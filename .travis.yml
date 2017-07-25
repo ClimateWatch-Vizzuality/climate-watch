@@ -1,0 +1,17 @@
+dist: trusty
+sudo: false
+language: ruby
+rvm:
+- 2.4.1
+addons:
+  postgresql: 9.5
+env:
+- MAILER_DEFAULT_FROM=no-reply@example.com MAILER_DEFAULT_URL=example.com
+before_script:
+- psql -c 'create database "climate-watch_test"' -U postgres
+- RAILS_ENV=test bundle exec rake db:migrate
+script:
+- bundle exec rspec spec
+notifications:
+  slack:
+    secure: LhOZUX759yvGkDLBJaSHKnhVHFBb2HNBtIcBGumcLOd0sX8tTwyzUfTRuffg3zz5bc6HuOXl7e6wiVgt6Kv1bsGsAXhnSgF3zNv/IHlAHxsbxF+k0V/PNxm/G1aW+LsBrWF3uSEm86afvJcMvxtv7P/cQrGhXSg9I4i0bOVyjBilFB5CLPTFmjKpWdX6kRDezVQTM3XAAztin8hoF90kGNOtKCIud5KA73gHxAFGJQxL4am2QazZxOXRTZ+XLuHovQrpgyDc7uPh3DUuH+9R1H/nSp84Wr27kLVRzK3Pb5eFN+4DCdPGKAl4ap943b+DNr5qPVGS1kF7sZGJ11NC9f8uDTdECbI7PCXlLwo6+xtDogjUrATeBB9p2/5KTdKoTarXsk3Xgjz2APrtwW4WKysxf3DuU34j6Oh6ACWR1zgyFKSMqrU+724smsYALnXuozEGnqudslCitr6NUP4oHiL2JfFlFpoBvy1YZV7RarQVL1MJe+N9V1m5PoO56T/t4GoZdYw+12JrYNzoAeosvk/2/9L/hs+ZjMXhjJHPaeWqBVgQ2Ib1WJSVOcKkLe3SfasFQ3myb3PoWB0G4n9B5ABCcXg1V8pz4oPqvJh4B2X1L3NpOZ/NH8FQ1a7t4JiVmTqSrL6fTML+vd0kpkV/dfBwWaKC5FUsSlM1jCDoh8M=
