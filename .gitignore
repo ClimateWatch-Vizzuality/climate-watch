@@ -37,8 +37,12 @@ config/initializers/secret_token.rb
 *.bowerrc
 bower.json
 
+/node_modules
+
 # Ignore pow environment settings
 .powenv
 
 # Ignore Byebug command history file.
 .byebug_history
+
+.DS_Store
