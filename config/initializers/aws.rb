@@ -1,7 +1,11 @@
+return if Rails.env.test?
 Aws.config.update({
-  region: ENV["AWS_REGION"],
-  credentials: Aws::Credentials.new(ENV["AWS_ACCESS_KEY_ID"], ENV["AWS_SECRET_ACCESS_KEY"]),
+  region: Rails.application.secrets.aws_region,
+  credentials: Aws::Credentials.new(
+    Rails.application.secrets.aws_access_key_id,
+    Rails.application.secrets.aws_secret_access_key
+  ),
   endpoint: "https://s3.amazonaws.com"
 })
 
-S3_BUCKET_URL = "https://s3-#{ENV["AWS_REGION"]}.amazonaws.com/#{ENV["S3_BUCKET_NAME"]}"
+S3_BUCKET_URL = "https://s3-#{Rails.application.secrets.aws_region}.amazonaws.com/#{Rails.application.secrets.s3_bucket_name}"

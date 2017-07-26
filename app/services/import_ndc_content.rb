@@ -1,15 +1,17 @@
 class ImportNdcContent
   def call
-    s3 = Aws::S3::Resource.new
-    bucket = s3.bucket(ENV['S3_BUCKET_NAME'])
     Ndc.delete_all
-    md_files = bucket.objects(prefix: 'ndcs').select { |o| o.key =~ /\.md$/ }
-    md_files.each { |object| import_object(object) }
+    bucket_name = Rails.application.secrets.s3_bucket_name
+    s3 = Aws::S3::Client.new
+    s3.list_objects(bucket: bucket_name, prefix: 'ndcs').each do |response|
+      md_objects = response.contents.select { |o| o.key =~ /\.md$/ }
+      md_objects.each { |object| import_object(s3, bucket_name, object) }
+    end
   end
 
   private
 
-  def import_object(object)
+  def import_object(s3, bucket_name, object)
     object.key =~ /ndcs\/(.+?)(-.+)?.md/
     code = Regexp.last_match[1]
     location = Location.find_by_code(code)
@@ -17,7 +19,8 @@ class ImportNdcContent
       Rails.logger.warn "Location not found: #{code}"
       return
     end
-    content = object.get.body.read
+    file = s3.get_object(bucket: bucket_name, key: object.key)
+    content = file.body.read
     Ndc.create(location: location, content: content)
     # TODO: indexing for FTS
   end
