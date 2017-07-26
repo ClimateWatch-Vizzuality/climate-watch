@@ -44,6 +44,10 @@ Style/BlockDelimiters:
   Exclude:
     - 'spec/**/*'
 
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
+  AllowInnerSlashes: true
+
 Metrics/LineLength:
   Max: 80
   Exclude:
