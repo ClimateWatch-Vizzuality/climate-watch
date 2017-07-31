@@ -2,8 +2,8 @@
   "name": "climate-watch",
   "scripts": {
     "server": "bundle exec rails s",
-    "dev": "./bin/webpack-dev-server",
-    "build": "./bin/rails webpacker:compile"
+    "reinstall": "rm -rf ./node_modules && yarn install",
+    "dev": "./bin/webpack-dev-server"
   },
   "private": true,
   "dependencies": {
