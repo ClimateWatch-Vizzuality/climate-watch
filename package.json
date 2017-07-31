@@ -1,5 +1,10 @@
 {
   "name": "climate-watch",
+  "scripts": {
+    "server": "bundle exec rails s",
+    "dev": "./bin/webpack-dev-server",
+    "build": "./bin/rails webpacker:compile"
+  },
   "private": true,
   "dependencies": {
     "autoprefixer": "^7.1.2",
