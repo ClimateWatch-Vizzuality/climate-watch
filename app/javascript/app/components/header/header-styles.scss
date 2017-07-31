@@ -1,0 +1,19 @@
+.header {
+  margin: 10px 0 0;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.link {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  text-decoration: none;
+
+  &Active {
+    text-decoration: underline;
+  }
+
+  &:hover {
+    color: #ccc;
+  }
+}
