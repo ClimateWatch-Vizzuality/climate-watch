@@ -8,6 +8,8 @@ const { basename, dirname, join, relative, resolve } = require('path')
 const { sync } = require('glob')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
+
 const extname = require('path-complete-extname')
 const { env, settings, output, loadersDir } = require('./configuration.js')
 
@@ -41,7 +43,8 @@ module.exports = {
     new ManifestPlugin({
       publicPath: output.publicPath,
       writeToFileEmit: true
-    })
+    }),
+    new DirectoryNamedWebpackPlugin(true)
   ],
 
   resolve: {
