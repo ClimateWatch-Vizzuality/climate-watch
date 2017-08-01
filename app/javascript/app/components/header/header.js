@@ -3,4 +3,4 @@
 // export { default as styles } from './header-styles'
 // export { default as actions } from './header-actions'
 
-export { default } from './header-component'
+export { default } from './header-container'

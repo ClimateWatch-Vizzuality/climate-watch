@@ -1,0 +1,15 @@
+.container {
+  width: 100%;
+  position: relative;
+
+  .list {
+    background-color: #ccc;
+    padding: 20px;
+    position: absolute;
+    display: block;
+
+    &Closed {
+      display: none;
+    }
+  }
+}

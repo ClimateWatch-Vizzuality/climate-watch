@@ -1,23 +1,14 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
 
 import styles from './header-styles.scss'
-import routes from 'app/routes'
+// import routes from 'app/routes'
+import CountryExplorer from 'components/country-explorer'
+import COUNTRIES from 'data/countries'
 
-export default () => (
+export default ({ toggleCountryExplorer }) => (
   <div className={styles.header}>
-    {routes
-      .filter(r => r.nav)
-      .map(({ path, exact, label }) =>
-        <NavLink
-          key={path}
-          to={path}
-          exact
-          className={styles.link}
-          activeClassName={styles.linkActive}
-        >
-          {label}
-        </NavLink>
-    )}
+    <h2 onClick={() => toggleCountryExplorer()}>Countries</h2>
+    <CountryExplorer countries={COUNTRIES} />
   </div>
 )
