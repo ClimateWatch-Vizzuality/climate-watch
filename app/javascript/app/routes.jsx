@@ -5,9 +5,13 @@ import Other from 'components/other'
 export default [
   { path: '/',
     component: Home,
-    exact: true
+    label: 'Home',
+    exact: true,
+    nav: true
   },
   { path: '/other',
-    component: Other
+    component: Other,
+    label: 'Other',
+    nav: true
   }
 ]
