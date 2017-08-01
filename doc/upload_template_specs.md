@@ -4,7 +4,7 @@ Over the course of the Climate Watch project, you may need/wish to update the si
 
 **Please provide all files in comma separated value (*.csv*) format with utf-8 encoding.** This will avoid any issues with special characters. If you have your data in an Excel table and are unsure how to produce a *csv* file, you can export a single sheet (the active sheet) by clicking `Save As` in the drop-down `File` menu, and selecting *csv* as a file-type.
 
-Unless you have a specific reason not to do so, any empty columns should be filled with the character `NA` rather than being left blank.
+Unless you have a specific reason not to do so, you should leave any missing data fields blank. If there is currently filler data fields, such as NA, N/A, None, nil, -9999, etc, please remove these values and leave the entries blank (unless you have a good reason not to do so, and it is clear from the metadata that these missing data are present).
 
 ## NDC-SDG Linkages
 
