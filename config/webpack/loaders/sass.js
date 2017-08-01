@@ -7,7 +7,7 @@ const devConfig = [
     loader: 'css-loader',
     query: {
       modules: true,
-      localIdentName: '[local]__[path][name]__[hash:base64:5]'
+      localIdentName: '[name]__[local]__[hash:base64:5]'
     }
   },
   { loader: 'postcss-loader' },
