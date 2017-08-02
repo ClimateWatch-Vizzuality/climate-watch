@@ -17,21 +17,7 @@ export const bindActionsToReducers = (actions, reducerList, appState) =>
   }, {})
 
 export const handleActions = (key, actions, reducers, state) =>
-  handle(bindActionsToReducers(actions, [reducers], state), state[key])
-
-// our own actioncreattor that can handle thunks
-// fires the action as init
-// and leaves resolve/reject to the thunk creator
-// export const createAction = (name, thunkAction, autoDispatch = true) => {
-//   const action = CA(name)
-//   if (!thunkAction) return action
-//   const thunk = () => dispatch => {
-//     if (autoDispatch) dispatch(action())
-//     return thunkAction(dispatch)
-//   }
-//   thunk.toString = () => name
-//   return thunk
-// }
+  handle(bindActionsToReducers(actions, [reducers], state), state[key] || {})
 
 // our own actioncreattor that can handle thunks
 // fires the action as init

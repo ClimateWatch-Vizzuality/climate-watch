@@ -3,5 +3,9 @@ export default {
   countryExplorer: {
     open: false
   },
-  other: {}
+  other: {
+    loading: false,
+    loaded: false,
+    data: null
+  }
 }

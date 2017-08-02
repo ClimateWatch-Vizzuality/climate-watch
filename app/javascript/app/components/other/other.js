@@ -6,4 +6,4 @@ import actions from './other-actions'
 export { default as reducers } from './other-reducers'
 export { default as actions } from './other-actions'
 
-export default connect(null, actions)(Component)
+export default connect(state => state.other, actions)(Component)
