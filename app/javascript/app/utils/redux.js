@@ -22,13 +22,22 @@ export const handleActions = (key, actions, reducers, state) =>
 // our own actioncreattor that can handle thunks
 // fires the action as init
 // and leaves resolve/reject to the thunk creator
-export const createAction = (name, thunkAction, autoDispatch = true) => {
-  const action = CA(name)
-  if (!thunkAction) return action
-  const thunk = () => dispatch => {
-    if (autoDispatch) dispatch(action())
-    return thunkAction(dispatch)
-  }
-  thunk.toString = () => name
-  return thunk
+// export const createAction = (name, thunkAction, autoDispatch = true) => {
+//   const action = CA(name)
+//   if (!thunkAction) return action
+//   const thunk = () => dispatch => {
+//     if (autoDispatch) dispatch(action())
+//     return thunkAction(dispatch)
+//   }
+//   thunk.toString = () => name
+//   return thunk
+// }
+
+// our own actioncreattor that can handle thunks
+// fires the action as init
+// and leaves resolve/reject to the thunk creator
+export const createThunkAction = (name, thunkAction) => {
+  if (!thunkAction) return CA(name)
+  thunkAction.toString = () => name
+  return thunkAction
 }

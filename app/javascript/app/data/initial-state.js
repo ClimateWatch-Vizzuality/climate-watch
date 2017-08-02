@@ -1,7 +1,7 @@
 
 export default {
   countryExplorer: {
-    open: false,
-    selected: 'FR'
-  }
+    open: false
+  },
+  other: {}
 }

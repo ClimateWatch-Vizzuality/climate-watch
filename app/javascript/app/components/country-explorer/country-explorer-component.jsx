@@ -2,6 +2,7 @@ import React from 'react'
 import _map from 'lodash/map'
 import cx from 'classnames'
 import { themr } from 'react-css-themr'
+import { NavLink } from 'react-router-dom'
 
 import styles from './country-explorer-styles.scss'
 
@@ -13,27 +14,27 @@ const CountryExplorer = props => {
     selected,
     className,
     theme,
-    onLabelClick
+    onLabelClick,
+    closeCountryExplorer
   } = props
-
   return (
-    <div className={cx(className, theme.countryExplorerContainer)}>
+    <div className={cx(className, theme.container)}>
       <span onClick={onLabelClick}>
         {label}
       </span>
       <ul
-        className={cx(theme.countryExplorerList, {
-          [theme.countryExplorerListClosed]: !open
+        className={cx(theme.list, {
+          [theme.listClosed]: !open
         })}
       >
         {_map(countries, (country, iso) =>
           <li
-            className={cx(theme.countryExplorerListItem, {
-              [theme.countryExplorerListItemSelected]: selected === iso
+            className={cx(theme.listItem, {
+              [theme.listItemSelected]: selected === iso
             })}
             key={iso}
           >
-            {country}
+            <NavLink onClick={() => closeCountryExplorer()} className={theme.link} to={`/country/${iso}`}>{country}</NavLink>
           </li>
         )}
       </ul>

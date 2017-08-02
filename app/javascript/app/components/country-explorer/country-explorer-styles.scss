@@ -1,7 +1,7 @@
-.countryExplorerContainer {
+.container {
   position: relative;
 
-  .countryExplorerList {
+  .list {
     list-style: none;
     position: absolute;
     display: block;
@@ -11,7 +11,7 @@
     }
   }
 
-  .countryExplorerListItem {
+  .listItem {
     margin-bottom: 0.5em;
 
     &Selected {
