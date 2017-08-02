@@ -68,5 +68,16 @@ Countries and country groups for which data is collected are referenced by a cod
 | **Name** | String, name as displayed in the system, possibly the WRI standard name, e.g. 'United States' |
 | **Type** | String, one of COUNTRY, REGION, COUNTRY_GROUP |
 
+### Emissions
+
+| column name | data type |
+| ---| --|
+| **country** | String matching the `code` attribute of countries |
+| **source** | String matching the `name` property of sources |
+| **sector** | String matching the `name` attribute of sectors |
+| **gas** | String matching the `gas` property of sectors |
+| **gwp** | String, e.g. 'AR2' |
+| **year** | Integer, e.g. 2000 |
+| **value** | Float, e.g. 5.8 |
 
 ## Indicators
