@@ -13,11 +13,16 @@ class CountryExplorerContainer extends Component {
   render () {
     const { toggleCountryExplorer } = this.props
     const onLabelClick = () => toggleCountryExplorer()
-    return React.createElement(CountryExplorer, {...this.props, onLabelClick, label: 'Countries'})
+
+    return React.createElement(CountryExplorer, {
+      ...this.props, onLabelClick, label: 'Countries'
+    })
   }
 }
 
 export { default as reducers } from './country-explorer-reducers'
 export { default as actions } from './country-explorer-actions'
 
-export default connect(state => state.countryExplorer, actions)(clickOutside(CountryExplorerContainer))
+export default connect(state => state.countryExplorer, actions)(
+  clickOutside(CountryExplorerContainer)
+)

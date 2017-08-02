@@ -6,19 +6,39 @@ import { themr } from 'react-css-themr'
 import styles from './country-explorer-styles.scss'
 
 const CountryExplorer = props => {
-  const { open, countries, label, selected, className, theme, onLabelClick } = props
+  const {
+    open,
+    countries,
+    label,
+    selected,
+    className,
+    theme,
+    onLabelClick
+  } = props
 
   return (
     <div className={cx(className, theme.countryExplorerContainer)}>
-      <span onClick={onLabelClick}>{label}</span>
-      <ul className={cx(theme.countryExplorerList, { [theme.countryExplorerListClosed]: !open })}>
+      <span onClick={onLabelClick}>
+        {label}
+      </span>
+      <ul
+        className={cx(theme.countryExplorerList, {
+          [theme.countryExplorerListClosed]: !open
+        })}
+      >
         {_map(countries, (country, iso) =>
-          <li className={cx(
-              theme.countryExplorerListItem, {[theme.countryExplorerListItemSelected]: selected === iso}
-          )} key={iso}>{country}</li>
+          <li
+            className={cx(theme.countryExplorerListItem, {
+              [theme.countryExplorerListItemSelected]: selected === iso
+            })}
+            key={iso}
+          >
+            {country}
+          </li>
         )}
       </ul>
-    </div>)
+    </div>
+  )
 }
 
 export default themr(CountryExplorer, styles)(CountryExplorer)
