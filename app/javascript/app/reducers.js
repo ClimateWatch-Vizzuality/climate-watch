@@ -3,11 +3,15 @@ import { routerReducer as router } from 'react-router-redux'
 import { handleActions } from 'app/utils/redux'
 
 import { reducers as countryExplorerReducers } from 'components/country-explorer'
-
 import initialState from './data/initial-state'
 import allActions from './actions'
 
 export default combineReducers({
   router,
-  countryExplorer: handleActions('countryExplorer', allActions, countryExplorerReducers, initialState)
+  countryExplorer: handleActions(
+    'countryExplorer',
+    allActions,
+    countryExplorerReducers,
+    initialState
+  )
 })
