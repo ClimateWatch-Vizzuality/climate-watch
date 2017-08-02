@@ -46,7 +46,10 @@ If you wish to update the NDC-SDG linkages table, ensure the following columns a
 | ---| --|
 | **source** | String, e.g. 'CAIT', spellt exactly as in the Data sources file  |
 | **name** | String, e.g. 'Electricity/Heat' |
-| parent | String e.g. 'Energy', spellt exactly as the name of the parent sector |
+| parent | String e.g. 'Energy', spelt exactly as the name of the parent sector |
+| **gas** | String, e.g. 'CO2' or 'All GHG' |
+| **unit** | String, e.g. 'MtCO2e' |
+| definition | String, e.g. 'Emissions from energy sector' |
 
 Please note: rows which define subsectors should follow rows which defined their parents.
 
