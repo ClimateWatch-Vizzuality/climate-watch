@@ -3,12 +3,14 @@
   "scripts": {
     "server": "bundle exec rails s",
     "reinstall": "rm -rf ./node_modules && yarn install",
-    "dev": "./bin/webpack-dev-server"
+    "dev": "./bin/webpack-dev-server",
+    "precommit": "lint-staged"
   },
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
     "history": "^4.6.3",
+    "precommit": "^1.2.2",
     "react": "^15.6.1",
     "react-click-outside": "tj/react-click-outside",
     "react-css-themr": "^2.1.2",
