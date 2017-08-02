@@ -34,12 +34,19 @@ If you wish to update the NDC-SDG linkages table, ensure the following columns a
 
 ## Historical Climate data
 
+### Data sources
+| column name | data type |
+| ---| --|
+|  **name** | String, e.g. 'CAIT'  |
+| long_name| String, e.g. 'CAIT Paris Contributions Map' |
+| link | String e.g. 'http://cait.wri.org/indc/' |
+
 ### Countries
 
 Countries and country groups for which data is collected are referenced by a code, which is the 3-digit iso codes in case of countries and a custom code in case of country groups.
 
 1. QUESTION: do we need to know which countries make up a country group? In such case another meta data file with inclusion relationships is needed
-2. QUESTION: do we need to know what the name of the country is for PIK or CAIT? In such case more columns are needed
+2. QUESTION: do we need to know what the name of the country is for PIK or CAIT or other data sources? In such case more columns are needed
 3. QUESTION: is the difference between a REGION and a COUNTRY_GROUP relevant for the system? If not, possibly we could just have a boolean flag to say it's a group of countries instead of the type column
 4. QUESTION: do we need the UNFCCC group here?
 
