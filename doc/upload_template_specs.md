@@ -41,6 +41,15 @@ If you wish to update the NDC-SDG linkages table, ensure the following columns a
 | long_name| String, e.g. 'CAIT Paris Contributions Map' |
 | link | String e.g. 'http://cait.wri.org/indc/' |
 
+### Sectors
+| column name | data type |
+| ---| --|
+| **source** | String, e.g. 'CAIT', spellt exactly as in the Data sources file  |
+| **name** | String, e.g. 'Electricity/Heat' |
+| parent | String e.g. 'Energy', spellt exactly as the name of the parent sector |
+
+Please note: rows which define subsectors should follow rows which defined their parents.
+
 ### Countries
 
 Countries and country groups for which data is collected are referenced by a code, which is the 3-digit iso codes in case of countries and a custom code in case of country groups.
