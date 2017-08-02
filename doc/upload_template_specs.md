@@ -173,12 +173,31 @@ E.g. currently there are values in percent with % symbol attached, html instead 
 
 ## Historical Climate data
 
+### Data sources
+| column name | data type |
+| ---| --|
+|  **name** | String, e.g. 'CAIT'  |
+| long_name| String, e.g. 'CAIT Paris Contributions Map' |
+| link | String e.g. 'http://cait.wri.org/indc/' |
+
+### Sectors
+| column name | data type |
+| ---| --|
+| **source** | String, e.g. 'CAIT', spellt exactly as in the Data sources file  |
+| **name** | String, e.g. 'Electricity/Heat' |
+| parent | String e.g. 'Energy', spelt exactly as the name of the parent sector |
+| **gas** | String, e.g. 'CO2' or 'All GHG' |
+| **unit** | String, e.g. 'MtCO2e' |
+| definition | String, e.g. 'Emissions from energy sector' |
+
+Please note: rows which define subsectors should follow rows which defined their parents.
+
 ### Countries
 
 Countries and country groups for which data is collected are referenced by a code, which is the 3-digit iso codes in case of countries and a custom code in case of country groups.
 
 1. QUESTION: do we need to know which countries make up a country group? In such case another meta data file with inclusion relationships is needed
-2. QUESTION: do we need to know what the name of the country is for PIK or CAIT? In such case more columns are needed
+2. QUESTION: do we need to know what the name of the country is for PIK or CAIT or other data sources? In such case more columns are needed
 3. QUESTION: is the difference between a REGION and a COUNTRY_GROUP relevant for the system? If not, possibly we could just have a boolean flag to say it's a group of countries instead of the type column
 4. QUESTION: do we need the UNFCCC group here?
 
@@ -188,5 +207,16 @@ Countries and country groups for which data is collected are referenced by a cod
 | **Name** | String, name as displayed in the system, possibly the WRI standard name, e.g. 'United States' |
 | **Type** | String, one of COUNTRY, REGION, COUNTRY_GROUP |
 
+### Emissions
+
+| column name | data type |
+| ---| --|
+| **country** | String matching the `code` attribute of countries |
+| **source** | String matching the `name` property of sources |
+| **sector** | String matching the `name` attribute of sectors |
+| **gas** | String matching the `gas` property of sectors |
+| **gwp** | String, e.g. 'AR2' |
+| **year** | Integer, e.g. 2000 |
+| **value** | Float, e.g. 5.8 |
 
 ## Indicators
