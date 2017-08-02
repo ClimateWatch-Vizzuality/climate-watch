@@ -8,5 +8,5 @@ import allActions from './actions'
 
 export default combineReducers({
   router,
-  countryExplorer: handleActions(allActions, countryExplorerReducers, initialState, 'countryExplorer')
+  countryExplorer: handleActions('countryExplorer', allActions, countryExplorerReducers, initialState)
 })

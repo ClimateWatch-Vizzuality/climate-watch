@@ -1,15 +1,21 @@
-.container {
-  width: 100%;
+.countryExplorerContainer {
   position: relative;
 
-  .list {
-    background-color: #ccc;
-    padding: 20px;
+  .countryExplorerList {
+    list-style: none;
     position: absolute;
     display: block;
 
     &Closed {
       display: none;
+    }
+  }
+
+  .countryExplorerListItem {
+    margin-bottom: 0.5em;
+
+    &Selected {
+      text-decoration: underline;
     }
   }
 }

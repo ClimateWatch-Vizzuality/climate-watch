@@ -16,7 +16,7 @@ export const bindActionsToReducers = (actions, reducerList, appState) =>
     return { ...result, ...c }
   }, {})
 
-export const handleActions = (actions, reducers, state, key) =>
+export const handleActions = (key, actions, reducers, state) =>
   handle(bindActionsToReducers(actions, [reducers], state), state[key])
 
 // our own actioncreattor that can handle thunks
