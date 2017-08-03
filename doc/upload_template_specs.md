@@ -12,10 +12,10 @@ If you wish to send us an update to the NDC-SDG linkages table, please ensure th
 
 | Column Name | Data Type | Example |
 | ---| --|--|
-|  ** Country ** | String  | Afghanistan |
+| **Country** | String  | Afghanistan |
 | Goal | String | Goal 1 - No Poverty |
-| ** Target ** | String | 6.b |
-| ** INDC_text ** | String | reduce poverty and improve agricultural productions |
+| **Target** | String | 6.b |
+| **INDC_text** | String | reduce poverty and improve agricultural productions |
 |Status| String | Future |
 |Sector| String | "Agriculture, Water" |
 | Climate_response | String | Mitigation |
@@ -170,6 +170,8 @@ Currently these data seems to be in `NDC content data 0424.xlsx`. Looks like the
 E.g. currently there are values in percent with % symbol attached, html instead of unicode text, dates some as just date others with time attached, column names should be snake case, we should also have metadata dictionary mapping the column name to description. "" used to encapsulate any string with a comma inside. Blanks permitted.
 
 ## NDC Files
+
+Collection of `.md` files, stored in a S3 bucket.
 
 ## Historical Climate data
 
