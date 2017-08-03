@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170725171311) do
+ActiveRecord::Schema.define(version: 20170803102815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,9 +30,10 @@ ActiveRecord::Schema.define(version: 20170725171311) do
   create_table "ndcs", force: :cascade do |t|
     t.bigint "location_id"
     t.text "content"
-    t.text "content_tsv"
+    t.tsvector "content_tsv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["content_tsv"], name: "index_ndcs_on_content_tsv", using: :gin
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 

@@ -7,6 +7,7 @@ class ImportNdcContent
       md_objects = response.contents.select { |o| o.key =~ /\.md$/ }
       md_objects.each { |object| import_object(s3, bucket_name, object) }
     end
+    Ndc.refresh_content_tsv
   end
 
   private
@@ -22,6 +23,5 @@ class ImportNdcContent
     file = s3.get_object(bucket: bucket_name, key: object.key)
     content = file.body.read
     Ndc.create(location: location, content: content)
-    # TODO: indexing for FTS
   end
 end

@@ -3,4 +3,9 @@ namespace :ndc_content do
   task import: :environment do
     ImportNdcContent.new.call
   end
+
+  desc 'Indexes NDC cotent'
+  task index: :environment do
+    Ndc.refresh_content_tsv
+  end
 end
