@@ -6,18 +6,12 @@ import Country from 'components/country'
 export default [
   { path: '/',
     component: Home,
-    label: 'Home',
-    exact: true,
-    nav: true
+    exact: true
   },
   { path: '/other',
-    component: Other,
-    label: 'Other',
-    nav: true
+    component: Other
   },
   { path: '/country/:iso',
-    component: Country,
-    label: 'Other',
-    nav: true
+    component: Country
   }
 ]
