@@ -1,9 +1,13 @@
 {
   "name": "climate-watch",
   "scripts": {
-    "server": "bundle exec rails s",
-    "reinstall": "rm -rf ./node_modules && yarn install",
-    "dev": "./bin/webpack-dev-server",
+    "rails:install": "bundle install",
+    "js:install": "yarn install",
+    "js:reinstall": "rm -rf ./node_modules && yarn install",
+    "rails:db:create": "RAILS_ENV=development bundle exec rails db:create",
+    "rails:db:migrate": "RAILS_ENV=development bundle exec rails db:migrate",
+    "rails:server": "bundle exec rails s",
+    "js:server": "./bin/webpack-dev-server",
     "precommit": "lint-staged"
   },
   "private": true,
