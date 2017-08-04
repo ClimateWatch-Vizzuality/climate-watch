@@ -1,5 +1,5 @@
 import React from 'react'
-import { LineChart, Line } from 'recharts'
+import { LineChart, Line, XAxis, Tooltip } from 'recharts'
 
 const data = [
   {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
@@ -11,13 +11,17 @@ const data = [
   {name: 'Page G', uv: 3490, pv: 4300, amt: 2100}
 ]
 
-const clicked = e => console.log(e);
+const animated = false
+
+const renderTooltip = props => console.log(props) || <div>{props.label}</div>
 
 const Home = props => (
   <div>
     <h1>Home</h1>
     <LineChart width={400} height={400} data={data}>
-      <Line isAnimationActive={false} onClick={clicked} type="monotone" dataKey="uv" stroke="#8884d8" />
+      <Tooltip isAnimationActive={animated} cursor={false} content={renderTooltip} />
+      <Line isAnimationActive={animated} onClick={e => console.log(e)} type="monotone" dataKey="uv" stroke="#8884d8" />
+      <XAxis isAnimationActive={animated} dataKey="uv" />
     </LineChart>
   </div>
 )
