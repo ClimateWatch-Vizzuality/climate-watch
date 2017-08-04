@@ -4,7 +4,20 @@ class Ndc < ApplicationRecord
   belongs_to :location
 
   pg_search_scope :search_for, against: :content, using: {
-    tsearch: {dictionary: 'english', tsvector_column: :content_tsv}
+    tsearch: {
+      dictionary: 'English',
+      tsvector_column: :content_tsv,
+      highlight: {
+        StartSel: '<mark>',
+        StopSel: '</mark>',
+        MaxWords: 123,
+        MinWords: 456,
+        ShortWord: 4,
+        HighlightAll: true,
+        MaxFragments: 3,
+        FragmentDelimiter: '&hellip;'
+      }
+    }
   }
 
   def self.refresh_content_tsv
