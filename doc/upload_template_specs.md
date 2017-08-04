@@ -185,7 +185,7 @@ Collection of `.md` files, stored in a S3 bucket.
 ### Sectors
 | column name | data type |
 | ---| --|
-| **source** | String, e.g. 'CAIT', spellt exactly as in the Data sources file  |
+| **source** | String, e.g. 'CAIT', spelt exactly as in the Data sources file  |
 | **name** | String, e.g. 'Electricity/Heat' |
 | parent | String e.g. 'Energy', spelt exactly as the name of the parent sector |
 | **gas** | String, e.g. 'CO2' or 'All GHG' |
@@ -205,9 +205,9 @@ Countries and country groups for which data is collected are referenced by a cod
 
 | column name | data type |
 | ---| --|
-| **Code** | String, 3-digit iso code for countries and custom code for country groups, e.g. 'USA'  |
-| **Name** | String, name as displayed in the system, possibly the WRI standard name, e.g. 'United States' |
-| **Type** | String, one of COUNTRY, REGION, COUNTRY_GROUP |
+| **code** | String, 3-digit iso code for countries and custom code for country groups, e.g. 'USA'  |
+| **name** | String, name as displayed in the system, possibly the WRI standard name, e.g. 'United States' |
+| **type** | String, one of COUNTRY, REGION, COUNTRY_GROUP |
 
 ### Emissions
 
