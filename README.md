@@ -108,3 +108,7 @@ Whenever the module will need to be mounted in the application and given some st
 and the parent will be responsible for styling the component with the app specific styles.
 
 If the module we are writing is only meant to live in the current app it's ok to have app specific styles in there, always using global styles as layout or grid used across the app (these will be combined into the local styles).
+
+## State management and connecting Modules
+
+TBD
