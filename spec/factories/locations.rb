@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :location do
     code 'MyText'
-    pik 'MyText'
-    cait 'MyText'
-    ndcp_navigators 'MyText'
+    pik_name 'MyText'
+    cait_name 'MyText'
+    ndcp_navigators_name 'MyText'
     wri_standard_name 'MyText'
     unfccc_group 'MyText'
-    country_group false
+    group false
   end
 end
