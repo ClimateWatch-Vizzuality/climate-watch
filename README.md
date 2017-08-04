@@ -111,4 +111,26 @@ If the module we are writing is only meant to live in the current app it's ok to
 
 ## State management and connecting Modules
 
-TBD
+Once we are using the mentioned module architecture we have to gather all the local actions and reducers and glue them together so redux can use them.  
+For asynchronous actions we use [redux-thunk](https://github.com/gaearon/redux-thunk).
+
+### Module Actions
+
+Actions inside a module are created with [redux-actions createActions](https://github.com/acdlite/redux-actions) and exported individually.
+For Thunk actions a slim wrapper around `createActions` is used, this allows us to pass a thunk as the second argument giving us full control of what actions to dispatch on `init` `success` or `fail`.
+
+### Module Reducers
+
+Reducers inside a module are simple pure functions, no switch case is even present.  
+The reducers file exports an object which keys are the actions constants and the value is the reducer that will react to that dispatched action.
+
+The exported actions are used for the keys since `redux-actions` returns the action constant when calling the `.toString()` method in the action creator.
+
+### App Actions
+
+The application actions file is free to import/export every module's actions individually or merge then into a big object of actions.
+
+### App Reducers
+
+In the app reducers we will import all module's reducers and bind them to a key in the store using a `handleActions` wrapper.
+This wrapper uses `redux-actions`'s `handleActions` and glues all the individual reducers together to the matching actions.
