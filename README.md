@@ -68,7 +68,7 @@ There are some peculiarities in the architectural choices that we will outline i
 The router version used in the project is `v.4.1.1`.
 
 - routes are defined as a data-structure instead of using `jsx` inside the `routes.js` file.
-- Instead of connecting the routes to the reducer via middleware we decided to use `withRouter` HOC instead, which means whenever you need access to the router information you will have to wrap your component with `withRouter`.
+- Instead of connecting the routes to the reducer via middleware we decided to use `withRouter` [HOC](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e) instead, which means whenever you need access to the router information you will have to wrap your component with `withRouter`.
 
 ## Modules
 
@@ -89,7 +89,7 @@ That includes not only Component and Container, but also styles, reducers and ac
 
 ### Module entry point
 
-The module entry point, named as the directory containing the module acts exports every element of the module individually and acts as container (as in [container component](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)) if needed.
+The module entry point, named as the directory containing the module exports every element of the module individually and acts as container (as in [container component](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)) if needed.
 
 ### Module Component
 
@@ -104,10 +104,10 @@ For all the application styles we are using [css-modules](https://github.com/css
 If the module we are writing is supposed to be reusable, the styles contained within the module only refer to the particular functioning of that module.
 No aesthetic definition belongs in the module styles.
 
-Whenever the module will need to be mounted in the application and given some style, the module will provide the means to be customized using [react-css-themr](https://github.com/javivelasco/react-css-themr)
-and the parent will be responsible for styling the component with the app specific styles.
+#### Theming
 
-If the module we are writing is only meant to live in the current app it's ok to have app specific styles in there, always using global styles as layout or grid used across the app (these will be combined into the local styles).
+Whenever the module will need to be mounted in the application and given some style, the module will provide the means to be customized using [react-css-themr](https://github.com/javivelasco/react-css-themr)
+and the parent will be responsible for styling the component with the app specific styles. This library provides a [HOC](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e) in which we can wrap our component or container and it will take care of merging the passed theme into the local styles.
 
 ## State management and connecting Modules
 
@@ -128,7 +128,7 @@ The exported actions are used for the keys since `redux-actions` returns the act
 
 ### App Actions
 
-The application actions file is free to import/export every module's actions individually or merge then into a big object of actions.
+The application actions file is free to import/export every module's actions individually or merge them into a big object containing all the actions.
 
 ### App Reducers
 
