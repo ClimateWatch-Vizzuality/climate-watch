@@ -1,5 +1,8 @@
 scss:
   enabled: false
 
+eslint:
+  enabled: true
+
 ruby:
   config_file: .rubocop.yml
