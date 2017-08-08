@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
 
   def index
     @data = {}
-    render "index"
+    render 'index'
   end
-
 end
