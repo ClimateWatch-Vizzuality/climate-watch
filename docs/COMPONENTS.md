@@ -1,7 +1,24 @@
 # App component
 
-## Topbar
-![topbar](https://github.com/Vizzuality/climate-watch/raw/feature/frontend-boilerplate/docs/img/top-bar.png)
-> simple black bar with an icon that links to an external URL
-
-## Nav Menu
+- Topbar
+- Nav Menu
+    - Countries
+        - Searchable list
+            - Search
+            - List
+        - Map (clickable and hoverable)
+    - Tools menu (my cw and download)
+- Header
+    - Intro (title + description)
+- Buttons
+    - Group
+        - Text
+        - Icon
+- Dropdown
+- Sticky
+    - Anchor nav
+- Legend
+- Accordion
+- TileGrid
+- SDG list
+- Card
