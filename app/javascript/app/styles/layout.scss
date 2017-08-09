@@ -1,9 +1,10 @@
+@import 'settings';
+
 .content {
-  max-width: 1150px;
-  padding: 0 25px;
   width: 100%;
+  max-width: $max-width;
   margin: 0 auto;
-  height: 100%;
+  padding: 0 $gutter-padding;
 }
 
 .grid {

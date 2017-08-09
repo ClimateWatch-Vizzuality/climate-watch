@@ -1,17 +1,15 @@
 .topbar {
   background-color: #000;
   height: 35px;
-
-  .wriLogo {
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    color: #fff;
-  }
-
-  img {
-    margin-right: 10px;
-  }
 }
 
+.wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+img {
+  margin-right: 10px;
+}
