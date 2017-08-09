@@ -1,0 +1,21 @@
+.container {
+  position: relative;
+
+  .list {
+    list-style: none;
+    position: absolute;
+    display: block;
+
+    &Closed {
+      display: none;
+    }
+  }
+
+  .listItem {
+    margin-bottom: 0.5em;
+
+    &Selected {
+      text-decoration: underline;
+    }
+  }
+}

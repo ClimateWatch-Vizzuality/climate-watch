@@ -8,6 +8,8 @@ const { basename, dirname, join, relative, resolve } = require('path')
 const { sync } = require('glob')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
+
 const extname = require('path-complete-extname')
 const { env, settings, output, loadersDir } = require('./configuration.js')
 
@@ -15,15 +17,17 @@ const extensionGlob = `**/*{${settings.extensions.join(',')}}*`
 const entryPath = join(settings.source_path, settings.source_entry_path)
 const packPaths = sync(join(entryPath, extensionGlob))
 
+const entry = packPaths.reduce(
+  (map, entry) => {
+    const localMap = map
+    const namespace = relative(join(entryPath), dirname(entry))
+    localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry)
+    return localMap
+  }, {}
+)
+
 module.exports = {
-  entry: packPaths.reduce(
-    (map, entry) => {
-      const localMap = map
-      const namespace = relative(join(entryPath), dirname(entry))
-      localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry)
-      return localMap
-    }, {}
-  ),
+  entry,
 
   output: {
     filename: '[name].js',
@@ -48,11 +52,20 @@ module.exports = {
     extensions: settings.extensions,
     modules: [
       resolve(settings.source_path),
+      resolve(settings.source_path, 'app'),
       'node_modules'
+    ],
+    plugins: [
+      new DirectoryNamedWebpackPlugin(true)
     ]
   },
 
   resolveLoader: {
     modules: ['node_modules']
+  },
+
+  node: {
+    fs: 'empty',
+    net: 'empty'
   }
 }
