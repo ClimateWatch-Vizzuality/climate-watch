@@ -1,6 +1,7 @@
 {
   "name": "climate-watch",
   "scripts": {
+    "start": "npm-run-all -p rails:server js:server",
     "rails:install": "bundle install",
     "js:install": "yarn install",
     "js:reinstall": "rm -rf ./node_modules && yarn install",
@@ -58,6 +59,7 @@
     "js-yaml": "^3.9.0",
     "lint-staged": "^4.0.2",
     "node-sass": "^4.5.3",
+    "npm-run-all": "4.0.2",
     "path-complete-extname": "^0.1.0",
     "postcss-cssnext": "^2.0.6",
     "postcss-loader": "^2.0.6",
