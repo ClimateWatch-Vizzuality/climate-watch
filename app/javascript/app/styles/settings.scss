@@ -1,0 +1,19 @@
+// Font families
+$font-family-1: 'Roboto', sans-serif;
+
+// Font sizes
+$font-size: 12px;
+
+// Layout
+$max-width: 1280px;
+$gutter-padding: 20px;
+
+// Breakpoitns
+$breakpoint-mobile: 320;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1280px;
+
+// Media queries
+$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
+$mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
+$mq-desktop: 'screen and (min-width: #{$breakpoint-desktop})';

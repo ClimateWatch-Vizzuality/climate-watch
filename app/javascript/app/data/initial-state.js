@@ -8,4 +8,4 @@ export default {
     loaded: false,
     data: null
   }
-}
+};

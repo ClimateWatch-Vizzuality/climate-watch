@@ -1,22 +1,29 @@
-import React from 'react'
-import { Provider } from 'react-redux'
-import { Route, BrowserRouter as Router } from 'react-router-dom'
-import createBrowserHistory from 'history/createBrowserHistory'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory';
 
-import store from 'app/store'
-import Layout from './layout'
-import routes from './routes'
+import store from 'app/store';
+import Page from './page';
+import routes from './routes';
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
-export default ({ data }) => (
+const App = ({ data }) => (
   <Provider store={store(data)}>
     <Router history={history}>
-      <Layout>
+      <Page>
         {routes.map(route =>
           <Route key={route.path} {...route} />
         )}
-      </Layout>
+      </Page>
     </Router>
   </Provider>
-)
+);
+
+App.propTypes = {
+  data: PropTypes.object
+};
+
+export default App;
