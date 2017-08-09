@@ -5,6 +5,7 @@
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <script><%= raw "window.__data = #{@data.to_json};" %></script>
     <%= javascript_pack_tag 'main' %>
   </head>
 
