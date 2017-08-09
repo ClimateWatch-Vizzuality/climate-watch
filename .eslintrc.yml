@@ -1,0 +1,40 @@
+---
+extends: vizzuality
+env:
+  node: true
+  es6: true
+  browser: true
+globals:
+  require: true
+  config: true
+  __DEV__: true
+parser: babel-eslint
+parserOptions:
+  ecmaVersion: 7
+  ecmaFeatures:
+    jsx: true
+    experimentalObjectRestSpread: true
+  sourceType: module
+plugins: [react]
+
+rules:
+  max-len: [1, 140, 2, {"ignoreUrls":true}]
+  comma-dangle: [error, never]
+  no-console: [error, allow: [warn, error, info]]
+  no-plusplus: ["error", { "allowForLoopAfterthoughts": true }]
+  import-extensions: [error, never]
+  no-use-before-define: 0
+  no-underscore-dangle: 0
+  react/forbid-prop-types: 0
+settings:
+  import/resolver:
+    node:
+      extensions:
+        - .js
+        - .jsx
+
+      moduleDirectory:
+        - node_modules
+        - javascript
+        - javascript/app
+        - app/javascript/app
