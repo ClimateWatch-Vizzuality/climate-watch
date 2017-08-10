@@ -1,6 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, Tooltip } from 'recharts';
 import Header from 'components/header';
+import Intro from 'components/intro';
 
 const data = [
   { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
@@ -22,7 +23,9 @@ const renderTooltip = props =>
 
 const Home = () =>
   (<div>
-    <Header size="large" />
+    <Header size="large">
+      <Intro title="Climate Watch" description="A very useful site" />
+    </Header>
     <h1>Home</h1>
     <LineChart width={400} height={400} data={data}>
       <Tooltip
