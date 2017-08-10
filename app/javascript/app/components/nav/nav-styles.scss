@@ -1,4 +1,30 @@
-.topbar {
-  background-color: red;
+@import '../../styles/settings.scss';
+
+.navbar {
+  display: flex;
+  align-items: center;
+  height: $navbar-height;
 }
 
+.logo {
+  width: 136px;
+  height: 13px;
+}
+
+.link {
+  color: $theme-color;
+  margin-right: 40px;
+  text-decoration: none;
+  position: relative;
+
+  &Active::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    background-color: rgba($theme-color, 0.2);
+    width: 100%;
+    height: 3px;
+  }
+}

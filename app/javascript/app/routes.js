@@ -1,6 +1,7 @@
 import Home from 'components/home';
 import Other from 'components/other';
 import Country from 'components/country';
+import errorPage from 'components/error-page';
 
 export default [
   {
@@ -9,11 +10,15 @@ export default [
     exact: true
   },
   {
-    path: '/other',
+    path: '/ndcs',
     component: Other
   },
   {
     path: '/country/:iso',
     component: Country
+  },
+  {
+    path: '/error-page',
+    component: errorPage
   }
 ];
