@@ -7,7 +7,9 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
+import Icon from 'components/icon';
 
+import iconShare from 'assets/icons/share.svg';
 import styles from "./page-styles.scss"; // eslint-disable-line
 
 const Layout = ({ children }) =>
@@ -20,6 +22,9 @@ const Layout = ({ children }) =>
         <ButtonGroup />
         <Button className="download-button">
           <span>Compare</span>
+        </Button>
+        <Button className={styles.button} type="icon">
+          <Icon icon={iconShare} />
         </Button>
       </div>
     </Header>
