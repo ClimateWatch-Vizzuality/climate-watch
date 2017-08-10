@@ -7,7 +7,7 @@ import Header from 'components/header';
 
 import styles from "./page-styles.scss"; // eslint-disable-line
 
-const Layout = ({ children }) =>
+const Page = ({ children }) =>
   (<div>
     <TopBar />
     <Nav />
@@ -15,8 +15,8 @@ const Layout = ({ children }) =>
     {children}
   </div>);
 
-Layout.propTypes = {
+Page.propTypes = {
   children: Proptypes.node
 };
 
-export default Layout;
+export default Page;
