@@ -1,27 +1,27 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
-import CountryExplorer from 'components/country-explorer';
-import countryExplorerTheme from 'styles/themes/country-explorer.scss';
-import uiStyles from 'styles/ui.scss';
-import COUNTRIES from 'data/countries';
+import layout from 'styles/layout.scss';
 import styles from './header-styles.scss';
 
-export default ({ toggleCountryExplorer }) =>
-  (<div className={styles.header}>
-    <ul className={styles.nav}>
-      <li className={styles.navItem}>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      <li className={styles.navItem}>
-        <CountryExplorer
-          className={uiStyles.button}
-          countries={COUNTRIES}
-          theme={countryExplorerTheme}
-        />
-      </li>
-      <li className={styles.navItem}>
-        <NavLink to="/other">Other...</NavLink>
-      </li>
-    </ul>
-  </div>);
+const Header = (props) => {
+  const { image, className, size } = props;
+  const sizeClass = size === 'large' ? styles.large : '';
+  return (
+    <div
+      className={cx(className, styles.header, sizeClass)}
+      style={{ backgroundImage: `url(${image})` }}
+    >
+      <div className={layout.content}>Child components go here</div>
+    </div>
+  );
+};
+
+Header.propTypes = {
+  image: PropTypes.string,
+  className: PropTypes.object,
+  size: PropTypes.string
+};
+
+export default Header;
