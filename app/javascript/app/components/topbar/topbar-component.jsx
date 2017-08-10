@@ -5,7 +5,6 @@ import logoWri from 'assets/icons/logo-wri.svg';
 import layout from 'styles/layout.scss';
 import styles from './topbar-styles.scss';
 
-
 export default () =>
   (<div className={styles.topbar}>
     <div className={layout.content}>
