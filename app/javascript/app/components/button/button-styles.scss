@@ -7,11 +7,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   border-radius: 4px;
   font-family: $font-family-2;
   text-transform: capitalize;
   color: $theme-color;
+  float: left;
+  cursor: pointer;
 }
 
 .square {
