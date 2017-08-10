@@ -6,7 +6,7 @@ import Nav from 'components/nav';
 import styles from './page-styles.scss';
 
 const Layout = ({ children }) => (
-  <div className={styles.body}>
+  <div>
     <TopBar />
     {children}
   </div>
