@@ -5,6 +5,8 @@ import TopBar from 'components/topbar';
 import Nav from 'components/nav';
 import Header from 'components/header';
 
+import styles from "./page-styles.scss"; // eslint-disable-line
+
 const Layout = ({ children }) =>
   (<div>
     <TopBar />
