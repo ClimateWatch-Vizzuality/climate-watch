@@ -1,6 +1,8 @@
 *.rbc
 capybara-*.html
 .rspec
+.gems
+.rbenv-gemsets
 /log
 /tmp
 /db/*.sqlite3
