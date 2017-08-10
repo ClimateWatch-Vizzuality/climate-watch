@@ -6,10 +6,11 @@ import layout from 'styles/layout.scss';
 import styles from './header-styles.scss';
 
 const Header = (props) => {
-  const { image, className, children } = props;
+  const { image, className, children, size } = props;
+  const sizeClass = size === 'large' ? styles.large : '';
   return (
     <div
-      className={cx(className, styles.header)}
+      className={cx(className, styles.header, sizeClass)}
       style={{ backgroundImage: `url(${image})` }}
     >
       <div className={layout.content}>
@@ -22,7 +23,8 @@ const Header = (props) => {
 Header.propTypes = {
   image: PropTypes.string,
   className: PropTypes.object,
-  children: PropTypes.object
+  children: PropTypes.object,
+  size: PropTypes.string
 };
 
 export default Header;

@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import store from 'app/store';
@@ -14,7 +19,10 @@ const App = ({ data }) =>
   (<Provider store={store(data)}>
     <Router history={history}>
       <Page>
-        {routes.map(route => <Route key={route.path} {...route} />)}
+        <Switch>
+          {routes.map(route => <Route key={route.path} {...route} />)}
+          <Redirect to="/error-page" push />
+        </Switch>
       </Page>
     </Router>
   </Provider>);
