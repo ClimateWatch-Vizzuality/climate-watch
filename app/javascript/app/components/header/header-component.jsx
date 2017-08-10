@@ -7,8 +7,8 @@ import uiStyles from 'styles/ui.scss';
 import COUNTRIES from 'data/countries';
 import styles from './header-styles.scss';
 
-export default ({ toggleCountryExplorer }) => (
-  <div className={styles.header}>
+export default ({ toggleCountryExplorer }) =>
+  (<div className={styles.header}>
     <ul className={styles.nav}>
       <li className={styles.navItem}>
         <NavLink to="/">Home</NavLink>
@@ -24,5 +24,4 @@ export default ({ toggleCountryExplorer }) => (
         <NavLink to="/other">Other...</NavLink>
       </li>
     </ul>
-  </div>
-);
+  </div>);

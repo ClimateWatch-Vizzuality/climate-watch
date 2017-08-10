@@ -10,17 +10,14 @@ import routes from 'app/routes';
 
 const history = createBrowserHistory();
 
-const App = ({ data }) => (
-  <Provider store={store(data)}>
+const App = ({ data }) =>
+  (<Provider store={store(data)}>
     <Router history={history}>
       <Page>
-        {routes.map(route =>
-          <Route key={route.path} {...route} />
-        )}
+        {routes.map(route => <Route key={route.path} {...route} />)}
       </Page>
     </Router>
-  </Provider>
-);
+  </Provider>);
 
 App.propTypes = {
   data: PropTypes.object

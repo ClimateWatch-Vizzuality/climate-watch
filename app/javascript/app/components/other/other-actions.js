@@ -9,8 +9,9 @@ const fetchMeDataReady = createAction('fetchMeDataReady');
 const fetchMeData = createThunkAction('fetchMeData', data => (dispatch) => {
   dispatch(fetchMeDataInit(data));
 
-  fetch('https://google.com', { mode: 'no-cors' })
-    .then(d => dispatch(fetchMeDataReady(d)));
+  fetch('https://google.com', { mode: 'no-cors' }).then(d =>
+    dispatch(fetchMeDataReady(d))
+  );
 });
 
 export default {

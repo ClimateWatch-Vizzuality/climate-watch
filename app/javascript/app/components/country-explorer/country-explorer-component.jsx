@@ -34,7 +34,13 @@ const CountryExplorer = (props) => {
             })}
             key={iso}
           >
-            <NavLink onClick={() => closeCountryExplorer()} className={theme.link} to={`/country/${iso}`}>{country}</NavLink>
+            <NavLink
+              onClick={() => closeCountryExplorer()}
+              className={theme.link}
+              to={`/country/${iso}`}
+            >
+              {country}
+            </NavLink>
           </li>)
         )}
       </ul>

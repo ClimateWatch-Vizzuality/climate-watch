@@ -8,10 +8,11 @@ export const bindActionsToReducers = (actions, reducerList, appState) =>
   Object.keys(actions).reduce((result, k) => {
     const c = {};
     const name = actions[k];
-    c[name] = (state, action) => reducerList.reduce((r, reducer) => {
-      if (!reducer.hasOwnProperty(k) || !isFunction(reducer[k])) return r;
-      return reducer[k](r, action, appState);
-    }, state);
+    c[name] = (state, action) =>
+      reducerList.reduce((r, reducer) => {
+        if (!reducer.hasOwnProperty(k) || !isFunction(reducer[k])) return r;
+        return reducer[k](r, action, appState);
+      }, state);
 
     return { ...result, ...c };
   }, {});

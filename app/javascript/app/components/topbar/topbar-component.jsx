@@ -1,19 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Icon from 'components/icon';
 
+import logoWri from 'assets/icons/logo-wri.svg';
 import layout from 'styles/layout.scss';
 import styles from './topbar-styles.scss';
 
-import homer from 'assets/icons/homer.svg';
-import Icon from 'components/icon';
-
-
-export default () => (
-  <div className={styles.topbar}>
+export default () =>
+  (<div className={styles.topbar}>
     <div className={layout.content}>
-      <img src="" alt="WRI Logo" />
-      <h1>WORLD RESOURCE INSTITUTE</h1>
-      <Icon icon={homer} className="homer-icon" />
+      <a
+        className={styles.wrapper}
+        href="http://www.wri.org/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Icon icon={logoWri} className={styles.iconLogoWRI} theme={styles} />
+      </a>
     </div>
-  </div>
-);
+  </div>);

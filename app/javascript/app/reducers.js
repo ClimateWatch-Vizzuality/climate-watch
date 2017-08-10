@@ -7,12 +7,7 @@ import initialState from './data/initial-state';
 import allActions from './actions';
 
 export default combineReducers({
-  other: handleActions(
-    'other',
-    allActions,
-    otherReducers,
-    initialState
-  ),
+  other: handleActions('other', allActions, otherReducers, initialState),
   countryExplorer: handleActions(
     'countryExplorer',
     allActions,

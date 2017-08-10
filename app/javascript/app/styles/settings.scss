@@ -2,11 +2,19 @@
 $font-family-1: 'Roboto', sans-serif;
 
 // Font sizes
-$font-size: 12px;
+$font-size: 16px;
+
+//font-weights
+$font-weight: 500;
 
 // Layout
 $max-width: 1280px;
 $gutter-padding: 20px;
+
+// Colors
+$black: #333333;
+$white: #ffffff;
+$theme-color: #302463;
 
 // Breakpoitns
 $breakpoint-mobile: 320;

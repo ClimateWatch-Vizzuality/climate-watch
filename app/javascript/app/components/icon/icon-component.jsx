@@ -1,17 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { themr } from 'react-css-themr';
 import cx from 'classnames';
 
 import styles from './icon-styles.scss';
 
-const Icon = ({ icon, className = '', large, medium = true }) => {
-  const classNames = cx(
-    {
-      [styles.large]: large,
-      [styles.medium]: medium
-    },
-    className
-  );
+const Icon = ({ icon, theme, className = '' }) => {
+  const classNames = cx(className, theme.icon);
   return (
     <svg className={classNames} viewBox={icon.viewBox}>
       <use xlinkHref={`#${icon.id}`} />
@@ -20,10 +15,9 @@ const Icon = ({ icon, className = '', large, medium = true }) => {
 };
 
 Icon.propTypes = {
-  large: PropTypes.bool,
-  medium: PropTypes.bool,
-  icon: PropTypes.string,
-  className: PropTypes.string
+  icon: PropTypes.object,
+  className: PropTypes.string,
+  theme: PropTypes.object
 };
 
-export default Icon;
+export default themr('Icon', styles)(Icon);

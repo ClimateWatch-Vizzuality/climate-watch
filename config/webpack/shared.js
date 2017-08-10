@@ -17,14 +17,14 @@ const extensionGlob = `**/*{${settings.extensions.join(',')}}*`;
 const entryPath = join(settings.source_path, settings.source_entry_path);
 const packPaths = sync(join(entryPath, extensionGlob));
 
-const entry = packPaths.reduce(
-  (map, entryParam) => {
-    const localMap = map;
-    const namespace = relative(join(entryPath), dirname(entryParam));
-    localMap[join(namespace, basename(entryParam, extname(entryParam)))] = resolve(entryParam);
-    return localMap;
-  }, {}
-);
+const entry = packPaths.reduce((map, entryParam) => {
+  const localMap = map;
+  const namespace = relative(join(entryPath), dirname(entryParam));
+  localMap[
+    join(namespace, basename(entryParam, extname(entryParam)))
+  ] = resolve(entryParam);
+  return localMap;
+}, {});
 
 module.exports = {
   entry,
@@ -41,7 +41,9 @@ module.exports = {
 
   plugins: [
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
-    new ExtractTextPlugin(env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'),
+    new ExtractTextPlugin(
+      env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'
+    ),
     new ManifestPlugin({
       publicPath: output.publicPath,
       writeToFileEmit: true
@@ -55,9 +57,7 @@ module.exports = {
       resolve(settings.source_path, 'app'),
       'node_modules'
     ],
-    plugins: [
-      new DirectoryNamedWebpackPlugin(true)
-    ],
+    plugins: [new DirectoryNamedWebpackPlugin(true)],
     alias: {
       app: 'app',
       components: 'app/components'

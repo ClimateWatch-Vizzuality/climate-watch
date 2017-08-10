@@ -18,16 +18,22 @@ class CountryExplorerContainer extends Component {
     const selected = match ? match.params.iso : null;
 
     return createElement(CountryExplorer, {
-      ...this.props, onLabelClick, label: 'Countries', selected
+      ...this.props,
+      onLabelClick,
+      label: 'Countries',
+      selected
     });
   }
 }
 
-const mapStateToProps = (state, { match }) => ({ ...state.countryExplorer, match });
+const mapStateToProps = (state, { match }) => ({
+  ...state.countryExplorer,
+  match
+});
 
 export { default as reducers } from './country-explorer-reducers';
 export { default as actions } from './country-explorer-actions';
 
-export default withRouter(connect(mapStateToProps, actions)(
-  clickOutside(CountryExplorerContainer)
-));
+export default withRouter(
+  connect(mapStateToProps, actions)(clickOutside(CountryExplorerContainer))
+);
