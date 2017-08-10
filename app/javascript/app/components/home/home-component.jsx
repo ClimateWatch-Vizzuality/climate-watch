@@ -1,5 +1,6 @@
 import React from 'react';
 import { LineChart, Line, XAxis, Tooltip } from 'recharts';
+import Header from 'components/header';
 
 const data = [
   { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
@@ -17,6 +18,7 @@ const renderTooltip = props => console.info(props) || <div>{props.label}</div>;
 
 const Home = () => (
   <div>
+    <Header size="large" />
     <h1>Home</h1>
     <LineChart width={400} height={400} data={data}>
       <Tooltip isAnimationActive={animated} cursor={false} content={renderTooltip} />
