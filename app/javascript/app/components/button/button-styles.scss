@@ -1,0 +1,24 @@
+@import '../../styles/settings';
+
+.button {
+  background-color: $white;
+  height: 45px;
+  padding: 0 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: $font-family-2;
+  text-transform: capitalize;
+  color: $theme-color;
+}
+
+.square {
+  width: 45px;
+  padding: 0;
+}
+
+.transparent {
+  background-color: rgba($black, 0.2);
+}
