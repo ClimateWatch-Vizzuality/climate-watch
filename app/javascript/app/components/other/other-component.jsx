@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Other = ({ fetchMeData, loading, loaded, data }) => (
   <div>
@@ -6,5 +6,5 @@ const Other = ({ fetchMeData, loading, loaded, data }) => (
     <button onClick={() => fetchMeData('payloadsss')}>Fetchers</button>
     <p>{ loading ? 'loading...' : loaded ? `data: ${data}` : 'no data'}</p>
   </div>
-)
-export default Other
+);
+export default Other;

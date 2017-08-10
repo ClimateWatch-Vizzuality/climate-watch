@@ -5,8 +5,8 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import store from 'app/store';
-import Page from './page';
-import routes from './routes';
+import Page from 'app/page';
+import routes from 'app/routes';
 
 const history = createBrowserHistory();
 

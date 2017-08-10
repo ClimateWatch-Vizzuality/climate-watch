@@ -8,6 +8,7 @@ import styles from './page-styles.scss';
 const Layout = ({ children }) => (
   <div className={styles.body}>
     <TopBar />
+    <Nav />
     {children}
   </div>
 );
