@@ -3,4 +3,4 @@ export default {
   FR: 'France',
   GE: 'Germany',
   PO: 'Portugal'
-}
+};

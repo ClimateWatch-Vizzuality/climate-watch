@@ -1,10 +1,10 @@
-import { combineReducers } from 'redux'
-import { handleActions } from 'app/utils/redux'
+import { combineReducers } from 'redux';
+import { handleActions } from 'app/utils/redux';
 
-import { reducers as countryExplorerReducers } from 'components/country-explorer'
-import { reducers as otherReducers } from 'components/other'
-import initialState from './data/initial-state'
-import allActions from './actions'
+import { reducers as countryExplorerReducers } from 'components/country-explorer';
+import { reducers as otherReducers } from 'components/other';
+import initialState from './data/initial-state';
+import allActions from './actions';
 
 export default combineReducers({
   other: handleActions(
@@ -19,4 +19,4 @@ export default combineReducers({
     countryExplorerReducers,
     initialState
   )
-})
+});

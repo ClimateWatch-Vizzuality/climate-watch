@@ -2,7 +2,7 @@
 
 - Topbar
 
-    ![topbar](./img/Top-bar.png)
+    ![topbar](./img/Topbar.png)
 
 - Nav
 
@@ -74,7 +74,7 @@
 
 - TileGrid
 
-    ![tilesgrid](./img/TilesGrid.png)
+    ![tilesgrid](./img/Tilesgrid.png)
 
 - SDG list
 

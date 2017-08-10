@@ -3,4 +3,4 @@
 // export { default as styles } from './home-styles'
 // export { default as actions } from './home-actions'
 
-export { default } from './home-component'
+export { default } from './home-component';
