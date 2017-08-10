@@ -4,6 +4,8 @@
   background-color: $white;
   border-radius: 4px;
   float: left;
+  display: flex;
+  justify-content: space-between;
   border-right: solid 1px rgba(202, 204, 208, 0.85);
 }
 
@@ -11,6 +13,9 @@
   border: solid 1px rgba(202, 204, 208, 0.85);
   border-radius: 0;
   border-right: 0;
+  padding: 0;
+  min-width: 45px;
+  width: 100%;
 }
 
 .first {
