@@ -1,10 +1,13 @@
 // Font families
 $font-family-1: 'Roboto', sans-serif;
+$font-family-2: 'Lato', sans-serif;
 
 // Font sizes
 $font-size: 16px;
+$font-size-x-large: 64px;
 
 //font-weights
+$font-weight-light: 300;
 $font-weight: 500;
 
 // Layout
@@ -12,8 +15,8 @@ $max-width: 1280px;
 $gutter-padding: 20px;
 
 // Colors
-$black: #333333;
-$white: #ffffff;
+$black: #333;
+$white: #fff;
 $theme-color: #302463;
 
 // Breakpoitns

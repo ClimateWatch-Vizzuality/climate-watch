@@ -6,20 +6,23 @@ import layout from 'styles/layout.scss';
 import styles from './header-styles.scss';
 
 const Header = (props) => {
-  const { image, className } = props;
+  const { image, className, children } = props;
   return (
     <div
       className={cx(className, styles.header)}
       style={{ backgroundImage: `url(${image})` }}
     >
-      <div className={layout.content}>Child components go here</div>
+      <div className={layout.content}>
+        {children}
+      </div>
     </div>
   );
 };
 
 Header.propTypes = {
   image: PropTypes.string,
-  className: PropTypes.object
+  className: PropTypes.object,
+  children: PropTypes.object
 };
 
 export default Header;
