@@ -12,6 +12,9 @@
   align-items: center;
 }
 
-img {
-  margin-right: 10px;
+.iconLogoWRI {
+  &.icon {
+    width: 200px;
+    height: 35px;
+  }
 }

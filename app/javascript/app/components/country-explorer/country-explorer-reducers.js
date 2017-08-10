@@ -1,9 +1,9 @@
-import actions from './country-explorer-actions'
+import actions from './country-explorer-actions';
 
-const setOpen = (state, open) => ({ ...state, open })
+const setOpen = (state, open) => ({ ...state, open });
 
 export default {
-  [actions.openCountryExplorer]: (state, payload) => setOpen(state, true),
-  [actions.closeCountryExplorer]: (state, payload) => setOpen(state, false),
-  [actions.toggleCountryExplorer]: (state, payload) => setOpen(state, !state.open)
-}
+  [actions.openCountryExplorer]: state => setOpen(state, true),
+  [actions.closeCountryExplorer]: state => setOpen(state, false),
+  [actions.toggleCountryExplorer]: state => setOpen(state, !state.open)
+};

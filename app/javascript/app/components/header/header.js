@@ -1,3 +1,3 @@
-import Component from './header-component'
+import Component from './header-component';
 
-export default Component
+export default Component;

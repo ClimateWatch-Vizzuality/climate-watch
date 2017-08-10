@@ -5,22 +5,19 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import store from 'app/store';
-import Page from './page';
-import routes from './routes';
+import Page from 'app/page';
+import routes from 'app/routes';
 
 const history = createBrowserHistory();
 
-const App = ({ data }) => (
-  <Provider store={store(data)}>
+const App = ({ data }) =>
+  (<Provider store={store(data)}>
     <Router history={history}>
       <Page>
-        {routes.map(route =>
-          <Route key={route.path} {...route} />
-        )}
+        {routes.map(route => <Route key={route.path} {...route} />)}
       </Page>
     </Router>
-  </Provider>
-);
+  </Provider>);
 
 App.propTypes = {
   data: PropTypes.object

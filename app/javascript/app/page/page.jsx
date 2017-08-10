@@ -5,12 +5,12 @@ import TopBar from 'components/topbar';
 import Nav from 'components/nav';
 import styles from './page-styles.scss';
 
-const Layout = ({ children }) => (
-  <div>
+const Layout = ({ children }) =>
+  (<div>
     <TopBar />
+    <Nav />
     {children}
-  </div>
-);
+  </div>);
 
 Layout.propTypes = {
   children: Proptypes.node
