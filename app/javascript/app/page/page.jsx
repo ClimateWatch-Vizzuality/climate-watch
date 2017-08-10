@@ -3,17 +3,16 @@ import Proptypes from 'prop-types';
 
 import TopBar from 'components/topbar';
 import Nav from 'components/nav';
-import styles from './page-styles.scss';
 
-const Layout = ({ children }) =>
+const Page = ({ children }) =>
   (<div>
     <TopBar />
     <Nav />
     {children}
   </div>);
 
-Layout.propTypes = {
+Page.propTypes = {
   children: Proptypes.node
 };
 
-export default Layout;
+export default Page;
