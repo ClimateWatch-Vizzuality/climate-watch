@@ -3,12 +3,13 @@ import Proptypes from 'prop-types';
 
 import TopBar from 'components/topbar';
 import Nav from 'components/nav';
-import styles from './page-styles.scss';
+import Header from 'components/header';
 
 const Layout = ({ children }) =>
   (<div>
     <TopBar />
     <Nav />
+    <Header />
     {children}
   </div>);
 
