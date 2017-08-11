@@ -16,6 +16,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "history": "^4.6.3",
+    "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-click-outside": "tj/react-click-outside",
     "react-css-themr": "^2.1.2",
@@ -23,7 +24,7 @@
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
-    "react-select": "^1.0.0-rc.5",
+    "react-select": "1.0.0-rc.5",
     "recharts": "^1.0.0-alpha.2",
     "redux": "^3.7.1",
     "redux-actions": "^2.2.1",
