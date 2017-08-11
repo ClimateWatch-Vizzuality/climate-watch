@@ -1,32 +1,26 @@
 import React from 'react';
+import Proptypes from 'prop-types';
 import {
   ComposableMap,
   ZoomableGroup,
   Geographies,
   Geography
-} from 'react-simple-maps';
+} from 'components/react-simple-maps';
+// TODO: use the library when is updadet with the changes
 
 import styles from './map-styles.scss';
 
-// import { feature } from 'topojson-client';
-// import topojson from '../../data/world-50m.json';
-// const paths = feature(topojson, topojson.objects[Object.keys(topojson.objects)[0]]).features;
-// console.log(paths);
-
-const BasicMap = () =>
+const BasicMap = ({ paths }) =>
   (<div className={styles.wrapper}>
     <ComposableMap
-      projectionConfig={{
-        scale: 205,
-        rotation: [-11, 0, 0]
-      }}
+      projection="robinson"
       style={{
         width: '100%',
         height: 'auto'
       }}
     >
       <ZoomableGroup center={[0, 20]} disablePanning>
-        <Geographies geographyUrl="/data/world-50m.json">
+        <Geographies geographyPaths={paths}>
           {(geographies, projection) =>
             geographies.map(geography =>
               (<Geography
@@ -59,5 +53,9 @@ const BasicMap = () =>
       </ZoomableGroup>
     </ComposableMap>
   </div>);
+
+BasicMap.propTypes = {
+  paths: Proptypes.array.isRequired
+};
 
 export default BasicMap;
