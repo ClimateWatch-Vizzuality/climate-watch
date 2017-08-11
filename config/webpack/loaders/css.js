@@ -1,5 +1,5 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin'); // eslint-disable-line
-const { env } = require('../configuration.js'); // eslint-disable-line
+const ExtractTextPlugin = require("extract-text-webpack-plugin"); // eslint-disable-line
+const { env } = require("../configuration.js"); // eslint-disable-line
 
 module.exports = {
   test: /\.(css)$/i,
