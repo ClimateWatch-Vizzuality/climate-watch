@@ -4,7 +4,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 
-const LINKS = [
+const ANCHOR_LINKS = [
   {
     label: 'Map',
     path: '/ndcs'
@@ -19,7 +19,7 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
   (<div>
     <Header>
       <Intro title="NDC Explorer" />
-      <AnchorNav links={LINKS} />
+      <AnchorNav links={ANCHOR_LINKS} />
     </Header>
     <h1>Other</h1>
     <button onClick={() => fetchMeData('payloadsss')}>Fetchers</button>
