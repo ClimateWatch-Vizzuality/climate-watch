@@ -12,11 +12,15 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
     </p>
     <Dropdown
       name="form-field-name"
-      value="one"
+      value={'test'}
       options={[
         {
           label: 'test',
           value: 'test'
+        },
+        {
+          label: 'test2',
+          value: 'test2'
         }
       ]}
     />
