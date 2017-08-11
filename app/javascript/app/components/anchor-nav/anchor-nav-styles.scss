@@ -3,7 +3,6 @@
 .anchorNav {
   display: flex;
   align-items: center;
-  height: $anchor-nav-height;
 }
 
 .link {
@@ -11,11 +10,12 @@
   margin-right: 35px;
   text-decoration: none;
   position: relative;
+  height: $anchor-nav-height;
 
   &Active::after {
     content: "";
     position: absolute;
-    bottom: -16px;
+    bottom: 0;
     left: 0;
     right: 0;
     background-color: $white;
