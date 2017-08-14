@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-
 import Icon from 'components/icon';
 
 import cwLogo from 'assets/icons/cw-logo.svg';

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Header from 'components/header';
+
+import Dropdown from 'components/dropdown';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 
@@ -27,6 +29,20 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
       {loading ? 'loading...' : ''}
       {loaded ? `data: ${data}` : 'no data'}
     </p>
+    <Dropdown
+      name="form-field-name"
+      value={'test'}
+      options={[
+        {
+          label: 'test',
+          value: 'test'
+        },
+        {
+          label: 'test2',
+          value: 'test2'
+        }
+      ]}
+    />
   </div>);
 
 Other.propTypes = {

@@ -28,7 +28,7 @@ const prodConfig = ExtractTextPlugin.extract({
 });
 
 module.exports = {
-  test: /\.(scss|sass|css)$/i,
+  test: /\.(scss|sass)$/i,
   use: env.NODE_ENV === 'production' ? prodConfig : devConfig,
   exclude: /node_modules/
 };
