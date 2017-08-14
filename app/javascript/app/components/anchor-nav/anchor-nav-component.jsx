@@ -8,9 +8,9 @@ const AnchorNav = (props) => {
   const { links } = props;
   return (
     <div className={styles.anchorNav}>
-      {links.map((link, index) =>
+      {links.map(link =>
         (<NavLink
-          exact={index === 0}
+          exact
           key={link.label}
           className={styles.link}
           activeClassName={styles.linkActive}
