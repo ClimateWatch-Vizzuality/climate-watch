@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Icon from 'components/icon';
 
+import search from 'assets/icons/search.svg';
 import styles from './search-styles.scss';
 
 const Search = (props) => {
   const { input, placeholder, onChange } = props;
   return (
-    <input
-      className={styles.search}
-      placeholder={placeholder}
-      onChange={onChange}
-    />
+    <div className={styles.search}>
+      <input
+        className={styles.input}
+        placeholder={placeholder}
+        onChange={onChange}
+      />
+      <Icon icon={search} className={styles.iconSearch} />
+    </div>
   );
 };
 

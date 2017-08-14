@@ -1,11 +1,15 @@
 @import '../../styles/settings';
 
 .search {
+  position: relative;
+}
+
+.input {
+  width: 100%;
   height: 45px;
   border-radius: 4px;
   background-color: $white;
   box-shadow: 0 5px 15px 0 rgba(71, 44, 184, 0.1);
-  cursor: pointer;
   color: $theme-color;
   border: 0;
   padding: 0 15px;
@@ -20,4 +24,11 @@
   &:focus {
     outline: none;
   }
+}
+
+.iconSearch {
+  position: absolute;
+  right: 0;
+  width: 50px;
+  height: 50px;
 }
