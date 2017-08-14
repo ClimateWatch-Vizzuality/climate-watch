@@ -11,6 +11,6 @@ const paths = feature(geoData, geoData.objects[Object.keys(geoData.objects)[0]])
 const NDC = () =>
   (<div>
     <Header />
-    <Map paths={paths} />
+    <Map paths={paths} zoomEnable />
   </div>);
 export default NDC;
