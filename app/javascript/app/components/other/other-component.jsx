@@ -5,6 +5,7 @@ import Header from 'components/header';
 import Dropdown from 'components/dropdown';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
+import Search from 'components/search';
 
 const ANCHOR_LINKS = [
   {
@@ -22,6 +23,7 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
     <Header>
       <Intro title="NDC Explorer" />
       <AnchorNav links={ANCHOR_LINKS} />
+      <Search placeholder="Test" />
     </Header>
     <h1>Other</h1>
     <button onClick={() => fetchMeData('payloadsss')}>Fetchers</button>

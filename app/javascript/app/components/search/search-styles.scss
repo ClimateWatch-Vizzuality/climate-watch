@@ -1,0 +1,23 @@
+@import '../../styles/settings';
+
+.search {
+  height: 45px;
+  border-radius: 4px;
+  background-color: $white;
+  box-shadow: 0 5px 15px 0 rgba(71, 44, 184, 0.1);
+  cursor: pointer;
+  color: $theme-color;
+  border: 0;
+  padding: 0 15px;
+  font-size: $font-size;
+  font-family: $font-family-2;
+
+  &::placeholder {
+    color: rgba($theme-color, 0.5);
+    font-style: italic;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
