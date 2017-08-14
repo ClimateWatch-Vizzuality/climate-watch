@@ -5,8 +5,7 @@ import {
   ZoomableGroup,
   Geographies,
   Geography
-} from 'components/react-simple-maps';
-// TODO: use the library when is updadet with the changes
+} from 'react-simple-maps';
 
 import styles from './map-styles.scss';
 
