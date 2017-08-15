@@ -121,7 +121,8 @@ Map.defaultProps = {
     console.info('clicked', country);
   },
   // gets the geography data to handle styles individually
-  computedStyles: () => ({
+  // eslint-disable-next-line
+  computedStyles: geography => ({
     default: {
       fill: '#ECEFF1',
       stroke: '#607D8B',
