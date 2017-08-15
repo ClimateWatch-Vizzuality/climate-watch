@@ -19,9 +19,5 @@
     margin-bottom: 4px;
     background-color: rgba($white, 0.8);
     cursor: pointer;
-
-    &:disabled {
-      cursor: not-allowed;
-    }
   }
 }

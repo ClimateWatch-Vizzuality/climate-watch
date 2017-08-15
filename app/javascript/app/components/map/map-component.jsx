@@ -7,6 +7,7 @@ import {
   Geography
 } from 'react-simple-maps';
 import { Motion, spring } from 'react-motion';
+import Button from 'components/button';
 
 import styles from './map-styles.scss';
 
@@ -17,22 +18,24 @@ class Map extends Component {
       center: props.initial.center,
       zoom: props.initial.zoom
     };
+    this.handleZoomIn = this.handleZoomIn.bind(this);
+    this.handleZoomOut = this.handleZoomOut.bind(this);
   }
 
-  handleZoomIn = () => {
+  handleZoomIn() {
     this.setState({
       zoom: this.state.zoom * 2
     });
-  };
+  }
 
-  handleZoomOut = () => {
+  handleZoomOut() {
     const { zoom } = this.state;
     if (zoom > 1) {
       this.setState({
         zoom: zoom / 2
       });
     }
-  };
+  }
 
   render() {
     const { zoom, center } = this.state;
@@ -47,10 +50,10 @@ class Map extends Component {
       <div className={styles.wrapper}>
         {zoomEnable &&
           <div className={styles.actions}>
-            <button onClick={this.handleZoomIn}>+</button>
-            <button disabled={zoom === 1} onClick={this.handleZoomOut}>
+            <Button onClick={this.handleZoomIn}>+</Button>
+            <Button disabled={zoom === 1} onClick={this.handleZoomOut}>
               -
-            </button>
+            </Button>
           </div>}
         <Motion
           defaultStyle={{
