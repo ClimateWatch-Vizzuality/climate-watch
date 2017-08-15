@@ -1,21 +1,15 @@
 @import '../../styles/settings.scss';
 
-.navbar {
+.toolsNav {
   display: flex;
   align-items: center;
   height: $navbar-height;
-  justify-content: space-between;
-}
-
-.logo {
-  width: 136px;
-  height: 13px;
+  border-left: solid 1px rgba(#b1b1c1, 0.5);
 }
 
 .link {
-  color: $theme-color;
-  font-weight: $font-weight-bold;
-  margin-right: 40px;
+  color: $theme-color-light;
+  margin-left: 40px;
   text-decoration: none;
   position: relative;
 
@@ -29,4 +23,8 @@
     width: 100%;
     height: 3px;
   }
+}
+
+.download {
+  fill: $theme-color-light;
 }
