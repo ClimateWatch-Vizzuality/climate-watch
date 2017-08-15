@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
+import ToolsNav from 'components/tools-nav';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
 import layout from 'styles/layout.scss';
@@ -54,6 +55,7 @@ const NavBar = () =>
       >
         ABOUT
       </NavLink>
+      <ToolsNav />
     </div>
   </div>);
 
