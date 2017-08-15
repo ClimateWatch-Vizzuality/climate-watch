@@ -7,9 +7,9 @@ import search from 'assets/icons/search.svg';
 import styles from './search-styles.scss';
 
 class Search extends Component {
-  handleChange = (e) => {
-    debounce(this.props.onChange(e.target.value), 300);
-  };
+  handleChange = debounce((value) => {
+    this.props.onChange(value);
+  }, 150);
 
   render() {
     const { input, placeholder } = this.props;
@@ -19,7 +19,7 @@ class Search extends Component {
           type="text"
           className={styles.input}
           placeholder={placeholder}
-          onChange={this.handleChange}
+          onChange={e => this.handleChange(e.target.value)}
           value={input}
         />
         <Icon icon={search} className={styles.iconSearch} />
