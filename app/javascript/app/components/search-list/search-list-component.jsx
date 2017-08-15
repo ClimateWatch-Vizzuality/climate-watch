@@ -7,14 +7,14 @@ import arrow from 'assets/icons/dropdown-arrow.svg';
 import styles from './search-list-styles.scss';
 
 const SearchList = (props) => {
-  const { list } = props;
+  const { list, hasIcon } = props;
   return (
     <ul className={styles.searchList}>
       {list.map(item =>
         (<li className={styles.listItem} key={item.value} id={item.value}>
           <NavLink exact className={styles.link} to={item.path}>
             {item.label}
-            <Icon icon={arrow} className={styles.iconArrow} />
+            {hasIcon && <Icon icon={arrow} className={styles.iconArrow} />}
           </NavLink>
         </li>)
       )}
@@ -23,7 +23,8 @@ const SearchList = (props) => {
 };
 
 SearchList.propTypes = {
-  list: PropTypes.array
+  list: PropTypes.array,
+  hasIcon: PropTypes.bool
 };
 
 export default SearchList;

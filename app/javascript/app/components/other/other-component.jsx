@@ -37,7 +37,8 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
     <Header>
       <Intro title="NDC Explorer" />
       <Search placeholder="e.g. “Brazil”, “energy”, “reduce emissions by 37%”" />
-      {TEST_SEARCH_DATA.length > 0 && <SearchList list={TEST_SEARCH_DATA} />}
+      {TEST_SEARCH_DATA.length > 0 &&
+        <SearchList list={TEST_SEARCH_DATA} hasIcon />}
       <AnchorNav links={ANCHOR_LINKS} />
     </Header>
     <h1>Other</h1>
