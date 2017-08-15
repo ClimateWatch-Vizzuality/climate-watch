@@ -1,6 +1,6 @@
 @import '../../styles/settings';
 
-.searchList {
+.resultsList {
   border-radius: 0 0 4px 4px;
   position: relative;
   background-color: $light-gray;
@@ -25,14 +25,15 @@
     transform: rotate(-90deg);
     position: absolute;
     right: 15px;
-    display: none;
+    opacity: 0;
   }
 
   &:hover {
     color: $theme-color;
 
     .iconArrow {
-      display: inline-block;
+      opacity: 1;
+      transition: opacity 0.15s ease-in-out;
     }
   }
 }

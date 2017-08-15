@@ -4,12 +4,12 @@ import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
 
 import arrow from 'assets/icons/dropdown-arrow.svg';
-import styles from './search-list-styles.scss';
+import styles from './results-list-styles.scss';
 
-const SearchList = (props) => {
+const ResultsList = (props) => {
   const { list, hasIcon } = props;
   return (
-    <ul className={styles.searchList}>
+    <ul className={styles.resultsList}>
       {list.map(item =>
         (<li className={styles.listItem} key={item.value} id={item.value}>
           <NavLink exact className={styles.link} to={item.path}>
@@ -22,9 +22,9 @@ const SearchList = (props) => {
   );
 };
 
-SearchList.propTypes = {
+ResultsList.propTypes = {
   list: PropTypes.array,
   hasIcon: PropTypes.bool
 };
 
-export default SearchList;
+export default ResultsList;

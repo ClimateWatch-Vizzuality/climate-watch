@@ -10,6 +10,7 @@ const Search = (props) => {
   return (
     <div className={styles.search}>
       <input
+        type="text"
         className={styles.input}
         placeholder={placeholder}
         onChange={onChange}
