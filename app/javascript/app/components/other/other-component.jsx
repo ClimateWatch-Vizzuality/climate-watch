@@ -19,26 +19,24 @@ const ANCHOR_LINKS = [
   }
 ];
 
-const TEST_SEARCH_DATA = [
-  {
-    label: 'Brazil full text',
-    value: 'brazil_full',
-    path: '/country/bra'
-  },
-  {
-    label: 'Brazil summary',
-    value: 'brazil_sum',
-    path: '/country/bra/summary'
-  }
-];
-
-const Other = ({ fetchMeData, loading, loaded, data }) =>
+const Other = ({
+  fetchMeData,
+  loading,
+  loaded,
+  data,
+  searchList,
+  search,
+  setSearch
+}) =>
   (<div>
     <Header>
       <Intro title="NDC Explorer" />
-      <Search placeholder="e.g. “Brazil”, “energy”, “reduce emissions by 37%”" />
-      {TEST_SEARCH_DATA.length > 0 &&
-        <SearchList list={TEST_SEARCH_DATA} hasIcon />}
+      <Search
+        placeholder="e.g. “Brazil”, “energy”, “reduce emissions by 37%”"
+        input={search}
+        onChange={setSearch}
+      />
+      {searchList.length > 0 && <SearchList list={searchList} hasIcon />}
       <AnchorNav links={ANCHOR_LINKS} />
     </Header>
     <h1>Other</h1>
@@ -67,7 +65,10 @@ Other.propTypes = {
   fetchMeData: PropTypes.func,
   loading: PropTypes.bool,
   loaded: PropTypes.bool,
-  data: PropTypes.object
+  data: PropTypes.object,
+  searchList: PropTypes.array,
+  search: PropTypes.string,
+  setSearch: PropTypes.func
 };
 
 export default Other;

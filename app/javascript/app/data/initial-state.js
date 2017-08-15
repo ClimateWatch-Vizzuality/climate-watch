@@ -1,4 +1,3 @@
-
 export default {
   countryExplorer: {
     open: false
@@ -6,6 +5,7 @@ export default {
   other: {
     loading: false,
     loaded: false,
-    data: null
+    data: null,
+    search: ''
   }
 };

@@ -14,8 +14,11 @@ const fetchMeData = createThunkAction('fetchMeData', data => (dispatch) => {
   );
 });
 
+const setSearch = createAction('setSearch');
+
 export default {
   fetchMeData,
   fetchMeDataInit,
-  fetchMeDataReady
+  fetchMeDataReady,
+  setSearch
 };
