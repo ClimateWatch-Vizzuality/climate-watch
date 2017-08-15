@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
+import debounce from 'lodash/debounce';
 
 import search from 'assets/icons/search.svg';
 import styles from './search-styles.scss';
 
 class Search extends Component {
   handleChange = (e) => {
-    const value = e.target.value;
-    this.props.onChange(value);
+    debounce(this.props.onChange(e.target.value), 300);
   };
 
   render() {
