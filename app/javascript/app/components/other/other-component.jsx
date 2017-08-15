@@ -6,6 +6,7 @@ import Dropdown from 'components/dropdown';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Search from 'components/search';
+import SearchList from 'components/search-list';
 
 const ANCHOR_LINKS = [
   {
@@ -18,11 +19,25 @@ const ANCHOR_LINKS = [
   }
 ];
 
+const TEST_SEARCH_DATA = [
+  {
+    label: 'Brazil full text',
+    value: 'brazil_full',
+    path: '/countries/bra'
+  },
+  {
+    label: 'Brazil summary',
+    value: 'brazil_sum',
+    path: '/countries/bra/summary'
+  }
+];
+
 const Other = ({ fetchMeData, loading, loaded, data }) =>
   (<div>
     <Header>
       <Intro title="NDC Explorer" />
       <Search placeholder="e.g. “Brazil”, “energy”, “reduce emissions by 37%”" />
+      <SearchList list={TEST_SEARCH_DATA} />
       <AnchorNav links={ANCHOR_LINKS} />
     </Header>
     <h1>Other</h1>

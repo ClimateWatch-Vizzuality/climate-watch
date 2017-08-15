@@ -1,5 +1,20 @@
 @import '../../styles/settings';
 
 .searchList {
-  position: relative;
+  background-color: white;
+  border-radius: 0 0 4px 4px;
+}
+
+.listItem {
+  padding: 10px 15px;
+  border-bottom: solid 1px #e5e5eb;
+}
+
+.link {
+  font-family: $font-family-2;
+  color: $theme-color-light;
+
+  &:hover {
+    color: $theme-color;
+  }
 }
