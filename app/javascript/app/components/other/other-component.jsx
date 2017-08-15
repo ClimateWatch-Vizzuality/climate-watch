@@ -22,8 +22,8 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
   (<div>
     <Header>
       <Intro title="NDC Explorer" />
+      <Search placeholder="e.g. “Brazil”, “energy”, “reduce emissions by 37%”" />
       <AnchorNav links={ANCHOR_LINKS} />
-      <Search placeholder="Test" />
     </Header>
     <h1>Other</h1>
     <button onClick={() => fetchMeData('payloadsss')}>Fetchers</button>
