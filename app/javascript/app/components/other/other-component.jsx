@@ -6,7 +6,7 @@ import Dropdown from 'components/dropdown';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Search from 'components/search';
-import SearchList from 'components/search-list';
+import ResultsList from 'components/results-list';
 
 const ANCHOR_LINKS = [
   {
@@ -36,7 +36,7 @@ const Other = ({
         input={search}
         onChange={setSearch}
       />
-      <SearchList search={search} list={searchList} hasIcon />
+      <ResultsList search={search} list={searchList} hasIcon />
       <AnchorNav links={ANCHOR_LINKS} />
     </Header>
     <h1>Other</h1>
