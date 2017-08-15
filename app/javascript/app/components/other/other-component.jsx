@@ -36,7 +36,7 @@ const Other = ({
         input={search}
         onChange={setSearch}
       />
-      {searchList.length > 0 && <SearchList list={searchList} hasIcon />}
+      <SearchList search={search} list={searchList} hasIcon />
       <AnchorNav links={ANCHOR_LINKS} />
     </Header>
     <h1>Other</h1>
