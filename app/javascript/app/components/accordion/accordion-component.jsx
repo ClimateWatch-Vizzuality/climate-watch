@@ -78,8 +78,8 @@ class Accordion extends Component {
 }
 
 Accordion.propTypes = {
-  location: PropTypes.object,
-  history: PropTypes.object,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   data: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string,
@@ -87,6 +87,10 @@ Accordion.propTypes = {
       definitions: PropTypes.array.isRequired
     })
   )
+};
+
+Accordion.defaultProps = {
+  data: []
 };
 
 export default Accordion;
