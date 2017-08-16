@@ -11,8 +11,8 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends Component {
   handleOnClick = (slug) => {
-    const { location, history } = this.props;
-    const newSearch = { ...this.props.search, activeSection: slug };
+    const { location, history, search } = this.props;
+    const newSearch = { ...search, activeSection: slug };
     history.push({
       pathname: location.pathname,
       search: qs.stringify(newSearch)
