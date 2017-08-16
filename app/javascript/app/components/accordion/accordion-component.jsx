@@ -10,15 +10,18 @@ import layout from 'styles/layout.scss';
 import styles from './accordion-styles.scss';
 
 class Accordion extends Component {
-  handleOnClick = (slug) => {
+  handleOnClick(slug) {
     const { location, history } = this.props;
     const search = qs.parse(location.search);
-    const newSearch = { ...search, activeSection: slug };
-    history.push({
+    const newSlug =
+      !search.activeSection || search.activeSection === slug ? 'none' : slug;
+    const newSearch = { ...search, activeSection: newSlug };
+
+    history.replace({
       pathname: location.pathname,
       search: qs.stringify(newSearch)
     });
-  };
+  }
 
   render() {
     const { location, data } = this.props;
