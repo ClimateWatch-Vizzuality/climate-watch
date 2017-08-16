@@ -6,7 +6,8 @@ import Dropdown from 'components/dropdown';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Search from 'components/search';
-import SearchList from 'components/search-list';
+import ResultsList from 'components/results-list';
+import Accordion from 'components/accordion';
 
 const ANCHOR_LINKS = [
   {
@@ -38,7 +39,7 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
       <Intro title="NDC Explorer" />
       <Search placeholder="e.g. “Brazil”, “energy”, “reduce emissions by 37%”" />
       {TEST_SEARCH_DATA.length > 0 &&
-        <SearchList list={TEST_SEARCH_DATA} hasIcon />}
+        <ResultsList list={TEST_SEARCH_DATA} hasIcon />}
       <AnchorNav links={ANCHOR_LINKS} />
     </Header>
     <h1>Other</h1>
@@ -61,6 +62,9 @@ const Other = ({ fetchMeData, loading, loaded, data }) =>
         }
       ]}
     />
+    <Accordion>
+      <div>hello</div>
+    </Accordion>
   </div>);
 
 Other.propTypes = {
