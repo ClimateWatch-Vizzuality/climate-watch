@@ -13,10 +13,10 @@ class Accordion extends Component {
   handleOnClick = (slug) => {
     const { location, history } = this.props;
     const search = qs.parse(location.search);
-    search.activeSection = slug;
+    const newSearch = { ...search, activeSection: slug };
     history.push({
       pathname: location.pathname,
-      search: qs.stringify(search)
+      search: qs.stringify(newSearch)
     });
   };
 
@@ -31,6 +31,7 @@ class Accordion extends Component {
             <button
               className={styles.header}
               onClick={() => this.handleOnClick(section.slug)}
+              disabled={activeSection === section.slug}
             >
               <div className={layout.content}>
                 <div className={styles.title}>
