@@ -31,17 +31,15 @@ class Accordion extends Component {
             <button
               className={styles.header}
               onClick={() => this.handleOnClick(section.slug)}
-              disabled={activeSection === section.slug}
             >
               <div className={layout.content}>
                 <div className={styles.title}>
                   {section.title}
                   <Icon
                     icon={dropdownArrow}
-                    className={cx(
-                      { [styles.isOpen]: activeSection === section.slug },
-                      styles.iconArrow
-                    )}
+                    className={cx(styles.iconArrow, {
+                      [styles.isOpen]: activeSection === section.slug
+                    })}
                   />
                 </div>
               </div>

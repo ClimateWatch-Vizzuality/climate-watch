@@ -26,6 +26,8 @@
 }
 
 .iconArrow {
+  transition: transform 0.25s ease-in-out;
+
   &.isOpen {
     transform: rotate(180deg);
   }
