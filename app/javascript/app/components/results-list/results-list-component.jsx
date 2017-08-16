@@ -7,24 +7,26 @@ import arrow from 'assets/icons/dropdown-arrow.svg';
 import styles from './results-list-styles.scss';
 
 const ResultsList = (props) => {
-  const { list, hasIcon } = props;
-  return (
-    <ul className={styles.resultsList}>
+  const { search, list, hasIcon, open } = props;
+  return list.length > 0 && (search !== '' || open)
+    ? <ul className={styles.resultsList}>
       {list.map(item =>
-        (<li className={styles.listItem} key={item.value} id={item.value}>
-          <NavLink exact className={styles.link} to={item.path}>
-            {item.label}
-            {hasIcon && <Icon icon={arrow} className={styles.iconArrow} />}
-          </NavLink>
-        </li>)
-      )}
+          (<li className={styles.listItem} key={item.value} id={item.value}>
+            <NavLink exact className={styles.link} to={item.path}>
+              {item.label}
+              {hasIcon && <Icon icon={arrow} className={styles.iconArrow} />}
+            </NavLink>
+          </li>)
+        )}
     </ul>
-  );
+    : null;
 };
 
 ResultsList.propTypes = {
   list: PropTypes.array,
-  hasIcon: PropTypes.bool
+  hasIcon: PropTypes.bool,
+  search: PropTypes.string,
+  open: PropTypes.bool
 };
 
 export default ResultsList;

@@ -22,6 +22,7 @@ rules:
   comma-dangle: [error, never]
   no-console: [error, allow: [warn, error, info]]
   no-plusplus: ["error", { "allowForLoopAfterthoughts": true }]
+  arrow-parens: 1
   import/extensions: [error, {"js": never, "jsx": never}]
   import/no-unresolved: 0
   import/no-extraneous-dependencies: 0
