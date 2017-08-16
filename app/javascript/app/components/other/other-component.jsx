@@ -7,7 +7,6 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Search from 'components/search';
 import ResultsList from 'components/results-list';
-import Accordion from 'components/accordion';
 
 const ANCHOR_LINKS = [
   {
@@ -60,9 +59,6 @@ const Other = ({
         }
       ]}
     />
-    <Accordion>
-      <div>hello</div>
-    </Accordion>
   </div>);
 
 Other.propTypes = {
