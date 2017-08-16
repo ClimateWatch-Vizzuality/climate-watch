@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import Icon from 'components/icon';
-import qs from 'query-string';
 import cx from 'classnames';
+import qs from 'query-string';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import layout from 'styles/layout.scss';
@@ -11,8 +11,7 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends Component {
   handleOnClick = (slug) => {
-    const { location, history } = this.props;
-    const search = qs.parse(location.search);
+    const { location, history, search } = this.props;
     const newSearch = { ...search, activeSection: slug };
     history.push({
       pathname: location.pathname,
@@ -21,12 +20,16 @@ class Accordion extends Component {
   };
 
   render() {
-    const { location, data } = this.props;
-    const search = qs.parse(location.search);
-    const activeSection = search.activeSection ? search.activeSection : null;
+    const {
+      data,
+      country,
+      activeSection,
+      compare,
+      countriesToCompare
+    } = this.props;
     return (
       <div>
-        {data.map((section, index) =>
+        {data[country].map((section, index) =>
           (<section key={section.slug} className={styles.accordion}>
             <button
               className={styles.header}
@@ -36,6 +39,15 @@ class Accordion extends Component {
               <div className={layout.content}>
                 <div className={styles.title}>
                   {section.title}
+                  {compare &&
+                    <div>
+                      <span>
+                        {countriesToCompare[0] || 'none'},{' '}
+                      </span>
+                      <span>
+                        {countriesToCompare[1] || 'none'}
+                      </span>
+                    </div>}
                   <Icon
                     icon={dropdownArrow}
                     className={cx(
@@ -55,14 +67,36 @@ class Accordion extends Component {
               <div className={styles.accordionContent}>
                 <div className={layout.content}>
                   <dl className={styles.definitionList}>
-                    {section.definitions.map(def =>
+                    {section.definitions.map((def, defIndex) =>
                       (<div className={styles.definition} key={def.title}>
                         <dt className={styles.definitionTitle}>
                           {def.title}
                         </dt>
-                        <dd className={styles.definitionDesc}>
+                        <dd
+                          className={
+                            compare
+                              ? styles.definitionCompare
+                              : styles.definitionDesc
+                          }
+                        >
                           {def.description}
                         </dd>
+                        {compare &&
+                          <dd className={styles.definitionCompare}>
+                            {data[countriesToCompare[0]]
+                              ? data[countriesToCompare[0]][index].definitions[
+                                  defIndex
+                                ].description
+                              : ''}
+                          </dd>}
+                        {compare &&
+                          <dd className={styles.definitionCompare}>
+                            {data[countriesToCompare[1]]
+                              ? data[countriesToCompare[1]][index].definitions[
+                                  defIndex
+                                ].description
+                              : ''}
+                          </dd>}
                       </div>)
                     )}
                   </dl>
@@ -77,15 +111,14 @@ class Accordion extends Component {
 }
 
 Accordion.propTypes = {
-  location: PropTypes.object,
+  data: PropTypes.object.isRequired,
+  country: PropTypes.string,
+  activeSection: PropTypes.string,
+  compare: PropTypes.bool,
+  countriesToCompare: PropTypes.array,
   history: PropTypes.object,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      slug: PropTypes.string,
-      definitions: PropTypes.array.isRequired
-    })
-  )
+  location: PropTypes.object,
+  search: PropTypes.object
 };
 
 export default Accordion;
