@@ -13,6 +13,10 @@
   color: $theme-color;
   float: left;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .square {
