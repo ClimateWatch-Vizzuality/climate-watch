@@ -5,6 +5,7 @@ export default {
   ndc: {
     loading: false,
     loaded: false,
-    data: null
+    data: null,
+    search: ''
   }
 };

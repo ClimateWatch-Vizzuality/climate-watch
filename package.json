@@ -16,6 +16,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "history": "^4.6.3",
+    "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-click-outside": "tj/react-click-outside",
     "react-collapse": "^4.0.3",
