@@ -50,7 +50,7 @@
 }
 
 .definitionTitle {
-  width: 200px;
+  width: 25%;
   min-width: 200px;
   margin-right: 40px;
   color: $theme-color;
@@ -59,6 +59,19 @@
 }
 
 .definitionDesc {
+  width: 75%;
   color: $theme-color;
   font-family: $font-family-2;
+  margin-right: 20px;
+}
+
+.definitionCompare {
+  width: 50%;
+  margin-right: 20px;
+}
+
+.compare {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
