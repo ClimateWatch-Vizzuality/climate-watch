@@ -12,6 +12,12 @@
   height: 13px;
 }
 
+.linkWrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .link {
   color: $theme-color;
   font-weight: $font-weight-bold;

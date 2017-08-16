@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
+import cx from 'classnames';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -39,6 +40,7 @@ class Map extends Component {
 
   render() {
     const { zoom, center } = this.state;
+    const { className } = this.props;
     const {
       paths,
       zoomEnable,
@@ -47,7 +49,7 @@ class Map extends Component {
       computedStyles
     } = this.props;
     return (
-      <div className={styles.wrapper}>
+      <div className={cx(styles.wrapper, className)}>
         {zoomEnable &&
           <div className={styles.actions}>
             <Button onClick={this.handleZoomIn}>+</Button>
@@ -107,6 +109,7 @@ Map.propTypes = {
     center: Proptypes.array,
     zoom: Proptypes.number
   }),
+  className: Proptypes.string,
   paths: Proptypes.array.isRequired,
   onCountryClick: Proptypes.func,
   computedStyles: Proptypes.func.isRequired
