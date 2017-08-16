@@ -82,20 +82,21 @@ class Accordion extends Component {
                           {def.description}
                         </dd>
                         {compare &&
-                          <div className={styles.compare}>
-                            <dd className={styles.definitionCompare}>
-                              {data[countriesToCompare[0]]
-                                ? data[countriesToCompare[0]][index]
-                                    .definitions[defIndex].description
-                                : ''}
-                            </dd>
-                            <dd className={styles.definitionCompare}>
-                              {data[countriesToCompare[1]]
-                                ? data[countriesToCompare[1]][index]
-                                    .definitions[defIndex].description
-                                : ''}
-                            </dd>
-                          </div>}
+                          <dd className={styles.definitionCompare}>
+                            {data[countriesToCompare[0]]
+                              ? data[countriesToCompare[0]][index].definitions[
+                                  defIndex
+                                ].description
+                              : ''}
+                          </dd>}
+                        {compare &&
+                          <dd className={styles.definitionCompare}>
+                            {data[countriesToCompare[1]]
+                              ? data[countriesToCompare[1]][index].definitions[
+                                  defIndex
+                                ].description
+                              : ''}
+                          </dd>}
                       </div>)
                     )}
                   </dl>
