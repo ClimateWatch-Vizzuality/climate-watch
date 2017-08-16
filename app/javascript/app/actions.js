@@ -1,7 +1,7 @@
 import { actions as countryExplorerActions } from 'components/country-explorer';
-import { actions as otherActions } from 'components/other';
+import { actions as ndcActions } from 'components/ndc';
 
 export default {
   ...countryExplorerActions,
-  ...otherActions
+  ...ndcActions
 };

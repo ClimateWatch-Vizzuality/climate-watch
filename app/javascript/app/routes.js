@@ -1,5 +1,5 @@
 import Home from 'components/home';
-import Other from 'components/other';
+import NDC from 'components/ndc';
 import Country from 'components/country';
 import errorPage from 'components/error-page';
 
@@ -11,7 +11,7 @@ export default [
   },
   {
     path: '/ndcs',
-    component: Other
+    component: NDC
   },
   {
     path: '/country/:iso',

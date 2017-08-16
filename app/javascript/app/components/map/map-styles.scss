@@ -1,0 +1,23 @@
+@import '../../styles/settings';
+
+.wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.actions {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+
+  button {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 1px;
+    border: 1px solid $theme-color;
+    margin-bottom: 4px;
+    background-color: rgba($white, 0.8);
+    cursor: pointer;
+  }
+}
