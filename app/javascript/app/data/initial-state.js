@@ -1,9 +1,8 @@
-
 export default {
   countryExplorer: {
     open: false
   },
-  other: {
+  ndc: {
     loading: false,
     loaded: false,
     data: null
