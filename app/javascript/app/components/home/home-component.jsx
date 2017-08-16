@@ -5,7 +5,6 @@ import Intro from 'components/intro';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import Icon from 'components/icon';
-import Accordion from 'components/accordion';
 
 import iconShare from 'assets/icons/share.svg';
 
@@ -39,9 +38,6 @@ const Home = () =>
         <Icon icon={iconShare} />
       </Button>
     </Header>
-    <Accordion>
-      <div>hello</div>
-    </Accordion>
     <h1>Home</h1>
     <LineChart width={400} height={400} data={data}>
       <Tooltip
