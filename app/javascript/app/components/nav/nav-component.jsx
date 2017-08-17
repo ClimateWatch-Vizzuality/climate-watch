@@ -33,7 +33,7 @@ class NavBar extends Component {
           <div
             className={styles.linkWrapper}
             onMouseEnter={() => this.setCountriesVisibility(true)}
-            onMouseLeave={() => this.setCountriesVisibility(true)}
+            onMouseLeave={() => this.setCountriesVisibility(false)}
           >
             <NavLink
               className={styles.link}
