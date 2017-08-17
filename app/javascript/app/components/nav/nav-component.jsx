@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import cx from 'classnames';
 import Icon from 'components/icon';
 import ToolsNav from 'components/tools-nav';
 import CountriesSelect from 'components/countries-select';
@@ -31,14 +32,19 @@ class NavBar extends PureComponent {
             >
               COUNTRIES
             </NavLink>
-            {countriesOpen &&
+            <div
+              className={cx(styles.subMenu, {
+                [styles.subMenuOpen]: countriesOpen
+              })}
+            >
               <ClickOutside
                 onClickOutside={() => setCountriesVisibility(false)}
               >
                 <CountriesSelect
                   onLeave={() => setCountriesVisibility(false)}
                 />
-              </ClickOutside>}
+              </ClickOutside>
+            </div>
           </div>
           <NavLink
             className={styles.link}
