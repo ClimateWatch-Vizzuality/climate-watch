@@ -19,6 +19,7 @@
     "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-click-outside": "tj/react-click-outside",
+    "react-collapse": "^4.0.3",
     "react-css-themr": "^2.1.2",
     "react-dom": "^15.6.1",
     "react-motion": "^0.5.0",

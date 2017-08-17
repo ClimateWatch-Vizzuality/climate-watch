@@ -2,10 +2,9 @@ export default {
   countryExplorer: {
     open: false
   },
-  ndc: {
+  countryNDC: {
     loading: false,
     loaded: false,
-    data: null,
-    search: ''
+    data: {}
   }
 };

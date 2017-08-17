@@ -1,0 +1,66 @@
+@import '../../styles/settings';
+
+.accordion {
+  position: relative;
+}
+
+.header {
+  width: 100%;
+  padding: 20px 0;
+  background-color: $white;
+  color: $theme-color;
+  font-size: $font-size-large;
+  font-family: $font-family-2;
+  border-bottom: solid 1px rgba($theme-color, 0.3);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.iconArrow {
+  transition: transform 0.25s ease-in-out;
+
+  &.isOpen {
+    transform: rotate(180deg);
+  }
+}
+
+.accordionContent {
+  background-color: $light-gray;
+  border-bottom: solid 1px rgba($theme-color, 0.3);
+}
+
+.definition {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: solid 1px rgba(#9090b2, 0.15);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.definitionTitle {
+  width: 200px;
+  min-width: 200px;
+  margin-right: 40px;
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  font-family: $font-family-2;
+}
+
+.definitionDesc {
+  color: $theme-color;
+  font-family: $font-family-2;
+}
