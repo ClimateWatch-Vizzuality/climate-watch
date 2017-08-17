@@ -1,6 +1,5 @@
-const countrySelectFilter = (query, state) => ({ ...state, query });
+const countrySelectFilter = (state, { payload }) => ({ ...state, query: payload });
 
 export default {
-  countrySelectFilter: (state, { payload }) =>
-    countrySelectFilter(payload, state)
+  countrySelectFilter
 };

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import deburr from 'lodash/deburr';
+import { deburrUpper } from 'app/utils';
+import includes from 'lodash/includes';
 
 import Component from './countries-select-component';
 import actions from './countries-select-actions';
@@ -12,10 +13,10 @@ export { default as actions } from './countries-select-actions';
 
 function getCountriesFiltered(countries, query) {
   // TODO: use reselect here
-  const queryUpper = deburr(query.toUpperCase());
+  const queryUpper = deburrUpper(query);
   const filteredCountries = queryUpper
-    ? countries.filter(
-      country => deburr(country.label.toUpperCase()).indexOf(queryUpper) > -1
+    ? countries.filter(country =>
+      includes(deburrUpper(country.label), queryUpper)
     )
     : countries;
   return filteredCountries.map(country => ({

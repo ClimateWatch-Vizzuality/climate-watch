@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
-import deburr from 'lodash/deburr';
+import { deburrUpper } from 'app/utils';
+import includes from 'lodash/includes';
 import paths from 'app/data/world-50m-paths';
 
 import Search from 'components/search';
@@ -14,11 +15,11 @@ import styles from './countries-select-styles.scss';
 class CountriesSelect extends PureComponent {
   constructor(props) {
     super(props);
-    this.queryUpper = deburr(props.query.toUpperCase());
+    this.queryUpper = deburrUpper(props.query);
   }
 
   componentWillReceiveProps(props) {
-    this.queryUpper = deburr(props.query.toUpperCase());
+    this.queryUpper = deburrUpper(props.query);
   }
 
   onCountryClick = (geometry) => {
@@ -29,9 +30,9 @@ class CountriesSelect extends PureComponent {
   };
 
   computedStyles = (geography) => {
-    const nameUpper = deburr(geography.properties.name.toUpperCase());
+    const nameUpper = deburrUpper(geography.properties.name);
     const isInFilter = this.queryUpper
-      ? nameUpper.indexOf(this.queryUpper) > -1
+      ? includes(nameUpper, this.queryUpper)
       : false;
     if (isInFilter) {
       return {
