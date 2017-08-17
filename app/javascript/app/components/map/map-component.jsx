@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
 import {
@@ -12,17 +12,7 @@ import Button from 'components/button';
 
 import styles from './map-styles.scss';
 
-class Map extends Component {
-  handleZoomIn = () => {
-    const zoom = this.props.zoom * 2;
-    this.props.setMapZoom(zoom);
-  };
-
-  handleZoomOut = () => {
-    const zoom = this.props.zoom / 2;
-    this.props.setMapZoom(zoom);
-  };
-
+class Map extends PureComponent {
   render() {
     const { zoom, center } = this.props;
     const { className } = this.props;
@@ -31,6 +21,8 @@ class Map extends Component {
       cache,
       zoomEnable,
       dragEnable,
+      handleZoomIn,
+      handleZoomOut,
       onCountryClick,
       computedStyles
     } = this.props;
@@ -38,8 +30,8 @@ class Map extends Component {
       <div className={cx(styles.wrapper, className)}>
         {zoomEnable &&
           <div className={styles.actions}>
-            <Button onClick={this.handleZoomIn}>+</Button>
-            <Button disabled={zoom === 1} onClick={this.handleZoomOut}>
+            <Button onClick={handleZoomIn}>+</Button>
+            <Button disabled={zoom === 1} onClick={handleZoomOut}>
               -
             </Button>
           </div>}
@@ -99,7 +91,8 @@ Map.propTypes = {
   cache: Proptypes.bool,
   className: Proptypes.string,
   paths: Proptypes.array.isRequired,
-  setMapZoom: Proptypes.func.isRequired,
+  handleZoomIn: Proptypes.func.isRequired,
+  handleZoomOut: Proptypes.func.isRequired,
   onCountryClick: Proptypes.func,
   computedStyles: Proptypes.func.isRequired
 };
