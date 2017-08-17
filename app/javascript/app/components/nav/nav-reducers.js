@@ -1,9 +1,8 @@
-const setCountriesVisibility = (isOpen, state) => ({
+const setCountriesVisibility = (state, { payload }) => ({
   ...state,
-  countriesOpen: isOpen
+  countriesOpen: payload
 });
 
 export default {
-  setCountriesVisibility: (state, { payload }) =>
-    setCountriesVisibility(payload, state)
+  setCountriesVisibility
 };
