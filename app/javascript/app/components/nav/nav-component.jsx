@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import Proptypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
 import ToolsNav from 'components/tools-nav';
@@ -9,14 +10,7 @@ import cwLogo from 'assets/icons/cw-logo.svg';
 import layout from 'styles/layout.scss';
 import styles from './nav-styles.scss';
 
-class NavBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showCountries: false
-    };
-  }
-
+class NavBar extends PureComponent {
   setCountriesVisibility(status) {
     this.setState({
       showCountries: status
@@ -24,6 +18,7 @@ class NavBar extends Component {
   }
 
   render() {
+    const { countriesOpen, setCountriesVisibility } = this.props;
     return (
       <div className={layout.content}>
         <div className={styles.navbar}>
@@ -32,8 +27,8 @@ class NavBar extends Component {
           </NavLink>
           <div
             className={styles.linkWrapper}
-            onMouseEnter={() => this.setCountriesVisibility(true)}
-            onMouseLeave={() => this.setCountriesVisibility(false)}
+            onMouseEnter={() => setCountriesVisibility(true)}
+            onMouseLeave={() => setCountriesVisibility(false)}
           >
             <NavLink
               className={styles.link}
@@ -42,12 +37,12 @@ class NavBar extends Component {
             >
               COUNTRIES
             </NavLink>
-            {this.state.showCountries &&
+            {countriesOpen &&
               <ClickOutside
-                onClickOutside={() => this.setCountriesVisibility(false)}
+                onClickOutside={() => setCountriesVisibility(false)}
               >
                 <CountriesSelect
-                  onLeave={() => this.setCountriesVisibility(false)}
+                  onLeave={() => setCountriesVisibility(false)}
                 />
               </ClickOutside>}
           </div>
@@ -92,5 +87,14 @@ class NavBar extends Component {
     );
   }
 }
+
+NavBar.propTypes = {
+  countriesOpen: Proptypes.bool,
+  setCountriesVisibility: Proptypes.func.isRequired
+};
+
+NavBar.defaultProps = {
+  countriesOpen: false
+};
 
 export default NavBar;

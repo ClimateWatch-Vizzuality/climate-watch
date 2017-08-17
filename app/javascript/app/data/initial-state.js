@@ -1,4 +1,7 @@
 export default {
+  nav: {
+    countriesOpen: false
+  },
   countryExplorer: {
     open: false
   },
