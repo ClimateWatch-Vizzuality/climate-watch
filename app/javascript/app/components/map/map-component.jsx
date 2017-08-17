@@ -43,6 +43,7 @@ class Map extends Component {
     const { className } = this.props;
     const {
       paths,
+      cache,
       zoomEnable,
       dragEnable,
       onCountryClick,
@@ -82,7 +83,10 @@ class Map extends Component {
                 zoom={z}
                 disablePanning={!dragEnable}
               >
-                <Geographies geographyPaths={paths}>
+                <Geographies
+                  geographyPaths={paths}
+                  disableOptimization={!cache}
+                >
                   {(geographies, projection) =>
                     geographies.map(geography =>
                       (<Geography
@@ -105,6 +109,7 @@ class Map extends Component {
 Map.propTypes = {
   zoomEnable: Proptypes.bool,
   dragEnable: Proptypes.bool,
+  cache: Proptypes.bool,
   initial: Proptypes.shape({
     center: Proptypes.array,
     zoom: Proptypes.number
@@ -118,6 +123,7 @@ Map.propTypes = {
 Map.defaultProps = {
   zoomEnable: false,
   dragEnable: true,
+  cache: true,
   initial: {
     center: [0, 20],
     zoom: 1

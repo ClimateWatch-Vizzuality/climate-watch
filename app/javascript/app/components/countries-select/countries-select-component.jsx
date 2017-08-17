@@ -1,13 +1,26 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
-import Map from 'components/map';
+import deburr from 'lodash/deburr';
 import paths from 'app/data/world-50m-paths';
+
+import Search from 'components/search';
+import ResultsList from 'components/results-list';
+import Map from 'components/map';
 
 import layout from 'styles/layout.scss';
 import styles from './countries-select-styles.scss';
 
 class CountriesSelect extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.queryUpper = deburr(props.query.toUpperCase());
+  }
+
+  componentWillReceiveProps(props) {
+    this.queryUpper = deburr(props.query.toUpperCase());
+  }
+
   onCountryClick = (geometry) => {
     const { history } = this.props;
     const country = geometry.id;
@@ -16,7 +29,11 @@ class CountriesSelect extends PureComponent {
   };
 
   computedStyles = (geography) => {
-    if (geography.id === 'ESP') {
+    const nameUpper = deburr(geography.properties.name.toUpperCase());
+    const isInFilter = this.queryUpper
+      ? nameUpper.indexOf(this.queryUpper) > -1
+      : false;
+    if (isInFilter) {
       return {
         default: {
           fill: '#302463',
@@ -51,10 +68,13 @@ class CountriesSelect extends PureComponent {
   };
 
   render() {
+    const { query, countrySelectFilter, countriesList } = this.props;
     return (
       <div className={cx(layout.content, styles.wrapper)}>
-        <div className={styles.listContainer}>There will be a list here</div>
+        <Search placeholder="" value={query} onChange={countrySelectFilter} />
+        <ResultsList list={countriesList} emptyDataMsg="No results" />
         <Map
+          cache={false}
           paths={paths}
           onCountryClick={this.onCountryClick}
           computedStyles={this.computedStyles}
@@ -66,7 +86,10 @@ class CountriesSelect extends PureComponent {
 
 CountriesSelect.propTypes = {
   history: Proptypes.object,
-  onLeave: Proptypes.func.isRequired
+  onLeave: Proptypes.func.isRequired,
+  query: Proptypes.string,
+  countrySelectFilter: Proptypes.func.isRequired,
+  countriesList: Proptypes.array
 };
 
 export default CountriesSelect;
