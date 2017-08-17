@@ -3,38 +3,24 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { deburrUpper } from 'app/utils';
-import includes from 'lodash/includes';
+import { getDefaultStyles } from 'app/utils/map';
 
 import paths from 'app/data/world-50m-paths';
 
 import CountrySelectComponent from './countries-select-component';
 import actions from './countries-select-actions';
+import { getFilteredCountriesWithPath } from './countries-select-selectors';
 
 export { default as component } from './countries-select-component';
 export { default as reducers } from './countries-select-reducers';
 export { default as styles } from './countries-select-styles';
 export { default as actions } from './countries-select-actions';
 
-function getCountriesFiltered(countries, queryUpper) {
-  // TODO: use reselect here
-  const filteredCountries = queryUpper
-    ? countries.filter(country =>
-      includes(deburrUpper(country.label), queryUpper)
-    )
-    : countries;
-  return filteredCountries.map(country => ({
-    value: country.value,
-    label: country.label,
-    path: `countries/${country.value}`
-  }));
-}
-
 const mapStateToProps = (state) => {
-  const { query, countries } = state.countrySelect;
-  const queryUpper = deburrUpper(query);
+  const { query } = state.countrySelect;
   return {
-    query: queryUpper,
-    countriesList: getCountriesFiltered(countries, queryUpper)
+    query: deburrUpper(query),
+    countriesList: getFilteredCountriesWithPath(state.countrySelect)
   };
 };
 
@@ -48,46 +34,26 @@ const CountrySelectContainer = (props) => {
     }
   };
 
+  const getActiveStyles = () => ({
+    default: {
+      fill: '#302463',
+      stroke: '#607D8B',
+      strokeWidth: 0.2,
+      outline: 'none'
+    },
+    hover: {},
+    pressed: {}
+  });
+
   const computedStyles = (geography) => {
     const { query } = props;
     const nameUpper = deburrUpper(geography.properties.name);
-    const isInFilter = query ? includes(nameUpper, query) : false;
-    if (isInFilter) {
-      return {
-        default: {
-          fill: '#302463',
-          stroke: '#607D8B',
-          strokeWidth: 0.2,
-          outline: 'none'
-        },
-        hover: {},
-        pressed: {}
-      };
-    }
-    return {
-      default: {
-        fill: '#ECEFF1',
-        stroke: '#607D8B',
-        strokeWidth: 0.2,
-        outline: 'none'
-      },
-      hover: {
-        fill: '#302463',
-        stroke: '#607D8B',
-        strokeWidth: 0.2,
-        outline: 'none'
-      },
-      pressed: {
-        fill: '#FF5722',
-        stroke: '#607D8B',
-        strokeWidth: 0.5,
-        outline: 'none'
-      }
-    };
+    const isInFilter = query ? nameUpper.includes(query) : false;
+    return isInFilter ? getActiveStyles() : getDefaultStyles();
   };
 
   return createElement(CountrySelectComponent, {
-    ...this.props,
+    ...props,
     onCountryClick,
     computedStyles,
     paths
