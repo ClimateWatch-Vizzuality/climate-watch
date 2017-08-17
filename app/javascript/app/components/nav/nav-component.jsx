@@ -11,12 +11,6 @@ import layout from 'styles/layout.scss';
 import styles from './nav-styles.scss';
 
 class NavBar extends PureComponent {
-  setCountriesVisibility(status) {
-    this.setState({
-      showCountries: status
-    });
-  }
-
   render() {
     const { countriesOpen, setCountriesVisibility } = this.props;
     return (

@@ -2,6 +2,10 @@ export default {
   nav: {
     countriesOpen: false
   },
+  map: {
+    center: [0, 20],
+    zoom: 1
+  },
   countryExplorer: {
     open: false
   },
