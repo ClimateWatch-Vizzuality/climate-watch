@@ -1,5 +1,5 @@
 import Home from 'components/home';
-import NDC from 'components/ndc';
+import NDC from 'pages/ndc';
 import NDCCountry from 'components/ndc-country';
 import Country from 'components/country';
 import errorPage from 'components/error-page';
