@@ -23,9 +23,7 @@ COPY Gemfile Gemfile.lock ./
 
 RUN bundle install --without development test --jobs 4 --deployment
 
-# Set Rails to run in production
-ENV RAILS_ENV production
-ENV RACK_ENV production
+RUN npm install -g yarn
 
 # Bundle app source
 COPY . ./
@@ -33,4 +31,7 @@ COPY . ./
 EXPOSE 3000
 
 # Start puma
-CMD bundle exec rake assets:precompile && bundle exec rake tmp:clear db:migrate && bundle exec puma -C config/puma.rb
+CMD bundle exec rake assets:precompile && bundle exec rake tmp:clear db:migrate && npm start
+
+# Start server
+# CMD npm start

@@ -23,12 +23,6 @@ spec:
           limits:
             memory: "512Mi"
         env:
-          - name: MAILER_DEFAULT_FROM
-            value: no-reply@localhost
-          - name: MAILER_DEFAULT_URL
-            value: localhost
-          - name: AWS_REGION
-            value: eu-west-1
           - name: RACK_ENV
             value: production
           - name: RAILS_ENV

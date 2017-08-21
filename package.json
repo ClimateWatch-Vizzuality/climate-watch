@@ -7,7 +7,7 @@
     "js:reinstall": "rm -rf ./node_modules && yarn install",
     "rails:db:create": "RAILS_ENV=development bundle exec rails db:create",
     "rails:db:migrate": "RAILS_ENV=development bundle exec rails db:migrate",
-    "rails:server": "bundle exec rails s",
+    "rails:server": "bundle exec rails s -b 0.0.0.0",
     "js:server": "./bin/webpack-dev-server",
     "precommit": "lint-staged",
     "lint": "eslint --ext js --ext jsx ."

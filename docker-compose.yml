@@ -4,11 +4,12 @@ services:
     build: .
     ports:
       - "3000:3000"
+      - "8080:8080"
     env_file:
       - .env
     environment:
-      - RACK_ENV=production
-      - RAILS_ENV=production
+      - RACK_ENV=development
+      - RAILS_ENV=development
       - PORT=3000
       - POSTGRES_URL=postgres://postgres:example@postgres:5432/climate_watch
       - RAILS_SERVE_STATIC_FILES=true
@@ -16,6 +17,7 @@ services:
     container_name: climate-watch
     depends_on:
       - postgres
+
   postgres:
     image: postgres:9.6
     restart: always
