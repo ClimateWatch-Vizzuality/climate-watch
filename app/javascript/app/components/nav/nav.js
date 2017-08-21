@@ -1,3 +1,13 @@
-import Component from './nav-component';
+import { connect } from 'react-redux';
 
-export default Component;
+import Component from './nav-component';
+import actions from './nav-actions';
+
+export { default as reducers } from './nav-reducers';
+export { default as actions } from './nav-actions';
+
+const mapStateToProps = state => ({
+  countriesOpen: state.nav.countriesOpen
+});
+
+export default connect(mapStateToProps, actions)(Component);

@@ -1,16 +1,25 @@
 import React from 'react';
+import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Map from 'components/map';
 
-import { feature } from 'topojson-client';
-import geoData from 'app/data/world-50m.json';
+import paths from 'app/data/world-50m-paths';
 
-const paths = feature(geoData, geoData.objects[Object.keys(geoData.objects)[0]])
-  .features;
+const NDC = (props) => {
+  const handleCountryClick = (geography) => {
+    props.history.push(`ndcs/${geography.id}`);
+  };
 
-const NDC = () =>
-  (<div>
-    <Header />
-    <Map paths={paths} zoomEnable />
-  </div>);
+  return (
+    <div>
+      <Header />
+      <Map paths={paths} zoomEnable onCountryClick={handleCountryClick} />
+    </div>
+  );
+};
+
+NDC.propTypes = {
+  history: Proptypes.object.isRequired
+};
+
 export default NDC;
