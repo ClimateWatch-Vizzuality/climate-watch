@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import Icon from 'components/icon';
-import qs from 'query-string';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
@@ -11,9 +10,7 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
-    const { location, data, handleOnClick } = this.props;
-    const search = qs.parse(location.search);
-    const activeSection = search.activeSection ? search.activeSection : null;
+    const { data, handleOnClick, activeSection } = this.props;
     return (
       <div>
         {data.map((section, index) =>
@@ -65,7 +62,7 @@ class Accordion extends PureComponent {
 }
 
 Accordion.propTypes = {
-  location: PropTypes.object,
+  activeSection: PropTypes.string,
   handleOnClick: PropTypes.func,
   data: PropTypes.arrayOf(
     PropTypes.shape({
