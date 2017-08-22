@@ -4,6 +4,7 @@ import Section from 'components/section';
 import Search from 'components/search';
 import Icon from 'components/icon';
 import Button from 'components/button';
+import Dropdown from 'components/dropdown';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import homeOneBg from 'assets/backgrounds/home_bg_1';
@@ -38,9 +39,12 @@ const Home = () =>
           title="Explore the country factsheets"
           description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         />
-        <Button color="yellow">
-          <span>Explore your country</span>
-        </Button>
+        <div className={styles.doubleFold}>
+          <Button color="yellow">
+            <span>Explore your country</span>
+          </Button>
+          <Dropdown placeholder="Select another country" />
+        </div>
       </div>
     </Section>
     <Section className={styles.homeThree} backgroundImage={homeThreeBg}>
@@ -51,6 +55,14 @@ const Home = () =>
           title="See and compare the Nationally Determined Contributions"
           description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         />
+        <div className={styles.doubleFold}>
+          <Button color="yellow">
+            <span>Explore NDC content</span>
+          </Button>
+          <Button color="white">
+            <span>Compare NDCs</span>
+          </Button>
+        </div>
       </div>
       <div className={styles.column}>
         <img src={homeThreeImage} alt="home-section-one" />

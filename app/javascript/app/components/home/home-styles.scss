@@ -1,4 +1,11 @@
 @import '../../styles/settings.scss';
+@import '~styles/layout.scss';
+
+.doubleFold {
+  @extend %grid;
+
+  grid-template-columns: repeat(2, 1fr);
+}
 
 .column {
   display: flex;
@@ -7,15 +14,17 @@
 }
 
 .homeOne {
-  padding: 120px 0;
+  padding-top: 120px;
+  padding-bottom: 120px;
 }
 
 .homeTwo {
-  padding: 50px 0 0;
+  padding-top: 120px;
 }
 
 .homeThree {
-  padding: 140px 0;
+  padding-bottom: 140px;
+  padding-top: 140px;
 }
 
 .lightIntro {

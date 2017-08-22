@@ -9,7 +9,8 @@ const Button = (props) => {
   const classNames = cx(className, styles.button, {
     [styles.square]: type === 'icon',
     [styles.transparent]: color === 'transparent',
-    [styles.yellow]: color === 'yellow'
+    [styles.yellow]: color === 'yellow',
+    [styles.white]: color === 'white'
   });
   return (
     <button disabled={disabled} className={classNames} onClick={onClick}>

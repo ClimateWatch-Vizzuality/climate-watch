@@ -9,6 +9,7 @@
   align-items: center;
   border-radius: 4px;
   font-family: $font-family-2;
+  font-size: $font-size;
   text-transform: capitalize;
   color: $theme-color;
   float: left;
@@ -30,4 +31,9 @@
 
 .yellow {
   background-color: $theme-secondary;
+}
+
+.white {
+  background-color: $white;
+  border: solid 1px rgba($theme-color-light, 0.3);
 }
