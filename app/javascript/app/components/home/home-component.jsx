@@ -5,10 +5,9 @@ import Intro from 'components/intro';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import Icon from 'components/icon';
-import cx from 'classnames';
 
 import iconShare from 'assets/icons/share.svg';
-import layout from 'styles/layout.scss';
+import styles from './home-styles.scss';
 
 const data = [
   { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
@@ -32,7 +31,7 @@ const Home = () =>
   (<div>
     <Header size="large">
       <Intro title="Climate Watch" description="A very useful site" />
-      <div className={cx(layout.grid, layout.col2)}>
+      <div className={styles.doubleFold}>
         <ButtonGroup />
         <div>
           <Button className="download-button">
