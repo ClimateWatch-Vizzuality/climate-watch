@@ -8,7 +8,8 @@ const Button = (props) => {
   const { children, className, type, color, disabled, onClick } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: type === 'icon',
-    [styles.transparent]: color === 'transparent'
+    [styles.transparent]: color === 'transparent',
+    [styles.yellow]: color === 'yellow'
   });
   return (
     <button disabled={disabled} className={classNames} onClick={onClick}>

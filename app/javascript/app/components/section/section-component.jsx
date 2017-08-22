@@ -2,7 +2,7 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
 
-import layout from 'styles/layout.scss';
+import layout from '~styles/layout.scss';
 import styles from './section-styles.scss';
 
 const Section = ({ children, backgroundImage, className }) =>
