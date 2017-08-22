@@ -1,39 +1,23 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import Icon from 'components/icon';
-import qs from 'query-string';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import layout from 'styles/layout.scss';
 import styles from './accordion-styles.scss';
 
-class Accordion extends Component {
-  handleOnClick(slug) {
-    const { location, history } = this.props;
-    const search = qs.parse(location.search);
-    const newSlug =
-      !search.activeSection || search.activeSection === slug ? 'none' : slug;
-    const newSearch = { ...search, activeSection: newSlug };
-
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
-    });
-  }
-
+class Accordion extends PureComponent {
   render() {
-    const { location, data } = this.props;
-    const search = qs.parse(location.search);
-    const activeSection = search.activeSection ? search.activeSection : null;
+    const { data, handleOnClick, activeSection } = this.props;
     return (
       <div>
         {data.map((section, index) =>
           (<section key={section.slug} className={styles.accordion}>
             <button
               className={styles.header}
-              onClick={() => this.handleOnClick(section.slug)}
+              onClick={() => handleOnClick(section.slug)}
             >
               <div className={layout.content}>
                 <div className={styles.title}>
@@ -78,8 +62,8 @@ class Accordion extends Component {
 }
 
 Accordion.propTypes = {
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  activeSection: PropTypes.string,
+  handleOnClick: PropTypes.func,
   data: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string,

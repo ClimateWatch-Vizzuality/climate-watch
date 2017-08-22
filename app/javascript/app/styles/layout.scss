@@ -7,11 +7,7 @@
   padding: 0 $gutter-padding;
 }
 
-.grid {
+%grid {
   display: grid;
-  grid-gap: 20px;
-}
-
-.col2 {
-  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: $gutter-padding;
 }

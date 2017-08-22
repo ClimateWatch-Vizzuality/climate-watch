@@ -3,7 +3,6 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { deburrUpper } from 'app/utils';
-import { getDefaultStyles } from 'app/utils/map';
 
 import paths from 'app/data/world-50m-paths';
 
@@ -34,22 +33,39 @@ const CountrySelectContainer = (props) => {
     }
   };
 
-  const getActiveStyles = () => ({
+  const countryStyles = {
     default: {
+      fill: '#ECEFF1',
+      stroke: '#607D8B',
+      strokeWidth: 0.2,
+      outline: 'none'
+    },
+    hover: {
       fill: '#302463',
       stroke: '#607D8B',
       strokeWidth: 0.2,
       outline: 'none'
     },
-    hover: {},
-    pressed: {}
-  });
+    pressed: {
+      fill: '#FF5722',
+      stroke: '#607D8B',
+      strokeWidth: 0.5,
+      outline: 'none'
+    }
+  };
+
+  const activeCountryStyles = {
+    ...countryStyles,
+    default: {
+      fill: '#302463'
+    }
+  };
 
   const computedStyles = (geography) => {
     const { query } = props;
     const nameUpper = deburrUpper(geography.properties.name);
     const isInFilter = query ? nameUpper.includes(query) : false;
-    return isInFilter ? getActiveStyles() : getDefaultStyles();
+    return isInFilter ? activeCountryStyles : countryStyles;
   };
 
   return createElement(CountrySelectComponent, {

@@ -1,4 +1,11 @@
 @import '../../styles/settings.scss';
+@import '~styles/layout.scss';
+
+.doubleFold {
+  @extend %grid;
+
+  grid-template-columns: repeat(2, 1fr);
+}
 
 .section {
   display: block;

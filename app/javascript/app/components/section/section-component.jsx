@@ -2,7 +2,7 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
 
-import layout from '~styles/layout.scss';
+import layout from 'styles/layout.scss';
 import styles from './section-styles.scss';
 
 const Section = ({ children, backgroundImage, className }) =>
@@ -12,7 +12,7 @@ const Section = ({ children, backgroundImage, className }) =>
       backgroundImage: `url(${backgroundImage})`
     }}
   >
-    <div className={cx(className, layout.content, layout.grid, layout.col2)}>
+    <div className={cx(className, layout.content, styles.doubleFold)}>
       {children}
     </div>
   </section>);
