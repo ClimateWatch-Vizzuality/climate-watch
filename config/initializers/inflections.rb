@@ -14,3 +14,9 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+#
+
+# Custom inflection rules
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'gas', 'gases'
+end

@@ -15,6 +15,40 @@ ActiveRecord::Schema.define(version: 20170823121414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "he_data_sources", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "he_gases", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "he_records", force: :cascade do |t|
+    t.bigint "location_id"
+    t.bigint "he_sector_id"
+    t.bigint "he_gas_id"
+    t.text "gwp"
+    t.integer "year"
+    t.decimal "value"
+    t.index ["he_gas_id"], name: "index_he_records_on_he_gas_id"
+    t.index ["he_sector_id"], name: "index_he_records_on_he_sector_id"
+    t.index ["location_id"], name: "index_he_records_on_location_id"
+  end
+
+  create_table "he_sectors", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.bigint "he_data_source_id"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["he_data_source_id"], name: "index_he_sectors_on_he_data_source_id"
+    t.index ["parent_id"], name: "index_he_sectors_on_parent_id"
+  end
+
   create_table "location_members", force: :cascade do |t|
     t.bigint "location_id"
     t.bigint "member_id"
@@ -49,6 +83,11 @@ ActiveRecord::Schema.define(version: 20170823121414) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  add_foreign_key "he_records", "he_gases", on_delete: :cascade
+  add_foreign_key "he_records", "he_sectors", on_delete: :cascade
+  add_foreign_key "he_records", "locations", on_delete: :cascade
+  add_foreign_key "he_sectors", "he_data_sources", on_delete: :cascade
+  add_foreign_key "he_sectors", "he_sectors", column: "parent_id", on_delete: :cascade
   add_foreign_key "location_members", "locations", column: "member_id", on_delete: :cascade
   add_foreign_key "location_members", "locations", on_delete: :cascade
   add_foreign_key "ndcs", "locations", on_delete: :cascade
