@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+import { themr } from 'react-css-themr';
 
 import styles from './intro-styles.scss';
 
 const Intro = (props) => {
-  const { title, description } = props;
+  const { title, description, theme, className } = props;
   return (
-    <div className={styles.intro}>
-      <h2 className={styles.title}>
+    <div className={cx(className, theme.intro)}>
+      <h2 className={theme.title}>
         {title}
       </h2>
-      <p className={styles.description}>
+      <p className={theme.description}>
         {description}
       </p>
     </div>
@@ -19,7 +21,9 @@ const Intro = (props) => {
 
 Intro.propTypes = {
   title: PropTypes.string,
-  description: PropTypes.string
+  description: PropTypes.string,
+  theme: PropTypes.object,
+  className: PropTypes.string
 };
 
-export default Intro;
+export default themr('Intro', styles)(Intro);

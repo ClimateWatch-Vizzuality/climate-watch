@@ -5,21 +5,22 @@ import cx from 'classnames';
 import layout from 'styles/layout.scss';
 import styles from './section-styles.scss';
 
-const Section = ({ children, backgroundImage }) =>
+const Section = ({ children, backgroundImage, className }) =>
   (<section
     className={styles.section}
     style={{
       backgroundImage: `url(${backgroundImage})`
     }}
   >
-    <div className={cx(layout.content, layout.grid, layout.col2)}>
+    <div className={cx(className, layout.content, layout.grid, layout.col2)}>
       {children}
     </div>
   </section>);
 
 Section.propTypes = {
   children: Proptypes.node,
-  backgroundImage: Proptypes.string
+  backgroundImage: Proptypes.string,
+  className: Proptypes.string
 };
 
 export default Section;

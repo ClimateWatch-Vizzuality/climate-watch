@@ -1,0 +1,36 @@
+@import '../../styles/settings.scss';
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.homeOne {
+  padding: 120px 0;
+}
+
+.homeTwo {
+  padding: 50px 0 0;
+}
+
+.homeThree {
+  padding: 140px 0;
+}
+
+.lightIntro {
+  .title {
+    color: $theme-color;
+    font-size: $font-size-x-large;
+  }
+
+  .description {
+    color: $base-text;
+  }
+}
+
+.cwLogo {
+  width: 270px;
+  height: 25px;
+  fill: $white;
+}
