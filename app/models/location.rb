@@ -2,7 +2,7 @@ class Location < ApplicationRecord
   has_many :ndcs
   has_many :location_members
   has_many :members, through: :location_members
-  has_many :he_records
+  has_many :historical_emissions
 
   validates :iso_code3, presence: true, uniqueness: true
   # TODO: not until data provided
