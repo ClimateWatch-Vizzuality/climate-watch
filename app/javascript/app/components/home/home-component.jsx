@@ -7,6 +7,7 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 
 import iconShare from 'assets/icons/share.svg';
+import styles from './home-styles.scss';
 
 const data = [
   { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
@@ -30,13 +31,17 @@ const Home = () =>
   (<div>
     <Header size="large">
       <Intro title="Climate Watch" description="A very useful site" />
-      <ButtonGroup />
-      <Button className="download-button">
-        <span>Compare</span>
-      </Button>
-      <Button type="icon">
-        <Icon icon={iconShare} />
-      </Button>
+      <div className={styles.doubleFold}>
+        <ButtonGroup />
+        <div>
+          <Button className="download-button">
+            <span>Compare</span>
+          </Button>
+          <Button type="icon">
+            <Icon icon={iconShare} />
+          </Button>
+        </div>
+      </div>
     </Header>
     <h1>Home</h1>
     <LineChart width={400} height={400} data={data}>

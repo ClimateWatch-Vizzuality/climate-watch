@@ -1,7 +1,7 @@
 {
   "name": "climate-watch",
   "scripts": {
-    "start": "npm-run-all -p rails:server js:server",
+    "start": "npm-run-all -p -r rails:server js:server",
     "rails:install": "bundle install",
     "js:install": "yarn install",
     "js:reinstall": "rm -rf ./node_modules && yarn install",

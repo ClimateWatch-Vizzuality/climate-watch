@@ -7,6 +7,7 @@
   padding: 0 $gutter-padding;
 }
 
-.grid {
+%grid {
   display: grid;
+  grid-column-gap: $gutter-padding;
 }
