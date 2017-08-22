@@ -1,5 +1,6 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const { env } = require('../configuration.js');
+const { resolve } = require('path');
+const { env, settings } = require('../configuration');
 
 const devConfig = [
   { loader: 'style-loader' },
@@ -10,8 +11,14 @@ const devConfig = [
       localIdentName: '[name]__[local]__[hash:base64:5]'
     }
   },
-  { loader: 'postcss-loader' },
-  { loader: 'sass-loader' }
+  { loader: 'postcss-loader', options: { sourceMap: true } },
+  {
+    loader: `sass-loader?includePaths[]='${resolve(
+      settings.source_path,
+      'app'
+    )}'`,
+    options: { sourceMap: true }
+  }
 ];
 
 const prodConfig = ExtractTextPlugin.extract({
@@ -21,9 +28,9 @@ const prodConfig = ExtractTextPlugin.extract({
       loader: 'css-loader',
       options: { minimize: env.NODE_ENV === 'production' }
     },
-    { loader: 'postcss-loader', options: { sourceMap: true } },
+    { loader: 'postcss-loader' },
     'resolve-url-loader',
-    { loader: 'sass-loader', options: { sourceMap: true } }
+    { loader: 'sass-loader' }
   ]
 });
 
