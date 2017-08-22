@@ -14,7 +14,7 @@ class ImportNdcContent
   def import_object(s3, bucket_name, object)
     object.key =~ /ndcs\/(.+?)(-.+)?.md/
     code = Regexp.last_match[1]
-    location = Location.find_by_code(code)
+    location = Location.find_by_iso_code3(code)
     unless location
       Rails.logger.warn "Location not found: #{code}"
       return
