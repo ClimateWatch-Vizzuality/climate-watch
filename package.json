@@ -1,7 +1,7 @@
 {
   "name": "climate-watch",
   "scripts": {
-    "start": "npm-run-all -p -r rails:server js:server",
+    "start": "run-s rails:db:migrate servers",
     "rails:install": "bundle install",
     "js:install": "yarn install",
     "js:reinstall": "rm -rf ./node_modules && yarn install",
@@ -9,6 +9,7 @@
     "rails:db:migrate": "RAILS_ENV=development bundle exec rails db:migrate",
     "rails:server": "bundle exec rails s",
     "js:server": "./bin/webpack-dev-server",
+    "servers": "run-p -r rails:server js:server",
     "precommit": "lint-staged",
     "lint": "eslint --ext js --ext jsx ."
   },
