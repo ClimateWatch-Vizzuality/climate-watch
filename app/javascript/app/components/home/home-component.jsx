@@ -5,6 +5,7 @@ import Intro from 'components/intro';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import Icon from 'components/icon';
+import Section from 'components/section';
 
 import iconShare from 'assets/icons/share.svg';
 
@@ -38,6 +39,10 @@ const Home = () =>
         <Icon icon={iconShare} />
       </Button>
     </Header>
+    <Section backgroundImage="/assets/backgrounds/home-section-1.png">
+      <div>test</div>
+      <div>test</div>
+    </Section>
     <h1>Home</h1>
     <LineChart width={400} height={400} data={data}>
       <Tooltip
