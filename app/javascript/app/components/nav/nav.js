@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import Component from './nav-component';
 import actions from './nav-actions';
@@ -6,8 +7,9 @@ import actions from './nav-actions';
 export { default as reducers } from './nav-reducers';
 export { default as actions } from './nav-actions';
 
-const mapStateToProps = state => ({
-  countriesOpen: state.nav.countriesOpen
+const mapStateToProps = (state, { location }) => ({
+  countriesOpen: state.nav.countriesOpen,
+  location
 });
 
-export default connect(mapStateToProps, actions)(Component);
+export default withRouter(connect(mapStateToProps, actions)(Component));

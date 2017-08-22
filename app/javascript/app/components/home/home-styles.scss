@@ -19,6 +19,10 @@
 }
 
 .lightIntro {
+  .intro {
+    padding-bottom: 0;
+  }
+
   .title {
     color: $theme-color;
     font-size: $font-size-x-large;

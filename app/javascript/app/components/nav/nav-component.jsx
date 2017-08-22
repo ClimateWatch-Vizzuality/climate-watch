@@ -13,13 +13,14 @@ import styles from './nav-styles.scss';
 
 class NavBar extends PureComponent {
   render() {
-    const { countriesOpen, setCountriesVisibility } = this.props;
+    const { countriesOpen, setCountriesVisibility, location } = this.props;
     return (
       <div className={layout.content}>
         <div className={styles.navbar}>
-          <NavLink exact className={styles.link} to="/">
-            <Icon className={styles.logo} icon={cwLogo} />
-          </NavLink>
+          {location.pathname !== '/' &&
+            <NavLink exact className={styles.link} to="/">
+              <Icon className={styles.logo} icon={cwLogo} />
+            </NavLink>}
           <div
             className={styles.linkWrapper}
             onMouseEnter={() => setCountriesVisibility(true)}
@@ -90,7 +91,8 @@ class NavBar extends PureComponent {
 
 NavBar.propTypes = {
   countriesOpen: Proptypes.bool,
-  setCountriesVisibility: Proptypes.func.isRequired
+  setCountriesVisibility: Proptypes.func.isRequired,
+  location: Proptypes.object
 };
 
 NavBar.defaultProps = {
