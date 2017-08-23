@@ -9,6 +9,7 @@ import actions from './autocomplete-search-actions';
 import { getFilteredCountriesWithPath } from './autocomplete-search-selectors';
 
 export { default as component } from './autocomplete-search-component';
+export { initialState } from './autocomplete-search-reducers';
 export { default as reducers } from './autocomplete-search-reducers';
 export { default as styles } from './autocomplete-search-styles';
 export { default as actions } from './autocomplete-search-actions';
@@ -23,10 +24,9 @@ const mapStateToProps = (state) => {
 
 const AutocompleteSearchContainer = (props) => {
   const onOptionClick = (selected) => {
-    const { history, onLeave } = props;
+    const { history } = props;
     if (selected) {
       history.push(`ndcs/${selected.value}`);
-      onLeave();
     }
   };
 
@@ -38,8 +38,7 @@ const AutocompleteSearchContainer = (props) => {
 
 AutocompleteSearchContainer.propTypes = {
   query: Proptypes.string,
-  history: Proptypes.object,
-  onLeave: Proptypes.func.isRequired
+  history: Proptypes.object
 };
 
 export default withRouter(

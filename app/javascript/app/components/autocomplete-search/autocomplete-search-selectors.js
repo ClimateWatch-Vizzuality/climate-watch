@@ -8,20 +8,40 @@ const filterCountries = (countries, queryUpper) => {
   );
 };
 
-const addCountriesPath = countries =>
-  countries.map(country => ({
-    value: country.value,
-    label: country.label,
-    path: `countries/${country.value}`
-  }));
+const getCountries = state => state.countries;
+const getQuery = state => state.query;
+const getQueryUpper = state => deburrUpper(state.query);
+
+const addCountriesPath = (countries, query) => {
+  const ndcResults = countries.reduce((ndcResult, country) => {
+    ndcResult.push({
+      value: `${country.value}-overview`,
+      label: `${country.label} NDC - Overview`,
+      path: `ndcs/${country.value}`
+    });
+    ndcResult.push({
+      value: `${country.value}-full`,
+      label: `${country.label} NDC - Full Text`,
+      path: `ndcs/${country.value}`
+    });
+    return ndcResult;
+  }, []);
+
+  ndcResults.push({
+    value: 'search',
+    label: `Search "${query}" in the content of all NDC's`,
+    path: `ndcs?search=${query}`
+  });
+  return ndcResults;
+};
 
 export const getFilteredCountries = createSelector(
-  [state => state.countries, state => deburrUpper(state.query)],
+  [getCountries, getQueryUpper],
   filterCountries
 );
 
 export const getFilteredCountriesWithPath = createSelector(
-  getFilteredCountries,
+  [getFilteredCountries, getQuery],
   addCountriesPath
 );
 
