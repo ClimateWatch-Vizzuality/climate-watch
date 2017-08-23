@@ -18,6 +18,10 @@
   &:disabled {
     cursor: not-allowed;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .square {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Proptypes from 'proptypes';
+import PropTypes from 'prop-types';
 
 const Country = ({ match }) =>
   (<h1>
@@ -7,7 +7,7 @@ const Country = ({ match }) =>
   </h1>);
 
 Country.propTypes = {
-  match: Proptypes.object.isRequired
+  match: PropTypes.object.isRequired
 };
 
 export default Country;

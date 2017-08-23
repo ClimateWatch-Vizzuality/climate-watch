@@ -5,10 +5,12 @@ import Search from 'components/search';
 import Icon from 'components/icon';
 import Button from 'components/button';
 import Dropdown from 'components/dropdown';
+import ReactPlayer from 'react-player';
+import cx from 'classnames';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
+import fullscreen from 'assets/icons/map-fullscreen.svg';
 import homeOneBg from 'assets/backgrounds/home_bg_1';
-import homeOneImage from 'assets/backgrounds/home_image_1';
 import homeTwoBg from 'assets/backgrounds/home_bg_2';
 import homeTwoImage from 'assets/backgrounds/home_image_2';
 import homeThreeBg from 'assets/backgrounds/home_bg_3';
@@ -24,8 +26,18 @@ const Home = () =>
         <Intro description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data." />
         <Search />
       </div>
-      <div className={styles.column}>
-        <img src={homeOneImage} alt="home-section-one" />
+      <div className={cx(styles.column, styles.video)}>
+        <Button color="yellow" type="icon" className={styles.fullscreen}>
+          <Icon icon={fullscreen} />
+        </Button>
+        <ReactPlayer
+          url="https://www.youtube.com/watch?v=0XsJNU75Si0"
+          playing
+          youtubeConfig={{
+            playerVars: {},
+            preload: false
+          }}
+        />
       </div>
     </Section>
     <Section className={styles.homeTwo} backgroundImage={homeTwoBg}>

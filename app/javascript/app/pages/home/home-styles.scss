@@ -47,3 +47,15 @@
   height: 25px;
   fill: $white;
 }
+
+.video {
+  position: relative;
+}
+
+.fullscreen {
+  border-radius: 50%;
+  position: absolute;
+  z-index: 10;
+  right: -20px;
+  top: -20px;
+}
