@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Intro from 'components/intro';
 import Section from 'components/section';
-import Search from 'components/search';
 import Icon from 'components/icon';
 import Button from 'components/button';
 import Dropdown from 'components/dropdown';
+import AutocompleteSearch from 'components/autocomplete-search';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
 
@@ -33,7 +33,7 @@ class Home extends PureComponent {
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data." />
-            <Search />
+            <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
             <Button color="yellow" type="icon" className={styles.fullscreen}>
@@ -41,7 +41,6 @@ class Home extends PureComponent {
             </Button>
             <ReactPlayer
               url="https://www.youtube.com/watch?v=0XsJNU75Si0"
-              playing
               youtubeConfig={{
                 playerVars: {},
                 preload: false
