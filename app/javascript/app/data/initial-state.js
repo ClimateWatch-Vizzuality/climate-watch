@@ -1,4 +1,7 @@
 export default {
+  authocompleteSearch: {
+    query: ''
+  },
   nav: {
     countriesOpen: false
   },

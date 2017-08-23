@@ -1,15 +1,5 @@
 @import '../../styles/settings.scss';
 
 .wrapper {
-  position: absolute;
-  top: $topbar-height + $navbar-height;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 460px;
-  background-color: $theme-color-light;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: relative;
 }

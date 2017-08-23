@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 
-const countrySelectFilter = createAction('countrySelectFilter');
+const setAutocompleteSearch = createAction('setAutocompleteSearch');
 
 export default {
-  countrySelectFilter
+  setAutocompleteSearch
 };

@@ -5,6 +5,7 @@ import Intro from 'components/intro';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import Icon from 'components/icon';
+import AutocompleteSearch from 'components/autocomplete-search';
 
 import iconShare from 'assets/icons/share.svg';
 import styles from './home-styles.scss';
@@ -42,6 +43,7 @@ const Home = () =>
           </Button>
         </div>
       </div>
+      <AutocompleteSearch />
     </Header>
     <h1>Home</h1>
     <LineChart width={400} height={400} data={data}>

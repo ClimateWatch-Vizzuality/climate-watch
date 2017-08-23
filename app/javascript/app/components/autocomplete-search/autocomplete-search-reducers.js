@@ -1,8 +1,8 @@
-const countrySelectFilter = (state, { payload }) => ({
+const setAutocompleteSearch = (state, { payload }) => ({
   ...state,
   query: payload
 });
 
 export default {
-  countrySelectFilter
+  setAutocompleteSearch
 };

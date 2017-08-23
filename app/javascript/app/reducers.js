@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 
+import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
 import { reducers as countryExplorerReducers } from 'components/country-explorer';
 import { reducers as countrySelectReducers } from 'components/countries-select';
 import { reducers as countryNDCReducers } from 'components/ndc-country';
@@ -29,5 +30,11 @@ export default combineReducers({
     initialState
   ),
   nav: handleActions('nav', allActions, navReducers, initialState),
-  map: handleActions('map', allActions, mapReducers, initialState)
+  map: handleActions('map', allActions, mapReducers, initialState),
+  autocompleteSearch: handleActions(
+    'autocompleteSearch',
+    allActions,
+    autocompleteSearchReducers,
+    initialState
+  )
 });
