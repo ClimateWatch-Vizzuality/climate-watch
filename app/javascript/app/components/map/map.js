@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import MapComponent from './map-component';
 import actions from './map-actions';
 
+export { initialState } from './map-reducers';
 export { default as reducers } from './map-reducers';
 export { default as actions } from './map-actions';
 
