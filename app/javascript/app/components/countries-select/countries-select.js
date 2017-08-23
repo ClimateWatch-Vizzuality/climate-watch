@@ -26,31 +26,31 @@ const mapStateToProps = (state) => {
 
 const CountrySelectContainer = (props) => {
   const onCountryClick = (geometry) => {
-    const { history, onLeave } = props;
+    const { history } = props;
     const country = geometry.id;
     if (country) {
       history.push(`countries/${country}`);
-      onLeave();
     }
   };
 
   const countryStyles = {
     default: {
       fill: '#ECEFF1',
-      stroke: '#607D8B',
-      strokeWidth: 0.2,
+      fillOpacity: 0.3,
+      stroke: '#396d90',
+      strokeWidth: 0.7,
       outline: 'none'
     },
     hover: {
-      fill: '#302463',
-      stroke: '#607D8B',
-      strokeWidth: 0.2,
+      fill: '#ffc735',
+      stroke: '#396d90',
+      strokeWidth: 0.7,
       outline: 'none'
     },
     pressed: {
-      fill: '#FF5722',
-      stroke: '#607D8B',
-      strokeWidth: 0.5,
+      fill: '#ffc735',
+      stroke: '#396d90',
+      strokeWidth: 1,
       outline: 'none'
     }
   };
@@ -58,7 +58,7 @@ const CountrySelectContainer = (props) => {
   const activeCountryStyles = {
     ...countryStyles,
     default: {
-      fill: '#302463'
+      fill: '#ffc735'
     }
   };
 
@@ -79,8 +79,7 @@ const CountrySelectContainer = (props) => {
 
 CountrySelectContainer.propTypes = {
   query: Proptypes.string,
-  history: Proptypes.object,
-  onLeave: Proptypes.func.isRequired
+  history: Proptypes.object
 };
 
 export default withRouter(

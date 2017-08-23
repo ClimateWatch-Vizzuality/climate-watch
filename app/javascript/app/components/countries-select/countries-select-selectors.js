@@ -8,11 +8,12 @@ const filterCountries = (countries, queryUpper) => {
   );
 };
 
-const addCountriesPath = countries => countries.map(country => ({
-  value: country.value,
-  label: country.label,
-  path: `countries/${country.value}`
-}));
+const addCountriesPath = countries =>
+  countries.map(country => ({
+    value: country.value,
+    label: country.label,
+    path: `/countries/${country.value}`
+  }));
 
 export const getFilteredCountries = createSelector(
   [state => state.countries, state => deburrUpper(state.query)],
