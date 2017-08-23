@@ -10,7 +10,7 @@ import {
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import store from 'app/store';
-import Page from 'app/page';
+import Container from 'app/pages/container';
 import routes from 'app/routes';
 
 const history = createBrowserHistory();
@@ -18,12 +18,12 @@ const history = createBrowserHistory();
 const App = ({ data }) =>
   (<Provider store={store(data)}>
     <Router history={history}>
-      <Page>
+      <Container>
         <Switch>
           {routes.map(route => <Route key={route.path} {...route} />)}
-          <Redirect to="/error-page" push />
+          <Redirect to="/error-page" />
         </Switch>
-      </Page>
+      </Container>
     </Router>
   </Provider>);
 
