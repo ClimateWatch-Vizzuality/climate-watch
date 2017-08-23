@@ -1,8 +1,7 @@
-import { createElement } from 'react';
+import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { deburrUpper } from 'app/utils';
 
 import AutocompleteSearchComponent from './autocomplete-search-component';
 import actions from './autocomplete-search-actions';
@@ -15,30 +14,36 @@ export { default as styles } from './autocomplete-search-styles';
 export { default as actions } from './autocomplete-search-actions';
 
 const mapStateToProps = (state) => {
-  const { query } = state.autocompleteSearch;
+  const { autocompleteSearch } = state;
   return {
-    query: deburrUpper(query),
-    searchList: getFilteredCountriesWithPath(state.autocompleteSearch)
+    query: getQueryUpper(autocompleteSearch),
+    searchList: getFilteredCountriesWithPath(autocompleteSearch)
   };
 };
 
-const AutocompleteSearchContainer = (props) => {
-  const onOptionClick = (selected) => {
-    const { history } = props;
+class AutocompleteSearchContainer extends PureComponent {
+  componentWillUnmount() {
+    this.props.setAutocompleteSearch('');
+  }
+
+  onOptionClick = (selected) => {
+    const { history } = this.props;
     if (selected) {
       history.push(`ndcs/${selected.value}`);
     }
   };
 
-  return createElement(AutocompleteSearchComponent, {
-    ...props,
-    onOptionClick
-  });
-};
+  render() {
+    return createElement(AutocompleteSearchComponent, {
+      ...this.props,
+      onOptionClick: this.onOptionClick
+    });
+  }
+}
 
 AutocompleteSearchContainer.propTypes = {
-  query: Proptypes.string,
-  history: Proptypes.object
+  history: Proptypes.object,
+  setAutocompleteSearch: Proptypes.func.isRequired
 };
 
 export default withRouter(
