@@ -1,5 +1,7 @@
 require 'csv'
 
+CARTODB_URL = 'https://wri-01.carto.com/api/v2/sql?q=SELECT%20name_engli,iso,topojson%20FROM%20gadm28_countries'
+
 class ImportLocations
   def call
     bucket_name = Rails.application.secrets.s3_bucket_name
@@ -13,6 +15,7 @@ class ImportLocations
     end
     content = file.body.read
     import_locations(content)
+    import_topojson
   end
 
   private
@@ -32,6 +35,17 @@ class ImportLocations
       }
 
       create_or_update(attributes)
+    end
+  end
+
+  def import_topojson
+    uri = URI(CARTODB_URL)
+    response = Net::HTTP.get(uri)
+    parsed_response = JSON.parse(response, symbolize_names: true)
+    parsed_response[:rows].each do |row|
+      Location
+        .where(iso_code3: row[:iso])
+        .update(topojson: row[:topojson])
     end
   end
 
