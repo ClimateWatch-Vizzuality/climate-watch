@@ -12,7 +12,7 @@ const Section = ({ children, backgroundImage, className }) =>
       backgroundImage: `url(${backgroundImage})`
     }}
   >
-    <div className={cx(className, layout.content, styles.doubleFold)}>
+    <div className={cx(layout.content, styles.doubleFold, className)}>
       {children}
     </div>
   </section>);

@@ -92,7 +92,7 @@ class NavBar extends PureComponent {
 NavBar.propTypes = {
   countriesOpen: Proptypes.bool,
   setCountriesVisibility: Proptypes.func.isRequired,
-  location: Proptypes.object
+  location: Proptypes.object.isRequired
 };
 
 NavBar.defaultProps = {
