@@ -11,6 +11,7 @@ import actions from './countries-select-actions';
 import { getFilteredCountriesWithPath } from './countries-select-selectors';
 
 export { default as component } from './countries-select-component';
+export { initialState } from './countries-select-reducers';
 export { default as reducers } from './countries-select-reducers';
 export { default as styles } from './countries-select-styles';
 export { default as actions } from './countries-select-actions';
