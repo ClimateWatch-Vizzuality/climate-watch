@@ -7,6 +7,8 @@ module Api
                  :ndcp_navigators_name,
                  :wri_standard_name,
                  :unfccc_group
+
+      attribute :topojson, if: -> { instance_options[:topojson] }
     end
   end
 end

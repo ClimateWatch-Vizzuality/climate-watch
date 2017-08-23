@@ -6,7 +6,9 @@ module Api
           location_type: 'COUNTRY',
           show_in_cw: true
         )
-        render json: locations
+
+        render json: locations,
+               topojson: params.key?(:topojson)
       end
     end
   end
