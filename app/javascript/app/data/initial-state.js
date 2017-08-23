@@ -1,11 +1,11 @@
+import { initialState as nav } from 'components/nav';
+import { initialState as map } from 'components/map';
+import { initialState as countryNDC } from 'pages/ndc-country';
+import { initialState as countrySelect } from 'components/countries-select';
+
 export default {
-  countryExplorer: {
-    open: false
-  },
-  ndc: {
-    loading: false,
-    loaded: false,
-    data: null,
-    search: ''
-  }
+  nav,
+  map,
+  countryNDC,
+  countrySelect
 };

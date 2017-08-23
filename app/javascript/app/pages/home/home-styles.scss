@@ -1,0 +1,46 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.doubleFold {
+  @extend %grid;
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.homeOne {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.homeTwo {
+  padding-top: 120px;
+}
+
+.homeThree {
+  padding-bottom: 140px;
+  padding-top: 140px;
+}
+
+.cwLogo {
+  width: 270px;
+  height: 25px;
+  fill: $white;
+}
+
+.video {
+  position: relative;
+}
+
+.fullscreen {
+  border-radius: 50%;
+  position: absolute;
+  z-index: 10;
+  right: -20px;
+  top: -20px;
+}

@@ -1,7 +1,8 @@
-import Home from 'components/home';
-import NDC from 'components/ndc';
-import Country from 'components/country';
-import errorPage from 'components/error-page';
+import Home from 'pages/home';
+import NDC from 'pages/ndc';
+import NDCCountry from 'pages/ndc-country';
+import Country from 'pages/country';
+import error from 'pages/error';
 
 export default [
   {
@@ -11,14 +12,19 @@ export default [
   },
   {
     path: '/ndcs',
-    component: NDC
+    component: NDC,
+    exact: true
   },
   {
-    path: '/country/:iso',
+    path: '/ndcs/:iso',
+    component: NDCCountry
+  },
+  {
+    path: '/countries/:iso',
     component: Country
   },
   {
     path: '/error-page',
-    component: errorPage
+    component: error
   }
 ];

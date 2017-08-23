@@ -1,9 +1,11 @@
-@import '../../styles/settings';
+@import '~styles/settings';
 
 .resultsList {
   border-radius: 0 0 4px 4px;
   position: relative;
   background-color: $light-gray;
+  max-height: 300px;
+  overflow: scroll;
 }
 
 .listItem {

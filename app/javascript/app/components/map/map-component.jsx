@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import cx from 'classnames';
 import {
   ComposableMap,
   ZoomableGroup,
@@ -11,47 +12,26 @@ import Button from 'components/button';
 
 import styles from './map-styles.scss';
 
-class Map extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      center: props.initial.center,
-      zoom: props.initial.zoom
-    };
-    this.handleZoomIn = this.handleZoomIn.bind(this);
-    this.handleZoomOut = this.handleZoomOut.bind(this);
-  }
-
-  handleZoomIn() {
-    this.setState({
-      zoom: this.state.zoom * 2
-    });
-  }
-
-  handleZoomOut() {
-    const { zoom } = this.state;
-    if (zoom > 1) {
-      this.setState({
-        zoom: zoom / 2
-      });
-    }
-  }
-
+class Map extends PureComponent {
   render() {
-    const { zoom, center } = this.state;
+    const { zoom, center } = this.props;
+    const { className } = this.props;
     const {
       paths,
+      cache,
       zoomEnable,
       dragEnable,
+      handleZoomIn,
+      handleZoomOut,
       onCountryClick,
       computedStyles
     } = this.props;
     return (
-      <div className={styles.wrapper}>
+      <div className={cx(styles.wrapper, className)}>
         {zoomEnable &&
           <div className={styles.actions}>
-            <Button onClick={this.handleZoomIn}>+</Button>
-            <Button disabled={zoom === 1} onClick={this.handleZoomOut}>
+            <Button onClick={handleZoomIn}>+</Button>
+            <Button disabled={zoom === 1} onClick={handleZoomOut}>
               -
             </Button>
           </div>}
@@ -80,7 +60,10 @@ class Map extends Component {
                 zoom={z}
                 disablePanning={!dragEnable}
               >
-                <Geographies geographyPaths={paths}>
+                <Geographies
+                  geographyPaths={paths}
+                  disableOptimization={!cache}
+                >
                   {(geographies, projection) =>
                     geographies.map(geography =>
                       (<Geography
@@ -101,24 +84,25 @@ class Map extends Component {
 }
 
 Map.propTypes = {
+  center: Proptypes.array.isRequired,
+  zoom: Proptypes.number.isRequired,
   zoomEnable: Proptypes.bool,
   dragEnable: Proptypes.bool,
-  initial: Proptypes.shape({
-    center: Proptypes.array,
-    zoom: Proptypes.number
-  }),
+  cache: Proptypes.bool,
+  className: Proptypes.string,
   paths: Proptypes.array.isRequired,
+  handleZoomIn: Proptypes.func.isRequired,
+  handleZoomOut: Proptypes.func.isRequired,
   onCountryClick: Proptypes.func,
   computedStyles: Proptypes.func.isRequired
 };
 
 Map.defaultProps = {
+  center: [0, 20],
+  zoom: 1,
   zoomEnable: false,
   dragEnable: true,
-  initial: {
-    center: [0, 20],
-    zoom: 1
-  },
+  cache: true,
   paths: [],
   onCountryClick: (country) => {
     console.info('clicked', country);
