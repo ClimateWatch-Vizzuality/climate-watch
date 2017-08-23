@@ -90,7 +90,7 @@ class Home extends PureComponent {
               <Button color="yellow" link="/ndcs">
                 Explore NDC content
               </Button>
-              <Button color="yellow" link="/ndcs/compare">
+              <Button color="white" link="/ndcs/compare">
                 Compare NDCs
               </Button>
             </div>

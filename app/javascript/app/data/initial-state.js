@@ -1,7 +1,4 @@
 export default {
-  home: {
-    countrySelected: null
-  },
   nav: {
     countriesOpen: false
   },
