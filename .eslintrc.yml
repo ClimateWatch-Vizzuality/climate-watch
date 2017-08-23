@@ -1,5 +1,8 @@
 ---
-extends: vizzuality
+extends: [
+   prettier,
+   vizzuality
+]
 env:
   node: true
   es6: true
@@ -15,7 +18,7 @@ parserOptions:
     jsx: true
     experimentalObjectRestSpread: true
   sourceType: module
-plugins: [react]
+plugins: [react, prettier]
 
 rules:
   max-len: [1, 140, 2, {"ignoreUrls":true}]
