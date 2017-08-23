@@ -1,4 +1,4 @@
-@import '../../styles/settings.scss';
+@import '~styles/settings.scss';
 @import '~styles/layout.scss';
 
 .doubleFold {
@@ -25,21 +25,6 @@
 .homeThree {
   padding-bottom: 140px;
   padding-top: 140px;
-}
-
-.lightIntro {
-  .intro {
-    padding-bottom: 0;
-  }
-
-  .title {
-    color: $theme-color;
-    font-size: $font-size-x-large;
-  }
-
-  .description {
-    color: $base-text;
-  }
 }
 
 .cwLogo {

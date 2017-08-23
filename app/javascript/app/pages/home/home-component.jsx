@@ -17,6 +17,7 @@ import homeTwoImage from 'assets/backgrounds/home_image_2';
 import homeThreeBg from 'assets/backgrounds/home_bg_3';
 import homeThreeImage from 'assets/backgrounds/home_image_3';
 
+import introTheme from 'styles/themes/intro-light.scss';
 import styles from './home-styles.scss';
 
 class Home extends PureComponent {
@@ -30,7 +31,7 @@ class Home extends PureComponent {
       <div>
         <Section className={styles.homeOne} backgroundImage={homeOneBg}>
           <div className={styles.column}>
-            <Icon icon={cwLogo} className={styles.cwLogo} theme={styles} />
+            <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data." />
             <Search />
           </div>
@@ -54,8 +55,7 @@ class Home extends PureComponent {
           </div>
           <div className={styles.column}>
             <Intro
-              className={styles.lightIntro}
-              theme={styles}
+              theme={introTheme}
               title="Explore the country factsheets"
               description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
@@ -81,8 +81,7 @@ class Home extends PureComponent {
         <Section className={styles.homeThree} backgroundImage={homeThreeBg}>
           <div className={styles.column}>
             <Intro
-              className={styles.lightIntro}
-              theme={styles}
+              theme={introTheme}
               title="See and compare the Nationally Determined Contributions"
               description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />

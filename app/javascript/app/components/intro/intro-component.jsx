@@ -6,9 +6,9 @@ import { themr } from 'react-css-themr';
 import styles from './intro-styles.scss';
 
 const Intro = (props) => {
-  const { title, description, theme, className } = props;
+  const { title, description, theme } = props;
   return (
-    <div className={cx(className, theme.intro)}>
+    <div className={cx(theme.intro, theme.intro)}>
       <h2 className={theme.title}>
         {title}
       </h2>
@@ -22,8 +22,7 @@ const Intro = (props) => {
 Intro.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  theme: PropTypes.object,
-  className: PropTypes.string
+  theme: PropTypes.object
 };
 
 export default themr('Intro', styles)(Intro);
