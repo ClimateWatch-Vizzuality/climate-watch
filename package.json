@@ -24,6 +24,7 @@
     "react-css-themr": "^2.1.2",
     "react-dom": "^15.6.1",
     "react-motion": "^0.5.0",
+    "react-player": "0.20.0",
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",

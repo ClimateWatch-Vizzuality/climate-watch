@@ -2,8 +2,8 @@ import React from 'react';
 
 import layout from 'styles/layout.scss';
 
-const ErrorPage = () =>
+const Error = () =>
   (<div className={layout.content}>
-    <h1>Ups that route does not exist</h1>
+    <h1>Oops that route does not exist</h1>
   </div>);
-export default ErrorPage;
+export default Error;

@@ -11,11 +11,12 @@
 }
 
 .title {
-  font-size: $font-size-x-large;
+  font-size: $font-size-xl-large;
   margin-bottom: 10px;
   font-weight: $font-weight-light;
 }
 
 .description {
   margin-bottom: 20px;
+  line-height: 1.62;
 }
