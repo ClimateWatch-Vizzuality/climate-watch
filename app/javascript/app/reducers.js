@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 
+import { reducers as dataReducers } from 'components/data';
 import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
 import { reducers as countrySelectReducers } from 'components/countries-select';
 import { reducers as countryNDCReducers } from 'pages/ndc-country';
@@ -10,6 +11,7 @@ import initialState from './data/initial-state';
 import allActions from './actions';
 
 export default combineReducers({
+  data: handleActions('data', allActions, dataReducers, initialState),
   countryNDC: handleActions(
     'countryNDC',
     allActions,
