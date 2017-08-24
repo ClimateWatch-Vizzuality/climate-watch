@@ -12,8 +12,14 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
-.backIcon {
+.backButton {
   margin-right: 20px;
+}
+
+.backIcon {
+  fill: $white;
+  width: 60px;
+  height: 60px;
 }
 
 .title {

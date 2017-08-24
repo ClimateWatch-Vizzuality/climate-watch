@@ -4,14 +4,12 @@ import { withRouter } from 'react-router-dom';
 
 import NDCCountryComponent from './ndc-country-component';
 import actions from './ndc-country-actions';
+import { getCountry } from './ndc-country-selectors';
 
 export { default as component } from './ndc-country-component';
 export { initialState } from './ndc-country-reducers';
 export { default as reducers } from './ndc-country-reducers';
 export { default as actions } from './ndc-country-actions';
-
-const getCountry = (countries, iso) =>
-  countries.filter(country => country.value === iso)[0];
 
 const mapStateToProps = (state, { match }) => ({
   country: getCountry(state.countrySelect.countries, match.params.iso),

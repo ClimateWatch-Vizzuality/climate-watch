@@ -22,12 +22,12 @@ class NDCCountry extends PureComponent {
           <div className={cx(styles.doubleFold, styles.header)}>
             <div className={styles.title}>
               <Button
-                className={styles.backIcon}
+                className={styles.backButton}
                 color="transparent"
                 link="/ndcs"
-                type="icon"
+                square
               >
-                <Icon icon={backIcon} />
+                <Icon className={styles.backIcon} icon={backIcon} />
               </Button>
               <Intro title={country.label} />
             </div>
