@@ -6,9 +6,9 @@ import { NavLink } from 'react-router-dom';
 import styles from './button-styles.scss';
 
 const Button = (props) => {
-  const { link, children, className, type, color, disabled, onClick } = props;
+  const { link, children, className, square, color, disabled, onClick } = props;
   const classNames = cx(className, styles.button, {
-    [styles.square]: type === 'icon',
+    [styles.square]: square,
     [styles.transparent]: color === 'transparent',
     [styles.yellow]: color === 'yellow',
     [styles.white]: color === 'white'
@@ -26,7 +26,7 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   link: PropTypes.string,
-  type: PropTypes.string,
+  square: PropTypes.bool,
   color: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func

@@ -36,7 +36,7 @@ class Home extends PureComponent {
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
-            <Button color="yellow" type="icon" className={styles.fullscreen}>
+            <Button color="yellow" className={styles.fullscreen} square>
               <Icon icon={fullscreen} />
             </Button>
             <ReactPlayer
