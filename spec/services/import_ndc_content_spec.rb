@@ -8,8 +8,8 @@ RSpec.describe ImportNdcContent do
       stub_responses: {
         list_objects: {
           contents: [
-            {key: 'ndcs/AFG.md'},
-            {key: 'ndcs/ALB.md'}
+            {key: 'ndcs/AFG.html'},
+            {key: 'ndcs/ALB.html'}
           ]
         }
       }
