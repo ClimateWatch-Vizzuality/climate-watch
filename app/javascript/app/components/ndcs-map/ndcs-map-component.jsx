@@ -4,7 +4,7 @@ import Map from 'components/map';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 
-import styles from './ndc-map-styles.scss';
+import styles from './ndcs-map-styles.scss';
 
 const NDCMap = props =>
   (<div>

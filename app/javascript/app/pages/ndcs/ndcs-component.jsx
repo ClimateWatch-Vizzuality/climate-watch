@@ -7,11 +7,11 @@ import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
 
-import NDCMap from 'components/ndc-map';
-import NDCTable from 'components/ndc-table';
+import NDCMap from 'components/ndcs-map';
+import NDCTable from 'components/ndcs-table';
 
 import layout from 'styles/layout.scss';
-import styles from './ndc-styles.scss';
+import styles from './ndcs-styles.scss';
 
 const NDC = props =>
   (<div>
