@@ -1,8 +1,6 @@
 import { createElement } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import paths from 'app/data/world-50m-paths';
 import Component from './ndc-component';
 
 const links = [
@@ -16,17 +14,10 @@ const links = [
   }
 ];
 
-const NDCContainer = (props) => {
-  const handleCountryClick = (geography) => {
-    props.history.push(`ndcs/${geography.id}`);
-  };
-
-  return createElement(Component, {
+const NDCContainer = props =>
+  createElement(Component, {
     ...props,
-    paths,
-    links,
-    handleCountryClick
+    links
   });
-};
 
-export default withRouter(connect(null)(NDCContainer));
+export default withRouter(NDCContainer);

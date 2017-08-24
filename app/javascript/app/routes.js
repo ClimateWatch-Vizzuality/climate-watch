@@ -11,13 +11,13 @@ export default [
     exact: true
   },
   {
-    path: '/ndcs',
-    component: NDC,
+    path: '/ndcs/country/:iso',
+    component: NDCCountry,
     exact: true
   },
   {
-    path: '/ndcs/:iso',
-    component: NDCCountry
+    path: '/ndcs',
+    component: NDC
   },
   {
     path: '/countries/:iso',
