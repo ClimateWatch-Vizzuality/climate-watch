@@ -7,6 +7,8 @@ import ResultsList from 'components/results-list';
 import Map from 'components/map';
 
 import layout from 'styles/layout.scss';
+import resultsListLightTheme from 'styles/themes/results-list-light.scss';
+import searchLightTheme from 'styles/themes/search-light.scss';
 import styles from './countries-select-styles.scss';
 
 class CountriesSelect extends PureComponent {
@@ -17,18 +19,35 @@ class CountriesSelect extends PureComponent {
       countrySelectFilter,
       countriesList,
       onCountryClick,
+      onCountryMouseEnter,
+      onCountryMouseLeave,
       computedStyles
     } = this.props;
     return (
-      <div className={cx(layout.content, styles.wrapper)}>
-        <Search placeholder="" value={query} onChange={countrySelectFilter} />
-        <ResultsList list={countriesList} emptyDataMsg="No results" />
-        <Map
-          cache={false}
-          paths={paths}
-          onCountryClick={onCountryClick}
-          computedStyles={computedStyles}
-        />
+      <div className={styles.wrapper}>
+        <div className={cx(layout.content, styles.content)}>
+          <Search
+            placeholder=""
+            value={query}
+            onChange={countrySelectFilter}
+            className={styles.search}
+            theme={searchLightTheme}
+          />
+          <ResultsList
+            list={countriesList}
+            emptyDataMsg="No results"
+            theme={resultsListLightTheme}
+            handleMouseItemEnter={onCountryMouseEnter}
+            handleMouseItemLeave={onCountryMouseLeave}
+          />
+          <Map
+            cache={false}
+            paths={paths}
+            className={styles.map}
+            onCountryClick={onCountryClick}
+            computedStyles={computedStyles}
+          />
+        </div>
       </div>
     );
   }
@@ -39,6 +58,8 @@ CountriesSelect.propTypes = {
   onCountryClick: Proptypes.func.isRequired,
   computedStyles: Proptypes.func.isRequired,
   countrySelectFilter: Proptypes.func.isRequired,
+  onCountryMouseEnter: Proptypes.func.isRequired,
+  onCountryMouseLeave: Proptypes.func.isRequired,
   countriesList: Proptypes.array,
   paths: Proptypes.array
 };

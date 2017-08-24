@@ -1,15 +1,29 @@
 @import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
 .wrapper {
+  padding: $gutter-padding;
   position: absolute;
   top: $topbar-height + $navbar-height;
   left: 0;
   right: 0;
   bottom: 0;
   height: 460px;
-  background-color: $theme-color-light;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  background-color: $bg-main;
+}
+
+.content {
+  @extend %grid;
+
+  grid-template: 1fr / 1fr 3fr;
+  grid-row-gap: 20px;
+}
+
+.search {
+  grid-column: span 2;
+}
+
+.map {
+  height: 340px;
+  text-align: center;
 }

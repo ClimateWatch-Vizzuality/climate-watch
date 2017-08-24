@@ -51,8 +51,8 @@ class Map extends PureComponent {
             (<ComposableMap
               projection="robinson"
               style={{
-                width: '100%',
-                height: 'auto'
+                width: 'auto',
+                height: '100%'
               }}
             >
               <ZoomableGroup

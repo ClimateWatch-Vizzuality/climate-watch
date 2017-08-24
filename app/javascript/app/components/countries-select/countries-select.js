@@ -8,7 +8,11 @@ import paths from 'app/data/world-50m-paths';
 
 import CountrySelectComponent from './countries-select-component';
 import actions from './countries-select-actions';
-import { getFilteredCountriesWithPath } from './countries-select-selectors';
+import {
+  getFilterUpper,
+  getPreSelect,
+  getFilteredCountriesWithPath
+} from './countries-select-selectors';
 
 export { default as component } from './countries-select-component';
 export { initialState } from './countries-select-reducers';
@@ -17,40 +21,49 @@ export { default as styles } from './countries-select-styles';
 export { default as actions } from './countries-select-actions';
 
 const mapStateToProps = (state) => {
-  const { query } = state.countrySelect;
+  const { countrySelect } = state;
   return {
-    query: deburrUpper(query),
-    countriesList: getFilteredCountriesWithPath(state.countrySelect)
+    query: getFilterUpper(countrySelect),
+    preSelect: getPreSelect(countrySelect),
+    countriesList: getFilteredCountriesWithPath(countrySelect)
   };
 };
 
 const CountrySelectContainer = (props) => {
   const onCountryClick = (geometry) => {
-    const { history, onLeave } = props;
+    const { history } = props;
     const country = geometry.id;
     if (country) {
       history.push(`countries/${country}`);
-      onLeave();
     }
+  };
+
+  const onCountryMouseEnter = (country) => {
+    props.countryPreSelect(country);
+  };
+
+  const onCountryMouseLeave = () => {
+    props.countryPreSelect('');
   };
 
   const countryStyles = {
     default: {
       fill: '#ECEFF1',
-      stroke: '#607D8B',
-      strokeWidth: 0.2,
+      fillOpacity: 0.3,
+      stroke: '#396d90',
+      strokeWidth: 0.7,
       outline: 'none'
     },
     hover: {
-      fill: '#302463',
-      stroke: '#607D8B',
-      strokeWidth: 0.2,
+      fill: '#ffc735',
+      stroke: '#396d90',
+      strokeWidth: 0.7,
       outline: 'none'
     },
     pressed: {
-      fill: '#FF5722',
-      stroke: '#607D8B',
-      strokeWidth: 0.5,
+      fill: '#ffc735',
+      stroke: '#396d90',
+      strokeWidth: 1,
       outline: 'none'
     }
   };
@@ -58,29 +71,43 @@ const CountrySelectContainer = (props) => {
   const activeCountryStyles = {
     ...countryStyles,
     default: {
-      fill: '#302463'
+      ...countryStyles.defaut,
+      fill: '#ffc735',
+      fillOpacity: 1
+    }
+  };
+
+  const semiActiveCountryStyles = {
+    ...activeCountryStyles,
+    default: {
+      ...activeCountryStyles.default,
+      fill: '#ecde85'
     }
   };
 
   const computedStyles = (geography) => {
-    const { query } = props;
+    const { query, preSelect } = props;
     const nameUpper = deburrUpper(geography.properties.name);
+    const isEqual = geography.id === preSelect || nameUpper === query;
+    if (isEqual) return activeCountryStyles;
+
     const isInFilter = query ? nameUpper.includes(query) : false;
-    return isInFilter ? activeCountryStyles : countryStyles;
+    return isInFilter ? semiActiveCountryStyles : countryStyles;
   };
 
   return createElement(CountrySelectComponent, {
     ...props,
     onCountryClick,
     computedStyles,
+    onCountryMouseEnter,
+    onCountryMouseLeave,
     paths
   });
 };
 
 CountrySelectContainer.propTypes = {
   query: Proptypes.string,
-  history: Proptypes.object,
-  onLeave: Proptypes.func.isRequired
+  history: Proptypes.object
 };
 
 export default withRouter(

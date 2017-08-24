@@ -9,34 +9,60 @@ import arrow from 'assets/icons/dropdown-arrow.svg';
 import styles from './results-list-styles.scss';
 
 const ResultsList = (props) => {
-  const { className, list, hasIcon, emptyDataMsg } = props;
-  return list.length > 0
-    ? <ul className={cx(styles.resultsList, className)}>
-      {list.map(item =>
-        (<li className={styles.listItem} key={item.value} id={item.value}>
-          <NavLink exact className={styles.link} to={item.path}>
-            {item.label}
-            {hasIcon && <Icon icon={arrow} className={styles.iconArrow} />}
-          </NavLink>
-        </li>)
-      )}
+  const {
+    className,
+    list,
+    hasIcon,
+    emptyDataMsg,
+    theme,
+    handleMouseItemEnter,
+    handleMouseItemLeave
+  } = props;
+  return (
+    <ul className={cx(styles.resultsList, className, theme.resultsList)}>
+      {list.length > 0
+        ? list.map(item =>
+          (<li
+            className={cx(styles.listItem, theme.listItem)}
+            onMouseEnter={() => handleMouseItemEnter(item.value)}
+            onMouseLeave={handleMouseItemLeave}
+            key={item.value}
+            id={item.value}
+          >
+            <NavLink
+              exact
+              className={cx(styles.link, theme.link)}
+              to={item.path}
+            >
+              {item.label}
+              {hasIcon && <Icon icon={arrow} className={styles.iconArrow} />}
+            </NavLink>
+          </li>)
+        )
+        : <li className={cx(styles.listItem, theme.listItem)} key="empty">
+          <span className={cx(styles.link, theme.link)}>
+            {emptyDataMsg}
+          </span>
+        </li>}
     </ul>
-    : <p>
-      {emptyDataMsg}
-    </p>;
+  );
 };
 
 ResultsList.propTypes = {
   list: PropTypes.array,
   hasIcon: PropTypes.bool,
   emptyDataMsg: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  theme: PropTypes.object,
+  handleMouseItemEnter: PropTypes.func,
+  handleMouseItemLeave: PropTypes.func
 };
 
 ResultsList.defaultProps = {
   list: [],
   hasIcon: false,
-  emptyDataMsg: 'No data'
+  emptyDataMsg: 'No data',
+  theme: {}
 };
 
 export default ResultsList;

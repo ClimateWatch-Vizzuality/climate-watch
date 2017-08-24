@@ -14,9 +14,9 @@ class Search extends Component {
   }, 150);
 
   render() {
-    const { theme, input, placeholder } = this.props;
+    const { theme, input, placeholder, className } = this.props;
     return (
-      <div className={cx(styles.search, theme.search)}>
+      <div className={cx(styles.search, className, theme.search)}>
         <input
           type="text"
           className={cx(styles.input, theme.input)}
@@ -37,6 +37,7 @@ Search.propTypes = {
   input: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
+  className: PropTypes.string,
   theme: PropTypes.object
 };
 

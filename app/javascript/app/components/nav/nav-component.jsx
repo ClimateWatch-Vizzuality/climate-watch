@@ -5,7 +5,6 @@ import cx from 'classnames';
 import Icon from 'components/icon';
 import ToolsNav from 'components/tools-nav';
 import CountriesSelect from 'components/countries-select';
-import ClickOutside from 'react-click-outside';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
 import layout from 'styles/layout.scss';
@@ -38,13 +37,7 @@ class NavBar extends PureComponent {
                 [styles.subMenuOpen]: countriesOpen
               })}
             >
-              <ClickOutside
-                onClickOutside={() => setCountriesVisibility(false)}
-              >
-                <CountriesSelect
-                  onLeave={() => setCountriesVisibility(false)}
-                />
-              </ClickOutside>
+              <CountriesSelect />
             </div>
           </div>
           <NavLink

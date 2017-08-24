@@ -10,7 +10,7 @@ const filterCountries = (countries, queryUpper) => {
 
 const getCountries = state => state.countries;
 const getQuery = state => state.query;
-const getQueryUpper = state => deburrUpper(state.query);
+export const getQueryUpper = state => deburrUpper(state.query);
 
 const addCountriesPath = (countries, query) => {
   const ndcResults = countries.reduce((ndcResult, country) => {
