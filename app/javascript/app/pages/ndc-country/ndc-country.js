@@ -11,10 +11,16 @@ export { initialState } from './ndc-country-reducers';
 export { default as reducers } from './ndc-country-reducers';
 export { default as actions } from './ndc-country-actions';
 
-const mapStateToProps = (state, { match }) => ({
-  country: getCountry(state.countrySelect.countries, match.params.iso),
-  hasData: !!state.countryNDC.data[match.params.iso]
-});
+const mapStateToProps = (state, { match }) => {
+  const countryData = {
+    countries: state.countrySelect.countries,
+    iso: match.params.iso
+  };
+  return {
+    country: getCountry(countryData),
+    hasData: !!state.countryNDC.data[match.params.iso]
+  };
+};
 
 const NDCCountryContainer = (props) => {
   const { hasData, match, fetchCountryNDC } = props;
