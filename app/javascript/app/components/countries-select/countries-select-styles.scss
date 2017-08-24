@@ -8,7 +8,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 460px;
   background-color: $bg-main;
 }
 
@@ -24,6 +23,9 @@
 }
 
 .map {
-  height: 340px;
   text-align: center;
+}
+
+.list {
+  max-height: 450px;
 }
