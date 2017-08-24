@@ -33,41 +33,43 @@ class ImportHistoricalEmissions
     HistoricalEmission.delete_all
   end
 
-  def create_sector_hash(row)
-    sector = {}
-    sector[:name] = row[:sector]
-    sector[:data_source] = DataSource.find_or_create_by(name: row[:source])
-    sector[:parent] = row[:subsectorof] &&
-      Sector.find_or_create_by(name: row[:subsectorof])
-
-    sector
+  def sector_attributes(row)
+    {
+      name: row[:sector],
+      data_source: DataSource.find_or_create_by(name: row[:source]),
+      parent: row[:subsectorof] &&
+        Sector.find_or_create_by(name: row[:subsectorof])
+    }
   end
 
   def import_sectors(content)
     CSV.parse(content, headers: true, header_converters: :symbol).each do |row|
       next if Sector.find_by(name: row[:sector])
-      sector = create_sector_hash(row)
+      sector = sector_attributes(row)
       Sector.create!(sector)
     end
   end
 
-  def create_he_hash(row)
-    he = {}
-    he[:location] = Location.find_by(iso_code3: row[:country])
-    he[:data_source] = DataSource.find_by(name: row[:source])
-    he[:sector] = Sector.find_by(name: row[:sector])
-    he[:gas] = Gas.find_or_create_by(name: row[:gas])
-    he[:gwp] = row[:gwp]
-    he[:emissions] = row.headers.grep(/\d{4}/).map do |year|
-      {year: year.to_i, value: row[year] && row[year].to_f}
+  def emissions(row)
+    row.headers.grep(/\d{4}/).map do |year|
+      {year: year.to_s.to_i, value: row[year]&.to_f}
     end
+  end
 
-    he
+  def he_attributes(row)
+    {
+      location: Location.find_by(iso_code3: row[:country]),
+      data_source: DataSource.find_by(name: row[:source]),
+      sector: Sector.find_by(name: row[:sector]),
+      gas: Gas.find_or_create_by(name: row[:gas]),
+      gwp: row[:gwp],
+      emissions: emissions(row)
+    }
   end
 
   def import_records(content)
     CSV.parse(content, headers: true, header_converters: :symbol).each do |row|
-      he = create_he_hash(row)
+      he = he_attributes(row)
       begin
         HistoricalEmission.create!(he)
       rescue ActiveRecord::RecordInvalid => invalid
