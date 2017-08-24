@@ -1,7 +1,8 @@
+import { createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Component from './ndc-country-component';
+import NDCCountryComponent from './ndc-country-component';
 import actions from './ndc-country-actions';
 
 export { default as component } from './ndc-country-component';
@@ -17,4 +18,17 @@ const mapStateToProps = (state, { match }) => ({
   hasData: !!state.countryNDC.data[match.params.iso]
 });
 
-export default withRouter(connect(mapStateToProps, actions)(Component));
+const NDCCountryContainer = (props) => {
+  const { hasData, match, fetchCountryNDC } = props;
+  const { iso } = match.params;
+  if (!hasData && iso) {
+    fetchCountryNDC(iso);
+  }
+  return createElement(NDCCountryComponent, {
+    ...props
+  });
+};
+
+export default withRouter(
+  connect(mapStateToProps, actions)(NDCCountryContainer)
+);

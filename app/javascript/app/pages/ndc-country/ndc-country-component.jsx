@@ -14,14 +14,6 @@ import background from 'assets/backgrounds/home_bg_1';
 import styles from './ndc-country-styles.scss';
 
 class NDCCountry extends PureComponent {
-  componentWillMount() {
-    const { hasData, match, fetchCountryNDC } = this.props;
-    const { iso } = match.params;
-    if (!hasData && iso) {
-      fetchCountryNDC(iso);
-    }
-  }
-
   render() {
     const { country, match } = this.props;
     return (
@@ -61,9 +53,7 @@ class NDCCountry extends PureComponent {
 
 NDCCountry.propTypes = {
   match: Proptypes.object.isRequired,
-  hasData: Proptypes.bool.isRequired,
-  country: Proptypes.object.isRequired,
-  fetchCountryNDC: Proptypes.func.isRequired // eslint-disable-line
+  country: Proptypes.object.isRequired
 };
 
 export default NDCCountry;
