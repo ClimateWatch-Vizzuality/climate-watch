@@ -134,6 +134,25 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  create_table "sdg_targets", force: :cascade do |t|
+    t.text "number", null: false
+    t.text "title", null: false
+    t.bigint "sdg_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_sdg_targets_on_number", unique: true
+    t.index ["sdg_id"], name: "index_sdg_targets_on_sdg_id"
+  end
+
+  create_table "sdgs", force: :cascade do |t|
+    t.text "number", null: false
+    t.text "title", null: false
+    t.text "cw_title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_sdgs_on_number", unique: true
+  end
+
   create_table "sectors", force: :cascade do |t|
     t.bigint "parent_id"
     t.bigint "data_source_id"
@@ -159,6 +178,7 @@ ActiveRecord::Schema.define(version: 20170830111409) do
   add_foreign_key "location_members", "locations", column: "member_id", on_delete: :cascade
   add_foreign_key "location_members", "locations", on_delete: :cascade
   add_foreign_key "ndcs", "locations", on_delete: :cascade
+  add_foreign_key "sdg_targets", "sdgs"
   add_foreign_key "sectors", "data_sources", on_delete: :cascade
   add_foreign_key "sectors", "sectors", column: "parent_id", on_delete: :cascade
 end
