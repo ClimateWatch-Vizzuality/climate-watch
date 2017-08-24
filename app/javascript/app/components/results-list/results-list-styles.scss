@@ -6,6 +6,7 @@
   background-color: $light-gray;
   max-height: 300px;
   overflow-y: auto;
+  z-index: 1;
 }
 
 .listItem {
