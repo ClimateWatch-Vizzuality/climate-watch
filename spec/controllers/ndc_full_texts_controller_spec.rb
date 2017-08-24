@@ -9,7 +9,7 @@ RSpec.describe NdcFullTextsController, type: :controller do
 <img src=\"#{S3_BUCKET_URL}/ndcs/#{poland_img_src}\" /></p>"
     }
     let!(:ndc_poland) {
-      FactoryGirl.create(:ndc, location: poland, content: poland_html)
+      FactoryGirl.create(:ndc, location: poland, full_text: poland_html)
     }
 
     it 'renders NDC content in html' do
