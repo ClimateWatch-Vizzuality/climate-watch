@@ -1,5 +1,6 @@
 export const initialState = {
   query: '',
+  preSelect: '',
   countries: [
     // TODO get countries list from the API
     { value: 'AFG', label: 'Afghanistan' },
@@ -225,6 +226,12 @@ const countrySelectFilter = (state, { payload }) => ({
   query: payload
 });
 
+const countryPreSelect = (state, { payload }) => ({
+  ...state,
+  preSelect: payload
+});
+
 export default {
+  countryPreSelect,
   countrySelectFilter
 };

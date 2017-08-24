@@ -9,13 +9,23 @@ import arrow from 'assets/icons/dropdown-arrow.svg';
 import styles from './results-list-styles.scss';
 
 const ResultsList = (props) => {
-  const { className, list, hasIcon, emptyDataMsg, theme } = props;
+  const {
+    className,
+    list,
+    hasIcon,
+    emptyDataMsg,
+    theme,
+    handleMouseItemEnter,
+    handleMouseItemLeave
+  } = props;
   return (
     <ul className={cx(styles.resultsList, className, theme.resultsList)}>
       {list.length > 0
         ? list.map(item =>
           (<li
             className={cx(styles.listItem, theme.listItem)}
+            onMouseEnter={() => handleMouseItemEnter(item.value)}
+            onMouseLeave={handleMouseItemLeave}
             key={item.value}
             id={item.value}
           >
@@ -43,7 +53,9 @@ ResultsList.propTypes = {
   hasIcon: PropTypes.bool,
   emptyDataMsg: PropTypes.string,
   className: PropTypes.string,
-  theme: PropTypes.object
+  theme: PropTypes.object,
+  handleMouseItemEnter: PropTypes.func,
+  handleMouseItemLeave: PropTypes.func
 };
 
 ResultsList.defaultProps = {

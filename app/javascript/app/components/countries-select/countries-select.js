@@ -8,7 +8,11 @@ import paths from 'app/data/world-50m-paths';
 
 import CountrySelectComponent from './countries-select-component';
 import actions from './countries-select-actions';
-import { getFilteredCountriesWithPath } from './countries-select-selectors';
+import {
+  getFilterUpper,
+  getPreSelect,
+  getFilteredCountriesWithPath
+} from './countries-select-selectors';
 
 export { default as component } from './countries-select-component';
 export { initialState } from './countries-select-reducers';
@@ -17,10 +21,11 @@ export { default as styles } from './countries-select-styles';
 export { default as actions } from './countries-select-actions';
 
 const mapStateToProps = (state) => {
-  const { query } = state.countrySelect;
+  const { countrySelect } = state;
   return {
-    query: deburrUpper(query),
-    countriesList: getFilteredCountriesWithPath(state.countrySelect)
+    query: getFilterUpper(countrySelect),
+    preSelect: getPreSelect(countrySelect),
+    countriesList: getFilteredCountriesWithPath(countrySelect)
   };
 };
 
@@ -31,6 +36,14 @@ const CountrySelectContainer = (props) => {
     if (country) {
       history.push(`countries/${country}`);
     }
+  };
+
+  const onCountryMouseEnter = (country) => {
+    props.countryPreSelect(country);
+  };
+
+  const onCountryMouseLeave = () => {
+    props.countryPreSelect('');
   };
 
   const countryStyles = {
@@ -58,21 +71,36 @@ const CountrySelectContainer = (props) => {
   const activeCountryStyles = {
     ...countryStyles,
     default: {
-      fill: '#ffc735'
+      ...countryStyles.defaut,
+      fill: '#ffc735',
+      fillOpacity: 1
+    }
+  };
+
+  const semiActiveCountryStyles = {
+    ...activeCountryStyles,
+    default: {
+      ...activeCountryStyles.default,
+      fill: '#ecde85'
     }
   };
 
   const computedStyles = (geography) => {
-    const { query } = props;
+    const { query, preSelect } = props;
     const nameUpper = deburrUpper(geography.properties.name);
+    const isEqual = geography.id === preSelect || nameUpper === query;
+    if (isEqual) return activeCountryStyles;
+
     const isInFilter = query ? nameUpper.includes(query) : false;
-    return isInFilter ? activeCountryStyles : countryStyles;
+    return isInFilter ? semiActiveCountryStyles : countryStyles;
   };
 
   return createElement(CountrySelectComponent, {
     ...props,
     onCountryClick,
     computedStyles,
+    onCountryMouseEnter,
+    onCountryMouseLeave,
     paths
   });
 };
