@@ -1,5 +1,7 @@
 class Location < ApplicationRecord
   has_many :ndcs
+  has_many :location_members
+  has_many :members, through: :location_members
   validates :iso_code3, presence: true, uniqueness: true
   # TODO: not until data provided
   # validates :iso_code2, presence: true, uniqueness: true
