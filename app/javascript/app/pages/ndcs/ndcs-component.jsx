@@ -15,7 +15,7 @@ import styles from './ndcs-styles.scss';
 
 const NDC = props =>
   (<div>
-    <Header>
+    <Header size="medium">
       <Intro title="NDC Explorer" />
       <AutocompleteSearch />
       <AnchorNav links={props.links} />

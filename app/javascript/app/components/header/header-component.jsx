@@ -7,7 +7,10 @@ import styles from './header-styles.scss';
 
 const Header = (props) => {
   const { image, className, children, size } = props;
-  const sizeClass = size === 'large' ? styles.large : '';
+  const sizeClass = cx({
+    [styles.medium]: size === 'medium',
+    [styles.large]: size === 'large'
+  });
   const style = image ? { backgroundImage: `url(${image})` } : {};
 
   return (
