@@ -1,1 +1,13 @@
-@import '../styles/settings.scss';
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
+}
+
+.col4 {
+  @extend %grid;
+
+  grid-template-columns: repeat(4, 1fr);
+}
