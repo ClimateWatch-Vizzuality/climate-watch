@@ -4,4 +4,5 @@ class Sector < ApplicationRecord
                       foreign_key: 'parent_id',
                       required: false
   has_many :historical_emissions
+  validates :name, presence: true
 end
