@@ -2,10 +2,6 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  @extend %grid;
-
-  grid-template: 1fr / 1fr 3fr;
-  grid-row-gap: 20px;
   padding: $gutter-padding;
   position: absolute;
   top: $topbar-height + $navbar-height;
@@ -14,6 +10,13 @@
   bottom: 0;
   height: 460px;
   background-color: $bg-main;
+}
+
+.content {
+  @extend %grid;
+
+  grid-template: 1fr / 1fr 3fr;
+  grid-row-gap: 20px;
 }
 
 .search {

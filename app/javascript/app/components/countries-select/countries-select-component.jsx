@@ -24,28 +24,30 @@ class CountriesSelect extends PureComponent {
       computedStyles
     } = this.props;
     return (
-      <div className={cx(layout.content, styles.wrapper)}>
-        <Search
-          placeholder=""
-          value={query}
-          onChange={countrySelectFilter}
-          className={styles.search}
-          theme={searchLightTheme}
-        />
-        <ResultsList
-          list={countriesList}
-          emptyDataMsg="No results"
-          theme={resultsListLightTheme}
-          handleMouseItemEnter={onCountryMouseEnter}
-          handleMouseItemLeave={onCountryMouseLeave}
-        />
-        <Map
-          cache={false}
-          paths={paths}
-          className={styles.map}
-          onCountryClick={onCountryClick}
-          computedStyles={computedStyles}
-        />
+      <div className={styles.wrapper}>
+        <div className={cx(layout.content, styles.content)}>
+          <Search
+            placeholder=""
+            value={query}
+            onChange={countrySelectFilter}
+            className={styles.search}
+            theme={searchLightTheme}
+          />
+          <ResultsList
+            list={countriesList}
+            emptyDataMsg="No results"
+            theme={resultsListLightTheme}
+            handleMouseItemEnter={onCountryMouseEnter}
+            handleMouseItemLeave={onCountryMouseLeave}
+          />
+          <Map
+            cache={false}
+            paths={paths}
+            className={styles.map}
+            onCountryClick={onCountryClick}
+            computedStyles={computedStyles}
+          />
+        </div>
       </div>
     );
   }
