@@ -59,7 +59,7 @@ class ImportHistoricalEmissions
     he[:gas] = Gas.find_or_create_by(name: row[:gas])
     he[:gwp] = row[:gwp]
     he[:emissions] = row.headers.grep(/\d{4}/).map do |year|
-      {year: year, value: row[year]}
+      {year: year.to_i, value: row[year] && row[year].to_f}
     end
 
     he
