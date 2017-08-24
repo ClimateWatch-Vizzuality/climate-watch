@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe NdcsController, type: :controller do
+RSpec.describe NdcFullTextsController, type: :controller do
   describe 'GET show' do
     let(:poland) { FactoryGirl.create(:location, iso_code3: 'POL') }
     let(:poland_img_src) { 'POL-1.PNG' }

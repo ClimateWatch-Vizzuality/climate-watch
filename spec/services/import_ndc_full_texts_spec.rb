@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe ImportNdcContent do
-  subject { ImportNdcContent.new.call }
+RSpec.describe ImportNdcFullTexts do
+  subject { ImportNdcFullTexts.new.call }
 
   before :all do
     Aws.config[:s3] = {
@@ -16,7 +16,7 @@ RSpec.describe ImportNdcContent do
     }
   end
 
-  before :each  do
+  before(:each) do
     @location = FactoryGirl.create(
       :location, iso_code3: 'AFG', wri_standard_name: 'Afghanistan'
     )
