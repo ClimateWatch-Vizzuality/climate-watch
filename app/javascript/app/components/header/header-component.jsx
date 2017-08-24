@@ -22,7 +22,7 @@ const Header = (props) => {
 
 Header.propTypes = {
   image: PropTypes.string,
-  className: PropTypes.object,
+  className: PropTypes.string,
   children: PropTypes.node,
   size: PropTypes.string
 };

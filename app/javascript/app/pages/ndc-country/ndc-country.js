@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import isoCountries from 'app/data/iso-countries';
-
 import Component from './ndc-country-component';
 import actions from './ndc-country-actions';
 
@@ -11,8 +9,11 @@ export { initialState } from './ndc-country-reducers';
 export { default as reducers } from './ndc-country-reducers';
 export { default as actions } from './ndc-country-actions';
 
+const getCountry = (countries, iso) =>
+  countries.filter(country => country.value === iso)[0];
+
 const mapStateToProps = (state, { match }) => ({
-  countryName: isoCountries[match.params.iso] || 'Country',
+  country: getCountry(state.countrySelect.countries, match.params.iso),
   hasData: !!state.countryNDC.data[match.params.iso]
 });
 

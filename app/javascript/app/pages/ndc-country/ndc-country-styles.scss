@@ -1,0 +1,23 @@
+@import '~styles/layout.scss';
+
+.doubleFold {
+  @extend %grid;
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.threeFold {
+  @extend %grid;
+
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.backIcon {
+  margin-right: 20px;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
