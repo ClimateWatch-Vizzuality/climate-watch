@@ -10,7 +10,7 @@ export { default as reducers } from './ndc-country-reducers';
 export { default as actions } from './ndc-country-actions';
 
 const mapStateToProps = (state, { match }) => ({
-  countryName: state.data.countries || 'Country',
+  countryName: state.countries[0] || 'Country',
   hasData: !!state.countryNDC.data[match.params.iso]
 });
 

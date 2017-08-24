@@ -18,7 +18,7 @@ class NDCCountry extends PureComponent {
     return (
       <div>
         <Header>
-          <Intro title={countryName} />
+          <Intro title={countryName.label} />
         </Header>
         <Accordion />
       </div>
@@ -29,7 +29,7 @@ class NDCCountry extends PureComponent {
 NDCCountry.propTypes = {
   match: Proptypes.object.isRequired,
   hasData: Proptypes.bool.isRequired,
-  countryName: Proptypes.string.isRequired,
+  countryName: Proptypes.object.isRequired,
   fetchCountryNDC: Proptypes.func.isRequired // eslint-disable-line
 };
 

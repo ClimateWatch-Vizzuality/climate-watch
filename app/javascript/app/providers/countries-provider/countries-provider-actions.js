@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 
-const setCountries = createAction('setCountries');
+const getCountries = createAction('getCountries');
 
 export default {
-  setCountries
+  getCountries
 };
