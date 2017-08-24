@@ -34,7 +34,7 @@ const CountrySelectContainer = (props) => {
     const { history } = props;
     const country = geometry.id;
     if (country) {
-      history.push(`countries/${country}`);
+      history.push(`/countries/${country}`);
     }
   };
 
