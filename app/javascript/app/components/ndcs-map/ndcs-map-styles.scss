@@ -10,4 +10,9 @@
   @extend %grid;
 
   grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+}
+
+.buttons {
+  grid-column-end: -1;
 }

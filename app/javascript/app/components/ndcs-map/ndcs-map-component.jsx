@@ -15,28 +15,20 @@ const NDCMap = props =>
     />
     <div className={styles.col4}>
       <Dropdown
-        placeholder="Region"
-        options={[]}
-        onChange={() => console.info('changed')}
-        value={''}
-        clearable={false}
-        isOpen
-      />
-      <Dropdown
-        placeholder="Region"
+        label="Category"
         options={[]}
         onChange={() => console.info('changed')}
         value={''}
         clearable={false}
       />
       <Dropdown
-        placeholder="Region"
+        label="Indicator"
         options={[]}
         onChange={() => console.info('changed')}
         value={''}
         clearable={false}
       />
-      <ButtonGroup />
+      <ButtonGroup className={styles.buttons} />
     </div>
   </div>);
 
