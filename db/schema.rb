@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20170824095252) do
     t.text "iso_code2", null: false
     t.text "location_type", null: false
     t.boolean "show_in_cw", default: true
+    t.json "topojson"
     t.index ["iso_code2"], name: "index_locations_on_iso_code2"
     t.index ["iso_code3"], name: "index_locations_on_iso_code3"
   end
