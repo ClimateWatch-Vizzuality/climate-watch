@@ -1,3 +1,5 @@
+S3_BUCKET_URL = "https://s3-#{Rails.application.secrets.aws_region}.amazonaws.com/#{Rails.application.secrets.s3_bucket_name}"
+
 return if Rails.env.test?
 Aws.config.update({
   region: Rails.application.secrets.aws_region,
@@ -7,5 +9,3 @@ Aws.config.update({
   ),
   endpoint: "https://s3.amazonaws.com"
 })
-
-S3_BUCKET_URL = "https://s3-#{Rails.application.secrets.aws_region}.amazonaws.com/#{Rails.application.secrets.s3_bucket_name}"

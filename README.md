@@ -58,10 +58,13 @@ yarn run js:server
 
 Point your browser to `http://localhost:3000/`. Ta-da!
 
+### Launching the app with docker
+```docker-compose up```
+Ta-da!
 
 ## Frontend Architectural choices
 
-The fronted uses react, redux and react-router.  
+The fronted uses react, redux and react-router.
 There are some peculiarities in the architectural choices that we will outline in this section.
 
 ## Router
@@ -72,7 +75,7 @@ The router version used in the project is `v.4.1.1`.
 
 ## Modules
 
-Perhaps the bigger peculiarity is the module based architecture. What a module architecture means is that all the elements that are part of a component are contained inside the same directory.  
+Perhaps the bigger peculiarity is the module based architecture. What a module architecture means is that all the elements that are part of a component are contained inside the same directory.
 That includes not only Component and Container, but also styles, reducers and actions.
 
 ### Typical module structure:
@@ -111,7 +114,7 @@ and the parent will be responsible for styling the component with the app specif
 
 ## State management and connecting Modules
 
-Once we are using the mentioned module architecture we have to gather all the local actions and reducers and glue them together so redux can use them.  
+Once we are using the mentioned module architecture we have to gather all the local actions and reducers and glue them together so redux can use them.
 For asynchronous actions we use [redux-thunk](https://github.com/gaearon/redux-thunk).
 
 ### Module Actions
@@ -121,7 +124,7 @@ For Thunk actions a slim wrapper around `createActions` is used, this allows us 
 
 ### Module Reducers
 
-Reducers inside a module are simple pure functions, no switch case is even present.  
+Reducers inside a module are simple pure functions, no switch case is even present.
 The reducers file exports an object which keys are the actions constants and the value is the reducer that will react to that dispatched action.
 
 The exported actions are used for the keys since `redux-actions` returns the action constant when calling the `.toString()` method in the action creator.
