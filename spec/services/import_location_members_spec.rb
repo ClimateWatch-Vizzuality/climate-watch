@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe ImportLocationMembers do
-  before(:each) do
-    Aws.config[:s3][:stub_responses][:get_object] = {
-      body: <<~END
-        parent_iso_code3,name,iso_code3,,
-        EU28,Poland,POL,,'
-      END
+  before :all do
+    Aws.config[:s3] = {
+      stub_responses: {
+        get_object: {
+          body: <<~END
+            parent_iso_code3,name,iso_code3,,
+            EU28,Poland,POL,,'
+          END
+        }
+      }
     }
   end
 
