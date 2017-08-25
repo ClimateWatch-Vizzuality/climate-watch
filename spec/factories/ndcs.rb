@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :ndc do
     location
-    content 'MyText'
-    content_tsv 'MyText'
+    full_text 'MyText'
+    full_text_tsv 'MyText'
   end
 end
