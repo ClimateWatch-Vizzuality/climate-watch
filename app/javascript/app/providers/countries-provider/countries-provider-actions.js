@@ -2,8 +2,6 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-// import countriesData from 'app/data/countries.json';
-
 const getCountriesInit = createAction('fetchNDCSInit');
 const getCountriesReady = createAction('fetchNDCSReady');
 
