@@ -10,7 +10,7 @@ const NDCMap = props =>
   (<div>
     <Map
       paths={props.paths}
-      zoomEnable
+      computedStyles={props.computedStyles}
       onCountryClick={props.handleCountryClick}
     />
     <div className={styles.col4}>
@@ -18,14 +18,14 @@ const NDCMap = props =>
         label="Category"
         options={props.categories}
         onChange={props.handleCategoryChange}
-        value={props.selectedCategory}
+        value={props.selectedCategory.value}
         clearable={false}
       />
       <Dropdown
         label="Indicator"
         options={props.indicators}
         onChange={props.handleIndicatorChange}
-        value={props.selectedIndicator}
+        value={props.selectedIndicator.value}
         clearable={false}
       />
       <ButtonGroup className={styles.buttons} />
@@ -34,10 +34,11 @@ const NDCMap = props =>
 
 NDCMap.propTypes = {
   categories: PropTypes.array.isRequired,
-  selectedCategory: PropTypes.string,
+  selectedCategory: PropTypes.object,
   indicators: PropTypes.array.isRequired,
-  selectedIndicator: PropTypes.string,
+  selectedIndicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
+  computedStyles: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
   handleIndicatorChange: PropTypes.func.isRequired

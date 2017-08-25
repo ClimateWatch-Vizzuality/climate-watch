@@ -22,6 +22,37 @@ const mapStateToProps = (state) => {
   };
 };
 
+const countryStyles = {
+  default: {
+    fill: '#ECEFF1',
+    fillOpacity: 0.3,
+    stroke: '#396d90',
+    strokeWidth: 0.7,
+    outline: 'none'
+  },
+  hover: {
+    fill: '#ffc735',
+    stroke: '#396d90',
+    strokeWidth: 0.7,
+    outline: 'none'
+  },
+  pressed: {
+    fill: '#ffc735',
+    stroke: '#396d90',
+    strokeWidth: 1,
+    outline: 'none'
+  }
+};
+
+const activeCountryStyles = {
+  ...countryStyles,
+  default: {
+    ...countryStyles.defaut,
+    fill: '#ffc735',
+    fillOpacity: 1
+  }
+};
+
 class NDCMapContainer extends PureComponent {
   handleCountryClick = (geography) => {
     this.props.history.push(`ndcs/country/${geography.id}`);
@@ -35,12 +66,22 @@ class NDCMapContainer extends PureComponent {
     console.info(indicator);
   };
 
+  computedStyles = (geography) => {
+    const { countries } = this.props.selectedIndicator;
+    if (countries && countries[geography]) {
+      return activeCountryStyles;
+    }
+    return countryStyles;
+  };
+
   render() {
-    const indicators = this.props.indicators[this.props.selectedCategory] || [];
+    const indicators =
+      this.props.indicators[this.props.selectedCategory.value] || [];
     return createElement(Component, {
       ...this.props,
       paths,
       indicators,
+      computedStyles: this.computedStyles,
       handleCountryClick: this.handleCountryClick,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange
@@ -49,9 +90,10 @@ class NDCMapContainer extends PureComponent {
 }
 
 NDCMapContainer.propTypes = {
+  history: PropTypes.object.isRequired,
   indicators: PropTypes.object.isRequired,
-  selectedCategory: PropTypes.string,
-  history: PropTypes.object.isRequired
+  selectedCategory: PropTypes.object.isRequired,
+  selectedIndicator: PropTypes.object.isRequired
 };
 
 export default withRouter(connect(mapStateToProps)(NDCMapContainer));
