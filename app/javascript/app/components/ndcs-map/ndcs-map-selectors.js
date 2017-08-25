@@ -32,10 +32,15 @@ export const getIndicators = createSelector(getData, data =>
 );
 
 export const getSelectedCategory = createSelector(
-  [state => state.selectedCategory, getCategories],
-  (selected, categories) => {
-    if (selected) return selected;
+  [state => state.category, getCategories],
+  (selected, categories = []) => {
     if (categories.length > 0) {
+      if (selected) {
+        const filtered = categories.filter(
+          category => category.value === selected
+        );
+        return filtered.length > 0 ? filtered[0] : {};
+      }
       return categories[0];
     }
     return {};
@@ -43,15 +48,22 @@ export const getSelectedCategory = createSelector(
 );
 
 export const getSelectedIndicator = createSelector(
-  [state => state.selectedIndicator, getIndicators, getSelectedCategory],
-  (selected, indicators, category) => {
-    if (selected) return selected;
+  [state => state.indicator, getIndicators, getSelectedCategory],
+  (selected, indicators = {}, category = {}) => {
+    const categoryValue = category.value;
     if (
-      category &&
-      indicators[category.value] &&
-      indicators[category.value].length > 0
+      categoryValue &&
+      indicators[categoryValue] &&
+      indicators[categoryValue].length > 0
     ) {
-      return indicators[category.value][0];
+      const selectedIndicators = indicators[categoryValue];
+      if (selected) {
+        const filtered = selectedIndicators.filter(
+          indicator => indicator.value === selected
+        );
+        return filtered.length > 0 ? filtered[0] : {};
+      }
+      return selectedIndicators[0];
     }
     return {};
   }
@@ -59,5 +71,7 @@ export const getSelectedIndicator = createSelector(
 
 export default {
   getCategories,
-  getIndicators
+  getIndicators,
+  getSelectedCategory,
+  getSelectedIndicator
 };

@@ -2,6 +2,7 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
+import qs from 'query-string';
 
 import paths from 'app/data/world-50m-paths';
 import Component from './ndcs-map-component';
@@ -12,13 +13,20 @@ import {
   getSelectedIndicator
 } from './ndcs-map-selectors';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, { location }) => {
   const { ndcs } = state;
+  const search = qs.parse(location.search);
+  const ndcsWithRouter = {
+    ...ndcs,
+    category: search.category,
+    indicator: search.indicator
+  };
+
   return {
     categories: getCategories(ndcs),
     indicators: getIndicators(ndcs),
-    selectedCategory: getSelectedCategory(ndcs),
-    selectedIndicator: getSelectedIndicator(ndcs)
+    selectedCategory: getSelectedCategory(ndcsWithRouter),
+    selectedIndicator: getSelectedIndicator(ndcsWithRouter)
   };
 };
 
@@ -59,12 +67,28 @@ class NDCMapContainer extends PureComponent {
   };
 
   handleCategoryChange = (category) => {
-    console.info(category);
+    this.updateUrlParam('category', category.value, true);
   };
 
   handleIndicatorChange = (indicator) => {
-    console.info(indicator);
+    this.updateUrlParam('indicator', indicator.value);
   };
+
+  updateUrlParam(param, value, clear = false) {
+    const { history, location } = this.props;
+    const search = qs.parse(location.search);
+    const newSearch = clear
+      ? { [param]: value }
+      : {
+        ...search,
+        [param]: value
+      };
+
+    history.replace({
+      pathname: location.pathname,
+      search: qs.stringify(newSearch)
+    });
+  }
 
   computedStyles = (geography) => {
     const { countries } = this.props.selectedIndicator;
@@ -91,6 +115,7 @@ class NDCMapContainer extends PureComponent {
 
 NDCMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   indicators: PropTypes.object.isRequired,
   selectedCategory: PropTypes.object.isRequired,
   selectedIndicator: PropTypes.object.isRequired
