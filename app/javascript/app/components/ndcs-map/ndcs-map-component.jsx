@@ -1,5 +1,5 @@
 import React from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Map from 'components/map';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
@@ -16,16 +16,16 @@ const NDCMap = props =>
     <div className={styles.col4}>
       <Dropdown
         label="Category"
-        options={[]}
-        onChange={() => console.info('changed')}
-        value={''}
+        options={props.categories}
+        onChange={props.handleCategoryChange}
+        value={props.selectedCategory}
         clearable={false}
       />
       <Dropdown
         label="Indicator"
-        options={[]}
-        onChange={() => console.info('changed')}
-        value={''}
+        options={props.indicators}
+        onChange={props.handleIndicatorChange}
+        value={props.selectedIndicator}
         clearable={false}
       />
       <ButtonGroup className={styles.buttons} />
@@ -33,8 +33,14 @@ const NDCMap = props =>
   </div>);
 
 NDCMap.propTypes = {
-  paths: Proptypes.array.isRequired,
-  handleCountryClick: Proptypes.func.isRequired
+  categories: PropTypes.array.isRequired,
+  selectedCategory: PropTypes.string,
+  indicators: PropTypes.array.isRequired,
+  selectedIndicator: PropTypes.string,
+  paths: PropTypes.array.isRequired,
+  handleCountryClick: PropTypes.func.isRequired,
+  handleCategoryChange: PropTypes.func.isRequired,
+  handleIndicatorChange: PropTypes.func.isRequired
 };
 
 export default NDCMap;
