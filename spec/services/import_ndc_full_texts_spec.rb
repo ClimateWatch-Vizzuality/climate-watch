@@ -1,22 +1,22 @@
 require 'rails_helper'
 
-RSpec.describe ImportNdcContent do
-  subject { ImportNdcContent.new.call }
+RSpec.describe ImportNdcFullTexts do
+  subject { ImportNdcFullTexts.new.call }
 
   before :all do
     Aws.config[:s3] = {
       stub_responses: {
         list_objects: {
           contents: [
-            {key: 'ndcs/AFG.md'},
-            {key: 'ndcs/ALB.md'}
+            {key: 'ndcs/AFG.html'},
+            {key: 'ndcs/ALB.html'}
           ]
         }
       }
     }
   end
 
-  before :each  do
+  before(:each) do
     @location = FactoryGirl.create(
       :location, iso_code3: 'AFG', wri_standard_name: 'Afghanistan'
     )
