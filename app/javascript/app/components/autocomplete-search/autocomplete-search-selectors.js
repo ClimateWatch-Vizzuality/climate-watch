@@ -4,7 +4,7 @@ import { deburrUpper } from 'app/utils';
 const filterCountries = (countries, queryUpper) => {
   if (!queryUpper) return countries;
   return countries.filter(country =>
-    deburrUpper(country.label).includes(queryUpper)
+    deburrUpper(country.wri_standard_name).includes(queryUpper)
   );
 };
 
@@ -15,14 +15,14 @@ export const getQueryUpper = state => deburrUpper(state.query);
 const addCountriesPath = (countries, query) => {
   const ndcResults = countries.reduce((ndcResult, country) => {
     ndcResult.push({
-      value: `${country.value}-overview`,
-      label: `${country.label} NDC - Overview`,
-      path: `ndcs/${country.value}`
+      value: `${country.iso_code3}-overview`,
+      label: `${country.wri_standard_name} NDC - Overview`,
+      path: `ndcs/${country.iso_code3}`
     });
     ndcResult.push({
-      value: `${country.value}-full`,
-      label: `${country.label} NDC - Full Text`,
-      path: `ndcs/${country.value}`
+      value: `${country.iso_code3}-full`,
+      label: `${country.wri_standard_name} NDC - Full Text`,
+      path: `ndcs/${country.iso_code3}`
     });
     return ndcResult;
   }, []);

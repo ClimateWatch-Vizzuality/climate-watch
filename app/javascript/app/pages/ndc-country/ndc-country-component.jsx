@@ -29,7 +29,7 @@ class NDCCountry extends PureComponent {
               >
                 <Icon className={styles.backIcon} icon={backIcon} />
               </Button>
-              <Intro title={country.label} />
+              <Intro title={country.wri_standard_name} />
             </div>
             <div className={styles.threeFold}>
               <Button color="yellow" link={`/ndcs/${match.params.iso}/full`}>

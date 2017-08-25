@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 
-const getCountries = state => state.countries;
+const getCountries = state => state;
 export const getPreSelect = state => state.preSelect;
 export const getFilterUpper = state => deburrUpper(state.query);
 
@@ -14,8 +14,8 @@ const filterCountries = (countries, queryUpper) => {
 
 const addCountriesPath = countries =>
   countries.map(country => ({
-    value: country.value,
-    label: country.label,
+    value: country.iso_code3,
+    label: country.ndcp_navigators_name,
     path: `/countries/${country.value}`
   }));
 

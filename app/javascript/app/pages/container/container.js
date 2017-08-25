@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { actions } from 'providers/countries-provider';
 import Component from './container-component';
 
+const mapStateToProps = state => ({
+  countriesLoaded: state.countries.loaded
+});
+
 class Container extends PureComponent {
   constructor(props) {
     super(props);
@@ -11,12 +15,15 @@ class Container extends PureComponent {
   }
 
   render() {
-    return createElement(Component, this.props);
+    return this.props.countriesLoaded
+      ? createElement(Component, this.props)
+      : null;
   }
 }
 
 Container.propTypes = {
-  getCountries: Proptypes.func
+  getCountries: Proptypes.func,
+  countriesLoaded: Proptypes.bool
 };
 
-export default connect(null, actions)(Container);
+export default connect(mapStateToProps, actions)(Container);
