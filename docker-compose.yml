@@ -1,0 +1,33 @@
+version: '2'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+      args:
+        env: development
+        secretKey: 1234567890
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - POSTGRES_URL=postgres://postgres:example@postgres:5432/climate_watch
+    restart: always
+    container_name: climate-watch
+    depends_on:
+      - postgres
+    volumes:
+      - .:/usr/src/climate-watch
+
+  postgres:
+    image: postgres:9.6
+    restart: always
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=climate_watch
