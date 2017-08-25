@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ImportLocationMembers do
+  subject { ImportLocationMembers.new.call }
+
   before :all do
     Aws.config[:s3] = {
       stub_responses: {
@@ -13,8 +15,6 @@ RSpec.describe ImportLocationMembers do
       }
     }
   end
-
-  subject { ImportLocationMembers.new.call }
 
   before(:each) do
     FactoryGirl.create(:location, iso_code3: 'EU28', location_type: 'GROUP')
