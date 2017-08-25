@@ -3,8 +3,10 @@ import { initialState as map } from 'components/map';
 import { initialState as countryNDC } from 'pages/ndc-country';
 import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
+import { initialState as countries } from 'providers/countries-provider';
 
 export default {
+  countries,
   nav,
   map,
   countryNDC,
