@@ -2,12 +2,11 @@ FROM ruby:2.4.1
 MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 
 ARG secretKey
-ARG env
 
 ENV NAME climate-watch
 ENV SECRET_KEY_BASE $secretKey
-ENV RAKE_ENV $env
-ENV RAILS_ENV $env
+ENV RAKE_ENV production
+ENV RAILS_ENV production
 
 # Install dependencies
 RUN apt-get update \
