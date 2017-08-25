@@ -4,7 +4,7 @@ const getCountries = state => state.countries;
 const getIso = state => state.iso;
 
 const getCountryByIso = (countries, iso) =>
-  countries.find(country => country.value === iso);
+  countries.find(country => country.iso_code3 === iso);
 
 export const getCountry = createSelector(
   [getCountries, getIso],
