@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: {name}
+  name: {name}
+spec:
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      annotations:
+        chaos.alpha.kubernetes.io/enabled: "true"
+      labels:
+        name: {name}
+    spec:
+      containers:
+      - name: {name}
+        image: vizzuality/{name}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+          limits:
+            memory: "512Mi"
+        env:
+          - name: RACK_ENV
+            value: production
+          - name: RAILS_ENV
+            value: production
+          - name: PORT
+            value: "3000"
+          - name: RAILS_SERVE_STATIC_FILES
+            value: "true"
+          - name: POSTGRES_URL
+            valueFrom:
+                secretKeyRef:
+                  name: dbsecrets
+                  key: CW_POSTGRES_URL
+
+        ports:
+          - containerPort: 3000
+
+      restartPolicy: Always

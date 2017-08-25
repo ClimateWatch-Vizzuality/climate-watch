@@ -13,7 +13,7 @@ export { default as actions } from './ndc-country-actions';
 
 const mapStateToProps = (state, { match }) => {
   const countryData = {
-    countries: state.countrySelect.countries,
+    countries: state.countries.data,
     iso: match.params.iso
   };
   return {
