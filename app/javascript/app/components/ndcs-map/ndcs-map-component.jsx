@@ -9,6 +9,7 @@ import styles from './ndcs-map-styles.scss';
 const NDCMap = props =>
   (<div>
     <Map
+      cache={false}
       paths={props.paths}
       computedStyles={props.computedStyles}
       onCountryClick={props.handleCountryClick}

@@ -35,13 +35,13 @@ const countryStyles = {
     fill: '#ECEFF1',
     fillOpacity: 0.3,
     stroke: '#396d90',
-    strokeWidth: 0.7,
+    strokeWidth: 1,
     outline: 'none'
   },
   hover: {
     fill: '#ffc735',
     stroke: '#396d90',
-    strokeWidth: 0.7,
+    strokeWidth: 1,
     outline: 'none'
   },
   pressed: {
@@ -52,12 +52,18 @@ const countryStyles = {
   }
 };
 
-const activeCountryStyles = {
-  ...countryStyles,
-  default: {
-    ...countryStyles.defaut,
-    fill: '#ffc735',
-    fillOpacity: 1
+const getChoroplethColor = (vis) => {
+  switch (vis) {
+    case 1:
+      return '#d54d60';
+    case 2:
+      return '#eebc8f';
+    case 3:
+      return '#fee08d';
+    case 4:
+      return '#7aabd3';
+    default:
+      return '#25597c';
   }
 };
 
@@ -92,8 +98,21 @@ class NDCMapContainer extends PureComponent {
 
   computedStyles = (geography) => {
     const { countries } = this.props.selectedIndicator;
-    if (countries && countries[geography]) {
-      return activeCountryStyles;
+    if (countries && countries[geography.id]) {
+      const color = getChoroplethColor(countries[geography.id].vis);
+      return {
+        ...countryStyles,
+        default: {
+          ...countryStyles.default,
+          fill: color,
+          fillOpacity: 0.9
+        },
+        hover: {
+          ...countryStyles.hover,
+          fill: color,
+          fillOpacity: 1
+        }
+      };
     }
     return countryStyles;
   };
