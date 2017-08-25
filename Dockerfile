@@ -13,7 +13,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
     && rm -rf /var/lib/apt/lists/* \
-    && curl -sL https://deb.nodesource.com/setup_7.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get install -y nodejs build-essential patch zlib1g-dev liblzma-dev libicu-dev \
     && npm install -g yarn
 
@@ -34,5 +34,8 @@ COPY . ./
 
 EXPOSE 3000
 
+# Rails assets compile
+RUN bundle exec rake assets:precompile
+
 # Start app
-CMD bundle exec rake assets:precompile && bundle exec rake tmp:clear db:migrate && npm run servers
+CMD bundle exec rake tmp:clear db:migrate && bundle exec rails s -b 0.0.0.0
