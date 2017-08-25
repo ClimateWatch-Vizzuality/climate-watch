@@ -20,5 +20,9 @@ RSpec.describe NdcFullTextsController, type: :controller do
       get :show, params: {code: poland.iso_code3.downcase}
       expect(response.body).to match(poland_html)
     end
+    it 'responds with 404 if bogus code' do
+      get :show, params: {code: 'LOL'}
+      expect(response.status).to be(404)
+    end
   end
 end
