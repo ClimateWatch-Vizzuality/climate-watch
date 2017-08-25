@@ -24,20 +24,23 @@ node {
 
   currentBuild.result = "SUCCESS"
 
+  def secretKey = UUID.randomUUID().toString().replaceAll('-','')
+
   checkout scm
+  properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])])
 
   try {
 
     stage ('Build docker') {
-      sh("docker -H :2375 build -t ${imageTag} .")
-      sh("docker -H :2375 build -t ${dockerUsername}/${appName}:latest .")
+      sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${imageTag} .")
+      sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${dockerUsername}/${appName}:latest .")
     }
 
-    // stage ('Run Tests') {
-    //   sh('docker-compose -H :2375 -f docker-compose-test.yml build')
-    //   sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
-    //   sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
-    // }
+    stage ('Run Tests') {
+    //  sh('docker-compose -H :2375 -f docker-compose-test.yml build')
+    //  sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
+    //  sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
+    }
 
     stage('Push Docker') {
       withCredentials([usernamePassword(credentialsId: 'Vizzuality Docker Hub', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
@@ -78,15 +81,13 @@ node {
             }
           }
           catch(err) { // timeout reached or input false
-              def user = err.getCauses()[0].getUser()
+              sh("echo Aborted by user or timeout")
               if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
                   didTimeout = true
               } else {
                   userInput = false
-                  echo "Aborted by: [${user}]"
               }
           }
-
           if (userInput == true && !didTimeout){
             sh("echo Deploying to PROD cluster")
             sh("kubectl config use-context gke_${GCLOUD_PROJECT}_${GCLOUD_GCE_ZONE}_${KUBE_PROD_CLUSTER}")
@@ -99,19 +100,20 @@ node {
             }
             sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record")
           } else {
-            echo "this was not successful"
-            //currentBuild.result = 'FAILURE'
+            sh("echo NOT DEPLOYED")
+            currentBuild.result = 'SUCCESS'
           }
           break
 
         // Default behavior?
         default:
-          sh("Default -> do nothing")
+          echo "Default -> do nothing"
+          currentBuild.result = "SUCCESS"
       }
     }
 
     // Notify Success
-    slackSend (color: '#00FF00', channel: '#the-new-api', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (color: '#00FF00', channel: '#climate-watch', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     emailext (
       subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -124,7 +126,7 @@ node {
 
     currentBuild.result = "FAILURE"
     // Notify Error
-    slackSend (color: '#FF0000', channel: '#the-new-api', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (color: '#FF0000', channel: '#climate-watch', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     emailext (
       subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>

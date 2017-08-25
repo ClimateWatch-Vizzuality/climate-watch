@@ -30,14 +30,11 @@ spec:
             value: "3000"
           - name: RAILS_SERVE_STATIC_FILES
             value: "true"
-          - name: S3_BUCKET_NAME
-            value: climate-watch-dev
           - name: POSTGRES_URL
             valueFrom:
                 secretKeyRef:
                   name: dbsecrets
                   key: CW_POSTGRES_URL
-
 
         ports:
           - containerPort: 3000
