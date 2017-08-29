@@ -39,9 +39,9 @@ class ImportCaitIndc
         map { |i| i.name.downcase.strip.gsub(/ /, '_').gsub(/\W/, '').to_sym }
     ) - [:region]
 
-    import_indicator_values
+    import_indicator_labels
     import_location_data
-    import_location_indicator_values
+    import_values
   end
 
   private
@@ -60,8 +60,8 @@ class ImportCaitIndc
 
   def cleanup
     CaitIndc::LocationDatum.delete_all
-    CaitIndc::LocationIndicatorValue.delete_all
-    CaitIndc::IndicatorValue.delete_all
+    CaitIndc::Value.delete_all
+    CaitIndc::IndicatorLabel.delete_all
     CaitIndc::Indicator.delete_all
     CaitIndc::Chart.delete_all
     CaitIndc::Category.delete_all
@@ -90,12 +90,12 @@ class ImportCaitIndc
     }
   end
 
-  def indicator_value_attributes(indicator_value)
+  def indicator_label_attributes(indicator_label)
     {
       indicator: CaitIndc::Indicator.
-        find_by(name: indicator_value[:indicator_name]),
-      name: indicator_value[:legend_item_name],
-      color: indicator_value[:color]
+        find_by(name: indicator_label[:indicator_name]),
+      name: indicator_label[:legend_item_name],
+      color: indicator_label[:color]
     }
   end
 
@@ -143,12 +143,12 @@ class ImportCaitIndc
       .each { |ind| CaitIndc::Indicator.create!(indicator_attributes(ind)) }
   end
 
-  def import_indicator_values
+  def import_indicator_labels
     @legend.
       map { |l| l.except(:chart_name) }.
       uniq.
       each { |ind_v|
-        CaitIndc::IndicatorValue.create(indicator_value_attributes(ind_v))
+        CaitIndc::IndicatorLabel.create(indicator_label_attributes(ind_v))
       }
   end
 
@@ -157,24 +157,24 @@ class ImportCaitIndc
       each { |d| CaitIndc::LocationDatum.create(location_datum_attributes(d)) }
   end
 
-  def import_location_indicator_values
+  def import_values
     @data.each do |d|
       @indicator_keys.each do |ind_k|
         label_sym = (ind_k.to_s + '_label').to_sym
         indicator = CaitIndc::Indicator.find_by(slug: ind_k.to_s)
 
         if indicator && d[ind_k]
-          indicator_value = CaitIndc::IndicatorValue.find_by(
+          indicator_label = CaitIndc::IndicatorLabel.find_by(
             name: d[label_sym],
             indicator: indicator
           )
 
           begin
-            CaitIndc::LocationIndicatorValue.create!({
+            CaitIndc::Value.create!({
               location: Location.find_by(wri_standard_name: d[:country]),
               indicator: indicator,
-              indicator_value: indicator_value,
-              custom_value: d[ind_k]
+              indicator_label: indicator_label,
+              value: d[ind_k]
             })
           rescue ActiveRecord::RecordInvalid => invalid
             STDERR.puts "Error importing #{d[:country].to_s}: #{invalid}"

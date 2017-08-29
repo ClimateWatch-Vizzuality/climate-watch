@@ -23,17 +23,17 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.text "name", null: false
   end
 
-  create_table "cait_indc_indicator_types", force: :cascade do |t|
-    t.text "name", null: false
-  end
-
-  create_table "cait_indc_indicator_values", force: :cascade do |t|
+  create_table "cait_indc_indicator_labels", force: :cascade do |t|
     t.bigint "indicator_id"
     t.text "name", null: false
     t.text "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["indicator_id"], name: "index_cait_indc_indicator_values_on_indicator_id"
+    t.index ["indicator_id"], name: "index_cait_indc_indicator_labels_on_indicator_id"
+  end
+
+  create_table "cait_indc_indicator_types", force: :cascade do |t|
+    t.text "name", null: false
   end
 
   create_table "cait_indc_indicators", force: :cascade do |t|
@@ -62,14 +62,14 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.index ["location_id"], name: "index_cait_indc_location_data_on_location_id"
   end
 
-  create_table "cait_indc_location_indicator_values", force: :cascade do |t|
+  create_table "cait_indc_values", force: :cascade do |t|
     t.bigint "location_id"
     t.bigint "indicator_id"
-    t.bigint "indicator_value_id"
-    t.text "custom_value", null: false
-    t.index ["indicator_id"], name: "index_cait_indc_location_indicator_values_on_indicator_id"
-    t.index ["indicator_value_id"], name: "index_cait_indc_location_indicator_values_on_indicator_value_id"
-    t.index ["location_id"], name: "index_cait_indc_location_indicator_values_on_location_id"
+    t.bigint "indicator_label_id"
+    t.text "value", null: false
+    t.index ["indicator_id"], name: "index_cait_indc_values_on_indicator_id"
+    t.index ["indicator_label_id"], name: "index_cait_indc_values_on_indicator_label_id"
+    t.index ["location_id"], name: "index_cait_indc_values_on_location_id"
   end
 
   create_table "data_sources", force: :cascade do |t|
@@ -143,14 +143,14 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.index ["parent_id"], name: "index_sectors_on_parent_id"
   end
 
-  add_foreign_key "cait_indc_indicator_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "cait_indc_indicator_labels", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
   add_foreign_key "cait_indc_location_data", "locations", on_delete: :cascade
-  add_foreign_key "cait_indc_location_indicator_values", "cait_indc_indicator_values", column: "indicator_value_id", on_delete: :cascade
-  add_foreign_key "cait_indc_location_indicator_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
-  add_foreign_key "cait_indc_location_indicator_values", "locations", on_delete: :cascade
+  add_foreign_key "cait_indc_values", "cait_indc_indicator_labels", column: "indicator_label_id", on_delete: :cascade
+  add_foreign_key "cait_indc_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "cait_indc_values", "locations", on_delete: :cascade
   add_foreign_key "historical_emissions", "data_sources", on_delete: :cascade
   add_foreign_key "historical_emissions", "gases", on_delete: :cascade
   add_foreign_key "historical_emissions", "locations", on_delete: :cascade
