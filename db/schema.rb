@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.bigint "indicator_type_id"
     t.bigint "category_id"
     t.text "name", null: false
+    t.text "slug", null: false
     t.boolean "summary_list", default: false, null: false
     t.boolean "on_map", default: false, null: false
     t.boolean "omit_from_detailed_view", default: false, null: false
@@ -65,7 +66,7 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.bigint "location_id"
     t.bigint "indicator_id"
     t.bigint "indicator_value_id"
-    t.jsonb "custom_value", null: false
+    t.text "custom_value", null: false
     t.index ["indicator_id"], name: "index_cait_indc_location_indicator_values_on_indicator_id"
     t.index ["indicator_value_id"], name: "index_cait_indc_location_indicator_values_on_indicator_value_id"
     t.index ["location_id"], name: "index_cait_indc_location_indicator_values_on_location_id"
