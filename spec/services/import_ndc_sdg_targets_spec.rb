@@ -21,10 +21,10 @@ RSpec.describe ImportNdcSdgTargets do
       :location, iso_code3: 'AFG', location_type: 'COUNTRY'
     )
     FactoryGirl.create(:ndc, location: afg)
-    FactoryGirl.create(:sdg_target, number: '1.1')
+    FactoryGirl.create(:ndc_sdg_target, number: '1.1')
   end
 
   it 'Creates a new NDC-SDG target link' do
-    expect { subject }.to change { NdcSdgTarget.count }.by(1)
+    expect { subject }.to change { NdcSdg::NdcTarget.count }.by(1)
   end
 end

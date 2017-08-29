@@ -2,11 +2,20 @@ require 'csv'
 
 class ImportNdcSdgTargets
   def call
-    NdcSdgTargetSector.delete_all
-    SdgSector.delete_all
-    NdcSdgTarget.delete_all
+    cleanup
+    import_ndc_sdg_targets(read_from_s3('data/ndc_sdg_targets.csv'))
+  end
+
+  private
+
+  def cleanup
+    NdcSdg::NdcTargetSector.delete_all
+    NdcSdg::NdcTarget.delete_all
+    NdcSdg::Sector.delete_all
+  end
+
+  def read_from_s3(file_name)
     bucket_name = Rails.application.secrets.s3_bucket_name
-    file_name = 'data/ndc_sdg_targets.csv'
     s3 = Aws::S3::Client.new
     begin
       file = s3.get_object(bucket: bucket_name, key: file_name)
@@ -14,37 +23,34 @@ class ImportNdcSdgTargets
       Rails.logger.error "File #{file_name} not found in #{bucket_name}"
       return
     end
-    content = file.body.read
-    import_ndc_sdg_targets(content)
+    file.body.read
   end
-
-  private
 
   def import_ndc_sdg_targets(content)
     CSV.parse(content, headers: true).each.with_index(2) do |row|
       ndc = ndc(row)
-      sdg_target = sdg_target(row)
-      next unless ndc && sdg_target
-      ndc_sdg_target = NdcSdgTarget.find_or_create_by(
+      target = target(row)
+      next unless ndc && target
+      ndc_target = NdcSdg::NdcTarget.find_or_create_by(
         ndc: ndc,
-        sdg_target: sdg_target,
+        target: target,
         indc_text: row['INDC_text'],
         status: row['Status'],
         climate_response: row['Climate_response'],
         type_of_information: row['Type_of_information']
       )
-      import_ndc_sdg_target_sectors(row, ndc_sdg_target)
+      import_ndc_target_sectors(row, ndc_target)
     end
   end
 
-  def import_ndc_sdg_target_sectors(row, ndc_sdg_target)
+  def import_ndc_target_sectors(row, ndc_target)
     sectors = row['Sector'] && row['Sector'].split(',').map(&:strip).uniq ||
       []
     sectors.each do |sector|
-      sector = SdgSector.find_or_create_by(name: sector)
-      NdcSdgTargetSector.create(
-        ndc_sdg_target: ndc_sdg_target,
-        sdg_sector: sector
+      sector = NdcSdg::Sector.find_or_create_by(name: sector)
+      NdcSdg::NdcTargetSector.create(
+        ndc_target: ndc_target,
+        sector: sector
       )
     end
   end
@@ -61,10 +67,10 @@ class ImportNdcSdgTargets
     ndc
   end
 
-  def sdg_target(row)
+  def target(row)
     target_number = row['Target'] && row['Target'].strip.downcase
-    sdg_target = SdgTarget.find_by_number(target_number)
-    Rails.logger.error "SDG target not found #{row}" unless sdg_target
-    sdg_target
+    target = NdcSdg::Target.find_by_number(target_number)
+    Rails.logger.error "SDG target not found #{row}" unless target
+    target
   end
 end

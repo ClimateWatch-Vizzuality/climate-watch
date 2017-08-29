@@ -124,26 +124,51 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.index ["iso_code3"], name: "index_locations_on_iso_code3"
   end
 
-  create_table "ndc_sdg_target_sectors", force: :cascade do |t|
-    t.bigint "ndc_sdg_target_id"
+  create_table "ndc_sdg_goals", force: :cascade do |t|
+    t.text "number", null: false
+    t.text "title", null: false
+    t.text "cw_title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "sdg_sector_id"
-    t.index ["ndc_sdg_target_id"], name: "index_ndc_sdg_target_sectors_on_ndc_sdg_target_id"
-    t.index ["sdg_sector_id"], name: "index_ndc_sdg_target_sectors_on_sdg_sector_id"
+    t.index ["number"], name: "index_ndc_sdg_goals_on_number", unique: true
   end
 
-  create_table "ndc_sdg_targets", force: :cascade do |t|
+  create_table "ndc_sdg_ndc_target_sectors", force: :cascade do |t|
+    t.bigint "ndc_target_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "sector_id"
+    t.index ["ndc_target_id"], name: "index_ndc_sdg_ndc_target_sectors_on_ndc_target_id"
+    t.index ["sector_id"], name: "index_ndc_sdg_ndc_target_sectors_on_sector_id"
+  end
+
+  create_table "ndc_sdg_ndc_targets", force: :cascade do |t|
     t.bigint "ndc_id"
-    t.bigint "sdg_target_id"
+    t.bigint "target_id"
     t.text "indc_text"
     t.text "status"
     t.text "climate_response"
     t.text "type_of_information"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["ndc_id"], name: "index_ndc_sdg_targets_on_ndc_id"
-    t.index ["sdg_target_id"], name: "index_ndc_sdg_targets_on_sdg_target_id"
+    t.index ["ndc_id"], name: "index_ndc_sdg_ndc_targets_on_ndc_id"
+    t.index ["target_id"], name: "index_ndc_sdg_ndc_targets_on_target_id"
+  end
+
+  create_table "ndc_sdg_sectors", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ndc_sdg_targets", force: :cascade do |t|
+    t.text "number", null: false
+    t.text "title", null: false
+    t.bigint "goal_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["goal_id"], name: "index_ndc_sdg_targets_on_goal_id"
+    t.index ["number"], name: "index_ndc_sdg_targets_on_number", unique: true
   end
 
   create_table "ndcs", force: :cascade do |t|
@@ -154,31 +179,6 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.datetime "updated_at", null: false
     t.index ["full_text_tsv"], name: "index_ndcs_on_full_text_tsv", using: :gin
     t.index ["location_id"], name: "index_ndcs_on_location_id"
-  end
-
-  create_table "sdg_sectors", force: :cascade do |t|
-    t.text "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "sdg_targets", force: :cascade do |t|
-    t.text "number", null: false
-    t.text "title", null: false
-    t.bigint "sdg_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["number"], name: "index_sdg_targets_on_number", unique: true
-    t.index ["sdg_id"], name: "index_sdg_targets_on_sdg_id"
-  end
-
-  create_table "sdgs", force: :cascade do |t|
-    t.text "number", null: false
-    t.text "title", null: false
-    t.text "cw_title", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["number"], name: "index_sdgs_on_number", unique: true
   end
 
   create_table "sectors", force: :cascade do |t|
@@ -205,12 +205,12 @@ ActiveRecord::Schema.define(version: 20170830111409) do
   add_foreign_key "historical_emissions", "sectors", on_delete: :cascade
   add_foreign_key "location_members", "locations", column: "member_id", on_delete: :cascade
   add_foreign_key "location_members", "locations", on_delete: :cascade
-  add_foreign_key "ndc_sdg_target_sectors", "ndc_sdg_targets"
-  add_foreign_key "ndc_sdg_target_sectors", "sdg_sectors"
-  add_foreign_key "ndc_sdg_targets", "ndcs"
-  add_foreign_key "ndc_sdg_targets", "sdg_targets"
+  add_foreign_key "ndc_sdg_ndc_target_sectors", "ndc_sdg_ndc_targets", column: "ndc_target_id"
+  add_foreign_key "ndc_sdg_ndc_target_sectors", "ndc_sdg_sectors", column: "sector_id"
+  add_foreign_key "ndc_sdg_ndc_targets", "ndc_sdg_targets", column: "target_id"
+  add_foreign_key "ndc_sdg_ndc_targets", "ndcs"
+  add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
-  add_foreign_key "sdg_targets", "sdgs"
   add_foreign_key "sectors", "data_sources", on_delete: :cascade
   add_foreign_key "sectors", "sectors", column: "parent_id", on_delete: :cascade
 end

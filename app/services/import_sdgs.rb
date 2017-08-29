@@ -35,7 +35,7 @@ class ImportSdgs
     CSV.parse(content, headers: true).each.with_index(2) do |row|
       attributes = {
         number: number(row),
-        sdg: goal(row),
+        goal: goal(row),
         title: row['title']
       }
       create_or_update_sdg_target(attributes)
@@ -48,13 +48,13 @@ class ImportSdgs
 
   def goal(row)
     goal_number = row['goal_number'] && row['goal_number'].strip.downcase
-    Sdg.find_by_number(goal_number)
+    NdcSdg::Goal.find_by_number(goal_number)
   end
 
   def create_or_update_sdg(attributes)
     number = attributes[:number]
-    sdg = Sdg.find_by_number(number) ||
-      Sdg.new(number: number)
+    sdg = NdcSdg::Goal.find_by_number(number) ||
+      NdcSdg::Goal.new(number: number)
     sdg.assign_attributes(attributes)
 
     op = sdg.new_record? ? 'CREATE' : 'UPDATE'
@@ -68,8 +68,8 @@ class ImportSdgs
 
   def create_or_update_sdg_target(attributes)
     number = attributes[:number]
-    sdg = SdgTarget.find_by_number(number) ||
-      SdgTarget.new(number: number)
+    sdg = NdcSdg::Target.find_by_number(number) ||
+      NdcSdg::Target.new(number: number)
     sdg.assign_attributes(attributes)
 
     op = sdg.new_record? ? 'CREATE' : 'UPDATE'

@@ -25,6 +25,6 @@ RSpec.describe ImportSdgs do
   end
 
   it 'Creates a new sdg' do
-    expect { subject }.to change { Sdg.count }.by(1)
+    expect { subject }.to change { NdcSdg::Goal.count }.by(1)
   end
 end
