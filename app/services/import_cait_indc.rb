@@ -1,5 +1,3 @@
-require 'csv'
-
 META_INDICATORS_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - indicators.csv'.
   freeze
 META_LEGEND_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - legend.csv'.
@@ -11,33 +9,14 @@ class ImportCaitIndc
   def call
     cleanup
 
-    @indicators = CSV.parse(
-      read_from_s3(META_INDICATORS_FILEPATH),
-      headers: true,
-      header_converters: :symbol
-    ).map { |r| r.to_h }
-
-    @legend = CSV.parse(
-      read_from_s3(META_LEGEND_FILEPATH),
-      headers: true,
-      header_converters: :symbol
-    ).map { |r| r.to_h }
-
-    @data = CSV.parse(
-      read_from_s3(DATA_FILEPATH),
-      headers: true,
-      header_converters: :symbol
-    ).map { |r| r.to_h }
+    load_csvs
 
     import_categories
     import_indicator_types
     import_charts
     import_indicators
 
-    @indicator_keys = (
-      CaitIndc::Indicator.all.
-        map { |i| i.name.downcase.strip.gsub(/ /, '_').gsub(/\W/, '').to_sym }
-    ) - [:region]
+    load_indicator_keys
 
     import_indicator_labels
     import_location_data
@@ -46,16 +25,16 @@ class ImportCaitIndc
 
   private
 
-  def read_from_s3(file_name)
-    bucket_name = Rails.application.secrets.s3_bucket_name
-    s3 = Aws::S3::Client.new
-    begin
-      file = s3.get_object(bucket: bucket_name, key: file_name)
-    rescue Aws::S3::Errors::NoSuchKey
-      Rails.logger.error "File #{file_name} not found in #{bucket_name}"
-      return
+  def load_csvs
+    @indicators = S3CSVReader.read(META_INDICATORS_FILEPATH).map(&:to_h)
+    @legend = S3CSVReader.read(META_LEGEND_FILEPATH).map(&:to_h)
+    @data = S3CSVReader.read(DATA_FILEPATH).map(&:to_h)
+  end
+
+  def load_indicator_keys
+    @indicator_keys = CaitIndc::Indicator.all.map do |i|
+      i.name.downcase.strip.tr(' ', '_').gsub(/\W/, '').to_sym
     end
-    file.body.read
   end
 
   def cleanup
@@ -107,7 +86,21 @@ class ImportCaitIndc
         (datum[:marker_latlng].split(',')[0] if datum[:marker_latlng]),
       marker_lng:
         (datum[:marker_latlng].split(',')[1] if datum[:marker_latlng]),
-      data: datum.except(@indicator_keys)
+      data: datum.except(*@indicator_keys)
+    }
+  end
+
+  def value_attributes(datum, location, indicator_key)
+    indicator = CaitIndc::Indicator.find_by(slug: indicator_key)
+
+    {
+      location: location,
+      indicator: indicator,
+      indicator_label: CaitIndc::IndicatorLabel.find_by(
+        name: datum[:"#{indicator_key}_label"],
+        indicator: indicator
+      ),
+      value: datum[indicator_key]
     }
   end
 
@@ -116,7 +109,7 @@ class ImportCaitIndc
       map { |r| r[:category] }.
       sort_by.
       uniq.
-      select { |cat| cat }.
+      select(&:itself).
       each { |cat| CaitIndc::Category.create!(name: cat) }
   end
 
@@ -125,8 +118,8 @@ class ImportCaitIndc
       map { |r| r[:indicator_type] }.
       sort_by.
       uniq.
-      select { |ind_t| ind_t }.
-      each { |ind_t| CaitIndc::IndicatorType.create(name: ind_t) }
+      select(&:itself).
+      each { |ind_t| CaitIndc::IndicatorType.create!(name: ind_t) }
   end
 
   def import_charts
@@ -134,53 +127,43 @@ class ImportCaitIndc
       map { |r| r[:chart_title] }.
       sort_by.
       uniq.
-      select { |chart_t| chart_t }.
-      each { |chart_t| CaitIndc::Chart.create(name: chart_t) }
+      select(&:itself).
+      each { |chart_t| CaitIndc::Chart.create!(name: chart_t) }
   end
 
   def import_indicators
-    @indicators
-      .each { |ind| CaitIndc::Indicator.create!(indicator_attributes(ind)) }
+    @indicators.each do |ind|
+      CaitIndc::Indicator.create!(indicator_attributes(ind))
+    end
   end
 
   def import_indicator_labels
     @legend.
       map { |l| l.except(:chart_name) }.
       uniq.
-      each { |ind_v|
-        CaitIndc::IndicatorLabel.create(indicator_label_attributes(ind_v))
-      }
+      each do |ind_v|
+        CaitIndc::IndicatorLabel.create!(indicator_label_attributes(ind_v))
+      end
   end
 
   def import_location_data
     @data.
-      each { |d| CaitIndc::LocationDatum.create(location_datum_attributes(d)) }
+      each do |d|
+        a = location_datum_attributes(d)
+        CaitIndc::LocationDatum.create!(a) if a[:location]
+      end
   end
 
   def import_values
     @data.each do |d|
-      @indicator_keys.each do |ind_k|
-        label_sym = (ind_k.to_s + '_label').to_sym
-        indicator = CaitIndc::Indicator.find_by(slug: ind_k.to_s)
+      location = Location.find_by(wri_standard_name: d[:country])
+      unless location
+        Rails.logger.error "location #{d[:country]} not parametrized. Skipping."
+        next
+      end
 
-        if indicator && d[ind_k]
-          indicator_label = CaitIndc::IndicatorLabel.find_by(
-            name: d[label_sym],
-            indicator: indicator
-          )
-
-          begin
-            CaitIndc::Value.create!({
-              location: Location.find_by(wri_standard_name: d[:country]),
-              indicator: indicator,
-              indicator_label: indicator_label,
-              value: d[ind_k]
-            })
-          rescue ActiveRecord::RecordInvalid => invalid
-            STDERR.puts "Error importing #{d[:country].to_s}: #{invalid}"
-          end
-        else
-        end
+      @indicator_keys.select { |ind_k| d[ind_k] }.each do |ind_k|
+        CaitIndc::Value.create!(value_attributes(d, location, ind_k))
       end
     end
   end
