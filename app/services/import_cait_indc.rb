@@ -1,27 +1,47 @@
 require 'csv'
 
-META_INDICATORS_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - indicators.csv'.freeze
-META_LEGEND_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - legend.csv'.freeze
-DATA_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - data.csv'.freeze
+META_INDICATORS_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - indicators.csv'.
+  freeze
+META_LEGEND_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - legend.csv'.
+  freeze
+DATA_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - data.csv'.
+  freeze
 
 class ImportCaitIndc
   def call
     cleanup
 
-    @indicators = CSV.parse(read_from_s3(META_INDICATORS_FILEPATH), headers: true, header_converters: :symbol).
-      map { |r| r.to_h }
+    @indicators = CSV.parse(
+      read_from_s3(META_INDICATORS_FILEPATH),
+      headers: true,
+      header_converters: :symbol
+    ).map { |r| r.to_h }
 
-    @legend = CSV.parse(read_from_s3(META_LEGEND_FILEPATH), headers: true, header_converters: :symbol).
-      map { |r| r.to_h }
+    @legend = CSV.parse(
+      read_from_s3(META_LEGEND_FILEPATH),
+      headers: true,
+      header_converters: :symbol
+    ).map { |r| r.to_h }
 
-    @data = CSV.parse(read_from_s3(DATA_FILEPATH), headers: true, header_converters: :symbol).
-      map { |r| r.to_h }
+    @data = CSV.parse(
+      read_from_s3(DATA_FILEPATH),
+      headers: true,
+      header_converters: :symbol
+    ).map { |r| r.to_h }
 
     import_categories
     import_indicator_types
     import_charts
     import_indicators
+
+    @indicator_keys = (
+      CaitIndc::Indicator.all.
+        map { |i| i.name.downcase.strip.gsub(/ /, '_').gsub(/\W/, '').to_sym }
+    ) - [:region]
+
     import_indicator_values
+    import_location_data
+    import_location_indicator_values
   end
 
   private
@@ -79,6 +99,18 @@ class ImportCaitIndc
     }
   end
 
+  def location_datum_attributes(datum)
+    {
+      location: Location.find_by(wri_standard_name: datum[:country]),
+      highlight_outline: datum[:highlight_outline] == 'x',
+      marker_lat:
+        (datum[:marker_latlng].split(',')[0] if datum[:marker_latlng]),
+      marker_lng:
+        (datum[:marker_latlng].split(',')[1] if datum[:marker_latlng]),
+      data: datum.except(@indicator_keys)
+    }
+  end
+
   def import_categories
     @indicators.
       map { |r| r[:category] }.
@@ -118,5 +150,38 @@ class ImportCaitIndc
       each { |ind_v|
         CaitIndc::IndicatorValue.create(indicator_value_attributes(ind_v))
       }
+  end
+
+  def import_location_data
+    @data.
+      each { |d| CaitIndc::LocationDatum.create(location_datum_attributes(d)) }
+  end
+
+  def import_location_indicator_values
+    @data.each do |d|
+      @indicator_keys.each do |ind_k|
+        label_sym = (ind_k.to_s + '_label').to_sym
+        indicator = CaitIndc::Indicator.find_by(slug: ind_k.to_s)
+
+        if indicator && d[ind_k]
+          indicator_value = CaitIndc::IndicatorValue.find_by(
+            name: d[label_sym],
+            indicator: indicator
+          )
+
+          begin
+            CaitIndc::LocationIndicatorValue.create!({
+              location: Location.find_by(wri_standard_name: d[:country]),
+              indicator: indicator,
+              indicator_value: indicator_value,
+              custom_value: d[ind_k]
+            })
+          rescue ActiveRecord::RecordInvalid => invalid
+            STDERR.puts "Error importing #{d[:country].to_s}: #{invalid}"
+          end
+        else
+        end
+      end
+    end
   end
 end
