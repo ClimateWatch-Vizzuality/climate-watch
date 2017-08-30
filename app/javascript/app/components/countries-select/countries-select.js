@@ -21,11 +21,15 @@ export { default as styles } from './countries-select-styles';
 export { default as actions } from './countries-select-actions';
 
 const mapStateToProps = (state) => {
-  const { countrySelect } = state;
+  const { countrySelect, countries } = state;
+  const filterCountryData = {
+    query: countrySelect.query,
+    countries: countries.data
+  };
   return {
     query: getFilterUpper(countrySelect),
     preSelect: getPreSelect(countrySelect),
-    countriesList: getFilteredCountriesWithPath(countrySelect)
+    countriesList: getFilteredCountriesWithPath(filterCountryData)
   };
 };
 

@@ -18,10 +18,13 @@ export { default as actions } from './autocomplete-search-actions';
 
 const mapStateToProps = (state) => {
   const { autocompleteSearch } = state;
-
+  const searchListData = {
+    query: autocompleteSearch.query,
+    countries: state.countries.data
+  };
   return {
     query: getQueryUpper(autocompleteSearch),
-    searchList: getFilteredCountriesWithPath(autocompleteSearch)
+    searchList: getFilteredCountriesWithPath(searchListData)
   };
 };
 
