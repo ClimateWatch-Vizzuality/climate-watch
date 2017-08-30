@@ -6,16 +6,12 @@ import actions from './ndcs-actions';
 
 import Component from './ndcs-component';
 
-const links = [
-  {
-    label: 'Map',
-    path: '/ndcs'
-  },
-  {
-    label: 'Table',
-    path: '/ndcs/table'
-  }
-];
+function getRouterLinks(routes) {
+  return routes.filter(route => route.link).map(route => ({
+    label: route.label,
+    path: route.path
+  }));
+}
 
 class NDCContainer extends PureComponent {
   componentWillMount() {
@@ -25,10 +21,14 @@ class NDCContainer extends PureComponent {
   render() {
     return createElement(Component, {
       ...this.props,
-      links
+      links: getRouterLinks(this.props.route.routes)
     });
   }
 }
+
+NDCContainer.propTypes = {
+  route: PropTypes.object.isRequired
+};
 
 export { initialState } from './ndcs-reducers';
 export { default as reducers } from './ndcs-reducers';

@@ -31,12 +31,16 @@ export default [
           {
             path: '/ndcs',
             component: NDCMap,
-            exact: true
+            exact: true,
+            link: true,
+            label: 'Map'
           },
           {
             path: '/ndcs/table',
             component: NDCTable,
-            exact: true
+            exact: true,
+            link: true,
+            label: 'Table'
           },
           {
             path: '/ndcs',
