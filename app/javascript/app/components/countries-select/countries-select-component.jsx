@@ -35,6 +35,7 @@ class CountriesSelect extends PureComponent {
           />
           <ResultsList
             list={countriesList}
+            className={styles.list}
             emptyDataMsg="No results"
             theme={resultsListLightTheme}
             handleMouseItemEnter={onCountryMouseEnter}

@@ -7,10 +7,12 @@ import iconInfo from 'assets/icons/info.svg';
 import iconShare from 'assets/icons/share.svg';
 import iconDownload from 'assets/icons/download.svg';
 import iconAddToUser from 'assets/icons/add-to-user.svg';
+import PropTypes from 'prop-types';
+
 import styles from './button-group-styles.scss';
 
-export default () =>
-  (<div className={styles.buttonGroup}>
+const ButtonGroup = props =>
+  (<div className={cx(styles.buttonGroup, props.className)}>
     <Button className={cx(styles.button, styles.first)}>
       <Icon icon={iconInfo} />
     </Button>
@@ -24,3 +26,9 @@ export default () =>
       <Icon icon={iconAddToUser} />
     </Button>
   </div>);
+
+ButtonGroup.propTypes = {
+  className: PropTypes.string
+};
+
+export default ButtonGroup;

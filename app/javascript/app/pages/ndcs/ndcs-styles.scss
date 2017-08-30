@@ -1,0 +1,7 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
+}

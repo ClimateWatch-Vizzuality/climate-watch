@@ -62,7 +62,9 @@ ResultsList.defaultProps = {
   list: [],
   hasIcon: false,
   emptyDataMsg: 'No data',
-  theme: {}
+  theme: {},
+  handleMouseItemEnter() {},
+  handleMouseItemLeave() {}
 };
 
 export default ResultsList;

@@ -1,5 +1,5 @@
 import Home from 'pages/home';
-import NDC from 'pages/ndc';
+import NDCS from 'pages/ndcs';
 import NDCCountry from 'pages/ndc-country';
 import Country from 'pages/country';
 import error from 'pages/error';
@@ -11,13 +11,13 @@ export default [
     exact: true
   },
   {
-    path: '/ndcs',
-    component: NDC,
+    path: '/ndcs/country/:iso',
+    component: NDCCountry,
     exact: true
   },
   {
-    path: '/ndcs/:iso',
-    component: NDCCountry
+    path: '/ndcs',
+    component: NDCS
   },
   {
     path: '/countries/:iso',
