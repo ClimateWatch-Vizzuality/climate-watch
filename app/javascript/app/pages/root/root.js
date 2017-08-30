@@ -1,6 +1,7 @@
 import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { actions } from 'providers/countries-provider';
 import Component from './root-component';
 
@@ -26,4 +27,4 @@ Root.propTypes = {
   countriesLoaded: Proptypes.bool
 };
 
-export default connect(mapStateToProps, actions)(Root);
+export default withRouter(connect(mapStateToProps, actions)(Root));

@@ -1,7 +1,7 @@
 export const initialState = {
   loading: false,
   loaded: false,
-  data: null
+  data: []
 };
 
 const setLoading = (loading, state) => ({ ...state, loading });

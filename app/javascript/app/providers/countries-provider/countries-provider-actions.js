@@ -2,8 +2,8 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-const getCountriesInit = createAction('fetchNDCSInit');
-const getCountriesReady = createAction('fetchNDCSReady');
+const getCountriesInit = createAction('getCountriesInit');
+const getCountriesReady = createAction('getCountriesReady');
 
 const getCountries = createThunkAction(
   'getCountries',
