@@ -9,8 +9,7 @@ module Api
         attribute :category,
                   if: -> { object.category }
 
-        has_many :indicator_labels,
-                 key: :labels
+        has_many :labels
 
         def category
           object.category&.name

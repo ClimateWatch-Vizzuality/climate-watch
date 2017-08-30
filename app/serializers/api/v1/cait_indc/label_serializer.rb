@@ -1,7 +1,7 @@
 module Api
   module V1
     module CaitIndc
-      class IndicatorLabelSerializer < ActiveModel::Serializer
+      class LabelSerializer < ActiveModel::Serializer
         attributes :name,
                    :color
       end

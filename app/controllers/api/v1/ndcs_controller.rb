@@ -4,9 +4,9 @@ module Api
       def index
         ndcs = ::CaitIndc::Indicator.
           includes(
-            :indicator_labels,
+            :labels,
             :category,
-            values: [:indicator_label, :location]
+            values: [:label, :location]
           )
 
         render json: ndcs,

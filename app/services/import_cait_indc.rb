@@ -18,7 +18,7 @@ class ImportCaitIndc
 
     load_indicator_keys
 
-    import_indicator_labels
+    import_labels
     import_location_data
     import_values
   end
@@ -40,7 +40,7 @@ class ImportCaitIndc
   def cleanup
     CaitIndc::LocationDatum.delete_all
     CaitIndc::Value.delete_all
-    CaitIndc::IndicatorLabel.delete_all
+    CaitIndc::Label.delete_all
     CaitIndc::Indicator.delete_all
     CaitIndc::Chart.delete_all
     CaitIndc::Category.delete_all
@@ -69,12 +69,12 @@ class ImportCaitIndc
     }
   end
 
-  def indicator_label_attributes(indicator_label)
+  def label_attributes(label)
     {
       indicator: CaitIndc::Indicator.
-        find_by(name: indicator_label[:indicator_name]),
-      name: indicator_label[:legend_item_name],
-      color: indicator_label[:color]
+        find_by(name: label[:indicator_name]),
+      name: label[:legend_item_name],
+      color: label[:color]
     }
   end
 
@@ -96,7 +96,7 @@ class ImportCaitIndc
     {
       location: location,
       indicator: indicator,
-      indicator_label: CaitIndc::IndicatorLabel.find_by(
+      label: CaitIndc::Label.find_by(
         name: datum[:"#{indicator_key}_label"],
         indicator: indicator
       ),
@@ -137,12 +137,12 @@ class ImportCaitIndc
     end
   end
 
-  def import_indicator_labels
+  def import_labels
     @legend.
       map { |l| l.except(:chart_name) }.
       uniq.
       each do |ind_v|
-        CaitIndc::IndicatorLabel.create!(indicator_label_attributes(ind_v))
+        CaitIndc::Label.create!(label_attributes(ind_v))
       end
   end
 

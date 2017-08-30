@@ -4,9 +4,7 @@ module Api
       class ValueSerializer < ActiveModel::Serializer
         attributes :value
 
-        belongs_to :indicator_label,
-                   key: :label,
-                   serializer: IndicatorLabelSerializer
+        belongs_to :label, serializer: LabelSerializer
       end
     end
   end
