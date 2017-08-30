@@ -3,6 +3,6 @@ FactoryGirl.define do
     location
     association :indicator, factory: :cait_indc_indicator
     association :label, factory: :cait_indc_label
-    value nil
+    value 'MyText'
   end
 end
