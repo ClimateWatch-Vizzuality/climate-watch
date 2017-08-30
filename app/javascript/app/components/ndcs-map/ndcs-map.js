@@ -69,7 +69,7 @@ const getChoroplethColor = (vis) => {
 
 class NDCMapContainer extends PureComponent {
   handleCountryClick = (geography) => {
-    this.props.history.push(`ndcs/country/${geography.id}`);
+    this.props.history.push(`/ndcs/country/${geography.id}`);
   };
 
   handleCategoryChange = (category) => {
