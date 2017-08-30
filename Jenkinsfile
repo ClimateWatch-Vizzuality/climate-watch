@@ -126,7 +126,7 @@ node {
 
     currentBuild.result = "FAILURE"
     // Notify Error
-    slackSend (color: '#FF0000', channel: '#climate-watch', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (color: '#FF0000', channel: '#climate-watch-magic', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     emailext (
       subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
