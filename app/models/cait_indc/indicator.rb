@@ -6,8 +6,8 @@ module CaitIndc
     belongs_to :indicator_type, class_name: 'CaitIndc::IndicatorType'
     belongs_to :category, class_name: 'CaitIndc::Category', optional: true
     has_many :indicator_labels, class_name: 'CaitIndc::IndicatorLabel'
-    has_many :values,
-             class_name: 'CaitIndc::Value'
+    has_many :values, class_name: 'CaitIndc::Value'
+
     validates :name, presence: true
 
     def set_slug
