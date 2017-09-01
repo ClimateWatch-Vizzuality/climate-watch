@@ -75,6 +75,18 @@
   }
 }
 
+.dropdownUp :global {
+  .Select-menu-outer {
+    top: auto;
+    bottom: 100%;
+    border-top: 1px solid #ccc;
+    border-bottom: 0;
+    border-radius: 0;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+}
+
 .isOpen {
   transform: rotate(180deg);
 }
