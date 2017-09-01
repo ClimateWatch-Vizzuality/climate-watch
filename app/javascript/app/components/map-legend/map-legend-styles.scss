@@ -1,0 +1,62 @@
+@import '~styles/settings';
+
+.wrapper {
+  max-width: 260px;
+}
+
+.title {
+  font-size: $font-size-s;
+  color: $theme-color-light;
+  max-width: 200px;
+}
+
+.buckets {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.list {
+  margin-top: 10px;
+}
+
+.bucketIcon {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+
+  &Color1 {
+    background-color: $legend-1;
+  }
+
+  &Color2 {
+    background-color: $legend-2;
+  }
+
+  &Color3 {
+    background-color: $legend-3;
+  }
+
+  &Color4 {
+    background-color: $legend-4;
+  }
+
+  &Color5 {
+    background-color: $legend-5;
+  }
+
+  &Color6 {
+    background-color: $legend-6;
+  }
+
+  &Color7 {
+    background-color: $legend-7;
+  }
+}
+
+.bucketTxt {
+  font-size: $font-size-s;
+  color: $dark-gray;
+}

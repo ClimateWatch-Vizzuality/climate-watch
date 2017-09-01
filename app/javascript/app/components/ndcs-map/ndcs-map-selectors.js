@@ -69,6 +69,11 @@ export const getSelectedIndicator = createSelector(
   }
 );
 
+export const getCountriesGeometry = createSelector(
+  state => state.data,
+  countries => countries.map(country => country.topojson)
+);
+
 export default {
   getCategories,
   getIndicators,

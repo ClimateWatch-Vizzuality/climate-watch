@@ -1,21 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Map from 'components/map';
+import MapLegend from 'components/map-legend';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 
 import styles from './ndcs-map-styles.scss';
 
 const NDCMap = props =>
-  (<div>
+  (<div className={styles.wrapper}>
     <Map
       cache={false}
       paths={props.paths}
       computedStyles={props.computedStyles}
       onCountryClick={props.handleCountryClick}
+      onCountryMove={props.handleCountryMove}
+      onCountryLeave={props.handleCountryLeave}
     />
+    {props.selectedIndicator &&
+      <MapLegend
+        className={styles.legend}
+        title={props.selectedIndicator.legend}
+        buckets={props.selectedIndicator.legendBuckets}
+      />}
     <div className={styles.col4}>
       <Dropdown
+        openUp
         label="Category"
         options={props.categories}
         onChange={props.handleCategoryChange}
@@ -23,6 +33,7 @@ const NDCMap = props =>
         clearable={false}
       />
       <Dropdown
+        openUp
         label="Indicator"
         options={props.indicators}
         onChange={props.handleIndicatorChange}
@@ -41,6 +52,8 @@ NDCMap.propTypes = {
   paths: PropTypes.array.isRequired,
   computedStyles: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
+  handleCountryMove: PropTypes.func.isRequired,
+  handleCountryLeave: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
   handleIndicatorChange: PropTypes.func.isRequired
 };
