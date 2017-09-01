@@ -1,20 +1,21 @@
 import React from 'react';
 import Proptypes from 'prop-types';
+import { renderRoutes } from 'react-router-config';
 
 import TopBar from 'components/topbar';
 import Nav from 'components/nav';
 
-import styles from "./container-styles.scss"; // eslint-disable-line
+import styles from "./root-styles.scss"; // eslint-disable-line
 
-const Page = ({ children }) =>
+const Page = ({ route }) =>
   (<div>
     <TopBar />
     <Nav />
-    {children}
+    {renderRoutes(route.routes)}
   </div>);
 
 Page.propTypes = {
-  children: Proptypes.node
+  route: Proptypes.object
 };
 
 export default Page;

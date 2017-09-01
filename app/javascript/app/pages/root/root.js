@@ -3,13 +3,13 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { actions } from 'providers/countries-provider';
-import Component from './container-component';
+import Component from './root-component';
 
 const mapStateToProps = state => ({
   countriesLoaded: state.countries.loaded
 });
 
-class Container extends PureComponent {
+class Root extends PureComponent {
   constructor(props) {
     super(props);
     props.getCountries();
@@ -22,9 +22,9 @@ class Container extends PureComponent {
   }
 }
 
-Container.propTypes = {
+Root.propTypes = {
   getCountries: Proptypes.func,
   countriesLoaded: Proptypes.bool
 };
 
-export default withRouter(connect(mapStateToProps, actions)(Container));
+export default withRouter(connect(mapStateToProps, actions)(Root));
