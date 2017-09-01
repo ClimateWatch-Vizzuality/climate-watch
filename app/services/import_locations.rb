@@ -43,9 +43,13 @@ class ImportLocations
     response = Net::HTTP.get(uri)
     parsed_response = JSON.parse(response, symbolize_names: true)
     parsed_response[:rows].each do |row|
-      Location.
-        where(iso_code3: row[:iso]).
-        update(topojson: row[:topojson])
+      begin
+        Location.
+          where(iso_code3: row[:iso]).
+          update(topojson: JSON.parse(row[:topojson]))
+      rescue JSON::ParserError => e
+        STDERR.puts "Error importing data for #{row[:iso]}: #{e}"
+      end
     end
   end
 
