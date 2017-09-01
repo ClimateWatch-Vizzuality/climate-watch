@@ -4,7 +4,9 @@ module Api
       def index
         @ndcs = Ndc.includes(:location)
         @ndcs = apply_query_with_highlights(@ndcs, false)
-        render json: @ndcs, each_serializer: Api::V1::NdcFullTextSearchResultSerializer, query: params[:query]
+        render json: @ndcs,
+               each_serializer: Api::V1::NdcFullTextSearchResultSerializer,
+               query: params[:query]
       end
 
       def show
@@ -14,8 +16,9 @@ module Api
         ndcs = apply_query_with_highlights(ndcs, true)
         @ndc = ndcs.first
         render status: :not_found and return unless @ndc
-        #render html: @ndc.pg_search_highlight.html_safe
-        render json: @ndc, serializer: Api::V1::NdcFullTextSerializer, query: params[:query]
+        render json: @ndc,
+               serializer: Api::V1::NdcFullTextSerializer,
+               query: params[:query]
       end
 
       private
