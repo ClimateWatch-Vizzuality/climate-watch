@@ -15,7 +15,7 @@ import styles from './ndc-country-styles.scss';
 
 class NDCCountry extends PureComponent {
   render() {
-    const { country, match } = this.props;
+    const { country, match, onSearchChange, search } = this.props;
     return (
       <div>
         <Header image={background}>
@@ -41,7 +41,12 @@ class NDCCountry extends PureComponent {
               >
                 Compare
               </Button>
-              <Search theme={lightSearch} placeholder="Search" />
+              <Search
+                theme={lightSearch}
+                placeholder="Search"
+                input={search}
+                onChange={onSearchChange}
+              />
             </div>
           </div>
         </Header>
@@ -53,7 +58,9 @@ class NDCCountry extends PureComponent {
 
 NDCCountry.propTypes = {
   match: Proptypes.object.isRequired,
-  country: Proptypes.object.isRequired
+  country: Proptypes.object.isRequired,
+  onSearchChange: Proptypes.func.isRequired,
+  search: Proptypes.string
 };
 
 export default NDCCountry;

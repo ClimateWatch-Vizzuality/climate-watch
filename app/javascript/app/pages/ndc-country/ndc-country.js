@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import qs from 'query-string';
 
 import NDCCountryComponent from './ndc-country-component';
 import actions from './ndc-country-actions';
@@ -11,25 +12,39 @@ export { initialState } from './ndc-country-reducers';
 export { default as reducers } from './ndc-country-reducers';
 export { default as actions } from './ndc-country-actions';
 
-const mapStateToProps = (state, { match }) => {
+const mapStateToProps = (state, { match, location }) => {
   const countryData = {
     countries: state.countries.data,
     iso: match.params.iso
   };
+  const search = qs.parse(location.search);
   return {
     country: getCountry(countryData),
-    hasData: !!state.countryNDC.data[match.params.iso]
+    hasData: !!state.countryNDC.data[match.params.iso],
+    search: search.search
   };
 };
 
-const NDCCountryContainer = (props) => {
-  const { hasData, match, fetchCountryNDC } = props;
+const NDCCountryContainer = props => {
+  const { hasData, location, match, history, fetchCountryNDC } = props;
   const { iso } = match.params;
   if (!hasData && iso) {
     fetchCountryNDC(iso);
   }
+
+  const onSearchChange = query => {
+    const search = qs.parse(location.search);
+    const newSearch = { ...search, search: query };
+
+    history.replace({
+      pathname: location.pathname,
+      search: qs.stringify(newSearch)
+    });
+  };
+
   return createElement(NDCCountryComponent, {
-    ...props
+    ...props,
+    onSearchChange
   });
 };
 
