@@ -15,18 +15,19 @@ const Dropdown = props =>
         {props.label}
       </span>}
     <Select
-      className={styles.dropdown}
+      className={cx(styles.dropdown, { [styles.dropdownUp]: props.openUp })}
       {...props}
       arrowRenderer={({ isOpen }) =>
         (<Icon
-          className={cx({ [styles.isOpen]: isOpen })}
+          className={cx({ [styles.isOpen]: props.openUp ? !isOpen : isOpen })}
           icon={dropdownArrow}
         />)}
     />
   </div>);
 
 Dropdown.propTypes = {
-  label: PropTypes.string
+  label: PropTypes.string,
+  openUp: PropTypes.bool
 };
 
 export default Dropdown;

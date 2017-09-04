@@ -15,7 +15,7 @@ class NavBar extends PureComponent {
     const { countriesOpen, setCountriesVisibility, location } = this.props;
     return (
       <div className={layout.content}>
-        <div className={styles.navbar}>
+        <nav className={styles.navbar}>
           {location.pathname !== '/' &&
             <NavLink exact className={styles.link} to="/">
               <Icon className={styles.logo} icon={cwLogo} />
@@ -76,7 +76,7 @@ class NavBar extends PureComponent {
             ABOUT
           </NavLink>
           <ToolsNav />
-        </div>
+        </nav>
       </div>
     );
   }

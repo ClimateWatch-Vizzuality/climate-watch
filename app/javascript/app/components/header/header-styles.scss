@@ -4,10 +4,12 @@
   background-color: $theme-color;
   color: $white;
   padding: 50px 0 0;
+  display: flex;
+  align-items: flex-end;
 }
 
 .medium {
-  min-height: 250px;
+  min-height: 180px;
 }
 
 .large {

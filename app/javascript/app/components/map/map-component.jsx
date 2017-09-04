@@ -24,6 +24,8 @@ class Map extends PureComponent {
       handleZoomIn,
       handleZoomOut,
       onCountryClick,
+      onCountryMove,
+      onCountryLeave,
       computedStyles
     } = this.props;
     return (
@@ -64,14 +66,18 @@ class Map extends PureComponent {
                   disableOptimization={!cache}
                 >
                   {(geographies, projection) =>
-                    geographies.map(geography =>
-                      (<Geography
-                        key={geography.id}
-                        geography={geography}
-                        projection={projection}
-                        onClick={onCountryClick}
-                        style={computedStyles(geography)}
-                      />)
+                    geographies.map(
+                      geography =>
+                        geography &&
+                        <Geography
+                          key={geography.id}
+                          geography={geography}
+                          projection={projection}
+                          onClick={onCountryClick}
+                          onMouseMove={onCountryMove}
+                          onMouseLeave={onCountryLeave}
+                          style={computedStyles(geography)}
+                        />
                     )}
                 </Geographies>
               </ZoomableGroup>
@@ -93,6 +99,8 @@ Map.propTypes = {
   handleZoomIn: Proptypes.func.isRequired,
   handleZoomOut: Proptypes.func.isRequired,
   onCountryClick: Proptypes.func,
+  onCountryMove: Proptypes.func,
+  onCountryLeave: Proptypes.func,
   computedStyles: Proptypes.func.isRequired
 };
 
@@ -103,9 +111,9 @@ Map.defaultProps = {
   dragEnable: true,
   cache: true,
   paths: [],
-  onCountryClick: (country) => {
-    console.info('clicked', country);
-  },
+  onCountryClick: () => {},
+  onCountryMove: () => {},
+  onCountryLeave: () => {},
   // gets the geography data to handle styles individually
   // eslint-disable-next-line
   computedStyles: geography => ({

@@ -2,8 +2,7 @@
 @import '~styles/settings.scss';
 
 .wrapper {
-  padding-top: $gutter-padding;
-  padding-bottom: $gutter-padding;
+  position: relative;
 }
 
 .col4 {
@@ -11,6 +10,12 @@
 
   grid-template-columns: repeat(4, 1fr);
   align-items: end;
+}
+
+.legend {
+  position: absolute;
+  left: 0;
+  bottom: 100px;
 }
 
 .buttons {

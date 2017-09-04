@@ -4,13 +4,13 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 
-import paths from 'app/data/world-50m-paths';
 import Component from './ndcs-map-component';
 import {
   getCategories,
   getIndicators,
   getSelectedCategory,
-  getSelectedIndicator
+  getSelectedIndicator,
+  getCountriesGeometry
 } from './ndcs-map-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -26,7 +26,8 @@ const mapStateToProps = (state, { location }) => {
     categories: getCategories(ndcs),
     indicators: getIndicators(ndcs),
     selectedCategory: getSelectedCategory(ndcsWithRouter),
-    selectedIndicator: getSelectedIndicator(ndcsWithRouter)
+    selectedIndicator: getSelectedIndicator(ndcsWithRouter),
+    paths: getCountriesGeometry(state.countries)
   };
 };
 
@@ -52,7 +53,7 @@ const countryStyles = {
   }
 };
 
-const getChoroplethColor = (vis) => {
+const getChoroplethColor = vis => {
   switch (vis) {
     case 1:
       return '#d54d60';
@@ -62,21 +63,33 @@ const getChoroplethColor = (vis) => {
       return '#fee08d';
     case 4:
       return '#7aabd3';
-    default:
+    case 5:
       return '#25597c';
+    case 6:
+      return '#3c4483';
+    default:
+      return '#a4c74c';
   }
 };
 
 class NDCMapContainer extends PureComponent {
-  handleCountryClick = (geography) => {
+  handleCountryClick = geography => {
     this.props.history.push(`/ndcs/country/${geography.id}`);
   };
 
-  handleCategoryChange = (category) => {
+  handleCountryMove = geometry => {
+    console.info(geometry);
+  };
+
+  handleCountryLeave = geometry => {
+    console.info(geometry);
+  };
+
+  handleCategoryChange = category => {
     this.updateUrlParam('category', category.value, true);
   };
 
-  handleIndicatorChange = (indicator) => {
+  handleIndicatorChange = indicator => {
     this.updateUrlParam('indicator', indicator.value);
   };
 
@@ -96,7 +109,7 @@ class NDCMapContainer extends PureComponent {
     });
   }
 
-  computedStyles = (geography) => {
+  computedStyles = geography => {
     const { countries } = this.props.selectedIndicator;
     if (countries && countries[geography.id]) {
       const color = getChoroplethColor(countries[geography.id].vis);
@@ -122,10 +135,11 @@ class NDCMapContainer extends PureComponent {
       this.props.indicators[this.props.selectedCategory.value] || [];
     return createElement(Component, {
       ...this.props,
-      paths,
       indicators,
       computedStyles: this.computedStyles,
       handleCountryClick: this.handleCountryClick,
+      handleCountryMove: this.handleCountryMove,
+      handleCountryLeave: this.handleCountryLeave,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange
     });

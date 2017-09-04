@@ -13,8 +13,10 @@ import styles from './ndcs-styles.scss';
 const NDC = props =>
   (<div>
     <Header size="medium">
-      <Intro title="NDC Explorer" />
-      <AutocompleteSearch />
+      <div className={styles.cols}>
+        <Intro title="NDC Explorer" />
+        <AutocompleteSearch />
+      </div>
       <AnchorNav links={props.links} />
     </Header>
     <div className={cx(layout.content, styles.wrapper)}>

@@ -4,10 +4,10 @@ import { NavLink } from 'react-router-dom';
 
 import styles from './anchor-nav-styles.scss';
 
-const AnchorNav = (props) => {
+const AnchorNav = props => {
   const { links } = props;
   return (
-    <div className={styles.anchorNav}>
+    <nav className={styles.anchorNav}>
       {links.map(link =>
         (<NavLink
           exact
@@ -19,7 +19,7 @@ const AnchorNav = (props) => {
           {link.label}
         </NavLink>)
       )}
-    </div>
+    </nav>
   );
 };
 

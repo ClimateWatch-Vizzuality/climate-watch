@@ -5,3 +5,9 @@
   padding-top: $gutter-padding;
   padding-bottom: $gutter-padding;
 }
+
+.cols {
+  @extend %grid;
+
+  grid-template-columns: repeat(2, 1fr);
+}
