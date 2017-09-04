@@ -8,16 +8,11 @@ module Api
                  serializer: IndicatorSerializer
 
         def categories
-          serialized_values = ActiveModelSerializers::SerializableResource.new(
+          IndexedSerializer.serialize(
             object.categories,
-            each_serializer: CategorySerializer
-          ).as_json
-
-          object.categories.
-            map(&:id).
-            zip(serialized_values).
-            sort.
-            to_h
+            each_serializer: CategorySerializer,
+            &:id
+          )
         end
       end
     end

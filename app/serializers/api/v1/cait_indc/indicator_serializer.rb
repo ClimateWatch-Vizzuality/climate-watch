@@ -10,29 +10,20 @@ module Api
         attribute :locations
 
         def labels
-          serialized_values = ActiveModelSerializers::SerializableResource.new(
+          IndexedSerializer.serialize(
             object.labels,
-            each_serializer: LabelSerializer
-          ).as_json
-
-          object.labels.
-            map(&:id).
-            zip(serialized_values).
-            sort.
-            to_h
+            each_serializer: LabelSerializer,
+            &:id
+          )
         end
 
         def locations
-          serialized_values = ActiveModelSerializers::SerializableResource.new(
+          IndexedSerializer.serialize(
             object.values,
             each_serializer: ValueSerializer
-          ).as_json
-
-          object.values.
-            map { |v| v.location.iso_code3 }.
-            zip(serialized_values).
-            sort.
-            to_h
+          ) do |v|
+            v.location.iso_code3
+          end
         end
       end
     end
