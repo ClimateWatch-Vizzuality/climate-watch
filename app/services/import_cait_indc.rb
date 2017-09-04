@@ -158,7 +158,7 @@ class ImportCaitIndc
         if a[:location]
           CaitIndc::LocationDatum.create!(a)
         else
-          Rails.logger.error "location #{d[:country]} not parametrized. Skipping."
+          Rails.logger.error "location #{d[:country]} not found. Skipping."
         end
       end
   end
@@ -167,7 +167,7 @@ class ImportCaitIndc
     @data.each do |d|
       location = Location.find_by(wri_standard_name: d[:country])
       unless location
-        Rails.logger.error "location #{d[:country]} not parametrized. Skipping."
+        Rails.logger.error "location #{d[:country]} not found. Skipping."
         next
       end
 
