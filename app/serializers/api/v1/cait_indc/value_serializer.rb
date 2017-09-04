@@ -2,9 +2,8 @@ module Api
   module V1
     module CaitIndc
       class ValueSerializer < ActiveModel::Serializer
-        attributes :value
-
-        belongs_to :label, serializer: LabelSerializer
+        attribute :value
+        attribute :label_id, if: -> { object.label_id }
       end
     end
   end

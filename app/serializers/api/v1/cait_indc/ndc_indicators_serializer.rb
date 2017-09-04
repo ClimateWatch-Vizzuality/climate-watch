@@ -2,19 +2,19 @@ module Api
   module V1
     module CaitIndc
       class NdcIndicatorsSerializer < ActiveModel::Serializer
-        attribute :locations
+        attribute :categories
 
         has_many :indicators,
                  serializer: IndicatorSerializer
 
-        def locations
+        def categories
           serialized_values = ActiveModelSerializers::SerializableResource.new(
-            object.locations,
-            each_serializer: LocationDatumSerializer
+            object.categories,
+            each_serializer: CategorySerializer
           ).as_json
 
-          object.locations.
-            map { |l| l.iso_code3 }.
+          object.categories.
+            map(&:id).
             zip(serialized_values).
             sort.
             to_h

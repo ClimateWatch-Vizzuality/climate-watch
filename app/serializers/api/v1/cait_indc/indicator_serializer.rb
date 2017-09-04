@@ -2,17 +2,24 @@ module Api
   module V1
     module CaitIndc
       class IndicatorSerializer < ActiveModel::Serializer
-        attributes :name,
-                   :slug,
-                   :locations
+        attribute :id
+        attribute :name
+        attribute :slug
+        attribute :category_id, if: -> { object.category_id }
+        attribute :labels
+        attribute :locations
 
-        attribute :category,
-                  if: -> { object.category }
+        def labels
+          serialized_values = ActiveModelSerializers::SerializableResource.new(
+            object.labels,
+            each_serializer: LabelSerializer
+          ).as_json
 
-        has_many :labels
-
-        def category
-          object.category&.name
+          object.labels.
+            map(&:id).
+            zip(serialized_values).
+            sort.
+            to_h
         end
 
         def locations

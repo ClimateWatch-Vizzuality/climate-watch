@@ -1,6 +1,6 @@
 module Api
   module V1
-    NdcIndicators = Struct.new(:indicators, :locations) do
+    NdcIndicators = Struct.new(:indicators, :categories) do
       alias_method :read_attribute_for_serialization, :send
     end
 
@@ -13,9 +13,9 @@ module Api
             values: [:label, :location]
           )
 
-        locations = Location.includes(:location_datum)
+        categories = ::CaitIndc::Category.all
 
-        render json: NdcIndicators.new(indicators, locations),
+        render json: NdcIndicators.new(indicators, categories),
                serializer: Api::V1::CaitIndc::NdcIndicatorsSerializer
       end
     end
