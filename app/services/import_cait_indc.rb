@@ -155,7 +155,11 @@ class ImportCaitIndc
     @data.
       each do |d|
         a = location_datum_attributes(d)
-        CaitIndc::LocationDatum.create!(a) if a[:location]
+        if a[:location]
+          CaitIndc::LocationDatum.create!(a)
+        else
+          Rails.logger.error "location #{d[:country]} not parametrized. Skipping."
+        end
       end
   end
 
