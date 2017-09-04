@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20170830111409) do
 
   create_table "cait_indc_categories", force: :cascade do |t|
     t.text "name", null: false
+    t.text "slug", null: false
   end
 
   create_table "cait_indc_charts", force: :cascade do |t|

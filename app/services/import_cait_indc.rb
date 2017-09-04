@@ -62,6 +62,7 @@ class ImportCaitIndc
         find_by(name: indicator[:indicator_type]),
       category: CaitIndc::Category.find_by(name: indicator[:category]),
       name: indicator[:indicator],
+      slug: Slug.create(indicator[:indicator]),
       summary_list: indicator[:summary_list] == 'Yes',
       on_map: indicator[:on_map] == 'Yes',
       omit_from_detailed_view: indicator[:omit_from_detailed_view] == 'x',
@@ -104,19 +105,24 @@ class ImportCaitIndc
     }
   end
 
+  def category_attributes(category_name)
+    {
+      name: category_name,
+      slug: Slug.create(category_name)
+    }
+  end
+
   def import_categories
     @indicators.
       map { |r| r[:category] }.
-      sort_by.
       uniq.
       select(&:itself).
-      each { |cat| CaitIndc::Category.create!(name: cat) }
+      each { |cat| CaitIndc::Category.create!(category_attributes(cat)) }
   end
 
   def import_indicator_types
     @indicators.
       map { |r| r[:indicator_type] }.
-      sort_by.
       uniq.
       select(&:itself).
       each { |ind_t| CaitIndc::IndicatorType.create!(name: ind_t) }
@@ -125,7 +131,6 @@ class ImportCaitIndc
   def import_charts
     @legend.
       map { |r| r[:chart_title] }.
-      sort_by.
       uniq.
       select(&:itself).
       each { |chart_t| CaitIndc::Chart.create!(name: chart_t) }
