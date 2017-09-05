@@ -25,7 +25,7 @@ class Map extends PureComponent {
       handleZoomIn,
       handleZoomOut,
       onCountryClick,
-      onCountryMove,
+      onCountryEnter,
       onCountryLeave,
       computedStyles
     } = this.props;
@@ -74,7 +74,7 @@ class Map extends PureComponent {
                           geography,
                           projection,
                           onClick: onCountryClick,
-                          onMouseMove: onCountryMove,
+                          onMouseEnter: onCountryEnter,
                           onMouseLeave: onCountryLeave,
                           style: computedStyles(geography)
                         };
@@ -109,6 +109,7 @@ Map.propTypes = {
   tooltipId: Proptypes.string,
   handleZoomIn: Proptypes.func.isRequired,
   handleZoomOut: Proptypes.func.isRequired,
+  onCountryEnter: Proptypes.func,
   onCountryClick: Proptypes.func,
   onCountryMove: Proptypes.func,
   onCountryLeave: Proptypes.func,
@@ -124,6 +125,7 @@ Map.defaultProps = {
   paths: [],
   tooltipId: '',
   onCountryClick: () => {},
+  onCountryEnter: () => {},
   onCountryMove: () => {},
   onCountryLeave: () => {},
   // gets the geography data to handle styles individually

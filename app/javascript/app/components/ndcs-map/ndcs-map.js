@@ -7,7 +7,7 @@ import qs from 'query-string';
 import Component from './ndcs-map-component';
 import {
   getCategories,
-  getIndicators,
+  getCategoryIndicators,
   getSelectedCategory,
   getSelectedIndicator,
   getCountriesGeometry
@@ -24,7 +24,7 @@ const mapStateToProps = (state, { location }) => {
 
   return {
     categories: getCategories(ndcs),
-    indicators: getIndicators(ndcs),
+    indicators: getCategoryIndicators(ndcs),
     selectedCategory: getSelectedCategory(ndcsWithRouter),
     selectedIndicator: getSelectedIndicator(ndcsWithRouter),
     paths: getCountriesGeometry(state.countries)
@@ -73,16 +73,33 @@ const getChoroplethColor = vis => {
 };
 
 class NDCMapContainer extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      geometryIdHover: null
+    };
+  }
+
+  getTooltipText() {
+    const { geometryIdHover } = this.state;
+    const { selectedIndicator } = this.props;
+    if (!geometryIdHover) return '';
+
+    return selectedIndicator.countries[geometryIdHover]
+      ? selectedIndicator.countries[geometryIdHover].txt
+      : '';
+  }
+
   handleCountryClick = geography => {
     this.props.history.push(`/ndcs/country/${geography.id}`);
   };
 
-  handleCountryMove = geometry => {
-    console.info(geometry);
+  handleCountryEnter = geometry => {
+    this.setState({ geometryIdHover: geometry.id });
   };
 
-  handleCountryLeave = geometry => {
-    console.info(geometry);
+  handleCountryLeave = () => {
+    this.setState({ geometryIdHover: null });
   };
 
   handleCategoryChange = category => {
@@ -131,14 +148,13 @@ class NDCMapContainer extends PureComponent {
   };
 
   render() {
-    const indicators =
-      this.props.indicators[this.props.selectedCategory.value] || [];
+    const tooltipTxt = this.getTooltipText();
     return createElement(Component, {
       ...this.props,
-      indicators,
+      tooltipTxt,
       computedStyles: this.computedStyles,
       handleCountryClick: this.handleCountryClick,
-      handleCountryMove: this.handleCountryMove,
+      handleCountryEnter: this.handleCountryEnter,
       handleCountryLeave: this.handleCountryLeave,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange
@@ -149,8 +165,6 @@ class NDCMapContainer extends PureComponent {
 NDCMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  indicators: PropTypes.object.isRequired,
-  selectedCategory: PropTypes.object.isRequired,
   selectedIndicator: PropTypes.object.isRequired
 };
 
