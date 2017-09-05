@@ -15,7 +15,7 @@ import styles from './ndc-country-styles.scss';
 
 class NDCCountry extends PureComponent {
   render() {
-    const { country, match, onSearchChange, search } = this.props;
+    const { country, match, onSearchChange, search, data } = this.props;
     return (
       <div>
         <Header image={background}>
@@ -50,7 +50,7 @@ class NDCCountry extends PureComponent {
             </div>
           </div>
         </Header>
-        <Accordion />
+        <Accordion data={data} />
       </div>
     );
   }
@@ -60,7 +60,8 @@ NDCCountry.propTypes = {
   match: Proptypes.object.isRequired,
   country: Proptypes.object.isRequired,
   onSearchChange: Proptypes.func.isRequired,
-  search: Proptypes.string
+  search: Proptypes.string,
+  data: Proptypes.array
 };
 
 export default NDCCountry;
