@@ -21,6 +21,7 @@ class Map extends PureComponent {
       cache,
       zoomEnable,
       dragEnable,
+      tooltipId,
       handleZoomIn,
       handleZoomOut,
       onCountryClick,
@@ -66,19 +67,28 @@ class Map extends PureComponent {
                   disableOptimization={!cache}
                 >
                   {(geographies, projection) =>
-                    geographies.map(
-                      geography =>
-                        geography &&
-                        <Geography
-                          key={geography.id}
-                          geography={geography}
-                          projection={projection}
-                          onClick={onCountryClick}
-                          onMouseMove={onCountryMove}
-                          onMouseLeave={onCountryLeave}
-                          style={computedStyles(geography)}
-                        />
-                    )}
+                    geographies.map(geography => {
+                      if (geography) {
+                        let commonProps = {
+                          key: geography.id,
+                          geography,
+                          projection,
+                          onClick: onCountryClick,
+                          onMouseMove: onCountryMove,
+                          onMouseLeave: onCountryLeave,
+                          style: computedStyles(geography)
+                        };
+                        if (tooltipId) {
+                          commonProps = {
+                            ...commonProps,
+                            'data-tip': '',
+                            'data-for': tooltipId
+                          };
+                        }
+                        return <Geography {...commonProps} />;
+                      }
+                      return null;
+                    })}
                 </Geographies>
               </ZoomableGroup>
             </ComposableMap>)}
@@ -96,6 +106,7 @@ Map.propTypes = {
   cache: Proptypes.bool,
   className: Proptypes.string,
   paths: Proptypes.array.isRequired,
+  tooltipId: Proptypes.string,
   handleZoomIn: Proptypes.func.isRequired,
   handleZoomOut: Proptypes.func.isRequired,
   onCountryClick: Proptypes.func,
@@ -111,6 +122,7 @@ Map.defaultProps = {
   dragEnable: true,
   cache: true,
   paths: [],
+  tooltipId: '',
   onCountryClick: () => {},
   onCountryMove: () => {},
   onCountryLeave: () => {},
