@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import paths from 'app/data/world-50m-paths';
 
 import Component from './ndcs-map-component';
 import {
   getCategories,
   getCategoryIndicators,
   getSelectedCategory,
-  getSelectedIndicator,
-  getCountriesGeometry
+  getSelectedIndicator
 } from './ndcs-map-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -27,7 +27,7 @@ const mapStateToProps = (state, { location }) => {
     indicators: getCategoryIndicators(ndcs),
     selectedCategory: getSelectedCategory(ndcsWithRouter),
     selectedIndicator: getSelectedIndicator(ndcsWithRouter),
-    paths: getCountriesGeometry(state.countries)
+    paths
   };
 };
 
