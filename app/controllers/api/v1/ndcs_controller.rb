@@ -6,6 +6,15 @@ module Api
 
     class NdcsController < ApiController
       def index
+        categories = ::CaitIndc::Category.all
+
+        render json: NdcIndicators.new(indicators, categories),
+               serializer: Api::V1::CaitIndc::NdcIndicatorsSerializer
+      end
+
+      private
+
+      def indicators
         indicators = ::CaitIndc::Indicator.
           includes(
             :labels,
@@ -15,32 +24,25 @@ module Api
 
         if location_list
           indicators = indicators.where(
-            values: { locations: { iso_code3: location_list } }
+            values: {locations: {iso_code3: location_list}}
           )
         end
 
-        if params[:filter] == 'map'
-          indicators = indicators.where(on_map: true)
-        end
+        indicators = indicators.where(on_map: true) if params[:filter] == 'map'
 
-        if params[:filter] == 'summary'
-          indicators = indicators.where(summary_list: true)
-        end
+        indicators = indicators.where(summary_list: true) if
+          params[:filter] == 'summary'
 
-        categories = ::CaitIndc::Category.all
-
-        render json: NdcIndicators.new(indicators, categories),
-               serializer: Api::V1::CaitIndc::NdcIndicatorsSerializer
+        indicators
       end
-
-      private
 
       def location_list
-        params[:location].blank? ?
-          nil :
+        if params[:location].blank?
+          nil
+        else
           params[:location].split(',')
+        end
       end
-
     end
   end
 end
