@@ -82,7 +82,7 @@ class ImportCaitIndc
 
   def location_datum_attributes(datum)
     {
-      location: Location.find_by(wri_standard_name: datum[:country]),
+      location: Location.find_by(iso_code3: datum[:iso]),
       highlight_outline: datum[:highlight_outline] == 'x',
       marker_lat:
         (datum[:marker_latlng].split(',')[0] if datum[:marker_latlng]),
