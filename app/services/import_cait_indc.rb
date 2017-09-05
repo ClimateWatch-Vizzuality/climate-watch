@@ -4,6 +4,7 @@ META_LEGEND_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - legend.csv'.
   freeze
 DATA_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - data.csv'.
   freeze
+DEFAULT_CATEGORY = 'General'.freeze
 
 class ImportCaitIndc
   def call
@@ -114,7 +115,7 @@ class ImportCaitIndc
 
   def import_categories
     @indicators.
-      map { |r| r[:category] }.
+      map { |r| r[:category].blank? ? DEFAULT_CATEGORY : r[:category].strip }.
       uniq.
       select(&:itself).
       each { |cat| CaitIndc::Category.create!(category_attributes(cat)) }
@@ -122,7 +123,7 @@ class ImportCaitIndc
 
   def import_indicator_types
     @indicators.
-      map { |r| r[:indicator_type] }.
+      map { |r| r[:indicator_type].strip }.
       uniq.
       select(&:itself).
       each { |ind_t| CaitIndc::IndicatorType.create!(name: ind_t) }
@@ -130,7 +131,7 @@ class ImportCaitIndc
 
   def import_charts
     @legend.
-      map { |r| r[:chart_title] }.
+      map { |r| r[:chart_title].strip }.
       uniq.
       select(&:itself).
       each { |chart_t| CaitIndc::Chart.create!(name: chart_t) }
