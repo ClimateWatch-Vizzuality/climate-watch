@@ -43,13 +43,20 @@ class Accordion extends PureComponent {
                       <NoContent message="Nothing here" />}
                     <dl className={styles.definitionList}>
                       {section.definitions.map(def =>
-                        (<div className={styles.definition} key={def.title}>
+                        (<div className={styles.definition} key={def.slug}>
                           <dt className={styles.definitionTitle}>
                             {def.title}
                           </dt>
-                          <dd className={styles.definitionDesc}>
-                            {def.description}
-                          </dd>
+                          {def.descriptions.map(desc =>
+                            (<dd
+                              key={`${def.slug}-${desc.iso}`}
+                              className={styles.definitionDesc}
+                            >
+                              <div
+                                dangerouslySetInnerHTML={{ __html: desc.value }}
+                              />
+                            </dd>)
+                          )}
                         </div>)
                       )}
                     </dl>

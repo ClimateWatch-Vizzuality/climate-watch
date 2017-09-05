@@ -1,42 +1,61 @@
 import { createSelector } from 'reselect';
-import { deburrUpper } from 'app/utils';
+// import { deburrUpper } from 'app/utils';
+import groupBy from 'lodash/groupBy';
+import uniqBy from 'lodash/uniqBy';
 
 const getCountries = state => state.countries;
 const getIso = state => state.iso;
-const getDefs = state => state.ndcs;
-const getSearch = state => deburrUpper(state.search);
+const getAllIndicators = state => state.data.indicators || {};
+const getCategories = state => state.data.categories;
+// const getSearch = state => deburrUpper(state.search);
 
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
 
-const filterNDCsDefinition = (ndcs, search) => {
-  const filteredNdcs = ndcs.map(ndc => {
-    const defs = ndc.definitions.filter(
-      def =>
-        deburrUpper(def.title).indexOf(search) > -1 ||
-        deburrUpper(def.description).indexOf(search) > -1
-    );
+export const getIndicators = createSelector(getAllIndicators, data =>
+  groupBy(data, 'category_id')
+);
 
-    return {
-      ...ndc,
-      definitions: defs
-    };
-  });
+export const parseIndicatorsDefs = createSelector(
+  [getIndicators, getCountries],
+  (indicators, countries) => {
+    const parsedIndicators = Object.keys(indicators).map(category => {
+      const parsedDefinitions = indicators[category].map(indicator => {
+        const descriptions = countries.map(country => ({
+          iso: country,
+          value: indicator.locations[country]
+            ? indicator.locations[country].value
+            : null
+        }));
+        return {
+          title: indicator.name,
+          descriptions
+        };
+      });
+      return uniqBy(parsedDefinitions, 'title');
+    });
+    return parsedIndicators;
+  }
+);
 
-  return filteredNdcs;
-};
+export const getNDCs = createSelector(
+  [getCategories, parseIndicatorsDefs],
+  (categories, indicators) => {
+    const ndcs = Object.keys(categories).map(category => ({
+      title: categories[category].name,
+      slug: categories[category].slug,
+      definitions: indicators[category] ? indicators[category] : []
+    }));
+    return ndcs;
+  }
+);
 
 export const getCountry = createSelector(
   [getCountries, getIso],
   getCountryByIso
 );
 
-export const filterDefs = createSelector(
-  [getDefs, getSearch],
-  filterNDCsDefinition
-);
-
 export default {
   getCountry,
-  filterDefs
+  getNDCs
 };

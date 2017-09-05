@@ -19,14 +19,17 @@
   }
 
   .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: left;
+    position: relative;
+    padding-right: 30px;
   }
 }
 
 .iconArrow {
   transition: transform 0.25s ease-in-out;
+  position: absolute;
+  right: 0;
+  top: calc(50% - 5px);
 
   &.isOpen {
     transform: rotate(180deg);
@@ -63,4 +66,5 @@
 .definitionDesc {
   color: $theme-color;
   font-family: $font-family-2;
+  line-height: 1.4em;
 }

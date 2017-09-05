@@ -6,20 +6,13 @@ import exampleNDC from 'app/data/ndc-country.json';
 const fetchCountryNDCInit = createAction('fetchCountryNDCInit');
 const fetchCountryNDCReady = createAction('fetchCountryNDCReady');
 
-const fetchCountryNDC = createThunkAction(
-  'fetchCountryNDC',
-  iso => (dispatch) => {
-    dispatch(fetchCountryNDCInit());
+const fetchCountryNDC = createThunkAction('fetchCountryNDC', () => dispatch => {
+  dispatch(fetchCountryNDCInit());
 
-    setTimeout(() => {
-      dispatch(
-        fetchCountryNDCReady({
-          [iso]: exampleNDC
-        })
-      );
-    }, 1000);
-  }
-);
+  setTimeout(() => {
+    dispatch(fetchCountryNDCReady(exampleNDC));
+  }, 1000);
+});
 
 export default {
   fetchCountryNDC,

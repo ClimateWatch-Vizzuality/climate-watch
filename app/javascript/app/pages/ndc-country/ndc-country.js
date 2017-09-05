@@ -2,10 +2,11 @@ import { createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
+import isEmpty from 'lodash/isEmpty';
 
 import NDCCountryComponent from './ndc-country-component';
 import actions from './ndc-country-actions';
-import { getCountry, filterDefs } from './ndc-country-selectors';
+import { getCountry, getNDCs } from './ndc-country-selectors';
 
 export { default as component } from './ndc-country-component';
 export { initialState } from './ndc-country-reducers';
@@ -19,26 +20,22 @@ const mapStateToProps = (state, { match, location }) => {
     iso: match.params.iso
   };
   const ndcsData = {
-    ndcs: state.countryNDC.data[match.params.iso],
-    search: search.search
+    data: state.countryNDC.data,
+    search: search.search,
+    countries: [match.params.iso]
   };
-
   return {
     country: getCountry(countryData),
-    hasData: !!state.countryNDC.data[match.params.iso],
+    fetchNeeds: isEmpty(state.countryNDC.data) && !state.countryNDC.loading,
     search: search.search,
-    data:
-      state.countryNDC.data[match.params.iso] &&
-      (search.search !== '' && search.search)
-        ? filterDefs(ndcsData)
-        : state.countryNDC.data[match.params.iso]
+    ndcsData: isEmpty(state.countryNDC.data) ? [] : getNDCs(ndcsData)
   };
 };
 
 const NDCCountryContainer = props => {
-  const { hasData, location, match, history, fetchCountryNDC } = props;
+  const { fetchNeeds, location, match, history, fetchCountryNDC } = props;
   const { iso } = match.params;
-  if (!hasData && iso) {
+  if (fetchNeeds && iso) {
     fetchCountryNDC(iso);
   }
 
