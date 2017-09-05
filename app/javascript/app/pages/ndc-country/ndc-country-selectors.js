@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-// import { deburrUpper } from 'app/utils';
+import { deburrUpper } from 'app/utils';
 import groupBy from 'lodash/groupBy';
 import uniqBy from 'lodash/uniqBy';
 
@@ -7,7 +7,7 @@ const getCountries = state => state.countries;
 const getIso = state => state.iso;
 const getAllIndicators = state => state.data.indicators || {};
 const getCategories = state => state.data.categories;
-// const getSearch = state => deburrUpper(state.search);
+const getSearch = state => deburrUpper(state.search);
 
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
@@ -50,6 +50,23 @@ export const getNDCs = createSelector(
   }
 );
 
+export const filterNDCs = createSelector(
+  [getNDCs, getSearch],
+  (ndcs, search) => {
+    const filteredNDCs = ndcs.map(ndc => {
+      const defs = ndc.definitions.filter(
+        def => deburrUpper(def.title).indexOf(search) > -1
+      );
+
+      return {
+        ...ndc,
+        definitions: defs
+      };
+    });
+    return filteredNDCs;
+  }
+);
+
 export const getCountry = createSelector(
   [getCountries, getIso],
   getCountryByIso
@@ -57,5 +74,5 @@ export const getCountry = createSelector(
 
 export default {
   getCountry,
-  getNDCs
+  filterNDCs
 };

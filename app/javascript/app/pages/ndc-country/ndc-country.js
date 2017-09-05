@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import NDCCountryComponent from './ndc-country-component';
 import actions from './ndc-country-actions';
-import { getCountry, getNDCs } from './ndc-country-selectors';
+import { getCountry, filterNDCs } from './ndc-country-selectors';
 
 export { default as component } from './ndc-country-component';
 export { initialState } from './ndc-country-reducers';
@@ -28,7 +28,7 @@ const mapStateToProps = (state, { match, location }) => {
     country: getCountry(countryData),
     fetchNeeds: isEmpty(state.countryNDC.data) && !state.countryNDC.loading,
     search: search.search,
-    ndcsData: isEmpty(state.countryNDC.data) ? [] : getNDCs(ndcsData)
+    ndcsData: isEmpty(state.countryNDC.data) ? [] : filterNDCs(ndcsData)
   };
 };
 
