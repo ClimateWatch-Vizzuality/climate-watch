@@ -18,16 +18,24 @@ const mapStateToProps = (state, { match }) => {
     iso: match.params.iso
   };
   return {
+    loading: state.countryNDCFull.loading,
     country: getCountry(countryData),
-    content: state.countryNDCFull.data
+    content: state.countryNDCFull.data[match.params.iso]
   };
 };
 
 const NDCCountryFullContainer = props => {
-  const { fetchNeeds, location, match, history, fetchCountryNDC } = props;
+  const {
+    loading,
+    location,
+    match,
+    history,
+    fetchCountryNDCFull,
+    content
+  } = props;
   const { iso } = match.params;
-  if (fetchNeeds && iso) {
-    fetchCountryNDC(iso);
+  if (iso && (!content && content !== '') && !loading) {
+    fetchCountryNDCFull(iso);
   }
 
   const onSearchChange = query => {

@@ -1,29 +1,36 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
-const fetchCountryNDCInit = createAction('fetchCountryNDCInit');
-const fetchCountryNDCReady = createAction('fetchCountryNDCReady');
+const fetchCountryNDCFullInit = createAction('fetchCountryNDCFullInit');
+const fetchCountryNDCFullReady = createAction('fetchCountryNDCFullReady');
+const fetchCountryNDCFullFailed = createAction('fetchCountryNDCFullFailed');
 
-const fetchCountryNDC = createThunkAction(
-  'fetchCountryNDC',
+const fetchCountryNDCFull = createThunkAction(
+  'fetchCountryNDCFull',
   iso => dispatch => {
-    dispatch(fetchCountryNDCInit());
+    dispatch(fetchCountryNDCFullInit());
     fetch(`/api/v1/ndcs/${iso}/full`)
       .then(response => {
-        if (response.ok) return response.json();
+        if (response.ok) return response.text();
         throw Error(response.statusText);
       })
       .then(data => {
-        dispatch(fetchCountryNDCReady(data));
+        const dataWithIso = {
+          iso,
+          data
+        };
+        dispatch(fetchCountryNDCFullReady(dataWithIso));
       })
       .catch(error => {
+        dispatch(fetchCountryNDCFullFailed(iso));
         console.info(error);
       });
   }
 );
 
 export default {
-  fetchCountryNDC,
-  fetchCountryNDCInit,
-  fetchCountryNDCReady
+  fetchCountryNDCFull,
+  fetchCountryNDCFullInit,
+  fetchCountryNDCFullReady,
+  fetchCountryNDCFullFailed
 };
