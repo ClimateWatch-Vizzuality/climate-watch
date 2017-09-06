@@ -1,4 +1,3 @@
-import { initialState as nav } from 'components/nav';
 import { initialState as map } from 'components/map';
 import { initialState as ndcs } from 'pages/ndcs';
 import { initialState as countryNDC } from 'pages/ndc-country';
@@ -8,7 +7,6 @@ import { initialState as countries } from 'providers/countries-provider';
 
 export default {
   countries,
-  nav,
   map,
   ndcs,
   countryNDC,

@@ -36,15 +36,3 @@
     height: 3px;
   }
 }
-
-.subMenu {
-  opacity: 0;
-  z-index: -1;
-  pointer-events: none;
-
-  &Open {
-    opacity: 1;
-    z-index: 10;
-    pointer-events: all;
-  }
-}

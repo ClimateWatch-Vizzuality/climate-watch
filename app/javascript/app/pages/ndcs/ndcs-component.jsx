@@ -10,23 +10,26 @@ import AnchorNav from 'components/anchor-nav';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
 
-const NDC = props =>
-  (<div>
+const NDC = props => (
+  <div>
     <Header size="medium">
-      <div className={styles.cols}>
-        <Intro title="NDC Explorer" />
-        <AutocompleteSearch />
+      <div className={layout.content}>
+        <div className={styles.cols}>
+          <Intro title="NDC Explorer" />
+          <AutocompleteSearch />
+        </div>
+        <AnchorNav useRoutes links={props.anchorLinks} />
       </div>
-      <AnchorNav links={props.links} />
     </Header>
     <div className={cx(layout.content, styles.wrapper)}>
       {renderRoutes(props.route.routes)}
     </div>
-  </div>);
+  </div>
+);
 
 NDC.propTypes = {
   route: Proptypes.object.isRequired,
-  links: Proptypes.array.isRequired
+  anchorLinks: Proptypes.array.isRequired
 };
 
 export default NDC;
