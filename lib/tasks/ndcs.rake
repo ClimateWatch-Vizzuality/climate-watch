@@ -4,5 +4,10 @@ namespace :ndcs do
     task import: :environment do
       ImportNdcFullTexts.new.call
     end
+
+    desc 'Indexes NDC full text'
+    task index: :environment do
+      Ndc.refresh_full_text_tsv
+    end
   end
 end

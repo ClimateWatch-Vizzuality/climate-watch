@@ -7,6 +7,7 @@ class ImportNdcFullTexts
       md_objects = response.contents.select { |o| o.key =~ /\.html$/ }
       md_objects.each { |object| import_object(s3, bucket_name, object) }
     end
+    Ndc.refresh_full_text_tsv
   end
 
   private
