@@ -17,7 +17,7 @@ const NDC = props =>
         <Intro title="NDC Explorer" />
         <AutocompleteSearch />
       </div>
-      <AnchorNav links={props.links} />
+      <AnchorNav links={props.anchorLinks} />
     </Header>
     <div className={cx(layout.content, styles.wrapper)}>
       {renderRoutes(props.route.routes)}
@@ -26,7 +26,7 @@ const NDC = props =>
 
 NDC.propTypes = {
   route: Proptypes.object.isRequired,
-  links: Proptypes.array.isRequired
+  anchorLinks: Proptypes.array.isRequired
 };
 
 export default NDC;

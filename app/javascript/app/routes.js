@@ -32,14 +32,14 @@ export default [
             path: '/ndcs',
             component: NDCMap,
             exact: true,
-            link: true,
+            anchor: true,
             label: 'Map'
           },
           {
             path: '/ndcs/table',
             component: NDCTable,
             exact: true,
-            link: true,
+            anchor: true,
             label: 'Table'
           },
           {
@@ -50,7 +50,19 @@ export default [
       },
       {
         path: '/countries/:iso',
-        component: Country
+        component: Country,
+        sections: [
+          {
+            slug: 'ghg-emissions',
+            label: 'GHG Emissions',
+            anchor: true
+          },
+          {
+            slug: 'ndc-sdg-linkages',
+            label: 'NDC-SDG Linkages',
+            anchor: true
+          }
+        ]
       },
       {
         path: '/error-page',
