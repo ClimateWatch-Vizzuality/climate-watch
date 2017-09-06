@@ -10,7 +10,7 @@ import styles from './nav-styles.scss';
 
 class NavBar extends PureComponent {
   render() {
-    const { setCountriesVisibility, location } = this.props;
+    const { location } = this.props;
     return (
       <div className={layout.content}>
         <nav className={styles.navbar}>
@@ -19,11 +19,7 @@ class NavBar extends PureComponent {
               <Icon className={styles.logo} icon={cwLogo} />
             </NavLink>
           )}
-          <div
-            className={styles.linkWrapper}
-            onMouseEnter={() => setCountriesVisibility(true)}
-            onMouseLeave={() => setCountriesVisibility(false)}
-          >
+          <div className={styles.linkWrapper}>
             <NavLink
               className={styles.link}
               activeClassName={styles.linkActive}
@@ -75,7 +71,6 @@ class NavBar extends PureComponent {
 }
 
 NavBar.propTypes = {
-  setCountriesVisibility: Proptypes.func.isRequired,
   location: Proptypes.object.isRequired
 };
 
