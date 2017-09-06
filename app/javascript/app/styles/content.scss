@@ -3,6 +3,8 @@
 .content :global {
   font-family: $font-family-1;
   color: $theme-color;
+  line-height: 1.9em;
+  font-size: $font-size-m;
 
   h1,
   h2,
@@ -16,7 +18,11 @@
   }
 
   img {
-    width: 100%;
+    text-align: center;
+    display: block;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 20px;
   }
 
   h1 {
@@ -95,6 +101,7 @@
       height: 10px;
       border-radius: 5px;
       margin-right: 15px;
+      background-color: $theme-color;
     }
   }
 
@@ -118,6 +125,7 @@
         margin-right: 13px;
         content: counters(item, ".") " ";
         counter-increment: item;
+        background-color: $theme-color;
       }
 
       p {

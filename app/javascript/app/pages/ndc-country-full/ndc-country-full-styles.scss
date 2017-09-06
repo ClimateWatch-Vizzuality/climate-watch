@@ -22,7 +22,14 @@
   align-items: flex-start;
 }
 
-.content {
+.bodyContent {
+  @extend %grid;
+
+  grid-template-columns: repeat(6, 1fr);
   padding-top: 80px;
   padding-bottom: 80px;
+}
+
+.innerContent {
+  grid-column: 2 / 6;
 }

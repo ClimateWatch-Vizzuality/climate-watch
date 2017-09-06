@@ -9,10 +9,10 @@ import cx from 'classnames';
 import NoContent from 'components/no-content';
 
 import layout from 'styles/layout.scss';
-import contentStyles from 'styles/content.scss';
 import backIcon from 'assets/icons/back.svg';
 import lightSearch from 'styles/themes/search-light.scss';
 import background from 'assets/backgrounds/home_bg_1';
+import contentStyles from 'styles/content.scss';
 import styles from './ndc-country-full-styles.scss';
 
 class NDCCountryFull extends PureComponent {
@@ -51,10 +51,12 @@ class NDCCountryFull extends PureComponent {
           </div>
         </Header>
         {!content && !loading && <NoContent message="No content available" />}
-        <div
-          className={cx(layout.content, contentStyles.content, styles.content)}
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+        <div className={cx(layout.content, styles.bodyContent)}>
+          <div
+            className={cx(contentStyles.content, styles.innerContent)}
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </div>
       </div>
     );
   }
