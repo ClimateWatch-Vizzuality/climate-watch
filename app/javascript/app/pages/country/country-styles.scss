@@ -1,0 +1,12 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.header {
+  @extend %grid;
+
+  grid-template-columns: 10fr 2fr;
+}
+
+.section {
+  min-height: 600px;
+}

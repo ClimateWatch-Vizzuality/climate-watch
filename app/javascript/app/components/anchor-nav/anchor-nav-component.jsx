@@ -18,20 +18,11 @@ const AnchorNav = props => {
         };
         if (useRoutes) {
           linkProps.exact = true;
-          linkProps.activeClassName = styles.linkActive;
-          return (
-            <NavLink {...linkProps}>
-              {link.label}
-            </NavLink>
-          );
+          return <NavLink {...linkProps}>{link.label}</NavLink>;
         }
         linkProps.isActive = (match, location) =>
           `#${link.hash}` === location.hash;
-        return (
-          <HashLink {...linkProps}>
-            {link.label}
-          </HashLink>
-        );
+        return <HashLink {...linkProps}>{link.label}</HashLink>;
       })}
     </nav>
   );

@@ -8,6 +8,8 @@ import NDCMap from 'components/ndcs-map';
 import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
 import Country from 'pages/country';
+import GHGEmissions from 'components/country-ghg-emissions';
+import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import error from 'pages/error';
 
 export default [
@@ -53,14 +55,16 @@ export default [
         component: Country,
         sections: [
           {
-            slug: 'ghg-emissions',
+            hash: 'ghg-emissions',
             label: 'GHG Emissions',
-            anchor: true
+            anchor: true,
+            component: GHGEmissions
           },
           {
-            slug: 'ndc-sdg-linkages',
+            hash: 'ndc-sdg-linkages',
             label: 'NDC-SDG Linkages',
-            anchor: true
+            anchor: true,
+            component: NDCSDGLinkages
           }
         ]
       },
