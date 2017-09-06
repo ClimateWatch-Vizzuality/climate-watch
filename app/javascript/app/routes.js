@@ -7,6 +7,7 @@ import NDCS from 'pages/ndcs';
 import NDCMap from 'components/ndcs-map';
 import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
+import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
 import GHGEmissions from 'components/country-ghg-emissions';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
@@ -67,6 +68,11 @@ export default [
             component: NDCSDGLinkages
           }
         ]
+      },
+      {
+        path: '/countries',
+        exact: true,
+        component: CountryIndex
       },
       {
         path: '/error-page',
