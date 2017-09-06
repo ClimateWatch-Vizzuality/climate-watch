@@ -20,16 +20,14 @@ export const parseIndicatorsDefs = createSelector(
   [getIndicators, getCountries],
   (indicators, countries) => {
     const parsedIndicators = Object.keys(indicators).map(category => {
-      const parsedDefinitions = indicators[category].map(indicator => {
+      const parsedDefinitions = indicators[category].map(def => {
         const descriptions = countries.map(country => ({
           iso: country,
-          value: indicator.locations[country]
-            ? indicator.locations[country].value
-            : null
+          value: def.locations[country] ? def.locations[country].value : null
         }));
         return {
-          title: indicator.name,
-          id: indicator.id,
+          title: def.name,
+          slug: def.slug,
           descriptions
         };
       });
