@@ -29,10 +29,11 @@ export const parseIndicatorsDefs = createSelector(
         }));
         return {
           title: indicator.name,
+          id: indicator.id,
           descriptions
         };
       });
-      return uniqBy(parsedDefinitions, 'title');
+      return uniqBy(parsedDefinitions, 'slug');
     });
     return parsedIndicators;
   }
