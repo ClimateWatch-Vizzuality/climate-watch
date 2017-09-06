@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import groupBy from 'lodash/groupBy';
-import uniqBy from 'lodash/uniqBy';
 
 const getCountries = state => state.countries;
 const getIso = state => state.iso;
@@ -19,7 +18,8 @@ export const getIndicators = createSelector(getAllIndicators, data =>
 export const parseIndicatorsDefs = createSelector(
   [getIndicators, getCountries],
   (indicators, countries) => {
-    const parsedIndicators = Object.keys(indicators).map(category => {
+    const parsedIndicators = {};
+    Object.keys(indicators).forEach(category => {
       const parsedDefinitions = indicators[category].map(def => {
         const descriptions = countries.map(country => ({
           iso: country,
@@ -31,7 +31,7 @@ export const parseIndicatorsDefs = createSelector(
           descriptions
         };
       });
-      return uniqBy(parsedDefinitions, 'slug');
+      parsedIndicators[category] = parsedDefinitions;
     });
     return parsedIndicators;
   }
