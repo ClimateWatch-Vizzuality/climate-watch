@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
-  const { links, useRoutes } = props;
+  const { links, useRoutes, className } = props;
   return (
-    <nav className={styles.anchorNav}>
+    <nav className={cx(styles.anchorNav, className)}>
       {links.map(link => {
         const linkProps = {
           key: link.label,
@@ -30,7 +31,8 @@ const AnchorNav = props => {
 
 AnchorNav.propTypes = {
   links: PropTypes.array,
-  useRoutes: PropTypes.bool.isRequired
+  useRoutes: PropTypes.bool.isRequired,
+  className: PropTypes.string
 };
 
 AnchorNav.defaultProps = {
