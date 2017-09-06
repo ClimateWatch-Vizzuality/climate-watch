@@ -11,15 +11,11 @@ const fetchCountryNDCFull = createThunkAction(
     dispatch(fetchCountryNDCFullInit());
     fetch(`/api/v1/ndcs/${iso}/full`)
       .then(response => {
-        if (response.ok) return response.text();
+        if (response.ok) return response.json();
         throw Error(response.statusText);
       })
       .then(data => {
-        const dataWithIso = {
-          iso,
-          data
-        };
-        dispatch(fetchCountryNDCFullReady(dataWithIso));
+        dispatch(fetchCountryNDCFullReady(data));
       })
       .catch(error => {
         dispatch(fetchCountryNDCFullFailed(iso));

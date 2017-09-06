@@ -14,7 +14,7 @@ export default {
       ...state,
       data: {
         ...state.data,
-        [payload.iso]: payload.data
+        [payload.iso_code3]: payload.html
       }
     };
 
