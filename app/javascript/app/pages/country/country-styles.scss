@@ -8,5 +8,12 @@
 }
 
 .section {
+  padding-top: 50px;
   min-height: 600px;
+}
+
+:global .sticky-outer-wrapper.sticky {
+  .sticky-inner-wrapper {
+    background-image: url('../../assets/backgrounds/home_bg_1');
+  }
 }

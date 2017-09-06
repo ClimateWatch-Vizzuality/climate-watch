@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+import Sticky from 'react-stickynode';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -16,7 +18,7 @@ class Country extends PureComponent {
     return (
       <div>
         <Header image={background}>
-          <div className={styles.header}>
+          <div className={cx(layout.content, styles.header)}>
             <Intro title={country.name} />
             <Button
               color="yellow"
@@ -25,7 +27,9 @@ class Country extends PureComponent {
               Compare
             </Button>
           </div>
-          <AnchorNav routes links={anchorLinks} />
+          <Sticky activeClass="sticky">
+            <AnchorNav links={anchorLinks} className={layout.content} />
+          </Sticky>
         </Header>
         <div className={layout.content}>
           {route.sections &&
