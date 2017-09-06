@@ -4,6 +4,7 @@ import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
+import ReactTooltip from 'react-tooltip';
 
 import styles from './ndcs-map-styles.scss';
 
@@ -12,11 +13,15 @@ const NDCMap = props =>
     <Map
       cache={false}
       paths={props.paths}
+      tooltipId="mapTooltip"
       computedStyles={props.computedStyles}
       onCountryClick={props.handleCountryClick}
-      onCountryMove={props.handleCountryMove}
+      onCountryEnter={props.handleCountryEnter}
       onCountryLeave={props.handleCountryLeave}
     />
+    <ReactTooltip id="mapTooltip">
+      {props.tooltipTxt}
+    </ReactTooltip>
     {props.selectedIndicator &&
       <MapLegend
         className={styles.legend}
@@ -50,9 +55,10 @@ NDCMap.propTypes = {
   indicators: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
+  tooltipTxt: PropTypes.string,
   computedStyles: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
-  handleCountryMove: PropTypes.func.isRequired,
+  handleCountryEnter: PropTypes.func.isRequired,
   handleCountryLeave: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
   handleIndicatorChange: PropTypes.func.isRequired
