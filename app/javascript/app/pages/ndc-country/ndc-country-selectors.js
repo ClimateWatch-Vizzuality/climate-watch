@@ -52,6 +52,7 @@ export const getNDCs = createSelector(
 export const filterNDCs = createSelector(
   [getNDCs, getSearch],
   (ndcs, search) => {
+    if (!search) return ndcs;
     const filteredNDCs = ndcs.map(ndc => {
       const defs = ndc.definitions.filter(
         def => deburrUpper(def.title).indexOf(search) > -1
