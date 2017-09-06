@@ -7,6 +7,7 @@ import NDCS from 'pages/ndcs';
 import NDCMap from 'components/ndcs-map';
 import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
+import NDCCountryFull from 'pages/ndc-country-full';
 import Country from 'pages/country';
 import error from 'pages/error';
 
@@ -22,6 +23,11 @@ export default [
       {
         path: '/ndcs/country/:iso',
         component: NDCCountry,
+        exact: true
+      },
+      {
+        path: '/ndcs/country/:iso/full',
+        component: NDCCountryFull,
         exact: true
       },
       {

@@ -12,6 +12,7 @@ export default {
   map,
   ndcs,
   countryNDC,
+  countryNDCFull,
   countrySelect,
   autocompleteSearch
 };
