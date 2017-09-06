@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 
@@ -7,12 +7,7 @@ import Nav from 'components/nav';
 
 import styles from "./root-styles.scss"; // eslint-disable-line
 
-class Root extends Component {
-  shouldComponentUpdate() {
-    // Improve this to better performance
-    return true;
-  }
-
+class Root extends PureComponent {
   render() {
     const { route } = this.props;
     return (
