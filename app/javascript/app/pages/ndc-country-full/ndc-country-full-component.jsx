@@ -28,7 +28,7 @@ class NDCCountryFull extends PureComponent {
     return (
       <div>
         <Header image={background}>
-          <div className={cx(styles.twoFold, styles.header)}>
+          <div className={cx(layout.content, styles.twoFold, styles.header)}>
             <div className={styles.title}>
               <Button
                 className={styles.backButton}
