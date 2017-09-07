@@ -19,6 +19,7 @@ const mapStateToProps = (state, { match }) => {
   };
   return {
     loading: state.countryNDCFull.loading,
+    loaded: state.countryNDCFull.loaded,
     country: getCountry(countryData),
     content: state.countryNDCFull.data[match.params.iso]
   };
@@ -27,14 +28,14 @@ const mapStateToProps = (state, { match }) => {
 const NDCCountryFullContainer = props => {
   const {
     loading,
+    loaded,
     location,
     match,
     history,
-    fetchCountryNDCFull,
-    content
+    fetchCountryNDCFull
   } = props;
   const { iso } = match.params;
-  if (iso && (!content && content !== '') && !loading) {
+  if (iso && !loading && !loaded) {
     fetchCountryNDCFull(iso);
   }
 
