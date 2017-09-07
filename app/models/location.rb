@@ -3,6 +3,12 @@ class Location < ApplicationRecord
   has_many :location_members
   has_many :members, through: :location_members
   has_many :historical_emissions
+  has_many :values, class_name: 'CaitIndc::Value'
+  has_many :indicators,
+           class_name: 'CaitIndc::Indicator',
+           through: :values
+  has_one :location_datum,
+          class_name: 'CaitIndc::LocationDatum'
 
   validates :iso_code3, presence: true, uniqueness: true
   # TODO: not until data provided
