@@ -7,30 +7,10 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
-import SDGCard from 'components/sdg-card';
 
 import background from 'assets/backgrounds/home_bg_1';
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
-
-const sdg = {
-  index: '1',
-  title: 'No poverty',
-  color: 'red',
-  sections: [
-    {
-      number: 1.1,
-      title:
-        'By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day',
-      sectors: [77, 76, 75]
-    },
-    {
-      number: 1.2,
-      title:
-        'By 2030, reduce at least by half the proportion of men, women and children of all ages living in poverty in all its dimensions according to national definitions'
-    }
-  ]
-};
 
 class Country extends PureComponent {
   render() {
@@ -51,7 +31,6 @@ class Country extends PureComponent {
             <AnchorNav links={anchorLinks} className={layout.content} />
           </Sticky>
         </Header>
-        <SDGCard sdg={sdg} />
         <div className={layout.content}>
           {route.sections &&
             route.sections.length > 0 &&
