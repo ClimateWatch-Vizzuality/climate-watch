@@ -44,8 +44,8 @@ const icons = {
 
 class SDGCard extends PureComponent {
   render() {
-    const { sdg, indicators } = this.props;
-    const cardStyle = cx(styles.card, !indicators ? styles.square : null);
+    const { sdg, indicators, square } = this.props;
+    const cardStyle = cx(styles.card, square ? styles.square : null);
     return (
       <div className={cardStyle}>
         <h4 className={styles.title}>{`${indicators
@@ -74,7 +74,8 @@ class SDGCard extends PureComponent {
 
 SDGCard.propTypes = {
   sdg: Proptypes.object,
-  indicators: Proptypes.bool
+  indicators: Proptypes.bool,
+  square: Proptypes.bool
 };
 
 export default SDGCard;
