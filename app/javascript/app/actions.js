@@ -4,12 +4,14 @@ import { actions as autocompleteSearch } from 'components/autocomplete-search';
 import { actions as mapActions } from 'components/map';
 import { actions as NDCSActions } from 'pages/ndcs';
 import { actions as countryNDCActions } from 'pages/ndc-country';
+import { actions as countryNDCFullActions } from 'pages/ndc-country-full';
 
 export default {
   ...countriesProvider,
   ...countrySelect,
   ...NDCSActions,
   ...countryNDCActions,
+  ...countryNDCFullActions,
   ...mapActions,
   ...autocompleteSearch
 };

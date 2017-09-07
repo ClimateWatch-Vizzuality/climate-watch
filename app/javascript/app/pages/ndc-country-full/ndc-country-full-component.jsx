@@ -2,49 +2,45 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Accordion from 'components/accordion';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import Search from 'components/search';
 import cx from 'classnames';
+import NoContent from 'components/no-content';
 
+import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
 import lightSearch from 'styles/themes/search-light.scss';
 import background from 'assets/backgrounds/home_bg_1';
-import layout from 'styles/layout.scss';
-import styles from './ndc-country-styles.scss';
+import contentStyles from 'styles/content.scss';
+import styles from './ndc-country-full-styles.scss';
 
-class NDCCountry extends PureComponent {
+class NDCCountryFull extends PureComponent {
   render() {
-    const { country, match, onSearchChange, search, ndcsData } = this.props;
+    const {
+      loading,
+      country,
+      match,
+      onSearchChange,
+      search,
+      content
+    } = this.props;
     return (
       <div>
         <Header image={background}>
-          <div className={cx(layout.content, styles.doubleFold, styles.header)}>
+          <div className={cx(styles.twoFold, styles.header)}>
             <div className={styles.title}>
               <Button
                 className={styles.backButton}
                 color="transparent"
-                link="/ndcs"
+                link={`/ndcs/country/${match.params.iso}`}
                 square
               >
                 <Icon className={styles.backIcon} icon={backIcon} />
               </Button>
-              <Intro title={country.wri_standard_name} />
+              <Intro title={`${country.wri_standard_name} Full Content`} />
             </div>
-            <div className={styles.threeFold}>
-              <Button
-                color="yellow"
-                link={`/ndcs/country/${match.params.iso}/full`}
-              >
-                View full NDC
-              </Button>
-              <Button
-                color="yellow"
-                link={`/ndcs/compare?countries=${match.params.iso}`}
-              >
-                Compare
-              </Button>
+            <div className={styles.fiveFold}>
               <Search
                 theme={lightSearch}
                 placeholder="Search"
@@ -54,18 +50,25 @@ class NDCCountry extends PureComponent {
             </div>
           </div>
         </Header>
-        <Accordion data={ndcsData} />
+        {!content && !loading && <NoContent message="No content available" />}
+        <div className={cx(layout.content, styles.bodyContent)}>
+          <div
+            className={cx(contentStyles.content, styles.innerContent)}
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </div>
       </div>
     );
   }
 }
 
-NDCCountry.propTypes = {
+NDCCountryFull.propTypes = {
   match: Proptypes.object.isRequired,
   country: Proptypes.object.isRequired,
   onSearchChange: Proptypes.func.isRequired,
   search: Proptypes.string,
-  ndcsData: Proptypes.array
+  content: Proptypes.string,
+  loading: Proptypes.bool
 };
 
-export default NDCCountry;
+export default NDCCountryFull;
