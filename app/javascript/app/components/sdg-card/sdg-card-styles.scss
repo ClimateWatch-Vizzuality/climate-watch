@@ -1,0 +1,46 @@
+@import '../../styles/settings.scss';
+
+.card {
+  border: solid 1px $theme-border;
+  padding: 15px;
+  position: relative;
+}
+
+.square {
+  min-height: 100px;
+}
+
+.title {
+  font-size: $font-size;
+  color: $theme-color;
+  font-family: $font-family-2;
+  margin-bottom: 5px;
+}
+
+.number {
+  font-size: $font-size;
+  color: $theme-color;
+  font-family: $font-family-2;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+}
+
+.dot {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
+  background-color: $theme-border;
+  margin-right: 5px;
+}
+
+.icon {
+  height: 20px;
+  width: 50px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+}
