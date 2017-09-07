@@ -42,6 +42,6 @@ RSpec.describe ImportHistoricalEmissions do
   end
 
   it 'Creates new historical emission records' do
-    expect { subject }.to change { HistoricalEmission.count }.by(2)
+    expect { subject }.to change { HistoricalEmissions::Record.count }.by(2)
   end
 end
