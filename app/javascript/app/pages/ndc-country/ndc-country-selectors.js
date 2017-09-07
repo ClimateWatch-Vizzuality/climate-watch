@@ -4,8 +4,8 @@ import groupBy from 'lodash/groupBy';
 
 const getCountries = state => state.countries;
 const getIso = state => state.iso;
-const getAllIndicators = state => state.data.indicators || {};
-const getCategories = state => state.data.categories;
+const getAllIndicators = state => (state.data ? state.data.indicators : {});
+const getCategories = state => (state.data ? state.data.categories : {});
 const getSearch = state => deburrUpper(state.search);
 
 const getCountryByIso = (countries, iso) =>
@@ -52,6 +52,7 @@ export const getNDCs = createSelector(
 export const filterNDCs = createSelector(
   [getNDCs, getSearch],
   (ndcs, search) => {
+    if (!ndcs) return [];
     if (!search) return ndcs;
     const filteredNDCs = ndcs.map(ndc => {
       const defs = ndc.definitions.filter(
