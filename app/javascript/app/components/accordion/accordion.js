@@ -5,17 +5,16 @@ import { connect } from 'react-redux';
 import qs from 'query-string';
 import AccordionComponent from './accordion-component';
 
-const mapStateToProps = (state, { match, location }) => {
+const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
   const activeSection = search.activeSection ? search.activeSection : null;
   return {
-    data: state.countryNDC.data[match.params.iso],
     activeSection
   };
 };
 
-const AccordionContainer = (props) => {
-  const handleOnClick = (slug) => {
+const AccordionContainer = props => {
+  const handleOnClick = slug => {
     const { location, history } = props;
     const search = qs.parse(location.search);
     const newSlug =

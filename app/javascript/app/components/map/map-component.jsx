@@ -31,13 +31,14 @@ class Map extends PureComponent {
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
-        {zoomEnable &&
+        {zoomEnable && (
           <div className={styles.actions}>
             <Button onClick={handleZoomIn}>+</Button>
             <Button disabled={zoom === 1} onClick={handleZoomOut}>
               -
             </Button>
-          </div>}
+          </div>
+        )}
         <Motion
           defaultStyle={{
             z: 1,
@@ -50,8 +51,8 @@ class Map extends PureComponent {
             y: spring(center[1], { stiffness: 240, damping: 30 })
           }}
         >
-          {({ z, x, y }) =>
-            (<ComposableMap
+          {({ z, x, y }) => (
+            <ComposableMap
               projection="robinson"
               style={{
                 width: '100%'
@@ -91,7 +92,8 @@ class Map extends PureComponent {
                     })}
                 </Geographies>
               </ZoomableGroup>
-            </ComposableMap>)}
+            </ComposableMap>
+          )}
         </Motion>
       </div>
     );

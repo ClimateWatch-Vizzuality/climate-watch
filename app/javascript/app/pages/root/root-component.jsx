@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 
@@ -7,15 +7,21 @@ import Nav from 'components/nav';
 
 import styles from "./root-styles.scss"; // eslint-disable-line
 
-const Page = ({ route }) =>
-  (<div>
-    <TopBar />
-    <Nav />
-    {renderRoutes(route.routes)}
-  </div>);
+class Root extends PureComponent {
+  render() {
+    const { route } = this.props;
+    return (
+      <div>
+        <TopBar />
+        <Nav />
+        {renderRoutes(route.routes)}
+      </div>
+    );
+  }
+}
 
-Page.propTypes = {
+Root.propTypes = {
   route: Proptypes.object
 };
 
-export default Page;
+export default Root;

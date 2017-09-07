@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import Icon from 'components/icon';
+import NoContent from 'components/no-content';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
@@ -38,15 +39,24 @@ class Accordion extends PureComponent {
               <Collapse isOpened={isOpen}>
                 <div className={styles.accordionContent}>
                   <div className={layout.content}>
+                    {section.definitions.length === 0 &&
+                      <NoContent message="Nothing here" />}
                     <dl className={styles.definitionList}>
                       {section.definitions.map(def =>
-                        (<div className={styles.definition} key={def.title}>
+                        (<div key={def.slug} className={styles.definition}>
                           <dt className={styles.definitionTitle}>
                             {def.title}
                           </dt>
-                          <dd className={styles.definitionDesc}>
-                            {def.description}
-                          </dd>
+                          {def.descriptions.map(desc =>
+                            (<dd
+                              key={`${def.slug}-${desc.iso}`}
+                              className={styles.definitionDesc}
+                            >
+                              <div
+                                dangerouslySetInnerHTML={{ __html: desc.value }}
+                              />
+                            </dd>)
+                          )}
                         </div>)
                       )}
                     </dl>
