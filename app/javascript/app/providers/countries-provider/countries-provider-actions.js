@@ -11,15 +11,15 @@ const getCountries = createThunkAction(
     const { countries } = state();
     if (countries && isEmpty(countries.data)) {
       dispatch(getCountriesInit());
-      fetch('/api/v1/countries?topojson')
-        .then((response) => {
+      fetch('/api/v1/countries')
+        .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
         })
-        .then((data) => {
+        .then(data => {
           dispatch(getCountriesReady(data));
         })
-        .catch((error) => {
+        .catch(error => {
           console.info(error);
         });
     }

@@ -4,16 +4,17 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import HomeComponent from './home-component';
+import { getCountriesOptions } from './home-selectors';
 
 export { default as component } from './home-component';
 export { default as styles } from './home-styles';
 
 const mapStateToProps = state => ({
-  countriesOptions: state.countrySelect.countries
+  countriesOptions: getCountriesOptions(state.countries)
 });
 
-const HomeContainer = (props) => {
-  const handleDropDownChange = (selected) => {
+const HomeContainer = props => {
+  const handleDropDownChange = selected => {
     props.history.push(`/countries/${selected.value}`);
   };
 

@@ -21,22 +21,24 @@ class Map extends PureComponent {
       cache,
       zoomEnable,
       dragEnable,
+      tooltipId,
       handleZoomIn,
       handleZoomOut,
       onCountryClick,
-      onCountryMove,
+      onCountryEnter,
       onCountryLeave,
       computedStyles
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
-        {zoomEnable &&
+        {zoomEnable && (
           <div className={styles.actions}>
             <Button onClick={handleZoomIn}>+</Button>
             <Button disabled={zoom === 1} onClick={handleZoomOut}>
               -
             </Button>
-          </div>}
+          </div>
+        )}
         <Motion
           defaultStyle={{
             z: 1,
@@ -49,8 +51,8 @@ class Map extends PureComponent {
             y: spring(center[1], { stiffness: 240, damping: 30 })
           }}
         >
-          {({ z, x, y }) =>
-            (<ComposableMap
+          {({ z, x, y }) => (
+            <ComposableMap
               projection="robinson"
               style={{
                 width: '100%'
@@ -66,22 +68,32 @@ class Map extends PureComponent {
                   disableOptimization={!cache}
                 >
                   {(geographies, projection) =>
-                    geographies.map(
-                      geography =>
-                        geography &&
-                        <Geography
-                          key={geography.id}
-                          geography={geography}
-                          projection={projection}
-                          onClick={onCountryClick}
-                          onMouseMove={onCountryMove}
-                          onMouseLeave={onCountryLeave}
-                          style={computedStyles(geography)}
-                        />
-                    )}
+                    geographies.map(geography => {
+                      if (geography) {
+                        let commonProps = {
+                          key: geography.id,
+                          geography,
+                          projection,
+                          onClick: onCountryClick,
+                          onMouseEnter: onCountryEnter,
+                          onMouseLeave: onCountryLeave,
+                          style: computedStyles(geography)
+                        };
+                        if (tooltipId) {
+                          commonProps = {
+                            ...commonProps,
+                            'data-tip': '',
+                            'data-for': tooltipId
+                          };
+                        }
+                        return <Geography {...commonProps} />;
+                      }
+                      return null;
+                    })}
                 </Geographies>
               </ZoomableGroup>
-            </ComposableMap>)}
+            </ComposableMap>
+          )}
         </Motion>
       </div>
     );
@@ -96,8 +108,10 @@ Map.propTypes = {
   cache: Proptypes.bool,
   className: Proptypes.string,
   paths: Proptypes.array.isRequired,
+  tooltipId: Proptypes.string,
   handleZoomIn: Proptypes.func.isRequired,
   handleZoomOut: Proptypes.func.isRequired,
+  onCountryEnter: Proptypes.func,
   onCountryClick: Proptypes.func,
   onCountryMove: Proptypes.func,
   onCountryLeave: Proptypes.func,
@@ -111,7 +125,9 @@ Map.defaultProps = {
   dragEnable: true,
   cache: true,
   paths: [],
+  tooltipId: '',
   onCountryClick: () => {},
+  onCountryEnter: () => {},
   onCountryMove: () => {},
   onCountryLeave: () => {},
   // gets the geography data to handle styles individually

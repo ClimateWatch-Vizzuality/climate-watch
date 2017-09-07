@@ -3,6 +3,7 @@ import { createThunkAction } from 'utils/redux';
 
 const fetchCountryNDCInit = createAction('fetchCountryNDCInit');
 const fetchCountryNDCReady = createAction('fetchCountryNDCReady');
+const fetchCountryNDCFailed = createAction('fetchCountryNDCFailed');
 
 const fetchCountryNDC = createThunkAction(
   'fetchCountryNDC',
@@ -14,9 +15,14 @@ const fetchCountryNDC = createThunkAction(
         throw Error(response.statusText);
       })
       .then(data => {
-        dispatch(fetchCountryNDCReady(data));
+        const dataWithIso = {
+          iso,
+          data
+        };
+        dispatch(fetchCountryNDCReady(dataWithIso));
       })
       .catch(error => {
+        dispatch(fetchCountryNDCFailed(iso));
         console.info(error);
       });
   }
@@ -25,5 +31,6 @@ const fetchCountryNDC = createThunkAction(
 export default {
   fetchCountryNDC,
   fetchCountryNDCInit,
-  fetchCountryNDCReady
+  fetchCountryNDCReady,
+  fetchCountryNDCFailed
 };

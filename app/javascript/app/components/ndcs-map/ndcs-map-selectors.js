@@ -14,7 +14,7 @@ export const getCategories = createSelector(getData, data =>
   )
 );
 
-export const getIndicators = createSelector(getData, data =>
+export const getAllIndicators = createSelector(getData, data =>
   groupBy(
     uniqBy(
       data.map(item => ({
@@ -47,36 +47,36 @@ export const getSelectedCategory = createSelector(
   }
 );
 
-export const getSelectedIndicator = createSelector(
-  [state => state.indicator, getIndicators, getSelectedCategory],
-  (selected, indicators = {}, category = {}) => {
+export const getCategoryIndicators = createSelector(
+  [getAllIndicators, getSelectedCategory],
+  (allIndicators = {}, category = {}) => {
     const categoryValue = category.value;
-    if (
-      categoryValue &&
-      indicators[categoryValue] &&
-      indicators[categoryValue].length > 0
-    ) {
-      const selectedIndicators = indicators[categoryValue];
+    return categoryValue && allIndicators[categoryValue]
+      ? allIndicators[categoryValue]
+      : [];
+  }
+);
+
+export const getSelectedIndicator = createSelector(
+  [state => state.indicator, getCategoryIndicators],
+  (selected, indicators = []) => {
+    if (indicators.length > 0) {
       if (selected) {
-        const filtered = selectedIndicators.filter(
+        const filtered = indicators.filter(
           indicator => indicator.value === selected
         );
         return filtered.length > 0 ? filtered[0] : {};
       }
-      return selectedIndicators[0];
+      return indicators[0];
     }
     return {};
   }
 );
 
-export const getCountriesGeometry = createSelector(
-  state => state.data,
-  countries => countries.map(country => country.topojson)
-);
-
 export default {
   getCategories,
-  getIndicators,
+  getAllIndicators,
+  getCategoryIndicators,
   getSelectedCategory,
   getSelectedIndicator
 };
