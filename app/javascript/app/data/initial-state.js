@@ -1,5 +1,6 @@
 import { initialState as map } from 'components/map';
 import { initialState as ndcs } from 'pages/ndcs';
+import { initialState as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
 import { initialState as countryNDC } from 'pages/ndc-country';
 import { initialState as countryNDCFull } from 'pages/ndc-country-full';
 import { initialState as countrySelect } from 'components/countries-select';
@@ -10,6 +11,7 @@ export default {
   countries,
   map,
   ndcs,
+  countrySDGLinkages,
   countryNDC,
   countryNDCFull,
   countrySelect,

@@ -1,5 +1,22 @@
 @import '../../styles/settings.scss';
+@import '~styles/layout.scss';
 
-.wrapper {
-  display: block;
+.sdgs {
+  margin-left: 1px;
+}
+
+.title {
+  font-size: $font-size-m;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: 15px;
+}
+
+.threeFold {
+  @extend %grid;
+
+  grid-column-gap: 0;
+  grid-template-columns: repeat(3, 1fr);
+  column-count: 3;
+  column-gap: 0;
 }
