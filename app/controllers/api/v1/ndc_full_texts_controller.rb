@@ -15,7 +15,10 @@ module Api
         )
         ndcs = apply_query_with_highlights(ndcs, true)
         @ndc = ndcs.first
-        render status: :not_found and return unless @ndc
+        render json: {
+          error: 'NDC not found',
+          status: 404
+        }, status: :not_found and return unless @ndc
         render json: @ndc,
                serializer: Api::V1::NdcFullTextSerializer,
                query: params[:query]
