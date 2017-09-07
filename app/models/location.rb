@@ -2,7 +2,9 @@ class Location < ApplicationRecord
   has_many :ndcs, dependent: :destroy
   has_many :location_members, dependent: :destroy
   has_many :members, through: :location_members
-  has_many :historical_emissions, dependent: :destroy
+  has_many :historical_emissions,
+           class_name: 'HistoricalEmissions::Record',
+           dependent: :destroy
   has_many :values, class_name: 'CaitIndc::Value'
   has_many :indicators,
            class_name: 'CaitIndc::Indicator',

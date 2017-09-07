@@ -1,5 +1,3 @@
-require 'csv'
-
 META_SECTORS_FILEPATH = 'he/CW_HistoricalEmisisons_metadata_sectors.csv'.freeze
 DATA_CAIT_FILEPATH = 'he/CW_HistoricalEmisisons_sampledata_CAIT.csv'.freeze
 DATA_PIK_FILEPATH = 'he/CW_HistoricalEmisisons_sampledata_PIK.csv'.freeze
@@ -7,9 +5,9 @@ DATA_PIK_FILEPATH = 'he/CW_HistoricalEmisisons_sampledata_PIK.csv'.freeze
 class ImportHistoricalEmissions
   def call
     cleanup
-    import_sectors(read_from_s3(META_SECTORS_FILEPATH))
-    import_records(read_from_s3(DATA_CAIT_FILEPATH))
-    import_records(read_from_s3(DATA_PIK_FILEPATH))
+    import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
+    import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
+    import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
   end
 
   private
@@ -27,26 +25,26 @@ class ImportHistoricalEmissions
   end
 
   def cleanup
-    DataSource.delete_all
-    Sector.delete_all
-    Gas.delete_all
-    HistoricalEmission.delete_all
+    HistoricalEmissions::DataSource.delete_all
+    HistoricalEmissions::Sector.delete_all
+    HistoricalEmissions::Gas.delete_all
+    HistoricalEmissions::Record.delete_all
   end
 
   def sector_attributes(row)
     {
       name: row[:sector],
-      data_source: DataSource.find_or_create_by(name: row[:source]),
+      data_source: HistoricalEmissions::DataSource.find_or_create_by(name: row[:source]),
       parent: row[:subsectorof] &&
-        Sector.find_or_create_by(name: row[:subsectorof])
+        HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
     }
   end
 
   def import_sectors(content)
-    CSV.parse(content, headers: true, header_converters: :symbol).each do |row|
-      next if Sector.find_by(name: row[:sector])
+    content.each do |row|
+      next if HistoricalEmissions::Sector.find_by(name: row[:sector])
       sector = sector_attributes(row)
-      Sector.create!(sector)
+      HistoricalEmissions::Sector.create!(sector)
     end
   end
 
@@ -56,22 +54,21 @@ class ImportHistoricalEmissions
     end
   end
 
-  def he_attributes(row)
+  def record_attributes(row)
     {
       location: Location.find_by(iso_code3: row[:country]),
-      data_source: DataSource.find_by(name: row[:source]),
-      sector: Sector.find_by(name: row[:sector]),
-      gas: Gas.find_or_create_by(name: row[:gas]),
+      data_source: HistoricalEmissions::DataSource.find_by(name: row[:source]),
+      sector: HistoricalEmissions::Sector.find_by(name: row[:sector]),
+      gas: HistoricalEmissions::Gas.find_or_create_by(name: row[:gas]),
       gwp: row[:gwp],
       emissions: emissions(row)
     }
   end
 
   def import_records(content)
-    CSV.parse(content, headers: true, header_converters: :symbol).each do |row|
-      he = he_attributes(row)
+   content.each do |row|
       begin
-        HistoricalEmission.create!(he)
+        HistoricalEmissions::Record.create!(record_attributes(row))
       rescue ActiveRecord::RecordInvalid => invalid
         STDERR.puts "Error importing #{row.to_s.chomp}: #{invalid}"
       end
