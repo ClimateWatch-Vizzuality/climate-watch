@@ -4,38 +4,33 @@ import cx from 'classnames';
 
 import styles from './map-legend-styles.scss';
 
-const MapLegend = ({ title, buckets, className }) =>
-  (<div className={cx(styles.wrapper, className)}>
-    <p className={styles.title}>
-      {title}
-    </p>
+const MapLegend = ({ title, buckets, className }) => (
+  <div className={cx(styles.wrapper, className)}>
+    <p className={styles.title}>{title}</p>
     <ul className={styles.list}>
-      {buckets.length > 0 &&
-        buckets.map(bucket =>
-          (<li className={styles.buckets} key={bucket.vis}>
+      {Object.keys(buckets).length > 0 &&
+        Object.keys(buckets).map(key => (
+          <li className={styles.buckets} key={key}>
             <span
-              className={cx(
-                styles.bucketIcon,
-                styles[`bucketIconColor${bucket.vis}`]
-              )}
+              className={styles.bucketIcon}
+              style={{ backgroundColor: buckets[key].color }}
             />
-            <span className={styles.bucketTxt}>
-              {bucket.txt}
-            </span>
-          </li>)
-        )}
+            <span className={styles.bucketTxt}>{buckets[key].name}</span>
+          </li>
+        ))}
     </ul>
-  </div>);
+  </div>
+);
 
 MapLegend.propTypes = {
   title: PropTypes.string,
-  buckets: PropTypes.array,
+  buckets: PropTypes.object,
   className: PropTypes.string
 };
 
 MapLegend.defaultProps = {
   title: '',
-  buckets: []
+  buckets: {}
 };
 
 export default MapLegend;
