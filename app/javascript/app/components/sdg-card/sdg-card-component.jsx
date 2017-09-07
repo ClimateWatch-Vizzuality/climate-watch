@@ -10,7 +10,11 @@ class SDGCard extends PureComponent {
       <div className={styles.card}>
         <h4 className={styles.title}>{`${sdg.index}. ${sdg.title}`}</h4>
         {sdg.sections.map(section => (
-          <span key={section.number} className={styles.dot} />
+          <span
+            key={section.number}
+            className={styles.dot}
+            style={{ backgroundColor: section.sectors ? sdg.color : '' }}
+          />
         ))}
       </div>
     );

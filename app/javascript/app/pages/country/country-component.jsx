@@ -16,6 +16,7 @@ import styles from './country-styles.scss';
 const sdg = {
   index: '1',
   title: 'No poverty',
+  color: 'red',
   sections: [
     {
       number: 1.1,
@@ -26,8 +27,7 @@ const sdg = {
     {
       number: 1.2,
       title:
-        'By 2030, reduce at least by half the proportion of men, women and children of all ages living in poverty in all its dimensions according to national definitions',
-      sectors: [77, 76, 75]
+        'By 2030, reduce at least by half the proportion of men, women and children of all ages living in poverty in all its dimensions according to national definitions'
     }
   ]
 };
