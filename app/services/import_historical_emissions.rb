@@ -34,7 +34,9 @@ class ImportHistoricalEmissions
   def sector_attributes(row)
     {
       name: row[:sector],
-      data_source: HistoricalEmissions::DataSource.find_or_create_by(name: row[:source]),
+      data_source: HistoricalEmissions::DataSource.find_or_create_by(
+        name: row[:source]
+      ),
       parent: row[:subsectorof] &&
         HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
     }
@@ -66,7 +68,7 @@ class ImportHistoricalEmissions
   end
 
   def import_records(content)
-   content.each do |row|
+    content.each do |row|
       begin
         HistoricalEmissions::Record.create!(record_attributes(row))
       rescue ActiveRecord::RecordInvalid => invalid
