@@ -27,9 +27,7 @@ const mapStateToProps = (state, { match, location }) => {
     loading: state.countryNDC.loading,
     country: getCountry(countryData),
     search: search.search,
-    ndcsData: state.countryNDC.data[match.params.iso]
-      ? filterNDCs(ndcsData)
-      : []
+    ndcsData: filterNDCs(ndcsData)
   };
 };
 
