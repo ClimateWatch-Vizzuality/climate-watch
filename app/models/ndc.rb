@@ -2,6 +2,7 @@ class Ndc < ApplicationRecord
   include PgSearch
 
   belongs_to :location
+  has_many :ndc_targets, class_name: 'NdcSdg::NdcTarget', dependent: :destroy
 
   PG_SEARCH_HIGHLIGHT_START = '<span class="highlight">'.freeze
   PG_SEARCH_HIGHLIGHT_END = '</span>'.freeze

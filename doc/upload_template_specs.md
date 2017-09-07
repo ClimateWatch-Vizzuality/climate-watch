@@ -6,18 +6,42 @@ Over the course of the Climate Watch project, you may need/wish to update the si
 
 Unless you have a specific reason not to do so, you should leave any missing data fields blank. If there is currently filler data fields, such as NA, N/A, None, nil, -9999, etc, please remove these values and leave the entries blank (unless you have a good reason not to do so, and it is clear from the metadata that these missing data are present).
 
+Please ensure columns are included with the column names written in an identical manner and that the contents conform to the below data types. Entries that must be present (i.e. fields that cannot be left blank) have their column names highlighted in bold.
+
+Please avoid using hidden columns as you work on the file as a spreadsheet, because those will end up as visible in the CSV file and in case of column name clashes wrong data may be used unexpectedly. Any columns that are not needed should be deleted. Please also do not use highlighting on the file to denote special treatment of particular rows, as this information is lost when saving as a csv and is better encoded in the file by using a separate column.
+
+Please as much as possible aim to design files in a horizontal manner, as csv files are normally read row by row and not in columns.
+
 ## NDC-SDG Linkages
 
-If you wish to send us an update to the NDC-SDG linkages table, please ensure the following columns are included with the column names written in an identical manner (using snake_case) and that the contents conform to the below data types. **Any entry that contains a comma (,) character must be enclosed with double quotes (e.g. "Future, Present").** Entries that must be present (i.e. fields that cannot be left blank) have their column names highlighted in bold.
+For this data to be imported correctly some SDG metadata is needed first.
+
+### sdgs.csv
 
 | Column Name | Data Type | Example |
 | ---| --|--|
-| **Country** | String  | Afghanistan |
+| **number** | String  | SDG number e.g. 1 |
+| **title** | String | full goal title (might be redundant if we only use short names), e.g. End poverty in all its forms everywhere |
+| **cw_title** | String | goal title as displayed in Climate Watch, e.g. No poverty |
+
+### sdg_targets.csv
+| Column Name | Data Type | Example |
+| ---| --|--|
+| **goal_number** | String  | SDG number e.g. 1 |
+| **number** | String  | SDG target number e.g. 1.1 |
+| **title** | String | target title|
+
+### ndc_sdg_targets.csv
+| Column Name | Data Type | Example |
+| ---| --|--|
+| Country | String  | Country name e.g. Afghanistan, not required - for human perusal only |
+| wri_standard_name | String | Standardised country name e.g. Afghanistan, not required - for human perusal only |
+| **iso_code3** | String | 3-letter country iso code |
 | Goal | String | Goal 1 - No Poverty |
 | **Target** | String | 6.b |
 | **INDC_text** | String | reduce poverty and improve agricultural productions |
 |Status| String | Future |
-|Sector| String | "Agriculture, Water" |
+|Sector| String | Comma-separated list of sectors e.g. Agriculture, Water |
 | Climate_response | String | Mitigation |
 | Type_of_information | String | Action |
 

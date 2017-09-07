@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import cx from 'classnames';
 
 import sdg1 from 'assets/sdg-icons/icon_1';
 import sdg2 from 'assets/sdg-icons/icon_2';
@@ -43,17 +44,25 @@ const icons = {
 
 class SDGCard extends PureComponent {
   render() {
-    const { sdg } = this.props;
+    const { sdg, indicators } = this.props;
+    const cardStyle = cx(styles.card, !indicators ? styles.square : null);
     return (
-      <div className={styles.card}>
-        <h4 className={styles.title}>{`${sdg.index}. ${sdg.title}`}</h4>
-        {sdg.sections.map(section => (
-          <span
-            key={section.number}
-            className={styles.dot}
-            style={{ backgroundColor: section.sectors ? sdg.color : '' }}
-          />
-        ))}
+      <div className={cardStyle}>
+        <h4 className={styles.title}>{`${indicators
+          ? sdg.index
+          : ''} ${sdg.title}`}</h4>
+        <div className={styles.dots}>
+          {indicators &&
+            sdg.sections.map(section => (
+              <span
+                key={section.number}
+                data-tip={section.title}
+                className={styles.dot}
+                style={{ backgroundColor: section.sectors ? sdg.color : '' }}
+              />
+            ))}
+        </div>
+        {!indicators && <div className={styles.number}>{sdg.index}</div>}
         <div
           className={styles.icon}
           style={{ backgroundImage: `url(${icons[`sdg${sdg.index}`]})` }}
@@ -64,7 +73,8 @@ class SDGCard extends PureComponent {
 }
 
 SDGCard.propTypes = {
-  sdg: Proptypes.object
+  sdg: Proptypes.object,
+  indicators: Proptypes.bool
 };
 
 export default SDGCard;

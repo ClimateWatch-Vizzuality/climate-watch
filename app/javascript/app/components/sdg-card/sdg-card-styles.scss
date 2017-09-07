@@ -6,11 +6,24 @@
   position: relative;
 }
 
+.square {
+  min-height: 100px;
+}
+
 .title {
   font-size: $font-size;
   color: $theme-color;
   font-family: $font-family-2;
   margin-bottom: 5px;
+}
+
+.number {
+  font-size: $font-size;
+  color: $theme-color;
+  font-family: $font-family-2;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
 }
 
 .dot {
