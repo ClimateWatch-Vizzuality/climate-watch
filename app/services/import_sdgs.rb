@@ -25,7 +25,8 @@ class ImportSdgs
       attributes = {
         number: number(row),
         title: row['title'],
-        cw_title: row['cw_title']
+        cw_title: row['cw_title'],
+        colour: row['colour']
       }
       create_or_update_sdg(attributes)
     end

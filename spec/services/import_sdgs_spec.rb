@@ -2,8 +2,8 @@ require 'rails_helper'
 
 object_contents = {
   'data/sdgs.csv' => <<~END,
-    number,title,cw_title
-    1,End poverty in all its forms everywhere,No poverty
+    number,title,cw_title,colour
+    1,End poverty in all its forms everywhere,No poverty,#F33D4D
   END
   'data/sdg_targets.csv' => <<~END,
     goal_number,number,title

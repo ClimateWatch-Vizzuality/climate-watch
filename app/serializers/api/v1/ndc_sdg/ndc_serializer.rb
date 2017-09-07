@@ -32,7 +32,8 @@ module Api
 
         def goal_properties(goal, ndc_targets)
           goal_properties = {
-            title: goal.cw_title
+            title: goal.cw_title,
+            colour: goal.colour
           }
           goal.targets.each do |target|
             goal_properties[target.number] = target_properties(

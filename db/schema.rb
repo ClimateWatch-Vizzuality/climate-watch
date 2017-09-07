@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170830111409) do
+ActiveRecord::Schema.define(version: 20170907102325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 20170830111409) do
     t.text "cw_title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "colour", null: false
     t.index ["number"], name: "index_ndc_sdg_goals_on_number", unique: true
   end
 
