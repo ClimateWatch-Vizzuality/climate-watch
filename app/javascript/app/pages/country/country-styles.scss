@@ -1,0 +1,19 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.header {
+  @extend %grid;
+
+  grid-template-columns: 10fr 2fr;
+}
+
+.section {
+  padding-top: 50px;
+  min-height: 600px;
+}
+
+:global .sticky-outer-wrapper.sticky {
+  .sticky-inner-wrapper {
+    background-image: url('../../assets/backgrounds/home_bg_1');
+  }
+}

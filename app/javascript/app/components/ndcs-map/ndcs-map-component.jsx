@@ -8,8 +8,8 @@ import ReactTooltip from 'react-tooltip';
 
 import styles from './ndcs-map-styles.scss';
 
-const NDCMap = props =>
-  (<div className={styles.wrapper}>
+const NDCMap = props => (
+  <div className={styles.wrapper}>
     <Map
       cache={false}
       paths={props.paths}
@@ -19,15 +19,14 @@ const NDCMap = props =>
       onCountryEnter={props.handleCountryEnter}
       onCountryLeave={props.handleCountryLeave}
     />
-    <ReactTooltip id="mapTooltip">
-      {props.tooltipTxt}
-    </ReactTooltip>
-    {props.selectedIndicator &&
+    <ReactTooltip id="mapTooltip">{props.tooltipTxt}</ReactTooltip>
+    {props.selectedIndicator && (
       <MapLegend
         className={styles.legend}
         title={props.selectedIndicator.legend}
         buckets={props.selectedIndicator.legendBuckets}
-      />}
+      />
+    )}
     <div className={styles.col4}>
       <Dropdown
         openUp
@@ -47,7 +46,8 @@ const NDCMap = props =>
       />
       <ButtonGroup className={styles.buttons} />
     </div>
-  </div>);
+  </div>
+);
 
 NDCMap.propTypes = {
   categories: PropTypes.array.isRequired,
