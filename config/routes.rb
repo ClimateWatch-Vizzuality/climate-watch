@@ -6,6 +6,8 @@ Rails.application.routes.draw do
         resources :regions, only: [:index], controller: :regions
       end
 
+      resources :emissions, only: [:index], controller: :historical_emissions
+
       resources :ndcs, param: :code, only: [:index, :show] do
         get :full, on: :member, controller: :ndc_full_texts, action: :show
         get :full, on: :collection, controller: :ndc_full_texts, action: :index
