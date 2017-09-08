@@ -1,5 +1,4 @@
 import { createElement } from 'react';
-// import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -35,10 +34,6 @@ const CountrySDGLinkagesContainer = props => {
     ...props
   });
 };
-
-// CountrySDGLinkagesContainer.propTypes = {
-//   myProp: Proptypes.string
-// };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountrySDGLinkagesContainer)
