@@ -8,6 +8,10 @@
   margin-bottom: 4px;
 }
 
+.dropdownWrapper {
+  width: 100%;
+}
+
 .dropdown :global {
   width: 100%;
   height: 45px;
@@ -73,6 +77,12 @@
         color: $theme-color;
       }
     }
+  }
+}
+
+.transparent :global {
+  .Select-control {
+    border: 0;
   }
 }
 
