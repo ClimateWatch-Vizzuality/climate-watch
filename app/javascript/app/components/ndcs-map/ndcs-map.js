@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import paths from 'app/data/world-50m-paths';
+import ReactTooltip from 'react-tooltip';
 
 import Component from './ndcs-map-component';
 import {
@@ -14,19 +15,19 @@ import {
 } from './ndcs-map-selectors';
 
 const mapStateToProps = (state, { location }) => {
-  const { ndcs } = state;
+  const { data } = state.ndcs;
   const search = qs.parse(location.search);
-  const ndcsWithRouter = {
-    ...ndcs,
-    category: search.category,
-    indicator: search.indicator
+  const ndcsWithSelection = {
+    ...data,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator
   };
 
   return {
-    categories: getCategories(ndcs),
-    indicators: getCategoryIndicators(ndcs),
-    selectedCategory: getSelectedCategory(ndcsWithRouter),
-    selectedIndicator: getSelectedIndicator(ndcsWithRouter),
+    categories: getCategories(ndcsWithSelection),
+    indicators: getCategoryIndicators(ndcsWithSelection),
+    selectedCategory: getSelectedCategory(ndcsWithSelection),
+    selectedIndicator: getSelectedIndicator(ndcsWithSelection),
     paths
   };
 };
@@ -40,35 +41,16 @@ const countryStyles = {
     outline: 'none'
   },
   hover: {
-    fill: '#ffc735',
+    fill: '#ECEFF1',
     stroke: '#396d90',
     strokeWidth: 1,
     outline: 'none'
   },
   pressed: {
-    fill: '#ffc735',
+    fill: '#ECEFF1',
     stroke: '#396d90',
     strokeWidth: 1,
     outline: 'none'
-  }
-};
-
-const getChoroplethColor = vis => {
-  switch (vis) {
-    case 1:
-      return '#d54d60';
-    case 2:
-      return '#eebc8f';
-    case 3:
-      return '#fee08d';
-    case 4:
-      return '#7aabd3';
-    case 5:
-      return '#25597c';
-    case 6:
-      return '#3c4483';
-    default:
-      return '#a4c74c';
   }
 };
 
@@ -85,8 +67,8 @@ class NDCMapContainer extends PureComponent {
     const { selectedIndicator } = this.props;
     if (!geometryIdHover) return '';
 
-    return selectedIndicator.countries[geometryIdHover]
-      ? selectedIndicator.countries[geometryIdHover].txt
+    return selectedIndicator.locations[geometryIdHover]
+      ? selectedIndicator.locations[geometryIdHover].value
       : '';
   }
 
@@ -96,6 +78,7 @@ class NDCMapContainer extends PureComponent {
 
   handleCountryEnter = geometry => {
     this.setState({ geometryIdHover: geometry.id });
+    ReactTooltip.rebuild();
   };
 
   handleCountryLeave = () => {
@@ -127,9 +110,12 @@ class NDCMapContainer extends PureComponent {
   }
 
   computedStyles = geography => {
-    const { countries } = this.props.selectedIndicator;
-    if (countries && countries[geography.id]) {
-      const color = getChoroplethColor(countries[geography.id].vis);
+    const { locations, legendBuckets } = this.props.selectedIndicator;
+    const countryData = locations && locations[geography.id];
+
+    if (countryData) {
+      const legendData = legendBuckets[countryData.label_id];
+      const color = legendData && legendData.color;
       return {
         ...countryStyles,
         default: {

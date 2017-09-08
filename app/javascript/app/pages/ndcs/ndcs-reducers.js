@@ -1,14 +1,17 @@
 export const initialState = {
   loading: false,
   loaded: false,
-  data: []
+  error: false,
+  data: {}
 };
 
-const setLoading = (loading, state) => ({ ...state, loading });
-const setLoaded = (loaded, state) => ({ ...state, loaded });
+const setLoading = (state, loading) => ({ ...state, loading });
+const setError = (state, error) => ({ ...state, error });
+const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
-  fetchNDCSInit: state => setLoading(true, state),
+  fetchNDCSInit: state => setLoading(state, true),
   fetchNDCSReady: (state, { payload }) =>
-    setLoaded(true, setLoading(false, { ...state, data: payload }))
+    setLoaded(setLoading({ ...state, data: payload }, false), true),
+  fetchNDCSFail: state => setError(state, true)
 };
