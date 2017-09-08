@@ -17,6 +17,7 @@ export default {
         [payload.iso]: payload.data
       }
     };
+
     return setLoaded(true, setLoading(false, newState));
   },
   fetchCountryNDCFailed: (state, { payload }) => {

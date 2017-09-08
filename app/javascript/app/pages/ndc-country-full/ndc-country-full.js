@@ -13,29 +13,30 @@ export { default as reducers } from './ndc-country-full-reducers';
 export { default as actions } from './ndc-country-full-actions';
 
 const mapStateToProps = (state, { match }) => {
+  const { iso } = match.params;
   const countryData = {
     countries: state.countries.data,
-    iso: match.params.iso
+    iso
   };
   return {
+    fetched: state.countryNDCFull.data[iso],
     loading: state.countryNDCFull.loading,
-    loaded: state.countryNDCFull.loaded,
     country: getCountry(countryData),
-    content: state.countryNDCFull.data[match.params.iso]
+    content: state.countryNDCFull.data[iso]
   };
 };
 
 const NDCCountryFullContainer = props => {
   const {
     loading,
-    loaded,
+    fetched,
     location,
     match,
     history,
     fetchCountryNDCFull
   } = props;
   const { iso } = match.params;
-  if (iso && !loading && !loaded) {
+  if (iso && !loading && !fetched) {
     fetchCountryNDCFull(iso);
   }
 

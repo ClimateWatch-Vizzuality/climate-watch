@@ -1,27 +1,37 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
 
 import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
+import NoContent from 'components/no-content';
 
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
-class Component extends PureComponent {
+class CountrySDGLinkages extends PureComponent {
   render() {
-    const { sdg } = this.props;
+    const { sdgs } = this.props;
     return (
-      <div className={styles.wrapper}>
-        <h1>Hi! I am ndc sdg linkages component, {this.props.myProp}</h1>
-        <SDGCard sdg={sdg} />
+      <div>
+        <h3 className={styles.title}>NDC-SDG Linkages</h3>
+        <div className={styles.sdgs}>
+          {!isEmpty(sdgs) &&
+            Object.keys(sdgs).map(sdg => (
+              <div key={sdgs[sdg].title} className={styles.card}>
+                <SDGCard sdgIndex={sdg} sdgData={sdgs[sdg]} indicators />
+                <ReactTooltip />
+              </div>
+            ))}
+          {isEmpty(sdgs) && <NoContent message="No SDG data available" />}
+        </div>
         <ReactTooltip />
       </div>
     );
   }
 }
 
-Component.propTypes = {
-  myProp: Proptypes.any,
-  sdg: Proptypes.object
+CountrySDGLinkages.propTypes = {
+  sdgs: Proptypes.object
 };
 
-export default Component;
+export default CountrySDGLinkages;

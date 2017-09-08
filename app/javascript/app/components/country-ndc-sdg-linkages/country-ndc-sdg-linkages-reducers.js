@@ -8,26 +8,25 @@ const setLoading = (loading, state) => ({ ...state, loading });
 const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
-  fetchCountryNDCFullInit: state => setLoading(true, state),
-  fetchCountryNDCFullReady: (state, { payload }) => {
+  fetchNDCsSDGsInit: state => setLoading(true, state),
+  fetchNDCsSDGsReady: (state, { payload }) => {
     const newState = {
       ...state,
       data: {
-        ...state.data,
         [payload.iso_code3]: payload
       }
     };
 
     return setLoaded(true, setLoading(false, newState));
   },
-  fetchCountryNDCFullFailed: (state, { payload }) => {
+  fetchNDCsSDGsFailed: (state, { payload }) => {
     const newState = {
       ...state,
       data: {
-        ...state.data,
         [payload]: {}
       }
     };
+
     return setLoaded(true, setLoading(false, newState));
   }
 };

@@ -1,44 +1,41 @@
 import { createElement } from 'react';
-import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-import Component from './country-ndc-sdg-linkages-component';
+import CountrySDGLinkagesComponent from './country-ndc-sdg-linkages-component';
+import actions from './country-ndc-sdg-linkages-actions';
 
 export { default as component } from './country-ndc-sdg-linkages-component';
+export { initialState } from './country-ndc-sdg-linkages-reducers';
 export { default as styles } from './country-ndc-sdg-linkages-styles';
+export { default as reducers } from './country-ndc-sdg-linkages-reducers';
+export { default as actions } from './country-ndc-sdg-linkages-actions';
 
-const sdg = {
-  index: '1',
-  title: 'No poverty',
-  color: 'red',
-  sections: [
-    {
-      number: 1.1,
-      title:
-        'By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day',
-      sectors: [77, 76, 75]
-    },
-    {
-      number: 1.2,
-      title:
-        'By 2030, reduce at least by half the proportion of men, women and children of all ages living in poverty in all its dimensions according to national definitions'
-    }
-  ]
+const mapStateToProps = (state, { match }) => {
+  const { countrySDGLinkages } = state;
+  const { iso } = match.params;
+  return {
+    fetched: countrySDGLinkages.data[iso],
+    sectors: countrySDGLinkages.data[iso]
+      ? countrySDGLinkages.data[iso].sectors
+      : {},
+    sdgs: countrySDGLinkages.data[iso] ? countrySDGLinkages.data[iso].sdgs : {},
+    loading: countrySDGLinkages.loading
+  };
 };
 
-const mapStateToProps = () => ({
-  stateProp: 'State prop',
-  sdg
-});
+const CountrySDGLinkagesContainer = props => {
+  const { match, fetchNDCsSDGs, loading, fetched } = props;
+  const { iso } = match.params;
+  if (iso && !loading && !fetched) {
+    fetchNDCsSDGs(iso);
+  }
 
-const ComponentContainer = props =>
-  createElement(Component, {
-    ...props,
-    myProp: 'And I am the prop'
+  return createElement(CountrySDGLinkagesComponent, {
+    ...props
   });
-
-ComponentContainer.propTypes = {
-  myProp: Proptypes.string
 };
 
-export default connect(mapStateToProps, null)(ComponentContainer);
+export default withRouter(
+  connect(mapStateToProps, actions)(CountrySDGLinkagesContainer)
+);
