@@ -9,10 +9,14 @@ import 'react-select/dist/react-select.css';
 import styles from './dropdown-styles.scss';
 
 const Dropdown = props => (
-  <div className={props.className}>
+  <div className={styles.dropdownWrapper}>
     {props.label && <span className={styles.label}>{props.label}</span>}
     <Select
-      className={cx(styles.dropdown, { [styles.dropdownUp]: props.openUp })}
+      className={cx(
+        styles.dropdown,
+        { [styles.dropdownUp]: props.openUp },
+        props.transparent ? styles.transparent : ''
+      )}
       {...props}
       arrowRenderer={({ isOpen }) => (
         <Icon
@@ -27,7 +31,8 @@ const Dropdown = props => (
 Dropdown.propTypes = {
   label: PropTypes.string,
   openUp: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
+  transparent: PropTypes.bool
 };
 
 export default Dropdown;
