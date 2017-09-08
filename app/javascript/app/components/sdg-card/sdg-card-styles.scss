@@ -1,22 +1,9 @@
 @import '../../styles/settings.scss';
 
 .card {
-  border: solid 1px $theme-border;
   padding: 15px;
   position: relative;
-  margin-top: -1px;
-  margin-left: -1px;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: transparent;
-    z-index: -1;
-  }
+  border: solid 1px $theme-border;
 }
 
 .square {
@@ -53,6 +40,7 @@
   width: 50px;
   background-repeat: no-repeat;
   background-size: contain;
+  background-position: right;
   position: absolute;
   right: 15px;
   bottom: 15px;

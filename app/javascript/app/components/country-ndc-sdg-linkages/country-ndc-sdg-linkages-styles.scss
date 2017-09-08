@@ -2,7 +2,17 @@
 @import '~styles/layout.scss';
 
 .sdgs {
-  margin-left: 1px;
+  column-count: 3;
+  column-gap: 0;
+  position: relative;
+}
+
+.card {
+  position: relative;
+  display: inline-block;
+  width: calc(100% + 1px);
+  margin: auto;
+  margin-bottom: -1px;
 }
 
 .title {
@@ -10,13 +20,4 @@
   font-weight: $font-weight;
   color: $theme-color;
   margin-bottom: 15px;
-}
-
-.threeFold {
-  @extend %grid;
-
-  grid-column-gap: 0;
-  grid-template-columns: repeat(3, 1fr);
-  column-count: 3;
-  column-gap: 0;
 }

@@ -44,28 +44,33 @@ const icons = {
 
 class SDGCard extends PureComponent {
   render() {
-    const { sdg, indicators, square } = this.props;
+    const { sdgIndex, sdgData, indicators, square } = this.props;
     const cardStyle = cx(styles.card, square ? styles.square : null);
     return (
       <div className={cardStyle}>
         <h4 className={styles.title}>{`${indicators
-          ? sdg.index
-          : ''} ${sdg.title}`}</h4>
+          ? sdgIndex
+          : ''} ${sdgData.title}`}</h4>
         <div className={styles.dots}>
           {indicators &&
-            sdg.sections.map(section => (
+            sdgData &&
+            Object.keys(sdgData.targets).map(target => (
               <span
-                key={section.number}
-                data-tip={section.title}
+                key={target}
+                data-tip={sdgData.targets[target].title}
                 className={styles.dot}
-                style={{ backgroundColor: section.sectors ? sdg.color : '' }}
+                style={{
+                  backgroundColor: sdgData.targets[target].sectors
+                    ? sdgData.colour
+                    : ''
+                }}
               />
             ))}
         </div>
-        {!indicators && <div className={styles.number}>{sdg.index}</div>}
+        {!indicators && <div className={styles.number}>{sdgIndex}</div>}
         <div
           className={styles.icon}
-          style={{ backgroundImage: `url(${icons[`sdg${sdg.index}`]})` }}
+          style={{ backgroundImage: `url(${icons[`sdg${sdgIndex}`]})` }}
         />
       </div>
     );
@@ -73,7 +78,8 @@ class SDGCard extends PureComponent {
 }
 
 SDGCard.propTypes = {
-  sdg: Proptypes.object,
+  sdgIndex: Proptypes.string,
+  sdgData: Proptypes.object,
   indicators: Proptypes.bool,
   square: Proptypes.bool
 };
