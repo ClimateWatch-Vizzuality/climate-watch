@@ -17,28 +17,22 @@ module Api
             :gas
           )
 
+        filters(records)
+      end
+
+      def filters(records)
         if location_list
           records = records.where(
             locations: {iso_code3: location_list}
           )
         end
 
-        if params[:gas]
-          records = records.where(
-            historical_emissions_gases: {id: params[:gas]}
-          )
-        end
-
-        if params[:source]
-          records = records.where(
-            historical_emissions_data_sources: {id: params[:source]}
-          )
-        end
-
-        if params[:sector]
-          records = records.where(
-            historical_emissions_sectors: {id: params[:sector]}
-          )
+        {
+          historical_emissions_gases: :gas,
+          historical_emissions_data_sources: :source,
+          historical_emissions_sectors: :sector
+        }.each do |k, v|
+          records = records.where(Hash[k, {id: params[v]}]) if params[v]
         end
 
         records
