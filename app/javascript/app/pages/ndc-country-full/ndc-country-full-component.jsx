@@ -7,6 +7,7 @@ import Icon from 'components/icon';
 import Search from 'components/search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
+import isEmpty from 'lodash/isEmpty';
 
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
@@ -50,12 +51,15 @@ class NDCCountryFull extends PureComponent {
             </div>
           </div>
         </Header>
-        {!content && !loading && <NoContent message="No content available" />}
+        {isEmpty(content) &&
+        !loading && <NoContent message="No content available" />}
         <div className={cx(layout.content, styles.bodyContent)}>
-          <div
-            className={cx(contentStyles.content, styles.innerContent)}
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
+          {!isEmpty(content) && (
+            <div
+              className={cx(contentStyles.content, styles.innerContent)}
+              dangerouslySetInnerHTML={{ __html: content.html }}
+            />
+          )}
         </div>
       </div>
     );
@@ -67,7 +71,7 @@ NDCCountryFull.propTypes = {
   country: Proptypes.object.isRequired,
   onSearchChange: Proptypes.func.isRequired,
   search: Proptypes.string,
-  content: Proptypes.string,
+  content: Proptypes.object,
   loading: Proptypes.bool
 };
 

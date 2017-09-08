@@ -14,7 +14,7 @@ export default {
       ...state,
       data: {
         ...state.data,
-        [payload.iso_code3]: payload.html
+        [payload.iso_code3]: payload
       }
     };
 
@@ -25,10 +25,9 @@ export default {
       ...state,
       data: {
         ...state.data,
-        [payload]: ''
+        [payload]: {}
       }
     };
-
     return setLoaded(true, setLoading(false, newState));
   }
 };
