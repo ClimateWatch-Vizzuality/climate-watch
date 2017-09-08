@@ -38,4 +38,4 @@ EXPOSE 3000
 RUN bundle exec rake assets:precompile
 
 # Start app
-CMD bundle exec rake tmp:clear db:migrate && bundle exec rails s -b 0.0.0.0
+CMD bundle exec rake tmp:clear db:migrate && rake db:reimport && bundle exec rails s -b 0.0.0.0
