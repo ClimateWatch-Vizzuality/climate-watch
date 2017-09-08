@@ -14,6 +14,7 @@
 
 :global .sticky-outer-wrapper.sticky {
   .sticky-inner-wrapper {
+    z-index: 10;
     background-image: url('../../assets/backgrounds/home_bg_1');
   }
 }
