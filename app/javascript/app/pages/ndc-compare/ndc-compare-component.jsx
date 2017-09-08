@@ -40,8 +40,9 @@ class NDCCountry extends PureComponent {
           </div>
         </Header>
         <div className={styles.countrySelector}>
-          <div className={cx(layout.content, styles.threeFold)}>
+          <div className={cx(layout.content, styles.fourFold)}>
             <Dropdown
+              className={styles.offset}
               placeholder="Add a country"
               options={sortBy(countriesOptions, ['label'])}
               onChange={selected => handleDropDownChange(0, selected)}

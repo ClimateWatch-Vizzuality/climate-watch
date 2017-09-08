@@ -21,8 +21,12 @@
   border-bottom: solid 1px rgba($theme-color, 0.3);
 }
 
-.threeFold {
+.fourFold {
   @extend %grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.offset {
+  grid-column-start: 2;
 }

@@ -21,15 +21,16 @@ export const getCountriesOptions = createSelector([getCountries], countries => {
 export const getActiveCountries = createSelector(
   [getCountries, getLocations],
   (countries, locations) => {
-    const activeCountries = countries.filter(
-      country => locations.indexOf(country.iso_code3) > -1
-    );
-    const activeCountriesOptions = activeCountries.map(country => ({
-      label: country.wri_standard_name,
-      value: country.iso_code3
-    }));
-
-    return activeCountriesOptions;
+    const activeCountries = locations.map(location => {
+      const countryDetail = countries.find(
+        country => country.iso_code3 === location
+      );
+      return {
+        label: countryDetail.wri_standard_name,
+        value: countryDetail.iso_code3
+      };
+    });
+    return activeCountries;
   }
 );
 

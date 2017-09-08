@@ -55,10 +55,9 @@
 }
 
 .definition {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
+  @extend %grid;
+
+  grid-template-columns: 1fr 3fr;
   padding: 20px 0;
   border-bottom: solid 1px rgba(#9090b2, 0.15);
 
@@ -68,8 +67,6 @@
 }
 
 .definitionTitle {
-  width: 200px;
-  min-width: 200px;
   margin-right: 40px;
   color: $theme-color;
   font-weight: $font-weight-bold;
