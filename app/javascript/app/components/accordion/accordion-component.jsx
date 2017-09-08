@@ -11,7 +11,7 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
-    const { data, handleOnClick, activeSection } = this.props;
+    const { data, handleOnClick, activeSection, compare } = this.props;
     return (
       <div>
         {data.map((section, index) => {
@@ -39,26 +39,34 @@ class Accordion extends PureComponent {
               <Collapse isOpened={isOpen}>
                 <div className={styles.accordionContent}>
                   <div className={layout.content}>
-                    {section.definitions.length === 0 &&
-                      <NoContent message="Nothing here" />}
+                    {section.definitions.length === 0 && (
+                      <NoContent message="Nothing here" />
+                    )}
                     <dl className={styles.definitionList}>
-                      {section.definitions.map(def =>
-                        (<div key={def.slug} className={styles.definition}>
+                      {section.definitions.map(def => (
+                        <div
+                          key={def.slug}
+                          className={cx(
+                            compare
+                              ? styles.definitionCompare
+                              : styles.definition
+                          )}
+                        >
                           <dt className={styles.definitionTitle}>
                             {def.title}
                           </dt>
-                          {def.descriptions.map(desc =>
-                            (<dd
+                          {def.descriptions.map(desc => (
+                            <dd
                               key={`${def.slug}-${desc.iso}`}
                               className={styles.definitionDesc}
                             >
                               <div
                                 dangerouslySetInnerHTML={{ __html: desc.value }}
                               />
-                            </dd>)
-                          )}
-                        </div>)
-                      )}
+                            </dd>
+                          ))}
+                        </div>
+                      ))}
                     </dl>
                   </div>
                 </div>
@@ -80,7 +88,8 @@ Accordion.propTypes = {
       slug: PropTypes.string,
       definitions: PropTypes.array.isRequired
     })
-  )
+  ),
+  compare: PropTypes.bool
 };
 
 Accordion.defaultProps = {

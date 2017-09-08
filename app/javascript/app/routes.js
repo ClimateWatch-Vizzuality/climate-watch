@@ -8,6 +8,7 @@ import NDCMap from 'components/ndcs-map';
 import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
+import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
 import GHGEmissions from 'components/country-ghg-emissions';
@@ -31,6 +32,11 @@ export default [
       {
         path: '/ndcs/country/:iso/full',
         component: NDCCountryFull,
+        exact: true
+      },
+      {
+        path: '/ndcs/compare',
+        component: NDCCompare,
         exact: true
       },
       {

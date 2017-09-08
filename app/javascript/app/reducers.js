@@ -8,6 +8,7 @@ import { reducers as NDCSReducers } from 'pages/ndcs';
 import { reducers as countrySDGLinkagesReducers } from 'components/country-ndc-sdg-linkages';
 import { reducers as countryNDCReducers } from 'pages/ndc-country';
 import { reducers as countryNDCFullReducers } from 'pages/ndc-country-full';
+import { reducers as NDCCompareReducers } from 'pages/ndc-compare';
 import { reducers as mapReducers } from 'components/map';
 import initialState from './data/initial-state';
 import allActions from './actions';
@@ -36,6 +37,12 @@ export default combineReducers({
     'countryNDCFull',
     allActions,
     countryNDCFullReducers,
+    initialState
+  ),
+  NDCCompare: handleActions(
+    'NDCCompare',
+    allActions,
+    NDCCompareReducers,
     initialState
   ),
   countrySelect: handleActions(
