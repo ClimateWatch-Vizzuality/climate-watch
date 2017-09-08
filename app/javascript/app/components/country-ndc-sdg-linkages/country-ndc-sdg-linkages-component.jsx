@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 
 import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
+import NoContent from 'no-content';
 
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
@@ -20,6 +21,7 @@ class CountrySDGLinkages extends PureComponent {
                 <ReactTooltip />
               </div>
             ))}
+          {!sgds && <NoContent message="No SDG data available" />}
         </div>
         <ReactTooltip />
       </div>

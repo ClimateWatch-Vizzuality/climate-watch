@@ -11,22 +11,23 @@ export { default as styles } from './country-ndc-sdg-linkages-styles';
 export { default as reducers } from './country-ndc-sdg-linkages-reducers';
 export { default as actions } from './country-ndc-sdg-linkages-actions';
 
-const mapStateToProps = (state, { match }) => ({
-  stateProp: 'State prop',
-  sectors: state.countrySDGLinkages.data[match.params.iso]
-    ? state.countrySDGLinkages.data[match.params.iso].sectors
-    : {},
-  sdgs: state.countrySDGLinkages.data[match.params.iso]
-    ? state.countrySDGLinkages.data[match.params.iso].sdgs
-    : {},
-  loading: state.countrySDGLinkages.loading,
-  loaded: state.countrySDGLinkages.loaded
-});
+const mapStateToProps = (state, { match }) => {
+  const { countrySDGLinkages } = state;
+  const { iso } = match.params;
+  return {
+    fetched: countrySDGLinkages.data[iso],
+    sectors: countrySDGLinkages.data[iso]
+      ? countrySDGLinkages.data[iso].sectors
+      : {},
+    sdgs: countrySDGLinkages.data[iso] ? countrySDGLinkages.data[iso].sdgs : {},
+    loading: countrySDGLinkages.loading
+  };
+};
 
 const CountrySDGLinkagesContainer = props => {
-  const { match, fetchNDCsSDGs, loading, loaded } = props;
+  const { match, fetchNDCsSDGs, loading, fetched } = props;
   const { iso } = match.params;
-  if (iso && !loading && !loaded) {
+  if (iso && !loading && !fetched) {
     fetchNDCsSDGs(iso);
   }
 
