@@ -7,6 +7,7 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
+import sortBy from 'lodash/sortBy';
 
 import backIcon from 'assets/icons/back.svg';
 import background from 'assets/backgrounds/home_bg_1';
@@ -15,7 +16,12 @@ import styles from './ndc-compare-styles.scss';
 
 class NDCCountry extends PureComponent {
   render() {
-    const { ndcsData, countriesOptions, activeCountriesOptions } = this.props;
+    const {
+      ndcsData,
+      countriesOptions,
+      activeCountriesOptions,
+      handleDropDownChange
+    } = this.props;
     return (
       <div>
         <Header image={background}>
@@ -37,17 +43,20 @@ class NDCCountry extends PureComponent {
           <div className={cx(layout.content, styles.threeFold)}>
             <Dropdown
               placeholder="Add a country"
-              options={countriesOptions}
+              options={sortBy(countriesOptions, ['label'])}
+              onChange={selected => handleDropDownChange(0, selected)}
               value={activeCountriesOptions[0]}
             />
             <Dropdown
-              placeholder="Add a country"
-              options={countriesOptions}
+              placeholder="Add a second country"
+              options={sortBy(countriesOptions, ['label'])}
+              onChange={selected => handleDropDownChange(1, selected)}
               value={activeCountriesOptions[1]}
             />
             <Dropdown
-              placeholder="Add a country"
-              options={countriesOptions}
+              placeholder="Add a third country"
+              options={sortBy(countriesOptions, ['label'])}
+              onChange={selected => handleDropDownChange(2, selected)}
               value={activeCountriesOptions[2]}
             />
           </div>
@@ -61,7 +70,8 @@ class NDCCountry extends PureComponent {
 NDCCountry.propTypes = {
   ndcsData: Proptypes.array,
   countriesOptions: Proptypes.array,
-  activeCountriesOptions: Proptypes.array
+  activeCountriesOptions: Proptypes.array,
+  handleDropDownChange: Proptypes.func
 };
 
 export default NDCCountry;

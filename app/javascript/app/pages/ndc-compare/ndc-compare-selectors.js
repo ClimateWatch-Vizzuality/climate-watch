@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 
 const getCountries = state => state.data;
 const getLocations = state => state.locations;
@@ -16,7 +15,7 @@ export const getCountriesOptions = createSelector([getCountries], countries => {
     label: country.wri_standard_name,
     value: country.iso_code3
   }));
-  return sortBy(countriesOptions, ['label']);
+  return countriesOptions;
 });
 
 export const getActiveCountries = createSelector(
@@ -30,7 +29,7 @@ export const getActiveCountries = createSelector(
       value: country.iso_code3
     }));
 
-    return sortBy(activeCountriesOptions, ['label']);
+    return activeCountriesOptions;
   }
 );
 

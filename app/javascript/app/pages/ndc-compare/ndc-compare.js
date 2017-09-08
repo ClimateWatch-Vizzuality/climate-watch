@@ -33,18 +33,37 @@ const mapStateToProps = (state, { location }) => {
     loading: state.NDCCompare.loading,
     ndcsData: getNDCs(ndcsData),
     locations,
-    countries: getCountriesOptions(state.countries),
+    countriesOptions: getCountriesOptions(state.countries),
     activeCountriesOptions: getActiveCountries(activeCountriesData)
   };
 };
 
 const NDCCompareContainer = props => {
-  const { locations, fetchCompareNDC, loading, fetched } = props;
+  const {
+    history,
+    location,
+    locations,
+    fetchCompareNDC,
+    loading,
+    fetched
+  } = props;
   if (locations && !loading && !fetched) {
     fetchCompareNDC(locations);
   }
 
+  const handleDropDownChange = (selector, country) => {
+    locations[selector] = country.value;
+    const search = qs.parse(location.search);
+    const newSearch = { ...search, locations: locations.toString() };
+    history.replace({
+      pathname: location.pathname,
+      search: qs.stringify(newSearch)
+    });
+    fetchCompareNDC(locations);
+  };
+
   return createElement(NDCCompareComponent, {
+    handleDropDownChange,
     ...props
   });
 };
