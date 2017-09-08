@@ -41,7 +41,7 @@ class NDCCountry extends PureComponent {
               </Button>
               <Button
                 color="yellow"
-                link={`/ndcs/compare?countries=${match.params.iso}`}
+                link={`/ndcs/compare?locations=${match.params.iso}`}
               >
                 Compare
               </Button>
