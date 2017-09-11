@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import paths from 'app/data/world-50m-paths';
-import ReactTooltip from 'react-tooltip';
 
 import Component from './ndcs-map-component';
 import {
@@ -78,11 +77,6 @@ class NDCMapContainer extends PureComponent {
 
   handleCountryEnter = geometry => {
     this.setState({ geometryIdHover: geometry.id });
-    ReactTooltip.rebuild();
-  };
-
-  handleCountryLeave = () => {
-    this.setState({ geometryIdHover: null });
   };
 
   handleCategoryChange = category => {
@@ -141,7 +135,6 @@ class NDCMapContainer extends PureComponent {
       computedStyles: this.computedStyles,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
-      handleCountryLeave: this.handleCountryLeave,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange
     });
