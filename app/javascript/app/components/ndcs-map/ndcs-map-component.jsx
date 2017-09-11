@@ -8,6 +8,8 @@ import ReactTooltip from 'react-tooltip';
 
 import styles from './ndcs-map-styles.scss';
 
+const getHtmlTooltip = content => ({ __html: content });
+
 const NDCMap = props => (
   <div className={styles.wrapper}>
     <Map
@@ -17,9 +19,12 @@ const NDCMap = props => (
       computedStyles={props.computedStyles}
       onCountryClick={props.handleCountryClick}
       onCountryEnter={props.handleCountryEnter}
-      onCountryLeave={props.handleCountryLeave}
     />
-    <ReactTooltip id="mapTooltip">{props.tooltipTxt}</ReactTooltip>
+    <ReactTooltip id="mapTooltip">
+      {props.tooltipTxt && (
+        <p dangerouslySetInnerHTML={getHtmlTooltip(props.tooltipTxt)} />
+      )}
+    </ReactTooltip>
     {props.selectedIndicator && (
       <MapLegend
         className={styles.legend}
@@ -59,7 +64,6 @@ NDCMap.propTypes = {
   computedStyles: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
-  handleCountryLeave: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
   handleIndicatorChange: PropTypes.func.isRequired
 };
