@@ -1,0 +1,42 @@
+@import '~styles/settings';
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  color: $white;
+  font-family: $font-family-2;
+  border-bottom: solid 1px #e5e5eb;
+  border-right: solid 1px #e5e5eb;
+  padding-top: 30px;
+  padding-right: 25px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.title {
+  margin-bottom: 10px;
+  color: $theme-color;
+}
+
+.count {
+  color: $theme-text-light;
+  font-weight: $font-weight-bold;
+  display: inline-block;
+}
+
+.match {
+  margin-bottom: 40px;
+  padding-right: 80px;
+  color: $theme-text-light;
+
+  &:hover {
+    color: $theme-color;
+  }
+}

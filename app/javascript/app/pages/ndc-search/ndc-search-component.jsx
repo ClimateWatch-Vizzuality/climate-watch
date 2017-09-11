@@ -5,6 +5,7 @@ import cx from 'classnames';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
+import ResultCard from 'components/result-card';
 import NDCSearchMap from 'components/ndcs-search-map';
 
 import background from 'assets/backgrounds/home_bg_1';
@@ -14,6 +15,7 @@ import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
   render() {
+    const { results } = this.props;
     return (
       <div>
         <Header image={background}>
@@ -25,7 +27,12 @@ class SearchPage extends PureComponent {
           </div>
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>
-          <div className="resultsList">results here</div>
+          <div className="resultsList">
+            {results &&
+              results.map(result => (
+                <ResultCard key={result.iso_code3} result={result} />
+              ))}
+          </div>
           <NDCSearchMap />
         </div>
       </div>
