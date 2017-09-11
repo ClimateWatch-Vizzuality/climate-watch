@@ -15,7 +15,7 @@ const NDC = props => (
     <Header size="medium">
       <div className={layout.content}>
         <div className={styles.cols}>
-          <Intro title="NDC Explorer" />
+          <Intro title="NDC Content" />
           <AutocompleteSearch />
         </div>
         <AnchorNav useRoutes links={props.anchorLinks} />
