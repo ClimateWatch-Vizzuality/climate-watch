@@ -16,7 +16,7 @@ export { default as reducers } from './autocomplete-search-reducers';
 export { default as styles } from './autocomplete-search-styles';
 export { default as actions } from './autocomplete-search-actions';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { autocompleteSearch } = state;
   const searchListData = {
     query: autocompleteSearch.query,
@@ -33,23 +33,14 @@ class AutocompleteSearchContainer extends PureComponent {
     this.props.setAutocompleteSearch('');
   }
 
-  onOptionClick = (selected) => {
-    const { history } = this.props;
-    if (selected) {
-      history.push(`ndcs/${selected.value}`);
-    }
-  };
-
   render() {
     return createElement(AutocompleteSearchComponent, {
-      ...this.props,
-      onOptionClick: this.onOptionClick
+      ...this.props
     });
   }
 }
 
 AutocompleteSearchContainer.propTypes = {
-  history: Proptypes.object,
   setAutocompleteSearch: Proptypes.func.isRequired
 };
 

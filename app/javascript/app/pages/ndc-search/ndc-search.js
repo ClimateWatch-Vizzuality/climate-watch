@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import qs from 'query-string';
 
-import actions from './search-actions';
-import SearchComponent from './search-component';
-import { getSearchResults } from './search-selectors';
+import actions from './ndc-search-actions';
+import SearchComponent from './ndc-search-component';
+import { getSearchResults } from './ndc-search-selectors';
 
-export { default as component } from './search-component';
-export { default as styles } from './search-styles';
+export { default as component } from './ndc-search-component';
+export { default as styles } from './ndc-search-styles';
 
 const mapStateToProps = (state, { location }) => {
   const { query } = qs.parse(location.search);
@@ -29,9 +29,9 @@ class SearchContainer extends PureComponent {
     fetchSearchResults(query);
   }
 
-  onResultClick = (result) => {
-    console.log(result);
-  }
+  onResultClick = result => {
+    console.info(result);
+  };
 
   render() {
     return createElement(SearchComponent, {
@@ -46,8 +46,8 @@ SearchContainer.propTypes = {
   query: Proptypes.string
 };
 
-export { initialState } from './search-reducers';
-export { default as reducers } from './search-reducers';
-export { default as actions } from './search-actions';
+export { initialState } from './ndc-search-reducers';
+export { default as reducers } from './ndc-search-reducers';
+export { default as actions } from './ndc-search-actions';
 
 export default withRouter(connect(mapStateToProps, actions)(SearchContainer));

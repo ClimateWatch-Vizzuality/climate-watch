@@ -7,7 +7,7 @@ import { actions as NDCCompareActions } from 'pages/ndc-compare';
 import { actions as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
 import { actions as countryNDCActions } from 'pages/ndc-country';
 import { actions as countryNDCFullActions } from 'pages/ndc-country-full';
-import { actions as searchActions } from 'pages/search';
+import { actions as ndcSearchActions } from 'pages/ndc-search';
 
 export default {
   ...countriesProvider,
@@ -19,5 +19,5 @@ export default {
   ...countryNDCFullActions,
   ...mapActions,
   ...autocompleteSearch,
-  ...searchActions
+  ...ndcSearchActions
 };
