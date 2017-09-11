@@ -12,6 +12,8 @@
   padding-top: 30px;
   padding-right: 25px;
   position: relative;
+  margin-left: -2000px;
+  padding-left: 2000px;
 }
 
 .header {
@@ -34,18 +36,30 @@
 
 .match {
   margin-bottom: 40px;
-  padding-right: 80px;
   color: $theme-text-light;
   line-height: 1.5em;
+  position: relative;
+
+  .text {
+    margin-right: 80px;
+  }
+
+  .link {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 45px / 2);
+  }
+
+  .iconLink {
+    transform: rotate(-90deg);
+  }
 
   &:hover {
     color: $theme-color;
-  }
-}
 
-.iconLink {
-  position: absolute;
-  right: 25px;
-  bottom: 40px;
-  transform: rotate(-90deg);
+    .link {
+      opacity: 1;
+    }
+  }
 }

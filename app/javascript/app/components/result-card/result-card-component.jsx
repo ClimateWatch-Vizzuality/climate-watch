@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 import Button from 'components/button';
 import Icon from 'components/icon';
@@ -8,7 +9,7 @@ import iconLink from 'assets/icons/dropdown-arrow.svg';
 import styles from './result-card-styles.scss';
 
 const ResultCard = props => {
-  const { result } = props;
+  const { result, query } = props;
   return (
     <div className={styles.resultCard}>
       <div className={styles.header}>
@@ -17,27 +18,28 @@ const ResultCard = props => {
       </div>
       {result.matches &&
         result.matches.map(match => (
-          <div
-            key={match.fragment}
-            id={match.idx}
+          <NavLink
+            to={`/ndcs/country/${result.iso_code3}/full?search=${query}&idx=0`}
             className={styles.match}
-            dangerouslySetInnerHTML={{ __html: match.fragment }}
-          />
+          >
+            <div
+              className={styles.text}
+              key={match.fragment}
+              id={match.idx}
+              dangerouslySetInnerHTML={{ __html: match.fragment }}
+            />
+            <Button className={styles.link} color="white" square>
+              <Icon icon={iconLink} className={styles.iconLink} />
+            </Button>
+          </NavLink>
         ))}
-      <Button
-        className={styles.iconLink}
-        link={`/ndcs/country/${result.iso_code3}`}
-        color="white"
-        square
-      >
-        <Icon icon={iconLink} />
-      </Button>
     </div>
   );
 };
 
 ResultCard.propTypes = {
-  result: PropTypes.object
+  result: PropTypes.object,
+  query: PropTypes.string
 };
 
 export default ResultCard;

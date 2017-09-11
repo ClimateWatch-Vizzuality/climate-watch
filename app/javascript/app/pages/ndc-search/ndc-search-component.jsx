@@ -7,6 +7,7 @@ import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
 import NDCSearchMap from 'components/ndcs-search-map';
 import Search from 'components/search';
+import NoContent from 'components/no-content';
 
 import background from 'assets/backgrounds/home_bg_1';
 import layout from 'styles/layout.scss';
@@ -34,9 +35,12 @@ class SearchPage extends PureComponent {
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>
           <div className="resultsList">
+            {!results.length && (
+              <NoContent message="No results for this search" />
+            )}
             {results &&
               results.map(result => (
-                <ResultCard key={result.iso_code3} result={result} />
+                <ResultCard key={result.iso_code3} result={result} query />
               ))}
           </div>
           <NDCSearchMap />
