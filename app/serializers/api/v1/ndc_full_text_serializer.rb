@@ -14,15 +14,18 @@ module Api
       end
 
       def html
-        if query_present?
+        if highlights_present?
           object.pg_search_highlight.html_safe
         else
           object.full_text.html_safe
         end
       end
 
-      def query_present?
-        @instance_options[:query].present?
+      def highlights_present?
+        object.pg_search_highlight
+        true
+      rescue PgSearch::PgSearchHighlightNotSelected
+        false
       end
     end
   end

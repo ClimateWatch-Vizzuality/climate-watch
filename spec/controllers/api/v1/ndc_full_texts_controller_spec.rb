@@ -59,5 +59,10 @@ RSpec.describe Api::V1::NdcFullTextsController, type: :controller do
       json_response = JSON.parse(response.body)
       expect(json_response['html']).to match(pol_html_with_highlight)
     end
+    it 'returns NDC content in html without highlights if no matches' do
+      get :show, params: {code: pol.iso_code3.downcase, query: 'goodbye'}
+      json_response = JSON.parse(response.body)
+      expect(json_response['html']).to match(pol_html)
+    end
   end
 end
