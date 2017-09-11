@@ -22,12 +22,10 @@ module Api
       end
 
       def highlights_present?
-        begin
-          object.pg_search_highlight
-          true
-        rescue PgSearch::PgSearchHighlightNotSelected
-          false
-        end
+        object.pg_search_highlight
+        true
+      rescue PgSearch::PgSearchHighlightNotSelected
+        false
       end
     end
   end
