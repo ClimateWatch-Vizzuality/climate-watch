@@ -25,6 +25,7 @@ class Map extends PureComponent {
       handleZoomIn,
       handleZoomOut,
       onCountryClick,
+      onCountryMove,
       onCountryEnter,
       onCountryLeave,
       computedStyles
@@ -75,6 +76,7 @@ class Map extends PureComponent {
                           geography,
                           projection,
                           onClick: onCountryClick,
+                          onMouseMove: onCountryMove,
                           onMouseEnter: onCountryEnter,
                           onMouseLeave: onCountryLeave,
                           style: computedStyles(geography)
