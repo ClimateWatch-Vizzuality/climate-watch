@@ -35,6 +35,20 @@ spec:
                 secretKeyRef:
                   name: dbsecrets
                   key: CW_POSTGRES_URL
+          - name: S3_BUCKET_NAME
+            value: "climate-watch-dev"
+          - name: AWS_REGION
+            value: "eu-west-1"
+          - name: CW_AWS_ACCESS_KEY_ID
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: AWS_ACCESS_KEY
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: CW_AWS_SECRET_ACCESS_KEY
 
         ports:
           - containerPort: 3000
