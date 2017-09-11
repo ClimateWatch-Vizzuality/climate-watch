@@ -10,10 +10,14 @@ RSpec.describe Api::V1::NdcFullTextsController, type: :controller do
   let(:pol_img_src) { 'POL-1.PNG' }
   let(:pol_html) {
     "<h1>Hello</h1>\n\n<p>\
-<img src=\"#{S3_BUCKET_URL}/ndcs/#{pol_img_src}\" /></p>"
+<img src=\"#{S3_BUCKET_URL}/ndcs/#{pol_img_src}\" /></p><p>Lorem ipsum dolor\
+sit amet, consectetur adipiscing elit. Nullam aliquam pretium risus laoreet.\
+Cras sollicitudin eleifend maximus. Etiam nec nulla viverra, suscipit diam\
+pulvinar, tempus augue. Hello sed egestas ipsum, et posuere tellus. \
+Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
   }
   let(:pol_html_with_highlight) {
-    pol_html.sub(
+    pol_html.gsub(
       'Hello',
       "#{Ndc::PG_SEARCH_HIGHLIGHT_START}Hello#{Ndc::PG_SEARCH_HIGHLIGHT_END}"
     )
@@ -36,6 +40,11 @@ RSpec.describe Api::V1::NdcFullTextsController, type: :controller do
     it 'renders a list of matching NDCS' do
       get :index, params: {query: 'hello'}
       expect(assigns(:ndcs)).to match_array([pol_ndc])
+    end
+    it 'renders fragments with correct highlight indexes' do
+      get :index, params: {query: 'hello'}
+      json_response = JSON.parse(response.body)
+      expect(json_response.first['matches'].last['idx']).to equal(2)
     end
   end
 
