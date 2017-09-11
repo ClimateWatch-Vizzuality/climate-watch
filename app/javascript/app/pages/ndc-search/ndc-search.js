@@ -15,7 +15,7 @@ const mapStateToProps = (state, { location }) => {
   const { query } = qs.parse(location.search);
   const stateWithQuery = {
     query,
-    results: state.search
+    results: state.ndcSearch.data
   };
   return {
     query,

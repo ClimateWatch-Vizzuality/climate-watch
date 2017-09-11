@@ -5,7 +5,11 @@ import layout from 'styles/layout.scss';
 
 class SearchPage extends PureComponent {
   render() {
-    return <div className={layout.content}>I am the search page</div>;
+    return (
+      <div>
+        <div className={layout.content}>I am the search page</div>
+      </div>
+    );
   }
 }
 

@@ -1,0 +1,10 @@
+@import '~styles/settings';
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  color: $white;
+  font-family: $font-family-2;
+}
