@@ -13,6 +13,7 @@ export { default as reducers } from './ndc-country-full-reducers';
 export { default as actions } from './ndc-country-full-actions';
 
 const mapStateToProps = (state, { match }) => {
+  const search = qs.parse(location.search);
   const { iso } = match.params;
   const countryData = {
     countries: state.countries.data,
@@ -22,7 +23,8 @@ const mapStateToProps = (state, { match }) => {
     fetched: state.countryNDCFull.data[iso],
     loading: state.countryNDCFull.loading,
     country: getCountry(countryData),
-    content: state.countryNDCFull.data[iso]
+    content: state.countryNDCFull.data[iso],
+    search: search.search
   };
 };
 
@@ -35,14 +37,15 @@ const NDCCountryFullContainer = props => {
     history,
     fetchCountryNDCFull
   } = props;
-  const search = qs.parse(location.search);
   const { iso } = match.params;
+  const search = qs.parse(location.search);
   if (iso && !loading && !fetched) {
     fetchCountryNDCFull(iso, search.search);
   }
 
   const onSearchChange = query => {
     const newSearch = { ...search, search: query };
+
     history.replace({
       pathname: location.pathname,
       search: qs.stringify(newSearch)
