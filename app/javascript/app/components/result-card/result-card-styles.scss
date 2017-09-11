@@ -11,6 +11,7 @@
   border-right: solid 1px #e5e5eb;
   padding-top: 30px;
   padding-right: 25px;
+  position: relative;
 }
 
 .header {
@@ -35,8 +36,16 @@
   margin-bottom: 40px;
   padding-right: 80px;
   color: $theme-text-light;
+  line-height: 1.5em;
 
   &:hover {
     color: $theme-color;
   }
+}
+
+.iconLink {
+  position: absolute;
+  right: 25px;
+  bottom: 40px;
+  transform: rotate(-90deg);
 }
