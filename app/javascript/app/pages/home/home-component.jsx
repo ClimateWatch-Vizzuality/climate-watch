@@ -32,7 +32,7 @@ class Home extends PureComponent {
         <Section className={styles.homeOne} backgroundImage={homeOneBg}>
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
-            <Intro description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data." />
+            <Intro description="A global platform for climate action that offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries’ climate progress." />
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
@@ -55,7 +55,7 @@ class Home extends PureComponent {
           <div className={styles.column}>
             <Intro
               theme={introTheme}
-              title="Explore the country factsheets"
+              title="Explore the country profiles"
               description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
             <div className={styles.doubleFold}>
