@@ -6,6 +6,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import ResultCard from 'components/result-card';
+import NDCSearchMap from 'components/ndcs-search-map';
 
 import background from 'assets/backgrounds/home_bg_1';
 import layout from 'styles/layout.scss';
@@ -32,7 +33,7 @@ class SearchPage extends PureComponent {
                 <ResultCard key={result.iso_code3} result={result} />
               ))}
           </div>
-          <div className="map">map here</div>
+          <NDCSearchMap />
         </div>
       </div>
     );
