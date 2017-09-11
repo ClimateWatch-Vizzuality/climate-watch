@@ -11,6 +11,7 @@ import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
+import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'components/country-ghg-emissions';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import error from 'pages/error';
@@ -85,6 +86,11 @@ export default [
         path: '/countries',
         exact: true,
         component: CountryIndex
+      },
+      {
+        path: '/ndc-search',
+        exact: true,
+        component: NDCSearch
       },
       {
         path: '/error-page',

@@ -30,7 +30,7 @@ const addCountriesPath = (countries, query) => {
   ndcResults.push({
     value: 'search',
     label: `Search "${query}" in the content of all NDC's`,
-    path: `ndcs?search=${query}`
+    path: `/ndc-search?query=${query}`
   });
   return ndcResults;
 };
