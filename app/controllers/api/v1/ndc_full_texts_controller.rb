@@ -13,8 +13,8 @@ module Api
         ndcs = Ndc.joins(:location).where(
           'locations.iso_code3' => params[:code].upcase
         )
-        ndcs = apply_query_with_highlights(ndcs, true)
-        @ndc = ndcs.first
+        ndcs_highlighted = apply_query_with_highlights(ndcs, true)
+        @ndc = ndcs_highlighted.first || ndcs.first
         unless @ndc
           render json: {
             error: 'NDC not found',
@@ -22,8 +22,7 @@ module Api
           }, status: :not_found and return
         end
         render json: @ndc,
-               serializer: Api::V1::NdcFullTextSerializer,
-               query: params[:query]
+               serializer: Api::V1::NdcFullTextSerializer
       end
 
       private
