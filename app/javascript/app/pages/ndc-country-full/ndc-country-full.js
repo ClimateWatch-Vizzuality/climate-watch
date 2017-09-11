@@ -35,19 +35,19 @@ const NDCCountryFullContainer = props => {
     history,
     fetchCountryNDCFull
   } = props;
+  const search = qs.parse(location.search);
   const { iso } = match.params;
   if (iso && !loading && !fetched) {
-    fetchCountryNDCFull(iso);
+    fetchCountryNDCFull(iso, search.search);
   }
 
   const onSearchChange = query => {
-    const search = qs.parse(location.search);
     const newSearch = { ...search, search: query };
-
     history.replace({
       pathname: location.pathname,
       search: qs.stringify(newSearch)
     });
+    fetchCountryNDCFull(iso, query);
   };
 
   return createElement(NDCCountryFullComponent, {
