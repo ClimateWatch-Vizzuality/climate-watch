@@ -5,6 +5,7 @@ import cx from 'classnames';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
+import NDCSearchMap from 'components/ndcs-search-map';
 
 import background from 'assets/backgrounds/home_bg_1';
 import layout from 'styles/layout.scss';
@@ -25,7 +26,7 @@ class SearchPage extends PureComponent {
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>
           <div className="resultsList">results here</div>
-          <div className="map">map here</div>
+          <NDCSearchMap />
         </div>
       </div>
     );
