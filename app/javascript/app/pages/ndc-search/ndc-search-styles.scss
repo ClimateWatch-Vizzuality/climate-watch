@@ -1,2 +1,14 @@
 @import '~styles/settings.scss';
 @import '~styles/layout.scss';
+
+.headerCols {
+  @extend %grid;
+
+  grid-template-columns: 7fr 5fr;
+}
+
+.contentCols {
+  @extend %grid;
+
+  grid-template-columns: repeat(2, 1fr);
+}

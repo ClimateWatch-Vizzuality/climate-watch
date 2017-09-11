@@ -7,12 +7,18 @@ const ResultCard = props => {
   const { result } = props;
   return (
     <div className={styles.resultCard}>
-      <h4 className={styles.title}>{result.iso_code3}</h4>
+      <div className={styles.header}>
+        <h4 className={styles.title}>{result.iso_code3}</h4>
+        <span className={styles.count}>{result.matches.length}</span>
+      </div>
       {result.matches &&
         result.matches.map(match => (
-          <p key={match.idx} id={match.idx} className={styles.match}>
-            {match.fragment}
-          </p>
+          <div
+            key={match.fragment}
+            id={match.idx}
+            className={styles.match}
+            dangerouslySetInnerHTML={{ __html: match.fragment }}
+          />
         ))}
     </div>
   );
