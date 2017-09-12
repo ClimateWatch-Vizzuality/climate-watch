@@ -40,6 +40,9 @@ class NDCCountryFullContainer extends PureComponent {
   }
 
   onSearchChange = query => {
+    const { match, history, location, fetchCountryNDCFull } = this.props;
+    const { iso } = match.params;
+    const search = qs.parse(location.search);
     const newSearch = { ...search, search: query };
 
     history.replace({
@@ -59,6 +62,8 @@ class NDCCountryFullContainer extends PureComponent {
 
 NDCCountryFullContainer.propTypes = {
   match: Proptypes.object.isRequired,
+  history: Proptypes.object.isRequired,
+  location: Proptypes.object.isRequired,
   fetched: Proptypes.object,
   loading: Proptypes.bool,
   fetchCountryNDCFull: Proptypes.func
