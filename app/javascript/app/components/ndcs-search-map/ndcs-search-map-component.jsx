@@ -8,7 +8,6 @@ const NDCSearchMap = props => (
     <Map
       cache={false}
       paths={props.paths}
-      computedStyles={props.computedStyles}
       onCountryClick={props.handleCountryClick}
     />
   </div>
@@ -16,7 +15,6 @@ const NDCSearchMap = props => (
 
 NDCSearchMap.propTypes = {
   paths: PropTypes.array.isRequired,
-  computedStyles: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired
 };
 

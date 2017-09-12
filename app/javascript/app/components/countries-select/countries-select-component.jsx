@@ -20,8 +20,7 @@ class CountriesSelect extends PureComponent {
       countriesList,
       onCountryClick,
       onCountryMouseEnter,
-      onCountryMouseLeave,
-      computedStyles
+      onCountryMouseLeave
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -46,7 +45,6 @@ class CountriesSelect extends PureComponent {
             paths={paths}
             className={styles.map}
             onCountryClick={onCountryClick}
-            computedStyles={computedStyles}
           />
         </div>
       </div>
@@ -57,7 +55,6 @@ class CountriesSelect extends PureComponent {
 CountriesSelect.propTypes = {
   query: Proptypes.string,
   onCountryClick: Proptypes.func.isRequired,
-  computedStyles: Proptypes.func.isRequired,
   countrySelectFilter: Proptypes.func.isRequired,
   onCountryMouseEnter: Proptypes.func.isRequired,
   onCountryMouseLeave: Proptypes.func.isRequired,

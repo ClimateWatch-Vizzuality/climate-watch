@@ -28,7 +28,7 @@ class Map extends PureComponent {
       onCountryMove,
       onCountryEnter,
       onCountryLeave,
-      computedStyles
+      defaultStyle
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
@@ -79,7 +79,7 @@ class Map extends PureComponent {
                           onMouseMove: onCountryMove,
                           onMouseEnter: onCountryEnter,
                           onMouseLeave: onCountryLeave,
-                          style: computedStyles(geography)
+                          style: geography.style || defaultStyle
                         };
                         if (tooltipId) {
                           commonProps = {
@@ -117,7 +117,7 @@ Map.propTypes = {
   onCountryClick: Proptypes.func,
   onCountryMove: Proptypes.func,
   onCountryLeave: Proptypes.func,
-  computedStyles: Proptypes.func.isRequired
+  defaultStyle: Proptypes.object.isRequired
 };
 
 Map.defaultProps = {
@@ -132,9 +132,7 @@ Map.defaultProps = {
   onCountryEnter: () => {},
   onCountryMove: () => {},
   onCountryLeave: () => {},
-  // gets the geography data to handle styles individually
-  // eslint-disable-next-line
-  computedStyles: geography => ({
+  defaultStyle: {
     default: {
       fill: '#ECEFF1',
       stroke: '#607D8B',
@@ -153,7 +151,7 @@ Map.defaultProps = {
       strokeWidth: 1,
       outline: 'none'
     }
-  })
+  }
 };
 
 export default Map;

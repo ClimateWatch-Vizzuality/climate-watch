@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import Sticky from 'react-stickynode';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -47,7 +48,9 @@ class SearchPage extends PureComponent {
                 />
               ))}
           </div>
-          <NDCSearchMap />
+          <Sticky>
+            <NDCSearchMap />
+          </Sticky>
         </div>
       </div>
     );
