@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
-import paths from 'app/data/world-50m-paths';
 
 import Component from './ndcs-map-component';
 import {
   getCategories,
   getCategoryIndicators,
   getSelectedCategory,
-  getSelectedIndicator
+  getSelectedIndicator,
+  getPathsWithStyles
 } from './ndcs-map-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -23,34 +23,12 @@ const mapStateToProps = (state, { location }) => {
   };
 
   return {
+    paths: getPathsWithStyles(ndcsWithSelection),
     categories: getCategories(ndcsWithSelection),
     indicators: getCategoryIndicators(ndcsWithSelection),
     selectedCategory: getSelectedCategory(ndcsWithSelection),
-    selectedIndicator: getSelectedIndicator(ndcsWithSelection),
-    paths
+    selectedIndicator: getSelectedIndicator(ndcsWithSelection)
   };
-};
-
-const countryStyles = {
-  default: {
-    fill: '#ECEFF1',
-    fillOpacity: 0.3,
-    stroke: '#396d90',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#ECEFF1',
-    stroke: '#396d90',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#ECEFF1',
-    stroke: '#396d90',
-    strokeWidth: 1,
-    outline: 'none'
-  }
 };
 
 class NDCMapContainer extends PureComponent {
@@ -103,36 +81,11 @@ class NDCMapContainer extends PureComponent {
     });
   }
 
-  computedStyles = geography => {
-    const { locations, legendBuckets } = this.props.selectedIndicator;
-    const countryData = locations && locations[geography.id];
-
-    if (countryData) {
-      const legendData = legendBuckets[countryData.label_id];
-      const color = legendData && legendData.color;
-      return {
-        ...countryStyles,
-        default: {
-          ...countryStyles.default,
-          fill: color,
-          fillOpacity: 0.9
-        },
-        hover: {
-          ...countryStyles.hover,
-          fill: color,
-          fillOpacity: 1
-        }
-      };
-    }
-    return countryStyles;
-  };
-
   render() {
     const tooltipTxt = this.getTooltipText();
     return createElement(Component, {
       ...this.props,
       tooltipTxt,
-      computedStyles: this.computedStyles,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleCategoryChange: this.handleCategoryChange,
