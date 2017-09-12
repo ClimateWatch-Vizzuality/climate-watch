@@ -13,14 +13,15 @@ const ResultCard = props => {
   return (
     <div className={styles.resultCard}>
       <div className={styles.header}>
-        <h4 className={styles.title}>{result.iso_code3}</h4>
+        <h4 className={styles.title}>{result.location.name}</h4>
         <span className={styles.count}>{result.matches.length}</span>
       </div>
       {result.matches &&
         result.matches.map(match => (
           <NavLink
             key={match.fragment}
-            to={`/ndcs/country/${result.iso_code3}/full?search=${query}&idx=${match.idx}`}
+            to={`/ndcs/country/${result.location
+              .iso_code3}/full?search=${query}&idx=${match.idx}`}
             className={styles.match}
           >
             <div
