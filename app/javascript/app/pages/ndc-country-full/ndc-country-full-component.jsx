@@ -56,8 +56,6 @@ class NDCCountryFull extends PureComponent {
         <div className={cx(layout.content, styles.bodyContent)}>
           {!isEmpty(content) && (
             <div
-              name="name"
-              id="id"
               className={cx(contentStyles.content, styles.innerContent)}
               dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
             />

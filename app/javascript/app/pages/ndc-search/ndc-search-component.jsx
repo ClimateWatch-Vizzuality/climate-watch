@@ -58,9 +58,8 @@ class SearchPage extends PureComponent {
 }
 
 SearchPage.propTypes = {
-  query: PropTypes.string, // eslint-disable-line
-  results: PropTypes.array, // eslint-disable-line
-  onResultClick: PropTypes.func.isRequired, // eslint-disable-line
+  query: PropTypes.string,
+  results: PropTypes.array,
   onSearchChange: PropTypes.func.isRequired
 };
 
