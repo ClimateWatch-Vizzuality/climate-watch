@@ -33,17 +33,32 @@ class SearchContainer extends PureComponent {
     console.info(result);
   };
 
+  onSearchChange = query => {
+    const { history, location, fetchSearchResults } = this.props;
+    const search = qs.parse(location.search);
+    const newSearch = { ...search, query };
+
+    history.replace({
+      pathname: location.pathname,
+      search: qs.stringify(newSearch)
+    });
+    fetchSearchResults(query);
+  };
+
   render() {
     return createElement(SearchComponent, {
       ...this.props,
-      onResultClick: this.onResultClick
+      onResultClick: this.onResultClick,
+      onSearchChange: this.onSearchChange
     });
   }
 }
 
 SearchContainer.propTypes = {
   fetchSearchResults: Proptypes.func.isRequired,
-  query: Proptypes.string
+  query: Proptypes.string,
+  history: Proptypes.object,
+  location: Proptypes.object
 };
 
 export { initialState } from './ndc-search-reducers';

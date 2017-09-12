@@ -61,7 +61,7 @@ class Accordion extends PureComponent {
                               className={styles.definitionDesc}
                             >
                               <div
-                                dangerouslySetInnerHTML={{ __html: desc.value }}
+                                dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
                               />
                             </dd>
                           ))}
