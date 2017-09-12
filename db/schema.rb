@@ -66,6 +66,17 @@ ActiveRecord::Schema.define(version: 20170914191538) do
     t.index ["indicator_id"], name: "index_cait_indc_labels_on_indicator_id"
   end
 
+  create_table "cait_indc_submissions", force: :cascade do |t|
+    t.bigint "location_id"
+    t.text "submission_type", null: false
+    t.text "language", null: false
+    t.date "submission_date", null: false
+    t.text "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_cait_indc_submissions_on_location_id"
+  end
+
   create_table "cait_indc_values", force: :cascade do |t|
     t.bigint "location_id"
     t.bigint "indicator_id"
@@ -201,6 +212,7 @@ ActiveRecord::Schema.define(version: 20170914191538) do
   add_foreign_key "cait_indc_indicators", "cait_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
   add_foreign_key "cait_indc_labels", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "cait_indc_submissions", "locations", on_delete: :cascade
   add_foreign_key "cait_indc_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "cait_indc_labels", column: "label_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "locations", on_delete: :cascade

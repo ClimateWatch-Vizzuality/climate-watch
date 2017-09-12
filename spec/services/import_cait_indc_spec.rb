@@ -20,6 +20,10 @@ object_contents = {
     Algeria,DZA,Executive,Executive
     Andorra,AND,Not yet included in analysis
   END
+  'cait_indc_2/CW_NDC_Submission_URL.csv' => <<~END
+    ISO,Country,Type,Language,Date_of_Submission,URL
+    AFG,Afghanistan,INDC,English,10/13/2015,http://www4.unfccc.int/Submissions/INDC/Published Documents/Afghanistan/1/INDC_AFG_Paper_En_20150927_.docx FINAL.pdf
+  END
 }
 
 RSpec.describe ImportCaitIndc do
@@ -58,5 +62,9 @@ RSpec.describe ImportCaitIndc do
 
   it 'Creates new CAIT INDC records' do
     expect { subject }.to change { CaitIndc::Value.count }.by(3)
+  end
+
+  it 'Creates new INDC submission records' do
+    expect { subject }.to change { CaitIndc::Submission.count }.by(1)
   end
 end

@@ -18,6 +18,7 @@ class ImportCaitIndc
     load_indicator_keys
     import_labels
     import_values
+    import_submissions
   end
 
   private
@@ -42,6 +43,7 @@ class ImportCaitIndc
     CaitIndc::Indicator.delete_all
     CaitIndc::Chart.delete_all
     CaitIndc::Category.delete_all
+    CaitIndc::Submission.delete_all
   end
 
   def chart(indicator)
@@ -88,6 +90,16 @@ class ImportCaitIndc
     {
       name: category_name,
       slug: Slug.create(category_name)
+    }
+  end
+
+  def submission_attributes(submission)
+    {
+      location: Location.find_by(iso_code3: submission[:iso]),
+      submission_type: submission[:type],
+      language: submission[:language],
+      submission_date: submission[:date_of_submission],
+      url: submission[:url]
     }
   end
 
@@ -151,6 +163,12 @@ class ImportCaitIndc
       ind_keys_no_label.select { |ind_k| d[ind_k] }.each do |ind_k|
         CaitIndc::Value.create!(value_attributes(d, location, ind_k))
       end
+    end
+  end
+
+  def import_submissions
+    @submissions.each do |sub|
+      CaitIndc::Submission.create!(submission_attributes(sub))
     end
   end
 end
