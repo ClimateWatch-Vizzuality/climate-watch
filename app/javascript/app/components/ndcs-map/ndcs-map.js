@@ -42,7 +42,7 @@ class NDCMapContainer extends PureComponent {
   getTooltipText() {
     const { geometryIdHover } = this.state;
     const { selectedIndicator } = this.props;
-    if (!geometryIdHover) return '';
+    if (!geometryIdHover || !selectedIndicator) return '';
 
     return selectedIndicator.locations[geometryIdHover]
       ? selectedIndicator.locations[geometryIdHover].value
