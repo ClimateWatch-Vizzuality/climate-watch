@@ -60,7 +60,7 @@ class ImportCaitIndc
       category: CaitIndc::Category.find_by(name: indicator[:category]),
       name: indicator[:long_name],
       slug: indicator[:column_name],
-      on_map: @map.any? { |m| m[:indicator] == indicator[:column_name] },
+      on_map: @map.any? { |m| m[:indicator] == indicator[:column_name] }
     }
   end
 
@@ -137,12 +137,12 @@ class ImportCaitIndc
     label_accumulator = []
     label_fields.each do |lf|
       @data.each do |d|
-        unless d[:"#{lf}_label"].nil?
-          label_accumulator << {
-            indicator_name: "#{lf}",
-            legend_item_name: d[:"#{lf}_label"]
-          }
-        end
+        next if d[:"#{lf}_label"].nil?
+
+        label_accumulator << {
+          indicator_name: lf.to_s,
+          legend_item_name: d[:"#{lf}_label"]
+        }
       end
     end
 
