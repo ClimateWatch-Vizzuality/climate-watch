@@ -16,13 +16,12 @@ const NDCMap = props => (
       cache={false}
       paths={props.paths}
       tooltipId="mapTooltip"
-      computedStyles={props.computedStyles}
       onCountryClick={props.handleCountryClick}
       onCountryEnter={props.handleCountryEnter}
     />
     <ReactTooltip id="mapTooltip">
       {props.tooltipTxt && (
-        <p dangerouslySetInnerHTML={getHtmlTooltip(props.tooltipTxt)} />
+        <p dangerouslySetInnerHTML={getHtmlTooltip(props.tooltipTxt)} /> // eslint-disable-line
       )}
     </ReactTooltip>
     {props.selectedIndicator && (
@@ -61,7 +60,6 @@ NDCMap.propTypes = {
   selectedIndicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,
-  computedStyles: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
