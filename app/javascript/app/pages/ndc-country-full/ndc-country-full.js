@@ -1,6 +1,7 @@
-import { createElement } from 'react';
+import { createElement, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Proptypes from 'prop-types';
 import qs from 'query-string';
 
 import NDCCountryFullComponent from './ndc-country-full-component';
@@ -28,22 +29,20 @@ const mapStateToProps = (state, { match }) => {
   };
 };
 
-const NDCCountryFullContainer = props => {
-  const {
-    loading,
-    fetched,
-    location,
-    match,
-    history,
-    fetchCountryNDCFull
-  } = props;
-  const { iso } = match.params;
-  const search = qs.parse(location.search);
-  if (iso && !loading && !fetched) {
-    fetchCountryNDCFull(iso, search.search);
+class NDCCountryFullContainer extends PureComponent {
+  componentWillMount() {
+    const { match, fetched, loading, fetchCountryNDCFull } = this.props;
+    const { iso } = match.params;
+    const search = qs.parse(location.search);
+    if (iso && !loading && !fetched) {
+      fetchCountryNDCFull(iso, search.search);
+    }
   }
 
-  const onSearchChange = query => {
+  onSearchChange = query => {
+    const { match, history, location, fetchCountryNDCFull } = this.props;
+    const { iso } = match.params;
+    const search = qs.parse(location.search);
     const newSearch = { ...search, search: query };
 
     history.replace({
@@ -53,10 +52,21 @@ const NDCCountryFullContainer = props => {
     fetchCountryNDCFull(iso, query);
   };
 
-  return createElement(NDCCountryFullComponent, {
-    ...props,
-    onSearchChange
-  });
+  render() {
+    return createElement(NDCCountryFullComponent, {
+      ...this.props,
+      onSearchChange: this.onSearchChange
+    });
+  }
+}
+
+NDCCountryFullContainer.propTypes = {
+  match: Proptypes.object.isRequired,
+  history: Proptypes.object.isRequired,
+  location: Proptypes.object.isRequired,
+  fetched: Proptypes.object,
+  loading: Proptypes.bool,
+  fetchCountryNDCFull: Proptypes.func
 };
 
 export default withRouter(
