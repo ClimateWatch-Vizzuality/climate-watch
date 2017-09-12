@@ -40,7 +40,11 @@ class SearchPage extends PureComponent {
             )}
             {results &&
               results.map(result => (
-                <ResultCard key={result.iso_code3} result={result} query />
+                <ResultCard
+                  key={result.iso_code3}
+                  result={result}
+                  query={query}
+                />
               ))}
           </div>
           <NDCSearchMap />

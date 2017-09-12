@@ -19,12 +19,12 @@ const ResultCard = props => {
       {result.matches &&
         result.matches.map(match => (
           <NavLink
+            key={match.fragment}
             to={`/ndcs/country/${result.iso_code3}/full?search=${query}&idx=0`}
             className={styles.match}
           >
             <div
               className={styles.text}
-              key={match.fragment}
               id={match.idx}
               dangerouslySetInnerHTML={{ __html: match.fragment }}
             />
