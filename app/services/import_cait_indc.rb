@@ -66,8 +66,7 @@ class ImportCaitIndc
     {
       indicator: CaitIndc::Indicator.
         find_by!(slug: label[:indicator_name]),
-      name: label[:legend_item_name],
-      color: label[:color]
+      name: label[:legend_item_name]
     }
   end
 
@@ -122,15 +121,14 @@ class ImportCaitIndc
       keys.
       grep(/_label$/).
       map { |l| l.to_s.gsub(/_label$/, '') }
-    label_accumulator = []
 
+    label_accumulator = []
     label_fields.each do |lf|
       @data.each do |d|
         unless d[:"#{lf}_label"].nil?
           label_accumulator << {
             indicator_name: "#{lf}",
-            legend_item_name: d[:"#{lf}_label"],
-            color: d[:"#{lf}_color"]
+            legend_item_name: d[:"#{lf}_label"]
           }
         end
       end

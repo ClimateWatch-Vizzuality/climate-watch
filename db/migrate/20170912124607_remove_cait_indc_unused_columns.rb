@@ -4,5 +4,6 @@ class RemoveCaitIndcUnusedColumns < ActiveRecord::Migration[5.1]
     remove_column :cait_indc_indicators, :omit_from_detailed_view
     remove_column :cait_indc_indicators, :show_in_dashboard
     remove_column :cait_indc_indicators, :indicator_type_id
+    remove_column :cait_indc_labels, :color
   end
 end

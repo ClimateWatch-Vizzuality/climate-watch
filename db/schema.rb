@@ -61,7 +61,6 @@ ActiveRecord::Schema.define(version: 20170914191538) do
   create_table "cait_indc_labels", force: :cascade do |t|
     t.bigint "indicator_id"
     t.text "name", null: false
-    t.text "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["indicator_id"], name: "index_cait_indc_labels_on_indicator_id"
