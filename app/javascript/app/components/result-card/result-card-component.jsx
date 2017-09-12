@@ -26,7 +26,7 @@ const ResultCard = props => {
             <div
               className={styles.text}
               id={match.idx}
-              dangerouslySetInnerHTML={{ __html: match.fragment }}
+              dangerouslySetInnerHTML={{ __html: match.fragment }} // eslint-disable-line
             />
             <Button className={styles.link} color="white" square>
               <Icon icon={iconLink} className={styles.iconLink} />
