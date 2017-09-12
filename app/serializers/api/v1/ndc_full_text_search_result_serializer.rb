@@ -25,7 +25,7 @@ module Api
           }
           # there can be more than one highlight per fragment
           # we're only interested in the position of the first highlight
-          regexp = <<~EOT
+          regexp = <<~EOT.strip
             #{Ndc::PG_SEARCH_HIGHLIGHT_START}.+?#{Ndc::PG_SEARCH_HIGHLIGHT_END}
           EOT
           number_of_matches = fragment.scan(/#{regexp}/).length
