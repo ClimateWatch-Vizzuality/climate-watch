@@ -7,13 +7,19 @@
   align-items: flex-start;
   color: $white;
   font-family: $font-family-2;
-  border-bottom: solid 1px #e5e5eb;
   border-right: solid 1px #e5e5eb;
   padding-top: 30px;
   padding-right: 25px;
   position: relative;
-  margin-left: -2000px;
-  padding-left: 2000px;
+
+  &::after {
+    position: absolute;
+    content: '';
+    border-bottom: solid 1px #e5e5eb;
+    bottom: 0;
+    right: 0;
+    width: 200%;
+  }
 }
 
 .header {
@@ -40,8 +46,12 @@
   line-height: 1.5em;
   position: relative;
 
-  .text {
+  .text :global {
     margin-right: 80px;
+
+    .highlight {
+      background-color: $theme-secondary;
+    }
   }
 
   .link {
