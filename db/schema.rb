@@ -46,25 +46,16 @@ ActiveRecord::Schema.define(version: 20170914191538) do
     t.text "name", null: false
   end
 
-  create_table "cait_indc_indicator_types", force: :cascade do |t|
-    t.text "name", null: false
-  end
-
   create_table "cait_indc_indicators", force: :cascade do |t|
     t.bigint "chart_id"
-    t.bigint "indicator_type_id"
     t.bigint "category_id"
     t.text "name", null: false
     t.text "slug", null: false
-    t.boolean "summary_list", default: false, null: false
     t.boolean "on_map", default: false, null: false
-    t.boolean "omit_from_detailed_view", default: false, null: false
-    t.boolean "show_in_dashboard", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_cait_indc_indicators_on_category_id"
     t.index ["chart_id"], name: "index_cait_indc_indicators_on_chart_id"
-    t.index ["indicator_type_id"], name: "index_cait_indc_indicators_on_indicator_type_id"
   end
 
   create_table "cait_indc_labels", force: :cascade do |t|
@@ -74,15 +65,6 @@ ActiveRecord::Schema.define(version: 20170914191538) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["indicator_id"], name: "index_cait_indc_labels_on_indicator_id"
-  end
-
-  create_table "cait_indc_location_data", force: :cascade do |t|
-    t.bigint "location_id"
-    t.boolean "highlight_outline", default: false, null: false
-    t.decimal "marker_lat"
-    t.decimal "marker_lng"
-    t.jsonb "data", null: false
-    t.index ["location_id"], name: "index_cait_indc_location_data_on_location_id"
   end
 
   create_table "cait_indc_values", force: :cascade do |t|
@@ -219,9 +201,7 @@ ActiveRecord::Schema.define(version: 20170914191538) do
   add_foreign_key "adaptation_values", "locations", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
-  add_foreign_key "cait_indc_indicators", "cait_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
   add_foreign_key "cait_indc_labels", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
-  add_foreign_key "cait_indc_location_data", "locations", on_delete: :cascade
   add_foreign_key "cait_indc_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "cait_indc_labels", column: "label_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "locations", on_delete: :cascade

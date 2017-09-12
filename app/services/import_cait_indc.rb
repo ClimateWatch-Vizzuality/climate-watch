@@ -1,9 +1,8 @@
-META_INDICATORS_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - indicators.csv'.
-  freeze
-META_LEGEND_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - legend.csv'.
-  freeze
-DATA_FILEPATH = 'cait_indc/Backend-CAIT INDC Map - data.csv'.
-  freeze
+META_INDICATORS_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_metadata.csv'.freeze
+META_LEGEND_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_legend.csv'.freeze
+META_MAP_FILEPATH = 'cait_indc_2/CW_NDC_map.csv'.freeze
+DATA_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_data.csv'.freeze
+SUBMISSIONS_FILEPATH = 'cait_indc_2/CW_NDC_Submission_URL.csv'.freeze
 DEFAULT_CATEGORY = 'General'.freeze
 
 class ImportCaitIndc
@@ -13,14 +12,11 @@ class ImportCaitIndc
     load_csvs
 
     import_categories
-    import_indicator_types
     import_charts
     import_indicators
 
     load_indicator_keys
-
     import_labels
-    import_location_data
     import_values
   end
 
@@ -30,27 +26,27 @@ class ImportCaitIndc
     @indicators = S3CSVReader.read(META_INDICATORS_FILEPATH).map(&:to_h)
     @legend = S3CSVReader.read(META_LEGEND_FILEPATH).map(&:to_h)
     @data = S3CSVReader.read(DATA_FILEPATH).map(&:to_h)
+    @map = S3CSVReader.read(META_MAP_FILEPATH).map(&:to_h)
+    @submissions = S3CSVReader.read(SUBMISSIONS_FILEPATH).map(&:to_h)
   end
 
   def load_indicator_keys
     @indicator_keys = CaitIndc::Indicator.all.map do |i|
-      i.name.downcase.strip.tr(' ', '_').gsub(/\W/, '').to_sym
+      i.slug.to_sym
     end
   end
 
   def cleanup
-    CaitIndc::LocationDatum.delete_all
     CaitIndc::Value.delete_all
     CaitIndc::Label.delete_all
     CaitIndc::Indicator.delete_all
     CaitIndc::Chart.delete_all
     CaitIndc::Category.delete_all
-    CaitIndc::IndicatorType.delete_all
   end
 
   def chart(indicator)
     chart_name = @legend.
-      detect { |l| l[:indicator_name] == indicator[:indicator] }&.
+      detect { |l| l[:indicator_name] == indicator[:column_name] }&.
       fetch(:chart_title, nil)
 
     CaitIndc::Chart.find_by(name: chart_name) if chart_name
@@ -59,36 +55,19 @@ class ImportCaitIndc
   def indicator_attributes(indicator)
     {
       chart: chart(indicator),
-      indicator_type: CaitIndc::IndicatorType.
-        find_by(name: indicator[:indicator_type]),
       category: CaitIndc::Category.find_by(name: indicator[:category]),
-      name: indicator[:indicator],
-      slug: Slug.create(indicator[:indicator]),
-      summary_list: indicator[:summary_list] == 'Yes',
-      on_map: indicator[:on_map] == 'Yes',
-      omit_from_detailed_view: indicator[:omit_from_detailed_view] == 'x',
-      show_in_dashboard: indicator[:show_in_dashboard] == 'x'
+      name: indicator[:long_name],
+      slug: indicator[:column_name],
+      on_map: @map.any? { |m| m[:indicator] == indicator[:column_name] },
     }
   end
 
   def label_attributes(label)
     {
       indicator: CaitIndc::Indicator.
-        find_by(name: label[:indicator_name]),
+        find_by!(slug: label[:indicator_name]),
       name: label[:legend_item_name],
       color: label[:color]
-    }
-  end
-
-  def location_datum_attributes(datum)
-    {
-      location: Location.find_by(iso_code3: datum[:iso]),
-      highlight_outline: datum[:highlight_outline] == 'x',
-      marker_lat:
-        (datum[:marker_latlng].split(',')[0] if datum[:marker_latlng]),
-      marker_lng:
-        (datum[:marker_latlng].split(',')[1] if datum[:marker_latlng]),
-      data: datum.except(*@indicator_keys)
     }
   end
 
@@ -121,14 +100,6 @@ class ImportCaitIndc
       each { |cat| CaitIndc::Category.create!(category_attributes(cat)) }
   end
 
-  def import_indicator_types
-    @indicators.
-      map { |r| r[:indicator_type].strip }.
-      uniq.
-      select(&:itself).
-      each { |ind_t| CaitIndc::IndicatorType.create!(name: ind_t) }
-  end
-
   def import_charts
     @legend.
       map { |r| r[:chart_title].strip }.
@@ -138,41 +109,48 @@ class ImportCaitIndc
   end
 
   def import_indicators
-    @indicators.each do |ind|
+    @indicators.
+      reject { |ind| ind[:column_name].match(/_label$/) }.
+      each do |ind|
       CaitIndc::Indicator.create!(indicator_attributes(ind))
     end
   end
 
   def import_labels
-    @legend.
-      map { |l| l.except(:chart_name) }.
-      uniq.
-      each do |ind_v|
-        CaitIndc::Label.create!(label_attributes(ind_v))
-      end
-  end
+    label_fields = @data.
+      first.
+      keys.
+      grep(/_label$/).
+      map { |l| l.to_s.gsub(/_label$/, '') }
+    label_accumulator = []
 
-  def import_location_data
-    @data.
-      each do |d|
-        a = location_datum_attributes(d)
-        if a[:location]
-          CaitIndc::LocationDatum.create!(a)
-        else
-          Rails.logger.error "location #{d[:country]} not found. Skipping."
+    label_fields.each do |lf|
+      @data.each do |d|
+        unless d[:"#{lf}_label"].nil?
+          label_accumulator << {
+            indicator_name: "#{lf}",
+            legend_item_name: d[:"#{lf}_label"],
+            color: d[:"#{lf}_color"]
+          }
         end
       end
+    end
+
+    label_accumulator.uniq.each do |l|
+      CaitIndc::Label.create!(label_attributes(l))
+    end
   end
 
   def import_values
+    ind_keys_no_label = @indicator_keys - @indicator_keys.grep(/_label$/)
     @data.each do |d|
-      location = Location.find_by(wri_standard_name: d[:country])
+      location = Location.find_by(iso_code3: d[:iso])
       unless location
         Rails.logger.error "location #{d[:country]} not found. Skipping."
         next
       end
 
-      @indicator_keys.select { |ind_k| d[ind_k] }.each do |ind_k|
+      ind_keys_no_label.select { |ind_k| d[ind_k] }.each do |ind_k|
         CaitIndc::Value.create!(value_attributes(d, location, ind_k))
       end
     end
