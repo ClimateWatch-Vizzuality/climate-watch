@@ -3,7 +3,8 @@ module Api
     class HistoricalEmissionsController < ApiController
       def index
         render json: records,
-               each_serializer: Api::V1::HistoricalEmissions::RecordSerializer
+               each_serializer: Api::V1::HistoricalEmissions::RecordSerializer,
+               params: params
       end
 
       private
