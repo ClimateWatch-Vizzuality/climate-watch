@@ -33,7 +33,7 @@ module Api
           historical_emissions_data_sources: :source,
           historical_emissions_sectors: :sector
         }.each do |k, v|
-          records = records.where(Hash[k, {id: params[v]}]) if params[v]
+          records = records.where(k => {id: params[v]}) if params[v]
         end
 
         records
