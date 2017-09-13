@@ -1,4 +1,4 @@
-class RenameHistoricalEmisisonsTables < ActiveRecord::Migration[5.1]
+class RenameHistoricalEmissionsTables < ActiveRecord::Migration[5.1]
   def up
     rename_table :data_sources, :historical_emissions_data_sources
     rename_table :gases, :historical_emissions_gases
