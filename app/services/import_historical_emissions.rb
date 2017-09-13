@@ -1,7 +1,11 @@
-META_SECTORS_FILEPATH = 'he_2/CW_HistoricalEmissions_metadata_sectors.csv'.freeze
-DATA_CAIT_FILEPATH = 'he_2/CW_HistoricalEmissions_sampledata_CAIT.csv'.freeze
-DATA_PIK_FILEPATH = 'he_2/CW_HistoricalEmissions_sampledata_PIK.csv'.freeze
-DATA_UNFCCC_FILEPATH = 'he_2/CW_HistoricalEmissions_sampledata_UNFCCC.csv'.freeze
+META_SECTORS_FILEPATH = 'he_2/CW_HistoricalEmissions_metadata_sectors.csv'.
+  freeze
+DATA_CAIT_FILEPATH = 'he_2/CW_HistoricalEmissions_sampledata_CAIT.csv'.
+  freeze
+DATA_PIK_FILEPATH = 'he_2/CW_HistoricalEmissions_sampledata_PIK.csv'.
+  freeze
+DATA_UNFCCC_FILEPATH = 'he_2/CW_HistoricalEmissions_sampledata_UNFCCC.csv'.
+  freeze
 
 class ImportHistoricalEmissions
   def call
@@ -72,7 +76,6 @@ class ImportHistoricalEmissions
 
   def import_records(content)
     content.each do |row|
-      pp row
       begin
         HistoricalEmissions::Record.create!(record_attributes(row))
       rescue ActiveRecord::RecordInvalid => invalid
