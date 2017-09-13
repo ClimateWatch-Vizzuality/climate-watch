@@ -6,7 +6,7 @@ module CaitIndc
     validates :submission_date, presence: true
     validates :url,
               presence: true,
-              format: URI::regexp(['http', 'https'])
+              format: URI.regexp(%w(http https))
 
     def submission_date=(val)
       parts = val.split('/')
