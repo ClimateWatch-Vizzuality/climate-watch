@@ -3,7 +3,9 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
 import cx from 'classnames';
+
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
+import searchIcon from 'assets/icons/search.svg';
 
 import 'react-select/dist/react-select.css';
 import styles from './dropdown-styles.scss';
@@ -20,8 +22,14 @@ const Dropdown = props => (
       {...props}
       arrowRenderer={({ isOpen }) => (
         <Icon
-          className={cx({ [styles.isOpen]: props.openUp ? !isOpen : isOpen })}
-          icon={dropdownArrow}
+          className={
+            props.search ? (
+              styles.searchIcon
+            ) : (
+              cx({ [styles.isOpen]: props.openUp ? !isOpen : isOpen })
+            )
+          }
+          icon={props.search ? searchIcon : dropdownArrow}
         />
       )}
     />
@@ -32,7 +40,9 @@ Dropdown.propTypes = {
   label: PropTypes.string,
   openUp: PropTypes.bool,
   className: PropTypes.string,
-  transparent: PropTypes.bool
+  transparent: PropTypes.bool,
+  theme: PropTypes.object,
+  search: PropTypes.bool
 };
 
 export default Dropdown;

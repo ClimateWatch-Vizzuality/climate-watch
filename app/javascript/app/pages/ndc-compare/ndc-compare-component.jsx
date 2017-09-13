@@ -49,7 +49,6 @@ class NDCCountry extends PureComponent {
                 options={sortBy(countriesOptions, ['label'])}
                 onChange={selected => handleDropDownChange(0, selected)}
                 value={activeCountriesOptions[0]}
-                transparent
               />
             </div>
             <div className={cx(styles.selector, styles.separator)}>
@@ -58,7 +57,6 @@ class NDCCountry extends PureComponent {
                 options={sortBy(countriesOptions, ['label'])}
                 onChange={selected => handleDropDownChange(1, selected)}
                 value={activeCountriesOptions[1]}
-                transparent
               />
             </div>
             <div className={styles.selector}>
@@ -67,7 +65,6 @@ class NDCCountry extends PureComponent {
                 options={sortBy(countriesOptions, ['label'])}
                 onChange={selected => handleDropDownChange(2, selected)}
                 value={activeCountriesOptions[2]}
-                transparent
               />
             </div>
           </div>

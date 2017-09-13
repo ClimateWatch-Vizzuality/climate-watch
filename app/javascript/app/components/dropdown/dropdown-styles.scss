@@ -25,6 +25,10 @@
     background: transparent;
     color: $theme-color;
     font-family: $font-family-2;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .Select-input {
@@ -48,8 +52,9 @@
   }
 
   .Select-arrow-zone {
-    padding-top: 5px;
-    padding-right: 15px;
+    position: absolute;
+    right: 15px;
+    top: 4px;
   }
 
   .Select-menu-outer {
@@ -57,6 +62,8 @@
 
     .Select-option {
       height: 45px;
+      padding: 14px 10px;
+      line-height: 1.2em;
       display: block;
       color: $theme-color-light;
       border-bottom: #e5e5eb 1px solid;
@@ -71,6 +78,7 @@
 
       &.is-focused {
         color: $theme-color;
+        outline: none;
       }
 
       &:hover {
@@ -82,7 +90,23 @@
 
 .transparent :global {
   .Select-control {
-    border: 0;
+    border-color: $white;
+  }
+
+  .Select-placeholder {
+    color: $white;
+  }
+
+  .Select-input > input {
+    color: $white;
+  }
+
+  .Select-value-label {
+    color: $white !important;
+  }
+
+  .Select-arrow-zone {
+    fill: $white;
   }
 }
 
@@ -100,4 +124,9 @@
 
 .isOpen {
   transform: rotate(180deg);
+}
+
+.searchIcon {
+  width: 40px;
+  height: 40px;
 }
