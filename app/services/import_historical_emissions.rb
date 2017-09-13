@@ -1,6 +1,7 @@
-META_SECTORS_FILEPATH = 'he/CW_HistoricalEmisisons_metadata_sectors.csv'.freeze
-DATA_CAIT_FILEPATH = 'he/CW_HistoricalEmisisons_sampledata_CAIT.csv'.freeze
-DATA_PIK_FILEPATH = 'he/CW_HistoricalEmisisons_sampledata_PIK.csv'.freeze
+META_SECTORS_FILEPATH = 'he_2/CW_HistoricalEmisisons_metadata_sectors.csv'.freeze
+DATA_CAIT_FILEPATH = 'he_2/CW_HistoricalEmisisons_sampledata_CAIT.csv'.freeze
+DATA_PIK_FILEPATH = 'he_2/CW_HistoricalEmisisons_sampledata_PIK.csv'.freeze
+DATA_UNFCCC_FILEPATH = 'he_2/CW_HistoricalEmisisons_sampledata_UNFCCC.csv'.freeze
 
 class ImportHistoricalEmissions
   def call
@@ -8,6 +9,7 @@ class ImportHistoricalEmissions
     import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
     import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
     import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
+    import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH))
   end
 
   private
@@ -37,6 +39,7 @@ class ImportHistoricalEmissions
       data_source: HistoricalEmissions::DataSource.find_or_create_by(
         name: row[:source]
       ),
+      annex_type: row[:annex_type],
       parent: row[:subsectorof] &&
         HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
     }

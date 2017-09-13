@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20170914191538) do
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "annex_type"
     t.index ["data_source_id"], name: "index_historical_emissions_sectors_on_data_source_id"
     t.index ["parent_id"], name: "index_historical_emissions_sectors_on_parent_id"
   end
