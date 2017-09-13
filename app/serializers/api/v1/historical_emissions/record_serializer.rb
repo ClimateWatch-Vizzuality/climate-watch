@@ -23,6 +23,16 @@ module Api
         def sector
           object.sector.name
         end
+
+        def emissions
+          date_before = @instance_options[:params]["date_before"]&.to_i
+          date_after = @instance_options[:params]["date_after"]&.to_i
+
+          object.emissions.select do |em|
+            (date_before ? em["year"] <= date_before : true) &&
+            (date_after ? em["year"] >= date_after : true)
+          end
+        end
       end
     end
   end
