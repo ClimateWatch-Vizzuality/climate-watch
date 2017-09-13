@@ -8,5 +8,6 @@ FactoryGirl.define do
                 factory: :historical_emissions_sector
     association :gas,
                 factory: :historical_emissions_gas
+    emissions [{year: 1990, value: 9001}]
   end
 end
