@@ -1,16 +1,32 @@
 module Api
   module V1
     class HistoricalEmissionsController < ApiController
+
       def index
-        render json: records,
+        rs = records_specific
+        render json: records_global + rs,
                each_serializer: Api::V1::HistoricalEmissions::RecordSerializer,
-               params: params
+               params: params.merge(location: location_list),
+               records_specific: rs
       end
 
       private
 
-      def records
-        records = ::HistoricalEmissions::Record.
+      def records_global
+        global = ::HistoricalEmissions::Record.
+          includes(
+            :location,
+            :data_source,
+            :sector,
+            :gas
+          ).
+          where(locations: {iso_code3: 'WORLD'})
+
+          filter_parameters(global)
+      end
+
+      def records_specific
+        specific = ::HistoricalEmissions::Record.
           includes(
             :location,
             :data_source,
@@ -18,16 +34,20 @@ module Api
             :gas
           )
 
-        filters(records)
+        filter_parameters(filter_location(specific))
       end
 
-      def filters(records)
+      def filter_location(records)
         if location_list
           records = records.where(
             locations: {iso_code3: location_list}
           )
         end
 
+        records
+      end
+
+      def filter_parameters(records)
         {
           historical_emissions_gases: :gas,
           historical_emissions_data_sources: :source,
