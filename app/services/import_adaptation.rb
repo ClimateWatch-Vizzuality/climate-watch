@@ -15,6 +15,8 @@ class ImportAdaptation
 
     import_metadata
     import_data
+
+    update_ranks
   end
 
   private
@@ -71,5 +73,23 @@ class ImportAdaptation
     else
       return s
     end
+  end
+
+  def update_ranks
+    sql = <<~END
+      WITH ranks AS (
+      SELECT val.id, val.number_value,
+        RANK() OVER (PARTITION BY var.id ORDER BY number_value DESC) AS rank
+      FROM adaptation_variables var
+      INNER JOIN adaptation_values val ON var.id = val.variable_id
+      WHERE val.number_value IS NOT NULL
+      ORDER BY var.id, rank asc
+      ) UPDATE adaptation_values val
+      SET rank = ranks.rank
+      FROM ranks
+      WHERE val.id = ranks.id;
+    END
+
+    ActiveRecord::Base.connection.execute(sql)
   end
 end
