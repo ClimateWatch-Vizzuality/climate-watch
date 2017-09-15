@@ -73,6 +73,7 @@ class Home extends PureComponent {
                 onChange={handleDropDownChange}
                 value={countrySelected}
                 clearable={false}
+                onClose={() => console.info('I have closed')}
               />
             </div>
           </div>
