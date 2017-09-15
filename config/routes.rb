@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         get :full, on: :collection, controller: :ndc_full_texts, action: :index
         get :sdgs, on: :member, controller: :ndc_sdgs, action: :show
       end
+      resources :adaptations, only: [:index]
     end
   end
 
