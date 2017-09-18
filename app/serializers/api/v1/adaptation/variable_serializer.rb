@@ -5,7 +5,9 @@ module Api
         attribute :slug
         attribute :name
         has_many :values, serializer: Adaptation::ValueSerializer do
-          object.values.select(&:value)
+          object.values.reject do |v|
+            v.value.nil?
+          end
         end
       end
     end
