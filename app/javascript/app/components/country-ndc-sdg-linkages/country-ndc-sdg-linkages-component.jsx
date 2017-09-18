@@ -22,9 +22,9 @@ class CountrySDGLinkages extends PureComponent {
         <h3 className={styles.title}>NDC-SDG Linkages</h3>
         <div className={styles.sdgs}>
           {!isEmpty(sdgs) &&
-            Object.keys(sdgs).map(sdg => (
-              <div key={sdgs[sdg].title} className={styles.card}>
-                <SDGCard sdgIndex={sdg} sdgData={sdgs[sdg]} indicators />
+            sdgs.map(sdg => (
+              <div key={sdg.title} className={styles.card}>
+                <SDGCard sdgIndex={sdg.id} sdgData={sdg} indicators />
                 <ReactTooltip />
               </div>
             ))}
@@ -46,7 +46,7 @@ class CountrySDGLinkages extends PureComponent {
 }
 
 CountrySDGLinkages.propTypes = {
-  sdgs: Proptypes.object,
+  sdgs: Proptypes.array,
   sectorOptions: Proptypes.array,
   handleSectorChange: Proptypes.func,
   activeSector: Proptypes.object
