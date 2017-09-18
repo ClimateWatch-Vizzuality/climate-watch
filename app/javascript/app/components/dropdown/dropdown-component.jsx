@@ -18,7 +18,6 @@ const Dropdown = props => (
         styles.dropdown,
         { [styles.dropdownUp]: props.openUp },
         props.transparent ? styles.transparent : '',
-        props.hasLinks ? styles.hasLinks : '',
         props.white ? styles.white : ''
       )}
       {...props}
@@ -45,8 +44,7 @@ Dropdown.propTypes = {
   transparent: PropTypes.bool,
   white: PropTypes.bool,
   theme: PropTypes.object,
-  search: PropTypes.bool,
-  hasLinks: PropTypes.bool
+  search: PropTypes.bool
 };
 
 export default Dropdown;
