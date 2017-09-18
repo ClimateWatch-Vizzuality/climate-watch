@@ -4,7 +4,7 @@ module Api
       class ValueSerializer < ActiveModel::Serializer
         attribute :location
         attribute :value
-        attribute :rank
+        attribute :rank, if: -> { object.absolute_rank }
 
         def location
           object.location.iso_code3
