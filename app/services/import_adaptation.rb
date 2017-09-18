@@ -3,7 +3,7 @@ METADATA_FILEPATH = 'adaptation/adaptation_metadata.csv'.freeze
 
 class String
   def numeric?
-    Float(self) != nil rescue false
+    !(self =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/).nil?
   end
 end
 
@@ -61,18 +61,14 @@ class ImportAdaptation
   def value_attributes(k, d, l)
     s = {
       location: l,
-      variable: Adaptation::Variable.find_by!(slug: k),
+      variable: Adaptation::Variable.find_by!(slug: k)
     }
 
-    if ['YES', 'NO'].include?(d[k])
-      return s.merge(boolean_value: d[k] == 'YES')
-    elsif d[k].numeric?
-      return s.merge(number_value: Float(d[k]))
-    elsif d[k] != '#N/A'
-      return s.merge(string_value: d[k])
-    else
-      return s
-    end
+    return s.merge(boolean_value: d[k] == 'YES') if %w(YES NO).include?(d[k])
+    return s.merge(number_value: d[k]) if d[k].numeric?
+    return s.merge(string_value: d[k]) if d[k] != '#N/A'
+
+    s
   end
 
   def update_ranks

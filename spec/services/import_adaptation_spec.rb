@@ -2,14 +2,14 @@ require 'rails_helper'
 
 object_contents = {
   'adaptation/adaptation_metadata.csv' => <<~END,
-  column_name,long_name
-  country,Country
-  poverty_14,Population living below the national income poverty line (%)
-  climate_risks,Climate Risk Index score
+    column_name,long_name
+    country,Country
+    poverty_14,Population living below the national income poverty line (%)
+    climate_risks,Climate Risk Index score
   END
   'adaptation/adaptation.csv' => <<~END,
-  country,poverty_14,climate_risks
-  AFG,35.8,36.17
+    country,poverty_14,climate_risks
+    AFG,35.8,36.17
   END
 }
 

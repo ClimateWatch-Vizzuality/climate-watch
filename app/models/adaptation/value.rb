@@ -4,10 +4,14 @@ module Adaptation
     belongs_to :location
 
     def value
-      return self.number_value unless self.number_value.nil?
-      return self.string_value unless self.string_value.nil?
-      return self.boolean_value unless self.boolean_value.nil?
+      return number_value unless number_value.nil?
+      return string_value unless string_value.nil?
+      return boolean_value unless boolean_value.nil?
       nil
+    end
+
+    def number_value=(value)
+      write_attribute(:number_value, Float(value))
     end
   end
 end
