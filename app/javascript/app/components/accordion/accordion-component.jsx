@@ -11,9 +11,10 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
-    const { data, handleOnClick, activeSection, compare } = this.props;
+    const { data, handleOnClick, activeSection, compare, loading } = this.props;
     return (
       <div>
+        {!data.length && !loading && <NoContent message="Nothing here" />}
         {data.map((section, index) => {
           const isOpen = activeSection
             ? activeSection === section.slug
@@ -39,9 +40,6 @@ class Accordion extends PureComponent {
               <Collapse isOpened={isOpen}>
                 <div className={styles.accordionContent}>
                   <div className={layout.content}>
-                    {section.definitions.length === 0 && (
-                      <NoContent message="Nothing here" />
-                    )}
                     <dl className={styles.definitionList}>
                       {section.definitions.map(def => (
                         <div
@@ -89,7 +87,8 @@ Accordion.propTypes = {
       definitions: PropTypes.array.isRequired
     })
   ),
-  compare: PropTypes.bool
+  compare: PropTypes.bool,
+  loading: PropTypes.bool
 };
 
 Accordion.defaultProps = {

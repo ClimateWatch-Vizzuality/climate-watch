@@ -53,7 +53,6 @@ export const filterNDCs = createSelector(
   [getNDCs, getSearch],
   (ndcs, search) => {
     if (!ndcs) return [];
-    if (!search) return ndcs;
     const filteredNDCs = ndcs.map(ndc => {
       const defs = ndc.definitions.filter(
         def =>
@@ -66,7 +65,8 @@ export const filterNDCs = createSelector(
         definitions: defs
       };
     });
-    return filteredNDCs;
+    const reducedNDCs = filteredNDCs.filter(ndc => ndc.definitions.length > 0);
+    return reducedNDCs;
   }
 );
 
