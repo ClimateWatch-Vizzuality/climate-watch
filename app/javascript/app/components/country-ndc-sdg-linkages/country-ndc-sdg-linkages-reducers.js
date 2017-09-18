@@ -1,11 +1,13 @@
 export const initialState = {
   loading: false,
   loaded: false,
+  activeSector: null,
   data: {}
 };
 
 const setLoading = (loading, state) => ({ ...state, loading });
 const setLoaded = (loaded, state) => ({ ...state, loaded });
+const setActiveSector = (sector, state) => ({ ...state, activeSector: sector });
 
 export default {
   fetchNDCsSDGsInit: state => setLoading(true, state),
@@ -28,5 +30,6 @@ export default {
     };
 
     return setLoaded(true, setLoading(false, newState));
-  }
+  },
+  setActiveSector: (state, { payload }) => setActiveSector(payload, state)
 };

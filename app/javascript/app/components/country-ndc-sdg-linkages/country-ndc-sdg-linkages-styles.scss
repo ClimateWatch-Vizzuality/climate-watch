@@ -1,4 +1,3 @@
-@import '../../styles/settings.scss';
 @import '~styles/layout.scss';
 
 .sdgs {
@@ -6,6 +5,7 @@
   column-gap: 0;
   position: relative;
   margin-left: 1px;
+  margin-bottom: 30px;
 }
 
 .card {
@@ -21,4 +21,11 @@
   font-weight: $font-weight;
   color: $theme-color;
   margin-bottom: 15px;
+}
+
+.sectorSelector {
+  @extend %grid;
+
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 40px;
 }

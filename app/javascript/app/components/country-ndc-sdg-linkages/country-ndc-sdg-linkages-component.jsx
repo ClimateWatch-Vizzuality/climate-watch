@@ -11,7 +11,12 @@ import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
   render() {
-    const { sdgs, sectorOptions } = this.props;
+    const {
+      sdgs,
+      activeSector,
+      sectorOptions,
+      handleSectorChange
+    } = this.props;
     return (
       <div>
         <h3 className={styles.title}>NDC-SDG Linkages</h3>
@@ -26,11 +31,15 @@ class CountrySDGLinkages extends PureComponent {
           {isEmpty(sdgs) && <NoContent message="No SDG data available" />}
         </div>
         <ReactTooltip />
-        <Dropdown
-          placeholder="Choose a sector"
-          options={sectorOptions}
-          value={null}
-        />
+        <div className={styles.sectorSelector}>
+          <Dropdown
+            label="Sector"
+            placeholder="Choose a sector"
+            options={sectorOptions}
+            onChange={handleSectorChange}
+            value={activeSector}
+          />
+        </div>
       </div>
     );
   }
@@ -38,7 +47,9 @@ class CountrySDGLinkages extends PureComponent {
 
 CountrySDGLinkages.propTypes = {
   sdgs: Proptypes.object,
-  sectorOptions: Proptypes.array
+  sectorOptions: Proptypes.array,
+  handleSectorChange: Proptypes.func,
+  activeSector: Proptypes.object
 };
 
 export default CountrySDGLinkages;

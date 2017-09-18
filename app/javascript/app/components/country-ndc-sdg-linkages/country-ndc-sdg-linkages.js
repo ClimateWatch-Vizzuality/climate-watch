@@ -17,6 +17,7 @@ const mapStateToProps = (state, { match }) => {
   const { iso } = match.params;
   return {
     fetched: countrySDGLinkages.data[iso],
+    activeSector: state.countrySDGLinkages.activeSector,
     sectorOptions: getSectorOptions(countrySDGLinkages.data[iso]),
     sdgs: countrySDGLinkages.data[iso] ? countrySDGLinkages.data[iso].sdgs : {},
     loading: countrySDGLinkages.loading
@@ -24,14 +25,19 @@ const mapStateToProps = (state, { match }) => {
 };
 
 const CountrySDGLinkagesContainer = props => {
-  const { match, fetchNDCsSDGs, loading, fetched } = props;
+  const { match, fetchNDCsSDGs, loading, fetched, setActiveSector } = props;
   const { iso } = match.params;
   if (iso && !loading && !fetched) {
     fetchNDCsSDGs(iso);
   }
 
+  const handleSectorChange = option => {
+    setActiveSector(option);
+  };
+
   return createElement(CountrySDGLinkagesComponent, {
-    ...props
+    ...props,
+    handleSectorChange
   });
 };
 
