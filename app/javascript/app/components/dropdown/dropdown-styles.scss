@@ -71,6 +71,11 @@
       white-space: nowrap;
       text-overflow: ellipsis;
 
+      &.is-focused {
+        color: $theme-color;
+        outline: none;
+      }
+
       &:last-child {
         border-bottom: 0 !important;
       }
@@ -100,17 +105,6 @@
   }
 }
 
-.hasLinks :global {
-  .is-focused {
-    color: red !important;
-    outline: none;
-
-    &:last-child {
-      opacity: 1;
-    }
-  }
-}
-
 .dropdownUp :global {
   .Select-menu-outer {
     top: auto;
@@ -135,14 +129,22 @@
   top: 4px;
 }
 
+.hasLinks :global {
+  .link-arrow {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
+
+  .is-focused {
+    .link-arrow {
+      opacity: 1;
+    }
+  }
+}
+
 .optionContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 14px 10px;
-}
-
-.iconArrow {
-  transform: rotate(-90deg);
-  opacity: 0;
 }

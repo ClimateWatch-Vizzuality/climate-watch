@@ -37,7 +37,7 @@ const Dropdown = props => (
         <div className={styles.optionContainer}>
           <div>{`${option.label}`}</div>
           {props.optionsAreLinks && (
-            <div className={styles.iconArrow}>
+            <div className="link-arrow">
               <Icon icon={dropdownArrow} />
             </div>
           )}
