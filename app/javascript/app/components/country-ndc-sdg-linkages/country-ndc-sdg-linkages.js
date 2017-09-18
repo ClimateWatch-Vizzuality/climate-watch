@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import CountrySDGLinkagesComponent from './country-ndc-sdg-linkages-component';
 import actions from './country-ndc-sdg-linkages-actions';
+import { getSectorOptions } from './country-ndc-sdg-linkages-selectors';
 
 export { default as component } from './country-ndc-sdg-linkages-component';
 export { initialState } from './country-ndc-sdg-linkages-reducers';
@@ -16,9 +17,7 @@ const mapStateToProps = (state, { match }) => {
   const { iso } = match.params;
   return {
     fetched: countrySDGLinkages.data[iso],
-    sectors: countrySDGLinkages.data[iso]
-      ? countrySDGLinkages.data[iso].sectors
-      : {},
+    sectorOptions: getSectorOptions(countrySDGLinkages.data[iso]),
     sdgs: countrySDGLinkages.data[iso] ? countrySDGLinkages.data[iso].sdgs : {},
     loading: countrySDGLinkages.loading
   };

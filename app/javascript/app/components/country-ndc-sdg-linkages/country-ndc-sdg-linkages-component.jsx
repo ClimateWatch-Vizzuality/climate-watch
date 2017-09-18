@@ -5,12 +5,13 @@ import isEmpty from 'lodash/isEmpty';
 import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
+import Dropdown from 'components/dropdown';
 
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
   render() {
-    const { sdgs } = this.props;
+    const { sdgs, sectorOptions } = this.props;
     return (
       <div>
         <h3 className={styles.title}>NDC-SDG Linkages</h3>
@@ -25,13 +26,19 @@ class CountrySDGLinkages extends PureComponent {
           {isEmpty(sdgs) && <NoContent message="No SDG data available" />}
         </div>
         <ReactTooltip />
+        <Dropdown
+          placeholder="Choose a sector"
+          options={sectorOptions}
+          value={null}
+        />
       </div>
     );
   }
 }
 
 CountrySDGLinkages.propTypes = {
-  sdgs: Proptypes.object
+  sdgs: Proptypes.object,
+  sectorOptions: Proptypes.array
 };
 
 export default CountrySDGLinkages;
