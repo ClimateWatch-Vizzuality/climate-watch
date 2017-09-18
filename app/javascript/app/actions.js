@@ -1,4 +1,5 @@
 import { actions as countriesProvider } from 'providers/countries-provider';
+import { actions as geoLocationProvider } from 'providers/geolocation-provider';
 import { actions as countrySelect } from 'components/countries-select';
 import { actions as autocompleteSearch } from 'components/autocomplete-search';
 import { actions as mapActions } from 'components/map';
@@ -11,6 +12,7 @@ import { actions as ndcSearchActions } from 'pages/ndc-search';
 
 export default {
   ...countriesProvider,
+  ...geoLocationProvider,
   ...countrySelect,
   ...NDCSActions,
   ...NDCCompareActions,

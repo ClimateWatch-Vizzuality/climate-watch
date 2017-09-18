@@ -44,3 +44,13 @@
   right: -20px;
   top: -20px;
 }
+
+.geoLocation {
+  opacity: 1;
+  font-size: $font-size-s;
+  color: $base-text;
+}
+
+.geoLocationHide {
+  opacity: 0;
+}

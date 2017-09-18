@@ -8,6 +8,7 @@ import Dropdown from 'components/dropdown';
 import AutocompleteSearch from 'components/autocomplete-search';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
+import GeoLocationProvider from 'providers/geolocation-provider';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
@@ -22,11 +23,7 @@ import styles from './home-styles.scss';
 
 class Home extends PureComponent {
   render() {
-    const {
-      countrySelected,
-      countriesOptions,
-      handleDropDownChange
-    } = this.props;
+    const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
       <div>
         <Section className={styles.homeOne} backgroundImage={homeOneBg}>
@@ -58,12 +55,18 @@ class Home extends PureComponent {
               title="Explore the country profiles"
               description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
+            <GeoLocationProvider />
+            <span
+              className={cx(styles.geoLocation, {
+                [styles.geoLocationHide]: !geolocation.country
+              })}
+            >
+              Connected from {geolocation.country}?
+            </span>
             <div className={styles.doubleFold}>
               <Button
                 color="yellow"
-                link={`/countries/${countrySelected
-                  ? countrySelected.value
-                  : ''}`}
+                link={`/countries/${geolocation.iso ? geolocation.iso : ''}`}
               >
                 Explore your country
               </Button>
@@ -71,7 +74,6 @@ class Home extends PureComponent {
                 placeholder="Select another country"
                 options={countriesOptions}
                 onChange={handleDropDownChange}
-                value={countrySelected}
                 clearable={false}
               />
             </div>
@@ -103,12 +105,13 @@ class Home extends PureComponent {
 }
 
 Home.propTypes = {
-  countrySelected: PropTypes.object,
+  geolocation: PropTypes.object,
   countriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func
 };
 
 Home.defaultProps = {
+  geolocation: {},
   countriesOptions: []
 };
 
