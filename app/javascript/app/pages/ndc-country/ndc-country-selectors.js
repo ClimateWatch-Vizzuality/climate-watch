@@ -56,7 +56,9 @@ export const filterNDCs = createSelector(
     if (!search) return ndcs;
     const filteredNDCs = ndcs.map(ndc => {
       const defs = ndc.definitions.filter(
-        def => deburrUpper(def.title).indexOf(search) > -1
+        def =>
+          deburrUpper(def.title).indexOf(search) > -1 ||
+          deburrUpper(def.descriptions[0].value).indexOf(search) > -1
       );
 
       return {
