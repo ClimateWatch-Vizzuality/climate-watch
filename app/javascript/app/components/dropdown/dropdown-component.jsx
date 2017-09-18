@@ -17,7 +17,8 @@ const Dropdown = props => (
       className={cx(
         styles.dropdown,
         { [styles.dropdownUp]: props.openUp },
-        props.transparent ? styles.transparent : ''
+        props.transparent ? styles.transparent : '',
+        props.optionsAreLinks ? styles.hasLinks : ''
       )}
       {...props}
       arrowRenderer={({ isOpen }) => (
@@ -32,6 +33,16 @@ const Dropdown = props => (
           icon={props.search ? searchIcon : dropdownArrow}
         />
       )}
+      optionRenderer={option => (
+        <div className={styles.optionContainer}>
+          <div>{`${option.label}`}</div>
+          {props.optionsAreLinks && (
+            <div className={styles.iconArrow}>
+              <Icon icon={dropdownArrow} />
+            </div>
+          )}
+        </div>
+      )}
     />
   </div>
 );
@@ -42,7 +53,8 @@ Dropdown.propTypes = {
   className: PropTypes.string,
   transparent: PropTypes.bool,
   theme: PropTypes.object,
-  search: PropTypes.bool
+  search: PropTypes.bool,
+  optionsAreLinks: PropTypes.bool
 };
 
 export default Dropdown;

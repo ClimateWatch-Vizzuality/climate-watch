@@ -61,7 +61,7 @@
 
     .Select-option {
       height: 45px;
-      padding: 14px 10px;
+      padding: 0;
       line-height: 1.2em;
       display: block;
       color: $theme-color-light;
@@ -73,15 +73,6 @@
 
       &:last-child {
         border-bottom: 0 !important;
-      }
-
-      &.is-focused {
-        color: $theme-color;
-        outline: none;
-      }
-
-      &:hover {
-        color: $theme-color;
       }
     }
   }
@@ -109,6 +100,17 @@
   }
 }
 
+.hasLinks :global {
+  .is-focused {
+    color: red !important;
+    outline: none;
+
+    &:last-child {
+      opacity: 1;
+    }
+  }
+}
+
 .dropdownUp :global {
   .Select-menu-outer {
     top: auto;
@@ -131,4 +133,16 @@
   position: absolute;
   right: 5px;
   top: 4px;
+}
+
+.optionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 14px 10px;
+}
+
+.iconArrow {
+  transform: rotate(-90deg);
+  opacity: 0;
 }
