@@ -1,7 +1,21 @@
 @import '~styles/settings.scss';
 
-.wrapper {
+.wrapper :global {
   position: relative;
+
+  .is-focused {
+    color: $theme-color;
+    outline: none;
+
+    .link-arrow {
+      opacity: 1;
+    }
+  }
+
+  .link-arrow {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
 }
 
 .isOpen {
@@ -11,8 +25,9 @@
   }
 }
 
-.results {
-  position: absolute;
-  left: 0;
-  right: 0;
+.optionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 14px 10px;
 }

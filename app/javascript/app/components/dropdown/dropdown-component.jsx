@@ -34,16 +34,6 @@ const Dropdown = props => (
           icon={props.search ? searchIcon : dropdownArrow}
         />
       )}
-      optionRenderer={option => (
-        <div className={styles.optionContainer}>
-          <div>{`${option.label}`}</div>
-          {props.hasLinks && (
-            <div className="link-arrow">
-              <Icon icon={dropdownArrow} />
-            </div>
-          )}
-        </div>
-      )}
     />
   </div>
 );

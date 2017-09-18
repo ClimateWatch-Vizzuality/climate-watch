@@ -74,6 +74,15 @@
       &.is-focused {
         color: $theme-color;
         outline: none;
+
+        .link-arrow {
+          opacity: 1;
+        }
+      }
+
+      .link-arrow {
+        transform: rotate(-90deg);
+        opacity: 0;
       }
     }
   }
@@ -153,24 +162,4 @@
   position: absolute;
   right: 5px;
   top: 4px;
-}
-
-.hasLinks :global {
-  .link-arrow {
-    transform: rotate(-90deg);
-    opacity: 0;
-  }
-
-  .is-focused {
-    .link-arrow {
-      opacity: 1;
-    }
-  }
-}
-
-.optionContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 14px 10px;
 }
