@@ -4,7 +4,11 @@ module Api
       class VariableSerializer < ActiveModel::Serializer
         attribute :slug
         attribute :name
-        has_many :values, serializer: Adaptation::ValueSerializer
+        has_many :values, serializer: Adaptation::ValueSerializer do
+          object.values.select do |value|
+            value.value
+          end
+        end
       end
     end
   end
