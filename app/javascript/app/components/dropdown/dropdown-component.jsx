@@ -18,7 +18,8 @@ const Dropdown = props => (
         styles.dropdown,
         { [styles.dropdownUp]: props.openUp },
         props.transparent ? styles.transparent : '',
-        props.optionsAreLinks ? styles.hasLinks : ''
+        props.hasLinks ? styles.hasLinks : '',
+        props.white ? styles.white : ''
       )}
       {...props}
       arrowRenderer={({ isOpen }) => (
@@ -36,7 +37,7 @@ const Dropdown = props => (
       optionRenderer={option => (
         <div className={styles.optionContainer}>
           <div>{`${option.label}`}</div>
-          {props.optionsAreLinks && (
+          {props.hasLinks && (
             <div className="link-arrow">
               <Icon icon={dropdownArrow} />
             </div>
@@ -52,9 +53,10 @@ Dropdown.propTypes = {
   openUp: PropTypes.bool,
   className: PropTypes.string,
   transparent: PropTypes.bool,
+  white: PropTypes.bool,
   theme: PropTypes.object,
   search: PropTypes.bool,
-  optionsAreLinks: PropTypes.bool
+  hasLinks: PropTypes.bool
 };
 
 export default Dropdown;

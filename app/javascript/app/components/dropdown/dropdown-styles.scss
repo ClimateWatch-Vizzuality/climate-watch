@@ -105,6 +105,36 @@
   }
 }
 
+.white :global {
+  height: 60px;
+
+  .Select-control {
+    border: 0;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  .Select-value-label {
+    line-height: 60px;
+  }
+
+  .Select-placeholder {
+    line-height: 60px;
+  }
+
+  .Select-input > input {
+    padding: 20px 0;
+  }
+
+  .Select-menu-outer {
+    width: calc(100% + 2px);
+    margin-left: -1px;
+    border-top: solid 1px #e5e5eb;
+  }
+}
+
 .dropdownUp :global {
   .Select-menu-outer {
     top: auto;

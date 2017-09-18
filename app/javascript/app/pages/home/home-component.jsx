@@ -74,6 +74,7 @@ class Home extends PureComponent {
                 value={countrySelected}
                 clearable={false}
                 onClose={() => console.info('I have closed')}
+                hasLinks
               />
             </div>
           </div>

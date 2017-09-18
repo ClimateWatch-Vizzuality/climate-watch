@@ -20,7 +20,7 @@ class CountriesSelect extends PureComponent {
           transparent
           searchable
           search
-          optionsAreLinks
+          hasLinks
         />
       </div>
     );
