@@ -21,7 +21,8 @@ ActiveRecord::Schema.define(version: 20170914191538) do
     t.text "string_value"
     t.float "number_value"
     t.boolean "boolean_value"
-    t.integer "rank"
+    t.integer "absolute_rank"
+    t.float "relative_rank"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_adaptation_values_on_location_id"

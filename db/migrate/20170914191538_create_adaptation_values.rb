@@ -13,7 +13,8 @@ class CreateAdaptationValues < ActiveRecord::Migration[5.1]
       t.text :string_value
       t.float :number_value
       t.boolean :boolean_value
-      t.integer :rank
+      t.integer :absolute_rank
+      t.float :relative_rank
       t.timestamps
     end
   end
