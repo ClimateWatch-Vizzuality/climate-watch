@@ -2,9 +2,7 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 
 import Dropdown from 'components/dropdown';
-import Icon from 'components/icon';
-
-import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
+import theme from 'styles/themes/dropdown.scss';
 import styles from './autocomplete-search-styles.scss';
 
 class CountriesSelect extends PureComponent {
@@ -13,6 +11,7 @@ class CountriesSelect extends PureComponent {
     return (
       <div className={styles.wrapper}>
         <Dropdown
+          className={theme.dropdownOptionWithArrow}
           placeholder={'e.g. "Brazil", "energy", "reduce emissions by 37%"'}
           options={searchList}
           onInputChange={setAutocompleteSearch}
@@ -22,14 +21,6 @@ class CountriesSelect extends PureComponent {
           transparent
           searchable
           search
-          optionRenderer={option => (
-            <div className={styles.optionContainer}>
-              <div>{`${option.label}`}</div>
-              <div className="link-arrow">
-                <Icon icon={dropdownArrow} />
-              </div>
-            </div>
-          )}
         />
       </div>
     );

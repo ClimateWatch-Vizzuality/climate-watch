@@ -1,0 +1,22 @@
+.dropdownOptionWithArrow :global {
+  .Select-menu-outer {
+    .Select-option {
+      &.is-focused {
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          right: 8px;
+          top: 0;
+          bottom: 0;
+          width: 14px;
+          height: 14px;
+          background-position: center;
+          background-image: url('../../assets/sdg-icons/icon_1.png') no-repeat;
+          background-color: red;
+        }
+      }
+    }
+  }
+}

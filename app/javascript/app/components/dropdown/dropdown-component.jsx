@@ -14,13 +14,14 @@ const Dropdown = props => (
   <div className={styles.dropdownWrapper}>
     {props.label && <span className={styles.label}>{props.label}</span>}
     <Select
+      {...props}
       className={cx(
         styles.dropdown,
         { [styles.dropdownUp]: props.openUp },
         props.transparent ? styles.transparent : '',
-        props.white ? styles.white : ''
+        props.white ? styles.white : '',
+        props.className
       )}
-      {...props}
       arrowRenderer={({ isOpen }) => (
         <Icon
           className={
