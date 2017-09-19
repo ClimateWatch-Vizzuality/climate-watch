@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe Api::V1::CountriesController, type: :controller do
+describe Api::V1::Locations::RegionsController, type: :controller do
   context do
     let!(:some_locations) {
-      FactoryGirl.create_list(:location, 3)
+      FactoryGirl.create_list(:location_region, 3)
     }
 
     describe 'GET index' do
@@ -12,10 +12,13 @@ describe Api::V1::CountriesController, type: :controller do
         expect(response).to be_success
       end
 
-      it 'lists all known locations that are countries' do
+      it 'lists all known locations that are regions' do
         get :index
         parsed_body = JSON.parse(response.body)
         expect(parsed_body.length).to eq(3)
+        parsed_body.each do |region|
+          expect(region['members'].length).to eq(3)
+        end
       end
     end
   end
