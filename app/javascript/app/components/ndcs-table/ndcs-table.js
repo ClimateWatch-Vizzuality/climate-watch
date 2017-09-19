@@ -10,26 +10,29 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getSelectedIndicator,
-  getSelectedData
+  getFilteredData
 } from './ndcs-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.ndcs;
+  const { data, loading } = state.ndcs;
   const { data: countries } = state.countries;
   const search = qs.parse(location.search);
   const ndcsWithSelection = {
     ...data,
     countries,
+    query: search.search,
     categorySelected: search.category,
     indicatorSelected: search.indicator
   };
 
   return {
+    loading,
+    query: ndcsWithSelection.query,
     categories: getCategories(ndcsWithSelection),
     indicators: getCategoryIndicators(ndcsWithSelection),
     selectedCategory: getSelectedCategory(ndcsWithSelection),
     selectedIndicator: getSelectedIndicator(ndcsWithSelection),
-    data: getSelectedData(ndcsWithSelection)
+    data: getFilteredData(ndcsWithSelection)
   };
 };
 
@@ -40,6 +43,10 @@ class NDCTableContainer extends PureComponent {
 
   handleIndicatorChange = indicator => {
     this.updateUrlParam('indicator', indicator.value);
+  };
+
+  handleSearchChange = query => {
+    this.updateUrlParam('search', query);
   };
 
   updateUrlParam(param, value, clear = false) {
@@ -62,7 +69,8 @@ class NDCTableContainer extends PureComponent {
     return createElement(Component, {
       ...this.props,
       handleCategoryChange: this.handleCategoryChange,
-      handleIndicatorChange: this.handleIndicatorChange
+      handleIndicatorChange: this.handleIndicatorChange,
+      handleSearchChange: this.handleSearchChange
     });
   }
 }

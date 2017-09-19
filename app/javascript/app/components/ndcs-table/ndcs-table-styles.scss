@@ -7,3 +7,7 @@
   grid-template-columns: repeat(4, 1fr);
   align-items: end;
 }
+
+.searchBox {
+  grid-column-end: -1;
+}

@@ -1,10 +1,12 @@
 import { createSelector } from 'reselect';
+import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 
 const getCategoriesData = state => state.categories || {};
 const getIndicatorsData = state => state.indicators || [];
 const getCountries = state => state.countries || [];
+const getQuery = state => deburrUpper(state.query) || '';
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   Object.keys(categories).map(category => ({
@@ -89,9 +91,20 @@ export const getSelectedData = createSelector(
   }
 );
 
+export const getFilteredData = createSelector(
+  [getSelectedData, getQuery],
+  (data, query) =>
+    data.filter(
+      d =>
+        deburrUpper(d.country).indexOf(query) > -1 ||
+        deburrUpper(d.value).indexOf(query) > -1
+    )
+);
+
 export default {
   getCategories,
   getCategoryIndicators,
   getSelectedCategory,
-  getSelectedIndicator
+  getSelectedIndicator,
+  getFilteredData
 };
