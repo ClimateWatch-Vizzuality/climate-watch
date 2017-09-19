@@ -32,7 +32,6 @@ class CountrySDGLinkages extends PureComponent {
           {isEmpty(sdgs) &&
           !loading && <NoContent message="No SDG data available" />}
         </div>
-        <ReactTooltip />
         <div className={styles.sectorSelector}>
           <Dropdown
             label="Sector"
