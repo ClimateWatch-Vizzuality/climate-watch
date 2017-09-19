@@ -7,8 +7,9 @@ import { getAnchorLinks } from './ndcs-selectors';
 
 import Component from './ndcs-component';
 
-const mapStateToProps = (state, { route }) => ({
-  anchorLinks: getAnchorLinks(route)
+const mapStateToProps = (state, { route, location }) => ({
+  anchorLinks: getAnchorLinks(route),
+  query: location.search
 });
 
 class NDCContainer extends PureComponent {
