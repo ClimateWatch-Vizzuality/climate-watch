@@ -14,6 +14,14 @@
   width: calc(100% + 1px);
   margin: auto;
   margin-bottom: -1px;
+
+  &:nth-child(6n) {
+    border-bottom: solid $theme-border 1px;
+  }
+
+  &:nth-child(12n) {
+    border-right: solid $theme-border 1px;
+  }
 }
 
 .title {
