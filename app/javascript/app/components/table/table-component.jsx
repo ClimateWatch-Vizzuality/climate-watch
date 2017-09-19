@@ -6,7 +6,7 @@ import 'react-virtualized/styles.css'; // only needs to be imported once
 import styles from './table-styles.scss';
 
 const SimpleTable = props => {
-  const { data } = props;
+  const { data, rowHeight, headerHeight } = props;
   if (!data.length) return null;
 
   const columns = Object.keys(data[0]);
@@ -16,9 +16,9 @@ const SimpleTable = props => {
         <Table
           className={styles.table}
           width={width}
-          height={300}
-          headerHeight={20}
-          rowHeight={30}
+          height={460}
+          headerHeight={headerHeight}
+          rowHeight={rowHeight}
           rowCount={data.length}
           rowGetter={({ index }) => data[index]}
         >
@@ -38,11 +38,15 @@ const SimpleTable = props => {
 };
 
 SimpleTable.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  rowHeight: PropTypes.number.isRequired,
+  headerHeight: PropTypes.number.isRequired
 };
 
 SimpleTable.defaultProps = {
-  data: []
+  data: [],
+  rowHeight: 45,
+  headerHeight: 30
 };
 
 export default SimpleTable;

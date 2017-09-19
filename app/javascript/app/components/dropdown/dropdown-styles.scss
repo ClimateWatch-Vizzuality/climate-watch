@@ -25,6 +25,10 @@
     background: transparent;
     color: $theme-color;
     font-family: $font-family-1;
+
+    .Select-value {
+      padding-right: 40px;
+    }
   }
 
   .Select-input {

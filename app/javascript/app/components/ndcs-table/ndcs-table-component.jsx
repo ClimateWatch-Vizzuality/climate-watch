@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
 import Table from 'components/table';
 
+import styles from './ndcs-table-styles.scss';
+
 class NDCTable extends PureComponent {
   render() {
     const {
@@ -16,7 +18,7 @@ class NDCTable extends PureComponent {
     } = this.props;
     return (
       <div>
-        <div>
+        <div className={styles.col4}>
           <Dropdown
             label="Category"
             options={categories}
