@@ -15,7 +15,8 @@ class CountrySDGLinkages extends PureComponent {
       sdgs,
       activeSector,
       sectorOptions,
-      handleSectorChange
+      handleSectorChange,
+      loading
     } = this.props;
     return (
       <div>
@@ -24,11 +25,12 @@ class CountrySDGLinkages extends PureComponent {
           {!isEmpty(sdgs) &&
             sdgs.map(sdg => (
               <div key={sdg.title} className={styles.card}>
-                <SDGCard sdgIndex={sdg.id} sdgData={sdg} indicators />
+                <SDGCard sdgData={sdg} indicators />
                 <ReactTooltip />
               </div>
             ))}
-          {isEmpty(sdgs) && <NoContent message="No SDG data available" />}
+          {isEmpty(sdgs) &&
+          !loading && <NoContent message="No SDG data available" />}
         </div>
         <ReactTooltip />
         <div className={styles.sectorSelector}>
@@ -49,7 +51,8 @@ CountrySDGLinkages.propTypes = {
   sdgs: Proptypes.array,
   sectorOptions: Proptypes.array,
   handleSectorChange: Proptypes.func,
-  activeSector: Proptypes.object
+  activeSector: Proptypes.object,
+  loading: Proptypes.bool
 };
 
 export default CountrySDGLinkages;
