@@ -33,14 +33,20 @@ class AutocompleteSearchContainer extends PureComponent {
     this.props.setAutocompleteSearch('');
   }
 
+  handleValueClick = option => {
+    this.props.history.push(option.path);
+  };
+
   render() {
     return createElement(AutocompleteSearchComponent, {
-      ...this.props
+      ...this.props,
+      handleValueClick: this.handleValueClick
     });
   }
 }
 
 AutocompleteSearchContainer.propTypes = {
+  history: Proptypes.object.isRequired,
   setAutocompleteSearch: Proptypes.func.isRequired
 };
 

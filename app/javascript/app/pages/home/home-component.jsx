@@ -73,6 +73,7 @@ class Home extends PureComponent {
                 onChange={handleDropDownChange}
                 value={countrySelected}
                 clearable={false}
+                hasLinks
               />
             </div>
           </div>
