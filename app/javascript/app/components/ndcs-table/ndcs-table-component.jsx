@@ -1,8 +1,51 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Dropdown from 'components/dropdown';
+import Table from 'components/table';
 
-const NDCTable = () =>
-  (<div>
-    <p> I will be the table </p>
-  </div>);
+class NDCTable extends PureComponent {
+  render() {
+    const {
+      data,
+      categories,
+      handleCategoryChange,
+      selectedCategory,
+      indicators,
+      handleIndicatorChange,
+      selectedIndicator
+    } = this.props;
+    return (
+      <div>
+        <div>
+          <Dropdown
+            label="Category"
+            options={categories}
+            onChange={handleCategoryChange}
+            value={selectedCategory.value}
+            clearable={false}
+          />
+          <Dropdown
+            label="Indicator"
+            options={indicators}
+            onChange={handleIndicatorChange}
+            value={selectedIndicator.value}
+            clearable={false}
+          />
+        </div>
+        <Table data={data} />
+      </div>
+    );
+  }
+}
+
+NDCTable.propTypes = {
+  categories: PropTypes.array.isRequired,
+  selectedCategory: PropTypes.object,
+  indicators: PropTypes.array.isRequired,
+  selectedIndicator: PropTypes.object,
+  data: PropTypes.array.isRequired,
+  handleCategoryChange: PropTypes.func.isRequired,
+  handleIndicatorChange: PropTypes.func.isRequired
+};
 
 export default NDCTable;
