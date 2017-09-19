@@ -18,11 +18,15 @@ export { default as actions } from './country-ndc-sdg-linkages-actions';
 const mapStateToProps = (state, { match }) => {
   const { countrySDGLinkages } = state;
   const { iso } = match.params;
+  const sdgsData = {
+    data: countrySDGLinkages.data[iso],
+    activeSector: 1
+  };
   return {
     fetched: countrySDGLinkages.data[iso],
     activeSector: state.countrySDGLinkages.activeSector,
     sectorOptions: getSectorOptions(countrySDGLinkages.data[iso]),
-    sdgs: filterSDGs(countrySDGLinkages.data[iso]),
+    sdgs: filterSDGs(sdgsData),
     loading: countrySDGLinkages.loading
   };
 };

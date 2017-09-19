@@ -5,9 +5,21 @@ const getSectors = state => {
   return state.sectors;
 };
 
+const getActiveSector = state => {
+  if (!state) return [];
+  return state.activeSector;
+};
+
 const getSDGs = state => {
-  if (!state) return {};
-  return state.sdgs;
+  if (!state.data) return [];
+  const sdgIds = Object.keys(state.data.sdgs);
+  const sdgs = sdgIds.map(sdg => ({
+    id: sdg,
+    title: state.data.sdgs[sdg].title,
+    colour: state.data.sdgs[sdg].colour,
+    targets: state.data.sdgs[sdg].targets
+  }));
+  return sdgs;
 };
 
 export const getSectorOptions = createSelector([getSectors], sectors => {
@@ -20,17 +32,22 @@ export const getSectorOptions = createSelector([getSectors], sectors => {
   return sectorOptions;
 });
 
-export const filterSDGs = createSelector([getSDGs], sdgs => {
-  if (!sdgs) return {};
-  const sdgIds = Object.keys(sdgs);
-  const filteredSDGs = sdgIds.map(sdg => ({
-    id: sdg,
-    title: sdgs[sdg].title,
-    colour: sdgs[sdg].colour,
-    targets: sdgs[sdg].targets
-  }));
-  return filteredSDGs;
-});
+export const filterSDGs = createSelector(
+  [getSDGs, getActiveSector],
+  (sdgs, sector) => {
+    if (!sdgs) return [];
+    const filteredSDGs = sdgs.map(sdg => {
+      const targets = Object.keys(sdg.targets).filter(
+        target => sdg.targets[target].sectors.indexOf(sector) > -1
+      );
+      return {
+        ...sdg,
+        targets
+      };
+    });
+    return filteredSDGs;
+  }
+);
 
 export default {
   getSectorOptions,
