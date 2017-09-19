@@ -16,9 +16,15 @@ class Accordion extends PureComponent {
       <div>
         {!data.length && !loading && <NoContent message="Nothing here" />}
         {data.map((section, index) => {
-          const isOpen = activeSection
-            ? activeSection === section.slug
-            : index === 0;
+          let isOpen = false;
+          if (data.length === 1) {
+            isOpen = true;
+          } else {
+            isOpen =
+              activeSection || data.length === 1
+                ? activeSection === section.slug
+                : index === 0;
+          }
           return (
             <section key={section.slug} className={styles.accordion}>
               <button
