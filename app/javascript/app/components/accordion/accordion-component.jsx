@@ -16,14 +16,18 @@ class Accordion extends PureComponent {
       <div>
         {!data.length && !loading && <NoContent message="Nothing here" />}
         {data.map((section, index) => {
-          let isOpen = false;
-          if (data.length === 1) {
-            isOpen = true;
-          } else {
-            isOpen =
-              activeSection || data.length === 1
-                ? activeSection === section.slug
-                : index === 0;
+          let isOpen = index === 0;
+          if (activeSection) {
+            if (activeSection !== 'none') {
+              const isActiveInResults = data.some(
+                d => d.slug === activeSection
+              );
+              isOpen =
+                activeSection === section.slug ||
+                (index === 0 && !isActiveInResults);
+            } else {
+              isOpen = false;
+            }
           }
           return (
             <section key={section.slug} className={styles.accordion}>
