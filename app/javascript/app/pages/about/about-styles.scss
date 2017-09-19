@@ -1,0 +1,33 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.section {
+  padding: 40px 0;
+  border-bottom: solid 1px #cbccd0;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: 30px;
+}
+
+.partners {
+  @extend %grid;
+
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: $gutter-padding;
+}
+
+.partner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partnerText {
+  font-size: $font-size;
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+}

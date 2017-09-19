@@ -36,6 +36,10 @@
     color: $theme-color;
   }
 
+  .Select-value {
+    padding-right: 35px !important;
+  }
+
   .Select-value-label {
     color: $theme-color !important;
     line-height: 45px;
@@ -62,14 +66,16 @@
     .Select-option {
       height: 45px;
       padding: 0;
+      padding-left: 10px;
       line-height: 1.2em;
-      display: block;
       color: $theme-color-light;
       border-bottom: #e5e5eb 1px solid;
       background-color: $light-gray;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
 
       &.is-focused {
         color: $theme-color;
@@ -77,6 +83,10 @@
       }
     }
   }
+}
+
+.dropdown:focus {
+  outline: none;
 }
 
 .transparent :global {
@@ -153,24 +163,4 @@
   position: absolute;
   right: 5px;
   top: 4px;
-}
-
-.hasLinks :global {
-  .link-arrow {
-    transform: rotate(-90deg);
-    opacity: 0;
-  }
-
-  .is-focused {
-    .link-arrow {
-      opacity: 1;
-    }
-  }
-}
-
-.optionContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 14px 10px;
 }

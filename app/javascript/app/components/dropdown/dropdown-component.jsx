@@ -14,14 +14,14 @@ const Dropdown = props => (
   <div className={styles.dropdownWrapper}>
     {props.label && <span className={styles.label}>{props.label}</span>}
     <Select
+      {...props}
       className={cx(
         styles.dropdown,
         { [styles.dropdownUp]: props.openUp },
         props.transparent ? styles.transparent : '',
-        props.hasLinks ? styles.hasLinks : '',
-        props.white ? styles.white : ''
+        props.white ? styles.white : '',
+        props.className
       )}
-      {...props}
       arrowRenderer={({ isOpen }) => (
         <Icon
           className={
@@ -34,16 +34,6 @@ const Dropdown = props => (
           icon={props.search ? searchIcon : dropdownArrow}
         />
       )}
-      optionRenderer={option => (
-        <div className={styles.optionContainer}>
-          <div>{`${option.label}`}</div>
-          {props.hasLinks && (
-            <div className="link-arrow">
-              <Icon icon={dropdownArrow} />
-            </div>
-          )}
-        </div>
-      )}
     />
   </div>
 );
@@ -55,8 +45,7 @@ Dropdown.propTypes = {
   transparent: PropTypes.bool,
   white: PropTypes.bool,
   theme: PropTypes.object,
-  search: PropTypes.bool,
-  hasLinks: PropTypes.bool
+  search: PropTypes.bool
 };
 
 export default Dropdown;
