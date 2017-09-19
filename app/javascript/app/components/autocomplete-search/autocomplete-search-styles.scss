@@ -2,20 +2,6 @@
 
 .wrapper :global {
   position: relative;
-
-  .is-focused {
-    color: $theme-color;
-    outline: none;
-
-    .link-arrow {
-      opacity: 1;
-    }
-  }
-
-  .link-arrow {
-    transform: rotate(-90deg);
-    opacity: 0;
-  }
 }
 
 .isOpen {
@@ -23,11 +9,4 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
-}
-
-.optionContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 14px 10px;
 }

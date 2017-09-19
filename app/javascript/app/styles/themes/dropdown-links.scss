@@ -7,14 +7,16 @@
         &::after {
           content: "";
           position: absolute;
-          right: 8px;
-          top: 0;
+          right: 10px;
+          top: 15px;
           bottom: 0;
           width: 14px;
           height: 14px;
           background-position: center;
-          background-image: url('../../assets/sdg-icons/icon_1.png') no-repeat;
-          background-color: red;
+          background-image: url('../../assets/icon-pngs/accordion-arrow.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-color: transparent;
         }
       }
     }
