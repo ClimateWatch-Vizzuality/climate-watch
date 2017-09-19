@@ -1,9 +1,3 @@
-class String
-  def numeric?
-    !(self =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/).nil?
-  end
-end
-
 class ImportAdaptation
   DATA_FILEPATH = 'adaptation/adaptation.csv'.freeze
   METADATA_FILEPATH = 'adaptation/adaptation_metadata.csv'.freeze
