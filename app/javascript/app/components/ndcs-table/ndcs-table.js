@@ -15,9 +15,11 @@ import {
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.ndcs;
+  const { data: countries } = state.countries;
   const search = qs.parse(location.search);
   const ndcsWithSelection = {
     ...data,
+    countries,
     categorySelected: search.category,
     indicatorSelected: search.indicator
   };

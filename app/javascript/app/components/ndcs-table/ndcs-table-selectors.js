@@ -4,6 +4,7 @@ import groupBy from 'lodash/groupBy';
 
 const getCategoriesData = state => state.categories || {};
 const getIndicatorsData = state => state.indicators || [];
+const getCountries = state => state.countries || [];
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   Object.keys(categories).map(category => ({
@@ -74,13 +75,17 @@ export const getSelectedIndicator = createSelector(
 );
 
 export const getSelectedData = createSelector(
-  [getSelectedIndicator],
-  selectedIndicator => {
+  [getSelectedIndicator, getCountries],
+  (selectedIndicator, countries) => {
     if (!selectedIndicator || !selectedIndicator.locations) return [];
-    return Object.keys(selectedIndicator.locations).map(location => ({
-      country: location,
-      value: selectedIndicator.locations[location].value
-    }));
+    return Object.keys(selectedIndicator.locations).map(iso => {
+      const countryData =
+        countries.find(country => country.iso_code3 === iso) || {};
+      return {
+        country: countryData.wri_standard_name || iso,
+        value: selectedIndicator.locations[iso].value
+      };
+    });
   }
 );
 
