@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :countries, only: [:index], controller: :countries, param: :code
+
+      namespace :locations do
+        resources :countries, only: [:index], controller: :countries
+        resources :regions, only: [:index], controller: :regions
+      end
 
       resources :emissions, only: [:index], controller: :historical_emissions do
         get :meta, on: :collection, controller: :historical_emissions, action: :meta
@@ -17,4 +21,4 @@ Rails.application.routes.draw do
 
   root 'application#index'
   get '(*frontend)', to: 'application#index'
- end
+end
