@@ -44,7 +44,7 @@ class ImportAdaptation
           Adaptation::Value.create!(v)
         end
       else
-        STDERR.puts "Location #{d[:country]} not found"
+        Rails.logger.error "Location #{d[:country]} not found"
       end
     end
   end
