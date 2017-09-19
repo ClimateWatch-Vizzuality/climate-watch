@@ -41,7 +41,7 @@ class ImportAdaptation
       if l
         @metakeys.each do |k|
           v = value_attributes(k, d, l)
-          Adaptation::Value.create!(v)
+          Adaptation::Value.create!(v) if v
         end
       else
         Rails.logger.error "Location #{d[:country]} not found"
@@ -65,8 +65,6 @@ class ImportAdaptation
     return s.merge(boolean_value: d[k] == 'YES') if %w(YES NO).include?(d[k])
     return s.merge(number_value: d[k]) if d[k].numeric?
     return s.merge(string_value: d[k]) if d[k] != '#N/A'
-
-    s
   end
 
   def update_ranks
