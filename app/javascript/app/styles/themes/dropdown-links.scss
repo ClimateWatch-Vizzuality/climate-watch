@@ -1,0 +1,24 @@
+.dropdownOptionWithArrow :global {
+  .Select-menu-outer {
+    .Select-option {
+      &.is-focused {
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          right: 10px;
+          top: 15px;
+          bottom: 0;
+          width: 14px;
+          height: 14px;
+          background-position: center;
+          background-image: url('../../assets/icon-pngs/accordion-arrow.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}

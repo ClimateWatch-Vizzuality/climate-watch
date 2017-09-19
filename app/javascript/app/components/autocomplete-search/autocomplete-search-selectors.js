@@ -22,13 +22,13 @@ const addCountriesPath = (countries, query) => {
     ndcResult.push({
       value: `${country.iso_code3}-full`,
       label: `${country.wri_standard_name} NDC - Full Text`,
-      path: `ndcs/country/${country.iso_code3}`
+      path: `ndcs/country/${country.iso_code3}/full`
     });
     return ndcResult;
   }, []);
 
   ndcResults.push({
-    value: 'search',
+    value: query,
     label: `Search "${query}" in the content of all NDC's`,
     path: `/ndc-search?query=${query}`
   });

@@ -13,7 +13,7 @@ export const getCountry = createSelector(
 
 export const getCountryName = createSelector(
   [getCountry],
-  country => country.cait_name
+  country => country.wri_standard_name
 );
 
 export const getCountryDescription = createSelector(
