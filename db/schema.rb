@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907102325) do
+ActiveRecord::Schema.define(version: 20170913132252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,29 +73,40 @@ ActiveRecord::Schema.define(version: 20170907102325) do
     t.index ["location_id"], name: "index_cait_indc_values_on_location_id"
   end
 
-  create_table "data_sources", force: :cascade do |t|
+  create_table "historical_emissions_data_sources", force: :cascade do |t|
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "gases", force: :cascade do |t|
+  create_table "historical_emissions_gases", force: :cascade do |t|
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "historical_emissions", force: :cascade do |t|
+  create_table "historical_emissions_records", force: :cascade do |t|
     t.bigint "location_id"
     t.bigint "data_source_id"
     t.bigint "sector_id"
     t.bigint "gas_id"
     t.text "gwp"
     t.jsonb "emissions"
-    t.index ["data_source_id"], name: "index_historical_emissions_on_data_source_id"
-    t.index ["gas_id"], name: "index_historical_emissions_on_gas_id"
-    t.index ["location_id"], name: "index_historical_emissions_on_location_id"
-    t.index ["sector_id"], name: "index_historical_emissions_on_sector_id"
+    t.index ["data_source_id"], name: "index_historical_emissions_records_on_data_source_id"
+    t.index ["gas_id"], name: "index_historical_emissions_records_on_gas_id"
+    t.index ["location_id"], name: "index_historical_emissions_records_on_location_id"
+    t.index ["sector_id"], name: "index_historical_emissions_records_on_sector_id"
+  end
+
+  create_table "historical_emissions_sectors", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.bigint "data_source_id"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "annex_type"
+    t.index ["data_source_id"], name: "index_historical_emissions_sectors_on_data_source_id"
+    t.index ["parent_id"], name: "index_historical_emissions_sectors_on_parent_id"
   end
 
   create_table "location_members", force: :cascade do |t|
@@ -182,16 +193,6 @@ ActiveRecord::Schema.define(version: 20170907102325) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
-  create_table "sectors", force: :cascade do |t|
-    t.bigint "parent_id"
-    t.bigint "data_source_id"
-    t.text "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["data_source_id"], name: "index_sectors_on_data_source_id"
-    t.index ["parent_id"], name: "index_sectors_on_parent_id"
-  end
-
   add_foreign_key "cait_indc_indicators", "cait_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
@@ -200,10 +201,12 @@ ActiveRecord::Schema.define(version: 20170907102325) do
   add_foreign_key "cait_indc_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "cait_indc_labels", column: "label_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "locations", on_delete: :cascade
-  add_foreign_key "historical_emissions", "data_sources", on_delete: :cascade
-  add_foreign_key "historical_emissions", "gases", on_delete: :cascade
-  add_foreign_key "historical_emissions", "locations", on_delete: :cascade
-  add_foreign_key "historical_emissions", "sectors", on_delete: :cascade
+  add_foreign_key "historical_emissions_records", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
+  add_foreign_key "historical_emissions_records", "historical_emissions_gases", column: "gas_id", on_delete: :cascade
+  add_foreign_key "historical_emissions_records", "historical_emissions_sectors", column: "sector_id", on_delete: :cascade
+  add_foreign_key "historical_emissions_records", "locations", on_delete: :cascade
+  add_foreign_key "historical_emissions_sectors", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
+  add_foreign_key "historical_emissions_sectors", "historical_emissions_sectors", column: "parent_id", on_delete: :cascade
   add_foreign_key "location_members", "locations", column: "member_id", on_delete: :cascade
   add_foreign_key "location_members", "locations", on_delete: :cascade
   add_foreign_key "ndc_sdg_ndc_target_sectors", "ndc_sdg_ndc_targets", column: "ndc_target_id"
@@ -212,6 +215,4 @@ ActiveRecord::Schema.define(version: 20170907102325) do
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs"
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
-  add_foreign_key "sectors", "data_sources", on_delete: :cascade
-  add_foreign_key "sectors", "sectors", column: "parent_id", on_delete: :cascade
 end
