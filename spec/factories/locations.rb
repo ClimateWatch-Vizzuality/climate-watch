@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :location, aliases: [:location_country] do
-    iso_code3 { (0...3).map { (65 + rand(26)).chr }.join }
-    iso_code2 { (0...2).map { (65 + rand(26)).chr }.join }
+    sequence :iso_code2 { |n| ('AA'..'ZZ').to_a[n] }
+    sequence :iso_code3 { |n| ('AAA'..'ZZZ').to_a[n] }
     pik_name 'MyText'
     cait_name 'MyText'
     ndcp_navigators_name 'MyText'
