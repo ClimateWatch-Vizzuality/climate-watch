@@ -9,8 +9,7 @@ module CaitIndc
               format: URI.regexp(%w(http https))
 
     def submission_date=(val)
-      parts = val.split('/')
-      write_attribute :submission_date, "#{parts[1]}-#{parts[0]}-#{parts[2]}"
+      write_attribute :submission_date, Date.strptime(val, '%m/%d/%Y')
     end
   end
 end
