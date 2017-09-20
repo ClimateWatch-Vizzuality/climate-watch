@@ -28,12 +28,16 @@ const mapStateToProps = (state, { location }) => {
     data: state.countries.data,
     locations
   };
+  const countriesOptionsData = {
+    data: state.countries.data,
+    locations
+  };
   return {
     fetched: !isEmpty(state.NDCCompare.data),
     loading: state.NDCCompare.loading,
     ndcsData: getNDCs(ndcsData),
     locations,
-    countriesOptions: getCountriesOptions(state.countries),
+    countriesOptions: getCountriesOptions(countriesOptionsData),
     activeCountriesOptions: getActiveCountries(activeCountriesData)
   };
 };

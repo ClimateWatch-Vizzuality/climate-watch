@@ -1,22 +1,15 @@
 import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
+import compact from 'lodash/compact';
 
-const getCountries = state => state.data;
-const getLocations = state => state.locations;
+const getCountries = state => (state.data ? state.data : []);
+const getLocations = state => (state.locations ? state.locations : []);
 const getIso = state => state.iso;
 const getAllIndicators = state => (state.data ? state.data.indicators : {});
 const getCategories = state => (state.data ? state.data.categories : {});
 
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
-
-export const getCountriesOptions = createSelector([getCountries], countries => {
-  const countriesOptions = countries.map(country => ({
-    label: country.wri_standard_name,
-    value: country.iso_code3
-  }));
-  return countriesOptions;
-});
 
 export const getActiveCountries = createSelector(
   [getCountries, getLocations],
@@ -32,6 +25,23 @@ export const getActiveCountries = createSelector(
       };
     });
     return activeCountries;
+  }
+);
+
+export const getCountriesOptions = createSelector(
+  [getCountries, getActiveCountries],
+  (countries, activeCountries) => {
+    const countriesOptions = countries.map(country => ({
+      label: country.wri_standard_name,
+      value: country.iso_code3
+    }));
+    const activeCountriesISOs = compact(activeCountries).map(
+      activeCountry => activeCountry.value
+    );
+    const countriesOptionsFiltered = countriesOptions.filter(
+      country => activeCountriesISOs.indexOf(country.value) === -1
+    );
+    return countriesOptionsFiltered;
   }
 );
 
