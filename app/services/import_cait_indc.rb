@@ -1,11 +1,11 @@
-META_INDICATORS_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_metadata.csv'.freeze
-META_LEGEND_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_legend.csv'.freeze
-META_MAP_FILEPATH = 'cait_indc_2/CW_NDC_map.csv'.freeze
-DATA_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_data.csv'.freeze
-SUBMISSIONS_FILEPATH = 'cait_indc_2/CW_NDC_Submission_URL.csv'.freeze
-DEFAULT_CATEGORY = 'General'.freeze
-
 class ImportCaitIndc
+  META_INDICATORS_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_metadata.csv'.freeze
+  META_LEGEND_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_legend.csv'.freeze
+  META_MAP_FILEPATH = 'cait_indc_2/CW_NDC_map.csv'.freeze
+  DATA_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_data.csv'.freeze
+  SUBMISSIONS_FILEPATH = 'cait_indc_2/CW_NDC_Submission_URL.csv'.freeze
+  DEFAULT_CATEGORY = 'General'.freeze
+
   def call
     cleanup
 
