@@ -22,6 +22,7 @@ export const getActiveCountries = createSelector(
   [getCountries, getLocations],
   (countries, locations) => {
     const activeCountries = locations.map(location => {
+      if (parseInt(location, 10)) return null;
       const countryDetail = countries.find(
         country => country.iso_code3 === location
       );

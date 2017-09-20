@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import isEmpty from 'lodash/isEmpty';
-import compact from 'lodash/compact';
 
 import NDCCompareComponent from './ndc-compare-component';
 import actions from './ndc-compare-actions';
@@ -53,18 +52,20 @@ const NDCCompareContainer = props => {
   }
 
   const handleDropDownChange = (selector, selected) => {
-    const newLocations = locations.slice();
-    newLocations[selector] = selected ? selected.value : null;
     const search = qs.parse(location.search);
-    const newSearch = {
-      ...search,
-      locations: compact(newLocations).toString()
-    };
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
-    });
-    fetchCompareNDC(newLocations);
+    if (!selected || search.locations.indexOf(selected.value) === -1) {
+      const newLocations = locations.slice();
+      newLocations[selector] = selected ? selected.value : selector + 1;
+      const newSearch = {
+        ...search,
+        locations: newLocations.toString()
+      };
+      history.replace({
+        pathname: location.pathname,
+        search: qs.stringify(newSearch)
+      });
+      fetchCompareNDC(newLocations);
+    }
   };
 
   return createElement(NDCCompareComponent, {
