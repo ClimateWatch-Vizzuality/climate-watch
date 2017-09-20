@@ -6,10 +6,17 @@ import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
 import Dropdown from 'components/dropdown';
+import isEqual from 'lodash/isEqual';
 
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.sdgs, this.props.sdgs)) {
+      ReactTooltip.rebuild();
+    }
+  }
+
   getHtmlTooltip = content => ({ __html: content });
 
   render() {
@@ -62,6 +69,7 @@ class CountrySDGLinkages extends PureComponent {
             </ReactTooltip>
             <div className={styles.sectorSelector}>
               <Dropdown
+                openUp
                 label="Sector"
                 placeholder="Choose a sector"
                 options={sectorOptions}

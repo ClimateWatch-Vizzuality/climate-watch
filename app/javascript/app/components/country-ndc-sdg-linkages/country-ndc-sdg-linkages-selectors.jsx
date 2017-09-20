@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import upperFirst from 'lodash/upperFirst';
 
 const getSectors = state => {
   if (!state) return [];
@@ -31,11 +32,20 @@ export const getSectorOptions = createSelector([getSectors], sectors => {
   if (!sectors) return [];
   const sectorIds = Object.keys(sectors);
   const sectorOptions = sectorIds.map(sector => ({
-    label: sectors[sector].name,
+    label: upperFirst(sectors[sector].name),
     value: sector
   }));
   return sectorOptions;
 });
+
+export const getSectorOptionsSorted = createSelector(
+  [getSectorOptions],
+  sectors => sectors.sort((a, b) => {
+    if (a.label < b.label) return -1;
+    if (a.label > b.label) return 1;
+    return 0;
+  })
+);
 
 export const filterSDGs = createSelector(
   [mapSDGs, getActiveSector],
@@ -64,6 +74,6 @@ export const filterSDGs = createSelector(
 );
 
 export default {
-  getSectorOptions,
+  getSectorOptionsSorted,
   filterSDGs
 };
