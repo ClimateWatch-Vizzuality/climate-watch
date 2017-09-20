@@ -37,3 +37,14 @@
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 40px;
 }
+
+.tooltip {
+  font-size: $font-size-s;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+}
+
+.tooltipTitle {
+  margin-bottom: 10px;
+}

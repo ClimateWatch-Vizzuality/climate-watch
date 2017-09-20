@@ -25,6 +25,10 @@ const mapStateToProps = (state, { match }) => {
   return {
     fetched: countrySDGLinkages.data[iso],
     activeSector: countrySDGLinkages.activeSector,
+    tooltipData: countrySDGLinkages.tooltipData,
+    sectors: countrySDGLinkages.data[iso]
+      ? countrySDGLinkages.data[iso].sectors
+      : {},
     sectorOptions: getSectorOptions(countrySDGLinkages.data[iso]),
     sdgs: filterSDGs(sdgsData),
     loading: countrySDGLinkages.loading

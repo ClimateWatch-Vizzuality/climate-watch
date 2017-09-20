@@ -44,7 +44,13 @@ const icons = {
 
 class SDGCard extends PureComponent {
   render() {
-    const { sdgData, indicators, square } = this.props;
+    const {
+      sdgData,
+      indicators,
+      square,
+      tooltipId,
+      setTooltipData
+    } = this.props;
     const cardStyle = cx(styles.card, square ? styles.square : null);
     return (
       <div className={cardStyle}>
@@ -57,7 +63,9 @@ class SDGCard extends PureComponent {
             sdgData.targets.map(target => (
               <span
                 key={target.targetKey}
-                data-tip={target.title}
+                data-for={tooltipId}
+                data-tip
+                onMouseEnter={() => setTooltipData(target)}
                 className={styles.dot}
                 style={{
                   backgroundColor: target.sectors ? sdgData.colour : ''
@@ -78,7 +86,9 @@ class SDGCard extends PureComponent {
 SDGCard.propTypes = {
   sdgData: Proptypes.object,
   indicators: Proptypes.bool,
-  square: Proptypes.bool
+  square: Proptypes.bool,
+  tooltipId: Proptypes.string,
+  setTooltipData: Proptypes.func
 };
 
 export default SDGCard;
