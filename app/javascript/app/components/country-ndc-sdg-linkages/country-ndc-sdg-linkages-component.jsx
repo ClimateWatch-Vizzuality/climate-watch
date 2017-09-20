@@ -5,33 +5,96 @@ import isEmpty from 'lodash/isEmpty';
 import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
+import Dropdown from 'components/dropdown';
+import isEqual from 'lodash/isEqual';
 
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.sdgs, this.props.sdgs)) {
+      ReactTooltip.rebuild();
+    }
+  }
+
+  getHtmlTooltip = content => ({ __html: content });
+
   render() {
-    const { sdgs } = this.props;
+    const {
+      sdgs,
+      activeSector,
+      sectorOptions,
+      sectors,
+      handleSectorChange,
+      loading,
+      setTooltipData,
+      tooltipData
+    } = this.props;
     return (
       <div>
         <h3 className={styles.title}>NDC-SDG Linkages</h3>
-        <div className={styles.sdgs}>
-          {!isEmpty(sdgs) &&
-            Object.keys(sdgs).map(sdg => (
-              <div key={sdgs[sdg].title} className={styles.card}>
-                <SDGCard sdgIndex={sdg} sdgData={sdgs[sdg]} indicators />
-                <ReactTooltip />
-              </div>
-            ))}
-          {isEmpty(sdgs) && <NoContent message="No SDG data available" />}
-        </div>
-        <ReactTooltip />
+        {!isEmpty(sdgs) && (
+          <div>
+            <div className={styles.sdgs}>
+              {sdgs.map(sdg => (
+                <div key={sdg.title} className={styles.card}>
+                  <SDGCard
+                    sdgData={sdg}
+                    tooltipId="sdg-linkages"
+                    setTooltipData={setTooltipData}
+                    indicators
+                  />
+                </div>
+              ))}
+            </div>
+            <ReactTooltip id="sdg-linkages">
+              {tooltipData && (
+                <div className={styles.tooltip}>
+                  <p className={styles.tooltipTitle}>
+                    <b>{tooltipData.targetKey}: </b>
+                    {tooltipData.title}
+                  </p>
+                  <p className={styles.sectors}>
+                    <b>Sectors: </b>
+                    {tooltipData.sectors &&
+                      tooltipData.sectors.map((sector, index) => (
+                        <span key={`${tooltipData.targetKey}-${sector}`}>
+                          {sectors[sector].name}
+                          {index === tooltipData.sectors.length - 1 ? '' : ', '}
+                        </span>
+                      ))}
+                  </p>
+                </div>
+              )}
+            </ReactTooltip>
+            <div className={styles.sectorSelector}>
+              <Dropdown
+                openUp
+                label="Sector"
+                placeholder="Choose a sector"
+                options={sectorOptions}
+                onChange={handleSectorChange}
+                value={activeSector}
+              />
+            </div>
+          </div>
+        )}
+        {isEmpty(sdgs) &&
+        !loading && <NoContent message="No SDG data available" />}
       </div>
     );
   }
 }
 
 CountrySDGLinkages.propTypes = {
-  sdgs: Proptypes.object
+  sdgs: Proptypes.array,
+  sectorOptions: Proptypes.array,
+  sectors: Proptypes.object,
+  handleSectorChange: Proptypes.func,
+  activeSector: Proptypes.object,
+  loading: Proptypes.bool,
+  setTooltipData: Proptypes.func,
+  tooltipData: Proptypes.object
 };
 
 export default CountrySDGLinkages;
