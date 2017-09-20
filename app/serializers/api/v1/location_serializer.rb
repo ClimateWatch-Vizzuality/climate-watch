@@ -8,6 +8,10 @@ module Api
                  :wri_standard_name,
                  :unfccc_group
 
+      has_many :members,
+               serializer: Api::V1::LocationSerializer,
+               if: -> { object.location_type != 'COUNTRY' }
+
       attribute :topojson, if: -> { instance_options[:topojson] }
     end
   end
