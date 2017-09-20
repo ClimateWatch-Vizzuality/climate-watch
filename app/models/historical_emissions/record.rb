@@ -17,8 +17,6 @@ module HistoricalEmissions
       filters(records, params)
     end
 
-    private_class_method
-
     def self.filters(records, params)
       unless params[:location].blank?
         records = records.where(
@@ -36,5 +34,7 @@ module HistoricalEmissions
 
       records
     end
+
+    private_class_method :filters
   end
 end
