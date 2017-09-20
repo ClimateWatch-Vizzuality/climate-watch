@@ -6,8 +6,8 @@ const getRegionsInit = createAction('getRegionsInit');
 const getRegionsReady = createAction('getRegionsReady');
 
 const getRegions = createThunkAction('getRegions', () => (dispatch, state) => {
-  const { countries } = state();
-  if (countries && isEmpty(countries.data)) {
+  const { regions } = state();
+  if (regions && isEmpty(regions.data)) {
     dispatch(getRegionsInit());
     fetch('/api/v1/locations/regions')
       .then(response => {

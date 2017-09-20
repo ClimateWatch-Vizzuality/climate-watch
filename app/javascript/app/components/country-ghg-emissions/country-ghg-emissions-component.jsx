@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   Tooltip
 } from 'recharts';
+import RegionsProvider from 'providers/regions-provider';
 
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -54,6 +55,7 @@ class Component extends PureComponent {
   render() {
     return (
       <div className={styles.wrapper}>
+        <RegionsProvider />
         <ResponsiveContainer width="100%" aspect={4 / 3}>
           <AreaChart data={data}>
             <XAxis dataKey="year" />
