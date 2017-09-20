@@ -2,6 +2,7 @@
 
 .card {
   padding: 15px;
+  min-height: 75px;
   position: relative;
   border: solid 1px $theme-border;
 }
@@ -13,17 +14,21 @@
 .title {
   font-size: $font-size;
   color: $theme-color;
-  font-family: $font-family-2;
+  font-family: $font-family-1;
   margin-bottom: 5px;
 }
 
 .number {
   font-size: $font-size;
   color: $theme-color;
-  font-family: $font-family-2;
+  font-family: $font-family-1;
   position: absolute;
   bottom: 15px;
   left: 15px;
+}
+
+.dots {
+  margin-right: 40px;
 }
 
 .dot {

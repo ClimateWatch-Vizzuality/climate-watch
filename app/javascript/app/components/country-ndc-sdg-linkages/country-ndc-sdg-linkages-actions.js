@@ -4,6 +4,8 @@ import { createThunkAction } from 'utils/redux';
 const fetchNDCsSDGsInit = createAction('fetchNDCsSDGsInit');
 const fetchNDCsSDGsReady = createAction('fetchNDCsSDGsReady');
 const fetchNDCsSDGsFailed = createAction('fetchNDCsSDGsFailed');
+const setActiveSector = createAction('setActiveSector');
+const setTooltipData = createAction('setTooltipData');
 
 const fetchNDCsSDGs = createThunkAction('fetchNDCsSDGs', iso => dispatch => {
   dispatch(fetchNDCsSDGsInit());
@@ -25,5 +27,7 @@ export default {
   fetchNDCsSDGs,
   fetchNDCsSDGsInit,
   fetchNDCsSDGsReady,
-  fetchNDCsSDGsFailed
+  fetchNDCsSDGsFailed,
+  setActiveSector,
+  setTooltipData
 };
