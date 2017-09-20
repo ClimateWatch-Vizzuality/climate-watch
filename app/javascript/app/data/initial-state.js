@@ -8,9 +8,13 @@ import { initialState as ndcSearch } from 'pages/ndc-search';
 import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
 import { initialState as countries } from 'providers/countries-provider';
+import { initialState as regions } from 'providers/regions-provider';
+import { initialState as geoLocation } from 'providers/geolocation-provider';
 
 export default {
   countries,
+  regions,
+  geoLocation,
   map,
   ndcs,
   countrySDGLinkages,

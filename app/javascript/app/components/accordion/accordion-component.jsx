@@ -53,7 +53,7 @@ class Accordion extends PureComponent {
                     <dl className={styles.definitionList}>
                       {section.definitions.map(def => (
                         <div
-                          key={def.slug}
+                          key={`${def.slug}-${section.slug}`}
                           className={cx(
                             compare
                               ? styles.definitionCompare

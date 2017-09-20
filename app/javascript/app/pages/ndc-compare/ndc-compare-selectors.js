@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
+import compact from 'lodash/compact';
 
-const getCountries = state => state.data;
-const getLocations = state => state.locations;
+const getCountries = state => (state.data ? state.data : []);
+const getLocations = state => (state.locations ? state.locations : []);
 const getIso = state => state.iso;
 const getAllIndicators = state => (state.data ? state.data.indicators : {});
 const getCategories = state => (state.data ? state.data.categories : {});
@@ -10,18 +11,11 @@ const getCategories = state => (state.data ? state.data.categories : {});
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
 
-export const getCountriesOptions = createSelector([getCountries], countries => {
-  const countriesOptions = countries.map(country => ({
-    label: country.wri_standard_name,
-    value: country.iso_code3
-  }));
-  return countriesOptions;
-});
-
 export const getActiveCountries = createSelector(
   [getCountries, getLocations],
   (countries, locations) => {
     const activeCountries = locations.map(location => {
+      if (parseInt(location, 10)) return null;
       const countryDetail = countries.find(
         country => country.iso_code3 === location
       );
@@ -31,6 +25,25 @@ export const getActiveCountries = createSelector(
       };
     });
     return activeCountries;
+  }
+);
+
+export const getCountriesOptions = createSelector([getCountries], countries =>
+  countries.map(country => ({
+    label: country.wri_standard_name,
+    value: country.iso_code3
+  }))
+);
+
+export const getCountriesOptionsFiltered = createSelector(
+  [getCountriesOptions, getActiveCountries],
+  (countries, activeCountries) => {
+    const activeCountriesISOs = compact(activeCountries).map(
+      activeCountry => activeCountry.value
+    );
+    return countries.filter(
+      country => activeCountriesISOs.indexOf(country.value) === -1
+    );
   }
 );
 
@@ -81,6 +94,7 @@ export const getCountry = createSelector(
 export default {
   getCountry,
   getCountriesOptions,
+  getCountriesOptionsFiltered,
   getActiveCountries,
   getNDCs
 };
