@@ -10,12 +10,10 @@ import styles from './ndcs-table-styles.scss';
 
 class NDCTable extends PureComponent {
   getTableContent() {
-    const { loading, data, query } = this.props;
+    const { loading, data, noContentMsg } = this.props;
 
     if (loading) return null;
-    const noContentMsg = query
-      ? 'No results found'
-      : 'There is no data for that indicator';
+
     return data.length > 0 ? (
       <Table data={data} />
     ) : (
@@ -56,7 +54,7 @@ class NDCTable extends PureComponent {
             theme={darkSearch}
             onChange={handleSearchChange}
             className={styles.searchBox}
-            placeholder="Filter table data"
+            placeholder="Search table data"
           />
         </div>
         {this.getTableContent()}
@@ -67,6 +65,7 @@ class NDCTable extends PureComponent {
 
 NDCTable.propTypes = {
   loading: PropTypes.bool.isRequired,
+  noContentMsg: PropTypes.string,
   query: PropTypes.string,
   categories: PropTypes.array.isRequired,
   selectedCategory: PropTypes.object,

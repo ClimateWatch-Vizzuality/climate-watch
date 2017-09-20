@@ -66,8 +66,13 @@ class NDCTableContainer extends PureComponent {
   }
 
   render() {
+    const { query } = this.props;
+    const noContentMsg = query
+      ? 'No results found'
+      : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,
+      noContentMsg,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
       handleSearchChange: this.handleSearchChange
@@ -76,6 +81,7 @@ class NDCTableContainer extends PureComponent {
 }
 
 NDCTableContainer.propTypes = {
+  query: PropTypes.string,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
 };
