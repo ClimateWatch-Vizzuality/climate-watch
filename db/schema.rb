@@ -10,10 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907102325) do
+ActiveRecord::Schema.define(version: 20170914191538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "adaptation_values", force: :cascade do |t|
+    t.bigint "variable_id"
+    t.bigint "location_id"
+    t.text "string_value"
+    t.float "number_value"
+    t.boolean "boolean_value"
+    t.integer "absolute_rank"
+    t.float "relative_rank"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_adaptation_values_on_location_id"
+    t.index ["variable_id"], name: "index_adaptation_values_on_variable_id"
+  end
+
+  create_table "adaptation_variables", force: :cascade do |t|
+    t.text "slug"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_adaptation_variables_on_slug", unique: true
+  end
 
   create_table "cait_indc_categories", force: :cascade do |t|
     t.text "name", null: false
@@ -192,6 +214,8 @@ ActiveRecord::Schema.define(version: 20170907102325) do
     t.index ["parent_id"], name: "index_sectors_on_parent_id"
   end
 
+  add_foreign_key "adaptation_values", "adaptation_variables", column: "variable_id", on_delete: :cascade
+  add_foreign_key "adaptation_values", "locations", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
