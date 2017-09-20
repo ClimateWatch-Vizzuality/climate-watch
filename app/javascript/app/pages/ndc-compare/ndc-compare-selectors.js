@@ -28,20 +28,22 @@ export const getActiveCountries = createSelector(
   }
 );
 
-export const getCountriesOptions = createSelector(
-  [getCountries, getActiveCountries],
+export const getCountriesOptions = createSelector([getCountries], countries =>
+  countries.map(country => ({
+    label: country.wri_standard_name,
+    value: country.iso_code3
+  }))
+);
+
+export const getCountriesOptionsFiltered = createSelector(
+  [getCountriesOptions, getActiveCountries],
   (countries, activeCountries) => {
-    const countriesOptions = countries.map(country => ({
-      label: country.wri_standard_name,
-      value: country.iso_code3
-    }));
     const activeCountriesISOs = compact(activeCountries).map(
       activeCountry => activeCountry.value
     );
-    const countriesOptionsFiltered = countriesOptions.filter(
+    return countries.filter(
       country => activeCountriesISOs.indexOf(country.value) === -1
     );
-    return countriesOptionsFiltered;
   }
 );
 
@@ -92,6 +94,7 @@ export const getCountry = createSelector(
 export default {
   getCountry,
   getCountriesOptions,
+  getCountriesOptionsFiltered,
   getActiveCountries,
   getNDCs
 };

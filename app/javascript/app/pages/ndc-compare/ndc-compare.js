@@ -8,7 +8,7 @@ import NDCCompareComponent from './ndc-compare-component';
 import actions from './ndc-compare-actions';
 import {
   getNDCs,
-  getCountriesOptions,
+  getCountriesOptionsFiltered,
   getActiveCountries
 } from './ndc-compare-selectors';
 
@@ -37,7 +37,7 @@ const mapStateToProps = (state, { location }) => {
     loading: state.NDCCompare.loading,
     ndcsData: getNDCs(ndcsData),
     locations,
-    countriesOptions: getCountriesOptions(countriesOptionsData),
+    countriesOptions: getCountriesOptionsFiltered(countriesOptionsData),
     activeCountriesOptions: getActiveCountries(activeCountriesData)
   };
 };
