@@ -8,7 +8,8 @@ namespace :db do
     'sdgs:import',
     'ndc_sdg_targets:import',
     'historical_emissions:import',
-    'cait_indc:import'
+    'cait_indc:import',
+    'adaptation:import'
   ]
 
   desc 'Imports all data in correct order, replaces all data'

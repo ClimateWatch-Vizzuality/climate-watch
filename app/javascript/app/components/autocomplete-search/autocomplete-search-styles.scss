@@ -1,6 +1,6 @@
 @import '~styles/settings.scss';
 
-.wrapper {
+.wrapper :global {
   position: relative;
 }
 
@@ -9,10 +9,4 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
-}
-
-.results {
-  position: absolute;
-  left: 0;
-  right: 0;
 }

@@ -12,7 +12,9 @@
     "js:server": "./bin/webpack-dev-server",
     "servers": "run-p -r rails:server js:server",
     "precommit": "lint-staged",
-    "lint": "eslint --ext js --ext jsx ."
+    "lint": "eslint --ext js --ext jsx .",
+    "generate": "plop --plopfile app/javascript/generators/plopfile.js component",
+    "generate:page": "plop --plopfile app/javascript/generators/plopfile.js page"
   },
   "private": true,
   "dependencies": {

@@ -75,6 +75,7 @@ class Home extends PureComponent {
                 options={countriesOptions}
                 onChange={handleDropDownChange}
                 clearable={false}
+                hasLinks
               />
             </div>
           </div>

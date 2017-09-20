@@ -1,39 +1,34 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
-import cx from 'classnames';
 
-import Search from 'components/search';
-import ResultsList from 'components/results-list';
-
-import searchLightTheme from 'styles/themes/search-light.scss';
+import Dropdown from 'components/dropdown';
+import theme from 'styles/themes/dropdown-links.scss';
 import styles from './autocomplete-search-styles.scss';
 
 class CountriesSelect extends PureComponent {
   render() {
-    const { query, setAutocompleteSearch, searchList } = this.props;
+    const { handleValueClick, setAutocompleteSearch, searchList } = this.props;
     return (
       <div className={styles.wrapper}>
-        <Search
-          theme={searchLightTheme}
-          className={cx({ [styles.isOpen]: query }, styles.search)}
+        <Dropdown
+          className={theme.dropdownOptionWithArrow}
           placeholder={'e.g. "Brazil", "energy", "reduce emissions by 37%"'}
-          value={query}
-          onChange={setAutocompleteSearch}
+          options={searchList}
+          onInputChange={setAutocompleteSearch}
+          onChange={handleValueClick}
+          value={null}
+          clearable={false}
+          transparent
+          searchable
+          search
         />
-        {query &&
-          <ResultsList
-            className={styles.results}
-            list={searchList}
-            emptyDataMsg="No results"
-            hasIcon
-          />}
       </div>
     );
   }
 }
 
 CountriesSelect.propTypes = {
-  query: Proptypes.string,
+  handleValueClick: Proptypes.func.isRequired,
   setAutocompleteSearch: Proptypes.func.isRequired,
   searchList: Proptypes.array
 };
