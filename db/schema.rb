@@ -215,21 +215,8 @@ ActiveRecord::Schema.define(version: 20170914191538) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
-<<<<<<< HEAD
-  create_table "sectors", force: :cascade do |t|
-    t.bigint "parent_id"
-    t.bigint "data_source_id"
-    t.text "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["data_source_id"], name: "index_sectors_on_data_source_id"
-    t.index ["parent_id"], name: "index_sectors_on_parent_id"
-  end
-
   add_foreign_key "adaptation_values", "adaptation_variables", column: "variable_id", on_delete: :cascade
   add_foreign_key "adaptation_values", "locations", on_delete: :cascade
-=======
->>>>>>> change schema, models and import process
   add_foreign_key "cait_indc_indicators", "cait_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
