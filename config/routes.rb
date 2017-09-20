@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       end
 
       resources :emissions, only: [:index], controller: :historical_emissions do
-        get :meta, on: :collection, controller: :historical_emissions, action: :meta
+        get :meta, on: :collection
       end
 
       resources :ndcs, param: :code, only: [:index, :show] do
