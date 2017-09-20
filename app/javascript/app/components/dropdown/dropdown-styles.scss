@@ -24,7 +24,11 @@
     border: solid 1px rgba($theme-color-light, 0.3);
     background: transparent;
     color: $theme-color;
-    font-family: $font-family-2;
+    font-family: $font-family-1;
+
+    .Select-value {
+      padding-right: 40px;
+    }
 
     &:focus {
       outline: none;

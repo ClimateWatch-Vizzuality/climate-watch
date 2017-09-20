@@ -11,7 +11,7 @@ import background from 'assets/backgrounds/home_bg_1';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
 
-const NDC = props => (
+const NDC = ({ anchorLinks, query, route }) => (
   <div>
     <Header size="medium" image={background}>
       <div className={layout.content}>
@@ -19,16 +19,17 @@ const NDC = props => (
           <Intro title="NDC Content" />
           <AutocompleteSearch />
         </div>
-        <AnchorNav useRoutes links={props.anchorLinks} />
+        <AnchorNav useRoutes links={anchorLinks} query={query} />
       </div>
     </Header>
     <div className={cx(layout.content, styles.wrapper)}>
-      {renderRoutes(props.route.routes)}
+      {renderRoutes(route.routes)}
     </div>
   </div>
 );
 
 NDC.propTypes = {
+  query: Proptypes.string,
   route: Proptypes.object.isRequired,
   anchorLinks: Proptypes.array.isRequired
 };

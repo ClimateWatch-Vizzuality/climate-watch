@@ -1,0 +1,17 @@
+@import '~styles/settings.scss';
+
+.input {
+  background-color: transparent;
+  border: solid 1px rgba($theme-color, 0.3);
+  box-shadow: none;
+  color: $theme-color;
+
+  &::placeholder {
+    color: $theme-color;
+    opacity: 0.3;
+  }
+}
+
+.iconSearch {
+  fill: $theme-color;
+}
