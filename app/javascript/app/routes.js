@@ -12,8 +12,9 @@ import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
 import NDCSearch from 'pages/ndc-search';
+import GHGEmissions from 'pages/ghg-emissions';
 import About from 'pages/about';
-import GHGEmissions from 'components/country-ghg-emissions';
+import GHGCountryEmissions from 'components/country-ghg-emissions';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import error from 'pages/error';
 
@@ -73,7 +74,7 @@ export default [
             hash: 'ghg-emissions',
             label: 'GHG Emissions',
             anchor: true,
-            component: GHGEmissions
+            component: GHGCountryEmissions
           },
           {
             hash: 'ndc-sdg-linkages',
@@ -92,6 +93,11 @@ export default [
         path: '/ndc-search',
         exact: true,
         component: NDCSearch
+      },
+      {
+        path: '/ghg-emissions',
+        exact: true,
+        component: GHGEmissions
       },
       {
         path: '/about',

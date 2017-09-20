@@ -45,7 +45,7 @@ class NavBar extends PureComponent {
           <NavLink
             className={styles.link}
             activeClassName={styles.linkActive}
-            to="/hgh"
+            to="/ghg-emissions"
           >
             GHG EMISSIONS
           </NavLink>
