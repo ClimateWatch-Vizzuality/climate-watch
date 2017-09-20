@@ -17,8 +17,6 @@ class CountrySDGLinkages extends PureComponent {
     }
   }
 
-  getHtmlTooltip = content => ({ __html: content });
-
   render() {
     const {
       sdgs,
@@ -54,16 +52,17 @@ class CountrySDGLinkages extends PureComponent {
                     <b>{tooltipData.targetKey}: </b>
                     {tooltipData.title}
                   </p>
-                  <p className={styles.sectors}>
-                    <b>Sectors: </b>
-                    {tooltipData.sectors &&
-                      tooltipData.sectors.map((sector, index) => (
+                  {tooltipData.sectors && (
+                    <p className={styles.sectors}>
+                      <b>Sectors: </b>
+                      {tooltipData.sectors.map((sector, index) => (
                         <span key={`${tooltipData.targetKey}-${sector}`}>
                           {sectors[sector].name}
                           {index === tooltipData.sectors.length - 1 ? '' : ', '}
                         </span>
                       ))}
-                  </p>
+                    </p>
+                  )}
                 </div>
               )}
             </ReactTooltip>
