@@ -11,7 +11,7 @@ const getCountries = createThunkAction(
     const { countries } = state();
     if (countries && isEmpty(countries.data)) {
       dispatch(getCountriesInit());
-      fetch('/api/v1/countries')
+      fetch('/api/v1/locations/countries')
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);

@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 
 import { reducers as countriesReducers } from 'providers/countries-provider';
+import { reducers as regionsReducers } from 'providers/regions-provider';
 import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
 import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
 import { reducers as countrySelectReducers } from 'components/countries-select';
@@ -29,6 +30,7 @@ export default combineReducers({
     countriesReducers,
     initialState
   ),
+  regions: handleActions('regions', allActions, regionsReducers, initialState),
   geoLocation: handleActions(
     'geoLocation',
     allActions,
