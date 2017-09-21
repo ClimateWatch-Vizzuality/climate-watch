@@ -22,7 +22,7 @@ const ghgEmissionsSampleConfig = {
   theme: {
     yRussia: { fill: '#302463' },
     yChina: { fill: '#d5eaf7' },
-    yEUR28: { fill: '#103d5c', stroke: '#113750', strokeWidth: 5 }
+    yEUR28: { fill: '#103d5c', stroke: '#113750', strokeWidth: '5' }
   },
   tooltip: {
     yRussia: {

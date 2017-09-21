@@ -14,7 +14,6 @@ import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
 
 class ChartStackedArea extends PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
   render() {
     const { config, data } = this.props;
     return (
@@ -25,14 +24,14 @@ class ChartStackedArea extends PureComponent {
         >
           <XAxis
             dataKey="x"
-            tick={{
-              marginTop: '10px',
-              fontSize: '16px',
-              stroke: '#8f8fa1',
-              strokeWidth: 1
-            }}
+            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
           />
-          <YAxis axisLine={false} tickFormatter={tick => format('.1s')(tick)} />
+          <YAxis
+            axisLine={false}
+            tickFormatter={tick => format('.1s')(tick)}
+            tickLine={false}
+            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+          />
           <CartesianGrid vertical={false} />
           <Tooltip
             isAnimationActive={false}
