@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
+import upperFirst from 'lodash/upperFirst';
 import qs from 'query-string';
 
 const fetchGhgEmissionsInit = createAction('fetchGhgEmissionsInit');
@@ -19,7 +20,18 @@ const fetchGhgEmissionsMeta = createThunkAction(
           throw Error(response.statusText);
         })
         .then(data => {
-          dispatch(fetchGhgEmissionsMetaReady(data));
+          if (data) {
+            const dataParsed = {};
+            Object.keys(data).forEach(key => {
+              dataParsed[key] = data[key].map(item => ({
+                value: item.id,
+                label: upperFirst(item.name)
+              }));
+            }, this);
+            dispatch(fetchGhgEmissionsMetaReady(dataParsed));
+          } else {
+            dispatch(fetchGhgEmissionsMetaReady({}));
+          }
         })
         .catch(error => {
           console.warn(error);

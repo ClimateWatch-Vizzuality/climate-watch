@@ -1,31 +1,31 @@
 import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
-
-function filterDataSourceMeta(meta) {
-  const { data_source, ...others } = meta;
-  return others;
-}
+import omit from 'lodash/omit';
 
 const getMetadata = state => state.meta || {};
+const getRegions = state => state.regions || [];
 const getSourceSelection = state => parseInt(state.search.source, 10) || null;
 const getBreakSelection = state => state.search.breakBy || null;
-const getFilterSelection = state => state.search.filter || null;
+const getFilterSelection = state => parseInt(state.search.filter, 10) || null;
+const getMetaFiltered = meta => omit(meta, 'data_source');
 
-const getSelections = state => ({
-  ...filterDataSourceMeta(state.meta),
-  regions: state.regions
-});
+const parseRegions = regions =>
+  regions.map(region => ({
+    label: region.wri_standard_name,
+    value: region.iso_code3
+  }));
 
-export const getSourcesData = createSelector(
-  getMetadata,
-  meta => meta.data_source || {}
+export const getFilters = createSelector(
+  [getMetadata, getRegions],
+  (meta, regions) => ({
+    ...getMetaFiltered(meta),
+    regions: parseRegions(regions)
+  })
 );
-export const getSourceOptions = createSelector(getSourcesData, sources =>
-  Object.keys(sources).map(source => ({
-    label: sources[source].name,
-    value: sources[source].id,
-    id: source
-  }))
+
+export const getSourceOptions = createSelector(
+  getMetadata,
+  meta => meta.data_source || []
 );
 
 export const getSourceSelected = createSelector(
@@ -36,7 +36,7 @@ export const getSourceSelected = createSelector(
         const filtered = sources.filter(
           category => category.value === selected
         );
-        return filtered.length > 0 ? filtered[0] : {};
+        return filtered.length > 0 ? filtered[0] : sources[0];
       }
       return sources[0];
     }
@@ -45,8 +45,7 @@ export const getSourceSelected = createSelector(
 );
 
 export const getBreaksByOptions = createSelector(getMetadata, meta => {
-  const metaFiltered = filterDataSourceMeta(meta);
-  const breakBy = Object.keys(metaFiltered).map(other => ({
+  const breakByOptions = Object.keys(getMetaFiltered(meta)).map(other => ({
     label: upperFirst(other),
     value: other,
     id: other
@@ -56,7 +55,7 @@ export const getBreaksByOptions = createSelector(getMetadata, meta => {
     value: 'regions',
     id: 'regions'
   };
-  return [...breakBy, regionBreak];
+  return [...breakByOptions, regionBreak];
 });
 
 export const getBreakSelected = createSelector(
@@ -65,7 +64,7 @@ export const getBreakSelected = createSelector(
     if (breaks.length > 0) {
       if (selected) {
         const filtered = breaks.filter(category => category.value === selected);
-        return filtered.length > 0 ? filtered[0] : {};
+        return filtered.length > 0 ? filtered[0] : breaks[0];
       }
       return breaks[0];
     }
@@ -74,19 +73,19 @@ export const getBreakSelected = createSelector(
 );
 
 export const getFilterOptions = createSelector(
-  [getBreakSelected, getSelections],
-  (breakSelected, selections) => selections[breakSelected.value] || {}
+  [getBreakSelected, getFilters],
+  (breakSelected, filters) => filters[breakSelected.value] || []
 );
 
 export const getFilterSelected = createSelector(
   [getFilterOptions, getFilterSelection],
-  (filter, selected) => {
-    if (filter.length > 0) {
+  (filters, selected) => {
+    if (filters.length > 0) {
       if (selected) {
-        const filtered = filter.filter(category => category.value === selected);
+        const filtered = filters.filter(filter => filter.value === selected);
         return filtered.length > 0 ? filtered[0] : {};
       }
-      return filter[0];
+      return filters[0];
     }
     return {};
   }
