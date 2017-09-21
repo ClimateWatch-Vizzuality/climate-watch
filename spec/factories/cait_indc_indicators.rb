@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :cait_indc_indicator, class: 'CaitIndc::Indicator' do
     association :chart, factory: :cait_indc_chart
-    association :category, factory: :cait_indc_category
     name 'MyText'
     slug 'my-text'
 
@@ -10,6 +9,7 @@ FactoryGirl.define do
       transient do
         values_count 3
         labels_count 2
+        categories_count 2
       end
 
       after(:create) do |indicator, evaluator|
@@ -17,6 +17,11 @@ FactoryGirl.define do
           :cait_indc_label,
           evaluator.labels_count,
           indicator: indicator
+        )
+
+        indicator.categories = create_list(
+          :cait_indc_category,
+          evaluator.categories_count
         )
 
         create_list(
