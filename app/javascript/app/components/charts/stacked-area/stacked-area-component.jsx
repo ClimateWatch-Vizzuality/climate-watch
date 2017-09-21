@@ -36,7 +36,7 @@ class ChartStackedArea extends PureComponent {
           <CartesianGrid vertical={false} />
           <Tooltip
             isAnimationActive={false}
-            cursor={{ stroke: 'white', strokeWidth: 1 }}
+            cursor={{ stroke: '#113750', strokeWidth: 2 }}
             content={content => (
               <TooltipChart content={content} config={config} />
             )}
