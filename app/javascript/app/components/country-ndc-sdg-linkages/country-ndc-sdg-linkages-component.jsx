@@ -35,14 +35,14 @@ class CountrySDGLinkages extends PureComponent {
           <div>
             <div className={styles.sdgs}>
               {sdgs.map(sdg => (
-                <div key={sdg.title} className={styles.card}>
-                  <SDGCard
-                    sdgData={sdg}
-                    tooltipId="sdg-linkages"
-                    setTooltipData={setTooltipData}
-                    indicators
-                  />
-                </div>
+                <SDGCard
+                  key={sdg.title}
+                  sdgData={sdg}
+                  tooltipId="sdg-linkages"
+                  setTooltipData={setTooltipData}
+                  indicators
+                  className={styles.card}
+                />
               ))}
             </div>
             <ReactTooltip id="sdg-linkages">

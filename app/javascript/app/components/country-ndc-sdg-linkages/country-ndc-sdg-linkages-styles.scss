@@ -1,27 +1,20 @@
 @import '~styles/layout.scss';
 
 .sdgs {
-  column-count: 3;
-  column-gap: 0;
+  @extend %grid;
+
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 0;
   position: relative;
-  margin-left: 1px;
-  margin-bottom: 30px;
+  margin-left: -1px;
+  margin-bottom: -1px;
 }
 
 .card {
   position: relative;
-  display: inline-block;
-  width: calc(100% + 1px);
-  margin: auto;
+  margin-left: -1px;
   margin-bottom: -1px;
-
-  &:nth-child(6n) {
-    border-bottom: solid $theme-border 1px;
-  }
-
-  &:nth-child(12n) {
-    border-right: solid $theme-border 1px;
-  }
+  border: solid 1px $theme-border;
 }
 
 .title {

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import sdg1 from 'assets/sdg-icons/icon_1';
@@ -49,9 +49,10 @@ class SDGCard extends PureComponent {
       indicators,
       square,
       tooltipId,
-      setTooltipData
+      setTooltipData,
+      className
     } = this.props;
-    const cardStyle = cx(styles.card, square ? styles.square : null);
+    const cardStyle = cx(styles.card, square ? styles.square : null, className);
     return (
       <div className={cardStyle}>
         <h4 className={styles.title}>{`${indicators
@@ -84,11 +85,12 @@ class SDGCard extends PureComponent {
 }
 
 SDGCard.propTypes = {
-  sdgData: Proptypes.object,
-  indicators: Proptypes.bool,
-  square: Proptypes.bool,
-  tooltipId: Proptypes.string,
-  setTooltipData: Proptypes.func
+  sdgData: PropTypes.object,
+  indicators: PropTypes.bool,
+  square: PropTypes.bool,
+  tooltipId: PropTypes.string,
+  setTooltipData: PropTypes.func,
+  className: PropTypes.string
 };
 
 export default SDGCard;
