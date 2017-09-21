@@ -9,9 +9,10 @@ import styles from "./root-styles.scss"; // eslint-disable-line
 class Root extends PureComponent {
   render() {
     const { route } = this.props;
+    const navRoutes = route.routes.filter(r => r.nav);
     return (
       <div>
-        <Nav />
+        <Nav routes={navRoutes} />
         {renderRoutes(route.routes)}
       </div>
     );
