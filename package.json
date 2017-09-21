@@ -19,6 +19,7 @@
   "private": true,
   "dependencies": {
     "classnames": "2.2.5",
+    "d3-format": "^1.2.0",
     "history": "4.7.2",
     "lodash": "4.17.4",
     "react": "15.6.1",
