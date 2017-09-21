@@ -1,5 +1,11 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import RegionsProvider from 'providers/regions-provider';
 import ChartStackedArea from 'components/charts/stacked-area';
+import Dropdown from 'components/dropdown';
+import ButtonGroup from 'components/button-group';
+
+import styles from './ghg-emissions-styles.scss';
 
 const ghgEmissionsSampleConfig = {
   axes: {
@@ -40,22 +46,66 @@ const ghgEmissionsSampleData = [
   { x: 2020, yRussia: 3490, yChina: 4300, yEUR28: 2100 }
 ];
 
-// import styles from './GhgEmissions-styles.scss';
-
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
+    const {
+      sources,
+      sourceSelected,
+      handleSourceChange,
+      breaksBy,
+      breakSelected,
+      handleBreakByChange,
+      filters,
+      filterSelected,
+      handleFilterChange
+    } = this.props;
     return (
       <div>
+        <RegionsProvider />
         <ChartStackedArea
           config={ghgEmissionsSampleConfig}
           data={ghgEmissionsSampleData}
         />
+        <div className={styles.col4}>
+          <Dropdown
+            label="Category"
+            options={sources}
+            onChange={handleSourceChange}
+            value={sourceSelected}
+            clearable={false}
+          />
+          <Dropdown
+            label="BreakBy"
+            options={breaksBy}
+            onChange={handleBreakByChange}
+            value={breakSelected}
+            clearable={false}
+          />
+          <Dropdown
+            label={breakSelected.label}
+            options={filters}
+            onChange={handleFilterChange}
+            value={filterSelected}
+            clearable={false}
+          />
+          <ButtonGroup className={styles.colEnd} />
+        </div>
       </div>
     );
   }
 }
 
-GhgEmissions.propTypes = {};
+GhgEmissions.propTypes = {
+  sources: PropTypes.array.isRequired,
+  sourceSelected: PropTypes.object.isRequired,
+  handleSourceChange: PropTypes.func.isRequired,
+  breaksBy: PropTypes.array.isRequired,
+  breakSelected: PropTypes.object.isRequired,
+  handleBreakByChange: PropTypes.func.isRequired,
+  filters: PropTypes.array.isRequired,
+  filterSelected: PropTypes.object.isRequired,
+  handleFilterChange: PropTypes.func.isRequired
+};
 
 export default GhgEmissions;
