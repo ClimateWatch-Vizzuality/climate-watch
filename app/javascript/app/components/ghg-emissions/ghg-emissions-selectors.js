@@ -6,7 +6,7 @@ const getMetadata = state => state.meta || {};
 const getRegions = state => state.regions || [];
 const getSourceSelection = state => parseInt(state.search.source, 10) || null;
 const getBreakSelection = state => state.search.breakBy || null;
-const getFilterSelection = state => parseInt(state.search.filter, 10) || null;
+const getFilterSelection = state => state.search.filter || null;
 const getMetaFiltered = meta => omit(meta, 'data_source');
 
 const parseRegions = regions =>
@@ -19,7 +19,7 @@ export const getFilters = createSelector(
   [getMetadata, getRegions],
   (meta, regions) => ({
     ...getMetaFiltered(meta),
-    regions: parseRegions(regions)
+    locations: parseRegions(regions)
   })
 );
 
@@ -52,8 +52,7 @@ export const getBreaksByOptions = createSelector(getMetadata, meta => {
   }));
   const regionBreak = {
     label: 'Regions',
-    value: 'regions',
-    id: 'regions'
+    value: 'locations'
   };
   return [...breakByOptions, regionBreak];
 });
@@ -82,8 +81,8 @@ export const getFilterSelected = createSelector(
   (filters, selected) => {
     if (filters.length > 0) {
       if (selected) {
-        const filtered = filters.filter(filter => filter.value === selected);
-        return filtered.length > 0 ? filtered[0] : {};
+        const filtered = filters.filter(filter => filter.value == selected); // eslint-disable-line eqeqeq
+        return filtered.length > 0 ? filtered[0] : filters[0];
       }
       return filters[0];
     }

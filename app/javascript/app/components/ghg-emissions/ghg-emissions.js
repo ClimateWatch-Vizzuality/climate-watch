@@ -36,10 +36,36 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
+function needsRequestData(props, nextProps) {
+  const { sourceSelected, breakSelected, filterSelected } = nextProps;
+  const conditions = [
+    sourceSelected.value && sourceSelected.value !== props.sourceSelected.value,
+    sourceSelected.value && breakSelected.value !== props.breakSelected.value,
+    sourceSelected.value && filterSelected.value !== props.filterSelected.value
+  ];
+  return conditions.includes(true);
+}
+
+function getFiltersParsed(props) {
+  const { sourceSelected, breakSelected, filterSelected } = props;
+  return {
+    source: sourceSelected.value,
+    [breakSelected.value]: filterSelected.value
+  };
+}
+
 class GhgEmissionsContainer extends PureComponent {
   componentDidMount() {
     const { fetchGhgEmissionsMeta } = this.props;
     fetchGhgEmissionsMeta();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (needsRequestData(this.props, nextProps)) {
+      const { fetchGhgEmissionsData } = nextProps;
+      const filters = getFiltersParsed(nextProps);
+      fetchGhgEmissionsData(filters);
+    }
   }
 
   handleSourceChange = category => {
@@ -72,7 +98,8 @@ class GhgEmissionsContainer extends PureComponent {
 GhgEmissionsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  fetchGhgEmissionsMeta: PropTypes.func.isRequired
+  fetchGhgEmissionsMeta: PropTypes.func.isRequired,
+  fetchGhgEmissionsData: PropTypes.func.isRequired
 };
 
 export { default as component } from './ghg-emissions-component';

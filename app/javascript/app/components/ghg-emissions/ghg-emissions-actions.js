@@ -46,7 +46,7 @@ const fetchGhgEmissionsData = createThunkAction(
   'fetchGhgEmissionsData',
   filters => dispatch => {
     dispatch(fetchGhgEmissionsInit());
-    fetch(`/api/v1/emissions${qs.stringify(filters)}`)
+    fetch(`/api/v1/emissions?${qs.stringify(filters)}`)
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);
