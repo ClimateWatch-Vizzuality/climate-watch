@@ -109,7 +109,7 @@ class ImportCaitIndc
       uniq.
       select(&:itself).
       each do |cat|
-        CaitIndc::Category.create!(category_attributes(cat, 'accordion'))
+        CaitIndc::Category.create!(category_attributes(cat, 'overview'))
       end
 
     @map.
@@ -141,12 +141,12 @@ class ImportCaitIndc
     CaitIndc::Indicator.
       all.
       each do |ind|
-        accordion_categories = @indicators.
+        overview_categories = @indicators.
           select { |r| r[:column_name] == ind.slug }.
           map do |r|
             CaitIndc::Category.where(
               name: r[:category],
-              category_type: 'accordion'
+              category_type: 'overview'
             ).first
         end.
         uniq
@@ -161,7 +161,7 @@ class ImportCaitIndc
           end.
           uniq
 
-        ind.categories = accordion_categories + map_categories
+        ind.categories = overview_categories + map_categories
       end
   end
 
