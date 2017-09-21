@@ -4,7 +4,6 @@ class ImportCaitIndc
   META_MAP_FILEPATH = 'cait_indc_2/CW_NDC_map.csv'.freeze
   DATA_FILEPATH = 'cait_indc_2/CW_NDC_CAIT_data.csv'.freeze
   SUBMISSIONS_FILEPATH = 'cait_indc_2/CW_NDC_Submission_URL.csv'.freeze
-  DEFAULT_CATEGORY = 'General'.freeze
 
   def call
     cleanup
@@ -14,6 +13,7 @@ class ImportCaitIndc
     import_categories
     import_charts
     import_indicators
+    import_association_indicators_categories
 
     load_indicator_keys
     import_labels
@@ -57,7 +57,6 @@ class ImportCaitIndc
   def indicator_attributes(indicator)
     {
       chart: chart(indicator),
-      category: CaitIndc::Category.find_by(name: indicator[:category]),
       name: indicator[:long_name],
       slug: indicator[:column_name],
       on_map: @map.any? { |m| m[:indicator] == indicator[:column_name] }
@@ -86,10 +85,11 @@ class ImportCaitIndc
     }
   end
 
-  def category_attributes(category_name)
+  def category_attributes(category_name, category_type)
     {
       name: category_name,
-      slug: Slug.create(category_name)
+      slug: Slug.create(category_name),
+      category_type: category_type
     }
   end
 
@@ -105,10 +105,20 @@ class ImportCaitIndc
 
   def import_categories
     @indicators.
-      map { |r| r[:category].blank? ? DEFAULT_CATEGORY : r[:category].strip }.
+      map { |r| r[:category].strip }.
       uniq.
       select(&:itself).
-      each { |cat| CaitIndc::Category.create!(category_attributes(cat)) }
+      each do |cat|
+        CaitIndc::Category.create!(category_attributes(cat, 'accordion'))
+      end
+
+    @map.
+      map { |r| r[:category].strip }.
+      uniq.
+      select(&:itself).
+      each do |cat|
+        CaitIndc::Category.create!(category_attributes(cat, 'map'))
+      end
   end
 
   def import_charts
@@ -125,6 +135,34 @@ class ImportCaitIndc
       each do |ind|
       CaitIndc::Indicator.create!(indicator_attributes(ind))
     end
+  end
+
+  def import_association_indicators_categories
+    CaitIndc::Indicator.
+      all.
+      each do |ind|
+        accordion_categories = @indicators.
+          select { |r| r[:column_name] == ind.slug }.
+          map do |r|
+            CaitIndc::Category.where(
+              name: r[:category],
+              category_type: 'accordion'
+            ).first
+        end.
+        uniq
+
+        map_categories = @map.
+          select { |r| r[:indicator] == ind.slug }.
+          map do  |r|
+            CaitIndc::Category.where(
+              name: r[:category],
+              category_type: 'map'
+            ).first
+          end.
+          uniq
+
+        ind.categories = accordion_categories + map_categories
+      end
   end
 
   def import_labels
