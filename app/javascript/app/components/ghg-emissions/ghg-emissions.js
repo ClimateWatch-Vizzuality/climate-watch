@@ -17,7 +17,7 @@ import {
 import GhgEmissionsComponent from './ghg-emissions-component';
 import actions from './ghg-emissions-actions';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, { location }) => {
   const { meta } = state.ghgEmissions;
   const { data: regions } = state.regions;
   const search = qs.parse(location.search);
