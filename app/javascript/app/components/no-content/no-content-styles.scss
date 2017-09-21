@@ -2,7 +2,6 @@
 
 .noContent {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px 0;
@@ -12,5 +11,10 @@
   font-family: $font-family-1;
   font-size: $font-size-m;
   color: $theme-color;
-  margin-bottom: 20px;
+  margin-right: 10px;
+}
+
+.img {
+  width: 30px;
+  height: 30px;
 }

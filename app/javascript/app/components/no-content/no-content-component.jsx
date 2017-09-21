@@ -8,7 +8,7 @@ import styles from './no-content-styles.scss';
 const NoContent = ({ className, message, icon }) => (
   <div className={cx(styles.noContent, className)}>
     <p className={styles.text}>{message}</p>
-    {icon && <img src={monete} alt="Monete" />}
+    {icon && <img className={styles.img} src={monete} alt="Monete" />}
   </div>
 );
 
