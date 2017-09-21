@@ -18,7 +18,7 @@ module Api
         indicators = ::CaitIndc::Indicator.
           includes(
             :labels,
-            :category,
+            :categories,
             values: [:label, :location]
           )
 
