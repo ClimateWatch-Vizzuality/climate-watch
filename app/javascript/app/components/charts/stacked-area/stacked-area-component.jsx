@@ -37,7 +37,9 @@ class ChartStackedArea extends PureComponent {
           <Tooltip
             isAnimationActive={false}
             cursor={{ stroke: 'white', strokeWidth: 1 }}
-            content={<TooltipChart config={config.tooltip} />}
+            content={content => (
+              <TooltipChart content={content} config={config} />
+            )}
           />
           {config.columns.y.map(column => (
             <Area
