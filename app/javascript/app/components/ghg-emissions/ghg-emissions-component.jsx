@@ -23,6 +23,15 @@ const ghgEmissionsSampleConfig = {
     yRussia: { fill: '#302463' },
     yChina: { fill: '#d5eaf7' },
     yEUR28: { fill: '#103d5c', stroke: '#113750' }
+  },
+  tooltip: {
+    yChina: {
+      label: 'China',
+      prefix: '', // optional
+      format: '', // just in case you want to show it in a different axes way
+      sufix: '', // optional
+      type: 'number'
+    }
   }
 };
 

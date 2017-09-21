@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
+import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
 
 class ChartStackedArea extends PureComponent {
@@ -33,7 +34,11 @@ class ChartStackedArea extends PureComponent {
           />
           <YAxis axisLine={false} tickFormatter={tick => format('.1s')(tick)} />
           <CartesianGrid vertical={false} />
-          <Tooltip />
+          <Tooltip
+            isAnimationActive={false}
+            cursor={{ stroke: 'white', strokeWidth: 1 }}
+            content={<TooltipChart config={config.tooltip} />}
+          />
           {config.columns.y.map(column => (
             <Area
               key={column}
