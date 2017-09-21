@@ -5,7 +5,7 @@ module Api
         attribute :id
         attribute :name
         attribute :slug
-        attribute :category_ids, if: -> { object.category_ids.length > 0 }
+        attribute :category_ids, if: -> { object.category_ids.length.positive? }
         attribute :labels
         attribute :locations
 

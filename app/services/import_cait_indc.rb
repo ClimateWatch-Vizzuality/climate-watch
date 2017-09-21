@@ -10,7 +10,8 @@ class ImportCaitIndc
 
     load_csvs
 
-    import_categories
+    import_categories(@indicators, 'overview')
+    import_categories(@map, 'map')
     import_charts
     import_indicators
     import_association_indicators_categories
@@ -103,21 +104,23 @@ class ImportCaitIndc
     }
   end
 
-  def import_categories
-    @indicators.
-      map { |r| r[:category].strip }.
-      uniq.
-      select(&:itself).
-      each do |cat|
-        CaitIndc::Category.create!(category_attributes(cat, 'overview'))
-      end
+  def select_categories(dataset, indicator_key, indicator, category_type)
+    dataset.select { |r| r[indicator_key] == indicator.slug }.
+      map do |r|
+        CaitIndc::Category.where(
+          name: r[:category],
+          category_type: category_type
+        ).first
+      end.uniq
+  end
 
-    @map.
+  def import_categories(dataset, category_type)
+    dataset.
       map { |r| r[:category].strip }.
       uniq.
       select(&:itself).
       each do |cat|
-        CaitIndc::Category.create!(category_attributes(cat, 'map'))
+        CaitIndc::Category.create!(category_attributes(cat, category_type))
       end
   end
 
@@ -138,38 +141,21 @@ class ImportCaitIndc
   end
 
   def import_association_indicators_categories
-    CaitIndc::Indicator.
-      all.
-      each do |ind|
-        overview_categories = @indicators.
-          select { |r| r[:column_name] == ind.slug }.
-          map do |r|
-            CaitIndc::Category.where(
-              name: r[:category],
-              category_type: 'overview'
-            ).first
-        end.
-        uniq
+    CaitIndc::Indicator.all.each do |indicator|
+      overview_categories = select_categories(
+        @indicators, :column_name, indicator, 'overview'
+      )
 
-        map_categories = @map.
-          select { |r| r[:indicator] == ind.slug }.
-          map do  |r|
-            CaitIndc::Category.where(
-              name: r[:category],
-              category_type: 'map'
-            ).first
-          end.
-          uniq
+      map_categories = select_categories(
+        @map, :indicator, indicator, 'map'
+      )
 
-        ind.categories = overview_categories + map_categories
-      end
+      indicator.categories = overview_categories + map_categories
+    end
   end
 
   def import_labels
-    label_fields = @data.
-      first.
-      keys.
-      grep(/_label$/).
+    label_fields = @data.first.keys.grep(/_label$/).
       map { |l| l.to_s.gsub(/_label$/, '') }
 
     label_accumulator = []
