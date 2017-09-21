@@ -21,6 +21,12 @@
   margin-right: 5px;
 }
 
+.closeButton {
+  &:focus {
+    outline: none;
+  }
+}
+
 .icon {
   width: 10px;
   height: 10px;

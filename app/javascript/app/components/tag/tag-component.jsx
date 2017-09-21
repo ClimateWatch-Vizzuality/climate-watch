@@ -12,7 +12,9 @@ class Tag extends PureComponent {
       <div className={styles.tag}>
         <span className={styles.dot} style={{ backgroundColor: data.color }} />
         <p>{data.name}</p>
-        <Icon icon={closeIcon} className={styles.icon} onClick={onRemove} />
+        <button className={styles.closeButton} onClick={onRemove}>
+          <Icon icon={closeIcon} className={styles.icon} />
+        </button>
       </div>
     );
   }
