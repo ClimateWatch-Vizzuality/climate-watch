@@ -26,21 +26,26 @@ class GhgEmissions extends PureComponent {
     } = this.props;
     return (
       <div>
+        <h2
+          className={styles.title}
+        >{`Global Historical Emissions - ${filterSelected.label}`}</h2>
         <RegionsProvider />
         <ChartStackedArea config={config} data={data} />
-        {config.columns.y &&
-          config.columns.y.map(column => (
-            <Tag
-              key={column.value}
-              data={{
-                color: 'red',
-                name: column.label
-              }}
-              onRemove={() => {
-                console.info('please remove me');
-              }}
-            />
-          ))}
+        <div className={styles.tags}>
+          {config.columns.y &&
+            config.columns.y.map(column => (
+              <Tag
+                key={column.value}
+                data={{
+                  color: 'red',
+                  name: column.label
+                }}
+                onRemove={() => {
+                  console.info('please remove me');
+                }}
+              />
+            ))}
+        </div>
         <div className={styles.col4}>
           <Dropdown
             label="Category"
