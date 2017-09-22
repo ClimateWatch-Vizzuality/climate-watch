@@ -28,15 +28,19 @@ class GhgEmissions extends PureComponent {
       <div>
         <RegionsProvider />
         <ChartStackedArea config={config} data={data} />
-        <Tag
-          data={{
-            color: 'red',
-            name: 'United States'
-          }}
-          onRemove={() => {
-            console.info('please remove me');
-          }}
-        />
+        {config.columns.y &&
+          config.columns.y.map(column => (
+            <Tag
+              key={column.value}
+              data={{
+                color: 'red',
+                name: column.label
+              }}
+              onRemove={() => {
+                console.info('please remove me');
+              }}
+            />
+          ))}
         <div className={styles.col4}>
           <Dropdown
             label="Category"
