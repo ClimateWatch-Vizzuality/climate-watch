@@ -2,8 +2,7 @@ module Api
   module V1
     module CaitIndc
       class LabelSerializer < ActiveModel::Serializer
-        attributes :name,
-                   :color
+        attributes :name
       end
     end
   end

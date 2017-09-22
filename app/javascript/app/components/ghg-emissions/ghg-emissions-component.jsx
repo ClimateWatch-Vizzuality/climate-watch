@@ -4,6 +4,7 @@ import RegionsProvider from 'providers/regions-provider';
 import ChartStackedArea from 'components/charts/stacked-area';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
+import Tag from 'components/tag';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -28,7 +29,22 @@ const ghgEmissionsSampleConfig = {
   theme: {
     yRussia: { fill: '#302463' },
     yChina: { fill: '#d5eaf7' },
-    yEUR28: { fill: '#103d5c', stroke: '#113750' }
+    yEUR28: { fill: '#103d5c', stroke: '#113750', strokeWidth: '5' }
+  },
+  tooltip: {
+    yRussia: {
+      label: 'Russia'
+    },
+    yChina: {
+      label: 'China',
+      prefix: '', // optional
+      format: '', // just in case you want to show it in a different axes way
+      sufix: '', // optional
+      type: 'number'
+    },
+    yEUR28: {
+      label: 'EUR28'
+    }
   }
 };
 
@@ -66,6 +82,15 @@ class GhgEmissions extends PureComponent {
         <ChartStackedArea
           config={ghgEmissionsSampleConfig}
           data={ghgEmissionsSampleData}
+        />
+        <Tag
+          data={{
+            color: 'red',
+            name: 'United States'
+          }}
+          onRemove={() => {
+            console.info('please remove me');
+          }}
         />
         <div className={styles.col4}>
           <Dropdown

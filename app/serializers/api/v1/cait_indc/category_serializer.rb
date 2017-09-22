@@ -4,6 +4,7 @@ module Api
       class CategorySerializer < ActiveModel::Serializer
         attribute :name
         attribute :slug
+        attribute :category_type, key: :type
       end
     end
   end
