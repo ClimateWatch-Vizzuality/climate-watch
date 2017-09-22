@@ -38,17 +38,37 @@ const mapStateToProps = (state, { location }) => {
 
 function needsRequestData(props, nextProps) {
   const { sourceSelected, breakSelected, filterSelected } = nextProps;
-  const conditions = [
-    sourceSelected.value && sourceSelected.value !== props.sourceSelected.value,
-    sourceSelected.value && breakSelected.value !== props.breakSelected.value,
-    sourceSelected.value && filterSelected.value !== props.filterSelected.value
-  ];
-  return conditions.includes(true);
+  const hasValues =
+    sourceSelected.value && breakSelected.value && filterSelected.value;
+  const hasChanged =
+    sourceSelected.value !== props.sourceSelected.value ||
+    breakSelected.value !== props.breakSelected.value ||
+    filterSelected.value !== props.filterSelected.value;
+  return hasValues && hasChanged;
 }
 
 function getFiltersParsed(props) {
   const { sourceSelected, breakSelected, filterSelected } = props;
+  const filter = {};
+  // we need to request default value for other indicators
+  switch (breakSelected.value) {
+    case 'gas':
+      filter.location = 'WORLD';
+      filter.sector = 1;
+      break;
+    case 'locations':
+      filter.gas = 1;
+      filter.sector = 1;
+      break;
+    case 'sector':
+      filter.gas = 1;
+      filter.location = 'WORLD';
+      break;
+    default:
+      break;
+  }
   return {
+    ...filter,
     source: sourceSelected.value,
     [breakSelected.value]: filterSelected.value
   };

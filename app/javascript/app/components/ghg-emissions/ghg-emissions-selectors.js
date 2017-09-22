@@ -44,17 +44,27 @@ export const getSourceSelected = createSelector(
   }
 );
 
+function sortLabelByAlpha(array) {
+  return array.sort((a, b) => {
+    if (a.label < b.label) return -1;
+    if (a.label > b.label) return 1;
+    return 0;
+  });
+}
+
 export const getBreaksByOptions = createSelector(getMetadata, meta => {
-  const breakByOptions = Object.keys(getMetaFiltered(meta)).map(other => ({
-    label: upperFirst(other),
-    value: other,
-    id: other
-  }));
+  const breakByOptions = sortLabelByAlpha(
+    Object.keys(getMetaFiltered(meta)).map(other => ({
+      label: upperFirst(other),
+      value: other,
+      id: other
+    }))
+  );
   const regionBreak = {
     label: 'Regions',
     value: 'locations'
   };
-  return [...breakByOptions, regionBreak];
+  return [regionBreak, ...breakByOptions];
 });
 
 export const getBreakSelected = createSelector(
