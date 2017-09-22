@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import ChartStackedArea from 'components/charts/stacked-area';
+import Tag from 'components/tag';
 
 const ghgEmissionsSampleConfig = {
   axes: {
@@ -65,6 +66,15 @@ class GhgEmissions extends PureComponent {
         <ChartStackedArea
           config={ghgEmissionsSampleConfig}
           data={ghgEmissionsSampleData}
+        />
+        <Tag
+          data={{
+            color: 'red',
+            name: 'United States'
+          }}
+          onRemove={() => {
+            console.info('please remove me');
+          }}
         />
       </div>
     );
