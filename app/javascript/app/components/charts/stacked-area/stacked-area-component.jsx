@@ -42,12 +42,12 @@ class ChartStackedArea extends PureComponent {
           />
           {config.columns.y.map(column => (
             <Area
-              key={column}
+              key={column.value}
               type="monotone"
-              dataKey={column}
+              dataKey={column.value}
               stackId="1"
-              stroke={config.theme[column].stroke || ''}
-              fill={config.theme[column].fill || ''}
+              stroke={config.theme[column.value].stroke || ''}
+              fill={config.theme[column.value].fill || ''}
             />
           ))}
         </AreaChart>

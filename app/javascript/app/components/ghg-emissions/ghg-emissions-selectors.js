@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
 import omit from 'lodash/omit';
+import camelCase from 'lodash/camelCase';
 
 const getData = state => state.data || [];
 const getMetadata = state => state.meta || {};
@@ -112,7 +113,7 @@ export const getChartData = createSelector(
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
-        const yKey = `y${d[breakBy.value]}`;
+        const yKey = getYColumnValue(d[breakBy.value]);
         const yData = d.emissions.find(e => e.year === x);
         yItems[yKey] = yData.value;
       });
@@ -143,7 +144,7 @@ const axesConfig = {
 function getThemeConfig(columns) {
   const theme = {};
   columns.forEach(column => {
-    theme[column] = { fill: '#302463' };
+    theme[column.value] = { fill: '#302463' };
   });
   return theme;
 }
@@ -151,15 +152,22 @@ function getThemeConfig(columns) {
 function getTooltipConfig(columns) {
   const tooltip = {};
   columns.forEach(column => {
-    tooltip[column] = { label: column.substr(1) };
+    tooltip[column.value] = { label: column.label };
   });
   return tooltip;
+}
+
+function getYColumnValue(column) {
+  return `y${upperFirst(camelCase(column))}`;
 }
 
 export const getChartConfig = createSelector(
   [getData, getBreakSelected],
   (data, breakBy) => {
-    const yColumns = data.map(d => `y${d[breakBy.value]}`);
+    const yColumns = data.map(d => ({
+      label: d[breakBy.value],
+      value: getYColumnValue(d[breakBy.value])
+    }));
     const theme = getThemeConfig(yColumns);
     const tooltip = getTooltipConfig(yColumns);
     return {
@@ -167,7 +175,7 @@ export const getChartConfig = createSelector(
       theme,
       tooltip,
       columns: {
-        x: ['x'],
+        x: [{ label: 'year', value: 'x' }],
         y: yColumns
       }
     };

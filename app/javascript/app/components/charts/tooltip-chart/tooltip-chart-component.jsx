@@ -9,7 +9,7 @@ class TooltipChart extends PureComponent {
   getTotal = (keys, data) => {
     let total = 0;
     keys.forEach(key => {
-      total += data.payload[key];
+      total += data.payload[key.value];
     });
     return format('.3s')(total);
   };

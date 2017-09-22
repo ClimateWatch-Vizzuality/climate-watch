@@ -43,8 +43,11 @@ legendConfig <https://github.com/resource-watch/notebooks/blob/develop/ResourceW
 
 ```js
 {
-  x: [x],
-  y: [yWater, ySample]
+  x: [{ label: 'Year', value: 'x' }],
+  y: [
+    { label: 'Water', value: 'yWater' },
+    { label: 'Sample', value: 'ySample' }
+  ]
 }
 ```
 
