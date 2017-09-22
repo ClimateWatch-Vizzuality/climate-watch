@@ -7,42 +7,58 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip
+  Tooltip,
+  ResponsiveContainer
 } from 'recharts';
+import TooltipChart from 'components/charts/tooltip-chart';
+import { format } from 'd3-format';
 
-class ChartStackedarea extends PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
+class ChartStackedArea extends PureComponent {
   render() {
     const { config, data } = this.props;
     return (
-      <AreaChart
-        width={600}
-        height={400}
-        data={data}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-      >
-        <XAxis dataKey="x" />
-        <YAxis />
-        <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip />
-        {config.columns.y.map(column => (
-          <Area
-            key={column}
-            type="monotone"
-            dataKey={column}
-            stackId="1"
-            stroke={config.theme[column].stroke || ''}
-            fill={config.theme[column].fill || ''}
+      <ResponsiveContainer height={500}>
+        <AreaChart
+          data={data}
+          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        >
+          <XAxis
+            dataKey="x"
+            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
           />
-        ))}
-      </AreaChart>
+          <YAxis
+            axisLine={false}
+            tickFormatter={tick => format('.1s')(tick)}
+            tickLine={false}
+            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+          />
+          <CartesianGrid vertical={false} />
+          <Tooltip
+            isAnimationActive={false}
+            cursor={{ stroke: '#113750', strokeWidth: 2 }}
+            content={content => (
+              <TooltipChart content={content} config={config} />
+            )}
+          />
+          {config.columns.y.map(column => (
+            <Area
+              key={column}
+              type="monotone"
+              dataKey={column}
+              stackId="1"
+              stroke={config.theme[column].stroke || ''}
+              fill={config.theme[column].fill || ''}
+            />
+          ))}
+        </AreaChart>
+      </ResponsiveContainer>
     );
   }
 }
 
-ChartStackedarea.propTypes = {
+ChartStackedArea.propTypes = {
   config: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired
 };
 
-export default ChartStackedarea;
+export default ChartStackedArea;
