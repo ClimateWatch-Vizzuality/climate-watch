@@ -6,6 +6,8 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
 import {
+  getChartData,
+  getChartConfig,
   getSourceOptions,
   getSourceSelected,
   getBreaksByOptions,
@@ -18,15 +20,18 @@ import GhgEmissionsComponent from './ghg-emissions-component';
 import actions from './ghg-emissions-actions';
 
 const mapStateToProps = (state, { location }) => {
-  const { meta } = state.ghgEmissions;
+  const { meta, data } = state.ghgEmissions;
   const { data: regions } = state.regions;
   const search = qs.parse(location.search);
   const ghg = {
     meta,
+    data,
     regions,
     search
   };
   return {
+    data: getChartData(ghg),
+    config: getChartConfig(ghg),
     sources: getSourceOptions(ghg),
     sourceSelected: getSourceSelected(ghg),
     breaksBy: getBreaksByOptions(ghg),
@@ -56,7 +61,7 @@ function getFiltersParsed(props) {
       filter.location = 'WORLD';
       filter.sector = 1;
       break;
-    case 'locations':
+    case 'location':
       filter.gas = 1;
       filter.sector = 1;
       break;

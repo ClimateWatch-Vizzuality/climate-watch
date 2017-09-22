@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
 import omit from 'lodash/omit';
 
+const getData = state => state.data || [];
 const getMetadata = state => state.meta || {};
 const getRegions = state => state.regions || [];
 const getSourceSelection = state => parseInt(state.search.source, 10) || null;
@@ -19,7 +20,7 @@ export const getFilters = createSelector(
   [getMetadata, getRegions],
   (meta, regions) => ({
     ...getMetaFiltered(meta),
-    locations: parseRegions(regions)
+    location: parseRegions(regions)
   })
 );
 
@@ -62,7 +63,7 @@ export const getBreaksByOptions = createSelector(getMetadata, meta => {
   );
   const regionBreak = {
     label: 'Regions',
-    value: 'locations'
+    value: 'location'
   };
   return [regionBreak, ...breakByOptions];
 });
@@ -97,6 +98,79 @@ export const getFilterSelected = createSelector(
       return filters[0];
     }
     return {};
+  }
+);
+
+export const getChartData = createSelector(
+  [getData, getBreakSelected],
+  (data, breakBy) => {
+    if (!data || !data.length) return [];
+
+    const xValues = data[0].emissions.length
+      ? data[0].emissions.map(d => d.year)
+      : [];
+    const dataParsed = xValues.map(x => {
+      const yItems = {};
+      data.forEach(d => {
+        const yKey = `y${d[breakBy.value]}`;
+        const yData = d.emissions.find(e => e.year === x);
+        yItems[yKey] = yData.value;
+      });
+      const item = {
+        x,
+        ...yItems
+      };
+      return item;
+    });
+
+    return dataParsed;
+  }
+);
+
+const axesConfig = {
+  xBottom: {
+    name: 'Year',
+    unit: 'date',
+    format: 'YYYY'
+  },
+  yLeft: {
+    name: 'Emissions',
+    unit: 'MtCO2e',
+    format: 'number'
+  }
+};
+
+function getThemeConfig(columns) {
+  const theme = {};
+  columns.forEach(column => {
+    theme[column] = { fill: '#302463' };
+  });
+  return theme;
+}
+
+function getTooltipConfig(columns) {
+  const tooltip = {};
+  columns.forEach(column => {
+    tooltip[column] = { label: column.substr(1) };
+  });
+  return tooltip;
+}
+
+export const getChartConfig = createSelector(
+  [getData, getBreakSelected],
+  (data, breakBy) => {
+    const yColumns = data.map(d => `y${d[breakBy.value]}`);
+    const theme = getThemeConfig(yColumns);
+    const tooltip = getTooltipConfig(yColumns);
+    return {
+      axes: axesConfig,
+      theme,
+      tooltip,
+      columns: {
+        x: ['x'],
+        y: yColumns
+      }
+    };
   }
 );
 
