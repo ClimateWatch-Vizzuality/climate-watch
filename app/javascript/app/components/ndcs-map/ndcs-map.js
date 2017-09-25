@@ -44,8 +44,8 @@ class NDCMapContainer extends PureComponent {
     const { geometryIdHover } = this.state;
     const { selectedIndicator } = this.props;
     if (!geometryIdHover || !selectedIndicator) return '';
-
-    return selectedIndicator.locations[geometryIdHover]
+    return selectedIndicator.locations &&
+    selectedIndicator.locations[geometryIdHover]
       ? selectedIndicator.locations[geometryIdHover].value
       : '';
   }
