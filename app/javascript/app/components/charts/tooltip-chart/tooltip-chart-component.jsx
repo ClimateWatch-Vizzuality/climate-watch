@@ -9,23 +9,25 @@ class TooltipChart extends PureComponent {
   getTotal = (keys, data) => {
     let total = 0;
     keys.forEach(key => {
-      total += data.payload[key];
+      total += data.payload[key.value];
     });
     return format('.3s')(total);
   };
 
   render() {
     const { config, content } = this.props;
+    const needsTotal = content.payload && content.payload.length > 1;
     return (
       <div className={styles.tooltip}>
         <span className={styles.unit}>{config.axes.yLeft.unit}</span>
-        {content.payload.length > 0 && (
+        {needsTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
             <p>{this.getTotal(config.columns.y, content.payload[0])}</p>
           </div>
         )}
-        {content.payload.length > 0 &&
+        {content.payload &&
+          content.payload.length > 0 &&
           content.payload.map(y => (
             <div key={y.dataKey} className={styles.label}>
               <div className={styles.legend}>

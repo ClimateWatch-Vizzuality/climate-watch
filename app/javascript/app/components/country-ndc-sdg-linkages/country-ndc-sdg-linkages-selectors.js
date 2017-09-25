@@ -40,11 +40,12 @@ export const getSectorOptions = createSelector([getSectors], sectors => {
 
 export const getSectorOptionsSorted = createSelector(
   [getSectorOptions],
-  sectors => sectors.sort((a, b) => {
-    if (a.label < b.label) return -1;
-    if (a.label > b.label) return 1;
-    return 0;
-  })
+  sectors =>
+    sectors.sort((a, b) => {
+      if (a.label < b.label) return -1;
+      if (a.label > b.label) return 1;
+      return 0;
+    })
 );
 
 export const filterSDGs = createSelector(

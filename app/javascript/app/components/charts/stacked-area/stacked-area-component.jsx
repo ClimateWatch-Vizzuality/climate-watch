@@ -20,7 +20,7 @@ class ChartStackedArea extends PureComponent {
       <ResponsiveContainer height={500}>
         <AreaChart
           data={data}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 0, right: 0, left: -40, bottom: 0 }}
         >
           <XAxis
             dataKey="x"
@@ -42,12 +42,12 @@ class ChartStackedArea extends PureComponent {
           />
           {config.columns.y.map(column => (
             <Area
-              key={column}
+              key={column.value}
               type="monotone"
-              dataKey={column}
+              dataKey={column.value}
               stackId="1"
-              stroke={config.theme[column].stroke || ''}
-              fill={config.theme[column].fill || ''}
+              stroke={config.theme[column.value].stroke || ''}
+              fill={config.theme[column.value].fill || ''}
             />
           ))}
         </AreaChart>

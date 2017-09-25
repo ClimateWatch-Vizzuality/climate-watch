@@ -1,1 +1,26 @@
 @import '~styles/layout.scss';
+
+.col4 {
+  @extend %grid;
+
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+  margin-bottom: 40px;
+}
+
+.colEnd {
+  grid-column-end: -1;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: 50px;
+  margin-top: 35px;
+}
+
+.tags {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}

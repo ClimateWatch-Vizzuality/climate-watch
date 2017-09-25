@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
 import ToolsNav from 'components/tools-nav';
@@ -10,7 +10,7 @@ import styles from './nav-styles.scss';
 
 class NavBar extends PureComponent {
   render() {
-    const { location } = this.props;
+    const { location, routes } = this.props;
     return (
       <div className={layout.content}>
         <nav className={styles.navbar}>
@@ -19,50 +19,16 @@ class NavBar extends PureComponent {
               <Icon className={styles.logo} icon={cwLogo} />
             </NavLink>
           )}
-          <div className={styles.linkWrapper}>
+          {routes.map(route => (
             <NavLink
+              key={route.path}
               className={styles.link}
               activeClassName={styles.linkActive}
-              to="/countries"
+              to={route.path}
             >
-              COUNTRIES
+              {route.label}
             </NavLink>
-          </div>
-          <NavLink
-            className={styles.link}
-            activeClassName={styles.linkActive}
-            to="/sectors"
-          >
-            SECTORS
-          </NavLink>
-          <NavLink
-            className={styles.link}
-            activeClassName={styles.linkActive}
-            to="/ndcs"
-          >
-            NDCs
-          </NavLink>
-          <NavLink
-            className={styles.link}
-            activeClassName={styles.linkActive}
-            to="/ghg-emissions"
-          >
-            GHG EMISSIONS
-          </NavLink>
-          <NavLink
-            className={styles.link}
-            activeClassName={styles.linkActive}
-            to="/stories"
-          >
-            STORIES
-          </NavLink>
-          <NavLink
-            className={styles.link}
-            activeClassName={styles.linkActive}
-            to="/about"
-          >
-            ABOUT
-          </NavLink>
+          ))}
           <ToolsNav />
         </nav>
       </div>
@@ -71,11 +37,12 @@ class NavBar extends PureComponent {
 }
 
 NavBar.propTypes = {
-  location: Proptypes.object.isRequired
+  routes: PropTypes.array.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 NavBar.defaultProps = {
-  countriesOpen: false
+  routes: []
 };
 
 export default NavBar;

@@ -13,12 +13,12 @@ export const getCountry = createSelector(
 
 export const getCountryName = createSelector(
   [getCountry],
-  country => country.wri_standard_name
+  (country = {}) => country.wri_standard_name || ''
 );
 
 export const getCountryDescription = createSelector(
   [getCountry],
-  country => country.description || ''
+  (country = {}) => country.description || ''
 );
 
 export const getAnchorLinks = createSelector(

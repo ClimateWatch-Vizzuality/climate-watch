@@ -19,8 +19,10 @@ class GhgEmissions extends PureComponent {
             <Intro title="Historical GHG Emissions" />
           </div>
         </Header>
-        <div className={layout.content}>
-          <GhgEmissionsGraph />
+        <div className={styles.wrapper}>
+          <div className={layout.content}>
+            <GhgEmissionsGraph />
+          </div>
         </div>
       </div>
     );

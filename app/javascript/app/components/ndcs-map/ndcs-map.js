@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import { getLocationParamUpdated } from 'utils/navigation';
 
 import Component from './ndcs-map-component';
 import {
@@ -58,27 +59,24 @@ class NDCMapContainer extends PureComponent {
   };
 
   handleCategoryChange = category => {
-    this.updateUrlParam('category', category.value, true);
+    this.updateUrlParam({
+      name: 'category',
+      value: category.value,
+      clear: true
+    });
   };
 
   handleIndicatorChange = indicator => {
-    this.updateUrlParam('indicator', indicator.value);
+    this.updateUrlParam({ name: 'indicator', value: indicator.value });
   };
 
-  updateUrlParam(param, value, clear = false) {
-    const { history, location } = this.props;
-    const search = qs.parse(location.search);
-    const newSearch = clear
-      ? { [param]: value }
-      : {
-        ...search,
-        [param]: value
-      };
+  handleSearchChange = query => {
+    this.updateUrlParam({ name: 'search', value: query });
+  };
 
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
-    });
+  updateUrlParam(param) {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, param));
   }
 
   render() {
