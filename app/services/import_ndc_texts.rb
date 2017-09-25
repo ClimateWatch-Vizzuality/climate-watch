@@ -1,4 +1,4 @@
-class ImportNdcFullTexts
+class ImportNdcTexts
   def call
     Ndc.delete_all
     bucket_name = Rails.application.secrets.s3_bucket_name

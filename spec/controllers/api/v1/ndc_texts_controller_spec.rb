@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::NdcFullTextsController, type: :controller do
+RSpec.describe Api::V1::NdcTextsController, type: :controller do
   let(:pol) {
     FactoryGirl.create(:location, iso_code3: 'POL', location_type: 'COUNTRY')
   }
@@ -35,11 +35,13 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
   describe 'GET index' do
     it 'renders a list of NDCs' do
       get :index
-      expect(assigns(:ndcs)).to match_array([pol_ndc, prt_ndc])
+      json_response = JSON.parse(response.body)
+      expect(json_response.length).to eq(2)
     end
     it 'renders a list of matching NDCS' do
       get :index, params: {query: 'hello'}
-      expect(assigns(:ndcs)).to match_array([pol_ndc])
+      json_response = JSON.parse(response.body)
+      expect(json_response.length).to eq(1)
     end
     it 'renders fragments with correct highlight indexes' do
       get :index, params: {query: 'hello'}
@@ -52,26 +54,27 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
     it 'renders NDC content in html' do
       get :show, params: {code: pol.iso_code3}
       json_response = JSON.parse(response.body)
-      expect(json_response['html']).to match(pol_html)
+      expect(json_response.first['html']).to match(pol_html)
     end
     it 'renders NDC content in html even if code downcased' do
       get :show, params: {code: pol.iso_code3.downcase}
       json_response = JSON.parse(response.body)
-      expect(json_response['html']).to match(pol_html)
+      expect(json_response.first['html']).to match(pol_html)
     end
-    it 'responds with 404 if bogus code' do
+    it 'responds with empty collection if bogus code' do
       get :show, params: {code: 'LOL'}
-      expect(response.status).to be(404)
+      json_response = JSON.parse(response.body)
+      expect(json_response.length).to be(0)
     end
     it 'highlights matches' do
       get :show, params: {code: pol.iso_code3, query: 'hello'}
       json_response = JSON.parse(response.body)
-      expect(json_response['html']).to match(pol_html_with_highlight)
+      expect(json_response.first['html']).to match(pol_html_with_highlight)
     end
     it 'returns NDC content in html without highlights if no matches' do
       get :show, params: {code: pol.iso_code3.downcase, query: 'goodbye'}
       json_response = JSON.parse(response.body)
-      expect(json_response['html']).to match(pol_html)
+      expect(json_response.first['html']).to match(pol_html)
     end
   end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe ImportNdcFullTexts do
-  subject { ImportNdcFullTexts.new.call }
+RSpec.describe ImportNdcTexts do
+  subject { ImportNdcTexts.new.call }
 
   before :all do
     Aws.config[:s3] = {

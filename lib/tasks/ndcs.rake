@@ -2,7 +2,7 @@ namespace :ndcs do
   namespace :full do
     desc 'Stores and indexes NDC full text from S3'
     task import: :environment do
-      ImportNdcFullTexts.new.call
+      ImportNdcTexts.new.call
     end
 
     desc 'Indexes NDC full text'
