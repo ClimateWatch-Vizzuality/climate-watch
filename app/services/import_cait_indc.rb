@@ -60,7 +60,6 @@ class ImportCaitIndc
       chart: chart(indicator),
       name: indicator[:long_name],
       slug: indicator[:column_name],
-      on_map: @map.any? { |m| m[:indicator] == indicator[:column_name] }
     }
   end
 

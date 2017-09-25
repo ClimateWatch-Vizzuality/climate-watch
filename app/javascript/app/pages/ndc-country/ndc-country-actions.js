@@ -9,7 +9,7 @@ const fetchCountryNDC = createThunkAction(
   'fetchCountryNDC',
   iso => dispatch => {
     dispatch(fetchCountryNDCInit());
-    fetch(`/api/v1/ndcs?location=${iso}&filter=summary`)
+    fetch(`/api/v1/ndcs?location=${iso}&filter=overview`)
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);

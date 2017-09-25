@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170921110036) do
+ActiveRecord::Schema.define(version: 20170925144250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20170921110036) do
     t.text "name", null: false
     t.text "slug", null: false
     t.text "category_type"
+    t.index ["category_type"], name: "index_cait_indc_categories_on_category_type"
   end
 
   create_table "cait_indc_charts", force: :cascade do |t|
@@ -51,7 +52,6 @@ ActiveRecord::Schema.define(version: 20170921110036) do
     t.bigint "chart_id"
     t.text "name", null: false
     t.text "slug", null: false
-    t.boolean "on_map", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chart_id"], name: "index_cait_indc_indicators_on_chart_id"
