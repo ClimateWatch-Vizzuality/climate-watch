@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
-import groupBy from 'lodash/groupBy';
 
 const getCategoriesData = state => state.categories || {};
 const getIndicatorsData = state => state.indicators || [];
@@ -16,21 +15,18 @@ export const getCategories = createSelector(getCategoriesData, categories =>
   }))
 );
 
-export const getIndicatorsGrouped = createSelector(
+export const getindicatorsParsed = createSelector(
   getIndicatorsData,
   indicators =>
-    groupBy(
-      uniqBy(
-        indicators.map(item => ({
-          label: item.name,
-          value: item.slug,
-          categoryId: item.category_id,
-          locations: item.locations,
-          legendBuckets: item.labels
-        })),
-        'value'
-      ),
-      'categoryId'
+    uniqBy(
+      indicators.map(item => ({
+        label: item.name,
+        value: item.slug,
+        categoryIds: item.category_ids,
+        locations: item.locations,
+        legendBuckets: item.labels
+      })),
+      'value'
     )
 );
 
@@ -51,12 +47,13 @@ export const getSelectedCategory = createSelector(
 );
 
 export const getCategoryIndicators = createSelector(
-  [getIndicatorsGrouped, getSelectedCategory],
-  (indicatorsGrouped = {}, category = {}) => {
+  [getindicatorsParsed, getSelectedCategory],
+  (indicatorsParsed, category) => {
     const categoryId = category.id;
-    return categoryId && indicatorsGrouped[categoryId]
-      ? indicatorsGrouped[categoryId]
-      : [];
+    const categoryIndicators = indicatorsParsed.filter(
+      indicator => indicator.categoryIds.indexOf(parseInt(categoryId, 10)) > -1
+    );
+    return categoryIndicators;
   }
 );
 
