@@ -22,7 +22,6 @@ const mapStateToProps = (state, { location }) => {
     categorySelected: search.category,
     indicatorSelected: search.indicator
   };
-
   return {
     paths: getPathsWithStyles(ndcsWithSelection),
     categories: getCategories(ndcsWithSelection),
@@ -44,8 +43,8 @@ class NDCMapContainer extends PureComponent {
     const { geometryIdHover } = this.state;
     const { selectedIndicator } = this.props;
     if (!geometryIdHover || !selectedIndicator) return '';
-
-    return selectedIndicator.locations[geometryIdHover]
+    return selectedIndicator.locations &&
+    selectedIndicator.locations[geometryIdHover]
       ? selectedIndicator.locations[geometryIdHover].value
       : '';
   }
