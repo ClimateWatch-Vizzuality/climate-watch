@@ -20,7 +20,8 @@ class NDCCountry extends PureComponent {
       ndcsData,
       countriesOptions,
       activeCountriesOptions,
-      handleDropDownChange
+      handleDropDownChange,
+      loading
     } = this.props;
     return (
       <div>
@@ -72,7 +73,7 @@ class NDCCountry extends PureComponent {
             </div>
           </div>
         </div>
-        <Accordion data={ndcsData} compare />
+        <Accordion data={ndcsData} loading={loading} compare />
       </div>
     );
   }
@@ -82,7 +83,8 @@ NDCCountry.propTypes = {
   ndcsData: Proptypes.array,
   countriesOptions: Proptypes.array,
   activeCountriesOptions: Proptypes.array,
-  handleDropDownChange: Proptypes.func
+  handleDropDownChange: Proptypes.func,
+  loading: Proptypes.bool
 };
 
 export default NDCCountry;

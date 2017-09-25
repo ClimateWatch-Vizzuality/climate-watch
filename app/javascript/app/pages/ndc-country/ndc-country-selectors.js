@@ -40,6 +40,7 @@ export const parseIndicatorsDefs = createSelector(
 export const getNDCs = createSelector(
   [getCategories, parseIndicatorsDefs],
   (categories, indicators) => {
+    if (!categories) return [];
     const ndcs = Object.keys(categories).map(category => ({
       title: categories[category].name,
       slug: categories[category].slug,

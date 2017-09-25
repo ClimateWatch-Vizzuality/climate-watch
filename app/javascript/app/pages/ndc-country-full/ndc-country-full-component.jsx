@@ -47,6 +47,7 @@ class NDCCountryFull extends PureComponent {
                 placeholder="Search"
                 input={search}
                 onChange={onSearchChange}
+                disabled={isEmpty(content)}
               />
             </div>
           </div>

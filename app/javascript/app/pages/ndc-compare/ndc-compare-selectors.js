@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import groupBy from 'lodash/groupBy';
 import compact from 'lodash/compact';
 
 const getCountries = state => (state.data ? state.data : []);
@@ -47,16 +46,21 @@ export const getCountriesOptionsFiltered = createSelector(
   }
 );
 
-export const getIndicators = createSelector(getAllIndicators, data =>
-  groupBy(data, 'category_id')
+export const getIndicators = createSelector(
+  getAllIndicators,
+  data => data || []
 );
 
 export const parseIndicatorsDefs = createSelector(
-  [getIndicators, getLocations],
-  (indicators, countries) => {
+  [getAllIndicators, getCategories, getLocations],
+  (indicators, categories, countries) => {
+    if (!indicators || !categories || !countries) return {};
     const parsedIndicators = {};
-    Object.keys(indicators).forEach(category => {
-      const parsedDefinitions = indicators[category].map(def => {
+    Object.keys(categories).forEach(category => {
+      const categoryIndicators = indicators.filter(
+        indicator => indicator.category_ids.indexOf(parseInt(category, 10)) > -1
+      );
+      const parsedDefinitions = categoryIndicators.map(def => {
         const descriptions = countries.map(country => ({
           iso: country,
           value: def.locations[country] ? def.locations[country].value : null
