@@ -9,7 +9,7 @@ const fetchSearchResults = createThunkAction(
   'fetchSearchResults',
   query => dispatch => {
     dispatch(fetchSearchResultsInit());
-    fetch(`/api/v1/ndcs/full?query=${query}`)
+    fetch(`/api/v1/ndcs/text?query=${query}`)
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);
