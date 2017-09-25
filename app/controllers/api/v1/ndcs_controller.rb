@@ -15,12 +15,11 @@ module Api
       private
 
       def indicators
-        indicators = ::CaitIndc::Indicator.
-          includes(
-            :labels,
-            :categories,
-            values: [:label, :location]
-          )
+        indicators = ::CaitIndc::Indicator.includes(
+          :labels,
+          :categories,
+          values: [:label, :location]
+        )
 
         if location_list
           indicators = indicators.where(
@@ -28,10 +27,11 @@ module Api
           )
         end
 
-        indicators = indicators.where(on_map: true) if params[:filter] == 'map'
-
-        indicators = indicators.where(summary_list: true) if
-          params[:filter] == 'summary'
+        if params[:filter]
+          indicators = indicators.where(
+            cait_indc_categories: {category_type: params[:filter]}
+          )
+        end
 
         indicators
       end
