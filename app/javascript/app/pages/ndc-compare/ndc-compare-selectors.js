@@ -46,11 +46,6 @@ export const getCountriesOptionsFiltered = createSelector(
   }
 );
 
-export const getIndicators = createSelector(
-  getAllIndicators,
-  data => data || []
-);
-
 export const parseIndicatorsDefs = createSelector(
   [getAllIndicators, getCategories, getLocations],
   (indicators, categories, countries) => {

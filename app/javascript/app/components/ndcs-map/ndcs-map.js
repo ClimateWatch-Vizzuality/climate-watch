@@ -22,7 +22,6 @@ const mapStateToProps = (state, { location }) => {
     categorySelected: search.category,
     indicatorSelected: search.indicator
   };
-
   return {
     paths: getPathsWithStyles(ndcsWithSelection),
     categories: getCategories(ndcsWithSelection),

@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
-import groupBy from 'lodash/groupBy';
 
 const getCountries = state => state.countries;
 const getIso = state => state.iso;
@@ -11,16 +10,16 @@ const getSearch = state => deburrUpper(state.search);
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
 
-export const getIndicators = createSelector(getAllIndicators, data =>
-  groupBy(data, 'category_id')
-);
-
 export const parseIndicatorsDefs = createSelector(
-  [getIndicators, getCountries],
-  (indicators, countries) => {
+  [getAllIndicators, getCategories, getCountries],
+  (indicators, categories, countries) => {
+    if (!indicators || !categories || !countries) return {};
     const parsedIndicators = {};
-    Object.keys(indicators).forEach(category => {
-      const parsedDefinitions = indicators[category].map(def => {
+    Object.keys(categories).forEach(category => {
+      const categoryIndicators = indicators.filter(
+        indicator => indicator.category_ids.indexOf(parseInt(category, 10)) > -1
+      );
+      const parsedDefinitions = categoryIndicators.map(def => {
         const descriptions = countries.map(country => ({
           iso: country,
           value: def.locations[country] ? def.locations[country].value : null
