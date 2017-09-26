@@ -21,6 +21,13 @@
 }
 
 .tags {
+  display: flex;
+  flex-wrap: wrap;
   margin-top: 10px;
   margin-bottom: 15px;
+}
+
+.tag {
+  margin-right: 10px;
+  margin-bottom: 10px;
 }

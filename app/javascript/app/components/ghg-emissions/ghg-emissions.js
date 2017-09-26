@@ -20,6 +20,19 @@ import {
 import GhgEmissionsComponent from './ghg-emissions-component';
 import actions from './ghg-emissions-actions';
 
+const lineColors = [
+  '#2D9290',
+  '#B25BD0',
+  '#7EA759',
+  '#FF0D3A',
+  '#687AB7',
+  '#BC6332',
+  '#F97DA1',
+  '#00971D',
+  '#F1933B',
+  '#938126'
+];
+
 const mapStateToProps = (state, { location }) => {
   const { meta, data } = state.ghgEmissions;
   const { data: regions } = state.regions;
@@ -38,7 +51,8 @@ const mapStateToProps = (state, { location }) => {
     breaksBy: getBreaksByOptions(ghg),
     breakSelected: getBreakSelected(ghg),
     filters: getFilterOptions(ghg),
-    filtersSelected: getFiltersSelected(ghg)
+    filtersSelected: getFiltersSelected(ghg),
+    colors: lineColors
   };
 };
 

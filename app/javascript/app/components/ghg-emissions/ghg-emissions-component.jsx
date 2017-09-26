@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import RegionsProvider from 'providers/regions-provider';
-import ChartStackedArea from 'components/charts/stacked-area';
+import ChartLine from 'components/charts/line';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Tag from 'components/tag';
@@ -22,7 +22,8 @@ class GhgEmissions extends PureComponent {
       handleBreakByChange,
       filters,
       filtersSelected,
-      handleFilterChange
+      handleFilterChange,
+      colors
     } = this.props;
     return (
       <div>
@@ -30,7 +31,7 @@ class GhgEmissions extends PureComponent {
         <RegionsProvider />
         <div className={styles.col4}>
           <Dropdown
-            label="Category"
+            label="Source"
             options={sources}
             onChange={handleSourceChange}
             value={sourceSelected}
@@ -53,15 +54,16 @@ class GhgEmissions extends PureComponent {
           />
           <ButtonGroup className={styles.colEnd} />
         </div>
-        <ChartStackedArea config={config} data={data} />
+        <ChartLine config={config} data={data} />
         <div className={styles.tags}>
-          {config.columns.y &&
-            config.columns.y.map(column => (
+          {filtersSelected &&
+            filtersSelected.map((filter, index) => (
               <Tag
-                key={column.value}
+                className={styles.tag}
+                key={`tag-${filter.value}`}
                 data={{
-                  color: 'red',
-                  name: column.label
+                  color: colors[index],
+                  name: filter.label
                 }}
                 onRemove={() => {
                   console.info('please remove me');
@@ -85,7 +87,8 @@ GhgEmissions.propTypes = {
   handleBreakByChange: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
   filtersSelected: PropTypes.array.isRequired,
-  handleFilterChange: PropTypes.func.isRequired
+  handleFilterChange: PropTypes.func.isRequired,
+  colors: PropTypes.array
 };
 
 export default GhgEmissions;

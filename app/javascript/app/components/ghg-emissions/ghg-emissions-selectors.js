@@ -11,6 +11,19 @@ const getBreakSelection = state => state.search.breakBy || null;
 const getFilterSelection = state => state.search.filter || null;
 const getMetaFiltered = meta => omit(meta, 'data_source');
 
+const lineColors = [
+  '#2D9290',
+  '#B25BD0',
+  '#7EA759',
+  '#FF0D3A',
+  '#687AB7',
+  '#BC6332',
+  '#F97DA1',
+  '#00971D',
+  '#F1933B',
+  '#938126'
+];
+
 const parseRegions = regions =>
   regions.map(region => ({
     label: region.wri_standard_name,
@@ -103,7 +116,7 @@ export const getFiltersSelected = createSelector(
         });
         return selectedFilters;
       }
-      return [filters[0]];
+      return filters;
     }
     return [];
   }
@@ -122,7 +135,7 @@ export const getChartData = createSelector(
       data.forEach(d => {
         const yKey = getYColumnValue(d[breakBy.value]);
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value;
+        yItems[yKey] = yData.value * 1000000;
       });
       const item = {
         x,
@@ -143,15 +156,18 @@ const axesConfig = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'MtCO2e',
+    unit: 'CO2e',
     format: 'number'
   }
 };
 
 function getThemeConfig(columns) {
   const theme = {};
-  columns.forEach(column => {
-    theme[column.value] = { fill: '#302463' };
+  columns.forEach((column, index) => {
+    theme[column.value] = {
+      stroke: lineColors[index],
+      strokeWidth: 5
+    };
   });
   return theme;
 }
