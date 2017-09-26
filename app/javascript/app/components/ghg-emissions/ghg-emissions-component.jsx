@@ -21,31 +21,13 @@ class GhgEmissions extends PureComponent {
       breakSelected,
       handleBreakByChange,
       filters,
-      filterSelected,
+      filtersSelected,
       handleFilterChange
     } = this.props;
     return (
       <div>
-        <h2
-          className={styles.title}
-        >{`Global Historical Emissions - ${filterSelected.label}`}</h2>
+        <h2 className={styles.title}>Global Historical Emissions</h2>
         <RegionsProvider />
-        <ChartStackedArea config={config} data={data} />
-        <div className={styles.tags}>
-          {config.columns.y &&
-            config.columns.y.map(column => (
-              <Tag
-                key={column.value}
-                data={{
-                  color: 'red',
-                  name: column.label
-                }}
-                onRemove={() => {
-                  console.info('please remove me');
-                }}
-              />
-            ))}
-        </div>
         <div className={styles.col4}>
           <Dropdown
             label="Category"
@@ -65,10 +47,27 @@ class GhgEmissions extends PureComponent {
             label={breakSelected.label}
             options={filters}
             onChange={handleFilterChange}
-            value={filterSelected}
+            value={filtersSelected}
             clearable={false}
+            multi
           />
           <ButtonGroup className={styles.colEnd} />
+        </div>
+        <ChartStackedArea config={config} data={data} />
+        <div className={styles.tags}>
+          {config.columns.y &&
+            config.columns.y.map(column => (
+              <Tag
+                key={column.value}
+                data={{
+                  color: 'red',
+                  name: column.label
+                }}
+                onRemove={() => {
+                  console.info('please remove me');
+                }}
+              />
+            ))}
         </div>
       </div>
     );
@@ -85,7 +84,7 @@ GhgEmissions.propTypes = {
   breakSelected: PropTypes.object.isRequired,
   handleBreakByChange: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
-  filterSelected: PropTypes.object.isRequired,
+  filtersSelected: PropTypes.array.isRequired,
   handleFilterChange: PropTypes.func.isRequired
 };
 

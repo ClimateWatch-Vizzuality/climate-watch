@@ -88,17 +88,24 @@ export const getFilterOptions = createSelector(
   (breakSelected, filters) => filters[breakSelected.value] || []
 );
 
-export const getFilterSelected = createSelector(
+export const getFiltersSelected = createSelector(
   [getFilterOptions, getFilterSelection],
   (filters, selected) => {
     if (filters.length > 0) {
       if (selected) {
-        const filtered = filters.filter(filter => filter.value == selected); // eslint-disable-line eqeqeq
-        return filtered.length > 0 ? filtered[0] : filters[0];
+        const selectedFilters = [];
+        selected.split(',').forEach(filter => {
+          selectedFilters.push(
+            filters.find(
+              filterOption => filterOption.value === parseInt(filter, 10)
+            )
+          );
+        });
+        return selectedFilters;
       }
-      return filters[0];
+      return [filters[0]];
     }
-    return {};
+    return [];
   }
 );
 
@@ -188,5 +195,5 @@ export default {
   getBreaksByOptions,
   getBreakSelected,
   getFilterOptions,
-  getFilterSelected
+  getFiltersSelected
 };

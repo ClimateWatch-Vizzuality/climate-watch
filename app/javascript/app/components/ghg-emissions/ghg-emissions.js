@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import isEqual from 'lodash/isEqual';
 
 import {
   getChartData,
@@ -13,7 +14,7 @@ import {
   getBreaksByOptions,
   getBreakSelected,
   getFilterOptions,
-  getFilterSelected
+  getFiltersSelected
 } from './ghg-emissions-selectors';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -37,23 +38,23 @@ const mapStateToProps = (state, { location }) => {
     breaksBy: getBreaksByOptions(ghg),
     breakSelected: getBreakSelected(ghg),
     filters: getFilterOptions(ghg),
-    filterSelected: getFilterSelected(ghg)
+    filtersSelected: getFiltersSelected(ghg)
   };
 };
 
 function needsRequestData(props, nextProps) {
-  const { sourceSelected, breakSelected, filterSelected } = nextProps;
+  const { sourceSelected, breakSelected, filtersSelected } = nextProps;
   const hasValues =
-    sourceSelected.value && breakSelected.value && filterSelected.value;
+    sourceSelected.value && breakSelected.value && filtersSelected;
   const hasChanged =
     sourceSelected.value !== props.sourceSelected.value ||
     breakSelected.value !== props.breakSelected.value ||
-    filterSelected.value !== props.filterSelected.value;
+    !isEqual(filtersSelected, props.filtersSelected);
   return hasValues && hasChanged;
 }
 
 function getFiltersParsed(props) {
-  const { sourceSelected, breakSelected, filterSelected } = props;
+  const { sourceSelected, breakSelected, filtersSelected } = props;
   const filter = {};
   // we need to request default value for other indicators
   switch (breakSelected.value) {
@@ -75,7 +76,7 @@ function getFiltersParsed(props) {
   return {
     ...filter,
     source: sourceSelected.value,
-    [breakSelected.value]: filterSelected.value
+    [breakSelected.value]: filtersSelected.value
   };
 }
 
@@ -101,8 +102,9 @@ class GhgEmissionsContainer extends PureComponent {
     this.updateUrlParam({ name: 'breakBy', value: breakBy.value });
   };
 
-  handleFilterChange = filter => {
-    this.updateUrlParam({ name: 'filter', value: filter.value });
+  handleFilterChange = filters => {
+    const filtersParam = filters.map(filter => filter.value);
+    this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
   };
 
   updateUrlParam(param) {
