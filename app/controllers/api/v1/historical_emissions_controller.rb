@@ -3,7 +3,8 @@ module Api
     HistoricalEmissionsMetadata = Struct.new(
       :data_sources,
       :sectors,
-      :gases
+      :gases,
+      :locations
     ) do
       alias_method :read_attribute_for_serialization, :send
     end
@@ -16,14 +17,43 @@ module Api
       end
 
       def meta
-        args = [
-          ::HistoricalEmissions::DataSource.all,
-          ::HistoricalEmissions::Sector.all,
-          ::HistoricalEmissions::Gas.all
-        ]
+        render(
+          json: HistoricalEmissionsMetadata.new(
+            merged_records(grouped_records),
+            ::HistoricalEmissions::Sector.all,
+            ::HistoricalEmissions::Gas.all,
+            Location.all
+          ),
+          serializer: Api::V1::HistoricalEmissions::MetadataSerializer
+        )
+      end
 
-        render json: HistoricalEmissionsMetadata.new(*args),
-               serializer: Api::V1::HistoricalEmissions::MetadataSerializer
+      private
+
+      def grouped_records
+        ::HistoricalEmissions::Record.
+          select(
+            <<-SQL
+              data_source_id,
+              ARRAY_AGG(DISTINCT sector_id) AS sector_ids,
+              ARRAY_AGG(DISTINCT gas_id) AS gas_ids,
+              ARRAY_AGG(DISTINCT location_id) AS location_ids
+            SQL
+          ).
+          group('data_source_id').
+          as_json.
+          map { |h| [h['data_source_id'], h.symbolize_keys.except(:id)] }.
+          to_h
+      end
+
+      def merged_records(records)
+        ::HistoricalEmissions::DataSource.
+          all.map do |source|
+            {
+              id: source.id,
+              name: source.name
+            }.merge(records[source.id])
+          end
       end
     end
   end
