@@ -23,7 +23,7 @@ class GhgEmissions extends PureComponent {
       filters,
       filtersSelected,
       handleFilterChange,
-      colors
+      handleRemoveTag
     } = this.props;
     return (
       <div>
@@ -57,19 +57,21 @@ class GhgEmissions extends PureComponent {
         <ChartLine config={config} data={data} />
         <div className={styles.tags}>
           {filtersSelected &&
-            filtersSelected.map((filter, index) => (
-              <Tag
-                className={styles.tag}
-                key={`tag-${filter.value}`}
-                data={{
-                  color: colors[index],
-                  name: filter.label
-                }}
-                onRemove={() => {
-                  console.info('please remove me');
-                }}
-              />
-            ))}
+            filtersSelected.map(
+              filter =>
+                (config.theme[filter.column] ? (
+                  <Tag
+                    className={styles.tag}
+                    key={`${filter.value}`}
+                    data={{
+                      color: config.theme[filter.column].stroke,
+                      label: filter.label,
+                      id: filter.value
+                    }}
+                    onRemove={handleRemoveTag}
+                  />
+                ) : null)
+            )}
         </div>
       </div>
     );
@@ -85,10 +87,10 @@ GhgEmissions.propTypes = {
   breaksBy: PropTypes.array.isRequired,
   breakSelected: PropTypes.object.isRequired,
   handleBreakByChange: PropTypes.func.isRequired,
+  handleRemoveTag: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
   filtersSelected: PropTypes.array.isRequired,
-  handleFilterChange: PropTypes.func.isRequired,
-  colors: PropTypes.array
+  handleFilterChange: PropTypes.func.isRequired
 };
 
 export default GhgEmissions;

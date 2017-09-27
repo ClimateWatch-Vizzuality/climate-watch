@@ -27,22 +27,30 @@ class TooltipChart extends PureComponent {
         )}
         {content.payload &&
           content.payload.length > 0 &&
-          content.payload.map(y => (
-            <div key={y.dataKey} className={styles.label}>
-              <div className={styles.legend}>
-                <span
-                  className={styles.labelDot}
-                  style={{ backgroundColor: config.theme[y.dataKey].stroke }}
-                />
-                <p className={styles.labelName}>
-                  {config.tooltip[y.dataKey].label}
-                </p>
-              </div>
-              <p className={styles.labelValue}>
-                {y.payload ? `${format('.3s')(y.payload[y.dataKey])}t` : ''}
-              </p>
-            </div>
-          ))}
+          content.payload.map(
+            y =>
+              (y.payload ? (
+                <div
+                  key={`${y.dataKey}-${y.payload[y.dataKey]}`}
+                  className={styles.label}
+                >
+                  <div className={styles.legend}>
+                    <span
+                      className={styles.labelDot}
+                      style={{
+                        backgroundColor: config.theme[y.dataKey].stroke
+                      }}
+                    />
+                    <p className={styles.labelName}>
+                      {config.tooltip[y.dataKey].label}
+                    </p>
+                  </div>
+                  <p className={styles.labelValue}>
+                    {y.payload ? `${format('.3s')(y.payload[y.dataKey])}t` : ''}
+                  </p>
+                </div>
+              ) : null)
+          )}
       </div>
     );
   }

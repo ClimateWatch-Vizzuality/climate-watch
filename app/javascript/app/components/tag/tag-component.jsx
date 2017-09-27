@@ -12,8 +12,8 @@ class Tag extends PureComponent {
     return (
       <div className={cx(styles.tag, className)}>
         <span className={styles.dot} style={{ backgroundColor: data.color }} />
-        <p>{data.name}</p>
-        <button className={styles.closeButton} onClick={onRemove}>
+        <p>{data.label}</p>
+        <button className={styles.closeButton} onClick={() => onRemove(data)}>
           <Icon icon={closeIcon} className={styles.icon} />
         </button>
       </div>
