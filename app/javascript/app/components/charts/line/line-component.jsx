@@ -31,6 +31,7 @@ class ChartLine extends PureComponent {
             tickFormatter={tick => `${format('.1s')(tick)}t`}
             tickLine={false}
             tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+            domain={['auto', 'auto']}
           />
           <CartesianGrid vertical={false} />
           <Tooltip
