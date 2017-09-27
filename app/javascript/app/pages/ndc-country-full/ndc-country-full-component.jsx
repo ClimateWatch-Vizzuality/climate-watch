@@ -33,7 +33,7 @@ class NDCCountryFull extends PureComponent {
     const selectOptions = content
       ? content.map(item => ({
         value: item.id,
-        label: `#${item.id}`
+        label: `${item.document_type.toUpperCase()} (${item.language.toUpperCase()})`
       }))
       : [];
 
