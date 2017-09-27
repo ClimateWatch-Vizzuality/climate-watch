@@ -3,7 +3,7 @@ module Api
     class NdcTextSerializer < ActiveModel::Serializer
       include Rails.application.routes.url_helpers
 
-      attributes :id, :links, :html
+      attributes :id, :language, :document_type, :links, :html
       belongs_to :location, serializer: Api::V1::LocationNanoSerializer
 
       def links

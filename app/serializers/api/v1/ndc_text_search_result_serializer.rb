@@ -3,8 +3,7 @@ module Api
     class NdcTextSearchResultSerializer < ActiveModel::Serializer
       include Rails.application.routes.url_helpers
 
-      attribute :id
-      attribute :links
+      attributes :language, :document_type, :links
       attribute :matches, if: :query_present?
       belongs_to :location, serializer: Api::V1::LocationNanoSerializer
 
