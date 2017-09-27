@@ -12,7 +12,7 @@ import 'react-select/dist/react-select.css';
 import styles from './dropdown-styles.scss';
 
 const Dropdown = props => {
-  const arrow = props.transparent ? dropdownArrowWhite : dropdownArrow;
+  const arrow = props.white ? dropdownArrowWhite : dropdownArrow;
 
   return (
     <div className={styles.dropdownWrapper}>

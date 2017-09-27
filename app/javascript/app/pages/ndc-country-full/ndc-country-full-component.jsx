@@ -69,7 +69,7 @@ class NDCCountryFull extends PureComponent {
             >
               {selectOptions.length > 1 && (
                 <Dropdown
-                  transparent
+                  white
                   searchable={false}
                   clearable={false}
                   options={selectOptions}

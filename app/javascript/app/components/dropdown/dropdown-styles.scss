@@ -92,7 +92,7 @@
   outline: none;
 }
 
-.transparent :global {
+.white :global {
   .Select-control {
     border: solid 1px rgba($white, 0.3);
   }
@@ -114,7 +114,7 @@
   }
 }
 
-.white :global {
+.transparent :global {
   height: 60px;
 
   .Select-control {

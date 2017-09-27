@@ -18,7 +18,7 @@ class CountriesSelect extends PureComponent {
           onChange={handleValueClick}
           value={null}
           clearable={false}
-          transparent
+          white
           searchable
           search
         />
