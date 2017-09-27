@@ -23,10 +23,23 @@ const fetchGhgEmissionsMeta = createThunkAction(
           if (data) {
             const dataParsed = {};
             Object.keys(data).forEach(key => {
-              dataParsed[key] = data[key].map(item => ({
-                value: item.id,
-                label: upperFirst(item.name)
-              }));
+              if (key === 'data_sources') {
+                dataParsed[key] = data[key].map(item => {
+                  let newitem = {
+                    value: item.id,
+                    label: upperFirst(item.name)
+                  };
+                  if (key === 'data_sources') {
+                    newitem = {
+                      ...item,
+                      location: item.location_ids,
+                      sector: item.sector_ids,
+                      gas: item.gas_ids
+                    };
+                  }
+                  return newitem;
+                });
+              }
             }, this);
             dispatch(fetchGhgEmissionsMetaReady(dataParsed));
           } else {
