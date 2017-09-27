@@ -47,6 +47,7 @@ class ChartLine extends PureComponent {
               dataKey={column.value}
               dot={false}
               stroke={config.theme[column.value].stroke || ''}
+              strokeWidth={2}
             />
           ))}
         </LineChart>

@@ -17,8 +17,6 @@ const getData = state =>
   (state.data ? state.data.filter(d => d.gwp === 'AR2') : []);
 
 // constants needed for data parsing
-const DATA_LIMIT = 10;
-
 const colors = [
   '#2D9290',
   '#B25BD0',
@@ -160,16 +158,14 @@ export const getFiltersSelected = createSelector(
       const selectedValues = selected
         ? selected.split(',')
         : sortedFilters.map(filter => filter.value);
-      selectedValues.forEach((filter, index) => {
-        if (index < DATA_LIMIT) {
-          const filterData = sortedFilters.find(
-            filterOption => filterOption.value === parseInt(filter, 10)
-          );
-          selectedFilters.push({
-            ...filterData,
-            column: getYColumnValue(filterData.label)
-          });
-        }
+      selectedValues.forEach(filter => {
+        const filterData = sortedFilters.find(
+          filterOption => filterOption.value === parseInt(filter, 10)
+        );
+        selectedFilters.push({
+          ...filterData,
+          column: getYColumnValue(filterData.label)
+        });
       });
       return selectedFilters;
     }

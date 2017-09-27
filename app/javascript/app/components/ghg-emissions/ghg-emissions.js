@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import isEqual from 'lodash/isEqual';
 
 import {
   getChartData,
@@ -47,7 +48,8 @@ function needsRequestData(props, nextProps) {
     sourceSelected.value && breakSelected.value && filtersSelected;
   const hasChanged =
     sourceSelected.value !== props.sourceSelected.value ||
-    breakSelected.value !== props.breakSelected.value;
+    breakSelected.value !== props.breakSelected.value ||
+    !isEqual(filtersSelected.value, props.filtersSelected.value);
   return hasValues && hasChanged;
 }
 
@@ -63,6 +65,7 @@ function getFiltersParsed(props) {
     case 'location':
       filter.gas = 1;
       filter.sector = 1;
+      filter.location = 'WORLD';
       break;
     case 'sector':
       filter.gas = 1;
@@ -71,10 +74,13 @@ function getFiltersParsed(props) {
     default:
       break;
   }
+  const filtersSelectedValues = filtersSelected.map(
+    d => (breakSelected.value === 'location' ? d.label : d.value)
+  );
   return {
     ...filter,
     source: sourceSelected.value,
-    [breakSelected.value]: filtersSelected.value
+    [breakSelected.value]: filtersSelectedValues.toString()
   };
 }
 
