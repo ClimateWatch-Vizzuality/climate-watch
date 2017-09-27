@@ -4,6 +4,8 @@ class Ndc < ApplicationRecord
   belongs_to :location
   has_many :ndc_targets, class_name: 'NdcSdg::NdcTarget', dependent: :destroy
 
+  validates :document_type, inclusion: {in: %w(ndc indc)}
+
   PG_SEARCH_HIGHLIGHT_START = '<span class="highlight">'.freeze
   PG_SEARCH_HIGHLIGHT_END = '</span>'.freeze
   PG_SEARCH_HIGHLIGHT_FRAGMENT_DELIMITER = '[[FRAGMENT DELIMITER]]'.freeze

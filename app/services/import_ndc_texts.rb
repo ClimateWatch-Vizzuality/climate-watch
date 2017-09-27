@@ -3,7 +3,7 @@ class ImportNdcTexts
     Ndc.delete_all
     bucket_name = Rails.application.secrets.s3_bucket_name
     s3 = Aws::S3::Client.new
-    s3.list_objects(bucket: bucket_name, prefix: 'ndcs').each do |response|
+    s3.list_objects(bucket: bucket_name, prefix: 'ndcs/').each do |response|
       md_objects = response.contents.select { |o| o.key =~ /\.html$/ }
       md_objects.each { |object| import_object(s3, bucket_name, object) }
     end
@@ -13,17 +13,29 @@ class ImportNdcTexts
   private
 
   def import_object(s3, bucket_name, object)
-    object.key =~ /ndcs\/(.+?)(-.+)?.html/
-    code = Regexp.last_match[1]
-    location = Location.find_by_iso_code3(code)
-    unless location
-      Rails.logger.warn "Location not found: #{code}"
+    object.key =~ /ndcs\/(.+?)-(.+?)-(.+?)(-.+?)?(\.md)?\.html/
+    unless Regexp.last_match
+      Rails.logger.error "Ignored file with wrong naming convention #{object.key}"
       return
     end
+
+    code = Regexp.last_match[1]
+    type = Regexp.last_match[2]
+    lang = Regexp.last_match[3]
+    location = Location.find_by_iso_code3(code)
+    unless location
+      Rails.logger.error "Location not found: #{code}"
+      return
+    end
+
     file = s3.get_object(bucket: bucket_name, key: object.key)
     html_content = html_content_with_resolved_image_paths(file.body.read)
-
-    Ndc.create(location: location, full_text: html_content)
+    Ndc.create!(
+      location: location,
+      full_text: html_content,
+      document_type: type.downcase,
+      language: lang
+    )
   end
 
   def html_content_with_resolved_image_paths(html_content)
