@@ -30,10 +30,7 @@ class TooltipChart extends PureComponent {
           content.payload.map(
             y =>
               (y.payload ? (
-                <div
-                  key={`${y.dataKey}-${y.payload[y.dataKey]}`}
-                  className={styles.label}
-                >
+                <div key={`${y.dataKey}`} className={styles.label}>
                   <div className={styles.legend}>
                     <span
                       className={styles.labelDot}

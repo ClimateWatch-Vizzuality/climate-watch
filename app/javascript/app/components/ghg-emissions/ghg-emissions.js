@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import isEqual from 'lodash/isEqual';
 
 import {
   getChartData,
@@ -48,8 +47,7 @@ function needsRequestData(props, nextProps) {
     sourceSelected.value && breakSelected.value && filtersSelected;
   const hasChanged =
     sourceSelected.value !== props.sourceSelected.value ||
-    breakSelected.value !== props.breakSelected.value ||
-    !isEqual(filtersSelected, props.filtersSelected);
+    breakSelected.value !== props.breakSelected.value;
   return hasValues && hasChanged;
 }
 

@@ -4,7 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
 import camelCase from 'lodash/camelCase';
 
-const getData = state => state.data || [];
 const getMetadata = state => state.meta || {};
 const getRegions = state => state.regions || [];
 const getSourceSelection = state => parseInt(state.search.source, 10) || null;
@@ -12,18 +11,15 @@ const getBreakSelection = state => state.search.breakBy || null;
 const getFilterSelection = state => state.search.filter || null;
 const getMetaFiltered = meta => omit(meta, 'data_source');
 
+// TODO: currently data (specifically PIK) contains an extra value 'gwp' which is vairable for all selectors
+// This data needs to be separated, for now we are just rendering one version to prevent child flattening
+const getData = state =>
+  (state.data ? state.data.filter(d => d.gwp === 'AR2') : []);
+
 // constants needed for data parsing
+const DATA_LIMIT = 10;
+
 const colors = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
   '#2D9290',
   '#B25BD0',
   '#7EA759',
@@ -77,6 +73,14 @@ export const getFilters = createSelector(
     location: parseRegions(regions)
   })
 );
+
+function sortLabelByAlpha(array) {
+  return array.sort((a, b) => {
+    if (a.label < b.label) return -1;
+    if (a.label > b.label) return 1;
+    return 0;
+  });
+}
 
 export const getSourceOptions = createSelector(
   getMetadata,
@@ -143,7 +147,7 @@ export const getFilterOptions = createSelector(
     const filters = filtersData.filter(
       filter => activeFilterKeys.indexOf(filter.value) > -1
     );
-    return filters;
+    return sortLabelByAlpha(filters);
   }
 );
 
@@ -151,18 +155,21 @@ export const getFiltersSelected = createSelector(
   [getFilterOptions, getFilterSelection],
   (filters, selected) => {
     if (filters.length > 0) {
+      const sortedFilters = sortLabelByAlpha(filters);
       const selectedFilters = [];
       const selectedValues = selected
         ? selected.split(',')
-        : filters.map(filter => filter.value);
-      selectedValues.forEach(filter => {
-        const filterData = filters.find(
-          filterOption => filterOption.value === parseInt(filter, 10)
-        );
-        selectedFilters.push({
-          ...filterData,
-          column: getYColumnValue(filterData.label)
-        });
+        : sortedFilters.map(filter => filter.value);
+      selectedValues.forEach((filter, index) => {
+        if (index < DATA_LIMIT) {
+          const filterData = sortedFilters.find(
+            filterOption => filterOption.value === parseInt(filter, 10)
+          );
+          selectedFilters.push({
+            ...filterData,
+            column: getYColumnValue(filterData.label)
+          });
+        }
       });
       return selectedFilters;
     }
@@ -173,7 +180,7 @@ export const getFiltersSelected = createSelector(
 export const getChartData = createSelector(
   [getData, getBreakSelected, getFiltersSelected],
   (data, breakBy, filters) => {
-    if (!data || !data.length) return [];
+    if (!data || !data.length || !breakBy || !filters) return [];
     const activeFiltersLabels = filters.map(filter => filter.label);
     const xValues = data[0].emissions.length
       ? data[0].emissions.map(d => d.year)
@@ -181,6 +188,7 @@ export const getChartData = createSelector(
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
+        // console.log(d);
         if (activeFiltersLabels.indexOf(d[breakBy.value]) > -1) {
           const yKey = getYColumnValue(d[breakBy.value]);
           const yData = d.emissions.find(e => e.year === x);
@@ -202,7 +210,7 @@ function getThemeConfig(columns) {
   const theme = {};
   columns.forEach((column, index) => {
     theme[column.value] = {
-      stroke: colors[index],
+      stroke: colors[index % 10],
       strokeWidth: 5
     };
   });

@@ -26,7 +26,8 @@ const fetchGhgEmissionsMeta = createThunkAction(
               dataParsed[key] = data[key].map(item => {
                 let newItem = {
                   value: item.id,
-                  label: upperFirst(item.name)
+                  label:
+                    key === 'locations' ? item.iso_code3 : upperFirst(item.name)
                 };
                 if (key === 'data_sources') {
                   newItem = {
