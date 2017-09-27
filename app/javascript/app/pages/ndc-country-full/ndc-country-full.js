@@ -20,12 +20,14 @@ const mapStateToProps = (state, { match }) => {
     countries: state.countries.data,
     iso
   };
+
   return {
     fetched: state.countryNDCFull.data[iso],
     loading: state.countryNDCFull.loading,
     country: getCountry(countryData),
     content: state.countryNDCFull.data[iso],
-    search: search.search
+    search: search.search,
+    selected: state.countryNDCFull.selected
   };
 };
 
@@ -52,10 +54,16 @@ class NDCCountryFullContainer extends PureComponent {
     fetchCountryNDCFull(iso, query);
   };
 
+  onSelectChange = args => {
+    const { changeSelectedCountryNDCFull } = this.props;
+    changeSelectedCountryNDCFull(args.value);
+  };
+
   render() {
     return createElement(NDCCountryFullComponent, {
       ...this.props,
-      onSearchChange: this.onSearchChange
+      onSearchChange: this.onSearchChange,
+      onSelectChange: this.onSelectChange
     });
   }
 }
@@ -64,9 +72,10 @@ NDCCountryFullContainer.propTypes = {
   match: Proptypes.object.isRequired,
   history: Proptypes.object.isRequired,
   location: Proptypes.object.isRequired,
-  fetched: Proptypes.object,
+  fetched: Proptypes.array,
   loading: Proptypes.bool,
-  fetchCountryNDCFull: Proptypes.func
+  fetchCountryNDCFull: Proptypes.func,
+  changeSelectedCountryNDCFull: Proptypes.func
 };
 
 export default withRouter(

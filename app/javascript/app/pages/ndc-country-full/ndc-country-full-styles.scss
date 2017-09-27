@@ -6,6 +6,16 @@
   grid-template-columns: 7fr 5fr;
 }
 
+.twoFoldReversed {
+  @extend %grid;
+
+  grid-template-columns: 5fr 7fr;
+}
+
+.oneFold {
+
+}
+
 .backButton {
   margin-right: 20px;
 }

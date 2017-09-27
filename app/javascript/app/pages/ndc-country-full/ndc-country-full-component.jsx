@@ -4,6 +4,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import Button from 'components/button';
 import Icon from 'components/icon';
+import Dropdown from 'components/dropdown';
 import Search from 'components/search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
@@ -24,8 +25,24 @@ class NDCCountryFull extends PureComponent {
       match,
       onSearchChange,
       search,
+      onSelectChange,
+      selected,
       content
     } = this.props;
+
+    const selectOptions = content
+      ? content.map(item => ({
+        value: item.id,
+        label: `#${item.id}`
+      }))
+      : [];
+
+    const selectedContent =
+      !isEmpty(content) &&
+      (content.length > 1
+        ? content.find(item => item.id === selected)
+        : content[0]);
+
     return (
       <div>
         <Header image={background}>
@@ -41,7 +58,25 @@ class NDCCountryFull extends PureComponent {
               </Button>
               <Intro title={`${country.wri_standard_name} Full Content`} />
             </div>
-            <div className={styles.fiveFold}>
+            <div
+              className={
+                selectOptions.length > 1 ? (
+                  styles.twoFoldReversed
+                ) : (
+                  styles.oneFold
+                )
+              }
+            >
+              {selectOptions.length > 1 && (
+                <Dropdown
+                  transparent
+                  searchable={false}
+                  clearable={false}
+                  options={selectOptions}
+                  value={selected}
+                  onChange={onSelectChange}
+                />
+              )}
               <Search
                 theme={lightSearch}
                 placeholder="Search"
@@ -55,10 +90,10 @@ class NDCCountryFull extends PureComponent {
         {isEmpty(content) &&
         !loading && <NoContent message="No content available" />}
         <div className={cx(layout.content, styles.bodyContent)}>
-          {!isEmpty(content) && (
+          {!isEmpty(selectedContent) && (
             <div
               className={cx(contentStyles.content, styles.innerContent)}
-              dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
+              dangerouslySetInnerHTML={{ __html: selectedContent.html }} // eslint-disable-line
             />
           )}
         </div>
@@ -72,7 +107,9 @@ NDCCountryFull.propTypes = {
   country: Proptypes.object.isRequired,
   onSearchChange: Proptypes.func.isRequired,
   search: Proptypes.string,
-  content: Proptypes.object,
+  content: Proptypes.array,
+  onSelectChange: Proptypes.func,
+  selected: Proptypes.number,
   loading: Proptypes.bool
 };
 

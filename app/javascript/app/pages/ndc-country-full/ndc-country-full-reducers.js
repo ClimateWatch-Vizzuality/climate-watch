@@ -12,12 +12,12 @@ export default {
   fetchCountryNDCFullReady: (state, { payload }) => {
     const newState = {
       ...state,
+      selected: payload[0].id,
       data: {
         ...state.data,
-        [payload.location.iso_code3]: payload
+        [payload[0].location.iso_code3]: payload
       }
     };
-
     return setLoaded(true, setLoading(false, newState));
   },
   fetchCountryNDCFullFailed: (state, { payload }) => {
@@ -25,9 +25,16 @@ export default {
       ...state,
       data: {
         ...state.data,
-        [payload]: {}
+        [payload]: []
       }
     };
     return setLoaded(true, setLoading(false, newState));
+  },
+  changeSelectedCountryNDCFull: (state, { payload }) => {
+    const newState = {
+      ...state,
+      selected: payload
+    };
+    return newState;
   }
 };
