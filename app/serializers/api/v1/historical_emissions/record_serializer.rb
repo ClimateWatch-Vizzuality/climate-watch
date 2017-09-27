@@ -7,6 +7,7 @@ module Api
         belongs_to :data_source, key: :source
         belongs_to :sector
         attribute :emissions
+        attribute :gwp
 
         def location
           object.location.iso_code3

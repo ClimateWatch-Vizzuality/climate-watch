@@ -17,7 +17,7 @@ module HistoricalEmissions
       filters(records, params)
     end
 
-    def self.filters(records, params)
+    private_class_method def self.filters(records, params)
       unless params[:location].blank?
         records = records.where(
           locations: {iso_code3: params[:location].split(',')}
@@ -29,12 +29,10 @@ module HistoricalEmissions
         historical_emissions_data_sources: :source,
         historical_emissions_sectors: :sector
       }.each do |k, v|
-        records = records.where(k => {id: params[v]}) if params[v]
+        records = records.where(k => {id: params[v].split(',')}) if params[v]
       end
 
       records
     end
-
-    private_class_method :filters
   end
 end
