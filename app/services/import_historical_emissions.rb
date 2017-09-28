@@ -35,6 +35,7 @@ class ImportHistoricalEmissions
     HistoricalEmissions::Sector.delete_all
     HistoricalEmissions::Gas.delete_all
     HistoricalEmissions::Record.delete_all
+    HistoricalEmissions::Record.delete_all
   end
 
   def sector_attributes(row)
@@ -69,7 +70,7 @@ class ImportHistoricalEmissions
       data_source: HistoricalEmissions::DataSource.find_by(name: row[:source]),
       sector: HistoricalEmissions::Sector.find_by(name: row[:sector]),
       gas: HistoricalEmissions::Gas.find_or_create_by(name: row[:gas]),
-      gwp: row[:gwp],
+      gwp: HistoricalEmissions::Gwp.find_or_create_by(name: row[:gwp]),
       emissions: emissions(row)
     }
   end

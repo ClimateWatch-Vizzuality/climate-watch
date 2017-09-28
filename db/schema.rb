@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170925144250) do
+ActiveRecord::Schema.define(version: 20170928114306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,15 +106,22 @@ ActiveRecord::Schema.define(version: 20170925144250) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "historical_emissions_gwps", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "historical_emissions_records", force: :cascade do |t|
     t.bigint "location_id"
     t.bigint "data_source_id"
     t.bigint "sector_id"
     t.bigint "gas_id"
-    t.text "gwp"
     t.jsonb "emissions"
+    t.bigint "gwp_id"
     t.index ["data_source_id"], name: "index_historical_emissions_records_on_data_source_id"
     t.index ["gas_id"], name: "index_historical_emissions_records_on_gas_id"
+    t.index ["gwp_id"], name: "index_historical_emissions_records_on_gwp_id"
     t.index ["location_id"], name: "index_historical_emissions_records_on_location_id"
     t.index ["sector_id"], name: "index_historical_emissions_records_on_sector_id"
   end
@@ -226,6 +233,7 @@ ActiveRecord::Schema.define(version: 20170925144250) do
   add_foreign_key "cait_indc_values", "locations", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_gases", column: "gas_id", on_delete: :cascade
+  add_foreign_key "historical_emissions_records", "historical_emissions_gwps", column: "gwp_id"
   add_foreign_key "historical_emissions_records", "historical_emissions_sectors", column: "sector_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "locations", on_delete: :cascade
   add_foreign_key "historical_emissions_sectors", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
