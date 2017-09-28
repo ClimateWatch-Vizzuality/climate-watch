@@ -31,6 +31,12 @@ const fetchGhgEmissionsMeta = createThunkAction(
                       ? item.wri_standard_name
                       : upperFirst(item.name)
                 };
+                if (key === 'location') {
+                  newItem = {
+                    ...newItem,
+                    iso: item.iso_code3
+                  };
+                }
                 if (key === 'data_source') {
                   newItem = {
                     ...newItem,

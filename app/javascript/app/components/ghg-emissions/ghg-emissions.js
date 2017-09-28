@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import isEqual from 'lodash/isEqual';
 
 import {
   getChartData,
@@ -52,50 +51,26 @@ function needsRequestData(props, nextProps) {
     sourceSelected.value && breakSelected.value && filtersSelected;
   const hasChanged =
     sourceSelected.value !== props.sourceSelected.value ||
-    breakSelected.value !== props.breakSelected.value ||
-    !isEqual(filtersSelected.value, props.filtersSelected.value);
+    breakSelected.value !== props.breakSelected.value;
   return hasValues && hasChanged;
 }
 
-const TOP_EMITTERS = [
-  'CHN',
-  'USA',
-  'EU28',
-  'IND',
-  'RUS',
-  'JPN',
-  'BRA',
-  'IDN',
-  'CAN',
-  'MEX'
-];
-
 function getFiltersParsed(props) {
-  const { sourceSelected, breakSelected, filtersSelected, location } = props;
-  const search = qs.parse(location.search);
+  const { sourceSelected, breakSelected } = props;
   const filter = {};
-  // we need to request default value for other indicators
-  const filtersSelectedValues = filtersSelected.map(
-    d => (breakSelected.value === 'location' ? d.label : d.value)
-  );
 
   switch (breakSelected.value) {
     case 'gas':
       filter.location = 'WORLD';
       filter.sector = 1;
-      filter.gas = filtersSelectedValues.toString();
       break;
     case 'location':
       filter.gas = 1;
       filter.sector = 1;
-      filter.location = search.filter
-        ? filtersSelectedValues.toString()
-        : TOP_EMITTERS.toString();
       break;
     case 'sector':
       filter.gas = 1;
       filter.location = 'WORLD';
-      filter.sector = filtersSelectedValues.toString();
       break;
     default:
       break;

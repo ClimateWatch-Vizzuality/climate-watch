@@ -41,7 +41,7 @@ class GhgEmissions extends PureComponent {
             clearable={false}
           />
           <Dropdown
-            label="IPCCVersion"
+            label="IPCC Version"
             options={versions}
             onChange={handleVersionChange}
             value={versionSelected}
@@ -71,7 +71,7 @@ class GhgEmissions extends PureComponent {
             config.columns.y.map(column => (
               <Tag
                 className={styles.tag}
-                key={`${column.label}`}
+                key={`${column.value}`}
                 data={{
                   color: config.theme[column.value].stroke,
                   label: column.label,

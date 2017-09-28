@@ -7,6 +7,19 @@ import {
 } from './ghg-emissions-utils';
 
 // constants needed for data parsing
+const TOP_EMITTERS = [
+  'CHN',
+  'USA',
+  'EU28',
+  'IND',
+  'RUS',
+  'JPN',
+  'BRA',
+  'IDN',
+  'CAN',
+  'MEX'
+];
+
 const DATA_SCALE = 1000000;
 
 const COLORS = [
@@ -102,7 +115,7 @@ export const getVersionSelected = createSelector(
 );
 
 // BreakBy selectors
-export const getBreaksByOptions = createSelector(() => BREAY_BY_OPTIONS);
+export const getBreaksByOptions = () => BREAY_BY_OPTIONS;
 
 export const getBreakSelected = createSelector(
   [getBreaksByOptions, getBreakSelection],
@@ -130,12 +143,24 @@ export const getFilterOptions = createSelector(
 );
 
 export const getFiltersSelected = createSelector(
-  [getFilterOptions, getFilterSelection],
-  (filters, selected) => {
+  [getFilterOptions, getFilterSelection, getBreakSelected],
+  (filters, selected, breakBy) => {
     if (!filters || !filters.length) return [];
-    if (!selected) return filters;
-    const selectedValues = selected.split(',');
-    return filters.filter(filter => selectedValues.indexOf(filter.value));
+    if (!selected && breakBy.value !== 'location') return filters;
+    let selectedFilters = [];
+    if (breakBy.value === 'location' && !selected) {
+      const selectedValues = TOP_EMITTERS;
+      selectedFilters = filters.filter(
+        filter => selectedValues.indexOf(filter.iso) > -1
+      );
+    } else {
+      const selectedValues = selected.split(',');
+      const selectedValuesNum = selectedValues.map(d => parseInt(d, 10));
+      selectedFilters = filters.filter(
+        filter => selectedValuesNum.indexOf(filter.value) > -1
+      );
+    }
+    return selectedFilters;
   }
 );
 
@@ -144,7 +169,8 @@ export const filterData = createSelector(
   [getData, getVersionSelected, getFiltersSelected, getBreakSelected],
   (data, version, filters, breakBy) => {
     if (!data || !data.length || !filters || !filters.length) return [];
-    const filterValues = filters.map(filter => filter.label);
+    const filterKey = breakBy.value === 'location' ? 'iso' : 'label';
+    const filterValues = filters.map(filter => filter[filterKey]);
     return data.filter(
       d =>
         d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
