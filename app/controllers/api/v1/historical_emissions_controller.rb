@@ -4,6 +4,7 @@ module Api
       :data_sources,
       :sectors,
       :gases,
+      :gwps,
       :locations
     ) do
       alias_method :read_attribute_for_serialization, :send
@@ -22,6 +23,7 @@ module Api
             merged_records(grouped_records),
             ::HistoricalEmissions::Sector.all,
             ::HistoricalEmissions::Gas.all,
+            ::HistoricalEmissions::Gwp.all,
             Location.all
           ),
           serializer: Api::V1::HistoricalEmissions::MetadataSerializer
@@ -37,7 +39,8 @@ module Api
               data_source_id,
               ARRAY_AGG(DISTINCT sector_id) AS sector_ids,
               ARRAY_AGG(DISTINCT gas_id) AS gas_ids,
-              ARRAY_AGG(DISTINCT location_id) AS location_ids
+              ARRAY_AGG(DISTINCT location_id) AS location_ids,
+              ARRAY_AGG(DISTINCT gwp_id) AS gwp_ids
             SQL
           ).
           group('data_source_id').

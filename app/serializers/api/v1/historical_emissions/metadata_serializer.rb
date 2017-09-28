@@ -2,29 +2,35 @@ module Api
   module V1
     module HistoricalEmissions
       class MetadataSerializer < ActiveModel::Serializer
-        attributes :data_sources, :sectors, :gases, :locations
+        attributes :data_source, :sector, :gas, :location, :gwp
 
-        def data_sources
+        def data_source
           object.data_sources.map do |g|
-            g.slice(:id, :name, :location_ids, :sector_ids, :gas_ids)
+            g.slice(:id, :name, :location_ids, :sector_ids, :gas_ids, :gwp_ids)
           end
         end
 
-        def sectors
+        def sector
           object.sectors.map do |g|
             g.slice(:id, :name)
           end
         end
 
-        def gases
+        def gas
           object.gases.map do |g|
             g.slice(:id, :name)
           end
         end
 
-        def locations
+        def location
           object.locations.map do |l|
-            l.slice(:id, :iso_code3)
+            l.slice(:id, :iso_code3, :wri_standard_name)
+          end
+        end
+
+        def gwp
+          object.gwps.map do |g|
+            g.slice(:id, :name)
           end
         end
       end
