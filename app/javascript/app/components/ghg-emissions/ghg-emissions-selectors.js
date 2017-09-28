@@ -184,7 +184,6 @@ export const getChartData = createSelector(
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
-        // console.log(d);
         if (activeFiltersLabels.indexOf(d[breakBy.value]) > -1) {
           const yKey = getYColumnValue(d[breakBy.value]);
           const yData = d.emissions.find(e => e.year === x);

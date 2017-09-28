@@ -53,34 +53,53 @@ function needsRequestData(props, nextProps) {
   return hasValues && hasChanged;
 }
 
+const TOP_EMITTERS = [
+  'CHN',
+  'USA',
+  'EU28',
+  'IND',
+  'RUS',
+  'JPN',
+  'BRA',
+  'IDN',
+  'CAN',
+  'MEX'
+];
+
 function getFiltersParsed(props) {
-  const { sourceSelected, breakSelected, filtersSelected } = props;
+  const { sourceSelected, breakSelected, filtersSelected, location } = props;
+  const search = qs.parse(location.search);
   const filter = {};
   // we need to request default value for other indicators
+  const filtersSelectedValues = filtersSelected.map(
+    d => (breakSelected.value === 'location' ? d.label : d.value)
+  );
+
   switch (breakSelected.value) {
     case 'gas':
       filter.location = 'WORLD';
       filter.sector = 1;
+      filter.gas = filtersSelectedValues.toString();
       break;
     case 'location':
       filter.gas = 1;
       filter.sector = 1;
-      filter.location = 'WORLD';
+      filter.location = search.filter
+        ? filtersSelectedValues.toString()
+        : TOP_EMITTERS.toString();
       break;
     case 'sector':
       filter.gas = 1;
       filter.location = 'WORLD';
+      filter.sector = filtersSelectedValues.toString();
       break;
     default:
       break;
   }
-  const filtersSelectedValues = filtersSelected.map(
-    d => (breakSelected.value === 'location' ? d.label : d.value)
-  );
+
   return {
     ...filter,
-    source: sourceSelected.value,
-    [breakSelected.value]: filtersSelectedValues.toString()
+    source: sourceSelected.value
   };
 }
 
@@ -99,11 +118,11 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value, clear: true });
+    this.updateUrlParam({ name: 'source', value: category.value });
   };
 
   handleBreakByChange = breakBy => {
-    this.updateUrlParam({ name: 'breakBy', value: breakBy.value, clear: true });
+    this.updateUrlParam({ name: 'breakBy', value: breakBy.value });
   };
 
   handleFilterChange = filters => {
