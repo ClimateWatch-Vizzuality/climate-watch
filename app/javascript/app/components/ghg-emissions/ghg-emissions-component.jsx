@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import RegionsProvider from 'providers/regions-provider';
-import ChartStackedArea from 'components/charts/stacked-area';
+import ChartLine from 'components/charts/line';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Tag from 'components/tag';
@@ -17,42 +17,36 @@ class GhgEmissions extends PureComponent {
       sources,
       sourceSelected,
       handleSourceChange,
+      versions,
+      versionSelected,
+      handleVersionChange,
       breaksBy,
       breakSelected,
       handleBreakByChange,
       filters,
-      filterSelected,
-      handleFilterChange
+      filtersSelected,
+      handleFilterChange,
+      handleRemoveTag
     } = this.props;
     return (
       <div>
-        <h2
-          className={styles.title}
-        >{`Global Historical Emissions - ${filterSelected.label}`}</h2>
+        <h2 className={styles.title}>Global Historical Emissions</h2>
         <RegionsProvider />
-        <ChartStackedArea config={config} data={data} />
-        <div className={styles.tags}>
-          {config.columns.y &&
-            config.columns.y.map(column => (
-              <Tag
-                key={column.value}
-                data={{
-                  color: 'red',
-                  name: column.label
-                }}
-                onRemove={() => {
-                  console.info('please remove me');
-                }}
-              />
-            ))}
-        </div>
         <div className={styles.col4}>
           <Dropdown
-            label="Category"
+            label="Source"
             options={sources}
             onChange={handleSourceChange}
             value={sourceSelected}
             clearable={false}
+          />
+          <Dropdown
+            label="IPCC Version"
+            options={versions}
+            onChange={handleVersionChange}
+            value={versionSelected}
+            clearable={false}
+            disabled={versions.length === 1}
           />
           <Dropdown
             label="BreakBy"
@@ -65,10 +59,27 @@ class GhgEmissions extends PureComponent {
             label={breakSelected.label}
             options={filters}
             onChange={handleFilterChange}
-            value={filterSelected}
+            value={filtersSelected}
             clearable={false}
+            multi
           />
           <ButtonGroup className={styles.colEnd} />
+        </div>
+        <ChartLine config={config} data={data} />
+        <div className={styles.tags}>
+          {config.columns &&
+            config.columns.y.map(column => (
+              <Tag
+                className={styles.tag}
+                key={`${column.value}`}
+                data={{
+                  color: config.theme[column.value].stroke,
+                  label: column.label,
+                  id: column.value
+                }}
+                onRemove={handleRemoveTag}
+              />
+            ))}
         </div>
       </div>
     );
@@ -78,14 +89,18 @@ class GhgEmissions extends PureComponent {
 GhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  versions: PropTypes.array.isRequired,
+  versionSelected: PropTypes.object.isRequired,
+  handleVersionChange: PropTypes.func.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
   handleSourceChange: PropTypes.func.isRequired,
   breaksBy: PropTypes.array.isRequired,
   breakSelected: PropTypes.object.isRequired,
   handleBreakByChange: PropTypes.func.isRequired,
+  handleRemoveTag: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
-  filterSelected: PropTypes.object.isRequired,
+  filtersSelected: PropTypes.array.isRequired,
   handleFilterChange: PropTypes.func.isRequired
 };
 

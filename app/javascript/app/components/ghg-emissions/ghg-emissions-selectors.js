@@ -1,134 +1,57 @@
 import { createSelector } from 'reselect';
-import upperFirst from 'lodash/upperFirst';
-import omit from 'lodash/omit';
-import camelCase from 'lodash/camelCase';
+import isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
+import {
+  getYColumnValue,
+  getThemeConfig,
+  getTooltipConfig
+} from './ghg-emissions-utils';
 
-const getData = state => state.data || [];
-const getMetadata = state => state.meta || {};
-const getRegions = state => state.regions || [];
-const getSourceSelection = state => parseInt(state.search.source, 10) || null;
-const getBreakSelection = state => state.search.breakBy || null;
-const getFilterSelection = state => state.search.filter || null;
-const getMetaFiltered = meta => omit(meta, 'data_source');
+// constants needed for data parsing
+const TOP_EMITTERS = [
+  'CHN',
+  'USA',
+  'EU28',
+  'IND',
+  'RUS',
+  'JPN',
+  'BRA',
+  'IDN',
+  'CAN',
+  'MEX'
+];
 
-const parseRegions = regions =>
-  regions.map(region => ({
-    label: region.wri_standard_name,
-    value: region.iso_code3
-  }));
+const DATA_SCALE = 1000000;
 
-export const getFilters = createSelector(
-  [getMetadata, getRegions],
-  (meta, regions) => ({
-    ...getMetaFiltered(meta),
-    location: parseRegions(regions)
-  })
-);
+const COLORS = [
+  '#2D9290',
+  '#B25BD0',
+  '#7EA759',
+  '#FF0D3A',
+  '#687AB7',
+  '#BC6332',
+  '#F97DA1',
+  '#00971D',
+  '#F1933B',
+  '#938126'
+];
 
-export const getSourceOptions = createSelector(
-  getMetadata,
-  meta => meta.data_source || []
-);
-
-export const getSourceSelected = createSelector(
-  [getSourceOptions, getSourceSelection],
-  (sources, selected) => {
-    if (sources.length > 0) {
-      if (selected) {
-        const filtered = sources.filter(
-          category => category.value === selected
-        );
-        return filtered.length > 0 ? filtered[0] : sources[0];
-      }
-      return sources[0];
-    }
-    return {};
-  }
-);
-
-function sortLabelByAlpha(array) {
-  return array.sort((a, b) => {
-    if (a.label < b.label) return -1;
-    if (a.label > b.label) return 1;
-    return 0;
-  });
-}
-
-export const getBreaksByOptions = createSelector(getMetadata, meta => {
-  const breakByOptions = sortLabelByAlpha(
-    Object.keys(getMetaFiltered(meta)).map(other => ({
-      label: upperFirst(other),
-      value: other,
-      id: other
-    }))
-  );
-  const regionBreak = {
+const BREAY_BY_OPTIONS = [
+  {
+    label: 'Sector',
+    value: 'sector'
+  },
+  {
     label: 'Regions',
     value: 'location'
-  };
-  return [regionBreak, ...breakByOptions];
-});
-
-export const getBreakSelected = createSelector(
-  [getBreaksByOptions, getBreakSelection],
-  (breaks, selected) => {
-    if (breaks.length > 0) {
-      if (selected) {
-        const filtered = breaks.filter(category => category.value === selected);
-        return filtered.length > 0 ? filtered[0] : breaks[0];
-      }
-      return breaks[0];
-    }
-    return {};
+  },
+  {
+    label: 'Gas',
+    value: 'gas'
   }
-);
+];
 
-export const getFilterOptions = createSelector(
-  [getBreakSelected, getFilters],
-  (breakSelected, filters) => filters[breakSelected.value] || []
-);
-
-export const getFilterSelected = createSelector(
-  [getFilterOptions, getFilterSelection],
-  (filters, selected) => {
-    if (filters.length > 0) {
-      if (selected) {
-        const filtered = filters.filter(filter => filter.value == selected); // eslint-disable-line eqeqeq
-        return filtered.length > 0 ? filtered[0] : filters[0];
-      }
-      return filters[0];
-    }
-    return {};
-  }
-);
-
-export const getChartData = createSelector(
-  [getData, getBreakSelected],
-  (data, breakBy) => {
-    if (!data || !data.length) return [];
-
-    const xValues = data[0].emissions.length
-      ? data[0].emissions.map(d => d.year)
-      : [];
-    const dataParsed = xValues.map(x => {
-      const yItems = {};
-      data.forEach(d => {
-        const yKey = getYColumnValue(d[breakBy.value]);
-        const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value;
-      });
-      const item = {
-        x,
-        ...yItems
-      };
-      return item;
-    });
-
-    return dataParsed;
-  }
-);
-
-const axesConfig = {
+const AXES_CONFIG = {
   xBottom: {
     name: 'Year',
     unit: 'date',
@@ -136,47 +59,164 @@ const axesConfig = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'MtCO2e',
+    unit: 'CO2e',
     format: 'number'
   }
 };
 
-function getThemeConfig(columns) {
-  const theme = {};
-  columns.forEach(column => {
-    theme[column.value] = { fill: '#302463' };
-  });
-  return theme;
-}
+// meta data for selectors
+const getMeta = state => state.meta || {};
+const getSources = state => state.meta.data_source || [];
+const getVersions = state => state.meta.gwp || [];
 
-function getTooltipConfig(columns) {
-  const tooltip = {};
-  columns.forEach(column => {
-    tooltip[column.value] = { label: column.label };
-  });
-  return tooltip;
-}
+// values from search
+const getSourceSelection = state => state.search.source || null;
+const getVersionSelection = state => state.search.version || null;
+const getBreakSelection = state => state.search.breakBy || null;
+const getFilterSelection = state => state.search.filter || null;
 
-function getYColumnValue(column) {
-  return `y${upperFirst(camelCase(column))}`;
-}
+// data for the graph
+const getData = state => state.data || [];
+
+// Sources selectors
+export const getSourceOptions = createSelector(getSources, sources => {
+  if (!sources) return [];
+  return sources.map(d => ({
+    label: d.label,
+    value: d.value
+  }));
+});
+
+export const getSourceSelected = createSelector(
+  [getSourceOptions, getSourceSelection],
+  (sources, selected) => {
+    if (!sources || !sources.length) return {};
+    if (!selected) return sources[0];
+    return sources.find(category => category.value === parseInt(selected, 10));
+  }
+);
+
+// Versions selectors
+export const getVersionOptions = createSelector(
+  [getVersions, getSources, getSourceSelected],
+  (versions, sources, sourceSelected) => {
+    if (!sourceSelected || !versions) return [];
+    const sourceData = sources.find(d => sourceSelected.value === d.value);
+    return versions.filter(filter => sourceData.gwp.indexOf(filter.value) > -1);
+  }
+);
+
+export const getVersionSelected = createSelector(
+  [getVersionOptions, getVersionSelection],
+  (versions, selected) => {
+    if (!versions || !versions.length) return {};
+    if (!selected) return versions[0];
+    return versions.find(version => version.value === parseInt(selected, 10));
+  }
+);
+
+// BreakBy selectors
+export const getBreaksByOptions = () => BREAY_BY_OPTIONS;
+
+export const getBreakSelected = createSelector(
+  [getBreaksByOptions, getBreakSelection],
+  (breaks, selected) => {
+    if (!breaks || !breaks.length) return {};
+    if (!selected) return breaks[0];
+    return breaks.find(category => category.value === selected);
+  }
+);
+
+// Filters selector
+export const getFilterOptions = createSelector(
+  [getMeta, getSourceSelected, getBreakSelected],
+  (meta, sourceSelected, breakSelected) => {
+    if (!sourceSelected || !breakSelected || isEmpty(meta)) return [];
+    const breakByValue = breakSelected.value;
+    const activeSourceData = meta.data_source.find(
+      source => source.value === sourceSelected.value
+    );
+    const activeFilterKeys = activeSourceData[breakByValue];
+    return meta[breakByValue].filter(
+      filter => activeFilterKeys.indexOf(filter.value) > -1
+    );
+  }
+);
+
+export const getFiltersSelected = createSelector(
+  [getFilterOptions, getFilterSelection, getBreakSelected],
+  (filters, selected, breakBy) => {
+    if (!filters || !filters.length) return [];
+    if (!selected && breakBy.value !== 'location') return filters;
+    let selectedFilters = [];
+    if (breakBy.value === 'location' && !selected) {
+      const selectedValues = TOP_EMITTERS;
+      selectedFilters = filters.filter(
+        filter => selectedValues.indexOf(filter.iso) > -1
+      );
+    } else {
+      const selectedValues = selected.split(',');
+      const selectedValuesNum = selectedValues.map(d => parseInt(d, 10));
+      selectedFilters = filters.filter(
+        filter => selectedValuesNum.indexOf(filter.value) > -1
+      );
+    }
+    return selectedFilters;
+  }
+);
+
+// Map the data from the API
+export const filterData = createSelector(
+  [getData, getVersionSelected, getFiltersSelected, getBreakSelected],
+  (data, version, filters, breakBy) => {
+    if (!data || !data.length || !filters || !filters.length) return [];
+    const filterValues = filters.map(filter => filter.label);
+    return data.filter(
+      d =>
+        d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
+    );
+  }
+);
+
+export const getChartData = createSelector(
+  [filterData, getBreakSelected, getFiltersSelected],
+  (data, breakBy, filters) => {
+    if (!data || !data.length || !breakBy || !filters) return [];
+    const xValues = data[0].emissions.map(d => d.year);
+    const dataParsed = xValues.map(x => {
+      const yItems = {};
+      data.forEach(d => {
+        const yKey = getYColumnValue(d[breakBy.value]);
+        const yData = d.emissions.find(e => e.year === x);
+        yItems[yKey] = yData.value * DATA_SCALE;
+      });
+      const item = {
+        x,
+        ...yItems
+      };
+      return item;
+    });
+    return dataParsed;
+  }
+);
 
 export const getChartConfig = createSelector(
-  [getData, getBreakSelected],
+  [filterData, getBreakSelected],
   (data, breakBy) => {
     const yColumns = data.map(d => ({
       label: d[breakBy.value],
       value: getYColumnValue(d[breakBy.value])
     }));
-    const theme = getThemeConfig(yColumns);
-    const tooltip = getTooltipConfig(yColumns);
+    const yColumnsChecked = uniqBy(yColumns, 'value');
+    const theme = getThemeConfig(yColumnsChecked, COLORS);
+    const tooltip = getTooltipConfig(yColumnsChecked);
     return {
-      axes: axesConfig,
+      axes: AXES_CONFIG,
       theme,
       tooltip,
       columns: {
         x: [{ label: 'year', value: 'x' }],
-        y: yColumns
+        y: yColumnsChecked
       }
     };
   }
@@ -188,5 +228,5 @@ export default {
   getBreaksByOptions,
   getBreakSelected,
   getFilterOptions,
-  getFilterSelected
+  getFiltersSelected
 };

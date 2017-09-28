@@ -11,16 +11,15 @@ class TooltipChart extends PureComponent {
     keys.forEach(key => {
       total += data.payload[key.value];
     });
-    return format('.3s')(total);
+    return `${format('.3s')(total)}t`;
   };
 
   render() {
-    const { config, content } = this.props;
-    const needsTotal = content.payload && content.payload.length > 1;
+    const { config, content, showTotal } = this.props;
     return (
       <div className={styles.tooltip}>
         <span className={styles.unit}>{config.axes.yLeft.unit}</span>
-        {needsTotal && (
+        {showTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
             <p>{this.getTotal(config.columns.y, content.payload[0])}</p>
@@ -28,22 +27,27 @@ class TooltipChart extends PureComponent {
         )}
         {content.payload &&
           content.payload.length > 0 &&
-          content.payload.map(y => (
-            <div key={y.dataKey} className={styles.label}>
-              <div className={styles.legend}>
-                <span
-                  className={styles.labelDot}
-                  style={{ backgroundColor: config.theme[y.dataKey].fill }}
-                />
-                <p className={styles.labelName}>
-                  {config.tooltip[y.dataKey].label}
-                </p>
-              </div>
-              <p className={styles.labelValue}>
-                {y.payload ? format('.3s')(y.payload[y.dataKey]) : ''}
-              </p>
-            </div>
-          ))}
+          content.payload.map(
+            y =>
+              (y.payload ? (
+                <div key={`${y.dataKey}`} className={styles.label}>
+                  <div className={styles.legend}>
+                    <span
+                      className={styles.labelDot}
+                      style={{
+                        backgroundColor: config.theme[y.dataKey].stroke
+                      }}
+                    />
+                    <p className={styles.labelName}>
+                      {config.tooltip[y.dataKey].label}
+                    </p>
+                  </div>
+                  <p className={styles.labelValue}>
+                    {y.payload ? `${format('.3s')(y.payload[y.dataKey])}t` : ''}
+                  </p>
+                </div>
+              ) : null)
+          )}
       </div>
     );
   }
@@ -51,7 +55,8 @@ class TooltipChart extends PureComponent {
 
 TooltipChart.propTypes = {
   content: Proptypes.object,
-  config: Proptypes.object
+  config: Proptypes.object,
+  showTotal: Proptypes.bool
 };
 
 export default TooltipChart;
