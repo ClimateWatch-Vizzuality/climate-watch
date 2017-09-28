@@ -6,7 +6,12 @@ import qs from 'query-string';
 
 import NDCCountryFullComponent from './ndc-country-full-component';
 import actions from './ndc-country-full-actions';
-import { getCountry } from './ndc-country-full-selectors';
+import {
+  getCountry,
+  getContent,
+  getSelectedContent,
+  getContentOptions
+} from './ndc-country-full-selectors';
 
 export { default as component } from './ndc-country-full-component';
 export { initialState } from './ndc-country-full-reducers';
@@ -16,18 +21,14 @@ export { default as actions } from './ndc-country-full-actions';
 const mapStateToProps = (state, { match }) => {
   const search = qs.parse(location.search);
   const { iso } = match.params;
-  const countryData = {
-    countries: state.countries.data,
-    iso
-  };
 
   return {
-    fetched: state.countryNDCFull.data[iso],
+    fetched: getContent(state, iso),
     loading: state.countryNDCFull.loading,
-    country: getCountry(countryData),
-    content: state.countryNDCFull.data[iso],
-    search: search.search,
-    selected: state.countryNDCFull.selected
+    country: getCountry(state, iso),
+    content: getSelectedContent(state, iso),
+    contentOptions: getContentOptions(state, iso),
+    search: search.search
   };
 };
 

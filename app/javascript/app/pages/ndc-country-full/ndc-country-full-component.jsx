@@ -26,22 +26,9 @@ class NDCCountryFull extends PureComponent {
       onSearchChange,
       search,
       onSelectChange,
-      selected,
-      content
+      content,
+      contentOptions
     } = this.props;
-
-    const selectOptions = content
-      ? content.map(item => ({
-        value: item.id,
-        label: `${item.document_type.toUpperCase()} (${item.language.toUpperCase()})`
-      }))
-      : [];
-
-    const selectedContent =
-      !isEmpty(content) &&
-      (content.length > 1
-        ? content.find(item => item.id === selected)
-        : content[0]);
 
     return (
       <div>
@@ -60,20 +47,20 @@ class NDCCountryFull extends PureComponent {
             </div>
             <div
               className={
-                selectOptions.length > 1 ? (
+                contentOptions.length > 1 ? (
                   styles.twoFoldReversed
                 ) : (
                   styles.oneFold
                 )
               }
             >
-              {selectOptions.length > 1 && (
+              {contentOptions.length > 1 && (
                 <Dropdown
                   white
                   searchable={false}
                   clearable={false}
-                  options={selectOptions}
-                  value={selected}
+                  options={contentOptions}
+                  value={content.id}
                   onChange={onSelectChange}
                 />
               )}
@@ -90,10 +77,10 @@ class NDCCountryFull extends PureComponent {
         {isEmpty(content) &&
         !loading && <NoContent message="No content available" />}
         <div className={cx(layout.content, styles.bodyContent)}>
-          {!isEmpty(selectedContent) && (
+          {!isEmpty(content) && (
             <div
               className={cx(contentStyles.content, styles.innerContent)}
-              dangerouslySetInnerHTML={{ __html: selectedContent.html }} // eslint-disable-line
+              dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
             />
           )}
         </div>
@@ -107,9 +94,9 @@ NDCCountryFull.propTypes = {
   country: Proptypes.object.isRequired,
   onSearchChange: Proptypes.func.isRequired,
   search: Proptypes.string,
-  content: Proptypes.array,
+  content: Proptypes.object,
+  contentOptions: Proptypes.array,
   onSelectChange: Proptypes.func,
-  selected: Proptypes.number,
   loading: Proptypes.bool
 };
 
