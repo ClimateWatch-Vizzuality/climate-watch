@@ -97,20 +97,26 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value, clear: true });
+    this.updateUrlParam([{ name: 'source', value: category.value }], true);
   };
 
   handleBreakByChange = breakBy => {
-    this.updateUrlParam({ name: 'breakBy', value: breakBy.value, clear: true });
+    this.updateUrlParam(
+      [
+        { name: 'breakBy', value: breakBy.value },
+        { name: 'filter', value: '' }
+      ],
+      true
+    );
   };
 
   handleVersionChange = version => {
-    this.updateUrlParam({ name: 'version', value: version.value });
+    this.updateUrlParam([{ name: 'version', value: version.value }]);
   };
 
   handleFilterChange = filters => {
     const filtersParam = filters.map(filter => filter.value);
-    this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
+    this.updateUrlParam([{ name: 'filter', value: filtersParam.toString() }]);
   };
 
   updateUrlParam(param) {
@@ -126,7 +132,7 @@ class GhgEmissionsContainer extends PureComponent {
         newFilters.push(filter.value);
       }
     });
-    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
+    this.updateUrlParam([{ name: 'filter', value: newFilters.toString() }]);
   };
 
   render() {

@@ -1,15 +1,16 @@
 import qs from 'query-string';
 
-export function getLocationParamUpdated(
-  location,
-  { name, value, clear = false }
-) {
+export function getLocationParamUpdated(location, params, clear) {
   const search = qs.parse(location.search);
+  const newFilters = {};
+  params.forEach(param => {
+    newFilters[param.name] = param.value;
+  });
   const newSearch = clear
-    ? { [name]: value }
+    ? { ...newFilters }
     : {
       ...search,
-      [name]: value
+      ...newFilters
     };
   return {
     pathname: location.pathname,
