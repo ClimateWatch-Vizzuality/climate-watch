@@ -1,23 +1,15 @@
 import { createSelector } from 'reselect';
-import upperFirst from 'lodash/upperFirst';
 import isEmpty from 'lodash/isEmpty';
-import omit from 'lodash/omit';
-import camelCase from 'lodash/camelCase';
-
-const getMetadata = state => state.meta || {};
-const getRegions = state => state.regions || [];
-const getSourceSelection = state => parseInt(state.search.source, 10) || null;
-const getBreakSelection = state => state.search.breakBy || null;
-const getFilterSelection = state => state.search.filter || null;
-const getMetaFiltered = meta => omit(meta, 'data_source');
-
-// TODO: currently data (specifically PIK) contains an extra value 'gwp' which is vairable for all selectors
-// This data needs to be separated, for now we are just rendering one version to prevent child flattening
-const getData = state =>
-  (state.data ? state.data.filter(d => d.gwp === 'AR2') : []);
+import {
+  getYColumnValue,
+  getThemeConfig,
+  getTooltipConfig
+} from './ghg-emissions-utils';
 
 // constants needed for data parsing
-const colors = [
+const DATA_SCALE = 1000000;
+
+const COLORS = [
   '#2D9290',
   '#B25BD0',
   '#7EA759',
@@ -30,7 +22,7 @@ const colors = [
   '#938126'
 ];
 
-const breakByOptions = [
+const BREAY_BY_OPTIONS = [
   {
     label: 'Sector',
     value: 'sector'
@@ -45,7 +37,7 @@ const breakByOptions = [
   }
 ];
 
-const axesConfig = {
+const AXES_CONFIG = {
   xBottom: {
     name: 'Year',
     unit: 'date',
@@ -58,137 +50,119 @@ const axesConfig = {
   }
 };
 
-const parseRegions = regions =>
-  regions.map(region => ({
-    label: region.wri_standard_name,
-    value: region.iso_code3
+// meta data for selectors
+const getMeta = state => state.meta || {};
+const getSources = state => state.meta.data_source || [];
+const getVersions = state => state.meta.gwp || [];
+
+// values from search
+const getSourceSelection = state => state.search.source || null;
+const getVersionSelection = state => state.search.version || null;
+const getBreakSelection = state => state.search.breakBy || null;
+const getFilterSelection = state => state.search.filter || null;
+
+// data for the graph
+const getData = state => state.data || [];
+
+// Sources selectors
+export const getSourceOptions = createSelector(getSources, sources => {
+  if (!sources) return [];
+  return sources.map(d => ({
+    label: d.label,
+    value: d.value
   }));
-
-export const getFilters = createSelector(
-  [getMetadata, getRegions],
-  (meta, regions) => ({
-    ...getMetaFiltered(meta),
-    location: parseRegions(regions)
-  })
-);
-
-function sortLabelByAlpha(array) {
-  return array.sort((a, b) => {
-    if (a.label < b.label) return -1;
-    if (a.label > b.label) return 1;
-    return 0;
-  });
-}
-
-export const getSourceOptions = createSelector(
-  getMetadata,
-  meta => meta.data_sources || []
-);
+});
 
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
-    if (sources.length > 0) {
-      if (selected) {
-        const filtered = sources.filter(
-          category => category.value === selected
-        );
-        return filtered.length > 0 ? filtered[0] : sources[0];
-      }
-      return sources[0];
-    }
-    return {};
+    if (!sources || !sources.length) return {};
+    if (!selected) return sources[0];
+    return sources.find(category => category.value === parseInt(selected, 10));
   }
 );
 
-export const getBreaksByOptions = createSelector(() => breakByOptions);
+// Versions selectors
+export const getVersionOptions = createSelector(
+  [getVersions, getSources, getSourceSelected],
+  (versions, sources, sourceSelected) => {
+    if (!sourceSelected || !versions) return [];
+    const sourceData = sources.find(d => sourceSelected.value === d.value);
+    return versions.filter(filter => sourceData.gwp.indexOf(filter.value) > -1);
+  }
+);
+
+export const getVersionSelected = createSelector(
+  [getVersionOptions, getVersionSelection],
+  (versions, selected) => {
+    if (!versions || !versions.length) return {};
+    if (!selected) return versions[0];
+    return versions.find(version => version.value === parseInt(selected, 10));
+  }
+);
+
+// BreakBy selectors
+export const getBreaksByOptions = createSelector(() => BREAY_BY_OPTIONS);
 
 export const getBreakSelected = createSelector(
-  [getBreakSelection],
-  selected => {
-    if (breakByOptions.length > 0) {
-      if (selected) {
-        const filtered = breakByOptions.filter(
-          category => category.value === selected
-        );
-        return filtered.length > 0 ? filtered[0] : breakByOptions[0];
-      }
-      return breakByOptions[0];
-    }
-    return {};
+  [getBreaksByOptions, getBreakSelection],
+  (breaks, selected) => {
+    if (!breaks || !breaks.length) return {};
+    if (!selected) return breaks[0];
+    return breaks.find(category => category.value === selected);
   }
 );
 
+// Filters selector
 export const getFilterOptions = createSelector(
-  [getSourceSelected, getBreakSelected, getMetadata],
-  (sourceSelected, breakSelected, meta) => {
+  [getMeta, getSourceSelected, getBreakSelected],
+  (meta, sourceSelected, breakSelected) => {
     if (!sourceSelected || !breakSelected || isEmpty(meta)) return [];
     const breakByValue = breakSelected.value;
-    const activeSourceData = meta.data_sources.find(
+    const activeSourceData = meta.data_source.find(
       source => source.value === sourceSelected.value
     );
     const activeFilterKeys = activeSourceData[breakByValue];
-    let filtersData = [];
-    switch (breakByValue) {
-      case 'gas':
-        filtersData = meta.gases;
-        break;
-      case 'location':
-        filtersData = meta.locations;
-        break;
-      case 'sector':
-        filtersData = meta.sectors;
-        break;
-      default:
-        break;
-    }
-    const filters = filtersData.filter(
+    return meta[breakByValue].filter(
       filter => activeFilterKeys.indexOf(filter.value) > -1
     );
-    return sortLabelByAlpha(filters);
   }
 );
 
 export const getFiltersSelected = createSelector(
   [getFilterOptions, getFilterSelection],
   (filters, selected) => {
-    if (filters.length > 0) {
-      const sortedFilters = sortLabelByAlpha(filters);
-      const selectedFilters = [];
-      const selectedValues = selected
-        ? selected.split(',')
-        : sortedFilters.map(filter => filter.value);
-      selectedValues.forEach(filter => {
-        const filterData = sortedFilters.find(
-          filterOption => filterOption.value === parseInt(filter, 10)
-        );
-        selectedFilters.push({
-          ...filterData,
-          column: getYColumnValue(filterData.label)
-        });
-      });
-      return selectedFilters;
-    }
-    return [];
+    if (!filters || !filters.length) return [];
+    if (!selected) return filters;
+    const selectedValues = selected.split(',');
+    return filters.filter(filter => selectedValues.indexOf(filter.value));
+  }
+);
+
+// Map the data from the API
+export const filterData = createSelector(
+  [getData, getVersionSelected, getFiltersSelected, getBreakSelected],
+  (data, version, filters, breakBy) => {
+    if (!data || !data.length || !filters || !filters.length) return [];
+    const filterValues = filters.map(filter => filter.label);
+    return data.filter(
+      d =>
+        d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
+    );
   }
 );
 
 export const getChartData = createSelector(
-  [getData, getBreakSelected, getFiltersSelected],
+  [filterData, getBreakSelected, getFiltersSelected],
   (data, breakBy, filters) => {
     if (!data || !data.length || !breakBy || !filters) return [];
-    const activeFiltersLabels = filters.map(filter => filter.label);
-    const xValues = data[0].emissions.length
-      ? data[0].emissions.map(d => d.year)
-      : [];
+    const xValues = data[0].emissions.map(d => d.year);
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
-        if (activeFiltersLabels.indexOf(d[breakBy.value]) > -1) {
-          const yKey = getYColumnValue(d[breakBy.value]);
-          const yData = d.emissions.find(e => e.year === x);
-          yItems[yKey] = yData.value * 1000000;
-        }
+        const yKey = getYColumnValue(d[breakBy.value]);
+        const yData = d.emissions.find(e => e.year === x);
+        yItems[yKey] = yData.value * DATA_SCALE;
       });
       const item = {
         x,
@@ -196,45 +170,21 @@ export const getChartData = createSelector(
       };
       return item;
     });
-
     return dataParsed;
   }
 );
 
-function getThemeConfig(columns) {
-  const theme = {};
-  columns.forEach((column, index) => {
-    theme[column.value] = {
-      stroke: colors[index % 10],
-      strokeWidth: 5
-    };
-  });
-  return theme;
-}
-
-function getTooltipConfig(columns) {
-  const tooltip = {};
-  columns.forEach(column => {
-    tooltip[column.value] = { label: column.label };
-  });
-  return tooltip;
-}
-
-function getYColumnValue(column) {
-  return `y${upperFirst(camelCase(column))}`;
-}
-
 export const getChartConfig = createSelector(
-  [getData, getBreakSelected],
+  [filterData, getBreakSelected],
   (data, breakBy) => {
     const yColumns = data.map(d => ({
       label: d[breakBy.value],
       value: getYColumnValue(d[breakBy.value])
     }));
-    const theme = getThemeConfig(yColumns);
+    const theme = getThemeConfig(yColumns, COLORS);
     const tooltip = getTooltipConfig(yColumns);
     return {
-      axes: axesConfig,
+      axes: AXES_CONFIG,
       theme,
       tooltip,
       columns: {

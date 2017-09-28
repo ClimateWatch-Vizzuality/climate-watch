@@ -27,14 +27,17 @@ const fetchGhgEmissionsMeta = createThunkAction(
                 let newItem = {
                   value: item.id,
                   label:
-                    key === 'locations' ? item.iso_code3 : upperFirst(item.name)
+                    key === 'location'
+                      ? item.wri_standard_name
+                      : upperFirst(item.name)
                 };
-                if (key === 'data_sources') {
+                if (key === 'data_source') {
                   newItem = {
                     ...newItem,
                     location: item.location_ids,
                     sector: item.sector_ids,
-                    gas: item.gas_ids
+                    gas: item.gas_ids,
+                    gwp: item.gwp_ids
                   };
                 }
                 return newItem;

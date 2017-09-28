@@ -17,6 +17,9 @@ class GhgEmissions extends PureComponent {
       sources,
       sourceSelected,
       handleSourceChange,
+      versions,
+      versionSelected,
+      handleVersionChange,
       breaksBy,
       breakSelected,
       handleBreakByChange,
@@ -38,6 +41,14 @@ class GhgEmissions extends PureComponent {
             clearable={false}
           />
           <Dropdown
+            label="IPCCVersion"
+            options={versions}
+            onChange={handleVersionChange}
+            value={versionSelected}
+            clearable={false}
+            disabled={versions.length === 1}
+          />
+          <Dropdown
             label="BreakBy"
             options={breaksBy}
             onChange={handleBreakByChange}
@@ -56,22 +67,19 @@ class GhgEmissions extends PureComponent {
         </div>
         <ChartLine config={config} data={data} />
         <div className={styles.tags}>
-          {filtersSelected &&
-            filtersSelected.map(
-              filter =>
-                (config.theme[filter.column] ? (
-                  <Tag
-                    className={styles.tag}
-                    key={`${filter.value}`}
-                    data={{
-                      color: config.theme[filter.column].stroke,
-                      label: filter.label,
-                      id: filter.value
-                    }}
-                    onRemove={handleRemoveTag}
-                  />
-                ) : null)
-            )}
+          {config.columns &&
+            config.columns.y.map(column => (
+              <Tag
+                className={styles.tag}
+                key={`${column.label}`}
+                data={{
+                  color: config.theme[column.value].stroke,
+                  label: column.label,
+                  id: column.value
+                }}
+                onRemove={handleRemoveTag}
+              />
+            ))}
         </div>
       </div>
     );
@@ -81,6 +89,9 @@ class GhgEmissions extends PureComponent {
 GhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  versions: PropTypes.array.isRequired,
+  versionSelected: PropTypes.object.isRequired,
+  handleVersionChange: PropTypes.func.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
   handleSourceChange: PropTypes.func.isRequired,

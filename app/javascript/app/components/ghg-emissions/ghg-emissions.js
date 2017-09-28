@@ -11,6 +11,8 @@ import {
   getChartConfig,
   getSourceOptions,
   getSourceSelected,
+  getVersionOptions,
+  getVersionSelected,
   getBreaksByOptions,
   getBreakSelected,
   getFilterOptions,
@@ -35,6 +37,8 @@ const mapStateToProps = (state, { location }) => {
     config: getChartConfig(ghg),
     sources: getSourceOptions(ghg),
     sourceSelected: getSourceSelected(ghg),
+    versions: getVersionOptions(ghg),
+    versionSelected: getVersionSelected(ghg),
     breaksBy: getBreaksByOptions(ghg),
     breakSelected: getBreakSelected(ghg),
     filters: getFilterOptions(ghg),
@@ -125,6 +129,10 @@ class GhgEmissionsContainer extends PureComponent {
     this.updateUrlParam({ name: 'breakBy', value: breakBy.value });
   };
 
+  handleVersionChange = version => {
+    this.updateUrlParam({ name: 'version', value: version.value });
+  };
+
   handleFilterChange = filters => {
     const filtersParam = filters.map(filter => filter.value);
     this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
@@ -150,6 +158,7 @@ class GhgEmissionsContainer extends PureComponent {
     return createElement(GhgEmissionsComponent, {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
+      handleVersionChange: this.handleVersionChange,
       handleBreakByChange: this.handleBreakByChange,
       handleFilterChange: this.handleFilterChange,
       handleRemoveTag: this.handleRemoveTag

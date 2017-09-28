@@ -3,7 +3,7 @@
 .col4 {
   @extend %grid;
 
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   align-items: end;
   margin-bottom: 40px;
 }
