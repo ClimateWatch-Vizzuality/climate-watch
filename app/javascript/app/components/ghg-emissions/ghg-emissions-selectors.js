@@ -170,8 +170,7 @@ export const filterData = createSelector(
   [getData, getVersionSelected, getFiltersSelected, getBreakSelected],
   (data, version, filters, breakBy) => {
     if (!data || !data.length || !filters || !filters.length) return [];
-    const filterKey = breakBy.value === 'location' ? 'iso' : 'label';
-    const filterValues = filters.map(filter => filter[filterKey]);
+    const filterValues = filters.map(filter => filter.label);
     return data.filter(
       d =>
         d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1

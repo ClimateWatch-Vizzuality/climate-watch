@@ -10,7 +10,7 @@ module Api
         attribute :gwp
 
         def location
-          object.location.iso_code3
+          object.location.wri_standard_name
         end
 
         def gas
