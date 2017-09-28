@@ -3,7 +3,7 @@ class ImportNdcTexts
     Ndc.delete_all
     bucket_name = Rails.application.secrets.s3_bucket_name
     s3 = Aws::S3::Client.new
-    s3.list_objects(bucket: bucket_name, prefix: 'ndcs/').each do |response|
+    s3.list_objects(bucket: bucket_name, prefix: 'new_ndcs/').each do |response|
       md_objects = response.contents.select { |o| o.key =~ /\.html$/ }
       md_objects.each { |object| import_object(s3, bucket_name, object) }
     end
@@ -13,9 +13,9 @@ class ImportNdcTexts
   private
 
   def import_object(s3, bucket_name, object)
-    object.key =~ /ndcs\/(.+?)-(.+?)-(.+?)(-.+?)?(\.md)?\.html/
+    object.key =~ /new_ndcs\/(.+?)-(.+?)-(.+?)(-.+?)?(\.md)?\.html/
     unless Regexp.last_match
-      Rails.logger.error "Ignored file with wrong naming convention #{object.key}"
+      Rails.logger.error "Ignored file with unrecognized name #{object.key}"
       return
     end
 
@@ -42,7 +42,7 @@ class ImportNdcTexts
     begin
       page = Nokogiri::HTML(html_content)
       page.css('img').each do |img|
-        img['src'] = "#{S3_BUCKET_URL}/ndcs/#{img['src']}"
+        img['src'] = "#{S3_BUCKET_URL}/new_ndcs/#{img['src']}"
       end
       html_content = page.to_html
     rescue Nokogiri::SyntaxError => e
