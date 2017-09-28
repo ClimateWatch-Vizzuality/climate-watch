@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -207,15 +208,16 @@ export const getChartConfig = createSelector(
       label: d[breakBy.value],
       value: getYColumnValue(d[breakBy.value])
     }));
-    const theme = getThemeConfig(yColumns, COLORS);
-    const tooltip = getTooltipConfig(yColumns);
+    const yColumnsChecked = uniqBy(yColumns, 'value');
+    const theme = getThemeConfig(yColumnsChecked, COLORS);
+    const tooltip = getTooltipConfig(yColumnsChecked);
     return {
       axes: AXES_CONFIG,
       theme,
       tooltip,
       columns: {
         x: [{ label: 'year', value: 'x' }],
-        y: yColumns
+        y: yColumnsChecked
       }
     };
   }

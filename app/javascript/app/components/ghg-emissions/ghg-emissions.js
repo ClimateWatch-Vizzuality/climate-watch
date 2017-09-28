@@ -97,11 +97,11 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value });
+    this.updateUrlParam({ name: 'source', value: category.value, clear: true });
   };
 
   handleBreakByChange = breakBy => {
-    this.updateUrlParam({ name: 'breakBy', value: breakBy.value });
+    this.updateUrlParam({ name: 'breakBy', value: breakBy.value, clear: true });
   };
 
   handleVersionChange = version => {
