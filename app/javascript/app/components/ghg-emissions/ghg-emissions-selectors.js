@@ -165,6 +165,19 @@ export const getFiltersSelected = createSelector(
   }
 );
 
+// get selector defaults
+export const getSelectorDefaults = createSelector(
+  [getSources, getSourceSelected],
+  (sources, sourceSelected) => {
+    if (!sources || !sources.length || !sourceSelected) return {};
+    const sourceData = sources.find(d => d.value === sourceSelected.value);
+    return {
+      sector: sourceData.sector[0],
+      gas: sourceData.gas[0]
+    };
+  }
+);
+
 // Map the data from the API
 export const filterData = createSelector(
   [getData, getVersionSelected, getFiltersSelected, getBreakSelected],

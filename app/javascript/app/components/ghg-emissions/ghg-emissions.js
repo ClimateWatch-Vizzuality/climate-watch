@@ -15,7 +15,8 @@ import {
   getBreaksByOptions,
   getBreakSelected,
   getFilterOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getSelectorDefaults
 } from './ghg-emissions-selectors';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -41,7 +42,8 @@ const mapStateToProps = (state, { location }) => {
     breaksBy: getBreaksByOptions(ghg),
     breakSelected: getBreakSelected(ghg),
     filters: getFilterOptions(ghg),
-    filtersSelected: getFiltersSelected(ghg)
+    filtersSelected: getFiltersSelected(ghg),
+    selectorDefaults: getSelectorDefaults(ghg)
   };
 };
 
@@ -56,20 +58,19 @@ function needsRequestData(props, nextProps) {
 }
 
 function getFiltersParsed(props) {
-  const { sourceSelected, breakSelected } = props;
+  const { sourceSelected, breakSelected, selectorDefaults } = props;
   const filter = {};
-
   switch (breakSelected.value) {
     case 'gas':
       filter.location = 'WORLD';
-      filter.sector = 1;
+      filter.sector = selectorDefaults.sector;
       break;
     case 'location':
-      filter.gas = 1;
-      filter.sector = 1;
+      filter.gas = selectorDefaults.gas;
+      filter.sector = selectorDefaults.sector;
       break;
     case 'sector':
-      filter.gas = 1;
+      filter.gas = selectorDefaults.gas;
       filter.location = 'WORLD';
       break;
     default:
