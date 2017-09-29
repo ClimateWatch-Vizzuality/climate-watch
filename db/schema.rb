@@ -217,6 +217,8 @@ ActiveRecord::Schema.define(version: 20170928114306) do
     t.tsvector "full_text_tsv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "document_type", default: "ndc"
+    t.text "language"
     t.index ["full_text_tsv"], name: "index_ndcs_on_full_text_tsv", using: :gin
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end

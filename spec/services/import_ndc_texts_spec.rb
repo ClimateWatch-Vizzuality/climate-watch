@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe ImportNdcFullTexts do
-  subject { ImportNdcFullTexts.new.call }
+RSpec.describe ImportNdcTexts do
+  subject { ImportNdcTexts.new.call }
 
   before :all do
     Aws.config[:s3] = {
       stub_responses: {
         list_objects: {
           contents: [
-            {key: 'ndcs/AFG.html'},
-            {key: 'ndcs/ALB.html'}
+            {key: 'new_ndcs/AFG-INDC-EN.html'},
+            {key: 'new_ndcs/ALB-INDC-EN.html'}
           ]
         }
       }

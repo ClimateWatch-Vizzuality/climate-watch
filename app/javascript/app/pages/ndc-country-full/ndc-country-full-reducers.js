@@ -1,3 +1,5 @@
+import isEmpty from 'lodash/isEmpty';
+
 export const initialState = {
   loading: false,
   loaded: false,
@@ -10,11 +12,16 @@ const setLoaded = (loaded, state) => ({ ...state, loaded });
 export default {
   fetchCountryNDCFullInit: state => setLoading(true, state),
   fetchCountryNDCFullReady: (state, { payload }) => {
+    if (isEmpty(payload)) {
+      return setLoaded(true, setLoading(false, state));
+    }
+
     const newState = {
       ...state,
+      selected: payload[0].id,
       data: {
         ...state.data,
-        [payload.location.iso_code3]: payload
+        [payload[0].location.iso_code3]: payload
       }
     };
 
@@ -25,9 +32,16 @@ export default {
       ...state,
       data: {
         ...state.data,
-        [payload]: {}
+        [payload]: []
       }
     };
     return setLoaded(true, setLoading(false, newState));
+  },
+  changeSelectedCountryNDCFull: (state, { payload }) => {
+    const newState = {
+      ...state,
+      selected: payload
+    };
+    return newState;
   }
 };

@@ -4,6 +4,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import Button from 'components/button';
 import Icon from 'components/icon';
+import Dropdown from 'components/dropdown';
 import Search from 'components/search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
@@ -24,8 +25,11 @@ class NDCCountryFull extends PureComponent {
       match,
       onSearchChange,
       search,
-      content
+      onSelectChange,
+      content,
+      contentOptions
     } = this.props;
+
     return (
       <div>
         <Header image={background}>
@@ -41,7 +45,25 @@ class NDCCountryFull extends PureComponent {
               </Button>
               <Intro title={`${country.wri_standard_name} Full Content`} />
             </div>
-            <div className={styles.fiveFold}>
+            <div
+              className={
+                contentOptions.length > 1 ? (
+                  styles.twoFoldReversed
+                ) : (
+                  styles.oneFold
+                )
+              }
+            >
+              {contentOptions.length > 1 && (
+                <Dropdown
+                  white
+                  searchable={false}
+                  clearable={false}
+                  options={contentOptions}
+                  value={content.id}
+                  onChange={onSelectChange}
+                />
+              )}
               <Search
                 theme={lightSearch}
                 placeholder="Search"
@@ -73,6 +95,8 @@ NDCCountryFull.propTypes = {
   onSearchChange: Proptypes.func.isRequired,
   search: Proptypes.string,
   content: Proptypes.object,
+  contentOptions: Proptypes.array,
+  onSelectChange: Proptypes.func,
   loading: Proptypes.bool
 };
 

@@ -4,13 +4,16 @@ import { createThunkAction } from 'utils/redux';
 const fetchCountryNDCFullInit = createAction('fetchCountryNDCFullInit');
 const fetchCountryNDCFullReady = createAction('fetchCountryNDCFullReady');
 const fetchCountryNDCFullFailed = createAction('fetchCountryNDCFullFailed');
+const changeSelectedCountryNDCFull = createAction(
+  'changeSelectedCountryNDCFull'
+);
 
 const fetchCountryNDCFull = createThunkAction(
   'fetchCountryNDCFull',
   (iso, search) => dispatch => {
     const url = search
-      ? `/api/v1/ndcs/${iso}/full?query=${search}`
-      : `/api/v1/ndcs/${iso}/full`;
+      ? `/api/v1/ndcs/${iso}/text?query=${search}`
+      : `/api/v1/ndcs/${iso}/text`;
     dispatch(fetchCountryNDCFullInit());
     fetch(url)
       .then(response => {
@@ -31,5 +34,6 @@ export default {
   fetchCountryNDCFull,
   fetchCountryNDCFullInit,
   fetchCountryNDCFullReady,
-  fetchCountryNDCFullFailed
+  fetchCountryNDCFullFailed,
+  changeSelectedCountryNDCFull
 };

@@ -6,7 +6,12 @@ import qs from 'query-string';
 
 import NDCCountryFullComponent from './ndc-country-full-component';
 import actions from './ndc-country-full-actions';
-import { getCountry } from './ndc-country-full-selectors';
+import {
+  getCountry,
+  getContent,
+  getSelectedContent,
+  getContentOptions
+} from './ndc-country-full-selectors';
 
 export { default as component } from './ndc-country-full-component';
 export { initialState } from './ndc-country-full-reducers';
@@ -16,15 +21,13 @@ export { default as actions } from './ndc-country-full-actions';
 const mapStateToProps = (state, { match }) => {
   const search = qs.parse(location.search);
   const { iso } = match.params;
-  const countryData = {
-    countries: state.countries.data,
-    iso
-  };
+
   return {
-    fetched: state.countryNDCFull.data[iso],
+    fetched: getContent(state, iso),
     loading: state.countryNDCFull.loading,
-    country: getCountry(countryData),
-    content: state.countryNDCFull.data[iso],
+    country: getCountry(state, iso),
+    content: getSelectedContent(state, iso),
+    contentOptions: getContentOptions(state, iso),
     search: search.search
   };
 };
@@ -52,10 +55,16 @@ class NDCCountryFullContainer extends PureComponent {
     fetchCountryNDCFull(iso, query);
   };
 
+  onSelectChange = args => {
+    const { changeSelectedCountryNDCFull } = this.props;
+    changeSelectedCountryNDCFull(args.value);
+  };
+
   render() {
     return createElement(NDCCountryFullComponent, {
       ...this.props,
-      onSearchChange: this.onSearchChange
+      onSearchChange: this.onSearchChange,
+      onSelectChange: this.onSelectChange
     });
   }
 }
@@ -64,9 +73,10 @@ NDCCountryFullContainer.propTypes = {
   match: Proptypes.object.isRequired,
   history: Proptypes.object.isRequired,
   location: Proptypes.object.isRequired,
-  fetched: Proptypes.object,
+  fetched: Proptypes.array,
   loading: Proptypes.bool,
-  fetchCountryNDCFull: Proptypes.func
+  fetchCountryNDCFull: Proptypes.func,
+  changeSelectedCountryNDCFull: Proptypes.func
 };
 
 export default withRouter(
