@@ -225,6 +225,55 @@ ActiveRecord::Schema.define(version: 20171010171130) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  create_table "wb_indc_categories", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "wb_indc_indicator_types", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "wb_indc_indicators", force: :cascade do |t|
+    t.bigint "indicator_type_id"
+    t.text "code", null: false
+    t.text "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["indicator_type_id"], name: "index_wb_indc_indicators_on_indicator_type_id"
+  end
+
+  create_table "wb_indc_indicators_categories", force: :cascade do |t|
+    t.bigint "indicator_id"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_wb_indc_indicators_categories_on_category_id"
+    t.index ["indicator_id"], name: "index_wb_indc_indicators_categories_on_indicator_id"
+  end
+
+  create_table "wb_indc_sectors", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.text "name", null: false
+    t.index ["parent_id"], name: "index_wb_indc_sectors_on_parent_id"
+  end
+
+  create_table "wb_indc_values", force: :cascade do |t|
+    t.bigint "indicator_id"
+    t.bigint "location_id"
+    t.bigint "sector_id"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["indicator_id"], name: "index_wb_indc_values_on_indicator_id"
+    t.index ["location_id"], name: "index_wb_indc_values_on_location_id"
+    t.index ["sector_id"], name: "index_wb_indc_values_on_sector_id"
+  end
+
   add_foreign_key "adaptation_values", "adaptation_variables", column: "variable_id", on_delete: :cascade
   add_foreign_key "adaptation_values", "locations", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
@@ -250,4 +299,11 @@ ActiveRecord::Schema.define(version: 20171010171130) do
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs", on_delete: :cascade
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
+  add_foreign_key "wb_indc_indicators", "wb_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
+  add_foreign_key "wb_indc_indicators_categories", "wb_indc_categories", column: "category_id", on_delete: :cascade
+  add_foreign_key "wb_indc_indicators_categories", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "wb_indc_sectors", "wb_indc_sectors", column: "parent_id", on_delete: :cascade
+  add_foreign_key "wb_indc_values", "locations", on_delete: :cascade
+  add_foreign_key "wb_indc_values", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "wb_indc_values", "wb_indc_sectors", column: "sector_id", on_delete: :cascade
 end
