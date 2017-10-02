@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import worldPaths from 'app/data/world-50m-paths';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 const getCategoriesData = state => state.categories || {};
 const getIndicatorsData = state => state.indicators || [];
@@ -98,7 +99,14 @@ export const getPathsWithStyles = createSelector(
   selectedIndicator =>
     worldPaths.map(path => {
       const { locations, legendBuckets } = selectedIndicator;
-      const countryData = locations && locations[path.id];
+      const defaultStyles = { ...path, style: countryStyles };
+
+      if (!locations) return defaultStyles;
+
+      const isEuropeanCountry = europeanCountries.includes(path.id);
+      const countryData = isEuropeanCountry
+        ? locations[europeSlug]
+        : locations[path.id];
 
       if (countryData) {
         const legendData = legendBuckets[countryData.label_id];
@@ -121,10 +129,7 @@ export const getPathsWithStyles = createSelector(
           style
         };
       }
-      return {
-        ...path,
-        style: countryStyles
-      };
+      return defaultStyles;
     })
 );
 
