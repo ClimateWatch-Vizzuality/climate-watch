@@ -98,31 +98,29 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam([{ name: 'source', value: category.value }], true);
+    this.updateUrlParam({ name: 'source', value: category.value }, true);
   };
 
   handleBreakByChange = breakBy => {
-    this.updateUrlParam(
-      [
-        { name: 'breakBy', value: breakBy.value },
-        { name: 'filter', value: '' }
-      ],
-      true
-    );
+    const params = [
+      { name: 'breakBy', value: breakBy.value },
+      { name: 'filter', value: '' }
+    ];
+    this.updateUrlParam(params, true);
   };
 
   handleVersionChange = version => {
-    this.updateUrlParam([{ name: 'version', value: version.value }]);
+    this.updateUrlParam({ name: 'version', value: version.value });
   };
 
   handleFilterChange = filters => {
     const filtersParam = filters.map(filter => filter.value);
-    this.updateUrlParam([{ name: 'filter', value: filtersParam.toString() }]);
+    this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
   };
 
-  updateUrlParam(param) {
+  updateUrlParam(params) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, param));
+    history.replace(getLocationParamUpdated(location, params));
   }
 
   handleRemoveTag = tagData => {
@@ -133,7 +131,7 @@ class GhgEmissionsContainer extends PureComponent {
         newFilters.push(filter.value);
       }
     });
-    this.updateUrlParam([{ name: 'filter', value: newFilters.toString() }]);
+    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
   };
 
   render() {

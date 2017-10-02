@@ -1,9 +1,11 @@
 import qs from 'query-string';
+import isArray from 'lodash/isArray';
 
-export function getLocationParamUpdated(location, params, clear) {
+export function getLocationParamUpdated(location, params = [], clear = false) {
   const search = qs.parse(location.search);
   const newFilters = {};
-  params.forEach(param => {
+  const paramsArray = isArray(params) ? params : [params];
+  paramsArray.forEach(param => {
     newFilters[param.name] = param.value;
   });
   const newSearch = clear

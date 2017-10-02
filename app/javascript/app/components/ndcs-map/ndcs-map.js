@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 import Component from './ndcs-map-component';
 import {
@@ -43,9 +44,11 @@ class NDCMapContainer extends PureComponent {
     const { geometryIdHover } = this.state;
     const { selectedIndicator } = this.props;
     if (!geometryIdHover || !selectedIndicator) return '';
-    return selectedIndicator.locations &&
-    selectedIndicator.locations[geometryIdHover]
-      ? selectedIndicator.locations[geometryIdHover].value
+
+    const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
+    const id = isEuropeanCountry ? europeSlug : geometryIdHover;
+    return selectedIndicator.locations && selectedIndicator.locations[id]
+      ? selectedIndicator.locations[id].value
       : '';
   }
 
