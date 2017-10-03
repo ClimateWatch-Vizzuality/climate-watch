@@ -17,6 +17,7 @@ import homeTwoBg from 'assets/backgrounds/home_bg_2';
 import homeTwoImage from 'assets/backgrounds/home_image_2';
 import homeThreeBg from 'assets/backgrounds/home_bg_3';
 import homeThreeImage from 'assets/backgrounds/home_image_3';
+import theme from 'styles/themes/dropdown-links.scss';
 
 import introTheme from 'styles/themes/intro-light.scss';
 import styles from './home-styles.scss';
@@ -71,11 +72,11 @@ class Home extends PureComponent {
                 Explore your country
               </Button>
               <Dropdown
+                className={theme.dropdownOptionWithArrow}
                 placeholder="Select another country"
                 options={countriesOptions}
                 onValueChange={handleDropDownChange}
                 hideResetButton
-                hasLinks
               />
             </div>
           </div>
