@@ -29,38 +29,43 @@ export default [
       },
       {
         path: '/countries',
-        exact: true,
         component: CountryIndex,
+        exact: true,
         nav: true,
-        label: 'COUNTRIES'
+        label: 'COUNTRIES',
+        header: 'countries'
       },
       {
         path: '/sectors',
-        exact: true,
         component: error,
+        exact: true,
         nav: true,
         label: 'SECTORS'
       },
       {
         path: '/ndcs/country/:iso',
         component: NDCCountry,
-        exact: true
+        exact: true,
+        header: 'ndc'
       },
       {
         path: '/ndcs/country/:iso/full',
         component: NDCCountryFull,
-        exact: true
+        exact: true,
+        header: 'ndc'
       },
       {
         path: '/ndcs/compare',
         component: NDCCompare,
-        exact: true
+        exact: true,
+        header: 'ndc'
       },
       {
         path: '/ndcs',
         component: NDCS,
         nav: true,
         label: 'NDCs',
+        header: 'ndc',
         routes: [
           {
             path: '/ndcs',
@@ -102,10 +107,11 @@ export default [
       },
       {
         path: '/ghg-emissions',
-        exact: true,
         component: GHGEmissions,
+        exact: true,
         nav: true,
-        label: 'GHG-EMISSIONS'
+        label: 'GHG-EMISSIONS',
+        header: 'emissions'
       },
       {
         path: '/ndc-search',
@@ -114,17 +120,18 @@ export default [
       },
       {
         path: '/stories',
-        exact: true,
         component: error,
+        exact: true,
         nav: true,
         label: 'STORIES'
       },
       {
         path: '/about',
-        exact: true,
         component: About,
+        exact: true,
         nav: true,
-        label: 'ABOUT'
+        label: 'ABOUT',
+        header: 'about'
       },
       {
         path: '/error-page',

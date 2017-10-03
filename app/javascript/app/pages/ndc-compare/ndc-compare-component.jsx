@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Accordion from 'components/accordion';
@@ -8,15 +8,17 @@ import Icon from 'components/icon';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import sortBy from 'lodash/sortBy';
+import getHeaderBg from 'utils/header';
 
 import backIcon from 'assets/icons/back.svg';
-import background from 'assets/headers/home.jpg';
+
 import layout from 'styles/layout.scss';
 import styles from './ndc-compare-styles.scss';
 
 class NDCCountry extends PureComponent {
   render() {
     const {
+      route,
       ndcsData,
       countriesOptions,
       activeCountriesOptions,
@@ -25,7 +27,7 @@ class NDCCountry extends PureComponent {
     } = this.props;
     return (
       <div>
-        <Header image={background}>
+        <Header image={getHeaderBg(route.header)}>
           <div className={cx(layout.content, styles.header)}>
             <div className={styles.title}>
               <Button
@@ -80,11 +82,12 @@ class NDCCountry extends PureComponent {
 }
 
 NDCCountry.propTypes = {
-  ndcsData: Proptypes.array,
-  countriesOptions: Proptypes.array,
-  activeCountriesOptions: Proptypes.array,
-  handleDropDownChange: Proptypes.func,
-  loading: Proptypes.bool
+  route: PropTypes.object.isRequired,
+  ndcsData: PropTypes.array,
+  countriesOptions: PropTypes.array,
+  activeCountriesOptions: PropTypes.array,
+  handleDropDownChange: PropTypes.func,
+  loading: PropTypes.bool
 };
 
 export default NDCCountry;

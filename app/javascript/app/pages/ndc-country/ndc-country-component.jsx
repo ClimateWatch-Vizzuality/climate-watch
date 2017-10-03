@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Accordion from 'components/accordion';
@@ -7,10 +7,10 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 import Search from 'components/search';
 import cx from 'classnames';
+import getHeaderBg from 'utils/header';
 
 import backIcon from 'assets/icons/back.svg';
 import lightSearch from 'styles/themes/search/search-light.scss';
-import background from 'assets/headers/home.jpg';
 import layout from 'styles/layout.scss';
 import styles from './ndc-country-styles.scss';
 
@@ -22,11 +22,12 @@ class NDCCountry extends PureComponent {
       onSearchChange,
       search,
       ndcsData,
-      loading
+      loading,
+      route
     } = this.props;
     return (
       <div>
-        <Header image={background}>
+        <Header image={getHeaderBg(route.header)}>
           <div className={cx(layout.content, styles.doubleFold, styles.header)}>
             <div className={styles.title}>
               <Button
@@ -68,12 +69,13 @@ class NDCCountry extends PureComponent {
 }
 
 NDCCountry.propTypes = {
-  match: Proptypes.object.isRequired,
-  country: Proptypes.object.isRequired,
-  onSearchChange: Proptypes.func.isRequired,
-  search: Proptypes.string,
-  ndcsData: Proptypes.array,
-  loading: Proptypes.bool
+  route: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  country: PropTypes.object.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  search: PropTypes.string,
+  ndcsData: PropTypes.array,
+  loading: PropTypes.bool
 };
 
 export default NDCCountry;

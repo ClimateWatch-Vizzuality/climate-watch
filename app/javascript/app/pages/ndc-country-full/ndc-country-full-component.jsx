@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Button from 'components/button';
@@ -9,11 +9,11 @@ import Search from 'components/search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
+import getHeaderBg from 'utils/header';
 
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
 import lightSearch from 'styles/themes/search/search-light.scss';
-import background from 'assets/headers/home.jpg';
 import contentStyles from 'styles/themes/content.scss';
 import styles from './ndc-country-full-styles.scss';
 
@@ -27,12 +27,13 @@ class NDCCountryFull extends PureComponent {
       search,
       onSelectChange,
       content,
-      contentOptions
+      contentOptions,
+      route
     } = this.props;
 
     return (
       <div>
-        <Header image={background}>
+        <Header image={getHeaderBg(route.header)}>
           <div className={cx(layout.content, styles.twoFold, styles.header)}>
             <div className={styles.title}>
               <Button
@@ -90,14 +91,15 @@ class NDCCountryFull extends PureComponent {
 }
 
 NDCCountryFull.propTypes = {
-  match: Proptypes.object.isRequired,
-  country: Proptypes.object.isRequired,
-  onSearchChange: Proptypes.func.isRequired,
-  search: Proptypes.string,
-  content: Proptypes.object,
-  contentOptions: Proptypes.array,
-  onSelectChange: Proptypes.func,
-  loading: Proptypes.bool
+  route: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  country: PropTypes.object.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  search: PropTypes.string,
+  content: PropTypes.object,
+  contentOptions: PropTypes.array,
+  onSelectChange: PropTypes.func,
+  loading: PropTypes.bool
 };
 
 export default NDCCountryFull;

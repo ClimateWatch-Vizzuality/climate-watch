@@ -6,14 +6,14 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
+import getHeaderBg from 'utils/header';
 
-import background from 'assets/headers/home.jpg';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
 
 const NDC = ({ anchorLinks, query, route }) => (
   <div>
-    <Header size="medium" image={background}>
+    <Header size="medium" image={getHeaderBg(route.header)}>
       <div className={layout.content}>
         <div className={styles.cols}>
           <Intro title="NDC Content" />

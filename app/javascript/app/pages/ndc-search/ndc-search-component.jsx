@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
+import getHeaderBg from 'utils/header';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -10,7 +11,6 @@ import NDCSearchMap from 'components/ndcs-search-map';
 import Search from 'components/search';
 import NoContent from 'components/no-content';
 
-import background from 'assets/headers/home.jpg';
 import layout from 'styles/layout.scss';
 
 import lightSearch from 'styles/themes/search/search-light.scss';
@@ -18,10 +18,10 @@ import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
   render() {
-    const { results, query, onSearchChange } = this.props;
+    const { results, query, onSearchChange, route } = this.props;
     return (
       <div>
-        <Header image={background}>
+        <Header image={getHeaderBg(route.header)}>
           <div className={layout.content}>
             <div className={styles.headerCols}>
               <Intro title="NDC Content Search" />
@@ -58,6 +58,7 @@ class SearchPage extends PureComponent {
 }
 
 SearchPage.propTypes = {
+  route: PropTypes.object.isRequired,
   query: PropTypes.string,
   results: PropTypes.array,
   onSearchChange: PropTypes.func.isRequired
