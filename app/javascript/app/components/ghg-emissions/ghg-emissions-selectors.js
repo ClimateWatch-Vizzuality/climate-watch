@@ -4,7 +4,9 @@ import uniqBy from 'lodash/uniqBy';
 import {
   getYColumnValue,
   getThemeConfig,
-  getTooltipConfig
+  getTooltipConfig,
+  sortEmissionsByValue,
+  sortLabelByAlpha
 } from './ghg-emissions-utils';
 
 // constants needed for data parsing
@@ -156,9 +158,9 @@ export const getFilterOptions = createSelector(
         ...d,
         groupId: 'countries'
       }));
-      return uniqBy(countries.concat(regions), 'value');
+      return sortLabelByAlpha(uniqBy(countries.concat(regions), 'value'));
     }
-    return filteredSelected;
+    return sortLabelByAlpha(filteredSelected);
   }
 );
 
@@ -203,9 +205,11 @@ export const filterData = createSelector(
   (data, version, filters, breakBy) => {
     if (!data || !data.length || !filters || !filters.length) return [];
     const filterValues = filters.map(filter => filter.label);
-    return data.filter(
-      d =>
-        d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
+    return sortEmissionsByValue(
+      data.filter(
+        d =>
+          d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
+      )
     );
   }
 );
