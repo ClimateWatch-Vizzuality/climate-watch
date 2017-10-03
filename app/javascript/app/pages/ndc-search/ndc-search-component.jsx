@@ -10,10 +10,10 @@ import NDCSearchMap from 'components/ndcs-search-map';
 import Search from 'components/search';
 import NoContent from 'components/no-content';
 
-import background from 'assets/backgrounds/home_bg_1';
+import background from 'assets/headers/home.jpg';
 import layout from 'styles/layout.scss';
 
-import lightSearch from 'styles/themes/search-light.scss';
+import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 
-import background from 'assets/backgrounds/home_bg_1';
+import background from 'assets/headers/home.jpg';
 
 import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';

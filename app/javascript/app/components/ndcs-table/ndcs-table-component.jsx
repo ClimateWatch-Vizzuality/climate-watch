@@ -5,7 +5,7 @@ import Search from 'components/search';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 
-import darkSearch from 'styles/themes/search-dark.scss';
+import darkSearch from 'styles/themes/search/search-dark.scss';
 import styles from './ndcs-table-styles.scss';
 
 class NDCTable extends PureComponent {

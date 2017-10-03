@@ -8,7 +8,7 @@ import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
 
-import background from 'assets/backgrounds/home_bg_1';
+import background from 'assets/headers/home.jpg';
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
 

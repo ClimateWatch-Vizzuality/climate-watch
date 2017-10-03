@@ -12,9 +12,9 @@ import isEmpty from 'lodash/isEmpty';
 
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
-import lightSearch from 'styles/themes/search-light.scss';
-import background from 'assets/backgrounds/home_bg_1';
-import contentStyles from 'styles/content.scss';
+import lightSearch from 'styles/themes/search/search-light.scss';
+import background from 'assets/headers/home.jpg';
+import contentStyles from 'styles/themes/content.scss';
 import styles from './ndc-country-full-styles.scss';
 
 class NDCCountryFull extends PureComponent {

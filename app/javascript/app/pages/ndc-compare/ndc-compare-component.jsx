@@ -10,7 +10,7 @@ import Dropdown from 'components/dropdown';
 import sortBy from 'lodash/sortBy';
 
 import backIcon from 'assets/icons/back.svg';
-import background from 'assets/backgrounds/home_bg_1';
+import background from 'assets/headers/home.jpg';
 import layout from 'styles/layout.scss';
 import styles from './ndc-compare-styles.scss';
 

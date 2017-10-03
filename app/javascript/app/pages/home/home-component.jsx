@@ -12,13 +12,11 @@ import GeoLocationProvider from 'providers/geolocation-provider';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
-import homeOneBg from 'assets/backgrounds/home_bg_1';
-import homeTwoBg from 'assets/backgrounds/home_bg_2';
-import homeTwoImage from 'assets/backgrounds/home_image_2';
-import homeThreeBg from 'assets/backgrounds/home_bg_3';
-import homeThreeImage from 'assets/backgrounds/home_image_3';
+import background from 'assets/headers/home.jpg';
+import countryScreenshot from 'assets/screenshots/country';
+import ndcScreenshot from 'assets/screenshots/ndc';
 
-import introTheme from 'styles/themes/intro-light.scss';
+import introDark from 'styles/themes/intro/intro-dark.scss';
 import styles from './home-styles.scss';
 
 class Home extends PureComponent {
@@ -26,7 +24,7 @@ class Home extends PureComponent {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
       <div>
-        <Section className={styles.homeOne} backgroundImage={homeOneBg}>
+        <Section className={styles.section} backgroundImage={background}>
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="A global platform for climate action that offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries’ climate progress." />
@@ -45,13 +43,13 @@ class Home extends PureComponent {
             />
           </div>
         </Section>
-        <Section className={styles.homeTwo} backgroundImage={homeTwoBg}>
+        <Section className={styles.section}>
           <div className={styles.column}>
-            <img src={homeTwoImage} alt="home-section-two" />
+            <img src={countryScreenshot} alt="Country section screenshot" />
           </div>
           <div className={styles.column}>
             <Intro
-              theme={introTheme}
+              theme={introDark}
               title="Explore the country profiles"
               description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
@@ -80,10 +78,10 @@ class Home extends PureComponent {
             </div>
           </div>
         </Section>
-        <Section className={styles.homeThree} backgroundImage={homeThreeBg}>
+        <Section className={styles.section}>
           <div className={styles.column}>
             <Intro
-              theme={introTheme}
+              theme={introDark}
               title="See and compare the Nationally Determined Contributions"
               description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
@@ -97,7 +95,7 @@ class Home extends PureComponent {
             </div>
           </div>
           <div className={styles.column}>
-            <img src={homeThreeImage} alt="home-section-one" />
+            <img src={ndcScreenshot} alt="Ndcs section screenshot" />
           </div>
         </Section>
       </div>
