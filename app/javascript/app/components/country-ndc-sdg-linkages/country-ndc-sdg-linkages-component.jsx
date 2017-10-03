@@ -68,12 +68,12 @@ class CountrySDGLinkages extends PureComponent {
             </ReactTooltip>
             <div className={styles.sectorSelector}>
               <Dropdown
-                openUp
                 label="Sector"
                 placeholder="Choose a sector"
                 options={sectorOptions}
-                onChange={handleSectorChange}
+                onValueChange={handleSectorChange}
                 value={activeSector}
+                dropdownDirection={-1}
               />
             </div>
           </div>

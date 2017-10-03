@@ -33,20 +33,19 @@ const NDCMap = props => (
     )}
     <div className={styles.col4}>
       <Dropdown
-        openUp
         label="Category"
+        paceholder="Select a category"
         options={props.categories}
-        onChange={props.handleCategoryChange}
-        value={props.selectedCategory.value}
-        clearable={false}
+        onValueChange={props.handleCategoryChange}
+        value={props.selectedCategory}
+        hideResetButton
       />
       <Dropdown
-        openUp
         label="Indicator"
         options={props.indicators}
-        onChange={props.handleIndicatorChange}
-        value={props.selectedIndicator.value}
-        clearable={false}
+        onValueChange={props.handleIndicatorChange}
+        value={props.selectedIndicator}
+        hideResetButton
       />
       <ButtonGroup className={styles.buttons} />
     </div>

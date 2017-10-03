@@ -73,8 +73,8 @@ class Home extends PureComponent {
               <Dropdown
                 placeholder="Select another country"
                 options={countriesOptions}
-                onChange={handleDropDownChange}
-                clearable={false}
+                onValueChange={handleDropDownChange}
+                hideResetButton
                 hasLinks
               />
             </div>

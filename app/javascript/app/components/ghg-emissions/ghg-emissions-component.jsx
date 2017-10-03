@@ -38,24 +38,24 @@ class GhgEmissions extends PureComponent {
           <Dropdown
             label="Source"
             options={sources}
-            onChange={handleSourceChange}
+            onValueChange={handleSourceChange}
             value={sourceSelected}
-            clearable={false}
+            hideResetButton
           />
           <Dropdown
             label="IPCC Version"
             options={versions}
-            onChange={handleVersionChange}
+            onValueChange={handleVersionChange}
             value={versionSelected}
-            clearable={false}
+            hideResetButton
             disabled={versions.length === 1}
           />
           <Dropdown
             label="BreakBy"
             options={breaksBy}
-            onChange={handleBreakByChange}
+            onValueChange={handleBreakByChange}
             value={breakSelected}
-            clearable={false}
+            hideResetButton
           />
           <MultiSelect
             groups={breakSelected.value === 'location' ? groups : null}

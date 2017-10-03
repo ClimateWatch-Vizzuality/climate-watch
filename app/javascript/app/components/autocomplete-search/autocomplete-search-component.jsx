@@ -14,13 +14,12 @@ class CountriesSelect extends PureComponent {
           className={theme.dropdownOptionWithArrow}
           placeholder={'e.g. "Brazil", "energy", "reduce emissions by 37%"'}
           options={searchList}
-          onInputChange={setAutocompleteSearch}
-          onChange={handleValueClick}
+          onSearchChange={setAutocompleteSearch}
+          onValueChange={handleValueClick}
           value={null}
-          clearable={false}
+          hideResetButton
           white
-          searchable
-          search
+          hasSearch
         />
       </div>
     );

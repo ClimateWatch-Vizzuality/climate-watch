@@ -48,7 +48,7 @@ class NDCCountry extends PureComponent {
               <Dropdown
                 placeholder="Add a country"
                 options={sortBy(countriesOptions, ['label'])}
-                onChange={selected => handleDropDownChange(0, selected)}
+                onValueChange={selected => handleDropDownChange(0, selected)}
                 value={activeCountriesOptions[0]}
                 transparent
               />
@@ -57,7 +57,7 @@ class NDCCountry extends PureComponent {
               <Dropdown
                 placeholder="Add a second country"
                 options={sortBy(countriesOptions, ['label'])}
-                onChange={selected => handleDropDownChange(1, selected)}
+                onValueChange={selected => handleDropDownChange(1, selected)}
                 value={activeCountriesOptions[1]}
                 transparent
               />
@@ -66,7 +66,7 @@ class NDCCountry extends PureComponent {
               <Dropdown
                 placeholder="Add a third country"
                 options={sortBy(countriesOptions, ['label'])}
-                onChange={selected => handleDropDownChange(2, selected)}
+                onValueChange={selected => handleDropDownChange(2, selected)}
                 value={activeCountriesOptions[2]}
                 transparent
               />
