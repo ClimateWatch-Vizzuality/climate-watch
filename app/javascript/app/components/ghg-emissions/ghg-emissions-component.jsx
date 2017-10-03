@@ -5,6 +5,7 @@ import ChartLine from 'components/charts/line';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Tag from 'components/tag';
+import MultiSelect from 'components/multiselect';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -55,13 +56,12 @@ class GhgEmissions extends PureComponent {
             value={breakSelected}
             clearable={false}
           />
-          <Dropdown
-            label={breakSelected.label}
+          <MultiSelect
+            placeholder="Select a filter"
+            values={filtersSelected}
             options={filters}
-            onChange={handleFilterChange}
-            value={filtersSelected}
-            clearable={false}
-            multi
+            onMultiValueChange={handleFilterChange}
+            selectedClassName={styles.selected}
           />
           <ButtonGroup className={styles.colEnd} />
         </div>

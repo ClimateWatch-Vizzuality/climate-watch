@@ -1,0 +1,29 @@
+@import '~styles/layout.scss';
+
+.multiSelect :global {
+  position: relative;
+
+  .resizable-input {
+    border: 0;
+  }
+}
+
+.values {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: $white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.selected {
+  background: red;
+}
