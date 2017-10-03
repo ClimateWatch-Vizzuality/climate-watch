@@ -5,18 +5,59 @@
 
   .resizable-input {
     border: 0;
+    width: 100px;
+  }
+
+  .react-selectize {
+    width: 100%;
+    font-family: $font-family-1;
+    color: $theme-color;
+
+    &.open {
+      background: $white;
+      z-index: 11;
+    }
+
+    .react-selectize-control {
+      background-color: transparent !important;
+      border-color: rgba($theme-color-light, 0.3) !important;
+      font-size: $font-size !important;
+      height: 45px;
+    }
+
+    .react-selectize-search-field-and-selected-values,
+    .react-selectize-reset-button-container,
+    .react-selectize-toggle-button-container {
+      height: 100% !important;
+    }
+
+    .option-wrapper {
+      padding: 12px 10px;
+      border-bottom: #e5e5eb 1px solid;
+      color: $theme-color-light;
+      background-color: $light-gray;
+    }
+
+    .dropdown-menu {
+      border-color: rgba($theme-color-light, 0.3) !important;
+    }
+
+    .simple-group-title {
+      background-color: $theme-color !important;
+      color: $white;
+    }
   }
 }
 
 .values {
+  color: $theme-color;
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-  background: $white;
+  padding-left: 10px;
+  padding-right: 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -25,5 +66,17 @@
 }
 
 .selected {
-  background: red;
+  background: #f0f0f0;
+}
+
+.isOpen {
+  transform: rotate(180deg);
+}
+
+.checked {
+  display: inline-block;
+  background: $theme-color;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
 }

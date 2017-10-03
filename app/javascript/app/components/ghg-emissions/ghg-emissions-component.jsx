@@ -15,6 +15,7 @@ class GhgEmissions extends PureComponent {
     const {
       data,
       config,
+      groups,
       sources,
       sourceSelected,
       handleSourceChange,
@@ -57,7 +58,9 @@ class GhgEmissions extends PureComponent {
             clearable={false}
           />
           <MultiSelect
-            placeholder="Select a filter"
+            groups={breakSelected.value === 'location' ? groups : null}
+            groupsAsColumns
+            placeholderText={`Select ${breakSelected.value}s`}
             values={filtersSelected}
             options={filters}
             onMultiValueChange={handleFilterChange}
@@ -89,6 +92,7 @@ class GhgEmissions extends PureComponent {
 GhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  groups: PropTypes.array.isRequired,
   versions: PropTypes.array.isRequired,
   versionSelected: PropTypes.object.isRequired,
   handleVersionChange: PropTypes.func.isRequired,

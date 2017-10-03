@@ -1,67 +1,48 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
 import { ReactSelectize, MultiSelect } from 'react-selectize'; // eslint-disable-line
-import remove from 'lodash/remove';
+import Icon from 'components/icon';
 
+import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import 'react-selectize/themes/index.css';
 import styles from './multiselect-styles.scss';
 
 class Multiselect extends Component {
   // eslint-disable-line react/prefer-stateless-function
-  filterOptions = options =>
-    options.map(o => {
-      const isSelected = this.props.values.some(
-        filter => o.value === filter.value
-      );
-      return {
-        ...o,
-        isSelected
-      };
-    });
-
-  handleChange = values => {
-    const selectedValues = values.map(d => d.value);
-    const duplicateValue = this.findDuplicateInArray(selectedValues);
-    if (duplicateValue) {
-      remove(selectedValues, value => duplicateValue === value);
-    }
-    const selected = values.filter(
-      value => selectedValues.indexOf(value.value) > -1
-    );
-    this.props.onMultiValueChange(selected);
-  };
-
-  findDuplicateInArray = array => {
-    let repeatedValue = null;
-    array.forEach((value, index) => {
-      if (array.indexOf(value) !== index && array.indexOf(value) > -1) {
-        repeatedValue = value;
-      }
-    });
-    return repeatedValue;
-  };
-
   render() {
-    const { values, selectedClassName } = this.props;
+    const {
+      values,
+      selectedClassName,
+      placeholderText,
+      handleChange,
+      filterOptions
+    } = this.props;
     return (
       <div className={styles.multiSelect}>
-        <div className={styles.values}>{values.length} options selected</div>
+        <div className={styles.values}>
+          {placeholderText && !values.length ? (
+            placeholderText
+          ) : (
+            `${values.length} selected`
+          )}
+        </div>
         <MultiSelect
-          filterOptions={this.filterOptions}
+          filterOptions={filterOptions}
           renderValue={value =>
             (values.length > 2 ? <span /> : <span>{value}, </span>)}
           renderOption={option => {
-            const className = option.isSelected
-              ? selectedClassName
-              : styles.normal;
+            const className = option.isSelected ? selectedClassName : '';
             return (
               <div className={className}>
                 {option.label}
-                {option.isSelected && <span> selected </span>}
+                {option.isSelected && <span className={styles.checked} />}
               </div>
             );
           }}
-          onValuesChange={this.handleChange}
+          onValuesChange={handleChange}
+          renderToggleButton={({ open }) => (
+            <Icon className={open ? styles.isOpen : ''} icon={dropdownArrow} />
+          )}
           {...this.props}
         />
       </div>
@@ -72,7 +53,10 @@ class Multiselect extends Component {
 Multiselect.propTypes = {
   values: Proptypes.array.isRequired,
   selectedClassName: Proptypes.string,
-  onMultiValueChange: Proptypes.func
+  onMultiValueChange: Proptypes.func,
+  placeholderText: Proptypes.string,
+  filterOptions: Proptypes.func,
+  handleChange: Proptypes.func
 };
 
 Multiselect.defaultProps = {
