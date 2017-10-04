@@ -36,6 +36,7 @@ class CountrySDGLinkages extends PureComponent {
             <div className={styles.sdgs}>
               {sdgs.map(sdg => (
                 <SDGCard
+                  activeSector={activeSector}
                   key={sdg.title}
                   sdgData={sdg}
                   tooltipId="sdg-linkages"

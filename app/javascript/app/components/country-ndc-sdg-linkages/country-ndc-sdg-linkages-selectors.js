@@ -48,31 +48,21 @@ export const getSectorOptionsSorted = createSelector(
     })
 );
 
-export const filterSDGs = createSelector(
-  [mapSDGs, getActiveSector],
-  (sdgs, sector) => {
-    if (!sdgs) return [];
-    const filteredSDGs = sdgs.map(sdg => {
-      const sectorTargetKeys = Object.keys(sdg.targets).filter(
-        targetKey =>
-          !sector ||
-          (sdg.targets[targetKey].sectors &&
-            sdg.targets[targetKey].sectors.indexOf(parseInt(sector.value, 10)) >
-              -1)
-      );
-      const sectorTargets = sectorTargetKeys.map(targetKey => ({
-        targetKey,
-        title: sdg.targets[targetKey].title,
-        sectors: sdg.targets[targetKey].sectors
-      }));
-      return {
-        ...sdg,
-        targets: sectorTargets
-      };
-    });
-    return filteredSDGs;
-  }
-);
+export const filterSDGs = createSelector([mapSDGs, getActiveSector], sdgs => {
+  if (!sdgs) return [];
+  const filteredSDGs = sdgs.map(sdg => {
+    const sectorTargets = Object.keys(sdg.targets).map(targetKey => ({
+      targetKey,
+      title: sdg.targets[targetKey].title,
+      sectors: sdg.targets[targetKey].sectors
+    }));
+    return {
+      ...sdg,
+      targets: sectorTargets
+    };
+  });
+  return filteredSDGs;
+});
 
 export default {
   getSectorOptionsSorted,

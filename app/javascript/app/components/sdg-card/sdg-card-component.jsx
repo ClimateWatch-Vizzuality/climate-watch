@@ -50,7 +50,8 @@ class SDGCard extends PureComponent {
       square,
       tooltipId,
       setTooltipData,
-      className
+      className,
+      activeSector
     } = this.props;
     const cardStyle = cx(styles.card, square ? styles.square : null, className);
     return (
@@ -67,7 +68,15 @@ class SDGCard extends PureComponent {
                 data-for={tooltipId}
                 data-tip
                 onMouseEnter={() => setTooltipData(target)}
-                className={styles.dot}
+                className={cx(
+                  styles.dot,
+                  activeSector &&
+                  (!target.sectors ||
+                    target.sectors.indexOf(parseInt(activeSector.value, 10)) ===
+                      -1)
+                    ? styles.small
+                    : ''
+                )}
                 style={{
                   backgroundColor: target.sectors ? sdgData.colour : ''
                 }}
@@ -90,7 +99,8 @@ SDGCard.propTypes = {
   square: PropTypes.bool,
   tooltipId: PropTypes.string,
   setTooltipData: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  activeSector: PropTypes.object
 };
 
 export default SDGCard;
