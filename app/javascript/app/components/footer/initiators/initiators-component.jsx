@@ -8,12 +8,17 @@ import Icon from 'components/icon';
 import arrowIcon from 'assets/icons/link-arrow.svg';
 import styles from './initiators-styles.scss';
 
-const Initiators = ({ initiators, className }) => (
+const Initiators = ({ initiators, className, gray }) => (
   <div className={styles.container}>
     <div className={cx(styles.component, className)}>
       <div className={styles.intro}>
-        <h4 className={styles.text}>CLIMATE WATCH IS A JOINT INITIATIVE OF</h4>
-        <Link className={cx(styles.text, styles.right)} to="/about">
+        <h4 className={cx(styles.text, { [styles.textGray]: gray })}>
+          CLIMATE WATCH IS A JOINT INITIATIVE OF
+        </h4>
+        <Link
+          className={cx(styles.text, { [styles.textGray]: gray }, styles.right)}
+          to="/about"
+        >
           SEE ALL PARTNERS <Icon className={styles.arrow} icon={arrowIcon} />
         </Link>
       </div>
@@ -42,6 +47,7 @@ const Initiators = ({ initiators, className }) => (
 );
 
 Initiators.propTypes = {
+  gray: PropTypes.bool,
   className: PropTypes.string,
   initiators: PropTypes.arrayOf(
     PropTypes.shape({

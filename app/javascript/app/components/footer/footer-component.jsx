@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import cx from 'classnames';
 
 import Nav from 'components/nav';
@@ -15,9 +16,19 @@ class Footer extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
     const { routes } = this.props;
+    const { pathname } = this.props.location;
+    const isHomePage = pathname === '/';
+    const isAboutPage = pathname.includes('about');
+    const className = cx(
+      styles.footer,
+      { [styles.gray]: isHomePage },
+      { [styles.border]: isAboutPage }
+    );
     return (
-      <footer className={styles.footer}>
-        <Initiators className={layout.content} />
+      <footer className={className}>
+        {!isAboutPage && (
+          <Initiators className={layout.content} gray={isHomePage} />
+        )}
         <div className={cx(layout.content, styles.nav)}>
           <Nav routes={routes} hideLogo />
           <div className={styles.contactContainer}>
@@ -37,7 +48,8 @@ class Footer extends PureComponent {
 }
 
 Footer.propTypes = {
+  location: PropTypes.object.isRequired,
   routes: PropTypes.array.isRequired
 };
 
-export default Footer;
+export default withRouter(Footer);
