@@ -63,6 +63,7 @@ class GhgEmissions extends PureComponent {
             placeholderText={`Select ${breakSelected.value}s`}
             values={filtersSelected}
             options={filters}
+            open
             onMultiValueChange={handleFilterChange}
           />
           <ButtonGroup className={styles.colEnd} />

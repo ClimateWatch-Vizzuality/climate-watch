@@ -19,7 +19,6 @@ $height: 45px;
 
       .react-selectize-control {
         cursor: pointer;
-        display: box;
         display: flex;
         align-items: center;
         position: relative;
@@ -33,14 +32,12 @@ $height: 45px;
           line-height: 1em;
           overflow: hidden;
           text-overflow: ellipsis;
-          vertical-align: middle;
           white-space: nowrap;
           position: absolute;
           max-width: calc(100% - 56px);
         }
 
         .react-selectize-search-field-and-selected-values {
-          display: box;
           display: flex;
           min-height: $height;
           flex-grow: 1;
@@ -61,11 +58,6 @@ $height: 45px;
           }
 
           .value-wrapper {
-            display: -webkit-box;
-            display: -moz-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: box;
             display: flex;
             align-items: center;
           }
@@ -76,11 +68,6 @@ $height: 45px;
           flex-grow: 0;
           flex-shrink: 0;
           cursor: pointer;
-          display: -webkit-box;
-          display: -moz-box;
-          display: -webkit-flex;
-          display: -ms-flexbox;
-          display: box;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -140,7 +127,6 @@ $height: 45px;
       }
 
       .groups.as-columns {
-        display: box;
         display: flex;
 
         > div {
