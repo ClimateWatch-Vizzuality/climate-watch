@@ -191,7 +191,7 @@ $height: 45px;
           }
 
           .dropdown-menu {
-            bottom: $height;
+            bottom: $height - 1;
           }
 
           .react-selectize-toggle-button-container {

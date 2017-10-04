@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 
-import background from 'assets/backgrounds/home_bg_1';
-
 import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';
 
-const About = ({ sections }) => (
+const About = ({ route, sections }) => (
   <div>
-    <Header image={background}>
+    <Header route={route}>
       <div className={layout.content}>
         <Intro
           title="About"
@@ -55,6 +53,7 @@ const About = ({ sections }) => (
 );
 
 About.propTypes = {
+  route: PropTypes.object.isRequired,
   sections: PropTypes.array.isRequired
 };
 

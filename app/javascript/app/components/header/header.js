@@ -1,3 +1,28 @@
-import Component from './header-component';
+import { withProps } from 'recompose';
 
-export default Component;
+import HeaderComponent from './header-component';
+
+function importAllImagesFromFolder(r) {
+  const images = {};
+  const keys = r.keys();
+  if (keys.length) {
+    keys.forEach(item => {
+      images[item.replace('./', '').replace('.jpg', '')] = r(item);
+    });
+  }
+  return images;
+}
+
+const images = importAllImagesFromFolder(
+  require.context('assets/headers', false, /\.(png|jpe?g)$/)
+);
+
+const withBgByRoute = withProps(({ route }) => {
+  if (!route || !route.headerImage) return null;
+
+  return {
+    image: images[route.headerImage] ? images[route.headerImage] : images.home
+  };
+});
+
+export default withBgByRoute(HeaderComponent);
