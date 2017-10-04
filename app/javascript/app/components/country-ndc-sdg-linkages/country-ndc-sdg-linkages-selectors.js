@@ -2,18 +2,18 @@ import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
 
 const getSectors = state => {
-  if (!state) return [];
-  return state.sectors;
-};
-
-const getActiveSector = state => {
-  if (!state) return [];
-  return state.activeSector;
+  if (!state.data) return [];
+  return state.data.sectors;
 };
 
 const getSDGs = state => {
   if (!state.data) return [];
   return state.data.sdgs;
+};
+
+const getActiveSectorId = state => {
+  if (!state.activeSector) return null;
+  return state.activeSector;
 };
 
 export const mapSDGs = createSelector(getSDGs, sdgs => {
@@ -30,8 +30,7 @@ export const mapSDGs = createSelector(getSDGs, sdgs => {
 
 export const getSectorOptions = createSelector([getSectors], sectors => {
   if (!sectors) return [];
-  const sectorIds = Object.keys(sectors);
-  const sectorOptions = sectorIds.map(sector => ({
+  const sectorOptions = Object.keys(sectors).map(sector => ({
     label: upperFirst(sectors[sector].name),
     value: sector
   }));
@@ -48,7 +47,15 @@ export const getSectorOptionsSorted = createSelector(
     })
 );
 
-export const filterSDGs = createSelector([mapSDGs, getActiveSector], sdgs => {
+export const getSectorSelected = createSelector(
+  [getSectorOptions, getActiveSectorId],
+  (sectors, activeSector) => {
+    if (!sectors && !sectors.length) return {};
+    return sectors.find(sector => sector.value === activeSector);
+  }
+);
+
+export const filterSDGs = createSelector([mapSDGs], sdgs => {
   if (!sdgs) return [];
   const filteredSDGs = sdgs.map(sdg => {
     const sectorTargets = Object.keys(sdg.targets).map(targetKey => ({
@@ -66,5 +73,6 @@ export const filterSDGs = createSelector([mapSDGs, getActiveSector], sdgs => {
 
 export default {
   getSectorOptionsSorted,
-  filterSDGs
+  filterSDGs,
+  getSectorSelected
 };
