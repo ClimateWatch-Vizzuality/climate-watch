@@ -90,7 +90,7 @@ const partnershipWith = {
   ]
 };
 
-const adicionalData = {
+const additionalData = {
   title: 'Additional data provided by',
   partners: [
     {
@@ -156,7 +156,7 @@ const foundingBy = {
 };
 
 const withSections = withProps(() => ({
-  sections: [jointInitiative, partnershipWith, adicionalData, foundingBy]
+  sections: [jointInitiative, partnershipWith, additionalData, foundingBy]
 }));
 
 export default withSections(Component);
