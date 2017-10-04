@@ -7,8 +7,8 @@ import ResultsList from 'components/results-list';
 import Map from 'components/map';
 
 import layout from 'styles/layout.scss';
-import resultsListLightTheme from 'styles/themes/results-list-light.scss';
-import searchLightTheme from 'styles/themes/search-light.scss';
+import resultsListLightTheme from 'styles/themes/results-list/results-list-light.scss';
+import searchLightTheme from 'styles/themes/search/search-light.scss';
 import styles from './countries-select-styles.scss';
 
 class CountriesSelect extends PureComponent {
