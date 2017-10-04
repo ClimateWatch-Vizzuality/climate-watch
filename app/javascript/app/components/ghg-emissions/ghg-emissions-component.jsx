@@ -58,13 +58,12 @@ class GhgEmissions extends PureComponent {
             hideResetButton
           />
           <MultiSelect
+            label={breakSelected.label}
             groups={breakSelected.value === 'location' ? groups : null}
-            groupsAsColumns
             placeholderText={`Select ${breakSelected.value}s`}
             values={filtersSelected}
             options={filters}
             onMultiValueChange={handleFilterChange}
-            selectedClassName={styles.selected}
           />
           <ButtonGroup className={styles.colEnd} />
         </div>

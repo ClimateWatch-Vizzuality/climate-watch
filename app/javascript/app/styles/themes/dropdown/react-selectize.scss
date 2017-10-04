@@ -140,10 +140,6 @@ $height: 45px;
       }
 
       .groups.as-columns {
-        display: -webkit-box;
-        display: -moz-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
         display: box;
         display: flex;
 
@@ -292,8 +288,8 @@ $height: 45px;
       }
 
       .simple-group-title {
-        background-color: #fafafa;
-        padding: 8px;
+        background-color: $dark-gray;
+        padding: 12px 10px;
       }
 
       .option-wrapper {

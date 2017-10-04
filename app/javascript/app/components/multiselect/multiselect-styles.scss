@@ -1,52 +1,15 @@
 @import '~styles/layout.scss';
 
-.multiSelect :global {
+.label {
+  display: block;
+  font-size: $font-size-s;
+  font-weight: $font-weight-bold;
+  color: $theme-color;
+  margin-bottom: 4px;
+}
+
+.multiSelectWrapper {
   position: relative;
-
-  .resizable-input {
-    border: 0;
-    width: calc(100% - 50px);
-  }
-
-  .react-selectize {
-    width: 100%;
-    font-family: $font-family-1;
-    color: $theme-color;
-
-    &.open {
-      background: $white;
-      z-index: 11;
-    }
-
-    .react-selectize-control {
-      background-color: transparent;
-      border-color: rgba($theme-color-light, 0.3);
-      font-size: $font-size;
-      height: 45px;
-    }
-
-    .react-selectize-search-field-and-selected-values,
-    .react-selectize-reset-button-container,
-    .react-selectize-toggle-button-container {
-      height: 100%;
-    }
-
-    .option-wrapper {
-      padding: 12px 10px;
-      border-bottom: #e5e5eb 1px solid;
-      color: $theme-color-light;
-      background-color: $light-gray;
-    }
-
-    .dropdown-menu {
-      border-color: rgba($theme-color-light, 0.3);
-    }
-
-    .simple-group-title {
-      background-color: $theme-color;
-      color: $white;
-    }
-  }
 }
 
 .values {
@@ -65,18 +28,28 @@
   z-index: 10;
 }
 
-.selected {
-  background: #f0f0f0;
+.multiSelect :global {
+  position: relative;
+
+  .dropdown-menu {
+    .option-wrapper {
+      padding: 12px 10px;
+    }
+  }
 }
 
-.isOpen {
-  transform: rotate(180deg);
+.selected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $theme-color;
 }
 
 .checked {
   display: inline-block;
   background: $theme-color;
   border-radius: 50%;
+  color: $theme-color !important;
   width: 8px;
   height: 8px;
 }
