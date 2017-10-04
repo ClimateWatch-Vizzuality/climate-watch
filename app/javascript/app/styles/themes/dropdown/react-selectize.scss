@@ -42,13 +42,15 @@ $height: 45px;
           min-height: $height;
           flex-grow: 1;
           flex-wrap: wrap;
+          overflow: hidden;
+          position: relative;
 
           .resizable-input {
             background: none;
             border: none;
             outline: none;
             font-size: 1em;
-            padding: 4px 0;
+            padding: 6px 0;
             vertical-align: middle;
             width: 0;
             position: absolute;
@@ -268,7 +270,6 @@ $height: 45px;
 
       .no-results-found {
         color: #aaa;
-        font-style: oblique;
         padding: 12px 10px;
       }
 

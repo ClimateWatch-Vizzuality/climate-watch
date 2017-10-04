@@ -11,6 +11,13 @@ import styles from './multiselect-styles.scss';
 
 class Multiselect extends Component {
   // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+    this.state = {
+      search: ''
+    };
+  }
+
   render() {
     const {
       values,
@@ -21,6 +28,7 @@ class Multiselect extends Component {
       filterOptions,
       label
     } = this.props;
+    const { search } = this.state;
     return (
       <div className={styles.multiSelectWrapper}>
         {label && <span className={styles.label}>{label}</span>}
@@ -28,11 +36,13 @@ class Multiselect extends Component {
           <div className={styles.values}>
             {placeholderText &&
             !values.length && <span>{placeholderText}</span>}
-            {values.length && values.length === options.length ? (
-              <span>All selected</span>
-            ) : (
-              `${values.length} selected`
-            )}
+            {!search &&
+            values.length &&
+            values.length === options.length && <span>All selected</span>}
+            {!search &&
+              values.length &&
+              values.length !== options.length &&
+              `${values.length} selected`}
           </div>
           <MultiSelect
             filterOptions={filterOptions}
@@ -54,6 +64,8 @@ class Multiselect extends Component {
                 icon={dropdownArrow}
               />
             )}
+            onSearchChange={s => this.setState({ search: s })}
+            search={this.state.search}
             {...this.props}
           />
         </div>
