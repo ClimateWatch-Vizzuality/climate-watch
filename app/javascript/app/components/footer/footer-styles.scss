@@ -1,0 +1,29 @@
+@import '~styles/layout.scss';
+
+.footer {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  background-color: $light-gray;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.contactContainer {
+  display: flex;
+  align-items: center;
+}
+
+.contact {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $dark-gray;
+  margin-right: 10px;
+}
