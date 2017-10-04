@@ -168,8 +168,8 @@ $height: 45px;
     &.root-node {
       .react-selectize-control {
         background-color: transparent;
-        border: 1px solid;
-        border-color: rgba($theme-color-light, 0.3);
+        border: solid 1px rgba(26, 28, 34, 0.1);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
         border-radius: 4px;
         font-size: $font-size;
 
@@ -253,7 +253,8 @@ $height: 45px;
     &.dropdown-menu {
       background: $light-gray;
       color: $theme-color-light;
-      border: 1px solid rgba($theme-color-light, 0.3);
+      border: solid 1px rgba(26, 28, 34, 0.1);
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
       margin-top: -1px;
 
       &.flipped {
@@ -262,7 +263,6 @@ $height: 45px;
       }
 
       &:not(.flipped) {
-        border-color: rgba($theme-color-light, 0.3);
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
       }
