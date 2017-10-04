@@ -52,8 +52,7 @@ class MultiSelectContainer extends PureComponent {
     return createElement(MultiSelectComponent, {
       ...this.props,
       filterOptions: this.filterOptions,
-      handleChange: this.handleChange,
-      findDuplicateInArray: this.findDuplicateInArray
+      handleChange: this.handleChange
     });
   }
 }

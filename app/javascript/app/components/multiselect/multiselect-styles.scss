@@ -5,7 +5,7 @@
 
   .resizable-input {
     border: 0;
-    width: 100px;
+    width: calc(100% - 50px);
   }
 
   .react-selectize {
@@ -19,16 +19,16 @@
     }
 
     .react-selectize-control {
-      background-color: transparent !important;
-      border-color: rgba($theme-color-light, 0.3) !important;
-      font-size: $font-size !important;
+      background-color: transparent;
+      border-color: rgba($theme-color-light, 0.3);
+      font-size: $font-size;
       height: 45px;
     }
 
     .react-selectize-search-field-and-selected-values,
     .react-selectize-reset-button-container,
     .react-selectize-toggle-button-container {
-      height: 100% !important;
+      height: 100%;
     }
 
     .option-wrapper {
@@ -39,11 +39,11 @@
     }
 
     .dropdown-menu {
-      border-color: rgba($theme-color-light, 0.3) !important;
+      border-color: rgba($theme-color-light, 0.3);
     }
 
     .simple-group-title {
-      background-color: $theme-color !important;
+      background-color: $theme-color;
       color: $white;
     }
   }

@@ -1,123 +1,13 @@
 @import '~styles/settings.scss';
 
+.dropdownWrapper {
+  width: 100%;
+}
+
 .label {
   display: block;
   font-size: $font-size-s;
   font-weight: $font-weight-bold;
   color: $theme-color;
   margin-bottom: 4px;
-}
-
-.dropdown :global {
-  position: relative;
-  width: 100%;
-
-  .resizable-input {
-    border: 0;
-    width: 100px;
-    position: absolute;
-    top: calc(50% - 16px);
-  }
-
-  .react-selectize {
-    width: 100%;
-    font-family: $font-family-1;
-    color: $theme-color;
-
-    &.open {
-      z-index: 11;
-
-      .react-selectize-control {
-        background-color: $white !important;
-      }
-    }
-
-    .react-selectize-control {
-      background-image: none !important;
-      background-color: transparent !important;
-      border-color: rgba($theme-color-light, 0.3);
-      font-size: $font-size !important;
-      height: 45px;
-      align-items: center;
-    }
-
-    .react-selectize-search-field-and-selected-values,
-    .react-selectize-reset-button-container,
-    .react-selectize-toggle-button-container {
-      height: 100% !important;
-    }
-
-    .option-wrapper {
-      border-bottom: #e5e5eb 1px solid;
-      color: $theme-color-light;
-      background-color: $light-gray;
-
-      .simple-option {
-        padding: 12px 10px !important;
-      }
-    }
-
-    .highlighted {
-      color: $theme-color !important;
-      background-color: transparent;
-
-      .simple-option {
-        color: $theme-color !important;
-      }
-    }
-
-    .dropdown-menu {
-      border-color: rgba($theme-color-light, 0.3) !important;
-    }
-
-    .simple-group-title {
-      background-color: $theme-color !important;
-      color: $white;
-    }
-  }
-
-  .disabled {
-    background-color: $light-gray;
-  }
-}
-
-.isOpen {
-  transform: rotate(180deg);
-}
-
-.searchIcon {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  right: 5px;
-  top: 4px;
-}
-
-.white :global {
-  .react-selectize-control {
-    border-color: rgba($white, 0.5) !important;
-    color: $white;
-  }
-
-  .react-selectize-placeholder {
-    color: $white !important;
-    text-indent: 10px !important;
-  }
-}
-
-.transparent :global {
-  .react-selectize-control {
-    border-color: transparent !important;
-    color: $white;
-    height: 60px !important;
-  }
-
-  .dropdown-menu {
-    margin-left: -1px;
-    width: calc(100% + 2px) !important;
-  }
-}
-
-.whiteIcon {
-  fill: $white;
 }

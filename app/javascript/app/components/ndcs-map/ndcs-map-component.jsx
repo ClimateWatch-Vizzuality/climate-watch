@@ -39,6 +39,7 @@ const NDCMap = props => (
         onValueChange={props.handleCategoryChange}
         value={props.selectedCategory}
         hideResetButton
+        dropdownDirection={-1}
       />
       <Dropdown
         label="Indicator"
@@ -46,6 +47,7 @@ const NDCMap = props => (
         onValueChange={props.handleIndicatorChange}
         value={props.selectedIndicator}
         hideResetButton
+        dropdownDirection={-1}
       />
       <ButtonGroup className={styles.buttons} />
     </div>

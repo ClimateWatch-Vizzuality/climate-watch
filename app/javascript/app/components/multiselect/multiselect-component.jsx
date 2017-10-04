@@ -29,7 +29,7 @@ class Multiselect extends Component {
         <MultiSelect
           filterOptions={filterOptions}
           renderValue={value =>
-            (values.length > 2 ? <span /> : <span>{value}, </span>)}
+            (values.length > 1 ? <span /> : <span>{value}</span>)}
           renderOption={option => {
             const className = option.isSelected ? selectedClassName : '';
             return (

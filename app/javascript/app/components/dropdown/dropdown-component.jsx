@@ -2,40 +2,34 @@ import React from 'react';
 import { ReactSelectize, SimpleSelect } from 'react-selectize'; // eslint-disable-line
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
+import { themr } from 'react-css-themr';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import dropdownArrowWhite from 'assets/icons/dropdown-arrow-white.svg';
-import searchIcon from 'assets/icons/search.svg';
 
-import 'react-selectize/themes/index.css';
+import theme from 'styles/themes/dropdown/react-selectize.scss';
 import styles from './dropdown-styles.scss';
 
 const Dropdown = props => {
   const arrow = props.white ? dropdownArrowWhite : dropdownArrow;
 
   return (
-    <div className={styles.dropdown}>
+    <div className={styles.dropdownWrapper}>
       {props.label && <span className={styles.label}>{props.label}</span>}
-      <SimpleSelect
-        {...props}
+      <div
         className={cx(
-          props.className,
-          props.disabled,
-          props.transparent ? styles.transparent : '',
-          props.white ? styles.white : ''
+          theme.dropdown,
+          props.transparent ? theme.transparent : '',
+          props.white ? theme.white : ''
         )}
-        renderToggleButton={({ open }) => (
-          <Icon
-            className={cx(
-              props.white && !open ? styles.whiteIcon : '',
-              props.hasSearch ? styles.searchIcon : '',
-              open && !props.hasSearch ? styles.isOpen : ''
-            )}
-            icon={props.hasSearch ? searchIcon : arrow}
-          />
-        )}
-      />
+      >
+        <SimpleSelect
+          className={cx(props.className, props.disabled)}
+          renderToggleButton={() => <Icon icon={arrow} />}
+          {...props}
+        />
+      </div>
     </div>
   );
 };
@@ -51,4 +45,4 @@ Dropdown.propTypes = {
   disabled: PropTypes.bool
 };
 
-export default Dropdown;
+export default themr('Dropdown', styles)(Dropdown);
