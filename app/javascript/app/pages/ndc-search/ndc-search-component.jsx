@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
-import getHeaderBg from 'utils/header';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -21,7 +20,7 @@ class SearchPage extends PureComponent {
     const { results, query, onSearchChange, route } = this.props;
     return (
       <div>
-        <Header image={getHeaderBg(route.header)}>
+        <Header route={route}>
           <div className={layout.content}>
             <div className={styles.headerCols}>
               <Intro title="NDC Content Search" />

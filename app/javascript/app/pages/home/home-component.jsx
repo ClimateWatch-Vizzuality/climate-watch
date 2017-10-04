@@ -14,7 +14,7 @@ import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
 import countryScreenshot from 'assets/screenshots/country';
-import ndcScreenshot from 'assets/screenshots/ndc';
+import ndcScreenshot from 'assets/screenshots/ndc-explore';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';
 import styles from './home-styles.scss';

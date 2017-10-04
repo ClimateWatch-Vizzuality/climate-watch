@@ -7,7 +7,6 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 import Search from 'components/search';
 import cx from 'classnames';
-import getHeaderBg from 'utils/header';
 
 import backIcon from 'assets/icons/back.svg';
 import lightSearch from 'styles/themes/search/search-light.scss';
@@ -27,7 +26,7 @@ class NDCCountry extends PureComponent {
     } = this.props;
     return (
       <div>
-        <Header image={getHeaderBg(route.header)}>
+        <Header route={route}>
           <div className={cx(layout.content, styles.doubleFold, styles.header)}>
             <div className={styles.title}>
               <Button

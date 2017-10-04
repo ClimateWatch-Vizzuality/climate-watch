@@ -9,7 +9,6 @@ import Search from 'components/search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
-import getHeaderBg from 'utils/header';
 
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
@@ -33,7 +32,7 @@ class NDCCountryFull extends PureComponent {
 
     return (
       <div>
-        <Header image={getHeaderBg(route.header)}>
+        <Header route={route}>
           <div className={cx(layout.content, styles.twoFold, styles.header)}>
             <div className={styles.title}>
               <Button

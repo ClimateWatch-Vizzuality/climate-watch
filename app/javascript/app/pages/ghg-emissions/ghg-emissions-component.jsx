@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import getHeaderBg from 'utils/header';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -16,7 +15,7 @@ class GhgEmissions extends PureComponent {
     const { route } = this.props;
     return (
       <div>
-        <Header image={getHeaderBg(route.header)}>
+        <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <Intro title="Historical GHG Emissions" />
           </div>

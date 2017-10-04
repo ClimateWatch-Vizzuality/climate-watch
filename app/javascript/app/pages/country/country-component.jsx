@@ -8,16 +8,15 @@ import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
 
-import background from 'assets/headers/home.jpg';
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
 
 class Country extends PureComponent {
   render() {
-    const { country, anchorLinks, route } = this.props;
+    const { route, country, anchorLinks } = this.props;
     return (
       <div>
-        <Header image={background}>
+        <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <Intro title={country.name} />
             <Button

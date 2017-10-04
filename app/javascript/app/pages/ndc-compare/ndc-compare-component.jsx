@@ -8,7 +8,6 @@ import Icon from 'components/icon';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import sortBy from 'lodash/sortBy';
-import getHeaderBg from 'utils/header';
 
 import backIcon from 'assets/icons/back.svg';
 
@@ -27,7 +26,7 @@ class NDCCountry extends PureComponent {
     } = this.props;
     return (
       <div>
-        <Header image={getHeaderBg(route.header)}>
+        <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <div className={styles.title}>
               <Button
