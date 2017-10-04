@@ -47,7 +47,7 @@ const CountrySDGLinkagesContainer = props => {
   }
 
   const handleSectorChange = option => {
-    updateUrlParam({ name: 'sector', value: option.value });
+    updateUrlParam({ name: 'sector', value: option ? option.value : '' });
   };
 
   const updateUrlParam = (params, clear) => {
