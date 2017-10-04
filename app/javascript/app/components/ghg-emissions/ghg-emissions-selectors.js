@@ -4,7 +4,9 @@ import uniqBy from 'lodash/uniqBy';
 import {
   getYColumnValue,
   getThemeConfig,
-  getTooltipConfig
+  getTooltipConfig,
+  sortEmissionsByValue,
+  sortLabelByAlpha
 } from './ghg-emissions-utils';
 
 // constants needed for data parsing
@@ -67,6 +69,7 @@ const AXES_CONFIG = {
 // meta data for selectors
 const getMeta = state => state.meta || {};
 const getSources = state => state.meta.data_source || [];
+const getRegions = state => state.regions || [];
 const getVersions = state => state.meta.gwp || [];
 
 // values from search
@@ -77,6 +80,16 @@ const getFilterSelection = state => state.search.filter || null;
 
 // data for the graph
 const getData = state => state.data || [];
+
+//
+export const getRegionsOptions = createSelector(getRegions, regions => {
+  if (!regions) return [];
+  return regions.map(d => ({
+    label: d.wri_standard_name,
+    value: d.iso_code3,
+    groudId: 'regions'
+  }));
+});
 
 // Sources selectors
 export const getSourceOptions = createSelector(getSources, sources => {
@@ -129,17 +142,25 @@ export const getBreakSelected = createSelector(
 
 // Filters selector
 export const getFilterOptions = createSelector(
-  [getMeta, getSourceSelected, getBreakSelected],
-  (meta, sourceSelected, breakSelected) => {
+  [getMeta, getSourceSelected, getBreakSelected, getRegionsOptions],
+  (meta, sourceSelected, breakSelected, regions) => {
     if (!sourceSelected || !breakSelected || isEmpty(meta)) return [];
     const breakByValue = breakSelected.value;
     const activeSourceData = meta.data_source.find(
       source => source.value === sourceSelected.value
     );
     const activeFilterKeys = activeSourceData[breakByValue];
-    return meta[breakByValue].filter(
+    const filteredSelected = meta[breakByValue].filter(
       filter => activeFilterKeys.indexOf(filter.value) > -1
     );
+    if (breakByValue === 'location') {
+      const countries = filteredSelected.map(d => ({
+        ...d,
+        groupId: 'countries'
+      }));
+      return sortLabelByAlpha(uniqBy(countries.concat(regions), 'value'));
+    }
+    return sortLabelByAlpha(filteredSelected);
   }
 );
 
@@ -184,9 +205,11 @@ export const filterData = createSelector(
   (data, version, filters, breakBy) => {
     if (!data || !data.length || !filters || !filters.length) return [];
     const filterValues = filters.map(filter => filter.label);
-    return data.filter(
-      d =>
-        d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
+    return sortEmissionsByValue(
+      data.filter(
+        d =>
+          d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
+      )
     );
   }
 );

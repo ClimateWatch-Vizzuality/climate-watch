@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import cx from 'classnames';
 
 import Dropdown from 'components/dropdown';
-import theme from 'styles/themes/dropdown-links.scss';
+import Icon from 'components/icon';
+
+import searchIcon from 'assets/icons/search.svg';
+import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import styles from './autocomplete-search-styles.scss';
 
 class CountriesSelect extends PureComponent {
@@ -14,13 +18,18 @@ class CountriesSelect extends PureComponent {
           className={theme.dropdownOptionWithArrow}
           placeholder={'e.g. "Brazil", "energy", "reduce emissions by 37%"'}
           options={searchList}
-          onInputChange={setAutocompleteSearch}
-          onChange={handleValueClick}
+          onSearchChange={setAutocompleteSearch}
+          onValueChange={handleValueClick}
           value={null}
-          clearable={false}
+          hideResetButton
           white
-          searchable
-          search
+          hasSearch
+          renderToggleButton={({ open }) => (
+            <Icon
+              icon={searchIcon}
+              className={cx(styles.searchIcon, !open ? styles.whiteIcon : '')}
+            />
+          )}
         />
       </div>
     );

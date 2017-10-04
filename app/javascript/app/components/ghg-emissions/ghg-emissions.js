@@ -22,6 +22,17 @@ import {
 import GhgEmissionsComponent from './ghg-emissions-component';
 import actions from './ghg-emissions-actions';
 
+const groups = [
+  {
+    groupId: 'regions',
+    title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Countries'
+  }
+];
+
 const mapStateToProps = (state, { location }) => {
   const { meta, data } = state.ghgEmissions;
   const { data: regions } = state.regions;
@@ -43,7 +54,8 @@ const mapStateToProps = (state, { location }) => {
     breakSelected: getBreakSelected(ghg),
     filters: getFilterOptions(ghg),
     filtersSelected: getFiltersSelected(ghg),
-    selectorDefaults: getSelectorDefaults(ghg)
+    selectorDefaults: getSelectorDefaults(ghg),
+    groups
   };
 };
 
@@ -118,9 +130,9 @@ class GhgEmissionsContainer extends PureComponent {
     this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
   };
 
-  updateUrlParam(params) {
+  updateUrlParam(params, clear) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, params));
+    history.replace(getLocationParamUpdated(location, params, clear));
   }
 
   handleRemoveTag = tagData => {

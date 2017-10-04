@@ -15,6 +15,7 @@ import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
 import countryScreenshot from 'assets/screenshots/country';
 import ndcScreenshot from 'assets/screenshots/ndc-explore';
+import theme from 'styles/themes/dropdown/dropdown-links.scss';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';
 import styles from './home-styles.scss';
@@ -69,11 +70,11 @@ class Home extends PureComponent {
                 Explore your country
               </Button>
               <Dropdown
+                className={theme.dropdownOptionWithArrow}
                 placeholder="Select another country"
                 options={countriesOptions}
-                onChange={handleDropDownChange}
-                clearable={false}
-                hasLinks
+                onValueChange={handleDropDownChange}
+                hideResetButton
               />
             </div>
           </div>

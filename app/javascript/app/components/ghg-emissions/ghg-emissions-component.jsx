@@ -5,6 +5,7 @@ import ChartLine from 'components/charts/line';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Tag from 'components/tag';
+import MultiSelect from 'components/multiselect';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -14,6 +15,7 @@ class GhgEmissions extends PureComponent {
     const {
       data,
       config,
+      groups,
       sources,
       sourceSelected,
       handleSourceChange,
@@ -36,32 +38,32 @@ class GhgEmissions extends PureComponent {
           <Dropdown
             label="Source"
             options={sources}
-            onChange={handleSourceChange}
+            onValueChange={handleSourceChange}
             value={sourceSelected}
-            clearable={false}
+            hideResetButton
           />
           <Dropdown
             label="IPCC Version"
             options={versions}
-            onChange={handleVersionChange}
+            onValueChange={handleVersionChange}
             value={versionSelected}
-            clearable={false}
+            hideResetButton
             disabled={versions.length === 1}
           />
           <Dropdown
             label="BreakBy"
             options={breaksBy}
-            onChange={handleBreakByChange}
+            onValueChange={handleBreakByChange}
             value={breakSelected}
-            clearable={false}
+            hideResetButton
           />
-          <Dropdown
+          <MultiSelect
             label={breakSelected.label}
+            groups={breakSelected.value === 'location' ? groups : null}
+            placeholderText={`Select ${breakSelected.value}s`}
+            values={filtersSelected}
             options={filters}
-            onChange={handleFilterChange}
-            value={filtersSelected}
-            clearable={false}
-            multi
+            onMultiValueChange={handleFilterChange}
           />
           <ButtonGroup className={styles.colEnd} />
         </div>
@@ -89,6 +91,7 @@ class GhgEmissions extends PureComponent {
 GhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  groups: PropTypes.array.isRequired,
   versions: PropTypes.array.isRequired,
   versionSelected: PropTypes.object.isRequired,
   handleVersionChange: PropTypes.func.isRequired,
