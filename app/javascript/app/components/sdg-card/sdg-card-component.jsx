@@ -2,23 +2,25 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import sdg1 from 'assets/sdg-icons/icon_1';
-import sdg2 from 'assets/sdg-icons/icon_2';
-import sdg3 from 'assets/sdg-icons/icon_3';
-import sdg4 from 'assets/sdg-icons/icon_4';
-import sdg5 from 'assets/sdg-icons/icon_5';
-import sdg6 from 'assets/sdg-icons/icon_6';
-import sdg7 from 'assets/sdg-icons/icon_7';
-import sdg8 from 'assets/sdg-icons/icon_8';
-import sdg9 from 'assets/sdg-icons/icon_9';
-import sdg10 from 'assets/sdg-icons/icon_10';
-import sdg11 from 'assets/sdg-icons/icon_11';
-import sdg12 from 'assets/sdg-icons/icon_12';
-import sdg13 from 'assets/sdg-icons/icon_13';
-import sdg14 from 'assets/sdg-icons/icon_14';
-import sdg15 from 'assets/sdg-icons/icon_15';
-import sdg16 from 'assets/sdg-icons/icon_16';
-import sdg17 from 'assets/sdg-icons/icon_17';
+import Icon from 'components/icon';
+
+import sdg1 from 'assets/sdg-icons/sdg1';
+import sdg2 from 'assets/sdg-icons/sdg2';
+import sdg3 from 'assets/sdg-icons/sdg3';
+import sdg4 from 'assets/sdg-icons/sdg4';
+import sdg5 from 'assets/sdg-icons/sdg5';
+import sdg6 from 'assets/sdg-icons/sdg6';
+import sdg7 from 'assets/sdg-icons/sdg7';
+import sdg8 from 'assets/sdg-icons/sdg8';
+import sdg9 from 'assets/sdg-icons/sdg9';
+import sdg10 from 'assets/sdg-icons/sdg10';
+import sdg11 from 'assets/sdg-icons/sdg11';
+import sdg12 from 'assets/sdg-icons/sdg12';
+import sdg13 from 'assets/sdg-icons/sdg13';
+import sdg14 from 'assets/sdg-icons/sdg14';
+import sdg15 from 'assets/sdg-icons/sdg15';
+import sdg16 from 'assets/sdg-icons/sdg16';
+import sdg17 from 'assets/sdg-icons/sdg17';
 
 import styles from './sdg-card-styles.scss';
 
@@ -84,10 +86,7 @@ class SDGCard extends PureComponent {
             ))}
         </div>
         {!indicators && <div className={styles.number}>{sdgData.id}</div>}
-        <div
-          className={styles.icon}
-          style={{ backgroundImage: `url(${icons[`sdg${sdgData.id}`]})` }}
-        />
+        <Icon icon={icons[`sdg${sdgData.id}`]} className={styles.icon} />
       </div>
     );
   }
