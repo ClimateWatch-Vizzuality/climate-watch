@@ -10,18 +10,17 @@ import NDCSearchMap from 'components/ndcs-search-map';
 import Search from 'components/search';
 import NoContent from 'components/no-content';
 
-import background from 'assets/backgrounds/home_bg_1';
 import layout from 'styles/layout.scss';
 
-import lightSearch from 'styles/themes/search-light.scss';
+import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
   render() {
-    const { results, query, onSearchChange } = this.props;
+    const { results, query, onSearchChange, route } = this.props;
     return (
       <div>
-        <Header image={background}>
+        <Header route={route}>
           <div className={layout.content}>
             <div className={styles.headerCols}>
               <Intro title="NDC Content Search" />
@@ -58,6 +57,7 @@ class SearchPage extends PureComponent {
 }
 
 SearchPage.propTypes = {
+  route: PropTypes.object.isRequired,
   query: PropTypes.string,
   results: PropTypes.array,
   onSearchChange: PropTypes.func.isRequired

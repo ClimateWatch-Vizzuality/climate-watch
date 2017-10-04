@@ -25,42 +25,48 @@ export default [
       {
         path: '/',
         component: Home,
-        exact: true
+        exact: true,
+        headerImage: 'home'
       },
       {
         path: '/countries',
-        exact: true,
         component: CountryIndex,
+        exact: true,
         nav: true,
-        label: 'COUNTRIES'
+        label: 'COUNTRIES',
+        headerImage: 'countries'
       },
       {
         path: '/sectors',
-        exact: true,
         component: error,
+        exact: true,
         nav: true,
         label: 'SECTORS'
       },
       {
         path: '/ndcs/country/:iso',
         component: NDCCountry,
-        exact: true
+        exact: true,
+        headerImage: 'ndc'
       },
       {
         path: '/ndcs/country/:iso/full',
         component: NDCCountryFull,
-        exact: true
+        exact: true,
+        headerImage: 'ndc'
       },
       {
         path: '/ndcs/compare',
         component: NDCCompare,
-        exact: true
+        exact: true,
+        headerImage: 'ndc'
       },
       {
         path: '/ndcs',
         component: NDCS,
         nav: true,
         label: 'NDCs',
+        headerImage: 'ndc',
         routes: [
           {
             path: '/ndcs',
@@ -85,6 +91,7 @@ export default [
       {
         path: '/countries/:iso',
         component: Country,
+        headerImage: 'countries',
         sections: [
           {
             hash: 'ghg-emissions',
@@ -102,10 +109,11 @@ export default [
       },
       {
         path: '/ghg-emissions',
-        exact: true,
         component: GHGEmissions,
+        exact: true,
         nav: true,
-        label: 'GHG-EMISSIONS'
+        label: 'GHG-EMISSIONS',
+        headerImage: 'emissions'
       },
       {
         path: '/ndc-search',
@@ -114,17 +122,18 @@ export default [
       },
       {
         path: '/stories',
-        exact: true,
         component: error,
+        exact: true,
         nav: true,
         label: 'STORIES'
       },
       {
         path: '/about',
-        exact: true,
         component: About,
+        exact: true,
         nav: true,
-        label: 'ABOUT'
+        label: 'ABOUT',
+        headerImage: 'about'
       },
       {
         path: '/error-page',

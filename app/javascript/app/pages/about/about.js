@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { withProps } from 'recompose';
 
 import ndcImage from 'assets/partners/ndcp.png';
 import wriImage from 'assets/partners/wri.png';
@@ -90,7 +90,7 @@ const partnershipWith = {
   ]
 };
 
-const adicionalData = {
+const additionalData = {
   title: 'Additional data provided by',
   partners: [
     {
@@ -155,6 +155,8 @@ const foundingBy = {
   ]
 };
 
-const sections = [jointInitiative, partnershipWith, adicionalData, foundingBy];
+const withSections = withProps(() => ({
+  sections: [jointInitiative, partnershipWith, additionalData, foundingBy]
+}));
 
-export default () => createElement(Component, { sections });
+export default withSections(Component);
