@@ -14,6 +14,7 @@ class Multiselect extends Component {
   render() {
     const {
       values,
+      options,
       selectedClassName,
       placeholderText,
       handleChange,
@@ -25,8 +26,10 @@ class Multiselect extends Component {
         {label && <span className={styles.label}>{label}</span>}
         <div className={cx(theme.dropdown, styles.multiSelect)}>
           <div className={styles.values}>
-            {placeholderText && !values.length ? (
-              placeholderText
+            {placeholderText &&
+            !values.length && <span>{placeholderText}</span>}
+            {values.length && values.length === options.length ? (
+              <span>All selected</span>
             ) : (
               `${values.length} selected`
             )}
@@ -61,6 +64,7 @@ class Multiselect extends Component {
 
 Multiselect.propTypes = {
   values: Proptypes.array.isRequired,
+  options: Proptypes.array.isRequired,
   selectedClassName: Proptypes.string,
   onMultiValueChange: Proptypes.func,
   placeholderText: Proptypes.string,
