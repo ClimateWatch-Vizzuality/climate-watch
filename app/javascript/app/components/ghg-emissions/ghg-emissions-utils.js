@@ -14,6 +14,19 @@ export const sortLabelByAlpha = array =>
     return 0;
   });
 
+export const sortEmissionsByValue = array =>
+  array.sort((a, b) => {
+    if (
+      a.emissions[a.emissions.length - 1].value >
+      b.emissions[a.emissions.length - 1].value
+    ) { return -1; }
+    if (
+      a.emissions[a.emissions.length - 1].value <
+      b.emissions[a.emissions.length - 1].value
+    ) { return 1; }
+    return 0;
+  });
+
 export const getYColumnValue = column => `y${upperFirst(camelCase(column))}`;
 
 export const getThemeConfig = (columns, colors) => {

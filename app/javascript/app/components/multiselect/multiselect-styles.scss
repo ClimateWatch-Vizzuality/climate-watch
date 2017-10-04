@@ -1,0 +1,55 @@
+@import '~styles/layout.scss';
+
+.label {
+  display: block;
+  font-size: $font-size-s;
+  font-weight: $font-weight-bold;
+  color: $theme-color;
+  margin-bottom: 4px;
+}
+
+.multiSelectWrapper {
+  position: relative;
+}
+
+.values {
+  color: $theme-color;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.multiSelect :global {
+  position: relative;
+
+  .dropdown-menu {
+    .option-wrapper {
+      padding: 12px 10px;
+    }
+  }
+}
+
+.selected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $theme-color;
+}
+
+.checked {
+  display: inline-block;
+  background: $theme-color;
+  border-radius: 50%;
+  color: $theme-color !important;
+  width: 8px;
+  height: 8px;
+}

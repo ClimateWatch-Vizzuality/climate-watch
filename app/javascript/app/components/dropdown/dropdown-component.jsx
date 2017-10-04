@@ -1,14 +1,14 @@
 import React from 'react';
-import Select from 'react-select';
+import { ReactSelectize, SimpleSelect } from 'react-selectize'; // eslint-disable-line
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
+import { themr } from 'react-css-themr';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import dropdownArrowWhite from 'assets/icons/dropdown-arrow-white.svg';
-import searchIcon from 'assets/icons/search.svg';
 
-import 'react-select/dist/react-select.css';
+import theme from 'styles/themes/dropdown/react-selectize.scss';
 import styles from './dropdown-styles.scss';
 
 const Dropdown = props => {
@@ -17,28 +17,19 @@ const Dropdown = props => {
   return (
     <div className={styles.dropdownWrapper}>
       {props.label && <span className={styles.label}>{props.label}</span>}
-      <Select
-        {...props}
+      <div
         className={cx(
-          styles.dropdown,
-          { [styles.dropdownUp]: props.openUp },
-          props.transparent ? styles.transparent : '',
-          props.white ? styles.white : '',
-          props.className
+          theme.dropdown,
+          props.transparent ? theme.transparent : '',
+          props.white ? theme.white : ''
         )}
-        arrowRenderer={({ isOpen }) => (
-          <Icon
-            className={
-              props.search ? (
-                styles.searchIcon
-              ) : (
-                cx({ [styles.isOpen]: props.openUp ? !isOpen : isOpen })
-              )
-            }
-            icon={props.search ? searchIcon : arrow}
-          />
-        )}
-      />
+      >
+        <SimpleSelect
+          className={cx(props.className, props.disabled)}
+          renderToggleButton={() => <Icon icon={arrow} />}
+          {...props}
+        />
+      </div>
     </div>
   );
 };
@@ -50,7 +41,8 @@ Dropdown.propTypes = {
   transparent: PropTypes.bool,
   white: PropTypes.bool,
   theme: PropTypes.object,
-  search: PropTypes.bool
+  hasSearch: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
-export default Dropdown;
+export default themr('Dropdown', styles)(Dropdown);

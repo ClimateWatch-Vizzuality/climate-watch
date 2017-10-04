@@ -38,21 +38,21 @@ class NDCTable extends PureComponent {
           <Dropdown
             label="Category"
             options={categories}
-            onChange={handleCategoryChange}
-            value={selectedCategory.value}
-            clearable={false}
+            onValueChange={handleCategoryChange}
+            value={selectedCategory}
+            hideResetButton
           />
           <Dropdown
             label="Indicator"
             options={indicators}
-            onChange={handleIndicatorChange}
-            value={selectedIndicator.value}
-            clearable={false}
+            onValueChange={handleIndicatorChange}
+            value={selectedIndicator}
+            hideResetButton
           />
           <Search
             input={query}
             theme={darkSearch}
-            onChange={handleSearchChange}
+            onValueChange={handleSearchChange}
             className={styles.searchBox}
             placeholder="Search table data"
           />
