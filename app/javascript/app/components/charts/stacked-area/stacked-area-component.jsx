@@ -28,26 +28,30 @@ class ChartStackedArea extends PureComponent {
           />
           <YAxis
             axisLine={false}
-            tickFormatter={tick => `${format('.1s')(tick)}t`}
+            tickFormatter={tick => `${format('.2s')(tick)}t`}
             tickLine={false}
             tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
-            domain={['auto', 'auto']}
           />
           <CartesianGrid vertical={false} />
-          <Tooltip
-            isAnimationActive={false}
-            cursor={{ stroke: '#113750', strokeWidth: 2 }}
-            content={content => (
-              <TooltipChart content={content} config={config} />
-            )}
-          />
+          {config.columns && (
+            <Tooltip
+              isAnimationActive={false}
+              cursor={{ stroke: '#113750', strokeWidth: 2 }}
+              content={content => (
+                <TooltipChart content={content} config={config} />
+              )}
+            />
+          )}
           {config.columns &&
             config.columns.y.map(column => (
               <Area
                 key={column.value}
                 dataKey={column.value}
                 dot={false}
-                fill={config.theme[column.value].stroke || ''}
+                stackId={1}
+                stroke={'transparent' || ''}
+                strokeWidth={0}
+                fill={config.theme[column.value].fill || ''}
               />
             ))}
         </AreaChart>

@@ -28,7 +28,7 @@ class ChartLine extends PureComponent {
           />
           <YAxis
             axisLine={false}
-            tickFormatter={tick => `${format('.1s')(tick)}t`}
+            tickFormatter={tick => `${format('.2s')(tick)}t`}
             tickLine={false}
             tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
             domain={['auto', 'auto']}
