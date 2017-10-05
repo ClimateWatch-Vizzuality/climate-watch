@@ -30,12 +30,24 @@ class CountrySDGLinkages extends PureComponent {
     } = this.props;
     return (
       <div>
-        <h3 className={styles.title}>NDC-SDG Linkages</h3>
+        <div className={styles.header}>
+          <h3 className={styles.title}>NDC-SDG Linkages</h3>
+          <div className={styles.sectorSelector}>
+            <Dropdown
+              label="Sector"
+              placeholder="Choose a sector"
+              options={sectorOptions}
+              onValueChange={handleSectorChange}
+              value={activeSector}
+            />
+          </div>
+        </div>
         {!isEmpty(sdgs) && (
           <div>
             <div className={styles.sdgs}>
               {sdgs.map(sdg => (
                 <SDGCard
+                  activeSector={activeSector}
                   key={sdg.title}
                   sdgData={sdg}
                   tooltipId="sdg-linkages"
@@ -66,16 +78,6 @@ class CountrySDGLinkages extends PureComponent {
                 </div>
               )}
             </ReactTooltip>
-            <div className={styles.sectorSelector}>
-              <Dropdown
-                label="Sector"
-                placeholder="Choose a sector"
-                options={sectorOptions}
-                onValueChange={handleSectorChange}
-                value={activeSector}
-                dropdownDirection={-1}
-              />
-            </div>
           </div>
         )}
         {isEmpty(sdgs) &&

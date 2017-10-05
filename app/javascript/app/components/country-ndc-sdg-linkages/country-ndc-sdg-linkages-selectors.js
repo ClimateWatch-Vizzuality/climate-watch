@@ -2,18 +2,18 @@ import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
 
 const getSectors = state => {
-  if (!state) return [];
-  return state.sectors;
-};
-
-const getActiveSector = state => {
-  if (!state) return [];
-  return state.activeSector;
+  if (!state.data) return [];
+  return state.data.sectors;
 };
 
 const getSDGs = state => {
   if (!state.data) return [];
   return state.data.sdgs;
+};
+
+const getActiveSectorId = state => {
+  if (!state.activeSector) return null;
+  return state.activeSector;
 };
 
 export const mapSDGs = createSelector(getSDGs, sdgs => {
@@ -30,8 +30,7 @@ export const mapSDGs = createSelector(getSDGs, sdgs => {
 
 export const getSectorOptions = createSelector([getSectors], sectors => {
   if (!sectors) return [];
-  const sectorIds = Object.keys(sectors);
-  const sectorOptions = sectorIds.map(sector => ({
+  const sectorOptions = Object.keys(sectors).map(sector => ({
     label: upperFirst(sectors[sector].name),
     value: sector
   }));
@@ -48,33 +47,32 @@ export const getSectorOptionsSorted = createSelector(
     })
 );
 
-export const filterSDGs = createSelector(
-  [mapSDGs, getActiveSector],
-  (sdgs, sector) => {
-    if (!sdgs) return [];
-    const filteredSDGs = sdgs.map(sdg => {
-      const sectorTargetKeys = Object.keys(sdg.targets).filter(
-        targetKey =>
-          !sector ||
-          (sdg.targets[targetKey].sectors &&
-            sdg.targets[targetKey].sectors.indexOf(parseInt(sector.value, 10)) >
-              -1)
-      );
-      const sectorTargets = sectorTargetKeys.map(targetKey => ({
-        targetKey,
-        title: sdg.targets[targetKey].title,
-        sectors: sdg.targets[targetKey].sectors
-      }));
-      return {
-        ...sdg,
-        targets: sectorTargets
-      };
-    });
-    return filteredSDGs;
+export const getSectorSelected = createSelector(
+  [getSectorOptions, getActiveSectorId],
+  (sectors, activeSector) => {
+    if (!sectors && !sectors.length) return {};
+    return sectors.find(sector => sector.value === activeSector);
   }
 );
 
+export const filterSDGs = createSelector([mapSDGs], sdgs => {
+  if (!sdgs) return [];
+  const filteredSDGs = sdgs.map(sdg => {
+    const sectorTargets = Object.keys(sdg.targets).map(targetKey => ({
+      targetKey,
+      title: sdg.targets[targetKey].title,
+      sectors: sdg.targets[targetKey].sectors
+    }));
+    return {
+      ...sdg,
+      targets: sectorTargets
+    };
+  });
+  return filteredSDGs;
+});
+
 export default {
   getSectorOptionsSorted,
-  filterSDGs
+  filterSDGs,
+  getSectorSelected
 };
