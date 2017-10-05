@@ -30,19 +30,17 @@ class Country extends PureComponent {
             <AnchorNav links={anchorLinks} className={layout.content} />
           </Sticky>
         </Header>
-        <div className={layout.content}>
-          {route.sections &&
-            route.sections.length > 0 &&
-            route.sections.map(section => (
-              <div
-                key={section.hash}
-                id={section.hash}
-                className={styles.section}
-              >
-                <section.component />
-              </div>
-            ))}
-        </div>
+        {route.sections &&
+          route.sections.length > 0 &&
+          route.sections.map(section => (
+            <div
+              key={section.hash}
+              id={section.hash}
+              className={styles.section}
+            >
+              <section.component />
+            </div>
+          ))}
       </div>
     );
   }
