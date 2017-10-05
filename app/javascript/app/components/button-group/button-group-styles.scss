@@ -6,7 +6,6 @@
   float: left;
   display: flex;
   justify-content: space-between;
-  border-right: solid 1px rgba(202, 204, 208, 0.85);
 }
 
 .button {
@@ -16,6 +15,10 @@
   padding: 0;
   min-width: 45px;
   width: 100%;
+
+  &:last-child {
+    border-right: solid 1px rgba(202, 204, 208, 0.85);
+  }
 }
 
 .first {

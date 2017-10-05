@@ -2,8 +2,7 @@ export const initialState = {
   loading: false,
   loaded: false,
   error: false,
-  meta: {},
-  data: {}
+  data: []
 };
 
 const setLoading = (state, loading) => ({ ...state, loading });
@@ -11,10 +10,8 @@ const setError = (state, error) => ({ ...state, error });
 const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
-  fetchGhgEmissionsInit: state => setLoading(state, true),
-  fetchGhgEmissionsMetaReady: (state, { payload }) =>
-    setLoaded(setLoading({ ...state, meta: payload }, false), true),
-  fetchGhgEmissionsDataReady: (state, { payload }) =>
+  fetchStoriesInit: state => setLoading(state, true),
+  fetchStoriesReady: (state, { payload }) =>
     setLoaded(setLoading({ ...state, data: payload }, false), true),
-  fetchGhgEmissionsFail: state => setError(state, true)
+  fetchStoriesFail: state => setError(state, true)
 };

@@ -20,7 +20,7 @@ class ChartStackedArea extends PureComponent {
       <ResponsiveContainer height={500}>
         <AreaChart
           data={data}
-          margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+          margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
         >
           <XAxis
             dataKey="x"
@@ -28,26 +28,32 @@ class ChartStackedArea extends PureComponent {
           />
           <YAxis
             axisLine={false}
-            tickFormatter={tick => format('.1s')(tick)}
+            tickFormatter={tick => `${format('.2s')(tick)}t`}
             tickLine={false}
             tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
           />
           <CartesianGrid vertical={false} />
-          <Tooltip
-            isAnimationActive={false}
-            cursor={{ stroke: '#113750', strokeWidth: 2 }}
-            content={content => (
-              <TooltipChart content={content} config={config} />
-            )}
-          />
-          {config.columns.y.map(column => (
-            <Area
-              key={column.value}
-              dataKey={column.value}
-              dot={false}
-              stroke={config.theme[column.value].stroke || ''}
+          {config.columns && (
+            <Tooltip
+              isAnimationActive={false}
+              cursor={{ stroke: '#113750', strokeWidth: 2 }}
+              content={content => (
+                <TooltipChart content={content} config={config} />
+              )}
             />
-          ))}
+          )}
+          {config.columns &&
+            config.columns.y.map(column => (
+              <Area
+                key={column.value}
+                dataKey={column.value}
+                dot={false}
+                stackId={1}
+                stroke={'transparent' || ''}
+                strokeWidth={0}
+                fill={config.theme[column.value].fill || ''}
+              />
+            ))}
         </AreaChart>
       </ResponsiveContainer>
     );

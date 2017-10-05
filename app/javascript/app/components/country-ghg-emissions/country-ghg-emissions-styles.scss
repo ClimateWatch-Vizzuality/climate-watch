@@ -1,6 +1,53 @@
-@import '../../styles/settings.scss';
+@import '../../styles/layout.scss';
 
 .wrapper {
-  display: block;
-  max-width: 600px;
+  border-bottom: solid 1px $border-color;
+}
+
+.col2 {
+  @extend %grid;
+
+  grid-template-columns: 3fr 1fr;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 40px;
+}
+
+.graph {
+  border-right: solid 1px $border-color;
+  padding-right: 30px;
+}
+
+.graphControls {
+  @extend %grid;
+
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 25px;
+}
+
+.exploreBtn {
+  align-self: flex-end;
+}
+
+.btnGroup {
+  align-items: flex-end;  
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+.tag {
+  margin-right: 10px;
+  margin-bottom: 10px;
 }

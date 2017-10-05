@@ -79,6 +79,7 @@ class GhgEmissions extends PureComponent {
                   label: column.label,
                   id: column.value
                 }}
+                canRemove
                 onRemove={handleRemoveTag}
               />
             ))}

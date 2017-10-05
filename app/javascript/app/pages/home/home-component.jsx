@@ -6,6 +6,7 @@ import Icon from 'components/icon';
 import Button from 'components/button';
 import Dropdown from 'components/dropdown';
 import AutocompleteSearch from 'components/autocomplete-search';
+import Stories from 'components/stories';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
 import GeoLocationProvider from 'providers/geolocation-provider';
@@ -18,13 +19,14 @@ import ndcScreenshot from 'assets/screenshots/ndc-explore';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';
+import layout from 'styles/layout.scss';
 import styles from './home-styles.scss';
 
 class Home extends PureComponent {
   render() {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
-      <div>
+      <div className={styles.homeBg}>
         <Section className={styles.section} backgroundImage={background}>
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
@@ -44,6 +46,9 @@ class Home extends PureComponent {
             />
           </div>
         </Section>
+        <div className={cx(layout.content, styles.stories)}>
+          <Stories />
+        </div>
         <Section className={styles.section}>
           <div className={styles.column}>
             <img src={countryScreenshot} alt="Country section screenshot" />
