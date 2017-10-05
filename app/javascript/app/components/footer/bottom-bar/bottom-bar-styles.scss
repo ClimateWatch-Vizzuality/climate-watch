@@ -1,0 +1,19 @@
+@import '~styles/layout.scss';
+
+.container {
+  background-color: $bg-blue;
+  padding: 10px 0;
+}
+
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  color: $white;
+}
+
+.text {
+  opacity: 0.7;
+  font-size: $font-size-sm;
+  line-height: 1.64;
+  color: $white;
+}

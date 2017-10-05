@@ -1,48 +1,51 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import cx from 'classnames';
+
 import Icon from 'components/icon';
-import ToolsNav from 'components/tools-nav';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
-import layout from 'styles/layout.scss';
 import styles from './nav-styles.scss';
 
-class NavBar extends PureComponent {
+class Nav extends PureComponent {
   render() {
-    const { location, routes } = this.props;
+    const { location, routes, className, hideLogo, hideActive } = this.props;
+    const showLogo = !hideLogo && location.pathname !== '/';
     return (
-      <div className={layout.content}>
-        <nav className={styles.navbar}>
-          {location.pathname !== '/' && (
-            <NavLink exact className={styles.link} to="/">
-              <Icon className={styles.logo} icon={cwLogo} />
-            </NavLink>
-          )}
-          {routes.map(route => (
-            <NavLink
-              key={route.path}
-              className={styles.link}
-              activeClassName={styles.linkActive}
-              to={route.path}
-            >
-              {route.label}
-            </NavLink>
-          ))}
-          <ToolsNav />
-        </nav>
-      </div>
+      <nav className={cx(styles.navbar, className)}>
+        {showLogo && (
+          <NavLink exact className={styles.link} to="/">
+            <Icon className={styles.logo} icon={cwLogo} />
+          </NavLink>
+        )}
+        {routes.map(route => (
+          <NavLink
+            key={route.path}
+            className={styles.link}
+            activeClassName={hideActive ? '' : styles.linkActive}
+            to={route.path}
+          >
+            {route.label}
+          </NavLink>
+        ))}
+      </nav>
     );
   }
 }
 
-NavBar.propTypes = {
+Nav.propTypes = {
+  hideLogo: PropTypes.bool.isRequired,
+  hideActive: PropTypes.bool.isRequired,
   routes: PropTypes.array.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  className: PropTypes.string
 };
 
-NavBar.defaultProps = {
-  routes: []
+Nav.defaultProps = {
+  routes: [],
+  hideLogo: false,
+  hideActive: false
 };
 
-export default NavBar;
+export default Nav;
