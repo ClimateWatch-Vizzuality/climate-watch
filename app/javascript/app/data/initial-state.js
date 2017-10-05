@@ -5,6 +5,7 @@ import { initialState as autocompleteSearch } from 'components/autocomplete-sear
 import { initialState as stories } from 'components/stories';
 import { initialState as ghgEmissions } from 'components/ghg-emissions';
 import { initialState as ndcs } from 'pages/ndcs';
+import { initialState as countryGhgEmissions } from 'components/country-ghg-emissions';
 import { initialState as countryNDC } from 'pages/ndc-country';
 import { initialState as countryNDCFull } from 'pages/ndc-country-full';
 import { initialState as NDCCompare } from 'pages/ndc-compare';
@@ -20,6 +21,7 @@ export default {
   geoLocation,
   map,
   ndcs,
+  countryGhgEmissions,
   countrySDGLinkages,
   countryNDC,
   countryNDCFull,

@@ -1,75 +1,83 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Dropdown from 'components/dropdown';
+import ButtonGroup from 'components/button-group';
+import Button from 'components/button';
+import ChartStackedArea from 'components/charts/stacked-area';
+import Tag from 'components/tag';
+import cx from 'classnames';
 
-import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip
-} from 'recharts';
-import RegionsProvider from 'providers/regions-provider';
-
+import layout from 'styles/layout.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
-const data = [
-  {
-    year: '1995',
-    color: '#456786',
-    waste: 868,
-    landUse: 967,
-    agriculture: 1506
-  },
-  {
-    year: '2000',
-    color: '#5c7d9a',
-    waste: 1397,
-    landUse: 1098,
-    agriculture: 989
-  },
-  {
-    year: '2005',
-    color: '#99b5cd',
-    waste: 3480,
-    landUse: 1200,
-    agriculture: 1228
-  },
-  {
-    year: '2010',
-    color: '#113750',
-    waste: 2520,
-    landUse: 1108,
-    agriculture: 1100
-  },
-  {
-    year: '2015',
-    color: '#103d5c',
-    waste: 590,
-    landUse: 800,
-    agriculture: 1400
-  }
-];
-
-class Component extends PureComponent {
+class CountryGhgEmissions extends PureComponent {
   render() {
+    const {
+      data,
+      config,
+      iso,
+      sources,
+      handleSourceChange,
+      sourceSelected
+    } = this.props;
     return (
       <div className={styles.wrapper}>
-        <RegionsProvider />
-        <ResponsiveContainer width="100%" aspect={4 / 3}>
-          <AreaChart data={data}>
-            <XAxis dataKey="year" />
-            <YAxis />
-            <CartesianGrid />
-            <Tooltip />
-            <Area dataKey="waste" stroke="#103d5c" fill="#103d5c" />
-            <Area dataKey="landUse" stroke="#99b5cd" fill="#99b5cd" />
-            <Area dataKey="agriculture" stroke="#113750" fill="#113750" />
-          </AreaChart>
-        </ResponsiveContainer>
+        <div className={cx(layout.content, styles.col2)}>
+          <div className={styles.graph}>
+            <h3 className={styles.title}>
+              Greenhouse Gas Emissions and Emissions Targets
+            </h3>
+            <div className={styles.graphControls}>
+              <Dropdown
+                label="GHG emissions source"
+                options={sources}
+                onValueChange={handleSourceChange}
+                value={sourceSelected}
+                hideResetButton
+              />
+              <ButtonGroup className={styles.btnGroup} />
+              <Button
+                className={styles.exploreBtn}
+                color="yellow"
+                link={`/ghg-emissions?breakBy=location&filter=${iso}`}
+              >
+                Explore emissions
+              </Button>
+            </div>
+            <ChartStackedArea config={config} data={data} />
+            <div className={styles.tags}>
+              {config.columns &&
+                config.columns.y.map(column => (
+                  <Tag
+                    className={styles.tag}
+                    key={`${column.value}`}
+                    data={{
+                      color: config.theme[column.value].stroke,
+                      label: column.label,
+                      id: column.value
+                    }}
+                  />
+                ))}
+            </div>
+          </div>
+          <div className={styles.map}>I am a cool map</div>
+        </div>
       </div>
     );
   }
 }
 
-export default Component;
+CountryGhgEmissions.propTypes = {
+  data: PropTypes.array.isRequired,
+  config: PropTypes.object.isRequired,
+  iso: PropTypes.string.isRequired,
+  sources: PropTypes.array.isRequired,
+  sourceSelected: PropTypes.object.isRequired,
+  handleSourceChange: PropTypes.func.isRequired
+};
+
+CountryGhgEmissions.defaultProps = {
+  iso: ''
+};
+
+export default CountryGhgEmissions;
