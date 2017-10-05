@@ -10,10 +10,11 @@ import styles from './nav-styles.scss';
 
 class Nav extends PureComponent {
   render() {
-    const { location, routes, className, hideLogo } = this.props;
+    const { location, routes, className, hideLogo, hideActive } = this.props;
+    const showLogo = !hideLogo && location.pathname !== '/';
     return (
       <nav className={cx(styles.navbar, className)}>
-        {!hideLogo && location.pathname !== '/' && (
+        {showLogo && (
           <NavLink exact className={styles.link} to="/">
             <Icon className={styles.logo} icon={cwLogo} />
           </NavLink>
@@ -22,7 +23,7 @@ class Nav extends PureComponent {
           <NavLink
             key={route.path}
             className={styles.link}
-            activeClassName={styles.linkActive}
+            activeClassName={hideActive ? '' : styles.linkActive}
             to={route.path}
           >
             {route.label}
@@ -35,6 +36,7 @@ class Nav extends PureComponent {
 
 Nav.propTypes = {
   hideLogo: PropTypes.bool.isRequired,
+  hideActive: PropTypes.bool.isRequired,
   routes: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
   className: PropTypes.string
@@ -42,7 +44,8 @@ Nav.propTypes = {
 
 Nav.defaultProps = {
   routes: [],
-  hideLogo: false
+  hideLogo: false,
+  hideActive: false
 };
 
 export default Nav;

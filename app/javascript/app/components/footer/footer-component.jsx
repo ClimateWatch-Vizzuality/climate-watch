@@ -30,7 +30,7 @@ class Footer extends PureComponent {
           <Initiators className={layout.content} gray={isHomePage} />
         )}
         <div className={cx(layout.content, styles.nav)}>
-          <Nav routes={routes} hideLogo />
+          <Nav routes={routes} hideLogo hideActive />
           <div className={styles.contactContainer}>
             <a
               className={styles.contact}
