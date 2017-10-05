@@ -26,6 +26,7 @@ $height: 45px;
         padding-left: 10px;
         padding-right: 5px;
         height: $height;
+        overflow: hidden;
 
         .react-selectize-placeholder {
           display: block;
