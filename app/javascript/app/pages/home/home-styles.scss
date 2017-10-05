@@ -7,6 +7,10 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
+.homeBg {
+  background-color: $light-gray;
+}
+
 .column {
   display: flex;
   flex-direction: column;
@@ -14,9 +18,12 @@
 }
 
 .section {
-  background-color: $light-gray;
   padding-top: 120px;
   padding-bottom: 120px;
+}
+
+.stories {
+  padding-top: 60px;
 }
 
 .cwLogo {

@@ -2,6 +2,7 @@ import { initialState as map } from 'components/map';
 import { initialState as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
 import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
+import { initialState as stories } from 'components/stories';
 import { initialState as ghgEmissions } from 'components/ghg-emissions';
 import { initialState as ndcs } from 'pages/ndcs';
 import { initialState as countryNDC } from 'pages/ndc-country';
@@ -15,6 +16,7 @@ import { initialState as geoLocation } from 'providers/geolocation-provider';
 export default {
   countries,
   regions,
+  stories,
   geoLocation,
   map,
   ndcs,
