@@ -8,8 +8,6 @@ import qs from 'query-string';
 import {
   getSourceOptions,
   getSourceSelected,
-  getFilterOptions,
-  getFiltersSelected,
   getChartData,
   getChartConfig,
   getSelectorDefaults
@@ -37,7 +35,7 @@ const mapStateToProps = (state, { location, match }) => {
 };
 
 function needsRequestData(props, nextProps) {
-  const { sourceSelected, filtersSelected } = nextProps;
+  const { sourceSelected } = nextProps;
   const hasValues = sourceSelected.value;
   const hasChanged = sourceSelected.value !== props.sourceSelected.value;
   return hasValues && hasChanged;
@@ -48,7 +46,9 @@ function getFiltersParsed(props) {
   const filter = {};
   filter.location = props.iso;
   filter.gas = selectorDefaults.gas;
-
+  filter.source = sourceSelected
+    ? sourceSelected.value
+    : selectorDefaults.source;
   return filter;
 }
 
@@ -70,33 +70,15 @@ class CountryGhgEmissionsContainer extends PureComponent {
     this.updateUrlParam({ name: 'source', value: category.value }, true);
   };
 
-  handleFilterChange = filters => {
-    const filtersParam = filters.map(filter => filter.value);
-    this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
-  };
-
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
   }
 
-  handleRemoveTag = tagData => {
-    const { filtersSelected } = this.props;
-    const newFilters = [];
-    filtersSelected.forEach(filter => {
-      if (filter.label !== tagData.label) {
-        newFilters.push(filter.value);
-      }
-    });
-    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
-  };
-
   render() {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
-      handleSourceChange: this.handleSourceChange,
-      handleFilterChange: this.handleFilterChange,
-      handleRemoveTag: this.handleRemoveTag
+      handleSourceChange: this.handleSourceChange
     });
   }
 }
@@ -104,7 +86,8 @@ class CountryGhgEmissionsContainer extends PureComponent {
 CountryGhgEmissionsContainer.propTypes = {
   history: Proptypes.object,
   location: Proptypes.object,
-  fetchCountryGhgEmissionsMeta: Proptypes.func
+  fetchCountryGhgEmissionsMeta: Proptypes.func,
+  fetchCountryGhgEmissionsData: Proptypes.func
 };
 
 export { default as component } from './country-ghg-emissions-component';

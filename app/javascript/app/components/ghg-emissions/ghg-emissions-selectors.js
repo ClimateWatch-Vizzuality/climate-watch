@@ -66,6 +66,13 @@ const AXES_CONFIG = {
   }
 };
 
+const EXCLUDED_SECTORS = [
+  'Total excluding LUCF',
+  'Total including LUCF',
+  'Total including LULUCF',
+  'Total excluding LULUCF'
+];
+
 // meta data for selectors
 const getMeta = state => state.meta || {};
 const getSources = state => state.meta.data_source || [];
@@ -208,7 +215,9 @@ export const filterData = createSelector(
     return sortEmissionsByValue(
       data.filter(
         d =>
-          d.gwp === version.label && filterValues.indexOf(d[breakBy.value]) > -1
+          d.gwp === version.label &&
+          filterValues.indexOf(d[breakBy.value]) > -1 &&
+          EXCLUDED_SECTORS.indexOf(d[breakBy.value]) === -1
       )
     );
   }

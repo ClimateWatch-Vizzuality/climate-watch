@@ -6,24 +6,14 @@ import {
   getThemeConfig,
   getTooltipConfig,
   sortEmissionsByValue,
-  sortLabelByAlpha
+  sortLabelByAlpha,
+  getColorPalette
 } from './country-ghg-emissions-utils';
 
 // constants needed for data parsing
 const DATA_SCALE = 1000000;
 
-const COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126'
-];
+const BASE_COLORS = ['#25597C', '#DFE9ED'];
 
 const AXES_CONFIG = {
   xBottom: {
@@ -38,10 +28,16 @@ const AXES_CONFIG = {
   }
 };
 
+const EXCLUDED_SECTORS = [
+  'Total excluding LUCF',
+  'Total including LUCF',
+  'Total including LULUCF',
+  'Total excluding LULUCF'
+];
+
 // meta data for selectors
 const getMeta = state => state.meta || {};
 const getSources = state => state.meta.data_source || [];
-const getRegions = state => state.regions || [];
 const getVersions = state => state.meta.gwp || [];
 
 // values from search
@@ -51,16 +47,6 @@ const getFilterSelection = state => state.search.filter || null;
 
 // data for the graph
 const getData = state => state.data || [];
-
-//
-export const getRegionsOptions = createSelector(getRegions, regions => {
-  if (!regions) return [];
-  return regions.map(d => ({
-    label: d.wri_standard_name,
-    value: d.iso_code3,
-    groudId: 'regions'
-  }));
-});
 
 // Sources selectors
 export const getSourceOptions = createSelector(getSources, sources => {
@@ -101,7 +87,7 @@ export const getVersionSelected = createSelector(
 
 // Filters selector
 export const getFilterOptions = createSelector(
-  [getMeta, getSourceSelected, getRegionsOptions],
+  [getMeta, getSourceSelected],
   (meta, sourceSelected) => {
     if (!sourceSelected || isEmpty(meta)) return [];
     const activeSourceData = meta.data_source.find(
@@ -138,7 +124,8 @@ export const getSelectorDefaults = createSelector(
     const sourceData = sources.find(d => d.value === sourceSelected.value);
     return {
       sector: sourceData.sector[0],
-      gas: sourceData.gas[0]
+      gas: sourceData.gas[0],
+      source: sources[0].value
     };
   }
 );
@@ -146,17 +133,16 @@ export const getSelectorDefaults = createSelector(
 // Map the data from the API
 export const filterData = createSelector(
   [getData, getFiltersSelected],
-  (data, filters) => {
-    if (!data || !data.length || !filters || !filters.length) return [];
-    const filterValues = filters.map(filter => filter.label);
+  data => {
+    if (!data || !data.length) return [];
     return sortEmissionsByValue(
-      data.filter(d => filterValues.indexOf(d.value) > -1)
+      data.filter(d => EXCLUDED_SECTORS.indexOf(d.sector) === -1)
     );
   }
 );
 
 export const getChartData = createSelector(
-  [getData, getFiltersSelected],
+  [filterData, getFiltersSelected],
   (data, filters) => {
     if (!data || !data.length || !filters) return [];
     const xValues = data[0].emissions.map(d => d.year);
@@ -177,14 +163,17 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartConfig = createSelector([getData], data => {
+export const getChartConfig = createSelector([filterData], data => {
   if (!data || !data.length) return {};
   const yColumns = data.map(d => ({
     label: d.sector,
     value: getYColumnValue(d.sector)
   }));
   const yColumnsChecked = uniqBy(yColumns, 'value');
-  const theme = getThemeConfig(yColumnsChecked, COLORS);
+  const theme = getThemeConfig(
+    yColumnsChecked,
+    getColorPalette(BASE_COLORS, yColumnsChecked.length)
+  );
   const tooltip = getTooltipConfig(yColumnsChecked);
   return {
     axes: AXES_CONFIG,

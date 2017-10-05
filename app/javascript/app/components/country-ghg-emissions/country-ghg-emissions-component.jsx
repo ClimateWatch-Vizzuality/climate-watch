@@ -36,13 +36,6 @@ class CountryGhgEmissions extends PureComponent {
                 value={sourceSelected}
                 hideResetButton
               />
-              {/* <Dropdown
-                label="Calculation"
-                options={versions}
-                onValueChange={handleVersionChange}
-                value={versionSelected}
-                hideResetButton
-              /> */}
               <ButtonGroup className={styles.btnGroup} />
               <Button
                 className={styles.exploreBtn}

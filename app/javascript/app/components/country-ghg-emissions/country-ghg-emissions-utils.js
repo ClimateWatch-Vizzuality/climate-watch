@@ -1,5 +1,6 @@
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
+import chroma from 'chroma-js';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -37,7 +38,8 @@ export const getThemeConfig = (columns, colors) => {
   const theme = {};
   columns.forEach((column, index) => {
     theme[column.value] = {
-      will: colors[index % 10]
+      stroke: colors[index],
+      fill: colors[index]
     };
   });
   return theme;
@@ -50,3 +52,6 @@ export const getTooltipConfig = columns => {
   });
   return tooltip;
 };
+
+export const getColorPalette = (colorRange, quantity) =>
+  chroma.scale(colorRange).colors(quantity);
