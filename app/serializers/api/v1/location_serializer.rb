@@ -6,7 +6,8 @@ module Api
                  :cait_name,
                  :ndcp_navigators_name,
                  :wri_standard_name,
-                 :unfccc_group
+                 :unfccc_group,
+                 :centroid
 
       has_many :members,
                serializer: Api::V1::LocationSerializer,
