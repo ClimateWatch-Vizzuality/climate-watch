@@ -9,6 +9,9 @@ import {
 } from 'react-simple-maps';
 import { Motion, spring } from 'react-motion';
 import Button from 'components/button';
+import Icon from 'components/icon';
+import mapZoomIn from 'assets/icons/map-zoom-in.svg';
+import mapZoomOut from 'assets/icons/map-zoom-out.svg';
 
 import styles from './map-styles.scss';
 
@@ -34,9 +37,11 @@ class Map extends PureComponent {
       <div className={cx(styles.wrapper, className)}>
         {zoomEnable && (
           <div className={styles.actions}>
-            <Button onClick={handleZoomIn}>+</Button>
+            <Button onClick={handleZoomIn}>
+              <Icon icon={mapZoomIn} />
+            </Button>
             <Button disabled={zoom === 1} onClick={handleZoomOut}>
-              -
+              <Icon icon={mapZoomOut} />
             </Button>
           </div>
         )}
