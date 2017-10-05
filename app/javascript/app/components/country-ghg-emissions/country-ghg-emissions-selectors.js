@@ -8,7 +8,7 @@ import {
   sortEmissionsByValue,
   sortLabelByAlpha,
   getColorPalette
-} from './country-ghg-emissions-utils';
+} from 'utils/graphs';
 
 // constants needed for data parsing
 const DATA_SCALE = 1000000;

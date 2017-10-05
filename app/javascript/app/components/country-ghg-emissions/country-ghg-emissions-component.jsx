@@ -18,8 +18,7 @@ class CountryGhgEmissions extends PureComponent {
       iso,
       sources,
       handleSourceChange,
-      sourceSelected,
-      handleRemoveTag
+      sourceSelected
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -57,7 +56,6 @@ class CountryGhgEmissions extends PureComponent {
                       label: column.label,
                       id: column.value
                     }}
-                    onRemove={handleRemoveTag}
                   />
                 ))}
             </div>
@@ -75,8 +73,7 @@ CountryGhgEmissions.propTypes = {
   iso: PropTypes.string.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
-  handleSourceChange: PropTypes.func.isRequired,
-  handleRemoveTag: PropTypes.func.isRequired
+  handleSourceChange: PropTypes.func.isRequired
 };
 
 CountryGhgEmissions.defaultProps = {

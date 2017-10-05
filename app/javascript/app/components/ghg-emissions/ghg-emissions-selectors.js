@@ -7,7 +7,7 @@ import {
   getTooltipConfig,
   sortEmissionsByValue,
   sortLabelByAlpha
-} from './ghg-emissions-utils';
+} from 'utils/graphs';
 
 // constants needed for data parsing
 const TOP_EMITTERS = [
