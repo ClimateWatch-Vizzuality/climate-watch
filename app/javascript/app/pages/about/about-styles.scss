@@ -3,7 +3,10 @@
 
 .section {
   padding: 40px 0;
-  border-bottom: solid 1px #cbccd0;
+
+  &:not(:last-child) {
+    border-bottom: solid 1px #cbccd0;
+  }
 }
 
 .title {

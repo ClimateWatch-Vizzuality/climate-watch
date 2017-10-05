@@ -3,8 +3,7 @@
 .navbar {
   display: flex;
   align-items: center;
-  height: $navbar-height;
-  justify-content: space-between;
+  height: 100%;
 }
 
 .logo {
@@ -17,14 +16,16 @@
 }
 
 .link {
+  display: flex;
+  align-items: center;
   color: $theme-color;
+  font-size: $font-size-s;
   font-weight: $font-weight-bold;
+  letter-spacing: 1px;
   margin-right: 40px;
   text-decoration: none;
   position: relative;
   height: 100%;
-  display: flex;
-  align-items: center;
 
   &Active::after {
     content: "";
