@@ -1,0 +1,42 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
+import styles from './map-footer-styles.scss';
+
+class MapFooter extends PureComponent {
+  // eslint-disable-line react/prefer-stateless-function
+  render() {
+    const { title, buckets } = this.props.data;
+
+    return (
+      <div className={styles.container}>
+        <span className={styles.title}>{title}</span>
+        <div>
+          {buckets.map(value => (
+            <span
+              className={styles.bucket}
+              style={{ backgroundColor: value }}
+              key={value}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
+
+MapFooter.propTypes = {
+  data: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    buckets: PropTypes.array.isRequired
+  })
+};
+
+MapFooter.defaultProps = {
+  data: {
+    title: '',
+    buckets: []
+  }
+};
+
+export default MapFooter;
