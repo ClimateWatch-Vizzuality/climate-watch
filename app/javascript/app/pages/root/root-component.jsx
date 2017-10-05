@@ -2,9 +2,10 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 
-import Nav from 'components/nav';
+import NavBar from 'components/navbar';
+import Footer from 'components/footer';
 
-import styles from "./root-styles.scss"; // eslint-disable-line
+import styles from './root-styles.scss'; // eslint-disable-line
 
 class Root extends PureComponent {
   render() {
@@ -12,8 +13,9 @@ class Root extends PureComponent {
     const navRoutes = route.routes.filter(r => r.nav);
     return (
       <div>
-        <Nav routes={navRoutes} />
+        <NavBar routes={navRoutes} />
         {renderRoutes(route.routes)}
+        <Footer routes={navRoutes} />
       </div>
     );
   }

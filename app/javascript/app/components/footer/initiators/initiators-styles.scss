@@ -1,0 +1,51 @@
+@import '~styles/layout.scss';
+
+.container {
+  border-top: solid 1px $border-color;
+  border-bottom: solid 1px $border-color;
+}
+
+.component {
+  position: relative;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.text {
+  position: absolute;
+  left: 0;
+  top: -8px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-s;
+  letter-spacing: 1px;
+  text-align: left;
+  color: $dark-gray;
+  background: $white;
+}
+
+.textGray {
+  background: $light-gray;
+}
+
+.right {
+  left: auto;
+  right: 0;
+}
+
+.arrow {
+  width: 20px;
+  height: 12px;
+  fill: $dark-gray;
+}
+
+.initiator {
+  margin-right: 30px;
+}
+
+.img {
+  mix-blend-mode: multiply;
+  max-width: 85px;
+}
