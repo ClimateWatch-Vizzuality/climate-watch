@@ -4,10 +4,16 @@ import isEmpty from 'lodash/isEmpty';
 import upperFirst from 'lodash/upperFirst';
 import qs from 'query-string';
 
-const fetchCountryGhgEmissionsInit = createAction('fetchCountryGhgEmissionsInit');
-const fetchCountryGhgEmissionsFail = createAction('fetchCountryGhgEmissionsFail');
+const fetchCountryGhgEmissionsInit = createAction(
+  'fetchCountryGhgEmissionsInit'
+);
+const fetchCountryGhgEmissionsFail = createAction(
+  'fetchCountryGhgEmissionsFail'
+);
 
-const fetchCountryGhgEmissionsMetaReady = createAction('fetchCountryGhgEmissionsMetaReady');
+const fetchCountryGhgEmissionsMetaReady = createAction(
+  'fetchCountryGhgEmissionsMetaReady'
+);
 const fetchCountryGhgEmissionsMeta = createThunkAction(
   'fetchCountryGhgEmissionsMeta',
   () => (dispatch, state) => {
@@ -62,7 +68,9 @@ const fetchCountryGhgEmissionsMeta = createThunkAction(
   }
 );
 
-const fetchCountryGhgEmissionsDataReady = createAction('fetchCountryGhgEmissionsDataReady');
+const fetchCountryGhgEmissionsDataReady = createAction(
+  'fetchCountryGhgEmissionsDataReady'
+);
 const fetchCountryGhgEmissionsData = createThunkAction(
   'fetchCountryGhgEmissionsData',
   filters => dispatch => {

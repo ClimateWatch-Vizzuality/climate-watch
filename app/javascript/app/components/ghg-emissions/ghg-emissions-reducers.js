@@ -2,7 +2,8 @@ export const initialState = {
   loading: false,
   loaded: false,
   error: false,
-  meta: {}
+  meta: {},
+  data: {}
 };
 
 const setLoading = (state, loading) => ({ ...state, loading });

@@ -150,10 +150,7 @@ export const filterData = createSelector(
     if (!data || !data.length || !filters || !filters.length) return [];
     const filterValues = filters.map(filter => filter.label);
     return sortEmissionsByValue(
-      data.filter(
-        d =>
-          filterValues.indexOf(d.value) > -1
-      )
+      data.filter(d => filterValues.indexOf(d.value) > -1)
     );
   }
 );
@@ -180,28 +177,25 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartConfig = createSelector(
-  [getData],
-  (data) => {
-    if (!data || !data.length) return {};
-    const yColumns = data.map(d => ({
-      label: d.sector,
-      value: getYColumnValue(d.sector)
-    }));
-    const yColumnsChecked = uniqBy(yColumns, 'value');
-    const theme = getThemeConfig(yColumnsChecked, COLORS);
-    const tooltip = getTooltipConfig(yColumnsChecked);
-    return {
-      axes: AXES_CONFIG,
-      theme,
-      tooltip,
-      columns: {
-        x: [{ label: 'year', value: 'x' }],
-        y: yColumnsChecked
-      }
-    };
-  }
-);
+export const getChartConfig = createSelector([getData], data => {
+  if (!data || !data.length) return {};
+  const yColumns = data.map(d => ({
+    label: d.sector,
+    value: getYColumnValue(d.sector)
+  }));
+  const yColumnsChecked = uniqBy(yColumns, 'value');
+  const theme = getThemeConfig(yColumnsChecked, COLORS);
+  const tooltip = getTooltipConfig(yColumnsChecked);
+  return {
+    axes: AXES_CONFIG,
+    theme,
+    tooltip,
+    columns: {
+      x: [{ label: 'year', value: 'x' }],
+      y: yColumnsChecked
+    }
+  };
+});
 
 export default {
   getSourceOptions,

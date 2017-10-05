@@ -25,7 +25,9 @@ class CountryGhgEmissions extends PureComponent {
       <div className={styles.wrapper}>
         <div className={cx(layout.content, styles.col2)}>
           <div className={styles.graph}>
-            <h3 className={styles.title}>Greenhouse Gas Emissions and Emissions Targets</h3>
+            <h3 className={styles.title}>
+              Greenhouse Gas Emissions and Emissions Targets
+            </h3>
             <div className={styles.graphControls}>
               <Dropdown
                 label="GHG emissions source"
@@ -42,7 +44,11 @@ class CountryGhgEmissions extends PureComponent {
                 hideResetButton
               /> */}
               <ButtonGroup className={styles.btnGroup} />
-              <Button className={styles.exploreBtn} color="yellow" link={`/ghg-emissions?breakBy=location&filter=${iso}`}>
+              <Button
+                className={styles.exploreBtn}
+                color="yellow"
+                link={`/ghg-emissions?breakBy=location&filter=${iso}`}
+              >
                 Explore emissions
               </Button>
             </div>
@@ -63,9 +69,7 @@ class CountryGhgEmissions extends PureComponent {
                 ))}
             </div>
           </div>
-          <div className={styles.map}>
-            I am a cool map
-          </div>
+          <div className={styles.map}>I am a cool map</div>
         </div>
       </div>
     );

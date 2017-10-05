@@ -41,15 +41,16 @@ class ChartLine extends PureComponent {
               <TooltipChart content={content} config={config} />
             )}
           />
-          {config.columns.y.map(column => (
-            <Line
-              key={column.value}
-              dataKey={column.value}
-              dot={false}
-              stroke={config.theme[column.value].stroke || ''}
-              strokeWidth={2}
-            />
-          ))}
+          {config.columns &&
+            config.columns.y.map(column => (
+              <Line
+                key={column.value}
+                dataKey={column.value}
+                dot={false}
+                stroke={config.theme[column.value].stroke || ''}
+                strokeWidth={2}
+              />
+            ))}
         </LineChart>
       </ResponsiveContainer>
     );

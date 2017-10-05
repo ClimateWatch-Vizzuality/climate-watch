@@ -38,10 +38,8 @@ const mapStateToProps = (state, { location, match }) => {
 
 function needsRequestData(props, nextProps) {
   const { sourceSelected, filtersSelected } = nextProps;
-  const hasValues =
-    sourceSelected.value;
-  const hasChanged =
-    sourceSelected.value !== props.sourceSelected.value;
+  const hasValues = sourceSelected.value;
+  const hasChanged = sourceSelected.value !== props.sourceSelected.value;
   return hasValues && hasChanged;
 }
 
@@ -115,4 +113,6 @@ export { default as reducers } from './country-ghg-emissions-reducers';
 export { default as styles } from './country-ghg-emissions-styles';
 export { default as actions } from './country-ghg-emissions-actions';
 
-export default withRouter(connect(mapStateToProps, actions)(CountryGhgEmissionsContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(CountryGhgEmissionsContainer)
+);
