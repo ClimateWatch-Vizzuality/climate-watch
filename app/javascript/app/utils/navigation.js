@@ -16,7 +16,8 @@ export function getLocationParamUpdated(location, params = [], clear = false) {
     };
   return {
     pathname: location.pathname,
-    search: qs.stringify(newSearch)
+    search: qs.stringify(newSearch),
+    hash: location.hash
   };
 }
 
