@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928114306) do
+ActiveRecord::Schema.define(version: 20171005141114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 20170928114306) do
     t.text "location_type", null: false
     t.boolean "show_in_cw", default: true
     t.json "topojson"
+    t.jsonb "centroid"
     t.index ["iso_code2"], name: "index_locations_on_iso_code2"
     t.index ["iso_code3"], name: "index_locations_on_iso_code3"
   end

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import RegionsProvider from 'providers/regions-provider';
 import ChartLine from 'components/charts/line';
 import Dropdown from 'components/dropdown';
@@ -34,6 +35,7 @@ class GhgEmissions extends PureComponent {
       <div>
         <h2 className={styles.title}>Global Historical Emissions</h2>
         <RegionsProvider />
+        <EmissionsMetaProvider />
         <div className={styles.col4}>
           <Dropdown
             label="Source"

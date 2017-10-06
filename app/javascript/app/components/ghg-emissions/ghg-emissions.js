@@ -34,7 +34,8 @@ const groups = [
 ];
 
 const mapStateToProps = (state, { location }) => {
-  const { meta, data } = state.ghgEmissions;
+  const { data } = state.ghgEmissions;
+  const { meta } = state.ghgEmissionsMeta;
   const { data: regions } = state.regions;
   const search = qs.parse(location.search);
   const ghg = {
@@ -96,11 +97,6 @@ function getFiltersParsed(props) {
 }
 
 class GhgEmissionsContainer extends PureComponent {
-  componentDidMount() {
-    const { fetchGhgEmissionsMeta } = this.props;
-    fetchGhgEmissionsMeta();
-  }
-
   componentWillReceiveProps(nextProps) {
     if (needsRequestData(this.props, nextProps)) {
       const { fetchGhgEmissionsData } = nextProps;
@@ -161,7 +157,6 @@ class GhgEmissionsContainer extends PureComponent {
 GhgEmissionsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  fetchGhgEmissionsMeta: PropTypes.func.isRequired,
   fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array
 };

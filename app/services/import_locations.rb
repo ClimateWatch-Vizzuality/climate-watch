@@ -1,6 +1,6 @@
 require 'csv'
 
-CARTODB_URL = 'https://wri-01.carto.com/api/v2/sql?q=SELECT%20name_engli,iso,topojson%20FROM%20gadm28_countries'.freeze
+CARTODB_URL = 'https://wri-01.carto.com/api/v2/sql?q=SELECT%20name_engli,iso,topojson,centroid%20FROM%20gadm28_countries'.freeze
 
 class ImportLocations
   def call
@@ -43,10 +43,11 @@ class ImportLocations
     response = Net::HTTP.get(uri)
     parsed_response = JSON.parse(response, symbolize_names: true)
     parsed_response[:rows].each do |row|
+      centroid = row[:centroid].nil? ? {} : JSON.parse(row[:centroid])
       begin
         Location.
           where(iso_code3: row[:iso]).
-          update(topojson: JSON.parse(row[:topojson]))
+          update(topojson: JSON.parse(row[:topojson]), centroid: centroid)
       rescue JSON::ParserError => e
         STDERR.puts "Error importing data for #{row[:iso]}: #{e}"
       end

@@ -3,12 +3,14 @@ import { handleActions } from 'app/utils/redux';
 
 import { reducers as countriesReducers } from 'providers/countries-provider';
 import { reducers as regionsReducers } from 'providers/regions-provider';
+import { reducers as ghgEmissionsMetaReducers } from 'providers/ghg-emissions-meta-provider';
 import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
 import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
 import { reducers as storiesReducers } from 'components/stories';
 import { reducers as countrySelectReducers } from 'components/countries-select';
 import { reducers as ghgEmissionsReducers } from 'components/ghg-emissions';
 import { reducers as NDCSReducers } from 'pages/ndcs';
+import { reducers as countryGhgEmissionsMapReducers } from 'components/country-ghg-map';
 import { reducers as countryGhgEmissionsReducers } from 'components/country-ghg-emissions';
 import { reducers as countrySDGLinkagesReducers } from 'components/country-ndc-sdg-linkages';
 import { reducers as countryNDCReducers } from 'pages/ndc-country';
@@ -22,6 +24,18 @@ import allActions from './actions';
 export default combineReducers({
   ndcs: handleActions('ndcs', allActions, NDCSReducers, initialState),
   stories: handleActions('stories', allActions, storiesReducers, initialState),
+  countryGhgEmissionsMap: handleActions(
+    'countryGhgEmissionsMap',
+    allActions,
+    countryGhgEmissionsMapReducers,
+    initialState
+  ),
+  ghgEmissionsMeta: handleActions(
+    'ghgEmissionsMeta',
+    allActions,
+    ghgEmissionsMetaReducers,
+    initialState
+  ),
   ndcSearch: handleActions(
     'search',
     allActions,
