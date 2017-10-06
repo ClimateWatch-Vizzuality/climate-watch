@@ -1,8 +1,10 @@
-import { createElement } from 'react';
+import { createElement, PureComponent } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import MapComponent from './map-component';
 import actions from './map-actions';
+import { initialState } from './map-reducers';
 
 export { initialState } from './map-reducers';
 export { default as reducers } from './map-reducers';
@@ -15,21 +17,34 @@ const mapStateToProps = state => ({
   center: state.map.center
 });
 
-const MapContainer = (props) => {
-  const handleZoomIn = () => {
-    const zoom = props.zoom * ZOOM_STEP;
-    props.setMapZoom(zoom);
+class MapContainer extends PureComponent {
+  componentWillUnmount() {
+    this.props.setMapParams(initialState);
+  }
+
+  handleZoomIn = () => {
+    const zoom = this.props.zoom * ZOOM_STEP;
+    this.props.setMapZoom(zoom);
   };
 
-  const handleZoomOut = () => {
-    const zoom = props.zoom / ZOOM_STEP;
-    props.setMapZoom(zoom);
+  handleZoomOut = () => {
+    const zoom = this.props.zoom / ZOOM_STEP;
+    this.props.setMapZoom(zoom);
   };
-  return createElement(MapComponent, {
-    ...props,
-    handleZoomIn,
-    handleZoomOut
-  });
+
+  render() {
+    return createElement(MapComponent, {
+      ...this.props,
+      handleZoomIn: this.handleZoomIn,
+      handleZoomOut: this.handleZoomOut
+    });
+  }
+}
+
+MapContainer.propTypes = {
+  zoom: PropTypes.number.isRequired,
+  setMapZoom: PropTypes.func.isRequired,
+  setMapParams: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, actions)(MapContainer);

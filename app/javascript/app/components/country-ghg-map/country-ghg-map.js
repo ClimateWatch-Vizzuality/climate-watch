@@ -1,27 +1,43 @@
-import { PureComponent, createElement } from 'react';
+import { Component, createElement } from 'react';
 import { connect } from 'react-redux';
-import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { compose, onlyUpdateForKeys } from 'recompose';
+import qs from 'query-string';
 
 import mapActions from 'components/map/map-actions';
+import ghgMapActions from './country-ghg-map-actions';
+
 import CountryGhgMapComponent from './country-ghg-map-component';
 import {
   getPathsWithStyles,
   getLegendData,
-  getMapCenter
+  getMapCenter,
+  getYearSelected,
+  getSourceSelected
 } from './country-ghg-map-selectors';
 
-const data = { BRA: 1, SPA: 10, FRA: 3 };
+const actions = {
+  ...mapActions,
+  ...ghgMapActions
+};
 
-const mapStateToProps = (state, { match }) => {
+const mapStateToProps = (state, { location, match }) => {
+  const { data } = state.countryGhgEmissionsMap;
+  const { meta } = state.ghgEmissionsMeta;
+  const { data: countries } = state.countries;
+  const search = qs.parse(location.search);
   const stateWithSelected = {
-    countries: state.countries.data,
-    selected: match.params.iso,
-    data
+    countries,
+    data,
+    meta,
+    search,
+    iso: match.params.iso
   };
   return {
+    iso: match.params.iso,
+    yearSelected: getYearSelected(stateWithSelected),
+    sourceSelected: getSourceSelected(stateWithSelected),
     legend: getLegendData(stateWithSelected),
     paths: getPathsWithStyles(stateWithSelected),
     center: getMapCenter(stateWithSelected)
@@ -29,53 +45,69 @@ const mapStateToProps = (state, { match }) => {
 };
 
 const defaultZoom = 4;
-let forceUpdate = false;
 
-class CountryGhgMapContainer extends PureComponent {
+class CountryGhgMapContainer extends Component {
   componentDidMount() {
+    const { center, setMapParams } = this.props;
     const params = {
-      zoom: defaultZoom,
-      center: this.props.center
+      center,
+      zoom: defaultZoom
     };
-    this.props.setMapParams(params);
+    setMapParams(params);
+    this.fetchData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    forceUpdate = !isEqual(nextProps.data, this.props.data);
+    if (nextProps.sourceSelected !== this.props.sourceSelected) {
+      this.fetchData(nextProps);
+    }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const params = {
       zoom: defaultZoom,
       center: this.props.center
     };
-    this.props.setMapParams(params);
+    if (prevProps.center !== this.props.center) {
+      this.props.setMapParams(params);
+    }
   }
 
-  componentWillUnmount() {
-    this.props.setMapParams({ zoom: 1, center: [0, 20] });
-  }
+  fetchData = props => {
+    const { sourceSelected, fetchGhgEmissionsMapData } = props;
+    if (sourceSelected && sourceSelected.value) {
+      // TODO: make this dynamic with default values in reducer
+      fetchGhgEmissionsMapData({
+        source: sourceSelected.value,
+        gas: 29,
+        sector: 113
+      });
+    }
+  };
 
   render() {
     return createElement(CountryGhgMapComponent, {
-      ...this.props,
-      forceUpdate
+      ...this.props
     });
   }
 }
 
 CountryGhgMapContainer.propTypes = {
-  data: PropTypes.array,
   center: PropTypes.array,
-  setMapParams: PropTypes.func.isRequired
+  sourceSelected: PropTypes.object,
+  setMapParams: PropTypes.func.isRequired,
+  fetchGhgEmissionsMapData: PropTypes.func.isRequired
 };
 
 export { default as component } from './country-ghg-map-component';
 export { default as styles } from './country-ghg-map-styles';
+export { initialState } from './country-ghg-map-reducers';
+export { default as reducers } from './country-ghg-map-reducers';
+export { default as actions } from './country-ghg-map-actions';
 
 const enhance = compose(
   withRouter,
-  connect(mapStateToProps, mapActions),
-  onlyUpdateForKeys(['paths', 'center'])
+  connect(mapStateToProps, actions),
+  onlyUpdateForKeys(['data', 'center', 'sourceSelected'])
 );
 export default enhance(CountryGhgMapContainer);

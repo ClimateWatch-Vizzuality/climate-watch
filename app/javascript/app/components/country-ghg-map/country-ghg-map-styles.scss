@@ -2,4 +2,9 @@
 
 .container {
   background-color: $light-gray;
+  border-bottom: solid 1px $border-color;
+}
+
+.map {
+  height: 800px;
 }

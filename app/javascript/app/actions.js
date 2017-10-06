@@ -10,6 +10,7 @@ import { actions as ghgEmissionsActions } from 'components/ghg-emissions';
 import { actions as NDCSActions } from 'pages/ndcs';
 import { actions as NDCCompareActions } from 'pages/ndc-compare';
 import { actions as countryGhgEmissionsActions } from 'components/country-ghg-emissions';
+import { actions as countryGhgEmissionsMapActions } from 'components/country-ghg-map';
 import { actions as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
 import { actions as countryNDCActions } from 'pages/ndc-country';
 import { actions as countryNDCFullActions } from 'pages/ndc-country-full';
@@ -25,6 +26,7 @@ export default {
   ...NDCSActions,
   ...NDCCompareActions,
   ...countryGhgEmissionsActions,
+  ...countryGhgEmissionsMapActions,
   ...countrySDGLinkages,
   ...countryNDCActions,
   ...countryNDCFullActions,

@@ -3,10 +3,10 @@ module Api
     module HistoricalEmissions
       class RecordSerializer < ActiveModel::Serializer
         belongs_to :location
-        belongs_to :iso_code3
         belongs_to :gas
         belongs_to :data_source, key: :source
         belongs_to :sector
+        attribute :iso_code3
         attribute :emissions
         attribute :gwp
 

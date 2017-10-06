@@ -27,7 +27,7 @@ class CountryGhgMap extends PureComponent {
 
 CountryGhgMap.propTypes = {
   paths: PropTypes.array.isRequired,
-  forceUpdate: PropTypes.bool.isRequired,
+  forceUpdate: PropTypes.bool,
   legend: PropTypes.object.isRequired
 };
 
