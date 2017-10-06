@@ -7,7 +7,7 @@ import { HashLink } from 'react-router-hash-link';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
-  const { links, useRoutes, className, query } = props;
+  const { links, useRoutes, className } = props;
   return (
     <nav className={cx(styles.anchorNav, className)}>
       {links.map(link => {
@@ -16,8 +16,9 @@ const AnchorNav = props => {
           className: styles.link,
           activeClassName: styles.linkActive,
           to: {
-            search: query,
-            pathname: link.path
+            search: link.search,
+            pathname: link.path,
+            hash: link.hash
           }
         };
         if (useRoutes) {
@@ -33,7 +34,6 @@ const AnchorNav = props => {
 };
 
 AnchorNav.propTypes = {
-  query: PropTypes.string,
   links: PropTypes.array,
   useRoutes: PropTypes.bool.isRequired,
   className: PropTypes.string
