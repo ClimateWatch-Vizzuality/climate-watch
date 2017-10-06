@@ -11,10 +11,10 @@ const setError = (state, error) => ({ ...state, error });
 const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
-  fetchGhgEmissionsInit: state => setLoading(state, true),
-  fetchGhgEmissionsMetaReady: (state, { payload }) =>
+  fetchCountryGhgEmissionsInit: state => setLoading(state, true),
+  fetchCountryGhgEmissionsMetaReady: (state, { payload }) =>
     setLoaded(setLoading({ ...state, meta: payload }, false), true),
-  fetchGhgEmissionsDataReady: (state, { payload }) =>
+  fetchCountryGhgEmissionsDataReady: (state, { payload }) =>
     setLoaded(setLoading({ ...state, data: payload }, false), true),
-  fetchGhgEmissionsFail: state => setError(state, true)
+  fetchCountryGhgEmissionsFail: state => setError(state, true)
 };

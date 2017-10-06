@@ -2,8 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    name: {name}
-  name: {name}
+    name: {name}-staging
+  name: {name}-staging
 spec:
   revisionHistoryLimit: 0
   template:
@@ -11,10 +11,10 @@ spec:
       annotations:
         chaos.alpha.kubernetes.io/enabled: "true"
       labels:
-        name: {name}
+        name: {name}-staging
     spec:
       containers:
-      - name: {name}
+      - name: {name}-staging
         image: vizzuality/{name}
         imagePullPolicy: Always
         resources:

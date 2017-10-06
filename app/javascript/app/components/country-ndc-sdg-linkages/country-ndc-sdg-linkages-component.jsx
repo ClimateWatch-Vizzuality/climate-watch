@@ -8,6 +8,7 @@ import NoContent from 'components/no-content';
 import Dropdown from 'components/dropdown';
 import isEqual from 'lodash/isEqual';
 
+import layout from 'styles/layout.scss';
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
@@ -29,43 +30,10 @@ class CountrySDGLinkages extends PureComponent {
       tooltipData
     } = this.props;
     return (
-      <div>
-        <h3 className={styles.title}>NDC-SDG Linkages</h3>
-        {!isEmpty(sdgs) && (
-          <div>
-            <div className={styles.sdgs}>
-              {sdgs.map(sdg => (
-                <SDGCard
-                  key={sdg.title}
-                  sdgData={sdg}
-                  tooltipId="sdg-linkages"
-                  setTooltipData={setTooltipData}
-                  indicators
-                  className={styles.card}
-                />
-              ))}
-            </div>
-            <ReactTooltip id="sdg-linkages">
-              {tooltipData && (
-                <div className={styles.tooltip}>
-                  <p className={styles.tooltipTitle}>
-                    <b>{tooltipData.targetKey}: </b>
-                    {tooltipData.title}
-                  </p>
-                  {tooltipData.sectors && (
-                    <p className={styles.sectors}>
-                      <b>Sectors: </b>
-                      {tooltipData.sectors.map((sector, index) => (
-                        <span key={`${tooltipData.targetKey}-${sector}`}>
-                          {sectors[sector].name}
-                          {index === tooltipData.sectors.length - 1 ? '' : ', '}
-                        </span>
-                      ))}
-                    </p>
-                  )}
-                </div>
-              )}
-            </ReactTooltip>
+      <div className={styles.wrapper}>
+        <div className={layout.content}>
+          <div className={styles.header}>
+            <h3 className={styles.title}>NDC-SDG Linkages</h3>
             <div className={styles.sectorSelector}>
               <Dropdown
                 label="Sector"
@@ -73,13 +41,54 @@ class CountrySDGLinkages extends PureComponent {
                 options={sectorOptions}
                 onValueChange={handleSectorChange}
                 value={activeSector}
-                dropdownDirection={-1}
               />
             </div>
           </div>
-        )}
-        {isEmpty(sdgs) &&
-        !loading && <NoContent message="No SDG data available" />}
+          {!isEmpty(sdgs) && (
+            <div>
+              <div className={styles.sdgs}>
+                {sdgs.map(sdg => (
+                  <SDGCard
+                    activeSector={activeSector}
+                    key={sdg.title}
+                    sdgData={sdg}
+                    tooltipId="sdg-linkages"
+                    setTooltipData={setTooltipData}
+                    indicators
+                    className={styles.card}
+                  />
+                ))}
+              </div>
+              <ReactTooltip id="sdg-linkages">
+                {tooltipData && (
+                  <div className={styles.tooltip}>
+                    <p className={styles.tooltipTitle}>
+                      <b>{tooltipData.targetKey}: </b>
+                      {tooltipData.title}
+                    </p>
+                    {tooltipData.sectors && (
+                      <p className={styles.sectors}>
+                        <b>Sectors: </b>
+                        {tooltipData.sectors.map((sector, index) => (
+                          <span key={`${tooltipData.targetKey}-${sector}`}>
+                            {sectors[sector].name}
+                            {index === tooltipData.sectors.length - 1 ? (
+                              ''
+                            ) : (
+                              ', '
+                            )}
+                          </span>
+                        ))}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </ReactTooltip>
+            </div>
+          )}
+          {isEmpty(sdgs) &&
+          !loading && <NoContent message="No SDG data available" />}
+        </div>
       </div>
     );
   }

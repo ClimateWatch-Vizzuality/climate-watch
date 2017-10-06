@@ -1,5 +1,13 @@
 @import '~styles/layout.scss';
 
+.header {
+  @extend %grid;
+
+  grid-template-columns: 3fr 1fr;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
 .sdgs {
   @extend %grid;
 
@@ -7,7 +15,7 @@
   grid-column-gap: 0;
   position: relative;
   margin-left: -1px;
-  margin-bottom: -1px;
+  margin-bottom: 40px;
 }
 
 .card {
@@ -18,18 +26,11 @@
 }
 
 .title {
-  font-size: $font-size-m;
+  font-size: $font-size-large;
   font-weight: $font-weight;
   color: $theme-color;
-  margin-bottom: 15px;
-}
-
-.sectorSelector {
-  @extend %grid;
-
-  grid-template-columns: repeat(4, 1fr);
-  margin-bottom: 40px;
-  margin-top: 30px;
+  display: flex;
+  align-items: center;
 }
 
 .tooltip {

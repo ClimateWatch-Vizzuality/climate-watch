@@ -1,7 +1,6 @@
 export const initialState = {
   loading: false,
   loaded: false,
-  activeSector: null,
   tooltipData: {},
   data: {}
 };
@@ -11,10 +10,6 @@ const setLoaded = (state, loaded) => ({ ...state, loaded });
 const setCountryData = (state, { iso, data }) => ({
   ...state,
   data: { [iso]: data }
-});
-const setActiveSector = (state, { payload }) => ({
-  ...state,
-  activeSector: payload
 });
 const setTooltipData = (state, { payload }) => ({
   ...state,
@@ -37,6 +32,5 @@ export default {
       true
     );
   },
-  setActiveSector,
   setTooltipData
 };
