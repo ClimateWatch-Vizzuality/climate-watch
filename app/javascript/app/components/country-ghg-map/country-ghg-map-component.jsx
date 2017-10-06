@@ -14,6 +14,7 @@ class CountryGhgMap extends PureComponent {
       <div className={styles.container}>
         <Map
           cache={!forceUpdate}
+          style={{ height: '100%', width: 'auto', maxWidth: '410px' }}
           zoomEnable
           paths={paths}
           className={styles.map}

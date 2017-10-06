@@ -13,6 +13,7 @@ import { initialState as ndcSearch } from 'pages/ndc-search';
 import { initialState as countries } from 'providers/countries-provider';
 import { initialState as regions } from 'providers/regions-provider';
 import { initialState as geoLocation } from 'providers/geolocation-provider';
+import { initialState as ghgEmissionsMeta } from 'providers/ghg-emissions-meta-provider';
 
 export default {
   countries,
@@ -29,5 +30,6 @@ export default {
   countrySelect,
   autocompleteSearch,
   ndcSearch,
-  ghgEmissions
+  ghgEmissions,
+  ghgEmissionsMeta
 };

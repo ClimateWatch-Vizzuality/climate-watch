@@ -2,12 +2,7 @@
 
 .wrapper {
   border-bottom: solid 1px $border-color;
-}
-
-.col2 {
-  @extend %grid;
-
-  grid-template-columns: 3fr 1fr;
+  border-right: solid 1px $border-color;
 }
 
 .title {
@@ -21,7 +16,6 @@
 }
 
 .graph {
-  border-right: solid 1px $border-color;
   padding-right: 30px;
 }
 
@@ -37,7 +31,7 @@
 }
 
 .btnGroup {
-  align-items: flex-end;  
+  align-items: flex-end;
 }
 
 .tags {

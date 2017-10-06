@@ -1,6 +1,7 @@
 import { actions as countriesProvider } from 'providers/countries-provider';
 import { actions as regionsProvider } from 'providers/regions-provider';
 import { actions as geoLocationProvider } from 'providers/geolocation-provider';
+import { actions as ghgEmissionsMetaProvider } from 'providers/ghg-emissions-meta-provider';
 import { actions as countrySelect } from 'components/countries-select';
 import { actions as stories } from 'components/stories';
 import { actions as autocompleteSearch } from 'components/autocomplete-search';
@@ -18,6 +19,7 @@ export default {
   ...countriesProvider,
   ...regionsProvider,
   ...geoLocationProvider,
+  ...ghgEmissionsMetaProvider,
   ...stories,
   ...countrySelect,
   ...NDCSActions,

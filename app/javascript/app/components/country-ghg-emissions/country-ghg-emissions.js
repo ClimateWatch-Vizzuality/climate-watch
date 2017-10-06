@@ -17,7 +17,8 @@ import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
 import actions from './country-ghg-emissions-actions';
 
 const mapStateToProps = (state, { location, match }) => {
-  const { meta, data } = state.countryGhgEmissions;
+  const { data } = state.countryGhgEmissions;
+  const { meta } = state.ghgEmissionsMeta;
   const search = qs.parse(location.search);
   const countryGhg = {
     meta,
@@ -53,11 +54,6 @@ function getFiltersParsed(props) {
 }
 
 class CountryGhgEmissionsContainer extends PureComponent {
-  componentDidMount() {
-    const { fetchCountryGhgEmissionsMeta } = this.props;
-    fetchCountryGhgEmissionsMeta();
-  }
-
   componentWillReceiveProps(nextProps) {
     if (needsRequestData(this.props, nextProps)) {
       const { fetchCountryGhgEmissionsData } = nextProps;
@@ -86,7 +82,6 @@ class CountryGhgEmissionsContainer extends PureComponent {
 CountryGhgEmissionsContainer.propTypes = {
   history: Proptypes.object,
   location: Proptypes.object,
-  fetchCountryGhgEmissionsMeta: Proptypes.func,
   fetchCountryGhgEmissionsData: Proptypes.func
 };
 
