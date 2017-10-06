@@ -26,6 +26,7 @@ $height: 45px;
         padding-left: 10px;
         padding-right: 5px;
         height: $height;
+        overflow: hidden;
 
         .react-selectize-placeholder {
           display: block;
@@ -42,14 +43,15 @@ $height: 45px;
           min-height: $height;
           flex-grow: 1;
           flex-wrap: wrap;
+          overflow: hidden;
+          position: relative;
 
           .resizable-input {
             background: none;
             border: none;
             outline: none;
             font-size: 1em;
-            margin: 2px;
-            padding: 4px 0;
+            padding: 6px 0;
             vertical-align: middle;
             width: 0;
             position: absolute;
@@ -168,8 +170,8 @@ $height: 45px;
     &.root-node {
       .react-selectize-control {
         background-color: transparent;
-        border: 1px solid;
-        border-color: rgba($theme-color-light, 0.3);
+        border: solid 1px $border-color;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
         border-radius: 4px;
         font-size: $font-size;
 
@@ -253,7 +255,8 @@ $height: 45px;
     &.dropdown-menu {
       background: $light-gray;
       color: $theme-color-light;
-      border: 1px solid rgba($theme-color-light, 0.3);
+      border: solid 1px $border-color;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
       margin-top: -1px;
 
       &.flipped {
@@ -262,14 +265,12 @@ $height: 45px;
       }
 
       &:not(.flipped) {
-        border-color: rgba($theme-color-light, 0.3);
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
       }
 
       .no-results-found {
         color: #aaa;
-        font-style: oblique;
         padding: 12px 10px;
       }
 
@@ -308,7 +309,7 @@ $height: 45px;
 
   .multi-select.react-selectize.root-node .simple-value {
     background: #f2f9fc;
-    border: 1px solid #c9e6f2;
+    border: 1px solid $border-color;
     border-radius: 2px;
     color: #08c;
   }
