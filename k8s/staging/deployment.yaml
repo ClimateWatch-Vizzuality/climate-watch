@@ -2,8 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    name: {name}
-  name: {name}
+    name: {name}-staging
+  name: {name}-staging
 spec:
   revisionHistoryLimit: 0
   template:
