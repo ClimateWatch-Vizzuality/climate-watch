@@ -29,8 +29,9 @@ export const getAnchorLinks = createSelector(
   (sections, iso) =>
     sections.filter(section => section.anchor).map(section => ({
       label: section.label,
-      path: `/countries/${iso}#${section.hash}`,
-      hash: section.hash
+      path: `/countries/${iso}`,
+      hash: section.hash,
+      search: location.search
     }))
 );
 
