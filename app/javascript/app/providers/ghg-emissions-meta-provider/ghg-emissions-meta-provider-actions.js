@@ -10,8 +10,8 @@ const fetchEmissionsMetaFail = createAction('fetchEmissionsMetaFail');
 const fetchEmissionsMeta = createThunkAction(
   'fetchEmissionsMeta',
   () => (dispatch, state) => {
-    const { countryGhgEmissions } = state();
-    if (countryGhgEmissions && isEmpty(countryGhgEmissions.meta)) {
+    const { ghgEmissionsMeta } = state();
+    if (isEmpty(ghgEmissionsMeta.meta) && !ghgEmissionsMeta.loading) {
       dispatch(fetchEmissionsMetaInit());
       fetch('/api/v1/emissions/meta')
         .then(response => {
