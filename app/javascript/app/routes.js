@@ -11,6 +11,7 @@ import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
+import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import About from 'pages/about';
@@ -98,6 +99,12 @@ export default [
             label: 'GHG Emissions',
             anchor: true,
             component: GHGCountryEmissions
+          },
+          {
+            hash: 'ndc-content-overview',
+            label: 'NDC Content Overview',
+            anchor: true,
+            component: CountryNdcOverview
           },
           {
             hash: 'ndc-sdg-linkages',
