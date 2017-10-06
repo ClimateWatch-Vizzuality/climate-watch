@@ -12,6 +12,14 @@ module Api
 
     class HistoricalEmissionsController < ApiController
       def index
+        unless valid_params(params)
+          render json: {
+            status: :bad_request,
+            error: 'Please specify `source` and at least one of `location`,'\
+                   '`sector` or `gas`'
+          }, status: :bad_request and return
+        end
+
         render json: ::HistoricalEmissions::Record.find_by_params(params),
                each_serializer: Api::V1::HistoricalEmissions::RecordSerializer,
                params: params
@@ -31,6 +39,12 @@ module Api
       end
 
       private
+
+      def valid_params(params)
+        params[:source] && (
+          params[:location] || params[:sector] || params[:gas]
+        )
+      end
 
       def grouped_records
         ::HistoricalEmissions::Record.
