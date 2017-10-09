@@ -29,7 +29,7 @@ class Accordion extends PureComponent {
               isOpen = false;
             }
           }
-          return (
+          return section.definitions.length ? (
             <section key={section.slug} className={styles.accordion}>
               <button
                 className={styles.header}
@@ -80,7 +80,7 @@ class Accordion extends PureComponent {
                 </div>
               </Collapse>
             </section>
-          );
+          ) : null;
         })}
       </div>
     );

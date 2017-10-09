@@ -17,7 +17,8 @@ const AccordionContainer = props => {
   const handleOnClick = slug => {
     const { location, history } = props;
     const search = qs.parse(location.search);
-    const newSlug = search.activeSection === slug ? 'none' : slug;
+    const newSlug =
+      search.activeSection === slug || !search.activeSection ? 'none' : slug;
     const newSearch = { ...search, activeSection: newSlug };
 
     history.replace({
