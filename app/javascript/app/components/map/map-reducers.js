@@ -3,11 +3,24 @@ export const initialState = {
   zoom: 1
 };
 
-const setMapZoom = (zoom, state) => ({
+const setMapZoom = (state, { payload }) => ({
   ...state,
-  zoom
+  zoom: payload
+});
+
+const setMapCenter = (state, { payload }) => ({
+  ...state,
+  center: payload
+});
+
+const setMapParams = (state, { payload }) => ({
+  ...state,
+  zoom: payload.zoom,
+  center: payload.center
 });
 
 export default {
-  setMapZoom: (state, { payload }) => setMapZoom(payload, state)
+  setMapZoom,
+  setMapCenter,
+  setMapParams
 };

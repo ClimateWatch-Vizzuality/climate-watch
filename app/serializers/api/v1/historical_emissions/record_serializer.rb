@@ -6,11 +6,16 @@ module Api
         belongs_to :gas
         belongs_to :data_source, key: :source
         belongs_to :sector
+        attribute :iso_code3
         attribute :emissions
         attribute :gwp
 
         def location
           object.location.wri_standard_name
+        end
+
+        def iso_code3
+          object.location.iso_code3
         end
 
         def gas

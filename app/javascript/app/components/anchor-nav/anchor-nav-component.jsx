@@ -16,8 +16,9 @@ const AnchorNav = props => {
           className: styles.link,
           activeClassName: styles.linkActive,
           to: {
-            search: query,
-            pathname: link.path
+            search: link.search || query,
+            pathname: link.path,
+            hash: link.hash
           }
         };
         if (useRoutes) {
@@ -33,15 +34,16 @@ const AnchorNav = props => {
 };
 
 AnchorNav.propTypes = {
-  query: PropTypes.string,
   links: PropTypes.array,
   useRoutes: PropTypes.bool.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  query: PropTypes.string
 };
 
 AnchorNav.defaultProps = {
   links: [],
-  useRoutes: false
+  useRoutes: false,
+  query: ''
 };
 
 export default AnchorNav;

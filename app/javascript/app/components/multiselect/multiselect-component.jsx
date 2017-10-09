@@ -11,25 +11,38 @@ import styles from './multiselect-styles.scss';
 
 class Multiselect extends Component {
   // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+    this.state = {
+      search: ''
+    };
+  }
+
   render() {
     const {
       values,
+      options,
       selectedClassName,
       placeholderText,
       handleChange,
       filterOptions,
       label
     } = this.props;
+    const { search } = this.state;
     return (
       <div className={styles.multiSelectWrapper}>
         {label && <span className={styles.label}>{label}</span>}
         <div className={cx(theme.dropdown, styles.multiSelect)}>
           <div className={styles.values}>
-            {placeholderText && !values.length ? (
-              placeholderText
-            ) : (
-              `${values.length} selected`
-            )}
+            {placeholderText &&
+            !values.length && <span>{placeholderText}</span>}
+            {!search &&
+            values.length &&
+            values.length === options.length && <span>All selected</span>}
+            {!search &&
+              values.length &&
+              values.length !== options.length &&
+              `${values.length} selected`}
           </div>
           <MultiSelect
             filterOptions={filterOptions}
@@ -51,6 +64,8 @@ class Multiselect extends Component {
                 icon={dropdownArrow}
               />
             )}
+            onSearchChange={s => this.setState({ search: s })}
+            search={this.state.search}
             {...this.props}
           />
         </div>
@@ -61,6 +76,7 @@ class Multiselect extends Component {
 
 Multiselect.propTypes = {
   values: Proptypes.array.isRequired,
+  options: Proptypes.array.isRequired,
   selectedClassName: Proptypes.string,
   onMultiValueChange: Proptypes.func,
   placeholderText: Proptypes.string,

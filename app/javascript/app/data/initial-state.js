@@ -4,6 +4,7 @@ import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
 import { initialState as stories } from 'components/stories';
 import { initialState as ghgEmissions } from 'components/ghg-emissions';
+import { initialState as countryGhgEmissionsMap } from 'components/country-ghg-map';
 import { initialState as ndcs } from 'pages/ndcs';
 import { initialState as countryGhgEmissions } from 'components/country-ghg-emissions';
 import { initialState as countryNDC } from 'pages/ndc-country';
@@ -13,6 +14,7 @@ import { initialState as ndcSearch } from 'pages/ndc-search';
 import { initialState as countries } from 'providers/countries-provider';
 import { initialState as regions } from 'providers/regions-provider';
 import { initialState as geoLocation } from 'providers/geolocation-provider';
+import { initialState as ghgEmissionsMeta } from 'providers/ghg-emissions-meta-provider';
 
 export default {
   countries,
@@ -29,5 +31,7 @@ export default {
   countrySelect,
   autocompleteSearch,
   ndcSearch,
-  ghgEmissions
+  ghgEmissions,
+  countryGhgEmissionsMap,
+  ghgEmissionsMeta
 };

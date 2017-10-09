@@ -72,7 +72,11 @@ class CountrySDGLinkages extends PureComponent {
                         {tooltipData.sectors.map((sector, index) => (
                           <span key={`${tooltipData.targetKey}-${sector}`}>
                             {sectors[sector].name}
-                            {index === tooltipData.sectors.length - 1 ? '' : ', '}
+                            {index === tooltipData.sectors.length - 1 ? (
+                              ''
+                            ) : (
+                              ', '
+                            )}
                           </span>
                         ))}
                       </p>

@@ -15,7 +15,7 @@ import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import About from 'pages/about';
-import GHGCountryEmissions from 'components/country-ghg-emissions';
+import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import error from 'pages/error';
 
