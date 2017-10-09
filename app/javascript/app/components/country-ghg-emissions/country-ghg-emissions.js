@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
+import throttle from 'lodash/throttle';
 import qs from 'query-string';
 
 import {
@@ -64,8 +65,16 @@ class CountryGhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value }, true);
+    if (category) {
+      this.updateUrlParam({ name: 'source', value: category.value }, true);
+    }
   };
+
+  handleYearHover = throttle(data => {
+    if (data) {
+      this.updateUrlParam({ name: 'year', value: data.activeLabel });
+    }
+  }, 400);
 
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
@@ -75,6 +84,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
   render() {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
+      handleYearHover: this.handleYearHover,
       handleSourceChange: this.handleSourceChange
     });
   }

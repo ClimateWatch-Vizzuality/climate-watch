@@ -15,12 +15,13 @@ import { format } from 'd3-format';
 
 class ChartStackedArea extends PureComponent {
   render() {
-    const { config, data, height } = this.props;
+    const { config, data, height, onMouseMove } = this.props;
     return (
       <ResponsiveContainer height={height}>
         <AreaChart
           data={data}
           margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
+          onMouseMove={onMouseMove}
         >
           <XAxis
             dataKey="x"
@@ -66,11 +67,13 @@ ChartStackedArea.propTypes = {
   height: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string // % accepted
-  ]).isRequired
+  ]).isRequired,
+  onMouseMove: PropTypes.func.isRequired
 };
 
 ChartStackedArea.defaultProps = {
-  height: 500
+  height: 500,
+  onMouseMove: () => {}
 };
 
 export default ChartStackedArea;

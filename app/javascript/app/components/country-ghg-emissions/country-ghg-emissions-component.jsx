@@ -16,6 +16,7 @@ class CountryGhgEmissions extends PureComponent {
       config,
       iso,
       sources,
+      handleYearHover,
       handleSourceChange,
       sourceSelected
     } = this.props;
@@ -45,7 +46,12 @@ class CountryGhgEmissions extends PureComponent {
         </div>
         <div className={styles.graph}>
           {!loading && (
-            <ChartStackedArea config={config} data={data} height="100%" />
+            <ChartStackedArea
+              config={config}
+              data={data}
+              height="100%"
+              onMouseMove={handleYearHover}
+            />
           )}
         </div>
         <div className={styles.tags}>
@@ -74,6 +80,7 @@ CountryGhgEmissions.propTypes = {
   iso: PropTypes.string.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
+  handleYearHover: PropTypes.func.isRequired,
   handleSourceChange: PropTypes.func.isRequired
 };
 

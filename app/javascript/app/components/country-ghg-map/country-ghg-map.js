@@ -2,8 +2,8 @@ import { Component, createElement } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import { compose, onlyUpdateForKeys } from 'recompose';
 import qs from 'query-string';
+import isEqual from 'lodash/isEqual';
 
 import mapActions from 'components/map/map-actions';
 import ghgMapActions from './country-ghg-map-actions';
@@ -13,8 +13,9 @@ import {
   getPathsWithStyles,
   getLegendData,
   getMapCenter,
-  getYearSelected,
-  getSourceSelected
+  getSourceSelected,
+  getDefaultValues,
+  getYearSelected
 } from './country-ghg-map-selectors';
 
 const actions = {
@@ -32,12 +33,15 @@ const mapStateToProps = (state, { location, match }) => {
     data,
     meta,
     search,
-    iso: match.params.iso
+    iso: match.params.iso,
+    year: search.year
   };
+
   return {
     iso: match.params.iso,
     yearSelected: getYearSelected(stateWithSelected),
     sourceSelected: getSourceSelected(stateWithSelected),
+    defaultValues: getDefaultValues(stateWithSelected),
     legend: getLegendData(stateWithSelected),
     paths: getPathsWithStyles(stateWithSelected),
     center: getMapCenter(stateWithSelected)
@@ -47,6 +51,11 @@ const mapStateToProps = (state, { location, match }) => {
 const defaultZoom = 4;
 
 class CountryGhgMapContainer extends Component {
+  constructor() {
+    super();
+    this.state = { forceUpdate: false };
+  }
+
   componentDidMount() {
     const { center, setMapParams } = this.props;
     const params = {
@@ -61,6 +70,7 @@ class CountryGhgMapContainer extends Component {
     if (nextProps.sourceSelected !== this.props.sourceSelected) {
       this.fetchData(nextProps);
     }
+    this.state.forceUpdate = !isEqual(nextProps.paths, this.props.paths);
   }
 
   componentDidUpdate(prevProps) {
@@ -71,29 +81,36 @@ class CountryGhgMapContainer extends Component {
     if (prevProps.center !== this.props.center) {
       this.props.setMapParams(params);
     }
+    if (this.state.forceUpdate) {
+      // Not a good practice but I want to force a rerender
+      // because setting the map cache improve performance a lot!
+      this.setState({ forceUpdate: false }); // eslint-disable-line
+    }
   }
 
   fetchData = props => {
-    const { sourceSelected, fetchGhgEmissionsMapData } = props;
+    const { sourceSelected, fetchGhgEmissionsMapData, defaultValues } = props;
     if (sourceSelected && sourceSelected.value) {
-      // TODO: make this dynamic with default values in reducer
       fetchGhgEmissionsMapData({
         source: sourceSelected.value,
-        gas: 29,
-        sector: 113
+        gas: defaultValues.gas,
+        sector: defaultValues.sector
       });
     }
   };
 
   render() {
     return createElement(CountryGhgMapComponent, {
-      ...this.props
+      ...this.props,
+      forceUpdate: this.state.forceUpdate
     });
   }
 }
 
 CountryGhgMapContainer.propTypes = {
   center: PropTypes.array,
+  paths: PropTypes.array.isRequired,
+  defaultValues: PropTypes.object,
   sourceSelected: PropTypes.object,
   setMapParams: PropTypes.func.isRequired,
   fetchGhgEmissionsMapData: PropTypes.func.isRequired
@@ -105,9 +122,6 @@ export { initialState } from './country-ghg-map-reducers';
 export { default as reducers } from './country-ghg-map-reducers';
 export { default as actions } from './country-ghg-map-actions';
 
-const enhance = compose(
-  withRouter,
-  connect(mapStateToProps, actions),
-  onlyUpdateForKeys(['data', 'center', 'sourceSelected'])
+export default withRouter(
+  connect(mapStateToProps, actions)(CountryGhgMapContainer)
 );
-export default enhance(CountryGhgMapContainer);

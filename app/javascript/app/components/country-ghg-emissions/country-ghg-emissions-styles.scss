@@ -9,6 +9,7 @@
   height: calc(100vh - 50px);
   border-bottom: solid 1px $border-color;
   border-right: solid 1px $border-color;
+  padding-right: $gutter-padding;
 }
 
 .title {
