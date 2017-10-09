@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { getColorByIndex } from 'utils/map';
 
 import styles from './map-legend-styles.scss';
 
@@ -13,7 +14,9 @@ const MapLegend = ({ title, buckets, className }) => (
           <li className={styles.buckets} key={key}>
             <span
               className={styles.bucketIcon}
-              style={{ backgroundColor: buckets[key].color }}
+              style={{
+                backgroundColor: getColorByIndex(buckets, buckets[key].index)
+              }}
             />
             <span className={styles.bucketTxt}>{buckets[key].name}</span>
           </li>

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { getColorByIndex } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -102,7 +103,6 @@ export const getPathsWithStyles = createSelector(
       const defaultStyles = { ...path, style: countryStyles };
 
       if (!locations) return defaultStyles;
-
       const isEuropeanCountry = europeanCountries.includes(path.id);
       const countryData = isEuropeanCountry
         ? locations[europeSlug]
@@ -110,7 +110,7 @@ export const getPathsWithStyles = createSelector(
 
       if (countryData) {
         const legendData = legendBuckets[countryData.label_id];
-        const color = legendData && legendData.color;
+        const color = getColorByIndex(legendBuckets, legendData.index);
         const style = {
           ...countryStyles,
           default: {
