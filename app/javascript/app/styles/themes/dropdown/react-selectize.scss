@@ -51,7 +51,7 @@ $height: 45px;
             border: none;
             outline: none;
             font-size: 1em;
-            padding: 6px 0;
+            padding: 7px 0;
             vertical-align: middle;
             width: 0;
             position: absolute;
@@ -145,7 +145,7 @@ $height: 45px;
 
   .multi-select.react-selectize.root-node .simple-value {
     display: inline-block;
-    margin: 2px;
+    // margin: 2px;
     vertical-align: middle;
 
     span {
@@ -156,7 +156,7 @@ $height: 45px;
   }
 
   .simple-select.react-selectize.root-node .simple-value {
-    margin: 2px;
+    // margin: 2px;
 
     span {
       display: inline-block;
@@ -340,6 +340,7 @@ $height: 45px;
   .react-selectize-control {
     border-color: transparent !important;
     height: 60px !important;
+    box-shadow: none !important;
   }
 
   .dropdown-menu {
