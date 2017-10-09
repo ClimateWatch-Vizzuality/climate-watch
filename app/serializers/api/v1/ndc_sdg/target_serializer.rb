@@ -8,7 +8,7 @@ module Api
         attribute :sectors
 
         def sectors
-          object.sector_ids
+          object.sector_ids.uniq.sort
         end
       end
     end
