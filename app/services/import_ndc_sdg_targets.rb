@@ -29,11 +29,10 @@ class ImportNdcSdgTargets
   def import_ndc_sdg_targets(content)
     CSV.parse(content, headers: true).each.with_index(2) do |row|
       location = location(row)
-      ndc = ndc(row)
       target = target(row)
       next unless location && target
       ndc_target = NdcSdg::NdcTarget.find_or_create_by(
-        ndc: ndc,
+        ndc: ndc(row),
         target: target,
         location: location,
         indc_text: row['INDC_text'],
