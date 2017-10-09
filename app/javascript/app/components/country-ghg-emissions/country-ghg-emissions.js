@@ -27,6 +27,7 @@ const mapStateToProps = (state, { location, match }) => {
   };
   return {
     iso: match.params.iso,
+    loading: state.countryGhgEmissions.loading,
     data: getChartData(countryGhg),
     sources: getSourceOptions(countryGhg),
     sourceSelected: getSourceSelected(countryGhg),

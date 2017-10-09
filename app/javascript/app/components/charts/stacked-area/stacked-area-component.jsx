@@ -15,9 +15,9 @@ import { format } from 'd3-format';
 
 class ChartStackedArea extends PureComponent {
   render() {
-    const { config, data } = this.props;
+    const { config, data, height } = this.props;
     return (
-      <ResponsiveContainer height={500}>
+      <ResponsiveContainer height={height}>
         <AreaChart
           data={data}
           margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
@@ -62,7 +62,15 @@ class ChartStackedArea extends PureComponent {
 
 ChartStackedArea.propTypes = {
   config: PropTypes.object.isRequired,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  height: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string // % accepted
+  ]).isRequired
+};
+
+ChartStackedArea.defaultProps = {
+  height: 500
 };
 
 export default ChartStackedArea;

@@ -1,6 +1,12 @@
 @import '../../styles/layout.scss';
 
-.wrapper {
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-auto-flow: column;
+  grid-gap: $gutter-padding;
+  height: calc(100vh - 50px);
   border-bottom: solid 1px $border-color;
   border-right: solid 1px $border-color;
 }
@@ -13,10 +19,6 @@
   align-items: center;
   margin-bottom: 20px;
   margin-top: 40px;
-}
-
-.graph {
-  padding-right: 30px;
 }
 
 .graphControls {

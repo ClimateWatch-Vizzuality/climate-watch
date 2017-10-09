@@ -12,6 +12,7 @@ class CountryGhgEmissions extends PureComponent {
   render() {
     const {
       data,
+      loading,
       config,
       iso,
       sources,
@@ -19,8 +20,8 @@ class CountryGhgEmissions extends PureComponent {
       sourceSelected
     } = this.props;
     return (
-      <div className={styles.wrapper}>
-        <div className={styles.graph}>
+      <div className={styles.grid}>
+        <div className={styles.header}>
           <h3 className={styles.title}>
             Greenhouse Gas Emissions and Emissions Targets
           </h3>
@@ -41,21 +42,25 @@ class CountryGhgEmissions extends PureComponent {
               Explore emissions
             </Button>
           </div>
-          <ChartStackedArea config={config} data={data} />
-          <div className={styles.tags}>
-            {config.columns &&
-              config.columns.y.map(column => (
-                <Tag
-                  className={styles.tag}
-                  key={`${column.value}`}
-                  data={{
-                    color: config.theme[column.value].stroke,
-                    label: column.label,
-                    id: column.value
-                  }}
-                />
-              ))}
-          </div>
+        </div>
+        <div className={styles.graph}>
+          {!loading && (
+            <ChartStackedArea config={config} data={data} height="100%" />
+          )}
+        </div>
+        <div className={styles.tags}>
+          {config.columns &&
+            config.columns.y.map(column => (
+              <Tag
+                className={styles.tag}
+                key={`${column.value}`}
+                data={{
+                  color: config.theme[column.value].stroke,
+                  label: column.label,
+                  id: column.value
+                }}
+              />
+            ))}
         </div>
       </div>
     );
@@ -63,6 +68,7 @@ class CountryGhgEmissions extends PureComponent {
 }
 
 CountryGhgEmissions.propTypes = {
+  loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
