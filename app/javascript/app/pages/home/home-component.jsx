@@ -79,6 +79,7 @@ class Home extends PureComponent {
                 placeholder="Select another country"
                 options={countriesOptions}
                 onValueChange={handleDropDownChange}
+                plain
                 hideResetButton
               />
             </div>

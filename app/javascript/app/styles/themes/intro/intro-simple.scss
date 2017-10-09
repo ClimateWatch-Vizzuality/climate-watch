@@ -1,0 +1,11 @@
+@import '~styles/settings.scss';
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+}
+
+.description {
+  color: $theme-color;
+}

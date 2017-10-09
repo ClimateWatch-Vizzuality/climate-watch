@@ -348,5 +348,12 @@ $height: 45px;
   .dropdown-menu {
     margin-left: -1px !important;
     width: calc(100% + 2px) !important;
+    background: $white !important;
+  }
+}
+
+.plain :global {
+  .dropdown-menu {
+    background: $white !important;
   }
 }

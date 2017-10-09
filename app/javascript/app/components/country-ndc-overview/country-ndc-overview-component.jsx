@@ -4,7 +4,7 @@ import Card from 'components/card';
 import Intro from 'components/intro';
 import cx from 'classnames';
 
-import introThemeDark from 'styles/themes/intro/intro-dark.scss';
+import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
 import styles from './country-ndc-overview-styles.scss';
 
@@ -16,7 +16,7 @@ class CountryNdcOverview extends PureComponent {
         <div className={layout.content}>
           <div className={cx(styles.header, styles.col2)}>
             <Intro
-              theme={introThemeDark}
+              theme={introTheme}
               title="NDC Content Overview"
               description="Brazil intends to commit to reduce greenhouse gas emissions by 37% below 2005 levels in 2025, with an indicative goal to reduce GHG emissions by 43% by 2030, relative to 2005 levels."
             />

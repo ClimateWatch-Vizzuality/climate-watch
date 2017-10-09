@@ -21,7 +21,8 @@ const Dropdown = props => {
         className={cx(
           theme.dropdown,
           props.transparent ? theme.transparent : '',
-          props.white ? theme.white : ''
+          props.white ? theme.white : '',
+          props.plain ? theme.plain : ''
         )}
       >
         <SimpleSelect
@@ -40,6 +41,7 @@ Dropdown.propTypes = {
   className: PropTypes.string,
   transparent: PropTypes.bool,
   white: PropTypes.bool,
+  plain: PropTypes.bool,
   theme: PropTypes.object,
   hasSearch: PropTypes.bool,
   disabled: PropTypes.bool
