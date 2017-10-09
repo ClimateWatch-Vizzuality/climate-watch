@@ -28,12 +28,14 @@ class ImportNdcSdgTargets
 
   def import_ndc_sdg_targets(content)
     CSV.parse(content, headers: true).each.with_index(2) do |row|
+      location = location(row)
       ndc = ndc(row)
       target = target(row)
-      next unless ndc && target
+      next unless location && target
       ndc_target = NdcSdg::NdcTarget.find_or_create_by(
         ndc: ndc,
         target: target,
+        location: location,
         indc_text: row['INDC_text'],
         status: row['Status'],
         climate_response: row['Climate_response'],
@@ -55,9 +57,13 @@ class ImportNdcSdgTargets
     end
   end
 
-  def ndc(row)
+  def location(row)
     iso_code3 = row['iso_code3'] && row['iso_code3'].strip.upcase
-    location = iso_code3 && Location.find_by_iso_code3(iso_code3)
+    iso_code3 && Location.find_by_iso_code3(iso_code3)
+  end
+
+  def ndc(row)
+    location = location(row)
     unless location
       Rails.logger.error "Location not found #{row}"
       return nil
