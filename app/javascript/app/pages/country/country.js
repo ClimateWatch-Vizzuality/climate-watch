@@ -9,20 +9,24 @@ import {
 
 import Component from './country-component';
 
-const mapStateToProps = (state, location) => {
-  const iso = location.match.params.iso;
+const mapStateToProps = (state, { location, match, route }) => {
+  const iso = match.params.iso;
   const stateWithIso = {
     iso,
     countries: state.countries
   };
-
+  const routeData = {
+    iso,
+    location,
+    route
+  };
   return {
     country: {
       iso,
       name: getCountryName(stateWithIso),
       description: getCountryDescription(stateWithIso)
     },
-    anchorLinks: getAnchorLinks(location)
+    anchorLinks: getAnchorLinks(routeData)
   };
 };
 

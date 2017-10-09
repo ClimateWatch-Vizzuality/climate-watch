@@ -23,15 +23,16 @@ export const getCountryDescription = createSelector(
 
 export const getAnchorLinks = createSelector(
   [
-    location => location.route.sections || [],
-    location => location.match.params.iso
+    state => state.route.sections || [],
+    state => state.iso,
+    state => state.location.search
   ],
-  (sections, iso) =>
+  (sections, iso, search) =>
     sections.filter(section => section.anchor).map(section => ({
       label: section.label,
       path: `/countries/${iso}`,
       hash: section.hash,
-      search: location.search
+      search
     }))
 );
 
