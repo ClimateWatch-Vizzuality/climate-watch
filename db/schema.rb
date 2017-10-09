@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171005141114) do
+ActiveRecord::Schema.define(version: 20171009153610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20171005141114) do
     t.text "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "index"
     t.index ["indicator_id"], name: "index_cait_indc_labels_on_indicator_id"
   end
 
