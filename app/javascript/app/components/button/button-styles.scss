@@ -3,7 +3,7 @@
 .button {
   background-color: $white;
   height: 45px;
-  padding: 0 35px;
+  padding: 0 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,5 +44,10 @@
 
 .white {
   background-color: $white;
+  border: solid 1px rgba($theme-color-light, 0.3);
+}
+
+.plain {
+  background-color: transparent;
   border: solid 1px rgba($theme-color-light, 0.3);
 }

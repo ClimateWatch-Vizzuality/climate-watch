@@ -48,8 +48,14 @@
   opacity: 1;
   font-size: $font-size-s;
   color: $base-text;
+  margin-bottom: 5px;
 }
 
 .geoLocationHide {
   opacity: 0;
+}
+
+.exploreCountries {
+  border-bottom: solid 1px $border-color;
+  padding-bottom: 0;
 }

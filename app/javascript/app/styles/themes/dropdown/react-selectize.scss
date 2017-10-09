@@ -41,6 +41,7 @@ $height: 45px;
         .react-selectize-search-field-and-selected-values {
           display: flex;
           min-height: $height;
+          max-height: $height;
           flex-grow: 1;
           flex-wrap: wrap;
           overflow: hidden;
@@ -61,7 +62,8 @@ $height: 45px;
 
           .value-wrapper {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            line-height: $height;
           }
         }
 

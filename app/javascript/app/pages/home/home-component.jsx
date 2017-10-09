@@ -49,7 +49,7 @@ class Home extends PureComponent {
         <div className={cx(layout.content, styles.stories)}>
           <Stories />
         </div>
-        <Section className={styles.section}>
+        <Section className={cx(styles.section, styles.exploreCountries)}>
           <div className={styles.column}>
             <img src={countryScreenshot} alt="Country section screenshot" />
           </div>
@@ -95,7 +95,7 @@ class Home extends PureComponent {
               <Button color="yellow" link="/ndcs">
                 Explore NDC content
               </Button>
-              <Button color="white" link="/ndcs/compare">
+              <Button color="plain" link="/ndcs/compare">
                 Compare NDCs
               </Button>
             </div>

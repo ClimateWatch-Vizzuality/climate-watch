@@ -74,7 +74,12 @@ class NDCCountry extends PureComponent {
             </div>
           </div>
         </div>
-        <Accordion data={ndcsData} loading={loading} compare />
+        <Accordion
+          className={styles.accordion}
+          data={ndcsData}
+          loading={loading}
+          compare
+        />
       </div>
     );
   }

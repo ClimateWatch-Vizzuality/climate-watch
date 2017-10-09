@@ -5,21 +5,24 @@ import { NavLink } from 'react-router-dom';
 
 import styles from './button-styles.scss';
 
-const Button = (props) => {
+const Button = props => {
   const { link, children, className, square, color, disabled, onClick } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
     [styles.transparent]: color === 'transparent',
     [styles.yellow]: color === 'yellow',
-    [styles.white]: color === 'white'
+    [styles.white]: color === 'white',
+    [styles.plain]: color === 'plain'
   });
-  return link
-    ? <NavLink className={classNames} to={link}>
+  return link ? (
+    <NavLink className={classNames} to={link}>
       {children}
     </NavLink>
-    : <button disabled={disabled} className={classNames} onClick={onClick}>
+  ) : (
+    <button disabled={disabled} className={classNames} onClick={onClick}>
       {children}
-    </button>;
+    </button>
+  );
 };
 
 Button.propTypes = {

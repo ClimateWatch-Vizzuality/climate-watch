@@ -11,9 +11,16 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
-    const { data, handleOnClick, activeSection, compare, loading } = this.props;
+    const {
+      className,
+      data,
+      handleOnClick,
+      activeSection,
+      compare,
+      loading
+    } = this.props;
     return (
-      <div>
+      <div className={className}>
         {!data.length && !loading && <NoContent message="Nothing here" />}
         {data.map((section, index) => {
           let isOpen = index === 0;
@@ -88,6 +95,7 @@ class Accordion extends PureComponent {
 }
 
 Accordion.propTypes = {
+  className: PropTypes.string,
   activeSection: PropTypes.string,
   handleOnClick: PropTypes.func,
   data: PropTypes.arrayOf(
