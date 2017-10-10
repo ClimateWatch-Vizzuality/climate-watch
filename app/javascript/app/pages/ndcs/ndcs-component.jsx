@@ -1,7 +1,6 @@
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import Proptypes from 'prop-types';
-import cx from 'classnames';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
@@ -21,8 +20,8 @@ const NDC = ({ anchorLinks, query, route }) => (
         <AnchorNav useRoutes links={anchorLinks} query={query} />
       </div>
     </Header>
-    <div className={cx(layout.content, styles.wrapper)}>
-      {renderRoutes(route.routes)}
+    <div className={styles.wrapper}>
+      <div className={layout.content}>{renderRoutes(route.routes)}</div>
     </div>
   </div>
 );

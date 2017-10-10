@@ -55,7 +55,23 @@
   opacity: 0;
 }
 
-.exploreCountries {
+.imageLeft {
+  box-shadow: -10px 9px 30px 0 rgba(37, 89, 124, 0.15);
+}
+
+.imageRight {
+  box-shadow: 10px 9px 30px 0 rgba(37, 89, 124, 0.15);
+}
+
+.imageTall {
+  box-shadow: -10px 0 30px 0 rgba(37, 89, 124, 0.15);
+}
+
+.ndcs {
+  border-bottom: solid 1px $border-color;
+}
+
+.countries {
   border-bottom: solid 1px $border-color;
   padding-bottom: 0;
 }

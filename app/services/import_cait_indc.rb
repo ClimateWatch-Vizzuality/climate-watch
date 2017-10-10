@@ -18,6 +18,7 @@ class ImportCaitIndc
 
     load_indicator_keys
     import_labels
+    update_label_indexes
     import_values
     import_submissions
   end
@@ -193,5 +194,24 @@ class ImportCaitIndc
     @submissions.each do |sub|
       CaitIndc::Submission.create!(submission_attributes(sub))
     end
+  end
+
+  def update_label_indexes
+    sql = <<~END
+      WITH indexes AS (
+        SELECT l.id, l.indicator_id,
+          ROW_NUMBER() OVER (
+            PARTITION BY l.indicator_id
+            ORDER BY l.id asc
+          ) AS index
+        FROM cait_indc_labels l
+      )
+      UPDATE cait_indc_labels l
+      SET index = indexes.index
+      FROM indexes
+      WHERE indexes.id = l.id
+    END
+
+    ActiveRecord::Base.connection.execute(sql)
   end
 end
