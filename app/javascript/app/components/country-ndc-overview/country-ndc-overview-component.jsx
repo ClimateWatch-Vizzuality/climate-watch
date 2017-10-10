@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
 import Intro from 'components/intro';
@@ -40,6 +41,7 @@ const listData = [
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
+    const { iso } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -54,14 +56,14 @@ class CountryNdcOverview extends PureComponent {
               <Button
                 className={styles.exploreBtn}
                 color="white"
-                link={'/ghg-emissions?breakBy=location&filter='}
+                link={`/ndcs/compare?locations=${iso}`}
               >
                 Compare
               </Button>
               <Button
                 className={styles.exploreBtn}
                 color="yellow"
-                link={'/ghg-emissions?breakBy=location&filter='}
+                link={`/ghg-emissions?breakBy=location&filter=${iso}`}
               >
                 See more
               </Button>
@@ -112,6 +114,8 @@ class CountryNdcOverview extends PureComponent {
   }
 }
 
-CountryNdcOverview.propTypes = {};
+CountryNdcOverview.propTypes = {
+  iso: PropTypes.string
+};
 
 export default CountryNdcOverview;
