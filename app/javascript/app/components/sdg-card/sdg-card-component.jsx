@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 import Icon from 'components/icon';
 
@@ -16,7 +17,8 @@ class SDGCard extends PureComponent {
       setTooltipData,
       className,
       activeSector,
-      icons
+      icons,
+      targetsMeta
     } = this.props;
     const cardStyle = cx(styles.card, square ? styles.square : null, className);
     return (
@@ -26,6 +28,7 @@ class SDGCard extends PureComponent {
           : ''} ${sdgData.title}`}</h4>
         <div className={styles.dots}>
           {indicators &&
+            !isEmpty(targetsMeta) &&
             sdgData &&
             sdgData.targets.map(target => (
               <span
@@ -36,9 +39,9 @@ class SDGCard extends PureComponent {
                 className={cx(
                   styles.dot,
                   activeSector &&
-                  (!target.sectors ||
-                    target.sectors.indexOf(parseInt(activeSector.value, 10)) ===
-                      -1)
+                  targetsMeta[target.targetKey].sectors.indexOf(
+                    parseInt(activeSector.value, 10)
+                  ) === -1
                     ? styles.small
                     : ''
                 )}
@@ -63,7 +66,8 @@ SDGCard.propTypes = {
   tooltipId: PropTypes.string,
   setTooltipData: PropTypes.func,
   className: PropTypes.string,
-  activeSector: PropTypes.object
+  activeSector: PropTypes.object,
+  targetsMeta: PropTypes.object
 };
 
 export default SDGCard;
