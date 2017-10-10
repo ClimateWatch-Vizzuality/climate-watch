@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { getColorByIndex } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -75,20 +76,22 @@ export const getSelectedIndicator = createSelector(
 const countryStyles = {
   default: {
     fill: '#ECEFF1',
-    fillOpacity: 0.3,
-    stroke: '#396d90',
+    fillOpacity: 1,
+    stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   hover: {
     fill: '#ECEFF1',
-    stroke: '#396d90',
+    fillOpacity: 1,
+    stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   pressed: {
     fill: '#ECEFF1',
-    stroke: '#396d90',
+    fillOpacity: 1,
+    stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   }
@@ -102,7 +105,6 @@ export const getPathsWithStyles = createSelector(
       const defaultStyles = { ...path, style: countryStyles };
 
       if (!locations) return defaultStyles;
-
       const isEuropeanCountry = europeanCountries.includes(path.id);
       const countryData = isEuropeanCountry
         ? locations[europeSlug]
@@ -110,7 +112,7 @@ export const getPathsWithStyles = createSelector(
 
       if (countryData) {
         const legendData = legendBuckets[countryData.label_id];
-        const color = legendData && legendData.color;
+        const color = getColorByIndex(legendBuckets, legendData.index);
         const style = {
           ...countryStyles,
           default: {
