@@ -9,7 +9,8 @@ import actions from './country-ndc-sdg-linkages-actions';
 import {
   getSectorOptionsSorted,
   filterSDGs,
-  getSectorSelected
+  getSectorSelected,
+  parsedNdcsSdgs
 } from './country-ndc-sdg-linkages-selectors';
 
 export { default as component } from './country-ndc-sdg-linkages-component';
@@ -19,7 +20,7 @@ export { default as reducers } from './country-ndc-sdg-linkages-reducers';
 export { default as actions } from './country-ndc-sdg-linkages-actions';
 
 const mapStateToProps = (state, { match, location }) => {
-  const { countrySDGLinkages } = state;
+  const { countrySDGLinkages, ndcsSdgsMeta } = state;
   const { iso } = match.params;
   const search = qs.parse(location.search);
   const sdgsData = {
@@ -35,6 +36,7 @@ const mapStateToProps = (state, { match, location }) => {
       : {},
     sectorOptions: getSectorOptionsSorted(sdgsData),
     sdgs: filterSDGs(sdgsData),
+    targetsMeta: parsedNdcsSdgs(ndcsSdgsMeta),
     loading: countrySDGLinkages.loading
   };
 };

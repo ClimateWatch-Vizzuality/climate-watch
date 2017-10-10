@@ -16,6 +16,23 @@ const getActiveSectorId = state => {
   return state.activeSector;
 };
 
+const getNdcsSdgsTargets = state => {
+  if (!state.data) return null;
+  return state.data.targets;
+};
+
+export const parsedNdcsSdgs = createSelector(getNdcsSdgsTargets, targets => {
+  if (!targets) return {};
+  const mappedTargets = {};
+  targets.forEach(target => {
+    mappedTargets[target.number] = {
+      title: target.title,
+      sectors: target.sectors
+    };
+  });
+  return mappedTargets;
+});
+
 export const mapSDGs = createSelector(getSDGs, sdgs => {
   if (!sdgs) return [];
   const sdgIds = Object.keys(sdgs);
@@ -74,5 +91,6 @@ export const filterSDGs = createSelector([mapSDGs], sdgs => {
 export default {
   getSectorOptionsSorted,
   filterSDGs,
-  getSectorSelected
+  getSectorSelected,
+  parsedNdcsSdgs
 };
