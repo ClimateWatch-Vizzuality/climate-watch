@@ -36,12 +36,5 @@ export default {
       }
     };
     return setLoaded(true, setLoading(false, newState));
-  },
-  changeSelectedCountryNDCFull: (state, { payload }) => {
-    const newState = {
-      ...state,
-      selected: payload
-    };
-    return newState;
   }
 };

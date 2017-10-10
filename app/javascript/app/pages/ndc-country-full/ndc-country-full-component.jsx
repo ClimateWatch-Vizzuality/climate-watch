@@ -10,9 +10,9 @@ import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
 
+import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
-import lightSearch from 'styles/themes/search/search-light.scss';
 import contentStyles from 'styles/themes/content.scss';
 import styles from './ndc-country-full-styles.scss';
 
@@ -27,9 +27,9 @@ class NDCCountryFull extends PureComponent {
       onSelectChange,
       content,
       contentOptions,
+      contentOptionSelected,
       route
     } = this.props;
-
     return (
       <div>
         <Header route={route}>
@@ -43,36 +43,29 @@ class NDCCountryFull extends PureComponent {
               >
                 <Icon className={styles.backIcon} icon={backIcon} />
               </Button>
-              <Intro title={`${country.wri_standard_name} Full Content`} />
-            </div>
-            <div
-              className={
-                contentOptions.length > 1 ? (
-                  styles.twoFoldReversed
-                ) : (
-                  styles.oneFold
-                )
-              }
-            >
-              {contentOptions.length > 1 && (
-                <Dropdown
-                  white
-                  options={contentOptions}
-                  value={content}
-                  onValueChange={onSelectChange}
-                  hideResetButton
-                />
-              )}
-              <Search
-                theme={lightSearch}
-                placeholder="Search"
-                input={search}
-                onChange={onSearchChange}
-                disabled={isEmpty(content)}
-              />
+              <Intro title={`${country.wri_standard_name} - Full Content`} />
             </div>
           </div>
         </Header>
+        <div className={cx(layout.content, styles.actions)}>
+          {contentOptions.length > 1 && (
+            <Dropdown
+              label="Document"
+              options={contentOptions}
+              value={contentOptionSelected}
+              onValueChange={onSelectChange}
+              hideResetButton
+            />
+          )}
+          <Search
+            theme={darkSearch}
+            className={styles.search}
+            placeholder="Search"
+            input={search}
+            onChange={onSearchChange}
+            disabled={isEmpty(content)}
+          />
+        </div>
         {isEmpty(content) &&
         !loading && <NoContent message="No content available" />}
         <div className={cx(layout.content, styles.bodyContent)}>
@@ -97,6 +90,7 @@ NDCCountryFull.propTypes = {
   content: PropTypes.object,
   contentOptions: PropTypes.array,
   onSelectChange: PropTypes.func,
+  contentOptionSelected: PropTypes.object,
   loading: PropTypes.bool
 };
 

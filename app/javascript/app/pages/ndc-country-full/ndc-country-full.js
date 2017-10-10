@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Proptypes from 'prop-types';
 import qs from 'query-string';
+import { getLocationParamUpdated } from 'utils/navigation';
 
 import NDCCountryFullComponent from './ndc-country-full-component';
 import actions from './ndc-country-full-actions';
 import {
   getCountry,
-  getContent,
   getSelectedContent,
-  getContentOptions
+  getContentOptions,
+  getContentOptionSelected
 } from './ndc-country-full-selectors';
 
 export { default as component } from './ndc-country-full-component';
@@ -21,13 +22,17 @@ export { default as actions } from './ndc-country-full-actions';
 const mapStateToProps = (state, { match }) => {
   const search = qs.parse(location.search);
   const { iso } = match.params;
-
+  const contentData = {
+    content: state.countryNDCFull.data[iso],
+    document: search.document,
+    iso
+  };
   return {
-    fetched: getContent(state, iso),
     loading: state.countryNDCFull.loading,
     country: getCountry(state, iso),
-    content: getSelectedContent(state, iso),
-    contentOptions: getContentOptions(state, iso),
+    content: getSelectedContent(contentData),
+    contentOptions: getContentOptions(contentData),
+    contentOptionSelected: getContentOptionSelected(contentData),
     search: search.search
   };
 };
@@ -55,9 +60,13 @@ class NDCCountryFullContainer extends PureComponent {
     fetchCountryNDCFull(iso, query);
   };
 
-  onSelectChange = args => {
-    const { changeSelectedCountryNDCFull } = this.props;
-    changeSelectedCountryNDCFull(args.value);
+  onSelectChange = selected => {
+    this.updateUrlParam({ name: 'document', value: selected.value });
+  };
+
+  updateUrlParam = (params, clear) => {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
   };
 
   render() {
@@ -75,8 +84,7 @@ NDCCountryFullContainer.propTypes = {
   location: Proptypes.object.isRequired,
   fetched: Proptypes.array,
   loading: Proptypes.bool,
-  fetchCountryNDCFull: Proptypes.func,
-  changeSelectedCountryNDCFull: Proptypes.func
+  fetchCountryNDCFull: Proptypes.func
 };
 
 export default withRouter(
