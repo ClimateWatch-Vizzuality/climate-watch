@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009163704) do
+ActiveRecord::Schema.define(version: 20171010131139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -193,8 +193,6 @@ ActiveRecord::Schema.define(version: 20171009163704) do
     t.text "type_of_information"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "location_id"
-    t.index ["location_id"], name: "index_ndc_sdg_ndc_targets_on_location_id"
     t.index ["ndc_id"], name: "index_ndc_sdg_ndc_targets_on_ndc_id"
     t.index ["target_id"], name: "index_ndc_sdg_ndc_targets_on_target_id"
   end
@@ -248,7 +246,6 @@ ActiveRecord::Schema.define(version: 20171009163704) do
   add_foreign_key "location_members", "locations", on_delete: :cascade
   add_foreign_key "ndc_sdg_ndc_target_sectors", "ndc_sdg_ndc_targets", column: "ndc_target_id"
   add_foreign_key "ndc_sdg_ndc_target_sectors", "ndc_sdg_sectors", column: "sector_id"
-  add_foreign_key "ndc_sdg_ndc_targets", "locations"
   add_foreign_key "ndc_sdg_ndc_targets", "ndc_sdg_targets", column: "target_id"
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs"
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
