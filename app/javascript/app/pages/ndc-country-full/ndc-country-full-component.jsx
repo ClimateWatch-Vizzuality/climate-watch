@@ -48,15 +48,14 @@ class NDCCountryFull extends PureComponent {
           </div>
         </Header>
         <div className={cx(layout.content, styles.actions)}>
-          {contentOptions.length > 1 && (
-            <Dropdown
-              label="Document"
-              options={contentOptions}
-              value={contentOptionSelected}
-              onValueChange={onSelectChange}
-              hideResetButton
-            />
-          )}
+          <Dropdown
+            label="Document"
+            options={contentOptions}
+            value={contentOptionSelected}
+            onValueChange={onSelectChange}
+            hideResetButton
+            disabled={contentOptions.length === 1}
+          />
           <Search
             theme={darkSearch}
             className={styles.search}

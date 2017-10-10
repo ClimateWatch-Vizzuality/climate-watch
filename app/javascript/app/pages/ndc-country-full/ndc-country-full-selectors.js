@@ -30,8 +30,10 @@ export const getContentOptions = createSelector(getContent, content =>
 
 export const getContentOptionSelected = createSelector(
   [getSelected, getContentOptions],
-  (selected, options) =>
-    options.find(option => option.value === parseInt(selected, 10))
+  (selected, options) => {
+    if (!selected) return options[0];
+    return options.find(option => option.value === parseInt(selected, 10));
+  }
 );
 
 export default {
