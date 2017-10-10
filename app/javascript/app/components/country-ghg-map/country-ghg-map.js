@@ -23,7 +23,7 @@ const actions = {
   ...ghgMapActions
 };
 
-const mapStateToProps = (state, { location, match }) => {
+const mapStateToProps = (state, { location, match, year }) => {
   const { data } = state.countryGhgEmissionsMap;
   const { meta } = state.ghgEmissionsMeta;
   const { data: countries } = state.countries;
@@ -34,7 +34,7 @@ const mapStateToProps = (state, { location, match }) => {
     meta,
     search,
     iso: match.params.iso,
-    year: search.year
+    year
   };
 
   return {
