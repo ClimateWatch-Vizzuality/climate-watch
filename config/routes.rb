@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       resources :ndcs, param: :code, only: [:index, :show] do
         get :text, on: :member, controller: :ndc_texts, action: :show
         get :text, on: :collection, controller: :ndc_texts, action: :index
-        get :sdgs, on: :member, controller: :ndc_sdgs, action: :show
+        get :sdgs, on: :member, controller: :ndc_sdgs, action: :show_by_location
       end
       resources :adaptations, only: [:index]
 
