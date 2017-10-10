@@ -38,7 +38,7 @@ class Home extends PureComponent {
               <Icon icon={fullscreen} />
             </Button>
             <ReactPlayer
-              url="https://www.youtube.com/watch?v=0XsJNU75Si0"
+              url="https://www.youtube.com/watch?v=lTG-0brb98I"
               youtubeConfig={{
                 playerVars: {},
                 preload: false
