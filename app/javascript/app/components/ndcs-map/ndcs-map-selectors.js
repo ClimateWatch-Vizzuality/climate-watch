@@ -76,20 +76,22 @@ export const getSelectedIndicator = createSelector(
 const countryStyles = {
   default: {
     fill: '#ECEFF1',
-    fillOpacity: 0.3,
-    stroke: '#396d90',
+    fillOpacity: 1,
+    stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   hover: {
     fill: '#ECEFF1',
-    stroke: '#396d90',
+    fillOpacity: 1,
+    stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   pressed: {
     fill: '#ECEFF1',
-    stroke: '#396d90',
+    fillOpacity: 1,
+    stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   }

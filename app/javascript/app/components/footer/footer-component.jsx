@@ -17,17 +17,18 @@ class Footer extends PureComponent {
   render() {
     const { routes } = this.props;
     const { pathname } = this.props.location;
+    const isNdcs = pathname === '/ndcs' || pathname === '/ndcs/table';
     const isHomePage = pathname === '/';
     const isAboutPage = pathname.includes('about');
     const className = cx(
       styles.footer,
-      { [styles.gray]: isHomePage },
+      { [styles.gray]: isHomePage || isNdcs },
       { [styles.border]: isAboutPage }
     );
     return (
       <footer className={className}>
         {!isAboutPage && (
-          <Initiators className={layout.content} gray={isHomePage} />
+          <Initiators className={layout.content} gray={isHomePage || isNdcs} />
         )}
         <div className={cx(layout.content, styles.nav)}>
           <Nav routes={routes} hideLogo hideActive />

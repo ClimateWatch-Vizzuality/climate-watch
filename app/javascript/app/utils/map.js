@@ -42,7 +42,7 @@ const buckets = [
 
 export function getColorByIndex(data, index) {
   const length = Object.keys(data).length;
-  return buckets[length][index] || '#E5E5EB';
+  return buckets[length - 2][index - 1] || '#E5E5EB';
 }
 
 export default {
