@@ -57,11 +57,10 @@ class NDCCountryFull extends PureComponent {
               {contentOptions.length > 1 && (
                 <Dropdown
                   white
-                  searchable={false}
-                  clearable={false}
                   options={contentOptions}
-                  value={content.id}
-                  onChange={onSelectChange}
+                  value={content}
+                  onValueChange={onSelectChange}
+                  hideResetButton
                 />
               )}
               <Search

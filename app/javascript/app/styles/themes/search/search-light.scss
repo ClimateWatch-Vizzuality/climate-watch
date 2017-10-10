@@ -2,13 +2,12 @@
 
 .input {
   background-color: transparent;
-  border: solid 1px rgba($white, 0.3);
+  border: solid 1px rgba($white, 0.5);
   box-shadow: none;
   color: $white;
 
   &::placeholder {
     color: $white;
-    opacity: 0.3;
   }
 }
 

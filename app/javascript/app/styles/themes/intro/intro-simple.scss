@@ -1,9 +1,9 @@
 @import '~styles/settings.scss';
 
 .title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
   color: $theme-color;
-  font-size: $font-size-x-large;
-  line-height: 1.25em;
 }
 
 .description {

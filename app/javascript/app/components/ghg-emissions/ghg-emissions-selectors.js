@@ -35,7 +35,10 @@ const COLORS = [
   '#F97DA1',
   '#00971D',
   '#F1933B',
-  '#938126'
+  '#938126',
+  '#2D9290',
+  '#B25BD0',
+  '#7EA759'
 ];
 
 const BREAY_BY_OPTIONS = [

@@ -1,0 +1,73 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  border-bottom: solid 1px $border-color;
+  border-top: solid 1px $border-color;
+}
+
+.col2 {
+  @extend %grid;
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.header {
+  margin-top: 40px;
+}
+
+.actions {
+  @extend %grid;
+
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.subTitle {
+  font-size: $font-size;
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  margin-bottom: 10px;
+}
+
+.cards {
+  @extend %grid;
+
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 60px;
+}
+
+.cardContent {
+  display: grid;
+  flex-direction: column;
+  min-height: 180px;
+}
+
+.metaTitle {
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  margin-bottom: 5px;
+}
+
+.targetText {
+  font-size: $font-size;
+  color: $theme-color;
+  margin-bottom: 20px;
+}
+
+.noContent {
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listItem {
+  font-size: $font-size;
+  color: $theme-color;
+  margin-bottom: 10px;
+}
+
+.adaptionList {
+  margin-top: -31px;
+}

@@ -84,6 +84,7 @@ class Home extends PureComponent {
                 placeholder="Select another country"
                 options={countriesOptions}
                 onValueChange={handleDropDownChange}
+                plain
                 hideResetButton
               />
             </div>
@@ -100,7 +101,7 @@ class Home extends PureComponent {
               <Button color="yellow" link="/ndcs">
                 Explore NDC content
               </Button>
-              <Button color="white" link="/ndcs/compare">
+              <Button color="plain" link="/ndcs/compare">
                 Compare NDCs
               </Button>
             </div>
