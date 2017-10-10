@@ -7,7 +7,10 @@ module Api
     class NdcSdgsController < ApiController
       def index
         sectors = ::NdcSdg::Sector.all
-        targets = ::NdcSdg::Target.includes(:sectors)
+        targets = ::NdcSdg::Target.
+          includes(:sectors).
+          references(:sectors)
+
         render json: NdcSdgsMetadata.new(sectors, targets),
                serializer: Api::V1::NdcSdg::MetaSerializer
       end
