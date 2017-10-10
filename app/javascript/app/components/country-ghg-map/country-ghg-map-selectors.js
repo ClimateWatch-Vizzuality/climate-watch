@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { scaleLinear } from 'd3-scale';
+import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
 
 import worldPaths from 'app/data/world-50m-paths';
@@ -7,10 +7,11 @@ import worldPaths from 'app/data/world-50m-paths';
 const getCountries = state => state.countries;
 const getIso = state => state.iso;
 const getData = state => state.data;
-const getYear = state => state.search.year || false;
-const getSources = state => state.meta.data_source || [];
+const getSources = state => state.meta.data_source || null;
 const getSourceSelection = state => state.search.source || false;
+const getYear = state => parseInt(state.year, 10);
 
+const EXCLUDED_INDICATORS = ['WORLD'];
 const buckets = [
   '#fffffb',
   '#ffffd5',
@@ -22,20 +23,20 @@ const buckets = [
   '#1b4a75',
   '#163449'
 ];
+const steps = [0, 0.4, 0.8, 2, 4, 8, 16, 32, 64];
 let colorScale = null;
 function setScale(ranges) {
-  colorScale = scaleLinear()
+  colorScale = scalePow()
     .domain(ranges)
-    .range(['#fffffb', '#163449']);
+    .range(buckets);
 }
 
 function getRanges(min, max) {
-  // TODO calculate with buckets length
-  return [min, max];
+  return buckets.map((el, i) => max / 100 * steps[i]); // eslint-disable-line
 }
 
 export const getSourceOptions = createSelector(getSources, sources => {
-  if (!sources) return [];
+  if (!sources || !sources.length) return null;
   return sources.map(d => ({
     label: d.label,
     value: d.value
@@ -45,7 +46,7 @@ export const getSourceOptions = createSelector(getSources, sources => {
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
-    if (!sources || !sources.length) return {};
+    if (!sources || !sources.length) return null;
     if (!selected) return sources[0];
     return sources.find(category => category.value === parseInt(selected, 10));
   }
@@ -66,34 +67,53 @@ export const getYearSelected = createSelector(
 export const getDataParsed = createSelector(
   [getData, getYearSelected],
   (data, year) => {
-    if (!data || isEmpty(data)) return {};
+    if (!data || isEmpty(data)) return null;
     const dataParsed = {};
     let max = 0;
     let min = 9999999999;
     data.forEach(d => {
       const item = d.emissions.find(e => e.year === year);
-      if (item.value) {
+      if (item && item.value && !EXCLUDED_INDICATORS.includes(item.iso_code3)) {
         if (item.value > max) max = item.value;
         if (item.value < min) min = item.value;
+        dataParsed[d.iso_code3] = item.value;
+      } else {
+        dataParsed[d.iso_code3] = null;
       }
-      dataParsed[d.iso_code3] = item.value;
     });
     return {
       min,
       max,
+      year,
       values: dataParsed
     };
   }
 );
 
-export const getPathsWithStyles = createSelector([getDataParsed], data => {
-  const { values, min, max } = data;
-  if (min && max) setScale(getRanges(data.min, data.max));
+// get selector defaults
+export const getDefaultValues = createSelector(
+  [getSources, getSourceSelected],
+  (sources, sourceSelected) => {
+    if (!sources || !sources.length || !sourceSelected) return null;
+    const sourceData = sources.find(d => d.value === sourceSelected.value);
+    return {
+      sector: sourceData.sector[0],
+      gas: sourceData.gas[0],
+      source: sources[0].value
+    };
+  }
+);
 
+export const getPathsWithStyles = createSelector([getDataParsed], data => {
+  if (!data) return worldPaths;
+
+  const { min, max } = data;
+
+  if (min && max) setScale(getRanges(data.min, data.max));
   return worldPaths.map(path => {
-    let color = '#8f8fa1';
-    if (values && values[path.id]) {
-      color = colorScale(values[path.id]);
+    let color = '#E5E5EB'; // default color
+    if (data && data.values && data.values[path.id]) {
+      color = colorScale(data.values[path.id]);
     }
     const style = {
       default: {
@@ -123,10 +143,10 @@ export const getPathsWithStyles = createSelector([getDataParsed], data => {
   });
 });
 
-export const getLegendData = () => ({
-  title: 'GHG Emissions per capita',
+export const getLegendData = createSelector(getYearSelected, year => ({
+  title: `GHG Emissions per capita in ${year}`,
   buckets
-});
+}));
 
 export const getMapCenter = createSelector(
   [getCountries, getIso],
