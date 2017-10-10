@@ -27,6 +27,7 @@ const mapStateToProps = (state, { location, match }) => {
   };
   return {
     iso: match.params.iso,
+    loading: state.countryGhgEmissions.loading,
     data: getChartData(countryGhg),
     sources: getSourceOptions(countryGhg),
     sourceSelected: getSourceSelected(countryGhg),
@@ -54,6 +55,14 @@ function getFiltersParsed(props) {
 }
 
 class CountryGhgEmissionsContainer extends PureComponent {
+  constructor(props) {
+    super(props);
+    if (props.sourceSelected.value) {
+      const filters = getFiltersParsed(props);
+      props.fetchCountryGhgEmissionsData(filters);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (needsRequestData(this.props, nextProps)) {
       const { fetchCountryGhgEmissionsData } = nextProps;
@@ -63,7 +72,9 @@ class CountryGhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value }, true);
+    if (category) {
+      this.updateUrlParam({ name: 'source', value: category.value }, true);
+    }
   };
 
   updateUrlParam(params, clear) {
@@ -82,6 +93,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
 CountryGhgEmissionsContainer.propTypes = {
   history: Proptypes.object,
   location: Proptypes.object,
+  sourceSelected: Proptypes.object,
   fetchCountryGhgEmissionsData: Proptypes.func
 };
 

@@ -1,10 +1,17 @@
 @import '~styles/layout.scss';
 
+$legend-height: 30px;
+
 .container {
   background-color: $light-gray;
   border-bottom: solid 1px $border-color;
+  height: 100%;
 }
 
 .map {
-  height: 800px;
+  height: calc(100% - #{$legend-height});
+}
+
+.legend {
+  height: $legend-height;
 }
