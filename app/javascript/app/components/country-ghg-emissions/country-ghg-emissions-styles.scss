@@ -6,7 +6,7 @@
   grid-template-rows: auto 1fr auto;
   grid-auto-flow: column;
   grid-gap: $gutter-padding;
-  height: calc(100vh - 50px);
+  height: 100%;
   border-bottom: solid 1px $border-color;
   border-right: solid 1px $border-color;
   padding-right: $gutter-padding;
