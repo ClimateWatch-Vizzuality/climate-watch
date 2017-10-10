@@ -22,7 +22,7 @@ module Api
           includes(:ndc_targets).
           where(iso_code3: params[:code].upcase).
           first
-        if @location.ndc_targets.length.empty?
+        if @location.ndc_targets.empty?
           render json: {
             error: 'NDC not found',
             status: 404
