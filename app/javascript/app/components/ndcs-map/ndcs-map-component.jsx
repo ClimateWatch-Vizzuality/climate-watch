@@ -12,6 +12,24 @@ const getHtmlTooltip = content => ({ __html: content });
 
 const NDCMap = props => (
   <div className={styles.wrapper}>
+    <div className={styles.col4}>
+      <Dropdown
+        label="Category"
+        paceholder="Select a category"
+        options={props.categories}
+        onValueChange={props.handleCategoryChange}
+        value={props.selectedCategory}
+        hideResetButton
+      />
+      <Dropdown
+        label="Indicator"
+        options={props.indicators}
+        onValueChange={props.handleIndicatorChange}
+        value={props.selectedIndicator}
+        hideResetButton
+      />
+      <ButtonGroup className={styles.buttons} />
+    </div>
     <Map
       cache={false}
       paths={props.paths}
@@ -31,26 +49,6 @@ const NDCMap = props => (
         buckets={props.selectedIndicator.legendBuckets}
       />
     )}
-    <div className={styles.col4}>
-      <Dropdown
-        label="Category"
-        paceholder="Select a category"
-        options={props.categories}
-        onValueChange={props.handleCategoryChange}
-        value={props.selectedCategory}
-        hideResetButton
-        dropdownDirection={-1}
-      />
-      <Dropdown
-        label="Indicator"
-        options={props.indicators}
-        onValueChange={props.handleIndicatorChange}
-        value={props.selectedIndicator}
-        hideResetButton
-        dropdownDirection={-1}
-      />
-      <ButtonGroup className={styles.buttons} />
-    </div>
   </div>
 );
 
