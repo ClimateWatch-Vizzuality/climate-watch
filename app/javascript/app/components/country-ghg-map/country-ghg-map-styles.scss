@@ -5,7 +5,7 @@ $legend-height: 30px;
 .container {
   background-color: $light-gray;
   border-bottom: solid 1px $border-color;
-  height: calc(100vh - 50px);
+  height: 100%;
 }
 
 .map {
