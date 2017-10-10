@@ -16,6 +16,7 @@ import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
 import countryScreenshot from 'assets/screenshots/country';
 import ndcScreenshot from 'assets/screenshots/ndc-explore';
+import ndcSdgScreenshot from 'assets/screenshots/ndc-sdg';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';
@@ -49,9 +50,13 @@ class Home extends PureComponent {
         <div className={cx(layout.content, styles.stories)}>
           <Stories />
         </div>
-        <Section className={styles.section}>
+        <Section className={cx(styles.section, styles.countries)}>
           <div className={styles.column}>
-            <img src={countryScreenshot} alt="Country section screenshot" />
+            <img
+              className={styles.imageTall}
+              src={countryScreenshot}
+              alt="Country section screenshot"
+            />
           </div>
           <div className={styles.column}>
             <Intro
@@ -84,7 +89,7 @@ class Home extends PureComponent {
             </div>
           </div>
         </Section>
-        <Section className={styles.section}>
+        <Section className={cx(styles.section, styles.ndcs)}>
           <div className={styles.column}>
             <Intro
               theme={introDark}
@@ -101,7 +106,32 @@ class Home extends PureComponent {
             </div>
           </div>
           <div className={styles.column}>
-            <img src={ndcScreenshot} alt="Ndcs section screenshot" />
+            <img
+              className={styles.imageRight}
+              src={ndcScreenshot}
+              alt="Ndcs section screenshot"
+            />
+          </div>
+        </Section>
+        <Section className={styles.section}>
+          <div className={styles.column}>
+            <img
+              className={styles.imageLeft}
+              src={ndcSdgScreenshot}
+              alt="NDC SDGs screenshot"
+            />
+          </div>
+          <div className={styles.column}>
+            <Intro
+              theme={introDark}
+              title="See how the NDCs align with the SDGs..."
+              description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            />
+            <div className={styles.doubleFold}>
+              <Button color="yellow" link={'/ndcs/sdgs'}>
+                Explore NDC-SDG Linkages
+              </Button>
+            </div>
           </div>
         </Section>
       </div>
