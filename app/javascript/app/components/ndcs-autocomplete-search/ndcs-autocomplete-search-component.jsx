@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
 
+import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import Dropdown from 'components/dropdown';
 import Icon from 'components/icon';
 
@@ -14,9 +15,10 @@ class NdcsAutocompleteSearch extends PureComponent {
     const { handleValueClick, setNdcsAutocompleteSearch, searchList } = this.props;
     return (
       <div className={styles.wrapper}>
+        <NdcsSdgsMetaProvider />
         <Dropdown
           className={theme.dropdownOptionWithArrow}
-          placeholder={'e.g. "Brazil", "energy", "reduce emissions by 37%"'}
+          placeholder={'e.g. “Energy”, “SDG 8.1”, “reduce emissions by 37%”'}
           options={searchList}
           onSearchChange={setNdcsAutocompleteSearch}
           onValueChange={handleValueClick}
