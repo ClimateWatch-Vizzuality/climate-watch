@@ -26,7 +26,7 @@ const setData = (state, data) => ({
 
 export default {
   setModalMetadataParams,
-  fetchModalMetaDataInit: state => setLoading(state, true),
+  fetchModalMetaDataInit: state => setLoading(setLoaded(state, false), true),
   fetchModalMetaDataReady: (state, { payload }) =>
     setLoaded(setLoading(setData(state, payload), false), true),
   fetchModalMetaDataFail: state => setError(state, true)

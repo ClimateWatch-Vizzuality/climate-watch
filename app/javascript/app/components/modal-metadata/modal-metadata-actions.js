@@ -27,13 +27,16 @@ const data = {
 
 const fetchModalMetaData = createThunkAction(
   'fetchModalMetaDataData',
-  slug => dispatch => {
-    dispatch(fetchModalMetaDataInit());
-    setTimeout(() => {
-      if (slug) {
-        dispatch(fetchModalMetaDataReady(data));
-      }
-    }, 800);
+  slug => (dispatch, state) => {
+    const { modalMetadata } = state();
+    if (!modalMetadata.data[slug]) {
+      dispatch(fetchModalMetaDataInit());
+      setTimeout(() => {
+        if (slug) {
+          dispatch(fetchModalMetaDataReady(data));
+        }
+      }, 1000);
+    }
   }
 );
 
