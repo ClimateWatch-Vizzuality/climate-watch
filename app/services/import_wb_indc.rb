@@ -123,7 +123,7 @@ class ImportWbIndc
       WbIndc::Value.create(
         indicator: indicator,
         location: location,
-        sector: @sector_index[d[:sector]],
+        sector: @sector_index[d[:subsector]],
         value: d[:responsetext]
       )
     end
@@ -134,7 +134,7 @@ class ImportWbIndc
      'indc_categories',
      'indc_indicators',
      'indc_indicators_categories',
-     'indc_labels',
+     'indc_sectors',
      'indc_values'
     ].each do |v|
       ActiveRecord::Base.connection.execute(

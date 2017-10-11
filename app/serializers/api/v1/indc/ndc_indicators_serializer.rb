@@ -4,6 +4,8 @@ module Api
       class NdcIndicatorsSerializer < ActiveModel::Serializer
         attribute :categories
 
+        attribute :sectors
+
         has_many :indicators,
                  serializer: IndicatorSerializer
 
@@ -11,6 +13,14 @@ module Api
           IndexedSerializer.serialize(
             object.categories,
             each_serializer: CategorySerializer,
+            &:id
+          )
+        end
+
+        def sectors
+          IndexedSerializer.serialize(
+            object.sectors,
+            each_serializer: SectorSerializer,
             &:id
           )
         end

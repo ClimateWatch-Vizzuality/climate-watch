@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011122332) do
+ActiveRecord::Schema.define(version: 20171011134822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -350,6 +350,7 @@ ActiveRecord::Schema.define(version: 20171011122332) do
       cait_indc_values.location_id,
       ('cait'::text || cait_indc_values.indicator_id) AS indicator_id,
       ('cait'::text || cait_indc_values.label_id) AS label_id,
+      NULL::text AS sector_id,
       cait_indc_values.value
      FROM cait_indc_values
   UNION ALL
@@ -358,6 +359,7 @@ ActiveRecord::Schema.define(version: 20171011122332) do
       wb_indc_values.location_id,
       ('wb'::text || wb_indc_values.indicator_id) AS indicator_id,
       NULL::text AS label_id,
+      ('wb'::text || wb_indc_values.sector_id) AS sector_id,
       wb_indc_values.value
      FROM wb_indc_values;
   SQL
@@ -393,5 +395,14 @@ ActiveRecord::Schema.define(version: 20171011122332) do
 
   add_index "indc_labels", ["id"], name: "index_indc_labels_on_id"
   add_index "indc_labels", ["indicator_id"], name: "index_indc_labels_on_indicator_id"
+
+  create_view "indc_sectors", materialized: true,  sql_definition: <<-SQL
+      SELECT ('wb'::text || child.id) AS id,
+      child.name,
+      ('wb'::text || parent.id) AS parent_id,
+      parent.name AS parent_name
+     FROM (wb_indc_sectors child
+       LEFT JOIN wb_indc_sectors parent ON ((child.parent_id = parent.id)));
+  SQL
 
 end
