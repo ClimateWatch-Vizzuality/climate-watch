@@ -7,11 +7,8 @@ import styles from './loading-styles.scss';
 class Loading extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const className = cx(styles.container, {
-      [styles.light]: this.props.light
-    });
     return (
-      <div className={className}>
+      <div className={cx(styles.container, this.props.className)}>
         <div className={styles.loader}>
           <span className={styles.loaderTrack} />
           <span className={styles.loaderLight} />
@@ -22,7 +19,7 @@ class Loading extends PureComponent {
 }
 
 Loading.propTypes = {
-  light: PropTypes.bool
+  className: PropTypes.string
 };
 
 export default Loading;

@@ -1,5 +1,10 @@
 @import '~styles/layout.scss';
 
+.loadingContainer {
+  min-height: 200px;
+  position: relative;
+}
+
 .text {
   font-size: $font-size;
   line-height: 1.62;

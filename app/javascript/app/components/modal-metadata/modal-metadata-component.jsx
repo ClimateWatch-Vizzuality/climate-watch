@@ -8,7 +8,7 @@ import styles from './modal-metadata-styles.scss';
 
 class ModalMetadata extends PureComponent {
   getContent() {
-    if (this.props.loading) return <Loading />;
+    if (this.props.loading) { return <Loading className={styles.loadingContainer} />; }
     if (!this.props.data) return <NoContent />;
 
     const {
