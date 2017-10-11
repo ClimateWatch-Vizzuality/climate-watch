@@ -18,6 +18,7 @@ import styles from './ndc-search-styles.scss';
 class SearchPage extends PureComponent {
   render() {
     const { results, query, onSearchChange, route } = this.props;
+    console.log(results);
     return (
       <div>
         <Header route={route}>
@@ -41,7 +42,7 @@ class SearchPage extends PureComponent {
             {results &&
               results.map(result => (
                 <ResultCard
-                  key={result.location.iso_code3}
+                  key={result.location}
                   result={result}
                   query={query}
                 />
