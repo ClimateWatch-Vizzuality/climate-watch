@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 
+import AnchorNav from 'components/anchor-nav';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
@@ -17,8 +18,14 @@ import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
   render() {
-    const { results, query, onSearchChange, route } = this.props;
-    console.log(results);
+    const {
+      results,
+      query,
+      onSearchChange,
+      route,
+      docOptions,
+      anchorLinks
+    } = this.props;
     return (
       <div>
         <Header route={route}>
@@ -32,6 +39,9 @@ class SearchPage extends PureComponent {
                 onChange={onSearchChange}
               />
             </div>
+            {docOptions.length > 1 && (
+              <AnchorNav useRoutes links={anchorLinks} />
+            )}
           </div>
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>
@@ -42,7 +52,7 @@ class SearchPage extends PureComponent {
             {results &&
               results.map(result => (
                 <ResultCard
-                  key={result.location}
+                  key={result.location.iso_code3}
                   result={result}
                   query={query}
                 />
@@ -61,7 +71,9 @@ SearchPage.propTypes = {
   route: PropTypes.object.isRequired,
   query: PropTypes.string,
   results: PropTypes.array,
-  onSearchChange: PropTypes.func.isRequired
+  onSearchChange: PropTypes.func.isRequired,
+  docOptions: PropTypes.array,
+  anchorLinks: PropTypes.array.isRequired
 };
 
 SearchPage.defaultProps = {

@@ -14,7 +14,7 @@ export const getSelectedContent = createSelector(
   (selected, content) => {
     if (!content || !content.length) return null;
     if (!selected) return content[0];
-    return content.find(item => item.id === parseInt(selected, 10));
+    return content.find(item => item.document_type === selected, 10);
   }
 );
 
@@ -23,7 +23,7 @@ const getLabel = item =>
 
 export const getContentOptions = createSelector(getContent, content =>
   (content || []).map(item => ({
-    value: item.id,
+    value: item.document_type,
     label: getLabel(item)
   }))
 );
@@ -32,7 +32,7 @@ export const getContentOptionSelected = createSelector(
   [getSelected, getContentOptions],
   (selected, options) => {
     if (!selected) return options[0];
-    return options.find(option => option.value === parseInt(selected, 10));
+    return options.find(option => option.value === selected);
   }
 );
 

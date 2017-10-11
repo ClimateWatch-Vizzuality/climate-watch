@@ -1,32 +1,58 @@
 import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
+import toUpper from 'lodash/toUpper';
 
 const getResultsData = state => state.results || null;
+const getDocQuery = state => state.document || null;
+const getLocation = state => state.location || null;
+const getQuery = state => state.query || null;
 
-export const groupSearchResults = createSelector(getResultsData, results => {
+export const getDocumentOptions = createSelector([getResultsData], results => {
   if (!results) return null;
-  return groupBy(results.map(d => ({
-    location: d.location.iso_code3,
-    label: d.location.name,
-    documentType: d.document_type,
-    language: d.language,
-    matches: d.matches
-  })), 'location');
+  const groupedByDoc = groupBy(results, 'document_type');
+  return Object.keys(groupedByDoc).map(d => ({
+    label: toUpper(groupedByDoc[d][0].document_type),
+    value: d
+  }));
 });
 
-export const getSearchResults = createSelector(groupSearchResults,
-  results => {
-    if (!results) return [];
-    const mappedResults = Object.keys(results).map(d => ({
-      label: results[d][0].label,
-      location: results[d][0].location,
-      results: results[d]
-    }));
-    return mappedResults.sort((a, b) => a.results[0].matches.length < b.results[0].matches.length);
+export const getDocumentSelected = createSelector(
+  [getDocumentOptions, getDocQuery],
+  (docs, docQuery) => {
+    if (!docs) return null;
+    if (!docQuery) return docs[0];
+    return docs.find(d => d.value === docQuery);
   }
 );
 
+export const filterSearchResults = createSelector(
+  [getResultsData, getDocumentSelected],
+  (results, docSelected) => {
+    if (!results) return null;
+    return results.filter(d => d.document_type === docSelected.value);
+  }
+);
+
+export const getSearchResultsSorted = createSelector(
+  filterSearchResults,
+  results => results.sort((a, b) => a.matches.length > b.matches.length)
+);
+
+export const getAnchorLinks = createSelector(
+  [getDocumentOptions, getLocation, getQuery],
+  (docs, location, query) =>
+    docs.map(d => ({
+      label: d.label,
+      path: `${location.pathname}`,
+      search: `?document=${d.value}&query=${query}`,
+      checkActiveQuery: 'document',
+      activeQueryValue: d.value
+    }))
+);
 
 export default {
-  getSearchResults
+  getSearchResultsSorted,
+  getDocumentOptions,
+  getDocumentSelected,
+  getAnchorLinks
 };
