@@ -67,7 +67,7 @@ class CountrySDGLinkages extends PureComponent {
                 ))}
               </div>
               <ReactTooltip id="sdg-linkages">
-                {tooltipData && (
+                {tooltipData && targetsMeta && targetsMeta[tooltipData.targetKey] && (
                   <div className={styles.tooltip}>
                     <p className={styles.tooltipTitle}>
                       <b>{tooltipData.targetKey}: </b>
