@@ -7,6 +7,8 @@ import worldPaths from 'app/data/world-50m-paths';
 const getCountries = state => state.countries;
 const getIso = state => state.iso;
 const getData = state => state.data;
+const isLoaded = state => state.loaded;
+const isLoading = state => state.loading;
 const getSources = state => state.meta.data_source || null;
 const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
@@ -147,6 +149,11 @@ export const getLegendData = createSelector(getYearSelected, year => ({
   title: `GHG Emissions per capita in ${year}`,
   buckets
 }));
+
+export const getMapReady = createSelector(
+  [isLoaded, isLoading],
+  (loaded, loading) => loaded && !loading
+);
 
 export const getMapCenter = createSelector(
   [getCountries, getIso],

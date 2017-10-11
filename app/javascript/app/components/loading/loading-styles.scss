@@ -4,8 +4,12 @@ $loader-size: 60px;
 $loader-border-size: 4px;
 $loading-color: $theme-secondary;
 
-.relative {
+.container {
   position: relative;
+}
+
+.light {
+  background-color: $light-gray;
 }
 
 .loader {
