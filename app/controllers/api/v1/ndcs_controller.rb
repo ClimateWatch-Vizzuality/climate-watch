@@ -19,7 +19,7 @@ module Api
         indicators = ::Indc::Indicator.includes(
           :labels,
           :categories,
-          values: [:label, :location]
+          values: [:location]
         )
 
         if location_list
