@@ -22,7 +22,7 @@ class ImportCaitIndc
     import_values
     import_submissions
 
-    refresh_matviews
+    refresh_materialized_views
   end
 
   private
@@ -217,17 +217,13 @@ class ImportCaitIndc
     ActiveRecord::Base.connection.execute(sql)
   end
 
-  def refresh_matviews
-    [
+  def refresh_materialized_views
+    MaterializedView.refresh(
      'indc_categories',
      'indc_indicators',
      'indc_indicators_categories',
      'indc_labels',
      'indc_values'
-    ].each do |v|
-      ActiveRecord::Base.connection.execute(
-        "REFRESH MATERIALIZED VIEW #{v}"
-      )
-    end
+    )
   end
 end

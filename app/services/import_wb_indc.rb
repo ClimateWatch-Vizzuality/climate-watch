@@ -15,7 +15,7 @@ class ImportWbIndc
     import_sectors
     import_values
 
-    refresh_matviews
+    refresh_materialized_views
   end
 
   private
@@ -129,17 +129,13 @@ class ImportWbIndc
     end
   end
 
-  def refresh_matviews
-    [
+  def refresh_materialized_views
+    MaterializedView.refresh(
      'indc_categories',
      'indc_indicators',
      'indc_indicators_categories',
      'indc_sectors',
      'indc_values'
-    ].each do |v|
-      ActiveRecord::Base.connection.execute(
-        "REFRESH MATERIALIZED VIEW #{v}"
-      )
-    end
+    )
   end
 end
