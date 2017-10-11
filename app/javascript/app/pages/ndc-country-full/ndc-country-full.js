@@ -29,11 +29,13 @@ const mapStateToProps = (state, { match }) => {
   };
   return {
     loading: state.countryNDCFull.loading,
+    loaded: state.countryNDCFull.loaded,
     country: getCountry(state, iso),
     content: getSelectedContent(contentData),
     contentOptions: getContentOptions(contentData),
     contentOptionSelected: getContentOptionSelected(contentData),
-    search: search.search
+    search: search.search,
+    idx: search.idx
   };
 };
 

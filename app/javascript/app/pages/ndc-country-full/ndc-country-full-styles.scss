@@ -22,11 +22,14 @@
   height: 60px;
 }
 
+.actionsWrapper {
+  border-bottom: solid 1px $border-color;  
+}
+
 .actions {
   @extend %grid;
 
   grid-template-columns: 3fr 4fr 5fr;
-  border-bottom: solid 1px $border-color;
   padding-top: 30px;
   padding-bottom: 40px;
 }
