@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class ScrollToHighlightIndex extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
-    setTimeout(this.handleScroll(), 1500);
+    setTimeout(this.handleScroll, 150);
   }
 
   handleScroll = () => {
