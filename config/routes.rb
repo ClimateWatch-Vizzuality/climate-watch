@@ -16,6 +16,7 @@ Rails.application.routes.draw do
         get :sdgs, on: :member, controller: :ndc_sdgs, action: :show_by_location
       end
       resources :adaptations, only: [:index]
+      resources :metadata, only: [:index, :show]
 
       get '(*endpoint)', controller: :api, action: :not_found
     end
