@@ -9,8 +9,6 @@ class Location < ApplicationRecord
   has_many :indicators,
            class_name: 'CaitIndc::Indicator',
            through: :values
-  has_many :ndc_targets,
-           class_name: 'NdcSdg::NdcTarget'
 
   validates :iso_code3, presence: true, uniqueness: true
   validates :iso_code2, presence: true, uniqueness: true, if: proc { |l|
