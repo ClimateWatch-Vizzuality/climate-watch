@@ -11,7 +11,7 @@ const AnchorNav = props => {
   const { links, useRoutes, className, query } = props;
   return (
     <nav className={cx(styles.anchorNav, className)}>
-      {links.map(link => {
+      {links.map((link, index) => {
         const linkProps = {
           key: link.label,
           className: styles.link,
@@ -25,7 +25,8 @@ const AnchorNav = props => {
         if (link.checkActiveQuery) {
           linkProps.isActive = (match, location) =>
             qs.parse(location.search)[link.checkActiveQuery] ===
-            link.activeQueryValue;
+              link.activeQueryValue ||
+            (index === 0 && !qs.parse(location.search)[link.checkActiveQuery]);
         }
         if (useRoutes) {
           linkProps.exact = true;
