@@ -1,6 +1,6 @@
 module Api
   module V1
-    module CaitIndc
+    module Indc
       class NdcIndicatorsSerializer < ActiveModel::Serializer
         attribute :categories
 

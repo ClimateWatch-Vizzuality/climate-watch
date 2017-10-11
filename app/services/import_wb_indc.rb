@@ -14,6 +14,8 @@ class ImportWbIndc
     import_indicators
     import_sectors
     import_values
+
+    refresh_matviews
   end
 
   private
@@ -45,7 +47,10 @@ class ImportWbIndc
     end.flatten.uniq.reject do |c|
       c === 'NULL'
     end.each do |c|
-      WbIndc::Category.create(name: c)
+      WbIndc::Category.create(
+        name: c,
+        slug: Slug.create(c)
+      )
     end
   end
 
@@ -120,6 +125,20 @@ class ImportWbIndc
         location: location,
         sector: @sector_index[d[:sector]],
         value: d[:responsetext]
+      )
+    end
+  end
+
+  def refresh_matviews
+    [
+     'indc_categories',
+     'indc_indicators',
+     'indc_indicators_categories',
+     'indc_labels',
+     'indc_values'
+    ].each do |v|
+      ActiveRecord::Base.connection.execute(
+        "REFRESH MATERIALIZED VIEW #{v}"
       )
     end
   end

@@ -7,7 +7,7 @@ module IndexedSerializer
     objects.
       map(&block).
       zip(serialized_values).
-      sort.
+      sort_by { |i| i.first }.
       to_h
   end
 end
