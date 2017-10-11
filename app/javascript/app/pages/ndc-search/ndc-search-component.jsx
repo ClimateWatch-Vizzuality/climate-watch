@@ -19,6 +19,7 @@ import styles from './ndc-search-styles.scss';
 class SearchPage extends PureComponent {
   render() {
     const {
+      loading,
       results,
       query,
       onSearchChange,
@@ -46,9 +47,8 @@ class SearchPage extends PureComponent {
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>
           <div className={styles.resultsList}>
-            {!results.length && (
-              <NoContent message="No results for this search" />
-            )}
+            {!results.length &&
+            !loading && <NoContent message="No results for this search" />}
             {results &&
               results.map(result => (
                 <ResultCard
@@ -68,6 +68,7 @@ class SearchPage extends PureComponent {
 }
 
 SearchPage.propTypes = {
+  loading: PropTypes.bool,
   route: PropTypes.object.isRequired,
   query: PropTypes.string,
   results: PropTypes.array,

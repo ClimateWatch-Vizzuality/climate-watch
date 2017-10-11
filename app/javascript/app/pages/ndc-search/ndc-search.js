@@ -26,6 +26,7 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     query,
+    loading: state.ndcSearch.loading,
     results: getSearchResultsSorted(stateWithQuery),
     docOptions: getDocumentOptions(stateWithQuery),
     docSelected: getDocumentSelected(stateWithQuery),
