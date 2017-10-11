@@ -6,6 +6,7 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 import Dropdown from 'components/dropdown';
 import Search from 'components/search';
+import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
@@ -81,6 +82,7 @@ class NDCCountryFull extends PureComponent {
               hideResetButton
               disabled={contentOptions.length === 1}
             />
+            <NdcsAutocompleteSearch />
             <Search
               theme={darkSearch}
               className={styles.search}

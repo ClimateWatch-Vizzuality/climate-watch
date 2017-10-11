@@ -2,6 +2,7 @@ import { initialState as map } from 'components/map';
 import { initialState as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
 import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
+import { initialState as ndcsAutocompleteSearch } from 'components/ndcs-autocomplete-search';
 import { initialState as stories } from 'components/stories';
 import { initialState as ghgEmissions } from 'components/ghg-emissions';
 import { initialState as countryGhgEmissionsMap } from 'components/country-ghg-map';
@@ -30,6 +31,7 @@ export default {
   NDCCompare,
   countrySelect,
   autocompleteSearch,
+  ndcsAutocompleteSearch,
   ndcSearch,
   ghgEmissions,
   countryGhgEmissionsMap,

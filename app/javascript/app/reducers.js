@@ -6,6 +6,7 @@ import { reducers as regionsReducers } from 'providers/regions-provider';
 import { reducers as ghgEmissionsMetaReducers } from 'providers/ghg-emissions-meta-provider';
 import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
 import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
+import { reducers as ndcsAutocompleteSearchReducers } from 'components/ndcs-autocomplete-search';
 import { reducers as storiesReducers } from 'components/stories';
 import { reducers as countrySelectReducers } from 'components/countries-select';
 import { reducers as ghgEmissionsReducers } from 'components/ghg-emissions';
@@ -102,6 +103,12 @@ export default combineReducers({
     'autocompleteSearch',
     allActions,
     autocompleteSearchReducers,
+    initialState
+  ),
+  ndcsAutocompleteSearch: handleActions(
+    'ndcsAutocompleteSearch',
+    allActions,
+    ndcsAutocompleteSearchReducers,
     initialState
   )
 });

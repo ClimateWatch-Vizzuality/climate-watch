@@ -1,0 +1,22 @@
+@import '~styles/settings.scss';
+
+.wrapper :global {
+  position: relative;
+
+  .dropdown-menu {
+    border-left: 0 !important;
+    border-right: 0 !important;
+  }
+}
+
+.searchIcon {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 5px;
+  top: 4px;
+}
+
+.whiteIcon {
+  fill: $white;
+}
