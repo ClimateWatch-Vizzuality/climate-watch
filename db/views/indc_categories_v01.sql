@@ -10,7 +10,7 @@ SELECT
   'wb' || id AS id,
   'wb' AS source,
   name,
-  null AS slug,
-  null AS category_type
+  slug,
+  'overview' AS category_type
 FROM wb_indc_categories
 

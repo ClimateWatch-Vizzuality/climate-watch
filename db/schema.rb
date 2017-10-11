@@ -337,8 +337,8 @@ ActiveRecord::Schema.define(version: 20171011122332) do
    SELECT ('wb'::text || wb_indc_categories.id) AS id,
       'wb'::text AS source,
       wb_indc_categories.name,
-      NULL::text AS slug,
-      NULL::text AS category_type
+      wb_indc_categories.slug,
+      'overview'::text AS category_type
      FROM wb_indc_categories;
   SQL
 
