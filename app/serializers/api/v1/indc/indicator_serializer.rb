@@ -13,7 +13,7 @@ module Api
         def labels
           IndexedSerializer.serialize(
             object.labels,
-            each_serializer: LabelSerializer,
+            serializer: LabelSerializer,
             &:id
           )
         end
@@ -21,7 +21,7 @@ module Api
         def locations
           IndexedSerializer.serialize(
             object.values,
-            each_serializer: ValueSerializer
+            serializer: ValueSerializer
           ) do |v|
             v.location.iso_code3
           end

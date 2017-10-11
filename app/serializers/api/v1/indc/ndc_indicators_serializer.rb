@@ -12,7 +12,7 @@ module Api
         def categories
           IndexedSerializer.serialize(
             object.categories,
-            each_serializer: CategorySerializer,
+            serializer: CategorySerializer,
             &:id
           )
         end
@@ -20,7 +20,7 @@ module Api
         def sectors
           IndexedSerializer.serialize(
             object.sectors,
-            each_serializer: SectorSerializer,
+            serializer: SectorSerializer,
             &:id
           )
         end
