@@ -1,5 +1,6 @@
 import { actions as countriesProvider } from 'providers/countries-provider';
 import { actions as regionsProvider } from 'providers/regions-provider';
+import { actions as ndcsSdgsMetaProvider } from 'providers/ndcs-sdgs-meta-provider';
 import { actions as geoLocationProvider } from 'providers/geolocation-provider';
 import { actions as ghgEmissionsMetaProvider } from 'providers/ghg-emissions-meta-provider';
 import { actions as countrySelect } from 'components/countries-select';
@@ -20,6 +21,7 @@ import { actions as ndcSearchActions } from 'pages/ndc-search';
 export default {
   ...countriesProvider,
   ...regionsProvider,
+  ...ndcsSdgsMetaProvider,
   ...geoLocationProvider,
   ...ghgEmissionsMetaProvider,
   ...stories,

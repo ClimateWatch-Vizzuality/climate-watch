@@ -1,7 +1,6 @@
 module NdcSdg
   class NdcTarget < ApplicationRecord
-    belongs_to :ndc, optional: true
-    belongs_to :location
+    belongs_to :ndc
     belongs_to :target, class_name: 'NdcSdg::Target'
     has_many :ndc_target_sectors,
              class_name: 'NdcSdg::NdcTargetSector',

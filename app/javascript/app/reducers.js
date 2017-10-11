@@ -3,6 +3,7 @@ import { handleActions } from 'app/utils/redux';
 
 import { reducers as countriesReducers } from 'providers/countries-provider';
 import { reducers as regionsReducers } from 'providers/regions-provider';
+import { reducers as ndcsSdgsMetaReducers } from 'providers/ndcs-sdgs-meta-provider';
 import { reducers as ghgEmissionsMetaReducers } from 'providers/ghg-emissions-meta-provider';
 import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
 import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
@@ -56,6 +57,12 @@ export default combineReducers({
     initialState
   ),
   regions: handleActions('regions', allActions, regionsReducers, initialState),
+  ndcsSdgsMeta: handleActions(
+    'ndcsSdgsMeta',
+    allActions,
+    ndcsSdgsMetaReducers,
+    initialState
+  ),
   geoLocation: handleActions(
     'geoLocation',
     allActions,
