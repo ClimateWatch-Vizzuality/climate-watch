@@ -13,10 +13,9 @@ describe WbIndc::Value, type: :model do
     ).to have(1).errors_on(:location)
   end
 
-    it 'should not be invalid when sector not present' do
+  it 'should not be invalid when sector not present' do
     expect(
       FactoryGirl.build(:wb_indc_value, sector: nil)
     ).to have(0).errors_on(:sector)
   end
 end
-

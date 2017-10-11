@@ -60,5 +60,4 @@ describe ImportWbIndc do
   it 'Creates new WB INDC records' do
     expect { subject }.to change { WbIndc::Value.count }.by(8)
   end
-
 end

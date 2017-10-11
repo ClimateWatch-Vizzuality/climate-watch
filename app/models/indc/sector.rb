@@ -8,4 +8,3 @@ module Indc
     end
   end
 end
-

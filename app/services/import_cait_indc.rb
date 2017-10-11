@@ -62,7 +62,7 @@ class ImportCaitIndc
     {
       chart: chart(indicator),
       name: indicator[:long_name],
-      slug: indicator[:column_name],
+      slug: indicator[:column_name]
     }
   end
 
@@ -219,11 +219,11 @@ class ImportCaitIndc
 
   def refresh_materialized_views
     MaterializedView.refresh(
-     'indc_categories',
-     'indc_indicators',
-     'indc_indicators_categories',
-     'indc_labels',
-     'indc_values'
+      'indc_categories',
+      'indc_indicators',
+      'indc_indicators_categories',
+      'indc_labels',
+      'indc_values'
     )
   end
 end
