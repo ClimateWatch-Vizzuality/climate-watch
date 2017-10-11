@@ -7,8 +7,12 @@ import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
 import Dropdown from 'components/dropdown';
 import isEqual from 'lodash/isEqual';
+import Button from 'components/button';
+import Icon from 'components/icon';
+import infoIcon from 'assets/icons/info.svg';
 
 import layout from 'styles/layout.scss';
+import btnInfoTheme from 'styles/themes/button/button-info.scss';
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
@@ -33,7 +37,12 @@ class CountrySDGLinkages extends PureComponent {
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <div className={styles.header}>
-            <h3 className={styles.title}>NDC-SDG Linkages</h3>
+            <div className={styles.titleContainer}>
+              <h3 className={styles.title}>NDC-SDG Linkages</h3>
+              <Button className={btnInfoTheme.btnInfo}>
+                <Icon icon={infoIcon} />
+              </Button>
+            </div>
             <div className={styles.sectorSelector}>
               <Dropdown
                 label="Sector"

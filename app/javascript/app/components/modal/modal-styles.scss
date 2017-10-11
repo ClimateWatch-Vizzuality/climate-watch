@@ -5,17 +5,22 @@
   margin: -$gutter-padding;
   margin-bottom: $gutter-padding;
   padding: $gutter-padding;
+  padding-bottom: 0;
+  min-height: 95px;
+  border-bottom: solid 1px $border-color;
 }
 
 .headerTitle {
   font-size: $font-size-large;
+  font-weight: $font-weight;
   color: $theme-color;
+  margin-top: 5px;
   margin-bottom: $gutter-padding;
 }
 
 .closeBtn {
   position: absolute;
-  top: $gutter-padding;
-  right: $gutter-padding;
+  top: 25px;
+  right: 25px;
   border: solid 1px rgba(202, 204, 208, 0.85);
 }

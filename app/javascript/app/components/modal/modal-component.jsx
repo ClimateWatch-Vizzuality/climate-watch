@@ -18,7 +18,7 @@ export const ModalHeader = ({ title, children }) => (
 
 ModalHeader.propTypes = {
   title: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 
 class CustomModal extends PureComponent {
