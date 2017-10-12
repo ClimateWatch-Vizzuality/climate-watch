@@ -49,4 +49,40 @@ class Ndc < ApplicationRecord
     EOT
     update_all(sql)
   end
+
+  def self.linkage_texts(params)
+    query_params = {}
+
+    if params[:target]
+      query_params[:ndc_sdg_targets] = {
+        number: params[:target]
+      }
+    end
+
+    if params[:sector]
+      query_params[:ndc_sdg_ndc_target_sectors] = {
+        sector_id: params[:sector]
+      }
+    end
+
+    if params[:goal]
+      query_params[:ndc_sdg_goals] = {
+        number: params[:goal]
+      }
+    end
+
+    if params[:code]
+      query_params[:locations] = {
+        iso_code3: params[:code]
+      }
+    end
+
+    ::NdcSdg::NdcTarget.includes(
+      target: [:goal],
+      ndc_target_sectors: [:sector],
+      ndc: [:location]
+    ).where(query_params).
+      map(&:indc_text).
+      map(&:strip)
+  end
 end
