@@ -13,12 +13,39 @@ module Api
         ndcs = Ndc.joins(:location).where(
           locations: {iso_code3: params[:code].upcase}
         )
-        ndcs = with_highlights(ndcs, true, true)
+
+        ndcs =
+          if params[:target]
+            with_linkage_highlights(ndcs)
+          else
+            with_highlights(ndcs, true, true)
+          end
+
         render json: ndcs,
                each_serializer: Api::V1::NdcTextSerializer
       end
 
       private
+
+      def linkage_texts(target, location = nil)
+        query_params = {
+          ndc_sdg_targets: {
+            number: target
+          }
+        }
+
+        if location
+          query_params[:locations] = {
+            iso_code3: location
+          }
+        end
+
+        ::NdcSdg::NdcTarget.includes(
+          :target,
+          ndc: :location
+        ).where(query_params).
+          map(&:indc_text)
+      end
 
       def with_highlights(
         ndcs,
@@ -43,6 +70,32 @@ module Api
         end
 
         highlighted_ndcs
+      end
+
+      def highlight_text(text, highlights)
+        text.gsub(
+          Regexp.new("(#{highlights.map { |t| "(?:#{t})" }.join('|')})", 'i'),
+          [
+            Ndc::PG_SEARCH_HIGHLIGHT_START,
+            '\1',
+            Ndc::PG_SEARCH_HIGHLIGHT_END
+          ].join
+        )
+      end
+
+      def with_linkage_highlights(ndcs)
+        return ndcs unless params[:target]
+
+        texts = linkage_texts(params[:target], params[:code].upcase)
+
+        ndcs.where(
+          (['full_text ILIKE ?'] * texts.length).join(' OR '),
+          *texts.map { |t| "%#{t}%" }
+        ).map do |ndc|
+          ndc.full_text = highlight_text(ndc.full_text, texts)
+          ndc.readonly!
+          ndc
+        end
       end
     end
   end
