@@ -53,6 +53,7 @@ module Api
       end
 
       def highlight_text(text, highlights)
+        return text unless highlights.length.positive?
         text.gsub(
           Regexp.new(
             "(#{highlights.map { |t| "(?:#{Regexp.escape(t)})" }.join('|')})",
@@ -66,13 +67,23 @@ module Api
         )
       end
 
-      def with_linkage_highlights(ndcs)
+      def with_linkage_highlights(
+        ndcs,
+        include_not_matched = true
+      )
         texts = Ndc.linkage_texts(params)
 
-        ndcs.where(
-          (['full_text ILIKE ?'] * texts.length).join(' OR '),
-          *texts.map { |t| "%#{t}%" }
-        ).map do |ndc|
+        unless include_not_matched
+          ndcs = ndcs.where(
+            (['full_text ILIKE ?'] * texts.length).join(' OR '),
+            *texts.map { |t| "%#{t}%" }
+          )
+        end
+
+        ndcs.map do |ndc|
+          ndc.linkages = texts.reject do |text|
+            ndc.full_text.at(text).nil?
+          end
           ndc.full_text = highlight_text(ndc.full_text, texts)
           ndc.readonly!
           ndc
