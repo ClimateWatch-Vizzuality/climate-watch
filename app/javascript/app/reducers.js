@@ -10,6 +10,7 @@ import { reducers as autocompleteSearchReducers } from 'components/autocomplete-
 import { reducers as storiesReducers } from 'components/stories';
 import { reducers as countrySelectReducers } from 'components/countries-select';
 import { reducers as ghgEmissionsReducers } from 'components/ghg-emissions';
+import { reducers as modalMetadataReducers } from 'components/modal-metadata';
 import { reducers as NDCSReducers } from 'pages/ndcs';
 import { reducers as countryGhgEmissionsMapReducers } from 'components/country-ghg-map';
 import { reducers as countryGhgEmissionsReducers } from 'components/country-ghg-emissions';
@@ -25,6 +26,12 @@ import allActions from './actions';
 export default combineReducers({
   ndcs: handleActions('ndcs', allActions, NDCSReducers, initialState),
   stories: handleActions('stories', allActions, storiesReducers, initialState),
+  modalMetadata: handleActions(
+    'modalMetadata',
+    allActions,
+    modalMetadataReducers,
+    initialState
+  ),
   countryGhgEmissionsMap: handleActions(
     'countryGhgEmissionsMap',
     allActions,

@@ -6,20 +6,31 @@ import qs from 'query-string';
 
 import actions from './ndc-search-actions';
 import SearchComponent from './ndc-search-component';
-import { getSearchResults } from './ndc-search-selectors';
+import {
+  getSearchResultsSorted,
+  getDocumentOptions,
+  getDocumentSelected,
+  getAnchorLinks
+} from './ndc-search-selectors';
 
 export { default as component } from './ndc-search-component';
 export { default as styles } from './ndc-search-styles';
 
 const mapStateToProps = (state, { location }) => {
-  const { query } = qs.parse(location.search);
+  const { query, document } = qs.parse(location.search);
   const stateWithQuery = {
     query,
+    document,
+    location,
     results: state.ndcSearch.data
   };
   return {
     query,
-    results: getSearchResults(stateWithQuery)
+    loading: state.ndcSearch.loading,
+    results: getSearchResultsSorted(stateWithQuery),
+    docOptions: getDocumentOptions(stateWithQuery),
+    docSelected: getDocumentSelected(stateWithQuery),
+    anchorLinks: getAnchorLinks(stateWithQuery)
   };
 };
 

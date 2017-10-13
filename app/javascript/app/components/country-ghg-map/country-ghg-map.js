@@ -1,9 +1,11 @@
-import { Component, createElement } from 'react';
+import React, { Component, createElement } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import isEqual from 'lodash/isEqual';
+
+import Loading from 'components/loading';
 
 import mapActions from 'components/map/map-actions';
 import ghgMapActions from './country-ghg-map-actions';
@@ -15,7 +17,8 @@ import {
   getMapCenter,
   getSourceSelected,
   getDefaultValues,
-  getYearSelected
+  getYearSelected,
+  getMapReady
 } from './country-ghg-map-selectors';
 
 const actions = {
@@ -39,6 +42,7 @@ const mapStateToProps = (state, { location, match, year }) => {
 
   return {
     iso: match.params.iso,
+    ready: getMapReady(state.countryGhgEmissionsMap),
     yearSelected: getYearSelected(stateWithSelected),
     sourceSelected: getSourceSelected(stateWithSelected),
     defaultValues: getDefaultValues(stateWithSelected),
@@ -100,6 +104,8 @@ class CountryGhgMapContainer extends Component {
   };
 
   render() {
+    if (!this.props.ready) return <Loading light />;
+
     return createElement(CountryGhgMapComponent, {
       ...this.props,
       forceUpdate: this.state.forceUpdate
@@ -108,6 +114,7 @@ class CountryGhgMapContainer extends Component {
 }
 
 CountryGhgMapContainer.propTypes = {
+  ready: PropTypes.bool,
   center: PropTypes.array,
   paths: PropTypes.array.isRequired,
   defaultValues: PropTypes.object,

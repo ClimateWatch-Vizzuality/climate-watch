@@ -18,36 +18,35 @@ class Multiselect extends Component {
     };
   }
 
+  getSelectorValue() {
+    const { values, options } = this.props;
+    const { search } = this.state;
+    const hasValues = values && values.length;
+    if (hasValues && !search) {
+      return values.length === options.length ? (
+        <span>All selected</span>
+      ) : (
+        <span>{`${values.length} selected`}</span>
+      );
+    }
+    return null;
+  }
+
   render() {
     const {
-      values,
-      options,
       selectedClassName,
-      placeholderText,
       handleChange,
       filterOptions,
       label
     } = this.props;
-    const { search } = this.state;
     return (
       <div className={styles.multiSelectWrapper}>
         {label && <span className={styles.label}>{label}</span>}
         <div className={cx(theme.dropdown, styles.multiSelect)}>
-          <div className={styles.values}>
-            {placeholderText &&
-            !values.length && <span>{placeholderText}</span>}
-            {!search &&
-            values.length &&
-            values.length === options.length && <span>All selected</span>}
-            {!search &&
-              values.length &&
-              values.length !== options.length &&
-              `${values.length} selected`}
-          </div>
+          <div className={styles.values}>{this.getSelectorValue()}</div>
           <MultiSelect
             filterOptions={filterOptions}
-            renderValue={value =>
-              (values.length > 1 ? <span /> : <span>{value}</span>)}
+            renderValue={() => <span />}
             renderOption={option => {
               const className = option.isSelected ? selectedClassName : '';
               return (
@@ -79,7 +78,6 @@ Multiselect.propTypes = {
   options: Proptypes.array.isRequired,
   selectedClassName: Proptypes.string,
   onMultiValueChange: Proptypes.func,
-  placeholderText: Proptypes.string,
   filterOptions: Proptypes.func,
   handleChange: Proptypes.func,
   label: Proptypes.string

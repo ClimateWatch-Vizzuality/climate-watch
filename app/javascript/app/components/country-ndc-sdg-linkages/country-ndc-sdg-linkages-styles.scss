@@ -25,6 +25,12 @@
   border: solid 1px $theme-border;
 }
 
+.titleContainer {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+}
+
 .title {
   font-size: $font-size-large;
   font-weight: $font-weight;

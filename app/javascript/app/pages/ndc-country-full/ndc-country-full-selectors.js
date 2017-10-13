@@ -1,10 +1,8 @@
 import { createSelector } from 'reselect';
-import isEmpty from 'lodash/isEmpty';
 
 const getCountries = state => state.countries.data;
-const getSelected = state => state.countryNDCFull.selected;
-
-export const getContent = (state, iso) => state.countryNDCFull.data[iso];
+const getSelected = state => state.document || null;
+const getContent = state => state.content || null;
 
 export const getCountry = createSelector(
   [getCountries, (countries, iso) => iso],
@@ -14,13 +12,9 @@ export const getCountry = createSelector(
 export const getSelectedContent = createSelector(
   [getSelected, getContent],
   (selected, content) => {
-    if (isEmpty(content)) {
-      return null;
-    }
-
-    return content.length > 1
-      ? content.find(item => item.id === selected)
-      : content[0];
+    if (!content || !content.length) return null;
+    if (!selected) return content[0];
+    return content.find(item => item.document_type === selected, 10);
   }
 );
 
@@ -29,9 +23,17 @@ const getLabel = item =>
 
 export const getContentOptions = createSelector(getContent, content =>
   (content || []).map(item => ({
-    value: item.id,
+    value: item.document_type,
     label: getLabel(item)
   }))
+);
+
+export const getContentOptionSelected = createSelector(
+  [getSelected, getContentOptions],
+  (selected, options) => {
+    if (!selected) return options[0];
+    return options.find(option => option.value === selected);
+  }
 );
 
 export default {

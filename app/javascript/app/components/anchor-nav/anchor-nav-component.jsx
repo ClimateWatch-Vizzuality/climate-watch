@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
+import qs from 'query-string';
 
 import styles from './anchor-nav-styles.scss';
 
@@ -10,7 +11,7 @@ const AnchorNav = props => {
   const { links, useRoutes, className, query } = props;
   return (
     <nav className={cx(styles.anchorNav, className)}>
-      {links.map(link => {
+      {links.map((link, index) => {
         const linkProps = {
           key: link.label,
           className: styles.link,
@@ -21,6 +22,18 @@ const AnchorNav = props => {
             hash: link.hash
           }
         };
+        if (link.activeQuery) {
+          linkProps.isActive = (match, location) => {
+            const activeSearchQuery = qs.parse(location.search)[
+              link.activeQuery.key
+            ];
+            const linkSearchQuery = link.activeQuery.value;
+            return (
+              activeSearchQuery === linkSearchQuery ||
+              (index === 0 && !activeSearchQuery)
+            );
+          };
+        }
         if (useRoutes) {
           linkProps.exact = true;
           return <NavLink {...linkProps}>{link.label}</NavLink>;

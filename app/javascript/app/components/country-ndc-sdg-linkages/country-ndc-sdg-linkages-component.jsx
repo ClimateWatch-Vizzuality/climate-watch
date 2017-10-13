@@ -8,8 +8,12 @@ import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
 import Dropdown from 'components/dropdown';
 import isEqual from 'lodash/isEqual';
+import Button from 'components/button';
+import Icon from 'components/icon';
+import infoIcon from 'assets/icons/info.svg';
 
 import layout from 'styles/layout.scss';
+import btnInfoTheme from 'styles/themes/button/button-info.scss';
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
@@ -22,23 +26,50 @@ class CountrySDGLinkages extends PureComponent {
     }
   }
 
+  getTooltip() {
+    const { sectors, tooltipData, targetsMeta } = this.props;
+    const targetsContent = targetsMeta && targetsMeta[tooltipData.targetKey];
+    return tooltipData && targetsContent ? (
+      <div className={styles.tooltip}>
+        <p className={styles.tooltipTitle}>
+          <b>{tooltipData.targetKey}: </b>
+          {tooltipData.title}
+        </p>
+        {targetsContent.sectors && !!targetsContent.sectors.length && (
+          <p className={styles.sectors}>
+            <b>Sectors: </b>
+            {targetsContent.sectors.map((sector, index) => (
+              <span key={`${tooltipData.targetKey}-${sector}`}>
+                {sectors[sector].name}
+                {index === targetsContent.sectors.length - 1 ? '' : ', '}
+              </span>
+            ))}
+          </p>
+        )}
+      </div>
+    ) : null;
+  }
+
   render() {
     const {
       sdgs,
       activeSector,
       sectorOptions,
-      sectors,
       handleSectorChange,
       loading,
       setTooltipData,
-      tooltipData,
       targetsMeta
     } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <div className={styles.header}>
-            <h3 className={styles.title}>NDC-SDG Linkages</h3>
+            <div className={styles.titleContainer}>
+              <h3 className={styles.title}>NDC-SDG Linkages</h3>
+              <Button className={btnInfoTheme.btnInfo}>
+                <Icon icon={infoIcon} />
+              </Button>
+            </div>
             <div className={styles.sectorSelector}>
               <Dropdown
                 label="Sector"
@@ -67,33 +98,7 @@ class CountrySDGLinkages extends PureComponent {
                 ))}
               </div>
               <ReactTooltip id="sdg-linkages">
-                {tooltipData && targetsMeta && targetsMeta[tooltipData.targetKey] && (
-                  <div className={styles.tooltip}>
-                    <p className={styles.tooltipTitle}>
-                      <b>{tooltipData.targetKey}: </b>
-                      {tooltipData.title}
-                    </p>
-                    {targetsMeta[tooltipData.targetKey] && (
-                      <p className={styles.sectors}>
-                        <b>Sectors: </b>
-                        {targetsMeta[
-                          tooltipData.targetKey
-                        ].sectors.map((sector, index) => (
-                          <span key={`${tooltipData.targetKey}-${sector}`}>
-                            {sectors[sector].name}
-                            {index ===
-                            targetsMeta[tooltipData.targetKey].sectors.length -
-                              1 ? (
-                                ''
-                              ) : (
-                                ', '
-                              )}
-                          </span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                )}
+                {this.getTooltip()}
               </ReactTooltip>
             </div>
           )}

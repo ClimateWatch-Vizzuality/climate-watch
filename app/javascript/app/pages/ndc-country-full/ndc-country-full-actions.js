@@ -4,9 +4,6 @@ import { createThunkAction } from 'utils/redux';
 const fetchCountryNDCFullInit = createAction('fetchCountryNDCFullInit');
 const fetchCountryNDCFullReady = createAction('fetchCountryNDCFullReady');
 const fetchCountryNDCFullFailed = createAction('fetchCountryNDCFullFailed');
-const changeSelectedCountryNDCFull = createAction(
-  'changeSelectedCountryNDCFull'
-);
 
 const fetchCountryNDCFull = createThunkAction(
   'fetchCountryNDCFull',
@@ -34,6 +31,5 @@ export default {
   fetchCountryNDCFull,
   fetchCountryNDCFullInit,
   fetchCountryNDCFullReady,
-  fetchCountryNDCFullFailed,
-  changeSelectedCountryNDCFull
+  fetchCountryNDCFullFailed
 };

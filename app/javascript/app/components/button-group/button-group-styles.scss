@@ -17,10 +17,7 @@
   padding: 0;
   min-width: 45px;
   width: 100%;
-
-  &:last-child {
-    border-right: solid 1px rgba(202, 204, 208, 0.85);
-  }
+  box-shadow: none;
 }
 
 .first {

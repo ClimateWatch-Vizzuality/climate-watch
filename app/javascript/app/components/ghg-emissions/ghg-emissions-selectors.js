@@ -166,9 +166,10 @@ export const getFilterOptions = createSelector(
     if (breakByValue === 'location') {
       const countries = filteredSelected.map(d => ({
         ...d,
+        value: d.iso,
         groupId: 'countries'
       }));
-      return sortLabelByAlpha(uniqBy(countries.concat(regions), 'value'));
+      return sortLabelByAlpha(uniqBy(countries.concat(regions), 'iso'));
     }
     return sortLabelByAlpha(filteredSelected);
   }
@@ -183,13 +184,12 @@ export const getFiltersSelected = createSelector(
     if (breakBy.value === 'location' && !selected) {
       const selectedValues = TOP_EMITTERS;
       selectedFilters = filters.filter(
-        filter => selectedValues.indexOf(filter.iso) > -1
+        filter => selectedValues.indexOf(filter.value) > -1
       );
     } else {
       const selectedValues = selected.split(',');
-      const selectedValuesNum = selectedValues.map(d => parseInt(d, 10));
       selectedFilters = filters.filter(
-        filter => selectedValuesNum.indexOf(filter.value) > -1
+        filter => selectedValues.indexOf(`${filter.value}`) > -1
       );
     }
     return selectedFilters;
