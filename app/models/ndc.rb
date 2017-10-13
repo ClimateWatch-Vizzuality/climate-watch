@@ -75,7 +75,7 @@ class Ndc < ApplicationRecord
 
     if params[:code]
       query_params[:locations] = {
-        iso_code3: params[:code]
+        iso_code3: params[:code].upcase
       }
     end
 

@@ -10,6 +10,10 @@ module Api
         {self: text_api_v1_ndc_path(code: object.location.try(:iso_code3))}
       end
 
+      def linkages
+        object.linkages || []
+      end
+
       def html
         if highlights_present?
           object.pg_search_highlight.html_safe
