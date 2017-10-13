@@ -1,0 +1,51 @@
+@import '~styles/layout.scss';
+
+$loader-size: 60px;
+$loader-border-size: 4px;
+$loading-color: $theme-secondary;
+
+.container {
+  position: relative;
+}
+
+.light {
+  background-color: $light-gray;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: $loader-size/-2 0 0 $loader-size/-2;
+  width: $loader-size;
+  height: $loader-size;
+}
+
+.loaderLight {
+  display: block;
+  width: $loader-size;
+  height: $loader-size;
+  border-radius: $loader-size;
+  box-shadow: 0 $loader-border-size 6px $loading-color;
+  animation: rotate360 2s linear infinite;
+}
+
+.loaderTrack {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $loader-size;
+  height: $loader-size;
+  border-radius: $loader-size;
+}
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

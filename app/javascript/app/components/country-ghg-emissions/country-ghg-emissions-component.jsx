@@ -16,6 +16,7 @@ class CountryGhgEmissions extends PureComponent {
       config,
       iso,
       sources,
+      handleInfoClick,
       handleYearHover,
       handleSourceChange,
       sourceSelected
@@ -34,7 +35,10 @@ class CountryGhgEmissions extends PureComponent {
               value={sourceSelected}
               hideResetButton
             />
-            <ButtonGroup className={styles.btnGroup} />
+            <ButtonGroup
+              className={styles.btnGroup}
+              onInfoClick={handleInfoClick}
+            />
             <Button
               className={styles.exploreBtn}
               color="yellow"
@@ -80,6 +84,7 @@ CountryGhgEmissions.propTypes = {
   iso: PropTypes.string.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
+  handleInfoClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func.isRequired,
   handleSourceChange: PropTypes.func.isRequired
 };
