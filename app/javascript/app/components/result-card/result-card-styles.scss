@@ -11,13 +11,15 @@
   padding-right: 25px;
   position: relative;
 
-  &::after {
-    position: absolute;
-    content: '';
-    border-bottom: solid 1px #e5e5eb;
-    bottom: 0;
-    right: 0;
-    width: 200%;
+  &:not(:last-child) {
+    &::after {
+      position: absolute;
+      content: '';
+      border-bottom: solid 1px #e5e5eb;
+      bottom: 0;
+      right: 0;
+      width: 200%;
+    }
   }
 }
 

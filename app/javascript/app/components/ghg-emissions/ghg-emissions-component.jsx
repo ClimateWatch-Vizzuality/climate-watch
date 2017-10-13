@@ -62,7 +62,6 @@ class GhgEmissions extends PureComponent {
           <MultiSelect
             label={breakSelected.label}
             groups={breakSelected.value === 'location' ? groups : null}
-            placeholderText={`Select ${breakSelected.value}s`}
             values={filtersSelected}
             options={filters}
             onMultiValueChange={handleFilterChange}

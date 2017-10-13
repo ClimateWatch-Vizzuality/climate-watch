@@ -133,7 +133,12 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleFilterChange = filters => {
-    const filtersParam = filters.map(filter => filter.value);
+    const filtersParam = filters.map(
+      filter =>
+        (this.props.breakSelected.value === 'location'
+          ? filter.iso
+          : filter.value)
+    );
     this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
   };
 

@@ -25,7 +25,7 @@ class NDCCountry extends PureComponent {
       loading
     } = this.props;
     return (
-      <div>
+      <div className={styles.wrapper}>
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <div className={styles.title}>

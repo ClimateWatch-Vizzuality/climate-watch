@@ -125,7 +125,8 @@ export default [
       {
         path: '/ndc-search',
         exact: true,
-        component: NDCSearch
+        component: NDCSearch,
+        headerImage: 'ndc'
       },
       {
         path: '/stories',
