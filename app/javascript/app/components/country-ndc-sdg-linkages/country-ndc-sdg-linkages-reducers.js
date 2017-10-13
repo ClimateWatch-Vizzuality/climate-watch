@@ -2,7 +2,8 @@ export const initialState = {
   loading: false,
   loaded: false,
   tooltipData: {},
-  data: {}
+  data: {},
+  infoOpen: false
 };
 
 const setLoading = (state, loading) => ({ ...state, loading });
@@ -14,6 +15,11 @@ const setCountryData = (state, { iso, data }) => ({
 const setTooltipData = (state, { payload }) => ({
   ...state,
   tooltipData: payload
+});
+
+const toogleNDCsSDGsInfo = state => ({
+  ...state,
+  infoOpen: !state.infoOpen
 });
 
 export default {
@@ -32,5 +38,6 @@ export default {
       true
     );
   },
-  setTooltipData
+  setTooltipData,
+  toogleNDCsSDGsInfo
 };

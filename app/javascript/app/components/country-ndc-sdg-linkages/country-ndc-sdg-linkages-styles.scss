@@ -29,6 +29,7 @@
   display: inline-flex;
   position: relative;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .title {
@@ -50,4 +51,22 @@
 
 .tooltipTitle {
   margin-bottom: 10px;
+}
+
+.info {
+  flex-basis: 100%;
+}
+
+.infoText {
+  overflow: hidden;
+  height: auto;
+  max-height: 0;
+  max-width: 580px;
+  color: $theme-color;
+  margin-bottom: 20px;
+  transition: max-height 0.4s ease-in;
+
+  &Open {
+    max-height: 70px;
+  }
 }

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
+import cx from 'classnames';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import SDGCard from 'components/sdg-card';
@@ -29,13 +30,17 @@ class CountrySDGLinkages extends PureComponent {
   getTooltip() {
     const { sectors, tooltipData, targetsMeta } = this.props;
     const targetsContent = targetsMeta && targetsMeta[tooltipData.targetKey];
+    const hasTargetSectors =
+      targetsContent &&
+      targetsContent.sectors &&
+      !!targetsContent.sectors.length;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.targetKey}: </b>
           {tooltipData.title}
         </p>
-        {targetsContent.sectors && !!targetsContent.sectors.length && (
+        {hasTargetSectors && (
           <p className={styles.sectors}>
             <b>Sectors: </b>
             {targetsContent.sectors.map((sector, index) => (
@@ -58,17 +63,37 @@ class CountrySDGLinkages extends PureComponent {
       handleSectorChange,
       loading,
       setTooltipData,
-      targetsMeta
+      targetsMeta,
+      toogleNDCsSDGsInfo,
+      infoOpen
     } = this.props;
+
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <div className={styles.header}>
             <div className={styles.titleContainer}>
               <h3 className={styles.title}>NDC-SDG Linkages</h3>
-              <Button className={btnInfoTheme.btnInfo}>
+              <Button
+                className={cx(btnInfoTheme.btnInfo, {
+                  [btnInfoTheme.btnInfoActive]: infoOpen
+                })}
+                onClick={toogleNDCsSDGsInfo}
+              >
                 <Icon icon={infoIcon} />
               </Button>
+              <div className={styles.info}>
+                <p
+                  className={cx(styles.infoText, {
+                    [styles.infoTextOpen]: infoOpen
+                  })}
+                >
+                  Each box represents a Sustainable Development Goal (SDG) and
+                  each dot is a more specific target within that goal. Alignment
+                  with that country&apos;s NDC is represented by color added to
+                  the dot.
+                </p>
+              </div>
             </div>
             <div className={styles.sectorSelector}>
               <Dropdown
@@ -97,9 +122,7 @@ class CountrySDGLinkages extends PureComponent {
                   />
                 ))}
               </div>
-              <ReactTooltip id="sdg-linkages">
-                {this.getTooltip()}
-              </ReactTooltip>
+              <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
             </div>
           )}
           {isEmpty(sdgs) &&
@@ -117,7 +140,9 @@ CountrySDGLinkages.propTypes = {
   handleSectorChange: Proptypes.func,
   activeSector: Proptypes.object,
   loading: Proptypes.bool,
+  infoOpen: Proptypes.bool,
   setTooltipData: Proptypes.func,
+  toogleNDCsSDGsInfo: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object
 };
