@@ -1,1 +1,11 @@
 @import '~styles/layout.scss';
+
+.grid {
+  @extend %grid;
+
+  grid-template-columns: 4fr 8fr;
+}
+
+.bg {
+  background-color: $light-gray;
+}

@@ -14,6 +14,7 @@ import infoIcon from 'assets/icons/info.svg';
 
 import layout from 'styles/layout.scss';
 import btnInfoTheme from 'styles/themes/button/button-info.scss';
+import cardTheme from 'styles/themes/sdg-card/sdg-card';
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
@@ -29,13 +30,15 @@ class CountrySDGLinkages extends PureComponent {
   getTooltip() {
     const { sectors, tooltipData, targetsMeta } = this.props;
     const targetsContent = targetsMeta && targetsMeta[tooltipData.targetKey];
+    const hasSectors =
+      targetsContent.sectors && !!targetsContent.sectors.length;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.targetKey}: </b>
           {tooltipData.title}
         </p>
-        {targetsContent.sectors && !!targetsContent.sectors.length && (
+        {hasSectors && (
           <p className={styles.sectors}>
             <b>Sectors: </b>
             {targetsContent.sectors.map((sector, index) => (
@@ -93,13 +96,11 @@ class CountrySDGLinkages extends PureComponent {
                     tooltipId="sdg-linkages"
                     setTooltipData={setTooltipData}
                     indicators
-                    className={styles.card}
+                    className={cardTheme.card}
                   />
                 ))}
               </div>
-              <ReactTooltip id="sdg-linkages">
-                {this.getTooltip()}
-              </ReactTooltip>
+              <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
             </div>
           )}
           {isEmpty(sdgs) &&

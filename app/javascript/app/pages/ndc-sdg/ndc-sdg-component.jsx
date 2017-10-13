@@ -1,8 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+
+import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
+
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
+import NDCSDGS from 'components/ndc-sdg-linkages-table';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';
@@ -13,7 +18,8 @@ class NdcSdg extends PureComponent {
   render() {
     const { route } = this.props;
     return (
-      <div>
+      <div className={styles.bg}>
+        <NdcsSdgsMetaProvider />
         <Header size="medium" route={route}>
           <div className={layout.content}>
             <div className={headerTheme.headerGrid}>
@@ -23,7 +29,10 @@ class NdcSdg extends PureComponent {
           </div>
         </Header>
         <div className={styles.wrapper}>
-          <div className={layout.content}>I am your ndc sdg page</div>
+          <div className={cx(layout.content, styles.grid)}>
+            <NDCSDGS />
+            <div>map</div>
+          </div>
         </div>
       </div>
     );
