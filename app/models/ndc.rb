@@ -55,27 +55,17 @@ class Ndc < ApplicationRecord
   def self.linkage_texts(params)
     query_params = {}
 
-    if params[:target]
-      query_params[:ndc_sdg_targets] = {
-        number: params[:target]
-      }
-    end
+    filters = {
+      target: [:ndc_sdg_targets, :number, params[:target]],
+      sector: [:ndc_sdg_ndc_target_sectors, :sector_id, params[:sector]],
+      goal: [:ndc_sdg_goals, :number, params[:goal]],
+      code: [:locations, :iso_code3, params[:code].upcase]
+    }
 
-    if params[:sector]
-      query_params[:ndc_sdg_ndc_target_sectors] = {
-        sector_id: params[:sector]
-      }
-    end
-
-    if params[:goal]
-      query_params[:ndc_sdg_goals] = {
-        number: params[:goal]
-      }
-    end
-
-    if params[:code]
-      query_params[:locations] = {
-        iso_code3: params[:code].upcase
+    filters.each do |k, v|
+      next unless params[k]
+      query_params[v.first] = {
+        v.second => v.third
       }
     end
 

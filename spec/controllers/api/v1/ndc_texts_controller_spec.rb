@@ -17,7 +17,7 @@ pulvinar, tempus augue. Hello sed egestas ipsum, et posuere tellus. \
 Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
   }
   let(:pol_html_linkage_text) {
-    "Nullam aliquam pretium risus laoreet."
+    'Nullam aliquam pretium risus laoreet.'
   }
   let(:pol_html_with_highlight) {
     pol_html.gsub(
@@ -93,22 +93,43 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
       expect(json_response.first['html']).to match(pol_html)
     end
     it 'returns NDC content with highlights when given a target number' do
-      get :show, params: {code: pol.iso_code3.downcase, target: pol_ndc_sdg_ndc_target.target.number}
+      get :show, params: {
+        code: pol.iso_code3.downcase,
+        target: pol_ndc_sdg_ndc_target.target.number
+      }
       json_response = JSON.parse(response.body)
-      expect(json_response.first['linkages']).to match_array([pol_html_linkage_text])
-      expect(json_response.first['html']).to include("<span class=\"highlight\">#{pol_html_linkage_text}</span>")
+      expect(json_response.first['linkages']).to match_array(
+        [pol_html_linkage_text]
+      )
+      expect(json_response.first['html']).to include(
+        "<span class=\"highlight\">#{pol_html_linkage_text}</span>"
+      )
     end
     it 'returns NDC content with highlights when given a goal number' do
-      get :show, params: {code: pol.iso_code3.downcase, goal: pol_ndc_sdg_ndc_target.target.goal.number}
+      get :show, params: {
+        code: pol.iso_code3.downcase,
+        goal: pol_ndc_sdg_ndc_target.target.goal.number
+      }
       json_response = JSON.parse(response.body)
-      expect(json_response.first['linkages']).to match_array([pol_html_linkage_text])
-      expect(json_response.first['html']).to include("<span class=\"highlight\">#{pol_html_linkage_text}</span>")
+      expect(json_response.first['linkages']).to match_array(
+        [pol_html_linkage_text]
+      )
+      expect(json_response.first['html']).to include(
+        "<span class=\"highlight\">#{pol_html_linkage_text}</span>"
+      )
     end
     it 'returns NDC content with highlights when given a sector id' do
-      get :show, params: {code: pol.iso_code3.downcase, sector: pol_ndc_sdg_ndc_target_sector.sector.id}
+      get :show, params: {
+        code: pol.iso_code3.downcase,
+        sector: pol_ndc_sdg_ndc_target_sector.sector.id
+      }
       json_response = JSON.parse(response.body)
-      expect(json_response.first['linkages']).to match_array([pol_html_linkage_text])
-      expect(json_response.first['html']).to include("<span class=\"highlight\">#{pol_html_linkage_text}</span>")
+      expect(json_response.first['linkages']).to match_array(
+        [pol_html_linkage_text]
+      )
+      expect(json_response.first['html']).to include(
+        "<span class=\"highlight\">#{pol_html_linkage_text}</span>"
+      )
     end
   end
 end
