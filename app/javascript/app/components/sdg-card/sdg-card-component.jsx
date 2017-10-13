@@ -21,35 +21,35 @@ class SDGCard extends PureComponent {
       targetsMeta
     } = this.props;
     const cardStyle = cx(styles.card, square ? styles.square : null, className);
+    const hasTargets = !isEmpty(targetsMeta) && sdgData && sdgData.targets;
     return (
       <div className={cardStyle}>
         <h4 className={styles.title}>{`${indicators
           ? sdgData.id
           : ''} ${sdgData.title}`}</h4>
         <div className={styles.dots}>
-          {indicators &&
-            !isEmpty(targetsMeta) &&
-            sdgData &&
-            sdgData.targets.map(target => (
-              <span
-                key={target.targetKey}
-                data-for={tooltipId}
-                data-tip
-                onMouseEnter={() => setTooltipData(target)}
-                className={cx(
-                  styles.dot,
-                  activeSector &&
-                  targetsMeta[target.targetKey].sectors.indexOf(
-                    parseInt(activeSector.value, 10)
-                  ) === -1
-                    ? styles.small
-                    : ''
-                )}
-                style={{
-                  backgroundColor: target.sectors ? sdgData.colour : ''
-                }}
-              />
-            ))}
+          {hasTargets &&
+            sdgData.targets.map(target => {
+              const sectors =
+                targetsMeta[target.targetKey] &&
+                targetsMeta[target.targetKey].sectors;
+              const isSmall =
+                activeSector &&
+                sectors &&
+                sectors.indexOf(parseInt(activeSector.value, 10)) === -1;
+              return (
+                <span
+                  key={target.targetKey}
+                  data-for={tooltipId}
+                  data-tip
+                  onMouseEnter={() => setTooltipData(target)}
+                  className={cx(styles.dot, { [styles.small]: isSmall })}
+                  style={{
+                    backgroundColor: target.sectors ? sdgData.colour : ''
+                  }}
+                />
+              );
+            })}
         </div>
         {!indicators && <div className={styles.number}>{sdgData.id}</div>}
         <Icon icon={icons[`sdg${sdgData.id}`]} className={styles.icon} />
