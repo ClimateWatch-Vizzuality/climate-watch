@@ -74,7 +74,6 @@ class Ndc < ApplicationRecord
       ndc_target_sectors: [:sector],
       ndc: [:location]
     ).where(query_params).
-      map(&:indc_text).
-      map(&:strip)
+      map(&:indc_text)
   end
 end
