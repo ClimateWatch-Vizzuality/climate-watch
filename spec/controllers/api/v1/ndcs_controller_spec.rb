@@ -3,7 +3,16 @@ require 'rails_helper'
 describe Api::V1::NdcsController, type: :controller do
   context do
     let!(:some_cait_indc_values) {
-      FactoryGirl.create_list(:cait_indc_indicator_with_dependants, 3)
+      list = FactoryGirl.create_list(:cait_indc_indicator_with_dependants, 3)
+      MaterializedView.refresh(
+        'indc_categories',
+        'indc_indicators',
+        'indc_indicators_categories',
+        'indc_labels',
+        'indc_sectors',
+        'indc_values'
+      )
+      list
     }
 
     describe 'GET index' do

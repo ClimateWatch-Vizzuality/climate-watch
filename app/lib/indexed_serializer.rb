@@ -8,7 +8,7 @@ module IndexedSerializer
     objects.
       map(&block).
       zip(serialized_values).
-      sort.
+      sort_by(&:first).
       to_h
   end
 end
