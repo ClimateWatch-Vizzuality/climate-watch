@@ -22,16 +22,38 @@ class CountrySDGLinkages extends PureComponent {
     }
   }
 
+  getTooltip() {
+    const { sectors, tooltipData, targetsMeta } = this.props;
+    const targetsContent = targetsMeta && targetsMeta[tooltipData.targetKey];
+    return tooltipData && targetsContent ? (
+      <div className={styles.tooltip}>
+        <p className={styles.tooltipTitle}>
+          <b>{tooltipData.targetKey}: </b>
+          {tooltipData.title}
+        </p>
+        {targetsContent.sectors && !!targetsContent.sectors.length && (
+          <p className={styles.sectors}>
+            <b>Sectors: </b>
+            {targetsContent.sectors.map((sector, index) => (
+              <span key={`${tooltipData.targetKey}-${sector}`}>
+                {sectors[sector].name}
+                {index === targetsContent.sectors.length - 1 ? '' : ', '}
+              </span>
+            ))}
+          </p>
+        )}
+      </div>
+    ) : null;
+  }
+
   render() {
     const {
       sdgs,
       activeSector,
       sectorOptions,
-      sectors,
       handleSectorChange,
       loading,
       setTooltipData,
-      tooltipData,
       targetsMeta
     } = this.props;
     return (
@@ -67,33 +89,7 @@ class CountrySDGLinkages extends PureComponent {
                 ))}
               </div>
               <ReactTooltip id="sdg-linkages">
-                {tooltipData && targetsMeta && targetsMeta[tooltipData.targetKey] && (
-                  <div className={styles.tooltip}>
-                    <p className={styles.tooltipTitle}>
-                      <b>{tooltipData.targetKey}: </b>
-                      {tooltipData.title}
-                    </p>
-                    {targetsMeta[tooltipData.targetKey] && (
-                      <p className={styles.sectors}>
-                        <b>Sectors: </b>
-                        {targetsMeta[
-                          tooltipData.targetKey
-                        ].sectors.map((sector, index) => (
-                          <span key={`${tooltipData.targetKey}-${sector}`}>
-                            {sectors[sector].name}
-                            {index ===
-                            targetsMeta[tooltipData.targetKey].sectors.length -
-                              1 ? (
-                                ''
-                              ) : (
-                                ', '
-                              )}
-                          </span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                )}
+                {this.getTooltip()}
               </ReactTooltip>
             </div>
           )}
