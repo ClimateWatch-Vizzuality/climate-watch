@@ -3,7 +3,13 @@ module Api
     class NdcTextsController < ApiController
       def index
         ndcs = Ndc.includes(:location)
-        ndcs = with_highlights(ndcs, false, false)
+        ndcs =
+          if params[:query]
+            with_highlights(ndcs, false, false)
+          else
+            ndcs
+          end
+
         render json: ndcs,
                each_serializer: Api::V1::NdcTextSearchResultSerializer,
                query: params[:query]
