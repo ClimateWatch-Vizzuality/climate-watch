@@ -2,6 +2,8 @@ import { createElement, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import worldPaths from 'app/data/world-50m-paths';
+
 import MapComponent from './map-component';
 import actions from './map-actions';
 import { initialState } from './map-reducers';
@@ -35,6 +37,7 @@ class MapContainer extends PureComponent {
   render() {
     return createElement(MapComponent, {
       ...this.props,
+      paths: worldPaths,
       handleZoomIn: this.handleZoomIn,
       handleZoomOut: this.handleZoomOut
     });
