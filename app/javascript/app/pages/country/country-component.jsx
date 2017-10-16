@@ -7,6 +7,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
+import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
@@ -41,6 +42,7 @@ class Country extends PureComponent {
               <section.component />
             </div>
           ))}
+        <ModalMetadata />
       </div>
     );
   }

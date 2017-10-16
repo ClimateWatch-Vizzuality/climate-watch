@@ -8,6 +8,7 @@ import { actions as stories } from 'components/stories';
 import { actions as autocompleteSearch } from 'components/autocomplete-search';
 import { actions as ndcsAutocompleteSearch } from 'components/ndcs-autocomplete-search';
 import { actions as mapActions } from 'components/map';
+import { actions as modalMetadata } from 'components/modal-metadata';
 import { actions as ghgEmissionsActions } from 'components/ghg-emissions';
 import { actions as NDCSActions } from 'pages/ndcs';
 import { actions as NDCCompareActions } from 'pages/ndc-compare';
@@ -34,6 +35,7 @@ export default {
   ...countryNDCActions,
   ...countryNDCFullActions,
   ...mapActions,
+  ...modalMetadata,
   ...autocompleteSearch,
   ...ndcsAutocompleteSearch,
   ...ndcSearchActions,

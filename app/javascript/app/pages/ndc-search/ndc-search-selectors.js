@@ -50,8 +50,10 @@ export const getAnchorLinks = createSelector(
       label: d.label,
       path: `${location.pathname}`,
       search: `?document=${d.value}&query=${query}`,
-      checkActiveQuery: 'document',
-      activeQueryValue: d.value
+      activeQuery: {
+        key: 'document',
+        value: d.value
+      }
     }))
 );
 

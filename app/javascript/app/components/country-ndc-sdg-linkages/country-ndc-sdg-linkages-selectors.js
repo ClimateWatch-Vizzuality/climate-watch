@@ -38,6 +38,7 @@ export const mapSDGs = createSelector(getSDGs, sdgs => {
   const sdgIds = Object.keys(sdgs);
   const mappedSDGs = sdgIds.map(sdg => ({
     id: sdg,
+    number: sdg,
     title: sdgs[sdg].title,
     colour: sdgs[sdg].colour,
     targets: sdgs[sdg].targets

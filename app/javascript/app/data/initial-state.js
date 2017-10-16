@@ -4,6 +4,7 @@ import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
 import { initialState as ndcsAutocompleteSearch } from 'components/ndcs-autocomplete-search';
 import { initialState as stories } from 'components/stories';
+import { initialState as modalMetadata } from 'components/modal-metadata';
 import { initialState as ghgEmissions } from 'components/ghg-emissions';
 import { initialState as countryGhgEmissionsMap } from 'components/country-ghg-map';
 import { initialState as ndcs } from 'pages/ndcs';
@@ -25,6 +26,7 @@ export default {
   stories,
   geoLocation,
   map,
+  modalMetadata,
   ndcs,
   countryGhgEmissions,
   countrySDGLinkages,

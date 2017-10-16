@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
+import { actions as modalMetaActions } from 'components/modal-metadata';
 import {
   getSourceOptions,
   getSourceSelected,
@@ -15,6 +16,8 @@ import {
 
 import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
 import actions from './country-ghg-emissions-actions';
+
+const mergedActions = { ...actions, ...modalMetaActions };
 
 const mapStateToProps = (state, { location, match }) => {
   const { data } = state.countryGhgEmissions;
@@ -71,6 +74,13 @@ class CountryGhgEmissionsContainer extends PureComponent {
     }
   }
 
+  handleInfoClick = () => {
+    this.props.setModalMetadata({
+      open: true,
+      slug: 'cait_historical_emissions'
+    });
+  };
+
   handleSourceChange = category => {
     if (category) {
       this.updateUrlParam({ name: 'source', value: category.value }, true);
@@ -85,7 +95,8 @@ class CountryGhgEmissionsContainer extends PureComponent {
   render() {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
-      handleSourceChange: this.handleSourceChange
+      handleSourceChange: this.handleSourceChange,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
@@ -94,6 +105,7 @@ CountryGhgEmissionsContainer.propTypes = {
   history: Proptypes.object,
   location: Proptypes.object,
   sourceSelected: Proptypes.object,
+  setModalMetadata: Proptypes.func,
   fetchCountryGhgEmissionsData: Proptypes.func
 };
 
@@ -104,5 +116,5 @@ export { default as styles } from './country-ghg-emissions-styles';
 export { default as actions } from './country-ghg-emissions-actions';
 
 export default withRouter(
-  connect(mapStateToProps, actions)(CountryGhgEmissionsContainer)
+  connect(mapStateToProps, mergedActions)(CountryGhgEmissionsContainer)
 );

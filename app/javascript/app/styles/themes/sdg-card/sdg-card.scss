@@ -1,0 +1,8 @@
+@import '~styles/layout.scss';
+
+.card {
+  position: relative;
+  margin-left: -1px;
+  margin-bottom: -1px;
+  border: solid 1px $theme-border;
+}

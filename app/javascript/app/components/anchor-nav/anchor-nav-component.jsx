@@ -22,11 +22,17 @@ const AnchorNav = props => {
             hash: link.hash
           }
         };
-        if (link.checkActiveQuery) {
-          linkProps.isActive = (match, location) =>
-            qs.parse(location.search)[link.checkActiveQuery] ===
-              link.activeQueryValue ||
-            (index === 0 && !qs.parse(location.search)[link.checkActiveQuery]);
+        if (link.activeQuery) {
+          linkProps.isActive = (match, location) => {
+            const activeSearchQuery = qs.parse(location.search)[
+              link.activeQuery.key
+            ];
+            const linkSearchQuery = link.activeQuery.value;
+            return (
+              activeSearchQuery === linkSearchQuery ||
+              (index === 0 && !activeSearchQuery)
+            );
+          };
         }
         if (useRoutes) {
           linkProps.exact = true;

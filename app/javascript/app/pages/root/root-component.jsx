@@ -9,8 +9,7 @@ import styles from './root-styles.scss'; // eslint-disable-line
 
 class Root extends PureComponent {
   render() {
-    const { route } = this.props;
-    const navRoutes = route.routes.filter(r => r.nav);
+    const { route, navRoutes } = this.props;
     return (
       <div>
         <NavBar routes={navRoutes} />
@@ -22,7 +21,8 @@ class Root extends PureComponent {
 }
 
 Root.propTypes = {
-  route: Proptypes.object
+  route: Proptypes.object,
+  navRoutes: Proptypes.array
 };
 
 export default Root;

@@ -1,8 +1,9 @@
 module Api
   module V1
-    module CaitIndc
+    module Indc
       class IndicatorSerializer < ActiveModel::Serializer
         attribute :id
+        attribute :source
         attribute :name
         attribute :slug
         attribute :category_ids, if: -> { object.category_ids.length.positive? }
@@ -12,7 +13,7 @@ module Api
         def labels
           IndexedSerializer.serialize(
             object.labels,
-            each_serializer: LabelSerializer,
+            serializer: LabelSerializer,
             &:id
           )
         end
@@ -20,7 +21,7 @@ module Api
         def locations
           IndexedSerializer.serialize(
             object.values,
-            each_serializer: ValueSerializer
+            serializer: ValueSerializer
           ) do |v|
             v.location.iso_code3
           end

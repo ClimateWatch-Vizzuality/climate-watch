@@ -37,7 +37,8 @@ const mapStateToProps = (state, { match, location }) => {
     sectorOptions: getSectorOptionsSorted(sdgsData),
     sdgs: filterSDGs(sdgsData),
     targetsMeta: parsedNdcsSdgs(ndcsSdgsMeta),
-    loading: countrySDGLinkages.loading
+    loading: countrySDGLinkages.loading,
+    infoOpen: countrySDGLinkages.infoOpen
   };
 };
 
