@@ -1,51 +1,75 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 
-const filterCountries = (countries, queryUpper) => {
-  if (!queryUpper) return countries;
-  return countries.filter(country =>
-    deburrUpper(country.wri_standard_name).includes(queryUpper)
-  );
-};
-
-const getCountries = state => state.countries;
+const getSectors = state => state.sectors || null;
+const getTargets = state => state.targets || null;
+const getGoals = state => state.goals || null;
 const getQuery = state => state.query;
+const getQueryValues = state => state.queryParams || null;
+
 export const getQueryUpper = state => deburrUpper(state.query);
 
-const addCountriesPath = (countries, query) => {
-  const ndcResults = countries.reduce((ndcResult, country) => {
-    ndcResult.push({
-      value: `${country.iso_code3}-overview`,
-      label: `${country.wri_standard_name} NDC - Overview`,
-      path: `/ndcs/country/${country.iso_code3}`
-    });
-    ndcResult.push({
-      value: `${country.iso_code3}-full`,
-      label: `${country.wri_standard_name} NDC - Full Text`,
-      path: `/ndcs/country/${country.iso_code3}/full`
-    });
-    return ndcResult;
-  }, []);
+export const getSectorsMapped = createSelector([getSectors], sectors => {
+  if (!sectors) return [];
+  return sectors.map(sector => ({
+    label: sector.name,
+    value: sector.id.toString(),
+    groupId: 'sector'
+  }));
+});
 
-  ndcResults.push({
-    value: query,
-    label: `Search "${query}" in the content of all NDC's`,
-    path: `/ndc-search?query=${query}`
-  });
-  return ndcResults;
-};
+export const getGoalsMapped = createSelector([getGoals], goals => {
+  if (!goals) return [];
+  return goals.map(goal => ({
+    label: `SDG ${goal.number}: ${goal.title}`,
+    value: goal.number,
+    groupId: 'goal'
+  }));
+});
 
-export const getFilteredCountries = createSelector(
-  [getCountries, getQueryUpper],
-  filterCountries
+export const getTargetsMapped = createSelector([getTargets], targets => {
+  if (!targets) return [];
+  return targets.map(target => ({
+    label: `${target.number}: ${target.title}`,
+    value: target.number,
+    groupId: 'target'
+  }));
+});
+
+export const getSearchList = createSelector(
+  [getSectorsMapped, getGoalsMapped, getTargetsMapped, getQuery],
+  (sectors, goals, targets, query) => {
+    const searchOptions = sectors.concat(goals, targets);
+    searchOptions.push({
+      label: `Search ${query} in document`,
+      value: query,
+      groupId: 'search'
+    });
+    return searchOptions;
+  }
 );
 
-export const getFilteredCountriesWithPath = createSelector(
-  [getFilteredCountries, getQuery],
-  addCountriesPath
+export const getOptionSelected = createSelector(
+  [getSearchList, getQueryValues],
+  (options, queryValues) => {
+    if (!options || !queryValues) return null;
+    if (queryValues.search) {
+      return {
+        label: queryValues.search,
+        value: queryValues.search
+      };
+    }
+    return options.find(
+      option =>
+        option.value === queryValues.sector ||
+        option.value === queryValues.goal ||
+        option.value === queryValues.target
+    );
+  }
 );
 
 export default {
-  getFilteredCountries,
-  getFilteredCountriesWithPath
+  getQueryUpper,
+  getSearchList,
+  getOptionSelected
 };

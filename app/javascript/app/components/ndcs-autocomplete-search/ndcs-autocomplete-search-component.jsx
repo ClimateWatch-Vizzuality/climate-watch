@@ -12,19 +12,27 @@ import styles from './ndcs-autocomplete-search-styles.scss';
 
 class NdcsAutocompleteSearch extends PureComponent {
   render() {
-    const { handleValueClick, setNdcsAutocompleteSearch, searchList } = this.props;
+    const {
+      className,
+      handleValueClick,
+      setNdcsAutocompleteSearch,
+      searchList,
+      groups,
+      optionSelected
+    } = this.props;
     return (
-      <div className={styles.wrapper}>
+      <div className={cx(styles.wrapper, className)}>
         <NdcsSdgsMetaProvider />
         <Dropdown
           className={theme.dropdownOptionWithArrow}
           placeholder={'e.g. “Energy”, “SDG 8.1”, “reduce emissions by 37%”'}
+          groups={groups}
           options={searchList}
           onSearchChange={setNdcsAutocompleteSearch}
           onValueChange={handleValueClick}
-          value={null}
+          value={optionSelected}
           hideResetButton
-          white
+          dark
           hasSearch
           renderToggleButton={({ open }) => (
             <Icon
@@ -39,9 +47,12 @@ class NdcsAutocompleteSearch extends PureComponent {
 }
 
 NdcsAutocompleteSearch.propTypes = {
+  className: Proptypes.string,
   handleValueClick: Proptypes.func.isRequired,
   setNdcsAutocompleteSearch: Proptypes.func.isRequired,
-  searchList: Proptypes.array
+  searchList: Proptypes.array,
+  groups: Proptypes.array,
+  optionSelected: Proptypes.object
 };
 
 export default NdcsAutocompleteSearch;

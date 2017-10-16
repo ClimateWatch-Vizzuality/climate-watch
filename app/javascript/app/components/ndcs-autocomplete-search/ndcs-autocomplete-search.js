@@ -2,12 +2,15 @@ import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { getLocationParamUpdated } from 'utils/navigation';
+import qs from 'query-string';
 
 import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
 import actions from './ndcs-autocomplete-search-actions';
 import {
   getQueryUpper,
-  getFilteredCountriesWithPath
+  getSearchList,
+  getOptionSelected
 } from './ndcs-autocomplete-search-selectors';
 
 export { default as component } from './ndcs-autocomplete-search-component';
@@ -16,15 +19,40 @@ export { default as reducers } from './ndcs-autocomplete-search-reducers';
 export { default as styles } from './ndcs-autocomplete-search-styles';
 export { default as actions } from './ndcs-autocomplete-search-actions';
 
-const mapStateToProps = state => {
-  const { autocompleteSearch } = state;
+const groups = [
+  {
+    groupId: 'sector',
+    title: 'Sectors'
+  },
+  {
+    groupId: 'target',
+    title: 'Targets'
+  },
+  {
+    groupId: 'goal',
+    title: 'Goals'
+  },
+  {
+    groupId: 'search',
+    title: 'Search'
+  }
+];
+
+const mapStateToProps = (state, props) => {
+  const { ndcsAutocompleteSearch } = state;
+  const { location } = props;
   const searchListData = {
-    query: autocompleteSearch.query,
-    countries: state.countries.data
+    query: ndcsAutocompleteSearch.query,
+    sectors: state.ndcsSdgsMeta.data.sectors,
+    targets: state.ndcsSdgsMeta.data.targets,
+    goals: state.ndcsSdgsMeta.data.goals,
+    queryParams: qs.parse(location.search, { ignoreQueryPrefix: true })
   };
   return {
-    query: getQueryUpper(autocompleteSearch),
-    searchList: getFilteredCountriesWithPath(searchListData)
+    query: getQueryUpper(ndcsAutocompleteSearch),
+    searchList: getSearchList(searchListData),
+    optionSelected: getOptionSelected(searchListData),
+    groups
   };
 };
 
@@ -34,8 +62,13 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
   }
 
   handleValueClick = option => {
-    this.props.history.push(option.path);
+    this.updateUrlParam({ name: option.groupId, value: option.value }, true);
   };
+
+  updateUrlParam(params, clear) {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  }
 
   render() {
     return createElement(NdcsAutocompleteSearchComponent, {
@@ -47,7 +80,8 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
 
 NdcsAutocompleteSearchContainer.propTypes = {
   history: Proptypes.object.isRequired,
-  setNdcsAutocompleteSearch: Proptypes.func.isRequired
+  setNdcsAutocompleteSearch: Proptypes.func.isRequired,
+  location: Proptypes.object
 };
 
 export default withRouter(
