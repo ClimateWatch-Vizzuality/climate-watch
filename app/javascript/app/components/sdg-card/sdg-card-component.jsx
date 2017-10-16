@@ -31,7 +31,9 @@ class SDGCard extends PureComponent {
       className
     );
 
-    if (!sdgData || !sdgData.number) { return <div key={Math.random()} className={cardStyle} />; }
+    if (!sdgData || !sdgData.number) {
+      return <div key={Math.random()} className={cardStyle} />;
+    }
 
     const hasTargets = !isEmpty(targetsMeta) && sdgData && sdgData.targets;
     const title = square ? sdgData.title : `${sdgData.number} ${sdgData.title}`;

@@ -6,6 +6,8 @@ const fetchNDCsSDGsReady = createAction('fetchNDCsSDGsReady');
 const fetchNDCsSDGsFailed = createAction('fetchNDCsSDGsFailed');
 const setTooltipData = createAction('setTooltipData');
 
+const toogleNDCsSDGsInfo = createAction('toogleNDCsSDGsInfo');
+
 const fetchNDCsSDGs = createThunkAction(
   'fetchNDCsSDGs',
   iso => (dispatch, state) => {
@@ -33,5 +35,6 @@ export default {
   fetchNDCsSDGsInit,
   fetchNDCsSDGsReady,
   fetchNDCsSDGsFailed,
-  setTooltipData
+  setTooltipData,
+  toogleNDCsSDGsInfo
 };
