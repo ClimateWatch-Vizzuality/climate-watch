@@ -34,7 +34,7 @@ class ImportNdcSdgTargets
       ndc_target = NdcSdg::NdcTarget.find_or_create_by(
         ndc: ndc,
         target: target,
-        indc_text: row['INDC_text'],
+        indc_text: row['INDC_text'].strip,
         status: row['Status'],
         climate_response: row['Climate_response'],
         type_of_information: row['Type_of_information']
