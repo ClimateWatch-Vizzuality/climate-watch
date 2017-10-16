@@ -31,7 +31,7 @@ class Home extends PureComponent {
         <Section className={styles.section} backgroundImage={background}>
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
-            <Intro description="A global platform for climate action that offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries’ climate progress." />
+            <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
@@ -61,8 +61,8 @@ class Home extends PureComponent {
           <div className={styles.column}>
             <Intro
               theme={introDark}
-              title="Explore the country profiles"
-              description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+              title="View country profiles"
+              description="A snapshot of countries' climate action progress, risks and vulnerability. Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
             />
             <GeoLocationProvider />
             <span
@@ -94,8 +94,8 @@ class Home extends PureComponent {
           <div className={styles.column}>
             <Intro
               theme={introDark}
-              title="See and compare the Nationally Determined Contributions"
-              description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+              title="Explore and Compare Nationally Determined Contributions"
+              description="Analyze and compare national climate pledges under the Paris Agreement."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link="/ndcs">
@@ -125,8 +125,8 @@ class Home extends PureComponent {
           <div className={styles.column}>
             <Intro
               theme={introDark}
-              title="See how the NDCs align with the SDGs..."
-              description="Check each country or region’s progress on climate action lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+              title="Examine Links Between Sustainable Development and Climate Goals"
+              description="Identify potential alignment between the targets, actions, policies measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/ndcs/sdgs'}>
