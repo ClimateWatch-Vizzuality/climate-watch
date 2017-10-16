@@ -31,7 +31,7 @@ const NDCMap = props => (
       <ButtonGroup className={styles.buttons} />
     </div>
     <Map
-      cache={false}
+      cache={!props.forceUpdate}
       paths={props.paths}
       tooltipId="mapTooltip"
       onCountryClick={props.handleCountryClick}
@@ -53,6 +53,7 @@ const NDCMap = props => (
 );
 
 NDCMap.propTypes = {
+  forceUpdate: PropTypes.bool,
   categories: PropTypes.array.isRequired,
   selectedCategory: PropTypes.object,
   indicators: PropTypes.array.isRequired,
