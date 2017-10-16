@@ -1,0 +1,58 @@
+@import '~styles/layout.scss';
+
+.twoFold {
+  @extend %grid;
+
+  grid-template-columns: 7fr 5fr;
+}
+
+.twoFoldReversed {
+  @extend %grid;
+
+  grid-template-columns: 5fr 7fr;
+}
+
+.backButton {
+  margin-right: 20px;
+}
+
+.backIcon {
+  fill: $white;
+  width: 60px;
+  height: 60px;
+}
+
+.actionsWrapper {
+  border-bottom: solid 1px $border-color;
+}
+
+.actions {
+  @extend %grid;
+
+  grid-template-columns: 3fr 4fr 5fr;
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
+
+.search {
+  grid-column-start: 3;
+  align-self: flex-end;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.bodyContent {
+  @extend %grid;
+
+  grid-template-columns: repeat(6, 1fr);
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.innerContent {
+  grid-column: 2 / 6;
+}

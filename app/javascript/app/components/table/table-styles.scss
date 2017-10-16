@@ -1,0 +1,33 @@
+@import '~styles/settings';
+
+.table :global {
+  position: relative;
+
+  .ReactVirtualized__Table__headerRow {
+    border-bottom: solid 1px $theme-color-light;
+    font-size: $font-size-sm;
+    color: $theme-color;
+    padding: 30px 0 15px;
+    text-transform: capitalize;
+    font-weight: $font-weight-bold;
+    font-family: $font-family-1;
+  }
+
+  .ReactVirtualized__Grid,
+  .ReactVirtualized__Table__Grid {
+    background-color: $light-gray;
+  }
+
+  .ReactVirtualized__Table__row {
+    border-bottom: solid 1px #e5e5eb;
+  }
+
+  .ReactVirtualized__Table__rowColumn {
+    color: $theme-color;
+    font-size: $font-size-sm;
+
+    &:first-of-type {
+      font-weight: $font-weight-bold;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@import '~styles/settings';
+
+.wrapper {
+  max-width: 260px;
+}
+
+.title {
+  font-size: $font-size-s;
+  color: $theme-color-light;
+  max-width: 200px;
+}
+
+.buckets {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.list {
+  margin-top: 10px;
+}
+
+.bucketIcon {
+  display: block;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  background-color: #d54d60;
+}
+
+.bucketTxt {
+  font-size: $font-size-s;
+  color: $dark-gray;
+}

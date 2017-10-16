@@ -1,0 +1,23 @@
+@import '~styles/settings';
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  color: $white;
+  font-family: $font-family-1;
+}
+
+.title {
+  font-size: $font-size-xl-large;
+  margin-bottom: 10px;
+  font-weight: $font-weight-light;
+  line-height: 0.85em;
+}
+
+.description {
+  margin-bottom: 20px;
+  line-height: 1.62;
+  max-width: 580px;
+}

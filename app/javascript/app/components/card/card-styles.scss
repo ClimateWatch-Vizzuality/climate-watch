@@ -1,0 +1,19 @@
+@import '~styles/layout.scss';
+
+.card {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  border: solid 1px rgba($border-color, 0.1);
+}
+
+.data {
+  background-color: $light-gray;
+  padding: 15px 20px;
+}
+
+.info {
+  padding: 15px 20px;
+  color: $theme-color;
+  font-size: $font-size;
+  font-weight: $font-weight-bold;
+  min-height: 90px;
+}

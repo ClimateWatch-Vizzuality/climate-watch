@@ -1,0 +1,30 @@
+@import '~styles/settings.scss';
+
+.toolsNav {
+  display: flex;
+  align-items: center;
+  height: $navbar-height;
+  border-left: solid 1px rgba($gray, 0.5);
+}
+
+.link {
+  color: $theme-color-light;
+  margin-left: 40px;
+  text-decoration: none;
+  position: relative;
+
+  &Active::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    background-color: rgba($theme-color, 0.2);
+    width: 100%;
+    height: 3px;
+  }
+}
+
+.download {
+  fill: $theme-color-light;
+}

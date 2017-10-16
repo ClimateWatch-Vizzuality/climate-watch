@@ -1,0 +1,56 @@
+@import '~styles/layout.scss';
+
+.tooltip {
+  background: $white;
+  min-width: 180px;
+  max-width: 300px;
+  padding: 15px;
+  box-shadow: 0 5px 15px 0 rgba(17, 55, 80, 0.15);
+  border-radius: 4px;
+}
+
+.unit {
+  color: $dark-gray;
+  font-size: $font-size-s;
+  margin-bottom: 5px;
+  text-align: right;
+  width: 100%;
+  display: block;
+}
+
+.labelTotal {
+  color: #0e4762;
+  font-weight: $font-weight-bold;
+}
+
+.label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: $font-size-sm;
+}
+
+.legend {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.labelDot {
+  border-radius: 50%;
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  margin-top: 3px;
+  display: block;
+}
+
+.labelName {
+  margin-right: 30px;
+  color: $theme-color;
+}
+
+.labelValue {
+  color: $dark-gray;
+}

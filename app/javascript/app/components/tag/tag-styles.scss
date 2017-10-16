@@ -1,0 +1,41 @@
+@import '~styles/layout.scss';
+
+.tag {
+  border: solid 1px $border-color;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  border-radius: 4px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  width: fit-content;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.label {
+  margin-right: 8px;
+}
+
+.closeButton {
+  fill: $dark-gray;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.icon {
+  width: 10px;
+  height: 10px;
+  margin-right: 2px;
+}

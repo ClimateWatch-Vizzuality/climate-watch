@@ -1,0 +1,11 @@
+@import '~styles/settings.scss';
+
+.title {
+  color: $theme-color;
+  font-size: $font-size-x-large;
+  line-height: 1.25em;
+}
+
+.description {
+  color: $theme-color;
+}

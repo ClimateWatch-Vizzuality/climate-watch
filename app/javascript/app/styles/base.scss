@@ -1,0 +1,54 @@
+@import 'settings';
+
+* {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  &::after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+
+  &::before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+}
+
+body,
+html {
+  font-family: $font-family-1;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+}
+
+img {
+  max-width: 100%;
+}

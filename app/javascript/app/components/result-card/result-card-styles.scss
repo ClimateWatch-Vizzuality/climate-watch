@@ -1,0 +1,76 @@
+@import '~styles/settings';
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  color: $white;
+  font-family: $font-family-1;
+  padding-top: 30px;
+  padding-right: 25px;
+  position: relative;
+
+  &:not(:last-child) {
+    &::after {
+      position: absolute;
+      content: '';
+      border-bottom: solid 1px #e5e5eb;
+      bottom: 0;
+      right: 0;
+      width: 200%;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.title {
+  margin-bottom: 10px;
+  color: $theme-color;
+}
+
+.count {
+  color: $dark-gray;
+  font-weight: $font-weight-bold;
+  display: inline-block;
+}
+
+.match {
+  margin-bottom: 40px;
+  color: $dark-gray;
+  line-height: 1.5em;
+  position: relative;
+
+  .text :global {
+    margin-right: 80px;
+
+    .highlight {
+      background-color: $theme-secondary;
+    }
+  }
+
+  .link {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 45px / 2);
+  }
+
+  .iconLink {
+    transform: rotate(-90deg);
+  }
+
+  &:hover {
+    color: $theme-color;
+
+    .link {
+      opacity: 1;
+    }
+  }
+}

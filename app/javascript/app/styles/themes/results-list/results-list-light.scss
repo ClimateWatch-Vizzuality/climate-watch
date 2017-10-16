@@ -1,0 +1,25 @@
+@import '~styles/settings.scss';
+
+.resultsList {
+  border: none;
+  background-color: transparent;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.listItem {
+  border-bottom: solid 1px rgba($white, 0.2);
+}
+
+.link {
+  color: $white;
+
+  &:hover {
+    color: rgba($white, 0.8);
+  }
+}

@@ -1,0 +1,53 @@
+@import '~styles/settings';
+
+.button {
+  height: 45px;
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-family: $font-family-1;
+  font-size: $font-size;
+  text-transform: capitalize;
+  color: $theme-color;
+  float: left;
+  cursor: pointer;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  a {
+    color: $theme-color;
+  }
+}
+
+.square {
+  width: 45px;
+  padding: 0;
+}
+
+.transparent {
+  background-color: transparent;
+  border: solid 1px rgba($white, 0.3);
+}
+
+.yellow {
+  background-color: $theme-secondary;
+}
+
+.white {
+  background-color: $white;
+  border: solid 1px $border-color;
+}
+
+.plain {
+  background-color: transparent;
+  border: solid 1px $border-color;
+}

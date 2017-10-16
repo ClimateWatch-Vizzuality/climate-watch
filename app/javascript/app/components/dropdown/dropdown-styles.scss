@@ -1,0 +1,13 @@
+@import '~styles/settings.scss';
+
+.dropdownWrapper {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: $font-size-s;
+  font-weight: $font-weight-bold;
+  color: $theme-color;
+  margin-bottom: 4px;
+}

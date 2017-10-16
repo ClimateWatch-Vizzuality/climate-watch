@@ -1,0 +1,14 @@
+@import 'settings';
+
+.content {
+  width: 100%;
+  height: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $gutter-padding;
+}
+
+%grid {
+  display: grid;
+  grid-column-gap: $gutter-padding;
+}

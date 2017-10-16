@@ -1,0 +1,9 @@
+@import '~styles/layout.scss';
+
+.grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  position: relative;
+  height: calc(100vh - 100px);
+  max-height: 800px;
+}

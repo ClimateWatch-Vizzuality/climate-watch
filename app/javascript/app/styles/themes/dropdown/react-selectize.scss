@@ -1,0 +1,359 @@
+@import '~styles/settings.scss';
+
+$height: 45px;
+
+.dropdown :global {
+  width: 100%;
+
+  .react-selectize {
+    color: $theme-color;
+
+    &.root-node {
+      position: relative;
+      width: 100%;
+
+      &.disabled {
+        pointer-events: none;
+        background-color: $light-gray;
+      }
+
+      .react-selectize-control {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 0;
+        padding-left: 10px;
+        padding-right: 5px;
+        height: $height;
+        overflow: hidden;
+
+        .react-selectize-placeholder {
+          display: block;
+          line-height: 1em;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          position: absolute;
+          max-width: calc(100% - 56px);
+        }
+
+        .react-selectize-search-field-and-selected-values {
+          display: flex;
+          min-height: $height;
+          max-height: $height;
+          flex-grow: 1;
+          flex-wrap: wrap;
+          overflow: hidden;
+          position: relative;
+
+          .resizable-input {
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            padding: 7px 0;
+            vertical-align: middle;
+            width: 0;
+            position: absolute;
+            top: calc(50% - #{$font-size});
+            color: $theme-color;
+          }
+
+          .value-wrapper {
+            display: flex;
+            align-items: flex-start;
+            line-height: $height;
+          }
+        }
+
+        .react-selectize-reset-button-container,
+        .react-selectize-toggle-button-container {
+          flex-grow: 0;
+          flex-shrink: 0;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: $height;
+        }
+
+        .react-selectize-reset-button-container {
+          width: 16px;
+        }
+
+        .react-selectize-toggle-button-container {
+          width: 32px;
+        }
+
+        .react-selectize-reset-button-container:hover .react-selectize-reset-button path {
+          stroke: #c0392b;
+        }
+
+        .react-selectize-reset-button path {
+          transition: stroke 0.5s 0s ease;
+          stroke: #999;
+          stroke-linecap: square;
+          stroke-linejoin: mitter;
+        }
+
+        .react-selectize-toggle-button path {
+          fill: #999;
+        }
+      }
+    }
+
+    &.dropdown-menu-wrapper {
+      position: absolute;
+
+      &.tethered {
+        min-width: 100%;
+      }
+
+      &:not(.tethered) {
+        width: 100%;
+      }
+    }
+
+    &.dropdown-menu {
+      box-sizing: border-box;
+      overflow: auto;
+      position: absolute;
+      max-height: 200px;
+      z-index: 10;
+
+      &.tethered {
+        min-width: 100%;
+      }
+
+      &:not(.tethered) {
+        width: 100%;
+      }
+
+      .groups.as-columns {
+        display: flex;
+
+        > div {
+          flex: 1;
+        }
+      }
+
+      .option-wrapper {
+        cursor: pointer;
+        outline: none;
+      }
+    }
+  }
+
+  .multi-select.react-selectize.root-node .simple-value {
+    display: inline-block;
+    // margin: 2px;
+    vertical-align: middle;
+
+    span {
+      display: inline-block;
+      padding: 2px 5px 4px;
+      vertical-align: center;
+    }
+  }
+
+  .simple-select.react-selectize.root-node .simple-value {
+    // margin: 2px;
+
+    span {
+      display: inline-block;
+      vertical-align: center;
+    }
+  }
+
+  .react-selectize {
+    font-family: $font-family-1;
+
+    &.root-node {
+      .react-selectize-control {
+        background-color: transparent;
+        border: solid 1px $border-color;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+        border-radius: 4px;
+        font-size: $font-size;
+
+        .react-selectize-placeholder {
+          color: #aaa;
+        }
+      }
+
+      &.flipped {
+        .react-selectize-toggle-button-container {
+          transform: rotate(180deg);
+        }
+      }
+
+      &.open {
+        &.flipped {
+          .react-selectize-control {
+            border-radius: 0 0 4px 4px;
+          }
+
+          .dropdown-menu {
+            bottom: $height - 1;
+          }
+
+          .react-selectize-toggle-button-container {
+            transform: rotate(0);
+          }
+        }
+
+        &:not(.flipped) .react-selectize-control {
+          border-radius: 4px 4px 0 0;
+        }
+
+        .react-selectize-toggle-button-container {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    &.dropdown-menu-wrapper {
+      overflow: hidden;
+
+      .dropdown-menu {
+        &.custom-enter-active,
+        &.custom-leave-active {
+          transition: transform 0.2s 0s ease;
+        }
+
+        &.flipped {
+          &.custom-enter {
+            transform: translateY(100%);
+          }
+
+          &.custom-enter-active,
+          &.custom-leave {
+            transform: translateY(0%);
+          }
+
+          &.custom-leave-active {
+            transform: translateY(100%);
+          }
+        }
+
+        &:not(.flipped) {
+          &.custom-enter {
+            transform: translateY(-100%);
+          }
+
+          &.custom-enter-active,
+          &.custom-leave {
+            transform: translateY(0%);
+          }
+
+          &.custom-leave-active {
+            transform: translateY(-100%);
+          }
+        }
+      }
+    }
+
+    &.dropdown-menu {
+      background: $light-gray;
+      color: $theme-color-light;
+      border: solid 1px $border-color;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+      margin-top: -1px;
+
+      &.flipped {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+      }
+
+      &:not(.flipped) {
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+      .no-results-found {
+        color: #aaa;
+        padding: 12px 10px;
+      }
+
+      .simple-group-title {
+        background-color: $dark-gray;
+        padding: 12px 10px;
+      }
+
+      .option-wrapper {
+        border-bottom: solid 1px #e5e5eb;
+        color: $dark-gray;
+
+        &:last-child {
+          border-bottom: 0;
+        }
+
+        &.highlight {
+          color: $theme-color;
+        }
+
+        .simple-option {
+          cursor: pointer;
+          padding: 12px 10px;
+
+          &.not-selectable {
+            background-color: #f8f8f8;
+            color: #999;
+            cursor: default;
+            font-style: oblique;
+            text-shadow: 0 1px 0 #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .multi-select.react-selectize.root-node .simple-value {
+    background: #f2f9fc;
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    color: #08c;
+  }
+}
+
+.white :global {
+  .react-selectize-control {
+    border-color: rgba($white, 0.5) !important;
+    color: $white !important;
+  }
+
+  .react-selectize-placeholder {
+    color: $white !important;
+  }
+
+  .react-selectize-toggle-button-container {
+    transform: rotate(0deg) !important;
+  }
+
+  .open {
+    .react-selectize-control {
+      background: $white !important;
+    }
+  }
+}
+
+.transparent :global {
+  .react-selectize-control {
+    border-color: transparent !important;
+    height: 60px !important;
+    box-shadow: none !important;
+  }
+
+  .dropdown-menu {
+    margin-left: -1px !important;
+    width: calc(100% + 2px) !important;
+    background: $white !important;
+  }
+}
+
+.plain :global {
+  .dropdown-menu {
+    background: $white !important;
+  }
+}

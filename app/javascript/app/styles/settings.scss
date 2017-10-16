@@ -1,0 +1,70 @@
+// Font families
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,400i,700');
+$font-family-1: 'Lato', sans-serif;
+
+// Font sizes
+$font-size-s: 13px;
+$font-size-sm: 14px;
+$font-size: 16px;
+$font-size-m: 19px;
+$font-size-large: 24px;
+$font-size-x-large: 44px;
+$font-size-xl-large: 54px;
+
+//font-weights
+$font-weight-light: 300;
+$font-weight: 400;
+$font-weight-semi-bold: 500;
+$font-weight-bold: 600;
+
+// Layout
+$max-width: 1210px;
+$gutter-padding: 30px;
+$navbar-height: 60px;
+
+// Colors
+$black: #333;
+$white: #fff;
+$theme-color: #113750;
+$theme-color-light: #25597c;
+$theme-secondary: #ffc735;
+$theme-border: #e6e7ed;
+$light-gray: #f5f6f7;
+$gray: #b1b1c1;
+$dark-gray: #8f8fa1;
+$base-text: #424242;
+
+$bg-main: #00548b;
+$bg-blue: #1b3b5a;
+
+$border-color: rgba(26, 28, 34, 0.1);
+
+// Breakpoitns
+$breakpoint-mobile: 320;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1280px;
+
+// Media queries
+$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
+$mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
+$mq-desktop: 'screen and (min-width: #{$breakpoint-desktop})';
+
+$sdg-1: #e5243b;
+$sdg-2: #dda63a;
+$sdg-3: #4c9f38;
+$sdg-4: #c5192d;
+$sdg-5: #ff3a21;
+$sdg-6: #26bde2;
+$sdg-7: #fcc30b;
+$sdg-8: #b93156;
+$sdg-9: #fd6925;
+$sdg-10: #dd1367;
+$sdg-11: #fd9d24;
+$sdg-12: #bf8b2e;
+$sdg-13: #3f7e44;
+$sdg-14: #0a97d9;
+$sdg-15: #56c02b;
+$sdg-16: #00689d;
+$sdg-17: #19486a;
+
+$sdg-colors: $sdg-1 ,$sdg-2 ,$sdg-3 ,$sdg-4 ,$sdg-5 ,$sdg-6 ,$sdg-7 ,$sdg-8 ,$sdg-9 ,$sdg-10 ,$sdg-11 ,$sdg-12 ,$sdg-13 ,$sdg-14 ,$sdg-15 ,$sdg-16 ,$sdg-17;

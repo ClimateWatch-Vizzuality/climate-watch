@@ -1,0 +1,104 @@
+@import '../../styles/settings.scss';
+
+$animation-time: 0.2s;
+$animation-delay-time: 0.1s;
+
+.card {
+  padding: 15px;
+  min-height: 75px;
+  position: relative;
+  transition: background-color $animation-time linear $animation-delay-time;
+
+  &Hover:not(:empty) {
+    cursor: pointer;
+
+    &:hover {
+      transition: background-color $animation-time linear;
+
+      > .title,
+      > .number {
+        color: $white;
+        transition: color $animation-time / 2 linear;
+      }
+
+      > .icon {
+        fill: $white;
+        transition: fill $animation-time linear;
+      }
+    }
+  }
+}
+
+.square {
+  min-height: 110px;
+  padding: 10px;
+}
+
+.title {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  color: $theme-color;
+  font-family: $font-family-1;
+  margin-bottom: 5px;
+  letter-spacing: -0.3px;
+  line-height: 1.12;
+  transition: color $animation-time linear $animation-delay-time * 2;
+}
+
+.number {
+  font-size: $font-size;
+  color: $gray;
+  font-family: $font-family-1;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  transition: color $animation-time linear $animation-delay-time;
+}
+
+.dots {
+  margin-right: 40px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+}
+
+.dot {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: $theme-border;
+  margin-right: 5px;
+}
+
+.small {
+  width: 5px;
+  height: 5px;
+}
+
+.icon {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 60px;
+  height: 52px;
+  z-index: 0;
+  transition: fill $animation-time linear $animation-delay-time;
+
+  @for $i from 1 through length($sdg-colors) {
+    &#{$i} {
+      fill: nth($sdg-colors, $i);
+    }
+  }
+}
+
+.hover {
+  @for $i from 1 through length($sdg-colors) {
+    &#{$i}:hover {
+      background-color: nth($sdg-colors, $i);
+    }
+  }
+}

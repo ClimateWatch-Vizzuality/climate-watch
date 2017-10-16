@@ -1,4 +1,15 @@
 {
+  "env": {
+    "production": {
+      "plugins": [
+        ["transform-react-remove-prop-types", {
+          "mode": "remove",
+          "removeImport": true,
+          "ignoreFilenames": ["node_modules"]
+        }]
+      ]
+    }
+  },
   "presets": [
     [
       "env",
@@ -11,7 +22,8 @@
         "useBuiltIns": true
       }
     ],
-    "react"
+    "react",
+    "stage-2"
   ],
   "plugins": [
     "syntax-dynamic-import",

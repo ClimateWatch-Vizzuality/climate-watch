@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: climate-watch_development
+  url: <%= ENV['POSTGRES_URL'] %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -80,7 +80,4 @@ test:
 #
 production:
   <<: *default
-  database: climate-watch_production
-  username: climate-watch
-  password: <%= ENV['climate-watch_DATABASE_PASSWORD'] %>
-  
+  url: <%= ENV['POSTGRES_URL'] %>

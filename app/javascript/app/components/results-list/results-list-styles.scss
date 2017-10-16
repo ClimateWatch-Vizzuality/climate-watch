@@ -1,0 +1,42 @@
+@import '~styles/settings';
+
+.resultsList {
+  border-radius: 0 0 4px 4px;
+  position: relative;
+  background-color: $light-gray;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.listItem {
+  border-bottom: solid 1px #e5e5eb;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.link {
+  font-family: $font-family-1;
+  color: $theme-color-light;
+  padding: 10px 15px;
+  width: 100%;
+  display: block;
+
+  .iconArrow {
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 15px;
+    opacity: 0;
+  }
+
+  &:hover {
+    color: $theme-color;
+
+    .iconArrow {
+      opacity: 1;
+      transition: opacity 0.15s ease-in-out;
+    }
+  }
+}

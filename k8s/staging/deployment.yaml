@@ -1,0 +1,56 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: {name}-staging
+  name: {name}-staging
+spec:
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      annotations:
+        chaos.alpha.kubernetes.io/enabled: "true"
+      labels:
+        name: {name}-staging
+    spec:
+      containers:
+      - name: {name}-staging
+        image: vizzuality/{name}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "0Mi"
+            cpu: "0m"
+        env:
+          - name: RACK_ENV
+            value: production
+          - name: RAILS_ENV
+            value: production
+          - name: PORT
+            value: "3000"
+          - name: RAILS_SERVE_STATIC_FILES
+            value: "true"
+          - name: POSTGRES_URL
+            valueFrom:
+                secretKeyRef:
+                  name: dbsecrets
+                  key: CW_POSTGRES_URL
+          - name: S3_BUCKET_NAME
+            value: "climate-watch-dev"
+          - name: AWS_REGION
+            value: "eu-west-1"
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: CW_AWS_ACCESS_KEY
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: CW_AWS_SECRET_ACCESS_KEY
+
+        ports:
+          - containerPort: 3000
+
+      restartPolicy: Always

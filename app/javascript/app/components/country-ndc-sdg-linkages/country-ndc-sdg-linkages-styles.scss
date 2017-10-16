@@ -1,0 +1,65 @@
+@import '~styles/layout.scss';
+
+.header {
+  @extend %grid;
+
+  grid-template-columns: 3fr 1fr;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.sdgs {
+  @extend %grid;
+
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 0;
+  position: relative;
+  margin-left: -1px;
+  margin-bottom: 40px;
+}
+
+.titleContainer {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+}
+
+.tooltip {
+  font-size: $font-size-s;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.tooltipTitle {
+  margin-bottom: 10px;
+}
+
+.info {
+  flex-basis: 100%;
+}
+
+.infoText {
+  overflow: hidden;
+  height: auto;
+  max-height: 0;
+  max-width: 580px;
+  color: $theme-color;
+  margin-bottom: 20px;
+  transition: max-height 0.4s ease-in;
+
+  &Open {
+    max-height: 70px;
+  }
+}

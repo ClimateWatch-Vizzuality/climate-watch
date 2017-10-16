@@ -1,0 +1,140 @@
+@import '~styles/settings.scss';
+
+.content :global {
+  font-family: $font-family-1;
+  color: $theme-color;
+  line-height: 1.9em;
+  font-size: $font-size-m;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: $font-weight-semi-bold;
+    line-height: 1.25em;
+    display: inline-block;
+  }
+
+  img {
+    text-align: center;
+    display: block;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: $font-size-xl-large;
+  }
+
+  h2 {
+    font-size: $font-size-x-large;
+  }
+
+  h3 {
+    font-size: $font-size-large;
+  }
+
+  h4 {
+    font-size: $font-size;
+  }
+
+  h5,
+  h6 {
+    font-size: $font-size-s;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  a {
+    color: $theme-color;
+    word-wrap: break-word;
+
+    &:hover {
+      color: $theme-color;
+    }
+  }
+
+  blockquote {
+    font-weight: $font-weight-bold;
+    font-family: $font-family-1;
+    line-height: 1.6;
+
+    &::after {
+      display: inline-block;
+      content: '"';
+    }
+
+    &::before {
+      display: inline-block;
+      content: '"';
+    }
+
+    p {
+      display: inline;
+    }
+  }
+
+  ul {
+    list-style: none;
+    width: 100%;
+
+    li {
+      padding-left: 25px;
+      text-indent: -25px;
+      display: block;
+      padding-bottom: 10px;
+
+      p {
+        display: inline;
+      }
+    }
+
+    li::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      margin-right: 15px;
+      background-color: $theme-color;
+    }
+  }
+
+  ol {
+    list-style-type: none !important;
+    padding-left: 0;
+    counter-reset: item;
+
+    li {
+      display: block;
+      padding-left: 35px;
+      text-indent: -35px;
+      padding-bottom: 10px;
+
+      &::before {
+        font-size: 80%;
+        padding: 5px 8px 5px 10px;
+        color: white;
+        font-weight: bold;
+        border-radius: 15px;
+        margin-right: 13px;
+        content: counters(item, ".") " ";
+        counter-increment: item;
+        background-color: $theme-color;
+      }
+
+      p {
+        display: inline;
+      }
+    }
+  }
+
+  .highlight {
+    background-color: $theme-secondary;
+  }
+}

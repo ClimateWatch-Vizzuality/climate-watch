@@ -1,0 +1,9 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.container {
+  height: calc(100vh - #{$navbar-height});
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

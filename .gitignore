@@ -1,11 +1,14 @@
 *.rbc
 capybara-*.html
 .rspec
+.gems
+.rbenv-gemsets
 /log
 /tmp
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /public/system
+/public/packs
 /coverage/
 /spec/tmp
 *.orig

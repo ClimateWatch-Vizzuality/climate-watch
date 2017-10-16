@@ -1,0 +1,20 @@
+@import '~styles/settings';
+
+.header {
+  background-color: $theme-color;
+  color: $white;
+  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.medium {
+  min-height: 180px;
+}
+
+.large {
+  min-height: 500px;
+}

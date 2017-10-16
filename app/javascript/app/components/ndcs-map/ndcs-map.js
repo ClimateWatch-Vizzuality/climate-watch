@@ -1,0 +1,121 @@
+import { PureComponent, createElement } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
+import qs from 'query-string';
+import isEqual from 'lodash/isEqual';
+import { getLocationParamUpdated } from 'utils/navigation';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
+
+import Component from './ndcs-map-component';
+import {
+  getCategories,
+  getCategoryIndicators,
+  getSelectedCategory,
+  getSelectedIndicator,
+  getPathsWithStyles
+} from './ndcs-map-selectors';
+
+const mapStateToProps = (state, { location }) => {
+  const { data } = state.ndcs;
+  const search = qs.parse(location.search);
+  const ndcsWithSelection = {
+    ...data,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator
+  };
+  return {
+    paths: getPathsWithStyles(ndcsWithSelection),
+    categories: getCategories(ndcsWithSelection),
+    indicators: getCategoryIndicators(ndcsWithSelection),
+    selectedCategory: getSelectedCategory(ndcsWithSelection),
+    selectedIndicator: getSelectedIndicator(ndcsWithSelection)
+  };
+};
+
+class NDCMapContainer extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      geometryIdHover: null,
+      forceUpdate: false
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.state.forceUpdate = !isEqual(nextProps.paths, this.props.paths);
+  }
+
+  componentDidUpdate() {
+    if (this.state.forceUpdate) {
+      // Not a good practice but I want to force a rerender
+      // because setting the map cache improve performance a lot!
+      this.setState({ forceUpdate: false }); // eslint-disable-line
+    }
+  }
+
+  getTooltipText() {
+    const { geometryIdHover } = this.state;
+    const { selectedIndicator } = this.props;
+    if (!geometryIdHover || !selectedIndicator) return '';
+
+    const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
+    const id = isEuropeanCountry ? europeSlug : geometryIdHover;
+    return selectedIndicator.locations && selectedIndicator.locations[id]
+      ? selectedIndicator.locations[id].value
+      : '';
+  }
+
+  handleCountryClick = geography => {
+    this.props.history.push(`/ndcs/country/${geography.id}`);
+  };
+
+  handleCountryEnter = geometry => {
+    this.setState({ geometryIdHover: geometry.id });
+  };
+
+  handleCategoryChange = category => {
+    this.updateUrlParam(
+      {
+        name: 'category',
+        value: category.value
+      },
+      true
+    );
+  };
+
+  handleIndicatorChange = indicator => {
+    this.updateUrlParam({ name: 'indicator', value: indicator.value });
+  };
+
+  handleSearchChange = query => {
+    this.updateUrlParam({ name: 'search', value: query });
+  };
+
+  updateUrlParam(param, clear) {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, param, clear));
+  }
+
+  render() {
+    const tooltipTxt = this.getTooltipText();
+    return createElement(Component, {
+      ...this.props,
+      tooltipTxt,
+      forceUpdate: this.state.forceUpdate,
+      handleCountryClick: this.handleCountryClick,
+      handleCountryEnter: this.handleCountryEnter,
+      handleCategoryChange: this.handleCategoryChange,
+      handleIndicatorChange: this.handleIndicatorChange
+    });
+  }
+}
+
+NDCMapContainer.propTypes = {
+  paths: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  selectedIndicator: PropTypes.object.isRequired
+};
+
+export default withRouter(connect(mapStateToProps)(NDCMapContainer));

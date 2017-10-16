@@ -1,0 +1,49 @@
+@import '../../styles/layout.scss';
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-auto-flow: column;
+  grid-gap: $gutter-padding;
+  height: 100%;
+  border-right: solid 1px $border-color;
+  padding-right: $gutter-padding;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 40px;
+}
+
+.graphControls {
+  @extend %grid;
+
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 25px;
+}
+
+.exploreBtn {
+  align-self: flex-end;
+}
+
+.btnGroup {
+  align-self: flex-end;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+.tag {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}

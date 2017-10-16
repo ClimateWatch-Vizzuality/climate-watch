@@ -1,0 +1,24 @@
+@import '~styles/layout.scss';
+
+.loadingContainer {
+  min-height: 200px;
+  position: relative;
+}
+
+.text {
+  font-size: $font-size;
+  line-height: 1.62;
+  color: $theme-color;
+  margin-bottom: 5px;
+
+  &Highlight {
+    font-weight: $font-weight-bold;
+  }
+}
+
+.link {
+  font-size: $font-size;
+  line-height: 1.62;
+  color: $theme-color;
+  border-bottom: 1px solid $theme-secondary;
+}
