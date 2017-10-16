@@ -30,7 +30,7 @@ $height: 45px;
 
         .react-selectize-placeholder {
           display: block;
-          line-height: 1em;
+          line-height: 1.2em;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -355,5 +355,25 @@ $height: 45px;
 .plain :global {
   .dropdown-menu {
     background: $white !important;
+  }
+}
+
+.dark :global {
+  .react-selectize-control {
+    color: $theme-color !important;
+  }
+
+  .react-selectize-placeholder {
+    color: $theme-color !important;
+  }
+
+  .react-selectize-toggle-button-container {
+    transform: rotate(0deg) !important;
+  }
+
+  .open {
+    .react-selectize-control {
+      background: $white !important;
+    }
   }
 }
