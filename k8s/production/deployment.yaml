@@ -40,7 +40,7 @@ spec:
             value: "climate-watch-dev"
           - name: AWS_REGION
             value: "eu-west-1"
-          - name: CW_AWS_ACCESS_KEY_ID
+          - name: AWS_ACCESS_KEY_ID
             valueFrom:
                 secretKeyRef:
                   name: appsecrets
