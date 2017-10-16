@@ -29,6 +29,14 @@ module Api
         render json: @ndc,
                serializer: Api::V1::NdcSdg::NdcSerializer
       end
+
+      def overview
+        goals = ::NdcSdg::Goal.
+          includes(targets: {ndc_targets: {ndc: :location}})
+
+        render json: goals,
+               each_serializer: Api::V1::NdcSdg::GoalOverviewSerializer
+      end
     end
   end
 end
