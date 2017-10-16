@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
+import upperFirst from 'lodash/upperFirst';
 
 const getSectors = state => state.sectors || null;
 const getTargets = state => state.targets || null;
@@ -12,7 +13,7 @@ export const getQueryUpper = state => deburrUpper(state.query);
 export const getSectorsMapped = createSelector([getSectors], sectors => {
   if (!sectors) return [];
   return sectors.map(sector => ({
-    label: sector.name,
+    label: upperFirst(sector.name),
     value: sector.id.toString(),
     groupId: 'sector'
   }));
