@@ -26,15 +26,15 @@ class SDGCard extends PureComponent {
       {
         [styles.square]: square,
         [styles.cardHover]: hover,
-        [styles[`hover${sdgData.id}`]]: hover
+        [styles[`hover${sdgData.number}`]]: hover
       },
       className
     );
 
-    if (!sdgData.id) return <div key={Math.random()} className={cardStyle} />;
+    if (!sdgData || !sdgData.number) { return <div key={Math.random()} className={cardStyle} />; }
 
     const hasTargets = !isEmpty(targetsMeta) && sdgData && sdgData.targets;
-    const title = square ? sdgData.title : `${sdgData.id} ${sdgData.title}`;
+    const title = square ? sdgData.title : `${sdgData.number} ${sdgData.title}`;
     return (
       <div className={cardStyle}>
         <h4 className={styles.title}>{title}</h4>
@@ -63,12 +63,12 @@ class SDGCard extends PureComponent {
             })}
         </div>
         {(!indicators || square) && (
-          <div className={styles.number}>{sdgData.id}</div>
+          <div className={styles.number}>{sdgData.number}</div>
         )}
         {sdgData.id && (
           <Icon
-            icon={icons[`sdg${sdgData.id}`]}
-            className={cx(styles.icon, styles[`icon${sdgData.id}`])}
+            icon={icons[`sdg${sdgData.number}`]}
+            className={cx(styles.icon, styles[`icon${sdgData.number}`])}
           />
         )}
       </div>

@@ -11,6 +11,7 @@ class NdcSdgLinkagesTable extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
     const { sdgs } = this.props;
+    if (!sdgs || !sdgs.length) return <div className={styles.placeholder} />;
     return (
       <div className={styles.container}>
         {sdgs.map(sdg => (
