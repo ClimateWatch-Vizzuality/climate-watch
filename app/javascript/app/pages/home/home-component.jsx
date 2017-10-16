@@ -14,9 +14,9 @@ import GeoLocationProvider from 'providers/geolocation-provider';
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
-import countryScreenshot from 'assets/screenshots/country';
-import ndcScreenshot from 'assets/screenshots/ndc-explore';
-import ndcSdgScreenshot from 'assets/screenshots/ndc-sdg';
+import countryScreenshot from 'assets/screenshots/country-screenshot';
+import ndcScreenshot from 'assets/screenshots/ndc-explore-screenshot';
+import ndcSdgScreenshot from 'assets/screenshots/ndc-sdg-screenshot';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';

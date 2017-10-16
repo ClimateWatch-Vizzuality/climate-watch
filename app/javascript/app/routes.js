@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Root from 'app/pages/root';
 import Home from 'pages/home';
 import NDCS from 'pages/ndcs';
+import NDCSDG from 'pages/ndc-sdg';
 import NDCMap from 'components/ndcs-map';
 import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
@@ -88,6 +89,14 @@ export default [
             component: () => createElement(Redirect, { to: '/ndcs' })
           }
         ]
+      },
+      {
+        path: '/ndcs-sdg',
+        component: NDCSDG,
+        exact: true,
+        nav: true,
+        label: 'SDG LINKAGES',
+        headerImage: 'ndc-sdg'
       },
       {
         path: '/countries/:iso',
