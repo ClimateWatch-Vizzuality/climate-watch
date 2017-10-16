@@ -13,7 +13,6 @@ $animation-delay-time: 0.1s;
     cursor: pointer;
 
     &:hover {
-      border-color: transparent;
       transition: background-color $animation-time linear;
 
       > .title,
