@@ -48,3 +48,23 @@ $breakpoint-desktop: 1280px;
 $mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-desktop: 'screen and (min-width: #{$breakpoint-desktop})';
+
+$sdg-1: #e5243b;
+$sdg-2: #dda63a;
+$sdg-3: #4c9f38;
+$sdg-4: #c5192d;
+$sdg-5: #ff3a21;
+$sdg-6: #26bde2;
+$sdg-7: #fcc30b;
+$sdg-8: #b93156;
+$sdg-9: #fd6925;
+$sdg-10: #dd1367;
+$sdg-11: #fd9d24;
+$sdg-12: #bf8b2e;
+$sdg-13: #3f7e44;
+$sdg-14: #0a97d9;
+$sdg-15: #56c02b;
+$sdg-16: #00689d;
+$sdg-17: #19486a;
+
+$sdg-colors: $sdg-1 ,$sdg-2 ,$sdg-3 ,$sdg-4 ,$sdg-5 ,$sdg-6 ,$sdg-7 ,$sdg-8 ,$sdg-9 ,$sdg-10 ,$sdg-11 ,$sdg-12 ,$sdg-13 ,$sdg-14 ,$sdg-15 ,$sdg-16 ,$sdg-17;

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171010171130) do
+ActiveRecord::Schema.define(version: 20171011134822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,6 +225,56 @@ ActiveRecord::Schema.define(version: 20171010171130) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  create_table "wb_indc_categories", force: :cascade do |t|
+    t.text "name", null: false
+    t.text "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "wb_indc_indicator_types", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "wb_indc_indicators", force: :cascade do |t|
+    t.bigint "indicator_type_id"
+    t.text "code", null: false
+    t.text "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["indicator_type_id"], name: "index_wb_indc_indicators_on_indicator_type_id"
+  end
+
+  create_table "wb_indc_indicators_categories", force: :cascade do |t|
+    t.bigint "indicator_id"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_wb_indc_indicators_categories_on_category_id"
+    t.index ["indicator_id"], name: "index_wb_indc_indicators_categories_on_indicator_id"
+  end
+
+  create_table "wb_indc_sectors", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.text "name", null: false
+    t.index ["parent_id"], name: "index_wb_indc_sectors_on_parent_id"
+  end
+
+  create_table "wb_indc_values", force: :cascade do |t|
+    t.bigint "indicator_id"
+    t.bigint "location_id"
+    t.bigint "sector_id"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["indicator_id"], name: "index_wb_indc_values_on_indicator_id"
+    t.index ["location_id"], name: "index_wb_indc_values_on_location_id"
+    t.index ["sector_id"], name: "index_wb_indc_values_on_sector_id"
+  end
+
   add_foreign_key "adaptation_values", "adaptation_variables", column: "variable_id", on_delete: :cascade
   add_foreign_key "adaptation_values", "locations", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
@@ -250,4 +300,109 @@ ActiveRecord::Schema.define(version: 20171010171130) do
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs", on_delete: :cascade
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
+  add_foreign_key "wb_indc_indicators", "wb_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
+  add_foreign_key "wb_indc_indicators_categories", "wb_indc_categories", column: "category_id", on_delete: :cascade
+  add_foreign_key "wb_indc_indicators_categories", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "wb_indc_sectors", "wb_indc_sectors", column: "parent_id", on_delete: :cascade
+  add_foreign_key "wb_indc_values", "locations", on_delete: :cascade
+  add_foreign_key "wb_indc_values", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "wb_indc_values", "wb_indc_sectors", column: "sector_id", on_delete: :cascade
+
+  create_view "indc_indicators", materialized: true,  sql_definition: <<-SQL
+      SELECT ('cait'::text || cait_indc_indicators.id) AS id,
+      'cait'::text AS source,
+      cait_indc_indicators.name,
+      cait_indc_indicators.slug,
+      NULL::text AS description
+     FROM cait_indc_indicators
+  UNION ALL
+   SELECT ('wb'::text || wb_indc_indicators.id) AS id,
+      'wb'::text AS source,
+      wb_indc_indicators.name,
+      wb_indc_indicators.code AS slug,
+      wb_indc_indicators.description
+     FROM wb_indc_indicators;
+  SQL
+
+  add_index "indc_indicators", ["id"], name: "index_indc_indicators_on_id"
+
+  create_view "indc_categories", materialized: true,  sql_definition: <<-SQL
+      SELECT ('cait'::text || cait_indc_categories.id) AS id,
+      'cait'::text AS source,
+      cait_indc_categories.name,
+      cait_indc_categories.slug,
+      cait_indc_categories.category_type
+     FROM cait_indc_categories
+  UNION ALL
+   SELECT ('wb'::text || wb_indc_categories.id) AS id,
+      'wb'::text AS source,
+      wb_indc_categories.name,
+      wb_indc_categories.slug,
+      'overview'::text AS category_type
+     FROM wb_indc_categories;
+  SQL
+
+  add_index "indc_categories", ["id"], name: "index_indc_categories_on_id"
+
+  create_view "indc_values", materialized: true,  sql_definition: <<-SQL
+      SELECT ('cait'::text || cait_indc_values.id) AS id,
+      'cait'::text AS source,
+      cait_indc_values.location_id,
+      ('cait'::text || cait_indc_values.indicator_id) AS indicator_id,
+      ('cait'::text || cait_indc_values.label_id) AS label_id,
+      NULL::text AS sector_id,
+      cait_indc_values.value
+     FROM cait_indc_values
+  UNION ALL
+   SELECT ('wb'::text || wb_indc_values.id) AS id,
+      'wb'::text AS source,
+      wb_indc_values.location_id,
+      ('wb'::text || wb_indc_values.indicator_id) AS indicator_id,
+      NULL::text AS label_id,
+      ('wb'::text || wb_indc_values.sector_id) AS sector_id,
+      wb_indc_values.value
+     FROM wb_indc_values;
+  SQL
+
+  add_index "indc_values", ["indicator_id"], name: "index_indc_values_on_indicator_id"
+  add_index "indc_values", ["label_id"], name: "index_indc_values_on_label_id"
+
+  create_view "indc_indicators_categories", materialized: true,  sql_definition: <<-SQL
+      SELECT ('cait'::text || cait_indc_indicators_categories.id) AS id,
+      ('cait'::text || cait_indc_indicators_categories.indicator_id) AS indicator_id,
+      ('cait'::text || cait_indc_indicators_categories.category_id) AS category_id,
+      'cait'::text AS source
+     FROM cait_indc_indicators_categories
+  UNION ALL
+   SELECT ('wb'::text || wb_indc_indicators_categories.id) AS id,
+      ('wb'::text || wb_indc_indicators_categories.indicator_id) AS indicator_id,
+      ('wb'::text || wb_indc_indicators_categories.category_id) AS category_id,
+      'wb'::text AS source
+     FROM wb_indc_indicators_categories;
+  SQL
+
+  add_index "indc_indicators_categories", ["category_id"], name: "index_indc_indicators_categories_on_category_id"
+  add_index "indc_indicators_categories", ["indicator_id"], name: "index_indc_indicators_categories_on_indicator_id"
+
+  create_view "indc_labels", materialized: true,  sql_definition: <<-SQL
+      SELECT ('cait'::text || cait_indc_labels.id) AS id,
+      'cait'::text AS source,
+      ('cait'::text || cait_indc_labels.indicator_id) AS indicator_id,
+      cait_indc_labels.name,
+      cait_indc_labels.index
+     FROM cait_indc_labels;
+  SQL
+
+  add_index "indc_labels", ["id"], name: "index_indc_labels_on_id"
+  add_index "indc_labels", ["indicator_id"], name: "index_indc_labels_on_indicator_id"
+
+  create_view "indc_sectors", materialized: true,  sql_definition: <<-SQL
+      SELECT ('wb'::text || child.id) AS id,
+      child.name,
+      ('wb'::text || parent.id) AS parent_id,
+      parent.name AS parent_name
+     FROM (wb_indc_sectors child
+       LEFT JOIN wb_indc_sectors parent ON ((child.parent_id = parent.id)));
+  SQL
+
 end

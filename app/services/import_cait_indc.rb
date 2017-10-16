@@ -21,6 +21,8 @@ class ImportCaitIndc
     update_label_indexes
     import_values
     import_submissions
+
+    refresh_materialized_views
   end
 
   private
@@ -60,7 +62,7 @@ class ImportCaitIndc
     {
       chart: chart(indicator),
       name: indicator[:long_name],
-      slug: indicator[:column_name],
+      slug: indicator[:column_name]
     }
   end
 
@@ -213,5 +215,15 @@ class ImportCaitIndc
     END
 
     ActiveRecord::Base.connection.execute(sql)
+  end
+
+  def refresh_materialized_views
+    MaterializedView.refresh(
+      'indc_categories',
+      'indc_indicators',
+      'indc_indicators_categories',
+      'indc_labels',
+      'indc_values'
+    )
   end
 end

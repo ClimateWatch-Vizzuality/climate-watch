@@ -6,6 +6,8 @@ class Ndc < ApplicationRecord
 
   validates :document_type, inclusion: {in: %w(ndc indc)}
 
+  attr_accessor :linkages
+
   PG_SEARCH_HIGHLIGHT_START = '<span class="highlight">'.freeze
   PG_SEARCH_HIGHLIGHT_END = '</span>'.freeze
   PG_SEARCH_HIGHLIGHT_FRAGMENT_DELIMITER = '[[FRAGMENT DELIMITER]]'.freeze
@@ -48,5 +50,30 @@ class Ndc < ApplicationRecord
       full_text_tsv = to_tsvector('#{PG_SEARCH_TSEARCH_DICTIONARY}', COALESCE(full_text, ''))
     EOT
     update_all(sql)
+  end
+
+  def self.linkage_texts(params)
+    query_params = {}
+
+    filters = {
+      target: [:ndc_sdg_targets, :number, params[:target]],
+      sector: [:ndc_sdg_ndc_target_sectors, :sector_id, params[:sector]],
+      goal: [:ndc_sdg_goals, :number, params[:goal]],
+      code: [:locations, :iso_code3, params[:code].upcase]
+    }
+
+    filters.each do |k, v|
+      next unless params[k]
+      query_params[v.first] = {
+        v.second => v.third
+      }
+    end
+
+    ::NdcSdg::NdcTarget.includes(
+      target: [:goal],
+      ndc_target_sectors: [:sector],
+      ndc: [:location]
+    ).where(query_params).
+      map(&:indc_text)
   end
 end

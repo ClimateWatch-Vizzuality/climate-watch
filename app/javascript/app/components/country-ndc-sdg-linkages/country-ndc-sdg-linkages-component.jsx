@@ -15,6 +15,7 @@ import infoIcon from 'assets/icons/info.svg';
 
 import layout from 'styles/layout.scss';
 import btnInfoTheme from 'styles/themes/button/button-info.scss';
+import cardTheme from 'styles/themes/sdg-card/sdg-card';
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
 class CountrySDGLinkages extends PureComponent {
@@ -118,7 +119,7 @@ class CountrySDGLinkages extends PureComponent {
                     tooltipId="sdg-linkages"
                     setTooltipData={setTooltipData}
                     indicators
-                    className={styles.card}
+                    className={cardTheme.card}
                   />
                 ))}
               </div>
