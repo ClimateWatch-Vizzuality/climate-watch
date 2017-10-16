@@ -51,7 +51,7 @@ export const getCategoryIndicators = createSelector(
   (indicatorsParsed, category) => {
     const categoryId = category.id;
     const categoryIndicators = indicatorsParsed.filter(
-      indicator => indicator.categoryIds.indexOf(parseInt(categoryId, 10)) > -1
+      indicator => indicator.categoryIds.indexOf(categoryId) > -1
     );
     return categoryIndicators;
   }

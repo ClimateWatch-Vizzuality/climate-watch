@@ -1,24 +1,25 @@
 module Api
   module V1
-    NdcIndicators = Struct.new(:indicators, :categories) do
+    NdcIndicators = Struct.new(:indicators, :categories, :sectors) do
       alias_method :read_attribute_for_serialization, :send
     end
 
     class NdcsController < ApiController
       def index
-        categories = ::CaitIndc::Category.all
+        categories = ::Indc::Category.all
+        sectors = ::Indc::Sector.all
 
-        render json: NdcIndicators.new(indicators, categories),
-               serializer: Api::V1::CaitIndc::NdcIndicatorsSerializer
+        render json: NdcIndicators.new(indicators, categories, sectors),
+               serializer: Api::V1::Indc::NdcIndicatorsSerializer
       end
 
       private
 
       def indicators
-        indicators = ::CaitIndc::Indicator.includes(
+        indicators = ::Indc::Indicator.includes(
           :labels,
           :categories,
-          values: [:label, :location]
+          values: [:location]
         )
 
         if location_list
@@ -29,7 +30,7 @@ module Api
 
         if params[:filter]
           indicators = indicators.where(
-            cait_indc_categories: {category_type: params[:filter]}
+            indc_categories: {category_type: params[:filter]}
           )
         end
 
