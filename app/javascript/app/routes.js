@@ -128,7 +128,7 @@ export default [
         component: GHGEmissions,
         exact: true,
         nav: true,
-        label: 'GHG-EMISSIONS',
+        label: 'GHG EMISSIONS',
         headerImage: 'emissions'
       },
       {
