@@ -9,8 +9,8 @@ module Api
         goals = ::NdcSdg::Goal.all
         sectors = ::NdcSdg::Sector.all
         targets = ::NdcSdg::Target.
-          includes(:sectors).
-          references(:sectors)
+          includes(:sectors, :goal).
+          references(:sectors, :goal)
 
         render json: NdcSdgsMetadata.new(sectors, targets, goals),
                serializer: Api::V1::NdcSdg::MetaSerializer
