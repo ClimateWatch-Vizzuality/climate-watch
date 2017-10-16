@@ -9,7 +9,7 @@ const fetchCountryNDCFull = createThunkAction(
   'fetchCountryNDCFull',
   (iso, search) => dispatch => {
     const url = search
-      ? `/api/v1/ndcs/${iso}/text?query=${search}`
+      ? `/api/v1/ndcs/${iso}/text?${search.groupId}=${search.value}`
       : `/api/v1/ndcs/${iso}/text`;
     dispatch(fetchCountryNDCFullInit());
     fetch(url)

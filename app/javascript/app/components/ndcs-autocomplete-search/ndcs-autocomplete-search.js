@@ -62,6 +62,7 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
   }
 
   handleValueClick = option => {
+    this.props.onSearchChange(option);
     this.updateUrlParam({ name: option.groupId, value: option.value }, true);
   };
 
@@ -81,7 +82,8 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
 NdcsAutocompleteSearchContainer.propTypes = {
   history: Proptypes.object.isRequired,
   setNdcsAutocompleteSearch: Proptypes.func.isRequired,
-  location: Proptypes.object
+  location: Proptypes.object,
+  onSearchChange: Proptypes.func
 };
 
 export default withRouter(

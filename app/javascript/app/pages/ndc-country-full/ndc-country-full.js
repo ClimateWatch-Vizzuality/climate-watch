@@ -49,17 +49,10 @@ class NDCCountryFullContainer extends PureComponent {
     }
   }
 
-  onSearchChange = query => {
-    const { match, history, location, fetchCountryNDCFull } = this.props;
+  onSearchChange = option => {
+    const { match, fetchCountryNDCFull } = this.props;
     const { iso } = match.params;
-    const search = qs.parse(location.search);
-    const newSearch = { ...search, search: query };
-
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
-    });
-    fetchCountryNDCFull(iso, query);
+    fetchCountryNDCFull(iso, option);
   };
 
   onSelectChange = selected => {

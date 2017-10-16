@@ -29,12 +29,11 @@ class NDCCountryFull extends PureComponent {
               dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
             />
           )}
-          {idx && (
-            <ScrollToHighlightIndex
-              idx={idx}
-              targetElementsSelector={'.highlight'}
-            />
-          )}
+          <ScrollToHighlightIndex
+            idx={idx}
+            targetElementsSelector={'.highlight'}
+            content={content}
+          />
         </div>
       );
     }
@@ -48,7 +47,8 @@ class NDCCountryFull extends PureComponent {
       onSelectChange,
       contentOptions,
       contentOptionSelected,
-      route
+      route,
+      onSearchChange
     } = this.props;
     return (
       <div>
@@ -77,7 +77,10 @@ class NDCCountryFull extends PureComponent {
               hideResetButton
               disabled={contentOptions.length === 1}
             />
-            <NdcsAutocompleteSearch className={styles.search} />
+            <NdcsAutocompleteSearch
+              className={styles.search}
+              onSearchChange={onSearchChange}
+            />
           </div>
         </div>
         {this.getPageContent()}
@@ -95,7 +98,8 @@ NDCCountryFull.propTypes = {
   onSelectChange: PropTypes.func,
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
-  idx: PropTypes.string
+  idx: PropTypes.string,
+  onSearchChange: PropTypes.func
 };
 
 export default NDCCountryFull;
