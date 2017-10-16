@@ -36,10 +36,10 @@ class MapContainer extends PureComponent {
 
   render() {
     return createElement(MapComponent, {
-      ...this.props,
       paths: worldPaths,
       handleZoomIn: this.handleZoomIn,
-      handleZoomOut: this.handleZoomOut
+      handleZoomOut: this.handleZoomOut,
+      ...this.props
     });
   }
 }

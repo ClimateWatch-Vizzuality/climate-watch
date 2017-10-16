@@ -31,7 +31,9 @@ class CountrySDGLinkages extends PureComponent {
     const { sectors, tooltipData, targetsMeta } = this.props;
     const targetsContent = targetsMeta && targetsMeta[tooltipData.targetKey];
     const hasSectors =
-      targetsContent.sectors && !!targetsContent.sectors.length;
+      targetsContent &&
+      targetsContent.sectors &&
+      !!targetsContent.sectors.length;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
