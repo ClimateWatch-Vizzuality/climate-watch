@@ -61,11 +61,13 @@ class NDCMapContainer extends PureComponent {
   };
 
   handleCategoryChange = category => {
-    this.updateUrlParam({
-      name: 'category',
-      value: category.value,
-      clear: true
-    });
+    this.updateUrlParam(
+      {
+        name: 'category',
+        value: category.value
+      },
+      true
+    );
   };
 
   handleIndicatorChange = indicator => {
@@ -76,9 +78,9 @@ class NDCMapContainer extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
-  updateUrlParam(param) {
+  updateUrlParam(param, clear) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, param));
+    history.replace(getLocationParamUpdated(location, param, clear));
   }
 
   render() {
