@@ -44,7 +44,7 @@ spec:
             valueFrom:
                 secretKeyRef:
                   name: appsecrets
-                  key: AWS_ACCESS_KEY
+                  key: CW_AWS_ACCESS_KEY
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
                 secretKeyRef:
