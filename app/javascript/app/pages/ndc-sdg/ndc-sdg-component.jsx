@@ -7,7 +7,7 @@ import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
-import NDCSDGS from 'components/ndc-sdg-linkages-table';
+import NdcSdgLinkagesTable from 'components/ndc-sdg-linkages-table';
 import Map from 'components/map';
 
 import layout from 'styles/layout';
@@ -31,7 +31,7 @@ class NdcSdg extends PureComponent {
         </Header>
         <div className={styles.wrapper}>
           <div className={cx(layout.content, styles.grid)}>
-            <NDCSDGS />
+            <NdcSdgLinkagesTable />
             <Map style={{ width: '100%', height: '100%' }} />
           </div>
         </div>
