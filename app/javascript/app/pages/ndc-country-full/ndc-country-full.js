@@ -34,7 +34,6 @@ const mapStateToProps = (state, { match }) => {
     content: getSelectedContent(contentData),
     contentOptions: getContentOptions(contentData),
     contentOptionSelected: getContentOptionSelected(contentData),
-    search: search.search,
     idx: search.idx
   };
 };
@@ -52,10 +51,12 @@ class NDCCountryFullContainer extends PureComponent {
   onSearchChange = option => {
     const { match, fetchCountryNDCFull } = this.props;
     const { iso } = match.params;
-    const optionValues = {
-      [option.groupId]: option.value
-    };
-    fetchCountryNDCFull(iso, optionValues);
+    if (option.groupId) {
+      const optionValues = {
+        [option.groupId]: option.value
+      };
+      fetchCountryNDCFull(iso, optionValues);
+    }
   };
 
   onSelectChange = selected => {
