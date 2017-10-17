@@ -44,7 +44,7 @@ class NDCCountryFull extends PureComponent {
     const {
       country,
       match,
-      onSelectChange,
+      onDocumentChange,
       contentOptions,
       contentOptionSelected,
       route,
@@ -73,7 +73,7 @@ class NDCCountryFull extends PureComponent {
               label="Document"
               options={contentOptions}
               value={contentOptionSelected}
-              onValueChange={onSelectChange}
+              onValueChange={onDocumentChange}
               hideResetButton
               disabled={contentOptions.length === 1}
             />
@@ -95,7 +95,7 @@ NDCCountryFull.propTypes = {
   country: PropTypes.object.isRequired,
   content: PropTypes.object,
   contentOptions: PropTypes.array,
-  onSelectChange: PropTypes.func,
+  onDocumentChange: PropTypes.func,
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
   idx: PropTypes.string,

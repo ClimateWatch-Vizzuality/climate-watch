@@ -5,8 +5,8 @@ import upperFirst from 'lodash/upperFirst';
 const getSectors = state => state.sectors || null;
 const getTargets = state => state.targets || null;
 const getGoals = state => state.goals || null;
-const getQuery = state => state.query;
-const getQueryValues = state => state.queryParams || null;
+const getQuery = state => state.query || null;
+const getSearch = state => state.search || null;
 
 export const getQueryUpper = state => deburrUpper(state.query);
 
@@ -45,7 +45,7 @@ export const getSearchList = createSelector(
       searchOptions.push({
         label: `Search for "${query}" in the document`,
         value: query,
-        groupId: 'search'
+        groupId: 'query'
       });
     }
     return searchOptions.concat(sectors, goals, targets);
@@ -53,21 +53,16 @@ export const getSearchList = createSelector(
 );
 
 export const getOptionSelected = createSelector(
-  [getSearchList, getQueryValues],
-  (options, queryValues) => {
-    if (!options || !queryValues) return null;
-    if (queryValues.search) {
+  [getSearchList, getSearch],
+  (options, search) => {
+    if (!options || !search) return null;
+    if (search.searchBy === 'query') {
       return {
-        label: queryValues.search,
-        value: queryValues.search
+        label: search.query,
+        value: search.query
       };
     }
-    return options.find(
-      option =>
-        option.value === queryValues.sector ||
-        option.value === queryValues.goal ||
-        option.value === queryValues.target
-    );
+    return options.find(option => option.value === search.query);
   }
 );
 
