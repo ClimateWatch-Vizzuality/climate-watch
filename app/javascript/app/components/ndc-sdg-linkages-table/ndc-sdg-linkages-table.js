@@ -6,14 +6,21 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
 import NdcSdgLinkagesTableComponent from './ndc-sdg-linkages-table-component';
-import { parsedNdcsSdgs } from './ndc-sdg-linkages-table-selectors';
+import {
+  getParsedGoals,
+  getGoalSelected
+} from './ndc-sdg-linkages-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const { ndcsSdgsMeta } = state;
-  const selectedSDG = qs.parse(location.search).sdg;
+  const selectedGoal = qs.parse(location.search).goal;
+  const sdgData = {
+    selectedGoal,
+    meta: ndcsSdgsMeta.data
+  };
   return {
-    sdgs: parsedNdcsSdgs(ndcsSdgsMeta),
-    selectedSDG
+    goals: getParsedGoals(sdgData),
+    selectedGoal: getGoalSelected(sdgData)
   };
 };
 
@@ -23,14 +30,14 @@ class NdcSdgLinkagesTableContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, param, clear));
   }
 
-  selectSDG = sdgNumber => {
-    this.updateUrlParam({ name: 'sdg', value: sdgNumber });
+  handleClickGoal = sdgNumber => {
+    this.updateUrlParam({ name: 'goal', value: sdgNumber });
   };
 
   render() {
     return createElement(NdcSdgLinkagesTableComponent, {
       ...this.props,
-      selectSDG: this.selectSDG
+      handleClickGoal: this.handleClickGoal
     });
   }
 }

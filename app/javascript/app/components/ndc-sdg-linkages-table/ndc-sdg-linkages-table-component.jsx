@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import SDGCard from 'components/sdg-card';
+import NdcSdgLinkagesList from 'components/ndc-sdg-linkages-list';
 
 import cardTheme from 'styles/themes/sdg-card/sdg-card';
 import styles from './ndc-sdg-linkages-table-styles.scss';
@@ -10,18 +11,20 @@ import styles from './ndc-sdg-linkages-table-styles.scss';
 class NdcSdgLinkagesTable extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { sdgs, selectSDG, selectedSDG } = this.props;
-    if (!sdgs || !sdgs.length) return <div className={styles.placeholder} />;
+    const { goals, selectedGoal, handleClickGoal } = this.props;
+    if (!goals || !goals.length) return <div className={styles.placeholder} />;
     return (
       <div className={styles.container}>
-        {selectedSDG ? null : ( // <- Goals List component
-          sdgs.map(sdg => (
+        {selectedGoal ? (
+          <NdcSdgLinkagesList goal={selectedGoal} />
+        ) : (
+          goals.map(goal => (
             <SDGCard
               square
               hover
-              onClick={() => selectSDG(sdg.number)}
-              key={sdg.title}
-              sdgData={sdg}
+              onClick={() => handleClickGoal(goal.number)}
+              key={goal.title}
+              sdgData={goal}
               tooltipId="sdg-linkages"
               className={cx(cardTheme.card, cardTheme.squaredCard)}
             />
@@ -33,9 +36,9 @@ class NdcSdgLinkagesTable extends PureComponent {
 }
 
 NdcSdgLinkagesTable.propTypes = {
-  sdgs: PropTypes.array,
-  selectSDG: PropTypes.func.isRequired,
-  selectedSDG: PropTypes.string
+  goals: PropTypes.array,
+  handleClickGoal: PropTypes.func.isRequired,
+  selectedGoal: PropTypes.object
 };
 
 export default NdcSdgLinkagesTable;
