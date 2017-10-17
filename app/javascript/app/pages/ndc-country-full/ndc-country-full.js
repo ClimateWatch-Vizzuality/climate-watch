@@ -51,7 +51,7 @@ class NDCCountryFullContainer extends PureComponent {
   onSearchChange = option => {
     const { match, fetchCountryNDCFull } = this.props;
     const { iso } = match.params;
-    if (option.groupId) {
+    if (option && option.groupId) {
       const optionValues = {
         [option.groupId]: option.value
       };
@@ -59,7 +59,7 @@ class NDCCountryFullContainer extends PureComponent {
     }
   };
 
-  onSelectChange = selected => {
+  onDocumentChange = selected => {
     this.updateUrlParam({ name: 'document', value: selected.value });
   };
 
@@ -72,7 +72,7 @@ class NDCCountryFullContainer extends PureComponent {
     return createElement(NDCCountryFullComponent, {
       ...this.props,
       onSearchChange: this.onSearchChange,
-      onSelectChange: this.onSelectChange
+      onDocumentChange: this.onDocumentChange
     });
   }
 }
