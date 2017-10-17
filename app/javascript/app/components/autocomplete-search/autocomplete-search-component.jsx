@@ -16,7 +16,7 @@ class CountriesSelect extends PureComponent {
       <div className={styles.wrapper}>
         <Dropdown
           className={theme.dropdownOptionWithArrow}
-          placeholder={'e.g. "Brazil", "energy", "reduce emissions by 37%"'}
+          placeholder={'e.g. "Brazil", "energy", "deforestation targets"'}
           options={searchList}
           onSearchChange={setAutocompleteSearch}
           onValueChange={handleValueClick}

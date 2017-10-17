@@ -5,5 +5,20 @@ FactoryGirl.define do
     title <<~EOT
       'By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day'
     EOT
+
+    trait :with_dependants do
+      transient do
+        ndc_target_count 1
+      end
+
+      after(:create) do |target, evaluator|
+        create_list(
+          :ndc_sdg_ndc_target,
+          evaluator.ndc_target_count,
+          :with_dependants,
+          target: target
+        )
+      end
+    end
   end
 end
