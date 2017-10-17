@@ -1,0 +1,16 @@
+@import '~styles/layout.scss';
+
+.container {
+  height: 100%;
+  position: relative;
+}
+
+.map {
+  height: 100%;
+}
+
+.legend {
+  position: absolute;
+  left: $gutter-padding;
+  bottom: $gutter-padding;
+}

@@ -7,6 +7,7 @@ import { reducers as ndcsSdgsMetaReducers } from 'providers/ndcs-sdgs-meta-provi
 import { reducers as ghgEmissionsMetaReducers } from 'providers/ghg-emissions-meta-provider';
 import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
 import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
+import { reducers as ndcsAutocompleteSearchReducers } from 'components/ndcs-autocomplete-search';
 import { reducers as storiesReducers } from 'components/stories';
 import { reducers as countrySelectReducers } from 'components/countries-select';
 import { reducers as ghgEmissionsReducers } from 'components/ghg-emissions';
@@ -19,6 +20,7 @@ import { reducers as countryNDCReducers } from 'pages/ndc-country';
 import { reducers as countryNDCFullReducers } from 'pages/ndc-country-full';
 import { reducers as NDCCompareReducers } from 'pages/ndc-compare';
 import { reducers as ndcSearchReducers } from 'pages/ndc-search';
+import { reducers as ndcSdgReducers } from 'pages/ndc-sdg';
 import { reducers as mapReducers } from 'components/map';
 import initialState from './data/initial-state';
 import allActions from './actions';
@@ -26,6 +28,7 @@ import allActions from './actions';
 export default combineReducers({
   ndcs: handleActions('ndcs', allActions, NDCSReducers, initialState),
   stories: handleActions('stories', allActions, storiesReducers, initialState),
+  ndcSdg: handleActions('ndcSdg', allActions, ndcSdgReducers, initialState),
   modalMetadata: handleActions(
     'modalMetadata',
     allActions,
@@ -116,6 +119,12 @@ export default combineReducers({
     'autocompleteSearch',
     allActions,
     autocompleteSearchReducers,
+    initialState
+  ),
+  ndcsAutocompleteSearch: handleActions(
+    'ndcsAutocompleteSearch',
+    allActions,
+    ndcsAutocompleteSearchReducers,
     initialState
   )
 });

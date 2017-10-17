@@ -4,6 +4,7 @@ import cx from 'classnames';
 
 import SDGCard from 'components/sdg-card';
 import NdcSdgLinkagesList from 'components/ndc-sdg-linkages-list';
+import Loading from 'components/loading';
 
 import cardTheme from 'styles/themes/sdg-card/sdg-card';
 import styles from './ndc-sdg-linkages-table-styles.scss';
@@ -17,7 +18,7 @@ class NdcSdgLinkagesTable extends PureComponent {
       handleClickGoal,
       handleClickClose
     } = this.props;
-    if (!goals || !goals.length) return <div className={styles.placeholder} />;
+    if (!goals || !goals.length) return <Loading />;
     return (
       <div>
         {selectedGoal ? (
