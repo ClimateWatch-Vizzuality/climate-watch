@@ -6,15 +6,20 @@ import { withRouter } from 'react-router';
 import NdcSdgLinkagesMapComponent from './ndc-sdg-linkages-map-component';
 import { getPathsWithStyles } from './ndc-sdg-linkages-map-selectors';
 
-const mapStateToProps = (state, { location }) => {
+const mapStateToProps = (state, { location, goalHover, targetHover }) => {
   const { data: goalsData } = state.ndcSdg;
   const goalSelected = qs.parse(location.search).goal;
   const data = {
     goalsData,
-    goalSelected
+    goalSelected,
+    goalHover,
+    targetHover
   };
   return {
-    paths: getPathsWithStyles(data)
+    paths: getPathsWithStyles(data),
+    goalSelected,
+    goalHover,
+    targetHover
   };
 };
 class NdcSdgLinkagesMapContainer extends PureComponent {

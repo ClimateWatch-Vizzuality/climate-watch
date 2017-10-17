@@ -22,6 +22,7 @@
 
     .closeButton {
       align-self: flex-end;
+      cursor: pointer;
 
       &:focus {
         outline: none;

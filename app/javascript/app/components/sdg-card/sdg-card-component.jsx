@@ -21,7 +21,8 @@ class SDGCard extends PureComponent {
       icons,
       targetsMeta,
       hover,
-      onClick
+      onClick,
+      onMouseEnter
     } = this.props;
 
     const cardStyle = cx(
@@ -43,7 +44,13 @@ class SDGCard extends PureComponent {
     const hasTargets = !isEmpty(targetsMeta) && sdgData && sdgData.targets;
     const title = square ? sdgData.title : `${sdgData.number} ${sdgData.title}`;
     return (
-      <div className={cardStyle} onClick={onClick} role="menuitem" tabIndex={0}>
+      <div
+        className={cardStyle}
+        onClick={onClick}
+        role="menuitem"
+        tabIndex={0}
+        onMouseEnter={onMouseEnter}
+      >
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
           {hasTargets &&
@@ -95,7 +102,8 @@ SDGCard.propTypes = {
   className: PropTypes.string,
   activeSector: PropTypes.object,
   targetsMeta: PropTypes.object,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  onMouseEnter: PropTypes.func.isRequired
 };
 
 SDGCard.defaultProps = {
