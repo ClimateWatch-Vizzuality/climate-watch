@@ -19,7 +19,14 @@ class NdcSdgLinkagesList extends PureComponent {
             <Icon icon={closeIcon} className={styles.icon} />
           </button>
         </div>
-        {goal.targets.map(target => <div key={target.id}>{target.title}</div>)}
+        <div className={styles.targetContainer}>
+          {goal.targets.map(target => (
+            <div key={target.id} className={styles.target}>
+              <div className={styles.number}>{target.number}</div>
+              <div className={styles.title}>{target.title}</div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
