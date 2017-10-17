@@ -5,13 +5,12 @@ import Intro from 'components/intro';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import Dropdown from 'components/dropdown';
-import Search from 'components/search';
+import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
 import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 
-import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
 import contentStyles from 'styles/themes/content.scss';
@@ -30,12 +29,11 @@ class NDCCountryFull extends PureComponent {
               dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
             />
           )}
-          {idx && (
-            <ScrollToHighlightIndex
-              idx={idx}
-              targetElementsSelector={'.highlight'}
-            />
-          )}
+          <ScrollToHighlightIndex
+            idx={idx}
+            targetElementsSelector={'.highlight'}
+            content={content}
+          />
         </div>
       );
     }
@@ -46,13 +44,11 @@ class NDCCountryFull extends PureComponent {
     const {
       country,
       match,
-      onSearchChange,
-      search,
       onSelectChange,
-      content,
       contentOptions,
       contentOptionSelected,
-      route
+      route,
+      onSearchChange
     } = this.props;
     return (
       <div>
@@ -81,13 +77,9 @@ class NDCCountryFull extends PureComponent {
               hideResetButton
               disabled={contentOptions.length === 1}
             />
-            <Search
-              theme={darkSearch}
+            <NdcsAutocompleteSearch
               className={styles.search}
-              placeholder="Search"
-              input={search}
-              onChange={onSearchChange}
-              disabled={isEmpty(content)}
+              onSearchChange={onSearchChange}
             />
           </div>
         </div>
@@ -101,14 +93,13 @@ NDCCountryFull.propTypes = {
   route: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   country: PropTypes.object.isRequired,
-  onSearchChange: PropTypes.func.isRequired,
-  search: PropTypes.string,
   content: PropTypes.object,
   contentOptions: PropTypes.array,
   onSelectChange: PropTypes.func,
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
-  idx: PropTypes.string
+  idx: PropTypes.string,
+  onSearchChange: PropTypes.func
 };
 
 export default NDCCountryFull;
