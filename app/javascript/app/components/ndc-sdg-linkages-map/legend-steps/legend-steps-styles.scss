@@ -1,0 +1,33 @@
+@import '~styles/layout.scss';
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.steps {
+  > li {
+    position: relative;
+    padding-left: 20px;
+    font-size: $font-size-sm;
+    line-height: 2;
+    color: $dark-gray;
+
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 9px;
+      left: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background-color: #d3d3dc;
+    }
+
+    &:first-child::after {
+      background-color: #a11a42;
+    }
+  }
+}

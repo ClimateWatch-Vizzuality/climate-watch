@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import styles from './map-range-styles.scss';
+import styles from './legend-range-styles.scss';
 
-class MapRange extends PureComponent {
+class LegendRange extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
@@ -20,8 +20,8 @@ class MapRange extends PureComponent {
   }
 }
 
-MapRange.propTypes = {
+LegendRange.propTypes = {
   className: PropTypes.string
 };
 
-export default MapRange;
+export default LegendRange;
