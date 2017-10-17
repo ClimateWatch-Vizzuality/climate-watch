@@ -10,6 +10,7 @@ import styles from './sdg-card-styles.scss';
 class SDGCard extends PureComponent {
   render() {
     const {
+      selected,
       sdgData,
       indicators,
       square,
@@ -22,9 +23,12 @@ class SDGCard extends PureComponent {
       hover,
       onClick
     } = this.props;
+
     const cardStyle = cx(
       styles.card,
       {
+        [styles.selected]: selected,
+        [styles[`selected${sdgData.number}`]]: selected,
         [styles.square]: square,
         [styles.cardHover]: hover,
         [styles[`hover${sdgData.number}`]]: hover
@@ -82,6 +86,7 @@ class SDGCard extends PureComponent {
 SDGCard.propTypes = {
   icons: PropTypes.object.isRequired,
   sdgData: PropTypes.object,
+  selected: PropTypes.bool,
   hover: PropTypes.bool,
   indicators: PropTypes.bool,
   square: PropTypes.bool,

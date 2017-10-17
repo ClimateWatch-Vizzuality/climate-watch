@@ -28,17 +28,24 @@ class NdcSdgLinkagesTable extends PureComponent {
           />
         ) : (
           <div className={styles.container}>
-            {goals.map(goal => (
-              <SDGCard
-                square
-                hover
-                onClick={() => handleClickGoal(goal.number)}
-                key={goal.title}
-                sdgData={goal}
-                tooltipId="sdg-linkages"
-                className={cx(cardTheme.card, cardTheme.squaredCard)}
-              />
-            ))}
+            {goals.map((goal, i) => {
+              const isSelected = selectedGoal
+                ? goal.id === selectedGoal.id
+                : i === 0;
+
+              return (
+                <SDGCard
+                  square
+                  hover
+                  selected={isSelected}
+                  onClick={() => handleClickGoal(goal.number)}
+                  key={goal.title}
+                  sdgData={goal}
+                  tooltipId="sdg-linkages"
+                  className={cx(cardTheme.card, cardTheme.squaredCard)}
+                />
+              );
+            })}
           </div>
         )}
       </div>
