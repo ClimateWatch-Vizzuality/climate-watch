@@ -102,3 +102,22 @@ $animation-delay-time: 0.1s;
     }
   }
 }
+
+.selected {
+  > .title,
+  > .number {
+    color: $white;
+    transition: color $animation-time / 2 linear;
+  }
+
+  > .icon {
+    fill: $white;
+    transition: fill $animation-time linear;
+  }
+
+  @for $i from 1 through length($sdg-colors) {
+    &#{$i} {
+      background-color: rgba(nth($sdg-colors, $i), 0.6);
+    }
+  }
+}

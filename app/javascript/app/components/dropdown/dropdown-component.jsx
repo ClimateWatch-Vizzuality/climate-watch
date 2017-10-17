@@ -22,7 +22,8 @@ const Dropdown = props => {
           theme.dropdown,
           props.transparent ? theme.transparent : '',
           props.white ? theme.white : '',
-          props.plain ? theme.plain : ''
+          props.plain ? theme.plain : '',
+          props.dark ? theme.dark : ''
         )}
       >
         <SimpleSelect
@@ -42,6 +43,7 @@ Dropdown.propTypes = {
   transparent: PropTypes.bool,
   white: PropTypes.bool,
   plain: PropTypes.bool,
+  dark: PropTypes.bool,
   theme: PropTypes.object,
   hasSearch: PropTypes.bool,
   disabled: PropTypes.bool

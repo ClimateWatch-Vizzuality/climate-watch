@@ -10,6 +10,7 @@ import styles from './sdg-card-styles.scss';
 class SDGCard extends PureComponent {
   render() {
     const {
+      selected,
       sdgData,
       indicators,
       square,
@@ -19,11 +20,15 @@ class SDGCard extends PureComponent {
       activeSector,
       icons,
       targetsMeta,
-      hover
+      hover,
+      onClick
     } = this.props;
+
     const cardStyle = cx(
       styles.card,
       {
+        [styles.selected]: selected,
+        [styles[`selected${sdgData.number}`]]: selected,
         [styles.square]: square,
         [styles.cardHover]: hover,
         [styles[`hover${sdgData.number}`]]: hover
@@ -38,7 +43,7 @@ class SDGCard extends PureComponent {
     const hasTargets = !isEmpty(targetsMeta) && sdgData && sdgData.targets;
     const title = square ? sdgData.title : `${sdgData.number} ${sdgData.title}`;
     return (
-      <div className={cardStyle}>
+      <div className={cardStyle} onClick={onClick} role="menuitem" tabIndex={0}>
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
           {hasTargets &&
@@ -81,6 +86,7 @@ class SDGCard extends PureComponent {
 SDGCard.propTypes = {
   icons: PropTypes.object.isRequired,
   sdgData: PropTypes.object,
+  selected: PropTypes.bool,
   hover: PropTypes.bool,
   indicators: PropTypes.bool,
   square: PropTypes.bool,
@@ -88,7 +94,8 @@ SDGCard.propTypes = {
   setTooltipData: PropTypes.func,
   className: PropTypes.string,
   activeSector: PropTypes.object,
-  targetsMeta: PropTypes.object
+  targetsMeta: PropTypes.object,
+  onClick: PropTypes.func.isRequired
 };
 
 SDGCard.defaultProps = {

@@ -1,0 +1,40 @@
+@import '~styles/layout.scss';
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.range {
+  display: block;
+  width: 10px;
+  height: 65px;
+  border-radius: 5px;
+  background-image: linear-gradient(to bottom, #a11a42, #fff);
+}
+
+.startPoint {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-color: #d3d3dc;
+  border: solid 2px $light-gray;
+  position: absolute;
+  left: -1px;
+  bottom: 5px;
+  border-radius: 6px;
+  box-shadow: 0 0 4px 0 $light-gray;
+}
+
+.scale {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+
+  > li {
+    font-size: $font-size-sm;
+    line-height: 2;
+    color: $dark-gray;
+  }
+}

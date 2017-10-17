@@ -6,6 +6,7 @@ import { actions as ghgEmissionsMetaProvider } from 'providers/ghg-emissions-met
 import { actions as countrySelect } from 'components/countries-select';
 import { actions as stories } from 'components/stories';
 import { actions as autocompleteSearch } from 'components/autocomplete-search';
+import { actions as ndcsAutocompleteSearch } from 'components/ndcs-autocomplete-search';
 import { actions as mapActions } from 'components/map';
 import { actions as modalMetadata } from 'components/modal-metadata';
 import { actions as ghgEmissionsActions } from 'components/ghg-emissions';
@@ -17,6 +18,7 @@ import { actions as countrySDGLinkages } from 'components/country-ndc-sdg-linkag
 import { actions as countryNDCActions } from 'pages/ndc-country';
 import { actions as countryNDCFullActions } from 'pages/ndc-country-full';
 import { actions as ndcSearchActions } from 'pages/ndc-search';
+import { actions as ndcSdgActions } from 'pages/ndc-sdg';
 
 export default {
   ...countriesProvider,
@@ -36,6 +38,8 @@ export default {
   ...mapActions,
   ...modalMetadata,
   ...autocompleteSearch,
+  ...ndcsAutocompleteSearch,
   ...ndcSearchActions,
-  ...ghgEmissionsActions
+  ...ghgEmissionsActions,
+  ...ndcSdgActions
 };
