@@ -1,7 +1,7 @@
 module Api
   module V1
     module Indc
-      class OverviewValueSerializer < ActiveModel::Serializer
+      class ValueOverviewSerializer < ActiveModel::Serializer
         attribute :slug
         attribute :name
         attribute :value

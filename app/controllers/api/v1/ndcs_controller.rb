@@ -15,6 +15,10 @@ module Api
       alias_method :read_attribute_for_serialization, :send
     end
 
+    NdcOverview = Struct.new(:values, :sectors) do
+      alias_method :read_attribute_for_serialization, :send
+    end
+
     class NdcsController < ApiController
       def index
         categories = ::Indc::Category.all
@@ -30,11 +34,18 @@ module Api
           where(indc_indicators: {
             slug: OVERVIEW_INDICATORS
           }, locations: {
-            iso_code3: 'BRA'
+            iso_code3: params[:code]
           })
 
-        render json: values,
-               each_serializer: Api::V1::Indc::OverviewValueSerializer
+        sectors = ::Indc::Sector.
+          includes(:parent, values: :location).
+          where(locations: {iso_code3: params[:code]}).
+          map(&:parent).
+          map(&:name).
+          uniq
+
+        render json: NdcOverview.new(values, sectors),
+               serializer: Api::V1::Indc::OverviewSerializer
       end
 
       private
