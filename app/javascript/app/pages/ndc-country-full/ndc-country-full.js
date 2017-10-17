@@ -51,7 +51,7 @@ class NDCCountryFullContainer extends PureComponent {
   onSearchChange = option => {
     const { match, fetchCountryNDCFull } = this.props;
     const { iso } = match.params;
-    if (option.groupId) {
+    if (option && option.groupId) {
       const optionValues = {
         [option.groupId]: option.value
       };
