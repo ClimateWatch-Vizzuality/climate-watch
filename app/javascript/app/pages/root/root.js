@@ -17,7 +17,7 @@ class Root extends PureComponent {
   }
 
   componentDidMount() {
-    ReactGA.initialize('UA-0000000-00');
+    ReactGA.initialize('UA-1981881-51');
   }
 
   componentDidUpdate() {
