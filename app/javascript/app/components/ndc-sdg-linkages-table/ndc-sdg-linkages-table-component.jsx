@@ -22,7 +22,7 @@ class NdcSdgLinkagesTable extends PureComponent {
       handleClickClose
     } = this.props;
 
-    if (!goals || !goals.length) return <Loading />;
+    if (!goals || !goals.length) return <Loading className={styles.loading} />;
     return (
       <div>
         {selectedGoal ? (

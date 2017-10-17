@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 
 const getGoals = state => state.meta.goals || null;
 const getTargets = state => state.meta.targets || null;
@@ -18,7 +19,7 @@ export const getParsedGoals = createSelector(
       id: goal.id,
       title: goal.cw_title,
       number: parseInt(goal.number, 10),
-      targets: targets[goal.number]
+      targets: sortBy(targets[goal.number], 'number')
     }));
     parsedGoals.push({ title: 'empty to have round number of elements' });
     return parsedGoals;
