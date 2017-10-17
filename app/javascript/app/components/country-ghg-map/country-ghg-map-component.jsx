@@ -8,12 +8,11 @@ import styles from './country-ghg-map-styles.scss';
 class CountryGhgMap extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { paths, forceUpdate, legend } = this.props;
+    const { paths, legend } = this.props;
 
     return (
       <div className={styles.container}>
         <Map
-          cache={!forceUpdate}
           style={{ height: '100%', width: '100%' }}
           zoomEnable
           paths={paths}
@@ -27,7 +26,6 @@ class CountryGhgMap extends PureComponent {
 
 CountryGhgMap.propTypes = {
   paths: PropTypes.array.isRequired,
-  forceUpdate: PropTypes.bool,
   legend: PropTypes.object.isRequired
 };
 
