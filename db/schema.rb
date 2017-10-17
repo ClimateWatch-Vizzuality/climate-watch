@@ -280,6 +280,7 @@ ActiveRecord::Schema.define(version: 20171016113522) do
     t.text "definition"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["acronym"], name: "index_wri_metadata_acronyms_on_acronym", unique: true
   end
 
   create_table "wri_metadata_properties", force: :cascade do |t|
@@ -287,6 +288,7 @@ ActiveRecord::Schema.define(version: 20171016113522) do
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_wri_metadata_properties_on_slug", unique: true
   end
 
   create_table "wri_metadata_sources", force: :cascade do |t|
@@ -302,6 +304,7 @@ ActiveRecord::Schema.define(version: 20171016113522) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_wri_metadata_values_on_property_id"
+    t.index ["source_id", "property_id"], name: "source_id_property_id_index", unique: true
     t.index ["source_id"], name: "index_wri_metadata_values_on_source_id"
   end
 

@@ -2,6 +2,8 @@ module WriMetadata
   class Source < ApplicationRecord
     has_many :values, class_name: 'WriMetadata::Value'
 
+    validates :name, presence: true
+
     def value_by_property(property)
       self.values.
         find do |value|

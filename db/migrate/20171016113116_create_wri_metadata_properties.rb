@@ -5,5 +5,7 @@ class CreateWriMetadataProperties < ActiveRecord::Migration[5.1]
       t.text :name
       t.timestamps
     end
+
+    add_index :wri_metadata_properties, :slug, unique: true
   end
 end

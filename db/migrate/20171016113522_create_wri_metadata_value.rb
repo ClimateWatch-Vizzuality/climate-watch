@@ -6,5 +6,8 @@ class CreateWriMetadataValue < ActiveRecord::Migration[5.1]
       t.text :value
       t.timestamps
     end
+
+   add_index :wri_metadata_values, [:source_id, :property_id],
+             unique: true, name: 'source_id_property_id_index'
   end
 end
