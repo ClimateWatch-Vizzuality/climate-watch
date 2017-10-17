@@ -6,7 +6,7 @@ const getSectors = state => state.sectors || null;
 const getTargets = state => state.targets || null;
 const getGoals = state => state.goals || null;
 const getQuery = state => state.query || null;
-const getQueryValues = state => state.search || null;
+const getSearch = state => state.search || null;
 
 export const getQueryUpper = state => deburrUpper(state.query);
 
@@ -53,21 +53,16 @@ export const getSearchList = createSelector(
 );
 
 export const getOptionSelected = createSelector(
-  [getSearchList, getQueryValues],
-  (options, queryValues) => {
-    if (!options || !queryValues) return null;
-    if (queryValues.query) {
+  [getSearchList, getSearch],
+  (options, search) => {
+    if (!options || !search) return null;
+    if (search.searchBy === 'query') {
       return {
-        label: queryValues.query,
-        value: queryValues.query
+        label: search.query,
+        value: search.query
       };
     }
-    return options.find(
-      option =>
-        option.value === queryValues.sector ||
-        option.value === queryValues.goal ||
-        option.value === queryValues.target
-    );
+    return options.find(option => option.value === search.query);
   }
 );
 

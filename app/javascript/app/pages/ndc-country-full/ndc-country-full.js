@@ -53,7 +53,8 @@ class NDCCountryFullContainer extends PureComponent {
     const { iso } = match.params;
     if (option && option.groupId) {
       const optionValues = {
-        [option.groupId]: option.value
+        searchBy: option.groupId,
+        query: option.value
       };
       fetchCountryNDCFull(iso, optionValues);
     }

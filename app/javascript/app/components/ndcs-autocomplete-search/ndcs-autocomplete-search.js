@@ -65,7 +65,10 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
   handleValueClick = option => {
     if (option) {
       this.props.onSearchChange(option);
-      this.updateUrlParam({ name: option.groupId, value: option.value }, true);
+      this.updateUrlParam([
+        { name: 'searchBy', value: option.groupId },
+        { name: 'query', value: option.value }
+      ]);
     }
   };
 
