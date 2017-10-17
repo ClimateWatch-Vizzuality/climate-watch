@@ -1,29 +1,60 @@
 import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
-// import Proptypes from 'prop-types';
-// import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { getLocationParamUpdated } from 'utils/navigation';
+import qs from 'query-string';
 
 import NdcSdgLinkagesTableComponent from './ndc-sdg-linkages-table-component';
-import { parsedNdcsSdgs } from './ndc-sdg-linkages-table-selectors';
+import {
+  getParsedGoals,
+  getGoalSelected
+} from './ndc-sdg-linkages-table-selectors';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, { location }) => {
   const { ndcsSdgsMeta } = state;
+  const selectedGoal = qs.parse(location.search).goal;
+  const sdgData = {
+    selectedGoal,
+    meta: ndcsSdgsMeta.data
+  };
   return {
-    sdgs: parsedNdcsSdgs(ndcsSdgsMeta)
+    goals: getParsedGoals(sdgData),
+    selectedGoal: getGoalSelected(sdgData)
   };
 };
 
 class NdcSdgLinkagesTableContainer extends PureComponent {
+  updateUrlParam(param, clear) {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, param, clear));
+  }
+
+  handleClickGoal = sdgNumber => {
+    this.updateUrlParam({ name: 'goal', value: sdgNumber });
+  };
+
+  handleClickClose = () => {
+    this.updateUrlParam({ name: 'goal', value: '' });
+  };
+
   render() {
     return createElement(NdcSdgLinkagesTableComponent, {
-      ...this.props
+      ...this.props,
+      handleClickGoal: this.handleClickGoal,
+      handleClickClose: this.handleClickClose
     });
   }
 }
 
-NdcSdgLinkagesTableContainer.propTypes = {};
+NdcSdgLinkagesTableContainer.propTypes = {
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
+};
 
 export { default as component } from './ndc-sdg-linkages-table-component';
 export { default as styles } from './ndc-sdg-linkages-table-styles';
 
-export default connect(mapStateToProps, null)(NdcSdgLinkagesTableContainer);
+export default withRouter(
+  connect(mapStateToProps, null)(NdcSdgLinkagesTableContainer)
+);

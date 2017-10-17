@@ -12,7 +12,11 @@ const colorScale = scaleLinear()
 
 export const getNdcsSdgsGoalsDataSelected = createSelector(
   [getNdcsSdgsGoalsData, getGoalSelected],
-  (data, goalSelected) => data[goalSelected] || null
+  (data, goalSelected) => {
+    if (!data) return null;
+    if (!goalSelected) return data[0];
+    return data[goalSelected];
+  }
 );
 
 export const getPathsWithStyles = createSelector(

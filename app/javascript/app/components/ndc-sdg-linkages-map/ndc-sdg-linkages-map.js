@@ -1,16 +1,17 @@
 import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
-// import Proptypes from 'prop-types';
-// import { withRouter } from 'react-router';
+import qs from 'query-string';
+import { withRouter } from 'react-router';
 
 import NdcSdgLinkagesMapComponent from './ndc-sdg-linkages-map-component';
 import { getPathsWithStyles } from './ndc-sdg-linkages-map-selectors';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, { location }) => {
   const { data: goalsData } = state.ndcSdg;
+  const goalSelected = qs.parse(location.search).goal;
   const data = {
     goalsData,
-    goalSelected: '1' // TODO: get this real
+    goalSelected
   };
   return {
     paths: getPathsWithStyles(data)
@@ -29,4 +30,4 @@ NdcSdgLinkagesMapContainer.propTypes = {};
 export { default as component } from './ndc-sdg-linkages-map-component';
 export { default as styles } from './ndc-sdg-linkages-map-styles';
 
-export default connect(mapStateToProps)(NdcSdgLinkagesMapContainer);
+export default withRouter(connect(mapStateToProps)(NdcSdgLinkagesMapContainer));
