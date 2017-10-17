@@ -1,6 +1,7 @@
 class ImportWriMetadata
   WRI_ACRONYMS_FILEPATH = 'metadata/Acronyms.csv'.freeze
   WRI_METADATA_FILEPATH = 'metadata/metadata_sources.csv'.freeze
+  WRI_DESCRIPTIONS_FILEPATH = 'metadata/metadata_sources_descriptions.csv'.freeze
 
   def call
     cleanup
@@ -25,6 +26,11 @@ class ImportWriMetadata
   def load_csvs
     @acronyms = S3CSVReader.read(WRI_ACRONYMS_FILEPATH)
     @metadata = S3CSVReader.read(WRI_METADATA_FILEPATH)
+    @descriptions_index = S3CSVReader.read(WRI_DESCRIPTIONS_FILEPATH).
+      reduce({}) do |memo, current|
+        memo[current[:id].to_sym] = current[:description]
+        memo
+      end
     @sources_index = {}
     @properties_index = {}
   end
@@ -51,7 +57,8 @@ class ImportWriMetadata
     properties = @metadata.first.to_h.except(:dataset).keys
     properties.each do |a|
       @properties_index[a] = WriMetadata::Property.create!(
-        name: a
+        slug: a,
+        name: @descriptions_index[a]
       )
     end
   end

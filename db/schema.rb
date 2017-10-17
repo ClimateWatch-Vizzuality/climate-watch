@@ -283,6 +283,7 @@ ActiveRecord::Schema.define(version: 20171016113522) do
   end
 
   create_table "wri_metadata_properties", force: :cascade do |t|
+    t.text "slug"
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
