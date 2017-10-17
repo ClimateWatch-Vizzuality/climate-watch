@@ -14,15 +14,21 @@ class Root extends PureComponent {
   constructor(props) {
     super(props);
     props.getCountries();
+    const page = props.location.pathname;
+    this.trackPage(page);
   }
 
   componentDidMount() {
     ReactGA.initialize('UA-1981881-51');
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(nextProps) {
     const page = this.props.location.pathname;
-    this.trackPage(page);
+    const newPage = nextProps.location.pathname;
+
+    if (page !== newPage) {
+      this.trackPage(page);
+    }
   }
 
   trackPage = page => {
