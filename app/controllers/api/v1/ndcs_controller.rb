@@ -29,6 +29,8 @@ module Api
       end
 
       def content_overview
+        Location.find_by!(iso_code3: params[:code])
+
         values = ::Indc::Value.
           includes(:indicator, :location).
           where(indc_indicators: {

@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       resources :adaptations, only: [:index]
       resources :metadata, only: [:index, :show]
 
-      get '(*endpoint)', controller: :api, action: :not_found
+      get '(*endpoint)', controller: :api, action: :route_not_found
     end
   end
 
