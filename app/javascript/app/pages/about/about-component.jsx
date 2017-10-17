@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import cx from 'classnames';
 import Header from 'components/header';
 import Intro from 'components/intro';
 
@@ -21,30 +21,56 @@ const About = ({ route, sections }) => (
       {sections.map(section => (
         <div key={section.title} className={styles.section}>
           <h2 className={styles.title}>{section.title}</h2>
-          <div className={styles.partners}>
+          <div
+            className={cx(styles.partners, {
+              [styles.additionalData]: section.id === 'additional-data'
+            })}
+          >
             {section.partners &&
-              section.partners.map(partner => (
-                <a
-                  key={partner.link}
-                  className={styles.partner}
-                  href={partner.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {partner.img && (
-                    <img
-                      key={partner.img.alt}
-                      src={partner.img.src}
-                      alt={partner.img.alt}
-                    />
-                  )}
-                  {partner.text && (
-                    <p className={styles.partnerText} key={partner.text}>
-                      {partner.text}
-                    </p>
-                  )}
-                </a>
-              ))}
+              section.partners.map(
+                partner =>
+                  (section.id === 'additional-data' ? (
+                    <div className={styles.partner} key={partner.id}>
+                      <a
+                        className={styles.link}
+                        href={partner.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {partner.text && (
+                          <div
+                            className={styles.additionalDataLink}
+                            key={partner.id}
+                          >
+                            {partner.text}
+                          </div>
+                        )}
+                      </a>
+                    </div>
+                  ) : (
+                    <div className={styles.partner} key={partner.id}>
+                      <a
+                        className={styles.link}
+                        href={partner.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {partner.img && (
+                          <img
+                            key={partner.img.alt}
+                            src={partner.img.src}
+                            alt={partner.img.alt}
+                          />
+                        )}
+                      </a>
+                      {partner.text && (
+                        <div className={styles.text} key={partner.id}>
+                          {partner.text}
+                        </div>
+                      )}
+                    </div>
+                  ))
+              )}
           </div>
         </div>
       ))}

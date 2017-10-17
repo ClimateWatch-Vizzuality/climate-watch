@@ -2,7 +2,8 @@
 @import '~styles/settings.scss';
 
 .section {
-  padding: 40px 0;
+  padding: 40px 30px;
+  margin: 0 -30px;
 
   &:not(:last-child) {
     border-bottom: solid 1px #cbccd0;
@@ -19,18 +20,30 @@
 .partners {
   @extend %grid;
 
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-row-gap: $gutter-padding;
-}
+  justify-items: start;
 
-.partner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .partner {
+    .link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-.partnerText {
-  font-size: $font-size;
-  color: $theme-color;
-  font-weight: $font-weight-bold;
+      .additionalDataLink {
+        color: $theme-color;
+        border-bottom: solid 1px $theme-secondary;
+      }
+    }
+
+    .text {
+      margin-top: 10px;
+      font-size: $font-size;
+      color: $dark-gray;
+    }
+  }
+
+  &.additionalData {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
