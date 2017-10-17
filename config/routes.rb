@@ -15,7 +15,8 @@ Rails.application.routes.draw do
         get :text, on: :member, controller: :ndc_texts, action: :show
         get :sdgs, on: :collection, controller: :ndc_sdgs, action: :index
         get :sdgs, on: :member, controller: :ndc_sdgs, action: :show
-        get :overview, on: :collection, controller: :ndc_sdgs, action: :overview
+        get :sdgs_overview, on: :collection, controller: :ndc_sdgs,
+          action: :sdgs_overview
       end
       resources :adaptations, only: [:index]
       resources :metadata, only: [:index, :show]

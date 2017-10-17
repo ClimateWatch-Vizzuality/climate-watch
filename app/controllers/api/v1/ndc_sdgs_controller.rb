@@ -30,7 +30,7 @@ module Api
                serializer: Api::V1::NdcSdg::NdcSerializer
       end
 
-      def overview
+      def sdgs_overview
         goals = ::NdcSdg::Goal.
           includes(targets: {ndc_targets: {ndc: :location}})
 

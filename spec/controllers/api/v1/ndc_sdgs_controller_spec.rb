@@ -67,18 +67,18 @@ describe Api::V1::NdcSdgsController, type: :controller do
       end
     end
 
-    describe 'GET overview' do
+    describe 'GET sdgs_overview' do
       let!(:some_ndc_sdg_goals) {
         FactoryGirl.create_list(:ndc_sdg_goal, 5, :with_dependants)
       }
 
       it 'returns a successful 200 response' do
-        get :overview
+        get :sdgs_overview
         expect(response).to be_success
       end
 
       it 'returns a list of goals' do
-        get :overview
+        get :sdgs_overview
         expect(parsed_response.length).to eq(5)
       end
     end
