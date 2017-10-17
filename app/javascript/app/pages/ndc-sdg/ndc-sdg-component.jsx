@@ -8,7 +8,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import NdcSdgLinkagesTable from 'components/ndc-sdg-linkages-table';
-import Map from 'components/map';
+import NdcSdgLinkagesMap from 'components/ndc-sdg-linkages-map';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';
@@ -32,7 +32,7 @@ class NdcSdg extends PureComponent {
         <div className={styles.wrapper}>
           <div className={cx(layout.content, styles.grid)}>
             <NdcSdgLinkagesTable />
-            <Map style={{ width: '100%', height: '100%' }} />
+            <NdcSdgLinkagesMap />
           </div>
         </div>
       </div>
