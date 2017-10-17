@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
-import actions from './ndc-sdg-linkages-table-actions';
 
 import NdcSdgLinkagesTableComponent from './ndc-sdg-linkages-table-component';
 import { parsedNdcsSdgs } from './ndc-sdg-linkages-table-selectors';
@@ -43,10 +42,7 @@ NdcSdgLinkagesTableContainer.propTypes = {
 
 export { default as component } from './ndc-sdg-linkages-table-component';
 export { default as styles } from './ndc-sdg-linkages-table-styles';
-export { initialState } from './ndc-sdg-linkages-table-reducers';
-export { default as reducers } from './ndc-sdg-linkages-table-reducers';
-export { default as actions } from './ndc-sdg-linkages-table-actions';
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NdcSdgLinkagesTableContainer)
+  connect(mapStateToProps, null)(NdcSdgLinkagesTableContainer)
 );

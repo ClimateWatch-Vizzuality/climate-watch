@@ -11,7 +11,6 @@ import { reducers as storiesReducers } from 'components/stories';
 import { reducers as countrySelectReducers } from 'components/countries-select';
 import { reducers as ghgEmissionsReducers } from 'components/ghg-emissions';
 import { reducers as modalMetadataReducers } from 'components/modal-metadata';
-import { reducers as ndcSdgLinkagesTableReducers } from 'components/ndc-sdg-linkages-table';
 import { reducers as NDCSReducers } from 'pages/ndcs';
 import { reducers as countryGhgEmissionsMapReducers } from 'components/country-ghg-map';
 import { reducers as countryGhgEmissionsReducers } from 'components/country-ghg-emissions';
@@ -49,12 +48,6 @@ export default combineReducers({
     'search',
     allActions,
     ndcSearchReducers,
-    initialState
-  ),
-  ndcSdgLinkagesTable: handleActions(
-    'ndcSdgLinkagesTable',
-    allActions,
-    ndcSdgLinkagesTableReducers,
     initialState
   ),
   ghgEmissions: handleActions(

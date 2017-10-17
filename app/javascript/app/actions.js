@@ -6,7 +6,6 @@ import { actions as ghgEmissionsMetaProvider } from 'providers/ghg-emissions-met
 import { actions as countrySelect } from 'components/countries-select';
 import { actions as stories } from 'components/stories';
 import { actions as autocompleteSearch } from 'components/autocomplete-search';
-import { actions as ndcSdgLinkagesTable } from 'components/ndc-sdg-linkages-table';
 import { actions as mapActions } from 'components/map';
 import { actions as modalMetadata } from 'components/modal-metadata';
 import { actions as ghgEmissionsActions } from 'components/ghg-emissions';
@@ -38,6 +37,5 @@ export default {
   ...modalMetadata,
   ...autocompleteSearch,
   ...ndcSearchActions,
-  ...ghgEmissionsActions,
-  ...ndcSdgLinkagesTable
+  ...ghgEmissionsActions
 };
