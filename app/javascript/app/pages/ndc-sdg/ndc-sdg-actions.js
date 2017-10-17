@@ -12,7 +12,7 @@ const fetchSdgGoals = createThunkAction(
     const { ndcs } = state();
     if (ndcs && isEmpty(ndcs.data)) {
       dispatch(fetchSdgGoalsInit());
-      fetch('/api/v1/ndcs/overview')
+      fetch('/api/v1/ndcs/sdgs_overview')
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
