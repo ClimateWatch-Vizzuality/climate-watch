@@ -40,13 +40,15 @@ export const getTargetsMapped = createSelector([getTargets], targets => {
 export const getSearchList = createSelector(
   [getSectorsMapped, getGoalsMapped, getTargetsMapped, getQuery],
   (sectors, goals, targets, query) => {
-    const searchOptions = sectors.concat(goals, targets);
-    searchOptions.push({
-      label: `Search ${query} in document`,
-      value: query,
-      groupId: 'search'
-    });
-    return searchOptions;
+    const searchOptions = [];
+    if (query) {
+      searchOptions.push({
+        label: `Search for "${query}" in the document`,
+        value: query,
+        groupId: 'search'
+      });
+    }
+    return searchOptions.concat(sectors, goals, targets);
   }
 );
 

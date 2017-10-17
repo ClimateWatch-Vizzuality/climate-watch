@@ -21,20 +21,20 @@ export { default as actions } from './ndcs-autocomplete-search-actions';
 
 const groups = [
   {
-    groupId: 'sector',
-    title: 'Sectors'
+    groupId: 'search',
+    title: 'Search'
   },
   {
-    groupId: 'target',
-    title: 'Targets'
+    groupId: 'sector',
+    title: 'Sectors'
   },
   {
     groupId: 'goal',
     title: 'Goals'
   },
   {
-    groupId: 'search',
-    title: 'Search'
+    groupId: 'target',
+    title: 'Targets'
   }
 ];
 
@@ -57,8 +57,9 @@ const mapStateToProps = (state, props) => {
 };
 
 class NdcsAutocompleteSearchContainer extends PureComponent {
-  componentWillUnmount() {
-    this.props.setNdcsAutocompleteSearch('');
+  componentDidMount() {
+    const search = qs.parse(this.props.location.search).search || '';
+    this.props.setNdcsAutocompleteSearch(search);
   }
 
   handleValueClick = option => {

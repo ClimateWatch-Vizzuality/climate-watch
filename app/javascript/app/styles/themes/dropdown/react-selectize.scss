@@ -277,8 +277,24 @@ $height: 45px;
       }
 
       .simple-group-title {
-        background-color: $dark-gray;
+        border-bottom: solid 1px #e5e5eb;
+        border-top: solid 1px #e5e5eb;
         padding: 12px 10px;
+        text-transform: uppercase;
+        font-size: $font-size-s;
+        font-weight: $font-weight-bold;
+      }
+
+      .groups {
+        .option-wrapper {
+          .simple-option {
+            padding-left: 20px;
+
+            &.-search {
+              padding-left: 10px;
+            }
+          }
+        }
       }
 
       .option-wrapper {
@@ -295,7 +311,7 @@ $height: 45px;
 
         .simple-option {
           cursor: pointer;
-          padding: 12px 10px;
+          padding: 12px 30px 12px 10px;
 
           &.not-selectable {
             background-color: #f8f8f8;
