@@ -1,5 +1,16 @@
 module Api
   module V1
+    OVERVIEW_INDICATORS = [
+      'ghg_target_type',
+      'time_target_year',
+      'non_ghg_target',
+      'indc_summary',
+      'indc_summary_long',
+      'coverage_sectors',
+      'coverage_sectors_short',
+      'other_adaption info'
+    ]
+
     NdcIndicators = Struct.new(:indicators, :categories, :sectors) do
       alias_method :read_attribute_for_serialization, :send
     end
@@ -11,6 +22,19 @@ module Api
 
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer
+      end
+
+      def content_overview
+        values = ::Indc::Value.
+          includes(:indicator, :location).
+          where(indc_indicators: {
+            slug: OVERVIEW_INDICATORS
+          }, locations: {
+            iso_code3: 'BRA'
+          })
+
+        render json: values,
+               each_serializer: Api::V1::Indc::OverviewValueSerializer
       end
 
       private
