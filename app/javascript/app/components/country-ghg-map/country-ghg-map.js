@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
-import isEqual from 'lodash/isEqual';
 
 import Loading from 'components/loading';
 
@@ -55,11 +54,6 @@ const mapStateToProps = (state, { location, match, year }) => {
 const defaultZoom = 4;
 
 class CountryGhgMapContainer extends Component {
-  constructor() {
-    super();
-    this.state = { forceUpdate: false };
-  }
-
   componentDidMount() {
     const { center, setMapParams } = this.props;
     const params = {
@@ -74,7 +68,6 @@ class CountryGhgMapContainer extends Component {
     if (nextProps.sourceSelected !== this.props.sourceSelected) {
       this.fetchData(nextProps);
     }
-    this.state.forceUpdate = !isEqual(nextProps.paths, this.props.paths);
   }
 
   componentDidUpdate(prevProps) {
@@ -84,11 +77,6 @@ class CountryGhgMapContainer extends Component {
     };
     if (prevProps.center !== this.props.center) {
       this.props.setMapParams(params);
-    }
-    if (this.state.forceUpdate) {
-      // Not a good practice but I want to force a rerender
-      // because setting the map cache improve performance a lot!
-      this.setState({ forceUpdate: false }); // eslint-disable-line
     }
   }
 
@@ -107,8 +95,7 @@ class CountryGhgMapContainer extends Component {
     if (!this.props.ready) return <Loading light />;
 
     return createElement(CountryGhgMapComponent, {
-      ...this.props,
-      forceUpdate: this.state.forceUpdate
+      ...this.props
     });
   }
 }
@@ -116,7 +103,6 @@ class CountryGhgMapContainer extends Component {
 CountryGhgMapContainer.propTypes = {
   ready: PropTypes.bool,
   center: PropTypes.array,
-  paths: PropTypes.array.isRequired,
   defaultValues: PropTypes.object,
   sourceSelected: PropTypes.object,
   setMapParams: PropTypes.func.isRequired,

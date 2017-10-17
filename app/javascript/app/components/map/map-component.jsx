@@ -20,6 +20,7 @@ class Map extends PureComponent {
     const { zoom, center } = this.props;
     const { className } = this.props;
     const {
+      forceUpdate,
       paths,
       cache,
       style,
@@ -34,6 +35,7 @@ class Map extends PureComponent {
       onCountryLeave,
       defaultStyle
     } = this.props;
+
     return (
       <div className={cx(styles.wrapper, className)}>
         {zoomEnable && (
@@ -67,7 +69,7 @@ class Map extends PureComponent {
               >
                 <Geographies
                   geographyPaths={paths}
-                  disableOptimization={!cache}
+                  disableOptimization={forceUpdate || !cache}
                 >
                   {(geographies, projection) =>
                     geographies.map(geography => {
@@ -109,6 +111,7 @@ Map.propTypes = {
   zoom: PropTypes.number.isRequired,
   zoomEnable: PropTypes.bool,
   dragEnable: PropTypes.bool,
+  forceUpdate: PropTypes.bool,
   cache: PropTypes.bool,
   className: PropTypes.string,
   paths: PropTypes.array.isRequired,
@@ -130,6 +133,7 @@ Map.defaultProps = {
   zoom: 1,
   zoomEnable: false,
   dragEnable: true,
+  forceUpdate: false,
   cache: true,
   paths: [],
   tooltipId: '',

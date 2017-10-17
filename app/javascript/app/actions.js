@@ -17,6 +17,7 @@ import { actions as countrySDGLinkages } from 'components/country-ndc-sdg-linkag
 import { actions as countryNDCActions } from 'pages/ndc-country';
 import { actions as countryNDCFullActions } from 'pages/ndc-country-full';
 import { actions as ndcSearchActions } from 'pages/ndc-search';
+import { actions as ndcSdgActions } from 'pages/ndc-sdg';
 
 export default {
   ...countriesProvider,
@@ -37,5 +38,6 @@ export default {
   ...modalMetadata,
   ...autocompleteSearch,
   ...ndcSearchActions,
-  ...ghgEmissionsActions
+  ...ghgEmissionsActions,
+  ...ndcSdgActions
 };
