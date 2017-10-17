@@ -1,6 +1,10 @@
 # Climate Watch
 
-Add some nice description of the project.
+Table of Contents:
+
+- [Local Setup](#local-setup)
+- [Modules](#modules)
+- [API](#api)
 
 ## Local setup
 
@@ -137,3 +141,47 @@ The application actions file is free to import/export every module's actions ind
 
 In the app reducers we will import all module's reducers and bind them to a key in the store using a `handleActions` wrapper.
 This wrapper uses `redux-actions`'s `handleActions` and glues all the individual reducers together to the matching actions.
+
+## API
+
+### NDC-SDG Linkages
+
+#### Overview page
+
+- `GET /api/v1/ndcs/sdgs_overview` will return a response with the following
+format:
+
+```
+[
+  {
+    "id": 35,
+    "locations": {
+      "AFG": [
+        "1.1",
+        "1.5"
+      ],
+      "AGO": [
+        "1.1"
+      ]
+    },
+    "number": "1",
+    "targets": [
+      "1.1",
+      "1.2",
+      "1.3",
+      "1.4",
+      "1.5",
+      "1.a",
+      "1.b"
+    ]
+  }
+]
+```
+
+Where:
+
+- `id`: is the Sustainable Development Goal id;
+- `number`: is the goal number;
+- `locations`: is an array with all the locations that have linkages to targets
+of this goal;
+- `targets`: is the list of targets available for a given SDG goal;
