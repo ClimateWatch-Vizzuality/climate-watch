@@ -6,8 +6,9 @@ import { initialState as stories } from 'components/stories';
 import { initialState as modalMetadata } from 'components/modal-metadata';
 import { initialState as ghgEmissions } from 'components/ghg-emissions';
 import { initialState as countryGhgEmissionsMap } from 'components/country-ghg-map';
-import { initialState as ndcs } from 'pages/ndcs';
 import { initialState as countryGhgEmissions } from 'components/country-ghg-emissions';
+import { initialState as ndcSdgLinkagesTable } from 'components/ndc-sdg-linkages-table';
+import { initialState as ndcs } from 'pages/ndcs';
 import { initialState as countryNDC } from 'pages/ndc-country';
 import { initialState as countryNDCFull } from 'pages/ndc-country-full';
 import { initialState as NDCCompare } from 'pages/ndc-compare';
@@ -37,5 +38,6 @@ export default {
   ndcSearch,
   ghgEmissions,
   countryGhgEmissionsMap,
-  ghgEmissionsMeta
+  ghgEmissionsMeta,
+  ndcSdgLinkagesTable
 };

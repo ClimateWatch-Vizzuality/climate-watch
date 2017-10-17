@@ -10,27 +10,32 @@ import styles from './ndc-sdg-linkages-table-styles.scss';
 class NdcSdgLinkagesTable extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { sdgs } = this.props;
+    const { sdgs, selectSDG, selectedSDG } = this.props;
     if (!sdgs || !sdgs.length) return <div className={styles.placeholder} />;
     return (
       <div className={styles.container}>
-        {sdgs.map(sdg => (
-          <SDGCard
-            square
-            hover
-            key={sdg.title}
-            sdgData={sdg}
-            tooltipId="sdg-linkages"
-            className={cx(cardTheme.card, cardTheme.squaredCard)}
-          />
-        ))}
+        {selectedSDG ? null : ( // <- Goals List component
+          sdgs.map(sdg => (
+            <SDGCard
+              square
+              hover
+              onClick={() => selectSDG(sdg.number)}
+              key={sdg.title}
+              sdgData={sdg}
+              tooltipId="sdg-linkages"
+              className={cx(cardTheme.card, cardTheme.squaredCard)}
+            />
+          ))
+        )}
       </div>
     );
   }
 }
 
 NdcSdgLinkagesTable.propTypes = {
-  sdgs: PropTypes.array
+  sdgs: PropTypes.array,
+  selectSDG: PropTypes.func.isRequired,
+  selectedSDG: PropTypes.string
 };
 
 export default NdcSdgLinkagesTable;
