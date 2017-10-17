@@ -12,6 +12,7 @@ import { initialState as countryNDC } from 'pages/ndc-country';
 import { initialState as countryNDCFull } from 'pages/ndc-country-full';
 import { initialState as NDCCompare } from 'pages/ndc-compare';
 import { initialState as ndcSearch } from 'pages/ndc-search';
+import { initialState as ndcSdg } from 'pages/ndc-sdg';
 import { initialState as countries } from 'providers/countries-provider';
 import { initialState as regions } from 'providers/regions-provider';
 import { initialState as ndcsSdgsMeta } from 'providers/ndcs-sdgs-meta-provider';
@@ -37,5 +38,6 @@ export default {
   ndcSearch,
   ghgEmissions,
   countryGhgEmissionsMap,
-  ghgEmissionsMeta
+  ghgEmissionsMeta,
+  ndcSdg
 };
