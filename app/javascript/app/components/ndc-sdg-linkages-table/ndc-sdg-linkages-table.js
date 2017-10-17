@@ -34,10 +34,15 @@ class NdcSdgLinkagesTableContainer extends PureComponent {
     this.updateUrlParam({ name: 'goal', value: sdgNumber });
   };
 
+  handleClickClose = () => {
+    this.updateUrlParam({ name: 'goal', value: '' });
+  };
+
   render() {
     return createElement(NdcSdgLinkagesTableComponent, {
       ...this.props,
-      handleClickGoal: this.handleClickGoal
+      handleClickGoal: this.handleClickGoal,
+      handleClickClose: this.handleClickClose
     });
   }
 }

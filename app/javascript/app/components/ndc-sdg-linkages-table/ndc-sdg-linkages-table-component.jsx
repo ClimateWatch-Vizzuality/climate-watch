@@ -11,24 +11,34 @@ import styles from './ndc-sdg-linkages-table-styles.scss';
 class NdcSdgLinkagesTable extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { goals, selectedGoal, handleClickGoal } = this.props;
+    const {
+      goals,
+      selectedGoal,
+      handleClickGoal,
+      handleClickClose
+    } = this.props;
     if (!goals || !goals.length) return <div className={styles.placeholder} />;
     return (
-      <div className={styles.container}>
+      <div>
         {selectedGoal ? (
-          <NdcSdgLinkagesList goal={selectedGoal} />
+          <NdcSdgLinkagesList
+            onCloseClick={handleClickClose}
+            goal={selectedGoal}
+          />
         ) : (
-          goals.map(goal => (
-            <SDGCard
-              square
-              hover
-              onClick={() => handleClickGoal(goal.number)}
-              key={goal.title}
-              sdgData={goal}
-              tooltipId="sdg-linkages"
-              className={cx(cardTheme.card, cardTheme.squaredCard)}
-            />
-          ))
+          <div className={styles.container}>
+            {goals.map(goal => (
+              <SDGCard
+                square
+                hover
+                onClick={() => handleClickGoal(goal.number)}
+                key={goal.title}
+                sdgData={goal}
+                tooltipId="sdg-linkages"
+                className={cx(cardTheme.card, cardTheme.squaredCard)}
+              />
+            ))}
+          </div>
         )}
       </div>
     );
@@ -38,6 +48,7 @@ class NdcSdgLinkagesTable extends PureComponent {
 NdcSdgLinkagesTable.propTypes = {
   goals: PropTypes.array,
   handleClickGoal: PropTypes.func.isRequired,
+  handleClickClose: PropTypes.func.isRequired,
   selectedGoal: PropTypes.object
 };
 
