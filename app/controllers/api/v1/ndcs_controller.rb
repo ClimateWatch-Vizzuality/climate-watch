@@ -9,7 +9,7 @@ module Api
       'coverage_sectors',
       'coverage_sectors_short',
       'other_adaption info'
-    ]
+    ].freeze
 
     NdcIndicators = Struct.new(:indicators, :categories, :sectors) do
       alias_method :read_attribute_for_serialization, :send
@@ -33,11 +33,13 @@ module Api
 
         values = ::Indc::Value.
           includes(:indicator, :location).
-          where(indc_indicators: {
-            slug: OVERVIEW_INDICATORS
-          }, locations: {
-            iso_code3: params[:code]
-          })
+          where(
+            indc_indicators: {
+              slug: OVERVIEW_INDICATORS
+            }, locations: {
+              iso_code3: params[:code]
+            }
+          )
 
         sectors = ::Indc::Sector.
           includes(:parent, values: :location).
