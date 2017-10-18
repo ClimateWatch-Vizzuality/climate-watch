@@ -28,7 +28,7 @@
   color: $white;
   font-size: $font-size-large;
   z-index: 0;
-  background-size: 100%;
+  background-size: 106%;
   background-position: center;
   transition: background-size 0.3s ease-in;
 
@@ -45,7 +45,7 @@
   }
 
   &:hover {
-    background-size: 105%;
+    background-size: 110%;
   }
 
   &:first-child {

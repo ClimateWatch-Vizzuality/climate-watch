@@ -9,7 +9,7 @@ import iconLink from 'assets/icons/dropdown-arrow.svg';
 import styles from './result-card-styles.scss';
 
 const ResultCard = props => {
-  const { result, query } = props;
+  const { result, search } = props;
   return (
     <div className={styles.resultCard}>
       <div className={styles.header}>
@@ -21,7 +21,9 @@ const ResultCard = props => {
           <NavLink
             key={match.fragment}
             to={`/ndcs/country/${result.location
-              .iso_code3}/full?search=${query}&idx=${match.idx}&document=${result.document_type}`}
+              .iso_code3}/full?searchBy=${search.searchBy}&query=${search[
+              search.searchBy
+            ]}&idx=${match.idx}&document=${result.document_type}`}
             className={styles.match}
           >
             <div
@@ -40,7 +42,7 @@ const ResultCard = props => {
 
 ResultCard.propTypes = {
   result: PropTypes.object,
-  query: PropTypes.string
+  search: PropTypes.object
 };
 
 export default ResultCard;

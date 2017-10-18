@@ -21,7 +21,7 @@ class SearchPage extends PureComponent {
     const {
       loading,
       results,
-      query,
+      search,
       onSearchChange,
       route,
       docOptions,
@@ -36,7 +36,7 @@ class SearchPage extends PureComponent {
               <Search
                 theme={lightSearch}
                 placeholder="Search"
-                input={query}
+                input={search.query}
                 onChange={onSearchChange}
               />
             </div>
@@ -54,7 +54,7 @@ class SearchPage extends PureComponent {
                 <ResultCard
                   key={result.location.iso_code3}
                   result={result}
-                  query={query}
+                  search={search}
                 />
               ))}
           </div>
@@ -70,7 +70,7 @@ class SearchPage extends PureComponent {
 SearchPage.propTypes = {
   loading: PropTypes.bool,
   route: PropTypes.object.isRequired,
-  query: PropTypes.string,
+  search: PropTypes.object,
   results: PropTypes.array,
   onSearchChange: PropTypes.func.isRequired,
   docOptions: PropTypes.array,

@@ -27,7 +27,7 @@ class NdcSdg extends PureComponent {
     return (
       <div className={styles.bg}>
         <NdcsSdgsMetaProvider />
-        <Header size="medium" route={route}>
+        <Header size="small" route={route}>
           <div className={layout.content}>
             <div className={headerTheme.headerGrid}>
               <Intro title="NDC-SDG Linkages" />

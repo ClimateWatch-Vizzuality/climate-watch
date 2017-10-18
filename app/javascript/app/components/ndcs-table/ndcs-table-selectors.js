@@ -31,8 +31,8 @@ export const getindicatorsParsed = createSelector(
 );
 
 export const getSelectedCategory = createSelector(
-  [state => state.categorySelected, getCategories],
-  (selected, categories = []) => {
+  [state => state.categorySelected, getCategories, getIndicatorsData],
+  (selected, categories = [], indicators) => {
     if (categories.length > 0) {
       if (selected) {
         const filtered = categories.filter(
@@ -40,7 +40,12 @@ export const getSelectedCategory = createSelector(
         );
         return filtered.length > 0 ? filtered[0] : {};
       }
-      return categories[0];
+      const firstCategorywithIndicators = categories.find(category =>
+        indicators.some(
+          indicator => indicator.category_ids.indexOf(category.id) > -1
+        )
+      );
+      return firstCategorywithIndicators || categories[0];
     }
     return {};
   }

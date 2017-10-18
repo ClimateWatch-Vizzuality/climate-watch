@@ -9,6 +9,10 @@ $animation-delay-time: 0.1s;
   position: relative;
   transition: background-color $animation-time linear $animation-delay-time;
 
+  &:focus {
+    outline: none;
+  }
+
   &Hover:not(:empty) {
     cursor: pointer;
 
