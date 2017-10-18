@@ -102,8 +102,8 @@ SDGCard.propTypes = {
   className: PropTypes.string,
   activeSector: PropTypes.object,
   targetsMeta: PropTypes.object,
-  onClick: PropTypes.func.isRequired,
-  onMouseEnter: PropTypes.func.isRequired
+  onClick: PropTypes.func,
+  onMouseEnter: PropTypes.func
 };
 
 SDGCard.defaultProps = {
