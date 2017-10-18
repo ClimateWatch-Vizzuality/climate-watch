@@ -52,7 +52,7 @@ class NDCTable extends PureComponent {
           <Search
             input={query}
             theme={darkSearch}
-            onValueChange={handleSearchChange}
+            onChange={handleSearchChange}
             className={styles.searchBox}
             placeholder="Search table data"
           />
