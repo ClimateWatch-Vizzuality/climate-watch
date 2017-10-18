@@ -108,7 +108,9 @@ SDGCard.propTypes = {
 
 SDGCard.defaultProps = {
   square: false,
-  hover: false
+  hover: false,
+  onClick: () => {},
+  onMouseEnter: () => {}
 };
 
 export default SDGCard;
