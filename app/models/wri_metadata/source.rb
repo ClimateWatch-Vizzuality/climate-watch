@@ -5,9 +5,9 @@ module WriMetadata
     validates :name, presence: true
 
     def value_by_property(property)
-      self.values.
+      values.
         find do |v|
-         v.property.slug == property.to_s
+          v.property.slug == property.to_s
         end
     end
   end

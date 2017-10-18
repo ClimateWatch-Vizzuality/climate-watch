@@ -37,4 +37,3 @@ describe Api::V1::MetadataController, type: :controller do
     end
   end
 end
-
