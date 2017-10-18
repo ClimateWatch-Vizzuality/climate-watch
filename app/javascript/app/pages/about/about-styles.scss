@@ -25,17 +25,19 @@
   justify-items: start;
 
   .partner {
+    margin-bottom: 30px;
+
     .link {
       display: flex;
       align-items: center;
 
-      .additionalDataLink {
+      .linkLabel {
         color: $theme-color;
         border-bottom: solid 1px $theme-secondary;
       }
     }
 
-    .text {
+    .description {
       margin-top: 10px;
       font-size: $font-size;
       color: $dark-gray;

@@ -95,6 +95,7 @@ const partnershipWith = {
 const additionalData = {
   id: 'additional-data',
   title: 'Additional data provided by',
+  type: 'onlyLinks',
   partners: [
     {
       link: 'http://energyinnovation.org/',

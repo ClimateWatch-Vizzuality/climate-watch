@@ -17,60 +17,46 @@ const About = ({ route, sections }) => (
         />
       </div>
     </Header>
-    <div className={layout.content}>
+    <div>
       {sections.map(section => (
         <div key={section.title} className={styles.section}>
-          <h2 className={styles.title}>{section.title}</h2>
-          <div
-            className={cx(styles.partners, {
-              [styles.additionalData]: section.id === 'additional-data'
-            })}
-          >
-            {section.partners &&
-              section.partners.map(
-                partner =>
-                  (section.id === 'additional-data' ? (
-                    <div className={styles.partner} key={partner.id}>
-                      <a
-                        className={styles.link}
-                        href={partner.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {partner.text && (
-                          <div
-                            className={styles.additionalDataLink}
-                            key={partner.id}
-                          >
-                            {partner.text}
-                          </div>
-                        )}
-                      </a>
-                    </div>
-                  ) : (
-                    <div className={styles.partner} key={partner.id}>
-                      <a
-                        className={styles.link}
-                        href={partner.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {partner.img && (
-                          <img
-                            key={partner.img.alt}
-                            src={partner.img.src}
-                            alt={partner.img.alt}
-                          />
-                        )}
-                      </a>
+          <div className={layout.content}>
+            <h2 className={styles.title}>{section.title}</h2>
+            <div
+              className={cx(styles.partners, {
+                [styles.additionalData]: section.type === 'onlyLinks'
+              })}
+            >
+              {section.partners &&
+                section.partners.map(partner => (
+                  <div className={styles.partner} key={partner.id}>
+                    <a
+                      className={styles.link}
+                      href={partner.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {partner.img && (
+                        <img
+                          key={partner.img.alt}
+                          src={partner.img.src}
+                          alt={partner.img.alt}
+                        />
+                      )}
                       {partner.text && (
-                        <div className={styles.text} key={partner.id}>
+                        <div className={styles.linkLabel} key={partner.id}>
                           {partner.text}
                         </div>
                       )}
-                    </div>
-                  ))
-              )}
+                    </a>
+                    {partner.description && (
+                      <div className={styles.description} key={partner.id}>
+                        {partner.description}
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       ))}
