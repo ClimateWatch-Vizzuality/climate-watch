@@ -6,10 +6,9 @@ module WriMetadata
 
     def value_by_property(property)
       self.values.
-        find do |value|
-          value.property.slug == property.to_s
-        end.
-        value
+        find do |v|
+         v.property.slug == property.to_s
+        end
     end
   end
 end

@@ -2,6 +2,7 @@ module Api
   module V1
     module WriMetadata
       class SourceSerializer < ActiveModel::Serializer
+        attribute :name, key: :source
         attribute :title
         attribute :subtitle
         attribute :technical_title
@@ -19,10 +20,19 @@ module Api
         attribute :published_language
         attribute :published_title
 
-        def read_attribute_for_serialization(attribute)
-          object.value_by_property(attribute)
+        def source
+          object.name
         end
 
+        def read_attribute_for_serialization(attribute)
+          value = object.value_by_property(attribute)
+
+          if value.nil? && object.methods.include?(attribute)
+            object.send(attribute)
+          elsif !value.nil?
+            value.value
+          end
+        end
       end
     end
   end
