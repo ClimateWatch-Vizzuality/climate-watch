@@ -2,6 +2,7 @@
 
 /* eslint global-require: 0 */
 
+const dotenv = require('dotenv').config(); // eslint-disable-line
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -12,6 +13,8 @@ module.exports = merge(sharedConfig, {
   stats: 'normal',
 
   plugins: [
+    new webpack.EnvironmentPlugin(['GOOGLE_ANALYTICS_ID']),
+
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       sourceMap: false,
