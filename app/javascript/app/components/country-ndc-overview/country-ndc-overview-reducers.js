@@ -1,12 +1,37 @@
+import isEmpty from 'lodash/isEmpty';
+
 export const initialState = {
-  data: null
+  loading: false,
+  loaded: false,
+  data: {}
 };
 
-const countryNdcOverviewAction = (state, { payload }) => ({
-  ...state,
-  data: payload
-});
+const setLoading = (state, loading) => ({ ...state, loading });
+const setLoaded = (state, loaded) => ({ ...state, loaded });
 
 export default {
-  countryNdcOverviewAction
+  fetchCountryNdcOverviewInit: state => setLoading(state, true),
+  fetchCountryNdcOverviewDataReady: (state, { payload }) => {
+    if (isEmpty(payload)) {
+      return setLoaded(setLoading(false, state), true);
+    }
+    const newState = {
+      ...state,
+      data: {
+        ...state.data,
+        [payload.iso]: payload.data
+      }
+    };
+    return setLoaded(setLoading(newState, false), true);
+  },
+  fetchCountryNdcOverviewFail: (state, { payload }) => {
+    const newState = {
+      ...state,
+      data: {
+        ...state.data,
+        [payload]: {}
+      }
+    };
+    return setLoaded(setLoading(false, newState), true);
+  }
 };
