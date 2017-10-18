@@ -18,7 +18,7 @@
 .actions {
   @extend %grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 2fr 3fr;
 }
 
 .subTitle {
@@ -65,9 +65,9 @@
 .listItem {
   font-size: $font-size;
   color: $theme-color;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .adaptionList {
-  margin-top: -31px;
+  margin-top: -29px;
 }
