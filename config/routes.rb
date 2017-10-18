@@ -21,7 +21,9 @@ Rails.application.routes.draw do
           action: :content_overview
       end
       resources :adaptations, only: [:index]
-      resources :metadata, only: [:index, :show]
+      resources :metadata, param: :slug, only: [:index, :show] do
+        get :acronyms, on: :collection, controller: :metadata, action: :acronyms
+      end
 
       get '(*endpoint)', controller: :api, action: :route_not_found
     end
