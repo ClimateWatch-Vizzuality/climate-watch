@@ -20,8 +20,6 @@ spec:
         resources:
           requests:
             memory: "128Mi"
-          limits:
-            memory: "512Mi"
         env:
           - name: RACK_ENV
             value: production
