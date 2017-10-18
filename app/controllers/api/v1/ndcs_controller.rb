@@ -24,6 +24,12 @@ module Api
         categories = ::Indc::Category.all
         sectors = ::Indc::Sector.all
 
+        if params[:filter]
+          categories = categories.where(
+            category_type: params[:filter]
+          )
+        end
+
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer
       end
