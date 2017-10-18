@@ -3,9 +3,9 @@ import groupBy from 'lodash/groupBy';
 import toUpper from 'lodash/toUpper';
 
 const getResultsData = state => state.results || null;
-const getDocQuery = state => state.document || null;
+const getDocQuery = state => state.search.document || null;
 const getLocation = state => state.location || null;
-const getQuery = state => state.query || null;
+const getQuery = state => state.search.query || null;
 
 export const getDocumentOptions = createSelector([getResultsData], results => {
   if (!results) return null;
