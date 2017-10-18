@@ -9,105 +9,96 @@ import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
 import styles from './country-ndc-overview-styles.scss';
 
-const cardData = [
-  {
-    title: 'GHG Target',
-    data: {
-      targetType: 'Absolute Emission Reduction',
-      targetYear: '2025'
-    }
-  },
-  {
-    title: 'Non-GHG Target',
-    data: {
-      targetType: 'Absolute Emission Reduction',
-      targetYear: '2030'
-    }
-  },
-  {
-    title: 'Sectoral coverage'
-  }
-];
-
-const listData = [
-  'Cross-cutting area',
-  'Education',
-  'Energy',
-  'Health',
-  'LULUCF/Forestry',
-  'Social Development'
-];
-
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { iso } = this.props;
+    const { iso, sectors, values } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
-          <div className={cx(styles.header, styles.col2)}>
-            <Intro
-              theme={introTheme}
-              title="NDC Content Overview"
-              description="Brazil intends to commit to reduce greenhouse gas emissions by 37% below 2005 levels in 2025, with an indicative goal to reduce GHG emissions by 43% by 2030, relative to 2005 levels."
-            />
-            <div className={styles.actions}>
-              <div className={styles.printButton} />
-              <Button
-                className={styles.exploreBtn}
-                color="white"
-                link={`/ndcs/compare?locations=${iso}`}
-              >
-                Compare
-              </Button>
-              <Button
-                className={styles.exploreBtn}
-                color="yellow"
-                link={`/ghg-emissions?breakBy=location&filter=${iso}`}
-              >
-                See more
-              </Button>
-            </div>
-          </div>
-          <h4 className={styles.subTitle}>Mitigation contribution</h4>
-          <div className={styles.cards}>
-            {cardData &&
-              cardData.map(card => (
-                <Card title={card.title} key={card.title}>
+          {values && sectors &&
+            <div>
+              <div className={cx(styles.header, styles.col2)}>
+                <Intro
+                  theme={introTheme}
+                  title="Nationally Determined Contribution (NDC) Overview"
+                  description={values.indc_summary[0].value}
+                />
+                <div className={styles.actions}>
+                  <div className={styles.printButton} />
+                  <Button
+                    className={styles.exploreBtn}
+                    color="white"
+                    link={`/ndcs/compare?locations=${iso}`}
+                  >
+                    Compare
+                  </Button>
+                  <Button
+                    className={styles.exploreBtn}
+                    color="yellow"
+                    link={`/ndcs/country/${iso}`}
+                  >
+                    Explore NDC content
+                  </Button>
+                </div>
+              </div>
+              <h4 className={styles.subTitle}>Mitigation contribution</h4>
+              <div className={styles.cards}>
+                <Card title="GHG Target">
                   <div className={styles.cardContent}>
-                    {card.data && (
+                    {values.ghg_target_type.length ?
                       <div>
                         <span className={styles.metaTitle}>Target type</span>
-                        <p className={styles.targetText}>
-                          {card.data.targetType}
-                        </p>
+                        <p className={styles.targetText} dangerouslySetInnerHTML={{ __html: values.ghg_target_type[0].value }} />
                         <span className={styles.metaTitle}>Target year</span>
-                        <p className={styles.targetText}>
-                          {card.data.targetYear}
-                        </p>
+                        <p className={styles.targetText} dangerouslySetInnerHTML={{ __html: values.time_target_year[0].value }} />
                       </div>
-                    )}
-                    {!card.data && (
+                      :
                       <div className={styles.noContent}>Not included</div>
-                    )}
+                    }
                   </div>
                 </Card>
-              ))}
-            {listData && (
-              <div>
-                <h4 className={cx(styles.subTitle, styles.adaptionList)}>
-                  Adaptation Contribution
-                </h4>
-                <ul className={styles.list}>
-                  {listData.map(item => (
-                    <li className={styles.listItem} key={item}>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <Card title="Non-GHG Target">
+                  <div className={styles.cardContent}>
+                    {values.non_ghg_target.length ?
+                      <p className={styles.targetText} dangerouslySetInnerHTML={{ __html: values.non_ghg_target[0].value }} /> // eslint-disable-line
+                      :
+                      <div className={styles.noContent}>Not included</div>
+                    }
+                  </div>
+                </Card>
+                <Card title="Sectoral coverage">
+                  <div className={styles.cardContent}>
+                    {values.coverage_sectors_short.length ?
+                      <p className={styles.targetText} dangerouslySetInnerHTML={{ __html: values.coverage_sectors_short[0].value }} /> // eslint-disable-line
+                      :
+                      <div className={styles.noContent}>Not included</div>
+                    }
+                  </div>
+                </Card>
+                <div>
+                  <h4 className={cx(styles.subTitle, styles.adaptionList)}>
+                    Adaptation Contribution
+                  </h4>
+                  <Card title="Sectoral coverage">
+                    <div className={styles.cardContent}>
+                      {sectors.length ?
+                        <ul className={styles.list}>
+                          {sectors.map(sector => (
+                            <li key={sector} className={styles.listItem}>
+                              {sector}
+                            </li>
+                          ))}
+                        </ul>
+                        :
+                        <div className={styles.noContent}>Not included</div>
+                      }
+                    </div>
+                  </Card>
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+          }
         </div>
       </div>
     );
@@ -115,7 +106,9 @@ class CountryNdcOverview extends PureComponent {
 }
 
 CountryNdcOverview.propTypes = {
-  iso: PropTypes.string
+  iso: PropTypes.string,
+  sectors: PropTypes.array,
+  values: PropTypes.object
 };
 
 export default CountryNdcOverview;
