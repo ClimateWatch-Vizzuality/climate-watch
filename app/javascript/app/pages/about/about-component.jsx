@@ -29,7 +29,10 @@ const About = ({ route, sections }) => (
             >
               {section.partners &&
                 section.partners.map(partner => (
-                  <div className={styles.partner} key={partner.id}>
+                  <div
+                    className={styles.partner}
+                    key={partner.alt ? partner.alt : partner.img.alt}
+                  >
                     <a
                       className={styles.link}
                       href={partner.link}
@@ -43,9 +46,9 @@ const About = ({ route, sections }) => (
                           alt={partner.img.alt}
                         />
                       )}
-                      {partner.text && (
+                      {partner.alt && (
                         <div className={styles.linkLabel} key={partner.id}>
-                          {partner.text}
+                          {partner.alt}
                         </div>
                       )}
                     </a>

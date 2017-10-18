@@ -99,27 +99,27 @@ const additionalData = {
   partners: [
     {
       link: 'http://energyinnovation.org/',
-      text: 'Energy innnovation'
+      alt: 'Energy innnovation'
     },
     {
       link: 'http://www.cprindia.org/',
-      text: 'CPR India'
+      alt: 'CPR India'
     },
     {
       link: 'https://www.ucc.ie',
-      text: 'UCC Ireland'
+      alt: 'UCC Ireland'
     },
     {
       link: 'http://www.psi.org/',
-      text: 'PSI'
+      alt: 'PSI'
     },
     {
       link: 'https://www.eia.gov/',
-      text: 'US EIA'
+      alt: 'US EIA'
     },
     {
       link: 'https://www.ulisboa.pt/en',
-      text: 'University of Lisbon'
+      alt: 'University of Lisbon'
     }
   ]
 };
