@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011134822) do
+ActiveRecord::Schema.define(version: 20171016113522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -275,6 +275,39 @@ ActiveRecord::Schema.define(version: 20171011134822) do
     t.index ["sector_id"], name: "index_wb_indc_values_on_sector_id"
   end
 
+  create_table "wri_metadata_acronyms", force: :cascade do |t|
+    t.text "acronym"
+    t.text "definition"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["acronym"], name: "index_wri_metadata_acronyms_on_acronym", unique: true
+  end
+
+  create_table "wri_metadata_properties", force: :cascade do |t|
+    t.text "slug"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_wri_metadata_properties_on_slug", unique: true
+  end
+
+  create_table "wri_metadata_sources", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "wri_metadata_values", force: :cascade do |t|
+    t.bigint "source_id"
+    t.bigint "property_id"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["property_id"], name: "index_wri_metadata_values_on_property_id"
+    t.index ["source_id", "property_id"], name: "source_id_property_id_index", unique: true
+    t.index ["source_id"], name: "index_wri_metadata_values_on_source_id"
+  end
+
   add_foreign_key "adaptation_values", "adaptation_variables", column: "variable_id", on_delete: :cascade
   add_foreign_key "adaptation_values", "locations", on_delete: :cascade
   add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
@@ -307,6 +340,8 @@ ActiveRecord::Schema.define(version: 20171011134822) do
   add_foreign_key "wb_indc_values", "locations", on_delete: :cascade
   add_foreign_key "wb_indc_values", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "wb_indc_values", "wb_indc_sectors", column: "sector_id", on_delete: :cascade
+  add_foreign_key "wri_metadata_values", "wri_metadata_properties", column: "property_id", on_delete: :cascade
+  add_foreign_key "wri_metadata_values", "wri_metadata_sources", column: "source_id", on_delete: :cascade
 
   create_view "indc_indicators", materialized: true,  sql_definition: <<-SQL
       SELECT ('cait'::text || cait_indc_indicators.id) AS id,

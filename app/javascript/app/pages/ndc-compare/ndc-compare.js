@@ -57,19 +57,17 @@ const NDCCompareContainer = props => {
 
   const handleDropDownChange = (selector, selected) => {
     const search = qs.parse(location.search);
-    if (!selected || search.locations.indexOf(selected.value) === -1) {
-      const newLocations = locations.slice();
-      newLocations[selector] = selected ? selected.value : selector + 1;
-      const newSearch = {
-        ...search,
-        locations: newLocations.toString()
-      };
-      history.replace({
-        pathname: location.pathname,
-        search: qs.stringify(newSearch)
-      });
-      fetchCompareNDC(newLocations);
-    }
+    const newLocations = locations.slice();
+    newLocations[selector] = selected ? selected.value : selector + 1;
+    const newSearch = {
+      ...search,
+      locations: newLocations.toString()
+    };
+    history.replace({
+      pathname: location.pathname,
+      search: qs.stringify(newSearch)
+    });
+    fetchCompareNDC(newLocations);
   };
 
   return createElement(NDCCompareComponent, {

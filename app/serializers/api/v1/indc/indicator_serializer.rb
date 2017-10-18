@@ -6,6 +6,7 @@ module Api
         attribute :source
         attribute :name
         attribute :slug
+        attribute :description, if: -> { object.description }
         attribute :category_ids, if: -> { object.category_ids.length.positive? }
         attribute :labels
         attribute :locations

@@ -9,8 +9,8 @@ const fetchSdgGoalsFail = createAction('fetchSdgGoalsFail');
 const fetchSdgGoals = createThunkAction(
   'fetchSdgGoals',
   () => (dispatch, state) => {
-    const { ndcs } = state();
-    if (ndcs && isEmpty(ndcs.data)) {
+    const { ndcSdg } = state();
+    if (ndcSdg && isEmpty(ndcSdg.data)) {
       dispatch(fetchSdgGoalsInit());
       fetch('/api/v1/ndcs/sdgs_overview')
         .then(response => {

@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Map from 'components/map';
-import MapRange from 'components/map-range';
+import LegendRange from './legend-range';
+import LegendSteps from './legend-steps';
 
 import styles from './ndc-sdg-linkages-map-styles.scss';
 
@@ -16,14 +17,19 @@ class NdcSdgLinkagesMap extends PureComponent {
           paths={this.props.paths}
           className={styles.map}
         />
-        <MapRange className={styles.legend} />
+        {this.props.targetHover ? (
+          <LegendSteps className={styles.legend} />
+        ) : (
+          <LegendRange className={styles.legend} />
+        )}
       </div>
     );
   }
 }
 
 NdcSdgLinkagesMap.propTypes = {
-  paths: PropTypes.array.isRequired
+  paths: PropTypes.array.isRequired,
+  targetHover: PropTypes.string
 };
 
 export default NdcSdgLinkagesMap;

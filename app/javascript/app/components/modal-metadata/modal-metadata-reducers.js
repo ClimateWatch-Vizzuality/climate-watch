@@ -14,13 +14,12 @@ const setModalMetadataParams = (state, { payload }) => ({
 });
 
 const setLoading = (state, loading) => ({ ...state, loading });
-const setError = (state, error) => ({ ...state, error });
 const setLoaded = (state, loaded) => ({ ...state, loaded });
-const setData = (state, data) => ({
+const setData = (state, { slug, data }) => ({
   ...state,
   data: {
     ...state.data,
-    [data.slug]: data
+    [slug]: data
   }
 });
 
@@ -28,6 +27,5 @@ export default {
   setModalMetadataParams,
   fetchModalMetaDataInit: state => setLoading(setLoaded(state, false), true),
   fetchModalMetaDataReady: (state, { payload }) =>
-    setLoaded(setLoading(setData(state, payload), false), true),
-  fetchModalMetaDataFail: state => setError(state, true)
+    setLoaded(setLoading(setData(state, payload), false), true)
 };

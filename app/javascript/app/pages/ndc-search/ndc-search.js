@@ -17,15 +17,14 @@ export { default as component } from './ndc-search-component';
 export { default as styles } from './ndc-search-styles';
 
 const mapStateToProps = (state, { location }) => {
-  const { query, document } = qs.parse(location.search);
+  const search = qs.parse(location.search);
   const stateWithQuery = {
-    query,
-    document,
+    search,
     location,
     results: state.ndcSearch.data
   };
   return {
-    query,
+    search,
     loading: state.ndcSearch.loading,
     results: getSearchResultsSorted(stateWithQuery),
     docOptions: getDocumentOptions(stateWithQuery),
@@ -36,30 +35,29 @@ const mapStateToProps = (state, { location }) => {
 
 class SearchContainer extends PureComponent {
   componentWillMount() {
-    const { fetchSearchResults, query } = this.props;
-    fetchSearchResults(query);
+    const { fetchSearchResults, search } = this.props;
+    fetchSearchResults(search);
   }
-
-  onResultClick = result => {
-    console.info(result);
-  };
 
   onSearchChange = query => {
     const { history, location, fetchSearchResults } = this.props;
     const search = qs.parse(location.search);
-    const newSearch = { ...search, query };
+    const newSearch = {
+      ...search,
+      searchBy: search.searchBy,
+      query
+    };
 
     history.replace({
       pathname: location.pathname,
       search: qs.stringify(newSearch)
     });
-    fetchSearchResults(query);
+    fetchSearchResults(newSearch);
   };
 
   render() {
     return createElement(SearchComponent, {
       ...this.props,
-      onResultClick: this.onResultClick,
       onSearchChange: this.onSearchChange
     });
   }
@@ -67,7 +65,7 @@ class SearchContainer extends PureComponent {
 
 SearchContainer.propTypes = {
   fetchSearchResults: Proptypes.func.isRequired,
-  query: Proptypes.string,
+  search: Proptypes.object,
   history: Proptypes.object,
   location: Proptypes.object
 };

@@ -15,29 +15,40 @@ class NdcSdgLinkagesTable extends PureComponent {
     const {
       goals,
       selectedGoal,
+      goalHover,
+      onGoalHover,
+      onTargetHover,
       handleClickGoal,
       handleClickClose
     } = this.props;
-    if (!goals || !goals.length) return <Loading />;
+
+    if (!goals || !goals.length) return <Loading className={styles.loading} />;
     return (
       <div>
         {selectedGoal ? (
           <NdcSdgLinkagesList
+            onTargetHover={onTargetHover}
             onCloseClick={handleClickClose}
             goal={selectedGoal}
           />
         ) : (
           <div className={styles.container}>
             {goals.map((goal, i) => {
-              const isSelected = selectedGoal
-                ? goal.id === selectedGoal.id
-                : i === 0;
+              let isSelected = false;
+              if (goalHover) {
+                isSelected = goal.id === goalHover;
+              } else {
+                isSelected = selectedGoal
+                  ? goal.id === selectedGoal.id
+                  : i === 0;
+              }
 
               return (
                 <SDGCard
                   square
                   hover
                   selected={isSelected}
+                  onMouseEnter={() => onGoalHover(goal.number)}
                   onClick={() => handleClickGoal(goal.number)}
                   key={goal.title}
                   sdgData={goal}
@@ -57,7 +68,10 @@ NdcSdgLinkagesTable.propTypes = {
   goals: PropTypes.array,
   handleClickGoal: PropTypes.func.isRequired,
   handleClickClose: PropTypes.func.isRequired,
-  selectedGoal: PropTypes.object
+  selectedGoal: PropTypes.object,
+  goalHover: PropTypes.number,
+  onGoalHover: PropTypes.func.isRequired,
+  onTargetHover: PropTypes.func.isRequired
 };
 
 export default NdcSdgLinkagesTable;

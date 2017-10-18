@@ -9,7 +9,9 @@ namespace :db do
     'ndc_sdg_targets:import',
     'historical_emissions:import',
     'cait_indc:import',
-    'adaptation:import'
+    'wb_indc:import',
+    'adaptation:import',
+    'wri_metadata:import'
   ]
 
   desc 'Imports all data in correct order, replaces all data'

@@ -17,11 +17,17 @@ import styles from './ndc-sdg-styles';
 class NdcSdg extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route } = this.props;
+    const {
+      route,
+      goalHover,
+      targetHover,
+      handleGoalHover,
+      handleTargetHover
+    } = this.props;
     return (
       <div className={styles.bg}>
         <NdcsSdgsMetaProvider />
-        <Header size="medium" route={route}>
+        <Header size="small" route={route}>
           <div className={layout.content}>
             <div className={headerTheme.headerGrid}>
               <Intro title="NDC-SDG Linkages" />
@@ -31,8 +37,16 @@ class NdcSdg extends PureComponent {
         </Header>
         <div className={styles.wrapper}>
           <div className={cx(layout.content, styles.grid)}>
-            <NdcSdgLinkagesTable />
-            <NdcSdgLinkagesMap />
+            <NdcSdgLinkagesTable
+              goalHover={goalHover}
+              onGoalHover={handleGoalHover}
+              targetHover={targetHover}
+              onTargetHover={handleTargetHover}
+            />
+            <NdcSdgLinkagesMap
+              goalHover={goalHover}
+              targetHover={targetHover}
+            />
           </div>
         </div>
       </div>
@@ -41,7 +55,11 @@ class NdcSdg extends PureComponent {
 }
 
 NdcSdg.propTypes = {
-  route: PropTypes.object.isRequired
+  route: PropTypes.object.isRequired,
+  goalHover: PropTypes.number,
+  targetHover: PropTypes.string,
+  handleGoalHover: PropTypes.func.isRequired,
+  handleTargetHover: PropTypes.func.isRequired
 };
 
 export default NdcSdg;

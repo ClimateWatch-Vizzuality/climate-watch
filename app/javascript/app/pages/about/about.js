@@ -16,6 +16,7 @@ import swissImage from 'assets/partners/swiss.png';
 import Component from './about-component';
 
 const jointInitiative = {
+  id: 'joint-initiative',
   title: 'Climate Watch is a joint initiative of',
   partners: [
     {
@@ -36,6 +37,7 @@ const jointInitiative = {
 };
 
 const partnershipWith = {
+  id: 'partnership-with',
   title: 'In partnership with',
   partners: [
     {
@@ -91,36 +93,39 @@ const partnershipWith = {
 };
 
 const additionalData = {
+  id: 'additional-data',
   title: 'Additional data provided by',
+  type: 'onlyLinks',
   partners: [
     {
       link: 'http://energyinnovation.org/',
-      text: 'Energy innnovation'
+      alt: 'Energy innnovation'
     },
     {
       link: 'http://www.cprindia.org/',
-      text: 'CPR India'
+      alt: 'CPR India'
     },
     {
       link: 'https://www.ucc.ie',
-      text: 'UCC Ireland'
+      alt: 'UCC Ireland'
     },
     {
       link: 'http://www.psi.org/',
-      text: 'PSI'
+      alt: 'PSI'
     },
     {
       link: 'https://www.eia.gov/',
-      text: 'US EIA'
+      alt: 'US EIA'
     },
     {
       link: 'https://www.ulisboa.pt/en',
-      text: 'University of Lisbon'
+      alt: 'University of Lisbon'
     }
   ]
 };
 
 const foundingBy = {
+  id: 'founding-by',
   title: 'Funding provided by',
   partners: [
     {

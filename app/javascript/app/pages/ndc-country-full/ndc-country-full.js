@@ -53,13 +53,14 @@ class NDCCountryFullContainer extends PureComponent {
     const { iso } = match.params;
     if (option && option.groupId) {
       const optionValues = {
-        [option.groupId]: option.value
+        searchBy: option.groupId,
+        query: option.value
       };
       fetchCountryNDCFull(iso, optionValues);
     }
   };
 
-  onSelectChange = selected => {
+  onDocumentChange = selected => {
     this.updateUrlParam({ name: 'document', value: selected.value });
   };
 
@@ -72,7 +73,7 @@ class NDCCountryFullContainer extends PureComponent {
     return createElement(NDCCountryFullComponent, {
       ...this.props,
       onSearchChange: this.onSearchChange,
-      onSelectChange: this.onSelectChange
+      onDocumentChange: this.onDocumentChange
     });
   }
 }

@@ -51,8 +51,9 @@ $height: 45px;
             background: none;
             border: none;
             outline: none;
-            font-size: 1em;
-            padding: 7px 0;
+            font-size: $font-size;
+            font-family: $font-family-1;
+            padding: 6px 0;
             vertical-align: middle;
             width: 0;
             position: absolute;
@@ -385,6 +386,10 @@ $height: 45px;
 
   .react-selectize-toggle-button-container {
     transform: rotate(0deg) !important;
+  }
+
+  .dropdown-menu {
+    border: solid 1px $border-color !important;
   }
 
   .open {

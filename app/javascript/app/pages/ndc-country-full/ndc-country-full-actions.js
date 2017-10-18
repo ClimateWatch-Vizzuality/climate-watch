@@ -8,10 +8,8 @@ const fetchCountryNDCFullFailed = createAction('fetchCountryNDCFullFailed');
 const fetchCountryNDCFull = createThunkAction(
   'fetchCountryNDCFull',
   (iso, search) => dispatch => {
-    const url = search
-      ? `/api/v1/ndcs/${iso}/text?${Object.keys(search)[0]}=${search[
-        Object.keys(search)[0]
-      ]}`
+    const url = search.searchBy
+      ? `/api/v1/ndcs/${iso}/text?${search.searchBy}=${search.query}`
       : `/api/v1/ndcs/${iso}/text`;
     dispatch(fetchCountryNDCFullInit());
     fetch(url)

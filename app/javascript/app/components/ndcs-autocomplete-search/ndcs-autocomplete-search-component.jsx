@@ -41,12 +41,12 @@ class NdcsAutocompleteSearch extends PureComponent {
             />
           )}
           renderGroupTitle={(index, group) =>
-            group.groupId !== 'search' && (
+            group.groupId !== 'query' && (
               <div className="simple-group-title">{group.title}</div>
             )}
           renderOption={option => (
             <div
-              className={`simple-option ${option.groupId === 'search'
+              className={`simple-option ${option.groupId === 'query'
                 ? '-search'
                 : ''}`}
             >
