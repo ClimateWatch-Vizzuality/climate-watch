@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
+import sourceSlugs from 'data/source-slugs';
 import qs from 'query-string';
 
 import { actions as modalMetaActions } from 'components/modal-metadata';
@@ -75,10 +76,13 @@ class CountryGhgEmissionsContainer extends PureComponent {
   }
 
   handleInfoClick = () => {
-    this.props.setModalMetadata({
-      open: true,
-      slug: 'cait_historical_emissions'
-    });
+    const slug = sourceSlugs[this.props.sourceSelected.label];
+    if (slug) {
+      this.props.setModalMetadata({
+        slug,
+        open: true
+      });
+    }
   };
 
   handleSourceChange = category => {
