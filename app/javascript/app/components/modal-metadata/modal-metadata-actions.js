@@ -18,19 +18,19 @@ const fetchModalMetaData = createThunkAction(
   'fetchModalMetaDataData',
   slug => (dispatch, state) => {
     const { modalMetadata } = state();
-    if (!modalMetadata.data[slug]) {
+    if (!modalMetadata.data[slug] || modalMetadata.data[slug] === 'error') {
       dispatch(fetchModalMetaDataInit());
-      fetch(`/api/v1/metadata/${slug}}`)
+      fetch(`/api/v1/metadata/${slug}`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
         })
         .then(data => {
-          dispatch(fetchModalMetaDataReady(data));
+          dispatch(fetchModalMetaDataReady({ slug, data }));
         })
         .catch(error => {
           console.warn(error);
-          dispatch(fetchModalMetaDataFail());
+          dispatch(fetchModalMetaDataReady({ slug, data: 'error' }));
         });
     }
   }
