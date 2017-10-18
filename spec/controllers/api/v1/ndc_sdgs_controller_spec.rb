@@ -84,4 +84,3 @@ describe Api::V1::NdcSdgsController, type: :controller do
     end
   end
 end
-

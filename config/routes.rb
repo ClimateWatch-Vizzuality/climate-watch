@@ -17,11 +17,13 @@ Rails.application.routes.draw do
         get :sdgs, on: :member, controller: :ndc_sdgs, action: :show
         get :sdgs_overview, on: :collection, controller: :ndc_sdgs,
           action: :sdgs_overview
+        get :content_overview, on: :member, controller: :ndcs,
+          action: :content_overview
       end
       resources :adaptations, only: [:index]
       resources :metadata, only: [:index, :show]
 
-      get '(*endpoint)', controller: :api, action: :not_found
+      get '(*endpoint)', controller: :api, action: :route_not_found
     end
   end
 

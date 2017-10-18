@@ -9,6 +9,7 @@ namespace :db do
     'ndc_sdg_targets:import',
     'historical_emissions:import',
     'cait_indc:import',
+    'wb_indc:import',
     'adaptation:import'
   ]
 
