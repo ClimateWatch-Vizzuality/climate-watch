@@ -20,7 +20,7 @@ class ChartStackedArea extends PureComponent {
       <ResponsiveContainer height={height}>
         <AreaChart
           data={data}
-          margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
+          margin={{ top: 0, right: 0, left: -18, bottom: 0 }}
           onMouseMove={onMouseMove}
         >
           <XAxis
