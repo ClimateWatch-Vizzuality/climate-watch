@@ -16,6 +16,7 @@ import swissImage from 'assets/partners/swiss.png';
 import Component from './about-component';
 
 const jointInitiative = {
+  id: 'joint-initiative',
   title: 'Climate Watch is a joint initiative of',
   partners: [
     {
@@ -36,6 +37,7 @@ const jointInitiative = {
 };
 
 const partnershipWith = {
+  id: 'partnership-with',
   title: 'In partnership with',
   partners: [
     {
@@ -91,7 +93,9 @@ const partnershipWith = {
 };
 
 const additionalData = {
+  id: 'additional-data',
   title: 'Additional data provided by',
+  type: 'onlyLinks',
   partners: [
     {
       link: 'http://energyinnovation.org/',
@@ -121,6 +125,7 @@ const additionalData = {
 };
 
 const foundingBy = {
+  id: 'founding-by',
   title: 'Funding provided by',
   partners: [
     {
