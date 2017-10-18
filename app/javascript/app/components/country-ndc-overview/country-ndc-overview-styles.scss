@@ -48,9 +48,12 @@
 }
 
 .targetText {
+  display: block;
   font-size: $font-size;
   color: $theme-color;
   margin-bottom: 20px;
+  max-height: 195px;
+  overflow-y: scroll;
 }
 
 .noContent {
