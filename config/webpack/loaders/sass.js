@@ -2,6 +2,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { resolve } = require('path');
 const { env, settings } = require('../configuration');
 
+const postcssConfig = resolve(process.cwd(), '.postcssrc');
 const sourceMap = env.NODE_ENV === 'development';
 
 const sassConfig = [
@@ -12,7 +13,10 @@ const sassConfig = [
       localIdentName: '[name]__[local]__[hash:base64:5]'
     }
   },
-  { loader: 'postcss-loader', options: { sourceMap } },
+  {
+    loader: 'postcss-loader',
+    options: { sourceMap, config: { path: postcssConfig } }
+  },
   {
     loader: `sass-loader?includePaths[]='${resolve(
       settings.source_path,
