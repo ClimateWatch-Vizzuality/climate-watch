@@ -1,6 +1,8 @@
 @import '../../styles/layout.scss';
 
 .grid {
+  @include msGridColumns(1fr);
+
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
@@ -23,6 +25,8 @@
 
 .graphControls {
   @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
 
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 25px;

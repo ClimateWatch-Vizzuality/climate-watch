@@ -4,6 +4,8 @@
 .header {
   @extend %grid;
 
+  @include msGridColumns(10fr, 2fr);
+
   grid-template-columns: 10fr 2fr;
 }
 

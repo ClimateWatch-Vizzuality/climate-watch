@@ -3,6 +3,8 @@
 .header {
   @extend %grid;
 
+  @include msGridColumns(3fr, 1fr);
+
   grid-template-columns: 3fr 1fr;
   margin-bottom: 10px;
   margin-top: 20px;
@@ -10,6 +12,8 @@
 
 .sdgs {
   @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr);
 
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 0;
