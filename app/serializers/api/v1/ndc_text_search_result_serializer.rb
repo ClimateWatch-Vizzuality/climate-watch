@@ -3,8 +3,8 @@ module Api
     class NdcTextSearchResultSerializer < ActiveModel::Serializer
       include Rails.application.routes.url_helpers
 
-      attributes :language, :document_type, :links
-      attribute :matches, if: :query_present?
+      attributes :language, :document_type, :links, :linkages
+      attribute :matches
       belongs_to :location, serializer: Api::V1::LocationNanoSerializer
 
       def links
@@ -12,8 +12,16 @@ module Api
       end
 
       def matches
+        if query_present?
+          query_matches
+        elsif filter_present?
+          filter_matches
+        end
+      end
+
+      def query_matches
         highlight_idx = 0
-        object.pg_search_highlight.split(
+         object.pg_search_highlight.split(
           Ndc::PG_SEARCH_HIGHLIGHT_FRAGMENT_DELIMITER
         ).map do |fragment|
           match = {
@@ -31,8 +39,29 @@ module Api
         end
       end
 
+      def filter_matches
+        object.full_text.scan(
+          Regexp.new(
+            "#{Ndc::PG_SEARCH_HIGHLIGHT_START}(.*?)#{Ndc::PG_SEARCH_HIGHLIGHT_END}"
+          )
+        ).flatten.map.with_index do |fragment, idx|
+          {
+            idx: idx,
+            fragment: fragment
+          }
+        end
+      end
+
       def query_present?
-        @instance_options[:query].present?
+        !@instance_options[:params][:query].nil?
+      end
+
+      def filter_present?
+        filter = [:target, :goal, :sector].select do |param|
+          @instance_options[:params].has_key?(param)
+        end
+
+        filter.length.positive?
       end
     end
   end
