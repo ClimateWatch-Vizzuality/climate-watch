@@ -2,9 +2,9 @@ module Api
   module V1
     class WbExtraCountryDataController < ApiController
       def show
-        country = Location.where(location_type: "COUNTRY", iso_code3: params[:iso])
+        country = Location.find_by(location_type: "COUNTRY", iso_code3: params[:iso])
         
-        if country.size == 0
+        if !country
           render json: {
             error: 'Country not found',
             status: 404
