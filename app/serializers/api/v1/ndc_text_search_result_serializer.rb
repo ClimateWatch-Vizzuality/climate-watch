@@ -21,7 +21,7 @@ module Api
 
       def query_matches
         highlight_idx = 0
-         object.pg_search_highlight.split(
+        object.pg_search_highlight.split(
           Ndc::PG_SEARCH_HIGHLIGHT_FRAGMENT_DELIMITER
         ).map do |fragment|
           match = {
@@ -42,7 +42,11 @@ module Api
       def filter_matches
         object.full_text.scan(
           Regexp.new(
-            "#{Ndc::PG_SEARCH_HIGHLIGHT_START}(.*?)#{Ndc::PG_SEARCH_HIGHLIGHT_END}"
+            [
+              Ndc::PG_SEARCH_HIGHLIGHT_START,
+              '(.*?)',
+              Ndc::PG_SEARCH_HIGHLIGHT_END
+            ].join
           )
         ).flatten.map.with_index do |fragment, idx|
           {
@@ -58,7 +62,7 @@ module Api
 
       def filter_present?
         filter = [:target, :goal, :sector].select do |param|
-          @instance_options[:params].has_key?(param)
+          @instance_options[:params].key?(param)
         end
 
         filter.length.positive?
