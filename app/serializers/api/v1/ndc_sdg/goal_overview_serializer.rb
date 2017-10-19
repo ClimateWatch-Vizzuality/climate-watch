@@ -6,6 +6,7 @@ module Api
         attribute :number
         attribute :locations
         attribute :targets
+        attribute :colour
 
         def targets
           object.targets.map(&:number)
