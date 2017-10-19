@@ -1,7 +1,8 @@
 module Api
   module V1
     module NdcSdg
-      class SectorSerializer < ActiveModel::Serializer
+      class SectorMetaSerializer < ActiveModel::Serializer
+        attribute :id
         attribute :name
       end
     end

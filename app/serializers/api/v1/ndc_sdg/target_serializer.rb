@@ -2,18 +2,15 @@ module Api
   module V1
     module NdcSdg
       class TargetSerializer < ActiveModel::Serializer
-        attribute :id
-        attribute :number
         attribute :title
         attribute :sectors
-        attribute :goal_number
 
         def sectors
-          object.sector_ids
-        end
-
-        def goal_number
-          object.goal.number
+          ndc_targets = instance_options[:ndc_targets]
+          ndc_targets.
+            select { |ndc_target| ndc_target.target_id == object.id }.
+            flat_map(&:ndc_target_sectors).
+            map(&:sector_id)
         end
       end
     end

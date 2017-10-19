@@ -1,7 +1,7 @@
 module Api
   module V1
     module NdcSdg
-      class GoalSerializer < ActiveModel::Serializer
+      class GoalMetaSerializer < ActiveModel::Serializer
         attribute :id
         attribute :number
         attribute :title
