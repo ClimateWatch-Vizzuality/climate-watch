@@ -17,7 +17,9 @@ module Api
         render json: filtered_country_data,
                each_serializer: Api::V1::WbExtra::CountryDataSerializer
       end
-
+      
+      private
+      
       def filter_by_dates(country_data, start_year, end_year)
         filtered_country_data = country_data
         if start_year
