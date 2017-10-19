@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import GhgEmissionsGraph from 'components/ghg-emissions';
+import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout.scss';
 import styles from './ghg-emissions-styles.scss';
@@ -25,6 +26,7 @@ class GhgEmissions extends PureComponent {
             <GhgEmissionsGraph />
           </div>
         </div>
+        <ModalMetadata />
       </div>
     );
   }

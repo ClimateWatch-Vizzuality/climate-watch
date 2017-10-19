@@ -42,7 +42,8 @@ const fetchEmissionsMeta = createThunkAction(
                     location: item.location_ids,
                     sector: item.sector_ids,
                     gas: item.gas_ids,
-                    gwp: item.gwp_ids
+                    gwp: item.gwp_ids,
+                    source: item.source
                   };
                 }
                 return newItem;

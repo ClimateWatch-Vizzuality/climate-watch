@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { actions as modalMetaActions } from 'components/modal-metadata';
 
 import {
   getChartData,
@@ -21,6 +22,8 @@ import {
 
 import GhgEmissionsComponent from './ghg-emissions-component';
 import actions from './ghg-emissions-actions';
+
+const mergedActions = { ...actions, ...modalMetaActions };
 
 const groups = [
   {
@@ -158,6 +161,16 @@ class GhgEmissionsContainer extends PureComponent {
     this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
   };
 
+  handleInfoClick = () => {
+    const { source } = this.props.sourceSelected;
+    if (source) {
+      this.props.setModalMetadata({
+        slug: source,
+        open: true
+      });
+    }
+  };
+
   render() {
     return createElement(GhgEmissionsComponent, {
       ...this.props,
@@ -165,7 +178,8 @@ class GhgEmissionsContainer extends PureComponent {
       handleVersionChange: this.handleVersionChange,
       handleBreakByChange: this.handleBreakByChange,
       handleFilterChange: this.handleFilterChange,
-      handleRemoveTag: this.handleRemoveTag
+      handleRemoveTag: this.handleRemoveTag,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
@@ -175,6 +189,7 @@ GhgEmissionsContainer.propTypes = {
   location: PropTypes.object.isRequired,
   breakSelected: PropTypes.object.isRequired,
   sourceSelected: PropTypes.object.isRequired,
+  setModalMetadata: PropTypes.func.isRequired,
   fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array
 };
@@ -186,5 +201,5 @@ export { default as styles } from './ghg-emissions-styles';
 export { default as actions } from './ghg-emissions-actions';
 
 export default withRouter(
-  connect(mapStateToProps, actions)(GhgEmissionsContainer)
+  connect(mapStateToProps, mergedActions)(GhgEmissionsContainer)
 );
