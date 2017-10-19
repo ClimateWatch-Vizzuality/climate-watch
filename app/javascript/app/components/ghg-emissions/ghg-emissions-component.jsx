@@ -20,6 +20,7 @@ class GhgEmissions extends PureComponent {
       sources,
       sourceSelected,
       handleSourceChange,
+      handleInfoClick,
       versions,
       versionSelected,
       handleVersionChange,
@@ -66,7 +67,10 @@ class GhgEmissions extends PureComponent {
             options={filters}
             onMultiValueChange={handleFilterChange}
           />
-          <ButtonGroup className={styles.colEnd} />
+          <ButtonGroup
+            className={styles.colEnd}
+            onInfoClick={handleInfoClick}
+          />
         </div>
         <ChartLine config={config} data={data} />
         <div className={styles.tags}>
@@ -99,6 +103,7 @@ GhgEmissions.propTypes = {
   handleVersionChange: PropTypes.func.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
+  handleInfoClick: PropTypes.func.isRequired,
   handleSourceChange: PropTypes.func.isRequired,
   breaksBy: PropTypes.array.isRequired,
   breakSelected: PropTypes.object.isRequired,

@@ -106,7 +106,8 @@ export const getSourceOptions = createSelector(getSources, sources => {
   if (!sources) return [];
   return sources.map(d => ({
     label: d.label,
-    value: d.value
+    value: d.value,
+    source: d.source
   }));
 });
 
