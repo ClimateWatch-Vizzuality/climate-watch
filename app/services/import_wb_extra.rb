@@ -15,7 +15,7 @@ class ImportWbExtra
   def cleanup
     WbExtra::CountryData.delete_all
   end
-  
+
   def year_range
     current_year = DateTime.now.year
     @year_range = (FIRST_YEAR..current_year)
@@ -25,30 +25,31 @@ class ImportWbExtra
     @population = S3CSVReader.read(POPULATION_FILEPATH).map(&:to_h)
     @gdp = S3CSVReader.read(GDP_FILEPATH).map(&:to_h)
   end
-  
+
   def read_data
     @population_by_country = parse_data(@population)
     @gdp_by_country = parse_data(@gdp)
   end
-  
+
   def import_data
-    all_countries = Location.where(location_type: "COUNTRY")
+    all_countries = Location.where(location_type: 'COUNTRY')
     not_included_countries = []
 
     all_countries.each do |country|
       country_code = country.iso_code3
-      country_location = Location.find_by(location_type: "COUNTRY", iso_code3: country_code)
+      country_location = Location.find_by(
+        location_type: 'COUNTRY',
+        iso_code3: country_code
+      )
 
       @year_range.map do |year|
         year_index = (year - FIRST_YEAR)
         if @population_by_country[country_code]
           WbExtra::CountryData.create(
-            {
-              location: country_location,
-              year: year,
-              population: @population_by_country[country_code][year_index]&.to_i,
-              GDP: @gdp_by_country[country_code][year_index]&.to_i
-            }
+            location: country_location,
+            year: year,
+            population: @population_by_country[country_code][year_index]&.to_i,
+            GDP: @gdp_by_country[country_code][year_index]&.to_i
           )
         else
           not_included_countries << country_code
@@ -57,16 +58,16 @@ class ImportWbExtra
     end
     Rails.logger.info "Countries not included in the data #{not_included_countries.uniq}"
   end
-  
+
   private
-  
+
   def parse_data(csv_data)
     parsed_data = {}
     csv_data.each do |country_data|
       country_code = country_data[:country_code]
       parsed_data[country_code] = @year_range.map do |year|
         year_sym = year.to_s.to_sym
-        country_data[year_sym] == "null" ? nil : country_data[year_sym]
+        country_data[year_sym] == 'null' ? nil : country_data[year_sym]
       end
     end
     parsed_data
