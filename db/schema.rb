@@ -225,6 +225,16 @@ ActiveRecord::Schema.define(version: 20171016113522) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  create_table "wb_extra_country_data", force: :cascade do |t|
+    t.bigint "location_id"
+    t.string "year"
+    t.string "GDP"
+    t.string "population"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_wb_extra_country_data_on_location_id"
+  end
+
   create_table "wb_indc_categories", force: :cascade do |t|
     t.text "name", null: false
     t.text "slug", null: false
@@ -333,6 +343,7 @@ ActiveRecord::Schema.define(version: 20171016113522) do
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs", on_delete: :cascade
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
+  add_foreign_key "wb_extra_country_data", "locations"
   add_foreign_key "wb_indc_indicators", "wb_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
   add_foreign_key "wb_indc_indicators_categories", "wb_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "wb_indc_indicators_categories", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
