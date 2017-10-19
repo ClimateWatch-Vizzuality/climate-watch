@@ -1,6 +1,6 @@
 class ImportWbExtra
-  POPULATION_FILEPATH = 'wb_extra/population.csv'.freeze
-  GDP_FILEPATH = 'wb_extra/gdp.csv'.freeze
+  POPULATION_FILEPATH = 'wb_extra/population.csv'
+  GDP_FILEPATH = 'wb_extra/gdp.csv'
   FIRST_YEAR = 1960.freeze
   def call
     cleanup
@@ -37,20 +37,10 @@ class ImportWbExtra
 
     all_countries.each do |country|
       country_code = country.iso_code3
-      country_location = Location.find_by(
-        location_type: 'COUNTRY',
-        iso_code3: country_code
-      )
 
       @year_range.map do |year|
-        year_index = (year - FIRST_YEAR)
         if @population_by_country[country_code]
-          WbExtra::CountryData.create(
-            location: country_location,
-            year: year,
-            population: @population_by_country[country_code][year_index]&.to_i,
-            GDP: @gdp_by_country[country_code][year_index]&.to_i
-          )
+          create_country_data(country_code, year)
         else
           not_included_countries << country_code
         end
@@ -59,7 +49,20 @@ class ImportWbExtra
     Rails.logger.info "Countries not included in the data #{not_included_countries.uniq}"
   end
 
-  private
+  def create_country_data(country_code, year)
+    year_index = (year - FIRST_YEAR)
+    country_location = Location.find_by(
+      location_type: 'COUNTRY',
+      iso_code3: country_code
+    )
+
+    WbExtra::CountryData.create(
+      location: country_location,
+      year: year,
+      population: @population_by_country[country_code][year_index]&.to_i,
+      GDP: @gdp_by_country[country_code][year_index]&.to_i
+    )
+  end
 
   def parse_data(csv_data)
     parsed_data = {}
@@ -73,3 +76,4 @@ class ImportWbExtra
     parsed_data
   end
 end
+

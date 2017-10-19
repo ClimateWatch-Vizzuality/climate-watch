@@ -21,7 +21,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
     let!(:wb_extra_country_data_2000) {
       FactoryGirl.create(:wb_extra_country_data, location: location, year: '2000')
     }
-    
+
     describe 'GET show' do
       it 'returns a successful 200 response' do
         get :show, params: {iso: 'AFG'}
