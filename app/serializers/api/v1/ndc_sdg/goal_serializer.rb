@@ -6,6 +6,7 @@ module Api
         attribute :number
         attribute :title
         attribute :cw_title
+        attribute :colour
       end
     end
   end

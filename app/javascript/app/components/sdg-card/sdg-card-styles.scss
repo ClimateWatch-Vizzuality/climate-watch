@@ -34,7 +34,7 @@ $animation-delay-time: 0.1s;
 }
 
 .square {
-  min-height: 110px;
+  min-height: 115px;
   padding: 10px;
 }
 
@@ -121,7 +121,7 @@ $animation-delay-time: 0.1s;
 
   @for $i from 1 through length($sdg-colors) {
     &#{$i} {
-      background-color: rgba(nth($sdg-colors, $i), 0.6);
+      background-color: rgba(nth($sdg-colors, $i), 0.6) !important;
     }
   }
 }

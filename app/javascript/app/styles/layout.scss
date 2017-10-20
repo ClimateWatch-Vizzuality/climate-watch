@@ -12,3 +12,46 @@
   display: grid;
   grid-column-gap: $gutter-padding;
 }
+
+@mixin msGridColumns($columns...) {
+  $frs: ();
+
+  @for $i from 1 through length($columns) {
+    $item: nth($columns, $i);
+
+    @if $i==$columns {
+      $frs: append($frs, $item);
+    }
+
+    @else {
+      $frs: append($frs, $item $gutter-padding);
+    }
+
+    > *:nth-child(#{$i}) {
+      -ms-grid-column: #{$i + ($i - 1)};
+    }
+  }
+
+  display: -ms-grid;
+  -ms-grid-columns: $frs;
+}
+
+@mixin clearFix() {
+  &::before,
+  &::after {
+    content: " ";
+    display: table;
+  }
+
+  &::after {
+    display: block;
+    clear: both;
+    height: 1px;
+    margin-top: -1px;
+    visibility: hidden;
+  }
+
+  & {
+    *zoom: 1;
+  }
+}

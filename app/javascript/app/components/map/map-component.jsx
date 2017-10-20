@@ -143,21 +143,21 @@ Map.defaultProps = {
   onCountryLeave: () => {},
   defaultStyle: {
     default: {
-      fill: '#ECEFF1',
-      stroke: '#607D8B',
-      strokeWidth: 0.75,
+      fill: '#E5E5EB',
+      stroke: '#000',
+      strokeWidth: 0.05,
       outline: 'none'
     },
     hover: {
-      fill: '#302463',
-      stroke: '#607D8B',
-      strokeWidth: 0.75,
+      fill: '#E5E5EB',
+      stroke: '#000',
+      strokeWidth: 0.05,
       outline: 'none'
     },
     pressed: {
-      fill: '#FF5722',
-      stroke: '#607D8B',
-      strokeWidth: 1,
+      fill: '#E5E5EB',
+      stroke: '#000',
+      strokeWidth: 0.5,
       outline: 'none'
     }
   }

@@ -4,7 +4,10 @@ import qs from 'query-string';
 import { withRouter } from 'react-router';
 
 import NdcSdgLinkagesMapComponent from './ndc-sdg-linkages-map-component';
-import { getPathsWithStyles } from './ndc-sdg-linkages-map-selectors';
+import {
+  getNdcsSdgsGoalsDataSelected,
+  getPathsWithStyles
+} from './ndc-sdg-linkages-map-selectors';
 
 const mapStateToProps = (state, { location, goalHover, targetHover }) => {
   const { data: goalsData } = state.ndcSdg;
@@ -16,6 +19,7 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     targetHover
   };
   return {
+    goal: getNdcsSdgsGoalsDataSelected(data),
     paths: getPathsWithStyles(data),
     goalSelected,
     goalHover,

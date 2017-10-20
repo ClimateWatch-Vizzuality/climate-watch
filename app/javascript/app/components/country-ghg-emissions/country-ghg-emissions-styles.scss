@@ -1,6 +1,8 @@
 @import '../../styles/layout.scss';
 
 .grid {
+  @include msGridColumns(1fr);
+
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
@@ -9,6 +11,20 @@
   height: 100%;
   border-right: solid 1px $border-color;
   padding-right: $gutter-padding;
+
+  > div:nth-child(1) {
+    -ms-grid-row: 1;
+  }
+
+  > div:nth-child(2) {
+    -ms-grid-row: 2;
+    min-height: 140px;
+    height: 100%;
+  }
+
+  > div:nth-child(3) {
+    -ms-grid-row: 3;
+  }
 }
 
 .title {
@@ -23,6 +39,8 @@
 
 .graphControls {
   @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
 
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 25px;
