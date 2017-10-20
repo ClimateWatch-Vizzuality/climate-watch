@@ -8,9 +8,10 @@ class NdcSdgLinkagesList extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
     const { goal, onCloseClick, onTargetHover } = this.props;
+    const headerStyle = { borderColor: goal.colour };
     return (
       <div className={styles.container}>
-        <div className={styles.header}>
+        <div className={styles.header} style={headerStyle}>
           <div className={styles.titleContainer}>
             <span className={styles.number}>{goal.number}</span>
             <span className={styles.title}>{goal.title}</span>

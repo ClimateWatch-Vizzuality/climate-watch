@@ -7,10 +7,13 @@ const getGoalSelected = state => state.goalSelected || null;
 const getGoalHover = state => state.goalHover || null;
 const getTargetHover = state => state.targetHover || null;
 
-const buckets = ['#d3d3dc', '#a11a42'];
-const colorScale = scaleLinear()
-  .domain([0, 1])
-  .range(buckets);
+const initialStep = '#d3d3dc';
+let colorScale;
+function setScaleBuckets(range) {
+  colorScale = scaleLinear()
+    .domain([0, 1])
+    .range(range);
+}
 
 export const getNdcsSdgsGoalsDataSelected = createSelector(
   [getNdcsSdgsGoalsData, getGoalSelected, getGoalHover],
@@ -25,6 +28,7 @@ export const getPathsWithStyles = createSelector(
   [getNdcsSdgsGoalsDataSelected, getTargetHover],
   (data, targetHover) => {
     if (!data) return worldPaths;
+    setScaleBuckets([initialStep, data.colour]);
     return worldPaths.map(path => {
       let color = '#E5E5EB'; // default color
       if (data && data.locations && data.locations[path.id]) {
@@ -38,13 +42,13 @@ export const getPathsWithStyles = createSelector(
         default: {
           fill: color,
           stroke: '#000',
-          strokeWidth: 0.1,
+          strokeWidth: 0.05,
           outline: 'none'
         },
         hover: {
           fill: color,
           stroke: '#000',
-          strokeWidth: 0.1,
+          strokeWidth: 0.05,
           outline: 'none'
         },
         pressed: {

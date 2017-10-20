@@ -18,6 +18,7 @@ export const getParsedGoals = createSelector(
     const parsedGoals = goals.map(goal => ({
       id: goal.id,
       title: goal.cw_title,
+      colour: goal.colour,
       number: parseInt(goal.number, 10),
       targets: sortBy(targets[goal.number], 'number')
     }));
