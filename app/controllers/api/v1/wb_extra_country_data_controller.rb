@@ -11,51 +11,12 @@ module Api
           }, status: :not_found and return
         end
 
-        render json: filtered_country_data(country),
+        filtered_country_data = ::WbExtra::CountryData
+          .where(location: country)
+          .filter_by_dates(params[:startYear], params[:endYear])
+
+        render json: filtered_country_data,
                each_serializer: Api::V1::WbExtra::CountryDataSerializer
-      end
-
-      private
-
-      def filtered_country_data(country)
-        country_data = ::WbExtra::CountryData.where(location: country)
-        filter_by_dates(
-          country_data,
-          params[:startYear],
-          params[:endYear]
-        )
-      end
-
-      def filter_by_dates(country_data, start_year, end_year)
-        filtered_country_data = country_data
-        filtered_country_data = filter_by_start_year(
-          filtered_country_data, start_year
-        )
-        filter_by_end_year(filtered_country_data, end_year)
-      end
-
-      def filter_by_start_year(filtered_country_data, start_year)
-        if start_year
-          start_year = start_year.to_i
-          min_year = filtered_country_data.minimum(:year)
-          start_year = min_year if min_year > start_year
-          filtered_country_data = filtered_country_data.where(
-            'year >= ?', start_year
-            )
-        end
-        filtered_country_data
-      end
-
-      def filter_by_end_year(filtered_country_data, end_year)
-        if end_year
-          end_year = end_year.to_i
-          max_year = filtered_country_data.maximum(:year)
-          end_year = max_year if max_year < end_year
-          filtered_country_data = filtered_country_data.where(
-            'year <= ?', end_year
-          )
-        end
-        filtered_country_data
       end
     end
   end
