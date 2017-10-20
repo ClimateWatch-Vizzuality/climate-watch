@@ -1,6 +1,6 @@
 module WbExtra
   class CountryData < ApplicationRecord
     belongs_to :location
-    validates :year, :population, :GDP, presence: true
+    validates :year, :population, :gdp, presence: true
   end
 end

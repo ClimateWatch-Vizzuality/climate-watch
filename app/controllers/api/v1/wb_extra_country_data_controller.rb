@@ -36,17 +36,19 @@ module Api
 
       def filter_by_start_year(filtered_country_data, start_year)
         if start_year
+          start_year = start_year.to_i
           min_year = filtered_country_data.minimum(:year)
           start_year = min_year if min_year > start_year
           filtered_country_data = filtered_country_data.where(
             'year >= ?', start_year
-          )
+            )
         end
         filtered_country_data
       end
 
       def filter_by_end_year(filtered_country_data, end_year)
         if end_year
+          end_year = end_year.to_i
           max_year = filtered_country_data.maximum(:year)
           end_year = max_year if max_year < end_year
           filtered_country_data = filtered_country_data.where(

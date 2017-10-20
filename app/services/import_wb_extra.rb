@@ -60,7 +60,7 @@ class ImportWbExtra
       location: country_location,
       year: year,
       population: @population_by_country[country_code][year_index]&.to_i,
-      GDP: @gdp_by_country[country_code][year_index]&.to_i
+      gdp: @gdp_by_country[country_code][year_index]&.to_i
     )
   end
 

@@ -3,7 +3,7 @@ module Api
     module WbExtra
       class CountryDataSerializer < ActiveModel::Serializer
         attribute :population
-        attribute :GDP
+        attribute :gdp
         attribute :year
       end
     end
