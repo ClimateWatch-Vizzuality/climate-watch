@@ -4,18 +4,15 @@ import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import isEmpty from 'lodash/isEmpty';
 
-import NDCCompareComponent from './ndc-compare-component';
 import actions from './ndc-compare-actions';
+import reducers, { initialState } from './ndc-compare-reducers';
+
+import NDCCompareComponent from './ndc-compare-component';
 import {
   getNDCs,
   getCountriesOptionsFiltered,
   getActiveCountries
 } from './ndc-compare-selectors';
-
-export { default as component } from './ndc-compare-component';
-export { initialState } from './ndc-compare-reducers';
-export { default as reducers } from './ndc-compare-reducers';
-export { default as actions } from './ndc-compare-actions';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
@@ -74,6 +71,12 @@ const NDCCompareContainer = props => {
     handleDropDownChange,
     ...props
   });
+};
+
+export const redux = {
+  actions,
+  reducers,
+  initialState
 };
 
 export default withRouter(

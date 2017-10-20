@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 
-import NDCCountryComponent from './ndc-country-component';
 import actions from './ndc-country-actions';
-import { getCountry, filterNDCs } from './ndc-country-selectors';
+import reducers, { initialState } from './ndc-country-reducers';
 
-export { default as component } from './ndc-country-component';
-export { initialState } from './ndc-country-reducers';
-export { default as reducers } from './ndc-country-reducers';
-export { default as actions } from './ndc-country-actions';
+import NDCCountryComponent from './ndc-country-component';
+import { getCountry, filterNDCs } from './ndc-country-selectors';
 
 const mapStateToProps = (state, { match, location }) => {
   const { iso } = match.params;
@@ -54,6 +51,12 @@ const NDCCountryContainer = props => {
     ...props,
     onSearchChange
   });
+};
+
+export const redux = {
+  actions,
+  reducers,
+  initialState
 };
 
 export default withRouter(

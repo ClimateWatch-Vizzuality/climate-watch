@@ -3,8 +3,9 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import CountrySelectComponent from './countries-select-component';
 import actions from './countries-select-actions';
+import reducers, { initialState } from './countries-select-reducers';
+import CountrySelectComponent from './countries-select-component';
 import {
   getFilterUpper,
   getPreSelect,
@@ -63,6 +64,12 @@ class CountrySelectContainer extends PureComponent {
 CountrySelectContainer.propTypes = {
   countryPreSelect: Proptypes.func.isRequired,
   history: Proptypes.object
+};
+
+export const redux = {
+  actions,
+  reducers,
+  initialState
 };
 
 export default withRouter(

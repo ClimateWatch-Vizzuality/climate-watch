@@ -5,6 +5,8 @@ import Proptypes from 'prop-types';
 import qs from 'query-string';
 
 import actions from './ndc-search-actions';
+import reducers, { initialState } from './ndc-search-reducers';
+
 import SearchComponent from './ndc-search-component';
 import {
   getSearchResultsSorted,
@@ -12,9 +14,6 @@ import {
   getDocumentSelected,
   getAnchorLinks
 } from './ndc-search-selectors';
-
-export { default as component } from './ndc-search-component';
-export { default as styles } from './ndc-search-styles';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
@@ -70,8 +69,10 @@ SearchContainer.propTypes = {
   location: Proptypes.object
 };
 
-export { initialState } from './ndc-search-reducers';
-export { default as reducers } from './ndc-search-reducers';
-export { default as actions } from './ndc-search-actions';
+export const redux = {
+  actions,
+  reducers,
+  initialState
+};
 
 export default withRouter(connect(mapStateToProps, actions)(SearchContainer));

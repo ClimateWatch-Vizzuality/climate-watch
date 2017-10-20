@@ -1,137 +1,68 @@
+/* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 
-import { reducers as countriesReducers } from 'providers/countries-provider';
-import { reducers as regionsReducers } from 'providers/regions-provider';
-import { reducers as ndcsSdgsMetaReducers } from 'providers/ndcs-sdgs-meta-provider';
-import { reducers as ghgEmissionsMetaReducers } from 'providers/ghg-emissions-meta-provider';
-import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
-import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
-import { reducers as ndcsAutocompleteSearchReducers } from 'components/ndcs-autocomplete-search';
-import { reducers as storiesReducers } from 'components/stories';
-import { reducers as countrySelectReducers } from 'components/countries-select';
-import { reducers as ghgEmissionsReducers } from 'components/ghg-emissions';
-import { reducers as modalMetadataReducers } from 'components/modal-metadata';
-import { reducers as NDCSReducers } from 'pages/ndcs';
-import { reducers as countryGhgEmissionsMapReducers } from 'components/country-ghg-map';
-import { reducers as countryGhgEmissionsReducers } from 'components/country-ghg-emissions';
-import { reducers as countrySDGLinkagesReducers } from 'components/country-ndc-sdg-linkages';
-import { reducers as countryNDCOverviewReducers } from 'components/country-ndc-overview';
-import { reducers as countryNDCReducers } from 'pages/ndc-country';
-import { reducers as countryNDCFullReducers } from 'pages/ndc-country-full';
-import { reducers as NDCCompareReducers } from 'pages/ndc-compare';
-import { reducers as ndcSearchReducers } from 'pages/ndc-search';
-import { reducers as ndcSdgReducers } from 'pages/ndc-sdg';
-import { reducers as mapReducers } from 'components/map';
-import initialState from './data/initial-state';
-import allActions from './actions';
+// Providers
+import { redux as countriesProvider } from 'providers/countries-provider';
+import { redux as regionsProvider } from 'providers/regions-provider';
+import { redux as ndcsSdgsMetaProvider } from 'providers/ndcs-sdgs-meta-provider';
+import { redux as ghgEmissionsProvider } from 'providers/ghg-emissions-meta-provider';
+import { redux as geoLocationProvider } from 'providers/geolocation-provider';
+
+const providersReducers = {
+  countries: handleActions(countriesProvider),
+  regions: handleActions(regionsProvider),
+  ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
+  ghgEmissionsMeta: handleActions(ghgEmissionsProvider),
+  geoLocation: handleActions(geoLocationProvider)
+};
+
+// Pages
+import { redux as NDCSPage } from 'pages/ndcs';
+import { redux as countryNDCPage } from 'pages/ndc-country';
+import { redux as countryNDCFullPage } from 'pages/ndc-country-full';
+import { redux as NDCComparePage } from 'pages/ndc-compare';
+import { redux as ndcSearchPage } from 'pages/ndc-search';
+import { redux as ndcSdgPage } from 'pages/ndc-sdg';
+
+const pagesReducers = {
+  ndcs: handleActions(NDCSPage),
+  countryNDC: handleActions(countryNDCPage),
+  countryNDCFull: handleActions(countryNDCFullPage),
+  NDCCompare: handleActions(NDCComparePage),
+  ndcSearch: handleActions(ndcSearchPage),
+  ndcSdg: handleActions(ndcSdgPage)
+};
+
+// Components
+import { redux as mapComponent } from 'components/map';
+import { redux as autocompleteSearchComponent } from 'components/autocomplete-search';
+import { redux as ndcsAutocompleteSearchComponent } from 'components/ndcs-autocomplete-search';
+import { redux as storiesComponent } from 'components/stories';
+import { redux as countrySelectComponent } from 'components/countries-select';
+import { redux as ghgEmissionsComponent } from 'components/ghg-emissions';
+import { redux as modalMetadataComponent } from 'components/modal-metadata';
+import { redux as countryGhgEmissionsMapComponent } from 'components/country-ghg-map';
+import { redux as countryGhgEmissionsComponent } from 'components/country-ghg-emissions';
+import { redux as countrySDGLinkagesComponent } from 'components/country-ndc-sdg-linkages';
+import { redux as countryNDCOverviewComponent } from 'components/country-ndc-overview';
+
+const componentsReducers = {
+  map: handleActions(mapComponent),
+  autocompleteSearch: handleActions(autocompleteSearchComponent),
+  ndcsAutocompleteSearch: handleActions(ndcsAutocompleteSearchComponent),
+  stories: handleActions(storiesComponent),
+  countrySelect: handleActions(countrySelectComponent),
+  ghgEmissions: handleActions(ghgEmissionsComponent),
+  modalMetadata: handleActions(modalMetadataComponent),
+  countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
+  countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
+  countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
+  countryNDCOverview: handleActions(countryNDCOverviewComponent)
+};
 
 export default combineReducers({
-  ndcs: handleActions('ndcs', allActions, NDCSReducers, initialState),
-  stories: handleActions('stories', allActions, storiesReducers, initialState),
-  ndcSdg: handleActions('ndcSdg', allActions, ndcSdgReducers, initialState),
-  modalMetadata: handleActions(
-    'modalMetadata',
-    allActions,
-    modalMetadataReducers,
-    initialState
-  ),
-  countryGhgEmissionsMap: handleActions(
-    'countryGhgEmissionsMap',
-    allActions,
-    countryGhgEmissionsMapReducers,
-    initialState
-  ),
-  ghgEmissionsMeta: handleActions(
-    'ghgEmissionsMeta',
-    allActions,
-    ghgEmissionsMetaReducers,
-    initialState
-  ),
-  ndcSearch: handleActions(
-    'search',
-    allActions,
-    ndcSearchReducers,
-    initialState
-  ),
-  ghgEmissions: handleActions(
-    'ghgEmissions',
-    allActions,
-    ghgEmissionsReducers,
-    initialState
-  ),
-  countries: handleActions(
-    'countries',
-    allActions,
-    countriesReducers,
-    initialState
-  ),
-  regions: handleActions('regions', allActions, regionsReducers, initialState),
-  ndcsSdgsMeta: handleActions(
-    'ndcsSdgsMeta',
-    allActions,
-    ndcsSdgsMetaReducers,
-    initialState
-  ),
-  geoLocation: handleActions(
-    'geoLocation',
-    allActions,
-    geoLocationReducers,
-    initialState
-  ),
-  countryGhgEmissions: handleActions(
-    'countryGhgEmissions',
-    allActions,
-    countryGhgEmissionsReducers,
-    initialState
-  ),
-  countrySDGLinkages: handleActions(
-    'countrySDGLinkages',
-    allActions,
-    countrySDGLinkagesReducers,
-    initialState
-  ),
-  countryNDC: handleActions(
-    'countryNDC',
-    allActions,
-    countryNDCReducers,
-    initialState
-  ),
-  countryNDCFull: handleActions(
-    'countryNDCFull',
-    allActions,
-    countryNDCFullReducers,
-    initialState
-  ),
-  countryNDCOverview: handleActions(
-    'countryNDCOverview',
-    allActions,
-    countryNDCOverviewReducers,
-    initialState
-  ),
-  NDCCompare: handleActions(
-    'NDCCompare',
-    allActions,
-    NDCCompareReducers,
-    initialState
-  ),
-  countrySelect: handleActions(
-    'countrySelect',
-    allActions,
-    countrySelectReducers,
-    initialState
-  ),
-  map: handleActions('map', allActions, mapReducers, initialState),
-  autocompleteSearch: handleActions(
-    'autocompleteSearch',
-    allActions,
-    autocompleteSearchReducers,
-    initialState
-  ),
-  ndcsAutocompleteSearch: handleActions(
-    'ndcsAutocompleteSearch',
-    allActions,
-    ndcsAutocompleteSearchReducers,
-    initialState
-  )
+  ...providersReducers,
+  ...pagesReducers,
+  ...componentsReducers
 });

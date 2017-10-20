@@ -30,9 +30,4 @@ const mapStateToProps = (state, { location, match, route }) => {
   };
 };
 
-// import allActions from 'app/actions'
-// export { default as component } from './other-component'
-// export * as reducers from './other-reducers'
-// export { default as styles } from './other-styles'
-// export { default as actions } from './other-actions'
 export default withRouter(connect(mapStateToProps)(Component));

@@ -2,10 +2,12 @@ import { PureComponent, createElement } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import actions from './ndcs-actions';
-import { getAnchorLinks } from './ndcs-selectors';
+import reducers, { initialState } from './ndcs-reducers';
 
 import Component from './ndcs-component';
+import { getAnchorLinks } from './ndcs-selectors';
 
 const mapStateToProps = (state, { route, location }) => ({
   anchorLinks: getAnchorLinks(route),
@@ -24,12 +26,13 @@ class NDCContainer extends PureComponent {
 
 NDCContainer.propTypes = {};
 
-export { initialState } from './ndcs-reducers';
-export { default as reducers } from './ndcs-reducers';
-export { default as actions } from './ndcs-actions';
-
 NDCContainer.propTypes = {
   fetchNDCS: PropTypes.func.isRequired
 };
 
+export const redux = {
+  actions,
+  reducers,
+  initialState
+};
 export default withRouter(connect(mapStateToProps, actions)(NDCContainer));

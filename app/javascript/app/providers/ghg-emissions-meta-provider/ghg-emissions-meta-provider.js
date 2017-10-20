@@ -3,15 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import actions from './ghg-emissions-meta-provider-actions';
-
-export { initialState } from './ghg-emissions-meta-provider-reducers';
-export { default as reducers } from './ghg-emissions-meta-provider-reducers';
-export { default as actions } from './ghg-emissions-meta-provider-actions';
+import reducers, { initialState } from './ghg-emissions-meta-provider-reducers';
 
 class EmissionsMetaProvider extends PureComponent {
   componentDidMount() {
-    const { fetchEmissionsMeta } = this.props;
-    fetchEmissionsMeta();
+    this.props.fetchEmissionsMeta();
   }
 
   render() {
@@ -23,4 +19,9 @@ EmissionsMetaProvider.propTypes = {
   fetchEmissionsMeta: PropTypes.func.isRequired
 };
 
+export const redux = {
+  actions,
+  reducers,
+  initialState
+};
 export default connect(null, actions)(EmissionsMetaProvider);

@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-import CountryNdcOverviewComponent from './country-ndc-overview-component';
 import actions from './country-ndc-overview-actions';
+import reducers, { initialState } from './country-ndc-overview-reducers';
+
+import CountryNdcOverviewComponent from './country-ndc-overview-component';
 import { getValuesGrouped } from './country-ndc-overview-selectors';
 
 const mapStateToProps = (state, { match }) => {
@@ -41,11 +43,11 @@ CountryNdcOverviewContainer.propTypes = {
   fetchCountryNdcOverviewData: Proptypes.func
 };
 
-export { default as component } from './country-ndc-overview-component';
-export { initialState } from './country-ndc-overview-reducers';
-export { default as reducers } from './country-ndc-overview-reducers';
-export { default as styles } from './country-ndc-overview-styles';
-export { default as actions } from './country-ndc-overview-actions';
+export const redux = {
+  actions,
+  reducers,
+  initialState
+};
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountryNdcOverviewContainer)

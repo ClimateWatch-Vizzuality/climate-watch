@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 
+import CountriesProvider from 'providers/countries-provider';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 
@@ -12,6 +13,7 @@ class Root extends PureComponent {
     const { route, navRoutes } = this.props;
     return (
       <div>
+        <CountriesProvider />
         <NavBar routes={navRoutes} />
         {renderRoutes(route.routes)}
         <Footer routes={navRoutes} />
