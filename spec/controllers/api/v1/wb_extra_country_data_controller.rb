@@ -10,7 +10,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
       FactoryGirl.create(
         :wb_extra_country_data,
         location: location,
-        year: '1960'
+        year: 1960
       )
     }
 
@@ -18,7 +18,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
       FactoryGirl.create(
         :wb_extra_country_data,
         location: location,
-        year: '1990'
+        year: 1990
       )
     }
 
@@ -26,7 +26,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
       FactoryGirl.create(
         :wb_extra_country_data,
         location: location,
-        year: '2000'
+        year: 2000
       )
     }
 
@@ -34,7 +34,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
       FactoryGirl.create(
         :wb_extra_country_data,
         location: location,
-        year: '2004'
+        year: 2004
       )
     }
 
