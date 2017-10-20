@@ -13,7 +13,7 @@ module Api
         end
 
         def locations
-          object.targets.
+          targets = object.targets.
             flat_map do |target|
               target.ndc_targets.map do |ndc_target|
                 [
@@ -21,8 +21,9 @@ module Api
                   target.number
                 ]
               end
-            end.
-            group_by(&:first).
+            end
+
+          targets.group_by(&:first).
             transform_values do |value|
               value.map(&:last).uniq.sort
             end

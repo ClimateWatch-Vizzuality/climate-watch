@@ -4,10 +4,13 @@ module Api
       class NdcSerializer < ActiveModel::Serializer
         include Rails.application.routes.url_helpers
 
-        attributes :iso_code3, :links, :sectors, :sdgs
+        attribute :iso_code3
+        attribute :links
+        attribute :sectors
+        attribute :sdgs
 
         def iso_code3
-          object.location.try(:iso_code3)
+          object.first.location.iso_code3
         end
 
         def links
@@ -15,46 +18,31 @@ module Api
         end
 
         def sectors
-          ary = ::NdcSdg::Sector.order(:name).select(:id, :name)
-          Hash[ary.map { |s| [s.id, {name: s.name}] }]
+          sectors = object.
+            flat_map(&:ndc_targets).
+            flat_map(&:sectors)
+
+          IndexedSerializer.serialize(
+            sectors,
+            serializer: Api::V1::NdcSdg::SectorSerializer,
+            &:id
+          )
         end
 
         def sdgs
-          result = {}
-          ndc_targets = object.ndc_targets.includes(:ndc_target_sectors)
-          ::NdcSdg::Goal.eager_load(:targets).
-            order('ndc_sdg_goals.number::INT, ndc_sdg_targets.number').
-            each do |goal|
-            result[goal.number] = goal_properties(goal, ndc_targets)
-          end
-          result
-        end
+          ndc_targets = object.
+            flat_map(&:ndc_targets)
 
-        def goal_properties(goal, ndc_targets)
-          goal_properties = {
-            title: goal.cw_title,
-            colour: goal.colour,
-            targets: {}
-          }
-          goal.targets.each do |target|
-            goal_properties[:targets][target.number] = target_properties(
-              target, ndc_targets
-            )
-          end
-          goal_properties
-        end
+          goals = ndc_targets.
+            map(&:target).
+            map(&:goal)
 
-        def target_properties(target, ndc_targets)
-          target_properties = {
-            title: target.title
-          }
-          ndc_target = ndc_targets.select { |o| o.target_id == target.id }.
-            first
-          if ndc_target
-            sector_ids = ndc_target.ndc_target_sectors.map(&:sector_id)
-            target_properties[:sectors] = sector_ids
-          end
-          target_properties
+          IndexedSerializer.serialize(
+            goals,
+            ndc_targets: ndc_targets,
+            serializer: Api::V1::NdcSdg::SdgsSerializer,
+            &:number
+          )
         end
       end
     end
