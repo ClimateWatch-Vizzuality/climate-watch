@@ -76,4 +76,27 @@ class Ndc < ApplicationRecord
     ).where(query_params).
       map(&:indc_text)
   end
+
+  def self.linkages_for(iso_code3)
+    Ndc.
+      includes(
+        :location,
+        ndc_targets: [
+          :sectors,
+          target: :goal
+        ]
+      ).
+      references(
+        :locations,
+        ndc_targets: [
+          ndc_target_sectors: :sectors,
+          targets: :goals
+        ]
+      ).
+      where(
+        locations: {
+          iso_code3: iso_code3.upcase
+        }
+      )
+  end
 end

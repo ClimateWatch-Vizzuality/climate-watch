@@ -14,11 +14,9 @@ module Api
         end
 
         def ndc_targets
-          ndc_targets = object.flat_map do |ndc|
-            ndc.ndc_targets
-          end
-
-          ndc_targets.uniq
+          object.
+            flat_map(&:ndc_targets).
+            uniq
         end
 
         def links
@@ -32,10 +30,9 @@ module Api
 
           IndexedSerializer.serialize(
             sectors,
-            serializer: Api::V1::NdcSdg::SectorSerializer
-          ) do |sector|
-            sector.id
-          end
+            serializer: Api::V1::NdcSdg::SectorSerializer,
+            &:id
+          )
         end
 
         def sdgs
@@ -49,10 +46,9 @@ module Api
           IndexedSerializer.serialize(
             goals,
             ndc_targets: ndc_targets,
-            serializer: Api::V1::NdcSdg::SdgsSerializer
-          ) do |sdg|
-            sdg.number
-          end
+            serializer: Api::V1::NdcSdg::SdgsSerializer,
+            &:number
+          )
         end
       end
     end

@@ -17,27 +17,7 @@ module Api
       end
 
       def show
-        ndcs = Ndc.
-          includes(
-            :location,
-            ndc_targets: [
-              :sectors,
-              target: :goal
-            ]
-          ).
-          references(
-            :locations,
-            ndc_targets: [
-              ndc_target_sectors: :sectors,
-              targets: :goals,
-            ]
-          ).
-          joins(:location).
-          where(
-            locations: {
-              iso_code3: params[:code].upcase
-            }
-          )
+        ndcs = Ndc.linkages_for(params[:code])
 
         unless ndcs.length.positive?
           render json: {

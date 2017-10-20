@@ -17,10 +17,9 @@ module Api
           IndexedSerializer.serialize(
             targets,
             ndc_targets: ndc_targets,
-            serializer: Api::V1::NdcSdg::TargetSerializer
-          ) do |target|
-            target.number
-          end
+            serializer: Api::V1::NdcSdg::TargetSerializer,
+            &:number
+          )
         end
       end
     end
