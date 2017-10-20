@@ -13,12 +13,6 @@ module Api
           object.first.location.iso_code3
         end
 
-        def ndc_targets
-          object.
-            flat_map(&:ndc_targets).
-            uniq
-        end
-
         def links
           {self: sdgs_api_v1_ndc_path(code: iso_code3)}
         end
