@@ -201,13 +201,13 @@ format:
 [
     {
         "population": "30739250",
-        "GDP": "13834300571",
-        "year": "1961"
+        "gdp": "13834300571",
+        "year": 1961
     },
     {
         "population": "31023366",
-        "GDP": "16138545209",
-        "year": "1962"
+        "gdp": "16138545209",
+        "year": 1962
     }, ...
 ]
 ```
@@ -215,5 +215,5 @@ format:
 Where:
 
 - `population`: is the total population for the year and the iso code of the country;
-- `GDP`: is the gross domestic product for the year and the iso code of the country;
+- `gdp`: is the gross domestic product for the year and the iso code of the country;
 - `year`: year
