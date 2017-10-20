@@ -46,8 +46,8 @@ class ImportWbExtra
         end
       end
     end
-    Rails.logger.info 'Countries not included in the data ' +
-      not_included_countries.uniq
+    Rails.logger.info "Countries not included in the data
+      #{not_included_countries.uniq}"
   end
 
   def create_country_data(country_code, year)
