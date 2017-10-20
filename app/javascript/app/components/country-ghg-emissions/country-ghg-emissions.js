@@ -8,7 +8,9 @@ import qs from 'query-string';
 import { actions as modalMetaActions } from 'components/modal-metadata';
 import {
   getSourceOptions,
+  getCalculationOptions,
   getSourceSelected,
+  getCalculationSelected,
   getChartData,
   getChartConfig,
   getSelectorDefaults
@@ -32,6 +34,8 @@ const mapStateToProps = (state, { location, match }) => {
     iso: match.params.iso,
     loading: state.countryGhgEmissions.loading,
     data: getChartData(countryGhg),
+    calculations: getCalculationOptions(countryGhg),
+    calculationSelected: getCalculationSelected(countryGhg),
     sources: getSourceOptions(countryGhg),
     sourceSelected: getSourceSelected(countryGhg),
     config: getChartConfig(countryGhg),
@@ -91,6 +95,15 @@ class CountryGhgEmissionsContainer extends PureComponent {
     }
   };
 
+  handleCalculationChange = calculation => {
+    if (calculation) {
+      this.updateUrlParam(
+        { name: 'calculation', value: calculation.value },
+        true
+      );
+    }
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -100,6 +113,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
+      handleCalculationChange: this.handleCalculationChange,
       handleInfoClick: this.handleInfoClick
     });
   }

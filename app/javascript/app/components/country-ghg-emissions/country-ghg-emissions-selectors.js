@@ -35,6 +35,21 @@ const EXCLUDED_SECTORS = [
   'Total excluding LULUCF'
 ];
 
+const CALCULATION_OPTIONS = [
+  {
+    label: 'Absolute value',
+    value: 'ABSOLUTE_VALUE'
+  },
+  {
+    label: 'per Capita',
+    value: 'PER_CAPITA'
+  },
+  {
+    label: 'per GDP',
+    value: 'PER_GDP'
+  }
+];
+
 // meta data for selectors
 const getMeta = state => state.meta || {};
 const getSources = state => state.meta.data_source || [];
@@ -42,6 +57,7 @@ const getVersions = state => state.meta.gwp || [];
 
 // values from search
 const getSourceSelection = state => state.search.source || null;
+const getCalculationSelection = state => state.search.calculation || null;
 const getVersionSelection = state => state.search.version || null;
 const getFilterSelection = state => state.search.filter || null;
 
@@ -58,12 +74,24 @@ export const getSourceOptions = createSelector(getSources, sources => {
   }));
 });
 
+export const getCalculationOptions = () => CALCULATION_OPTIONS;
+
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
     if (!sources || !sources.length) return {};
     if (!selected) return sources[0];
     return sources.find(category => category.value === parseInt(selected, 10));
+  }
+);
+
+export const getCalculationSelected = createSelector(
+  [getCalculationSelection],
+  selected => {
+    if (!selected) return CALCULATION_OPTIONS[0];
+    return CALCULATION_OPTIONS.find(
+      calculation => calculation.value === selected
+    );
   }
 );
 
