@@ -1,11 +1,13 @@
 import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
-// import Proptypes from 'prop-types';
+// import PropTypes from 'prop-types';
 // import { withRouter } from 'react-router';
 
-import {{properCase name}}Component from './{{kebabCase name}}-component';
 import actions from './{{kebabCase name}}-actions';
-// import { {{camelCase name}}Selector } from './countries-select-selectors';
+import reducers, { initialState } from './{{kebabCase name}}-reducers';
+
+import {{properCase name}}Component from './{{kebabCase name}}-component';
+// import { {{camelCase name}}Selector } from './{{kebabCase name}}-selectors';
 
 const mapStateToProps = (state) => ({
   state
@@ -21,11 +23,10 @@ class {{properCase name}}Container extends PureComponent {
 
 {{properCase name}}Container.propTypes = {};
 
-
-export { default as component } from './{{kebabCase name}}-component';
-export { initialState } from './{{kebabCase name}}-reducers';
-export { default as reducers } from './{{kebabCase name}}-reducers';
-export { default as styles } from './{{kebabCase name}}-styles';
-export { default as actions } from './{{kebabCase name}}-actions';
+export const redux = {
+  actions,
+  reducers,
+  initialState
+};
 
 export default connect(mapStateToProps, actions)({{properCase name}}Container);
