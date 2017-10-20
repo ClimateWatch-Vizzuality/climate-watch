@@ -17,16 +17,16 @@ module Api
       end
 
       def show
-        @ndc = Ndc.joins(:location).where(
-          'locations.iso_code3' => params[:code].upcase
-        ).first
-        unless @ndc
+        ndcs = Ndc.linkages_for(params[:code])
+
+        unless ndcs.length.positive?
           render json: {
             error: 'NDC not found',
             status: 404
           }, status: :not_found and return
         end
-        render json: @ndc,
+
+        render json: ndcs.to_a,
                serializer: Api::V1::NdcSdg::NdcSerializer
       end
 

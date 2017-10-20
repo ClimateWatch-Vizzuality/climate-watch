@@ -12,7 +12,6 @@ namespace :db do
     'wb_indc:import',
     'adaptation:import',
     'wri_metadata:import',
-    'adaptation:import',
     'wb_extra:import'
   ]
 
