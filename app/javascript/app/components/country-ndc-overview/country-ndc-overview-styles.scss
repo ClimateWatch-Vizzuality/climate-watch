@@ -8,6 +8,8 @@
 .col2 {
   @extend %grid;
 
+  @include msGridColumns(1fr, 1fr);
+
   grid-template-columns: repeat(2, 1fr);
 }
 
@@ -17,6 +19,8 @@
 
 .actions {
   @extend %grid;
+
+  @include msGridColumns(1fr, 2fr, 3fr);
 
   grid-template-columns: 1fr 2fr 3fr;
 }
@@ -30,6 +34,8 @@
 
 .cards {
   @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
 
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 60px;

@@ -6,4 +6,9 @@
   position: relative;
   height: calc(100vh - 100px);
   max-height: 800px;
+  min-height: 500px;
+
+  > div:nth-child(2) {
+    -ms-grid-column: 2;
+  }
 }

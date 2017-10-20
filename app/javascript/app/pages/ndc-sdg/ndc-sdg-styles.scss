@@ -3,6 +3,8 @@
 .grid {
   @extend %grid;
 
+  @include msGridColumns(4fr, 8fr);
+
   grid-template-columns: 4fr 8fr;
 }
 

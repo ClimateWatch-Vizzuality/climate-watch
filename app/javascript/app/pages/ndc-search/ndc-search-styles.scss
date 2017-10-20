@@ -4,11 +4,15 @@
 .headerCols {
   @extend %grid;
 
+  @include msGridColumns(7fr, 5fr);
+
   grid-template-columns: 7fr 5fr;
 }
 
 .contentCols {
   @extend %grid;
+
+  @include msGridColumns(1fr, 1fr);
 
   grid-template-columns: repeat(2, 50%);
 }
