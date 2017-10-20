@@ -23,15 +23,19 @@ const mergedActions = { ...actions, ...modalMetaActions };
 
 const mapStateToProps = (state, { location, match }) => {
   const { data } = state.countryGhgEmissions;
+  const calculationData = state.wbCountryData.data;
   const { meta } = state.ghgEmissionsMeta;
   const search = qs.parse(location.search);
+  const iso = match.params.iso;
   const countryGhg = {
+    iso,
     meta,
     data,
+    calculationData,
     search
   };
   return {
-    iso: match.params.iso,
+    iso,
     loading: state.countryGhgEmissions.loading,
     data: getChartData(countryGhg),
     calculations: getCalculationOptions(countryGhg),

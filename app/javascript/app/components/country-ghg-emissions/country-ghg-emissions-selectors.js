@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
+
 import {
   getYColumnValue,
   getThemeConfig,
@@ -54,6 +56,8 @@ const CALCULATION_OPTIONS = [
 const getMeta = state => state.meta || {};
 const getSources = state => state.meta.data_source || [];
 const getVersions = state => state.meta.gwp || [];
+const getCalculationData = state =>
+  (state.calculationData && state.calculationData[state.iso]) || [];
 
 // values from search
 const getSourceSelection = state => state.search.source || null;
@@ -75,6 +79,11 @@ export const getSourceOptions = createSelector(getSources, sources => {
 });
 
 export const getCalculationOptions = () => CALCULATION_OPTIONS;
+
+const parseCalculationData = createSelector([getCalculationData], data => {
+  if (!data || !data.length) return {};
+  return groupBy(data, 'year');
+});
 
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
@@ -170,17 +179,48 @@ export const filterData = createSelector(
   }
 );
 
+const calculatedRatio = (selected, calculationData, x) => {
+  if (selected === 'PER_GDP') {
+    return calculationData[x][0].gdp;
+  }
+  if (selected === 'PER_CAPITA') {
+    return calculationData[x][0].population;
+  }
+  return 1;
+};
+
 export const getChartData = createSelector(
-  [filterData, getFiltersSelected],
-  (data, filters) => {
-    if (!data || !data.length || !filters) return [];
-    const xValues = data[0].emissions.map(d => d.year);
+  [
+    filterData,
+    getFiltersSelected,
+    parseCalculationData,
+    getCalculationSelected
+  ],
+  (data, filters, calculationData, calculationSelected) => {
+    if (
+      !data ||
+      !data.length ||
+      !filters ||
+      !calculationData ||
+      !calculationSelected
+    ) {
+      return [];
+    }
+    let xValues = [];
+    xValues = data[0].emissions.map(d => d.year);
+
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
         const yKey = getYColumnValue(d.sector);
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value * DATA_SCALE;
+        const calculationRatio = calculatedRatio(
+          calculationSelected.value,
+          calculationData,
+          x
+        );
+        const scaledYData = yData.value * DATA_SCALE;
+        yItems[yKey] = scaledYData / calculationRatio;
       });
       const item = {
         x,
@@ -219,5 +259,6 @@ export default {
   getSourceOptions,
   getSourceSelected,
   getFilterOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getCalculationData
 };
