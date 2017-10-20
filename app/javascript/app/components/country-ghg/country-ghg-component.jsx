@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import GHGCountryEmissions from 'components/country-ghg-emissions';
 import GHGCountryMap from 'components/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
+import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import cx from 'classnames';
 import throttle from 'lodash/throttle';
 
@@ -27,6 +28,7 @@ class CountryGhg extends PureComponent {
     return (
       <div className={cx(layout.content, styles.grid)}>
         <EmissionsMetaProvider />
+        <WbCountryDataProvider />
         <GHGCountryEmissions handleYearHover={this.handleYearHover} />
         <GHGCountryMap className={styles.map} year={this.state.year} />
       </div>

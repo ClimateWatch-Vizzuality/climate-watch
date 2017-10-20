@@ -3,6 +3,7 @@ import { actions as regionsProvider } from 'providers/regions-provider';
 import { actions as ndcsSdgsMetaProvider } from 'providers/ndcs-sdgs-meta-provider';
 import { actions as geoLocationProvider } from 'providers/geolocation-provider';
 import { actions as ghgEmissionsMetaProvider } from 'providers/ghg-emissions-meta-provider';
+import { actions as wbCountryDataProvider } from 'providers/wb-country-data-provider';
 import { actions as countrySelect } from 'components/countries-select';
 import { actions as stories } from 'components/stories';
 import { actions as autocompleteSearch } from 'components/autocomplete-search';
@@ -27,6 +28,7 @@ export default {
   ...ndcsSdgsMetaProvider,
   ...geoLocationProvider,
   ...ghgEmissionsMetaProvider,
+  ...wbCountryDataProvider,
   ...stories,
   ...countrySelect,
   ...NDCSActions,

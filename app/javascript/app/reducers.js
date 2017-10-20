@@ -5,6 +5,7 @@ import { reducers as countriesReducers } from 'providers/countries-provider';
 import { reducers as regionsReducers } from 'providers/regions-provider';
 import { reducers as ndcsSdgsMetaReducers } from 'providers/ndcs-sdgs-meta-provider';
 import { reducers as ghgEmissionsMetaReducers } from 'providers/ghg-emissions-meta-provider';
+import { reducers as wbCountryDataReducers } from 'providers/wb-country-data-provider';
 import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
 import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
 import { reducers as ndcsAutocompleteSearchReducers } from 'components/ndcs-autocomplete-search';
@@ -46,6 +47,12 @@ export default combineReducers({
     'ghgEmissionsMeta',
     allActions,
     ghgEmissionsMetaReducers,
+    initialState
+  ),
+  wbCountryData: handleActions(
+    'wbCountryData',
+    allActions,
+    wbCountryDataReducers,
     initialState
   ),
   ndcSearch: handleActions(
