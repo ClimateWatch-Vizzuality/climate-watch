@@ -4,7 +4,6 @@ module Api
       def show
         country = Location.find_by(location_type: 'COUNTRY',
                                    iso_code3: params[:iso])
-
         unless country
           render json: {
             error: 'Country not found',
@@ -27,7 +26,9 @@ module Api
 
       def filter_by_dates(country_data, start_year, end_year)
         filtered_country_data = country_data
-        filtered_country_data = filter_by_start_year(filtered_country_data, start_year)
+        filtered_country_data = filter_by_start_year(
+          filtered_country_data, start_year
+        )
         filter_by_end_year(filtered_country_data, end_year)
       end
 
@@ -48,7 +49,7 @@ module Api
           end_year = max_year if max_year < end_year
           filtered_country_data = filtered_country_data.where(
             'year <= ?', end_year
-            )
+          )
         end
         filtered_country_data
       end
