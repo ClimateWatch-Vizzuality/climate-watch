@@ -8,6 +8,19 @@ import styles from './ndc-sdg-linkages-map-styles.scss';
 
 class NdcSdgLinkagesMap extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+
+  getLegend() {
+    const { goal } = this.props;
+    const colour = goal ? goal.colour : '';
+
+    if (!goal) return null;
+
+    return this.props.targetHover ? (
+      <LegendSteps className={styles.legend} colour={colour} />
+    ) : (
+      <LegendRange className={styles.legend} colour={colour} />
+    );
+  }
   render() {
     return (
       <div className={styles.container}>
@@ -17,17 +30,14 @@ class NdcSdgLinkagesMap extends PureComponent {
           paths={this.props.paths}
           className={styles.map}
         />
-        {this.props.targetHover ? (
-          <LegendSteps className={styles.legend} />
-        ) : (
-          <LegendRange className={styles.legend} />
-        )}
+        {this.getLegend()}
       </div>
     );
   }
 }
 
 NdcSdgLinkagesMap.propTypes = {
+  goal: PropTypes.object,
   paths: PropTypes.array.isRequired,
   targetHover: PropTypes.string
 };
