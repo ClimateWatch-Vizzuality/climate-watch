@@ -59,7 +59,7 @@ class Ndc < ApplicationRecord
       target: [:ndc_sdg_targets, :number, params[:target]],
       sector: [:ndc_sdg_ndc_target_sectors, :sector_id, params[:sector]],
       goal: [:ndc_sdg_goals, :number, params[:goal]],
-      code: [:locations, :iso_code3, params[:code].upcase]
+      code: [:locations, :iso_code3, params[:code]&.upcase]
     }
 
     filters.each do |k, v|
