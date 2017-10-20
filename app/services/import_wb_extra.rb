@@ -1,7 +1,7 @@
 class ImportWbExtra
   POPULATION_FILEPATH = 'wb_extra/population.csv'.freeze
   GDP_FILEPATH = 'wb_extra/gdp.csv'.freeze
-  FIRST_YEAR = 1960.freeze
+  FIRST_YEAR = 1960
   def call
     cleanup
     year_range
@@ -46,7 +46,8 @@ class ImportWbExtra
         end
       end
     end
-    Rails.logger.info "Countries not included in the data #{not_included_countries.uniq}"
+    Rails.logger.info 'Countries not included in the data ' +
+      not_included_countries.uniq
   end
 
   def create_country_data(country_code, year)

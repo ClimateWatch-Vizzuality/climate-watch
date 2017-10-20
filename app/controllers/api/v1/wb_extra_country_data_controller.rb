@@ -11,9 +11,9 @@ module Api
           }, status: :not_found and return
         end
 
-        filtered_country_data = ::WbExtra::CountryData
-          .where(location: country)
-          .filter_by_dates(params[:startYear], params[:endYear])
+        filtered_country_data = ::WbExtra::CountryData.
+          where(location: country).
+          filter_by_dates(params[:startYear], params[:endYear])
 
         render json: filtered_country_data,
                each_serializer: Api::V1::WbExtra::CountryDataSerializer
