@@ -11,15 +11,12 @@
 }
 
 .sdgs {
-  @extend %grid;
+  @include clearFix();
 
-  @include msGridColumns(1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 0;
-  position: relative;
-  margin-left: -1px;
-  margin-bottom: 40px;
+  > div {
+    float: left;
+    width: 33.333333%;
+  }
 }
 
 .titleContainer {

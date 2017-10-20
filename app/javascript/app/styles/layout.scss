@@ -35,3 +35,23 @@
   display: -ms-grid;
   -ms-grid-columns: $frs;
 }
+
+@mixin clearFix() {
+  &::before,
+  &::after {
+    content: " ";
+    display: table;
+  }
+
+  &::after {
+    display: block;
+    clear: both;
+    height: 1px;
+    margin-top: -1px;
+    visibility: hidden;
+  }
+
+  & {
+    *zoom: 1;
+  }
+}
