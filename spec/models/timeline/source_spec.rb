@@ -7,4 +7,3 @@ RSpec.describe Timeline::Source, type: :model do
     ).to have(1).errors_on(:name)
   end
 end
-

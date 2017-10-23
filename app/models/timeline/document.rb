@@ -7,5 +7,3 @@ module Timeline
     validates :link, presence: true
   end
 end
-
-

@@ -13,5 +13,3 @@ RSpec.describe Timeline::Note, type: :model do
     ).to have(1).errors_on(:document)
   end
 end
-
-

@@ -13,5 +13,3 @@ RSpec.describe Timeline::Document, type: :model do
     ).to have(1).errors_on(:location)
   end
 end
-
-

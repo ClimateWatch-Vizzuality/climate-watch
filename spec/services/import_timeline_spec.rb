@@ -14,7 +14,6 @@ object_contents = {
 }
 
 RSpec.describe ImportTimeline do
-
   subject { ImportTimeline.new.call }
 
   before :all do

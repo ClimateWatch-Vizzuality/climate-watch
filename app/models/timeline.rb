@@ -3,4 +3,3 @@ module Timeline
     'timeline_'
   end
 end
-

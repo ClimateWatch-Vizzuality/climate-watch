@@ -3,5 +3,3 @@ FactoryGirl.define do
     note 'MyText'
   end
 end
-
-

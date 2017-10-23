@@ -29,4 +29,3 @@ describe Api::V1::TimelineController, type: :controller do
     end
   end
 end
-

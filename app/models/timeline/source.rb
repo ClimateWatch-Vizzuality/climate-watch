@@ -5,4 +5,3 @@ module Timeline
     validates :name, presence: true
   end
 end
-

@@ -1,6 +1,4 @@
 class ImportTimeline
-  FILEPATH='unfccc/'.freeze
-
   def call
     cleanup
 
@@ -27,9 +25,7 @@ class ImportTimeline
         c.key =~ /.csv/
       end
 
-      @csv_keys = @csv_keys.map do |c|
-        c.key
-      end
+      @csv_keys = @csv_keys.map(&:key)
 
       @csv_keys = @csv_keys.reject do |c|
         c =~ /_metadata.csv/
@@ -38,10 +34,9 @@ class ImportTimeline
   end
 
   def load_csvs
-    @csvs = @csv_keys.reduce({}) do |memo, c|
+    @csvs = @csv_keys.each_with_object({}) do |c, memo|
       name = c[/\/(.*).csv/, 1]
       memo[name] = S3CSVReader.read(c).map(&:to_h)
-      memo
     end
   end
 

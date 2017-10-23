@@ -5,6 +5,3 @@ module Timeline
     validates :note, presence: true
   end
 end
-
-
-
