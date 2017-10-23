@@ -1,6 +1,6 @@
-module Unfccc
+module Timeline
   def self.table_name_prefix
-    'unfccc_'
+    'timeline_'
   end
 end
 

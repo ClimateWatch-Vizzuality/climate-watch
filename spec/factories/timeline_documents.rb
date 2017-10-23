@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :unfccc_record, class: 'Unfccc::Record' do
-    association :document, factory: :unfccc_document
+  factory :timeline_document, class: 'Timeline::Document' do
+    association :source, factory: :timeline_source
     location
     link 'http://xyzzy.abc/fgsfds'
     text 'MyText'
@@ -10,11 +10,11 @@ FactoryGirl.define do
         note_count 2
       end
 
-      after(:create) do |record, evaluator|
+      after(:create) do |document, evaluator|
         create_list(
-          :unfccc_note,
+          :timeline_note,
           evaluator.note_count,
-          record: record
+          document: document
         )
       end
     end

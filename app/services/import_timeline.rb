@@ -1,4 +1,4 @@
-class ImportUnfccc
+class ImportTimeline
   FILEPATH='unfccc/'.freeze
 
   def call
@@ -11,9 +11,9 @@ class ImportUnfccc
   end
 
   def cleanup
-    Unfccc::Note.delete_all
-    Unfccc::Record.delete_all
-    Unfccc::Document.delete_all
+    Timeline::Note.delete_all
+    Timeline::Document.delete_all
+    Timeline::Source.delete_all
   end
 
   def find_csvs
@@ -21,7 +21,7 @@ class ImportUnfccc
     s3 = Aws::S3::Client.new
     s3.list_objects(
       bucket: bucket_name,
-      prefix: 'unfccc/'
+      prefix: 'timeline/'
     ).each do |response|
       @csv_keys = response.contents.select do |c|
         c.key =~ /.csv/
@@ -47,21 +47,21 @@ class ImportUnfccc
 
   def import_all
     @csvs.each do |key, csv|
-      import_document(key, csv)
+      import_source(key, csv)
     end
   end
 
-  def import_document(name, csv)
-    document = Unfccc::Document.create!(
+  def import_source(name, csv)
+    source = Timeline::Source.create!(
       name: name
     )
 
     csv.each do |line|
-      import_record(document, line)
+      import_document(source, line)
     end
   end
 
-  def import_record(document, line)
+  def import_document(source, line)
     location = Location.find_by(
       iso_code3: line[:iso_code3]
     )
@@ -71,8 +71,8 @@ class ImportUnfccc
       return
     end
 
-    record = Unfccc::Record.create!(
-      document: document,
+    document = Timeline::Document.create!(
+      source: source,
       location: location,
       link: prefixed('link', line),
       text: prefixed('text', line),
@@ -80,7 +80,7 @@ class ImportUnfccc
       language: prefixed('language', line)
     )
 
-    import_notes(record, line)
+    import_notes(document, line)
   end
 
   def prefixed(prefix, line)
@@ -98,7 +98,7 @@ class ImportUnfccc
     Date.new(year, month, day)
   end
 
-  def import_notes(record, line)
+  def import_notes(document, line)
     note_keys = line.keys.select do |key|
       key =~ /note\d*$/
     end
@@ -109,8 +109,8 @@ class ImportUnfccc
 
     notes.each do |note|
       next if note.nil? || note.empty?
-      Unfccc::Note.create!(
-        record: record,
+      Timeline::Note.create!(
+        document: document,
         note: note
       )
     end

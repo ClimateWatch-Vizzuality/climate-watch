@@ -1,6 +1,6 @@
-module Unfccc
+module Timeline
   class Note < ApplicationRecord
-    belongs_to :record, class_name: 'Unfccc::Record'
+    belongs_to :document, class_name: 'Timeline::Document'
 
     validates :note, presence: true
   end

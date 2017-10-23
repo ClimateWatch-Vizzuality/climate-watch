@@ -13,7 +13,7 @@ namespace :db do
     'adaptation:import',
     'wri_metadata:import',
     'wb_extra:import',
-    'unfccc:import'
+    'timeline:import'
   ]
 
   desc 'Imports all data in correct order, replaces all data'
