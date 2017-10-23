@@ -15,6 +15,7 @@ import { actions as NDCCompareActions } from 'pages/ndc-compare';
 import { actions as countryGhgEmissionsActions } from 'components/country-ghg-emissions';
 import { actions as countryGhgEmissionsMapActions } from 'components/country-ghg-map';
 import { actions as countryNDCOverviewActions } from 'components/country-ndc-overview';
+import { actions as countryClimateVulnerabilityActions } from 'components/country-climate-vulnerability';
 import { actions as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
 import { actions as countryNDCActions } from 'pages/ndc-country';
 import { actions as countryNDCFullActions } from 'pages/ndc-country-full';
@@ -37,6 +38,7 @@ export default {
   ...countryNDCActions,
   ...countryNDCFullActions,
   ...countryNDCOverviewActions,
+  ...countryClimateVulnerabilityActions,
   ...mapActions,
   ...modalMetadata,
   ...autocompleteSearch,

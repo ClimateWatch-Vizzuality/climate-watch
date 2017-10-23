@@ -1,5 +1,6 @@
 import { initialState as map } from 'components/map';
 import { initialState as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
+import { initialState as countryClimateVulnerability } from 'components/country-climate-vulnerability';
 import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
 import { initialState as ndcsAutocompleteSearch } from 'components/ndcs-autocomplete-search';
@@ -35,6 +36,7 @@ export default {
   countryNDC,
   countryNDCFull,
   countryNDCOverview,
+  countryClimateVulnerability,
   NDCCompare,
   countrySelect,
   autocompleteSearch,

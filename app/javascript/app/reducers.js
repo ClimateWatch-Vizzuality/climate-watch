@@ -17,6 +17,7 @@ import { reducers as countryGhgEmissionsMapReducers } from 'components/country-g
 import { reducers as countryGhgEmissionsReducers } from 'components/country-ghg-emissions';
 import { reducers as countrySDGLinkagesReducers } from 'components/country-ndc-sdg-linkages';
 import { reducers as countryNDCOverviewReducers } from 'components/country-ndc-overview';
+import { reducers as countryClimateVulnerabilityReducers } from 'components/country-climate-vulnerability';
 import { reducers as countryNDCReducers } from 'pages/ndc-country';
 import { reducers as countryNDCFullReducers } from 'pages/ndc-country-full';
 import { reducers as NDCCompareReducers } from 'pages/ndc-compare';
@@ -89,6 +90,12 @@ export default combineReducers({
     'countrySDGLinkages',
     allActions,
     countrySDGLinkagesReducers,
+    initialState
+  ),
+  countryClimateVulnerability: handleActions(
+    'countrySDGLinkages',
+    allActions,
+    countryClimateVulnerabilityReducers,
     initialState
   ),
   countryNDC: handleActions(
