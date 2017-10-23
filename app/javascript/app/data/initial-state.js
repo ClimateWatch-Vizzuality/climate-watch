@@ -19,6 +19,7 @@ import { initialState as ndcSdg } from 'pages/ndc-sdg';
 import { initialState as countries } from 'providers/countries-provider';
 import { initialState as regions } from 'providers/regions-provider';
 import { initialState as ndcsSdgsMeta } from 'providers/ndcs-sdgs-meta-provider';
+import { initialState as adaptations } from 'providers/adaptations-provider';
 import { initialState as geoLocation } from 'providers/geolocation-provider';
 import { initialState as ghgEmissionsMeta } from 'providers/ghg-emissions-meta-provider';
 
@@ -26,6 +27,7 @@ export default {
   countries,
   regions,
   ndcsSdgsMeta,
+  adaptations,
   stories,
   geoLocation,
   map,
