@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
+import intersection from 'lodash/intersection';
 
 import {
   getYColumnValue,
@@ -212,8 +213,15 @@ export const getChartData = createSelector(
     ) {
       return [];
     }
+
     let xValues = [];
     xValues = data[0].emissions.map(d => d.year);
+    if (calculationSelected.value !== 'ABSOLUTE_VALUE') {
+      xValues = intersection(
+        xValues,
+        Object.keys(calculationData).map(y => parseInt(y, 10))
+      );
+    }
 
     const dataParsed = xValues.map(x => {
       const yItems = {};
