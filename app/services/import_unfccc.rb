@@ -74,24 +74,18 @@ class ImportUnfccc
     record = Unfccc::Record.create!(
       document: document,
       location: location,
-      link: link(line),
-      text: text(line),
-      date: date(line)
+      link: prefixed('link', line),
+      text: prefixed('text', line),
+      date: date(line),
+      language: prefixed('language', line)
     )
 
     import_notes(record, line)
   end
 
-  def link(line)
+  def prefixed(prefix, line)
     key = line.keys.find do |k|
-      k =~ /link$/
-    end
-    line[key]&.strip
-  end
-
-  def text(line)
-    key = line.keys.find do |k|
-      k =~ /text$/
+      k =~ /#{prefix}$/
     end
     line[key]&.strip
   end

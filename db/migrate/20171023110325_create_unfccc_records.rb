@@ -6,6 +6,7 @@ class CreateUnfcccRecords < ActiveRecord::Migration[5.1]
       t.text :link
       t.text :text
       t.date :date
+      t.text :language
       t.timestamps
     end
   end

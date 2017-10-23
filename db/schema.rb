@@ -243,6 +243,7 @@ ActiveRecord::Schema.define(version: 20171023110328) do
     t.text "link"
     t.text "text"
     t.date "date"
+    t.text "language"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["document_id"], name: "index_unfccc_records_on_document_id"
