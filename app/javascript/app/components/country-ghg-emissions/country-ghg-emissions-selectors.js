@@ -78,12 +78,18 @@ export const getSourceOptions = createSelector(getSources, sources => {
   }));
 });
 
-export const getCalculationOptions = () => CALCULATION_OPTIONS;
-
 const parseCalculationData = createSelector([getCalculationData], data => {
-  if (!data || !data.length) return {};
+  if (!data || !data.length) return null;
   return groupBy(data, 'year');
 });
+
+export const getCalculationOptions = createSelector(
+  parseCalculationData,
+  calculationData => {
+    if (!calculationData) return [];
+    return CALCULATION_OPTIONS;
+  }
+);
 
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
