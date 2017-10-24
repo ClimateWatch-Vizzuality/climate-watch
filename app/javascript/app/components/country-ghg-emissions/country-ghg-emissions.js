@@ -95,16 +95,13 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
   handleSourceChange = category => {
     if (category) {
-      this.updateUrlParam({ name: 'source', value: category.value }, true);
+      this.updateUrlParam({ name: 'source', value: category.value });
     }
   };
 
   handleCalculationChange = calculation => {
     if (calculation) {
-      this.updateUrlParam(
-        { name: 'calculation', value: calculation.value },
-        true
-      );
+      this.updateUrlParam({ name: 'calculation', value: calculation.value });
     }
   };
 
