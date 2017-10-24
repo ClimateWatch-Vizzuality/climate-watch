@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       resources :metadata, param: :slug, only: [:index, :show] do
         get :acronyms, on: :collection, controller: :metadata, action: :acronyms
       end
+      resources :timeline, param: :code, only: [:index, :show]
 
       get '(*endpoint)', controller: :api, action: :route_not_found
     end
