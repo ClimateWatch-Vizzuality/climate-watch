@@ -1,0 +1,37 @@
+@import '~styles/layout.scss';
+
+.circularChart {
+  display: block;
+  max-height: 100px;
+}
+
+.circleBg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 1.2;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 1;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.circularChart .circle {
+  stroke: #113750;
+}
+
+.percentage {
+  fill: #113750;
+  font-family: sans-serif;
+  font-size: 0.4em;
+  text-anchor: middle;
+  font-weight: bold;
+}
