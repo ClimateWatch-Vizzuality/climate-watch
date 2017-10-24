@@ -2,8 +2,9 @@ class ImportNdcTexts
   def call
     Ndc.delete_all
     bucket_name = Rails.application.secrets.s3_bucket_name
+    prefix = "#{CW_FILES_PREFIX}ndc_texts/"
     s3 = Aws::S3::Client.new
-    s3.list_objects(bucket: bucket_name, prefix: "#{CW_FILES_PREFIX}ndc_texts/").each do |response|
+    s3.list_objects(bucket: bucket_name, prefix: prefix).each do |response|
       md_objects = response.contents.select { |o| o.key =~ /\.html$/ }
       md_objects.each { |object| import_object(s3, bucket_name, object) }
     end
@@ -13,7 +14,8 @@ class ImportNdcTexts
   private
 
   def import_object(s3, bucket_name, object)
-    object.key =~ /#{CW_FILES_PREFIX}ndc_texts\/(.+?)-(.+?)-(.+?)(-.+?)?(\.md)?\.html/
+    object.key =~
+      /#{CW_FILES_PREFIX}ndc_texts\/(.+?)-(.+?)-(.+?)(-.+?)?(\.md)?\.html/
     unless Regexp.last_match
       Rails.logger.error "Ignored file with unrecognized name #{object.key}"
       return
@@ -42,7 +44,8 @@ class ImportNdcTexts
     begin
       page = Nokogiri::HTML(html_content)
       page.css('img').each do |img|
-        img['src'] = "#{S3_BUCKET_URL}/#{CW_FILES_PREFIX}ndc_texts/#{img['src']}"
+        img['src'] =
+          "#{S3_BUCKET_URL}/#{CW_FILES_PREFIX}ndc_texts/#{img['src']}"
       end
       html_content = page.to_html
     rescue Nokogiri::SyntaxError => e

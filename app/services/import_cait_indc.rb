@@ -1,9 +1,11 @@
 class ImportCaitIndc
+  # rubocop:disable LineLength
   META_INDICATORS_FILEPATH = "#{CW_FILES_PREFIX}cait_indc/CW_NDC_CAIT_metadata.csv".freeze
   META_LEGEND_FILEPATH = "#{CW_FILES_PREFIX}cait_indc/CW_NDC_CAIT_legend.csv".freeze
   META_MAP_FILEPATH = "#{CW_FILES_PREFIX}cait_indc/CW_NDC_map.csv".freeze
   DATA_FILEPATH = "#{CW_FILES_PREFIX}cait_indc/CW_NDC_CAIT_data.csv".freeze
   SUBMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}cait_indc/CW_NDC_Submission_URL.csv".freeze
+  # rubocop:enable LineLength
 
   def call
     cleanup
