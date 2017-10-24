@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
-import { redux as ModalRedux } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-metadata';
 import ownActions from './country-ghg-emissions-actions';
 import reducers, { initialState } from './country-ghg-emissions-reducers';
 
@@ -18,7 +18,7 @@ import {
   getSelectorDefaults
 } from './country-ghg-emissions-selectors';
 
-const actions = { ...ownActions, ...ModalRedux.actions };
+const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location, match }) => {
   const { data } = state.countryGhgEmissions;
@@ -114,11 +114,7 @@ CountryGhgEmissionsContainer.propTypes = {
   fetchCountryGhgEmissionsData: Proptypes.func
 };
 
-export const redux = {
-  actions,
-  reducers,
-  initialState
-};
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountryGhgEmissionsContainer)

@@ -6,7 +6,7 @@ import qs from 'query-string';
 
 import Loading from 'components/loading';
 
-import { redux as mapRedux } from 'components/map/map';
+import { actions as mapActions } from 'components/map/map';
 import ownActions from './country-ghg-map-actions';
 import reducers, { initialState } from './country-ghg-map-reducers';
 
@@ -22,7 +22,7 @@ import {
 } from './country-ghg-map-selectors';
 
 const actions = {
-  ...mapRedux.actions,
+  ...mapActions,
   ...ownActions
 };
 
@@ -110,11 +110,7 @@ CountryGhgMapContainer.propTypes = {
   fetchGhgEmissionsMapData: PropTypes.func.isRequired
 };
 
-export const redux = {
-  actions,
-  reducers,
-  initialState
-};
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountryGhgMapContainer)

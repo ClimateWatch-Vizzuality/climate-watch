@@ -20,11 +20,7 @@ const includeActions = withHandlers({
   }
 });
 
-export const redux = {
-  actions,
-  reducers,
-  initialState
-};
+export { actions, reducers, initialState };
 
 export default connect(mapStateToProps, actions)(
   includeActions(ModalMetadataComponent)

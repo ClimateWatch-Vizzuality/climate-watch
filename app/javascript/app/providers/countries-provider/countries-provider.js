@@ -19,9 +19,5 @@ GeolocationProvider.propTypes = {
   getCountries: PropTypes.func.isRequired
 };
 
-export const redux = {
-  actions,
-  reducers,
-  initialState
-};
+export { actions, reducers, initialState };
 export default connect(null, actions)(GeolocationProvider);

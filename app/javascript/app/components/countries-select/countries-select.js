@@ -13,12 +13,6 @@ import {
   getPathsWithStyles
 } from './countries-select-selectors';
 
-export { default as component } from './countries-select-component';
-export { initialState } from './countries-select-reducers';
-export { default as reducers } from './countries-select-reducers';
-export { default as styles } from './countries-select-styles';
-export { default as actions } from './countries-select-actions';
-
 const mapStateToProps = state => {
   const { countrySelect, countries } = state;
   const stateWithFilters = {
@@ -66,11 +60,7 @@ CountrySelectContainer.propTypes = {
   history: Proptypes.object
 };
 
-export const redux = {
-  actions,
-  reducers,
-  initialState
-};
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountrySelectContainer)

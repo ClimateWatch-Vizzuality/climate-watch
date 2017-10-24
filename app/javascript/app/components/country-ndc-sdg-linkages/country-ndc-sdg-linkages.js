@@ -59,11 +59,7 @@ const CountrySDGLinkagesContainer = props => {
   });
 };
 
-export const redux = {
-  actions,
-  reducers,
-  initialState
-};
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountrySDGLinkagesContainer)

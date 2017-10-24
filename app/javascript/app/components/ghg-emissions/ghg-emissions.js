@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import { redux as modalRedux } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-metadata';
 import ownActions from './ghg-emissions-actions';
 import reducers, { initialState } from './ghg-emissions-reducers';
 
@@ -24,7 +24,7 @@ import {
   getSelectorDefaults
 } from './ghg-emissions-selectors';
 
-const actions = { ...ownActions, ...modalRedux.actions };
+const actions = { ...ownActions, ...modalActions };
 
 const groups = [
   {
@@ -195,11 +195,7 @@ GhgEmissionsContainer.propTypes = {
   filtersSelected: PropTypes.array
 };
 
-export const redux = {
-  actions,
-  reducers,
-  initialState
-};
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(GhgEmissionsContainer)
