@@ -45,13 +45,16 @@ module Api
             }, locations: {
               iso_code3: params[:code]
             }
-          )
+          ).
+          order('indc_indicators.name')
+
 
         sectors = ::Indc::Sector.
           includes(:parent, values: :location).
           where(locations: {iso_code3: params[:code]}).
           map(&:parent).
           map(&:name).
+          sort.
           uniq
 
         render json: NdcOverview.new(values, sectors),

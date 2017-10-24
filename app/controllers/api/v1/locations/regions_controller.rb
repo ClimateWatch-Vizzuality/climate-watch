@@ -6,7 +6,7 @@ module Api
           regions = Location.where(
             location_type: 'REGION',
             show_in_cw: true
-          ).includes(:members)
+          ).includes(:members).order(:wri_standard_name)
 
           render json: regions,
                  each_serializer: Api::V1::LocationSerializer,
