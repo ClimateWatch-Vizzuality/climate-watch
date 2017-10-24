@@ -3,7 +3,7 @@ require 'csv'
 class ImportLocationMembers
   def call
     bucket_name = Rails.application.secrets.s3_bucket_name
-    file_name = 'data/locations_groupings.csv'
+    file_name = "#{CW_FILES_PREFIX}locations/locations_groupings.csv"
     s3 = Aws::S3::Client.new
     begin
       file = s3.get_object(bucket: bucket_name, key: file_name)

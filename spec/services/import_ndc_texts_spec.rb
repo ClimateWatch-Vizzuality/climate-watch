@@ -8,8 +8,8 @@ RSpec.describe ImportNdcTexts do
       stub_responses: {
         list_objects: {
           contents: [
-            {key: 'new_ndcs/AFG-INDC-EN.html'},
-            {key: 'new_ndcs/ALB-INDC-EN.html'}
+            {key: "#{CW_FILES_PREFIX}ndc_texts/AFG-INDC-EN.html"},
+            {key: "#{CW_FILES_PREFIX}ndc_texts/ALB-INDC-EN.html"}
           ]
         }
       }

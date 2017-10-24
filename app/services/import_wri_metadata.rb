@@ -1,7 +1,7 @@
 class ImportWriMetadata
-  WRI_ACRONYMS_FILEPATH = 'metadata/Acronyms.csv'.freeze
-  WRI_METADATA_FILEPATH = 'metadata/metadata_sources.csv'.freeze
-  WRI_DESCRIPTIONS_FILEPATH = 'metadata/metadata_sources_descriptions.csv'.
+  WRI_ACRONYMS_FILEPATH = "#{CW_FILES_PREFIX}wri_metadata/Acronyms.csv".freeze
+  WRI_METADATA_FILEPATH = "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv".freeze
+  WRI_DESCRIPTIONS_FILEPATH = "#{CW_FILES_PREFIX}wri_metadata/metadata_sources_descriptions.csv".
     freeze
 
   def call

@@ -3,7 +3,7 @@ require 'csv'
 class ImportNdcSdgTargets
   def call
     cleanup
-    import_ndc_sdg_targets(read_from_s3('data/ndc_sdg_targets.csv'))
+    import_ndc_sdg_targets(read_from_s3("#{CW_FILES_PREFIX}sdgs/ndc_sdg_targets.csv"))
   end
 
   private

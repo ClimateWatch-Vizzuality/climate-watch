@@ -19,7 +19,7 @@ class ImportTimeline
     s3 = Aws::S3::Client.new
     s3.list_objects(
       bucket: bucket_name,
-      prefix: 'timeline/'
+      prefix: "#{CW_FILES_PREFIX}timeline/"
     ).each do |response|
       @csv_keys = response.contents.select do |c|
         c.key =~ /.csv/
