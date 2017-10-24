@@ -7,7 +7,7 @@
 
 .text {
   font-size: $font-size;
-  line-height: 1.62;
+  line-height: $line-height-medium;
   color: $theme-color;
   margin-bottom: 5px;
 
@@ -18,7 +18,8 @@
 
 .link {
   font-size: $font-size;
-  line-height: 1.62;
+  line-height: $line-height-medium;
+  height: 1.62;
   color: $theme-color;
   border-bottom: 1px solid $theme-secondary;
 }
