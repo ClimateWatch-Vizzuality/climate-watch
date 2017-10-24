@@ -12,7 +12,9 @@ import reducers, { initialState } from './country-ghg-emissions-reducers';
 import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
 import {
   getSourceOptions,
+  getCalculationOptions,
   getSourceSelected,
+  getCalculationSelected,
   getChartData,
   getChartConfig,
   getSelectorDefaults
@@ -22,17 +24,23 @@ const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location, match }) => {
   const { data } = state.countryGhgEmissions;
+  const calculationData = state.wbCountryData.data;
   const { meta } = state.ghgEmissionsMeta;
   const search = qs.parse(location.search);
+  const iso = match.params.iso;
   const countryGhg = {
+    iso,
     meta,
     data,
+    calculationData,
     search
   };
   return {
-    iso: match.params.iso,
+    iso,
     loading: state.countryGhgEmissions.loading,
     data: getChartData(countryGhg),
+    calculations: getCalculationOptions(countryGhg),
+    calculationSelected: getCalculationSelected(countryGhg),
     sources: getSourceOptions(countryGhg),
     sourceSelected: getSourceSelected(countryGhg),
     config: getChartConfig(countryGhg),
@@ -88,7 +96,13 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
   handleSourceChange = category => {
     if (category) {
-      this.updateUrlParam({ name: 'source', value: category.value }, true);
+      this.updateUrlParam({ name: 'source', value: category.value });
+    }
+  };
+
+  handleCalculationChange = calculation => {
+    if (calculation) {
+      this.updateUrlParam({ name: 'calculation', value: calculation.value });
     }
   };
 
@@ -101,6 +115,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
+      handleCalculationChange: this.handleCalculationChange,
       handleInfoClick: this.handleInfoClick
     });
   }
