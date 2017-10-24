@@ -5,19 +5,15 @@ import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
-import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
 import actions from './ndcs-autocomplete-search-actions';
+import reducers, { initialState } from './ndcs-autocomplete-search-reducers';
+
+import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
 import {
   getQueryUpper,
   getSearchList,
   getOptionSelected
 } from './ndcs-autocomplete-search-selectors';
-
-export { default as component } from './ndcs-autocomplete-search-component';
-export { initialState } from './ndcs-autocomplete-search-reducers';
-export { default as reducers } from './ndcs-autocomplete-search-reducers';
-export { default as styles } from './ndcs-autocomplete-search-styles';
-export { default as actions } from './ndcs-autocomplete-search-actions';
 
 const groups = [
   {
@@ -91,6 +87,8 @@ NdcsAutocompleteSearchContainer.propTypes = {
   location: Proptypes.object,
   onSearchChange: Proptypes.func
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(NdcsAutocompleteSearchContainer)

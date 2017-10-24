@@ -5,7 +5,11 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
-import { actions as modalMetaActions } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-metadata';
+import ownActions from './country-ghg-emissions-actions';
+import reducers, { initialState } from './country-ghg-emissions-reducers';
+
+import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
 import {
   getSourceOptions,
   getSourceSelected,
@@ -14,10 +18,7 @@ import {
   getSelectorDefaults
 } from './country-ghg-emissions-selectors';
 
-import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
-import actions from './country-ghg-emissions-actions';
-
-const mergedActions = { ...actions, ...modalMetaActions };
+const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location, match }) => {
   const { data } = state.countryGhgEmissions;
@@ -113,12 +114,8 @@ CountryGhgEmissionsContainer.propTypes = {
   fetchCountryGhgEmissionsData: Proptypes.func
 };
 
-export { default as component } from './country-ghg-emissions-component';
-export { initialState } from './country-ghg-emissions-reducers';
-export { default as reducers } from './country-ghg-emissions-reducers';
-export { default as styles } from './country-ghg-emissions-styles';
-export { default as actions } from './country-ghg-emissions-actions';
+export { actions, reducers, initialState };
 
 export default withRouter(
-  connect(mapStateToProps, mergedActions)(CountryGhgEmissionsContainer)
+  connect(mapStateToProps, actions)(CountryGhgEmissionsContainer)
 );

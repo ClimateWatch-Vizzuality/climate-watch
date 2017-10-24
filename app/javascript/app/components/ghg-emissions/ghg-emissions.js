@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { actions as modalMetaActions } from 'components/modal-metadata';
 
+import { actions as modalActions } from 'components/modal-metadata';
+import ownActions from './ghg-emissions-actions';
+import reducers, { initialState } from './ghg-emissions-reducers';
+
+import GhgEmissionsComponent from './ghg-emissions-component';
 import {
   getChartData,
   getChartConfig,
@@ -20,10 +24,7 @@ import {
   getSelectorDefaults
 } from './ghg-emissions-selectors';
 
-import GhgEmissionsComponent from './ghg-emissions-component';
-import actions from './ghg-emissions-actions';
-
-const mergedActions = { ...actions, ...modalMetaActions };
+const actions = { ...ownActions, ...modalActions };
 
 const groups = [
   {
@@ -194,12 +195,8 @@ GhgEmissionsContainer.propTypes = {
   filtersSelected: PropTypes.array
 };
 
-export { default as component } from './ghg-emissions-component';
-export { initialState } from './ghg-emissions-reducers';
-export { default as reducers } from './ghg-emissions-reducers';
-export { default as styles } from './ghg-emissions-styles';
-export { default as actions } from './ghg-emissions-actions';
+export { actions, reducers, initialState };
 
 export default withRouter(
-  connect(mapStateToProps, mergedActions)(GhgEmissionsContainer)
+  connect(mapStateToProps, actions)(GhgEmissionsContainer)
 );

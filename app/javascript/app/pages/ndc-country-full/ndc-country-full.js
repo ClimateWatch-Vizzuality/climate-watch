@@ -5,19 +5,16 @@ import Proptypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import NDCCountryFullComponent from './ndc-country-full-component';
 import actions from './ndc-country-full-actions';
+import reducers, { initialState } from './ndc-country-full-reducers';
+
+import NDCCountryFullComponent from './ndc-country-full-component';
 import {
   getCountry,
   getSelectedContent,
   getContentOptions,
   getContentOptionSelected
 } from './ndc-country-full-selectors';
-
-export { default as component } from './ndc-country-full-component';
-export { initialState } from './ndc-country-full-reducers';
-export { default as reducers } from './ndc-country-full-reducers';
-export { default as actions } from './ndc-country-full-actions';
 
 const mapStateToProps = (state, { match }) => {
   const search = qs.parse(location.search);
@@ -86,6 +83,8 @@ NDCCountryFullContainer.propTypes = {
   loading: Proptypes.bool,
   fetchCountryNDCFull: Proptypes.func
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(NDCCountryFullContainer)

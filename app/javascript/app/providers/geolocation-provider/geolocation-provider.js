@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import actions from './geolocation-provider-actions';
-
-export { initialState } from './geolocation-provider-reducers';
-export { default as reducers } from './geolocation-provider-reducers';
-export { default as actions } from './geolocation-provider-actions';
+import reducers, { initialState } from './geolocation-provider-reducers';
 
 class GeolocationProvider extends PureComponent {
   componentDidMount() {
@@ -28,4 +25,5 @@ GeolocationProvider.defaultProps = {
   locationProvider: 'http://ip-api.com/json'
 };
 
+export { actions, reducers, initialState };
 export default connect(null, actions)(GeolocationProvider);

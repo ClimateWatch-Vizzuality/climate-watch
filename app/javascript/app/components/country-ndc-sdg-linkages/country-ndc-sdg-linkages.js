@@ -4,20 +4,16 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
-import CountrySDGLinkagesComponent from './country-ndc-sdg-linkages-component';
 import actions from './country-ndc-sdg-linkages-actions';
+import reducers, { initialState } from './country-ndc-sdg-linkages-reducers';
+
+import CountrySDGLinkagesComponent from './country-ndc-sdg-linkages-component';
 import {
   getSectorOptionsSorted,
   filterSDGs,
   getSectorSelected,
   parsedNdcsSdgs
 } from './country-ndc-sdg-linkages-selectors';
-
-export { default as component } from './country-ndc-sdg-linkages-component';
-export { initialState } from './country-ndc-sdg-linkages-reducers';
-export { default as styles } from './country-ndc-sdg-linkages-styles';
-export { default as reducers } from './country-ndc-sdg-linkages-reducers';
-export { default as actions } from './country-ndc-sdg-linkages-actions';
 
 const mapStateToProps = (state, { match, location }) => {
   const { countrySDGLinkages, ndcsSdgsMeta } = state;
@@ -62,6 +58,8 @@ const CountrySDGLinkagesContainer = props => {
     handleSectorChange
   });
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountrySDGLinkagesContainer)
