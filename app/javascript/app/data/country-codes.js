@@ -247,3 +247,5 @@ export default {
   ZM: 'ZMB',
   ZW: 'ZWE'
 };
+
+export const COUNTRIES_NUMBER = '156';
