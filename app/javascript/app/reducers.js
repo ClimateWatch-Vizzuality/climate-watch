@@ -1,151 +1,76 @@
+/* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 
-import { reducers as countriesReducers } from 'providers/countries-provider';
-import { reducers as regionsReducers } from 'providers/regions-provider';
-import { reducers as ndcsSdgsMetaReducers } from 'providers/ndcs-sdgs-meta-provider';
-import { reducers as ghgEmissionsMetaReducers } from 'providers/ghg-emissions-meta-provider';
-import { reducers as geoLocationReducers } from 'providers/geolocation-provider';
-import { reducers as adaptationsReducers } from 'providers/adaptations-provider';
-import { reducers as autocompleteSearchReducers } from 'components/autocomplete-search';
-import { reducers as ndcsAutocompleteSearchReducers } from 'components/ndcs-autocomplete-search';
-import { reducers as storiesReducers } from 'components/stories';
-import { reducers as countrySelectReducers } from 'components/countries-select';
-import { reducers as ghgEmissionsReducers } from 'components/ghg-emissions';
-import { reducers as modalMetadataReducers } from 'components/modal-metadata';
-import { reducers as NDCSReducers } from 'pages/ndcs';
-import { reducers as countryGhgEmissionsMapReducers } from 'components/country-ghg-map';
-import { reducers as countryGhgEmissionsReducers } from 'components/country-ghg-emissions';
-import { reducers as countrySDGLinkagesReducers } from 'components/country-ndc-sdg-linkages';
-import { reducers as countryNDCOverviewReducers } from 'components/country-ndc-overview';
-import { reducers as countryClimateVulnerabilityReducers } from 'components/country-climate-vulnerability';
-import { reducers as countryNDCReducers } from 'pages/ndc-country';
-import { reducers as countryNDCFullReducers } from 'pages/ndc-country-full';
-import { reducers as NDCCompareReducers } from 'pages/ndc-compare';
-import { reducers as ndcSearchReducers } from 'pages/ndc-search';
-import { reducers as ndcSdgReducers } from 'pages/ndc-sdg';
-import { reducers as mapReducers } from 'components/map';
-import initialState from './data/initial-state';
-import allActions from './actions';
+// Providers
+import * as countriesProvider from 'providers/countries-provider';
+import * as regionsProvider from 'providers/regions-provider';
+import * as adaptationsProvider from 'providers/adaptations-provider';
+import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
+import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
+import * as geoLocationProvider from 'providers/geolocation-provider';
+import * as wbCountryProvider from 'providers/wb-country-data-provider';
+
+const providersReducers = {
+  countries: handleActions(countriesProvider),
+  regions: handleActions(regionsProvider),
+  adaptations: handleActions(adaptationsProvider),
+  ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
+  ghgEmissionsMeta: handleActions(ghgEmissionsProvider),
+  geoLocation: handleActions(geoLocationProvider),
+  wbCountryData: handleActions(wbCountryProvider)
+};
+
+// Pages
+import * as NDCSPage from 'pages/ndcs';
+import * as countryNDCPage from 'pages/ndc-country';
+import * as countryNDCFullPage from 'pages/ndc-country-full';
+import * as NDCComparePage from 'pages/ndc-compare';
+import * as ndcSearchPage from 'pages/ndc-search';
+import * as ndcSdgPage from 'pages/ndc-sdg';
+
+const pagesReducers = {
+  ndcs: handleActions(NDCSPage),
+  countryNDC: handleActions(countryNDCPage),
+  countryNDCFull: handleActions(countryNDCFullPage),
+  NDCCompare: handleActions(NDCComparePage),
+  ndcSearch: handleActions(ndcSearchPage),
+  ndcSdg: handleActions(ndcSdgPage)
+};
+
+// Components
+import * as mapComponent from 'components/map';
+import * as autocompleteSearchComponent from 'components/autocomplete-search';
+import * as ndcsAutocompleteSearchComponent from 'components/ndcs-autocomplete-search';
+import * as storiesComponent from 'components/stories';
+import * as countrySelectComponent from 'components/countries-select';
+import * as ghgEmissionsComponent from 'components/ghg-emissions';
+import * as modalMetadataComponent from 'components/modal-metadata';
+import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
+import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';
+import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkages';
+import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
+import * as countryClimateVulnerabilityComponent from 'components/country-climate-vulnerability';
+
+const componentsReducers = {
+  map: handleActions(mapComponent),
+  autocompleteSearch: handleActions(autocompleteSearchComponent),
+  ndcsAutocompleteSearch: handleActions(ndcsAutocompleteSearchComponent),
+  stories: handleActions(storiesComponent),
+  countrySelect: handleActions(countrySelectComponent),
+  ghgEmissions: handleActions(ghgEmissionsComponent),
+  modalMetadata: handleActions(modalMetadataComponent),
+  countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
+  countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
+  countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
+  countryNDCOverview: handleActions(countryNDCOverviewComponent),
+  countryClimateVulnerability: handleActions(
+    countryClimateVulnerabilityComponent
+  )
+};
 
 export default combineReducers({
-  ndcs: handleActions('ndcs', allActions, NDCSReducers, initialState),
-  stories: handleActions('stories', allActions, storiesReducers, initialState),
-  ndcSdg: handleActions('ndcSdg', allActions, ndcSdgReducers, initialState),
-  modalMetadata: handleActions(
-    'modalMetadata',
-    allActions,
-    modalMetadataReducers,
-    initialState
-  ),
-  countryGhgEmissionsMap: handleActions(
-    'countryGhgEmissionsMap',
-    allActions,
-    countryGhgEmissionsMapReducers,
-    initialState
-  ),
-  ghgEmissionsMeta: handleActions(
-    'ghgEmissionsMeta',
-    allActions,
-    ghgEmissionsMetaReducers,
-    initialState
-  ),
-  ndcSearch: handleActions(
-    'search',
-    allActions,
-    ndcSearchReducers,
-    initialState
-  ),
-  ghgEmissions: handleActions(
-    'ghgEmissions',
-    allActions,
-    ghgEmissionsReducers,
-    initialState
-  ),
-  countries: handleActions(
-    'countries',
-    allActions,
-    countriesReducers,
-    initialState
-  ),
-  regions: handleActions('regions', allActions, regionsReducers, initialState),
-  ndcsSdgsMeta: handleActions(
-    'ndcsSdgsMeta',
-    allActions,
-    ndcsSdgsMetaReducers,
-    initialState
-  ),
-  geoLocation: handleActions(
-    'geoLocation',
-    allActions,
-    geoLocationReducers,
-    initialState
-  ),
-  adaptations: handleActions(
-    'adaptations',
-    allActions,
-    adaptationsReducers,
-    initialState
-  ),
-  countryGhgEmissions: handleActions(
-    'countryGhgEmissions',
-    allActions,
-    countryGhgEmissionsReducers,
-    initialState
-  ),
-  countrySDGLinkages: handleActions(
-    'countrySDGLinkages',
-    allActions,
-    countrySDGLinkagesReducers,
-    initialState
-  ),
-  countryClimateVulnerability: handleActions(
-    'countrySDGLinkages',
-    allActions,
-    countryClimateVulnerabilityReducers,
-    initialState
-  ),
-  countryNDC: handleActions(
-    'countryNDC',
-    allActions,
-    countryNDCReducers,
-    initialState
-  ),
-  countryNDCFull: handleActions(
-    'countryNDCFull',
-    allActions,
-    countryNDCFullReducers,
-    initialState
-  ),
-  countryNDCOverview: handleActions(
-    'countryNDCOverview',
-    allActions,
-    countryNDCOverviewReducers,
-    initialState
-  ),
-  NDCCompare: handleActions(
-    'NDCCompare',
-    allActions,
-    NDCCompareReducers,
-    initialState
-  ),
-  countrySelect: handleActions(
-    'countrySelect',
-    allActions,
-    countrySelectReducers,
-    initialState
-  ),
-  map: handleActions('map', allActions, mapReducers, initialState),
-  autocompleteSearch: handleActions(
-    'autocompleteSearch',
-    allActions,
-    autocompleteSearchReducers,
-    initialState
-  ),
-  ndcsAutocompleteSearch: handleActions(
-    'ndcsAutocompleteSearch',
-    allActions,
-    ndcsAutocompleteSearchReducers,
-    initialState
-  )
+  ...providersReducers,
+  ...pagesReducers,
+  ...componentsReducers
 });

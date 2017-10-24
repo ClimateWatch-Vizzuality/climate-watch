@@ -6,8 +6,9 @@ import qs from 'query-string';
 
 import Loading from 'components/loading';
 
-import mapActions from 'components/map/map-actions';
-import ghgMapActions from './country-ghg-map-actions';
+import { actions as mapActions } from 'components/map/map';
+import ownActions from './country-ghg-map-actions';
+import reducers, { initialState } from './country-ghg-map-reducers';
 
 import CountryGhgMapComponent from './country-ghg-map-component';
 import {
@@ -22,7 +23,7 @@ import {
 
 const actions = {
   ...mapActions,
-  ...ghgMapActions
+  ...ownActions
 };
 
 const mapStateToProps = (state, { location, match, year }) => {
@@ -109,11 +110,7 @@ CountryGhgMapContainer.propTypes = {
   fetchGhgEmissionsMapData: PropTypes.func.isRequired
 };
 
-export { default as component } from './country-ghg-map-component';
-export { default as styles } from './country-ghg-map-styles';
-export { initialState } from './country-ghg-map-reducers';
-export { default as reducers } from './country-ghg-map-reducers';
-export { default as actions } from './country-ghg-map-actions';
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountryGhgMapContainer)

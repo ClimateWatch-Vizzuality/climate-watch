@@ -16,9 +16,12 @@ class CountryGhgEmissions extends PureComponent {
       config,
       iso,
       sources,
+      calculations,
       handleInfoClick,
       handleYearHover,
       handleSourceChange,
+      handleCalculationChange,
+      calculationSelected,
       sourceSelected
     } = this.props;
     return (
@@ -35,11 +38,19 @@ class CountryGhgEmissions extends PureComponent {
               value={sourceSelected}
               hideResetButton
             />
+            <Dropdown
+              label="Calculation"
+              options={calculations}
+              onValueChange={handleCalculationChange}
+              value={calculationSelected}
+              hideResetButton
+            />
             <ButtonGroup
               className={styles.btnGroup}
               onInfoClick={handleInfoClick}
             />
             <Button
+              noSpace
               className={styles.exploreBtn}
               color="yellow"
               link={`/ghg-emissions?breakBy=location&filter=${iso}`}
@@ -82,11 +93,14 @@ CountryGhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
+  calculations: PropTypes.array.isRequired,
+  calculationSelected: PropTypes.object.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func.isRequired,
-  handleSourceChange: PropTypes.func.isRequired
+  handleSourceChange: PropTypes.func.isRequired,
+  handleCalculationChange: PropTypes.func.isRequired
 };
 
 CountryGhgEmissions.defaultProps = {

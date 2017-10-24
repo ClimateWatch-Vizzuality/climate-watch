@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
+import intersection from 'lodash/intersection';
+
 import {
   getYColumnValue,
   getThemeConfig,
@@ -35,13 +38,31 @@ const EXCLUDED_SECTORS = [
   'Total excluding LULUCF'
 ];
 
+const CALCULATION_OPTIONS = [
+  {
+    label: 'Absolute value',
+    value: 'ABSOLUTE_VALUE'
+  },
+  {
+    label: 'per Capita',
+    value: 'PER_CAPITA'
+  },
+  {
+    label: 'per GDP',
+    value: 'PER_GDP'
+  }
+];
+
 // meta data for selectors
 const getMeta = state => state.meta || {};
 const getSources = state => state.meta.data_source || [];
 const getVersions = state => state.meta.gwp || [];
+const getCalculationData = state =>
+  (state.calculationData && state.calculationData[state.iso]) || [];
 
 // values from search
 const getSourceSelection = state => state.search.source || null;
+const getCalculationSelection = state => state.search.calculation || null;
 const getVersionSelection = state => state.search.version || null;
 const getFilterSelection = state => state.search.filter || null;
 
@@ -58,12 +79,35 @@ export const getSourceOptions = createSelector(getSources, sources => {
   }));
 });
 
+const parseCalculationData = createSelector([getCalculationData], data => {
+  if (!data || !data.length) return null;
+  return groupBy(data, 'year');
+});
+
+export const getCalculationOptions = createSelector(
+  parseCalculationData,
+  calculationData => {
+    if (!calculationData) return [];
+    return CALCULATION_OPTIONS;
+  }
+);
+
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
     if (!sources || !sources.length) return {};
     if (!selected) return sources[0];
     return sources.find(category => category.value === parseInt(selected, 10));
+  }
+);
+
+export const getCalculationSelected = createSelector(
+  [getCalculationSelection],
+  selected => {
+    if (!selected) return CALCULATION_OPTIONS[0];
+    return CALCULATION_OPTIONS.find(
+      calculation => calculation.value === selected
+    );
   }
 );
 
@@ -142,17 +186,55 @@ export const filterData = createSelector(
   }
 );
 
+const calculatedRatio = (selected, calculationData, x) => {
+  if (selected === 'PER_GDP') {
+    return calculationData[x][0].gdp;
+  }
+  if (selected === 'PER_CAPITA') {
+    return calculationData[x][0].population;
+  }
+  return 1;
+};
+
 export const getChartData = createSelector(
-  [filterData, getFiltersSelected],
-  (data, filters) => {
-    if (!data || !data.length || !filters) return [];
-    const xValues = data[0].emissions.map(d => d.year);
+  [
+    filterData,
+    getFiltersSelected,
+    parseCalculationData,
+    getCalculationSelected
+  ],
+  (data, filters, calculationData, calculationSelected) => {
+    if (
+      !data ||
+      !data.length ||
+      !filters ||
+      !calculationData ||
+      !calculationSelected
+    ) {
+      return [];
+    }
+
+    let xValues = [];
+    xValues = data[0].emissions.map(d => d.year);
+    if (calculationSelected.value !== 'ABSOLUTE_VALUE') {
+      xValues = intersection(
+        xValues,
+        Object.keys(calculationData).map(y => parseInt(y, 10))
+      );
+    }
+
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
         const yKey = getYColumnValue(d.sector);
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value * DATA_SCALE;
+        const calculationRatio = calculatedRatio(
+          calculationSelected.value,
+          calculationData,
+          x
+        );
+        const scaledYData = yData.value * DATA_SCALE;
+        yItems[yKey] = scaledYData / calculationRatio;
       });
       const item = {
         x,
@@ -191,5 +273,6 @@ export default {
   getSourceOptions,
   getSourceSelected,
   getFilterOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getCalculationData
 };

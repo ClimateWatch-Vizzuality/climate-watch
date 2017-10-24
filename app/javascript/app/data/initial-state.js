@@ -22,6 +22,7 @@ import { initialState as ndcsSdgsMeta } from 'providers/ndcs-sdgs-meta-provider'
 import { initialState as adaptations } from 'providers/adaptations-provider';
 import { initialState as geoLocation } from 'providers/geolocation-provider';
 import { initialState as ghgEmissionsMeta } from 'providers/ghg-emissions-meta-provider';
+import { initialState as wbCountryData } from 'providers/wb-country-data-provider';
 
 export default {
   countries,
@@ -47,5 +48,6 @@ export default {
   ghgEmissions,
   countryGhgEmissionsMap,
   ghgEmissionsMeta,
+  wbCountryData,
   ndcSdg
 };

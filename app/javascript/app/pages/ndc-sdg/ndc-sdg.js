@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 // import { withRouter } from 'react-router';
 
-import NdcSdgComponent from './ndc-sdg-component';
 import actions from './ndc-sdg-actions';
+import reducers, { initialState } from './ndc-sdg-reducers';
+import NdcSdgComponent from './ndc-sdg-component';
 
 class NdcSdgContainer extends PureComponent {
   constructor(props) {
@@ -43,10 +44,6 @@ NdcSdgContainer.propTypes = {
   fetchSdgGoals: PropTypes.func.isRequired
 };
 
-export { default as component } from './ndc-sdg-component';
-export { initialState } from './ndc-sdg-reducers';
-export { default as reducers } from './ndc-sdg-reducers';
-export { default as styles } from './ndc-sdg-styles';
-export { default as actions } from './ndc-sdg-actions';
+export { actions, reducers, initialState };
 
 export default connect(null, actions)(NdcSdgContainer);

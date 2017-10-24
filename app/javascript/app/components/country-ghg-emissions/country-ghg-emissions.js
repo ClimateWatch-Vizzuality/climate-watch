@@ -5,33 +5,42 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
-import { actions as modalMetaActions } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-metadata';
+import ownActions from './country-ghg-emissions-actions';
+import reducers, { initialState } from './country-ghg-emissions-reducers';
+
+import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
 import {
   getSourceOptions,
+  getCalculationOptions,
   getSourceSelected,
+  getCalculationSelected,
   getChartData,
   getChartConfig,
   getSelectorDefaults
 } from './country-ghg-emissions-selectors';
 
-import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
-import actions from './country-ghg-emissions-actions';
-
-const mergedActions = { ...actions, ...modalMetaActions };
+const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location, match }) => {
   const { data } = state.countryGhgEmissions;
+  const calculationData = state.wbCountryData.data;
   const { meta } = state.ghgEmissionsMeta;
   const search = qs.parse(location.search);
+  const iso = match.params.iso;
   const countryGhg = {
+    iso,
     meta,
     data,
+    calculationData,
     search
   };
   return {
-    iso: match.params.iso,
+    iso,
     loading: state.countryGhgEmissions.loading,
     data: getChartData(countryGhg),
+    calculations: getCalculationOptions(countryGhg),
+    calculationSelected: getCalculationSelected(countryGhg),
     sources: getSourceOptions(countryGhg),
     sourceSelected: getSourceSelected(countryGhg),
     config: getChartConfig(countryGhg),
@@ -87,7 +96,13 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
   handleSourceChange = category => {
     if (category) {
-      this.updateUrlParam({ name: 'source', value: category.value }, true);
+      this.updateUrlParam({ name: 'source', value: category.value });
+    }
+  };
+
+  handleCalculationChange = calculation => {
+    if (calculation) {
+      this.updateUrlParam({ name: 'calculation', value: calculation.value });
     }
   };
 
@@ -100,6 +115,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
+      handleCalculationChange: this.handleCalculationChange,
       handleInfoClick: this.handleInfoClick
     });
   }
@@ -113,12 +129,8 @@ CountryGhgEmissionsContainer.propTypes = {
   fetchCountryGhgEmissionsData: Proptypes.func
 };
 
-export { default as component } from './country-ghg-emissions-component';
-export { initialState } from './country-ghg-emissions-reducers';
-export { default as reducers } from './country-ghg-emissions-reducers';
-export { default as styles } from './country-ghg-emissions-styles';
-export { default as actions } from './country-ghg-emissions-actions';
+export { actions, reducers, initialState };
 
 export default withRouter(
-  connect(mapStateToProps, mergedActions)(CountryGhgEmissionsContainer)
+  connect(mapStateToProps, actions)(CountryGhgEmissionsContainer)
 );

@@ -5,13 +5,10 @@ import isEqual from 'lodash/isEqual';
 
 import worldPaths from 'app/data/world-50m-paths';
 
-import MapComponent from './map-component';
 import actions from './map-actions';
-import { initialState } from './map-reducers';
+import reducers, { initialState } from './map-reducers';
 
-export { initialState } from './map-reducers';
-export { default as reducers } from './map-reducers';
-export { default as actions } from './map-actions';
+import MapComponent from './map-component';
 
 const ZOOM_STEP = 2;
 
@@ -69,5 +66,7 @@ MapContainer.propTypes = {
   setMapZoom: PropTypes.func.isRequired,
   setMapParams: PropTypes.func.isRequired
 };
+
+export { actions, reducers, initialState };
 
 export default connect(mapStateToProps, actions)(MapContainer);
