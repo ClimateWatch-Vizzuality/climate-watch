@@ -50,6 +50,7 @@ class CountryGhgEmissions extends PureComponent {
               onInfoClick={handleInfoClick}
             />
             <Button
+              noSpace
               className={styles.exploreBtn}
               color="yellow"
               link={`/ghg-emissions?breakBy=location&filter=${iso}`}

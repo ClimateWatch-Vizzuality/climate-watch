@@ -3,20 +3,15 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import CountrySelectComponent from './countries-select-component';
 import actions from './countries-select-actions';
+import reducers, { initialState } from './countries-select-reducers';
+import CountrySelectComponent from './countries-select-component';
 import {
   getFilterUpper,
   getPreSelect,
   getFilteredCountriesWithPath,
   getPathsWithStyles
 } from './countries-select-selectors';
-
-export { default as component } from './countries-select-component';
-export { initialState } from './countries-select-reducers';
-export { default as reducers } from './countries-select-reducers';
-export { default as styles } from './countries-select-styles';
-export { default as actions } from './countries-select-actions';
 
 const mapStateToProps = state => {
   const { countrySelect, countries } = state;
@@ -64,6 +59,8 @@ CountrySelectContainer.propTypes = {
   countryPreSelect: Proptypes.func.isRequired,
   history: Proptypes.object
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountrySelectContainer)
