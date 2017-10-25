@@ -35,6 +35,7 @@
     "react-dom": "16.0.0",
     "react-dom-factories": "1.0.0",
     "react-ga": "^2.3.5",
+    "react-horizontal-timeline": "1.4.0",
     "react-modal": "3.0.0",
     "react-motion": "0.5.1",
     "react-player": "0.20.0",

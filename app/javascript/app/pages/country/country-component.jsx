@@ -4,6 +4,7 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 
 import Header from 'components/header';
+import CountryTimeline from 'components/country-timeline';
 import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
@@ -27,6 +28,7 @@ class Country extends PureComponent {
               Compare
             </Button>
           </div>
+          <CountryTimeline />
           <Sticky activeClass="sticky">
             <AnchorNav links={anchorLinks} className={layout.content} />
           </Sticky>

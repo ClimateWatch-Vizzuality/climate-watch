@@ -1,0 +1,40 @@
+@import '~styles/layout.scss';
+
+.timeline { // overwriting timeline styles
+  display: block;
+  width: 100%;
+  height: 90px;
+
+  > div {
+    > div :global {
+      .events-wrapper {
+        .events {
+          .timeline-eventline:nth-child(2) {
+            background-color: transparent !important;
+          }
+
+          .dot-label.present {
+            > span {
+              background-color: $theme-secondary !important;
+              border-color: $theme-secondary !important;
+            }
+          }
+        }
+      }
+
+      ul {
+        display: none;
+      }
+
+      .buttons {
+        display: block;
+
+        li {
+          &.disabled {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
