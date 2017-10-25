@@ -1,5 +1,11 @@
 @import '~styles/layout.scss';
 
+.documentLink {
+  width: 170px;
+  height: 48.4px;
+  background-color: $white;
+}
+
 .timeline { // overwriting timeline styles
   display: block;
   width: 100%;
@@ -14,7 +20,7 @@
           }
 
           .dot-label.present {
-            > span {
+            > span:last-child {
               background-color: $theme-secondary !important;
               border-color: $theme-secondary !important;
             }

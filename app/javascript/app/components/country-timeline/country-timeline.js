@@ -16,8 +16,12 @@ const mapStateToProps = (state, { match }) => {
     iso
   };
 
+  const documents = getDates(countryTimeline);
+  const documentYears = documents && Object.keys(documents);
+
   return {
-    dates: getDates(countryTimeline)
+    documents,
+    documentYears
   };
 };
 

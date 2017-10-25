@@ -7,21 +7,55 @@ import styles from './country-timeline-styles.scss';
 
 class CountryTimeline extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
-  state = { value: 0, previous: 0 };
+  constructor() {
+    super();
+    this.state = {
+      index: 0,
+      previous: 0,
+      open: false
+    };
+  }
+
+  getLabel(year, index) {
+    const { documents } = this.props;
+    let content = null;
+    if (this.state.open && this.state.index === index) {
+      content = (
+        <div className={styles.tooltip}>
+          {documents[year].map(document => (
+            <a
+              className={styles.documentLink}
+              key={document.link}
+              target="_blank"
+              href={document.link}
+            >
+              {document.text}
+            </a>
+          ))}
+        </div>
+      );
+    }
+    return (
+      <div className={styles.contentLabel}>
+        {content}
+        <span>{year}</span>
+      </div>
+    );
+  }
 
   render() {
-    const { dates } = this.props;
+    const { documentYears } = this.props;
     return (
       <div className={styles.timeline}>
         <TimelineProvider />
-        {dates ? (
+        {documentYears ? (
           <HorizontalTimeline
-            index={this.state.value}
+            index={this.state.index}
             indexClick={index => {
-              this.setState({ value: index, previous: this.state.value });
+              this.setState({ index, previous: this.state.index, open: true });
             }}
-            getLabel={date => date.split('-')[0]}
-            values={dates}
+            getLabel={(year, index) => this.getLabel(year, index)}
+            values={documentYears}
           />
         ) : null}
       </div>
@@ -30,7 +64,8 @@ class CountryTimeline extends PureComponent {
 }
 
 CountryTimeline.propTypes = {
-  dates: PropTypes.array
+  documents: PropTypes.object,
+  documentYears: PropTypes.array
 };
 
 export default CountryTimeline;
