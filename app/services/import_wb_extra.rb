@@ -1,6 +1,6 @@
 class ImportWbExtra
-  POPULATION_FILEPATH = 'wb_extra/population.csv'.freeze
-  GDP_FILEPATH = 'wb_extra/gdp.csv'.freeze
+  POPULATION_FILEPATH = "#{CW_FILES_PREFIX}wb_extra/population.csv".freeze
+  GDP_FILEPATH = "#{CW_FILES_PREFIX}wb_extra/gdp.csv".freeze
   FIRST_YEAR = 1960
   def call
     cleanup

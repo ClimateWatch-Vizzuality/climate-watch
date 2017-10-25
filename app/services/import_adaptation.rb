@@ -1,6 +1,8 @@
 class ImportAdaptation
-  DATA_FILEPATH = 'adaptation/adaptation.csv'.freeze
-  METADATA_FILEPATH = 'adaptation/adaptation_metadata.csv'.freeze
+  DATA_FILEPATH =
+    "#{CW_FILES_PREFIX}adaptation/adaptation.csv".freeze
+  METADATA_FILEPATH =
+    "#{CW_FILES_PREFIX}adaptation/adaptation_metadata.csv".freeze
 
   def call
     cleanup
