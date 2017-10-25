@@ -48,7 +48,6 @@ module Api
           ).
           order('indc_indicators.name')
 
-
         sectors = ::Indc::Sector.
           includes(:parent, values: :location).
           where(locations: {iso_code3: params[:code]}).
