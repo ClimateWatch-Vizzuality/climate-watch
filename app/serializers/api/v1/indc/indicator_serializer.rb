@@ -20,9 +20,10 @@ module Api
         end
 
         def locations
-          IndexedSerializer.serialize(
+          IndexedSerializer.serialize_collection(
             object.values,
-            serializer: ValueSerializer
+            serializer: ValueSerializer,
+            ree: object.id == 'wb36'
           ) do |v|
             v.location.iso_code3
           end
