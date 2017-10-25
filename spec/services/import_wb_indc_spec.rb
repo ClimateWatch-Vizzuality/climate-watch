@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 object_contents = {
-  'wb_indc/CW_NDC_WB_metadata_w_definitions.csv' => <<~END,
+  "#{CW_FILES_PREFIX}wb_indc/CW_NDC_WB_metadata_w_definitions.csv" => <<~END,
     QuestionType,category,category_2,QuestionCode,QuestionText,Definition
     Adaptation,General Information,Adaptation Target,A_Tg_AdInclu,Adaptation Included in INDC (Yes/No),Whether or not the NDC includes adaptation
     Adaptation,General Information,Adaptation Target,A_Tg_TarYr,Target Year for Adaptation,The year by which adaptation objectives are expected to be achieved
@@ -9,13 +9,12 @@ object_contents = {
     Adaptation,Sectoral Information,Sectoral Commitments,A_Sc_ConAct,Sectorial Conditional Actions
     Mitigation,Economy-wide Information,Target,M_TarYr,Target year
   END
-
-  'wb_indc/CW_NDC_WB_sectoral.csv' => <<~END,
+  "#{CW_FILES_PREFIX}wb_indc/CW_NDC_WB_sectoral.csv" => <<~END,
     CountryCode,Sector,SubSector,QuestionCode,ResponseText
     AF,Water,Water Infrastructure,A_Sc_CapBud,Ecological engineering and spatial planning for water resources
     AF,Water,Water Infrastructure,A_Sc_ConAct,"Development of water resources through rehabilitation and reconstruction of small-, medium-, and large-scale infrastructure"
   END
-  'wb_indc/CW_NDC_WB_economy_wide.csv' => <<~END
+  "#{CW_FILES_PREFIX}wb_indc/CW_NDC_WB_economy_wide.csv" => <<~END
     CountryCode,QuestionCode,ResponseText
     AF,A_Tg_AdInclu,Yes
     AF,A_Tg_TarYr,2030

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
         get :meta, on: :collection
       end
 
-      resources :ndcs, param: :code, only: [:index, :show] do
+      resources :ndcs, param: :code, only: [:index] do
         get :text, on: :collection, controller: :ndc_texts, action: :index
         get :text, on: :member, controller: :ndc_texts, action: :show
         get :sdgs, on: :collection, controller: :ndc_sdgs, action: :index
@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       resources :metadata, param: :slug, only: [:index, :show] do
         get :acronyms, on: :collection, controller: :metadata, action: :acronyms
       end
+      resources :timeline, param: :code, only: [:index, :show]
 
       get '(*endpoint)', controller: :api, action: :route_not_found
     end

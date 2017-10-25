@@ -5,7 +5,7 @@ CARTODB_URL = 'https://wri-01.carto.com/api/v2/sql?q=SELECT%20name_engli,iso,top
 class ImportLocations
   def call
     bucket_name = Rails.application.secrets.s3_bucket_name
-    file_name = 'data/locations.csv'
+    file_name = "#{CW_FILES_PREFIX}locations/locations.csv"
     s3 = Aws::S3::Client.new
     begin
       file = s3.get_object(bucket: bucket_name, key: file_name)

@@ -2,7 +2,9 @@ module Api
   module V1
     class MetadataController < ApiController
       def index
-        metadata = ::WriMetadata::Source.includes(values: :property)
+        metadata = ::WriMetadata::Source.
+          includes(values: :property).
+          order(:name)
         render json: metadata,
                each_serializer: Api::V1::WriMetadata::SourceSerializer
       end
@@ -17,7 +19,9 @@ module Api
       end
 
       def acronyms
-        acronyms = ::WriMetadata::Acronym.all
+        acronyms = ::WriMetadata::Acronym.
+          order(:acronym).
+          all
         render json: acronyms,
                each_serializer: Api::V1::WriMetadata::AcronymSerializer
       end

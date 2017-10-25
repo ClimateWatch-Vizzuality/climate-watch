@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 object_contents = {
-  'metadata/Acronyms.csv' => <<~END,
+  "#{CW_FILES_PREFIX}wri_metadata/Acronyms.csv" => <<~END,
     Acronym,Definition
     WRI ,World Resources Institute
   END
-  'metadata/metadata_sources.csv' => <<~END,
+  "#{CW_FILES_PREFIX}wri_metadata/metadata_sources.csv" => <<~END,
     dataset,title,subtitle
     historical_emissions_CAIT,CAIT Historical Emissions,CAIT Historical Emissions
   END
-  'metadata/metadata_sources_descriptions.csv' => <<~END
+  "#{CW_FILES_PREFIX}wri_metadata/metadata_sources_descriptions.csv" => <<~END
     id,description
     title,Title (75 character limit)
     subtitle,"Subtitle (Abbreviated Source, ex. NASA)"

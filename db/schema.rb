@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171018141030) do
+ActiveRecord::Schema.define(version: 20171023110328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,6 +225,31 @@ ActiveRecord::Schema.define(version: 20171018141030) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  create_table "timeline_documents", force: :cascade do |t|
+    t.bigint "source_id"
+    t.bigint "location_id"
+    t.text "link"
+    t.text "text"
+    t.date "date"
+    t.text "language"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_timeline_documents_on_location_id"
+    t.index ["source_id"], name: "index_timeline_documents_on_source_id"
+  end
+
+  create_table "timeline_notes", force: :cascade do |t|
+    t.bigint "document_id"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_timeline_notes_on_document_id"
+  end
+
+  create_table "timeline_sources", force: :cascade do |t|
+    t.text "name"
+  end
+
   create_table "wb_extra_country_data", force: :cascade do |t|
     t.bigint "location_id"
     t.integer "year"
@@ -343,6 +368,9 @@ ActiveRecord::Schema.define(version: 20171018141030) do
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs", on_delete: :cascade
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
+  add_foreign_key "timeline_documents", "locations", on_delete: :cascade
+  add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
+  add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
   add_foreign_key "wb_extra_country_data", "locations"
   add_foreign_key "wb_indc_indicators", "wb_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
   add_foreign_key "wb_indc_indicators_categories", "wb_indc_categories", column: "category_id", on_delete: :cascade

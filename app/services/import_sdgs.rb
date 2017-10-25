@@ -2,8 +2,8 @@ require 'csv'
 
 class ImportSdgs
   def call
-    import_sdgs(read_from_s3('data/sdgs.csv'))
-    import_sdg_targets(read_from_s3('data/sdg_targets.csv'))
+    import_sdgs(read_from_s3("#{CW_FILES_PREFIX}sdgs/sdgs.csv"))
+    import_sdg_targets(read_from_s3("#{CW_FILES_PREFIX}sdgs/sdg_targets.csv"))
   end
 
   private
