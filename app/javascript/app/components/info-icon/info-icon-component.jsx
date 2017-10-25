@@ -9,13 +9,11 @@ import styles from './info-icon-styles.scss';
 class InfoIcon extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { toggleInfo, infoOpen, right, noPadding } = this.props;
+    const { toggleInfo, infoOpen, className } = this.props;
     return (
       <Button
-        className={cx(styles.btnInfo, {
-          [styles.btnInfoActive]: infoOpen,
-          [styles.right]: right,
-          [styles.noPadding]: noPadding
+        className={cx(styles.btnInfo, className, {
+          [styles.btnInfoActive]: infoOpen
         })}
         onClick={toggleInfo}
       >
@@ -26,8 +24,7 @@ class InfoIcon extends PureComponent {
 }
 
 InfoIcon.propTypes = {
-  right: PropTypes.bool,
-  noPadding: PropTypes.bool,
+  className: PropTypes.string,
   infoOpen: PropTypes.bool.isRequired,
   toggleInfo: PropTypes.func.isRequired
 };
