@@ -24,7 +24,7 @@ class InfoIcon extends PureComponent {
 }
 
 InfoIcon.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.node,
   infoOpen: PropTypes.bool.isRequired,
   toggleInfo: PropTypes.func.isRequired
 };
