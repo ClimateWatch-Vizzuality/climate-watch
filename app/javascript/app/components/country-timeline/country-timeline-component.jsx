@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import HorizontalTimeline from 'react-horizontal-timeline';
+import TimelineProvider from 'providers/timeline-provider';
 
 import styles from './country-timeline-styles.scss';
 
@@ -12,6 +13,7 @@ class CountryTimeline extends PureComponent {
     const { dates } = this.props;
     return (
       <div className={styles.timeline}>
+        <TimelineProvider />
         <HorizontalTimeline
           index={this.state.value}
           indexClick={index => {
