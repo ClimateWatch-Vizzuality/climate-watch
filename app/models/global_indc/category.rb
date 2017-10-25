@@ -6,6 +6,10 @@ module GlobalIndc
                class_name: 'GlobalIndc::Category',
                foreign_key: 'parent_id',
                required: false
+    has_many :children,
+             class_name: 'GlobalIndc::Category',
+             foreign_key: 'parent_id'
+
     validates :name, presence: true
     validates :slug, presence: true
   end

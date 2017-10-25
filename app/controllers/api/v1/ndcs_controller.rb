@@ -82,6 +82,28 @@ module Api
           )
         end
 
+        if params[:category]
+          indicator_ids = ::GlobalIndc::Category.
+            includes(:indicators, children: :indicators).
+            where(
+              parent_id: nil,
+              slug: params[:category]
+            ).
+            flat_map(&:children).
+            flat_map(&:indicators).
+            map do |indicator|
+              if indicator.wb_indicator_id
+                "wb#{indicator.wb_indicator_id}"
+              elsif indicator.cait_indicator_id
+                "cait#{indicator.cait_indicator_id}"
+              end
+            end
+
+          indicators = indicators.where(
+            id: indicator_ids
+          )
+        end
+
         indicators
       end
 
