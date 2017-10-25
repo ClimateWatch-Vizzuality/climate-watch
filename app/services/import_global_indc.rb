@@ -1,33 +1,81 @@
-class ImportWbIndc
+class ImportGlobalIndc
 
   GLOBAL_METADATA_FILEPATH =
-    "#{CW_FILES_PREFIX}global_indc/".freeze
+    "#{CW_FILES_PREFIX}global_indc/CW_NDC_metadata_combined.csv".freeze
 
   def call
     cleanup
 
     load_csvs
+
+    import_categories
+    import_indicators
   end
 
   private
 
   def load_csvs
-    @indicators = S3CSVReader.read(META_INDICATORS_FILEPATH).map(&:to_h)
-    @data_sectorial = S3CSVReader.read(DATA_SECTORIAL_FILEPATH).map(&:to_h)
-    @data_economy_wide = S3CSVReader.read(DATA_ECONOMY_WIDE_FILEPATH).
-      map(&:to_h)
-    @location_index = {}
-    @indicator_index = {}
-    @sector_index = {}
-    @ignored_indicators = []
+    @metadata = S3CSVReader.read(GLOBAL_METADATA_FILEPATH).map(&:to_h)
+    @categories_index = {}
   end
 
   def cleanup
-    WbIndc::Value.delete_all
-    WbIndc::Sector.delete_all
-    WbIndc::Category.delete_all
-    WbIndc::Indicator.delete_all
-    WbIndc::IndicatorType.delete_all
+    GlobalIndc::Category.delete_all
+    GlobalIndc::Indicator.delete_all
   end
 
+  def import_categories
+    categories.map(&:first).uniq.each do |category|
+      @categories_index[category] = GlobalIndc::Category.create!(
+        name: category,
+        slug: Slug.create(category)
+      )
+    end
+
+    categories.map.uniq(&:second).each do |category|
+      next if category.second.nil?
+      @categories_index[category.second] = GlobalIndc::Category.create!(
+        name: category.second,
+        slug: Slug.create(category.second),
+        parent: @categories_index[category.first]
+      )
+    end
+  end
+
+  def import_indicators
+    @metadata.each do |row|
+      next if row[:column_name].nil? || row[:source].nil? ||
+        row[:category_2] == 'NULL'
+
+      indicator = GlobalIndc::Indicator.find_or_create_by!(
+        indicator(row[:column_name], row[:source])
+      )
+
+      indicator.categories << (row[:category_2].nil? ?
+        @categories_index[row[:category]] :
+        @categories_index[row[:category_2]])
+
+    end
+  end
+
+  def categories
+    categories = @metadata.map do |row|
+      [row[:category], row[:category_2]]
+    end
+
+    categories = categories.reject do |category|
+      category.second == 'NULL'
+    end
+
+    categories.uniq
+  end
+
+  def indicator(code, source)
+    if source.upcase == 'CAIT'
+      {cait_indicator: CaitIndc::Indicator.find_by(slug: code)}
+    elsif source.upcase == 'WB'
+      {wb_indicator: WbIndc::Indicator.find_by(code: code)}
+    end
+  end
 end
+
