@@ -54,7 +54,6 @@ class ImportGlobalIndc
       indicator.categories << (row[:category_2].nil? ?
         @categories_index[row[:category]] :
         @categories_index[row[:category_2]])
-
     end
   end
 

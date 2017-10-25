@@ -15,7 +15,7 @@ module GlobalIndc
       unless cait_indicator.blank? ^ wb_indicator.blank?
         errors.add(
           :base,
-          'Please reference either a cait or wb indicator, never both'
+          'Reference either a cait or wb indicator, never both or none'
         )
       end
     end
