@@ -12,12 +12,12 @@ module GlobalIndc
     validate :cait_xor_wb_indicator_presence
 
     def cait_xor_wb_indicator_presence
-      unless cait_indicator.blank? ^ wb_indicator.blank?
-        errors.add(
-          :base,
-          'Reference either a cait or wb indicator, never both or none'
-        )
-      end
+      return if cait_indicator.blank? ^ wb_indicator.blank?
+
+      errors.add(
+        :base,
+        'Reference either a cait or wb indicator, never both or none'
+      )
     end
   end
 end

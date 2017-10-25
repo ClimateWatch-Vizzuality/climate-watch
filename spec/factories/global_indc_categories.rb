@@ -4,4 +4,3 @@ FactoryGirl.define do
     slug 'my-text'
   end
 end
-

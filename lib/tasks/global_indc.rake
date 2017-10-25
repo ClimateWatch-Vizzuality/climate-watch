@@ -4,4 +4,3 @@ namespace :global_indc do
     ImportGlobalIndc.new.call
   end
 end
-

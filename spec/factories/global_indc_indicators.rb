@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :global_indc_indicator, class: 'GlobalIndc::Indicator' do
-
     trait :with_cait_reference do
       after(:create) do |indicator|
         indicator.cait_indicator = create(:cait_indc_indicator)
@@ -14,4 +13,3 @@ FactoryGirl.define do
     end
   end
 end
-

@@ -1,5 +1,4 @@
 class ImportGlobalIndc
-
   GLOBAL_METADATA_FILEPATH =
     "#{CW_FILES_PREFIX}global_indc/CW_NDC_metadata_combined.csv".freeze
 
@@ -45,15 +44,18 @@ class ImportGlobalIndc
   def import_indicators
     @metadata.each do |row|
       next if row[:column_name].nil? || row[:source].nil? ||
-        row[:category_2] == 'NULL'
+          row[:category_2] == 'NULL'
 
       indicator = GlobalIndc::Indicator.find_or_create_by!(
         indicator(row[:column_name], row[:source])
       )
 
-      indicator.categories << (row[:category_2].nil? ?
-        @categories_index[row[:category]] :
-        @categories_index[row[:category_2]])
+      indicator.categories <<
+        if row[:category_2].nil?
+          @categories_index[row[:category]]
+        else
+          @categories_index[row[:category_2]]
+        end
     end
   end
 
@@ -70,11 +72,10 @@ class ImportGlobalIndc
   end
 
   def indicator(code, source)
-    if source.upcase == 'CAIT'
+    if source.casecmp('CAIT').zero?
       {cait_indicator: CaitIndc::Indicator.find_by(slug: code)}
-    elsif source.upcase == 'WB'
+    elsif source.casecmp('WB').zero?
       {wb_indicator: WbIndc::Indicator.find_by(code: code)}
     end
   end
 end
-

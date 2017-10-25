@@ -3,4 +3,3 @@ module GlobalIndc
     'global_indc_'
   end
 end
-
