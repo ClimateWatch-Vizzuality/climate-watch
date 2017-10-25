@@ -18,6 +18,7 @@ import GHGEmissions from 'pages/ghg-emissions';
 import About from 'pages/about';
 import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
+import ClimateVulnerability from 'components/country-climate-vulnerability';
 import error from 'pages/error';
 
 export default [
@@ -108,6 +109,12 @@ export default [
             label: 'GHG Emissions',
             anchor: true,
             component: GHGCountryEmissions
+          },
+          {
+            hash: 'climate-vulnerability',
+            label: 'Climate vulnerability and readiness',
+            anchor: true,
+            component: ClimateVulnerability
           },
           {
             hash: 'ndc-content-overview',

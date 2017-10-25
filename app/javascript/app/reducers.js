@@ -5,6 +5,7 @@ import { handleActions } from 'app/utils/redux';
 // Providers
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
+import * as adaptationsProvider from 'providers/adaptations-provider';
 import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as geoLocationProvider from 'providers/geolocation-provider';
@@ -13,6 +14,7 @@ import * as wbCountryProvider from 'providers/wb-country-data-provider';
 const providersReducers = {
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
+  adaptations: handleActions(adaptationsProvider),
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
   ghgEmissionsMeta: handleActions(ghgEmissionsProvider),
   geoLocation: handleActions(geoLocationProvider),

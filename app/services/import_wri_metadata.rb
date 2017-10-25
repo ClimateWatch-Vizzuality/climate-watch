@@ -49,7 +49,7 @@ class ImportWriMetadata
     sources = @metadata.map { |r| r[:dataset] }.uniq
     sources.each do |s|
       @sources_index[s] = WriMetadata::Source.create!(
-        name: s
+        name: s.strip.downcase
       )
     end
   end
