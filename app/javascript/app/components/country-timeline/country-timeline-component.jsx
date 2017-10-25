@@ -14,21 +14,23 @@ class CountryTimeline extends PureComponent {
     return (
       <div className={styles.timeline}>
         <TimelineProvider />
-        <HorizontalTimeline
-          index={this.state.value}
-          indexClick={index => {
-            this.setState({ value: index, previous: this.state.value });
-          }}
-          getLabel={date => date.split('-')[0]}
-          values={dates}
-        />
+        {dates ? (
+          <HorizontalTimeline
+            index={this.state.value}
+            indexClick={index => {
+              this.setState({ value: index, previous: this.state.value });
+            }}
+            getLabel={date => date.split('-')[0]}
+            values={dates}
+          />
+        ) : null}
       </div>
     );
   }
 }
 
 CountryTimeline.propTypes = {
-  dates: PropTypes.array.isRequired
+  dates: PropTypes.array
 };
 
 export default CountryTimeline;
