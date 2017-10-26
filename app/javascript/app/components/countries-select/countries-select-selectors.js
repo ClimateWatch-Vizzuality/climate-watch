@@ -75,7 +75,7 @@ export const getPathsWithStyles = createSelector(
   (query, preSelect) =>
     worldPaths.map(path => {
       const nameUpper = deburrUpper(path.properties.name);
-      const isEqual = path.id === preSelect || nameUpper === query;
+      const isEqual = path.properties.id === preSelect || nameUpper === query;
 
       if (isEqual) {
         return {

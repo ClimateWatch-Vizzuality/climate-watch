@@ -31,9 +31,9 @@ const mapStateToProps = state => {
 class CountrySelectContainer extends PureComponent {
   onCountryClick = geometry => {
     const { history } = this.props;
-    const country = geometry.id;
-    if (country) {
-      history.push(`/countries/${country}`);
+    const iso = geometry.properties && geometry.properties.id;
+    if (iso) {
+      history.push(`/countries/${iso}`);
     }
   };
 

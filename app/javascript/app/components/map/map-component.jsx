@@ -75,7 +75,7 @@ class Map extends PureComponent {
                     geographies.map(geography => {
                       if (geography) {
                         let commonProps = {
-                          key: geography.id,
+                          key: geography.properties && geography.properties.id,
                           geography,
                           projection,
                           onClick: onCountryClick,

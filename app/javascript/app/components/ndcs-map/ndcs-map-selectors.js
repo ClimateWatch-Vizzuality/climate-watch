@@ -110,10 +110,11 @@ export const getPathsWithStyles = createSelector(
       const defaultStyles = { ...path, style: countryStyles };
 
       if (!locations) return defaultStyles;
-      const isEuropeanCountry = europeanCountries.includes(path.id);
+      const iso = path.properties && path.properties.id;
+      const isEuropeanCountry = europeanCountries.includes(iso);
       const countryData = isEuropeanCountry
         ? locations[europeSlug]
-        : locations[path.id];
+        : locations[iso];
 
       if (countryData) {
         const legendData = legendBuckets[countryData.label_id];

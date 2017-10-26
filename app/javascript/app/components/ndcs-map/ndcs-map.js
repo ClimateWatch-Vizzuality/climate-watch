@@ -53,11 +53,17 @@ class NDCMapContainer extends PureComponent {
   }
 
   handleCountryClick = geography => {
-    this.props.history.push(`/ndcs/country/${geography.id}`);
+    const iso = geography.properties && geography.properties.id;
+    if (iso) {
+      this.props.history.push(`/ndcs/country/${iso}`);
+    }
   };
 
-  handleCountryEnter = geometry => {
-    this.setState({ geometryIdHover: geometry.id });
+  handleCountryEnter = geography => {
+    const iso = geography.properties && geography.properties.id;
+    if (iso) {
+      this.setState({ geometryIdHover: iso });
+    }
   };
 
   handleCategoryChange = category => {
