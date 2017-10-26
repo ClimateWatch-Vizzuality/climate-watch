@@ -10,6 +10,7 @@ import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as geoLocationProvider from 'providers/geolocation-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
+import * as timelineProvider from 'providers/timeline-provider';
 
 const providersReducers = {
   countries: handleActions(countriesProvider),
@@ -18,7 +19,8 @@ const providersReducers = {
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
   ghgEmissionsMeta: handleActions(ghgEmissionsProvider),
   geoLocation: handleActions(geoLocationProvider),
-  wbCountryData: handleActions(wbCountryProvider)
+  wbCountryData: handleActions(wbCountryProvider),
+  timeline: handleActions(timelineProvider)
 };
 
 // Pages
