@@ -173,6 +173,34 @@ export default [
             exact: true,
             anchor: true,
             label: 'Partners'
+          },
+          {
+            path: '/about/contact',
+            component: AboutPartners,
+            exact: true,
+            anchor: true,
+            label: 'Contact us & Feedback'
+          },
+          {
+            path: '/about/join',
+            component: AboutPartners,
+            exact: true,
+            anchor: true,
+            label: 'Join Climate Watch'
+          },
+          {
+            path: '/about/webinars',
+            component: AboutPartners,
+            exact: true,
+            anchor: true,
+            label: 'Webinars'
+          },
+          {
+            path: '/about/permissions',
+            component: AboutPartners,
+            exact: true,
+            anchor: true,
+            label: 'Permissions & Licensing'
           }
         ]
       },
