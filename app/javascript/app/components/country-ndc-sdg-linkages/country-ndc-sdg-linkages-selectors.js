@@ -1,14 +1,15 @@
 import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
+import groupBy from 'lodash/groupBy';
 
 const getSectors = state => {
-  if (!state.data) return [];
+  if (!state.data) return null;
   return state.data.sectors;
 };
 
-const getSDGs = state => {
-  if (!state.data) return [];
-  return state.data.sdgs;
+const getTargets = state => {
+  if (!state.data.targets) return null;
+  return state.data.targets;
 };
 
 const getActiveSectorId = state => {
@@ -16,34 +17,13 @@ const getActiveSectorId = state => {
   return state.activeSector;
 };
 
-const getNdcsSdgsTargets = state => {
-  if (!state.data) return null;
-  return state.data.targets;
-};
-
-export const parsedNdcsSdgs = createSelector(getNdcsSdgsTargets, targets => {
-  if (!targets) return {};
-  const mappedTargets = {};
-  targets.forEach(target => {
-    mappedTargets[target.number] = {
-      title: target.title,
-      sectors: target.sectors
-    };
+export const getSectorsMapped = createSelector([getSectors], sectors => {
+  if (!sectors) return {};
+  const sectorsMapped = {};
+  sectors.forEach(sector => {
+    sectorsMapped[sector.id] = sector.name;
   });
-  return mappedTargets;
-});
-
-export const mapSDGs = createSelector(getSDGs, sdgs => {
-  if (!sdgs) return [];
-  const sdgIds = Object.keys(sdgs);
-  const mappedSDGs = sdgIds.map(sdg => ({
-    id: sdg,
-    number: sdg,
-    title: sdgs[sdg].title,
-    colour: sdgs[sdg].colour,
-    targets: sdgs[sdg].targets
-  }));
-  return mappedSDGs;
+  return sectorsMapped;
 });
 
 export const getSectorOptions = createSelector([getSectors], sectors => {
@@ -73,25 +53,14 @@ export const getSectorSelected = createSelector(
   }
 );
 
-export const filterSDGs = createSelector([mapSDGs], sdgs => {
-  if (!sdgs) return [];
-  const filteredSDGs = sdgs.map(sdg => {
-    const sectorTargets = Object.keys(sdg.targets).map(targetKey => ({
-      targetKey,
-      title: sdg.targets[targetKey].title,
-      sectors: sdg.targets[targetKey].sectors
-    }));
-    return {
-      ...sdg,
-      targets: sectorTargets
-    };
-  });
-  return filteredSDGs;
+export const groupTargetsMeta = createSelector([getTargets], targets => {
+  if (!targets) return {};
+  return groupBy(targets, 'goal_number');
 });
 
 export default {
   getSectorOptionsSorted,
-  filterSDGs,
+  groupTargetsMeta,
   getSectorSelected,
-  parsedNdcsSdgs
+  getSectorsMapped
 };

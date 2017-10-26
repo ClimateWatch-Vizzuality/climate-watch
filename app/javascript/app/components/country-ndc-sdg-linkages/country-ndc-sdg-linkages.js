@@ -10,9 +10,9 @@ import reducers, { initialState } from './country-ndc-sdg-linkages-reducers';
 import CountrySDGLinkagesComponent from './country-ndc-sdg-linkages-component';
 import {
   getSectorOptionsSorted,
-  filterSDGs,
+  groupTargetsMeta,
   getSectorSelected,
-  parsedNdcsSdgs
+  getSectorsMapped
 } from './country-ndc-sdg-linkages-selectors';
 
 const mapStateToProps = (state, { match, location }) => {
@@ -27,12 +27,13 @@ const mapStateToProps = (state, { match, location }) => {
     fetched: countrySDGLinkages.data[iso],
     activeSector: getSectorSelected(sdgsData),
     tooltipData: countrySDGLinkages.tooltipData,
-    sectors: countrySDGLinkages.data[iso]
-      ? countrySDGLinkages.data[iso].sectors
-      : {},
+    sectors: getSectorsMapped(ndcsSdgsMeta),
     sectorOptions: getSectorOptionsSorted(sdgsData),
-    sdgs: filterSDGs(sdgsData),
-    targetsMeta: parsedNdcsSdgs(ndcsSdgsMeta),
+    goals: ndcsSdgsMeta.data.goals || [],
+    targets: groupTargetsMeta(ndcsSdgsMeta),
+    targetsData: countrySDGLinkages.data[iso]
+      ? countrySDGLinkages.data[iso].sdgs
+      : {},
     loading: countrySDGLinkages.loading,
     infoOpen: countrySDGLinkages.infoOpen
   };
