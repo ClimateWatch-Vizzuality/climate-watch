@@ -1,0 +1,54 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.section {
+  padding: 40px 30px;
+  margin: 0 -30px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $border-color;
+  }
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: 30px;
+}
+
+.partners {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr);
+
+  grid-template-columns: repeat(3, 1fr);
+  grid-row-gap: $gutter-padding;
+  justify-items: start;
+
+  .partner {
+    margin-bottom: 30px;
+
+    .link {
+      display: flex;
+      align-items: center;
+
+      .linkLabel {
+        color: $theme-color;
+        border-bottom: solid 1px $theme-secondary;
+      }
+    }
+
+    .description {
+      margin-top: 10px;
+      font-size: $font-size;
+      color: $dark-gray;
+    }
+  }
+
+  &.additionalData {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
