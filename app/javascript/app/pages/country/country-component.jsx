@@ -28,7 +28,9 @@ class Country extends PureComponent {
               Compare
             </Button>
           </div>
-          <CountryTimeline />
+          <div className={layout.content}>
+            <CountryTimeline />
+          </div>
           <Sticky activeClass="sticky">
             <AnchorNav links={anchorLinks} className={layout.content} />
           </Sticky>

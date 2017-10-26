@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import ClickOutside from 'react-click-outside';
 import HorizontalTimeline from 'react-horizontal-timeline';
 import TimelineProvider from 'providers/timeline-provider';
 
 import styles from './country-timeline-styles.scss';
 
 class CountryTimeline extends PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
     this.state = {
@@ -21,27 +21,35 @@ class CountryTimeline extends PureComponent {
     let content = null;
     if (this.state.open && this.state.index === index) {
       content = (
-        <div className={styles.tooltip}>
-          {documents[year].map(document => (
-            <a
-              className={styles.documentLink}
-              key={document.link}
-              target="_blank"
-              href={document.link}
-            >
-              {document.text}
-            </a>
-          ))}
-        </div>
+        <ClickOutside onClickOutside={this.closeTooltip}>
+          <ul className="links">
+            {documents[year].map(document => (
+              <li key={document.link}>
+                <a
+                  className={styles.documentLink}
+                  key={document.link}
+                  target="_blank"
+                  href={document.link}
+                >
+                  {document.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </ClickOutside>
       );
     }
     return (
-      <div className={styles.contentLabel}>
+      <div className={`timelineTooltip ${content ? '-open' : ''}`}>
         {content}
-        <span>{year}</span>
+        <span className="yearLabel">{year}</span>
       </div>
     );
   }
+
+  closeTooltip = () => {
+    this.setState({ open: false });
+  };
 
   render() {
     const { documentYears } = this.props;
