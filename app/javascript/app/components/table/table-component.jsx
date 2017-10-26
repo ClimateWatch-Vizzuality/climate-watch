@@ -2,8 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
-
 import styles from './table-styles.scss';
+
+const ReactDOMServer = require('react-dom/server');
+const HtmlToReactParser = require('html-to-react').Parser;
+
+const htmlToReactParser = new HtmlToReactParser();
 
 class SimpleTable extends PureComponent {
   render() {
@@ -18,6 +22,13 @@ class SimpleTable extends PureComponent {
     if (!data.length) return null;
 
     const columns = Object.keys(data[0]);
+    const parsedData = data.map(d => {
+      const parsedD = d;
+      parsedD.value = ReactDOMServer.renderToStaticMarkup(
+        htmlToReactParser.parse(d.value)
+      );
+      return d;
+    });
     return (
       <AutoSizer disableHeight>
         {({ width }) => (
@@ -27,11 +38,11 @@ class SimpleTable extends PureComponent {
             height={460}
             headerHeight={headerHeight}
             rowHeight={rowHeight}
-            rowCount={data.length}
+            rowCount={parsedData.length}
             sort={handleSort}
             sortBy={sortBy}
             sortDirection={sortDirection}
-            rowGetter={({ index }) => data[index]}
+            rowGetter={({ index }) => parsedData[index]}
           >
             {columns.map(column => (
               <Column
