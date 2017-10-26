@@ -10,20 +10,11 @@ import reducers, { initialState } from './ndcs-autocomplete-search-reducers';
 
 import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
 import {
-  getQueryUpper,
   getSearchList,
   getOptionSelected
 } from './ndcs-autocomplete-search-selectors';
 
 const groups = [
-  {
-    groupId: 'query',
-    title: 'Query'
-  },
-  {
-    groupId: 'sector',
-    title: 'Sectors'
-  },
   {
     groupId: 'goal',
     title: 'Goals'
@@ -35,17 +26,14 @@ const groups = [
 ];
 
 const mapStateToProps = (state, props) => {
-  const { ndcsAutocompleteSearch } = state;
-  const { location } = props;
+  const { location, match } = props;
   const searchListData = {
-    query: ndcsAutocompleteSearch.query,
-    sectors: state.ndcsSdgsMeta.data.sectors,
-    targets: state.ndcsSdgsMeta.data.targets,
-    goals: state.ndcsSdgsMeta.data.goals,
+    sdgs: state.ndcsSdgsData.data[match.params.iso]
+      ? state.ndcsSdgsData.data[match.params.iso].sdgs
+      : {},
     search: qs.parse(location.search)
   };
   return {
-    query: getQueryUpper(ndcsAutocompleteSearch),
     searchList: getSearchList(searchListData),
     optionSelected: getOptionSelected(searchListData),
     groups

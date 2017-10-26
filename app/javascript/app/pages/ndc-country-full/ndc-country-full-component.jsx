@@ -10,6 +10,7 @@ import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
 import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
+import Search from 'components/search';
 
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
@@ -48,7 +49,8 @@ class NDCCountryFull extends PureComponent {
       contentOptions,
       contentOptionSelected,
       route,
-      onSearchChange
+      onSearchChange,
+      search
     } = this.props;
     return (
       <div>
@@ -63,7 +65,9 @@ class NDCCountryFull extends PureComponent {
               >
                 <Icon className={styles.backIcon} icon={backIcon} />
               </Button>
-              <Intro title={`${country.wri_standard_name} - Full Content`} />
+              {country && (
+                <Intro title={`${country.wri_standard_name} - Full Content`} />
+              )}
             </div>
           </div>
         </Header>
@@ -78,8 +82,14 @@ class NDCCountryFull extends PureComponent {
               disabled={contentOptions.length === 1}
             />
             <NdcsAutocompleteSearch
-              className={styles.search}
+              className={styles.select}
               onSearchChange={onSearchChange}
+            />
+            <Search
+              className={styles.search}
+              placeholder="Search"
+              input={search}
+              onChange={onSearchChange}
             />
           </div>
         </div>
@@ -92,14 +102,15 @@ class NDCCountryFull extends PureComponent {
 NDCCountryFull.propTypes = {
   route: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-  country: PropTypes.object.isRequired,
+  country: PropTypes.object,
   content: PropTypes.object,
   contentOptions: PropTypes.array,
   onDocumentChange: PropTypes.func,
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
   idx: PropTypes.string,
-  onSearchChange: PropTypes.func
+  onSearchChange: PropTypes.func,
+  search: PropTypes.string
 };
 
 export default NDCCountryFull;

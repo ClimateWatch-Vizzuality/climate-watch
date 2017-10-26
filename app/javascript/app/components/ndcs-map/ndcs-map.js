@@ -16,7 +16,7 @@ import {
 } from './ndcs-map-selectors';
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.ndcs;
+  const { data, loading } = state.ndcs;
   const search = qs.parse(location.search);
   const ndcsWithSelection = {
     ...data,
@@ -24,6 +24,7 @@ const mapStateToProps = (state, { location }) => {
     indicatorSelected: search.indicator
   };
   return {
+    loading,
     paths: getPathsWithStyles(ndcsWithSelection),
     categories: getCategories(ndcsWithSelection),
     indicators: getCategoryIndicators(ndcsWithSelection),

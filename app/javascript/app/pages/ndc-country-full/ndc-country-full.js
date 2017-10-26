@@ -31,7 +31,8 @@ const mapStateToProps = (state, { match }) => {
     content: getSelectedContent(contentData),
     contentOptions: getContentOptions(contentData),
     contentOptionSelected: getContentOptionSelected(contentData),
-    idx: search.idx
+    idx: search.idx,
+    search: search.search
   };
 };
 

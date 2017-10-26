@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import cx from 'classnames';
+import Loading from 'components/loading';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import SDGCard from 'components/sdg-card';
@@ -106,28 +107,29 @@ class CountrySDGLinkages extends PureComponent {
           </div>
           <NdcsSdgsMetaProvider />
           {goals &&
-          goals.length > 0 && (
-          <div>
+            goals.length > 0 && (
+              <div>
                 <div className={styles.sdgs}>
-              {goals.map(goal => (
+                  {goals.map(goal => (
                     <SDGCard
-                  activeSector={activeSector}
-                  key={goal.title}
-                  goal={goal}
-                  targets={targets[goal.number]}
-                  targetData={targetsData[goal.number]}
-                  tooltipId="sdg-linkages"
-                  setTooltipData={setTooltipData}
-                  indicators
-                  className={cardTheme.card}
-                />
+                      activeSector={activeSector}
+                      key={goal.title}
+                      goal={goal}
+                      targets={targets[goal.number]}
+                      targetData={targetsData[goal.number]}
+                      tooltipId="sdg-linkages"
+                      setTooltipData={setTooltipData}
+                      indicators
+                      className={cardTheme.card}
+                    />
                   ))}
-            </div>
+                </div>
                 <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
               </div>
             )}
           {isEmpty(goals) &&
           !loading && <NoContent message="No SDG data available" />}
+          {loading && <Loading light className={styles.loader} />}
         </div>
       </div>
     );
