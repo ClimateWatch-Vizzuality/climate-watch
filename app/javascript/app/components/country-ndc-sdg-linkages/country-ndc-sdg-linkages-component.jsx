@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
 import Dropdown from 'components/dropdown';
 import isEqual from 'lodash/isEqual';
-import Button from 'components/button';
+import InfoButton from 'components/button/info-button';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
 
@@ -21,7 +21,7 @@ import styles from './country-ndc-sdg-linkages-styles.scss';
 class CountrySDGLinkages extends PureComponent {
   componentDidUpdate(prevProps) {
     if (
-      !isEqual(prevProps.sdgs, this.props.sdgs) ||
+      !isEqual(prevProps.goals, this.props.goals) ||
       !isEqual(prevProps.targetsMeta, this.props.targetsMeta)
     ) {
       ReactTooltip.rebuild();
@@ -29,60 +29,58 @@ class CountrySDGLinkages extends PureComponent {
   }
 
   getTooltip() {
-    const { sectors, tooltipData, targetsMeta } = this.props;
-    const targetsContent = targetsMeta && targetsMeta[tooltipData.targetKey];
-    const hasTargetSectors =
-      targetsContent &&
-      targetsContent.sectors &&
-      !!targetsContent.sectors.length;
+    const { sectors, tooltipData, targets } = this.props;
+    const targetsContent = targets && targets[tooltipData.goal_number];
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
-          <b>{tooltipData.targetKey}: </b>
+          <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
-        {hasTargetSectors && (
-          <p className={styles.sectors}>
-            <b>Sectors: </b>
-            {targetsContent.sectors.map((sector, index) => (
-              <span key={`${tooltipData.targetKey}-${sector}`}>
-                {sectors[sector].name}
-                {index === targetsContent.sectors.length - 1 ? '' : ', '}
-              </span>
-            ))}
-          </p>
-        )}
+        {tooltipData.sectors &&
+          tooltipData.sectors.length > 0 && (
+            <p className={styles.sectors}>
+              <b>Sectors: </b>
+              {tooltipData.sectors.map((sector, index) => (
+                <span key={`${tooltipData.targetKey}-${sector}`}>
+                  {sectors[sector]}
+                  {index === tooltipData.sectors.length - 1 ? '' : ', '}
+                </span>
+              ))}
+            </p>
+          )}
       </div>
     ) : null;
   }
 
   render() {
     const {
-      sdgs,
+      goals,
+      targets,
+      targetsData,
       activeSector,
       sectorOptions,
       handleSectorChange,
       loading,
       setTooltipData,
-      targetsMeta,
       toogleNDCsSDGsInfo,
       infoOpen
     } = this.props;
-
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <div className={styles.header}>
             <div className={styles.titleContainer}>
               <h3 className={styles.title}>NDC-SDG Linkages</h3>
-              <Button
+              <InfoButton
                 className={cx(btnInfoTheme.btnInfo, {
                   [btnInfoTheme.btnInfoActive]: infoOpen
                 })}
-                onClick={toogleNDCsSDGsInfo}
+                infoOpen={infoOpen}
+                handleInfoClick={() => toogleNDCsSDGsInfo(i => !i)}
               >
                 <Icon icon={infoIcon} />
-              </Button>
+              </InfoButton>
               <div className={styles.info}>
                 <p
                   className={cx(styles.infoText, {
@@ -107,26 +105,28 @@ class CountrySDGLinkages extends PureComponent {
             </div>
           </div>
           <NdcsSdgsMetaProvider />
-          {!isEmpty(sdgs) && (
-            <div>
-              <div className={styles.sdgs}>
-                {sdgs.map(sdg => (
-                  <SDGCard
-                    targetsMeta={targetsMeta}
-                    activeSector={activeSector}
-                    key={sdg.title}
-                    sdgData={sdg}
-                    tooltipId="sdg-linkages"
-                    setTooltipData={setTooltipData}
-                    indicators
-                    className={cardTheme.card}
-                  />
-                ))}
-              </div>
-              <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
+          {goals &&
+          goals.length > 0 && (
+          <div>
+                <div className={styles.sdgs}>
+              {goals.map(goal => (
+                    <SDGCard
+                  activeSector={activeSector}
+                  key={goal.title}
+                  goal={goal}
+                  targets={targets[goal.number]}
+                  targetData={targetsData[goal.number]}
+                  tooltipId="sdg-linkages"
+                  setTooltipData={setTooltipData}
+                  indicators
+                  className={cardTheme.card}
+                />
+                  ))}
             </div>
-          )}
-          {isEmpty(sdgs) &&
+                <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
+              </div>
+            )}
+          {isEmpty(goals) &&
           !loading && <NoContent message="No SDG data available" />}
         </div>
       </div>
@@ -135,7 +135,9 @@ class CountrySDGLinkages extends PureComponent {
 }
 
 CountrySDGLinkages.propTypes = {
-  sdgs: Proptypes.array,
+  goals: Proptypes.array,
+  targets: Proptypes.object,
+  targetsData: Proptypes.object,
   sectorOptions: Proptypes.array,
   sectors: Proptypes.object,
   handleSectorChange: Proptypes.func,
