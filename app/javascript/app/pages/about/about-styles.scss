@@ -6,7 +6,7 @@
   margin: 0 -30px;
 
   &:not(:last-child) {
-    border-bottom: solid 1px #cbccd0;
+    border-bottom: 1px solid $border-color;
   }
 }
 
