@@ -12,6 +12,7 @@ import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
+import Sectors from 'pages/sectors';
 import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
@@ -41,7 +42,7 @@ export default [
       },
       {
         path: '/sectors',
-        component: error,
+        component: Sectors,
         exact: true,
         nav: true,
         label: 'SECTORS'
