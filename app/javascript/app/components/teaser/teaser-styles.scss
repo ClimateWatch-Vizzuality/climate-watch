@@ -1,0 +1,19 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  padding-top: 50px;
+  background-color: $light-gray;
+  box-shadow: 0 10px 30px -10px $dark-gray inset;
+}
+
+.imageLeft {
+  box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent, 5px 0 28px -10px $dark-gray, -5px 0 28px -10px $dark-gray;
+}
+
+.paddedTeaser {
+  padding-top: 200px;
+}
+
+.wideButton {
+  width: 270px;
+}
