@@ -26,6 +26,10 @@
     color: $theme-color;
     font-size: $font-size-sm;
 
+    div {
+      overflow: scroll;
+    }
+
     &:first-of-type {
       font-weight: $font-weight-bold;
     }

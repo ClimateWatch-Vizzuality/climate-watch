@@ -15,7 +15,7 @@ class NDCTable extends PureComponent {
     if (loading) return null;
 
     return data.length > 0 ? (
-      <Table data={data} />
+      <Table parseHtml data={data} />
     ) : (
       <NoContent message={noContentMsg} />
     );
