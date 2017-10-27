@@ -30,7 +30,7 @@ class ImportQuantifications
           label: Quantification::Label.find_or_create_by!(name: row[:label]),
           year: row[:year],
           value: row[:value],
-          range: row[:range] == "Yes"
+          range: row[:range] == 'Yes'
         )
       else
         Rails.logger.error "Location #{row[:iso]} not found"
