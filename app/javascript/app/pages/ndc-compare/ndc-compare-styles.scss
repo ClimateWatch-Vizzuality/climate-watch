@@ -52,3 +52,10 @@ $country-filter-height: 60px;
   display: flex;
   align-items: center;
 }
+
+.accordion {
+  margin-bottom: -1px;
+  position: relative;
+  min-height: 400px;
+  z-index: 5;
+}

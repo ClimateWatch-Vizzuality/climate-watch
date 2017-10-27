@@ -12,12 +12,15 @@ import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
+import CountryCompare from 'pages/country-compare';
+import Sectors from 'pages/sectors';
 import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import About from 'pages/about';
 import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
+import ClimateVulnerability from 'components/country-climate-vulnerability';
 import error from 'pages/error';
 
 export default [
@@ -39,8 +42,14 @@ export default [
         headerImage: 'countries'
       },
       {
+        path: '/countries/compare',
+        component: CountryCompare,
+        exact: true,
+        headerImage: 'ndc'
+      },
+      {
         path: '/sectors',
-        component: error,
+        component: Sectors,
         exact: true,
         nav: true,
         label: 'SECTORS'
@@ -108,6 +117,12 @@ export default [
             label: 'GHG Emissions',
             anchor: true,
             component: GHGCountryEmissions
+          },
+          {
+            hash: 'climate-vulnerability',
+            label: 'Climate vulnerability and readiness',
+            anchor: true,
+            component: ClimateVulnerability
           },
           {
             hash: 'ndc-content-overview',

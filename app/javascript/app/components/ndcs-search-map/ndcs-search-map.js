@@ -27,7 +27,10 @@ class NDCSearchMapContainer extends PureComponent {
   }
 
   handleCountryClick = geography => {
-    this.props.history.push(`/ndcs/country/${geography.id}`);
+    const iso = geography.properties && geography.properties.id;
+    if (iso) {
+      this.props.history.push(`/ndcs/country/${iso}`);
+    }
   };
 
   render() {

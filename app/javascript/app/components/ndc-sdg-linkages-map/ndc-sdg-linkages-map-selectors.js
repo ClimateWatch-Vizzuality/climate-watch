@@ -31,10 +31,11 @@ export const getPathsWithStyles = createSelector(
     setScaleBuckets([initialStep, data.colour]);
     return worldPaths.map(path => {
       let color = '#E5E5EB'; // default color
-      if (data && data.locations && data.locations[path.id]) {
-        let percentage = data.locations[path.id].length / data.targets.length;
+      const iso = path.properties && path.properties.id;
+      if (data && data.locations && data.locations[iso]) {
+        let percentage = data.locations[iso].length / data.targets.length;
         if (targetHover) {
-          percentage = data.locations[path.id].includes(targetHover) ? 1 : 0;
+          percentage = data.locations[iso].includes(targetHover) ? 1 : 0;
         }
         color = colorScale(percentage);
       }

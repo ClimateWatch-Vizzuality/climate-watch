@@ -6,7 +6,7 @@
   @include msGridColumns(3fr, 1fr);
 
   grid-template-columns: 3fr 1fr;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   margin-top: 20px;
 }
 
@@ -17,6 +17,8 @@
     float: left;
     width: 33.333333%;
   }
+
+  margin-bottom: 40px;
 }
 
 .titleContainer {
@@ -57,10 +59,13 @@
   max-height: 0;
   max-width: 580px;
   color: $theme-color;
-  margin-bottom: 20px;
   transition: max-height 0.4s ease-in;
 
   &Open {
     max-height: 70px;
   }
+}
+
+.loader {
+  min-height: 400px;
 }

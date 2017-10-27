@@ -5,6 +5,7 @@ import MapLegend from 'components/map-legend';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import ReactTooltip from 'react-tooltip';
+import Loading from 'components/loading';
 
 import styles from './ndcs-map-styles.scss';
 
@@ -30,6 +31,7 @@ const NDCMap = props => (
       />
       <ButtonGroup className={styles.buttons} />
     </div>
+    {props.loading && <Loading light className={styles.loader} />}
     <Map
       paths={props.paths}
       tooltipId="mapTooltip"
@@ -52,6 +54,7 @@ const NDCMap = props => (
 );
 
 NDCMap.propTypes = {
+  loading: PropTypes.bool,
   categories: PropTypes.array.isRequired,
   selectedCategory: PropTypes.object,
   indicators: PropTypes.array.isRequired,

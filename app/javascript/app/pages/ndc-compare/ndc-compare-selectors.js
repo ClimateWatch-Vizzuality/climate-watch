@@ -1,11 +1,11 @@
 import { createSelector } from 'reselect';
 import compact from 'lodash/compact';
 
-const getCountries = state => (state.data ? state.data : []);
-const getLocations = state => (state.locations ? state.locations : []);
+const getCountries = state => state.data || null;
+const getLocations = state => state.locations || null;
 const getIso = state => state.iso;
-const getAllIndicators = state => (state.data ? state.data.indicators : {});
-const getCategories = state => (state.data ? state.data.categories : {});
+const getAllIndicators = state => state.data.indicators || null;
+const getCategories = state => state.data.categories || null;
 
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
@@ -13,6 +13,7 @@ const getCountryByIso = (countries, iso) =>
 export const getActiveCountries = createSelector(
   [getCountries, getLocations],
   (countries, locations) => {
+    if (!countries && !countries.length) return null;
     const activeCountries = locations.map(location => {
       if (parseInt(location, 10)) return null;
       const countryDetail = countries.find(
