@@ -83,6 +83,7 @@ class NDCCountryFull extends PureComponent {
                 value={contentOptionSelected}
                 onValueChange={onDocumentChange}
                 hideResetButton
+                blueBorder
                 disabled={contentOptions.length === 1}
               />
               <NdcsAutocompleteSearch
