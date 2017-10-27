@@ -22,6 +22,12 @@ describe Indc::Submission, type: :model do
   it 'should be invalid when url not present' do
     expect(
       FactoryGirl.build(:indc_submission, url: nil)
+    ).to have(2).errors_on(:url)
+  end
+
+    it 'should be invalid when url present but invalid' do
+    expect(
+      FactoryGirl.build(:indc_submission, url: 'not an url')
     ).to have(1).errors_on(:url)
   end
 end

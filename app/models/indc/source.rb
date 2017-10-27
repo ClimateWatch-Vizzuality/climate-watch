@@ -1,6 +1,6 @@
 module Indc
   class Source < ApplicationRecord
-    validate :name, presence: true
-    validate :name, uniqueness: true
+    validates :name, presence: true
+    validates :name, uniqueness: true
   end
 end

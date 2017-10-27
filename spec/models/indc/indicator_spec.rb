@@ -9,7 +9,7 @@ describe Indc::Indicator, type: :model do
 
   it 'should be invalid when slug not present' do
     expect(
-      FactoryGirl.build(:indc_indicator, sljg: nil)
+      FactoryGirl.build(:indc_indicator, slug: nil)
     ).to have(1).errors_on(:slug)
   end
 
