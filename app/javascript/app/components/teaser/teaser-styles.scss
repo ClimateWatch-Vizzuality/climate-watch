@@ -3,10 +3,17 @@
 .wrapper {
   padding-top: 50px;
   background-color: $light-gray;
-  box-shadow: 0 10px 30px -10px $dark-gray inset;
+  border-bottom: solid 1px $border-color;
+}
+
+.imageContainer {
+  overflow: hidden;
+  padding: 0 20px;
+  margin: -2px -20px;
 }
 
 .imageLeft {
+  margin-bottom: -2px;
   box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent, 5px 0 28px -10px $dark-gray, -5px 0 28px -10px $dark-gray;
 }
 

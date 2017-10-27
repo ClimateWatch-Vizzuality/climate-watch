@@ -15,7 +15,7 @@ class Teaser extends PureComponent {
     return (
       <div className={styles.wrapper}>
         <Section className={styles.section}>
-          <div className={styles.column}>
+          <div className={cx(styles.column, styles.imageContainer)}>
             <img
               className={styles.imageLeft}
               src={screenshot}
@@ -40,7 +40,7 @@ class Teaser extends PureComponent {
 }
 
 Teaser.propTypes = {
-  screenshot: PropTypes.object.isRequired,
+  screenshot: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired
 };
