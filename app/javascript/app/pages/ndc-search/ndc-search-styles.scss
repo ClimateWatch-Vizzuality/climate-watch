@@ -4,9 +4,9 @@
 .headerCols {
   @extend %grid;
 
-  @include msGridColumns(7fr, 5fr);
+  @include msGridColumns(6fr, 6fr);
 
-  grid-template-columns: 7fr 5fr;
+  grid-template-columns: 6fr 6fr;
 }
 
 .contentCols {
@@ -19,4 +19,12 @@
 
 .resultsList {
   border-right: solid 1px #e5e5eb;
+  position: relative;
+}
+
+.loader {
+  position: absolute;
+  left: 0;
+  right: 0;
+  min-height: 400px;
 }

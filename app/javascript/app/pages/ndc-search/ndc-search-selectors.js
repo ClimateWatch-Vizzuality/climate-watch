@@ -6,7 +6,7 @@ import uniqBy from 'lodash/uniqBy';
 const getResultsData = state => state.results || null;
 const getDocQuery = state => state.search.document || null;
 const getLocation = state => state.location || null;
-const getQuery = state => state.search.query || null;
+const getSearch = state => state.search || null;
 
 export const getDocumentOptions = createSelector([getResultsData], results => {
   if (!results) return null;
@@ -50,12 +50,12 @@ export const getSearchResultsSorted = createSelector(
 );
 
 export const getAnchorLinks = createSelector(
-  [getDocumentOptions, getLocation, getQuery],
-  (docs, location, query) =>
+  [getDocumentOptions, getLocation, getSearch],
+  (docs, location, search) =>
     docs.map(d => ({
       label: d.label,
       path: `${location.pathname}`,
-      search: `?document=${d.value}&query=${query}`,
+      search: `?document=${d.value}&searchBy=${search.searchBy}&query=${search.query}`,
       activeQuery: {
         key: 'document',
         value: d.value

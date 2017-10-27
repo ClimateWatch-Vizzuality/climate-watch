@@ -2,18 +2,18 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
+import Loading from 'components/loading';
 
 import AnchorNav from 'components/anchor-nav';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
 import NDCSearchMap from 'components/ndcs-search-map';
-import Search from 'components/search';
 import NoContent from 'components/no-content';
+import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
 
 import layout from 'styles/layout.scss';
 
-import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
@@ -22,10 +22,10 @@ class SearchPage extends PureComponent {
       loading,
       results,
       search,
-      onSearchChange,
       route,
       docOptions,
-      anchorLinks
+      anchorLinks,
+      fetchSearchResults
     } = this.props;
     return (
       <div>
@@ -33,11 +33,10 @@ class SearchPage extends PureComponent {
           <div className={layout.content}>
             <div className={styles.headerCols}>
               <Intro title="NDC Content Search" />
-              <Search
-                theme={lightSearch}
-                placeholder="Search"
-                input={search.query}
-                onChange={onSearchChange}
+              <NdcsAutocompleteSearch
+                className={styles.select}
+                fetchSearchResults={fetchSearchResults}
+                global
               />
             </div>
             {docOptions.length > 1 && (
@@ -47,6 +46,7 @@ class SearchPage extends PureComponent {
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>
           <div className={styles.resultsList}>
+            {loading && <Loading light className={styles.loader} />}
             {!results &&
             !loading && <NoContent message="No results for this search" />}
             {results &&
@@ -72,9 +72,9 @@ SearchPage.propTypes = {
   route: PropTypes.object.isRequired,
   search: PropTypes.object,
   results: PropTypes.array,
-  onSearchChange: PropTypes.func.isRequired,
   docOptions: PropTypes.array,
-  anchorLinks: PropTypes.array.isRequired
+  anchorLinks: PropTypes.array.isRequired,
+  fetchSearchResults: PropTypes.func
 };
 
 SearchPage.defaultProps = {

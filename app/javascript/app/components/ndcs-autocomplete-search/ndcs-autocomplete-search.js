@@ -7,8 +7,10 @@ import qs from 'query-string';
 
 import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
 import {
-  getSearchList,
-  getOptionSelected
+  getSearchListMeta,
+  getSearchListData,
+  getOptionSelectedMeta,
+  getOptionSelectedData
 } from './ndcs-autocomplete-search-selectors';
 
 const groups = [
@@ -23,23 +25,61 @@ const groups = [
 ];
 
 const mapStateToProps = (state, props) => {
-  const { location, match } = props;
+  const { location, match, global } = props;
+  const search = qs.parse(location.search);
+  const searchListMeta = {
+    data: state.ndcsSdgsMeta.data,
+    search
+  };
   const searchListData = {
     sdgs: state.ndcsSdgsData.data[match.params.iso]
       ? state.ndcsSdgsData.data[match.params.iso].sdgs
       : {},
-    search: qs.parse(location.search)
+    search
   };
   return {
-    searchList: getSearchList(searchListData),
-    optionSelected: getOptionSelected(searchListData),
+    search,
+    iso: match.params.iso,
+    searchList: global
+      ? getSearchListMeta(searchListMeta)
+      : getSearchListData(searchListData),
+    optionSelected: global
+      ? getOptionSelectedMeta(searchListMeta)
+      : getOptionSelectedData(searchListData),
     groups
   };
 };
 
 class NdcsAutocompleteSearchContainer extends PureComponent {
-  handleValueClick = option => {
-    this.props.onSearchChange(option);
+  onSearchChange = option => {
+    if (option) {
+      this.updateUrlParam([
+        { name: 'searchBy', value: option.groupId },
+        { name: 'query', value: option.value }
+      ]);
+      this.handleFetchContent(option);
+    }
+  };
+
+  handleKeyUp = e => {
+    if (e.key === 'Enter') {
+      this.onSearchChange({
+        label: e.target.value,
+        value: e.target.value,
+        groupId: 'query'
+      });
+    }
+  };
+
+  handleFetchContent = option => {
+    const { fetchSearchResults, iso } = this.props;
+    if (option && option.groupId) {
+      const optionValues = {
+        searchBy: option.groupId,
+        query: option.value
+      };
+      fetchSearchResults(optionValues, iso);
+    }
   };
 
   updateUrlParam(params, clear) {
@@ -50,7 +90,8 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
   render() {
     return createElement(NdcsAutocompleteSearchComponent, {
       ...this.props,
-      handleValueClick: this.handleValueClick
+      handleKeyUp: this.handleKeyUp,
+      onSearchChange: this.onSearchChange
     });
   }
 }
@@ -58,7 +99,8 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
 NdcsAutocompleteSearchContainer.propTypes = {
   history: Proptypes.object.isRequired,
   location: Proptypes.object,
-  onSearchChange: Proptypes.func
+  fetchSearchResults: Proptypes.func,
+  iso: Proptypes.string
 };
 
 export default withRouter(

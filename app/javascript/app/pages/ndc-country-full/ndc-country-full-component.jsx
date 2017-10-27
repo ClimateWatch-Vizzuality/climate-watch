@@ -10,13 +10,11 @@ import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
 import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
-import Search from 'components/search';
 import Sticky from 'react-stickynode';
 
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
 import contentStyles from 'styles/themes/content.scss';
-import searchDark from 'styles/themes/search/search-dark.scss';
 import styles from './ndc-country-full-styles.scss';
 
 class NDCCountryFull extends PureComponent {
@@ -51,9 +49,7 @@ class NDCCountryFull extends PureComponent {
       contentOptions,
       contentOptionSelected,
       route,
-      onSearchChange,
-      search,
-      handleKeyUp
+      fetchCountryNDCFull
     } = this.props;
     return (
       <div>
@@ -88,14 +84,10 @@ class NDCCountryFull extends PureComponent {
               />
               <NdcsAutocompleteSearch
                 className={styles.select}
-                onSearchChange={onSearchChange}
-              />
-              <Search
-                theme={searchDark}
-                className={styles.search}
-                placeholder="e.g. “reduce emissions by 37%”"
-                input={search.searchBy === 'query' ? search.query : ''}
-                handleKeyUp={handleKeyUp}
+                fetchSearchResults={fetchCountryNDCFull}
+                global
+                dark
+                label
               />
             </div>
           </div>
@@ -116,9 +108,7 @@ NDCCountryFull.propTypes = {
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
   idx: PropTypes.string,
-  onSearchChange: PropTypes.func,
-  search: PropTypes.object,
-  handleKeyUp: PropTypes.func
+  fetchCountryNDCFull: PropTypes.func
 };
 
 export default NDCCountryFull;
