@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import cx from 'classnames';
+import Loading from 'components/loading';
 
+import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
@@ -99,6 +101,7 @@ class CountrySDGLinkages extends PureComponent {
                 </p>
               </div>
             </div>
+            <NdcsSdgsDataProvider />
             <div className={styles.sectorSelector}>
               <Dropdown
                 label="Sector"
@@ -132,6 +135,7 @@ class CountrySDGLinkages extends PureComponent {
           )}
           {isEmpty(goals) &&
           !loading && <NoContent message="No SDG data available" />}
+          {loading && <Loading light className={styles.loader} />}
         </div>
       </div>
     );
@@ -152,6 +156,10 @@ CountrySDGLinkages.propTypes = {
   toogleNDCsSDGsInfo: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object
+};
+
+CountrySDGLinkages.defaultProps = {
+  targetsData: {}
 };
 
 export default CountrySDGLinkages;

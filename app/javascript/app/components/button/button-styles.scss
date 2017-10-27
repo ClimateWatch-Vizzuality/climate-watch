@@ -55,3 +55,9 @@
   background-color: transparent;
   border: solid 1px $border-color;
 }
+
+.disabled {
+  background-color: transparent;
+  color: $border-color;
+  border: solid 1px $border-color;
+}

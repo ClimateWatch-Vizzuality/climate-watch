@@ -48,7 +48,8 @@ export const getPathsWithStyles = createSelector(
   [getCountriesIncluded],
   countriesIncluded =>
     worldPaths.map(path => {
-      const isCountryIncluded = countriesIncluded.includes(path.id);
+      const iso = path.properties && path.properties.id;
+      const isCountryIncluded = countriesIncluded.includes(iso);
       return {
         ...path,
         style: isCountryIncluded ? activeCountryStyle : countryStyle

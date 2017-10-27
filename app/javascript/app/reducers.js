@@ -7,6 +7,7 @@ import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
 import * as adaptationsProvider from 'providers/adaptations-provider';
 import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
+import * as ndcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as geoLocationProvider from 'providers/geolocation-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
@@ -17,6 +18,7 @@ const providersReducers = {
   regions: handleActions(regionsProvider),
   adaptations: handleActions(adaptationsProvider),
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
+  ndcsSdgsData: handleActions(ndcsSdgsDataProvider),
   ghgEmissionsMeta: handleActions(ghgEmissionsProvider),
   geoLocation: handleActions(geoLocationProvider),
   wbCountryData: handleActions(wbCountryProvider),
@@ -43,7 +45,6 @@ const pagesReducers = {
 // Components
 import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
-import * as ndcsAutocompleteSearchComponent from 'components/ndcs-autocomplete-search';
 import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as ghgEmissionsComponent from 'components/ghg-emissions';
@@ -56,7 +57,6 @@ import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
 const componentsReducers = {
   map: handleActions(mapComponent),
   autocompleteSearch: handleActions(autocompleteSearchComponent),
-  ndcsAutocompleteSearch: handleActions(ndcsAutocompleteSearchComponent),
   stories: handleActions(storiesComponent),
   countrySelect: handleActions(countrySelectComponent),
   ghgEmissions: handleActions(ghgEmissionsComponent),
