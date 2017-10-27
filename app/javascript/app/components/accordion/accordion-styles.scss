@@ -82,3 +82,11 @@
   font-family: $font-family-1;
   line-height: 1.4em;
 }
+
+.loader {
+  min-height: 400px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}

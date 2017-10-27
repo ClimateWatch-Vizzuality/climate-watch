@@ -4,6 +4,7 @@ import Button from 'components/button';
 import Card from 'components/card';
 import Intro from 'components/intro';
 import cx from 'classnames';
+import Loading from 'components/loading';
 
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
@@ -12,10 +13,11 @@ import styles from './country-ndc-overview-styles.scss';
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { iso, sectors, values } = this.props;
+    const { iso, sectors, values, loading } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
+          {loading && <Loading light className={styles.loader} />}
           {values && sectors &&
             <div>
               <div className={cx(styles.header, styles.col2)}>
@@ -108,7 +110,8 @@ class CountryNdcOverview extends PureComponent {
 CountryNdcOverview.propTypes = {
   iso: PropTypes.string,
   sectors: PropTypes.array,
-  values: PropTypes.object
+  values: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 export default CountryNdcOverview;

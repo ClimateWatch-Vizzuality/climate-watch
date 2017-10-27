@@ -18,7 +18,7 @@ const getActiveSectorId = state => {
 };
 
 export const getSectorsMapped = createSelector([getSectors], sectors => {
-  if (!sectors) return {};
+  if (!sectors) return null;
   const sectorsMapped = {};
   sectors.forEach(sector => {
     sectorsMapped[sector.id] = sector.name;
@@ -27,7 +27,8 @@ export const getSectorsMapped = createSelector([getSectors], sectors => {
 });
 
 export const getSectorOptions = createSelector([getSectors], sectors => {
-  if (!sectors) return [];
+  if (!sectors) return null;
+
   const sectorOptions = Object.keys(sectors).map(sector => ({
     label: upperFirst(sectors[sector].name),
     value: sector
@@ -37,18 +38,20 @@ export const getSectorOptions = createSelector([getSectors], sectors => {
 
 export const getSectorOptionsSorted = createSelector(
   [getSectorOptions],
-  sectors =>
-    sectors.sort((a, b) => {
+  sectors => {
+    if (!sectors) return null;
+    return sectors.sort((a, b) => {
       if (a.label < b.label) return -1;
       if (a.label > b.label) return 1;
       return 0;
-    })
+    });
+  }
 );
 
 export const getSectorSelected = createSelector(
   [getSectorOptions, getActiveSectorId],
   (sectors, activeSector) => {
-    if (!sectors && !sectors.length) return {};
+    if (!sectors) return null;
     return sectors.find(sector => sector.value === activeSector);
   }
 );

@@ -11,7 +11,7 @@ const fetchCountryNDCFull = createThunkAction(
     const url = search.searchBy
       ? `/api/v1/ndcs/${iso}/text?${search.searchBy}=${search.query}`
       : `/api/v1/ndcs/${iso}/text`;
-    dispatch(fetchCountryNDCFullInit());
+    dispatch(fetchCountryNDCFullInit(iso));
     fetch(url)
       .then(response => {
         if (response.ok) return response.json();

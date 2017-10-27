@@ -16,6 +16,7 @@ const mapStateToProps = (state, { match }) => {
   return {
     iso,
     values: getValuesGrouped(countryData),
+    loading: state.countryNDCOverview.loading,
     sectors: countryData ? countryData.sectors : null
   };
 };
