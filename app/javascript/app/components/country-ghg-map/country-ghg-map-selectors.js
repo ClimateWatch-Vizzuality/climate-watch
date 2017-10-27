@@ -12,6 +12,7 @@ const isLoading = state => state.loading;
 const getSources = state => state.meta.data_source || null;
 const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
+const getCalculationSelection = state => state.search.calculation || null;
 
 const EXCLUDED_INDICATORS = ['WORLD'];
 const buckets = [
@@ -146,10 +147,22 @@ export const getPathsWithStyles = createSelector([getDataParsed], data => {
   });
 });
 
-export const getLegendData = createSelector(getYearSelected, year => ({
-  title: `GHG Emissions per capita in ${year}`,
-  buckets
-}));
+export const getLegendData = createSelector(
+  [getCalculationSelection, getYearSelected],
+  (calculation, year) => {
+    let calculationText = '';
+    if (calculation === 'PER_CAPITA') {
+      calculationText = 'per capita ';
+    } else if (calculation === 'PER_GDP') {
+      calculationText = 'per GDP ';
+    }
+
+    return {
+      title: `GHG Emissions ${calculationText}in ${year}`,
+      buckets
+    };
+  }
+);
 
 export const getMapReady = createSelector(
   [isLoaded, isLoading],
