@@ -1,2 +1,15 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
+
+.aboutDescription {
+  padding-top: 50px;
+  line-height: $line-height-medium;
+
+  > div {
+    padding-bottom: 10px;
+  }
+
+  > ul {
+    list-style: initial;
+  }
+}

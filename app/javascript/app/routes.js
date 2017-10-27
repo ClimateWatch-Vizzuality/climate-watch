@@ -172,7 +172,7 @@ export default [
             component: AboutPartners,
             exact: true,
             anchor: true,
-            label: 'Partners'
+            label: 'Climate Watch Partners'
           },
           {
             path: '/about/contact',
