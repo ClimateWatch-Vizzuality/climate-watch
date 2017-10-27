@@ -4,7 +4,7 @@ const getSDGs = state => state.sdgs || null;
 const getSearch = state => state.search || null;
 
 export const getGoalsMapped = createSelector([getSDGs], sdgs => {
-  if (!sdgs) return [];
+  if (!sdgs) return null;
   return Object.keys(sdgs).map(goal => ({
     label: `${goal}: ${sdgs[goal].title}`,
     value: goal,
@@ -13,7 +13,7 @@ export const getGoalsMapped = createSelector([getSDGs], sdgs => {
 });
 
 export const getTargetsMapped = createSelector([getSDGs], sdgs => {
-  if (!sdgs) return [];
+  if (!sdgs) return null;
   const targets = [];
   Object.keys(sdgs).forEach(goal => {
     Object.keys(sdgs[goal].targets).forEach(target => {

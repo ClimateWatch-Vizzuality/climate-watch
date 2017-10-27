@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import cx from 'classnames';
 import Loading from 'components/loading';
 
+import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
@@ -95,6 +96,7 @@ class CountrySDGLinkages extends PureComponent {
                 </p>
               </div>
             </div>
+            <NdcsSdgsDataProvider />
             <div className={styles.sectorSelector}>
               <Dropdown
                 label="Sector"
