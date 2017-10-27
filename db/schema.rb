@@ -392,7 +392,7 @@ ActiveRecord::Schema.define(version: 20171027123608) do
   add_foreign_key "timeline_documents", "locations", on_delete: :cascade
   add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
-  add_foreign_key "wb_extra_country_data", "locations"
+  add_foreign_key "wb_extra_country_data", "locations", on_delete: :cascade
   add_foreign_key "wb_indc_indicators", "wb_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
   add_foreign_key "wb_indc_indicators_categories", "wb_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "wb_indc_indicators_categories", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
