@@ -47,7 +47,7 @@ class SearchPage extends PureComponent {
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>
           <div className={styles.resultsList}>
-            {!results.length &&
+            {!results &&
             !loading && <NoContent message="No results for this search" />}
             {results &&
               results.map(result => (

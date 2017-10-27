@@ -39,12 +39,14 @@ export const filterSearchResults = createSelector(
 
 export const getSearchResultsSorted = createSelector(
   filterSearchResults,
-  results =>
-    results.sort((a, b) => {
+  results => {
+    if (!results || !results.length) return null;
+    return results.sort((a, b) => {
       if (a.matches.length > b.matches.length) return -1;
       if (a.matches.length < b.matches.length) return 1;
       return 0;
-    })
+    });
+  }
 );
 
 export const getAnchorLinks = createSelector(

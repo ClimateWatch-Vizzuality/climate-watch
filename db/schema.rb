@@ -95,6 +95,29 @@ ActiveRecord::Schema.define(version: 20171026163849) do
     t.index ["location_id"], name: "index_cait_indc_values_on_location_id"
   end
 
+  create_table "global_indc_categories", force: :cascade do |t|
+    t.text "name"
+    t.text "slug"
+    t.bigint "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_global_indc_categories_on_parent_id"
+  end
+
+  create_table "global_indc_indicators", force: :cascade do |t|
+    t.bigint "cait_indicator_id"
+    t.bigint "wb_indicator_id"
+    t.index ["cait_indicator_id"], name: "index_global_indc_indicators_on_cait_indicator_id"
+    t.index ["wb_indicator_id"], name: "index_global_indc_indicators_on_wb_indicator_id"
+  end
+
+  create_table "global_indc_indicators_categories", force: :cascade do |t|
+    t.bigint "indicator_id"
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_global_indc_indicators_categories_on_category_id"
+    t.index ["indicator_id"], name: "index_global_indc_indicators_categories_on_indicator_id"
+  end
+
   create_table "historical_emissions_data_sources", force: :cascade do |t|
     t.text "name"
     t.datetime "created_at", null: false
@@ -353,6 +376,11 @@ ActiveRecord::Schema.define(version: 20171026163849) do
   add_foreign_key "cait_indc_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "cait_indc_labels", column: "label_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "locations", on_delete: :cascade
+  add_foreign_key "global_indc_categories", "global_indc_categories", column: "parent_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators", "cait_indc_indicators", column: "cait_indicator_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators", "wb_indc_indicators", column: "wb_indicator_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators_categories", "global_indc_categories", column: "category_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators_categories", "global_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_gases", column: "gas_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_gwps", column: "gwp_id"
