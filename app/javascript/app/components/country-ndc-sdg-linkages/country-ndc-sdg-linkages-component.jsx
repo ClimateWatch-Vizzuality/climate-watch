@@ -39,11 +39,11 @@ class CountrySDGLinkages extends PureComponent {
           {tooltipData.title}
         </p>
         {tooltipData.sectors &&
-          tooltipData.sectors.length > 0 && (
-            <p className={styles.sectors}>
+        tooltipData.sectors.length > 0 && (
+        <p className={styles.sectors}>
               <b>Sectors: </b>
               {tooltipData.sectors.map((sector, index) => (
-                <span key={`${tooltipData.targetKey}-${sector}`}>
+            <span key={`${tooltipData.targetKey}-${sector}`}>
                   {sectors[sector]}
                   {index === tooltipData.sectors.length - 1 ? '' : ', '}
                 </span>
@@ -107,23 +107,23 @@ class CountrySDGLinkages extends PureComponent {
           </div>
           <NdcsSdgsMetaProvider />
           {goals &&
-            goals.length > 0 && (
-              <div>
+          goals.length > 0 && (
+          <div>
                 <div className={styles.sdgs}>
-                  {goals.map(goal => (
+              {goals.map(goal => (
                     <SDGCard
-                      activeSector={activeSector}
-                      key={goal.title}
-                      goal={goal}
-                      targets={targets[goal.number]}
-                      targetData={targetsData[goal.number]}
-                      tooltipId="sdg-linkages"
-                      setTooltipData={setTooltipData}
-                      indicators
-                      className={cardTheme.card}
-                    />
+                  activeSector={activeSector}
+                  key={goal.title}
+                  goal={goal}
+                  targets={targets[goal.number]}
+                  targetData={targetsData[goal.number]}
+                  tooltipId="sdg-linkages"
+                  setTooltipData={setTooltipData}
+                  indicators
+                  className={cardTheme.card}
+                />
                   ))}
-                </div>
+            </div>
                 <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
               </div>
             )}
@@ -150,6 +150,10 @@ CountrySDGLinkages.propTypes = {
   toogleNDCsSDGsInfo: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object
+};
+
+CountrySDGLinkages.defaultProps = {
+  targetsData: {}
 };
 
 export default CountrySDGLinkages;

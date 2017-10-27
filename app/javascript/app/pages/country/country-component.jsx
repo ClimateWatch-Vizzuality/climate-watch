@@ -23,7 +23,7 @@ class Country extends PureComponent {
             <Intro title={country.name} />
             <Button
               color="yellow"
-              link={`/ndcs/compare?locations=${country.iso}`}
+              link={`/countries/compare?locations=${country.iso}`}
             >
               Compare
             </Button>

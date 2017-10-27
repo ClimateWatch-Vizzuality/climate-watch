@@ -11,14 +11,13 @@ import { getValuesGrouped } from './country-ndc-overview-selectors';
 
 const mapStateToProps = (state, { match }) => {
   const { iso } = match.params;
-  const countryData = state.countryNDCOverview.data[iso] || null;
+  const overviewData = state.countryNDCOverview.data;
+  const countryData = overviewData ? overviewData[iso] : null;
   return {
     iso,
     values: getValuesGrouped(countryData),
-    sectors: state.countryNDCOverview.data[iso]
-      ? state.countryNDCOverview.data[iso].sectors
-      : null,
-    loading: state.countryNDCOverview.loading
+    loading: state.countryNDCOverview.loading,
+    sectors: countryData ? countryData.sectors : null
   };
 };
 
