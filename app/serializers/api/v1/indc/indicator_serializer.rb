@@ -20,7 +20,7 @@ module Api
         end
 
         def locations
-          IndexedSerializer.serialize(
+          IndexedSerializer.serialize_collection(
             object.values,
             serializer: ValueSerializer
           ) do |v|

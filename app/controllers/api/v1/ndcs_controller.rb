@@ -48,7 +48,6 @@ module Api
           ).
           order('indc_indicators.name')
 
-
         sectors = ::Indc::Sector.
           includes(:parent, values: :location).
           where(locations: {iso_code3: params[:code]}).
@@ -79,6 +78,28 @@ module Api
         if params[:filter]
           indicators = indicators.where(
             indc_categories: {category_type: params[:filter]}
+          )
+        end
+
+        if params[:category]
+          indicator_ids = ::GlobalIndc::Category.
+            includes(:indicators, children: :indicators).
+            where(
+              parent_id: nil,
+              slug: params[:category]
+            ).
+            flat_map(&:children).
+            flat_map(&:indicators).
+            map do |indicator|
+              if indicator.wb_indicator_id
+                "wb#{indicator.wb_indicator_id}"
+              elsif indicator.cait_indicator_id
+                "cait#{indicator.cait_indicator_id}"
+              end
+            end
+
+          indicators = indicators.where(
+            id: indicator_ids
           )
         end
 
