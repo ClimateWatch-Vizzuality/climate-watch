@@ -49,6 +49,10 @@
   margin-bottom: 10px;
 }
 
+.sectorSelector {
+  padding-top: 15px;
+}
+
 .info {
   flex-basis: 100%;
 }
@@ -57,11 +61,11 @@
   overflow: hidden;
   height: auto;
   max-height: 0;
-  max-width: 580px;
+  max-width: 780px;
   color: $theme-color;
   transition: max-height 0.4s ease-in;
 
   &Open {
-    max-height: 70px;
+    max-height: 100px;
   }
 }

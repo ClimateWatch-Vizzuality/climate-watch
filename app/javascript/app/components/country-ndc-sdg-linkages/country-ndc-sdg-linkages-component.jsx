@@ -31,24 +31,25 @@ class CountrySDGLinkages extends PureComponent {
   getTooltip() {
     const { sectors, tooltipData, targets } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
+    const hasTooltipData =
+      tooltipData.sectors && tooltipData.sectors.length > 0;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
-        {tooltipData.sectors &&
-          tooltipData.sectors.length > 0 && (
-            <p className={styles.sectors}>
-              <b>Sectors: </b>
-              {tooltipData.sectors.map((sector, index) => (
-                <span key={`${tooltipData.targetKey}-${sector}`}>
-                  {sectors[sector]}
-                  {index === tooltipData.sectors.length - 1 ? '' : ', '}
-                </span>
-              ))}
-            </p>
-          )}
+        {hasTooltipData && (
+          <p className={styles.sectors}>
+            <b>Sectors: </b>
+            {tooltipData.sectors.map((sector, index) => (
+              <span key={`${tooltipData.targetKey}-${sector}`}>
+                {sectors[sector]}
+                {index === tooltipData.sectors.length - 1 ? '' : ', '}
+              </span>
+            ))}
+          </p>
+        )}
       </div>
     ) : null;
   }
@@ -66,6 +67,7 @@ class CountrySDGLinkages extends PureComponent {
       toogleNDCsSDGsInfo,
       infoOpen
     } = this.props;
+    const hasGoals = goals && goals.length > 0;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -87,10 +89,13 @@ class CountrySDGLinkages extends PureComponent {
                     [styles.infoTextOpen]: infoOpen
                   })}
                 >
-                  Each box represents a Sustainable Development Goal (SDG) and
-                  each dot is a more specific target within that goal. Alignment
-                  with that country&apos;s NDC is represented by color added to
-                  the dot.
+                  The colored dots represent the SDG targets for which there is
+                  an aligned climate target, action, policy measure or need in
+                  the NDC. This alignment was identified based only on the
+                  information communicated in the NDC, not the domestic policy
+                  context. It is therefore only an entry point for considering
+                  the degree of potential alignment between the country’s
+                  climate and sustainable development objectives.
                 </p>
               </div>
             </div>
@@ -105,27 +110,26 @@ class CountrySDGLinkages extends PureComponent {
             </div>
           </div>
           <NdcsSdgsMetaProvider />
-          {goals &&
-          goals.length > 0 && (
-          <div>
-                <div className={styles.sdgs}>
-              {goals.map(goal => (
-                    <SDGCard
-                  activeSector={activeSector}
-                  key={goal.title}
-                  goal={goal}
-                  targets={targets[goal.number]}
-                  targetData={targetsData[goal.number]}
-                  tooltipId="sdg-linkages"
-                  setTooltipData={setTooltipData}
-                  indicators
-                  className={cardTheme.card}
-                />
-                  ))}
-            </div>
-                <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
+          {hasGoals && (
+            <div>
+              <div className={styles.sdgs}>
+                {goals.map(goal => (
+                  <SDGCard
+                    activeSector={activeSector}
+                    key={goal.title}
+                    goal={goal}
+                    targets={targets[goal.number]}
+                    targetData={targetsData[goal.number]}
+                    tooltipId="sdg-linkages"
+                    setTooltipData={setTooltipData}
+                    indicators
+                    className={cardTheme.card}
+                  />
+                ))}
               </div>
-            )}
+              <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
+            </div>
+          )}
           {isEmpty(goals) &&
           !loading && <NoContent message="No SDG data available" />}
         </div>
