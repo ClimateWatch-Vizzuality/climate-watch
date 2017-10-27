@@ -38,11 +38,11 @@ class CountrySDGLinkages extends PureComponent {
           {tooltipData.title}
         </p>
         {tooltipData.sectors &&
-          tooltipData.sectors.length > 0 && (
-            <p className={styles.sectors}>
+        tooltipData.sectors.length > 0 && (
+        <p className={styles.sectors}>
               <b>Sectors: </b>
               {tooltipData.sectors.map((sector, index) => (
-                <span key={`${tooltipData.targetKey}-${sector}`}>
+            <span key={`${tooltipData.targetKey}-${sector}`}>
                   {sectors[sector]}
                   {index === tooltipData.sectors.length - 1 ? '' : ', '}
                 </span>
@@ -148,6 +148,10 @@ CountrySDGLinkages.propTypes = {
   toogleNDCsSDGsInfo: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object
+};
+
+CountrySDGLinkages.defaultProps = {
+  targetsData: {}
 };
 
 export default CountrySDGLinkages;
