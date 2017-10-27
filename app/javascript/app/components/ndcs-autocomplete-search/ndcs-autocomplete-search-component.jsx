@@ -13,7 +13,6 @@ class NdcsAutocompleteSearch extends PureComponent {
     const {
       className,
       handleValueClick,
-      setNdcsAutocompleteSearch,
       searchList,
       groups,
       optionSelected
@@ -27,7 +26,6 @@ class NdcsAutocompleteSearch extends PureComponent {
           placeholder="Select a goal or target"
           groups={groups}
           options={searchList}
-          onSearchChange={setNdcsAutocompleteSearch}
           onValueChange={handleValueClick}
           value={optionSelected}
           hideResetButton
@@ -41,7 +39,6 @@ class NdcsAutocompleteSearch extends PureComponent {
 NdcsAutocompleteSearch.propTypes = {
   className: Proptypes.string,
   handleValueClick: Proptypes.func.isRequired,
-  setNdcsAutocompleteSearch: Proptypes.func.isRequired,
   searchList: Proptypes.array,
   groups: Proptypes.array,
   optionSelected: Proptypes.object

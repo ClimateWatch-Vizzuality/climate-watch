@@ -51,7 +51,8 @@ class NDCCountryFull extends PureComponent {
       contentOptionSelected,
       route,
       onSearchChange,
-      search
+      search,
+      handleKeyUp
     } = this.props;
     return (
       <div>
@@ -91,12 +92,7 @@ class NDCCountryFull extends PureComponent {
               className={styles.search}
               placeholder="e.g. “reduce emissions by 37%”"
               input={search.searchBy === 'query' ? search.query : ''}
-              onChange={searchQuery =>
-                onSearchChange({
-                  label: searchQuery,
-                  value: searchQuery,
-                  groupId: 'query'
-                })}
+              handleKeyUp={handleKeyUp}
             />
           </div>
         </div>
@@ -117,7 +113,8 @@ NDCCountryFull.propTypes = {
   loaded: PropTypes.bool,
   idx: PropTypes.string,
   onSearchChange: PropTypes.func,
-  search: PropTypes.object
+  search: PropTypes.object,
+  handleKeyUp: PropTypes.func
 };
 
 export default NDCCountryFull;

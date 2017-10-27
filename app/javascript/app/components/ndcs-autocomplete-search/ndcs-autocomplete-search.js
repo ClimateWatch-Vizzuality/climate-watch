@@ -38,11 +38,6 @@ const mapStateToProps = (state, props) => {
 };
 
 class NdcsAutocompleteSearchContainer extends PureComponent {
-  componentWillMount() {
-    const search = qs.parse(this.props.location.search).search || '';
-    this.props.setNdcsAutocompleteSearch(search);
-  }
-
   handleValueClick = option => {
     this.props.onSearchChange(option);
   };
@@ -62,7 +57,6 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
 
 NdcsAutocompleteSearchContainer.propTypes = {
   history: Proptypes.object.isRequired,
-  setNdcsAutocompleteSearch: Proptypes.func.isRequired,
   location: Proptypes.object,
   onSearchChange: Proptypes.func
 };
