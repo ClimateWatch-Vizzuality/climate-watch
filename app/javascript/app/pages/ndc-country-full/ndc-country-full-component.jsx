@@ -15,6 +15,7 @@ import Search from 'components/search';
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
 import contentStyles from 'styles/themes/content.scss';
+import searchDark from 'styles/themes/search/search-dark.scss';
 import styles from './ndc-country-full-styles.scss';
 
 class NDCCountryFull extends PureComponent {
@@ -86,10 +87,16 @@ class NDCCountryFull extends PureComponent {
               onSearchChange={onSearchChange}
             />
             <Search
+              theme={searchDark}
               className={styles.search}
-              placeholder="Search"
-              input={search}
-              onChange={onSearchChange}
+              placeholder="e.g. “reduce emissions by 37%”"
+              input={search.searchBy === 'query' ? search.query : ''}
+              onChange={searchQuery =>
+                onSearchChange({
+                  label: searchQuery,
+                  value: searchQuery,
+                  groupId: 'query'
+                })}
             />
           </div>
         </div>
@@ -110,7 +117,7 @@ NDCCountryFull.propTypes = {
   loaded: PropTypes.bool,
   idx: PropTypes.string,
   onSearchChange: PropTypes.func,
-  search: PropTypes.string
+  search: PropTypes.object
 };
 
 export default NDCCountryFull;

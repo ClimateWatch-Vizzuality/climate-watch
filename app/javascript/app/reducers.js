@@ -45,7 +45,6 @@ const pagesReducers = {
 // Components
 import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
-import * as ndcsAutocompleteSearchComponent from 'components/ndcs-autocomplete-search';
 import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as ghgEmissionsComponent from 'components/ghg-emissions';
@@ -58,7 +57,6 @@ import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
 const componentsReducers = {
   map: handleActions(mapComponent),
   autocompleteSearch: handleActions(autocompleteSearchComponent),
-  ndcsAutocompleteSearch: handleActions(ndcsAutocompleteSearchComponent),
   stories: handleActions(storiesComponent),
   countrySelect: handleActions(countrySelectComponent),
   ghgEmissions: handleActions(ghgEmissionsComponent),

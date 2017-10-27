@@ -5,9 +5,6 @@ import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
-import actions from './ndcs-autocomplete-search-actions';
-import reducers, { initialState } from './ndcs-autocomplete-search-reducers';
-
 import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
 import {
   getSearchList,
@@ -47,13 +44,7 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
   }
 
   handleValueClick = option => {
-    if (option) {
-      this.props.onSearchChange(option);
-      this.updateUrlParam([
-        { name: 'searchBy', value: option.groupId },
-        { name: 'query', value: option.value }
-      ]);
-    }
+    this.props.onSearchChange(option);
   };
 
   updateUrlParam(params, clear) {
@@ -76,8 +67,6 @@ NdcsAutocompleteSearchContainer.propTypes = {
   onSearchChange: Proptypes.func
 };
 
-export { actions, reducers, initialState };
-
 export default withRouter(
-  connect(mapStateToProps, actions)(NdcsAutocompleteSearchContainer)
+  connect(mapStateToProps, null)(NdcsAutocompleteSearchContainer)
 );
