@@ -11,6 +11,7 @@ import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
 import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 import Search from 'components/search';
+import Sticky from 'react-stickynode';
 
 import layout from 'styles/layout.scss';
 import backIcon from 'assets/icons/back.svg';
@@ -57,7 +58,7 @@ class NDCCountryFull extends PureComponent {
     return (
       <div>
         <Header route={route}>
-          <div className={cx(layout.content, styles.twoFold, styles.header)}>
+          <div className={cx(layout.content, styles.header)}>
             <div className={styles.title}>
               <Button
                 className={styles.backButton}
@@ -73,29 +74,31 @@ class NDCCountryFull extends PureComponent {
             </div>
           </div>
         </Header>
-        <div className={styles.actionsWrapper}>
-          <div className={cx(layout.content, styles.actions)}>
-            <Dropdown
-              label="Document"
-              options={contentOptions}
-              value={contentOptionSelected}
-              onValueChange={onDocumentChange}
-              hideResetButton
-              disabled={contentOptions.length === 1}
-            />
-            <NdcsAutocompleteSearch
-              className={styles.select}
-              onSearchChange={onSearchChange}
-            />
-            <Search
-              theme={searchDark}
-              className={styles.search}
-              placeholder="e.g. “reduce emissions by 37%”"
-              input={search.searchBy === 'query' ? search.query : ''}
-              handleKeyUp={handleKeyUp}
-            />
+        <Sticky>
+          <div className={styles.actionsWrapper}>
+            <div className={cx(layout.content, styles.actions)}>
+              <Dropdown
+                label="Document"
+                options={contentOptions}
+                value={contentOptionSelected}
+                onValueChange={onDocumentChange}
+                hideResetButton
+                disabled={contentOptions.length === 1}
+              />
+              <NdcsAutocompleteSearch
+                className={styles.select}
+                onSearchChange={onSearchChange}
+              />
+              <Search
+                theme={searchDark}
+                className={styles.search}
+                placeholder="e.g. “reduce emissions by 37%”"
+                input={search.searchBy === 'query' ? search.query : ''}
+                handleKeyUp={handleKeyUp}
+              />
+            </div>
           </div>
-        </div>
+        </Sticky>
         {this.getPageContent()}
       </div>
     );
