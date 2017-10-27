@@ -4,6 +4,5 @@ module Quantification
     belongs_to :location
 
     validates :year, presence: true
-    validates :value, presence: true
   end
 end
