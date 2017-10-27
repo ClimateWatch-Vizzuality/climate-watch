@@ -2,6 +2,7 @@ import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { isCountryDisabled } from 'app/utils';
 
 import actions from './countries-select-actions';
 import reducers, { initialState } from './countries-select-reducers';
@@ -32,7 +33,7 @@ class CountrySelectContainer extends PureComponent {
   onCountryClick = geometry => {
     const { history } = this.props;
     const iso = geometry.properties && geometry.properties.id;
-    if (iso) {
+    if (iso && !isCountryDisabled(iso)) {
       history.push(`/countries/${iso}`);
     }
   };

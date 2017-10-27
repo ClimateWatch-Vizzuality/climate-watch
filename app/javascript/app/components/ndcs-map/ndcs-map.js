@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import { isCountryDisabled } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
@@ -54,14 +55,14 @@ class NDCMapContainer extends PureComponent {
 
   handleCountryClick = geography => {
     const iso = geography.properties && geography.properties.id;
-    if (iso) {
+    if (iso && !isCountryDisabled(iso)) {
       this.props.history.push(`/ndcs/country/${iso}`);
     }
   };
 
   handleCountryEnter = geography => {
     const iso = geography.properties && geography.properties.id;
-    if (iso) {
+    if (iso && !isCountryDisabled(iso)) {
       this.setState({ geometryIdHover: iso });
     }
   };

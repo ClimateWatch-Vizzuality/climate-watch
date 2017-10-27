@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { deburrUpper } from 'app/utils';
+import { deburrUpper, isCountryDisabled } from 'app/utils';
 import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
 
@@ -74,6 +74,13 @@ export const getPathsWithStyles = createSelector(
   [getFilterUpper, getPreSelect],
   (query, preSelect) =>
     worldPaths.map(path => {
+      if (!path.properties || isCountryDisabled(path.properties.id)) {
+        return {
+          ...path,
+          style: countryStyles
+        };
+      }
+
       const nameUpper = deburrUpper(path.properties.name);
       const isEqual = path.properties.id === preSelect || nameUpper === query;
 
