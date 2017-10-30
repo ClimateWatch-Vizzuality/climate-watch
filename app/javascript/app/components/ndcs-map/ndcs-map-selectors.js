@@ -4,8 +4,13 @@ import uniqBy from 'lodash/uniqBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
+const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || {};
 const getIndicatorsData = state => state.indicators || [];
+
+export const getISOCountries = createSelector([getCountries], countries =>
+  countries.map(country => country.iso_code3)
+);
 
 export const getCategories = createSelector(getCategoriesData, categories =>
   Object.keys(categories).map(category => ({

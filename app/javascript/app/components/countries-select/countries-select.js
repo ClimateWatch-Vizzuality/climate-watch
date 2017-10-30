@@ -2,7 +2,7 @@ import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { isCountryDisabled } from 'app/utils';
+import { isCountryIncluded } from 'app/utils';
 
 import actions from './countries-select-actions';
 import reducers, { initialState } from './countries-select-reducers';
@@ -10,6 +10,7 @@ import CountrySelectComponent from './countries-select-component';
 import {
   getFilterUpper,
   getPreSelect,
+  getISOCountries,
   getFilteredCountriesWithPath,
   getPathsWithStyles
 } from './countries-select-selectors';
@@ -25,15 +26,21 @@ const mapStateToProps = state => {
     paths: getPathsWithStyles(stateWithFilters),
     query: getFilterUpper(stateWithFilters),
     preSelect: getPreSelect(stateWithFilters),
+    isoCountries: getISOCountries(stateWithFilters),
     countriesList: getFilteredCountriesWithPath(stateWithFilters)
   };
 };
 
 class CountrySelectContainer extends PureComponent {
+  componentWillUnmount() {
+    this.props.countryPreSelect('');
+    this.props.countrySelectFilter('');
+  }
+
   onCountryClick = geometry => {
-    const { history } = this.props;
+    const { isoCountries, history } = this.props;
     const iso = geometry.properties && geometry.properties.id;
-    if (iso && !isCountryDisabled(iso)) {
+    if (iso && isCountryIncluded(isoCountries, iso)) {
       history.push(`/countries/${iso}`);
     }
   };
@@ -57,6 +64,8 @@ class CountrySelectContainer extends PureComponent {
 }
 
 CountrySelectContainer.propTypes = {
+  isoCountries: Proptypes.array.isRequired,
+  countrySelectFilter: Proptypes.func.isRequired,
   countryPreSelect: Proptypes.func.isRequired,
   history: Proptypes.object
 };
