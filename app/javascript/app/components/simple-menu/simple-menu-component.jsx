@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from 'components/icon';
+import ClickOutside from 'react-click-outside';
 import styles from './simple-menu-styles.scss';
 
 class SimpleMenu extends PureComponent {
@@ -17,7 +18,7 @@ class SimpleMenu extends PureComponent {
     const { options, icon } = this.props;
     const { open } = this.state;
     return (
-      <div>
+      <ClickOutside onClickOutside={() => this.setState({ open: false })}>
         <button
           className={cx(styles.button, { [styles.active]: open })}
           onClick={() => this.setState({ open: !open })}
@@ -48,7 +49,7 @@ class SimpleMenu extends PureComponent {
             </li>
           ))}
         </ul>
-      </div>
+      </ClickOutside>
     );
   }
 }
