@@ -22,6 +22,7 @@ const Button = props => {
     [styles.yellow]: color === 'yellow',
     [styles.white]: color === 'white',
     [styles.plain]: color === 'plain',
+    [styles.disabled]: !onClick && !link,
     [styles.noSpace]: noSpace
   });
   return link ? (
@@ -29,7 +30,11 @@ const Button = props => {
       {children}
     </NavLink>
   ) : (
-    <button disabled={disabled} className={classNames} onClick={onClick}>
+    <button
+      disabled={disabled || !onClick}
+      className={classNames}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
