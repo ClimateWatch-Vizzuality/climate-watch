@@ -22,14 +22,21 @@ const Button = props => {
     [styles.yellow]: color === 'yellow',
     [styles.white]: color === 'white',
     [styles.plain]: color === 'plain',
+    [styles.disabled]: !onClick && !link,
     [styles.noSpace]: noSpace
   });
+  const isDisabled = disabled || !onClick;
   return link ? (
     <NavLink className={classNames} to={link}>
       {children}
     </NavLink>
   ) : (
-    <button disabled={disabled} className={classNames} onClick={onClick}>
+    <button
+      title={isDisabled ? 'Coming soon' : ''}
+      disabled={isDisabled}
+      className={classNames}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
