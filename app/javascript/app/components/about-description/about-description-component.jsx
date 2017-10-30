@@ -38,7 +38,7 @@ const About = () => (
         </a>;
       </li>
       <li>
-        <a href="/ndc-sdgs" className={styles.link}>
+        <a href="/ndcs-sdg" className={styles.link}>
           Comprehensive mapping of linkages between Nationally Determined
           Contributions (NDCs) and the Sustainable Development Goals (SDGs) and
           associated targets of the 2030 Agenda for Sustainable Development
