@@ -12,6 +12,7 @@ class CountryGhgEmissions extends PureComponent {
   render() {
     const {
       data,
+      quantifications,
       loading,
       config,
       iso,
@@ -66,6 +67,7 @@ class CountryGhgEmissions extends PureComponent {
               data={data}
               height="100%"
               onMouseMove={handleYearHover}
+              points={quantifications}
             />
           )}
         </div>

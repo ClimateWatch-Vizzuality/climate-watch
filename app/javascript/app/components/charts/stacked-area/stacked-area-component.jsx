@@ -2,12 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  AreaChart,
+  ComposedChart,
   Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  Dot,
   ResponsiveContainer
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
@@ -15,10 +16,10 @@ import { format } from 'd3-format';
 
 class ChartStackedArea extends PureComponent {
   render() {
-    const { config, data, height, onMouseMove } = this.props;
+    const { config, data, height, onMouseMove, points } = this.props;
     return (
       <ResponsiveContainer height={height}>
-        <AreaChart
+        <ComposedChart
           data={data}
           margin={{ top: 0, right: 0, left: -18, bottom: 0 }}
           onMouseMove={onMouseMove}
@@ -55,7 +56,11 @@ class ChartStackedArea extends PureComponent {
                 fill={config.theme[column.value].fill || ''}
               />
             ))}
-        </AreaChart>
+          {points && points.map(point => console.log(point) || (
+            <Dot r={15} key={point.cy} cx="x" cy="points" />
+          ))
+          }
+        </ComposedChart>
       </ResponsiveContainer>
     );
   }
@@ -64,6 +69,7 @@ class ChartStackedArea extends PureComponent {
 ChartStackedArea.propTypes = {
   config: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
+  points: PropTypes.array.isRequired,
   height: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string // % accepted

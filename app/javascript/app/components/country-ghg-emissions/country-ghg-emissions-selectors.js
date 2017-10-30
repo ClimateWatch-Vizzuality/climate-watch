@@ -46,6 +46,7 @@ const options = calculationKeys.map(
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
+const getQuantifications = state => uniqBy(state.quantifications, 'year') || null;
 const getCalculationData = state =>
   (state.calculationData && state.calculationData[state.iso]) || [];
 
@@ -189,14 +190,24 @@ const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
+export const getQuantificationsData = createSelector(getQuantifications,
+  quantifications => {
+    if (!quantifications) return [];
+    return quantifications.map(q => ({
+      cy: q.value * DATA_SCALE,
+      cx: q.year
+    }));
+  }
+);
 export const getChartData = createSelector(
   [
     filterData,
     getFiltersSelected,
     parseCalculationData,
-    getCalculationSelected
+    getCalculationSelected,
+    getQuantifications
   ],
-  (data, filters, calculationData, calculationSelected) => {
+  (data, filters, calculationData, calculationSelected, quantifications) => {
     if (
       !data ||
       !data.length ||
@@ -218,6 +229,11 @@ export const getChartData = createSelector(
       );
     }
 
+    if (quantifications) {
+      const quantificationYears = quantifications.map(q => q.year).sort();
+      xValues = xValues.concat(quantificationYears);
+    }
+
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
@@ -228,8 +244,10 @@ export const getChartData = createSelector(
           calculationData,
           x
         );
-        const scaledYData = yData.value * DATA_SCALE;
-        yItems[yKey] = scaledYData / calculationRatio;
+        if (yData) {
+          const scaledYData = yData.value * DATA_SCALE;
+          yItems[yKey] = scaledYData / calculationRatio;
+        }
       });
       const item = {
         x,

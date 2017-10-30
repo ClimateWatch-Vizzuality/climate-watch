@@ -17,13 +17,14 @@ import {
   getCalculationSelected,
   getChartData,
   getChartConfig,
-  getSelectorDefaults
+  getSelectorDefaults,
+  getQuantificationsData
 } from './country-ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location, match }) => {
-  const { data } = state.countryGhgEmissions;
+  const { data, quantifications } = state.countryGhgEmissions;
   const calculationData = state.wbCountryData.data;
   const { meta } = state.ghgEmissionsMeta;
   const search = qs.parse(location.search);
@@ -33,12 +34,14 @@ const mapStateToProps = (state, { location, match }) => {
     meta,
     data,
     calculationData,
-    search
+    search,
+    quantifications
   };
   return {
     iso,
     loading: state.countryGhgEmissions.loading,
     data: getChartData(countryGhg),
+    quantifications: getQuantificationsData(countryGhg),
     calculations: getCalculationOptions(countryGhg),
     calculationSelected: getCalculationSelected(countryGhg),
     sources: getSourceOptions(countryGhg),
