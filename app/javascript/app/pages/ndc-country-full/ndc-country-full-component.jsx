@@ -85,7 +85,6 @@ class NDCCountryFull extends PureComponent {
               <NdcsAutocompleteSearch
                 className={styles.select}
                 fetchSearchResults={fetchCountryNDCFull}
-                global
                 dark
                 label
               />
