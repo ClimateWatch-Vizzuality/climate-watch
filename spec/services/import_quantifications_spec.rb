@@ -15,7 +15,7 @@ RSpec.describe ImportQuantifications do
   before :all do
     Aws.config[:s3] = {
       stub_responses: {
-        get_object: -> (context) do
+        get_object: lambda do |context|
           {body: object_contents[context.params[:key]]}
         end
       }
