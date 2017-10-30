@@ -17,6 +17,10 @@
         overflow: initial !important;
 
         .events {
+          .timeline-eventline {
+            background-color: $white !important;
+          }
+
           .timeline-eventline:nth-child(2) {
             background-color: transparent !important;
           }
