@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Intro from 'components/intro';
 import Section from 'components/section';
@@ -18,12 +19,18 @@ import countryScreenshot from 'assets/screenshots/country-screenshot';
 import ndcScreenshot from 'assets/screenshots/ndc-explore-screenshot';
 import ndcSdgScreenshot from 'assets/screenshots/ndc-sdg-screenshot';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
+import screenfull from 'screenfull';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';
 import layout from 'styles/layout.scss';
 import styles from './home-styles.scss';
 
 class Home extends PureComponent {
+  onClickFullscreen = () => {
+    const playerNode = ReactDOM.findDOMNode(this.player); // eslint-disable-line react/no-find-dom-node
+    screenfull.request(playerNode);
+  };
+
   render() {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
@@ -35,13 +42,23 @@ class Home extends PureComponent {
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
-            <Button color="yellow" className={styles.fullscreen} square>
+            <Button
+              color="yellow"
+              onClick={this.onClickFullscreen}
+              className={styles.fullscreen}
+              square
+            >
               <Icon icon={fullscreen} />
             </Button>
             <ReactPlayer
+              width="100%"
+              height="100%"
+              ref={player => {
+                this.player = player;
+              }}
               url="https://www.youtube.com/watch?v=lTG-0brb98I"
               youtubeConfig={{
-                playerVars: {},
+                playerVars: { playsinline: 0 },
                 preload: false
               }}
             />
