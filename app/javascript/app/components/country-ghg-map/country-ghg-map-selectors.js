@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import worldPaths from 'app/data/world-50m-paths';
 
@@ -12,6 +13,7 @@ const isLoading = state => state.loading;
 const getSources = state => state.meta.data_source || null;
 const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
+const getCalculationSelection = state => state.search.calculation || null;
 
 const EXCLUDED_INDICATORS = ['WORLD'];
 const buckets = [
@@ -146,10 +148,23 @@ export const getPathsWithStyles = createSelector([getDataParsed], data => {
   });
 });
 
-export const getLegendData = createSelector(getYearSelected, year => ({
-  title: `GHG Emissions per capita in ${year}`,
-  buckets
-}));
+export const getLegendData = createSelector(
+  [getCalculationSelection, getYearSelected],
+  (calculation, year) => {
+    let calculationText = '';
+    if (
+      calculation &&
+      calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+    ) {
+      calculationText = `${CALCULATION_OPTIONS[calculation].label} `;
+    }
+
+    return {
+      title: `GHG Emissions ${calculationText}in ${year}`,
+      buckets
+    };
+  }
+);
 
 export const getMapReady = createSelector(
   [isLoaded, isLoading],

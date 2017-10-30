@@ -33,13 +33,15 @@ class CountrySDGLinkages extends PureComponent {
   getTooltip() {
     const { sectors, tooltipData, targets } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
+    const hasTooltipData =
+      tooltipData.sectors && tooltipData.sectors.length > 0;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
-        {tooltipData.sectors && tooltipData.sectors.length > 0 && (
+        {hasTooltipData && (
           <p className={styles.sectors}>
             <b>Sectors: </b>
             {tooltipData.sectors.map((sector, index) => (
@@ -67,6 +69,7 @@ class CountrySDGLinkages extends PureComponent {
       toogleNDCsSDGsInfo,
       infoOpen
     } = this.props;
+    const hasGoals = goals && goals.length > 0;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -88,10 +91,13 @@ class CountrySDGLinkages extends PureComponent {
                     [styles.infoTextOpen]: infoOpen
                   })}
                 >
-                  Each box represents a Sustainable Development Goal (SDG) and
-                  each dot is a more specific target within that goal. Alignment
-                  with that country&apos;s NDC is represented by color added to
-                  the dot.
+                  The colored dots represent the SDG targets for which there is
+                  an aligned climate target, action, policy measure or need in
+                  the NDC. This alignment was identified based only on the
+                  information communicated in the NDC, not the domestic policy
+                  context. It is therefore only an entry point for considering
+                  the degree of potential alignment between the country’s
+                  climate and sustainable development objectives.
                 </p>
               </div>
             </div>
@@ -107,7 +113,7 @@ class CountrySDGLinkages extends PureComponent {
             </div>
           </div>
           <NdcsSdgsMetaProvider />
-          {goals && goals.length > 0 && (
+          {hasGoals && (
             <div>
               <div className={styles.sdgs}>
                 {goals.map(goal => (

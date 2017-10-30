@@ -15,7 +15,6 @@ export default {
     if (isEmpty(payload)) {
       return setLoaded(true, setLoading(false, state));
     }
-
     const newState = {
       ...state,
       selected: payload[0].id,

@@ -13,7 +13,6 @@ import styles from './ndc-country-accordion-styles.scss';
 class Accordion extends PureComponent {
   render() {
     const {
-      className,
       data,
       handleOnClick,
       activeSection,
@@ -23,136 +22,146 @@ class Accordion extends PureComponent {
     } = this.props;
     console.log(data);
     return (
-      <div className={className}>
+      <div className={styles.wrapper}>
         {loading && <Loading light className={styles.loader} />}
-        {!data.length && !loading && <NoContent message="No content for that category" icon />}
-        {data.map((section, index) => {
-          let isOpen = index === 0;
-          if (activeSection) {
-            if (activeSection !== 'none') {
-              const isActiveInResults = data.some(
-                d => d.slug === activeSection
-              );
-              isOpen =
-                activeSection === section.slug ||
-                (index === 0 && !isActiveInResults);
-            } else {
-              isOpen = false;
+        {!data.length &&
+        !loading && (
+        <NoContent
+              className={styles.noContent}
+              message="No content for that category"
+              icon
+            />
+          )}
+        {!loading &&
+          data &&
+          data.map((section, index) => {
+            let isOpen = index === 0;
+            if (activeSection) {
+              if (activeSection !== 'none') {
+                const isActiveInResults = data.some(
+                  d => d.slug === activeSection
+                );
+                isOpen =
+                  activeSection === section.slug ||
+                  (index === 0 && !isActiveInResults);
+              } else {
+                isOpen = false;
+              }
             }
-          }
-          return section.definitions.length ? (
-            <section key={section.slug} className={styles.accordion}>
-              <button
-                className={styles.header}
-                onClick={() => handleOnClick(section.slug)}
-              >
-                <div className={layout.content}>
-                  <div className={styles.title}>
-                    {section.title}
-                    <Icon
-                      icon={dropdownArrow}
-                      className={cx(styles.iconArrow, {
-                        [styles.isOpen]: isOpen
-                      })}
-                    />
+            return section.definitions.length ? (
+              <section key={section.slug} className={styles.accordion}>
+                <button
+                  className={styles.header}
+                  onClick={() => handleOnClick(section.slug)}
+                >
+                  <div className={layout.content}>
+                    <div className={styles.title}>
+                      {section.title}
+                      <Icon
+                        icon={dropdownArrow}
+                        className={cx(styles.iconArrow, {
+                          [styles.isOpen]: isOpen
+                        })}
+                      />
+                    </div>
                   </div>
-                </div>
-              </button>
-              <Collapse isOpened={isOpen}>
-                <div className={styles.accordionContent}>
-                  <div>
+                </button>
+                <Collapse isOpened={isOpen}>
+                  <div className={styles.accordionContent}>
                     <dl className={styles.definitionList}>
-                      {section.definitions.map(def => (
-                        !Array.isArray(def.descriptions) ?
-                          <section
-                            key={`${def.slug}-${section.slug}`}
-                          >
-                            <button
-                              className={cx(styles.header, styles.subHeader)}
-                              onClick={() => handleOnClick(section.slug)}
-                            >
-                              <div className={layout.content}>
-                                <div className={styles.title}>
-                                  {def.title}
-                                </div>
-                              </div>
-                            </button>
-                            <Collapse isOpened>
-                              {Object.keys(def.descriptions).map(sector => (
-                                <div
-                                  key={sector}
-                                  className={layout.content}
-                                >
-                                  <div
-                                    className={cx(
-                                      compare
-                                        ? styles.definitionCompare
-                                        : styles.definition,
-                                      styles.thirdLevel
-                                    )}
-                                  >
-                                    <dt className={styles.definitionTitle}>
-                                      {sectors && sectors[sector].name}
-                                    </dt>
-                                    {def.descriptions[sector].map(desc => (
-                                      <dd
-                                        key={`${desc.iso}-${desc.value}`}
-                                        className={styles.definitionDesc}
-                                      >
-                                        <div
-                                          dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
-                                        />
-                                      </dd>
-                                    ))}
+                      {section.definitions.map(
+                        def =>
+                          (!Array.isArray(def.descriptions) ? (
+                            <section key={`${def.slug}-${section.slug}`}>
+                              <button
+                                className={cx(styles.header, styles.subHeader)}
+                                onClick={() => handleOnClick(section.slug)}
+                              >
+                                <div className={layout.content}>
+                                  <div className={styles.title}>
+                                    {def.title}
                                   </div>
                                 </div>
-                              ))
-                              }
-                            </Collapse>
-                          </section>
-                          :
-                          <div
-                            key={`${def.slug}-${section.slug}`}
-                            className={layout.content}
-                          >
+                              </button>
+                              <Collapse isOpened>
+                                <div className={styles.definitions}>
+                                  {Object.keys(def.descriptions).map(sector => (
+                                    <div
+                                      key={sector}
+                                      className={layout.content}
+                                    >
+                                      <div
+                                        className={cx(
+                                          compare
+                                            ? styles.definitionCompare
+                                            : styles.definition,
+                                          styles.thirdLevel
+                                        )}
+                                      >
+                                        <dt className={styles.definitionTitle}>
+                                          {sectors && sectors[sector].name}
+                                        </dt>
+                                        {def.descriptions[sector].map(desc => (
+                                          <dd
+                                            key={`${desc.iso}-${desc.value}`}
+                                            className={styles.definitionDesc}
+                                          >
+                                            <div
+                                              dangerouslySetInnerHTML={{
+                                                __html: desc.value
+                                              }} // eslint-disable-line
+                                            />
+                                          </dd>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </Collapse>
+                            </section>
+                          ) : (
                             <div
-                              className={cx(
-                                compare
-                                  ? styles.definitionCompare
-                                  : styles.definition
-                              )}
+                              key={`${def.slug}-${section.slug}`}
+                              className={layout.content}
                             >
-                              <dt className={styles.definitionTitle}>
-                                {def.title}
-                              </dt>
-                              {def.descriptions.map(desc => (
-                                <dd
-                                  key={`${def.slug}-${desc.iso}`}
-                                  className={styles.definitionDesc}
-                                >
-                                  <div
-                                    dangerouslySetInnerHTML={{ __html: desc.values[0].value }} // eslint-disable-line
-                                  />
-                                </dd>
-                              ))}
+                              <div
+                                className={cx(
+                                  compare
+                                    ? styles.definitionCompare
+                                    : styles.definition
+                                )}
+                              >
+                                <dt className={styles.definitionTitle}>
+                                  {def.title}
+                                </dt>
+                                {def.descriptions.map(desc => (
+                                  <dd
+                                    key={`${def.slug}-${desc.iso}`}
+                                    className={styles.definitionDesc}
+                                  >
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html: desc.values[0].value
+                                      }} // eslint-disable-line
+                                    />
+                                  </dd>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                      )
+                          ))
                       )}
                     </dl>
                   </div>
-                </div>
-              </Collapse>
-            </section>
-          ) : null;
-        })}
+                </Collapse>
+              </section>
+            ) : null;
+          })}
       </div>
     );
   }
 }
 
 Accordion.propTypes = {
-  className: PropTypes.string,
   activeSection: PropTypes.string,
   handleOnClick: PropTypes.func,
   data: PropTypes.arrayOf(

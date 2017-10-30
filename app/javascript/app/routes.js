@@ -18,7 +18,12 @@ import Sectors from 'pages/sectors';
 import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
+import EmissionPathways from 'pages/emission-pathways';
 import About from 'pages/about';
+import AboutContact from 'components/about-contact';
+import AboutDescription from 'components/about-description';
+import AboutPartners from 'components/about-partners';
+import AboutPermissions from 'components/about-permissions';
 import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country-climate-vulnerability';
@@ -59,43 +64,11 @@ export default [
         path: '/ndcs/country/:iso/full',
         component: NDCCountryFull,
         exact: true,
-        nav: true,
-        headerImage: 'ndc',
-        routes: [
-          {
-            path: '/ndcs/country/:iso/full/mitigation',
-            component: () => createElement(NDCCountryAccordion, { category: 'migitation' }),
-            exact: true,
-            anchor: true,
-            label: 'Mitigation',
-            param: 'mitigation'
-          },
-          {
-            path: '/ndcs/country/:iso/full/adaptation',
-            component: () => createElement(NDCCountryAccordion, { category: 'adaptation' }),
-            exact: true,
-            anchor: true,
-            label: 'Adaptation',
-            param: 'adaptation'
-          },
-          {
-            path: '/ndcs/country/:iso/full/sectoral-information',
-            component: () => createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
-            exact: true,
-            anchor: true,
-            label: 'Sectoral Information',
-            param: 'sectoral-information'
-          },
-          {
-            path: '/ndcs/country/:iso/full',
-            component: () => createElement(Redirect, { to: '/ndcs' })
-          }
-        ]
+        headerImage: 'ndc'
       },
       {
         path: '/ndcs/country/:iso',
         component: NDCCountry,
-        nav: true,
         headerImage: 'ndc',
         routes: [
           {
@@ -107,7 +80,11 @@ export default [
           },
           {
             path: '/ndcs/country/:iso/mitigation',
-            component: () => createElement(NDCCountryAccordion, { category: 'migitation' }),
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'migitation',
+                type: 'overview'
+              }),
             exact: true,
             anchor: true,
             label: 'Mitigation',
@@ -115,7 +92,11 @@ export default [
           },
           {
             path: '/ndcs/country/:iso/adaptation',
-            component: () => createElement(NDCCountryAccordion, { category: 'adaptation' }),
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'adaptation',
+                type: 'overview'
+              }),
             exact: true,
             anchor: true,
             label: 'Adaptation',
@@ -123,7 +104,11 @@ export default [
           },
           {
             path: '/ndcs/country/:iso/sectoral-information',
-            component: () => createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'sectoral_information',
+                type: 'overview'
+              }),
             exact: true,
             anchor: true,
             label: 'Sectoral Information',
@@ -138,12 +123,12 @@ export default [
       {
         path: '/ndcs/compare',
         component: NDCCompare,
-        nav: true,
         headerImage: 'ndc',
         routes: [
           {
             path: '/ndcs/compare/mitigation',
-            component: () => createElement(NDCCountryAccordion, { category: 'migitation' }),
+            component: () =>
+              createElement(NDCCountryAccordion, { category: 'migitation' }),
             exact: true,
             anchor: true,
             label: 'Mitigation',
@@ -151,7 +136,8 @@ export default [
           },
           {
             path: '/ndcs/compare/adaptation',
-            component: () => createElement(NDCCountryAccordion, { category: 'adaptation' }),
+            component: () =>
+              createElement(NDCCountryAccordion, { category: 'adaptation' }),
             exact: true,
             anchor: true,
             label: 'Adaptation',
@@ -159,7 +145,10 @@ export default [
           },
           {
             path: '/ndcs/compare/sectoral-information',
-            component: () => createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'sectoral_information'
+              }),
             exact: true,
             anchor: true,
             label: 'Sectoral Information',
@@ -167,7 +156,8 @@ export default [
           },
           {
             path: '/ndcs/compare',
-            component: () => createElement(Redirect, { to: '/ndcs/compare/mitigation' })
+            component: () =>
+              createElement(Redirect, { to: '/ndcs/compare/mitigation' })
           }
         ]
       },
@@ -227,7 +217,8 @@ export default [
             hash: 'ndc-content-overview',
             label: 'NDC Content Overview',
             anchor: true,
-            component: () => createElement(CountryNdcOverview, { actions: true })
+            component: () =>
+              createElement(CountryNdcOverview, { actions: true })
           },
           {
             hash: 'ndc-sdg-linkages',
@@ -246,6 +237,14 @@ export default [
         headerImage: 'emissions'
       },
       {
+        path: '/emission-pathways',
+        component: EmissionPathways,
+        exact: true,
+        nav: true,
+        label: 'EMISSION PATHWAYS',
+        headerImage: 'emissions'
+      },
+      {
         path: '/ndc-search',
         exact: true,
         component: NDCSearch,
@@ -255,16 +254,45 @@ export default [
         path: '/stories',
         component: error,
         exact: true,
-        nav: true,
+        nav: false,
         label: 'STORIES'
       },
       {
         path: '/about',
         component: About,
-        exact: true,
         nav: true,
         label: 'ABOUT',
-        headerImage: 'about'
+        headerImage: 'about',
+        routes: [
+          {
+            path: '/about',
+            component: AboutDescription,
+            exact: true,
+            anchor: true,
+            label: 'About Climate Watch'
+          },
+          {
+            path: '/about/partners',
+            component: AboutPartners,
+            exact: true,
+            anchor: true,
+            label: 'Climate Watch Partners'
+          },
+          {
+            path: '/about/contact',
+            component: AboutContact,
+            exact: true,
+            anchor: true,
+            label: 'Contact us & Feedback'
+          },
+          {
+            path: '/about/permissions',
+            component: AboutPermissions,
+            exact: true,
+            anchor: true,
+            label: 'Permissions & Licensing'
+          }
+        ]
       },
       {
         path: '/error-page',

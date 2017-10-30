@@ -2,6 +2,7 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
+import qs from 'query-string';
 
 import Component from './ndcs-search-map-component';
 import {
@@ -9,12 +10,16 @@ import {
   getCountriesIncluded
 } from './ndcs-search-map-selectors';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, { location }) => {
   const { ndcSearch } = state;
-
+  const search = qs.parse(location.search);
+  const ndcsSearchData = {
+    data: ndcSearch,
+    search
+  };
   return {
-    paths: getPathsWithStyles(ndcSearch),
-    countriesIncluded: getCountriesIncluded(ndcSearch)
+    paths: getPathsWithStyles(ndcsSearchData),
+    countriesIncluded: getCountriesIncluded(ndcsSearchData)
   };
 };
 

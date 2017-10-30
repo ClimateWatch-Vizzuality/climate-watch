@@ -1,15 +1,23 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
-const fetchNDCCountryAccordionInit = createAction('fetchNDCCountryAccordionInit');
-const fetchNDCCountryAccordionReady = createAction('fetchNDCCountryAccordionReady');
-const fetchNDCCountryAccordionFailed = createAction('fetchNDCCountryAccordionFailed');
+const fetchNDCCountryAccordionInit = createAction(
+  'fetchNDCCountryAccordionInit'
+);
+const fetchNDCCountryAccordionReady = createAction(
+  'fetchNDCCountryAccordionReady'
+);
+const fetchNDCCountryAccordionFailed = createAction(
+  'fetchNDCCountryAccordionFailed'
+);
 
 const fetchNDCCountryAccordion = createThunkAction(
   'fetchNDCCountryAccordion',
-  (locations, category) => dispatch => {
+  (locations, category, type) => dispatch => {
     dispatch(fetchNDCCountryAccordionInit());
-    fetch(`/api/v1/ndcs?location=${locations}&category=${category}&filter=overview`)
+    fetch(
+      `/api/v1/ndcs?location=${locations}&category=${category}&filter=${type}`
+    )
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);

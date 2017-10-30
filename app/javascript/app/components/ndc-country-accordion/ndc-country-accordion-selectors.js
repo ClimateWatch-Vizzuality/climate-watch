@@ -20,12 +20,16 @@ export const parseIndicatorsDefs = createSelector(
         const sectorIds = [];
         let descriptions = {};
         Object.keys(indicator.locations).forEach(location => {
-          indicator.locations[location].forEach(def => sectorIds.push(def.sector_id));
+          indicator.locations[location].forEach(def =>
+            sectorIds.push(def.sector_id)
+          );
         });
         if (sectorIds && sectorIds.length && sectorIds[0]) {
           sectorIds.forEach(sector => {
             descriptions[sector] = countries.map(country => {
-              const value = indicator.locations[country].find(indicValue => indicValue.sector_id === sector);
+              const value = indicator.locations[country].find(
+                indicValue => indicValue.sector_id === sector
+              );
               return {
                 iso: country,
                 value: value ? value.value : null
@@ -36,7 +40,9 @@ export const parseIndicatorsDefs = createSelector(
           console.log(countries);
           descriptions = countries.map(country => ({
             iso: country,
-            values: indicator.locations[country] ? indicator.locations[country] : null
+            values: indicator.locations[country]
+              ? indicator.locations[country]
+              : null
           }));
         }
         return {
@@ -70,9 +76,7 @@ export const filterNDCs = createSelector(
     if (!ndcs) return [];
     const filteredNDCs = ndcs.map(ndc => {
       const defs = ndc.definitions.filter(
-        def =>
-          deburrUpper(def.title).indexOf(search) > -1 ||
-          deburrUpper(def.descriptions[0].value).indexOf(search) > -1
+        def => deburrUpper(def.title).indexOf(search) > -1
       );
 
       return {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
-import { isCountryDisabled } from 'app/utils';
+import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
@@ -13,14 +13,17 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getSelectedIndicator,
-  getPathsWithStyles
+  getPathsWithStyles,
+  getISOCountries
 } from './ndcs-map-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcs;
+  const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsWithSelection = {
     ...data,
+    countries: countries.data,
     categorySelected: search.category,
     indicatorSelected: search.indicator
   };
@@ -28,6 +31,7 @@ const mapStateToProps = (state, { location }) => {
     loading,
     paths: getPathsWithStyles(ndcsWithSelection),
     categories: getCategories(ndcsWithSelection),
+    isoCountries: getISOCountries(ndcsWithSelection),
     indicators: getCategoryIndicators(ndcsWithSelection),
     selectedCategory: getSelectedCategory(ndcsWithSelection),
     selectedIndicator: getSelectedIndicator(ndcsWithSelection)
@@ -55,15 +59,17 @@ class NDCMapContainer extends PureComponent {
   }
 
   handleCountryClick = geography => {
+    const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
-    if (iso && !isCountryDisabled(iso)) {
+    if (iso && isCountryIncluded(isoCountries, iso)) {
       this.props.history.push(`/ndcs/country/${iso}`);
     }
   };
 
   handleCountryEnter = geography => {
+    const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
-    if (iso && !isCountryDisabled(iso)) {
+    if (iso && isCountryIncluded(isoCountries, iso)) {
       this.setState({ geometryIdHover: iso });
     }
   };
@@ -107,6 +113,7 @@ class NDCMapContainer extends PureComponent {
 NDCMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  isoCountries: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object.isRequired
 };
 

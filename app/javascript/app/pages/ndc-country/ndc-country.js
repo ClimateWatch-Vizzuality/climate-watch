@@ -21,12 +21,17 @@ const mapStateToProps = (state, { match, location, route }) => {
   return {
     country: getCountry(countryData),
     search: search.search,
-    anchorLinks: getAnchorLinks(routeData)
+    anchorLinks: getAnchorLinks(routeData),
+    documentsOptions: null
   };
 };
 
 const NDCCountryContainer = props => {
   const { location, history } = props;
+
+  const handleDropDownChange = option => {
+    this.props.history.push(option.path);
+  };
 
   const onSearchChange = query => {
     const search = qs.parse(location.search);
@@ -40,10 +45,9 @@ const NDCCountryContainer = props => {
 
   return createElement(NDCCountryComponent, {
     ...props,
-    onSearchChange
+    onSearchChange,
+    handleDropDownChange
   });
 };
 
-export default withRouter(
-  connect(mapStateToProps, null)(NDCCountryContainer)
-);
+export default withRouter(connect(mapStateToProps, null)(NDCCountryContainer));

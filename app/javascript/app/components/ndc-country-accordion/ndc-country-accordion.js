@@ -3,7 +3,6 @@ import { withRouter } from 'react-router';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import qs from 'query-string';
-import isEmpty from 'lodash/isEmpty';
 
 import actions from './ndc-country-accordion-actions';
 import reducers, { initialState } from './ndc-country-accordion-reducers';
@@ -18,21 +17,30 @@ const mapStateToProps = (state, { location, match }) => {
   const ndcsData = {
     data,
     search: search.search,
-    countries: match.params.iso ? [match.params.iso] : search.locations.split(',')
+    countries: match.params.iso
+      ? [match.params.iso]
+      : search.locations.split(',')
   };
   return {
     activeSection,
     data: filterNDCs(ndcsData),
-    sectors: data ? data.sectors : null
+    sectors: data ? data.sectors : null,
+    loading: state.NDCCountryAccordion.loading
   };
 };
 
 class NDCCountryAccordionContainer extends PureComponent {
   componentWillMount() {
-    const { location, match, fetchNDCCountryAccordion, category } = this.props;
+    const {
+      location,
+      match,
+      fetchNDCCountryAccordion,
+      category,
+      type
+    } = this.props;
     const { iso } = match.params;
     const locations = iso || qs.parse(location.search).locations;
-    fetchNDCCountryAccordion(locations, category);
+    fetchNDCCountryAccordion(locations, category, type);
   }
 
   handleOnClick = slug => {
@@ -60,12 +68,13 @@ NDCCountryAccordionContainer.propTypes = {
   location: Proptypes.object,
   history: Proptypes.object,
   match: Proptypes.object,
-  loading: Proptypes.bool,
-  fetched: Proptypes.bool,
   category: Proptypes.string,
-  fetchNDCCountryAccordion: Proptypes.func
+  fetchNDCCountryAccordion: Proptypes.func,
+  type: Proptypes.string
 };
 
 export { actions, reducers, initialState };
 
-export default withRouter(connect(mapStateToProps, actions)(NDCCountryAccordionContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(NDCCountryAccordionContainer)
+);

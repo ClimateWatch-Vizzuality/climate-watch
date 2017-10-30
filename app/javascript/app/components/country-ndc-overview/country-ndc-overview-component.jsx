@@ -14,19 +14,26 @@ class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
     const { iso, sectors, values, loading, actions } = this.props;
+    const hasSectors = values && sectors;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           {loading && <Loading light className={styles.loader} />}
-          {values && sectors && (
+          {hasSectors && (
             <div>
               <div className={cx(styles.header, actions ? styles.col2 : '')}>
                 <Intro
                   theme={introTheme}
-                  title={actions ? 'Nationally Determined Contribution (NDC) Overview' : 'Overview'}
+                  title={
+                    actions ? (
+                      'Nationally Determined Contribution (NDC) Overview'
+                    ) : (
+                      'Overview'
+                    )
+                  }
                   description={values.indc_summary[0].value}
                 />
-                {actions &&
+                {actions && (
                   <div className={styles.actions}>
                     <div className={styles.printButton} />
                     <Button
@@ -44,7 +51,7 @@ class CountryNdcOverview extends PureComponent {
                       Explore NDC content
                     </Button>
                   </div>
-                }
+                )}
               </div>
               <h4 className={styles.subTitle}>Mitigation contribution</h4>
               <div className={styles.cards}>
@@ -55,14 +62,16 @@ class CountryNdcOverview extends PureComponent {
                         <span className={styles.metaTitle}>Target type</span>
                         <p
                           className={styles.targetText}
-                          dangerouslySetInnerHTML={{ // eslint-disable-line
+                          dangerouslySetInnerHTML={{
+                            // eslint-disable-line
                             __html: values.ghg_target_type[0].value
                           }}
                         />
                         <span className={styles.metaTitle}>Target year</span>
                         <p
                           className={styles.targetText}
-                          dangerouslySetInnerHTML={{ // eslint-disable-line
+                          dangerouslySetInnerHTML={{
+                            // eslint-disable-line
                             __html: values.time_target_year[0].value
                           }}
                         />
@@ -77,7 +86,8 @@ class CountryNdcOverview extends PureComponent {
                     {values.non_ghg_target.length ? (
                       <p
                         className={styles.targetText}
-                        dangerouslySetInnerHTML={{ // eslint-disable-line
+                        dangerouslySetInnerHTML={{
+                          // eslint-disable-line
                           __html: values.non_ghg_target[0].value
                         }}
                       />
@@ -91,7 +101,8 @@ class CountryNdcOverview extends PureComponent {
                     {values.coverage_sectors_short.length ? (
                       <p
                         className={styles.targetText}
-                        dangerouslySetInnerHTML={{ // eslint-disable-line
+                        dangerouslySetInnerHTML={{
+                          // eslint-disable-line
                           __html: values.coverage_sectors_short[0].value
                         }}
                       /> // eslint-disable-line

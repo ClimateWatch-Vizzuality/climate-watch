@@ -1,12 +1,20 @@
 import { createSelector } from 'reselect';
 import worldPaths from 'app/data/world-50m-paths';
 
-const getResultsData = state => state.data || [];
+const getResultsData = state => state.data.data || [];
+const getLoading = state => state.data.loading || null;
+const getDocument = state => state.search.document || null;
 
-export const getCountriesIncluded = createSelector(getResultsData, results => {
-  if (!results || !results.length) return [];
-  return results.map(result => result.location.iso_code3);
-});
+export const getCountriesIncluded = createSelector(
+  [getResultsData, getDocument],
+  (results, document) => {
+    if (!results || !results.length) return [];
+    const resultsFiltered = results.filter(
+      result => result.document_type === document
+    );
+    return resultsFiltered.map(result => result.location.iso_code3);
+  }
+);
 
 const countryStyle = {
   default: {
@@ -45,14 +53,14 @@ const activeCountryStyle = {
 };
 
 export const getPathsWithStyles = createSelector(
-  [getCountriesIncluded],
-  countriesIncluded =>
+  [getCountriesIncluded, getLoading],
+  (countriesIncluded, loading) =>
     worldPaths.map(path => {
       const iso = path.properties && path.properties.id;
       const isCountryIncluded = countriesIncluded.includes(iso);
       return {
         ...path,
-        style: isCountryIncluded ? activeCountryStyle : countryStyle
+        style: isCountryIncluded && !loading ? activeCountryStyle : countryStyle
       };
     })
 );

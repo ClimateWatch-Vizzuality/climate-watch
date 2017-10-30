@@ -4,13 +4,13 @@ import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Button from 'components/button';
-import Icon from 'components/icon';
 import Search from 'components/search';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
+import Dropdown from 'components/dropdown';
 
-import backIcon from 'assets/icons/back.svg';
+import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import layout from 'styles/layout.scss';
 import styles from './ndc-country-styles.scss';
@@ -21,6 +21,8 @@ class NDCCountry extends PureComponent {
       country,
       match,
       onSearchChange,
+      handleDropDownChange,
+      documentsOptions,
       search,
       route,
       anchorLinks
@@ -36,13 +38,14 @@ class NDCCountry extends PureComponent {
                 <Intro title={country.wri_standard_name} />
               </div>
               <div className={styles.threeFold}>
-                
-                <Button
-                  color="yellow"
-                  link={`/ndcs/country/${match.params.iso}/full`}
-                >
-                  View full NDC
-                </Button>
+                <Dropdown
+                  className={theme.dropdownOptionWithArrow}
+                  placeholder="Select a document"
+                  options={documentsOptions}
+                  onValueChange={handleDropDownChange}
+                  hideResetButton
+                  white
+                />
                 <Search
                   theme={lightSearch}
                   placeholder="Search"
@@ -58,13 +61,15 @@ class NDCCountry extends PureComponent {
               </div>
             </div>
             <Sticky activeClass="sticky">
-              <AnchorNav links={anchorLinks} className={layout.content} />
+              <AnchorNav
+                useRoutes
+                links={anchorLinks}
+                className={layout.content}
+              />
             </Sticky>
           </Header>
         )}
-        <div className={styles.wrapper}>
-          <div>{renderRoutes(route.routes)}</div>
-        </div>
+        <div className={styles.wrapper}>{renderRoutes(route.routes)}</div>
       </div>
     );
   }
@@ -76,7 +81,8 @@ NDCCountry.propTypes = {
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
   search: PropTypes.string,
-  anchorLinks: PropTypes.array
+  anchorLinks: PropTypes.array,
+  handleDropDownChange: PropTypes.func
 };
 
 export default NDCCountry;
