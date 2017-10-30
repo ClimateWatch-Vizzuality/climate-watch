@@ -53,17 +53,8 @@
 }
 
 .bodyContent {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(6, 1fr);
   padding-top: 80px;
   padding-bottom: 80px;
-}
-
-.innerContent {
-  grid-column: 2 / 6;
 }
 
 .loader {
