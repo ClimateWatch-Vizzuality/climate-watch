@@ -26,10 +26,7 @@ class Footer extends PureComponent {
         <div className={cx(layout.content, styles.nav)}>
           <Nav routes={routes} hideLogo hideActive />
           <div className={styles.contactContainer}>
-            <a
-              className={styles.contact}
-              href="mailto:climatewatch@ndcpartnership.org"
-            >
+            <a className={styles.contact} href="mailto:climatewatch@wri.org">
               CONTACT US
             </a>
             <Icon icon={contactIcon} />
