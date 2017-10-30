@@ -32,10 +32,14 @@
     .link {
       display: flex;
       align-items: center;
+      height: 80px;
 
       .linkLabel {
         color: $theme-color;
-        border-bottom: solid 1px $theme-secondary;
+        background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
+        background-position: 0 17px;
+        background-repeat: repeat-x;
+        background-size: 10px 2px;
       }
     }
 
@@ -46,9 +50,19 @@
     }
   }
 
-  &.additionalData {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
+  &.col4 {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
 
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &.additionalData {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+    .link {
+      display: inline-block;
+    }
+
+    grid-template-columns: repeat(4, 1fr);
   }
 }

@@ -3,36 +3,36 @@ import styles from './about-description-styles.scss';
 
 const About = () => (
   <div className={styles.aboutDescription}>
-    <div>
+    <p>
       Climate Watch is an online platform designed to empower policymakers,
       researchers, media and other stakeholders with the open climate data,
       visualizations and resources they need to gather insights on national and
       global progress on climate change.
-    </div>
-    <div>
+    </p>
+    <p>
       Climate Watch brings together dozens of datasets for the first time to let
       users analyze and compare the Nationally Determined Contributions (NDCs)
       under the Paris Agreement, access historical emissions data, discover how
       countries can leverage their climate goals to achieve their sustainable
       development objectives, and use models to map new pathways to a lower
       carbon, prosperous future.
-    </div>
-    <div>
+    </p>
+    <p>
       This free platform enables users to create and share custom data
       visualizations and comparisons of national climate commitments. It
       contributes to the goals of the Paris Agreement by using open data to
       increase transparency and accountability, and provide actionable analysis
       on how countries can enhance their efforts to combat climate change.
-    </div>
+    </p>
     Climate Watch is an online platform designed to empower policymakers,
-    <div>
+    <p>
       This free platform enables users to create and share custom data
       visualizations and comparisons of national climate commitments. It
       contributes to the goals of the Paris Agreement by using open data to
       increase transparency and accountability, and provide actionable analysis
       on how countries can enhance their efforts to combat climate change.
-    </div>
-    <div>Climate Watch includes:</div>
+    </p>
+    <h3>Climate Watch includes:</h3>
     <ul>
       <li>
         Data and visualizations on all countries’ greenhouse gas emissions;
@@ -59,13 +59,13 @@ const About = () => (
         visualizations through My Climate Watch.
       </li>
     </ul>
-    <div>
+    <p>
       Climate Watch is implemented by{' '}
-      <a href="www.wri.org" target="_blank">
+      <a href="www.wri.org" target="_blank" className={styles.link}>
         World Resources Institute
       </a>{' '}
       in collaboration with partners.
-    </div>
+    </p>
   </div>
 );
 

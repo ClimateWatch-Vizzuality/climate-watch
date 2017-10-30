@@ -18,8 +18,10 @@ import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import About from 'pages/about';
+import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
 import AboutPartners from 'components/about-partners';
+import AboutPermissions from 'components/about-permissions';
 import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country-climate-vulnerability';
@@ -184,28 +186,14 @@ export default [
           },
           {
             path: '/about/contact',
-            component: error,
+            component: AboutContact,
             exact: true,
             anchor: true,
             label: 'Contact us & Feedback'
           },
           {
-            path: '/about/join',
-            component: error,
-            exact: true,
-            anchor: true,
-            label: 'Join Climate Watch'
-          },
-          {
-            path: '/about/webinars',
-            component: error,
-            exact: true,
-            anchor: true,
-            label: 'Webinars'
-          },
-          {
             path: '/about/permissions',
-            component: error,
+            component: AboutPermissions,
             exact: true,
             anchor: true,
             label: 'Permissions & Licensing'

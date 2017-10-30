@@ -143,6 +143,7 @@ const additionalData = {
 const foundingBy = {
   id: 'founding-by',
   title: 'Generous funding for this initiative is provided by',
+  type: 'col4',
   partners: [
     {
       link: 'http://www.bmub.bund.de/en/',

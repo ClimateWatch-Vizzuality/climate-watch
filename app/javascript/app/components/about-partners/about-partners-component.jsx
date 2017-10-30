@@ -11,7 +11,8 @@ const AboutPartners = ({ sections }) => (
         <h2 className={styles.title}>{section.title}</h2>
         <div
           className={cx(styles.partners, {
-            [styles.additionalData]: section.type === 'onlyLinks'
+            [styles.additionalData]: section.type === 'onlyLinks',
+            [styles.col4]: section.type === 'col4'
           })}
         >
           {section.partners &&
@@ -34,9 +35,9 @@ const AboutPartners = ({ sections }) => (
                     />
                   )}
                   {partner.alt && (
-                    <div className={styles.linkLabel} key={partner.id}>
+                    <span className={styles.linkLabel} key={partner.id}>
                       {partner.alt}
-                    </div>
+                    </span>
                   )}
                 </a>
                 {partner.description && (
