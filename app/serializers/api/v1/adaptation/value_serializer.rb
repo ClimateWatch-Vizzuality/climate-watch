@@ -13,9 +13,7 @@ module Api
         def rank
           {
             absolute: object.absolute_rank,
-            relative: object.relative_rank,
-            maximum: ::Adaptation::Value.where(variable_id: object.variable_id).
-              maximum(:absolute_rank)
+            relative: object.relative_rank
           }
         end
       end
