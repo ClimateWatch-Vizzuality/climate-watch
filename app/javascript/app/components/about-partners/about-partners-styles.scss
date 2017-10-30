@@ -34,6 +34,10 @@
       align-items: center;
       height: 80px;
 
+      img {
+        max-width: 180px;
+      }
+
       .linkLabel {
         color: $theme-color;
         background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
