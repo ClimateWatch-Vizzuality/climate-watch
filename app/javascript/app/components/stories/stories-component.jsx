@@ -17,6 +17,8 @@ class Stories extends PureComponent {
               className={styles.story}
               style={{ backgroundImage: `url(${story.image})` }}
               href={story.link}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {story.title}
             </a>
