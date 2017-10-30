@@ -56,12 +56,13 @@
 
 .tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin-top: 10px;
-  margin-bottom: 25px;
+  height: 45px;
+  padding-bottom: 20px;
+  overflow-x: scroll;
 }
 
 .tag {
   margin-right: 10px;
-  margin-bottom: 10px;
 }
