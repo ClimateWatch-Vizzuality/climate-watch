@@ -19,12 +19,13 @@ class Accordion extends PureComponent {
       activeSection,
       compare,
       loading,
-      category
+      sectors
     } = this.props;
+    console.log(data);
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!data.length && !loading && <NoContent message="Nothing here" />}
+        {!data.length && !loading && <NoContent message="No content for that category" icon />}
         {data.map((section, index) => {
           let isOpen = index === 0;
           if (activeSection) {
@@ -59,32 +60,85 @@ class Accordion extends PureComponent {
               </button>
               <Collapse isOpened={isOpen}>
                 <div className={styles.accordionContent}>
-                  <div className={layout.content}>
+                  <div>
                     <dl className={styles.definitionList}>
                       {section.definitions.map(def => (
-                        <div
-                          key={`${def.slug}-${section.slug}`}
-                          className={cx(
-                            compare
-                              ? styles.definitionCompare
-                              : styles.definition
-                          )}
-                        >
-                          <dt className={styles.definitionTitle}>
-                            {def.title}
-                          </dt>
-                          {def.descriptions.map(desc => (
-                            <dd
-                              key={`${def.slug}-${desc.iso}`}
-                              className={styles.definitionDesc}
+                        !Array.isArray(def.descriptions) ?
+                          <section
+                            key={`${def.slug}-${section.slug}`}
+                          >
+                            <button
+                              className={cx(styles.header, styles.subHeader)}
+                              onClick={() => handleOnClick(section.slug)}
                             >
-                              <div
-                                dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
-                              />
-                            </dd>
-                          ))}
-                        </div>
-                      ))}
+                              <div className={layout.content}>
+                                <div className={styles.title}>
+                                  {def.title}
+                                </div>
+                              </div>
+                            </button>
+                            <Collapse isOpened>
+                              {Object.keys(def.descriptions).map(sector => (
+                                <div
+                                  key={sector}
+                                  className={layout.content}
+                                >
+                                  <div
+                                    className={cx(
+                                      compare
+                                        ? styles.definitionCompare
+                                        : styles.definition,
+                                      styles.thirdLevel
+                                    )}
+                                  >
+                                    <dt className={styles.definitionTitle}>
+                                      {sectors && sectors[sector].name}
+                                    </dt>
+                                    {def.descriptions[sector].map(desc => (
+                                      <dd
+                                        key={`${desc.iso}-${desc.value}`}
+                                        className={styles.definitionDesc}
+                                      >
+                                        <div
+                                          dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
+                                        />
+                                      </dd>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))
+                              }
+                            </Collapse>
+                          </section>
+                          :
+                          <div
+                            key={`${def.slug}-${section.slug}`}
+                            className={layout.content}
+                          >
+                            <div
+                              className={cx(
+                                compare
+                                  ? styles.definitionCompare
+                                  : styles.definition
+                              )}
+                            >
+                              <dt className={styles.definitionTitle}>
+                                {def.title}
+                              </dt>
+                              {def.descriptions.map(desc => (
+                                <dd
+                                  key={`${def.slug}-${desc.iso}`}
+                                  className={styles.definitionDesc}
+                                >
+                                  <div
+                                    dangerouslySetInnerHTML={{ __html: desc.values[0].value }} // eslint-disable-line
+                                  />
+                                </dd>
+                              ))}
+                            </div>
+                          </div>
+                      )
+                      )}
                     </dl>
                   </div>
                 </div>
@@ -110,7 +164,7 @@ Accordion.propTypes = {
   ),
   compare: PropTypes.bool,
   loading: PropTypes.bool,
-  category: PropTypes.string
+  sectors: PropTypes.object
 };
 
 Accordion.defaultProps = {

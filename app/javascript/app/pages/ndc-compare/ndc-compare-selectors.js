@@ -13,15 +13,15 @@ const getCountryByIso = (countries, iso) =>
 export const getActiveCountries = createSelector(
   [getCountries, getLocations],
   (countries, locations) => {
-    if (!countries && !countries.length) return null;
+    if (!countries && !countries.length && !locations) return null;
     const activeCountries = locations.map(location => {
       if (parseInt(location, 10)) return null;
       const countryDetail = countries.find(
         country => country.iso_code3 === location
       );
       return {
-        label: countryDetail.wri_standard_name,
-        value: countryDetail.iso_code3
+        label: countryDetail ? countryDetail.wri_standard_name : '',
+        value: countryDetail ? countryDetail.iso_code3 : ''
       };
     });
     return activeCountries;
@@ -91,10 +91,24 @@ export const getCountry = createSelector(
   getCountryByIso
 );
 
+export const getAnchorLinks = createSelector(
+  [
+    state => state.route.routes || [],
+    state => state.location.search
+  ],
+  (routes, search) =>
+    routes.filter(route => route.anchor).map(route => ({
+      label: route.label,
+      path: `/ndcs/compare/${route.param ? route.param : ''}`,
+      search
+    }))
+);
+
 export default {
   getCountry,
   getCountriesOptions,
   getCountriesOptionsFiltered,
   getActiveCountries,
-  getNDCs
+  getNDCs,
+  getAnchorLinks
 };

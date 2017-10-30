@@ -1,32 +1,22 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
-/* @tmpfix: remove usage of indcTransform */
-import indcTransform from 'utils/indctransform';
-
 const fetchNDCCountryAccordionInit = createAction('fetchNDCCountryAccordionInit');
 const fetchNDCCountryAccordionReady = createAction('fetchNDCCountryAccordionReady');
 const fetchNDCCountryAccordionFailed = createAction('fetchNDCCountryAccordionFailed');
 
 const fetchNDCCountryAccordion = createThunkAction(
   'fetchNDCCountryAccordion',
-  iso => dispatch => {
+  (locations, category) => dispatch => {
     dispatch(fetchNDCCountryAccordionInit());
-    fetch(`/api/v1/ndcs?location=${iso}&filter=overview`)
+    fetch(`/api/v1/ndcs?location=${locations}&category=${category}&filter=overview`)
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);
       })
-      .then(data => indcTransform(data))
-      .then(data => {
-        const dataWithIso = {
-          iso,
-          data
-        };
-        dispatch(fetchNDCCountryAccordionReady(dataWithIso));
-      })
+      .then(data => dispatch(fetchNDCCountryAccordionReady(data)))
       .catch(error => {
-        dispatch(fetchNDCCountryAccordionFailed(iso));
+        dispatch(fetchNDCCountryAccordionFailed());
         console.info(error);
       });
   }

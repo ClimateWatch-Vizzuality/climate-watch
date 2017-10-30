@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-// import Accordion from 'components/accordion';
+import { renderRoutes } from 'react-router-config';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import sortBy from 'lodash/sortBy';
+import AnchorNav from 'components/anchor-nav';
+import Sticky from 'react-stickynode';
 
 import backIcon from 'assets/icons/back.svg';
 
@@ -18,11 +20,10 @@ class NDCCountry extends PureComponent {
   render() {
     const {
       route,
-      ndcsData,
       countriesOptions,
       activeCountriesOptions,
       handleDropDownChange,
-      loading
+      anchorLinks
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -40,6 +41,9 @@ class NDCCountry extends PureComponent {
               <Intro title="NDC Comparison" />
             </div>
           </div>
+          <Sticky activeClass="sticky">
+            <AnchorNav links={anchorLinks} className={layout.content} />
+          </Sticky>
         </Header>
         <div className={styles.countrySelector}>
           <div className={cx(layout.content, styles.fourFold)}>
@@ -74,6 +78,9 @@ class NDCCountry extends PureComponent {
             </div>
           </div>
         </div>
+        <div className={styles.wrapper}>
+          <div>{renderRoutes(route.routes)}</div>
+        </div>
       </div>
     );
   }
@@ -81,11 +88,9 @@ class NDCCountry extends PureComponent {
 
 NDCCountry.propTypes = {
   route: PropTypes.object.isRequired,
-  ndcsData: PropTypes.array,
   countriesOptions: PropTypes.array,
   activeCountriesOptions: PropTypes.array,
-  handleDropDownChange: PropTypes.func,
-  loading: PropTypes.bool
+  handleDropDownChange: PropTypes.func
 };
 
 export default NDCCountry;

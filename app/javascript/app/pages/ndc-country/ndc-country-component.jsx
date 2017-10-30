@@ -33,28 +33,15 @@ class NDCCountry extends PureComponent {
               className={cx(layout.content, styles.doubleFold, styles.header)}
             >
               <div className={styles.title}>
-                <Button
-                  className={styles.backButton}
-                  color="transparent"
-                  link="/ndcs"
-                  square
-                >
-                  <Icon className={styles.backIcon} icon={backIcon} />
-                </Button>
                 <Intro title={country.wri_standard_name} />
               </div>
               <div className={styles.threeFold}>
+                
                 <Button
                   color="yellow"
                   link={`/ndcs/country/${match.params.iso}/full`}
                 >
                   View full NDC
-                </Button>
-                <Button
-                  color="yellow"
-                  link={`/ndcs/compare?locations=${match.params.iso}`}
-                >
-                  Compare
                 </Button>
                 <Search
                   theme={lightSearch}
@@ -62,15 +49,21 @@ class NDCCountry extends PureComponent {
                   input={search}
                   onChange={onSearchChange}
                 />
+                <Button
+                  color="yellow"
+                  link={`/ndcs/compare?locations=${match.params.iso}`}
+                >
+                  Compare
+                </Button>
               </div>
-              <Sticky activeClass="sticky">
-                <AnchorNav links={anchorLinks} className={layout.content} />
-              </Sticky>
             </div>
+            <Sticky activeClass="sticky">
+              <AnchorNav links={anchorLinks} className={layout.content} />
+            </Sticky>
           </Header>
         )}
         <div className={styles.wrapper}>
-          <div className={layout.content}>{renderRoutes(route.routes)}</div>
+          <div>{renderRoutes(route.routes)}</div>
         </div>
       </div>
     );

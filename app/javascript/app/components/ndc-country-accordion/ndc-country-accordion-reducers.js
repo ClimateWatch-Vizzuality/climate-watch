@@ -10,25 +10,8 @@ const setLoaded = (loaded, state) => ({ ...state, loaded });
 export default {
   fetchNDCCountryAccordionInit: state => setLoading(true, state),
   fetchNDCCountryAccordionReady: (state, { payload }) => {
-    const newState = {
-      ...state,
-      data: {
-        ...state.data,
-        [payload.iso]: payload.data
-      }
-    };
-
-    return setLoaded(true, setLoading(false, newState));
+    const data = { ...state, data: payload };
+    return setLoaded(true, setLoading(false, data));
   },
-  fetchNDCCountryAccordionFailed: (state, { payload }) => {
-    const newState = {
-      ...state,
-      data: {
-        ...state.data,
-        [payload]: []
-      }
-    };
-
-    return setLoaded(true, setLoading(false, newState));
-  }
+  fetchNDCCountryAccordionFailed: () => setLoaded(true, setLoading(false, {}))
 };

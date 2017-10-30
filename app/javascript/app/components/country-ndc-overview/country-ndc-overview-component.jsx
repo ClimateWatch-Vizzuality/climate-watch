@@ -20,10 +20,10 @@ class CountryNdcOverview extends PureComponent {
           {loading && <Loading light className={styles.loader} />}
           {values && sectors && (
             <div>
-              <div className={cx(styles.header, styles.col2)}>
+              <div className={cx(styles.header, actions ? styles.col2 : '')}>
                 <Intro
                   theme={introTheme}
-                  title="Nationally Determined Contribution (NDC) Overview"
+                  title={actions ? 'Nationally Determined Contribution (NDC) Overview' : 'Overview'}
                   description={values.indc_summary[0].value}
                 />
                 {actions &&

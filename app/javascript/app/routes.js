@@ -56,6 +56,43 @@ export default [
         label: 'SECTORS'
       },
       {
+        path: '/ndcs/country/:iso/full',
+        component: NDCCountryFull,
+        exact: true,
+        nav: true,
+        headerImage: 'ndc',
+        routes: [
+          {
+            path: '/ndcs/country/:iso/full/mitigation',
+            component: () => createElement(NDCCountryAccordion, { category: 'migitation' }),
+            exact: true,
+            anchor: true,
+            label: 'Mitigation',
+            param: 'mitigation'
+          },
+          {
+            path: '/ndcs/country/:iso/full/adaptation',
+            component: () => createElement(NDCCountryAccordion, { category: 'adaptation' }),
+            exact: true,
+            anchor: true,
+            label: 'Adaptation',
+            param: 'adaptation'
+          },
+          {
+            path: '/ndcs/country/:iso/full/sectoral-information',
+            component: () => createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
+            exact: true,
+            anchor: true,
+            label: 'Sectoral Information',
+            param: 'sectoral-information'
+          },
+          {
+            path: '/ndcs/country/:iso/full',
+            component: () => createElement(Redirect, { to: '/ndcs' })
+          }
+        ]
+      },
+      {
         path: '/ndcs/country/:iso',
         component: NDCCountry,
         nav: true,
@@ -90,25 +127,49 @@ export default [
             exact: true,
             anchor: true,
             label: 'Sectoral Information',
-            param: 'sectoral_information'
+            param: 'sectoral-information'
           },
           {
             path: '/ndcs/country/:iso',
-            component: () => createElement(Redirect, { to: '/ndcs/country/:iso' })
+            component: () => createElement(Redirect, { to: '/ndcs' })
           }
         ]
       },
       {
-        path: '/ndcs/country/:iso/full',
-        component: NDCCountryFull,
-        exact: true,
-        headerImage: 'ndc'
-      },
-      {
         path: '/ndcs/compare',
         component: NDCCompare,
-        exact: true,
-        headerImage: 'ndc'
+        nav: true,
+        headerImage: 'ndc',
+        routes: [
+          {
+            path: '/ndcs/compare/mitigation',
+            component: () => createElement(NDCCountryAccordion, { category: 'migitation' }),
+            exact: true,
+            anchor: true,
+            label: 'Mitigation',
+            param: 'mitigation'
+          },
+          {
+            path: '/ndcs/compare/adaptation',
+            component: () => createElement(NDCCountryAccordion, { category: 'adaptation' }),
+            exact: true,
+            anchor: true,
+            label: 'Adaptation',
+            param: 'adaptation'
+          },
+          {
+            path: '/ndcs/compare/sectoral-information',
+            component: () => createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
+            exact: true,
+            anchor: true,
+            label: 'Sectoral Information',
+            param: 'sectoral-information'
+          },
+          {
+            path: '/ndcs/compare',
+            component: () => createElement(Redirect, { to: '/ndcs/compare/mitigation' })
+          }
+        ]
       },
       {
         path: '/ndcs',

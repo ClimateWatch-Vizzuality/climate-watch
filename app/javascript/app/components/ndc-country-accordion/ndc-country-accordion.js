@@ -1,8 +1,9 @@
-import { createElement } from 'react';
+import { createElement, PureComponent } from 'react';
 import { withRouter } from 'react-router';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import qs from 'query-string';
+import isEmpty from 'lodash/isEmpty';
 
 import actions from './ndc-country-accordion-actions';
 import reducers, { initialState } from './ndc-country-accordion-reducers';
@@ -13,25 +14,29 @@ import { filterNDCs } from './ndc-country-accordion-selectors';
 const mapStateToProps = (state, { location, match }) => {
   const search = qs.parse(location.search);
   const activeSection = search.activeSection ? search.activeSection : null;
+  const data = state.NDCCountryAccordion.data;
   const ndcsData = {
-    data: state.NDCCountryAccordion.data[match.params.iso],
+    data,
     search: search.search,
-    countries: [match.params.iso]
+    countries: match.params.iso ? [match.params.iso] : search.locations.split(',')
   };
   return {
     activeSection,
-    data: filterNDCs(ndcsData)
+    data: filterNDCs(ndcsData),
+    sectors: data ? data.sectors : null
   };
 };
 
-const NDCCountryAccordionContainer = props => {
-  const { location, match, history, fetchNDCCountryAccordion, loading, fetched } = props;
-  const { iso } = match.params;
-  if (iso && !loading && !fetched) {
-    // fetchNDCCountryAccordion(iso);
+class NDCCountryAccordionContainer extends PureComponent {
+  componentWillMount() {
+    const { location, match, fetchNDCCountryAccordion, category } = this.props;
+    const { iso } = match.params;
+    const locations = iso || qs.parse(location.search).locations;
+    fetchNDCCountryAccordion(locations, category);
   }
 
-  const handleOnClick = slug => {
+  handleOnClick = slug => {
+    const { history, location } = this.props;
     const search = qs.parse(location.search);
     const newSlug =
       search.activeSection === slug || !search.activeSection ? 'none' : slug;
@@ -43,15 +48,22 @@ const NDCCountryAccordionContainer = props => {
     });
   };
 
-  return createElement(NDCCountryAccordionComponent, {
-    ...props,
-    handleOnClick
-  });
-};
+  render() {
+    return createElement(NDCCountryAccordionComponent, {
+      ...this.props,
+      handleOnClick: this.handleOnClick
+    });
+  }
+}
 
 NDCCountryAccordionContainer.propTypes = {
   location: Proptypes.object,
-  history: Proptypes.object
+  history: Proptypes.object,
+  match: Proptypes.object,
+  loading: Proptypes.bool,
+  fetched: Proptypes.bool,
+  category: Proptypes.string,
+  fetchNDCCountryAccordion: Proptypes.func
 };
 
 export { actions, reducers, initialState };
