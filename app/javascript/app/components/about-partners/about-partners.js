@@ -5,7 +5,7 @@ import wriImage from 'assets/partners/wri.png';
 import climateAnalyticsImage from 'assets/partners/climate-analytics.png';
 import climateActionTrackerImage from 'assets/partners/climate-action-tracker.png';
 import worldBankImage from 'assets/partners/the-world-bank.png';
-import ccImage from 'assets/partners/cc.png';
+import ccImage from 'assets/partners/unfccc.jpg';
 import gizImage from 'assets/partners/giz.png';
 import googleImage from 'assets/partners/google.png';
 import fmencbnsImage from 'assets/partners/fmencbns.png';
