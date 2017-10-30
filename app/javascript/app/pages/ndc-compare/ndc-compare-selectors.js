@@ -19,8 +19,8 @@ export const getActiveCountries = createSelector(
         country => country.iso_code3 === location
       );
       return {
-        label: countryDetail.wri_standard_name,
-        value: countryDetail.iso_code3
+        label: countryDetail && countryDetail.wri_standard_name,
+        value: countryDetail && countryDetail.iso_code3
       };
     });
     return activeCountries;
