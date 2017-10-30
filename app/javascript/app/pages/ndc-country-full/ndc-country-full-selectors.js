@@ -14,7 +14,13 @@ export const getSelectedContent = createSelector(
   (selected, content) => {
     if (!content || !content.length) return null;
     if (!selected) return content[0];
-    return content.find(item => item.document_type === selected, 10);
+    const splitSelected = selected.split('-');
+    return content.find(
+      item =>
+        item.document_type === splitSelected[0] &&
+        item.language === splitSelected[1],
+      10
+    );
   }
 );
 
@@ -23,7 +29,7 @@ const getLabel = item =>
 
 export const getContentOptions = createSelector(getContent, content =>
   (content || []).map(item => ({
-    value: item.document_type,
+    value: `${item.document_type}-${item.language}`,
     label: getLabel(item)
   }))
 );
