@@ -125,7 +125,7 @@ export default [
           },
           {
             hash: 'climate-vulnerability',
-            label: 'Climate vulnerability and readiness',
+            label: 'Climate Vulnerability and Readiness',
             anchor: true,
             component: ClimateVulnerability
           },
