@@ -26,8 +26,9 @@
     color: $theme-color;
     font-size: $font-size-sm;
 
-    div {
-      overflow: scroll;
+    > div {
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &:first-of-type {

@@ -34,21 +34,27 @@ class SimpleTable extends PureComponent {
             sortDirection={sortDirection}
             rowGetter={({ index }) => data[index]}
           >
-            {columns.map(column => (
-              <Column
-                className={styles.column}
-                key={column}
-                label={column}
-                dataKey={column}
-                width={300}
-                cellRenderer={cell =>
-                  (!parseHtml ? (
-                    cell.cellData
-                  ) : (
-                    <div dangerouslySetInnerHTML={{ __html: cell.cellData }} />
-                  ))}
-              />
-            ))}
+            {columns.map((column, i) => {
+              const flexGrow = i === 0 ? 0 : 1;
+              return (
+                <Column
+                  className={styles.column}
+                  key={column}
+                  label={column}
+                  dataKey={column}
+                  width={200}
+                  flexGrow={flexGrow}
+                  cellRenderer={cell =>
+                    (!parseHtml ? (
+                      cell.cellData
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{ __html: cell.cellData }}
+                      />
+                    ))}
+                />
+              );
+            })}
           </Table>
         )}
       </AutoSizer>
