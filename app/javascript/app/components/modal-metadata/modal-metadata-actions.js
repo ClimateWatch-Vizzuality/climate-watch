@@ -20,7 +20,7 @@ const fetchModalMetaData = createThunkAction(
     const { modalMetadata } = state();
     if (!modalMetadata.data[slug] || modalMetadata.data[slug] === 'error') {
       dispatch(fetchModalMetaDataInit());
-      fetch(`/api/v1/metadata/${slug}`)
+      fetch(`/api/v1/metadata/${slug.toLowerCase()}`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
