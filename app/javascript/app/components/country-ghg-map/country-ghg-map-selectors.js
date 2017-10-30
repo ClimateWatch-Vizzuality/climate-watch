@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
-import CALCULATION_OPTIONS from 'app/data/constants';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import worldPaths from 'app/data/world-50m-paths';
 

@@ -1,4 +1,4 @@
-export default {
+export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
     label: 'Absolute value',
     value: 'ABSOLUTE_VALUE'
@@ -11,4 +11,8 @@ export default {
     label: 'per GDP',
     value: 'PER_GDP'
   }
+};
+
+export default {
+  CALCULATION_OPTIONS
 };

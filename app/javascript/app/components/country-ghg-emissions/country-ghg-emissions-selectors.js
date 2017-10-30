@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
-import CALCULATION_OPTIONS from 'app/data/constants';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import {
   getYColumnValue,
@@ -209,7 +209,9 @@ export const getChartData = createSelector(
 
     let xValues = [];
     xValues = data[0].emissions.map(d => d.year);
-    if (calculationSelected.value !== 'ABSOLUTE_VALUE') {
+    if (
+      calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+    ) {
       xValues = intersection(
         xValues,
         Object.keys(calculationData).map(y => parseInt(y, 10))
