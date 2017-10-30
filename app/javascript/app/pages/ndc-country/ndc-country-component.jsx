@@ -8,9 +8,7 @@ import Search from 'components/search';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
-import Dropdown from 'components/dropdown';
 
-import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import layout from 'styles/layout.scss';
 import styles from './ndc-country-styles.scss';
@@ -21,7 +19,6 @@ class NDCCountry extends PureComponent {
       country,
       match,
       onSearchChange,
-      handleDropDownChange,
       search,
       route,
       anchorLinks
@@ -37,13 +34,12 @@ class NDCCountry extends PureComponent {
                 <Intro title={country.wri_standard_name} />
               </div>
               <div className={styles.threeFold}>
-                <Dropdown
-                  className={theme.dropdownOptionWithArrow}
-                  placeholder="Select a document"
-                  onValueChange={handleDropDownChange}
-                  hideResetButton
-                  white
-                />
+                <Button
+                  color="yellow"
+                  link={`/ndcs/country/${match.params.iso}/full`}
+                >
+                  View full NDC
+                </Button>
                 <Search
                   theme={lightSearch}
                   placeholder="Search"
@@ -80,8 +76,7 @@ NDCCountry.propTypes = {
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
   search: PropTypes.string,
-  anchorLinks: PropTypes.array,
-  handleDropDownChange: PropTypes.func
+  anchorLinks: PropTypes.array
 };
 
 export default NDCCountry;

@@ -43,6 +43,24 @@ class NDCCountryAccordionContainer extends PureComponent {
     fetchNDCCountryAccordion(locations, category, type);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      location,
+      match,
+      fetchNDCCountryAccordion,
+      category,
+      type
+    } = this.props;
+    const { iso } = match.params;
+    const locations = iso || qs.parse(location.search).locations;
+    if (
+      nextProps.location.search.locations !==
+      this.props.location.search.locations
+    ) {
+      fetchNDCCountryAccordion(locations, category, type);
+    }
+  }
+
   handleOnClick = slug => {
     const { history, location } = this.props;
     const search = qs.parse(location.search);
