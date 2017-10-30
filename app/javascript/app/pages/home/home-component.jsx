@@ -56,7 +56,7 @@ class Home extends PureComponent {
               ref={player => {
                 this.player = player;
               }}
-              url="https://www.youtube.com/watch?v=lTG-0brb98I"
+              url="https://youtu.be/C2nIcBqrHsk"
               youtubeConfig={{
                 playerVars: { playsinline: 0 },
                 preload: false
