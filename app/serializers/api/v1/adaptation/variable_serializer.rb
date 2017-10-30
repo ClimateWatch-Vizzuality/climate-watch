@@ -10,11 +10,6 @@ module Api
             v.value.nil?
           end
         end
-
-        def maximum
-          ::Adaptation::Value.where(variable: object.id).
-            maximum(:absolute_rank)
-        end
       end
     end
   end
