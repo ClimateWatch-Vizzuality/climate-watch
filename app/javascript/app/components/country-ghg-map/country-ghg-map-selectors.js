@@ -152,7 +152,10 @@ export const getLegendData = createSelector(
   [getCalculationSelection, getYearSelected],
   (calculation, year) => {
     let calculationText = '';
-    if (calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value) {
+    if (
+      calculation &&
+      calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+    ) {
       calculationText = `${CALCULATION_OPTIONS[calculation].label} `;
     }
 
