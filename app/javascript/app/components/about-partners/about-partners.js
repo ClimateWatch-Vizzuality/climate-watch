@@ -47,7 +47,7 @@ const partnershipWith = {
         'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch'
     },
     {
-      link: 'https://www.google.es',
+      link: 'https://www.google.com',
       img: {
         alt: 'Google',
         src: googleImage
@@ -152,7 +152,7 @@ const foundingBy = {
       }
     },
     {
-      link: 'https://www.google.es',
+      link: 'https://www.google.com',
       img: {
         alt: 'Google',
         src: googleImage
