@@ -17,7 +17,7 @@ const AboutContact = () => (
     <iframe
       title="contact-form"
       className={styles.contactIframe}
-      src="http://connect.wri.org/l/120942/2017-09-11/3khdjq"
+      src="https://connect.wri.org/l/120942/2017-09-11/3khdjq"
       frameBorder="0"
     />
   </div>
