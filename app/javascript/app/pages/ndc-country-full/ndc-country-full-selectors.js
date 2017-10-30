@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import uniqBy from 'lodash/uniqBy';
 
 const getCountries = state => state.countries.data;
 const getSelected = state => state.document || null;
@@ -28,10 +29,13 @@ const getLabel = item =>
   `${item.document_type.toUpperCase()} (${item.language.toUpperCase()})`;
 
 export const getContentOptions = createSelector(getContent, content =>
-  (content || []).map(item => ({
-    value: `${item.document_type}-${item.language}`,
-    label: getLabel(item)
-  }))
+  uniqBy(
+    (content || []).map(item => ({
+      value: `${item.document_type}-${item.language}`,
+      label: getLabel(item)
+    })),
+    'value'
+  )
 );
 
 export const getContentOptionSelected = createSelector(
