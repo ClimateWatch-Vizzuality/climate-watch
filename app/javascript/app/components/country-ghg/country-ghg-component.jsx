@@ -43,7 +43,7 @@ class CountryGhg extends PureComponent {
 }
 
 CountryGhg.propTypes = {
-  search: PropTypes.string
+  search: PropTypes.node
 };
 
 export default CountryGhg;
