@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Api::V1::QuantificationsController, type: :controller do
   context do
     let!(:polish_quantifications) {
-      location = FactoryGirl.create(:location, iso_code3: "POL")
+      location = FactoryGirl.create(:location, iso_code3: 'POL')
       FactoryGirl.create_list(:quantification_value, 2, location: location)
     }
     let!(:german_quantifications) {
-      location = FactoryGirl.create(:location, iso_code3: "GER")
+      location = FactoryGirl.create(:location, iso_code3: 'GER')
       FactoryGirl.create_list(:quantification_value, 3, location: location)
     }
 
