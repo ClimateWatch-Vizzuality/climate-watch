@@ -55,8 +55,6 @@ const CALCULATION_OPTIONS = [
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
-const getSources = state => state.meta.data_source || [];
-const getVersions = state => state.meta.gwp || [];
 const getCalculationData = state =>
   (state.calculationData && state.calculationData[state.iso]) || [];
 
@@ -70,6 +68,12 @@ const getFilterSelection = state => state.search.filter || null;
 const getData = state => state.data || [];
 
 // Sources selectors
+export const getSources = createSelector(
+  getMeta,
+  meta => meta.data_source || null
+);
+export const getVersions = createSelector(getMeta, meta => meta.gwp || null);
+
 export const getSourceOptions = createSelector(getSources, sources => {
   if (!sources) return [];
   return sources.map(d => ({

@@ -398,3 +398,10 @@ $height: 45px;
     }
   }
 }
+
+.blueBorder :global {
+  .react-selectize-control {
+    border-color: $theme-color !important;
+    border-width: 2px !important;
+  }
+}

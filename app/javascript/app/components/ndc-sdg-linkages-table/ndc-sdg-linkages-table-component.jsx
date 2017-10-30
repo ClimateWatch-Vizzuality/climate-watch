@@ -51,7 +51,7 @@ class NdcSdgLinkagesTable extends PureComponent {
                   onMouseEnter={() => onGoalHover(goal.number)}
                   onClick={() => handleClickGoal(goal.number)}
                   key={goal.title}
-                  sdgData={goal}
+                  goal={goal}
                   tooltipId="sdg-linkages"
                   className={cx(cardTheme.card, cardTheme.squaredCard)}
                 />

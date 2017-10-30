@@ -2,11 +2,9 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
 
-import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
+import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import Dropdown from 'components/dropdown';
-import Icon from 'components/icon';
 
-import searchIcon from 'assets/icons/search.svg';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import styles from './ndcs-autocomplete-search-styles.scss';
 
@@ -15,44 +13,23 @@ class NdcsAutocompleteSearch extends PureComponent {
     const {
       className,
       handleValueClick,
-      setNdcsAutocompleteSearch,
       searchList,
       groups,
       optionSelected
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
-        <NdcsSdgsMetaProvider />
+        <NdcsSdgsDataProvider />
         <Dropdown
+          label="Highlight SDG Linkages"
           className={theme.dropdownOptionWithArrow}
-          placeholder={'e.g. “Energy”, “SDG 8.1”, “reduce emissions by 37%”'}
+          placeholder="Select a goal or target"
           groups={groups}
           options={searchList}
-          onSearchChange={setNdcsAutocompleteSearch}
           onValueChange={handleValueClick}
           value={optionSelected}
           hideResetButton
           dark
-          hasSearch
-          renderToggleButton={({ open }) => (
-            <Icon
-              icon={searchIcon}
-              className={cx(styles.searchIcon, !open ? styles.whiteIcon : '')}
-            />
-          )}
-          renderGroupTitle={(index, group) =>
-            group.groupId !== 'query' && (
-              <div className="simple-group-title">{group.title}</div>
-            )}
-          renderOption={option => (
-            <div
-              className={`simple-option ${option.groupId === 'query'
-                ? '-search'
-                : ''}`}
-            >
-              <span>{option.label}</span>
-            </div>
-          )}
         />
       </div>
     );
@@ -62,7 +39,6 @@ class NdcsAutocompleteSearch extends PureComponent {
 NdcsAutocompleteSearch.propTypes = {
   className: Proptypes.string,
   handleValueClick: Proptypes.func.isRequired,
-  setNdcsAutocompleteSearch: Proptypes.func.isRequired,
   searchList: Proptypes.array,
   groups: Proptypes.array,
   optionSelected: Proptypes.object

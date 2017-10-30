@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 
 import Icon from 'components/icon';
 
@@ -11,7 +10,9 @@ class SDGCard extends PureComponent {
   render() {
     const {
       selected,
-      sdgData,
+      goal,
+      targets,
+      targetData,
       indicators,
       square,
       tooltipId,
@@ -19,30 +20,23 @@ class SDGCard extends PureComponent {
       className,
       activeSector,
       icons,
-      targetsMeta,
       hover,
       onClick,
       onMouseEnter
     } = this.props;
-
     const cardStyle = cx(
       styles.card,
       {
         [styles.selected]: selected,
-        [styles[`selected${sdgData.number}`]]: selected,
+        [styles[`selected${goal.number}`]]: selected,
         [styles.square]: square,
         [styles.cardHover]: hover,
-        [styles[`hover${sdgData.number}`]]: hover
+        [styles[`hover${goal.number}`]]: hover
       },
       className
     );
 
-    if (!sdgData || !sdgData.number) {
-      return <div key={Math.random()} className={cardStyle} />;
-    }
-
-    const hasTargets = !isEmpty(targetsMeta) && sdgData && sdgData.targets;
-    const title = square ? sdgData.title : `${sdgData.number} ${sdgData.title}`;
+    const title = square ? goal.title : `${goal.number}. ${goal.cw_title}`;
     return (
       <div
         className={cardStyle}
@@ -53,36 +47,37 @@ class SDGCard extends PureComponent {
       >
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
-          {hasTargets &&
-            sdgData.targets.map(target => {
-              const sectors =
-                targetsMeta[target.targetKey] &&
-                targetsMeta[target.targetKey].sectors;
+          {targets &&
+            targets.map(target => {
               const isSmall =
+                target.sectors &&
                 activeSector &&
-                sectors &&
-                sectors.indexOf(parseInt(activeSector.value, 10)) === -1;
+                target.sectors.indexOf(parseInt(activeSector.value, 10)) !== -1;
+              const hasSectors =
+                targetData &&
+                targetData.targets[target.number] &&
+                targetData.targets[target.number].sectors;
               return (
                 <span
-                  key={target.targetKey}
+                  key={target.number}
                   data-for={tooltipId}
                   data-tip
                   onMouseEnter={() => setTooltipData(target)}
                   className={cx(styles.dot, { [styles.small]: isSmall })}
                   style={{
-                    backgroundColor: target.sectors ? sdgData.colour : ''
+                    backgroundColor: hasSectors ? goal.colour : ''
                   }}
                 />
               );
             })}
         </div>
         {(!indicators || square) && (
-          <div className={styles.number}>{sdgData.number}</div>
+          <div className={styles.number}>{goal.number}</div>
         )}
-        {sdgData.id && (
+        {goal.id && (
           <Icon
-            icon={icons[`sdg${sdgData.number}`]}
-            className={cx(styles.icon, styles[`icon${sdgData.number}`])}
+            icon={icons[`sdg${goal.number}`]}
+            className={cx(styles.icon, styles[`icon${goal.number}`])}
           />
         )}
       </div>
@@ -92,7 +87,9 @@ class SDGCard extends PureComponent {
 
 SDGCard.propTypes = {
   icons: PropTypes.object.isRequired,
-  sdgData: PropTypes.object,
+  goal: PropTypes.object.isRequired,
+  targets: PropTypes.array,
+  targetData: PropTypes.object,
   selected: PropTypes.bool,
   hover: PropTypes.bool,
   indicators: PropTypes.bool,
@@ -101,7 +98,6 @@ SDGCard.propTypes = {
   setTooltipData: PropTypes.func,
   className: PropTypes.string,
   activeSector: PropTypes.object,
-  targetsMeta: PropTypes.object,
   onClick: PropTypes.func,
   onMouseEnter: PropTypes.func
 };

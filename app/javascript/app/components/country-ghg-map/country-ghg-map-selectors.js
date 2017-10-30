@@ -114,8 +114,9 @@ export const getPathsWithStyles = createSelector([getDataParsed], data => {
   if (min && max) setScale(getRanges(data.min, data.max));
   return worldPaths.map(path => {
     let color = '#E5E5EB'; // default color
-    if (data && data.values && data.values[path.id]) {
-      color = colorScale(data.values[path.id]);
+    const iso = path.properties && path.properties.id;
+    if (data && data.values && data.values[iso]) {
+      color = colorScale(data.values[iso]);
     }
     const style = {
       default: {

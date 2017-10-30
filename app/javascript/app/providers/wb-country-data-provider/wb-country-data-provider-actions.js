@@ -10,7 +10,11 @@ const fetchWbCountryData = createThunkAction(
   'fetchWbCountryData',
   iso => (dispatch, state) => {
     const { wbCountryData } = state();
-    if (isEmpty(wbCountryData.data[iso]) && !wbCountryData.loading) {
+    if (
+      wbCountryData.data &&
+      isEmpty(wbCountryData.data[iso]) &&
+      !wbCountryData.loading
+    ) {
       dispatch(fetchWbCountryDataInit());
       fetch(`/api/v1/wb_extra/${iso}`)
         .then(response => {

@@ -22,7 +22,7 @@ class ScrollToHighlightIndex extends PureComponent {
       window.scrollTo({
         behavior: 'smooth',
         left: 0,
-        top: e.offsetTop - 100
+        top: e.offsetTop - 200
       });
     }
   };

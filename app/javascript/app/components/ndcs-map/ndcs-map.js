@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
+import { isCountryDisabled } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
@@ -16,7 +17,7 @@ import {
 } from './ndcs-map-selectors';
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.ndcs;
+  const { data, loading } = state.ndcs;
   const search = qs.parse(location.search);
   const ndcsWithSelection = {
     ...data,
@@ -24,6 +25,7 @@ const mapStateToProps = (state, { location }) => {
     indicatorSelected: search.indicator
   };
   return {
+    loading,
     paths: getPathsWithStyles(ndcsWithSelection),
     categories: getCategories(ndcsWithSelection),
     indicators: getCategoryIndicators(ndcsWithSelection),
@@ -53,11 +55,17 @@ class NDCMapContainer extends PureComponent {
   }
 
   handleCountryClick = geography => {
-    this.props.history.push(`/ndcs/country/${geography.id}`);
+    const iso = geography.properties && geography.properties.id;
+    if (iso && !isCountryDisabled(iso)) {
+      this.props.history.push(`/ndcs/country/${iso}`);
+    }
   };
 
-  handleCountryEnter = geometry => {
-    this.setState({ geometryIdHover: geometry.id });
+  handleCountryEnter = geography => {
+    const iso = geography.properties && geography.properties.id;
+    if (iso && !isCountryDisabled(iso)) {
+      this.setState({ geometryIdHover: iso });
+    }
   };
 
   handleCategoryChange = category => {

@@ -4,6 +4,7 @@ import { Collapse } from 'react-collapse';
 import Icon from 'components/icon';
 import NoContent from 'components/no-content';
 import cx from 'classnames';
+import Loading from 'components/loading';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import layout from 'styles/layout.scss';
@@ -21,6 +22,7 @@ class Accordion extends PureComponent {
     } = this.props;
     return (
       <div className={className}>
+        {loading && <Loading light className={styles.loader} />}
         {!data.length && !loading && <NoContent message="Nothing here" />}
         {data.map((section, index) => {
           let isOpen = index === 0;
