@@ -19,7 +19,7 @@ import styles from './ndc-country-full-styles.scss';
 
 class NDCCountryFull extends PureComponent {
   getPageContent() {
-    const { content, loaded, idx } = this.props;
+    const { content, loaded, search } = this.props;
     const hasContent = !isEmpty(content);
     if (hasContent) {
       return (
@@ -31,7 +31,7 @@ class NDCCountryFull extends PureComponent {
             />
           )}
           <ScrollToHighlightIndex
-            idx={idx}
+            idx={search.idx}
             targetElementsSelector={'.highlight'}
             content={content}
           />
@@ -107,7 +107,7 @@ NDCCountryFull.propTypes = {
   onDocumentChange: PropTypes.func,
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
-  idx: PropTypes.string,
+  search: PropTypes.object,
   fetchCountryNDCFull: PropTypes.func
 };
 
