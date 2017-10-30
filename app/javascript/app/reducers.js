@@ -27,7 +27,6 @@ const providersReducers = {
 
 // Pages
 import * as NDCSPage from 'pages/ndcs';
-import * as countryNDCPage from 'pages/ndc-country';
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as NDCComparePage from 'pages/ndc-compare';
 import * as ndcSearchPage from 'pages/ndc-search';
@@ -35,7 +34,6 @@ import * as ndcSdgPage from 'pages/ndc-sdg';
 
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
-  countryNDC: handleActions(countryNDCPage),
   countryNDCFull: handleActions(countryNDCFullPage),
   NDCCompare: handleActions(NDCComparePage),
   ndcSearch: handleActions(ndcSearchPage),
@@ -47,6 +45,7 @@ import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
+import * as NDCCountryAccordion from 'components/ndc-country-accordion';
 import * as ghgEmissionsComponent from 'components/ghg-emissions';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
@@ -60,6 +59,7 @@ const componentsReducers = {
   stories: handleActions(storiesComponent),
   countrySelect: handleActions(countrySelectComponent),
   ghgEmissions: handleActions(ghgEmissionsComponent),
+  NDCCountryAccordion: handleActions(NDCCountryAccordion),
   modalMetadata: handleActions(modalMetadataComponent),
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),

@@ -4,14 +4,14 @@ import { createThunkAction } from 'utils/redux';
 /* @tmpfix: remove usage of indcTransform */
 import indcTransform from 'utils/indctransform';
 
-const fetchCountryNDCInit = createAction('fetchCountryNDCInit');
-const fetchCountryNDCReady = createAction('fetchCountryNDCReady');
-const fetchCountryNDCFailed = createAction('fetchCountryNDCFailed');
+const fetchNDCCountryAccordionInit = createAction('fetchNDCCountryAccordionInit');
+const fetchNDCCountryAccordionReady = createAction('fetchNDCCountryAccordionReady');
+const fetchNDCCountryAccordionFailed = createAction('fetchNDCCountryAccordionFailed');
 
-const fetchCountryNDC = createThunkAction(
-  'fetchCountryNDC',
+const fetchNDCCountryAccordion = createThunkAction(
+  'fetchNDCCountryAccordion',
   iso => dispatch => {
-    dispatch(fetchCountryNDCInit());
+    dispatch(fetchNDCCountryAccordionInit());
     fetch(`/api/v1/ndcs?location=${iso}&filter=overview`)
       .then(response => {
         if (response.ok) return response.json();
@@ -23,18 +23,18 @@ const fetchCountryNDC = createThunkAction(
           iso,
           data
         };
-        dispatch(fetchCountryNDCReady(dataWithIso));
+        dispatch(fetchNDCCountryAccordionReady(dataWithIso));
       })
       .catch(error => {
-        dispatch(fetchCountryNDCFailed(iso));
+        dispatch(fetchNDCCountryAccordionFailed(iso));
         console.info(error);
       });
   }
 );
 
 export default {
-  fetchCountryNDC,
-  fetchCountryNDCInit,
-  fetchCountryNDCReady,
-  fetchCountryNDCFailed
+  fetchNDCCountryAccordion,
+  fetchNDCCountryAccordionInit,
+  fetchNDCCountryAccordionReady,
+  fetchNDCCountryAccordionFailed
 };

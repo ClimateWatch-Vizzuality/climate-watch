@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Accordion from 'components/accordion';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import Search from 'components/search';
@@ -84,8 +83,6 @@ NDCCountry.propTypes = {
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
   search: PropTypes.string,
-  ndcsData: PropTypes.array,
-  loading: PropTypes.bool,
   anchorLinks: PropTypes.array
 };
 

@@ -3,25 +3,35 @@ import { withRouter } from 'react-router';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import qs from 'query-string';
-import AccordionComponent from './ndc-country-accordion-component';
+
+import actions from './ndc-country-accordion-actions';
+import reducers, { initialState } from './ndc-country-accordion-reducers';
+
+import NDCCountryAccordionComponent from './ndc-country-accordion-component';
+import { filterNDCs } from './ndc-country-accordion-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
   const search = qs.parse(location.search);
   const activeSection = search.activeSection ? search.activeSection : null;
   const ndcsData = {
-    data: state.countryNDC.data[match.params.iso],
+    data: state.NDCCountryAccordion.data[match.params.iso],
     search: search.search,
     countries: [match.params.iso]
   };
   return {
     activeSection,
-    ndcsData: filterNDCs(ndcsData)
+    data: filterNDCs(ndcsData)
   };
 };
 
-const AccordionContainer = props => {
+const NDCCountryAccordionContainer = props => {
+  const { location, match, history, fetchNDCCountryAccordion, loading, fetched } = props;
+  const { iso } = match.params;
+  if (iso && !loading && !fetched) {
+    // fetchNDCCountryAccordion(iso);
+  }
+
   const handleOnClick = slug => {
-    const { location, history } = props;
     const search = qs.parse(location.search);
     const newSlug =
       search.activeSection === slug || !search.activeSection ? 'none' : slug;
@@ -33,15 +43,17 @@ const AccordionContainer = props => {
     });
   };
 
-  return createElement(AccordionComponent, {
+  return createElement(NDCCountryAccordionComponent, {
     ...props,
     handleOnClick
   });
 };
 
-AccordionContainer.propTypes = {
+NDCCountryAccordionContainer.propTypes = {
   location: Proptypes.object,
   history: Proptypes.object
 };
 
-export default withRouter(connect(mapStateToProps, null)(AccordionContainer));
+export { actions, reducers, initialState };
+
+export default withRouter(connect(mapStateToProps, actions)(NDCCountryAccordionContainer));

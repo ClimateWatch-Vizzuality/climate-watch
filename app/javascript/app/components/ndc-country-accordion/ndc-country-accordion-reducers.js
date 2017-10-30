@@ -8,8 +8,8 @@ const setLoading = (loading, state) => ({ ...state, loading });
 const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
-  fetchCountryNDCInit: state => setLoading(true, state),
-  fetchCountryNDCReady: (state, { payload }) => {
+  fetchNDCCountryAccordionInit: state => setLoading(true, state),
+  fetchNDCCountryAccordionReady: (state, { payload }) => {
     const newState = {
       ...state,
       data: {
@@ -20,7 +20,7 @@ export default {
 
     return setLoaded(true, setLoading(false, newState));
   },
-  fetchCountryNDCFailed: (state, { payload }) => {
+  fetchNDCCountryAccordionFailed: (state, { payload }) => {
     const newState = {
       ...state,
       data: {

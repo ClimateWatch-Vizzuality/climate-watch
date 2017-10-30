@@ -109,7 +109,8 @@ Accordion.propTypes = {
     })
   ),
   compare: PropTypes.bool,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  category: PropTypes.string
 };
 
 Accordion.defaultProps = {

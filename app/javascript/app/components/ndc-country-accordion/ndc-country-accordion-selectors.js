@@ -2,13 +2,9 @@ import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 
 const getCountries = state => state.countries;
-const getIso = state => state.iso;
-const getAllIndicators = state => (state.data ? state.data.indicators : {});
-const getCategories = state => (state.data ? state.data.categories : {});
+const getAllIndicators = state => (state.data ? state.data.indicators : null);
+const getCategories = state => (state.data ? state.data.categories : null);
 const getSearch = state => deburrUpper(state.search);
-
-const getCountryByIso = (countries, iso) =>
-  countries.find(country => country.iso_code3 === iso);
 
 export const parseIndicatorsDefs = createSelector(
   [getAllIndicators, getCategories, getCountries],
@@ -70,11 +66,6 @@ export const filterNDCs = createSelector(
   }
 );
 
-export const getCountry = createSelector(
-  [getCountries, getIso],
-  getCountryByIso
-);
-
 export const getAnchorLinks = createSelector(
   [
     state => state.route.routes || [],
@@ -90,7 +81,5 @@ export const getAnchorLinks = createSelector(
 );
 
 export default {
-  getCountry,
-  filterNDCs,
-  getAnchorLinks
+  filterNDCs
 };

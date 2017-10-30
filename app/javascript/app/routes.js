@@ -63,14 +63,14 @@ export default [
         routes: [
           {
             path: '/ndcs/country/:iso',
-            component: createElement(CountryNdcOverview),
+            component: () => createElement(CountryNdcOverview),
             exact: true,
             anchor: true,
             label: 'Overview'
           },
           {
             path: '/ndcs/country/:iso/mitigation',
-            component: createElement(NDCCountryAccordion, { category: 'migitation' }),
+            component: () => createElement(NDCCountryAccordion, { category: 'migitation' }),
             exact: true,
             anchor: true,
             label: 'Mitigation',
@@ -78,7 +78,7 @@ export default [
           },
           {
             path: '/ndcs/country/:iso/adaptation',
-            component: createElement(NDCCountryAccordion, { category: 'adaptation' }),
+            component: () => createElement(NDCCountryAccordion, { category: 'adaptation' }),
             exact: true,
             anchor: true,
             label: 'Adaptation',
@@ -86,10 +86,10 @@ export default [
           },
           {
             path: '/ndcs/country/:iso/sectoral-information',
-            component: createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
+            component: () => createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
             exact: true,
             anchor: true,
-            label: 'Mitigation',
+            label: 'Sectoral Information',
             param: 'sectoral_information'
           },
           {
@@ -166,7 +166,7 @@ export default [
             hash: 'ndc-content-overview',
             label: 'NDC Content Overview',
             anchor: true,
-            component: createElement(CountryNdcOverview, { actions: true })
+            component: () => createElement(CountryNdcOverview, { actions: true })
           },
           {
             hash: 'ndc-sdg-linkages',

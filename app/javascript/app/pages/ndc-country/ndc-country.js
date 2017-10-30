@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 
-import actions from './ndc-country-actions';
-import reducers, { initialState } from './ndc-country-reducers';
-
 import NDCCountryComponent from './ndc-country-component';
 import { getCountry, getAnchorLinks } from './ndc-country-selectors';
 
@@ -22,8 +19,6 @@ const mapStateToProps = (state, { match, location, route }) => {
     route
   };
   return {
-    fetched: state.countryNDC.data[iso],
-    loading: state.countryNDC.loading,
     country: getCountry(countryData),
     search: search.search,
     anchorLinks: getAnchorLinks(routeData)
@@ -31,11 +26,7 @@ const mapStateToProps = (state, { match, location, route }) => {
 };
 
 const NDCCountryContainer = props => {
-  const { location, match, history, fetchCountryNDC, loading, fetched } = props;
-  const { iso } = match.params;
-  if (iso && !loading && !fetched) {
-    fetchCountryNDC(iso);
-  }
+  const { location, history } = props;
 
   const onSearchChange = query => {
     const search = qs.parse(location.search);
@@ -53,8 +44,6 @@ const NDCCountryContainer = props => {
   });
 };
 
-export { actions, reducers, initialState };
-
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCCountryContainer)
+  connect(mapStateToProps, null)(NDCCountryContainer)
 );

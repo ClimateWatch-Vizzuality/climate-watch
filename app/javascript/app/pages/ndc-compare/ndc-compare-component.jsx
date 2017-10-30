@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Accordion from 'components/accordion';
+// import Accordion from 'components/accordion';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import cx from 'classnames';
@@ -74,12 +74,6 @@ class NDCCountry extends PureComponent {
             </div>
           </div>
         </div>
-        <Accordion
-          className={styles.accordion}
-          data={ndcsData}
-          loading={loading}
-          compare
-        />
       </div>
     );
   }
