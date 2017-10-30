@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026163849) do
+ActiveRecord::Schema.define(version: 20171027123608) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,6 +249,25 @@ ActiveRecord::Schema.define(version: 20171026163849) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  create_table "quantification_labels", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_quantification_labels_on_name", unique: true
+  end
+
+  create_table "quantification_values", force: :cascade do |t|
+    t.bigint "location_id"
+    t.bigint "label_id"
+    t.integer "year"
+    t.float "value"
+    t.boolean "range"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["label_id"], name: "index_quantification_values_on_label_id"
+    t.index ["location_id"], name: "index_quantification_values_on_location_id"
+  end
+
   create_table "timeline_documents", force: :cascade do |t|
     t.bigint "source_id"
     t.bigint "location_id"
@@ -396,6 +416,8 @@ ActiveRecord::Schema.define(version: 20171026163849) do
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs", on_delete: :cascade
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
+  add_foreign_key "quantification_values", "locations", on_delete: :cascade
+  add_foreign_key "quantification_values", "quantification_labels", column: "label_id", on_delete: :cascade
   add_foreign_key "timeline_documents", "locations", on_delete: :cascade
   add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade

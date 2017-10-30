@@ -22,6 +22,7 @@ Rails.application.routes.draw do
           action: :content_overview
       end
       resources :adaptations, only: [:index]
+      resources :quantifications, only: [:index]
       resources :metadata, param: :slug, only: [:index, :show] do
         get :acronyms, on: :collection, controller: :metadata, action: :acronyms
       end
