@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
+import CALCULATION_OPTIONS from 'app/data/constants';
 
 import worldPaths from 'app/data/world-50m-paths';
 
@@ -151,10 +152,8 @@ export const getLegendData = createSelector(
   [getCalculationSelection, getYearSelected],
   (calculation, year) => {
     let calculationText = '';
-    if (calculation === 'PER_CAPITA') {
-      calculationText = 'per capita ';
-    } else if (calculation === 'PER_GDP') {
-      calculationText = 'per GDP ';
+    if (calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value) {
+      calculationText = `${CALCULATION_OPTIONS[calculation].label} `;
     }
 
     return {
