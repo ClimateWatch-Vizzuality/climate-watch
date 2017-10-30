@@ -8,6 +8,7 @@ FactoryGirl.define do
       transient do
         values_count 3
         labels_count 2
+        sectors_count 2
         categories_count 2
       end
 
@@ -16,6 +17,11 @@ FactoryGirl.define do
           :indc_label,
           evaluator.labels_count,
           indicator: indicator
+        )
+
+        sector = create(
+          :indc_sector,
+          parent: create(:indc_sector)
         )
 
         indicator.categories = create_list(
@@ -27,7 +33,8 @@ FactoryGirl.define do
           :indc_value,
           evaluator.values_count,
           indicator: indicator,
-          label: labels.sample
+          label: labels.sample,
+          sector: sector
         )
       end
     end

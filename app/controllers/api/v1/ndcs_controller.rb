@@ -9,7 +9,7 @@ module Api
       'coverage_sectors',
       'coverage_sectors_short',
       'other_adaption info'
-    ].freeze
+    ].map { |s| "cait_#{s}"}.freeze
 
     NdcIndicators = Struct.new(:indicators, :categories, :sectors) do
       alias_method :read_attribute_for_serialization, :send
@@ -21,12 +21,16 @@ module Api
 
     class NdcsController < ApiController
       def index
-        categories = ::Indc::Category.all
+        categories = ::Indc::Category.
+          includes(:category_type).
+          all
         sectors = ::Indc::Sector.all
 
         if params[:filter]
           categories = categories.where(
-            category_type: params[:filter]
+            indc_category_types: {
+              name: params[:filter]
+            }
           )
         end
 
@@ -65,7 +69,8 @@ module Api
       def indicators
         indicators = ::Indc::Indicator.includes(
           :labels,
-          :categories,
+          :source,
+          categories: [:category_type],
           values: [:location]
         )
 
@@ -77,30 +82,14 @@ module Api
 
         if params[:filter]
           indicators = indicators.where(
-            indc_categories: {category_type: params[:filter]}
+            indc_category_types: {
+              name: params[:filter]
+            }
           )
         end
 
         if params[:category]
-          indicator_ids = ::GlobalIndc::Category.
-            includes(:indicators, children: :indicators).
-            where(
-              parent_id: nil,
-              slug: params[:category]
-            ).
-            flat_map(&:children).
-            flat_map(&:indicators).
-            map do |indicator|
-              if indicator.wb_indicator_id
-                "wb#{indicator.wb_indicator_id}"
-              elsif indicator.cait_indicator_id
-                "cait#{indicator.cait_indicator_id}"
-              end
-            end
 
-          indicators = indicators.where(
-            id: indicator_ids
-          )
         end
 
         indicators
