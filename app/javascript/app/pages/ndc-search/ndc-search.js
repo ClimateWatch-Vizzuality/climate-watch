@@ -38,22 +38,6 @@ class SearchContainer extends PureComponent {
     fetchSearchResults(search);
   }
 
-  onSearchChange = query => {
-    const { history, location, fetchSearchResults } = this.props;
-    const search = qs.parse(location.search);
-    const newSearch = {
-      ...search,
-      searchBy: search.searchBy,
-      query
-    };
-
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
-    });
-    fetchSearchResults(newSearch);
-  };
-
   render() {
     return createElement(SearchComponent, {
       ...this.props,
@@ -64,9 +48,7 @@ class SearchContainer extends PureComponent {
 
 SearchContainer.propTypes = {
   fetchSearchResults: Proptypes.func.isRequired,
-  search: Proptypes.object,
-  history: Proptypes.object,
-  location: Proptypes.object
+  search: Proptypes.object
 };
 
 export { actions, reducers, initialState };
