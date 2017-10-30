@@ -7,9 +7,9 @@ import actions from './ndc-country-actions';
 import reducers, { initialState } from './ndc-country-reducers';
 
 import NDCCountryComponent from './ndc-country-component';
-import { getCountry, filterNDCs } from './ndc-country-selectors';
+import { getCountry, filterNDCs, getAnchorLinks } from './ndc-country-selectors';
 
-const mapStateToProps = (state, { match, location }) => {
+const mapStateToProps = (state, { match, location, route }) => {
   const { iso } = match.params;
   const search = qs.parse(location.search);
   const countryData = {
@@ -21,12 +21,18 @@ const mapStateToProps = (state, { match, location }) => {
     search: search.search,
     countries: [match.params.iso]
   };
+  const routeData = {
+    iso,
+    location,
+    route
+  };
   return {
     fetched: state.countryNDC.data[iso],
     loading: state.countryNDC.loading,
     country: getCountry(countryData),
     search: search.search,
-    ndcsData: filterNDCs(ndcsData)
+    ndcsData: filterNDCs(ndcsData),
+    anchorLinks: getAnchorLinks(routeData)
   };
 };
 

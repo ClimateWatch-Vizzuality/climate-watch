@@ -58,7 +58,28 @@ export default [
         path: '/ndcs/country/:iso',
         component: NDCCountry,
         exact: true,
-        headerImage: 'ndc'
+        headerImage: 'ndc',
+        routes: [
+          {
+            path: '/ndcs/country/:iso',
+            component: NDCCountry,
+            exact: true,
+            anchor: true,
+            label: 'Overview'
+          },
+          {
+            path: '/ndcs/country/:iso/mitigation',
+            component: NDCCountry,
+            exact: true,
+            anchor: true,
+            label: 'Mitigation',
+            param: 'mitigation'
+          },
+          {
+            path: '/ndcs/country/:iso',
+            component: () => createElement(Redirect, { to: '/ndcs/country/:iso' })
+          }
+        ]
       },
       {
         path: '/ndcs/country/:iso/full',

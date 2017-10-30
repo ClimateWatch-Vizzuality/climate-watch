@@ -7,6 +7,8 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 import Search from 'components/search';
 import cx from 'classnames';
+import Sticky from 'react-stickynode';
+import AnchorNav from 'components/anchor-nav';
 
 import backIcon from 'assets/icons/back.svg';
 import lightSearch from 'styles/themes/search/search-light.scss';
@@ -22,8 +24,10 @@ class NDCCountry extends PureComponent {
       search,
       ndcsData,
       loading,
-      route
+      route,
+      anchorLinks
     } = this.props;
+    console.log(anchorLinks);
     return (
       <div>
         {country && (
@@ -62,6 +66,9 @@ class NDCCountry extends PureComponent {
                   onChange={onSearchChange}
                 />
               </div>
+              <Sticky activeClass="sticky">
+                <AnchorNav links={anchorLinks} className={layout.content} />
+              </Sticky>
             </div>
           </Header>
         )}
@@ -82,7 +89,8 @@ NDCCountry.propTypes = {
   onSearchChange: PropTypes.func.isRequired,
   search: PropTypes.string,
   ndcsData: PropTypes.array,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  anchorLinks: PropTypes.array
 };
 
 export default NDCCountry;
