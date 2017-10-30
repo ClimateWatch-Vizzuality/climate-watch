@@ -8,10 +8,14 @@
 }
 
 .link {
-  color: $theme-color-light;
+  color: $dark-gray;
   margin-left: 40px;
   text-decoration: none;
   position: relative;
+
+  svg {
+    fill: $dark-gray;
+  }
 
   &Active::after {
     content: "";
@@ -23,8 +27,4 @@
     width: 100%;
     height: 3px;
   }
-}
-
-.download {
-  fill: $theme-color-light;
 }

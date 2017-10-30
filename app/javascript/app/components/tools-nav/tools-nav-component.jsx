@@ -1,12 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Icon from 'components/icon';
+import SimpleMenu from 'components/simple-menu';
 
 import download from 'assets/icons/download.svg';
 import styles from './tools-nav-styles.scss';
 
-const ToolsNav = () =>
-  (<div className={styles.toolsNav}>
+const ToolsNav = ({ shareMenuOptions, shareIcon }) => (
+  <div className={styles.toolsNav}>
     <NavLink
       className={styles.link}
       activeClassName={styles.linkActive}
@@ -17,6 +19,13 @@ const ToolsNav = () =>
     <NavLink exact className={styles.link} to="/my-downloads">
       <Icon className={styles.download} icon={download} />
     </NavLink>
-  </div>);
+    <SimpleMenu options={shareMenuOptions} icon={shareIcon} />
+  </div>
+);
+
+ToolsNav.propTypes = {
+  shareMenuOptions: PropTypes.array.isRequired,
+  shareIcon: PropTypes.object.isRequired
+};
 
 export default ToolsNav;
