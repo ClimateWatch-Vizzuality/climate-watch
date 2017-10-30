@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ClimateWatch</title>
+    <title>Climate Watch: Data for Climate Action</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all',
+      'data-turbolinks-track': 'reload' %>
     <script><%= raw "window.__data = #{@data.to_json};" %></script>
     <% if @isProduction %>
       <%= stylesheet_pack_tag 'main' %>
