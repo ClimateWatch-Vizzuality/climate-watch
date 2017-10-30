@@ -37,13 +37,14 @@ class ImportSocioeconomics
   end
 
   def parse_row(row)
-    row.inject(Hash.new { |hash, key| hash[key] = {} }) do |result, (key, value)|
+    row.each_with_object(
+      Hash.new { |hash, key| hash[key] = {} }
+    ) do |(key, value), result|
       year = key.to_s.scan(/\d{4}/).first
       if year
         attribute = key.to_s.include?("rank") ? :rank : :value
         result[year][attribute] = value
       end
-      result
     end
   end
 
