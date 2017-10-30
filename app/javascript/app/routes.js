@@ -10,6 +10,7 @@ import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCompare from 'pages/ndc-compare';
+import NDCCountryAccordion from 'components/ndc-country-accordion';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
 import CountryCompare from 'pages/country-compare';
@@ -57,23 +58,39 @@ export default [
       {
         path: '/ndcs/country/:iso',
         component: NDCCountry,
-        exact: true,
+        nav: true,
         headerImage: 'ndc',
         routes: [
           {
             path: '/ndcs/country/:iso',
-            component: NDCCountry,
+            component: createElement(CountryNdcOverview),
             exact: true,
             anchor: true,
             label: 'Overview'
           },
           {
             path: '/ndcs/country/:iso/mitigation',
-            component: NDCCountry,
+            component: createElement(NDCCountryAccordion, { category: 'migitation' }),
             exact: true,
             anchor: true,
             label: 'Mitigation',
             param: 'mitigation'
+          },
+          {
+            path: '/ndcs/country/:iso/adaptation',
+            component: createElement(NDCCountryAccordion, { category: 'adaptation' }),
+            exact: true,
+            anchor: true,
+            label: 'Adaptation',
+            param: 'adaptation'
+          },
+          {
+            path: '/ndcs/country/:iso/sectoral-information',
+            component: createElement(NDCCountryAccordion, { category: 'sectoral_information' }),
+            exact: true,
+            anchor: true,
+            label: 'Mitigation',
+            param: 'sectoral_information'
           },
           {
             path: '/ndcs/country/:iso',
@@ -149,7 +166,7 @@ export default [
             hash: 'ndc-content-overview',
             label: 'NDC Content Overview',
             anchor: true,
-            component: CountryNdcOverview
+            component: createElement(CountryNdcOverview, { actions: true })
           },
           {
             hash: 'ndc-sdg-linkages',

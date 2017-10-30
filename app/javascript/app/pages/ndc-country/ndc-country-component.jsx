@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Accordion from 'components/accordion';
@@ -22,12 +23,9 @@ class NDCCountry extends PureComponent {
       match,
       onSearchChange,
       search,
-      ndcsData,
-      loading,
       route,
       anchorLinks
     } = this.props;
-    console.log(anchorLinks);
     return (
       <div>
         {country && (
@@ -72,11 +70,9 @@ class NDCCountry extends PureComponent {
             </div>
           </Header>
         )}
-        <Accordion
-          className={styles.accordion}
-          data={ndcsData}
-          loading={loading}
-        />
+        <div className={styles.wrapper}>
+          <div className={layout.content}>{renderRoutes(route.routes)}</div>
+        </div>
       </div>
     );
   }

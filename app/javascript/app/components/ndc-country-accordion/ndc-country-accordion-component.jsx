@@ -8,7 +8,7 @@ import Loading from 'components/loading';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import layout from 'styles/layout.scss';
-import styles from './accordion-styles.scss';
+import styles from './ndc-country-accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
@@ -18,7 +18,8 @@ class Accordion extends PureComponent {
       handleOnClick,
       activeSection,
       compare,
-      loading
+      loading,
+      category
     } = this.props;
     return (
       <div className={className}>

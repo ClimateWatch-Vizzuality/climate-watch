@@ -3,13 +3,19 @@ import { withRouter } from 'react-router';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import qs from 'query-string';
-import AccordionComponent from './accordion-component';
+import AccordionComponent from './ndc-country-accordion-component';
 
-const mapStateToProps = (state, { location }) => {
+const mapStateToProps = (state, { location, match }) => {
   const search = qs.parse(location.search);
   const activeSection = search.activeSection ? search.activeSection : null;
+  const ndcsData = {
+    data: state.countryNDC.data[match.params.iso],
+    search: search.search,
+    countries: [match.params.iso]
+  };
   return {
-    activeSection
+    activeSection,
+    ndcsData: filterNDCs(ndcsData)
   };
 };
 

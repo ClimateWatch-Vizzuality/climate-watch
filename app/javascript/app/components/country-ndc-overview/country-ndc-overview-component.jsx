@@ -13,7 +13,7 @@ import styles from './country-ndc-overview-styles.scss';
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { iso, sectors, values, loading } = this.props;
+    const { iso, sectors, values, loading, actions } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -26,23 +26,25 @@ class CountryNdcOverview extends PureComponent {
                   title="Nationally Determined Contribution (NDC) Overview"
                   description={values.indc_summary[0].value}
                 />
-                <div className={styles.actions}>
-                  <div className={styles.printButton} />
-                  <Button
-                    className={styles.exploreBtn}
-                    color="white"
-                    link={`/ndcs/compare?locations=${iso}`}
-                  >
-                    Compare
-                  </Button>
-                  <Button
-                    className={styles.exploreBtn}
-                    color="yellow"
-                    link={`/ndcs/country/${iso}`}
-                  >
-                    Explore NDC content
-                  </Button>
-                </div>
+                {actions &&
+                  <div className={styles.actions}>
+                    <div className={styles.printButton} />
+                    <Button
+                      className={styles.exploreBtn}
+                      color="white"
+                      link={`/ndcs/compare?locations=${iso}`}
+                    >
+                      Compare
+                    </Button>
+                    <Button
+                      className={styles.exploreBtn}
+                      color="yellow"
+                      link={`/ndcs/country/${iso}`}
+                    >
+                      Explore NDC content
+                    </Button>
+                  </div>
+                }
               </div>
               <h4 className={styles.subTitle}>Mitigation contribution</h4>
               <div className={styles.cards}>
@@ -131,7 +133,8 @@ CountryNdcOverview.propTypes = {
   iso: PropTypes.string,
   sectors: PropTypes.array,
   values: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  actions: PropTypes.bool
 };
 
 export default CountryNdcOverview;
