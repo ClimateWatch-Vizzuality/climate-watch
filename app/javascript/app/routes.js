@@ -156,7 +156,7 @@ export default [
         component: EmissionPathways,
         exact: true,
         nav: true,
-        label: 'Emission Pathways',
+        label: 'EMISSION PATHWAYS',
         headerImage: 'emissions'
       },
       {
@@ -169,7 +169,7 @@ export default [
         path: '/stories',
         component: error,
         exact: true,
-        nav: true,
+        nav: false,
         label: 'STORIES'
       },
       {
