@@ -51,6 +51,8 @@ class Home extends PureComponent {
               <Icon icon={fullscreen} />
             </Button>
             <ReactPlayer
+              width="100%"
+              height="100%"
               ref={player => {
                 this.player = player;
               }}
