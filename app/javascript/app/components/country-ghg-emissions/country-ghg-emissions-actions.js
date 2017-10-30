@@ -16,13 +16,32 @@ const fetchCountryGhgEmissionsData = createThunkAction(
   'fetchCountryGhgEmissionsData',
   filters => dispatch => {
     dispatch(fetchCountryGhgEmissionsInit());
-    fetch(`/api/v1/emissions?${qs.stringify(filters)}`)
-      .then(response => {
+    const promises = [
+      fetch(`/api/v1/emissions?${qs.stringify(filters)}`).then(response => {
+        if (response.ok) return response.json();
+        throw Error(response.statusText);
+      }),
+      fetch(
+        `/api/v1/quantifications?location=${filters.location}`
+      ).then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);
       })
+    ];
+
+    Promise.all(promises)
       .then(data => {
-        dispatch(fetchCountryGhgEmissionsDataReady(data));
+        let quantifications;
+        if (data[1].length) {
+          quantifications = data[1].map(quantification => ({
+            value: quantification.value,
+            label: quantification.label,
+            year: parseInt(quantification.label.replace(/\D/g, ''), 10) // TODO get this value from API and remove this ugly hack
+          }));
+        }
+        dispatch(
+          fetchCountryGhgEmissionsDataReady({ data: data[0], quantifications })
+        );
       })
       .catch(error => {
         console.warn(error);
