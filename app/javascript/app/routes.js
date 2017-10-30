@@ -198,7 +198,7 @@ export default [
             component: AboutContact,
             exact: true,
             anchor: true,
-            label: 'Contact us & Feedback'
+            label: 'Contact Us & Feedback'
           },
           {
             path: '/about/permissions',
