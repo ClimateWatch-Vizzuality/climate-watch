@@ -59,15 +59,15 @@
 }
 
 .definitions {
-  border-bottom: solid 1px rgba($theme-color, 0.3);  
+  border-bottom: solid 1px rgba($theme-color, 0.3);
 }
 
 .definitionCompare {
   @extend %grid;
 
-  @include msGridColumns(25%, 25%, 25%, 25%);
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
 
-  grid-template-columns: repeat(4, 25%);
+  grid-template-columns: repeat(4, 1fr);
   padding: 30px 0;
   border-bottom: solid 1px rgba(#9090b2, 0.15);
 }
