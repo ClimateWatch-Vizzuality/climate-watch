@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 object_contents = {
-  "#{CW_FILES_PREFIX}quantifications/quantifications.csv" => <<~END,
+  "#{CW_FILES_PREFIX}quantifications/quantifications.csv" => <<~END_OF_CSV,
     ISO,Country,Year,Value,Range,Label
     AFG,Afghanistan,2025,40.3,No,2025 High pledge
     AFG,Afghanistan,2030,48.93954,No,2030 Low pledge
     AGO,Angola,2025,113.28797,No,2025 High pledge
-  END
+  END_OF_CSV
 }
 
 RSpec.describe ImportQuantifications do
@@ -15,7 +15,9 @@ RSpec.describe ImportQuantifications do
   before :all do
     Aws.config[:s3] = {
       stub_responses: {
-        get_object: ->(context) { {body: object_contents[context.params[:key]]} }
+        get_object: -> (context) do
+          {body: object_contents[context.params[:key]]}
+        end
       }
     }
   end
