@@ -25,13 +25,15 @@ const Button = props => {
     [styles.disabled]: !onClick && !link,
     [styles.noSpace]: noSpace
   });
+  const isDisabled = disabled || !onClick;
   return link ? (
     <NavLink className={classNames} to={link}>
       {children}
     </NavLink>
   ) : (
     <button
-      disabled={disabled || !onClick}
+      title={isDisabled ? 'Coming soon' : ''}
+      disabled={isDisabled}
       className={classNames}
       onClick={onClick}
     >
