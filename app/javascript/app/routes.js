@@ -125,7 +125,7 @@ export default [
           },
           {
             hash: 'climate-vulnerability',
-            label: 'Climate vulnerability and readiness',
+            label: 'Climate Vulnerability and Readiness',
             anchor: true,
             component: ClimateVulnerability
           },
@@ -198,7 +198,7 @@ export default [
             component: AboutContact,
             exact: true,
             anchor: true,
-            label: 'Contact us & Feedback'
+            label: 'Contact Us & Feedback'
           },
           {
             path: '/about/permissions',

@@ -6,9 +6,16 @@ const AboutPermissions = () => (
     <p>
       Climate Watch has an open data commitment and intends to provide
       information free of constraints and restrictions on use. Except as noted
-      below, data and visualizations on this site carry the Creative Commons CC
-      BY 4.0 license, which permits unrestricted reuse of Climate Watch content
-      when proper attribution is provided. This means you are able to download,
+      below, data and visualizations on this site carry the{' '}
+      <a
+        href="//creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Creative Commons CC BY 4.0
+      </a>{' '}
+      license, which permits unrestricted reuse of Climate Watch content when
+      proper attribution is provided. This means you are able to download,
       share, and adapt the data for any use, including commercial and
       noncommercial uses. You must attribute the data appropriately, using the
       information provided in the data set description.
@@ -24,7 +31,14 @@ const AboutPermissions = () => (
     <ul>
       <li>
         You are free to use maps, graphics, charts, and other representations of
-        data on the Climate Watch website, with the Creative Commons CC BY 4.0
+        data on the Climate Watch website, with the{' '}
+        <a
+          href="//creativecommons.org/licenses/by/4.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Creative Commons CC BY 4.0
+        </a>{' '}
         license. Where graphs employ data from third parties, we may not be able
         to grant permissions to the original data used in these charts, although
         such permissions may be granted by the owners of the data. In these
@@ -38,7 +52,14 @@ const AboutPermissions = () => (
         inpidual data set. Most of the photographs featured on this site have
         either been licensed under nontransferable terms, or have been acquired
         from photo-sharing sites such as Flickr that have their own policies for
-        public use. Unless indicated otherwise, the Creative Commons CC BY 4.0
+        public use. Unless indicated otherwise, the{' '}
+        <a
+          href="//creativecommons.org/licenses/by/4.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Creative Commons CC BY 4.0
+        </a>{' '}
         license described above does not apply to photographs and images used on
         this site.
       </li>
@@ -59,14 +80,22 @@ const AboutPermissions = () => (
         2016. “Examining the Alignment Between the Intended Nationally
         Determined Contributions and Sustainable Development Goals.” Working
         Paper. Washington, DC: World Resources Institute. Available online at:{' '}
-        <a href="www.climatewatchdata.org" target="_blank">
+        <a
+          href="//www.climatewatchdata.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           www.climatewatchdata.org
         </a>
       </li>
       <li>
         CAIT emissions data (except PIK or UNFCCC data sets) Climate Watch.
         2017. Washington, DC: World Resources Institute. Available online at:{' '}
-        <a href="www.climatewatchdata.org" target="_blank">
+        <a
+          href="//www.climatewatchdata.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           www.climatewatchdata.org
         </a>
       </li>

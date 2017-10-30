@@ -78,7 +78,7 @@ class Home extends PureComponent {
           <div className={styles.column}>
             <Intro
               theme={introDark}
-              title="View country profiles"
+              title="View Country Profiles"
               description="A snapshot of countries' climate action progress, risks and vulnerability. Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
             />
             <GeoLocationProvider />
