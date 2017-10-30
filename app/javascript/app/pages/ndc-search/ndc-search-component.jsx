@@ -50,6 +50,7 @@ class SearchPage extends PureComponent {
             {!results &&
             !loading && <NoContent message="No results for this search" />}
             {results &&
+              !loading &&
               results.map(result => (
                 <ResultCard
                   key={result.location.iso_code3}
