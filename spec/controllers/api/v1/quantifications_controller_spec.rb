@@ -24,7 +24,7 @@ describe Api::V1::QuantificationsController, type: :controller do
       end
 
       it 'filters quantification values by location' do
-        get :index, params: {location: "POL"}
+        get :index, params: {location: 'POL'}
         parsed_body = JSON.parse(response.body)
         expect(parsed_body.length).to eq(2)
       end
