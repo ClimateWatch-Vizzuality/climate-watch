@@ -17,6 +17,7 @@ import Sectors from 'pages/sectors';
 import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
+import EmissionPathways from 'pages/emission-pathways';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
@@ -148,6 +149,14 @@ export default [
         exact: true,
         nav: true,
         label: 'GHG EMISSIONS',
+        headerImage: 'emissions'
+      },
+      {
+        path: '/emission-pathways',
+        component: EmissionPathways,
+        exact: true,
+        nav: true,
+        label: 'Emission Pathways',
         headerImage: 'emissions'
       },
       {
