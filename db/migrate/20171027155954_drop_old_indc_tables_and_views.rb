@@ -7,9 +7,9 @@ class DropOldIndcTablesAndViews < ActiveRecord::Migration[5.1]
     drop_view :indc_indicators, materialized: true
     drop_view :indc_categories, materialized: true
 
+    drop_table :global_indc_indicators_categories
     drop_table :global_indc_categories
     drop_table :global_indc_indicators
-    drop_table :global_indc_indicators_categories
 
     drop_table :cait_indc_values
     drop_table :cait_indc_labels

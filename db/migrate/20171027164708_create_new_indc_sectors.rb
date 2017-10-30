@@ -6,10 +6,7 @@ class CreateNewIndcSectors < ActiveRecord::Migration[5.1]
         on_delete: :cascade
       }
       t.text :name, null: false
-      t.text :slug, null: false
       t.timestamps
     end
-
-    add_index :indc_sectors, :slug, unique: true
   end
 end
