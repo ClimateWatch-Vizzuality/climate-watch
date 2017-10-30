@@ -42,7 +42,11 @@ class NDCCountry extends PureComponent {
             </div>
           </div>
           <Sticky activeClass="sticky">
-            <AnchorNav links={anchorLinks} className={layout.content} />
+            <AnchorNav
+              useRoutes
+              links={anchorLinks}
+              className={layout.content}
+            />
           </Sticky>
         </Header>
         <div className={styles.countrySelector}>
@@ -90,7 +94,8 @@ NDCCountry.propTypes = {
   route: PropTypes.object.isRequired,
   countriesOptions: PropTypes.array,
   activeCountriesOptions: PropTypes.array,
-  handleDropDownChange: PropTypes.func
+  handleDropDownChange: PropTypes.func,
+  anchorLinks: PropTypes.array
 };
 
 export default NDCCountry;

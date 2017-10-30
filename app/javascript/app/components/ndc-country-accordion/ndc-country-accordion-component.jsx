@@ -20,18 +20,16 @@ class Accordion extends PureComponent {
       loading,
       sectors
     } = this.props;
-    console.log(data);
     return (
       <div className={styles.wrapper}>
         {loading && <Loading light className={styles.loader} />}
-        {!data.length &&
-        !loading && (
-        <NoContent
-              className={styles.noContent}
-              message="No content for that category"
-              icon
-            />
-          )}
+        {!data.length && !loading && (
+          <NoContent
+            className={styles.noContent}
+            message="No content for that category"
+            icon
+          />
+        )}
         {!loading &&
           data &&
           data.map((section, index) => {
@@ -107,9 +105,9 @@ class Accordion extends PureComponent {
                                             className={styles.definitionDesc}
                                           >
                                             <div
-                                              dangerouslySetInnerHTML={{
+                                              dangerouslySetInnerHTML={{ // eslint-disable-line
                                                 __html: desc.value
-                                              }} // eslint-disable-line
+                                              }} 
                                             />
                                           </dd>
                                         ))}
@@ -134,18 +132,23 @@ class Accordion extends PureComponent {
                                 <dt className={styles.definitionTitle}>
                                   {def.title}
                                 </dt>
-                                {def.descriptions.map(desc => (
-                                  <dd
-                                    key={`${def.slug}-${desc.iso}`}
-                                    className={styles.definitionDesc}
-                                  >
-                                    <div
-                                      dangerouslySetInnerHTML={{
-                                        __html: desc.values[0].value
-                                      }} // eslint-disable-line
-                                    />
-                                  </dd>
-                                ))}
+                                {def.descriptions.map(
+                                  desc =>
+                                    (
+                                      <dd
+                                        key={`${def.slug}-${desc.iso}`}
+                                        className={styles.definitionDesc}
+                                      >
+                                        <div
+                                          dangerouslySetInnerHTML={{  // eslint-disable-line
+                                            __html: desc.values
+                                              ? desc.values[0].value
+                                              : null
+                                          }}
+                                        />
+                                      </dd>
+                                    )
+                                )}
                               </div>
                             </div>
                           ))

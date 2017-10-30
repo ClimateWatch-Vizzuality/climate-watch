@@ -128,7 +128,10 @@ export default [
           {
             path: '/ndcs/compare/mitigation',
             component: () =>
-              createElement(NDCCountryAccordion, { category: 'migitation' }),
+              createElement(NDCCountryAccordion, {
+                category: 'migitation',
+                compare: true
+              }),
             exact: true,
             anchor: true,
             label: 'Mitigation',
@@ -137,7 +140,10 @@ export default [
           {
             path: '/ndcs/compare/adaptation',
             component: () =>
-              createElement(NDCCountryAccordion, { category: 'adaptation' }),
+              createElement(NDCCountryAccordion, {
+                category: 'adaptation',
+                compare: true
+              }),
             exact: true,
             anchor: true,
             label: 'Adaptation',
@@ -147,7 +153,8 @@ export default [
             path: '/ndcs/compare/sectoral-information',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'sectoral_information'
+                category: 'sectoral_information',
+                compare: true
               }),
             exact: true,
             anchor: true,

@@ -22,7 +22,6 @@ class NDCCountry extends PureComponent {
       match,
       onSearchChange,
       handleDropDownChange,
-      documentsOptions,
       search,
       route,
       anchorLinks
@@ -41,7 +40,6 @@ class NDCCountry extends PureComponent {
                 <Dropdown
                   className={theme.dropdownOptionWithArrow}
                   placeholder="Select a document"
-                  options={documentsOptions}
                   onValueChange={handleDropDownChange}
                   hideResetButton
                   white
@@ -54,7 +52,8 @@ class NDCCountry extends PureComponent {
                 />
                 <Button
                   color="yellow"
-                  link={`/ndcs/compare?locations=${match.params.iso}`}
+                  link={`/ndcs/compare/mitigation?locations=${match.params
+                    .iso}`}
                 >
                   Compare
                 </Button>

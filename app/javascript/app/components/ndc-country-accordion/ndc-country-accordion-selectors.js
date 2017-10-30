@@ -27,9 +27,11 @@ export const parseIndicatorsDefs = createSelector(
         if (sectorIds && sectorIds.length && sectorIds[0]) {
           sectorIds.forEach(sector => {
             descriptions[sector] = countries.map(country => {
-              const value = indicator.locations[country].find(
-                indicValue => indicValue.sector_id === sector
-              );
+              const value = indicator.locations[country]
+                ? indicator.locations[country].find(
+                  indicValue => indicValue.sector_id === sector
+                )
+                : '';
               return {
                 iso: country,
                 value: value ? value.value : null
@@ -37,7 +39,6 @@ export const parseIndicatorsDefs = createSelector(
             });
           });
         } else {
-          console.log(countries);
           descriptions = countries.map(country => ({
             iso: country,
             values: indicator.locations[country]

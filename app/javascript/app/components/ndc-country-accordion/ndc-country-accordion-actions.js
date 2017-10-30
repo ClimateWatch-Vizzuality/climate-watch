@@ -16,7 +16,9 @@ const fetchNDCCountryAccordion = createThunkAction(
   (locations, category, type) => dispatch => {
     dispatch(fetchNDCCountryAccordionInit());
     fetch(
-      `/api/v1/ndcs?location=${locations}&category=${category}&filter=${type}`
+      `/api/v1/ndcs?location=${locations}&category=${category}${type
+        ? `&filter=${type}`
+        : ''}`
     )
       .then(response => {
         if (response.ok) return response.json();
