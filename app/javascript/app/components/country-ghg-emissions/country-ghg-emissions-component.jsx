@@ -4,7 +4,9 @@ import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import ChartStackedArea from 'components/charts/stacked-area';
+import LineChart from 'components/charts/line';
 import Tag from 'components/tag';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -24,6 +26,11 @@ class CountryGhgEmissions extends PureComponent {
       calculationSelected,
       sourceSelected
     } = this.props;
+    const useLineChart =
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
+      calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
+    const ChartComponent = useLineChart ? LineChart : ChartStackedArea;
+
     return (
       <div className={styles.grid}>
         <div className={styles.header}>
@@ -61,7 +68,7 @@ class CountryGhgEmissions extends PureComponent {
         </div>
         <div className={styles.graph}>
           {!loading && (
-            <ChartStackedArea
+            <ChartComponent
               config={config}
               data={data}
               height="100%"

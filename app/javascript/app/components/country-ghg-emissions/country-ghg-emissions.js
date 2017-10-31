@@ -50,9 +50,10 @@ const mapStateToProps = (state, { location, match }) => {
 
 function needsRequestData(props, nextProps) {
   const { sourceSelected } = nextProps;
-  const hasValues = sourceSelected.value;
+  const hasValues = sourceSelected && sourceSelected.value;
+  if (!hasValues) return false;
   const hasChanged = sourceSelected.value !== props.sourceSelected.value;
-  return hasValues && hasChanged;
+  return hasChanged;
 }
 
 function getFiltersParsed(props) {

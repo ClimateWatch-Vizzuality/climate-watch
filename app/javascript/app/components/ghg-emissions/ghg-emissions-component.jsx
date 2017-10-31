@@ -72,7 +72,7 @@ class GhgEmissions extends PureComponent {
             onInfoClick={handleInfoClick}
           />
         </div>
-        <ChartLine config={config} data={data} />
+        <ChartLine config={config} data={data} height={500} />
         <div className={styles.tags}>
           {config.columns &&
             config.columns.y.map(column => (
