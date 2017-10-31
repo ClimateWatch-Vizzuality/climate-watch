@@ -1,7 +1,9 @@
-import { createElement } from 'react';
+import { createElement, PureComponent } from 'react';
 import { connect } from 'react-redux';
+import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
+import { getLocationParamUpdated } from 'utils/navigation';
 
 import actions from './ndc-country-actions';
 import reducers, { initialState } from './ndc-country-reducers';
@@ -28,23 +30,27 @@ const mapStateToProps = (state, { match, location, route }) => {
   };
 };
 
-const NDCCountryContainer = props => {
-  const { location, history } = props;
-
-  const onSearchChange = query => {
-    const search = qs.parse(location.search);
-    const newSearch = { ...search, search: query };
-
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
-    });
+class NDCCountryContainer extends PureComponent {
+  onSearchChange = query => {
+    this.updateUrlParam({ name: 'search', value: query });
   };
 
-  return createElement(NDCCountryComponent, {
-    ...props,
-    onSearchChange
-  });
+  updateUrlParam = (params, clear) => {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  };
+
+  render() {
+    return createElement(NDCCountryComponent, {
+      ...this.props,
+      onSearchChange: this.onSearchChange
+    });
+  }
+}
+
+NDCCountryContainer.propTypes = {
+  history: Proptypes.object.isRequired,
+  location: Proptypes.object.isRequired
 };
 
 export { actions, reducers, initialState };
