@@ -45,7 +45,7 @@ export const getDescriptionText = createSelector(
   description => {
     if (!description) return null;
     return `GDP per capita (${description.year}) - USD
-      ${description.gdp_per_capita} (${description.gdp_per_capita_rank}% of the global average.
+      ${description.gdp_per_capita} (${description.gdp_per_capita_rank}% of the global average).
       <br/>
       Population (${description.year}) - ${description.population} million
       (${description.population_growth}% annual growth)`;
