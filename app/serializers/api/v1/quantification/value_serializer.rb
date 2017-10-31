@@ -3,6 +3,7 @@ module Api
     module Quantification
       class ValueSerializer < ActiveModel::Serializer
         attribute :location
+        attribute :year
         attribute :value
         attribute :label
         attribute :range
