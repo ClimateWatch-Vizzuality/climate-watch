@@ -16,9 +16,10 @@ class TooltipChart extends PureComponent {
 
   render() {
     const { config, content, showTotal } = this.props;
+    const unit = config.axes && config.axes.yLeft && config.axes.yLeft.unit;
     return (
       <div className={styles.tooltip}>
-        <span className={styles.unit}>{config.axes.yLeft.unit}</span>
+        <span className={styles.unit}>{unit}</span>
         {showTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
