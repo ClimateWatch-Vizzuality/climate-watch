@@ -7,13 +7,31 @@
   border-left: solid 1px rgba($gray, 0.5);
 }
 
+.shareButton {
+  fill: $dark-gray;
+  margin-left: 20px;
+  padding: 17px 20px;
+
+  &.active {
+    border-bottom: 3px solid $theme-secondary;
+  }
+}
+
 .link {
-  color: $theme-color-light;
+  color: $dark-gray;
   margin-left: 40px;
   text-decoration: none;
   position: relative;
 
-  &Active::after {
+  svg {
+    fill: $dark-gray;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &.active::after {
     content: "";
     position: absolute;
     bottom: -8px;
@@ -23,8 +41,4 @@
     width: 100%;
     height: 3px;
   }
-}
-
-.download {
-  fill: $theme-color-light;
 }

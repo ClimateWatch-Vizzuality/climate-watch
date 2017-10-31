@@ -32,9 +32,11 @@ function handleTrack(location, prevLocation) {
   }
 }
 
+// Path routes exclude menu groups
 const mapStateToProps = (state, { route }) => ({
   countriesLoaded: state.countries.loaded,
-  navRoutes: route.routes.filter(r => r.nav)
+  navRoutes: route.routes.filter(r => r.nav),
+  pathRoutes: route.routes.filter(r => r.path)
 });
 
 class Root extends PureComponent {

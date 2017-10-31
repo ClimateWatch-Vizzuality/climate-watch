@@ -9,7 +9,7 @@ const BottomBar = ({ className }) => (
   <div className={styles.container}>
     <div className={cx(styles.bottomBar, className)}>
       <div>
-        <Link className={styles.text} to="/terms">
+        <Link className={styles.text} to="/about/permissions">
           Terms of Service
         </Link>
         <span className={styles.text}> - </span>

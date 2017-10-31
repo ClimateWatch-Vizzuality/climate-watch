@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Button from 'components/button';
-import Icon from 'components/icon';
 import Dropdown from 'components/dropdown';
 import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
 import cx from 'classnames';
@@ -13,7 +11,6 @@ import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 import Sticky from 'react-stickynode';
 
 import layout from 'styles/layout.scss';
-import backIcon from 'assets/icons/back.svg';
 import contentStyles from 'styles/themes/content.scss';
 import styles from './ndc-country-full-styles.scss';
 
@@ -44,7 +41,6 @@ class NDCCountryFull extends PureComponent {
   render() {
     const {
       country,
-      match,
       onDocumentChange,
       contentOptions,
       contentOptionSelected,
@@ -56,14 +52,6 @@ class NDCCountryFull extends PureComponent {
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <div className={styles.title}>
-              <Button
-                className={styles.backButton}
-                color="transparent"
-                link={`/ndcs/country/${match.params.iso}`}
-                square
-              >
-                <Icon className={styles.backIcon} icon={backIcon} />
-              </Button>
               {country && (
                 <Intro title={`${country.wri_standard_name} - Full Content`} />
               )}
@@ -99,7 +87,6 @@ class NDCCountryFull extends PureComponent {
 
 NDCCountryFull.propTypes = {
   route: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
   country: PropTypes.object,
   content: PropTypes.object,
   contentOptions: PropTypes.array,

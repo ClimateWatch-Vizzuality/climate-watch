@@ -24,35 +24,37 @@ const About = () => (
       increase transparency and accountability, and provide actionable analysis
       on how countries can enhance their efforts to combat climate change.
     </p>
-    Climate Watch is an online platform designed to empower policymakers,
-    <p>
-      This free platform enables users to create and share custom data
-      visualizations and comparisons of national climate commitments. It
-      contributes to the goals of the Paris Agreement by using open data to
-      increase transparency and accountability, and provide actionable analysis
-      on how countries can enhance their efforts to combat climate change.
-    </p>
     <h3>Climate Watch includes:</h3>
     <ul>
       <li>
-        Data and visualizations on all countries’ greenhouse gas emissions;
+        <a href="/ghg-emissions" className={styles.link}>
+          Data and visualizations on all countries’ greenhouse gas emissions
+        </a>;
       </li>
       <li>
-        A comprehensive, user-friendly database of all countries’ Nationally
-        Determined Contributions (NDCs);
+        <a href="/ndcs" className={styles.link}>
+          A comprehensive, user-friendly database of all countries’ Nationally
+          Determined Contributions (NDCs)
+        </a>;
       </li>
       <li>
-        Comprehensive mapping of linkages between Nationally Determined
-        Contributions (NDCs) and the Sustainable Development Goals (SDGs) and
-        associated targets of the 2030 Agenda for Sustainable Development.
+        <a href="/ndcs-sdg" className={styles.link}>
+          Comprehensive mapping of linkages between Nationally Determined
+          Contributions (NDCs) and the Sustainable Development Goals (SDGs) and
+          associated targets of the 2030 Agenda for Sustainable Development
+        </a>.
       </li>
       <li>
-        Data and visuals of emissions scenario pathways for major emitting
-        countries, derived from a growing library of models;
+        <a href="/emission-pathways" className={styles.link}>
+          Data and visuals of emissions scenario pathways for major emitting
+          countries, derived from a growing library of models
+        </a>;
       </li>
       <li>
-        National and sectoral profile pages that offer a snapshot of climate
-        progress, risks and vulnerabilities; and
+        <a href="/countries" className={styles.link}>
+          National and sectoral profile pages that offer a snapshot of climate
+          progress, risks and vulnerabilities
+        </a>; and
       </li>
       <li>
         The ability to download data and create, save and share customized data
@@ -60,11 +62,24 @@ const About = () => (
       </li>
     </ul>
     <p>
-      Climate Watch is implemented by{' '}
-      <a href="www.wri.org" target="_blank" className={styles.link}>
+      Climate Watch is managed by{' '}
+      <a
+        href="//www.wri.org"
+        target="_blank"
+        className={styles.link}
+        rel="noopener noreferrer"
+      >
         World Resources Institute
       </a>{' '}
-      in collaboration with partners.
+      in collaboration with partners and is a flagship initiative of the{' '}
+      <a
+        href="//ndcpartnership.org/"
+        target="_blank"
+        className={styles.link}
+        rel="noopener noreferrer"
+      >
+        NDC Partnership
+      </a>.
     </p>
   </div>
 );

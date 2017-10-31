@@ -32,7 +32,7 @@ class NdcSdg extends PureComponent {
             <div className={headerTheme.headerGrid}>
               <Intro
                 title="NDC-SDG Linkages"
-                description="The level of alignment between NDCs and SDGs"
+                description="Identify potential alignment between the targets, actions, policies measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
               />
               <AutocompleteSearch />
             </div>
