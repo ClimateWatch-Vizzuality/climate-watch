@@ -5,6 +5,8 @@
   display: inline-block;
 
   .button {
+    cursor: pointer;
+
     &.active::after {
       content: "";
       position: absolute;
@@ -32,6 +34,13 @@
 
     .arrowIcon {
       transform: rotate(180deg);
+    }
+  }
+
+  &.positionRight {
+    .links {
+      left: 0;
+      right: initial;
     }
   }
 

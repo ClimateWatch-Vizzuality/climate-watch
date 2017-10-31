@@ -27,6 +27,11 @@
     fill: $dark-gray;
   }
 
+  &.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
   &.active::after {
     content: "";
     position: absolute;
