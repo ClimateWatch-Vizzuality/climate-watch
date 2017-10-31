@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :indc_indicator, class: 'Indc::Indicator' do
     name 'MyName'
     association :source, factory: :indc_source
-    sequence :slug { |n| "my-slug-" + ('AA'..'ZZ').to_a[n] }
+    sequence :slug { |n| 'my-slug-' + ('AA'..'ZZ').to_a[n] }
 
     trait :with_dependants do
       transient do

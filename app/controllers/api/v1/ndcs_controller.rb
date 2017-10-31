@@ -9,7 +9,7 @@ module Api
       'coverage_sectors',
       'coverage_sectors_short',
       'other_adaption info'
-    ].map { |s| "cait_#{s}"}.freeze
+    ].map { |s| "cait_#{s}" }.freeze
 
     NdcIndicators = Struct.new(:indicators, :categories, :sectors) do
       alias_method :read_attribute_for_serialization, :send

@@ -4,4 +4,3 @@ namespace :indc do
     ImportIndc.new.call
   end
 end
-

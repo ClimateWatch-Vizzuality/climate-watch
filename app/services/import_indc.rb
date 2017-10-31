@@ -1,11 +1,16 @@
 class ImportIndc
-  DATA_CAIT_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_CAIT_data.csv".
-    freeze
-  LEGEND_CAIT_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_CAIT_legend.csv".freeze
-  DATA_WB_WIDE_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_WB_data_wide.csv".freeze
-  DATA_WB_SECTORAL_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_WB_data_sectoral.csv".freeze
-  SUBMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_submission.csv".freeze
-  METADATA_FILEPATH = "#{CW_FILES_PREFIX}indc/NDC_metadata.csv".freeze
+  DATA_CAIT_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_CAIT_data.csv".freeze
+  LEGEND_CAIT_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_CAIT_legend.csv".freeze
+  DATA_WB_WIDE_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_WB_data_wide.csv".freeze
+  DATA_WB_SECTORAL_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_WB_data_sectoral.csv".freeze
+  SUBMISSIONS_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_submission.csv".freeze
+  METADATA_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_metadata.csv".freeze
 
   def call
     cleanup
@@ -138,7 +143,7 @@ class ImportIndc
   def import_categories
     Indc::CategoryType.all.
       each do |category_type|
-      import_categories_of(category_type)
+        import_categories_of(category_type)
       end
   end
 
@@ -147,7 +152,7 @@ class ImportIndc
       map { |r| [[r[:column_name], r[:source]], r] }.
       uniq(&:first).
       map(&:second).
-      each do |indicator, memo|
+      each do |indicator|
         Indc::Indicator.create!(indicator_attributes(indicator))
       end
   end
@@ -162,15 +167,15 @@ class ImportIndc
         )
 
       categories = r.keys.
-        select { |key| key.match(/_category$/)}.
+        select { |key| key.match(/_category$/) }.
         map { |c| c.to_s.gsub(/_category$/, '') }.
         map do |category_type|
-          unless r[:"#{category_type}_category"].nil?
-            Indc::Category.find_by!(
-              name: r[:"#{category_type}_category"],
-              category_type: @category_types_index[category_type]
-            )
-          end
+          next if r[:"#{category_type}_category"].nil?
+
+          Indc::Category.find_by!(
+            name: r[:"#{category_type}_category"],
+            category_type: @category_types_index[category_type]
+          )
         end
 
       categories = categories.
@@ -192,30 +197,30 @@ class ImportIndc
     indicators.each do |indicator_name, labels|
       indicator = Indc::Indicator.find_by!(name: indicator_name)
       labels.each_with_index do |label, index|
-        Indc::Label.create!({
+        Indc::Label.create!(
           indicator: indicator,
           value: label,
           index: index + 1
-        })
+        )
       end
     end
   end
 
   def import_values_cait
-    Indc::Indicator.
-      where(source: @sources_index['CAIT']).
-      each do |indicator|
-        @cait_data.each do |r|
-          location = @locations_by_iso3[r[:iso]]
-          unless location
-            Rails.logger.error "location #{d[:country]} not found. Skipping."
-            next
-          end
-
-          Indc::Value.create!(
-            value_cait_attributes(r, location, indicator)
-          ) if r[:"#{indicator.name}"]
+    Indc::Indicator.where(source: @sources_index['CAIT']).each do |indicator|
+      @cait_data.each do |r|
+        location = @locations_by_iso3[r[:iso]]
+        unless location
+          Rails.logger.error "location #{d[:country]} not found. Skipping."
+          next
         end
+
+        next unless r[:"#{indicator.name}"]
+
+        Indc::Value.create!(
+          value_cait_attributes(r, location, indicator)
+        )
+      end
     end
   end
 
@@ -227,7 +232,7 @@ class ImportIndc
     @sectors_index = {}
     sectors.uniq.each do |d|
       parent = Indc::Sector.find_or_create_by(
-        name: d[:sector],
+        name: d[:sector]
       )
       sector = Indc::Sector.create!(
         name: d[:subsector],
@@ -258,9 +263,11 @@ class ImportIndc
         next
       end
 
+      next unless r[:responsetext]
+
       Indc::Value.create!(
         value_wb_attributes(r, location, indicator)
-      ) if r[:responsetext]
+      )
     end
   end
 
