@@ -31,11 +31,15 @@ export const getPathsWithStyles = createSelector(
     setScaleBuckets([initialStep, data.colour]);
     return worldPaths.map(path => {
       let color = '#E5E5EB'; // default color
+      let clickAllowed = false;
       const iso = path.properties && path.properties.id;
       if (data && data.locations && data.locations[iso]) {
         let percentage = data.locations[iso].length / data.targets.length;
+        clickAllowed = true;
         if (targetHover) {
-          percentage = data.locations[iso].includes(targetHover) ? 1 : 0;
+          const isIncluded = data.locations[iso].includes(targetHover);
+          clickAllowed = isIncluded;
+          percentage = isIncluded ? 1 : 0;
         }
         color = colorScale(percentage);
       }
@@ -62,7 +66,8 @@ export const getPathsWithStyles = createSelector(
 
       return {
         ...path,
-        style
+        style,
+        clickAllowed
       };
     });
   }

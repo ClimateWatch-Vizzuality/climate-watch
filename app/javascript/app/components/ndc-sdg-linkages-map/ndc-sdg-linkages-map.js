@@ -1,5 +1,6 @@
 import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
 
@@ -27,14 +28,36 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
   };
 };
 class NdcSdgLinkagesMapContainer extends PureComponent {
+  onCountryClick = geometry => {
+    const { history, targetHover, goalSelected, goalHover } = this.props;
+    const iso = geometry.properties.id;
+    if (iso && geometry.clickAllowed) {
+      let path = `/ndcs/country/${iso}/full?query=1&searchBy=goal`;
+      if (targetHover) {
+        path = `/ndcs/country/${iso}/full?query=${targetHover}&searchBy=target`;
+      } else if (goalSelected) {
+        path = `/ndcs/country/${iso}/full?query=${goalSelected}&searchBy=goal`;
+      } else if (goalHover) {
+        path = `/ndcs/country/${iso}/full?query=${goalHover}&searchBy=goal`;
+      }
+      history.push(path);
+    }
+  };
+
   render() {
     return createElement(NdcSdgLinkagesMapComponent, {
-      ...this.props
+      ...this.props,
+      onCountryClick: this.onCountryClick
     });
   }
 }
 
-NdcSdgLinkagesMapContainer.propTypes = {};
+NdcSdgLinkagesMapContainer.propTypes = {
+  targetHover: PropTypes.string,
+  goalSelected: PropTypes.string,
+  goalHover: PropTypes.number,
+  history: PropTypes.object.isRequired
+};
 
 export { default as component } from './ndc-sdg-linkages-map-component';
 export { default as styles } from './ndc-sdg-linkages-map-styles';
