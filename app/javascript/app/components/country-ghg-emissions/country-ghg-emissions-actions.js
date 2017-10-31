@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import qs from 'query-string';
+import sortBy from 'lodash/sortBy';
 
 const fetchCountryGhgEmissionsInit = createAction(
   'fetchCountryGhgEmissionsInit'
@@ -33,11 +34,14 @@ const fetchCountryGhgEmissionsData = createThunkAction(
       .then(data => {
         let quantifications;
         if (data[1].length) {
-          quantifications = data[1].map(quantification => ({
-            value: quantification.value,
-            label: quantification.label,
-            year: parseInt(quantification.label.replace(/\D/g, ''), 10) // TODO get this value from API and remove this ugly hack
-          }));
+          quantifications = sortBy(
+            data[1].map(quantification => ({
+              value: quantification.value,
+              label: quantification.label,
+              year: quantification.year
+            })),
+            'year'
+          );
         }
         dispatch(
           fetchCountryGhgEmissionsDataReady({ data: data[0], quantifications })
