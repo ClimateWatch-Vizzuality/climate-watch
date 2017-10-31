@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 
 import {
   getCountryName,
-  getCountryDescription,
+  getDescriptionText,
   getAnchorLinks
 } from './country-selectors';
 
@@ -13,19 +13,22 @@ const mapStateToProps = (state, { location, match, route }) => {
   const iso = match.params.iso;
   const stateWithIso = {
     iso,
-    countries: state.countries
+    countries: state.countries,
+    socioeconomics: state.socioeconomics
   };
+
   const routeData = {
     iso,
     location,
     route
   };
+
   return {
     country: {
       iso,
-      name: getCountryName(stateWithIso),
-      description: getCountryDescription(stateWithIso)
+      name: getCountryName(stateWithIso)
     },
+    description: getDescriptionText(stateWithIso),
     anchorLinks: getAnchorLinks(routeData)
   };
 };
