@@ -9,16 +9,15 @@ const AboutContact = () => (
     </p>
     <h3>Sign Up for Updates</h3>
     <p>
-      <a
-        href="http://connect.wri.org/l/120942/2017-09-11/3khdjq"
-        target="_blank"
-        className={styles.link}
-        rel="noopener noreferrer"
-      >
-        Subscribe to our newsletter
-      </a>{' '}
-      for updates and events on Climate Watch and other climate-related tools.
+      Subscribe to our newsletter for updates and events on Climate Watch and
+      other climate-related tools.
     </p>
+    <iframe
+      title="contact-form"
+      className={styles.contactIframe}
+      src="//go.pardot.com/l/120942/2017-09-11/3khdjq"
+      frameBorder="0"
+    />
   </div>
 );
 
