@@ -15,7 +15,7 @@ class Root extends PureComponent {
       <div>
         <CountriesProvider />
         <NavBar routes={navRoutes} />
-        {renderRoutes(route.routes)}
+        {renderRoutes(route.routes.filter(r => r.path))}
         <Footer routes={navRoutes} />
       </div>
     );

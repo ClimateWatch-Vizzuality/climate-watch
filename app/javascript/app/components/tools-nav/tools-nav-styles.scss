@@ -7,6 +7,16 @@
   border-left: solid 1px rgba($gray, 0.5);
 }
 
+.shareButton {
+  fill: $dark-gray;
+  margin-left: 20px;
+  padding: 17px 20px;
+
+  &.active {
+    border-bottom: 3px solid $theme-secondary;
+  }
+}
+
 .link {
   color: $dark-gray;
   margin-left: 40px;
@@ -17,7 +27,11 @@
     fill: $dark-gray;
   }
 
-  &Active::after {
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &.active::after {
     content: "";
     position: absolute;
     bottom: -8px;

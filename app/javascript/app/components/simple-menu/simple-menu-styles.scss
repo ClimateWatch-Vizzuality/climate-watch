@@ -1,82 +1,112 @@
 @import '~styles/layout.scss';
 
-.button {
-  margin-left: 20px;
-  padding: 17px 20px;
-  fill: $dark-gray;
+.dropdown {
+  position: relative;
+  display: inline-block;
 
-  &.active {
-    margin-bottom: -4px;
-    border-bottom: 3px solid $theme-secondary;
-    fill: $theme-color;
-  }
-}
-
-.links {
-  display: none;
-  position: absolute;
-  top: 60px;
-  right: 26px;
-  width: 198px;
-  z-index: 20;
-  border-top: 1px solid $theme-border;
-
-  &.open {
-    display: block;
-  }
-
-  li {
-    background-color: $white;
-    text-align: left;
-    position: relative;
-    transition: color 0.1s linear;
-    border-bottom: 1px solid $theme-border;
+  .button {
     cursor: pointer;
 
-    .documentLink {
-      font-weight: bold;
-      padding: 24px 15px;
+    &.active::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      background-color: $theme-secondary;
+      width: 100%;
+      height: 3px;
+    }
+  }
+
+  .arrowIcon {
+    width: 7px;
+    height: 4px;
+  }
+
+  &.reverse {
+    .links {
+      bottom: 55px;
+      left: 0;
+      right: initial;
+      top: initial;
+    }
+
+    .arrowIcon {
+      transform: rotate(180deg);
+    }
+  }
+
+  &.positionRight {
+    .links {
+      left: 0;
+      right: initial;
+    }
+  }
+
+  .links {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 225px;
+    z-index: 20;
+    border-top: 1px solid $theme-border;
+
+    &.open {
       display: block;
-      width: auto;
-      height: auto;
-      font-size: $font-size;
-      line-height: $line-height-medium;
-      color: $dark-gray;
-      background-color: transparent;
+    }
+
+    li {
+      background-color: $white;
+      text-align: left;
+      position: relative;
       transition: color 0.1s linear;
+      border-bottom: 1px solid $theme-border;
+      cursor: pointer;
 
-      &.disabled {
-        color: $border-color;
-        cursor: not-allowed;
-      }
-
-      .icon {
-        fill: $dark-gray;
-        margin-right: 5px;
-        width: 15px;
-        height: 15px;
-      }
-
-      .title {
+      .link {
         color: $dark-gray;
         vertical-align: text-bottom;
         text-transform: uppercase;
-      }
-    }
 
-    &:hover {
-      .documentLink {
-        .title {
-          color: $theme-color;
+        .documentLink {
+          font-weight: bold;
+          padding: 24px 15px;
+          display: block;
+          width: auto;
+          height: auto;
+          font-size: $font-size;
+          line-height: $line-height-medium;
+          color: $dark-gray;
+          background-color: transparent;
+          transition: color 0.1s linear;
+
+          .icon {
+            fill: $dark-gray;
+            margin-right: 5px;
+            width: 15px;
+            height: 15px;
+          }
+        }
+      }
+
+      &:hover {
+        .link {
+          .documentLink {
+            .icon {
+              fill: $theme-color;
+            }
+
+            .title {
+              color: $theme-color;
+            }
+          }
         }
 
-        .icon {
-          fill: $theme-color;
+        &::after {
+          opacity: 1;
         }
-      }
-
-      &::after {
-        opacity: 1;
       }
     }
   }

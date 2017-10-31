@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171030145609) do
+ActiveRecord::Schema.define(version: 20171031100456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,11 +258,11 @@ ActiveRecord::Schema.define(version: 20171030145609) do
   create_table "quantification_values", force: :cascade do |t|
     t.bigint "location_id"
     t.bigint "label_id"
-    t.integer "year"
-    t.float "value"
-    t.boolean "range"
+    t.integer "year", limit: 2
+    t.float "first_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "second_value"
     t.index ["label_id"], name: "index_quantification_values_on_label_id"
     t.index ["location_id"], name: "index_quantification_values_on_location_id"
   end

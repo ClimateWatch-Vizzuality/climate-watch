@@ -23,6 +23,7 @@ import { initialState as adaptations } from 'providers/adaptations-provider';
 import { initialState as geoLocation } from 'providers/geolocation-provider';
 import { initialState as ghgEmissionsMeta } from 'providers/ghg-emissions-meta-provider';
 import { initialState as wbCountryData } from 'providers/wb-country-data-provider';
+import { initialState as socioeconomics } from 'providers/socioeconomics-provider';
 import { initialState as timeline } from 'providers/timeline-provider';
 
 export default {
@@ -51,5 +52,6 @@ export default {
   ghgEmissionsMeta,
   wbCountryData,
   timeline,
-  ndcSdg
+  ndcSdg,
+  socioeconomics
 };

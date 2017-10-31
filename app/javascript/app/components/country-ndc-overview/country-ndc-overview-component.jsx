@@ -5,6 +5,7 @@ import Card from 'components/card';
 import Intro from 'components/intro';
 import cx from 'classnames';
 import Loading from 'components/loading';
+import NoContent from 'components/no-content';
 
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
@@ -13,37 +14,53 @@ import styles from './country-ndc-overview-styles.scss';
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { iso, sectors, values, loading } = this.props;
+    const { iso, sectors, values, loading, actions } = this.props;
     const hasSectors = values && sectors;
+    if (!hasSectors && !loading) {
+      return (
+        <NoContent
+          message="No overview content data"
+          className={styles.noContent}
+        />
+      );
+    }
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           {loading && <Loading light className={styles.loader} />}
           {hasSectors && (
             <div>
-              <div className={cx(styles.header, styles.col2)}>
+              <div className={cx(styles.header, actions ? styles.col2 : '')}>
                 <Intro
                   theme={introTheme}
-                  title="Nationally Determined Contribution (NDC) Overview"
+                  title={
+                    actions ? (
+                      'Nationally Determined Contribution (NDC) Overview'
+                    ) : (
+                      'Overview'
+                    )
+                  }
                   description={values.indc_summary[0].value}
                 />
-                <div className={styles.actions}>
-                  <div className={styles.printButton} />
-                  <Button
-                    className={styles.exploreBtn}
-                    color="white"
-                    link={`/ndcs/compare?locations=${iso}`}
-                  >
-                    Compare
-                  </Button>
-                  <Button
-                    className={styles.exploreBtn}
-                    color="yellow"
-                    link={`/ndcs/country/${iso}`}
-                  >
-                    Explore NDC content
-                  </Button>
-                </div>
+                {actions && (
+                  <div className={styles.actions}>
+                    <div className={styles.printButton} />
+                    <Button
+                      className={styles.exploreBtn}
+                      color="white"
+                      link={`/ndcs/compare?locations=${iso}`}
+                    >
+                      Compare
+                    </Button>
+                    <Button
+                      className={styles.exploreBtn}
+                      color="yellow"
+                      link={`/ndcs/country/${iso}`}
+                    >
+                      Explore NDC content
+                    </Button>
+                  </div>
+                )}
               </div>
               <h4 className={styles.subTitle}>Mitigation contribution</h4>
               <div className={styles.cards}>
@@ -97,7 +114,7 @@ class CountryNdcOverview extends PureComponent {
                           // eslint-disable-line
                           __html: values.coverage_sectors_short[0].value
                         }}
-                      /> // eslint-disable-line
+                      />
                     ) : (
                       <div className={styles.noContent}>Not included</div>
                     )}
@@ -136,7 +153,8 @@ CountryNdcOverview.propTypes = {
   iso: PropTypes.string,
   sectors: PropTypes.array,
   values: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  actions: PropTypes.bool
 };
 
 export default CountryNdcOverview;

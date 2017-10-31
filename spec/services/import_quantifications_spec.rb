@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 object_contents = {
-  "#{CW_FILES_PREFIX}quantifications/quantifications.csv" => <<~END_OF_CSV,
+  "#{CW_FILES_PREFIX}quantifications/CW_NDC_quantification_commas.csv" => <<~END_OF_CSV,
     ISO,Country,Year,Value,Range,Label
     AFG,Afghanistan,2025,40.3,No,2025 High pledge
     AFG,Afghanistan,2030,48.93954,No,2030 Low pledge

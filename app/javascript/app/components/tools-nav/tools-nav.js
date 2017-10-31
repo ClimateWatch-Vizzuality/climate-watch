@@ -14,22 +14,22 @@ const mapStateToProps = () => {
   const url = location.href;
   const shareMenuOptions = [
     {
-      title: 'Email',
+      label: 'Email',
       icon: mailIcon,
       link: `mailto:?subject=Climate%20Watch&body=${url}`
     },
     {
-      title: 'Facebook',
+      label: 'Facebook',
       icon: facebookIcon,
       link: `https://www.facebook.com/sharer/sharer.php?u=${url}`
     },
     {
-      title: 'Twitter',
+      label: 'Twitter',
       icon: twitterIcon,
       link: `https://twitter.com/intent/tweet?url=${url}`
     },
     {
-      title: 'Copy link',
+      label: 'Copy link',
       icon: linkIcon
     }
   ];
