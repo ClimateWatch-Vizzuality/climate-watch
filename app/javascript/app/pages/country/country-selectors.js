@@ -1,10 +1,8 @@
 import { createSelector } from 'reselect';
-import isEmpty from 'lodash/isEmpty';
 
-const getCountries = state => state.countries.data;
+const getCountries = state => state.countries.data || null;
 const getIso = state => state.iso;
-const getSocioeconomics = state =>
-  (isEmpty(state.socioeconomics.data) ? null : state.socioeconomics.data);
+const getSocioeconomicsData = state => state.socioeconomics;
 
 const getCountryByIso = (countries = [], iso) =>
   countries.find(country => country.iso_code3 === iso);
@@ -35,11 +33,10 @@ export const getAnchorLinks = createSelector(
 );
 
 export const getCountryDescription = createSelector(
-  [getSocioeconomics, getIso],
-  (socioeconomics, iso) => {
-    const countrySocioeconomics = socioeconomics && socioeconomics[iso];
-    if (!countrySocioeconomics) return null;
-    return countrySocioeconomics[countrySocioeconomics.length - 1];
+  [getSocioeconomicsData],
+  socioeconomicsData => {
+    if (!socioeconomicsData) return null;
+    return socioeconomicsData[socioeconomicsData.length - 1];
   }
 );
 

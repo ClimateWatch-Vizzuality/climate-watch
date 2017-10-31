@@ -11,10 +11,11 @@ import Component from './country-component';
 
 const mapStateToProps = (state, { location, match, route }) => {
   const iso = match.params.iso;
+  const { data } = state.socioeconomics;
   const stateWithIso = {
     iso,
     countries: state.countries,
-    socioeconomics: state.socioeconomics
+    socioeconomics: data ? data[iso] : {}
   };
 
   const routeData = {

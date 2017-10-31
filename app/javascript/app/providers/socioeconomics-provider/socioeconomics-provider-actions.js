@@ -9,11 +9,11 @@ const fetchSocioeconomicsFail = createAction('fetchSocioeconomicsFail');
 const fetchSocioeconomics = createThunkAction(
   'fetchSocioeconomics',
   iso => (dispatch, state) => {
-    const { wbCountryData } = state();
+    const { socioeconomics } = state();
     if (
-      wbCountryData.data &&
-      isEmpty(wbCountryData.data[iso]) &&
-      !wbCountryData.loading
+      socioeconomics.data &&
+      isEmpty(socioeconomics.data[iso]) &&
+      !socioeconomics.loading
     ) {
       dispatch(fetchSocioeconomicsInit());
       fetch(`/api/v1/socioeconomics/${iso}`)
