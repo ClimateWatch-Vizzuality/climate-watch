@@ -211,7 +211,7 @@ class ImportIndc
       @cait_data.each do |r|
         location = @locations_by_iso3[r[:iso]]
         unless location
-          Rails.logger.error "location #{d[:country]} not found. Skipping."
+          Rails.logger.error "location #{r[:country]} not found. Skipping."
           next
         end
 
