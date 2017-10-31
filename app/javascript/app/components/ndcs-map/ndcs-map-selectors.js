@@ -47,7 +47,8 @@ export const getSelectedCategory = createSelector(
       }
       const firstCategorywithIndicators = categories.find(category =>
         indicators.some(
-          indicator => indicator.category_ids.indexOf(category.id) > -1
+          indicator =>
+            indicator.category_ids.indexOf(parseInt(category.id, 10)) > -1
         )
       );
       return firstCategorywithIndicators || categories[0];
@@ -59,9 +60,8 @@ export const getSelectedCategory = createSelector(
 export const getCategoryIndicators = createSelector(
   [getIndicatorsParsed, getSelectedCategory],
   (indicatorsParsed, category) => {
-    const categoryId = category.id;
     const categoryIndicators = indicatorsParsed.filter(
-      indicator => indicator.categoryIds.indexOf(categoryId) > -1
+      indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
     );
     return categoryIndicators;
   }
