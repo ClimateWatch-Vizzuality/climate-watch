@@ -98,6 +98,10 @@ describe ImportIndc do
     expect { subject }.to change { Indc::Source.count }.by(2)
   end
 
+  it 'Creates new INDC category records' do
+    expect { subject }.to change { Indc::Category.count }.by(9)
+  end
+
   it 'Creates new INDC indicator records' do
     expect { subject }.to change { Indc::Indicator.count }.by(12)
   end
