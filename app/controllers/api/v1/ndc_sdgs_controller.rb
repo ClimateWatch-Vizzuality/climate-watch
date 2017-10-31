@@ -7,7 +7,7 @@ module Api
     class NdcSdgsController < ApiController
       def index
         goals = ::NdcSdg::Goal.all
-        sectors = ::NdcSdg::Sector.all
+        sectors = ::NdcSdg::Sector.order(:name)
         targets = ::NdcSdg::Target.
           includes(:sectors, :goal).
           references(:sectors, :goal)

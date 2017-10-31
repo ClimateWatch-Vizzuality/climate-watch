@@ -31,7 +31,7 @@ export const getSectorOptions = createSelector([getSectors], sectors => {
 
   const sectorOptions = Object.keys(sectors).map(sector => ({
     label: upperFirst(sectors[sector].name),
-    value: sector
+    value: sectors[sector].id
   }));
   return sectorOptions;
 });
@@ -52,7 +52,7 @@ export const getSectorSelected = createSelector(
   [getSectorOptions, getActiveSectorId],
   (sectors, activeSector) => {
     if (!sectors) return null;
-    return sectors.find(sector => sector.value === activeSector);
+    return sectors.find(sector => sector.value === parseInt(activeSector, 10));
   }
 );
 

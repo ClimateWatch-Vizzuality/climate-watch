@@ -35,6 +35,7 @@ class NdcSdgLinkagesTableContainer extends PureComponent {
   };
 
   handleClickClose = () => {
+    this.props.onTargetHover(null);
     this.updateUrlParam({ name: 'goal', value: '' });
   };
 
@@ -49,7 +50,8 @@ class NdcSdgLinkagesTableContainer extends PureComponent {
 
 NdcSdgLinkagesTableContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  onTargetHover: PropTypes.func.isRequired
 };
 
 export { default as component } from './ndc-sdg-linkages-table-component';
