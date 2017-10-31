@@ -45,13 +45,19 @@
     .target {
       display: flex;
       padding: 15px 15px 15px 20px;
-      border-bottom: 1px solid $theme-border;
       color: $dark-gray;
+      outline: none;
+      border-top: 1px solid $theme-border;
+      border-bottom: 4px solid transparent;
 
-      &Selected,
       &:hover {
         color: $theme-color;
         cursor: pointer;
+      }
+
+      &Selected,
+      &Selected:hover {
+        color: $theme-color;
       }
 
       .title {

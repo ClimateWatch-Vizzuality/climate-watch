@@ -71,7 +71,7 @@ NdcSdgLinkagesTable.propTypes = {
   handleClickGoal: PropTypes.func.isRequired,
   handleClickClose: PropTypes.func.isRequired,
   selectedGoal: PropTypes.object,
-  targetHover: PropTypes.number,
+  targetHover: PropTypes.string,
   goalHover: PropTypes.number,
   onGoalHover: PropTypes.func.isRequired,
   onTargetHover: PropTypes.func.isRequired
