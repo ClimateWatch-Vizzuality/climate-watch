@@ -16,9 +16,12 @@ const ToolsNav = ({ shareMenuOptions, shareIcon }) => (
     >
       MY CW
     </NavLink>
-    <NavLink exact className={styles.link} to="/my-downloads">
+    <a
+      href="//climate-watch-dev.s3.amazonaws.com/climate-watch-download-zip/data-download.zip"
+      className={styles.link}
+    >
       <Icon className={styles.download} icon={download} />
-    </NavLink>
+    </a>
     <SimpleMenu options={shareMenuOptions} icon={shareIcon} />
   </div>
 );
