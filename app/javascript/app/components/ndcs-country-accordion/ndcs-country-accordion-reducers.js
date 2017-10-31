@@ -12,21 +12,15 @@ export default {
   fetchNdcsCountryAccordionReady: (state, { payload }) => {
     const newState = {
       ...state,
-      data: {
-        ...state.data,
-        [payload.iso]: payload.data
-      }
+      data: payload
     };
 
     return setLoaded(true, setLoading(false, newState));
   },
-  fetchNdcsCountryAccordionFailed: (state, { payload }) => {
+  fetchNdcsCountryAccordionFailed: state => {
     const newState = {
       ...state,
-      data: {
-        ...state.data,
-        [payload]: []
-      }
+      data: {}
     };
 
     return setLoaded(true, setLoading(false, newState));

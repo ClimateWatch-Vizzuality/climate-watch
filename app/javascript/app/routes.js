@@ -111,8 +111,38 @@ export default [
       {
         path: '/ndcs/compare',
         component: NDCCompare,
-        exact: true,
-        headerImage: 'ndc'
+        headerImage: 'ndc',
+        routes: [
+          {
+            path: '/ndcs/compare/mitigation',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'migitation',
+                compare: true
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Mitigation',
+            param: 'mitigation'
+          },
+          {
+            path: '/ndcs/compare/adaptation',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'adaptation',
+                compare: true
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Adaptation',
+            param: 'adaptation'
+          },
+          {
+            path: '/ndcs/compare',
+            component: () =>
+              createElement(Redirect, { to: '/ndcs/compare/mitigation' })
+          }
+        ]
       },
       {
         path: '/ndcs',

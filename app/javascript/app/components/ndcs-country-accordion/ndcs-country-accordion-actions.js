@@ -13,24 +13,22 @@ const fetchNdcsCountryAccordionFailed = createAction(
 
 const fetchNdcsCountryAccordion = createThunkAction(
   'fetchNdcsCountryAccordion',
-  (iso, category) => dispatch => {
-    dispatch(fetchNdcsCountryAccordionInit());
-    fetch(`/api/v1/ndcs?location=${iso}&category=${category}&filter=overview`)
-      .then(response => {
-        if (response.ok) return response.json();
-        throw Error(response.statusText);
-      })
-      .then(data => {
-        const dataWithIso = {
-          iso,
-          data
-        };
-        dispatch(fetchNdcsCountryAccordionReady(dataWithIso));
-      })
-      .catch(error => {
-        dispatch(fetchNdcsCountryAccordionFailed(iso));
-        console.info(error);
-      });
+  (locations, category) => dispatch => {
+    if (locations) {
+      dispatch(fetchNdcsCountryAccordionInit());
+      fetch(
+        `/api/v1/ndcs?location=${locations}&category=${category}&filter=overview`
+      )
+        .then(response => {
+          if (response.ok) return response.json();
+          throw Error(response.statusText);
+        })
+        .then(data => dispatch(fetchNdcsCountryAccordionReady(data)))
+        .catch(error => {
+          dispatch(fetchNdcsCountryAccordionFailed());
+          console.info(error);
+        });
+    }
   }
 );
 

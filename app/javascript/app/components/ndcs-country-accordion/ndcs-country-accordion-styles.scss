@@ -4,12 +4,12 @@ $min-height: 450px;
 
 .wrapper {
   position: relative;
+  min-height: $min-height;
 }
 
 .accordion {
   margin-bottom: -1px;
   position: relative;
-  min-height: $min-height;
 }
 
 .loader {
