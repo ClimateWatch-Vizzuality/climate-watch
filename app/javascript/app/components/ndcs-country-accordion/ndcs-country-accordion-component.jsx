@@ -23,6 +23,7 @@ class NdcsCountryAccordion extends PureComponent {
         {ndcsData && ndcsData.length > 0 && (
           <Accordion
             className={styles.accordion}
+            param="section"
             data={ndcsData}
             loading={loading}
             compare={compare}

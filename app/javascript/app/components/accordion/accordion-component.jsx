@@ -10,24 +10,16 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
-    const {
-      className,
-      data,
-      handleOnClick,
-      activeSection,
-      compare
-    } = this.props;
+    const { className, data, handleOnClick, openSlug, compare } = this.props;
     return (
       <div className={className}>
         {data.map((section, index) => {
           let isOpen = index === 0;
-          if (activeSection) {
-            if (activeSection !== 'none') {
-              const isActiveInResults = data.some(
-                d => d.slug === activeSection
-              );
+          if (openSlug) {
+            if (openSlug !== 'none') {
+              const isActiveInResults = data.some(d => d.slug === openSlug);
               isOpen =
-                activeSection === section.slug ||
+                openSlug === section.slug ||
                 (index === 0 && !isActiveInResults);
             } else {
               isOpen = false;
@@ -93,7 +85,7 @@ class Accordion extends PureComponent {
 
 Accordion.propTypes = {
   className: PropTypes.string,
-  activeSection: PropTypes.string,
+  openSlug: PropTypes.string,
   handleOnClick: PropTypes.func,
   data: PropTypes.arrayOf(
     PropTypes.shape({
