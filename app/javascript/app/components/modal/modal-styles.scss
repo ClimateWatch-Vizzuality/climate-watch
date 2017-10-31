@@ -2,6 +2,10 @@
 
 $close-position: 25px;
 
+:global .ReactModal__Body--open {
+  overflow: hidden;
+}
+
 .header {
   background-color: $light-gray;
   margin: -$gutter-padding;
