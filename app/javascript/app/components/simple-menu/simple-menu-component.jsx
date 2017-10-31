@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from 'components/icon';
 import ClickOutside from 'react-click-outside';
+import { NavLink } from 'react-router-dom';
+import includes from 'lodash/includes';
 import styles from './simple-menu-styles.scss';
 
 class SimpleMenu extends PureComponent {
@@ -15,37 +17,61 @@ class SimpleMenu extends PureComponent {
   }
 
   render() {
-    const { options, icon } = this.props;
+    const {
+      options,
+      icon,
+      title,
+      buttonClassName,
+      currentPathname
+    } = this.props;
     const { open } = this.state;
+    const paths = this.props.options.map(option => option.path);
+    const active = includes(paths, currentPathname);
+
     return (
       <ClickOutside onClickOutside={() => this.setState({ open: false })}>
-        <div className={styles.dropdown}>
+        <div className={cx(styles.dropdown)}>
           <button
-            className={cx(styles.button, { [styles.active]: open })}
+            className={cx(styles.button, buttonClassName, {
+              [styles.active]: open || active
+            })}
             onClick={() => this.setState({ open: !open })}
           >
-            <Icon icon={icon} className={styles.icon} />
+            {icon && <Icon icon={icon} className={styles.icon} />}
+            {title && <div>{title}</div>}
           </button>
           <ul className={cx(styles.links, { [styles.open]: open })}>
             {options.map(option => (
-              <li key={option.title}>
+              <li key={option.label}>
                 {option.action ? (
-                  <button key={option.title} className={styles.documentLink}>
+                  <button key={option.label} className={styles.documentLink}>
                     <Icon icon={option.icon} className={styles.icon} />
-                    <span className={styles.title}>{option.title}</span>
+                    <span className={styles.title}>{option.label}</span>
                   </button>
                 ) : (
-                  <a
-                    className={cx(styles.documentLink, {
-                      [styles.disabled]: !option.link
-                    })}
-                    key={option.title}
-                    target="_blank"
-                    href={option.link}
-                  >
-                    <Icon icon={option.icon} className={styles.icon} />
-                    <span className={styles.title}>{option.title}</span>
-                  </a>
+                  <div className={styles.documentLink} key={option.label}>
+                    {option.icon && (
+                      <Icon icon={option.icon} className={styles.icon} />
+                    )}
+                    {option.path ? (
+                      <NavLink
+                        className={styles.title}
+                        activeClassName={styles.active}
+                        to={option.path}
+                        onClick={() => this.setState({ open: false })}
+                      >
+                        {option.label}
+                      </NavLink>
+                    ) : (
+                      <a
+                        className={styles.title}
+                        target="_blank"
+                        href={option.link}
+                      >
+                        {option.label}
+                      </a>
+                    )}
+                  </div>
                 )}
               </li>
             ))}
@@ -58,7 +84,10 @@ class SimpleMenu extends PureComponent {
 
 SimpleMenu.propTypes = {
   options: PropTypes.array.isRequired,
-  icon: PropTypes.object.isRequired
+  icon: PropTypes.object,
+  title: PropTypes.string,
+  buttonClassName: PropTypes.string,
+  currentPathname: PropTypes.string
 };
 
 export default SimpleMenu;
