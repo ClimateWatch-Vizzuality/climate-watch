@@ -8,20 +8,10 @@ const setLoading = (loading, state) => ({ ...state, loading });
 const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
-  fetchCompareNDCInit: state => setLoading(true, state),
-  fetchCompareNDCReady: (state, { payload }) => {
+  fetchNDCCountryAccordionInit: state => setLoading(true, state),
+  fetchNDCCountryAccordionReady: (state, { payload }) => {
     const data = { ...state, data: payload };
-
     return setLoaded(true, setLoading(false, data));
   },
-  fetchCompareNDCFailed: state => {
-    const data = {
-      ...state,
-      data: {
-        fetched: true
-      }
-    };
-
-    return setLoaded(true, setLoading(false, data));
-  }
+  fetchNDCCountryAccordionFailed: () => setLoaded(true, setLoading(false, {}))
 };
