@@ -60,16 +60,52 @@ export default [
         label: 'SECTORS'
       },
       {
-        path: '/ndcs/country/:iso',
-        component: NDCCountry,
-        exact: true,
-        headerImage: 'ndc'
-      },
-      {
         path: '/ndcs/country/:iso/full',
         component: NDCCountryFull,
         exact: true,
         headerImage: 'ndc'
+      },
+      {
+        path: '/ndcs/country/:iso',
+        component: NDCCountry,
+        headerImage: 'ndc',
+        routes: [
+          {
+            path: '/ndcs/country/:iso',
+            component: () => createElement(CountryNdcOverview),
+            exact: true,
+            anchor: true,
+            label: 'Overview'
+          },
+          {
+            path: '/ndcs/country/:iso/mitigation',
+            component: () =>
+              createElement(NDCCountry, {
+                category: 'migitation',
+                type: 'overview'
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Mitigation',
+            param: 'mitigation'
+          },
+          {
+            path: '/ndcs/country/:iso/adaptation',
+            component: () =>
+              createElement(NDCCountry, {
+                category: 'adaptation',
+                type: 'overview'
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Adaptation',
+            param: 'adaptation'
+          },
+          {
+            path: '/ndcs/country/:iso',
+            component: () => createElement(Redirect, { to: '/ndcs' })
+          }
+        ]
       },
       {
         path: '/ndcs/compare',
@@ -133,7 +169,8 @@ export default [
             hash: 'ndc-content-overview',
             label: 'NDC Content Overview',
             anchor: true,
-            component: CountryNdcOverview
+            component: () =>
+              createElement(CountryNdcOverview, { actions: true })
           },
           {
             hash: 'ndc-sdg-linkages',

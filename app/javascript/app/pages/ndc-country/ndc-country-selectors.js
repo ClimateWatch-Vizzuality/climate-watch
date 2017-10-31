@@ -75,7 +75,22 @@ export const getCountry = createSelector(
   getCountryByIso
 );
 
+export const getAnchorLinks = createSelector(
+  [
+    state => state.route.routes || [],
+    state => state.iso,
+    state => state.location.search
+  ],
+  (routes, iso, search) =>
+    routes.filter(route => route.anchor).map(route => ({
+      label: route.label,
+      path: `/ndcs/country/${iso}/${route.param ? route.param : ''}`,
+      search
+    }))
+);
+
 export default {
   getCountry,
-  filterNDCs
+  filterNDCs,
+  getAnchorLinks
 };

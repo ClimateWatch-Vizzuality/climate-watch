@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Accordion from 'components/accordion';
 import Button from 'components/button';
-import Icon from 'components/icon';
 import Search from 'components/search';
 import cx from 'classnames';
+import Sticky from 'react-stickynode';
+import AnchorNav from 'components/anchor-nav';
 
-import backIcon from 'assets/icons/back.svg';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import layout from 'styles/layout.scss';
 import styles from './ndc-country-styles.scss';
@@ -22,7 +23,8 @@ class NDCCountry extends PureComponent {
       search,
       ndcsData,
       loading,
-      route
+      route,
+      anchorLinks
     } = this.props;
     return (
       <div>
@@ -32,14 +34,6 @@ class NDCCountry extends PureComponent {
               className={cx(layout.content, styles.doubleFold, styles.header)}
             >
               <div className={styles.title}>
-                <Button
-                  className={styles.backButton}
-                  color="transparent"
-                  link="/ndcs"
-                  square
-                >
-                  <Icon className={styles.backIcon} icon={backIcon} />
-                </Button>
                 <Intro title={country.wri_standard_name} />
               </div>
               <div className={styles.threeFold}>
@@ -63,8 +57,16 @@ class NDCCountry extends PureComponent {
                 />
               </div>
             </div>
+            <Sticky activeClass="sticky">
+              <AnchorNav
+                useRoutes
+                links={anchorLinks}
+                className={layout.content}
+              />
+            </Sticky>
           </Header>
         )}
+        <div className={styles.wrapper}>{renderRoutes(route.routes)}</div>
         <Accordion
           className={styles.accordion}
           data={ndcsData}
@@ -82,7 +84,8 @@ NDCCountry.propTypes = {
   onSearchChange: PropTypes.func.isRequired,
   search: PropTypes.string,
   ndcsData: PropTypes.array,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  anchorLinks: PropTypes.array
 };
 
 export default NDCCountry;
