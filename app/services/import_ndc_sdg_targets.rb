@@ -49,10 +49,13 @@ class ImportNdcSdgTargets
     sectors = row['Sector'] && row['Sector'].split(',').map(&:strip).uniq ||
       []
     sectors.each do |sector|
-      sector = NdcSdg::Sector.find_or_create_by(name: sector)
+      sector_rec = NdcSdg::Sector.where('name ilike ?', sector).first
+      if !sector_rec
+        sector_rec = NdcSdg::Sector.create(name: sector)
+      end
       NdcSdg::NdcTargetSector.create(
         ndc_target: ndc_target,
-        sector: sector
+        sector: sector_rec
       )
     end
   end
