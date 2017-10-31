@@ -263,28 +263,46 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartConfig = createSelector([filterData], data => {
-  if (!data || !data.length) return {};
-  const yColumns = data.map(d => ({
-    label: d.sector,
-    value: getYColumnValue(d.sector)
-  }));
-  const yColumnsChecked = uniqBy(yColumns, 'value');
-  const theme = getThemeConfig(
-    yColumnsChecked,
-    getColorPalette(BASE_COLORS, yColumnsChecked.length)
-  );
-  const tooltip = getTooltipConfig(yColumnsChecked);
-  return {
-    axes: AXES_CONFIG,
-    theme,
-    tooltip,
-    columns: {
-      x: [{ label: 'year', value: 'x' }],
-      y: yColumnsChecked
+export const getChartConfig = createSelector(
+  [filterData, getCalculationSelected],
+  (data, calculationSelected) => {
+    if (!data || !data.length) return {};
+    const yColumns = data.map(d => ({
+      label: d.sector,
+      value: getYColumnValue(d.sector)
+    }));
+    const yColumnsChecked = uniqBy(yColumns, 'value');
+    const theme = getThemeConfig(
+      yColumnsChecked,
+      getColorPalette(BASE_COLORS, yColumnsChecked.length)
+    );
+    const tooltip = getTooltipConfig(yColumnsChecked);
+    let unit = AXES_CONFIG.yLeft.unit;
+    if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
+      unit = `${unit}  per $`;
+    } else if (
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
+    ) {
+      unit = `${unit}  per capita`;
     }
-  };
-});
+    const axes = {
+      ...AXES_CONFIG,
+      yLeft: {
+        ...AXES_CONFIG.yLeft,
+        unit
+      }
+    };
+    return {
+      axes,
+      theme,
+      tooltip,
+      columns: {
+        x: [{ label: 'year', value: 'x' }],
+        y: yColumnsChecked
+      }
+    };
+  }
+);
 
 export default {
   getSourceOptions,
