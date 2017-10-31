@@ -1,6 +1,6 @@
 class ImportQuantifications
   DATA_FILEPATH =
-    "#{CW_FILES_PREFIX}quantifications/quantifications.csv".freeze
+    "#{CW_FILES_PREFIX}quantifications/CW_NDC_quantification_commas.csv".freeze
 
   def call
     cleanup
@@ -24,14 +24,27 @@ class ImportQuantifications
   def import_data
     @csv.each do |row|
       location = Location.find_by(iso_code3: row[:iso])
+      label = Quantification::Label.find_or_create_by!(name: row[:label].strip)
       if location
-        Quantification::Value.create!(
-          location: location,
-          label: Quantification::Label.find_or_create_by!(name: row[:label]),
-          year: row[:year],
-          value: row[:value],
-          range: row[:range] == 'Yes'
-        )
+        if row[:range] == 'Yes'
+          value = Quantification::Value.find_or_initialize_by(
+            location: location,
+            label: label,
+            year: row[:year],
+            first_value: nil
+          )
+
+          range = [value.second_value, row[:value].to_f].compact.sort
+          range.unshift(nil) if range.size == 1
+          value.update!(first_value: range.first, second_value: range.second)
+        else
+          Quantification::Value.create!(
+            location: location,
+            label: label,
+            year: row[:year],
+            first_value: row[:value]
+          )
+        end
       else
         Rails.logger.error "Location #{row[:iso]} not found"
       end
