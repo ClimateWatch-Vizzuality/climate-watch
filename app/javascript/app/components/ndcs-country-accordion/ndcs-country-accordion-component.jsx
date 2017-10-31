@@ -16,7 +16,6 @@ class NdcsCountryAccordion extends PureComponent {
         {!ndcsData.length && !loading && (
           <NoContent
             message="No content for this category"
-            icon
             className={styles.noContent}
           />
         )}
