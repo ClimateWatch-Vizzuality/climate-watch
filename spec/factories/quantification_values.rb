@@ -3,7 +3,6 @@ FactoryGirl.define do
     location
     association :label, factory: :quantification_label
     year '2025'
-    value 1.5
-    range false
+    first_value 1.5
   end
 end

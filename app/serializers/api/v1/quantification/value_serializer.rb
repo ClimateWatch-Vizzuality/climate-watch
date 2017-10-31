@@ -16,9 +16,9 @@ module Api
         end
 
         def value
-          if object.first_value.present? and object.second_value.blank?
+          if object.first_value.present? && object.second_value.blank?
             object.first_value
-          elsif object.first_value.present? and object.second_value.present?
+          elsif object.first_value.present? && object.second_value.present?
             [object.first_value, object.second_value]
           else
             # something's weird with values
