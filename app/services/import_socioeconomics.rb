@@ -42,7 +42,7 @@ class ImportSocioeconomics
     ) do |(key, value), result|
       year = key.to_s.scan(/\d{4}/).first
       if year
-        attribute = key.to_s.include?("rank") ? :rank : :value
+        attribute = key.to_s.include?('rank') ? :rank : :value
         result[year][attribute] = value
       end
     end
@@ -53,10 +53,9 @@ class ImportSocioeconomics
       location = Location.find_by(iso_code3: row[:iso_code3])
       if location
         parse_row(row).each do |year, values|
-          Socioeconomic::Indicator
-            .find_or_initialize_by(location: location, year: year)
-            .update!(value_key =>  values[:value], rank_key => values[:rank])
-
+          Socioeconomic::Indicator.
+            find_or_initialize_by(location: location, year: year).
+            update!(value_key => values[:value], rank_key => values[:rank])
         end
       else
         Rails.logger.error "Location #{row[:iso]} not found"
