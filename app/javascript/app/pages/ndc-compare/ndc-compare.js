@@ -11,10 +11,11 @@ import NDCCompareComponent from './ndc-compare-component';
 import {
   getNDCs,
   getCountriesOptionsFiltered,
-  getActiveCountries
+  getActiveCountries,
+  getAnchorLinks
 } from './ndc-compare-selectors';
 
-const mapStateToProps = (state, { location }) => {
+const mapStateToProps = (state, { location, route }) => {
   const search = qs.parse(location.search);
   const locations = search.locations ? search.locations.split(',') : [];
   const ndcsData = {
@@ -29,13 +30,18 @@ const mapStateToProps = (state, { location }) => {
     data: state.countries.data,
     locations
   };
+  const routeData = {
+    location,
+    route
+  };
   return {
     fetched: !isEmpty(state.NDCCompare.data),
     loading: state.NDCCompare.loading,
     ndcsData: getNDCs(ndcsData),
     locations,
     countriesOptions: getCountriesOptionsFiltered(countriesOptionsData),
-    activeCountriesOptions: getActiveCountries(activeCountriesData)
+    activeCountriesOptions: getActiveCountries(activeCountriesData),
+    anchorLinks: getAnchorLinks(routeData)
   };
 };
 
