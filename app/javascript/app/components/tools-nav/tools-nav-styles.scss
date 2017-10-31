@@ -27,6 +27,10 @@
     fill: $dark-gray;
   }
 
+  &.disabled {
+    cursor: not-allowed;
+  }
+
   &.active::after {
     content: "";
     position: absolute;

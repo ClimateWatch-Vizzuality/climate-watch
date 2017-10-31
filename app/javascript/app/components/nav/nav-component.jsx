@@ -48,6 +48,7 @@ class Nav extends PureComponent {
               title={route.label}
               buttonClassName={cx(styles.link, styles.menuLink)}
               reverse={reverse}
+              positionRight
             />
           );
         })}
