@@ -75,7 +75,7 @@ class ImportIndc
   def indicator_attributes(indicator)
     {
       name: indicator[:column_name],
-      slug: Slug.create("#{indicator[:source]}_#{indicator[:column_name]}"),
+      slug: Slug.create(indicator[:column_name]),
       description: indicator[:long_name],
       source: @sources_index[indicator[:source]]
     }
