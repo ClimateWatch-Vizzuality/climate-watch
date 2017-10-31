@@ -1,4 +1,4 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
 .wrapper :global {
   position: relative;
@@ -9,10 +9,30 @@
   }
 }
 
+.col2 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr);
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.search {
+  align-self: flex-end;
+}
+
 .searchIcon {
   width: 40px;
   height: 40px;
   position: absolute;
   right: 5px;
   top: 4px;
+}
+
+.contentCols {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr);
+
+  grid-template-columns: repeat(2, 50%);
 }

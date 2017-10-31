@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 
 const getSDGs = state => state.sdgs || null;
+const getTargets = state => state.data.targets || null;
+const getGoals = state => state.data.goals || null;
 const getSearch = state => state.search || null;
 
 export const getGoalsMapped = createSelector([getSDGs], sdgs => {
@@ -27,13 +29,45 @@ export const getTargetsMapped = createSelector([getSDGs], sdgs => {
   return targets;
 });
 
-export const getSearchList = createSelector(
+export const getGoalsParsed = createSelector([getGoals], goals => {
+  if (!goals) return null;
+  return goals.map(goal => ({
+    label: `${goal.number}: ${goal.title}`,
+    value: goal.number,
+    groupId: 'goal'
+  }));
+});
+
+export const getTargetsParsed = createSelector([getTargets], targets => {
+  if (!targets) return null;
+  return targets.map(target => ({
+    label: `${target.number}: ${target.title}`,
+    value: target.number,
+    groupId: 'target'
+  }));
+});
+
+export const getSearchListData = createSelector(
   [getGoalsMapped, getTargetsMapped],
-  (goals, targets) => goals.concat(targets)
+  (goals, targets) => (goals && targets ? goals.concat(targets) : null)
 );
 
-export const getOptionSelected = createSelector(
-  [getSearchList, getSearch],
+export const getSearchListMeta = createSelector(
+  [getGoalsParsed, getTargetsParsed],
+  (goals, targets) => (goals && targets ? goals.concat(targets) : null)
+);
+
+export const getOptionSelectedData = createSelector(
+  [getSearchListData, getSearch],
+  (options, search) => {
+    if (!options || !search) return null;
+    if (search.searchBy === 'query') return null;
+    return options.find(option => option.value === search.query);
+  }
+);
+
+export const getOptionSelectedMeta = createSelector(
+  [getSearchListMeta, getSearch],
   (options, search) => {
     if (!options || !search) return null;
     if (search.searchBy === 'query') return null;
@@ -42,6 +76,8 @@ export const getOptionSelected = createSelector(
 );
 
 export default {
-  getSearchList,
-  getOptionSelected
+  getSearchListData,
+  getSearchListMeta,
+  getOptionSelectedMeta,
+  getOptionSelectedData
 };

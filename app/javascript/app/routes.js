@@ -17,7 +17,12 @@ import Sectors from 'pages/sectors';
 import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
+import EmissionPathways from 'pages/emission-pathways';
 import About from 'pages/about';
+import AboutContact from 'components/about-contact';
+import AboutDescription from 'components/about-description';
+import AboutPartners from 'components/about-partners';
+import AboutPermissions from 'components/about-permissions';
 import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country-climate-vulnerability';
@@ -120,7 +125,7 @@ export default [
           },
           {
             hash: 'climate-vulnerability',
-            label: 'Climate vulnerability and readiness',
+            label: 'Climate Vulnerability and Readiness',
             anchor: true,
             component: ClimateVulnerability
           },
@@ -147,6 +152,14 @@ export default [
         headerImage: 'emissions'
       },
       {
+        path: '/emission-pathways',
+        component: EmissionPathways,
+        exact: true,
+        nav: true,
+        label: 'EMISSION PATHWAYS',
+        headerImage: 'emissions'
+      },
+      {
         path: '/ndc-search',
         exact: true,
         component: NDCSearch,
@@ -156,16 +169,45 @@ export default [
         path: '/stories',
         component: error,
         exact: true,
-        nav: true,
+        nav: false,
         label: 'STORIES'
       },
       {
         path: '/about',
         component: About,
-        exact: true,
         nav: true,
         label: 'ABOUT',
-        headerImage: 'about'
+        headerImage: 'about',
+        routes: [
+          {
+            path: '/about',
+            component: AboutDescription,
+            exact: true,
+            anchor: true,
+            label: 'About Climate Watch'
+          },
+          {
+            path: '/about/partners',
+            component: AboutPartners,
+            exact: true,
+            anchor: true,
+            label: 'Climate Watch Partners'
+          },
+          {
+            path: '/about/contact',
+            component: AboutContact,
+            exact: true,
+            anchor: true,
+            label: 'Contact Us & Feedback'
+          },
+          {
+            path: '/about/permissions',
+            component: AboutPermissions,
+            exact: true,
+            anchor: true,
+            label: 'Permissions & Licensing'
+          }
+        ]
       },
       {
         path: '/error-page',

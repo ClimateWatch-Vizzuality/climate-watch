@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { deburrUpper, isCountryDisabled } from 'app/utils';
+import { deburrUpper, isCountryIncluded } from 'app/utils';
 import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
 
@@ -24,6 +24,10 @@ const addCountriesPath = countries =>
 export const getFilteredCountries = createSelector(
   [getCountries, getFilterUpper],
   filterCountries
+);
+
+export const getISOCountries = createSelector([getCountries], countries =>
+  countries.map(country => country.iso_code3)
 );
 
 export const getFilteredCountriesWithPath = createSelector(
@@ -71,10 +75,11 @@ const semiActiveCountryStyles = {
 };
 
 export const getPathsWithStyles = createSelector(
-  [getFilterUpper, getPreSelect],
-  (query, preSelect) =>
+  [getFilterUpper, getPreSelect, getISOCountries],
+  (query, preSelect, isoCountries) =>
     worldPaths.map(path => {
-      if (!path.properties || isCountryDisabled(path.properties.id)) {
+      const iso = path.properties && path.properties.id;
+      if (!iso || (isoCountries && !isCountryIncluded(isoCountries, iso))) {
         return {
           ...path,
           style: countryStyles
@@ -82,8 +87,7 @@ export const getPathsWithStyles = createSelector(
       }
 
       const nameUpper = deburrUpper(path.properties.name);
-      const isEqual = path.properties.id === preSelect || nameUpper === query;
-
+      const isEqual = iso === preSelect || nameUpper === query;
       if (isEqual) {
         return {
           ...path,

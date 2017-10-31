@@ -56,10 +56,11 @@ class Home extends PureComponent {
               ref={player => {
                 this.player = player;
               }}
-              url="https://www.youtube.com/watch?v=lTG-0brb98I"
+              url="https://youtu.be/C2nIcBqrHsk"
+              controls
               youtubeConfig={{
                 playerVars: { playsinline: 0 },
-                preload: false
+                preload: true
               }}
             />
           </div>
@@ -78,7 +79,7 @@ class Home extends PureComponent {
           <div className={styles.column}>
             <Intro
               theme={introDark}
-              title="View country profiles"
+              title="View Country Profiles"
               description="A snapshot of countries' climate action progress, risks and vulnerability. Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
             />
             <GeoLocationProvider />

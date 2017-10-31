@@ -4,6 +4,7 @@ module Api
       class VariableSerializer < ActiveModel::Serializer
         attribute :slug
         attribute :name
+        attribute :maximum
         has_many :values, serializer: Adaptation::ValueSerializer do
           object.values.reject do |v|
             v.value.nil?

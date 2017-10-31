@@ -8,8 +8,8 @@ class CountryCompare extends PureComponent {
     return (
       <Teaser
         screenshot={compareScreenshot}
-        title="Compare countries"
-        description="'Compare a snapshot of countries’ climate action progress, risks and vulnerability. Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
+        title="Compare Countries"
+        description="Compare a snapshot of countries’ climate action progress, risks and vulnerability.<br /><br />Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
       />
     );
   }

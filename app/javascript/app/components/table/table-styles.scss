@@ -20,11 +20,18 @@
 
   .ReactVirtualized__Table__row {
     border-bottom: solid 1px #e5e5eb;
+    align-items: flex-start;
+    padding: 5px 0;
   }
 
   .ReactVirtualized__Table__rowColumn {
     color: $theme-color;
     font-size: $font-size-sm;
+
+    > div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     &:first-of-type {
       font-weight: $font-weight-bold;

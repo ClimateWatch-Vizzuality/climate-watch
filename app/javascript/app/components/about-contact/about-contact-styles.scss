@@ -1,0 +1,32 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.aboutContact {
+  padding-top: 50px;
+  width: 100%;
+  max-width: 770px;
+  line-height: $line-height-medium;
+  font-size: $font-size-m;
+  text-align: left;
+  color: $theme-color;
+
+  p {
+    margin-bottom: 40px;
+  }
+
+  > ul {
+    margin-bottom: 40px;
+    list-style: initial;
+    margin-left: 20px;
+  }
+
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+  }
+
+  .contactIframe {
+    height: 480px;
+    width: 100%;
+  }
+}

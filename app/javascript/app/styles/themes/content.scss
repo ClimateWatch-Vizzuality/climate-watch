@@ -12,9 +12,76 @@
   h4,
   h5,
   h6 {
+    max-width: $paragraph-max-width;
+    margin: 30px auto;
+    display: block;
     font-weight: $font-weight-semi-bold;
-    line-height: 1.25em;
-    display: inline-block;
+    line-height: 1.2em;
+  }
+
+  h1 {
+    font-size: $font-size-x-large;
+  }
+
+  h2 {
+    font-size: $font-size-large;
+  }
+
+  h3 {
+    font-size: $font-size-m;
+    font-weight: $font-weight-bold;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: $font-size;
+    font-weight: $font-weight-bold;
+  }
+
+  p {
+    max-width: $paragraph-max-width;
+    margin: 30px auto;
+    font-weight: $font-weight;
+    line-height: 1.6em;
+  }
+
+  hr {
+    max-width: $paragraph-max-width;
+    color: $border-color;
+    background-color: $border-color;
+    height: 2px;
+    border: none;
+  }
+
+  table,
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  td,
+  th {
+    text-align: left;
+    margin: auto;
+    padding: 10px;
+    border: none;
+    font-size: $font-size;
+  }
+
+  th {
+    border-bottom: 2px solid $theme-color;
+  }
+
+  td {
+    border-bottom: 1px solid $theme-border;
+  }
+
+  ul,
+  ol {
+    max-width: $paragraph-max-width;
+    margin: 20px auto;
+    padding-left: 30px;
+    font-size: $font-size;
   }
 
   img {
@@ -25,38 +92,13 @@
     margin-bottom: 20px;
   }
 
-  h1 {
-    font-size: $font-size-xl-large;
-  }
-
-  h2 {
-    font-size: $font-size-x-large;
-  }
-
-  h3 {
-    font-size: $font-size-large;
-  }
-
-  h4 {
-    font-size: $font-size;
-  }
-
-  h5,
-  h6 {
-    font-size: $font-size-s;
-  }
-
-  p {
-    margin-bottom: 20px;
-  }
-
   a {
     color: $theme-color;
     word-wrap: break-word;
-
-    &:hover {
-      color: $theme-color;
-    }
+    background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
+    background-position: 0 1.07em;
+    background-repeat: repeat-x;
+    background-size: 10px 2px;
   }
 
   blockquote {
@@ -97,16 +139,17 @@
     li::before {
       content: '';
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 5px;
+      height: 5px;
+      vertical-align: middle;
       border-radius: 5px;
       margin-right: 15px;
-      background-color: $theme-color;
+      background-color: $dark-gray;
     }
   }
 
   ol {
-    list-style-type: none !important;
+    list-style-type: none;
     padding-left: 0;
     counter-reset: item;
 
@@ -117,15 +160,12 @@
       padding-bottom: 10px;
 
       &::before {
-        font-size: 80%;
         padding: 5px 8px 5px 10px;
-        color: white;
-        font-weight: bold;
+        color: $dark-gray;
         border-radius: 15px;
-        margin-right: 13px;
+        margin-right: 10px;
         content: counters(item, ".") " ";
         counter-increment: item;
-        background-color: $theme-color;
       }
 
       p {

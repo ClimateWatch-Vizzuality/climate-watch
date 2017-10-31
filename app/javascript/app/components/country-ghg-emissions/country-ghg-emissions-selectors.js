@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import {
   getYColumnValue,
@@ -38,20 +39,10 @@ const EXCLUDED_SECTORS = [
   'Total excluding LULUCF'
 ];
 
-const CALCULATION_OPTIONS = [
-  {
-    label: 'Absolute value',
-    value: 'ABSOLUTE_VALUE'
-  },
-  {
-    label: 'per Capita',
-    value: 'PER_CAPITA'
-  },
-  {
-    label: 'per GDP',
-    value: 'PER_GDP'
-  }
-];
+const calculationKeys = Object.keys(CALCULATION_OPTIONS);
+const options = calculationKeys.map(
+  calculationKey => CALCULATION_OPTIONS[calculationKey]
+);
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
@@ -92,7 +83,7 @@ export const getCalculationOptions = createSelector(
   parseCalculationData,
   calculationData => {
     if (!calculationData) return [];
-    return CALCULATION_OPTIONS;
+    return options;
   }
 );
 
@@ -108,10 +99,8 @@ export const getSourceSelected = createSelector(
 export const getCalculationSelected = createSelector(
   [getCalculationSelection],
   selected => {
-    if (!selected) return CALCULATION_OPTIONS[0];
-    return CALCULATION_OPTIONS.find(
-      calculation => calculation.value === selected
-    );
+    if (!selected) return options[0];
+    return options.find(calculation => calculation.value === selected);
   }
 );
 
@@ -191,10 +180,10 @@ export const filterData = createSelector(
 );
 
 const calculatedRatio = (selected, calculationData, x) => {
-  if (selected === 'PER_GDP') {
+  if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
     return calculationData[x][0].gdp;
   }
-  if (selected === 'PER_CAPITA') {
+  if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
     return calculationData[x][0].population;
   }
   return 1;
@@ -220,7 +209,9 @@ export const getChartData = createSelector(
 
     let xValues = [];
     xValues = data[0].emissions.map(d => d.year);
-    if (calculationSelected.value !== 'ABSOLUTE_VALUE') {
+    if (
+      calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+    ) {
       xValues = intersection(
         xValues,
         Object.keys(calculationData).map(y => parseInt(y, 10))

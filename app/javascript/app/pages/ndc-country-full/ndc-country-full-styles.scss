@@ -34,19 +34,15 @@
 .actions {
   @extend %grid;
 
-  @include msGridColumns(3fr, 3fr, 3fr, 3fr);
+  @include msGridColumns(3fr, 3fr, 6fr);
 
-  grid-template-columns: 3fr 3fr 3fr 3fr;
+  grid-template-columns: 3fr 3fr 6fr;
   padding-top: 20px;
   padding-bottom: 30px;
 }
 
 .select {
   grid-column-start: 3;
-  align-self: flex-end;
-}
-
-.search {
   align-self: flex-end;
 }
 
@@ -57,17 +53,8 @@
 }
 
 .bodyContent {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(6, 1fr);
   padding-top: 80px;
   padding-bottom: 80px;
-}
-
-.innerContent {
-  grid-column: 2 / 6;
 }
 
 .loader {
