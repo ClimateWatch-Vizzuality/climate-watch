@@ -36,7 +36,7 @@ class Search extends Component {
 
   render() {
     const { search } = this.state;
-    const { theme, input, placeholder, className, handleKeyUp } = this.props;
+    const { theme, input, placeholder, className, handleKeyUp, disabled } = this.props;
     return (
       <div className={cx(styles.search, className, theme.search)}>
         <input
@@ -46,6 +46,7 @@ class Search extends Component {
           onChange={e => this.handleChange(e.target.value)}
           value={search}
           onKeyUp={handleKeyUp}
+          disabled={disabled}
         />
         <Icon
           icon={searchIcon}
@@ -62,7 +63,8 @@ Search.propTypes = {
   onChange: PropTypes.func,
   className: PropTypes.string,
   theme: PropTypes.object,
-  handleKeyUp: PropTypes.func
+  handleKeyUp: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 Search.defaultProps = {
