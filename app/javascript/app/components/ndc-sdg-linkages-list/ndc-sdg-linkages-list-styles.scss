@@ -48,6 +48,7 @@
       border-bottom: 1px solid $theme-border;
       color: $dark-gray;
 
+      &Selected,
       &:hover {
         color: $theme-color;
         cursor: pointer;

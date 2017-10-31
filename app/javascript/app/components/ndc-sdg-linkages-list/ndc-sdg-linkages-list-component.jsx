@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
+import cx from 'classnames';
 import closeIcon from 'assets/icons/legend-close.svg';
 import styles from './ndc-sdg-linkages-list-styles.scss';
 
 class NdcSdgLinkagesList extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { goal, onCloseClick, onTargetHover } = this.props;
+    const { goal, onCloseClick, targetHover, onTargetHover } = this.props;
     const headerStyle = { borderColor: goal.colour };
     return (
       <div className={styles.container}>
@@ -24,9 +25,10 @@ class NdcSdgLinkagesList extends PureComponent {
           {goal.targets.map(target => (
             <div
               key={target.id}
-              className={styles.target}
+              className={cx(styles.target, {
+                [styles.targetSelected]: targetHover === target.number
+              })}
               onMouseEnter={() => onTargetHover(target.number)}
-              onMouseLeave={() => onTargetHover(null)}
             >
               <div className={styles.number}>{target.number}</div>
               <div className={styles.title}>{target.title}</div>
@@ -40,6 +42,7 @@ class NdcSdgLinkagesList extends PureComponent {
 
 NdcSdgLinkagesList.propTypes = {
   goal: PropTypes.object.isRequired,
+  targetHover: PropTypes.string,
   onCloseClick: PropTypes.func.isRequired,
   onTargetHover: PropTypes.func.isRequired
 };
