@@ -54,7 +54,7 @@ class GhgEmissions extends PureComponent {
             disabled={versions.length === 1}
           />
           <Dropdown
-            label="BreakBy"
+            label="Break by"
             options={breaksBy}
             onValueChange={handleBreakByChange}
             value={breakSelected}

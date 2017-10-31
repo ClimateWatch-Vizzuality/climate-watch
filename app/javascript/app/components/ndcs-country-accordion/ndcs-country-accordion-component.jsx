@@ -16,7 +16,6 @@ class NdcsCountryAccordion extends PureComponent {
         {!ndcsData.length && !loading && (
           <NoContent
             message={locations ? 'No content for this category' : 'Select a country to start'}
-            icon
             className={styles.noContent}
           />
         )}
