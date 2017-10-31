@@ -22,7 +22,11 @@ const ToolsNav = ({ shareMenuOptions, shareIcon }) => (
     >
       <Icon className={styles.download} icon={download} />
     </a>
-    <SimpleMenu options={shareMenuOptions} icon={shareIcon} />
+    <SimpleMenu
+      options={shareMenuOptions}
+      icon={shareIcon}
+      buttonClassName={styles.shareButton}
+    />
   </div>
 );
 

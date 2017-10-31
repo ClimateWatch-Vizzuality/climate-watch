@@ -145,9 +145,36 @@ export default [
         ]
       },
       {
+        label: 'NDCs',
+        nav: true,
+        routes: [
+          {
+            path: '/ndcs',
+            label: 'NDCs'
+          },
+          {
+            path: '/ndcs-sdg',
+            label: 'SDG LINKAGES'
+          }
+        ]
+      },
+      {
+        label: 'GHG EMISSIONS',
+        nav: true,
+        routes: [
+          {
+            path: '/ghg-emissions',
+            label: 'GHG EMISSIONS'
+          },
+          {
+            path: '/emission-pathways',
+            label: 'EMISSION PATHWAYS'
+          }
+        ]
+      },
+      {
         path: '/ndcs',
         component: NDCS,
-        nav: true,
         label: 'NDCs',
         headerImage: 'ndc',
         routes: [
@@ -175,7 +202,6 @@ export default [
         path: '/ndcs-sdg',
         component: NDCSDG,
         exact: true,
-        nav: true,
         label: 'SDG LINKAGES',
         headerImage: 'ndc-sdg'
       },
@@ -215,7 +241,6 @@ export default [
         path: '/ghg-emissions',
         component: GHGEmissions,
         exact: true,
-        nav: true,
         label: 'GHG EMISSIONS',
         headerImage: 'emissions'
       },
@@ -223,7 +248,6 @@ export default [
         path: '/emission-pathways',
         component: EmissionPathways,
         exact: true,
-        nav: true,
         label: 'EMISSION PATHWAYS',
         headerImage: 'emissions'
       },
