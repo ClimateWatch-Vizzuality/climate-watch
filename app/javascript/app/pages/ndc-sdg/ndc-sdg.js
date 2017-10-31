@@ -23,11 +23,11 @@ class NdcSdgContainer extends PureComponent {
 
   handleGoalHover = debounce(goal => {
     this.setState({ goalHover: goal });
-  }, 300);
+  }, 150);
 
   handleTargetHover = debounce(target => {
     this.setState({ targetHover: target });
-  }, 300);
+  }, 100);
 
   render() {
     return createElement(NdcSdgComponent, {
