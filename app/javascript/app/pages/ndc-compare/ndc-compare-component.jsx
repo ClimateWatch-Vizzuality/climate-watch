@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Accordion from 'components/accordion';
 import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import sortBy from 'lodash/sortBy';
@@ -17,11 +16,9 @@ class NDCCountry extends PureComponent {
   render() {
     const {
       route,
-      ndcsData,
       countriesOptions,
       activeCountriesOptions,
       handleDropDownChange,
-      loading,
       anchorLinks
     } = this.props;
     return (
@@ -74,12 +71,6 @@ class NDCCountry extends PureComponent {
           </div>
         </div>
         <div className={styles.wrapper}>{renderRoutes(route.routes)}</div>
-        <Accordion
-          className={styles.accordion}
-          data={ndcsData}
-          loading={loading}
-          compare
-        />
       </div>
     );
   }
@@ -87,11 +78,9 @@ class NDCCountry extends PureComponent {
 
 NDCCountry.propTypes = {
   route: PropTypes.object.isRequired,
-  ndcsData: PropTypes.array,
   countriesOptions: PropTypes.array,
   activeCountriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
-  loading: PropTypes.bool,
   anchorLinks: PropTypes.array
 };
 
