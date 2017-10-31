@@ -13,18 +13,20 @@ import { filterNDCs } from './ndcs-country-accordion-selectors';
 const mapStateToProps = (state, { match, location }) => {
   const { iso } = match.params;
   const search = qs.parse(location.search);
+  const locations = search.locations ? search.locations.split(',') : null;
   const ndcsData = {
     data: state.ndcCountryAccordion.data,
     search: search.search,
     countries: match.params.iso
       ? [match.params.iso]
-      : search.locations.split(',')
+      : locations
   };
   return {
     loading: state.ndcCountryAccordion.loading,
     search,
     ndcsData: filterNDCs(ndcsData),
-    iso
+    iso,
+    locations
   };
 };
 
