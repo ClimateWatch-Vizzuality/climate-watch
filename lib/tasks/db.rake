@@ -13,7 +13,6 @@ namespace :db do
     'wri_metadata:import',
     'wb_extra:import',
     'timeline:import',
-    'global_indc:import',
     'quantifications:import',
     'socioeconomics:import'
   ]
