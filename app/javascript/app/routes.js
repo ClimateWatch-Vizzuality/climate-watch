@@ -9,6 +9,7 @@ import NDCMap from 'components/ndcs-map';
 import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
+import NDCCountryAccordion from 'components/ndcs-country-accordion';
 import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
@@ -80,7 +81,7 @@ export default [
           {
             path: '/ndcs/country/:iso/mitigation',
             component: () =>
-              createElement(NDCCountry, {
+              createElement(NDCCountryAccordion, {
                 category: 'migitation',
                 type: 'overview'
               }),
@@ -92,7 +93,7 @@ export default [
           {
             path: '/ndcs/country/:iso/adaptation',
             component: () =>
-              createElement(NDCCountry, {
+              createElement(NDCCountryAccordion, {
                 category: 'adaptation',
                 type: 'overview'
               }),

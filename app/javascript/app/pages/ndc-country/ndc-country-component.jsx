@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Accordion from 'components/accordion';
 import Button from 'components/button';
 import Search from 'components/search';
 import cx from 'classnames';
@@ -21,8 +20,6 @@ class NDCCountry extends PureComponent {
       match,
       onSearchChange,
       search,
-      ndcsData,
-      loading,
       route,
       anchorLinks
     } = this.props;
@@ -67,11 +64,6 @@ class NDCCountry extends PureComponent {
           </Header>
         )}
         <div className={styles.wrapper}>{renderRoutes(route.routes)}</div>
-        <Accordion
-          className={styles.accordion}
-          data={ndcsData}
-          loading={loading}
-        />
       </div>
     );
   }
@@ -83,8 +75,6 @@ NDCCountry.propTypes = {
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
   search: PropTypes.string,
-  ndcsData: PropTypes.array,
-  loading: PropTypes.bool,
   anchorLinks: PropTypes.array
 };
 
