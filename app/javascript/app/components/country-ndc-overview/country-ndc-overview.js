@@ -2,6 +2,7 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { withRouter } from 'react-router';
+import isEmpty from 'lodash/isEmpty';
 
 import actions from './country-ndc-overview-actions';
 import reducers, { initialState } from './country-ndc-overview-reducers';
@@ -17,15 +18,16 @@ const mapStateToProps = (state, { match }) => {
     iso,
     values: getValuesGrouped(countryData),
     loading: state.countryNDCOverview.loading,
-    sectors: countryData ? countryData.sectors : null
+    sectors: countryData ? countryData.sectors : null,
+    fetched: !isEmpty(overviewData[iso])
   };
 };
 
 class CountryNdcOverviewContainer extends PureComponent {
   componentWillMount() {
-    const { match, loading, fetchCountryNdcOverviewData } = this.props;
+    const { match, loading, fetched, fetchCountryNdcOverviewData } = this.props;
     const { iso } = match.params;
-    if (iso && !loading) {
+    if (iso && !loading && !fetched) {
       fetchCountryNdcOverviewData(iso);
     }
   }
@@ -40,7 +42,8 @@ class CountryNdcOverviewContainer extends PureComponent {
 CountryNdcOverviewContainer.propTypes = {
   match: Proptypes.object.isRequired,
   loading: Proptypes.bool,
-  fetchCountryNdcOverviewData: Proptypes.func
+  fetchCountryNdcOverviewData: Proptypes.func,
+  fetched: Proptypes.bool
 };
 
 export { actions, reducers, initialState };

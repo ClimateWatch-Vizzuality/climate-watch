@@ -1,9 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
-/* @tmpfix: remove usage of indcTransform */
-import indcTransform from 'utils/indctransform';
-
 const fetchCountryNDCInit = createAction('fetchCountryNDCInit');
 const fetchCountryNDCReady = createAction('fetchCountryNDCReady');
 const fetchCountryNDCFailed = createAction('fetchCountryNDCFailed');
@@ -17,7 +14,6 @@ const fetchCountryNDC = createThunkAction(
         if (response.ok) return response.json();
         throw Error(response.statusText);
       })
-      .then(data => indcTransform(data))
       .then(data => {
         const dataWithIso = {
           iso,

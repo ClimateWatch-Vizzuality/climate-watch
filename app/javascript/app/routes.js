@@ -9,6 +9,7 @@ import NDCMap from 'components/ndcs-map';
 import NDCTable from 'components/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
+import NDCCountryAccordion from 'components/ndcs-country-accordion';
 import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
@@ -60,16 +61,52 @@ export default [
         label: 'SECTORS'
       },
       {
-        path: '/ndcs/country/:iso',
-        component: NDCCountry,
-        exact: true,
-        headerImage: 'ndc'
-      },
-      {
         path: '/ndcs/country/:iso/full',
         component: NDCCountryFull,
         exact: true,
         headerImage: 'ndc'
+      },
+      {
+        path: '/ndcs/country/:iso',
+        component: NDCCountry,
+        headerImage: 'ndc',
+        routes: [
+          {
+            path: '/ndcs/country/:iso',
+            component: () => createElement(CountryNdcOverview),
+            exact: true,
+            anchor: true,
+            label: 'Overview'
+          },
+          {
+            path: '/ndcs/country/:iso/mitigation',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'migitation',
+                type: 'overview'
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Mitigation',
+            param: 'mitigation'
+          },
+          {
+            path: '/ndcs/country/:iso/adaptation',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'adaptation',
+                type: 'overview'
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Adaptation',
+            param: 'adaptation'
+          },
+          {
+            path: '/ndcs/country/:iso',
+            component: () => createElement(Redirect, { to: '/ndcs' })
+          }
+        ]
       },
       {
         path: '/ndcs/compare',
@@ -133,7 +170,8 @@ export default [
             hash: 'ndc-content-overview',
             label: 'NDC Content Overview',
             anchor: true,
-            component: CountryNdcOverview
+            component: () =>
+              createElement(CountryNdcOverview, { actions: true })
           },
           {
             hash: 'ndc-sdg-linkages',
