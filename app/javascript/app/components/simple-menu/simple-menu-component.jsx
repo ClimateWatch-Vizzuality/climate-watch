@@ -45,7 +45,8 @@ class SimpleMenu extends PureComponent {
       title,
       buttonClassName,
       currentPathname,
-      reverse
+      reverse,
+      positionRight
     } = this.props;
     const { open } = this.state;
     const paths = this.props.options.map(option => option.path);
@@ -53,7 +54,13 @@ class SimpleMenu extends PureComponent {
 
     return (
       <ClickOutside onClickOutside={() => this.setState({ open: false })}>
-        <div className={cx(styles.dropdown, { [styles.reverse]: reverse })}>
+        <div
+          className={cx(
+            styles.dropdown,
+            { [styles.reverse]: reverse },
+            { [styles.positionRight]: positionRight }
+          )}
+        >
           <button
             className={cx(styles.button, buttonClassName, {
               [styles.active]: open || active
@@ -89,6 +96,7 @@ SimpleMenu.propTypes = {
   icon: PropTypes.object,
   title: PropTypes.string,
   reverse: PropTypes.bool,
+  positionRight: PropTypes.bool,
   buttonClassName: PropTypes.string,
   currentPathname: PropTypes.string
 };
