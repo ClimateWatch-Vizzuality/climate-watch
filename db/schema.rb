@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027170320) do
+ActiveRecord::Schema.define(version: 20171031100456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,13 +264,30 @@ ActiveRecord::Schema.define(version: 20171027170320) do
   create_table "quantification_values", force: :cascade do |t|
     t.bigint "location_id"
     t.bigint "label_id"
-    t.integer "year"
-    t.float "value"
-    t.boolean "range"
+    t.integer "year", limit: 2
+    t.float "first_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "second_value"
     t.index ["label_id"], name: "index_quantification_values_on_label_id"
     t.index ["location_id"], name: "index_quantification_values_on_location_id"
+  end
+
+  create_table "socioeconomic_indicators", force: :cascade do |t|
+    t.bigint "location_id"
+    t.integer "year", limit: 2, null: false
+    t.bigint "gdp"
+    t.integer "gdp_rank", limit: 2
+    t.float "gdp_per_capita"
+    t.integer "gdp_per_capita_rank"
+    t.bigint "population"
+    t.integer "population_rank", limit: 2
+    t.float "population_growth"
+    t.integer "population_growth_rank", limit: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id", "year"], name: "index_socioeconomic_indicators_on_location_id_and_year", unique: true
+    t.index ["location_id"], name: "index_socioeconomic_indicators_on_location_id"
   end
 
   create_table "timeline_documents", force: :cascade do |t|
@@ -371,6 +388,7 @@ ActiveRecord::Schema.define(version: 20171027170320) do
   add_foreign_key "ndcs", "locations", on_delete: :cascade
   add_foreign_key "quantification_values", "locations", on_delete: :cascade
   add_foreign_key "quantification_values", "quantification_labels", column: "label_id", on_delete: :cascade
+  add_foreign_key "socioeconomic_indicators", "locations", on_delete: :cascade
   add_foreign_key "timeline_documents", "locations", on_delete: :cascade
   add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
