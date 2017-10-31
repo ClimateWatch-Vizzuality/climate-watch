@@ -82,7 +82,7 @@ export default [
             path: '/ndcs/country/:iso/mitigation',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'migitation',
+                category: 'mitigation',
                 type: 'overview'
               }),
             exact: true,
@@ -117,7 +117,7 @@ export default [
             path: '/ndcs/compare/mitigation',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'migitation',
+                category: 'mitigation',
                 compare: true
               }),
             exact: true,
