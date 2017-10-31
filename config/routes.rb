@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       end
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]
+      get 'socioeconomics/:location', to: 'socioeconomics#index'
       resources :metadata, param: :slug, only: [:index, :show] do
         get :acronyms, on: :collection, controller: :metadata, action: :acronyms
       end
