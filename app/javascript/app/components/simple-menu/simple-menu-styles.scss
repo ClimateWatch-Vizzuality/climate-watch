@@ -22,6 +22,19 @@
     height: 4px;
   }
 
+  &.reverse {
+    .links {
+      bottom: 55px;
+      left: 0;
+      right: initial;
+      top: initial;
+    }
+
+    .arrowIcon {
+      transform: rotate(180deg);
+    }
+  }
+
   .links {
     display: none;
     position: absolute;

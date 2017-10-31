@@ -11,7 +11,14 @@ import styles from './nav-styles.scss';
 
 class Nav extends PureComponent {
   render() {
-    const { location, routes, className, hideLogo, hideActive } = this.props;
+    const {
+      location,
+      routes,
+      className,
+      hideLogo,
+      hideActive,
+      reverse
+    } = this.props;
     const showLogo = !hideLogo && location.pathname !== '/';
     return (
       <nav className={cx(styles.navbar, className)}>
@@ -40,6 +47,7 @@ class Nav extends PureComponent {
               options={route.routes}
               title={route.label}
               buttonClassName={cx(styles.link, styles.menuLink)}
+              reverse={reverse}
             />
           );
         })}
@@ -51,6 +59,7 @@ class Nav extends PureComponent {
 Nav.propTypes = {
   hideLogo: PropTypes.bool.isRequired,
   hideActive: PropTypes.bool.isRequired,
+  reverse: PropTypes.bool,
   routes: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
   className: PropTypes.string
