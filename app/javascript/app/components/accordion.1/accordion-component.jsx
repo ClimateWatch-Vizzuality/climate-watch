@@ -10,7 +10,7 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
-    const { className, data, handleOnClick, openSlug, children } = this.props;
+    const { className, data, handleOnClick, openSlug, compare } = this.props;
     return (
       <div className={className}>
         {data.map((section, index) => {
@@ -25,7 +25,7 @@ class Accordion extends PureComponent {
               isOpen = false;
             }
           }
-          return (
+          return section.definitions.length ? (
             <section key={section.slug} className={styles.accordion}>
               <button
                 className={styles.header}
@@ -44,13 +44,39 @@ class Accordion extends PureComponent {
                 </div>
               </button>
               <Collapse isOpened={isOpen}>
-                {React.Children.map(children, (child, i) => {
-                  if (i === index) return child;
-                  return null;
-                })}
+                <div className={styles.accordionContent}>
+                  <div className={layout.content}>
+                    <dl className={styles.definitionList}>
+                      {section.definitions.map(def => (
+                        <div
+                          key={`${def.slug}-${section.slug}`}
+                          className={cx(
+                            compare
+                              ? styles.definitionCompare
+                              : styles.definition
+                          )}
+                        >
+                          <dt className={styles.definitionTitle}>
+                            {def.title}
+                          </dt>
+                          {def.descriptions.map(desc => (
+                            <dd
+                              key={`${def.slug}-${desc.iso}`}
+                              className={styles.definitionDesc}
+                            >
+                              <div
+                                dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
+                              />
+                            </dd>
+                          ))}
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                </div>
               </Collapse>
             </section>
-          );
+          ) : null;
         })}
       </div>
     );
@@ -68,7 +94,7 @@ Accordion.propTypes = {
       definitions: PropTypes.array.isRequired
     })
   ),
-  children: PropTypes.node
+  compare: PropTypes.bool
 };
 
 Accordion.defaultProps = {
