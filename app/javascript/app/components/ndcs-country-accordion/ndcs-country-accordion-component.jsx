@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import Accordion from 'components/accordion';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
+import DefinitionList from 'components/definition-list';
 
+import layout from 'styles/layout.scss';
 import styles from './ndcs-country-accordion-styles.scss';
 
 class NdcsCountryAccordion extends PureComponent {
@@ -26,14 +28,21 @@ class NdcsCountryAccordion extends PureComponent {
             param="section"
             data={ndcsData}
             loading={loading}
-            compare={compare}
           >
-            <div className={styles.accordionContent}>
-              test1
-            </div>
-            <div className={styles.accordionContent}>
-              test2
-            </div>
+            {ndcsData &&
+              ndcsData.map(section => (
+                <div
+                  key={section.title}
+                  className={styles.definitionList}
+                >
+                  <DefinitionList
+                    className={layout.content}
+                    definitions={section.definitions}
+                    compare={compare}
+                  />
+                </div>
+              ))
+            }
           </Accordion>
         )}
       </div>
