@@ -19,36 +19,38 @@ class SimpleMenu extends PureComponent {
     const { open } = this.state;
     return (
       <ClickOutside onClickOutside={() => this.setState({ open: false })}>
-        <button
-          className={cx(styles.button, { [styles.active]: open })}
-          onClick={() => this.setState({ open: !open })}
-        >
-          <Icon icon={icon} className={styles.icon} />
-        </button>
-        <ul className={cx(styles.links, { [styles.open]: open })}>
-          {options.map(option => (
-            <li key={option.title}>
-              {option.action ? (
-                <button key={option.title} className={styles.documentLink}>
-                  <Icon icon={option.icon} className={styles.icon} />
-                  <span className={styles.title}>{option.title}</span>
-                </button>
-              ) : (
-                <a
-                  className={cx(styles.documentLink, {
-                    [styles.disabled]: !option.link
-                  })}
-                  key={option.title}
-                  target="_blank"
-                  href={option.link}
-                >
-                  <Icon icon={option.icon} className={styles.icon} />
-                  <span className={styles.title}>{option.title}</span>
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
+        <div className={styles.dropdown}>
+          <button
+            className={cx(styles.button, { [styles.active]: open })}
+            onClick={() => this.setState({ open: !open })}
+          >
+            <Icon icon={icon} className={styles.icon} />
+          </button>
+          <ul className={cx(styles.links, { [styles.open]: open })}>
+            {options.map(option => (
+              <li key={option.title}>
+                {option.action ? (
+                  <button key={option.title} className={styles.documentLink}>
+                    <Icon icon={option.icon} className={styles.icon} />
+                    <span className={styles.title}>{option.title}</span>
+                  </button>
+                ) : (
+                  <a
+                    className={cx(styles.documentLink, {
+                      [styles.disabled]: !option.link
+                    })}
+                    key={option.title}
+                    target="_blank"
+                    href={option.link}
+                  >
+                    <Icon icon={option.icon} className={styles.icon} />
+                    <span className={styles.title}>{option.title}</span>
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </ClickOutside>
     );
   }
