@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027123608) do
+ActiveRecord::Schema.define(version: 20171030145609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -267,6 +267,23 @@ ActiveRecord::Schema.define(version: 20171027123608) do
     t.index ["location_id"], name: "index_quantification_values_on_location_id"
   end
 
+  create_table "socioeconomic_indicators", force: :cascade do |t|
+    t.bigint "location_id"
+    t.integer "year", limit: 2, null: false
+    t.bigint "gdp"
+    t.integer "gdp_rank", limit: 2
+    t.float "gdp_per_capita"
+    t.integer "gdp_per_capita_rank"
+    t.bigint "population"
+    t.integer "population_rank", limit: 2
+    t.float "population_growth"
+    t.integer "population_growth_rank", limit: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id", "year"], name: "index_socioeconomic_indicators_on_location_id_and_year", unique: true
+    t.index ["location_id"], name: "index_socioeconomic_indicators_on_location_id"
+  end
+
   create_table "timeline_documents", force: :cascade do |t|
     t.bigint "source_id"
     t.bigint "location_id"
@@ -417,6 +434,7 @@ ActiveRecord::Schema.define(version: 20171027123608) do
   add_foreign_key "ndcs", "locations", on_delete: :cascade
   add_foreign_key "quantification_values", "locations", on_delete: :cascade
   add_foreign_key "quantification_values", "quantification_labels", column: "label_id", on_delete: :cascade
+  add_foreign_key "socioeconomic_indicators", "locations", on_delete: :cascade
   add_foreign_key "timeline_documents", "locations", on_delete: :cascade
   add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
