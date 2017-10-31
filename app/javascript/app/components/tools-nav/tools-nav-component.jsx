@@ -13,7 +13,7 @@ const ToolsNav = ({ shareMenuOptions, shareIcon }) => (
     <NavLink
       className={cx(styles.link, styles.disabled)}
       activeClassName={styles.linkActive}
-      to="/my-cw"
+      to=""
       disabled
       title="Coming soon"
     >
