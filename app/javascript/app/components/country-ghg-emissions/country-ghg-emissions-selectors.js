@@ -32,12 +32,31 @@ const AXES_CONFIG = {
   }
 };
 
-const EXCLUDED_SECTORS = [
-  'Total excluding LUCF',
-  'Total including LUCF',
-  'Total including LULUCF',
-  'Total excluding LULUCF'
-];
+const INCLUDED_SECTORS = {
+  CAIT: [
+    'Energy',
+    'Industrial Processes',
+    'Agriculture',
+    'Waste',
+    'Bunker Fuels'
+  ],
+  PIK: [
+    'Energy',
+    'Agriculture',
+    'Waste',
+    'Solvent sector',
+    'Industrial process',
+    'Other'
+  ],
+  UNFCCC: [
+    'Energy',
+    'Industrial Processes',
+    'Solvent and Other Product Use',
+    'Agriculture',
+    'Waste',
+    'Other'
+  ]
+};
 
 const calculationKeys = Object.keys(CALCULATION_OPTIONS);
 const options = calculationKeys.map(
@@ -170,11 +189,14 @@ export const getSelectorDefaults = createSelector(
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getFiltersSelected],
-  data => {
+  [getData, getSourceSelected],
+  (data, sourceSelected) => {
     if (!data || !data.length) return [];
     return sortEmissionsByValue(
-      data.filter(d => EXCLUDED_SECTORS.indexOf(d.sector) === -1)
+      data.filter(
+        d =>
+          INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >= 0
+      )
     );
   }
 );
