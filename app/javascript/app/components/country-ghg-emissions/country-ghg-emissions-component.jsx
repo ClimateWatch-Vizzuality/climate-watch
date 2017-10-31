@@ -4,7 +4,9 @@ import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import ChartStackedArea from 'components/charts/stacked-area';
+import LineChart from 'components/charts/line';
 import Tag from 'components/tag';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -16,11 +18,19 @@ class CountryGhgEmissions extends PureComponent {
       config,
       iso,
       sources,
+      calculations,
       handleInfoClick,
       handleYearHover,
       handleSourceChange,
+      handleCalculationChange,
+      calculationSelected,
       sourceSelected
     } = this.props;
+    const useLineChart =
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
+      calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
+    const ChartComponent = useLineChart ? LineChart : ChartStackedArea;
+
     return (
       <div className={styles.grid}>
         <div className={styles.header}>
@@ -35,11 +45,19 @@ class CountryGhgEmissions extends PureComponent {
               value={sourceSelected}
               hideResetButton
             />
+            <Dropdown
+              label="Calculation"
+              options={calculations}
+              onValueChange={handleCalculationChange}
+              value={calculationSelected}
+              hideResetButton
+            />
             <ButtonGroup
               className={styles.btnGroup}
               onInfoClick={handleInfoClick}
             />
             <Button
+              noSpace
               className={styles.exploreBtn}
               color="yellow"
               link={`/ghg-emissions?breakBy=location&filter=${iso}`}
@@ -50,7 +68,7 @@ class CountryGhgEmissions extends PureComponent {
         </div>
         <div className={styles.graph}>
           {!loading && (
-            <ChartStackedArea
+            <ChartComponent
               config={config}
               data={data}
               height="100%"
@@ -82,11 +100,14 @@ CountryGhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
+  calculations: PropTypes.array.isRequired,
+  calculationSelected: PropTypes.object.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func.isRequired,
-  handleSourceChange: PropTypes.func.isRequired
+  handleSourceChange: PropTypes.func.isRequired,
+  handleCalculationChange: PropTypes.func.isRequired
 };
 
 CountryGhgEmissions.defaultProps = {

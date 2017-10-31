@@ -5,19 +5,16 @@ import Proptypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import NDCCountryFullComponent from './ndc-country-full-component';
 import actions from './ndc-country-full-actions';
+import reducers, { initialState } from './ndc-country-full-reducers';
+
+import NDCCountryFullComponent from './ndc-country-full-component';
 import {
   getCountry,
   getSelectedContent,
   getContentOptions,
   getContentOptionSelected
 } from './ndc-country-full-selectors';
-
-export { default as component } from './ndc-country-full-component';
-export { initialState } from './ndc-country-full-reducers';
-export { default as reducers } from './ndc-country-full-reducers';
-export { default as actions } from './ndc-country-full-actions';
 
 const mapStateToProps = (state, { match }) => {
   const search = qs.parse(location.search);
@@ -34,7 +31,7 @@ const mapStateToProps = (state, { match }) => {
     content: getSelectedContent(contentData),
     contentOptions: getContentOptions(contentData),
     contentOptionSelected: getContentOptionSelected(contentData),
-    idx: search.idx
+    search
   };
 };
 
@@ -44,21 +41,9 @@ class NDCCountryFullContainer extends PureComponent {
     const { iso } = match.params;
     const search = qs.parse(location.search);
     if (iso && !loading && !fetched) {
-      fetchCountryNDCFull(iso, search);
+      fetchCountryNDCFull(search, iso);
     }
   }
-
-  onSearchChange = option => {
-    const { match, fetchCountryNDCFull } = this.props;
-    const { iso } = match.params;
-    if (option && option.groupId) {
-      const optionValues = {
-        searchBy: option.groupId,
-        query: option.value
-      };
-      fetchCountryNDCFull(iso, optionValues);
-    }
-  };
 
   onDocumentChange = selected => {
     this.updateUrlParam({ name: 'document', value: selected.value });
@@ -73,7 +58,8 @@ class NDCCountryFullContainer extends PureComponent {
     return createElement(NDCCountryFullComponent, {
       ...this.props,
       onSearchChange: this.onSearchChange,
-      onDocumentChange: this.onDocumentChange
+      onDocumentChange: this.onDocumentChange,
+      handleKeyUp: this.handleKeyUp
     });
   }
 }
@@ -86,6 +72,8 @@ NDCCountryFullContainer.propTypes = {
   loading: Proptypes.bool,
   fetchCountryNDCFull: Proptypes.func
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(NDCCountryFullContainer)

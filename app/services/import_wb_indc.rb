@@ -1,8 +1,10 @@
 class ImportWbIndc
-  META_INDICATORS_FILEPATH = 'wb_indc/CW_NDC_WB_metadata_w_definitions.csv'.
-    freeze
-  DATA_SECTORIAL_FILEPATH = 'wb_indc/CW_NDC_WB_sectoral.csv'.freeze
-  DATA_ECONOMY_WIDE_FILEPATH = 'wb_indc/CW_NDC_WB_economy_wide.csv'.freeze
+  META_INDICATORS_FILEPATH =
+    "#{CW_FILES_PREFIX}wb_indc/CW_NDC_WB_metadata_w_definitions.csv".freeze
+  DATA_SECTORIAL_FILEPATH =
+    "#{CW_FILES_PREFIX}wb_indc/CW_NDC_WB_sectoral.csv".freeze
+  DATA_ECONOMY_WIDE_FILEPATH =
+    "#{CW_FILES_PREFIX}wb_indc/CW_NDC_WB_economy_wide.csv".freeze
 
   def call
     cleanup

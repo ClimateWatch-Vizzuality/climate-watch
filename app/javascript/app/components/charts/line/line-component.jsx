@@ -15,12 +15,12 @@ import { format } from 'd3-format';
 
 class ChartLine extends PureComponent {
   render() {
-    const { config, data } = this.props;
+    const { config, data, height } = this.props;
     return (
-      <ResponsiveContainer height={500}>
+      <ResponsiveContainer height={height}>
         <LineChart
           data={data}
-          margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
+          margin={{ top: 0, right: 0, left: -10, bottom: 0 }}
         >
           <XAxis
             dataKey="x"
@@ -59,7 +59,12 @@ class ChartLine extends PureComponent {
 
 ChartLine.propTypes = {
   config: PropTypes.object.isRequired,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  height: PropTypes.any.isRequired
+};
+
+ChartLine.defaultProps = {
+  height: '100%'
 };
 
 export default ChartLine;

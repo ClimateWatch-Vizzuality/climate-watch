@@ -3,18 +3,14 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import AutocompleteSearchComponent from './autocomplete-search-component';
 import actions from './autocomplete-search-actions';
+import reducers, { initialState } from './autocomplete-search-reducers';
+
+import AutocompleteSearchComponent from './autocomplete-search-component';
 import {
   getQueryUpper,
   getFilteredCountriesWithPath
 } from './autocomplete-search-selectors';
-
-export { default as component } from './autocomplete-search-component';
-export { initialState } from './autocomplete-search-reducers';
-export { default as reducers } from './autocomplete-search-reducers';
-export { default as styles } from './autocomplete-search-styles';
-export { default as actions } from './autocomplete-search-actions';
 
 const mapStateToProps = state => {
   const { autocompleteSearch } = state;
@@ -49,6 +45,8 @@ AutocompleteSearchContainer.propTypes = {
   history: Proptypes.object.isRequired,
   setAutocompleteSearch: Proptypes.func.isRequired
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(AutocompleteSearchContainer)

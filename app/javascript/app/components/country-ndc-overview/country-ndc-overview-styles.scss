@@ -3,6 +3,7 @@
 .wrapper {
   border-bottom: solid 1px $border-color;
   border-top: solid 1px $border-color;
+  min-height: 450px;
 }
 
 .col2 {
@@ -69,6 +70,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 450px;
 }
 
 .listItem {
@@ -79,4 +81,8 @@
 
 .adaptionList {
   margin-top: -29px;
+}
+
+.loader {
+  min-height: 400px;
 }

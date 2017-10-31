@@ -1,60 +1,59 @@
-import { createElement } from 'react';
+import { createElement, PureComponent } from 'react';
 import { connect } from 'react-redux';
+import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
+import { getLocationParamUpdated } from 'utils/navigation';
+
+import actions from './ndc-country-actions';
+import reducers, { initialState } from './ndc-country-reducers';
 
 import NDCCountryComponent from './ndc-country-component';
-import actions from './ndc-country-actions';
-import { getCountry, filterNDCs } from './ndc-country-selectors';
+import { getCountry, getAnchorLinks } from './ndc-country-selectors';
 
-export { default as component } from './ndc-country-component';
-export { initialState } from './ndc-country-reducers';
-export { default as reducers } from './ndc-country-reducers';
-export { default as actions } from './ndc-country-actions';
-
-const mapStateToProps = (state, { match, location }) => {
+const mapStateToProps = (state, { match, location, route }) => {
   const { iso } = match.params;
   const search = qs.parse(location.search);
   const countryData = {
     countries: state.countries.data,
     iso: match.params.iso
   };
-  const ndcsData = {
-    data: state.countryNDC.data[match.params.iso],
-    search: search.search,
-    countries: [match.params.iso]
+  const routeData = {
+    iso,
+    location,
+    route
   };
   return {
-    fetched: state.countryNDC.data[iso],
-    loading: state.countryNDC.loading,
     country: getCountry(countryData),
     search: search.search,
-    ndcsData: filterNDCs(ndcsData)
+    anchorLinks: getAnchorLinks(routeData)
   };
 };
 
-const NDCCountryContainer = props => {
-  const { location, match, history, fetchCountryNDC, loading, fetched } = props;
-  const { iso } = match.params;
-  if (iso && !loading && !fetched) {
-    fetchCountryNDC(iso);
-  }
+class NDCCountryContainer extends PureComponent {
+  onSearchChange = query => {
+    this.updateUrlParam({ name: 'search', value: query });
+  };
 
-  const onSearchChange = query => {
-    const search = qs.parse(location.search);
-    const newSearch = { ...search, search: query };
+  updateUrlParam = (params, clear) => {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  };
 
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
+  render() {
+    return createElement(NDCCountryComponent, {
+      ...this.props,
+      onSearchChange: this.onSearchChange
     });
-  };
+  }
+}
 
-  return createElement(NDCCountryComponent, {
-    ...props,
-    onSearchChange
-  });
+NDCCountryContainer.propTypes = {
+  history: Proptypes.object.isRequired,
+  location: Proptypes.object.isRequired
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(NDCCountryContainer)

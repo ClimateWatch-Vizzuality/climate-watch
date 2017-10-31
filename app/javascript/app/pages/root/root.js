@@ -2,7 +2,6 @@ import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { actions } from 'providers/countries-provider';
 import ReactGA from 'react-ga';
 import Component from './root-component';
 
@@ -33,17 +32,14 @@ function handleTrack(location, prevLocation) {
   }
 }
 
+// Path routes exclude menu groups
 const mapStateToProps = (state, { route }) => ({
   countriesLoaded: state.countries.loaded,
-  navRoutes: route.routes.filter(r => r.nav)
+  navRoutes: route.routes.filter(r => r.nav),
+  pathRoutes: route.routes.filter(r => r.path)
 });
 
 class Root extends PureComponent {
-  constructor(props) {
-    super(props);
-    props.getCountries();
-  }
-
   componentDidMount() {
     handleTrack(this.props.location);
   }
@@ -53,16 +49,12 @@ class Root extends PureComponent {
   }
 
   render() {
-    return this.props.countriesLoaded
-      ? createElement(Component, this.props)
-      : null;
+    return createElement(Component, this.props);
   }
 }
 
 Root.propTypes = {
-  getCountries: Proptypes.func,
-  location: Proptypes.object.isRequired,
-  countriesLoaded: Proptypes.bool
+  location: Proptypes.object.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, actions)(Root));
+export default withRouter(connect(mapStateToProps)(Root));

@@ -5,6 +5,12 @@ export function deburrUpper(string) {
   return toUpper(deburr(string));
 }
 
+export function isCountryIncluded(countriesIncluded = [], iso) {
+  if (!countriesIncluded.length) return false;
+  return countriesIncluded.includes(iso);
+}
+
 export default {
-  deburrUpper
+  deburrUpper,
+  isCountryIncluded
 };

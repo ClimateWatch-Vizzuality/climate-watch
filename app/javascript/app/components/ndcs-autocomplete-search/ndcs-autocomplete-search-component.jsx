@@ -3,10 +3,12 @@ import Proptypes from 'prop-types';
 import cx from 'classnames';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
+import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import Dropdown from 'components/dropdown';
-import Icon from 'components/icon';
+import Search from 'components/search';
 
-import searchIcon from 'assets/icons/search.svg';
+import darkSearch from 'styles/themes/search/search-dark.scss';
+import lightSearch from 'styles/themes/search/search-light.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import styles from './ndcs-autocomplete-search-styles.scss';
 
@@ -14,45 +16,36 @@ class NdcsAutocompleteSearch extends PureComponent {
   render() {
     const {
       className,
-      handleValueClick,
-      setNdcsAutocompleteSearch,
+      onSearchChange,
       searchList,
       groups,
-      optionSelected
+      optionSelected,
+      label,
+      global,
+      search,
+      handleKeyUp,
+      dark
     } = this.props;
     return (
-      <div className={cx(styles.wrapper, className)}>
-        <NdcsSdgsMetaProvider />
+      <div className={cx(styles.wrapper, styles.col2, className)}>
+        {global ? <NdcsSdgsMetaProvider /> : <NdcsSdgsDataProvider />}
         <Dropdown
+          label={label ? 'Highlight SDG Linkages' : ''}
           className={theme.dropdownOptionWithArrow}
-          placeholder={'e.g. “Energy”, “SDG 8.1”, “reduce emissions by 37%”'}
+          placeholder="Select a goal or target"
           groups={groups}
           options={searchList}
-          onSearchChange={setNdcsAutocompleteSearch}
-          onValueChange={handleValueClick}
+          onValueChange={onSearchChange}
           value={optionSelected}
           hideResetButton
-          dark
-          hasSearch
-          renderToggleButton={({ open }) => (
-            <Icon
-              icon={searchIcon}
-              className={cx(styles.searchIcon, !open ? styles.whiteIcon : '')}
-            />
-          )}
-          renderGroupTitle={(index, group) =>
-            group.groupId !== 'query' && (
-              <div className="simple-group-title">{group.title}</div>
-            )}
-          renderOption={option => (
-            <div
-              className={`simple-option ${option.groupId === 'query'
-                ? '-search'
-                : ''}`}
-            >
-              <span>{option.label}</span>
-            </div>
-          )}
+          white={!dark}
+        />
+        <Search
+          theme={dark ? darkSearch : lightSearch}
+          className={label ? styles.search : ''}
+          placeholder="e.g. “reduce emissions by 37%”"
+          input={search.searchBy === 'query' ? search.query : ''}
+          handleKeyUp={handleKeyUp}
         />
       </div>
     );
@@ -61,11 +54,15 @@ class NdcsAutocompleteSearch extends PureComponent {
 
 NdcsAutocompleteSearch.propTypes = {
   className: Proptypes.string,
-  handleValueClick: Proptypes.func.isRequired,
-  setNdcsAutocompleteSearch: Proptypes.func.isRequired,
+  onSearchChange: Proptypes.func.isRequired,
   searchList: Proptypes.array,
   groups: Proptypes.array,
-  optionSelected: Proptypes.object
+  optionSelected: Proptypes.object,
+  label: Proptypes.bool,
+  global: Proptypes.bool,
+  search: Proptypes.object,
+  handleKeyUp: Proptypes.func,
+  dark: Proptypes.bool
 };
 
 export default NdcsAutocompleteSearch;

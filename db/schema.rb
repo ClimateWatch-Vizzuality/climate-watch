@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171016113522) do
+ActiveRecord::Schema.define(version: 20171031100456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,29 @@ ActiveRecord::Schema.define(version: 20171016113522) do
     t.index ["indicator_id"], name: "index_cait_indc_values_on_indicator_id"
     t.index ["label_id"], name: "index_cait_indc_values_on_label_id"
     t.index ["location_id"], name: "index_cait_indc_values_on_location_id"
+  end
+
+  create_table "global_indc_categories", force: :cascade do |t|
+    t.text "name"
+    t.text "slug"
+    t.bigint "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_global_indc_categories_on_parent_id"
+  end
+
+  create_table "global_indc_indicators", force: :cascade do |t|
+    t.bigint "cait_indicator_id"
+    t.bigint "wb_indicator_id"
+    t.index ["cait_indicator_id"], name: "index_global_indc_indicators_on_cait_indicator_id"
+    t.index ["wb_indicator_id"], name: "index_global_indc_indicators_on_wb_indicator_id"
+  end
+
+  create_table "global_indc_indicators_categories", force: :cascade do |t|
+    t.bigint "indicator_id"
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_global_indc_indicators_categories_on_category_id"
+    t.index ["indicator_id"], name: "index_global_indc_indicators_categories_on_indicator_id"
   end
 
   create_table "historical_emissions_data_sources", force: :cascade do |t|
@@ -225,6 +248,77 @@ ActiveRecord::Schema.define(version: 20171016113522) do
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
 
+  create_table "quantification_labels", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_quantification_labels_on_name", unique: true
+  end
+
+  create_table "quantification_values", force: :cascade do |t|
+    t.bigint "location_id"
+    t.bigint "label_id"
+    t.integer "year", limit: 2
+    t.float "first_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "second_value"
+    t.index ["label_id"], name: "index_quantification_values_on_label_id"
+    t.index ["location_id"], name: "index_quantification_values_on_location_id"
+  end
+
+  create_table "socioeconomic_indicators", force: :cascade do |t|
+    t.bigint "location_id"
+    t.integer "year", limit: 2, null: false
+    t.bigint "gdp"
+    t.integer "gdp_rank", limit: 2
+    t.float "gdp_per_capita"
+    t.integer "gdp_per_capita_rank"
+    t.bigint "population"
+    t.integer "population_rank", limit: 2
+    t.float "population_growth"
+    t.integer "population_growth_rank", limit: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id", "year"], name: "index_socioeconomic_indicators_on_location_id_and_year", unique: true
+    t.index ["location_id"], name: "index_socioeconomic_indicators_on_location_id"
+  end
+
+  create_table "timeline_documents", force: :cascade do |t|
+    t.bigint "source_id"
+    t.bigint "location_id"
+    t.text "link"
+    t.text "text"
+    t.date "date"
+    t.text "language"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_timeline_documents_on_location_id"
+    t.index ["source_id"], name: "index_timeline_documents_on_source_id"
+  end
+
+  create_table "timeline_notes", force: :cascade do |t|
+    t.bigint "document_id"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_timeline_notes_on_document_id"
+  end
+
+  create_table "timeline_sources", force: :cascade do |t|
+    t.text "name"
+  end
+
+  create_table "wb_extra_country_data", force: :cascade do |t|
+    t.bigint "location_id"
+    t.integer "year"
+    t.bigint "gdp"
+    t.bigint "population"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_wb_extra_country_data_on_location_id"
+  end
+
   create_table "wb_indc_categories", force: :cascade do |t|
     t.text "name", null: false
     t.text "slug", null: false
@@ -318,6 +412,11 @@ ActiveRecord::Schema.define(version: 20171016113522) do
   add_foreign_key "cait_indc_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "cait_indc_labels", column: "label_id", on_delete: :cascade
   add_foreign_key "cait_indc_values", "locations", on_delete: :cascade
+  add_foreign_key "global_indc_categories", "global_indc_categories", column: "parent_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators", "cait_indc_indicators", column: "cait_indicator_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators", "wb_indc_indicators", column: "wb_indicator_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators_categories", "global_indc_categories", column: "category_id", on_delete: :cascade
+  add_foreign_key "global_indc_indicators_categories", "global_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_gases", column: "gas_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_gwps", column: "gwp_id"
@@ -333,6 +432,13 @@ ActiveRecord::Schema.define(version: 20171016113522) do
   add_foreign_key "ndc_sdg_ndc_targets", "ndcs", on_delete: :cascade
   add_foreign_key "ndc_sdg_targets", "ndc_sdg_goals", column: "goal_id"
   add_foreign_key "ndcs", "locations", on_delete: :cascade
+  add_foreign_key "quantification_values", "locations", on_delete: :cascade
+  add_foreign_key "quantification_values", "quantification_labels", column: "label_id", on_delete: :cascade
+  add_foreign_key "socioeconomic_indicators", "locations", on_delete: :cascade
+  add_foreign_key "timeline_documents", "locations", on_delete: :cascade
+  add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
+  add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
+  add_foreign_key "wb_extra_country_data", "locations", on_delete: :cascade
   add_foreign_key "wb_indc_indicators", "wb_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
   add_foreign_key "wb_indc_indicators_categories", "wb_indc_categories", column: "category_id", on_delete: :cascade
   add_foreign_key "wb_indc_indicators_categories", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade

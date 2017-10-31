@@ -29,6 +29,7 @@ class NdcSdgLinkagesMap extends PureComponent {
           zoomEnable
           paths={this.props.paths}
           className={styles.map}
+          onCountryClick={this.props.onCountryClick}
         />
         {this.getLegend()}
       </div>
@@ -39,7 +40,8 @@ class NdcSdgLinkagesMap extends PureComponent {
 NdcSdgLinkagesMap.propTypes = {
   goal: PropTypes.object,
   paths: PropTypes.array.isRequired,
-  targetHover: PropTypes.string
+  targetHover: PropTypes.string,
+  onCountryClick: PropTypes.func.isRequired
 };
 
 export default NdcSdgLinkagesMap;

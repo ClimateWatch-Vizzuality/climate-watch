@@ -1,5 +1,6 @@
 import { initialState as map } from 'components/map';
 import { initialState as countrySDGLinkages } from 'components/country-ndc-sdg-linkages';
+import { initialState as countryClimateVulnerability } from 'components/country-climate-vulnerability';
 import { initialState as countrySelect } from 'components/countries-select';
 import { initialState as autocompleteSearch } from 'components/autocomplete-search';
 import { initialState as ndcsAutocompleteSearch } from 'components/ndcs-autocomplete-search';
@@ -18,13 +19,18 @@ import { initialState as ndcSdg } from 'pages/ndc-sdg';
 import { initialState as countries } from 'providers/countries-provider';
 import { initialState as regions } from 'providers/regions-provider';
 import { initialState as ndcsSdgsMeta } from 'providers/ndcs-sdgs-meta-provider';
+import { initialState as adaptations } from 'providers/adaptations-provider';
 import { initialState as geoLocation } from 'providers/geolocation-provider';
 import { initialState as ghgEmissionsMeta } from 'providers/ghg-emissions-meta-provider';
+import { initialState as wbCountryData } from 'providers/wb-country-data-provider';
+import { initialState as socioeconomics } from 'providers/socioeconomics-provider';
+import { initialState as timeline } from 'providers/timeline-provider';
 
 export default {
   countries,
   regions,
   ndcsSdgsMeta,
+  adaptations,
   stories,
   geoLocation,
   map,
@@ -35,6 +41,7 @@ export default {
   countryNDC,
   countryNDCFull,
   countryNDCOverview,
+  countryClimateVulnerability,
   NDCCompare,
   countrySelect,
   autocompleteSearch,
@@ -43,5 +50,8 @@ export default {
   ghgEmissions,
   countryGhgEmissionsMap,
   ghgEmissionsMeta,
-  ndcSdg
+  wbCountryData,
+  timeline,
+  ndcSdg,
+  socioeconomics
 };

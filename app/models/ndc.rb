@@ -59,7 +59,7 @@ class Ndc < ApplicationRecord
       target: [:ndc_sdg_targets, :number, params[:target]],
       sector: [:ndc_sdg_ndc_target_sectors, :sector_id, params[:sector]],
       goal: [:ndc_sdg_goals, :number, params[:goal]],
-      code: [:locations, :iso_code3, params[:code].upcase]
+      code: [:locations, :iso_code3, params[:code]&.upcase]
     }
 
     filters.each do |k, v|
@@ -75,5 +75,28 @@ class Ndc < ApplicationRecord
       ndc: [:location]
     ).where(query_params).
       map(&:indc_text)
+  end
+
+  def self.linkages_for(iso_code3)
+    Ndc.
+      includes(
+        :location,
+        ndc_targets: [
+          :sectors,
+          target: :goal
+        ]
+      ).
+      references(
+        :locations,
+        ndc_targets: [
+          ndc_target_sectors: :sectors,
+          targets: :goals
+        ]
+      ).
+      where(
+        locations: {
+          iso_code3: iso_code3.upcase
+        }
+      )
   end
 end

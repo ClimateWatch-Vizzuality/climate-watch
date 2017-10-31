@@ -19,11 +19,9 @@ const ResultCard = props => {
       {result.matches &&
         result.matches.map(match => (
           <NavLink
-            key={match.fragment}
+            key={`${match.fragment}-${match.idx}`}
             to={`/ndcs/country/${result.location
-              .iso_code3}/full?searchBy=${search.searchBy}&query=${search[
-              search.searchBy
-            ]}&idx=${match.idx}&document=${result.document_type}`}
+              .iso_code3}/full?searchBy=${search.searchBy}&query=${search.query}&idx=${match.idx}&document=${result.document_type}`}
             className={styles.match}
           >
             <div

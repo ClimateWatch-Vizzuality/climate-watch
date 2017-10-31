@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import GHGCountryEmissions from 'components/country-ghg-emissions';
 import GHGCountryMap from 'components/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
+import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import throttle from 'lodash/throttle';
 
 import layout from 'styles/layout.scss';
@@ -24,16 +26,24 @@ class CountryGhg extends PureComponent {
   }, 10);
 
   render() {
+    const { search } = this.props;
     return (
       <div className={cx(layout.content, styles.grid)}>
         <EmissionsMetaProvider />
+        <WbCountryDataProvider />
         <GHGCountryEmissions handleYearHover={this.handleYearHover} />
-        <GHGCountryMap className={styles.map} year={this.state.year} />
+        <GHGCountryMap
+          search={search}
+          className={styles.map}
+          year={this.state.year}
+        />
       </div>
     );
   }
 }
 
-CountryGhg.propTypes = {};
+CountryGhg.propTypes = {
+  search: PropTypes.object
+};
 
 export default CountryGhg;

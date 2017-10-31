@@ -1,0 +1,30 @@
+module Api
+  module V1
+    module Quantification
+      class ValueSerializer < ActiveModel::Serializer
+        attribute :location
+        attribute :year
+        attribute :value
+        attribute :label
+
+        def location
+          object.location.iso_code3
+        end
+
+        def label
+          object.label.name
+        end
+
+        def value
+          if object.first_value.present? && object.second_value.blank?
+            object.first_value
+          elsif object.first_value.present? && object.second_value.present?
+            [object.first_value, object.second_value]
+          else
+            # something's weird with values
+          end
+        end
+      end
+    end
+  end
+end

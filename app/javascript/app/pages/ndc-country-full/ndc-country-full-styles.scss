@@ -28,19 +28,20 @@
 
 .actionsWrapper {
   border-bottom: solid 1px $border-color;
+  background: $white;
 }
 
 .actions {
   @extend %grid;
 
-  @include msGridColumns(3fr, 4fr, 5fr);
+  @include msGridColumns(3fr, 3fr, 6fr);
 
-  grid-template-columns: 3fr 4fr 5fr;
-  padding-top: 30px;
-  padding-bottom: 40px;
+  grid-template-columns: 3fr 3fr 6fr;
+  padding-top: 20px;
+  padding-bottom: 30px;
 }
 
-.search {
+.select {
   grid-column-start: 3;
   align-self: flex-end;
 }
@@ -52,15 +53,10 @@
 }
 
 .bodyContent {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(6, 1fr);
   padding-top: 80px;
   padding-bottom: 80px;
 }
 
-.innerContent {
-  grid-column: 2 / 6;
+.loader {
+  min-height: 500px;
 }

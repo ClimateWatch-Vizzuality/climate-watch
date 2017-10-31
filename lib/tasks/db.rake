@@ -11,7 +11,12 @@ namespace :db do
     'cait_indc:import',
     'wb_indc:import',
     'adaptation:import',
-    'wri_metadata:import'
+    'wri_metadata:import',
+    'wb_extra:import',
+    'timeline:import',
+    'global_indc:import',
+    'quantifications:import',
+    'socioeconomics:import'
   ]
 
   desc 'Imports all data in correct order, replaces all data'

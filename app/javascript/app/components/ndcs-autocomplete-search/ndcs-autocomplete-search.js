@@ -6,28 +6,14 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 
 import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
-import actions from './ndcs-autocomplete-search-actions';
 import {
-  getQueryUpper,
-  getSearchList,
-  getOptionSelected
+  getSearchListMeta,
+  getSearchListData,
+  getOptionSelectedMeta,
+  getOptionSelectedData
 } from './ndcs-autocomplete-search-selectors';
 
-export { default as component } from './ndcs-autocomplete-search-component';
-export { initialState } from './ndcs-autocomplete-search-reducers';
-export { default as reducers } from './ndcs-autocomplete-search-reducers';
-export { default as styles } from './ndcs-autocomplete-search-styles';
-export { default as actions } from './ndcs-autocomplete-search-actions';
-
 const groups = [
-  {
-    groupId: 'query',
-    title: 'Query'
-  },
-  {
-    groupId: 'sector',
-    title: 'Sectors'
-  },
   {
     groupId: 'goal',
     title: 'Goals'
@@ -39,36 +25,60 @@ const groups = [
 ];
 
 const mapStateToProps = (state, props) => {
-  const { ndcsAutocompleteSearch } = state;
-  const { location } = props;
+  const { location, match, global } = props;
+  const search = qs.parse(location.search);
+  const searchListMeta = {
+    data: state.ndcsSdgsMeta.data,
+    search
+  };
   const searchListData = {
-    query: ndcsAutocompleteSearch.query,
-    sectors: state.ndcsSdgsMeta.data.sectors,
-    targets: state.ndcsSdgsMeta.data.targets,
-    goals: state.ndcsSdgsMeta.data.goals,
-    search: qs.parse(location.search)
+    sdgs: state.ndcsSdgsData.data[match.params.iso]
+      ? state.ndcsSdgsData.data[match.params.iso].sdgs
+      : {},
+    search
   };
   return {
-    query: getQueryUpper(ndcsAutocompleteSearch),
-    searchList: getSearchList(searchListData),
-    optionSelected: getOptionSelected(searchListData),
+    search,
+    iso: match.params.iso,
+    searchList: global
+      ? getSearchListMeta(searchListMeta)
+      : getSearchListData(searchListData),
+    optionSelected: global
+      ? getOptionSelectedMeta(searchListMeta)
+      : getOptionSelectedData(searchListData),
     groups
   };
 };
 
 class NdcsAutocompleteSearchContainer extends PureComponent {
-  componentWillMount() {
-    const search = qs.parse(this.props.location.search).search || '';
-    this.props.setNdcsAutocompleteSearch(search);
-  }
-
-  handleValueClick = option => {
+  onSearchChange = option => {
     if (option) {
-      this.props.onSearchChange(option);
       this.updateUrlParam([
         { name: 'searchBy', value: option.groupId },
         { name: 'query', value: option.value }
       ]);
+      this.handleFetchContent(option);
+    }
+  };
+
+  handleKeyUp = e => {
+    if (e.key === 'Enter') {
+      this.onSearchChange({
+        label: e.target.value,
+        value: e.target.value,
+        groupId: 'query'
+      });
+    }
+  };
+
+  handleFetchContent = option => {
+    const { fetchSearchResults, iso } = this.props;
+    if (option && option.groupId) {
+      const optionValues = {
+        searchBy: option.groupId,
+        query: option.value
+      };
+      fetchSearchResults(optionValues, iso);
     }
   };
 
@@ -80,18 +90,19 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
   render() {
     return createElement(NdcsAutocompleteSearchComponent, {
       ...this.props,
-      handleValueClick: this.handleValueClick
+      handleKeyUp: this.handleKeyUp,
+      onSearchChange: this.onSearchChange
     });
   }
 }
 
 NdcsAutocompleteSearchContainer.propTypes = {
   history: Proptypes.object.isRequired,
-  setNdcsAutocompleteSearch: Proptypes.func.isRequired,
   location: Proptypes.object,
-  onSearchChange: Proptypes.func
+  fetchSearchResults: Proptypes.func,
+  iso: Proptypes.string
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NdcsAutocompleteSearchContainer)
+  connect(mapStateToProps, null)(NdcsAutocompleteSearchContainer)
 );

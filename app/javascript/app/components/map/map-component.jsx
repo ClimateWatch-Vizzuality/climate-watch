@@ -7,6 +7,7 @@ import {
   Geographies,
   Geography
 } from 'react-simple-maps';
+import ReactTooltip from 'react-tooltip';
 import { Motion, spring } from 'react-motion';
 import Button from 'components/button';
 import Icon from 'components/icon';
@@ -29,6 +30,7 @@ class Map extends PureComponent {
       tooltipId,
       handleZoomIn,
       handleZoomOut,
+      countryNameTooltip,
       onCountryClick,
       onCountryMove,
       onCountryEnter,
@@ -75,7 +77,7 @@ class Map extends PureComponent {
                     geographies.map(geography => {
                       if (geography) {
                         let commonProps = {
-                          key: geography.id,
+                          key: geography.properties && geography.properties.id,
                           geography,
                           projection,
                           onClick: onCountryClick,
@@ -84,6 +86,13 @@ class Map extends PureComponent {
                           onMouseLeave: onCountryLeave,
                           style: geography.style || defaultStyle
                         };
+                        if (countryNameTooltip) {
+                          commonProps = {
+                            ...commonProps,
+                            'data-tip': geography.properties.name,
+                            'data-for': 'namesTooltip'
+                          };
+                        }
                         if (tooltipId) {
                           commonProps = {
                             ...commonProps,
@@ -100,6 +109,7 @@ class Map extends PureComponent {
             </ComposableMap>
           )}
         </Motion>
+        {countryNameTooltip && <ReactTooltip id="namesTooltip" />}
       </div>
     );
   }
@@ -116,6 +126,7 @@ Map.propTypes = {
   className: PropTypes.string,
   paths: PropTypes.array.isRequired,
   tooltipId: PropTypes.string,
+  countryNameTooltip: PropTypes.bool.isRequired,
   handleZoomIn: PropTypes.func.isRequired,
   handleZoomOut: PropTypes.func.isRequired,
   onCountryEnter: PropTypes.func,
@@ -137,6 +148,7 @@ Map.defaultProps = {
   cache: true,
   paths: [],
   tooltipId: '',
+  countryNameTooltip: true,
   onCountryClick: () => {},
   onCountryEnter: () => {},
   onCountryMove: () => {},

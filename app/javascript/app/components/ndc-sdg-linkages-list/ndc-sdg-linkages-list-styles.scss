@@ -2,10 +2,9 @@
 
 .container {
   background-color: white;
-  border-bottom: solid 1px $border-color;
   border-left: solid 1px $border-color;
   border-right: solid 1px $border-color;
-  min-height: 686px;
+  min-height: 685px;
 
   .header {
     display: flex;
@@ -37,7 +36,7 @@
 
   .targetContainer {
     overflow-y: auto;
-    max-height: 616px;
+    max-height: 615px;
 
     &::-webkit-scrollbar {
       width: 0;
@@ -46,12 +45,19 @@
     .target {
       display: flex;
       padding: 15px 15px 15px 20px;
-      border-bottom: 1px solid $theme-border;
       color: $dark-gray;
+      outline: none;
+      border-top: 1px solid $theme-border;
+      border-bottom: 4px solid transparent;
 
       &:hover {
         color: $theme-color;
         cursor: pointer;
+      }
+
+      &Selected,
+      &Selected:hover {
+        color: $theme-color;
       }
 
       .title {

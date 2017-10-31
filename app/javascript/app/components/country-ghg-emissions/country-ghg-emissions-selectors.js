@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
+import intersection from 'lodash/intersection';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
+
 import {
   getYColumnValue,
   getThemeConfig,
@@ -28,20 +32,45 @@ const AXES_CONFIG = {
   }
 };
 
-const EXCLUDED_SECTORS = [
-  'Total excluding LUCF',
-  'Total including LUCF',
-  'Total including LULUCF',
-  'Total excluding LULUCF'
-];
+const INCLUDED_SECTORS = {
+  CAIT: [
+    'Energy',
+    'Industrial Processes',
+    'Agriculture',
+    'Waste',
+    'Bunker Fuels'
+  ],
+  PIK: [
+    'Energy',
+    'Agriculture',
+    'Waste',
+    'Solvent sector',
+    'Industrial process',
+    'Other'
+  ],
+  UNFCCC: [
+    'Energy',
+    'Industrial Processes',
+    'Solvent and Other Product Use',
+    'Agriculture',
+    'Waste',
+    'Other'
+  ]
+};
+
+const calculationKeys = Object.keys(CALCULATION_OPTIONS);
+const options = calculationKeys.map(
+  calculationKey => CALCULATION_OPTIONS[calculationKey]
+);
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
-const getSources = state => state.meta.data_source || [];
-const getVersions = state => state.meta.gwp || [];
+const getCalculationData = state =>
+  (state.calculationData && state.calculationData[state.iso]) || [];
 
 // values from search
 const getSourceSelection = state => state.search.source || null;
+const getCalculationSelection = state => state.search.calculation || null;
 const getVersionSelection = state => state.search.version || null;
 const getFilterSelection = state => state.search.filter || null;
 
@@ -49,6 +78,12 @@ const getFilterSelection = state => state.search.filter || null;
 const getData = state => state.data || [];
 
 // Sources selectors
+export const getSources = createSelector(
+  getMeta,
+  meta => meta.data_source || null
+);
+export const getVersions = createSelector(getMeta, meta => meta.gwp || null);
+
 export const getSourceOptions = createSelector(getSources, sources => {
   if (!sources) return [];
   return sources.map(d => ({
@@ -58,12 +93,33 @@ export const getSourceOptions = createSelector(getSources, sources => {
   }));
 });
 
+const parseCalculationData = createSelector([getCalculationData], data => {
+  if (!data || !data.length) return null;
+  return groupBy(data, 'year');
+});
+
+export const getCalculationOptions = createSelector(
+  parseCalculationData,
+  calculationData => {
+    if (!calculationData) return [];
+    return options;
+  }
+);
+
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
     if (!sources || !sources.length) return {};
     if (!selected) return sources[0];
     return sources.find(category => category.value === parseInt(selected, 10));
+  }
+);
+
+export const getCalculationSelected = createSelector(
+  [getCalculationSelection],
+  selected => {
+    if (!selected) return options[0];
+    return options.find(calculation => calculation.value === selected);
   }
 );
 
@@ -133,26 +189,69 @@ export const getSelectorDefaults = createSelector(
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getFiltersSelected],
-  data => {
+  [getData, getSourceSelected],
+  (data, sourceSelected) => {
     if (!data || !data.length) return [];
     return sortEmissionsByValue(
-      data.filter(d => EXCLUDED_SECTORS.indexOf(d.sector) === -1)
+      data.filter(
+        d =>
+          INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >= 0
+      )
     );
   }
 );
 
+const calculatedRatio = (selected, calculationData, x) => {
+  if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
+    return calculationData[x][0].gdp;
+  }
+  if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
+    return calculationData[x][0].population;
+  }
+  return 1;
+};
+
 export const getChartData = createSelector(
-  [filterData, getFiltersSelected],
-  (data, filters) => {
-    if (!data || !data.length || !filters) return [];
-    const xValues = data[0].emissions.map(d => d.year);
+  [
+    filterData,
+    getFiltersSelected,
+    parseCalculationData,
+    getCalculationSelected
+  ],
+  (data, filters, calculationData, calculationSelected) => {
+    if (
+      !data ||
+      !data.length ||
+      !filters ||
+      !calculationData ||
+      !calculationSelected
+    ) {
+      return [];
+    }
+
+    let xValues = [];
+    xValues = data[0].emissions.map(d => d.year);
+    if (
+      calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+    ) {
+      xValues = intersection(
+        xValues,
+        Object.keys(calculationData).map(y => parseInt(y, 10))
+      );
+    }
+
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
         const yKey = getYColumnValue(d.sector);
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value * DATA_SCALE;
+        const calculationRatio = calculatedRatio(
+          calculationSelected.value,
+          calculationData,
+          x
+        );
+        const scaledYData = yData.value * DATA_SCALE;
+        yItems[yKey] = scaledYData / calculationRatio;
       });
       const item = {
         x,
@@ -164,32 +263,51 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartConfig = createSelector([filterData], data => {
-  if (!data || !data.length) return {};
-  const yColumns = data.map(d => ({
-    label: d.sector,
-    value: getYColumnValue(d.sector)
-  }));
-  const yColumnsChecked = uniqBy(yColumns, 'value');
-  const theme = getThemeConfig(
-    yColumnsChecked,
-    getColorPalette(BASE_COLORS, yColumnsChecked.length)
-  );
-  const tooltip = getTooltipConfig(yColumnsChecked);
-  return {
-    axes: AXES_CONFIG,
-    theme,
-    tooltip,
-    columns: {
-      x: [{ label: 'year', value: 'x' }],
-      y: yColumnsChecked
+export const getChartConfig = createSelector(
+  [filterData, getCalculationSelected],
+  (data, calculationSelected) => {
+    if (!data || !data.length) return {};
+    const yColumns = data.map(d => ({
+      label: d.sector,
+      value: getYColumnValue(d.sector)
+    }));
+    const yColumnsChecked = uniqBy(yColumns, 'value');
+    const theme = getThemeConfig(
+      yColumnsChecked,
+      getColorPalette(BASE_COLORS, yColumnsChecked.length)
+    );
+    const tooltip = getTooltipConfig(yColumnsChecked);
+    let unit = AXES_CONFIG.yLeft.unit;
+    if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
+      unit = `${unit}  per $`;
+    } else if (
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
+    ) {
+      unit = `${unit}  per capita`;
     }
-  };
-});
+    const axes = {
+      ...AXES_CONFIG,
+      yLeft: {
+        ...AXES_CONFIG.yLeft,
+        unit
+      }
+    };
+    return {
+      axes,
+      theme,
+      tooltip,
+      columns: {
+        x: [{ label: 'year', value: 'x' }],
+        y: yColumnsChecked
+      }
+    };
+  }
+);
 
 export default {
   getSourceOptions,
   getSourceSelected,
   getFilterOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getCalculationData
 };

@@ -4,7 +4,6 @@ import { withRouter } from 'react-router';
 import cx from 'classnames';
 
 import Nav from 'components/nav';
-import Initiators from 'components/footer/initiators';
 import BottomBar from 'components/footer/bottom-bar';
 import Icon from 'components/icon';
 
@@ -19,24 +18,15 @@ class Footer extends PureComponent {
     const { pathname } = this.props.location;
     const isNdcs = pathname === '/ndcs' || pathname === '/ndcs/table';
     const isHomePage = pathname === '/';
-    const isAboutPage = pathname.includes('about');
-    const className = cx(
-      styles.footer,
-      { [styles.gray]: isHomePage || isNdcs },
-      { [styles.border]: isAboutPage }
-    );
+    const className = cx(styles.footer, styles.border, {
+      [styles.gray]: isHomePage || isNdcs
+    });
     return (
       <footer className={className}>
-        {!isAboutPage && (
-          <Initiators className={layout.content} gray={isHomePage || isNdcs} />
-        )}
         <div className={cx(layout.content, styles.nav)}>
-          <Nav routes={routes} hideLogo hideActive />
+          <Nav routes={routes} hideLogo hideActive reverse />
           <div className={styles.contactContainer}>
-            <a
-              className={styles.contact}
-              href="mailto:climatewatch@ndcpartnership.org"
-            >
+            <a className={styles.contact} href="mailto:climatewatch@wri.org">
               CONTACT US
             </a>
             <Icon icon={contactIcon} />

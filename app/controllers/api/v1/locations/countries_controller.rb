@@ -6,7 +6,7 @@ module Api
           countries = Location.where(
             location_type: 'COUNTRY',
             show_in_cw: true
-          )
+          ).order(:wri_standard_name)
 
           render json: countries,
                  each_serializer: Api::V1::LocationSerializer,

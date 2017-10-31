@@ -1,0 +1,160 @@
+@import '~styles/layout.scss';
+
+.documentLink {
+  width: 170px;
+  height: 48.4px;
+  background-color: $white;
+}
+
+.timeline { // overwriting timeline styles
+  display: block;
+  width: 100%;
+  height: 90px;
+
+  > div {
+    > div :global {
+      .events-wrapper {
+        overflow: initial !important;
+
+        .events {
+          .timeline-eventline {
+            background-color: $white !important;
+          }
+
+          .timeline-eventline:nth-child(2) {
+            background-color: transparent !important;
+          }
+
+          .dot-label {
+            width: auto !important;
+
+            &.present {
+              > span:last-child {
+                background-color: $theme-secondary !important;
+                border-color: $theme-secondary !important;
+              }
+            }
+          }
+        }
+      }
+
+      ul {
+        display: none;
+      }
+
+      .yearLabel {
+        font-size: $font-size-s;
+        line-height: 1.54;
+        text-align: center;
+        position: absolute;
+        bottom: -30px;
+        left: 27px;
+      }
+
+      .timelineTooltip {
+        &.-open::before {
+          content: " ";
+          top: calc(100% - 15px);
+          left: 42px;
+          border: solid transparent;
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+          border-color: rgba(255, 255, 255, 0);
+          border-top-color: $light-gray;
+          border-width: 6px;
+          margin-left: -6px;
+        }
+
+        .links {
+          display: block;
+          min-width: 120px;
+          position: relative;
+          overflow: auto;
+          max-height: 140px;
+
+          li {
+            background-color: $light-gray;
+            text-align: left;
+            position: relative;
+            border-bottom: 1px solid rgba($white, 0.2);
+            transition: color 0.1s linear;
+
+            a {
+              padding: 10px 25px 10px 10px;
+              display: block;
+              width: auto;
+              height: auto;
+              font-size: $font-size;
+              line-height: $line-height-medium;
+              color: $dark-gray;
+              background-color: transparent;
+              transition: color 0.1s linear;
+            }
+
+            &::after {
+              content: "";
+              opacity: 0;
+              position: absolute;
+              right: 10px;
+              top: calc(50% - 7px);
+              bottom: 0;
+              width: 14px;
+              height: 14px;
+              background-position: center;
+              background-image: url('../../assets/icon-pngs/accordion-arrow.png');
+              background-repeat: no-repeat;
+              background-size: contain;
+              background-color: transparent;
+              transition: opacity 0.1s linear;
+            }
+
+            &:hover {
+              background-color: $white;
+
+              a {
+                color: $theme-color;
+              }
+
+              &::after {
+                opacity: 1;
+              }
+            }
+
+            &:first-child {
+              border-top-left-radius: 4px;
+              border-top-right-radius: 4px;
+            }
+
+            &:last-child {
+              border-bottom-left-radius: 4px;
+              border-bottom-right-radius: 4px;
+              border-bottom: none;
+            }
+          }
+        }
+      }
+
+      .buttons {
+        display: block;
+
+        li {
+          border: none !important;
+          height: 24px !important;
+          width: 24px !important;
+          background-color: $white;
+
+          > svg {
+            fill: $theme-color !important;
+            width: 100% !important;
+          }
+
+          &.disabled {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

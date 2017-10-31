@@ -11,7 +11,7 @@
   align-items: center;
   font-size: $font-size-sm;
   color: $dark-gray;
-  width: fit-content;
+  flex-grow: 0;
 }
 
 .dot {
@@ -24,6 +24,7 @@
 
 .label {
   margin-right: 8px;
+  width: max-content;
 }
 
 .closeButton {

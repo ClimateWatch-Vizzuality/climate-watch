@@ -2,21 +2,18 @@ import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { isCountryIncluded } from 'app/utils';
 
-import CountrySelectComponent from './countries-select-component';
 import actions from './countries-select-actions';
+import reducers, { initialState } from './countries-select-reducers';
+import CountrySelectComponent from './countries-select-component';
 import {
   getFilterUpper,
   getPreSelect,
+  getISOCountries,
   getFilteredCountriesWithPath,
   getPathsWithStyles
 } from './countries-select-selectors';
-
-export { default as component } from './countries-select-component';
-export { initialState } from './countries-select-reducers';
-export { default as reducers } from './countries-select-reducers';
-export { default as styles } from './countries-select-styles';
-export { default as actions } from './countries-select-actions';
 
 const mapStateToProps = state => {
   const { countrySelect, countries } = state;
@@ -29,16 +26,22 @@ const mapStateToProps = state => {
     paths: getPathsWithStyles(stateWithFilters),
     query: getFilterUpper(stateWithFilters),
     preSelect: getPreSelect(stateWithFilters),
+    isoCountries: getISOCountries(stateWithFilters),
     countriesList: getFilteredCountriesWithPath(stateWithFilters)
   };
 };
 
 class CountrySelectContainer extends PureComponent {
+  componentWillUnmount() {
+    this.props.countryPreSelect('');
+    this.props.countrySelectFilter('');
+  }
+
   onCountryClick = geometry => {
-    const { history } = this.props;
-    const country = geometry.id;
-    if (country) {
-      history.push(`/countries/${country}`);
+    const { isoCountries, history } = this.props;
+    const iso = geometry.properties && geometry.properties.id;
+    if (iso && isCountryIncluded(isoCountries, iso)) {
+      history.push(`/countries/${iso}`);
     }
   };
 
@@ -61,9 +64,13 @@ class CountrySelectContainer extends PureComponent {
 }
 
 CountrySelectContainer.propTypes = {
+  isoCountries: Proptypes.array.isRequired,
+  countrySelectFilter: Proptypes.func.isRequired,
   countryPreSelect: Proptypes.func.isRequired,
   history: Proptypes.object
 };
+
+export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(CountrySelectContainer)

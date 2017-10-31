@@ -16,11 +16,10 @@ class Search extends Component {
     };
   }
 
-  componentWillReceiveProps() {
-    // TODO: fix this when we need to change the value from outside
-    // if (nextProps.input !== this.props.input) {
-    //   this.setState({ search: this.props.input });
-    // }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.input !== this.props.input) {
+      this.setState({ search: nextProps.input });
+    }
   }
 
   handleChange = value => {
@@ -29,12 +28,15 @@ class Search extends Component {
   };
 
   debouncedChange = debounce(() => {
-    this.props.onChange(this.state.search);
+    const { onChange } = this.props;
+    if (onChange) {
+      this.props.onChange(this.state.search);
+    }
   }, 150);
 
   render() {
     const { search } = this.state;
-    const { theme, input, placeholder, className } = this.props;
+    const { theme, input, placeholder, className, handleKeyUp, disabled } = this.props;
     return (
       <div className={cx(styles.search, className, theme.search)}>
         <input
@@ -43,6 +45,8 @@ class Search extends Component {
           placeholder={placeholder}
           onChange={e => this.handleChange(e.target.value)}
           value={search}
+          onKeyUp={handleKeyUp}
+          disabled={disabled}
         />
         <Icon
           icon={searchIcon}
@@ -58,7 +62,9 @@ Search.propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   className: PropTypes.string,
-  theme: PropTypes.object
+  theme: PropTypes.object,
+  handleKeyUp: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 Search.defaultProps = {

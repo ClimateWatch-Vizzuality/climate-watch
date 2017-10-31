@@ -17,6 +17,7 @@ class NdcSdgLinkagesTable extends PureComponent {
       selectedGoal,
       goalHover,
       onGoalHover,
+      targetHover,
       onTargetHover,
       handleClickGoal,
       handleClickClose
@@ -27,6 +28,7 @@ class NdcSdgLinkagesTable extends PureComponent {
       <div>
         {selectedGoal ? (
           <NdcSdgLinkagesList
+            targetHover={targetHover}
             onTargetHover={onTargetHover}
             onCloseClick={handleClickClose}
             goal={selectedGoal}
@@ -51,7 +53,7 @@ class NdcSdgLinkagesTable extends PureComponent {
                   onMouseEnter={() => onGoalHover(goal.number)}
                   onClick={() => handleClickGoal(goal.number)}
                   key={goal.title}
-                  sdgData={goal}
+                  goal={goal}
                   tooltipId="sdg-linkages"
                   className={cx(cardTheme.card, cardTheme.squaredCard)}
                 />
@@ -69,6 +71,7 @@ NdcSdgLinkagesTable.propTypes = {
   handleClickGoal: PropTypes.func.isRequired,
   handleClickClose: PropTypes.func.isRequired,
   selectedGoal: PropTypes.object,
+  targetHover: PropTypes.string,
   goalHover: PropTypes.number,
   onGoalHover: PropTypes.func.isRequired,
   onTargetHover: PropTypes.func.isRequired

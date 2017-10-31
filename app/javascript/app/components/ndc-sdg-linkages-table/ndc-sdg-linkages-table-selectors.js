@@ -22,7 +22,8 @@ export const getParsedGoals = createSelector(
       number: parseInt(goal.number, 10),
       targets: sortBy(targets[goal.number], 'number')
     }));
-    parsedGoals.push({ title: 'empty to have round number of elements' });
+    // pushing an extra empty goal to have a round number of elements
+    parsedGoals.push({ title: '' });
     return parsedGoals;
   }
 );

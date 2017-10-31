@@ -2,23 +2,21 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Button from 'components/button';
-import Icon from 'components/icon';
 import Dropdown from 'components/dropdown';
 import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
 import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
+import Sticky from 'react-stickynode';
 
 import layout from 'styles/layout.scss';
-import backIcon from 'assets/icons/back.svg';
 import contentStyles from 'styles/themes/content.scss';
 import styles from './ndc-country-full-styles.scss';
 
 class NDCCountryFull extends PureComponent {
   getPageContent() {
-    const { content, loaded, idx } = this.props;
+    const { content, loaded, search } = this.props;
     const hasContent = !isEmpty(content);
     if (hasContent) {
       return (
@@ -30,7 +28,7 @@ class NDCCountryFull extends PureComponent {
             />
           )}
           <ScrollToHighlightIndex
-            idx={idx}
+            idx={search.idx}
             targetElementsSelector={'.highlight'}
             content={content}
           />
@@ -43,46 +41,44 @@ class NDCCountryFull extends PureComponent {
   render() {
     const {
       country,
-      match,
       onDocumentChange,
       contentOptions,
       contentOptionSelected,
       route,
-      onSearchChange
+      fetchCountryNDCFull
     } = this.props;
     return (
       <div>
         <Header route={route}>
-          <div className={cx(layout.content, styles.twoFold, styles.header)}>
+          <div className={cx(layout.content, styles.header)}>
             <div className={styles.title}>
-              <Button
-                className={styles.backButton}
-                color="transparent"
-                link={`/ndcs/country/${match.params.iso}`}
-                square
-              >
-                <Icon className={styles.backIcon} icon={backIcon} />
-              </Button>
-              <Intro title={`${country.wri_standard_name} - Full Content`} />
+              {country && (
+                <Intro title={`${country.wri_standard_name} - Full Content`} />
+              )}
             </div>
           </div>
         </Header>
-        <div className={styles.actionsWrapper}>
-          <div className={cx(layout.content, styles.actions)}>
-            <Dropdown
-              label="Document"
-              options={contentOptions}
-              value={contentOptionSelected}
-              onValueChange={onDocumentChange}
-              hideResetButton
-              disabled={contentOptions.length === 1}
-            />
-            <NdcsAutocompleteSearch
-              className={styles.search}
-              onSearchChange={onSearchChange}
-            />
+        <Sticky>
+          <div className={styles.actionsWrapper}>
+            <div className={cx(layout.content, styles.actions)}>
+              <Dropdown
+                label="Document"
+                options={contentOptions}
+                value={contentOptionSelected}
+                onValueChange={onDocumentChange}
+                hideResetButton
+                blueBorder
+                disabled={contentOptions.length === 1}
+              />
+              <NdcsAutocompleteSearch
+                className={styles.select}
+                fetchSearchResults={fetchCountryNDCFull}
+                dark
+                label
+              />
+            </div>
           </div>
-        </div>
+        </Sticky>
         {this.getPageContent()}
       </div>
     );
@@ -91,15 +87,14 @@ class NDCCountryFull extends PureComponent {
 
 NDCCountryFull.propTypes = {
   route: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-  country: PropTypes.object.isRequired,
+  country: PropTypes.object,
   content: PropTypes.object,
   contentOptions: PropTypes.array,
   onDocumentChange: PropTypes.func,
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
-  idx: PropTypes.string,
-  onSearchChange: PropTypes.func
+  search: PropTypes.object,
+  fetchCountryNDCFull: PropTypes.func
 };
 
 export default NDCCountryFull;

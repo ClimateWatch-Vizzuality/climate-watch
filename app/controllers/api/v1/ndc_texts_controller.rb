@@ -4,7 +4,9 @@ module Api
       def index
         ndcs = Ndc.includes(:location)
         ndcs =
-          if params[:query]
+          if params[:target] || params[:goal] || params[:sector]
+            with_linkage_highlights(ndcs, false)
+          elsif params[:query]
             with_highlights(ndcs, false, false)
           else
             ndcs
@@ -12,7 +14,7 @@ module Api
 
         render json: ndcs,
                each_serializer: Api::V1::NdcTextSearchResultSerializer,
-               query: params[:query]
+               params: params
       end
 
       def show

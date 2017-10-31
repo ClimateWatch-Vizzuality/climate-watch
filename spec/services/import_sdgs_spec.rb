@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 object_contents = {
-  'data/sdgs.csv' => <<~END,
+  "#{CW_FILES_PREFIX}sdgs/sdgs.csv" => <<~END,
     number,title,cw_title,colour
     1,End poverty in all its forms everywhere,No poverty,#F33D4D
   END
-  'data/sdg_targets.csv' => <<~END,
+  "#{CW_FILES_PREFIX}sdgs/sdg_targets.csv" => <<~END,
     goal_number,number,title
     1,1.1,"By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day"
   END

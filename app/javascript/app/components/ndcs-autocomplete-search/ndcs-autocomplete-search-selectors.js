@@ -1,35 +1,45 @@
 import { createSelector } from 'reselect';
-import { deburrUpper } from 'app/utils';
-import upperFirst from 'lodash/upperFirst';
 
-const getSectors = state => state.sectors || null;
-const getTargets = state => state.targets || null;
-const getGoals = state => state.goals || null;
-const getQuery = state => state.query || null;
+const getSDGs = state => state.sdgs || null;
+const getTargets = state => state.data.targets || null;
+const getGoals = state => state.data.goals || null;
 const getSearch = state => state.search || null;
 
-export const getQueryUpper = state => deburrUpper(state.query);
-
-export const getSectorsMapped = createSelector([getSectors], sectors => {
-  if (!sectors) return [];
-  return sectors.map(sector => ({
-    label: upperFirst(sector.name),
-    value: sector.id.toString(),
-    groupId: 'sector'
+export const getGoalsMapped = createSelector([getSDGs], sdgs => {
+  if (!sdgs) return null;
+  return Object.keys(sdgs).map(goal => ({
+    label: `${goal}: ${sdgs[goal].title}`,
+    value: goal,
+    groupId: 'goal'
   }));
 });
 
-export const getGoalsMapped = createSelector([getGoals], goals => {
-  if (!goals) return [];
+export const getTargetsMapped = createSelector([getSDGs], sdgs => {
+  if (!sdgs) return null;
+  const targets = [];
+  Object.keys(sdgs).forEach(goal => {
+    Object.keys(sdgs[goal].targets).forEach(target => {
+      targets.push({
+        label: `${target}: ${sdgs[goal].targets[target].title}`,
+        value: target,
+        groupId: 'target'
+      });
+    });
+  });
+  return targets;
+});
+
+export const getGoalsParsed = createSelector([getGoals], goals => {
+  if (!goals) return null;
   return goals.map(goal => ({
-    label: `SDG ${goal.number}: ${goal.title}`,
+    label: `${goal.number}: ${goal.title}`,
     value: goal.number,
     groupId: 'goal'
   }));
 });
 
-export const getTargetsMapped = createSelector([getTargets], targets => {
-  if (!targets) return [];
+export const getTargetsParsed = createSelector([getTargets], targets => {
+  if (!targets) return null;
   return targets.map(target => ({
     label: `${target.number}: ${target.title}`,
     value: target.number,
@@ -37,37 +47,37 @@ export const getTargetsMapped = createSelector([getTargets], targets => {
   }));
 });
 
-export const getSearchList = createSelector(
-  [getSectorsMapped, getGoalsMapped, getTargetsMapped, getQuery],
-  (sectors, goals, targets, query) => {
-    const searchOptions = [];
-    if (query) {
-      searchOptions.push({
-        label: `Search for "${query}" in the document`,
-        value: query,
-        groupId: 'query'
-      });
-    }
-    return searchOptions.concat(sectors, goals, targets);
+export const getSearchListData = createSelector(
+  [getGoalsMapped, getTargetsMapped],
+  (goals, targets) => (goals && targets ? goals.concat(targets) : null)
+);
+
+export const getSearchListMeta = createSelector(
+  [getGoalsParsed, getTargetsParsed],
+  (goals, targets) => (goals && targets ? goals.concat(targets) : null)
+);
+
+export const getOptionSelectedData = createSelector(
+  [getSearchListData, getSearch],
+  (options, search) => {
+    if (!options || !search) return null;
+    if (search.searchBy === 'query') return null;
+    return options.find(option => option.value === search.query);
   }
 );
 
-export const getOptionSelected = createSelector(
-  [getSearchList, getSearch],
+export const getOptionSelectedMeta = createSelector(
+  [getSearchListMeta, getSearch],
   (options, search) => {
     if (!options || !search) return null;
-    if (search.searchBy === 'query') {
-      return {
-        label: search.query,
-        value: search.query
-      };
-    }
+    if (search.searchBy === 'query') return null;
     return options.find(option => option.value === search.query);
   }
 );
 
 export default {
-  getQueryUpper,
-  getSearchList,
-  getOptionSelected
+  getSearchListData,
+  getSearchListMeta,
+  getOptionSelectedMeta,
+  getOptionSelectedData
 };

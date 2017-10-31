@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import Icon from 'components/icon';
-import NoContent from 'components/no-content';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
@@ -16,12 +15,10 @@ class Accordion extends PureComponent {
       data,
       handleOnClick,
       activeSection,
-      compare,
-      loading
+      compare
     } = this.props;
     return (
       <div className={className}>
-        {!data.length && !loading && <NoContent message="Nothing here" />}
         {data.map((section, index) => {
           let isOpen = index === 0;
           if (activeSection) {
@@ -105,8 +102,7 @@ Accordion.propTypes = {
       definitions: PropTypes.array.isRequired
     })
   ),
-  compare: PropTypes.bool,
-  loading: PropTypes.bool
+  compare: PropTypes.bool
 };
 
 Accordion.defaultProps = {

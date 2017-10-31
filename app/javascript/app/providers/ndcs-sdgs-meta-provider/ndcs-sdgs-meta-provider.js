@@ -3,15 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import actions from './ndcs-sdgs-meta-provider-actions';
-
-export { initialState } from './ndcs-sdgs-meta-provider-reducers';
-export { default as reducers } from './ndcs-sdgs-meta-provider-reducers';
-export { default as actions } from './ndcs-sdgs-meta-provider-actions';
+import reducers, { initialState } from './ndcs-sdgs-meta-provider-reducers';
 
 class NdcsSdgsMetaProvider extends PureComponent {
   componentDidMount() {
-    const { getNdcsSdgsMeta } = this.props;
-    getNdcsSdgsMeta();
+    this.props.getNdcsSdgsMeta();
   }
 
   render() {
@@ -23,4 +19,5 @@ NdcsSdgsMetaProvider.propTypes = {
   getNdcsSdgsMeta: PropTypes.func.isRequired
 };
 
+export { actions, reducers, initialState };
 export default connect(null, actions)(NdcsSdgsMetaProvider);
