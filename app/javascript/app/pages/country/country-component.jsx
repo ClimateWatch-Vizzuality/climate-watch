@@ -9,6 +9,7 @@ import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
 import ModalMetadata from 'components/modal-metadata';
+import SocioeconomicsProvider from 'providers/socioeconomics-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
@@ -18,6 +19,7 @@ class Country extends PureComponent {
     const { route, country, anchorLinks } = this.props;
     return (
       <div>
+        <SocioeconomicsProvider />
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <Intro title={country.name} />
