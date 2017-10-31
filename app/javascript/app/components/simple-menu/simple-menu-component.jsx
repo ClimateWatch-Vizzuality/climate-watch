@@ -5,6 +5,7 @@ import Icon from 'components/icon';
 import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
+import arrow from 'assets/icons/arrow-down-tiny.svg';
 import styles from './simple-menu-styles.scss';
 
 class SimpleMenu extends PureComponent {
@@ -16,6 +17,27 @@ class SimpleMenu extends PureComponent {
     };
   }
 
+  renderLink(option) {
+    return option.path ? (
+      <NavLink
+        className={styles.link}
+        activeClassName={styles.active}
+        to={option.path}
+        onClick={() => this.setState({ open: false })}
+      >
+        <div className={styles.documentLink} key={option.label}>
+          {option.label}
+        </div>
+      </NavLink>
+    ) : (
+      <a className={styles.link} target="_blank" href={option.link}>
+        <div className={styles.documentLink} key={option.label}>
+          {option.icon && <Icon icon={option.icon} className={styles.icon} />}
+          <span className={styles.title}>{option.label}</span>
+        </div>
+      </a>
+    );
+  }
   render() {
     const {
       options,
@@ -39,6 +61,7 @@ class SimpleMenu extends PureComponent {
           >
             {icon && <Icon icon={icon} className={styles.icon} />}
             {title && <div>{title}</div>}
+            {!icon && <Icon icon={arrow} className={styles.arrowIcon} />}
           </button>
           <ul className={cx(styles.links, { [styles.open]: open })}>
             {options.map(option => (
@@ -49,29 +72,7 @@ class SimpleMenu extends PureComponent {
                     <span className={styles.title}>{option.label}</span>
                   </button>
                 ) : (
-                  <div className={styles.documentLink} key={option.label}>
-                    {option.icon && (
-                      <Icon icon={option.icon} className={styles.icon} />
-                    )}
-                    {option.path ? (
-                      <NavLink
-                        className={styles.title}
-                        activeClassName={styles.active}
-                        to={option.path}
-                        onClick={() => this.setState({ open: false })}
-                      >
-                        {option.label}
-                      </NavLink>
-                    ) : (
-                      <a
-                        className={styles.title}
-                        target="_blank"
-                        href={option.link}
-                      >
-                        {option.label}
-                      </a>
-                    )}
-                  </div>
+                  this.renderLink(option)
                 )}
               </li>
             ))}

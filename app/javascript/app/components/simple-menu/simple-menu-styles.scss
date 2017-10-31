@@ -17,6 +17,11 @@
     }
   }
 
+  .arrowIcon {
+    width: 7px;
+    height: 4px;
+  }
+
   .links {
     display: none;
     position: absolute;
@@ -38,40 +43,42 @@
       border-bottom: 1px solid $theme-border;
       cursor: pointer;
 
-      .documentLink {
-        font-weight: bold;
-        padding: 24px 15px;
-        display: block;
-        width: auto;
-        height: auto;
-        font-size: $font-size;
-        line-height: $line-height-medium;
+      .link {
         color: $dark-gray;
-        background-color: transparent;
-        transition: color 0.1s linear;
+        vertical-align: text-bottom;
+        text-transform: uppercase;
 
-        .icon {
-          fill: $dark-gray;
-          margin-right: 5px;
-          width: 15px;
-          height: 15px;
-        }
-
-        .title {
+        .documentLink {
+          font-weight: bold;
+          padding: 24px 15px;
+          display: block;
+          width: auto;
+          height: auto;
+          font-size: $font-size;
+          line-height: $line-height-medium;
           color: $dark-gray;
-          vertical-align: text-bottom;
-          text-transform: uppercase;
+          background-color: transparent;
+          transition: color 0.1s linear;
+
+          .icon {
+            fill: $dark-gray;
+            margin-right: 5px;
+            width: 15px;
+            height: 15px;
+          }
         }
       }
 
       &:hover {
-        .documentLink {
-          .title {
-            color: $theme-color;
-          }
+        .link {
+          .documentLink {
+            .icon {
+              fill: $theme-color;
+            }
 
-          .icon {
-            fill: $theme-color;
+            .title {
+              color: $theme-color;
+            }
           }
         }
 
