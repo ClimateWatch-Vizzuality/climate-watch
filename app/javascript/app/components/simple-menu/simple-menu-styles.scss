@@ -40,7 +40,6 @@
 
       .documentLink {
         font-weight: bold;
-        padding: 24px 15px;
         display: block;
         width: auto;
         height: auto;
@@ -58,9 +57,11 @@
         }
 
         .title {
+          display: block;
           color: $dark-gray;
           vertical-align: text-bottom;
           text-transform: uppercase;
+          padding: 24px 15px;
         }
       }
 
