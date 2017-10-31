@@ -3,9 +3,9 @@ module Api
     module Quantification
       class ValueSerializer < ActiveModel::Serializer
         attribute :location
+        attribute :year
         attribute :value
         attribute :label
-        attribute :range
 
         def location
           object.location.iso_code3
@@ -13,6 +13,16 @@ module Api
 
         def label
           object.label.name
+        end
+
+        def value
+          if object.first_value.present? && object.second_value.blank?
+            object.first_value
+          elsif object.first_value.present? && object.second_value.present?
+            [object.first_value, object.second_value]
+          else
+            # something's weird with values
+          end
         end
       end
     end
