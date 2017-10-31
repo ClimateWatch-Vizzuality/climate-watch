@@ -15,7 +15,7 @@ class NdcsCountryAccordion extends PureComponent {
         {loading && <Loading light className={styles.loader} />}
         {!ndcsData.length && !loading && (
           <NoContent
-            message={locations ? 'No content for this category' : 'Select a country to start'}
+            message={compare && !locations ? 'Select a country to start' : 'No content for this category'}
             className={styles.noContent}
           />
         )}

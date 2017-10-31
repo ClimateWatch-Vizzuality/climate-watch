@@ -16,7 +16,7 @@ class CountryNdcOverview extends PureComponent {
   render() {
     const { iso, sectors, values, loading, actions } = this.props;
     const hasSectors = values && sectors;
-    if (!hasSectors) {
+    if (!hasSectors && !loading) {
       return (
         <NoContent
           message="No overview content data"
