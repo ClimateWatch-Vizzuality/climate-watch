@@ -16,6 +16,22 @@ module Api
         def location
           object.location.iso_code3
         end
+
+        def gdp_rank
+          object.gdp_rank.try(:ordinalize)
+        end
+
+        def gdp_per_capita_rank
+          object.gdp_per_capita_rank.try(:ordinalize)
+        end
+
+        def population_rank
+          object.population_rank.try(:ordinalize)
+        end
+
+        def population_growth_rank
+          object.population_growth_rank.try(:ordinalize)
+        end
       end
     end
   end
