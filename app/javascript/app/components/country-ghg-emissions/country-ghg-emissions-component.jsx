@@ -39,14 +39,14 @@ class CountryGhgEmissions extends PureComponent {
           </h3>
           <div className={styles.graphControls}>
             <Dropdown
-              label="GHG emissions source"
+              label="Data Source"
               options={sources}
               onValueChange={handleSourceChange}
               value={sourceSelected}
               hideResetButton
             />
             <Dropdown
-              label="Calculation"
+              label="Metric"
               options={calculations}
               onValueChange={handleCalculationChange}
               value={calculationSelected}
