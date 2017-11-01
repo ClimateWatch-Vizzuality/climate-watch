@@ -28,7 +28,7 @@ class NdcsCountryAccordion extends PureComponent {
             className={styles.noContent}
           />
         )}
-        {!loading && ndcsData && ndcsData.length &&
+        {!loading && ndcsData && ndcsData.length > 0 &&
           <div>
             {ndcsData && ndcsData.length && category === 'sectoral_information' ? (
               <Accordion
