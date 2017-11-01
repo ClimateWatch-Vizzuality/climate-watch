@@ -10,9 +10,9 @@ class DefinitionList extends PureComponent {
     const { definitions, compare, className } = this.props;
     return (
       <dl className={className}>
-        {definitions.map(def => (
+        {definitions && definitions.length && definitions.map(def => (
           <div
-            key={`${def.slug}`}
+            key={`${def.slug}-${def.title}-${Math.random()}`}
             className={cx(
               compare ? styles.definitionCompare : styles.definition
             )}
