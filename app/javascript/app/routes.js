@@ -150,11 +150,11 @@ export default [
         routes: [
           {
             path: '/ndcs',
-            label: 'NDCs'
+            label: 'NDC Content'
           },
           {
             path: '/ndcs-sdg',
-            label: 'SDG LINKAGES'
+            label: 'NDC-SDG LINKAGES'
           }
         ]
       },

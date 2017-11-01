@@ -26,7 +26,7 @@ const partnershipWith = {
         src: climateActionTrackerImage
       },
       description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch'
+        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
     },
     {
       link: 'http://climateanalytics.org/',
@@ -35,7 +35,7 @@ const partnershipWith = {
         src: climateAnalyticsImage
       },
       description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch'
+        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
     },
     {
       link: 'https://www.giz.de/en/html/index.html',
@@ -44,7 +44,7 @@ const partnershipWith = {
         src: gizImage
       },
       description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch'
+        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
     },
     {
       link: 'https://www.google.com/intl/en/about/',
@@ -62,7 +62,7 @@ const partnershipWith = {
         src: ndcImage
       },
       description:
-        'Climate Watch is a flagship initiative of the NDC Partnership'
+        'Climate Watch is a flagship initiative of the NDC Partnership.'
     },
     {
       link: 'http://www.wri.org/',
@@ -70,7 +70,7 @@ const partnershipWith = {
         alt: 'WRI',
         src: wriImage
       },
-      description: 'WRI manages Climate Watch in collaboration with partners'
+      description: 'WRI manages Climate Watch in collaboration with partners.'
     },
     {
       link: 'http://www.worldbank.org/',
@@ -79,7 +79,7 @@ const partnershipWith = {
         src: worldBankImage
       },
       description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch, as well as provided the NDC-related data for the NDC Content module' // eslint-disable-line
+        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch, as well as provided the NDC-related data for the NDC Content module.' // eslint-disable-line
     },
     {
       link: 'http://newsroom.unfccc.int/',
@@ -88,7 +88,7 @@ const partnershipWith = {
         src: ccImage
       },
       description:
-        'as a part of the NDC partnership, the United Nations Framework Convention on Climate Change (UNFCCC) provided support in developing the Climate Watch initiative, as well as provided the GHG historical emissions data as reported by Parties' // eslint-disable-line
+        'as a part of the NDC partnership, the United Nations Framework Convention on Climate Change (UNFCCC) provided support in developing the Climate Watch initiative, as well as provided the GHG historical emissions data as reported by Parties.' // eslint-disable-line
     }
   ]
 };
@@ -155,7 +155,7 @@ const foundingBy = {
         src: fmencbnsImage
       },
       description:
-        'This initiative is a part of the International Climate Initiative (IKI)'
+        'This initiative is a part of the International Climate Initiative (IKI).'
     },
     {
       link: 'https://www.google.com/intl/en/about/',
