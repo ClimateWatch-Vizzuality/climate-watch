@@ -8,23 +8,27 @@ import actions from './ndcs-country-accordion-actions';
 import reducers, { initialState } from './ndcs-country-accordion-reducers';
 
 import NdcsCountryAccordionComponent from './ndcs-country-accordion-component';
-import { filterNDCs } from './ndcs-country-accordion-selectors';
+import {
+  filterNDCs,
+  getSectoralNDCs
+} from './ndcs-country-accordion-selectors';
 
-const mapStateToProps = (state, { match, location }) => {
+const mapStateToProps = (state, { match, location, category }) => {
   const { iso } = match.params;
   const search = qs.parse(location.search);
   const locations = search.locations ? search.locations.split(',') : null;
   const ndcsData = {
     data: state.ndcCountryAccordion.data,
     search: search.search,
-    countries: match.params.iso
-      ? [match.params.iso]
-      : locations
+    countries: match.params.iso ? [match.params.iso] : locations
   };
   return {
     loading: state.ndcCountryAccordion.loading,
+    ndcsData:
+      category === 'sectoral_information'
+        ? getSectoralNDCs(ndcsData)
+        : filterNDCs(ndcsData),
     search,
-    ndcsData: filterNDCs(ndcsData),
     iso,
     locations
   };

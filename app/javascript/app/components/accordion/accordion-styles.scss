@@ -26,6 +26,13 @@
   }
 }
 
+.subHeader {
+  background-color: rgba($light-gray, 0.5);
+  padding: 10px 0;
+  padding-left: 15px;
+  font-size: $font-size-m;
+}
+
 .iconArrow {
   transition: transform 0.25s ease-in-out;
   position: absolute;

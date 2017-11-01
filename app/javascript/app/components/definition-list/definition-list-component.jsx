@@ -18,16 +18,17 @@ class DefinitionList extends PureComponent {
             )}
           >
             <dt className={styles.definitionTitle}>{def.title}</dt>
-            {def.descriptions.map(desc => (
-              <dd
-                key={`${def.slug}-${desc.iso}`}
-                className={styles.definitionDesc}
-              >
-                <div
-                  dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
-                />
-              </dd>
-            ))}
+            {def.descriptions &&
+              def.descriptions.map(desc => (
+                <dd
+                  key={`${def.slug}-${desc.iso}`}
+                  className={styles.definitionDesc}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
+                  />
+                </dd>
+              ))}
           </div>
         ))}
       </dl>

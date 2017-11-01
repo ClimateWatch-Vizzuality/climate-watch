@@ -10,48 +10,61 @@ import styles from './accordion-styles.scss';
 
 class Accordion extends PureComponent {
   render() {
-    const { className, data, handleOnClick, openSlug, children } = this.props;
+    const {
+      className,
+      data,
+      handleOnClick,
+      openSlug,
+      children,
+      isChild
+    } = this.props;
     return (
       <div className={className}>
-        {data.map((section, index) => {
-          let isOpen = index === 0;
-          if (openSlug) {
-            if (openSlug !== 'none') {
-              const isActiveInResults = data.some(d => d.slug === openSlug);
-              isOpen =
-                openSlug === section.slug ||
-                (index === 0 && !isActiveInResults);
-            } else {
-              isOpen = false;
+        {data &&
+          data.length > 0 &&
+          data.map((section, index) => {
+            let isOpen = index === 0;
+            if (openSlug) {
+              if (openSlug !== 'none') {
+                const isActiveInResults = data.some(d => d.slug === openSlug);
+                isOpen =
+                  openSlug === section.slug ||
+                  (index === 0 && !isActiveInResults);
+              } else {
+                isOpen = false;
+              }
             }
-          }
-          return (
-            <section key={section.slug} className={styles.accordion}>
-              <button
-                className={styles.header}
-                onClick={() => handleOnClick(section.slug)}
+            return children[index] ? (
+              <section
+                key={`${section.slug}-${section.title}`}
+                className={styles.accordion}
               >
-                <div className={layout.content}>
-                  <div className={styles.title}>
-                    {section.title}
-                    <Icon
-                      icon={dropdownArrow}
-                      className={cx(styles.iconArrow, {
-                        [styles.isOpen]: isOpen
-                      })}
-                    />
+                <button
+                  className={cx(styles.header, isChild ? styles.subHeader : '')}
+                  onClick={() => handleOnClick(section.slug)}
+                >
+                  <div className={layout.content}>
+                    <div className={styles.title}>
+                      {section.title}
+                      <Icon
+                        icon={dropdownArrow}
+                        className={cx(styles.iconArrow, {
+                          [styles.isOpen]: isOpen
+                        })}
+                      />
+                    </div>
                   </div>
-                </div>
-              </button>
-              <Collapse isOpened={isOpen}>
-                {React.Children.map(children, (child, i) => {
-                  if (i === index) return child;
-                  return null;
-                })}
-              </Collapse>
-            </section>
-          );
-        })}
+                </button>
+                <Collapse isOpened={isOpen}>
+                  <div />
+                  {React.Children.map(children, (child, i) => {
+                    if (i === index) return child;
+                    return null;
+                  })}
+                </Collapse>
+              </section>
+            ) : null;
+          })}
       </div>
     );
   }
@@ -65,10 +78,11 @@ Accordion.propTypes = {
     PropTypes.shape({
       title: PropTypes.string,
       slug: PropTypes.string,
-      definitions: PropTypes.array.isRequired
+      definitions: PropTypes.array
     })
   ),
-  children: PropTypes.node
+  children: PropTypes.node,
+  isChild: PropTypes.bool
 };
 
 Accordion.defaultProps = {

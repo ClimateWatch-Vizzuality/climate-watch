@@ -103,6 +103,18 @@ export default [
             param: 'adaptation'
           },
           {
+            path: '/ndcs/country/:iso/sectoral-information',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'sectoral_information',
+                type: 'overview'
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Sectoral Information',
+            param: 'sectoral-information'
+          },
+          {
             path: '/ndcs/country/:iso',
             component: () => createElement(Redirect, { to: '/ndcs' })
           }
@@ -136,6 +148,18 @@ export default [
             anchor: true,
             label: 'Adaptation',
             param: 'adaptation'
+          },
+          {
+            path: '/ndcs/compare/sectoral-information',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'sectoral_information',
+                compare: true
+              }),
+            exact: true,
+            anchor: true,
+            label: 'Sectoral Information',
+            param: 'sectoral-information'
           },
           {
             path: '/ndcs/compare',

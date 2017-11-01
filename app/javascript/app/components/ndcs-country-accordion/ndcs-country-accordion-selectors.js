@@ -4,12 +4,13 @@ import { deburrUpper } from 'app/utils';
 const getCountries = state => state.countries;
 const getAllIndicators = state => (state.data ? state.data.indicators : {});
 const getCategories = state => (state.data ? state.data.categories : {});
+const getSectors = state => (state.data ? state.data.sectors : {});
 const getSearch = state => deburrUpper(state.search);
 
 export const parseIndicatorsDefs = createSelector(
   [getAllIndicators, getCategories, getCountries],
   (indicators, categories, countries) => {
-    if (!indicators || !categories || !countries) return {};
+    if (!indicators || !categories || !countries) return null;
     const parsedIndicators = {};
     Object.keys(categories).forEach(category => {
       const categoryIndicators = indicators.filter(
@@ -32,14 +33,83 @@ export const parseIndicatorsDefs = createSelector(
   }
 );
 
+export const parseIndicatorsDefsWithSectors = createSelector(
+  [getAllIndicators, getCategories, getCountries, getSectors],
+  (indicators, categories, countries, sectors) => {
+    if (!indicators || !categories || !countries || !sectors) return null;
+    const parsedIndicators = [];
+    Object.keys(categories).forEach(category => {
+      const indicatorsWithCategory = indicators.filter(
+        indicator => indicator.category_ids.indexOf(category) > -1
+      );
+      const parsedDefinitions = indicatorsWithCategory.map(indicator => {
+        const sectorIds = [];
+        let descriptions = [];
+        Object.keys(indicator.locations).forEach(location => {
+          indicator.locations[location].forEach(def =>
+            sectorIds.push(def.sector_id)
+          );
+        });
+        if (sectorIds && sectorIds.length && sectorIds[0]) {
+          sectorIds.forEach(sector => {
+            const descriptionsBySector = countries.map(country => {
+              const value = indicator.locations[country]
+                ? indicator.locations[country].find(
+                  indicValue => indicValue.sector_id === sector
+                )
+                : '';
+              return {
+                iso: country,
+                value: value ? value.value : null
+              };
+            });
+            descriptions.push({
+              title: sectors[sector].name,
+              slug: sector,
+              descriptions: descriptionsBySector
+            });
+          });
+        } else {
+          descriptions = countries.map(country => ({
+            iso: country,
+            values: indicator.locations[country]
+              ? indicator.locations[country]
+              : null
+          }));
+        }
+        return {
+          title: indicator.name,
+          slug: indicator.slug,
+          descriptions
+        };
+      });
+      parsedIndicators[category] = parsedDefinitions;
+    });
+    return parsedIndicators;
+  }
+);
+
 export const getNDCs = createSelector(
   [getCategories, parseIndicatorsDefs],
   (categories, indicators) => {
-    if (!categories) return [];
+    if (!categories) return null;
     const ndcs = Object.keys(categories).map(category => ({
       title: categories[category].name,
       slug: categories[category].slug,
       definitions: indicators[category] ? indicators[category] : []
+    }));
+    return ndcs;
+  }
+);
+
+export const getSectoralNDCs = createSelector(
+  [getCategories, parseIndicatorsDefsWithSectors],
+  (categories, indicators) => {
+    if (!categories || !indicators) return [];
+    const ndcs = Object.keys(categories).map(category => ({
+      title: categories[category].name,
+      slug: categories[category].slug,
+      indicators: indicators[category] ? indicators[category] : []
     }));
     return ndcs;
   }
@@ -67,5 +137,6 @@ export const filterNDCs = createSelector(
 );
 
 export default {
-  filterNDCs
+  filterNDCs,
+  getSectoralNDCs
 };
