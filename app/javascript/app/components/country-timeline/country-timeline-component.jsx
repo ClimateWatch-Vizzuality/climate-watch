@@ -31,7 +31,7 @@ class CountryTimeline extends PureComponent {
                   target="_blank"
                   href={document.link}
                 >
-                  {document.text}
+                  {document.label}
                 </a>
               </li>
             ))}

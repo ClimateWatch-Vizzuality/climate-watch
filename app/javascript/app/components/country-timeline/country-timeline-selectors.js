@@ -16,8 +16,8 @@ export const getDates = createSelector(
       if (d.date && d.language === 'en') {
         documents.push({
           year: d.date.split('-')[0],
-          text: d.text,
-          link: d.link
+          link: d.link,
+          label: d.label
         });
       }
     });

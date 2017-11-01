@@ -279,11 +279,11 @@ export const getChartConfig = createSelector(
     const tooltip = getTooltipConfig(yColumnsChecked);
     let unit = AXES_CONFIG.yLeft.unit;
     if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
-      unit = `${unit}  per $`;
+      unit = `${unit}/ million $ GDP`;
     } else if (
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
     ) {
-      unit = `${unit}  per capita`;
+      unit = `${unit} per capita`;
     }
     const axes = {
       ...AXES_CONFIG,
