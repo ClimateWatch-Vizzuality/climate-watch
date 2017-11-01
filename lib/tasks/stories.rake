@@ -4,7 +4,7 @@ namespace :stories do
     puts '##############################'
     puts '# Starting to import stories #'
     puts '##############################'
-    ImportStories.call
+    ImportStories.new.call
     puts '########### ENDED ############'
   end
 
@@ -13,7 +13,7 @@ namespace :stories do
     puts '##############################'
     puts '# Starting to import stories #'
     puts '##############################'
-    ImportStories.call(true)
+    ImportStories.new.call(true)
     puts '########### ENDED ############'
   end
 end
