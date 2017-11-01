@@ -44,11 +44,16 @@ export const getDescriptionText = createSelector(
   [getCountryDescription],
   description => {
     if (!description) return null;
+    const gdpPerCapitaLocale = description.gdp_per_capita.toLocaleString();
+    const populationLocale = description.population.toLocaleString();
+    const populationGrowthLocale = (Math.round(
+      description.population_growth * 100
+    ) / 100).toLocaleString();
     return `GDP per capita (${description.year}) - USD
-      ${description.gdp_per_capita} (${description.gdp_per_capita_rank}% of the global average).
+      ${gdpPerCapitaLocale} (ranked ${description.gdp_per_capita_rank} globally).
       <br/>
-      Population (${description.year}) - ${description.population} million
-      (${description.population_growth}% annual growth)`;
+      Population (${description.year}) - ${populationLocale}
+      (${populationGrowthLocale}% annual growth)`;
   }
 );
 
