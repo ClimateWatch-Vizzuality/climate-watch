@@ -11,6 +11,9 @@ import googleImage from 'assets/partners/google.png';
 import fmencbnsImage from 'assets/partners/fmencbns.png';
 import dbeisImage from 'assets/partners/dbeis.png';
 import swissImage from 'assets/partners/swiss.png';
+import actsImage from 'assets/partners/acts.png';
+import dieImage from 'assets/partners/die.jpg';
+import seiImage from 'assets/partners/sei.png';
 
 import Component from './about-partners-component';
 
@@ -19,6 +22,13 @@ const partnershipWith = {
   title:
     'Climate Watch is implemented by World Resources Institute in collaboration with',
   partners: [
+    {
+      link: 'http://www.acts-net.org/',
+      img: {
+        alt: 'African Center for Technology Studies',
+        src: actsImage
+      }
+    },
     {
       link: 'http://climateactiontracker.org/',
       img: {
@@ -47,6 +57,13 @@ const partnershipWith = {
         'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
     },
     {
+      link: 'https://www.die-gdi.de',
+      img: {
+        alt: 'German Development Institute',
+        src: dieImage
+      }
+    },
+    {
       link: 'https://www.google.com/intl/en/about/',
       img: {
         alt: 'Google',
@@ -65,21 +82,19 @@ const partnershipWith = {
         'Climate Watch is a flagship initiative of the NDC Partnership.'
     },
     {
+      link: 'https://www.sei-international.org/',
+      img: {
+        alt: 'Stockholm Environment Institute',
+        src: seiImage
+      }
+    },
+    {
       link: 'http://www.wri.org/',
       img: {
         alt: 'WRI',
         src: wriImage
       },
       description: 'WRI manages Climate Watch in collaboration with partners.'
-    },
-    {
-      link: 'http://www.worldbank.org/',
-      img: {
-        alt: 'The world bank',
-        src: worldBankImage
-      },
-      description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch, as well as provided the NDC-related data for the NDC Content module.' // eslint-disable-line
     },
     {
       link: 'http://newsroom.unfccc.int/',
@@ -89,6 +104,15 @@ const partnershipWith = {
       },
       description:
         'as a part of the NDC partnership, the United Nations Framework Convention on Climate Change (UNFCCC) provided support in developing the Climate Watch initiative, as well as provided the GHG historical emissions data as reported by Parties.' // eslint-disable-line
+    },
+    {
+      link: 'http://www.worldbank.org/',
+      img: {
+        alt: 'The world bank',
+        src: worldBankImage
+      },
+      description:
+        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch, as well as provided the NDC-related data for the NDC Content module.' // eslint-disable-line
     }
   ]
 };
