@@ -10,27 +10,29 @@ class DefinitionList extends PureComponent {
     const { definitions, compare, className } = this.props;
     return (
       <dl className={className}>
-        {definitions && definitions.length && definitions.map(def => (
-          <div
-            key={`${def.slug}-${def.title}-${Math.random()}`}
-            className={cx(
-              compare ? styles.definitionCompare : styles.definition
-            )}
-          >
-            <dt className={styles.definitionTitle}>{def.title}</dt>
-            {def.descriptions &&
-              def.descriptions.map(desc => (
-                <dd
-                  key={`${def.slug}-${desc.iso}`}
-                  className={styles.definitionDesc}
-                >
-                  <div
-                    dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
-                  />
-                </dd>
-              ))}
-          </div>
-        ))}
+        {definitions &&
+          definitions.length > 0 &&
+          definitions.map(def => (
+            <div
+              key={`${def.slug}-${def.title}-${Math.random()}`}
+              className={cx(
+                compare ? styles.definitionCompare : styles.definition
+              )}
+            >
+              <dt className={styles.definitionTitle}>{def.title}</dt>
+              {def.descriptions &&
+                def.descriptions.map(desc => (
+                  <dd
+                    key={`${def.slug}-${desc.iso}`}
+                    className={styles.definitionDesc}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
+                    />
+                  </dd>
+                ))}
+            </div>
+          ))}
       </dl>
     );
   }

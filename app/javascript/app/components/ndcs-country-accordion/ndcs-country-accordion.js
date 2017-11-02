@@ -10,7 +10,7 @@ import reducers, { initialState } from './ndcs-country-accordion-reducers';
 import NdcsCountryAccordionComponent from './ndcs-country-accordion-component';
 import {
   filterNDCs,
-  getSectoralNDCs
+  filterSectoralNDCs
 } from './ndcs-country-accordion-selectors';
 
 const mapStateToProps = (state, { match, location, category }) => {
@@ -26,7 +26,7 @@ const mapStateToProps = (state, { match, location, category }) => {
     loading: state.ndcCountryAccordion.loading,
     ndcsData:
       category === 'sectoral_information'
-        ? getSectoralNDCs(ndcsData)
+        ? filterSectoralNDCs(ndcsData)
         : filterNDCs(ndcsData),
     search,
     iso,

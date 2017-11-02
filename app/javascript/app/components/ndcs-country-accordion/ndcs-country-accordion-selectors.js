@@ -105,7 +105,7 @@ export const getNDCs = createSelector(
 export const getSectoralNDCs = createSelector(
   [getCategories, parseIndicatorsDefsWithSectors],
   (categories, indicators) => {
-    if (!categories || !indicators) return [];
+    if (!categories || !indicators) return null;
     const ndcs = Object.keys(categories).map(category => ({
       title: categories[category].name,
       slug: categories[category].slug,
@@ -118,7 +118,7 @@ export const getSectoralNDCs = createSelector(
 export const filterNDCs = createSelector(
   [getNDCs, getSearch],
   (ndcs, search) => {
-    if (!ndcs) return [];
+    if (!ndcs) return null;
     const filteredNDCs = ndcs.map(ndc => {
       const defs = ndc.definitions.filter(
         def =>
@@ -136,7 +136,39 @@ export const filterNDCs = createSelector(
   }
 );
 
+export const filterSectoralNDCs = createSelector(
+  [getSectoralNDCs, getSearch],
+  (ndcs, search) => {
+    if (!ndcs) return null;
+    const reducedNDCs = ndcs.filter(
+      ndc => ndc.indicators && ndc.indicators.length
+    );
+    const filteredNDCs = reducedNDCs.map(ndc => {
+      const defs = [];
+      ndc.indicators.forEach(def => {
+        const descs = def.descriptions.filter(
+          desc =>
+            deburrUpper(desc.title).indexOf(search) > -1 ||
+            deburrUpper(desc.descriptions[0].value).indexOf(search) > -1
+        );
+        if (descs && descs.length) {
+          defs.push({
+            ...def,
+            descriptions: descs
+          });
+        }
+      });
+
+      return {
+        ...ndc,
+        indicators: defs
+      };
+    });
+    return filteredNDCs;
+  }
+);
+
 export default {
   filterNDCs,
-  getSectoralNDCs
+  filterSectoralNDCs
 };
