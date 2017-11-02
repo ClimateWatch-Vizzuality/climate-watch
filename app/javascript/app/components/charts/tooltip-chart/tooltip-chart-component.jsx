@@ -7,6 +7,7 @@ import styles from './tooltip-chart-styles.scss';
 
 class TooltipChart extends PureComponent {
   getTotal = (keys, data) => {
+    if (!keys || !data) return '';
     let total = 0;
     keys.forEach(key => {
       total += data.payload[key.value];
@@ -16,9 +17,10 @@ class TooltipChart extends PureComponent {
 
   render() {
     const { config, content, showTotal } = this.props;
+    const unit = config.axes && config.axes.yLeft && config.axes.yLeft.unit;
     return (
       <div className={styles.tooltip}>
-        <span className={styles.unit}>{config.axes.yLeft.unit}</span>
+        <span className={styles.unit}>{unit}</span>
         {showTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
@@ -29,17 +31,20 @@ class TooltipChart extends PureComponent {
           content.payload.length > 0 &&
           content.payload.map(
             y =>
-              (y.payload ? (
+              (y.payload && y.dataKey !== 'total' ? (
                 <div key={`${y.dataKey}`} className={styles.label}>
                   <div className={styles.legend}>
                     <span
                       className={styles.labelDot}
                       style={{
-                        backgroundColor: config.theme[y.dataKey].stroke
+                        backgroundColor:
+                          config.theme[y.dataKey] &&
+                          config.theme[y.dataKey].stroke
                       }}
                     />
                     <p className={styles.labelName}>
-                      {config.tooltip[y.dataKey].label}
+                      {config.theme[y.dataKey] &&
+                        config.tooltip[y.dataKey].label}
                     </p>
                   </div>
                   <p className={styles.labelValue}>

@@ -55,7 +55,7 @@ class ImportSocioeconomics
         parse_row(row).each do |year, values|
           Socioeconomic::Indicator.
             find_or_initialize_by(location: location, year: year).
-            update!(value_key => values[:value], rank_key => values[:rank])
+            update!(value_key => values[:value].to_f, rank_key => values[:rank])
         end
       else
         Rails.logger.error "Location #{row[:iso]} not found"

@@ -4,24 +4,43 @@ import PropTypes from 'prop-types';
 import {
   ComposedChart,
   Area,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Dot,
   ResponsiveContainer
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
 
+function includeTotalData(data, config) {
+  return data.map(d => {
+    let total = 0;
+    config.columns.y.forEach(key => {
+      total += d[key.value];
+    });
+    return {
+      ...d,
+      total
+    };
+  });
+}
+
 class ChartStackedArea extends PureComponent {
   render() {
-    const { config, data, height, onMouseMove, points } = this.props;
+    const { config, data, height, onMouseMove, includeTotalLine } = this.props;
+    if (!data.length) return null;
+
+    let dataParsed = data;
+    if (includeTotalLine) {
+      dataParsed = includeTotalData(data, config);
+    }
     return (
       <ResponsiveContainer height={height}>
         <ComposedChart
-          data={data}
-          margin={{ top: 0, right: 0, left: -18, bottom: 0 }}
+          data={dataParsed}
+          margin={{ top: 20, right: 20, left: -10, bottom: 0 }}
           onMouseMove={onMouseMove}
         >
           <XAxis
@@ -40,7 +59,7 @@ class ChartStackedArea extends PureComponent {
               isAnimationActive={false}
               cursor={{ stroke: '#113750', strokeWidth: 2 }}
               content={content => (
-                <TooltipChart content={content} config={config} />
+                <TooltipChart content={content} config={config} showTotal />
               )}
             />
           )}
@@ -56,10 +75,15 @@ class ChartStackedArea extends PureComponent {
                 fill={config.theme[column.value].fill || ''}
               />
             ))}
-          {points && points.map(point => console.log(point) || (
-            <Dot r={15} key={point.cy} cx="x" cy="points" />
-          ))
-          }
+          {includeTotalLine && (
+            <Line
+              key="total"
+              dataKey="total"
+              dot={false}
+              stroke="#113750"
+              strokeWidth={2}
+            />
+          )}
         </ComposedChart>
       </ResponsiveContainer>
     );
@@ -69,17 +93,18 @@ class ChartStackedArea extends PureComponent {
 ChartStackedArea.propTypes = {
   config: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
-  points: PropTypes.array.isRequired,
   height: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string // % accepted
   ]).isRequired,
-  onMouseMove: PropTypes.func.isRequired
+  onMouseMove: PropTypes.func.isRequired,
+  includeTotalLine: PropTypes.bool
 };
 
 ChartStackedArea.defaultProps = {
   height: 500,
-  onMouseMove: () => {}
+  onMouseMove: () => {},
+  includeTotalLine: true
 };
 
 export default ChartStackedArea;

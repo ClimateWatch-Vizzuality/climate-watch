@@ -32,7 +32,7 @@ spec:
           - name: GOOGLE_ANALYTICS_ID
             value: UA-1981881-51
           - name: PASSWORD_PROTECT
-            value: "true"
+            value: "false"
           - name: AUTH_USERNAME
             valueFrom:
               secretKeyRef:
