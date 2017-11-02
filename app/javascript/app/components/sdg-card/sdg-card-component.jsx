@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-
 import Icon from 'components/icon';
-
 import styles from './sdg-card-styles.scss';
 
 class SDGCard extends PureComponent {
@@ -37,6 +35,26 @@ class SDGCard extends PureComponent {
     );
 
     const title = square ? goal.title : `${goal.number}. ${goal.cw_title}`;
+
+    const compare = (a, b) => {
+      const aRegex = a.number.match(/(.*)\.(.*)/);
+      const fullA = (aRegex && aRegex[1]) || a.number.match(/(.*)\.?/);
+      const decimalA = aRegex && aRegex[2];
+      const bRegex = b.number.match(/(.*)\.(.*)/);
+      const fullB = (bRegex && bRegex[1]) || b.number.match(/(.*)\.?/);
+      const decimalB = bRegex && bRegex[2];
+      if (
+        !decimalA ||
+        !decimalB ||
+        parseInt(fullA, 10) !== parseInt(fullB, 10) ||
+        decimalA.match(/[^0-9.]/) ||
+        decimalA.match(/[^0-9.]/)
+      ) {
+        return fullA < fullB ? 1 : -1;
+      }
+      return parseInt(decimalA, 10) - parseInt(decimalB, 10);
+    };
+
     return (
       <div
         className={cardStyle}
@@ -48,7 +66,7 @@ class SDGCard extends PureComponent {
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
           {targets &&
-            targets.map(target => {
+            targets.sort(compare).map(target => {
               const isSmall =
                 target.sectors &&
                 activeSector &&
