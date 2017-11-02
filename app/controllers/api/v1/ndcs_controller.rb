@@ -21,16 +21,43 @@ module Api
 
     class NdcsController < ApiController
       def index
-        categories = ::Indc::Category.
-          includes(:category_type).
+        sectors = ::Indc::Sector.
           all
-        sectors = ::Indc::Sector.all
+
+        categories = ::Indc::Category.
+          includes(:category_type)
 
         if params[:filter]
           categories = categories.where(
-            indc_category_types: {
-              name: params[:filter]
-            }
+            indc_category_types: { name: params[:filter] },
+          )
+        end
+
+        if params[:category]
+          parent = ::Indc::Category.
+            includes(:category_type).
+            where(
+              indc_category_types: { name: 'global' },
+              slug: params[:category]
+            )
+
+          categories = categories
+            .where(
+              parent_id: parent.map(&:id)
+            )
+        end
+
+
+        indicators = ::Indc::Indicator.
+          includes(
+            :labels, :source, :categories,
+            values: [:sector, :label, :location]
+          ).
+          where(id: categories.flat_map(&:indicator_ids).uniq)
+
+        if location_list
+          indicators = indicators.where(
+            values: {locations: {iso_code3: location_list}}
           )
         end
 
@@ -66,7 +93,7 @@ module Api
 
       private
 
-      def indicators
+      def load_indicators
         indicators = ::Indc::Indicator.includes(
           :labels,
           :source,
@@ -74,25 +101,36 @@ module Api
           values: [:location]
         )
 
-        if location_list
-          indicators = indicators.where(
-            values: {locations: {iso_code3: location_list}}
-          )
-        end
 
-        if params[:filter]
-          indicators = indicators.where(
+        if params[:category] and params[:filter]
+          indicators2 = indicators.where(
+            indc_category_types: {
+              name: 'global'
+            },
+            indc_categories: {
+              slug: [params[:category], params[:filter]]
+            }
+          )
+        elsif params[:category]
+          indicators2 = indicators.where(
+            indc_category_types: {
+              name: 'global'
+            },
+            indc_categories: {
+              slug: params[:category]
+            }
+          )
+        elsif params[:filter]
+          indicators2 = indicators.where(
             indc_category_types: {
               name: params[:filter]
             }
           )
         end
 
-        if params[:category]
-
-        end
-
-        indicators
+       indicators.where(
+          id: indicators2.map(&:id)
+        )
       end
 
       def location_list

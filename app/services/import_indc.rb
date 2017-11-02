@@ -105,7 +105,7 @@ class ImportIndc
 
   def submission_attributes(submission)
     {
-      location: Location.find_by(iso_code3: submission[:iso]),
+      location: Location.find_by!(iso_code3: submission[:iso]),
       submission_type: submission[:type],
       language: submission[:language],
       submission_date: submission[:date_of_submission],
@@ -150,17 +150,26 @@ class ImportIndc
 
   def import_category_relations
     @metadata.each do |r|
-      global_category = Indc::Category.find_by(
-        slug: Slug.create(r[:global_category])
-      ) or next
+      global_category = Indc::Category.
+        includes(:category_type).
+        find_by(
+          slug: Slug.create(r[:global_category]),
+          indc_category_types: { name: 'global' }
+        ) or next
 
-      overview_category = Indc::Category.find_by(
-        slug: Slug.create(r[:overview_category])
-      ) if r[:overview_category]
+      overview_category = Indc::Category.
+        includes(:category_type).
+        find_by(
+          slug: Slug.create(r[:overview_category]),
+          indc_category_types: { name: 'overview' }
+        ) if r[:overview_category]
 
-      map_category = Indc::Category.find_by(
-        slug: Slug.create(r[:map_category])
-      ) if r[:map_category]
+      map_category = Indc::Category.
+        includes(:category_type).
+        find_by(
+          slug: Slug.create(r[:map_category]),
+          indc_category_types: { name: 'map' }
+        ) if r[:map_category]
 
       global_category.children << [
         overview_category, map_category
