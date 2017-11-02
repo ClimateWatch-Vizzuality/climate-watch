@@ -36,17 +36,23 @@ const mapStateToProps = (state, { match, location, category }) => {
 
 class NdcsCountryAccordionContainer extends PureComponent {
   componentWillMount() {
-    const { iso, fetchNdcsCountryAccordion, category, search } = this.props;
+    const {
+      iso,
+      fetchNdcsCountryAccordion,
+      category,
+      search,
+      compare
+    } = this.props;
     const locations = iso || search.locations;
-    fetchNdcsCountryAccordion(locations, category);
+    fetchNdcsCountryAccordion(locations, category, compare);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchNdcsCountryAccordion } = this.props;
+    const { fetchNdcsCountryAccordion, compare } = this.props;
     const newLocations = qs.parse(nextProps.location.search).locations;
     const oldLocations = qs.parse(this.props.location.search).locations;
     if (newLocations !== oldLocations) {
-      fetchNdcsCountryAccordion(newLocations, nextProps.category);
+      fetchNdcsCountryAccordion(newLocations, nextProps.category, compare);
     }
   }
 
@@ -62,7 +68,8 @@ NdcsCountryAccordionContainer.propTypes = {
   iso: PropTypes.string,
   category: PropTypes.string,
   search: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  compare: PropTypes.bool
 };
 
 export { actions, reducers, initialState };

@@ -82,8 +82,7 @@ export default [
             path: '/ndcs/country/:iso/mitigation',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'mitigation',
-                type: 'overview'
+                category: 'mitigation'
               }),
             exact: true,
             anchor: true,
@@ -94,8 +93,7 @@ export default [
             path: '/ndcs/country/:iso/adaptation',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'adaptation',
-                type: 'overview'
+                category: 'adaptation'
               }),
             exact: true,
             anchor: true,
@@ -106,8 +104,7 @@ export default [
             path: '/ndcs/country/:iso/sectoral-information',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'sectoral_information',
-                type: 'overview'
+                category: 'sectoral_information'
               }),
             exact: true,
             anchor: true,
