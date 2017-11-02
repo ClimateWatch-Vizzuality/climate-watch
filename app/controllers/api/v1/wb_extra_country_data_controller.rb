@@ -1,6 +1,13 @@
 module Api
   module V1
     class WbExtraCountryDataController < ApiController
+      def index
+        filtered_country_data = ::WbExtra::CountryData.
+          filter_by_dates(params[:startYear], params[:endYear])
+        render json: filtered_country_data.includes(:location).group_by(&:country_code),
+               each_serializer: Api::V1::WbExtra::CountryDataSerializer
+      end
+
       def show
         country = Location.find_by(location_type: 'COUNTRY',
                                    iso_code3: params[:iso])
