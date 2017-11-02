@@ -1,13 +1,23 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
+import cx from 'classnames';
 import closeIcon from 'assets/icons/legend-close.svg';
 import styles from './ndc-sdg-linkages-list-styles.scss';
 
 class NdcSdgLinkagesList extends PureComponent {
+  handleClick = target => {
+    const { onTargetHover, targetHover } = this.props;
+    const isSelected = targetHover === target;
+    if (isSelected) {
+      onTargetHover(null);
+    } else {
+      onTargetHover(target);
+    }
+  };
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { goal, onCloseClick, onTargetHover } = this.props;
+    const { goal, onCloseClick, targetHover } = this.props;
     const headerStyle = { borderColor: goal.colour };
     return (
       <div className={styles.container}>
@@ -21,17 +31,29 @@ class NdcSdgLinkagesList extends PureComponent {
           </button>
         </div>
         <div className={styles.targetContainer}>
-          {goal.targets.map(target => (
-            <div
-              key={target.id}
-              className={styles.target}
-              onMouseEnter={() => onTargetHover(target.number)}
-              onMouseLeave={() => onTargetHover(null)}
-            >
-              <div className={styles.number}>{target.number}</div>
-              <div className={styles.title}>{target.title}</div>
-            </div>
-          ))}
+          {goal.targets.map((target, index) => {
+            const isSelected = targetHover === target.number;
+            const style = {
+              borderBottom: `4px solid ${isSelected
+                ? goal.colour
+                : 'transparent'}`
+            };
+            return (
+              <div
+                key={target.id}
+                className={cx(styles.target, {
+                  [styles.targetSelected]: isSelected
+                })}
+                style={style}
+                role="button"
+                tabIndex={index}
+                onClick={() => this.handleClick(target.number)}
+              >
+                <span className={styles.number}>{target.number}</span>
+                <span className={styles.title}>{target.title}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -40,6 +62,7 @@ class NdcSdgLinkagesList extends PureComponent {
 
 NdcSdgLinkagesList.propTypes = {
   goal: PropTypes.object.isRequired,
+  targetHover: PropTypes.string,
   onCloseClick: PropTypes.func.isRequired,
   onTargetHover: PropTypes.func.isRequired
 };

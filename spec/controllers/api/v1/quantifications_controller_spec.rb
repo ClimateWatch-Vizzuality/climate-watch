@@ -7,7 +7,7 @@ describe Api::V1::QuantificationsController, type: :controller do
       FactoryGirl.create_list(:quantification_value, 2, location: location)
     }
     let!(:german_quantifications) {
-      location = FactoryGirl.create(:location, iso_code3: 'GER')
+      location = FactoryGirl.create(:location, iso_code3: 'DEU')
       FactoryGirl.create_list(:quantification_value, 3, location: location)
     }
 

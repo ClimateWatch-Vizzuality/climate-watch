@@ -52,7 +52,7 @@ class SDGCard extends PureComponent {
               const isSmall =
                 target.sectors &&
                 activeSector &&
-                target.sectors.indexOf(parseInt(activeSector.value, 10)) !== -1;
+                target.sectors.indexOf(parseInt(activeSector.value, 10)) === -1;
               const hasSectors =
                 targetData &&
                 targetData.targets[target.number] &&

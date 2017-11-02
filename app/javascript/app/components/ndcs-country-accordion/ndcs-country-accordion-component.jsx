@@ -18,57 +18,59 @@ class NdcsCountryAccordion extends PureComponent {
         {!loading && (!ndcsData || !ndcsData.length) && (
           <NoContent
             message={
-              locations ? (
-                'No content for this category'
-              ) : (
+              compare && !locations ? (
                 'Select a country to start'
+              ) : (
+                'No content for this category'
               )
             }
-            icon
             className={styles.noContent}
           />
         )}
-        {!loading && ndcsData && ndcsData.length > 0 &&
+        {!loading && ndcsData && ndcsData.length > 0 && (
           <div>
-            {ndcsData && ndcsData.length && category === 'sectoral_information' ? (
-              <Accordion
-                className={styles.accordion}
-                param="section"
-                data={ndcsData}
-              >
-                {ndcsData &&
-                  ndcsData.length > 0 &&
-                  ndcsData.map(
-                    section =>
-                      (section.indicators.length > 0 ? (
-                        <Accordion
-                          key={section.slug}
-                          isChild
-                          className={styles.subAccordion}
-                          param="subSection"
-                          data={section.indicators}
-                        >
-                          {section.indicators.map(desc => (
-                            <div key={desc.title} className={styles.definitionList}>
-                              <DefinitionList
-                                className={layout.content}
-                                definitions={desc.descriptions}
-                                compare={compare}
-                              />
-                            </div>
-                          ))}
-                        </Accordion>
-                      ) : null)
-                  )}
-              </Accordion>
-            ) : (
-              <Accordion
-                className={styles.accordion}
-                param="section"
-                data={ndcsData}
-                loading={loading}
-              >
-                {ndcsData &&
+            {ndcsData && ndcsData.length &&
+              category === 'sectoral_information' ? (
+                <Accordion
+                  className={styles.accordion}
+                  param="section"
+                  data={ndcsData}
+                >
+                  {ndcsData && ndcsData.length > 0 &&
+                    ndcsData.map(
+                      section =>
+                        (section.indicators.length > 0 ? (
+                          <Accordion
+                            key={section.slug}
+                            isChild
+                            className={styles.subAccordion}
+                            param="subSection"
+                            data={section.indicators}
+                          >
+                            {section.indicators.map(desc => (
+                              <div
+                                key={desc.title}
+                                className={styles.definitionList}
+                              >
+                                <DefinitionList
+                                  className={layout.content}
+                                  definitions={desc.descriptions}
+                                  compare={compare}
+                                />
+                              </div>
+                            ))}
+                          </Accordion>
+                        ) : null)
+                    )}
+                </Accordion>
+              ) : (
+                <Accordion
+                  className={styles.accordion}
+                  param="section"
+                  data={ndcsData}
+                  loading={loading}
+                >
+                  {ndcsData &&
                   ndcsData.map(section => (
                     <div key={section.title} className={styles.definitionList}>
                       <DefinitionList
@@ -78,10 +80,10 @@ class NdcsCountryAccordion extends PureComponent {
                       />
                     </div>
                   ))}
-              </Accordion>
-            )}
+                </Accordion>
+              )}
           </div>
-        }
+        )}
       </div>
     );
   }

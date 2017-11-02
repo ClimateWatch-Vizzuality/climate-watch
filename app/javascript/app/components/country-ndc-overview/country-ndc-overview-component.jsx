@@ -5,6 +5,7 @@ import Card from 'components/card';
 import Intro from 'components/intro';
 import cx from 'classnames';
 import Loading from 'components/loading';
+import NoContent from 'components/no-content';
 
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
@@ -15,6 +16,14 @@ class CountryNdcOverview extends PureComponent {
   render() {
     const { iso, sectors, values, loading, actions } = this.props;
     const hasSectors = values && sectors;
+    if (!hasSectors && !loading) {
+      return (
+        <NoContent
+          message="No overview content data"
+          className={styles.noContent}
+        />
+      );
+    }
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
