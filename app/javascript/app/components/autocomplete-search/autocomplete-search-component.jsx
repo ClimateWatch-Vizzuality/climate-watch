@@ -18,10 +18,6 @@ class CountriesSelect extends PureComponent {
           className={theme.dropdownOptionWithArrow}
           placeholder={'e.g. "Brazil", "energy", "deforestation targets"'}
           options={searchList}
-          selectorRef={el => {
-            this.selectorElement = el;
-            return this.selectorElement;
-          }}
           onSearchChange={handleSearchChange}
           onValueChange={handleValueClick}
           value={null}

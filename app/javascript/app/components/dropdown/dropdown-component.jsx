@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { ReactSelectize, SimpleSelect } from 'react-selectize'; // eslint-disable-line
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
@@ -11,32 +11,41 @@ import dropdownArrowWhite from 'assets/icons/dropdown-arrow-white.svg';
 import theme from 'styles/themes/dropdown/react-selectize.scss';
 import styles from './dropdown-styles.scss';
 
-const Dropdown = props => {
-  const arrow = props.white ? dropdownArrowWhite : dropdownArrow;
+class Dropdown extends PureComponent {
+  componentDidUpdate() {
+    this.selectorElement.highlightFirstSelectableOption();
+  }
 
-  return (
-    <div className={styles.dropdownWrapper}>
-      {props.label && <span className={styles.label}>{props.label}</span>}
-      <div
-        className={cx(
-          theme.dropdown,
-          props.transparent ? theme.transparent : '',
-          props.white ? theme.white : '',
-          props.plain ? theme.plain : '',
-          props.dark ? theme.dark : '',
-          props.blueBorder ? theme.blueBorder : ''
+  render() {
+    const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
+    return (
+      <div className={styles.dropdownWrapper}>
+        {this.props.label && (
+          <span className={styles.label}>{this.props.label}</span>
         )}
-      >
-        <SimpleSelect
-          ref={props.selectorRef}
-          className={cx(props.className, props.disabled)}
-          renderToggleButton={() => <Icon icon={arrow} />}
-          {...props}
-        />
+        <div
+          className={cx(
+            theme.dropdown,
+            this.props.transparent ? theme.transparent : '',
+            this.props.white ? theme.white : '',
+            this.props.plain ? theme.plain : '',
+            this.props.dark ? theme.dark : '',
+            this.props.blueBorder ? theme.blueBorder : ''
+          )}
+        >
+          <SimpleSelect
+            ref={el => {
+              this.selectorElement = el;
+            }}
+            className={cx(this.props.className, this.props.disabled)}
+            renderToggleButton={() => <Icon icon={arrow} />}
+            {...this.props}
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Dropdown.propTypes = {
   label: PropTypes.string,
