@@ -37,20 +37,24 @@ class SDGCard extends PureComponent {
     const title = square ? goal.title : `${goal.number}. ${goal.cw_title}`;
 
     const compare = (a, b) => {
-      const aRegex = a.number.match(/(.*)\.(.*)/);
-      const fullA = (aRegex && aRegex[1]) || a.number.match(/(.*)\.?/);
-      const decimalA = aRegex && aRegex[2];
-      const bRegex = b.number.match(/(.*)\.(.*)/);
-      const fullB = (bRegex && bRegex[1]) || b.number.match(/(.*)\.?/);
-      const decimalB = bRegex && bRegex[2];
+      const divideRegex = /(.*)\.(.*)/;
+      const match = x => x.number.match(divideRegex);
+      const fullNumber = x =>
+        (match(x) && match(x)[1]) || x.number.match(divideRegex);
+      const decimalNumber = x => match(x) && match(x)[2];
+      const fullA = fullNumber(a);
+      const fullB = fullNumber(b);
+      const decimalA = decimalNumber(a);
+      const decimalB = decimalNumber(b);
       if (
         !decimalA ||
         !decimalB ||
-        parseInt(fullA, 10) !== parseInt(fullB, 10) ||
-        decimalA.match(/[^0-9.]/) ||
-        decimalA.match(/[^0-9.]/)
+        parseInt(fullA, 10) !== parseInt(fullB, 10)
       ) {
-        return fullA < fullB ? 1 : -1;
+        return fullA > fullB ? 1 : -1;
+      }
+      if (decimalA.match(/[^0-9.]/) || decimalA.match(/[^0-9.]/)) {
+        return decimalA > decimalB ? 1 : -1;
       }
       return parseInt(decimalA, 10) - parseInt(decimalB, 10);
     };
@@ -77,7 +81,7 @@ class SDGCard extends PureComponent {
                 targetData.targets[target.number].sectors;
               return (
                 <span
-                  key={target.number}
+                  key={target.id}
                   data-for={tooltipId}
                   data-tip
                   onMouseEnter={() => setTooltipData(target)}
