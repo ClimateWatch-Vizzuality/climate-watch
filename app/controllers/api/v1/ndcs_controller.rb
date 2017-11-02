@@ -93,46 +93,6 @@ module Api
 
       private
 
-      def load_indicators
-        indicators = ::Indc::Indicator.includes(
-          :labels,
-          :source,
-          categories: [:category_type],
-          values: [:location]
-        )
-
-
-        if params[:category] and params[:filter]
-          indicators2 = indicators.where(
-            indc_category_types: {
-              name: 'global'
-            },
-            indc_categories: {
-              slug: [params[:category], params[:filter]]
-            }
-          )
-        elsif params[:category]
-          indicators2 = indicators.where(
-            indc_category_types: {
-              name: 'global'
-            },
-            indc_categories: {
-              slug: params[:category]
-            }
-          )
-        elsif params[:filter]
-          indicators2 = indicators.where(
-            indc_category_types: {
-              name: params[:filter]
-            }
-          )
-        end
-
-       indicators.where(
-          id: indicators2.map(&:id)
-        )
-      end
-
       def location_list
         if params[:location].blank?
           nil

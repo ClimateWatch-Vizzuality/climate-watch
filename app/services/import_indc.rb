@@ -75,9 +75,9 @@ class ImportIndc
 
   def indicator_attributes(indicator)
     {
-      name: indicator[:column_name],
-      slug: Slug.create(indicator[:column_name]),
-      description: indicator[:long_name],
+      name: indicator[:long_name],
+      slug: indicator[:column_name],
+      description: indicator[:definition],
       source: @sources_index[indicator[:source]]
     }
   end
@@ -87,10 +87,10 @@ class ImportIndc
       location: location,
       indicator: indicator,
       label: Indc::Label.find_by(
-        value: row[:"#{indicator.name}_label"],
+        value: row[:"#{indicator.slug}_label"],
         indicator: indicator
       ),
-      value: row[:"#{indicator.name}"]
+      value: row[:"#{indicator.slug}"]
     }
   end
 
@@ -192,7 +192,7 @@ class ImportIndc
       indicator = Indc::Indicator.
         includes(:categories).
         find_by!(
-          name: r[:column_name],
+          slug: r[:column_name],
           source: @sources_index[r[:source]]
         )
 
@@ -225,7 +225,7 @@ class ImportIndc
       to_h
 
     indicators.each do |indicator_name, labels|
-      indicator = Indc::Indicator.find_by!(name: indicator_name)
+      indicator = Indc::Indicator.find_by!(slug: indicator_name)
       labels.each_with_index do |label, index|
         Indc::Label.create!(
           indicator: indicator,
@@ -245,7 +245,7 @@ class ImportIndc
           next
         end
 
-        next unless r[:"#{indicator.name}"]
+        next unless r[:"#{indicator.slug}"]
 
         Indc::Value.create!(
           value_cait_attributes(r, location, indicator)
@@ -276,7 +276,7 @@ class ImportIndc
   def import_values_wb
     indicator_index = Indc::Indicator.
       where(source: @sources_index['WB']).
-      group_by(&:name).
+      group_by(&:slug).
       map { |k, v| [k, v.first] }.
       to_h
 
