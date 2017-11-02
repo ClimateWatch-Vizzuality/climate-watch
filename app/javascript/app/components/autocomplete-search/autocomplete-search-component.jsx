@@ -11,14 +11,14 @@ import styles from './autocomplete-search-styles.scss';
 
 class CountriesSelect extends PureComponent {
   render() {
-    const { handleValueClick, handleSearchChange, searchList } = this.props;
+    const { handleValueClick, setAutocompleteSearch, searchList } = this.props;
     return (
       <div className={styles.wrapper}>
         <Dropdown
           className={theme.dropdownOptionWithArrow}
           placeholder={'e.g. "Brazil", "energy", "deforestation targets"'}
           options={searchList}
-          onSearchChange={handleSearchChange}
+          onSearchChange={setAutocompleteSearch}
           onValueChange={handleValueClick}
           value={null}
           hideResetButton
@@ -38,7 +38,7 @@ class CountriesSelect extends PureComponent {
 
 CountriesSelect.propTypes = {
   handleValueClick: Proptypes.func.isRequired,
-  handleSearchChange: Proptypes.func.isRequired,
+  setAutocompleteSearch: Proptypes.func.isRequired,
   searchList: Proptypes.array
 };
 
