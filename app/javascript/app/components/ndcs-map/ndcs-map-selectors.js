@@ -121,7 +121,7 @@ export const getPathsWithStyles = createSelector(
         ? locations[europeSlug]
         : locations[iso];
 
-      if (countryData) {
+      if (countryData && countryData.label_id) {
         const legendData = legendBuckets[countryData.label_id];
         const color = getColorByIndex(legendBuckets, legendData.index);
         const style = {
