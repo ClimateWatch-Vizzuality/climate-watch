@@ -13,6 +13,7 @@ import * as geoLocationProvider from 'providers/geolocation-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
 import * as socioeconomicsProvider from 'providers/socioeconomics-provider';
+import * as ndcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 
 const providersReducers = {
   countries: handleActions(countriesProvider),
@@ -24,7 +25,8 @@ const providersReducers = {
   geoLocation: handleActions(geoLocationProvider),
   wbCountryData: handleActions(wbCountryProvider),
   socioeconomics: handleActions(socioeconomicsProvider),
-  timeline: handleActions(timelineProvider)
+  timeline: handleActions(timelineProvider),
+  ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider)
 };
 
 // Pages

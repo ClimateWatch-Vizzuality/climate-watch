@@ -3,17 +3,17 @@
 .doubleFold {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr);
+  @include msGridColumns(5fr, 7fr);
 
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 5fr 7fr;
 }
 
 .threeFold {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr);
+  @include msGridColumns(3fr, 2fr, 2fr);
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 2fr 2fr;
 }
 
 .backButton {

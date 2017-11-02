@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Proptypes from 'prop-types';
 import qs from 'query-string';
-import isEmpty from 'lodash/isEmpty';
 import { getLocationParamUpdated } from 'utils/navigation';
 
 import NDCCompareComponent from './ndc-compare-component';
@@ -29,8 +28,6 @@ const mapStateToProps = (state, { location, route }) => {
     route
   };
   return {
-    fetched: !isEmpty(state.NDCCompare.data),
-    loading: state.NDCCompare.loading,
     locations,
     countriesOptions: getCountriesOptionsFiltered(countriesOptionsData),
     activeCountriesOptions: getActiveCountries(activeCountriesData),
