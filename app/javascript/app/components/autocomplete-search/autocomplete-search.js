@@ -33,10 +33,18 @@ class AutocompleteSearchContainer extends PureComponent {
     this.props.history.push(option.path);
   };
 
+  handleSearchChange = search => {
+    this.props.setAutocompleteSearch(search);
+    if (this.selectorElement) {
+      this.selectorElement.highlightFirstSelectableOption();
+    }
+  };
+
   render() {
     return createElement(AutocompleteSearchComponent, {
       ...this.props,
-      handleValueClick: this.handleValueClick
+      handleValueClick: this.handleValueClick,
+      handleSearchChange: this.handleSearchChange
     });
   }
 }

@@ -28,6 +28,7 @@ const Dropdown = props => {
         )}
       >
         <SimpleSelect
+          ref={props.selectorRef}
           className={cx(props.className, props.disabled)}
           renderToggleButton={() => <Icon icon={arrow} />}
           {...props}
@@ -48,7 +49,8 @@ Dropdown.propTypes = {
   theme: PropTypes.object,
   hasSearch: PropTypes.bool,
   disabled: PropTypes.bool,
-  blueBorder: PropTypes.bool
+  blueBorder: PropTypes.bool,
+  selectorRef: PropTypes.func
 };
 
 export default themr('Dropdown', styles)(Dropdown);
