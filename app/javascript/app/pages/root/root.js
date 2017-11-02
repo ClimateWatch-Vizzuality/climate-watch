@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import ReactGA from 'react-ga';
 import Component from './root-component';
 
-// const { GOOGLE_ANALYTICS_ID } = process.env;
+const GOOGLE_ANALYTICS_ID = 'UA-1981881-51';
 
 function trackPage(page) {
   ReactGA.set({ page });
@@ -14,9 +14,9 @@ function trackPage(page) {
 
 let gaInitialized = false;
 function handleTrack(location, prevLocation) {
-  if (true) {
+  if (GOOGLE_ANALYTICS_ID) {
     if (!gaInitialized) {
-      ReactGA.initialize('UA-1981881-51');
+      ReactGA.initialize(GOOGLE_ANALYTICS_ID);
       gaInitialized = true;
     }
     if (!prevLocation) {
