@@ -34,7 +34,7 @@ class Accordion extends PureComponent {
                 isOpen = false;
               }
             }
-            return children[index] ? (
+            return (
               <section
                 key={`${section.slug}-${section.title}`}
                 className={styles.accordion}
@@ -63,7 +63,7 @@ class Accordion extends PureComponent {
                   })}
                 </Collapse>
               </section>
-            ) : null;
+            );
           })}
       </div>
     );
