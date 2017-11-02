@@ -21,6 +21,7 @@ class ImportIndc
     import_sources
     import_category_types
     import_categories
+    import_category_relations
     import_indicators
     import_indicators_categories
     import_labels
@@ -145,6 +146,26 @@ class ImportIndc
       each do |category_type|
         import_categories_of(category_type)
       end
+  end
+
+  def import_category_relations
+    @metadata.each do |r|
+      global_category = Indc::Category.find_by(
+        slug: Slug.create(r[:global_category])
+      ) or next
+
+      overview_category = Indc::Category.find_by(
+        slug: Slug.create(r[:overview_category])
+      ) if r[:overview_category]
+
+      map_category = Indc::Category.find_by(
+        slug: Slug.create(r[:map_category])
+      ) if r[:map_category]
+
+      global_category.children << [
+        overview_category, map_category
+      ].select(&:itself)
+    end
   end
 
   def import_indicators

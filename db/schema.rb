@@ -82,11 +82,13 @@ ActiveRecord::Schema.define(version: 20171031100456) do
 
   create_table "indc_categories", force: :cascade do |t|
     t.bigint "category_type_id", null: false
+    t.bigint "parent_id"
     t.text "slug", null: false
     t.text "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_type_id"], name: "index_indc_categories_on_category_type_id"
+    t.index ["parent_id"], name: "index_indc_categories_on_parent_id"
     t.index ["slug", "category_type_id"], name: "index_indc_categories_on_slug_and_category_type_id", unique: true
   end
 
@@ -367,6 +369,7 @@ ActiveRecord::Schema.define(version: 20171031100456) do
   add_foreign_key "historical_emissions_records", "locations", on_delete: :cascade
   add_foreign_key "historical_emissions_sectors", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
   add_foreign_key "historical_emissions_sectors", "historical_emissions_sectors", column: "parent_id", on_delete: :cascade
+  add_foreign_key "indc_categories", "indc_categories", column: "parent_id", on_delete: :cascade
   add_foreign_key "indc_categories", "indc_category_types", column: "category_type_id", on_delete: :cascade
   add_foreign_key "indc_indicators", "indc_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "indc_indicators_categories", "indc_categories", column: "category_id", on_delete: :cascade
