@@ -31,14 +31,12 @@ const providersReducers = {
 import * as NDCSPage from 'pages/ndcs';
 
 import * as countryNDCFullPage from 'pages/ndc-country-full';
-import * as NDCComparePage from 'pages/ndc-compare';
 import * as ndcSearchPage from 'pages/ndc-search';
 import * as ndcSdgPage from 'pages/ndc-sdg';
 
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
-  NDCCompare: handleActions(NDCComparePage),
   ndcSearch: handleActions(ndcSearchPage),
   ndcSdg: handleActions(ndcSdgPage)
 };
