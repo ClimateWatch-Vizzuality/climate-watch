@@ -9,6 +9,7 @@ import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
 import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 import Sticky from 'react-stickynode';
+import Button from 'components/button';
 
 import layout from 'styles/layout.scss';
 import contentStyles from 'styles/themes/content.scss';
@@ -45,17 +46,21 @@ class NDCCountryFull extends PureComponent {
       contentOptions,
       contentOptionSelected,
       route,
-      fetchCountryNDCFull
+      fetchCountryNDCFull,
+      iso
     } = this.props;
     return (
       <div>
         <Header route={route}>
-          <div className={cx(layout.content, styles.header)}>
+          <div className={cx(layout.content, styles.header, styles.twoFold)}>
             <div className={styles.title}>
               {country && (
                 <Intro title={`${country.wri_standard_name} - Full Content`} />
               )}
             </div>
+            <Button color="yellow" link={`/ndcs/country/${iso}`}>
+              View NDC Overview
+            </Button>
           </div>
         </Header>
         <Sticky>
@@ -94,7 +99,8 @@ NDCCountryFull.propTypes = {
   contentOptionSelected: PropTypes.object,
   loaded: PropTypes.bool,
   search: PropTypes.object,
-  fetchCountryNDCFull: PropTypes.func
+  fetchCountryNDCFull: PropTypes.func,
+  iso: PropTypes.string
 };
 
 export default NDCCountryFull;

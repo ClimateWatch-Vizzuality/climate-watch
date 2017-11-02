@@ -13,6 +13,7 @@ import * as geoLocationProvider from 'providers/geolocation-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
 import * as socioeconomicsProvider from 'providers/socioeconomics-provider';
+import * as ndcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 
 const providersReducers = {
   countries: handleActions(countriesProvider),
@@ -24,21 +25,20 @@ const providersReducers = {
   geoLocation: handleActions(geoLocationProvider),
   wbCountryData: handleActions(wbCountryProvider),
   socioeconomics: handleActions(socioeconomicsProvider),
-  timeline: handleActions(timelineProvider)
+  timeline: handleActions(timelineProvider),
+  ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider)
 };
 
 // Pages
 import * as NDCSPage from 'pages/ndcs';
 
 import * as countryNDCFullPage from 'pages/ndc-country-full';
-import * as NDCComparePage from 'pages/ndc-compare';
 import * as ndcSearchPage from 'pages/ndc-search';
 import * as ndcSdgPage from 'pages/ndc-sdg';
 
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
-  NDCCompare: handleActions(NDCComparePage),
   ndcSearch: handleActions(ndcSearchPage),
   ndcSdg: handleActions(ndcSdgPage)
 };
