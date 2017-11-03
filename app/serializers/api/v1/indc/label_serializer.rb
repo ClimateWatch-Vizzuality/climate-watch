@@ -2,8 +2,8 @@ module Api
   module V1
     module Indc
       class LabelSerializer < ActiveModel::Serializer
-        attributes :name
-        attributes :index
+        attribute :value, key: :name
+        attribute :index
       end
     end
   end

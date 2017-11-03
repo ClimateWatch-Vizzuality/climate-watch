@@ -107,7 +107,7 @@ export default [
                 category: 'sectoral_information'
               }),
             exact: true,
-            anchor: true,
+            anchor: false,
             label: 'Sectoral Information',
             param: 'sectoral-information'
           },
@@ -154,7 +154,7 @@ export default [
                 compare: true
               }),
             exact: true,
-            anchor: true,
+            anchor: false,
             label: 'Sectoral Information',
             param: 'sectoral-information'
           },

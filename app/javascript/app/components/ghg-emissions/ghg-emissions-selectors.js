@@ -65,7 +65,7 @@ const AXES_CONFIG = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'CO2e',
+    unit: 'CO<sub>2</sub>e',
     format: 'number'
   }
 };
