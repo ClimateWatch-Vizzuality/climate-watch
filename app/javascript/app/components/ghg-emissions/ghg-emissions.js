@@ -28,12 +28,12 @@ const actions = { ...ownActions, ...modalActions };
 
 const groups = [
   {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
     groupId: 'countries',
     title: 'Countries'
+  },
+  {
+    groupId: 'regions',
+    title: 'Regions'
   }
 ];
 
