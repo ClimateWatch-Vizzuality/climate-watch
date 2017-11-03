@@ -20,7 +20,10 @@ class TooltipChart extends PureComponent {
     const unit = config.axes && config.axes.yLeft && config.axes.yLeft.unit;
     return (
       <div className={styles.tooltip}>
-        <span className={styles.unit}>{unit}</span>
+        <span
+          className={styles.unit}
+          dangerouslySetInnerHTML={{ __html: unit }} // eslint-disable-line
+        />
         {showTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
