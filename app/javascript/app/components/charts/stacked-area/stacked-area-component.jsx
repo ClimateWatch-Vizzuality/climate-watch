@@ -10,6 +10,7 @@ import {
   CartesianGrid,
   Tooltip,
   ReferenceDot,
+  Label,
   ResponsiveContainer
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
@@ -118,7 +119,15 @@ class ChartStackedArea extends PureComponent {
                 y={point.y}
                 fill="#8699A4"
                 r={4}
-              />
+              >
+                <Label
+                  value={`${format('.3s')(point.y)}t`}
+                  position="top"
+                  fill="#8f8fa1"
+                  strokeWidth={0.5}
+                  fontSize="13px"
+                />
+              </ReferenceDot>
             ))}
         </ComposedChart>
       </ResponsiveContainer>
