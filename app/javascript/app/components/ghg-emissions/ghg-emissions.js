@@ -60,6 +60,8 @@ const mapStateToProps = (state, { location }) => {
     filters: getFilterOptions(ghg),
     filtersSelected: getFiltersSelected(ghg),
     selectorDefaults: getSelectorDefaults(ghg),
+    loadingMeta: state.ghgEmissionsMeta.loading,
+    loadingData: state.ghgEmissions.loading,
     groups
   };
 };

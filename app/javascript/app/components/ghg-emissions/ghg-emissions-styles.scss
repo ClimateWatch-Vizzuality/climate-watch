@@ -33,3 +33,15 @@
   margin-right: 10px;
   margin-bottom: 10px;
 }
+
+.chartWrapper {
+  position: relative;
+}
+
+.loader {
+  min-height: 450px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
