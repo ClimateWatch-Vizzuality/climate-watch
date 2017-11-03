@@ -5,11 +5,12 @@ import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import actions from './ndc-country-actions';
-import reducers, { initialState } from './ndc-country-reducers';
-
 import NDCCountryComponent from './ndc-country-component';
-import { getCountry, getAnchorLinks } from './ndc-country-selectors';
+import {
+  getCountry,
+  getAnchorLinks,
+  getDocumentsOptions
+} from './ndc-country-selectors';
 
 const mapStateToProps = (state, { match, location, route }) => {
   const { iso } = match.params;
@@ -23,10 +24,15 @@ const mapStateToProps = (state, { match, location, route }) => {
     location,
     route
   };
+  const documentsData = {
+    iso,
+    data: state.ndcsDocumentsMeta.data
+  };
   return {
     country: getCountry(countryData),
     search: search.search,
-    anchorLinks: getAnchorLinks(routeData)
+    anchorLinks: getAnchorLinks(routeData),
+    documentsOptions: getDocumentsOptions(documentsData)
   };
 };
 
@@ -40,10 +46,15 @@ class NDCCountryContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params, clear));
   };
 
+  handleDropDownChange = selected => {
+    this.props.history.push(selected.path);
+  };
+
   render() {
     return createElement(NDCCountryComponent, {
       ...this.props,
-      onSearchChange: this.onSearchChange
+      onSearchChange: this.onSearchChange,
+      handleDropDownChange: this.handleDropDownChange
     });
   }
 }
@@ -53,8 +64,4 @@ NDCCountryContainer.propTypes = {
   location: Proptypes.object.isRequired
 };
 
-export { actions, reducers, initialState };
-
-export default withRouter(
-  connect(mapStateToProps, actions)(NDCCountryContainer)
-);
+export default withRouter(connect(mapStateToProps, null)(NDCCountryContainer));

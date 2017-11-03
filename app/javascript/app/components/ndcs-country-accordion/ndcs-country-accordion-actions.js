@@ -13,11 +13,13 @@ const fetchNdcsCountryAccordionFailed = createAction(
 
 const fetchNdcsCountryAccordion = createThunkAction(
   'fetchNdcsCountryAccordion',
-  (locations, category) => dispatch => {
+  (locations, category, compare) => dispatch => {
     if (locations) {
       dispatch(fetchNdcsCountryAccordionInit());
       fetch(
-        `/api/v1/ndcs?location=${locations}&category=${category}&filter=overview`
+        `/api/v1/ndcs?location=${locations}&category=${category}${!compare
+          ? '&filter=overview'
+          : ''}`
       )
         .then(response => {
           if (response.ok) return response.json();

@@ -1,41 +1,45 @@
-import { createElement } from 'react';
+import { createElement, PureComponent } from 'react';
 import { withRouter } from 'react-router';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import qs from 'query-string';
+import { getLocationParamUpdated } from 'utils/navigation';
+
 import AccordionComponent from './accordion-component';
 
-const mapStateToProps = (state, { location }) => {
+const mapStateToProps = (state, { location, param }) => {
   const search = qs.parse(location.search);
-  const activeSection = search.activeSection ? search.activeSection : null;
+  const openSlug = search[param] || null;
   return {
-    activeSection
+    openSlug
   };
 };
 
-const AccordionContainer = props => {
-  const handleOnClick = slug => {
-    const { location, history } = props;
+class AccordionContainer extends PureComponent {
+  handleOnClick = slug => {
+    const { param, location } = this.props;
     const search = qs.parse(location.search);
-    const newSlug =
-      search.activeSection === slug || !search.activeSection ? 'none' : slug;
-    const newSearch = { ...search, activeSection: newSlug };
-
-    history.replace({
-      pathname: location.pathname,
-      search: qs.stringify(newSearch)
-    });
+    const newSlug = search[param] === slug || !search[param] ? 'none' : slug;
+    this.updateUrlParam({ name: param, value: newSlug });
   };
 
-  return createElement(AccordionComponent, {
-    ...props,
-    handleOnClick
-  });
-};
+  updateUrlParam = (params, clear) => {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  };
+
+  render() {
+    return createElement(AccordionComponent, {
+      handleOnClick: this.handleOnClick,
+      ...this.props
+    });
+  }
+}
 
 AccordionContainer.propTypes = {
   location: Proptypes.object,
-  history: Proptypes.object
+  history: Proptypes.object,
+  param: Proptypes.string
 };
 
 export default withRouter(connect(mapStateToProps, null)(AccordionContainer));

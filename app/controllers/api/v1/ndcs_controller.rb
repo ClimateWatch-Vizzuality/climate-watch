@@ -21,12 +21,43 @@ module Api
 
     class NdcsController < ApiController
       def index
-        categories = ::Indc::Category.all
-        sectors = ::Indc::Sector.all
+        sectors = ::Indc::Sector.
+          all
+
+        categories = ::Indc::Category.
+          includes(:category_type)
 
         if params[:filter]
           categories = categories.where(
-            category_type: params[:filter]
+            indc_category_types: { name: params[:filter] },
+          )
+        end
+
+        if params[:category]
+          parent = ::Indc::Category.
+            includes(:category_type).
+            where(
+              indc_category_types: { name: 'global' },
+              slug: params[:category]
+            )
+
+          categories = categories
+            .where(
+              parent_id: parent.map(&:id)
+            )
+        end
+
+
+        indicators = ::Indc::Indicator.
+          includes(
+            :labels, :source, :categories,
+            values: [:sector, :label, :location]
+          ).
+          where(id: categories.flat_map(&:indicator_ids).uniq)
+
+        if location_list
+          indicators = indicators.where(
+            values: {locations: {iso_code3: location_list}}
           )
         end
 
@@ -61,50 +92,6 @@ module Api
       end
 
       private
-
-      def indicators
-        indicators = ::Indc::Indicator.includes(
-          :labels,
-          :categories,
-          values: [:location]
-        )
-
-        if location_list
-          indicators = indicators.where(
-            values: {locations: {iso_code3: location_list}}
-          )
-        end
-
-        if params[:filter]
-          indicators = indicators.where(
-            indc_categories: {category_type: params[:filter]}
-          )
-        end
-
-        if params[:category]
-          indicator_ids = ::GlobalIndc::Category.
-            includes(:indicators, children: :indicators).
-            where(
-              parent_id: nil,
-              slug: params[:category]
-            ).
-            flat_map(&:children).
-            flat_map(&:indicators).
-            map do |indicator|
-              if indicator.wb_indicator_id
-                "wb#{indicator.wb_indicator_id}"
-              elsif indicator.cait_indicator_id
-                "cait#{indicator.cait_indicator_id}"
-              end
-            end
-
-          indicators = indicators.where(
-            id: indicator_ids
-          )
-        end
-
-        indicators
-      end
 
       def location_list
         if params[:location].blank?
