@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-
 import Icon from 'components/icon';
-
+import { compareIndexByKey } from 'utils/utils';
 import styles from './sdg-card-styles.scss';
 
 class SDGCard extends PureComponent {
@@ -37,6 +36,7 @@ class SDGCard extends PureComponent {
     );
 
     const title = square ? goal.title : `${goal.number}. ${goal.cw_title}`;
+
     return (
       <div
         className={cardStyle}
@@ -48,7 +48,7 @@ class SDGCard extends PureComponent {
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
           {targets &&
-            targets.map(target => {
+            targets.sort(compareIndexByKey('number')).map(target => {
               const isSmall =
                 target.sectors &&
                 activeSector &&
@@ -59,7 +59,7 @@ class SDGCard extends PureComponent {
                 targetData.targets[target.number].sectors;
               return (
                 <span
-                  key={target.number}
+                  key={target.id}
                   data-for={tooltipId}
                   data-tip
                   onMouseEnter={() => setTooltipData(target)}

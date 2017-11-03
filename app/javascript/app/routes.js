@@ -73,7 +73,8 @@ export default [
         routes: [
           {
             path: '/ndcs/country/:iso',
-            component: () => createElement(CountryNdcOverview),
+            component: () =>
+              createElement(CountryNdcOverview, { textColumns: true }),
             exact: true,
             anchor: true,
             label: 'Overview'

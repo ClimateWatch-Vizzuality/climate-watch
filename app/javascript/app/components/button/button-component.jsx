@@ -44,7 +44,7 @@ const Button = props => {
 
 Button.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   link: PropTypes.string,
   square: PropTypes.bool,
   color: PropTypes.string,

@@ -38,7 +38,7 @@ class CustomModal extends PureComponent {
         style={customStyles}
         contentLabel={contentLabel}
       >
-        <Button onClick={onRequestClose} className={styles.closeBtn}>
+        <Button onClick={onRequestClose} className={styles.closeBtn} square>
           <Icon icon={closeIcon} className={styles.close} />
         </Button>
         {children}

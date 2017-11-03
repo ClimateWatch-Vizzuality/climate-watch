@@ -3,9 +3,11 @@
 $legend-height: 30px;
 
 .container {
+  position: relative;
   background-color: $light-gray;
   height: 100%;
   max-height: 800px;
+  border: solid 1px $border-color;
 }
 
 .map {
