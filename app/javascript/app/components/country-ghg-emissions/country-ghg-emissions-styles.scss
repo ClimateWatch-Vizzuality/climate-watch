@@ -38,6 +38,10 @@
   margin-top: 30px;
 }
 
+.graph {
+  position: relative;
+}
+
 .graphControls {
   @extend %grid;
 
@@ -66,4 +70,11 @@
 
 .tag {
   margin-right: 10px;
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
 }

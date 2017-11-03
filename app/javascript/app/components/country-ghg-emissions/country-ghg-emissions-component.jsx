@@ -7,6 +7,7 @@ import ChartStackedArea from 'components/charts/stacked-area';
 import LineChart from 'components/charts/line';
 import Tag from 'components/tag';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import Loading from 'components/loading';
 
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -67,6 +68,7 @@ class CountryGhgEmissions extends PureComponent {
           </div>
         </div>
         <div className={styles.graph}>
+          {loading && <Loading light className={styles.loader} />}
           {!loading && (
             <ChartComponent
               config={config}
