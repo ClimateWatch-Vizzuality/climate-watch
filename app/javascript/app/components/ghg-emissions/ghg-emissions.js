@@ -79,7 +79,7 @@ function getFiltersParsed(props) {
   const filter = {};
   switch (breakSelected.value) {
     case 'gas':
-      filter.location = 'WORLD';
+      filter.location = sourceSelected.label === 'UNFCCC' ? 'ANNEXI' : 'WORLD';
       filter.sector = selectorDefaults.sector;
       break;
     case 'location':
@@ -88,7 +88,7 @@ function getFiltersParsed(props) {
       break;
     case 'sector':
       filter.gas = selectorDefaults.gas;
-      filter.location = 'WORLD';
+      filter.location = sourceSelected.label === 'UNFCCC' ? 'ANNEXI' : 'WORLD';
       break;
     default:
       break;
