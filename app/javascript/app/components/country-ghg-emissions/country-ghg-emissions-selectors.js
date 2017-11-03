@@ -203,7 +203,8 @@ export const filterData = createSelector(
 
 const calculatedRatio = (selected, calculationData, x) => {
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
-    return calculationData[x][0].gdp;
+    // GDP is in dollars and we want to display it in million dollars
+    return calculationData[x][0].gdp / 1000000;
   }
   if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
     return calculationData[x][0].population;
