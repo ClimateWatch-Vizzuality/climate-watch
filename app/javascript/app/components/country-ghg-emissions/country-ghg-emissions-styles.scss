@@ -9,6 +9,7 @@
   grid-auto-flow: column;
   grid-gap: $gutter-padding;
   height: 100%;
+  max-height: 800px;
   border-right: solid 1px $border-color;
   padding-right: $gutter-padding;
 
