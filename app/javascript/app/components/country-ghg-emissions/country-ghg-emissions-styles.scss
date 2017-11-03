@@ -7,10 +7,9 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   grid-auto-flow: column;
-  grid-gap: $gutter-padding;
+  grid-gap: 20px;
   height: 100%;
   max-height: 800px;
-  border-right: solid 1px $border-color;
   padding-right: $gutter-padding;
 
   > div:nth-child(1) {
@@ -34,7 +33,7 @@
   color: $theme-color;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   margin-top: 30px;
 }
 
@@ -58,9 +57,7 @@
 .tags {
   display: flex;
   flex-wrap: nowrap;
-  margin-top: 10px;
-  height: 45px;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   overflow-x: scroll;
 }
 

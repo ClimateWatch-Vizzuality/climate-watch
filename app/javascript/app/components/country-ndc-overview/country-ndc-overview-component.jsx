@@ -14,7 +14,7 @@ import styles from './country-ndc-overview-styles.scss';
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { iso, sectors, values, loading, actions } = this.props;
+    const { iso, sectors, values, loading, actions, textColumns } = this.props;
     const hasSectors = values && sectors;
     if (!hasSectors && !loading) {
       return (
@@ -41,6 +41,7 @@ class CountryNdcOverview extends PureComponent {
                     )
                   }
                   description={values.indc_summary[0].value}
+                  textColumns={textColumns}
                 />
                 {actions && (
                   <div className={styles.actions}>
@@ -154,7 +155,8 @@ CountryNdcOverview.propTypes = {
   sectors: PropTypes.array,
   values: PropTypes.object,
   loading: PropTypes.bool,
-  actions: PropTypes.bool
+  actions: PropTypes.bool,
+  textColumns: PropTypes.bool
 };
 
 export default CountryNdcOverview;

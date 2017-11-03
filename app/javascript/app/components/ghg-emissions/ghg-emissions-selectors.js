@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -122,11 +124,17 @@ export const getSourceSelected = createSelector(
 
 // Versions selectors
 export const getVersionOptions = createSelector(
-  [getVersions, getSources, getSourceSelected],
-  (versions, sources, sourceSelected) => {
-    if (!sourceSelected || !versions) return [];
-    const sourceData = sources.find(d => sourceSelected.value === d.value);
-    return versions.filter(filter => sourceData.gwp.indexOf(filter.value) > -1);
+  [getVersions, getSources, getSourceSelected, getData],
+  (versions, sources, sourceSelected, data) => {
+    if (!sourceSelected || !versions || !data) return [];
+    const versionsFromData = groupBy(data, 'gwp');
+    return sortBy(
+      Object.keys(versionsFromData).map(version => ({
+        label: version,
+        value: versions.find(versionMeta => version === versionMeta.label).value
+      })),
+      'label'
+    );
   }
 );
 
@@ -135,7 +143,10 @@ export const getVersionSelected = createSelector(
   (versions, selected) => {
     if (!versions || !versions.length) return {};
     if (!selected) return versions[0];
-    return versions.find(version => version.value === parseInt(selected, 10));
+    return (
+      versions.find(version => version.value === parseInt(selected, 10)) ||
+      versions[0]
+    );
   }
 );
 
