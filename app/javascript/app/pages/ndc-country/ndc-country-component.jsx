@@ -40,20 +40,27 @@ class NDCCountry extends PureComponent {
                 <Intro title={country.wri_standard_name} />
               </div>
               <div className={styles.threeFold}>
-                <Dropdown
-                  className={theme.dropdownOptionWithArrow}
-                  placeholder="Select a document"
-                  options={documentsOptions}
-                  onValueChange={handleDropDownChange}
-                  white
-                  hideResetButton
-                />
-                <Search
-                  theme={lightSearch}
-                  placeholder="Search"
-                  input={search}
-                  onChange={onSearchChange}
-                />
+                {documentsOptions && (
+                  <div>
+                    {documentsOptions.length > 1 ? (
+                      <Dropdown
+                        className={theme.dropdownOptionWithArrow}
+                        placeholder="Select a document"
+                        options={documentsOptions}
+                        onValueChange={handleDropDownChange}
+                        white
+                        hideResetButton
+                      />
+                    ) : (
+                      <Button
+                        color="yellow"
+                        link={`/ndcs/country/${match.params.iso}/full`}
+                      >
+                        {`View ${documentsOptions[0].label} Document`}
+                      </Button>
+                    )}
+                  </div>
+                )}
                 <Button
                   color="yellow"
                   link={`/ndcs/compare/mitigation?locations=${match.params
@@ -61,6 +68,12 @@ class NDCCountry extends PureComponent {
                 >
                   Compare
                 </Button>
+                <Search
+                  theme={lightSearch}
+                  placeholder="Search"
+                  input={search}
+                  onChange={onSearchChange}
+                />
               </div>
             </div>
             <Sticky activeClass="sticky">

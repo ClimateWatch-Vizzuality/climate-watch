@@ -19,7 +19,7 @@ const mapStateToProps = (state, { match }) => {
     values: getValuesGrouped(countryData),
     loading: state.countryNDCOverview.loading,
     sectors: countryData ? countryData.sectors : null,
-    fetched: !isEmpty(overviewData[iso])
+    fetched: !isEmpty(countryData)
   };
 };
 

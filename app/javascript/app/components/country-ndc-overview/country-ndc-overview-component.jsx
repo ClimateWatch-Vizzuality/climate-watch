@@ -14,7 +14,7 @@ import styles from './country-ndc-overview-styles.scss';
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { iso, sectors, values, loading, actions } = this.props;
+    const { iso, sectors, values, loading, actions, textColumns } = this.props;
     const hasSectors = values && sectors;
     if (!hasSectors && !loading) {
       return (
@@ -41,6 +41,7 @@ class CountryNdcOverview extends PureComponent {
                     )
                   }
                   description={values.indc_summary[0].value}
+                  textColumns={textColumns}
                 />
                 {actions && (
                   <div className={styles.actions}>
@@ -71,16 +72,14 @@ class CountryNdcOverview extends PureComponent {
                         <span className={styles.metaTitle}>Target type</span>
                         <p
                           className={styles.targetText}
-                          dangerouslySetInnerHTML={{
-                            // eslint-disable-line
+                          dangerouslySetInnerHTML={{ // eslint-disable-line
                             __html: values.ghg_target_type[0].value
                           }}
                         />
                         <span className={styles.metaTitle}>Target year</span>
                         <p
                           className={styles.targetText}
-                          dangerouslySetInnerHTML={{
-                            // eslint-disable-line
+                          dangerouslySetInnerHTML={{ // eslint-disable-line
                             __html: values.time_target_year[0].value
                           }}
                         />
@@ -95,8 +94,7 @@ class CountryNdcOverview extends PureComponent {
                     {values.non_ghg_target.length ? (
                       <p
                         className={styles.targetText}
-                        dangerouslySetInnerHTML={{
-                          // eslint-disable-line
+                        dangerouslySetInnerHTML={{ // eslint-disable-line
                           __html: values.non_ghg_target[0].value
                         }}
                       />
@@ -110,8 +108,7 @@ class CountryNdcOverview extends PureComponent {
                     {values.coverage_sectors_short.length ? (
                       <p
                         className={styles.targetText}
-                        dangerouslySetInnerHTML={{
-                          // eslint-disable-line
+                        dangerouslySetInnerHTML={{ // eslint-disable-line
                           __html: values.coverage_sectors_short[0].value
                         }}
                       />
@@ -154,7 +151,8 @@ CountryNdcOverview.propTypes = {
   sectors: PropTypes.array,
   values: PropTypes.object,
   loading: PropTypes.bool,
-  actions: PropTypes.bool
+  actions: PropTypes.bool,
+  textColumns: PropTypes.bool
 };
 
 export default CountryNdcOverview;

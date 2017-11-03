@@ -16,7 +16,6 @@ import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
 
 import layout from 'styles/layout.scss';
-import btnInfoTheme from 'styles/themes/button/button-info.scss';
 import cardTheme from 'styles/themes/sdg-card/sdg-card';
 import styles from './country-ndc-sdg-linkages-styles.scss';
 
@@ -77,11 +76,9 @@ class CountrySDGLinkages extends PureComponent {
             <div className={styles.titleContainer}>
               <h3 className={styles.title}>NDC-SDG Linkages</h3>
               <InfoButton
-                className={cx(btnInfoTheme.btnInfo, {
-                  [btnInfoTheme.btnInfoActive]: infoOpen
-                })}
                 infoOpen={infoOpen}
                 handleInfoClick={() => toogleNDCsSDGsInfo(i => !i)}
+                square
               >
                 <Icon icon={infoIcon} />
               </InfoButton>
