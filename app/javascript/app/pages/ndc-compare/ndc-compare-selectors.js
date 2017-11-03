@@ -4,8 +4,6 @@ import compact from 'lodash/compact';
 const getCountries = state => state.data || null;
 const getLocations = state => state.locations || null;
 const getIso = state => state.iso;
-const getAllIndicators = state => state.data.indicators || null;
-const getCategories = state => state.data.categories || null;
 
 const getCountryByIso = (countries, iso) =>
   countries.find(country => country.iso_code3 === iso);
@@ -47,45 +45,6 @@ export const getCountriesOptionsFiltered = createSelector(
   }
 );
 
-export const parseIndicatorsDefs = createSelector(
-  [getAllIndicators, getCategories, getLocations],
-  (indicators, categories, countries) => {
-    if (!indicators || !categories || !countries) return {};
-    const parsedIndicators = {};
-    Object.keys(categories).forEach(category => {
-      const categoryIndicators = indicators.filter(
-        indicator => indicator.category_ids.indexOf(category) > -1
-      );
-      const parsedDefinitions = categoryIndicators.map(def => {
-        const descriptions = countries.map(country => ({
-          iso: country,
-          value: def.locations[country] ? def.locations[country].value : null
-        }));
-        return {
-          title: def.name,
-          slug: def.slug,
-          descriptions
-        };
-      });
-      parsedIndicators[category] = parsedDefinitions;
-    });
-    return parsedIndicators;
-  }
-);
-
-export const getNDCs = createSelector(
-  [getCategories, parseIndicatorsDefs],
-  (categories, indicators) => {
-    if (!categories) return [];
-    const ndcs = Object.keys(categories).map(category => ({
-      title: categories[category].name,
-      slug: categories[category].slug,
-      definitions: indicators[category] ? indicators[category] : []
-    }));
-    return ndcs;
-  }
-);
-
 export const getCountry = createSelector(
   [getCountries, getIso],
   getCountryByIso
@@ -106,6 +65,5 @@ export default {
   getCountriesOptions,
   getCountriesOptionsFiltered,
   getActiveCountries,
-  getNDCs,
   getAnchorLinks
 };

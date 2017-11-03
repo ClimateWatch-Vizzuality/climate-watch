@@ -7,14 +7,12 @@ namespace :db do
     'ndcs:full:index',
     'sdgs:import',
     'ndc_sdg_targets:import',
+    'indc:import',
     'historical_emissions:import',
-    'cait_indc:import',
-    'wb_indc:import',
     'adaptation:import',
     'wri_metadata:import',
     'wb_extra:import',
     'timeline:import',
-    'global_indc:import',
     'quantifications:import',
     'socioeconomics:import'
   ]
