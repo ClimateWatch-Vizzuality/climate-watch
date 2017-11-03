@@ -27,7 +27,7 @@ module Api
           parts = []
           parts << object.text
           parts += object.notes.map(&:note) if object.notes.length.positive?
-          parts << object.language
+          parts << object.language unless object.language == 'English'
           parts.join(', ')
         end
       end

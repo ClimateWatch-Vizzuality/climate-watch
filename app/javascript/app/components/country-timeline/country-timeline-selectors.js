@@ -13,7 +13,7 @@ export const getDates = createSelector(
     if (isEmpty(data) || !data[iso]) return null;
     const documents = [];
     uniqBy(data[iso], 'link').forEach(d => {
-      if (d.date && d.language === 'en') {
+      if (d.date) {
         documents.push({
           year: d.date.split('-')[0],
           link: d.link,
