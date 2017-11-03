@@ -8,6 +8,7 @@ import ButtonGroup from 'components/button-group';
 import Tag from 'components/tag';
 import MultiSelect from 'components/multiselect';
 import Loading from 'components/loading';
+import NoContent from 'components/no-content';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -79,6 +80,15 @@ class GhgEmissions extends PureComponent {
           {(loadingMeta || loadingData) && (
             <Loading light className={styles.loader} />
           )}
+          {!loadingData &&
+            !loadingMeta &&
+              (!data || !data.length) && (
+              <NoContent
+                message="No data available"
+                className={styles.noContent}
+                icon
+              />
+            )}
           <ChartLine config={config} data={data} height={500} />
           <div className={styles.tags}>
             {config.columns &&
