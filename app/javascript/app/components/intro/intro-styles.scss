@@ -21,3 +21,9 @@
   line-height: $line-height-medium;
   max-width: 580px;
 }
+
+.columns {
+  max-width: 100%;
+  column-count: 2;
+  column-gap: 30px;
+}

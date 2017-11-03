@@ -61,12 +61,6 @@ class NDCCountry extends PureComponent {
                     )}
                   </div>
                 )}
-                <Search
-                  theme={lightSearch}
-                  placeholder="Search"
-                  input={search}
-                  onChange={onSearchChange}
-                />
                 <Button
                   color="yellow"
                   link={`/ndcs/compare/mitigation?locations=${match.params
@@ -74,6 +68,12 @@ class NDCCountry extends PureComponent {
                 >
                   Compare
                 </Button>
+                <Search
+                  theme={lightSearch}
+                  placeholder="Search"
+                  input={search}
+                  onChange={onSearchChange}
+                />
               </div>
             </div>
             <Sticky activeClass="sticky">
