@@ -46,6 +46,7 @@
   color: $dark-gray;
   line-height: 1.5em;
   position: relative;
+  transition: color 150ms ease-out;
 
   .text :global {
     margin-right: 80px;
