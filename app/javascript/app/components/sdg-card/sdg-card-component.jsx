@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from 'components/icon';
-import { compareIndex } from 'utils/utils';
+import { compareIndexByKey } from 'utils/utils';
 import styles from './sdg-card-styles.scss';
 
 class SDGCard extends PureComponent {
@@ -48,7 +48,7 @@ class SDGCard extends PureComponent {
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
           {targets &&
-            targets.sort(compareIndex).map(target => {
+            targets.sort(compareIndexByKey('number')).map(target => {
               const isSmall =
                 target.sectors &&
                 activeSector &&
