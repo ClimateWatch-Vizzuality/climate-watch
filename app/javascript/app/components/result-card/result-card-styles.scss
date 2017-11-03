@@ -61,6 +61,7 @@
     position: absolute;
     right: 0;
     top: calc(50% - 45px / 2);
+    transition: opacity 150ms ease-out;
   }
 
   .iconLink {
