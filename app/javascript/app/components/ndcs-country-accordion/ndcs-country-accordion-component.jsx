@@ -11,19 +11,20 @@ import styles from './ndcs-country-accordion-styles.scss';
 class NdcsCountryAccordion extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { ndcsData, loading, compare, locations, category } = this.props;
+    const { ndcsData, loading, compare, locations, category, search } = this.props;
+    let message = 'No content for this category';
+    if (compare && !locations) {
+      message = 'Select a country to start';
+    }
+    if (search.search) {
+      message = 'No content for that search or category';
+    }
     return (
       <div className={styles.wrapper}>
         {loading && <Loading light className={styles.loader} />}
         {!loading && (!ndcsData || !ndcsData.length) && (
           <NoContent
-            message={
-              compare && !locations ? (
-                'Select a country to start'
-              ) : (
-                'No content for this category'
-              )
-            }
+            message={message}
             className={styles.noContent}
           />
         )}
@@ -94,7 +95,8 @@ NdcsCountryAccordion.propTypes = {
   loading: PropTypes.bool,
   compare: PropTypes.bool,
   locations: PropTypes.array,
-  category: PropTypes.string
+  category: PropTypes.string,
+  search: PropTypes.object
 };
 
 export default NdcsCountryAccordion;
