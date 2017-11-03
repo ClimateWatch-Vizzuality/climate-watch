@@ -15,6 +15,7 @@ class CountryGhgEmissions extends PureComponent {
   render() {
     const {
       data,
+      quantifications,
       loading,
       config,
       iso,
@@ -75,6 +76,7 @@ class CountryGhgEmissions extends PureComponent {
               data={data}
               height="100%"
               onMouseMove={handleYearHover}
+              points={quantifications}
             />
           )}
         </div>
@@ -102,6 +104,7 @@ CountryGhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
+  quantifications: PropTypes.array.isRequired,
   calculations: PropTypes.array.isRequired,
   calculationSelected: PropTypes.object.isRequired,
   sources: PropTypes.array.isRequired,

@@ -8,8 +8,7 @@
   grid-template-rows: auto 1fr auto;
   grid-auto-flow: column;
   grid-gap: 20px;
-  height: 100%;
-  max-height: 800px;
+  height: 600px;
   padding-right: $gutter-padding;
 
   > div:nth-child(1) {

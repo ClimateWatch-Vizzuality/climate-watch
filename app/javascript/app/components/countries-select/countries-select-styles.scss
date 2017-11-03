@@ -14,6 +14,22 @@
 
   grid-template: 1fr / 1fr 3fr;
   grid-row-gap: 20px;
+
+  > * {
+    &:first-child {
+      -ms-grid-column-span: 2;
+    }
+
+    &:nth-child(2) {
+      -ms-grid-column: 1;
+      -ms-grid-row: 2;
+    }
+
+    &:nth-child(3) {
+      -ms-grid-column: 2;
+      -ms-grid-row: 2;
+    }
+  }
 }
 
 .search {
