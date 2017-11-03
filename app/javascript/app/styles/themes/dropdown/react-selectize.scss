@@ -16,6 +16,10 @@ $height: 45px;
         pointer-events: none;
         cursor: not-allowed;
         background-color: $light-gray;
+
+        .react-selectize-toggle-button-container {
+          opacity: 0;
+        }
       }
 
       .react-selectize-control {
