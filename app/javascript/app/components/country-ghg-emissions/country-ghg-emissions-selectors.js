@@ -65,6 +65,8 @@ const options = calculationKeys.map(
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
+const getQuantifications = state =>
+  uniqBy(state.quantifications, 'year') || null;
 const getCalculationData = state =>
   (state.calculationData && state.calculationData[state.iso]) || [];
 
@@ -212,12 +214,24 @@ const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
+export const getQuantificationsData = createSelector(
+  getQuantifications,
+  quantifications => {
+    if (!quantifications) return [];
+    return quantifications.map(q => ({
+      y: q.value * DATA_SCALE,
+      x: q.year
+    }));
+  }
+);
+
 export const getChartData = createSelector(
   [
     filterData,
     getFiltersSelected,
     parseCalculationData,
-    getCalculationSelected
+    getCalculationSelected,
+    getQuantifications
   ],
   (data, filters, calculationData, calculationSelected) => {
     if (
@@ -251,8 +265,10 @@ export const getChartData = createSelector(
           calculationData,
           x
         );
-        const scaledYData = yData.value * DATA_SCALE;
-        yItems[yKey] = scaledYData / calculationRatio;
+        if (yData) {
+          const scaledYData = yData.value * DATA_SCALE;
+          yItems[yKey] = scaledYData / calculationRatio;
+        }
       });
       const item = {
         x,

@@ -17,7 +17,8 @@ class TooltipChart extends PureComponent {
 
   render() {
     const { config, content, showTotal } = this.props;
-    const unit = config.axes && config.axes.yLeft && config.axes.yLeft.unit;
+    const unit =
+      config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
     return (
       <div className={styles.tooltip}>
         <span
@@ -30,7 +31,8 @@ class TooltipChart extends PureComponent {
             <p>{this.getTotal(config.columns.y, content.payload[0])}</p>
           </div>
         )}
-        {content.payload &&
+        {content &&
+          content.payload &&
           content.payload.length > 0 &&
           content.payload.map(
             y =>
