@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
 import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 
 const getSectors = state => {
   if (!state.data) return null;
@@ -59,7 +58,7 @@ export const getSectorSelected = createSelector(
 
 export const groupTargetsMeta = createSelector([getTargets], targets => {
   if (!targets) return {};
-  return groupBy(sortBy(targets, 'number'), 'goal_number');
+  return groupBy(targets, 'goal_number');
 });
 
 export default {
