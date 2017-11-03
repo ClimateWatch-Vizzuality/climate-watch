@@ -102,6 +102,8 @@
       &:hover {
         .link {
           .documentLink {
+            color: $theme-color;
+
             .icon {
               fill: $theme-color;
             }

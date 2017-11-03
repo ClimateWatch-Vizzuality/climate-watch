@@ -16,8 +16,16 @@
   grid-row-gap: 20px;
 }
 
-.search {
+.search :global {
   grid-column: span 2;
+
+  input {
+    transition: border-color 150ms ease-out;
+
+    &:hover {
+      border-color: $white;
+    }
+  }
 }
 
 .map {

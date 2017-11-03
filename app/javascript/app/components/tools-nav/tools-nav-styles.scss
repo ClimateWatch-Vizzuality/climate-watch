@@ -22,6 +22,9 @@
   margin-left: 40px;
   text-decoration: none;
   position: relative;
+  letter-spacing: 1px;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-s;
 
   svg {
     fill: $dark-gray;

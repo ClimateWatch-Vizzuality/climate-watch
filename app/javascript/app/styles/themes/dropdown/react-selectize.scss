@@ -28,6 +28,11 @@ $height: 45px;
         padding-right: 5px;
         height: $height;
         overflow: hidden;
+        transition: box-shadow 150ms ease-out;
+
+        &:hover {
+          box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09) !important;
+        }
 
         .react-selectize-placeholder {
           display: block;
@@ -257,10 +262,10 @@ $height: 45px;
     }
 
     &.dropdown-menu {
-      background: $light-gray;
+      background: $white;
       color: $theme-color-light;
       border: solid 1px $border-color;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
       margin-top: -1px;
 
       &.flipped {
@@ -339,6 +344,11 @@ $height: 45px;
   .react-selectize-control {
     border-color: rgba($white, 0.5) !important;
     color: $white !important;
+    transition: border-color 150ms ease-out;
+
+    &:hover {
+      border-color: $white !important;
+    }
   }
 
   .react-selectize-placeholder {
@@ -374,6 +384,20 @@ $height: 45px;
   .dropdown-menu {
     background: $white !important;
   }
+
+  .react-selectize-control {
+    transition: background-color 150ms ease-out;
+
+    &:hover {
+      background-color: $white !important;
+    }
+  }
+
+  .open {
+    .react-selectize-control {
+      background: $white !important;
+    }
+  }
 }
 
 .dark :global {
@@ -401,8 +425,12 @@ $height: 45px;
 }
 
 .blueBorder :global {
-  .react-selectize-control {
-    border-color: $theme-color !important;
-    border-width: 2px !important;
+  .react-selectize {
+    &:not(.disabled) {
+      .react-selectize-control {
+        border-color: $theme-color !important;
+        border-width: 2px !important;
+      }
+    }
   }
 }
