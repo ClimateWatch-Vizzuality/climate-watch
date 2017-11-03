@@ -32,11 +32,13 @@ class CountryGhg extends PureComponent {
         <EmissionsMetaProvider />
         <WbCountryDataProvider />
         <GHGCountryEmissions handleYearHover={this.handleYearHover} />
-        <GHGCountryMap
-          search={search}
-          className={styles.map}
-          year={this.state.year}
-        />
+        <div className={styles.map}>
+          <GHGCountryMap
+            search={search}
+            className={styles.map}
+            year={this.state.year}
+          />
+        </div>
       </div>
     );
   }
