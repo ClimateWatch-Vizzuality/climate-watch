@@ -23,12 +23,12 @@
     <meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=default,fetch,es6,Array.prototype.includes,String.prototype.includes"></script>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag 'application', media: 'all',
       'data-turbolinks-track': 'reload' %>
     <script><%= raw "window.__data = #{@data.to_json};" %></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
     <% if @isProduction %>
       <%= stylesheet_pack_tag 'main' %>
     <% end %>
