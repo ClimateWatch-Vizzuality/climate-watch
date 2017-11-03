@@ -34,6 +34,7 @@
   .dropdown-menu {
     .option-wrapper {
       padding: 12px 10px;
+      position: relative;
     }
   }
 }
@@ -52,4 +53,14 @@
   color: $theme-color !important;
   width: 8px;
   height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 4px);
+}
+
+.nested {
+  padding-left: 10px;
+  padding-right: 15px;
 }

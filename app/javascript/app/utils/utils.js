@@ -22,10 +22,13 @@ export function compareIndexByKey(attribute) {
     const fullB = fullNumber(b);
     const decimalA = decimalNumber(a);
     const decimalB = decimalNumber(b);
-    if (!decimalA || !decimalB || parseInt(fullA, 10) !== parseInt(fullB, 10)) {
-      return fullA > fullB ? 1 : -1;
+    if (!match(a) || !match(b)) {
+      return a[attribute] > b[attribute] ? 1 : -1;
     }
-    if (decimalA.match(isNotNumber) || decimalA.match(isNotNumber)) {
+    if (!decimalA || !decimalB || parseInt(fullA, 10) !== parseInt(fullB, 10)) {
+      return parseInt(fullA, 10) - parseInt(fullB, 10);
+    }
+    if (decimalA.match(isNotNumber) || decimalB.match(isNotNumber)) {
       return decimalA > decimalB ? 1 : -1;
     }
     return parseInt(decimalA, 10) - parseInt(decimalB, 10);

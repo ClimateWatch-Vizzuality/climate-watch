@@ -81,9 +81,9 @@ class GhgEmissions extends PureComponent {
             <Loading light className={styles.loader} />
           )}
           {!loadingData &&
-          !loadingMeta &&
-          (!data || !data.length) && (
-          <NoContent
+            !loadingMeta &&
+            (!data || !data.length) && (
+              <NoContent
                 message="No data available"
                 className={styles.noContent}
                 icon

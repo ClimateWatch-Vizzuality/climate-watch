@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { getColorByIndex } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
+import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
@@ -13,25 +14,31 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getCategories = createSelector(getCategoriesData, categories =>
-  Object.keys(categories).map(category => ({
-    label: categories[category].name,
-    value: categories[category].slug,
-    id: category
-  }))
+  sortBy(
+    Object.keys(categories).map(category => ({
+      label: categories[category].name,
+      value: categories[category].slug,
+      id: category
+    })),
+    'label'
+  )
 );
 
 export const getIndicatorsParsed = createSelector(
   getIndicatorsData,
   indicators =>
-    uniqBy(
-      indicators.map(item => ({
-        label: item.name,
-        value: item.slug,
-        categoryIds: item.category_ids,
-        locations: item.locations,
-        legendBuckets: item.labels
-      })),
-      'value'
+    sortBy(
+      uniqBy(
+        indicators.map(item => ({
+          label: item.name,
+          value: item.slug,
+          categoryIds: item.category_ids,
+          locations: item.locations,
+          legendBuckets: item.labels
+        })),
+        'value'
+      ),
+      'label'
     )
 );
 

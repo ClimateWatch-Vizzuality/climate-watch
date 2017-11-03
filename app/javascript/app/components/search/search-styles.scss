@@ -15,6 +15,7 @@
   padding: 0 40px 0 15px;
   font-size: $font-size;
   font-family: $font-family-1;
+  transition: box-shadow 150ms ease-out;
 
   &::placeholder {
     color: rgba($theme-color, 0.5);
@@ -23,6 +24,10 @@
 
   &:focus {
     outline: none;
+  }
+
+  &:hover {
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09) !important;
   }
 }
 

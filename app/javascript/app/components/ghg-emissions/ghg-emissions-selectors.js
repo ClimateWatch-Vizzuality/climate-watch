@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import {
@@ -45,16 +46,16 @@ const COLORS = [
 
 const BREAY_BY_OPTIONS = [
   {
+    label: 'Gas',
+    value: 'gas'
+  },
+  {
     label: 'Sector',
     value: 'sector'
   },
   {
     label: 'Regions',
     value: 'location'
-  },
-  {
-    label: 'Gas',
-    value: 'gas'
   }
 ];
 
@@ -99,7 +100,8 @@ export const getRegionsOptions = createSelector(getRegions, regions => {
   return regions.map(d => ({
     label: d.wri_standard_name,
     value: d.iso_code3,
-    groudId: 'regions'
+    iso: d.iso_code3,
+    groupId: 'regions'
   }));
 });
 
@@ -181,7 +183,7 @@ export const getFilterOptions = createSelector(
         value: d.iso,
         groupId: 'countries'
       }));
-      return sortLabelByAlpha(uniqBy(countries.concat(regions), 'iso'));
+      return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
     }
     return sortLabelByAlpha(filteredSelected);
   }

@@ -12,7 +12,7 @@ const Intro = props => {
       <h2 className={theme.title}>{title}</h2>
       <p
         className={cx(theme.description, textColumns ? theme.columns : '')}
-        dangerouslySetInnerHTML={{ __html: description }}
+        dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line
       />
     </div>
   );
