@@ -7,11 +7,11 @@ const getDocument = state => state.search.document || null;
 
 export const getCountriesIncluded = createSelector(
   [getResultsData, getDocument],
-  (results, document) => {
+  (results, documents) => {
     if (!results || !results.length) return [];
-    const resultsFiltered = results.filter(
-      result => result.document_type === document
-    );
+    const resultsFiltered = documents
+      ? results.filter(result => result.document_type === documents)
+      : results;
     return resultsFiltered.map(result => result.location.iso_code3);
   }
 );
