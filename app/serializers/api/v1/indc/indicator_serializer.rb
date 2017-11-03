@@ -11,6 +11,10 @@ module Api
         attribute :labels
         attribute :locations
 
+        def source
+          object.source.name
+        end
+
         def labels
           IndexedSerializer.serialize(
             object.labels,

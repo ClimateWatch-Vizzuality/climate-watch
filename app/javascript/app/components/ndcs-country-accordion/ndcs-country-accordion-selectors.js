@@ -14,7 +14,7 @@ export const parseIndicatorsDefs = createSelector(
     const parsedIndicators = {};
     Object.keys(categories).forEach(category => {
       const categoryIndicators = indicators.filter(
-        indicator => indicator.category_ids.indexOf(category) > -1
+        indicator => indicator.category_ids.indexOf(parseInt(category, 10)) > -1
       );
       const parsedDefinitions = categoryIndicators.map(def => {
         const descriptions = countries.map(country => ({
@@ -40,7 +40,7 @@ export const parseIndicatorsDefsWithSectors = createSelector(
     const parsedIndicators = [];
     Object.keys(categories).forEach(category => {
       const indicatorsWithCategory = indicators.filter(
-        indicator => indicator.category_ids.indexOf(category) > -1
+        indicator => indicator.category_ids.indexOf(parseInt(category, 10)) > -1
       );
       const parsedDefinitions = indicatorsWithCategory.map(indicator => {
         const sectorIds = [];
