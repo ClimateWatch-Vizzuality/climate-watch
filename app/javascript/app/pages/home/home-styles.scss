@@ -34,11 +34,6 @@
   fill: $white;
 }
 
-.video {
-  position: relative;
-  background: #000;
-}
-
 .fullscreen {
   border-radius: 50%;
   position: absolute;
@@ -75,7 +70,9 @@
 }
 
 .video {
-  height: 320px;
+  position: relative;
+  background: #000;
+  height: 315px;
 }
 
 .countries {

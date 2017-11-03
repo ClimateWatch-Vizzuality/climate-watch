@@ -11,7 +11,14 @@ import styles from './ndcs-country-accordion-styles.scss';
 class NdcsCountryAccordion extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { ndcsData, loading, compare, locations, category, search } = this.props;
+    const {
+      ndcsData,
+      loading,
+      compare,
+      locations,
+      category,
+      search
+    } = this.props;
     let message = 'No content for this category';
     if (compare && !locations) {
       message = 'Select a country to start';
@@ -22,56 +29,57 @@ class NdcsCountryAccordion extends PureComponent {
     return (
       <div className={styles.wrapper}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading && (!ndcsData || !ndcsData.length) && (
-          <NoContent
-            message={message}
-            className={styles.noContent}
-          />
-        )}
-        {!loading && ndcsData && ndcsData.length > 0 && (
-          <div>
-            {ndcsData && ndcsData.length &&
-              category === 'sectoral_information' ? (
-                <Accordion
-                  className={styles.accordion}
-                  param="section"
-                  data={ndcsData}
-                >
-                  {ndcsData && ndcsData.length > 0 &&
-                    ndcsData.map(
-                      section =>
-                        (section.indicators.length > 0 ? (
-                          <Accordion
-                            key={section.slug}
-                            isChild
-                            className={styles.subAccordion}
-                            param="subSection"
-                            data={section.indicators}
-                          >
-                            {section.indicators.map(desc => (
-                              <div
-                                key={desc.title}
-                                className={styles.definitionList}
-                              >
-                                <DefinitionList
-                                  className={layout.content}
-                                  definitions={desc.descriptions}
-                                  compare={compare}
-                                />
-                              </div>
-                            ))}
-                          </Accordion>
-                        ) : null)
-                    )}
-                </Accordion>
-              ) : (
-                <Accordion
-                  className={styles.accordion}
-                  param="section"
-                  data={ndcsData}
-                  loading={loading}
-                >
-                  {ndcsData &&
+        {!loading &&
+          (!ndcsData || !ndcsData.length) && (
+            <NoContent message={message} className={styles.noContent} />
+          )}
+        {!loading && ndcsData &&
+          ndcsData.length > 0 && (
+            <div>
+              {ndcsData &&
+                ndcsData.length &&
+                category === 'sectoral_information' ? (
+                  <Accordion
+                    className={styles.accordion}
+                    param="section"
+                    data={ndcsData}
+                  >
+                    {ndcsData &&
+                  ndcsData.length > 0 &&
+                  ndcsData.map(
+                    section =>
+                      (section.indicators.length > 0 ? (
+                        <Accordion
+                          key={section.slug}
+                          isChild
+                          className={styles.subAccordion}
+                          param="subSection"
+                          data={section.indicators}
+                        >
+                          {section.indicators.map(desc => (
+                            <div
+                              key={desc.title}
+                              className={styles.definitionList}
+                            >
+                              <DefinitionList
+                                className={layout.content}
+                                definitions={desc.descriptions}
+                                compare={compare}
+                              />
+                            </div>
+                          ))}
+                        </Accordion>
+                      ) : null)
+                  )}
+                  </Accordion>
+                ) : (
+                  <Accordion
+                    className={styles.accordion}
+                    param="section"
+                    data={ndcsData}
+                    loading={loading}
+                  >
+                    {ndcsData &&
                   ndcsData.map(section => (
                     <div key={section.title} className={styles.definitionList}>
                       <DefinitionList
@@ -81,10 +89,10 @@ class NdcsCountryAccordion extends PureComponent {
                       />
                     </div>
                   ))}
-                </Accordion>
-              )}
-          </div>
-        )}
+                  </Accordion>
+                )}
+            </div>
+          )}
       </div>
     );
   }
