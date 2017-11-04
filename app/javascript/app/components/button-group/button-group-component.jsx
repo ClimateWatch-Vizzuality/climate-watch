@@ -11,8 +11,14 @@ import PropTypes from 'prop-types';
 
 import styles from './button-group-styles.scss';
 
-const ButtonGroup = ({ className, onInfoClick }) => (
-  <div className={cx(styles.buttonGroup, className)}>
+const ButtonGroup = ({ className, onInfoClick, disabled }) => (
+  <div
+    className={cx(
+      styles.buttonGroup,
+      disabled ? styles.disabled : '',
+      className
+    )}
+  >
     <Button className={cx(styles.button, styles.first)} onClick={onInfoClick}>
       <Icon icon={iconInfo} />
     </Button>
@@ -30,7 +36,8 @@ const ButtonGroup = ({ className, onInfoClick }) => (
 
 ButtonGroup.propTypes = {
   className: PropTypes.string,
-  onInfoClick: PropTypes.func
+  onInfoClick: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 export default ButtonGroup;
