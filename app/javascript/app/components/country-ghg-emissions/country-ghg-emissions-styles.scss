@@ -46,7 +46,7 @@
   @include msGridColumns(1fr, 1fr, 1fr, 1fr);
 
   grid-template-columns: repeat(4, 1fr);
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 .exploreBtn {
@@ -59,13 +59,15 @@
 
 .tags {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   padding-bottom: 30px;
   overflow-x: scroll;
+  margin-top: -15px;
 }
 
 .tag {
   margin-right: 10px;
+  margin-top: 15px;
 }
 
 .loader {
