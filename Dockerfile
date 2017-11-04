@@ -4,7 +4,6 @@ MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 ARG secretKey
 
 ENV NAME climate-watch
-ENV SECRET_KEY_BASE $secretKey
 ENV RAKE_ENV production
 ENV RAILS_ENV production
 
@@ -30,6 +29,7 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install --without development test --jobs 4 --deployment
 
 # Bundle app source
+ENV SECRET_KEY_BASE $secretKey
 COPY . ./
 
 EXPOSE 3000

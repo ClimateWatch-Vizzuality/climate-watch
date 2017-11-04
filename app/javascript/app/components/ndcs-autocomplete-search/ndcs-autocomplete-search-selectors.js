@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { compareIndexByKey } from 'utils/utils';
 
 const getSDGs = state => state.sdgs || null;
 const getTargets = state => state.data.targets || null;
@@ -40,11 +41,13 @@ export const getGoalsParsed = createSelector([getGoals], goals => {
 
 export const getTargetsParsed = createSelector([getTargets], targets => {
   if (!targets) return null;
-  return targets.map(target => ({
-    label: `${target.number}: ${target.title}`,
-    value: target.number,
-    groupId: 'target'
-  }));
+  return targets
+    .map(target => ({
+      label: `${target.number}: ${target.title}`,
+      value: target.number,
+      groupId: 'target'
+    }))
+    .sort(compareIndexByKey('value'));
 });
 
 export const getSearchListData = createSelector(
