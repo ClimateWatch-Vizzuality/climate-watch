@@ -1,4 +1,5 @@
 class Location < ApplicationRecord
+  scope :countries, (-> { where(location_type: 'COUNTRY') })
   has_many :ndcs, dependent: :destroy
   has_many :location_members, dependent: :destroy
   has_many :members, through: :location_members
