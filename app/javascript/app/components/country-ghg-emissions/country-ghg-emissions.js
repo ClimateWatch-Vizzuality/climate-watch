@@ -39,7 +39,7 @@ const mapStateToProps = (state, { location, match }) => {
   };
   return {
     iso,
-    loading: state.countryGhgEmissions.loading,
+    loading: state.countryGhgEmissions.loading || state.wbCountryData.loading,
     data: getChartData(countryGhg),
     quantifications: getQuantificationsData(countryGhg),
     calculations: getCalculationOptions(countryGhg),
