@@ -8,22 +8,22 @@ const fetchWbCountryDataFail = createAction('fetchWbCountryDataFail');
 
 const fetchWbCountryData = createThunkAction(
   'fetchWbCountryData',
-  iso => (dispatch, state) => {
+  () => (dispatch, state) => {
     const { wbCountryData } = state();
     if (
       wbCountryData.data &&
-      isEmpty(wbCountryData.data[iso]) &&
+      isEmpty(wbCountryData.data) &&
       !wbCountryData.loading
     ) {
       dispatch(fetchWbCountryDataInit());
-      fetch(`/api/v1/wb_extra/${iso}`)
+      fetch('/api/v1/wb_extra')
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
         })
         .then(data => {
           if (data) {
-            dispatch(fetchWbCountryDataReady({ [iso]: data }));
+            dispatch(fetchWbCountryDataReady(data));
           } else {
             dispatch(fetchWbCountryDataReady({}));
           }
