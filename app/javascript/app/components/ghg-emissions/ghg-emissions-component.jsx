@@ -34,7 +34,8 @@ class GhgEmissions extends PureComponent {
       handleFilterChange,
       handleRemoveTag,
       loadingMeta,
-      loadingData
+      loadingData,
+      activeFilterRegion
     } = this.props;
     return (
       <div>
@@ -65,6 +66,7 @@ class GhgEmissions extends PureComponent {
             hideResetButton
           />
           <MultiSelect
+            selectedLabel={activeFilterRegion ? activeFilterRegion.label : null}
             label={breakSelected.label}
             groups={breakSelected.value === 'location' ? groups : null}
             values={filtersSelected}
@@ -84,7 +86,7 @@ class GhgEmissions extends PureComponent {
             !loadingMeta &&
             (!data || !data.length) && (
               <NoContent
-                message="No data available"
+                message={filtersSelected.length ? 'No data available' : 'No data selected'}
                 className={styles.noContent}
                 icon
               />
@@ -131,7 +133,8 @@ GhgEmissions.propTypes = {
   filtersSelected: PropTypes.array.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
   loadingData: PropTypes.bool,
-  loadingMeta: PropTypes.bool
+  loadingMeta: PropTypes.bool,
+  activeFilterRegion: PropTypes.object
 };
 
 export default GhgEmissions;
