@@ -234,13 +234,7 @@ export const getChartData = createSelector(
     getQuantifications
   ],
   (data, filters, calculationData, calculationSelected) => {
-    if (
-      !data ||
-      !data.length ||
-      !filters ||
-      !calculationData ||
-      !calculationSelected
-    ) {
+    if (!data || !data.length || !filters || !calculationSelected) {
       return [];
     }
 
@@ -251,7 +245,7 @@ export const getChartData = createSelector(
     ) {
       xValues = intersection(
         xValues,
-        Object.keys(calculationData).map(y => parseInt(y, 10))
+        Object.keys(calculationData || []).map(y => parseInt(y, 10))
       );
     }
 
