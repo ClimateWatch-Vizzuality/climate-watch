@@ -1,5 +1,4 @@
 class Location < ApplicationRecord
-  scope :countries, (-> { where(location_type: 'COUNTRY') })
   has_many :ndcs, dependent: :destroy
   has_many :location_members, dependent: :destroy
   has_many :members, through: :location_members
@@ -23,6 +22,8 @@ class Location < ApplicationRecord
   before_validation :populate_wri_standard_name, if: proc { |l|
     l.wri_standard_name.blank?
   }
+
+  scope :countries, (-> { where(location_type: 'COUNTRY') })
 
   def populate_wri_standard_name
     self.wri_standard_name = [
