@@ -86,15 +86,15 @@ module Api
 
         unless include_not_matched
           if params[:target]
-            ndcs = ndcs.where(ndc_sdg_targets: { number: params[:target] })
+            ndcs = ndcs.where(ndc_sdg_targets: {number: params[:target]})
           end
 
           if params[:goal]
-            ndcs = ndcs.where(ndc_sdg_goals: { number: params[:goal] })
+            ndcs = ndcs.where(ndc_sdg_goals: {number: params[:goal]})
           end
 
           if params[:sector]
-            ndcs = ndcs.where(ndc_sdg_sectors: { id: params[:sector] })
+            ndcs = ndcs.where(ndc_sdg_sectors: {id: params[:sector]})
           end
         end
 
