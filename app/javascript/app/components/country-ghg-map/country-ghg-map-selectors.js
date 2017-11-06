@@ -19,8 +19,7 @@ const getSources = state => state.meta.data_source || null;
 const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
-const getCalculationData = state =>
-  (state.calculationData && state.calculationData[state.iso]) || [];
+const getCalculationData = state => state.calculationData || null;
 
 export const getCalculationSelected = createSelector(
   [getCalculationSelection],
@@ -29,11 +28,6 @@ export const getCalculationSelected = createSelector(
     return options.find(calculation => calculation.value === selected);
   }
 );
-
-const parseCalculationData = createSelector([getCalculationData], data => {
-  if (!data || !data.length) return null;
-  return groupBy(data, 'year');
-});
 
 const EXCLUDED_INDICATORS = ['WORLD'];
 const buckets = [
@@ -98,27 +92,42 @@ const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
+const yearHasCalculationData = (data, iso, year) =>
+  data[iso] && data[iso].some(d => d.year === year);
+const countryCalculationDataByYear = (data, iso) => groupBy(data[iso], 'year');
+
 export const getDataParsed = createSelector(
-  [getData, parseCalculationData, getYearSelected, getCalculationSelected],
+  [getData, getCalculationData, getYearSelected, getCalculationSelected],
   (data, calculationData, year, calculationSelected) => {
-    if (!data || isEmpty(data) || !calculationData || !calculationSelected) { return null; }
+    if (
+      !data ||
+      isEmpty(data) ||
+      isEmpty(calculationData) ||
+      !calculationSelected
+    ) {
+      return null;
+    }
     const dataParsed = {};
     let max = 0;
     let min = 9999999999;
 
     data.forEach(d => {
       const item = d.emissions.find(e => e.year === year);
-      if (item && item.value && !EXCLUDED_INDICATORS.includes(item.iso_code3)) {
+      if (
+        item &&
+        item.value &&
+        !EXCLUDED_INDICATORS.includes(d.iso_code3) &&
+        yearHasCalculationData(calculationData, d.iso_code3, item.year)
+      ) {
         const calculationRatio = calculatedRatio(
           calculationSelected.value,
-          calculationData,
+          countryCalculationDataByYear(calculationData, d.iso_code3),
           item.year
         );
 
         const value = item.value / calculationRatio;
         if (value > max) max = value;
         if (value < min) min = value;
-
         dataParsed[d.iso_code3] = value;
       } else {
         dataParsed[d.iso_code3] = null;
