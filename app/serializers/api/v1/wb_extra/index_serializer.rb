@@ -2,7 +2,7 @@ module Api
   module V1
     module WbExtra
       class IndexSerializer < ActiveModel::Serializer
-        def attributes(*args)
+        def attributes(*)
           IndexedSerializer.serialize_collection(
             object,
             serializer: Api::V1::WbExtra::CountryDataSerializer
@@ -14,4 +14,3 @@ module Api
     end
   end
 end
-
