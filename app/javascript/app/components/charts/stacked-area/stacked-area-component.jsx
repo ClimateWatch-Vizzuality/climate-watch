@@ -50,7 +50,8 @@ class ChartStackedArea extends PureComponent {
       x: ['dataMin', 'dataMax'],
       y: ['dataMin', 'dataMax']
     };
-    if (points.length > 0) {
+    // TODO: remove hack that disables quantifications
+    if (points.length > 1000) {
       // dataParsed.push({ x: data[data.length - 1].x + 0.0000000000000001 });
       // dataParsed = dataParsed.concat(points);
       domain.x[1] = points[points.length - 1].x;
