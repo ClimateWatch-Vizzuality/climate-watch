@@ -27,7 +27,15 @@
   }
 
   &:hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09) !important;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+  }
+
+  &.plain {
+    transition: background-color 150ms ease-out;
+
+    &:hover {
+      background-color: $white;
+    }
   }
 }
 

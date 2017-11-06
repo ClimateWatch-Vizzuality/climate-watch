@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       end
       resources :timeline, param: :code, only: [:index, :show]
 
+      resources :stories, only: [:index]
+
       get '(*endpoint)', controller: :api, action: :route_not_found
     end
   end
