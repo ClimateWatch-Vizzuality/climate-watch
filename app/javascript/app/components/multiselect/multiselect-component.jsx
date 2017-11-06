@@ -23,9 +23,12 @@ class Multiselect extends Component {
   }
 
   getSelectorValue() {
-    const { values, options } = this.props;
+    const { values, options, selectedLabel } = this.props;
     const { search } = this.state;
     const hasValues = values && values.length;
+    if (selectedLabel) {
+      return <span>{selectedLabel}</span>;
+    }
     if (hasValues && !search) {
       return values.length === options.length ? (
         <span>All selected</span>
@@ -89,7 +92,8 @@ Multiselect.propTypes = {
   onMultiValueChange: Proptypes.func,
   filterOptions: Proptypes.func,
   handleChange: Proptypes.func,
-  label: Proptypes.string
+  label: Proptypes.string,
+  selectedLabel: Proptypes.string
 };
 
 Multiselect.defaultProps = {
