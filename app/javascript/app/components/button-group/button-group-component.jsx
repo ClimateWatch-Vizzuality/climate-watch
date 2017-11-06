@@ -19,7 +19,11 @@ const ButtonGroup = ({ className, onInfoClick, disabled }) => (
       className
     )}
   >
-    <Button className={cx(styles.button, styles.first)} onClick={onInfoClick}>
+    <Button
+      className={cx(styles.button, styles.first)}
+      onClick={onInfoClick}
+      disabled={!onInfoClick}
+    >
       <Icon icon={iconInfo} />
     </Button>
     <Button className={styles.button} disabled>
