@@ -27,7 +27,7 @@ const AXES_CONFIG = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'CO2e',
+    unit: 'CO<sub>2</sub>e',
     format: 'number'
   }
 };
@@ -65,6 +65,8 @@ const options = calculationKeys.map(
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
+const getQuantifications = state =>
+  uniqBy(state.quantifications, 'year') || null;
 const getCalculationData = state =>
   (state.calculationData && state.calculationData[state.iso]) || [];
 
@@ -203,7 +205,8 @@ export const filterData = createSelector(
 
 const calculatedRatio = (selected, calculationData, x) => {
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
-    return calculationData[x][0].gdp;
+    // GDP is in dollars and we want to display it in million dollars
+    return calculationData[x][0].gdp / DATA_SCALE;
   }
   if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
     return calculationData[x][0].population;
@@ -211,12 +214,24 @@ const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
+export const getQuantificationsData = createSelector(
+  getQuantifications,
+  quantifications => {
+    if (!quantifications) return [];
+    return quantifications.map(q => ({
+      y: q.value * DATA_SCALE,
+      x: q.year
+    }));
+  }
+);
+
 export const getChartData = createSelector(
   [
     filterData,
     getFiltersSelected,
     parseCalculationData,
-    getCalculationSelected
+    getCalculationSelected,
+    getQuantifications
   ],
   (data, filters, calculationData, calculationSelected) => {
     if (
@@ -250,8 +265,10 @@ export const getChartData = createSelector(
           calculationData,
           x
         );
-        const scaledYData = yData.value * DATA_SCALE;
-        yItems[yKey] = scaledYData / calculationRatio;
+        if (yData) {
+          const scaledYData = yData.value * DATA_SCALE;
+          yItems[yKey] = scaledYData / calculationRatio;
+        }
       });
       const item = {
         x,
@@ -279,11 +296,11 @@ export const getChartConfig = createSelector(
     const tooltip = getTooltipConfig(yColumnsChecked);
     let unit = AXES_CONFIG.yLeft.unit;
     if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
-      unit = `${unit}  per $`;
+      unit = `${unit}/ million $ GDP`;
     } else if (
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
     ) {
-      unit = `${unit}  per capita`;
+      unit = `${unit} per capita`;
     }
     const axes = {
       ...AXES_CONFIG,

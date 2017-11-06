@@ -3,9 +3,12 @@ module Api
     module Indc
       class CategorySerializer < ActiveModel::Serializer
         attribute :name
-        attribute :source
         attribute :slug
         attribute :category_type, key: :type
+
+        def category_type
+          object.category_type.name
+        end
       end
     end
   end

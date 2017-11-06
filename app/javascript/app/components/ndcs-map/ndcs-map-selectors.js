@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { getColorByIndex } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
+import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
@@ -13,25 +14,31 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getCategories = createSelector(getCategoriesData, categories =>
-  Object.keys(categories).map(category => ({
-    label: categories[category].name,
-    value: categories[category].slug,
-    id: category
-  }))
+  sortBy(
+    Object.keys(categories).map(category => ({
+      label: categories[category].name,
+      value: categories[category].slug,
+      id: category
+    })),
+    'label'
+  )
 );
 
 export const getIndicatorsParsed = createSelector(
   getIndicatorsData,
   indicators =>
-    uniqBy(
-      indicators.map(item => ({
-        label: item.name,
-        value: item.slug,
-        categoryIds: item.category_ids,
-        locations: item.locations,
-        legendBuckets: item.labels
-      })),
-      'value'
+    sortBy(
+      uniqBy(
+        indicators.map(item => ({
+          label: item.name,
+          value: item.slug,
+          categoryIds: item.category_ids,
+          locations: item.locations,
+          legendBuckets: item.labels
+        })),
+        'value'
+      ),
+      'label'
     )
 );
 
@@ -47,7 +54,8 @@ export const getSelectedCategory = createSelector(
       }
       const firstCategorywithIndicators = categories.find(category =>
         indicators.some(
-          indicator => indicator.category_ids.indexOf(category.id) > -1
+          indicator =>
+            indicator.category_ids.indexOf(parseInt(category.id, 10)) > -1
         )
       );
       return firstCategorywithIndicators || categories[0];
@@ -59,9 +67,8 @@ export const getSelectedCategory = createSelector(
 export const getCategoryIndicators = createSelector(
   [getIndicatorsParsed, getSelectedCategory],
   (indicatorsParsed, category) => {
-    const categoryId = category.id;
     const categoryIndicators = indicatorsParsed.filter(
-      indicator => indicator.categoryIds.indexOf(categoryId) > -1
+      indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
     );
     return categoryIndicators;
   }
@@ -121,7 +128,7 @@ export const getPathsWithStyles = createSelector(
         ? locations[europeSlug]
         : locations[iso];
 
-      if (countryData) {
+      if (countryData && countryData.label_id) {
         const legendData = legendBuckets[countryData.label_id];
         const color = getColorByIndex(legendBuckets, legendData.index);
         const style = {

@@ -39,9 +39,11 @@ class SearchPage extends PureComponent {
                 global
               />
             </div>
-            {docOptions.length > 1 && (
-              <AnchorNav useRoutes links={anchorLinks} />
-            )}
+            <div className={styles.anchorNav}>
+              {docOptions.length > 1 && (
+                <AnchorNav useRoutes links={anchorLinks} />
+              )}
+            </div>
           </div>
         </Header>
         <div className={cx(layout.content, styles.contentCols)}>

@@ -37,87 +37,6 @@ ActiveRecord::Schema.define(version: 20171031100456) do
     t.index ["slug"], name: "index_adaptation_variables_on_slug", unique: true
   end
 
-  create_table "cait_indc_categories", force: :cascade do |t|
-    t.text "name", null: false
-    t.text "slug", null: false
-    t.text "category_type"
-    t.index ["category_type"], name: "index_cait_indc_categories_on_category_type"
-  end
-
-  create_table "cait_indc_charts", force: :cascade do |t|
-    t.text "name", null: false
-  end
-
-  create_table "cait_indc_indicators", force: :cascade do |t|
-    t.bigint "chart_id"
-    t.text "name", null: false
-    t.text "slug", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["chart_id"], name: "index_cait_indc_indicators_on_chart_id"
-  end
-
-  create_table "cait_indc_indicators_categories", force: :cascade do |t|
-    t.bigint "indicator_id"
-    t.bigint "category_id"
-    t.index ["category_id"], name: "index_cait_indc_indicators_categories_on_category_id"
-    t.index ["indicator_id", "category_id"], name: "indicator_id_category_id_index", unique: true
-    t.index ["indicator_id"], name: "index_cait_indc_indicators_categories_on_indicator_id"
-  end
-
-  create_table "cait_indc_labels", force: :cascade do |t|
-    t.bigint "indicator_id"
-    t.text "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "index"
-    t.index ["indicator_id"], name: "index_cait_indc_labels_on_indicator_id"
-  end
-
-  create_table "cait_indc_submissions", force: :cascade do |t|
-    t.bigint "location_id"
-    t.text "submission_type", null: false
-    t.text "language", null: false
-    t.date "submission_date", null: false
-    t.text "url", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["location_id"], name: "index_cait_indc_submissions_on_location_id"
-  end
-
-  create_table "cait_indc_values", force: :cascade do |t|
-    t.bigint "location_id"
-    t.bigint "indicator_id"
-    t.bigint "label_id"
-    t.text "value", null: false
-    t.index ["indicator_id"], name: "index_cait_indc_values_on_indicator_id"
-    t.index ["label_id"], name: "index_cait_indc_values_on_label_id"
-    t.index ["location_id"], name: "index_cait_indc_values_on_location_id"
-  end
-
-  create_table "global_indc_categories", force: :cascade do |t|
-    t.text "name"
-    t.text "slug"
-    t.bigint "parent_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_global_indc_categories_on_parent_id"
-  end
-
-  create_table "global_indc_indicators", force: :cascade do |t|
-    t.bigint "cait_indicator_id"
-    t.bigint "wb_indicator_id"
-    t.index ["cait_indicator_id"], name: "index_global_indc_indicators_on_cait_indicator_id"
-    t.index ["wb_indicator_id"], name: "index_global_indc_indicators_on_wb_indicator_id"
-  end
-
-  create_table "global_indc_indicators_categories", force: :cascade do |t|
-    t.bigint "indicator_id"
-    t.bigint "category_id"
-    t.index ["category_id"], name: "index_global_indc_indicators_categories_on_category_id"
-    t.index ["indicator_id"], name: "index_global_indc_indicators_categories_on_indicator_id"
-  end
-
   create_table "historical_emissions_data_sources", force: :cascade do |t|
     t.text "name"
     t.datetime "created_at", null: false
@@ -159,6 +78,95 @@ ActiveRecord::Schema.define(version: 20171031100456) do
     t.text "annex_type"
     t.index ["data_source_id"], name: "index_historical_emissions_sectors_on_data_source_id"
     t.index ["parent_id"], name: "index_historical_emissions_sectors_on_parent_id"
+  end
+
+  create_table "indc_categories", force: :cascade do |t|
+    t.bigint "category_type_id", null: false
+    t.bigint "parent_id"
+    t.text "slug", null: false
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_type_id"], name: "index_indc_categories_on_category_type_id"
+    t.index ["parent_id"], name: "index_indc_categories_on_parent_id"
+    t.index ["slug", "category_type_id"], name: "index_indc_categories_on_slug_and_category_type_id", unique: true
+  end
+
+  create_table "indc_category_types", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_indc_category_types_on_name", unique: true
+  end
+
+  create_table "indc_indicators", force: :cascade do |t|
+    t.bigint "source_id", null: false
+    t.text "slug", null: false
+    t.text "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_indc_indicators_on_slug", unique: true
+    t.index ["source_id"], name: "index_indc_indicators_on_source_id"
+  end
+
+  create_table "indc_indicators_categories", force: :cascade do |t|
+    t.bigint "indicator_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_indc_indicators_categories_on_category_id"
+    t.index ["indicator_id", "category_id"], name: "indc_indicators_categories_uniq", unique: true
+    t.index ["indicator_id"], name: "index_indc_indicators_categories_on_indicator_id"
+  end
+
+  create_table "indc_labels", force: :cascade do |t|
+    t.bigint "indicator_id", null: false
+    t.text "value", null: false
+    t.integer "index", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["indicator_id"], name: "index_indc_labels_on_indicator_id"
+  end
+
+  create_table "indc_sectors", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_indc_sectors_on_parent_id"
+  end
+
+  create_table "indc_sources", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_indc_sources_on_name", unique: true
+  end
+
+  create_table "indc_submissions", force: :cascade do |t|
+    t.bigint "location_id", null: false
+    t.text "submission_type", null: false
+    t.text "language", null: false
+    t.date "submission_date", null: false
+    t.text "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_indc_submissions_on_location_id"
+  end
+
+  create_table "indc_values", force: :cascade do |t|
+    t.bigint "indicator_id", null: false
+    t.bigint "location_id", null: false
+    t.bigint "sector_id"
+    t.bigint "label_id"
+    t.text "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["indicator_id"], name: "index_indc_values_on_indicator_id"
+    t.index ["label_id"], name: "index_indc_values_on_label_id"
+    t.index ["location_id"], name: "index_indc_values_on_location_id"
+    t.index ["sector_id"], name: "index_indc_values_on_sector_id"
   end
 
   create_table "location_members", force: :cascade do |t|
@@ -319,56 +327,6 @@ ActiveRecord::Schema.define(version: 20171031100456) do
     t.index ["location_id"], name: "index_wb_extra_country_data_on_location_id"
   end
 
-  create_table "wb_indc_categories", force: :cascade do |t|
-    t.text "name", null: false
-    t.text "slug", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "wb_indc_indicator_types", force: :cascade do |t|
-    t.text "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "wb_indc_indicators", force: :cascade do |t|
-    t.bigint "indicator_type_id"
-    t.text "code", null: false
-    t.text "name", null: false
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["indicator_type_id"], name: "index_wb_indc_indicators_on_indicator_type_id"
-  end
-
-  create_table "wb_indc_indicators_categories", force: :cascade do |t|
-    t.bigint "indicator_id"
-    t.bigint "category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_wb_indc_indicators_categories_on_category_id"
-    t.index ["indicator_id"], name: "index_wb_indc_indicators_categories_on_indicator_id"
-  end
-
-  create_table "wb_indc_sectors", force: :cascade do |t|
-    t.bigint "parent_id"
-    t.text "name", null: false
-    t.index ["parent_id"], name: "index_wb_indc_sectors_on_parent_id"
-  end
-
-  create_table "wb_indc_values", force: :cascade do |t|
-    t.bigint "indicator_id"
-    t.bigint "location_id"
-    t.bigint "sector_id"
-    t.text "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["indicator_id"], name: "index_wb_indc_values_on_indicator_id"
-    t.index ["location_id"], name: "index_wb_indc_values_on_location_id"
-    t.index ["sector_id"], name: "index_wb_indc_values_on_sector_id"
-  end
-
   create_table "wri_metadata_acronyms", force: :cascade do |t|
     t.text "acronym"
     t.text "definition"
@@ -404,19 +362,6 @@ ActiveRecord::Schema.define(version: 20171031100456) do
 
   add_foreign_key "adaptation_values", "adaptation_variables", column: "variable_id", on_delete: :cascade
   add_foreign_key "adaptation_values", "locations", on_delete: :cascade
-  add_foreign_key "cait_indc_indicators", "cait_indc_charts", column: "chart_id", on_delete: :cascade
-  add_foreign_key "cait_indc_indicators_categories", "cait_indc_categories", column: "category_id", on_delete: :cascade
-  add_foreign_key "cait_indc_indicators_categories", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
-  add_foreign_key "cait_indc_labels", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
-  add_foreign_key "cait_indc_submissions", "locations", on_delete: :cascade
-  add_foreign_key "cait_indc_values", "cait_indc_indicators", column: "indicator_id", on_delete: :cascade
-  add_foreign_key "cait_indc_values", "cait_indc_labels", column: "label_id", on_delete: :cascade
-  add_foreign_key "cait_indc_values", "locations", on_delete: :cascade
-  add_foreign_key "global_indc_categories", "global_indc_categories", column: "parent_id", on_delete: :cascade
-  add_foreign_key "global_indc_indicators", "cait_indc_indicators", column: "cait_indicator_id", on_delete: :cascade
-  add_foreign_key "global_indc_indicators", "wb_indc_indicators", column: "wb_indicator_id", on_delete: :cascade
-  add_foreign_key "global_indc_indicators_categories", "global_indc_categories", column: "category_id", on_delete: :cascade
-  add_foreign_key "global_indc_indicators_categories", "global_indc_indicators", column: "indicator_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_gases", column: "gas_id", on_delete: :cascade
   add_foreign_key "historical_emissions_records", "historical_emissions_gwps", column: "gwp_id"
@@ -424,6 +369,18 @@ ActiveRecord::Schema.define(version: 20171031100456) do
   add_foreign_key "historical_emissions_records", "locations", on_delete: :cascade
   add_foreign_key "historical_emissions_sectors", "historical_emissions_data_sources", column: "data_source_id", on_delete: :cascade
   add_foreign_key "historical_emissions_sectors", "historical_emissions_sectors", column: "parent_id", on_delete: :cascade
+  add_foreign_key "indc_categories", "indc_categories", column: "parent_id", on_delete: :cascade
+  add_foreign_key "indc_categories", "indc_category_types", column: "category_type_id", on_delete: :cascade
+  add_foreign_key "indc_indicators", "indc_sources", column: "source_id", on_delete: :cascade
+  add_foreign_key "indc_indicators_categories", "indc_categories", column: "category_id", on_delete: :cascade
+  add_foreign_key "indc_indicators_categories", "indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "indc_labels", "indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "indc_sectors", "indc_sectors", column: "parent_id", on_delete: :cascade
+  add_foreign_key "indc_submissions", "locations", on_delete: :cascade
+  add_foreign_key "indc_values", "indc_indicators", column: "indicator_id", on_delete: :cascade
+  add_foreign_key "indc_values", "indc_labels", column: "label_id", on_delete: :cascade
+  add_foreign_key "indc_values", "indc_sectors", column: "sector_id", on_delete: :cascade
+  add_foreign_key "indc_values", "locations", on_delete: :cascade
   add_foreign_key "location_members", "locations", column: "member_id", on_delete: :cascade
   add_foreign_key "location_members", "locations", on_delete: :cascade
   add_foreign_key "ndc_sdg_ndc_target_sectors", "ndc_sdg_ndc_targets", column: "ndc_target_id", on_delete: :cascade
@@ -439,111 +396,6 @@ ActiveRecord::Schema.define(version: 20171031100456) do
   add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
   add_foreign_key "wb_extra_country_data", "locations", on_delete: :cascade
-  add_foreign_key "wb_indc_indicators", "wb_indc_indicator_types", column: "indicator_type_id", on_delete: :cascade
-  add_foreign_key "wb_indc_indicators_categories", "wb_indc_categories", column: "category_id", on_delete: :cascade
-  add_foreign_key "wb_indc_indicators_categories", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
-  add_foreign_key "wb_indc_sectors", "wb_indc_sectors", column: "parent_id", on_delete: :cascade
-  add_foreign_key "wb_indc_values", "locations", on_delete: :cascade
-  add_foreign_key "wb_indc_values", "wb_indc_indicators", column: "indicator_id", on_delete: :cascade
-  add_foreign_key "wb_indc_values", "wb_indc_sectors", column: "sector_id", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_properties", column: "property_id", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_sources", column: "source_id", on_delete: :cascade
-
-  create_view "indc_indicators", materialized: true,  sql_definition: <<-SQL
-      SELECT ('cait'::text || cait_indc_indicators.id) AS id,
-      'cait'::text AS source,
-      cait_indc_indicators.name,
-      cait_indc_indicators.slug,
-      NULL::text AS description
-     FROM cait_indc_indicators
-  UNION ALL
-   SELECT ('wb'::text || wb_indc_indicators.id) AS id,
-      'wb'::text AS source,
-      wb_indc_indicators.name,
-      wb_indc_indicators.code AS slug,
-      wb_indc_indicators.description
-     FROM wb_indc_indicators;
-  SQL
-
-  add_index "indc_indicators", ["id"], name: "index_indc_indicators_on_id"
-
-  create_view "indc_categories", materialized: true,  sql_definition: <<-SQL
-      SELECT ('cait'::text || cait_indc_categories.id) AS id,
-      'cait'::text AS source,
-      cait_indc_categories.name,
-      cait_indc_categories.slug,
-      cait_indc_categories.category_type
-     FROM cait_indc_categories
-  UNION ALL
-   SELECT ('wb'::text || wb_indc_categories.id) AS id,
-      'wb'::text AS source,
-      wb_indc_categories.name,
-      wb_indc_categories.slug,
-      'overview'::text AS category_type
-     FROM wb_indc_categories;
-  SQL
-
-  add_index "indc_categories", ["id"], name: "index_indc_categories_on_id"
-
-  create_view "indc_values", materialized: true,  sql_definition: <<-SQL
-      SELECT ('cait'::text || cait_indc_values.id) AS id,
-      'cait'::text AS source,
-      cait_indc_values.location_id,
-      ('cait'::text || cait_indc_values.indicator_id) AS indicator_id,
-      ('cait'::text || cait_indc_values.label_id) AS label_id,
-      NULL::text AS sector_id,
-      cait_indc_values.value
-     FROM cait_indc_values
-  UNION ALL
-   SELECT ('wb'::text || wb_indc_values.id) AS id,
-      'wb'::text AS source,
-      wb_indc_values.location_id,
-      ('wb'::text || wb_indc_values.indicator_id) AS indicator_id,
-      NULL::text AS label_id,
-      ('wb'::text || wb_indc_values.sector_id) AS sector_id,
-      wb_indc_values.value
-     FROM wb_indc_values;
-  SQL
-
-  add_index "indc_values", ["indicator_id"], name: "index_indc_values_on_indicator_id"
-  add_index "indc_values", ["label_id"], name: "index_indc_values_on_label_id"
-
-  create_view "indc_indicators_categories", materialized: true,  sql_definition: <<-SQL
-      SELECT ('cait'::text || cait_indc_indicators_categories.id) AS id,
-      ('cait'::text || cait_indc_indicators_categories.indicator_id) AS indicator_id,
-      ('cait'::text || cait_indc_indicators_categories.category_id) AS category_id,
-      'cait'::text AS source
-     FROM cait_indc_indicators_categories
-  UNION ALL
-   SELECT ('wb'::text || wb_indc_indicators_categories.id) AS id,
-      ('wb'::text || wb_indc_indicators_categories.indicator_id) AS indicator_id,
-      ('wb'::text || wb_indc_indicators_categories.category_id) AS category_id,
-      'wb'::text AS source
-     FROM wb_indc_indicators_categories;
-  SQL
-
-  add_index "indc_indicators_categories", ["category_id"], name: "index_indc_indicators_categories_on_category_id"
-  add_index "indc_indicators_categories", ["indicator_id"], name: "index_indc_indicators_categories_on_indicator_id"
-
-  create_view "indc_labels", materialized: true,  sql_definition: <<-SQL
-      SELECT ('cait'::text || cait_indc_labels.id) AS id,
-      'cait'::text AS source,
-      ('cait'::text || cait_indc_labels.indicator_id) AS indicator_id,
-      cait_indc_labels.name,
-      cait_indc_labels.index
-     FROM cait_indc_labels;
-  SQL
-
-  add_index "indc_labels", ["id"], name: "index_indc_labels_on_id"
-  add_index "indc_labels", ["indicator_id"], name: "index_indc_labels_on_indicator_id"
-
-  create_view "indc_sectors", materialized: true,  sql_definition: <<-SQL
-      SELECT ('wb'::text || child.id) AS id,
-      child.name,
-      ('wb'::text || parent.id) AS parent_id,
-      parent.name AS parent_name
-     FROM (wb_indc_sectors child
-       LEFT JOIN wb_indc_sectors parent ON ((child.parent_id = parent.id)));
-  SQL
-
 end

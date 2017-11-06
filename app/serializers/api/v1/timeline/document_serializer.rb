@@ -9,6 +9,7 @@ module Api
         attribute :date
         attribute :language
         attribute :notes, if: -> { object.notes.length.positive? }
+        attribute :label
 
         def source
           object.source.name
@@ -20,6 +21,14 @@ module Api
 
         def notes
           object.notes.map(&:note)
+        end
+
+        def label
+          parts = []
+          parts << object.text
+          parts += object.notes.map(&:note) if object.notes.length.positive?
+          parts << object.language unless object.language == 'English'
+          parts.join(', ')
         end
       end
     end

@@ -18,6 +18,10 @@ class Multiselect extends Component {
     };
   }
 
+  componentDidUpdate() {
+    this.selectorElement.highlightFirstSelectableOption();
+  }
+
   getSelectorValue() {
     const { values, options } = this.props;
     const { search } = this.state;
@@ -45,12 +49,17 @@ class Multiselect extends Component {
         <div className={cx(theme.dropdown, styles.multiSelect)}>
           <div className={styles.values}>{this.getSelectorValue()}</div>
           <MultiSelect
+            ref={el => {
+              this.selectorElement = el;
+            }}
             filterOptions={filterOptions}
             renderValue={() => <span />}
             renderOption={option => {
               const className = option.isSelected ? selectedClassName : '';
               return (
-                <div className={className}>
+                <div
+                  className={cx(className, option.groupId ? styles.nested : '')}
+                >
                   {option.label}
                   {option.isSelected && <span className={styles.checked} />}
                 </div>

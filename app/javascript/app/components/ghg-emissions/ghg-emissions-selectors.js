@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import union from 'lodash/union';
+import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -43,16 +46,16 @@ const COLORS = [
 
 const BREAY_BY_OPTIONS = [
   {
+    label: 'Gas',
+    value: 'gas'
+  },
+  {
     label: 'Sector',
     value: 'sector'
   },
   {
     label: 'Regions',
     value: 'location'
-  },
-  {
-    label: 'Gas',
-    value: 'gas'
   }
 ];
 
@@ -64,7 +67,7 @@ const AXES_CONFIG = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'CO2e',
+    unit: 'CO<sub>2</sub>e',
     format: 'number'
   }
 };
@@ -97,7 +100,8 @@ export const getRegionsOptions = createSelector(getRegions, regions => {
   return regions.map(d => ({
     label: d.wri_standard_name,
     value: d.iso_code3,
-    groudId: 'regions'
+    iso: d.iso_code3,
+    groupId: 'regions'
   }));
 });
 
@@ -122,11 +126,17 @@ export const getSourceSelected = createSelector(
 
 // Versions selectors
 export const getVersionOptions = createSelector(
-  [getVersions, getSources, getSourceSelected],
-  (versions, sources, sourceSelected) => {
-    if (!sourceSelected || !versions) return [];
-    const sourceData = sources.find(d => sourceSelected.value === d.value);
-    return versions.filter(filter => sourceData.gwp.indexOf(filter.value) > -1);
+  [getVersions, getSources, getSourceSelected, getData],
+  (versions, sources, sourceSelected, data) => {
+    if (!sourceSelected || !versions || !data) return [];
+    const versionsFromData = groupBy(data, 'gwp');
+    return sortBy(
+      Object.keys(versionsFromData).map(version => ({
+        label: version,
+        value: versions.find(versionMeta => version === versionMeta.label).value
+      })),
+      'label'
+    );
   }
 );
 
@@ -135,7 +145,10 @@ export const getVersionSelected = createSelector(
   (versions, selected) => {
     if (!versions || !versions.length) return {};
     if (!selected) return versions[0];
-    return versions.find(version => version.value === parseInt(selected, 10));
+    return (
+      versions.find(version => version.value === parseInt(selected, 10)) ||
+      versions[0]
+    );
   }
 );
 
@@ -170,7 +183,7 @@ export const getFilterOptions = createSelector(
         value: d.iso,
         groupId: 'countries'
       }));
-      return sortLabelByAlpha(uniqBy(countries.concat(regions), 'iso'));
+      return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
     }
     return sortLabelByAlpha(filteredSelected);
   }

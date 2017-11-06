@@ -29,6 +29,7 @@
 
 .closeButton {
   fill: $dark-gray;
+  cursor: pointer;
 
   &:focus {
     outline: none;

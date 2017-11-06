@@ -7,6 +7,8 @@ import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Tag from 'components/tag';
 import MultiSelect from 'components/multiselect';
+import Loading from 'components/loading';
+import NoContent from 'components/no-content';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -30,7 +32,9 @@ class GhgEmissions extends PureComponent {
       filters,
       filtersSelected,
       handleFilterChange,
-      handleRemoveTag
+      handleRemoveTag,
+      loadingMeta,
+      loadingData
     } = this.props;
     return (
       <div>
@@ -72,22 +76,36 @@ class GhgEmissions extends PureComponent {
             onInfoClick={handleInfoClick}
           />
         </div>
-        <ChartLine config={config} data={data} height={500} />
-        <div className={styles.tags}>
-          {config.columns &&
-            config.columns.y.map(column => (
-              <Tag
-                className={styles.tag}
-                key={`${column.value}`}
-                data={{
-                  color: config.theme[column.value].stroke,
-                  label: column.label,
-                  id: column.value
-                }}
-                canRemove
-                onRemove={handleRemoveTag}
+        <div className={styles.chartWrapper}>
+          {(loadingMeta || loadingData) && (
+            <Loading light className={styles.loader} />
+          )}
+          {!loadingData &&
+            !loadingMeta &&
+            (!data || !data.length) && (
+              <NoContent
+                message="No data available"
+                className={styles.noContent}
+                icon
               />
-            ))}
+            )}
+          <ChartLine config={config} data={data} height={500} />
+          <div className={styles.tags}>
+            {config.columns &&
+              config.columns.y.map(column => (
+                <Tag
+                  className={styles.tag}
+                  key={`${column.value}`}
+                  data={{
+                    color: config.theme[column.value].stroke,
+                    label: column.label,
+                    id: column.value
+                  }}
+                  canRemove
+                  onRemove={handleRemoveTag}
+                />
+              ))}
+          </div>
         </div>
       </div>
     );
@@ -111,7 +129,9 @@ GhgEmissions.propTypes = {
   handleRemoveTag: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
   filtersSelected: PropTypes.array.isRequired,
-  handleFilterChange: PropTypes.func.isRequired
+  handleFilterChange: PropTypes.func.isRequired,
+  loadingData: PropTypes.bool,
+  loadingMeta: PropTypes.bool
 };
 
 export default GhgEmissions;

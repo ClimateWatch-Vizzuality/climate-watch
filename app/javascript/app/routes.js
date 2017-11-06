@@ -73,7 +73,8 @@ export default [
         routes: [
           {
             path: '/ndcs/country/:iso',
-            component: () => createElement(CountryNdcOverview),
+            component: () =>
+              createElement(CountryNdcOverview, { textColumns: true }),
             exact: true,
             anchor: true,
             label: 'Overview'
@@ -82,8 +83,7 @@ export default [
             path: '/ndcs/country/:iso/mitigation',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'mitigation',
-                type: 'overview'
+                category: 'mitigation'
               }),
             exact: true,
             anchor: true,
@@ -94,13 +94,23 @@ export default [
             path: '/ndcs/country/:iso/adaptation',
             component: () =>
               createElement(NDCCountryAccordion, {
-                category: 'adaptation',
-                type: 'overview'
+                category: 'adaptation'
               }),
             exact: true,
             anchor: true,
             label: 'Adaptation',
             param: 'adaptation'
+          },
+          {
+            path: '/ndcs/country/:iso/sectoral-information',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'sectoral_information'
+              }),
+            exact: true,
+            anchor: false,
+            label: 'Sectoral Information',
+            param: 'sectoral-information'
           },
           {
             path: '/ndcs/country/:iso',
@@ -138,6 +148,18 @@ export default [
             param: 'adaptation'
           },
           {
+            path: '/ndcs/compare/sectoral-information',
+            component: () =>
+              createElement(NDCCountryAccordion, {
+                category: 'sectoral_information',
+                compare: true
+              }),
+            exact: true,
+            anchor: false,
+            label: 'Sectoral Information',
+            param: 'sectoral-information'
+          },
+          {
             path: '/ndcs/compare',
             component: () =>
               createElement(Redirect, { to: '/ndcs/compare/mitigation' })
@@ -150,11 +172,11 @@ export default [
         routes: [
           {
             path: '/ndcs',
-            label: 'NDCs'
+            label: 'NDC Content'
           },
           {
             path: '/ndcs-sdg',
-            label: 'SDG LINKAGES'
+            label: 'NDC-SDG LINKAGES'
           }
         ]
       },

@@ -25,15 +25,14 @@ const Button = props => {
     [styles.disabled]: !onClick && !link,
     [styles.noSpace]: noSpace
   });
-  const isDisabled = disabled || !onClick;
   return link ? (
     <NavLink className={classNames} to={link}>
       {children}
     </NavLink>
   ) : (
     <button
-      title={isDisabled ? 'Coming soon' : ''}
-      disabled={isDisabled}
+      title={disabled ? 'Coming soon' : ''}
+      disabled={disabled}
       className={classNames}
       onClick={onClick}
     >
@@ -44,7 +43,7 @@ const Button = props => {
 
 Button.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   link: PropTypes.string,
   square: PropTypes.bool,
   color: PropTypes.string,

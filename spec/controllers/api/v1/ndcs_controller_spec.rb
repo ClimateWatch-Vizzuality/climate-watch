@@ -5,17 +5,12 @@ describe Api::V1::NdcsController, type: :controller do
     let(:parsed_body) {
       JSON.parse(response.body)
     }
-    let!(:some_cait_indc_values) {
-      list = FactoryGirl.create_list(:cait_indc_indicator_with_dependants, 3)
-      MaterializedView.refresh(
-        'indc_categories',
-        'indc_indicators',
-        'indc_indicators_categories',
-        'indc_labels',
-        'indc_sectors',
-        'indc_values'
+    let!(:some_indc_values) {
+      FactoryGirl.create_list(
+        :indc_indicator,
+        3,
+        :with_dependants
       )
-      list
     }
 
     describe 'GET index' do
@@ -24,7 +19,7 @@ describe Api::V1::NdcsController, type: :controller do
         expect(response).to be_success
       end
 
-      it 'lists all cait indc indicators' do
+      it 'lists all indc indicators' do
         get :index
         expect(parsed_body['indicators'].length).to eq(3)
       end
@@ -32,7 +27,7 @@ describe Api::V1::NdcsController, type: :controller do
 
     describe 'GET content_overview' do
       it 'returns a successful 200 response' do
-        code = some_cait_indc_values.first.values.first.location.iso_code3
+        code = some_indc_values.first.values.first.location.iso_code3
         get :content_overview, params: {code: code}
         expect(response).to be_success
       end

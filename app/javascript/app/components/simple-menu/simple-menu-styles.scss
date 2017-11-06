@@ -17,11 +17,16 @@
       width: 100%;
       height: 3px;
     }
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .arrowIcon {
     width: 7px;
     height: 4px;
+    margin-left: 4px;
   }
 
   &.reverse {
@@ -72,13 +77,16 @@
 
         .documentLink {
           font-weight: bold;
-          padding: 24px 15px;
-          display: block;
+          height: 60px;
+          padding: 0 15px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
           width: auto;
-          height: auto;
-          font-size: $font-size;
+          font-size: $font-size-s;
           line-height: $line-height-medium;
           color: $dark-gray;
+          letter-spacing: 1px;
           background-color: transparent;
           transition: color 0.1s linear;
 
@@ -94,6 +102,8 @@
       &:hover {
         .link {
           .documentLink {
+            color: $theme-color;
+
             .icon {
               fill: $theme-color;
             }

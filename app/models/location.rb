@@ -6,9 +6,9 @@ class Location < ApplicationRecord
   has_many :historical_emissions,
            class_name: 'HistoricalEmissions::Record',
            dependent: :destroy
-  has_many :values, class_name: 'CaitIndc::Value'
+  has_many :values, class_name: 'Indc::Value'
   has_many :indicators,
-           class_name: 'CaitIndc::Indicator',
+           class_name: 'Indc::Indicator',
            through: :values
 
   validates :iso_code3, presence: true, uniqueness: true

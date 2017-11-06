@@ -16,13 +16,13 @@ const ButtonGroup = ({ className, onInfoClick }) => (
     <Button className={cx(styles.button, styles.first)} onClick={onInfoClick}>
       <Icon icon={iconInfo} />
     </Button>
-    <Button className={styles.button}>
+    <Button className={styles.button} disabled>
       <Icon icon={iconShare} />
     </Button>
-    <Button className={styles.button}>
+    <Button className={styles.button} disabled>
       <Icon icon={iconDownload} />
     </Button>
-    <Button className={cx(styles.button, styles.last)}>
+    <Button className={cx(styles.button, styles.last)} disabled>
       <Icon icon={iconAddToUser} />
     </Button>
   </div>

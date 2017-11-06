@@ -44,11 +44,25 @@ export const getDescriptionText = createSelector(
   [getCountryDescription],
   description => {
     if (!description) return null;
-    return `GDP per capita (${description.year}) - USD
-      ${description.gdp_per_capita} (${description.gdp_per_capita_rank}% of the global average.
-      <br/>
-      Population (${description.year}) - ${description.population} million
-      (${description.population_growth}% annual growth)`;
+    const gdpPerCapitaLocale =
+      description.gdp_per_capita && description.gdp_per_capita.toLocaleString();
+    const populationLocale =
+      description.population && description.population.toLocaleString();
+    const populationGrowthLocale = (Math.round(
+      description.population_growth * 100
+    ) / 100).toLocaleString();
+
+    let text = '';
+    if (gdpPerCapitaLocale && description.gdp_per_capita_rank) {
+      text += `GDP per capita (${description.year}) - USD
+      ${gdpPerCapitaLocale} (ranked ${description.gdp_per_capita_rank} globally).
+      <br/>`;
+    }
+    if (populationLocale && populationGrowthLocale) {
+      text += `Population (${description.year}) - ${populationLocale}
+      (${populationGrowthLocale}% annual growth)`;
+    }
+    return text;
   }
 );
 

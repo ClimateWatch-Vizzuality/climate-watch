@@ -18,15 +18,13 @@
 }
 
 .partners {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(3, 1fr);
-  grid-row-gap: $gutter-padding;
-  justify-items: start;
+  @include clearFix();
 
   .partner {
+    float: left;
+    width: 33.333%;
+    padding-right: $gutter-padding;
+    height: 170px;
     margin-bottom: 30px;
 
     .link {
@@ -55,13 +53,16 @@
   }
 
   &.col4 {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
-
-    grid-template-columns: repeat(4, 1fr);
+    .partner {
+      width: 25%;
+    }
   }
 
   &.additionalData {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+    .partner {
+      width: 25%;
+      height: 80px;
+    }
 
     .link {
       display: inline-block;

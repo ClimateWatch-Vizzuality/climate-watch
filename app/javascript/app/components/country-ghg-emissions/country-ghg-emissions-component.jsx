@@ -7,6 +7,7 @@ import ChartStackedArea from 'components/charts/stacked-area';
 import LineChart from 'components/charts/line';
 import Tag from 'components/tag';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import Loading from 'components/loading';
 
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -14,6 +15,7 @@ class CountryGhgEmissions extends PureComponent {
   render() {
     const {
       data,
+      quantifications,
       loading,
       config,
       iso,
@@ -39,14 +41,14 @@ class CountryGhgEmissions extends PureComponent {
           </h3>
           <div className={styles.graphControls}>
             <Dropdown
-              label="GHG emissions source"
+              label="Data Source"
               options={sources}
               onValueChange={handleSourceChange}
               value={sourceSelected}
               hideResetButton
             />
             <Dropdown
-              label="Calculation"
+              label="Metric"
               options={calculations}
               onValueChange={handleCalculationChange}
               value={calculationSelected}
@@ -67,12 +69,14 @@ class CountryGhgEmissions extends PureComponent {
           </div>
         </div>
         <div className={styles.graph}>
+          {loading && <Loading light className={styles.loader} />}
           {!loading && (
             <ChartComponent
               config={config}
               data={data}
               height="100%"
               onMouseMove={handleYearHover}
+              points={quantifications}
             />
           )}
         </div>
@@ -100,6 +104,7 @@ CountryGhgEmissions.propTypes = {
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
+  quantifications: PropTypes.array.isRequired,
   calculations: PropTypes.array.isRequired,
   calculationSelected: PropTypes.object.isRequired,
   sources: PropTypes.array.isRequired,

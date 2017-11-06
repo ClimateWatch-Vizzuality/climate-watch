@@ -8,7 +8,10 @@ import Search from 'components/search';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
+import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
+import Dropdown from 'components/dropdown';
 
+import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import layout from 'styles/layout.scss';
 import styles from './ndc-country-styles.scss';
@@ -21,10 +24,13 @@ class NDCCountry extends PureComponent {
       onSearchChange,
       search,
       route,
-      anchorLinks
+      anchorLinks,
+      documentsOptions,
+      handleDropDownChange
     } = this.props;
     return (
       <div>
+        <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>
             <div
@@ -34,12 +40,27 @@ class NDCCountry extends PureComponent {
                 <Intro title={country.wri_standard_name} />
               </div>
               <div className={styles.threeFold}>
-                <Button
-                  color="yellow"
-                  link={`/ndcs/country/${match.params.iso}/full`}
-                >
-                  View full NDC
-                </Button>
+                {documentsOptions && (
+                  <div>
+                    {documentsOptions.length > 1 ? (
+                      <Dropdown
+                        className={theme.dropdownOptionWithArrow}
+                        placeholder="Select a document"
+                        options={documentsOptions}
+                        onValueChange={handleDropDownChange}
+                        white
+                        hideResetButton
+                      />
+                    ) : (
+                      <Button
+                        color="yellow"
+                        link={`/ndcs/country/${match.params.iso}/full`}
+                      >
+                        {`View ${documentsOptions[0].label} Document`}
+                      </Button>
+                    )}
+                  </div>
+                )}
                 <Button
                   color="yellow"
                   link={`/ndcs/compare/mitigation?locations=${match.params
@@ -76,7 +97,9 @@ NDCCountry.propTypes = {
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
   search: PropTypes.string,
-  anchorLinks: PropTypes.array
+  anchorLinks: PropTypes.array,
+  documentsOptions: PropTypes.array,
+  handleDropDownChange: PropTypes.func
 };
 
 export default NDCCountry;
