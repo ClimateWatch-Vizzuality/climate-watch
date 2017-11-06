@@ -2,7 +2,10 @@ module Api
   module V1
     class NdcTextsController < ApiController
       def index
-        ndcs = Ndc.includes(:location)
+        ndcs = Ndc.includes(
+          :location,
+          ndc_targets: [{target: :goal}, :sectors]
+        )
         ndcs =
           if params[:target] || params[:goal] || params[:sector]
             with_linkage_highlights(ndcs, false)
@@ -82,10 +85,17 @@ module Api
         texts = Ndc.linkage_texts(params)
 
         unless include_not_matched
-          ndcs = ndcs.where(
-            (['full_text ILIKE ?'] * texts.length).join(' OR '),
-            *texts.map { |t| "%#{t}%" }
-          )
+          if params[:target]
+            ndcs = ndcs.where(ndc_sdg_targets: { number: params[:target] })
+          end
+
+          if params[:goal]
+            ndcs = ndcs.where(ndc_sdg_goals: { number: params[:goal] })
+          end
+
+          if params[:sector]
+            ndcs = ndcs.where(ndc_sdg_sectors: { id: params[:sector] })
+          end
         end
 
         ndcs.map do |ndc|

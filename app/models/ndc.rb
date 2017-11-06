@@ -74,7 +74,8 @@ class Ndc < ApplicationRecord
       ndc_target_sectors: [:sector],
       ndc: [:location]
     ).where(query_params).
-      map(&:indc_text)
+      map(&:indc_text).
+      uniq
   end
 
   def self.linkages_for(iso_code3)
