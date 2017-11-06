@@ -21,19 +21,20 @@ import {
   getBreakSelected,
   getFilterOptions,
   getFiltersSelected,
-  getSelectorDefaults
+  getSelectorDefaults,
+  getActiveFilterRegion
 } from './ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions };
 
 const groups = [
   {
-    groupId: 'countries',
-    title: 'Countries'
-  },
-  {
     groupId: 'regions',
     title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Countries'
   }
 ];
 
@@ -60,6 +61,7 @@ const mapStateToProps = (state, { location }) => {
     filters: getFilterOptions(ghg),
     filtersSelected: getFiltersSelected(ghg),
     selectorDefaults: getSelectorDefaults(ghg),
+    activeFilterRegion: getActiveFilterRegion(ghg),
     loadingMeta: state.ghgEmissionsMeta.loading,
     loadingData: state.ghgEmissions.loading,
     groups
@@ -128,11 +130,10 @@ class GhgEmissionsContainer extends PureComponent {
 
   handleBreakByChange = breakBy => {
     const params = [
-      { name: 'breakBy', value: breakBy.value },
-      { name: 'version', value: '' },
-      { name: 'filter', value: '' }
+      { name: 'source', value: this.props.sourceSelected.value },
+      { name: 'breakBy', value: breakBy.value }
     ];
-    this.updateUrlParam(params);
+    this.updateUrlParam(params, true);
   };
 
   handleVersionChange = version => {
@@ -140,12 +141,26 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleFilterChange = filters => {
-    const filtersParam = filters.map(
-      filter =>
-        (this.props.breakSelected.value === 'location'
-          ? filter.iso
-          : filter.value)
-    );
+    const oldFilters = this.props.filtersSelected;
+    const removing = filters.length < oldFilters.length;
+    const selectedFilter = filters
+      .filter(x => oldFilters.indexOf(x) === -1)
+      .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0];
+    const filtersParam = [];
+    if (!removing && selectedFilter.groupId === 'regions') {
+      filtersParam.push(selectedFilter.iso);
+      selectedFilter.members.forEach(m => filtersParam.push(m));
+    } else if (selectedFilter.groupId !== 'regions') {
+      filters.forEach(filter => {
+        if (filter.groupId !== 'regions') {
+          filtersParam.push(
+            this.props.breakSelected.value === 'location'
+              ? filter.iso
+              : filter.value
+          );
+        }
+      });
+    }
     this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
   };
 
