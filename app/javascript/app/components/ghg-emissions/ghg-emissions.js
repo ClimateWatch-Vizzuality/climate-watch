@@ -28,12 +28,12 @@ const actions = { ...ownActions, ...modalActions };
 
 const groups = [
   {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
     groupId: 'countries',
     title: 'Countries'
+  },
+  {
+    groupId: 'regions',
+    title: 'Regions'
   }
 ];
 
@@ -60,6 +60,8 @@ const mapStateToProps = (state, { location }) => {
     filters: getFilterOptions(ghg),
     filtersSelected: getFiltersSelected(ghg),
     selectorDefaults: getSelectorDefaults(ghg),
+    loadingMeta: state.ghgEmissionsMeta.loading,
+    loadingData: state.ghgEmissions.loading,
     groups
   };
 };
@@ -79,7 +81,7 @@ function getFiltersParsed(props) {
   const filter = {};
   switch (breakSelected.value) {
     case 'gas':
-      filter.location = 'WORLD';
+      filter.location = sourceSelected.label === 'UNFCCC' ? 'ANNEXI' : 'WORLD';
       filter.sector = selectorDefaults.sector;
       break;
     case 'location':
@@ -88,7 +90,7 @@ function getFiltersParsed(props) {
       break;
     case 'sector':
       filter.gas = selectorDefaults.gas;
-      filter.location = 'WORLD';
+      filter.location = sourceSelected.label === 'UNFCCC' ? 'ANNEXI' : 'WORLD';
       break;
     default:
       break;
@@ -127,6 +129,7 @@ class GhgEmissionsContainer extends PureComponent {
   handleBreakByChange = breakBy => {
     const params = [
       { name: 'breakBy', value: breakBy.value },
+      { name: 'version', value: '' },
       { name: 'filter', value: '' }
     ];
     this.updateUrlParam(params);

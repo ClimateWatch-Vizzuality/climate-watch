@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
+import sortBy from 'lodash/sortBy';
 
 const getCountries = state => state.countries;
 const getAllIndicators = state => (state.data ? state.data.indicators : {});
@@ -27,7 +28,9 @@ export const parseIndicatorsDefs = createSelector(
           descriptions
         };
       });
-      parsedIndicators[category] = parsedDefinitions;
+      if (parsedDefinitions && parsedDefinitions.length) {
+        parsedIndicators[category] = sortBy(parsedDefinitions, 'title');
+      }
     });
     return parsedIndicators;
   }
@@ -80,10 +83,12 @@ export const parseIndicatorsDefsWithSectors = createSelector(
         return {
           title: indicator.name,
           slug: indicator.slug,
-          descriptions
+          descriptions: sortBy(descriptions, 'title')
         };
       });
-      parsedIndicators[category] = parsedDefinitions;
+      if (parsedDefinitions) {
+        parsedIndicators[category] = sortBy(parsedDefinitions, 'title');
+      }
     });
     return parsedIndicators;
   }
@@ -132,7 +137,7 @@ export const filterNDCs = createSelector(
       };
     });
     const reducedNDCs = filteredNDCs.filter(ndc => ndc.definitions.length > 0);
-    return reducedNDCs;
+    return sortBy(reducedNDCs, 'title');
   }
 );
 
@@ -164,7 +169,7 @@ export const filterSectoralNDCs = createSelector(
         indicators: defs
       };
     });
-    return filteredNDCs;
+    return sortBy(filteredNDCs, 'title');
   }
 );
 

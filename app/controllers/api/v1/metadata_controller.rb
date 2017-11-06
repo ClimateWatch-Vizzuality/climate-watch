@@ -12,8 +12,8 @@ module Api
       def show
         metadata = ::WriMetadata::Source.
           includes(values: :property).
-          where(name: params[:slug]).
-          first
+          find_by!(name: params[:slug])
+
         render json: metadata,
                serializer: Api::V1::WriMetadata::SourceSerializer
       end

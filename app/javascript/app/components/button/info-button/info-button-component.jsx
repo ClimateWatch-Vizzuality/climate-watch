@@ -9,13 +9,16 @@ import styles from './info-button-styles.scss';
 class InfoButton extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { handleInfoClick, infoOpen, className } = this.props;
+    const { handleInfoClick, infoOpen, className, square } = this.props;
     return (
       <Button
-        className={cx(styles.btnInfo, className, {
-          [styles.btnInfoActive]: infoOpen
-        })}
+        className={cx(
+          styles.btnInfo,
+          infoOpen ? styles.btnInfoActive : '',
+          className
+        )}
         onClick={handleInfoClick}
+        square={square}
       >
         <Icon icon={infoIcon} />
       </Button>
@@ -26,7 +29,8 @@ class InfoButton extends PureComponent {
 InfoButton.propTypes = {
   className: PropTypes.node,
   infoOpen: PropTypes.bool.isRequired,
-  handleInfoClick: PropTypes.func.isRequired
+  handleInfoClick: PropTypes.func.isRequired,
+  square: PropTypes.bool
 };
 
 export default InfoButton;

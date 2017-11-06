@@ -12,6 +12,6 @@ const setLoaded = (state, loaded) => ({ ...state, loaded });
 export default {
   fetchCountryGhgEmissionsInit: state => setLoading(state, true),
   fetchCountryGhgEmissionsDataReady: (state, { payload }) =>
-    setLoaded(setLoading({ ...state, data: payload }, false), true),
+    setLoaded(setLoading({ ...state, ...payload }, false), true),
   fetchCountryGhgEmissionsFail: state => setError(state, true)
 };

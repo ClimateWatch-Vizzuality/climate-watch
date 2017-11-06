@@ -13,4 +13,9 @@
   &Active {
     fill: $theme-color;
   }
+
+  &:hover {
+    box-shadow: none !important;
+    fill: $theme-color;
+  }
 }
