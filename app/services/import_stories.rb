@@ -2,7 +2,7 @@ class ImportStories
   require 'rss'
   require 'open-uri'
 
-  def call reset = false
+  def call(reset = false)
     cleanup if reset
 
     import_stories

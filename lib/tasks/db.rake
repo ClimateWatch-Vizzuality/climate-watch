@@ -14,7 +14,8 @@ namespace :db do
     'wb_extra:import',
     'timeline:import',
     'quantifications:import',
-    'socioeconomics:import'
+    'socioeconomics:import',
+    'stories:import'
   ]
 
   desc 'Imports all data in correct order, replaces all data'
@@ -32,6 +33,8 @@ namespace :db do
     puts "Deleting Locations"
     Location.all.each(&:destroy)
     puts "Starting the import"
+    puts "Deleting stories"
+    Story.delete_all
     Rake::Task['db:import'].invoke
   end
 end
