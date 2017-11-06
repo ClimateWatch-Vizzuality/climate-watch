@@ -31,7 +31,7 @@ const NDCMap = props => (
         hideResetButton
         plain
       />
-      <ButtonGroup className={styles.buttons} />
+      <ButtonGroup className={styles.buttons} disabled />
     </div>
     {props.loading && <Loading light className={styles.loader} />}
     <Map
