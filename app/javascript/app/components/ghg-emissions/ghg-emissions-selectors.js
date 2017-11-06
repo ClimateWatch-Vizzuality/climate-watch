@@ -23,7 +23,8 @@ const TOP_EMITTERS = [
   'BRA',
   'IDN',
   'CAN',
-  'MEX'
+  'MEX',
+  'TOP'
 ];
 
 const DATA_SCALE = 1000000;
@@ -89,7 +90,7 @@ const getVersions = state => state.meta.gwp || [];
 const getSourceSelection = state => state.search.source || null;
 const getVersionSelection = state => state.search.version || null;
 const getBreakSelection = state => state.search.breakBy || null;
-const getFilterSelection = state => state.search.filter || null;
+const getFilterSelection = state => state.search.filter;
 
 // data for the graph
 const getData = state => state.data || [];
@@ -97,12 +98,27 @@ const getData = state => state.data || [];
 //
 export const getRegionsOptions = createSelector(getRegions, regions => {
   if (!regions) return [];
-  return regions.map(d => ({
-    label: d.wri_standard_name,
-    value: d.iso_code3,
-    iso: d.iso_code3,
-    groupId: 'regions'
-  }));
+  const mappedRegions = [
+    {
+      label: 'Top Emitters',
+      value: 'TOP',
+      members: TOP_EMITTERS,
+      iso: 'TOP',
+      groupId: 'regions'
+    }
+  ];
+  regions.forEach(d => {
+    if (d.iso_code3 !== 'WORLD') {
+      mappedRegions.push({
+        label: d.wri_standard_name,
+        value: d.iso_code3,
+        iso: d.iso_code3,
+        members: d.members.map(m => m.iso_code3),
+        groupId: 'regions'
+      });
+    }
+  });
+  return mappedRegions;
 });
 
 // Sources selectors
@@ -192,7 +208,7 @@ export const getFilterOptions = createSelector(
 export const getFiltersSelected = createSelector(
   [getFilterOptions, getFilterSelection, getBreakSelected],
   (filters, selected, breakBy) => {
-    if (!filters || !filters.length) return [];
+    if (!filters || !filters.length || selected === '') return [];
     if (!selected && breakBy.value !== 'location') return filters;
     let selectedFilters = [];
     if (breakBy.value === 'location' && !selected) {
@@ -205,6 +221,9 @@ export const getFiltersSelected = createSelector(
       selectedFilters = filters.filter(
         filter => selectedValues.indexOf(`${filter.value}`) > -1
       );
+      return selectedFilters.length >= 10
+        ? selectedFilters.slice(0, 10)
+        : selectedFilters;
     }
     return selectedFilters;
   }
@@ -220,6 +239,14 @@ export const getSelectorDefaults = createSelector(
       sector: sourceData.sector[0],
       gas: sourceData.gas[0]
     };
+  }
+);
+
+export const getActiveFilterRegion = createSelector(
+  [getFiltersSelected],
+  filters => {
+    if (!filters || !filters.length) return null;
+    return filters.find(f => f.groupId === 'regions');
   }
 );
 
@@ -290,5 +317,6 @@ export default {
   getBreaksByOptions,
   getBreakSelected,
   getFilterOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getActiveFilterRegion
 };
