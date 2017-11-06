@@ -83,6 +83,7 @@ export const getYearSelected = createSelector(
 );
 
 const calculatedRatio = (selected, calculationData, x) => {
+  if (isEmpty(calculationData)) return 1;
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
     return calculationData[x][0].gdp;
   }
@@ -99,12 +100,7 @@ const countryCalculationDataByYear = (data, iso) => groupBy(data[iso], 'year');
 export const getDataParsed = createSelector(
   [getData, getCalculationData, getYearSelected, getCalculationSelected],
   (data, calculationData, year, calculationSelected) => {
-    if (
-      !data ||
-      isEmpty(data) ||
-      isEmpty(calculationData) ||
-      !calculationSelected
-    ) {
+    if (!data || isEmpty(data) || !calculationSelected) {
       return null;
     }
     const dataParsed = {};
@@ -117,11 +113,13 @@ export const getDataParsed = createSelector(
         item &&
         item.value &&
         !EXCLUDED_INDICATORS.includes(d.iso_code3) &&
-        countryHasCalculationDataForYear(
-          calculationData,
-          d.iso_code3,
-          item.year
-        )
+        (isEmpty(calculationData) ||
+          (!isEmpty(calculationData) &&
+            countryHasCalculationDataForYear(
+              calculationData,
+              d.iso_code3,
+              item.year
+            )))
       ) {
         const calculationRatio = calculatedRatio(
           calculationSelected.value,
