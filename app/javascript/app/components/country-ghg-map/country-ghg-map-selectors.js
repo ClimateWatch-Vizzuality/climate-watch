@@ -92,7 +92,7 @@ const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
-const yearHasCalculationData = (data, iso, year) =>
+const countryHasCalculationDataForYear = (data, iso, year) =>
   data[iso] && data[iso].some(d => d.year === year);
 const countryCalculationDataByYear = (data, iso) => groupBy(data[iso], 'year');
 
@@ -117,7 +117,11 @@ export const getDataParsed = createSelector(
         item &&
         item.value &&
         !EXCLUDED_INDICATORS.includes(d.iso_code3) &&
-        yearHasCalculationData(calculationData, d.iso_code3, item.year)
+        countryHasCalculationDataForYear(
+          calculationData,
+          d.iso_code3,
+          item.year
+        )
       ) {
         const calculationRatio = calculatedRatio(
           calculationSelected.value,
