@@ -189,6 +189,38 @@ of this goal;
 
 #### WB (World Bank) Extra Country Data
 
+- `GET /api/v1/wb_extra/`  will return a response with the following
+format:
+
+```
+[
+  'AUS':
+    [
+      {
+          "population": 30739250,
+          "gdp": 13834300571,
+          "year": 1961,
+          ...
+      },
+      {
+          "population": 31023366,
+          "gdp": 16138545209,
+          "year": 1962.
+          ...
+      }, ...
+    ],
+  'ANG':
+    ...
+]
+```
+
+Where:
+
+- `population`: is the total population for the year and the iso code of the country;
+- `gdp`: is the gross domestic product for the year and the iso code of the country;
+- `year`: year
+
+
 - `GET /api/v1/wb_extra/:iso` will return a response with the following
 
 extra params:
@@ -211,9 +243,3 @@ format:
     }, ...
 ]
 ```
-
-Where:
-
-- `population`: is the total population for the year and the iso code of the country;
-- `gdp`: is the gross domestic product for the year and the iso code of the country;
-- `year`: year

@@ -12,9 +12,6 @@ const setError = (state, error) => ({ ...state, error });
 export default {
   fetchWbCountryDataInit: state => setLoading(true, state),
   fetchWbCountryDataReady: (state, { payload }) =>
-    setLoaded(
-      true,
-      setLoading(false, { ...state, data: Object.assign(state.data, payload) })
-    ),
+    setLoaded(true, setLoading(false, { ...state, data: payload })),
   fetchWbCountryDataFail: state => setLoading(setError(state, true), false)
 };
