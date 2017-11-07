@@ -28,7 +28,7 @@ class Multiselect extends Component {
     const { values, options, selectedLabel } = this.props;
     const { search } = this.state;
     const hasValues = values && values.length;
-    if (selectedLabel) {
+    if (selectedLabel && !search) {
       return <span>{selectedLabel}</span>;
     }
     if (hasValues && !search) {
