@@ -56,7 +56,7 @@ class GhgEmissions extends PureComponent {
             onValueChange={handleVersionChange}
             value={versionSelected}
             hideResetButton
-            disabled={versions.length === 1}
+            disabled={versions && versions.length === 1}
           />
           <Dropdown
             label="Break by"
@@ -69,8 +69,8 @@ class GhgEmissions extends PureComponent {
             selectedLabel={activeFilterRegion ? activeFilterRegion.label : null}
             label={breakSelected.label}
             groups={breakSelected.value === 'location' ? groups : null}
-            values={filtersSelected}
-            options={filters}
+            values={filtersSelected || []}
+            options={filters || []}
             onMultiValueChange={handleFilterChange}
           />
           <ButtonGroup
@@ -86,28 +86,32 @@ class GhgEmissions extends PureComponent {
             !loadingMeta &&
             (!data || !data.length) && (
               <NoContent
-                message={filtersSelected.length ? 'No data available' : 'No data selected'}
+                message={filtersSelected && filtersSelected.length ? 'No data available' : 'No data selected'}
                 className={styles.noContent}
                 icon
               />
             )}
-          <ChartLine config={config} data={data} height={500} />
-          <div className={styles.tags}>
-            {config.columns &&
-              config.columns.y.map(column => (
-                <Tag
-                  className={styles.tag}
-                  key={`${column.value}`}
-                  data={{
-                    color: config.theme[column.value].stroke,
-                    label: column.label,
-                    id: column.value
-                  }}
-                  canRemove
-                  onRemove={handleRemoveTag}
-                />
-              ))}
-          </div>
+          {data && config &&
+            <div>
+              <ChartLine config={config} data={data} height={500} />
+              <div className={styles.tags}>
+                {config.columns &&
+                  config.columns.y.map(column => (
+                    <Tag
+                      className={styles.tag}
+                      key={`${column.value}`}
+                      data={{
+                        color: config.theme[column.value].stroke,
+                        label: column.label,
+                        id: column.value
+                      }}
+                      canRemove
+                      onRemove={handleRemoveTag}
+                    />
+                  ))}
+              </div>
+            </div>
+          }
         </div>
       </div>
     );
@@ -115,22 +119,22 @@ class GhgEmissions extends PureComponent {
 }
 
 GhgEmissions.propTypes = {
-  data: PropTypes.array.isRequired,
-  config: PropTypes.object.isRequired,
-  groups: PropTypes.array.isRequired,
-  versions: PropTypes.array.isRequired,
-  versionSelected: PropTypes.object.isRequired,
+  data: PropTypes.array,
+  config: PropTypes.object,
+  groups: PropTypes.array,
+  versions: PropTypes.array,
+  versionSelected: PropTypes.object,
   handleVersionChange: PropTypes.func.isRequired,
-  sources: PropTypes.array.isRequired,
-  sourceSelected: PropTypes.object.isRequired,
+  sources: PropTypes.array,
+  sourceSelected: PropTypes.object,
   handleInfoClick: PropTypes.func.isRequired,
   handleSourceChange: PropTypes.func.isRequired,
-  breaksBy: PropTypes.array.isRequired,
-  breakSelected: PropTypes.object.isRequired,
+  breaksBy: PropTypes.array,
+  breakSelected: PropTypes.object,
   handleBreakByChange: PropTypes.func.isRequired,
   handleRemoveTag: PropTypes.func.isRequired,
-  filters: PropTypes.array.isRequired,
-  filtersSelected: PropTypes.array.isRequired,
+  filters: PropTypes.array,
+  filtersSelected: PropTypes.array,
   handleFilterChange: PropTypes.func.isRequired,
   loadingData: PropTypes.bool,
   loadingMeta: PropTypes.bool,
