@@ -11,9 +11,8 @@ export { default as actions } from './wb-country-data-provider-actions';
 
 class WbCountryDataProvider extends PureComponent {
   componentDidMount() {
-    const { match, fetchWbCountryData } = this.props;
-    const iso = match.params.iso;
-    fetchWbCountryData(iso);
+    const { fetchWbCountryData } = this.props;
+    fetchWbCountryData();
   }
 
   render() {
@@ -22,8 +21,7 @@ class WbCountryDataProvider extends PureComponent {
 }
 
 WbCountryDataProvider.propTypes = {
-  fetchWbCountryData: PropTypes.func.isRequired,
-  match: PropTypes.object.isRequired
+  fetchWbCountryData: PropTypes.func.isRequired
 };
 
 export default withRouter(connect(null, actions)(WbCountryDataProvider));

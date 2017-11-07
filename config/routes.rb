@@ -5,7 +5,7 @@ Rails.application.routes.draw do
         resources :countries, only: [:index], controller: :countries
         resources :regions, only: [:index], controller: :regions
       end
-      resources :wb_extra, param: :iso, only: [:show], controller: 'wb_extra_country_data'
+      resources :wb_extra, param: :iso, only: [:index, :show], controller: 'wb_extra_country_data'
 
       resources :emissions, only: [:index], controller: :historical_emissions do
         get :meta, on: :collection
@@ -28,6 +28,8 @@ Rails.application.routes.draw do
         get :acronyms, on: :collection, controller: :metadata, action: :acronyms
       end
       resources :timeline, param: :code, only: [:index, :show]
+
+      resources :stories, only: [:index]
 
       get '(*endpoint)', controller: :api, action: :route_not_found
     end

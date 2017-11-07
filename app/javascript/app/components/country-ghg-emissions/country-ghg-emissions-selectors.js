@@ -58,8 +58,7 @@ const INCLUDED_SECTORS = {
   ]
 };
 
-const calculationKeys = Object.keys(CALCULATION_OPTIONS);
-const options = calculationKeys.map(
+const options = Object.keys(CALCULATION_OPTIONS).map(
   calculationKey => CALCULATION_OPTIONS[calculationKey]
 );
 
@@ -100,13 +99,7 @@ const parseCalculationData = createSelector([getCalculationData], data => {
   return groupBy(data, 'year');
 });
 
-export const getCalculationOptions = createSelector(
-  parseCalculationData,
-  calculationData => {
-    if (!calculationData) return [];
-    return options;
-  }
-);
+export const getCalculationOptions = () => options;
 
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
@@ -204,6 +197,7 @@ export const filterData = createSelector(
 );
 
 const calculatedRatio = (selected, calculationData, x) => {
+  if (!calculationData) return 1;
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
     // GDP is in dollars and we want to display it in million dollars
     return calculationData[x][0].gdp / DATA_SCALE;
@@ -234,24 +228,18 @@ export const getChartData = createSelector(
     getQuantifications
   ],
   (data, filters, calculationData, calculationSelected) => {
-    if (
-      !data ||
-      !data.length ||
-      !filters ||
-      !calculationData ||
-      !calculationSelected
-    ) {
+    if (!data || !data.length || !filters || !calculationSelected) {
       return [];
     }
-
     let xValues = [];
     xValues = data[0].emissions.map(d => d.year);
     if (
+      calculationData &&
       calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
     ) {
       xValues = intersection(
         xValues,
-        Object.keys(calculationData).map(y => parseInt(y, 10))
+        Object.keys(calculationData || []).map(y => parseInt(y, 10))
       );
     }
 

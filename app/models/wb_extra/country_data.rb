@@ -32,5 +32,9 @@ module WbExtra
       end_year = max_year if max_year < end_year
       where('year <= ?', end_year)
     end
+
+    def country_code
+      Location.find(location_id).iso_code3
+    end
   end
 end

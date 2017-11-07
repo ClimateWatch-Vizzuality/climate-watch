@@ -10,6 +10,7 @@ import isEmpty from 'lodash/isEmpty';
 import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 import Sticky from 'react-stickynode';
 import Button from 'components/button';
+import Loading from 'components/loading';
 
 import layout from 'styles/layout.scss';
 import contentStyles from 'styles/themes/content.scss';
@@ -47,7 +48,9 @@ class NDCCountryFull extends PureComponent {
       contentOptionSelected,
       route,
       fetchCountryNDCFull,
-      iso
+      iso,
+      loading,
+      content
     } = this.props;
     return (
       <div>
@@ -63,7 +66,7 @@ class NDCCountryFull extends PureComponent {
             </Button>
           </div>
         </Header>
-        <Sticky>
+        <Sticky className={styles.sticky}>
           <div className={styles.actionsWrapper}>
             <div className={cx(layout.content, styles.actions)}>
               <Dropdown
@@ -84,7 +87,10 @@ class NDCCountryFull extends PureComponent {
             </div>
           </div>
         </Sticky>
-        {this.getPageContent()}
+        <div className={styles.contentContainer} id="ndc-content-container">
+          {loading && !content && <Loading light className={styles.loader} />}
+          {this.getPageContent()}
+        </div>
       </div>
     );
   }
@@ -100,7 +106,8 @@ NDCCountryFull.propTypes = {
   loaded: PropTypes.bool,
   search: PropTypes.object,
   fetchCountryNDCFull: PropTypes.func,
-  iso: PropTypes.string
+  iso: PropTypes.string,
+  loading: PropTypes.bool
 };
 
 export default NDCCountryFull;

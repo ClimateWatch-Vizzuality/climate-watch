@@ -1,3 +1,9 @@
+import { withProps } from 'recompose';
+import { compareIndexByKey } from 'utils/utils';
 import Component from './ndc-sdg-linkages-list-component';
 
-export default Component;
+const withSortedTargets = withProps(({ goal }) => ({
+  targets: goal.targets.sort(compareIndexByKey('number'))
+}));
+
+export default withSortedTargets(Component);
