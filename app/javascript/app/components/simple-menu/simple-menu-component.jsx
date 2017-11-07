@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from 'components/icon';
+import checkIcon from 'assets/icons/check.svg';
 import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
@@ -13,41 +14,55 @@ class SimpleMenu extends PureComponent {
   constructor() {
     super();
     this.state = {
-      open: false
+      open: false,
+      actionSuccessful: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(action) {
-    this.setState({ open: false });
-    return action();
+    this.setState({ actionSuccesful: action() });
+  }
+  renderInsideLink(option, withAction = false) {
+    const { actionSuccesful } = this.state;
+    return (
+      <div className={styles.documentLink} key={option.label}>
+        {option.icon &&
+          (withAction && actionSuccesful ? (
+            <Icon icon={checkIcon} className={styles.icon} />
+          ) : (
+            <Icon icon={option.icon} className={styles.icon} />
+          ))}
+        <span className={styles.title}>{option.label}</span>
+      </div>
+    );
   }
 
   renderLink(option) {
-    const insideLink = o => (
-      <div className={styles.documentLink} key={o.label}>
-        {o.icon && <Icon icon={o.icon} className={styles.icon} />}
-        <span className={styles.title}>{o.label}</span>
-      </div>
-    );
-
-    return option.path ? (
-      <NavLink
-        className={styles.link}
-        activeClassName={styles.active}
-        to={option.path}
-        onClick={() => this.setState({ open: false })}
-      >
-        {insideLink(option)}
-      </NavLink>
-    ) : (
+    if (option.path) {
+      return (
+        <NavLink
+          className={styles.link}
+          activeClassName={styles.active}
+          to={option.path}
+          onClick={() => this.setState({ open: false })}
+        >
+          {this.renderInsideLink(option)}
+        </NavLink>
+      );
+    }
+    return option.action ? (
       <a
         className={styles.link}
-        target="_blank"
-        href={option.link}
         onClick={() => this.handleClick(option.action)}
+        role="button"
+        tabIndex={-1}
       >
-        {insideLink(option)}
+        {this.renderInsideLink(option, true)}
+      </a>
+    ) : (
+      <a className={styles.link} target="_blank" href={option.link}>
+        {this.renderInsideLink(option)}
       </a>
     );
   }
