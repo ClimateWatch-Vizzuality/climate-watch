@@ -81,10 +81,10 @@ const EXCLUDED_SECTORS = [
 ];
 
 // meta data for selectors
-const getMeta = state => state.meta || {};
-const getSources = state => state.meta.data_source || [];
-const getRegions = state => state.regions || [];
-const getVersions = state => state.meta.gwp || [];
+const getMeta = state => state.meta || null;
+const getSources = state => state.meta.data_source || null;
+const getRegions = state => state.regions || null;
+const getVersions = state => state.meta.gwp || null;
 
 // values from search
 const getSourceSelection = state => state.search.source || null;
@@ -95,35 +95,9 @@ const getFilterSelection = state => state.search.filter;
 // data for the graph
 const getData = state => state.data || [];
 
-//
-export const getRegionsOptions = createSelector(getRegions, regions => {
-  if (!regions) return [];
-  const mappedRegions = [
-    {
-      label: 'Top Emitters',
-      value: 'TOP',
-      members: TOP_EMITTERS,
-      iso: 'TOP',
-      groupId: 'regions'
-    }
-  ];
-  regions.forEach(d => {
-    if (d.iso_code3 !== 'WORLD') {
-      mappedRegions.push({
-        label: d.wri_standard_name,
-        value: d.iso_code3,
-        iso: d.iso_code3,
-        members: d.members.map(m => m.iso_code3),
-        groupId: 'regions'
-      });
-    }
-  });
-  return mappedRegions;
-});
-
 // Sources selectors
 export const getSourceOptions = createSelector(getSources, sources => {
-  if (!sources) return [];
+  if (!sources) return null;
   return sources.map(d => ({
     label: d.label,
     value: d.value,
@@ -134,7 +108,7 @@ export const getSourceOptions = createSelector(getSources, sources => {
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
-    if (!sources || !sources.length) return {};
+    if (!sources) return null;
     if (!selected) return sources[0];
     return sources.find(category => category.value === parseInt(selected, 10));
   }
@@ -144,7 +118,7 @@ export const getSourceSelected = createSelector(
 export const getVersionOptions = createSelector(
   [getVersions, getSources, getSourceSelected, getData],
   (versions, sources, sourceSelected, data) => {
-    if (!sourceSelected || !versions || !data) return [];
+    if (!sourceSelected || !versions || !data) return null;
     const versionsFromData = groupBy(data, 'gwp');
     return sortBy(
       Object.keys(versionsFromData).map(version => ({
@@ -159,7 +133,7 @@ export const getVersionOptions = createSelector(
 export const getVersionSelected = createSelector(
   [getVersionOptions, getVersionSelection],
   (versions, selected) => {
-    if (!versions || !versions.length) return {};
+    if (!versions) return null;
     if (!selected) return versions[0];
     return (
       versions.find(version => version.value === parseInt(selected, 10)) ||
@@ -174,9 +148,59 @@ export const getBreaksByOptions = () => BREAY_BY_OPTIONS;
 export const getBreakSelected = createSelector(
   [getBreaksByOptions, getBreakSelection],
   (breaks, selected) => {
-    if (!breaks || !breaks.length) return {};
+    if (!breaks) return null;
     if (!selected) return breaks[0];
     return breaks.find(category => category.value === selected);
+  }
+);
+
+// Get data and filter and sort by emissions value
+export const filterAndSortData = createSelector(
+  [getData, getVersionSelected, getBreakSelected],
+  (data, version, breakBy) => {
+    if (!data || isEmpty(data)) return null;
+    const dataSorted = sortEmissionsByValue(
+      data.filter(
+        d =>
+          d.gwp === version.label &&
+          EXCLUDED_SECTORS.indexOf(d[breakBy.value]) === -1
+      )
+    );
+    return dataSorted;
+  }
+);
+
+// use filtered data to get top emitters for each region
+export const getRegionsOptions = createSelector(
+  [getRegions, filterAndSortData],
+  (regions, data) => {
+    if (!regions || !data) return null;
+    const mappedRegions = [
+      {
+        label: 'Top Emitters',
+        value: 'TOP',
+        members: TOP_EMITTERS,
+        iso: 'TOP',
+        groupId: 'regions'
+      }
+    ];
+    regions.forEach(region => {
+      const regionMembers = region.members.map(m => m.iso_code3);
+      const regionData = data.filter(
+        d => regionMembers.indexOf(d.iso_code3) > -1
+      );
+      const regionIsos = regionData.map(m => m.iso_code3).slice(0, 10);
+      if (region.iso_code3 !== 'WORLD') {
+        mappedRegions.push({
+          label: region.wri_standard_name,
+          value: region.iso_code3,
+          iso: region.iso_code3,
+          members: regionIsos,
+          groupId: 'regions'
+        });
+      }
+    });
+    return mappedRegions;
   }
 );
 
@@ -184,7 +208,7 @@ export const getBreakSelected = createSelector(
 export const getFilterOptions = createSelector(
   [getMeta, getSourceSelected, getBreakSelected, getRegionsOptions],
   (meta, sourceSelected, breakSelected, regions) => {
-    if (!sourceSelected || !breakSelected || isEmpty(meta)) return [];
+    if (!sourceSelected || !breakSelected || isEmpty(meta) || !regions) { return []; }
     const breakByValue = breakSelected.value;
     const activeSourceData = meta.data_source.find(
       source => source.value === sourceSelected.value
@@ -208,7 +232,7 @@ export const getFilterOptions = createSelector(
 export const getFiltersSelected = createSelector(
   [getFilterOptions, getFilterSelection, getBreakSelected],
   (filters, selected, breakBy) => {
-    if (!filters || !filters.length || selected === '') return [];
+    if (!filters || selected === '') return [];
     if (!selected && breakBy.value !== 'location') return filters;
     let selectedFilters = [];
     if (breakBy.value === 'location' && !selected) {
@@ -221,9 +245,6 @@ export const getFiltersSelected = createSelector(
       selectedFilters = filters.filter(
         filter => selectedValues.indexOf(`${filter.value}`) > -1
       );
-      return selectedFilters.length >= 10
-        ? selectedFilters.slice(0, 10)
-        : selectedFilters;
     }
     return selectedFilters;
   }
@@ -233,7 +254,7 @@ export const getFiltersSelected = createSelector(
 export const getSelectorDefaults = createSelector(
   [getSources, getSourceSelected],
   (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return {};
+    if (!sources || !sourceSelected) return null;
     const sourceData = sources.find(d => d.value === sourceSelected.value);
     return {
       sector: sourceData.sector[0],
@@ -245,24 +266,19 @@ export const getSelectorDefaults = createSelector(
 export const getActiveFilterRegion = createSelector(
   [getFiltersSelected],
   filters => {
-    if (!filters || !filters.length) return null;
+    if (!filters) return null;
     return filters.find(f => f.groupId === 'regions');
   }
 );
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getVersionSelected, getFiltersSelected, getBreakSelected],
-  (data, version, filters, breakBy) => {
-    if (!data || !data.length || !filters || !filters.length) return [];
+  [getData, getFiltersSelected, getBreakSelected],
+  (data, filters, breakBy) => {
+    if (!data || !data.length || !filters || !filters.length) return null;
     const filterValues = filters.map(filter => filter.label);
     return sortEmissionsByValue(
-      data.filter(
-        d =>
-          d.gwp === version.label &&
-          filterValues.indexOf(d[breakBy.value]) > -1 &&
-          EXCLUDED_SECTORS.indexOf(d[breakBy.value]) === -1
-      )
+      data.filter(d => filterValues.indexOf(d[breakBy.value]) > -1)
     );
   }
 );
@@ -270,7 +286,7 @@ export const filterData = createSelector(
 export const getChartData = createSelector(
   [filterData, getBreakSelected, getFiltersSelected],
   (data, breakBy, filters) => {
-    if (!data || !data.length || !breakBy || !filters) return [];
+    if (!data || !data.length || !breakBy || !filters) return null;
     const xValues = data[0].emissions.map(d => d.year);
     const dataParsed = xValues.map(x => {
       const yItems = {};
@@ -292,6 +308,7 @@ export const getChartData = createSelector(
 export const getChartConfig = createSelector(
   [filterData, getBreakSelected],
   (data, breakBy) => {
+    if (!data || !breakBy) return null;
     const yColumns = data.map(d => ({
       label: d[breakBy.value],
       value: getYColumnValue(d[breakBy.value])
