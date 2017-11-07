@@ -18,8 +18,10 @@ class Multiselect extends Component {
     };
   }
 
-  componentDidUpdate() {
-    this.selectorElement.highlightFirstSelectableOption();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.search !== prevState.search) {
+      this.selectorElement.highlightFirstSelectableOption();
+    }
   }
 
   getSelectorValue() {

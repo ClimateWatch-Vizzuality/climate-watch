@@ -56,6 +56,18 @@ $height: 45px;
           flex-wrap: wrap;
           overflow: hidden;
           position: relative;
+          width: 100%;
+
+          .simple-value {
+            width: 100%;
+          }
+
+          span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+          }
 
           .resizable-input {
             background: none;
@@ -75,6 +87,7 @@ $height: 45px;
             display: flex;
             align-items: flex-start;
             line-height: $height;
+            width: 100%;
           }
         }
 
