@@ -4,14 +4,12 @@ import facebookIcon from 'assets/icons/facebook.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
 import mailIcon from 'assets/icons/mail.svg';
 import linkIcon from 'assets/icons/link.svg';
+import copy from 'copy-to-clipboard';
 import Component from './tools-nav-component';
 
 const mapStateToProps = () => {
-  // const handleCopyUrl = e => {
-  //   e.clipboardData.setData('text/plain', 'Hello, world!');
-  // };
-
   const url = location.href;
+  const copyUrl = () => copy(url);
   const shareMenuOptions = [
     {
       label: 'Email',
@@ -30,7 +28,8 @@ const mapStateToProps = () => {
     },
     {
       label: 'Copy link',
-      icon: linkIcon
+      icon: linkIcon,
+      action: copyUrl
     }
   ];
 

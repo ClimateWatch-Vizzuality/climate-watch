@@ -87,7 +87,7 @@ class NDCCountryFull extends PureComponent {
             </div>
           </div>
         </Sticky>
-        <div className={styles.contentContainer}>
+        <div className={styles.contentContainer} id="ndc-content-container">
           {loading && !content && <Loading light className={styles.loader} />}
           {this.getPageContent()}
         </div>

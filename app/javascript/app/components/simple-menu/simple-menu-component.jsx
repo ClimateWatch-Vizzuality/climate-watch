@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from 'components/icon';
+import checkIcon from 'assets/icons/check.svg';
 import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
@@ -13,44 +14,96 @@ class SimpleMenu extends PureComponent {
   constructor() {
     super();
     this.state = {
-      open: false
+      open: false,
+      actionSuccessful: false
     };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { actionSuccessful, open } = this.state;
+    if (!open && actionSuccessful) {
+      this.setState({ actionSuccessful: false }); // eslint-disable-line
+    }
+  }
+
+  handleClick(action) {
+    action();
+    this.setState({ actionSuccessful: true });
+  }
+
+  renderInsideLink(option, withAction = false) {
+    const { actionSuccessful } = this.state;
+    return (
+      <div className={styles.documentLink} key={option.label}>
+        {option.icon &&
+          (withAction && actionSuccessful ? (
+            <Icon icon={checkIcon} className={styles.icon} />
+          ) : (
+            <Icon icon={option.icon} className={styles.icon} />
+          ))}
+        <span className={styles.title}>{option.label}</span>
+      </div>
+    );
   }
 
   renderLink(option) {
-    return option.path ? (
-      <NavLink
+    if (option.path) {
+      return (
+        <NavLink
+          className={styles.link}
+          activeClassName={styles.active}
+          to={option.path}
+          onClick={() => this.setState({ open: false })}
+        >
+          {this.renderInsideLink(option)}
+        </NavLink>
+      );
+    }
+    return option.action ? (
+      <button
         className={styles.link}
-        activeClassName={styles.active}
-        to={option.path}
-        onClick={() => this.setState({ open: false })}
+        onClick={() => this.handleClick(option.action)}
       >
-        <div className={styles.documentLink} key={option.label}>
-          {option.label}
-        </div>
-      </NavLink>
+        {this.renderInsideLink(option, true)}
+      </button>
     ) : (
       <a className={styles.link} target="_blank" href={option.link}>
-        <div className={styles.documentLink} key={option.label}>
-          {option.icon && <Icon icon={option.icon} className={styles.icon} />}
-          <span className={styles.title}>{option.label}</span>
-        </div>
+        {this.renderInsideLink(option)}
       </a>
     );
   }
-  render() {
+
+  renderButton() {
     const {
-      options,
       icon,
       title,
       buttonClassName,
       currentPathname,
-      reverse,
-      positionRight
+      options
     } = this.props;
     const { open } = this.state;
-    const paths = this.props.options.map(option => option.path);
+
+    const paths = options.map(option => option.path);
     const active = includes(paths, currentPathname);
+
+    return (
+      <button
+        className={cx(styles.button, buttonClassName, {
+          [styles.active]: open || active
+        })}
+        onClick={() => this.setState({ open: !open })}
+      >
+        {icon && <Icon icon={icon} className={styles.icon} />}
+        {title && <div>{title}</div>}
+        {!icon && <Icon icon={arrow} className={styles.arrowIcon} />}
+      </button>
+    );
+  }
+
+  render() {
+    const { options, reverse, positionRight } = this.props;
+    const { open } = this.state;
 
     return (
       <ClickOutside onClickOutside={() => this.setState({ open: false })}>
@@ -61,28 +114,10 @@ class SimpleMenu extends PureComponent {
             { [styles.positionRight]: positionRight }
           )}
         >
-          <button
-            className={cx(styles.button, buttonClassName, {
-              [styles.active]: open || active
-            })}
-            onClick={() => this.setState({ open: !open })}
-          >
-            {icon && <Icon icon={icon} className={styles.icon} />}
-            {title && <div>{title}</div>}
-            {!icon && <Icon icon={arrow} className={styles.arrowIcon} />}
-          </button>
+          {this.renderButton()}
           <ul className={cx(styles.links, { [styles.open]: open })}>
             {options.map(option => (
-              <li key={option.label}>
-                {option.action ? (
-                  <button key={option.label} className={styles.documentLink}>
-                    <Icon icon={option.icon} className={styles.icon} />
-                    <span className={styles.title}>{option.label}</span>
-                  </button>
-                ) : (
-                  this.renderLink(option)
-                )}
-              </li>
+              <li key={option.label}>{this.renderLink(option)}</li>
             ))}
           </ul>
         </div>
