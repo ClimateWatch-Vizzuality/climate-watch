@@ -8,6 +8,11 @@
   grid-template-columns: 3fr 1fr;
 }
 
+.sticky {
+  z-index: 2;
+  position: relative;
+}
+
 .actionsWrapper {
   border-bottom: solid 1px $border-color;
   background: $white;
@@ -39,6 +44,17 @@
   padding-bottom: 80px;
 }
 
-.loader {
+.contentContainer {
+  position: relative;
   min-height: 500px;
+  z-index: 1;
+}
+
+.loader {
+  position: absolute;
+  min-height: 500px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }

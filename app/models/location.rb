@@ -23,6 +23,8 @@ class Location < ApplicationRecord
     l.wri_standard_name.blank?
   }
 
+  scope :countries, (-> { where(location_type: 'COUNTRY') })
+
   def populate_wri_standard_name
     self.wri_standard_name = [
       pik_name, cait_name, ndcp_navigators_name, iso_code3, iso_code2

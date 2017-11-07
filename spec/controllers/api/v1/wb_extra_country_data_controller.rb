@@ -37,6 +37,18 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
         year: 2004
       )
     }
+    describe 'GET index' do
+      it 'returns a successful 200 response' do
+        get :index
+        expect(response).to be_success
+      end
+
+      it 'lists all wb_extra_country_data' do
+        get :index
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body.length).to eq(1)
+      end
+    end
 
     describe 'GET show' do
       it 'returns a successful 200 response' do

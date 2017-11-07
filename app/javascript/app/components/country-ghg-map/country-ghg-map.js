@@ -31,9 +31,11 @@ const mapStateToProps = (state, { location, match, year }) => {
   const { meta } = state.ghgEmissionsMeta;
   const { data: countries } = state.countries;
   const search = qs.parse(location.search);
+  const calculationData = state.wbCountryData.data;
   const stateWithSelected = {
     countries,
     data,
+    calculationData,
     meta,
     search,
     iso: match.params.iso,

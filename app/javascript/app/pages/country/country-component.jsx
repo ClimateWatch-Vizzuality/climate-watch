@@ -40,11 +40,8 @@ class Country extends PureComponent {
         {route.sections &&
           route.sections.length > 0 &&
           route.sections.map(section => (
-            <div
-              key={section.hash}
-              id={section.hash}
-              className={styles.section}
-            >
+            <div key={section.hash} className={styles.section}>
+              <div id={section.hash} className={styles.sectionHash} />
               <section.component />
             </div>
           ))}

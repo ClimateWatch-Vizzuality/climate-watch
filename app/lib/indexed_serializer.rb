@@ -21,6 +21,7 @@ module IndexedSerializer
     objects.
       map(&block).
       zip(serialized_values).
+      sort_by(&:first).
       group_by(&:first).
       each_with_object({}) do |value, memo|
         memo[value.first] = value.second.map(&:second)

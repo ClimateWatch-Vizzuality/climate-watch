@@ -7,7 +7,7 @@
 
   grid-template-columns: 3fr 1fr;
   margin-bottom: 20px;
-  margin-top: 20px;
+  padding-top: 20px;
 }
 
 .sdgs {
@@ -64,6 +64,7 @@
   max-width: 780px;
   color: $theme-color;
   transition: max-height 0.4s ease-in;
+  line-height: 1.6;
 
   &Open {
     max-height: 100px;

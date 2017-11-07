@@ -43,24 +43,18 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const getSelectedCategory = createSelector(
-  [state => state.categorySelected, getCategories, getIndicatorsData],
-  (selected, categories = [], indicators) => {
-    if (categories.length > 0) {
-      if (selected) {
-        const filtered = categories.filter(
-          category => category.value === selected
-        );
-        return filtered.length > 0 ? filtered[0] : {};
-      }
-      const firstCategorywithIndicators = categories.find(category =>
-        indicators.some(
-          indicator =>
-            indicator.category_ids.indexOf(parseInt(category.id, 10)) > -1
-        )
+  [state => state.categorySelected, getCategories],
+  (selected, categories = []) => {
+    if (!categories || !categories.length) return null;
+    const defaultCategory =
+      categories.find(cat => cat.value === 'unfccc_process') || categories[0];
+    if (selected) {
+      return (
+        categories.find(category => category.value === selected) ||
+        defaultCategory
       );
-      return firstCategorywithIndicators || categories[0];
     }
-    return {};
+    return defaultCategory;
   }
 );
 
@@ -77,16 +71,14 @@ export const getCategoryIndicators = createSelector(
 export const getSelectedIndicator = createSelector(
   [state => state.indicatorSelected, getCategoryIndicators],
   (selected, indicators = []) => {
-    if (indicators.length > 0) {
-      if (selected) {
-        const filtered = indicators.filter(
-          indicator => indicator.value === selected
-        );
-        return filtered.length > 0 ? filtered[0] : {};
-      }
-      return indicators[0];
+    if (!indicators || !indicators.length) return {};
+    if (!selected) {
+      return indicators.find(ind => ind.value === 'pa_status') || indicators[0];
     }
-    return {};
+    return (
+      indicators.find(indicator => indicator.value === selected) ||
+      indicators[0]
+    );
   }
 );
 
