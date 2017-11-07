@@ -20,6 +20,8 @@ Rails.application.routes.draw do
           action: :sdgs_overview
         get :content_overview, on: :member, controller: :ndcs,
           action: :content_overview
+        get :linkages_dataset, on: :collection, controller: :ndc_sdgs,
+          action: :linkages_dataset, defaults: { format: :csv }
       end
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]
