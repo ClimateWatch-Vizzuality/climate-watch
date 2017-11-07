@@ -93,7 +93,9 @@ const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
-const countryHasCalculationDataForYear = (data, year) => data && data[year];
+// If we dont have calculationData the selected calculation is Absolute value so it should show that data
+const countryHasCalculationDataForYear = (calculationData, data, year) =>
+  isEmpty(calculationData) || (data && data[year]);
 
 export const getDataParsed = createSelector(
   [getData, getCalculationData, getYearSelected, getCalculationSelected],
@@ -116,12 +118,11 @@ export const getDataParsed = createSelector(
         item &&
         item.value &&
         !EXCLUDED_INDICATORS.includes(iso) &&
-        (isEmpty(calculationData) ||
-          (!isEmpty(calculationData) &&
-            countryHasCalculationDataForYear(
-              calculationDataGroupedByYear,
-              item.year
-            )))
+        countryHasCalculationDataForYear(
+          calculationData,
+          calculationDataGroupedByYear,
+          item.year
+        )
       ) {
         const calculationRatio = calculatedRatio(
           calculationSelected.value,
