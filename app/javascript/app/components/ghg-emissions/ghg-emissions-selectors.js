@@ -297,13 +297,11 @@ export const getActiveFilterRegion = createSelector(
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getFiltersSelected, getBreakSelected],
+  [filterAndSortData, getFiltersSelected, getBreakSelected],
   (data, filters, breakBy) => {
     if (!data || !data.length || !filters || !filters.length) return null;
     const filterValues = filters.map(filter => filter.label);
-    return sortEmissionsByValue(
-      data.filter(d => filterValues.indexOf(d[breakBy.value]) > -1)
-    );
+    return data.filter(d => filterValues.indexOf(d[breakBy.value]) > -1);
   }
 );
 
