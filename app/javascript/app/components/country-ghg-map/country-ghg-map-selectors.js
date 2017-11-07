@@ -93,9 +93,7 @@ const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
-const countryHasCalculationDataForYear = (data, iso, year) =>
-  data[iso] && data[iso].some(d => d.year === year);
-const countryCalculationDataByYear = (data, iso) => groupBy(data[iso], 'year');
+const countryHasCalculationDataForYear = (data, year) => data && data[year];
 
 export const getDataParsed = createSelector(
   [getData, getCalculationData, getYearSelected, getCalculationSelected],
@@ -108,31 +106,35 @@ export const getDataParsed = createSelector(
     let min = 9999999999;
 
     data.forEach(d => {
+      const iso = d.iso_code3;
+      const calculationDataGroupedByYear =
+        calculationData &&
+        calculationData[iso] &&
+        groupBy(calculationData[iso], 'year');
       const item = d.emissions.find(e => e.year === year);
       if (
         item &&
         item.value &&
-        !EXCLUDED_INDICATORS.includes(d.iso_code3) &&
+        !EXCLUDED_INDICATORS.includes(iso) &&
         (isEmpty(calculationData) ||
           (!isEmpty(calculationData) &&
             countryHasCalculationDataForYear(
-              calculationData,
-              d.iso_code3,
+              calculationDataGroupedByYear,
               item.year
             )))
       ) {
         const calculationRatio = calculatedRatio(
           calculationSelected.value,
-          countryCalculationDataByYear(calculationData, d.iso_code3),
+          calculationDataGroupedByYear,
           item.year
         );
 
         const value = item.value / calculationRatio;
         if (value > max) max = value;
         if (value < min) min = value;
-        dataParsed[d.iso_code3] = value;
+        dataParsed[iso] = value;
       } else {
-        dataParsed[d.iso_code3] = null;
+        dataParsed[iso] = null;
       }
     });
     return {
