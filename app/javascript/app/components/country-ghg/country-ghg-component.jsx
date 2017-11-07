@@ -20,9 +20,9 @@ class CountryGhg extends PureComponent {
     };
   }
 
-  handleYearHover = throttle(data => {
-    if (data) {
-      this.setState({ year: data.activeLabel });
+  handleYearHover = throttle(year => {
+    if (year) {
+      this.setState({ year });
     }
   }, 10);
 

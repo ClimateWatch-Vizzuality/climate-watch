@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
+import isArray from 'lodash/isArray';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import {
@@ -212,10 +213,17 @@ export const getQuantificationsData = createSelector(
   getQuantifications,
   quantifications => {
     if (!quantifications) return [];
-    return quantifications.map(q => ({
-      y: q.value * DATA_SCALE,
-      x: q.year
-    }));
+    return quantifications.map(q => {
+      const isRange = isArray(q.value);
+      const y = isRange
+        ? q.value.map(i => i * DATA_SCALE)
+        : q.value * DATA_SCALE;
+      return {
+        y,
+        x: q.year,
+        isRange
+      };
+    });
   }
 );
 
