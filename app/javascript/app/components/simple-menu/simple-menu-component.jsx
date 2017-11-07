@@ -20,15 +20,24 @@ class SimpleMenu extends PureComponent {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(action) {
-    this.setState({ actionSuccesful: action() });
+  componentDidUpdate() {
+    const { actionSuccessful, open } = this.state;
+    if (!open && actionSuccessful) {
+      this.setState({ actionSuccessful: false }); // eslint-disable-line
+    }
   }
+
+  handleClick(action) {
+    action();
+    this.setState({ actionSuccessful: true });
+  }
+
   renderInsideLink(option, withAction = false) {
-    const { actionSuccesful } = this.state;
+    const { actionSuccessful } = this.state;
     return (
       <div className={styles.documentLink} key={option.label}>
         {option.icon &&
-          (withAction && actionSuccesful ? (
+          (withAction && actionSuccessful ? (
             <Icon icon={checkIcon} className={styles.icon} />
           ) : (
             <Icon icon={option.icon} className={styles.icon} />
@@ -52,14 +61,12 @@ class SimpleMenu extends PureComponent {
       );
     }
     return option.action ? (
-      <a
+      <button
         className={styles.link}
         onClick={() => this.handleClick(option.action)}
-        role="button"
-        tabIndex={-1}
       >
         {this.renderInsideLink(option, true)}
-      </a>
+      </button>
     ) : (
       <a className={styles.link} target="_blank" href={option.link}>
         {this.renderInsideLink(option)}
