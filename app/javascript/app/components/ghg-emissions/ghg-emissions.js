@@ -69,12 +69,12 @@ const mapStateToProps = (state, { location }) => {
 };
 
 function needsRequestData(props, nextProps) {
-  const { sourceSelected, breakSelected, filtersSelected } = nextProps;
-  const hasValues =
-    sourceSelected.value && breakSelected.value && filtersSelected;
+  const { sourceSelected, breakSelected } = nextProps;
+  const hasValues = sourceSelected && breakSelected;
   const hasChanged =
-    sourceSelected.value !== props.sourceSelected.value ||
-    breakSelected.value !== props.breakSelected.value;
+    hasValues &&
+    (sourceSelected !== props.sourceSelected ||
+      breakSelected !== props.breakSelected);
   return hasValues && hasChanged;
 }
 
@@ -109,7 +109,7 @@ class GhgEmissionsContainer extends PureComponent {
     super(props);
     const { sourceSelected, breakSelected, filtersSelected } = props;
     const hasValues =
-      sourceSelected.value && breakSelected.value && filtersSelected.length > 0;
+      sourceSelected && breakSelected && filtersSelected.length > 0;
     if (hasValues) {
       const filters = getFiltersParsed(props);
       props.fetchGhgEmissionsData(filters);
@@ -206,11 +206,15 @@ class GhgEmissionsContainer extends PureComponent {
 GhgEmissionsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  breakSelected: PropTypes.object.isRequired,
-  sourceSelected: PropTypes.object.isRequired,
+  breakSelected: PropTypes.object,
+  sourceSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
   fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array
+};
+
+GhgEmissionsContainer.defaultProps = {
+  sourceSelected: null
 };
 
 export { actions, reducers, initialState };
