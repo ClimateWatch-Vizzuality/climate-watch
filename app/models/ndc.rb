@@ -52,7 +52,7 @@ class Ndc < ApplicationRecord
     update_all(sql)
   end
 
-  def self.linkage_texts(params)
+  def self.linkages(params)
     query_params = {}
 
     filters = {
@@ -74,8 +74,9 @@ class Ndc < ApplicationRecord
       ndc_target_sectors: [:sector],
       ndc: [:location]
     ).where(query_params).
-      map(&:indc_text).
-      uniq
+      reject { |n| n.starts_at.nil? }.
+      uniq(&:indc_text).
+      sort_by(&:starts_at)
   end
 
   def self.linkages_for(iso_code3)

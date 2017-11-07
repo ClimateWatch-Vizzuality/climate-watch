@@ -2,13 +2,10 @@ module Api
   module V1
     class NdcTextsController < ApiController
       def index
-        ndcs = Ndc.includes(
-          :location,
-          ndc_targets: [{target: :goal}, :sectors]
-        )
+        ndcs = Ndc.includes(:location)
         ndcs =
           if params[:target] || params[:goal] || params[:sector]
-            with_linkage_highlights(ndcs, false)
+            with_linkage_highlights(ndcs, false, false)
           elsif params[:query]
             with_highlights(ndcs, false, false)
           else
@@ -63,46 +60,92 @@ module Api
         highlighted_ndcs
       end
 
-      def highlight_text(text, highlights)
-        return text unless highlights.length.positive?
-        text.gsub(
-          Regexp.new(
-            "(#{highlights.map { |t| "(?:#{Regexp.escape(t)})" }.join('|')})",
-            'i'
-          ),
-          [
-            Ndc::PG_SEARCH_HIGHLIGHT_START,
-            '\1',
-            Ndc::PG_SEARCH_HIGHLIGHT_END
-          ].join
-        )
+      def highlight_text(text, linkages)
+        return text unless linkages.length.positive?
+
+        indices = linkages.reduce([]) do |list, linkage|
+          list.push(linkage.starts_at, linkage.ends_at)
+        end
+
+        if indices.length.positive?
+          indices.unshift(1)
+          indices.push(text.length)
+        end
+
+        parts = indices.each_cons(2).map.with_index do |(i1, i2), idx|
+          if idx % 2 == 0 && idx == 0
+            text[i1..(i2-1)]
+          elsif idx % 2 == 0
+            text[(i1+1)..(i2-1)]
+          else
+            text[i1..i2]
+          end
+        end
+
+        idx = 0
+        parts.reduce("") do |memo, part|
+          memo +=
+            if idx % 2 > 0
+              [
+                Ndc::PG_SEARCH_HIGHLIGHT_START,
+                part,
+                Ndc::PG_SEARCH_HIGHLIGHT_END
+              ].join
+            else
+              part
+            end
+          idx += 1
+          memo
+        end
       end
 
       def with_linkage_highlights(
         ndcs,
-        include_not_matched = true
+        include_not_matched = true,
+        highlight_matches = true
       )
-        texts = Ndc.linkage_texts(params)
+        linkages = Ndc.linkages(params)
 
         unless include_not_matched
           if params[:target]
-            ndcs = ndcs.where(ndc_sdg_targets: {number: params[:target]})
+            ids = ::NdcSdg::Target.
+              includes(:ndc_targets).
+              find_by!(number: params[:target]).
+              ndc_targets.
+              map(&:ndc_id).
+              uniq
+            ndcs = ndcs.where(id: ids)
           end
 
           if params[:goal]
-            ndcs = ndcs.where(ndc_sdg_goals: {number: params[:goal]})
+            ids = ::NdcSdg::Goal.
+              includes(targets: :ndc_targets).
+              find_by!(number: params[:goal]).
+              targets.
+              flat_map(&:ndc_targets).
+              map(&:ndc_id).
+              uniq
+            ndcs = ndcs.where(id: ids)
           end
 
           if params[:sector]
-            ndcs = ndcs.where(ndc_sdg_sectors: {id: params[:sector]})
+            ids = ::NdcSdg::Sector.
+              includes(:ndc_targets).
+              find_by!(id: params[:sector]).
+              ndc_targets.
+              map(&:ndc_id).
+              uniq
+            ndcs = ndcs.where(id: ids)
           end
         end
 
         ndcs.map do |ndc|
-          ndc.linkages = texts.reject do |text|
-            ndc.full_text.at(text).nil?
-          end
-          ndc.full_text = highlight_text(ndc.full_text, texts)
+          ndc_linkages = linkages.
+            select { |linkage| linkage.ndc_id == ndc.id }
+
+          ndc.linkages = ndc_linkages.map(&:indc_text)
+
+          ndc.full_text = highlight_text(ndc.full_text, ndc_linkages)
           ndc.readonly!
           ndc
         end
