@@ -11,9 +11,9 @@
 .col2 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr);
+  @include msGridColumns(50%, 50%);
 
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 50%);
 }
 
 .search {
@@ -31,7 +31,7 @@
 .contentCols {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr);
+  @include msGridColumns(50%, 50%);
 
   grid-template-columns: repeat(2, 50%);
 }
