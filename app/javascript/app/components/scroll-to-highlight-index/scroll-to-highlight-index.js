@@ -23,7 +23,7 @@ class ScrollToHighlightIndex extends PureComponent {
       const PADDING = -200;
       let firstLevelElement = element;
       let elementPosition = firstLevelElement.offsetTop;
-      while (firstLevelElement.tagName !== 'TABLE') {
+      while (firstLevelElement.id !== 'ndc-content-container') {
         elementPosition += firstLevelElement.offsetParent.offsetTop;
         firstLevelElement = firstLevelElement.offsetParent;
       }
