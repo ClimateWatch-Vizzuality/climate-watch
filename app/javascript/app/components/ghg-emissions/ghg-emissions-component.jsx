@@ -33,8 +33,7 @@ class GhgEmissions extends PureComponent {
       filtersSelected,
       handleFilterChange,
       handleRemoveTag,
-      loadingMeta,
-      loadingData,
+      loading,
       activeFilterRegion
     } = this.props;
     return (
@@ -79,11 +78,10 @@ class GhgEmissions extends PureComponent {
           />
         </div>
         <div className={styles.chartWrapper}>
-          {(loadingMeta || loadingData) && (
+          {loading && (
             <Loading light className={styles.loader} />
           )}
-          {!loadingData &&
-            !loadingMeta &&
+          {!loading &&
             (!data || !data.length) && (
               <NoContent
                 message={filtersSelected && filtersSelected.length ? 'No data available' : 'No data selected'}
@@ -136,8 +134,7 @@ GhgEmissions.propTypes = {
   filters: PropTypes.array,
   filtersSelected: PropTypes.array,
   handleFilterChange: PropTypes.func.isRequired,
-  loadingData: PropTypes.bool,
-  loadingMeta: PropTypes.bool,
+  loading: PropTypes.bool,
   activeFilterRegion: PropTypes.object
 };
 
