@@ -27,6 +27,7 @@ import AboutPermissions from 'components/about-permissions';
 import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country-climate-vulnerability';
+import Editor from 'components/editor';
 import error from 'pages/error';
 
 export default [
@@ -38,6 +39,11 @@ export default [
         component: Home,
         exact: true,
         headerImage: 'home'
+      },
+      {
+        path: '/editor',
+        component: Editor,
+        exact: true
       },
       {
         path: '/countries',

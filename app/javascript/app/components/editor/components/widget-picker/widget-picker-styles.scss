@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.options {
+  width: 90%;
+  height: 90%;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.option {
+  width: 30%;
+  height: 30%;
+  border: 1px solid;
+  line-height: 0;
+}
+
+.viz {
+  width: 100%;
+  height: 100%;
+  background-color: pink;
+  border-radius: 0;
+  cursor: pointer;
+}
