@@ -15,9 +15,22 @@ class SimpleMenu extends PureComponent {
     this.state = {
       open: false
     };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(action) {
+    this.setState({ open: false });
+    return action();
   }
 
   renderLink(option) {
+    const insideLink = o => (
+      <div className={styles.documentLink} key={o.label}>
+        {o.icon && <Icon icon={o.icon} className={styles.icon} />}
+        <span className={styles.title}>{o.label}</span>
+      </div>
+    );
+
     return option.path ? (
       <NavLink
         className={styles.link}
@@ -25,32 +38,50 @@ class SimpleMenu extends PureComponent {
         to={option.path}
         onClick={() => this.setState({ open: false })}
       >
-        <div className={styles.documentLink} key={option.label}>
-          {option.label}
-        </div>
+        {insideLink(option)}
       </NavLink>
     ) : (
-      <a className={styles.link} target="_blank" href={option.link}>
-        <div className={styles.documentLink} key={option.label}>
-          {option.icon && <Icon icon={option.icon} className={styles.icon} />}
-          <span className={styles.title}>{option.label}</span>
-        </div>
+      <a
+        className={styles.link}
+        target="_blank"
+        href={option.link}
+        onClick={() => this.handleClick(option.action)}
+      >
+        {insideLink(option)}
       </a>
     );
   }
-  render() {
+
+  renderButton() {
     const {
-      options,
       icon,
       title,
       buttonClassName,
       currentPathname,
-      reverse,
-      positionRight
+      options
     } = this.props;
     const { open } = this.state;
-    const paths = this.props.options.map(option => option.path);
+
+    const paths = options.map(option => option.path);
     const active = includes(paths, currentPathname);
+
+    return (
+      <button
+        className={cx(styles.button, buttonClassName, {
+          [styles.active]: open || active
+        })}
+        onClick={() => this.setState({ open: !open })}
+      >
+        {icon && <Icon icon={icon} className={styles.icon} />}
+        {title && <div>{title}</div>}
+        {!icon && <Icon icon={arrow} className={styles.arrowIcon} />}
+      </button>
+    );
+  }
+
+  render() {
+    const { options, reverse, positionRight } = this.props;
+    const { open } = this.state;
 
     return (
       <ClickOutside onClickOutside={() => this.setState({ open: false })}>
@@ -61,28 +92,10 @@ class SimpleMenu extends PureComponent {
             { [styles.positionRight]: positionRight }
           )}
         >
-          <button
-            className={cx(styles.button, buttonClassName, {
-              [styles.active]: open || active
-            })}
-            onClick={() => this.setState({ open: !open })}
-          >
-            {icon && <Icon icon={icon} className={styles.icon} />}
-            {title && <div>{title}</div>}
-            {!icon && <Icon icon={arrow} className={styles.arrowIcon} />}
-          </button>
+          {this.renderButton()}
           <ul className={cx(styles.links, { [styles.open]: open })}>
             {options.map(option => (
-              <li key={option.label}>
-                {option.action ? (
-                  <button key={option.label} className={styles.documentLink}>
-                    <Icon icon={option.icon} className={styles.icon} />
-                    <span className={styles.title}>{option.label}</span>
-                  </button>
-                ) : (
-                  this.renderLink(option)
-                )}
-              </li>
+              <li key={option.label}>{this.renderLink(option)}</li>
             ))}
           </ul>
         </div>
