@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import max from 'lodash/max';
+import isArray from 'lodash/isArray';
 
 import {
   ComposedChart,
@@ -11,6 +12,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ReferenceArea,
   ReferenceDot,
   Label,
   ResponsiveContainer
@@ -39,6 +41,8 @@ function getMaxValue(data, config) {
     y: max(values)
   };
 }
+
+const tickFormat = { fill: '#8f8fa1', strokeWidth: 0, fontSize: '13px' };
 
 class ChartStackedArea extends PureComponent {
   constructor() {
@@ -94,8 +98,9 @@ class ChartStackedArea extends PureComponent {
     };
 
     if (points.length > 0) {
-      domain.x[1] = points[points.length - 1].x;
-      domain.y[1] = points[points.length - 1].y + 1000000;
+      domain.x[1] = max(points.map(p => p.x));
+      domain.y[1] =
+        max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
     }
 
     return (
@@ -112,7 +117,7 @@ class ChartStackedArea extends PureComponent {
             type="number"
             dataKey="x"
             padding={{ left: 30, right: 30 }}
-            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+            tick={tickFormat}
           />
           <YAxis
             type="number"
@@ -121,7 +126,7 @@ class ChartStackedArea extends PureComponent {
             padding={{ top: 0, bottom: 0 }}
             tickFormatter={tick => (tick === 0 ? 0 : `${format('.2s')(tick)}t`)}
             tickLine={false}
-            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+            tick={tickFormat}
           />
           <CartesianGrid vertical={false} />
           {tooltipVisibility && (
@@ -183,9 +188,56 @@ class ChartStackedArea extends PureComponent {
           {points.length > 0 &&
             points.map(point => {
               const isActivePoint = point.x === activePoint;
+              const topLabel = isActivePoint ? (
+                <Label
+                  value={point.x}
+                  position="top"
+                  fill="#8f8fa1"
+                  strokeWidth={0.5}
+                  fontSize="13px"
+                  offset={25}
+                />
+              ) : null;
+
+              const bottomLabelValue = point.isRange
+                ? `${format('.3s')(point.y[0])}t - ${format('.3s')(
+                  point.y[1]
+                )}t`
+                : `${format('.3s')(point.y)}t`;
+              const bottomLabel = isActivePoint ? (
+                <Label
+                  value={bottomLabelValue}
+                  position="top"
+                  fill="#113750"
+                  fontSize="18px"
+                />
+              ) : null;
+
+              if (point.isRange) {
+                return [
+                  <ReferenceArea
+                    key={point.x}
+                    x1={point.x - 0.01}
+                    x2={point.x + 0.01}
+                    y1={point.y[0]}
+                    y2={point.y[1]}
+                    fill="transparent"
+                    stroke={isActivePoint ? '#113750' : '#8699A4'}
+                    strokeWidth={isActivePoint ? 8 : 6}
+                    strokeLinejoin="round"
+                    fillOpacity={0}
+                    isFront
+                    onMouseEnter={() => this.handlePointeHover(point.x)}
+                    onMouseLeave={() => this.handlePointeHover(null)}
+                  >
+                    {topLabel}
+                    {bottomLabel}
+                  </ReferenceArea>
+                ];
+              }
               return (
                 <ReferenceDot
-                  key={point.x}
+                  key={point.x + point.y}
                   x={point.x}
                   y={point.y}
                   fill={isActivePoint ? '#113750' : '#8699A4'}
@@ -193,24 +245,8 @@ class ChartStackedArea extends PureComponent {
                   onMouseEnter={() => this.handlePointeHover(point.x)}
                   onMouseLeave={() => this.handlePointeHover(null)}
                 >
-                  {isActivePoint && (
-                    <Label
-                      value={point.x}
-                      position="top"
-                      fill="#8f8fa1"
-                      strokeWidth={0.5}
-                      fontSize="13px"
-                      offset={25}
-                    />
-                  )}
-                  {isActivePoint && (
-                    <Label
-                      value={`${format('.3s')(point.y)}t`}
-                      position="top"
-                      fill="#113750"
-                      fontSize="18px"
-                    />
-                  )}
+                  {topLabel}
+                  {bottomLabel}
                 </ReferenceDot>
               );
             })}
