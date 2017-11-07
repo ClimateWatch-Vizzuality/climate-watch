@@ -208,7 +208,9 @@ export const getRegionsOptions = createSelector(
 export const getFilterOptions = createSelector(
   [getMeta, getSourceSelected, getBreakSelected, getRegionsOptions],
   (meta, sourceSelected, breakSelected, regions) => {
-    if (!sourceSelected || !breakSelected || isEmpty(meta) || !regions) { return []; }
+    if (!sourceSelected || !breakSelected || isEmpty(meta) || !regions) {
+      return [];
+    }
     const breakByValue = breakSelected.value;
     const activeSourceData = meta.data_source.find(
       source => source.value === sourceSelected.value
@@ -252,14 +254,36 @@ export const getFiltersSelected = createSelector(
 
 // get selector defaults
 export const getSelectorDefaults = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sourceSelected) return null;
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
-    return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0]
-    };
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    const defaults = {};
+    switch (sourceSelected.label) {
+      case 'CAIT':
+        defaults.sector = meta.sector.find(
+          s => s.label === 'Total excluding LUCF'
+        ).value;
+        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
+        defaults.location = 'WORLD';
+        break;
+      case 'PIK':
+        defaults.sector = meta.sector.find(
+          s => s.label === 'Total excluding LUCF'
+        ).value;
+        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
+        defaults.location = 'WORLD';
+        break;
+      case 'UNFCCC':
+        defaults.sector = meta.sector.find(
+          s => s.label === 'Total GHG emissions without LULUCF'
+        ).value;
+        defaults.gas = meta.gas.find(g => g.label === 'Aggregate GHGs').value;
+        defaults.location = 'ANNEXI';
+        break;
+      default:
+        return null;
+    }
+    return defaults;
   }
 );
 
