@@ -44,6 +44,7 @@ const pagesReducers = {
 };
 
 // Components
+import * as editorComponent from 'components/editor';
 import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as storiesComponent from 'components/stories';
@@ -57,6 +58,7 @@ import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkage
 import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
 
 const componentsReducers = {
+  editor: handleActions(editorComponent),
   map: handleActions(mapComponent),
   autocompleteSearch: handleActions(autocompleteSearchComponent),
   stories: handleActions(storiesComponent),

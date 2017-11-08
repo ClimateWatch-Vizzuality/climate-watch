@@ -1,24 +1,27 @@
+import { EditorState, AtomicBlockUtils, convertToRaw } from 'draft-js';
 import { compose, mapProps, withProps } from 'recompose';
 import omit from 'lodash/fp/omit';
 
-import { EditorState, AtomicBlockUtils } from 'draft-js';
+export const updateEditorContent = ({ editorState, type, mode, data }) => {
+  const contentState = editorState.getCurrentContent();
+  const contentStateWithEntity = contentState.createEntity(type, mode, data);
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+  const newEditorState = EditorState.set(editorState, {
+    currentContent: contentStateWithEntity
+  });
+  return {
+    entityKey,
+    newEditorState
+  };
+};
+
+export const insertAtomicBlock = ({ editorState, entityKey, char }) =>
+  AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, char);
+
+export const logEditorState = editorState =>
+  convertToRaw(editorState.getCurrentContent());
 
 const filterProps = compose(mapProps, omit);
-
-const modifier = urlType => (editorState, mode = 'IMMUTABLE', data) => {
-  const contentState = editorState.getCurrentContent();
-  const contentStateWithEntity = contentState.createEntity(urlType, mode, data);
-  const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-  const newEditorState = AtomicBlockUtils.insertAtomicBlock(
-    editorState,
-    entityKey,
-    ' '
-  );
-  return EditorState.forceSelection(
-    newEditorState,
-    editorState.getCurrentContent().getSelectionAfter()
-  );
-};
 
 const blockRendererFn = (component, entityType) => (
   block,
@@ -39,7 +42,7 @@ const blockRendererFn = (component, entityType) => (
   return null;
 };
 
-const createBarchartPlugin = (config = {}) => {
+export const createPlugin = (config = {}) => {
   const Chart = filterProps([
     'block',
     'blockProps',
@@ -55,9 +58,8 @@ const createBarchartPlugin = (config = {}) => {
 
   const component = config.decorator ? config.decorator(Chart) : Chart;
   return {
-    blockRendererFn: blockRendererFn(component, config.type),
-    modifier: modifier(config.type)
+    blockRendererFn: blockRendererFn(component, config.type)
   };
 };
 
-export default createBarchartPlugin;
+export default {};
