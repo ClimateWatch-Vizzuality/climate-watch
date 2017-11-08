@@ -66,7 +66,7 @@ module Api
         end
 
         if indices.length.positive?
-          indices.unshift(1)
+          indices.unshift(0)
           indices.push(text_length)
         end
 
