@@ -2,43 +2,52 @@ import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import initialState from './editor-initial-state';
 import * as actions from './editor-actions';
+import initialState from './editor-initial-state';
 import reducers from './editor-reducers';
 import EditorComponent from './editor-component';
 
 class Editor extends Component {
-  componentWillReceiveProps({ editorIsFocused }) {
-    if (editorIsFocused && this.editor) setTimeout(() => this.focus(), 0);
+  componentWillReceiveProps({ editorIsFocused, titleIsFocused }) {
+    if (editorIsFocused && this.editor) setTimeout(() => this.focusEditor(), 0);
+    if (titleIsFocused && this.editor) setTimeout(() => this.focusTitle(), 0);
   }
 
   getEditorRef = ref => {
     this.editor = ref;
   };
 
-  focus = () => {
+  getTitleRef = ref => {
+    this.title = ref;
+  };
+
+  focusEditor = () => {
     this.editor.focus();
+  };
+
+  focusTitle = () => {
+    this.title.focus();
   };
 
   render() {
     const {
       updateContent,
       content,
-      pickVisualiation,
-      pickerIsOpen,
       openPicker,
       closePicker,
-      logState
+      ...props
     } = this.props;
+
     return createElement(EditorComponent, {
-      pickerIsOpen,
       showPicker: openPicker,
       hidePicker: closePicker,
       editorState: content,
       onChange: updateContent,
-      pickVisualiation,
       getEditorRef: this.getEditorRef,
-      logState
+      getTitleRef: this.getTitleRef,
+      focusEditor: this.focusEditor,
+      focusTitle: this.focusTitle,
+      ...props
     });
   }
 }
@@ -50,11 +59,14 @@ Editor.propTypes = {
   openPicker: PropTypes.func.isRequired,
   closePicker: PropTypes.func.isRequired,
   pickerIsOpen: PropTypes.bool.isRequired,
-  logState: PropTypes.func
+  updateTitle: PropTypes.func.isRequired,
+  logState: PropTypes.func,
+  title: PropTypes.string,
+  titlePlaceholder: PropTypes.string
 };
 
 const mapStateToProps = ({ editor }) => editor;
 
 export { actions, reducers, initialState };
 
-export default connect(mapStateToProps, actions)(Editor);
+export default connect(mapStateToProps, { ...actions })(Editor);

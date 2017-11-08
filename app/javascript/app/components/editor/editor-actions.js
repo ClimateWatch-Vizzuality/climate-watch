@@ -10,6 +10,8 @@ export const openPicker = createAction('openPicker');
 export const closePicker = createAction('closePicker');
 export const updateContent = createAction('updateContent');
 export const focusEditor = createAction('focusEditor');
+export const focusTitle = createAction('focusTitle');
+export const updateTitle = createAction('updateTitle');
 export const logState = createThunkAction(
   'logState',
   () => (dispatch, getState) => {

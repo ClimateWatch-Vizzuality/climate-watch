@@ -30,14 +30,30 @@ const StoryEditor = ({
   pickVisualiation,
   hidePicker,
   getEditorRef,
-  pickerIsOpen
+  getTitleRef,
+  pickerIsOpen,
+  updateTitle,
+  title,
+  titlePlaceholder,
+  focusEditor,
+  focusTitle
 }) => (
   <div className={styles.container}>
-    <h1>Editor</h1>
     <Modal isOpen={pickerIsOpen} onRequestClose={hidePicker}>
       <Picker onHidePicker={hidePicker} onSelectVis={pickVisualiation} />
     </Modal>
+    <input
+      type="text"
+      onKeyUp={e => (e.keyCode === 13 ? focusEditor() : false)}
+      onClick={focusTitle}
+      ref={getTitleRef}
+      className={styles.title}
+      placeholder={titlePlaceholder}
+      onChange={updateTitle}
+      value={title}
+    />
     <Editor
+      onClick={focusEditor}
       editorState={editorState}
       onChange={onChange}
       ref={getEditorRef}
@@ -55,7 +71,13 @@ StoryEditor.propTypes = {
   pickVisualiation: PropTypes.func.isRequired,
   hidePicker: PropTypes.func.isRequired,
   getEditorRef: PropTypes.func.isRequired,
-  pickerIsOpen: PropTypes.bool.isRequired
+  getTitleRef: PropTypes.func.isRequired,
+  pickerIsOpen: PropTypes.bool.isRequired,
+  updateTitle: PropTypes.func.isRequired,
+  focusTitle: PropTypes.func.isRequired,
+  focusEditor: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  titlePlaceholder: PropTypes.string
 };
 
 export default StoryEditor;

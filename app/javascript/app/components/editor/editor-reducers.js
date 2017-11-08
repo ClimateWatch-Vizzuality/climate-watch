@@ -5,7 +5,22 @@ export default {
   [actions.closePicker]: state => ({ ...state, pickerIsOpen: false }),
   [actions.updateContent]: (state, { payload }) => ({
     ...state,
-    content: payload
+    content: payload,
+    titleIsFocused: false
   }),
-  [actions.focusEditor]: state => ({ ...state, editorIsFocused: true })
+  [actions.focusEditor]: state => ({
+    ...state,
+    editorIsFocused: true,
+    titleIsFocused: false
+  }),
+  [actions.focusTitle]: state => ({
+    ...state,
+    titleIsFocused: true,
+    editorIsFocused: false
+  }),
+  [actions.updateTitle]: (state, { payload }) => ({
+    ...state,
+    title: payload.target.value,
+    editorIsFocused: false
+  })
 };
