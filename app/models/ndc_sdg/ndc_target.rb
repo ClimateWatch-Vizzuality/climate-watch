@@ -1,6 +1,6 @@
-module NdcSdg
-  require 'CSV'
+require 'csv'
 
+module NdcSdg
   class NdcTarget < ApplicationRecord
     belongs_to :ndc
     belongs_to :target, class_name: 'NdcSdg::Target'
