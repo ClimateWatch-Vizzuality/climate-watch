@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import compact from 'lodash/compact';
+import qs from 'query-string';
 
 const getCountries = state => state.data || null;
 const getLocations = state => state.locations || null;
@@ -52,12 +53,15 @@ export const getCountry = createSelector(
 
 export const getAnchorLinks = createSelector(
   [state => state.route.routes || [], state => state.location.search],
-  (routes, search) =>
-    routes.filter(route => route.anchor).map(route => ({
+  (routes, search) => {
+    const searchQuery = qs.parse(search);
+    const searchParams = { locations: searchQuery.locations };
+    return routes.filter(route => route.anchor).map(route => ({
       label: route.label,
       path: `/ndcs/compare/${route.param ? route.param : ''}`,
-      search
-    }))
+      search: `?${qs.stringify(searchParams)}`
+    }));
+  }
 );
 
 export default {
