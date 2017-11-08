@@ -43,27 +43,28 @@ class NdcsCountryAccordion extends PureComponent {
                     className={styles.accordion}
                     param="section"
                     data={ndcsData}
+                    hasNestedCollapse
                   >
                     {ndcsData &&
                   ndcsData.length > 0 &&
                   ndcsData.map(
                     section =>
-                      (section.indicators.length > 0 ? (
+                      (section.sectors.length > 0 ? (
                         <Accordion
                           key={section.slug}
                           isChild
                           className={styles.subAccordion}
-                          param="subSection"
-                          data={section.indicators}
+                          param="sector"
+                          data={section.sectors}
                         >
-                          {section.indicators.map(desc => (
+                          {section.sectors.map(desc => (
                             <div
                               key={desc.title}
                               className={styles.definitionList}
                             >
                               <DefinitionList
                                 className={layout.content}
-                                definitions={desc.descriptions}
+                                definitions={desc.definitions}
                                 compare={compare}
                               />
                             </div>
