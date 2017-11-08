@@ -1,18 +1,43 @@
 import React, { PureComponent } from 'react';
-import emissionPathwaysScreenshot from 'assets/screenshots/emission-pathways-screenshot';
-import Teaser from 'components/teaser';
+import PropTypes from 'prop-types';
+import Header from 'components/header';
+import Intro from 'components/intro';
+import AnchorNav from 'components/anchor-nav';
+import Sticky from 'react-stickynode';
+
+import layout from 'styles/layout.scss';
+import styles from './emission-pathways-styles.scss';
 
 class EmissionPathways extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
+    const { route, anchorLinks } = this.props;
     return (
-      <Teaser
-        screenshot={emissionPathwaysScreenshot}
-        title="Explore Emission Pathways"
-        description="Easily visualize a range of future emission pathways linked to different scenarios of economic and energy developments, drawing from a variety of modeling tools. If you are interested to learn more about the tool or if you are a model developer and would like to make your data available on it, please <a href='mailto:climatewatch@wri.org'>contact us</a>."
-      />
+      <div>
+        <Header route={route}>
+          <div className={layout.content}>
+            <Intro title="Emission Pathways" />
+          </div>
+          <Sticky activeClass="sticky">
+            <AnchorNav links={anchorLinks} className={layout.content} />
+          </Sticky>
+        </Header>
+        {route.sections &&
+          route.sections.length > 0 &&
+          route.sections.map(section => (
+            <div key={section.hash} className={styles.section}>
+              <div id={section.hash} className={styles.sectionHash} />
+              <section.component />
+            </div>
+          ))}
+      </div>
     );
   }
 }
+
+EmissionPathways.propTypes = {
+  route: PropTypes.object.isRequired,
+  anchorLinks: PropTypes.array.isRequired
+};
 
 export default EmissionPathways;

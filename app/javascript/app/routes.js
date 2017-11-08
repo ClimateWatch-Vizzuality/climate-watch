@@ -269,9 +269,28 @@ export default [
       {
         path: '/emission-pathways',
         component: EmissionPathways,
-        exact: true,
         label: 'EMISSION PATHWAYS',
-        headerImage: 'emissions'
+        headerImage: 'emission-pathways',
+        sections: [
+          {
+            hash: 'overview',
+            label: 'Overview',
+            anchor: true,
+            component: error
+          },
+          {
+            hash: 'models-scenarios-indicators',
+            label: 'Models, Scenarios & Indicators',
+            anchor: true,
+            component: error
+          },
+          {
+            hash: 'stories',
+            label: 'Stories',
+            anchor: false,
+            component: error
+          }
+        ]
       },
       {
         path: '/ndc-search',
