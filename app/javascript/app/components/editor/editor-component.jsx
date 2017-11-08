@@ -1,8 +1,15 @@
 import React from 'react';
-import Editor from 'draft-js-plugins-editor';
-import createFocusPlugin from 'draft-js-focus-plugin';
-import { createPlugin } from 'app/utils/draft';
 import PropTypes from 'prop-types';
+import Editor from 'draft-js-plugins-editor';
+
+import createFocusPlugin from 'draft-js-focus-plugin';
+import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
+import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin';
+import { createPlugin } from 'app/utils/draft';
+
+import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
+import 'draft-js-side-toolbar-plugin/lib/plugin.css';
+import 'draft-js-focus-plugin/lib/plugin.css';
 
 import Modal from 'components/modal';
 import Barchart from './components/barchart';
@@ -11,6 +18,11 @@ import Picker from './components/widget-picker';
 import styles from './editor-styles';
 import focusTheme from './focus-theme';
 
+const inlineToolbarPlugin = createInlineToolbarPlugin();
+const sideToolbarPlugin = createSideToolbarPlugin();
+
+const { SideToolbar } = sideToolbarPlugin;
+const { InlineToolbar } = inlineToolbarPlugin;
 const focusPlugin = createFocusPlugin({
   theme: focusTheme
 });
@@ -21,7 +33,12 @@ const barchartPlugin = createPlugin({
   type: 'barchart'
 });
 
-const plugins = [focusPlugin, barchartPlugin];
+const plugins = [
+  focusPlugin,
+  barchartPlugin,
+  inlineToolbarPlugin,
+  sideToolbarPlugin
+];
 
 const StoryEditor = ({
   showPicker,
@@ -52,15 +69,19 @@ const StoryEditor = ({
       onChange={updateTitle}
       value={title}
     />
-    <Editor
-      onClick={focusEditor}
-      editorState={editorState}
-      onChange={onChange}
-      ref={getEditorRef}
-      spellCheck
-      plugins={plugins}
-    />
-    <button onClick={showPicker}>Select visualisation</button>
+    <div className={styles.editor}>
+      <Editor
+        onClick={focusEditor}
+        editorState={editorState}
+        onChange={onChange}
+        ref={getEditorRef}
+        spellCheck
+        plugins={plugins}
+      />
+      <InlineToolbar />
+      <SideToolbar />
+      <button onClick={showPicker}>Select visualisation</button>
+    </div>
   </div>
 );
 
