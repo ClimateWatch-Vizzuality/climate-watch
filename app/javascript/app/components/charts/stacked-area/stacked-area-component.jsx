@@ -174,15 +174,20 @@ class ChartStackedArea extends PureComponent {
                 value={maxData.x}
                 position="top"
                 fill="#8f8fa1"
-                strokeWidth={0.5}
                 fontSize="13px"
                 offset={25}
+                stroke="#fff"
+                strokeWidth={8}
+                style={{ paintOrder: 'stroke' }}
               />
               <Label
                 value={`${format('.3s')(maxData.y)}t`}
                 position="top"
                 fill="#113750"
                 fontSize="18px"
+                stroke="#fff"
+                strokeWidth={8}
+                style={{ paintOrder: 'stroke' }}
               />
             </ReferenceDot>
           )}
@@ -224,7 +229,7 @@ class ChartStackedArea extends PureComponent {
               ) : null;
 
               if (point.isRange) {
-                return [
+                return (
                   <ReferenceArea
                     key={`${point.label}-${point.x + point.y[0] + point.y[1]}`}
                     x1={point.x - 0.01}
@@ -243,7 +248,52 @@ class ChartStackedArea extends PureComponent {
                     {yearLabel}
                     {valueLabel}
                   </ReferenceArea>
-                ];
+                );
+              } else if (point.y === 0) {
+                return (
+                  <ReferenceArea
+                    key={`${point.label}-${point.x + point.y}`}
+                    x1={point.x - 0.01}
+                    x2={point.x + 0.01}
+                    y1={maxData.y}
+                    y2={point.y}
+                    fill="transparent"
+                    fillOpacity={0}
+                    stroke="#113750"
+                    strokeOpacity={isActivePoint ? 1 : 0.3}
+                    strokeWidth={isActivePoint ? 5 : 4}
+                    strokeLinejoin="round"
+                    onMouseEnter={() => this.handlePointeHover(point)}
+                    onMouseLeave={() => this.handlePointeHover(null)}
+                  >
+                    {isActivePoint && (
+                      <Label
+                        value={`${point.x}`}
+                        position="top"
+                        fill="#8f8fa1"
+                        stroke="#fff"
+                        strokeWidth={8}
+                        style={{ paintOrder: 'stroke' }}
+                        fontSize="13px"
+                        offset={25}
+                        isFront
+                      />
+                    )}
+                    {isActivePoint && (
+                      <Label
+                        value={`${point.label}`}
+                        position="top"
+                        fill="#8f8fa1"
+                        stroke="#fff"
+                        strokeWidth={8}
+                        style={{ paintOrder: 'stroke' }}
+                        fontSize="13px"
+                        offset={8}
+                        isFront
+                      />
+                    )}
+                  </ReferenceArea>
+                );
               }
               return (
                 <ReferenceDot
