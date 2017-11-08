@@ -120,6 +120,7 @@ class ChartStackedArea extends PureComponent {
             dataKey="x"
             padding={{ left: 30, right: 40 }}
             tick={tickFormat}
+            tickSize={8}
             tickCount={data.length + points.length}
           />
           <YAxis
