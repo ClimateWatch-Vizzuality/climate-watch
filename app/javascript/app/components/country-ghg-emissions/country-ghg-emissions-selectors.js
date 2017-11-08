@@ -263,7 +263,9 @@ export const getChartData = createSelector(
         );
         if (yData) {
           const scaledYData = yData.value * DATA_SCALE;
-          yItems[yKey] = scaledYData / calculationRatio;
+          if (yData.value) {
+            yItems[yKey] = scaledYData / calculationRatio;
+          }
         }
       });
       const item = {

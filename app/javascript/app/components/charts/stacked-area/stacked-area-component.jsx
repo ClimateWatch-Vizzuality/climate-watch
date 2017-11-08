@@ -22,9 +22,12 @@ import { format } from 'd3-format';
 
 function includeTotalData(data, config) {
   return data.map(d => {
-    let total = 0;
+    let total = null;
     config.columns.y.forEach(key => {
-      total += d[key.value];
+      if (d[key.value]) {
+        if (!total) total = 0;
+        total += d[key.value];
+      }
     });
     return {
       ...d,
@@ -102,7 +105,6 @@ class ChartStackedArea extends PureComponent {
       domain.y[1] =
         max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
     }
-
     return (
       <ResponsiveContainer height={height}>
         <ComposedChart
@@ -145,10 +147,11 @@ class ChartStackedArea extends PureComponent {
                 key={column.value}
                 dataKey={column.value}
                 dot={false}
-                stackId={1}
                 stroke={'transparent' || ''}
                 strokeWidth={0}
                 fill={config.theme[column.value].fill || ''}
+                connectNulls
+                type="monotone"
               />
             ))}
           {includeTotalLine && (
@@ -158,6 +161,7 @@ class ChartStackedArea extends PureComponent {
               dot={false}
               stroke="#113750"
               strokeWidth={2}
+              connectNulls
             />
           )}
           {showLastPoint && (
