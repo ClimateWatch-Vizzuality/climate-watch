@@ -287,7 +287,7 @@ export default [
           {
             hash: 'stories',
             label: 'Stories',
-            anchor: true,
+            anchor: false,
             component: error
           }
         ]
