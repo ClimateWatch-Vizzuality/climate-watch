@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101202433) do
+ActiveRecord::Schema.define(version: 20171107115316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,6 +224,8 @@ ActiveRecord::Schema.define(version: 20171101202433) do
     t.text "type_of_information"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "starts_at"
+    t.integer "ends_at"
     t.index ["ndc_id"], name: "index_ndc_sdg_ndc_targets_on_ndc_id"
     t.index ["target_id"], name: "index_ndc_sdg_ndc_targets_on_target_id"
   end

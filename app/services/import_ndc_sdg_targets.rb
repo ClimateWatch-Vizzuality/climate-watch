@@ -33,13 +33,18 @@ class ImportNdcSdgTargets
       ndc = ndc(row)
       target = target(row)
       next unless ndc && target
+      indc_text = row['INDC_text'].strip
+      starts_at = ndc.full_text.downcase.index(indc_text.downcase)
+      ends_at = starts_at + indc_text.length - 1 if starts_at
       ndc_target = NdcSdg::NdcTarget.find_or_create_by(
         ndc: ndc,
         target: target,
-        indc_text: row['INDC_text'].strip,
+        indc_text: indc_text,
         status: row['Status'],
         climate_response: row['Climate_response'],
-        type_of_information: row['Type_of_information']
+        type_of_information: row['Type_of_information'],
+        starts_at: starts_at,
+        ends_at: ends_at
       )
       import_ndc_target_sectors(row, ndc_target)
     end
