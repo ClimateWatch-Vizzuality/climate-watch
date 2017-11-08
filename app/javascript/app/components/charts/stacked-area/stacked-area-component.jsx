@@ -147,11 +147,11 @@ class ChartStackedArea extends PureComponent {
                 key={column.value}
                 dataKey={column.value}
                 dot={false}
+                stackId={1}
                 stroke={'transparent' || ''}
                 strokeWidth={0}
                 fill={config.theme[column.value].fill || ''}
-                connectNulls
-                type="monotone"
+                type="step"
               />
             ))}
           {includeTotalLine && (
@@ -161,7 +161,7 @@ class ChartStackedArea extends PureComponent {
               dot={false}
               stroke="#113750"
               strokeWidth={2}
-              connectNulls
+              type="step"
             />
           )}
           {showLastPoint && (
