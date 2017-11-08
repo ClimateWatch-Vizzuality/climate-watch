@@ -75,8 +75,8 @@ export const getCategoriesWithSectors = createSelector(
 );
 
 export const parsedCategoriesWithSectors = createSelector(
-  [getCategoriesWithSectors, getSectors],
-  (categories, sectors) => {
+  [getCategoriesWithSectors, getSectors, getCountries],
+  (categories, sectors, countries) => {
     if (!categories) return null;
     return sortBy(
       categories.map(cat => {
@@ -86,13 +86,13 @@ export const parsedCategoriesWithSectors = createSelector(
             cat.sectors.map(sec => {
               const definitions = sortBy(
                 cat.indicators.map(ind => {
-                  const descriptions = Object.keys(ind.locations).map(loc => {
-                    const value = ind.locations[loc].find(
-                      v => v.sector_id === sec
-                    );
+                  const descriptions = countries.map(loc => {
+                    const value = ind.locations[loc]
+                      ? ind.locations[loc].find(v => v.sector_id === sec)
+                      : null;
                     return {
                       iso: loc,
-                      value: value ? value.value : null
+                      value: value ? value.value : '—'
                     };
                   });
                   return {
