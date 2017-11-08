@@ -224,7 +224,7 @@ export const getQuantificationsData = createSelector(
           if (index === 0) {
             const isRange = isArray(v.value);
             const yValue = isRange
-              ? v.value.map(y => y * DATA_SCALE)
+              ? v.value.map(y => y * DATA_SCALE).sort()
               : v.value * DATA_SCALE;
             valuesParsed = {
               x: v.year,

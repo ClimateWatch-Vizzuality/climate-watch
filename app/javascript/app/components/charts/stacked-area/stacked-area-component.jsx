@@ -98,7 +98,7 @@ class ChartStackedArea extends PureComponent {
     };
 
     if (points.length > 0) {
-      domain.x[1] = max(points.map(p => p.x));
+      domain.x[1] = max(points.map(p => p.x)) + 1;
       domain.y[1] =
         max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
     }
@@ -118,6 +118,7 @@ class ChartStackedArea extends PureComponent {
             dataKey="x"
             padding={{ left: 30, right: 40 }}
             tick={tickFormat}
+            tickCount={data.length + points.length}
           />
           <YAxis
             type="number"
