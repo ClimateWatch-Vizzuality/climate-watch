@@ -55,9 +55,7 @@ class ImportNdcSdgTargets
       []
     sectors.each do |sector|
       sector_rec = NdcSdg::Sector.where('name ilike ?', sector).first
-      if !sector_rec
-        sector_rec = NdcSdg::Sector.create(name: sector)
-      end
+      sector_rec = NdcSdg::Sector.create(name: sector) unless sector_rec
       NdcSdg::NdcTargetSector.create(
         ndc_target: ndc_target,
         sector: sector_rec

@@ -154,22 +154,26 @@ class ImportIndc
         includes(:category_type).
         find_by(
           slug: Slug.create(r[:global_category]),
-          indc_category_types: { name: 'global' }
+          indc_category_types: {name: 'global'}
         ) or next
 
-      overview_category = Indc::Category.
-        includes(:category_type).
-        find_by(
-          slug: Slug.create(r[:overview_category]),
-          indc_category_types: { name: 'overview' }
-        ) if r[:overview_category]
+      if r[:overview_category]
+        overview_category = Indc::Category.
+          includes(:category_type).
+          find_by(
+            slug: Slug.create(r[:overview_category]),
+            indc_category_types: {name: 'overview'}
+          )
+      end
 
-      map_category = Indc::Category.
-        includes(:category_type).
-        find_by(
-          slug: Slug.create(r[:map_category]),
-          indc_category_types: { name: 'map' }
-        ) if r[:map_category]
+      if r[:map_category]
+        map_category = Indc::Category.
+          includes(:category_type).
+          find_by(
+            slug: Slug.create(r[:map_category]),
+            indc_category_types: {name: 'map'}
+          )
+      end
 
       global_category.children << [
         overview_category, map_category
