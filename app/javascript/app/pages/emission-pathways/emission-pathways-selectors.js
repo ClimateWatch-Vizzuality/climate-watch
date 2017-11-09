@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
 
-const getRoutes = route => route.sections || null;
+const getSections = route => route.sections || null;
+export const getRoutes = route => route.routes || null;
 export const getAnchorLinks = createSelector(
-  getRoutes,
+  getSections,
   sections =>
     sections &&
     sections.filter(route => route.anchor).map(route => ({
@@ -13,5 +14,6 @@ export const getAnchorLinks = createSelector(
 );
 
 export default {
-  getAnchorLinks
+  getAnchorLinks,
+  getRoutes
 };
