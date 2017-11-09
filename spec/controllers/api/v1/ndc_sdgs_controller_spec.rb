@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'csv'
 
 describe Api::V1::NdcSdgsController, type: :controller do
   context do
@@ -80,6 +81,23 @@ describe Api::V1::NdcSdgsController, type: :controller do
       it 'returns a list of goals' do
         get :sdgs_overview
         expect(parsed_response.length).to eq(5)
+      end
+    end
+
+    describe 'GET linkages_dataset' do
+      let!(:some_ndc_sdg_goals) {
+        FactoryGirl.create_list(:ndc_sdg_goal, 5, :with_dependants)
+      }
+
+      it 'returns a successful 200 response' do
+        get :linkages_dataset
+        expect(response).to be_success
+      end
+
+      it 'returns a list of goals' do
+        get :linkages_dataset
+        csv = CSV.parse(response.body)
+        expect(csv.length).to eq(6)
       end
     end
   end

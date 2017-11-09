@@ -60,39 +60,74 @@ module Api
         highlighted_ndcs
       end
 
-      def highlight_text(text, highlights)
-        return text unless highlights.length.positive?
-        text.gsub(
-          Regexp.new(
-            "(#{highlights.map { |t| "(?:#{Regexp.escape(t)})" }.join('|')})",
-            'i'
-          ),
-          [
-            Ndc::PG_SEARCH_HIGHLIGHT_START,
-            '\1',
-            Ndc::PG_SEARCH_HIGHLIGHT_END
-          ].join
-        )
+      def highlight_indices(linkages, text_length)
+        indices = linkages.reduce([]) do |list, linkage|
+          list.push(linkage.starts_at, linkage.ends_at)
+        end
+
+        if indices.length.positive?
+          indices.unshift(0)
+          indices.push(text_length)
+        end
+
+        indices
+      end
+
+      def highlight_text(text, linkages)
+        return text unless linkages.length.positive?
+
+        parts = highlight_indices(linkages, text.length).
+          each_cons(2).
+          map.with_index do |(i1, i2), idx|
+            if idx.zero?
+              text[i1..(i2 - 1)]
+            elsif idx.even?
+              text[(i1 + 1)..(i2 - 1)]
+            else
+              text[i1..i2]
+            end
+          end
+
+        parts.each.with_index.reduce('') do |memo, (part, idx)|
+          memo +
+            if idx.even?
+              part
+            else
+              [
+                Ndc::PG_SEARCH_HIGHLIGHT_START,
+                part,
+                Ndc::PG_SEARCH_HIGHLIGHT_END
+              ].join
+            end
+        end
       end
 
       def with_linkage_highlights(
         ndcs,
         include_not_matched = true
       )
-        texts = Ndc.linkage_texts(params)
-
         unless include_not_matched
-          ndcs = ndcs.where(
-            (['full_text ILIKE ?'] * texts.length).join(' OR '),
-            *texts.map { |t| "%#{t}%" }
-          )
+          if params[:target]
+            ndcs = ndcs.where(id: ::NdcSdg::Target.ndc_ids(params[:target]))
+          end
+
+          if params[:goal]
+            ndcs = ndcs.where(id: ::NdcSdg::Goal.ndc_ids(params[:goal]))
+          end
+
+          if params[:sector]
+            ndcs = ndcs.where(id: ::NdcSdg::Sector.ndc_ids(params[:sector]))
+          end
         end
 
+        linkages = Ndc.linkages(params)
         ndcs.map do |ndc|
-          ndc.linkages = texts.reject do |text|
-            ndc.full_text.at(text).nil?
-          end
-          ndc.full_text = highlight_text(ndc.full_text, texts)
+          ndc_linkages = linkages.
+            select { |linkage| linkage.ndc_id == ndc.id }
+
+          ndc.linkages = ndc_linkages.map(&:indc_text)
+
+          ndc.full_text = highlight_text(ndc.full_text, ndc_linkages)
           ndc.readonly!
           ndc
         end

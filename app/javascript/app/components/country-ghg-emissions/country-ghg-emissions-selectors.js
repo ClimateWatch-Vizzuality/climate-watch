@@ -3,6 +3,8 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
+import isArray from 'lodash/isArray';
+import orderBy from 'lodash/orderBy';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 
 import {
@@ -64,8 +66,7 @@ const options = Object.keys(CALCULATION_OPTIONS).map(
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
-const getQuantifications = state =>
-  uniqBy(state.quantifications, 'year') || null;
+const getQuantifications = state => state.quantifications || null;
 const getCalculationData = state =>
   (state.calculationData && state.calculationData[state.iso]) || [];
 
@@ -212,10 +213,34 @@ export const getQuantificationsData = createSelector(
   getQuantifications,
   quantifications => {
     if (!quantifications) return [];
-    return quantifications.map(q => ({
-      y: q.value * DATA_SCALE,
-      x: q.year
-    }));
+    const qGrouped = groupBy(quantifications, 'year');
+    const qParsed = [];
+    // Grouping the same year and value to concat the labels
+    Object.keys(qGrouped).forEach(function (year) {
+      const values = groupBy(qGrouped[year], 'value');
+      Object.keys(values).forEach(function (value) {
+        let valuesParsed = {};
+        values[value].forEach(function (v, index) {
+          if (index === 0) {
+            const isRange = isArray(v.value);
+            const yValue = isRange
+              ? v.value.map(y => y * DATA_SCALE).sort()
+              : v.value * DATA_SCALE;
+            valuesParsed = {
+              x: v.year,
+              y: yValue,
+              label: v.label,
+              isRange
+            };
+          } else {
+            valuesParsed.label += `, ${v.label}`;
+          }
+        });
+        qParsed.push(valuesParsed);
+      });
+    });
+    // Sort desc to avoid z-index problem in the graph
+    return orderBy(qParsed, 'x', 'desc');
   }
 );
 
@@ -255,7 +280,9 @@ export const getChartData = createSelector(
         );
         if (yData) {
           const scaledYData = yData.value * DATA_SCALE;
-          yItems[yKey] = scaledYData / calculationRatio;
+          if (yData.value) {
+            yItems[yKey] = scaledYData / calculationRatio;
+          }
         }
       });
       const item = {

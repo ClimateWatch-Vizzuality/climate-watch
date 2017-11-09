@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash/debounce';
+import max from 'lodash/max';
+import isArray from 'lodash/isArray';
 
 import {
   ComposedChart,
@@ -9,6 +12,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ReferenceArea,
   ReferenceDot,
   Label,
   ResponsiveContainer
@@ -18,9 +22,12 @@ import { format } from 'd3-format';
 
 function includeTotalData(data, config) {
   return data.map(d => {
-    let total = 0;
+    let total = null;
     config.columns.y.forEach(key => {
-      total += d[key.value];
+      if (d[key.value]) {
+        if (!total) total = 0;
+        total += d[key.value];
+      }
     });
     return {
       ...d,
@@ -29,66 +36,111 @@ function includeTotalData(data, config) {
   });
 }
 
+function getMaxValue(data, config) {
+  const lastData = data[data.length - 1];
+  const values = config.columns.y.map(key => lastData[key.value]);
+  return {
+    x: data[data.length - 1].x,
+    y: max(values)
+  };
+}
+
+const tickFormat = { fill: '#8f8fa1', strokeWidth: 0, fontSize: '13px' };
+
 class ChartStackedArea extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      activePoint: null,
+      activeCoordinateX: 0,
+      showLastPoint: true
+    };
+  }
+
+  setLastPoint = showLastPoint => {
+    this.setState({ showLastPoint });
+  };
+
+  debouncedMouseMove = debounce(year => {
+    this.props.onMouseMove(year);
+  }, 80);
+
+  handleMouseMove = e => {
+    const activeCoordinateX = e && e.activeCoordinate && e.activeCoordinate.x;
+    const chartX = (e && e.chartX) || 0;
+    const tooltipVisibility = activeCoordinateX >= chartX - 30;
+    if (this.state.tooltipVisibility !== tooltipVisibility) {
+      this.setState({ tooltipVisibility }, () => this.props.onMouseMove(e));
+    }
+    const year = e && e.activeLabel;
+    if (year) {
+      this.debouncedMouseMove(year);
+    }
+  };
+
+  handlePointeHover(activePoint) {
+    this.setState({ activePoint });
+  }
+
   render() {
-    const {
-      config,
-      data,
-      height,
-      onMouseMove,
-      points,
-      includeTotalLine
-    } = this.props;
+    const { activePoint, tooltipVisibility, showLastPoint } = this.state;
+    const { config, data, height, points, includeTotalLine } = this.props;
     if (!data.length) return null;
+
+    const maxData = getMaxValue(data, config);
 
     let dataParsed = data;
     if (includeTotalLine) {
       dataParsed = includeTotalData(data, config);
+      maxData.y = dataParsed[dataParsed.length - 1].total;
     }
 
     const domain = {
       x: ['dataMin', 'dataMax'],
       y: ['dataMin', 'dataMax']
     };
-    // TODO: remove hack that disables quantifications
-    if (points.length > 1000) {
-      // dataParsed.push({ x: data[data.length - 1].x + 0.0000000000000001 });
-      // dataParsed = dataParsed.concat(points);
-      domain.x[1] = points[points.length - 1].x;
-      domain.y[1] = points[points.length - 1].y;
+
+    if (points.length > 0) {
+      domain.x[1] = max(points.map(p => p.x)) + 1;
+      domain.y[1] =
+        max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
     }
     return (
       <ResponsiveContainer height={height}>
         <ComposedChart
           data={dataParsed}
-          margin={{ top: 20, right: 20, left: -10, bottom: 0 }}
-          onMouseMove={onMouseMove}
+          margin={{ top: 45, right: 20, left: -10, bottom: 0 }}
+          onMouseMove={this.handleMouseMove}
+          onMouseLeave={() => this.setLastPoint(true)}
+          onMouseEnter={() => this.setLastPoint(false)}
         >
           <XAxis
             domain={domain.x}
             type="number"
             dataKey="x"
-            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+            padding={{ left: 30, right: 40 }}
+            tick={tickFormat}
+            tickSize={8}
+            tickCount={data.length + points.length}
           />
           <YAxis
             type="number"
             domain={domain.y}
             axisLine={false}
-            tickFormatter={tick => `${format('.2s')(tick)}t`}
+            padding={{ top: 0, bottom: 0 }}
+            tickFormatter={tick => (tick === 0 ? 0 : `${format('.2s')(tick)}t`)}
             tickLine={false}
-            tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+            tick={tickFormat}
           />
           <CartesianGrid vertical={false} />
-          {config.columns && (
+          {tooltipVisibility && (
             <Tooltip
               viewBox={{ x: 0, y: 0, width: 100, height: 100 }}
               isAnimationActive={false}
               cursor={{ stroke: '#113750', strokeWidth: 2 }}
-              content={content =>
-                !!points.length &&
-                content.label <= points[0].x && (
-                  <TooltipChart content={content} config={config} showTotal />
-                )}
+              content={content => (
+                <TooltipChart content={content} config={config} showTotal />
+              )}
             />
           )}
           {config.columns &&
@@ -101,6 +153,7 @@ class ChartStackedArea extends PureComponent {
                 stroke={'transparent' || ''}
                 strokeWidth={0}
                 fill={config.theme[column.value].fill || ''}
+                type="step"
               />
             ))}
           {includeTotalLine && (
@@ -110,26 +163,159 @@ class ChartStackedArea extends PureComponent {
               dot={false}
               stroke="#113750"
               strokeWidth={2}
+              type="step"
             />
           )}
+          {showLastPoint && (
+            <ReferenceDot
+              x={maxData.x}
+              y={maxData.y}
+              fill="#113750"
+              stroke="#fff"
+              strokeWidth={2}
+              r={6}
+            >
+              <Label
+                value={maxData.x}
+                position="top"
+                fill="#8f8fa1"
+                fontSize="13px"
+                offset={25}
+                stroke="#fff"
+                strokeWidth={8}
+                style={{ paintOrder: 'stroke' }}
+              />
+              <Label
+                value={`${format('.3s')(maxData.y)}t`}
+                position="top"
+                fill="#113750"
+                fontSize="18px"
+                stroke="#fff"
+                strokeWidth={8}
+                style={{ paintOrder: 'stroke' }}
+              />
+            </ReferenceDot>
+          )}
           {points.length > 0 &&
-            points.map(point => (
-              <ReferenceDot
-                key={point.x}
-                x={point.x}
-                y={point.y}
-                fill="#8699A4"
-                r={4}
-              >
+            points.map(point => {
+              const isActivePoint =
+                activePoint &&
+                (point.x === activePoint.x && point.y === activePoint.y);
+              const yearLabel = isActivePoint ? (
                 <Label
-                  value={`${format('.3s')(point.y)}t`}
+                  value={`${point.x} - ${point.label}`}
                   position="top"
                   fill="#8f8fa1"
-                  strokeWidth={0.5}
+                  stroke="#fff"
+                  strokeWidth={8}
+                  style={{ paintOrder: 'stroke' }}
                   fontSize="13px"
+                  offset={25}
+                  isFront
                 />
-              </ReferenceDot>
-            ))}
+              ) : null;
+
+              const valueLabelValue = point.isRange
+                ? `${format('.3s')(point.y[0])}t - ${format('.3s')(
+                  point.y[1]
+                )}t`
+                : `${format('.3s')(point.y)}t`;
+              const valueLabel = isActivePoint ? (
+                <Label
+                  value={valueLabelValue}
+                  position="top"
+                  stroke="#fff"
+                  strokeWidth={4}
+                  style={{ paintOrder: 'stroke' }}
+                  fill="#113750"
+                  fontSize="18px"
+                  isFront
+                />
+              ) : null;
+
+              if (point.isRange) {
+                return (
+                  <ReferenceArea
+                    key={`${point.label}-${point.x + point.y[0] + point.y[1]}`}
+                    x1={point.x - 0.01}
+                    x2={point.x + 0.01}
+                    y1={point.y[0]}
+                    y2={point.y[1]}
+                    fill="transparent"
+                    fillOpacity={0}
+                    stroke="#113750"
+                    strokeOpacity={isActivePoint ? 1 : 0.3}
+                    strokeWidth={isActivePoint ? 8 : 6}
+                    strokeLinejoin="round"
+                    onMouseEnter={() => this.handlePointeHover(point)}
+                    onMouseLeave={() => this.handlePointeHover(null)}
+                  >
+                    {yearLabel}
+                    {valueLabel}
+                  </ReferenceArea>
+                );
+              } else if (point.y === 0) {
+                return (
+                  <ReferenceArea
+                    key={`${point.label}-${point.x + point.y}`}
+                    x1={point.x - 0.01}
+                    x2={point.x + 0.01}
+                    y1={maxData.y}
+                    y2={point.y}
+                    fill="transparent"
+                    fillOpacity={0}
+                    stroke="#113750"
+                    strokeOpacity={isActivePoint ? 1 : 0.3}
+                    strokeWidth={isActivePoint ? 5 : 4}
+                    strokeLinejoin="round"
+                    onMouseEnter={() => this.handlePointeHover(point)}
+                    onMouseLeave={() => this.handlePointeHover(null)}
+                  >
+                    {isActivePoint && (
+                      <Label
+                        value={`${point.x}`}
+                        position="top"
+                        fill="#8f8fa1"
+                        stroke="#fff"
+                        strokeWidth={8}
+                        style={{ paintOrder: 'stroke' }}
+                        fontSize="13px"
+                        offset={25}
+                        isFront
+                      />
+                    )}
+                    {isActivePoint && (
+                      <Label
+                        value={`${point.label}`}
+                        position="top"
+                        fill="#8f8fa1"
+                        stroke="#fff"
+                        strokeWidth={8}
+                        style={{ paintOrder: 'stroke' }}
+                        fontSize="13px"
+                        offset={8}
+                        isFront
+                      />
+                    )}
+                  </ReferenceArea>
+                );
+              }
+              return (
+                <ReferenceDot
+                  key={`${point.label}-${point.x + point.y}`}
+                  x={point.x}
+                  y={point.y}
+                  fill={'#113750'}
+                  fillOpacity={isActivePoint ? 1 : 0.3}
+                  r={isActivePoint ? 6 : 4}
+                  onMouseEnter={() => this.handlePointeHover(point)}
+                  onMouseLeave={() => this.handlePointeHover(null)}
+                >
+                  {yearLabel}
+                  {valueLabel}
+                </ReferenceDot>
+              );
+            })}
         </ComposedChart>
       </ResponsiveContainer>
     );
