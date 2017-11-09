@@ -64,17 +64,17 @@ Metrics/ModuleLength:
   Enabled: false
 
 Metrics/AbcSize:
-  Max: 30
+  Max: 25
   Exclude:
     - 'lib/modules/*'
 
 Metrics/MethodLength:
-  Max: 30
+  Max: 25
   Exclude:
     - 'lib/modules/*'
 
 Metrics/ClassLength:
-  Max: 300
+  Max: 150
 
 Bundler/OrderedGems:
   Enabled: false

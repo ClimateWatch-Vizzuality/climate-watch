@@ -1,3 +1,4 @@
+# rubocop:disable ClassLength
 class ImportIndc
   DATA_CAIT_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_CAIT_data.csv".freeze
@@ -148,6 +149,7 @@ class ImportIndc
       end
   end
 
+  # rubocop:disable MethodLength
   def import_category_relations
     @metadata.each do |r|
       global_category = Indc::Category.
@@ -180,6 +182,7 @@ class ImportIndc
       ].select(&:itself)
     end
   end
+  # rubocop:enable MethodLength
 
   def import_indicators
     @metadata.
@@ -311,3 +314,4 @@ class ImportIndc
     end
   end
 end
+# rubocop:enable ClassLength

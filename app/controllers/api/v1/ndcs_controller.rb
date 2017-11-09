@@ -20,7 +20,7 @@ module Api
     end
 
     class NdcsController < ApiController
-      # rubocop:disable MethodLength
+      # rubocop:disable MethodLength, AbcSize
       def index
         sectors = ::Indc::Sector.
           all
@@ -64,7 +64,7 @@ module Api
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer
       end
-      # rubocop:enable MethodLength
+      # rubocop:enable MethodLength, AbcSize
 
       def content_overview
         Location.find_by!(iso_code3: params[:code])
