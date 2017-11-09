@@ -8,13 +8,13 @@ import qs from 'query-string';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
-  const { links, useRoutes, className, query } = props;
+  const { links, useRoutes, className, linkClassName, query } = props;
   return (
-    <nav className={cx(styles.anchorNav, className)}>
+    <nav className={cx(styles.anchorNav, className, linkClassName)}>
       {links.map((link, index) => {
         const linkProps = {
           key: link.label,
-          className: styles.link,
+          className: linkClassName || styles.link,
           activeClassName: styles.linkActive,
           to: {
             search: link.search || query,
@@ -50,6 +50,7 @@ AnchorNav.propTypes = {
   links: PropTypes.array,
   useRoutes: PropTypes.bool.isRequired,
   className: PropTypes.string,
+  linkClassName: PropTypes.string,
   query: PropTypes.string
 };
 

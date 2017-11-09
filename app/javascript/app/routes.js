@@ -19,6 +19,7 @@ import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import EmissionPathways from 'pages/emission-pathways';
+import EmissionPathwaysTable from 'components/emission-pathways-table';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
@@ -282,7 +283,37 @@ export default [
             hash: 'models-scenarios-indicators',
             label: 'Models, Scenarios & Indicators',
             anchor: true,
-            component: error
+            nav: true,
+            component: EmissionPathwaysTable,
+            routes: [
+              {
+                path: '/emission-pathways/models',
+                label: 'Models',
+                component: createElement(EmissionPathwaysTable, {
+                  model: 'models'
+                }),
+                exact: true,
+                param: 'models'
+              },
+              {
+                path: '/emission-pathways/scenarios',
+                label: 'Scenarios',
+                component: createElement(EmissionPathwaysTable, {
+                  model: 'scenarios'
+                }),
+                exact: true,
+                param: 'scenarios'
+              },
+              {
+                path: '/emission-pathways/indicators',
+                label: 'Indicators',
+                component: createElement(EmissionPathwaysTable, {
+                  model: 'indicators'
+                }),
+                exact: true,
+                param: 'indicators'
+              }
+            ]
           },
           {
             hash: 'stories',
