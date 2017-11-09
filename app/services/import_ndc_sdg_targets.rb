@@ -72,7 +72,11 @@ class ImportNdcSdgTargets
       Rails.logger.error "Location not found #{row}"
       return nil
     end
-    ndc = location.ndcs.first
+    indc_text = row['INDC_text'].strip
+    ndc = location.ndcs.detect do |n|
+      !n.full_text.downcase.index(indc_text.downcase).nil?
+    end
+
     Rails.logger.error "NDC not found #{row}" unless ndc
     ndc
   end
