@@ -11,6 +11,7 @@ import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 import Sticky from 'react-stickynode';
 import Button from 'components/button';
 import Loading from 'components/loading';
+import NdcTranslationDisclaimer from 'components/ndc-translation-disclaimer';
 
 import layout from 'styles/layout.scss';
 import contentStyles from 'styles/themes/content.scss';
@@ -87,6 +88,7 @@ class NDCCountryFull extends PureComponent {
             </div>
           </div>
         </Sticky>
+        {content && content.translated && <NdcTranslationDisclaimer />}
         <div className={styles.contentContainer} id="ndc-content-container">
           {loading && !content && <Loading light className={styles.loader} />}
           {this.getPageContent()}
