@@ -16,10 +16,9 @@ const mapStateToProps = (state, { location, param }) => {
 };
 
 class AccordionContainer extends PureComponent {
-  handleOnClick = slug => {
-    const { param, location } = this.props;
-    const search = qs.parse(location.search);
-    const newSlug = search[param] === slug || !search[param] ? 'none' : slug;
+  handleOnClick = (slug, open) => {
+    const { param } = this.props;
+    const newSlug = !open ? slug : 'none';
     this.updateUrlParam({ name: param, value: newSlug });
   };
 

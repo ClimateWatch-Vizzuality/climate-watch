@@ -37,6 +37,14 @@ module Api
         render json: goals,
                each_serializer: Api::V1::NdcSdg::GoalOverviewSerializer
       end
+
+      def linkages_dataset
+        send_data(
+          ::NdcSdg::NdcTarget.to_csv,
+          type: Mime[:csv],
+          disposition: 'attachment; filename=ndc_sdg_targets.csv'
+        )
+      end
     end
   end
 end

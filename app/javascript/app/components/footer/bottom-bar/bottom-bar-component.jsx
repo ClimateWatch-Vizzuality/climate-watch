@@ -10,11 +10,7 @@ const BottomBar = ({ className }) => (
     <div className={cx(styles.bottomBar, className)}>
       <div>
         <Link className={styles.text} to="/about/permissions">
-          Terms of Service
-        </Link>
-        <span className={styles.text}> - </span>
-        <Link className={styles.text} to="/privacy">
-          Privacy
+          Permissions & Licensing
         </Link>
       </div>
       <div>

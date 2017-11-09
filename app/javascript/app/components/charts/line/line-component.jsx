@@ -20,12 +20,14 @@ class ChartLine extends PureComponent {
       <ResponsiveContainer height={height}>
         <LineChart
           data={data}
-          margin={{ top: 0, right: 0, left: -10, bottom: 0 }}
+          margin={{ top: 20, right: 0, left: -10, bottom: 0 }}
           onMouseMove={onMouseMove}
         >
           <XAxis
             dataKey="x"
             tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
+            padding={{ left: 15, right: 20 }}
+            tickSize={8}
           />
           <YAxis
             axisLine={false}

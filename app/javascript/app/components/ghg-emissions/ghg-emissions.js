@@ -21,19 +21,20 @@ import {
   getBreakSelected,
   getFilterOptions,
   getFiltersSelected,
-  getSelectorDefaults
+  getSelectorDefaults,
+  getActiveFilterRegion
 } from './ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions };
 
 const groups = [
   {
-    groupId: 'countries',
-    title: 'Countries'
-  },
-  {
     groupId: 'regions',
     title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Countries'
   }
 ];
 
@@ -60,19 +61,19 @@ const mapStateToProps = (state, { location }) => {
     filters: getFilterOptions(ghg),
     filtersSelected: getFiltersSelected(ghg),
     selectorDefaults: getSelectorDefaults(ghg),
-    loadingMeta: state.ghgEmissionsMeta.loading,
-    loadingData: state.ghgEmissions.loading,
+    activeFilterRegion: getActiveFilterRegion(ghg),
+    loading: state.ghgEmissionsMeta.loading || state.ghgEmissions.loading,
     groups
   };
 };
 
 function needsRequestData(props, nextProps) {
-  const { sourceSelected, breakSelected, filtersSelected } = nextProps;
-  const hasValues =
-    sourceSelected.value && breakSelected.value && filtersSelected;
+  const { sourceSelected, breakSelected } = nextProps;
+  const hasValues = sourceSelected && breakSelected;
   const hasChanged =
-    sourceSelected.value !== props.sourceSelected.value ||
-    breakSelected.value !== props.breakSelected.value;
+    hasValues &&
+    (sourceSelected !== props.sourceSelected ||
+      breakSelected !== props.breakSelected);
   return hasValues && hasChanged;
 }
 
@@ -81,7 +82,7 @@ function getFiltersParsed(props) {
   const filter = {};
   switch (breakSelected.value) {
     case 'gas':
-      filter.location = sourceSelected.label === 'UNFCCC' ? 'ANNEXI' : 'WORLD';
+      filter.location = selectorDefaults.location;
       filter.sector = selectorDefaults.sector;
       break;
     case 'location':
@@ -90,7 +91,7 @@ function getFiltersParsed(props) {
       break;
     case 'sector':
       filter.gas = selectorDefaults.gas;
-      filter.location = sourceSelected.label === 'UNFCCC' ? 'ANNEXI' : 'WORLD';
+      filter.location = selectorDefaults.location;
       break;
     default:
       break;
@@ -107,7 +108,7 @@ class GhgEmissionsContainer extends PureComponent {
     super(props);
     const { sourceSelected, breakSelected, filtersSelected } = props;
     const hasValues =
-      sourceSelected.value && breakSelected.value && filtersSelected.length > 0;
+      sourceSelected && breakSelected && filtersSelected.length > 0;
     if (hasValues) {
       const filters = getFiltersParsed(props);
       props.fetchGhgEmissionsData(filters);
@@ -128,11 +129,10 @@ class GhgEmissionsContainer extends PureComponent {
 
   handleBreakByChange = breakBy => {
     const params = [
-      { name: 'breakBy', value: breakBy.value },
-      { name: 'version', value: '' },
-      { name: 'filter', value: '' }
+      { name: 'source', value: this.props.sourceSelected.value },
+      { name: 'breakBy', value: breakBy.value }
     ];
-    this.updateUrlParam(params);
+    this.updateUrlParam(params, true);
   };
 
   handleVersionChange = version => {
@@ -140,12 +140,26 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleFilterChange = filters => {
-    const filtersParam = filters.map(
-      filter =>
-        (this.props.breakSelected.value === 'location'
-          ? filter.iso
-          : filter.value)
-    );
+    const oldFilters = this.props.filtersSelected;
+    const removing = filters.length < oldFilters.length;
+    const selectedFilter = filters
+      .filter(x => oldFilters.indexOf(x) === -1)
+      .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0];
+    const filtersParam = [];
+    if (!removing && selectedFilter.groupId === 'regions') {
+      filtersParam.push(selectedFilter.iso);
+      selectedFilter.members.forEach(m => filtersParam.push(m));
+    } else if (selectedFilter.groupId !== 'regions') {
+      filters.forEach(filter => {
+        if (filter.groupId !== 'regions') {
+          filtersParam.push(
+            this.props.breakSelected.value === 'location'
+              ? filter.iso
+              : filter.value
+          );
+        }
+      });
+    }
     this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
   };
 
@@ -191,11 +205,15 @@ class GhgEmissionsContainer extends PureComponent {
 GhgEmissionsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  breakSelected: PropTypes.object.isRequired,
-  sourceSelected: PropTypes.object.isRequired,
+  breakSelected: PropTypes.object,
+  sourceSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
   fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array
+};
+
+GhgEmissionsContainer.defaultProps = {
+  sourceSelected: null
 };
 
 export { actions, reducers, initialState };

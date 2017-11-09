@@ -1,5 +1,7 @@
 @import '~styles/layout.scss';
 
+$min-height: 550px;
+
 .col4 {
   @extend %grid;
 
@@ -7,7 +9,7 @@
 
   grid-template-columns: repeat(5, 1fr);
   align-items: end;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
 }
 
 .colEnd {
@@ -36,10 +38,11 @@
 
 .chartWrapper {
   position: relative;
+  min-height: $min-height;
 }
 
 .loader {
-  min-height: 450px;
+  min-height: $min-height;
   position: absolute;
   top: 0;
   right: 0;
@@ -47,7 +50,7 @@
 }
 
 .noContent {
-  min-height: 450px;
+  min-height: $min-height;
   position: absolute;
   top: 0;
   right: 0;
