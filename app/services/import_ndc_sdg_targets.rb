@@ -33,13 +33,18 @@ class ImportNdcSdgTargets
       ndc = ndc(row)
       target = target(row)
       next unless ndc && target
+      indc_text = row['INDC_text'].strip
+      starts_at = ndc.full_text.downcase.index(indc_text.downcase)
+      ends_at = starts_at + indc_text.length - 1 if starts_at
       ndc_target = NdcSdg::NdcTarget.find_or_create_by(
         ndc: ndc,
         target: target,
-        indc_text: row['INDC_text'].strip,
+        indc_text: indc_text,
         status: row['Status'],
         climate_response: row['Climate_response'],
-        type_of_information: row['Type_of_information']
+        type_of_information: row['Type_of_information'],
+        starts_at: starts_at,
+        ends_at: ends_at
       )
       import_ndc_target_sectors(row, ndc_target)
     end
@@ -50,9 +55,7 @@ class ImportNdcSdgTargets
       []
     sectors.each do |sector|
       sector_rec = NdcSdg::Sector.where('name ilike ?', sector).first
-      if !sector_rec
-        sector_rec = NdcSdg::Sector.create(name: sector)
-      end
+      sector_rec = NdcSdg::Sector.create(name: sector) unless sector_rec
       NdcSdg::NdcTargetSector.create(
         ndc_target: ndc_target,
         sector: sector_rec
@@ -67,7 +70,11 @@ class ImportNdcSdgTargets
       Rails.logger.error "Location not found #{row}"
       return nil
     end
-    ndc = location.ndcs.first
+    indc_text = row['INDC_text'].strip
+    ndc = location.ndcs.detect do |n|
+      !n.full_text.downcase.index(indc_text.downcase).nil?
+    end
+
     Rails.logger.error "NDC not found #{row}" unless ndc
     ndc
   end

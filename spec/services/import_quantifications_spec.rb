@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop disable:LineLength
 object_contents = {
   "#{CW_FILES_PREFIX}quantifications/CW_NDC_quantification_commas.csv" => <<~END_OF_CSV,
     ISO,Country,Year,Value,Range,Label
@@ -8,6 +9,7 @@ object_contents = {
     AGO,Angola,2025,113.28797,No,2025 High pledge
   END_OF_CSV
 }
+# rubocop enable:LineLength
 
 RSpec.describe ImportQuantifications do
   subject { ImportQuantifications.new.call }

@@ -41,27 +41,29 @@ class NDCCountry extends PureComponent {
                 <Intro title={country.wri_standard_name} />
               </div>
               <div className={styles.threeFold}>
-                {documentsOptions && (
-                  <div>
-                    {documentsOptions.length > 1 ? (
-                      <Dropdown
-                        className={theme.dropdownOptionWithArrow}
-                        placeholder="Select a document"
-                        options={documentsOptions}
-                        onValueChange={handleDropDownChange}
-                        white
-                        hideResetButton
-                      />
-                    ) : (
-                      <Button
-                        color="yellow"
-                        link={`/ndcs/country/${match.params.iso}/full`}
-                      >
-                        {`View ${documentsOptions[0].label} Document`}
-                      </Button>
-                    )}
-                  </div>
-                )}
+                <div>
+                  {documentsOptions && (
+                    <div>
+                      {documentsOptions.length > 1 ? (
+                        <Dropdown
+                          className={theme.dropdownOptionWithArrow}
+                          placeholder="Select a document"
+                          options={documentsOptions}
+                          onValueChange={handleDropDownChange}
+                          white
+                          hideResetButton
+                        />
+                      ) : (
+                        <Button
+                          color="yellow"
+                          link={`/ndcs/country/${match.params.iso}/full`}
+                        >
+                          {`View ${documentsOptions[0].label} Document`}
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <Button
                   color="yellow"
                   link={`/ndcs/compare/mitigation?locations=${match.params

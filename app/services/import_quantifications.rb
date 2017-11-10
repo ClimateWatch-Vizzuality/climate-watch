@@ -21,6 +21,7 @@ class ImportQuantifications
     @csv = S3CSVReader.read(DATA_FILEPATH)
   end
 
+  # rubocop:disable MethodLength, AbcSize
   def import_data
     @csv.each do |row|
       location = Location.find_by(iso_code3: row[:iso])
@@ -50,4 +51,5 @@ class ImportQuantifications
       end
     end
   end
+  # rubocop:enable MethodLength, AbcSize
 end

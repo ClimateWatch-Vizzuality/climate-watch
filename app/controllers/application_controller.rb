@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   def index
     @data = {}
-    @isProduction = Rails.env.production?
+    @is_production = Rails.env.production?
     render 'index'
   end
 end
