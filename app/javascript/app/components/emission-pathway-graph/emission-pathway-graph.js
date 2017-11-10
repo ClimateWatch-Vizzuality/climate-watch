@@ -6,149 +6,43 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
 import { actions as modalActions } from 'components/modal-metadata';
-import ownActions from './emission-pathway-graph-actions';
-import reducers, { initialState } from './emission-pathway-graph-reducers';
 
-import GhgEmissionsComponent from './emission-pathway-graph-component';
+import EmissionPathwayGraphComponent from './emission-pathway-graph-component';
 import {
   getChartData,
   getChartConfig,
-  getSourceOptions,
-  getSourceSelected,
-  getVersionOptions,
-  getVersionSelected,
-  getBreaksByOptions,
-  getBreakSelected,
-  getFilterOptions,
-  getFiltersSelected,
-  getSelectorDefaults,
-  getActiveFilterRegion
+  getLocationsOptions,
+  getLocationSelected,
+  getScenarioSelected
 } from './emission-pathway-graph-selectors';
 
-const actions = { ...ownActions, ...modalActions };
+const actions = { ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.ghgEmissions;
-  const { meta } = state.ghgEmissionsMeta;
-  const { data: regions } = state.regions;
-  const search = qs.parse(location.search);
-  const ghg = {
-    meta,
+  const { data } = state.ESPTimeSeries;
+  const { currentLocation, scenario } = qs.parse(location.search);
+  const espData = {
+    locations: state.ESPLocations.data,
     data,
-    regions,
-    search
+    location: currentLocation,
+    scenario
   };
   return {
-    data: getChartData(ghg),
-    config: getChartConfig(ghg),
-    sources: getSourceOptions(ghg),
-    sourceSelected: getSourceSelected(ghg),
-    versions: getVersionOptions(ghg),
-    versionSelected: getVersionSelected(ghg),
-    breaksBy: getBreaksByOptions(ghg),
-    breakSelected: getBreakSelected(ghg),
-    filters: getFilterOptions(ghg),
-    filtersSelected: getFiltersSelected(ghg),
-    selectorDefaults: getSelectorDefaults(ghg),
-    activeFilterRegion: getActiveFilterRegion(ghg),
-    loading: state.ghgEmissionsMeta.loading || state.ghgEmissions.loading
+    data: getChartData(espData),
+    config: getChartConfig(espData),
+    locationsOptions: getLocationsOptions(espData),
+    locationSelected: getLocationSelected(espData),
+    scenarioSelected: getScenarioSelected(espData),
+    loading: state.ESPTimeSeries.loading || state.ESPLocations.loading
   };
 };
 
-function needsRequestData(props, nextProps) {
-  const { sourceSelected, breakSelected } = nextProps;
-  const hasValues = sourceSelected && breakSelected;
-  const hasChanged =
-    hasValues &&
-    (sourceSelected !== props.sourceSelected ||
-      breakSelected !== props.breakSelected);
-  return hasValues && hasChanged;
-}
-
-function getFiltersParsed(props) {
-  const { sourceSelected, breakSelected, selectorDefaults } = props;
-  const filter = {};
-  switch (breakSelected.value) {
-    case 'gas':
-      filter.location = selectorDefaults.location;
-      filter.sector = selectorDefaults.sector;
-      break;
-    case 'location':
-      filter.gas = selectorDefaults.gas;
-      filter.sector = selectorDefaults.sector;
-      break;
-    case 'sector':
-      filter.gas = selectorDefaults.gas;
-      filter.location = selectorDefaults.location;
-      break;
-    default:
-      break;
-  }
-
-  return {
-    ...filter,
-    source: sourceSelected.value
-  };
-}
-
-class GhgEmissionsContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-    const { sourceSelected, breakSelected, filtersSelected } = props;
-    const hasValues =
-      sourceSelected && breakSelected && filtersSelected.length > 0;
-    if (hasValues) {
-      const filters = getFiltersParsed(props);
-      props.fetchGhgEmissionsData(filters);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (needsRequestData(this.props, nextProps)) {
-      const { fetchGhgEmissionsData } = nextProps;
-      const filters = getFiltersParsed(nextProps);
-      fetchGhgEmissionsData(filters);
-    }
-  }
-
-  handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value }, true);
-  };
-
-  handleBreakByChange = breakBy => {
-    const params = [
-      { name: 'source', value: this.props.sourceSelected.value },
-      { name: 'breakBy', value: breakBy.value }
-    ];
-    this.updateUrlParam(params, true);
-  };
-
-  handleVersionChange = version => {
-    this.updateUrlParam({ name: 'version', value: version.value });
-  };
-
-  handleFilterChange = filters => {
-    const oldFilters = this.props.filtersSelected;
-    const removing = filters.length < oldFilters.length;
-    const selectedFilter = filters
-      .filter(x => oldFilters.indexOf(x) === -1)
-      .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0];
-    const filtersParam = [];
-    if (!removing && selectedFilter.groupId === 'regions') {
-      filtersParam.push(selectedFilter.iso);
-      selectedFilter.members.forEach(m => filtersParam.push(m));
-    } else if (selectedFilter.groupId !== 'regions') {
-      filters.forEach(filter => {
-        if (filter.groupId !== 'regions') {
-          filtersParam.push(
-            this.props.breakSelected.value === 'location'
-              ? filter.iso
-              : filter.value
-          );
-        }
-      });
-    }
-    this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
+class EmissionPathwayGraphContainer extends PureComponent {
+  handleLocationChange = location => {
+    this.updateUrlParam(
+      { name: 'currentLocation', value: location.value },
+      true
+    );
   };
 
   updateUrlParam(params, clear) {
@@ -178,34 +72,25 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   render() {
-    return createElement(GhgEmissionsComponent, {
+    return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
-      handleSourceChange: this.handleSourceChange,
-      handleVersionChange: this.handleVersionChange,
-      handleBreakByChange: this.handleBreakByChange,
-      handleFilterChange: this.handleFilterChange,
-      handleRemoveTag: this.handleRemoveTag,
-      handleInfoClick: this.handleInfoClick
+      handleLocationChange: this.handleLocationChange
     });
   }
 }
 
-GhgEmissionsContainer.propTypes = {
+EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  breakSelected: PropTypes.object,
   sourceSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array
 };
 
-GhgEmissionsContainer.defaultProps = {
+EmissionPathwayGraphContainer.defaultProps = {
   sourceSelected: null
 };
 
-export { actions, reducers, initialState };
-
 export default withRouter(
-  connect(mapStateToProps, actions)(GhgEmissionsContainer)
+  connect(mapStateToProps, actions)(EmissionPathwayGraphContainer)
 );
