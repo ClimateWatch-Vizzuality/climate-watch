@@ -20,7 +20,7 @@ class CountryNdcOverview extends PureComponent {
       return (
         <NoContent
           message="No overview content data"
-          className={styles.noContent}
+          className={styles.noContentWrapper}
         />
       );
     }
@@ -72,14 +72,16 @@ class CountryNdcOverview extends PureComponent {
                         <span className={styles.metaTitle}>Target type</span>
                         <p
                           className={styles.targetText}
-                          dangerouslySetInnerHTML={{ // eslint-disable-line
+                          dangerouslySetInnerHTML={{
+                            // eslint-disable-line
                             __html: values.ghg_target_type[0].value
                           }}
                         />
                         <span className={styles.metaTitle}>Target year</span>
                         <p
                           className={styles.targetText}
-                          dangerouslySetInnerHTML={{ // eslint-disable-line
+                          dangerouslySetInnerHTML={{
+                            // eslint-disable-line
                             __html: values.time_target_year[0].value
                           }}
                         />
@@ -94,7 +96,8 @@ class CountryNdcOverview extends PureComponent {
                     {values.non_ghg_target.length ? (
                       <p
                         className={styles.targetText}
-                        dangerouslySetInnerHTML={{ // eslint-disable-line
+                        dangerouslySetInnerHTML={{
+                          // eslint-disable-line
                           __html: values.non_ghg_target[0].value
                         }}
                       />
@@ -108,7 +111,8 @@ class CountryNdcOverview extends PureComponent {
                     {values.coverage_sectors_short.length ? (
                       <p
                         className={styles.targetText}
-                        dangerouslySetInnerHTML={{ // eslint-disable-line
+                        dangerouslySetInnerHTML={{
+                          // eslint-disable-line
                           __html: values.coverage_sectors_short[0].value
                         }}
                       />
