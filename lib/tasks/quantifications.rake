@@ -1,10 +1,8 @@
 namespace :quantifications do
   desc 'Imports Quantification data from the csv sources'
   task import: :environment do
-    puts "###########################################"
-    puts "#  Starting to import Quantification data #"
-    puts "###########################################"
-    ImportQuantifications.new.call
-    puts "############## ENDED #################"
+    TimedLogger.log('import quantification data') do
+      ImportQuantifications.new.call
+    end
   end
 end

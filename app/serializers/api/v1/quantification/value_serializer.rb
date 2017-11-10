@@ -20,8 +20,6 @@ module Api
             object.first_value
           elsif object.first_value.present? && object.second_value.present?
             [object.first_value, object.second_value]
-          else
-            # something's weird with values
           end
         end
       end
