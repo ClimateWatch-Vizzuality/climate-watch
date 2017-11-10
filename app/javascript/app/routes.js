@@ -286,42 +286,42 @@ export default [
             label: 'Models, Scenarios & Indicators',
             anchor: true,
             nav: true,
-            component: EmissionPathwaysTableWrapper,
-            routes: [
-              {
-                path: '/emission-pathways/models',
-                label: 'Models',
-                anchor: true,
-                component: () =>
-                  createElement(EmissionPathwaysTable, {
-                    model: 'models'
-                  })
-              },
-              {
-                path: '/emission-pathways/scenarios',
-                label: 'Scenarios',
-                anchor: true,
-                component: () =>
-                  createElement(EmissionPathwaysTable, {
-                    model: 'scenarios'
-                  })
-              },
-              {
-                path: '/emission-pathways/indicators',
-                label: 'Indicators',
-                anchor: true,
-                component: () =>
-                  createElement(EmissionPathwaysTable, {
-                    model: 'indicators'
-                  })
-              },
-              {
-                path: '/emission-pathways',
-                label: 'emission-pathways',
-                component: () =>
-                  createElement(Redirect, { to: '/emission-pathways/models' })
-              }
-            ]
+            component: EmissionPathwaysTableWrapper
+          }
+        ],
+        routes: [
+          {
+            path: '/emission-pathways/models',
+            label: 'Models',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysTable, {
+                model: 'models'
+              })
+          },
+          {
+            path: '/emission-pathways/scenarios',
+            label: 'Scenarios',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysTable, {
+                model: 'scenarios'
+              })
+          },
+          {
+            path: '/emission-pathways/indicators',
+            label: 'Indicators',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysTable, {
+                model: 'indicators'
+              })
+          },
+          {
+            path: '/emission-pathways',
+            label: 'emission-pathways',
+            component: () =>
+              createElement(Redirect, { to: '/emission-pathways/models' })
           }
         ]
       },
