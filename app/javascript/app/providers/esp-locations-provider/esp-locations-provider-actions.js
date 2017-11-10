@@ -2,22 +2,22 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-const getESPLocationsInit = createAction('getESPLocationsInit');
-const getESPLocationsReady = createAction('getESPLocationsReady');
+const getEspLocationsInit = createAction('getEspLocationsInit');
+const getEspLocationsReady = createAction('getEspLocationsReady');
 
-const getESPLocations = createThunkAction(
-  'getESPLocations',
+const getEspLocations = createThunkAction(
+  'getEspLocations',
   () => (dispatch, state) => {
-    const { ESPLocations } = state();
-    if (ESPLocations && isEmpty(ESPLocations.data)) {
-      dispatch(getESPLocationsInit());
+    const { espLocations } = state();
+    if (espLocations && isEmpty(espLocations.data)) {
+      dispatch(getEspLocationsInit());
       fetch('https://emissionspathways.org/api/v1/locations')
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
         })
         .then(data => {
-          dispatch(getESPLocationsReady(data));
+          dispatch(getEspLocationsReady(data));
         })
         .catch(error => {
           console.info(error);
@@ -27,7 +27,7 @@ const getESPLocations = createThunkAction(
 );
 
 export default {
-  getESPLocations,
-  getESPLocationsInit,
-  getESPLocationsReady
+  getEspLocations,
+  getEspLocationsInit,
+  getEspLocationsReady
 };

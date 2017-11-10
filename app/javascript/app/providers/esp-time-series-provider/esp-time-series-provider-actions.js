@@ -2,18 +2,18 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-const getESPTimeSeriesInit = createAction('getESPTimeSeriesInit');
-const getESPTimeSeriesReady = createAction('getESPTimeSeriesReady');
+const getEspTimeSeriesInit = createAction('getEspTimeSeriesInit');
+const getEspTimeSeriesReady = createAction('getEspTimeSeriesReady');
 
-const getESPTimeSeries = createThunkAction(
-  'getESPTimeSeries',
+const getEspTimeSeries = createThunkAction(
+  'getEspTimeSeries',
   (location, scenario) => (dispatch, state) => {
-    const { ESPTimeSeries } = state();
+    const { espTimeSeries } = state();
     if (
-      ESPTimeSeries &&
-      (isEmpty(ESPTimeSeries.data) || !ESPTimeSeries.data[location.value])
+      espTimeSeries &&
+      (isEmpty(espTimeSeries.data) || !espTimeSeries.data[location.value])
     ) {
-      dispatch(getESPTimeSeriesInit());
+      dispatch(getEspTimeSeriesInit());
       fetch(
         `https://emissionspathways.org/api/v1/time_series_values?location=${location.id}&scenario=${scenario}`
       )
@@ -22,7 +22,7 @@ const getESPTimeSeries = createThunkAction(
           throw Error(response.statusText);
         })
         .then(data => {
-          dispatch(getESPTimeSeriesReady(data));
+          dispatch(getEspTimeSeriesReady(data));
         })
         .catch(error => {
           console.info(error);
@@ -32,7 +32,7 @@ const getESPTimeSeries = createThunkAction(
 );
 
 export default {
-  getESPTimeSeries,
-  getESPTimeSeriesInit,
-  getESPTimeSeriesReady
+  getEspTimeSeries,
+  getEspTimeSeriesInit,
+  getEspTimeSeriesReady
 };
