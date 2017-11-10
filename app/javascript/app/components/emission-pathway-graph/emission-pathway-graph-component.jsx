@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import ESPLocationsProvider from 'providers/esp-locations-provider';
-import ESPTimeSeriesProvider from 'providers/esp-time-series-provider';
+import EspLocationsProvider from 'providers/esp-locations-provider';
+import EspTimeSeriesProvider from 'providers/esp-time-series-provider';
 import ChartLine from 'components/charts/line';
 import ButtonGroup from 'components/button-group';
 import Dropdown from 'components/dropdown';
@@ -27,10 +27,10 @@ class EmissionPathwayGraph extends PureComponent {
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
-          <ESPLocationsProvider />
+          <EspLocationsProvider />
           {locationSelected &&
             scenarioSelected && (
-              <ESPTimeSeriesProvider
+              <EspTimeSeriesProvider
                 location={locationSelected}
                 scenario={scenarioSelected}
               />
