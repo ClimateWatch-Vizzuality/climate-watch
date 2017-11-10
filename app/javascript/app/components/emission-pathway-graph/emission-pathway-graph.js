@@ -50,27 +50,6 @@ class EmissionPathwayGraphContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params, clear));
   }
 
-  handleRemoveTag = tagData => {
-    const { filtersSelected } = this.props;
-    const newFilters = [];
-    filtersSelected.forEach(filter => {
-      if (filter.label !== tagData.label) {
-        newFilters.push(filter.value);
-      }
-    });
-    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
-  };
-
-  handleInfoClick = () => {
-    const { source } = this.props.sourceSelected;
-    if (source) {
-      this.props.setModalMetadata({
-        slug: source,
-        open: true
-      });
-    }
-  };
-
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
@@ -81,14 +60,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
 
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  sourceSelected: PropTypes.object,
-  setModalMetadata: PropTypes.func.isRequired,
-  filtersSelected: PropTypes.array
-};
-
-EmissionPathwayGraphContainer.defaultProps = {
-  sourceSelected: null
+  location: PropTypes.object.isRequired
 };
 
 export default withRouter(
