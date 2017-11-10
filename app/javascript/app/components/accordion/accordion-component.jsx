@@ -35,6 +35,9 @@ class Accordion extends PureComponent {
                 isOpen = false;
               }
             }
+            const title = section.parent
+              ? `${section.parent.name} | ${section.title}`
+              : section.title;
             return (
               <section
                 key={`${section.slug}-${section.title}`}
@@ -46,7 +49,7 @@ class Accordion extends PureComponent {
                 >
                   <div className={layout.content}>
                     <div className={styles.title}>
-                      {section.title}
+                      {title}
                       <Icon
                         icon={dropdownArrow}
                         className={cx(styles.iconArrow, {
