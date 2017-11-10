@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101202433) do
+ActiveRecord::Schema.define(version: 20171109140033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,6 +224,8 @@ ActiveRecord::Schema.define(version: 20171101202433) do
     t.text "type_of_information"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "starts_at"
+    t.integer "ends_at"
     t.index ["ndc_id"], name: "index_ndc_sdg_ndc_targets_on_ndc_id"
     t.index ["target_id"], name: "index_ndc_sdg_ndc_targets_on_target_id"
   end
@@ -252,6 +254,7 @@ ActiveRecord::Schema.define(version: 20171101202433) do
     t.datetime "updated_at", null: false
     t.text "document_type", default: "ndc"
     t.text "language"
+    t.boolean "translated", default: false
     t.index ["full_text_tsv"], name: "index_ndcs_on_full_text_tsv", using: :gin
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
