@@ -20,6 +20,7 @@ import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import EmissionPathways from 'pages/emission-pathways';
 import EmissionPathwaysTable from 'components/emission-pathways-table';
+import EmissionPathwayGraph from 'components/emission-pathway-graph';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
@@ -277,7 +278,7 @@ export default [
             hash: 'overview',
             label: 'Overview',
             anchor: true,
-            component: error
+            component: EmissionPathwayGraph
           },
           {
             hash: 'models-scenarios-indicators',
