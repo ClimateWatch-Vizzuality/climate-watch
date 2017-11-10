@@ -21,9 +21,9 @@
 .actions {
   @extend %grid;
 
-  @include msGridColumns(3fr, 3fr, 6fr);
+  @include msGridColumns(1fr, 1fr, 2fr);
 
-  grid-template-columns: 3fr 3fr 6fr;
+  grid-template-columns: 1fr 1fr 2fr;
   padding-top: 20px;
   padding-bottom: 30px;
 }
