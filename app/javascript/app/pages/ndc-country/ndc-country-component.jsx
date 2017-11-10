@@ -11,6 +11,7 @@ import AnchorNav from 'components/anchor-nav';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import Dropdown from 'components/dropdown';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import layout from 'styles/layout.scss';
@@ -81,6 +82,7 @@ class NDCCountry extends PureComponent {
                 useRoutes
                 links={anchorLinks}
                 className={layout.content}
+                theme={anchorNavRegularTheme}
               />
             </Sticky>
           </Header>
