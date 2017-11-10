@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-# rubocop:disable LineLength
 object_contents = {
   "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors.csv" => <<~END,
     Source,SourceType,Sector,SubsectorOf
@@ -21,7 +20,6 @@ object_contents = {
     ABW,UNFCCC,Total GHG emissions without LULUCF,Aggregate F-gases,AR4,6.242714951,6.264371648,6.183325393
   END
 }
-# rubocop:enable LineLength
 
 RSpec.describe ImportHistoricalEmissions do
   subject { ImportHistoricalEmissions.new.call }

@@ -27,11 +27,3 @@
   right: 5px;
   top: 4px;
 }
-
-.contentCols {
-  @extend %grid;
-
-  @include msGridColumns(50%, 50%);
-
-  grid-template-columns: repeat(2, 50%);
-}

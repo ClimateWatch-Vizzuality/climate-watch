@@ -22,9 +22,12 @@ import { format } from 'd3-format';
 
 function includeTotalData(data, config) {
   return data.map(d => {
-    let total = 0;
+    let total = null;
     config.columns.y.forEach(key => {
-      total += d[key.value];
+      if (d[key.value]) {
+        if (!total) total = 0;
+        total += d[key.value];
+      }
     });
     return {
       ...d,
@@ -98,11 +101,10 @@ class ChartStackedArea extends PureComponent {
     };
 
     if (points.length > 0) {
-      domain.x[1] = max(points.map(p => p.x));
+      domain.x[1] = max(points.map(p => p.x)) + 1;
       domain.y[1] =
         max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
     }
-
     return (
       <ResponsiveContainer height={height}>
         <ComposedChart
@@ -118,6 +120,8 @@ class ChartStackedArea extends PureComponent {
             dataKey="x"
             padding={{ left: 30, right: 40 }}
             tick={tickFormat}
+            tickSize={8}
+            tickCount={data.length + points.length}
           />
           <YAxis
             type="number"
@@ -149,6 +153,7 @@ class ChartStackedArea extends PureComponent {
                 stroke={'transparent' || ''}
                 strokeWidth={0}
                 fill={config.theme[column.value].fill || ''}
+                type="step"
               />
             ))}
           {includeTotalLine && (
@@ -158,6 +163,7 @@ class ChartStackedArea extends PureComponent {
               dot={false}
               stroke="#113750"
               strokeWidth={2}
+              type="step"
             />
           )}
           {showLastPoint && (
@@ -173,15 +179,20 @@ class ChartStackedArea extends PureComponent {
                 value={maxData.x}
                 position="top"
                 fill="#8f8fa1"
-                strokeWidth={0.5}
                 fontSize="13px"
                 offset={25}
+                stroke="#fff"
+                strokeWidth={8}
+                style={{ paintOrder: 'stroke' }}
               />
               <Label
                 value={`${format('.3s')(maxData.y)}t`}
                 position="top"
                 fill="#113750"
                 fontSize="18px"
+                stroke="#fff"
+                strokeWidth={8}
+                style={{ paintOrder: 'stroke' }}
               />
             </ReferenceDot>
           )}
@@ -190,6 +201,10 @@ class ChartStackedArea extends PureComponent {
               const isActivePoint =
                 activePoint &&
                 (point.x === activePoint.x && point.y === activePoint.y);
+              let colorPoint = point.label === 'BAU' ? '#113750' : '#ffc735';
+              if (point.label === 'No quantifiable target') {
+                colorPoint = '#b1b1c1';
+              }
               const yearLabel = isActivePoint ? (
                 <Label
                   value={`${point.x} - ${point.label}`}
@@ -223,7 +238,7 @@ class ChartStackedArea extends PureComponent {
               ) : null;
 
               if (point.isRange) {
-                return [
+                return (
                   <ReferenceArea
                     key={`${point.label}-${point.x + point.y[0] + point.y[1]}`}
                     x1={point.x - 0.01}
@@ -232,9 +247,9 @@ class ChartStackedArea extends PureComponent {
                     y2={point.y[1]}
                     fill="transparent"
                     fillOpacity={0}
-                    stroke="#113750"
-                    strokeOpacity={isActivePoint ? 1 : 0.3}
-                    strokeWidth={isActivePoint ? 8 : 6}
+                    stroke={colorPoint}
+                    strokeOpacity={1}
+                    strokeWidth={isActivePoint ? 10 : 8}
                     strokeLinejoin="round"
                     onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
@@ -242,16 +257,63 @@ class ChartStackedArea extends PureComponent {
                     {yearLabel}
                     {valueLabel}
                   </ReferenceArea>
-                ];
+                );
+              } else if (point.y === 0) {
+                return (
+                  <ReferenceArea
+                    key={`${point.label}-${point.x + point.y}`}
+                    x1={point.x - 0.01}
+                    x2={point.x + 0.01}
+                    y1={maxData.y}
+                    y2={point.y}
+                    fill="transparent"
+                    fillOpacity={0}
+                    stroke={colorPoint}
+                    strokeOpacity={1}
+                    strokeWidth={isActivePoint ? 4 : 3}
+                    strokeLinejoin="round"
+                    onMouseEnter={() => this.handlePointeHover(point)}
+                    onMouseLeave={() => this.handlePointeHover(null)}
+                  >
+                    {isActivePoint && (
+                      <Label
+                        value={`${point.x}`}
+                        position="top"
+                        fill="#8f8fa1"
+                        stroke="#fff"
+                        strokeWidth={8}
+                        style={{ paintOrder: 'stroke' }}
+                        fontSize="13px"
+                        offset={25}
+                        isFront
+                      />
+                    )}
+                    {isActivePoint && (
+                      <Label
+                        value={`${point.label}`}
+                        position="top"
+                        fill="#8f8fa1"
+                        stroke="#fff"
+                        strokeWidth={8}
+                        style={{ paintOrder: 'stroke' }}
+                        fontSize="13px"
+                        offset={8}
+                        isFront
+                      />
+                    )}
+                  </ReferenceArea>
+                );
               }
               return (
                 <ReferenceDot
                   key={`${point.label}-${point.x + point.y}`}
                   x={point.x}
                   y={point.y}
-                  fill={'#113750'}
-                  fillOpacity={isActivePoint ? 1 : 0.3}
-                  r={isActivePoint ? 6 : 4}
+                  fill={colorPoint}
+                  fillOpacity={1}
+                  stroke="#fff"
+                  strokeWidth={2}
+                  r={isActivePoint ? 8 : 6}
                   onMouseEnter={() => this.handlePointeHover(point)}
                   onMouseLeave={() => this.handlePointeHover(null)}
                 >

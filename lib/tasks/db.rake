@@ -20,20 +20,20 @@ namespace :db do
 
   desc 'Imports all data in correct order, replaces all data'
   task reimport: :environment do
-    puts "Deleting NdcSdg::Target"
+    puts 'Deleting NdcSdg::Target'
     NdcSdg::Target.delete_all
-    puts "Deleting NdcSdg::Goal"
+    puts 'Deleting NdcSdg::Goal'
     NdcSdg::Goal.delete_all
-    puts "Deleting HistoricalEmissions::Record"
+    puts 'Deleting HistoricalEmissions::Record'
     HistoricalEmissions::Record.delete_all
-    puts "Deleting WbExtra::CountryData"
+    puts 'Deleting WbExtra::CountryData'
     WbExtra::CountryData.delete_all
-    puts "Deleting Socioeconomic::Indicator"
+    puts 'Deleting Socioeconomic::Indicator'
     Socioeconomic::Indicator.delete_all
-    puts "Deleting Locations"
+    puts 'Deleting Locations'
     Location.all.each(&:destroy)
-    puts "Starting the import"
-    puts "Deleting stories"
+    puts 'Starting the import'
+    puts 'Deleting stories'
     Story.delete_all
     Rake::Task['db:import'].invoke
   end

@@ -274,9 +274,14 @@ export const getSelectorDefaults = createSelector(
         defaults.location = 'WORLD';
         break;
       case 'UNFCCC':
-        defaults.sector = meta.sector.find(
-          s => s.label === 'Total GHG emissions without LULUCF'
-        ).value;
+        defaults.sector = meta.sector
+          .filter(
+            s =>
+              s.label === 'Total GHG emissions without LULUCF' ||
+              s.label === 'Total GHG emissions excluding LULUCF/LUCF'
+          )
+          .map(d => d.value)
+          .toString();
         defaults.gas = meta.gas.find(g => g.label === 'Aggregate GHGs').value;
         defaults.location = 'ANNEXI';
         break;
