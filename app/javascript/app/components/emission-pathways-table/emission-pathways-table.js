@@ -7,13 +7,18 @@ import EmissionPathwaysTableComponent from './emission-pathways-table-component'
 
 class EmissionPathwaysTableContainer extends PureComponent {
   render() {
+    const routeData = {
+      routes: this.props.routes,
+      hash: location && location.hash
+    };
+
     return createElement(
       EmissionPathwaysTableComponent,
       Object.assign(
         {
           ...this.props
         },
-        { anchorLinks: getRouteLinks(this.props.routes) }
+        { anchorLinks: getRouteLinks(routeData) }
       )
     );
   }

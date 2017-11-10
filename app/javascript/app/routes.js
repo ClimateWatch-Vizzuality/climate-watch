@@ -289,27 +289,30 @@ export default [
               {
                 path: '/emission-pathways/models',
                 label: 'Models',
-                component: createElement(EmissionPathwaysTable, {
-                  model: 'models'
-                }),
+                component: () =>
+                  createElement(EmissionPathwaysTable, {
+                    model: 'models'
+                  }),
                 exact: true,
                 param: 'models'
               },
               {
                 path: '/emission-pathways/scenarios',
                 label: 'Scenarios',
-                component: createElement(EmissionPathwaysTable, {
-                  model: 'scenarios'
-                }),
+                component: () =>
+                  createElement(EmissionPathwaysTable, {
+                    model: 'scenarios'
+                  }),
                 exact: true,
                 param: 'scenarios'
               },
               {
                 path: '/emission-pathways/indicators',
                 label: 'Indicators',
-                component: createElement(EmissionPathwaysTable, {
-                  model: 'indicators'
-                }),
+                component: () =>
+                  createElement(EmissionPathwaysTable, {
+                    model: 'indicators'
+                  }),
                 exact: true,
                 param: 'indicators'
               }
