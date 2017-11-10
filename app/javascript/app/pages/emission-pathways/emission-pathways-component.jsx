@@ -5,6 +5,7 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-styles.scss';
 
@@ -19,7 +20,11 @@ class EmissionPathways extends PureComponent {
             <Intro title="Emission Pathways" />
           </div>
           <Sticky activeClass="sticky">
-            <AnchorNav links={anchorLinks} className={layout.content} />
+            <AnchorNav
+              links={anchorLinks}
+              className={layout.content}
+              theme={anchorNavRegularTheme}
+            />
           </Sticky>
         </Header>
         {route.sections &&

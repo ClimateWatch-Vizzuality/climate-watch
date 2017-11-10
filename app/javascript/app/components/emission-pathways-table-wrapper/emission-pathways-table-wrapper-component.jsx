@@ -16,7 +16,6 @@ class EmissionPathwaysTableWrapper extends PureComponent {
         <div className={cx(styles.col4, styles.tableMenuContainer)}>
           <AnchorNav
             useRoutes
-            className={styles.nav}
             links={anchorLinks}
             theme={anchorNavLightTheme}
           />
