@@ -103,13 +103,16 @@ export const parsedCategoriesWithSectors = createSelector(
                 }),
                 'title'
               );
+              const parent =
+                sectors[sec].parent_id && sectors[sectors[sec].parent_id];
               return {
                 title: sectors[sec].name,
                 slug: snakeCase(sectors[sec].name),
+                parent,
                 definitions
               };
             }),
-          'title'
+          ['parent.name', 'title']
         );
         return {
           title: cat.name,
