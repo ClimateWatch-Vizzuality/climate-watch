@@ -1,8 +1,9 @@
 @import '~styles/layout.scss';
 
 .disclaimer {
-  padding-top: 40px;
   font-size: $font-size-s;
   font-weight: $font-weight-light;
   color: $dark-gray;
+  max-width: 770px;
+  margin: auto;
 }

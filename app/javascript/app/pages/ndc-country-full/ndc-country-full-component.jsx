@@ -25,10 +25,13 @@ class NDCCountryFull extends PureComponent {
       return (
         <div className={cx(layout.content, styles.bodyContent)}>
           {!isEmpty(content) && (
-            <div
-              className={cx(contentStyles.content, styles.innerContent)}
-              dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
-            />
+            <div>
+              {<NdcTranslationDisclaimer className={styles.disclaimer} />}
+              <div
+                className={cx(contentStyles.content, styles.innerContent)}
+                dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
+              />
+            </div>
           )}
           <ScrollToHighlightIndex
             idx={search.idx}
@@ -88,7 +91,6 @@ class NDCCountryFull extends PureComponent {
             </div>
           </div>
         </Sticky>
-        {content && content.translated && <NdcTranslationDisclaimer />}
         <div className={styles.contentContainer} id="ndc-content-container">
           {loading && !content && <Loading light className={styles.loader} />}
           {this.getPageContent()}

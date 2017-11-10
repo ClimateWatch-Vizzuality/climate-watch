@@ -1,16 +1,12 @@
 import React, { PureComponent } from 'react';
-import cx from 'classnames';
 
-import layout from 'styles/layout';
 import styles from './ndc-translation-disclaimer-styles.scss';
 
 class NdcTranslationDisclaimer extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const classnames = cx(styles.disclaimer, layout.content);
-
     return (
-      <div className={classnames}>
+      <div className={styles.disclaimer}>
         Please note the following text has been translated for the purposes of
         Climate Watch using an automated service (Google Translate). This text
         has no status whatsoever under the UNFCCC, nor does it purport to be an
