@@ -4,6 +4,9 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
+import EspModelsProvider from 'providers/esp-models-provider';
+import EspScenariosProvider from 'providers/esp-scenarios-provider';
+import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-styles.scss';
@@ -14,6 +17,9 @@ class EmissionPathways extends PureComponent {
     const { route, anchorLinks } = this.props;
     return (
       <div>
+        <EspModelsProvider />
+        <EspScenariosProvider />
+        <EspIndicatorsProvider />
         <Header route={route}>
           <div className={layout.content}>
             <Intro title="Emission Pathways" />

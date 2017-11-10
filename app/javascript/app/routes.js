@@ -284,12 +284,6 @@ export default [
             label: 'Models, Scenarios & Indicators',
             anchor: true,
             component: error
-          },
-          {
-            hash: 'stories',
-            label: 'Stories',
-            anchor: false,
-            component: error
           }
         ]
       },

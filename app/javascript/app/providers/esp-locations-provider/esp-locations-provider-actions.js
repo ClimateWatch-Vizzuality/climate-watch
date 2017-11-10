@@ -4,12 +4,17 @@ import isEmpty from 'lodash/isEmpty';
 
 const getEspLocationsInit = createAction('getEspLocationsInit');
 const getEspLocationsReady = createAction('getEspLocationsReady');
+const getEspLocationsFail = createAction('getEspLocationsFail');
 
 const getEspLocations = createThunkAction(
   'getEspLocations',
   () => (dispatch, state) => {
     const { espLocations } = state();
-    if (espLocations && isEmpty(espLocations.data)) {
+    if (
+      espLocations.data &&
+      isEmpty(espLocations.data) &&
+      !espLocations.loading
+    ) {
       dispatch(getEspLocationsInit());
       fetch('https://emissionspathways.org/api/v1/locations')
         .then(response => {
@@ -17,10 +22,15 @@ const getEspLocations = createThunkAction(
           throw Error(response.statusText);
         })
         .then(data => {
-          dispatch(getEspLocationsReady(data));
+          if (data) {
+            dispatch(getEspLocationsReady(data));
+          } else {
+            dispatch(getEspLocationsReady({}));
+          }
         })
         .catch(error => {
-          console.info(error);
+          console.warn(error);
+          dispatch(getEspLocationsFail());
         });
     }
   }

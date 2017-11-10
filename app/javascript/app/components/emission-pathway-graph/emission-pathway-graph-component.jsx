@@ -19,29 +19,28 @@ class EmissionPathwayGraph extends PureComponent {
       data,
       config,
       loading,
-      locationsOptions,
-      locationSelected,
-      scenarioSelected,
+      filtersOptions,
+      filtersSelected,
       handleLocationChange
     } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <EspLocationsProvider />
-          {locationSelected &&
-            scenarioSelected && (
+          {filtersSelected && filtersSelected.location &&
+            filtersSelected.scenario && (
               <EspTimeSeriesProvider
-                location={locationSelected}
-                scenario={scenarioSelected}
+                location={filtersSelected.location.value}
+                scenario={filtersSelected.scenario.value}
               />
             )}
           <h2 className={styles.title}>Emission Pathways</h2>
           <div className={styles.col4}>
             <Dropdown
               label="Country/Region"
-              options={locationsOptions}
+              options={filtersOptions.locations}
               onValueChange={handleLocationChange}
-              value={locationSelected}
+              value={filtersSelected.location}
               hideResetButton
             />
             <ButtonGroup className={styles.colEnd} />
@@ -88,10 +87,9 @@ EmissionPathwayGraph.propTypes = {
   data: PropTypes.array,
   config: PropTypes.object,
   loading: PropTypes.bool,
-  locationsOptions: PropTypes.array,
-  locationSelected: PropTypes.object,
-  handleLocationChange: PropTypes.func,
-  scenarioSelected: PropTypes.string
+  filtersOptions: PropTypes.object,
+  filtersSelected: PropTypes.object,
+  handleLocationChange: PropTypes.func
 };
 
 export default EmissionPathwayGraph;
