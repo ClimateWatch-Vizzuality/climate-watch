@@ -107,7 +107,7 @@ class ChartStackedArea extends PureComponent {
       <ResponsiveContainer height={height}>
         <ComposedChart
           data={dataParsed}
-          margin={{ top: 45, right: 0, left: -10, bottom: 0 }}
+          margin={{ top: 45, right: 20, left: -10, bottom: 0 }}
           onMouseMove={this.handleMouseMove}
           onMouseLeave={() => this.setLastPoint(true)}
           onMouseEnter={() => this.setLastPoint(false)}
@@ -116,7 +116,7 @@ class ChartStackedArea extends PureComponent {
             domain={domain.x}
             type="number"
             dataKey="x"
-            padding={{ left: 30, right: 30 }}
+            padding={{ left: 30, right: 40 }}
             tick={tickFormat}
           />
           <YAxis
@@ -187,66 +187,76 @@ class ChartStackedArea extends PureComponent {
           )}
           {points.length > 0 &&
             points.map(point => {
-              const isActivePoint = point.x === activePoint;
-              const topLabel = isActivePoint ? (
+              const isActivePoint =
+                activePoint &&
+                (point.x === activePoint.x && point.y === activePoint.y);
+              const yearLabel = isActivePoint ? (
                 <Label
-                  value={point.x}
+                  value={`${point.x} - ${point.label}`}
                   position="top"
                   fill="#8f8fa1"
-                  strokeWidth={0.5}
+                  stroke="#fff"
+                  strokeWidth={8}
+                  style={{ paintOrder: 'stroke' }}
                   fontSize="13px"
                   offset={25}
+                  isFront
                 />
               ) : null;
 
-              const bottomLabelValue = point.isRange
+              const valueLabelValue = point.isRange
                 ? `${format('.3s')(point.y[0])}t - ${format('.3s')(
                   point.y[1]
                 )}t`
                 : `${format('.3s')(point.y)}t`;
-              const bottomLabel = isActivePoint ? (
+              const valueLabel = isActivePoint ? (
                 <Label
-                  value={bottomLabelValue}
+                  value={valueLabelValue}
                   position="top"
+                  stroke="#fff"
+                  strokeWidth={4}
+                  style={{ paintOrder: 'stroke' }}
                   fill="#113750"
                   fontSize="18px"
+                  isFront
                 />
               ) : null;
 
               if (point.isRange) {
                 return [
                   <ReferenceArea
-                    key={point.x}
+                    key={`${point.label}-${point.x + point.y[0] + point.y[1]}`}
                     x1={point.x - 0.01}
                     x2={point.x + 0.01}
                     y1={point.y[0]}
                     y2={point.y[1]}
                     fill="transparent"
-                    stroke={isActivePoint ? '#113750' : '#8699A4'}
+                    fillOpacity={0}
+                    stroke="#113750"
+                    strokeOpacity={isActivePoint ? 1 : 0.3}
                     strokeWidth={isActivePoint ? 8 : 6}
                     strokeLinejoin="round"
-                    fillOpacity={0}
-                    isFront
-                    onMouseEnter={() => this.handlePointeHover(point.x)}
+                    onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
                   >
-                    {topLabel}
-                    {bottomLabel}
+                    {yearLabel}
+                    {valueLabel}
                   </ReferenceArea>
                 ];
               }
               return (
                 <ReferenceDot
-                  key={point.x + point.y}
+                  key={`${point.label}-${point.x + point.y}`}
                   x={point.x}
                   y={point.y}
-                  fill={isActivePoint ? '#113750' : '#8699A4'}
+                  fill={'#113750'}
+                  fillOpacity={isActivePoint ? 1 : 0.3}
                   r={isActivePoint ? 6 : 4}
-                  onMouseEnter={() => this.handlePointeHover(point.x)}
+                  onMouseEnter={() => this.handlePointeHover(point)}
                   onMouseLeave={() => this.handlePointeHover(null)}
                 >
-                  {topLabel}
-                  {bottomLabel}
+                  {yearLabel}
+                  {valueLabel}
                 </ReferenceDot>
               );
             })}
