@@ -20,6 +20,7 @@ import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import EmissionPathways from 'pages/emission-pathways';
 import EmissionPathwaysTable from 'components/emission-pathways-table';
+import EmissionPathwaysTableWrapper from 'components/emission-pathways-table-wrapper';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
@@ -284,45 +285,42 @@ export default [
             label: 'Models, Scenarios & Indicators',
             anchor: true,
             nav: true,
-            component: EmissionPathwaysTable,
+            component: EmissionPathwaysTableWrapper,
             routes: [
               {
                 path: '/emission-pathways/models',
                 label: 'Models',
+                anchor: true,
                 component: () =>
                   createElement(EmissionPathwaysTable, {
                     model: 'models'
-                  }),
-                exact: true,
-                param: 'models'
+                  })
               },
               {
                 path: '/emission-pathways/scenarios',
                 label: 'Scenarios',
+                anchor: true,
                 component: () =>
                   createElement(EmissionPathwaysTable, {
                     model: 'scenarios'
-                  }),
-                exact: true,
-                param: 'scenarios'
+                  })
               },
               {
                 path: '/emission-pathways/indicators',
                 label: 'Indicators',
+                anchor: true,
                 component: () =>
                   createElement(EmissionPathwaysTable, {
                     model: 'indicators'
-                  }),
-                exact: true,
-                param: 'indicators'
+                  })
+              },
+              {
+                path: '/emission-pathways',
+                label: 'emission-pathways',
+                component: () =>
+                  createElement(Redirect, { to: '/emission-pathways/models' })
               }
             ]
-          },
-          {
-            hash: 'stories',
-            label: 'Stories',
-            anchor: false,
-            component: error
           }
         ]
       },

@@ -9,26 +9,3 @@
   grid-template-columns: repeat(4, 1fr);
   align-items: end;
 }
-
-.tableMenuContainer {
-  margin-bottom: 19px;
-}
-
-.tableMenu {
-  display: flex;
-  color: $dark-gray;
-  font-size: $font-size-large;
-
-  li {
-    margin-right: 30px;
-
-    &.active {
-      color: $base-text;
-    }
-  }
-}
-
-.searchBox,
-.uploadButton {
-  grid-column-end: -1;
-}
