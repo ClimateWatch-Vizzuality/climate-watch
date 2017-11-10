@@ -1,18 +1,46 @@
 import { createSelector } from 'reselect';
+import isEmpty from 'lodash/isEmpty';
+import pick from 'lodash/pick';
 
-const getRoutes = routeData => (routeData && routeData.routes) || null;
-const getHash = routeData => (routeData && routeData.hash) || null;
-export const getRouteLinks = createSelector(
-  [getRoutes, getHash],
-  (routes, hash) =>
-    routes &&
-    routes.map(route => ({
-      label: route.label,
-      path: route.path,
-      hash
-    }))
+const getModel = data => data.model || null;
+const getState = data => data.state || null;
+
+const getModelData = createSelector([getState, getModel], (state, model) => {
+  const modelData = state[`esp${model}`];
+  if (!modelData || isEmpty(modelData.data)) return null;
+  return modelData.data;
+});
+
+export const filteredModelData = createSelector(
+  [getModelData, getModel],
+  (data, model) => {
+    if (!data) return null;
+    const modelWhiteListedFields = {
+      Models: [
+        'full_name',
+        'abbreviation',
+        'availability',
+        'current_version',
+        'development_year',
+        'expertise',
+        'license',
+        'maintainer_name'
+      ],
+      Scenarios: [
+        'name',
+        'model_abbreviation',
+        'category',
+        'geographic_coverage_country',
+        'geographic_coverage_region',
+        'purpose_or_objective',
+        'time_horizon'
+      ],
+      Indicators: ['name', 'category', 'subcategory', 'definition', 'unit']
+    };
+    return data.map(d => pick(d, modelWhiteListedFields[model]));
+  }
 );
 
 export default {
-  getRoutes
+  filteredModelData
 };
