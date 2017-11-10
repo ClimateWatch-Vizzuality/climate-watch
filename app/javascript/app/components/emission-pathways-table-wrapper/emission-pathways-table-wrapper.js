@@ -5,6 +5,7 @@ import Component from './emission-pathways-table-wrapper-component';
 
 const mapStateToProps = (state, { location, routes }) => {
   const routeData = {
+    location,
     routes,
     hash: location && location.hash
   };
