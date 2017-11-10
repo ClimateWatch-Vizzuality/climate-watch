@@ -1,17 +1,9 @@
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { getRouteLinks } from './emission-pathways-table-selectors';
+import { filteredModelData } from './emission-pathways-table-selectors';
 import Component from './emission-pathways-table-component';
 
-const mapStateToProps = (state, { location, routes }) => {
-  const routeData = {
-    routes,
-    hash: location && location.hash
-  };
+const mapStateToProps = (state, { model }) => ({
+  data: filteredModelData({ state, model })
+});
 
-  return {
-    anchorLinks: getRouteLinks(routeData)
-  };
-};
-
-export default withRouter(connect(mapStateToProps, null)(Component));
+export default connect(mapStateToProps, null)(Component);

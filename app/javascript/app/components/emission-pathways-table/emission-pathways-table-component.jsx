@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Dropdown from 'components/dropdown';
-import Search from 'components/search';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
-import darkSearch from 'styles/themes/search/search-dark.scss';
+// import Search from 'components/search';
+// import Dropdown from 'components/dropdown';
+// import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
+import EspModelsProvider from 'providers/esp-models-provider';
+import EspScenariosProvider from 'providers/esp-scenarios-provider';
+import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
@@ -13,29 +16,31 @@ class EmissionPathwaysTable extends PureComponent {
     const { loading, data, noContentMsg } = this.props;
     if (loading) return null;
     return data && data.length > 0 ? (
-      <Table parseHtml data={data} rowHeight={60} />
+      <Table data={data} rowHeight={60} />
     ) : (
       <NoContent message={noContentMsg} />
     );
   }
 
   render() {
-    const {
-      query,
-      categories,
-      handleLicenseChange,
-      handleTimeIntervalChange,
-      indicators,
-      handleHorizonChange,
-      handleSearchChange,
-      selectedLicense,
-      selectedTimeInterval,
-      selectedHorizon
-    } = this.props;
+    // const {
+    // categories,
+    // handleLicenseChange,
+    // handleTimeIntervalChange,
+    // indicators,
+    // handleHorizonChange,
+    // handleSearchChange,
+    // selectedLicense,
+    // selectedTimeInterval,
+    // selectedHorizon
+    // } = this.props;
     return (
       <div className={layout.content}>
+        <EspModelsProvider />
+        <EspScenariosProvider />
+        <EspIndicatorsProvider />
         <div className={styles.col4}>
-          <Dropdown
+          {/* <Dropdown
             label="License"
             options={categories}
             onValueChange={handleLicenseChange}
@@ -58,15 +63,15 @@ class EmissionPathwaysTable extends PureComponent {
             value={selectedHorizon}
             hideResetButton
             plain
-          />
-          <Search
+          /> */}
+          {/* <Search
             input={query}
             theme={darkSearch}
             onChange={handleSearchChange}
             className={styles.searchBox}
             placeholder="Search table data"
             plain
-          />
+          /> */}
         </div>
         {this.getTableContent()}
       </div>
@@ -77,17 +82,17 @@ class EmissionPathwaysTable extends PureComponent {
 EmissionPathwaysTable.propTypes = {
   loading: PropTypes.bool,
   noContentMsg: PropTypes.string,
-  query: PropTypes.string,
-  categories: PropTypes.array,
-  indicators: PropTypes.array,
-  selectedLicense: PropTypes.object,
-  selectedTimeInterval: PropTypes.object,
-  selectedHorizon: PropTypes.object,
-  data: PropTypes.array,
-  handleLicenseChange: PropTypes.func,
-  handleHorizonChange: PropTypes.func,
-  handleTimeIntervalChange: PropTypes.func,
-  handleSearchChange: PropTypes.func
+  data: PropTypes.array
+  // categories: PropTypes.array,
+  // indicators: PropTypes.array,
+  // selectedLicense: PropTypes.object,
+  // selectedTimeInterval: PropTypes.object,
+  // selectedHorizon: PropTypes.object,
+  // data: PropTypes.array,
+  // handleLicenseChange: PropTypes.func,
+  // handleHorizonChange: PropTypes.func,
+  // handleTimeIntervalChange: PropTypes.func,
+  // handleSearchChange: PropTypes.func
 };
 
 export default EmissionPathwaysTable;
