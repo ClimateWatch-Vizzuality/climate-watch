@@ -19,10 +19,10 @@ import {
 const actions = { ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.ESPTimeSeries;
+  const { data } = state.espTimeSeries;
   const { currentLocation, scenario } = qs.parse(location.search);
   const espData = {
-    locations: state.ESPLocations.data,
+    locations: state.espLocations.data,
     data,
     location: currentLocation,
     scenario
@@ -33,7 +33,7 @@ const mapStateToProps = (state, { location }) => {
     locationsOptions: getLocationsOptions(espData),
     locationSelected: getLocationSelected(espData),
     scenarioSelected: getScenarioSelected(espData),
-    loading: state.ESPTimeSeries.loading || state.ESPLocations.loading
+    loading: state.espTimeSeries.loading || state.espLocations.loading
   };
 };
 

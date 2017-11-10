@@ -5,8 +5,8 @@ import { handleActions } from 'app/utils/redux';
 // Providers
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
-import * as ESPLocationsProvider from 'providers/esp-locations-provider';
-import * as ESPTimeSeriesProvider from 'providers/esp-time-series-provider';
+import * as espLocationsProvider from 'providers/esp-locations-provider';
+import * as espTimeSeriesProvider from 'providers/esp-time-series-provider';
 import * as adaptationsProvider from 'providers/adaptations-provider';
 import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ndcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
@@ -23,8 +23,6 @@ import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
 const providersReducers = {
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
-  ESPLocations: handleActions(ESPLocationsProvider),
-  ESPTimeSeries: handleActions(ESPTimeSeriesProvider),
   adaptations: handleActions(adaptationsProvider),
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
   ndcsSdgsData: handleActions(ndcsSdgsDataProvider),
@@ -36,7 +34,9 @@ const providersReducers = {
   ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
   espModels: handleActions(espModelsProvider),
   espScenarios: handleActions(espScenariosProvider),
-  espIndicators: handleActions(espIndicatorsProvider)
+  espIndicators: handleActions(espIndicatorsProvider),
+  espLocations: handleActions(espLocationsProvider),
+  espTimeSeries: handleActions(espTimeSeriesProvider)
 };
 
 // Pages

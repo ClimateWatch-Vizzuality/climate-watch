@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import actions from './esp-locations-provider-actions';
 import reducers, { initialState } from './esp-locations-provider-reducers';
 
-class ESPLocationsProvider extends PureComponent {
+class EspLocationsProvider extends PureComponent {
   componentDidMount() {
-    this.props.getESPLocations();
+    this.props.getEspLocations();
   }
 
   render() {
@@ -15,9 +15,9 @@ class ESPLocationsProvider extends PureComponent {
   }
 }
 
-ESPLocationsProvider.propTypes = {
-  getESPLocations: PropTypes.func.isRequired
+EspLocationsProvider.propTypes = {
+  getEspLocations: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
-export default connect(null, actions)(ESPLocationsProvider);
+export default connect(null, actions)(EspLocationsProvider);
