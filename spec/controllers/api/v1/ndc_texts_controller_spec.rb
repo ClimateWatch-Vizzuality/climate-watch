@@ -19,6 +19,12 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
   let(:pol_html_linkage_text) {
     'Nullam aliquam pretium risus laoreet.'
   }
+  let(:pol_html_linkage_text_starts_at) {
+    pol_html.index(pol_html_linkage_text)
+  }
+  let(:pol_html_linkage_text_ends_at) {
+    pol_html.index(pol_html_linkage_text) + pol_html_linkage_text.length - 1
+  }
   let(:pol_html_with_highlight) {
     pol_html.gsub(
       'Hello',
@@ -36,7 +42,9 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
     FactoryGirl.create(
       :ndc_sdg_ndc_target,
       ndc: pol_ndc,
-      indc_text: pol_html_linkage_text
+      indc_text: pol_html_linkage_text,
+      starts_at: pol_html_linkage_text_starts_at,
+      ends_at: pol_html_linkage_text_ends_at
     )
   }
   let!(:pol_ndc_sdg_ndc_target_sector) {

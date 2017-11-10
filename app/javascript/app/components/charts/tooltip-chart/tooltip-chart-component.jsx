@@ -10,7 +10,7 @@ class TooltipChart extends PureComponent {
     if (!keys || !data) return '';
     let total = 0;
     keys.forEach(key => {
-      total += data.payload[key.value];
+      if (data.payload[key.value]) total += data.payload[key.value];
     });
     return `${format('.3s')(total)}t`;
   };
@@ -19,6 +19,7 @@ class TooltipChart extends PureComponent {
     const { config, content, showTotal } = this.props;
     const unit =
       config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
+
     return (
       <div className={styles.tooltip}>
         <span
@@ -58,6 +59,7 @@ class TooltipChart extends PureComponent {
                 </div>
               ) : null)
           )}
+        {content && !content.payload && <div>No data fool</div>}
       </div>
     );
   }

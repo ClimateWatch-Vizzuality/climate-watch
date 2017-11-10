@@ -49,7 +49,7 @@ Style/RegexpLiteral:
   AllowInnerSlashes: true
 
 Metrics/LineLength:
-  Max: 80
+  Max: 100
   Exclude:
     - 'db/**/*'
     - 'spec/spec_helper.rb'
@@ -64,11 +64,12 @@ Metrics/ModuleLength:
   Enabled: false
 
 Metrics/AbcSize:
+  Max: 25
   Exclude:
     - 'lib/modules/*'
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 25
   Exclude:
     - 'lib/modules/*'
 

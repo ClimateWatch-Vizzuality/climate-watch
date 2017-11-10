@@ -1,19 +1,15 @@
 namespace :stories do
   desc 'Import new stories from WRI RSS feed'
   task import: :environment do
-    puts '##############################'
-    puts '# Starting to import stories #'
-    puts '##############################'
-    ImportStories.new.call
-    puts '########### ENDED ############'
+    TimedLogger.log('import stories') do
+      ImportStories.new.call
+    end
   end
 
   desc 'Delete stories and re-import'
   task fresh_import: :environment do
-    puts '##############################'
-    puts '# Starting to import stories #'
-    puts '##############################'
-    ImportStories.new.call(true)
-    puts '########### ENDED ############'
+    TimedLogger.log('fresh import stories') do
+      ImportStories.new.call(true)
+    end
   end
 end
