@@ -5,6 +5,7 @@ import Search from 'components/search';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 import darkSearch from 'styles/themes/search/search-dark.scss';
+import layout from 'styles/layout.scss';
 import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
@@ -32,7 +33,7 @@ class EmissionPathwaysTable extends PureComponent {
       selectedHorizon
     } = this.props;
     return (
-      <div>
+      <div className={layout.content}>
         <div className={styles.col4}>
           <Dropdown
             label="License"
