@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
-import QueryMenu from 'components/query-menu';
+import AnchorNav from 'components/anchor-nav';
 import Search from 'components/search';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 import layout from 'styles/layout.scss';
 import Button from 'components/button';
 import cx from 'classnames';
+import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import styles from './emission-pathways-table-styles.scss';
 
@@ -16,7 +17,6 @@ class EmissionPathwaysTable extends PureComponent {
     const { loading, data, noContentMsg } = this.props;
 
     if (loading) return null;
-
     return data && data.length > 0 ? (
       <Table parseHtml data={data} rowHeight={60} />
     ) : (
@@ -41,7 +41,12 @@ class EmissionPathwaysTable extends PureComponent {
     return (
       <div className={layout.content}>
         <div className={cx(styles.col4, styles.tableMenuContainer)}>
-          <QueryMenu options={anchorLinks} query={query} />
+          <AnchorNav
+            useRoutes
+            className={styles.nav}
+            links={anchorLinks}
+            theme={anchorNavLightTheme}
+          />
           <Button color="yellow" className={styles.uploadButton}>
             Upload your model
           </Button>
