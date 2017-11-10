@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 
 import actions from './esp-scenarios-provider-actions';
 
@@ -24,4 +23,4 @@ EspScenariosProvider.propTypes = {
   fetchEspScenarios: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(null, actions)(EspScenariosProvider));
+export default connect(null, actions)(EspScenariosProvider);

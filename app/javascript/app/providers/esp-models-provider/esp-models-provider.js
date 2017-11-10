@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 
 import actions from './esp-models-provider-actions';
 
@@ -24,4 +23,4 @@ EspModelsProvider.propTypes = {
   fetchEspModels: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(null, actions)(EspModelsProvider));
+export default connect(null, actions)(EspModelsProvider);
