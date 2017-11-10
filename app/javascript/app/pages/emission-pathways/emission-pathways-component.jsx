@@ -5,6 +5,7 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
 import ESPLocationsProvider from 'providers/esp-locations-provider';
+import ESPTimeSeriesProvider from 'providers/esp-time-series-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-styles.scss';
@@ -16,6 +17,7 @@ class EmissionPathways extends PureComponent {
     return (
       <div>
         <ESPLocationsProvider />
+        <ESPTimeSeriesProvider location={{ id: 251, iso_code: 'GB' }} />
         <Header route={route}>
           <div className={layout.content}>
             <Intro title="Emission Pathways" />
