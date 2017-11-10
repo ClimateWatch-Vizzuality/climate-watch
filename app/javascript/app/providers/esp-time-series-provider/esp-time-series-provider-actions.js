@@ -11,11 +11,12 @@ const getEspTimeSeries = createThunkAction(
     const { espTimeSeries } = state();
     if (
       espTimeSeries &&
-      (isEmpty(espTimeSeries.data) || !espTimeSeries.data[location.value])
+      isEmpty(espTimeSeries.data) &&
+      !espTimeSeries.loading
     ) {
       dispatch(getEspTimeSeriesInit());
       fetch(
-        `https://emissionspathways.org/api/v1/time_series_values?location=${location.id}&scenario=${scenario}`
+        `https://emissionspathways.org/api/v1/time_series_values?location=${location}&scenario=${scenario}`
       )
         .then(response => {
           if (response.ok) return response.json();

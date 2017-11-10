@@ -11,28 +11,29 @@ import EmissionPathwayGraphComponent from './emission-pathway-graph-component';
 import {
   getChartData,
   getChartConfig,
-  getLocationsOptions,
-  getLocationSelected,
-  getScenarioSelected
+  getFiltersOptions,
+  getFiltersSelected
 } from './emission-pathway-graph-selectors';
 
 const actions = { ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, scenario } = qs.parse(location.search);
+  const { currentLocation, scenario, model } = qs.parse(location.search);
   const espData = {
-    locations: state.espLocations.data,
     data,
+    locations: state.espLocations.data,
+    models: state.espModels.data,
+    scenarios: state.espScenarios.data,
     location: currentLocation,
+    model,
     scenario
   };
   return {
     data: getChartData(espData),
     config: getChartConfig(espData),
-    locationsOptions: getLocationsOptions(espData),
-    locationSelected: getLocationSelected(espData),
-    scenarioSelected: getScenarioSelected(espData),
+    filtersOptions: getFiltersOptions(espData),
+    filtersSelected: getFiltersSelected(espData),
     loading: state.espTimeSeries.loading || state.espLocations.loading
   };
 };

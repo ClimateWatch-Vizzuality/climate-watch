@@ -26,8 +26,8 @@ class EspTimeSeriesProvider extends PureComponent {
 
 EspTimeSeriesProvider.propTypes = {
   getEspTimeSeries: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
-  scenario: PropTypes.string
+  location: PropTypes.string.isRequired,
+  scenario: PropTypes.string.isRequired
 };
 
 export { actions, reducers, initialState };

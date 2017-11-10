@@ -44,21 +44,51 @@ const AXES_CONFIG = {
 
 // meta data for selectors
 const getLocations = state => state.locations || null;
+const getModels = state => state.models || null;
+const getScenarios = state => state.scenarios || null;
+
 const getLocation = state => state.location || null;
+const getModel = state => state.model || null;
 const getScenario = state => state.scenario || '31,32,33';
 
 // data for the graph
 const getData = state => state.data || null;
 
+// Selector options
 export const getLocationsOptions = createSelector([getLocations], locations => {
-  if (!locations) return null;
+  if (!locations || !locations.length) return [];
   return locations.map(l => ({
     label: l.name,
-    value: l.iso_code,
-    id: l.id
+    value: l.id.toString()
   }));
 });
 
+export const getModelsOptions = createSelector([getModels], models => {
+  if (!models || !models.length) return [];
+  return models.map(m => ({
+    label: m.full_name,
+    value: m.id.toString()
+  }));
+});
+
+export const getScenariosOptions = createSelector([getScenarios], scenarios => {
+  if (!scenarios || !scenarios.length) return [];
+  return scenarios.map(s => ({
+    label: s.name,
+    value: s.id.toString()
+  }));
+});
+
+export const getFiltersOptions = createSelector(
+  [getLocationsOptions, getModelsOptions, getScenariosOptions],
+  (locations, models, scenarios) => ({
+    locations,
+    models,
+    scenarios
+  })
+);
+
+// Selected values
 export const getLocationSelected = createSelector(
   [getLocationsOptions, getLocation],
   (locations, locationSelected) => {
@@ -68,13 +98,31 @@ export const getLocationSelected = createSelector(
   }
 );
 
-// Map the data from the API
-export const getScenarioSelected = createSelector(
-  [getScenario],
-  locationSelected => {
-    if (!locationSelected) return null;
-    return locationSelected;
+export const getModelSelected = createSelector(
+  [getModelsOptions, getModel],
+  (models, modelSelected) => {
+    if (!models) return null;
+    if (!modelSelected) return models[0];
+    return models.find(m => modelSelected === m.value);
   }
+);
+
+export const getScenarioSelected = createSelector(
+  [getScenariosOptions, getScenario],
+  (scenarios, scenarioSelected) => {
+    if (!scenarios) return null;
+    if (!scenarioSelected) return scenarios[0];
+    return scenarios.find(s => scenarioSelected === s.value);
+  }
+);
+
+export const getFiltersSelected = createSelector(
+  [getLocationSelected, getModelSelected, getScenarioSelected],
+  (location, model, scenario) => ({
+    location,
+    model,
+    scenario
+  })
 );
 
 // Map the data from the API
@@ -125,6 +173,6 @@ export const getChartConfig = createSelector([filterData], data => {
 export default {
   getChartData,
   getChartConfig,
-  getLocationsOptions,
-  getLocationSelected
+  getFiltersOptions,
+  getFiltersSelected
 };
