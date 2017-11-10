@@ -15,7 +15,8 @@ import * as timelineProvider from 'providers/timeline-provider';
 import * as socioeconomicsProvider from 'providers/socioeconomics-provider';
 import * as ndcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import * as espModelsProvider from 'providers/esp-models-provider';
-import * as espIndicatorsProvider from 'providers/simple-provider';
+import * as espScenariosProvider from 'providers/esp-scenarios-provider';
+import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
 
 const providersReducers = {
   countries: handleActions(countriesProvider),
@@ -30,6 +31,7 @@ const providersReducers = {
   timeline: handleActions(timelineProvider),
   ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
   espModels: handleActions(espModelsProvider),
+  espScenarios: handleActions(espScenariosProvider),
   espIndicators: handleActions(espIndicatorsProvider)
 };
 
