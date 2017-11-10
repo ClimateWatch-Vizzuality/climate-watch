@@ -3,8 +3,13 @@ module Api
     class NdcTextSearchResultSerializer < ActiveModel::Serializer
       include Rails.application.routes.url_helpers
 
-      attributes :language, :document_type, :links, :linkages
+      attribute :language
+      attribute :translated
+      attribute :document_type
+      attribute :links
+      attribute :linkages
       attribute :matches
+
       belongs_to :location, serializer: Api::V1::LocationNanoSerializer
 
       def links

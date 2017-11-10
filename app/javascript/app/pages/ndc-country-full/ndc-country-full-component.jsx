@@ -11,6 +11,7 @@ import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 import Sticky from 'react-stickynode';
 import Button from 'components/button';
 import Loading from 'components/loading';
+import NdcTranslationDisclaimer from 'components/ndc-translation-disclaimer';
 
 import layout from 'styles/layout.scss';
 import contentStyles from 'styles/themes/content.scss';
@@ -24,10 +25,13 @@ class NDCCountryFull extends PureComponent {
       return (
         <div className={cx(layout.content, styles.bodyContent)}>
           {!isEmpty(content) && (
-            <div
-              className={cx(contentStyles.content, styles.innerContent)}
-              dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
-            />
+            <div>
+              {<NdcTranslationDisclaimer className={styles.disclaimer} />}
+              <div
+                className={cx(contentStyles.content, styles.innerContent)}
+                dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
+              />
+            </div>
           )}
           <ScrollToHighlightIndex
             idx={search.idx}
