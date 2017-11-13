@@ -19,15 +19,19 @@ const actions = { ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, scenario, model } = qs.parse(location.search);
+  const { currentLocation, scenario, model, indicator } = qs.parse(
+    location.search
+  );
   const espData = {
     data,
     locations: state.espLocations.data,
     models: state.espModels.data,
     scenarios: state.espScenarios.data,
+    indicators: state.espIndicators.data,
     location: currentLocation,
     model,
-    scenario
+    scenario,
+    indicator
   };
   return {
     data: getChartData(espData),
@@ -39,11 +43,8 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
-  handleLocationChange = location => {
-    this.updateUrlParam(
-      { name: 'currentLocation', value: location.value },
-      true
-    );
+  handleSelectorChange = (option, param, clear) => {
+    this.updateUrlParam({ name: param, value: option.value }, clear);
   };
 
   updateUrlParam(params, clear) {
@@ -54,7 +55,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
-      handleLocationChange: this.handleLocationChange
+      handleSelectorChange: this.handleSelectorChange
     });
   }
 }

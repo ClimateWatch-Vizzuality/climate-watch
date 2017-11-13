@@ -46,10 +46,12 @@ const AXES_CONFIG = {
 const getLocations = state => state.locations || null;
 const getModels = state => state.models || null;
 const getScenarios = state => state.scenarios || null;
+const getIndicators = state => state.indicators || null;
 
 const getLocation = state => state.location || null;
 const getModel = state => state.model || null;
-const getScenario = state => state.scenario || '31,32,33';
+const getScenario = state => state.scenario || null;
+const getIndicator = state => state.indicator || null;
 
 // data for the graph
 const getData = state => state.data || null;
@@ -79,12 +81,29 @@ export const getScenariosOptions = createSelector([getScenarios], scenarios => {
   }));
 });
 
+export const getIndicatorsOptions = createSelector(
+  [getIndicators],
+  indicators => {
+    if (!indicators || !indicators.length) return [];
+    return indicators.map(i => ({
+      label: i.category,
+      value: i.id.toString()
+    }));
+  }
+);
+
 export const getFiltersOptions = createSelector(
-  [getLocationsOptions, getModelsOptions, getScenariosOptions],
-  (locations, models, scenarios) => ({
+  [
+    getLocationsOptions,
+    getModelsOptions,
+    getScenariosOptions,
+    getIndicatorsOptions
+  ],
+  (locations, models, scenarios, indicators) => ({
     locations,
     models,
-    scenarios
+    scenarios,
+    indicators
   })
 );
 
@@ -116,12 +135,27 @@ export const getScenarioSelected = createSelector(
   }
 );
 
+export const getIndicatorSelected = createSelector(
+  [getIndicatorsOptions, getIndicator],
+  (indicators, indicatorSelected) => {
+    if (!indicators) return null;
+    if (!indicatorSelected) return indicators[0];
+    return indicators.find(i => indicatorSelected === i.value);
+  }
+);
+
 export const getFiltersSelected = createSelector(
-  [getLocationSelected, getModelSelected, getScenarioSelected],
-  (location, model, scenario) => ({
+  [
+    getLocationSelected,
+    getModelSelected,
+    getScenarioSelected,
+    getIndicatorSelected
+  ],
+  (location, model, scenario, indicator) => ({
     location,
     model,
-    scenario
+    scenario,
+    indicator
   })
 );
 
