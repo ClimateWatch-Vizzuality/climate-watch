@@ -17,7 +17,7 @@ class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
     const data = props.data || [];
-    const sortBy = props.data.length ? props.data[0].value : '';
+    const sortBy = props.data.length ? props.data[0][props.sortBy] : '';
     const sortDirection = SortDirection.ASC;
     const dataSorted = getDataSorted({ data, sortBy, sortDirection });
 
@@ -56,11 +56,13 @@ class TableContainer extends PureComponent {
 }
 
 TableContainer.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  sortBy: PropTypes.string
 };
 
 TableContainer.defaultProps = {
-  data: []
+  data: [],
+  sortBy: 'value'
 };
 
 export default TableContainer;
