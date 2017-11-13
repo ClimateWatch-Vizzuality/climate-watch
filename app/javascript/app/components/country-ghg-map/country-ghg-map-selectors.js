@@ -161,44 +161,55 @@ export const getDefaultValues = createSelector(
   }
 );
 
-export const getPathsWithStyles = createSelector([getDataParsed], data => {
-  if (!data) return worldPaths;
-
-  const { min, max } = data;
-  if (min && max) setScale(getRanges(min, max));
-  return worldPaths.map(path => {
-    let color = '#E5E5EB'; // default color
-    const iso = path.properties && path.properties.id;
-    if (data && data.values && data.values[iso]) {
-      color = colorScale(data.values[iso]);
-    }
-    const style = {
-      default: {
-        fill: color,
-        stroke: '#000',
-        strokeWidth: 0.1,
-        outline: 'none'
-      },
-      hover: {
-        fill: color,
-        stroke: '#000',
-        strokeWidth: 0.1,
-        outline: 'none'
-      },
-      pressed: {
-        fill: color,
-        stroke: '#000',
-        strokeWidth: 0.5,
-        outline: 'none'
+export const getPathsWithStyles = createSelector(
+  [getDataParsed, getIso],
+  (data, countryIso) => {
+    if (!data) return worldPaths;
+    const { min, max } = data;
+    if (min && max) setScale(getRanges(min, max));
+    return worldPaths.map(path => {
+      let color = '#E5E5EB'; // default color
+      const iso = path.properties && path.properties.id;
+      if (data && data.values && data.values[iso]) {
+        color = colorScale(data.values[iso]);
       }
-    };
+      const isSelectedCountry = iso === countryIso;
+      const stroke = isSelectedCountry ? '#113750' : '#000';
+      const SELECTED_COUNTRY_STROKE_WIDTH = 0.7;
+      const strokeWidth = isSelectedCountry
+        ? SELECTED_COUNTRY_STROKE_WIDTH
+        : 0.1;
+      const strokeWidthPressed = isSelectedCountry
+        ? SELECTED_COUNTRY_STROKE_WIDTH
+        : 0.5;
+      const style = {
+        default: {
+          fill: color,
+          stroke,
+          strokeWidth,
+          outline: 'none'
+        },
+        hover: {
+          fill: color,
+          stroke,
+          strokeWidth,
+          outline: 'none'
+        },
+        pressed: {
+          fill: color,
+          stroke,
+          strokeWidth: strokeWidthPressed,
+          outline: 'none'
+        }
+      };
 
-    return {
-      ...path,
-      style
-    };
-  });
-});
+      return {
+        ...path,
+        style
+      };
+    });
+  }
+);
 
 export const getLegendData = createSelector(
   [getCalculationSelected, getYearSelected],
