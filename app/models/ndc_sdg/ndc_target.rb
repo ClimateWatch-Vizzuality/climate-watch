@@ -31,6 +31,7 @@ module NdcSdg
       end
     end
 
+    # rubocop:disable AbcSize
     private_class_method def self.get_attribute(linkage, attribute)
       attr_map = {
         'Country' => -> { linkage.ndc.location.wri_standard_name },
@@ -50,5 +51,6 @@ module NdcSdg
 
       attr_map[attribute].call
     end
+    # rubocop:enable AbcSize
   end
 end

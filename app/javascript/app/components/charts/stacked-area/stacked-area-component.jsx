@@ -201,6 +201,10 @@ class ChartStackedArea extends PureComponent {
               const isActivePoint =
                 activePoint &&
                 (point.x === activePoint.x && point.y === activePoint.y);
+              let colorPoint = point.label === 'BAU' ? '#113750' : '#ffc735';
+              if (point.label === 'No quantifiable target') {
+                colorPoint = '#b1b1c1';
+              }
               const yearLabel = isActivePoint ? (
                 <Label
                   value={`${point.x} - ${point.label}`}
@@ -243,9 +247,9 @@ class ChartStackedArea extends PureComponent {
                     y2={point.y[1]}
                     fill="transparent"
                     fillOpacity={0}
-                    stroke="#113750"
-                    strokeOpacity={isActivePoint ? 1 : 0.3}
-                    strokeWidth={isActivePoint ? 8 : 6}
+                    stroke={colorPoint}
+                    strokeOpacity={1}
+                    strokeWidth={isActivePoint ? 10 : 8}
                     strokeLinejoin="round"
                     onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
@@ -264,9 +268,9 @@ class ChartStackedArea extends PureComponent {
                     y2={point.y}
                     fill="transparent"
                     fillOpacity={0}
-                    stroke="#113750"
-                    strokeOpacity={isActivePoint ? 1 : 0.3}
-                    strokeWidth={isActivePoint ? 5 : 4}
+                    stroke={colorPoint}
+                    strokeOpacity={1}
+                    strokeWidth={isActivePoint ? 4 : 3}
                     strokeLinejoin="round"
                     onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
@@ -305,9 +309,11 @@ class ChartStackedArea extends PureComponent {
                   key={`${point.label}-${point.x + point.y}`}
                   x={point.x}
                   y={point.y}
-                  fill={'#113750'}
-                  fillOpacity={isActivePoint ? 1 : 0.3}
-                  r={isActivePoint ? 6 : 4}
+                  fill={colorPoint}
+                  fillOpacity={1}
+                  stroke="#fff"
+                  strokeWidth={2}
+                  r={isActivePoint ? 8 : 6}
                   onMouseEnter={() => this.handlePointeHover(point)}
                   onMouseLeave={() => this.handlePointeHover(null)}
                 >

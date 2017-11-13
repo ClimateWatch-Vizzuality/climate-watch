@@ -55,9 +55,7 @@ class ImportNdcSdgTargets
       []
     sectors.each do |sector|
       sector_rec = NdcSdg::Sector.where('name ilike ?', sector).first
-      if !sector_rec
-        sector_rec = NdcSdg::Sector.create(name: sector)
-      end
+      sector_rec = NdcSdg::Sector.create(name: sector) unless sector_rec
       NdcSdg::NdcTargetSector.create(
         ndc_target: ndc_target,
         sector: sector_rec
@@ -72,7 +70,11 @@ class ImportNdcSdgTargets
       Rails.logger.error "Location not found #{row}"
       return nil
     end
-    ndc = location.ndcs.first
+    indc_text = row['INDC_text'].strip
+    ndc = location.ndcs.detect do |n|
+      !n.full_text.downcase.index(indc_text.downcase).nil?
+    end
+
     Rails.logger.error "NDC not found #{row}" unless ndc
     ndc
   end

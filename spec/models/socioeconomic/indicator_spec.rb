@@ -9,9 +9,17 @@ RSpec.describe Socioeconomic::Indicator, type: :model do
 
   it 'should be invalid when year is taken' do
     location = FactoryGirl.create(:location)
-    FactoryGirl.create(:socioeconomic_indicator, year: 2015, location: location)
+    FactoryGirl.create(
+      :socioeconomic_indicator,
+      year: 2015,
+      location: location
+    )
     expect(
-      FactoryGirl.build(:socioeconomic_indicator, year: 2015, location: location)
+      FactoryGirl.build(
+        :socioeconomic_indicator,
+        year: 2015,
+        location: location
+      )
     ).to have(1).errors_on(:year)
   end
 end
