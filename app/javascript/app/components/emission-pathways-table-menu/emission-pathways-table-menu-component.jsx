@@ -7,7 +7,7 @@ import cx from 'classnames';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import styles from './emission-pathways-table-wrapper-styles.scss';
 
-class EmissionPathwaysTableWrapper extends PureComponent {
+class EmissionPathwaysTableMenu extends PureComponent {
   render() {
     const { routeLinks } = this.props;
     return (
@@ -23,8 +23,8 @@ class EmissionPathwaysTableWrapper extends PureComponent {
   }
 }
 
-EmissionPathwaysTableWrapper.propTypes = {
+EmissionPathwaysTableMenu.propTypes = {
   routeLinks: PropTypes.array
 };
 
-export default EmissionPathwaysTableWrapper;
+export default EmissionPathwaysTableMenu;
