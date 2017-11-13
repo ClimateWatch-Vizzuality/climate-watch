@@ -7,7 +7,10 @@ const EXCEPTIONS = [
   'mitigation',
   'adaptation',
   'sectoral-information',
-  'ndcs'
+  'ndcs',
+  'models',
+  'scenarios',
+  'indicators'
 ];
 
 class ScrollToTop extends PureComponent {
