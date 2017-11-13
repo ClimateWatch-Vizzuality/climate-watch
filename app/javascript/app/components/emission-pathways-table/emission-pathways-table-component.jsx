@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Search from 'components/search';
+import Loading from 'components/loading';
 // import Dropdown from 'components/dropdown';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
@@ -14,7 +15,8 @@ import styles from './emission-pathways-table-styles.scss';
 class EmissionPathwaysTable extends PureComponent {
   getTableContent() {
     const { loading, data, noContentMsg } = this.props;
-    if (loading) return null;
+    if (loading) return <Loading light className={styles.loader} />;
+
     return data && data.length > 0 ? (
       <Table data={data} rowHeight={60} />
     ) : (
