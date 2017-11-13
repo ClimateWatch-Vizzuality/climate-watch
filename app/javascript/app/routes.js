@@ -297,7 +297,7 @@ export default [
             anchor: true,
             component: () =>
               createElement(EmissionPathwaysTable, {
-                model: 'Models'
+                category: 'Models'
               })
           },
           {
@@ -306,7 +306,7 @@ export default [
             anchor: true,
             component: () =>
               createElement(EmissionPathwaysTable, {
-                model: 'Scenarios'
+                category: 'Scenarios'
               })
           },
           {
@@ -315,7 +315,7 @@ export default [
             anchor: true,
             component: () =>
               createElement(EmissionPathwaysTable, {
-                model: 'Indicators'
+                category: 'Indicators'
               })
           },
           {
