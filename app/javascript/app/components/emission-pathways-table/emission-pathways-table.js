@@ -10,13 +10,13 @@ import {
 } from './emission-pathways-table-selectors';
 import Component from './emission-pathways-table-component';
 
-const mapStateToProps = (state, { model }) => {
+const mapStateToProps = (state, { category }) => {
   const search = qs.parse(location.search);
-  const modelData = state[`esp${model}`];
+  const categoryData = state[`esp${category}`];
 
   const EspData = {
-    modelData,
-    model,
+    categoryData,
+    category,
     query: search.search
     // categorySelected: search.category,
     // indicatorSelected: search.indicator
@@ -26,8 +26,8 @@ const mapStateToProps = (state, { model }) => {
     data: filteredDataBySearch(EspData),
     sortBy: sortBy(EspData),
     query: EspData.query,
-    modelName: model,
-    loading: modelData.loading
+    categoryName: category,
+    loading: categoryData.loading
     // selectedCategory: getSelectedCategory(ndcsWithSelection),
     // selectedIndicator: getSelectedIndicator(ndcsWithSelection)
   };

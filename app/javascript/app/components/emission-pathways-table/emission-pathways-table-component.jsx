@@ -28,7 +28,7 @@ class EmissionPathwaysTable extends PureComponent {
     const {
       query,
       handleSearchChange,
-      modelName
+      categoryName
       // categories,
       // handleLicenseChange,
       // handleTimeIntervalChange,
@@ -74,7 +74,7 @@ class EmissionPathwaysTable extends PureComponent {
             theme={darkSearch}
             onChange={handleSearchChange}
             className={styles.searchBox}
-            placeholder={`Search in ${modelName}`}
+            placeholder={`Search in ${categoryName}`}
             plain
           />
         </div>
@@ -96,7 +96,7 @@ EmissionPathwaysTable.propTypes = {
   // handleLicenseChange: PropTypes.func,
   // handleHorizonChange: PropTypes.func,
   // handleTimeIntervalChange: PropTypes.func,
-  modelName: PropTypes.string.isRequired,
+  categoryName: PropTypes.string.isRequired,
   query: PropTypes.string,
   sortBy: PropTypes.string,
   handleSearchChange: PropTypes.func
