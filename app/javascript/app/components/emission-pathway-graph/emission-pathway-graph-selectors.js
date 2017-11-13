@@ -86,7 +86,7 @@ export const getIndicatorsOptions = createSelector(
   indicators => {
     if (!indicators || !indicators.length) return [];
     return indicators.map(i => ({
-      label: i.category,
+      label: i.alias,
       value: i.id.toString()
     }));
   }
@@ -160,10 +160,15 @@ export const getFiltersSelected = createSelector(
 );
 
 // Map the data from the API
-export const filterData = createSelector([getData], data => {
-  if (!data || isEmpty(data)) return null;
-  return data;
-});
+export const filterData = createSelector(
+  [getData, getFiltersSelected],
+  (data, filters) => {
+    if (!data || isEmpty(data)) return null;
+    return data.filter(
+      d => d.indicator_id === parseInt(filters.indicator.value, 10)
+    );
+  }
+);
 
 export const getChartData = createSelector([filterData], data => {
   if (!data) return null;

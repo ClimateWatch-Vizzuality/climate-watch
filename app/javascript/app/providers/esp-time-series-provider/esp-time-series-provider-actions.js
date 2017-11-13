@@ -7,7 +7,7 @@ const getEspTimeSeriesReady = createAction('getEspTimeSeriesReady');
 
 const getEspTimeSeries = createThunkAction(
   'getEspTimeSeries',
-  (location, scenario) => (dispatch, state) => {
+  (location, model, scenario) => (dispatch, state) => {
     const { espTimeSeries } = state();
     if (
       espTimeSeries &&
@@ -15,9 +15,10 @@ const getEspTimeSeries = createThunkAction(
       !espTimeSeries.loading
     ) {
       dispatch(getEspTimeSeriesInit());
-      fetch(
-        `https://emissionspathways.org/api/v1/time_series_values?location=${location}&scenario=${scenario}`
-      )
+      const query = `location=${location}${model
+        ? `&model=${model}`
+        : ''}${scenario ? `&scenario=${scenario}` : ''}`;
+      fetch(`https://emissionspathways.org/api/v1/time_series_values?${query}`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);

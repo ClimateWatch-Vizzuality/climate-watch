@@ -32,6 +32,7 @@ class EmissionPathwayGraph extends PureComponent {
             filtersSelected.scenario && (
               <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
+                model={filtersSelected.model.value}
                 scenario={filtersSelected.scenario.value}
               />
             )}
