@@ -1,9 +1,11 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
+import { deburrUpper } from 'app/utils';
 
 const getModel = data => data.model || null;
 const getState = data => data.state || null;
+const getQuery = data => deburrUpper(data.query) || '';
 
 const getModelData = createSelector([getState, getModel], (state, model) => {
   const modelData = state[`esp${model}`];
@@ -41,6 +43,23 @@ export const filteredModelData = createSelector(
   }
 );
 
+export const filteredDataBySearch = createSelector(
+  [filteredModelData, getQuery],
+  (data, query) => {
+    if (!data) return null;
+    if (!query) return data;
+
+    return data.filter(d =>
+      Object.keys(d).some(key => {
+        if (Object.prototype.hasOwnProperty.call(d, key) && d[key] !== null) {
+          return deburrUpper(d[key]).indexOf(query) > -1;
+        }
+        return false;
+      })
+    );
+  }
+);
+
 export default {
-  filteredModelData
+  filteredDataBySearch
 };

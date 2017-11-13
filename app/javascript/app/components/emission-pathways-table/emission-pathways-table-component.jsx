@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
-// import Search from 'components/search';
+import Search from 'components/search';
 // import Dropdown from 'components/dropdown';
-// import darkSearch from 'styles/themes/search/search-dark.scss';
+import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
 import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
@@ -23,17 +23,19 @@ class EmissionPathwaysTable extends PureComponent {
   }
 
   render() {
-    // const {
-    // categories,
-    // handleLicenseChange,
-    // handleTimeIntervalChange,
-    // indicators,
-    // handleHorizonChange,
-    // handleSearchChange,
-    // selectedLicense,
-    // selectedTimeInterval,
-    // selectedHorizon
-    // } = this.props;
+    const {
+      query,
+      handleSearchChange
+      // categories,
+      // handleLicenseChange,
+      // handleTimeIntervalChange,
+      // indicators,
+      // handleHorizonChange,
+      // handleSearchChange,
+      // selectedLicense,
+      // selectedTimeInterval,
+      // selectedHorizon
+    } = this.props;
     return (
       <div className={layout.content}>
         <EspModelsProvider />
@@ -64,14 +66,14 @@ class EmissionPathwaysTable extends PureComponent {
             hideResetButton
             plain
           /> */}
-          {/* <Search
+          <Search
             input={query}
             theme={darkSearch}
             onChange={handleSearchChange}
             className={styles.searchBox}
             placeholder="Search table data"
             plain
-          /> */}
+          />
         </div>
         {this.getTableContent()}
       </div>
@@ -82,17 +84,17 @@ class EmissionPathwaysTable extends PureComponent {
 EmissionPathwaysTable.propTypes = {
   loading: PropTypes.bool,
   noContentMsg: PropTypes.string,
-  data: PropTypes.array
+  data: PropTypes.array,
   // categories: PropTypes.array,
   // indicators: PropTypes.array,
   // selectedLicense: PropTypes.object,
   // selectedTimeInterval: PropTypes.object,
   // selectedHorizon: PropTypes.object,
-  // data: PropTypes.array,
   // handleLicenseChange: PropTypes.func,
   // handleHorizonChange: PropTypes.func,
   // handleTimeIntervalChange: PropTypes.func,
-  // handleSearchChange: PropTypes.func
+  query: PropTypes.string,
+  handleSearchChange: PropTypes.func
 };
 
 export default EmissionPathwaysTable;
