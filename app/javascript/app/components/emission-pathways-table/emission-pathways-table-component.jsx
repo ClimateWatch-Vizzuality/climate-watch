@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Search from 'components/search';
+import Loading from 'components/loading';
 // import Dropdown from 'components/dropdown';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
@@ -14,7 +15,8 @@ import styles from './emission-pathways-table-styles.scss';
 class EmissionPathwaysTable extends PureComponent {
   getTableContent() {
     const { loading, data, noContentMsg, sortBy } = this.props;
-    if (loading) return null;
+    if (loading) return <Loading light className={styles.loader} />;
+
     return data && data.length > 0 ? (
       <Table data={data} rowHeight={60} sortBy={sortBy} />
     ) : (
@@ -25,7 +27,8 @@ class EmissionPathwaysTable extends PureComponent {
   render() {
     const {
       query,
-      handleSearchChange
+      handleSearchChange,
+      modelName
       // categories,
       // handleLicenseChange,
       // handleTimeIntervalChange,
@@ -71,7 +74,7 @@ class EmissionPathwaysTable extends PureComponent {
             theme={darkSearch}
             onChange={handleSearchChange}
             className={styles.searchBox}
-            placeholder="Search table data"
+            placeholder={`Search in ${modelName}`}
             plain
           />
         </div>
@@ -93,6 +96,7 @@ EmissionPathwaysTable.propTypes = {
   // handleLicenseChange: PropTypes.func,
   // handleHorizonChange: PropTypes.func,
   // handleTimeIntervalChange: PropTypes.func,
+  modelName: PropTypes.string.isRequired,
   query: PropTypes.string,
   sortBy: PropTypes.string,
   handleSearchChange: PropTypes.func

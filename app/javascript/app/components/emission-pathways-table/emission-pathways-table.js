@@ -12,8 +12,10 @@ import Component from './emission-pathways-table-component';
 
 const mapStateToProps = (state, { model }) => {
   const search = qs.parse(location.search);
+  const modelData = state[`esp${model}`];
+
   const EspData = {
-    state,
+    modelData,
     model,
     query: search.search
     // categorySelected: search.category,
@@ -23,7 +25,9 @@ const mapStateToProps = (state, { model }) => {
   return {
     data: filteredDataBySearch(EspData),
     sortBy: sortBy(EspData),
-    query: EspData.query
+    query: EspData.query,
+    modelName: model,
+    loading: modelData.loading
     // selectedCategory: getSelectedCategory(ndcsWithSelection),
     // selectedIndicator: getSelectedIndicator(ndcsWithSelection)
   };
