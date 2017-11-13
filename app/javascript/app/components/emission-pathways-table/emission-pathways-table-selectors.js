@@ -3,19 +3,19 @@ import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import { deburrUpper } from 'app/utils';
 
-const getModel = data => data.model || null;
+const getModel = data => data.category || null;
 const getModelData = espData =>
-  (espData.modelData && !isEmpty(espData.modelData.data)
-    ? espData.modelData.data
+  (espData.categoryData && !isEmpty(espData.categoryData.data)
+    ? espData.categoryData.data
     : null);
 
 const getQuery = data => deburrUpper(data.query) || '';
 
 export const filteredModelData = createSelector(
   [getModelData, getModel],
-  (data, model) => {
+  (data, category) => {
     if (!data) return null;
-    const modelWhiteListedFields = {
+    const categoryWhiteListedFields = {
       Models: [
         'full_name',
         'abbreviation',
@@ -28,7 +28,7 @@ export const filteredModelData = createSelector(
       ],
       Scenarios: [
         'name',
-        'model_abbreviation',
+        'category_abbreviation',
         'category',
         'geographic_coverage_country',
         'geographic_coverage_region',
@@ -37,7 +37,7 @@ export const filteredModelData = createSelector(
       ],
       Indicators: ['name', 'category', 'subcategory', 'definition', 'unit']
     };
-    return data.map(d => pick(d, modelWhiteListedFields[model]));
+    return data.map(d => pick(d, categoryWhiteListedFields[category]));
   }
 );
 
