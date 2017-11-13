@@ -27,7 +27,8 @@ class EmissionPathwayGraph extends PureComponent {
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <EspLocationsProvider />
-          {filtersSelected && filtersSelected.location &&
+          {filtersSelected &&
+          filtersSelected.location &&
             filtersSelected.scenario && (
               <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
@@ -39,21 +40,23 @@ class EmissionPathwayGraph extends PureComponent {
             <Dropdown
               label="Country/Region"
               options={filtersOptions.locations}
-              onValueChange={(option) => handleSelectorChange(option, 'currentLocation', true)}
+              onValueChange={option =>
+                handleSelectorChange(option, 'currentLocation', true)}
               value={filtersSelected.location}
               hideResetButton
             />
             <Dropdown
               label="Models and scenarios"
               options={filtersOptions.models}
-              onValueChange={(option) => handleSelectorChange(option, 'model')}
+              onValueChange={option => handleSelectorChange(option, 'model')}
               value={filtersSelected.model}
               hideResetButton
             />
             <Dropdown
               label="Indicators"
               options={filtersOptions.indicators}
-              onValueChange={(option) => handleSelectorChange(option, 'indicator')}
+              onValueChange={option =>
+                handleSelectorChange(option, 'indicator')}
               value={filtersSelected.indicator}
               hideResetButton
             />
@@ -75,18 +78,18 @@ class EmissionPathwayGraph extends PureComponent {
                   <ChartLine config={config} data={data} height={500} />
                   <div className={styles.tags}>
                     {config.columns &&
-                      config.columns.y.map(column => (
-                        <Tag
-                          className={styles.tag}
-                          key={`${column.value}`}
-                          data={{
-                            color: config.theme[column.value].stroke,
-                            label: column.label,
-                            id: column.value
-                          }}
-                          canRemove
-                        />
-                      ))}
+                    config.columns.y.map(column => (
+                      <Tag
+                        className={styles.tag}
+                        key={`${column.value}`}
+                        data={{
+                          color: config.theme[column.value].stroke,
+                          label: column.label,
+                          id: column.value
+                        }}
+                        canRemove
+                      />
+                    ))}
                   </div>
                 </div>
               )}
