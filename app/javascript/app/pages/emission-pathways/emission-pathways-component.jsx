@@ -4,14 +4,16 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
+import { renderRoutes } from 'react-router-config';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-styles.scss';
 
 class EmissionPathways extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route, anchorLinks } = this.props;
+    const { route, anchorLinks, routeLinks } = this.props;
     return (
       <div>
         <Header route={route}>
@@ -19,7 +21,11 @@ class EmissionPathways extends PureComponent {
             <Intro title="Emission Pathways" />
           </div>
           <Sticky activeClass="sticky">
-            <AnchorNav links={anchorLinks} className={layout.content} />
+            <AnchorNav
+              links={anchorLinks}
+              className={layout.content}
+              theme={anchorNavRegularTheme}
+            />
           </Sticky>
         </Header>
         {route.sections &&
@@ -27,9 +33,10 @@ class EmissionPathways extends PureComponent {
           route.sections.map(section => (
             <div key={section.hash} className={styles.section}>
               <div id={section.hash} className={styles.sectionHash} />
-              <section.component />
+              <section.component routeLinks={routeLinks} />
             </div>
           ))}
+        {renderRoutes(route.routes)}
       </div>
     );
   }
@@ -37,7 +44,8 @@ class EmissionPathways extends PureComponent {
 
 EmissionPathways.propTypes = {
   route: PropTypes.object.isRequired,
-  anchorLinks: PropTypes.array.isRequired
+  anchorLinks: PropTypes.array.isRequired,
+  routeLinks: PropTypes.array.isRequired
 };
 
 export default EmissionPathways;

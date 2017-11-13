@@ -29,12 +29,13 @@ class EmissionPathwayGraph extends PureComponent {
         <div className={layout.content}>
           <EspLocationsProvider />
           {locationSelected &&
-            scenarioSelected && (
-              <EspTimeSeriesProvider
-                location={locationSelected}
-                scenario={scenarioSelected}
-              />
-            )}
+          scenarioSelected
+          && (
+            <EspTimeSeriesProvider
+              location={locationSelected}
+              scenario={scenarioSelected}
+            />
+          )}
           <h2 className={styles.title}>Emission Pathways</h2>
           <div className={styles.col4}>
             <Dropdown
@@ -49,34 +50,34 @@ class EmissionPathwayGraph extends PureComponent {
           <div className={styles.chartWrapper}>
             {loading && <Loading light className={styles.loader} />}
             {!loading &&
-              (!data || !data.length) && (
-                <NoContent
-                  message={'No data selected'}
-                  className={styles.noContent}
-                  icon
-                />
-              )}
+            (!data || !data.length) && (
+              <NoContent
+                message={'No data selected'}
+                className={styles.noContent}
+                icon
+              />
+            )}
             {data &&
-              config && (
-                <div>
-                  <ChartLine config={config} data={data} height={500} />
-                  <div className={styles.tags}>
-                    {config.columns &&
-                      config.columns.y.map(column => (
-                        <Tag
-                          className={styles.tag}
-                          key={`${column.value}`}
-                          data={{
-                            color: config.theme[column.value].stroke,
-                            label: column.label,
-                            id: column.value
-                          }}
-                          canRemove
-                        />
-                      ))}
-                  </div>
+            config && (
+            <div>
+              <ChartLine config={config} data={data} height={500} />
+              <div className={styles.tags}>
+                {config.columns &&
+                    config.columns.y.map(column => (
+                      <Tag
+                        className={styles.tag}
+                        key={`${column.value}`}
+                        data={{
+                          color: config.theme[column.value].stroke,
+                          label: column.label,
+                          id: column.value
+                        }}
+                        canRemove
+                      />
+                    ))}
                 </div>
-              )}
+              </div>
+            )}
           </div>
         </div>
       </div>
