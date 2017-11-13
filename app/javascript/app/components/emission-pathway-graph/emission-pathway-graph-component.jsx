@@ -72,7 +72,8 @@ class EmissionPathwayGraph extends PureComponent {
                   className={styles.noContent}
                   icon
                 />
-              )}
+              )
+            }
             {data &&
               config && (
                 <div>
@@ -93,7 +94,8 @@ class EmissionPathwayGraph extends PureComponent {
                     ))}
                   </div>
                 </div>
-              )}
+              )
+            }
           </div>
         </div>
       </div>

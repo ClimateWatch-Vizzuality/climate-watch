@@ -1,15 +1,11 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
-import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 import {
   getYColumnValue,
   getThemeConfig,
-  getTooltipConfig,
-  sortEmissionsByValue,
-  sortLabelByAlpha
+  getTooltipConfig
 } from 'utils/graphs';
 
 // constants needed for data parsing
