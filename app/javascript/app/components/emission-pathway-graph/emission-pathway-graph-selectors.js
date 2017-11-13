@@ -69,7 +69,6 @@ export const getLocationSelected = createSelector(
   [getLocationsOptions, getLocation],
   (locations, locationSelected) => {
     if (!locations) return null;
-    if (!locationSelected) return locations[0];
     if (!locationSelected) {
       const defaultLocation = locations.find(l => l.label === 'World');
       return defaultLocation || locations[0];

@@ -61,6 +61,7 @@ class EmissionPathwayGraph extends PureComponent {
               value={filtersSelected.indicator}
               hideResetButton
             />
+            <div />
             <ButtonGroup className={styles.colEnd} />
           </div>
           <div className={styles.chartWrapper}>
