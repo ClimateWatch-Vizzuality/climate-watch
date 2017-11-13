@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 const getEspLocationsInit = createAction('getEspLocationsInit');
 const getEspLocationsReady = createAction('getEspLocationsReady');
 const getEspLocationsFail = createAction('getEspLocationsFail');
+const { ESP_API } = process.env;
 
 const getEspLocations = createThunkAction(
   'getEspLocations',
@@ -16,7 +17,7 @@ const getEspLocations = createThunkAction(
       !espLocations.loading
     ) {
       dispatch(getEspLocationsInit());
-      fetch('https://emissionspathways.org/api/v1/locations')
+      fetch(`${ESP_API}/locations`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
