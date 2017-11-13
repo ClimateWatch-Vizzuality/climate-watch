@@ -33,7 +33,6 @@ class EmissionPathwayGraph extends PureComponent {
               <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
                 model={filtersSelected.model.value}
-                scenario={filtersSelected.scenario.value}
               />
             )}
           <h2 className={styles.title}>Emission Pathways</h2>

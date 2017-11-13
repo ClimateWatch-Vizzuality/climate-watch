@@ -101,15 +101,6 @@ export const getScenariosOptions = createSelector([getScenarios], scenarios => {
   }));
 });
 
-export const getScenarioSelected = createSelector(
-  [getScenariosOptions, getScenario],
-  (scenarios, scenarioSelected) => {
-    if (!scenarios) return null;
-    if (!scenarioSelected) return scenarios[0];
-    return scenarios.find(s => scenarioSelected === s.value);
-  }
-);
-
 export const getIndicatorsOptions = createSelector(
   [getIndicators, getModelSelected],
   (indicators, modelSelected) => {
@@ -152,16 +143,10 @@ export const getFiltersOptions = createSelector(
 );
 
 export const getFiltersSelected = createSelector(
-  [
-    getLocationSelected,
-    getModelSelected,
-    getScenarioSelected,
-    getIndicatorSelected
-  ],
-  (location, model, scenario, indicator) => ({
+  [getLocationSelected, getModelSelected, getIndicatorSelected],
+  (location, model, indicator) => ({
     location,
     model,
-    scenario,
     indicator
   })
 );
