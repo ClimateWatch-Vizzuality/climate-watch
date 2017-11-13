@@ -1,1 +1,10 @@
 @import '~styles/layout.scss';
+
+.section {
+  position: relative;
+}
+
+.sectionHash {
+  position: absolute;
+  top: -49px;
+}
