@@ -7,7 +7,8 @@ import reducers, { initialState } from './esp-time-series-provider-reducers';
 
 class EspTimeSeriesProvider extends PureComponent {
   componentDidMount() {
-    this.props.getEspTimeSeries(this.props.location, this.props.scenario);
+    const { location, model, scenario, getEspTimeSeries } = this.props;
+    getEspTimeSeries(location, model, scenario);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -15,7 +16,8 @@ class EspTimeSeriesProvider extends PureComponent {
       nextProps.location !== this.props.location ||
       nextProps.scenario !== this.props.scenario
     ) {
-      this.props.getEspTimeSeries(nextProps.location, nextProps.scenario);
+      const { location, model, scenario, getEspTimeSeries } = nextProps;
+      getEspTimeSeries(location, model, scenario);
     }
   }
 
@@ -27,7 +29,8 @@ class EspTimeSeriesProvider extends PureComponent {
 EspTimeSeriesProvider.propTypes = {
   getEspTimeSeries: PropTypes.func.isRequired,
   location: PropTypes.string.isRequired,
-  scenario: PropTypes.string.isRequired
+  model: PropTypes.string,
+  scenario: PropTypes.string
 };
 
 export { actions, reducers, initialState };
