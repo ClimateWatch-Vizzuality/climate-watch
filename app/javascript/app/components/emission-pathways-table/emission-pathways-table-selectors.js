@@ -4,14 +4,12 @@ import pick from 'lodash/pick';
 import { deburrUpper } from 'app/utils';
 
 const getModel = data => data.model || null;
-const getState = data => data.state || null;
-const getQuery = data => deburrUpper(data.query) || '';
+const getModelData = espData =>
+  (espData.modelData && !isEmpty(espData.modelData.data)
+    ? espData.modelData.data
+    : null);
 
-const getModelData = createSelector([getState, getModel], (state, model) => {
-  const modelData = state[`esp${model}`];
-  if (!modelData || isEmpty(modelData.data)) return null;
-  return modelData.data;
-});
+const getQuery = data => deburrUpper(data.query) || '';
 
 export const filteredModelData = createSelector(
   [getModelData, getModel],
