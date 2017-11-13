@@ -20,6 +20,7 @@ module Api
     end
 
     class NdcsController < ApiController
+      # rubocop:disable MethodLength, AbcSize
       def index
         sectors = ::Indc::Sector.
           all
@@ -29,7 +30,7 @@ module Api
 
         if params[:filter]
           categories = categories.where(
-            indc_category_types: { name: params[:filter] },
+            indc_category_types: {name: params[:filter]}
           )
         end
 
@@ -37,16 +38,15 @@ module Api
           parent = ::Indc::Category.
             includes(:category_type).
             where(
-              indc_category_types: { name: 'global' },
+              indc_category_types: {name: 'global'},
               slug: params[:category]
             )
 
-          categories = categories
-            .where(
+          categories = categories.
+            where(
               parent_id: parent.map(&:id)
             )
         end
-
 
         indicators = ::Indc::Indicator.
           includes(
@@ -64,6 +64,7 @@ module Api
         render json: NdcIndicators.new(indicators, categories, sectors),
                serializer: Api::V1::Indc::NdcIndicatorsSerializer
       end
+      # rubocop:enable MethodLength, AbcSize
 
       def content_overview
         Location.find_by!(iso_code3: params[:code])

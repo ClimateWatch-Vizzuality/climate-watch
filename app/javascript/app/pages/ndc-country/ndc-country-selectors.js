@@ -34,7 +34,7 @@ export const getAnchorLinks = createSelector(
 export const getDocumentsOptions = createSelector(
   [getDocuments, getIso],
   (documents, iso) => {
-    if (isEmpty(documents) || !iso) return null;
+    if (isEmpty(documents) || !iso || !documents[iso]) return null;
     return documents[iso].map(doc => ({
       label: `${upperCase(doc.document_type)}(${doc.language})`,
       value: `${doc.document_type}(${doc.language})`,

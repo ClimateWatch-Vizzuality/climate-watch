@@ -102,6 +102,7 @@ module Api
         end
       end
 
+      # rubocop:disable AbcSize
       def with_linkage_highlights(
         ndcs,
         include_not_matched = true
@@ -132,6 +133,7 @@ module Api
           ndc
         end
       end
+      # rubocop:enable AbcSize
     end
   end
 end
