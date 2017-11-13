@@ -61,13 +61,38 @@ export const getLocationsOptions = createSelector([getLocations], locations => {
   }));
 });
 
+export const getLocationSelected = createSelector(
+  [getLocationsOptions, getLocation],
+  (locations, locationSelected) => {
+    if (!locations) return null;
+    if (!locationSelected) return locations[0];
+    if (!locationSelected) {
+      const defaultLocation = locations.find(l => l.label === 'World');
+      return defaultLocation || locations[0];
+    }
+    return locations.find(l => locationSelected === l.value);
+  }
+);
+
 export const getModelsOptions = createSelector([getModels], models => {
   if (!models || !models.length) return [];
   return models.map(m => ({
-    label: m.full_name,
+    label: m.abbreviation,
     value: m.id.toString()
   }));
 });
+
+export const getModelSelected = createSelector(
+  [getModelsOptions, getModel],
+  (models, modelSelected) => {
+    if (!models) return null;
+    if (!modelSelected) {
+      const defaultModel = models.find(m => m.label === 'GCAM');
+      return defaultModel || models[0];
+    }
+    return models.find(m => modelSelected === m.value);
+  }
+);
 
 export const getScenariosOptions = createSelector([getScenarios], scenarios => {
   if (!scenarios || !scenarios.length) return [];
@@ -77,14 +102,38 @@ export const getScenariosOptions = createSelector([getScenarios], scenarios => {
   }));
 });
 
+export const getScenarioSelected = createSelector(
+  [getScenariosOptions, getScenario],
+  (scenarios, scenarioSelected) => {
+    if (!scenarios) return null;
+    if (!scenarioSelected) return scenarios[0];
+    return scenarios.find(s => scenarioSelected === s.value);
+  }
+);
+
 export const getIndicatorsOptions = createSelector(
-  [getIndicators],
-  indicators => {
-    if (!indicators || !indicators.length) return [];
-    return indicators.map(i => ({
-      label: i.alias,
-      value: i.id.toString()
-    }));
+  [getIndicators, getModelSelected],
+  (indicators, modelSelected) => {
+    if (!indicators || !indicators.length || !modelSelected) return [];
+    return indicators
+      .map(i => ({
+        label: i.alias,
+        value: i.id.toString()
+      }))
+      .filter(i => i.value === modelSelected.value);
+  }
+);
+
+export const getIndicatorSelected = createSelector(
+  [getIndicatorsOptions, getIndicator],
+  (indicators, indicatorSelected) => {
+    if (!indicators) return null;
+    if (!indicatorSelected) return indicators[0];
+    if (!indicatorSelected) {
+      const defaultIndicator = indicators.find(i => i.label === 'Heat');
+      return defaultIndicator || indicators[0];
+    }
+    return indicators.find(i => indicatorSelected === i.value);
   }
 );
 
@@ -101,43 +150,6 @@ export const getFiltersOptions = createSelector(
     scenarios,
     indicators
   })
-);
-
-// Selected values
-export const getLocationSelected = createSelector(
-  [getLocationsOptions, getLocation],
-  (locations, locationSelected) => {
-    if (!locations) return null;
-    if (!locationSelected) return locations[0];
-    return locations.find(l => locationSelected === l.value);
-  }
-);
-
-export const getModelSelected = createSelector(
-  [getModelsOptions, getModel],
-  (models, modelSelected) => {
-    if (!models) return null;
-    if (!modelSelected) return models[0];
-    return models.find(m => modelSelected === m.value);
-  }
-);
-
-export const getScenarioSelected = createSelector(
-  [getScenariosOptions, getScenario],
-  (scenarios, scenarioSelected) => {
-    if (!scenarios) return null;
-    if (!scenarioSelected) return scenarios[0];
-    return scenarios.find(s => scenarioSelected === s.value);
-  }
-);
-
-export const getIndicatorSelected = createSelector(
-  [getIndicatorsOptions, getIndicator],
-  (indicators, indicatorSelected) => {
-    if (!indicators) return null;
-    if (!indicatorSelected) return indicators[0];
-    return indicators.find(i => indicatorSelected === i.value);
-  }
 );
 
 export const getFiltersSelected = createSelector(
@@ -159,7 +171,7 @@ export const getFiltersSelected = createSelector(
 export const filterData = createSelector(
   [getData, getFiltersSelected],
   (data, filters) => {
-    if (!data || isEmpty(data)) return null;
+    if (!data || isEmpty(data) || !filters.indicator) return null;
     return data.filter(
       d => d.indicator_id === parseInt(filters.indicator.value, 10)
     );
@@ -185,25 +197,28 @@ export const getChartData = createSelector([filterData], data => {
   return dataMapped;
 });
 
-export const getChartConfig = createSelector([filterData], data => {
-  if (!data) return null;
-  const yColumns = data.map(d => ({
-    label: d.scenario_id,
-    value: getYColumnValue(d.scenario_id)
-  }));
-  const yColumnsChecked = uniqBy(yColumns, 'value');
-  const theme = getThemeConfig(yColumnsChecked, COLORS);
-  const tooltip = getTooltipConfig(yColumnsChecked);
-  return {
-    axes: AXES_CONFIG,
-    theme,
-    tooltip,
-    columns: {
-      x: [{ label: 'year', value: 'x' }],
-      y: yColumnsChecked
-    }
-  };
-});
+export const getChartConfig = createSelector(
+  [filterData, getScenariosOptions],
+  (data, scenarios) => {
+    if (!data || !scenarios) return null;
+    const yColumns = data.map(d => ({
+      label: scenarios.find(s => parseInt(s.value, 10) === d.scenario_id).label,
+      value: getYColumnValue(d.scenario_id)
+    }));
+    const yColumnsChecked = uniqBy(yColumns, 'value');
+    const theme = getThemeConfig(yColumnsChecked, COLORS);
+    const tooltip = getTooltipConfig(yColumnsChecked);
+    return {
+      axes: AXES_CONFIG,
+      theme,
+      tooltip,
+      columns: {
+        x: [{ label: 'year', value: 'x' }],
+        y: yColumnsChecked
+      }
+    };
+  }
+);
 
 export default {
   getChartData,
