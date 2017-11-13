@@ -58,6 +58,12 @@ export const filteredDataBySearch = createSelector(
   }
 );
 
+export const sortBy = createSelector([filteredDataBySearch], data => {
+  if (!data || isEmpty(data)) return null;
+  return Object.keys(data[0])[0];
+});
+
 export default {
-  filteredDataBySearch
+  filteredDataBySearch,
+  sortBy
 };
