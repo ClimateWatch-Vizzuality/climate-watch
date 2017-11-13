@@ -26,7 +26,7 @@ class EmissionPathways extends PureComponent {
           <div className={layout.content}>
             <Intro title="Emission Pathways" />
           </div>
-          <Sticky activeClass="sticky">
+          <Sticky activeClass="stickyEmissions">
             <AnchorNav
               links={anchorLinks}
               className={layout.content}
