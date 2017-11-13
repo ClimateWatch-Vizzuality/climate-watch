@@ -35,7 +35,12 @@ const mapStateToProps = (state, { location }) => {
     config: getChartConfig(espData),
     filtersOptions: getFiltersOptions(espData),
     filtersSelected: getFiltersSelected(espData),
-    loading: state.espTimeSeries.loading || state.espLocations.loading
+    loading:
+      state.espTimeSeries.loading ||
+      state.espLocations.loading ||
+      state.espModels.loading ||
+      state.espScenarios.loading ||
+      state.espIndicators.loading
   };
 };
 
