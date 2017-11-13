@@ -20,6 +20,7 @@ import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import EmissionPathways from 'pages/emission-pathways';
 import EmissionPathwaysTable from 'components/emission-pathways-table';
+import EmissionPathwaysTableMenu from 'components/emission-pathways-table-menu';
 import EmissionPathwayGraph from 'components/emission-pathway-graph';
 import EmissionPathwaysTableWrapper from 'components/emission-pathways-table-wrapper';
 import About from 'pages/about';
@@ -286,7 +287,7 @@ export default [
             label: 'Models, Scenarios & Indicators',
             anchor: true,
             nav: true,
-            component: EmissionPathwaysTableWrapper
+            component: EmissionPathwaysTableMenu
           }
         ],
         routes: [
