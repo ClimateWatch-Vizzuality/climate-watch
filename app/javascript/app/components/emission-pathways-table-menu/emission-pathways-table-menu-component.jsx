@@ -5,7 +5,7 @@ import layout from 'styles/layout.scss';
 import Button from 'components/button';
 import cx from 'classnames';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
-import styles from './emission-pathways-table-wrapper-styles.scss';
+import styles from './emission-pathways-table-menu-styles.scss';
 
 class EmissionPathwaysTableMenu extends PureComponent {
   render() {
