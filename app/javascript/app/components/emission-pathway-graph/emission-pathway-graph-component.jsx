@@ -21,7 +21,7 @@ class EmissionPathwayGraph extends PureComponent {
       loading,
       filtersOptions,
       filtersSelected,
-      handleLocationChange
+      handleSelectorChange
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -39,8 +39,22 @@ class EmissionPathwayGraph extends PureComponent {
             <Dropdown
               label="Country/Region"
               options={filtersOptions.locations}
-              onValueChange={handleLocationChange}
+              onValueChange={(option) => handleSelectorChange(option, 'currentLocation', true)}
               value={filtersSelected.location}
+              hideResetButton
+            />
+            <Dropdown
+              label="Models and scenarios"
+              options={filtersOptions.models}
+              onValueChange={(option) => handleSelectorChange(option, 'model')}
+              value={filtersSelected.model}
+              hideResetButton
+            />
+            <Dropdown
+              label="Indicators"
+              options={filtersOptions.indicators}
+              onValueChange={(option) => handleSelectorChange(option, 'indicator')}
+              value={filtersSelected.indicator}
               hideResetButton
             />
             <ButtonGroup className={styles.colEnd} />
@@ -89,7 +103,7 @@ EmissionPathwayGraph.propTypes = {
   loading: PropTypes.bool,
   filtersOptions: PropTypes.object,
   filtersSelected: PropTypes.object,
-  handleLocationChange: PropTypes.func
+  handleSelectorChange: PropTypes.func
 };
 
 export default EmissionPathwayGraph;
