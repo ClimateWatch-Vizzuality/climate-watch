@@ -122,11 +122,11 @@ export const getIndicatorSelected = createSelector(
   [getIndicatorsOptions, getIndicator],
   (indicators, indicatorSelected) => {
     if (!indicators) return null;
-    if (!indicatorSelected) return indicators[0];
-    if (!indicatorSelected) {
-      const defaultIndicator = indicators.find(i => i.label === 'Heat');
-      return defaultIndicator || indicators[0];
-    }
+    if (!indicatorSelected) return null;
+    // if (!indicatorSelected) {
+    //   const defaultIndicator = indicators.find(i => i.label === 'Heat');
+    //   return defaultIndicator || indicators[0];
+    // }
     return indicators.find(i => indicatorSelected === i.value);
   }
 );
@@ -159,7 +159,8 @@ export const getFiltersSelected = createSelector(
 export const filterData = createSelector(
   [getData, getFiltersSelected],
   (data, filters) => {
-    if (!data || isEmpty(data) || !filters.indicator) return null;
+    if (!data || isEmpty(data)) return null;
+    if (!filters.indicator) return data;
     return data.filter(
       d => d.indicator_id === parseInt(filters.indicator.value, 10)
     );
