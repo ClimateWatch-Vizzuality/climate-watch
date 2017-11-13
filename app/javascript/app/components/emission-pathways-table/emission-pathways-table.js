@@ -19,7 +19,8 @@ const mapStateToProps = (state, { model }) => {
 
   return {
     data: filteredDataBySearch(EspData),
-    query: EspData.query
+    query: EspData.query,
+    modelName: model
     // selectedCategory: getSelectedCategory(ndcsWithSelection),
     // selectedIndicator: getSelectedIndicator(ndcsWithSelection)
   };
