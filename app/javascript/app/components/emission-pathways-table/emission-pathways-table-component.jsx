@@ -13,10 +13,10 @@ import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
   getTableContent() {
-    const { loading, data, noContentMsg } = this.props;
+    const { loading, data, noContentMsg, sortBy } = this.props;
     if (loading) return null;
     return data && data.length > 0 ? (
-      <Table data={data} rowHeight={60} />
+      <Table data={data} rowHeight={60} sortBy={sortBy} />
     ) : (
       <NoContent message={noContentMsg} />
     );
@@ -94,6 +94,7 @@ EmissionPathwaysTable.propTypes = {
   // handleHorizonChange: PropTypes.func,
   // handleTimeIntervalChange: PropTypes.func,
   query: PropTypes.string,
+  sortBy: PropTypes.string,
   handleSearchChange: PropTypes.func
 };
 

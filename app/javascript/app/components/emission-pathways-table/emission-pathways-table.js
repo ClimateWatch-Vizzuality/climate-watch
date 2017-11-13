@@ -4,7 +4,10 @@ import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
-import { filteredDataBySearch } from './emission-pathways-table-selectors';
+import {
+  filteredDataBySearch,
+  sortBy
+} from './emission-pathways-table-selectors';
 import Component from './emission-pathways-table-component';
 
 const mapStateToProps = (state, { model }) => {
@@ -19,6 +22,7 @@ const mapStateToProps = (state, { model }) => {
 
   return {
     data: filteredDataBySearch(EspData),
+    sortBy: sortBy(EspData),
     query: EspData.query
     // selectedCategory: getSelectedCategory(ndcsWithSelection),
     // selectedIndicator: getSelectedIndicator(ndcsWithSelection)
@@ -51,7 +55,7 @@ class EmissionPatwaysTableComponent extends PureComponent {
     const { query } = this.props;
     const noContentMsg = query
       ? 'No results found'
-      : 'There is no data for this indicator';
+      : 'There is no data for this section';
     return createElement(Component, {
       ...this.props,
       noContentMsg,
