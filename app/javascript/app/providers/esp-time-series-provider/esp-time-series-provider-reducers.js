@@ -8,7 +8,7 @@ const setLoading = (loading, state) => ({ ...state, loading });
 const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
-  getEspTimeSeriesInit: state => setLoading(true, state),
+  getEspTimeSeriesInit: state => setLoading(true, { ...state, data: {} }),
   getEspTimeSeriesReady: (state, { payload }) =>
     setLoaded(true, setLoading(false, { ...state, data: payload }))
 };

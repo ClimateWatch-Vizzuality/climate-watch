@@ -19,7 +19,9 @@ const actions = { ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, model, indicator } = qs.parse(location.search);
+  const { currentLocation, model, indicator, scenario } = qs.parse(
+    location.search
+  );
   const espData = {
     data,
     locations: state.espLocations.data,
@@ -28,7 +30,8 @@ const mapStateToProps = (state, { location }) => {
     indicators: state.espIndicators.data,
     location: currentLocation,
     model,
-    indicator
+    indicator,
+    scenario
   };
   return {
     data: getChartData(espData),
@@ -45,8 +48,32 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
+  handleModelChange = model => {
+    this.updateUrlParam([
+      { name: 'model', value: model.value },
+      {
+        name: 'scenario',
+        value: model.scenarios ? model.scenarios.toString() : ''
+      }
+    ]);
+  };
+
   handleSelectorChange = (option, param, clear) => {
-    this.updateUrlParam({ name: param, value: option.value }, clear);
+    this.updateUrlParam(
+      { name: param, value: option ? option.value : '' },
+      clear
+    );
+  };
+
+  handleRemoveTag = tagData => {
+    const { filtersSelected } = this.props;
+    const newTags = [];
+    filtersSelected.scenarios.forEach(filter => {
+      if (filter.label !== tagData.label) {
+        newTags.push(filter.value);
+      }
+    });
+    this.updateUrlParam({ name: 'scenario', value: newTags.toString() });
   };
 
   updateUrlParam(params, clear) {
@@ -57,14 +84,17 @@ class EmissionPathwayGraphContainer extends PureComponent {
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
-      handleSelectorChange: this.handleSelectorChange
+      handleModelChange: this.handleModelChange,
+      handleSelectorChange: this.handleSelectorChange,
+      handleRemoveTag: this.handleRemoveTag
     });
   }
 }
 
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  filtersSelected: PropTypes.object
 };
 
 export default withRouter(

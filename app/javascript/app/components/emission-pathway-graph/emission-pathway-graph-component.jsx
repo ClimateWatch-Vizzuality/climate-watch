@@ -21,7 +21,9 @@ class EmissionPathwayGraph extends PureComponent {
       loading,
       filtersOptions,
       filtersSelected,
-      handleSelectorChange
+      handleSelectorChange,
+      handleModelChange,
+      handleRemoveTag
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -48,17 +50,17 @@ class EmissionPathwayGraph extends PureComponent {
             <Dropdown
               label="Models and scenarios"
               options={filtersOptions.models}
-              onValueChange={option => handleSelectorChange(option, 'model')}
+              onValueChange={handleModelChange}
               value={filtersSelected.model}
               hideResetButton
             />
             <Dropdown
               label="Indicators"
+              placeholder="Select an indicator"
               options={filtersOptions.indicators}
               onValueChange={option =>
                 handleSelectorChange(option, 'indicator')}
               value={filtersSelected.indicator}
-              hideResetButton
             />
             <div />
             <ButtonGroup className={styles.colEnd} />
@@ -74,7 +76,7 @@ class EmissionPathwayGraph extends PureComponent {
                 />
               )
             }
-            {data &&
+            {data && data.length > 0 &&
               config && (
                 <div>
                   <ChartLine config={config} data={data} height={500} />
@@ -89,6 +91,7 @@ class EmissionPathwayGraph extends PureComponent {
                           label: column.label,
                           id: column.value
                         }}
+                        onRemove={handleRemoveTag}
                         canRemove
                       />
                     ))}
@@ -109,7 +112,9 @@ EmissionPathwayGraph.propTypes = {
   loading: PropTypes.bool,
   filtersOptions: PropTypes.object,
   filtersSelected: PropTypes.object,
-  handleSelectorChange: PropTypes.func
+  handleSelectorChange: PropTypes.func,
+  handleModelChange: PropTypes.func,
+  handleRemoveTag: PropTypes.func
 };
 
 export default EmissionPathwayGraph;
