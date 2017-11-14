@@ -22,6 +22,7 @@ const getEspTimeSeries = createThunkAction(
         })
         .catch(error => {
           console.info(error);
+          getEspTimeSeriesReady({});
         });
     }
   }
