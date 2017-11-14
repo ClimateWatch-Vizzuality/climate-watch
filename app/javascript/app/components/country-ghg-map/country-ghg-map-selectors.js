@@ -20,6 +20,7 @@ const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
 const getCalculationData = state => state.calculationData || null;
+const getMeta = state => state.meta || {};
 
 export const getCalculationSelected = createSelector(
   [getCalculationSelection],
@@ -149,13 +150,39 @@ export const getDataParsed = createSelector(
 
 // get selector defaults
 export const getDefaultValues = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return null;
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
+  [getSources, getSourceSelected, getMeta],
+  (sources, sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    const defaults = {};
+    switch (sourceSelected.label) {
+      case 'CAIT':
+        defaults.sector = meta.sector.find(
+          s => s.label === 'Total excluding LUCF'
+        ).value;
+        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
+        break;
+      case 'PIK':
+        defaults.sector = meta.sector.find(
+          s => s.label === 'Total excluding LUCF'
+        ).value;
+        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
+        break;
+      case 'UNFCCC':
+        defaults.sector = meta.sector
+          .filter(
+            s =>
+              s.label === 'Total GHG emissions without LULUCF' ||
+              s.label === 'Total GHG emissions excluding LULUCF/LUCF'
+          )
+          .map(d => d.value)
+          .toString();
+        defaults.gas = meta.gas.find(g => g.label === 'Aggregate GHGs').value;
+        break;
+      default:
+        return null;
+    }
     return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
+      ...defaults,
       source: sources[0].value
     };
   }

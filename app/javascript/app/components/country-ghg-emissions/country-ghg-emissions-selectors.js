@@ -171,15 +171,38 @@ export const getFiltersSelected = createSelector(
 
 // get selector defaults
 export const getSelectorDefaults = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return {};
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
-    return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
-      source: sources[0].value
-    };
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    const defaults = {};
+    switch (sourceSelected.label) {
+      case 'CAIT':
+        defaults.sector = meta.sector.find(
+          s => s.label === 'Total excluding LUCF'
+        ).value;
+        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
+        break;
+      case 'PIK':
+        defaults.sector = meta.sector.find(
+          s => s.label === 'Total excluding LUCF'
+        ).value;
+        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
+        break;
+      case 'UNFCCC':
+        defaults.sector = meta.sector
+          .filter(
+            s =>
+              s.label === 'Total GHG emissions without LULUCF' ||
+              s.label === 'Total GHG emissions excluding LULUCF/LUCF'
+          )
+          .map(d => d.value)
+          .toString();
+        defaults.gas = meta.gas.find(g => g.label === 'Aggregate GHGs').value;
+        break;
+      default:
+        return null;
+    }
+    return defaults;
   }
 );
 
