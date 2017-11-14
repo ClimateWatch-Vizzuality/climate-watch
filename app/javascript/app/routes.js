@@ -22,6 +22,7 @@ import EmissionPathways from 'pages/emission-pathways';
 import EmissionPathwaysTable from 'components/emission-pathways-table';
 import EmissionPathwaysTableMenu from 'components/emission-pathways-table-menu';
 import EmissionPathwayGraph from 'components/emission-pathway-graph';
+import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
@@ -270,6 +271,27 @@ export default [
         headerImage: 'emissions'
       },
       {
+        path: '/emission-pathways/models/:id',
+        component: EmissionPathwaysModel,
+        label: 'EMISSION PATHWAYS MODEL',
+        headerImage: 'emission-pathways',
+        sections: [
+          {
+            hash: 'overview',
+            label: 'Overview',
+            anchor: true,
+            component: error
+          },
+          {
+            hash: 'scenarios-indicators',
+            label: 'Scenarios & Indicators',
+            anchor: true,
+            nav: true,
+            component: error
+          }
+        ]
+      },
+      {
         path: '/emission-pathways',
         component: EmissionPathways,
         label: 'EMISSION PATHWAYS',
@@ -320,6 +342,7 @@ export default [
           {
             path: '/emission-pathways',
             label: 'emission-pathways',
+            exact: true,
             component: () =>
               createElement(Redirect, { to: '/emission-pathways/models' })
           }
