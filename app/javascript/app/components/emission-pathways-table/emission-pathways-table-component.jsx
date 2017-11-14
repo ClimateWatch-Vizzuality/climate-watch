@@ -14,11 +14,15 @@ import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
   getTableContent() {
-    const { loading, data, noContentMsg, sortBy } = this.props;
+    const { loading, data, noContentMsg, sortBy, titleLinks } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
-
     return data && data.length > 0 ? (
-      <Table data={data} rowHeight={60} sortBy={sortBy} />
+      <Table
+        titleLinks={titleLinks}
+        data={data}
+        rowHeight={60}
+        sortBy={sortBy}
+      />
     ) : (
       <NoContent message={noContentMsg} />
     );
@@ -97,6 +101,7 @@ EmissionPathwaysTable.propTypes = {
   // handleHorizonChange: PropTypes.func,
   // handleTimeIntervalChange: PropTypes.func,
   categoryName: PropTypes.string.isRequired,
+  titleLinks: PropTypes.array,
   query: PropTypes.string,
   sortBy: PropTypes.string,
   handleSearchChange: PropTypes.func

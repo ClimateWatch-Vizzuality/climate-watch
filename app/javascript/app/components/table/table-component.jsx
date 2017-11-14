@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
+import { NavLink } from 'react-router-dom';
 import styles from './table-styles.scss';
 
 class SimpleTable extends PureComponent {
@@ -13,7 +14,8 @@ class SimpleTable extends PureComponent {
       sortBy,
       sortDirection,
       handleSort,
-      parseHtml
+      parseHtml,
+      titleLinks
     } = this.props;
     if (!data.length) return null;
 
@@ -44,14 +46,21 @@ class SimpleTable extends PureComponent {
                   dataKey={column}
                   width={200}
                   flexGrow={flexGrow}
-                  cellRenderer={cell =>
-                    (!parseHtml ? (
-                      cell.cellData
-                    ) : (
+                  cellRenderer={cell => {
+                    const titleLink = titleLinks[cell.rowIndex];
+                    if (titleLink && cell.dataKey === titleLink.fieldName) {
+                      return (
+                        <NavLink to={titleLink.url}>{cell.cellData}</NavLink>
+                      );
+                    }
+                    return parseHtml ? (
                       <div
                         dangerouslySetInnerHTML={{ __html: cell.cellData }}
                       />
-                    ))}
+                    ) : (
+                      cell.cellData
+                    );
+                  }}
                 />
               );
             })}
@@ -69,7 +78,8 @@ SimpleTable.propTypes = {
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   handleSort: PropTypes.func.isRequired,
-  parseHtml: PropTypes.bool
+  parseHtml: PropTypes.bool,
+  titleLinks: PropTypes.array
 };
 
 SimpleTable.defaultProps = {

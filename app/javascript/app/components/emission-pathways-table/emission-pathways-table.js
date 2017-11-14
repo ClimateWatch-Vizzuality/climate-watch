@@ -6,7 +6,8 @@ import qs from 'query-string';
 import PropTypes from 'prop-types';
 import {
   filteredDataBySearch,
-  sortBy
+  sortBy,
+  titleLinks
 } from './emission-pathways-table-selectors';
 import Component from './emission-pathways-table-component';
 
@@ -25,6 +26,7 @@ const mapStateToProps = (state, { category }) => {
   return {
     data: filteredDataBySearch(EspData),
     sortBy: sortBy(EspData),
+    titleLinks: titleLinks(EspData),
     query: EspData.query,
     categoryName: category,
     loading: categoryData.loading
@@ -33,7 +35,7 @@ const mapStateToProps = (state, { category }) => {
   };
 };
 
-class EmissionPatwaysTableComponent extends PureComponent {
+class EmissionPathwaysTableComponent extends PureComponent {
   // handleCategoryChange = category => {
   //   this.updateUrlParam({
   //     name: 'category',
@@ -68,12 +70,12 @@ class EmissionPatwaysTableComponent extends PureComponent {
   }
 }
 
-EmissionPatwaysTableComponent.propTypes = {
+EmissionPathwaysTableComponent.propTypes = {
   query: PropTypes.string,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
 };
 
 export default withRouter(
-  connect(mapStateToProps, null)(EmissionPatwaysTableComponent)
+  connect(mapStateToProps, null)(EmissionPathwaysTableComponent)
 );

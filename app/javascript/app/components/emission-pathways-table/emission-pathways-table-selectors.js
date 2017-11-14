@@ -3,16 +3,16 @@ import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import { deburrUpper } from 'app/utils';
 
-const getModel = data => data.category || null;
-const getModelData = espData =>
+const getCategoryName = data => data.category || null;
+const getCategoryData = espData =>
   (espData.categoryData && !isEmpty(espData.categoryData.data)
     ? espData.categoryData.data
     : null);
 
 const getQuery = data => deburrUpper(data.query) || '';
 
-export const filteredModelData = createSelector(
-  [getModelData, getModel],
+const filteredCategoryData = createSelector(
+  [getCategoryData, getCategoryName],
   (data, category) => {
     if (!data) return null;
     const categoryWhiteListedFields = {
@@ -21,28 +21,23 @@ export const filteredModelData = createSelector(
         'abbreviation',
         'availability',
         'current_version',
-        'development_year',
-        'expertise',
-        'license',
-        'maintainer_name'
+        'license'
       ],
       Scenarios: [
         'name',
         'category_abbreviation',
         'category',
         'geographic_coverage_country',
-        'geographic_coverage_region',
-        'purpose_or_objective',
-        'time_horizon'
+        'geographic_coverage_region'
       ],
-      Indicators: ['name', 'category', 'subcategory', 'definition', 'unit']
+      Indicators: ['name', 'category', 'subcategory', 'definition']
     };
     return data.map(d => pick(d, categoryWhiteListedFields[category]));
   }
 );
 
 export const filteredDataBySearch = createSelector(
-  [filteredModelData, getQuery],
+  [filteredCategoryData, getQuery],
   (data, query) => {
     if (!data) return null;
     if (!query) return data;
@@ -58,6 +53,22 @@ export const filteredDataBySearch = createSelector(
   }
 );
 
+export const titleLinks = createSelector(
+  [getCategoryName, getCategoryData],
+  (categoryName, data) => {
+    if (!data || !categoryName) return null;
+    const categoryId = {
+      Models: 'full_name',
+      Scenarios: 'name',
+      Indicators: 'name'
+    };
+    return data.map(d => ({
+      fieldName: categoryId[categoryName],
+      url: `${categoryName.toLowerCase()}/${d.id}`
+    }));
+  }
+);
+
 export const sortBy = createSelector([filteredDataBySearch], data => {
   if (!data || isEmpty(data)) return null;
   return Object.keys(data[0])[0];
@@ -65,5 +76,6 @@ export const sortBy = createSelector([filteredDataBySearch], data => {
 
 export default {
   filteredDataBySearch,
+  titleLinks,
   sortBy
 };
