@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import pick from 'lodash/pick';
 
 const getSections = espModelData => espModelData.route.sections || null;
 const getSearch = espModelData => espModelData.location.search || null;
@@ -39,8 +40,22 @@ export const getModel = createSelector([getData, getId], (data, id) => {
   return data.find(d => String(d.id) === id) || {};
 });
 
+export const getOverviewData = createSelector([getModel], data => {
+  if (!data) return null;
+  const overviewFields = [
+    'maintainer_name',
+    'geographic_coverage_region',
+    'sectoral_coverage',
+    'time_horizon',
+    'license'
+  ];
+
+  return pick(data, overviewFields);
+});
+
 export default {
   getAnchorLinks,
   getRouteLinks,
+  getOverviewData,
   getModel
 };

@@ -23,6 +23,7 @@ import EmissionPathwaysTable from 'components/emission-pathways-table';
 import EmissionPathwaysTableMenu from 'components/emission-pathways-table-menu';
 import EmissionPathwayGraph from 'components/emission-pathway-graph';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
+import EmissionPathwaysOverview from 'components/emission-pathways-overview';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
@@ -280,7 +281,7 @@ export default [
             hash: 'overview',
             label: 'Overview',
             anchor: true,
-            component: error
+            component: EmissionPathwaysOverview
           },
           {
             hash: 'scenarios-indicators',
