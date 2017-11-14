@@ -22,7 +22,6 @@ import EmissionPathways from 'pages/emission-pathways';
 import EmissionPathwaysTable from 'components/emission-pathways-table';
 import EmissionPathwaysTableMenu from 'components/emission-pathways-table-menu';
 import EmissionPathwayGraph from 'components/emission-pathway-graph';
-import EmissionPathwaysTableWrapper from 'components/emission-pathways-table-wrapper';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';

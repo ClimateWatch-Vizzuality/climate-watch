@@ -14,7 +14,7 @@ import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
   getTableContent() {
-    const { loading, data, noContentMsg } = this.props;
+    const { loading, data, noContentMsg, sortBy } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
 
     return data && data.length > 0 ? (
