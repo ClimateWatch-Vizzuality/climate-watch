@@ -27,8 +27,6 @@ spec:
             value: "3000"
           - name: RAILS_SERVE_STATIC_FILES
             value: "true"
-          - name: GOOGLE_ANALYTICS_ID
-            value: UA-1981881-51
           - name: PASSWORD_PROTECT
             value: "false"
           - name: AUTH_USERNAME
@@ -60,6 +58,8 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_AWS_SECRET_ACCESS_KEY
+          - name: ESP_API
+            value: "https://www.emissionspathways.org/api/v1"
 
         ports:
           - containerPort: 3000
