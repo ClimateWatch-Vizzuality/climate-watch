@@ -15,6 +15,7 @@ import {
   sortLabelByAlpha,
   getColorPalette
 } from 'utils/graphs';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 // constants needed for data parsing
 const DATA_SCALE = 1000000;
@@ -171,15 +172,10 @@ export const getFiltersSelected = createSelector(
 
 // get selector defaults
 export const getSelectorDefaults = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return {};
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
-    return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
-      source: sources[0].value
-    };
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 

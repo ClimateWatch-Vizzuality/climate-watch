@@ -5,6 +5,7 @@ import { CALCULATION_OPTIONS } from 'app/data/constants';
 import groupBy from 'lodash/groupBy';
 
 import worldPaths from 'app/data/world-50m-paths';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 const calculationKeys = Object.keys(CALCULATION_OPTIONS);
 const options = calculationKeys.map(
@@ -20,6 +21,7 @@ const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
 const getCalculationData = state => state.calculationData || null;
+const getMeta = state => state.meta || {};
 
 export const getCalculationSelected = createSelector(
   [getCalculationSelection],
@@ -149,15 +151,21 @@ export const getDataParsed = createSelector(
 
 // get selector defaults
 export const getDefaultValues = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return null;
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
+  [getSources, getSourceSelected, getMeta],
+  (sources, sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
     return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
+      ...getGhgEmissionDefaults(sourceSelected.label, meta),
       source: sources[0].value
     };
+  }
+);
+
+export const getSelectorDefaults = createSelector(
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 
