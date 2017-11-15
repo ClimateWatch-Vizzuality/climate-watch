@@ -25,6 +25,7 @@ class ModalMetadata extends PureComponent {
     this.state = {
       selectedIndex: 0
     };
+    this.handleOnRequestClose = this.handleOnRequestClose.bind(this);
   }
 
   getContent() {
@@ -102,10 +103,15 @@ class ModalMetadata extends PureComponent {
     );
   }
 
+  handleOnRequestClose() {
+    this.setState({ selectedIndex: 0 });
+    this.props.onRequestClose();
+  }
+
   render() {
-    const { onRequestClose, isOpen, title, tabTitles } = this.props;
+    const { isOpen, title, tabTitles } = this.props;
     return (
-      <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
+      <Modal isOpen={isOpen} onRequestClose={this.handleOnRequestClose}>
         {title && (
           <ModalHeader
             title={title}
