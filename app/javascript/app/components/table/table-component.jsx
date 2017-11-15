@@ -5,6 +5,7 @@ import MultiSelect from 'components/multiselect';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
+import theme from 'styles/themes/dropdown/multi-select-table.scss';
 import styles from './table-styles.scss';
 
 class SimpleTable extends PureComponent {
@@ -23,15 +24,18 @@ class SimpleTable extends PureComponent {
     } = this.props;
     if (!data.length) return null;
     return (
-      <div>
-        <MultiSelect
-          values={activeColumns || []}
-          options={columnsOptions || []}
-          onMultiValueChange={handleColumnChange}
-          hideResetButton
-        />
-        <AutoSizer disableHeight>
-          {({ width }) => (
+      <AutoSizer disableHeight>
+        {({ width }) => (
+          <div className={styles.tableWrapper}>
+            <MultiSelect
+              customClassName={styles.columnSelector}
+              values={activeColumns || []}
+              options={columnsOptions || []}
+              onMultiValueChange={handleColumnChange}
+              customTheme={theme.multiSelectTable}
+              hideResetButton
+              useDots
+            />
             <Table
               className={styles.table}
               width={width}
@@ -66,9 +70,9 @@ class SimpleTable extends PureComponent {
                 );
               })}
             </Table>
-          )}
-        </AutoSizer>
-      </div>
+          </div>
+        )}
+      </AutoSizer>
     );
   }
 }
