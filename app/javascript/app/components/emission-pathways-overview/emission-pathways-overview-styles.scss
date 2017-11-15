@@ -1,1 +1,32 @@
 @import '~styles/layout.scss';
+
+.col5 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr 1fr);
+
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.overview {
+  color: $theme-color;
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    margin-top: 71px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .title {
+      font-weight: bold;
+      margin-bottom: 11px;
+    }
+  }
+}
+
+.seeAllButton {
+  grid-column-end: -1;
+}

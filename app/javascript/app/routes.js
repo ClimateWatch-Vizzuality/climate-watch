@@ -281,7 +281,8 @@ export default [
             hash: 'overview',
             label: 'Overview',
             anchor: true,
-            component: EmissionPathwaysOverview
+            component: () =>
+              createElement(EmissionPathwaysOverview, { category: 'Models' })
           },
           {
             hash: 'scenarios-indicators',
@@ -308,7 +309,6 @@ export default [
             hash: 'models-scenarios-indicators',
             label: 'Models, Scenarios & Indicators',
             anchor: true,
-            nav: true,
             component: EmissionPathwaysTableMenu
           }
         ],

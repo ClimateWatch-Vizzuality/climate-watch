@@ -17,6 +17,7 @@ const mapStateToProps = (state, { route, location, match }) => {
     hash: location.hash
   };
   return {
+    route,
     query: location.search,
     anchorLinks: getAnchorLinks(espModel),
     routeLinks: getRouteLinks(espModel),

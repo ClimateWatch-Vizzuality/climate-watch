@@ -38,7 +38,9 @@ class EmissionPathwaysModel extends PureComponent {
               route.sections.length > 0 &&
               route.sections.map(section => (
                 <div key={section.hash} className={styles.section}>
-                  <div id={section.hash} className={styles.sectionHash} />
+                  <div id={section.hash} className={styles.sectionHash}>
+                    <section.component />
+                  </div>
                 </div>
               ))}
             {renderRoutes(route.routes)}
