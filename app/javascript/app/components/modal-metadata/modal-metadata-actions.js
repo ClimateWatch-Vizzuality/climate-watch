@@ -22,13 +22,14 @@ const fetchModalMetaData = createThunkAction(
   'fetchModalMetaDataData',
   slugs => (dispatch, state) => {
     const { modalMetadata } = state();
-    const someSlugDataIsMissing = slugs.some(slug => !modalMetadata.data[slug]);
-    const someSlugDataHasError = slugs.some(
+    const slugsDataMissing = slugs.filter(slug => !modalMetadata.data[slug]);
+    const slugsDataHasError = slugs.filter(
       slug => modalMetadata.data[slug] === 'error'
     );
-    if (someSlugDataIsMissing || someSlugDataHasError) {
+    const slugsToFetch = slugsDataMissing.concat(slugsDataHasError);
+    if (slugsToFetch.length > 0) {
       dispatch(fetchModalMetaDataInit());
-      const promises = slugs.map(slug =>
+      const promises = slugsToFetch.map(slug =>
         fetch(`/api/v1/metadata/${slug.toLowerCase()}`).then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
