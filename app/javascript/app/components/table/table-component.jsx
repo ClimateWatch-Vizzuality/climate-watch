@@ -24,18 +24,18 @@ class SimpleTable extends PureComponent {
     } = this.props;
     if (!data.length) return null;
     return (
-      <AutoSizer disableHeight>
-        {({ width }) => (
-          <div className={styles.tableWrapper}>
-            <MultiSelect
-              customClassName={styles.columnSelector}
-              values={activeColumns || []}
-              options={columnsOptions || []}
-              onMultiValueChange={handleColumnChange}
-              customTheme={theme.multiSelectTable}
-              hideResetButton
-              useDots
-            />
+      <div className={styles.tableWrapper}>
+        <MultiSelect
+          customClassName={styles.columnSelector}
+          values={activeColumns || []}
+          options={columnsOptions || []}
+          onMultiValueChange={handleColumnChange}
+          customTheme={theme.multiSelectTable}
+          hideResetButton
+          useDots
+        />
+        <AutoSizer disableHeight>
+          {({ width }) => (
             <Table
               className={styles.table}
               width={width}
@@ -70,9 +70,9 @@ class SimpleTable extends PureComponent {
                 );
               })}
             </Table>
-          </div>
-        )}
-      </AutoSizer>
+          )}
+        </AutoSizer>
+      </div>
     );
   }
 }
