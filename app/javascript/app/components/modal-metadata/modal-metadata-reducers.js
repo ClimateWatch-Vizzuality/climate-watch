@@ -2,8 +2,8 @@ export const initialState = {
   loaded: false,
   loading: false,
   isOpen: false,
-  title: '',
-  active: '',
+  customTitle: '',
+  active: [],
   data: {}
 };
 
@@ -11,7 +11,7 @@ const setModalMetadataParams = (state, { payload }) => ({
   ...state,
   isOpen: payload.open,
   active: payload.slugs,
-  title: payload.title || state.title
+  customTitle: payload.customTitle || state.title
 });
 
 const setLoading = (state, loading) => ({ ...state, loading });

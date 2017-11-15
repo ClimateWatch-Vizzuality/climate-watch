@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 
 const getData = state => state.data || null;
 const getActive = state => state.active || null;
-export const getModalTitle = state => state.title || null;
+const getTitle = state => state.customTitle || '';
 
 export const getModalData = createSelector(
   [getData, getActive],
@@ -11,10 +11,18 @@ export const getModalData = createSelector(
     if (isEmpty(data) || !active) return null;
     if (active.every(d => data[d])) {
       return active.length > 1
-        ? Object.keys(data).map(source => data[source])
+        ? active.map(source => data[source])
         : [data[active]];
     }
     return null;
+  }
+);
+
+export const getModalTitle = createSelector(
+  [getTitle, getModalData],
+  (customTitle, data) => {
+    if (!data || isEmpty(data)) return null;
+    return data.length > 1 ? customTitle : data[0].title;
   }
 );
 
