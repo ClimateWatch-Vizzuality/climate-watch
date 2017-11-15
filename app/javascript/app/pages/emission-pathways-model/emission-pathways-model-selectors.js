@@ -24,12 +24,12 @@ export const getAnchorLinks = createSelector(
 );
 
 export const getRouteLinks = createSelector(
-  [getRoutes, getHash, getSearch],
-  (routes, hash, search) =>
+  [getRoutes, getHash, getSearch, getId],
+  (routes, hash, search, id) =>
     routes &&
     routes.filter(r => r.anchor).map(route => ({
       label: route.label,
-      path: route.path,
+      path: route.path.replace(':id', id),
       search,
       hash
     }))

@@ -13,7 +13,7 @@ import styles from './emission-pathways-model-styles.scss';
 class EmissionPathwaysModel extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route, anchorLinks, model } = this.props;
+    const { route, routeLinks, anchorLinks, model } = this.props;
     return (
       <div>
         <EspModelsProvider />
@@ -39,7 +39,7 @@ class EmissionPathwaysModel extends PureComponent {
               route.sections.map(section => (
                 <div key={section.hash} className={styles.section}>
                   <div id={section.hash} className={styles.sectionHash}>
-                    <section.component />
+                    <section.component routeLinks={routeLinks} />
                   </div>
                 </div>
               ))}
@@ -54,6 +54,7 @@ class EmissionPathwaysModel extends PureComponent {
 EmissionPathwaysModel.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array.isRequired,
+  routeLinks: PropTypes.array.isRequired,
   model: PropTypes.object
 };
 
