@@ -37,4 +37,10 @@
       font-weight: $font-weight-bold;
     }
   }
+
+  .ReactVirtualized__Table__sortableHeaderColumn {
+    &:focus {
+      outline: none;
+    }
+  }
 }

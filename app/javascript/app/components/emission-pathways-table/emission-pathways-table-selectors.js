@@ -1,22 +1,15 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import pick from 'lodash/pick';
 import { deburrUpper } from 'app/utils';
 
-const getModel = data => data.category || null;
-const getModelData = espData =>
-  (espData.categoryData && !isEmpty(espData.categoryData.data)
-    ? espData.categoryData.data
-    : null);
+const getCategory = state => state.category || null;
+const getData = state => state.categoryData || null;
+const getQuery = state => deburrUpper(state.query) || '';
 
-const getQuery = data => deburrUpper(data.query) || '';
-
-export const filteredModelData = createSelector(
-  [getModelData, getModel],
-  (data, category) => {
-    if (!data) return null;
-    const categoryWhiteListedFields = {
-      Models: [
+export const getDefaultColumns = createSelector([getCategory], category => {
+  switch (category) {
+    case 'Models':
+      return [
         'full_name',
         'abbreviation',
         'availability',
@@ -25,8 +18,9 @@ export const filteredModelData = createSelector(
         'expertise',
         'license',
         'maintainer_name'
-      ],
-      Scenarios: [
+      ];
+    case 'Scenarios':
+      return [
         'name',
         'category_abbreviation',
         'category',
@@ -34,17 +28,18 @@ export const filteredModelData = createSelector(
         'geographic_coverage_region',
         'purpose_or_objective',
         'time_horizon'
-      ],
-      Indicators: ['name', 'category', 'subcategory', 'definition', 'unit']
-    };
-    return data.map(d => pick(d, categoryWhiteListedFields[category]));
+      ];
+    case 'Indicators':
+      return ['name', 'category', 'subcategory', 'definition', 'unit'];
+    default:
+      return null;
   }
-);
+});
 
 export const filteredDataBySearch = createSelector(
-  [filteredModelData, getQuery],
+  [getData, getQuery],
   (data, query) => {
-    if (!data) return null;
+    if (!data || isEmpty(data)) return null;
     if (!query) return data;
 
     return data.filter(d =>
@@ -58,12 +53,7 @@ export const filteredDataBySearch = createSelector(
   }
 );
 
-export const sortBy = createSelector([filteredDataBySearch], data => {
-  if (!data || isEmpty(data)) return null;
-  return Object.keys(data[0])[0];
-});
-
 export default {
-  filteredDataBySearch,
-  sortBy
+  getDefaultColumns,
+  filteredDataBySearch
 };

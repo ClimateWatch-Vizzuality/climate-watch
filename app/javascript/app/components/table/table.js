@@ -3,61 +3,71 @@ import PropTypes from 'prop-types';
 import { SortDirection } from 'react-virtualized';
 import _sortBy from 'lodash/sortBy';
 import reverse from 'lodash/reverse';
+import lowerCase from 'lodash/lowerCase';
+import upperFirst from 'lodash/upperFirst';
 
 import Component from './table-component';
-
-const getDataSorted = ({ data, sortBy, sortDirection }) => {
-  const dataSorted = _sortBy(data, sortBy);
-  return sortDirection === SortDirection.DESC
-    ? reverse(dataSorted)
-    : dataSorted;
-};
 
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const data = props.data || [];
-    const sortBy = props.data.length ? props.data[0][props.sortBy] : '';
-    const sortDirection = SortDirection.ASC;
-    const dataSorted = getDataSorted({ data, sortBy, sortDirection });
-
+    const { data, defaultColumns } = props;
     this.state = {
-      sortBy,
-      sortDirection,
-      data: dataSorted
+      data,
+      sortBy: Object.keys(data[0])[0],
+      sortDirection: SortDirection.ASC,
+      activeColumns: defaultColumns.map(d => ({
+        label: upperFirst(lowerCase(d)),
+        value: d
+      })),
+      columnsOptions: Object.keys(data[0]).map(d => ({
+        label: upperFirst(lowerCase(d)),
+        value: d
+      }))
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { sortBy, sortDirection } = this.state;
-    const { data } = nextProps;
-    const dataSorted = getDataSorted({ data, sortBy, sortDirection });
+  getDataSorted = (data, sortBy, sortDirection) => {
+    const dataSorted = _sortBy(data, sortBy);
+    return sortDirection === SortDirection.DESC
+      ? reverse(dataSorted)
+      : dataSorted;
+  };
 
-    this.setState({ data: dataSorted });
-  }
-
-  handleSort = ({ sortBy, sortDirection }) => {
+  handleSortChange = ({ sortBy, sortDirection }) => {
     const { data } = this.state;
-    const sortedData = getDataSorted({ data, sortBy, sortDirection });
-
+    const sortedData = this.getDataSorted(data, sortBy, sortDirection);
     this.setState({ data: sortedData, sortBy, sortDirection });
   };
 
+  handleColumnChange = columns => {
+    this.setState({ activeColumns: columns });
+  };
+
   render() {
-    const { data, sortBy, sortDirection } = this.state;
+    const {
+      data,
+      sortBy,
+      sortDirection,
+      activeColumns,
+      columnsOptions
+    } = this.state;
     return createElement(Component, {
       ...this.props,
       data,
       sortBy,
       sortDirection,
-      handleSort: this.handleSort
+      activeColumns,
+      columnsOptions,
+      handleSortChange: this.handleSortChange,
+      handleColumnChange: this.handleColumnChange
     });
   }
 }
 
 TableContainer.propTypes = {
   data: PropTypes.array.isRequired,
-  sortBy: PropTypes.string
+  defaultColumns: PropTypes.array
 };
 
 TableContainer.defaultProps = {
