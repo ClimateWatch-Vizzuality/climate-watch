@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import isEmpty from 'lodash/isEmpty';
 
 const getEspTimeSeriesInit = createAction('getEspTimeSeriesInit');
 const getEspTimeSeriesReady = createAction('getEspTimeSeriesReady');
@@ -10,11 +9,7 @@ const getEspTimeSeries = createThunkAction(
   'getEspTimeSeries',
   (location, model) => (dispatch, state) => {
     const { espTimeSeries } = state();
-    if (
-      espTimeSeries &&
-      isEmpty(espTimeSeries.data) &&
-      !espTimeSeries.loading
-    ) {
+    if (espTimeSeries && !espTimeSeries.loading) {
       dispatch(getEspTimeSeriesInit());
       const query = `location=${location}${model ? `&model=${model}` : ''}`;
       fetch(`${ESP_API}/time_series_values?${query}`)
@@ -27,6 +22,7 @@ const getEspTimeSeries = createThunkAction(
         })
         .catch(error => {
           console.info(error);
+          getEspTimeSeriesReady({});
         });
     }
   }
