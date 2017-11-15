@@ -64,9 +64,7 @@ function getFiltersParsed(props) {
   const filter = {};
   filter.location = props.iso;
   filter.gas = selectorDefaults.gas;
-  filter.source = sourceSelected
-    ? sourceSelected.value
-    : selectorDefaults.source;
+  filter.source = sourceSelected.value || null;
   return filter;
 }
 
