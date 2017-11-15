@@ -11,38 +11,69 @@ import EmissionPathwayGraphComponent from './emission-pathway-graph-component';
 import {
   getChartData,
   getChartConfig,
-  getLocationsOptions,
-  getLocationSelected,
-  getScenarioSelected
+  getFiltersOptions,
+  getFiltersSelected
 } from './emission-pathway-graph-selectors';
 
 const actions = { ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, scenario } = qs.parse(location.search);
+  const { currentLocation, model, indicator, scenario } = qs.parse(
+    location.search
+  );
   const espData = {
-    locations: state.espLocations.data,
     data,
+    locations: state.espLocations.data,
+    models: state.espModels.data,
+    scenarios: state.espScenarios.data,
+    indicators: state.espIndicators.data,
     location: currentLocation,
+    model,
+    indicator,
     scenario
   };
   return {
     data: getChartData(espData),
     config: getChartConfig(espData),
-    locationsOptions: getLocationsOptions(espData),
-    locationSelected: getLocationSelected(espData),
-    scenarioSelected: getScenarioSelected(espData),
-    loading: state.espTimeSeries.loading || state.espLocations.loading
+    filtersOptions: getFiltersOptions(espData),
+    filtersSelected: getFiltersSelected(espData),
+    loading:
+      state.espTimeSeries.loading ||
+      state.espLocations.loading ||
+      state.espModels.loading ||
+      state.espScenarios.loading ||
+      state.espIndicators.loading
   };
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
-  handleLocationChange = location => {
+  handleModelChange = model => {
+    this.updateUrlParam([
+      { name: 'model', value: model.value },
+      {
+        name: 'scenario',
+        value: model.scenarios ? model.scenarios.toString() : ''
+      }
+    ]);
+  };
+
+  handleSelectorChange = (option, param, clear) => {
     this.updateUrlParam(
-      { name: 'currentLocation', value: location.value },
-      true
+      { name: param, value: option ? option.value : '' },
+      clear
     );
+  };
+
+  handleRemoveTag = tagData => {
+    const { filtersSelected } = this.props;
+    const newTags = [];
+    filtersSelected.scenarios.forEach(filter => {
+      if (filter.label !== tagData.label) {
+        newTags.push(filter.value);
+      }
+    });
+    this.updateUrlParam({ name: 'scenario', value: newTags.toString() });
   };
 
   updateUrlParam(params, clear) {
@@ -53,14 +84,17 @@ class EmissionPathwayGraphContainer extends PureComponent {
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
-      handleLocationChange: this.handleLocationChange
+      handleModelChange: this.handleModelChange,
+      handleSelectorChange: this.handleSelectorChange,
+      handleRemoveTag: this.handleRemoveTag
     });
   }
 }
 
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  filtersSelected: PropTypes.object
 };
 
 export default withRouter(

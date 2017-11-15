@@ -59,6 +59,8 @@ $height: 45px;
           width: 100%;
 
           .simple-value {
+            display: table;
+            table-layout: fixed;
             width: 100%;
           }
 

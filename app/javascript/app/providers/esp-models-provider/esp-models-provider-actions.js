@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 const fetchEspModelsInit = createAction('fetchEspModelsInit');
 const fetchEspModelsReady = createAction('fetchEspModelsReady');
 const fetchEspModelsFail = createAction('fetchEspModelsFail');
+const { ESP_API } = process.env;
 
 const fetchEspModels = createThunkAction(
   'fetchEspModels',
@@ -12,7 +13,7 @@ const fetchEspModels = createThunkAction(
     const { espModels } = state();
     if (espModels.data && isEmpty(espModels.data) && !espModels.loading) {
       dispatch(fetchEspModelsInit());
-      fetch('https://emissionspathways.org/api/v1/models')
+      fetch(`${ESP_API}/models`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);

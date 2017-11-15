@@ -19,50 +19,69 @@ class EmissionPathwayGraph extends PureComponent {
       data,
       config,
       loading,
-      locationsOptions,
-      locationSelected,
-      scenarioSelected,
-      handleLocationChange
+      filtersOptions,
+      filtersSelected,
+      handleSelectorChange,
+      handleModelChange,
+      handleRemoveTag
     } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <EspLocationsProvider />
-          {locationSelected &&
-          scenarioSelected
-          && (
-            <EspTimeSeriesProvider
-              location={locationSelected}
-              scenario={scenarioSelected}
-            />
-          )}
+          {filtersSelected &&
+          filtersSelected.location &&
+            filtersSelected.model && (
+              <EspTimeSeriesProvider
+                location={filtersSelected.location.value}
+                model={filtersSelected.model.value}
+              />
+            )}
           <h2 className={styles.title}>Emission Pathways</h2>
           <div className={styles.col4}>
             <Dropdown
               label="Country/Region"
-              options={locationsOptions}
-              onValueChange={handleLocationChange}
-              value={locationSelected}
+              options={filtersOptions.locations}
+              onValueChange={option =>
+                handleSelectorChange(option, 'currentLocation', true)}
+              value={filtersSelected.location}
               hideResetButton
             />
+            <Dropdown
+              label="Models and scenarios"
+              options={filtersOptions.models}
+              onValueChange={handleModelChange}
+              value={filtersSelected.model}
+              hideResetButton
+            />
+            <Dropdown
+              label="Indicators"
+              placeholder="Select an indicator"
+              options={filtersOptions.indicators}
+              onValueChange={option =>
+                handleSelectorChange(option, 'indicator')}
+              value={filtersSelected.indicator}
+            />
+            <div />
             <ButtonGroup className={styles.colEnd} />
           </div>
           <div className={styles.chartWrapper}>
             {loading && <Loading light className={styles.loader} />}
             {!loading &&
-            (!data || !data.length) && (
-              <NoContent
-                message={'No data selected'}
-                className={styles.noContent}
-                icon
-              />
-            )}
-            {data &&
-            config && (
-            <div>
-              <ChartLine config={config} data={data} height={500} />
-              <div className={styles.tags}>
-                {config.columns &&
+              (!data || !data.length) && (
+                <NoContent
+                  message={'No data selected'}
+                  className={styles.noContent}
+                  icon
+                />
+              )
+            }
+            {data && data.length > 0 &&
+              config && (
+                <div>
+                  <ChartLine config={config} data={data} height={500} />
+                  <div className={styles.tags}>
+                    {config.columns &&
                     config.columns.y.map(column => (
                       <Tag
                         className={styles.tag}
@@ -72,12 +91,14 @@ class EmissionPathwayGraph extends PureComponent {
                           label: column.label,
                           id: column.value
                         }}
+                        onRemove={handleRemoveTag}
                         canRemove
                       />
                     ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )
+            }
           </div>
         </div>
       </div>
@@ -89,10 +110,11 @@ EmissionPathwayGraph.propTypes = {
   data: PropTypes.array,
   config: PropTypes.object,
   loading: PropTypes.bool,
-  locationsOptions: PropTypes.array,
-  locationSelected: PropTypes.object,
-  handleLocationChange: PropTypes.func,
-  scenarioSelected: PropTypes.string
+  filtersOptions: PropTypes.object,
+  filtersSelected: PropTypes.object,
+  handleSelectorChange: PropTypes.func,
+  handleModelChange: PropTypes.func,
+  handleRemoveTag: PropTypes.func
 };
 
 export default EmissionPathwayGraph;

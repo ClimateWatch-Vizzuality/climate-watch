@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 const fetchEspScenariosInit = createAction('fetchEspScenariosInit');
 const fetchEspScenariosReady = createAction('fetchEspScenariosReady');
 const fetchEspScenariosFail = createAction('fetchEspScenariosFail');
+const { ESP_API } = process.env;
 
 const fetchEspScenarios = createThunkAction(
   'fetchEspScenarios',
@@ -16,7 +17,7 @@ const fetchEspScenarios = createThunkAction(
       !espScenarios.loading
     ) {
       dispatch(fetchEspScenariosInit());
-      fetch('https://emissionspathways.org/api/v1/scenarios')
+      fetch(`${ESP_API}/scenarios`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);

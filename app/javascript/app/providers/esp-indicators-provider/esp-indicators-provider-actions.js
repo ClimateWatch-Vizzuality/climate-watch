@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 const fetchEspIndicatorsInit = createAction('fetchEspIndicatorsInit');
 const fetchEspIndicatorsReady = createAction('fetchEspIndicatorsReady');
 const fetchEspIndicatorsFail = createAction('fetchEspIndicatorsFail');
+const { ESP_API } = process.env;
 
 const fetchEspIndicators = createThunkAction(
   'fetchEspIndicators',
@@ -16,7 +17,7 @@ const fetchEspIndicators = createThunkAction(
       !espIndicators.loading
     ) {
       dispatch(fetchEspIndicatorsInit());
-      fetch('https://emissionspathways.org/api/v1/indicators')
+      fetch(`${ESP_API}/indicators`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
