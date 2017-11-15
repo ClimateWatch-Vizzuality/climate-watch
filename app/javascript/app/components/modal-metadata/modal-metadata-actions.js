@@ -2,6 +2,10 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
 const setModalMetadataParams = createAction('setModalMetadataParams');
+
+// Requires payload params:
+// slugs: array of slugs to fetch
+// customTitle: custom title if there is more than one slug
 const setModalMetadata = createThunkAction(
   'setModalMetadata',
   payload => dispatch => {
