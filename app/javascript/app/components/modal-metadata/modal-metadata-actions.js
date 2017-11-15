@@ -6,7 +6,7 @@ const setModalMetadata = createThunkAction(
   'setModalMetadata',
   payload => dispatch => {
     dispatch(setModalMetadataParams(payload));
-    if (payload.slug) dispatch(fetchModalMetaData(payload.slug));
+    if (payload.slugs) dispatch(fetchModalMetaData(payload.slugs));
   }
 );
 
@@ -16,21 +16,28 @@ const fetchModalMetaDataReady = createAction('fetchModalMetaDataReady');
 
 const fetchModalMetaData = createThunkAction(
   'fetchModalMetaDataData',
-  slug => (dispatch, state) => {
+  slugs => (dispatch, state) => {
     const { modalMetadata } = state();
-    if (!modalMetadata.data[slug] || modalMetadata.data[slug] === 'error') {
+    const someSlugDataIsMissing = slugs.some(slug => !modalMetadata.data[slug]);
+    const someSlugDataHasError = slugs.some(
+      slug => modalMetadata.data[slug] === 'error'
+    );
+    if (someSlugDataIsMissing || someSlugDataHasError) {
       dispatch(fetchModalMetaDataInit());
-      fetch(`/api/v1/metadata/${slug.toLowerCase()}`)
-        .then(response => {
+      const promises = slugs.map(slug =>
+        fetch(`/api/v1/metadata/${slug.toLowerCase()}`).then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
         })
+      );
+
+      Promise.all(promises)
         .then(data => {
-          dispatch(fetchModalMetaDataReady({ slug, data }));
+          dispatch(fetchModalMetaDataReady({ slugs, data }));
         })
         .catch(error => {
           console.warn(error);
-          dispatch(fetchModalMetaDataReady({ slug, data: 'error' }));
+          dispatch(fetchModalMetaDataReady({ slugs, data: 'error' }));
         });
     }
   }

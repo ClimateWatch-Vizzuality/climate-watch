@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Modal, { ModalHeader } from 'components/modal';
+import Modal from 'components/modal/modal-component';
+import ModalHeader from 'components/modal/modal-header-component';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 
@@ -19,14 +20,25 @@ MetadataProp.propTypes = {
 };
 
 class ModalMetadata extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      selectedIndex: 0
+    };
+  }
+
   getContent() {
-    if (this.props.loading) {
+    const { data, loading } = this.props;
+
+    if (loading) {
       return <Loading className={styles.loadingContainer} />;
     }
-    if (!this.props.data) return <NoContent />;
-    if (this.props.data === 'error') {
+    if (!data) return <NoContent />;
+    if (data === 'error') {
       return <NoContent message="There was an error getting the metadata" />;
     }
+
+    const selectedIndexData = data[this.state.selectedIndex];
     const {
       learn_more_link,
       source_organization,
@@ -39,10 +51,10 @@ class ModalMetadata extends PureComponent {
       date_of_content,
       summary_of_licenses,
       terms_of_service_link
-    } = this.props.data;
+    } = selectedIndexData;
 
     return (
-      <div className={styles.textContainer}>
+      <div key={selectedIndexData.source} className={styles.textContainer}>
         {technical_title && (
           <MetadataProp title="Title">{technical_title}</MetadataProp>
         )}
@@ -91,10 +103,17 @@ class ModalMetadata extends PureComponent {
   }
 
   render() {
-    const { onRequestClose, isOpen, title } = this.props;
+    const { onRequestClose, isOpen, title, tabTitles } = this.props;
     return (
       <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-        {title && <ModalHeader title={title} />}
+        {title && (
+          <ModalHeader
+            title={title}
+            tabTitles={tabTitles}
+            selectedIndex={this.state.selectedIndex}
+            handleTabIndexChange={i => this.setState({ selectedIndex: i })}
+          />
+        )}
         {this.getContent()}
       </Modal>
     );
@@ -103,7 +122,8 @@ class ModalMetadata extends PureComponent {
 
 ModalMetadata.propTypes = {
   title: PropTypes.string,
-  data: PropTypes.object,
+  tabTitles: PropTypes.array,
+  data: PropTypes.array,
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired
