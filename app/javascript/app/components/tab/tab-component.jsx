@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import styles from './tab-styles.scss';
 
@@ -9,19 +10,20 @@ class Tab extends PureComponent {
     const { options, selectedIndex, handleTabIndexChange } = this.props;
     return (
       <div className={styles.tab}>
-        <div className="nav-tab">
-          {options.map((option, i) => (
-            <a
-              key={option}
-              className={selectedIndex === i ? '-active' : ''}
-              onClick={() => handleTabIndexChange(i)}
-              role="menuitem"
-              tabIndex={-1}
-            >
-              {option}
-            </a>
-          ))}
-        </div>
+        {options.map((option, i) => (
+          <a
+            key={option}
+            className={cx([
+              styles.link,
+              { [styles.linkActive]: selectedIndex === i }
+            ])}
+            onClick={() => handleTabIndexChange(i)}
+            role="menuitem"
+            tabIndex={-1}
+          >
+            {option}
+          </a>
+        ))}
       </div>
     );
   }
