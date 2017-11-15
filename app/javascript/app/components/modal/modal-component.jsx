@@ -7,11 +7,11 @@ import Icon from 'components/icon';
 
 import closeIcon from 'assets/icons/sidebar-close.svg';
 
-import styles from './modal-styles.scss';
+import modalStyles from './modal-styles.scss';
 
 export const ModalHeader = ({ title, children }) => (
-  <div className={styles.header}>
-    {title && <h2 className={styles.headerTitle}>{title}</h2>}
+  <div className={modalStyles.header}>
+    {title && <h2 className={modalStyles.headerTitle}>{title}</h2>}
     {children}
   </div>
 );
@@ -27,6 +27,7 @@ class CustomModal extends PureComponent {
     const {
       isOpen,
       onRequestClose,
+      styles,
       customStyles,
       contentLabel,
       children
@@ -35,11 +36,15 @@ class CustomModal extends PureComponent {
       <Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
-        style={customStyles}
+        style={{ ...styles, ...customStyles }}
         contentLabel={contentLabel}
       >
-        <Button onClick={onRequestClose} className={styles.closeBtn} square>
-          <Icon icon={closeIcon} className={styles.close} />
+        <Button
+          onClick={onRequestClose}
+          className={modalStyles.closeBtn}
+          square
+        >
+          <Icon icon={closeIcon} className={modalStyles.close} />
         </Button>
         {children}
       </Modal>
@@ -51,13 +56,14 @@ CustomModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   contentLabel: PropTypes.string,
+  styles: PropTypes.object,
   customStyles: PropTypes.object,
   children: PropTypes.node
 };
 
 CustomModal.defaultProps = {
   contentLabel: 'Modal content',
-  customStyles: {
+  styles: {
     overlay: {
       zIndex: 20,
       display: 'flex',

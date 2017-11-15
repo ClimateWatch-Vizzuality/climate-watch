@@ -56,6 +56,7 @@ import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkages';
 import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
+import * as widgetPicker from 'components/editor/components/widget-picker';
 
 const componentsReducers = {
   editor: handleActions(editorComponent),
@@ -69,7 +70,8 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
-  countryNDCOverview: handleActions(countryNDCOverviewComponent)
+  countryNDCOverview: handleActions(countryNDCOverviewComponent),
+  picker: handleActions(widgetPicker)
 };
 
 export default combineReducers({

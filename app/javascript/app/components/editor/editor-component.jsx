@@ -40,6 +40,14 @@ const plugins = [
   sideToolbarPlugin
 ];
 
+const modalStyles = {
+  content: {
+    width: '90vw',
+    maxHeight: '90vh',
+    height: '90vh'
+  }
+};
+
 const StoryEditor = ({
   showPicker,
   editorState,
@@ -56,7 +64,11 @@ const StoryEditor = ({
   focusTitle
 }) => (
   <div className={styles.container}>
-    <Modal isOpen={pickerIsOpen} onRequestClose={hidePicker}>
+    <Modal
+      styles={modalStyles}
+      isOpen={pickerIsOpen}
+      onRequestClose={hidePicker}
+    >
       <Picker onHidePicker={hidePicker} onSelectVis={pickVisualiation} />
     </Modal>
     <input

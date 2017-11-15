@@ -35,6 +35,17 @@ export function compareIndexByKey(attribute) {
   };
 }
 
+export function importAllImagesFromFolder(r) {
+  const images = {};
+  const keys = r.keys();
+  if (keys.length) {
+    keys.forEach(item => {
+      images[item.replace('./', '').replace('.jpg', '')] = r(item);
+    });
+  }
+  return images;
+}
+
 export default {
   compareIndexByKey,
   deburrUpper,

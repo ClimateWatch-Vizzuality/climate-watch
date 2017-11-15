@@ -1,6 +1,8 @@
+@import '~styles/layout.scss';
+
 .container {
-  width: 100%;
-  height: 100%;
+  width: 90vw;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,14 +21,40 @@
 .option {
   width: 30%;
   height: 30%;
-  border: 1px solid;
   line-height: 0;
 }
 
 .viz {
-  width: 100%;
-  height: 100%;
+  width: 370px;
+  height: 300px;
   background-color: pink;
   border-radius: 0;
   cursor: pointer;
 }
+
+.vizCard {
+  .card {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+    border: solid 1px rgba($border-color, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: $light-gray;
+    height: 100%;
+  }
+
+  .data {
+    background-color: $light-gray;
+    padding: 15px 20px;
+  }
+
+  .info {
+    padding: 15px 20px;
+    background-color: $white;
+    color: $theme-color;
+    font-size: $font-size;
+    font-weight: $font-weight-bold;
+    min-height: 20%;
+  }
+}
+
