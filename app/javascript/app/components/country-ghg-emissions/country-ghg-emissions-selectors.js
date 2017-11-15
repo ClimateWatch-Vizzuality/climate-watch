@@ -15,6 +15,7 @@ import {
   sortLabelByAlpha,
   getColorPalette
 } from 'utils/graphs';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 // constants needed for data parsing
 const DATA_SCALE = 1000000;
@@ -174,35 +175,7 @@ export const getSelectorDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-    const defaults = {};
-    switch (sourceSelected.label) {
-      case 'CAIT':
-        defaults.sector = meta.sector.find(
-          s => s.label === 'Total excluding LUCF'
-        ).value;
-        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
-        break;
-      case 'PIK':
-        defaults.sector = meta.sector.find(
-          s => s.label === 'Total excluding LUCF'
-        ).value;
-        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
-        break;
-      case 'UNFCCC':
-        defaults.sector = meta.sector
-          .filter(
-            s =>
-              s.label === 'Total GHG emissions without LULUCF' ||
-              s.label === 'Total GHG emissions excluding LULUCF/LUCF'
-          )
-          .map(d => d.value)
-          .toString();
-        defaults.gas = meta.gas.find(g => g.label === 'Aggregate GHGs').value;
-        break;
-      default:
-        return null;
-    }
-    return defaults;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 

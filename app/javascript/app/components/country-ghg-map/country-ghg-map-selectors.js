@@ -5,6 +5,7 @@ import { CALCULATION_OPTIONS } from 'app/data/constants';
 import groupBy from 'lodash/groupBy';
 
 import worldPaths from 'app/data/world-50m-paths';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 const calculationKeys = Object.keys(CALCULATION_OPTIONS);
 const options = calculationKeys.map(
@@ -153,38 +154,18 @@ export const getDefaultValues = createSelector(
   [getSources, getSourceSelected, getMeta],
   (sources, sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-    const defaults = {};
-    switch (sourceSelected.label) {
-      case 'CAIT':
-        defaults.sector = meta.sector.find(
-          s => s.label === 'Total excluding LUCF'
-        ).value;
-        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
-        break;
-      case 'PIK':
-        defaults.sector = meta.sector.find(
-          s => s.label === 'Total excluding LUCF'
-        ).value;
-        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
-        break;
-      case 'UNFCCC':
-        defaults.sector = meta.sector
-          .filter(
-            s =>
-              s.label === 'Total GHG emissions without LULUCF' ||
-              s.label === 'Total GHG emissions excluding LULUCF/LUCF'
-          )
-          .map(d => d.value)
-          .toString();
-        defaults.gas = meta.gas.find(g => g.label === 'Aggregate GHGs').value;
-        break;
-      default:
-        return null;
-    }
     return {
-      ...defaults,
+      ...getGhgEmissionDefaults(sourceSelected.label, meta),
       source: sources[0].value
     };
+  }
+);
+
+export const getSelectorDefaults = createSelector(
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 
