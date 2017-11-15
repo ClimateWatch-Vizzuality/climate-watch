@@ -5,6 +5,12 @@ Rails.application.routes.draw do
         resources :countries, only: [:index], controller: :countries
         resources :regions, only: [:index], controller: :regions
       end
+      namespace :my_climate_watch do
+        resources :users,          only: :show
+        resources :vizualizations, except: [:new, :edit]
+        resources :user_stories,   except: [:new, :edit]
+      end
+
       resources :wb_extra, param: :iso, only: [:index, :show], controller: 'wb_extra_country_data'
 
       resources :emissions, only: [:index], controller: :historical_emissions do
@@ -32,6 +38,8 @@ Rails.application.routes.draw do
       resources :timeline, param: :code, only: [:index, :show]
 
       resources :stories, only: [:index]
+
+      get :login, to: 'auth#login'
 
       get '(*endpoint)', controller: :api, action: :route_not_found
     end
