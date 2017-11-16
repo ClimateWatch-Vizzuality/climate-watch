@@ -36,13 +36,7 @@ const AXES_CONFIG = {
 };
 
 const INCLUDED_SECTORS = {
-  CAIT: [
-    'Energy',
-    'Industrial Processes',
-    'Agriculture',
-    'Waste',
-    'Bunker Fuels'
-  ],
+  CAIT: ['Energy', 'Industrial Processes', 'Agriculture', 'Waste'],
   PIK: [
     'Energy',
     'Agriculture',

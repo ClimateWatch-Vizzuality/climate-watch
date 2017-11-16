@@ -79,7 +79,8 @@ const EXCLUDED_SECTORS = [
   'Total excluding LUCF',
   'Total including LUCF',
   'Total including LULUCF',
-  'Total excluding LULUCF'
+  'Total excluding LULUCF',
+  'Bunker Fuels '
 ];
 
 // meta data for selectors

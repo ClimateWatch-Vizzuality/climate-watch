@@ -32,6 +32,7 @@ export const getCalculationSelected = createSelector(
 );
 
 const EXCLUDED_INDICATORS = ['WORLD'];
+
 const buckets = [
   '#fffffb',
   '#ffffd5',
@@ -43,6 +44,7 @@ const buckets = [
   '#1b4a75',
   '#163449'
 ];
+
 const steps = [0, 0.4, 0.8, 2, 4, 8, 16, 32, 64];
 let colorScale = null;
 function setScale(ranges) {
