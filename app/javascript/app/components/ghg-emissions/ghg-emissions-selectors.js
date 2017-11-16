@@ -79,7 +79,8 @@ const EXCLUDED_SECTORS = [
   'Total excluding LUCF',
   'Total including LUCF',
   'Total including LULUCF',
-  'Total excluding LULUCF'
+  'Total excluding LULUCF',
+  'Bunker Fuels '
 ];
 
 // meta data for selectors
@@ -219,7 +220,9 @@ export const getFilterOptions = createSelector(
     );
     const activeFilterKeys = activeSourceData[breakByValue];
     const filteredSelected = meta[breakByValue].filter(
-      filter => activeFilterKeys.indexOf(filter.value) > -1
+      filter =>
+        activeFilterKeys.indexOf(filter.value) > -1 &&
+        EXCLUDED_SECTORS.indexOf(filter.label) === -1
     );
     if (breakByValue === 'location') {
       const countries = filteredSelected.map(d => ({
