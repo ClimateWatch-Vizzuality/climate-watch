@@ -22,11 +22,11 @@ class EmissionPathwaysTable extends PureComponent {
       defaultColumns
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
-
     return data && data.length > 0 ? (
       <Table
         data={data}
         rowHeight={60}
+        columnSelect
         sortDataBy={sortDataBy}
         defaultColumns={defaultColumns}
       />

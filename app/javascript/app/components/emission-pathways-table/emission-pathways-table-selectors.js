@@ -41,7 +41,6 @@ export const filteredDataBySearch = createSelector(
   (data, query) => {
     if (!data || isEmpty(data)) return null;
     if (!query) return data;
-
     return data.filter(d =>
       Object.keys(d).some(key => {
         if (Object.prototype.hasOwnProperty.call(d, key) && d[key] !== null) {

@@ -27,6 +27,12 @@ class TableContainer extends PureComponent {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data !== this.props.data) {
+      this.setState({ data: nextProps.data });
+    }
+  }
+
   getDataSorted = (data, sortBy, sortDirection) => {
     const dataSorted = _sortBy(data, sortBy);
     return sortDirection === SortDirection.DESC

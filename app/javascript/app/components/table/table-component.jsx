@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
+import cx from 'classnames';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
@@ -12,6 +13,7 @@ class SimpleTable extends PureComponent {
   render() {
     const {
       data,
+      columnSelect,
       activeColumns,
       columnsOptions,
       handleColumnChange,
@@ -24,16 +26,18 @@ class SimpleTable extends PureComponent {
     } = this.props;
     if (!data.length) return null;
     return (
-      <div className={styles.tableWrapper}>
-        <MultiSelect
-          customClassName={styles.columnSelector}
-          values={activeColumns || []}
-          options={columnsOptions || []}
-          onMultiValueChange={handleColumnChange}
-          customTheme={theme.multiSelectTable}
-          hideResetButton
-          useDots
-        />
+      <div className={cx(styles.tableWrapper, columnSelect ? styles.hasColumnSelect : '')}>
+        {columnSelect && columnsOptions &&
+          <MultiSelect
+            customClassName={styles.columnSelector}
+            values={activeColumns || []}
+            options={columnsOptions || []}
+            onMultiValueChange={handleColumnChange}
+            customTheme={theme.multiSelectTable}
+            hideResetButton
+            useDots
+          />
+        }
         <AutoSizer disableHeight>
           {({ width }) => (
             <Table
@@ -79,6 +83,7 @@ class SimpleTable extends PureComponent {
 
 SimpleTable.propTypes = {
   data: PropTypes.array,
+  columnSelect: PropTypes.bool,
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
   handleColumnChange: PropTypes.func,
