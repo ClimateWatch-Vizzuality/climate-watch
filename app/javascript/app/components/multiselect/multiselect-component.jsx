@@ -46,13 +46,16 @@ class Multiselect extends Component {
       selectedClassName,
       handleChange,
       filterOptions,
-      label
+      label,
+      parentClassName
     } = this.props;
     return (
-      <div className={styles.multiSelectWrapper}>
+      <div className={cx(styles.multiSelectWrapper, parentClassName)}>
         {label && <span className={styles.label}>{label}</span>}
         <div className={cx(theme.dropdown, styles.multiSelect)}>
-          <div className={styles.values}>{this.getSelectorValue()}</div>
+          <div className={cx(styles.values, 'values')}>
+            {this.getSelectorValue()}
+          </div>
           <MultiSelect
             ref={el => {
               this.selectorElement = el;
@@ -88,6 +91,7 @@ class Multiselect extends Component {
 }
 
 Multiselect.propTypes = {
+  parentClassName: Proptypes.string,
   values: Proptypes.array.isRequired,
   options: Proptypes.array.isRequired,
   selectedClassName: Proptypes.string,
