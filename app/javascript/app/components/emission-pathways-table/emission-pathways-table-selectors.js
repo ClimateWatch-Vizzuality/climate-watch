@@ -59,8 +59,7 @@ export const titleLinks = createSelector(
     if (!data || !categoryName) return null;
     const categoryId = {
       Models: 'full_name',
-      Scenarios: 'name',
-      Indicators: 'name'
+      Scenarios: 'name'
     };
     return data.map(d => ({
       fieldName: categoryId[categoryName],
