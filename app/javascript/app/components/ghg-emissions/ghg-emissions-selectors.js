@@ -220,7 +220,9 @@ export const getFilterOptions = createSelector(
     );
     const activeFilterKeys = activeSourceData[breakByValue];
     const filteredSelected = meta[breakByValue].filter(
-      filter => activeFilterKeys.indexOf(filter.value) > -1
+      filter =>
+        activeFilterKeys.indexOf(filter.value) > -1 &&
+        EXCLUDED_SECTORS.indexOf(filter.label) === -1
     );
     if (breakByValue === 'location') {
       const countries = filteredSelected.map(d => ({
