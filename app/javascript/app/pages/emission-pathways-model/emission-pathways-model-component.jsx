@@ -7,6 +7,7 @@ import Sticky from 'react-stickynode';
 import { renderRoutes } from 'react-router-config';
 import EspModelsProvider from 'providers/esp-models-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
+import cx from 'classnames';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-model-styles.scss';
 
@@ -26,7 +27,7 @@ class EmissionPathwaysModel extends PureComponent {
                   description={model.description}
                 />
               </div>
-              <Sticky activeClass="sticky">
+              <Sticky activeClass="stickyEmissionsModel">
                 <AnchorNav
                   links={anchorLinks}
                   className={layout.content}
@@ -38,7 +39,10 @@ class EmissionPathwaysModel extends PureComponent {
               route.sections.length > 0 &&
               route.sections.map(section => (
                 <div key={section.hash} className={styles.section}>
-                  <div id={section.hash} className={styles.sectionHash}>
+                  <div
+                    id={section.hash}
+                    className={cx(styles.sectionHash, styles[section.hash])}
+                  >
                     <section.component routeLinks={routeLinks} id={id} />
                   </div>
                 </div>
