@@ -311,6 +311,15 @@ export default [
               createElement(EmissionPathwaysModelTable, {
                 category: 'Indicators'
               })
+          },
+          {
+            path: '/emission-pathways/models/:id',
+            label: 'emission-pathways-model',
+            exact: true,
+            component: ({ match }) =>
+              createElement(Redirect, {
+                to: `/emission-pathways/models/${match.params.id}/scenarios`
+              })
           }
         ]
       },

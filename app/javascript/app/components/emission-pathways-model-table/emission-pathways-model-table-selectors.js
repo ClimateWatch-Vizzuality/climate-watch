@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 
-const getCategoryName = data => data.category || 'Scenarios';
+const getCategoryName = data => data.category;
 const getId = data => data.id || null;
 const getData = espData =>
   (espData.espModelsData && !isEmpty(espData.espModelsData.data)
