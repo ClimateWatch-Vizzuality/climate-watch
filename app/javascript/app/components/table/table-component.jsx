@@ -12,7 +12,7 @@ class SimpleTable extends PureComponent {
   render() {
     const {
       data,
-      columnSelect,
+      hasColumnSelect,
       activeColumns,
       columnsOptions,
       handleColumnChange,
@@ -25,8 +25,8 @@ class SimpleTable extends PureComponent {
     } = this.props;
     if (!data.length) return null;
     return (
-      <div className={cx(styles.tableWrapper, columnSelect ? styles.hasColumnSelect : '')}>
-        {columnSelect && columnsOptions &&
+      <div className={cx(styles.tableWrapper, hasColumnSelect ? styles.hasColumnSelect : '')}>
+        {hasColumnSelect && columnsOptions &&
           <MultiSelect
             parentClassName={styles.columnSelector}
             selectedLabel="..."
@@ -82,7 +82,7 @@ class SimpleTable extends PureComponent {
 
 SimpleTable.propTypes = {
   data: PropTypes.array,
-  columnSelect: PropTypes.bool,
+  hasColumnSelect: PropTypes.bool,
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
   handleColumnChange: PropTypes.func,

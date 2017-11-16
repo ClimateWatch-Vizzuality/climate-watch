@@ -26,7 +26,7 @@ class EmissionPathwaysTable extends PureComponent {
       <Table
         data={data}
         rowHeight={60}
-        columnSelect
+        hasColumnSelect
         sortDataBy={sortDataBy}
         defaultColumns={defaultColumns}
       />
