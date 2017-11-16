@@ -1,7 +1,7 @@
 import { EditorState } from 'draft-js';
 
 export default {
-  pickerIsOpen: false,
+  pickerIsOpen: true,
   title: '',
   titlePlaceholder: 'Title of the insight',
   content: EditorState.createEmpty(),

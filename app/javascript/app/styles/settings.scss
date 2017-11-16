@@ -41,7 +41,8 @@ $base-text: #424242;
 $bg-main: #00548b;
 $bg-blue: #1b3b5a;
 
-$border-color: rgba(26, 28, 34, 0.1);
+$border-color-base: rgb(26, 28, 34);
+$border-color: rgba($border-color-base, 0.1);
 
 // Breakpoitns
 $breakpoint-mobile: 320;

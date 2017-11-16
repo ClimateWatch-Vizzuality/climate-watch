@@ -10,5 +10,16 @@
     "type": "barchart",
     "title": "Mexico Primary Energy by Type",
     "data": [ 3, 9, 5, 1]
+  },
+  {
+    "key": "viz-2",
+    "type": "barchart",
+    "title": "Mexico Primary Energy by Type II",
+    "data": [
+      3,
+      9,
+      5,
+      1
+    ]
   }
 ]

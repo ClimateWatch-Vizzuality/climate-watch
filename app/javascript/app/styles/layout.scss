@@ -13,6 +13,17 @@
   grid-column-gap: $gutter-padding;
 }
 
+@mixin gridColumns($columns...) {
+  @include msGridColumns($columns);
+  $frs: ();
+
+  @for $i from 1 through length($columns) {
+    $frs: append($frs, nth($columns, $i));
+  }
+
+  grid-template-columns: $frs;
+}
+
 @mixin msGridColumns($columns...) {
   $frs: ();
 

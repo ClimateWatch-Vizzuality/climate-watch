@@ -11,7 +11,7 @@ import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 import 'draft-js-side-toolbar-plugin/lib/plugin.css';
 import 'draft-js-focus-plugin/lib/plugin.css';
 
-import Modal from 'components/modal';
+import Modal, { ModalHeader } from 'components/modal';
 import Barchart from './components/barchart';
 import Picker from './components/widget-picker';
 
@@ -69,6 +69,7 @@ const StoryEditor = ({
       isOpen={pickerIsOpen}
       onRequestClose={hidePicker}
     >
+      <ModalHeader title={title} />
       <Picker onHidePicker={hidePicker} onSelectVis={pickVisualiation} />
     </Modal>
     <input

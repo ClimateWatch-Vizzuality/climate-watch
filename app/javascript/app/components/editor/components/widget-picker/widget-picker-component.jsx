@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import { importAllImagesFromFolder } from 'app/utils';
 
 import Loading from 'components/loading';
@@ -17,7 +18,6 @@ const WidgetPicker = ({
   onSelectVis
 }) => (
   <div className={styles.container}>
-    <h1>Select a visualisation</h1>
     <ul className={styles.options}>
       {!loading ? (
         visualisations.map(viz => (
@@ -36,7 +36,9 @@ const WidgetPicker = ({
         <Loading />
       )}
       <li className={styles.option}>
-        <button className={styles.viz}>Create a new visualisation</button>
+        <button className={cx(styles.viz, styles.create)}>
+          Create a new visualisation
+        </button>
       </li>
     </ul>
     <button style={{ display: 'none' }} onClick={onHidePicker}>
