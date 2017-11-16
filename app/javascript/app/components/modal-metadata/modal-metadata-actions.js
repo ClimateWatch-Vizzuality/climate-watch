@@ -10,7 +10,11 @@ const setModalMetadata = createThunkAction(
   'setModalMetadata',
   payload => dispatch => {
     dispatch(setModalMetadataParams(payload));
-    if (payload.slugs) dispatch(fetchModalMetaData(payload.slugs));
+    let slugs = payload.slugs;
+    if (slugs) {
+      if (typeof slugs === 'string') slugs = [slugs];
+      dispatch(fetchModalMetaData(slugs));
+    }
   }
 );
 

@@ -5,13 +5,6 @@ import Tab from 'components/tab';
 import styles from './modal-styles.scss';
 
 class ModalHeader extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      selectedIndex: 0
-    };
-  }
-
   render() {
     const {
       title,
