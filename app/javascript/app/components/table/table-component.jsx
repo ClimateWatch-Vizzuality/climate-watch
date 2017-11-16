@@ -6,7 +6,6 @@ import cx from 'classnames';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
-import theme from 'styles/themes/dropdown/multi-select-table.scss';
 import styles from './table-styles.scss';
 
 class SimpleTable extends PureComponent {
@@ -29,11 +28,11 @@ class SimpleTable extends PureComponent {
       <div className={cx(styles.tableWrapper, columnSelect ? styles.hasColumnSelect : '')}>
         {columnSelect && columnsOptions &&
           <MultiSelect
-            customClassName={styles.columnSelector}
+            parentClassName={styles.columnSelector}
+            selectedLabel="..."
             values={activeColumns || []}
             options={columnsOptions || []}
             onMultiValueChange={handleColumnChange}
-            customTheme={theme.multiSelectTable}
             hideResetButton
             useDots
           />

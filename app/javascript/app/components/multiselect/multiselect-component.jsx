@@ -25,10 +25,9 @@ class Multiselect extends Component {
   }
 
   getSelectorValue() {
-    const { values, options, selectedLabel, useDots } = this.props;
+    const { values, options, selectedLabel } = this.props;
     const { search } = this.state;
     const hasValues = values && values.length;
-    if (useDots) return <span className={styles.dotsMenu}>...</span>;
     if (selectedLabel && !search) {
       return <span>{selectedLabel}</span>;
     }
@@ -48,13 +47,12 @@ class Multiselect extends Component {
       handleChange,
       filterOptions,
       label,
-      customClassName,
-      customTheme
+      parentClassName
     } = this.props;
     return (
-      <div className={cx(styles.multiSelectWrapper, customClassName)}>
+      <div className={cx(styles.multiSelectWrapper, parentClassName)}>
         {label && <span className={styles.label}>{label}</span>}
-        <div className={cx(theme.dropdown, styles.multiSelect, customTheme)}>
+        <div className={cx(theme.dropdown, styles.multiSelect)}>
           <div className={cx(styles.values, 'values')}>
             {this.getSelectorValue()}
           </div>
@@ -93,7 +91,7 @@ class Multiselect extends Component {
 }
 
 Multiselect.propTypes = {
-  customClassName: Proptypes.string,
+  parentClassName: Proptypes.string,
   values: Proptypes.array.isRequired,
   options: Proptypes.array.isRequired,
   selectedClassName: Proptypes.string,
@@ -101,9 +99,7 @@ Multiselect.propTypes = {
   filterOptions: Proptypes.func,
   handleChange: Proptypes.func,
   label: Proptypes.string,
-  selectedLabel: Proptypes.string,
-  customTheme: Proptypes.string,
-  useDots: Proptypes.bool
+  selectedLabel: Proptypes.string
 };
 
 Multiselect.defaultProps = {
