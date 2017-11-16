@@ -37,7 +37,7 @@ export const parseArraysOverviewData = createSelector(
     const parsedData = {};
     Object.keys(data).forEach(key => {
       let fieldData = data[key];
-      if (typeof fieldData !== 'string') {
+      if (fieldData && typeof fieldData !== 'string') {
         fieldData = fieldData.join(', ');
       }
       parsedData[key] = fieldData;

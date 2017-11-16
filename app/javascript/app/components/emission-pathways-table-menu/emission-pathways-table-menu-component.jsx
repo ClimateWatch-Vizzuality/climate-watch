@@ -27,7 +27,7 @@ class EmissionPathwaysTableMenu extends PureComponent {
 
 EmissionPathwaysTableMenu.propTypes = {
   routeLinks: PropTypes.array,
-  uploadButton: PropTypes.node
+  uploadButton: PropTypes.bool
 };
 
 export default EmissionPathwaysTableMenu;

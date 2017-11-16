@@ -19,8 +19,6 @@ const mapStateToProps = (state, { category }) => {
     categoryData,
     category,
     query: search.search
-    // categorySelected: search.category,
-    // indicatorSelected: search.indicator
   };
 
   return {
@@ -30,24 +28,10 @@ const mapStateToProps = (state, { category }) => {
     query: EspData.query,
     categoryName: category,
     loading: categoryData.loading
-    // selectedCategory: getSelectedCategory(ndcsWithSelection),
-    // selectedIndicator: getSelectedIndicator(ndcsWithSelection)
   };
 };
 
 class EmissionPathwaysTableComponent extends PureComponent {
-  // handleCategoryChange = category => {
-  //   this.updateUrlParam({
-  //     name: 'category',
-  //     value: category.value,
-  //     clear: true
-  //   });
-  // };
-
-  // handleIndicatorChange = indicator => {
-  //   this.updateUrlParam({ name: 'indicator', value: indicator.value });
-  // };
-
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
   };

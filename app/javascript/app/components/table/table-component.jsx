@@ -47,7 +47,7 @@ class SimpleTable extends PureComponent {
                   width={200}
                   flexGrow={flexGrow}
                   cellRenderer={cell => {
-                    const titleLink = titleLinks[cell.rowIndex];
+                    const titleLink = titleLinks && titleLinks[cell.rowIndex];
                     if (titleLink && cell.dataKey === titleLink.fieldName) {
                       return (
                         <NavLink to={titleLink.url}>{cell.cellData}</NavLink>

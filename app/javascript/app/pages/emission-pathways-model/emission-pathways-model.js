@@ -4,7 +4,8 @@ import {
   getAnchorLinks,
   getRouteLinks,
   getModel,
-  getOverviewData
+  getOverviewData,
+  getId
 } from './emission-pathways-model-selectors';
 import Component from './emission-pathways-model-component';
 
@@ -22,6 +23,7 @@ const mapStateToProps = (state, { route, location, match }) => {
     anchorLinks: getAnchorLinks(espModel),
     routeLinks: getRouteLinks(espModel),
     model: getModel(espModel),
+    id: getId(espModel),
     overviewData: getOverviewData(espModel)
   };
 };

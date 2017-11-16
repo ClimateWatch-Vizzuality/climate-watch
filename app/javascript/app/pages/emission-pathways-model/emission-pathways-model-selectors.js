@@ -6,12 +6,12 @@ const getSections = espModelData => espModelData.route.sections || null;
 const getSearch = espModelData => espModelData.location.search || null;
 const getHash = espModelData => espModelData.hash || null;
 const getRoutes = espModelData => espModelData.route.routes || null;
-const getId = espModelData => espModelData.id || null;
 const getData = espModelData =>
   (!espModelData.modelData || isEmpty(espModelData.modelData.data)
     ? null
     : espModelData.modelData.data);
 
+export const getId = espModelData => espModelData.id || null;
 export const getAnchorLinks = createSelector(
   [getSections, getSearch],
   (sections, search) =>
@@ -57,5 +57,6 @@ export default {
   getAnchorLinks,
   getRouteLinks,
   getOverviewData,
-  getModel
+  getModel,
+  getId
 };

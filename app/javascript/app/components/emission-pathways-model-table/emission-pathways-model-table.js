@@ -4,30 +4,24 @@ import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
-import {
-  filteredDataBySearch,
-  sortBy,
-  titleLinks
-} from './emission-pathways-model-table-selectors';
+import { filteredCategoryData } from './emission-pathways-model-table-selectors';
 import Component from './emission-pathways-model-table-component';
 
-const mapStateToProps = (state, { category }) => {
+const mapStateToProps = (state, { category, match, location }) => {
+  const { id } = match.params;
   const search = qs.parse(location.search);
-  const categoryData = state[`esp${category}`];
-
+  const espModelsData = state.espModels;
   const EspData = {
-    categoryData,
+    espModelsData,
     category,
-    query: search.search
+    id
   };
 
   return {
-    data: filteredDataBySearch(EspData),
-    sortBy: sortBy(EspData),
-    titleLinks: titleLinks(EspData),
-    query: EspData.query,
+    data: filteredCategoryData(EspData),
+    query: search.search,
     categoryName: category,
-    loading: categoryData.loading
+    loading: espModelsData.loading
   };
 };
 
