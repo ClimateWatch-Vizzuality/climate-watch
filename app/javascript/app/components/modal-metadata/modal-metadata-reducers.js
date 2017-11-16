@@ -2,26 +2,33 @@ export const initialState = {
   loaded: false,
   loading: false,
   isOpen: false,
-  title: 'Metadata info modal',
-  active: '',
+  customTitle: '',
+  active: [],
   data: {}
 };
 
 const setModalMetadataParams = (state, { payload }) => ({
   ...state,
   isOpen: payload.open,
-  active: payload.slug
+  active: typeof payload.slugs === 'string' ? [payload.slugs] : payload.slugs,
+  customTitle: payload.customTitle || state.title
 });
 
 const setLoading = (state, loading) => ({ ...state, loading });
 const setLoaded = (state, loaded) => ({ ...state, loaded });
-const setData = (state, { slug, data }) => ({
-  ...state,
-  data: {
-    ...state.data,
-    [slug]: data
-  }
-});
+const setData = (state, { slugs, data }) => {
+  let slugData = {};
+  slugs.forEach((slug, i) => {
+    slugData = { ...slugData, [slug]: data[i] };
+  });
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      ...slugData
+    }
+  };
+};
 
 export default {
   setModalMetadataParams,
