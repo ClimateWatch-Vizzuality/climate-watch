@@ -6,6 +6,8 @@ import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
 import orderBy from 'lodash/orderBy';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import flatten from 'lodash/flatten';
+import sumBy from 'lodash/sumBy';
 
 import {
   getYColumnValue,
@@ -36,13 +38,7 @@ const AXES_CONFIG = {
 };
 
 const INCLUDED_SECTORS = {
-  CAIT: [
-    'Energy',
-    'Industrial Processes',
-    'Agriculture',
-    'Waste',
-    'Bunker Fuels'
-  ],
+  CAIT: ['Energy', 'Industrial Processes', 'Agriculture', 'Waste', 'Total'],
   PIK: [
     'Energy',
     'Agriculture',
@@ -181,15 +177,32 @@ export const getSelectorDefaults = createSelector(
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getSourceSelected],
-  (data, sourceSelected) => {
+  [getData, getSourceSelected, getCalculationSelected],
+  (data, sourceSelected, calculation) => {
     if (!data || !data.length) return [];
-    return sortEmissionsByValue(
+    const filteredData = sortEmissionsByValue(
       data.filter(
         d =>
           INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >= 0
       )
     );
+    if (calculation.value !== 'ABSOLUTE_VALUE') {
+      const dataGrouped = groupBy(
+        flatten(filteredData.map(d => d.emissions)),
+        'year'
+      );
+      const dataSummed = Object.keys(dataGrouped).map(year => ({
+        year: parseInt(year, 10),
+        value: sumBy(dataGrouped[year], 'value')
+      }));
+      const compressedData = {
+        ...filteredData[0],
+        sector: 'Total',
+        emissions: dataSummed
+      };
+      return [compressedData];
+    }
+    return filteredData;
   }
 );
 
