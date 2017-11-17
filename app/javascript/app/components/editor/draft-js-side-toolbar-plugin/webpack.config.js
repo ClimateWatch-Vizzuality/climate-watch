@@ -6,18 +6,24 @@ module.exports = {
   output: {
     publicPath: '/',
     libraryTarget: 'commonjs2', // necessary for the babel plugin
-    path: path.join(__dirname, 'lib-css'), // where to place webpack files
+    path: path.join(__dirname, 'lib-css') // where to place webpack files
   },
   module: {
     loaders: [
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader?modules&importLoaders=1&localIdentName=draftJsToolbar__[local]__[hash:base64:5]!postcss-loader' }),
-      },
-    ],
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use:
+            'css-loader?modules&importLoaders=1&localIdentName=draftJsToolbar__[local]__[hash:base64:5]!postcss-loader'
+        })
+      }
+    ]
   },
 
   plugins: [
-    new ExtractTextPlugin({ filename: `${path.parse(process.argv[2]).name}.css` }),
-  ],
+    new ExtractTextPlugin({
+      filename: `${path.parse(process.argv[2]).name}.css`
+    })
+  ]
 };

@@ -6,7 +6,7 @@ import {
   BlockquoteButton,
   CodeBlockButton,
   UnorderedListButton,
-  OrderedListButton,
+  OrderedListButton
 } from 'draft-js-buttons';
 
 import BlockTypeSelect from '../BlockTypeSelect';
@@ -22,7 +22,7 @@ const DefaultBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
       UnorderedListButton,
       OrderedListButton,
       BlockquoteButton,
-      CodeBlockButton,
+      CodeBlockButton
     ]}
   />
 );

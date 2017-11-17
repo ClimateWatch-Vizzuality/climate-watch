@@ -37,7 +37,10 @@ const WidgetPicker = ({
         <Loading />
       )}
       <li className={styles.option}>
-        <button onClick={() => onOpenCreator()} className={cx(styles.viz, styles.create)}>
+        <button
+          onClick={() => onOpenCreator()}
+          className={cx(styles.viz, styles.create)}
+        >
           Create a new visualisation
         </button>
       </li>

@@ -1,4 +1,4 @@
-const createStore = (initialState) => {
+const createStore = initialState => {
   let state = initialState || {};
   const listeners = {};
 
@@ -8,26 +8,26 @@ const createStore = (initialState) => {
   };
 
   const unsubscribeFromItem = (key, callback) => {
-    listeners[key] = listeners[key].filter((listener) => listener !== callback);
+    listeners[key] = listeners[key].filter(listener => listener !== callback);
   };
 
   const updateItem = (key, item) => {
     state = {
       ...state,
-      [key]: item,
+      [key]: item
     };
     if (listeners[key]) {
-      listeners[key].forEach((listener) => listener(state[key]));
+      listeners[key].forEach(listener => listener(state[key]));
     }
   };
 
-  const getItem = (key) => state[key];
+  const getItem = key => state[key];
 
   return {
     subscribeToItem,
     unsubscribeFromItem,
     updateItem,
-    getItem,
+    getItem
   };
 };
 

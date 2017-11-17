@@ -1,6 +1,7 @@
 import * as actions from './viz-creator-actions';
 
-const toggleSelect = (state, key, value) => (value === state[key] ? null : value);
+const toggleSelect = (state, key, value) =>
+  (value === state[key] ? null : value);
 
 export default {
   [actions.fetchDatasets]: state => ({

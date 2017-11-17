@@ -23,11 +23,13 @@ import focusTheme from './themes/focus-theme';
 
 const inlineToolbarPlugin = createInlineToolbarPlugin();
 const sideToolbarPlugin = createSideToolbarPlugin({
-  structure: [({ trigerTool }) => (
-    <button onClick={trigerTool}>
-      <Icon icon={iconBarchart} />
-    </button>
-  )]
+  structure: [
+    ({ trigerTool }) => (
+      <button onClick={trigerTool}>
+        <Icon icon={iconBarchart} />
+      </button>
+    )
+  ]
 });
 
 const { SideToolbar } = sideToolbarPlugin;
@@ -82,7 +84,11 @@ const StoryEditor = ({
       onRequestClose={hidePicker}
     >
       <ModalHeader title="Select a visualisation" />
-      <Picker onHidePicker={hidePicker} onOpenCreator={showCreator} onSelectVis={pickVisualiation} />
+      <Picker
+        onHidePicker={hidePicker}
+        onOpenCreator={showCreator}
+        onSelectVis={pickVisualiation}
+      />
     </Modal>
     <Modal
       styles={modalStyles}
