@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 
 const getNdcsSdgsMetaInit = createAction('getNdcsSdgsMetaInit');
 const getNdcsSdgsMetaReady = createAction('getNdcsSdgsMetaReady');
+const getNdcsSdgsMetaFail = createAction('getTimelineFail');
 
 const getNdcsSdgsMeta = createThunkAction(
   'getNdcsSdgsMeta',
@@ -21,6 +22,7 @@ const getNdcsSdgsMeta = createThunkAction(
         })
         .catch(error => {
           console.info(error);
+          dispatch(getNdcsSdgsMetaFail());
         });
     }
   }
