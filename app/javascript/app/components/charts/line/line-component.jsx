@@ -12,16 +12,28 @@ import {
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
+import debounce from 'lodash/debounce';
 
 class ChartLine extends PureComponent {
+  debouncedMouseMove = debounce(year => {
+    this.props.onMouseMove(year);
+  }, 80);
+
+  handleMouseMove = e => {
+    const year = e && e.activeLabel;
+    if (year) {
+      this.debouncedMouseMove(year);
+    }
+  };
+
   render() {
-    const { config, data, height, onMouseMove } = this.props;
+    const { config, data, height } = this.props;
     return (
       <ResponsiveContainer height={height}>
         <LineChart
           data={data}
           margin={{ top: 20, right: 0, left: -10, bottom: 0 }}
-          onMouseMove={onMouseMove}
+          onMouseMove={this.handleMouseMove}
         >
           <XAxis
             dataKey="x"

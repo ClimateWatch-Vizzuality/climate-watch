@@ -5,6 +5,7 @@ import { CALCULATION_OPTIONS } from 'app/data/constants';
 import groupBy from 'lodash/groupBy';
 
 import worldPaths from 'app/data/world-50m-paths';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 const calculationKeys = Object.keys(CALCULATION_OPTIONS);
 const options = calculationKeys.map(
@@ -20,6 +21,7 @@ const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
 const getCalculationData = state => state.calculationData || null;
+const getMeta = state => state.meta || {};
 
 export const getCalculationSelected = createSelector(
   [getCalculationSelection],
@@ -30,6 +32,7 @@ export const getCalculationSelected = createSelector(
 );
 
 const EXCLUDED_INDICATORS = ['WORLD'];
+
 const buckets = [
   '#fffffb',
   '#ffffd5',
@@ -41,6 +44,7 @@ const buckets = [
   '#1b4a75',
   '#163449'
 ];
+
 const steps = [0, 0.4, 0.8, 2, 4, 8, 16, 32, 64];
 let colorScale = null;
 function setScale(ranges) {
@@ -149,15 +153,21 @@ export const getDataParsed = createSelector(
 
 // get selector defaults
 export const getDefaultValues = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return null;
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
+  [getSources, getSourceSelected, getMeta],
+  (sources, sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
     return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
+      ...getGhgEmissionDefaults(sourceSelected.label, meta),
       source: sources[0].value
     };
+  }
+);
+
+export const getSelectorDefaults = createSelector(
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 
@@ -165,6 +175,7 @@ export const getPathsWithStyles = createSelector(
   [getDataParsed, getIso],
   (data, countryIso) => {
     if (!data) return worldPaths;
+
     const { min, max } = data;
     if (min && max) setScale(getRanges(min, max));
     return worldPaths.map(path => {
@@ -173,6 +184,7 @@ export const getPathsWithStyles = createSelector(
       if (data && data.values && data.values[iso]) {
         color = colorScale(data.values[iso]);
       }
+
       const isSelectedCountry = iso === countryIso;
       const stroke = isSelectedCountry ? '#113750' : '#000';
       const SELECTED_COUNTRY_STROKE_WIDTH = 0.7;

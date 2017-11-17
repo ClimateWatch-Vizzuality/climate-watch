@@ -4,6 +4,7 @@ import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
+
 import {
   getYColumnValue,
   getThemeConfig,
@@ -11,6 +12,7 @@ import {
   sortEmissionsByValue,
   sortLabelByAlpha
 } from 'utils/graphs';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 // constants needed for data parsing
 const TOP_EMITTERS = [
@@ -77,7 +79,8 @@ const EXCLUDED_SECTORS = [
   'Total excluding LUCF',
   'Total including LUCF',
   'Total including LULUCF',
-  'Total excluding LULUCF'
+  'Total excluding LULUCF',
+  'Bunker Fuels '
 ];
 
 // meta data for selectors
@@ -217,7 +220,9 @@ export const getFilterOptions = createSelector(
     );
     const activeFilterKeys = activeSourceData[breakByValue];
     const filteredSelected = meta[breakByValue].filter(
-      filter => activeFilterKeys.indexOf(filter.value) > -1
+      filter =>
+        activeFilterKeys.indexOf(filter.value) > -1 &&
+        EXCLUDED_SECTORS.indexOf(filter.label) === -1
     );
     if (breakByValue === 'location') {
       const countries = filteredSelected.map(d => ({
@@ -257,38 +262,7 @@ export const getSelectorDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-    const defaults = {};
-    switch (sourceSelected.label) {
-      case 'CAIT':
-        defaults.sector = meta.sector.find(
-          s => s.label === 'Total excluding LUCF'
-        ).value;
-        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
-        defaults.location = 'WORLD';
-        break;
-      case 'PIK':
-        defaults.sector = meta.sector.find(
-          s => s.label === 'Total excluding LUCF'
-        ).value;
-        defaults.gas = meta.gas.find(g => g.label === 'All GHG').value;
-        defaults.location = 'WORLD';
-        break;
-      case 'UNFCCC':
-        defaults.sector = meta.sector
-          .filter(
-            s =>
-              s.label === 'Total GHG emissions without LULUCF' ||
-              s.label === 'Total GHG emissions excluding LULUCF/LUCF'
-          )
-          .map(d => d.value)
-          .toString();
-        defaults.gas = meta.gas.find(g => g.label === 'Aggregate GHGs').value;
-        defaults.location = 'ANNEXI';
-        break;
-      default:
-        return null;
-    }
-    return defaults;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 

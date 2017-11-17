@@ -162,7 +162,7 @@ const additionalData = {
     {
       link:
         'http://unfccc.int/national_reports/non-annex_i_parties/biennial_update_reports/items/9186.php',
-      alt: 'UNFCCC – Biennial Update Reports'
+      alt: 'UNFCCC – Biennial Reports'
     }
   ]
 };
