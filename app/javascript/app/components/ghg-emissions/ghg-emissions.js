@@ -106,9 +106,8 @@ function getFiltersParsed(props) {
 class GhgEmissionsContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const { sourceSelected, breakSelected, filtersSelected } = props;
-    const hasValues =
-      sourceSelected && breakSelected && filtersSelected.length > 0;
+    const { sourceSelected, breakSelected } = props;
+    const hasValues = sourceSelected && breakSelected;
     if (hasValues) {
       const filters = getFiltersParsed(props);
       props.fetchGhgEmissionsData(filters);
