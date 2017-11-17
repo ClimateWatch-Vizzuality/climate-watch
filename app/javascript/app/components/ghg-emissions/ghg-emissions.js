@@ -123,13 +123,15 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value }, true);
+    this.updateUrlParam([{ name: 'source', value: category.value }]);
   };
 
   handleBreakByChange = breakBy => {
+    const { versionSelected } = this.props;
     const params = [
       { name: 'source', value: this.props.sourceSelected.value },
-      { name: 'breakBy', value: breakBy.value }
+      { name: 'breakBy', value: breakBy.value },
+      { name: 'version', value: versionSelected.value }
     ];
     this.updateUrlParam(params, true);
   };
@@ -206,6 +208,7 @@ GhgEmissionsContainer.propTypes = {
   location: PropTypes.object.isRequired,
   breakSelected: PropTypes.object,
   sourceSelected: PropTypes.object,
+  versionSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
   fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array
