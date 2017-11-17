@@ -1,14 +1,18 @@
+@import '~styles/layout.scss';
+
 .container {
-  padding: 60px;
+  // padding: 0 60px 60px;
 }
 
 .editor {
-  border: 1px solid rgba(black, 0.2);
   min-height: 80vh;
+  margin: $gutter-padding * 3;
 }
 
 .title {
   border: none;
   width: 100%;
   font-size: 2.7rem;
+  background-color: rgba($gray, 0.2);
+  padding: 1.25em $gutter-padding 1em;
 }

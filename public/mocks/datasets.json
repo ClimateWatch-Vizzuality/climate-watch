@@ -1,0 +1,140 @@
+  { "filters": {
+      "countries": [
+        { "name": "France"},
+        { "name": "Italy"},
+        { "name": "Spain"},
+        { "name": "Portugal"}
+      ],
+      "models": [
+        "GCAM",
+        "MODEL2"
+      ],
+      "scenarios": [
+        "Paris plus",
+        "Paris",
+        "Brussels"
+      ],
+      "categories": ["buildings", "roads"],
+      "subcategories": ["electricity generation", "domestic waste"],
+      "indicators": ["all"]
+    },
+    "datasets": {
+    "emission pathways": {
+      "visualizations": {
+        "Focus on the emissions of one country": [{
+            "title": "See the change in a country's emmision's for a specified indicator for a specified indicator across multiple scenarios",
+            "tags": [
+              "Single country",
+              "Single indicator",
+              "Multiple scenarios",
+              "Time series"
+            ],
+            "image": "",
+            "filters": [
+              "countries",
+              "models",
+              "scenarios",
+              "categories",
+              "subcategories",
+              "indicators"
+            ]
+          },{
+          "title": "See the change in a country's emmision's for a specified indicator for a specified indicator and scenario",
+          "tags": [
+            "Single country",
+            "Multiple indicator",
+            "Single scenario",
+            "Time series"
+          ],
+          "image": "",
+          "filters": [
+            "countries",
+            "models",
+            "scenarios",
+            "categories",
+            "subcategories",
+            "indicators"
+          ]
+        },
+        {
+          "title": "See a country’s relative emissions across multiple indicators for a specified scenario",
+          "tags": [
+            "Single country",
+            "Multiple indicators",
+            "Single scenario",
+            "Single year"
+          ],
+          "image": "",
+          "filters": [
+            "countries",
+            "models",
+            "scenarios",
+            "categories",
+            "subcategories",
+            "indicators"
+          ]
+        }
+      ],
+      "Compare countries’ emissions": [
+        {
+          "title": "Compare changes per indicator across countries for a specified scenario",
+          "tags": [
+            "Multiple countries",
+            "Multiple indicators",
+            "Single scenario",
+            "Time series"
+          ],
+          "image": "",
+          "filters": [
+            "countries",
+            "models",
+            "scenarios",
+            "categories",
+            "subcategories",
+            "indicators"
+          ]
+        },
+        {
+          "title": "Compare countries relative emissions for a specified indicator and scenario",
+          "tags": [
+            "Multiple countries",
+            "Single indicator",
+            "Single scenario",
+            "Single year"
+          ],
+          "image": "",
+          "filters": [
+            "countries",
+            "models",
+            "scenarios",
+            "categories",
+            "subcategories",
+            "indicators"
+          ]
+        },
+        {
+          "title": "Compare countries stacked emissions across a specifed indicator category",
+          "tags": [
+            "Multiple countries",
+            "Multiple indicators",
+            "Single scenario",
+            "Single year"
+          ],
+          "image": "",
+          "filters": [
+            "countries",
+            "models",
+            "scenarios",
+            "categories",
+            "subcategories",
+            "indicators"
+          ]
+        }
+      ]
+    }
+    },
+    "NDC content": {},
+    "NDC-SDG linkages": {},
+    "historical GHG emissions": {}
+  }
+}

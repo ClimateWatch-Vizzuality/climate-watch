@@ -1,25 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'draft-js-plugins-editor';
 
 import createFocusPlugin from 'draft-js-focus-plugin';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
-import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin';
 import { createPlugin } from 'app/utils/draft';
 
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
-import 'draft-js-side-toolbar-plugin/lib/plugin.css';
 import 'draft-js-focus-plugin/lib/plugin.css';
 
 import Modal, { ModalHeader } from 'components/modal';
+import Icon from 'components/icon';
+import iconBarchart from 'assets/icons/barchart.svg';
+
+import createSideToolbarPlugin from './draft-js-side-toolbar-plugin';
 import Barchart from './components/barchart';
 import Picker from './components/widget-picker';
+import VizCreator from './components/viz-creator';
 
 import styles from './editor-styles';
-import focusTheme from './focus-theme';
+import focusTheme from './themes/focus-theme';
 
 const inlineToolbarPlugin = createInlineToolbarPlugin();
-const sideToolbarPlugin = createSideToolbarPlugin();
+const sideToolbarPlugin = createSideToolbarPlugin({
+  structure: [({ trigerTool }) => (
+    <button onClick={trigerTool}>
+      <Icon icon={iconBarchart} />
+    </button>
+  )]
+});
 
 const { SideToolbar } = sideToolbarPlugin;
 const { InlineToolbar } = inlineToolbarPlugin;
@@ -54,6 +63,9 @@ const StoryEditor = ({
   onChange,
   pickVisualiation,
   hidePicker,
+  creatorIsOpen,
+  hideCreator,
+  showCreator,
   getEditorRef,
   getTitleRef,
   pickerIsOpen,
@@ -69,8 +81,16 @@ const StoryEditor = ({
       isOpen={pickerIsOpen}
       onRequestClose={hidePicker}
     >
-      <ModalHeader title={title} />
-      <Picker onHidePicker={hidePicker} onSelectVis={pickVisualiation} />
+      <ModalHeader title="Select a visualisation" />
+      <Picker onHidePicker={hidePicker} onOpenCreator={showCreator} onSelectVis={pickVisualiation} />
+    </Modal>
+    <Modal
+      styles={modalStyles}
+      isOpen={creatorIsOpen}
+      onRequestClose={hideCreator}
+    >
+      <ModalHeader title="Create a visualisation" />
+      <VizCreator onHideCreator={hideCreator} />
     </Modal>
     <input
       type="text"
@@ -92,8 +112,7 @@ const StoryEditor = ({
         plugins={plugins}
       />
       <InlineToolbar />
-      <SideToolbar />
-      <button onClick={showPicker}>Select visualisation</button>
+      <SideToolbar trigerTool={() => showPicker()} />
     </div>
   </div>
 );
@@ -103,10 +122,13 @@ StoryEditor.propTypes = {
   editorState: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   pickVisualiation: PropTypes.func.isRequired,
-  hidePicker: PropTypes.func.isRequired,
   getEditorRef: PropTypes.func.isRequired,
   getTitleRef: PropTypes.func.isRequired,
   pickerIsOpen: PropTypes.bool.isRequired,
+  hidePicker: PropTypes.func.isRequired,
+  creatorIsOpen: PropTypes.bool.isRequired,
+  hideCreator: PropTypes.func.isRequired,
+  showCreator: PropTypes.func.isRequired,
   updateTitle: PropTypes.func.isRequired,
   focusTitle: PropTypes.func.isRequired,
   focusEditor: PropTypes.func.isRequired,

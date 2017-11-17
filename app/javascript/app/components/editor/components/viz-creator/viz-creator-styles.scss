@@ -1,0 +1,20 @@
+.container {
+  height: 100%;
+}
+
+.steps {
+  height: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.step {
+  min-height: 25%;
+  border-bottom: 1px solid;
+}
+
+.datasetSelected,
+.visualizationSelected {
+  border: 1px solid gray;
+}

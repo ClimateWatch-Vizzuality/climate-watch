@@ -35,12 +35,16 @@ class Editor extends Component {
       content,
       openPicker,
       closePicker,
+      openCreator,
+      closeCreator,
       ...props
     } = this.props;
 
     return createElement(EditorComponent, {
       showPicker: openPicker,
       hidePicker: closePicker,
+      showCreator: openCreator,
+      hideCreator: closeCreator,
       editorState: content,
       onChange: updateContent,
       getEditorRef: this.getEditorRef,
@@ -58,6 +62,8 @@ Editor.propTypes = {
   pickVisualiation: PropTypes.func.isRequired,
   openPicker: PropTypes.func.isRequired,
   closePicker: PropTypes.func.isRequired,
+  openCreator: PropTypes.func.isRequired,
+  closeCreator: PropTypes.func.isRequired,
   pickerIsOpen: PropTypes.bool.isRequired,
   updateTitle: PropTypes.func.isRequired,
   logState: PropTypes.func,

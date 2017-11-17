@@ -15,7 +15,8 @@ const WidgetPicker = ({
   visualisations,
   loading,
   onHidePicker,
-  onSelectVis
+  onSelectVis,
+  onOpenCreator
 }) => (
   <div className={styles.container}>
     <ul className={styles.options}>
@@ -36,7 +37,7 @@ const WidgetPicker = ({
         <Loading />
       )}
       <li className={styles.option}>
-        <button className={cx(styles.viz, styles.create)}>
+        <button onClick={() => onOpenCreator()} className={cx(styles.viz, styles.create)}>
           Create a new visualisation
         </button>
       </li>
@@ -50,6 +51,7 @@ const WidgetPicker = ({
 WidgetPicker.propTypes = {
   onHidePicker: PropTypes.func.isRequired,
   onSelectVis: PropTypes.func.isRequired,
+  onOpenCreator: PropTypes.func.isRequired,
   visualisations: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired
 };

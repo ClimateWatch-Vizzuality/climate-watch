@@ -1,8 +1,14 @@
 import * as actions from './editor-actions';
 
+const closePicker = state => ({ ...state, pickerIsOpen: false });
+
 export default {
   [actions.openPicker]: state => ({ ...state, pickerIsOpen: true }),
-  [actions.closePicker]: state => ({ ...state, pickerIsOpen: false }),
+  [actions.closePicker]: closePicker,
+
+  [actions.openCreator]: state => closePicker({ ...state, creatorIsOpen: true }),
+  [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
+
   [actions.updateContent]: (state, { payload }) => ({
     ...state,
     content: payload,

@@ -57,6 +57,7 @@ import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions'
 import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkages';
 import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
 import * as widgetPicker from 'components/editor/components/widget-picker';
+import * as vizCreator from 'components/editor/components/viz-creator';
 
 const componentsReducers = {
   editor: handleActions(editorComponent),
@@ -71,7 +72,8 @@ const componentsReducers = {
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
   countryNDCOverview: handleActions(countryNDCOverviewComponent),
-  picker: handleActions(widgetPicker)
+  picker: handleActions(widgetPicker),
+  vizCreator: handleActions(vizCreator)
 };
 
 export default combineReducers({
