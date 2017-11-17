@@ -24,6 +24,9 @@ class CountryNdcOverview extends PureComponent {
         />
       );
     }
+    const hasCoverageSectorsShort =
+      values.coverage_sectors_short && values.coverage_sectors_short.length;
+
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -40,7 +43,9 @@ class CountryNdcOverview extends PureComponent {
                       'Overview'
                     )
                   }
-                  description={values.indc_summary[0].value}
+                  description={
+                    values.indc_summary[0] && values.indc_summary[0].value
+                  }
                   textColumns={textColumns}
                 />
                 {actions && (
@@ -67,7 +72,7 @@ class CountryNdcOverview extends PureComponent {
               <div className={styles.cards}>
                 <Card title="GHG Target">
                   <div className={styles.cardContent}>
-                    {values.ghg_target_type.length ? (
+                    {values.ghg_target_type && values.ghg_target_type.length ? (
                       <div>
                         <span className={styles.metaTitle}>Target type</span>
                         <p
@@ -93,7 +98,7 @@ class CountryNdcOverview extends PureComponent {
                 </Card>
                 <Card title="Non-GHG Target">
                   <div className={styles.cardContent}>
-                    {values.non_ghg_target.length ? (
+                    {values.non_ghg_target && values.non_ghg_target.length ? (
                       <p
                         className={styles.targetText}
                         dangerouslySetInnerHTML={{
@@ -108,7 +113,7 @@ class CountryNdcOverview extends PureComponent {
                 </Card>
                 <Card title="Sectoral coverage">
                   <div className={styles.cardContent}>
-                    {values.coverage_sectors_short.length ? (
+                    {hasCoverageSectorsShort ? (
                       <p
                         className={styles.targetText}
                         dangerouslySetInnerHTML={{

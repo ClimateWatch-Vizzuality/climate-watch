@@ -3,9 +3,7 @@ import { createThunkAction } from 'utils/redux';
 
 const fetchNdcsDocumentsMetaInit = createAction('fetchNdcsDocumentsMetaInit');
 const fetchNdcsDocumentsMetaReady = createAction('fetchNdcsDocumentsMetaReady');
-const fetchNdcsDocumentsMetaFailed = createAction(
-  'fetchNdcsDocumentsMetaFailed'
-);
+const fetchNdcsDocumentsMetaFail = createAction('fetchNdcsDocumentsMetaFailed');
 
 const fetchNdcsDocumentsMeta = createThunkAction(
   'fetchNdcsDocumentsMeta',
@@ -20,7 +18,7 @@ const fetchNdcsDocumentsMeta = createThunkAction(
         dispatch(fetchNdcsDocumentsMetaReady(data));
       })
       .catch(error => {
-        dispatch(fetchNdcsDocumentsMetaFailed());
+        dispatch(fetchNdcsDocumentsMetaFail());
         console.info(error);
       });
   }
@@ -30,5 +28,5 @@ export default {
   fetchNdcsDocumentsMeta,
   fetchNdcsDocumentsMetaInit,
   fetchNdcsDocumentsMetaReady,
-  fetchNdcsDocumentsMetaFailed
+  fetchNdcsDocumentsMetaFail
 };

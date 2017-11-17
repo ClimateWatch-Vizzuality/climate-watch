@@ -23,16 +23,20 @@ const mapStateToProps = (state, { match, location }) => {
     data: ndcsSdgsMeta.data,
     activeSector: search.sector
   };
+
   return {
-    fetched: ndcsSdgsData.data[iso],
+    fetched: ndcsSdgsData.data && ndcsSdgsData.data[iso],
     activeSector: getSectorSelected(sdgsData),
     tooltipData: countrySDGLinkages.tooltipData,
     sectors: getSectorsMapped(sdgsData),
     sectorOptions: getSectorOptionsSorted(sdgsData),
-    goals: ndcsSdgsMeta.data.goals || [],
+    goals: (!ndcsSdgsData.error && ndcsSdgsMeta.data.goals) || [],
     targets: groupTargetsMeta(ndcsSdgsMeta),
-    targetsData: ndcsSdgsData.data[iso] ? ndcsSdgsData.data[iso].sdgs : {},
-    loading: ndcsSdgsData.loading,
+    targetsData:
+      ndcsSdgsData.data && ndcsSdgsData.data[iso]
+        ? ndcsSdgsData.data[iso].sdgs
+        : {},
+    loading: !ndcsSdgsData.error && ndcsSdgsData.loading,
     infoOpen: countrySDGLinkages.infoOpen
   };
 };
