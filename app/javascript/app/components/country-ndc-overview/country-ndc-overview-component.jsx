@@ -25,7 +25,9 @@ class CountryNdcOverview extends PureComponent {
       );
     }
     const hasCoverageSectorsShort =
-      values.coverage_sectors_short && values.coverage_sectors_short.length;
+      values &&
+      values.coverage_sectors_short &&
+      values.coverage_sectors_short.length;
 
     return (
       <div className={styles.wrapper}>
