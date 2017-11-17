@@ -18,11 +18,23 @@ class ScrollToHighlightIndex extends PureComponent {
     const e = idx
       ? document.querySelectorAll(targetElementsSelector)[idx]
       : document.querySelectorAll(targetElementsSelector)[0];
+
+    const topPosition = element => {
+      const PADDING = -200;
+      let firstLevelElement = element;
+      let elementPosition = firstLevelElement.offsetTop;
+      while (firstLevelElement.id !== 'ndc-content-container') {
+        elementPosition += firstLevelElement.offsetParent.offsetTop;
+        firstLevelElement = firstLevelElement.offsetParent;
+      }
+      return elementPosition + PADDING;
+    };
+
     if (e) {
       window.scrollTo({
         behavior: 'smooth',
         left: 0,
-        top: e.offsetTop - 200
+        top: topPosition(e)
       });
     }
   };

@@ -1,25 +1,11 @@
 import React, { PureComponent } from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-
 import Button from 'components/button';
 import Icon from 'components/icon';
 
 import closeIcon from 'assets/icons/sidebar-close.svg';
-
 import modalStyles from './modal-styles.scss';
-
-export const ModalHeader = ({ title, children }) => (
-  <div className={modalStyles.header}>
-    {title && <h2 className={modalStyles.headerTitle}>{title}</h2>}
-    {children}
-  </div>
-);
-
-ModalHeader.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node
-};
 
 class CustomModal extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function

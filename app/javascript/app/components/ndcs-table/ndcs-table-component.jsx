@@ -41,6 +41,7 @@ class NDCTable extends PureComponent {
             onValueChange={handleCategoryChange}
             value={selectedCategory}
             hideResetButton
+            plain
           />
           <Dropdown
             label="Indicator"
@@ -48,6 +49,7 @@ class NDCTable extends PureComponent {
             onValueChange={handleIndicatorChange}
             value={selectedIndicator}
             hideResetButton
+            plain
           />
           <Search
             input={query}
@@ -55,6 +57,7 @@ class NDCTable extends PureComponent {
             onChange={handleSearchChange}
             className={styles.searchBox}
             placeholder="Search table data"
+            plain
           />
         </div>
         {this.getTableContent()}

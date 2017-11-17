@@ -1,11 +1,11 @@
 FROM ruby:2.4.1
 MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 
-ARG secretKey
-
 ENV NAME climate-watch
 ENV RAKE_ENV production
 ENV RAILS_ENV production
+ENV ESP_API https://www.emissionspathways.org/api/v1
+ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
 # Install dependencies
 RUN apt-get update \
@@ -29,6 +29,7 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install --without development test --jobs 4 --deployment
 
 # Bundle app source
+ARG secretKey
 ENV SECRET_KEY_BASE $secretKey
 COPY . ./
 

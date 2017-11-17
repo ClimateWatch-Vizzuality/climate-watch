@@ -75,4 +75,4 @@ const mapStateToProps = ({ editor }) => editor;
 
 export { actions, reducers, initialState };
 
-export default connect(mapStateToProps, { ...actions })(Editor);
+export default connect(mapStateToProps, actions)(Editor);

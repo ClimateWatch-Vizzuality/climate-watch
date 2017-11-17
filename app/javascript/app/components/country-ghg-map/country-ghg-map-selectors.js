@@ -2,9 +2,15 @@ import { createSelector } from 'reselect';
 import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import groupBy from 'lodash/groupBy';
 
 import worldPaths from 'app/data/world-50m-paths';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
+const calculationKeys = Object.keys(CALCULATION_OPTIONS);
+const options = calculationKeys.map(
+  calculationKey => CALCULATION_OPTIONS[calculationKey]
+);
 const getCountries = state => state.countries;
 const getIso = state => state.iso;
 const getData = state => state.data;
@@ -14,8 +20,19 @@ const getSources = state => state.meta.data_source || null;
 const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
+const getCalculationData = state => state.calculationData || null;
+const getMeta = state => state.meta || {};
+
+export const getCalculationSelected = createSelector(
+  [getCalculationSelection],
+  selected => {
+    if (!selected) return options[0];
+    return options.find(calculation => calculation.value === selected);
+  }
+);
 
 const EXCLUDED_INDICATORS = ['WORLD'];
+
 const buckets = [
   '#fffffb',
   '#ffffd5',
@@ -27,6 +44,7 @@ const buckets = [
   '#1b4a75',
   '#163449'
 ];
+
 const steps = [0, 0.4, 0.8, 2, 4, 8, 16, 32, 64];
 let colorScale = null;
 function setScale(ranges) {
@@ -68,21 +86,60 @@ export const getYearSelected = createSelector(
   }
 );
 
+const calculatedRatio = (selected, calculationData, x) => {
+  if (isEmpty(calculationData)) return 1;
+  if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
+    return calculationData[x][0].gdp;
+  }
+  if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
+    return calculationData[x][0].population;
+  }
+  return 1;
+};
+
+// If we dont have calculationData the selected calculation is Absolute value so it should show that data
+const countryHasCalculationDataForYear = (calculationData, data, year) =>
+  isEmpty(calculationData) || (data && data[year]);
+
 export const getDataParsed = createSelector(
-  [getData, getYearSelected],
-  (data, year) => {
-    if (!data || isEmpty(data)) return null;
+  [getData, getCalculationData, getYearSelected, getCalculationSelected],
+  (data, calculationData, year, calculationSelected) => {
+    if (!data || isEmpty(data) || !calculationSelected) {
+      return null;
+    }
     const dataParsed = {};
     let max = 0;
     let min = 9999999999;
+
     data.forEach(d => {
+      const iso = d.iso_code3;
+      const calculationDataGroupedByYear =
+        calculationData &&
+        calculationData[iso] &&
+        groupBy(calculationData[iso], 'year');
       const item = d.emissions.find(e => e.year === year);
-      if (item && item.value && !EXCLUDED_INDICATORS.includes(item.iso_code3)) {
-        if (item.value > max) max = item.value;
-        if (item.value < min) min = item.value;
-        dataParsed[d.iso_code3] = item.value;
+      if (
+        item &&
+        item.value &&
+        !EXCLUDED_INDICATORS.includes(iso) &&
+        countryHasCalculationDataForYear(
+          calculationData,
+          calculationDataGroupedByYear,
+          item.year
+        )
+      ) {
+        const calculationRatio = calculatedRatio(
+          calculationSelected.value,
+          calculationDataGroupedByYear,
+          item.year
+        );
+
+        const value = item.value / calculationRatio;
+        if (value > max) max = value;
+        if (value < min) min = value;
+        dataParsed[iso] = value;
       } else {
-        dataParsed[d.iso_code3] = null;
+        dataParsed[iso] = null;
       }
     });
     return {
@@ -96,15 +153,21 @@ export const getDataParsed = createSelector(
 
 // get selector defaults
 export const getDefaultValues = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return null;
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
+  [getSources, getSourceSelected, getMeta],
+  (sources, sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
     return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
+      ...getGhgEmissionDefaults(sourceSelected.label, meta),
       source: sources[0].value
     };
+  }
+);
+
+export const getSelectorDefaults = createSelector(
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 
@@ -112,8 +175,7 @@ export const getPathsWithStyles = createSelector([getDataParsed], data => {
   if (!data) return worldPaths;
 
   const { min, max } = data;
-
-  if (min && max) setScale(getRanges(data.min, data.max));
+  if (min && max) setScale(getRanges(min, max));
   return worldPaths.map(path => {
     let color = '#E5E5EB'; // default color
     const iso = path.properties && path.properties.id;
@@ -149,14 +211,15 @@ export const getPathsWithStyles = createSelector([getDataParsed], data => {
 });
 
 export const getLegendData = createSelector(
-  [getCalculationSelection, getYearSelected],
+  [getCalculationSelected, getYearSelected],
   (calculation, year) => {
     let calculationText = '';
     if (
       calculation &&
-      calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
+      calculation.value &&
+      calculation.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
     ) {
-      calculationText = `${CALCULATION_OPTIONS[calculation].label} `;
+      calculationText = `${CALCULATION_OPTIONS[calculation.value].label} `;
     }
 
     return {

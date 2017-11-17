@@ -35,7 +35,7 @@ $height: 45px;
         transition: box-shadow 150ms ease-out;
 
         &:hover {
-          box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09) !important;
+          box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
         }
 
         .react-selectize-placeholder {
@@ -56,6 +56,18 @@ $height: 45px;
           flex-wrap: wrap;
           overflow: hidden;
           position: relative;
+          width: 100%;
+
+          .simple-value {
+            width: 100%;
+          }
+
+          span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+          }
 
           .resizable-input {
             background: none;
@@ -75,6 +87,7 @@ $height: 45px;
             display: flex;
             align-items: flex-start;
             line-height: $height;
+            width: 100%;
           }
         }
 
@@ -375,6 +388,10 @@ $height: 45px;
     border-color: transparent !important;
     height: 60px !important;
     box-shadow: none !important;
+
+    &:hover {
+      box-shadow: 0 !important;
+    }
   }
 
   .dropdown-menu {

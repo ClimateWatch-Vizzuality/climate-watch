@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import upperCase from 'lodash/upperCase';
+import qs from 'query-string';
 
 const getCountries = state => state.countries || null;
 const getIso = state => state.iso || null;
@@ -20,18 +21,20 @@ export const getAnchorLinks = createSelector(
     state => state.iso,
     state => state.location.search
   ],
-  (routes, iso, search) =>
-    routes.filter(route => route.anchor).map(route => ({
+  (routes, iso, search) => {
+    const searchParams = { search: qs.parse(search).search };
+    return routes.filter(route => route.anchor).map(route => ({
       label: route.label,
       path: `/ndcs/country/${iso}/${route.param ? route.param : ''}`,
-      search
-    }))
+      search: `?${qs.stringify(searchParams)}`
+    }));
+  }
 );
 
 export const getDocumentsOptions = createSelector(
   [getDocuments, getIso],
   (documents, iso) => {
-    if (isEmpty(documents) || !iso) return null;
+    if (isEmpty(documents) || !iso || !documents[iso]) return null;
     return documents[iso].map(doc => ({
       label: `${upperCase(doc.document_type)}(${doc.language})`,
       value: `${doc.document_type}(${doc.language})`,

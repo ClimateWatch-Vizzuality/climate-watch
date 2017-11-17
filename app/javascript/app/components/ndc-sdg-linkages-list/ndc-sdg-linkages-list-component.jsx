@@ -17,7 +17,7 @@ class NdcSdgLinkagesList extends PureComponent {
   };
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { goal, onCloseClick, targetHover } = this.props;
+    const { goal, onCloseClick, targetHover, targets } = this.props;
     const headerStyle = { borderColor: goal.colour };
     return (
       <div className={styles.container}>
@@ -31,7 +31,7 @@ class NdcSdgLinkagesList extends PureComponent {
           </button>
         </div>
         <div className={styles.targetContainer}>
-          {goal.targets.map((target, index) => {
+          {targets.map((target, index) => {
             const isSelected = targetHover === target.number;
             const style = {
               borderBottom: `4px solid ${isSelected
@@ -62,6 +62,7 @@ class NdcSdgLinkagesList extends PureComponent {
 
 NdcSdgLinkagesList.propTypes = {
   goal: PropTypes.object.isRequired,
+  targets: PropTypes.array.isRequired,
   targetHover: PropTypes.string,
   onCloseClick: PropTypes.func.isRequired,
   onTargetHover: PropTypes.func.isRequired

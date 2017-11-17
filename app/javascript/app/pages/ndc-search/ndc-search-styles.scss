@@ -15,6 +15,7 @@
   @include msGridColumns(1fr, 1fr);
 
   grid-template-columns: repeat(2, 50%);
+  background-color: $light-gray;
 }
 
 .anchorNav {
@@ -25,6 +26,26 @@
 .resultsList {
   border-right: solid 1px #e5e5eb;
   position: relative;
+  background-color: $white;
+}
+
+.resultCard {
+  max-width: calc((#{$max-width} / 2));
+  float: right;
+  padding-left: 30px;
+}
+
+.map :global {
+  max-width: calc((#{$max-width} / 2));
+  padding-right: 30px;
+  float: left;
+}
+
+.stickyMap :global {
+  .sticky-inner-wrapper {
+    max-width: calc((#{$max-width} / 2));
+    padding-right: 30px;
+  }
 }
 
 .loader {

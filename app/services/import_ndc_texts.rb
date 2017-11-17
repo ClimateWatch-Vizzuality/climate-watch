@@ -25,6 +25,10 @@ class ImportNdcTexts
     type = Regexp.last_match[2]
     lang = Regexp.last_match[3]
     location = Location.find_by_iso_code3(code)
+
+    translated = lang.match?(/_TR$/)
+    lang = lang.chomp('_TR') if translated
+
     unless location
       Rails.logger.error "Location not found: #{code}"
       return
@@ -36,7 +40,8 @@ class ImportNdcTexts
       location: location,
       full_text: html_content,
       document_type: type.downcase,
-      language: lang
+      language: lang,
+      translated: translated
     )
   end
 

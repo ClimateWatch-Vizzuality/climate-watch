@@ -3,7 +3,11 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
+import isArray from 'lodash/isArray';
+import orderBy from 'lodash/orderBy';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import flatten from 'lodash/flatten';
+import sumBy from 'lodash/sumBy';
 
 import {
   getYColumnValue,
@@ -13,6 +17,7 @@ import {
   sortLabelByAlpha,
   getColorPalette
 } from 'utils/graphs';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 
 // constants needed for data parsing
 const DATA_SCALE = 1000000;
@@ -33,13 +38,7 @@ const AXES_CONFIG = {
 };
 
 const INCLUDED_SECTORS = {
-  CAIT: [
-    'Energy',
-    'Industrial Processes',
-    'Agriculture',
-    'Waste',
-    'Bunker Fuels'
-  ],
+  CAIT: ['Energy', 'Industrial Processes', 'Agriculture', 'Waste', 'Total'],
   PIK: [
     'Energy',
     'Agriculture',
@@ -58,15 +57,13 @@ const INCLUDED_SECTORS = {
   ]
 };
 
-const calculationKeys = Object.keys(CALCULATION_OPTIONS);
-const options = calculationKeys.map(
+const options = Object.keys(CALCULATION_OPTIONS).map(
   calculationKey => CALCULATION_OPTIONS[calculationKey]
 );
 
 // meta data for selectors
 const getMeta = state => state.meta || {};
-const getQuantifications = state =>
-  uniqBy(state.quantifications, 'year') || null;
+const getQuantifications = state => state.quantifications || null;
 const getCalculationData = state =>
   (state.calculationData && state.calculationData[state.iso]) || [];
 
@@ -100,13 +97,7 @@ const parseCalculationData = createSelector([getCalculationData], data => {
   return groupBy(data, 'year');
 });
 
-export const getCalculationOptions = createSelector(
-  parseCalculationData,
-  calculationData => {
-    if (!calculationData) return [];
-    return options;
-  }
-);
+export const getCalculationOptions = () => options;
 
 export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
@@ -177,33 +168,46 @@ export const getFiltersSelected = createSelector(
 
 // get selector defaults
 export const getSelectorDefaults = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return {};
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
-    return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
-      source: sources[0].value
-    };
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getSourceSelected],
-  (data, sourceSelected) => {
+  [getData, getSourceSelected, getCalculationSelected],
+  (data, sourceSelected, calculation) => {
     if (!data || !data.length) return [];
-    return sortEmissionsByValue(
+    const filteredData = sortEmissionsByValue(
       data.filter(
         d =>
           INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >= 0
       )
     );
+    if (calculation.value !== 'ABSOLUTE_VALUE') {
+      const dataGrouped = groupBy(
+        flatten(filteredData.map(d => d.emissions)),
+        'year'
+      );
+      const dataSummed = Object.keys(dataGrouped).map(year => ({
+        year: parseInt(year, 10),
+        value: sumBy(dataGrouped[year], 'value')
+      }));
+      const compressedData = {
+        ...filteredData[0],
+        sector: 'Total',
+        emissions: dataSummed
+      };
+      return [compressedData];
+    }
+    return filteredData;
   }
 );
 
 const calculatedRatio = (selected, calculationData, x) => {
+  if (!calculationData) return 1;
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
     // GDP is in dollars and we want to display it in million dollars
     return calculationData[x][0].gdp / DATA_SCALE;
@@ -218,10 +222,34 @@ export const getQuantificationsData = createSelector(
   getQuantifications,
   quantifications => {
     if (!quantifications) return [];
-    return quantifications.map(q => ({
-      y: q.value * DATA_SCALE,
-      x: q.year
-    }));
+    const qGrouped = groupBy(quantifications, 'year');
+    const qParsed = [];
+    // Grouping the same year and value to concat the labels
+    Object.keys(qGrouped).forEach(function (year) {
+      const values = groupBy(qGrouped[year], 'value');
+      Object.keys(values).forEach(function (value) {
+        let valuesParsed = {};
+        values[value].forEach(function (v, index) {
+          if (index === 0) {
+            const isRange = isArray(v.value);
+            const yValue = isRange
+              ? v.value.map(y => y * DATA_SCALE).sort()
+              : v.value * DATA_SCALE;
+            valuesParsed = {
+              x: v.year,
+              y: yValue,
+              label: v.label,
+              isRange
+            };
+          } else {
+            valuesParsed.label += `, ${v.label}`;
+          }
+        });
+        qParsed.push(valuesParsed);
+      });
+    });
+    // Sort desc to avoid z-index problem in the graph
+    return orderBy(qParsed, 'x', 'desc');
   }
 );
 
@@ -234,24 +262,18 @@ export const getChartData = createSelector(
     getQuantifications
   ],
   (data, filters, calculationData, calculationSelected) => {
-    if (
-      !data ||
-      !data.length ||
-      !filters ||
-      !calculationData ||
-      !calculationSelected
-    ) {
+    if (!data || !data.length || !filters || !calculationSelected) {
       return [];
     }
-
     let xValues = [];
     xValues = data[0].emissions.map(d => d.year);
     if (
+      calculationData &&
       calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value
     ) {
       xValues = intersection(
         xValues,
-        Object.keys(calculationData).map(y => parseInt(y, 10))
+        Object.keys(calculationData || []).map(y => parseInt(y, 10))
       );
     }
 
@@ -267,7 +289,9 @@ export const getChartData = createSelector(
         );
         if (yData) {
           const scaledYData = yData.value * DATA_SCALE;
-          yItems[yKey] = scaledYData / calculationRatio;
+          if (yData.value) {
+            yItems[yKey] = scaledYData / calculationRatio;
+          }
         }
       });
       const item = {

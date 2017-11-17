@@ -5,7 +5,7 @@ Rails.application.routes.draw do
         resources :countries, only: [:index], controller: :countries
         resources :regions, only: [:index], controller: :regions
       end
-      resources :wb_extra, param: :iso, only: [:show], controller: 'wb_extra_country_data'
+      resources :wb_extra, param: :iso, only: [:index, :show], controller: 'wb_extra_country_data'
 
       resources :emissions, only: [:index], controller: :historical_emissions do
         get :meta, on: :collection
@@ -20,6 +20,8 @@ Rails.application.routes.draw do
           action: :sdgs_overview
         get :content_overview, on: :member, controller: :ndcs,
           action: :content_overview
+        get :linkages_dataset, on: :collection, controller: :ndc_sdgs,
+          action: :linkages_dataset, defaults: { format: :csv }
       end
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]

@@ -16,7 +16,8 @@ class Accordion extends PureComponent {
       handleOnClick,
       openSlug,
       children,
-      isChild
+      isChild,
+      hasNestedCollapse
     } = this.props;
     return (
       <div className={className}>
@@ -34,6 +35,9 @@ class Accordion extends PureComponent {
                 isOpen = false;
               }
             }
+            const title = section.parent
+              ? `${section.parent.name} | ${section.title}`
+              : section.title;
             return (
               <section
                 key={`${section.slug}-${section.title}`}
@@ -41,11 +45,11 @@ class Accordion extends PureComponent {
               >
                 <button
                   className={cx(styles.header, isChild ? styles.subHeader : '')}
-                  onClick={() => handleOnClick(section.slug)}
+                  onClick={() => handleOnClick(section.slug, isOpen)}
                 >
                   <div className={layout.content}>
                     <div className={styles.title}>
-                      {section.title}
+                      {title}
                       <Icon
                         icon={dropdownArrow}
                         className={cx(styles.iconArrow, {
@@ -55,12 +59,18 @@ class Accordion extends PureComponent {
                     </div>
                   </div>
                 </button>
-                <Collapse isOpened={isOpen}>
-                  <div />
-                  {React.Children.map(children, (child, i) => {
-                    if (i === index) return child;
-                    return null;
-                  })}
+                <Collapse
+                  isOpened={isOpen}
+                  hasNestedCollapse={hasNestedCollapse}
+                >
+                  {isOpen && (
+                    <div>
+                      {React.Children.map(children, (child, i) => {
+                        if (i === index) return child;
+                        return null;
+                      })}
+                    </div>
+                  )}
                 </Collapse>
               </section>
             );
@@ -82,7 +92,8 @@ Accordion.propTypes = {
     })
   ),
   children: PropTypes.node,
-  isChild: PropTypes.bool
+  isChild: PropTypes.bool,
+  hasNestedCollapse: PropTypes.bool
 };
 
 Accordion.defaultProps = {

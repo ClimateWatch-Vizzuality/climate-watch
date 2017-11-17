@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Map from 'components/map';
+import ButtonGroup from 'components/button-group';
 import LegendRange from './legend-range';
 import LegendSteps from './legend-steps';
 
@@ -32,6 +33,7 @@ class NdcSdgLinkagesMap extends PureComponent {
           onCountryClick={this.props.onCountryClick}
         />
         {this.getLegend()}
+        <ButtonGroup className={styles.buttons} disabled />
       </div>
     );
   }

@@ -43,9 +43,8 @@
 }
 
 .cardContent {
-  display: grid;
-  flex-direction: column;
-  min-height: 180px;
+  height: 180px;
+  overflow: auto;
 }
 
 .metaTitle {
@@ -59,8 +58,6 @@
   font-size: $font-size;
   color: $theme-color;
   margin-bottom: 20px;
-  max-height: 195px;
-  overflow-y: scroll;
 }
 
 .noContent {
@@ -70,7 +67,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 450px;
 }
 
 .listItem {
@@ -85,4 +81,8 @@
 
 .loader {
   min-height: 400px;
+}
+
+.noContentWrapper {
+  min-height: 450px;
 }

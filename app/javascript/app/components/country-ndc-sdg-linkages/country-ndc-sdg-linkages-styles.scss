@@ -3,11 +3,19 @@
 .header {
   @extend %grid;
 
-  @include msGridColumns(3fr, 1fr);
+  @include msGridColumns(7fr, 2fr, 3fr);
 
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 7fr 2fr 3fr;
   margin-bottom: 20px;
-  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.exploreBtn {
+  grid-column-start: 3;
+}
+
+.alignEnd {
+  align-self: flex-end;
 }
 
 .sdgs {
@@ -15,7 +23,7 @@
 
   > div {
     float: left;
-    width: 33.333333%;
+    width: calc(33.333333% + 1px);
   }
 
   margin-bottom: 40px;
@@ -64,6 +72,7 @@
   max-width: 780px;
   color: $theme-color;
   transition: max-height 0.4s ease-in;
+  line-height: 1.6;
 
   &Open {
     max-height: 100px;

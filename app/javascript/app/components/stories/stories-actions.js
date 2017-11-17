@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
-import image1 from 'assets/news/1.jpg';
+import image1 from 'assets/news/1.png';
 import image2 from 'assets/news/2.png';
 import image3 from 'assets/news/3.jpg';
 import image4 from 'assets/news/4.jpg';
@@ -30,10 +30,11 @@ const stories = [
   },
   {
     id: 3,
-    title: '6 Charts to Understand U.S. State Greenhouse Gas Emissions',
+    title:
+      'RELEASE: Climate Watch: Powerful New Platform Offers Comprehensive Data for Climate Action',
     image: image1,
     link:
-      '//www.wri.org/blog/2017/08/6-charts-understand-us-state-greenhouse-gas-emissions'
+      '//www.wri.org/news/2017/11/release-climate-watch-powerful-new-platform-offers-comprehensive-data-climate-action'
   },
   {
     id: 4,

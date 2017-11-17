@@ -37,21 +37,21 @@ export const getFilteredCountriesWithPath = createSelector(
 
 const countryStyles = {
   default: {
-    fill: '#ECEFF1',
-    fillOpacity: 0.3,
-    stroke: '#396d90',
+    fill: '#e5e5eb',
+    fillOpacity: 1,
+    stroke: '#ffffff',
     strokeWidth: 0.7,
     outline: 'none'
   },
   hover: {
     fill: '#ffc735',
-    stroke: '#396d90',
+    stroke: '#ffffff',
     strokeWidth: 0.7,
     outline: 'none'
   },
   pressed: {
     fill: '#ffc735',
-    stroke: '#396d90',
+    stroke: '#ffffff',
     strokeWidth: 1,
     outline: 'none'
   }

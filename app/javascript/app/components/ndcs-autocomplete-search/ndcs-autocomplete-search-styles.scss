@@ -4,17 +4,16 @@
   position: relative;
 
   .dropdown-menu {
-    border-left: 0 !important;
-    border-right: 0 !important;
+    border-top: 0 !important;
   }
 }
 
 .col2 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr);
+  @include msGridColumns(50%, 50%);
 
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 50%);
 }
 
 .search {
@@ -27,12 +26,4 @@
   position: absolute;
   right: 5px;
   top: 4px;
-}
-
-.contentCols {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 50%);
 }

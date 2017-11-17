@@ -17,10 +17,13 @@ RSpec.describe ImportNdcSdgTargets do
   end
 
   before(:each) do
+    full_text = <<~END
+      The NDC text contains the quote "Improving access by rural communities and farmers to water to support food security, reduce poverty and improve agricultural productions", which is amazing.
+    END
     afg = FactoryGirl.create(
       :location, iso_code3: 'AFG', location_type: 'COUNTRY'
     )
-    FactoryGirl.create(:ndc, location: afg)
+    FactoryGirl.create(:ndc, location: afg, full_text: full_text)
     FactoryGirl.create(:ndc_sdg_target, number: '1.1')
   end
 

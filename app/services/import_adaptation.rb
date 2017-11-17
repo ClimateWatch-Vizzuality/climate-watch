@@ -72,7 +72,6 @@ class ImportAdaptation
     return s.merge(string_value: d[k]) if d[k] != '#N/A'
   end
 
-  # rubocop:disable MethodLength
   def update_ranks
     sql = <<~END
       WITH ranks AS (
