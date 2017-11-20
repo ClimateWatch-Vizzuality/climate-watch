@@ -6,6 +6,7 @@ import qs from 'query-string';
 import PropTypes from 'prop-types';
 import {
   filteredDataBySearch,
+  titleLinks,
   getDefaultColumns
 } from './emission-pathways-table-selectors';
 import Component from './emission-pathways-table-component';
@@ -17,33 +18,18 @@ const mapStateToProps = (state, { category }) => {
     categoryData: categoryData.data,
     category,
     query: search.search
-    // categorySelected: search.category,
-    // indicatorSelected: search.indicator
   };
   return {
+    titleLinks: titleLinks(espData),
     data: filteredDataBySearch(espData),
     defaultColumns: getDefaultColumns(espData),
     categoryName: category,
     query: espData.query,
     loading: categoryData.loading
-    // selectedCategory: getSelectedCategory(ndcsWithSelection),
-    // selectedIndicator: getSelectedIndicator(ndcsWithSelection)
   };
 };
 
-class EmissionPatwaysTableComponent extends PureComponent {
-  // handleCategoryChange = category => {
-  //   this.updateUrlParam({
-  //     name: 'category',
-  //     value: category.value,
-  //     clear: true
-  //   });
-  // };
-
-  // handleIndicatorChange = indicator => {
-  //   this.updateUrlParam({ name: 'indicator', value: indicator.value });
-  // };
-
+class EmissionPathwaysTableComponent extends PureComponent {
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
   };
@@ -66,12 +52,12 @@ class EmissionPatwaysTableComponent extends PureComponent {
   }
 }
 
-EmissionPatwaysTableComponent.propTypes = {
+EmissionPathwaysTableComponent.propTypes = {
   query: PropTypes.string,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
 };
 
 export default withRouter(
-  connect(mapStateToProps, null)(EmissionPatwaysTableComponent)
+  connect(mapStateToProps, null)(EmissionPathwaysTableComponent)
 );

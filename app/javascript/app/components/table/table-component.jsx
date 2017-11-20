@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
+import { NavLink } from 'react-router-dom';
 import styles from './table-styles.scss';
 
 class SimpleTable extends PureComponent {
@@ -21,12 +22,19 @@ class SimpleTable extends PureComponent {
       sortBy,
       sortDirection,
       handleSortChange,
-      parseHtml
+      parseHtml,
+      titleLinks
     } = this.props;
     if (!data.length) return null;
+    const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
     return (
-      <div className={cx(styles.tableWrapper, hasColumnSelect ? styles.hasColumnSelect : '')}>
-        {hasColumnSelect && columnsOptions &&
+      <div
+        className={cx(
+          styles.tableWrapper,
+          hasColumnSelect ? styles.hasColumnSelect : ''
+        )}
+      >
+        {hasColumnSelectedOptions && (
           <MultiSelect
             parentClassName={styles.columnSelector}
             selectedLabel="..."
@@ -36,7 +44,7 @@ class SimpleTable extends PureComponent {
             hideResetButton
             useDots
           />
-        }
+        )}
         <AutoSizer disableHeight>
           {({ width }) => (
             <Table
@@ -61,14 +69,21 @@ class SimpleTable extends PureComponent {
                     dataKey={column}
                     width={200}
                     flexGrow={flexGrow}
-                    cellRenderer={cell =>
-                      (!parseHtml ? (
-                        cell.cellData
-                      ) : (
+                    cellRenderer={cell => {
+                      const titleLink = titleLinks && titleLinks[cell.rowIndex];
+                      if (titleLink && cell.dataKey === titleLink.fieldName) {
+                        return (
+                          <NavLink to={titleLink.url}>{cell.cellData}</NavLink>
+                        );
+                      }
+                      return parseHtml ? (
                         <div
                           dangerouslySetInnerHTML={{ __html: cell.cellData }}
                         />
-                      ))}
+                      ) : (
+                        cell.cellData
+                      );
+                    }}
                   />
                 );
               })}
@@ -90,6 +105,7 @@ SimpleTable.propTypes = {
   headerHeight: PropTypes.number.isRequired,
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
+  titleLinks: PropTypes.array,
   handleSortChange: PropTypes.func.isRequired,
   parseHtml: PropTypes.bool
 };

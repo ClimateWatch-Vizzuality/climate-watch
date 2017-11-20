@@ -22,6 +22,9 @@ import EmissionPathways from 'pages/emission-pathways';
 import EmissionPathwaysTable from 'components/emission-pathways-table';
 import EmissionPathwaysTableMenu from 'components/emission-pathways-table-menu';
 import EmissionPathwayGraph from 'components/emission-pathway-graph';
+import EmissionPathwaysModel from 'pages/emission-pathways-model';
+import EmissionPathwaysModelTable from 'components/emission-pathways-model-table';
+import EmissionPathwaysOverview from 'components/emission-pathways-overview';
 import About from 'pages/about';
 import AboutContact from 'components/about-contact';
 import AboutDescription from 'components/about-description';
@@ -270,6 +273,57 @@ export default [
         headerImage: 'emissions'
       },
       {
+        path: '/emission-pathways/models/:id',
+        component: EmissionPathwaysModel,
+        label: 'EMISSION PATHWAYS MODEL',
+        headerImage: 'emission-pathways',
+        sections: [
+          {
+            hash: 'overview',
+            label: 'Overview',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysOverview, { category: 'Models' })
+          },
+          {
+            hash: 'scenarios-indicators',
+            label: 'Scenarios & Indicators',
+            anchor: true,
+            nav: true,
+            component: EmissionPathwaysTableMenu
+          }
+        ],
+        routes: [
+          {
+            path: '/emission-pathways/models/:id/scenarios',
+            label: 'Scenarios',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysModelTable, {
+                category: 'Scenarios'
+              })
+          },
+          {
+            path: '/emission-pathways/models/:id/indicators',
+            label: 'Indicators',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysModelTable, {
+                category: 'Indicators'
+              })
+          },
+          {
+            path: '/emission-pathways/models/:id',
+            label: 'emission-pathways-model',
+            exact: true,
+            component: ({ match }) =>
+              createElement(Redirect, {
+                to: `/emission-pathways/models/${match.params.id}/scenarios`
+              })
+          }
+        ]
+      },
+      {
         path: '/emission-pathways',
         component: EmissionPathways,
         label: 'EMISSION PATHWAYS',
@@ -285,7 +339,6 @@ export default [
             hash: 'models-scenarios-indicators',
             label: 'Models, Scenarios & Indicators',
             anchor: true,
-            nav: true,
             component: EmissionPathwaysTableMenu
           }
         ],
@@ -320,6 +373,7 @@ export default [
           {
             path: '/emission-pathways',
             label: 'emission-pathways',
+            exact: true,
             component: () =>
               createElement(Redirect, { to: '/emission-pathways/models' })
           }

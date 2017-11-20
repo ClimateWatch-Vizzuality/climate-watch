@@ -37,6 +37,12 @@
       text-overflow: ellipsis;
     }
 
+    a {
+      line-height: $line-height-medium;
+      color: $theme-color;
+      border-bottom: 1px solid $theme-secondary;
+    }
+
     &:first-of-type {
       font-weight: $font-weight-bold;
     }
@@ -61,8 +67,6 @@
     margin-left: -30px;
     margin-right: 30px;
   }
-
-
 }
 
 .columnSelector :global {
