@@ -34,7 +34,7 @@ class EmissionPathwayGraph extends PureComponent {
         <div className={layout.content}>
           <EspLocationsProvider />
           {filtersSelected &&
-          filtersSelected.location &&
+            filtersSelected.location &&
             filtersSelected.model && (
               <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
@@ -78,43 +78,43 @@ class EmissionPathwayGraph extends PureComponent {
                   className={styles.noContent}
                   icon
                 />
-              )
-            }
-            {data && data.length > 0 &&
-              config && (
-                <div>
-                  <ChartLine config={config} data={data} height={500} />
-                  <div className={styles.tags}>
-                    {config.columns &&
-                    config.columns.y.map(column => (
-                      <Tag
-                        className={styles.tag}
-                        key={`${column.value}`}
-                        data={{
-                          color: config.theme[column.value].stroke,
-                          label: column.label,
-                          id: column.value
-                        }}
-                        onRemove={handleRemoveTag}
-                        canRemove
-                      />
-                    ))}
-                    <MultiSelect
-                      parentClassName={styles.tagSelector}
-                      values={filtersSelected.scenarios || []}
-                      options={filtersOptions.scenarios || []}
-                      onMultiValueChange={handleAddTag}
-                      hideResetButton
-                    >
-                      <Icon
-                        className={styles.plusIcon}
-                        icon={plusIcon}
-                      />
-                    </MultiSelect>
-                  </div>
-                </div>
-              )
-            }
+              )}
+            {data &&
+            data.length > 0 &&
+            config && <ChartLine config={config} data={data} height={500} />}
+            <div className={styles.tags}>
+              {!loading &&
+                config &&
+                config.columns &&
+                config.columns.y.map(column => (
+                  <Tag
+                    className={styles.tag}
+                    key={`${column.value}`}
+                    data={{
+                      color: config.theme[column.value].stroke,
+                      label: column.label,
+                      id: column.value
+                    }}
+                    onRemove={handleRemoveTag}
+                    canRemove
+                  />
+                ))}
+              {!loading &&
+              filtersOptions.scenarios &&
+              filtersSelected.scenarios &&
+              filtersSelected.scenarios.length !==
+                filtersOptions.scenarios.length && (
+                  <MultiSelect
+                    parentClassName={styles.tagSelector}
+                    values={filtersSelected.scenarios || []}
+                    options={filtersOptions.scenarios || []}
+                    onMultiValueChange={handleAddTag}
+                    hideResetButton
+                  >
+                    <Icon className={styles.plusIcon} icon={plusIcon} />
+                  </MultiSelect>
+                )}
+            </div>
           </div>
         </div>
       </div>

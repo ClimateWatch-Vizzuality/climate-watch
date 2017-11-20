@@ -2,6 +2,7 @@
 
 .wrapper {
   border-bottom: solid 1px $theme-border;
+  min-height: 450px;
 }
 
 .col4 {
@@ -50,7 +51,7 @@
   }
 
   .values {
-    width: 29px;
+    width: 27px;
     height: 27px;
     padding: 0;
     display: flex;
@@ -86,8 +87,4 @@
 
 .noContent {
   min-height: 450px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
 }

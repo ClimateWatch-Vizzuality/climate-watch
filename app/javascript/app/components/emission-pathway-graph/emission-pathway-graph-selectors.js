@@ -112,7 +112,7 @@ export const getScenariosSelected = createSelector(
   [getScenariosOptions, getScenario, getModelSelected],
   (scenarios, scenarioSelected, model) => {
     if (!scenarios || !model) return null;
-    if (!scenarioSelected && !model.scenarios) return null;
+    if ((!scenarioSelected && !model.scenarios) || scenarioSelected === '') { return []; }
     if (!scenarioSelected) {
       return scenarios.filter(s => model.scenarios.indexOf(s.value) > -1);
     }
