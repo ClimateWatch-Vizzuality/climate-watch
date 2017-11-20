@@ -91,7 +91,7 @@ class GhgEmissions extends PureComponent {
             )}
           {data && config &&
             <div>
-              <ChartLine config={config} data={data} height={500} />
+              <ChartLine config={config} data={data} height={500} domain={[0, 'auto']} />
               <div className={styles.tags}>
                 {config.columns &&
                   config.columns.y.map(column => (
