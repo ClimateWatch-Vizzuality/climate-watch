@@ -5,10 +5,10 @@ import RegionsProvider from 'providers/regions-provider';
 import ChartLine from 'components/charts/line';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
-import Tag from 'components/tag';
 import MultiSelect from 'components/multiselect';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
+import LegendChart from 'components/charts/legend-chart';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -33,6 +33,7 @@ class GhgEmissions extends PureComponent {
       filtersSelected,
       handleFilterChange,
       handleRemoveTag,
+      handleAddTag,
       loading,
       activeFilterRegion
     } = this.props;
@@ -90,25 +91,16 @@ class GhgEmissions extends PureComponent {
               />
             )}
           {data && config &&
-            <div>
-              <ChartLine config={config} data={data} height={500} />
-              <div className={styles.tags}>
-                {config.columns &&
-                  config.columns.y.map(column => (
-                    <Tag
-                      className={styles.tag}
-                      key={`${column.value}`}
-                      data={{
-                        color: config.theme[column.value].stroke,
-                        label: column.label,
-                        id: column.value
-                      }}
-                      canRemove
-                      onRemove={handleRemoveTag}
-                    />
-                  ))}
-              </div>
-            </div>
+            <ChartLine config={config} data={data} height={500} />
+          }
+          {config &&
+            <LegendChart
+              config={config}
+              tagsOptions={filters}
+              tagsSelected={filtersSelected}
+              handleRemove={handleRemoveTag}
+              handleAdd={handleAddTag}
+            />
           }
         </div>
       </div>
@@ -131,6 +123,7 @@ GhgEmissions.propTypes = {
   breakSelected: PropTypes.object,
   handleBreakByChange: PropTypes.func.isRequired,
   handleRemoveTag: PropTypes.func.isRequired,
+  handleAddTag: PropTypes.func.isRequired,
   filters: PropTypes.array,
   filtersSelected: PropTypes.array,
   handleFilterChange: PropTypes.func.isRequired,

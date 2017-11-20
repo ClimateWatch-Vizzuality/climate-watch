@@ -179,6 +179,13 @@ class GhgEmissionsContainer extends PureComponent {
     this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
   };
 
+  handleAddTag = selected => {
+    this.updateUrlParam({
+      name: 'filter',
+      value: selected.map(s => s.value).toString()
+    });
+  };
+
   handleInfoClick = () => {
     const { source } = this.props.sourceSelected;
     if (source) {
@@ -197,6 +204,7 @@ class GhgEmissionsContainer extends PureComponent {
       handleBreakByChange: this.handleBreakByChange,
       handleFilterChange: this.handleFilterChange,
       handleRemoveTag: this.handleRemoveTag,
+      handleAddTag: this.handleAddTag,
       handleInfoClick: this.handleInfoClick
     });
   }

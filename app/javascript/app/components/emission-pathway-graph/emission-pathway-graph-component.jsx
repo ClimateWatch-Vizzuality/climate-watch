@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import EspLocationsProvider from 'providers/esp-locations-provider';
 import EspTimeSeriesProvider from 'providers/esp-time-series-provider';
 import ChartLine from 'components/charts/line';
+import LegendChart from 'components/charts/legend-chart';
 import ButtonGroup from 'components/button-group';
 import Dropdown from 'components/dropdown';
-import Tag from 'components/tag';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
-import MultiSelect from 'components/multiselect';
-import Icon from 'components/icon';
 
-import plusIcon from 'assets/icons/plus.svg';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathway-graph-styles.scss';
 
@@ -52,14 +49,14 @@ class EmissionPathwayGraph extends PureComponent {
               hideResetButton
             />
             <Dropdown
-              label="Models and scenarios"
+              label="Model"
               options={filtersOptions.models}
               onValueChange={handleModelChange}
               value={filtersSelected.model}
               hideResetButton
             />
             <Dropdown
-              label="Indicators"
+              label="Indicator"
               placeholder="Select an indicator"
               options={filtersOptions.indicators}
               onValueChange={option =>
@@ -82,39 +79,15 @@ class EmissionPathwayGraph extends PureComponent {
             {data &&
             data.length > 0 &&
             config && <ChartLine config={config} data={data} height={500} />}
-            <div className={styles.tags}>
-              {!loading &&
-                config &&
-                config.columns &&
-                config.columns.y.map(column => (
-                  <Tag
-                    className={styles.tag}
-                    key={`${column.value}`}
-                    data={{
-                      color: config.theme[column.value].stroke,
-                      label: column.label,
-                      id: column.value
-                    }}
-                    onRemove={handleRemoveTag}
-                    canRemove
-                  />
-                ))}
-              {!loading &&
-              filtersOptions.scenarios &&
-              filtersSelected.scenarios &&
-              filtersSelected.scenarios.length !==
-                filtersOptions.scenarios.length && (
-                  <MultiSelect
-                    parentClassName={styles.tagSelector}
-                    values={filtersSelected.scenarios || []}
-                    options={filtersOptions.scenarios || []}
-                    onMultiValueChange={handleAddTag}
-                    hideResetButton
-                  >
-                    <Icon className={styles.plusIcon} icon={plusIcon} />
-                  </MultiSelect>
-                )}
-            </div>
+            {config &&
+              <LegendChart
+                config={config}
+                tagsOptions={filtersOptions.scenarios}
+                tagsSelected={filtersSelected.scenarios}
+                handleRemove={handleRemoveTag}
+                handleAdd={handleAddTag}
+              />
+            }
           </div>
         </div>
       </div>

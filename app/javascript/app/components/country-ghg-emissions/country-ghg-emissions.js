@@ -18,7 +18,9 @@ import {
   getChartData,
   getChartConfig,
   getSelectorDefaults,
-  getQuantificationsData
+  getQuantificationsData,
+  getFilterOptions,
+  getFiltersSelected
 } from './country-ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions };
@@ -46,6 +48,8 @@ const mapStateToProps = (state, { location, match }) => {
     calculationSelected: getCalculationSelected(countryGhg),
     sources: getSourceOptions(countryGhg),
     sourceSelected: getSourceSelected(countryGhg),
+    filtersOptions: getFilterOptions(countryGhg),
+    filtersSelected: getFiltersSelected(countryGhg),
     config: getChartConfig(countryGhg),
     selectorDefaults: getSelectorDefaults(countryGhg)
   };
@@ -99,8 +103,17 @@ class CountryGhgEmissionsContainer extends PureComponent {
   };
 
   handleSourceChange = category => {
+    const { search } = this.props.location;
+    const searchQuery = qs.parse(search);
     if (category) {
-      this.updateUrlParam({ name: 'source', value: category.value });
+      this.updateUrlParam(
+        [
+          { name: 'source', value: category.value },
+          { name: 'sector', value: searchQuery.sector },
+          { name: 'calculation', value: searchQuery.calculation }
+        ],
+        true
+      );
     }
   };
 
@@ -108,6 +121,24 @@ class CountryGhgEmissionsContainer extends PureComponent {
     if (calculation) {
       this.updateUrlParam({ name: 'calculation', value: calculation.value });
     }
+  };
+
+  handleRemoveTag = tagData => {
+    const { filtersSelected } = this.props;
+    const newFilters = [];
+    filtersSelected.forEach(filter => {
+      if (filter.label !== tagData.label.trim()) {
+        newFilters.push(filter.value);
+      }
+    });
+    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
+  };
+
+  handleAddTag = selected => {
+    this.updateUrlParam({
+      name: 'filter',
+      value: selected.map(s => s.value).toString()
+    });
   };
 
   updateUrlParam(params, clear) {
@@ -120,7 +151,9 @@ class CountryGhgEmissionsContainer extends PureComponent {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      handleRemoveTag: this.handleRemoveTag,
+      handleAddTag: this.handleAddTag
     });
   }
 }
@@ -130,7 +163,8 @@ CountryGhgEmissionsContainer.propTypes = {
   location: Proptypes.object,
   sourceSelected: Proptypes.object,
   setModalMetadata: Proptypes.func,
-  fetchCountryGhgEmissionsData: Proptypes.func
+  fetchCountryGhgEmissionsData: Proptypes.func,
+  filtersSelected: Proptypes.array
 };
 
 export { actions, reducers, initialState };

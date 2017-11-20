@@ -5,9 +5,10 @@ import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import ChartStackedArea from 'components/charts/stacked-area';
 import LineChart from 'components/charts/line';
-import Tag from 'components/tag';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import Loading from 'components/loading';
+import LegendChart from 'components/charts/legend-chart';
+import NoContent from 'components/no-content';
 
 import styles from './country-ghg-emissions-styles.scss';
 
@@ -26,7 +27,11 @@ class CountryGhgEmissions extends PureComponent {
       handleSourceChange,
       handleCalculationChange,
       calculationSelected,
-      sourceSelected
+      sourceSelected,
+      filtersOptions,
+      filtersSelected,
+      handleAddTag,
+      handleRemoveTag
     } = this.props;
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
@@ -70,7 +75,7 @@ class CountryGhgEmissions extends PureComponent {
         </div>
         <div className={styles.graph}>
           {loading && <Loading light className={styles.loader} />}
-          {!loading && (
+          {!loading && data && data.length > 0 && config &&
             <ChartComponent
               config={config}
               data={data}
@@ -78,22 +83,24 @@ class CountryGhgEmissions extends PureComponent {
               onMouseMove={handleYearHover}
               points={quantifications}
             />
-          )}
+          }
+          {!loading && !data.length > 0 &&
+            <NoContent
+              message={'No data selected'}
+              className={styles.noContent}
+              icon
+            />
+          }
         </div>
-        <div className={styles.tags}>
-          {config.columns &&
-            config.columns.y.map(column => (
-              <Tag
-                className={styles.tag}
-                key={`${column.value}`}
-                data={{
-                  color: config.theme[column.value].stroke,
-                  label: column.label,
-                  id: column.value
-                }}
-              />
-            ))}
-        </div>
+        {config &&
+          <LegendChart
+            config={config}
+            tagsOptions={filtersOptions}
+            tagsSelected={filtersSelected}
+            handleRemove={handleRemoveTag}
+            handleAdd={handleAddTag}
+          />
+        }
       </div>
     );
   }
@@ -109,10 +116,14 @@ CountryGhgEmissions.propTypes = {
   calculationSelected: PropTypes.object.isRequired,
   sources: PropTypes.array.isRequired,
   sourceSelected: PropTypes.object.isRequired,
+  filtersOptions: PropTypes.array,
+  filtersSelected: PropTypes.array,
   handleInfoClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func.isRequired,
   handleSourceChange: PropTypes.func.isRequired,
-  handleCalculationChange: PropTypes.func.isRequired
+  handleCalculationChange: PropTypes.func.isRequired,
+  handleAddTag: PropTypes.func.isRequired,
+  handleRemoveTag: PropTypes.func.isRequired
 };
 
 CountryGhgEmissions.defaultProps = {
