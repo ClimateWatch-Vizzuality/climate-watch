@@ -55,20 +55,53 @@ class CountrySDGLinkages extends PureComponent {
     ) : null;
   }
 
-  render() {
+  renderCards() {
     const {
       goals,
       targets,
       targetsData,
       activeSector,
+      loading,
+      setTooltipData
+    } = this.props;
+
+    const hasGoals = goals && goals.length > 0;
+    if (loading) return <Loading light className={styles.loader} />;
+    if (isEmpty(goals) || isEmpty(targetsData)) {
+      return <NoContent message="No SDG data available" />;
+    }
+    return (
+      hasGoals && (
+        <div>
+          <div className={styles.sdgs}>
+            {goals.map(goal => (
+              <SDGCard
+                activeSector={activeSector}
+                key={goal.title}
+                goal={goal}
+                targets={targets[goal.number]}
+                targetData={targetsData[goal.number]}
+                tooltipId="sdg-linkages"
+                setTooltipData={setTooltipData}
+                indicators
+                className={cardTheme.card}
+              />
+            ))}
+          </div>
+          <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
+        </div>
+      )
+    );
+  }
+
+  render() {
+    const {
+      activeSector,
       sectorOptions,
       handleSectorChange,
-      loading,
-      setTooltipData,
       toogleNDCsSDGsInfo,
       infoOpen
     } = this.props;
-    const hasGoals = goals && goals.length > 0;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -110,29 +143,7 @@ class CountrySDGLinkages extends PureComponent {
             </div>
           </div>
           <NdcsSdgsMetaProvider />
-          {hasGoals && (
-            <div>
-              <div className={styles.sdgs}>
-                {goals.map(goal => (
-                  <SDGCard
-                    activeSector={activeSector}
-                    key={goal.title}
-                    goal={goal}
-                    targets={targets[goal.number]}
-                    targetData={targetsData[goal.number]}
-                    tooltipId="sdg-linkages"
-                    setTooltipData={setTooltipData}
-                    indicators
-                    className={cardTheme.card}
-                  />
-                ))}
-              </div>
-              <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
-            </div>
-          )}
-          {isEmpty(goals) &&
-          !loading && <NoContent message="No SDG data available" />}
-          {loading && <Loading light className={styles.loader} />}
+          {this.renderCards()}
         </div>
       </div>
     );
