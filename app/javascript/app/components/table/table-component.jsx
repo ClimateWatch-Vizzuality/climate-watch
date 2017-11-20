@@ -29,13 +29,13 @@ class SimpleTable extends PureComponent {
         {hasColumnSelect && columnsOptions &&
           <MultiSelect
             parentClassName={styles.columnSelector}
-            selectedLabel="..."
             values={activeColumns || []}
             options={columnsOptions || []}
             onMultiValueChange={handleColumnChange}
             hideResetButton
-            useDots
-          />
+          >
+            <span className={styles.selectorValue}>...</span>
+          </MultiSelect>
         }
         <AutoSizer disableHeight>
           {({ width }) => (
