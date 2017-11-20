@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import cx from 'classnames';
-import Loading from 'components/loading';
 
+import Loading from 'components/loading';
 import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import SDGCard from 'components/sdg-card';
@@ -14,6 +14,7 @@ import isEqual from 'lodash/isEqual';
 import InfoButton from 'components/button/info-button';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
+import Button from 'components/button';
 
 import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/sdg-card/sdg-card';
@@ -99,15 +100,24 @@ class CountrySDGLinkages extends PureComponent {
               </div>
             </div>
             <NdcsSdgsDataProvider />
-            <div className={styles.sectorSelector}>
+            <div className={cx(styles.sectorSelector, styles.alignEnd)}>
               <Dropdown
-                label="Sector"
+                label="Filter by sector"
                 placeholder="Choose a sector"
                 options={sectorOptions}
                 onValueChange={handleSectorChange}
                 value={activeSector}
               />
             </div>
+            <Button
+              className={cx(styles.exploreBtn, styles.alignEnd)}
+              color="yellow"
+              link={`/ndcs-sdg${activeSector
+                ? `?goal=${activeSector.value}`
+                : ''}`}
+            >
+              Explore global linkages
+            </Button>
           </div>
           <NdcsSdgsMetaProvider />
           {hasGoals && (

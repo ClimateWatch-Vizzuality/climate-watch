@@ -209,30 +209,27 @@ export const getRegionsOptions = createSelector(
 
 // Filters selector
 export const getFilterOptions = createSelector(
-  [getMeta, getSourceSelected, getBreakSelected, getRegionsOptions],
-  (meta, sourceSelected, breakSelected, regions) => {
-    if (!sourceSelected || !breakSelected || isEmpty(meta) || !regions) {
+  [getMeta, getBreakSelected, getRegionsOptions, filterAndSortData],
+  (meta, breakSelected, regions, data) => {
+    if (isEmpty(meta) || isEmpty(data) || !breakSelected || !regions) {
       return [];
     }
     const breakByValue = breakSelected.value;
-    const activeSourceData = meta.data_source.find(
-      source => source.value === sourceSelected.value
-    );
-    const activeFilterKeys = activeSourceData[breakByValue];
-    const filteredSelected = meta[breakByValue].filter(
-      filter =>
-        activeFilterKeys.indexOf(filter.value) > -1 &&
-        EXCLUDED_SECTORS.indexOf(filter.label) === -1
+    const filterOptions = Object.keys(groupBy(data, breakByValue));
+    const filtersSelected = meta[breakByValue].filter(
+      m =>
+        filterOptions.indexOf(m.label) > -1 &&
+        EXCLUDED_SECTORS.indexOf(m.label) === -1
     );
     if (breakByValue === 'location') {
-      const countries = filteredSelected.map(d => ({
+      const countries = filtersSelected.map(d => ({
         ...d,
         value: d.iso,
         groupId: 'countries'
       }));
       return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
     }
-    return sortLabelByAlpha(filteredSelected);
+    return sortLabelByAlpha(filtersSelected);
   }
 );
 

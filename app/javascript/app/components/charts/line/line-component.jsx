@@ -27,7 +27,7 @@ class ChartLine extends PureComponent {
   };
 
   render() {
-    const { config, data, height } = this.props;
+    const { config, data, height, domain } = this.props;
     return (
       <ResponsiveContainer height={height}>
         <LineChart
@@ -46,7 +46,7 @@ class ChartLine extends PureComponent {
             tickFormatter={tick => `${format('.2s')(tick)}t`}
             tickLine={false}
             tick={{ stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' }}
-            domain={['auto', 'auto']}
+            domain={domain || ['auto', 'auto']}
           />
           <CartesianGrid vertical={false} />
           <Tooltip
@@ -76,7 +76,8 @@ ChartLine.propTypes = {
   config: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
-  onMouseMove: PropTypes.func.isRequired
+  onMouseMove: PropTypes.func.isRequired,
+  domain: PropTypes.array
 };
 
 ChartLine.defaultProps = {
