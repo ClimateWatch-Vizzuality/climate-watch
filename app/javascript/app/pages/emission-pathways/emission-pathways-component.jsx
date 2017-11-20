@@ -39,7 +39,7 @@ class EmissionPathways extends PureComponent {
           route.sections.map(section => (
             <div key={section.hash} className={styles.section}>
               <div id={section.hash} className={styles.sectionHash} />
-              <section.component routeLinks={routeLinks} />
+              <section.component routeLinks={routeLinks} uploadButton />
             </div>
           ))}
         {renderRoutes(route.routes)}

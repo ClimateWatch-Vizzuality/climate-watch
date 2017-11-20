@@ -16,10 +16,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
         'abbreviation',
         'availability',
         'current_version',
-        'development_year',
-        'expertise',
-        'license',
-        'maintainer_name'
+        'license'
       ];
     case 'Scenarios':
       return [
@@ -71,7 +68,23 @@ export const filteredDataBySearch = createSelector(
   }
 );
 
+export const titleLinks = createSelector(
+  [getCategory, getData],
+  (categoryName, data) => {
+    if (!data || isEmpty(data) || !categoryName) return null;
+    const categoryId = {
+      Models: 'full_name',
+      Scenarios: 'name'
+    };
+    return data.map(d => ({
+      fieldName: categoryId[categoryName],
+      url: `${categoryName.toLowerCase()}/${d.id}`
+    }));
+  }
+);
+
 export default {
   getDefaultColumns,
+  titleLinks,
   filteredDataBySearch
 };

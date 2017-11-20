@@ -9,14 +9,16 @@ import styles from './emission-pathways-table-menu-styles.scss';
 
 class EmissionPathwaysTableMenu extends PureComponent {
   render() {
-    const { routeLinks } = this.props;
+    const { routeLinks, uploadButton } = this.props;
     return (
       <div className={layout.content}>
         <div className={cx(styles.col4, styles.tableMenuContainer)}>
           <AnchorNav useRoutes links={routeLinks} theme={anchorNavLightTheme} />
-          <Button color="yellow" className={styles.uploadButton}>
-            Upload your model
-          </Button>
+          {uploadButton && (
+            <Button color="yellow" className={styles.uploadButton}>
+              Upload your model
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -24,7 +26,8 @@ class EmissionPathwaysTableMenu extends PureComponent {
 }
 
 EmissionPathwaysTableMenu.propTypes = {
-  routeLinks: PropTypes.array
+  routeLinks: PropTypes.array,
+  uploadButton: PropTypes.bool
 };
 
 export default EmissionPathwaysTableMenu;
