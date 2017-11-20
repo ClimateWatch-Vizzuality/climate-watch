@@ -16,6 +16,7 @@ module AuthHelper
   # end
 
   def ensure_logged_in
+    return false unless session[:user_token]
     connect = Faraday.new(url: "#{ENV['API_URL']}") do |faraday|
       faraday.request :url_encoded # form-encode POST params
       faraday.response :logger # log requests to STDOUT
@@ -24,15 +25,15 @@ module AuthHelper
     connect.authorization :Bearer, session[:user_token]
     response = connect.get('/auth/check-logged')
     if !response.success?
-      # session.delete(:user_token)
-      # session.delete(:current_user)
-      # session.delete(:api_validation_ttl)
+      session.delete(:user_token)
+      session.delete(:current_user)
       false
     else
-      #user_data = JSON.parse response.body
-      # session[:current_user] = user_data.symbolize_keys!
-      # session[:api_validation_ttl] = Time.now + Rails.configuration.session_revalidate_timer
+      user_data = JSON.parse response.body
+      session[:current_user] = user_data.symbolize_keys!
+      session[:current_user][:user_id] = ::MyCw::User.find_by ct_id: session[:current_user][:id]
       true
     end
   end
+
 end

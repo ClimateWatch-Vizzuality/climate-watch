@@ -5,11 +5,15 @@ Rails.application.routes.draw do
         resources :countries, only: [:index], controller: :countries
         resources :regions, only: [:index], controller: :regions
       end
-      namespace :my_climate_watch do
-        resources :users,          only: :show
+
+      namespace :my_cw do
+        get 'user', to: 'users#current_user'
         resources :vizualizations, except: [:new, :edit]
         resources :user_stories,   except: [:new, :edit]
       end
+
+      get 'auth/login', to: 'auth#login'
+      get 'auth/logout', to: 'auth#logout'
 
       resources :wb_extra, param: :iso, only: [:index, :show], controller: 'wb_extra_country_data'
 
