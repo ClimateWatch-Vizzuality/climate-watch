@@ -72,6 +72,7 @@ class CountryGhgEmissions extends PureComponent {
           {loading && <Loading light className={styles.loader} />}
           {!loading && (
             <ChartComponent
+              domain={[0, 'auto']}
               config={config}
               data={data}
               height="100%"
