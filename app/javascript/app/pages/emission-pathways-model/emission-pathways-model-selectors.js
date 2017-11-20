@@ -2,35 +2,30 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 
-const getSections = espModelData => espModelData.route.sections || null;
-const getSearch = espModelData => espModelData.location.search || null;
-const getHash = espModelData => espModelData.hash || null;
-const getRoutes = espModelData => espModelData.route.routes || null;
-const getData = espModelData =>
-  (!espModelData.modelData || isEmpty(espModelData.modelData.data)
+const getSections = state => state.route.sections || null;
+const getHash = state => state.hash || null;
+const getRoutes = state => state.route.routes || null;
+const getData = state =>
+  (!state.modelData || isEmpty(state.modelData.data)
     ? null
-    : espModelData.modelData.data);
+    : state.modelData.data);
 
-export const getId = espModelData => espModelData.id || null;
-export const getAnchorLinks = createSelector(
-  [getSections, getSearch],
-  (sections, search) =>
-    sections.filter(route => route.anchor).map(route => ({
-      label: route.label,
-      path: route.path,
-      hash: route.hash,
-      search
-    }))
+export const getId = state => state.id || null;
+export const getAnchorLinks = createSelector([getSections], sections =>
+  sections.filter(route => route.anchor).map(route => ({
+    label: route.label,
+    path: route.path,
+    hash: route.hash
+  }))
 );
 
 export const getRouteLinks = createSelector(
-  [getRoutes, getHash, getSearch, getId],
-  (routes, hash, search, id) =>
+  [getRoutes, getHash, getId],
+  (routes, hash, id) =>
     routes &&
     routes.filter(r => r.anchor).map(route => ({
       label: route.label,
       path: route.path.replace(':id', id),
-      search,
       hash
     }))
 );

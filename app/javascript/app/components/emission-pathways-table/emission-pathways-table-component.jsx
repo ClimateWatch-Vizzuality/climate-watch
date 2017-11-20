@@ -17,7 +17,6 @@ class EmissionPathwaysTable extends PureComponent {
       loading,
       data,
       noContentMsg,
-      sortDataBy,
       defaultColumns,
       titleLinks
     } = this.props;
@@ -28,7 +27,6 @@ class EmissionPathwaysTable extends PureComponent {
         titleLinks={titleLinks}
         rowHeight={60}
         hasColumnSelect
-        sortDataBy={sortDataBy}
         defaultColumns={defaultColumns}
       />
     ) : (
@@ -67,7 +65,6 @@ EmissionPathwaysTable.propTypes = {
   categoryName: PropTypes.string.isRequired,
   titleLinks: PropTypes.array,
   query: PropTypes.string,
-  sortDataBy: PropTypes.string,
   handleSearchChange: PropTypes.func
 };
 
