@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
-
+import isEmpty from 'lodash/isEmpty';
 import actions from './country-ndc-sdg-linkages-actions';
 import reducers, { initialState } from './country-ndc-sdg-linkages-reducers';
 
@@ -25,15 +25,15 @@ const mapStateToProps = (state, { match, location }) => {
   };
 
   return {
-    fetched: ndcsSdgsData.data && ndcsSdgsData.data[iso],
+    fetched: ndcsSdgsData.data[iso],
     activeSector: getSectorSelected(sdgsData),
     tooltipData: countrySDGLinkages.tooltipData,
     sectors: getSectorsMapped(sdgsData),
     sectorOptions: getSectorOptionsSorted(sdgsData),
-    goals: (!ndcsSdgsData.error && ndcsSdgsMeta.data.goals) || [],
+    goals: (!isEmpty(ndcsSdgsData.data) && ndcsSdgsMeta.data.goals) || [],
     targets: groupTargetsMeta(ndcsSdgsMeta),
     targetsData:
-      ndcsSdgsData.data && ndcsSdgsData.data[iso]
+      !isEmpty(ndcsSdgsData.data) && ndcsSdgsData.data[iso]
         ? ndcsSdgsData.data[iso].sdgs
         : {},
     loading: !ndcsSdgsData.error && ndcsSdgsData.loading,
