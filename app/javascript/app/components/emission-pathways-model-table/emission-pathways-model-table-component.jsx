@@ -4,9 +4,6 @@ import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
-import EspModelsProvider from 'providers/esp-models-provider';
-import EspScenariosProvider from 'providers/esp-scenarios-provider';
-import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import styles from './emission-pathways-model-table-styles.scss';
 
 class EmissionPathwaysModelTableComponent extends PureComponent {
@@ -26,14 +23,7 @@ class EmissionPathwaysModelTableComponent extends PureComponent {
   }
 
   render() {
-    return (
-      <div className={layout.content}>
-        <EspModelsProvider />
-        <EspScenariosProvider />
-        <EspIndicatorsProvider />
-        {this.getTableContent()}
-      </div>
-    );
+    return <div className={layout.content}>{this.getTableContent()}</div>;
   }
 }
 

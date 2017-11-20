@@ -4,14 +4,11 @@ import pick from 'lodash/pick';
 
 const getCategoryName = data => data.category;
 const getId = data => data.id || null;
-const getData = espData =>
-  (espData.espModelsData && !isEmpty(espData.espModelsData.data)
-    ? espData.espModelsData.data
-    : null);
+const getData = state =>
+  (!isEmpty(state.espModelsData) ? state.espModelsData : null);
 const getIdData = createSelector([getData, getId], (data, id) => {
   if (!data || !id) return null;
-  const idData = data.find(d => String(d.id) === id);
-  return idData || null;
+  return data.find(d => String(d.id) === id) || null;
 });
 
 export const filteredCategoryData = createSelector(

@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 
 const getId = stateWithId => stateWithId.id || null;
 const getCategory = stateWithId => stateWithId.category || null;
-const getCategoryData = stateWithId => stateWithId.categoryData.data || null;
+const getCategoryData = stateWithId => stateWithId.categoryData || null;
 
 const getOverviewData = createSelector([getCategoryData, getId], (data, id) => {
   if (isEmpty(data)) return null;

@@ -6,7 +6,8 @@ import { parseArraysOverviewData } from './emission-pathways-overview-selectors'
 const mapStateToProps = (state, { match, category }) => {
   const id = match.params.id;
 
-  const categoryData = state[`esp${category}`];
+  const categoryState = state[`esp${category}`];
+  const categoryData = categoryState && categoryState.data;
   const stateWithId = {
     id,
     category,
