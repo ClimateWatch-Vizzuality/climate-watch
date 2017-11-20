@@ -94,20 +94,28 @@ export const getModelSelected = createSelector(
   }
 );
 
-export const getScenariosOptions = createSelector([getScenarios], scenarios => {
-  if (!scenarios || !scenarios.length) return [];
-  return scenarios.map(s => ({
-    label: s.name,
-    value: s.id.toString()
-  }));
-});
+export const getScenariosOptions = createSelector(
+  [getScenarios, getModelSelected],
+  (scenarios, modelSelected) => {
+    if (!modelSelected || !scenarios || !scenarios.length) return [];
+    const filteredScenarios = scenarios.filter(
+      s => modelSelected.scenarios.indexOf(s.id.toString()) > -1
+    );
+    return filteredScenarios.map(s => ({
+      label: s.name,
+      value: s.id.toString()
+    }));
+  }
+);
 
 export const getScenariosSelected = createSelector(
   [getScenariosOptions, getScenario, getModelSelected],
   (scenarios, scenarioSelected, model) => {
     if (!scenarios || !model) return null;
     if (!scenarioSelected && !model.scenarios) return null;
-    if (!scenarioSelected) { return scenarios.filter(s => model.scenarios.indexOf(s.value) > -1); }
+    if (!scenarioSelected) {
+      return scenarios.filter(s => model.scenarios.indexOf(s.value) > -1);
+    }
     const activeScenarios = scenarioSelected.split(',');
     return scenarios.filter(s => activeScenarios.indexOf(s.value) > -1);
   }

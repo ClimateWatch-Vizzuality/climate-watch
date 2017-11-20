@@ -8,7 +8,10 @@ import Dropdown from 'components/dropdown';
 import Tag from 'components/tag';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
+import MultiSelect from 'components/multiselect';
+import Icon from 'components/icon';
 
+import plusIcon from 'assets/icons/plus.svg';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathway-graph-styles.scss';
 
@@ -23,7 +26,8 @@ class EmissionPathwayGraph extends PureComponent {
       filtersSelected,
       handleSelectorChange,
       handleModelChange,
-      handleRemoveTag
+      handleRemoveTag,
+      handleAddTag
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -95,6 +99,18 @@ class EmissionPathwayGraph extends PureComponent {
                         canRemove
                       />
                     ))}
+                    <MultiSelect
+                      parentClassName={styles.tagSelector}
+                      values={filtersSelected.scenarios || []}
+                      options={filtersOptions.scenarios || []}
+                      onMultiValueChange={handleAddTag}
+                      hideResetButton
+                    >
+                      <Icon
+                        className={styles.plusIcon}
+                        icon={plusIcon}
+                      />
+                    </MultiSelect>
                   </div>
                 </div>
               )
@@ -114,7 +130,8 @@ EmissionPathwayGraph.propTypes = {
   filtersSelected: PropTypes.object,
   handleSelectorChange: PropTypes.func,
   handleModelChange: PropTypes.func,
-  handleRemoveTag: PropTypes.func
+  handleRemoveTag: PropTypes.func,
+  handleAddTag: PropTypes.func
 };
 
 export default EmissionPathwayGraph;

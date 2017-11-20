@@ -76,6 +76,13 @@ class EmissionPathwayGraphContainer extends PureComponent {
     this.updateUrlParam({ name: 'scenario', value: newTags.toString() });
   };
 
+  handleAddTag = selected => {
+    this.updateUrlParam({
+      name: 'scenario',
+      value: selected.map(s => s.value).toString()
+    });
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -86,7 +93,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
       ...this.props,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,
-      handleRemoveTag: this.handleRemoveTag
+      handleRemoveTag: this.handleRemoveTag,
+      handleAddTag: this.handleAddTag
     });
   }
 }

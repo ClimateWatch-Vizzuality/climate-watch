@@ -27,7 +27,7 @@ class Multiselect extends Component {
   getSelectorValue() {
     const { values, options, selectedLabel, children } = this.props;
     if (children) {
-      return <div>{children}</div>;
+      return children;
     }
     const { search } = this.state;
     const hasValues = values && values.length;
