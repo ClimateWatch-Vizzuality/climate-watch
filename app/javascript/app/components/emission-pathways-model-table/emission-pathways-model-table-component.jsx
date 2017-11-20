@@ -8,7 +8,13 @@ import styles from './emission-pathways-model-table-styles.scss';
 
 class EmissionPathwaysModelTableComponent extends PureComponent {
   getTableContent() {
-    const { loading, data, noContentMsg, titleLinks } = this.props;
+    const {
+      loading,
+      data,
+      noContentMsg,
+      titleLinks,
+      defaultColumns
+    } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     return data && data.length > 0 ? (
       <Table
@@ -16,6 +22,8 @@ class EmissionPathwaysModelTableComponent extends PureComponent {
         data={data}
         rowHeight={60}
         sortBy={'name'}
+        hasColumnSelect
+        defaultColumns={defaultColumns}
       />
     ) : (
       <NoContent message={noContentMsg} />
@@ -31,7 +39,8 @@ EmissionPathwaysModelTableComponent.propTypes = {
   loading: PropTypes.bool,
   noContentMsg: PropTypes.string,
   data: PropTypes.array,
-  titleLinks: PropTypes.array
+  titleLinks: PropTypes.array,
+  defaultColumns: PropTypes.array
 };
 
 export default EmissionPathwaysModelTableComponent;

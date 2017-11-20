@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import pick from 'lodash/pick';
 
-const getCategoryName = data => data.category;
-const getId = data => data.id || null;
+const getCategoryName = state => state.category || null;
+const getId = state => state.id || null;
 const getData = state =>
   (!isEmpty(state.espModelsData) ? state.espModelsData : null);
 const getIdData = createSelector([getData, getId], (data, id) => {
@@ -16,16 +15,19 @@ export const filteredCategoryData = createSelector(
   (data, category) => {
     if (!data) return null;
     const categoryName = category.toLowerCase();
-    const categoryWhiteListedFields = {
-      Scenarios: ['name', 'category', 'description'],
-      Indicators: ['name', 'category', 'definition']
-    };
-    return data[categoryName].map(d =>
-      pick(d, categoryWhiteListedFields[category])
-    );
+    return data[categoryName];
   }
 );
 
+export const defaultColumns = createSelector(getCategoryName, category => {
+  const categoryDefaultColumns = {
+    Scenarios: ['name', 'category', 'description'],
+    Indicators: ['name', 'category', 'definition']
+  };
+  return categoryDefaultColumns[category];
+});
+
 export default {
-  filteredCategoryData
+  filteredCategoryData,
+  defaultColumns
 };
