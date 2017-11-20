@@ -4,7 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 
 const getNdcsSdgsDataInit = createAction('getNdcsSdgsDataInit');
 const getNdcsSdgsDataReady = createAction('getNdcsSdgsDataReady');
-const getNdcsSdgsDataFail = createAction('getTimelineFail');
 
 const getNdcsSdgsData = createThunkAction(
   'getNdcsSdgsData',
@@ -22,7 +21,7 @@ const getNdcsSdgsData = createThunkAction(
         })
         .catch(error => {
           console.info(error);
-          dispatch(getNdcsSdgsDataFail());
+          dispatch(getNdcsSdgsDataReady({}));
         });
     }
   }
@@ -31,6 +30,5 @@ const getNdcsSdgsData = createThunkAction(
 export default {
   getNdcsSdgsData,
   getNdcsSdgsDataInit,
-  getNdcsSdgsDataReady,
-  getNdcsSdgsDataFail
+  getNdcsSdgsDataReady
 };
