@@ -1,54 +1,43 @@
-require 'csv'
-
 class ImportSdgs
+  SDGS_FILEPATH = "#{CW_FILES_PREFIX}sdgs/sdgs.csv"
+  SDG_TARGETS_FILEPATH = "#{CW_FILES_PREFIX}sdgs/sdg_targets.csv"
+
   def call
-    import_sdgs(read_from_s3("#{CW_FILES_PREFIX}sdgs/sdgs.csv"))
-    import_sdg_targets(read_from_s3("#{CW_FILES_PREFIX}sdgs/sdg_targets.csv"))
+    import_sdgs(S3CSVReader.read(SDGS_FILEPATH))
+    import_sdg_targets(S3CSVReader.read(SDG_TARGETS_FILEPATH))
   end
 
   private
 
-  def read_from_s3(file_name)
-    bucket_name = Rails.application.secrets.s3_bucket_name
-    s3 = Aws::S3::Client.new
-    begin
-      file = s3.get_object(bucket: bucket_name, key: file_name)
-    rescue Aws::S3::Errors::NoSuchKey
-      Rails.logger.error "File #{file_name} not found in #{bucket_name}"
-      return
-    end
-    file.body.read
-  end
-
   def import_sdgs(content)
-    CSV.parse(content, headers: true).each.with_index(2) do |row|
+    content.each.with_index(2) do |row|
       attributes = {
         number: number(row),
-        title: row['title'],
-        cw_title: row['cw_title'],
-        colour: row['colour']
+        title: row[:title],
+        cw_title: row[:cw_title],
+        colour: row[:colour]
       }
       create_or_update_sdg(attributes)
     end
   end
 
   def import_sdg_targets(content)
-    CSV.parse(content, headers: true).each.with_index(2) do |row|
+   content.each.with_index(2) do |row|
       attributes = {
         number: number(row),
         goal: goal(row),
-        title: row['title']
+        title: row[:title]
       }
       create_or_update_sdg_target(attributes)
     end
   end
 
   def number(row)
-    row['number'] && row['number'].strip.downcase
+    row[:number] && row[:number].downcase
   end
 
   def goal(row)
-    goal_number = row['goal_number'] && row['goal_number'].strip.downcase
+    goal_number = row[:goal_number] && row[:goal_number].downcase
     NdcSdg::Goal.find_by_number(goal_number)
   end
 
