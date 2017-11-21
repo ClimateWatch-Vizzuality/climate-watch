@@ -16,7 +16,13 @@ const fetchGhgEmissionsData = createThunkAction(
         throw Error(response.statusText);
       })
       .then(data => {
-        dispatch(fetchGhgEmissionsDataReady(data));
+        const parsedData = data.map(d => ({
+          ...d,
+          gas: d.gas.trim(),
+          sector: d.sector.trim(),
+          location: d.location.trim()
+        }));
+        dispatch(fetchGhgEmissionsDataReady(parsedData));
       })
       .catch(error => {
         console.warn(error);
