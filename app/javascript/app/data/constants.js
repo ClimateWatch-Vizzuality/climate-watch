@@ -13,6 +13,8 @@ export const CALCULATION_OPTIONS = {
   }
 };
 
+export const DATA_SCALE = 1000000;
+
 export const ALLOWED_SECTORS_BY_SOURCE = {
   CAIT: [
     'Energy',
@@ -122,5 +124,6 @@ export default {
   ALLOWED_SECTORS_BY_SOURCE,
   DEFAULT_EMISSIONS_SELECTIONS,
   CHART_COLORS,
-  DEFAULT_AXES_CONFIG
+  DEFAULT_AXES_CONFIG,
+  DATA_SCALE
 };
