@@ -11,7 +11,7 @@ import {
 } from './emission-pathways-table-selectors';
 import Component from './emission-pathways-table-component';
 
-const mapStateToProps = (state, { category }) => {
+const mapStateToProps = (state, { category, location }) => {
   const search = qs.parse(location.search);
   const categoryData = state[`esp${category}`];
   const espData = {

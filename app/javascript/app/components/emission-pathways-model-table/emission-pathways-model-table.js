@@ -29,8 +29,7 @@ class EmissionPathwaysModelTableComponent extends PureComponent {
     const noContentMsg = 'No results found';
     return createElement(Component, {
       ...this.props,
-      noContentMsg,
-      handleSearchChange: this.handleSearchChange
+      noContentMsg
     });
   }
 }
