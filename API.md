@@ -120,7 +120,7 @@ Shows linkage data for the given country code.
 
 ### `GET /ndcs/sdgs_overview`
 
-Shows an overview of linkage data to meet specific front-end requirements:e .
+Shows an overview of linkage data to meet specific front-end requirements.
 
 ## NDCs (indicators)
 
@@ -159,7 +159,7 @@ Lists adaptation indicator data
 
 ### `GET /quantifications`
 
-Lists quantification data
+Lists quantification data, representing NDC emissions targets.
 
 #### Query parameters
 
