@@ -1,0 +1,20 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.col4 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+}
+
+.loader {
+  min-height: 475px;
+}
+
+.searchBox,
+.uploadButton {
+  grid-column-end: -1;
+}
