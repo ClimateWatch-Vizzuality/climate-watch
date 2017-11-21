@@ -45,6 +45,13 @@
   }
 }
 
+.hasChildren :global {
+
+  .react-selectize-control {
+    opacity: 0;
+  }
+}
+
 .selected {
   display: flex;
   justify-content: space-between;

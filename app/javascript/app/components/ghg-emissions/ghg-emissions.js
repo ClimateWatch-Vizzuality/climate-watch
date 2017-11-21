@@ -168,17 +168,6 @@ class GhgEmissionsContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params, clear));
   }
 
-  handleRemoveTag = tagData => {
-    const { filtersSelected } = this.props;
-    const newFilters = [];
-    filtersSelected.forEach(filter => {
-      if (filter.label !== tagData.label) {
-        newFilters.push(filter.value);
-      }
-    });
-    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
-  };
-
   handleInfoClick = () => {
     const { source } = this.props.sourceSelected;
     if (source) {
@@ -196,7 +185,6 @@ class GhgEmissionsContainer extends PureComponent {
       handleVersionChange: this.handleVersionChange,
       handleBreakByChange: this.handleBreakByChange,
       handleFilterChange: this.handleFilterChange,
-      handleRemoveTag: this.handleRemoveTag,
       handleInfoClick: this.handleInfoClick
     });
   }

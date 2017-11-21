@@ -35,13 +35,7 @@ const AXES_CONFIG = {
 };
 
 const INCLUDED_SECTORS = {
-  CAIT: [
-    'Energy',
-    'Industrial Processes',
-    'Agriculture',
-    'Waste',
-    'Bunker Fuels'
-  ],
+  CAIT: ['Energy', 'Industrial Processes', 'Agriculture', 'Waste'],
   PIK: [
     'Energy',
     'Agriculture',
@@ -74,7 +68,7 @@ const getCalculationData = state =>
 const getSourceSelection = state => state.search.source || null;
 const getCalculationSelection = state => state.search.calculation || null;
 const getVersionSelection = state => state.search.version || null;
-const getFilterSelection = state => state.search.filter || null;
+const getFilterSelection = state => state.search.filter;
 
 // data for the graph
 const getData = state => state.data || [];
@@ -143,12 +137,9 @@ export const getFilterOptions = createSelector(
   [getMeta, getSourceSelected],
   (meta, sourceSelected) => {
     if (!sourceSelected || isEmpty(meta)) return [];
-    const activeSourceData = meta.data_source.find(
-      source => source.value === sourceSelected.value
-    );
-    const activeFilterKeys = activeSourceData.sector;
     const filteredSelected = meta.sector.filter(
-      filter => activeFilterKeys.indexOf(filter.value) > -1
+      filter =>
+        INCLUDED_SECTORS[sourceSelected.label].indexOf(filter.label) > -1
     );
     return sortLabelByAlpha(filteredSelected);
   }
@@ -158,6 +149,7 @@ export const getFiltersSelected = createSelector(
   [getFilterOptions, getFilterSelection],
   (filters, selected) => {
     if (!filters || !filters.length) return [];
+    if (selected === '') return [];
     if (!selected) return filters;
     let selectedFilters = [];
     const selectedValues = selected.split(',');
@@ -185,13 +177,15 @@ export const getSelectorDefaults = createSelector(
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getSourceSelected],
-  (data, sourceSelected) => {
-    if (!data || !data.length) return [];
+  [getData, getSourceSelected, getFiltersSelected],
+  (data, sourceSelected, filtersSelected) => {
+    if (!data || !data.length || !filtersSelected) return [];
+    const filters = filtersSelected.map(f => f.label);
     return sortEmissionsByValue(
       data.filter(
         d =>
-          INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >= 0
+          INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >=
+            0 && filters.indexOf(d.sector.trim()) > -1
       )
     );
   }

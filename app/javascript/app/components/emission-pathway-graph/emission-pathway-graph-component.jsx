@@ -2,12 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EspLocationsProvider from 'providers/esp-locations-provider';
 import EspTimeSeriesProvider from 'providers/esp-time-series-provider';
-import ChartLine from 'components/charts/line';
 import ButtonGroup from 'components/button-group';
 import Dropdown from 'components/dropdown';
-import Tag from 'components/tag';
-import Loading from 'components/loading';
-import NoContent from 'components/no-content';
+import Chart from 'components/charts/chart';
 
 import layout from 'styles/layout.scss';
 import styles from './emission-pathway-graph-styles.scss';
@@ -22,15 +19,14 @@ class EmissionPathwayGraph extends PureComponent {
       filtersOptions,
       filtersSelected,
       handleSelectorChange,
-      handleModelChange,
-      handleRemoveTag
+      handleModelChange
     } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <EspLocationsProvider />
           {filtersSelected &&
-          filtersSelected.location &&
+            filtersSelected.location &&
             filtersSelected.model && (
               <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
@@ -48,14 +44,14 @@ class EmissionPathwayGraph extends PureComponent {
               hideResetButton
             />
             <Dropdown
-              label="Models and scenarios"
+              label="Model"
               options={filtersOptions.models}
               onValueChange={handleModelChange}
               value={filtersSelected.model}
               hideResetButton
             />
             <Dropdown
-              label="Indicators"
+              label="Indicator"
               placeholder="Select an indicator"
               options={filtersOptions.indicators}
               onValueChange={option =>
@@ -65,41 +61,17 @@ class EmissionPathwayGraph extends PureComponent {
             <div />
             <ButtonGroup className={styles.colEnd} />
           </div>
-          <div className={styles.chartWrapper}>
-            {loading && <Loading light className={styles.loader} />}
-            {!loading &&
-              (!data || !data.length) && (
-                <NoContent
-                  message={'No data selected'}
-                  className={styles.noContent}
-                  icon
-                />
-              )
-            }
-            {data && data.length > 0 &&
-              config && (
-                <div>
-                  <ChartLine config={config} data={data} height={500} />
-                  <div className={styles.tags}>
-                    {config.columns &&
-                    config.columns.y.map(column => (
-                      <Tag
-                        className={styles.tag}
-                        key={`${column.value}`}
-                        data={{
-                          color: config.theme[column.value].stroke,
-                          label: column.label,
-                          id: column.value
-                        }}
-                        onRemove={handleRemoveTag}
-                        canRemove
-                      />
-                    ))}
-                  </div>
-                </div>
-              )
-            }
-          </div>
+          <Chart
+            className={styles.chartWrapper}
+            type="line"
+            config={config}
+            data={data}
+            dataOptions={filtersOptions.scenarios}
+            dataSelected={filtersSelected.scenarios}
+            height={500}
+            loading={loading}
+            targetParam="scenario"
+          />
         </div>
       </div>
     );
@@ -113,8 +85,7 @@ EmissionPathwayGraph.propTypes = {
   filtersOptions: PropTypes.object,
   filtersSelected: PropTypes.object,
   handleSelectorChange: PropTypes.func,
-  handleModelChange: PropTypes.func,
-  handleRemoveTag: PropTypes.func
+  handleModelChange: PropTypes.func
 };
 
 export default EmissionPathwayGraph;

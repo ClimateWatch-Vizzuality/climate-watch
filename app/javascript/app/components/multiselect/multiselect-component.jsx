@@ -25,7 +25,10 @@ class Multiselect extends Component {
   }
 
   getSelectorValue() {
-    const { values, options, selectedLabel } = this.props;
+    const { values, options, selectedLabel, children } = this.props;
+    if (children) {
+      return children;
+    }
     const { search } = this.state;
     const hasValues = values && values.length;
     if (selectedLabel && !search) {
@@ -47,12 +50,19 @@ class Multiselect extends Component {
       handleChange,
       filterOptions,
       label,
-      parentClassName
+      parentClassName,
+      children
     } = this.props;
     return (
       <div className={cx(styles.multiSelectWrapper, parentClassName)}>
         {label && <span className={styles.label}>{label}</span>}
-        <div className={cx(theme.dropdown, styles.multiSelect)}>
+        <div
+          className={cx(
+            theme.dropdown,
+            styles.multiSelect,
+            children ? styles.hasChildren : ''
+          )}
+        >
           <div className={cx(styles.values, 'values')}>
             {this.getSelectorValue()}
           </div>
@@ -99,7 +109,8 @@ Multiselect.propTypes = {
   filterOptions: Proptypes.func,
   handleChange: Proptypes.func,
   label: Proptypes.string,
-  selectedLabel: Proptypes.string
+  selectedLabel: Proptypes.string,
+  children: Proptypes.node
 };
 
 Multiselect.defaultProps = {
