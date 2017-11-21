@@ -76,6 +76,7 @@ class CountryGhgEmissions extends PureComponent {
           dataOptions={filtersOptions}
           dataSelected={filtersSelected}
           loading={loading}
+          height={320}
         />
       </div>
     );

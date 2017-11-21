@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ChartStackedArea from 'components/charts/stacked-area';
 import LineChart from 'components/charts/line';
-import cx from 'classnames';
 import LegendChart from 'components/charts/legend-chart';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';

@@ -38,6 +38,7 @@
 
 .graph {
   position: relative;
+  max-height: 100%;
 }
 
 .graphControls {
@@ -55,19 +56,6 @@
 
 .btnGroup {
   align-self: flex-end;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  padding-bottom: 30px;
-  overflow-x: scroll;
-  margin-top: -15px;
-}
-
-.tag {
-  margin-right: 10px;
-  margin-top: 15px;
 }
 
 .loader {
