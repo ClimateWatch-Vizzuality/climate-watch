@@ -202,3 +202,98 @@ Shows timeline data for the given location `iso` code
 #### Query parameters
 
 * `limit`
+
+## My Climate Watch (Users)
+
+### `GET my_cw/user`
+
+Shows the current user's information
+
+### `POST my_cw/users`
+
+Creates a new user in CW and links it to the Control Tower user
+
+#### Query parameters
+
+* `user[ct_id]` - The ID from Control Tower
+
+## My Climate Watch (User Stories)
+
+All these requests expects a header to identify the user, returning a `401` error if not provided.
+
+### `GET my_cw/user_stories`
+
+Lists all the stories of the current user
+
+### `GET my_cw/user_stories/:id`
+
+Shows the story with the given id (as long as it belongs to the user, otherwise it returns 403)
+
+### `POST my_cw/user_stories`
+
+Returns a `json` with the created story if successfully created or `422` if there was an error (and the reason for failing)
+
+#### Query Params
+
+* title (string) *MANDATORY* - The title of the story 
+
+* body (json) - The body of the story
+
+* public (boolean) - The privacy of the story
+
+### `PUT my_cw/user_stories/:id`
+
+Returns a `json` with the updated story if successfully created or `422` if there was an error (and the reason for failing) or `401` if the user doesn't have permission to edit the story
+
+#### Query Params
+
+* user_story[title] (string) *MANDATORY* - The title of the story 
+
+* user_story[body] (json) - The body of the story
+
+* user_story[public] (boolean) - The privacy of the story
+
+### `DELETE my_cw/user_stories/:id`
+
+Removes the story and returns `200` if it worked or `401` if the user doesn't have permission to delete the story
+
+## My Climate Watch (Vizualizations )
+
+All these requests expects a header to identify the user, returning a `401` error if not provided.
+
+### `GET my_cw/vizualizations`
+
+List all the vizualizations of the current user
+
+### `GET my_cw/vizualizations/:id`
+
+Shows the vizualization with the given id (as long as it belongs to the user, otherwise it returns 403)
+
+### `POST my_cw/vizualizations`
+
+Returns a `json` with the created vizualization if successfully created or `422` if there was an error (and the reason for failing)
+
+#### Query Params
+
+* vizualization[title] (string) *MANDATORY* - The title of the vizualization 
+
+* vizualization[description] (text) - The description of the vizualization
+
+* vizualization[json_body] (json) - The body of the vizualization
+
+### `PUT my_cw/vizualizations/:id`
+
+Returns a `json` with the updated vizualization if successfully created or `422` if there was an error (and the reason for failing) or `401` if the user doesn't have permission to edit the story
+
+#### Query Params
+
+* vizualization[title] (string) *MANDATORY* - The title of the vizualization 
+
+* vizualization[description] (text) - The description of the vizualization
+
+* vizualization[json_body] (json) - The body of the vizualization
+
+### `DELETE my_cw/vizualizations/:id`
+
+Removes the vizualization and returns `200` if it worked or `401` if the user doesn't have permission to delete the story
+
