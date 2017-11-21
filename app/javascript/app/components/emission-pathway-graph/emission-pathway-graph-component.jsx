@@ -2,12 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EspLocationsProvider from 'providers/esp-locations-provider';
 import EspTimeSeriesProvider from 'providers/esp-time-series-provider';
-import ChartLine from 'components/charts/line';
-import LegendChart from 'components/charts/legend-chart';
 import ButtonGroup from 'components/button-group';
 import Dropdown from 'components/dropdown';
-import Loading from 'components/loading';
-import NoContent from 'components/no-content';
+import Chart from 'components/charts/chart';
 
 import layout from 'styles/layout.scss';
 import styles from './emission-pathway-graph-styles.scss';
@@ -22,18 +19,16 @@ class EmissionPathwayGraph extends PureComponent {
       filtersOptions,
       filtersSelected,
       handleSelectorChange,
-      handleModelChange,
-      handleRemoveTag,
-      handleAddTag
+      handleModelChange
     } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <EspLocationsProvider />
           {filtersSelected &&
-          filtersSelected.location &&
-          filtersSelected.model && (
-          <EspTimeSeriesProvider
+            filtersSelected.location &&
+            filtersSelected.model && (
+              <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
                 model={filtersSelected.model.value}
               />
@@ -66,30 +61,17 @@ class EmissionPathwayGraph extends PureComponent {
             <div />
             <ButtonGroup className={styles.colEnd} />
           </div>
-          <div className={styles.chartWrapper}>
-            {loading && <Loading light className={styles.loader} />}
-            {!loading &&
-            (!data || !data.length) && (
-            <NoContent
-                  message={'No data selected'}
-                  className={styles.noContent}
-                  icon
-                />
-              )}
-            {data &&
-            data.length > 0 &&
-            config && <ChartLine config={config} data={data} height={500} />}
-            {!loading &&
-            filtersOptions.scenarios && (
-            <LegendChart
-                  config={config}
-                  tagsOptions={filtersOptions.scenarios}
-                  tagsSelected={filtersSelected.scenarios}
-                  handleRemove={handleRemoveTag}
-                  handleAdd={handleAddTag}
-                />
-              )}
-          </div>
+          <Chart
+            className={styles.chartWrapper}
+            type="line"
+            config={config}
+            data={data}
+            dataOptions={filtersOptions.scenarios}
+            dataSelected={filtersSelected.scenarios}
+            height={500}
+            loading={loading}
+            targetParam="scenario"
+          />
         </div>
       </div>
     );
@@ -103,9 +85,7 @@ EmissionPathwayGraph.propTypes = {
   filtersOptions: PropTypes.object,
   filtersSelected: PropTypes.object,
   handleSelectorChange: PropTypes.func,
-  handleModelChange: PropTypes.func,
-  handleRemoveTag: PropTypes.func,
-  handleAddTag: PropTypes.func
+  handleModelChange: PropTypes.func
 };
 
 export default EmissionPathwayGraph;

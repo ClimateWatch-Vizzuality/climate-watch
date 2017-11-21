@@ -19,7 +19,8 @@ class Chart extends PureComponent { // eslint-disable-line react/prefer-stateles
       dataSelected,
       data,
       config,
-      height
+      height,
+      targetParam
     } = this.props;
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
     return (
@@ -52,6 +53,7 @@ class Chart extends PureComponent { // eslint-disable-line react/prefer-stateles
             config={config}
             dataOptions={dataOptions}
             dataSelected={dataSelected}
+            targetParam={targetParam}
           />
         }
       </div>
@@ -67,7 +69,15 @@ Chart.propTypes = {
   dataSelected: PropTypes.array,
   data: PropTypes.array,
   config: PropTypes.object,
-  height: PropTypes.number
+  height: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  targetParam: PropTypes.string
+};
+
+Chart.defaultProps = {
+  height: 300
 };
 
 export default Chart;

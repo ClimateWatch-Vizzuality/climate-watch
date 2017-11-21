@@ -123,24 +123,6 @@ class CountryGhgEmissionsContainer extends PureComponent {
     }
   };
 
-  handleRemoveTag = tagData => {
-    const { filtersSelected } = this.props;
-    const newFilters = [];
-    filtersSelected.forEach(filter => {
-      if (filter.label !== tagData.label.trim()) {
-        newFilters.push(filter.value);
-      }
-    });
-    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
-  };
-
-  handleAddTag = selected => {
-    this.updateUrlParam({
-      name: 'filter',
-      value: selected.map(s => s.value).toString()
-    });
-  };
-
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -151,9 +133,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
-      handleInfoClick: this.handleInfoClick,
-      handleRemoveTag: this.handleRemoveTag,
-      handleAddTag: this.handleAddTag
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
@@ -163,8 +143,7 @@ CountryGhgEmissionsContainer.propTypes = {
   location: Proptypes.object,
   sourceSelected: Proptypes.object,
   setModalMetadata: Proptypes.func,
-  fetchCountryGhgEmissionsData: Proptypes.func,
-  filtersSelected: Proptypes.array
+  fetchCountryGhgEmissionsData: Proptypes.func
 };
 
 export { actions, reducers, initialState };

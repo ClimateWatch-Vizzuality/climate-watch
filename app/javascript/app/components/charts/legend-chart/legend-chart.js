@@ -7,19 +7,20 @@ import LegendChartComponent from './legend-chart-component';
 
 class LegendChartContainer extends PureComponent {
   handleRemove = data => {
-    const { dataSelected } = this.props;
+    const { dataSelected, targetParam } = this.props;
     const newFilters = [];
-    dataSelected.forEach(filter => {
-      if (filter.label !== data.label) {
-        newFilters.push(filter.value);
+    dataSelected.forEach(d => {
+      if (d.label !== data.label) {
+        newFilters.push(d.value);
       }
     });
-    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
+    this.updateUrlParam({ name: targetParam, value: newFilters.toString() });
   };
 
   handleAdd = selected => {
+    const { targetParam } = this.props;
     this.updateUrlParam({
-      name: 'filter',
+      name: targetParam,
       value: selected.map(s => s.value).toString()
     });
   };
@@ -41,7 +42,12 @@ class LegendChartContainer extends PureComponent {
 LegendChartContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  dataSelected: PropTypes.array
+  dataSelected: PropTypes.array,
+  targetParam: PropTypes.string.isRequired
+};
+
+LegendChartContainer.defaultProps = {
+  targetParam: 'filter'
 };
 
 export default withRouter(LegendChartContainer);
