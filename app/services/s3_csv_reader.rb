@@ -2,12 +2,8 @@ require 'csv'
 
 module S3CSVReader
   def self.strip(hash)
-    hash.map do |pair|
-      if pair.second.respond_to?(:strip)
-        [pair.first, pair.second.strip]
-      else
-        pair
-      end
+    hash.map do |first, second|
+      [first, second.strip]
     end.to_h
   end
 
