@@ -5,16 +5,20 @@ import PropTypes from 'prop-types';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import {
-  filteredDataBySearch,
-  defaultColumns
+  filteredDataByCategory,
+  defaultColumns,
+  getCategories,
+  getSelectedCategoryObject
 } from './emission-pathways-scenario-table-selectors';
 import Component from './emission-pathways-scenario-table-component';
 
 const mapStateToProps = (state, { category, match, location }) => {
   const search = qs.parse(location.search);
+
   const { id } = match.params;
   const espScenariosData = state.espScenarios && state.espScenarios.data;
   const EspData = {
+    categorySelected: search.category,
     query: search.search,
     espScenariosData,
     category,
@@ -22,8 +26,10 @@ const mapStateToProps = (state, { category, match, location }) => {
   };
 
   return {
-    data: filteredDataBySearch(EspData),
+    data: filteredDataByCategory(EspData),
     defaultColumns: defaultColumns(EspData),
+    categories: getCategories(EspData),
+    selectedCategory: getSelectedCategoryObject(EspData),
     query: search.search,
     loading: espScenariosData.loading
   };
@@ -32,6 +38,13 @@ const mapStateToProps = (state, { category, match, location }) => {
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
+  };
+
+  handleCategoryChange = category => {
+    this.updateUrlParam({
+      name: 'category',
+      value: category.value
+    });
   };
 
   updateUrlParam(param) {
@@ -47,7 +60,8 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
     return createElement(Component, {
       ...this.props,
       noContentMsg,
-      handleSearchChange: this.handleSearchChange
+      handleSearchChange: this.handleSearchChange,
+      handleCategoryChange: this.handleCategoryChange
     });
   }
 }

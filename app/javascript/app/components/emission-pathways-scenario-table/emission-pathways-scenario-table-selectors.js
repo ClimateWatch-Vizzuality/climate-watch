@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import uniq from 'lodash/uniq';
 import { deburrUpper } from 'app/utils';
 
 const getId = state => state.id || null;
@@ -17,6 +18,26 @@ const getIndicatorsData = createSelector(getIdData, data => {
   return data.indicators || null;
 });
 
+export const getCategories = createSelector(getIndicatorsData, data => {
+  if (!data) return null;
+  return uniq(data.map(i => i.category)).map(c => ({ value: c, label: c }));
+});
+
+const getSelectedCategory = createSelector(
+  [state => state.categorySelected, getCategories],
+  (selected, categories = []) => {
+    if (categories.length > 0) {
+      return selected || categories[0];
+    }
+    return null;
+  }
+);
+
+export const getSelectedCategoryObject = createSelector(
+  getSelectedCategory,
+  selected => ({ value: selected, label: selected } || null)
+);
+
 export const filteredDataBySearch = createSelector(
   [getIndicatorsData, getQuery],
   (data, query) => {
@@ -33,6 +54,14 @@ export const filteredDataBySearch = createSelector(
   }
 );
 
+export const filteredDataByCategory = createSelector(
+  [getIndicatorsData, getSelectedCategory],
+  (data, category) => {
+    if (!data || !category) return null;
+    return data.filter(indicator => indicator.category.indexOf(category) > -1);
+  }
+);
+
 export const defaultColumns = () => [
   'alias',
   'category',
@@ -41,6 +70,8 @@ export const defaultColumns = () => [
 ];
 
 export default {
-  filteredDataBySearch,
-  defaultColumns
+  filteredDataByCategory,
+  defaultColumns,
+  getCategories,
+  getSelectedCategoryObject
 };
