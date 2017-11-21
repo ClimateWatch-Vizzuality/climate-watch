@@ -1,6 +1,12 @@
 module AuthHelper
-  def redirect_to_api_gateway_login(api_url)
-    redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{api_url}&token=true"
+  NETWORKS = %w(facebook google twitter)
+
+  def redirect_to_api_gateway_login(api_url, network = nil)
+    if NETWORKS.contain(network)
+      redirect_to "#{ENV['API_URL']}/#{network}/auth?callbackUrl=#{api_url}&token=true"
+    else
+      redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{api_url}&token=true"
+    end
   end
 
   def redirect_to_api_gateway_logout(api_url)

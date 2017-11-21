@@ -7,7 +7,7 @@ module Api
       def current_user
         if Rails.env.development? || Rails.env.test?
           user_id = ::MyCw::User.first.present? ? ::MyCw::User.first.id : '1'
-          session[:current_user] = { user_id: user_id }
+          session[:current_user] = {user_id: user_id}
           return
         end
 
