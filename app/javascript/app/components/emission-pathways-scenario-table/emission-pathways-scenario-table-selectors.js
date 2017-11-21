@@ -20,14 +20,16 @@ const getIndicatorsData = createSelector(getIdData, data => {
 
 export const getCategories = createSelector(getIndicatorsData, data => {
   if (!data) return null;
-  return uniq(data.map(i => i.category)).map(c => ({ value: c, label: c }));
+  return ['All']
+    .concat(uniq(data.map(i => i.category)))
+    .map(c => ({ value: c, label: c }));
 });
 
 const getSelectedCategory = createSelector(
   [state => state.categorySelected, getCategories],
   (selected, categories = []) => {
     if (categories.length > 0) {
-      return selected || categories[0];
+      return selected || 'All';
     }
     return null;
   }
@@ -58,6 +60,7 @@ export const filteredDataByCategory = createSelector(
   [getIndicatorsData, getSelectedCategory],
   (data, category) => {
     if (!data || !category) return null;
+    if (category === 'All') return data;
     return data.filter(indicator => indicator.category.indexOf(category) > -1);
   }
 );
