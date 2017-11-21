@@ -31,9 +31,9 @@ class EmissionPathwayGraph extends PureComponent {
         <div className={layout.content}>
           <EspLocationsProvider />
           {filtersSelected &&
-            filtersSelected.location &&
-            filtersSelected.model && (
-              <EspTimeSeriesProvider
+          filtersSelected.location &&
+          filtersSelected.model && (
+          <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
                 model={filtersSelected.model.value}
               />
@@ -69,8 +69,8 @@ class EmissionPathwayGraph extends PureComponent {
           <div className={styles.chartWrapper}>
             {loading && <Loading light className={styles.loader} />}
             {!loading &&
-              (!data || !data.length) && (
-                <NoContent
+            (!data || !data.length) && (
+            <NoContent
                   message={'No data selected'}
                   className={styles.noContent}
                   icon
@@ -79,15 +79,16 @@ class EmissionPathwayGraph extends PureComponent {
             {data &&
             data.length > 0 &&
             config && <ChartLine config={config} data={data} height={500} />}
-            {config &&
-              <LegendChart
-                config={config}
-                tagsOptions={filtersOptions.scenarios}
-                tagsSelected={filtersSelected.scenarios}
-                handleRemove={handleRemoveTag}
-                handleAdd={handleAddTag}
-              />
-            }
+            {!loading &&
+            filtersOptions.scenarios && (
+            <LegendChart
+                  config={config}
+                  tagsOptions={filtersOptions.scenarios}
+                  tagsSelected={filtersSelected.scenarios}
+                  handleRemove={handleRemoveTag}
+                  handleAdd={handleAddTag}
+                />
+              )}
           </div>
         </div>
       </div>

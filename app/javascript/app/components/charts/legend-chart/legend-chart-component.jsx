@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import MultiSelect from 'components/multiselect';
 import Icon from 'components/icon';
 import Tag from 'components/tag';
+import cx from 'classnames';
 
 import plusIcon from 'assets/icons/plus.svg';
 import styles from './legend-chart-styles.scss';
@@ -11,13 +12,14 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
   render() {
     const {
       config,
-      tagsOptions,
-      tagsSelected,
+      dataOptions,
+      dataSelected,
       handleRemove,
-      handleAdd
+      handleAdd,
+      className
     } = this.props;
     return (
-      <div className={styles.tags}>
+      <div className={cx(styles.tags, className)}>
         {config &&
           config.columns &&
           config.columns.y.map(column => (
@@ -33,14 +35,14 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
               canRemove
             />
           ))}
-        {tagsOptions &&
-          tagsSelected &&
-          tagsSelected.length !==
-            tagsOptions.length && (
+        {dataOptions &&
+          dataSelected &&
+          dataSelected.length !==
+            dataOptions.length && (
             <MultiSelect
               parentClassName={styles.tagSelector}
-              values={tagsSelected || []}
-              options={tagsOptions || []}
+              values={dataSelected || []}
+              options={dataOptions || []}
               onMultiValueChange={handleAdd}
               hideResetButton
               closeOnSelect
@@ -58,8 +60,9 @@ LegendChart.propTypes = {
   config: PropTypes.object,
   handleRemove: PropTypes.func,
   handleAdd: PropTypes.func,
-  tagsOptions: PropTypes.array,
-  tagsSelected: PropTypes.array
+  dataOptions: PropTypes.array,
+  dataSelected: PropTypes.array,
+  className: PropTypes.string
 };
 
 export default LegendChart;

@@ -2,13 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import RegionsProvider from 'providers/regions-provider';
-import ChartLine from 'components/charts/line';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import MultiSelect from 'components/multiselect';
-import Loading from 'components/loading';
-import NoContent from 'components/no-content';
-import LegendChart from 'components/charts/legend-chart';
+import Chart from 'components/charts/chart';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -32,8 +29,6 @@ class GhgEmissions extends PureComponent {
       filters,
       filtersSelected,
       handleFilterChange,
-      handleRemoveTag,
-      handleAddTag,
       loading,
       activeFilterRegion
     } = this.props;
@@ -78,31 +73,16 @@ class GhgEmissions extends PureComponent {
             onInfoClick={handleInfoClick}
           />
         </div>
-        <div className={styles.chartWrapper}>
-          {loading && (
-            <Loading light className={styles.loader} />
-          )}
-          {!loading &&
-            (!data || !data.length) && (
-              <NoContent
-                message={filtersSelected && filtersSelected.length ? 'No data available' : 'No data selected'}
-                className={styles.noContent}
-                icon
-              />
-            )}
-          {data && config &&
-            <ChartLine config={config} data={data} height={500} />
-          }
-          {config &&
-            <LegendChart
-              config={config}
-              tagsOptions={filters}
-              tagsSelected={filtersSelected}
-              handleRemove={handleRemoveTag}
-              handleAdd={handleAddTag}
-            />
-          }
-        </div>
+        <Chart
+          className={styles.chartWrapper}
+          type="line"
+          config={config}
+          data={data}
+          dataOptions={filters}
+          dataSelected={filtersSelected}
+          height={500}
+          loading={loading}
+        />
       </div>
     );
   }
@@ -122,8 +102,6 @@ GhgEmissions.propTypes = {
   breaksBy: PropTypes.array,
   breakSelected: PropTypes.object,
   handleBreakByChange: PropTypes.func.isRequired,
-  handleRemoveTag: PropTypes.func.isRequired,
-  handleAddTag: PropTypes.func.isRequired,
   filters: PropTypes.array,
   filtersSelected: PropTypes.array,
   handleFilterChange: PropTypes.func.isRequired,
