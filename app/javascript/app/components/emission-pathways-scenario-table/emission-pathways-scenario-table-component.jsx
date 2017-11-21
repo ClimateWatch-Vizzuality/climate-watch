@@ -40,7 +40,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
             defaultColumns={defaultColumns}
           />
         ) : (
-          <NoContent message={noContentMsg} />
+          <NoContent message={noContentMsg} className={styles.noContent} />
         )}
       </div>
     );
