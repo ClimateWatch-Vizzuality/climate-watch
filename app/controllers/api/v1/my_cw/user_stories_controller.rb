@@ -18,8 +18,8 @@ module Api
             render json: @user_story, serializer: Api::V1::MyCw::UserStorySerializer
           else
             render json: resource_error(@user_story.errors)
+          end
         end
-      end
 
         def create
           @user_story = ::MyCw::UserStory.new(user_story_params)

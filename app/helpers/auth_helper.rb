@@ -1,5 +1,5 @@
 module AuthHelper
-  NETWORKS = %w(facebook google twitter)
+  NETWORKS = %w(facebook google twitter).freeze
 
   def redirect_to_api_gateway_login(api_url, network = nil)
     if NETWORKS.contain(network)
@@ -13,17 +13,10 @@ module AuthHelper
     redirect_to "#{ENV['API_URL']}/auth/logout?callbackUrl=#{api_url}"
   end
 
-  # TODO: The commented code should be used if we decide to have a session in the server
-
-  # def jwt_authentication
-  #   unless session.key?('user_token')
-  #     redirect_to_api_gateway_login
-  #   end
-  # end
-
+  # rubocop:disable AbcSize
   def ensure_logged_in
     return false unless session[:user_token]
-    connect = Faraday.new(url: "#{ENV['API_URL']}") do |faraday|
+    connect = Faraday.new(url: (ENV['API_URL']).to_s) do |faraday|
       faraday.request :url_encoded # form-encode POST params
       faraday.response :logger # log requests to STDOUT
       faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
@@ -41,5 +34,5 @@ module AuthHelper
       true
     end
   end
-
+  # rubocop:enable AbcSize
 end

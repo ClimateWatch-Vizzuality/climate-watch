@@ -2,7 +2,6 @@ module Api
   module V1
     module MyCw
       class UsersController < MyCwController
-
         # Gets the current user
         def current
           render json: session[:current_user]
