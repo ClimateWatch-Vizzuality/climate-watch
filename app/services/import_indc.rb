@@ -71,7 +71,7 @@ class ImportIndc
       name: name,
       slug: Slug.create(name),
       category_type: category_type,
-      order: index*10
+      order: index * 10
     }
   end
 
@@ -81,7 +81,7 @@ class ImportIndc
       slug: indicator[:column_name],
       description: indicator[:definition],
       source: @sources_index[indicator[:source]],
-      order: index*10
+      order: index * 10
     }
   end
 
