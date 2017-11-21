@@ -27,6 +27,10 @@ class EmissionPathwaysScenario extends PureComponent {
                 <Intro
                   title={scenario.name}
                   description={scenario.description}
+                  button={{
+                    text: 'View model',
+                    link: `/emission-pathways/models/${scenario.model_id}`
+                  }}
                 />
               </div>
               <Sticky activeClass="stickyEmissionsScenario">
