@@ -10,7 +10,7 @@
 
 module MyCw
   class Vizualization < ApplicationRecord
-    belongs_to :user
+    belongs_to :user, optional: false
     validates_presence_of :title
   end
 end
