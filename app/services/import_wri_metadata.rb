@@ -39,8 +39,8 @@ class ImportWriMetadata
   def import_acronyms
     @acronyms.each do |r|
       WriMetadata::Acronym.create(
-        acronym: r[:acronym].strip,
-        definition: r[:definition].strip
+        acronym: r[:acronym],
+        definition: r[:definition]
       )
     end
   end
@@ -49,7 +49,7 @@ class ImportWriMetadata
     sources = @metadata.map { |r| r[:dataset] }.uniq
     sources.each do |s|
       @sources_index[s] = WriMetadata::Source.create!(
-        name: s.strip.downcase
+        name: s.downcase
       )
     end
   end
