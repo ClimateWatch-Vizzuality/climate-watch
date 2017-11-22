@@ -7,7 +7,6 @@ import Sticky from 'react-stickynode';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import cx from 'classnames';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-scenario-styles.scss';
 
@@ -44,12 +43,8 @@ class EmissionPathwaysScenario extends PureComponent {
               route.sections.length > 0 &&
               route.sections.map(section => (
                 <div key={section.hash} className={styles.section}>
-                  <div
-                    id={section.hash}
-                    className={cx(styles.sectionHash, styles[section.hash])}
-                  >
-                    <section.component id={id} />
-                  </div>
+                  <div id={section.hash} className={styles.sectionHash} />
+                  <section.component id={id} />
                 </div>
               ))}
           </div>

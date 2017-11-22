@@ -8,12 +8,11 @@
   }
 }
 
-.sectionHash {
-  border-bottom: solid 1px $border-color;
-  padding-bottom: 30px;
+.section {
+  position: relative;
+}
 
-  &.indicators {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
+.sectionHash {
+  position: absolute;
+  top: -49px;
 }
