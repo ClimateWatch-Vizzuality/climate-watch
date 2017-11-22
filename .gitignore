@@ -5,7 +5,7 @@ capybara-*.html
 .rbenv-gemsets
 /log
 /tmp
-/fixtures
+/fixtures/vcr_cassettes/user_token.yml
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /public/system
