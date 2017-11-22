@@ -4,7 +4,7 @@ module Api
       class UsersController < MyCwController
         # Gets the current user
         def current
-          render json: session[:current_user]
+          render json: @current_user
         end
 
         def create

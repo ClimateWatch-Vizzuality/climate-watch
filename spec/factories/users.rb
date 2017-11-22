@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :user, class: 'MyCw::User' do
-    sequence :ct_id, &:to_s
+    ct_id ENV['DEV_USER_ID']
   end
 end

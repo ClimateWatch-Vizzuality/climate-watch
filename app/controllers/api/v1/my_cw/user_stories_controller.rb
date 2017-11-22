@@ -5,7 +5,7 @@ module Api
         before_action :user_story, only: %w(show update destroy)
 
         def index
-          user_stories = ::MyCw::UserStory.where(user_id: session[:current_user][:user_id])
+          user_stories = ::MyCw::UserStory.where(user_id: @current_user[:user_id])
           render json: user_stories, each_serializer: Api::V1::MyCw::UserStorySerializer
         end
 
@@ -23,7 +23,7 @@ module Api
 
         def create
           @user_story = ::MyCw::UserStory.new(user_story_params)
-          @user_story.user_id = session[:current_user][:user_id]
+          @user_story.user_id = @current_user[:user_id]
           if @user_story.save
             render json: @user_story, serializer: Api::V1::MyCw::UserStorySerializer
           else
@@ -47,7 +47,7 @@ module Api
 
         def user_story
           @user_story = ::MyCw::UserStory.find params[:id]
-          render status: 401 unless @user_story.user_id == session[:current_user][:user_id]
+          render status: 401 unless @user_story.user_id == @current_user[:user_id]
         end
       end
     end

@@ -1,6 +1,12 @@
 require 'rails_helper'
+require 'controllers/api/v1/my_cw/helpers'
+include Helpers
 
 describe Api::V1::MyCw::VizualizationsController, type: :controller do
+  before(:each) do
+    set_cookies
+  end
+
   context do
     let!(:user) {
       FactoryGirl.create(:user)

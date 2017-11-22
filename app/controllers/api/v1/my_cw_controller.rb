@@ -5,12 +5,10 @@ module Api
       before_action :current_user
 
       def current_user
-        return if dev_or_test?
-
-        if session[:current_user].present?
-          session[:current_user]
+        if @current_user.present?
+          @current_user
         elsif ensure_logged_in
-          session[:current_user]
+          @current_user
         else
           render status: 401 and return
         end
@@ -22,21 +20,6 @@ module Api
           status: 'unprocessable entity',
           errors: errors
         }, status: :unprocessable_entity
-      end
-
-      private
-
-      # For dev and test environment, it always uses the first user as default
-      # This was requested by the frontend for temporary testing
-      # TODO: Remove when they decide this is unnecessary
-      def dev_or_test?
-        if Rails.env.development? || Rails.env.test?
-          user_id = ::MyCw::User.first.present? ? ::MyCw::User.first.id : '1'
-          session[:current_user] = {user_id: user_id}
-          true
-        else
-          false
-        end
       end
     end
   end

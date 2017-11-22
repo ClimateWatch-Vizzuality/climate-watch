@@ -5,7 +5,7 @@ module Api
         before_action :vizualization, only: %w(show update destroy)
 
         def index
-          vizualizations = ::MyCw::Vizualization.where(user_id: session[:current_user][:user_id])
+          vizualizations = ::MyCw::Vizualization.where(user_id: @current_user[:user_id])
           render json: vizualizations, each_serializer: Api::V1::MyCw::VizualizationSerializer
         end
 
@@ -23,7 +23,7 @@ module Api
 
         def create
           @vizualization = ::MyCw::Vizualization.new(vizualization_params)
-          @vizualization.user_id = session[:current_user][:user_id]
+          @vizualization.user_id = @current_user[:user_id]
           if @vizualization.save
             render json: @vizualization, serializer: Api::V1::MyCw::VizualizationSerializer
           else
@@ -47,7 +47,7 @@ module Api
 
         def vizualization
           @vizualization = ::MyCw::Vizualization.find params[:id]
-          render status: 401 unless @vizualization.user_id == session[:current_user][:user_id]
+          render status: 401 unless @vizualization.user_id == @current_user[:user_id]
         end
       end
     end

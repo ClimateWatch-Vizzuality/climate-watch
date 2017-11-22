@@ -1,8 +1,10 @@
 module AuthHelper
+  include ActionController::Cookies
   NETWORKS = %w(facebook google twitter).freeze
+  @current_user = nil
 
   def redirect_to_api_gateway_login(api_url, network = nil)
-    if NETWORKS.contain(network)
+    if NETWORKS.include?(network)
       redirect_to "#{ENV['API_URL']}/#{network}/auth?callbackUrl=#{api_url}&token=true"
     else
       redirect_to "#{ENV['API_URL']}/auth?callbackUrl=#{api_url}&token=true"
@@ -13,26 +15,23 @@ module AuthHelper
     redirect_to "#{ENV['API_URL']}/auth/logout?callbackUrl=#{api_url}"
   end
 
-  # rubocop:disable AbcSize
   def ensure_logged_in
-    return false unless session[:user_token]
+    return false unless cookies['user_token']
     connect = Faraday.new(url: (ENV['API_URL']).to_s) do |faraday|
       faraday.request :url_encoded # form-encode POST params
       faraday.response :logger # log requests to STDOUT
       faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
     end
-    connect.authorization :Bearer, session[:user_token]
+    connect.authorization :Bearer, cookies['user_token']
     response = connect.get('/auth/check-logged')
     if !response.success?
-      session.delete(:user_token)
-      session.delete(:current_user)
+      @current_user = nil
       false
     else
       user_data = JSON.parse response.body
-      session[:current_user] = user_data.symbolize_keys!
-      session[:current_user][:user_id] = ::MyCw::User.find_by ct_id: session[:current_user][:id]
+      @current_user = user_data.symbolize_keys!
+      @current_user[:user_id] = ::MyCw::User.find_by ct_id: @current_user[:id]
       true
     end
   end
-  # rubocop:enable AbcSize
 end
