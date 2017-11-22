@@ -116,6 +116,14 @@ const partnershipWith = {
         'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch, as well as provided the NDC-related data for the NDC Content module.' // eslint-disable-line
     },
     {
+      link: 'http://www.wri.org/',
+      img: {
+        alt: 'WRI',
+        src: wriImage
+      },
+      description: 'WRI manages Climate Watch in collaboration with partners.'
+    },
+    {
       link: 'http://www.vizzuality.com/',
       img: {
         alt: 'Vizzuality',
