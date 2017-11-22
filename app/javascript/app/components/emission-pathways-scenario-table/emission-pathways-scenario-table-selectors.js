@@ -57,7 +57,7 @@ export const filteredDataBySearch = createSelector(
 );
 
 export const filteredDataByCategory = createSelector(
-  [getIndicatorsData, getSelectedCategory],
+  [filteredDataBySearch, getSelectedCategory],
   (data, category) => {
     if (!data || !category) return null;
     if (category === 'All') return data;
