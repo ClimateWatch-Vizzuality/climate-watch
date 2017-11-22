@@ -24,6 +24,7 @@ class CountryNdcOverview extends PureComponent {
         />
       );
     }
+
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -40,7 +41,9 @@ class CountryNdcOverview extends PureComponent {
                       'Overview'
                     )
                   }
-                  description={values.indc_summary[0].value}
+                  description={
+                    values.indc_summary[0] && values.indc_summary[0].value
+                  }
                   textColumns={textColumns}
                 />
                 {actions && (
@@ -67,7 +70,7 @@ class CountryNdcOverview extends PureComponent {
               <div className={styles.cards}>
                 <Card title="GHG Target">
                   <div className={styles.cardContent}>
-                    {values.ghg_target_type.length ? (
+                    {values && values.ghg_target_type ? (
                       <div>
                         <span className={styles.metaTitle}>Target type</span>
                         <p
@@ -93,7 +96,7 @@ class CountryNdcOverview extends PureComponent {
                 </Card>
                 <Card title="Non-GHG Target">
                   <div className={styles.cardContent}>
-                    {values.non_ghg_target.length ? (
+                    {values && values.non_ghg_target ? (
                       <p
                         className={styles.targetText}
                         dangerouslySetInnerHTML={{
@@ -108,7 +111,7 @@ class CountryNdcOverview extends PureComponent {
                 </Card>
                 <Card title="Sectoral coverage">
                   <div className={styles.cardContent}>
-                    {values.coverage_sectors_short.length ? (
+                    {values && values.coverage_sectors_short ? (
                       <p
                         className={styles.targetText}
                         dangerouslySetInnerHTML={{

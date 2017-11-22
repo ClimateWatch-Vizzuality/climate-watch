@@ -106,9 +106,8 @@ function getFiltersParsed(props) {
 class GhgEmissionsContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const { sourceSelected, breakSelected, filtersSelected } = props;
-    const hasValues =
-      sourceSelected && breakSelected && filtersSelected.length > 0;
+    const { sourceSelected, breakSelected } = props;
+    const hasValues = sourceSelected && breakSelected;
     if (hasValues) {
       const filters = getFiltersParsed(props);
       props.fetchGhgEmissionsData(filters);
@@ -124,13 +123,15 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleSourceChange = category => {
-    this.updateUrlParam({ name: 'source', value: category.value }, true);
+    this.updateUrlParam([{ name: 'source', value: category.value }]);
   };
 
   handleBreakByChange = breakBy => {
+    const { versionSelected } = this.props;
     const params = [
       { name: 'source', value: this.props.sourceSelected.value },
-      { name: 'breakBy', value: breakBy.value }
+      { name: 'breakBy', value: breakBy.value },
+      { name: 'version', value: versionSelected.value }
     ];
     this.updateUrlParam(params, true);
   };
@@ -168,22 +169,11 @@ class GhgEmissionsContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params, clear));
   }
 
-  handleRemoveTag = tagData => {
-    const { filtersSelected } = this.props;
-    const newFilters = [];
-    filtersSelected.forEach(filter => {
-      if (filter.label !== tagData.label) {
-        newFilters.push(filter.value);
-      }
-    });
-    this.updateUrlParam({ name: 'filter', value: newFilters.toString() });
-  };
-
   handleInfoClick = () => {
     const { source } = this.props.sourceSelected;
     if (source) {
       this.props.setModalMetadata({
-        slug: source,
+        slugs: source,
         open: true
       });
     }
@@ -196,7 +186,6 @@ class GhgEmissionsContainer extends PureComponent {
       handleVersionChange: this.handleVersionChange,
       handleBreakByChange: this.handleBreakByChange,
       handleFilterChange: this.handleFilterChange,
-      handleRemoveTag: this.handleRemoveTag,
       handleInfoClick: this.handleInfoClick
     });
   }
@@ -207,6 +196,7 @@ GhgEmissionsContainer.propTypes = {
   location: PropTypes.object.isRequired,
   breakSelected: PropTypes.object,
   sourceSelected: PropTypes.object,
+  versionSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
   fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array

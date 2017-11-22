@@ -1,7 +1,11 @@
 @import '~styles/layout.scss';
 
+$min-height: 450px;
+
 .wrapper {
   border-bottom: solid 1px $theme-border;
+  min-height: 450px;
+  padding-bottom: 50px;
 }
 
 .col4 {
@@ -26,21 +30,9 @@
   padding-top: 35px;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  margin-bottom: 50px;
-}
-
-.tag {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
 .chartWrapper {
   position: relative;
-  min-height: 450px;
+  min-height: $min-height;
 }
 
 .loader {
@@ -52,9 +44,5 @@
 }
 
 .noContent {
-  min-height: 450px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
+  min-height: $min-height;
 }

@@ -4,7 +4,7 @@ module Api
       class RegionsController < ApiController
         def index
           regions = Location.where(
-            location_type: 'REGION',
+            location_type: ['REGION', 'GROUP'],
             show_in_cw: true
           ).includes(:members).order(:wri_standard_name)
 

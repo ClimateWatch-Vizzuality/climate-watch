@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import cx from 'classnames';
 
 import Button from 'components/button';
 import Icon from 'components/icon';
@@ -9,9 +10,9 @@ import iconLink from 'assets/icons/dropdown-arrow.svg';
 import styles from './result-card-styles.scss';
 
 const ResultCard = props => {
-  const { result, search } = props;
+  const { result, search, className } = props;
   return (
-    <div className={styles.resultCard}>
+    <div className={cx(styles.resultCard, className)}>
       <div className={styles.header}>
         <h4 className={styles.title}>{result.location.name}</h4>
         <span className={styles.count}>{result.matches.length}</span>
@@ -40,7 +41,8 @@ const ResultCard = props => {
 
 ResultCard.propTypes = {
   result: PropTypes.object,
-  search: PropTypes.object
+  search: PropTypes.object,
+  className: PropTypes.string
 };
 
 export default ResultCard;

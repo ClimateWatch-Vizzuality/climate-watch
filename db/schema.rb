@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109140033) do
+ActiveRecord::Schema.define(version: 20171121155026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20171109140033) do
     t.text "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order"
     t.index ["category_type_id"], name: "index_indc_categories_on_category_type_id"
     t.index ["parent_id"], name: "index_indc_categories_on_parent_id"
     t.index ["slug", "category_type_id"], name: "index_indc_categories_on_slug_and_category_type_id", unique: true
@@ -106,6 +107,7 @@ ActiveRecord::Schema.define(version: 20171109140033) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order"
     t.index ["slug"], name: "index_indc_indicators_on_slug", unique: true
     t.index ["source_id"], name: "index_indc_indicators_on_source_id"
   end

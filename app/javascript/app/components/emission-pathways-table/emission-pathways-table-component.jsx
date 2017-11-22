@@ -30,7 +30,7 @@ class EmissionPathwaysTable extends PureComponent {
         defaultColumns={defaultColumns}
       />
     ) : (
-      <NoContent message={noContentMsg} />
+      <NoContent className={styles.noContent} message={noContentMsg} icon />
     );
   }
 
