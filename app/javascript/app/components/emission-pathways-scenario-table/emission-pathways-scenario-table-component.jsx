@@ -32,15 +32,13 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
           </li>
         </div>
         <div className={styles.col4}>
-          {categories && (
-            <Dropdown
-              label="Category"
-              placeholder="Select a category"
-              options={categories}
-              onValueChange={handleCategoryChange}
-              value={selectedCategory}
-            />
-          )}
+          <Dropdown
+            label="Category"
+            placeholder="Select a category"
+            options={categories}
+            onValueChange={handleCategoryChange}
+            value={selectedCategory}
+          />
           <Search
             input={query}
             theme={darkSearch}

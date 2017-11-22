@@ -8,8 +8,6 @@ const getQuery = state => deburrUpper(state.query) || '';
 const getCategorySelected = state => state.categorySelected || null;
 const getData = state =>
   (!isEmpty(state.espScenariosData) ? state.espScenariosData : null);
-const getIndicatorsData = state =>
-  (isEmpty(state.espIndicatorsData) ? state.espIndicatorsData : null);
 
 const getIdData = createSelector([getData, getId], (data, id) => {
   if (!data || !id) return null;
@@ -22,9 +20,9 @@ const getIndicatorIds = createSelector(getIdData, data => {
 });
 
 const scenarioIndicatorsData = createSelector(
-  [getIndicatorsData, getIndicatorIds],
+  [state => state.espIndicatorsData, getIndicatorIds],
   (indicatorsData, ids) => {
-    if (!ids || !indicatorsData || isEmpty(ids)) return null;
+    if (!ids || isEmpty(indicatorsData) || isEmpty(ids)) return null;
     return indicatorsData.filter(i => i.id) || null;
   }
 );
