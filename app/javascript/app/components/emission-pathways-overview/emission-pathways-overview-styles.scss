@@ -1,5 +1,10 @@
 @import '~styles/layout.scss';
 
+.wrapper {
+  border-bottom: solid 1px $theme-border;
+  padding-bottom: 30px;
+}
+
 .col5 {
   @extend %grid;
 
