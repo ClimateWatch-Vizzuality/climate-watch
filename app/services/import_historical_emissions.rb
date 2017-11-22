@@ -16,18 +16,6 @@ class ImportHistoricalEmissions
 
   private
 
-  def read_from_s3(file_name)
-    bucket_name = Rails.application.secrets.s3_bucket_name
-    s3 = Aws::S3::Client.new
-    begin
-      file = s3.get_object(bucket: bucket_name, key: file_name)
-    rescue Aws::S3::Errors::NoSuchKey
-      Rails.logger.error "File #{file_name} not found in #{bucket_name}"
-      return
-    end
-    file.body.read
-  end
-
   def cleanup
     HistoricalEmissions::DataSource.delete_all
     HistoricalEmissions::Sector.delete_all

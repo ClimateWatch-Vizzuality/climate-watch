@@ -51,7 +51,7 @@ class SearchPage extends PureComponent {
             </div>
           </div>
         </Header>
-        <div className={cx(layout.content, styles.contentCols)}>
+        <div className={cx(styles.contentCols)}>
           <div className={styles.resultsList}>
             {loading && <Loading light className={styles.loader} />}
             {!results &&
@@ -60,13 +60,14 @@ class SearchPage extends PureComponent {
               !loading &&
               results.map(result => (
                 <ResultCard
+                  className={styles.resultCard}
                   key={result.location.iso_code3}
                   result={result}
                   search={search}
                 />
               ))}
           </div>
-          <Sticky>
+          <Sticky className={styles.map} activeClass={styles.stickyMap}>
             <NDCSearchMap />
           </Sticky>
         </div>

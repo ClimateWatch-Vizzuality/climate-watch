@@ -32,7 +32,7 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
                 id: column.value
               }}
               onRemove={handleRemove}
-              canRemove
+              canRemove={config.columns.y.length > 1}
             />
           ))}
         {dataOptions &&

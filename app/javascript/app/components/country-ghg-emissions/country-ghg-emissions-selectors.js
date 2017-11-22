@@ -5,8 +5,9 @@ import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
 import orderBy from 'lodash/orderBy';
-import { CALCULATION_OPTIONS } from 'app/data/constants';
-
+import flatten from 'lodash/flatten';
+import sumBy from 'lodash/sumBy';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -15,44 +16,15 @@ import {
   sortLabelByAlpha,
   getColorPalette
 } from 'utils/graphs';
+import {
+  CALCULATION_OPTIONS,
+  DEFAULT_AXES_CONFIG,
+  ALLOWED_SECTORS_BY_SOURCE,
+  DATA_SCALE
+} from 'data/constants';
 
 // constants needed for data parsing
-const DATA_SCALE = 1000000;
-
 const BASE_COLORS = ['#25597C', '#DFE9ED'];
-
-const AXES_CONFIG = {
-  xBottom: {
-    name: 'Year',
-    unit: 'date',
-    format: 'YYYY'
-  },
-  yLeft: {
-    name: 'Emissions',
-    unit: 'CO<sub>2</sub>e',
-    format: 'number'
-  }
-};
-
-const INCLUDED_SECTORS = {
-  CAIT: ['Energy', 'Industrial Processes', 'Agriculture', 'Waste'],
-  PIK: [
-    'Energy',
-    'Agriculture',
-    'Waste',
-    'Solvent sector',
-    'Industrial process',
-    'Other'
-  ],
-  UNFCCC: [
-    'Energy',
-    'Industrial Processes',
-    'Solvent and Other Product Use',
-    'Agriculture',
-    'Waste',
-    'Other'
-  ]
-};
 
 const options = Object.keys(CALCULATION_OPTIONS).map(
   calculationKey => CALCULATION_OPTIONS[calculationKey]
@@ -132,14 +104,24 @@ export const getVersionSelected = createSelector(
   }
 );
 
+export const getAllowedSectors = createSelector(
+  [getSourceSelected, getVersionSelected],
+  (source, version) => {
+    if (!source || !version) return null;
+    if (source.label === 'UNFCCC') {
+      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
+    }
+    return ALLOWED_SECTORS_BY_SOURCE[source.label];
+  }
+);
+
 // Filters selector
 export const getFilterOptions = createSelector(
-  [getMeta, getSourceSelected],
-  (meta, sourceSelected) => {
-    if (!sourceSelected || isEmpty(meta)) return [];
+  [getMeta, getAllowedSectors],
+  (meta, sectorsAllowed) => {
+    if (!sectorsAllowed || isEmpty(meta)) return [];
     const filteredSelected = meta.sector.filter(
-      filter =>
-        INCLUDED_SECTORS[sourceSelected.label].indexOf(filter.label) > -1
+      filter => sectorsAllowed.indexOf(filter.label) > -1
     );
     return sortLabelByAlpha(filteredSelected);
   }
@@ -163,31 +145,38 @@ export const getFiltersSelected = createSelector(
 
 // get selector defaults
 export const getSelectorDefaults = createSelector(
-  [getSources, getSourceSelected],
-  (sources, sourceSelected) => {
-    if (!sources || !sources.length || !sourceSelected) return {};
-    const sourceData = sources.find(d => d.value === sourceSelected.value);
-    return {
-      sector: sourceData.sector[0],
-      gas: sourceData.gas[0],
-      source: sources[0].value
-    };
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta || isEmpty(meta)) return null;
+    return getGhgEmissionDefaults(sourceSelected.label, meta);
   }
 );
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getSourceSelected, getFiltersSelected],
-  (data, sourceSelected, filtersSelected) => {
-    if (!data || !data.length || !filtersSelected) return [];
-    const filters = filtersSelected.map(f => f.label);
-    return sortEmissionsByValue(
-      data.filter(
-        d =>
-          INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >=
-            0 && filters.indexOf(d.sector.trim()) > -1
-      )
+  [getData, getSourceSelected, getCalculationSelected, getFiltersSelected],
+  (data, sourceSelected, calculation, filters) => {
+    if (!data || !data.length) return [];
+    const filteredData = sortEmissionsByValue(
+      data.filter(d => filters.map(f => f.label).indexOf(d.sector.trim()) >= 0)
     );
+    if (calculation.value !== 'ABSOLUTE_VALUE') {
+      const dataGrouped = groupBy(
+        flatten(filteredData.map(d => d.emissions)),
+        'year'
+      );
+      const dataSummed = Object.keys(dataGrouped).map(year => ({
+        year: parseInt(year, 10),
+        value: sumBy(dataGrouped[year], 'value')
+      }));
+      const compressedData = {
+        ...filteredData[0],
+        sector: 'Total',
+        emissions: dataSummed
+      };
+      return [compressedData];
+    }
+    return filteredData;
   }
 );
 
@@ -303,7 +292,7 @@ export const getChartConfig = createSelector(
       getColorPalette(BASE_COLORS, yColumnsChecked.length)
     );
     const tooltip = getTooltipConfig(yColumnsChecked);
-    let unit = AXES_CONFIG.yLeft.unit;
+    let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
     if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
       unit = `${unit}/ million $ GDP`;
     } else if (
@@ -312,9 +301,9 @@ export const getChartConfig = createSelector(
       unit = `${unit} per capita`;
     }
     const axes = {
-      ...AXES_CONFIG,
+      ...DEFAULT_AXES_CONFIG,
       yLeft: {
-        ...AXES_CONFIG.yLeft,
+        ...DEFAULT_AXES_CONFIG.yLeft,
         unit
       }
     };

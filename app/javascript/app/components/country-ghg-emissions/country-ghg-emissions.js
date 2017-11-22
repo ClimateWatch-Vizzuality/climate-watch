@@ -68,9 +68,7 @@ function getFiltersParsed(props) {
   const filter = {};
   filter.location = props.iso;
   filter.gas = selectorDefaults.gas;
-  filter.source = sourceSelected
-    ? sourceSelected.value
-    : selectorDefaults.source;
+  filter.source = sourceSelected.value || null;
   return filter;
 }
 
@@ -96,7 +94,8 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
     if (source) {
       this.props.setModalMetadata({
-        slug: source,
+        slugs: [source, 'ndc_quantification'],
+        customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
         open: true
       });
     }

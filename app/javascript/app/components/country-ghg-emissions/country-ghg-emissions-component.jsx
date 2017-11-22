@@ -30,7 +30,6 @@ class CountryGhgEmissions extends PureComponent {
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
-
     return (
       <div className={styles.grid}>
         <div className={styles.header}>
