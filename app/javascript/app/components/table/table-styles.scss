@@ -37,4 +37,13 @@
       font-weight: $font-weight-bold;
     }
   }
+
+  a {
+    color: $theme-color;
+    word-wrap: break-word;
+    background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
+    background-position: 0 1.07em;
+    background-repeat: repeat-x;
+    background-size: 10px 2px;
+  }
 }

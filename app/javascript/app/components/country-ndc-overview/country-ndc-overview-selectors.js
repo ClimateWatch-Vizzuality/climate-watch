@@ -5,7 +5,11 @@ const getValues = state => (state ? state.values : null);
 
 export const getValuesGrouped = createSelector(getValues, values => {
   if (!values || !values.length) return null;
-  return groupBy(values, 'slug');
+  const groupedValues = groupBy(values, 'slug');
+  Object.keys(groupedValues).forEach(key => {
+    if (!groupedValues[key].length) groupedValues[key] = null;
+  });
+  return groupedValues;
 });
 
 export default {

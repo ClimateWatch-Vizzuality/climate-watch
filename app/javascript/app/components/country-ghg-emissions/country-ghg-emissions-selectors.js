@@ -5,8 +5,9 @@ import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
 import orderBy from 'lodash/orderBy';
-import { CALCULATION_OPTIONS } from 'app/data/constants';
-
+import flatten from 'lodash/flatten';
+import sumBy from 'lodash/sumBy';
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -15,51 +16,15 @@ import {
   sortLabelByAlpha,
   getColorPalette
 } from 'utils/graphs';
-import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
+import {
+  CALCULATION_OPTIONS,
+  DEFAULT_AXES_CONFIG,
+  ALLOWED_SECTORS_BY_SOURCE,
+  DATA_SCALE
+} from 'data/constants';
 
 // constants needed for data parsing
-const DATA_SCALE = 1000000;
-
 const BASE_COLORS = ['#25597C', '#DFE9ED'];
-
-const AXES_CONFIG = {
-  xBottom: {
-    name: 'Year',
-    unit: 'date',
-    format: 'YYYY'
-  },
-  yLeft: {
-    name: 'Emissions',
-    unit: 'CO<sub>2</sub>e',
-    format: 'number'
-  }
-};
-
-const INCLUDED_SECTORS = {
-  CAIT: [
-    'Energy',
-    'Industrial Processes',
-    'Agriculture',
-    'Waste',
-    'Bunker Fuels'
-  ],
-  PIK: [
-    'Energy',
-    'Agriculture',
-    'Waste',
-    'Solvent sector',
-    'Industrial process',
-    'Other'
-  ],
-  UNFCCC: [
-    'Energy',
-    'Industrial Processes',
-    'Solvent and Other Product Use',
-    'Agriculture',
-    'Waste',
-    'Other'
-  ]
-};
 
 const options = Object.keys(CALCULATION_OPTIONS).map(
   calculationKey => CALCULATION_OPTIONS[calculationKey]
@@ -174,22 +139,47 @@ export const getFiltersSelected = createSelector(
 export const getSelectorDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
-    if (!sourceSelected || !meta) return null;
+    if (!sourceSelected || !meta || isEmpty(meta)) return null;
     return getGhgEmissionDefaults(sourceSelected.label, meta);
+  }
+);
+
+export const getAllowedSectors = createSelector(
+  [getSourceSelected, getVersionSelected],
+  (source, version) => {
+    if (!source || !version) return null;
+    if (source.label === 'UNFCCC') {
+      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
+    }
+    return ALLOWED_SECTORS_BY_SOURCE[source.label];
   }
 );
 
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getSourceSelected],
-  (data, sourceSelected) => {
+  [getData, getSourceSelected, getCalculationSelected, getAllowedSectors],
+  (data, sourceSelected, calculation, sectorsAllowed) => {
     if (!data || !data.length) return [];
-    return sortEmissionsByValue(
-      data.filter(
-        d =>
-          INCLUDED_SECTORS[sourceSelected.label].indexOf(d.sector.trim()) >= 0
-      )
+    const filteredData = sortEmissionsByValue(
+      data.filter(d => sectorsAllowed.indexOf(d.sector.trim()) >= 0)
     );
+    if (calculation.value !== 'ABSOLUTE_VALUE') {
+      const dataGrouped = groupBy(
+        flatten(filteredData.map(d => d.emissions)),
+        'year'
+      );
+      const dataSummed = Object.keys(dataGrouped).map(year => ({
+        year: parseInt(year, 10),
+        value: sumBy(dataGrouped[year], 'value')
+      }));
+      const compressedData = {
+        ...filteredData[0],
+        sector: 'Total',
+        emissions: dataSummed
+      };
+      return [compressedData];
+    }
+    return filteredData;
   }
 );
 
@@ -305,7 +295,7 @@ export const getChartConfig = createSelector(
       getColorPalette(BASE_COLORS, yColumnsChecked.length)
     );
     const tooltip = getTooltipConfig(yColumnsChecked);
-    let unit = AXES_CONFIG.yLeft.unit;
+    let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
     if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
       unit = `${unit}/ million $ GDP`;
     } else if (
@@ -314,9 +304,9 @@ export const getChartConfig = createSelector(
       unit = `${unit} per capita`;
     }
     const axes = {
-      ...AXES_CONFIG,
+      ...DEFAULT_AXES_CONFIG,
       yLeft: {
-        ...AXES_CONFIG.yLeft,
+        ...DEFAULT_AXES_CONFIG.yLeft,
         unit
       }
     };

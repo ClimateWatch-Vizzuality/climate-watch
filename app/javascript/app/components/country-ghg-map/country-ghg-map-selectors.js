@@ -16,7 +16,7 @@ const getIso = state => state.iso;
 const getData = state => state.data;
 const isLoaded = state => state.loaded;
 const isLoading = state => state.loading;
-const getSources = state => state.meta.data_source || null;
+const getSources = state => (state.meta && state.meta.data_source) || null;
 const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
@@ -32,6 +32,7 @@ export const getCalculationSelected = createSelector(
 );
 
 const EXCLUDED_INDICATORS = ['WORLD'];
+
 const buckets = [
   '#fffffb',
   '#ffffd5',
@@ -43,6 +44,7 @@ const buckets = [
   '#1b4a75',
   '#163449'
 ];
+
 const steps = [0, 0.4, 0.8, 2, 4, 8, 16, 32, 64];
 let colorScale = null;
 function setScale(ranges) {
