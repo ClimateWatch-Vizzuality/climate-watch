@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
   getAnchorLinks,
-  getRouteLinks,
   getScenario,
   getId
 } from './emission-pathways-scenario-selectors';
@@ -20,7 +19,6 @@ const mapStateToProps = (state, { route, location, match }) => {
     route,
     query: location.search,
     anchorLinks: getAnchorLinks(espScenario),
-    routeLinks: getRouteLinks(espScenario),
     scenario: getScenario(espScenario),
     id: getId(espScenario)
   };

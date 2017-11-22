@@ -6,6 +6,7 @@ import Search from 'components/search';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
+import cx from 'classnames';
 import styles from './emission-pathways-scenario-table-styles.scss';
 
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
@@ -21,6 +22,11 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
     if (loading) return <Loading light className={styles.loader} />;
     return (
       <div>
+        <div className={cx(styles.tableMenu)}>
+          <li className={cx(styles.singleTitle, styles.active)}>
+            {'Indicators'}
+          </li>
+        </div>
         <div className={styles.col4}>
           <Search
             input={query}
