@@ -90,14 +90,6 @@ const partnershipWith = {
       }
     },
     {
-      link: 'http://www.wri.org/',
-      img: {
-        alt: 'WRI',
-        src: wriImage
-      },
-      description: 'WRI manages Climate Watch in collaboration with partners.'
-    },
-    {
       link: 'http://newsroom.unfccc.int/',
       img: {
         alt: 'UNFCCC',
