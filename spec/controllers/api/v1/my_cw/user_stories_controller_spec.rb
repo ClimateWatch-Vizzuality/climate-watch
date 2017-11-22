@@ -17,14 +17,18 @@ describe Api::V1::MyCw::UserStoriesController, type: :controller do
 
     describe 'GET index' do
       it 'returns a successful 200 response' do
-        get :index
-        expect(response).to be_success
+        VCR.use_cassette('user_token') do
+          get :index
+          expect(response).to be_success
+        end
       end
 
       it 'lists all known user stories' do
-        get :index
-        parsed_body = JSON.parse(response.body)
-        expect(parsed_body.length).to eq(3)
+        VCR.use_cassette('user_token') do
+          get :index
+          parsed_body = JSON.parse(response.body)
+          expect(parsed_body.length).to eq(3)
+        end
       end
     end
   end

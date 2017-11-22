@@ -14,15 +14,19 @@ describe Api::V1::MyCw::UsersController, type: :controller do
 
     describe 'GET show' do
       it 'returns a successful 200 response' do
-        get :current
-        expect(response).to be_success
+        VCR.use_cassette('user_token') do
+          get :current
+          expect(response).to be_success
+        end
       end
     end
 
     describe 'POST create' do
       it 'returns a successful 200 response' do
-        post :create, params: {user: {ct_id: 'AAAA'}}
-        expect(response).to be_success
+        VCR.use_cassette('user_token') do
+          post :create, params: {user: {ct_id: 'AAAA'}}
+          expect(response).to be_success
+        end
       end
     end
   end
