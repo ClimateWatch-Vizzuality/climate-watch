@@ -8,7 +8,7 @@ import {
   filteredDataByCategory,
   defaultColumns,
   getCategories,
-  getSelectedCategoryObject
+  getSelectedCategoryOption
 } from './emission-pathways-scenario-table-selectors';
 import Component from './emission-pathways-scenario-table-component';
 
@@ -17,10 +17,12 @@ const mapStateToProps = (state, { category, match, location }) => {
 
   const { id } = match.params;
   const espScenariosData = state.espScenarios && state.espScenarios.data;
+  const espIndicatorsData = state.espIndicators && state.espIndicators.data;
   const EspData = {
     categorySelected: search.category,
     query: search.search,
     espScenariosData,
+    espIndicatorsData,
     category,
     id
   };
@@ -29,7 +31,7 @@ const mapStateToProps = (state, { category, match, location }) => {
     data: filteredDataByCategory(EspData),
     defaultColumns: defaultColumns(EspData),
     categories: getCategories(EspData),
-    selectedCategory: getSelectedCategoryObject(EspData),
+    selectedCategory: getSelectedCategoryOption(EspData),
     query: search.search,
     loading: espScenariosData.loading
   };
@@ -43,7 +45,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
   handleCategoryChange = category => {
     this.updateUrlParam({
       name: 'category',
-      value: category.value
+      value: category && category.value
     });
   };
 

@@ -5,43 +5,60 @@ import { deburrUpper } from 'app/utils';
 
 const getId = state => state.id || null;
 const getQuery = state => deburrUpper(state.query) || '';
+const getCategorySelected = state => state.categorySelected || null;
 const getData = state =>
   (!isEmpty(state.espScenariosData) ? state.espScenariosData : null);
+const getIndicatorsData = state =>
+  (isEmpty(state.espIndicatorsData) ? state.espIndicatorsData : null);
 
 const getIdData = createSelector([getData, getId], (data, id) => {
   if (!data || !id) return null;
   return data.find(d => String(d.id) === id) || null;
 });
 
-const getIndicatorsData = createSelector(getIdData, data => {
+const getIndicatorIds = createSelector(getIdData, data => {
   if (!data) return null;
-  return data.indicators || null;
+  return data.indicators.map(i => i.id) || null;
 });
 
-export const getCategories = createSelector(getIndicatorsData, data => {
-  if (!data) return null;
-  return ['All']
-    .concat(uniq(data.map(i => i.category)))
-    .map(c => ({ value: c, label: c }));
-});
-
-const getSelectedCategory = createSelector(
-  [state => state.categorySelected, getCategories],
-  (selected, categories = []) => {
-    if (categories.length > 0) {
-      return selected || 'All';
-    }
-    return null;
+const scenarioIndicatorsData = createSelector(
+  [getIndicatorsData, getIndicatorIds],
+  (indicatorsData, ids) => {
+    if (!ids || !indicatorsData || isEmpty(ids)) return null;
+    return indicatorsData.filter(i => i.id) || null;
   }
 );
 
-export const getSelectedCategoryObject = createSelector(
-  getSelectedCategory,
-  selected => ({ value: selected, label: selected } || null)
+export const getCategories = createSelector(scenarioIndicatorsData, data => {
+  if (!data) return null;
+  return uniq(data.map(i => i.category.name || i.category)).map(c => ({
+    value: c,
+    label: c
+  }));
+});
+
+export const getSelectedCategoryOption = createSelector(
+  [getCategorySelected],
+  selected => (selected ? { value: selected, label: selected } : null)
 );
 
-export const filteredDataBySearch = createSelector(
-  [getIndicatorsData, getQuery],
+const flattenedDataAttributes = createSelector(
+  [scenarioIndicatorsData],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const attributesWithObjects = ['model', 'category', 'subcategory'];
+    return data.map(d => {
+      const flattenedD = d;
+      attributesWithObjects.forEach(a => {
+        flattenedD[a] = d[a] && d[a].name;
+      });
+      return flattenedD;
+    });
+  }
+);
+
+const filteredDataBySearch = createSelector(
+  [flattenedDataAttributes, getQuery],
   (data, query) => {
     if (!data) return null;
     if (!query) return data;
@@ -57,10 +74,10 @@ export const filteredDataBySearch = createSelector(
 );
 
 export const filteredDataByCategory = createSelector(
-  [filteredDataBySearch, getSelectedCategory],
+  [filteredDataBySearch, getCategorySelected],
   (data, category) => {
-    if (!data || !category) return null;
-    if (category === 'All') return data;
+    if (!data) return null;
+    if (!category) return data;
     return data.filter(indicator => indicator.category.indexOf(category) > -1);
   }
 );
@@ -76,5 +93,5 @@ export default {
   filteredDataByCategory,
   defaultColumns,
   getCategories,
-  getSelectedCategoryObject
+  getSelectedCategoryOption
 };

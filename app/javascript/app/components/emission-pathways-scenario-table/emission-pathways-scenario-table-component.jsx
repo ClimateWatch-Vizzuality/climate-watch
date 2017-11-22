@@ -35,11 +35,10 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
           {categories && (
             <Dropdown
               label="Category"
+              placeholder="Select a category"
               options={categories}
               onValueChange={handleCategoryChange}
               value={selectedCategory}
-              hideResetButton
-              plain
             />
           )}
           <Search
