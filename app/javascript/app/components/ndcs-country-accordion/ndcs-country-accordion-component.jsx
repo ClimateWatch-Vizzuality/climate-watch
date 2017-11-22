@@ -49,7 +49,7 @@ class NdcsCountryAccordion extends PureComponent {
                   ndcsData.length > 0 &&
                   ndcsData.map(
                     section =>
-                      (section.sectors.length > 0 ? (
+                      (section.sectors && section.sectors.length > 0 ? (
                         <Accordion
                           key={section.slug}
                           isChild
