@@ -18,3 +18,27 @@
 .uploadButton {
   grid-column-end: -1;
 }
+
+.noContent {
+  min-height: 475px;
+  position: relative;
+}
+
+.tableMenu {
+  display: flex;
+  color: $dark-gray;
+  font-size: $font-size-large;
+
+  li {
+    margin-right: 30px;
+    list-style: none;
+
+    &.singleTitle {
+      margin-top: 30px;
+    }
+
+    &.active {
+      color: $base-text;
+    }
+  }
+}

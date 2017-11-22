@@ -4,7 +4,6 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
-import { renderRoutes } from 'react-router-config';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
@@ -15,7 +14,7 @@ import styles from './emission-pathways-scenario-styles.scss';
 class EmissionPathwaysScenario extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route, routeLinks, anchorLinks, scenario, id } = this.props;
+    const { route, anchorLinks, scenario, id } = this.props;
     return (
       <div>
         <EspScenariosProvider />
@@ -49,11 +48,10 @@ class EmissionPathwaysScenario extends PureComponent {
                     id={section.hash}
                     className={cx(styles.sectionHash, styles[section.hash])}
                   >
-                    <section.component routeLinks={routeLinks} id={id} />
+                    <section.component id={id} />
                   </div>
                 </div>
               ))}
-            {renderRoutes(route.routes)}
           </div>
         )}
       </div>
@@ -64,7 +62,6 @@ class EmissionPathwaysScenario extends PureComponent {
 EmissionPathwaysScenario.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array.isRequired,
-  routeLinks: PropTypes.array.isRequired,
   id: PropTypes.string,
   scenario: PropTypes.object
 };

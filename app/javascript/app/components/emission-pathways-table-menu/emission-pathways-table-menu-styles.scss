@@ -20,6 +20,11 @@
 
   li {
     margin-right: 30px;
+    list-style: none;
+
+    &.singleTitle {
+      margin-top: 30px;
+    }
 
     &.active {
       color: $base-text;

@@ -336,14 +336,6 @@ export default [
             label: 'Indicators',
             anchor: true,
             nav: true,
-            component: EmissionPathwaysTableMenu
-          }
-        ],
-        routes: [
-          {
-            path: '/emission-pathways/scenarios/:id',
-            label: 'Indicators',
-            anchor: true,
             component: EmissionPathwaysScenarioTable
           }
         ]
