@@ -2,7 +2,7 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
-  filteredCategoryData,
+  flattenedModelData,
   defaultColumns
 } from './emission-pathways-model-table-selectors';
 import Component from './emission-pathways-model-table-component';
@@ -10,14 +10,18 @@ import Component from './emission-pathways-model-table-component';
 const mapStateToProps = (state, { category, match }) => {
   const { id } = match.params;
   const espModelsData = state.espModels && state.espModels.data;
+  const espIndicatorsData = state.espIndicators && state.espIndicators.data;
+  const espScenariosData = state.espScenarios && state.espScenarios.data;
   const EspData = {
+    espIndicatorsData,
+    espScenariosData,
     espModelsData,
     category,
     id
   };
 
   return {
-    data: filteredCategoryData(EspData),
+    data: flattenedModelData(EspData),
     defaultColumns: defaultColumns(EspData),
     category,
     loading: espModelsData.loading
