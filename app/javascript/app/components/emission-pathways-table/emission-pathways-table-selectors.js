@@ -13,23 +13,15 @@ export const getDefaultColumns = createSelector([getCategory], category => {
     case 'Models':
       return [
         'full_name',
-        'abbreviation',
-        'availability',
-        'current_version',
-        'license'
-      ];
-    case 'Scenarios':
-      return [
-        'name',
-        'category_abbreviation',
-        'category',
-        'geographic_coverage_country',
-        'geographic_coverage_region',
-        'purpose_or_objective',
+        'description',
+        'license',
+        'time_step',
         'time_horizon'
       ];
+    case 'Scenarios':
+      return ['name', 'category', 'description'];
     case 'Indicators':
-      return ['name', 'category', 'subcategory', 'definition', 'unit'];
+      return ['name', 'category', 'unit'];
     default:
       return null;
   }

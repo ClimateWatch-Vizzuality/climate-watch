@@ -4,33 +4,34 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
-import { renderRoutes } from 'react-router-config';
-import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
-import styles from './emission-pathways-model-styles.scss';
+import styles from './emission-pathways-scenario-styles.scss';
 
-class EmissionPathwaysModel extends PureComponent {
+class EmissionPathwaysScenario extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route, routeLinks, anchorLinks, model, id } = this.props;
+    const { route, anchorLinks, scenario, id } = this.props;
     return (
       <div>
-        <EspModelsProvider />
         <EspScenariosProvider />
         <EspIndicatorsProvider />
-        {model && (
+        {scenario && (
           <div>
             <Header route={route}>
               <div className={layout.content}>
                 <Intro
-                  title={model.full_name}
-                  description={model.description}
+                  title={scenario.name}
+                  description={scenario.description}
+                  button={{
+                    text: 'View model',
+                    link: `/emission-pathways/models/${scenario.model_id}`
+                  }}
                 />
               </div>
-              <Sticky activeClass="stickyEmissionsModel">
+              <Sticky activeClass="stickyEmissionsScenario">
                 <AnchorNav
                   links={anchorLinks}
                   className={layout.content}
@@ -43,10 +44,9 @@ class EmissionPathwaysModel extends PureComponent {
               route.sections.map(section => (
                 <div key={section.hash} className={styles.section}>
                   <div id={section.hash} className={styles.sectionHash} />
-                  <section.component routeLinks={routeLinks} id={id} />
+                  <section.component id={id} />
                 </div>
               ))}
-            {renderRoutes(route.routes)}
           </div>
         )}
       </div>
@@ -54,12 +54,11 @@ class EmissionPathwaysModel extends PureComponent {
   }
 }
 
-EmissionPathwaysModel.propTypes = {
+EmissionPathwaysScenario.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array.isRequired,
-  routeLinks: PropTypes.array.isRequired,
   id: PropTypes.string,
-  model: PropTypes.object
+  scenario: PropTypes.object
 };
 
-export default EmissionPathwaysModel;
+export default EmissionPathwaysScenario;
