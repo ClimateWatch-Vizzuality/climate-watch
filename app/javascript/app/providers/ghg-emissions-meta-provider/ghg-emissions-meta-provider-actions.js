@@ -1,7 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
-import upperFirst from 'lodash/upperFirst';
 
 const fetchEmissionsMetaInit = createAction('fetchEmissionsMetaInit');
 const fetchEmissionsMetaReady = createAction('fetchEmissionsMetaReady');
@@ -27,8 +26,8 @@ const fetchEmissionsMeta = createThunkAction(
                   value: item.id,
                   label:
                     key === 'location'
-                      ? item.wri_standard_name
-                      : upperFirst(item.name)
+                      ? item.wri_standard_name.trim()
+                      : item.name.trim()
                 };
                 if (key === 'location') {
                   newItem = {

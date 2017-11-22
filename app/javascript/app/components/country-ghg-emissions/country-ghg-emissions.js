@@ -90,7 +90,8 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
     if (source) {
       this.props.setModalMetadata({
-        slug: source,
+        slugs: [source],
+        customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
         open: true
       });
     }

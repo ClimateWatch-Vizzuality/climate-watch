@@ -27,7 +27,7 @@ const mapStateToProps = (state, { location }) => {
 class NdcSdgLinkagesTableContainer extends PureComponent {
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, param, clear));
+    history.push(getLocationParamUpdated(location, param, clear));
   }
 
   handleClickGoal = sdgNumber => {

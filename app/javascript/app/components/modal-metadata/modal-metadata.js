@@ -5,12 +5,17 @@ import actions from './modal-metadata-actions';
 import reducers, { initialState } from './modal-metadata-reducers';
 
 import ModalMetadataComponent from './modal-metadata-component';
-import { getModalTitle, getModalData } from './modal-metadata-selectors';
+import {
+  getModalTitle,
+  getTabTitles,
+  getModalData
+} from './modal-metadata-selectors';
 
 const mapStateToProps = ({ modalMetadata }) => ({
   isOpen: modalMetadata.isOpen,
   loading: modalMetadata.loading,
   title: getModalTitle(modalMetadata),
+  tabTitles: getTabTitles(modalMetadata),
   data: getModalData(modalMetadata)
 });
 
