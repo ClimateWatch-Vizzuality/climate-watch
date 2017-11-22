@@ -2,7 +2,7 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
-  flattenedModelData,
+  flattenedData,
   defaultColumns
 } from './emission-pathways-model-table-selectors';
 import Component from './emission-pathways-model-table-component';
@@ -21,7 +21,7 @@ const mapStateToProps = (state, { category, match }) => {
   };
 
   return {
-    data: flattenedModelData(EspData),
+    data: flattenedData(EspData),
     defaultColumns: defaultColumns(EspData),
     category,
     loading: espModelsData.loading

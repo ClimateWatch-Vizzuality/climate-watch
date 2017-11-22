@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
 import { deburrUpper } from 'app/utils';
+import remove from 'lodash/remove';
+import pick from 'lodash/pick';
+import { ESP_BLACKLIST } from 'data/constants';
 
 const getId = state => state.id || null;
 const getQuery = state => deburrUpper(state.query) || '';
@@ -40,23 +43,34 @@ export const getSelectedCategoryOption = createSelector(
   selected => (selected ? { value: selected, label: selected } : null)
 );
 
-const flattenedDataAttributes = createSelector(
+export const filterDataByBlackList = createSelector(
   [scenarioIndicatorsData],
   data => {
     if (!data || isEmpty(data)) return null;
-    const attributesWithObjects = ['model', 'category', 'subcategory'];
-    return data.map(d => {
-      const flattenedD = d;
-      attributesWithObjects.forEach(a => {
-        flattenedD[a] = d[a] && d[a].name;
-      });
-      return flattenedD;
-    });
+    const whiteList = remove(
+      Object.keys(data[0]),
+      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
+    );
+    return data.map(d => pick(d, whiteList));
   }
 );
 
+const flattenedData = createSelector([filterDataByBlackList], data => {
+  if (!data || isEmpty(data)) return null;
+  const attributesWithObjects = ['model', 'category', 'subcategory'];
+  return data.map(d => {
+    const flattenedD = d;
+    attributesWithObjects.forEach(a => {
+      if (Object.prototype.hasOwnProperty.call(d, a)) {
+        flattenedD[a] = d[a] && d[a].name;
+      }
+    });
+    return flattenedD;
+  });
+});
+
 const filteredDataBySearch = createSelector(
-  [flattenedDataAttributes, getQuery],
+  [flattenedData, getQuery],
   (data, query) => {
     if (!data) return null;
     if (!query) return data;

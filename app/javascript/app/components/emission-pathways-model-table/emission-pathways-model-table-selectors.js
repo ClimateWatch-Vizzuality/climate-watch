@@ -1,5 +1,8 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import remove from 'lodash/remove';
+import pick from 'lodash/pick';
+import { ESP_BLACKLIST } from 'data/constants';
 
 const getCategoryName = state =>
   (state.category && state.category.toLowerCase()) || null;
@@ -33,13 +36,27 @@ const getModelData = createSelector(
   }
 );
 
-export const flattenedModelData = createSelector([getModelData], data => {
+export const filterDataByBlackList = createSelector(
+  [getModelData, getCategoryName],
+  (data, category) => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data[0]),
+      n => ESP_BLACKLIST[category].indexOf(n) === -1
+    );
+    return data.map(d => pick(d, whiteList));
+  }
+);
+
+export const flattenedData = createSelector([filterDataByBlackList], data => {
   if (!data || isEmpty(data)) return null;
   const attributesWithObjects = ['model', 'category', 'subcategory'];
   return data.map(d => {
     const flattenedD = d;
     attributesWithObjects.forEach(a => {
-      flattenedD[a] = d[a] && d[a].name;
+      if (Object.prototype.hasOwnProperty.call(d, a)) {
+        flattenedD[a] = d[a] && d[a].name;
+      }
     });
     return flattenedD;
   });
@@ -54,6 +71,6 @@ export const defaultColumns = createSelector(getCategoryName, category => {
 });
 
 export default {
-  flattenedModelData,
+  flattenedData,
   defaultColumns
 };
