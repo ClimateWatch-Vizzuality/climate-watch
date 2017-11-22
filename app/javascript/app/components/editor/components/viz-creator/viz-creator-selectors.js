@@ -11,10 +11,8 @@ const filters = state => state && state.filters;
 
 const mergeViz = t => t.reduce((r, c) => r.concat([...visualisations(c)]), []);
 
-export const vizSelector = createSelector(
-  datasets,
-  dataset,
-  (sets, set) => vizTypes(find(sets, { id: set }))
+export const vizSelector = createSelector(datasets, dataset, (sets, set) =>
+  vizTypes(find(sets, { id: set }))
 );
 
 export const filtersSelector = createSelector(
