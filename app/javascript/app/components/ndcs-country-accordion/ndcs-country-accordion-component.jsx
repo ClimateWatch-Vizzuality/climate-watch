@@ -30,16 +30,17 @@ class NdcsCountryAccordion extends PureComponent {
       <div className={styles.wrapper}>
         {loading && <Loading light className={styles.loader} />}
         {!loading &&
-          (!ndcsData || !ndcsData.length) && (
-            <NoContent message={message} className={styles.noContent} />
+        (!ndcsData || !ndcsData.length) && (
+        <NoContent message={message} className={styles.noContent} />
           )}
-        {!loading && ndcsData &&
-          ndcsData.length > 0 && (
-            <div>
+        {!loading &&
+        ndcsData &&
+        ndcsData.length > 0 && (
+        <div>
               {ndcsData &&
-                ndcsData.length &&
-                category === 'sectoral_information' ? (
-                  <Accordion
+            ndcsData.length &&
+            category === 'sectoral_information' ? (
+              <Accordion
                     className={styles.accordion}
                     param="section"
                     data={ndcsData}

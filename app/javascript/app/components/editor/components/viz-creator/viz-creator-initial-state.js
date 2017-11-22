@@ -1,7 +1,9 @@
 export default {
-  loading: false,
-  datasets: {},
-  filters: {},
+  datasets: {
+    loading: false,
+    data: []
+  },
   dataset: null,
-  visualization: null
+  visualization: null,
+  filters: {}
 };

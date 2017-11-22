@@ -1,28 +1,15 @@
-  { "filters": {
-      "countries": [
-        { "name": "France"},
-        { "name": "Italy"},
-        { "name": "Spain"},
-        { "name": "Portugal"}
-      ],
-      "models": [
-        "GCAM",
-        "MODEL2"
-      ],
-      "scenarios": [
-        "Paris plus",
-        "Paris",
-        "Brussels"
-      ],
-      "categories": ["buildings", "roads"],
-      "subcategories": ["electricity generation", "domestic waste"],
-      "indicators": ["all"]
-    },
-    "datasets": {
-    "emission pathways": {
-      "visualizations": {
-        "Focus on the emissions of one country": [{
-            "title": "See the change in a country's emmision's for a specified indicator for a specified indicator across multiple scenarios",
+[
+  {
+    "id": "zp89bjdm",
+    "name": "emission pathways",
+    "viz-types": [
+      {
+        "id": "m8dv72zm",
+        "name": "Focus on the emissions of one country",
+        "visualisations": [
+          {
+            "id": "ndpe7e7v",
+            "name": "See the change in a country's emmision's for a specified indicator for a specified indicator across multiple scenarios",
             "tags": [
               "Single country",
               "Single indicator",
@@ -31,110 +18,135 @@
             ],
             "image": "",
             "filters": [
-              "countries",
-              "models",
-              "scenarios",
-              "categories",
-              "subcategories",
-              "indicators"
+              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": true, "selected": "all", "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
+              {"name": "years", "multi": true, "selected": "all", "active": false }
             ]
-          },{
-          "title": "See the change in a country's emmision's for a specified indicator for a specified indicator and scenario",
-          "tags": [
-            "Single country",
-            "Multiple indicator",
-            "Single scenario",
-            "Time series"
-          ],
-          "image": "",
-          "filters": [
-            "countries",
-            "models",
-            "scenarios",
-            "categories",
-            "subcategories",
-            "indicators"
-          ]
-        },
-        {
-          "title": "See a country’s relative emissions across multiple indicators for a specified scenario",
-          "tags": [
-            "Single country",
-            "Multiple indicators",
-            "Single scenario",
-            "Single year"
-          ],
-          "image": "",
-          "filters": [
-            "countries",
-            "models",
-            "scenarios",
-            "categories",
-            "subcategories",
-            "indicators"
-          ]
-        }
-      ],
-      "Compare countries’ emissions": [
-        {
-          "title": "Compare changes per indicator across countries for a specified scenario",
-          "tags": [
-            "Multiple countries",
-            "Multiple indicators",
-            "Single scenario",
-            "Time series"
-          ],
-          "image": "",
-          "filters": [
-            "countries",
-            "models",
-            "scenarios",
-            "categories",
-            "subcategories",
-            "indicators"
-          ]
-        },
-        {
-          "title": "Compare countries relative emissions for a specified indicator and scenario",
-          "tags": [
-            "Multiple countries",
-            "Single indicator",
-            "Single scenario",
-            "Single year"
-          ],
-          "image": "",
-          "filters": [
-            "countries",
-            "models",
-            "scenarios",
-            "categories",
-            "subcategories",
-            "indicators"
-          ]
-        },
-        {
-          "title": "Compare countries stacked emissions across a specifed indicator category",
-          "tags": [
-            "Multiple countries",
-            "Multiple indicators",
-            "Single scenario",
-            "Single year"
-          ],
-          "image": "",
-          "filters": [
-            "countries",
-            "models",
-            "scenarios",
-            "categories",
-            "subcategories",
-            "indicators"
-          ]
-        }
-      ]
-    }
-    },
-    "NDC content": {},
-    "NDC-SDG linkages": {},
-    "historical GHG emissions": {}
+          },
+          {
+            "id": "b4x8g4wx",
+            "name": "See the change in a country's emmision's for a specified indicator for a specified indicator and scenario",
+            "tags": [
+              "Single country",
+              "Multiple indicator",
+              "Single scenario",
+              "Time series"
+            ],
+            "image": "",
+            "filters": [
+              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "years", "multi": true, "selected": "all", "active": false }
+            ]
+          },
+          {
+            "id": "3zpj65qq",
+            "name": "See a country’s relative emissions across multiple indicators for a specified scenario",
+            "tags": [
+              "Single country",
+              "Multiple indicators",
+              "Single scenario",
+              "Single year"
+            ],
+            "image": "",
+            "filters": [
+              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "type": "multiselectselect", "selected": "all", "active": true},
+              {"name": "years", "multi": false, "selected": "last", "active": true }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Compare locations’ emissions",
+        "id": "4vzy7k28",
+        "visualisations": [
+          {
+            "id": "8dg8wny5",
+            "name": "Compare changes per indicator across locations for a specified scenario",
+            "tags": [
+              "Multiple locations",
+              "Multiple indicators",
+              "Single scenario",
+              "Time series"
+            ],
+            "image": "",
+            "filters": [
+              {"name": "locations", "multi": true, "selected": "top-10", "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
+              {"name": "years", "multi": true, "selected": "all", "active": false }
+            ]
+          },
+          {
+            "id": "r3zy99ww",
+            "name": "Compare locations relative emissions for a specified indicator and scenario",
+            "tags": [
+              "Multiple locations",
+              "Single indicator",
+              "Single scenario",
+              "Single year"
+            ],
+            "image": "",
+            "filters": [
+              {"name": "locations", "multi": true, "selected": "top-10", "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
+              {"name": "years", "multi": false, "selected": "last", "active": true }
+            ]
+          },
+          {
+            "id": "8zmkjj28",
+            "name": "Compare locations stacked emissions across a specifed indicator category",
+            "tags": [
+              "Multiple locations",
+              "Multiple indicators",
+              "Single scenario",
+              "Single year"
+            ],
+            "image": "",
+            "filters": [
+              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "years", "multi": false, "selected": "last", "active": true }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "32pda52d",
+    "name": "NDC content"
+  },
+  {
+    "id": "rjn2523z",
+    "name": "NDC-SDG linkages"
+  },
+  {
+    "id": "a4g2vz65",
+    "name": "historical GHG emissions"
   }
-}
+]

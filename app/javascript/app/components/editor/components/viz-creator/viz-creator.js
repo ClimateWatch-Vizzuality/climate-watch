@@ -11,13 +11,16 @@ import { vizSelector, filtersSelector } from './viz-creator-selectors';
 
 class VizCreator extends Component {
   static propTypes = {
-    fetchDatasets: PropTypes.func.isRequired
+    fetchDatasets: PropTypes.func.isRequired,
+    fetchLocations: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
     props.fetchDatasets();
+    props.fetchLocations();
   }
+
   render() {
     return createElement(VizCreatorComponent, this.props);
   }
@@ -25,8 +28,8 @@ class VizCreator extends Component {
 
 const mapStateToProps = ({ vizCreator }) => ({
   ...vizCreator,
-  visualizations: vizSelector(vizCreator),
-  filters: filtersSelector(vizCreator)
+  visualisations: vizSelector(vizCreator),
+  selectors: filtersSelector(vizCreator)
 });
 
 export { actions, reducers, initialState };

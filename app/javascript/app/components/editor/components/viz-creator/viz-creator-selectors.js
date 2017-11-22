@@ -1,24 +1,26 @@
 import { createSelector } from 'reselect';
-import map from 'lodash/map';
+import find from 'lodash/find';
 
-export const datasets = state => state.datasets;
+export const datasets = state => state.datasets.data;
 export const dataset = state => state.dataset;
-export const visualizations = state => state.visualizations;
-export const visualization = state => state.visualization;
+export const vizTypes = state => state && state['viz-types'];
+export const visualisation = state => state && state.visualisation;
+
+const visualisations = state => state && state.visualisations;
+const filters = state => state && state.filters;
+
+const mergeViz = t => t.reduce((r, c) => r.concat([...visualisations(c)]), []);
 
 export const vizSelector = createSelector(
   datasets,
   dataset,
-  (sets, set) => sets[set] && visualizations(sets[set])
+  (sets, set) => vizTypes(find(sets, { id: set }))
 );
 
 export const filtersSelector = createSelector(
   vizSelector,
-  visualization,
-  (d, viz) =>
-    d &&
-    map(
-      d[viz],
-      dd => console.log({ ...dd, name: dd.title }) || { ...dd, name: dd.title }
-    )
+  visualisation,
+  (d, viz) => d && filters(find(mergeViz(d), { id: viz }))
 );
+
+// .filter(dd => find(dd.visualisations, { id: viz }))[0]

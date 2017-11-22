@@ -1,5 +1,15 @@
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
+import Hashids from 'hashids';
+
+export const assign = (o, ...args) => Object.assign({}, o, ...args);
+
+const hd = new Hashids();
+export const hashId = string => hd.encode(String(string)
+  .split('')
+  .map(s => s.charCodeAt(0))
+  .join('')
+);
 
 export function deburrUpper(string) {
   return toUpper(deburr(string));

@@ -78,22 +78,27 @@ class GhgEmissions extends PureComponent {
           />
         </div>
         <div className={styles.chartWrapper}>
-          {loading && (
-            <Loading light className={styles.loader} />
-          )}
+          {loading && <Loading light className={styles.loader} />}
           {!loading &&
-            (!data || !data.length) && (
-              <NoContent
-                message={filtersSelected && filtersSelected.length ? 'No data available' : 'No data selected'}
+          (!data || !data.length) && (
+          <NoContent
+                message={
+                  filtersSelected && filtersSelected.length ? (
+                    'No data available'
+                  ) : (
+                    'No data selected'
+                  )
+                }
                 className={styles.noContent}
                 icon
               />
             )}
-          {data && config &&
-            <div>
-              <ChartLine config={config} data={data} height={500} />
-              <div className={styles.tags}>
-                {config.columns &&
+          {data &&
+          config && (
+          <div>
+                <ChartLine config={config} data={data} height={500} />
+                <div className={styles.tags}>
+              {config.columns &&
                   config.columns.y.map(column => (
                     <Tag
                       className={styles.tag}
@@ -107,9 +112,9 @@ class GhgEmissions extends PureComponent {
                       onRemove={handleRemoveTag}
                     />
                   ))}
-              </div>
             </div>
-          }
+              </div>
+            )}
         </div>
       </div>
     );
