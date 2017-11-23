@@ -118,6 +118,12 @@ export const DEFAULT_AXES_CONFIG = {
   }
 };
 
+export const ESP_BLACKLIST = {
+  models: ['id', 'scenarios', 'indicators'],
+  scenarios: ['id', 'model_id', 'indicators'],
+  indicators: ['id', 'parent_id']
+};
+
 export default {
   CALCULATION_OPTIONS,
   TOP_EMITTERS,
@@ -125,5 +131,6 @@ export default {
   DEFAULT_EMISSIONS_SELECTIONS,
   CHART_COLORS,
   DEFAULT_AXES_CONFIG,
-  DATA_SCALE
+  DATA_SCALE,
+  ESP_BLACKLIST
 };
