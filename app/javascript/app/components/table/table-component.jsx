@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
+import Chart from 'components/charts/chart';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
@@ -10,6 +11,20 @@ import { NavLink } from 'react-router-dom';
 import styles from './table-styles.scss';
 
 class SimpleTable extends PureComponent {
+  renderTrendLine(data) {
+    const { trendLineConfig } = this.props;
+    return (
+      <Chart
+        className={styles.graph}
+        type={'line'}
+        loading={false} // Add loading
+        config={trendLineConfig}
+        data={data}
+        height={30}
+      />
+    );
+  }
+
   render() {
     const {
       data,
@@ -23,8 +38,10 @@ class SimpleTable extends PureComponent {
       sortDirection,
       handleSortChange,
       parseHtml,
-      titleLinks
+      titleLinks,
+      trendLine
     } = this.props;
+
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
     return (
@@ -71,6 +88,10 @@ class SimpleTable extends PureComponent {
                     flexGrow={flexGrow}
                     cellRenderer={cell => {
                       const titleLink = titleLinks && titleLinks[cell.rowIndex];
+                      if (trendLine && cell.dataKey === trendLine) {
+                        return this.renderTrendLine(cell.cellData);
+                      }
+
                       if (titleLink && cell.dataKey === titleLink.fieldName) {
                         return (
                           <NavLink to={titleLink.url}>{cell.cellData}</NavLink>
@@ -105,8 +126,10 @@ SimpleTable.propTypes = {
   headerHeight: PropTypes.number.isRequired,
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
-  titleLinks: PropTypes.array,
   handleSortChange: PropTypes.func.isRequired,
+  titleLinks: PropTypes.array, // {fieldName: 'title field name in the table', url:'/destination-url-for-the-link'}
+  trendLine: PropTypes.string, // 'field name of the trend line column'
+  trendLineConfig: PropTypes.object,
   parseHtml: PropTypes.bool
 };
 

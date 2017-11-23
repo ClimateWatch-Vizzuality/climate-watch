@@ -21,7 +21,8 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       handleSearchChange,
       categories,
       handleCategoryChange,
-      selectedCategory
+      selectedCategory,
+      trendLineConfig
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     return (
@@ -55,6 +56,8 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
             sortBy={'name'}
             hasColumnSelect
             defaultColumns={defaultColumns}
+            trendLine={'trend'}
+            trendLineConfig={trendLineConfig}
           />
         ) : (
           <NoContent message={noContentMsg} className={styles.noContent} />
@@ -77,7 +80,8 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   handleSearchChange: PropTypes.func,
   categories: PropTypes.array,
   selectedCategory: PropTypes.object,
-  handleCategoryChange: PropTypes.func
+  handleCategoryChange: PropTypes.func,
+  trendLineConfig: PropTypes.object
 };
 
 export default EmissionPathwaysScenarioTableComponent;

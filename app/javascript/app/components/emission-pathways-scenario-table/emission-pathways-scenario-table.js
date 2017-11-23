@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import {
-  filteredDataByCategory,
+  filterDataByBlackList,
   defaultColumns,
   getCategories,
-  getSelectedCategoryOption
+  getSelectedCategoryOption,
+  getTrendLineConfig
 } from './emission-pathways-scenario-table-selectors';
 import Component from './emission-pathways-scenario-table-component';
 
@@ -18,20 +19,23 @@ const mapStateToProps = (state, { category, match, location }) => {
   const { id } = match.params;
   const espScenariosData = state.espScenarios && state.espScenarios.data;
   const espIndicatorsData = state.espIndicators && state.espIndicators.data;
+  const espTimeSeriesData = state.espTimeSeries && state.espTimeSeries.data;
   const EspData = {
     categorySelected: search.category,
     query: search.search,
     espScenariosData,
     espIndicatorsData,
+    espTimeSeriesData,
     category,
     id
   };
 
   return {
-    data: filteredDataByCategory(EspData),
+    data: filterDataByBlackList(EspData),
     defaultColumns: defaultColumns(EspData),
     categories: getCategories(EspData),
     selectedCategory: getSelectedCategoryOption(EspData),
+    trendLineConfig: getTrendLineConfig(EspData),
     query: search.search,
     loading: state.espScenarios.loading || state.espIndicators.loading
   };

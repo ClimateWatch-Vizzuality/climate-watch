@@ -4,8 +4,8 @@ import uniq from 'lodash/uniq';
 import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
-import { ESP_BLACKLIST } from 'data/constants';
 import { sortLabelByAlpha } from 'utils/graphs';
+import { ESP_BLACKLIST, DEFAULT_AXES_CONFIG } from 'data/constants';
 
 const getScenarioId = state => state.id || null;
 const getQuery = state => deburrUpper(state.query) || '';
@@ -34,7 +34,7 @@ const scenarioIndicatorsData = createSelector(
 export const getCategories = createSelector(scenarioIndicatorsData, data => {
   if (!data) return null;
   return sortLabelByAlpha(
-    uniq(data.map(c => c.category.name)).map(c => ({
+    uniq(data.map(c => c.category.name || c.category)).map(c => ({
       value: c,
       label: c
     }))
@@ -49,19 +49,9 @@ export const getSelectedCategoryOption = createSelector(
   }
 );
 
-export const filterDataByBlackList = createSelector(
-  [scenarioIndicatorsData],
-  data => {
-    if (!data || isEmpty(data)) return null;
-    const whiteList = remove(
-      Object.keys(data[0]),
-      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
-    );
-    return data.map(d => pick(d, whiteList));
-  }
-);
+// DATA
 
-const flattenedData = createSelector([filterDataByBlackList], data => {
+const flattenedData = createSelector(scenarioIndicatorsData, data => {
   if (!data || isEmpty(data)) return null;
   const attributesWithObjects = ['model', 'category', 'subcategory'];
   return data.map(d => {
@@ -100,6 +90,30 @@ export const filteredDataByCategory = createSelector(
   }
 );
 
+export const dataWithTrendLine = createSelector(
+  [filteredDataByCategory],
+  data => {
+    if (!data) return null;
+    return data.map(d => {
+      const rowData = d;
+      rowData.trend = d.id;
+      return rowData;
+    });
+  }
+);
+
+export const filterDataByBlackList = createSelector(
+  [dataWithTrendLine],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data[0]),
+      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
+    );
+    return data.map(d => pick(d, whiteList));
+  }
+);
+
 export const defaultColumns = () => [
   'alias',
   'category',
@@ -107,9 +121,30 @@ export const defaultColumns = () => [
   'trend'
 ];
 
+export const getTrendLineConfig = createSelector(
+  [filterDataByBlackList],
+  data => {
+    if (!data || !data.length) return {};
+    const axes = {
+      ...DEFAULT_AXES_CONFIG,
+      yLeft: {
+        ...DEFAULT_AXES_CONFIG.yLeft
+      }
+    };
+    return {
+      axes,
+      columns: {
+        x: [{ label: 'year', value: 'x' }],
+        y: [{ label: 'value', value: 'x' }]
+      }
+    };
+  }
+);
+
 export default {
-  filteredDataByCategory,
+  filterDataByBlackList,
   defaultColumns,
   getCategories,
-  getSelectedCategoryOption
+  getSelectedCategoryOption,
+  getTrendLineConfig
 };
