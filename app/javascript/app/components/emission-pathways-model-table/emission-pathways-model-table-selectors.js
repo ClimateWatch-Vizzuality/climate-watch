@@ -6,38 +6,45 @@ import { ESP_BLACKLIST } from 'data/constants';
 
 const getCategoryName = state =>
   (state.category && state.category.toLowerCase()) || null;
-const getId = state => state.id || null;
+const getModelId = state => state.modelId || null;
 const getData = state =>
   (!isEmpty(state.espModelsData) ? state.espModelsData : null);
-const getIdData = createSelector([getData, getId], (data, id) => {
+
+const getModelDataById = createSelector([getData, getModelId], (data, id) => {
   if (!data || !id) return null;
   return data.find(d => String(d.id) === id) || null;
 });
 
-const getIndicatorIds = createSelector(
-  [getIdData, getCategoryName],
+const getSelectedIds = createSelector(
+  [getModelDataById, getCategoryName],
   (data, category) => {
-    if (!data) return null;
+    if (!data || !category) return null;
     return data[category].map(i => i.id) || null;
   }
 );
 
-const getModelData = createSelector(
+const getSelectedData = createSelector(
   [
-    state => state.espIndicatorsData,
     state => state.espScenariosData,
-    getIndicatorIds,
+    state => state.espIndicatorsData,
     getCategoryName
   ],
-  (indicatorsData, scenariosData, ids, category) => {
-    const data = category === 'indicators' ? indicatorsData : scenariosData;
-    if (!ids || isEmpty(data) || isEmpty(ids)) return null;
-    return data.filter(i => i.id) || null;
+  (scenarios, indicators, category) => {
+    if (!scenarios || !indicators) return null;
+    return category === 'indicators' ? indicators : scenarios;
+  }
+);
+
+const getFilteredData = createSelector(
+  [getSelectedData, getSelectedIds, getCategoryName],
+  (data, ids) => {
+    if (!ids || isEmpty(data)) return null;
+    return data.filter(i => ids.indexOf(i.id) > -1) || null;
   }
 );
 
 export const filterDataByBlackList = createSelector(
-  [getModelData, getCategoryName],
+  [getFilteredData, getCategoryName],
   (data, category) => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(
@@ -70,13 +77,16 @@ export const defaultColumns = createSelector(getCategoryName, category => {
   return categoryDefaultColumns[category];
 });
 
-export const titleLinks = createSelector([getData], data => {
-  if (!data || isEmpty(data)) return null;
-  return data.map(d => ({
-    fieldName: 'name',
-    url: `scenarios/${d.id}`
-  }));
-});
+export const titleLinks = createSelector(
+  [getFilteredData, getCategoryName],
+  (data, category) => {
+    if (!data || isEmpty(data) || category === 'indicators') return null;
+    return data.map(d => ({
+      fieldName: 'name',
+      url: `/emission-pathways/scenarios/${d.id}`
+    }));
+  }
+);
 
 export default {
   flattenedData,

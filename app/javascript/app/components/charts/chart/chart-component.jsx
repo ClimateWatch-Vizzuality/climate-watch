@@ -41,7 +41,7 @@ class Chart extends PureComponent { // eslint-disable-line react/prefer-stateles
             />
           )
         }
-        {!loading && data && config &&
+        {!loading && data && data.length > 0 && config &&
           <ChartComponent
             {...this.props}
           />
