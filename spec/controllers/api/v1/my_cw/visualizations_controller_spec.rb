@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'controllers/api/v1/my_cw/helpers'
 include Helpers
 
-describe Api::V1::MyCw::VizualizationsController, type: :controller do
+describe Api::V1::MyCw::VisualizationsController, type: :controller do
   before(:each) do
     set_cookies
   end
@@ -11,8 +11,8 @@ describe Api::V1::MyCw::VizualizationsController, type: :controller do
     let!(:user) {
       FactoryGirl.create(:user)
     }
-    let!(:some_vizualization) {
-      FactoryGirl.create_list(:vizualization, 3, user: user)
+    let!(:some_visualization) {
+      FactoryGirl.create_list(:visualization, 3, user: user)
     }
 
     describe 'GET index' do

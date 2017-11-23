@@ -1,4 +1,4 @@
-# Class Vizualization
+# Class Visualization
 #
 # Attributes
 #
@@ -9,7 +9,7 @@
 # timestamps
 
 module MyCw
-  class Vizualization < ApplicationRecord
+  class Visualization < ApplicationRecord
     belongs_to :user, optional: false
     validates_presence_of :title
   end

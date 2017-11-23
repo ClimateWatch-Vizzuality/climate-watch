@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :vizualization, class: 'MyCw::Vizualization' do
+  factory :visualization, class: 'MyCw::Visualization' do
     user
     title 'Title'
     description 'Description'

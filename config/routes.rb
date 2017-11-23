@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       namespace :my_cw do
         get 'user', to: 'users#current'
         resources :users, only: :create
-        resources :vizualizations, except: [:new, :edit]
+        resources :visualizations, except: [:new, :edit]
         resources :user_stories,   except: [:new, :edit]
       end
 

@@ -348,7 +348,7 @@ ActiveRecord::Schema.define(version: 20171121155026) do
     t.index ["ct_id"], name: "index_users_on_ct_id"
   end
 
-  create_table "vizualizations", force: :cascade do |t|
+  create_table "visualizations", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.jsonb "json_body"
@@ -436,7 +436,7 @@ ActiveRecord::Schema.define(version: 20171121155026) do
   add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
   add_foreign_key "user_stories", "users"
-  add_foreign_key "vizualizations", "users"
+  add_foreign_key "visualizations", "users"
   add_foreign_key "wb_extra_country_data", "locations", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_properties", column: "property_id", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_sources", column: "source_id", on_delete: :cascade

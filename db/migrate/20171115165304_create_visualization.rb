@@ -1,6 +1,6 @@
-class CreateVizualization < ActiveRecord::Migration[5.1]
+class CreateVisualization < ActiveRecord::Migration[5.1]
   def change
-    create_table :vizualizations do |t|
+    create_table :visualizations do |t|
       t.string :title
       t.text :description
       t.jsonb :json_body
