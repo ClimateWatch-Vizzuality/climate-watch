@@ -19,7 +19,7 @@ module AuthHelper
     return false unless cookies['user_token']
     connect = Faraday.new(url: (ENV['GFW_API']).to_s) do |faraday|
       faraday.request :url_encoded # form-encode POST params
-      faraday.response :logger # log requests to STDOUT
+      faraday.response :logger if ENV['RAILS_ENV'] != 'test' # log requests to STDOUT
       faraday.adapter Faraday.default_adapter # make requests with Net::HTTP
     end
     connect.authorization :Bearer, cookies['user_token']
