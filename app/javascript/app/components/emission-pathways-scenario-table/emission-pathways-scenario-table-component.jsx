@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Table from 'components/table';
+import Dropdown from 'components/dropdown';
 import NoContent from 'components/no-content';
 import Search from 'components/search';
 import darkSearch from 'styles/themes/search/search-dark.scss';
@@ -17,7 +18,10 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       noContentMsg,
       defaultColumns,
       query,
-      handleSearchChange
+      handleSearchChange,
+      categories,
+      handleCategoryChange,
+      selectedCategory
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     return (
@@ -28,6 +32,13 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
           </li>
         </div>
         <div className={styles.col4}>
+          <Dropdown
+            label="Category"
+            placeholder="Select a category"
+            options={categories}
+            onValueChange={handleCategoryChange}
+            value={selectedCategory}
+          />
           <Search
             input={query}
             theme={darkSearch}
@@ -63,7 +74,10 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   data: PropTypes.array,
   defaultColumns: PropTypes.array,
   query: PropTypes.string,
-  handleSearchChange: PropTypes.func
+  handleSearchChange: PropTypes.func,
+  categories: PropTypes.array,
+  selectedCategory: PropTypes.object,
+  handleCategoryChange: PropTypes.func
 };
 
 export default EmissionPathwaysScenarioTableComponent;

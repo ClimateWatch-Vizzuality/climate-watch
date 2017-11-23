@@ -14,7 +14,8 @@ const mapStateToProps = (state, { match, category }) => {
     categoryData
   };
   return {
-    data: parseArraysOverviewData(stateWithId)
+    data: parseArraysOverviewData(stateWithId),
+    loading: state.espModels.loading
   };
 };
 

@@ -2,25 +2,34 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
-  filteredCategoryData,
-  defaultColumns
+  flattenedData,
+  defaultColumns,
+  titleLinks
 } from './emission-pathways-model-table-selectors';
 import Component from './emission-pathways-model-table-component';
 
 const mapStateToProps = (state, { category, match }) => {
   const { id } = match.params;
   const espModelsData = state.espModels && state.espModels.data;
+  const espIndicatorsData = state.espIndicators && state.espIndicators.data;
+  const espScenariosData = state.espScenarios && state.espScenarios.data;
   const EspData = {
+    espIndicatorsData,
+    espScenariosData,
     espModelsData,
     category,
-    id
+    modelId: id
   };
 
   return {
-    data: filteredCategoryData(EspData),
+    data: flattenedData(EspData),
     defaultColumns: defaultColumns(EspData),
+    titleLinks: titleLinks(EspData),
     category,
-    loading: espModelsData.loading
+    loading:
+      state.espModels.loading ||
+      state.espScenarios.loading ||
+      state.espIndicators.loading
   };
 };
 

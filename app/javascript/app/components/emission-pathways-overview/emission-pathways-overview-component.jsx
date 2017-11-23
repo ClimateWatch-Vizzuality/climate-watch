@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import Button from 'components/button';
 import PropTypes from 'prop-types';
 import startCase from 'lodash/startCase';
+import Loading from 'components/loading';
+
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
 import styles from './emission-pathways-overview-styles.scss';
@@ -9,10 +11,11 @@ import styles from './emission-pathways-overview-styles.scss';
 class EmissionPathwaysOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { data } = this.props;
+    const { data, loading } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
+          {loading && <Loading light className={styles.loader} />}
           <div className={cx(styles.col5, styles.overview)}>
             {data &&
               Object.keys(data).map(key => (
@@ -34,7 +37,8 @@ class EmissionPathwaysOverview extends PureComponent {
 }
 
 EmissionPathwaysOverview.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 export default EmissionPathwaysOverview;

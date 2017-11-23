@@ -3,14 +3,16 @@ import isEmpty from 'lodash/isEmpty';
 import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
+import { ESP_BLACKLIST } from 'data/constants';
 
-const getCategory = state => state.category || null;
+const getCategory = state =>
+  (state.category && state.category.toLowerCase()) || null;
 const getData = state => state.categoryData || null;
 const getQuery = state => deburrUpper(state.query) || '';
 
 export const getDefaultColumns = createSelector([getCategory], category => {
   switch (category) {
-    case 'Models':
+    case 'models':
       return [
         'full_name',
         'description',
@@ -18,9 +20,9 @@ export const getDefaultColumns = createSelector([getCategory], category => {
         'time_step',
         'time_horizon'
       ];
-    case 'Scenarios':
+    case 'scenarios':
       return ['name', 'category', 'description'];
-    case 'Indicators':
+    case 'indicators':
       return ['name', 'category', 'unit'];
     default:
       return null;
@@ -31,21 +33,30 @@ export const filterDataByBlackList = createSelector(
   [getData, getCategory],
   (data, category) => {
     if (!data || isEmpty(data)) return null;
-    const blackList = {
-      Models: ['scenarios', 'indicators'],
-      Scenarios: ['indicators'],
-      Indicators: []
-    };
     const whiteList = remove(
       Object.keys(data[0]),
-      n => blackList[category].indexOf(n) === -1
+      n => ESP_BLACKLIST[category].indexOf(n) === -1
     );
     return data.map(d => pick(d, whiteList));
   }
 );
 
+export const flattenedData = createSelector([filterDataByBlackList], data => {
+  if (!data || isEmpty(data)) return null;
+  const attributesWithObjects = ['model', 'category', 'subcategory'];
+  return data.map(d => {
+    const flattenedD = d;
+    attributesWithObjects.forEach(a => {
+      if (Object.prototype.hasOwnProperty.call(d, a)) {
+        flattenedD[a] = d[a] && d[a].name;
+      }
+    });
+    return flattenedD;
+  });
+});
+
 export const filteredDataBySearch = createSelector(
-  [filterDataByBlackList, getQuery],
+  [flattenedData, getQuery],
   (data, query) => {
     if (!data) return null;
     if (!query) return data;
@@ -65,12 +76,12 @@ export const titleLinks = createSelector(
   (categoryName, data) => {
     if (!data || isEmpty(data) || !categoryName) return null;
     const categoryId = {
-      Models: 'full_name',
-      Scenarios: 'name'
+      models: 'full_name',
+      scenarios: 'name'
     };
     return data.map(d => ({
       fieldName: categoryId[categoryName],
-      url: `${categoryName.toLowerCase()}/${d.id}`
+      url: `${categoryName}/${d.id}`
     }));
   }
 );
