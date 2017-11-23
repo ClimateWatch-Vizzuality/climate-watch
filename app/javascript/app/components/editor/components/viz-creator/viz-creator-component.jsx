@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import map from 'lodash/map';
-
+import _ from 'lodash-inflection';
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
 import styles from './viz-creator-styles';
@@ -20,6 +20,17 @@ const SelectableList = ({ type, data, selected, onClick, children, log }) => (
     ))}
   </ul>
 );
+
+// maps filters to dropdown/multiselect format
+const mapFilters = (filters, f) => (filters[f.name] &&
+  filters[f.name].data.map(o => ({
+    label: o.name,
+    values: o.id
+  }))) ||
+  null;
+
+// based on a description returs a selected value(s)
+const getSelected = (spec, values) => values.selected;
 
 const VizCreator = ({
   datasets,
@@ -71,31 +82,21 @@ const VizCreator = ({
                     selectedLabel={null}
                     label={f.name}
                     values={filters[f.name].data.map(o => `location-${o.id}`)}
-                    options={filters[f.name].data.map(o => ({
-                      label: o.name,
-                      values: `location-${o.id}`
-                    }))}
+                    options={mapFilters(filters, f)}
                     onMultiValueChange={e => console.log(e)}
                   />
                 ) : (
                   filters[f.name] && (
                     <Dropdown
-                      label={f.name}
-                      options={
-                        (filters[f.name] &&
-                          filters[f.name].data.map(o => ({
-                            label: o.name,
-                            values: o.id
-                          }))) ||
-                        null
-                      }
+                      label={_.titleize(f.name)}
+                      options={mapFilters(filters, f)}
                       onValueChange={e =>
                         selectFilter({
-                          label: e.label,
-                          type: f.name,
-                          values: e.values
+                          ...e,
+                          type: f.name
                         })}
-                      value={filters[f.name].selected}
+                      value={getSelected(f, filters[f.name])}
+                      placeholder={`Select ${_.singularize(_.titleize(f.name))}`}
                       hideResetButton
                     />
                   )
