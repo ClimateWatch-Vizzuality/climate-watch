@@ -18,7 +18,7 @@ const mapStateToProps = (state, { category, match }) => {
     espScenariosData,
     espModelsData,
     category,
-    id
+    modelId: id
   };
 
   return {
@@ -26,7 +26,10 @@ const mapStateToProps = (state, { category, match }) => {
     defaultColumns: defaultColumns(EspData),
     titleLinks: titleLinks(EspData),
     category,
-    loading: espModelsData.loading
+    loading:
+      state.espModels.loading ||
+      state.espScenarios.loading ||
+      state.espIndicators.loading
   };
 };
 

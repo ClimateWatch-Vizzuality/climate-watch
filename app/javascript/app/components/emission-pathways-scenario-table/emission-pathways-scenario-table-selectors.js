@@ -5,19 +5,20 @@ import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import { ESP_BLACKLIST } from 'data/constants';
+import { sortLabelByAlpha } from 'utils/graphs';
 
-const getId = state => state.id || null;
+const getScenarioId = state => state.id || null;
 const getQuery = state => deburrUpper(state.query) || '';
 const getCategorySelected = state => state.categorySelected || null;
 const getData = state =>
   (!isEmpty(state.espScenariosData) ? state.espScenariosData : null);
 
-const getIdData = createSelector([getData, getId], (data, id) => {
+const getScenarioData = createSelector([getData, getScenarioId], (data, id) => {
   if (!data || !id) return null;
   return data.find(d => String(d.id) === id) || null;
 });
 
-const getIndicatorIds = createSelector(getIdData, data => {
+const getIndicatorIds = createSelector(getScenarioData, data => {
   if (!data) return null;
   return data.indicators.map(i => i.id) || null;
 });
@@ -26,21 +27,26 @@ const scenarioIndicatorsData = createSelector(
   [state => state.espIndicatorsData, getIndicatorIds],
   (indicatorsData, ids) => {
     if (!ids || isEmpty(indicatorsData) || isEmpty(ids)) return null;
-    return indicatorsData.filter(i => i.id) || null;
+    return indicatorsData.filter(i => ids.indexOf(i.id) > -1) || null;
   }
 );
 
 export const getCategories = createSelector(scenarioIndicatorsData, data => {
   if (!data) return null;
-  return uniq(data.map(i => i.category.name || i.category)).map(c => ({
-    value: c,
-    label: c
-  }));
+  return sortLabelByAlpha(
+    uniq(data.map(c => c.category.name)).map(c => ({
+      value: c,
+      label: c
+    }))
+  );
 });
 
 export const getSelectedCategoryOption = createSelector(
-  [getCategorySelected],
-  selected => (selected ? { value: selected, label: selected } : null)
+  [getCategories, getCategorySelected],
+  (categories, categorySelected) => {
+    if (!categories || !categorySelected) return null;
+    return categories.find(c => c.value === categorySelected);
+  }
 );
 
 export const filterDataByBlackList = createSelector(

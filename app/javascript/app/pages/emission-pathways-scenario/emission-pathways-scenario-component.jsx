@@ -18,37 +18,36 @@ class EmissionPathwaysScenario extends PureComponent {
       <div>
         <EspScenariosProvider />
         <EspIndicatorsProvider />
-        {scenario && (
-          <div>
-            <Header route={route}>
-              <div className={layout.content}>
-                <Intro
-                  title={scenario.name}
-                  description={scenario.description}
-                  button={{
-                    text: 'View model',
-                    link: `/emission-pathways/models/${scenario.model_id}`
-                  }}
-                />
+        <div>
+          <Header route={route}>
+            <div className={layout.content}>
+              <Intro
+                title={scenario && scenario.name}
+                description={scenario && scenario.description}
+                button={{
+                  text: 'View model',
+                  link: `/emission-pathways/models/${scenario &&
+                    scenario.model_id}`
+                }}
+              />
+            </div>
+            <Sticky activeClass="stickyEmissionsScenario">
+              <AnchorNav
+                links={anchorLinks}
+                className={layout.content}
+                theme={anchorNavRegularTheme}
+              />
+            </Sticky>
+          </Header>
+          {route.sections &&
+            route.sections.length > 0 &&
+            route.sections.map(section => (
+              <div key={section.hash} className={styles.section}>
+                <div id={section.hash} className={styles.sectionHash} />
+                <section.component id={id} />
               </div>
-              <Sticky activeClass="stickyEmissionsScenario">
-                <AnchorNav
-                  links={anchorLinks}
-                  className={layout.content}
-                  theme={anchorNavRegularTheme}
-                />
-              </Sticky>
-            </Header>
-            {route.sections &&
-              route.sections.length > 0 &&
-              route.sections.map(section => (
-                <div key={section.hash} className={styles.section}>
-                  <div id={section.hash} className={styles.sectionHash} />
-                  <section.component id={id} />
-                </div>
-              ))}
-          </div>
-        )}
+            ))}
+        </div>
       </div>
     );
   }

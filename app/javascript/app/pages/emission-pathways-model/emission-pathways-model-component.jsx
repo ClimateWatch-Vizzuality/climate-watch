@@ -21,34 +21,32 @@ class EmissionPathwaysModel extends PureComponent {
         <EspModelsProvider />
         <EspScenariosProvider />
         <EspIndicatorsProvider />
-        {model && (
-          <div>
-            <Header route={route}>
-              <div className={layout.content}>
-                <Intro
-                  title={model.full_name}
-                  description={model.description}
-                />
+        <div>
+          <Header route={route}>
+            <div className={layout.content}>
+              <Intro
+                title={model && model.full_name}
+                description={model && model.description}
+              />
+            </div>
+            <Sticky activeClass="stickyEmissionsModel">
+              <AnchorNav
+                links={anchorLinks}
+                className={layout.content}
+                theme={anchorNavRegularTheme}
+              />
+            </Sticky>
+          </Header>
+          {route.sections &&
+            route.sections.length > 0 &&
+            route.sections.map(section => (
+              <div key={section.hash} className={styles.section}>
+                <div id={section.hash} className={styles.sectionHash} />
+                <section.component routeLinks={routeLinks} id={id} />
               </div>
-              <Sticky activeClass="stickyEmissionsModel">
-                <AnchorNav
-                  links={anchorLinks}
-                  className={layout.content}
-                  theme={anchorNavRegularTheme}
-                />
-              </Sticky>
-            </Header>
-            {route.sections &&
-              route.sections.length > 0 &&
-              route.sections.map(section => (
-                <div key={section.hash} className={styles.section}>
-                  <div id={section.hash} className={styles.sectionHash} />
-                  <section.component routeLinks={routeLinks} id={id} />
-                </div>
-              ))}
-            {renderRoutes(route.routes)}
-          </div>
-        )}
+            ))}
+          {renderRoutes(route.routes)}
+        </div>
       </div>
     );
   }

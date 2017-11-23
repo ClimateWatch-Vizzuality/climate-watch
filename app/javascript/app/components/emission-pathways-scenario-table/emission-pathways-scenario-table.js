@@ -33,7 +33,7 @@ const mapStateToProps = (state, { category, match, location }) => {
     categories: getCategories(EspData),
     selectedCategory: getSelectedCategoryOption(EspData),
     query: search.search,
-    loading: espScenariosData.loading
+    loading: state.espScenarios.loading || state.espIndicators.loading
   };
 };
 
