@@ -5,9 +5,11 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
 import {
-  filteredDataBySearch,
+  filteredDataByFilters,
   titleLinks,
-  getDefaultColumns
+  getDefaultColumns,
+  getFilterOptionsByCategory,
+  getSelectedFieldOptions
 } from './emission-pathways-table-selectors';
 import Component from './emission-pathways-table-component';
 
@@ -17,21 +19,28 @@ const mapStateToProps = (state, { category, location }) => {
   const espData = {
     categoryData: categoryData.data,
     category,
+    search,
     query: search.search
   };
   return {
     titleLinks: titleLinks(espData),
-    data: filteredDataBySearch(espData),
+    data: filteredDataByFilters(espData),
     defaultColumns: getDefaultColumns(espData),
     categoryName: category,
     query: espData.query,
-    loading: categoryData.loading
+    loading: categoryData.loading,
+    filterOptions: getFilterOptionsByCategory(espData),
+    selectedFields: getSelectedFieldOptions(espData)
   };
 };
 
 class EmissionPathwaysTableComponent extends PureComponent {
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
+  };
+
+  handleFilterChange = (filterName, value) => {
+    this.updateUrlParam({ name: filterName, value });
   };
 
   updateUrlParam(param) {
@@ -47,7 +56,8 @@ class EmissionPathwaysTableComponent extends PureComponent {
     return createElement(Component, {
       ...this.props,
       noContentMsg,
-      handleSearchChange: this.handleSearchChange
+      handleSearchChange: this.handleSearchChange,
+      handleFilterChange: this.handleFilterChange
     });
   }
 }

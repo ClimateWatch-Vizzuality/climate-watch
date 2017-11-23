@@ -3,12 +3,14 @@ import isEmpty from 'lodash/isEmpty';
 import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
-import { ESP_BLACKLIST } from 'data/constants';
+import uniq from 'lodash/uniq';
+import { ESP_BLACKLIST, FILTERS_BY_CATEGORY } from 'data/constants';
 
 const getCategory = state =>
   (state.category && state.category.toLowerCase()) || null;
 const getData = state => state.categoryData || null;
 const getQuery = state => deburrUpper(state.query) || '';
+const getSearch = state => state.search || null;
 
 export const getDefaultColumns = createSelector([getCategory], category => {
   switch (category) {
@@ -86,8 +88,66 @@ export const titleLinks = createSelector(
   }
 );
 
+export const getFilterOptionsByCategory = createSelector(
+  [getCategory, getData],
+  (category, data) => {
+    if (!category || !data || isEmpty(data)) return null;
+    const filters = FILTERS_BY_CATEGORY[category];
+    const categoryOptions = {};
+    filters.forEach(f => {
+      const sanitizedFilterData = [];
+      data.forEach(d => {
+        if (d[f] !== null && d[f] !== '') {
+          const filterName = typeof d[f] === 'string' ? d[f] : d[f].name;
+          sanitizedFilterData.push(filterName);
+        }
+      });
+
+      categoryOptions[f] = uniq(sanitizedFilterData).map(filterData => ({
+        value: filterData,
+        label: filterData
+      }));
+    });
+    return categoryOptions;
+  }
+);
+
+const getSelectedFields = createSelector([getSearch], search => {
+  if (!search) return null;
+  const selectedFields = search;
+  delete selectedFields.search;
+  return selectedFields;
+});
+
+export const getSelectedFieldOptions = createSelector(
+  [getSelectedFields],
+  fields => {
+    if (!fields) return null;
+    const fieldOptions = {};
+    Object.keys(fields).forEach(key => {
+      fieldOptions[key] = { value: fields[key], label: fields[key] };
+    });
+    return fieldOptions;
+  }
+);
+
+export const filteredDataByFilters = createSelector(
+  [flattenedData, getSelectedFields],
+  (data, filters) => {
+    if (!data) return null;
+    if (!filters) return data;
+    let filteredData = data;
+    Object.keys(filters).forEach(key => {
+      filteredData = filteredData.filter(d => d[key] === filters[key]);
+    });
+    return filteredData;
+  }
+);
+
 export default {
   getDefaultColumns,
   titleLinks,
-  filteredDataBySearch
+  filteredDataByFilters,
+  getFilterOptionsByCategory,
+  getSelectedFieldOptions
 };
