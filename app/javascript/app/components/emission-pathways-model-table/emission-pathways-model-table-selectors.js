@@ -70,7 +70,16 @@ export const defaultColumns = createSelector(getCategoryName, category => {
   return categoryDefaultColumns[category];
 });
 
+export const titleLinks = createSelector([getData], data => {
+  if (!data || isEmpty(data)) return null;
+  return data.map(d => ({
+    fieldName: 'name',
+    url: `scenarios/${d.id}`
+  }));
+});
+
 export default {
   flattenedData,
-  defaultColumns
+  defaultColumns,
+  titleLinks
 };
