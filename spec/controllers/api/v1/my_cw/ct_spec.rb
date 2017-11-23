@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'VCR-RSpec integration' do
   def make_http_request
-    connect = Faraday.new(url: (ENV['API_URL']).to_s) do |faraday|
+    connect = Faraday.new(url: (ENV['GFW_API']).to_s) do |faraday|
       faraday.request :url_encoded # form-encode POST params
       faraday.response :logger # log requests to STDOUT
       faraday.adapter Faraday.default_adapter # make requests with Net::HTTP

@@ -10,7 +10,7 @@ http_interactions:
       User-Agent:
       - Faraday v0.12.1
       Authorization:
-      - Bearer [REPLACE_WITH_API_TOKEN]
+      - Bearer DEV_USER_TOKEN_PLACEHOLDER
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -38,7 +38,7 @@ http_interactions:
       - clear
     body:
       encoding: UTF-8
-      string: '{"id":"[REPLACE_WITH_USER_ID]","role":"USER","provider":"local","email":"[REPLACE_WITH_USER_EMAIL]","extraUserData":{"apps":["gfw-climate","gfw"]},"createdAt":1511344608420,"iat":1511344608}'
+      string: '{"id":"DEV_USER_ID_PLACEHOLDER","role":"USER","provider":"local","email":"test@example.com","extraUserData":{"apps":["gfw-climate","gfw"]},"createdAt":1511344608420,"iat":1511344608}'
     http_version: 
   recorded_at: Wed, 22 Nov 2017 15:15:03 GMT
 recorded_with: VCR 3.0.3
