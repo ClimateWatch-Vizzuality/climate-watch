@@ -243,11 +243,3 @@ format:
     }, ...
 ]
 ```
-
-### Running the tests
-
-Change the file `fixtures/vcr_cassetes/user_token.yml.sample` to `user_token.yml` and replace the values, if desired (the current values are valid):
-
-* `DEV_USER_ID_PLACEHOLDER` - the same value of the variable `DEV_USER_ID` in `.env`
-
-* `DEV_USER_TOKEN_PLACEHOLDER` - the same value of the variable `DEV_USER_TOKEN` in `.env`
