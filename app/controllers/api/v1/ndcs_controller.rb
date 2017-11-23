@@ -26,7 +26,8 @@ module Api
           all
 
         categories = ::Indc::Category.
-          includes(:category_type)
+          includes(:category_type).
+          order(:order)
 
         if params[:filter]
           categories = categories.where(
@@ -53,7 +54,8 @@ module Api
             :labels, :source, :categories,
             values: [:sector, :label, :location]
           ).
-          where(id: categories.flat_map(&:indicator_ids).uniq)
+          where(id: categories.flat_map(&:indicator_ids).uniq).
+          order(:order)
 
         if location_list
           indicators = indicators.where(

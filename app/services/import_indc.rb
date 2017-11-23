@@ -66,20 +66,22 @@ class ImportIndc
       to_h
   end
 
-  def category_attributes(name, category_type)
+  def category_attributes(name, category_type, index)
     {
       name: name,
       slug: Slug.create(name),
-      category_type: category_type
+      category_type: category_type,
+      order: index * 10
     }
   end
 
-  def indicator_attributes(indicator)
+  def indicator_attributes(indicator, index)
     {
       name: indicator[:long_name],
       slug: indicator[:column_name],
       description: indicator[:definition],
-      source: @sources_index[indicator[:source]]
+      source: @sources_index[indicator[:source]],
+      order: index * 10
     }
   end
 
@@ -119,8 +121,8 @@ class ImportIndc
       map { |m| m[:"#{category_type.name}_category"] }.
       select(&:itself).
       uniq.
-      each do |name|
-        Indc::Category.create!(category_attributes(name, category_type))
+      each_with_index do |name, index|
+        Indc::Category.create!(category_attributes(name, category_type, index))
       end
   end
 
@@ -189,8 +191,8 @@ class ImportIndc
       map { |r| [[r[:column_name], r[:source]], r] }.
       uniq(&:first).
       map(&:second).
-      each do |indicator|
-        Indc::Indicator.create!(indicator_attributes(indicator))
+      each_with_index do |indicator, index|
+        Indc::Indicator.create!(indicator_attributes(indicator, index))
       end
   end
 

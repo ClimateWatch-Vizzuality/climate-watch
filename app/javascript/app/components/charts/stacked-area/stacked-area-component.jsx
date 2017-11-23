@@ -97,7 +97,7 @@ class ChartStackedArea extends PureComponent {
 
     const domain = {
       x: ['dataMin', 'dataMax'],
-      y: ['dataMin', 'dataMax']
+      y: [0, 'dataMax']
     };
 
     if (points.length > 0) {

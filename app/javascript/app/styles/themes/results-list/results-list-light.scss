@@ -13,13 +13,13 @@
 }
 
 .listItem {
-  border-bottom: solid 1px rgba($white, 0.2);
+  border-bottom: solid 1px $theme-border;
 }
 
 .link {
-  color: $white;
+  color: $dark-gray;
 
   &:hover {
-    color: rgba($white, 0.8);
+    color: $theme-color;
   }
 }

@@ -4,7 +4,7 @@ import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
-
+import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -12,40 +12,14 @@ import {
   sortEmissionsByValue,
   sortLabelByAlpha
 } from 'utils/graphs';
-import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
-
-// constants needed for data parsing
-const TOP_EMITTERS = [
-  'CHN',
-  'USA',
-  'EU28',
-  'IND',
-  'RUS',
-  'JPN',
-  'BRA',
-  'IDN',
-  'CAN',
-  'MEX',
-  'TOP'
-];
-
-const DATA_SCALE = 1000000;
-
-const COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759'
-];
+import {
+  TOP_EMITTERS,
+  CHART_COLORS,
+  DEFAULT_AXES_CONFIG,
+  ALLOWED_SECTORS_BY_SOURCE,
+  DEFAULT_EMISSIONS_SELECTIONS,
+  DATA_SCALE
+} from 'data/constants';
 
 const BREAY_BY_OPTIONS = [
   {
@@ -60,27 +34,6 @@ const BREAY_BY_OPTIONS = [
     label: 'Regions',
     value: 'location'
   }
-];
-
-const AXES_CONFIG = {
-  xBottom: {
-    name: 'Year',
-    unit: 'date',
-    format: 'YYYY'
-  },
-  yLeft: {
-    name: 'Emissions',
-    unit: 'CO<sub>2</sub>e',
-    format: 'number'
-  }
-};
-
-const EXCLUDED_SECTORS = [
-  'Total excluding LUCF',
-  'Total including LUCF',
-  'Total including LULUCF',
-  'Total excluding LULUCF',
-  'Bunker Fuels '
 ];
 
 // meta data for selectors
@@ -148,6 +101,17 @@ export const getVersionSelected = createSelector(
 // BreakBy selectors
 export const getBreaksByOptions = () => BREAY_BY_OPTIONS;
 
+export const getAllowedSectors = createSelector(
+  [getSourceSelected, getVersionSelected],
+  (source, version) => {
+    if (!source || !version) return null;
+    if (source.label === 'UNFCCC') {
+      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
+    }
+    return ALLOWED_SECTORS_BY_SOURCE[source.label];
+  }
+);
+
 export const getBreakSelected = createSelector(
   [getBreaksByOptions, getBreakSelection],
   (breaks, selected) => {
@@ -159,17 +123,31 @@ export const getBreakSelected = createSelector(
 
 // Get data and filter and sort by emissions value
 export const filterAndSortData = createSelector(
-  [getData, getVersionSelected, getBreakSelected],
-  (data, version, breakBy) => {
+  [
+    getData,
+    getSourceSelected,
+    getVersionSelected,
+    getBreakSelected,
+    getAllowedSectors
+  ],
+  (data, source, version, breakBy, sectorsAllowed) => {
     if (!data || isEmpty(data)) return null;
-    const dataSorted = sortEmissionsByValue(
-      data.filter(
-        d =>
-          d.gwp === version.label &&
-          EXCLUDED_SECTORS.indexOf(d[breakBy.value]) === -1
-      )
+    const breakByValue = breakBy.value;
+    const dataBySource =
+      source.label === 'UNFCCC' && breakByValue !== 'sector'
+        ? data.filter(
+          d =>
+            d.sector.trim() ===
+              DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version.label]
+        )
+        : data;
+    const dataBySector =
+      breakByValue === 'sector'
+        ? dataBySource.filter(d => sectorsAllowed.indexOf(d.sector.trim()) > -1)
+        : dataBySource;
+    return sortEmissionsByValue(
+      dataBySector.filter(d => d.gwp === version.label)
     );
-    return dataSorted;
   }
 );
 
@@ -209,30 +187,31 @@ export const getRegionsOptions = createSelector(
 
 // Filters selector
 export const getFilterOptions = createSelector(
-  [getMeta, getSourceSelected, getBreakSelected, getRegionsOptions],
-  (meta, sourceSelected, breakSelected, regions) => {
-    if (!sourceSelected || !breakSelected || isEmpty(meta) || !regions) {
+  [
+    getMeta,
+    getBreakSelected,
+    getRegionsOptions,
+    filterAndSortData,
+    getAllowedSectors
+  ],
+  (meta, breakSelected, regions, data) => {
+    if (isEmpty(meta) || isEmpty(data) || !breakSelected || !regions) {
       return [];
     }
     const breakByValue = breakSelected.value;
-    const activeSourceData = meta.data_source.find(
-      source => source.value === sourceSelected.value
-    );
-    const activeFilterKeys = activeSourceData[breakByValue];
-    const filteredSelected = meta[breakByValue].filter(
-      filter =>
-        activeFilterKeys.indexOf(filter.value) > -1 &&
-        EXCLUDED_SECTORS.indexOf(filter.label) === -1
+    const filterOptions = Object.keys(groupBy(data, breakByValue));
+    const filtersSelected = meta[breakByValue].filter(
+      m => filterOptions.indexOf(m.label) > -1
     );
     if (breakByValue === 'location') {
-      const countries = filteredSelected.map(d => ({
+      const countries = filtersSelected.map(d => ({
         ...d,
         value: d.iso,
         groupId: 'countries'
       }));
       return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
     }
-    return sortLabelByAlpha(filteredSelected);
+    return sortLabelByAlpha(filtersSelected);
   }
 );
 
@@ -315,10 +294,10 @@ export const getChartConfig = createSelector(
       value: getYColumnValue(d[breakBy.value])
     }));
     const yColumnsChecked = uniqBy(yColumns, 'value');
-    const theme = getThemeConfig(yColumnsChecked, COLORS);
+    const theme = getThemeConfig(yColumnsChecked, CHART_COLORS);
     const tooltip = getTooltipConfig(yColumnsChecked);
     return {
-      axes: AXES_CONFIG,
+      axes: DEFAULT_AXES_CONFIG,
       theme,
       tooltip,
       columns: {

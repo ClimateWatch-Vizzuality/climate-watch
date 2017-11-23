@@ -16,7 +16,7 @@ const getIso = state => state.iso;
 const getData = state => state.data;
 const isLoaded = state => state.loaded;
 const isLoading = state => state.loading;
-const getSources = state => state.meta.data_source || null;
+const getSources = state => (state.meta && state.meta.data_source) || null;
 const getSourceSelection = state => state.search.source || false;
 const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;

@@ -1,24 +1,14 @@
-require 'csv'
-
 class ImportLocationMembers
+  LOCATION_GROUPINGS_FILEPATH = "#{CW_FILES_PREFIX}locations/locations_groupings.csv"
+
   def call
-    bucket_name = Rails.application.secrets.s3_bucket_name
-    file_name = "#{CW_FILES_PREFIX}locations/locations_groupings.csv"
-    s3 = Aws::S3::Client.new
-    begin
-      file = s3.get_object(bucket: bucket_name, key: file_name)
-    rescue Aws::S3::Errors::NoSuchKey
-      Rails.logger.error "File #{file_name} not found in #{bucket_name}"
-      return
-    end
-    content = file.body.read
-    import_records(content)
+    import_records(S3CSVReader.read(LOCATION_GROUPINGS_FILEPATH))
   end
 
   private
 
   def import_records(content)
-    CSV.parse(content, headers: true).each.with_index(2) do |row|
+    content.each.with_index(2) do |row|
       iso_code3 = iso_code3(row)
       parent_iso_code3 = parent_iso_code3(row)
       member = iso_code3 && Location.find_by_iso_code3(iso_code3)
@@ -35,10 +25,10 @@ class ImportLocationMembers
   end
 
   def iso_code3(row)
-    row['iso_code3'] && row['iso_code3'].strip.upcase
+    row[:iso_code3] && row[:iso_code3].upcase
   end
 
   def parent_iso_code3(row)
-    row['parent_iso_code3'] && row['parent_iso_code3'].strip.upcase
+    row[:parent_iso_code3] && row[:parent_iso_code3].upcase
   end
 end
