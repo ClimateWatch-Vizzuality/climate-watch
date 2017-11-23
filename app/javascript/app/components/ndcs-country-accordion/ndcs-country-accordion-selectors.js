@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
-import sortBy from 'lodash/sortBy';
 import uniq from 'lodash/uniq';
 import snakeCase from 'lodash/snakeCase';
 
@@ -31,7 +30,7 @@ export const parseIndicatorsDefs = createSelector(
         };
       });
       if (parsedDefinitions && parsedDefinitions.length) {
-        parsedIndicators[category] = sortBy(parsedDefinitions, 'title');
+        parsedIndicators[category] = parsedDefinitions;
       }
     });
     return parsedIndicators;
@@ -78,50 +77,42 @@ export const parsedCategoriesWithSectors = createSelector(
   [getCategoriesWithSectors, getSectors, getCountries],
   (categories, sectors, countries) => {
     if (!categories) return null;
-    return sortBy(
-      categories.map(cat => {
-        const sectorsParsed = sortBy(
-          cat.sectors &&
-            cat.sectors.length &&
-            cat.sectors.map(sec => {
-              const definitions = sortBy(
-                cat.indicators.map(ind => {
-                  const descriptions = countries.map(loc => {
-                    const value = ind.locations[loc]
-                      ? ind.locations[loc].find(v => v.sector_id === sec)
-                      : null;
-                    return {
-                      iso: loc,
-                      value: value ? value.value : '—'
-                    };
-                  });
-                  return {
-                    title: ind.name,
-                    slug: ind.slug,
-                    descriptions
-                  };
-                }),
-                'title'
-              );
-              const parent =
-                sectors[sec].parent_id && sectors[sectors[sec].parent_id];
+    return categories.map(cat => {
+      const sectorsParsed =
+        cat.sectors &&
+        cat.sectors.length &&
+        cat.sectors.map(sec => {
+          const definitions = cat.indicators.map(ind => {
+            const descriptions = countries.map(loc => {
+              const value = ind.locations[loc]
+                ? ind.locations[loc].find(v => v.sector_id === sec)
+                : null;
               return {
-                title: sectors[sec].name,
-                slug: snakeCase(sectors[sec].name),
-                parent,
-                definitions
+                iso: loc,
+                value: value ? value.value : '—'
               };
-            }),
-          ['parent.name', 'title']
-        );
-        return {
-          title: cat.name,
-          slug: cat.slug,
-          sectors: sectorsParsed
-        };
-      }),
-      'title'
-    );
+            });
+            return {
+              title: ind.name,
+              slug: ind.slug,
+              descriptions
+            };
+          });
+          const parent =
+            sectors[sec].parent_id && sectors[sectors[sec].parent_id];
+          return {
+            title: sectors[sec].name,
+            slug: snakeCase(sectors[sec].name),
+            parent,
+            definitions
+          };
+        });
+      return {
+        title: cat.name,
+        slug: cat.slug,
+        sectors: sectorsParsed
+      };
+    });
   }
 );
 
@@ -155,7 +146,7 @@ export const filterNDCs = createSelector(
       };
     });
     const reducedNDCs = filteredNDCs.filter(ndc => ndc.definitions.length > 0);
-    return sortBy(reducedNDCs, 'title');
+    return reducedNDCs;
   }
 );
 
