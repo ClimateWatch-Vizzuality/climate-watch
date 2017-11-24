@@ -8,6 +8,7 @@ import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
+import EspIndicatorsTrendDataProvider from 'providers/esp-indicators-trend-provider';
 import styles from './emission-pathways-scenario-styles.scss';
 
 class EmissionPathwaysScenario extends PureComponent {
@@ -18,6 +19,7 @@ class EmissionPathwaysScenario extends PureComponent {
       <div>
         <EspScenariosProvider />
         <EspIndicatorsProvider />
+        <EspIndicatorsTrendDataProvider scenarioId={id} locationId={267} />
         <div>
           <Header route={route}>
             <div className={layout.content}>
