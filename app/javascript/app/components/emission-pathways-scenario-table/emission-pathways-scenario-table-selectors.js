@@ -33,8 +33,12 @@ const scenarioIndicatorsData = createSelector(
 
 export const getCategories = createSelector(scenarioIndicatorsData, data => {
   if (!data) return null;
+  const categories = [];
+  data.forEach(c => {
+    if (c.category) categories.push(c.category);
+  });
   return sortLabelByAlpha(
-    uniq(data.map(c => c.category.name || c.category)).map(c => ({
+    uniq(categories).map(c => ({
       value: c,
       label: c
     }))
