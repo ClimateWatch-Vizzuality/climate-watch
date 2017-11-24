@@ -4,19 +4,31 @@ import uniq from 'lodash/uniq';
 import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
+import sortBy from 'lodash/sortBy';
+import { ESP_BLACKLIST } from 'data/constants';
 import { sortLabelByAlpha } from 'utils/graphs';
-import { ESP_BLACKLIST, DEFAULT_AXES_CONFIG } from 'data/constants';
 
 const getScenarioId = state => state.id || null;
 const getQuery = state => deburrUpper(state.query) || '';
 const getCategorySelected = state => state.categorySelected || null;
 const getData = state =>
   (!isEmpty(state.espScenariosData) ? state.espScenariosData : null);
+const getTrendData = state =>
+  (!isEmpty(state.espTrendData) ? state.espTrendData : null);
 
 const getScenarioData = createSelector([getData, getScenarioId], (data, id) => {
   if (!data || !id) return null;
   return data.find(d => String(d.id) === id) || null;
 });
+
+const getScenarioTrendData = createSelector(
+  [getTrendData, getScenarioId],
+  (data, id) => {
+    if (!data || !id || !data.locations) return null;
+    if (!data.locations['267']) return null;
+    return data.locations['267'].scenarios[id] || null;
+  }
+);
 
 const getIndicatorIds = createSelector(getScenarioData, data => {
   if (!data) return null;
@@ -95,12 +107,20 @@ export const filteredDataByCategory = createSelector(
 );
 
 export const dataWithTrendLine = createSelector(
-  [filteredDataByCategory],
-  data => {
-    if (!data) return null;
+  [filteredDataByCategory, getScenarioTrendData],
+  (data, trendData) => {
+    if (!data || !trendData) return null;
     return data.map(d => {
       const rowData = d;
-      rowData.trend = d.id;
+      const indicatorId = d.id;
+      const indicatorTrendData = trendData.find(
+        t => t.indicator_id === indicatorId
+      );
+      rowData.trend = isEmpty(indicatorTrendData)
+        ? null
+        : sortBy(indicatorTrendData.values, ['year']).map(v => ({
+          value: parseFloat(v.value)
+        }));
       return rowData;
     });
   }
@@ -124,31 +144,9 @@ export const defaultColumns = () => [
   'subcategory',
   'trend'
 ];
-
-export const getTrendLineConfig = createSelector(
-  [filterDataByBlackList],
-  data => {
-    if (!data || !data.length) return {};
-    const axes = {
-      ...DEFAULT_AXES_CONFIG,
-      yLeft: {
-        ...DEFAULT_AXES_CONFIG.yLeft
-      }
-    };
-    return {
-      axes,
-      columns: {
-        x: [{ label: 'year', value: 'x' }],
-        y: [{ label: 'value', value: 'x' }]
-      }
-    };
-  }
-);
-
 export default {
   filterDataByBlackList,
   defaultColumns,
   getCategories,
-  getSelectedCategoryOption,
-  getTrendLineConfig
+  getSelectedCategoryOption
 };

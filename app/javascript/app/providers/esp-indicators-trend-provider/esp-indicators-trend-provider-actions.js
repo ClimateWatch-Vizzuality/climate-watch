@@ -13,8 +13,10 @@ const getIndicatorsTrendData = createThunkAction(
     if (
       espIndicatorsTrend &&
       (!espIndicatorsTrend.data[scenarioId] ||
-        isEmpty(espIndicatorsTrend.data[scenarioId]))
-      // || isEmpty(espIndicatorsTrend.data[scenarioId][locationId])
+        isEmpty(
+          espIndicatorsTrend.data[scenarioId] ||
+            !espIndicatorsTrend.data[scenarioId][locationId]
+        ))
     ) {
       dispatch(getIndicatorsTrendDataInit());
       fetch(
