@@ -31,19 +31,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
   }
 });
 
-export const filterDataByBlackList = createSelector(
-  [getData, getCategory],
-  (data, category) => {
-    if (!data || isEmpty(data)) return null;
-    const whiteList = remove(
-      Object.keys(data[0]),
-      n => ESP_BLACKLIST[category].indexOf(n) === -1
-    );
-    return data.map(d => pick(d, whiteList));
-  }
-);
-
-export const flattenedData = createSelector([filterDataByBlackList], data => {
+export const flattenedData = createSelector([getData], data => {
   if (!data || isEmpty(data)) return null;
   const attributesWithObjects = ['model', 'category', 'subcategory'];
   return data.map(d => {
@@ -144,8 +132,20 @@ export const filteredDataByFilters = createSelector(
   }
 );
 
+export const filterDataByBlackList = createSelector(
+  [filteredDataByFilters, getCategory],
+  (data, category) => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data[0]),
+      n => ESP_BLACKLIST[category].indexOf(n) === -1
+    );
+    return data.map(d => pick(d, whiteList));
+  }
+);
+
 export default {
-  getDefaultColumns,
+  filterDataByBlackList,
   titleLinks,
   filteredDataByFilters,
   getFilterOptionsByCategory,
