@@ -76,30 +76,6 @@ export const titleLinks = createSelector(
   }
 );
 
-export const getFilterOptionsByCategory = createSelector(
-  [getCategory, getData],
-  (category, data) => {
-    if (!category || !data || isEmpty(data)) return null;
-    const filters = FILTERS_BY_CATEGORY[category];
-    const categoryOptions = {};
-    filters.forEach(f => {
-      const sanitizedFilterData = [];
-      data.forEach(d => {
-        if (d[f] !== null && d[f] !== '' && d[f] !== undefined) {
-          const filterName = typeof d[f] === 'string' ? d[f] : d[f].name;
-          sanitizedFilterData.push(filterName);
-        }
-      });
-
-      categoryOptions[f] = uniq(sanitizedFilterData).map(filterData => ({
-        value: filterData,
-        label: filterData
-      }));
-    });
-    return categoryOptions;
-  }
-);
-
 const getSelectedFields = createSelector([getSearch], search => {
   if (!search) return null;
   const selectedFields = search;
@@ -131,6 +107,30 @@ export const filteredDataByFilters = createSelector(
       );
     });
     return filteredData;
+  }
+);
+
+export const getFilterOptionsByCategory = createSelector(
+  [getCategory, filteredDataByFilters],
+  (category, data) => {
+    if (!category || !data || isEmpty(data)) return null;
+    const filters = FILTERS_BY_CATEGORY[category];
+    const categoryOptions = {};
+    filters.forEach(f => {
+      const sanitizedFilterData = [];
+      data.forEach(d => {
+        if (d[f] !== null && d[f] !== '' && d[f] !== undefined) {
+          const filterName = typeof d[f] === 'string' ? d[f] : d[f].name;
+          sanitizedFilterData.push(filterName);
+        }
+      });
+
+      categoryOptions[f] = uniq(sanitizedFilterData).map(filterData => ({
+        value: filterData,
+        label: filterData
+      }));
+    });
+    return categoryOptions;
   }
 );
 
