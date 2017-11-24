@@ -85,7 +85,7 @@ export const getFilterOptionsByCategory = createSelector(
     filters.forEach(f => {
       const sanitizedFilterData = [];
       data.forEach(d => {
-        if (d[f] !== null && d[f] !== '') {
+        if (d[f] !== null && d[f] !== '' && d[f] !== undefined) {
           const filterName = typeof d[f] === 'string' ? d[f] : d[f].name;
           sanitizedFilterData.push(filterName);
         }
@@ -126,7 +126,9 @@ export const filteredDataByFilters = createSelector(
     if (!filters) return data;
     let filteredData = data;
     Object.keys(filters).forEach(key => {
-      filteredData = filteredData.filter(d => d[key] === filters[key]);
+      filteredData = filteredData.filter(
+        d => d[key] === undefined || d[key] === filters[key]
+      );
     });
     return filteredData;
   }
