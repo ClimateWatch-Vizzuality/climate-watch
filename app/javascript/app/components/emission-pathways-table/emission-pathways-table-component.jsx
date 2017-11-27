@@ -4,15 +4,18 @@ import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Search from 'components/search';
 import Loading from 'components/loading';
+import Dropdown from 'components/dropdown';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import layout from 'styles/layout.scss';
 import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
+import startCase from 'lodash/startCase';
+import { FILTERS_BY_CATEGORY } from 'data/constants';
 import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
-  getTableContent() {
+  renderTableContent() {
     const {
       loading,
       data,
@@ -34,6 +37,27 @@ class EmissionPathwaysTable extends PureComponent {
     );
   }
 
+  renderFilters() {
+    const {
+      categoryName,
+      handleFilterChange,
+      selectedFields,
+      filterOptions
+    } = this.props;
+    const category = categoryName.toLowerCase();
+    return FILTERS_BY_CATEGORY[category].map(field => (
+      <Dropdown
+        key={field}
+        label={startCase(field)}
+        placeholder="Select a category"
+        options={filterOptions ? filterOptions[field] : []}
+        onValueChange={selected =>
+          handleFilterChange(field, selected && selected.value)}
+        value={selectedFields ? selectedFields[field] : null}
+      />
+    ));
+  }
+
   render() {
     const { query, handleSearchChange, categoryName } = this.props;
     return (
@@ -42,6 +66,7 @@ class EmissionPathwaysTable extends PureComponent {
         <EspScenariosProvider />
         <EspIndicatorsProvider />
         <div className={styles.col4}>
+          {this.renderFilters()}
           <Search
             input={query}
             theme={darkSearch}
@@ -51,7 +76,7 @@ class EmissionPathwaysTable extends PureComponent {
             plain
           />
         </div>
-        {this.getTableContent()}
+        {this.renderTableContent()}
       </div>
     );
   }
@@ -65,7 +90,10 @@ EmissionPathwaysTable.propTypes = {
   categoryName: PropTypes.string.isRequired,
   titleLinks: PropTypes.array,
   query: PropTypes.string,
-  handleSearchChange: PropTypes.func
+  handleSearchChange: PropTypes.func,
+  handleFilterChange: PropTypes.func,
+  selectedFields: PropTypes.object,
+  filterOptions: PropTypes.object
 };
 
 export default EmissionPathwaysTable;
