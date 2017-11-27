@@ -3,12 +3,14 @@ import isEmpty from 'lodash/isEmpty';
 import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
-import { ESP_BLACKLIST } from 'data/constants';
+import uniq from 'lodash/uniq';
+import { ESP_BLACKLIST, FILTERS_BY_CATEGORY } from 'data/constants';
 
 const getCategory = state =>
   (state.category && state.category.toLowerCase()) || null;
 const getData = state => state.categoryData || null;
 const getQuery = state => deburrUpper(state.query) || '';
+const getSearch = state => state.search || null;
 
 export const getDefaultColumns = createSelector([getCategory], category => {
   switch (category) {
@@ -29,19 +31,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
   }
 });
 
-export const filterDataByBlackList = createSelector(
-  [getData, getCategory],
-  (data, category) => {
-    if (!data || isEmpty(data)) return null;
-    const whiteList = remove(
-      Object.keys(data[0]),
-      n => ESP_BLACKLIST[category].indexOf(n) === -1
-    );
-    return data.map(d => pick(d, whiteList));
-  }
-);
-
-export const flattenedData = createSelector([filterDataByBlackList], data => {
+export const flattenedData = createSelector([getData], data => {
   if (!data || isEmpty(data)) return null;
   const attributesWithObjects = ['model', 'category', 'subcategory'];
   return data.map(d => {
@@ -86,8 +76,80 @@ export const titleLinks = createSelector(
   }
 );
 
+const getSelectedFields = createSelector([getSearch], search => {
+  if (!search) return null;
+  const selectedFields = search;
+  delete selectedFields.search;
+  return selectedFields;
+});
+
+export const getSelectedFieldOptions = createSelector(
+  [getSelectedFields],
+  fields => {
+    if (!fields) return null;
+    const fieldOptions = {};
+    Object.keys(fields).forEach(key => {
+      fieldOptions[key] = { value: fields[key], label: fields[key] };
+    });
+    return fieldOptions;
+  }
+);
+
+export const filteredDataByFilters = createSelector(
+  [filteredDataBySearch, getSelectedFields],
+  (data, filters) => {
+    if (!data) return null;
+    if (!filters) return data;
+    let filteredData = data;
+    Object.keys(filters).forEach(key => {
+      filteredData = filteredData.filter(
+        d => d[key] === undefined || d[key] === filters[key]
+      );
+    });
+    return filteredData;
+  }
+);
+
+export const getFilterOptionsByCategory = createSelector(
+  [getCategory, filteredDataByFilters],
+  (category, data) => {
+    if (!category || !data || isEmpty(data)) return null;
+    const filters = FILTERS_BY_CATEGORY[category];
+    const categoryOptions = {};
+    filters.forEach(f => {
+      const sanitizedFilterData = [];
+      data.forEach(d => {
+        if (d[f] !== null && d[f] !== '' && d[f] !== undefined) {
+          const filterName = typeof d[f] === 'string' ? d[f] : d[f].name;
+          sanitizedFilterData.push(filterName);
+        }
+      });
+
+      categoryOptions[f] = uniq(sanitizedFilterData).map(filterData => ({
+        value: filterData,
+        label: filterData
+      }));
+    });
+    return categoryOptions;
+  }
+);
+
+export const filterDataByBlackList = createSelector(
+  [filteredDataByFilters, getCategory],
+  (data, category) => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data[0]),
+      n => ESP_BLACKLIST[category].indexOf(n) === -1
+    );
+    return data.map(d => pick(d, whiteList));
+  }
+);
+
 export default {
-  getDefaultColumns,
+  filterDataByBlackList,
   titleLinks,
-  filteredDataBySearch
+  filteredDataByFilters,
+  getFilterOptionsByCategory,
+  getSelectedFieldOptions
 };

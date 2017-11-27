@@ -124,6 +124,12 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
+export const FILTERS_BY_CATEGORY = {
+  models: ['license', 'time_horizon', 'time_step'],
+  scenarios: ['model_abbreviation'],
+  indicators: ['category']
+};
+
 export default {
   CALCULATION_OPTIONS,
   TOP_EMITTERS,
@@ -132,5 +138,6 @@ export default {
   CHART_COLORS,
   DEFAULT_AXES_CONFIG,
   DATA_SCALE,
-  ESP_BLACKLIST
+  ESP_BLACKLIST,
+  FILTERS_BY_CATEGORY
 };
