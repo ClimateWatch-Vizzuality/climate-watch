@@ -4,58 +4,77 @@ import * as actions from './viz-creator-actions';
 const toggleSelect = (state, key, value) =>
   (!isNull(value) && value === state[key] ? null : value);
 
-export default {
-  [actions.fetchDatasets]: state => ({
-    ...state,
-    datasets: {
-      ...state.datasets,
+
+const fetchData = (key, state) => ({
+  ...state,
+  [key]: {
+    ...state[key],
+    loading: true
+  }
+});
+
+const gotData = (key, data, state) => ({
+  ...state,
+  [key]: {
+    ...state.datasets[key],
+    data,
+    loading: false
+  }
+});
+
+const gotFilterData = (key, data, state) => ({
+  ...state,
+  filters: {
+    ...state.filters,
+    [key]: {
+      loading: false,
+      data
+    }
+  }
+});
+
+const fetchFilter = (key, state) => ({
+  ...state,
+  filters: {
+    ...state.filters,
+    [key]: {
+      ...state.filters[key],
       loading: true
     }
-  }),
-  [actions.gotDatasets]: (state, { payload }) => ({
-    ...state,
-    datasets: {
-      ...state.datasets,
-      data: payload,
-      loading: false
+  }
+});
+
+const selectData = (key, data, state) => ({
+  ...state,
+  [key]: toggleSelect(state, key, data)
+});
+
+const selectFilter = ({ label, type, value, values }, state) => ({
+  ...state,
+  filters: {
+    ...state.filters,
+    [type]: {
+      ...state.filters[type],
+      selected: values || { label, value }
     }
-  }),
-  [actions.selectDataset]: (state, { payload }) => ({
-    ...state,
-    dataset: toggleSelect(state, 'dataset', payload)
-  }),
-  [actions.selectViz]: (state, { payload }) => ({
-    ...state,
-    visualisation: toggleSelect(state, 'visualisation', payload)
-  }),
-  [actions.selectFilter]: (state, { payload: { label, type, values } }) => ({
-    ...state,
-    filters: {
-      ...state.filters,
-      [type]: {
-        ...state.filters[type],
-        selected: { label, values }
-      }
-    }
-  }),
-  [actions.fetchLocations]: state => ({
-    ...state,
-    filters: {
-      ...state.filters,
-      locations: {
-        loading: true,
-        data: []
-      }
-    }
-  }),
-  [actions.gotLocations]: (state, { payload }) => ({
-    ...state,
-    filters: {
-      ...state.filters,
-      locations: {
-        loading: false,
-        data: payload
-      }
-    }
-  })
+  }
+});
+
+export default {
+  [actions.fetchDatasets]: state => fetchData('datasets', state),
+  [actions.fetchLocations]: state => fetchFilter('locations', state),
+  [actions.fetchModels]: state => fetchFilter('models', state),
+  [actions.fetchScenarios]: state => fetchFilter('scenarios', state),
+  [actions.fetchIndicators]: state => fetchFilter('indicators', state),
+
+  [actions.gotDatasets]: (state, { payload }) => gotData('datasets', payload, state),
+  [actions.gotLocations]: (state, { payload }) => gotFilterData('locations', payload, state),
+  [actions.gotModels]: (state, { payload }) => gotFilterData('models', payload, state),
+  [actions.gotScenarios]: (state, { payload }) => gotFilterData('scenarios', payload, state),
+  [actions.gotCategories]: (state, { payload }) => gotFilterData('categories', payload, state),
+  [actions.gotIndicators]: (state, { payload }) => gotFilterData('indicators', payload, state),
+
+  [actions.selectDataset]: (state, { payload }) => selectData('dataset', payload, state),
+  [actions.selectViz]: (state, { payload }) => selectData('visualisation', payload, state),
+  [actions.selectFilter]: (state, { payload }) => selectFilter(payload, state)
 };

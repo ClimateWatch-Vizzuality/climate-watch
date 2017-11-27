@@ -47,6 +47,10 @@ export function compareIndexByKey(attribute) {
   };
 }
 
+export const uniqueById = data => data
+  .reduce((res, current) => (current &&
+    (find(res, { id: current.id }) ? res : res.concat([current]))) || res, []);
+
 export function importAllImagesFromFolder(r) {
   const images = {};
   const keys = r.keys();

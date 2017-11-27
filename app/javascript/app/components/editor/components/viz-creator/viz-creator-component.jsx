@@ -1,36 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import _ from 'lodash-inflection';
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
+import SelectableList from './components/selectable-list';
 import styles from './viz-creator-styles';
-
-const SelectableList = ({ type, data, selected, onClick, children, log }) => (
-  <ul className={styles[`${type}s`]}>
-    {map(data, item => (
-      <li
-        key={item.id}
-        className={cx(styles[type], {
-          [styles[`${type}Selected`]]: selected === item.id
-        })}
-      >
-        <button onClick={() => onClick(item.id)}>{children(item)}</button>
-      </li>
-    ))}
-  </ul>
-);
-
-// maps filters to dropdown/multiselect format
-const mapFilters = (filters, f) => (filters[f.name] &&
-  filters[f.name].data.map(o => ({
-    label: o.name,
-    values: o.id
-  }))) ||
-  null;
-
-// based on a description returs a selected value(s)
-const getSelected = (spec, values) => values.selected;
 
 const VizCreator = ({
   datasets,
@@ -41,7 +17,8 @@ const VizCreator = ({
   visualisation,
   filters,
   selectors,
-  selectFilter
+  selectFilter,
+  categories
 }) => (
   <div className={styles.container}>
     <ul className={styles.steps}>
@@ -80,23 +57,30 @@ const VizCreator = ({
                 {filters[f.name] && f.multi ? (
                   <MultiSelect
                     selectedLabel={null}
+                    disabled={isEmpty(filters[f.name].data)}
                     label={f.name}
-                    values={filters[f.name].data.map(o => `location-${o.id}`)}
-                    options={mapFilters(filters, f)}
-                    onMultiValueChange={e => console.log(e)}
+                    values={filters[f.name].selected}
+                    options={filters[f.name].data}
+                    placeholder={filters[f.name].placeholder}
+                    onMultiValueChange={e =>
+                      selectFilter({
+                        values: e,
+                        type: f.name
+                      })}
                   />
                 ) : (
                   filters[f.name] && (
                     <Dropdown
-                      label={_.titleize(f.name)}
-                      options={mapFilters(filters, f)}
+                      label={filters[f.name].label}
+                      disabled={isEmpty(filters[f.name].data)}
                       onValueChange={e =>
                         selectFilter({
                           ...e,
                           type: f.name
                         })}
-                      value={getSelected(f, filters[f.name])}
-                      placeholder={`Select ${_.singularize(_.titleize(f.name))}`}
+                      value={filters[f.name].selected}
+                      options={filters[f.name].data}
+                      placeholder={filters[f.name].placeholder}
                       hideResetButton
                     />
                   )
@@ -108,6 +92,11 @@ const VizCreator = ({
       </li>
       <li className={styles.step}>
         <h1>4/4 - Annotate the visualisation</h1>
+        <ul>
+          {map(filters, (f, name) =>
+            <li key={name}>{name}: {f.selected && f.selected.label}</li>
+          )}
+        </ul>
       </li>
     </ul>
   </div>
