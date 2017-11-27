@@ -6,6 +6,7 @@ import Intro from 'components/intro';
 import cx from 'classnames';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
+import InfoButton from 'components/button/info-button';
 
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
@@ -48,7 +49,12 @@ class CountryNdcOverview extends PureComponent {
                 />
                 {actions && (
                   <div className={styles.actions}>
-                    <div className={styles.printButton} />
+                    <InfoButton
+                      className={styles.infoBtn}
+                      infoOpen={false}
+                      handleInfoClick={() => this.handleInfoClick()}
+                      box
+                    />
                     <Button
                       className={styles.exploreBtn}
                       color="white"

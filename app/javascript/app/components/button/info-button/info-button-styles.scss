@@ -18,4 +18,20 @@
     box-shadow: none !important;
     fill: $theme-color;
   }
+
+  &.box {
+    height: 45px;
+    width: 45px;
+    border: solid 1px $border-color;
+    border-radius: 4px;
+    padding: 0;
+    box-shadow: none;
+    fill: rgba($theme-color, 0.7);
+    transition: fill 150ms ease-out;
+
+    &:hover {
+      box-shadow: none;
+      fill: $theme-color;
+    }
+  }
 }

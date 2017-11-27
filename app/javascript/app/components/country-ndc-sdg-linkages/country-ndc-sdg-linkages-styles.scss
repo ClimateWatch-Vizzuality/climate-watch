@@ -1,21 +1,8 @@
 @import '~styles/layout.scss';
 
 .header {
-  @extend %grid;
-
-  @include msGridColumns(7fr, 2fr, 3fr);
-
-  grid-template-columns: 7fr 2fr 3fr;
   margin-bottom: 20px;
   padding-top: 20px;
-}
-
-.exploreBtn {
-  grid-column-start: 3;
-}
-
-.alignEnd {
-  align-self: flex-end;
 }
 
 .sdgs {
@@ -30,10 +17,24 @@
 }
 
 .titleContainer {
-  display: inline-flex;
-  position: relative;
-  align-items: center;
-  flex-wrap: wrap;
+  @extend %grid;
+
+  @include msGridColumns(5fr, 1fr, 3fr 3fr);
+
+  grid-template-columns: 5fr 1fr 3fr 3fr;
+}
+
+.descriptionContainer {
+  display: flex;
+  align-content: space-between;
+  color: $theme-color;
+  line-height: $line-height-medium;
+  width: 50%;
+
+  div {
+    margin-right: 30px;
+    width: 50%;
+  }
 }
 
 .title {
@@ -42,6 +43,8 @@
   color: $theme-color;
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
+  margin-top: 25px;
 }
 
 .tooltip {
@@ -61,22 +64,17 @@
   padding-top: 15px;
 }
 
-.info {
-  flex-basis: 100%;
+.infoBtn {
+  margin-top: 20px;
+  margin-left: 45px;
 }
 
-.infoText {
-  overflow: hidden;
-  height: auto;
-  max-height: 0;
-  max-width: 780px;
-  color: $theme-color;
-  transition: max-height 0.4s ease-in;
-  line-height: 1.6;
+.exploreBtn {
+  margin-top: 20px;
+}
 
-  &Open {
-    max-height: 100px;
-  }
+.info {
+  flex-basis: 100%;
 }
 
 .loader {
