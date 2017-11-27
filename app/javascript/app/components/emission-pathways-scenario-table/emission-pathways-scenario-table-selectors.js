@@ -5,16 +5,20 @@ import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import sortBy from 'lodash/sortBy';
-import { ESP_BLACKLIST } from 'data/constants';
+import { ESP_BLACKLIST, WORLD_LOCATION_ID } from 'data/constants';
 import { sortLabelByAlpha } from 'utils/graphs';
 
 const getScenarioId = state => state.id || null;
 const getQuery = state => deburrUpper(state.query) || '';
 const getCategorySelected = state => state.categorySelected || null;
+const getLocationSelected = state =>
+  state.locationSelected || WORLD_LOCATION_ID;
 const getData = state =>
   (!isEmpty(state.espScenariosData) ? state.espScenariosData : null);
 const getTrendData = state =>
   (!isEmpty(state.espTrendData) ? state.espTrendData : null);
+const getLocations = state =>
+  (!isEmpty(state.espLocationsData) ? state.espLocationsData : null);
 
 const getScenarioData = createSelector([getData, getScenarioId], (data, id) => {
   if (!data || !id) return null;
@@ -22,11 +26,11 @@ const getScenarioData = createSelector([getData, getScenarioId], (data, id) => {
 });
 
 const getScenarioTrendData = createSelector(
-  [getTrendData, getScenarioId],
-  (data, id) => {
+  [getTrendData, getLocationSelected, getScenarioId],
+  (data, selectedLocation, id) => {
+    if (!data.locations[selectedLocation]) return null;
     if (!data || !id || !data.locations) return null;
-    if (!data.locations['267']) return null;
-    return data.locations['267'].scenarios[id] || null;
+    return data.locations[selectedLocation].scenarios[id] || null;
   }
 );
 
@@ -62,6 +66,26 @@ export const getSelectedCategoryOption = createSelector(
   (categories, categorySelected) => {
     if (!categories || !categorySelected) return null;
     return categories.find(c => c.value === categorySelected);
+  }
+);
+
+export const getLocationOptions = createSelector([getLocations], locations => {
+  if (!locations) return null;
+  return locations.map(location => ({
+    value: location.id.toString(),
+    label: location.name
+  }));
+});
+
+export const getSelectedLocationOption = createSelector(
+  [getLocations, getLocationSelected],
+  (locations, selectedLocation) => {
+    if (!locations) return null;
+    const location = locations.find(l => l.id.toString() === selectedLocation);
+    return {
+      value: location.id,
+      label: location.name
+    };
   }
 );
 
@@ -109,18 +133,21 @@ export const filteredDataByCategory = createSelector(
 export const dataWithTrendLine = createSelector(
   [filteredDataByCategory, getScenarioTrendData],
   (data, trendData) => {
-    if (!data || !trendData) return null;
+    if (!data) return null;
     return data.map(d => {
       const rowData = d;
       const indicatorId = d.id;
-      const indicatorTrendData = trendData.find(
-        t => t.indicator_id === indicatorId
-      );
-      rowData.trend = isEmpty(indicatorTrendData)
-        ? null
-        : sortBy(indicatorTrendData.values, ['year']).map(v => ({
-          value: parseFloat(v.value)
-        }));
+      const indicatorTrendData =
+        trendData && trendData.find(t => t.indicator_id === indicatorId);
+      if (indicatorTrendData) {
+        rowData.trend = isEmpty(indicatorTrendData)
+          ? null
+          : sortBy(indicatorTrendData.values, ['year']).map(v => ({
+            value: parseFloat(v.value)
+          }));
+      } else {
+        rowData.trend = null;
+      }
       return rowData;
     });
   }
@@ -145,8 +172,10 @@ export const defaultColumns = () => [
   'trend'
 ];
 export default {
+  getLocationOptions,
   filterDataByBlackList,
   defaultColumns,
   getCategories,
-  getSelectedCategoryOption
+  getSelectedCategoryOption,
+  getSelectedLocationOption
 };

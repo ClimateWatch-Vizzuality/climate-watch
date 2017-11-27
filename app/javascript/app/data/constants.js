@@ -124,6 +124,8 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
+export const WORLD_LOCATION_ID = '267';
+
 export default {
   CALCULATION_OPTIONS,
   TOP_EMITTERS,
@@ -132,5 +134,6 @@ export default {
   CHART_COLORS,
   DEFAULT_AXES_CONFIG,
   DATA_SCALE,
-  ESP_BLACKLIST
+  ESP_BLACKLIST,
+  WORLD_LOCATION_ID
 };

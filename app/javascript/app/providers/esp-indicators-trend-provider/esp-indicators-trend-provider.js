@@ -14,6 +14,13 @@ class EspIndicatorsTrendDataProvider extends PureComponent {
     getIndicatorsTrendData(locationId, scenarioId);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { getIndicatorsTrendData, locationId, scenarioId } = nextProps;
+    if (locationId !== this.props.locationId) {
+      getIndicatorsTrendData(locationId, scenarioId);
+    }
+  }
+
   render() {
     return null;
   }

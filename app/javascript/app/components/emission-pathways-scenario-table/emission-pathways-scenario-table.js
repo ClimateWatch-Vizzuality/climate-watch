@@ -8,7 +8,9 @@ import {
   filterDataByBlackList,
   defaultColumns,
   getCategories,
-  getSelectedCategoryOption
+  getLocationOptions,
+  getSelectedCategoryOption,
+  getSelectedLocationOption
 } from './emission-pathways-scenario-table-selectors';
 import Component from './emission-pathways-scenario-table-component';
 
@@ -18,13 +20,16 @@ const mapStateToProps = (state, { category, match, location }) => {
   const { id } = match.params;
   const espScenariosData = state.espScenarios && state.espScenarios.data;
   const espIndicatorsData = state.espIndicators && state.espIndicators.data;
+  const espLocationsData = state.espLocations && state.espLocations.data;
   const espTrendData =
     state.espIndicatorsTrend && state.espIndicatorsTrend.data;
   const EspData = {
     categorySelected: search.category,
+    locationSelected: search.location,
     query: search.search,
     espScenariosData,
     espIndicatorsData,
+    espLocationsData,
     espTrendData,
     category,
     id
@@ -34,15 +39,25 @@ const mapStateToProps = (state, { category, match, location }) => {
     data: filterDataByBlackList(EspData),
     defaultColumns: defaultColumns(EspData),
     categories: getCategories(EspData),
+    locations: getLocationOptions(EspData),
     selectedCategory: getSelectedCategoryOption(EspData),
+    selectedLocation: getSelectedLocationOption(EspData),
     query: search.search,
-    loading: state.espScenarios.loading || state.espIndicators.loading
+    loading: state.espScenarios.loading || state.espIndicators.loading,
+    id
   };
 };
 
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
+  };
+
+  handleLocationChange = location => {
+    this.updateUrlParam({
+      name: 'location',
+      value: location && location.value
+    });
   };
 
   handleCategoryChange = category => {
@@ -66,7 +81,8 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       ...this.props,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
-      handleCategoryChange: this.handleCategoryChange
+      handleCategoryChange: this.handleCategoryChange,
+      handleLocationChange: this.handleLocationChange
     });
   }
 }

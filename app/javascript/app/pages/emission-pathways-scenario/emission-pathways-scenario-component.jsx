@@ -6,9 +6,9 @@ import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
+import EspLocationsProvider from 'providers/esp-locations-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
-import EspIndicatorsTrendDataProvider from 'providers/esp-indicators-trend-provider';
 import styles from './emission-pathways-scenario-styles.scss';
 
 class EmissionPathwaysScenario extends PureComponent {
@@ -17,9 +17,9 @@ class EmissionPathwaysScenario extends PureComponent {
     const { route, anchorLinks, scenario, id } = this.props;
     return (
       <div>
+        <EspLocationsProvider />
         <EspScenariosProvider />
         <EspIndicatorsProvider />
-        <EspIndicatorsTrendDataProvider scenarioId={id} locationId={267} />
         <div>
           <Header route={route}>
             <div className={layout.content}>
