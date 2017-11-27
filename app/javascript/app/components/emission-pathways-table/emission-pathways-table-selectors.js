@@ -96,7 +96,7 @@ export const getSelectedFieldOptions = createSelector(
 );
 
 export const filteredDataByFilters = createSelector(
-  [flattenedData, getSelectedFields],
+  [filteredDataBySearch, getSelectedFields],
   (data, filters) => {
     if (!data) return null;
     if (!filters) return data;
