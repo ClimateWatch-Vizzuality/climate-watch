@@ -55,18 +55,29 @@ export const fetchScenarios = createThunkAction(
   }
 );
 
-const uniqueById = data => data
-  .reduce((res, current) => (current &&
-    (find(res, { id: current.id }) ? res : res.concat([current]))) || res, []);
+const uniqueById = data =>
+  data.reduce(
+    (res, current) =>
+      (current &&
+        (find(res, { id: current.id }) ? res : res.concat([current]))) ||
+      res,
+    []
+  );
 
 export const fetchIndicators = createThunkAction(
   'fetchIndicators',
   ({ location, scenarios }) => dispatch => {
-    fetch(API('indicators', `scenario=${scenarios.map(s => s.value).join(',')}&location=${location.value}`))
+    fetch(
+      API(
+        'indicators',
+        `scenario=${scenarios
+          .map(s => s.value)
+          .join(',')}&location=${location.value}`
+      )
+    )
       .then(d => d.json())
       .then(d => {
-        const categories = uniqueById(d
-          .map(i => i.category));
+        const categories = uniqueById(d.map(i => i.category));
 
         dispatch(gotCategories(categories));
         dispatch(gotIndicators(uniqueById(d)));

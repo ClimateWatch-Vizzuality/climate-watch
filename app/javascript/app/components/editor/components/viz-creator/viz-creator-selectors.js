@@ -30,43 +30,48 @@ export const filtersSelector = createSelector(
   (d, viz) => d && filters(find(mergeViz(d), { id: viz }))
 );
 
-
-const uniqueById = data => data
-  .reduce((res, current) => (current &&
-    (find(res, { id: current.id }) ? res : res.concat([current]))) || res, []);
-
+const uniqueById = data =>
+  data.reduce(
+    (res, current) =>
+      (current &&
+        (find(res, { id: current.id }) ? res : res.concat([current]))) ||
+      res,
+    []
+  );
 
 // maps filters to dropdown/multiselect format
-const mapFilter = data => (data && data.map &&
-  data.map(o => ({
-    label: o.label || o.name || o.full_name || o.alias,
-    value: o.value || o.id
-  }))) || null;
+const mapFilter = data =>
+  (data &&
+    data.map &&
+    data.map(o => ({
+      label: o.label || o.name || o.full_name || o.alias,
+      value: o.value || o.id
+    }))) ||
+  null;
 
 export const subcategoriesSelector = createSelector(
   categories,
   indicators,
   (cats, indics) =>
-    cats
-    && cats.selected
-    && indics
-    && uniqueById(filter(indics.data, i =>
-      i.category.id === cats.selected.value)
-      .map(i => i.subcategory))
+    cats &&
+    cats.selected &&
+    indics &&
+    uniqueById(
+      filter(indics.data, i => i.category.id === cats.selected.value).map(
+        i => i.subcategory
+      )
+    )
 );
 
-export const getFormatFilters = name => createSelector(
-  identity,
-  filtersSelector,
-  (state, spec) => {
+export const getFormatFilters = name =>
+  createSelector(identity, filtersSelector, (state, spec) => {
     const filter = { ...state.filters[name] };
     filter.data = mapFilter(filter.data);
     filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
     filter.label = _.titleize(name);
 
-    const selected = spec
-      && find(spec, { name })
-      && find(spec, { name }).selected;
+    const selected =
+      spec && find(spec, { name }) && find(spec, { name }).selected;
 
     if (!filter.selected) {
       switch (selected) {

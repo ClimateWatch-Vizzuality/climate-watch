@@ -4,7 +4,6 @@ import * as actions from './viz-creator-actions';
 const toggleSelect = (state, key, value) =>
   (!isNull(value) && value === state[key] ? null : value);
 
-
 const fetchData = (key, state) => ({
   ...state,
   [key]: {
@@ -67,14 +66,22 @@ export default {
   [actions.fetchScenarios]: state => fetchFilter('scenarios', state),
   [actions.fetchIndicators]: state => fetchFilter('indicators', state),
 
-  [actions.gotDatasets]: (state, { payload }) => gotData('datasets', payload, state),
-  [actions.gotLocations]: (state, { payload }) => gotFilterData('locations', payload, state),
-  [actions.gotModels]: (state, { payload }) => gotFilterData('models', payload, state),
-  [actions.gotScenarios]: (state, { payload }) => gotFilterData('scenarios', payload, state),
-  [actions.gotCategories]: (state, { payload }) => gotFilterData('categories', payload, state),
-  [actions.gotIndicators]: (state, { payload }) => gotFilterData('indicators', payload, state),
+  [actions.gotDatasets]: (state, { payload }) =>
+    gotData('datasets', payload, state),
+  [actions.gotLocations]: (state, { payload }) =>
+    gotFilterData('locations', payload, state),
+  [actions.gotModels]: (state, { payload }) =>
+    gotFilterData('models', payload, state),
+  [actions.gotScenarios]: (state, { payload }) =>
+    gotFilterData('scenarios', payload, state),
+  [actions.gotCategories]: (state, { payload }) =>
+    gotFilterData('categories', payload, state),
+  [actions.gotIndicators]: (state, { payload }) =>
+    gotFilterData('indicators', payload, state),
 
-  [actions.selectDataset]: (state, { payload }) => selectData('dataset', payload, state),
-  [actions.selectViz]: (state, { payload }) => selectData('visualisation', payload, state),
+  [actions.selectDataset]: (state, { payload }) =>
+    selectData('dataset', payload, state),
+  [actions.selectViz]: (state, { payload }) =>
+    selectData('visualisation', payload, state),
   [actions.selectFilter]: (state, { payload }) => selectFilter(payload, state)
 };

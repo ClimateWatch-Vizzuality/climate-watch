@@ -93,9 +93,11 @@ const VizCreator = ({
       <li className={styles.step}>
         <h1>4/4 - Annotate the visualisation</h1>
         <ul>
-          {map(filters, (f, name) =>
-            <li key={name}>{name}: {f.selected && f.selected.label}</li>
-          )}
+          {map(filters, (f, name) => (
+            <li key={name}>
+              {name}: {f.selected && f.selected.label}
+            </li>
+          ))}
         </ul>
       </li>
     </ul>

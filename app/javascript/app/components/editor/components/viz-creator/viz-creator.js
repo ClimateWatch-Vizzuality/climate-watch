@@ -9,7 +9,11 @@ import reducers from './viz-creator-reducers';
 
 import VizCreatorComponent from './viz-creator-component';
 import {
-  vizSelector, filtersSelector, getFormatFilters, subcategoriesSelector } from './viz-creator-selectors';
+  vizSelector,
+  filtersSelector,
+  getFormatFilters,
+  subcategoriesSelector
+} from './viz-creator-selectors';
 
 class VizCreator extends Component {
   static propTypes = {
@@ -34,20 +38,26 @@ class VizCreator extends Component {
     const location = props.filters.locations.selected;
     const scenarios = props.filters.scenarios.selected;
     const indicators = props.filters.indicators;
-    if (location && !isEmpty(scenarios) && (indicators && isEmpty(indicators.data) && !indicators.loading)) {
+    if (
+      location &&
+      !isEmpty(scenarios) &&
+      (indicators && isEmpty(indicators.data) && !indicators.loading)
+    ) {
       this.props.fetchIndicators({ location, scenarios });
     }
   }
 
   loadFilter(dep, key, load, props) {
     const dependency = props.filters[dep].selected;
-    const dependencyId = (dependency && dependency.value);
+    const dependencyId = dependency && dependency.value;
     const prevLocation = this.props.filters[dep];
-    const prevLocationId = (prevLocation.selected && prevLocation.selected.value);
+    const prevLocationId = prevLocation.selected && prevLocation.selected.value;
 
     if (
-      (dependency && !props.filters[key].loading && isEmpty(props.filters[key].data))
-      || (dependency && dependencyId !== prevLocationId)
+      (dependency &&
+        !props.filters[key].loading &&
+        isEmpty(props.filters[key].data)) ||
+      (dependency && dependencyId !== prevLocationId)
     ) {
       props[load](dependency.value);
     }
