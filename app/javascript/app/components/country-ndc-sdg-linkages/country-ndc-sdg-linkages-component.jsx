@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import cx from 'classnames';
 
 import Loading from 'components/loading';
 import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
@@ -12,8 +11,6 @@ import NoContent from 'components/no-content';
 import Dropdown from 'components/dropdown';
 import isEqual from 'lodash/isEqual';
 import InfoButton from 'components/button/info-button';
-import Icon from 'components/icon';
-import infoIcon from 'assets/icons/info.svg';
 import Button from 'components/button';
 
 import layout from 'styles/layout.scss';
@@ -96,44 +93,20 @@ class CountrySDGLinkages extends PureComponent {
   }
 
   render() {
-    const {
-      activeSector,
-      sectorOptions,
-      handleSectorChange,
-      toogleNDCsSDGsInfo,
-      infoOpen
-    } = this.props;
+    const { activeSector, sectorOptions, handleSectorChange } = this.props;
     return (
       <div className={styles.wrapper}>
+        <NdcsSdgsDataProvider />
         <div className={layout.content}>
           <div className={styles.header}>
             <div className={styles.titleContainer}>
               <h3 className={styles.title}>NDC-SDG Linkages</h3>
               <InfoButton
-                infoOpen={infoOpen}
-                handleInfoClick={() => toogleNDCsSDGsInfo(i => !i)}
-                square
-              >
-                <Icon icon={infoIcon} />
-              </InfoButton>
-              <div className={styles.info}>
-                <p
-                  className={cx(styles.infoText, {
-                    [styles.infoTextOpen]: infoOpen
-                  })}
-                >
-                  The colored dots represent the SDG targets for which there is
-                  an aligned climate target, action, policy measure or need in
-                  the NDC. This alignment was identified based only on the
-                  information communicated in the NDC, not the domestic policy
-                  context. It is therefore only an entry point for considering
-                  the degree of potential alignment between the country’s
-                  climate and sustainable development objectives.
-                </p>
-              </div>
-            </div>
-            <NdcsSdgsDataProvider />
-            <div className={cx(styles.sectorSelector, styles.alignEnd)}>
+                className={styles.infoBtn}
+                infoOpen={false}
+                handleInfoClick={() => this.handleInfoClick()}
+                box
+              />
               <Dropdown
                 label="Filter by sector"
                 placeholder="Choose a sector"
@@ -141,16 +114,25 @@ class CountrySDGLinkages extends PureComponent {
                 onValueChange={handleSectorChange}
                 value={activeSector}
               />
+              <Button
+                className={styles.exploreBtn}
+                color="yellow"
+                link={`/ndcs-sdg${activeSector
+                  ? `?goal=${activeSector.value}`
+                  : ''}`}
+              >
+                Explore global linkages
+              </Button>
             </div>
-            <Button
-              className={cx(styles.exploreBtn, styles.alignEnd)}
-              color="yellow"
-              link={`/ndcs-sdg${activeSector
-                ? `?goal=${activeSector.value}`
-                : ''}`}
-            >
-              Explore global linkages
-            </Button>
+            <div className={styles.descriptionContainer}>
+              The colored dots represent the SDG targets for which there is an
+              aligned climate target, action, policy measure or need in the NDC.
+              This alignment was identified based only on the information
+              communicated in the NDC, not the domestic policy context. It is
+              therefore only an entry point for considering the degree of
+              potential alignment between the country’s climate and sustainable
+              development objectives.
+            </div>
           </div>
           <NdcsSdgsMetaProvider />
           {this.renderCards()}
@@ -169,9 +151,7 @@ CountrySDGLinkages.propTypes = {
   handleSectorChange: Proptypes.func,
   activeSector: Proptypes.object,
   loading: Proptypes.bool,
-  infoOpen: Proptypes.bool,
   setTooltipData: Proptypes.func,
-  toogleNDCsSDGsInfo: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object
 };

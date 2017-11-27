@@ -36,8 +36,7 @@ const mapStateToProps = (state, { match, location }) => {
       !isEmpty(ndcsSdgsData.data) && ndcsSdgsData.data[iso]
         ? ndcsSdgsData.data[iso].sdgs
         : {},
-    loading: !ndcsSdgsData.error && ndcsSdgsData.loading,
-    infoOpen: countrySDGLinkages.infoOpen
+    loading: !ndcsSdgsData.error && ndcsSdgsData.loading
   };
 };
 
