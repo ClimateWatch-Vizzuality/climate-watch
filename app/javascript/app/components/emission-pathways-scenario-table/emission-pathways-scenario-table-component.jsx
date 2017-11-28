@@ -28,7 +28,6 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       selectedLocation,
       id
     } = this.props;
-    if (loading) return <Loading light className={styles.loader} />;
     return (
       <div>
         {selectedLocation && (
@@ -37,46 +36,52 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
             locationId={selectedLocation.value}
           />
         )}
-        <div className={cx(styles.tableMenu)}>
-          <li className={cx(styles.singleTitle, styles.active)}>
-            {'Indicators'}
-          </li>
-        </div>
-        <div className={styles.col4}>
-          <Dropdown
-            label="Country/Region"
-            placeholder="Select a Country/Region"
-            options={locations}
-            onValueChange={handleLocationChange}
-            value={selectedLocation}
-          />
-          <Dropdown
-            label="Category"
-            placeholder="Select a category"
-            options={categories}
-            onValueChange={handleCategoryChange}
-            value={selectedCategory}
-          />
-          <Search
-            input={query}
-            theme={darkSearch}
-            onChange={handleSearchChange}
-            className={styles.searchBox}
-            placeholder={'Search by all fields'}
-            plain
-          />
-        </div>
-        {data && data.length > 0 ? (
-          <Table
-            data={data}
-            rowHeight={60}
-            sortBy={'name'}
-            hasColumnSelect
-            defaultColumns={defaultColumns}
-            trendLine={'trend'}
-          />
+        {loading ? (
+          <Loading light className={styles.loader} />
         ) : (
-          <NoContent message={noContentMsg} className={styles.noContent} />
+          <div>
+            <div className={cx(styles.tableMenu)}>
+              <li className={cx(styles.singleTitle, styles.active)}>
+                {'Indicators'}
+              </li>
+            </div>
+            <div className={styles.col4}>
+              <Dropdown
+                label="Country/Region"
+                placeholder="Select a Country/Region"
+                options={locations}
+                onValueChange={handleLocationChange}
+                value={selectedLocation}
+              />
+              <Dropdown
+                label="Category"
+                placeholder="Select a category"
+                options={categories}
+                onValueChange={handleCategoryChange}
+                value={selectedCategory}
+              />
+              <Search
+                input={query}
+                theme={darkSearch}
+                onChange={handleSearchChange}
+                className={styles.searchBox}
+                placeholder={'Search by all fields'}
+                plain
+              />
+            </div>
+            {data && data.length > 0 ? (
+              <Table
+                data={data}
+                rowHeight={60}
+                sortBy={'name'}
+                hasColumnSelect
+                defaultColumns={defaultColumns}
+                trendLine={'trend'}
+              />
+            ) : (
+              <NoContent message={noContentMsg} className={styles.noContent} />
+            )}
+          </div>
         )}
       </div>
     );

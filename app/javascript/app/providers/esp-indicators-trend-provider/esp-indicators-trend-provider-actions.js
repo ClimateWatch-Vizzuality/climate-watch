@@ -12,6 +12,7 @@ const getIndicatorsTrendData = createThunkAction(
     const { espIndicatorsTrend } = state();
     if (
       espIndicatorsTrend &&
+      !espIndicatorsTrend.loading &&
       (!espIndicatorsTrend.data[scenarioId] ||
         isEmpty(
           espIndicatorsTrend.data[scenarioId] ||
