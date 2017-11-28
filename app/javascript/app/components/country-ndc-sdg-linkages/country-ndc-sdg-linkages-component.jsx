@@ -93,7 +93,12 @@ class CountrySDGLinkages extends PureComponent {
   }
 
   render() {
-    const { activeSector, sectorOptions, handleSectorChange } = this.props;
+    const {
+      activeSector,
+      sectorOptions,
+      handleSectorChange,
+      handleInfoClick
+    } = this.props;
     return (
       <div className={styles.wrapper}>
         <NdcsSdgsDataProvider />
@@ -104,7 +109,7 @@ class CountrySDGLinkages extends PureComponent {
               <InfoButton
                 className={styles.infoBtn}
                 infoOpen={false}
-                handleInfoClick={() => this.handleInfoClick()}
+                handleInfoClick={handleInfoClick}
                 box
               />
               <Dropdown
@@ -153,7 +158,8 @@ CountrySDGLinkages.propTypes = {
   loading: Proptypes.bool,
   setTooltipData: Proptypes.func,
   tooltipData: Proptypes.object,
-  targetsMeta: Proptypes.object
+  targetsMeta: Proptypes.object,
+  handleInfoClick: Proptypes.func.isRequired
 };
 
 CountrySDGLinkages.defaultProps = {
