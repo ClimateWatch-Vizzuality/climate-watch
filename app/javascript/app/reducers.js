@@ -19,6 +19,7 @@ import * as ndcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provid
 import * as espModelsProvider from 'providers/esp-models-provider';
 import * as espScenariosProvider from 'providers/esp-scenarios-provider';
 import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
+import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-provider';
 
 const providersReducers = {
   countries: handleActions(countriesProvider),
@@ -35,6 +36,7 @@ const providersReducers = {
   espModels: handleActions(espModelsProvider),
   espScenarios: handleActions(espScenariosProvider),
   espIndicators: handleActions(espIndicatorsProvider),
+  espIndicatorsTrend: handleActions(espIndicatorsTrendProvider),
   espLocations: handleActions(espLocationsProvider),
   espTimeSeries: handleActions(espTimeSeriesProvider)
 };
