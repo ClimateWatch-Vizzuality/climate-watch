@@ -76,8 +76,8 @@ const semiActiveCountryStyles = {
 
 export const getPathsWithStyles = createSelector(
   [getFilterUpper, getPreSelect, getISOCountries],
-  (query, preSelect, isoCountries) =>
-    worldPaths.map(path => {
+  (query, preSelect, isoCountries) => {
+    const paths = worldPaths.map(path => {
       const iso = path.properties && path.properties.id;
       if (!iso || (isoCountries && !isCountryIncluded(isoCountries, iso))) {
         return {
@@ -101,7 +101,17 @@ export const getPathsWithStyles = createSelector(
         ...path,
         style
       };
-    })
+    });
+
+    // reorder map paths to show EU geometry if selected
+    if (preSelect === 'EU28') {
+      const EUPath = paths.find(p => p.properties.id === 'EU28');
+      const EU28Index = paths.indexOf(EUPath);
+      paths.push(paths.splice(EU28Index, 1)[0]);
+    }
+
+    return paths;
+  }
 );
 
 export default {
