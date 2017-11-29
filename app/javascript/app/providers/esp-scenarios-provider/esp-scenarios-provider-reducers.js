@@ -1,4 +1,4 @@
-import * as actions from './esp-scenadios-provider-actions';
+import * as actions from './esp-scenarios-provider-actions';
 
 export const initialState = {
   loading: false,
