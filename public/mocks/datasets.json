@@ -10,6 +10,10 @@
           {
             "id": "ndpe7e7v",
             "name": "See the change in a country's emmision's for a specified indicator for a specified indicator across multiple scenarios",
+            "chart": {
+              "type": "LineChart",
+              "options": []
+            },
             "tags": [
               "Single country",
               "Single indicator",
@@ -30,6 +34,12 @@
           {
             "id": "b4x8g4wx",
             "name": "See the change in a country's emmision's for a specified indicator for a specified indicator and scenario",
+            "chart": {
+              "type": "StackBarChart",
+              "options": [
+                { "layout": "vertical" }
+              ]
+            },
             "tags": [
               "Single country",
               "Multiple indicator",
@@ -50,6 +60,10 @@
           {
             "id": "3zpj65qq",
             "name": "See a country’s relative emissions across multiple indicators for a specified scenario",
+            "chart": {
+              "type": "PieChart",
+              "options": []
+            },
             "tags": [
               "Single country",
               "Multiple indicators",
@@ -76,6 +90,10 @@
           {
             "id": "8dg8wny5",
             "name": "Compare changes per indicator across locations for a specified scenario",
+            "chart": {
+              "type": "LineChart",
+              "options": []
+            },
             "tags": [
               "Multiple locations",
               "Multiple indicators",
@@ -96,6 +114,10 @@
           {
             "id": "r3zy99ww",
             "name": "Compare locations relative emissions for a specified indicator and scenario",
+            "chart": {
+              "type": "PieChart",
+              "options": []
+            },
             "tags": [
               "Multiple locations",
               "Single indicator",
@@ -116,6 +138,14 @@
           {
             "id": "8zmkjj28",
             "name": "Compare locations stacked emissions across a specifed indicator category",
+            "chart": {
+              "type": "StackBarChart",
+              "options": [
+                {
+                  "layout": "horizontal"
+                }
+              ]
+            },
             "tags": [
               "Multiple locations",
               "Multiple indicators",
