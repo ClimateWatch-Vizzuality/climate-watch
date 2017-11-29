@@ -78,6 +78,8 @@ export default {
     gotFilterData('categories', payload, state),
   [actions.gotIndicators]: (state, { payload }) =>
     gotFilterData('indicators', payload, state),
+  [actions.gotTimeseries]: (state, { payload }) =>
+    gotData('timeseries', payload, state),
 
   [actions.selectDataset]: (state, { payload }) =>
     selectData('dataset', payload, state),

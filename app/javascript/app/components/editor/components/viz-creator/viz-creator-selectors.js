@@ -1,21 +1,21 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash-inflection';
-import keys from 'lodash/keys';
 import identity from 'lodash/identity';
 import isEmpty from 'lodash/isEmpty';
-import findIndex from 'lodash/findIndex';
-import map from 'lodash/map';
-import reduce from 'lodash/reduce';
 import find from 'lodash/find';
-import filter from 'lodash/filter';
+import _filter from 'lodash/filter';
+
+import { groupDataByScenario } from 'utils/graphs';
 
 export const filters = state => state && state.filters;
 export const dataset = state => state.dataset;
 export const datasets = state => state && state.datasets.data;
 export const categories = state => filters(state) && filters(state).categories;
+export const scenarios = state => filters(state) && filters(state).scenarios;
 export const indicators = state => filters(state) && filters(state).indicators;
 export const vizTypes = state => state && state['viz-types'];
 export const visualisation = state => state && state.visualisation;
+export const timeseries = state => state && state.timeseries;
 const visualisations = state => state && state.visualisations;
 
 const mergeViz = t => t.reduce((r, c) => r.concat([...visualisations(c)]), []);
@@ -57,7 +57,7 @@ export const subcategoriesSelector = createSelector(
     cats.selected &&
     indics &&
     uniqueById(
-      filter(indics.data, i => i.category.id === cats.selected.value).map(
+      _filter(indics.data, i => i.category.id === cats.selected.value).map(
         i => i.subcategory
       )
     )
@@ -87,3 +87,6 @@ export const getFormatFilters = name =>
 
     return filter;
   });
+
+export const timeseriesSelector = createSelector(timeseries, scenarios,
+  (series, scn) => (isEmpty(series.data) ? [] : groupDataByScenario(series.data, scn.data)));

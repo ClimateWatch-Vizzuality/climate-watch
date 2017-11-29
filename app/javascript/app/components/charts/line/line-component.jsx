@@ -62,7 +62,11 @@ class ChartLine extends PureComponent {
                 key={column.value}
                 dataKey={column.value}
                 dot={false}
-                stroke={config.theme[column.value].stroke || ''}
+                stroke={(
+                  config.theme
+                    && config.theme[column.value]
+                    && config.theme[column.value].stroke) || ''
+                }
                 strokeWidth={2}
               />
             ))}

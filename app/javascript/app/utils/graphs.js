@@ -1,6 +1,8 @@
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import chroma from 'chroma-js';
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -14,6 +16,23 @@ export const sortLabelByAlpha = array =>
     if (a.label > b.label) return 1;
     return 0;
   });
+
+const found = v => v !== -1;
+export const groupDataByScenario = (data, scenarios) =>
+  data.reduce((res, d) => {
+    const x = d.year;
+    const idx = findIndex(res, { x });
+    // append y values if x exists, otherwise create new row
+    const row = found(idx) ? res[idx] : { x };
+    row[scenarios
+      // use real name if scenarios are passed
+      ? find(scenarios, { id: d.scenario_id }).name
+      : `y${d.scenario_id}`
+    ] = parseInt(d.value, 10);
+    // override row if exists otherwise append new row
+    res[found(idx) ? idx : res.length] = row;
+    return res;
+  }, []);
 
 export const sortEmissionsByValue = array =>
   array.sort((a, b) => {

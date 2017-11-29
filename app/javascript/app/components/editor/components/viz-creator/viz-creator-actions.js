@@ -2,9 +2,11 @@ import find from 'lodash/find';
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'app/utils/redux';
 
+import { groupDataByScenario } from 'utils/graphs';
+
 const API = (endpoint, params) =>
-  // `https://www.emissionspathways.org/api/v1/${endpoint}${params ? `?${params}` : ''}`;
-  `/mocks/${endpoint}.json${params ? `?${params}` : ''}`;
+  `https://www.emissionspathways.org/api/v1/${endpoint}${params ? `?${params}` : ''}`;
+  // `/mocks/${endpoint}.json${params ? `?${params}` : ''}`;
 
 export const gotDatasets = createAction('gotDatasets');
 export const selectDataset = createAction('selectDataset');
@@ -15,6 +17,7 @@ export const gotScenarios = createAction('gotScenarios');
 export const gotIndicators = createAction('gotIndicators');
 export const gotCategories = createAction('gotCategories');
 export const gotSubCategories = createAction('gotSubCategories');
+export const gotTimeseries = createAction('gotTimeseries');
 
 export const selectViz = createAction('selectViz');
 export const selectFilter = createAction('selectFilter');
@@ -22,9 +25,24 @@ export const selectFilter = createAction('selectFilter');
 export const fetchDatasets = createThunkAction(
   'fetchDatasets',
   () => dispatch => {
-    fetch(API('datasets'))
+    fetch('/mocks/datasets.json')
       .then(d => d.json())
       .then(d => dispatch(gotDatasets(d)));
+  }
+);
+
+const getValue = (key, data) => data[key].selected.value;
+
+export const fetchTimeseries = createThunkAction(
+  'fetchTimeseries',
+  (filters) => dispatch => {
+    const location = getValue('locations', filters);
+    const indicator = getValue('indicators', filters);
+    const scenarios = filters.scenarios.selected.map(s => s.value).join(',');
+
+    fetch(API('time_series_values', `location=${location}&scenario=${scenarios}&indicator=${indicator}`))
+      .then(d => d.json())
+      .then(d => dispatch(gotTimeseries(d)));
   }
 );
 

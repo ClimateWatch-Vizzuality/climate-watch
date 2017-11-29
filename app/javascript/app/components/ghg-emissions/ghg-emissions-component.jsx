@@ -79,42 +79,39 @@ class GhgEmissions extends PureComponent {
         </div>
         <div className={styles.chartWrapper}>
           {loading && <Loading light className={styles.loader} />}
-          {!loading &&
-          (!data || !data.length) && (
-          <NoContent
-                message={
-                  filtersSelected && filtersSelected.length ? (
-                    'No data available'
-                  ) : (
-                    'No data selected'
-                  )
-                }
-                className={styles.noContent}
-                icon
-              />
-            )}
-          {data &&
-          config && (
-          <div>
-                <ChartLine config={config} data={data} height={500} />
-                <div className={styles.tags}>
-              {config.columns &&
-                  config.columns.y.map(column => (
-                    <Tag
-                      className={styles.tag}
-                      key={`${column.value}`}
-                      data={{
-                        color: config.theme[column.value].stroke,
-                        label: column.label,
-                        id: column.value
-                      }}
-                      canRemove
-                      onRemove={handleRemoveTag}
-                    />
-                  ))}
-            </div>
+          {!loading && (!data || !data.length) && (
+            <NoContent
+              message={
+                filtersSelected && filtersSelected.length ? (
+                  'No data available'
+                ) : (
+                  'No data selected'
+                )
+              }
+              className={styles.noContent}
+              icon
+            />)}
+          {data && config && (
+            <div>
+              {console.log(JSON.stringify(config, null, 2), data)}
+              <ChartLine config={config} data={data} height={500} />
+              <div className={styles.tags}>{
+                config.columns && config.columns.y.map(column => (
+                  <Tag
+                    className={styles.tag}
+                    key={`${column.value}`}
+                    data={{
+                      color: config.theme[column.value].stroke,
+                      label: column.label,
+                      id: column.value
+                    }}
+                    canRemove
+                    onRemove={handleRemoveTag}
+                  />)
+                )}
               </div>
-            )}
+            </div>
+          )}
         </div>
       </div>
     );

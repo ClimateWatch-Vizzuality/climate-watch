@@ -2,7 +2,6 @@ import { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
 import reducers from './viz-creator-reducers';
@@ -12,13 +11,19 @@ import {
   vizSelector,
   filtersSelector,
   getFormatFilters,
-  subcategoriesSelector
+  subcategoriesSelector,
+  timeseriesSelector
 } from './viz-creator-selectors';
+
+const empty = o => Object.keys(o || {}).length > 0;
 
 class VizCreator extends Component {
   static propTypes = {
     fetchDatasets: PropTypes.func.isRequired,
+    filters: PropTypes.object.isRequired,
     fetchLocations: PropTypes.func.isRequired,
+    fetchTimeseries: PropTypes.func.isRequired,
+    timeseries: PropTypes.object.isRequired,
     fetchIndicators: PropTypes.func.isRequired
   };
 
@@ -32,6 +37,9 @@ class VizCreator extends Component {
     this.loadFilter('locations', 'models', 'fetchModels', props);
     this.loadFilter('models', 'scenarios', 'fetchScenarios', props);
     this.loadCategories(props);
+    if (props.filters.indicators.selected && (!props.timeseries.loading && isEmpty(props.timeseries.data))) {
+      props.fetchTimeseries(props.filters);
+    }
   }
 
   loadCategories(props) {
@@ -50,14 +58,14 @@ class VizCreator extends Component {
   loadFilter(dep, key, load, props) {
     const dependency = props.filters[dep].selected;
     const dependencyId = dependency && dependency.value;
-    const prevLocation = this.props.filters[dep];
-    const prevLocationId = prevLocation.selected && prevLocation.selected.value;
+    const prevDep = this.props.filters[dep];
+    const prevDepId = prevDep.selected && prevDep.selected.value;
 
     if (
       (dependency &&
         !props.filters[key].loading &&
         isEmpty(props.filters[key].data)) ||
-      (dependency && dependencyId !== prevLocationId)
+      (dependency && dependencyId !== prevDepId)
     ) {
       props[load](dependency.value);
     }
@@ -72,8 +80,8 @@ const mapStateToProps = ({ vizCreator }) => ({
   ...vizCreator,
   visualisations: vizSelector(vizCreator),
   selectors: filtersSelector(vizCreator),
+  timeseries: timeseriesSelector(vizCreator),
   filters: {
-    indicators: getFormatFilters('indicators')(vizCreator),
     locations: getFormatFilters('locations')(vizCreator),
     models: getFormatFilters('models')(vizCreator),
     scenarios: getFormatFilters('scenarios')(vizCreator),
@@ -85,6 +93,18 @@ const mapStateToProps = ({ vizCreator }) => ({
         subcategories: {
           ...vizCreator.filters.subcategories,
           data: subcategoriesSelector(vizCreator)
+        }
+      }
+    }),
+    indicators: getFormatFilters('indicators')({
+      ...vizCreator,
+      filters: {
+        indicators: {
+          ...vizCreator.filters.indicators,
+          active: (
+            !empty(vizCreator.filters.categories.selected) ||
+            !empty(vizCreator.filters.subcategories.selected)
+          )
         }
       }
     })

@@ -6,6 +6,11 @@ export default {
     selected: null,
     data: []
   },
+  timeseries: {
+    loading: false,
+    selected: null,
+    data: []
+  },
   filters: {
     locations: {
       loading: false,
