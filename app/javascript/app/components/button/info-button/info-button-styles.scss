@@ -15,7 +15,7 @@
   }
 
   &:hover {
-    box-shadow: none !important;
+    box-shadow: none;
     fill: $theme-color;
   }
 
@@ -30,8 +30,7 @@
     transition: fill 150ms ease-out;
 
     &:hover {
-      box-shadow: none;
-      fill: $theme-color;
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
     }
   }
 }
