@@ -1,3 +1,5 @@
+import * as actions from './esp-scenadios-provider-actions';
+
 export const initialState = {
   loading: false,
   loaded: false,
@@ -8,8 +10,8 @@ const setLoading = (loading, state) => ({ ...state, loading });
 const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
-  fetchEspScenariosInit: state => setLoading(true, state),
-  fetchEspScenariosReady: (state, { payload }) =>
+  [actions.fetchEspScenariosInit]: state => setLoading(true, state),
+  [actions.fetchEspScenariosReady]: (state, { payload }) =>
     setLoaded(true, setLoading(false, { ...state, data: payload })),
-  fetchEspScenariosFail: state => setLoading(false, { ...state })
+  [actions.fetchEspScenariosFail]: state => setLoading(false, { ...state })
 };
