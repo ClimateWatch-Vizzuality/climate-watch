@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { scaleLinear } from 'd3-scale';
 import worldPaths from 'app/data/world-50m-paths';
+import { PATH_LAYERS } from 'app/data/constants';
 
 const getNdcsSdgsGoalsData = state => state.goalsData || null;
 const getGoalSelected = state => state.goalSelected || null;
@@ -29,47 +30,51 @@ export const getPathsWithStyles = createSelector(
   (data, targetHover) => {
     if (!data) return worldPaths;
     setScaleBuckets([initialStep, data.colour]);
-    return worldPaths.map(path => {
-      let color = '#E5E5EB'; // default color
-      let clickAllowed = false;
-      const iso = path.properties && path.properties.id;
-      if (data && data.locations && data.locations[iso]) {
-        let percentage = data.locations[iso].length / data.targets.length;
-        clickAllowed = true;
-        if (targetHover) {
-          const isIncluded = data.locations[iso].includes(targetHover);
-          clickAllowed = isIncluded;
-          percentage = isIncluded ? 1 : 0;
+    const paths = [];
+    worldPaths.forEach(path => {
+      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+        let color = '#E5E5EB'; // default color
+        let clickAllowed = false;
+        const iso = path.properties && path.properties.id;
+        if (data && data.locations && data.locations[iso]) {
+          let percentage = data.locations[iso].length / data.targets.length;
+          clickAllowed = true;
+          if (targetHover) {
+            const isIncluded = data.locations[iso].includes(targetHover);
+            clickAllowed = isIncluded;
+            percentage = isIncluded ? 1 : 0;
+          }
+          color = colorScale(percentage);
         }
-        color = colorScale(percentage);
-      }
-      const style = {
-        default: {
-          fill: color,
-          stroke: '#000',
-          strokeWidth: 0.05,
-          outline: 'none'
-        },
-        hover: {
-          fill: color,
-          stroke: '#000',
-          strokeWidth: 0.05,
-          outline: 'none'
-        },
-        pressed: {
-          fill: color,
-          stroke: '#000',
-          strokeWidth: 0.5,
-          outline: 'none'
-        }
-      };
+        const style = {
+          default: {
+            fill: color,
+            stroke: '#000',
+            strokeWidth: 0.05,
+            outline: 'none'
+          },
+          hover: {
+            fill: color,
+            stroke: '#000',
+            strokeWidth: 0.05,
+            outline: 'none'
+          },
+          pressed: {
+            fill: color,
+            stroke: '#000',
+            strokeWidth: 0.5,
+            outline: 'none'
+          }
+        };
 
-      return {
-        ...path,
-        style,
-        clickAllowed
-      };
+        paths.push({
+          ...path,
+          style,
+          clickAllowed
+        });
+      }
     });
+    return paths;
   }
 );
 
