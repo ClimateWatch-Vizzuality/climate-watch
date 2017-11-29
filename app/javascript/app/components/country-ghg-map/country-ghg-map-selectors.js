@@ -1,7 +1,11 @@
 import { createSelector } from 'reselect';
 import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
-import { CALCULATION_OPTIONS } from 'app/data/constants';
+import {
+  CALCULATION_OPTIONS,
+  MIN_ZOOM_SHOW_ISLANDS,
+  PATH_LAYERS
+} from 'app/data/constants';
 import groupBy from 'lodash/groupBy';
 
 import worldPaths from 'app/data/world-50m-paths';
@@ -22,6 +26,7 @@ const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
 const getCalculationData = state => state.calculationData || null;
 const getMeta = state => state.meta || {};
+const getZoom = state => state.zoom || null;
 
 export const getCalculationSelected = createSelector(
   [getCalculationSelection],
@@ -171,44 +176,58 @@ export const getSelectorDefaults = createSelector(
   }
 );
 
-export const getPathsWithStyles = createSelector([getDataParsed], data => {
-  if (!data) return worldPaths;
+export const getPathsWithStyles = createSelector(
+  [getDataParsed, getZoom],
+  (data, zoom) => {
+    if (!data) return worldPaths;
+    const { min, max } = data;
+    if (min && max) setScale(getRanges(min, max));
 
-  const { min, max } = data;
-  if (min && max) setScale(getRanges(min, max));
-  return worldPaths.map(path => {
-    let color = '#E5E5EB'; // default color
-    const iso = path.properties && path.properties.id;
-    if (data && data.values && data.values[iso]) {
-      color = colorScale(data.values[iso]);
-    }
-    const style = {
-      default: {
-        fill: color,
-        stroke: '#000',
-        strokeWidth: 0.1,
-        outline: 'none'
-      },
-      hover: {
-        fill: color,
-        stroke: '#000',
-        strokeWidth: 0.1,
-        outline: 'none'
-      },
-      pressed: {
-        fill: color,
-        stroke: '#000',
-        strokeWidth: 0.5,
-        outline: 'none'
+    const paths = [];
+    worldPaths.forEach(path => {
+      if (
+        (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
+          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+            path.properties.layer === PATH_LAYERS.ISLANDS)) ||
+        (zoom < MIN_ZOOM_SHOW_ISLANDS &&
+          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+            path.properties.layer === PATH_LAYERS.POINTS))
+      ) {
+        let color = '#E5E5EB'; // default color
+        const iso = path.properties && path.properties.id;
+        if (data && data.values && data.values[iso]) {
+          color = colorScale(data.values[iso]);
+        }
+        const style = {
+          default: {
+            fill: color,
+            stroke: '#000',
+            strokeWidth: 0.1,
+            outline: 'none'
+          },
+          hover: {
+            fill: color,
+            stroke: '#000',
+            strokeWidth: 0.1,
+            outline: 'none'
+          },
+          pressed: {
+            fill: color,
+            stroke: '#000',
+            strokeWidth: 0.5,
+            outline: 'none'
+          }
+        };
+
+        paths.push({
+          ...path,
+          style
+        });
       }
-    };
-
-    return {
-      ...path,
-      style
-    };
-  });
-});
+    });
+    return paths;
+  }
+);
 
 export const getLegendData = createSelector(
   [getCalculationSelected, getYearSelected],
