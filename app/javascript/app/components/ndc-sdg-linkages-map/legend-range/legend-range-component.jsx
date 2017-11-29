@@ -16,7 +16,7 @@ class LegendRange extends PureComponent {
         <span className={styles.range} style={rangeStyle} />
         <ul className={styles.scale}>
           <li>All targets linked</li>
-          <li>Some tagets linked</li>
+          <li>Some targets linked</li>
           <li>Not linked</li>
         </ul>
       </div>

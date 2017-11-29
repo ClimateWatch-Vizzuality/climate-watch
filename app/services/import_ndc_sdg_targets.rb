@@ -37,7 +37,7 @@ class ImportNdcSdgTargets
   end
 
   def import_ndc_target_sectors(row, ndc_target)
-    sectors = row[:sector] && row[:sector].split(',').uniq ||
+    sectors = row[:sector] && row[:sector].split(',').map(&:strip).uniq ||
       []
     sectors.each do |sector|
       sector_rec = NdcSdg::Sector.where('name ilike ?', sector).first

@@ -74,7 +74,7 @@ legendConfig <https://github.com/resource-watch/notebooks/blob/develop/ResourceW
 
 ## CONFIG EXAMPLE
 
-´´´js
+```js
 {
   axes: {
     xBottom: {
@@ -94,7 +94,7 @@ legendConfig <https://github.com/resource-watch/notebooks/blob/develop/ResourceW
     y: ['yRussia', 'yChina', 'yEUR28']
   }
 }
-´´´
+```
 
 ## DATA EXAMPLE
 

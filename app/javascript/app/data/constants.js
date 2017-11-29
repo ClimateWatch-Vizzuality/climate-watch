@@ -131,6 +131,13 @@ export const FILTERS_BY_CATEGORY = {
   indicators: ['category']
 };
 
+export const MIN_ZOOM_SHOW_ISLANDS = '8';
+export const PATH_LAYERS = {
+  COUNTRIES: 'COUNTRIES',
+  ISLANDS: 'ISLANDS',
+  POINTS: 'POINTS'
+};
+
 export default {
   CALCULATION_OPTIONS,
   TOP_EMITTERS,
@@ -141,5 +148,7 @@ export default {
   DATA_SCALE,
   ESP_BLACKLIST,
   WORLD_LOCATION_ID,
-  FILTERS_BY_CATEGORY
+  FILTERS_BY_CATEGORY,
+  MIN_ZOOM_SHOW_ISLANDS,
+  PATH_LAYERS
 };
