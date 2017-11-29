@@ -3,15 +3,15 @@ import Button from 'components/button';
 import PropTypes from 'prop-types';
 import startCase from 'lodash/startCase';
 import Loading from 'components/loading';
-
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
+import ModalOverview from './modal-overview';
 import styles from './emission-pathways-overview-styles.scss';
 
 class EmissionPathwaysOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { data, loading } = this.props;
+    const { data, fullData, modalTitle, loading, handleInfoClick } = this.props;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -26,11 +26,16 @@ class EmissionPathwaysOverview extends PureComponent {
               ))}
           </div>
           <div className={styles.col5}>
-            <Button className={(styles.col5, styles.seeAllButton)}>
+            <Button
+              className={(styles.col5, styles.seeAllButton)}
+              onClick={handleInfoClick}
+              color="plain"
+            >
               See all
             </Button>
           </div>
         </div>
+        <ModalOverview data={fullData} title={modalTitle} />
       </div>
     );
   }
@@ -38,7 +43,10 @@ class EmissionPathwaysOverview extends PureComponent {
 
 EmissionPathwaysOverview.propTypes = {
   data: PropTypes.object,
-  loading: PropTypes.bool
+  fullData: PropTypes.object,
+  modalTitle: PropTypes.string,
+  loading: PropTypes.bool,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default EmissionPathwaysOverview;
