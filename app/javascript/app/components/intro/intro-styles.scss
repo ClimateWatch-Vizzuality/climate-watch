@@ -7,6 +7,11 @@
   align-items: flex-start;
   color: $white;
   font-family: $font-family-1;
+
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+  }
 }
 
 .title {
