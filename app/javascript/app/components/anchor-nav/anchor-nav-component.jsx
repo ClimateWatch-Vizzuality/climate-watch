@@ -36,11 +36,19 @@ const AnchorNav = props => {
         }
         if (useRoutes) {
           linkProps.exact = true;
-          return <NavLink {...linkProps}>{link.label}</NavLink>;
+          return (
+            <NavLink {...linkProps} replace>
+              {link.label}
+            </NavLink>
+          );
         }
         linkProps.isActive = (match, location) =>
           `#${link.hash}` === location.hash;
-        return <HashLink {...linkProps}>{link.label}</HashLink>;
+        return (
+          <HashLink {...linkProps} replace>
+            {link.label}
+          </HashLink>
+        );
       })}
     </nav>
   );
