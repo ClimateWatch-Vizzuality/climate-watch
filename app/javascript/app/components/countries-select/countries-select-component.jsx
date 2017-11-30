@@ -45,6 +45,7 @@ class CountriesSelect extends PureComponent {
             paths={paths}
             className={styles.map}
             onCountryClick={onCountryClick}
+            customCenter={[20, 15]}
           />
         </div>
       </div>
