@@ -3,9 +3,8 @@ require 'csv'
 class ImportNdcSdgTargets
   NDC_SDG_TARGETS = "#{CW_FILES_PREFIX}sdgs/ndc_sdg_targets.csv"
 
-
   def call
-    @failed_lines = [];
+    @failed_lines = []
 
     cleanup
     import_ndc_sdg_targets(S3CSVReader.read(NDC_SDG_TARGETS))
@@ -46,7 +45,7 @@ class ImportNdcSdgTargets
       import_ndc_target_sectors(row, ndc_target)
     end
 
-    if @failed_lines.length > 0
+    unless @failed_lines.empty?
       CSV.open("#{Rails.root}/tmp/ndc_sdg_targets_failed_rows.csv", 'wb') do |csv|
         csv << @failed_lines.first.headers
         @failed_lines.each do |line|

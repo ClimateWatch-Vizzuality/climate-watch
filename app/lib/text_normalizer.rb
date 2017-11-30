@@ -1,8 +1,8 @@
 module TextNormalizer
   def self.normalize(string)
     operations = [
-      lambda { |s| s.gsub(160.chr('UTF-8'), 32.chr) },
-      lambda { |s| s.squish }
+      ->(s) { s.gsub(160.chr('UTF-8'), 32.chr) },
+      ->(s) { s.squish }
     ]
 
     operations.reduce(string) do |s, operation|
@@ -10,4 +10,3 @@ module TextNormalizer
     end
   end
 end
-
