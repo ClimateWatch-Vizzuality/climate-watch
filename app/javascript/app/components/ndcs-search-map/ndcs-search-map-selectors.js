@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import worldPaths from 'app/data/world-50m-paths';
+import { PATH_LAYERS } from 'app/data/constants';
 
 const getResultsData = state => state.data.data || [];
 const getLoading = state => state.data.loading || null;
@@ -54,15 +55,21 @@ const activeCountryStyle = {
 
 export const getPathsWithStyles = createSelector(
   [getCountriesIncluded, getLoading],
-  (countriesIncluded, loading) =>
-    worldPaths.map(path => {
-      const iso = path.properties && path.properties.id;
-      const isCountryIncluded = countriesIncluded.includes(iso);
-      return {
-        ...path,
-        style: isCountryIncluded && !loading ? activeCountryStyle : countryStyle
-      };
-    })
+  (countriesIncluded, loading) => {
+    const paths = [];
+    worldPaths.forEach(path => {
+      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+        const iso = path.properties && path.properties.id;
+        const isCountryIncluded = countriesIncluded.includes(iso);
+        paths.push({
+          ...path,
+          style:
+            isCountryIncluded && !loading ? activeCountryStyle : countryStyle
+        });
+      }
+    });
+    return paths;
+  }
 );
 
 export default {
