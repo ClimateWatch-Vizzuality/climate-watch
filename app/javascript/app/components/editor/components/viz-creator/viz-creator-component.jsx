@@ -91,7 +91,6 @@ const Step3 = ({ selectors, filters, selectFilter }) => {
 };
 
 const pickChart = (charType, config) => {
-  console.log(config);
   switch (charType) {
     case 'LineChart':
       return <LineChart {...config} />;
