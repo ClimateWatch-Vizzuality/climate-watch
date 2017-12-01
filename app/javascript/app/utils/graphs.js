@@ -18,54 +18,30 @@ export const sortLabelByAlpha = array =>
     return 0;
   });
 
-// pick from constants when merged
-const COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759'
-];
-
-
 const flatmap = (res, v) => Object.assign(res, v);
-export const extractValues = data => key => data.map(d =>
-  map(d, (v, k) => ({ [k]: d[k][key] || v }))
-    .reduce(flatmap, {}));
+export const extractValues = data => key =>
+  data.map(d =>
+    map(d, (v, k) => ({ [k]: d[k][key] || v })).reduce(flatmap, {})
+  );
 
-export const columns = data => Object.keys(data[0]).map(d => ({ label: data[0][d].label, value: d }));
+export const getColumns = data =>
+  Object.keys(data[0]).map(d => ({ label: data[0][d].label, value: d }));
 
 const found = v => v !== -1;
 
 export const groupDataByScenario = (data, scenarios) =>
   data.reduce((res, d) => {
-    const year = { label: 'year', value: d.year };
-    const idx = findIndex(res, y =>
-      y.year.value === year.value
-    );
+    const year = d.year;
+    const idx = findIndex(res, { year });
     // append y values if x exists, otherwise create new row
-    const row = found(idx)
-      ? res[idx]
-      : { year };
+    const row = found(idx) ? res[idx] : { year };
 
     const label = scenarios
-      // use real name if scenarios are passed
-      ? find(scenarios, { id: d.scenario_id }).name
+      ? // use real name if scenarios are passed
+      find(scenarios, { id: d.scenario_id }).name
       : d.scenario_id;
     const key = getColumnValue(label);
 
-    // row[key] = {
-    //   label,
-    //   value: parseInt(d.value, 10)
-    // };
     row[key] = parseInt(d.value, 10);
     // override row if exists otherwise append new row
     res[found(idx) ? idx : res.length] = row;

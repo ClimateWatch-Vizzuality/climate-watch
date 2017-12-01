@@ -4,11 +4,11 @@ import isEmpty from 'lodash/isEmpty';
 import reduce from 'lodash/reduce';
 import find from 'lodash/find';
 import map from 'lodash/map';
-import LineChart from 'components/charts/line';
 
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
 import SelectableList from './components/selectable-list';
+import LineChart from './components/charts/line';
 import styles from './viz-creator-styles';
 
 const Step1 = ({ datasets, dataset, selectDataset }) => (
@@ -90,147 +90,14 @@ const Step3 = ({ selectors, filters, selectFilter }) => {
   );
 };
 
-const pickChart = (charType, data) => {
-  console.log(data);
-  /*
-    id: 145791,
-    indicator_id: 573,
-    location_id: 10,
-    model_id: 3,
-    scenario_id: 37,
-    unit_of_entry: "EJ/yr",
-    value: "0.0",
-    year: 2005
-  */
-  const conf = {
-    axes: {
-      xBottom: {
-        name: 'Year',
-        unit: 'date',
-        format: 'YYYY'
-      },
-      yLeft: {
-        name: 'Emissions',
-        unit: 'CO<sub>2</sub>e',
-        format: 'number'
-      }
-    },
-    theme: {
-      yAllGhg: {
-        stroke: '#2D9290',
-        fill: '#2D9290'
-      },
-      yCo2: {
-        stroke: '#B25BD0',
-        fill: '#B25BD0'
-      },
-      yCh4: {
-        stroke: '#7EA759',
-        fill: '#7EA759'
-      },
-      yN2O: {
-        stroke: '#FF0D3A',
-        fill: '#FF0D3A'
-      },
-      yFGas: {
-        stroke: '#687AB7',
-        fill: '#687AB7'
-      }
-    },
-    tooltip: {
-      yAllGhg: {
-        label: 'All GHG'
-      },
-      yCo2: {
-        label: 'CO2'
-      },
-      yCh4: {
-        label: 'CH4'
-      },
-      yN2O: {
-        label: 'N2O'
-      },
-      yFGas: {
-        label: 'F-Gas'
-      }
-    },
-    columns: {
-      x: [
-        {
-          label: 'year',
-          value: 'x'
-        }
-      ],
-      y: [
-        {
-          label: 'All GHG',
-          value: 'yAllGhg'
-        },
-        {
-          label: 'CO2',
-          value: 'yCo2'
-        },
-        {
-          label: 'CH4',
-          value: 'yCh4'
-        },
-        {
-          label: 'N2O',
-          value: 'yN2O'
-        },
-        {
-          label: 'F-Gas',
-          value: 'yFGas'
-        }
-      ]
-    }
-  };
-  const config = {
-    axes: {
-      xBottom: {
-        name: 'Year',
-        unit: 'date',
-        format: 'YYYY'
-      },
-      yLeft: {
-        name: 'Emissions',
-        unit: 'CO<sub>2</sub>e',
-        format: 'number'
-      }
-    },
-    theme: {
-      year: {
-        stroke: '#2D9290',
-        fill: '#2D9290'
-      },
-      value: {
-        stroke: '#2D9290',
-        fill: '#2D9290'
-      }
-    },
-    tooltip: {
-      year: {
-        label: 'All GHG'
-      },
-      value: {
-        label: 'CO2'
-      }
-    },
-    columns: {
-      x: [{ label: 'year', value: 'year' }],
-      y: [{
-        label: 'Value',
-        value: 'value'
-      }]
-    }
-  };
-
+const pickChart = (charType, config) => {
+  console.log(config);
   switch (charType) {
-    // case 'LineChart':
-    // return !isEmpty(data) ? (<LineChart config={config} data={data} height={500} />) : null;
+    case 'LineChart':
+      return <LineChart {...config} />;
 
     default:
-      console.log(data);
+      // console.log(data);
       return false;
   }
 };
@@ -242,7 +109,7 @@ const Step4 = ({ filters, visualisations, visualisation, timeseries }) => {
   return (
     <li className={styles.step}>
       <h1>4/4 - Annotate the visualisation</h1>
-      {pickChart(charType, timeseries)}
+      {!isEmpty(timeseries.data) && pickChart(charType, timeseries.data)}
     </li>
   );
 };

@@ -4,8 +4,9 @@ import identity from 'lodash/identity';
 import isEmpty from 'lodash/isEmpty';
 import find from 'lodash/find';
 import _filter from 'lodash/filter';
+import { format } from 'd3-format';
 
-import { groupDataByScenario } from 'utils/graphs';
+import { groupDataByScenario, pickByKey, mergeLineProps, getLineProps, COLORS } from './components/charts/line/utils';
 
 export const filters = state => state && state.filters;
 export const dataset = state => state.dataset;
@@ -88,5 +89,60 @@ export const getFormatFilters = name =>
     return filter;
   });
 
-export const timeseriesSelector = createSelector(timeseries, scenarios,
-  (series, scn) => (isEmpty(series.data) ? [] : groupDataByScenario(series.data, scn.data)));
+const processLineData = (idc, scn) => {
+  console.log(idc, scn);
+  const data = groupDataByScenario(idc, scn);
+  const lineData = pickByKey('value', data);
+
+  const lineProps = mergeLineProps({
+    type: 'monotone',
+    dot: false
+  }, getLineProps(data, COLORS));
+
+  const lines = Object.keys(lineData[0]).slice(1);
+  const axis = {
+    x: {
+      props: {
+        dataKey: 'year',
+        tick: { stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' },
+        padding: { left: 15, right: 20 },
+        tickSize: 8
+      }
+    },
+    y: {
+      props: {
+        axisLine: false,
+        tickFormatter: tick => `${format('.2s')(tick)}t`,
+        tickLine: false,
+        tick: { stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' },
+        domain: ['auto', 'auto']
+      }
+    }
+  };
+
+  const margin = { top: 20, right: 0, left: -10, bottom: 0 };
+
+  const config = {
+    data: lineData,
+    margin
+  };
+
+  const cartesianGrid = {
+    vertical: false
+  };
+
+  return {
+    config,
+    lineProps,
+    lines,
+    axis,
+    cartesianGrid
+  };
+};
+
+export const timeseriesSelector =
+  createSelector(timeseries, scenarios,
+    (series, scn) =>
+      (isEmpty(series.data)
+        ? series.data
+        : processLineData(series.data, scn.data)));

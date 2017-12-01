@@ -28,6 +28,7 @@ import GHGCountryEmissions from 'components/country-ghg';
 import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country-climate-vulnerability';
 import Editor from 'components/editor';
+import Charter from 'components/editor/charter';
 import error from 'pages/error';
 
 export default [
@@ -39,6 +40,11 @@ export default [
         component: Home,
         exact: true,
         headerImage: 'home'
+      },
+      {
+        path: '/charter',
+        component: Charter,
+        exact: true
       },
       {
         path: '/editor',

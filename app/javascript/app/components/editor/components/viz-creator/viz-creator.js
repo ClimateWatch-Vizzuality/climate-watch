@@ -46,10 +46,15 @@ class VizCreator extends Component {
     const location = props.filters.locations.selected;
     const scenarios = props.filters.scenarios.selected;
     const indicators = props.filters.indicators;
+    const prevIndicator = this.props.filters.indicators.selected && this.props.filters.indicators.selected.value;
+    const curIndicator = indicators.selected && indicators.selected.value;
+
     if (
-      location &&
-      !isEmpty(scenarios) &&
-      (indicators && isEmpty(indicators.data) && !indicators.loading)
+      location && !isEmpty(scenarios) &&
+      (
+        (indicators && isEmpty(indicators.data) && !indicators.loading)
+        || (curIndicator !== prevIndicator)
+      )
     ) {
       this.props.fetchIndicators({ location, scenarios });
     }
@@ -62,9 +67,7 @@ class VizCreator extends Component {
     const prevDepId = prevDep.selected && prevDep.selected.value;
 
     if (
-      (dependency &&
-        !props.filters[key].loading &&
-        isEmpty(props.filters[key].data)) ||
+      (dependency && !props.filters[key].loading && isEmpty(props.filters[key].data)) ||
       (dependency && dependencyId !== prevDepId)
     ) {
       props[load](dependency.value);
@@ -80,7 +83,10 @@ const mapStateToProps = ({ vizCreator }) => ({
   ...vizCreator,
   visualisations: vizSelector(vizCreator),
   selectors: filtersSelector(vizCreator),
-  timeseries: timeseriesSelector(vizCreator),
+  timeseries: {
+    ...vizCreator.timeseries,
+    data: timeseriesSelector(vizCreator)
+  },
   filters: {
     locations: getFormatFilters('locations')(vizCreator),
     models: getFormatFilters('models')(vizCreator),
