@@ -7,7 +7,8 @@ import reducers, { initialState } from './esp-locations-provider-reducers';
 
 class EspLocationsProvider extends PureComponent {
   componentDidMount() {
-    this.props.getEspLocations();
+    const { withTimeSeries } = this.props;
+    this.props.getEspLocations(withTimeSeries);
   }
 
   render() {
@@ -16,7 +17,8 @@ class EspLocationsProvider extends PureComponent {
 }
 
 EspLocationsProvider.propTypes = {
-  getEspLocations: PropTypes.func.isRequired
+  getEspLocations: PropTypes.func.isRequired,
+  withTimeSeries: PropTypes.bool
 };
 
 export { actions, reducers, initialState };
