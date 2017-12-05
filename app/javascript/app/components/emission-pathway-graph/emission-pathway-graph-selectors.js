@@ -140,20 +140,21 @@ export const getIndicatorsOptions = createSelector(
   (data, indicators, modelSelected) => {
     if (!data || !indicators || !indicators.length || !modelSelected) return [];
     const indicatorsWithData = data.map(d => d.indicator_id.toString());
-    const selectedIndicatorsWithData = indicators.filter(
-      i =>
+    const selectedIndicatorOptionsWithData = [];
+    indicators.forEach(i => {
+      if (
         i.model &&
         i.model.id.toString() === modelSelected.value &&
         i.name &&
         indicatorsWithData.indexOf(i.id.toString()) > -1
-    );
-
-    const uniqueIndicators = uniqBy(selectedIndicatorsWithData, 'name');
-
-    return uniqueIndicators.map(i => ({
-      label: i.name,
-      value: i.id.toString()
-    }));
+      ) {
+        selectedIndicatorOptionsWithData.push({
+          label: i.name,
+          value: i.id.toString()
+        });
+      }
+    });
+    return uniqBy(selectedIndicatorOptionsWithData, 'label');
   }
 );
 
@@ -233,10 +234,15 @@ export const getChartConfig = createSelector(
   [filterDataByIndicator, getScenariosOptions],
   (data, scenarios) => {
     if (!data || !scenarios) return null;
-    const yColumns = data.map(d => ({
-      label: scenarios.find(s => parseInt(s.value, 10) === d.scenario_id).label,
-      value: getYColumnValue(d.scenario_id)
-    }));
+    const yColumns = data.map(d => {
+      const scenario = scenarios.find(
+        s => parseInt(s.value, 10) === d.scenario_id
+      );
+      return {
+        label: scenario ? scenario.label : null,
+        value: getYColumnValue(d.scenario_id)
+      };
+    });
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const theme = getThemeConfig(yColumnsChecked, COLORS);
     const tooltip = getTooltipConfig(yColumnsChecked);
