@@ -3,12 +3,17 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { withRouter } from 'react-router';
 import isEmpty from 'lodash/isEmpty';
-
-import actions from './country-ndc-overview-actions';
+import { actions as modalMetadataActions } from 'components/modal-metadata';
+import ownActions from './country-ndc-overview-actions';
 import reducers, { initialState } from './country-ndc-overview-reducers';
 
 import CountryNdcOverviewComponent from './country-ndc-overview-component';
 import { getValuesGrouped } from './country-ndc-overview-selectors';
+
+const actions = {
+  ...modalMetadataActions,
+  ...ownActions
+};
 
 const mapStateToProps = (state, { match }) => {
   const { iso } = match.params;
@@ -32,9 +37,18 @@ class CountryNdcOverviewContainer extends PureComponent {
     }
   }
 
+  handleInfoClick = () => {
+    this.props.setModalMetadata({
+      slugs: ['ndc_cait', 'ndc_wb'],
+      customTitle: 'Nationally Determined Contribution (NDC) Overview',
+      open: true
+    });
+  };
+
   render() {
     return createElement(CountryNdcOverviewComponent, {
-      ...this.props
+      ...this.props,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
@@ -43,7 +57,8 @@ CountryNdcOverviewContainer.propTypes = {
   match: Proptypes.object.isRequired,
   loading: Proptypes.bool,
   fetchCountryNdcOverviewData: Proptypes.func,
-  fetched: Proptypes.bool
+  fetched: Proptypes.bool,
+  setModalMetadata: Proptypes.func.isRequired
 };
 
 export { actions, reducers, initialState };

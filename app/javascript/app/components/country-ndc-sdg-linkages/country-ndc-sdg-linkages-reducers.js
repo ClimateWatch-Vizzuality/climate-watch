@@ -1,6 +1,5 @@
 export const initialState = {
-  tooltipData: {},
-  infoOpen: false
+  tooltipData: {}
 };
 
 const setTooltipData = (state, { payload }) => ({
@@ -8,12 +7,6 @@ const setTooltipData = (state, { payload }) => ({
   tooltipData: payload
 });
 
-const toogleNDCsSDGsInfo = state => ({
-  ...state,
-  infoOpen: !state.infoOpen
-});
-
 export default {
-  setTooltipData,
-  toogleNDCsSDGsInfo
+  setTooltipData
 };

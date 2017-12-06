@@ -21,9 +21,13 @@
 .actions {
   @extend %grid;
 
-  @include msGridColumns(1fr, 2fr, 3fr);
+  @include msGridColumns(1fr, 20fr, 32fr);
 
-  grid-template-columns: 1fr 2fr 3fr;
+  grid-template-columns: 1fr 20fr 32fr;
+}
+
+.infoBtn {
+  margin-left: 45px;
 }
 
 .subTitle {
