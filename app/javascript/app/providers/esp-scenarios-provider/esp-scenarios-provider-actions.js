@@ -2,12 +2,12 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-const fetchEspScenariosInit = createAction('fetchEspScenariosInit');
-const fetchEspScenariosReady = createAction('fetchEspScenariosReady');
-const fetchEspScenariosFail = createAction('fetchEspScenariosFail');
+export const fetchEspScenariosInit = createAction('fetchEspScenariosInit');
+export const fetchEspScenariosReady = createAction('fetchEspScenariosReady');
+export const fetchEspScenariosFail = createAction('fetchEspScenariosFail');
 const { ESP_API } = process.env;
 
-const fetchEspScenarios = createThunkAction(
+export const fetchEspScenarios = createThunkAction(
   'fetchEspScenarios',
   () => (dispatch, state) => {
     const { espScenarios } = state();
