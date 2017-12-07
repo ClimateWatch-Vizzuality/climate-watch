@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
@@ -117,11 +118,14 @@ export const getAllowedSectors = createSelector(
 
 // Filters selector
 export const getFilterOptions = createSelector(
-  [getMeta, getAllowedSectors],
-  (meta, sectorsAllowed) => {
-    if (!sectorsAllowed || isEmpty(meta)) return [];
+  [getData, getMeta, getAllowedSectors],
+  (data, meta, sectorsAllowed) => {
+    if (!sectorsAllowed || isEmpty(data) || isEmpty(meta)) return [];
+    const sectorLabels = uniq(data.map(d => d.sector));
     const filteredSelected = meta.sector.filter(
-      filter => sectorsAllowed.indexOf(filter.label) > -1
+      filter =>
+        sectorLabels.indexOf(filter.label) > -1 &&
+        sectorsAllowed.indexOf(filter.label) > -1
     );
     return sortLabelByAlpha(filteredSelected);
   }
