@@ -125,10 +125,10 @@ export const getScenariosSelected = createSelector(
 
 // Map the data from the API
 export const filterDataByScenario = createSelector(
-  [getData, getScenariosSelected, getScenario],
-  (data, scenarios, activeScenarios) => {
-    if (!data || isEmpty(data) || activeScenarios === '') return null;
-    if (scenarios) return data;
+  [getData, getScenariosSelected],
+  (data, scenarios) => {
+    if (!data || isEmpty(data) || scenarios === '') return null;
+    if (!scenarios) return data;
     return data.filter(
       d => scenarios.map(s => s.value).indexOf(d.scenario_id.toString()) > -1
     );
