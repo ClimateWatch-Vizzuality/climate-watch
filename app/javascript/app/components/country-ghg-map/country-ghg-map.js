@@ -39,7 +39,8 @@ const mapStateToProps = (state, { location, match, year }) => {
     meta,
     search,
     iso: match.params.iso,
-    year
+    year,
+    zoom: state.map.zoom
   };
 
   return {

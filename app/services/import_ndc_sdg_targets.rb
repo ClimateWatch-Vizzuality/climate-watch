@@ -1,7 +1,11 @@
+require 'csv'
+
 class ImportNdcSdgTargets
   NDC_SDG_TARGETS = "#{CW_FILES_PREFIX}sdgs/ndc_sdg_targets.csv"
 
   def call
+    @failed_lines = []
+
     cleanup
     import_ndc_sdg_targets(S3CSVReader.read(NDC_SDG_TARGETS))
   end
@@ -16,9 +20,15 @@ class ImportNdcSdgTargets
 
   def import_ndc_sdg_targets(content)
     content.each.with_index(2) do |row|
+      row[:indc_text] = TextNormalizer.normalize(row[:indc_text])
       ndc = ndc(row)
       target = target(row)
-      next unless ndc && target
+
+      unless ndc && target
+        @failed_lines.append(row)
+        next
+      end
+
       indc_text = row[:indc_text]
       starts_at = ndc.full_text.downcase.index(indc_text.downcase)
       ends_at = starts_at + indc_text.length - 1 if starts_at
@@ -34,10 +44,19 @@ class ImportNdcSdgTargets
       )
       import_ndc_target_sectors(row, ndc_target)
     end
+
+    unless @failed_lines.empty?
+      CSV.open("#{Rails.root}/tmp/ndc_sdg_targets_failed_rows.csv", 'wb') do |csv|
+        csv << @failed_lines.first.headers
+        @failed_lines.each do |line|
+          csv << line
+        end
+      end
+    end
   end
 
   def import_ndc_target_sectors(row, ndc_target)
-    sectors = row[:sector] && row[:sector].split(',').uniq ||
+    sectors = row[:sector] && row[:sector].split(',').map(&:strip).uniq ||
       []
     sectors.each do |sector|
       sector_rec = NdcSdg::Sector.where('name ilike ?', sector).first

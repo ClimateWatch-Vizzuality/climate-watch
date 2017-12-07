@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
@@ -40,7 +41,7 @@ const getCalculationData = state =>
 const getSourceSelection = state => state.search.source || null;
 const getCalculationSelection = state => state.search.calculation || null;
 const getVersionSelection = state => state.search.version || null;
-const getFilterSelection = state => state.search.filter || null;
+const getFilterSelection = state => state.search.filter;
 
 // data for the graph
 const getData = state => state.data || [];
@@ -104,17 +105,27 @@ export const getVersionSelected = createSelector(
   }
 );
 
+export const getAllowedSectors = createSelector(
+  [getSourceSelected, getVersionSelected],
+  (source, version) => {
+    if (!source || !version) return null;
+    if (source.label === 'UNFCCC') {
+      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
+    }
+    return ALLOWED_SECTORS_BY_SOURCE[source.label];
+  }
+);
+
 // Filters selector
 export const getFilterOptions = createSelector(
-  [getMeta, getSourceSelected],
-  (meta, sourceSelected) => {
-    if (!sourceSelected || isEmpty(meta)) return [];
-    const activeSourceData = meta.data_source.find(
-      source => source.value === sourceSelected.value
-    );
-    const activeFilterKeys = activeSourceData.sector;
+  [getData, getMeta, getAllowedSectors],
+  (data, meta, sectorsAllowed) => {
+    if (!sectorsAllowed || isEmpty(data) || isEmpty(meta)) return [];
+    const sectorLabels = uniq(data.map(d => d.sector));
     const filteredSelected = meta.sector.filter(
-      filter => activeFilterKeys.indexOf(filter.value) > -1
+      filter =>
+        sectorLabels.indexOf(filter.label) > -1 &&
+        sectorsAllowed.indexOf(filter.label) > -1
     );
     return sortLabelByAlpha(filteredSelected);
   }
@@ -124,6 +135,7 @@ export const getFiltersSelected = createSelector(
   [getFilterOptions, getFilterSelection],
   (filters, selected) => {
     if (!filters || !filters.length) return [];
+    if (selected === '') return [];
     if (!selected) return filters;
     let selectedFilters = [];
     const selectedValues = selected.split(',');
@@ -144,24 +156,13 @@ export const getSelectorDefaults = createSelector(
   }
 );
 
-export const getAllowedSectors = createSelector(
-  [getSourceSelected, getVersionSelected],
-  (source, version) => {
-    if (!source || !version) return null;
-    if (source.label === 'UNFCCC') {
-      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
-    }
-    return ALLOWED_SECTORS_BY_SOURCE[source.label];
-  }
-);
-
 // Map the data from the API
 export const filterData = createSelector(
-  [getData, getSourceSelected, getCalculationSelected, getAllowedSectors],
-  (data, sourceSelected, calculation, sectorsAllowed) => {
+  [getData, getSourceSelected, getCalculationSelected, getFiltersSelected],
+  (data, sourceSelected, calculation, filters) => {
     if (!data || !data.length) return [];
     const filteredData = sortEmissionsByValue(
-      data.filter(d => sectorsAllowed.indexOf(d.sector.trim()) >= 0)
+      data.filter(d => filters.map(f => f.label).indexOf(d.sector.trim()) >= 0)
     );
     if (calculation.value !== 'ABSOLUTE_VALUE') {
       const dataGrouped = groupBy(

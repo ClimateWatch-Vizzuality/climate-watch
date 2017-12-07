@@ -31,7 +31,10 @@ const NDCMap = props => (
         hideResetButton
         plain
       />
-      <ButtonGroup className={styles.buttons} disabled />
+      <ButtonGroup
+        className={styles.buttons}
+        onInfoClick={props.handleInfoClick}
+      />
     </div>
     {props.loading && <Loading light className={styles.loader} />}
     <Map
@@ -66,7 +69,8 @@ NDCMap.propTypes = {
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
-  handleIndicatorChange: PropTypes.func.isRequired
+  handleIndicatorChange: PropTypes.func.isRequired,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default NDCMap;

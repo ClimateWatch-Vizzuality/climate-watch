@@ -4,6 +4,7 @@ import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
+import { PATH_LAYERS } from 'app/data/constants';
 
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || {};
@@ -108,41 +109,47 @@ const countryStyles = {
 
 export const getPathsWithStyles = createSelector(
   [getSelectedIndicator],
-  selectedIndicator =>
-    worldPaths.map(path => {
-      const { locations, legendBuckets } = selectedIndicator;
-      const defaultStyles = { ...path, style: countryStyles };
+  selectedIndicator => {
+    const paths = [];
+    worldPaths.forEach(path => {
+      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+        const { locations, legendBuckets } = selectedIndicator;
+        const defaultStyles = { ...path, style: countryStyles };
 
-      if (!locations) return defaultStyles;
-      const iso = path.properties && path.properties.id;
-      const isEuropeanCountry = europeanCountries.includes(iso);
-      const countryData = isEuropeanCountry
-        ? locations[europeSlug]
-        : locations[iso];
+        if (!locations) return defaultStyles;
+        const iso = path.properties && path.properties.id;
+        const isEuropeanCountry = europeanCountries.includes(iso);
+        const countryData = isEuropeanCountry
+          ? locations[europeSlug]
+          : locations[iso];
 
-      if (countryData && countryData.label_id) {
-        const legendData = legendBuckets[countryData.label_id];
-        const color = getColorByIndex(legendBuckets, legendData.index);
-        const style = {
-          ...countryStyles,
-          default: {
-            ...countryStyles.default,
-            fill: color,
-            fillOpacity: 0.9
-          },
-          hover: {
-            ...countryStyles.hover,
-            fill: color,
-            fillOpacity: 1
-          }
-        };
-        return {
-          ...path,
-          style
-        };
+        if (countryData && countryData.label_id) {
+          const legendData = legendBuckets[countryData.label_id];
+          const color = getColorByIndex(legendBuckets, legendData.index);
+          const style = {
+            ...countryStyles,
+            default: {
+              ...countryStyles.default,
+              fill: color,
+              fillOpacity: 0.9
+            },
+            hover: {
+              ...countryStyles.hover,
+              fill: color,
+              fillOpacity: 1
+            }
+          };
+          paths.push({
+            ...path,
+            style
+          });
+        }
+        return defaultStyles;
       }
-      return defaultStyles;
-    })
+      return null;
+    });
+    return paths;
+  }
 );
 
 export default {

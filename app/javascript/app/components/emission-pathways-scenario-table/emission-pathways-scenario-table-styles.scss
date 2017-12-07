@@ -1,0 +1,45 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.col4 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+}
+
+.loader {
+  min-height: 475px;
+}
+
+.searchBox,
+.uploadButton {
+  grid-column-end: -1;
+}
+
+.noContent {
+  min-height: 475px;
+  position: relative;
+}
+
+.tableMenu {
+  display: flex;
+  color: $dark-gray;
+  font-size: $font-size-large;
+  margin-bottom: 20px;
+
+  li {
+    margin-right: 30px;
+    list-style: none;
+
+    &.singleTitle {
+      margin-top: 30px;
+    }
+
+    &.active {
+      color: $base-text;
+    }
+  }
+}

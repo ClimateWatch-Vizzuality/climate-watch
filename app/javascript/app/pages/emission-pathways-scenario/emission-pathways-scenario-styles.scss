@@ -1,0 +1,18 @@
+@import '~styles/layout.scss';
+
+:global .stickyEmissionsScenario {
+  .sticky-inner-wrapper {
+    z-index: 12;
+    background-color: #81226b;
+    background-image: url('../../assets/headers/emission-pathways.jpg');
+  }
+}
+
+.section {
+  position: relative;
+}
+
+.sectionHash {
+  position: absolute;
+  top: -49px;
+}

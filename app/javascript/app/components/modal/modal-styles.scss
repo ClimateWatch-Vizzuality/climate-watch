@@ -8,9 +8,9 @@ $close-position: 25px;
 
 .header {
   background-color: $light-gray;
-  margin: -$gutter-padding;
-  margin-bottom: $gutter-padding;
-  padding: $gutter-padding;
+  margin: -$modal-padding -40px;
+  margin-bottom: 30px;
+  padding: $modal-padding 40px;
   padding-bottom: 0;
   min-height: 95px;
   border-bottom: solid 1px $border-color;
@@ -21,7 +21,7 @@ $close-position: 25px;
   font-weight: $font-weight;
   color: $theme-color;
   margin-top: 5px;
-  margin-bottom: $gutter-padding;
+  margin-bottom: 30px;
   padding-right: $gutter-padding + $close-position;
 }
 

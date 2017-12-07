@@ -1,7 +1,11 @@
 import { createSelector } from 'reselect';
 import { scalePow } from 'd3-scale';
 import isEmpty from 'lodash/isEmpty';
-import { CALCULATION_OPTIONS } from 'app/data/constants';
+import {
+  CALCULATION_OPTIONS,
+  MIN_ZOOM_SHOW_ISLANDS,
+  PATH_LAYERS
+} from 'app/data/constants';
 import groupBy from 'lodash/groupBy';
 
 import worldPaths from 'app/data/world-50m-paths';
@@ -22,6 +26,7 @@ const getYear = state => parseInt(state.year, 10);
 const getCalculationSelection = state => state.search.calculation || null;
 const getCalculationData = state => state.calculationData || null;
 const getMeta = state => state.meta || {};
+const getZoom = state => state.zoom || null;
 
 export const getCalculationSelected = createSelector(
   [getCalculationSelection],
@@ -172,54 +177,65 @@ export const getSelectorDefaults = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getDataParsed, getIso],
-  (data, countryIso) => {
+  [getDataParsed, getZoom, getIso],
+  (data, zoom, countryIso) => {
     if (!data) return worldPaths;
-
     const { min, max } = data;
     if (min && max) setScale(getRanges(min, max));
-    return worldPaths.map(path => {
-      let color = '#E5E5EB'; // default color
-      const iso = path.properties && path.properties.id;
-      if (data && data.values && data.values[iso]) {
-        color = colorScale(data.values[iso]);
-      }
 
-      const isSelectedCountry = iso === countryIso;
-      const stroke = isSelectedCountry ? '#113750' : '#000';
-      const SELECTED_COUNTRY_STROKE_WIDTH = 0.7;
-      const strokeWidth = isSelectedCountry
-        ? SELECTED_COUNTRY_STROKE_WIDTH
-        : 0.1;
-      const strokeWidthPressed = isSelectedCountry
-        ? SELECTED_COUNTRY_STROKE_WIDTH
-        : 0.5;
-      const style = {
-        default: {
-          fill: color,
-          stroke,
-          strokeWidth,
-          outline: 'none'
-        },
-        hover: {
-          fill: color,
-          stroke,
-          strokeWidth,
-          outline: 'none'
-        },
-        pressed: {
-          fill: color,
-          stroke,
-          strokeWidth: strokeWidthPressed,
-          outline: 'none'
+    const paths = [];
+    worldPaths.forEach(path => {
+      if (
+        (zoom >= MIN_ZOOM_SHOW_ISLANDS &&
+          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+            path.properties.layer === PATH_LAYERS.ISLANDS)) ||
+        (zoom < MIN_ZOOM_SHOW_ISLANDS &&
+          (path.properties.layer === PATH_LAYERS.COUNTRIES ||
+            path.properties.layer === PATH_LAYERS.POINTS))
+      ) {
+        let color = '#E5E5EB'; // default color
+        const iso = path.properties && path.properties.id;
+        if (data && data.values && data.values[iso]) {
+          color = colorScale(data.values[iso]);
         }
-      };
 
-      return {
-        ...path,
-        style
-      };
+        const isSelectedCountry = iso === countryIso;
+        const stroke = isSelectedCountry ? '#113750' : '#000';
+        const SELECTED_COUNTRY_STROKE_WIDTH = 0.7;
+        const strokeWidth = isSelectedCountry
+          ? SELECTED_COUNTRY_STROKE_WIDTH
+          : 0.1;
+        const strokeWidthPressed = isSelectedCountry
+          ? SELECTED_COUNTRY_STROKE_WIDTH
+          : 0.5;
+
+        const style = {
+          default: {
+            fill: color,
+            stroke,
+            strokeWidth,
+            outline: 'none'
+          },
+          hover: {
+            fill: color,
+            stroke,
+            strokeWidth,
+            outline: 'none'
+          },
+          pressed: {
+            fill: color,
+            stroke,
+            strokeWidth: strokeWidthPressed,
+            outline: 'none'
+          }
+        };
+        paths.push({
+          ...path,
+          style
+        });
+      }
     });
+    return paths;
   }
 );
 

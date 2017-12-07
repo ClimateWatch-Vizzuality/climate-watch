@@ -9,6 +9,7 @@ import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import NdcSdgLinkagesTable from 'components/ndc-sdg-linkages-table';
 import NdcSdgLinkagesMap from 'components/ndc-sdg-linkages-map';
+import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';
@@ -52,6 +53,7 @@ class NdcSdg extends PureComponent {
             />
           </div>
         </div>
+        <ModalMetadata />
       </div>
     );
   }

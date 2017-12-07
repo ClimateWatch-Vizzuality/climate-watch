@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { deburrUpper, isCountryIncluded } from 'app/utils';
 import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
+import { PATH_LAYERS } from 'app/data/constants';
 
 const getCountries = state => sortBy(state.countries, 'wri_standard_name');
 export const getPreSelect = state => state.preSelect;
@@ -76,32 +77,45 @@ const semiActiveCountryStyles = {
 
 export const getPathsWithStyles = createSelector(
   [getFilterUpper, getPreSelect, getISOCountries],
-  (query, preSelect, isoCountries) =>
-    worldPaths.map(path => {
-      const iso = path.properties && path.properties.id;
-      if (!iso || (isoCountries && !isCountryIncluded(isoCountries, iso))) {
-        return {
-          ...path,
-          style: countryStyles
-        };
-      }
+  (query, preSelect, isoCountries) => {
+    const paths = [];
+    worldPaths.forEach(path => {
+      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+        const iso = path.properties && path.properties.id;
+        if (!iso || (isoCountries && !isCountryIncluded(isoCountries, iso))) {
+          return paths.push({
+            ...path,
+            style: countryStyles
+          });
+        }
 
-      const nameUpper = deburrUpper(path.properties.name);
-      const isEqual = iso === preSelect || nameUpper === query;
-      if (isEqual) {
-        return {
-          ...path,
-          style: activeCountryStyles
-        };
-      }
+        const nameUpper = deburrUpper(path.properties.name);
+        const isEqual = iso === preSelect || nameUpper === query;
+        if (isEqual) {
+          return paths.push({
+            ...path,
+            style: activeCountryStyles
+          });
+        }
 
-      const isInFilter = query ? nameUpper.includes(query) : false;
-      const style = isInFilter ? semiActiveCountryStyles : countryStyles;
-      return {
-        ...path,
-        style
-      };
-    })
+        const isInFilter = query ? nameUpper.includes(query) : false;
+        const style = isInFilter ? semiActiveCountryStyles : countryStyles;
+        return paths.push({
+          ...path,
+          style
+        });
+      }
+      return null;
+    });
+
+    // reorder map paths to show EU geometry if selected
+    if (preSelect === 'EU28') {
+      const EUPath = paths.find(p => p.properties.id === 'EU28');
+      const EU28Index = paths.indexOf(EUPath);
+      paths.push(paths.splice(EU28Index, 1)[0]);
+    }
+    return paths;
+  }
 );
 
 export default {

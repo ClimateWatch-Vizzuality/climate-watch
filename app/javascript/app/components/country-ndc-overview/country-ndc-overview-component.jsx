@@ -6,6 +6,7 @@ import Intro from 'components/intro';
 import cx from 'classnames';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
+import InfoButton from 'components/button/info-button';
 
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
@@ -14,7 +15,15 @@ import styles from './country-ndc-overview-styles.scss';
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { iso, sectors, values, loading, actions, textColumns } = this.props;
+    const {
+      iso,
+      sectors,
+      values,
+      loading,
+      actions,
+      textColumns,
+      handleInfoClick
+    } = this.props;
     const hasSectors = values && sectors;
     if (!hasSectors && !loading) {
       return (
@@ -48,11 +57,16 @@ class CountryNdcOverview extends PureComponent {
                 />
                 {actions && (
                   <div className={styles.actions}>
-                    <div className={styles.printButton} />
+                    <InfoButton
+                      className={styles.infoBtn}
+                      infoOpen={false}
+                      handleInfoClick={handleInfoClick}
+                      box
+                    />
                     <Button
                       className={styles.exploreBtn}
                       color="white"
-                      link={`/ndcs/compare?locations=${iso}`}
+                      link={`/ndcs/compare/mitigation?locations=${iso}`}
                     >
                       Compare
                     </Button>
@@ -159,7 +173,8 @@ CountryNdcOverview.propTypes = {
   values: PropTypes.object,
   loading: PropTypes.bool,
   actions: PropTypes.bool,
-  textColumns: PropTypes.bool
+  textColumns: PropTypes.bool,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default CountryNdcOverview;

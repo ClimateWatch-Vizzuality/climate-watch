@@ -18,7 +18,9 @@ import {
   getChartData,
   getChartConfig,
   getSelectorDefaults,
-  getQuantificationsData
+  getQuantificationsData,
+  getFilterOptions,
+  getFiltersSelected
 } from './country-ghg-emissions-selectors';
 
 const actions = { ...ownActions, ...modalActions };
@@ -46,6 +48,8 @@ const mapStateToProps = (state, { location, match }) => {
     calculationSelected: getCalculationSelected(countryGhg),
     sources: getSourceOptions(countryGhg),
     sourceSelected: getSourceSelected(countryGhg),
+    filtersOptions: getFilterOptions(countryGhg),
+    filtersSelected: getFiltersSelected(countryGhg),
     config: getChartConfig(countryGhg),
     selectorDefaults: getSelectorDefaults(countryGhg)
   };
@@ -90,7 +94,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
     if (source) {
       this.props.setModalMetadata({
-        slugs: [source, 'ndc_quantification'],
+        slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
         open: true
       });
@@ -98,8 +102,17 @@ class CountryGhgEmissionsContainer extends PureComponent {
   };
 
   handleSourceChange = category => {
+    const { search } = this.props.location;
+    const searchQuery = qs.parse(search);
     if (category) {
-      this.updateUrlParam({ name: 'source', value: category.value });
+      this.updateUrlParam(
+        [
+          { name: 'source', value: category.value },
+          { name: 'sector', value: searchQuery.sector },
+          { name: 'calculation', value: searchQuery.calculation }
+        ],
+        true
+      );
     }
   };
 

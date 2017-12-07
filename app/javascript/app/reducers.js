@@ -5,6 +5,8 @@ import { handleActions } from 'app/utils/redux';
 // Providers
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
+import * as espLocationsProvider from 'providers/esp-locations-provider';
+import * as espTimeSeriesProvider from 'providers/esp-time-series-provider';
 import * as adaptationsProvider from 'providers/adaptations-provider';
 import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ndcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
@@ -14,6 +16,10 @@ import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
 import * as socioeconomicsProvider from 'providers/socioeconomics-provider';
 import * as ndcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
+import * as espModelsProvider from 'providers/esp-models-provider';
+import * as espScenariosProvider from 'providers/esp-scenarios-provider';
+import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
+import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-provider';
 
 const providersReducers = {
   countries: handleActions(countriesProvider),
@@ -26,7 +32,13 @@ const providersReducers = {
   wbCountryData: handleActions(wbCountryProvider),
   socioeconomics: handleActions(socioeconomicsProvider),
   timeline: handleActions(timelineProvider),
-  ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider)
+  ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
+  espModels: handleActions(espModelsProvider),
+  espScenarios: handleActions(espScenariosProvider),
+  espIndicators: handleActions(espIndicatorsProvider),
+  espIndicatorsTrend: handleActions(espIndicatorsTrendProvider),
+  espLocations: handleActions(espLocationsProvider),
+  espTimeSeries: handleActions(espTimeSeriesProvider)
 };
 
 // Pages
@@ -50,6 +62,7 @@ import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as ghgEmissionsComponent from 'components/ghg-emissions';
 import * as modalMetadataComponent from 'components/modal-metadata';
+import * as modalESPOverviewComponent from 'components/emission-pathways-overview/modal-overview';
 import * as ndcCountryAccordion from 'components/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';
@@ -63,6 +76,7 @@ const componentsReducers = {
   countrySelect: handleActions(countrySelectComponent),
   ghgEmissions: handleActions(ghgEmissionsComponent),
   modalMetadata: handleActions(modalMetadataComponent),
+  modalESPOverview: handleActions(modalESPOverviewComponent),
   ndcCountryAccordion: handleActions(ndcCountryAccordion),
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
