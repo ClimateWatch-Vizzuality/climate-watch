@@ -37,6 +37,14 @@
   margin-bottom: 10px;
 }
 
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+  column-count: 2;
+  column-gap: 20px;
+  margin-bottom: 15px;
+}
+
 .cards {
   @extend %grid;
 

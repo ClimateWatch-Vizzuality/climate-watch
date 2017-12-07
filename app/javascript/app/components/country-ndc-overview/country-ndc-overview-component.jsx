@@ -50,9 +50,6 @@ class CountryNdcOverview extends PureComponent {
                       'Overview'
                     )
                   }
-                  description={
-                    values.indc_summary[0] && values.indc_summary[0].value
-                  }
                   textColumns={textColumns}
                 />
                 {actions && (
@@ -79,6 +76,9 @@ class CountryNdcOverview extends PureComponent {
                     </Button>
                   </div>
                 )}
+              </div>
+              <div className={styles.descriptionContainer}>
+                {values.indc_summary[0] && values.indc_summary[0].value}
               </div>
               <h4 className={styles.subTitle}>Mitigation contribution</h4>
               <div className={styles.cards}>
