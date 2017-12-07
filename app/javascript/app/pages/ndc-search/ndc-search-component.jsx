@@ -12,6 +12,7 @@ import NDCSearchMap from 'components/ndcs-search-map';
 import NoContent from 'components/no-content';
 import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 
 import styles from './ndc-search-styles.scss';
@@ -41,7 +42,11 @@ class SearchPage extends PureComponent {
             </div>
             <div className={styles.anchorNav}>
               {docOptions.length > 1 && (
-                <AnchorNav useRoutes links={anchorLinks} />
+                <AnchorNav
+                  useRoutes
+                  links={anchorLinks}
+                  theme={anchorNavRegularTheme}
+                />
               )}
             </div>
           </div>

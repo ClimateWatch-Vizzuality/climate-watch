@@ -18,7 +18,7 @@ export const DATA_SCALE = 1000000;
 export const ALLOWED_SECTORS_BY_SOURCE = {
   CAIT: [
     'Energy',
-    'Industrial process',
+    'Industrial Processes',
     'Solvent sector',
     'Agriculture',
     'Land-Use Change and Forestry',
@@ -118,6 +118,19 @@ export const DEFAULT_AXES_CONFIG = {
   }
 };
 
+export const ESP_BLACKLIST = {
+  models: ['id', 'scenarios', 'indicators'],
+  scenarios: ['id', 'model_id', 'indicators'],
+  indicators: ['id', 'parent_id']
+};
+
+export const WORLD_LOCATION_ID = '267';
+export const FILTERS_BY_CATEGORY = {
+  models: ['license', 'time_horizon', 'time_step'],
+  scenarios: ['model_abbreviation'],
+  indicators: ['category']
+};
+
 export const MIN_ZOOM_SHOW_ISLANDS = '8';
 export const PATH_LAYERS = {
   COUNTRIES: 'COUNTRIES',
@@ -133,6 +146,9 @@ export default {
   CHART_COLORS,
   DEFAULT_AXES_CONFIG,
   DATA_SCALE,
+  ESP_BLACKLIST,
+  WORLD_LOCATION_ID,
+  FILTERS_BY_CATEGORY,
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS
 };
