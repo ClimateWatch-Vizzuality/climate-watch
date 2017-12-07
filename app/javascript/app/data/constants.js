@@ -18,7 +18,7 @@ export const DATA_SCALE = 1000000;
 export const ALLOWED_SECTORS_BY_SOURCE = {
   CAIT: [
     'Energy',
-    'Industrial process',
+    'Industrial Processes',
     'Solvent sector',
     'Agriculture',
     'Land-Use Change and Forestry',
