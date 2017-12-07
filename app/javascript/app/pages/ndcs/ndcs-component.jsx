@@ -5,6 +5,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
+import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
@@ -23,6 +24,7 @@ const NDC = ({ anchorLinks, query, route }) => (
     <div className={styles.wrapper}>
       <div className={layout.content}>{renderRoutes(route.routes)}</div>
     </div>
+    <ModalMetadata />
   </div>
 );
 
