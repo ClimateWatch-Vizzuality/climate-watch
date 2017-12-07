@@ -7,6 +7,8 @@ import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
+import { actions as modalActions } from 'components/modal-metadata';
+
 import Component from './ndcs-map-component';
 import {
   getCategories,
@@ -92,6 +94,13 @@ class NDCMapContainer extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
+  handleInfoClick = () => {
+    this.props.setModalMetadata({
+      slugs: 'ndc_wb',
+      open: true
+    });
+  };
+
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, param, clear));
@@ -105,7 +114,8 @@ class NDCMapContainer extends PureComponent {
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleCategoryChange: this.handleCategoryChange,
-      handleIndicatorChange: this.handleIndicatorChange
+      handleIndicatorChange: this.handleIndicatorChange,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
@@ -114,7 +124,10 @@ NDCMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
-  selectedIndicator: PropTypes.object.isRequired
+  selectedIndicator: PropTypes.object.isRequired,
+  setModalMetadata: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(mapStateToProps)(NDCMapContainer));
+export default withRouter(
+  connect(mapStateToProps, modalActions)(NDCMapContainer)
+);
