@@ -10,7 +10,7 @@
 
 %grid {
   display: grid;
-  grid-column-gap: $grid-gap;
+  grid-column-gap: $gutter-padding;
 }
 
 @mixin msGridColumns($columns...) {
