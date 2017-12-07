@@ -24,6 +24,7 @@
   @include msGridColumns(1fr, 20fr, 32fr);
 
   grid-template-columns: 1fr 20fr 32fr;
+  margin-top: -6px;
 }
 
 .infoBtn {
