@@ -9,7 +9,7 @@ const { ESP_API } = process.env;
 
 const getEspLocations = createThunkAction(
   'getEspLocations',
-  () => (dispatch, state) => {
+  (withTimeSeries) => (dispatch, state) => {
     const { espLocations } = state();
     if (
       espLocations.data &&
@@ -17,7 +17,7 @@ const getEspLocations = createThunkAction(
       !espLocations.loading
     ) {
       dispatch(getEspLocationsInit());
-      fetch(`${ESP_API}/locations`)
+      fetch(`${ESP_API}/locations${withTimeSeries ? '?time_series=true' : ''}`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);

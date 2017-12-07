@@ -112,25 +112,49 @@ export const getScenariosSelected = createSelector(
   [getScenariosOptions, getScenario, getModelSelected],
   (scenarios, scenarioSelected, model) => {
     if (!scenarios || !model) return null;
-    if ((!scenarioSelected && !model.scenarios) || scenarioSelected === '') { return []; }
+    if ((!scenarioSelected && !model.scenarios) || scenarioSelected === '') {
+      return [];
+    }
     if (!scenarioSelected) {
-      return scenarios.filter(s => model.scenarios.indexOf(s.value) > -1);
+      return scenarios;
     }
     const activeScenarios = scenarioSelected.split(',');
     return scenarios.filter(s => activeScenarios.indexOf(s.value) > -1);
   }
 );
 
+// Map the data from the API
+export const filterDataByScenario = createSelector(
+  [getData, getScenariosSelected, getScenario],
+  (data, scenarios, activeScenarios) => {
+    if (!data || isEmpty(data) || activeScenarios === '') return null;
+    if (scenarios) return data;
+    return data.filter(
+      d => scenarios.map(s => s.value).indexOf(d.scenario_id.toString()) > -1
+    );
+  }
+);
+
 export const getIndicatorsOptions = createSelector(
-  [getIndicators, getModelSelected],
-  (indicators, modelSelected) => {
-    if (!indicators || !indicators.length || !modelSelected) return [];
-    return indicators
-      .map(i => ({
-        label: i.name,
-        value: i.id.toString()
-      }))
-      .filter(i => i.value === modelSelected.value);
+  [filterDataByScenario, getIndicators, getModelSelected],
+  (data, indicators, modelSelected) => {
+    if (!data || !indicators || !indicators.length || !modelSelected) return [];
+    const indicatorsWithData = data.map(d => d.indicator_id.toString());
+    const selectedIndicatorOptionsWithData = [];
+    indicators.forEach(i => {
+      if (
+        i.model &&
+        i.model.id.toString() === modelSelected.value &&
+        i.name &&
+        indicatorsWithData.indexOf(i.id.toString()) > -1
+      ) {
+        selectedIndicatorOptionsWithData.push({
+          label: i.name,
+          value: i.id.toString()
+        });
+      }
+    });
+    return uniqBy(selectedIndicatorOptionsWithData, 'label');
   }
 );
 
@@ -138,13 +162,22 @@ export const getIndicatorSelected = createSelector(
   [getIndicatorsOptions, getIndicator],
   (indicators, indicatorSelected) => {
     if (!indicators) return null;
-    // temp fix to allow no filter by indicator
-    if (!indicatorSelected) return null;
     if (!indicatorSelected) {
       const defaultIndicator = indicators.find(i => i.label === 'Heat');
       return defaultIndicator || indicators[0];
     }
     return indicators.find(i => indicatorSelected === i.value);
+  }
+);
+
+export const filterDataByIndicator = createSelector(
+  [filterDataByScenario, getIndicatorSelected],
+  (data, indicator) => {
+    if (!data || isEmpty(data)) return null;
+    if (!indicator) return data;
+    return data.filter(
+      d => d.indicator_id.toString() === indicator.value.toString()
+    );
   }
 );
 
@@ -167,40 +200,15 @@ export const getFiltersSelected = createSelector(
   [
     getLocationSelected,
     getModelSelected,
-    getIndicatorSelected,
-    getScenariosSelected
+    getScenariosSelected,
+    getIndicatorSelected
   ],
-  (location, model, indicator, scenarios) => ({
+  (location, model, scenarios, indicator) => ({
     location,
     model,
-    indicator,
-    scenarios
+    scenarios,
+    indicator
   })
-);
-
-// Map the data from the API
-export const filterDataByScenario = createSelector(
-  [getData, getFiltersSelected, getScenario],
-  (data, filters, activeScenarios) => {
-    if (!data || isEmpty(data) || activeScenarios === '') return null;
-    if (!filters.scenarios) return data;
-    return data.filter(
-      d =>
-        filters.scenarios.map(s => s.value).indexOf(d.scenario_id.toString()) >
-        -1
-    );
-  }
-);
-
-export const filterDataByIndicator = createSelector(
-  [filterDataByScenario, getFiltersSelected],
-  (data, filters) => {
-    if (!data || isEmpty(data)) return null;
-    if (!filters.indicator) return data;
-    return data.filter(
-      d => d.indicator_id === filters.indicator.value.toString()
-    );
-  }
 );
 
 export const getChartData = createSelector([filterDataByIndicator], data => {
@@ -226,10 +234,15 @@ export const getChartConfig = createSelector(
   [filterDataByIndicator, getScenariosOptions],
   (data, scenarios) => {
     if (!data || !scenarios) return null;
-    const yColumns = data.map(d => ({
-      label: scenarios.find(s => parseInt(s.value, 10) === d.scenario_id).label,
-      value: getYColumnValue(d.scenario_id)
-    }));
+    const yColumns = data.map(d => {
+      const scenario = scenarios.find(
+        s => parseInt(s.value, 10) === d.scenario_id
+      );
+      return {
+        label: scenario ? scenario.label : null,
+        value: getYColumnValue(d.scenario_id)
+      };
+    });
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const theme = getThemeConfig(yColumnsChecked, COLORS);
     const tooltip = getTooltipConfig(yColumnsChecked);

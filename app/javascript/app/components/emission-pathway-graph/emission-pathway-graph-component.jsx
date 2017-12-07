@@ -24,7 +24,7 @@ class EmissionPathwayGraph extends PureComponent {
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
-          <EspLocationsProvider />
+          <EspLocationsProvider withTimeSeries />
           {filtersSelected &&
             filtersSelected.location &&
             filtersSelected.model && (
