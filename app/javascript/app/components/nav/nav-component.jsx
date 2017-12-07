@@ -5,7 +5,6 @@ import cx from 'classnames';
 
 import Icon from 'components/icon';
 import SimpleMenu from 'components/simple-menu';
-import CountriesMenu from 'components/countries-menu';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
 import styles from './nav-styles.scss';
@@ -28,7 +27,6 @@ class Nav extends PureComponent {
             <Icon className={styles.logo} icon={cwLogo} />
           </NavLink>
         )}
-        <CountriesMenu title="COUNTRIES" />
         {routes.map(route => {
           if (route.path) {
             return (

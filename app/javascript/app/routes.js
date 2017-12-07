@@ -11,6 +11,7 @@ import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountryAccordion from 'components/ndcs-country-accordion';
 import NDCCompare from 'pages/ndc-compare';
+import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
 import CountryCompare from 'pages/country-compare';
 import Sectors from 'pages/sectors';
@@ -37,6 +38,14 @@ export default [
         component: Home,
         exact: true,
         headerImage: 'home'
+      },
+      {
+        path: '/countries',
+        component: CountryIndex,
+        exact: true,
+        nav: true,
+        label: 'COUNTRIES',
+        headerImage: 'countries'
       },
       {
         path: '/countries/compare',

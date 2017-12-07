@@ -1,21 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import CountriesSelect from 'components/countries-select';
-import PropTypes from 'prop-types';
-import ClickOutside from 'react-click-outside';
 
-class CountryIndex extends PureComponent {
-  render() {
-    const { toggleCountriesMenu } = this.props;
-    return (
-      <ClickOutside onClickOutside={toggleCountriesMenu}>
-        <CountriesSelect />
-      </ClickOutside>
-    );
-  }
-}
+const Country = () => <CountriesSelect />;
 
-CountryIndex.propTypes = {
-  toggleCountriesMenu: PropTypes.func.isRequired
-};
-
-export default CountryIndex;
+export default Country;

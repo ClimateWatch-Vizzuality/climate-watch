@@ -16,7 +16,6 @@ class CountriesSelect extends PureComponent {
     const {
       query,
       paths,
-      className,
       countrySelectFilter,
       countriesList,
       onCountryClick,
@@ -24,7 +23,7 @@ class CountriesSelect extends PureComponent {
       onCountryMouseLeave
     } = this.props;
     return (
-      <div className={cx(styles.wrapper, className)}>
+      <div className={styles.wrapper}>
         <div className={cx(layout.content, styles.content)}>
           <Search
             placeholder=""
@@ -61,7 +60,6 @@ CountriesSelect.propTypes = {
   onCountryMouseEnter: Proptypes.func.isRequired,
   onCountryMouseLeave: Proptypes.func.isRequired,
   countriesList: Proptypes.array,
-  className: Proptypes.string,
   paths: Proptypes.array
 };
 
