@@ -274,127 +274,127 @@ export default [
         label: 'GHG EMISSIONS',
         headerImage: 'emissions'
       },
-      // {
-      //   path: '/emission-pathways/models/:id',
-      //   component: EmissionPathwaysModel,
-      //   label: 'EMISSION PATHWAYS MODEL',
-      //   headerImage: 'emission-pathways',
-      //   sections: [
-      //     {
-      //       hash: 'overview',
-      //       label: 'Overview',
-      //       anchor: true,
-      //       component: () =>
-      //         createElement(EmissionPathwaysOverview, { category: 'Models' })
-      //     },
-      //     {
-      //       hash: 'scenarios-indicators',
-      //       label: 'Scenarios & Indicators',
-      //       anchor: true,
-      //       nav: true,
-      //       component: EmissionPathwaysTableMenu
-      //     }
-      //   ],
-      //   routes: [
-      //     {
-      //       path: '/emission-pathways/models/:id/scenarios',
-      //       label: 'Scenarios',
-      //       anchor: true,
-      //       component: () =>
-      //         createElement(EmissionPathwaysModelTable, {
-      //           category: 'Scenarios'
-      //         })
-      //     },
-      //     {
-      //       path: '/emission-pathways/models/:id/indicators',
-      //       label: 'Indicators',
-      //       anchor: true,
-      //       component: () =>
-      //         createElement(EmissionPathwaysModelTable, {
-      //           category: 'Indicators'
-      //         })
-      //     },
-      //     {
-      //       path: '/emission-pathways/models/:id',
-      //       label: 'emission-pathways-model',
-      //       exact: true,
-      //       component: ({ match }) =>
-      //         createElement(Redirect, {
-      //           to: `/emission-pathways/models/${match.params.id}/scenarios`
-      //         })
-      //     }
-      //   ]
-      // },
-      // {
-      //   path: '/emission-pathways/scenarios/:id',
-      //   component: EmissionPathwaysScenario,
-      //   label: 'EMISSION PATHWAYS SCENARIO',
-      //   headerImage: 'emission-pathways',
-      //   sections: [
-      //     {
-      //       hash: 'indicators',
-      //       label: 'Indicators',
-      //       anchor: true,
-      //       nav: true,
-      //       component: EmissionPathwaysScenarioTable
-      //     }
-      //   ]
-      // },
+      {
+        path: '/emission-pathways/models/:id',
+        component: EmissionPathwaysModel,
+        label: 'EMISSION PATHWAYS MODEL',
+        headerImage: 'emission-pathways',
+        sections: [
+          {
+            hash: 'overview',
+            label: 'Overview',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysOverview, { category: 'Models' })
+          },
+          {
+            hash: 'scenarios-indicators',
+            label: 'Scenarios & Indicators',
+            anchor: true,
+            nav: true,
+            component: EmissionPathwaysTableMenu
+          }
+        ],
+        routes: [
+          {
+            path: '/emission-pathways/models/:id/scenarios',
+            label: 'Scenarios',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysModelTable, {
+                category: 'Scenarios'
+              })
+          },
+          {
+            path: '/emission-pathways/models/:id/indicators',
+            label: 'Indicators',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysModelTable, {
+                category: 'Indicators'
+              })
+          },
+          {
+            path: '/emission-pathways/models/:id',
+            label: 'emission-pathways-model',
+            exact: true,
+            component: ({ match }) =>
+              createElement(Redirect, {
+                to: `/emission-pathways/models/${match.params.id}/scenarios`
+              })
+          }
+        ]
+      },
+      {
+        path: '/emission-pathways/scenarios/:id',
+        component: EmissionPathwaysScenario,
+        label: 'EMISSION PATHWAYS SCENARIO',
+        headerImage: 'emission-pathways',
+        sections: [
+          {
+            hash: 'indicators',
+            label: 'Indicators',
+            anchor: true,
+            nav: true,
+            component: EmissionPathwaysScenarioTable
+          }
+        ]
+      },
       {
         path: '/emission-pathways',
         component: EmissionPathways,
         label: 'EMISSION PATHWAYS',
-        headerImage: 'emission-pathways'
-        // sections: [
-        //   {
-        //     hash: 'overview',
-        //     label: 'Overview',
-        //     anchor: true,
-        //     component: EmissionPathwayGraph
-        //   },
-        //   {
-        //     hash: 'models-scenarios-indicators',
-        //     label: 'Models, Scenarios & Indicators',
-        //     anchor: true,
-        //     component: EmissionPathwaysTableMenu
-        //   }
-        // ],
-        // routes: [
-        //   {
-        //     path: '/emission-pathways/models',
-        //     label: 'Models',
-        //     anchor: true,
-        //     component: () =>
-        //       createElement(EmissionPathwaysTable, {
-        //         category: 'Models'
-        //       })
-        //   },
-        //   {
-        //     path: '/emission-pathways/scenarios',
-        //     label: 'Scenarios',
-        //     anchor: true,
-        //     component: () =>
-        //       createElement(EmissionPathwaysTable, {
-        //         category: 'Scenarios'
-        //       })
-        //   },
-        //   {
-        //     path: '/emission-pathways/indicators',
-        //     label: 'Indicators',
-        //     anchor: true,
-        //     component: () =>
-        //       createElement(EmissionPathwaysTable, {
-        //         category: 'Indicators'
-        //       })
-        //   },
-        //   {
-        //     path: '/emission-pathways',
-        //     label: 'emission-pathways',
-        //     exact: true,
-        //     component: () =>
-        //       createElement(Redirect, { to: '/emission-pathways/models' })
-        //   }
-        // ]
+        headerImage: 'emission-pathways',
+        sections: [
+          {
+            hash: 'overview',
+            label: 'Overview',
+            anchor: true,
+            component: EmissionPathwayGraph
+          },
+          {
+            hash: 'models-scenarios-indicators',
+            label: 'Models, Scenarios & Indicators',
+            anchor: true,
+            component: EmissionPathwaysTableMenu
+          }
+        ],
+        routes: [
+          {
+            path: '/emission-pathways/models',
+            label: 'Models',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysTable, {
+                category: 'Models'
+              })
+          },
+          {
+            path: '/emission-pathways/scenarios',
+            label: 'Scenarios',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysTable, {
+                category: 'Scenarios'
+              })
+          },
+          {
+            path: '/emission-pathways/indicators',
+            label: 'Indicators',
+            anchor: true,
+            component: () =>
+              createElement(EmissionPathwaysTable, {
+                category: 'Indicators'
+              })
+          },
+          {
+            path: '/emission-pathways',
+            label: 'emission-pathways',
+            exact: true,
+            component: () =>
+              createElement(Redirect, { to: '/emission-pathways/models' })
+          }
+        ]
       },
       {
         path: '/ndc-search',

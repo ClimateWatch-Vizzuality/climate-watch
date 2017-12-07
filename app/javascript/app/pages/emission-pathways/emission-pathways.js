@@ -12,4 +12,4 @@ const mapStateToProps = (state, { route, location }) => {
   };
 };
 
-export default withRouter(connect(null, null)(Component));
+export default withRouter(connect(mapStateToProps, null)(Component));
