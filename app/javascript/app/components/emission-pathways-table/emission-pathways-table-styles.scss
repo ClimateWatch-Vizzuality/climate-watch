@@ -1,0 +1,21 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+$min-height: 475px;
+
+.col4 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+  grid-template-columns: repeat(4, 1fr);
+  align-items: end;
+}
+
+.loader {
+  min-height: $min-height;
+}
+
+.noContent {
+  min-height: $min-height;
+}

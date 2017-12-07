@@ -66,7 +66,7 @@ class CountryNdcOverview extends PureComponent {
                     <Button
                       className={styles.exploreBtn}
                       color="white"
-                      link={`/ndcs/compare?locations=${iso}`}
+                      link={`/ndcs/compare/mitigation?locations=${iso}`}
                     >
                       Compare
                     </Button>
