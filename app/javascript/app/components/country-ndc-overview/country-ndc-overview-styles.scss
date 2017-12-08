@@ -24,6 +24,7 @@
   @include msGridColumns(45px, 1fr, 47%);
 
   grid-template-columns: 45px 1fr 47%;
+  margin-top: -6px;
 }
 
 .subTitle {
@@ -31,6 +32,14 @@
   color: $theme-color;
   font-weight: $font-weight-bold;
   margin-bottom: 10px;
+}
+
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+  column-count: 2;
+  column-gap: 20px;
+  margin-bottom: 15px;
 }
 
 .cards {
