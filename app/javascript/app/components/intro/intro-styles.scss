@@ -2,6 +2,12 @@
 
 .intro {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.main {
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
@@ -12,6 +18,11 @@
     color: $theme-color;
     border-bottom: solid 1px $theme-secondary;
   }
+}
+
+.button {
+  width: 170px;
+  margin-right: 20px;
 }
 
 .title {

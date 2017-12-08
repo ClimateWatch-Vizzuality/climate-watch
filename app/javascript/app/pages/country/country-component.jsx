@@ -10,6 +10,7 @@ import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
 import ModalMetadata from 'components/modal-metadata';
 import SocioeconomicsProvider from 'providers/socioeconomics-provider';
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
@@ -34,7 +35,11 @@ class Country extends PureComponent {
             <CountryTimeline />
           </div>
           <Sticky activeClass="sticky">
-            <AnchorNav links={anchorLinks} className={layout.content} />
+            <AnchorNav
+              links={anchorLinks}
+              className={layout.content}
+              theme={anchorNavRegularTheme}
+            />
           </Sticky>
         </Header>
         {route.sections &&

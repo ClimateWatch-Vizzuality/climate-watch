@@ -18,7 +18,7 @@ import styles from './map-styles.scss';
 
 class Map extends PureComponent {
   render() {
-    const { zoom, center } = this.props;
+    const { zoom, center, customCenter } = this.props;
     const { className } = this.props;
     const {
       forceUpdate,
@@ -37,7 +37,6 @@ class Map extends PureComponent {
       onCountryLeave,
       defaultStyle
     } = this.props;
-
     return (
       <div className={cx(styles.wrapper, className)}>
         {zoomEnable && (
@@ -57,15 +56,21 @@ class Map extends PureComponent {
             y: 10
           }}
           style={{
-            z: spring(zoom),
-            x: spring(center[0]),
-            y: spring(center[1])
+            z: spring(zoom, { stiffness: 240, damping: 30 }),
+            x: spring((customCenter && customCenter[0]) || center[0], {
+              stiffness: 240,
+              damping: 30
+            }),
+            y: spring((customCenter && customCenter[1]) || center[1], {
+              stiffness: 240,
+              damping: 30
+            })
           }}
         >
           {({ z, x, y }) => (
             <ComposableMap projection="robinson" style={style}>
               <ZoomableGroup
-                center={[x, y]}
+                center={customCenter || [x, y]}
                 zoom={z}
                 disablePanning={!dragEnable}
               >
@@ -118,6 +123,7 @@ class Map extends PureComponent {
 Map.propTypes = {
   style: PropTypes.object.isRequired,
   center: PropTypes.array.isRequired,
+  customCenter: PropTypes.array,
   zoom: PropTypes.number.isRequired,
   zoomEnable: PropTypes.bool,
   dragEnable: PropTypes.bool,
