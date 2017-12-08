@@ -5,8 +5,8 @@ import cx from 'classnames';
 import monete from 'assets/icons/monete.png';
 import styles from './no-content-styles.scss';
 
-const NoContent = ({ className, message, icon }) => (
-  <div className={cx(styles.noContent, className)}>
+const NoContent = ({ className, message, icon, minHeight }) => (
+  <div className={cx(styles.noContent, className)} style={{ minHeight }}>
     <p className={styles.text}>{message}</p>
     {icon && <img className={styles.img} src={monete} alt="Monete" />}
   </div>
@@ -15,7 +15,8 @@ const NoContent = ({ className, message, icon }) => (
 NoContent.propTypes = {
   icon: PropTypes.bool,
   className: PropTypes.string,
-  message: PropTypes.string
+  message: PropTypes.string,
+  minHeight: PropTypes.number
 };
 
 NoContent.defaultProps = {

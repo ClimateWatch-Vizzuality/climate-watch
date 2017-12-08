@@ -3,9 +3,9 @@
 .grid {
   @extend %grid;
 
-  @include msGridColumns(4fr, 8fr);
+  @include msGridColumns(1fr, 2fr);
 
-  grid-template-columns: 4fr 8fr;
+  grid-template-columns: 1fr 2fr;
 }
 
 .bg {

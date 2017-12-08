@@ -1,10 +1,13 @@
 @import '~styles/settings';
 
+.tableWrapper {
+  position: relative;
+}
+
 .table :global {
   position: relative;
 
   .ReactVirtualized__Table__headerRow {
-    border-bottom: solid 1px $theme-color-light;
     font-size: $font-size-sm;
     color: $theme-color;
     padding: 30px 0 15px;
@@ -16,6 +19,7 @@
   .ReactVirtualized__Grid,
   .ReactVirtualized__Table__Grid {
     background-color: $light-gray;
+    border-top: solid 1px $theme-color-light;
   }
 
   .ReactVirtualized__Table__row {
@@ -33,17 +37,58 @@
       text-overflow: ellipsis;
     }
 
+    a {
+      line-height: $line-height-medium;
+      color: $theme-color;
+      border-bottom: 1px solid $theme-secondary;
+    }
+
     &:first-of-type {
       font-weight: $font-weight-bold;
     }
   }
 
-  a {
-    color: $theme-color;
-    word-wrap: break-word;
-    background-image: linear-gradient(to right, $theme-secondary 100%, transparent 100%);
-    background-position: 0 1.07em;
-    background-repeat: repeat-x;
-    background-size: 10px 2px;
+  .ReactVirtualized__Table__sortableHeaderColumn {
+    &:focus {
+      outline: none;
+    }
   }
+}
+
+.hasColumnSelect :global {
+  .ReactVirtualized__Table__headerRow {
+    padding-left: 30px;
+    margin-left: -30px;
+    margin-right: 30px;
+  }
+
+  .ReactVirtualized__Table__row {
+    padding-left: 30px;
+    margin-left: -30px;
+    margin-right: 30px;
+  }
+}
+
+.columnSelector :global {
+  position: absolute;
+  right: 0;
+  width: 50px;
+  z-index: 10;
+  border-bottom: solid 1px $theme-color-light;
+
+  .dropdown-menu {
+    width: 200px !important;
+    right: 0;
+    margin-top: 1px !important;
+  }
+
+  .values {
+    padding-right: 0;
+  }
+}
+
+.selectorValue {
+  position: absolute;
+  right: 10px;
+  top: 15px;
 }
