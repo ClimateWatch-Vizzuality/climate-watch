@@ -52,8 +52,8 @@ class Map extends PureComponent {
         <Motion
           defaultStyle={{
             z: 1,
-            x: 0,
-            y: 20
+            x: 20,
+            y: 10
           }}
           style={{
             z: spring(zoom, { stiffness: 240, damping: 30 }),
@@ -146,7 +146,7 @@ Map.defaultProps = {
   style: {
     width: '100%'
   },
-  center: [0, 20],
+  center: [20, 10],
   zoom: 1,
   zoomEnable: false,
   dragEnable: true,

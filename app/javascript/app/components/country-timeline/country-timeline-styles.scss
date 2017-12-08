@@ -2,23 +2,31 @@
 
 .documentLink {
   width: 170px;
-  height: 48.4px;
+  height: 48px;
   background-color: $white;
 }
 
 .timeline { // overwriting timeline styles
   display: block;
   width: 100%;
-  height: 90px;
+  height: 100px;
+  margin: 30px 0;
 
   > div {
     > div :global {
       .events-wrapper {
         overflow: initial !important;
+        width: 100% !important;
+        margin: 0 !important;
 
         .events {
+          width: 100% !important;
+
           .timeline-eventline {
+            min-width: 100% !important;
             background-color: $white !important;
+            height: 1px;
+            opacity: 0.5;
           }
 
           .timeline-eventline:nth-child(2) {
@@ -28,7 +36,9 @@
           .dot-label {
             width: auto !important;
 
-            &.present {
+            &.present,
+            &.past,
+            &.future {
               > span:last-child {
                 background-color: $theme-secondary !important;
                 border-color: $theme-secondary !important;
@@ -140,14 +150,16 @@
         display: block;
 
         li {
-          border: none !important;
-          height: 24px !important;
-          width: 24px !important;
+          height: 32px !important;
+          width: 32px !important;
           background-color: $white;
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+          border: solid 1px rgba(26, 28, 34, 0.1);
 
           > svg {
             fill: $theme-color !important;
-            width: 100% !important;
+            height: 24px !important;
+            width: 32px !important;
           }
 
           &.disabled {

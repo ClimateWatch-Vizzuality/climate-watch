@@ -21,13 +21,9 @@
 .actions {
   @extend %grid;
 
-  @include msGridColumns(1fr, 20fr, 32fr);
+  @include msGridColumns(45px, 1fr, 47%);
 
-  grid-template-columns: 1fr 20fr 32fr;
-}
-
-.infoBtn {
-  margin-left: 45px;
+  grid-template-columns: 45px 1fr 47%;
 }
 
 .subTitle {
@@ -47,8 +43,12 @@
 }
 
 .cardContent {
-  height: 180px;
-  overflow: auto;
+  margin: 15px;
+
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+  }
 }
 
 .metaTitle {
@@ -60,8 +60,9 @@
 .targetText {
   display: block;
   font-size: $font-size;
+  line-height: $line-height-small;
   color: $theme-color;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .noContent {

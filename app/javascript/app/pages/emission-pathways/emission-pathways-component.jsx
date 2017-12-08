@@ -1,24 +1,24 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import Header from 'components/header';
-import Intro from 'components/intro';
-import AnchorNav from 'components/anchor-nav';
-import Sticky from 'react-stickynode';
-import EspModelsProvider from 'providers/esp-models-provider';
-import EspScenariosProvider from 'providers/esp-scenarios-provider';
-import EspIndicatorsProvider from 'providers/esp-indicators-provider';
-import { renderRoutes } from 'react-router-config';
+// import PropTypes from 'prop-types';
+// import Header from 'components/header';
+// import Intro from 'components/intro';
+// import AnchorNav from 'components/anchor-nav';
+// import Sticky from 'react-stickynode';
+// import EspModelsProvider from 'providers/esp-models-provider';
+// import EspScenariosProvider from 'providers/esp-scenarios-provider';
+// import EspIndicatorsProvider from 'providers/esp-indicators-provider';
+// import { renderRoutes } from 'react-router-config';
 import Teaser from 'components/teaser';
 import screenshot from 'assets/screenshots/emission-pathways-screenshot';
 
-import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import layout from 'styles/layout.scss';
-import styles from './emission-pathways-styles.scss';
+// import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
+// import layout from 'styles/layout.scss';
+// import styles from './emission-pathways-styles.scss';
 
 class EmissionPathways extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route, anchorLinks, routeLinks } = this.props;
+    // const { route, anchorLinks, routeLinks } = this.props;
     return (
       <div>
         <Teaser
@@ -55,10 +55,10 @@ class EmissionPathways extends PureComponent {
   }
 }
 
-EmissionPathways.propTypes = {
-  route: PropTypes.object.isRequired,
-  anchorLinks: PropTypes.array.isRequired,
-  routeLinks: PropTypes.array.isRequired
-};
+// EmissionPathways.propTypes = {
+//   route: PropTypes.object.isRequired,
+//   anchorLinks: PropTypes.array.isRequired,
+//   routeLinks: PropTypes.array.isRequired
+// };
 
 export default EmissionPathways;
