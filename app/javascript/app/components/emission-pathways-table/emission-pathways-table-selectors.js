@@ -111,7 +111,7 @@ export const filteredDataByFilters = createSelector(
 );
 
 export const getFilterOptionsByCategory = createSelector(
-  [getCategory, filteredDataByFilters],
+  [getCategory, getData],
   (category, data) => {
     if (!category || !data || isEmpty(data)) return null;
     const filters = FILTERS_BY_CATEGORY[category];
