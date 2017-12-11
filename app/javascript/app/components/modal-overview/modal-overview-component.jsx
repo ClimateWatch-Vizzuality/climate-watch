@@ -22,6 +22,9 @@ class ModalOverview extends PureComponent {
   constructor() {
     super();
     this.handleOnRequestClose = this.handleOnRequestClose.bind(this);
+    this.state = {
+      selectedIndex: 0
+    };
   }
 
   handleOnRequestClose() {
@@ -39,10 +42,15 @@ class ModalOverview extends PureComponent {
   }
 
   render() {
-    const { isOpen, title } = this.props;
+    const { isOpen, title, tabTitles } = this.props;
     return (
       <Modal isOpen={isOpen} onRequestClose={this.handleOnRequestClose}>
-        <ModalHeader title={title} />
+        <ModalHeader
+          title={title}
+          tabTitles={tabTitles}
+          selectedIndex={this.state.selectedIndex}
+          handleTabIndexChange={i => this.setState({ selectedIndex: i })}
+        />
         {this.renderData()}
       </Modal>
     );
@@ -52,6 +60,7 @@ class ModalOverview extends PureComponent {
 ModalOverview.propTypes = {
   data: PropTypes.object,
   title: PropTypes.string,
+  tabTitles: PropTypes.array,
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired
 };
