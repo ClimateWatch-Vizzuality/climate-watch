@@ -19,8 +19,7 @@ class LegendChart extends PureComponent {
       handleAdd,
       className
     } = this.props;
-    const shouldRenderMultiselect =
-      dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
+    const shouldRenderMultiselect = dataOptions && dataSelected;
     return (
       <div className={cx(styles.tags, className)}>
         {config &&
@@ -40,7 +39,9 @@ class LegendChart extends PureComponent {
           ))}
         {shouldRenderMultiselect && (
           <MultiSelect
-            parentClassName={styles.tagSelector}
+            parentClassName={cx(styles.tagSelector, {
+              [styles.hidden]: dataOptions.length === dataSelected.length
+            })}
             values={dataSelected || []}
             options={dataOptions || []}
             onMultiValueChange={handleAdd}
