@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
 import ModalHeader from 'components/modal/modal-header-component';
 import NoContent from 'components/no-content';
+import cx from 'classnames';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
 import styles from './modal-overview-styles.scss';
@@ -35,18 +36,20 @@ class ModalOverview extends PureComponent {
   renderData() {
     const { data, tabTitles } = this.props;
     if (!data) return <NoContent />;
+    const renderKey = (d, marginBottom) =>
+      d && (
+        <div className={cx({ [styles.marginBottom]: marginBottom })}>
+          {Object.keys(d).map(key => (
+            <MetadataProp key={key} title={key}>
+              {d[key]}
+            </MetadataProp>
+          ))}
+        </div>
+      );
     let selectedData = data;
     if (tabTitles) selectedData = data[this.state.selectedIndex];
-    if (!isArray(selectedData)) selectedData = [selectedData];
-    return selectedData.map(
-      d =>
-        d &&
-        Object.keys(d).map(key => (
-          <MetadataProp key={key} title={key}>
-            {d[key]}
-          </MetadataProp>
-        ))
-    );
+    if (isArray(selectedData)) return selectedData.map(d => renderKey(d, true));
+    return renderKey(selectedData);
   }
 
   render() {
