@@ -281,6 +281,17 @@ export const getModelSelectedMetadata = createSelector(
   }
 );
 
+export const addLinktoModelSelectedMetadata = createSelector(
+  [getModelSelectedMetadata],
+  model => {
+    if (!model) return null;
+    return {
+      ...model,
+      Link: `/emission-pathways/models/${model.id}`
+    };
+  }
+);
+
 export const getScenariosSelectedMetadata = createSelector(
   [getScenarios, getScenariosSelected],
   (scenarios, scenariosSelected) => {
@@ -293,7 +304,8 @@ export const getScenariosSelectedMetadata = createSelector(
       scenariosMetadata &&
       scenariosMetadata.map(s => ({
         name: s.name,
-        description: s.description
+        description: s.description,
+        Link: `/emission-pathways/scenarios/${s.id}`
       }))
     );
   }
@@ -308,7 +320,7 @@ export const getIndicatorSelectedMetadata = createSelector(
 );
 
 export const filterModelsByBlackList = createSelector(
-  [getModelSelectedMetadata],
+  [addLinktoModelSelectedMetadata],
   data => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(

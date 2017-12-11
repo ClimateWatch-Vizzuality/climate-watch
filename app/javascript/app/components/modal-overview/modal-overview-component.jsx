@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
+import { NavLink } from 'react-router-dom';
 import ModalHeader from 'components/modal/modal-header-component';
 import NoContent from 'components/no-content';
 import cx from 'classnames';
@@ -38,12 +39,27 @@ class ModalOverview extends PureComponent {
     if (!data) return <NoContent />;
     const renderKey = (d, marginBottom) =>
       d && (
-        <div className={cx({ [styles.marginBottom]: marginBottom })}>
-          {Object.keys(d).map(key => (
-            <MetadataProp key={key} title={key}>
-              {d[key]}
-            </MetadataProp>
-          ))}
+        <div
+          key={d.name || d.full_name}
+          className={cx({ [styles.marginBottom]: marginBottom })}
+        >
+          {Object.keys(d).map(
+            key =>
+              (key === 'Link' ? (
+                <NavLink
+                  className={styles.link}
+                  onClick={this.handleOnRequestClose}
+                  to={d[key]}
+                  key={key}
+                >
+                  Show info page
+                </NavLink>
+              ) : (
+                <MetadataProp key={key} title={key}>
+                  {d[key]}
+                </MetadataProp>
+              ))
+          )}
         </div>
       );
     let selectedData = data;

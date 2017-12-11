@@ -14,3 +14,11 @@
 .marginBottom {
   margin-bottom: 30px;
 }
+
+.link {
+  font-size: $font-size;
+  line-height: $line-height-medium;
+  height: 1.62;
+  color: $theme-color;
+  border-bottom: 1px solid $theme-secondary;
+}
