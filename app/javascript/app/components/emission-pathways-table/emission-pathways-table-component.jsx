@@ -49,7 +49,7 @@ class EmissionPathwaysTable extends PureComponent {
       <Dropdown
         key={field}
         label={startCase(field)}
-        placeholder="Select a category"
+        placeholder={`Filter by ${startCase(field)}`}
         options={filterOptions ? filterOptions[field] : []}
         onValueChange={selected =>
           handleFilterChange(field, selected && selected.value)}
