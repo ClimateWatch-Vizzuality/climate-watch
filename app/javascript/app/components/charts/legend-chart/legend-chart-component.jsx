@@ -8,7 +8,8 @@ import cx from 'classnames';
 import plusIcon from 'assets/icons/plus.svg';
 import styles from './legend-chart-styles.scss';
 
-class LegendChart extends PureComponent { // eslint-disable-line react/prefer-stateless-function
+class LegendChart extends PureComponent {
+  // eslint-disable-line react/prefer-stateless-function
   render() {
     const {
       config,
@@ -18,6 +19,8 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
       handleAdd,
       className
     } = this.props;
+    const shouldRenderMultiselect =
+      dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
     return (
       <div className={cx(styles.tags, className)}>
         {config &&
@@ -35,22 +38,20 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
               canRemove={config.columns.y.length > 1}
             />
           ))}
-        {dataOptions &&
-          dataSelected &&
-          dataSelected.length !==
-            dataOptions.length && (
-            <MultiSelect
-              parentClassName={styles.tagSelector}
-              values={dataSelected || []}
-              options={dataOptions || []}
-              onMultiValueChange={handleAdd}
-              hideResetButton
-              closeOnSelect
-              dropdownDirection={-1}
-            >
-              <Icon className={styles.plusIcon} icon={plusIcon} />
-            </MultiSelect>
-          )}
+        {shouldRenderMultiselect && (
+          <MultiSelect
+            parentClassName={styles.tagSelector}
+            values={dataSelected || []}
+            options={dataOptions || []}
+            onMultiValueChange={handleAdd}
+            hideResetButton
+            closeOnSelect
+            dropdownDirection={-1}
+            hideSelected
+          >
+            <Icon className={styles.plusIcon} icon={plusIcon} />
+          </MultiSelect>
+        )}
       </div>
     );
   }
