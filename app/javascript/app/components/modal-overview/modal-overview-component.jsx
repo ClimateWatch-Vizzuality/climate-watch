@@ -24,18 +24,13 @@ MetadataProp.propTypes = {
 class ModalOverview extends PureComponent {
   constructor() {
     super();
-    this.handleOnRequestClose = this.handleOnRequestClose.bind(this);
     this.state = {
       selectedIndex: 0
     };
   }
 
-  handleOnRequestClose() {
-    this.props.onRequestClose();
-  }
-
   renderData() {
-    const { data, tabTitles } = this.props;
+    const { data, tabTitles, onRequestClose } = this.props;
     if (!data) return <NoContent />;
     const renderKey = (d, marginBottom) =>
       d && (
@@ -48,7 +43,7 @@ class ModalOverview extends PureComponent {
               (key === 'Link' ? (
                 <NavLink
                   className={styles.link}
-                  onClick={this.handleOnRequestClose}
+                  onClick={onRequestClose}
                   to={d[key]}
                   key={key}
                 >
@@ -69,9 +64,9 @@ class ModalOverview extends PureComponent {
   }
 
   render() {
-    const { isOpen, title, tabTitles } = this.props;
+    const { isOpen, title, tabTitles, onRequestClose } = this.props;
     return (
-      <Modal isOpen={isOpen} onRequestClose={this.handleOnRequestClose}>
+      <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
         <ModalHeader
           title={title}
           tabTitles={tabTitles}
