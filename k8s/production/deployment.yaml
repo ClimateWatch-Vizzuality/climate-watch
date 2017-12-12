@@ -29,6 +29,8 @@ spec:
             value: "true"
           - name: PASSWORD_PROTECT
             value: "false"
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
           - name: AUTH_USERNAME
             valueFrom:
               secretKeyRef:

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
 
+import { actions as modalActions } from 'components/modal-metadata';
+
 import NdcSdgLinkagesMapComponent from './ndc-sdg-linkages-map-component';
 import {
   getNdcsSdgsGoalsDataSelected,
@@ -44,10 +46,18 @@ class NdcSdgLinkagesMapContainer extends PureComponent {
     }
   };
 
+  handleInfoClick = () => {
+    this.props.setModalMetadata({
+      slugs: 'ndc_sdc_all indicators',
+      open: true
+    });
+  };
+
   render() {
     return createElement(NdcSdgLinkagesMapComponent, {
       ...this.props,
-      onCountryClick: this.onCountryClick
+      onCountryClick: this.onCountryClick,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
@@ -56,10 +66,13 @@ NdcSdgLinkagesMapContainer.propTypes = {
   targetHover: PropTypes.string,
   goalSelected: PropTypes.string,
   goalHover: PropTypes.number,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  setModalMetadata: PropTypes.func.isRequired
 };
 
 export { default as component } from './ndc-sdg-linkages-map-component';
 export { default as styles } from './ndc-sdg-linkages-map-styles';
 
-export default withRouter(connect(mapStateToProps)(NdcSdgLinkagesMapContainer));
+export default withRouter(
+  connect(mapStateToProps, modalActions)(NdcSdgLinkagesMapContainer)
+);
