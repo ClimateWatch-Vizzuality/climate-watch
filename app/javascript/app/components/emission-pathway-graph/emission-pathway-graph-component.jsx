@@ -82,7 +82,11 @@ class EmissionPathwayGraph extends PureComponent {
         <ModalOverview
           data={modalData}
           title={'Emission Pathways Metadata'}
-          tabTitles={['Model', 'Scenarios', 'Indicator']}
+          tabTitles={[
+            'Model',
+            'Scenarios',
+            filtersSelected.indicator ? 'Indicator' : null
+          ]}
         />
       </div>
     );
