@@ -40,6 +40,7 @@ const AXES_CONFIG = {
 
 // meta data for selectors
 const getLocations = state => state.locations || null;
+const getAvailableLocationsModelIds = state => state.availableModelIds || null;
 const getModels = state => state.models || null;
 const getScenarios = state => state.scenarios || null;
 const getIndicators = state => state.indicators || null;
@@ -51,6 +52,14 @@ const getIndicator = state => state.indicator || null;
 
 // data for the graph
 const getData = state => state.data || null;
+
+const getAvailableModelIds = createSelector(
+  [getAvailableLocationsModelIds, getLocation],
+  (availableLocationModelIds, location) => {
+    if (!availableLocationModelIds || !location) return null;
+    return availableLocationModelIds[location];
+  }
+);
 
 // Selector options
 export const getLocationsOptions = createSelector([getLocations], locations => {
@@ -73,14 +82,23 @@ export const getLocationSelected = createSelector(
   }
 );
 
-export const getModelsOptions = createSelector([getModels], models => {
-  if (!models || !models.length) return [];
-  return models.map(m => ({
-    label: m.abbreviation,
-    value: m.id.toString(),
-    scenarios: m.scenarios ? m.scenarios.map(s => s.id.toString()) : null
-  }));
-});
+export const getModelsOptions = createSelector(
+  [getModels, getAvailableModelIds],
+  (models, availableModelIds) => {
+    if (!models || !models.length) return [];
+    let availableModels = models;
+    if (!isEmpty(availableModelIds)) {
+      availableModels = models.filter(
+        m => availableModelIds.indexOf(m.id) > -1
+      );
+    }
+    return availableModels.map(m => ({
+      label: m.abbreviation,
+      value: m.id.toString(),
+      scenarios: m.scenarios ? m.scenarios.map(s => s.id.toString()) : null
+    }));
+  }
+);
 
 export const getModelSelected = createSelector(
   [getModelsOptions, getModel],

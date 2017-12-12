@@ -68,6 +68,7 @@ import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkages';
 import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
+import * as espGraphComponent from 'components/emission-pathway-graph';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -81,6 +82,7 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
+  espGraph: handleActions(espGraphComponent),
   countryNDCOverview: handleActions(countryNDCOverviewComponent)
 };
 
