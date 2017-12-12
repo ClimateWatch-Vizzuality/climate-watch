@@ -301,7 +301,7 @@ export const getScenariosSelectedMetadata = createSelector(
       s => selectedScenarioIds.indexOf(s.id.toString()) > -1
     );
     return (
-      scenariosMetadata &&
+      scenariosMetadata.length > 0 &&
       scenariosMetadata.map(s => ({
         name: s.name,
         description: s.description,
