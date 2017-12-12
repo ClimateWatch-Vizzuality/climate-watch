@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { WORLD_LOCATION_ID } from 'data/constants';
 
 import { actions as modalActions } from 'components/modal-metadata';
 
@@ -51,6 +52,11 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
+  componentDidMount() {
+    const { currentLocation } = qs.parse(this.props.location.search);
+    this.props.findAvailableModels(currentLocation || WORLD_LOCATION_ID);
+  }
+
   handleModelChange = model => {
     this.updateUrlParam([
       { name: 'model', value: model.value },
@@ -66,7 +72,9 @@ class EmissionPathwayGraphContainer extends PureComponent {
       { name: param, value: option ? option.value : '' },
       clear
     );
-    this.props.findAvailableModels(option.value);
+    if (param === 'currentLocation') {
+      this.props.findAvailableModels(option.value);
+    }
   };
 
   updateUrlParam(params, clear) {
