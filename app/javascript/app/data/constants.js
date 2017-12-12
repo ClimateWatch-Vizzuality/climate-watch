@@ -27,9 +27,10 @@ export const ALLOWED_SECTORS_BY_SOURCE = {
   ],
   PIK: [
     'Energy',
-    'Industrial Processes and Product Use',
+    'Industrial process',
     'Agriculture',
-    'Land Use, Land-Use Change and Forestry',
+    'Solvent sector',
+    'Land-Use Change and Forestry',
     'Waste',
     'Other'
   ],
@@ -39,16 +40,18 @@ export const ALLOWED_SECTORS_BY_SOURCE = {
       'Industrial Processes',
       'Solvent and Other Product Use',
       'Agriculture',
-      'Land-Use Change and Forestry',
       'Waste',
+      'Industrial Processes and Product Use',
+      'Land Use, Land-Use Change and Forestry',
       'Other'
     ],
     AR4: [
       'Energy',
       'Industrial Processes and Product Use',
       'Agriculture',
-      'Land Use, Land-Use Change and Forestry',
       'Waste',
+      'Industrial Processes and Product Use',
+      'Land Use, Land-Use Change and Forestry',
       'Other'
     ]
   }
