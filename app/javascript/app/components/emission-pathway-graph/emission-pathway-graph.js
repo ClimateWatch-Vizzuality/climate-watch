@@ -31,8 +31,8 @@ const mapStateToProps = (state, { location }) => {
     models: state.espModels.data,
     scenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
-    location: currentLocation,
-    availableModelIds: state.espGraph.modelIds,
+    location: currentLocation || WORLD_LOCATION_ID,
+    availableModelIds: state.espGraph.locations,
     model,
     indicator,
     scenario
