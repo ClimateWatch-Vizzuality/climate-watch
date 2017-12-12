@@ -30,7 +30,6 @@ const mapStateToProps = (state, { location }) => {
     scenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
     location: currentLocation,
-    availableModelIds: state.espGraph.modelIds,
     model,
     indicator,
     scenario
@@ -70,7 +69,6 @@ class EmissionPathwayGraphContainer extends PureComponent {
       { name: param, value: option ? option.value : '' },
       clear
     );
-    this.props.findAvailableModels(option.value);
   };
 
   updateUrlParam(params, clear) {
@@ -91,7 +89,6 @@ class EmissionPathwayGraphContainer extends PureComponent {
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  findAvailableModels: PropTypes.func.isRequired,
   toggleModalOverview: PropTypes.func.isRequired
 };
 
