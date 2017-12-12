@@ -15,10 +15,8 @@ import {
   getFiltersSelected,
   getModalData
 } from './emission-pathway-graph-selectors';
-import ownActions from './emission-pathway-graph-actions';
-import reducers, { initialState } from './emission-pathway-graph-reducers';
 
-const actions = { ...modalActions, ...ownActions };
+const actions = { ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
@@ -97,7 +95,6 @@ EmissionPathwayGraphContainer.propTypes = {
   toggleModalOverview: PropTypes.func.isRequired
 };
 
-export { actions, reducers, initialState };
 export default withRouter(
   connect(mapStateToProps, actions)(EmissionPathwayGraphContainer)
 );
