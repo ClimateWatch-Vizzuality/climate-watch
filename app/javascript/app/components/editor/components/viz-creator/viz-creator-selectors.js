@@ -6,7 +6,13 @@ import find from 'lodash/find';
 import _filter from 'lodash/filter';
 import { format } from 'd3-format';
 
-import { groupDataByScenario, pickByKey, mergeLineProps, getLineProps, COLORS } from './components/charts/line/utils';
+import {
+  groupDataByScenario,
+  pickByKey,
+  mergeLineProps,
+  getLineProps,
+  COLORS
+} from './components/charts/line/utils';
 
 export const filters = state => state && state.filters;
 export const dataset = state => state.dataset;
@@ -99,10 +105,13 @@ const processLineData = (idc, scn) => {
   const data = groupDataByScenario(idc, scn);
   const lineData = pickByKey('value', data);
 
-  const lineProps = mergeLineProps({
-    type: 'monotone',
-    dot: false
-  }, getLineProps(data, COLORS));
+  const lineProps = mergeLineProps(
+    {
+      type: 'monotone',
+      dot: false
+    },
+    getLineProps(data, COLORS)
+  );
 
   const lines = Object.keys(lineData[0]).slice(1);
   const axis = {
@@ -145,9 +154,9 @@ const processLineData = (idc, scn) => {
   };
 };
 
-export const timeseriesSelector =
-  createSelector(timeseries, scenarios,
-    (series, scn) =>
-      (isEmpty(series.data)
-        ? series.data
-        : processLineData(series.data, scn.data)));
+export const timeseriesSelector = createSelector(
+  timeseries,
+  scenarios,
+  (series, scn) =>
+    (isEmpty(series.data) ? series.data : processLineData(series.data, scn.data))
+);

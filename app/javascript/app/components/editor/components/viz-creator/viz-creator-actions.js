@@ -5,8 +5,10 @@ import { createThunkAction } from 'app/utils/redux';
 import { groupDataByScenario } from 'utils/graphs';
 
 const API = (endpoint, params) =>
-  `https://www.emissionspathways.org/api/v1/${endpoint}${params ? `?${params}` : ''}`;
-  // `/mocks/${endpoint}.json${params ? `?${params}` : ''}`;
+  `https://www.emissionspathways.org/api/v1/${endpoint}${params
+    ? `?${params}`
+    : ''}`;
+// `/mocks/${endpoint}.json${params ? `?${params}` : ''}`;
 
 export const gotDatasets = createAction('gotDatasets');
 export const selectDataset = createAction('selectDataset');
@@ -41,16 +43,25 @@ export const fetchTopEmmiters = createThunkAction(
   }
 );
 
-const getValue = (key, data) => (data[key].selected && data[key].selected.value) || false;
+const getValue = (key, data) =>
+  (data[key].selected && data[key].selected.value) || false;
 
 export const fetchTimeseries = createThunkAction(
   'fetchTimeseries',
-  (filters) => dispatch => {
+  filters => dispatch => {
     const location = getValue('locations', filters);
     const indicator = getValue('indicators', filters);
-    const scenarios = (filters.scenarios.selected && filters.scenarios.selected.map(s => s.value).join(',')) || false;
+    const scenarios =
+      (filters.scenarios.selected &&
+        filters.scenarios.selected.map(s => s.value).join(',')) ||
+      false;
 
-    fetch(API('time_series_values', `location=${location}&scenario=${scenarios}&indicator=${indicator}`))
+    fetch(
+      API(
+        'time_series_values',
+        `location=${location}&scenario=${scenarios}&indicator=${indicator}`
+      )
+    )
       .then(d => d.json())
       .then(d => dispatch(gotTimeseries(d)));
   }
@@ -68,7 +79,7 @@ export const fetchLocations = createThunkAction(
 export const fetchModels = createThunkAction(
   'fetchModels',
   countryId => dispatch => {
-    console.log(countryId)
+    console.log(countryId);
     fetch(API('models', `country=${countryId}`))
       .then(d => d.json())
       .then(d => dispatch(gotModels(d)));

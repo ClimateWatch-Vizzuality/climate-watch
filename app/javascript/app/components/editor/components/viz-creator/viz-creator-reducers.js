@@ -24,7 +24,8 @@ const gotData = (key, data, state) => ({
 
 const setData = (key, value, state) => assign(state, { [key]: value });
 
-const selectData = (key, data, state) => setData(key, toggleSelect(state, key, data), state);
+const selectData = (key, data, state) =>
+  setData(key, toggleSelect(state, key, data), state);
 const resetData = (key, state) => setData(key, null, state);
 
 const fetchFilter = (key, state) => ({
@@ -50,9 +51,7 @@ const setFilterKey = (filter, key, value, state) => ({
 });
 
 const gotFilterData = (key, data, state) =>
-  setFilterKey(key, 'loading', false,
-    setFilterKey(key, 'data', data, state)
-  );
+  setFilterKey(key, 'loading', false, setFilterKey(key, 'data', data, state));
 
 const selectFilter = ({ label, type, value, values }, state) => ({
   ...state,
@@ -65,9 +64,8 @@ const selectFilter = ({ label, type, value, values }, state) => ({
   }
 });
 
-const resetFilter = (filter, state) => setFilterKey(filter, 'data', [],
-  gotFilterData(filter, null, state)
-);
+const resetFilter = (filter, state) =>
+  setFilterKey(filter, 'data', [], gotFilterData(filter, null, state));
 
 export default {
   [actions.fetchDatasets]: state => fetchData('datasets', state),
@@ -97,10 +95,11 @@ export default {
   [actions.selectDataset]: (state, { payload }) =>
     resetData('visualisation', selectData('dataset', payload, state)),
   [actions.selectViz]: (state, { payload }) =>
-    setFilterKey('locations', 'selected', null,
-      resetFilter('models',
-        selectData('visualisation', payload, state)
-      )
+    setFilterKey(
+      'locations',
+      'selected',
+      null,
+      resetFilter('models', selectData('visualisation', payload, state))
     ),
   [actions.selectFilter]: (state, { payload }) => selectFilter(payload, state)
 };

@@ -51,23 +51,31 @@ class VizCreator extends Component {
     const scenarios = props.filters.scenarios.selected;
     const indicators = props.filters.indicators;
 
-    const prevLocation = this.props.filters.locations
-      && this.props.filters.locations.selected && this.props.filters.locations.selected.value;
-    const prevScenario = this.props.filters.scenarios
-      && this.props.filters.scenarios.selected && this.props.filters.scenarios.selected.value;
-    const prevIndicator = this.props.filters.indicators
-      && this.props.filters.indicators.selected && this.props.filters.indicators.selected.value;
+    const prevLocation =
+      this.props.filters.locations &&
+      this.props.filters.locations.selected &&
+      this.props.filters.locations.selected.value;
+    const prevScenario =
+      this.props.filters.scenarios &&
+      this.props.filters.scenarios.selected &&
+      this.props.filters.scenarios.selected.value;
+    const prevIndicator =
+      this.props.filters.indicators &&
+      this.props.filters.indicators.selected &&
+      this.props.filters.indicators.selected.value;
 
-    const curLocation = location && location.selected && location.selected.value;
-    const curScenario = scenarios && scenarios.selected && scenarios.selected.value;
-    const curIndicator = indicators && indicators.selected && indicators.selected.value;
+    const curLocation =
+      location && location.selected && location.selected.value;
+    const curScenario =
+      scenarios && scenarios.selected && scenarios.selected.value;
+    const curIndicator =
+      indicators && indicators.selected && indicators.selected.value;
 
     if (
-      location && !isEmpty(scenarios) &&
-      (
-        (indicators && isEmpty(indicators.data) && !indicators.loading)
-        || (curIndicator !== prevIndicator)
-      )
+      location &&
+      !isEmpty(scenarios) &&
+      ((indicators && isEmpty(indicators.data) && !indicators.loading) ||
+        curIndicator !== prevIndicator)
     ) {
       this.props.fetchIndicators({ location, scenarios });
     }
@@ -81,10 +89,17 @@ class VizCreator extends Component {
     const resource = props.filters[key];
 
     if (
-      (dependency && !isEmpty(dependency) && !resource.loading && isEmpty(resource.data)) ||
+      (dependency &&
+        !isEmpty(dependency) &&
+        !resource.loading &&
+        isEmpty(resource.data)) ||
       (dependency && !isEmpty(dependency) && dependencyId !== prevDepId)
     ) {
-      props[load](isArray(dependency) ? dependency.map(d => d.value).join(',') : dependency.value);
+      props[load](
+        isArray(dependency)
+          ? dependency.map(d => d.value).join(',')
+          : dependency.value
+      );
     }
   }
 
@@ -121,10 +136,9 @@ const mapStateToProps = ({ vizCreator }) => ({
       filters: {
         indicators: {
           ...vizCreator.filters.indicators,
-          active: (
+          active:
             !empty(vizCreator.filters.categories.selected) ||
             !empty(vizCreator.filters.subcategories.selected)
-          )
         }
       }
     })
