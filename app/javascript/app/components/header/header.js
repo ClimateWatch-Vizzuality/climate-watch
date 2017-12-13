@@ -1,6 +1,7 @@
 import { withProps } from 'recompose';
-
+import { themr } from 'react-css-themr';
 import HeaderComponent from './header-component';
+import styles from './header-styles.scss';
 
 function importAllImagesFromFolder(r) {
   const images = {};
@@ -25,4 +26,4 @@ const withBgByRoute = withProps(({ route }) => {
   };
 });
 
-export default withBgByRoute(HeaderComponent);
+export default themr('HeaderComponent', styles)(withBgByRoute(HeaderComponent));
