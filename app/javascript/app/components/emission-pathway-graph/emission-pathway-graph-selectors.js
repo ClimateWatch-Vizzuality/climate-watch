@@ -43,7 +43,7 @@ const AXES_CONFIG = {
 
 // meta data for selectors
 const getLocations = state => state.locations || null;
-const getAvailableModelIds = state => state.availableModelIds || null;
+const getAvailableLocationsModelIds = state => state.availableModelIds || null;
 const getModels = state => state.models || null;
 const getScenarios = state => state.scenarios || null;
 const getIndicators = state => state.indicators || null;
@@ -55,6 +55,14 @@ const getIndicator = state => state.indicator || null;
 
 // data for the graph
 const getData = state => state.data || null;
+
+const getAvailableModelIds = createSelector(
+  [getAvailableLocationsModelIds, getLocation],
+  (availableLocationModelIds, location) => {
+    if (!availableLocationModelIds || !location) return null;
+    return availableLocationModelIds[location];
+  }
+);
 
 // Selector options
 export const getLocationsOptions = createSelector([getLocations], locations => {

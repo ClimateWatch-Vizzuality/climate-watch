@@ -36,11 +36,14 @@
     margin-right: -1px;
     border-radius: 4px;
     bottom: 28px !important;
-    box-shadow: none !important;
   }
 }
 
 .plusIcon {
   width: 10px;
   height: 10px;
+}
+
+.hidden {
+  opacity: 0;
 }

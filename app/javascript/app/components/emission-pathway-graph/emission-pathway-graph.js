@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { WORLD_LOCATION_ID } from 'data/constants';
 
 import { actions as modalActions } from 'components/modal-overview';
 
@@ -15,8 +16,10 @@ import {
   getFiltersSelected,
   getModalData
 } from './emission-pathway-graph-selectors';
+import ownActions from './emission-pathway-graph-actions';
+import reducers, { initialState } from './emission-pathway-graph-reducers';
 
-const actions = { ...modalActions };
+const actions = { ...modalActions, ...ownActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
@@ -29,7 +32,8 @@ const mapStateToProps = (state, { location }) => {
     models: state.espModels.data,
     scenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
-    location: currentLocation,
+    location: currentLocation || WORLD_LOCATION_ID,
+    availableModelIds: state.espGraph.locations,
     model,
     indicator,
     scenario
@@ -50,6 +54,11 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
+  componentDidMount() {
+    const { currentLocation } = qs.parse(this.props.location.search);
+    this.props.findAvailableModels(currentLocation || WORLD_LOCATION_ID);
+  }
+
   handleModelChange = model => {
     this.updateUrlParam([
       { name: 'model', value: model.value },
@@ -69,6 +78,9 @@ class EmissionPathwayGraphContainer extends PureComponent {
       { name: param, value: option ? option.value : '' },
       clear
     );
+    if (param === 'currentLocation') {
+      this.props.findAvailableModels(option.value);
+    }
   };
 
   updateUrlParam(params, clear) {
@@ -89,9 +101,11 @@ class EmissionPathwayGraphContainer extends PureComponent {
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  findAvailableModels: PropTypes.func.isRequired,
   toggleModalOverview: PropTypes.func.isRequired
 };
 
+export { actions, reducers, initialState };
 export default withRouter(
   connect(mapStateToProps, actions)(EmissionPathwayGraphContainer)
 );
