@@ -2,18 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import styles from './header-styles.scss';
-
 const Header = props => {
-  const { image, className, children, size } = props;
+  const { image, className, children, size, theme } = props;
   const sizeClass = cx({
-    [styles.medium]: size === 'medium',
-    [styles.large]: size === 'large'
+    [theme.medium]: size === 'medium',
+    [theme.large]: size === 'large'
   });
   const style = image ? { backgroundImage: `url(${image})` } : {};
 
   return (
-    <div className={cx(className, styles.header, sizeClass)} style={style}>
+    <div className={cx(className, theme.header, sizeClass)} style={style}>
       {children}
     </div>
   );
@@ -23,7 +21,8 @@ Header.propTypes = {
   image: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.node,
-  size: PropTypes.string
+  size: PropTypes.string,
+  theme: PropTypes.object
 };
 
 export default Header;
