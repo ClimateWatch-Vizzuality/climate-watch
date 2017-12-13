@@ -66,6 +66,7 @@ export const subcategoriesSelector = createSelector(
 
 export const getFormatFilters = name =>
   createSelector(identity, filtersSelector, (state, spec) => {
+    const { topEmmiters } = state;
     const filter = { ...state.filters[name] };
     filter.data = mapFilter(filter.data);
     filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
@@ -80,6 +81,11 @@ export const getFormatFilters = name =>
           filter.selected = mapFilter(filter.data);
           break;
 
+        case 'top-10':
+          // filter.selected = mapFilter(topEmmiters.data);
+          filter.selected = [];
+          break;
+
         default:
           filter.selected = selected;
           break;
@@ -90,7 +96,6 @@ export const getFormatFilters = name =>
   });
 
 const processLineData = (idc, scn) => {
-  console.log(idc, scn);
   const data = groupDataByScenario(idc, scn);
   const lineData = pickByKey('value', data);
 

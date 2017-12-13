@@ -11,6 +11,11 @@ export default {
     selected: null,
     data: []
   },
+  topEmmiters: {
+    loading: false,
+    selected: null,
+    data: []
+  },
   filters: {
     locations: {
       loading: false,

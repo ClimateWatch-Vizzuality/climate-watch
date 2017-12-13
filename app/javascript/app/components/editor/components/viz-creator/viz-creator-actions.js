@@ -18,6 +18,7 @@ export const gotIndicators = createAction('gotIndicators');
 export const gotCategories = createAction('gotCategories');
 export const gotSubCategories = createAction('gotSubCategories');
 export const gotTimeseries = createAction('gotTimeseries');
+export const gotTopEmmiters = createAction('gotTopEmmiters');
 
 export const selectViz = createAction('selectViz');
 export const selectFilter = createAction('selectFilter');
@@ -31,14 +32,23 @@ export const fetchDatasets = createThunkAction(
   }
 );
 
-const getValue = (key, data) => data[key].selected.value;
+export const fetchTopEmmiters = createThunkAction(
+  'fetchTopEmmiters',
+  () => dispatch => {
+    fetch('/mocks/top-ghg-emmiters.json')
+      .then(d => d.json())
+      .then(d => dispatch(gotTopEmmiters(d)));
+  }
+);
+
+const getValue = (key, data) => (data[key].selected && data[key].selected.value) || false;
 
 export const fetchTimeseries = createThunkAction(
   'fetchTimeseries',
   (filters) => dispatch => {
     const location = getValue('locations', filters);
     const indicator = getValue('indicators', filters);
-    const scenarios = filters.scenarios.selected.map(s => s.value).join(',');
+    const scenarios = (filters.scenarios.selected && filters.scenarios.selected.map(s => s.value).join(',')) || false;
 
     fetch(API('time_series_values', `location=${location}&scenario=${scenarios}&indicator=${indicator}`))
       .then(d => d.json())
@@ -58,6 +68,7 @@ export const fetchLocations = createThunkAction(
 export const fetchModels = createThunkAction(
   'fetchModels',
   countryId => dispatch => {
+    console.log(countryId)
     fetch(API('models', `country=${countryId}`))
       .then(d => d.json())
       .then(d => dispatch(gotModels(d)));
