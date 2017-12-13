@@ -7,11 +7,13 @@ import { HashLink } from 'react-router-hash-link';
 import qs from 'query-string';
 import styles from './anchor-nav-styles.scss';
 
+const isVisible = l => !l.hide;
+
 const AnchorNav = props => {
   const { links, useRoutes, className, query, theme } = props;
   return (
     <nav className={cx(className, theme.anchorNav)}>
-      {links.map((link, index) => {
+      {links.filter(isVisible).map((link, index) => {
         const linkProps = {
           key: link.label,
           className: theme.link,
