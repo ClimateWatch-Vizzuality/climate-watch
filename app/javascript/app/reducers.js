@@ -62,7 +62,7 @@ import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as ghgEmissionsComponent from 'components/ghg-emissions';
 import * as modalMetadataComponent from 'components/modal-metadata';
-import * as modalESPOverviewComponent from 'components/emission-pathways-overview/modal-overview';
+import * as modalESPOverviewComponent from 'components/modal-overview';
 import * as ndcCountryAccordion from 'components/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import EspLocationsProvider from 'providers/esp-locations-provider';
 import EspTimeSeriesProvider from 'providers/esp-time-series-provider';
 import ButtonGroup from 'components/button-group';
+import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
 
@@ -19,20 +20,22 @@ class EmissionPathwayGraph extends PureComponent {
       filtersOptions,
       filtersSelected,
       handleSelectorChange,
-      handleModelChange
+      handleModelChange,
+      handleInfoClick,
+      modalData
     } = this.props;
+    const shouldRenderEspTimeSeriesProvider =
+      filtersSelected && filtersSelected.location && filtersSelected.model;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <EspLocationsProvider withTimeSeries />
-          {filtersSelected &&
-            filtersSelected.location &&
-            filtersSelected.model && (
-              <EspTimeSeriesProvider
-                location={filtersSelected.location.value}
-                model={filtersSelected.model.value}
-              />
-            )}
+          {shouldRenderEspTimeSeriesProvider && (
+            <EspTimeSeriesProvider
+              location={filtersSelected.location.value}
+              model={filtersSelected.model.value}
+            />
+          )}
           <h2 className={styles.title}>Emission Pathways</h2>
           <div className={styles.col4}>
             <Dropdown
@@ -59,7 +62,10 @@ class EmissionPathwayGraph extends PureComponent {
               value={filtersSelected.indicator}
             />
             <div />
-            <ButtonGroup className={styles.colEnd} />
+            <ButtonGroup
+              className={styles.colEnd}
+              onInfoClick={handleInfoClick}
+            />
           </div>
           <Chart
             className={styles.chartWrapper}
@@ -73,6 +79,15 @@ class EmissionPathwayGraph extends PureComponent {
             targetParam="scenario"
           />
         </div>
+        <ModalOverview
+          data={modalData}
+          title={'Emission Pathways Metadata'}
+          tabTitles={[
+            'Model',
+            'Scenarios',
+            filtersSelected.indicator ? 'Indicator' : null
+          ]}
+        />
       </div>
     );
   }
@@ -85,7 +100,9 @@ EmissionPathwayGraph.propTypes = {
   filtersOptions: PropTypes.object,
   filtersSelected: PropTypes.object,
   handleSelectorChange: PropTypes.func,
-  handleModelChange: PropTypes.func
+  handleModelChange: PropTypes.func,
+  handleInfoClick: PropTypes.func,
+  modalData: PropTypes.array
 };
 
 export default EmissionPathwayGraph;

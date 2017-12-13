@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import Button from 'components/button';
+import ModalOverview from 'components/modal-overview';
 import PropTypes from 'prop-types';
 import startCase from 'lodash/startCase';
 import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
-import ModalOverview from './modal-overview';
 import styles from './emission-pathways-overview-styles.scss';
 
 class EmissionPathwaysOverview extends PureComponent {

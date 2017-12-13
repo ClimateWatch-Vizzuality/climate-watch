@@ -6,14 +6,15 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { WORLD_LOCATION_ID } from 'data/constants';
 
-import { actions as modalActions } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-overview';
 
 import EmissionPathwayGraphComponent from './emission-pathway-graph-component';
 import {
   getChartData,
   getChartConfig,
   getFiltersOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getModalData
 } from './emission-pathway-graph-selectors';
 import ownActions from './emission-pathway-graph-actions';
 import reducers, { initialState } from './emission-pathway-graph-reducers';
@@ -42,6 +43,7 @@ const mapStateToProps = (state, { location }) => {
     config: getChartConfig(espData),
     filtersOptions: getFiltersOptions(espData),
     filtersSelected: getFiltersSelected(espData),
+    modalData: getModalData(espData),
     loading:
       state.espTimeSeries.loading ||
       state.espLocations.loading ||
@@ -67,6 +69,10 @@ class EmissionPathwayGraphContainer extends PureComponent {
     ]);
   };
 
+  handleInfoClick = () => {
+    this.props.toggleModalOverview({ open: true });
+  };
+
   handleSelectorChange = (option, param, clear) => {
     this.updateUrlParam(
       { name: param, value: option ? option.value : '' },
@@ -86,7 +92,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
       handleModelChange: this.handleModelChange,
-      handleSelectorChange: this.handleSelectorChange
+      handleSelectorChange: this.handleSelectorChange,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
@@ -94,7 +101,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  findAvailableModels: PropTypes.func.isRequired
+  findAvailableModels: PropTypes.func.isRequired,
+  toggleModalOverview: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
