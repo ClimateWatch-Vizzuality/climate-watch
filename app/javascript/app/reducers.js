@@ -68,6 +68,8 @@ import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkages';
 import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
+import * as myInsights from 'components/my-climate-watch/my-insights';
+import * as myVisualisations from 'components/my-climate-watch/my-visualisations';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -81,7 +83,9 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
-  countryNDCOverview: handleActions(countryNDCOverviewComponent)
+  countryNDCOverview: handleActions(countryNDCOverviewComponent),
+  insights: handleActions(myInsights),
+  visualisations: handleActions(myVisualisations)
 };
 
 export default combineReducers({
