@@ -20,8 +20,11 @@ module HistoricalEmissions
     end
 
     def self.filter_gwp(params)
-      selected_gwp = params[:gwp] ||
-        HistoricalEmissions::Gwp.where(name: 'AR4').first
+      selected_gwp =
+        params[:gwp] ||
+        HistoricalEmissions::Gwp.find_by(name: 'AR4') ||
+        HistoricalEmissions::Gwp.find_by(name: 'AR2')
+
       where(historical_emissions_gwps: {id: selected_gwp})
     end
 
@@ -32,7 +35,7 @@ module HistoricalEmissions
         )
       end
 
-      records = records.filter_gwp(params)
+      # records = records.filter_gwp(params)
 
       {
         historical_emissions_gases: :gas,
