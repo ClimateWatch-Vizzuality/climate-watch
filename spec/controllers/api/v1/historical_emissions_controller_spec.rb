@@ -60,6 +60,7 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
       parsed_body = JSON.parse(response.body)
       expect(response).to be_success
       expect(parsed_body.length).to eq(1)
+      expect(parsed_body.first['gwp']).to eq('AR4')
     end
 
     it 'returns results for the correct gwp' do
@@ -75,6 +76,7 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
       parsed_body = JSON.parse(response.body)
       expect(response).to be_success
       expect(parsed_body.length).to eq(1)
+      expect(parsed_body.first['gwp']).to eq('AR2')
     end
 
     it 'returns the AR2 record when no AR4 is present' do
@@ -89,6 +91,7 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
       parsed_body = JSON.parse(response.body)
       expect(response).to be_success
       expect(parsed_body.length).to eq(1)
+      expect(parsed_body.first['gwp']).to eq('AR2')
     end
   end
 

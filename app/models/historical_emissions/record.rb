@@ -20,12 +20,18 @@ module HistoricalEmissions
     end
 
     def self.filter_gwp(params)
-      selected_gwp =
-        params[:gwp] ||
-        HistoricalEmissions::Gwp.find_by(name: 'AR4') ||
-        HistoricalEmissions::Gwp.find_by(name: 'AR2')
+      if params[:gwp]
+        where(gwp_id: params[:gwp])
+      else
+        ar4_id = HistoricalEmissions::Gwp.find_by(name: 'AR4').try(:id)
+        ar2_id = HistoricalEmissions::Gwp.find_by(name: 'AR2').try(:id)
 
-      where(historical_emissions_gwps: {id: selected_gwp})
+        if where(gwp_id: ar4_id).exists?
+          where(gwp_id: ar4_id)
+        else
+          where(gwp_id: ar2_id)
+        end
+      end
     end
 
     private_class_method def self.filters(records, params)
@@ -35,8 +41,6 @@ module HistoricalEmissions
         )
       end
 
-      # records = records.filter_gwp(params)
-
       {
         historical_emissions_gases: :gas,
         historical_emissions_data_sources: :source,
@@ -44,6 +48,8 @@ module HistoricalEmissions
       }.each do |k, v|
         records = records.where(k => {id: params[v].split(',')}) if params[v]
       end
+
+      records = records.filter_gwp(params)
 
       records
     end
