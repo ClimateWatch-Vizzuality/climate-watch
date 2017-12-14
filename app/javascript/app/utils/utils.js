@@ -1,6 +1,8 @@
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 
+export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
+
 export function deburrUpper(string) {
   return toUpper(deburr(string));
 }

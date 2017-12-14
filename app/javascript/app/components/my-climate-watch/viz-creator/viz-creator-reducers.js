@@ -1,7 +1,9 @@
 import { get } from 'js-lenses';
+import { assign } from 'app/utils';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
-import { assign, updateIn } from './viz-creator-utils';
+import { updateIn } from './viz-creator-utils';
+
 import {
   $visualisations,
   $locations,
