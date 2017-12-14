@@ -48,7 +48,7 @@ class EmissionPathwaysTable extends PureComponent {
     return FILTERS_BY_CATEGORY[category].map(field => (
       <Dropdown
         key={field}
-        label={startCase(field)}
+        label={startCase(field === 'model_abbreviation' ? 'model' : field)}
         placeholder={`Filter by ${startCase(field)}`}
         options={filterOptions ? filterOptions[field] : []}
         onValueChange={selected =>

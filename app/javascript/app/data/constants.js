@@ -127,7 +127,7 @@ export const ESP_BLACKLIST = {
 export const WORLD_LOCATION_ID = '267';
 export const FILTERS_BY_CATEGORY = {
   models: ['license', 'time_horizon', 'time_step'],
-  scenarios: ['name'],
+  scenarios: ['model_abbreviation'],
   indicators: ['category']
 };
 
