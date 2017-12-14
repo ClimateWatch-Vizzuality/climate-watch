@@ -1,5 +1,6 @@
 import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import MyVisualisationsComponent from './my-visualisations-component';
 import initialState from './my-visualisations-initial-state';
@@ -16,6 +17,10 @@ class MyVisualisations extends Component {
     return createElement(MyVisualisationsComponent, this.props);
   }
 }
+
+MyVisualisations.propTypes = {
+  fetchVisualisations: PropTypes.func
+};
 
 const mapStateToProps = ({ visualisations }) => ({ ...visualisations });
 

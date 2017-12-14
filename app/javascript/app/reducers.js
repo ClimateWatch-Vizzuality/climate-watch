@@ -1,6 +1,7 @@
 /* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
+import { handleModule } from 'redux-tools';
 
 // Providers
 import * as countriesProvider from 'providers/countries-provider';
@@ -70,6 +71,7 @@ import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkage
 import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
 import * as myInsights from 'components/my-climate-watch/my-insights';
 import * as myVisualisations from 'components/my-climate-watch/my-visualisations';
+import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creator';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -84,8 +86,9 @@ const componentsReducers = {
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
   countryNDCOverview: handleActions(countryNDCOverviewComponent),
-  insights: handleActions(myInsights),
-  visualisations: handleActions(myVisualisations)
+  insights: handleModule(myInsights),
+  visualisations: handleModule(myVisualisations),
+  vizCreator: handleModule(myVisualisationsCreator)
 };
 
 export default combineReducers({
