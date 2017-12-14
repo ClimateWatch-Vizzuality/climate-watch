@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import pick from 'lodash/pick';
 import remove from 'lodash/remove';
+import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
 import {
   getYColumnValue,
@@ -52,6 +53,7 @@ const getLocation = state => state.location || null;
 const getModel = state => state.model || null;
 const getScenario = state => state.scenario;
 const getIndicator = state => state.indicator || null;
+const getCategory = state => state.category || null;
 
 // data for the graph
 const getData = state => state.data || null;
@@ -156,7 +158,7 @@ export const filterDataByScenario = createSelector(
   }
 );
 
-export const getIndicatorsOptions = createSelector(
+const getAvailableIndicators = createSelector(
   [filterDataByScenario, getIndicators, getModelSelected],
   (data, indicators, modelSelected) => {
     if (!data || !indicators || !indicators.length || !modelSelected) return [];
@@ -170,13 +172,56 @@ export const getIndicatorsOptions = createSelector(
         i.name &&
         indicatorsWithData.indexOf(i.id.toString()) > -1
       ) {
-        selectedIndicatorOptionsWithData.push({
-          label: i.name,
-          value: i.id.toString()
-        });
+        selectedIndicatorOptionsWithData.push(i);
       }
     });
-    return uniqBy(selectedIndicatorOptionsWithData, 'label');
+
+    return selectedIndicatorOptionsWithData;
+  }
+);
+
+export const getAvailableCategoryOptions = createSelector(
+  [getAvailableIndicators],
+  indicators => {
+    if (!indicators) return null;
+    const uniqueCategories = uniq(indicators.map(i => i.category.name));
+
+    return uniqueCategories.map(c => ({
+      label: c,
+      value: c
+    }));
+  }
+);
+
+export const getCategorySelected = createSelector(
+  [getAvailableCategoryOptions, getCategory],
+  (categories, categorySelected) => {
+    if (!categories) return null;
+    if (!categorySelected) {
+      const defaultCategory = categories.find(i => i.label === 'Energy');
+      return defaultCategory || categories[0];
+    }
+    return categories.find(c => categorySelected === c.value);
+  }
+);
+
+export const getIndicatorsOptions = createSelector(
+  [getAvailableIndicators, getCategorySelected],
+  (indicators, selectedCategory) => {
+    if (!indicators) return null;
+    let filteredIndicatorsByCategory = indicators;
+    if (selectedCategory) {
+      filteredIndicatorsByCategory = indicators.filter(
+        i => selectedCategory.label === (i.category && i.category.name)
+      );
+    }
+    return uniqBy(
+      filteredIndicatorsByCategory.map(i => ({
+        label: i.name,
+        value: i.id.toString()
+      })),
+      'label'
+    );
   }
 );
 
@@ -208,13 +253,15 @@ export const getFiltersOptions = createSelector(
     getLocationsOptions,
     getModelsOptions,
     getScenariosOptions,
-    getIndicatorsOptions
+    getIndicatorsOptions,
+    getAvailableCategoryOptions
   ],
-  (locations, models, scenarios, indicators) => ({
+  (locations, models, scenarios, indicators, categories) => ({
     locations,
     models,
     scenarios,
-    indicators
+    indicators,
+    categories
   })
 );
 
@@ -223,13 +270,15 @@ export const getFiltersSelected = createSelector(
     getLocationSelected,
     getModelSelected,
     getScenariosSelected,
-    getIndicatorSelected
+    getIndicatorSelected,
+    getCategorySelected
   ],
-  (location, model, scenarios, indicator) => ({
+  (location, model, scenarios, indicator, category) => ({
     location,
     model,
     scenarios,
-    indicator
+    indicator,
+    category
   })
 );
 

@@ -31,19 +31,26 @@ export const getDefaultColumns = createSelector([getCategory], category => {
   }
 });
 
-export const flattenedData = createSelector([getData], data => {
-  if (!data || isEmpty(data)) return null;
-  const attributesWithObjects = ['model', 'category', 'subcategory'];
-  return data.map(d => {
-    const flattenedD = d;
-    attributesWithObjects.forEach(a => {
-      if (Object.prototype.hasOwnProperty.call(d, a)) {
-        flattenedD[a] = d[a] && d[a].name;
-      }
+export const flattenedData = createSelector(
+  [getData, getCategory],
+  (data, category) => {
+    if (!data || isEmpty(data)) return null;
+    const attributesWithObjects = {
+      models: [],
+      scenarios: ['model'],
+      indicators: ['model', 'category', 'subcategory']
+    };
+    return data.map(d => {
+      const flattenedD = d;
+      attributesWithObjects[category].forEach(a => {
+        if (Object.prototype.hasOwnProperty.call(d, a)) {
+          flattenedD[a] = d[a] && d[a].name;
+        }
+      });
+      return flattenedD;
     });
-    return flattenedD;
-  });
-});
+  }
+);
 
 export const filteredDataBySearch = createSelector(
   [flattenedData, getQuery],
