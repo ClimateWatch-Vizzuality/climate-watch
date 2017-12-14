@@ -20,6 +20,7 @@ class EmissionPathwayGraph extends PureComponent {
       filtersOptions,
       filtersSelected,
       handleSelectorChange,
+      handleCategoryChange,
       handleModelChange,
       handleInfoClick,
       modalData
@@ -57,7 +58,7 @@ class EmissionPathwayGraph extends PureComponent {
               label="Categories"
               placeholder="Select a category"
               options={filtersOptions.categories}
-              onValueChange={option => handleSelectorChange(option, 'category')}
+              onValueChange={option => handleCategoryChange(option, 'category')}
               value={filtersSelected.category}
               hideResetButton
             />
@@ -109,6 +110,7 @@ EmissionPathwayGraph.propTypes = {
   filtersSelected: PropTypes.object,
   handleSelectorChange: PropTypes.func,
   handleModelChange: PropTypes.func,
+  handleCategoryChange: PropTypes.func,
   handleInfoClick: PropTypes.func,
   modalData: PropTypes.array
 };

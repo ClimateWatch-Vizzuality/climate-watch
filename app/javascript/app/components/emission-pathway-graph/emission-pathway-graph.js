@@ -50,7 +50,8 @@ const mapStateToProps = (state, { location }) => {
       state.espLocations.loading ||
       state.espModels.loading ||
       state.espScenarios.loading ||
-      state.espIndicators.loading
+      state.espIndicators.loading,
+    location
   };
 };
 
@@ -84,6 +85,24 @@ class EmissionPathwayGraphContainer extends PureComponent {
     }
   };
 
+  handleCategoryChange = (option, param, clear) => {
+    const { location } = this.props;
+    const query = qs.parse(location.search);
+    this.updateUrlParam(
+      [
+        { name: 'currentLocation', value: query.currentLocation || null },
+        { name: 'model', value: query.model || null },
+        { name: 'scenario', value: query.scenario || null },
+        { name: 'category', value: option.value || null },
+        { name: 'indicator', value: null }
+      ],
+      clear
+    );
+    if (param === 'currentLocation') {
+      this.props.findAvailableModels(option.value);
+    }
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -94,7 +113,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
       ...this.props,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      handleCategoryChange: this.handleCategoryChange
     });
   }
 }

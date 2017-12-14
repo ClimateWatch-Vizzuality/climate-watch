@@ -212,7 +212,7 @@ export const getIndicatorsOptions = createSelector(
     let filteredIndicatorsByCategory = indicators;
     if (selectedCategory) {
       filteredIndicatorsByCategory = indicators.filter(
-        i => selectedCategory.label === i.category.name
+        i => selectedCategory.label === (i.category && i.category.name)
       );
     }
     return uniqBy(
