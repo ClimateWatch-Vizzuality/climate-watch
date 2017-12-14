@@ -10,14 +10,17 @@ export { default as styles } from './multiselect-styles';
 
 class MultiSelectContainer extends PureComponent {
   filterOptions = (options, something, search) => {
-    const optionsParsed = options.map(o => {
+    const optionsParsed = [];
+    options.forEach(o => {
       const isSelected = this.props.values.some(
         filter => o.value === filter.value
       );
-      return {
-        ...o,
-        isSelected
-      };
+      if (!this.props.hideSelected || !isSelected) {
+        optionsParsed.push({
+          ...o,
+          isSelected
+        });
+      }
     });
     return search
       ? optionsParsed.filter(
@@ -59,7 +62,8 @@ class MultiSelectContainer extends PureComponent {
 
 MultiSelectContainer.propTypes = {
   onMultiValueChange: Proptypes.func,
-  values: Proptypes.array
+  values: Proptypes.array,
+  hideSelected: Proptypes.bool
 };
 
 export default MultiSelectContainer;

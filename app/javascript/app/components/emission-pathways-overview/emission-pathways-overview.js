@@ -2,13 +2,13 @@ import { createElement, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { actions } from 'components/modal-overview';
 import Component from './emission-pathways-overview-component';
 import {
   selectOverviewData,
   filterDataByBlackList,
   getModalTitle
 } from './emission-pathways-overview-selectors';
-import { actions } from './modal-overview/modal-overview';
 
 const mapStateToProps = (state, { match, category }) => {
   const id = match.params.id;

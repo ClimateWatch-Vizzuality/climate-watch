@@ -62,12 +62,13 @@ import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as ghgEmissionsComponent from 'components/ghg-emissions';
 import * as modalMetadataComponent from 'components/modal-metadata';
-import * as modalESPOverviewComponent from 'components/emission-pathways-overview/modal-overview';
+import * as modalESPOverviewComponent from 'components/modal-overview';
 import * as ndcCountryAccordion from 'components/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkages';
 import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
+import * as espGraphComponent from 'components/emission-pathway-graph';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -81,6 +82,7 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
+  espGraph: handleActions(espGraphComponent),
   countryNDCOverview: handleActions(countryNDCOverviewComponent)
 };
 

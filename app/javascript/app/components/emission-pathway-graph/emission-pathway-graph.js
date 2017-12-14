@@ -4,22 +4,26 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { WORLD_LOCATION_ID } from 'data/constants';
 
-import { actions as modalActions } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-overview';
 
 import EmissionPathwayGraphComponent from './emission-pathway-graph-component';
 import {
   getChartData,
   getChartConfig,
   getFiltersOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getModalData
 } from './emission-pathway-graph-selectors';
+import ownActions from './emission-pathway-graph-actions';
+import reducers, { initialState } from './emission-pathway-graph-reducers';
 
-const actions = { ...modalActions };
+const actions = { ...modalActions, ...ownActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, model, indicator, scenario } = qs.parse(
+  const { currentLocation, model, indicator, scenario, category } = qs.parse(
     location.search
   );
   const espData = {
@@ -28,7 +32,9 @@ const mapStateToProps = (state, { location }) => {
     models: state.espModels.data,
     scenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
-    location: currentLocation,
+    location: currentLocation || WORLD_LOCATION_ID,
+    availableModelIds: state.espGraph.locations,
+    category,
     model,
     indicator,
     scenario
@@ -38,16 +44,23 @@ const mapStateToProps = (state, { location }) => {
     config: getChartConfig(espData),
     filtersOptions: getFiltersOptions(espData),
     filtersSelected: getFiltersSelected(espData),
+    modalData: getModalData(espData),
     loading:
       state.espTimeSeries.loading ||
       state.espLocations.loading ||
       state.espModels.loading ||
       state.espScenarios.loading ||
-      state.espIndicators.loading
+      state.espIndicators.loading,
+    location
   };
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
+  componentDidMount() {
+    const { currentLocation } = qs.parse(this.props.location.search);
+    this.props.findAvailableModels(currentLocation || WORLD_LOCATION_ID);
+  }
+
   handleModelChange = model => {
     this.updateUrlParam([
       { name: 'model', value: model.value },
@@ -58,11 +71,36 @@ class EmissionPathwayGraphContainer extends PureComponent {
     ]);
   };
 
+  handleInfoClick = () => {
+    this.props.toggleModalOverview({ open: true });
+  };
+
   handleSelectorChange = (option, param, clear) => {
     this.updateUrlParam(
       { name: param, value: option ? option.value : '' },
       clear
     );
+    if (param === 'currentLocation') {
+      this.props.findAvailableModels(option.value);
+    }
+  };
+
+  handleCategoryChange = (option, param, clear) => {
+    const { location } = this.props;
+    const query = qs.parse(location.search);
+    this.updateUrlParam(
+      [
+        { name: 'currentLocation', value: query.currentLocation || null },
+        { name: 'model', value: query.model || null },
+        { name: 'scenario', value: query.scenario || null },
+        { name: 'category', value: option.value || null },
+        { name: 'indicator', value: null }
+      ],
+      clear
+    );
+    if (param === 'currentLocation') {
+      this.props.findAvailableModels(option.value);
+    }
   };
 
   updateUrlParam(params, clear) {
@@ -74,16 +112,21 @@ class EmissionPathwayGraphContainer extends PureComponent {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
       handleModelChange: this.handleModelChange,
-      handleSelectorChange: this.handleSelectorChange
+      handleSelectorChange: this.handleSelectorChange,
+      handleInfoClick: this.handleInfoClick,
+      handleCategoryChange: this.handleCategoryChange
     });
   }
 }
 
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  findAvailableModels: PropTypes.func.isRequired,
+  toggleModalOverview: PropTypes.func.isRequired
 };
 
+export { actions, reducers, initialState };
 export default withRouter(
   connect(mapStateToProps, actions)(EmissionPathwayGraphContainer)
 );
