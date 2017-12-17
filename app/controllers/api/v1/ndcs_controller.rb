@@ -12,6 +12,7 @@ module Api
     ].freeze
 
     SECTORS_INDICATORS = [
+      'a_agriculture',
       'a_coastal_zone',
       'a_cross_cutting_area',
       'a_DRM',
