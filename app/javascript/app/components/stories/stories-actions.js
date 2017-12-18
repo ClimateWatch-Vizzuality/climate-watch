@@ -47,10 +47,10 @@ const stories = [
   {
     id: 5,
     title:
-      'New Database Can Help Countries Chart a Course for Implementation of NDCs',
+      '3 New Ways to Explore Links Between Climate and Sustainable Development',
     image: image4,
     link:
-      '//www.wri.org/blog/2017/09/new-database-can-help-countries-chart-course-implementation-ndcs'
+      '//www.wri.org/blog/2017/12/3-new-ways-explore-links-between-climate-and-sustainable-development'
   }
 ];
 

@@ -19,17 +19,16 @@ export const ALLOWED_SECTORS_BY_SOURCE = {
   CAIT: [
     'Energy',
     'Industrial Processes',
-    'Solvent sector',
     'Agriculture',
-    'Land-Use Change and Forestry',
     'Waste',
-    'Other'
+    'Land-Use Change and Forestry'
   ],
   PIK: [
     'Energy',
-    'Industrial Processes and Product Use',
+    'Industrial process',
+    'Solvent sector',
     'Agriculture',
-    'Land Use, Land-Use Change and Forestry',
+    'Land-Use Change and Forestry',
     'Waste',
     'Other'
   ],

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import max from 'lodash/max';
 import isArray from 'lodash/isArray';
-
+import {
+  CustomXAxisTick,
+  CustomYAxisTick
+} from 'components/axis-ticks/axis-ticks-component';
 import {
   ComposedChart,
   Area,
@@ -44,8 +47,6 @@ function getMaxValue(data, config) {
     y: max(values)
   };
 }
-
-const tickFormat = { fill: '#8f8fa1', strokeWidth: 0, fontSize: '13px' };
 
 class ChartStackedArea extends PureComponent {
   constructor() {
@@ -119,7 +120,7 @@ class ChartStackedArea extends PureComponent {
             type="number"
             dataKey="x"
             padding={{ left: 30, right: 40 }}
-            tick={tickFormat}
+            tick={<CustomXAxisTick customstrokeWidth="0" />}
             tickSize={8}
             tickCount={data.length + points.length}
           />
@@ -128,9 +129,8 @@ class ChartStackedArea extends PureComponent {
             domain={domain.y}
             axisLine={false}
             padding={{ top: 0, bottom: 0 }}
-            tickFormatter={tick => (tick === 0 ? 0 : `${format('.2s')(tick)}t`)}
             tickLine={false}
-            tick={tickFormat}
+            tick={<CustomYAxisTick customstrokeWidth="0" />}
           />
           <CartesianGrid vertical={false} />
           {tooltipVisibility && (
