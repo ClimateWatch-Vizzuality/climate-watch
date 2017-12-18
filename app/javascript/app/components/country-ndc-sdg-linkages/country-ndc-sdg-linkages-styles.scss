@@ -47,6 +47,10 @@
   margin-top: 25px;
 }
 
+.tooltipContainer {
+  min-width: 500px;
+}
+
 .tooltip {
   font-size: $font-size-s;
   color: $white;
@@ -58,6 +62,7 @@
 
 .tooltipTitle {
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .sectorSelector {

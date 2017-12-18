@@ -21,7 +21,6 @@ class CountryNdcOverview extends PureComponent {
       values,
       loading,
       actions,
-      textColumns,
       handleInfoClick
     } = this.props;
     const hasSectors = values && sectors;
@@ -50,10 +49,6 @@ class CountryNdcOverview extends PureComponent {
                       'Overview'
                     )
                   }
-                  description={
-                    values.indc_summary[0] && values.indc_summary[0].value
-                  }
-                  textColumns={textColumns}
                 />
                 {actions && (
                   <div className={styles.actions}>
@@ -66,7 +61,7 @@ class CountryNdcOverview extends PureComponent {
                     <Button
                       className={styles.exploreBtn}
                       color="white"
-                      link={`/ndcs/compare?locations=${iso}`}
+                      link={`/ndcs/compare/mitigation?locations=${iso}`}
                     >
                       Compare
                     </Button>
@@ -80,6 +75,12 @@ class CountryNdcOverview extends PureComponent {
                   </div>
                 )}
               </div>
+              <p
+                className={styles.descriptionContainer}
+                dangerouslySetInnerHTML={{
+                  __html: values.indc_summary[0] && values.indc_summary[0].value
+                }} // eslint-disable-line
+              />
               <h4 className={styles.subTitle}>Mitigation contribution</h4>
               <div className={styles.cards}>
                 <Card title="GHG Target">
@@ -173,7 +174,6 @@ CountryNdcOverview.propTypes = {
   values: PropTypes.object,
   loading: PropTypes.bool,
   actions: PropTypes.bool,
-  textColumns: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired
 };
 

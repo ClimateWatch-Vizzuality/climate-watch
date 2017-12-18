@@ -33,7 +33,10 @@ class NdcSdgLinkagesMap extends PureComponent {
           onCountryClick={this.props.onCountryClick}
         />
         {this.getLegend()}
-        <ButtonGroup className={styles.buttons} disabled />
+        <ButtonGroup
+          className={styles.buttons}
+          onInfoClick={this.props.handleInfoClick}
+        />
       </div>
     );
   }
@@ -43,7 +46,8 @@ NdcSdgLinkagesMap.propTypes = {
   goal: PropTypes.object,
   paths: PropTypes.array.isRequired,
   targetHover: PropTypes.string,
-  onCountryClick: PropTypes.func.isRequired
+  onCountryClick: PropTypes.func.isRequired,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default NdcSdgLinkagesMap;

@@ -4,6 +4,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 
 import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';
@@ -13,7 +14,12 @@ const About = ({ route, anchorLinks, query }) => (
     <Header route={route}>
       <div className={layout.content}>
         <Intro title="About" />
-        <AnchorNav useRoutes links={anchorLinks} query={query} />
+        <AnchorNav
+          useRoutes
+          links={anchorLinks}
+          query={query}
+          theme={anchorNavRegularTheme}
+        />
       </div>
     </Header>
     <div className={styles.wrapper}>

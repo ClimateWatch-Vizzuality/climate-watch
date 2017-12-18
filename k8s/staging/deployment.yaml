@@ -30,6 +30,8 @@ spec:
             value: "3000"
           - name: RAILS_SERVE_STATIC_FILES
             value: "true"
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
           - name: POSTGRES_URL
             valueFrom:
                 secretKeyRef:

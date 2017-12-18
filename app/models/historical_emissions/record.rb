@@ -19,6 +19,21 @@ module HistoricalEmissions
       filters(records, params)
     end
 
+    def self.filter_gwp(params)
+      if params[:gwp]
+        where(gwp_id: params[:gwp])
+      else
+        ar4_id = HistoricalEmissions::Gwp.find_by(name: 'AR4').try(:id)
+        ar2_id = HistoricalEmissions::Gwp.find_by(name: 'AR2').try(:id)
+
+        if where(gwp_id: ar4_id).exists?
+          where(gwp_id: ar4_id)
+        else
+          where(gwp_id: ar2_id)
+        end
+      end
+    end
+
     private_class_method def self.filters(records, params)
       unless params[:location].blank?
         records = records.where(
@@ -29,11 +44,12 @@ module HistoricalEmissions
       {
         historical_emissions_gases: :gas,
         historical_emissions_data_sources: :source,
-        historical_emissions_sectors: :sector,
-        historical_emissions_gwps: :gwp
+        historical_emissions_sectors: :sector
       }.each do |k, v|
         records = records.where(k => {id: params[v].split(',')}) if params[v]
       end
+
+      records = records.filter_gwp(params)
 
       records
     end
