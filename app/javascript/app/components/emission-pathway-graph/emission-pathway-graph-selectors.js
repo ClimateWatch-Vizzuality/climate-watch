@@ -37,7 +37,6 @@ const AXES_CONFIG = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'CO<sub>2</sub>e',
     format: 'number'
   }
 };
@@ -162,8 +161,8 @@ const getAvailableIndicators = createSelector(
   [filterDataByScenario, getIndicators, getModelSelected],
   (data, indicators, modelSelected) => {
     if (!data || !indicators || !indicators.length || !modelSelected) return [];
-    const indicatorsWithData = data.map(d => d.indicator_id.toString());
-    const selectedIndicatorOptionsWithData = [];
+    const indicatorsWithData = uniq(data.map(d => d.indicator_id.toString()));
+    const selectedIndicatorsWithData = [];
     indicators.forEach(i => {
       if (
         i.model &&
@@ -172,11 +171,10 @@ const getAvailableIndicators = createSelector(
         i.name &&
         indicatorsWithData.indexOf(i.id.toString()) > -1
       ) {
-        selectedIndicatorOptionsWithData.push(i);
+        selectedIndicatorsWithData.push(i);
       }
     });
-
-    return selectedIndicatorOptionsWithData;
+    return selectedIndicatorsWithData;
   }
 );
 
@@ -218,7 +216,8 @@ export const getIndicatorsOptions = createSelector(
     return uniqBy(
       filteredIndicatorsByCategory.map(i => ({
         label: i.name,
-        value: i.id.toString()
+        value: i.id.toString(),
+        unit: i.unit
       })),
       'label'
     );
@@ -302,8 +301,8 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
 });
 
 export const getChartConfig = createSelector(
-  [filterDataByIndicator, getScenariosOptions],
-  (data, scenarios) => {
+  [filterDataByIndicator, getScenariosOptions, getIndicatorSelected],
+  (data, scenarios, indicator) => {
     if (!data || !scenarios) return null;
     const yColumns = data.map(d => {
       const scenario = scenarios.find(
@@ -318,7 +317,10 @@ export const getChartConfig = createSelector(
     const theme = getThemeConfig(yColumnsChecked, COLORS);
     const tooltip = getTooltipConfig(yColumnsChecked);
     return {
-      axes: AXES_CONFIG,
+      axes: {
+        ...AXES_CONFIG,
+        yLeft: { ...AXES_CONFIG.yLeft, unit: indicator && indicator.unit }
+      },
       theme,
       tooltip,
       columns: {
@@ -330,7 +332,7 @@ export const getChartConfig = createSelector(
 );
 
 // Parse Metadata for Modal
-export const getModelSelectedMetadata = createSelector(
+const getModelSelectedMetadata = createSelector(
   [getModels, getModelSelected],
   (models, modelSelected) => {
     if (!models || !modelSelected) return null;
@@ -338,7 +340,7 @@ export const getModelSelectedMetadata = createSelector(
   }
 );
 
-export const addLinktoModelSelectedMetadata = createSelector(
+const addLinktoModelSelectedMetadata = createSelector(
   [getModelSelectedMetadata],
   model => {
     if (!model) return null;
@@ -388,7 +390,7 @@ export const filterModelsByBlackList = createSelector(
   }
 );
 
-export const filterIndicatorsByBlackList = createSelector(
+const filterIndicatorsByBlackList = createSelector(
   [getIndicatorSelectedMetadata],
   data => {
     if (!data || isEmpty(data)) return null;
