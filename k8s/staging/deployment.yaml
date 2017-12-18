@@ -51,6 +51,10 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_AWS_SECRET_ACCESS_KEY
+          - name: ESP_API
+            value: "https://www.emissionspathways.org/api/v1"
+          - name: GFW_API
+            value: "https://production-api.globalforestwatch.org/"
 
         ports:
           - containerPort: 3000
