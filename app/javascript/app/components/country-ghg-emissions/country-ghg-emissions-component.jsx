@@ -54,6 +54,7 @@ class CountryGhgEmissions extends PureComponent {
             <ButtonGroup
               className={styles.btnGroup}
               onInfoClick={handleInfoClick}
+              widgetId="ghg-emissions"
             />
             <Button
               noSpace

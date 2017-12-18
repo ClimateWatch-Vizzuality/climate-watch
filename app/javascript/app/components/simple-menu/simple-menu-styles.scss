@@ -49,6 +49,18 @@
     }
   }
 
+  &.inButtonGroup {
+    .links {
+      top: 48px;
+    }
+
+    .button {
+      &.active::after {
+        bottom: -3px;
+      }
+    }
+  }
+
   .links {
     display: none;
     position: absolute;

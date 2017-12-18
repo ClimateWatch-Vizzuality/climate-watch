@@ -59,7 +59,10 @@ class EmissionPathwayGraph extends PureComponent {
               value={filtersSelected.indicator}
             />
             <div />
-            <ButtonGroup className={styles.colEnd} />
+            <ButtonGroup
+              className={styles.colEnd}
+              widgetId="emission-pathway-graph"
+            />
           </div>
           <Chart
             className={styles.chartWrapper}
