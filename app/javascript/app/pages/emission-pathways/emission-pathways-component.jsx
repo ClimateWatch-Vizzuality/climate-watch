@@ -24,7 +24,12 @@ class EmissionPathways extends PureComponent {
         <EspIndicatorsProvider />
         <Header route={route}>
           <div className={layout.content}>
-            <Intro title="Emission Pathways" />
+            <Intro
+              title="Emission Pathways"
+              description={
+                'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
+              }
+            />
           </div>
           <Sticky activeClass="stickyEmissions">
             <AnchorNav
