@@ -11,6 +11,23 @@ module Api
       'other_adaption info'
     ].freeze
 
+    SECTORS_INDICATORS = [
+      'a_agriculture',
+      'a_coastal_zone',
+      'a_cross_cutting_area',
+      'a_DRM',
+      'a_education',
+      'a_energy',
+      'a_environment',
+      'a_health',
+      'a_LULUCF',
+      'a_social_development',
+      'a_tourism',
+      'a_transport',
+      'a_urban',
+      'a_water'
+    ].freeze
+
     NdcIndicators = Struct.new(:indicators, :categories, :sectors) do
       alias_method :read_attribute_for_serialization, :send
     end
@@ -69,7 +86,7 @@ module Api
       # rubocop:enable MethodLength, AbcSize
 
       def content_overview
-        Location.find_by!(iso_code3: params[:code])
+        location = Location.find_by!(iso_code3: params[:code])
 
         values = ::Indc::Value.
           includes(:indicator, :location).
@@ -82,13 +99,11 @@ module Api
           ).
           order('indc_indicators.name')
 
-        sectors = ::Indc::Sector.
-          includes(:parent, values: :location).
-          where(locations: {iso_code3: params[:code]}).
-          map(&:parent).
-          map(&:name).
-          sort.
-          uniq
+        sectors = ::Indc::Indicator.
+          joins(:values).
+          where(slug: SECTORS_INDICATORS).
+          where(indc_values: {location_id: location.id}).
+          order('indc_indicators.name').pluck(:name)
 
         render json: NdcOverview.new(values, sectors),
                serializer: Api::V1::Indc::OverviewSerializer

@@ -1,0 +1,46 @@
+@import '~styles/layout.scss';
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.tagSelector :global {
+  width: 29px;
+  height: 29px;
+  border: solid 1px $border-color;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  border-radius: 4px;
+
+  .react-selectize-control {
+    height: 28px !important;
+  }
+
+  .values {
+    width: 27px;
+    height: 27px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dropdown-menu {
+    width: 200px !important;
+    margin-left: -1px;
+    margin-right: -1px;
+    border-radius: 4px;
+    bottom: 28px !important;
+    box-shadow: none !important;
+  }
+}
+
+.plusIcon {
+  width: 10px;
+  height: 10px;
+}

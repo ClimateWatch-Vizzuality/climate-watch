@@ -1,5 +1,5 @@
 export const initialState = {
-  center: [0, 20],
+  center: [20, 10],
   zoom: 1
 };
 
