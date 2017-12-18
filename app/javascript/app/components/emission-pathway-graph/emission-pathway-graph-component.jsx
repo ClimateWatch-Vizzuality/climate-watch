@@ -86,6 +86,7 @@ class EmissionPathwayGraph extends PureComponent {
             height={500}
             loading={loading}
             targetParam="scenario"
+            unit={filtersSelected.indicator && filtersSelected.indicator.unit}
           />
         </div>
         <ModalOverview

@@ -41,7 +41,7 @@ const CustomizedYAxisTick = ({ index, x, y, payload }) => (
       strokeWidth="0.5"
       fontSize="13px"
     >
-      {index === 0 ? '0' : `${format('.2s')(payload.value)}t`}
+      {index === 0 ? '0' : `${format('.2s')(payload.value)}`}
     </text>
   </g>
 );
@@ -76,7 +76,7 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={<CustomizedYAxisTick unit={'CO2e'} />}
+            tick={<CustomizedYAxisTick />}
             domain={domain || ['0', 'auto']}
           />
           <CartesianGrid vertical={false} />
