@@ -39,8 +39,11 @@ class EmissionPathwaysTableComponent extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
-  handleFilterChange = (filterName, value) => {
-    this.updateUrlParam({ name: filterName, value });
+  handleFilterChange = (filterName, categoryName, value) => {
+    this.updateUrlParam({
+      name: `${categoryName.toLowerCase()}-${filterName}`,
+      value
+    });
   };
 
   updateUrlParam(param) {

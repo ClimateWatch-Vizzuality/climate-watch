@@ -52,7 +52,7 @@ class EmissionPathwaysTable extends PureComponent {
         placeholder={`Filter by ${startCase(field)}`}
         options={filterOptions ? filterOptions[field] : []}
         onValueChange={selected =>
-          handleFilterChange(field, selected && selected.value)}
+          handleFilterChange(field, categoryName, selected && selected.value)}
         value={selectedFields ? selectedFields[field] : null}
       />
     ));
