@@ -105,22 +105,21 @@ class SimpleMenu extends PureComponent {
     const { options, reverse, positionRight, inButtonGroup } = this.props;
     const { open } = this.state;
     return (
-      <ClickOutside onClickOutside={() => this.setState({ open: false })}>
-        <div
-          className={cx(
-            styles.dropdown,
-            { [styles.reverse]: reverse },
-            { [styles.positionRight]: positionRight },
-            { [styles.inButtonGroup]: inButtonGroup }
-          )}
-        >
-          {this.renderButton()}
-          <ul className={cx(styles.links, { [styles.open]: open })}>
-            {options.map(option => (
-              <li key={option.label}>{this.renderLink(option)}</li>
-            ))}
-          </ul>
-        </div>
+      <ClickOutside
+        onClickOutside={() => this.setState({ open: false })}
+        className={cx(
+          styles.dropdown,
+          { [styles.reverse]: reverse },
+          { [styles.positionRight]: positionRight },
+          { [styles.inButtonGroup]: inButtonGroup }
+        )}
+      >
+        {this.renderButton()}
+        <ul className={cx(styles.links, { [styles.open]: open })}>
+          {options.map(option => (
+            <li key={option.label}>{this.renderLink(option)}</li>
+          ))}
+        </ul>
       </ClickOutside>
     );
   }
