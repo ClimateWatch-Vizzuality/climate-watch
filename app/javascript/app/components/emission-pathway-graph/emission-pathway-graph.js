@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { WORLD_LOCATION_ID } from 'data/constants';
-
 import { actions as modalActions } from 'components/modal-overview';
 
 import EmissionPathwayGraphComponent from './emission-pathway-graph-component';
@@ -32,7 +30,7 @@ const mapStateToProps = (state, { location }) => {
     models: state.espModels.data,
     scenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
-    location: currentLocation || WORLD_LOCATION_ID,
+    location: currentLocation,
     availableModelIds: state.espGraph.locations,
     category,
     model,
@@ -56,9 +54,16 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
-  componentDidMount() {
-    const { currentLocation } = qs.parse(this.props.location.search);
-    this.props.findAvailableModels(currentLocation || WORLD_LOCATION_ID);
+  componentDidUpdate(prevProps) {
+    const prevValue =
+      prevProps.filtersSelected.location &&
+      prevProps.filtersSelected.location.value;
+    const currentValue =
+      this.props.filtersSelected.location &&
+      this.props.filtersSelected.location.value;
+    if (prevValue !== currentValue) {
+      this.props.findAvailableModels(currentValue);
+    }
   }
 
   handleModelChange = model => {
@@ -80,9 +85,6 @@ class EmissionPathwayGraphContainer extends PureComponent {
       { name: param, value: option ? option.value : '' },
       clear
     );
-    if (param === 'currentLocation') {
-      this.props.findAvailableModels(option.value);
-    }
   };
 
   handleCategoryChange = (option, param, clear) => {
@@ -122,6 +124,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  filtersSelected: PropTypes.object,
   findAvailableModels: PropTypes.func.isRequired,
   toggleModalOverview: PropTypes.func.isRequired
 };

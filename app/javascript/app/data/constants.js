@@ -123,7 +123,6 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
-export const WORLD_LOCATION_ID = '267';
 export const FILTERS_BY_CATEGORY = {
   models: ['license', 'time_horizon', 'time_step'],
   scenarios: ['model_abbreviation'],
@@ -146,7 +145,6 @@ export default {
   DEFAULT_AXES_CONFIG,
   DATA_SCALE,
   ESP_BLACKLIST,
-  WORLD_LOCATION_ID,
   FILTERS_BY_CATEGORY,
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS
