@@ -1,14 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import Icon from 'components/icon';
-import SimpleMenu from 'components/simple-menu';
+import ShareMenu from 'components/share-menu';
 import cx from 'classnames';
 
 import download from 'assets/icons/download.svg';
 import styles from './tools-nav-styles.scss';
 
-const ToolsNav = ({ shareMenuOptions, shareIcon }) => (
+const ToolsNav = () => (
   <div className={styles.toolsNav}>
     <NavLink
       className={cx(styles.link, styles.disabled)}
@@ -26,17 +25,8 @@ const ToolsNav = ({ shareMenuOptions, shareIcon }) => (
     >
       <Icon className={styles.download} icon={download} />
     </a>
-    <SimpleMenu
-      options={shareMenuOptions}
-      icon={shareIcon}
-      buttonClassName={styles.shareButton}
-    />
+    <ShareMenu className={styles.shareButton} />
   </div>
 );
-
-ToolsNav.propTypes = {
-  shareMenuOptions: PropTypes.array.isRequired,
-  shareIcon: PropTypes.object.isRequired
-};
 
 export default ToolsNav;
