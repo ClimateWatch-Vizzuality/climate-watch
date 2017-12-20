@@ -74,7 +74,7 @@ NDCTable.propTypes = {
   selectedCategory: PropTypes.object,
   indicators: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   handleCategoryChange: PropTypes.func.isRequired,
   handleIndicatorChange: PropTypes.func.isRequired,
   handleSearchChange: PropTypes.func.isRequired

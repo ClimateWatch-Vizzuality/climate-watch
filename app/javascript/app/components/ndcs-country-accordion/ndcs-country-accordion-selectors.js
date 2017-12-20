@@ -108,7 +108,7 @@ export const parsedCategoriesWithSectors = createSelector(
               definitions
             };
           }),
-        'title'
+        ['parent.name', 'title']
       );
       return {
         title: cat.name,
