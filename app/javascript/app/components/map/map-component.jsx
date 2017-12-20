@@ -18,7 +18,7 @@ import styles from './map-styles.scss';
 
 class Map extends PureComponent {
   render() {
-    const { zoom, center } = this.props;
+    const { zoom, center, customCenter } = this.props;
     const { className } = this.props;
     const {
       forceUpdate,
@@ -35,13 +35,17 @@ class Map extends PureComponent {
       onCountryMove,
       onCountryEnter,
       onCountryLeave,
-      defaultStyle
+      defaultStyle,
+      controlPosition
     } = this.props;
-
     return (
       <div className={cx(styles.wrapper, className)}>
         {zoomEnable && (
-          <div className={styles.actions}>
+          <div
+            className={cx(styles.actions, {
+              [styles.bottom]: controlPosition === 'bottom'
+            })}
+          >
             <Button onClick={handleZoomIn}>
               <Icon icon={mapZoomIn} />
             </Button>
@@ -53,19 +57,25 @@ class Map extends PureComponent {
         <Motion
           defaultStyle={{
             z: 1,
-            x: 0,
-            y: 20
+            x: 20,
+            y: 10
           }}
           style={{
             z: spring(zoom, { stiffness: 240, damping: 30 }),
-            x: spring(center[0], { stiffness: 240, damping: 30 }),
-            y: spring(center[1], { stiffness: 240, damping: 30 })
+            x: spring((customCenter && customCenter[0]) || center[0], {
+              stiffness: 240,
+              damping: 30
+            }),
+            y: spring((customCenter && customCenter[1]) || center[1], {
+              stiffness: 240,
+              damping: 30
+            })
           }}
         >
           {({ z, x, y }) => (
             <ComposableMap projection="robinson" style={style}>
               <ZoomableGroup
-                center={[x, y]}
+                center={customCenter || [x, y]}
                 zoom={z}
                 disablePanning={!dragEnable}
               >
@@ -118,6 +128,7 @@ class Map extends PureComponent {
 Map.propTypes = {
   style: PropTypes.object.isRequired,
   center: PropTypes.array.isRequired,
+  customCenter: PropTypes.array,
   zoom: PropTypes.number.isRequired,
   zoomEnable: PropTypes.bool,
   dragEnable: PropTypes.bool,
@@ -133,6 +144,7 @@ Map.propTypes = {
   onCountryClick: PropTypes.func,
   onCountryMove: PropTypes.func,
   onCountryLeave: PropTypes.func,
+  controlPosition: PropTypes.object,
   defaultStyle: PropTypes.object.isRequired
 };
 
@@ -140,7 +152,7 @@ Map.defaultProps = {
   style: {
     width: '100%'
   },
-  center: [0, 20],
+  center: [20, 10],
   zoom: 1,
   zoomEnable: false,
   dragEnable: true,

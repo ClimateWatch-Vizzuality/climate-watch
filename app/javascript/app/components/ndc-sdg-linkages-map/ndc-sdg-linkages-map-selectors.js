@@ -28,7 +28,9 @@ export const getNdcsSdgsGoalsDataSelected = createSelector(
 export const getPathsWithStyles = createSelector(
   [getNdcsSdgsGoalsDataSelected, getTargetHover],
   (data, targetHover) => {
-    if (!data) return worldPaths;
+    if (!data) {
+      return worldPaths.filter(p => p.properties.layer !== PATH_LAYERS.ISLANDS);
+    }
     setScaleBuckets([initialStep, data.colour]);
     const paths = [];
     worldPaths.forEach(path => {
@@ -67,12 +69,13 @@ export const getPathsWithStyles = createSelector(
           }
         };
 
-        paths.push({
+        return paths.push({
           ...path,
           style,
           clickAllowed
         });
       }
+      return null;
     });
     return paths;
   }

@@ -86,7 +86,9 @@ class CountrySDGLinkages extends PureComponent {
               />
             ))}
           </div>
-          <ReactTooltip id="sdg-linkages">{this.getTooltip()}</ReactTooltip>
+          <ReactTooltip className={styles.tooltipContainer} id="sdg-linkages">
+            {this.getTooltip()}
+          </ReactTooltip>
         </div>
       )
     );
