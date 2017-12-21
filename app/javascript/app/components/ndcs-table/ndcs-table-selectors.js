@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 
 const getCategoriesData = state => state.categories || {};
 const getIndicatorsData = state => state.indicators || [];
@@ -87,6 +88,7 @@ export const getSelectedData = createSelector(
         countries.find(country => country.iso_code3 === iso) || {};
       return {
         country: countryData.wri_standard_name || iso,
+        iso,
         value: selectedIndicator.locations[iso].value
       };
     });
@@ -95,18 +97,37 @@ export const getSelectedData = createSelector(
 
 export const getFilteredData = createSelector(
   [getSelectedData, getQuery],
-  (data, query) =>
-    data.filter(
+  (data, query) => {
+    if (!data || isEmpty(data)) return null;
+    return data.filter(
       d =>
         deburrUpper(d.country).indexOf(query) > -1 ||
         deburrUpper(d.value).indexOf(query) > -1
-    )
+    );
+  }
 );
+
+export const getTitleLinks = createSelector([getFilteredData], data => {
+  if (!data || isEmpty(data)) return null;
+  return data.map(d => ({
+    fieldName: 'country',
+    url: `country/${d.iso}`
+  }));
+});
+
+export const removeIsoFromData = createSelector([getFilteredData], data => {
+  if (!data || isEmpty(data)) return null;
+  return data.map(d => ({
+    country: d.country,
+    value: d.value
+  }));
+});
 
 export default {
   getCategories,
   getCategoryIndicators,
   getSelectedCategory,
   getSelectedIndicator,
-  getFilteredData
+  removeIsoFromData,
+  getTitleLinks
 };
