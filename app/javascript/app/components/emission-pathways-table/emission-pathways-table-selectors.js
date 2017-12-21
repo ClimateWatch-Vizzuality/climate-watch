@@ -83,12 +83,24 @@ export const titleLinks = createSelector(
   }
 );
 
-const getSelectedFields = createSelector([getSearch], search => {
-  if (!search) return null;
-  const selectedFields = search;
-  delete selectedFields.search;
-  return selectedFields;
-});
+const getSelectedFields = createSelector(
+  [getSearch, getCategory],
+  (search, category) => {
+    if (!search) return null;
+    let selectedFields = search;
+    const selectedKeys = Object.keys(selectedFields).filter(k =>
+      k.startsWith(category)
+    );
+    selectedFields = pick(selectedFields, selectedKeys);
+
+    const fieldsWithoutPrefix = {};
+    Object.keys(selectedFields).forEach(k => {
+      const keyWithoutPrefix = k.replace(`${category}-`, '');
+      fieldsWithoutPrefix[keyWithoutPrefix] = selectedFields[k];
+    });
+    return fieldsWithoutPrefix;
+  }
+);
 
 export const getSelectedFieldOptions = createSelector(
   [getSelectedFields],
