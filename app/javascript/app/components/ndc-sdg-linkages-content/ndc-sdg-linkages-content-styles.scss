@@ -1,0 +1,9 @@
+@import '~styles/layout.scss';
+
+.grid {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 2fr);
+
+  grid-template-columns: 1fr 2fr;
+}
