@@ -6,6 +6,7 @@ import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import ReactTooltip from 'react-tooltip';
 import Loading from 'components/loading';
+import ModalMetadata from 'components/modal-metadata';
 
 import styles from './ndcs-map-styles.scss';
 
@@ -34,6 +35,7 @@ const NDCMap = props => (
       <ButtonGroup
         className={styles.buttons}
         onInfoClick={props.handleInfoClick}
+        shareUrl="/embed/ndcs"
       />
     </div>
     {props.loading && <Loading light className={styles.loader} />}
@@ -55,6 +57,7 @@ const NDCMap = props => (
         buckets={props.selectedIndicator.legendBuckets}
       />
     )}
+    <ModalMetadata />
   </div>
 );
 

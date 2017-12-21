@@ -6,9 +6,9 @@ import CountriesProvider from 'providers/countries-provider';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 
-import styles from './root-styles.scss'; // eslint-disable-line
+import styles from './app-styles.scss'; // eslint-disable-line
 
-class Root extends PureComponent {
+class App extends PureComponent {
   render() {
     const { route, navRoutes } = this.props;
     return (
@@ -22,9 +22,9 @@ class Root extends PureComponent {
   }
 }
 
-Root.propTypes = {
+App.propTypes = {
   route: Proptypes.object,
   navRoutes: Proptypes.array
 };
 
-export default Root;
+export default App;

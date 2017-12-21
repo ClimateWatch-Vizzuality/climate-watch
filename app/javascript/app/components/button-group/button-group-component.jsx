@@ -4,14 +4,21 @@ import Icon from 'components/icon';
 import cx from 'classnames';
 
 import iconInfo from 'assets/icons/info.svg';
-import iconShare from 'assets/icons/share.svg';
 import iconDownload from 'assets/icons/download.svg';
 import iconAddToUser from 'assets/icons/add-to-user.svg';
 import PropTypes from 'prop-types';
+import ShareMenu from 'components/share-menu';
 
 import styles from './button-group-styles.scss';
 
-const ButtonGroup = ({ className, onInfoClick, disabled }) => (
+const ButtonGroup = ({
+  className,
+  onInfoClick,
+  onDownloadClick,
+  onAddToUserClick,
+  disabled,
+  shareUrl
+}) => (
   <div
     className={cx(
       styles.buttonGroup,
@@ -26,13 +33,23 @@ const ButtonGroup = ({ className, onInfoClick, disabled }) => (
     >
       <Icon icon={iconInfo} />
     </Button>
-    <Button className={styles.button} disabled>
-      <Icon icon={iconShare} />
-    </Button>
-    <Button className={styles.button} disabled>
+    <ShareMenu
+      className={cx(styles.button, styles.share)}
+      path={shareUrl}
+      inButtonGroup
+    />
+    <Button
+      className={styles.button}
+      onClick={onDownloadClick}
+      disabled={!onDownloadClick}
+    >
       <Icon icon={iconDownload} />
     </Button>
-    <Button className={cx(styles.button, styles.last)} disabled>
+    <Button
+      className={cx(styles.button, styles.last)}
+      onClick={onAddToUserClick}
+      disabled={!onAddToUserClick}
+    >
       <Icon icon={iconAddToUser} />
     </Button>
   </div>
@@ -40,7 +57,10 @@ const ButtonGroup = ({ className, onInfoClick, disabled }) => (
 
 ButtonGroup.propTypes = {
   className: PropTypes.string,
+  shareUrl: PropTypes.string,
   onInfoClick: PropTypes.func,
+  onDownloadClick: PropTypes.func,
+  onAddToUserClick: PropTypes.func,
   disabled: PropTypes.bool
 };
 
