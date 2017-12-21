@@ -5,20 +5,32 @@ import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import sortBy from 'lodash/sortBy';
-import { ESP_BLACKLIST, WORLD_LOCATION_ID } from 'data/constants';
+import { ESP_BLACKLIST } from 'data/constants';
 import { sortLabelByAlpha } from 'utils/graphs';
 
 const getScenarioId = state => state.id || null;
 const getQuery = state => deburrUpper(state.query) || '';
 const getCategorySelected = state => state.categorySelected || null;
-const getLocationSelected = state =>
-  state.locationSelected || WORLD_LOCATION_ID;
 const getData = state =>
   (!isEmpty(state.espScenariosData) ? state.espScenariosData : null);
 const getTrendData = state =>
   (!isEmpty(state.espTrendData) ? state.espTrendData : null);
 const getLocations = state =>
   (!isEmpty(state.espLocationsData) ? state.espLocationsData : null);
+
+const getLocationSelected = createSelector(
+  [getLocations, state => state.locationSelected],
+  (locations, selectedLocation) => {
+    if (!locations) return null;
+    if (!selectedLocation) {
+      return (
+        locations.find(l => l.name === 'World') &&
+        locations.find(l => l.name === 'World').id
+      );
+    }
+    return selectedLocation;
+  }
+);
 
 const getScenarioData = createSelector([getData, getScenarioId], (data, id) => {
   if (!data || !id) return null;
@@ -28,7 +40,7 @@ const getScenarioData = createSelector([getData, getScenarioId], (data, id) => {
 const getScenarioTrendData = createSelector(
   [getTrendData, getLocationSelected, getScenarioId],
   (data, selectedLocation, id) => {
-    if (!data.locations[selectedLocation]) return null;
+    if (!selectedLocation || !data.locations[selectedLocation]) return null;
     if (!data || !id || !data.locations) return null;
     return data.locations[selectedLocation].scenarios[id] || null;
   }
@@ -80,8 +92,10 @@ export const getLocationOptions = createSelector([getLocations], locations => {
 export const getSelectedLocationOption = createSelector(
   [getLocations, getLocationSelected],
   (locations, selectedLocation) => {
-    if (!locations) return null;
-    const location = locations.find(l => l.id.toString() === selectedLocation);
+    if (!locations || !selectedLocation) return null;
+    const location = locations.find(
+      l => l.id.toString() === selectedLocation.toString()
+    );
     return {
       value: location.id,
       label: location.name
