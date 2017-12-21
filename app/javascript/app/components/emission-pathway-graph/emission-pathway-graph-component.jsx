@@ -26,9 +26,9 @@ class EmissionPathwayGraph extends PureComponent {
         <div className={layout.content}>
           <EspLocationsProvider withTimeSeries />
           {filtersSelected &&
-            filtersSelected.location &&
-            filtersSelected.model && (
-              <EspTimeSeriesProvider
+          filtersSelected.location &&
+          filtersSelected.model && (
+          <EspTimeSeriesProvider
                 location={filtersSelected.location.value}
                 model={filtersSelected.model.value}
               />
@@ -61,7 +61,7 @@ class EmissionPathwayGraph extends PureComponent {
             <div />
             <ButtonGroup
               className={styles.colEnd}
-              widgetId="emission-pathway-graph"
+              shareUrl="/embed/emission-pathway-graph"
             />
           </div>
           <Chart

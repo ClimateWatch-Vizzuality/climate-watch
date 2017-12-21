@@ -17,7 +17,7 @@ const ButtonGroup = ({
   onDownloadClick,
   onAddToUserClick,
   disabled,
-  widgetId
+  shareUrl
 }) => (
   <div
     className={cx(
@@ -35,7 +35,7 @@ const ButtonGroup = ({
     </Button>
     <ShareMenu
       className={cx(styles.button, styles.share)}
-      hash={widgetId}
+      path={shareUrl}
       inButtonGroup
     />
     <Button
@@ -57,7 +57,7 @@ const ButtonGroup = ({
 
 ButtonGroup.propTypes = {
   className: PropTypes.string,
-  widgetId: PropTypes.string,
+  shareUrl: PropTypes.string,
   onInfoClick: PropTypes.func,
   onDownloadClick: PropTypes.func,
   onAddToUserClick: PropTypes.func,

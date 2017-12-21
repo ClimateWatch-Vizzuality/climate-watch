@@ -7,10 +7,8 @@ import linkIcon from 'assets/icons/link.svg';
 import copy from 'copy-to-clipboard';
 import Component from './share-menu-component';
 
-const mapStateToProps = (state, { hash }) => {
-  const { origin, pathname } = location;
-  let url = origin + pathname;
-  if (hash) url = `${url}#${hash}`;
+const mapStateToProps = (state, { path }) => {
+  const url = location.origin + (path || location.pathname);
   const copyUrl = () => copy(url);
   const shareMenuOptions = [
     {

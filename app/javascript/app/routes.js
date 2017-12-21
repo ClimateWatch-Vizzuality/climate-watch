@@ -20,6 +20,7 @@ import Sectors from 'pages/sectors';
 import CountryNdcOverview from 'components/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
+import GhgEmissionsGraph from 'components/ghg-emissions';
 import EmissionPathways from 'pages/emission-pathways';
 // import EmissionPathwaysTable from 'components/emission-pathways-table';
 // import EmissionPathwaysTableMenu from 'components/emission-pathways-table-menu';
@@ -47,6 +48,16 @@ export default [
         component: Embed,
         path: '/embed',
         routes: [
+          {
+            path: '/embed/ndcs',
+            component: NDCMap,
+            exact: true
+          },
+          {
+            path: '/embed/ghg-emissions',
+            component: GhgEmissionsGraph,
+            exact: true
+          },
           {
             path: '/embed/countries/:iso/ghg-emissions',
             component: GHGCountryEmissions,

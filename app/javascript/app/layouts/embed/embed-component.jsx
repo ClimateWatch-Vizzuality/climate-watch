@@ -1,13 +1,19 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
+import CountriesProvider from 'providers/countries-provider';
 
-import styles from './embed-styles.scss'; // eslint-disable-line
+import layout from 'styles/layout';
 
 class Embed extends PureComponent {
   render() {
     const { route } = this.props;
-    return <div>{renderRoutes(route.routes)}</div>;
+    return (
+      <div className={layout.content}>
+        <CountriesProvider />
+        {renderRoutes(route.routes)}
+      </div>
+    );
   }
 }
 
