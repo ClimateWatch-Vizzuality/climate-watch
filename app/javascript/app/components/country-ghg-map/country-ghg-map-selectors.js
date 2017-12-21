@@ -177,8 +177,8 @@ export const getSelectorDefaults = createSelector(
 );
 
 export const getPathsWithStyles = createSelector(
-  [getDataParsed, getZoom],
-  (data, zoom) => {
+  [getDataParsed, getZoom, getIso],
+  (data, zoom, countryIso) => {
     if (!data) return worldPaths;
     const { min, max } = data;
     if (min && max) setScale(getRanges(min, max));
@@ -198,27 +198,37 @@ export const getPathsWithStyles = createSelector(
         if (data && data.values && data.values[iso]) {
           color = colorScale(data.values[iso]);
         }
+
+        const isSelectedCountry = iso === countryIso;
+        const stroke = isSelectedCountry ? '#113750' : '#000';
+        const SELECTED_COUNTRY_STROKE_WIDTH = 0.7;
+        const strokeWidth = isSelectedCountry
+          ? SELECTED_COUNTRY_STROKE_WIDTH
+          : 0.1;
+        const strokeWidthPressed = isSelectedCountry
+          ? SELECTED_COUNTRY_STROKE_WIDTH
+          : 0.5;
+
         const style = {
           default: {
             fill: color,
-            stroke: '#000',
-            strokeWidth: 0.1,
+            stroke,
+            strokeWidth,
             outline: 'none'
           },
           hover: {
             fill: color,
-            stroke: '#000',
-            strokeWidth: 0.1,
+            stroke,
+            strokeWidth,
             outline: 'none'
           },
           pressed: {
             fill: color,
-            stroke: '#000',
-            strokeWidth: 0.5,
+            stroke,
+            strokeWidth: strokeWidthPressed,
             outline: 'none'
           }
         };
-
         paths.push({
           ...path,
           style

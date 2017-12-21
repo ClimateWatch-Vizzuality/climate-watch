@@ -2,6 +2,8 @@ import { createElement, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import ReactDOM from 'react-dom';
+import ReactTooltip from 'react-tooltip';
 
 import worldPaths from 'app/data/world-50m-paths';
 
@@ -21,6 +23,8 @@ class MapContainer extends PureComponent {
   constructor() {
     super();
     this.state = { forceUpdate: false };
+    this.addGeometryRef = this.addGeometryRef.bind(this);
+    this.handleMotionRest = this.handleMotionRest.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,6 +43,18 @@ class MapContainer extends PureComponent {
     this.props.setMapParams(initialState);
   }
 
+  handleMotionRest() {
+    if (this.props.openedTooltipISO) {
+      ReactTooltip.show(
+        ReactDOM.findDOMNode(this[this.props.openedTooltipISO]) // eslint-disable-line react/no-find-dom-node
+      );
+    }
+  }
+
+  addGeometryRef(id, ref) {
+    if (id) this[id] = ref;
+  }
+
   handleZoomIn = () => {
     const zoom = this.props.zoom * ZOOM_STEP;
     this.props.setMapZoom(zoom);
@@ -54,7 +70,9 @@ class MapContainer extends PureComponent {
       paths: worldPaths,
       handleZoomIn: this.handleZoomIn,
       handleZoomOut: this.handleZoomOut,
+      handleMotionRest: this.handleMotionRest,
       forceUpdate: this.state.forceUpdate,
+      addGeometryRef: this.addGeometryRef,
       ...this.props
     });
   }
@@ -64,7 +82,8 @@ MapContainer.propTypes = {
   paths: PropTypes.array,
   zoom: PropTypes.number.isRequired,
   setMapZoom: PropTypes.func.isRequired,
-  setMapParams: PropTypes.func.isRequired
+  setMapParams: PropTypes.func.isRequired,
+  openedTooltipISO: PropTypes.string
 };
 
 export { actions, reducers, initialState };
