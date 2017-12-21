@@ -6,6 +6,9 @@ import ButtonGroup from 'components/button-group';
 import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
+import EspModelsProvider from 'providers/esp-models-provider';
+import EspScenariosProvider from 'providers/esp-scenarios-provider';
+import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 
 import layout from 'styles/layout.scss';
 import styles from './emission-pathway-graph-styles.scss';
@@ -30,6 +33,9 @@ class EmissionPathwayGraph extends PureComponent {
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
+          <EspModelsProvider />
+          <EspScenariosProvider />
+          <EspIndicatorsProvider />
           <EspLocationsProvider withTimeSeries />
           {shouldRenderEspTimeSeriesProvider && (
             <EspTimeSeriesProvider
@@ -74,7 +80,7 @@ class EmissionPathwayGraph extends PureComponent {
             <ButtonGroup
               className={styles.colEnd}
               onInfoClick={handleInfoClick}
-              shareUrl="/embed/emission-pathway-graph"
+              shareUrl="/embed/emission-pathways"
             />
           </div>
           <Chart
