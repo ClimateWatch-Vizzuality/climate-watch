@@ -61,7 +61,7 @@ spec:
                   name: appsecrets
                   key: CW_AWS_SECRET_ACCESS_KEY
           - name: ESP_API
-            value: "https://www.emissionspathways.org/api/v1"
+            value: "https://data.emissionspathways.org/api/v1"
 
         ports:
           - containerPort: 3000
