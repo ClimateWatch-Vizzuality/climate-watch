@@ -14,6 +14,11 @@
   display: flex;
   flex-direction: column;
 
+  &.bottom {
+    bottom: 10px;
+    top: initial;
+  }
+
   button {
     display: block;
     padding: 0;

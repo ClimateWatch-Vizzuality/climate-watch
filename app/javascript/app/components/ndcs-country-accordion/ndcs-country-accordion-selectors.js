@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import uniq from 'lodash/uniq';
+import sortBy from 'lodash/sortBy';
 import snakeCase from 'lodash/snakeCase';
 
 const getCountries = state => state.countries;
@@ -78,35 +79,37 @@ export const parsedCategoriesWithSectors = createSelector(
   (categories, sectors, countries) => {
     if (!categories) return null;
     return categories.map(cat => {
-      const sectorsParsed =
+      const sectorsParsed = sortBy(
         cat.sectors &&
-        cat.sectors.length &&
-        cat.sectors.map(sec => {
-          const definitions = cat.indicators.map(ind => {
-            const descriptions = countries.map(loc => {
-              const value = ind.locations[loc]
-                ? ind.locations[loc].find(v => v.sector_id === sec)
-                : null;
+          cat.sectors.length &&
+          cat.sectors.map(sec => {
+            const definitions = cat.indicators.map(ind => {
+              const descriptions = countries.map(loc => {
+                const value = ind.locations[loc]
+                  ? ind.locations[loc].find(v => v.sector_id === sec)
+                  : null;
+                return {
+                  iso: loc,
+                  value: value ? value.value : '—'
+                };
+              });
               return {
-                iso: loc,
-                value: value ? value.value : '—'
+                title: ind.name,
+                slug: ind.slug,
+                descriptions
               };
             });
+            const parent =
+              sectors[sec].parent_id && sectors[sectors[sec].parent_id];
             return {
-              title: ind.name,
-              slug: ind.slug,
-              descriptions
+              title: sectors[sec].name,
+              slug: snakeCase(sectors[sec].name),
+              parent,
+              definitions
             };
-          });
-          const parent =
-            sectors[sec].parent_id && sectors[sectors[sec].parent_id];
-          return {
-            title: sectors[sec].name,
-            slug: snakeCase(sectors[sec].name),
-            parent,
-            definitions
-          };
-        });
+          }),
+        ['parent.name', 'title']
+      );
       return {
         title: cat.name,
         slug: cat.slug,

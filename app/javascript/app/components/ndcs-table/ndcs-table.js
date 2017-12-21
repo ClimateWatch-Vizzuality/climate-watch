@@ -11,7 +11,8 @@ import {
   getCategoryIndicators,
   getSelectedCategory,
   getSelectedIndicator,
-  getFilteredData
+  removeIsoFromData,
+  getTitleLinks
 } from './ndcs-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -33,7 +34,8 @@ const mapStateToProps = (state, { location }) => {
     indicators: getCategoryIndicators(ndcsWithSelection),
     selectedCategory: getSelectedCategory(ndcsWithSelection),
     selectedIndicator: getSelectedIndicator(ndcsWithSelection),
-    data: getFilteredData(ndcsWithSelection)
+    data: removeIsoFromData(ndcsWithSelection),
+    titleLinks: getTitleLinks(ndcsWithSelection)
   };
 };
 
