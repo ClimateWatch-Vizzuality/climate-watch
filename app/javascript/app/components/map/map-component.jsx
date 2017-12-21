@@ -36,7 +36,9 @@ class Map extends PureComponent {
       onCountryEnter,
       onCountryLeave,
       defaultStyle,
-      controlPosition
+      controlPosition,
+      handleMotionRest,
+      addGeometryRef
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
@@ -71,6 +73,7 @@ class Map extends PureComponent {
               damping: 30
             })
           }}
+          onRest={handleMotionRest}
         >
           {({ z, x, y }) => (
             <ComposableMap projection="robinson" style={style}>
@@ -87,6 +90,8 @@ class Map extends PureComponent {
                     geographies.map(geography => {
                       if (geography) {
                         let commonProps = {
+                          ref: elem =>
+                            addGeometryRef(geography.properties.id, elem),
                           key: geography.properties && geography.properties.id,
                           geography,
                           projection,
@@ -145,6 +150,8 @@ Map.propTypes = {
   onCountryMove: PropTypes.func,
   onCountryLeave: PropTypes.func,
   controlPosition: PropTypes.object,
+  addGeometryRef: PropTypes.func,
+  handleMotionRest: PropTypes.func.isRequired,
   defaultStyle: PropTypes.object.isRequired
 };
 
