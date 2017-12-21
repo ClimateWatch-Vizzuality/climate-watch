@@ -85,21 +85,21 @@ export const getSelectedIndicator = createSelector(
 
 const countryStyles = {
   default: {
-    fill: '#ECEFF1',
+    fill: '#e9e9e9',
     fillOpacity: 1,
     stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   hover: {
-    fill: '#ECEFF1',
+    fill: '#e9e9e9',
     fillOpacity: 1,
     stroke: '#f5f6f7',
     strokeWidth: 1,
     outline: 'none'
   },
   pressed: {
-    fill: '#ECEFF1',
+    fill: '#e9e9e9',
     fillOpacity: 1,
     stroke: '#f5f6f7',
     strokeWidth: 1,
@@ -114,19 +114,26 @@ export const getPathsWithStyles = createSelector(
     worldPaths.forEach(path => {
       if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
         const { locations, legendBuckets } = selectedIndicator;
-        const defaultStyles = { ...path, style: countryStyles };
 
-        if (!locations) return defaultStyles;
+        if (!locations) {
+          paths.push({
+            ...path,
+            countryStyles
+          });
+          return null;
+        }
+
         const iso = path.properties && path.properties.id;
         const isEuropeanCountry = europeanCountries.includes(iso);
         const countryData = isEuropeanCountry
           ? locations[europeSlug]
           : locations[iso];
 
+        let style = countryStyles;
         if (countryData && countryData.label_id) {
           const legendData = legendBuckets[countryData.label_id];
           const color = getColorByIndex(legendBuckets, legendData.index);
-          const style = {
+          style = {
             ...countryStyles,
             default: {
               ...countryStyles.default,
@@ -139,12 +146,12 @@ export const getPathsWithStyles = createSelector(
               fillOpacity: 1
             }
           };
-          paths.push({
-            ...path,
-            style
-          });
         }
-        return defaultStyles;
+
+        paths.push({
+          ...path,
+          style
+        });
       }
       return null;
     });
