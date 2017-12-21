@@ -114,7 +114,15 @@ const partnershipWith = {
         src: wriImage
       },
       description: 'WRI manages Climate Watch in collaboration with partners.'
-    },
+    }
+  ]
+};
+
+const techPartnership = {
+  id: 'tech-partnership',
+  title: 'Technical partners',
+  type: 'onlyLinks',
+  partners: [
     {
       link: 'http://www.vizzuality.com/',
       img: {
@@ -215,7 +223,7 @@ const foundingBy = {
 };
 
 const withSections = withProps(() => ({
-  sections: [partnershipWith, additionalData, foundingBy]
+  sections: [partnershipWith, techPartnership, additionalData, foundingBy]
 }));
 
 export default withSections(Component);
