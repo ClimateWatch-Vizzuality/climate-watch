@@ -29,6 +29,7 @@ class NdcSdgLinkagesMap extends PureComponent {
         <ButtonGroup
           className={styles.buttons}
           onInfoClick={this.props.handleInfoClick}
+          shareUrl="/embed/ndcs-sdg"
         />
         <Map
           style={{ height: '100%', width: '100%' }}
