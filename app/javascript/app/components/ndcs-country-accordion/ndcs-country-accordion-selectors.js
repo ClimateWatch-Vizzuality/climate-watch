@@ -83,21 +83,29 @@ export const parsedCategoriesWithSectors = createSelector(
         cat.sectors &&
           cat.sectors.length &&
           cat.sectors.map(sec => {
-            const definitions = cat.indicators.map(ind => {
-              const descriptions = countries.map(loc => {
+            const definitions = [];
+            cat.indicators.forEach(ind => {
+              const descriptions = [];
+              let hasValue = false;
+              countries.forEach(loc => {
                 const value = ind.locations[loc]
                   ? ind.locations[loc].find(v => v.sector_id === sec)
                   : null;
-                return {
-                  iso: loc,
-                  value: value ? value.value : '—'
-                };
+                if (value && value.value) {
+                  hasValue = true;
+                  descriptions.push({
+                    iso: loc,
+                    value: value.value
+                  });
+                }
               });
-              return {
-                title: ind.name,
-                slug: ind.slug,
-                descriptions
-              };
+              if (hasValue) {
+                definitions.push({
+                  title: ind.name,
+                  slug: ind.slug,
+                  descriptions
+                });
+              }
             });
             const parent =
               sectors[sec].parent_id && sectors[sectors[sec].parent_id];
