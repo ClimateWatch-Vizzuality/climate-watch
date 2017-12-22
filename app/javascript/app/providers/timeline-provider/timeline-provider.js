@@ -13,6 +13,14 @@ class TimelineProvider extends PureComponent {
     getTimeline(iso);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const iso = this.props.match.params.iso;
+    const nextIso = nextProps.match.params.iso;
+    if (iso !== nextIso) {
+      this.props.getTimeline(nextIso);
+    }
+  }
+
   render() {
     return null;
   }
