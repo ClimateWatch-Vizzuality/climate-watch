@@ -26,17 +26,23 @@ export const getCategories = createSelector(getCategoriesData, categories =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  getIndicatorsData,
-  indicators =>
+  [getIndicatorsData, getISOCountries],
+  (indicators, isos) =>
     sortBy(
       uniqBy(
-        indicators.map(item => ({
-          label: item.name,
-          value: item.slug,
-          categoryIds: item.category_ids,
-          locations: item.locations,
-          legendBuckets: item.labels
-        })),
+        indicators.map(i => {
+          const legendBuckets =
+            Object.keys(i.locations) === isos
+              ? i.labels
+              : { ...i.labels, 0: { name: 'No data', index: 0 } };
+          return {
+            label: i.name,
+            value: i.slug,
+            categoryIds: i.category_ids,
+            locations: i.locations,
+            legendBuckets
+          };
+        }),
         'value'
       ),
       'label'
