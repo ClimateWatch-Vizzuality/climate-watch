@@ -2,7 +2,7 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
-// import { withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 
 import actions from './ndc-sdg-linkages-content-actions';
 import reducers, { initialState } from './ndc-sdg-linkages-content-reducers';
@@ -46,4 +46,6 @@ NdcSdgLinkagesContentContainer.propTypes = {
 
 export { actions, reducers, initialState };
 
-export default connect(null, actions)(NdcSdgLinkagesContentContainer);
+export default withRouter(
+  connect(null, actions)(NdcSdgLinkagesContentContainer)
+);
