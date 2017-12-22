@@ -144,7 +144,7 @@ Map.propTypes = {
   onCountryClick: PropTypes.func,
   onCountryMove: PropTypes.func,
   onCountryLeave: PropTypes.func,
-  controlPosition: PropTypes.object,
+  controlPosition: PropTypes.string,
   defaultStyle: PropTypes.object.isRequired
 };
 

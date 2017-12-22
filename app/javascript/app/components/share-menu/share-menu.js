@@ -8,7 +8,7 @@ import copy from 'copy-to-clipboard';
 import Component from './share-menu-component';
 
 const mapStateToProps = (state, { path }) => {
-  const url = location.origin + (path || location.pathname);
+  const url = location.origin + (path || location.pathname) + location.search;
   const copyUrl = () => copy(url);
   const shareMenuOptions = [
     {
