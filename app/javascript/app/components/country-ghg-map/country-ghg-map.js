@@ -84,6 +84,15 @@ class CountryGhgMapContainer extends Component {
     }
   }
 
+  onCountryClick = geometry => {
+    const { history } = this.props;
+    const iso = geometry.properties.id;
+    if (iso) {
+      const path = `/countries/${iso}`;
+      history.push(path);
+    }
+  };
+
   fetchData = props => {
     const { sourceSelected, fetchGhgEmissionsMapData, defaultValues } = props;
     if (sourceSelected && sourceSelected.value) {
@@ -99,7 +108,8 @@ class CountryGhgMapContainer extends Component {
     if (!this.props.ready) return <Loading light />;
 
     return createElement(CountryGhgMapComponent, {
-      ...this.props
+      ...this.props,
+      onCountryClick: this.onCountryClick
     });
   }
 }
@@ -107,6 +117,7 @@ class CountryGhgMapContainer extends Component {
 CountryGhgMapContainer.propTypes = {
   ready: PropTypes.bool,
   center: PropTypes.array,
+  history: PropTypes.object.isRequired,
   defaultValues: PropTypes.object,
   sourceSelected: PropTypes.object,
   setMapParams: PropTypes.func.isRequired,
