@@ -6,7 +6,7 @@ import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
-import NdcSdgLinkagesContent from 'components/ndc-sdg-linkages-content';
+import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';

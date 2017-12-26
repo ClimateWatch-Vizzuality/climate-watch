@@ -122,6 +122,7 @@ class ChartStackedArea extends PureComponent {
             padding={{ left: 30, right: 40 }}
             tick={<CustomXAxisTick customstrokeWidth="0" />}
             tickSize={8}
+            allowDecimals={false}
             tickCount={data.length + points.length}
           />
           <YAxis

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import SDGCard from 'components/sdg-card';
-import NdcSdgLinkagesList from 'components/ndc-sdg-linkages-list';
+import NdcSdgLinkagesList from 'components/ndc-sdg/ndc-sdg-linkages-list';
 import Loading from 'components/loading';
 
 import cardTheme from 'styles/themes/sdg-card/sdg-card';

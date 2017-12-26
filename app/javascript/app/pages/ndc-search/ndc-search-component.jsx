@@ -8,9 +8,9 @@ import AnchorNav from 'components/anchor-nav';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
-import NDCSearchMap from 'components/ndcs-search-map';
+import NDCSearchMap from 'components/ndcs/ndcs-search-map';
 import NoContent from 'components/no-content';
-import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
+import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';

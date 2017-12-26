@@ -26,26 +26,24 @@ class NdcsCountryAccordion extends PureComponent {
     if (search.search) {
       message = 'No content for that search or category';
     }
+    const showNoContent = !loading && (!ndcsData || !ndcsData.length);
+    const showData = !loading && ndcsData && ndcsData.length > 0;
     return (
       <div className={styles.wrapper}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading &&
-          (!ndcsData || !ndcsData.length) && (
-            <NoContent message={message} className={styles.noContent} />
-          )}
-        {!loading && ndcsData &&
-          ndcsData.length > 0 && (
-            <div>
-              {ndcsData &&
-                ndcsData.length &&
-                category === 'sectoral_information' ? (
-                  <Accordion
-                    className={styles.accordion}
-                    param="section"
-                    data={ndcsData}
-                    hasNestedCollapse
-                  >
-                    {ndcsData &&
+        {showNoContent && (
+          <NoContent message={message} className={styles.noContent} />
+        )}
+        {showData && (
+          <div>
+            {category === 'sectoral_information' ? (
+              <Accordion
+                className={styles.accordion}
+                param="section"
+                data={ndcsData}
+                hasNestedCollapse
+              >
+                {ndcsData &&
                   ndcsData.length > 0 &&
                   ndcsData.map(
                     section =>
@@ -72,15 +70,15 @@ class NdcsCountryAccordion extends PureComponent {
                         </Accordion>
                       ) : null)
                   )}
-                  </Accordion>
-                ) : (
-                  <Accordion
-                    className={styles.accordion}
-                    param="section"
-                    data={ndcsData}
-                    loading={loading}
-                  >
-                    {ndcsData &&
+              </Accordion>
+            ) : (
+              <Accordion
+                className={styles.accordion}
+                param="section"
+                data={ndcsData}
+                loading={loading}
+              >
+                {ndcsData &&
                   ndcsData.map(section => (
                     <div key={section.title} className={styles.definitionList}>
                       <DefinitionList
@@ -90,10 +88,10 @@ class NdcsCountryAccordion extends PureComponent {
                       />
                     </div>
                   ))}
-                  </Accordion>
-                )}
-            </div>
-          )}
+              </Accordion>
+            )}
+          </div>
+        )}
       </div>
     );
   }
