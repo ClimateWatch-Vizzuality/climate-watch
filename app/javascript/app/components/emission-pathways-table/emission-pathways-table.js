@@ -40,11 +40,22 @@ class EmissionPathwaysTableComponent extends PureComponent {
   };
 
   handleFilterChange = (filterName, categoryName, value) => {
+    if (categoryName === 'Indicators' && filterName === 'category') { this.deleteSubcategoriesParam(); }
     this.updateUrlParam({
       name: `${categoryName.toLowerCase()}-${filterName}`,
       value
     });
   };
+
+  deleteSubcategoriesParam() {
+    const { history, location } = this.props;
+    history.replace(
+      getLocationParamUpdated(location, {
+        name: 'indicators-subcategory',
+        value: undefined
+      })
+    );
+  }
 
   updateUrlParam(param) {
     const { history, location } = this.props;
