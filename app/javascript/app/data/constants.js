@@ -126,7 +126,7 @@ export const ESP_BLACKLIST = {
 export const FILTERS_BY_CATEGORY = {
   models: ['license', 'time_horizon', 'time_step'],
   scenarios: ['model'],
-  indicators: ['category']
+  indicators: ['category', 'subcategory']
 };
 
 export const MIN_ZOOM_SHOW_ISLANDS = '8';
