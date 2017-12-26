@@ -161,9 +161,12 @@ export const filterData = createSelector(
   [getData, getSourceSelected, getCalculationSelected, getFiltersSelected],
   (data, sourceSelected, calculation, filters) => {
     if (!data || !data.length) return [];
-    const filteredData = sortEmissionsByValue(
+    let filteredData = sortEmissionsByValue(
       data.filter(d => filters.map(f => f.label).indexOf(d.sector.trim()) >= 0)
     );
+    // If the data has the AR4 version (latest) we only want to display that data to avoid duplicates
+    const hasAR4 = filteredData.some(d => d.gwp === 'AR4');
+    if (hasAR4) filteredData = filteredData.filter(d => d.gwp === 'AR4');
     if (calculation.value !== 'ABSOLUTE_VALUE') {
       const dataGrouped = groupBy(
         flatten(filteredData.map(d => d.emissions)),
