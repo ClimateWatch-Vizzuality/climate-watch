@@ -21,18 +21,18 @@ class EmissionPathwayGraph extends PureComponent {
       handleSelectorChange,
       handleModelChange
     } = this.props;
+    const needsTimeSeries =
+      filtersSelected && filtersSelected.location && filtersSelected.model;
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
           <EspLocationsProvider withTimeSeries />
-          {filtersSelected &&
-          filtersSelected.location &&
-          filtersSelected.model && (
-          <EspTimeSeriesProvider
-                location={filtersSelected.location.value}
-                model={filtersSelected.model.value}
-              />
-            )}
+          {needsTimeSeries && (
+            <EspTimeSeriesProvider
+              location={filtersSelected.location.value}
+              model={filtersSelected.model.value}
+            />
+          )}
           <h2 className={styles.title}>Emission Pathways</h2>
           <div className={styles.col4}>
             <Dropdown
