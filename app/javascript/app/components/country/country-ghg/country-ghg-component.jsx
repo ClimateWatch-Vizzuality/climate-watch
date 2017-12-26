@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import GHGCountryEmissions from 'components/country-ghg-emissions';
-import GHGCountryMap from 'components/country-ghg-map';
+import GHGCountryEmissions from 'components/country/country-ghg-emissions';
+import GHGCountryMap from 'components/country/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import cx from 'classnames';

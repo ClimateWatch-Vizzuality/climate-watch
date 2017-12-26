@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
-import NdcSdgLinkagesTable from 'components/ndc-sdg-linkages-table';
-import NdcSdgLinkagesMap from 'components/ndc-sdg-linkages-map';
+import NdcSdgLinkagesTable from 'components/ndc-sdg/ndc-sdg-linkages-table';
+import NdcSdgLinkagesMap from 'components/ndc-sdg/ndc-sdg-linkages-map';
 import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout';
