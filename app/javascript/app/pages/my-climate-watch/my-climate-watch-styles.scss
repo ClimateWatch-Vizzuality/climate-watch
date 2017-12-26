@@ -4,6 +4,17 @@
   background-color: $light-gray;
 }
 
+.loginContainer {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login {
+  width: 200px;
+}
+
 .intro {
   .title {
     color: $theme-color;

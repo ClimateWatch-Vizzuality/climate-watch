@@ -3,7 +3,7 @@ import isFunction from 'lodash/isFunction';
 const mockUrl = (endpoint, params) =>
   `/mocks/${endpoint}.json${params ? `?${params}` : ''}`;
 
-const API = (baseURL = '', version = 'v1') => ({
+const api = (baseURL = '', version = 'v1') => ({
   get: (endpoint, params, mock = false) => {
     const url = mock
       ? mockUrl(endpoint, params)
@@ -19,6 +19,6 @@ const API = (baseURL = '', version = 'v1') => ({
   }
 });
 
-export const EPAPI = API('https://data.emissionspathways.org');
+export const EPAPI = api('https://data.emissionspathways.org');
 
-export const CWAPI = API();
+export const CWAPI = api();

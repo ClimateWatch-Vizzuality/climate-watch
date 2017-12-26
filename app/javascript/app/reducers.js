@@ -4,6 +4,7 @@ import { handleActions } from 'app/utils/redux';
 import { handleModule } from 'redux-tools';
 
 // Providers
+import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
 import * as espLocationsProvider from 'providers/esp-locations-provider';
@@ -23,6 +24,7 @@ import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
 import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-provider';
 
 const providersReducers = {
+  login: handleModule(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
   adaptations: handleActions(adaptationsProvider),

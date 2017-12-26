@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
 import ShareMenu from 'components/share-menu';
-import cx from 'classnames';
 
 import download from 'assets/icons/download.svg';
 import styles from './tools-nav-styles.scss';
@@ -10,11 +9,10 @@ import styles from './tools-nav-styles.scss';
 const ToolsNav = () => (
   <div className={styles.toolsNav}>
     <NavLink
-      className={cx(styles.link, styles.disabled)}
+      className={styles.link}
       activeClassName={styles.linkActive}
-      to=""
-      disabled
-      title="Coming soon"
+      to="/my-climate-watch"
+      title="My climate watch"
     >
       MY CW
     </NavLink>

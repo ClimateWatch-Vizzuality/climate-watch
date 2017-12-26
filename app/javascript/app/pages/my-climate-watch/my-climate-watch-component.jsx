@@ -4,13 +4,15 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
+import LoginProvider from 'providers/login-provider';
+import Button from 'components/button';
 
 import layout from 'styles/layout.scss';
 import styles from './my-climate-watch-styles';
 
 const button = { text: 'Create an insight', link: 'editor' };
 
-const MyCw = ({ route }) => (
+const MyCw = ({ route, login }) => (
   <div>
     <Header theme={styles}>
       <div className={layout.content}>
@@ -18,13 +20,27 @@ const MyCw = ({ route }) => (
         <AnchorNav useRoutes links={route.routes} theme={styles} />
       </div>
     </Header>
-    <div className={styles.wrapper}>
-      <div className={layout.content}>{renderRoutes(route.routes)}</div>
-    </div>
+    <LoginProvider />
+    {login.logged ? (
+      <div className={styles.wrapper}>
+        <div className={layout.content}>{renderRoutes(route.routes)}</div>
+      </div>
+    ) : (
+      <div className={styles.loginContainer}>
+        <Button
+          className={styles.login}
+          color="yellow"
+          href="https://staging-api.globalforestwatch.org/auth/login?callbackUrl=http://localhost:3000/api/v1/auth#login&token=true"
+        >
+          Login
+        </Button>
+      </div>
+    )}
   </div>
 );
 
 MyCw.propTypes = {
+  login: PropTypes.object.isRequired,
   route: PropTypes.object.isRequired
 };
 
