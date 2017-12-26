@@ -11,12 +11,19 @@
 
 .legend {
   position: absolute;
-  left: $gutter-padding;
-  bottom: $gutter-padding;
+  left: 0;
+  bottom: 15px;
 }
 
 .buttons {
   position: absolute;
-  right: 0;
-  bottom: $gutter-padding;
+  right: 10px;
+  top: $gutter-padding;
+  z-index: 1;
+}
+
+.title {
+  position: absolute;
+  left: 0;
+  top: $gutter-padding;
 }

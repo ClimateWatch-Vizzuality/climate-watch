@@ -5,6 +5,7 @@ import wriImage from 'assets/partners/wri.png';
 import climateAnalyticsImage from 'assets/partners/climate-analytics.png';
 import climateActionTrackerImage from 'assets/partners/climate-action-tracker.png';
 import worldBankImage from 'assets/partners/the-world-bank.png';
+import vizzualityImage from 'assets/partners/vizzuality.png';
 import ccImage from 'assets/partners/unfccc.jpg';
 import gizImage from 'assets/partners/giz.png';
 import googleImage from 'assets/partners/google.png';
@@ -117,6 +118,21 @@ const partnershipWith = {
   ]
 };
 
+const techPartnership = {
+  id: 'tech-partnership',
+  title: 'Technical partners',
+  type: 'onlyLinks',
+  partners: [
+    {
+      link: 'http://www.vizzuality.com/',
+      img: {
+        alt: 'Vizzuality',
+        src: vizzualityImage
+      }
+    }
+  ]
+};
+
 const additionalData = {
   id: 'additional-data',
   title: 'Additional data provided by',
@@ -207,7 +223,7 @@ const foundingBy = {
 };
 
 const withSections = withProps(() => ({
-  sections: [partnershipWith, additionalData, foundingBy]
+  sections: [partnershipWith, techPartnership, additionalData, foundingBy]
 }));
 
 export default withSections(Component);

@@ -25,18 +25,21 @@ class NdcSdgLinkagesMap extends PureComponent {
   render() {
     return (
       <div className={styles.container}>
+        <h3 className={styles.title}>Global Linkage Overview</h3>
+        <ButtonGroup
+          className={styles.buttons}
+          onInfoClick={this.props.handleInfoClick}
+          shareUrl="/embed/ndcs-sdg"
+        />
         <Map
           style={{ height: '100%', width: '100%' }}
           zoomEnable
           paths={this.props.paths}
           className={styles.map}
           onCountryClick={this.props.onCountryClick}
+          controlPosition="bottom"
         />
         {this.getLegend()}
-        <ButtonGroup
-          className={styles.buttons}
-          onInfoClick={this.props.handleInfoClick}
-        />
       </div>
     );
   }

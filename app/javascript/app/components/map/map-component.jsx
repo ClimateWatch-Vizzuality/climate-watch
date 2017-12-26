@@ -35,12 +35,17 @@ class Map extends PureComponent {
       onCountryMove,
       onCountryEnter,
       onCountryLeave,
-      defaultStyle
+      defaultStyle,
+      controlPosition
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
         {zoomEnable && (
-          <div className={styles.actions}>
+          <div
+            className={cx(styles.actions, {
+              [styles.bottom]: controlPosition === 'bottom'
+            })}
+          >
             <Button onClick={handleZoomIn}>
               <Icon icon={mapZoomIn} />
             </Button>
@@ -139,6 +144,7 @@ Map.propTypes = {
   onCountryClick: PropTypes.func,
   onCountryMove: PropTypes.func,
   onCountryLeave: PropTypes.func,
+  controlPosition: PropTypes.string,
   defaultStyle: PropTypes.object.isRequired
 };
 

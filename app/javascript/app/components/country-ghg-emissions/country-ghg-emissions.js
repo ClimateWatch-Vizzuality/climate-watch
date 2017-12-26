@@ -56,7 +56,9 @@ const mapStateToProps = (state, { location, match }) => {
 };
 
 function needsRequestData(props, nextProps) {
-  const { sourceSelected } = nextProps;
+  const { iso, sourceSelected } = nextProps;
+  const isNewCountry = iso !== props.iso;
+  if (isNewCountry) return true;
   const hasValues = sourceSelected && sourceSelected.value;
   if (!hasValues) return false;
   const hasChanged = sourceSelected.value !== props.sourceSelected.value;

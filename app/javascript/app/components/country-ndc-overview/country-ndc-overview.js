@@ -37,6 +37,14 @@ class CountryNdcOverviewContainer extends PureComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { iso, loading, fetchCountryNdcOverviewData } = this.props;
+    const { iso: nextIso } = nextProps;
+    if (iso && nextIso && nextIso !== iso && !loading) {
+      fetchCountryNdcOverviewData(nextIso);
+    }
+  }
+
   handleInfoClick = () => {
     this.props.setModalMetadata({
       slugs: ['ndc_cait', 'ndc_wb'],
@@ -54,6 +62,7 @@ class CountryNdcOverviewContainer extends PureComponent {
 }
 
 CountryNdcOverviewContainer.propTypes = {
+  iso: Proptypes.string,
   match: Proptypes.object.isRequired,
   loading: Proptypes.bool,
   fetchCountryNdcOverviewData: Proptypes.func,
