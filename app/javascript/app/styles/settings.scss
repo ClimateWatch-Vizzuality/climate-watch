@@ -93,3 +93,9 @@ $climate-risk-9: #5165a3;
 $climate-risk-10: #3c4483;
 
 $climate-risk-colors: $climate-risk-1 ,$climate-risk-2 ,$climate-risk-3 ,$climate-risk-4 ,$climate-risk-5 ,$climate-risk-6 ,$climate-risk-7 ,$climate-risk-8 ,$climate-risk-9 ,$climate-risk-10;
+
+h3 {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+}

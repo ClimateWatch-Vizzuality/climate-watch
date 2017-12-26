@@ -6,6 +6,7 @@ import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import MultiSelect from 'components/multiselect';
 import Chart from 'components/charts/chart';
+import ModalMetadata from 'components/modal-metadata';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -71,6 +72,7 @@ class GhgEmissions extends PureComponent {
           <ButtonGroup
             className={styles.colEnd}
             onInfoClick={handleInfoClick}
+            shareUrl="/embed/ghg-emissions"
           />
         </div>
         <Chart
@@ -83,6 +85,7 @@ class GhgEmissions extends PureComponent {
           height={500}
           loading={loading}
         />
+        <ModalMetadata />
       </div>
     );
   }
