@@ -4,12 +4,13 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-direction: column;
 }
 
 .main {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  width: 100%;
+  justify-content: space-between;
   align-items: flex-start;
   color: $white;
   font-family: $font-family-1;
