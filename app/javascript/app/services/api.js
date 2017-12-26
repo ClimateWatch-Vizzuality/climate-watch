@@ -19,6 +19,6 @@ const API = (baseURL = '', version = 'v1') => ({
   }
 });
 
-export const EPAPI = API('https://www.emissionspathways.org');
+export const EPAPI = API('https://data.emissionspathways.org');
 
 export const CWAPI = API();
