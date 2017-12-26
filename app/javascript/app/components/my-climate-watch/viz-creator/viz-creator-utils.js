@@ -1,7 +1,18 @@
 import isFunction from 'lodash/isFunction';
-import { update } from 'js-lenses';
+import { update, get } from 'js-lenses';
 import { format } from 'd3-format';
 import { assign } from 'app/utils';
+
+import {
+  $visualisations,
+  $locations,
+  $models,
+  $scenarios,
+  $indicators,
+  $categories,
+  $subcategories,
+  $timeseries
+} from './viz-creator-lenses';
 
 import {
   groupDataByScenario,
@@ -16,7 +27,7 @@ export const log = state => {
   return state;
 };
 
-export const flatMapVis = vis =>
+export const flatMapVis = (vis = []) =>
   vis.reduce((vv, v) => vv.concat(v.visualisations), []);
 
 export const updateIn = (l, payload, state) =>

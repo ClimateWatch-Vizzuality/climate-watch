@@ -28,7 +28,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": false, "selected": null, "active": true},
-              {"name": "years", "multi": true, "selected": "all", "active": false }
+              {"name": "indicators", "multi": true, "selected": "all", "active": false }
             ]
           },
           {
@@ -54,7 +54,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": true, "selected": "all", "active": true},
-              {"name": "years", "multi": true, "selected": "all", "active": false }
+              {"name": "indicators", "multi": true, "selected": "all", "active": false }
             ]
           },
           {
@@ -78,7 +78,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "type": "multiselectselect", "selected": "all", "active": true},
-              {"name": "years", "multi": false, "selected": "last", "active": true }
+              {"name": "indicators", "multi": false, "selected": "last", "active": true }
             ]
           }
         ]
@@ -108,7 +108,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": false, "selected": null, "active": true},
-              {"name": "years", "multi": true, "selected": "all", "active": false }
+              {"name": "indicators", "multi": true, "selected": "all", "active": false }
             ]
           },
           {
@@ -132,7 +132,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": false, "selected": null, "active": true},
-              {"name": "years", "multi": false, "selected": "last", "active": true }
+              {"name": "indicators", "multi": false, "selected": "last", "active": true }
             ]
           },
           {
@@ -160,7 +160,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": true, "selected": "all", "active": true},
-              {"name": "years", "multi": false, "selected": "last", "active": true }
+              {"name": "indicators", "multi": false, "selected": "last", "active": true }
             ]
           }
         ]

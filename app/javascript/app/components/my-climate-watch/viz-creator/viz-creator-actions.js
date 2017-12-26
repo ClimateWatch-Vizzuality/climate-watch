@@ -26,9 +26,10 @@ export const fetchVisualisations = createThunkAction(
   'fetchVisualisations',
   payload => (dispatch, getState) => {
     const state = getState();
-    const visualisations = flatMapVis(
-      find(state.vizCreator.data, { id: payload })['viz-types']
-    );
+    // const visualisations = flatMapVis(
+    const visualisations = find(state.vizCreator.data, { id: payload })[
+      'viz-types'
+    ];
     dispatch(gotVisualisations(visualisations));
   }
 );
