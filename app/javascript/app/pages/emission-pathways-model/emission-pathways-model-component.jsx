@@ -27,6 +27,7 @@ class EmissionPathwaysModel extends PureComponent {
               <Intro
                 title={model && model.full_name}
                 description={model && model.description}
+                textColumns
               />
             </div>
             <Sticky activeClass="stickyEmissionsModel">
