@@ -44,7 +44,7 @@ export const flattenedData = createSelector(
       const flattenedD = d;
       attributesWithObjects[category].forEach(a => {
         if (Object.prototype.hasOwnProperty.call(d, a)) {
-          flattenedD[a] = d[a] && d[a].name;
+          flattenedD[a] = d[a] && (d[a].name || d[a].full_name);
         }
       });
       return flattenedD;
