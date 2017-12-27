@@ -42,7 +42,7 @@ module Api
         private
 
         def user_story_params
-          params.require(:user_story).permit(:title, :body, :public)
+          params.require(:user_story).permit(:title, :public, body: {})
         end
 
         def user_story
