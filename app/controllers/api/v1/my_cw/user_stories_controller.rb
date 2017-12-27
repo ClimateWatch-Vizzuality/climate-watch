@@ -23,7 +23,7 @@ module Api
 
         def create
           @user_story = ::MyCw::UserStory.new(user_story_params)
-          @user_story.user_id = @current_user[:user_id]
+          @user_story.user = @current_user[:user_id]
           if @user_story.save
             render json: @user_story, serializer: Api::V1::MyCw::UserStorySerializer
           else
