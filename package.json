@@ -25,6 +25,7 @@
     "d3-format": "^1.2.0",
     "d3-scale": "1.0.6",
     "dotenv": "^4.0.0",
+    "draft-js": "0.10.4",
     "history": "4.7.2",
     "js-lenses": "2.0.1",
     "lodash": "4.17.4",

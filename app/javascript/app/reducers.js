@@ -49,11 +49,13 @@ import * as NDCSPage from 'pages/ndcs';
 
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as ndcSearchPage from 'pages/ndc-search';
+import * as myCWEditor from 'pages/my-climate-watch/my-cw-editor';
 
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
-  ndcSearch: handleActions(ndcSearchPage)
+  ndcSearch: handleActions(ndcSearchPage),
+  myCWEditor: handleModule(myCWEditor)
 };
 
 // Components

@@ -18,7 +18,12 @@ const Intro = props => {
         />
       </div>
       {button && (
-        <Button color="yellow" className={theme.button} link={button.link}>
+        <Button
+          color="yellow"
+          className={theme.button}
+          link={button.link}
+          onClick={button.onClick}
+        >
           {button.text}
         </Button>
       )}
