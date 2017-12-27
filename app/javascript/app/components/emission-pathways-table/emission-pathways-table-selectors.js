@@ -120,18 +120,37 @@ export const filteredDataByFilters = createSelector(
     if (!data) return null;
     if (!filters) return data;
     let filteredData = data;
+    const availableSubcategories = [];
     Object.keys(filters).forEach(key => {
-      filteredData = filteredData.filter(
-        d => d[key] === undefined || d[key] === filters[key]
-      );
+      filteredData = filteredData.filter(d => {
+        if (key === 'category' && d[key] === filters[key]) {
+          availableSubcategories.push(d.subcategory);
+        }
+        return d[key] === undefined || d[key] === filters[key];
+      });
     });
     return filteredData;
   }
 );
 
+export const getAvailableSubcategories = createSelector(
+  [filteredDataBySearch, getSelectedFields],
+  (data, filters) => {
+    if (!data) return null;
+    if (!filters || !filters.category) return [];
+    const availableSubcategories = [];
+    data.forEach(d => {
+      if (d.category === filters.category) {
+        availableSubcategories.push(d.subcategory);
+      }
+    });
+    return uniq(availableSubcategories);
+  }
+);
+
 export const getFilterOptionsByCategory = createSelector(
-  [getCategory, getData],
-  (category, data) => {
+  [getCategory, getData, getAvailableSubcategories],
+  (category, data, subcategories) => {
     if (!category || !data || isEmpty(data)) return null;
     const filters = FILTERS_BY_CATEGORY[category];
     const categoryOptions = {};
@@ -143,8 +162,13 @@ export const getFilterOptionsByCategory = createSelector(
           sanitizedFilterData.push(filterName);
         }
       });
-
-      categoryOptions[f] = uniq(sanitizedFilterData).map(filterData => ({
+      let availableData = uniq(sanitizedFilterData);
+      if (f === 'subcategory') {
+        availableData = uniq(sanitizedFilterData).filter(
+          d => subcategories.indexOf(d) > -1
+        );
+      }
+      categoryOptions[f] = availableData.map(filterData => ({
         value: filterData,
         label: filterData
       }));
