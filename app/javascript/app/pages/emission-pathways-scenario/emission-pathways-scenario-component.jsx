@@ -31,6 +31,7 @@ class EmissionPathwaysScenario extends PureComponent {
                   link: `/emission-pathways/models/${scenario &&
                     scenario.model_id}`
                 }}
+                textColumns
               />
             </div>
             <Sticky activeClass="stickyEmissionsScenario">
