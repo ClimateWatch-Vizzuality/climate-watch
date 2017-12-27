@@ -47,7 +47,7 @@ module Api
 
         def user_story
           @user_story = ::MyCw::UserStory.find params[:id]
-          render status: 401 unless @user_story.user_id == @current_user[:user_id]
+          render status: 401 unless @user_story.user_id == @current_user[:user_id]&.id
         end
       end
     end
