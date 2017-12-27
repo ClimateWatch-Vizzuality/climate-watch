@@ -10,7 +10,7 @@ import Button from 'components/button';
 import layout from 'styles/layout.scss';
 import styles from './my-climate-watch-styles';
 
-const button = { text: 'Create an insight', link: 'editor' };
+const button = { text: 'Create an insight', link: '/my-climate-watch/editor' };
 
 const MyCw = ({ route, login }) => (
   <div>

@@ -1,15 +1,19 @@
-import { createAction } from 'redux-actions';
-import { createThunkAction } from 'utils/redux';
+import { createAction, createThunkAction } from 'redux-tools';
+import { CWAPI } from 'services/api';
 
-export const gotStories = createAction('gotStories');
+export const fetchInsightsInit = createAction('fetchInsightsInit');
+export const fetchInsightsReady = createAction('fetchInsightsReady');
+export const fetchInsightsFail = createAction('fetchInsightsFail');
 
-export const fetchStories = createThunkAction(
-  'fetchStories',
+export const fetchInsights = createThunkAction(
+  'fetchInsights',
   () => dispatch => {
-    fetch('/api/v1/my_cw/user_stories', {
-      credentials: 'same-origin'
-    })
-      .then(d => d.json())
-      .then(stories => dispatch(gotStories(stories)));
+    dispatch(fetchInsightsInit());
+    CWAPI.get('my_cw/visualizations')
+      .then(visualisations => dispatch(fetchInsightsReady(visualisations)))
+      .catch(e => {
+        console.warn(e);
+        dispatch(fetchInsightsFail());
+      });
   }
 );

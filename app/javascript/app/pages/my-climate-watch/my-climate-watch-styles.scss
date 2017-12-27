@@ -4,8 +4,13 @@
   background-color: $light-gray;
 }
 
+.wrapper {
+  padding-top: 20px;
+  min-height: calc(100vh - 420px);
+}
+
 .loginContainer {
-  min-height: 300px;
+  min-height: calc(100vh - 420px);
   display: flex;
   align-items: center;
   justify-content: center;

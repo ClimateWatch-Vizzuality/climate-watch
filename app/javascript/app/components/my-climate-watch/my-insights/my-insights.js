@@ -1,15 +1,20 @@
 import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import MyInsightsComponent from './my-insights-component';
 import initialState from './my-insights-initial-state';
 import reducers from './my-insights-reducers';
 import * as actions from './my-insights-actions';
 
+const mapStateToProps = ({ insights }) => ({
+  insights: insights.data
+});
+
 class MyInsights extends Component {
   constructor(props) {
     super(props);
-    props.fetchStories();
+    props.fetchInsights();
   }
 
   render() {
@@ -17,7 +22,9 @@ class MyInsights extends Component {
   }
 }
 
-const mapStateToProps = ({ insights }) => ({ insights });
+MyInsights.propTypes = {
+  fetchInsights: PropTypes.func.isRequired
+};
 
 export { actions, reducers, initialState };
 
