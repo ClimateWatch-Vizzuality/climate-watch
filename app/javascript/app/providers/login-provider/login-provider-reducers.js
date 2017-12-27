@@ -17,5 +17,10 @@ export default {
     user: payload,
     logged: true
   }),
-  [actions.getUserFail]: state => ({ ...state, loading: false, error: true })
+  [actions.getUserFail]: state => ({
+    ...state,
+    loading: false,
+    loaded: true,
+    error: true
+  })
 };

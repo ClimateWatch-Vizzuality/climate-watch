@@ -2,6 +2,8 @@ import { createElement, PureComponent } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { parseInsight } from './my-cw-editor-selectors';
 import * as actions from './my-cw-editor-actions';
 import reducers, { initialState } from './my-cw-editor-reducers';
 
@@ -9,13 +11,22 @@ import MyClimateWatchComponent from './my-cw-editor-component';
 
 const mapStateToProps = ({ login, myCWEditor }) => ({
   login,
-  myCWEditor
+  saved: myCWEditor.saved,
+  loading: myCWEditor.loading,
+  insight: parseInsight(myCWEditor)
 });
 
 class MyClimateWatchContainer extends PureComponent {
+  componentWillMount() {
+    const { insightId } = this.props.match.params;
+    if (insightId) {
+      this.props.getInsight(insightId);
+    }
+  }
+
   componentDidUpdate() {
-    const { myCWEditor, history } = this.props;
-    if (myCWEditor.saved) {
+    const { saved, history } = this.props;
+    if (saved) {
       history.push('/my-climate-watch');
     }
   }
@@ -30,8 +41,10 @@ class MyClimateWatchContainer extends PureComponent {
 }
 
 MyClimateWatchContainer.propTypes = {
-  myCWEditor: PropTypes.object,
+  match: PropTypes.object,
   history: PropTypes.object,
+  saved: PropTypes.bool.isRequired,
+  getInsight: PropTypes.func.isRequired,
   clearInsight: PropTypes.func.isRequired
 };
 

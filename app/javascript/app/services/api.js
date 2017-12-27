@@ -37,6 +37,25 @@ const api = (baseURL = '', version = 'v1') => ({
       data.json = () => data;
       return data;
     });
+  },
+  patch: (endpoint, params, mock = false) => {
+    const url = mock
+      ? mockUrl(endpoint, params)
+      : `${baseURL}/api/${version}/${endpoint}`;
+    return fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      method: 'PATCH',
+      body: JSON.stringify(params)
+    }).then(d => {
+      const data = isFunction(d.json) ? d.json() : d;
+      // fallback
+      data.json = () => data;
+      return data;
+    });
   }
 });
 

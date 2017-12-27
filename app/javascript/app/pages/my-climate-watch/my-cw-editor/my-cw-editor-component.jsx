@@ -20,19 +20,36 @@ class MyCw extends PureComponent {
     };
     this.onChange = editorState => this.setState({ editorState });
   }
+
+  componentDidUpdate(prevProps) {
+    const { editorContent } = this.props.insight;
+    if (prevProps.insight.editorState !== editorContent) {
+      const editorState = EditorState.push(
+        this.state.editorState,
+        editorContent
+      );
+      this.setState({ editorState }); // eslint-disable-line
+    }
+  }
+
+  onCreateBtnClick = () => {
+    const content = convertToRaw(this.state.editorState.getCurrentContent());
+    const { insight } = this.props;
+    if (insight && insight.id) {
+      this.props.saveInsight({ content, id: insight.id });
+    } else {
+      this.props.saveInsight({ content });
+    }
+  };
+
   render() {
-    const { route, login, saveInsight } = this.props;
+    const { route, login, loading, insight } = this.props;
     const button = {
-      text: 'Save',
-      onClick: () => {
-        const content = convertToRaw(
-          this.state.editorState.getCurrentContent()
-        );
-        saveInsight(content);
-      }
+      text: insight.id ? 'Update' : 'Save',
+      onClick: this.onCreateBtnClick
     };
-    let content = <Loading />;
-    if (login.loaded) {
+    let content = <Loading className={styles.loading} />;
+    if (!loading && login.loaded) {
       content = login.logged ? (
         <Editor editorState={this.state.editorState} onChange={this.onChange} />
       ) : (
@@ -67,6 +84,8 @@ class MyCw extends PureComponent {
 MyCw.propTypes = {
   login: PropTypes.object.isRequired,
   route: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  insight: PropTypes.object.isRequired,
   saveInsight: PropTypes.func.isRequired
 };
 

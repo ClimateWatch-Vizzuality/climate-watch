@@ -493,7 +493,7 @@ export default [
           },
           {
             label: 'MyEditor',
-            path: '/my-climate-watch/editor',
+            path: '/my-climate-watch/editor/:insightId?',
             component: MyCWEditor,
             exact: true
           },

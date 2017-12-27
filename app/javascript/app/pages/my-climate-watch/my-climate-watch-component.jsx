@@ -14,7 +14,7 @@ import styles from './my-climate-watch-styles';
 const button = { text: 'Create an insight', link: '/my-climate-watch/editor' };
 
 const MyCw = ({ route, login }) => {
-  let content = <Loading />;
+  let content = <Loading className={styles.loading} />;
   if (login.loaded) {
     content = login.logged ? (
       renderRoutes(route.routes)
