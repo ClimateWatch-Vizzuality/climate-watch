@@ -8,23 +8,22 @@ import LoginProvider from 'providers/login-provider';
 import Button from 'components/button';
 import Loading from 'components/loading';
 
+import { LOGIN_URL } from 'data/constants';
+
 import layout from 'styles/layout.scss';
 import styles from './my-climate-watch-styles';
 
-const button = { text: 'Create an insight', link: '/my-climate-watch/editor' };
-
 const MyCw = ({ route, login }) => {
+  const button = login.logged
+    ? { text: 'Create an insight', link: '/my-climate-watch/editor' }
+    : null;
   let content = <Loading className={styles.loading} />;
   if (login.loaded) {
     content = login.logged ? (
       renderRoutes(route.routes)
     ) : (
       <div className={styles.loginContainer}>
-        <Button
-          className={styles.login}
-          color="yellow"
-          href="https://staging-api.globalforestwatch.org/auth/login?callbackUrl=http://localhost:3000/api/v1/auth/login?token=true"
-        >
+        <Button className={styles.login} color="yellow" href={LOGIN_URL}>
           Login
         </Button>
       </div>

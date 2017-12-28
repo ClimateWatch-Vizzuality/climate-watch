@@ -1,3 +1,8 @@
+const { GFW_API } = process.env;
+const { CW_API } = process.env;
+
+export const LOGIN_URL = `${GFW_API}/auth/login?callbackUrl=${location.origin}/${CW_API}/auth/login?token=true`;
+
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
     label: 'Absolute value',

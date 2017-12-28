@@ -8,6 +8,7 @@ import Button from 'components/button';
 import { EditorState, convertToRaw } from 'draft-js';
 import Editor from 'components/my-climate-watch/editor';
 import Loading from 'components/loading';
+import { LOGIN_URL } from 'data/constants';
 
 import layout from 'styles/layout.scss';
 import styles from './my-cw-editor-styles';
@@ -24,7 +25,10 @@ class MyCw extends PureComponent {
   componentDidUpdate(prevProps) {
     const { editorContent } = this.props.insight;
     if (prevProps.insight.editorState !== editorContent) {
-      const editorState = EditorState.push(this.state.editorState, editorContent);
+      const editorState = EditorState.push(
+        this.state.editorState,
+        editorContent
+      );
       this.setState({ editorState }); // eslint-disable-line
     }
   }
@@ -53,11 +57,7 @@ class MyCw extends PureComponent {
         <Editor editorState={this.state.editorState} onChange={this.onChange} />
       ) : (
         <div className={styles.loginContainer}>
-          <Button
-            className={styles.login}
-            color="yellow"
-            href="https://staging-api.globalforestwatch.org/auth/login?callbackUrl=http://localhost:3000/api/v1/auth/login?token=true"
-          >
+          <Button className={styles.login} color="yellow" href={LOGIN_URL}>
             Login
           </Button>
         </div>
