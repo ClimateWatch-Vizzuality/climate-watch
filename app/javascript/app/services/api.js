@@ -6,14 +6,6 @@ const { CW_API } = process.env;
 const mockUrl = (endpoint, params) =>
   `/mocks/${endpoint}.json${params ? `?${params}` : ''}`;
 
-const baseConfig = {
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
-  },
-  credentials: 'same-origin'
-};
-
 const handleResponse = d => {
   const data = isFunction(d.json) ? d.json() : d;
   // fallback
@@ -21,31 +13,50 @@ const handleResponse = d => {
   return data;
 };
 
-const api = (baseURL = '') => ({
-  get: (endpoint, params, mock = false) => {
+class API {
+  constructor(baseUrl, config) {
+    this.config = { ...config };
+    this.baseURL = baseUrl;
+  }
+
+  get = (endpoint, params, mock = false) => {
     const url = mock
       ? mockUrl(endpoint, params)
-      : `${baseURL}/${endpoint}${params ? `?${params}` : ''}`;
-    return fetch(url, baseConfig).then(handleResponse);
-  },
-  post: (endpoint, params, mock = false) => {
-    const url = mock ? mockUrl(endpoint, params) : `${baseURL}/${endpoint}`;
+      : `${this.baseURL}/${endpoint}${params ? `?${params}` : ''}`;
+    return fetch(url, this.config).then(handleResponse);
+  };
+
+  post = (endpoint, params, mock = false) => {
+    const url = mock
+      ? mockUrl(endpoint, params)
+      : `${this.baseURL}/${endpoint}`;
     return fetch(url, {
-      ...baseConfig,
+      ...this.config,
       method: 'POST',
       body: JSON.stringify(params)
     }).then(handleResponse);
-  },
-  patch: (endpoint, params, mock = false) => {
-    const url = mock ? mockUrl(endpoint, params) : `${baseURL}/${endpoint}`;
+  };
+
+  patch = (endpoint, params, mock = false) => {
+    const url = mock
+      ? mockUrl(endpoint, params)
+      : `${this.baseURL}/${endpoint}`;
     return fetch(url, {
-      ...baseConfig,
+      ...this.config,
       method: 'PATCH',
       body: JSON.stringify(params)
     }).then(handleResponse);
-  }
-});
+  };
+}
 
-export const EPAPI = api(ESP_API);
+export const EPAPI = new API(ESP_API);
 
-export const CWAPI = api(CW_API);
+const cwConfig = {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  },
+  credentials: 'same-origin'
+};
+
+export const CWAPI = new API(CW_API, cwConfig);

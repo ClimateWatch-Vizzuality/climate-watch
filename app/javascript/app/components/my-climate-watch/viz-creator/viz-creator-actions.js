@@ -16,8 +16,7 @@ export const fetchDatasets = createThunkAction(
 export const fetchLocations = createThunkAction(
   'fetchLocations',
   () => dispatch => {
-    // REMOVE MOCK WHEN ESP ACCEPTS CORSS
-    EPAPI.get('locations', 'time_series=true', true).then(d =>
+    EPAPI.get('locations', 'time_series=true').then(d =>
       dispatch(gotLocations(d))
     );
   }
@@ -60,7 +59,7 @@ export const fetchIndicators = createThunkAction(
       'indicators',
       `scenario=${scenarios
         .map(s => s.value)
-        .join(',')}&location=${location.value}&time_series=true`
+        .join(',')}&location=${location}&time_series=true`
     ).then(d => {
       const categories = uniqueById(d.map(i => i.category));
 
