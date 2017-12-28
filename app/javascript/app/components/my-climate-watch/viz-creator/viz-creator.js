@@ -17,7 +17,6 @@ import {
   subcategoriesSelector,
   timeseriesSelector,
   hasDataSelector,
-  filtersSelector,
   getFormatFilters
 } from './viz-creator-selectors';
 

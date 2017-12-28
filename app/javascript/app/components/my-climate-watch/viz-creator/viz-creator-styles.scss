@@ -28,3 +28,13 @@
   font-weight: $font-weight-bold;
   color: $theme-color;
 }
+
+.selectsContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.selectsItem {
+  flex-basis: 25%;
+  margin-right: 30px;
+}

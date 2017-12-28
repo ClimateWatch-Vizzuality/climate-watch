@@ -2,7 +2,7 @@ import { createAction, createThunkAction } from 'redux-tools';
 
 import find from 'lodash/find';
 import { EPAPI } from 'services/api';
-import { flatMapVis } from './viz-creator-utils';
+// import { flatMapVis } from './viz-creator-utils';
 
 export const fetchDatasets = createThunkAction(
   'fetchDatasets',
@@ -16,7 +16,8 @@ export const fetchDatasets = createThunkAction(
 export const fetchLocations = createThunkAction(
   'fetchLocations',
   () => dispatch => {
-    EPAPI.get('locations?time_series=true').then(d =>
+    // REMOVE MOCK WHEN ESP ACCEPTS CORSS
+    EPAPI.get('locations', 'time_series=true', true).then(d =>
       dispatch(gotLocations(d))
     );
   }

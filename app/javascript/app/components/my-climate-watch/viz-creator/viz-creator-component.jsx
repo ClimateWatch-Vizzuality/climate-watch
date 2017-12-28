@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _startCase from 'lodash/startCase';
 import _map from 'lodash/map';
 import _isUndefined from 'lodash/isUndefined';
@@ -18,6 +19,7 @@ import styles from './viz-creator-styles';
 const toFetcher = name => `fetch${_.pluralize(_startCase(name))}`;
 const toSelector = name => `select${_.singularize(_startCase(name))}`;
 
+/* eslint-disable */
 const Option = ({
   enableLoad,
   enableSelect,
@@ -38,14 +40,15 @@ const Option = ({
     )}
   </li>
 );
+/* eslint-enable */
 
-const Step1 = ({ datasets, dataset, selectDataset }) => (
+const Step1 = ({ datasets, selectDataset }) => (
   <li className={styles.step}>
     <h2 className={styles.stepTitle}>1/4 - Select a dataset</h2>
     <SelectableList
       type="dataset"
       data={datasets.data}
-      selected={dataset}
+      selected={datasets.selected}
       onClick={selectDataset}
     >
       {d => <CardContent data={d} type="dataset" />}
@@ -53,15 +56,25 @@ const Step1 = ({ datasets, dataset, selectDataset }) => (
   </li>
 );
 
-const Step2 = ({ visualisations, visualisation, selectVisualisation }) => (
+Step1.propTypes = {
+  datasets: PropTypes.shape({
+    data: PropTypes.array.isRequired,
+    selected: PropTypes.string
+  }).isRequired,
+  selectDataset: PropTypes.func.isRequired
+};
+
+const Step2 = ({ visualisations, selectVisualisation }) => (
   <li className={styles.step}>
     <h2 className={styles.stepTitle}>2/4 - Select what you want to compare</h2>
     {_map(visualisations.data, vs => [
-      <h3 className={styles.stepSubTitle} key={vs.id}>{vs.name}</h3>,
+      <h3 className={styles.stepSubTitle} key={vs.id}>
+        {vs.name}
+      </h3>,
       <SelectableList
         type="visualisation"
         data={vs.visualisations}
-        selected={visualisation}
+        selected={visualisations.selected}
         key={`v-${vs.id}`}
         onClick={selectVisualisation}
       >
@@ -71,12 +84,23 @@ const Step2 = ({ visualisations, visualisation, selectVisualisation }) => (
   </li>
 );
 
+Step2.propTypes = {
+  visualisations: PropTypes.shape({
+    data: PropTypes.array.isRequired,
+    selected: PropTypes.string
+  }).isRequired,
+  selectVisualisation: PropTypes.func.isRequired
+};
+
 const Step3 = props => {
-  const selectFilter = console.log.bind(console);
-  const { spec } = props;
-  console.log(spec, props);
+  const selectFilter = e => {
+    console.info(e);
+  };
+  const { spec } = props; // eslint-disable-line
+  // console.log(spec, props);
   const selectProps = (f, value) => {
     const dd = props[f.name];
+
     return {
       disabled: !_isUndefined(dd.active) || _isEmpty(dd.data),
       [value]: dd.selected || [],
@@ -89,22 +113,23 @@ const Step3 = props => {
     <li className={styles.step}>
       <h2 className={styles.stepTitle}>3/4 - Filter the data</h2>
       {spec && (
-        <ul>
-          {_map(spec, f => (
-            <li key={f.id}>
-              {props[f.name] && f.multi ? (
-                <MultiSelect
-                  // log={console.log(selectProps(f, 'values'))}
-                  {...selectProps(f, 'values')}
-                  label={f.name}
-                  onMultiValueChange={e =>
-                    selectFilter({
-                      values: e,
-                      type: f.name
-                    })}
-                />
-              ) : (
-                props[f.name] && (
+        <ul className={styles.selectsContainer}>
+          {_map(spec, f => {
+            if (!props[f.name]) return null;
+            return (
+              <li key={f.id} className={styles.selectsItem}>
+                {f.multi ? (
+                  <MultiSelect
+                    // log={console.log(selectProps(f, 'values'))}
+                    {...selectProps(f, 'values')}
+                    label={f.name}
+                    onMultiValueChange={e =>
+                      selectFilter({
+                        values: e,
+                        type: f.name
+                      })}
+                  />
+                ) : (
                   <Dropdown
                     {...selectProps(f, 'value')}
                     label={props[f.name].label}
@@ -115,10 +140,10 @@ const Step3 = props => {
                       })}
                     hideResetButton
                   />
-                )
-              )}
-            </li>
-          ))}
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </li>
@@ -126,6 +151,7 @@ const Step3 = props => {
 };
 
 const VizCreator = props => {
+  /* eslint-disable */
   const {
     fetchDatasets,
     selectDataset,
@@ -156,20 +182,19 @@ const VizCreator = props => {
     hasData,
     filters
   } = props;
-  // console.log(datasets);
+  /* eslint-enable */
+
   return (
     <div>
       <div className={styles.container}>
         <ul className={styles.steps}>
-          <Step1 {...{ datasets, dataset: datasets.selected, selectDataset }} />
-          <Step2
-            {...{
-              visualisations,
-              visualisation: visualisations.selected,
-              selectVisualisation
-            }}
-          />
-          <Step3 {...{ spec: filters, ...props }} />
+          <Step1 {...{ datasets, selectDataset }} />
+          {datasets.selected && (
+            <Step2 {...{ visualisations, selectVisualisation }} />
+          )}
+          {visualisations.selected && (
+            <Step3 {...{ spec: filters, ...props }} />
+          )}
         </ul>
       </div>
       <ul style={{ listStyle: 'none' }}>

@@ -18,6 +18,17 @@ import {
   $timeseries
 } from './viz-creator-lenses';
 
+const lenses = {
+  visualisations: $visualisations,
+  locations: $locations,
+  models: $models,
+  scenarios: $scenarios,
+  indicators: $indicators,
+  categories: $categories,
+  subcategories: $subcategories,
+  timeseries: $timeseries
+};
+
 // import {
 //   groupDataByScenario,
 //   pickByKey,
@@ -106,7 +117,7 @@ const mapFilter = data =>
 export const getFormatFilters = name =>
   createSelector(datasetsSelector, filtersSelector, (state, spec) => {
     // const { topEmmiters } = state;
-    const filter = { ...state[name] };
+    const filter = get(lenses[name], state);
     filter.data = mapFilter(filter.data);
     filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
     filter.label = _.titleize(name);
