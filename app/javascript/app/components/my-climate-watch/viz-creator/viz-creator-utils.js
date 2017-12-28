@@ -1,18 +1,9 @@
 import isFunction from 'lodash/isFunction';
-import { update, get } from 'js-lenses';
+import _startCase from 'lodash/startCase';
+import _ from 'lodash-inflection';
+import { update } from 'js-lenses';
 import { format } from 'd3-format';
 import { assign } from 'app/utils';
-
-import {
-  $visualisations,
-  $locations,
-  $models,
-  $scenarios,
-  $indicators,
-  $categories,
-  $subcategories,
-  $timeseries
-} from './viz-creator-lenses';
 
 import {
   groupDataByScenario,
@@ -22,10 +13,8 @@ import {
   COLORS
 } from './components/charts/line/utils';
 
-export const log = state => {
-  console.log(state); // eslint-disable-line
-  return state;
-};
+export const toFetcher = name => `fetch${_.pluralize(_startCase(name))}`;
+export const toSelector = name => `select${_.singularize(_startCase(name))}`;
 
 export const flatMapVis = (vis = []) =>
   vis.reduce((vv, v) => vv.concat(v.visualisations), []);

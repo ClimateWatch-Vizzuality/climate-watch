@@ -1,23 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _startCase from 'lodash/startCase';
 import _map from 'lodash/map';
 import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
-import _ from 'lodash-inflection';
 
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
 
 import { selections } from './viz-creator-mocks';
-import { processLineData } from './viz-creator-utils';
+import { processLineData, toSelector, toFetcher } from './viz-creator-utils';
 import LineChart from './components/charts/line/line';
 import SelectableList from './components/selectable-list';
 import CardContent from './components/card-content';
 import styles from './viz-creator-styles';
-
-const toFetcher = name => `fetch${_.pluralize(_startCase(name))}`;
-const toSelector = name => `select${_.singularize(_startCase(name))}`;
 
 /* eslint-disable */
 const Option = ({
@@ -93,14 +88,9 @@ Step2.propTypes = {
 };
 
 const Step3 = props => {
-  const selectFilter = e => {
-    console.info(e);
-  };
-  const { spec } = props; // eslint-disable-line
-  // console.log(spec, props);
+  const { spec } = props;
   const selectProps = (f, value) => {
     const dd = props[f.name];
-
     return {
       disabled: !_isUndefined(dd.active) || _isEmpty(dd.data),
       [value]: dd.selected || [],
@@ -124,7 +114,7 @@ const Step3 = props => {
                     {...selectProps(f, 'values')}
                     label={f.name}
                     onMultiValueChange={e =>
-                      selectFilter({
+                      props.handleFilterSelect({
                         values: e,
                         type: f.name
                       })}
@@ -134,7 +124,7 @@ const Step3 = props => {
                     {...selectProps(f, 'value')}
                     label={props[f.name].label}
                     onValueChange={e =>
-                      selectFilter({
+                      props.handleFilterSelect({
                         ...e,
                         type: f.name
                       })}
@@ -148,6 +138,10 @@ const Step3 = props => {
       )}
     </li>
   );
+};
+
+Step3.propTypes = {
+  spec: PropTypes.object.isRequired
 };
 
 const VizCreator = props => {

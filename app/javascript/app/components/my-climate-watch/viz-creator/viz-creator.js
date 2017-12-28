@@ -1,6 +1,7 @@
 import { Component, createElement } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import { toSelector } from './viz-creator-utils';
 import VizCreatorComponent from './viz-creator-component';
 import reducers from './viz-creator-reducers';
 import initialState from './viz-creator-initial-state';
@@ -46,7 +47,7 @@ const mapStateToProps = ({ vizCreator }) => ({
 class VizCreator extends Component {
   constructor(props) {
     super(props);
-    props.fetchDatasets(); // eslint-disable-line
+    props.fetchDatasets();
   }
 
   componentWillReceiveProps(props) {
@@ -63,8 +64,12 @@ class VizCreator extends Component {
     } = props;
 
     const {
-      fetchVisualisations, // eslint-disable-line
-      fetchLocations // eslint-disable-line
+      fetchVisualisations,
+      fetchLocations,
+      fetchModels,
+      fetchScenarios,
+      fetchIndicators,
+      fetchTimeseries
     } = props;
 
     if (
@@ -77,12 +82,51 @@ class VizCreator extends Component {
     if (visualisations.selected && !locations.loading && !locations.loaded) {
       fetchLocations(visualisations.selected);
     }
+    if (locations.selected && !models.loading && !models.loaded) {
+      fetchModels(locations.selected);
+    }
+    if (models.selected && !scenarios.loading && !scenarios.loaded) {
+      fetchScenarios(models.selected);
+    }
+    if (scenarios.selected && !indicators.loading && !indicators.loaded) {
+      fetchIndicators({
+        location: locations.selected,
+        scenarios: scenarios.selected
+      });
+    }
+    if (indicators.selected && !timeseries.loading && !timeseries.loaded) {
+      fetchTimeseries({
+        locations: locations.selected,
+        indicators: indicators.selected.value,
+        scenarios: scenarios.selected
+      });
+    }
   }
 
+  handleFilterSelect = filter => {
+    const actionName = toSelector(filter.type);
+    if (this.props[actionName]) {
+      this.props[actionName](filter.value);
+    }
+  };
+
   render() {
-    return createElement(VizCreatorComponent, this.props);
+    return createElement(VizCreatorComponent, {
+      ...this.props,
+      handleFilterSelect: this.handleFilterSelect
+    });
   }
 }
+
+VizCreator.propTypes = {
+  fetchDatasets: PropTypes.func.isRequired,
+  fetchVisualisations: PropTypes.func.isRequired,
+  fetchLocations: PropTypes.func.isRequired,
+  fetchModels: PropTypes.func.isRequired,
+  fetchScenarios: PropTypes.func.isRequired,
+  fetchIndicators: PropTypes.func.isRequired,
+  fetchTimeseries: PropTypes.func.isRequired
+};
 
 export { actions, reducers, initialState };
 
