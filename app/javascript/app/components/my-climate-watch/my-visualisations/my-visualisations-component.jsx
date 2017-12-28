@@ -28,7 +28,7 @@ const MyVisualisations = ({
       </li>
     </ul>
     <Modal
-      styles={modalStyles}
+      customStyles={modalStyles}
       isOpen={creatorIsOpen}
       onRequestClose={closeCreator}
     >
