@@ -31,6 +31,7 @@ const MyVisualisations = ({
       customStyles={modalStyles}
       isOpen={creatorIsOpen}
       onRequestClose={closeCreator}
+      shouldCloseOnOverlayClick={false}
     >
       <ModalHeader title="Create a visualisation" />
       <VizCreator onHideCreator={closeCreator} />

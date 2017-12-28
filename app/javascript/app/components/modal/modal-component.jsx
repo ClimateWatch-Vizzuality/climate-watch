@@ -16,7 +16,8 @@ class CustomModal extends PureComponent {
       defaultStyles,
       customStyles,
       contentLabel,
-      children
+      children,
+      shouldCloseOnOverlayClick
     } = this.props;
     const modalStyles = { ...defaultStyles, ...customStyles };
     return (
@@ -25,6 +26,7 @@ class CustomModal extends PureComponent {
         onRequestClose={onRequestClose}
         style={modalStyles}
         contentLabel={contentLabel}
+        shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       >
         <Button onClick={onRequestClose} className={styles.closeBtn} square>
           <Icon icon={closeIcon} className={styles.close} />
@@ -37,6 +39,7 @@ class CustomModal extends PureComponent {
 
 CustomModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  shouldCloseOnOverlayClick: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   contentLabel: PropTypes.string,
   customStyles: PropTypes.object,
@@ -46,6 +49,7 @@ CustomModal.propTypes = {
 
 CustomModal.defaultProps = {
   contentLabel: 'Modal content',
+  shouldCloseOnOverlayClick: true,
   defaultStyles: {
     overlay: {
       zIndex: 20,

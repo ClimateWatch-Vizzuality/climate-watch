@@ -12,6 +12,7 @@ import { selections } from './viz-creator-mocks';
 import { processLineData } from './viz-creator-utils';
 import LineChart from './components/charts/line/line';
 import SelectableList from './components/selectable-list';
+import CardContent from './components/card-content';
 import styles from './viz-creator-styles';
 
 const toFetcher = name => `fetch${_.pluralize(_startCase(name))}`;
@@ -40,23 +41,23 @@ const Option = ({
 
 const Step1 = ({ datasets, dataset, selectDataset }) => (
   <li className={styles.step}>
-    <h1>1/4 - Select a dataset</h1>
+    <h2 className={styles.stepTitle}>1/4 - Select a dataset</h2>
     <SelectableList
       type="dataset"
       data={datasets.data}
       selected={dataset}
       onClick={selectDataset}
     >
-      {d => d.name}
+      {d => <CardContent data={d} type="dataset" />}
     </SelectableList>
   </li>
 );
 
 const Step2 = ({ visualisations, visualisation, selectVisualisation }) => (
   <li className={styles.step}>
-    <h1>2/4 - Select what you want to compare</h1>
+    <h2 className={styles.stepTitle}>2/4 - Select what you want to compare</h2>
     {_map(visualisations.data, vs => [
-      <h2 key={vs.id}>{vs.name}</h2>,
+      <h3 className={styles.stepSubTitle} key={vs.id}>{vs.name}</h3>,
       <SelectableList
         type="visualisation"
         data={vs.visualisations}
@@ -64,7 +65,7 @@ const Step2 = ({ visualisations, visualisation, selectVisualisation }) => (
         key={`v-${vs.id}`}
         onClick={selectVisualisation}
       >
-        {d => d.name}
+        {d => <CardContent data={d} type="visualisation" />}
       </SelectableList>
     ])}
   </li>
@@ -86,7 +87,7 @@ const Step3 = props => {
 
   return (
     <li className={styles.step}>
-      <h1>3/4 - Filter the data</h1>
+      <h2 className={styles.stepTitle}>3/4 - Filter the data</h2>
       {spec && (
         <ul>
           {_map(spec, f => (

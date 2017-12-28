@@ -24,10 +24,7 @@ class MyCw extends PureComponent {
   componentDidUpdate(prevProps) {
     const { editorContent } = this.props.insight;
     if (prevProps.insight.editorState !== editorContent) {
-      const editorState = EditorState.push(
-        this.state.editorState,
-        editorContent
-      );
+      const editorState = EditorState.push(this.state.editorState, editorContent);
       this.setState({ editorState }); // eslint-disable-line
     }
   }
@@ -44,10 +41,12 @@ class MyCw extends PureComponent {
 
   render() {
     const { route, login, loading, insight } = this.props;
-    const button = {
-      text: insight.id ? 'Update' : 'Save',
-      onClick: this.onCreateBtnClick
-    };
+    const button = loading
+      ? null
+      : {
+        text: insight.id ? 'Update' : 'Save',
+        onClick: this.onCreateBtnClick
+      };
     let content = <Loading className={styles.loading} />;
     if (!loading && login.loaded) {
       content = login.logged ? (

@@ -1,7 +1,9 @@
 [
   {
     "id": "zp89bjdm",
-    "name": "emission pathways",
+    "name": "Emission pathways",
+    "image": "emissions",
+    "placeholder": "",
     "viz-types": [
       {
         "id": "m8dv72zm",
@@ -20,7 +22,7 @@
               "Multiple scenarios",
               "Time series"
             ],
-            "image": "",
+            "image": "one-country-lines",
             "filters": [
               {"name": "locations", "multi": false, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
@@ -46,7 +48,7 @@
               "Single scenario",
               "Time series"
             ],
-            "image": "",
+            "image": "one-country-bars",
             "filters": [
               {"name": "locations", "multi": false, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
@@ -70,7 +72,7 @@
               "Single scenario",
               "Single year"
             ],
-            "image": "",
+            "image": "one-country-donut",
             "filters": [
               {"name": "locations", "multi": false, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
@@ -100,7 +102,7 @@
               "Single scenario",
               "Time series"
             ],
-            "image": "",
+            "image": "compare-country-lines",
             "filters": [
               {"name": "locations", "multi": true, "selected": "top-10", "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
@@ -124,7 +126,7 @@
               "Single scenario",
               "Single year"
             ],
-            "image": "",
+            "image": "compare-country-donut",
             "filters": [
               {"name": "locations", "multi": true, "selected": "top-10", "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
@@ -152,7 +154,7 @@
               "Single scenario",
               "Single year"
             ],
-            "image": "",
+            "image": "compare-country-bars",
             "filters": [
               {"name": "locations", "multi": false, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
@@ -169,14 +171,23 @@
   },
   {
     "id": "32pda52d",
-    "name": "NDC content"
+    "name": "NDC content",
+    "image": "",
+    "placeholder": "Cooming soon",
+    "disabled": true
   },
   {
     "id": "rjn2523z",
-    "name": "NDC-SDG linkages"
+    "name": "NDC-SDG linkages",
+    "image": "",
+    "placeholder": "Cooming soon",
+    "disabled": true
   },
   {
     "id": "a4g2vz65",
-    "name": "historical GHG emissions"
+    "name": "historical GHG emissions",
+    "image": "",
+    "placeholder": "Cooming soon",
+    "disabled": true
   }
 ]

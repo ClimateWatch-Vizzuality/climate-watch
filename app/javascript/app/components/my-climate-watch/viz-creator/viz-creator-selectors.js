@@ -105,7 +105,6 @@ const mapFilter = data =>
 
 export const getFormatFilters = name =>
   createSelector(datasetsSelector, filtersSelector, (state, spec) => {
-    console.log(spec);
     // const { topEmmiters } = state;
     const filter = { ...state[name] };
     filter.data = mapFilter(filter.data);
