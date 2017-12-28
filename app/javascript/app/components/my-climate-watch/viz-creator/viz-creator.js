@@ -21,6 +21,29 @@ import {
   getFormatFilters
 } from './viz-creator-selectors';
 
+const mapStateToProps = ({ vizCreator }) => ({
+  ...vizCreator,
+  datasets: datasetsSelector(vizCreator),
+  visualisations: visualisationsSelector(vizCreator),
+  locations: locationsSelector(vizCreator),
+  models: modelsSelector(vizCreator),
+  scenarios: scenariosSelector(vizCreator),
+  indicators: indicatorsSelector(vizCreator),
+  categories: categoriesSelector(vizCreator),
+  subcategories: subcategoriesSelector(vizCreator),
+  timeseries: timeseriesSelector(vizCreator),
+  hasData: hasDataSelector(vizCreator),
+  filters: {
+    locations: getFormatFilters('locations')(vizCreator),
+    models: getFormatFilters('models')(vizCreator),
+    scenarios: getFormatFilters('scenarios')(vizCreator),
+    indicators: getFormatFilters('indicators')(vizCreator),
+    categories: getFormatFilters('categories')(vizCreator),
+    subcategories: getFormatFilters('subcategories')(vizCreator),
+    timeseries: getFormatFilters('timeseries')(vizCreator)
+  }
+});
+
 class VizCreator extends Component {
   constructor(props) {
     super(props);
@@ -61,29 +84,6 @@ class VizCreator extends Component {
     return createElement(VizCreatorComponent, this.props);
   }
 }
-
-const mapStateToProps = ({ vizCreator }) => ({
-  ...vizCreator,
-  datasets: datasetsSelector(vizCreator),
-  visualisations: visualisationsSelector(vizCreator),
-  locations: locationsSelector(vizCreator),
-  models: modelsSelector(vizCreator),
-  scenarios: scenariosSelector(vizCreator),
-  indicators: indicatorsSelector(vizCreator),
-  categories: categoriesSelector(vizCreator),
-  subcategories: subcategoriesSelector(vizCreator),
-  timeseries: timeseriesSelector(vizCreator),
-  hasData: hasDataSelector(vizCreator),
-  filters: {
-    locations: getFormatFilters('locations')(vizCreator),
-    models: getFormatFilters('models')(vizCreator),
-    scenarios: getFormatFilters('scenarios')(vizCreator),
-    indicators: getFormatFilters('indicators')(vizCreator),
-    categories: getFormatFilters('categories')(vizCreator),
-    subcategories: getFormatFilters('subcategories')(vizCreator),
-    timeseries: getFormatFilters('timeseries')(vizCreator)
-  }
-});
 
 export { actions, reducers, initialState };
 

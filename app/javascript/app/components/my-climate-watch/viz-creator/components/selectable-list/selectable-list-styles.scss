@@ -1,5 +1,45 @@
+@import '~styles/layout.scss';
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  display: inline-block;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  border: solid 1px rgba(26, 28, 34, 0.1);
+
+  &.dataset {
+    flex-basis: calc(50% - 20px);
+    margin: 0 10px 20px;
+
+    @media #{$mq-tablet} {
+      flex-basis: calc(25% - 20px);
+      margin: 0 10px;
+    }
+  }
+
+  &.visualisation {
+    flex-basis: calc(33% - 20px);
+    margin: 0 10px 20px;
+  }
+
+  &:hover, {
+    border: solid 1px $theme-color;
+  }
+}
 
 .datasetSelected,
 .visualisationSelected {
-  border: 1px solid gray;
+  border: solid 1px $theme-color;
+}
+
+.cardDisabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.button {
+  width: 100%;
 }
