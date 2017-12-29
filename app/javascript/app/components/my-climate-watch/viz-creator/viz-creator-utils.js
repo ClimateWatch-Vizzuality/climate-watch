@@ -34,7 +34,9 @@ export const processLineData = (idc, scn) => {
     getLineProps(data, COLORS)
   );
 
-  const lines = Object.keys(lineData[0]).slice(1);
+  const lines =
+    lineData && lineData.length ? Object.keys(lineData[0]).slice(1) : [];
+
   const axis = {
     x: {
       props: {

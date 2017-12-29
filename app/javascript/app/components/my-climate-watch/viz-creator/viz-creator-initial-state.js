@@ -25,6 +25,7 @@ export default {
         child: {
           name: 'scenarios',
           selected: null,
+          multi: true,
           data: [],
           loading: false,
           loaded: false,

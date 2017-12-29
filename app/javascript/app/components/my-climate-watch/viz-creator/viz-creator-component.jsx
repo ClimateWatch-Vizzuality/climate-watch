@@ -7,35 +7,11 @@ import _isEmpty from 'lodash/isEmpty';
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
 
-import { selections } from './viz-creator-mocks';
-import { processLineData, toSelector, toFetcher } from './viz-creator-utils';
+import { processLineData } from './viz-creator-utils';
 import LineChart from './components/charts/line/line';
 import SelectableList from './components/selectable-list';
 import CardContent from './components/card-content';
 import styles from './viz-creator-styles';
-
-/* eslint-disable */
-const Option = ({
-  enableLoad,
-  enableSelect,
-  onClickLoad,
-  onClickSelect,
-  name
-}) => (
-  <li>
-    {enableLoad && (
-      <button disabled={!enableLoad} onClick={onClickLoad}>
-        {toFetcher(name)}
-      </button>
-    )}
-    {enableSelect && (
-      <button disabled={!enableSelect} onClick={onClickSelect}>
-        {toSelector(name)}
-      </button>
-    )}
-  </li>
-);
-/* eslint-enable */
 
 const Step1 = ({ datasets, selectDataset }) => (
   <li className={styles.step}>
@@ -93,7 +69,8 @@ const Step3 = props => {
     const dd = props[f.name];
     return {
       disabled: !_isUndefined(dd.active) || _isEmpty(dd.data),
-      [value]: dd.selected || [],
+      [value]:
+        value === 'values' ? dd.selected.values || [] : dd.selected || {},
       options: dd.data || [],
       placeholder: dd.placeholder || dd.name
     };
@@ -107,7 +84,7 @@ const Step3 = props => {
           {_map(spec, f => {
             if (!props[f.name]) return null;
             return (
-              <li key={f.id} className={styles.selectsItem}>
+              <li key={f.name} className={styles.selectsItem}>
                 {f.multi ? (
                   <MultiSelect
                     // log={console.log(selectProps(f, 'values'))}
@@ -116,7 +93,8 @@ const Step3 = props => {
                     onMultiValueChange={e =>
                       props.handleFilterSelect({
                         values: e,
-                        type: f.name
+                        type: f.name,
+                        multi: true
                       })}
                   />
                 ) : (
@@ -191,78 +169,6 @@ const VizCreator = props => {
           )}
         </ul>
       </div>
-      <ul style={{ listStyle: 'none' }}>
-        <Option
-          name="dataset"
-          enableLoad
-          enableSelect={datasets.loaded}
-          onClickLoad={fetchDatasets}
-          onClickSelect={() => selectDataset(selections.datasets.value)}
-        />
-        <Option
-          name="visualisations"
-          enableLoad={datasets.selected}
-          enableSelect={visualisations.loaded}
-          onClickLoad={() => fetchVisualisations(datasets.selected)}
-          onClickSelect={() =>
-            selectVisualisation(selections.visualisations.value)}
-        />
-        <Option
-          name="locations"
-          enableLoad={visualisations.selected}
-          enableSelect={locations.loaded}
-          onClickLoad={() => fetchLocations(visualisations.selected)}
-          onClickSelect={() => selectLocation(selections.locations.value)}
-        />
-        <Option
-          name="models"
-          enableLoad={locations.selected}
-          enableSelect={models.loaded}
-          onClickLoad={() => fetchModels(locations.selected)}
-          onClickSelect={() => selectModel(selections.models.value)}
-        />
-        <Option
-          name="scenarios"
-          enableLoad={models.selected}
-          enableSelect={scenarios.loaded}
-          onClickLoad={() => fetchScenarios(models.selected)}
-          onClickSelect={() => selectScenario(selections.scenarios)}
-        />
-        <Option
-          name="categories"
-          enableLoad={indicators.loaded}
-          enableSelect={indicators.loaded}
-          onClickLoad={() =>
-            fetchIndicators({
-              location: { value: locations.selected },
-              scenarios: scenarios.selected
-            })}
-          onClickSelect={() => selectCategory(selections.categories.value)}
-        />
-        <Option
-          name="subcategories"
-          enableLoad={indicators.loaded}
-          enableSelect={categories.selected}
-          onClickLoad={() =>
-            fetchIndicators({
-              location: { value: locations.selected },
-              scenarios: scenarios.selected
-            })}
-          onClickSelect={() =>
-            selectSubCategory(selections.subcategories.value)}
-        />
-        <Option
-          name="indicators"
-          enableLoad={scenarios.selected}
-          enableSelect={subcategories.selected}
-          onClickLoad={() =>
-            fetchIndicators({
-              location: { value: locations.selected },
-              scenarios: scenarios.selected
-            })}
-          onClickSelect={() => selectIndicator(selections.indicators)}
-        />
-      </ul>
       {hasData && (
         <button
           onClick={() =>

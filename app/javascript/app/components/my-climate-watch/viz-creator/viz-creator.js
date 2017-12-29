@@ -83,22 +83,22 @@ class VizCreator extends Component {
       fetchLocations(visualisations.selected);
     }
     if (locations.selected && !models.loading && !models.loaded) {
-      fetchModels(locations.selected);
+      fetchModels(locations.selected.value);
     }
     if (models.selected && !scenarios.loading && !scenarios.loaded) {
-      fetchScenarios(models.selected);
+      fetchScenarios(models.selected.value);
     }
     if (scenarios.selected && !indicators.loading && !indicators.loaded) {
       fetchIndicators({
-        location: locations.selected,
-        scenarios: scenarios.selected
+        location: locations.selected.value,
+        scenarios: scenarios.selected.values
       });
     }
     if (indicators.selected && !timeseries.loading && !timeseries.loaded) {
       fetchTimeseries({
-        locations: locations.selected,
+        locations: locations.selected.value,
         indicators: indicators.selected.value,
-        scenarios: scenarios.selected
+        scenarios: scenarios.selected.values
       });
     }
   }
@@ -106,7 +106,7 @@ class VizCreator extends Component {
   handleFilterSelect = filter => {
     const actionName = toSelector(filter.type);
     if (this.props[actionName]) {
-      this.props[actionName](filter.value);
+      this.props[actionName](filter);
     }
   };
 
