@@ -1,7 +1,8 @@
 import { createAction, createThunkAction } from 'redux-tools';
 
 import find from 'lodash/find';
-import { EPAPI } from 'services/api';
+import { EPAPI, CWAPI } from 'services/api';
+
 // import { flatMapVis } from './viz-creator-utils';
 
 export const fetchDatasets = createThunkAction(
@@ -25,11 +26,9 @@ export const fetchLocations = createThunkAction(
 export const fetchVisualisations = createThunkAction(
   'fetchVisualisations',
   payload => (dispatch, getState) => {
-    const state = getState();
+    const { vizCreator } = getState();
     // const visualisations = flatMapVis(
-    const visualisations = find(state.vizCreator.data, { id: payload })[
-      'viz-types'
-    ];
+    const visualisations = find(vizCreator.data, { id: payload })['viz-types'];
     dispatch(gotVisualisations(visualisations));
   }
 );
@@ -115,3 +114,61 @@ export const gotSubCategories = createAction('gotSubCategories');
 export const selectSubCategory = createAction('selectSubCategory');
 
 export const gotTimeseries = createAction('gotTimeseries');
+
+export const updateVisualisationName = createAction('updateVisualisationName');
+
+export const clearVisualisation = createAction('clearVisualisation');
+export const getVisualisationInit = createAction('getVisualisationInit');
+export const getVisualisationReady = createAction('getVisualisationReady');
+export const getVisualisationFail = createAction('getVisualisationFail');
+export const saveVisualisationInit = createAction('saveVisualisationInit');
+export const saveVisualisationReady = createAction('saveVisualisationReady');
+export const saveVisualisationFail = createAction('saveVisualisationFail');
+
+export const getVisualisation = createThunkAction(
+  'getVisualisation',
+  VisualisationId => dispatch => {
+    dispatch(getVisualisationInit());
+    CWAPI.get(`my_cw/visualizations/${VisualisationId}`)
+      .then(Visualisation => {
+        dispatch(getVisualisationReady(Visualisation));
+      })
+      .catch(e => {
+        console.warn(e);
+        dispatch(getVisualisationFail());
+      });
+  }
+);
+
+export const saveVisualisation = createThunkAction(
+  'saveVisualisation',
+  ({ id = '' }) => (dispatch, getState) => {
+    dispatch(saveVisualisationInit());
+    const { vizCreator } = getState();
+    const visualisation = {
+      visualization: {
+        title: vizCreator.title,
+        json_body: vizCreator
+      }
+    };
+    if (id) {
+      CWAPI.patch(`my_cw/visualizations/${id}`, visualisation)
+        .then(response => {
+          dispatch(saveVisualisationReady(response));
+        })
+        .catch(e => {
+          console.warn(e);
+          dispatch(saveVisualisationFail());
+        });
+    } else {
+      CWAPI.post('my_cw/visualizations', visualisation)
+        .then(response => {
+          dispatch(saveVisualisationReady(response));
+        })
+        .catch(e => {
+          console.warn(e);
+          dispatch(saveVisualisationFail());
+        });
+    }
+  }
+);

@@ -1,4 +1,5 @@
 export default {
+  title: '',
   name: 'datasets',
   selected: null,
   data: [],

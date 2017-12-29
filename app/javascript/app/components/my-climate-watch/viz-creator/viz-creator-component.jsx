@@ -6,8 +6,10 @@ import _isEmpty from 'lodash/isEmpty';
 
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
+import Search from 'components/search';
+import Button from 'components/button';
+import inputTextTheme from 'styles/themes/search/input-text.scss';
 
-import { processLineData } from './viz-creator-utils';
 import LineChart from './components/charts/line/line';
 import SelectableList from './components/selectable-list';
 import CardContent from './components/card-content';
@@ -122,9 +124,40 @@ Step3.propTypes = {
   spec: PropTypes.object.isRequired
 };
 
+const Step4 = props => {
+  const { title, chartData, onNameChange, onSaveClick } = props;
+  return (
+    <li className={styles.step}>
+      <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
+      <Search
+        icon={false}
+        placeholder=""
+        value={title}
+        onChange={onNameChange}
+        className={styles.inputText}
+        theme={inputTextTheme}
+      />
+      <LineChart {...chartData} />
+      <div className={styles.saveContainer}>
+        <Button color="yellow" onClick={onSaveClick} className={styles.saveBtn}>
+          Save
+        </Button>
+      </div>
+    </li>
+  );
+};
+
+Step4.propTypes = {
+  title: PropTypes.string,
+  chartData: PropTypes.object.isRequired,
+  onSaveClick: PropTypes.func.isRequired,
+  onNameChange: PropTypes.func.isRequired
+};
+
 const VizCreator = props => {
   /* eslint-disable */
   const {
+    title,
     fetchDatasets,
     selectDataset,
     fetchVisualisations,
@@ -152,7 +185,10 @@ const VizCreator = props => {
     subcategories,
     timeseries,
     hasData,
-    filters
+    chartData,
+    filters,
+    updateVisualisationName,
+    saveVisualisation
   } = props;
   /* eslint-enable */
 
@@ -167,23 +203,16 @@ const VizCreator = props => {
           {visualisations.selected && (
             <Step3 {...{ spec: filters, ...props }} />
           )}
+          {hasData && (
+            <Step4
+              chartData={chartData}
+              title={title}
+              onNameChange={updateVisualisationName}
+              onSaveClick={saveVisualisation}
+            />
+          )}
         </ul>
       </div>
-      {hasData && (
-        <button
-          onClick={() =>
-            fetchTimeseries({
-              locations: locations.selected,
-              indicators: indicators.selected.value,
-              scenarios: scenarios.selected
-            })}
-        >
-          fetchTimeseries
-        </button>
-      )}
-      {timeseries.loaded && (
-        <LineChart {...processLineData(timeseries.data, scenarios.data)} />
-      )}
     </div>
   );
 };

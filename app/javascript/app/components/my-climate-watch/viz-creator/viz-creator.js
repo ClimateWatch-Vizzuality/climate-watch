@@ -18,6 +18,7 @@ import {
   subcategoriesSelector,
   timeseriesSelector,
   hasDataSelector,
+  chartDataSelector,
   getFormatFilters
 } from './viz-creator-selectors';
 
@@ -33,6 +34,7 @@ const mapStateToProps = ({ vizCreator }) => ({
   subcategories: subcategoriesSelector(vizCreator),
   timeseries: timeseriesSelector(vizCreator),
   hasData: hasDataSelector(vizCreator),
+  chartData: chartDataSelector(vizCreator),
   filters: {
     locations: getFormatFilters('locations')(vizCreator),
     models: getFormatFilters('models')(vizCreator),

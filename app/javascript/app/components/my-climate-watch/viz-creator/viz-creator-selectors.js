@@ -6,7 +6,7 @@ import _find from 'lodash/find';
 // import isEmpty from 'lodash/isEmpty';
 // import _filter from 'lodash/filter';
 // import { format } from 'd3-format';
-import { flatMapVis } from './viz-creator-utils';
+import { processLineData, flatMapVis } from './viz-creator-utils';
 import {
   $visualisations,
   $locations,
@@ -65,8 +65,8 @@ export const hasDataSelector = createSelector(
     models,
     scenarios,
     indicators,
-    categories,
-    subcategories
+    categories
+    // subcategories
   ) =>
     datasets.selected &&
     visualisations.selected &&
@@ -74,13 +74,21 @@ export const hasDataSelector = createSelector(
     models.selected &&
     scenarios.selected &&
     indicators.selected &&
-    categories.selected &&
-    subcategories.selected
+    categories.selected
+  // subcategories.selected
 );
 
 export const vizTypes = data => data && data['viz-types'];
 export const vizSelector = createSelector(datasetsSelector, sets =>
   vizTypes(_find(sets.data, { id: sets.selected }))
+);
+
+export const chartDataSelector = createSelector(
+  [hasDataSelector, timeseriesSelector, scenariosSelector],
+  (hasData, timeseries, scenarios) => {
+    if (!hasData) return {};
+    return { ...processLineData(timeseries.data, scenarios.data) };
+  }
 );
 
 export const filtersSelector = createSelector(

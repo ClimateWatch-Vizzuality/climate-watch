@@ -16,6 +16,8 @@ import {
 } from './viz-creator-lenses';
 
 export default {
+  [actions.updateVisualisationName]: (state, { payload }) =>
+    assign(state, { title: payload }),
   [actions.fetchDatasets]: state => assign(state, { loading: true }),
   [actions.gotDatasets]: (state, { payload }) =>
     assign(state, { loading: false, data: payload, loaded: true }),
