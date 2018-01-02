@@ -1,59 +1,60 @@
 export default {
   title: '',
-  name: 'datasets',
-  selected: null,
-  data: [],
-  loading: false,
-  loaded: false,
-  child: {
-    name: 'visualisations',
+  datasets: {
+    name: 'datasets',
     selected: null,
     data: [],
     loading: false,
     loaded: false,
     child: {
-      name: 'locations',
+      name: 'visualisations',
       selected: null,
       data: [],
       loading: false,
       loaded: false,
       child: {
-        name: 'models',
+        name: 'locations',
         selected: null,
         data: [],
         loading: false,
         loaded: false,
         child: {
-          name: 'scenarios',
+          name: 'models',
           selected: null,
-          multi: true,
           data: [],
           loading: false,
           loaded: false,
           child: {
-            name: 'indicators',
+            name: 'scenarios',
             selected: null,
             data: [],
             loading: false,
             loaded: false,
             child: {
-              name: 'categories',
+              name: 'indicators',
               selected: null,
               data: [],
               loading: false,
               loaded: false,
               child: {
-                name: 'subcategories',
+                name: 'categories',
                 selected: null,
                 data: [],
                 loading: false,
                 loaded: false,
                 child: {
-                  name: 'timeseries',
+                  name: 'subcategories',
                   selected: null,
                   data: [],
                   loading: false,
-                  loaded: false
+                  loaded: false,
+                  child: {
+                    name: 'timeseries',
+                    selected: null,
+                    data: [],
+                    loading: false,
+                    loaded: false
+                  }
                 }
               }
             }

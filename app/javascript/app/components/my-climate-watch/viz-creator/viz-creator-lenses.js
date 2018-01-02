@@ -6,11 +6,12 @@ const times = (n, s, sep = '|') =>
     .split(sep)
     .slice(0, -1);
 
-export const $visualisations = ofPath('child');
-export const $locations = ofPath(...times(2, 'child'));
-export const $models = ofPath(...times(3, 'child'));
-export const $scenarios = ofPath(...times(4, 'child'));
-export const $indicators = ofPath(...times(5, 'child'));
-export const $categories = ofPath(...times(6, 'child'));
-export const $subcategories = ofPath(...times(7, 'child'));
-export const $timeseries = ofPath(...times(8, 'child'));
+export const $datasets = ofPath('datasets');
+export const $visualisations = ofPath('datasets', 'child');
+export const $locations = ofPath('datasets', ...times(2, 'child'));
+export const $models = ofPath('datasets', ...times(3, 'child'));
+export const $scenarios = ofPath('datasets', ...times(4, 'child'));
+export const $indicators = ofPath('datasets', ...times(5, 'child'));
+export const $categories = ofPath('datasets', ...times(6, 'child'));
+export const $subcategories = ofPath('datasets', ...times(7, 'child'));
+export const $timeseries = ofPath('datasets', ...times(8, 'child'));

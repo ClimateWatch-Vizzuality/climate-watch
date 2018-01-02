@@ -5,6 +5,7 @@ import * as actions from './viz-creator-actions';
 import { updateIn } from './viz-creator-utils';
 
 import {
+  $datasets,
   $visualisations,
   $locations,
   $models,
@@ -18,14 +19,24 @@ import {
 export default {
   [actions.updateVisualisationName]: (state, { payload }) =>
     assign(state, { title: payload }),
-  [actions.fetchDatasets]: state => assign(state, { loading: true }),
+  [actions.fetchDatasets]: state =>
+    updateIn($datasets, { loading: true }, state),
   [actions.gotDatasets]: (state, { payload }) =>
-    assign(state, { loading: false, data: payload, loaded: true }),
+    updateIn(
+      $datasets,
+      {
+        loading: false,
+        loaded: true,
+        data: payload
+      },
+      state
+    ),
   [actions.selectDataset]: (state, { payload }) =>
-    assign(state, {
-      selected: payload,
-      child: get($visualisations, initialState)
-    }),
+    updateIn(
+      $datasets,
+      { selected: payload, child: get($locations, initialState) },
+      state
+    ),
 
   // Visualisations
   [actions.fetchVisualisations]: state =>

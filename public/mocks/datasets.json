@@ -104,7 +104,7 @@
             ],
             "image": "compare-country-lines",
             "filters": [
-              {"name": "locations", "multi": true, "selected": "top-10", "active": true},
+              {"name": "locations", "multi": false, "selected": "top-10", "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
@@ -128,7 +128,7 @@
             ],
             "image": "compare-country-donut",
             "filters": [
-              {"name": "locations", "multi": true, "selected": "top-10", "active": true},
+              {"name": "locations", "multi": false, "selected": "top-10", "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},

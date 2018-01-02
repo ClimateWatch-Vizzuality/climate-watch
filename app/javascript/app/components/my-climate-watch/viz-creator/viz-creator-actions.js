@@ -1,7 +1,9 @@
 import { createAction, createThunkAction } from 'redux-tools';
-
+import { get } from 'js-lenses';
 import find from 'lodash/find';
 import { EPAPI, CWAPI } from 'services/api';
+
+import { $datasets } from './viz-creator-lenses';
 
 // import { flatMapVis } from './viz-creator-utils';
 
@@ -26,10 +28,11 @@ export const fetchLocations = createThunkAction(
 export const fetchVisualisations = createThunkAction(
   'fetchVisualisations',
   payload => (dispatch, getState) => {
-    const { vizCreator } = getState();
+    const datasets = get($datasets, getState().vizCreator);
     // const visualisations = flatMapVis(
-    const visualisations = find(vizCreator.data, { id: payload })['viz-types'];
-    dispatch(gotVisualisations(visualisations));
+    const visualisations = find(datasets.data, { id: payload });
+    const spec = visualisations['viz-types'] || {};
+    dispatch(gotVisualisations(spec));
   }
 );
 

@@ -66,45 +66,46 @@ Step2.propTypes = {
 };
 
 const Step3 = props => {
-  const { spec } = props;
-  const selectProps = (f, value) => {
-    const dd = props[f.name];
+  const selectProps = (f, format) => {
+    let value = f.selected;
+    if (!value) {
+      value = f.multi ? [] : {};
+    }
     return {
-      disabled: !_isUndefined(dd.active) || _isEmpty(dd.data),
-      [value]:
-        value === 'values' ? dd.selected.values || [] : dd.selected || {},
-      options: dd.data || [],
-      placeholder: dd.placeholder || dd.name
+      disabled: _isUndefined(f.active) || _isEmpty(f.data),
+      [format]: value,
+      options: f.data || [],
+      placeholder: f.placeholder || f.name
     };
   };
 
+  const { spec, handleFilterSelect } = props;
   return (
     <li className={styles.step}>
       <h2 className={styles.stepTitle}>3/4 - Filter the data</h2>
       {spec && (
         <ul className={styles.selectsContainer}>
-          {_map(spec, f => {
-            if (!props[f.name]) return null;
+          {_map(spec, (f, i) => {
+            if (!f.data) return null;
             return (
-              <li key={f.name} className={styles.selectsItem}>
+              <li key={f.name || i} className={styles.selectsItem}>
                 {f.multi ? (
                   <MultiSelect
-                    // log={console.log(selectProps(f, 'values'))}
                     {...selectProps(f, 'values')}
                     label={f.name}
                     onMultiValueChange={e =>
-                      props.handleFilterSelect({
+                      handleFilterSelect({
                         values: e,
                         type: f.name,
-                        multi: true
+                        multi: f.multi
                       })}
                   />
                 ) : (
                   <Dropdown
                     {...selectProps(f, 'value')}
-                    label={props[f.name].label}
+                    label={f.label}
                     onValueChange={e =>
-                      props.handleFilterSelect({
+                      handleFilterSelect({
                         ...e,
                         type: f.name
                       })}
@@ -121,7 +122,8 @@ const Step3 = props => {
 };
 
 Step3.propTypes = {
-  spec: PropTypes.object.isRequired
+  spec: PropTypes.object.isRequired,
+  handleFilterSelect: PropTypes.func.isRequired
 };
 
 const Step4 = props => {
@@ -155,42 +157,19 @@ Step4.propTypes = {
 };
 
 const VizCreator = props => {
-  /* eslint-disable */
   const {
     title,
-    fetchDatasets,
     selectDataset,
-    fetchVisualisations,
     selectVisualisation,
-    fetchLocations,
-    selectLocation,
-    fetchModels,
-    selectModel,
-    fetchScenarios,
-    selectScenario,
-    fetchIndicators,
-    selectIndicator,
-    fetchCategories,
-    selectCategory,
-    fetchSubCategories,
-    selectSubCategory,
-    fetchTimeseries,
     datasets,
     visualisations,
-    locations,
-    models,
-    scenarios,
-    indicators,
-    categories,
-    subcategories,
-    timeseries,
     hasData,
     chartData,
     filters,
     updateVisualisationName,
-    saveVisualisation
+    saveVisualisation,
+    handleFilterSelect
   } = props;
-  /* eslint-enable */
 
   return (
     <div>
@@ -201,7 +180,7 @@ const VizCreator = props => {
             <Step2 {...{ visualisations, selectVisualisation }} />
           )}
           {visualisations.selected && (
-            <Step3 {...{ spec: filters, ...props }} />
+            <Step3 {...{ spec: filters, handleFilterSelect }} />
           )}
           {hasData && (
             <Step4
@@ -215,6 +194,20 @@ const VizCreator = props => {
       </div>
     </div>
   );
+};
+
+VizCreator.propTypes = {
+  title: PropTypes.string,
+  selectDataset: PropTypes.func.isRequired,
+  selectVisualisation: PropTypes.func.isRequired,
+  datasets: PropTypes.object,
+  visualisations: PropTypes.object,
+  hasData: PropTypes.bool,
+  chartData: PropTypes.object,
+  filters: PropTypes.object,
+  updateVisualisationName: PropTypes.func.isRequired,
+  saveVisualisation: PropTypes.func.isRequired,
+  handleFilterSelect: PropTypes.func.isRequired
 };
 
 export default VizCreator;

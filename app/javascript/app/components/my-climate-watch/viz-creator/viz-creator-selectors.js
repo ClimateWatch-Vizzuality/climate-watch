@@ -7,27 +7,7 @@ import _find from 'lodash/find';
 // import _filter from 'lodash/filter';
 // import { format } from 'd3-format';
 import { processLineData, flatMapVis } from './viz-creator-utils';
-import {
-  $visualisations,
-  $locations,
-  $models,
-  $scenarios,
-  $indicators,
-  $categories,
-  $subcategories,
-  $timeseries
-} from './viz-creator-lenses';
-
-const lenses = {
-  visualisations: $visualisations,
-  locations: $locations,
-  models: $models,
-  scenarios: $scenarios,
-  indicators: $indicators,
-  categories: $categories,
-  subcategories: $subcategories,
-  timeseries: $timeseries
-};
+import * as lenses from './viz-creator-lenses';
 
 // import {
 //   groupDataByScenario,
@@ -39,15 +19,17 @@ const lenses = {
 
 // const mergeViz = t => t.reduce((r, c) => r.concat([...visualisations(c)]), []);
 
-export const datasetsSelector = state => state;
-export const visualisationsSelector = state => get($visualisations, state);
-export const locationsSelector = state => get($locations, state);
-export const modelsSelector = state => get($models, state);
-export const scenariosSelector = state => get($scenarios, state);
-export const indicatorsSelector = state => get($indicators, state);
-export const categoriesSelector = state => get($categories, state);
-export const subcategoriesSelector = state => get($subcategories, state);
-export const timeseriesSelector = state => get($timeseries, state);
+export const dataSelector = state => state;
+export const datasetsSelector = state => get(lenses.$datasets, state);
+export const visualisationsSelector = state =>
+  get(lenses.$visualisations, state);
+export const locationsSelector = state => get(lenses.$locations, state);
+export const modelsSelector = state => get(lenses.$models, state);
+export const scenariosSelector = state => get(lenses.$scenarios, state);
+export const indicatorsSelector = state => get(lenses.$indicators, state);
+export const categoriesSelector = state => get(lenses.$categories, state);
+export const subcategoriesSelector = state => get(lenses.$subcategories, state);
+export const timeseriesSelector = state => get(lenses.$timeseries, state);
 
 export const hasDataSelector = createSelector(
   datasetsSelector,
@@ -92,12 +74,10 @@ export const chartDataSelector = createSelector(
 );
 
 export const filtersSelector = createSelector(
-  vizSelector,
-  visualisationsSelector,
-  locationsSelector,
+  [vizSelector, visualisationsSelector, locationsSelector],
   (vizStructure, visualisations) => {
     const selectedStructure = _find(flatMapVis(vizStructure), {
-      id: visualisations.selected
+      id: visualisations && visualisations.selected
     });
     return (selectedStructure && selectedStructure.filters) || [];
   }
@@ -123,18 +103,21 @@ const mapFilter = data =>
   null;
 
 export const getFormatFilters = name =>
-  createSelector(datasetsSelector, filtersSelector, (state, spec) => {
-    // const { topEmmiters } = state;
-    const filter = get(lenses[name], state);
-    filter.data = mapFilter(filter.data);
+  createSelector([dataSelector, filtersSelector], (state, spec) => {
+    if (!spec || !spec.length > 0) return {};
+
+    const filter = _find(spec, { name }) || {};
+    const lense = get(lenses[`$${name}`], state) || {};
+    filter.data = mapFilter(lense.data || []);
     filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
     filter.label = _.titleize(name);
 
-    const selected =
-      spec && find(spec, { name }) && find(spec, { name }).selected;
-
-    if (!filter.selected) {
-      switch (selected) {
+    if (lense.selected) {
+      filter.selected = filter.multi
+        ? [...lense.selected]
+        : { ...lense.selected };
+    } else {
+      switch (filter.selected) {
         case 'all':
           filter.selected = mapFilter(filter.data);
           break;
@@ -145,7 +128,7 @@ export const getFormatFilters = name =>
           break;
 
         default:
-          filter.selected = selected;
+          filter.selected = filter.multi ? [] : {};
           break;
       }
     }

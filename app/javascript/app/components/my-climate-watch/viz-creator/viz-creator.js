@@ -41,8 +41,7 @@ const mapStateToProps = ({ vizCreator }) => ({
     scenarios: getFormatFilters('scenarios')(vizCreator),
     indicators: getFormatFilters('indicators')(vizCreator),
     categories: getFormatFilters('categories')(vizCreator),
-    subcategories: getFormatFilters('subcategories')(vizCreator),
-    timeseries: getFormatFilters('timeseries')(vizCreator)
+    subcategories: getFormatFilters('subcategories')(vizCreator)
   }
 });
 
@@ -93,14 +92,14 @@ class VizCreator extends Component {
     if (scenarios.selected && !indicators.loading && !indicators.loaded) {
       fetchIndicators({
         location: locations.selected.value,
-        scenarios: scenarios.selected.values
+        scenarios: scenarios.selected
       });
     }
     if (indicators.selected && !timeseries.loading && !timeseries.loaded) {
       fetchTimeseries({
         locations: locations.selected.value,
         indicators: indicators.selected.value,
-        scenarios: scenarios.selected.values
+        scenarios: scenarios.selected
       });
     }
   }
@@ -108,7 +107,14 @@ class VizCreator extends Component {
   handleFilterSelect = filter => {
     const actionName = toSelector(filter.type);
     if (this.props[actionName]) {
-      this.props[actionName](filter);
+      const filterParsed = filter.multi
+        ? filter.values
+        : {
+          value: filter.value,
+          label: filter.label
+        };
+
+      this.props[actionName](filterParsed);
     }
   };
 
