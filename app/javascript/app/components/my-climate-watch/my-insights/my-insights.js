@@ -9,6 +9,7 @@ import { parseInsights } from './my-insights-selectors';
 import * as actions from './my-insights-actions';
 
 const mapStateToProps = ({ insights }) => ({
+  loaded: insights.loaded,
   insights: parseInsights(insights)
 });
 

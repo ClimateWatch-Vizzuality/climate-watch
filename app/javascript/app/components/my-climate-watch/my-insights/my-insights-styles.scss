@@ -11,3 +11,21 @@
   margin-bottom: 20px;
   margin-right: 20px;
 }
+
+.placeholder {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $theme-color;
+}
+
+.loading {
+  min-height: 400px;
+}
+
+.createBtn {
+  margin-top: 20px;
+  width: 250px;
+}
