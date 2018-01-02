@@ -42,7 +42,7 @@ module Api
         private
 
         def visualization_params
-          params.require(:visualization).permit(:title, :description, :json_body)
+          params.require(:visualization).permit(:title, :description, json_body: {})
         end
 
         def visualization
