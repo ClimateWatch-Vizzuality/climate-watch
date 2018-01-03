@@ -28,9 +28,9 @@ const MyVisualisations = ({
           <Card data={vis} onClick={openCreator} />
         </li>
       ))}
-      <li key="action-card" className={styles.insightsCard}>
+      <li key="action-card" className={styles.visCard}>
         <ActionCard
-          text="Create a new insight"
+          text="Create a new visualization"
           action={{ type: 'action', onClick: openCreator }}
         />
       </li>

@@ -127,7 +127,7 @@ Step3.propTypes = {
 };
 
 const Step4 = props => {
-  const { title, chartData, onNameChange, onSaveClick } = props;
+  const { id, title, chartData, onNameChange, onSaveClick } = props;
   return (
     <li className={styles.step}>
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
@@ -141,7 +141,11 @@ const Step4 = props => {
       />
       <LineChart {...chartData} />
       <div className={styles.saveContainer}>
-        <Button color="yellow" onClick={onSaveClick} className={styles.saveBtn}>
+        <Button
+          color="yellow"
+          onClick={() => onSaveClick({ id })}
+          className={styles.saveBtn}
+        >
           Save
         </Button>
       </div>
@@ -150,6 +154,7 @@ const Step4 = props => {
 };
 
 Step4.propTypes = {
+  id: PropTypes.number,
   title: PropTypes.string,
   chartData: PropTypes.object.isRequired,
   onSaveClick: PropTypes.func.isRequired,
@@ -158,6 +163,7 @@ Step4.propTypes = {
 
 const VizCreator = props => {
   const {
+    id,
     title,
     selectDataset,
     selectVisualisation,
@@ -184,8 +190,9 @@ const VizCreator = props => {
           )}
           {hasData && (
             <Step4
-              chartData={chartData}
+              id={id}
               title={title}
+              chartData={chartData}
               onNameChange={updateVisualisationName}
               onSaveClick={saveVisualisation}
             />
@@ -197,6 +204,7 @@ const VizCreator = props => {
 };
 
 VizCreator.propTypes = {
+  id: PropTypes.number,
   title: PropTypes.string,
   selectDataset: PropTypes.func.isRequired,
   selectVisualisation: PropTypes.func.isRequired,

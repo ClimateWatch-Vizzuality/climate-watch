@@ -13,10 +13,14 @@ import { LOGIN_URL } from 'data/constants';
 import layout from 'styles/layout.scss';
 import styles from './my-climate-watch-styles';
 
-const MyCw = ({ route, login }) => {
-  const button = login.logged
-    ? { text: 'Create an insight', link: '/my-climate-watch/editor' }
-    : null;
+const MyCw = ({ location, route, login, openCreator }) => {
+  let button = null;
+  if (login.logged) {
+    button =
+      location.pathname.indexOf('visualisations') > -1
+        ? { text: 'Create an visualisation', onClick: openCreator }
+        : { text: 'Create an insight', link: '/my-climate-watch/editor' };
+  }
   let content = <Loading className={styles.loading} />;
   if (login.loaded) {
     content = login.logged ? (
@@ -47,7 +51,9 @@ const MyCw = ({ route, login }) => {
 
 MyCw.propTypes = {
   login: PropTypes.object.isRequired,
-  route: PropTypes.object.isRequired
+  route: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  openCreator: PropTypes.func.isRequired
 };
 
 export default MyCw;

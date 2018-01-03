@@ -3,6 +3,8 @@ import { get } from 'js-lenses';
 import find from 'lodash/find';
 import { EPAPI, CWAPI } from 'services/api';
 
+import { actions as visActions } from 'components/my-climate-watch/my-visualisations';
+
 import { $datasets } from './viz-creator-lenses';
 
 // import { flatMapVis } from './viz-creator-utils';
@@ -154,20 +156,22 @@ export const saveVisualisation = createThunkAction(
         json_body: vizCreator.datasets
       }
     };
+
+    const handleResponse = () => {
+      // dispatch(saveVisualisationReady(response));
+      dispatch(visActions.fetchVisualisations());
+      dispatch(closeCreator());
+    };
     if (id) {
       CWAPI.patch(`my_cw/visualizations/${id}`, visualisation)
-        .then(response => {
-          dispatch(saveVisualisationReady(response));
-        })
+        .then(handleResponse)
         .catch(e => {
           console.warn(e);
           dispatch(saveVisualisationFail());
         });
     } else {
       CWAPI.post('my_cw/visualizations', visualisation)
-        .then(response => {
-          dispatch(saveVisualisationReady(response));
-        })
+        .then(handleResponse)
         .catch(e => {
           console.warn(e);
           dispatch(saveVisualisationFail());

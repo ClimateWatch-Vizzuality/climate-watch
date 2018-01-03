@@ -23,7 +23,8 @@ import {
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
-  ...vizCreator,
+  id: vizCreator.id,
+  title: vizCreator.title,
   datasets: datasetsSelector(vizCreator),
   visualisations: visualisationsSelector(vizCreator),
   locations: locationsSelector(vizCreator),

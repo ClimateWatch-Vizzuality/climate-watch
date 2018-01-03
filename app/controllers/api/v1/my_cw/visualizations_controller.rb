@@ -47,7 +47,7 @@ module Api
 
         def visualization
           @visualization = ::MyCw::Visualization.find params[:id]
-          render status: 401 unless @visualization.user_id == @current_user[:user_id]
+          render status: 401 unless @visualization.user == @current_user[:user_id]
         end
       end
     end

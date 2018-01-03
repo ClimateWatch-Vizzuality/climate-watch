@@ -20,6 +20,7 @@ export default {
   [actions.openCreator]: (state, { payload }) => ({
     ...state,
     creatorIsOpen: true,
+    id: payload.id || null,
     title: payload.title || initialState.title,
     datasets: payload.datasets || initialState.datasets
   }),
