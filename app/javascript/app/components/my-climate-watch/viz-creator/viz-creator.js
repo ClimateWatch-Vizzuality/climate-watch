@@ -40,9 +40,9 @@ const mapStateToProps = ({ vizCreator }) => ({
     locations: getFormatFilters('locations')(vizCreator),
     models: getFormatFilters('models')(vizCreator),
     scenarios: getFormatFilters('scenarios')(vizCreator),
-    indicators: getFormatFilters('indicators')(vizCreator),
     categories: getFormatFilters('categories')(vizCreator),
-    subcategories: getFormatFilters('subcategories')(vizCreator)
+    subcategories: getFormatFilters('subcategories')(vizCreator),
+    indicators: getFormatFilters('indicators')(vizCreator)
   }
 });
 

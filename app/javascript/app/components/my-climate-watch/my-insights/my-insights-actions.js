@@ -9,7 +9,7 @@ export const fetchInsights = createThunkAction(
   'fetchInsights',
   () => (dispatch, getState) => {
     const { insights } = getState();
-    if (!insights.loaded || insights.error) {
+    if (!insights.loading || insights.error) {
       dispatch(fetchInsightsInit());
       CWAPI.get('my_cw/user_stories')
         .then(response => dispatch(fetchInsightsReady(response)))

@@ -66,8 +66,10 @@ export const fetchIndicators = createThunkAction(
         .join(',')}&location=${location}&time_series=true`
     ).then(d => {
       const categories = uniqueById(d.map(i => i.category));
+      const subcategories = uniqueById(d.map(i => i.subcategory));
 
       dispatch(gotCategories(categories));
+      dispatch(gotSubCategories(subcategories));
       dispatch(gotIndicators(uniqueById(d)));
     });
   }
@@ -94,6 +96,9 @@ export const fetchTimeseries = createThunkAction(
   }
 );
 
+export const openCreator = createAction('openCreator');
+export const closeCreator = createAction('closeCreator');
+
 export const gotDatasets = createAction('gotDatasets');
 export const selectDataset = createAction('selectDataset');
 
@@ -116,7 +121,7 @@ export const gotCategories = createAction('gotCategories');
 export const selectCategory = createAction('selectCategory');
 
 export const gotSubCategories = createAction('gotSubCategories');
-export const selectSubCategory = createAction('selectSubCategory');
+export const selectSubcategory = createAction('selectSubcategory');
 
 export const gotTimeseries = createAction('gotTimeseries');
 
@@ -179,6 +184,3 @@ export const saveVisualisation = createThunkAction(
     }
   }
 );
-
-export const openCreator = createAction('openCreator');
-export const closeCreator = createAction('closeCreator');

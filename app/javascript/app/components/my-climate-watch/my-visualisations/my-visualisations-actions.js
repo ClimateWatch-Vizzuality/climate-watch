@@ -11,7 +11,7 @@ export const fetchVisualisations = createThunkAction(
   'fetchMyVisualisations',
   () => (dispatch, getState) => {
     const { visualisations } = getState();
-    if (!visualisations.loaded || visualisations.error) {
+    if (!visualisations.loading || !visualisations.error) {
       dispatch(fetchVisualisationsInit());
       CWAPI.get('my_cw/visualizations')
         .then(response => dispatch(fetchVisualisationsReady(response)))

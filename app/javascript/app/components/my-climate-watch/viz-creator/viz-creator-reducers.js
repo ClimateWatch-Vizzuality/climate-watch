@@ -176,7 +176,7 @@ export default {
       },
       state
     ),
-  [actions.selectSubCategory]: (state, { payload }) =>
+  [actions.selectSubcategory]: (state, { payload }) =>
     updateIn(
       $subcategories,
       { selected: payload, child: get($timeseries, initialState) },
