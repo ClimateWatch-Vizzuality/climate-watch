@@ -8,7 +8,10 @@ class Loading extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div className={cx(styles.container, this.props.className)}>
+      <div
+        className={cx(styles.container, this.props.className)}
+        style={{ height: this.props.height }}
+      >
         <div className={styles.loader}>
           <span className={styles.loaderTrack} />
           <span className={styles.loaderLight} />
@@ -19,7 +22,12 @@ class Loading extends PureComponent {
 }
 
 Loading.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  height: PropTypes.any
+};
+
+Loading.defaultProps = {
+  height: 'auto'
 };
 
 export default Loading;

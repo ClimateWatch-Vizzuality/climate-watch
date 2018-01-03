@@ -139,7 +139,7 @@ const Step4 = props => {
         className={styles.inputText}
         theme={inputTextTheme}
       />
-      <LineChart {...chartData} />
+      <LineChart {...chartData} width="90%" />
       <div className={styles.saveContainer}>
         <Button
           color="yellow"

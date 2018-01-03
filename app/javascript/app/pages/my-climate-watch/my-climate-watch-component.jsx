@@ -21,7 +21,7 @@ const MyCw = ({ location, route, login, openCreator }) => {
         ? { text: 'Create an visualisation', onClick: openCreator }
         : { text: 'Create an insight', link: '/my-climate-watch/editor' };
   }
-  let content = <Loading className={styles.loading} />;
+  let content = <Loading className={styles.loading} height={300} />;
   if (login.loaded) {
     content = login.logged ? (
       renderRoutes(route.routes)

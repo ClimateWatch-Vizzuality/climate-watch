@@ -1,6 +1,7 @@
 import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Loading from 'components/loading';
 
 import { actions as creatorActions } from 'components/my-climate-watch/viz-creator';
 
@@ -23,11 +24,13 @@ class MyVisualisations extends Component {
   }
 
   render() {
+    if (this.props.loading) return createElement(Loading, { height: 300 });
     return createElement(MyVisualisationsComponent, this.props);
   }
 }
 
 MyVisualisations.propTypes = {
+  loading: PropTypes.bool.isRequired,
   fetchVisualisations: PropTypes.func
 };
 

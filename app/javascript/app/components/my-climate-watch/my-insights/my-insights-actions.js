@@ -7,13 +7,16 @@ export const fetchInsightsFail = createAction('fetchInsightsFail');
 
 export const fetchInsights = createThunkAction(
   'fetchInsights',
-  () => dispatch => {
-    dispatch(fetchInsightsInit());
-    CWAPI.get('my_cw/user_stories')
-      .then(visualisations => dispatch(fetchInsightsReady(visualisations)))
-      .catch(e => {
-        console.warn(e);
-        dispatch(fetchInsightsFail());
-      });
+  () => (dispatch, getState) => {
+    const { insights } = getState();
+    if (!insights.loaded || insights.error) {
+      dispatch(fetchInsightsInit());
+      CWAPI.get('my_cw/user_stories')
+        .then(response => dispatch(fetchInsightsReady(response)))
+        .catch(e => {
+          console.warn(e);
+          dispatch(fetchInsightsFail());
+        });
+    }
   }
 );

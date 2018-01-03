@@ -51,7 +51,7 @@ class MyCw extends PureComponent {
         text: insight.id ? 'Update' : 'Save',
         onClick: this.onCreateBtnClick
       };
-    let content = <Loading className={styles.loading} />;
+    let content = <Loading className={styles.loading} height={300} />;
     if (!loading && login.loaded) {
       content = login.logged ? (
         <Editor editorState={this.state.editorState} onChange={this.onChange} />

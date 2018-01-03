@@ -1,13 +1,24 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { CWAPI } from 'services/api';
 
-export const gotVisualisations = createAction('gotMyVisualisations');
+export const fetchVisualisationsInit = createAction('fetchVisualisationsInit');
+export const fetchVisualisationsReady = createAction(
+  'fetchVisualisationsReady'
+);
+export const fetchVisualisationsFail = createAction('fetchVisualisationsFail');
 
 export const fetchVisualisations = createThunkAction(
   'fetchMyVisualisations',
-  () => dispatch => {
-    CWAPI.get('my_cw/visualizations').then(visualisations =>
-      dispatch(gotVisualisations(visualisations))
-    );
+  () => (dispatch, getState) => {
+    const { visualisations } = getState();
+    if (!visualisations.loaded || visualisations.error) {
+      dispatch(fetchVisualisationsInit());
+      CWAPI.get('my_cw/visualizations')
+        .then(response => dispatch(fetchVisualisationsReady(response)))
+        .catch(e => {
+          console.warn(e);
+          dispatch(fetchVisualisationsFail());
+        });
+    }
   }
 );

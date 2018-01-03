@@ -21,7 +21,6 @@ const MyVisualisations = ({
   closeCreator
 }) => (
   <div>
-    <h1>My visualisations</h1>
     <ul className={styles.visContainer}>
       {data.map(vis => (
         <li key={vis.id} className={styles.visCard}>
