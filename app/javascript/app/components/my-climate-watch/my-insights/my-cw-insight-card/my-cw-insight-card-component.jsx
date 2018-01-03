@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
 
-import styles from './my-cw-card-styles.scss';
+import styles from './my-cw-insight-card-styles.scss';
 
 class MyInsightCard extends PureComponent {
   render() {

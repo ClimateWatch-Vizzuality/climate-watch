@@ -1,0 +1,23 @@
+@import '~styles/layout.scss';
+
+.card {
+  border: dashed 1px rgba($black, 0.2);
+  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  min-height: 240px;
+  transition: box-shadow 150ms ease-out;
+
+  &:hover {
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
+  }
+}
+
+.cardTitle {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: 1.63;
+  color: $placeholder-gray;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from 'components/my-climate-watch/my-cw-card';
+import ActionCard from 'components/my-climate-watch/my-cw-placeholder-card';
+import Card from 'components/my-climate-watch/my-insights/my-cw-insight-card';
 import Button from 'components/button';
 import Loading from 'components/loading';
 
@@ -35,6 +36,12 @@ const MyInsights = ({ loaded, insights }) => {
             />
           </li>
         ))}
+        <li key="action-card" className={styles.insightsCard}>
+          <ActionCard
+            text="Create a new insight"
+            action={{ type: 'link', to: '/my-climate-watch/editor' }}
+          />
+        </li>
       </ul>
     </div>
   );
