@@ -151,7 +151,7 @@ export const saveVisualisation = createThunkAction(
     const visualisation = {
       visualization: {
         title: vizCreator.title,
-        json_body: vizCreator
+        json_body: vizCreator.datasets
       }
     };
     if (id) {
@@ -175,3 +175,6 @@ export const saveVisualisation = createThunkAction(
     }
   }
 );
+
+export const openCreator = createAction('openCreator');
+export const closeCreator = createAction('closeCreator');

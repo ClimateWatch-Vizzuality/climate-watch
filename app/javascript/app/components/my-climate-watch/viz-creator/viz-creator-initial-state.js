@@ -1,4 +1,5 @@
 export default {
+  creatorIsOpen: true,
   title: '',
   datasets: {
     name: 'datasets',
