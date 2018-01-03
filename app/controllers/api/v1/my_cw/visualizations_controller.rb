@@ -23,7 +23,7 @@ module Api
 
         def create
           @visualization = ::MyCw::Visualization.new(visualization_params)
-          @visualization.user_id = @current_user[:user_id]
+          @visualization.user = @current_user[:user_id]
           if @visualization.save
             render json: @visualization, serializer: Api::V1::MyCw::VisualizationSerializer
           else
