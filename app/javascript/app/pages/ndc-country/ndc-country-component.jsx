@@ -74,7 +74,7 @@ class NDCCountry extends PureComponent {
                 <Search
                   theme={lightSearch}
                   placeholder="Search"
-                  input={search}
+                  value={search}
                   onChange={onSearchChange}
                 />
               </div>

@@ -12,13 +12,13 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: props.input
+      search: props.value
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.input !== this.props.input) {
-      this.setState({ search: nextProps.input });
+    if (nextProps.value !== this.props.value) {
+      this.setState({ search: nextProps.value });
     }
   }
 
@@ -39,7 +39,6 @@ class Search extends Component {
     const {
       icon,
       theme,
-      input,
       placeholder,
       className,
       handleKeyUp,
@@ -70,7 +69,7 @@ class Search extends Component {
 
 Search.propTypes = {
   icon: PropTypes.bool.isRequired,
-  input: PropTypes.string,
+  value: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   className: PropTypes.string,
@@ -82,7 +81,7 @@ Search.propTypes = {
 
 Search.defaultProps = {
   icon: true,
-  input: ''
+  value: ''
 };
 
 export default themr('Search', styles)(Search);
