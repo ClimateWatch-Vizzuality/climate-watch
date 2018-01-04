@@ -290,7 +290,7 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
     const yValues = {};
     const groupedByScenario = groupBy(groupByYear[x], 'scenario_id');
     Object.keys(groupedByScenario).forEach(i => {
-      yValues[`y${i}`] = parseInt(groupedByScenario[i][0].value, 10);
+      yValues[`y${i}`] = parseFloat(groupedByScenario[i][0].value);
     });
     dataMapped.push({
       x,
