@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'components/icon';
 import { themr } from 'react-css-themr';
 import cx from 'classnames';
+import Loading from 'components/loading';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import dropdownArrowWhite from 'assets/icons/dropdown-arrow-white.svg';
@@ -33,6 +34,7 @@ class Dropdown extends PureComponent {
             this.props.blueBorder ? theme.blueBorder : ''
           )}
         >
+          {this.props.loading && <Loading className={styles.loader} mini />}
           <SimpleSelect
             ref={el => {
               this.selectorElement = el;
@@ -57,6 +59,7 @@ Dropdown.propTypes = {
   dark: PropTypes.bool,
   theme: PropTypes.object,
   hasSearch: PropTypes.bool,
+  loading: PropTypes.bool,
   disabled: PropTypes.bool,
   blueBorder: PropTypes.bool,
   selectorRef: PropTypes.func

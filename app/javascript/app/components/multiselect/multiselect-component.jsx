@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { ReactSelectize, MultiSelect } from 'react-selectize'; // eslint-disable-line
+import Loading from 'components/loading';
 import Icon from 'components/icon';
 import { themr } from 'react-css-themr';
 import cx from 'classnames';
@@ -51,6 +52,7 @@ class Multiselect extends Component {
       filterOptions,
       label,
       parentClassName,
+      loading,
       children
     } = this.props;
     return (
@@ -66,6 +68,7 @@ class Multiselect extends Component {
           <div className={cx(styles.values, 'values')}>
             {this.getSelectorValue()}
           </div>
+          {loading && <Loading className={styles.loader} mini />}
           <MultiSelect
             ref={el => {
               this.selectorElement = el;
@@ -101,20 +104,22 @@ class Multiselect extends Component {
 }
 
 Multiselect.propTypes = {
-  parentClassName: Proptypes.string,
-  values: Proptypes.array.isRequired,
-  options: Proptypes.array.isRequired,
-  selectedClassName: Proptypes.string,
-  onMultiValueChange: Proptypes.func,
-  filterOptions: Proptypes.func,
-  handleChange: Proptypes.func,
-  label: Proptypes.string,
-  selectedLabel: Proptypes.string,
-  children: Proptypes.node
+  parentClassName: PropTypes.string,
+  values: PropTypes.array.isRequired,
+  options: PropTypes.array.isRequired,
+  selectedClassName: PropTypes.string,
+  onMultiValueChange: PropTypes.func,
+  filterOptions: PropTypes.func,
+  handleChange: PropTypes.func,
+  label: PropTypes.string,
+  selectedLabel: PropTypes.string,
+  loading: PropTypes.bool,
+  children: PropTypes.node
 };
 
 Multiselect.defaultProps = {
-  selectedClassName: styles.selected
+  selectedClassName: styles.selected,
+  loading: false
 };
 
 export default themr('MultiSelect', styles)(Multiselect);

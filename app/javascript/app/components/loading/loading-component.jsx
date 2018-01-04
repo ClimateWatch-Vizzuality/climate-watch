@@ -12,7 +12,11 @@ class Loading extends PureComponent {
         className={cx(styles.container, this.props.className)}
         style={{ height: this.props.height }}
       >
-        <div className={styles.loader}>
+        <div
+          className={cx(styles.loader, {
+            [styles.loaderMini]: this.props.mini
+          })}
+        >
           <span className={styles.loaderTrack} />
           <span className={styles.loaderLight} />
         </div>
@@ -23,11 +27,13 @@ class Loading extends PureComponent {
 
 Loading.propTypes = {
   className: PropTypes.string,
-  height: PropTypes.any
+  height: PropTypes.any,
+  mini: PropTypes.bool
 };
 
 Loading.defaultProps = {
-  height: 'auto'
+  height: 'auto',
+  mini: false
 };
 
 export default Loading;

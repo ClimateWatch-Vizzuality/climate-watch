@@ -4,6 +4,7 @@ $height: 45px;
 
 .dropdown :global {
   width: 100%;
+  position: relative;
 
   .react-selectize {
     color: $theme-color;

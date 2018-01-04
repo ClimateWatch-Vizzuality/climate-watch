@@ -75,7 +75,8 @@ const Step3 = props => {
       disabled: _isUndefined(f.active) || _isEmpty(f.data),
       [format]: value,
       options: f.data || [],
-      placeholder: f.placeholder || f.name
+      placeholder: f.placeholder || f.name,
+      loading: f.loading
     };
   };
 

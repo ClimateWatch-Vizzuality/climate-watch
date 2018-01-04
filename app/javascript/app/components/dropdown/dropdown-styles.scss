@@ -11,3 +11,10 @@
   color: $theme-color;
   margin-bottom: 4px;
 }
+
+.loader {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  z-index: 1;
+}
