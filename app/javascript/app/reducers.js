@@ -46,13 +46,11 @@ import * as NDCSPage from 'pages/ndcs';
 
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as ndcSearchPage from 'pages/ndc-search';
-import * as ndcSdgPage from 'pages/ndc-sdg';
 
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
-  ndcSearch: handleActions(ndcSearchPage),
-  ndcSdg: handleActions(ndcSdgPage)
+  ndcSearch: handleActions(ndcSearchPage)
 };
 
 // Components
@@ -63,12 +61,13 @@ import * as countrySelectComponent from 'components/countries-select';
 import * as ghgEmissionsComponent from 'components/ghg-emissions';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as modalESPOverviewComponent from 'components/modal-overview';
-import * as ndcCountryAccordion from 'components/ndcs-country-accordion';
-import * as countryGhgEmissionsMapComponent from 'components/country-ghg-map';
-import * as countryGhgEmissionsComponent from 'components/country-ghg-emissions';
-import * as countrySDGLinkagesComponent from 'components/country-ndc-sdg-linkages';
-import * as countryNDCOverviewComponent from 'components/country-ndc-overview';
-import * as espGraphComponent from 'components/emission-pathway-graph';
+import * as espGraphComponent from 'components/emission-pathways/emission-pathways-graph';
+import * as ndcCountryAccordion from 'components/ndcs/ndcs-country-accordion';
+import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
+import * as countryGhgEmissionsComponent from 'components/country/country-ghg-emissions';
+import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
+import * as countryNDCOverviewComponent from 'components/country/country-ndc-overview';
+import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -83,7 +82,8 @@ const componentsReducers = {
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
   espGraph: handleActions(espGraphComponent),
-  countryNDCOverview: handleActions(countryNDCOverviewComponent)
+  countryNDCOverview: handleActions(countryNDCOverviewComponent),
+  ndcSdg: handleActions(ndcSdgLinkagesComponent)
 };
 
 export default combineReducers({

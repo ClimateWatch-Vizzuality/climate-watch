@@ -122,6 +122,7 @@ class ChartStackedArea extends PureComponent {
             padding={{ left: 30, right: 40 }}
             tick={<CustomXAxisTick customstrokeWidth="0" />}
             tickSize={8}
+            allowDecimals={false}
             tickCount={data.length + points.length}
           />
           <YAxis
@@ -130,7 +131,7 @@ class ChartStackedArea extends PureComponent {
             axisLine={false}
             padding={{ top: 0, bottom: 0 }}
             tickLine={false}
-            tick={<CustomYAxisTick customstrokeWidth="0" />}
+            tick={<CustomYAxisTick customstrokeWidth="0" unit="t" />}
           />
           <CartesianGrid vertical={false} />
           {tooltipVisibility && (

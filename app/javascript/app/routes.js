@@ -7,37 +7,38 @@ import Embed from 'layouts/embed';
 import Home from 'pages/home';
 import NDCS from 'pages/ndcs';
 import NDCSDG from 'pages/ndc-sdg';
-import NDCMap from 'components/ndcs-map';
-import NDCTable from 'components/ndcs-table';
+import NDCMap from 'components/ndcs/ndcs-map';
+import NDCTable from 'components/ndcs/ndcs-table';
 import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
-import NDCCountryAccordion from 'components/ndcs-country-accordion';
+import NDCCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import NDCCompare from 'pages/ndc-compare';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
 import CountryCompare from 'pages/country-compare';
 import Sectors from 'pages/sectors';
-import CountryNdcOverview from 'components/country-ndc-overview';
+import CountryNdcOverview from 'components/country/country-ndc-overview';
 import NDCSearch from 'pages/ndc-search';
 import GHGEmissions from 'pages/ghg-emissions';
 import GhgEmissionsGraph from 'components/ghg-emissions';
+import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import EmissionPathways from 'pages/emission-pathways';
-import EmissionPathwaysTable from 'components/emission-pathways-table';
-import EmissionPathwaysTableMenu from 'components/emission-pathways-table-menu';
-import EmissionPathwayGraph from 'components/emission-pathway-graph';
+import EmissionPathwaysTable from 'components/emission-pathways/emission-pathways-table';
+import EmissionPathwaysTableMenu from 'components/emission-pathways/emission-pathways-table-menu';
+import EmissionPathwayGraph from 'components/emission-pathways/emission-pathways-graph';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
-import EmissionPathwaysModelTable from 'components/emission-pathways-model-table';
+import EmissionPathwaysModelTable from 'components/emission-pathways/emission-pathways-model-table';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
-import EmissionPathwaysScenarioTable from 'components/emission-pathways-scenario-table';
-import EmissionPathwaysOverview from 'components/emission-pathways-overview';
+import EmissionPathwaysScenarioTable from 'components/emission-pathways/emission-pathways-scenario-table';
+import EmissionPathwaysOverview from 'components/emission-pathways/emission-pathways-overview';
 import About from 'pages/about';
-import AboutContact from 'components/about-contact';
-import AboutDescription from 'components/about-description';
-import AboutPartners from 'components/about-partners';
-import AboutPermissions from 'components/about-permissions';
-import GHGCountryEmissions from 'components/country-ghg';
-import NDCSDGLinkages from 'components/country-ndc-sdg-linkages';
-import ClimateVulnerability from 'components/country-climate-vulnerability';
+import AboutContact from 'components/about/about-contact';
+import AboutDescription from 'components/about/about-description';
+import AboutPartners from 'components/about/about-partners';
+import AboutPermissions from 'components/about/about-permissions';
+import GHGCountryEmissions from 'components/country/country-ghg';
+import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
+import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 import error from 'pages/error';
 
 export default [
@@ -65,7 +66,11 @@ export default [
           },
           {
             path: '/embed/emission-pathways/',
-            component: EmissionPathwayGraph,
+            component: EmissionPathwayGraph
+          },
+          {
+            path: '/embed/ndcs-sdg',
+            component: NdcSdgLinkagesContent,
             exact: true
           },
           {

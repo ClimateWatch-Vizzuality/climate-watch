@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 
 import Header from 'components/header';
-import CountryTimeline from 'components/country-timeline';
+import CountryTimeline from 'components/country/country-timeline';
 import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';

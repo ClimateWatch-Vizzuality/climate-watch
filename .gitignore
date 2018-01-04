@@ -49,3 +49,6 @@ bower.json
 .byebug_history
 
 .DS_Store
+
+# Editors
+.vscode/

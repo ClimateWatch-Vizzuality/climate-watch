@@ -41,7 +41,11 @@ const CustomizedYAxisTick = ({ index, x, y, payload }) => (
       strokeWidth="0.5"
       fontSize="13px"
     >
-      {index === 0 ? '0' : `${format('.2s')(payload.value)}`}
+      {index === 0 && payload.value >= 0 ? (
+        '0'
+      ) : (
+        `${format('.2s')(payload.value)}t`
+      )}
     </text>
   </g>
 );

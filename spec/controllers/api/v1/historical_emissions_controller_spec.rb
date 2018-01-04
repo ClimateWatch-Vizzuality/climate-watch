@@ -48,7 +48,7 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
       )
     }
 
-    it 'when filtering by location, source, and gas, return 1 record' do
+    it 'when filtering by location, source, and gas, return 2 records' do
       get(
         :index,
         params: {
@@ -59,8 +59,7 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
       )
       parsed_body = JSON.parse(response.body)
       expect(response).to be_success
-      expect(parsed_body.length).to eq(1)
-      expect(parsed_body.first['gwp']).to eq('AR4')
+      expect(parsed_body.length).to eq(2)
     end
 
     it 'returns results for the correct gwp' do

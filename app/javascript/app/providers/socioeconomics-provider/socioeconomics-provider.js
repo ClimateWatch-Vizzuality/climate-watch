@@ -16,6 +16,14 @@ class SocioeconomicsProvider extends PureComponent {
     fetchSocioeconomics(iso);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const iso = this.props.match.params.iso;
+    const nextIso = nextProps.match.params.iso;
+    if (iso !== nextIso) {
+      this.props.fetchSocioeconomics(nextIso);
+    }
+  }
+
   render() {
     return null;
   }
