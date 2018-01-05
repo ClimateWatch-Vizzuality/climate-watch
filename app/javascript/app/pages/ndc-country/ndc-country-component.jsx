@@ -10,6 +10,7 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import Dropdown from 'components/dropdown';
+import { Helmet } from 'react-helmet';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
@@ -29,8 +30,15 @@ class NDCCountry extends PureComponent {
       documentsOptions,
       handleDropDownChange
     } = this.props;
+    const META_TITLE = `Climate Watch: Data for Climate Action - ${country.name}`;
+    const countryName = country && `made by ${country.name}`;
+    const META_DESCRIPTION = `Explore the Commitments (NDCs) ${countryName} to act on climate change, as part of the Paris Agreement`;
     return (
       <div>
+        <Helmet>
+          <title>{META_TITLE}</title>
+          <meta name="description" content={META_DESCRIPTION} />
+        </Helmet>
         <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>
