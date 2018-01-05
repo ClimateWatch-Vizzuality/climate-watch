@@ -1,8 +1,10 @@
 import { get } from 'js-lenses';
 import { assign } from 'app/utils';
+import _find from 'lodash/find';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
-import { updateIn } from './viz-creator-utils';
+import { updateIn, mapFilter } from './viz-creator-utils';
+import { filtersSelector } from './viz-creator-selectors';
 
 import {
   $datasets,
@@ -98,52 +100,84 @@ export default {
       },
       state
     ),
-  [actions.selectModel]: (state, { payload }) =>
-    updateIn(
+  [actions.selectModel]: (state, { payload }) => {
+    const child = get($scenarios, initialState);
+    const filters = filtersSelector(state);
+    const scenariosFilter = _find(filters, { name: child.name });
+    if (scenariosFilter && scenariosFilter.selected === 'all') {
+      child.selected = mapFilter(child.data);
+    }
+    console.log('updated models', child);
+    return updateIn(
       $models,
-      { selected: payload, child: get($scenarios, initialState) },
+      { selected: payload, child },
       state
-    ),
+    );
+  },
 
   // Scenarios
   [actions.fetchScenarios]: state =>
     updateIn($scenarios, { loading: true }, state),
-  [actions.gotScenarios]: (state, { payload }) =>
-    updateIn(
+  [actions.gotScenarios]: (state, { payload }) => {
+    const scenarios = {
+      loading: false,
+      loaded: true,
+      data: payload
+    };
+    const filters = filtersSelector(state);
+    const scenariosFilter = _find(filters, { name: 'scenarios' });
+    if (scenariosFilter && scenariosFilter.selected === 'all') {
+      scenarios.selected = mapFilter(payload);
+    }
+    console.log('updated scenarios', scenarios);
+    return updateIn(
       $scenarios,
-      {
-        loading: false,
-        loaded: true,
-        data: payload
-      },
+      scenarios,
       state
-    ),
-  [actions.selectScenario]: (state, { payload }) =>
-    updateIn(
+    );
+  },
+  [actions.selectScenario]: (state, { payload }) => {
+    const q = updateIn(
       $scenarios,
       { selected: payload, child: get($indicators, initialState) },
       state
-    ),
-
+    );
+    debugger;
+    return q;
+  },
   // Indicators
-  [actions.fetchIndicators]: state =>
-    updateIn(
+  [actions.fetchIndicators]: state => {
+    const child = get($scenarios, initialState);
+    // Set categories and subcategories
+    child.loading = true;
+    child.child.loading = true;
+    debugger;
+    return updateIn(
       $indicators,
       {
-        loading: true
+        loading: true,
+        child
       },
       state
-    ),
-  [actions.gotIndicators]: (state, { payload }) =>
-    updateIn(
+    );
+  },
+  [actions.gotIndicators]: (state, { payload }) => {
+    const child = get($scenarios, initialState);
+    // Set categories and subcategories
+    child.loading = false;
+    child.child.loading = false;
+    debugger;
+    return updateIn(
       $indicators,
       {
         loading: false,
         loaded: true,
-        data: payload
+        data: payload,
+        child
       },
       state
-    ),
+    );
+  },
   [actions.selectIndicator]: (state, { payload }) =>
     updateIn($indicators, { selected: payload }, state),
 

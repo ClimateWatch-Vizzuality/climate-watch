@@ -29,7 +29,7 @@
               {"name": "scenarios", "multi": true, "selected": "all", "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": false, "selected": null, "active": true}
+              {"name": "indicators", "multi": false, "selected": null, "active": false}
             ]
           },
           {

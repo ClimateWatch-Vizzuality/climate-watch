@@ -90,13 +90,13 @@ class VizCreator extends Component {
     if (models.selected && !scenarios.loading && !scenarios.loaded) {
       fetchScenarios(models.selected.value);
     }
-    if (scenarios.selected && !indicators.loading && !indicators.loaded) {
+    if (locations.selected && scenarios.selected && scenarios.selected.length > 0 && !indicators.loading && !indicators.loaded) {
       fetchIndicators({
         location: locations.selected.value,
         scenarios: scenarios.selected
       });
     }
-    if (indicators.selected && !timeseries.loading && !timeseries.loaded) {
+    if (locations.selected && indicators.selected && scenarios.selected.length > 0 && scenarios.selected && !timeseries.loading && !timeseries.loaded) {
       fetchTimeseries({
         locations: locations.selected.value,
         indicators: indicators.selected.value,

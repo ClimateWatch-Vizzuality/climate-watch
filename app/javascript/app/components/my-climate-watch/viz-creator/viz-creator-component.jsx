@@ -71,8 +71,9 @@ const Step3 = props => {
     if (!value) {
       value = f.multi ? [] : {};
     }
+
     return {
-      disabled: _isUndefined(f.active) || _isEmpty(f.data),
+      disabled: !f.active || _isEmpty(f.data),
       [format]: value,
       options: f.data || [],
       placeholder: f.placeholder || f.name,

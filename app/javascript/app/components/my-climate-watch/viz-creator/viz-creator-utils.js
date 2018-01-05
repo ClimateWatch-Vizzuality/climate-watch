@@ -16,6 +16,16 @@ import {
 export const toFetcher = name => `fetch${_.pluralize(_startCase(name))}`;
 export const toSelector = name => `select${_.singularize(_startCase(name))}`;
 
+// // maps filters to dropdown/multiselect format
+export const mapFilter = data =>
+  (data &&
+    data.map &&
+    data.map(o => ({
+      label: o.label || o.name || o.full_name || o.alias,
+      value: o.value || o.id
+    }))) ||
+  null;
+
 export const flatMapVis = (vis = []) =>
   vis.reduce((vv, v) => vv.concat(v.visualisations), []);
 

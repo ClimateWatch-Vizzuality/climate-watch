@@ -6,7 +6,7 @@ import _find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 // import _filter from 'lodash/filter';
 // import { format } from 'd3-format';
-import { processLineData, flatMapVis } from './viz-creator-utils';
+import { processLineData, flatMapVis, mapFilter } from './viz-creator-utils';
 import * as lenses from './viz-creator-lenses';
 
 export const dataSelector = state => state;
@@ -73,54 +73,23 @@ export const filtersSelector = createSelector(
   }
 );
 
-// const uniqueById = data =>
-//   data.reduce(
-//     (res, current) =>
-//       (current &&
-//         (find(res, { id: current.id }) ? res : res.concat([current]))) ||
-//       res,
-//     []
-//   );
-
-// // maps filters to dropdown/multiselect format
-const mapFilter = data =>
-  (data &&
-    data.map &&
-    data.map(o => ({
-      label: o.label || o.name || o.full_name || o.alias,
-      value: o.value || o.id
-    }))) ||
-  null;
-
 export const getFormatFilters = name =>
   createSelector([dataSelector, filtersSelector], (state, spec) => {
     if (!spec || !spec.length > 0) return {};
 
-    const filter = _find(spec, { name }) || {};
+    const filter = { ..._find(spec, { name }) || {} };
     const lense = get(lenses[`$${name}`], state) || {};
     filter.data = mapFilter(lense.data || []);
     filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
     filter.label = _.titleize(name);
+    filter.loading = lense.loading;
 
     if (lense.selected) {
       filter.selected = filter.multi
         ? [...lense.selected]
         : { ...lense.selected };
     } else {
-      switch (filter.selected) {
-        case 'all':
-          filter.selected = mapFilter(filter.data);
-          break;
-
-        case 'top-10':
-          // filter.selected = mapFilter(topEmmiters.data);
-          filter.selected = [];
-          break;
-
-        default:
-          filter.selected = filter.multi ? [] : {};
-          break;
-      }
+      filter.selected = filter.multi ? [] : {};
     }
 
     return filter;
