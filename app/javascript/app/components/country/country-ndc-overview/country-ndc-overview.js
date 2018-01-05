@@ -47,6 +47,7 @@ class CountryNdcOverviewContainer extends PureComponent {
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
+      category: 'Country',
       slugs: ['ndc_cait', 'ndc_wb'],
       customTitle: 'Nationally Determined Contribution (NDC) Overview',
       open: true

@@ -104,6 +104,7 @@ class NDCMapContainer extends PureComponent {
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
+      category: 'NDC Content Map',
       slugs: 'ndc_wb',
       open: true
     });

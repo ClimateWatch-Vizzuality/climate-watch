@@ -51,6 +51,7 @@ const CountrySDGLinkagesContainer = props => {
 
   const handleInfoClick = () => {
     props.setModalMetadata({
+      category: 'Country',
       slugs: 'ndc_sdc_all indicators',
       open: true
     });

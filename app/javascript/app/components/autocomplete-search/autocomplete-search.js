@@ -2,7 +2,7 @@ import { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-
+import ReactGA from 'react-ga';
 import actions from './autocomplete-search-actions';
 import reducers, { initialState } from './autocomplete-search-reducers';
 
@@ -31,12 +31,27 @@ class AutocompleteSearchContainer extends PureComponent {
 
   handleValueClick = option => {
     this.props.history.push(option.path);
+    ReactGA.event({
+      category: 'Home',
+      action: 'Clicks through from a Search',
+      label: option.value
+    });
+  };
+
+  handleSearchChange = value => {
+    this.props.setAutocompleteSearch(value);
+    ReactGA.event({
+      category: 'Home',
+      action: 'Search for an item',
+      label: value
+    });
   };
 
   render() {
     return createElement(AutocompleteSearchComponent, {
       ...this.props,
-      handleValueClick: this.handleValueClick
+      handleValueClick: this.handleValueClick,
+      handleSearchChange: this.handleSearchChange
     });
   }
 }

@@ -173,6 +173,7 @@ class GhgEmissionsContainer extends PureComponent {
     const { source } = this.props.sourceSelected;
     if (source) {
       this.props.setModalMetadata({
+        category: 'Country',
         slugs: source,
         open: true
       });
