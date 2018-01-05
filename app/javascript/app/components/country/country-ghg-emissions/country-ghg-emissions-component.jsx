@@ -55,6 +55,7 @@ class CountryGhgEmissions extends PureComponent {
               className={styles.btnGroup}
               onInfoClick={handleInfoClick}
               shareUrl={`/embed/countries/${iso}/ghg-emissions`}
+              analyticsGraphName="Country/Ghg-emissions"
             />
             <Button
               noSpace

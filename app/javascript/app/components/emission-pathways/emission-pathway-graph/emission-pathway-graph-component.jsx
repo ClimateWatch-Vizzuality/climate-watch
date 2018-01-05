@@ -62,6 +62,7 @@ class EmissionPathwayGraph extends PureComponent {
             <ButtonGroup
               className={styles.colEnd}
               shareUrl="/embed/emission-pathway-graph"
+              analyticsGraphName="Emission pathway"
             />
           </div>
           <Chart
