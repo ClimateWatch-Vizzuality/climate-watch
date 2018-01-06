@@ -105,6 +105,14 @@ class CountryGhgEmissionsContainer extends PureComponent {
     }
   };
 
+  handleAnalyticsClick = () => {
+    ReactGA.event({
+      category: 'Country',
+      action: 'Leave page to explore data',
+      label: 'ghg-emissions'
+    });
+  };
+
   handleSourceChange = category => {
     const { search } = this.props.location;
     const searchQuery = qs.parse(search);
@@ -141,7 +149,8 @@ class CountryGhgEmissionsContainer extends PureComponent {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      handleAnalyticsClick: this.handleAnalyticsClick
     });
   }
 }

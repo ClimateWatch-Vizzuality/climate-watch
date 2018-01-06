@@ -4,7 +4,9 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import isEmpty from 'lodash/isEmpty';
+import ReactGA from 'react-ga';
 import { actions as modalMetadataActions } from 'components/modal-metadata';
+
 import ownActions from './country-ndc-sdg-linkages-actions';
 import reducers, { initialState } from './country-ndc-sdg-linkages-reducers';
 
@@ -49,6 +51,14 @@ const mapStateToProps = (state, { match, location }) => {
 const CountrySDGLinkagesContainer = props => {
   const { history, location } = props;
 
+  const handleAnalyticsClick = () => {
+    ReactGA.event({
+      category: 'Country',
+      action: 'Leave page to explore data',
+      label: 'ghg-emissions'
+    });
+  };
+
   const handleInfoClick = () => {
     props.setModalMetadata({
       category: 'Country',
@@ -68,7 +78,8 @@ const CountrySDGLinkagesContainer = props => {
   return createElement(CountrySDGLinkagesComponent, {
     ...props,
     handleSectorChange,
-    handleInfoClick
+    handleInfoClick,
+    handleAnalyticsClick
   });
 };
 
