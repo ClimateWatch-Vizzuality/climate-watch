@@ -109,7 +109,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
     ReactGA.event({
       category: 'Country',
       action: 'Leave page to explore data',
-      label: 'ghg-emissions'
+      label: 'Ghg emissions'
     });
   };
 

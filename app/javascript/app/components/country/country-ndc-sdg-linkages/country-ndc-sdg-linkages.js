@@ -55,7 +55,7 @@ const CountrySDGLinkagesContainer = props => {
     ReactGA.event({
       category: 'Country',
       action: 'Leave page to explore data',
-      label: 'ghg-emissions'
+      label: 'Ndc Sdg Linkages'
     });
   };
 
@@ -69,6 +69,13 @@ const CountrySDGLinkagesContainer = props => {
 
   const handleSectorChange = option => {
     updateUrlParam({ name: 'sector', value: option ? option.value : '' });
+    if (option) {
+      ReactGA.event({
+        category: 'Country',
+        action: 'Change SDG-NDC sector',
+        label: option.label
+      });
+    }
   };
 
   const updateUrlParam = (params, clear) => {
