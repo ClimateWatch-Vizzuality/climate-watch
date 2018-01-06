@@ -14,10 +14,10 @@ class NDCTable extends PureComponent {
 
     if (loading) return null;
 
-    return data.length > 0 ? (
+    return data && data.length > 0 ? (
       <Table parseHtml titleLinks={titleLinks} data={data} rowHeight={60} />
     ) : (
-      <NoContent message={noContentMsg} />
+      <NoContent className={styles.noContent} message={noContentMsg} />
     );
   }
 
