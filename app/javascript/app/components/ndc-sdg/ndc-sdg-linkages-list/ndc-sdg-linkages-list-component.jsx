@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
 import cx from 'classnames';
+import ReactGA from 'react-ga';
 import closeIcon from 'assets/icons/legend-close.svg';
 import styles from './ndc-sdg-linkages-list-styles.scss';
 
@@ -14,7 +15,13 @@ class NdcSdgLinkagesList extends PureComponent {
     } else {
       onTargetHover(target);
     }
+    ReactGA.event({
+      category: 'NDC-SDG map',
+      action: 'Target being visualised',
+      label: target
+    });
   };
+
   // eslint-disable-line react/prefer-stateless-function
   render() {
     const { goal, onCloseClick, targetHover, targets } = this.props;
