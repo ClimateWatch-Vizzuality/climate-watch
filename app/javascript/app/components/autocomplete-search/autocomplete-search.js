@@ -40,11 +40,6 @@ class AutocompleteSearchContainer extends PureComponent {
 
   handleSearchChange = value => {
     this.props.setAutocompleteSearch(value);
-    ReactGA.event({
-      category: 'Home',
-      action: 'Search for an item',
-      label: value
-    });
   };
 
   render() {
