@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -15,6 +16,13 @@ class GhgEmissions extends PureComponent {
     const { route } = this.props;
     return (
       <div>
+        <Helmet>
+          <title>Climate Watch: Data for Climate Action - GHG Emissions</title>
+          <meta
+            name="description"
+            content="Visualise the evolution of global emissions, or investigate specific sectors, gases or countries"
+          />
+        </Helmet>
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <Intro title="Historical GHG Emissions" />

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 
@@ -18,6 +19,15 @@ class NdcSdg extends PureComponent {
     const { route } = this.props;
     return (
       <div className={styles.bg}>
+        <Helmet>
+          <title>
+            Climate Watch: Data for Climate Action - NDC-SDG Linkages
+          </title>
+          <meta
+            name="description"
+            content="Explore how Country’s emissions actions (NDCs) relate to the Sustainable Development Goals"
+          />
+        </Helmet>
         <NdcsSdgsMetaProvider />
         <Header size="small" route={route}>
           <div className={layout.content}>
