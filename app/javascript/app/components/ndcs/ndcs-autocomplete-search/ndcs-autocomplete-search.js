@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
+import ReactGA from 'react-ga';
 
 import NdcsAutocompleteSearchComponent from './ndcs-autocomplete-search-component';
 import {
@@ -58,6 +59,11 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
         { name: 'query', value: option.value }
       ]);
       this.handleFetchContent(option);
+      ReactGA.event({
+        category: 'NDC Search',
+        action: 'Searches within an NDC',
+        label: option.label
+      });
     }
   };
 
@@ -67,6 +73,11 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
         label: e.target.value,
         value: e.target.value,
         groupId: 'query'
+      });
+      ReactGA.event({
+        category: 'NDC Search',
+        action: 'Used the main search bar',
+        label: e.target.value
       });
     }
   };

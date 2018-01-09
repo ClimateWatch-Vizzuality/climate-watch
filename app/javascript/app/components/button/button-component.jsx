@@ -26,7 +26,7 @@ const Button = props => {
     [styles.noSpace]: noSpace
   });
   return link ? (
-    <NavLink className={classNames} to={link}>
+    <NavLink className={classNames} to={link} onClick={onClick}>
       {children}
     </NavLink>
   ) : (

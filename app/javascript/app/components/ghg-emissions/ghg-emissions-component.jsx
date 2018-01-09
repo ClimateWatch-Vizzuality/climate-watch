@@ -73,6 +73,7 @@ class GhgEmissions extends PureComponent {
             className={styles.colEnd}
             onInfoClick={handleInfoClick}
             shareUrl="/embed/ghg-emissions"
+            analyticsGraphName="Ghg-emissions"
           />
         </div>
         <Chart
