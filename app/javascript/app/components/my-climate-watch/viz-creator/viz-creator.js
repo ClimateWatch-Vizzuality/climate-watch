@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toSelector } from './viz-creator-utils';
 import VizCreatorComponent from './viz-creator-component';
-import reducers from './viz-creator-reducers';
-import initialState from './viz-creator-initial-state';
+import * as reducers from './viz-creator-reducers';
 import * as actions from './viz-creator-actions';
+import initialState from './viz-creator-initial-state';
 
 import {
   datasetsSelector,
@@ -90,13 +90,26 @@ class VizCreator extends Component {
     if (models.selected && !scenarios.loading && !scenarios.loaded) {
       fetchScenarios(models.selected.value);
     }
-    if (locations.selected && scenarios.selected && scenarios.selected.length > 0 && !indicators.loading && !indicators.loaded) {
+    if (
+      locations.selected &&
+      scenarios.selected &&
+      scenarios.selected.length > 0 &&
+      !indicators.loading &&
+      !indicators.loaded
+    ) {
       fetchIndicators({
         location: locations.selected.value,
         scenarios: scenarios.selected
       });
     }
-    if (locations.selected && indicators.selected && scenarios.selected.length > 0 && scenarios.selected && !timeseries.loading && !timeseries.loaded) {
+    if (
+      locations.selected &&
+      indicators.selected &&
+      scenarios.selected.length > 0 &&
+      scenarios.selected &&
+      !timeseries.loading &&
+      !timeseries.loaded
+    ) {
       fetchTimeseries({
         locations: locations.selected.value,
         indicators: indicators.selected.value,

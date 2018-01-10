@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 import MyInsightsComponent from './my-insights-component';
 import initialState from './my-insights-initial-state';
-import reducers from './my-insights-reducers';
 import { parseInsights } from './my-insights-selectors';
+import * as reducers from './my-insights-reducers';
 import * as actions from './my-insights-actions';
 
 const mapStateToProps = ({ insights }) => ({

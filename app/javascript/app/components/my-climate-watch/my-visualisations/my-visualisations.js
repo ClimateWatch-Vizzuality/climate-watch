@@ -7,7 +7,7 @@ import { actions as creatorActions } from 'components/my-climate-watch/viz-creat
 
 import MyVisualisationsComponent from './my-visualisations-component';
 import initialState from './my-visualisations-initial-state';
-import reducers from './my-visualisations-reducers';
+import * as reducers from './my-visualisations-reducers';
 import * as ownActions from './my-visualisations-actions';
 
 const actions = { ...creatorActions, ...ownActions };

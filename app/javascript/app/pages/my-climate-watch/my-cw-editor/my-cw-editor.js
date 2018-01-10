@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 
 import { parseInsight } from './my-cw-editor-selectors';
 import * as actions from './my-cw-editor-actions';
-import reducers, { initialState } from './my-cw-editor-reducers';
-
+import * as reducers from './my-cw-editor-reducers';
 import MyClimateWatchComponent from './my-cw-editor-component';
+
+const initialState = reducers.initialState;
 
 const mapStateToProps = ({ login, myCWEditor }) => ({
   login,
