@@ -6,8 +6,10 @@ import arrow from 'assets/icons/arrow-down-tiny.svg';
 
 const NavEnhancedMenuComponent = ({ ...props }) => (
   <div>
-    <span>{props.title}</span>
-    <Icon icon={arrow} />
+    <div>
+      <span>{props.title}</span>
+      <Icon icon={arrow} />
+    </div>
     {props.isOpen && <props.childComponent />}
   </div>
 );
