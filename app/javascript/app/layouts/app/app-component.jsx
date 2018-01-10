@@ -21,7 +21,6 @@ class App extends PureComponent {
         <Helmet>
           <title>Climate Watch: Data for Climate Action</title>
           <meta itemProp="name" content={TITLE} />
-          <meta itemProp="description" content={DESCRIPTION} />
           <meta name="description" content={DESCRIPTION} />
 
           {/* Twitter Card data */}

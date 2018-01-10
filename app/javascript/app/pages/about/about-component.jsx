@@ -20,11 +20,7 @@ const About = ({ route, anchorLinks, query }) => (
       <div className={layout.content}>
         <Helmet>
           <title>Climate Watch: Data for Climate Action - About</title>
-          <meta
-            name="description"
-            helmetKey="description"
-            content={DESCRIPTION}
-          />
+          <meta name="description" content={DESCRIPTION} />
         </Helmet>
         <Intro title="About" />
         <AnchorNav
