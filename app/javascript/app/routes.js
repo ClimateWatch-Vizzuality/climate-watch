@@ -85,13 +85,19 @@ export default [
             exact: true,
             headerImage: 'home'
           },
+          // {
+          //   path: '/countries',
+          //   component: CountryIndex,
+          //   exact: true,
+          //   nav: true,
+          //   label: 'COUNTRIES',
+          //   headerImage: 'countries'
+          // },
           {
-            path: '/countries',
-            component: CountryIndex,
-            exact: true,
-            nav: true,
             label: 'COUNTRIES',
-            headerImage: 'countries'
+            nav: true,
+            navEnhancedMenu: true,
+            childComponent: CountryIndex
           },
           {
             path: '/countries/compare',

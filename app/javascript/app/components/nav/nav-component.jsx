@@ -5,6 +5,7 @@ import cx from 'classnames';
 
 import Icon from 'components/icon';
 import SimpleMenu from 'components/simple-menu';
+import NavEnhancedMenuComponent from 'components/nav-enhanced-menu';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
 import styles from './nav-styles.scss';
@@ -40,7 +41,16 @@ class Nav extends PureComponent {
               </NavLink>
             );
           }
-
+          if (route.navEnhancedMenu) {
+            return (
+              <NavEnhancedMenuComponent
+                key={route.label}
+                title={route.label}
+                isOpen={false}
+                childComponent={route.childComponent}
+              />
+            );
+          }
           return (
             <SimpleMenu
               key={route.label}
