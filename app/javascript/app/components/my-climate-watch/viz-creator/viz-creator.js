@@ -112,7 +112,7 @@ class VizCreator extends Component {
     ) {
       fetchTimeseries({
         locations: locations.selected.value,
-        indicators: indicators.selected.value,
+        indicators: indicators.selected,
         scenarios: scenarios.selected
       });
     }

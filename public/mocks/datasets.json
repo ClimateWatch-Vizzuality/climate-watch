@@ -29,7 +29,7 @@
               {"name": "scenarios", "multi": true, "selected": "all", "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": false, "selected": null, "active": false}
+              {"name": "indicators", "multi": true, "selected": "all", "active": true}
             ]
           },
           {
@@ -77,7 +77,7 @@
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "type": "multiselectselect", "selected": "all", "active": true}
+              {"name": "indicators", "multi": true, "selected": "all", "active": true}
             ]
           }
         ]
@@ -106,7 +106,7 @@
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": false, "selected": null, "active": true}
+              {"name": "indicators", "multi": true, "selected": null, "active": true}
             ]
           },
           {
@@ -129,7 +129,7 @@
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": false, "selected": null, "active": true}
+              {"name": "indicators", "multi": true, "selected": null, "active": true}
             ]
           },
           {

@@ -107,12 +107,7 @@ export default {
     if (scenariosFilter && scenariosFilter.selected === 'all') {
       child.selected = mapFilter(child.data);
     }
-    console.log('updated models', child);
-    return updateIn(
-      $models,
-      { selected: payload, child },
-      state
-    );
+    return updateIn($models, { selected: payload, child }, state);
   },
 
   // Scenarios
@@ -129,29 +124,23 @@ export default {
     if (scenariosFilter && scenariosFilter.selected === 'all') {
       scenarios.selected = mapFilter(payload);
     }
-    console.log('updated scenarios', scenarios);
-    return updateIn(
-      $scenarios,
-      scenarios,
-      state
-    );
+    return updateIn($scenarios, scenarios, state);
   },
   [actions.selectScenario]: (state, { payload }) => {
-    const q = updateIn(
+    const newState = updateIn(
       $scenarios,
       { selected: payload, child: get($indicators, initialState) },
       state
     );
-    debugger;
-    return q;
+    return newState;
   },
   // Indicators
   [actions.fetchIndicators]: state => {
-    const child = get($scenarios, initialState);
+    const child = get($categories, initialState);
     // Set categories and subcategories
     child.loading = true;
     child.child.loading = true;
-    debugger;
+
     return updateIn(
       $indicators,
       {
@@ -162,21 +151,27 @@ export default {
     );
   },
   [actions.gotIndicators]: (state, { payload }) => {
-    const child = get($scenarios, initialState);
+    const child = get($categories, initialState);
     // Set categories and subcategories
     child.loading = false;
     child.child.loading = false;
-    debugger;
-    return updateIn(
-      $indicators,
-      {
-        loading: false,
-        loaded: true,
-        data: payload,
-        child
-      },
-      state
-    );
+    child.disabled = false;
+    child.child.disabled = true;
+
+    const indicators = {
+      loading: false,
+      loaded: true,
+      data: payload,
+      disabled: true,
+      child
+    };
+
+    const filters = filtersSelector(state);
+    const indicatorsFilter = _find(filters, { name: 'indicators' });
+    if (indicatorsFilter && indicatorsFilter.selected === 'all') {
+      indicators.selected = mapFilter(payload);
+    }
+    return updateIn($indicators, indicators, state);
   },
   [actions.selectIndicator]: (state, { payload }) =>
     updateIn($indicators, { selected: payload }, state),
@@ -192,14 +187,14 @@ export default {
       },
       state
     ),
-  [actions.selectCategory]: (state, { payload }) =>
-    updateIn(
-      $categories,
-      { selected: payload, child: get($subcategories, initialState) },
-      state
-    ),
+  [actions.selectCategory]: (state, { payload }) => {
+    const child = get($subcategories, state);
+    child.disabled = false;
 
-  // Categories
+    return updateIn($categories, { selected: payload, child }, state);
+  },
+
+  // Subategories
   [actions.gotSubCategories]: (state, { payload }) =>
     updateIn(
       $subcategories,
@@ -210,12 +205,19 @@ export default {
       },
       state
     ),
-  [actions.selectSubcategory]: (state, { payload }) =>
-    updateIn(
-      $subcategories,
-      { selected: payload, child: get($timeseries, initialState) },
+  [actions.selectSubcategory]: (state, { payload }) => {
+    const updatedIndicators = updateIn(
+      $indicators,
+      { ...get($indicators, state), disabled: false },
       state
-    ),
+    );
+    const child = get($timeseries, initialState);
+    return updateIn(
+      $subcategories,
+      { selected: payload, child },
+      updatedIndicators
+    );
+  },
 
   // Timeseries
   [actions.fetchTimeseries]: state =>

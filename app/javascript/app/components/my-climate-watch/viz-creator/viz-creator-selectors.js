@@ -77,12 +77,13 @@ export const getFormatFilters = name =>
   createSelector([dataSelector, filtersSelector], (state, spec) => {
     if (!spec || !spec.length > 0) return {};
 
-    const filter = { ..._find(spec, { name }) || {} };
+    const filter = { ...(_find(spec, { name }) || {}) };
     const lense = get(lenses[`$${name}`], state) || {};
     filter.data = mapFilter(lense.data || []);
     filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
     filter.label = _.titleize(name);
     filter.loading = lense.loading;
+    filter.disabled = lense.disabled;
 
     if (lense.selected) {
       filter.selected = filter.multi

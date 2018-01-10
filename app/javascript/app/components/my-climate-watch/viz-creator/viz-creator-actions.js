@@ -68,9 +68,9 @@ export const fetchIndicators = createThunkAction(
       const categories = uniqueById(d.map(i => i.category));
       const subcategories = uniqueById(d.map(i => i.subcategory));
 
+      dispatch(gotIndicators(uniqueById(d)));
       dispatch(gotCategories(categories));
       dispatch(gotSubCategories(subcategories));
-      dispatch(gotIndicators(uniqueById(d)));
     });
   }
 );
@@ -88,10 +88,11 @@ export const fetchTimeseries = createThunkAction(
   'fetchTimeseries',
   ({ locations, indicators, scenarios }) => dispatch => {
     const flatScenarios = scenarios.map(s => s.value).join(',') || false;
+    const flatIndicators = indicators.map(s => s.value).join(',') || false;
 
     EPAPI.get(
       'time_series_values',
-      `location=${locations}&scenario=${flatScenarios}&indicator=${indicators}`
+      `location=${locations}&scenario=${flatScenarios}&indicator=${flatIndicators}`
     ).then(d => dispatch(gotTimeseries(d)));
   }
 );

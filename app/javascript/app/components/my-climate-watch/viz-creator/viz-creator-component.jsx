@@ -71,11 +71,11 @@ const Step3 = props => {
     if (!value) {
       value = f.multi ? [] : {};
     }
-
+    const disabled = _isUndefined(f.disabled) ? _isEmpty(f.data) : f.disabled;
     return {
-      disabled: !f.active || _isEmpty(f.data),
+      disabled,
       [format]: value,
-      options: f.data || [],
+      options: (f.data || []).map(d => ({ ...d, label: d.label || '' })),
       placeholder: f.placeholder || f.name,
       loading: f.loading
     };
