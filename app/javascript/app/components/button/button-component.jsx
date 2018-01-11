@@ -34,7 +34,7 @@ const Button = props => {
     );
   }
   return link ? (
-    <NavLink className={classNames} to={link}>
+    <NavLink className={classNames} to={link} onClick={onClick}>
       {children}
     </NavLink>
   ) : (

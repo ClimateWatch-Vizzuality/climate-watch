@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
+import ReactGA from 'react-ga';
 
 import { actions as modalActions } from 'components/modal-metadata';
 import ownActions from './country-ghg-emissions-actions';
@@ -96,11 +97,20 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
     if (source) {
       this.props.setModalMetadata({
+        category: 'Country',
         slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
         open: true
       });
     }
+  };
+
+  handleAnalyticsClick = () => {
+    ReactGA.event({
+      category: 'Country',
+      action: 'Leave page to explore data',
+      label: 'Ghg emissions'
+    });
   };
 
   handleSourceChange = category => {
@@ -115,6 +125,11 @@ class CountryGhgEmissionsContainer extends PureComponent {
         ],
         true
       );
+      ReactGA.event({
+        category: 'Country',
+        action: 'Change Emissions source',
+        label: category.label
+      });
     }
   };
 
@@ -134,7 +149,8 @@ class CountryGhgEmissionsContainer extends PureComponent {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      handleAnalyticsClick: this.handleAnalyticsClick
     });
   }
 }

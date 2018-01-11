@@ -7,6 +7,7 @@ import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
 import arrow from 'assets/icons/arrow-down-tiny.svg';
+import ReactGA from 'react-ga';
 import styles from './simple-menu-styles.scss';
 
 class SimpleMenu extends PureComponent {
@@ -17,7 +18,8 @@ class SimpleMenu extends PureComponent {
       open: false,
       actionSuccessful: false
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.handleActionClick = this.handleActionClick.bind(this);
+    this.handleLinkClick = this.handleLinkClick.bind(this);
   }
 
   componentDidUpdate() {
@@ -27,9 +29,26 @@ class SimpleMenu extends PureComponent {
     }
   }
 
-  handleClick(action) {
+  handleActionClick(action) {
     action();
     this.setState({ actionSuccessful: true });
+    this.handleAnalyticsClick();
+  }
+
+  handleLinkClick() {
+    this.setState({ open: false });
+    this.handleAnalyticsClick();
+  }
+
+  handleAnalyticsClick() {
+    const { analyticsGraphName } = this.props;
+    if (analyticsGraphName) {
+      ReactGA.event({
+        category: 'Share',
+        action: 'User shares a link',
+        label: analyticsGraphName
+      });
+    }
   }
 
   renderInsideLink(option, withAction = false) {
@@ -54,7 +73,6 @@ class SimpleMenu extends PureComponent {
           className={styles.link}
           activeClassName={styles.active}
           to={option.path}
-          onClick={() => this.setState({ open: false })}
         >
           {this.renderInsideLink(option)}
         </NavLink>
@@ -63,12 +81,17 @@ class SimpleMenu extends PureComponent {
     return option.action ? (
       <button
         className={styles.link}
-        onClick={() => this.handleClick(option.action)}
+        onClick={() => this.handleActionClick(option.action)}
       >
         {this.renderInsideLink(option, true)}
       </button>
     ) : (
-      <a className={styles.link} target="_blank" href={option.link}>
+      <a
+        className={styles.link}
+        target="_blank"
+        href={option.link}
+        onClick={this.handleLinkClick}
+      >
         {this.renderInsideLink(option)}
       </a>
     );
@@ -133,7 +156,8 @@ SimpleMenu.propTypes = {
   positionRight: PropTypes.bool,
   inButtonGroup: PropTypes.bool,
   buttonClassName: PropTypes.string,
-  currentPathname: PropTypes.string
+  currentPathname: PropTypes.string,
+  analyticsGraphName: PropTypes.string
 };
 
 export default SimpleMenu;

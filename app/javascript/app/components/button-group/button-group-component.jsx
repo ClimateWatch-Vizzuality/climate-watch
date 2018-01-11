@@ -17,7 +17,8 @@ const ButtonGroup = ({
   onDownloadClick,
   onAddToUserClick,
   disabled,
-  shareUrl
+  shareUrl,
+  analyticsGraphName
 }) => (
   <div
     className={cx(
@@ -37,6 +38,7 @@ const ButtonGroup = ({
       className={cx(styles.button, styles.share)}
       path={shareUrl}
       inButtonGroup
+      analyticsGraphName={analyticsGraphName}
     />
     <Button
       className={styles.button}
@@ -58,6 +60,7 @@ const ButtonGroup = ({
 ButtonGroup.propTypes = {
   className: PropTypes.string,
   shareUrl: PropTypes.string,
+  analyticsGraphName: PropTypes.string,
   onInfoClick: PropTypes.func,
   onDownloadClick: PropTypes.func,
   onAddToUserClick: PropTypes.func,

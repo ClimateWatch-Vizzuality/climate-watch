@@ -120,7 +120,7 @@ const partnershipWith = {
 
 const techPartnership = {
   id: 'tech-partnership',
-  title: 'Technical partners',
+  title: 'Technical partner',
   type: 'onlyLinks',
   partners: [
     {

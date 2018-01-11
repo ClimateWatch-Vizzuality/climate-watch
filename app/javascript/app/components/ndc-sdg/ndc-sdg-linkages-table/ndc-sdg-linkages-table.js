@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
+import ReactGA from 'react-ga';
 
 import NdcSdgLinkagesTableComponent from './ndc-sdg-linkages-table-component';
 import {
@@ -32,6 +33,11 @@ class NdcSdgLinkagesTableContainer extends PureComponent {
 
   handleClickGoal = sdgNumber => {
     this.updateUrlParam({ name: 'goal', value: sdgNumber });
+    ReactGA.event({
+      category: 'NDC-SDG map',
+      action: 'Clickthrough to target view',
+      label: sdgNumber.toString()
+    });
   };
 
   handleClickClose = () => {

@@ -32,7 +32,7 @@ class Search extends Component {
     if (onChange) {
       this.props.onChange(this.state.search);
     }
-  }, 150);
+  }, 300);
 
   render() {
     const { search } = this.state;

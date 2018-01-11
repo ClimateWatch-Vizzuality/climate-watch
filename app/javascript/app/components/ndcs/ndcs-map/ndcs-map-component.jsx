@@ -36,6 +36,7 @@ const NDCMap = props => (
         className={styles.buttons}
         onInfoClick={props.handleInfoClick}
         shareUrl="/embed/ndcs"
+        analyticsGraphName="Ndcs"
       />
     </div>
     {props.loading && <Loading light className={styles.loader} />}
