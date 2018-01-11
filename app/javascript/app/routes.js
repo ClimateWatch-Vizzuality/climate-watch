@@ -13,7 +13,7 @@ import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import NDCCompare from 'pages/ndc-compare';
-import CountryIndex from 'pages/country-index';
+import CountriesSelect from 'components/countries-select';
 import Country from 'pages/country';
 import CountryCompare from 'pages/country-compare';
 import Sectors from 'pages/sectors';
@@ -85,19 +85,11 @@ export default [
             exact: true,
             headerImage: 'home'
           },
-          // {
-          //   path: '/countries',
-          //   component: CountryIndex,
-          //   exact: true,
-          //   nav: true,
-          //   label: 'COUNTRIES',
-          //   headerImage: 'countries'
-          // },
           {
             label: 'COUNTRIES',
             nav: true,
-            navEnhancedMenu: true,
-            childComponent: CountryIndex
+            navNestedMenu: true,
+            Child: CountriesSelect
           },
           {
             path: '/countries/compare',
