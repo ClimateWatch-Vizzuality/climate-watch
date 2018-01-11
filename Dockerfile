@@ -5,6 +5,7 @@ ENV NAME climate-watch
 ENV RAKE_ENV production
 ENV RAILS_ENV production
 ENV CW_API /api/v1
+ENV GFW_API https://production-api.globalforestwatch.org
 ENV ESP_API https://data.emissionspathways.org/api/v1
 ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
