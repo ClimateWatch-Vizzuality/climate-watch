@@ -16,10 +16,13 @@ import styles from './my-climate-watch-styles';
 const MyCw = ({ location, route, login, openCreator }) => {
   let button = null;
   if (login.logged) {
-    button =
-      location.pathname.indexOf('visualisations') > -1
-        ? { text: 'Create an visualisation', onClick: openCreator }
-        : { text: 'Create an insight', link: '/my-climate-watch/editor' };
+    if (location.pathname.indexOf('visualisations') > -1) {
+      button = { text: 'Create a visualisation', onClick: openCreator };
+    } else if (location.pathname.indexOf('account-settings') > -1) {
+      button = { text: 'Logout' };
+    } else {
+      button = { text: 'Create an insight', link: '/my-climate-watch/editor' };
+    }
   }
   let content = <Loading className={styles.loading} height={300} />;
   if (login.loaded) {
