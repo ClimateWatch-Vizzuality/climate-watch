@@ -1,1 +1,0 @@
-export default { isOpen: false };

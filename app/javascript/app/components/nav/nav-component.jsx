@@ -45,6 +45,7 @@ class Nav extends PureComponent {
             return (
               <NavNestedMenu
                 key={route.label}
+                reverse={reverse}
                 title={route.label}
                 className={cx(styles.link, styles.menuLink)}
                 Child={route.Child}

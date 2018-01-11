@@ -1,5 +1,9 @@
 @import '~styles/layout.scss';
 
+.navNestedMenuContainer {
+  position: relative;
+}
+
 .navNestedMenu {
   position: absolute;
   width: 100vw;
@@ -27,4 +31,8 @@
   width: 7px;
   height: 4px;
   margin-left: 4px;
+}
+
+.reverse {
+  position: absolute;
 }
