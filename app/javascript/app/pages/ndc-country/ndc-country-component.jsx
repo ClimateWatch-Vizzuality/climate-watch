@@ -30,7 +30,8 @@ class NDCCountry extends PureComponent {
       documentsOptions,
       handleDropDownChange
     } = this.props;
-    const META_TITLE = `Climate Watch: Data for Climate Action - ${country.name}`;
+    const META_TITLE = `Climate Watch: Data for Climate Action - ${country &&
+      country.name}`;
     const countryName = country && `made by ${country.name}`;
     const META_DESCRIPTION = `Explore the Commitments (NDCs) ${countryName} to act on climate change, as part of the Paris Agreement`;
     return (

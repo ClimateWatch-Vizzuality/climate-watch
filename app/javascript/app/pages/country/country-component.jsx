@@ -16,16 +16,22 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
 
+const META_TITLE = 'Climate Watch: Data for Climate Action';
+const META_DESCRIPTION = `Discover information about Greenhouse Gas Emissions, vulnerability and readiness,
+  climate actions for`;
+
 class Country extends PureComponent {
   render() {
     const { route, country, anchorLinks, description } = this.props;
-    const META_TITLE = `Climate Watch: Data for Climate Action - ${country.name}`;
-    const META_DESCRIPTION = `Discover information about Greenhouse Gas Emissions, vulnerability and readiness, climate actions for ${country.name}`;
+    const countryName = (country && country.name) || '';
     return (
       <div>
         <Helmet>
-          <title>{META_TITLE}</title>
-          <meta name="description" content={META_DESCRIPTION} />
+          <title>{`${META_TITLE} - ${countryName}`}</title>
+          <meta
+            name="description"
+            content={`${META_DESCRIPTION} - ${countryName}`}
+          />
         </Helmet>
         <SocioeconomicsProvider />
         <Header route={route}>
