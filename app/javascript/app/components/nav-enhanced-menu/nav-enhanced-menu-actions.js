@@ -1,4 +1,4 @@
-import { createActions } from 'redux-actions';
+import { createAction } from 'redux-actions';
 
-export const openMenu = createActions('OPEN_MENU');
-export const closeMenu = createActions('CLOSE_MENU');
+export const openMenu = createAction('OPEN_MENU');
+export const closeMenu = createAction('CLOSE_MENU');

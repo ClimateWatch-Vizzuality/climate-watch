@@ -6,20 +6,20 @@ import arrow from 'assets/icons/arrow-down-tiny.svg';
 
 const NavEnhancedMenuComponent = ({ ...props }) => (
   <div>
-    <div>
+    <button onClick={props.isOpen ? props.closeMenu : props.openMenu}>
       <span>{props.title}</span>
       <Icon icon={arrow} />
-    </div>
+    </button>
     {props.isOpen && <props.childComponent />}
   </div>
 );
 
 NavEnhancedMenuComponent.propTypes = {
   title: PropTypes.string,
+  childComponent: PropTypes.func,
   isOpen: PropTypes.bool,
-  childComponent: PropTypes.func
+  openMenu: PropTypes.func,
+  closeMenu: PropTypes.func
 };
 
 export default NavEnhancedMenuComponent;
-
-// onClick={props.isOpen ? closeMenu() : openMenu()}
