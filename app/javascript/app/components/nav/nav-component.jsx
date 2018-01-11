@@ -46,7 +46,6 @@ class Nav extends PureComponent {
               <NavEnhancedMenuComponent
                 key={route.label}
                 title={route.label}
-                isOpen
                 childComponent={route.childComponent}
               />
             );

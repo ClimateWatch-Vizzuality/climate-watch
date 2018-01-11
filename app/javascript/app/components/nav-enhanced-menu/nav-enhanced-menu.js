@@ -1,11 +1,15 @@
-import { createElement, Component } from 'react';
+// import { createElement, Component } from 'react'
+import { connect } from 'react-redux';
+
+import * as actions from './nav-enhanced-menu-actions';
+import * as reducers from './nav-enhanced-menu-reducers';
 
 import NavEnhancedMenuComponent from './nav-enhanced-menu-component';
 
-class NavEnhancedMenuContainer extends Component {
-  render() {
-    return createElement(NavEnhancedMenuComponent, this.props, null);
-  }
-}
+// const mapStateToProps = ({navEnhancedMenu}) => navEnhancedMenu
 
-export default NavEnhancedMenuContainer;
+const initialState = { isOpen: false };
+
+const mapStateToProps = ({ navEnhancedMenu }) => navEnhancedMenu;
+export { actions, reducers, initialState };
+export default connect(mapStateToProps, actions)(NavEnhancedMenuComponent);

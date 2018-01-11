@@ -21,3 +21,5 @@ NavEnhancedMenuComponent.propTypes = {
 };
 
 export default NavEnhancedMenuComponent;
+
+// onClick={props.isOpen ? closeMenu() : openMenu()}
