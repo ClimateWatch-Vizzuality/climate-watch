@@ -54,15 +54,13 @@ class VizCreator extends Component {
 
   componentWillReceiveProps(props) {
     const {
-      datasets, // eslint-disable-line
-      visualisations, // eslint-disable-line
-      locations, // eslint-disable-line
-      models, // eslint-disable-line
-      scenarios, // eslint-disable-line
-      indicators, // eslint-disable-line
-      categories, // eslint-disable-line
-      subcategories, // eslint-disable-line
-      timeseries // eslint-disable-line
+      datasets,
+      visualisations,
+      locations,
+      models,
+      scenarios,
+      indicators,
+      timeseries
     } = props;
 
     const {
@@ -74,47 +72,47 @@ class VizCreator extends Component {
       fetchTimeseries
     } = props;
 
-    if (
-      datasets.selected &&
-      !visualisations.loading &&
-      !visualisations.loaded
-    ) {
-      fetchVisualisations(datasets.selected);
-    }
-    if (visualisations.selected && !locations.loading && !locations.loaded) {
-      fetchLocations(visualisations.selected);
-    }
-    if (locations.selected && !models.loading && !models.loaded) {
-      fetchModels(locations.selected.value);
-    }
-    if (models.selected && !scenarios.loading && !scenarios.loaded) {
-      fetchScenarios(models.selected.value);
-    }
-    if (
-      locations.selected &&
-      scenarios.selected &&
-      scenarios.selected.length > 0 &&
-      !indicators.loading &&
-      !indicators.loaded
-    ) {
-      fetchIndicators({
-        location: locations.selected.value,
-        scenarios: scenarios.selected
-      });
-    }
-    if (
-      locations.selected &&
-      indicators.selected &&
-      scenarios.selected.length > 0 &&
-      scenarios.selected &&
-      !timeseries.loading &&
-      !timeseries.loaded
-    ) {
-      fetchTimeseries({
-        locations: locations.selected.value,
-        indicators: indicators.selected,
-        scenarios: scenarios.selected
-      });
+    if (datasets.selected) {
+      if (!visualisations.loading && !visualisations.loaded) {
+        fetchVisualisations(datasets.selected);
+      }
+      if (visualisations.selected) {
+        if (!locations.loading && !locations.loaded) {
+          fetchLocations(visualisations.selected);
+        }
+        if (locations.selected) {
+          if (!models.loading && !models.loaded) {
+            fetchModels(locations.selected.value);
+          }
+          if (models.selected) {
+            if (!scenarios.loading && !scenarios.loaded) {
+              fetchScenarios(models.selected.value);
+            }
+
+            if (scenarios.selected && scenarios.selected.length > 0) {
+              if (!indicators.loading && !indicators.loaded) {
+                fetchIndicators({
+                  location: locations.selected.value,
+                  scenarios: scenarios.selected
+                });
+              }
+              if (indicators.selected && indicators.selected.length > 0) {
+                const hasChanges =
+                  this.props.indicators.length !== indicators.selected.length;
+                const notFetching =
+                  timeseries && !timeseries.loading && !timeseries.loaded;
+                if (notFetching && hasChanges) {
+                  fetchTimeseries({
+                    locations: this.props.filters.locations.selected.value,
+                    indicators: this.props.filters.indicators.selected,
+                    scenarios: this.props.filters.scenarios.selected
+                  });
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -141,6 +139,14 @@ class VizCreator extends Component {
 }
 
 VizCreator.propTypes = {
+  filters: PropTypes.object.isRequired,
+  datasets: PropTypes.object.isRequired,
+  visualisations: PropTypes.object.isRequired,
+  locations: PropTypes.object.isRequired,
+  models: PropTypes.object.isRequired,
+  scenarios: PropTypes.object.isRequired,
+  indicators: PropTypes.object.isRequired,
+  timeseries: PropTypes.object,
   fetchDatasets: PropTypes.func.isRequired,
   fetchVisualisations: PropTypes.func.isRequired,
   fetchLocations: PropTypes.func.isRequired,

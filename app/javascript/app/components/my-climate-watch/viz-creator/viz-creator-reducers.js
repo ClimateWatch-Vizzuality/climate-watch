@@ -1,6 +1,8 @@
 import { get } from 'js-lenses';
 import { assign } from 'app/utils';
 import _find from 'lodash/find';
+import groupBy from 'lodash/groupBy';
+import uniqBy from 'lodash/uniqBy';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
 import { updateIn, mapFilter } from './viz-creator-utils';
@@ -161,16 +163,11 @@ export default {
     const indicators = {
       loading: false,
       loaded: true,
-      data: payload,
+      data: [],
+      allIndicators: payload,
       disabled: true,
       child
     };
-
-    const filters = filtersSelector(state);
-    const indicatorsFilter = _find(filters, { name: 'indicators' });
-    if (indicatorsFilter && indicatorsFilter.selected === 'all') {
-      indicators.selected = mapFilter(payload);
-    }
     return updateIn($indicators, indicators, state);
   },
   [actions.selectIndicator]: (state, { payload }) =>
@@ -189,6 +186,11 @@ export default {
     ),
   [actions.selectCategory]: (state, { payload }) => {
     const child = get($subcategories, state);
+    const { allIndicators } = get($indicators, state);
+    const categories = groupBy(allIndicators, 'category.id');
+    const subCategories = (categories[payload.value] || [])
+      .map(i => i.subcategory);
+    child.data = uniqBy(subCategories, 'id');
     child.disabled = false;
 
     return updateIn($categories, { selected: payload, child }, state);
@@ -206,17 +208,32 @@ export default {
       state
     ),
   [actions.selectSubcategory]: (state, { payload }) => {
-    const updatedIndicators = updateIn(
-      $indicators,
-      { ...get($indicators, state), disabled: false },
-      state
-    );
+    const indicators = get($indicators, state);
+    const { allIndicators } = indicators;
+    const subcategories = groupBy(allIndicators, 'subcategory.id');
+    const indicatorSelected = subcategories[payload.value];
+
+    const newIndicators = {
+      ...indicators,
+      data: indicatorSelected || [],
+      disabled: false
+    };
+
+    const filters = filtersSelector(state);
+    const indicatorsFilter = _find(filters, { name: 'indicators' });
+    if (indicatorsFilter && indicatorsFilter.selected === 'all') {
+      newIndicators.selected = mapFilter(indicatorSelected);
+    }
+    const updatedIndicators = updateIn($indicators, newIndicators, state);
+
     const child = get($timeseries, initialState);
-    return updateIn(
+    const newState = updateIn(
       $subcategories,
       { selected: payload, child },
       updatedIndicators
     );
+
+    return newState;
   },
 
   // Timeseries

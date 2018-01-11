@@ -35,6 +35,7 @@ export default {
               name: 'indicators',
               selected: null,
               data: [],
+              allIndicators: [],
               loading: false,
               loaded: false,
               child: {

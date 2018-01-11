@@ -1,6 +1,7 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { get } from 'js-lenses';
 import find from 'lodash/find';
+import uniqBy from 'lodash/uniqBy';
 import { EPAPI, CWAPI } from 'services/api';
 
 import { actions as visActions } from 'components/my-climate-watch/my-visualisations';
@@ -65,24 +66,13 @@ export const fetchIndicators = createThunkAction(
         .map(s => s.value)
         .join(',')}&location=${location}&time_series=true`
     ).then(d => {
-      const categories = uniqueById(d.map(i => i.category));
-      const subcategories = uniqueById(d.map(i => i.subcategory));
-
-      dispatch(gotIndicators(uniqueById(d)));
+      const indicators = uniqBy(d, 'id');
+      const categories = uniqBy(d.map(i => i.category), 'id');
+      dispatch(gotIndicators(indicators));
       dispatch(gotCategories(categories));
-      dispatch(gotSubCategories(subcategories));
     });
   }
 );
-
-const uniqueById = data =>
-  data.reduce(
-    (res, current) =>
-      (current &&
-        (find(res, { id: current.id }) ? res : res.concat([current]))) ||
-      res,
-    []
-  );
 
 export const fetchTimeseries = createThunkAction(
   'fetchTimeseries',
