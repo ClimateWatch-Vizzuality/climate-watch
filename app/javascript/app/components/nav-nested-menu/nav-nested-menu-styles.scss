@@ -1,0 +1,50 @@
+@import '~styles/layout.scss';
+
+.navNestedMenuContainer {
+  .button {
+    cursor: pointer;
+    outline: none;
+
+    &.active::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      background-color: $theme-secondary;
+      width: 100%;
+      height: 3px;
+    }
+  }
+
+  .arrowIcon {
+    width: 7px;
+    height: 4px;
+    margin-left: 4px;
+  }
+
+  .navNestedMenuWrapper {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    left: 0;
+    z-index: 10;
+  }
+
+  &.regular {
+    .navNestedMenu {
+      position: absolute;
+      width: 100vw;
+      top: 4px;
+    }
+  }
+
+  &.reverse {
+    .navNestedMenu {
+      position: relative;
+      left: 0;
+      height: 604px;
+      bottom: 695px;
+    }
+  }
+}

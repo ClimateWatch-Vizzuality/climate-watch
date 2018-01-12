@@ -6,7 +6,7 @@ import ClickOutside from 'react-click-outside';
 import Icon from 'components/icon';
 import arrow from 'assets/icons/arrow-down-tiny.svg';
 
-import styles from './nav-enhanced-menu-styles';
+import styles from './nav-nested-menu-styles';
 
 class NavNestedMenuComponent extends PureComponent {
   constructor(props) {
@@ -29,7 +29,13 @@ class NavNestedMenuComponent extends PureComponent {
   render() {
     const { className } = this.props;
     return (
-      <div className={styles.navNestedMenuContainer}>
+      <div
+        className={cx(
+          styles.navNestedMenuContainer,
+          { [styles.reverse]: this.props.reverse },
+          { [styles.regular]: !this.props.reverse }
+        )}
+      >
         <ClickOutside onClickOutside={() => this.setState({ isOpen: false })}>
           <button
             onClick={() => this.toggleMenu()}
@@ -41,11 +47,9 @@ class NavNestedMenuComponent extends PureComponent {
             <Icon icon={arrow} className={styles.arrowIcon} />
           </button>
           {this.state.isOpen && (
-            <this.props.Child
-              className={cx(styles.navNestedMenu, {
-                [styles.reverse]: this.props.reverse
-              })}
-            />
+            <div className={styles.navNestedMenuWrapper}>
+              <this.props.Child className={cx(styles.navNestedMenu)} />
+            </div>
           )}
         </ClickOutside>
       </div>
