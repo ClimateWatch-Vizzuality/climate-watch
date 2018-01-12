@@ -8,8 +8,12 @@ import React, { PureComponent } from 'react';
 // import EspScenariosProvider from 'providers/esp-scenarios-provider';
 // import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 // import { renderRoutes } from 'react-router-config';
+import { Helmet } from 'react-helmet';
+
 import Teaser from 'components/teaser';
 import screenshot from 'assets/screenshots/emission-pathways-screenshot';
+
+import { EMISSION_PATHWAYS } from 'data/SEO';
 
 // import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 // import layout from 'styles/layout.scss';
@@ -21,6 +25,10 @@ class EmissionPathways extends PureComponent {
     // const { route, anchorLinks, routeLinks } = this.props;
     return (
       <div>
+        <Helmet>
+          <title>Emision pathways</title>
+          <meta name="description" content={EMISSION_PATHWAYS} />
+        </Helmet>
         <Teaser
           screenshot={screenshot}
           title="Explore Emission Pathways"

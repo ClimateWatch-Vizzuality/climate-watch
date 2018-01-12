@@ -8,6 +8,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
+import { NDC_SDG_LINKAGES } from 'data/SEO';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';
@@ -23,10 +24,7 @@ class NdcSdg extends PureComponent {
           <title>
             Climate Watch: Data for Climate Action - NDC-SDG Linkages
           </title>
-          <meta
-            name="description"
-            content="Explore how Country’s emissions actions (NDCs) relate to the Sustainable Development Goals"
-          />
+          <meta name="description" content={NDC_SDG_LINKAGES} />
         </Helmet>
         <NdcsSdgsMetaProvider />
         <Header size="small" route={route}>
