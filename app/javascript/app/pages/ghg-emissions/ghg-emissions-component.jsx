@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import GhgEmissionsGraph from 'components/ghg-emissions';
-import { HISTORICAL_GHG_EMISIONS } from 'data/SEO';
+import { TITLE, HISTORICAL_GHG_EMISIONS } from 'data/SEO';
 
 import layout from 'styles/layout.scss';
 import styles from './ghg-emissions-styles.scss';
@@ -18,7 +18,7 @@ class GhgEmissions extends PureComponent {
     return (
       <div>
         <Helmet>
-          <title>Climate Watch: Data for Climate Action - GHG Emissions</title>
+          <title>{`${TITLE} - GHG Emissions`}</title>
           <meta name="description" content={HISTORICAL_GHG_EMISIONS} />
         </Helmet>
         <Header route={route}>

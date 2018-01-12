@@ -6,11 +6,9 @@ import { Helmet } from 'react-helmet';
 import CountriesProvider from 'providers/countries-provider';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
-import { HOME_PAGE } from 'data/SEO';
+import { TITLE, HOME_PAGE } from 'data/SEO';
 
 import styles from './app-styles.scss'; // eslint-disable-line
-
-const TITLE = 'Climate Watch: Data for Climate Action';
 
 class App extends PureComponent {
   render() {
@@ -18,7 +16,7 @@ class App extends PureComponent {
     return (
       <div>
         <Helmet>
-          <title>Climate Watch: Data for Climate Action</title>
+          <title>{TITLE}</title>
           <meta itemProp="name" content={TITLE} />
           <meta name="description" content={HOME_PAGE} />
 

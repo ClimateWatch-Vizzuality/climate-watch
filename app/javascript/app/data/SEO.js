@@ -1,3 +1,5 @@
+export const TITLE = 'Climate Watch: Data for Climate Action';
+
 export const HOME_PAGE =
   'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.';
 export const COUNTRY_PROFILES =
@@ -9,4 +11,6 @@ export const NDC_SDG_LINKAGES =
 export const HISTORICAL_GHG_EMISIONS =
   'Analyze and visualize latest available international greenhouse gas emissions data. Climate Watch lets you explore global emissions by sector, gases, countries, or regions.';
 export const EMISSION_PATHWAYS =
+  'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.';
+export const ABOUT =
   'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.';

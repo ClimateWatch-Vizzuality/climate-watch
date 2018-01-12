@@ -13,7 +13,7 @@ import { Helmet } from 'react-helmet';
 import Teaser from 'components/teaser';
 import screenshot from 'assets/screenshots/emission-pathways-screenshot';
 
-import { EMISSION_PATHWAYS } from 'data/SEO';
+import { TITLE, EMISSION_PATHWAYS } from 'data/SEO';
 
 // import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 // import layout from 'styles/layout.scss';
@@ -31,7 +31,7 @@ class EmissionPathways extends PureComponent {
         </Helmet>
         <Teaser
           screenshot={screenshot}
-          title="Explore Emission Pathways"
+          title={`${TITLE} - Explore Emission Pathways`}
           description="Easily visualize a range of future emission pathways linked to different scenarios of economic and energy developments, drawing from a variety of modeling tools. If you are interested to learn more about the tool or if you are a model developer and would like to make your data available on it, please <a href='mailto:climatewatch@wri.org'>contact us.</a>"
         />
         {/* <EspModelsProvider />

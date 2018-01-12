@@ -7,7 +7,7 @@ import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import { Helmet } from 'react-helmet';
-import { NDC_CONTENT } from 'data/SEO';
+import { TITLE, NDC_CONTENT } from 'data/SEO';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
@@ -15,7 +15,7 @@ import styles from './ndcs-styles.scss';
 const NDC = ({ anchorLinks, query, route }) => (
   <div>
     <Helmet>
-      <title>Climate Watch: Data for Climate Action - NDC CONTENT</title>
+      <title>{`${TITLE} - NDC CONTENT`}</title>
       <meta name="description" content={NDC_CONTENT} />
     </Helmet>
     <Header size="medium" route={route}>
