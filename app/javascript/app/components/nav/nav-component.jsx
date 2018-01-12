@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import Icon from 'components/icon';
 import SimpleMenu from 'components/simple-menu';
-import NavNestedMenu from 'components/nav-enhanced-menu';
+import NavNestedMenu from 'components/nav-nested-menu';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
 import styles from './nav-styles.scss';
