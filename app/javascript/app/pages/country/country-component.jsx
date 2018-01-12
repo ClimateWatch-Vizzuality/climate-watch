@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import { Helmet } from 'react-helmet';
+import { TITLE, COUNTRY_PROFILES } from 'data/SEO';
 
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
@@ -16,10 +17,6 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import layout from 'styles/layout.scss';
 import styles from './country-styles.scss';
 
-const META_TITLE = 'Climate Watch: Data for Climate Action';
-const META_DESCRIPTION = `Discover information about Greenhouse Gas Emissions, vulnerability and readiness,
-  climate actions for`;
-
 class Country extends PureComponent {
   render() {
     const { route, country, anchorLinks, description } = this.props;
@@ -27,11 +24,8 @@ class Country extends PureComponent {
     return (
       <div>
         <Helmet>
-          <title>{`${META_TITLE} - ${countryName}`}</title>
-          <meta
-            name="description"
-            content={`${META_DESCRIPTION} - ${countryName}`}
-          />
+          <title>{`${TITLE} - ${countryName}`}</title>
+          <meta name="description" content={COUNTRY_PROFILES} />
         </Helmet>
         <SocioeconomicsProvider />
         <Header route={route}>

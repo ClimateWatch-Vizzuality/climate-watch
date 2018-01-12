@@ -6,12 +6,9 @@ import { Helmet } from 'react-helmet';
 import CountriesProvider from 'providers/countries-provider';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
+import { TITLE, HOME_PAGE } from 'data/SEO';
 
 import styles from './app-styles.scss'; // eslint-disable-line
-
-const TITLE = 'Climate Watch: Data for Climate Action';
-const DESCRIPTION = `Open data to help you understand global and national emissions reductions and climate adaptation measures,
-  as countries implement their NDCS and the Paris Agreement`;
 
 class App extends PureComponent {
   render() {
@@ -19,20 +16,20 @@ class App extends PureComponent {
     return (
       <div>
         <Helmet>
-          <title>Climate Watch: Data for Climate Action</title>
+          <title>{TITLE}</title>
           <meta itemProp="name" content={TITLE} />
-          <meta name="description" content={DESCRIPTION} />
+          <meta name="description" content={HOME_PAGE} />
 
           {/* Twitter Card data */}
           <meta name="twitter:title" content={TITLE} />
           <meta name="twitter:creator" content="@vizzuality" />
-          <meta name="twitter:description" content={DESCRIPTION} />
+          <meta name="twitter:description" content={HOME_PAGE} />
 
           {/* Open Graph data */}
           <meta property="og:title" content={TITLE} />
           <meta property="og:type" content="website" />
           <meta property="og:url" content={location.href} />
-          <meta property="og:description" content={DESCRIPTION} />
+          <meta property="og:description" content={HOME_PAGE} />
         </Helmet>
         <CountriesProvider />
         <NavBar routes={navRoutes} />
