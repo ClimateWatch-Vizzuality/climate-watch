@@ -190,7 +190,8 @@ export const getIndicatorsOptions = createSelector(
     }
     return filteredIndicators.map(i => ({
       label: i.name,
-      value: i.id.toString()
+      value: i.id.toString(),
+      unit: i.unit
     }));
   }
 );
@@ -272,8 +273,8 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
 });
 
 export const getChartConfig = createSelector(
-  [filterDataByIndicator, getScenariosOptions],
-  (data, scenarios) => {
+  [filterDataByIndicator, getScenariosOptions, getIndicatorSelected],
+  (data, scenarios, indicator) => {
     if (!data || !scenarios) return null;
     const yColumns = data.map(d => {
       const scenario = scenarios.find(
@@ -287,8 +288,15 @@ export const getChartConfig = createSelector(
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const theme = getThemeConfig(yColumnsChecked, COLORS);
     const tooltip = getTooltipConfig(yColumnsChecked);
+    const axes = indicator
+      ? {
+        ...AXES_CONFIG,
+        yLeft: { ...AXES_CONFIG.yLeft, unit: indicator.unit }
+      }
+      : AXES_CONFIG;
+
     return {
-      axes: AXES_CONFIG,
+      axes,
       theme,
       tooltip,
       columns: {
