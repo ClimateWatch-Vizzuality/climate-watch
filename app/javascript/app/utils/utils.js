@@ -35,6 +35,11 @@ export function compareIndexByKey(attribute) {
   };
 }
 
+const r2lWrittedLanguages = ['AR'];
+export function isR2LWrittedLanguage(lang) {
+  return r2lWrittedLanguages.indexOf(lang) > -1;
+}
+
 export default {
   compareIndexByKey,
   deburrUpper,
