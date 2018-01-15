@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const TITLE = 'Climate Watch: Data for Climate Action';
 
 export const HOME_PAGE =
@@ -14,3 +16,16 @@ export const EMISSION_PATHWAYS =
   'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.';
 export const ABOUT =
   'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.';
+
+export const getMetaDescription = description_context => (
+  <div>
+    <meta itemProp="name" content={TITLE} />
+    <meta name="description" content={HOME_PAGE} />
+    {/* Twitter Card data */}
+    <meta name="twitter:title" content={TITLE} />
+    <meta name="twitter:description" content={description_context} />
+    {/* Open Graph data */}
+    <meta property="og:title" content={TITLE} />
+    <meta property="og:description" content={description_context} />
+  </div>
+);

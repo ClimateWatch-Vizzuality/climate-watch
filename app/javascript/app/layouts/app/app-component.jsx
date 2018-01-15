@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import CountriesProvider from 'providers/countries-provider';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
-import { TITLE, HOME_PAGE } from 'data/SEO';
+import { TITLE, HOME_PAGE, getMetaDescription } from 'data/SEO';
 
 import styles from './app-styles.scss'; // eslint-disable-line
 
@@ -17,19 +17,14 @@ class App extends PureComponent {
       <div>
         <Helmet>
           <title>{TITLE}</title>
-          <meta itemProp="name" content={TITLE} />
-          <meta name="description" content={HOME_PAGE} />
-
+          {/* SEO data import */}
+          {getMetaDescription(HOME_PAGE)}
           {/* Twitter Card data */}
-          <meta name="twitter:title" content={TITLE} />
           <meta name="twitter:creator" content="@vizzuality" />
-          <meta name="twitter:description" content={HOME_PAGE} />
 
           {/* Open Graph data */}
-          <meta property="og:title" content={TITLE} />
           <meta property="og:type" content="website" />
           <meta property="og:url" content={location.href} />
-          <meta property="og:description" content={HOME_PAGE} />
         </Helmet>
         <CountriesProvider />
         <NavBar routes={navRoutes} />
