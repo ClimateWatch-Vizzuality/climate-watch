@@ -6,15 +6,15 @@ import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import { NDC_CONTENT, getMetaDescription } from 'data/SEO';
+import { NDC_CONTENT } from 'data/SEO';
+import { MetaDescription } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
 
 const NDC = ({ anchorLinks, query, route }) => (
   <div>
-    {/* SEO data import */}
-    {getMetaDescription(NDC_CONTENT, 'NDC CONTENT')}
+    <MetaDescription descriptionContext={NDC_CONTENT} subtitle="NDC CONTENT" />
     <Header size="medium" route={route}>
       <div className={layout.content}>
         <div className={styles.cols}>

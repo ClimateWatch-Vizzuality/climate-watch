@@ -5,7 +5,8 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import { ABOUT, getMetaDescription } from 'data/SEO';
+import { ABOUT } from 'data/SEO';
+import { MetaDescription } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';
@@ -14,8 +15,7 @@ const About = ({ route, anchorLinks, query }) => (
   <div>
     <Header route={route}>
       <div className={layout.content}>
-        {/* SEO data import */}
-        {getMetaDescription(ABOUT, 'About')}
+        <MetaDescription descriptionContext={ABOUT} subtitle="About" />
         <Intro title="About" />
         <AnchorNav
           useRoutes

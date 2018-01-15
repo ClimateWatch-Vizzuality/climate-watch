@@ -10,7 +10,8 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import Dropdown from 'components/dropdown';
-import { NDC_COUNTRY, getMetaDescription } from 'data/SEO';
+import { NDC_COUNTRY } from 'data/SEO';
+import { MetaDescription } from 'components/seo';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
@@ -33,8 +34,10 @@ class NDCCountry extends PureComponent {
     const countryName = country && `${country.wri_standard_name}`;
     return (
       <div>
-        {/* SEO data import */}
-        {getMetaDescription(NDC_COUNTRY, countryName)}
+        <MetaDescription
+          descriptionContext={NDC_COUNTRY}
+          subtitle={countryName}
+        />
         <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>

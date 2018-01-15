@@ -12,7 +12,8 @@ import React, { PureComponent } from 'react';
 import Teaser from 'components/teaser';
 import screenshot from 'assets/screenshots/emission-pathways-screenshot';
 
-import { TITLE, EMISSION_PATHWAYS, getMetaDescription } from 'data/SEO';
+import { TITLE, EMISSION_PATHWAYS } from 'data/SEO';
+import { MetaDescription } from 'components/seo';
 
 // import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 // import layout from 'styles/layout.scss';
@@ -24,8 +25,10 @@ class EmissionPathways extends PureComponent {
     // const { route, anchorLinks, routeLinks } = this.props;
     return (
       <div>
-        {/* SEO data import */}
-        {getMetaDescription(EMISSION_PATHWAYS, 'Emission Pathways')}
+        <MetaDescription
+          descriptionContext={EMISSION_PATHWAYS}
+          subtitle="Emission Pathways"
+        />
         <Teaser
           screenshot={screenshot}
           title={`${TITLE} - Explore Emission Pathways`}

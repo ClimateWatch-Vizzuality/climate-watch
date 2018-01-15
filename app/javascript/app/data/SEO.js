@@ -1,8 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-
 export const TITLE = 'Climate Watch: Data for Climate Action';
-
 export const HOME_PAGE =
   'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.';
 export const COUNTRY_PROFILES =
@@ -19,25 +15,3 @@ export const EMISSION_PATHWAYS =
   'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.';
 export const ABOUT =
   'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.';
-
-export const getMetaDescription = (description_context, subtitle = null) => (
-  <Helmet>
-    <title>{subtitle ? `${TITLE} - ${subtitle}` : TITLE}</title>
-    <meta itemProp="name" content={TITLE} />
-    <meta name="description" content={description_context} />
-  </Helmet>
-);
-
-export const getSocialMetadata = (description_context, href) => (
-  <Helmet>
-    {/* Twitter Card data */}
-    <meta name="twitter:title" content={TITLE} />
-    <meta name="twitter:creator" content="@vizzuality" />
-    <meta name="twitter:description" content={description_context} />
-    {/* Open Graph data */}
-    <meta property="og:title" content={TITLE} />
-    <meta property="og:description" content={description_context} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={href} />
-  </Helmet>
-);
