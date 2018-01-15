@@ -66,7 +66,6 @@ class EmissionPathwayGraph extends PureComponent {
                 handleSelectorChange(option, 'indicator')}
               value={filtersSelected.indicator}
             />
-            <div />
             <ButtonGroup
               className={styles.colEnd}
               shareUrl="/embed/emission-pathway-graph"
