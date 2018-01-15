@@ -2,8 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
-import { Helmet } from 'react-helmet';
-import { TITLE, COUNTRY_PROFILES } from 'data/SEO';
+import {
+  COUNTRY_PROFILES,
+  getMetaDescription,
+  getSocialMetadata
+} from 'data/SEO';
 
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
@@ -23,10 +26,9 @@ class Country extends PureComponent {
     const countryName = (country && country.name) || '';
     return (
       <div>
-        <Helmet>
-          <title>{`${TITLE} - ${countryName}`}</title>
-          <meta name="description" content={COUNTRY_PROFILES} />
-        </Helmet>
+        {/* SEO data import */}
+        {getMetaDescription(COUNTRY_PROFILES, countryName)}
+        {getSocialMetadata(COUNTRY_PROFILES, location.href)}
         <SocioeconomicsProvider />
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>

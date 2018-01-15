@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 export const TITLE = 'Climate Watch: Data for Climate Action';
 
@@ -8,6 +9,8 @@ export const COUNTRY_PROFILES =
   "Snapshots of countries' climate progress, including historical and projected emissions, their Nationally Determined Contribution (NDC), risks and vulnerability to climate change, and linkages between NDCs and the Sustainable Development Goals (SDGs).";
 export const NDC_CONTENT =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
+export const NDC_COUNTRY =
+  'Explore the Commitments (NDCs) made by COUNTRY_NAME to act on climate change, as part of the Paris Agreement';
 export const NDC_SDG_LINKAGES =
   'Comprehensive mapping of linkages between Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) and associated targets of the 2030 Agenda for Sustainable Development.';
 export const HISTORICAL_GHG_EMISIONS =
@@ -17,15 +20,24 @@ export const EMISSION_PATHWAYS =
 export const ABOUT =
   'Data and visuals of emission scenario pathways for major emitting countries and sectors, derived from a growing library of models.';
 
-export const getMetaDescription = description_context => (
-  <div>
+export const getMetaDescription = (description_context, subtitle = null) => (
+  <Helmet>
+    <title>{subtitle ? `${TITLE} - ${subtitle}` : TITLE}</title>
     <meta itemProp="name" content={TITLE} />
-    <meta name="description" content={HOME_PAGE} />
+    <meta name="description" content={description_context} />
+  </Helmet>
+);
+
+export const getSocialMetadata = (description_context, href) => (
+  <Helmet>
     {/* Twitter Card data */}
     <meta name="twitter:title" content={TITLE} />
+    <meta name="twitter:creator" content="@vizzuality" />
     <meta name="twitter:description" content={description_context} />
     {/* Open Graph data */}
     <meta property="og:title" content={TITLE} />
     <meta property="og:description" content={description_context} />
-  </div>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={href} />
+  </Helmet>
 );

@@ -6,18 +6,15 @@ import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import { Helmet } from 'react-helmet';
-import { TITLE, NDC_CONTENT } from 'data/SEO';
+import { NDC_CONTENT, getMetaDescription } from 'data/SEO';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
 
 const NDC = ({ anchorLinks, query, route }) => (
   <div>
-    <Helmet>
-      <title>{`${TITLE} - NDC CONTENT`}</title>
-      <meta name="description" content={NDC_CONTENT} />
-    </Helmet>
+    {/* SEO data import */}
+    {getMetaDescription(NDC_CONTENT, 'NDC CONTENT')}
     <Header size="medium" route={route}>
       <div className={layout.content}>
         <div className={styles.cols}>

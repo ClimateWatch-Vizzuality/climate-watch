@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 
@@ -8,7 +7,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
-import { TITLE, NDC_SDG_LINKAGES } from 'data/SEO';
+import { NDC_SDG_LINKAGES, getMetaDescription } from 'data/SEO';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';
@@ -20,10 +19,8 @@ class NdcSdg extends PureComponent {
     const { route } = this.props;
     return (
       <div className={styles.bg}>
-        <Helmet>
-          <title>{`${TITLE} - NDC-SDG Linkages`}</title>
-          <meta name="description" content={NDC_SDG_LINKAGES} />
-        </Helmet>
+        {/* SEO data import */}
+        {getMetaDescription(NDC_SDG_LINKAGES, 'NDC-SDG Linkages')}
         <NdcsSdgsMetaProvider />
         <Header size="small" route={route}>
           <div className={layout.content}>
