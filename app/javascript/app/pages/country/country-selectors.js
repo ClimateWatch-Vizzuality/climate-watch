@@ -57,7 +57,7 @@ export const getDescriptionText = createSelector(
     let text = '';
     if (gdpPerCapitaLocale && description.gdp_per_capita_rank) {
       text += `GDP per capita (${description.year}) - USD
-      ${gdpPerCapitaLocale} (ranked ${description.gdp_per_capita_rank} globally).
+      ${gdpPerCapitaLocale} (ranked ${description.gdp_per_capita_rank} globally)
       <br/>`;
     }
     if (populationLocale && populationGrowthLocale) {
