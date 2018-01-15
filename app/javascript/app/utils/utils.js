@@ -35,8 +35,11 @@ export function compareIndexByKey(attribute) {
   };
 }
 
+export const truncateDecimals = number => number.toFixed(0) / 1;
+
 export default {
   compareIndexByKey,
   deburrUpper,
-  isCountryIncluded
+  isCountryIncluded,
+  truncateDecimals
 };

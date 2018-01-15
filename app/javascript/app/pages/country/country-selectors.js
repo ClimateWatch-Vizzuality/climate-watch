@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { truncateDecimals } from 'utils/utils';
 
 const getCountries = state => state.countries.data || null;
 const getIso = state => state.iso;
@@ -45,7 +46,8 @@ export const getDescriptionText = createSelector(
   description => {
     if (!description) return null;
     const gdpPerCapitaLocale =
-      description.gdp_per_capita && description.gdp_per_capita.toLocaleString();
+      description.gdp_per_capita &&
+      truncateDecimals(description.gdp_per_capita).toLocaleString();
     const populationLocale =
       description.population && description.population.toLocaleString();
     const populationGrowthLocale = (Math.round(
