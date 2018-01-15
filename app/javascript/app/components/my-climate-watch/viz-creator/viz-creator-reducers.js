@@ -187,13 +187,25 @@ export default {
   [actions.selectCategory]: (state, { payload }) => {
     const child = get($subcategories, state);
     const { allIndicators } = get($indicators, state);
+
     const categories = groupBy(allIndicators, 'category.id');
     const subCategories = (categories[payload.value] || [])
       .map(i => i.subcategory);
+
     child.data = uniqBy(subCategories, 'id');
+    child.selected = null;
     child.disabled = false;
 
-    return updateIn($categories, { selected: payload, child }, state);
+    const indicatorsUpdateState = updateIn(
+      $indicators,
+      { selected: [], disabled: true },
+      state
+    );
+    return updateIn(
+      $categories,
+      { selected: payload, child },
+      indicatorsUpdateState
+    );
   },
 
   // Subategories
@@ -208,23 +220,22 @@ export default {
       state
     ),
   [actions.selectSubcategory]: (state, { payload }) => {
-    const indicators = get($indicators, state);
-    const { allIndicators } = indicators;
+    const indicators = { ...get($indicators, state) };
+    const allIndicators = [...indicators.allIndicators];
     const subcategories = groupBy(allIndicators, 'subcategory.id');
-    const indicatorSelected = subcategories[payload.value];
+    const indicatorSelected = (subcategories[payload.value] || [])
+      .map(i => ({ value: i.id, label: i.name }));
 
-    const newIndicators = {
-      ...indicators,
-      data: indicatorSelected || [],
-      disabled: false
-    };
+    indicators.data = indicatorSelected || [];
+    indicators.disabled = false;
 
     const filters = filtersSelector(state);
     const indicatorsFilter = _find(filters, { name: 'indicators' });
     if (indicatorsFilter && indicatorsFilter.selected === 'all') {
-      newIndicators.selected = mapFilter(indicatorSelected);
+      indicators.selected = mapFilter(indicatorSelected);
     }
-    const updatedIndicators = updateIn($indicators, newIndicators, state);
+
+    const updatedIndicators = updateIn($indicators, indicators, state);
 
     const child = get($timeseries, initialState);
     const newState = updateIn(

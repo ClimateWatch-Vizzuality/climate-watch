@@ -8,6 +8,7 @@ import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
 import Search from 'components/search';
 import Button from 'components/button';
+import Loading from 'components/loading';
 import inputTextTheme from 'styles/themes/search/input-text.scss';
 
 import LineChart from './components/charts/line/line';
@@ -75,7 +76,11 @@ const Step3 = props => {
     return {
       disabled,
       [format]: value,
-      options: (f.data || []).map(d => ({ ...d, label: d.label || '' })),
+      options: (f.data || []).map(d => ({
+        ...d,
+        label: d.label || '',
+        key: `${d.label}-${Date.now()}`
+      })),
       placeholder: f.placeholder || f.name,
       loading: f.loading
     };
@@ -129,7 +134,8 @@ Step3.propTypes = {
 };
 
 const Step4 = props => {
-  const { id, title, chartData, onNameChange, onSaveClick } = props;
+  const { id, title, chartData, onNameChange, onSaveClick, timeseries } = props;
+
   return (
     <li className={styles.step}>
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
@@ -141,7 +147,11 @@ const Step4 = props => {
         className={styles.inputText}
         theme={inputTextTheme}
       />
-      <LineChart {...chartData} width="90%" />
+      {timeseries.loading ? (
+        <Loading light className={styles.timeseriesLoader} />
+      ) : (
+        <LineChart {...chartData} width="90%" />
+      )}
       <div className={styles.saveContainer}>
         <Button
           color="yellow"
@@ -158,6 +168,7 @@ const Step4 = props => {
 Step4.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string,
+  timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
   onSaveClick: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired
@@ -170,6 +181,7 @@ const VizCreator = props => {
     selectDataset,
     selectVisualisation,
     datasets,
+    timeseries,
     visualisations,
     hasData,
     chartData,
@@ -194,6 +206,7 @@ const VizCreator = props => {
             <Step4
               id={id}
               title={title}
+              timeseries={timeseries}
               chartData={chartData}
               onNameChange={updateVisualisationName}
               onSaveClick={saveVisualisation}
@@ -212,6 +225,7 @@ VizCreator.propTypes = {
   selectVisualisation: PropTypes.func.isRequired,
   datasets: PropTypes.object,
   visualisations: PropTypes.object,
+  timeseries: PropTypes.object,
   hasData: PropTypes.bool,
   chartData: PropTypes.object,
   filters: PropTypes.object,

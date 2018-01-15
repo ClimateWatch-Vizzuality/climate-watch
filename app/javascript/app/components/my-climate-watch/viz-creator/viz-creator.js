@@ -98,14 +98,17 @@ class VizCreator extends Component {
               }
               if (indicators.selected && indicators.selected.length > 0) {
                 const hasChanges =
-                  this.props.indicators.length !== indicators.selected.length;
+                  this.props.indicators.selected &&
+                  indicators.selected &&
+                  this.props.indicators.selected.length !==
+                    indicators.selected.length;
                 const notFetching =
                   timeseries && !timeseries.loading && !timeseries.loaded;
-                if (notFetching && hasChanges) {
+                if (hasChanges || notFetching) {
                   fetchTimeseries({
-                    locations: this.props.filters.locations.selected.value,
-                    indicators: this.props.filters.indicators.selected,
-                    scenarios: this.props.filters.scenarios.selected
+                    locations: locations.selected.value,
+                    indicators: indicators.selected,
+                    scenarios: scenarios.selected
                   });
                 }
               }
@@ -139,7 +142,6 @@ class VizCreator extends Component {
 }
 
 VizCreator.propTypes = {
-  filters: PropTypes.object.isRequired,
   datasets: PropTypes.object.isRequired,
   visualisations: PropTypes.object.isRequired,
   locations: PropTypes.object.isRequired,
