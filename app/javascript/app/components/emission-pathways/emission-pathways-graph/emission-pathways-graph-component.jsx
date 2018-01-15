@@ -81,6 +81,7 @@ class EmissionPathwayGraph extends PureComponent {
             height={500}
             loading={loading}
             targetParam="scenario"
+            forceTwoDecimals
           />
         </div>
       </div>
