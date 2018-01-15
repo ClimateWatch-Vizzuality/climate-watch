@@ -22,7 +22,7 @@ const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, model, indicator, scenario } = qs.parse(
+  const { currentLocation, model, indicator, scenario, subcategory } = qs.parse(
     location.search
   );
   const espData = {
@@ -34,7 +34,8 @@ const mapStateToProps = (state, { location }) => {
     location: currentLocation,
     model,
     indicator,
-    scenario
+    scenario,
+    subcategory
   };
   return {
     data: getChartData(espData),

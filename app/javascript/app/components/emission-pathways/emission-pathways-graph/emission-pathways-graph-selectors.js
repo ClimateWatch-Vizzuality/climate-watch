@@ -48,6 +48,7 @@ const getLocation = state => state.location || null;
 const getModel = state => state.model || null;
 const getScenario = state => state.scenario;
 const getIndicator = state => state.indicator || null;
+const getSubcategory = state => state.subcategory || null;
 
 // data for the graph
 const getData = state => state.data || null;
@@ -135,27 +136,62 @@ export const filterDataByScenario = createSelector(
   }
 );
 
-export const getIndicatorsOptions = createSelector(
+const getIndicatorsWithData = createSelector(
   [filterDataByScenario, getIndicators, getModelSelected],
   (data, indicators, modelSelected) => {
     if (!data || !indicators || !indicators.length || !modelSelected) return [];
     const indicatorsWithData = data.map(d => d.indicator_id.toString());
-    const selectedIndicatorOptionsWithData = [];
-    indicators.forEach(i => {
-      if (
-        i.model &&
-        i.model.id &&
-        i.model.id.toString() === modelSelected.value &&
-        i.name &&
-        indicatorsWithData.indexOf(i.id.toString()) > -1
-      ) {
-        selectedIndicatorOptionsWithData.push({
-          label: i.name,
-          value: i.id.toString()
-        });
-      }
-    });
-    return uniqBy(selectedIndicatorOptionsWithData, 'label');
+    return uniqBy(
+      indicators.filter(
+        i =>
+          i.model &&
+          i.model.id &&
+          i.model.id.toString() === modelSelected.value &&
+          i.name &&
+          indicatorsWithData.indexOf(i.id.toString()) > -1
+      ),
+      'name'
+    );
+  }
+);
+
+export const getSubCategoryOptions = createSelector(
+  [getIndicatorsWithData],
+  indicators => {
+    if (!indicators) return [];
+    const subcategories = indicators.map(i => ({
+      label: i.subcategory.name,
+      value: i.subcategory.id.toString()
+    }));
+    return uniqBy(subcategories, 'value');
+  }
+);
+
+export const getSubcategorySelected = createSelector(
+  [getSubCategoryOptions, getSubcategory],
+  (subcategories, subcategorySelected) => {
+    if (!subcategories) return null;
+    if (!subcategorySelected) {
+      return subcategories[0];
+    }
+    return subcategories.find(i => subcategorySelected === i.value);
+  }
+);
+
+export const getIndicatorsOptions = createSelector(
+  [getIndicatorsWithData, getSubcategorySelected],
+  (indicators, subcategory) => {
+    if (!indicators) return [];
+    let filteredIndicators = indicators;
+    if (subcategory) {
+      filteredIndicators = indicators.filter(
+        i => i.subcategory === subcategory.label
+      );
+    }
+    return filteredIndicators.map(i => ({
+      label: i.name,
+      value: i.id.toString()
+    }));
   }
 );
 
@@ -187,13 +223,15 @@ export const getFiltersOptions = createSelector(
     getLocationsOptions,
     getModelsOptions,
     getScenariosOptions,
-    getIndicatorsOptions
+    getIndicatorsOptions,
+    getSubCategoryOptions
   ],
-  (locations, models, scenarios, indicators) => ({
+  (locations, models, scenarios, indicators, subcategory) => ({
     locations,
     models,
     scenarios,
-    indicators
+    indicators,
+    subcategory
   })
 );
 
@@ -202,13 +240,15 @@ export const getFiltersSelected = createSelector(
     getLocationSelected,
     getModelSelected,
     getScenariosSelected,
-    getIndicatorSelected
+    getIndicatorSelected,
+    getSubcategorySelected
   ],
-  (location, model, scenarios, indicator) => ({
+  (location, model, scenarios, indicator, subcategory) => ({
     location,
     model,
     scenarios,
-    indicator
+    indicator,
+    subcategory
   })
 );
 

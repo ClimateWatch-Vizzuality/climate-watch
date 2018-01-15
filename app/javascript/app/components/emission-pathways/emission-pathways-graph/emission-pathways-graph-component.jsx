@@ -51,6 +51,14 @@ class EmissionPathwayGraph extends PureComponent {
               hideResetButton
             />
             <Dropdown
+              label="Subcategory"
+              placeholder="Select a subcategory"
+              options={filtersOptions.subcategory}
+              onValueChange={option =>
+                handleSelectorChange(option, 'subcategory')}
+              value={filtersSelected.subcategory}
+            />
+            <Dropdown
               label="Indicator"
               placeholder="Select an indicator"
               options={filtersOptions.indicators}
