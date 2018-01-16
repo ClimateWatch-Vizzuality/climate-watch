@@ -45,6 +45,13 @@
     }
   }
 
+  &.isHidden {
+    .navNestedMenu {
+      display: none;
+      pointer-events: none;
+    }
+  }
+
   &.reverse {
     .navNestedMenu {
       position: relative;
