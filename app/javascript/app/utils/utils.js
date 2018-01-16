@@ -35,7 +35,13 @@ export function compareIndexByKey(attribute) {
   };
 }
 
-export const truncateDecimals = number => number.toFixed(0) / 1;
+export const truncateDecimals = (number, decimalPlaces) =>
+  number.toFixed(decimalPlaces) / 1;
+
+const r2lWrittedLanguages = ['AR'];
+export function isR2LWrittedLanguage(lang) {
+  return r2lWrittedLanguages.indexOf(lang) > -1;
+}
 
 export default {
   compareIndexByKey,

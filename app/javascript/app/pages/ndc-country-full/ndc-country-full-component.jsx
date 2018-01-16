@@ -13,6 +13,8 @@ import Button from 'components/button';
 import Loading from 'components/loading';
 import NdcTranslationDisclaimer from 'components/ndcs/ndc-translation-disclaimer';
 
+import { isR2LWrittedLanguage } from 'utils';
+
 import layout from 'styles/layout.scss';
 import contentStyles from 'styles/themes/content.scss';
 import styles from './ndc-country-full-styles.scss';
@@ -30,7 +32,11 @@ class NDCCountryFull extends PureComponent {
                 <NdcTranslationDisclaimer className={styles.disclaimer} />
               )}
               <div
-                className={cx(contentStyles.content, styles.innerContent)}
+                className={cx(contentStyles.content, {
+                  [styles.innerContentRtl]: isR2LWrittedLanguage(
+                    content.language
+                  )
+                })}
                 dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
               />
             </div>
@@ -114,6 +120,10 @@ NDCCountryFull.propTypes = {
   fetchCountryNDCFull: PropTypes.func,
   iso: PropTypes.string,
   loading: PropTypes.bool
+};
+
+NDCCountryFull.defaultProps = {
+  content: {}
 };
 
 export default NDCCountryFull;

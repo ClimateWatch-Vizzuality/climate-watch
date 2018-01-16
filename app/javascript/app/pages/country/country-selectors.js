@@ -47,7 +47,7 @@ export const getDescriptionText = createSelector(
     if (!description) return null;
     const gdpPerCapitaLocale =
       description.gdp_per_capita &&
-      truncateDecimals(description.gdp_per_capita).toLocaleString();
+      truncateDecimals(description.gdp_per_capita, 0).toLocaleString();
     const populationLocale =
       description.population && description.population.toLocaleString();
     const populationGrowthLocale = (Math.round(
