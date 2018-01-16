@@ -21,6 +21,12 @@
     &:focus {
       outline: none;
     }
+
+    &.active {
+      .arrowIcon {
+        transform: rotate(180deg);
+      }
+    }
   }
 
   .arrowIcon {
@@ -39,6 +45,14 @@
 
     .arrowIcon {
       transform: rotate(180deg);
+    }
+
+    .button {
+      &.active {
+        .arrowIcon {
+          transform: rotate(0deg);
+        }
+      }
     }
   }
 
