@@ -12,31 +12,20 @@ class NavNestedMenuComponent extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
       isHidden: props.isRendered
     };
   }
 
   toggleMenu = () => {
-    if (this.props.isRendered) {
-      this.setState(state => ({
-        isHidden: !state.isHidden
-      }));
-    } else {
-      this.setState(state => ({
-        isOpen: !state.isOpen
-      }));
-    }
+    this.setState(state => ({
+      isHidden: !state.isHidden
+    }));
   };
 
   outsideClickHandle = () => {
-    if (this.props.isRendered) {
-      console.log(this.props.location); // eslint-disable-line
-      this.setState({ isHidden: true });
-    } else {
-      this.setState({ isOpen: false });
-    }
+    this.setState({ isHidden: true });
   };
+
   render() {
     const { className } = this.props;
     return (
@@ -73,8 +62,7 @@ NavNestedMenuComponent.propTypes = {
   title: PropTypes.string,
   className: PropTypes.string,
   reverse: PropTypes.bool,
-  isRendered: PropTypes.bool,
-  location: PropTypes.object
+  isRendered: PropTypes.bool
 };
 
 export default NavNestedMenuComponent;
