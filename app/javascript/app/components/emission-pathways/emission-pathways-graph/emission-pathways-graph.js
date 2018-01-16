@@ -63,6 +63,9 @@ class EmissionPathwayGraphContainer extends PureComponent {
   };
 
   handleSelectorChange = (option, param, clear) => {
+    if (param === 'subcategory') {
+      this.updateUrlParam({ name: 'indicator', value: '' });
+    }
     this.updateUrlParam(
       { name: param, value: option ? option.value : '' },
       clear
