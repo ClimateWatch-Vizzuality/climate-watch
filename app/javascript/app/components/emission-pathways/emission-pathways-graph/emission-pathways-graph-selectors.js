@@ -2,11 +2,15 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
+import remove from 'lodash/remove';
+import pick from 'lodash/pick';
 import {
   getYColumnValue,
   getThemeConfig,
   getTooltipConfig
 } from 'utils/graphs';
+
+import { ESP_BLACKLIST } from 'data/constants';
 
 // constants needed for data parsing
 const COLORS = [
@@ -48,6 +52,7 @@ const getLocation = state => state.location || null;
 const getModel = state => state.model || null;
 const getScenario = state => state.scenario;
 const getIndicator = state => state.indicator || null;
+const getSubcategory = state => state.subcategory || null;
 
 // data for the graph
 const getData = state => state.data || null;
@@ -135,27 +140,58 @@ export const filterDataByScenario = createSelector(
   }
 );
 
-export const getIndicatorsOptions = createSelector(
+const getIndicatorsWithData = createSelector(
   [filterDataByScenario, getIndicators, getModelSelected],
   (data, indicators, modelSelected) => {
     if (!data || !indicators || !indicators.length || !modelSelected) return [];
     const indicatorsWithData = data.map(d => d.indicator_id.toString());
-    const selectedIndicatorOptionsWithData = [];
-    indicators.forEach(i => {
-      if (
-        i.model &&
-        i.model.id &&
-        i.model.id.toString() === modelSelected.value &&
-        i.name &&
-        indicatorsWithData.indexOf(i.id.toString()) > -1
-      ) {
-        selectedIndicatorOptionsWithData.push({
-          label: i.name,
-          value: i.id.toString()
-        });
-      }
-    });
-    return uniqBy(selectedIndicatorOptionsWithData, 'label');
+    return uniqBy(
+      indicators.filter(
+        i => i.name && indicatorsWithData.indexOf(i.id.toString()) > -1
+      ),
+      'name'
+    );
+  }
+);
+
+export const getSubCategoryOptions = createSelector(
+  [getIndicatorsWithData],
+  indicators => {
+    if (!indicators) return [];
+    const subcategories = indicators.map(i => ({
+      label: i.subcategory.name,
+      value: i.subcategory.id.toString()
+    }));
+    return uniqBy(subcategories, 'value');
+  }
+);
+
+export const getSubcategorySelected = createSelector(
+  [getSubCategoryOptions, getSubcategory],
+  (subcategories, subcategorySelected) => {
+    if (!subcategories) return null;
+    if (!subcategorySelected) {
+      return subcategories[0];
+    }
+    return subcategories.find(i => subcategorySelected === i.value);
+  }
+);
+
+export const getIndicatorsOptions = createSelector(
+  [getIndicatorsWithData, getSubcategorySelected],
+  (indicators, subcategory) => {
+    if (!indicators) return [];
+    let filteredIndicators = indicators;
+    if (subcategory) {
+      filteredIndicators = indicators.filter(
+        i => i.subcategory.id.toString() === subcategory.value
+      );
+    }
+    return filteredIndicators.map(i => ({
+      label: i.name,
+      value: i.id.toString(),
+      unit: i.unit
+    }));
   }
 );
 
@@ -187,13 +223,15 @@ export const getFiltersOptions = createSelector(
     getLocationsOptions,
     getModelsOptions,
     getScenariosOptions,
-    getIndicatorsOptions
+    getIndicatorsOptions,
+    getSubCategoryOptions
   ],
-  (locations, models, scenarios, indicators) => ({
+  (locations, models, scenarios, indicators, subcategory) => ({
     locations,
     models,
     scenarios,
-    indicators
+    indicators,
+    subcategory
   })
 );
 
@@ -202,13 +240,15 @@ export const getFiltersSelected = createSelector(
     getLocationSelected,
     getModelSelected,
     getScenariosSelected,
-    getIndicatorSelected
+    getIndicatorSelected,
+    getSubcategorySelected
   ],
-  (location, model, scenarios, indicator) => ({
+  (location, model, scenarios, indicator, subcategory) => ({
     location,
     model,
     scenarios,
-    indicator
+    indicator,
+    subcategory
   })
 );
 
@@ -221,7 +261,7 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
     const yValues = {};
     const groupedByScenario = groupBy(groupByYear[x], 'scenario_id');
     Object.keys(groupedByScenario).forEach(i => {
-      yValues[`y${i}`] = parseInt(groupedByScenario[i][0].value, 10);
+      yValues[`y${i}`] = parseFloat(groupedByScenario[i][0].value);
     });
     dataMapped.push({
       x,
@@ -232,8 +272,8 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
 });
 
 export const getChartConfig = createSelector(
-  [filterDataByIndicator, getScenariosOptions],
-  (data, scenarios) => {
+  [filterDataByIndicator, getScenariosOptions, getIndicatorSelected],
+  (data, scenarios, indicator) => {
     if (!data || !scenarios) return null;
     const yColumns = data.map(d => {
       const scenario = scenarios.find(
@@ -247,8 +287,15 @@ export const getChartConfig = createSelector(
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const theme = getThemeConfig(yColumnsChecked, COLORS);
     const tooltip = getTooltipConfig(yColumnsChecked);
+    const axes = indicator
+      ? {
+        ...AXES_CONFIG,
+        yLeft: { ...AXES_CONFIG.yLeft, unit: indicator.unit }
+      }
+      : AXES_CONFIG;
+
     return {
-      axes: AXES_CONFIG,
+      axes,
       theme,
       tooltip,
       columns: {
@@ -257,6 +304,106 @@ export const getChartConfig = createSelector(
       }
     };
   }
+);
+
+// Parse Metadata for Modal
+const getModelSelectedMetadata = createSelector(
+  [getModels, getModelSelected],
+  (models, modelSelected) => {
+    if (!models || !modelSelected) return null;
+    return models.find(m => modelSelected.value === m.id.toString());
+  }
+);
+
+const addLinktoModelSelectedMetadata = createSelector(
+  [getModelSelectedMetadata],
+  model => {
+    if (!model) return null;
+    return {
+      ...model,
+      Link: `/emissionpathways/models/${model.id}`
+    };
+  }
+);
+
+export const getScenariosSelectedMetadata = createSelector(
+  [getScenarios, getScenariosSelected],
+  (scenarios, scenariosSelected) => {
+    if (isEmpty(scenarios) || !scenariosSelected) return null;
+    const selectedScenarioIds = scenariosSelected.map(s => s.value);
+    const scenariosMetadata = scenarios.filter(
+      s => selectedScenarioIds.indexOf(s.id.toString()) > 1
+    );
+    return (
+      scenariosMetadata.length > 0 &&
+      scenariosMetadata.map(s => ({
+        name: s.name,
+        description: s.description,
+        Link: `/emissionpathways/scenarios/${s.id}`
+      }))
+    );
+  }
+);
+
+export const getIndicatorSelectedMetadata = createSelector(
+  [getIndicators, getIndicatorSelected],
+  (indicators, indicatorSelected) => {
+    if (!indicators || !indicatorSelected) return null;
+    return indicators.find(i => indicatorSelected.value === i.id.toString());
+  }
+);
+
+export const filterModelsByBlackList = createSelector(
+  [addLinktoModelSelectedMetadata],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data),
+      n => ESP_BLACKLIST.models.indexOf(n) === -1
+    );
+    return pick(data, whiteList);
+  }
+);
+
+const filterIndicatorsByBlackList = createSelector(
+  [getIndicatorSelectedMetadata],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data),
+      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
+    );
+    return pick(data, whiteList);
+  }
+);
+
+export const parseObjectsInIndicators = createSelector(
+  [filterIndicatorsByBlackList],
+  data => {
+    if (isEmpty(data)) return null;
+    const parsedData = {};
+    Object.keys(data).forEach(key => {
+      let fieldData = data[key];
+      if (
+        fieldData &&
+        typeof fieldData !== 'string' &&
+        typeof fieldData !== 'number'
+      ) {
+        fieldData = fieldData.name;
+      }
+      parsedData[key] = fieldData;
+    });
+    return parsedData;
+  }
+);
+
+export const getModalData = createSelector(
+  [
+    filterModelsByBlackList,
+    getScenariosSelectedMetadata,
+    parseObjectsInIndicators
+  ],
+  (model, scenarios, indicator) => [model, scenarios, indicator]
 );
 
 export default {

@@ -63,7 +63,7 @@ class ChartLine extends PureComponent {
   };
 
   render() {
-    const { config, data, height, domain } = this.props;
+    const { config, data, height, domain, forceTwoDecimals } = this.props;
     return (
       <ResponsiveContainer height={height}>
         <LineChart
@@ -88,7 +88,11 @@ class ChartLine extends PureComponent {
             isAnimationActive={false}
             cursor={{ stroke: '#113750', strokeWidth: 2 }}
             content={content => (
-              <TooltipChart content={content} config={config} />
+              <TooltipChart
+                content={content}
+                config={config}
+                forceTwoDecimals={forceTwoDecimals}
+              />
             )}
           />
           {config.columns &&
@@ -125,7 +129,8 @@ ChartLine.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  domain: PropTypes.array
+  domain: PropTypes.array,
+  forceTwoDecimals: PropTypes.bool
 };
 
 ChartLine.defaultProps = {

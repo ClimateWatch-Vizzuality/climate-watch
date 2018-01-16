@@ -6,13 +6,17 @@ import cx from 'classnames';
 import styles from './tooltip-chart-styles.scss';
 
 class TooltipChart extends PureComponent {
+  getFormat() {
+    return this.props.forceTwoDecimals ? '.2f' : '.2s';
+  }
+
   getTotal = (keys, data) => {
     if (!keys || !data) return '';
     let total = 0;
     keys.forEach(key => {
       if (data.payload[key.value]) total += data.payload[key.value];
     });
-    return `${format('.3s')(total)}t`;
+    return `${format(this.getFormat())(total)}t`;
   };
 
   render() {
@@ -54,7 +58,11 @@ class TooltipChart extends PureComponent {
                     </p>
                   </div>
                   <p className={styles.labelValue}>
-                    {y.payload ? `${format('.3s')(y.payload[y.dataKey])}t` : ''}
+                    {y.payload ? (
+                      `${format(this.getFormat())(y.payload[y.dataKey])}t`
+                    ) : (
+                      ''
+                    )}
                   </p>
                 </div>
               ) : null)
@@ -68,7 +76,8 @@ class TooltipChart extends PureComponent {
 TooltipChart.propTypes = {
   content: Proptypes.object,
   config: Proptypes.object,
-  showTotal: Proptypes.bool
+  showTotal: Proptypes.bool,
+  forceTwoDecimals: Proptypes.bool
 };
 
 export default TooltipChart;

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import { actions as modalActions } from 'components/modal-metadata';
+import { actions as modalActions } from 'components/modal-overview';
 
 import ownActions from './emission-pathways-graph-actions';
 import reducers, { initialState } from './emission-pathways-graph-reducers';
@@ -15,14 +15,15 @@ import {
   getChartData,
   getChartConfig,
   getFiltersOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getModalData
 } from './emission-pathways-graph-selectors';
 
 const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, model, indicator, scenario } = qs.parse(
+  const { currentLocation, model, indicator, scenario, subcategory } = qs.parse(
     location.search
   );
   const espData = {
@@ -34,13 +35,15 @@ const mapStateToProps = (state, { location }) => {
     location: currentLocation,
     model,
     indicator,
-    scenario
+    scenario,
+    subcategory
   };
   return {
     data: getChartData(espData),
     config: getChartConfig(espData),
     filtersOptions: getFiltersOptions(espData),
     filtersSelected: getFiltersSelected(espData),
+    modalData: getModalData(espData),
     loading:
       state.espTimeSeries.loading ||
       state.espLocations.loading ||
@@ -62,6 +65,9 @@ class EmissionPathwayGraphContainer extends PureComponent {
   };
 
   handleSelectorChange = (option, param, clear) => {
+    if (param === 'subcategory') {
+      this.updateUrlParam({ name: 'indicator', value: '' });
+    }
     this.updateUrlParam(
       { name: param, value: option ? option.value : '' },
       clear
@@ -73,9 +79,14 @@ class EmissionPathwayGraphContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params, clear));
   }
 
+  handleInfoClick = () => {
+    this.props.toggleModalOverview({ open: true });
+  };
+
   render() {
     return createElement(EmissionPathwayGraphComponent, {
       ...this.props,
+      handleInfoClick: this.handleInfoClick,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange
     });
@@ -84,7 +95,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
 
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  toggleModalOverview: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
