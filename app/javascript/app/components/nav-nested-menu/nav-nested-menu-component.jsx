@@ -16,13 +16,19 @@ class NavNestedMenuComponent extends PureComponent {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.closeMenu();
+    }
+  }
+
   toggleMenu = () => {
     this.setState(state => ({
       isHidden: !state.isHidden
     }));
   };
 
-  outsideClickHandle = () => {
+  closeMenu = () => {
     this.setState({ isHidden: true });
   };
 
@@ -37,7 +43,7 @@ class NavNestedMenuComponent extends PureComponent {
           { [styles.regular]: !this.props.reverse }
         )}
       >
-        <ClickOutside onClickOutside={() => this.outsideClickHandle()}>
+        <ClickOutside onClickOutside={this.closeMenu}>
           <button
             onClick={() => this.toggleMenu()}
             className={cx(className, styles.button, {
@@ -62,6 +68,7 @@ NavNestedMenuComponent.propTypes = {
   title: PropTypes.string,
   className: PropTypes.string,
   reverse: PropTypes.bool,
+  location: PropTypes.object,
   isRendered: PropTypes.bool
 };
 
