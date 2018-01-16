@@ -7,7 +7,7 @@ import AutocompleteSearch from 'components/autocomplete-search';
 import AnchorNav from 'components/anchor-nav';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import { NDC_CONTENT } from 'data/SEO';
-import { MetaDescription } from 'components/seo';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
@@ -15,6 +15,7 @@ import styles from './ndcs-styles.scss';
 const NDC = ({ anchorLinks, query, route }) => (
   <div>
     <MetaDescription descriptionContext={NDC_CONTENT} subtitle="NDC CONTENT" />
+    <SocialMetadata descriptionContext={NDC_CONTENT} href={location.href} />
     <Header size="medium" route={route}>
       <div className={layout.content}>
         <div className={styles.cols}>

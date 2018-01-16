@@ -8,7 +8,7 @@ import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import { NDC_SDG_LINKAGES } from 'data/SEO';
-import { MetaDescription } from 'components/seo';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';
@@ -23,6 +23,10 @@ class NdcSdg extends PureComponent {
         <MetaDescription
           descriptionContext={NDC_SDG_LINKAGES}
           subtitle="NDC-SDG Linkages"
+        />
+        <SocialMetadata
+          descriptionContext={NDC_SDG_LINKAGES}
+          href={location.href}
         />
         <NdcsSdgsMetaProvider />
         <Header size="small" route={route}>

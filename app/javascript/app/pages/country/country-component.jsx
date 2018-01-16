@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import { COUNTRY_PROFILES } from 'data/SEO';
-import { MetaDescription } from 'components/seo';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
@@ -26,6 +26,10 @@ class Country extends PureComponent {
         <MetaDescription
           descriptionContext={COUNTRY_PROFILES}
           subtitle={countryName}
+        />
+        <SocialMetadata
+          descriptionContext={COUNTRY_PROFILES}
+          href={location.href}
         />
         <SocioeconomicsProvider />
         <Header route={route}>

@@ -13,7 +13,7 @@ import Teaser from 'components/teaser';
 import screenshot from 'assets/screenshots/emission-pathways-screenshot';
 
 import { TITLE, EMISSION_PATHWAYS } from 'data/SEO';
-import { MetaDescription } from 'components/seo';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 // import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 // import layout from 'styles/layout.scss';
@@ -28,6 +28,10 @@ class EmissionPathways extends PureComponent {
         <MetaDescription
           descriptionContext={EMISSION_PATHWAYS}
           subtitle="Emission Pathways"
+        />
+        <SocialMetadata
+          descriptionContext={EMISSION_PATHWAYS}
+          href={location.href}
         />
         <Teaser
           screenshot={screenshot}

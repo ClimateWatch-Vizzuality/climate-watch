@@ -11,7 +11,7 @@ import AnchorNav from 'components/anchor-nav';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import Dropdown from 'components/dropdown';
 import { NDC_COUNTRY } from 'data/SEO';
-import { MetaDescription } from 'components/seo';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
@@ -38,6 +38,7 @@ class NDCCountry extends PureComponent {
           descriptionContext={NDC_COUNTRY}
           subtitle={countryName}
         />
+        <SocialMetadata descriptionContext={NDC_COUNTRY} href={location.href} />
         <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>

@@ -6,7 +6,7 @@ import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import { ABOUT } from 'data/SEO';
-import { MetaDescription } from 'components/seo';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';
@@ -16,6 +16,7 @@ const About = ({ route, anchorLinks, query }) => (
     <Header route={route}>
       <div className={layout.content}>
         <MetaDescription descriptionContext={ABOUT} subtitle="About" />
+        <SocialMetadata descriptionContext={ABOUT} href={location.href} />
         <Intro title="About" />
         <AnchorNav
           useRoutes
