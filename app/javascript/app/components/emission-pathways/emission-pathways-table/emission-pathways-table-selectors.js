@@ -40,7 +40,8 @@ export const flattenedData = createSelector(
       scenarios: ['model'],
       indicators: ['model', 'category', 'subcategory']
     };
-    return data.map(d => {
+    const updatedData = data;
+    return updatedData.map(d => {
       const flattenedD = d;
       attributesWithObjects[category].forEach(a => {
         if (Object.prototype.hasOwnProperty.call(d, a)) {
@@ -57,7 +58,8 @@ export const filteredDataBySearch = createSelector(
   (data, query) => {
     if (!data) return null;
     if (!query) return data;
-    return data.filter(d =>
+    const updatedData = data;
+    return updatedData.filter(d =>
       Object.keys(d).some(key => {
         if (Object.prototype.hasOwnProperty.call(d, key) && d[key] !== null) {
           return deburrUpper(d[key]).indexOf(query) > -1;
@@ -76,7 +78,8 @@ export const titleLinks = createSelector(
       models: 'full_name',
       scenarios: 'name'
     };
-    return data.map(d => ({
+    const updatedData = data;
+    return updatedData.map(d => ({
       fieldName: categoryId[categoryName],
       url: `${categoryName}/${d.id}`
     }));
