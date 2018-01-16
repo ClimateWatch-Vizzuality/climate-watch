@@ -12,7 +12,7 @@ import styles from './modal-overview-styles.scss';
 const MetadataProp = ({ title, children }) => (
   <p className={styles.text}>
     <span className={styles.textHighlight}>{startCase(title)}: </span>
-    {children}
+    {children || null}
   </p>
 );
 
