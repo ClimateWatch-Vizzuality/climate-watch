@@ -273,7 +273,7 @@ export const getChartData = createSelector(
       data.forEach(d => {
         const yKey = getYColumnValue(d[breakBy.value]);
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value * DATA_SCALE;
+        yItems[yKey] = yData.value ? yData.value * DATA_SCALE : null;
       });
       const item = {
         x,
@@ -300,6 +300,7 @@ export const getChartConfig = createSelector(
       axes: DEFAULT_AXES_CONFIG,
       theme,
       tooltip,
+      animation: false,
       columns: {
         x: [{ label: 'year', value: 'x' }],
         y: yColumnsChecked

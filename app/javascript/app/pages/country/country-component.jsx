@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
+import { Helmet } from 'react-helmet';
+import { TITLE, COUNTRY_PROFILES } from 'data/SEO';
 
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
@@ -18,8 +20,13 @@ import styles from './country-styles.scss';
 class Country extends PureComponent {
   render() {
     const { route, country, anchorLinks, description } = this.props;
+    const countryName = (country && country.name) || '';
     return (
       <div>
+        <Helmet>
+          <title>{`${TITLE} - ${countryName}`}</title>
+          <meta name="description" content={COUNTRY_PROFILES} />
+        </Helmet>
         <SocioeconomicsProvider />
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>

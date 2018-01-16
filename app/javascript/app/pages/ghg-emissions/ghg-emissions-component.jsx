@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
 import GhgEmissionsGraph from 'components/ghg-emissions';
+import { TITLE, HISTORICAL_GHG_EMISIONS } from 'data/SEO';
 
 import layout from 'styles/layout.scss';
 import styles from './ghg-emissions-styles.scss';
@@ -15,6 +17,10 @@ class GhgEmissions extends PureComponent {
     const { route } = this.props;
     return (
       <div>
+        <Helmet>
+          <title>{`${TITLE} - GHG Emissions`}</title>
+          <meta name="description" content={HISTORICAL_GHG_EMISIONS} />
+        </Helmet>
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <Intro title="Historical GHG Emissions" />

@@ -21,7 +21,8 @@ class CountryNdcOverview extends PureComponent {
       values,
       loading,
       actions,
-      handleInfoClick
+      handleInfoClick,
+      handleAnalyticsClick
     } = this.props;
     const hasSectors = values && sectors;
     if (!hasSectors && !loading) {
@@ -69,6 +70,7 @@ class CountryNdcOverview extends PureComponent {
                       className={styles.exploreBtn}
                       color="yellow"
                       link={`/ndcs/country/${iso}`}
+                      onClick={handleAnalyticsClick}
                     >
                       Explore NDC content
                     </Button>
@@ -174,7 +176,8 @@ CountryNdcOverview.propTypes = {
   values: PropTypes.object,
   loading: PropTypes.bool,
   actions: PropTypes.bool,
-  handleInfoClick: PropTypes.func.isRequired
+  handleInfoClick: PropTypes.func.isRequired,
+  handleAnalyticsClick: PropTypes.func.isRequired
 };
 
 export default CountryNdcOverview;

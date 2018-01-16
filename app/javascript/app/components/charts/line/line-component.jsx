@@ -13,6 +13,7 @@ import {
 import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
 import debounce from 'lodash/debounce';
+import isUndefined from 'lodash/isUndefined';
 
 const CustomizedXAxisTick = ({ x, y, payload }) => (
   <g transform={`translate(${x},${y})`}>
@@ -92,15 +93,21 @@ class ChartLine extends PureComponent {
             )}
           />
           {config.columns &&
-            config.columns.y.map(column => (
-              <Line
-                key={column.value}
-                dataKey={column.value}
-                dot={false}
-                stroke={config.theme[column.value].stroke || ''}
-                strokeWidth={2}
-              />
-            ))}
+            config.columns.y.map(column => {
+              const color = config.theme[column.value].stroke || '';
+              return (
+                <Line
+                  key={column.value}
+                  isAnimationActive={
+                    isUndefined(config.animation) ? true : config.animation
+                  }
+                  dot={{ strokeWidth: 0, fill: color, radius: 0.5 }}
+                  dataKey={column.value}
+                  stroke={color}
+                  strokeWidth={2}
+                />
+              );
+            })}
         </LineChart>
       </ResponsiveContainer>
     );

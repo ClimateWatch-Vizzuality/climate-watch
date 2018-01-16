@@ -71,7 +71,7 @@ export const getSelectedIndicator = createSelector(
         const filtered = indicators.filter(
           indicator => indicator.value === selected
         );
-        return filtered.length > 0 ? filtered[0] : {};
+        if (filtered.length > 0) return filtered[0];
       }
       return indicators[0];
     }

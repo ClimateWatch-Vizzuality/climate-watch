@@ -25,7 +25,8 @@ class CountryGhgEmissions extends PureComponent {
       calculationSelected,
       sourceSelected,
       filtersOptions,
-      filtersSelected
+      filtersSelected,
+      handleAnalyticsClick
     } = this.props;
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
@@ -55,12 +56,14 @@ class CountryGhgEmissions extends PureComponent {
               className={styles.btnGroup}
               onInfoClick={handleInfoClick}
               shareUrl={`/embed/countries/${iso}/ghg-emissions`}
+              analyticsGraphName="Country/Ghg-emissions"
             />
             <Button
               noSpace
               className={styles.exploreBtn}
               color="yellow"
               link={`/ghg-emissions?breakBy=location&filter=${iso}`}
+              onClick={handleAnalyticsClick}
             >
               Explore emissions
             </Button>
@@ -96,6 +99,7 @@ CountryGhgEmissions.propTypes = {
   filtersOptions: PropTypes.array,
   filtersSelected: PropTypes.array,
   handleInfoClick: PropTypes.func.isRequired,
+  handleAnalyticsClick: PropTypes.func.isRequired,
   handleYearHover: PropTypes.func.isRequired,
   handleSourceChange: PropTypes.func.isRequired,
   handleCalculationChange: PropTypes.func.isRequired

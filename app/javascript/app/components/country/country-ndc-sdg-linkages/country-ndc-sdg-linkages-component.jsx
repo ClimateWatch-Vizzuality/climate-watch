@@ -99,7 +99,8 @@ class CountrySDGLinkages extends PureComponent {
       activeSector,
       sectorOptions,
       handleSectorChange,
-      handleInfoClick
+      handleInfoClick,
+      handleAnalyticsClick
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -127,6 +128,7 @@ class CountrySDGLinkages extends PureComponent {
                 link={`/ndcs-sdg${activeSector
                   ? `?goal=${activeSector.value}`
                   : ''}`}
+                onClick={handleAnalyticsClick}
               >
                 Explore global linkages
               </Button>
@@ -161,7 +163,8 @@ CountrySDGLinkages.propTypes = {
   setTooltipData: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object,
-  handleInfoClick: Proptypes.func.isRequired
+  handleInfoClick: Proptypes.func.isRequired,
+  handleAnalyticsClick: Proptypes.func.isRequired
 };
 
 CountrySDGLinkages.defaultProps = {

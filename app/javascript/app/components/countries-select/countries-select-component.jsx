@@ -20,7 +20,8 @@ class CountriesSelect extends PureComponent {
       countriesList,
       onCountryClick,
       onCountryMouseEnter,
-      onCountryMouseLeave
+      onCountryMouseLeave,
+      handleClickAnalytics
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -39,6 +40,7 @@ class CountriesSelect extends PureComponent {
             theme={resultsListLightTheme}
             handleMouseItemEnter={onCountryMouseEnter}
             handleMouseItemLeave={onCountryMouseLeave}
+            handleClick={handleClickAnalytics}
           />
           <Map
             cache={false}
@@ -59,6 +61,7 @@ CountriesSelect.propTypes = {
   countrySelectFilter: Proptypes.func.isRequired,
   onCountryMouseEnter: Proptypes.func.isRequired,
   onCountryMouseLeave: Proptypes.func.isRequired,
+  handleClickAnalytics: Proptypes.func.isRequired,
   countriesList: Proptypes.array,
   paths: Proptypes.array
 };

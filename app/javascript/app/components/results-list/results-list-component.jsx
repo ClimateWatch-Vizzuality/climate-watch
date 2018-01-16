@@ -8,7 +8,7 @@ import Icon from 'components/icon';
 import arrow from 'assets/icons/dropdown-arrow.svg';
 import styles from './results-list-styles.scss';
 
-const ResultsList = (props) => {
+const ResultsList = props => {
   const {
     className,
     list,
@@ -16,13 +16,14 @@ const ResultsList = (props) => {
     emptyDataMsg,
     theme,
     handleMouseItemEnter,
-    handleMouseItemLeave
+    handleMouseItemLeave,
+    handleClick
   } = props;
   return (
     <ul className={cx(styles.resultsList, className, theme.resultsList)}>
-      {list.length > 0
-        ? list.map(item =>
-          (<li
+      {list.length > 0 ? (
+        list.map(item => (
+          <li
             className={cx(styles.listItem, theme.listItem)}
             onMouseEnter={() => handleMouseItemEnter(item.value)}
             onMouseLeave={handleMouseItemLeave}
@@ -33,17 +34,18 @@ const ResultsList = (props) => {
               exact
               className={cx(styles.link, theme.link)}
               to={item.path}
+              onClick={() => handleClick(item.value)}
             >
               {item.label}
               {hasIcon && <Icon icon={arrow} className={styles.iconArrow} />}
             </NavLink>
-          </li>)
-        )
-        : <li className={cx(styles.listItem, theme.listItem)} key="empty">
-          <span className={cx(styles.link, theme.link)}>
-            {emptyDataMsg}
-          </span>
-        </li>}
+          </li>
+        ))
+      ) : (
+        <li className={cx(styles.listItem, theme.listItem)} key="empty">
+          <span className={cx(styles.link, theme.link)}>{emptyDataMsg}</span>
+        </li>
+      )}
     </ul>
   );
 };
@@ -55,7 +57,8 @@ ResultsList.propTypes = {
   className: PropTypes.string,
   theme: PropTypes.object,
   handleMouseItemEnter: PropTypes.func,
-  handleMouseItemLeave: PropTypes.func
+  handleMouseItemLeave: PropTypes.func,
+  handleClick: PropTypes.func
 };
 
 ResultsList.defaultProps = {
@@ -64,7 +67,8 @@ ResultsList.defaultProps = {
   emptyDataMsg: 'No data',
   theme: {},
   handleMouseItemEnter() {},
-  handleMouseItemLeave() {}
+  handleMouseItemLeave() {},
+  handleClick() {}
 };
 
 export default ResultsList;

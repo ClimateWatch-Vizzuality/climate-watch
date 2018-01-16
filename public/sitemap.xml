@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>https://www.climatewatchdata.org/</loc>
+   <video:video>
+      <video:title>Climate Watch</video:title>
+      <video:description>Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress.</video:description>
+      <video:player_loc autoplay="ap=1">
+        https://youtu.be/C2nIcBqrHsk</video:player_loc>
+      <video:duration>79</video:duration>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:uploader info="https://www.climatewatchdata.org/">Climate Watch
+        </video:uploader>
+      <video:live>no</video:live>
+    </video:video>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/countries</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/countries/compare</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/sectors</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndcs</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndcs/compare</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndcs/compare/mitigation</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndcs/compare/adaptation</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndcs/compare/sectoral-information</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndcs-sdg/</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ghg-emissions</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/emission-pathways</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndc-search</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/stories</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/about</loc>
+</url>
+</urlset>
