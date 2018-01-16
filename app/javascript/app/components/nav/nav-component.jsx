@@ -18,7 +18,8 @@ class Nav extends PureComponent {
       className,
       hideLogo,
       hideActive,
-      reverse
+      reverse,
+      isRendered
     } = this.props;
     const showLogo = !hideLogo && location.pathname !== '/';
     return (
@@ -46,6 +47,8 @@ class Nav extends PureComponent {
               <NavNestedMenu
                 key={route.label}
                 reverse={reverse}
+                location={location}
+                isRendered={isRendered}
                 title={route.label}
                 className={cx(styles.link, styles.menuLink)}
                 Child={route.Child}
@@ -72,6 +75,7 @@ Nav.propTypes = {
   hideLogo: PropTypes.bool.isRequired,
   hideActive: PropTypes.bool.isRequired,
   reverse: PropTypes.bool,
+  isRendered: PropTypes.bool,
   routes: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
   className: PropTypes.string

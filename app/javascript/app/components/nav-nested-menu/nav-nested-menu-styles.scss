@@ -40,6 +40,7 @@
   &.regular {
     .navNestedMenu {
       position: absolute;
+      opacity: 1;
       width: 100vw;
       top: 4px;
     }
@@ -47,7 +48,7 @@
 
   &.isHidden {
     .navNestedMenu {
-      display: none;
+      opacity: 0;
       pointer-events: none;
     }
   }

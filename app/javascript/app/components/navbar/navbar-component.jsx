@@ -12,7 +12,7 @@ class NavBar extends PureComponent {
     const { routes } = this.props;
     return (
       <div className={cx(layout.content, styles.navbar)}>
-        <Nav routes={routes} />
+        <Nav routes={routes} isRendered location />
         <ToolsNav />
       </div>
     );

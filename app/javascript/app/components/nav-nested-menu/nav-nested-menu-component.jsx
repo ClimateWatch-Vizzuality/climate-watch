@@ -12,32 +12,29 @@ class NavNestedMenuComponent extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: !props.reverse,
-      isHidden: !props.reverse
+      isOpen: false,
+      isHidden: props.isRendered
     };
   }
 
-  setMenuOpen = isOpen => {
-    this.setState({ isOpen });
-  };
-
   toggleMenu = () => {
-    if (this.props.reverse) {
+    if (this.props.isRendered) {
       this.setState(state => ({
-        isOpen: !state.isOpen
+        isHidden: !state.isHidden
       }));
     } else {
       this.setState(state => ({
-        isHidden: !state.isHidden
+        isOpen: !state.isOpen
       }));
     }
   };
 
   outsideClickHandle = () => {
-    if (this.props.reverse) {
-      this.setState({ isOpen: false });
-    } else {
+    if (this.props.isRendered) {
+      console.log(this.props.location); // eslint-disable-line
       this.setState({ isHidden: true });
+    } else {
+      this.setState({ isOpen: false });
     }
   };
   render() {
@@ -55,13 +52,13 @@ class NavNestedMenuComponent extends PureComponent {
           <button
             onClick={() => this.toggleMenu()}
             className={cx(className, styles.button, {
-              [styles.active]: this.state.isOpen && !this.state.isHidden
+              [styles.active]: this.props.isRendered && !this.state.isHidden
             })}
           >
             <span>{this.props.title}</span>
             <Icon icon={arrow} className={styles.arrowIcon} />
           </button>
-          {this.state.isOpen && (
+          {this.props.isRendered && (
             <div className={styles.navNestedMenuWrapper}>
               <this.props.Child className={cx(styles.navNestedMenu)} />
             </div>
@@ -75,7 +72,9 @@ class NavNestedMenuComponent extends PureComponent {
 NavNestedMenuComponent.propTypes = {
   title: PropTypes.string,
   className: PropTypes.string,
-  reverse: PropTypes.bool
+  reverse: PropTypes.bool,
+  isRendered: PropTypes.bool,
+  location: PropTypes.object
 };
 
 export default NavNestedMenuComponent;
