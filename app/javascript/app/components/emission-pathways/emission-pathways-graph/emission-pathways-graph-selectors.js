@@ -140,15 +140,10 @@ const getIndicatorsWithData = createSelector(
   [filterDataByScenario, getIndicators, getModelSelected],
   (data, indicators, modelSelected) => {
     if (!data || !indicators || !indicators.length || !modelSelected) return [];
-    // const indicatorsWithData = data.map(d => d.indicator_id.toString());
+    const indicatorsWithData = data.map(d => d.indicator_id.toString());
     return uniqBy(
       indicators.filter(
-        i =>
-          // i.model &&
-          // i.model.id &&
-          // i.model.id.toString() === modelSelected.value &&
-          i.name // &&
-        // indicatorsWithData.indexOf(i.id.toString()) > -1
+        i => i.name && indicatorsWithData.indexOf(i.id.toString()) > -1
       ),
       'name'
     );
