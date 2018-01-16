@@ -38,7 +38,10 @@ class NDCCountry extends PureComponent {
           descriptionContext={NDC_COUNTRY}
           subtitle={countryName}
         />
-        <SocialMetadata descriptionContext={NDC_COUNTRY} href={location.href} />
+        <SocialMetadata
+          descriptionContext={NDC_COUNTRY({ countryName })}
+          href={location.href}
+        />
         <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>
