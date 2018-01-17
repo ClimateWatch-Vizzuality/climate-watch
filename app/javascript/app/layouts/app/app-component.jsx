@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
-import { Helmet } from 'react-helmet';
 
 import CountriesProvider from 'providers/countries-provider';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
-import { TITLE, HOME_PAGE } from 'data/SEO';
+import { HOME_PAGE } from 'data/SEO';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import styles from './app-styles.scss'; // eslint-disable-line
 
@@ -15,22 +15,8 @@ class App extends PureComponent {
     const { route, navRoutes, location } = this.props;
     return (
       <div>
-        <Helmet>
-          <title>{TITLE}</title>
-          <meta itemProp="name" content={TITLE} />
-          <meta name="description" content={HOME_PAGE} />
-
-          {/* Twitter Card data */}
-          <meta name="twitter:title" content={TITLE} />
-          <meta name="twitter:creator" content="@vizzuality" />
-          <meta name="twitter:description" content={HOME_PAGE} />
-
-          {/* Open Graph data */}
-          <meta property="og:title" content={TITLE} />
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content={location.href} />
-          <meta property="og:description" content={HOME_PAGE} />
-        </Helmet>
+        <MetaDescription descriptionContext={HOME_PAGE} />
+        <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
         <NavBar routes={navRoutes} />
         {renderRoutes(route.routes.filter(r => r.path))}
