@@ -73,6 +73,7 @@ class SimpleMenu extends PureComponent {
           className={styles.link}
           activeClassName={styles.active}
           to={option.path}
+          onClick={this.handleLinkClick}
         >
           {this.renderInsideLink(option)}
         </NavLink>
