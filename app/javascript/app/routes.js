@@ -87,18 +87,14 @@ export default [
             headerImage: 'home'
           },
           {
-            label: 'COUNTRIES',
-            nav: true,
-            navNestedMenu: true,
-            Child: CountriesSelect
-          },
-          {
             path: '/countries',
             component: CountryIndex,
             exact: true,
-            nav: false,
+            nav: true,
             label: 'COUNTRIES',
-            headerImage: 'countries'
+            headerImage: 'countries',
+            navNestedMenu: true,
+            Child: CountriesSelect
           },
           {
             path: '/countries/compare',

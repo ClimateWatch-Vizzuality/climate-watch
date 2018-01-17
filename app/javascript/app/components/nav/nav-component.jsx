@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import Icon from 'components/icon';
 import SimpleMenu from 'components/simple-menu';
-import NavNestedMenu from 'components/nav-nested-menu';
+import NavNestedMenu from 'components/nav/nav-nested-menu';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
 import styles from './nav-styles.scss';
@@ -19,7 +19,8 @@ class Nav extends PureComponent {
       hideLogo,
       hideActive,
       reverse,
-      isRendered
+      isRendered,
+      allowNested
     } = this.props;
     const showLogo = !hideLogo && location.pathname !== '/';
     return (
@@ -30,6 +31,18 @@ class Nav extends PureComponent {
           </NavLink>
         )}
         {routes.map(route => {
+          if (route.navNestedMenu && allowNested) {
+            return (
+              <NavNestedMenu
+                key={route.label}
+                reverse={reverse}
+                isRendered={isRendered}
+                title={route.label}
+                className={cx(styles.link, styles.menuLink)}
+                Child={route.Child}
+              />
+            );
+          }
           if (route.path) {
             return (
               <NavLink
@@ -40,18 +53,6 @@ class Nav extends PureComponent {
               >
                 {route.label}
               </NavLink>
-            );
-          }
-          if (route.navNestedMenu) {
-            return (
-              <NavNestedMenu
-                key={route.label}
-                reverse={reverse}
-                isRendered={isRendered}
-                title={route.label}
-                className={cx(styles.link, styles.menuLink)}
-                Child={route.Child}
-              />
             );
           }
           return (
@@ -73,6 +74,7 @@ class Nav extends PureComponent {
 Nav.propTypes = {
   hideLogo: PropTypes.bool.isRequired,
   hideActive: PropTypes.bool.isRequired,
+  allowNested: PropTypes.bool.isRequired,
   reverse: PropTypes.bool,
   isRendered: PropTypes.bool,
   routes: PropTypes.array.isRequired,
@@ -83,7 +85,8 @@ Nav.propTypes = {
 Nav.defaultProps = {
   routes: [],
   hideLogo: false,
-  hideActive: false
+  hideActive: false,
+  allowNested: true
 };
 
 export default Nav;
