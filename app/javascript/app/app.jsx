@@ -7,7 +7,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import ScrollToTop from 'components/scroll-to-top';
 
 import store from 'app/store';
-import routes from 'app/routes';
+import routes from 'app/routes/routes';
 
 const history = createBrowserHistory();
 

@@ -21,15 +21,21 @@ class TooltipChart extends PureComponent {
 
   render() {
     const { config, content, showTotal } = this.props;
+
     const unit =
       config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
 
     return (
       <div className={styles.tooltip}>
-        <span
-          className={styles.unit}
-          dangerouslySetInnerHTML={{ __html: unit }} // eslint-disable-line
-        />
+        <div className={styles.tooltipHeader}>
+          <span className={cx(styles.labelName, styles.labelNameBold)}>
+            {content.label}
+          </span>
+          <span
+            className={styles.unit}
+            dangerouslySetInnerHTML={{ __html: unit }} // eslint-disable-line
+          />
+        </div>
         {showTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
