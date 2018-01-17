@@ -441,45 +441,23 @@ export default [
             ]
           },
           {
-            hash: 'ndc-sdg-linkages',
-            label: 'NDC-SDG Linkages',
-            anchor: true,
-            component: NDCSDGLinkages
-          }
-        ]
-      },
-      {
-        path: '/ghg-emissions',
-        component: GHGEmissions,
-        exact: true,
-        label: 'GHG EMISSIONS',
-        headerImage: 'emissions'
-      },
-      {
-        path: '/ndc-search',
-        exact: true,
-        component: NDCSearch,
-        headerImage: 'ndc'
-      },
-      {
-        path: '/stories',
-        component: error,
-        exact: true,
-        nav: false,
-        label: 'STORIES'
-      },
-      {
-        path: '/about',
-        component: About,
-        nav: true,
-        label: 'ABOUT',
-        headerImage: 'about',
-        routes: [
-          {
             path: '/ndc-search',
             exact: true,
             component: NDCSearch,
             headerImage: 'ndc'
+          },
+          {
+            hash: 'ndc-sdg-linkages',
+            label: 'NDC-SDG Linkages',
+            anchor: true,
+            component: NDCSDGLinkages
+          },
+          {
+            path: '/ghg-emissions',
+            component: GHGEmissions,
+            exact: true,
+            label: 'GHG EMISSIONS',
+            headerImage: 'emissions'
           },
           {
             path: '/stories',
