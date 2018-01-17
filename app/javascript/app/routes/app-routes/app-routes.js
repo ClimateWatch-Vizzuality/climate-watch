@@ -30,10 +30,10 @@ import aboutRoutes from './about-routes';
 // import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
 
 // sections
-import countrySections from './sections-anchors/country-sections';
-// import emissionPathwaysModelSections from './sections-anchors/emission-pathways-model-sections';
-// import emissionPathwaysScenarioSections from './sections-anchors/emission-pathways-scenario-sections';
-// import emissionPathwaysSections from './sections-anchors/emission-pathways-sections';
+import countrySections from './country-sections';
+// import emissionPathwaysModelSections from './emission-pathways-model-sections';
+// import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
+// import emissionPathwaysSections from './emission-pathways-sections';
 
 export default [
   {
