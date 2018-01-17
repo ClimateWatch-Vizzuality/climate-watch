@@ -17,15 +17,27 @@ export const getDefaultColumns = createSelector([getCategory], category => {
     case 'models':
       return [
         'full_name',
-        'description',
-        'license',
-        'time_step',
+        'developed_by',
+        'geographic_coverage',
         'time_horizon'
       ];
     case 'scenarios':
-      return ['name', 'category', 'description'];
+      return ['model', 'name', 'geographic_coverage_country'];
     case 'indicators':
       return ['name', 'category', 'unit'];
+    default:
+      return null;
+  }
+});
+
+export const getFullTextColumns = createSelector([getCategory], category => {
+  switch (category) {
+    case 'models':
+      return ['full_name', 'geographic_coverage'];
+    case 'scenarios':
+      return ['geographic_coverage_country'];
+    case 'indicators':
+      return [];
     default:
       return null;
   }
@@ -192,8 +204,31 @@ export const filterDataByBlackList = createSelector(
   }
 );
 
+export const renameDataColumns = createSelector(
+  [filterDataByBlackList, getCategory],
+  (data, category) => {
+    if (!data || isEmpty(data)) return null;
+    if (category === 'models') {
+      let renamedData = data;
+      const changes = [{ old: 'maintainer_name', new: 'developed_by' }];
+      renamedData = renamedData.map(d => {
+        const updatedD = d;
+        changes.forEach(change => {
+          if (d[change.old]) {
+            updatedD[change.new] = d[change.old];
+            delete updatedD[change.new];
+          }
+        });
+        return updatedD;
+      });
+      return renamedData;
+    }
+    return data;
+  }
+);
+
 export default {
-  filterDataByBlackList,
+  renameDataColumns,
   titleLinks,
   filteredDataByFilters,
   getFilterOptionsByCategory,

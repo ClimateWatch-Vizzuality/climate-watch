@@ -118,8 +118,17 @@ export const DEFAULT_AXES_CONFIG = {
 };
 
 export const ESP_BLACKLIST = {
-  models: ['id', 'scenarios', 'indicators'],
-  scenarios: ['id', 'model_id', 'indicators'],
+  models: [
+    'id',
+    'scenarios',
+    'indicator_ids',
+    'availability',
+    'current_version',
+    'development_year',
+    'expertise',
+    'license'
+  ],
+  scenarios: ['id', 'model_id', 'indicator_ids'],
   indicators: ['id', 'parent_id']
 };
 
