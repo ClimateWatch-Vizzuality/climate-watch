@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import ReactGA from 'react-ga';
 import { renderRoutes } from 'react-router-config';
 
-const { GOOGLE_ANALYTICS_ID } = process.env;
+const GOOGLE_ANALYTICS_ID = 'UA-1981881-51';
 
 function trackPage(page) {
   ReactGA.set({ page });
