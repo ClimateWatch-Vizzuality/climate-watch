@@ -48,7 +48,7 @@ const getScenarioTrendData = createSelector(
 
 const getIndicatorIds = createSelector(getScenarioData, data => {
   if (!data) return null;
-  return data.indicators.map(i => i.id) || null;
+  return uniq(data.indicator_ids) || null;
 });
 
 const scenarioIndicatorsData = createSelector(
@@ -180,7 +180,7 @@ export const filterDataByBlackList = createSelector(
 );
 
 export const defaultColumns = () => [
-  'alias',
+  'name',
   'category',
   'subcategory',
   'trend'
