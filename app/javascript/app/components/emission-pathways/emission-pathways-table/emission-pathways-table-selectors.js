@@ -22,7 +22,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
         'time_horizon'
       ];
     case 'scenarios':
-      return ['name', 'category', 'description'];
+      return ['model', 'name', 'geographic_coverage_country'];
     case 'indicators':
       return ['name', 'category', 'unit'];
     default:
@@ -35,7 +35,7 @@ export const getFullTextColumns = createSelector([getCategory], category => {
     case 'models':
       return ['full_name', 'geographic_coverage'];
     case 'scenarios':
-      return [];
+      return ['geographic_coverage_country'];
     case 'indicators':
       return [];
     default:

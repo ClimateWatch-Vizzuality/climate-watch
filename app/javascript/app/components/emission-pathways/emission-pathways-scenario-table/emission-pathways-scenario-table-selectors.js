@@ -180,7 +180,7 @@ export const filterDataByBlackList = createSelector(
 );
 
 export const defaultColumns = () => [
-  'alias',
+  'name',
   'category',
   'subcategory',
   'trend'
