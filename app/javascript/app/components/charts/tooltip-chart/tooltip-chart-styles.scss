@@ -9,13 +9,16 @@
   border-radius: 4px;
 }
 
+.tooltipHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .unit {
   color: $dark-gray;
   font-size: $font-size-s;
-  margin-bottom: 5px;
-  text-align: right;
-  width: 100%;
-  display: block;
 }
 
 .labelTotal {
@@ -49,6 +52,10 @@
 .labelName {
   margin-right: 30px;
   color: $theme-color;
+}
+
+.labelNameBold {
+  font-weight: $font-weight-bold;
 }
 
 .labelValue {

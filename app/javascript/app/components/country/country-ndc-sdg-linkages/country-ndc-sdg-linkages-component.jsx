@@ -134,13 +134,13 @@ class CountrySDGLinkages extends PureComponent {
               </Button>
             </div>
             <div className={styles.descriptionContainer}>
-              The colored dots represent the SDG targets for which there is an
-              aligned climate target, action, policy measure or need in the NDC.
-              This alignment was identified based only on the information
-              communicated in the NDC, not the domestic policy context. It is
-              therefore only an entry point for considering the degree of
-              potential alignment between the country’s climate and sustainable
-              development objectives.
+              The colored dots represent the Sutainable Development Goals (SDGs)
+              for which there is an aligned climate target, action, policy
+              measure or need in the NDC. This alignment was identified based
+              only on the information communicated in the NDC, not the domestic
+              policy context. It is therefore only an entry point for
+              considering the degree of potential alignment between the
+              country’s climate and sustainable development objectives.
             </div>
           </div>
           <NdcsSdgsMetaProvider />

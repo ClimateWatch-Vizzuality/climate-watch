@@ -15,10 +15,10 @@ const AboutPermissions = () => (
         Creative Commons CC BY 4.0
       </a>{' '}
       license, which permits unrestricted reuse of Climate Watch content when
-      proper attribution is provided. This means you are able to download,
-      share, and adapt the data for any use, including commercial and
-      noncommercial uses. You must attribute the data appropriately, using the
-      information provided in the data set description.
+      proper attribution is provided. This means you are able to download, share
+      and adapt the data for any use, including commercial and non-commercial
+      uses. You must attribute the data appropriately, using the information
+      provided in the data set description.
     </p>
     <p>
       Some data displayed on Climate Watch was developed by other organizations
@@ -46,10 +46,10 @@ const AboutPermissions = () => (
         about permissions.
       </li>
       <li>
-        Source data licensing is determined for each inpidual data set—please
+        Source data licensing is determined for each individual data set—please
         refer to the original data source for detailed information. You must
         attribute the data as indicated in the metadata or licensing for each
-        inpidual data set. Most of the photographs featured on this site have
+        individual data set. Most of the photographs featured on this site have
         either been licensed under nontransferable terms, or have been acquired
         from photo-sharing sites such as Flickr that have their own policies for
         public use. Unless indicated otherwise, the{' '}
@@ -70,24 +70,9 @@ const AboutPermissions = () => (
       </li>
     </ul>
     <h3>Citations</h3>
-    <p>
-      For the following data sets, published directly in the Climate Watch
-      platform, please use the following citation
-    </p>
+    <p>Please consider using the following citation guidance.</p>
+    <p>General Reference:</p>
     <ul>
-      <li>
-        SDG Linkages Northrop, E., H. Biru, S. Lima, M. Bouye, and R. Song.
-        2016. “Examining the Alignment Between the Intended Nationally
-        Determined Contributions and Sustainable Development Goals.” Working
-        Paper. Washington, DC: World Resources Institute. Available online at:{' '}
-        <a
-          href="//www.climatewatchdata.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          www.climatewatchdata.org
-        </a>
-      </li>
       <li>
         CAIT emissions data (except PIK or UNFCCC data sets) Climate Watch.
         2017. Washington, DC: World Resources Institute. Available online at:{' '}
@@ -97,6 +82,26 @@ const AboutPermissions = () => (
           rel="noopener noreferrer"
         >
           www.climatewatchdata.org
+        </a>
+      </li>
+    </ul>
+    <p>
+      For individual data sets, please consider citing the original source,
+      listed in the information button next to each graph or chart. For example,
+      for the NDC-SDG Linkages data set, an example citation is:
+    </p>
+    <ul>
+      <li>
+        Northrop, E., H. Biru, S. Lima, M. Bouye, and R. Song. 2016. “Examining
+        the Alignment Between the Intended Nationally Determined Contributions
+        and Sustainable Development Goals.” Working Paper. Washington, DC: World
+        Resources Institute. Available online at:{' '}
+        <a
+          href="//www.wri.org/sites/default/files/WRI_INDCs_v5.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          http://www.wri.org/sites/default/files/WRI_INDCs_v5.pdf
         </a>
       </li>
     </ul>
