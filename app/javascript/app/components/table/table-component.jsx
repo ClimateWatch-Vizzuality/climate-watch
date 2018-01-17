@@ -4,6 +4,7 @@ import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
 import { LineChart, Line } from 'recharts';
+import isArray from 'lodash/isArray';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
@@ -68,41 +69,38 @@ class SimpleTable extends PureComponent {
               sortDirection={sortDirection}
               rowGetter={({ index }) => data[index]}
             >
-              {activeColumns.map(c => c.value).map((column, i) => {
-                const flexGrow = i === 0 ? 0 : 1;
-                return (
-                  <Column
-                    className={cx(styles.column, {
-                      [styles.fullText]:
-                        fullTextColumns && fullTextColumns.indexOf(column) > -1
-                    })}
-                    key={column}
-                    label={lowerCase(column)}
-                    dataKey={column}
-                    width={200}
-                    flexGrow={flexGrow}
-                    cellRenderer={cell => {
-                      const titleLink = titleLinks && titleLinks[cell.rowIndex];
-                      if (trendLine && cell.dataKey === trendLine) {
-                        return renderTrendLine(cell.cellData);
-                      }
-
-                      if (titleLink && cell.dataKey === titleLink.fieldName) {
-                        return (
-                          <NavLink to={titleLink.url}>{cell.cellData}</NavLink>
-                        );
-                      }
-                      return parseHtml ? (
-                        <div
-                          dangerouslySetInnerHTML={{ __html: cell.cellData }}
-                        />
-                      ) : (
-                        cell.cellData
-                      );
-                    }}
-                  />
-                );
-              })}
+              {activeColumns.map(c => c.value).map(column => (
+                <Column
+                  className={cx(styles.column, {
+                    [styles.fullText]:
+                      fullTextColumns && fullTextColumns.indexOf(column) > -1
+                  })}
+                  key={column}
+                  label={lowerCase(column)}
+                  dataKey={column}
+                  width={200}
+                  flexGrow={1}
+                  cellRenderer={cell => {
+                    let { cellData } = cell;
+                    const { rowIndex, dataKey } = cell;
+                    if (isArray(cellData)) {
+                      cellData = cellData.join(', ');
+                    }
+                    const titleLink = titleLinks && titleLinks[rowIndex];
+                    if (trendLine && dataKey === trendLine) {
+                      return renderTrendLine(cellData);
+                    }
+                    if (titleLink && dataKey === titleLink.fieldName) {
+                      return <NavLink to={titleLink.url}>{cellData}</NavLink>;
+                    }
+                    return parseHtml ? (
+                      <div dangerouslySetInnerHTML={{ __html: cellData }} />
+                    ) : (
+                      cellData
+                    );
+                  }}
+                />
+              ))}
             </Table>
           )}
         </AutoSizer>
