@@ -205,7 +205,7 @@ export const filterDataByBlackList = createSelector(
 );
 
 export const renameDataColumns = createSelector(
-  [filteredDataByFilters, getCategory],
+  [filterDataByBlackList, getCategory],
   (data, category) => {
     if (!data || isEmpty(data)) return null;
     if (category === 'models') {
