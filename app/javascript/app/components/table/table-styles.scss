@@ -55,6 +55,13 @@
   }
 }
 
+.column {
+  &.fullText {
+    white-space: normal;
+    overflow: visible !important;
+  }
+}
+
 .hasColumnSelect :global {
   .ReactVirtualized__Table__headerRow {
     padding-left: 30px;

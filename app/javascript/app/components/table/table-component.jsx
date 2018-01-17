@@ -25,7 +25,8 @@ class SimpleTable extends PureComponent {
       handleSortChange,
       parseHtml,
       titleLinks,
-      trendLine
+      trendLine,
+      fullTextColumns
     } = this.props;
 
     if (!data.length) return null;
@@ -71,7 +72,10 @@ class SimpleTable extends PureComponent {
                 const flexGrow = i === 0 ? 0 : 1;
                 return (
                   <Column
-                    className={styles.column}
+                    className={cx(styles.column, {
+                      [styles.fullText]:
+                        fullTextColumns && fullTextColumns.indexOf(column) > -1
+                    })}
                     key={column}
                     label={lowerCase(column)}
                     dataKey={column}
@@ -120,6 +124,7 @@ SimpleTable.propTypes = {
   handleSortChange: PropTypes.func.isRequired,
   titleLinks: PropTypes.array, // {fieldName: 'title field name in the table', url:'/destination-url-for-the-link'}
   trendLine: PropTypes.string, // 'field name of the trend line column'
+  fullTextColumns: PropTypes.array, // 'Columns with full text, no ellipsis'
   parseHtml: PropTypes.bool
 };
 
