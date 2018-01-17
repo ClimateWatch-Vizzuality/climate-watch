@@ -1,8 +1,14 @@
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
+import upperFirst from 'lodash/upperFirst';
+import toLower from 'lodash/toLower';
 
 export function deburrUpper(string) {
   return toUpper(deburr(string));
+}
+
+export function lowerUpperFirst(string) {
+  return upperFirst(toLower(string));
 }
 
 export function isCountryIncluded(countriesIncluded = [], iso) {
