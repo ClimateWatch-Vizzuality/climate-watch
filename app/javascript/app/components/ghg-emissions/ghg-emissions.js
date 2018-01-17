@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import ReactGA from 'react-ga';
 
 import { actions as modalActions } from 'components/modal-metadata';
 import ownActions from './ghg-emissions-actions';
@@ -124,6 +125,11 @@ class GhgEmissionsContainer extends PureComponent {
 
   handleSourceChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
+    ReactGA.event({
+      category: 'Historical Emissions',
+      action: 'Source selected',
+      label: category.label
+    });
   };
 
   handleBreakByChange = breakBy => {
@@ -134,10 +140,20 @@ class GhgEmissionsContainer extends PureComponent {
       { name: 'version', value: versionSelected.value }
     ];
     this.updateUrlParam(params, true);
+    ReactGA.event({
+      category: 'Historical Emissions',
+      action: 'Break by selected',
+      label: breakBy.label
+    });
   };
 
   handleVersionChange = version => {
     this.updateUrlParam({ name: 'version', value: version.value });
+    ReactGA.event({
+      category: 'Historical Emissions',
+      action: 'version selected',
+      label: version.label
+    });
   };
 
   handleFilterChange = filters => {
@@ -162,6 +178,14 @@ class GhgEmissionsContainer extends PureComponent {
       });
     }
     this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
+    const selectedFilterLabels = filters.map(f => f.label);
+    if (selectedFilterLabels.length > 0) {
+      ReactGA.event({
+        category: 'Historical Emissions',
+        action: 'Filter by',
+        label: selectedFilterLabels.toString()
+      });
+    }
   };
 
   updateUrlParam(params, clear) {
@@ -173,6 +197,7 @@ class GhgEmissionsContainer extends PureComponent {
     const { source } = this.props.sourceSelected;
     if (source) {
       this.props.setModalMetadata({
+        category: 'Historical Emissions',
         slugs: source,
         open: true
       });

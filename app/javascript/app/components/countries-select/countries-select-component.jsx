@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 import Search from 'components/search';
 import ResultsList from 'components/results-list';
-import Map from 'components/map';
+import Map from 'components/map/map-component';
 
 import layout from 'styles/layout.scss';
 import resultsListLightTheme from 'styles/themes/results-list/results-list-light.scss';
@@ -16,14 +16,16 @@ class CountriesSelect extends PureComponent {
     const {
       query,
       paths,
+      className,
       countrySelectFilter,
       countriesList,
       onCountryClick,
       onCountryMouseEnter,
-      onCountryMouseLeave
+      onCountryMouseLeave,
+      handleClickAnalytics
     } = this.props;
     return (
-      <div className={styles.wrapper}>
+      <div className={cx(styles.wrapper, className)}>
         <div className={cx(layout.content, styles.content)}>
           <Search
             placeholder=""
@@ -39,10 +41,12 @@ class CountriesSelect extends PureComponent {
             theme={resultsListLightTheme}
             handleMouseItemEnter={onCountryMouseEnter}
             handleMouseItemLeave={onCountryMouseLeave}
+            handleClick={handleClickAnalytics}
           />
           <Map
             cache={false}
             paths={paths}
+            zoomEnable={false}
             className={styles.map}
             onCountryClick={onCountryClick}
             customCenter={[20, 15]}
@@ -55,10 +59,12 @@ class CountriesSelect extends PureComponent {
 
 CountriesSelect.propTypes = {
   query: Proptypes.string,
+  className: Proptypes.string,
   onCountryClick: Proptypes.func.isRequired,
   countrySelectFilter: Proptypes.func.isRequired,
   onCountryMouseEnter: Proptypes.func.isRequired,
   onCountryMouseLeave: Proptypes.func.isRequired,
+  handleClickAnalytics: Proptypes.func.isRequired,
   countriesList: Proptypes.array,
   paths: Proptypes.array
 };

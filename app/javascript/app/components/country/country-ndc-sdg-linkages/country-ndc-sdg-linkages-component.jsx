@@ -99,7 +99,8 @@ class CountrySDGLinkages extends PureComponent {
       activeSector,
       sectorOptions,
       handleSectorChange,
-      handleInfoClick
+      handleInfoClick,
+      handleAnalyticsClick
     } = this.props;
     return (
       <div className={styles.wrapper}>
@@ -127,18 +128,19 @@ class CountrySDGLinkages extends PureComponent {
                 link={`/ndcs-sdg${activeSector
                   ? `?goal=${activeSector.value}`
                   : ''}`}
+                onClick={handleAnalyticsClick}
               >
                 Explore global linkages
               </Button>
             </div>
             <div className={styles.descriptionContainer}>
-              The colored dots represent the SDG targets for which there is an
-              aligned climate target, action, policy measure or need in the NDC.
-              This alignment was identified based only on the information
-              communicated in the NDC, not the domestic policy context. It is
-              therefore only an entry point for considering the degree of
-              potential alignment between the country’s climate and sustainable
-              development objectives.
+              The colored dots represent the Sutainable Development Goals (SDGs)
+              for which there is an aligned climate target, action, policy
+              measure or need in the NDC. This alignment was identified based
+              only on the information communicated in the NDC, not the domestic
+              policy context. It is therefore only an entry point for
+              considering the degree of potential alignment between the
+              country’s climate and sustainable development objectives.
             </div>
           </div>
           <NdcsSdgsMetaProvider />
@@ -161,7 +163,8 @@ CountrySDGLinkages.propTypes = {
   setTooltipData: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object,
-  handleInfoClick: Proptypes.func.isRequired
+  handleInfoClick: Proptypes.func.isRequired,
+  handleAnalyticsClick: Proptypes.func.isRequired
 };
 
 CountrySDGLinkages.defaultProps = {

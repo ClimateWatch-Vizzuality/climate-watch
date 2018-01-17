@@ -4,7 +4,9 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import isEmpty from 'lodash/isEmpty';
+import ReactGA from 'react-ga';
 import { actions as modalMetadataActions } from 'components/modal-metadata';
+
 import ownActions from './country-ndc-sdg-linkages-actions';
 import reducers, { initialState } from './country-ndc-sdg-linkages-reducers';
 
@@ -49,8 +51,17 @@ const mapStateToProps = (state, { match, location }) => {
 const CountrySDGLinkagesContainer = props => {
   const { history, location } = props;
 
+  const handleAnalyticsClick = () => {
+    ReactGA.event({
+      category: 'Country',
+      action: 'Leave page to explore data',
+      label: 'Ndc Sdg Linkages'
+    });
+  };
+
   const handleInfoClick = () => {
     props.setModalMetadata({
+      category: 'Country',
       slugs: 'ndc_sdc_all indicators',
       open: true
     });
@@ -58,6 +69,13 @@ const CountrySDGLinkagesContainer = props => {
 
   const handleSectorChange = option => {
     updateUrlParam({ name: 'sector', value: option ? option.value : '' });
+    if (option) {
+      ReactGA.event({
+        category: 'Country',
+        action: 'Change SDG-NDC sector',
+        label: option.label
+      });
+    }
   };
 
   const updateUrlParam = (params, clear) => {
@@ -67,7 +85,8 @@ const CountrySDGLinkagesContainer = props => {
   return createElement(CountrySDGLinkagesComponent, {
     ...props,
     handleSectorChange,
-    handleInfoClick
+    handleInfoClick,
+    handleAnalyticsClick
   });
 };
 

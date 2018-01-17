@@ -55,7 +55,7 @@ class GhgEmissions extends PureComponent {
             disabled={versions && versions.length === 1}
           />
           <Dropdown
-            label="Break by"
+            label="Select by"
             options={breaksBy}
             onValueChange={handleBreakByChange}
             value={breakSelected}
@@ -73,6 +73,7 @@ class GhgEmissions extends PureComponent {
             className={styles.colEnd}
             onInfoClick={handleInfoClick}
             shareUrl="/embed/ghg-emissions"
+            analyticsGraphName="Ghg-emissions"
           />
         </div>
         <Chart

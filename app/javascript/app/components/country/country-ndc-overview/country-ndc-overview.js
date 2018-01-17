@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { withRouter } from 'react-router';
 import isEmpty from 'lodash/isEmpty';
+import ReactGA from 'react-ga';
+
 import { actions as modalMetadataActions } from 'components/modal-metadata';
 import ownActions from './country-ndc-overview-actions';
 import reducers, { initialState } from './country-ndc-overview-reducers';
@@ -45,8 +47,17 @@ class CountryNdcOverviewContainer extends PureComponent {
     }
   }
 
+  handleAnalyticsClick = () => {
+    ReactGA.event({
+      category: 'Country',
+      action: 'Leave page to explore data',
+      label: 'Ndc Overview'
+    });
+  };
+
   handleInfoClick = () => {
     this.props.setModalMetadata({
+      category: 'Country',
       slugs: ['ndc_cait', 'ndc_wb'],
       customTitle: 'Nationally Determined Contribution (NDC) Overview',
       open: true
@@ -56,7 +67,8 @@ class CountryNdcOverviewContainer extends PureComponent {
   render() {
     return createElement(CountryNdcOverviewComponent, {
       ...this.props,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      handleAnalyticsClick: this.handleAnalyticsClick
     });
   }
 }

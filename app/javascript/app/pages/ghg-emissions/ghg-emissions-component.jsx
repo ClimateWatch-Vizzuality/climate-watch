@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import GhgEmissionsGraph from 'components/ghg-emissions';
+import { HISTORICAL_GHG_EMISIONS } from 'data/SEO';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './ghg-emissions-styles.scss';
@@ -15,6 +17,14 @@ class GhgEmissions extends PureComponent {
     const { route } = this.props;
     return (
       <div>
+        <MetaDescription
+          descriptionContext={HISTORICAL_GHG_EMISIONS}
+          subtitle="GHG emissions"
+        />
+        <SocialMetadata
+          descriptionContext={HISTORICAL_GHG_EMISIONS}
+          href={location.href}
+        />
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <Intro title="Historical GHG Emissions" />

@@ -21,7 +21,8 @@ class CountryNdcOverview extends PureComponent {
       values,
       loading,
       actions,
-      handleInfoClick
+      handleInfoClick,
+      handleAnalyticsClick
     } = this.props;
     const hasSectors = values && sectors;
     if (!hasSectors && !loading) {
@@ -69,6 +70,7 @@ class CountryNdcOverview extends PureComponent {
                       className={styles.exploreBtn}
                       color="yellow"
                       link={`/ndcs/country/${iso}`}
+                      onClick={handleAnalyticsClick}
                     >
                       Explore NDC content
                     </Button>
@@ -124,7 +126,7 @@ class CountryNdcOverview extends PureComponent {
                     )}
                   </div>
                 </Card>
-                <Card title="Sectoral coverage">
+                <Card title="Identified Sectors for Mitigation Action">
                   <div className={styles.cardContent}>
                     {values && values.coverage_sectors_short ? (
                       <p
@@ -143,7 +145,7 @@ class CountryNdcOverview extends PureComponent {
                   <h4 className={cx(styles.subTitle, styles.adaptionList)}>
                     Adaptation Contribution
                   </h4>
-                  <Card title="Sectoral coverage">
+                  <Card title="Identified Sectors for Adaptation Action">
                     <div className={styles.cardContent}>
                       {sectors.length ? (
                         <ul className={styles.list}>
@@ -174,7 +176,8 @@ CountryNdcOverview.propTypes = {
   values: PropTypes.object,
   loading: PropTypes.bool,
   actions: PropTypes.bool,
-  handleInfoClick: PropTypes.func.isRequired
+  handleInfoClick: PropTypes.func.isRequired,
+  handleAnalyticsClick: PropTypes.func.isRequired
 };
 
 export default CountryNdcOverview;

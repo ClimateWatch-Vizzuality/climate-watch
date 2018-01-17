@@ -144,7 +144,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Examine Links Between Sustainable Development and Climate Goals"
-              description="Identify potential alignment between the targets, actions, policies measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
+              description="Identify potential alignment between the targets, actions, policies policy measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/ndcs-sdg'}>

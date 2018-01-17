@@ -9,16 +9,16 @@ import searchIcon from 'assets/icons/search.svg';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import styles from './autocomplete-search-styles.scss';
 
-class CountriesSelect extends PureComponent {
+class AutocompleteSearch extends PureComponent {
   render() {
-    const { handleValueClick, setAutocompleteSearch, searchList } = this.props;
+    const { handleValueClick, handleSearchChange, searchList } = this.props;
     return (
       <div className={styles.wrapper}>
         <Dropdown
           className={theme.dropdownOptionWithArrow}
-          placeholder={'e.g. "Brazil", "energy", "deforestation targets"'}
+          placeholder="Search across NDC Content for all countries"
           options={searchList}
-          onSearchChange={setAutocompleteSearch}
+          onSearchChange={handleSearchChange}
           onValueChange={handleValueClick}
           value={null}
           hideResetButton
@@ -36,10 +36,10 @@ class CountriesSelect extends PureComponent {
   }
 }
 
-CountriesSelect.propTypes = {
+AutocompleteSearch.propTypes = {
   handleValueClick: Proptypes.func.isRequired,
-  setAutocompleteSearch: Proptypes.func.isRequired,
+  handleSearchChange: Proptypes.func.isRequired,
   searchList: Proptypes.array
 };
 
-export default CountriesSelect;
+export default AutocompleteSearch;
