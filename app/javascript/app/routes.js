@@ -13,6 +13,7 @@ import NDCCountry from 'pages/ndc-country';
 import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import NDCCompare from 'pages/ndc-compare';
+import CountriesSelect from 'components/countries-select';
 import CountryIndex from 'pages/country-index';
 import Country from 'pages/country';
 import CountryCompare from 'pages/country-compare';
@@ -91,7 +92,9 @@ export default [
             exact: true,
             nav: true,
             label: 'COUNTRIES',
-            headerImage: 'countries'
+            headerImage: 'countries',
+            navNestedMenu: true,
+            Child: CountriesSelect
           },
           {
             path: '/countries/compare',
