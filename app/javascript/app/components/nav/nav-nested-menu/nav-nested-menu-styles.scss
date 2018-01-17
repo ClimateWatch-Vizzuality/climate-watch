@@ -32,22 +32,21 @@
   .navNestedMenuWrapper {
     position: absolute;
     width: 100%;
-    height: 50%;
     left: 0;
     z-index: 10;
+    opacity: 1;
+    transition: opacity 0.2s ease;
   }
 
   &.regular {
     .navNestedMenu {
       position: absolute;
-      opacity: 1;
-      width: 100vw;
       top: 4px;
     }
   }
 
   &.isHidden {
-    .navNestedMenu {
+    .navNestedMenuWrapper {
       opacity: 0;
       pointer-events: none;
     }
