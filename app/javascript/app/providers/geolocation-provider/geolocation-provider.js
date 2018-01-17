@@ -22,7 +22,7 @@ GeolocationProvider.propTypes = {
 };
 
 GeolocationProvider.defaultProps = {
-  locationProvider: 'http://ip-api.com/json'
+  locationProvider: 'https://freegeoip.net/json/'
 };
 
 export { actions, reducers, initialState };
