@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
+import uniq from 'lodash/uniq';
 import { ESP_BLACKLIST } from 'data/constants';
 
 const getCategoryName = state =>
@@ -19,6 +20,9 @@ const getSelectedIds = createSelector(
   [getModelDataById, getCategoryName],
   (data, category) => {
     if (!data || !category) return null;
+    if (category === 'indicators') {
+      return uniq(data.indicator_ids) || null;
+    }
     return data[category].map(i => i.id) || null;
   }
 );
