@@ -156,9 +156,9 @@ export const dataWithTrendLine = createSelector(
       if (indicatorTrendData) {
         rowData.trend = isEmpty(indicatorTrendData)
           ? null
-          : sortBy(indicatorTrendData.values, ['year']).map(v => ({
-            value: parseFloat(v.value)
-          }));
+          : sortBy(indicatorTrendData.values, ['year']).map(v =>
+            parseFloat(v.value)
+          );
       } else {
         rowData.trend = null;
       }

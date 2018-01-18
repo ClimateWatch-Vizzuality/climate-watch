@@ -48,11 +48,12 @@ const getModels = state => state.models || null;
 const getScenarios = state => state.scenarios || null;
 const getIndicators = state => state.indicators || null;
 
-const getLocation = state => state.location || null;
-const getModel = state => state.model || null;
-const getScenario = state => state.scenario;
-const getIndicator = state => state.indicator || null;
-const getSubcategory = state => state.subcategory || null;
+const getLocation = state => parseInt(state.location, 10) || null;
+const getModel = state => parseInt(state.model, 10) || null;
+const getScenario = state => state.scenario || null;
+const getIndicator = state => parseInt(state.indicator, 10) || null;
+const getCategory = state => parseInt(state.category, 10) || null;
+const getSubcategory = state => parseInt(state.subcategory, 10) || null;
 
 // data for the graph
 const getData = state => state.data || null;
@@ -62,7 +63,7 @@ export const getLocationsOptions = createSelector([getLocations], locations => {
   if (!locations || !locations.length) return [];
   return locations.map(l => ({
     label: l.name,
-    value: l.id.toString()
+    value: l.id
   }));
 });
 
@@ -82,8 +83,8 @@ export const getModelsOptions = createSelector([getModels], models => {
   if (!models || !models.length) return [];
   return models.map(m => ({
     label: m.abbreviation,
-    value: m.id.toString(),
-    scenarios: m.scenarios ? m.scenarios.map(s => s.id.toString()) : null
+    value: m.id,
+    scenarios: m.scenario_ids
   }));
 });
 
@@ -102,13 +103,13 @@ export const getModelSelected = createSelector(
 export const getScenariosOptions = createSelector(
   [getScenarios, getModelSelected],
   (scenarios, modelSelected) => {
-    if (!modelSelected || !scenarios || !scenarios.length) return [];
+    if (!modelSelected || !scenarios || !scenarios.length) return null;
     const filteredScenarios = scenarios.filter(
-      s => modelSelected.scenarios.indexOf(s.id.toString()) > -1
+      s => modelSelected.scenarios.indexOf(s.id) > -1
     );
     return filteredScenarios.map(s => ({
       label: s.name,
-      value: s.id.toString()
+      value: s.id
     }));
   }
 );
@@ -118,13 +119,15 @@ export const getScenariosSelected = createSelector(
   (scenarios, scenarioSelected, model) => {
     if (!scenarios || !model) return null;
     if ((!scenarioSelected && !model.scenarios) || scenarioSelected === '') {
-      return [];
+      return null;
     }
     if (!scenarioSelected) {
       return scenarios;
     }
-    const activeScenarios = scenarioSelected.split(',');
-    return scenarios.filter(s => activeScenarios.indexOf(s.value) > -1);
+    const scenarioSelectedParsed = scenarioSelected
+      .split(',')
+      .map(s => parseInt(s, 10));
+    return scenarios.filter(s => scenarioSelectedParsed.indexOf(s.value) > -1);
   }
 );
 
@@ -135,7 +138,7 @@ export const filterDataByScenario = createSelector(
     if (!data || isEmpty(data) || scenarios === '') return null;
     if (!scenarios) return data;
     return data.filter(
-      d => scenarios.map(s => s.value).indexOf(d.scenario_id.toString()) > -1
+      d => scenarios.map(s => s.value).indexOf(d.scenario_id) > -1
     );
   }
 );
@@ -143,24 +146,50 @@ export const filterDataByScenario = createSelector(
 const getIndicatorsWithData = createSelector(
   [filterDataByScenario, getIndicators, getModelSelected],
   (data, indicators, modelSelected) => {
-    if (!data || !indicators || !indicators.length || !modelSelected) return [];
-    const indicatorsWithData = data.map(d => d.indicator_id.toString());
+    if (!data || !indicators || !indicators.length || !modelSelected) {
+      return null;
+    }
+    const indicatorsWithData = data.map(d => d.indicator_id);
     return uniqBy(
-      indicators.filter(
-        i => i.name && indicatorsWithData.indexOf(i.id.toString()) > -1
-      ),
+      indicators.filter(i => i.name && indicatorsWithData.indexOf(i.id) > -1),
       'name'
     );
   }
 );
 
-export const getSubCategoryOptions = createSelector(
+export const getCategoryOptions = createSelector(
   [getIndicatorsWithData],
   indicators => {
-    if (!indicators) return [];
-    const subcategories = indicators.map(i => ({
+    if (!indicators) return null;
+    const categories = indicators.filter(i => i.category).map(i => ({
+      label: i.category.name,
+      value: i.category.id
+    }));
+    return uniqBy(categories, 'value');
+  }
+);
+
+export const getCategorySelected = createSelector(
+  [getCategoryOptions, getCategory],
+  (categories, categorySelected) => {
+    if (!categories) return null;
+    if (!categorySelected) {
+      return categories[0];
+    }
+    return categories.find(i => i.value === categorySelected);
+  }
+);
+
+export const getSubCategoryOptions = createSelector(
+  [getIndicatorsWithData, getCategorySelected],
+  (indicators, category) => {
+    if (!indicators || !category) return null;
+    const indicatorsSelected = indicators.filter(
+      i => i.category.id === category.value
+    );
+    const subcategories = (indicatorsSelected || []).map(i => ({
       label: i.subcategory.name,
-      value: i.subcategory.id.toString()
+      value: i.subcategory.id
     }));
     return uniqBy(subcategories, 'value');
   }
@@ -180,16 +209,17 @@ export const getSubcategorySelected = createSelector(
 export const getIndicatorsOptions = createSelector(
   [getIndicatorsWithData, getSubcategorySelected],
   (indicators, subcategory) => {
-    if (!indicators) return [];
+    if (!indicators || !indicators.length || !subcategory) return [];
     let filteredIndicators = indicators;
     if (subcategory) {
       filteredIndicators = indicators.filter(
-        i => i.subcategory.id.toString() === subcategory.value
+        i => i.subcategory.id === subcategory.value
       );
     }
+
     return filteredIndicators.map(i => ({
-      label: i.name,
-      value: i.id.toString(),
+      label: i.name || i.composite_name || '',
+      value: i.id,
       unit: i.unit
     }));
   }
@@ -210,11 +240,8 @@ export const getIndicatorSelected = createSelector(
 export const filterDataByIndicator = createSelector(
   [filterDataByScenario, getIndicatorSelected],
   (data, indicator) => {
-    if (!data || isEmpty(data)) return null;
-    if (!indicator) return data;
-    return data.filter(
-      d => d.indicator_id.toString() === indicator.value.toString()
-    );
+    if (!data || isEmpty(data) || !indicator) return null;
+    return data.filter(d => d.indicator_id === indicator.value);
   }
 );
 
@@ -224,13 +251,15 @@ export const getFiltersOptions = createSelector(
     getModelsOptions,
     getScenariosOptions,
     getIndicatorsOptions,
+    getCategoryOptions,
     getSubCategoryOptions
   ],
-  (locations, models, scenarios, indicators, subcategory) => ({
+  (locations, models, scenarios, indicators, category, subcategory) => ({
     locations,
     models,
     scenarios,
     indicators,
+    category,
     subcategory
   })
 );
@@ -240,15 +269,17 @@ export const getFiltersSelected = createSelector(
     getLocationSelected,
     getModelSelected,
     getScenariosSelected,
-    getIndicatorSelected,
-    getSubcategorySelected
+    getCategorySelected,
+    getSubcategorySelected,
+    getIndicatorSelected
   ],
-  (location, model, scenarios, indicator, subcategory) => ({
+  (location, model, scenarios, category, subcategory, indicator) => ({
     location,
     model,
     scenarios,
-    indicator,
-    subcategory
+    category,
+    subcategory,
+    indicator
   })
 );
 
@@ -311,7 +342,7 @@ const getModelSelectedMetadata = createSelector(
   [getModels, getModelSelected],
   (models, modelSelected) => {
     if (!models || !modelSelected) return null;
-    return models.find(m => modelSelected.value === m.id.toString());
+    return models.find(m => modelSelected.value === m.id);
   }
 );
 
@@ -332,7 +363,7 @@ export const getScenariosSelectedMetadata = createSelector(
     if (isEmpty(scenarios) || !scenariosSelected) return null;
     const selectedScenarioIds = scenariosSelected.map(s => s.value);
     const scenariosMetadata = scenarios.filter(
-      s => selectedScenarioIds.indexOf(s.id.toString()) > 1
+      s => selectedScenarioIds.indexOf(s.id) > -1
     );
     return (
       scenariosMetadata.length > 0 &&
@@ -349,7 +380,7 @@ export const getIndicatorSelectedMetadata = createSelector(
   [getIndicators, getIndicatorSelected],
   (indicators, indicatorSelected) => {
     if (!indicators || !indicatorSelected) return null;
-    return indicators.find(i => indicatorSelected.value === i.id.toString());
+    return indicators.find(i => indicatorSelected.value === i.id);
   }
 );
 

@@ -32,11 +32,17 @@ class SimpleTable extends PureComponent {
 
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
-    const renderTrendLine = chartData => (
-      <LineChart width={70} height={35} data={chartData}>
-        <Line dot={false} dataKey="value" stroke="#113750" strokeWidth={2} />
-      </LineChart>
-    );
+
+    const renderTrendLine = chartData => {
+      const dataValues =
+        chartData && chartData.split(',').map(v => ({ value: parseFloat(v) }));
+      return (
+        <LineChart width={70} height={35} data={dataValues}>
+          <Line dot={false} dataKey="value" stroke="#113750" strokeWidth={2} />
+        </LineChart>
+      );
+    };
+
     return (
       <div
         className={cx(
