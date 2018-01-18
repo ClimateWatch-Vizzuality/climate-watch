@@ -23,9 +23,14 @@ const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
-  const { currentLocation, model, indicator, scenario, subcategory } = qs.parse(
-    location.search
-  );
+  const {
+    currentLocation,
+    model,
+    indicator,
+    scenario,
+    category,
+    subcategory
+  } = qs.parse(location.search);
   const espData = {
     data,
     locations: state.espLocations.data,
@@ -36,11 +41,18 @@ const mapStateToProps = (state, { location }) => {
     model,
     indicator,
     scenario,
+    category,
     subcategory
   };
   return {
     data: getChartData(espData),
     config: getChartConfig(espData),
+    filtersLoading: {
+      timeseries: state.espTimeSeries.loading,
+      locations: state.espLocations.loading,
+      models: state.espModels.loading,
+      indicators: state.espIndicators.loading
+    },
     filtersOptions: getFiltersOptions(espData),
     filtersSelected: getFiltersSelected(espData),
     modalData: getModalData(espData),
