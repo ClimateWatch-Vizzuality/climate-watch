@@ -19,7 +19,8 @@ export const getDefaultColumns = createSelector([getCategory], category => {
         'full_name',
         'developed_by',
         'geographic_coverage',
-        'time_horizon'
+        'time_horizon',
+        'url'
       ];
     case 'scenarios':
       return ['model', 'name', 'geographic_coverage_country'];
@@ -190,7 +191,7 @@ export const renameDataColumns = createSelector(
         changes.forEach(change => {
           if (d[change.old]) {
             updatedD[change.new] = d[change.old];
-            delete updatedD[change.new];
+            delete updatedD[change.old];
           }
         });
         return updatedD;
