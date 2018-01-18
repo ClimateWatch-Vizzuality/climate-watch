@@ -352,7 +352,7 @@ const addLinktoModelSelectedMetadata = createSelector(
     if (!model) return null;
     return {
       ...model,
-      Link: `/emissionpathways/models/${model.id}`
+      Link: `/emission-pathways/models/${model.id}`
     };
   }
 );
@@ -370,7 +370,7 @@ export const getScenariosSelectedMetadata = createSelector(
       scenariosMetadata.map(s => ({
         name: s.name,
         description: s.description,
-        Link: `/emissionpathways/scenarios/${s.id}`
+        Link: `/emission-pathways/scenarios/${s.id}`
       }))
     );
   }
