@@ -5,6 +5,7 @@ import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
 import { LineChart, Line } from 'recharts';
 import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
@@ -91,6 +92,9 @@ class SimpleTable extends PureComponent {
                     const { rowIndex, dataKey } = cell;
                     if (isArray(cellData)) {
                       cellData = cellData.join(', ');
+                    }
+                    if (cellData && !isString(cellData)) {
+                      cellData = cellData.name || cellData.full_name || '';
                     }
                     const titleLink = titleLinks && titleLinks[rowIndex];
                     if (trendLine && dataKey === trendLine) {

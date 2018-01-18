@@ -43,32 +43,10 @@ export const getFullTextColumns = createSelector([getCategory], category => {
   }
 });
 
-export const flattenedData = createSelector(
-  [getData, getCategory],
-  (data, category) => {
-    if (!data || isEmpty(data)) return null;
-    const attributesWithObjects = {
-      models: [],
-      scenarios: ['model'],
-      indicators: ['model', 'category', 'subcategory']
-    };
-    const updatedData = data;
-    return updatedData.map(d => {
-      const flattenedD = d;
-      attributesWithObjects[category].forEach(a => {
-        if (Object.prototype.hasOwnProperty.call(d, a)) {
-          flattenedD[a] = d[a] && (d[a].name || d[a].full_name);
-        }
-      });
-      return flattenedD;
-    });
-  }
-);
-
 export const filteredDataBySearch = createSelector(
-  [flattenedData, getQuery],
+  [getData, getQuery],
   (data, query) => {
-    if (!data) return null;
+    if (!data || isEmpty(data)) return null;
     if (!query) return data;
     const updatedData = data;
     return updatedData.filter(d =>
@@ -135,14 +113,10 @@ export const filteredDataByFilters = createSelector(
     if (!data) return null;
     if (!filters) return data;
     let filteredData = data;
-    const availableSubcategories = [];
     Object.keys(filters).forEach(key => {
-      filteredData = filteredData.filter(d => {
-        if (key === 'category' && d[key] === filters[key]) {
-          availableSubcategories.push(d.subcategory);
-        }
-        return d[key] === undefined || d[key] === filters[key];
-      });
+      filteredData = filteredData.filter(
+        d => d[key] && (d[key] === filters[key] || d[key].name === filters[key])
+      );
     });
     return filteredData;
   }
@@ -155,8 +129,8 @@ export const getAvailableSubcategories = createSelector(
     if (!filters || !filters.category) return [];
     const availableSubcategories = [];
     data.forEach(d => {
-      if (d.category === filters.category) {
-        availableSubcategories.push(d.subcategory);
+      if (d.category.name === filters.category) {
+        availableSubcategories.push(d.subcategory.name);
       }
     });
     return uniq(availableSubcategories);
