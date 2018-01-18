@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
-import uniq from 'lodash/uniq';
 import { ESP_BLACKLIST } from 'data/constants';
 
 const getCategoryName = state =>
@@ -20,10 +19,9 @@ const getSelectedIds = createSelector(
   [getModelDataById, getCategoryName],
   (data, category) => {
     if (!data || !category) return null;
-    if (category === 'indicators') {
-      return uniq(data.indicator_ids) || null;
-    }
-    return data[category].map(i => i.id) || null;
+    const categoryIds =
+      category === 'indicators' ? 'indicator_ids' : 'scenario_ids';
+    return data[categoryIds] || null;
   }
 );
 
@@ -43,7 +41,8 @@ const getFilteredData = createSelector(
   [getSelectedData, getSelectedIds, getCategoryName],
   (data, ids) => {
     if (!ids || isEmpty(data)) return null;
-    return data.filter(i => ids.indexOf(i.id) > -1) || null;
+    const updatedData = data;
+    return updatedData.filter(i => ids.indexOf(i.id) > -1) || null;
   }
 );
 
@@ -55,7 +54,8 @@ export const filterDataByBlackList = createSelector(
       Object.keys(data[0]),
       n => ESP_BLACKLIST[category].indexOf(n) === -1
     );
-    return data.map(d => pick(d, whiteList));
+    const updatedData = data;
+    return updatedData.map(d => pick(d, whiteList));
   }
 );
 
