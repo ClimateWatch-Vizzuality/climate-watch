@@ -67,23 +67,29 @@ const mapStateToProps = (state, { location }) => {
 
 class EmissionPathwayGraphContainer extends PureComponent {
   handleModelChange = model => {
-    this.updateUrlParam([
+    const { location } = this.props.filtersSelected;
+    const params = [
       { name: 'model', value: model.value },
       {
         name: 'scenario',
         value: model.scenarios ? model.scenarios.toString() : ''
       }
-    ]);
+    ];
+    if (location && location.value) {
+      params.push({ name: 'currentLocation', value: location.value });
+    }
+    this.updateUrlParam(params, true);
   };
 
   handleSelectorChange = (option, param, clear) => {
-    if (param === 'subcategory') {
-      this.updateUrlParam({ name: 'indicator', value: '' });
+    const params = [{ name: param, value: option ? option.value : '' }];
+    if (param === 'category') {
+      params.push({ name: 'subcategory', value: '' });
     }
-    this.updateUrlParam(
-      { name: param, value: option ? option.value : '' },
-      clear
-    );
+    if (param === 'subcategory') {
+      params.push({ name: 'indicator', value: '' });
+    }
+    this.updateUrlParam(params, clear);
   };
 
   updateUrlParam(params, clear) {
@@ -108,6 +114,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
 EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  filtersSelected: PropTypes.object.isRequired,
   toggleModalOverview: PropTypes.func.isRequired
 };
 
