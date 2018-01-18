@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { lowerUpperFirst } from 'utils';
+import upperFirst from 'lodash/upperFirst';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
@@ -27,7 +27,7 @@ const fetchEspIndicators = createThunkAction(
           if (data) {
             const dataParsed = data.map(d => ({
               ...d,
-              name: lowerUpperFirst(d.name)
+              name: upperFirst(d.name)
             }));
             dispatch(fetchEspIndicatorsReady(dataParsed));
           } else {
