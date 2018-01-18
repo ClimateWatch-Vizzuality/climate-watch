@@ -126,7 +126,7 @@ class CountryNdcOverview extends PureComponent {
                     )}
                   </div>
                 </Card>
-                <Card title="Identified Sectors for Adaptation Action">
+                <Card title="Identified Sectors for Mitigation Action">
                   <div className={styles.cardContent}>
                     {values && values.coverage_sectors_short ? (
                       <p
