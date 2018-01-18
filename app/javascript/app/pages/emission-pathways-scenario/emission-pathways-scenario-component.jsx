@@ -29,7 +29,8 @@ class EmissionPathwaysScenario extends PureComponent {
                 button={{
                   text: 'View model',
                   link: `/emission-pathways/models/${scenario &&
-                    scenario.model_id}`
+                    scenario.model &&
+                    scenario.model.id}`
                 }}
                 textColumns
               />
