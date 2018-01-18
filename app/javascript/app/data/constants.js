@@ -120,7 +120,7 @@ export const DEFAULT_AXES_CONFIG = {
 export const ESP_BLACKLIST = {
   models: [
     'id',
-    'scenarios',
+    'scenario_ids',
     'indicator_ids',
     'availability',
     'current_version',
