@@ -49,7 +49,7 @@ const getScenarios = state => state.scenarios || null;
 const getIndicators = state => state.indicators || null;
 
 const getLocation = state => parseInt(state.location, 10) || null;
-const getModel = state => state.model || null;
+const getModel = state => parseInt(state.model, 10) || null;
 const getScenario = state => state.scenario || null;
 const getIndicator = state => parseInt(state.indicator, 10) || null;
 const getCategory = state => parseInt(state.category, 10) || null;
