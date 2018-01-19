@@ -96,12 +96,21 @@ class SimpleTable extends PureComponent {
                     if (cellData && !isString(cellData)) {
                       cellData = cellData.name || cellData.full_name || '';
                     }
-                    const titleLink = titleLinks && titleLinks[rowIndex];
                     if (trendLine && dataKey === trendLine) {
                       return renderTrendLine(cellData);
                     }
-                    if (titleLink && dataKey === titleLink.fieldName) {
-                      return <NavLink to={titleLink.url}>{cellData}</NavLink>;
+                    const titleLink =
+                      titleLinks &&
+                      titleLinks[rowIndex] &&
+                      titleLinks[rowIndex].find(t => t.columnName === dataKey);
+                    if (titleLink) {
+                      return titleLink.url === 'self' ? (
+                        <a target="_blank" href={cellData}>
+                          {cellData}
+                        </a>
+                      ) : (
+                        <NavLink to={titleLink.url}>{cellData}</NavLink>
+                      );
                     }
                     return parseHtml ? (
                       <div dangerouslySetInnerHTML={{ __html: cellData }} />
@@ -130,7 +139,7 @@ SimpleTable.propTypes = {
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   handleSortChange: PropTypes.func.isRequired,
-  titleLinks: PropTypes.array, // {fieldName: 'title field name in the table', url:'/destination-url-for-the-link'}
+  titleLinks: PropTypes.array, // [ [ {columnName: 'title field name in the table', url:'/destination-url' or 'self'}, ... ] ]
   trendLine: PropTypes.string, // 'field name of the trend line column'
   fullTextColumns: PropTypes.array, // 'Columns with full text, no ellipsis'
   parseHtml: PropTypes.bool

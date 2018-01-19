@@ -85,10 +85,12 @@ export const titleLinks = createSelector(
   [getFilteredData, getCategoryName],
   (data, category) => {
     if (!data || isEmpty(data) || category === 'indicators') return null;
-    return data.map(d => ({
-      fieldName: 'name',
-      url: `/emission-pathways/scenarios/${d.id}`
-    }));
+    return data.map(d => [
+      {
+        columnName: 'name',
+        url: `/emission-pathways/scenarios/${d.id}`
+      }
+    ]);
   }
 );
 
