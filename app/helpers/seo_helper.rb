@@ -1,7 +1,7 @@
 module SeoHelper
-  @@title = 'Climate Watch'
+  TITLE = 'Climate Watch'.freeze
 
-  @@seo = [
+  SEO = [
     {path: '/',
      subtitle: 'Data for Climate Action',
      description: 'Climate Watch is an open online platform designed to empower'\
@@ -28,6 +28,10 @@ module SeoHelper
      subtitle: 'Emission pathways',
      description: 'Data and visuals of emission scenario pathways for major'\
           ' emitting countries and sectors, derived from a growing library of models.'},
+    {path: '/emission-pathways/models',
+     subtitle: 'Emission pathways',
+     description: 'Data and visuals of emission scenario pathways for major'\
+          ' emitting countries and sectors, derived from a growing library of models.'},
     {path: '/ghg-emissions',
      subtitle: 'Historical GHG emissions',
      description: 'Analyze and visualize latest available international'\
@@ -39,9 +43,9 @@ module SeoHelper
           'with the climate data, visualizations and resources they need to gather insights'\
           ' on national and global progress on climate change, sustainable development, '\
           'and help advance the goals of the Paris Agreement.'}
-  ]
+  ].freeze
 
-  @@images_urls = {
+  IMAGES_PATHS = {
     '/' => '/images/social-home.png',
     '/ndcs' => '/images/social-NDCs.png',
     '/ndcs-sdg' => '/images/social-NDCs-SDGs.png',
@@ -49,7 +53,7 @@ module SeoHelper
     '/emission-pathways/models' => '/images/social-emission-pathways.png',
     '/countries' => '/images/social-country.png',
     '/ghg-emissions' => '/images/social-historical-emissions.png'
-  }
+  }.freeze
 
   def split_country_name(path)
     path[14, 3]
@@ -63,39 +67,34 @@ module SeoHelper
 
   def ndc_country_title(path)
     @country_name = split_country_name(path)
-    "#{@@title} - #{@country_name} Nationally Determined Contribution"
+    "#{TITLE} - #{@country_name} Nationally Determined Contribution"
   end
 
   def image_src(path)
-    if @@images_urls[path]
-      asset_url(@@images_urls[path])
+    if IMAGES_PATHS[path]
+      asset_url(IMAGES_PATHS[path])
     else
       asset_url('/images/social-NDCs.png')
     end
   end
 
   def title_content(subtitle)
-    subtitle ? "#{@@title} - #{subtitle}" : @@title
+    subtitle ? "#{TITLE} - #{subtitle}" : TITLE
   end
 
   def description(path)
-    @@seo.each { |page|
-      if page[:path] == path
-        return page[:description]
-      elsif path.include? '/ndcs/country'
-        return ndc_country_description(path)
-      end
-    }
+    SEO.each do |page|
+      return page[:description] if page[:path] == path
+      return ndc_country_description(path) if path.include? '/ndcs/country'
+      return SEO[0][:description]
+    end
   end
 
   def title(path)
-    @@seo.each { |page|
-      if page[:path] == path
-        return title_content(page[:subtitle])
-      elsif path.include? '/ndcs/country'
-        return ndc_country_title(path)
-      end
-    }
+    SEO.each do |page|
+      return title_content(page[:subtitle]) if page[:path] == path
+      return ndc_country_title(path) if path.include? '/ndcs/country'
+      return title_content(nil)
+    end
   end
-
 end
