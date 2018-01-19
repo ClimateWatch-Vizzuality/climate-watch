@@ -1,19 +1,9 @@
 module SeoHelper
   @@title = 'Climate Watch'
-  @@home_page = 'Climate Watch is an open online platform designed to empower'\
-  ' users with the climate data, visualizations and resources they need'\
-  ' to gather insights on national and global progress on climate change,'\
-  ' sustainable development, and help advance the goals of the Paris Agreement.'
-  @@country_profiles = 'Snapshots of countries climate progress, including'\
-  ' historical and projected emissions, their Nationally Determined Contribution'\
-  ' (NDC), risks and vulnerability to climate change, and linkages between NDCs'\
-  ' and the Sustainable Development Goals (SDGs).'
-  @@ndc_content = 'Analyze and compare every national climate pledge '\
-  '(Nationally Determined Contribution – or NDC) under the Paris Agreement, '\
-  'with the ability to search key words and see summaries by topic across all.'
-  @@ndc_sdg_linkages = 'Comprehensive mapping of linkages between Nationally '\
-  'Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs)'\
-  ' and associated targets of the 2030 Agenda for Sustainable Development.'
+
+
+
+
   @@historical_ghg_emissions = 'Analyze and visualize latest available international'\
   ' greenhouse gas emissions data. Climate Watch lets you explore global emissions'\
   ' by sector, gases, countries, or regions.'
@@ -26,8 +16,8 @@ module SeoHelper
 
   @@subtitles = {
     '/' => 'Data for climate action',
-    '/ndcs' => 'NDCs',
-    '/ndcs-sdg' => 'NDCs-SDG linkages',
+    '/ndcs' => '',
+    '/ndcs-sdg' => '',
     '/emission-pathways/models' => 'Emission pathways',
     '/countries' => 'Country profiles',
     '/ghg-emissions' => 'Historical GHG emissions'
@@ -65,12 +55,97 @@ module SeoHelper
     @subtitle ? "#{@@title} - #{@subtitle}" : @@title
   end
 
+
+  class HomeSeo
+    def initialize
+      @path = '/'
+      @subtitle = 'Data for Climate Action'
+      @description = 'Climate Watch is an open online platform designed to empower'\
+      ' users with the climate data, visualizations and resources they need'\
+      ' to gather insights on national and global progress on climate change,'\
+      ' sustainable development, and help advance the goals of the Paris Agreement.'
+    end
+
+    def path_match?(actual_path)
+      @path == actual_path
+    end
+
+    def description
+      @description
+    end
+  end
+
+  class CountryProfilesSeo
+    def initialize
+      @path = '/countries'
+      @subtitle = 'Country profiles'
+      @description = 'Snapshots of countries climate progress, including'\
+      ' historical and projected emissions, their Nationally Determined Contribution'\
+      ' (NDC), risks and vulnerability to climate change, and linkages between NDCs'\
+      ' and the Sustainable Development Goals (SDGs).'
+    end
+
+    def path_include?(actual_path)
+      actual_path.include? @path
+    end
+
+    def description
+      @description
+    end
+  end
+
+  class NdcContentSeo
+    def initialize(
+      @path = '/ndcs'
+      @subtitle = 'NDCs'
+      @description = 'Analyze and compare every national climate pledge '\
+      '(Nationally Determined Contribution – or NDC) under the Paris Agreement, '\
+      'with the ability to search key words and see summaries by topic across all.'
+    end
+
+    def path_match?(actual_path)
+      @path == actual_path
+    end
+
+    def description
+      @description
+    end
+  end
+
+  class NdcSdgLinkages
+    def initialize
+      @path = '/ndcs-sdg'
+      @subtitle = 'NDCs-SDG linkages'
+      @description = 'Comprehensive mapping of linkages between Nationally '\
+      'Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs)'\
+      ' and associated targets of the 2030 Agenda for Sustainable Development.'
+    end
+
+    def path_match?(actual_path)
+      @path == actual_path
+    end
+
+    def description
+      @description
+    end
+  end
+
+  def description_content(path)
+    home = HomeSeo.new
+    countries_profiles = CountryProfilesSeo.new
+    if home.path_match?(path)
+       home.description
+    elsif countries_profiles.path_include?(path)
+       countries_profiles.description
+    end
+  end
+
   # def description_content(path)
   #   if path === '/'
   #     @@home_page
   #   elsif path === '/ndcs'
   #     @@ndc_content
-  #   elsif path === '/ndcs-sdg'
+  #   elsif path === ''
   #     @@ndc_sdg_linkages
   #   elsif path.include? '/ndcs/country'
   #     ndc_country(path)
@@ -83,26 +158,5 @@ module SeoHelper
   #   elsif path.include? '/about'
   #     @@about
   #   end
-  # end
-
-  def description_content(path)
-    case path
-    when '/'
-      @@home_page
-    when '/ndcs'
-      @@ndc_content
-    when '/ndcs-sdg'
-      @@ndc_sdg_linkages
-    when '/ndcs/country'
-      ndc_country(path)
-    when '/countries'
-      @@country_profiles
-    when '/ghg-emissions'
-      @@istorical_ghg_emissions
-    when '/emission-pathways'
-      @@emission_pathways
-    when '/about'
-      @@about
-    end
-  end
+  #
 end
