@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
-import { LineChart, Line } from 'recharts';
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
-import { NavLink } from 'react-router-dom';
+import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
 
 class SimpleTable extends PureComponent {
@@ -25,25 +22,11 @@ class SimpleTable extends PureComponent {
       sortBy,
       sortDirection,
       handleSortChange,
-      parseHtml,
-      titleLinks,
-      trendLine,
       fullTextColumns
     } = this.props;
 
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
-
-    const renderTrendLine = chartData => {
-      const dataValues =
-        chartData && chartData.split(',').map(v => ({ value: parseFloat(v) }));
-      return (
-        <LineChart width={70} height={35} data={dataValues}>
-          <Line dot={false} dataKey="value" stroke="#113750" strokeWidth={2} />
-        </LineChart>
-      );
-    };
-
     return (
       <div
         className={cx(
@@ -87,37 +70,8 @@ class SimpleTable extends PureComponent {
                   dataKey={column}
                   width={200}
                   flexGrow={1}
-                  cellRenderer={cell => {
-                    let { cellData } = cell;
-                    const { rowIndex, dataKey } = cell;
-                    if (isArray(cellData)) {
-                      cellData = cellData.join(', ');
-                    }
-                    if (cellData && !isString(cellData)) {
-                      cellData = cellData.name || cellData.full_name || '';
-                    }
-                    if (trendLine && dataKey === trendLine) {
-                      return renderTrendLine(cellData);
-                    }
-                    const titleLink =
-                      titleLinks &&
-                      titleLinks[rowIndex] &&
-                      titleLinks[rowIndex].find(t => t.columnName === dataKey);
-                    if (titleLink) {
-                      return titleLink.url === 'self' ? (
-                        <a target="_blank" href={cellData}>
-                          {cellData}
-                        </a>
-                      ) : (
-                        <NavLink to={titleLink.url}>{cellData}</NavLink>
-                      );
-                    }
-                    return parseHtml ? (
-                      <div dangerouslySetInnerHTML={{ __html: cellData }} />
-                    ) : (
-                      cellData
-                    );
-                  }}
+                  cellRenderer={cell =>
+                    cellRenderer({ props: this.props, cell })}
                 />
               ))}
             </Table>
@@ -139,10 +93,7 @@ SimpleTable.propTypes = {
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   handleSortChange: PropTypes.func.isRequired,
-  titleLinks: PropTypes.array, // [ [ {columnName: 'title field name in the table', url:'/destination-url' or 'self'}, ... ] ]
-  trendLine: PropTypes.string, // 'field name of the trend line column'
-  fullTextColumns: PropTypes.array, // 'Columns with full text, no ellipsis'
-  parseHtml: PropTypes.bool
+  fullTextColumns: PropTypes.array // 'Columns with full text, no ellipsis'
 };
 
 SimpleTable.defaultProps = {
