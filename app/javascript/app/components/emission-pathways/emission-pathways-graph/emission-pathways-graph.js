@@ -38,6 +38,7 @@ const mapStateToProps = (state, { location }) => {
     scenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
     location: currentLocation,
+    availableModels: state.espGraph.locations,
     model,
     indicator,
     scenario,
@@ -66,6 +67,15 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.filtersSelected.location !== this.props.filtersSelected.location
+    ) {
+      const currentLocation = this.props.filtersSelected.location;
+      this.props.findAvailableModels(currentLocation.value);
+    }
+  }
+
   handleModelChange = model => {
     const { location } = this.props.filtersSelected;
     const params = [
@@ -115,7 +125,8 @@ EmissionPathwayGraphContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   filtersSelected: PropTypes.object.isRequired,
-  toggleModalOverview: PropTypes.func.isRequired
+  toggleModalOverview: PropTypes.func.isRequired,
+  findAvailableModels: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };

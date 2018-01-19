@@ -67,7 +67,7 @@ export const getLocationsOptions = createSelector([getLocations], locations => {
   }));
 });
 
-export const getLocationSelected = createSelector(
+const getLocationSelected = createSelector(
   [getLocationsOptions, getLocation],
   (locations, locationSelected) => {
     if (!locations) return null;
@@ -79,14 +79,36 @@ export const getLocationSelected = createSelector(
   }
 );
 
-export const getModelsOptions = createSelector([getModels], models => {
-  if (!models || !models.length) return [];
-  return models.map(m => ({
-    label: m.abbreviation,
-    value: m.id,
-    scenarios: m.scenario_ids
-  }));
-});
+const getavailableModels = createSelector(
+  [state => state.availableModels, getLocationSelected],
+  (availableModels, location) => {
+    if (isEmpty(availableModels) || !location) return null;
+    return availableModels[location.value];
+  }
+);
+
+export const getModelsOptions = createSelector(
+  [getModels, getavailableModels],
+  (models, availableModels) => {
+    if (
+      !models ||
+      !models.length ||
+      !availableModels ||
+      isEmpty(availableModels)
+    ) { return []; }
+    const modelOptions = [];
+    models.forEach(m => {
+      if (availableModels.indexOf(m.id) > -1) {
+        modelOptions.push({
+          label: m.abbreviation,
+          value: m.id,
+          scenarios: m.scenario_ids
+        });
+      }
+    });
+    return modelOptions;
+  }
+);
 
 export const getModelSelected = createSelector(
   [getModelsOptions, getModel],
