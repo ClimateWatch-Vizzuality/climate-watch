@@ -28,6 +28,8 @@ class ImportStories
 
       story.description = item.description
       story.link = item.link
+      story.image = item.enclosure
+      story.tags = item.category
       story.save
     end
     puts "#{Story.count - existing} new stories"
