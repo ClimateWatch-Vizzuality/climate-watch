@@ -74,6 +74,7 @@ class ChartLine extends PureComponent {
         >
           <XAxis
             dataKey="x"
+            scale="linear"
             tick={<CustomizedXAxisTick />}
             padding={{ left: 15, right: 20 }}
             tickSize={8}
