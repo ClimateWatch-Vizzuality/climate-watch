@@ -10,13 +10,13 @@ class TooltipChart extends PureComponent {
     return this.props.forceTwoDecimals ? '.2f' : '.2s';
   }
 
-  getTotal = (keys, data) => {
+  getTotal = (keys, data, unitIsCo2) => {
     if (!keys || !data) return '';
     let total = 0;
     keys.forEach(key => {
       if (data.payload[key.value]) total += data.payload[key.value];
     });
-    return `${format(this.getFormat())(total)}t`;
+    return `${format(this.getFormat())(total)}${unitIsCo2 ? 't' : ''}`;
   };
 
   render() {
@@ -24,7 +24,7 @@ class TooltipChart extends PureComponent {
 
     const unit =
       config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
-
+    const unitIsCo2 = unit === 'CO<sub>2</sub>e';
     return (
       <div className={styles.tooltip}>
         <div className={styles.tooltipHeader}>
@@ -39,7 +39,9 @@ class TooltipChart extends PureComponent {
         {showTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
-            <p>{this.getTotal(config.columns.y, content.payload[0])}</p>
+            <p>
+              {this.getTotal(config.columns.y, content.payload[0], unitIsCo2)}
+            </p>
           </div>
         )}
         {content &&
@@ -65,7 +67,9 @@ class TooltipChart extends PureComponent {
                   </div>
                   <p className={styles.labelValue}>
                     {y.payload ? (
-                      `${format(this.getFormat())(y.payload[y.dataKey])}t`
+                      `${format(this.getFormat())(
+                        y.payload[y.dataKey]
+                      )}${unitIsCo2 ? 't' : ''}`
                     ) : (
                       ''
                     )}
