@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EspLocationsProvider from 'providers/esp-locations-provider';
+import EspModelsProvider from 'providers/esp-models-provider';
+import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import EspTimeSeriesProvider from 'providers/esp-time-series-provider';
 import ButtonGroup from 'components/button-group';
@@ -35,6 +37,8 @@ class EmissionPathwayGraph extends PureComponent {
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
+          <EspModelsProvider />
+          <EspScenariosProvider />
           <EspIndicatorsProvider />
           <EspLocationsProvider withTimeSeries />
           {needsTimeSeries && (
@@ -43,7 +47,7 @@ class EmissionPathwayGraph extends PureComponent {
               model={filtersSelected.model.value}
             />
           )}
-          <div className={styles.col4}>
+          <div className={styles.col5}>
             <h2 className={styles.title}>Emission Pathways</h2>
             <ButtonGroup
               className={styles.colEnd}
@@ -52,7 +56,7 @@ class EmissionPathwayGraph extends PureComponent {
               analyticsGraphName="Emission pathway"
             />
           </div>
-          <div className={styles.col4}>
+          <div className={styles.col5}>
             <Dropdown
               label="Country/Region"
               options={filtersOptions.locations}
@@ -65,6 +69,7 @@ class EmissionPathwayGraph extends PureComponent {
               label="Model"
               options={filtersOptions.models}
               onValueChange={handleModelChange}
+              disabled={filtersLoading.location}
               value={filtersSelected.model}
               hideResetButton
             />
