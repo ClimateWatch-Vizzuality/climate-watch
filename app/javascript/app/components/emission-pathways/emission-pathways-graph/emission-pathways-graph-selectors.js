@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
+import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
@@ -149,10 +150,9 @@ const getIndicatorsWithData = createSelector(
     if (!data || !indicators || !indicators.length || !modelSelected) {
       return null;
     }
-    const indicatorsWithData = data.map(d => d.indicator_id);
-    return uniqBy(
-      indicators.filter(i => i.name && indicatorsWithData.indexOf(i.id) > -1),
-      'name'
+    const indicatorsWithData = uniq(data.map(d => d.indicator_id));
+    return indicators.filter(
+      i => i.name && indicatorsWithData.indexOf(i.id) > -1
     );
   }
 );
