@@ -74,7 +74,7 @@ module SeoHelper
     if IMAGES_PATHS[path]
       asset_url(IMAGES_PATHS[path])
     else
-      asset_url('/images/social-NDCs.png')
+      asset_url('/images/social-home.png')
     end
   end
 
