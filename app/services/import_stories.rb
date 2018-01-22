@@ -1,6 +1,5 @@
 class ImportStories
   require 'rss'
-  require 'simple-rss'
   require 'open-uri'
 
   def call(reset = false)
@@ -24,7 +23,6 @@ class ImportStories
     url = 'http://www.wri.org/blog/rss2.xml'
     rss = open(url)
     feed = RSS::Parser.parse(rss, false)
-    #feed = SimpleRSS.parse rss
     puts "Channel Title: #{feed.channel.title}"
     feed.items.each do |item|
       title = item.title
@@ -33,7 +31,7 @@ class ImportStories
                                           published_at: published_at)
       story.description = item.description
       story.link = item.link
-      story.image = item.enclosure
+      story.background_image_url = item.enclosure ? item.enclosure.url : ''
       story.tags = item.category ? item.category.content : ''
       story.save
     end

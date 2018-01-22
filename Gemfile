@@ -40,7 +40,6 @@ gem 'aws-sdk', '~> 2'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'oj'
 gem 'scenic'
-gem 'simple-rss'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
