@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
     @data = {}
     @actual_path = request.original_fullpath
     @is_production = Rails.env.production?
+    response.headers['X-FRAME-OPTIONS'] = 'ALLOWALL'
     render 'index'
   end
 end
