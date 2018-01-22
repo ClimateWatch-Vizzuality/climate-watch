@@ -25,15 +25,15 @@ class Chart extends PureComponent {
     } = this.props;
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
     let message = 'No data available';
-    const noData = !data || !data.length;
+    const hasData = data && data.length > 0;
     if (customMessage) message = customMessage;
-    else if (!dataSelected || !dataSelected.length) {
+    else if (!dataSelected || !dataSelected.length > 0) {
       message = 'No data selected';
     }
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading && noData && (
+        {!loading && !hasData && (
           <NoContent
             message={message}
             className={styles.noContent}
@@ -41,7 +41,7 @@ class Chart extends PureComponent {
             icon
           />
         )}
-        {!loading && noData && config && <ChartComponent {...this.props} />}
+        {!loading && hasData && config && <ChartComponent {...this.props} />}
         {!loading && dataOptions && (
           <LegendChart
             className={styles.legend}
