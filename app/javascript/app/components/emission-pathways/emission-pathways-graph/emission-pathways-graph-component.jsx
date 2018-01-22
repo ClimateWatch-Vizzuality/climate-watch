@@ -57,7 +57,7 @@ class EmissionPathwayGraph extends PureComponent {
               label="Country/Region"
               options={filtersOptions.locations}
               onValueChange={option =>
-                handleSelectorChange(option, 'currentLocation', true)}
+                handleSelectorChange(option, 'currentLocation')}
               value={filtersSelected.location}
               hideResetButton
             />
@@ -105,6 +105,7 @@ class EmissionPathwayGraph extends PureComponent {
             data={data}
             dataOptions={filtersOptions.scenarios}
             dataSelected={filtersSelected.scenarios}
+            customMessage={'No data available for that indicator'}
             height={500}
             loading={loading}
             targetParam="scenario"

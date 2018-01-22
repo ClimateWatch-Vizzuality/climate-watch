@@ -8,7 +8,8 @@ import NoContent from 'components/no-content';
 
 import styles from './chart-styles.scss';
 
-class Chart extends PureComponent { // eslint-disable-line react/prefer-stateless-function
+class Chart extends PureComponent {
+  // eslint-disable-line react/prefer-stateless-function
   render() {
     const {
       className,
@@ -19,34 +20,29 @@ class Chart extends PureComponent { // eslint-disable-line react/prefer-stateles
       data,
       config,
       height,
-      targetParam
+      targetParam,
+      customMessage
     } = this.props;
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
+    let message = 'No data available';
+    const noData = !data || !data.length;
+    if (customMessage) message = customMessage;
+    else if (!dataSelected || !dataSelected.length) { message = 'No data selected'; }
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading &&
-          (!data || !data.length) && (
-            <NoContent
-              message={
-                dataSelected && dataSelected.length ? (
-                  'No data available'
-                ) : (
-                  'No data selected'
-                )
-              }
-              className={styles.noContent}
-              minHeight={height}
-              icon
-            />
-          )
-        }
-        {!loading && data && data.length > 0 && config &&
-          <ChartComponent
-            {...this.props}
+        {!loading && noData && (
+          <NoContent
+            message={message}
+            className={styles.noContent}
+            minHeight={height}
+            icon
           />
-        }
-        {!loading && dataOptions &&
+        )}
+        {!loading &&
+        noData &&
+        config && <ChartComponent {...this.props} />}
+        {!loading && dataOptions && (
           <LegendChart
             className={styles.legend}
             config={config}
@@ -54,7 +50,7 @@ class Chart extends PureComponent { // eslint-disable-line react/prefer-stateles
             dataSelected={dataSelected}
             targetParam={targetParam}
           />
-        }
+        )}
       </div>
     );
   }
@@ -68,11 +64,9 @@ Chart.propTypes = {
   dataSelected: PropTypes.array,
   data: PropTypes.array,
   config: PropTypes.object,
-  height: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  targetParam: PropTypes.string
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  targetParam: PropTypes.string,
+  customMessage: PropTypes.string
 };
 
 Chart.defaultProps = {
