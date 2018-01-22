@@ -15,6 +15,10 @@ class ImportStories
     Story.delete_all
   end
 
+  def tags()
+
+  end
+
   def import_stories
     existing = Story.count
     url = 'http://www.wri.org/blog/rss2.xml'
@@ -27,12 +31,10 @@ class ImportStories
       published_at = item.pubDate
       story = Story.find_or_initialize_by(title: title,
                                           published_at: published_at)
-
       story.description = item.description
-      debugger
       story.link = item.link
       story.image = item.enclosure
-      story.tags = item.category.split(",")
+      story.tags = item.category ? item.category.content : ''
       story.save
     end
     puts "#{Story.count - existing} new stories"
