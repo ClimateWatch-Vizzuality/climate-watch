@@ -12,7 +12,11 @@ class EmissionPathwaysTableMenu extends PureComponent {
     const { routeLinks, uploadButton } = this.props;
     return (
       <div className={layout.content}>
-        <div className={cx(styles.col4, styles.tableMenuContainer)}>
+        <div
+          className={cx(styles.col4, styles.tableMenuContainer)}
+          role="menubar"
+          tabIndex={-1}
+        >
           <AnchorNav useRoutes links={routeLinks} theme={anchorNavLightTheme} />
           {uploadButton && (
             <Button color="yellow" className={styles.uploadButton}>

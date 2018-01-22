@@ -11,3 +11,7 @@
   color: $theme-color;
   margin-bottom: 4px;
 }
+
+.noScrollParent {
+  overscroll-behavior: contain; /* stylelint-disable-line property-no-unknown */
+}
