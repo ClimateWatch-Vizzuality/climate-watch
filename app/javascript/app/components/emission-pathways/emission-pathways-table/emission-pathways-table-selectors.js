@@ -65,15 +65,21 @@ export const titleLinks = createSelector(
   [getCategory, getData],
   (categoryName, data) => {
     if (!data || isEmpty(data) || !categoryName) return null;
-    const categoryId = {
-      models: 'full_name',
-      scenarios: 'name'
+    const linkInfo = {
+      models: [
+        { columnName: 'full_name', linkToId: true },
+        { columnName: 'url' }
+      ],
+      scenarios: [{ columnName: 'name', linkToId: true }],
+      indicators: []
     };
     const updatedData = data;
-    return updatedData.map(d => ({
-      fieldName: categoryId[categoryName],
-      url: `${categoryName}/${d.id}`
-    }));
+    return updatedData.map(d =>
+      linkInfo[categoryName].map(l => ({
+        columnName: l.columnName,
+        url: l.linkToId ? `${categoryName}/${d.id}` : 'self'
+      }))
+    );
   }
 );
 
