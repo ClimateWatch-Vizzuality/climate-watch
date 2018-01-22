@@ -45,6 +45,14 @@ const mapStateToProps = (state, { location }) => {
     category,
     subcategory
   };
+  const providers = [
+    'espTimeSeries',
+    'espLocations',
+    'espModels',
+    'espScenarios',
+    'espIndicators',
+    'espGraph'
+  ];
   return {
     data: getChartData(espData),
     config: getChartConfig(espData),
@@ -57,13 +65,8 @@ const mapStateToProps = (state, { location }) => {
     filtersOptions: getFiltersOptions(espData),
     filtersSelected: getFiltersSelected(espData),
     modalData: getModalData(espData),
-    loading:
-      state.espTimeSeries.loading ||
-      state.espLocations.loading ||
-      state.espModels.loading ||
-      state.espScenarios.loading ||
-      state.espIndicators.loading ||
-      state.espGraph.loading
+    error: providers.some(p => state[p].error),
+    loading: providers.some(p => state[p].loading)
   };
 };
 
