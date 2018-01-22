@@ -16,9 +16,9 @@ class ImportStories
 
   def import_stories
     existing = Story.count
-    url = 'http://feeds.feedburner.com/WRI_News_and_Views.rss'
+    url = 'http://www.wri.org/blog/rss2.xml'
     rss = open(url)
-    feed = RSS::Parser.parse(rss)
+    feed = RSS::Parser.parse(rss, false)
     puts "Channel Title: #{feed.channel.title}"
     feed.items.each do |item|
       title = item.title
@@ -28,6 +28,7 @@ class ImportStories
 
       story.description = item.description
       story.link = item.link
+      debugger
       story.image = item.enclosure
       story.tags = item.category
       story.save
