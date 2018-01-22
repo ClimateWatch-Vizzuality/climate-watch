@@ -230,7 +230,7 @@ export const getIndicatorSelected = createSelector(
   (indicators, indicatorSelected) => {
     if (!indicators) return null;
     if (!indicatorSelected) {
-      const defaultIndicator = indicators.find(i => i.label === 'Heat');
+      const defaultIndicator = indicators.find(i => i.label === 'CO');
       return defaultIndicator || indicators[0];
     }
     return indicators.find(i => indicatorSelected === i.value);

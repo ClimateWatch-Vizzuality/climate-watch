@@ -27,7 +27,9 @@ class Chart extends PureComponent {
     let message = 'No data available';
     const noData = !data || !data.length;
     if (customMessage) message = customMessage;
-    else if (!dataSelected || !dataSelected.length) { message = 'No data selected'; }
+    else if (!dataSelected || !dataSelected.length) {
+      message = 'No data selected';
+    }
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
@@ -39,9 +41,7 @@ class Chart extends PureComponent {
             icon
           />
         )}
-        {!loading &&
-        noData &&
-        config && <ChartComponent {...this.props} />}
+        {!loading && noData && config && <ChartComponent {...this.props} />}
         {!loading && dataOptions && (
           <LegendChart
             className={styles.legend}
