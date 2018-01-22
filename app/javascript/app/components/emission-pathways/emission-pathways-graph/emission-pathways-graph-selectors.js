@@ -79,7 +79,7 @@ const getLocationSelected = createSelector(
   }
 );
 
-const getavailableModels = createSelector(
+const getAvailableModels = createSelector(
   [state => state.availableModels, getLocationSelected],
   (availableModels, location) => {
     if (isEmpty(availableModels) || !location) return null;
@@ -88,14 +88,16 @@ const getavailableModels = createSelector(
 );
 
 export const getModelsOptions = createSelector(
-  [getModels, getavailableModels],
+  [getModels, getAvailableModels],
   (models, availableModels) => {
     if (
       !models ||
       !models.length ||
       !availableModels ||
       isEmpty(availableModels)
-    ) { return []; }
+    ) {
+      return [];
+    }
     const modelOptions = [];
     models.forEach(m => {
       if (availableModels.indexOf(m.id) > -1) {

@@ -5,6 +5,7 @@ import NDCMap from 'components/ndcs/ndcs-map';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import GHGCountryEmissions from 'components/country/country-ghg';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
+import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
 
 export default [
   {
@@ -25,6 +26,11 @@ export default [
   {
     path: '/embed/ndcs-sdg',
     component: NdcSdgLinkagesContent,
+    exact: true
+  },
+  {
+    path: '/embed/emission-pathways',
+    component: EmissionPathwaysGraph,
     exact: true
   },
   {

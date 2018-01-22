@@ -8,7 +8,7 @@ $min-height: 450px;
   padding-bottom: 50px;
 }
 
-.col4 {
+.col5 {
   @extend %grid;
 
   @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
@@ -26,8 +26,9 @@ $min-height: 450px;
   font-size: $font-size-large;
   font-weight: $font-weight;
   color: $theme-color;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding-top: 35px;
+  grid-column: 1/5;
 }
 
 .chartWrapper {

@@ -62,11 +62,19 @@ const mapStateToProps = (state, { location }) => {
       state.espLocations.loading ||
       state.espModels.loading ||
       state.espScenarios.loading ||
-      state.espIndicators.loading
+      state.espIndicators.loading ||
+      state.espGraph.loading
   };
 };
 
 class EmissionPathwayGraphContainer extends PureComponent {
+  componentDidMount() {
+    const { location } = this.props.filtersSelected;
+    if (location) {
+      this.props.findAvailableModels(location);
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.filtersSelected.location !== this.props.filtersSelected.location
