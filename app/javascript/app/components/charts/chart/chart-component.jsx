@@ -14,6 +14,7 @@ class Chart extends PureComponent {
     const {
       className,
       type,
+      error,
       loading,
       dataOptions,
       dataSelected,
@@ -23,34 +24,40 @@ class Chart extends PureComponent {
       targetParam,
       customMessage
     } = this.props;
-    const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
-    let message = 'No data available';
     const hasData = data && data.length > 0;
-    if (customMessage) message = customMessage;
-    else if (!dataSelected || !dataSelected.length > 0) {
-      message = 'No data selected';
-    }
+    const getMessage = () => {
+      if (error) return 'Something went wrong';
+      if (customMessage) return customMessage;
+      if (!dataSelected || !dataSelected.length > 0) return 'No data selected';
+      return 'No data available';
+    };
+
+    const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading && !hasData && (
-          <NoContent
-            message={message}
+        {!loading &&
+        (error || !hasData) &&
+          (<NoContent
+            message={getMessage()}
             className={styles.noContent}
             minHeight={height}
             icon
           />
-        )}
+          )
+        }
         {!loading && hasData && config && <ChartComponent {...this.props} />}
-        {!loading && dataOptions && (
-          <LegendChart
+        {!loading &&
+        dataOptions &&
+          (<LegendChart
             className={styles.legend}
             config={config}
             dataOptions={dataOptions}
             dataSelected={dataSelected}
             targetParam={targetParam}
           />
-        )}
+          )
+        }
       </div>
     );
   }
@@ -59,6 +66,7 @@ class Chart extends PureComponent {
 Chart.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string.isRequired,
+  error: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   dataOptions: PropTypes.array,
   dataSelected: PropTypes.array,

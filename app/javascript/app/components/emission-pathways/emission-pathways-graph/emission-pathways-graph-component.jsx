@@ -20,6 +20,7 @@ class EmissionPathwayGraph extends PureComponent {
       data,
       config,
       loading,
+      error,
       filtersLoading,
       filtersOptions,
       filtersSelected,
@@ -113,6 +114,7 @@ class EmissionPathwayGraph extends PureComponent {
             customMessage={'No data available for that indicator'}
             height={500}
             loading={loading}
+            error={error}
             targetParam="scenario"
             forceTwoDecimals
           />
@@ -136,6 +138,7 @@ EmissionPathwayGraph.propTypes = {
   modalData: PropTypes.array,
   config: PropTypes.object,
   loading: PropTypes.bool,
+  error: PropTypes.bool,
   filtersLoading: PropTypes.object,
   filtersOptions: PropTypes.object,
   filtersSelected: PropTypes.object,

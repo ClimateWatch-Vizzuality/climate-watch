@@ -40,5 +40,6 @@ const getEspLocations = createThunkAction(
 export default {
   getEspLocations,
   getEspLocationsInit,
-  getEspLocationsReady
+  getEspLocationsReady,
+  getEspLocationsFail
 };
