@@ -12,6 +12,7 @@ class CountryGhgEmissions extends PureComponent {
   render() {
     const {
       data,
+      domain,
       quantifications,
       loading,
       config,
@@ -74,6 +75,7 @@ class CountryGhgEmissions extends PureComponent {
           type={useLineChart ? 'line' : 'area'}
           config={config}
           data={data}
+          domain={domain}
           onMouseMove={handleYearHover}
           points={quantifications}
           dataOptions={filtersOptions}
@@ -89,6 +91,7 @@ class CountryGhgEmissions extends PureComponent {
 CountryGhgEmissions.propTypes = {
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  domain: PropTypes.object,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
   quantifications: PropTypes.array.isRequired,

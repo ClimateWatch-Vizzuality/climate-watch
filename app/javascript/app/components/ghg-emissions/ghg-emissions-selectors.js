@@ -285,6 +285,12 @@ export const getChartData = createSelector(
   }
 );
 
+export const getChartXDomain = createSelector([getChartData], data => {
+  if (!data) return null;
+  const xValues = data.map(d => d.x);
+  return { x: [Math.min(...xValues), Math.max(...xValues)] };
+});
+
 export const getChartConfig = createSelector(
   [filterData, getBreakSelected],
   (data, breakBy) => {

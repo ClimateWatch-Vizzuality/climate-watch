@@ -74,16 +74,18 @@ class ChartLine extends PureComponent {
         >
           <XAxis
             dataKey="x"
-            scale="linear"
+            scale="time"
+            type="number"
             tick={<CustomizedXAxisTick />}
             padding={{ left: 15, right: 20 }}
             tickSize={8}
+            domain={domain && domain.x}
           />
           <YAxis
             axisLine={false}
             tickLine={false}
             tick={<CustomizedYAxisTick />}
-            domain={domain || ['0', 'auto']}
+            domain={(domain && domain.y) || ['0', 'auto']}
           />
           <CartesianGrid vertical={false} />
           <Tooltip
@@ -137,7 +139,7 @@ ChartLine.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  domain: PropTypes.array,
+  domain: PropTypes.object,
   forceTwoDecimals: PropTypes.bool
 };
 

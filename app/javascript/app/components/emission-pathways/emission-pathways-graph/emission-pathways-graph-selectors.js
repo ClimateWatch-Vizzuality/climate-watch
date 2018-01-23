@@ -326,6 +326,12 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
   return dataMapped;
 });
 
+export const getChartXDomain = createSelector([getChartData], data => {
+  if (!data) return null;
+  const xValues = data.map(d => d.x);
+  return { x: [Math.min(...xValues), Math.max(...xValues)] };
+});
+
 export const getChartConfig = createSelector(
   [filterDataByIndicator, getScenariosOptions, getIndicatorSelected],
   (data, scenarios, indicator) => {
@@ -463,6 +469,7 @@ export const getModalData = createSelector(
 
 export default {
   getChartData,
+  getChartXDomain,
   getChartConfig,
   getFiltersOptions,
   getFiltersSelected

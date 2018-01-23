@@ -18,6 +18,7 @@ class EmissionPathwayGraph extends PureComponent {
   render() {
     const {
       data,
+      domain,
       config,
       loading,
       error,
@@ -109,6 +110,7 @@ class EmissionPathwayGraph extends PureComponent {
             type="line"
             config={config}
             data={data}
+            domain={domain}
             dataOptions={filtersOptions.scenarios}
             dataSelected={filtersSelected.scenarios}
             customMessage={'No data available for that indicator'}
@@ -135,6 +137,7 @@ class EmissionPathwayGraph extends PureComponent {
 
 EmissionPathwayGraph.propTypes = {
   data: PropTypes.array,
+  domain: PropTypes.object,
   modalData: PropTypes.array,
   config: PropTypes.object,
   loading: PropTypes.bool,

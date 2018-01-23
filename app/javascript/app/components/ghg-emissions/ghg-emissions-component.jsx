@@ -15,6 +15,7 @@ class GhgEmissions extends PureComponent {
   render() {
     const {
       data,
+      domain,
       config,
       groups,
       sources,
@@ -81,6 +82,7 @@ class GhgEmissions extends PureComponent {
           type="line"
           config={config}
           data={data}
+          domain={domain}
           dataOptions={filters}
           dataSelected={filtersSelected}
           height={500}
@@ -94,6 +96,7 @@ class GhgEmissions extends PureComponent {
 
 GhgEmissions.propTypes = {
   data: PropTypes.array,
+  domain: PropTypes.object,
   config: PropTypes.object,
   groups: PropTypes.array,
   versions: PropTypes.array,
