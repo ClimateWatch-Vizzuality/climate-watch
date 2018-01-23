@@ -26,34 +26,38 @@ class Chart extends PureComponent {
     } = this.props;
     const hasData = data && data.length > 0;
     const getMessage = () => {
-      if (error) return 'There has been an error. Please reload or contact the page administrator';
+      if (error) return 'Something went wrong';
       if (customMessage) return customMessage;
       if (!dataSelected || !dataSelected.length > 0) return 'No data selected';
       return 'No data available';
-    }
+    };
 
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading && (error || !hasData) && (
-          <NoContent
+        {!loading &&
+        (error || !hasData) &&
+          (<NoContent
             message={getMessage()}
             className={styles.noContent}
             minHeight={height}
             icon
           />
-        )}
+          )
+        }
         {!loading && hasData && config && <ChartComponent {...this.props} />}
-        {!loading && dataOptions && (
-          <LegendChart
+        {!loading &&
+        dataOptions &&
+          (<LegendChart
             className={styles.legend}
             config={config}
             dataOptions={dataOptions}
             dataSelected={dataSelected}
             targetParam={targetParam}
           />
-        )}
+          )
+        }
       </div>
     );
   }
