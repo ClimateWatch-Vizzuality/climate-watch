@@ -28,7 +28,7 @@ class ImportStories
     feed.items.each do |item|
       title = link_sanitizer.sanitize(item.title)
       published_at = item.pubDate
-      story = Story.find_or_initialize_by(title: title,
+      story = Story.find_or_initialize_by(id: id,
                                           published_at: published_at)
       story.description = item.description
       story.link = item.link.split(/href="|">/)[1]
