@@ -4,10 +4,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import ScrollToTop from 'components/scroll-to-top';
-import { basename } from 'routes';
 
 import store from 'app/store';
-import routes from 'app/routes/routes';
+import routes, { basename } from 'app/routes/routes';
 
 const App = ({ data }) => (
   <Provider store={store(data)}>
