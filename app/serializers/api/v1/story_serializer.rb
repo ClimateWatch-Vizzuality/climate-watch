@@ -4,6 +4,7 @@ module Api
       attribute :title
       attribute :link
       attribute :background_image_url
+      attribute :tags
       attribute :published_at
     end
   end
