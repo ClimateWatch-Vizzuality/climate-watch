@@ -14,10 +14,6 @@ class ImportStories
     Story.delete_all
   end
 
-  def tags()
-
-  end
-
   def import_stories
     existing = Story.count
     url = 'http://www.wri.org/blog/rss2.xml'
