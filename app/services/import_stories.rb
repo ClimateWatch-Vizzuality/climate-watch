@@ -26,8 +26,7 @@ class ImportStories
       published_at = item.pubDate
       story = Story.find_or_initialize_by(title: title,
                                           published_at: published_at)
-      story.description = item.description
-      story.link = "http://www.wri.org#{item.link.split(/href="|">/)[1]}"
+      story.link = feed.channel.link + item.link.split(/href="|">/)[1].sub!(/^\//, '')
       story.background_image_url = item.enclosure ? item.enclosure.url : ''
       story.tags = item.category ? item.category.content : ''
       story.save
