@@ -1,8 +1,8 @@
 import React from 'react';
 import Responsive from 'react-responsive';
 
-export const Desktop = props => <Responsive {...props} minWidth={780} />;
+export const Desktop = props => <Responsive {...props} minWidth={'55em'} />;
 export const Tablet = props => (
-  <Responsive {...props} minWidth={360} maxWidth={779} />
+  <Responsive {...props} minWidth={'30em'} maxWidth={'55em'} />
 );
-export const Mobile = props => <Responsive {...props} maxWidth={359} />;
+export const Mobile = props => <Responsive {...props} maxWidth={'30em'} />;

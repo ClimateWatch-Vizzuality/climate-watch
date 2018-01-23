@@ -11,7 +11,6 @@ import Stories from 'components/stories';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
 import GeoLocationProvider from 'providers/geolocation-provider';
-import { Tablet } from 'components/responsive';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
@@ -39,9 +38,6 @@ class Home extends PureComponent {
         <Section className={styles.section} backgroundImage={background}>
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
-            <Tablet>
-              <Intro description="TABLET" />
-            </Tablet>
             <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
             <AutocompleteSearch />
           </div>
