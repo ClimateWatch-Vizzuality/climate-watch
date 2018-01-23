@@ -36,28 +36,24 @@ class Chart extends PureComponent {
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading &&
-        (error || !hasData) &&
-          (<NoContent
+        {!loading && (error || !hasData) && (
+          <NoContent
             message={getMessage()}
             className={styles.noContent}
             minHeight={height}
             icon
           />
-          )
-        }
+        )}
         {!loading && hasData && config && <ChartComponent {...this.props} />}
-        {!loading &&
-        dataOptions &&
-          (<LegendChart
+        {!loading && dataOptions && (
+          <LegendChart
             className={styles.legend}
             config={config}
             dataOptions={dataOptions}
             dataSelected={dataSelected}
             targetParam={targetParam}
           />
-          )
-        }
+        )}
       </div>
     );
   }
@@ -66,7 +62,7 @@ class Chart extends PureComponent {
 Chart.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string.isRequired,
-  error: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   dataOptions: PropTypes.array,
   dataSelected: PropTypes.array,

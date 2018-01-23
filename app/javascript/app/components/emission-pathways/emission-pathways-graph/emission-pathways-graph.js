@@ -13,6 +13,7 @@ import reducers, { initialState } from './emission-pathways-graph-reducers';
 import EmissionPathwayGraphComponent from './emission-pathways-graph-component';
 import {
   getChartData,
+  getChartXDomain,
   getChartConfig,
   getFiltersOptions,
   getFiltersSelected,
@@ -55,6 +56,7 @@ const mapStateToProps = (state, { location }) => {
   ];
   return {
     data: getChartData(espData),
+    domain: getChartXDomain(espData),
     config: getChartConfig(espData),
     filtersLoading: {
       timeseries: state.espTimeSeries.loading,

@@ -23,9 +23,9 @@ export const getDefaultColumns = createSelector([getCategory], category => {
         'url'
       ];
     case 'scenarios':
-      return ['model', 'name', 'geographic_coverage_country'];
+      return ['model', 'name', 'category', 'geographic_coverage_country'];
     case 'indicators':
-      return ['name', 'category', 'unit'];
+      return ['category', 'subcategory', 'name'];
     default:
       return null;
   }
