@@ -31,25 +31,30 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
   </g>
 );
 
-const CustomizedYAxisTick = ({ index, x, y, payload }) => (
-  <g transform={`translate(${x},${y})`}>
-    <text
-      x="0"
-      y="0"
-      dy="0"
-      textAnchor="end"
-      stroke="#b1b1c1"
-      strokeWidth="0.5"
-      fontSize="13px"
-    >
-      {index === 0 && payload.value >= 0 ? (
-        '0'
-      ) : (
-        `${format('.2s')(payload.value)}t`
-      )}
-    </text>
-  </g>
-);
+const CustomizedYAxisTick = ({ index, x, y, payload, config }) => {
+  const unit =
+    config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
+  const unitIsCo2 = unit === 'CO<sub>2</sub>e';
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x="0"
+        y="0"
+        dy="0"
+        textAnchor="end"
+        stroke="#b1b1c1"
+        strokeWidth="0.5"
+        fontSize="13px"
+      >
+        {index === 0 && payload.value >= 0 ? (
+          '0'
+        ) : (
+          `${format('.2s')(payload.value)}${unitIsCo2 ? 't' : ''}`
+        )}
+      </text>
+    </g>
+  );
+};
 
 class ChartLine extends PureComponent {
   debouncedMouseMove = debounce(year => {
@@ -84,7 +89,7 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={<CustomizedYAxisTick />}
+            tick={<CustomizedYAxisTick config={config} />}
             domain={(domain && domain.y) || ['0', 'auto']}
           />
           <CartesianGrid vertical={false} />
@@ -131,7 +136,8 @@ CustomizedYAxisTick.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   index: PropTypes.number,
-  payload: PropTypes.object
+  payload: PropTypes.object,
+  config: PropTypes.object.isRequired
 };
 
 ChartLine.propTypes = {
