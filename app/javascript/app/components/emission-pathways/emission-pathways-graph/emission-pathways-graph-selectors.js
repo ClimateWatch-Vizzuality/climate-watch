@@ -244,7 +244,8 @@ export const getIndicatorsOptions = createSelector(
     return filteredIndicators.map(i => ({
       label: i.name || i.composite_name || '',
       value: i.id,
-      unit: i.unit
+      unit: i.unit,
+      subcategory: i.subcategory.name
     }));
   }
 );
@@ -254,8 +255,17 @@ export const getIndicatorSelected = createSelector(
   (indicators, indicatorSelected) => {
     if (!indicators) return null;
     if (!indicatorSelected) {
-      const defaultIndicator = indicators.find(i => i.label === 'CO');
-      return defaultIndicator || indicators[0];
+      const defaultIndicator = indicators.find(
+        i => i.label === 'CO2' && i.subcategory === 'GHG Emissions by gas'
+      );
+      let secondBestIndicator = null;
+      if (!defaultIndicator) {
+        const secondBestIndicators = indicators.filter(
+          i => i.subcategory === 'Total GHG Emissions'
+        );
+        secondBestIndicator = secondBestIndicators && secondBestIndicators[0];
+      }
+      return defaultIndicator || secondBestIndicator || indicators[0];
     }
     return indicators.find(i => indicatorSelected === i.value);
   }
