@@ -49,15 +49,15 @@ $border-color: rgba(26, 28, 34, 0.1);
 
 // Breakpoints
 $breakpoint-mobile-only: 37.4375rem; // 599px / 16px
-$breakpoint-tablet-portrait-up: 37.5rem; // 600px / 16px
-$breakpoint-tablet-landscape-up: 56.25rem; // 900px / 16px
-$breakpoint-desktop-up: 75rem; // 1200px / 16px
+$breakpoint-tablet-portrait: 37.5rem; // 600px / 16px
+$breakpoint-tablet-landscape: 56.25rem; // 900px / 16px
+$breakpoint-desktop: 75rem; // 1200px / 16px
 
 // Media queries
-$mobile: 'screen and (max-width: #{$breakpoint-mobile-only})';
-$tablet-portrait-up: 'screen and (min-width: #{$breakpoint-tablet-portrait-up})';
-$tablet-landscape-up: 'screen and (min-width: #{$breakpoint-tablet-landscape-up})';
-$desktop-up: 'screen and (min-width: #{$breakpoint-desktop-up})';
+$mobile-only: 'screen and (max-width: #{$breakpoint-mobile-only})';
+$tablet-portrait: 'screen and (min-width: #{$breakpoint-tablet-portrait})';
+$tablet-landscape: 'screen and (min-width: #{$breakpoint-tablet-landscape})';
+$desktop: 'screen and (min-width: #{$breakpoint-desktop})';
 
 // Fixed heights
 $vulnerability-chart-height: calc(100% - 30px);

@@ -16,6 +16,12 @@ class Search extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.autofocus) {
+      this.inputRef.focus();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.input !== this.props.input) {
       this.setState({ search: nextProps.input });
@@ -48,6 +54,9 @@ class Search extends Component {
     return (
       <div className={cx(styles.search, className, theme.search)}>
         <input
+          ref={el => {
+            this.inputRef = el;
+          }}
           type="text"
           className={cx(styles.input, theme.input, plain ? styles.plain : '')}
           placeholder={placeholder}
@@ -68,6 +77,7 @@ class Search extends Component {
 Search.propTypes = {
   input: PropTypes.string,
   placeholder: PropTypes.string,
+  autofocus: PropTypes.bool,
   onChange: PropTypes.func,
   className: PropTypes.string,
   theme: PropTypes.object,

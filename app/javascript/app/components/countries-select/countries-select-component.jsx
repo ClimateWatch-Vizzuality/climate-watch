@@ -5,7 +5,7 @@ import cx from 'classnames';
 import Search from 'components/search';
 import ResultsList from 'components/results-list';
 import Map from 'components/map/map-component';
-import { TabletLandscapeUp } from 'components/responsive';
+import { TabletLandscape } from 'components/responsive';
 
 import layout from 'styles/layout.scss';
 import resultsListLightTheme from 'styles/themes/results-list/results-list-light.scss';
@@ -18,6 +18,7 @@ class CountriesSelect extends PureComponent {
       query,
       paths,
       className,
+      autofocus,
       countrySelectFilter,
       countriesList,
       onCountryClick,
@@ -34,6 +35,7 @@ class CountriesSelect extends PureComponent {
             onChange={countrySelectFilter}
             className={styles.search}
             theme={searchCountriesTheme}
+            autofocus={autofocus}
           />
           <ResultsList
             list={countriesList}
@@ -44,7 +46,7 @@ class CountriesSelect extends PureComponent {
             handleMouseItemLeave={onCountryMouseLeave}
             handleClick={handleClickAnalytics}
           />
-          <TabletLandscapeUp>
+          <TabletLandscape>
             <Map
               cache={false}
               paths={paths}
@@ -53,7 +55,7 @@ class CountriesSelect extends PureComponent {
               onCountryClick={onCountryClick}
               customCenter={[20, 15]}
             />
-          </TabletLandscapeUp>
+          </TabletLandscape>
         </div>
       </div>
     );
@@ -63,6 +65,7 @@ class CountriesSelect extends PureComponent {
 CountriesSelect.propTypes = {
   query: Proptypes.string,
   className: Proptypes.string,
+  autofocus: Proptypes.bool,
   onCountryClick: Proptypes.func.isRequired,
   countrySelectFilter: Proptypes.func.isRequired,
   onCountryMouseEnter: Proptypes.func.isRequired,
