@@ -14,8 +14,12 @@
 .content {
   @extend %grid;
 
-  grid-template: 1fr / 1fr 3fr;
+  grid-template: 1fr / 97%;
   grid-row-gap: 20px;
+
+  @media #{$tablet-landscape-up} {
+    grid-template: 1fr / 1fr 3fr;
+  }
 
   > * {
     &:first-child {
@@ -43,5 +47,10 @@
 }
 
 .list {
+  font-size: $font-size-m;
   max-height: 450px;
+
+  @media #{$tablet-landscape-up} {
+    font-size: $font-size;
+  }
 }
