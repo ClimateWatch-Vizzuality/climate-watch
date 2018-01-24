@@ -30,7 +30,7 @@ class NdcsAutocompleteSearch extends PureComponent {
       <div className={cx(styles.wrapper, styles.col2, className)}>
         {global ? <NdcsSdgsMetaProvider /> : <NdcsSdgsDataProvider />}
         <Dropdown
-          label={label ? 'Highlight SDG Linkages' : ''}
+          label={label ? 'Explore linkages between NDCs and SDGs' : ''}
           className={theme.dropdownOptionWithArrow}
           placeholder="Select a goal or target"
           groups={groups}

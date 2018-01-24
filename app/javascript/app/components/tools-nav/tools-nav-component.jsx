@@ -19,7 +19,7 @@ const ToolsNav = () => (
     <a
       href="//climate-watch-dev.s3.amazonaws.com/climate-watch-download-zip/data-download.zip"
       className={styles.link}
-      title="Download data"
+      title="Download all Climate Watch data"
     >
       <Icon className={styles.download} icon={download} />
     </a>

@@ -16,11 +16,19 @@
   height: 100%;
 }
 
-.info {
+.contentContainer {
   padding: 15px 20px;
   background-color: $white;
   color: $theme-color;
+  min-height: 90px;
+}
+
+.title {
   font-size: $font-size;
   font-weight: $font-weight-bold;
-  min-height: 90px;
+}
+
+.subtitle {
+  color: $theme-color;
+  line-height: $line-height-medium;
 }

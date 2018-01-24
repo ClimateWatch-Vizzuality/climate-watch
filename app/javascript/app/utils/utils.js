@@ -1,10 +1,16 @@
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
+import upperFirst from 'lodash/upperFirst';
+import toLower from 'lodash/toLower';
 
 export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
 export function deburrUpper(string) {
   return toUpper(deburr(string));
+}
+
+export function lowerUpperFirst(string) {
+  return upperFirst(toLower(string));
 }
 
 export function isCountryIncluded(countriesIncluded = [], iso) {
@@ -42,15 +48,30 @@ export function importAllImagesFromFolder(r) {
   const keys = r.keys();
   if (keys.length) {
     keys.forEach(item => {
-      images[item.replace('./', '').replace('.jpeg', '').replace('.jpg', '').replace('.png', '')] = r(item);
+      images[
+        item
+          .replace('./', '')
+          .replace('.jpeg', '')
+          .replace('.jpg', '')
+          .replace('.png', '')
+      ] = r(item);
     });
   }
   return images;
+}
+
+export const truncateDecimals = (number, decimalPlaces) =>
+  number.toFixed(decimalPlaces) / 1;
+
+const r2lWrittedLanguages = ['AR'];
+export function isR2LWrittedLanguage(lang) {
+  return r2lWrittedLanguages.indexOf(lang) > -1;
 }
 
 export default {
   compareIndexByKey,
   deburrUpper,
   isCountryIncluded,
-  importAllImagesFromFolder
+  importAllImagesFromFolder,
+  truncateDecimals
 };

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171227160000) do
+ActiveRecord::Schema.define(version: 20180123150615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,6 +257,7 @@ ActiveRecord::Schema.define(version: 20171227160000) do
     t.text "document_type", default: "ndc"
     t.text "language"
     t.boolean "translated", default: false
+    t.string "text_comment"
     t.index ["full_text_tsv"], name: "index_ndcs_on_full_text_tsv", using: :gin
     t.index ["location_id"], name: "index_ndcs_on_location_id"
   end
@@ -305,6 +306,7 @@ ActiveRecord::Schema.define(version: 20171227160000) do
     t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tags"
   end
 
   create_table "timeline_documents", force: :cascade do |t|

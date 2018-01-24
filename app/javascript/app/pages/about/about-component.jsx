@@ -5,23 +5,18 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import { Helmet } from 'react-helmet';
+import { ABOUT } from 'data/SEO';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';
-
-const DESCRIPTION = `Climate Watch is an online platform designed to empower policymakers, researchers, media and
-  other stakeholders with the open climate data, visualizations and resources they need to gather insights on
-  national and global progress on climate change. Climate Watch brings together dozens of datasets for the first time.`;
 
 const About = ({ route, anchorLinks, query }) => (
   <div>
     <Header route={route}>
       <div className={layout.content}>
-        <Helmet>
-          <title>Climate Watch: Data for Climate Action - About</title>
-          <meta name="description" content={DESCRIPTION} />
-        </Helmet>
+        <MetaDescription descriptionContext={ABOUT} subtitle="About" />
+        <SocialMetadata descriptionContext={ABOUT} href={location.href} />
         <Intro title="About" />
         <AnchorNav
           useRoutes

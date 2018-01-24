@@ -63,7 +63,8 @@ module.exports = {
     plugins: [new DirectoryNamedWebpackPlugin(true)],
     alias: {
       app: 'app',
-      components: 'app/components'
+      components: 'app/components',
+      routes: 'app/routes'
     }
   },
 

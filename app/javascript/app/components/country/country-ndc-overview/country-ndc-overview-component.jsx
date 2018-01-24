@@ -126,7 +126,7 @@ class CountryNdcOverview extends PureComponent {
                     )}
                   </div>
                 </Card>
-                <Card title="Sectoral coverage">
+                <Card title="Identified Sectors for Mitigation Action">
                   <div className={styles.cardContent}>
                     {values && values.coverage_sectors_short ? (
                       <p
@@ -145,7 +145,7 @@ class CountryNdcOverview extends PureComponent {
                   <h4 className={cx(styles.subTitle, styles.adaptionList)}>
                     Adaptation Contribution
                   </h4>
-                  <Card title="Sectoral coverage">
+                  <Card title="Identified Sectors for Adaptation Action">
                     <div className={styles.cardContent}>
                       {sectors.length ? (
                         <ul className={styles.list}>

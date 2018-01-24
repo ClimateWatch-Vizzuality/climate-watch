@@ -13,9 +13,9 @@ class Stories extends PureComponent {
         <div className={styles.grid}>
           {stories.map(story => (
             <a
-              key={story.id}
+              key={story.link}
               className={styles.story}
-              style={{ backgroundImage: `url(${story.image})` }}
+              style={{ backgroundImage: `url(${story.background_image_url})` }}
               href={story.link}
               target="_blank"
               rel="noopener noreferrer"

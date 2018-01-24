@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Climate Watch: Data for Climate Action</title>
+    <title><%= title(@actual_path) %></title>
     <%= favicon_link_tag asset_path('favicons/apple-icon-57x57.png'), rel: 'apple-touch-icon', type: 'image/png' %>
     <%= favicon_link_tag asset_path('favicons/apple-icon-60x60.png'), rel: 'apple-touch-icon', type: 'image/png' %>
     <%= favicon_link_tag asset_path('favicons/apple-icon-72x72.png'), rel: 'apple-touch-icon', type: 'image/png' %>
@@ -22,6 +22,16 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <!-- SEO -->
+    <meta name="description" content='<%= description(@actual_path) %>' />
+    <meta name="twitter:creator" content="@vizzuality" />
+    <meta name="twitter:description" content='<%= description(@actual_path) %>' />
+    <meta name="twitter:image:src" content='<%= image_src(@actual_path) %>' />
+    <meta property="og:description" content='<%= description(@actual_path) %>' />
+    <meta property="og:title" content='<%= title(@actual_path) %>' />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content='<%= image_src(@actual_path) %>'>
+    <meta property="og:url" content='<%= asset_url(@actual_path) %>' />
 
     <script src="https://cdn.polyfill.io/v2/polyfill.js?features=default,fetch,es6,Array.prototype.includes,String.prototype.includes"></script>
     <%= csrf_meta_tags %>

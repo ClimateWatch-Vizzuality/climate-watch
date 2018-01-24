@@ -1,15 +1,14 @@
 // Font families
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,400i,700');
 $font-family-1: 'Lato', sans-serif;
 
 // Font sizes
-$font-size-s: 13px;
-$font-size-sm: 14px;
-$font-size: 16px;
-$font-size-m: 19px;
-$font-size-large: 24px;
-$font-size-x-large: 44px;
-$font-size-xl-large: 54px;
+$font-size-s: 0.8125rem; // 13px / 16px
+$font-size-sm: 0.875rem; // 14px / 16px
+$font-size: 1rem; // 16px / 16px
+$font-size-m: 1.1875rem; // 19px / 16px
+$font-size-large: 1.5rem; // 24px / 16px
+$font-size-x-large: 2.75rem; // 44px / 16px
+$font-size-xl-large: 3.375rem; // 54px / 16px
 
 //font-weights
 $font-weight-light: 300;
@@ -49,10 +48,10 @@ $bg-blue: #1b3b5a;
 
 $border-color: rgba(26, 28, 34, 0.1);
 
-// Breakpoitns
-$breakpoint-mobile: 320;
-$breakpoint-tablet: 768px;
-$breakpoint-desktop: 1280px;
+// Breakpoints
+$breakpoint-mobile: 30rem; // 480px / 16px
+$breakpoint-tablet: 55rem; // 880px / 16px
+$breakpoint-desktop: 80rem; // 1280px / 16px
 
 // Media queries
 $mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
@@ -94,9 +93,3 @@ $climate-risk-9: #5165a3;
 $climate-risk-10: #3c4483;
 
 $climate-risk-colors: $climate-risk-1 ,$climate-risk-2 ,$climate-risk-3 ,$climate-risk-4 ,$climate-risk-5 ,$climate-risk-6 ,$climate-risk-7 ,$climate-risk-8 ,$climate-risk-9 ,$climate-risk-10;
-
-h3 {
-  font-size: $font-size-large;
-  font-weight: $font-weight;
-  color: $theme-color;
-}
