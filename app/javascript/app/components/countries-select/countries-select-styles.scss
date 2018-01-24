@@ -38,6 +38,15 @@
   }
 }
 
+.search_title {
+  color: $theme-color;
+  font-size: $font-size-m;
+
+  @media #{$tablet-landscape} {
+    display: none;
+  }
+}
+
 .search {
   grid-column: span 2;
 }

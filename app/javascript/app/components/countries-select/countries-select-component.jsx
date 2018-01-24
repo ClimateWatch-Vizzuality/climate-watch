@@ -29,6 +29,9 @@ class CountriesSelect extends PureComponent {
     return (
       <div className={cx(styles.wrapper, className)}>
         <div className={cx(layout.content, styles.content)}>
+          <p className={styles.search_title}>
+            Please type the name of a country:
+          </p>
           <Search
             placeholder=""
             value={query}
