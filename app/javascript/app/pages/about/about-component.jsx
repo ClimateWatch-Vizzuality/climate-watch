@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
@@ -14,7 +15,8 @@ import styles from './about-styles.scss';
 const About = ({ route, anchorLinks, query }) => (
   <div>
     <Header route={route}>
-      <div className={layout.content}>
+      <div className={styles.gradient} />
+      <div className={cx(layout.content, styles.header)}>
         <MetaDescription descriptionContext={ABOUT} subtitle="About" />
         <SocialMetadata descriptionContext={ABOUT} href={location.href} />
         <Intro title="About" />

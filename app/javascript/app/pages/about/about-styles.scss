@@ -10,6 +10,19 @@
   }
 }
 
+.gradient {
+  background: radial-gradient(70px $gutter-padding ellipse at 0%, $theme-color, transparent), radial-gradient(70px $gutter-padding ellipse at 100%, $theme-color, transparent);
+  z-index: 11;
+  width: 100%;
+  height: 50px;
+  pointer-events: none;
+  position: absolute;
+}
+
+.header {
+  background: linear-gradient(to top, $theme-color 25%, transparent);
+}
+
 .title {
   font-size: $font-size-large;
   font-weight: $font-weight;

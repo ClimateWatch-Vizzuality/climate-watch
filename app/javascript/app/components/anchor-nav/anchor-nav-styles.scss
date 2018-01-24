@@ -4,6 +4,15 @@
   display: flex;
   align-items: center;
   margin-top: 15px;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media screen and (min-width: 900px) {
+    overflow-x: none;
+  }
 }
 
 .link {
@@ -11,5 +20,5 @@
   padding: 15px 0;
   text-decoration: none;
   position: relative;
+  min-width: 170px;
 }
-
