@@ -114,11 +114,13 @@ class EmissionPathwayGraph extends PureComponent {
             dataOptions={filtersOptions.scenarios}
             dataSelected={filtersSelected.scenarios}
             customMessage={'No data available for that indicator'}
-            height={500}
+            height={600}
             loading={loading}
             error={error}
             targetParam="scenario"
             forceTwoDecimals
+            margin={{ top: 50 }}
+            espGraph
           />
           <ModalOverview
             data={modalData}
