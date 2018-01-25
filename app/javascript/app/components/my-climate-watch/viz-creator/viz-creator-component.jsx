@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _map from 'lodash/map';
+import upperFirst from 'lodash/upperFirst';
 import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -11,7 +12,7 @@ import Button from 'components/button';
 import Loading from 'components/loading';
 import inputTextTheme from 'styles/themes/search/input-text.scss';
 
-import LineChart from './components/charts/line/line';
+import LineChart from './components/charts/line';
 import SelectableList from './components/selectable-list';
 import CardContent from './components/card-content';
 import styles from './viz-creator-styles';
@@ -25,7 +26,13 @@ const Step1 = ({ datasets, selectDataset }) => (
       selected={datasets.selected}
       onClick={selectDataset}
     >
-      {d => <CardContent data={d} type="dataset" />}
+      {d => (
+        <CardContent placeholder={d.placeholder} image={d.image} type="dataset">
+          <div className={styles.cardContent}>
+            <p className={styles.cardTitle}>{d.name}</p>
+          </div>
+        </CardContent>
+      )}
     </SelectableList>
   </li>
 );
@@ -52,7 +59,18 @@ const Step2 = ({ visualisations, selectVisualisation }) => (
         key={`v-${vs.id}`}
         onClick={selectVisualisation}
       >
-        {d => <CardContent data={d} type="visualisation" />}
+        {d => (
+          <CardContent
+            placeholder={d.placeholder}
+            image={d.image}
+            type="visualisation"
+          >
+            <div className={styles.cardContent}>
+              <h1 className={styles.cardTitle}>{d.name}</h1>
+              <p className={styles.cardTags}>{d.tags.join(' | ')}</p>
+            </div>
+          </CardContent>
+        )}
       </SelectableList>
     ])}
   </li>
@@ -98,8 +116,9 @@ const Step3 = props => {
               <li key={f.name || i} className={styles.selectsItem}>
                 {f.multi ? (
                   <MultiSelect
+                    className={styles.dropDowns}
                     {...selectProps(f, 'values')}
-                    label={f.name}
+                    label={upperFirst(f.name)}
                     onMultiValueChange={e =>
                       handleFilterSelect({
                         values: e,
@@ -110,7 +129,8 @@ const Step3 = props => {
                 ) : (
                   <Dropdown
                     {...selectProps(f, 'value')}
-                    label={f.label}
+                    className={styles.dropDowns}
+                    label={upperFirst(f.label)}
                     onValueChange={e =>
                       handleFilterSelect({
                         ...e,
@@ -134,7 +154,7 @@ Step3.propTypes = {
 };
 
 const Step4 = props => {
-  const { id, title, chartData, onNameChange, onSaveClick, timeseries } = props;
+  const { title, chartData, onNameChange, timeseries } = props;
 
   return (
     <li className={styles.step}>
@@ -150,17 +170,8 @@ const Step4 = props => {
       {timeseries.loading ? (
         <Loading light className={styles.timeseriesLoader} />
       ) : (
-        <LineChart {...chartData} width="90%" />
+        <LineChart className={styles.chart} {...chartData} width="90%" />
       )}
-      <div className={styles.saveContainer}>
-        <Button
-          color="yellow"
-          onClick={() => onSaveClick({ id })}
-          className={styles.saveBtn}
-        >
-          Save
-        </Button>
-      </div>
     </li>
   );
 };
@@ -170,7 +181,6 @@ Step4.propTypes = {
   title: PropTypes.string,
   timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
-  onSaveClick: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired
 };
 
@@ -208,9 +218,17 @@ const VizCreator = props => {
             timeseries={timeseries}
             chartData={chartData}
             onNameChange={updateVisualisationName}
-            onSaveClick={gotVisualisation}
           />
         )}
+        <li className={styles.saveContainer}>
+          <Button
+            color="yellow"
+            onClick={() => gotVisualisation({ id })}
+            className={styles.saveBtn}
+          >
+            Save
+          </Button>
+        </li>
       </ul>
     </div>
   );

@@ -10,7 +10,8 @@ const modalStyles = {
   content: {
     width: '90vw',
     maxHeight: '90vh',
-    height: '90vh'
+    height: '90vh',
+    padding: 0
   }
 };
 

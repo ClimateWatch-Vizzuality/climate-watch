@@ -49,5 +49,6 @@ $close-position: 25px;
   width: calc(#{$modalWidth} - 2px);
   height: 95px;
   padding: 25px 40px;
-  z-index: 0;
+  z-index: 1;
+  left: calc(5vw + 4px);
 }

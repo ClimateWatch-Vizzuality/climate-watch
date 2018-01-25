@@ -46,7 +46,7 @@ CustomModal.propTypes = {
   contentLabel: PropTypes.string,
   customStyles: PropTypes.object,
   defaultStyles: PropTypes.object,
-  theme: PropTypes.string,
+  theme: PropTypes.object,
   children: PropTypes.node
 };
 

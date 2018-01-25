@@ -2,33 +2,42 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { importAllImagesFromFolder } from 'utils';
-
-// import emissions from 'assets/datasets/emissions.png';
-
 import styles from './card-content-styles';
 
 const images = importAllImagesFromFolder(
   require.context('assets/visualisations', false, /\.(png|jpe?g)$/)
 );
 
-const CardContent = ({ data = {}, type = '', className }) => (
+const CardContent = ({
+  placeholder,
+  image,
+  children,
+  type = '',
+  className
+}) => (
   <div className={cx(styles.cardContainer, className)}>
     <div className={cx(styles.cardHeader)}>
-      {data.image && images[data.image]
-        ? <img className={styles.cardImage} styles={styles.image} src={images[data.image]} alt={`${type} selectable option`} />
-        : <p className={styles.placeholder}>{data.placeholder}</p>
-      }
+      {image && images[image] ? (
+        <img
+          className={styles.cardImage}
+          styles={styles.image}
+          src={images[image]}
+          alt={`${type} selectable option`}
+        />
+      ) : (
+        <p className={styles.placeholder}>{placeholder}</p>
+      )}
     </div>
-    <div className={cx(styles.cardContent)}>
-      <p>{data.name}</p>
-    </div>
+    <div className={cx(styles.cardContent)}>{children}</div>
   </div>
 );
 
 CardContent.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string.isRequired,
-  data: PropTypes.object
+  placeholder: PropTypes.string,
+  image: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 
 export default CardContent;

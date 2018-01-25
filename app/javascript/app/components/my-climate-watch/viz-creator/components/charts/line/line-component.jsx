@@ -19,9 +19,10 @@ const ChartLine = ({
   lines,
   lineProps,
   axis,
-  cartesianGrid
+  cartesianGrid,
+  className
 }) => (
-  <ResponsiveContainer width={width} height={height}>
+  <ResponsiveContainer className={className} width={width} height={height}>
     <LineChart {...config}>
       {cartesianGrid && <CartesianGrid {...cartesianGrid} />}
       {lines && lines.map(l => <Line key={l} {...lineProps[l]} />)}
@@ -32,6 +33,7 @@ const ChartLine = ({
 );
 
 ChartLine.propTypes = {
+  className: PropTypes.string,
   width: PropTypes.any.isRequired,
   height: PropTypes.any.isRequired,
   config: PropTypes.PropTypes.shape({

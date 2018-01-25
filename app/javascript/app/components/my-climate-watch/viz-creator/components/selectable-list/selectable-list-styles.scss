@@ -3,6 +3,7 @@
 .container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .card {
@@ -22,7 +23,7 @@
 
   &.visualisation {
     flex-basis: calc(33% - 20px);
-    margin: 0 10px 20px;
+    margin-bottom: 20px;
   }
 
   &:hover, {
