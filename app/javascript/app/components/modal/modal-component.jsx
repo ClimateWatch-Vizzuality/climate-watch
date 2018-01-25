@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Icon from 'components/icon';
+import { themr } from 'react-css-themr';
 
 import closeIcon from 'assets/icons/sidebar-close.svg';
 import styles from './modal-styles.scss';
@@ -17,6 +18,7 @@ class CustomModal extends PureComponent {
       customStyles,
       contentLabel,
       children,
+      theme,
       shouldCloseOnOverlayClick
     } = this.props;
     const modalStyles = { ...defaultStyles, ...customStyles };
@@ -28,8 +30,8 @@ class CustomModal extends PureComponent {
         contentLabel={contentLabel}
         shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       >
-        <Button onClick={onRequestClose} className={styles.closeBtn} square>
-          <Icon icon={closeIcon} className={styles.close} />
+        <Button onClick={onRequestClose} className={theme.closeBtn} square>
+          <Icon icon={closeIcon} className={theme.close} />
         </Button>
         {children}
       </Modal>
@@ -44,6 +46,7 @@ CustomModal.propTypes = {
   contentLabel: PropTypes.string,
   customStyles: PropTypes.object,
   defaultStyles: PropTypes.object,
+  theme: PropTypes.string,
   children: PropTypes.node
 };
 
@@ -75,4 +78,4 @@ CustomModal.defaultProps = {
   }
 };
 
-export default CustomModal;
+export default themr('CustomModal', styles)(CustomModal);

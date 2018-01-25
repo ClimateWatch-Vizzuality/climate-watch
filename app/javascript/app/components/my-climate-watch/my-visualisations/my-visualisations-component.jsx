@@ -36,11 +36,12 @@ const MyVisualisations = ({
     </ul>
     <Modal
       customStyles={modalStyles}
+      theme={styles}
       isOpen={creatorIsOpen}
       onRequestClose={closeCreator}
       shouldCloseOnOverlayClick={false}
     >
-      <ModalHeader title="Create a visualisation" />
+      <ModalHeader theme={styles} title="Create a visualisation" />
       <VizCreator onHideCreator={closeCreator} />
     </Modal>
   </div>

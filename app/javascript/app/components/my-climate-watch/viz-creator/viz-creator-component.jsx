@@ -192,28 +192,26 @@ const VizCreator = props => {
   } = props;
 
   return (
-    <div>
-      <div className={styles.container}>
-        <ul className={styles.steps}>
-          <Step1 {...{ datasets, selectDataset }} />
-          {datasets.selected && (
-            <Step2 {...{ visualisations, selectVisualisation }} />
-          )}
-          {visualisations.selected && (
-            <Step3 {...{ spec: filters, handleFilterSelect }} />
-          )}
-          {hasData && (
-            <Step4
-              id={id}
-              title={title}
-              timeseries={timeseries}
-              chartData={chartData}
-              onNameChange={updateVisualisationName}
-              onSaveClick={gotVisualisation}
-            />
-          )}
-        </ul>
-      </div>
+    <div className={styles.container}>
+      <ul className={styles.steps}>
+        <Step1 {...{ datasets, selectDataset }} />
+        {datasets.selected && (
+          <Step2 {...{ visualisations, selectVisualisation }} />
+        )}
+        {visualisations.selected && (
+          <Step3 {...{ spec: filters, handleFilterSelect }} />
+        )}
+        {hasData && (
+          <Step4
+            id={id}
+            title={title}
+            timeseries={timeseries}
+            chartData={chartData}
+            onNameChange={updateVisualisationName}
+            onSaveClick={gotVisualisation}
+          />
+        )}
+      </ul>
     </div>
   );
 };
