@@ -1,8 +1,19 @@
 @import '~styles/layout.scss';
 
 .navbar {
+  position: relative;
+  top: 60px;
   display: flex;
-  align-items: center;
-  height: $navbar-height;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
+  height: calc(100vh - 60px);
+  background-color: $white;
+
+  @media #{$tablet-landscape} {
+    flex-direction: row;
+    align-items: center;
+    height: $navbar-height;
+    top: 0;
+  }
 }

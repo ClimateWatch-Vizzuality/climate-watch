@@ -1,0 +1,21 @@
+@import '~styles/layout.scss';
+
+.navbar {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  padding-left: $gutter-padding;
+  background: white;
+  z-index: 20;
+  border-bottom: 1px solid $gray;
+
+  .logo {
+    width: 150px;
+  }
+
+  @media #{$tablet-landscape} {
+    display: none;
+  }
+}

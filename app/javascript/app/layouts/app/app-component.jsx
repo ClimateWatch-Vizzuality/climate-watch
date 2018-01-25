@@ -3,6 +3,8 @@ import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 
 import CountriesProvider from 'providers/countries-provider';
+import { TabletLandscape } from 'components/responsive';
+import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 import { HOME_PAGE } from 'data/SEO';
@@ -18,9 +20,12 @@ class App extends PureComponent {
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
+        <NavBarMobile />
         <NavBar routes={navRoutes} />
         {renderRoutes(route.routes.filter(r => r.path))}
-        <Footer routes={navRoutes} />
+        <TabletLandscape>
+          <Footer routes={navRoutes} />
+        </TabletLandscape>
       </div>
     );
   }
