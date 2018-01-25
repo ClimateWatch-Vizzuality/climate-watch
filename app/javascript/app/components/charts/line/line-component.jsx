@@ -8,7 +8,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Label
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
@@ -31,30 +32,25 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
   </g>
 );
 
-const CustomizedYAxisTick = ({ index, x, y, payload, config }) => {
-  const unit =
-    config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
-  const unitIsCo2 = unit === 'CO<sub>2</sub>e';
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x="0"
-        y="0"
-        dy="0"
-        textAnchor="end"
-        stroke="#b1b1c1"
-        strokeWidth="0.5"
-        fontSize="13px"
-      >
-        {index === 0 && payload.value >= 0 ? (
-          '0'
-        ) : (
-          `${format('.2s')(payload.value)}${unitIsCo2 ? 't' : ''}`
-        )}
-      </text>
-    </g>
-  );
-};
+const CustomizedYAxisTick = ({ index, x, y, payload, unit }) => (
+  <g transform={`translate(${x},${y})`}>
+    <text
+      x="0"
+      y="0"
+      dy="0"
+      textAnchor="end"
+      stroke="#b1b1c1"
+      strokeWidth="0.5"
+      fontSize="13px"
+    >
+      {index === 0 && (payload.value >= 0 || payload.value > -0.001) ? (
+        '0'
+      ) : (
+        `${format(unit ? '' : '.2s')(payload.value)}${unit ? '' : 't'}`
+      )}
+    </text>
+  </g>
+);
 
 class ChartLine extends PureComponent {
   debouncedMouseMove = debounce(year => {
@@ -69,12 +65,42 @@ class ChartLine extends PureComponent {
   };
 
   render() {
-    const { config, data, height, domain, forceTwoDecimals } = this.props;
+    const {
+      config,
+      data,
+      height,
+      margin,
+      domain,
+      forceTwoDecimals,
+      espGraph
+    } = this.props;
+    const unit =
+      espGraph &&
+      config &&
+      config.axes &&
+      config.axes.yLeft &&
+      config.axes.yLeft.unit
+        ? config.axes.yLeft.unit
+        : null;
+    const LineChartMargin = espGraph
+      ? { top: 50, right: 0, left: 0, bottom: 0 }
+      : { top: 10, right: 0, left: -10, bottom: 0 };
+    const yAxisLabel = (
+      <Label
+        position="top"
+        offset={20}
+        content={() => (
+          <text x="8" y="20">
+            {unit}
+          </text>
+        )}
+      />
+    );
     return (
-      <ResponsiveContainer height={height}>
+      <ResponsiveContainer height={height} margin={margin}>
         <LineChart
           data={data}
-          margin={{ top: 20, right: 0, left: -10, bottom: 0 }}
+          margin={LineChartMargin}
           onMouseMove={this.handleMouseMove}
         >
           <XAxis
@@ -89,9 +115,11 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={<CustomizedYAxisTick config={config} />}
+            tick={<CustomizedYAxisTick unit={unit} />}
             domain={(domain && domain.y) || ['0', 'auto']}
-          />
+          >
+            {espGraph && yAxisLabel}
+          </YAxis>
           <CartesianGrid vertical={false} />
           <Tooltip
             isAnimationActive={false}
@@ -137,7 +165,7 @@ CustomizedYAxisTick.propTypes = {
   y: PropTypes.number,
   index: PropTypes.number,
   payload: PropTypes.object,
-  config: PropTypes.object.isRequired
+  unit: PropTypes.string
 };
 
 ChartLine.propTypes = {
@@ -146,12 +174,15 @@ ChartLine.propTypes = {
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
   domain: PropTypes.object,
-  forceTwoDecimals: PropTypes.bool
+  forceTwoDecimals: PropTypes.bool,
+  margin: PropTypes.object,
+  espGraph: PropTypes.bool.isRequired
 };
 
 ChartLine.defaultProps = {
   height: '100%',
-  onMouseMove: () => {}
+  onMouseMove: () => {},
+  espGraph: false
 };
 
 export default ChartLine;

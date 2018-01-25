@@ -224,9 +224,12 @@ export const getSubcategorySelected = createSelector(
   (subcategories, subcategorySelected) => {
     if (!subcategories) return null;
     if (!subcategorySelected) {
-      return subcategories[0];
+      const defaultSubcategory =
+        subcategories.find(s => s.label === 'GHG Emissions by gas') ||
+        subcategories.find(s => s.label === 'Total GHG Emissions');
+      return defaultSubcategory || subcategories[0];
     }
-    return subcategories.find(i => subcategorySelected === i.value);
+    return subcategories.find(s => subcategorySelected === s.value);
   }
 );
 
@@ -253,19 +256,10 @@ export const getIndicatorsOptions = createSelector(
 export const getIndicatorSelected = createSelector(
   [getIndicatorsOptions, getIndicator],
   (indicators, indicatorSelected) => {
-    if (!indicators) return null;
+    if (!indicators || !indicators.length) return null;
     if (!indicatorSelected) {
-      const defaultIndicator = indicators.find(
-        i => i.label === 'CO2' && i.subcategory === 'GHG Emissions by gas'
-      );
-      let secondBestIndicator = null;
-      if (!defaultIndicator) {
-        const secondBestIndicators = indicators.filter(
-          i => i.subcategory === 'Total GHG Emissions'
-        );
-        secondBestIndicator = secondBestIndicators && secondBestIndicators[0];
-      }
-      return defaultIndicator || secondBestIndicator || indicators[0];
+      const defaultIndicator = indicators.find(i => i.label === 'CO2');
+      return defaultIndicator || indicators[0];
     }
     return indicators.find(i => indicatorSelected === i.value);
   }
