@@ -11,8 +11,8 @@
 }
 
 .gradient {
-  background: radial-gradient(70px $gutter-padding ellipse at 0%, $theme-color, transparent), radial-gradient(70px $gutter-padding ellipse at 100%, $theme-color, transparent);
-  z-index: 11;
+  background: radial-gradient(40px $gutter-padding ellipse at 0%, $theme-color, transparent), radial-gradient(75px $gutter-padding ellipse at 100%, $theme-color, transparent);
+  z-index: 5;
   width: 100%;
   height: 50px;
   pointer-events: none;

@@ -5,6 +5,10 @@
   align-items: center;
   margin-top: 15px;
   overflow-x: scroll;
+  width: 110%;
+  padding-left: 10%;
+  position: relative;
+  left: -10%;
 
   &::-webkit-scrollbar {
     display: none;
@@ -12,6 +16,9 @@
 
   @media screen and (min-width: 900px) {
     overflow-x: none;
+    width: 100%;
+    padding-left: 0;
+    left: 0;
   }
 }
 
