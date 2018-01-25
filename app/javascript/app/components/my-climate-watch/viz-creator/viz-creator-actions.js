@@ -5,10 +5,7 @@ import uniqBy from 'lodash/uniqBy';
 import { EPAPI, CWAPI } from 'services/api';
 
 import { actions as visActions } from 'components/my-climate-watch/my-visualisations';
-
 import { $datasets } from './viz-creator-lenses';
-
-// import { flatMapVis } from './viz-creator-utils';
 
 export const fetchDatasets = createThunkAction(
   'fetchDatasets',
@@ -32,7 +29,6 @@ export const fetchVisualisations = createThunkAction(
   'fetchVisualisations',
   payload => (dispatch, getState) => {
     const datasets = get($datasets, getState().vizCreator);
-    // const visualisations = flatMapVis(
     const visualisations = find(datasets.data, { id: payload });
     const spec = visualisations['viz-types'] || {};
     dispatch(gotVisualisations(spec));
@@ -57,19 +53,49 @@ export const fetchScenarios = createThunkAction(
   }
 );
 
+export const fetchCategories = createThunkAction(
+  'fetchCategories',
+  ({ scenarios, locations }) => dispatch => {
+    EPAPI.get(
+      'categories',
+      `scenario=${scenarios
+        .map(s => s.value)
+        .join(',')}&location=${locations}&time_series=true`
+    ).then(d => {
+      const categories = d.map(({ id, name }) => ({ id, name }));
+      dispatch(gotCategories(categories));
+    });
+  }
+);
+
+export const fetchSubCategories = createThunkAction(
+  'fetchSubCategories',
+  ({ scenarios, locations, category }) => dispatch => {
+    EPAPI.get(
+      'categories',
+      `scenario=${scenarios
+        .map(s => s.value)
+        .join(',')}&location=${locations}&time_series=true`
+    ).then(d => {
+      const foundCategory = find(d, { id: category.value });
+      dispatch(gotSubCategories(foundCategory.subcategories));
+    });
+  }
+);
+
 export const fetchIndicators = createThunkAction(
   'fetchIndicators',
-  ({ location, scenarios }) => dispatch => {
+  ({ locations, scenarios, subcategory }) => dispatch => {
     EPAPI.get(
       'indicators',
       `scenario=${scenarios
         .map(s => s.value)
-        .join(',')}&location=${location}&time_series=true`
+        .join(
+          ','
+        )}&location=${locations}&time_series=true&subcategory=${subcategory}`
     ).then(d => {
       const indicators = uniqBy(d, 'id');
-      const categories = uniqBy(d.map(i => i.category), 'id');
       dispatch(gotIndicators(indicators));
-      dispatch(gotCategories(categories));
     });
   }
 );
@@ -82,8 +108,23 @@ export const fetchTimeseries = createThunkAction(
 
     EPAPI.get(
       'time_series_values',
-      `location=${locations}&scenario=${flatScenarios}&indicator=${flatIndicators}`
+      `location=${locations}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true`
     ).then(d => dispatch(gotTimeseries(d)));
+  }
+);
+
+export const fetchVisualisation = createThunkAction(
+  'fetchVisualisation',
+  VisualisationId => dispatch => {
+    dispatch(fetchVisualisationInit());
+    CWAPI.get(`my_cw/visualizations/${VisualisationId}`)
+      .then(Visualisation => {
+        dispatch(fetchVisualisationReady(Visualisation));
+      })
+      .catch(e => {
+        console.warn(e);
+        dispatch(fetchVisualisationFail());
+      });
   }
 );
 
@@ -119,32 +160,17 @@ export const gotTimeseries = createAction('gotTimeseries');
 export const updateVisualisationName = createAction('updateVisualisationName');
 
 export const clearVisualisation = createAction('clearVisualisation');
-export const getVisualisationInit = createAction('getVisualisationInit');
-export const getVisualisationReady = createAction('getVisualisationReady');
-export const getVisualisationFail = createAction('getVisualisationFail');
-export const saveVisualisationInit = createAction('saveVisualisationInit');
-export const saveVisualisationReady = createAction('saveVisualisationReady');
-export const saveVisualisationFail = createAction('saveVisualisationFail');
+export const fetchVisualisationInit = createAction('fetchVisualisationInit');
+export const fetchVisualisationReady = createAction('fetchVisualisationReady');
+export const fetchVisualisationFail = createAction('fetchVisualisationFail');
+export const gotVisualisationInit = createAction('gotVisualisationInit');
+export const gotVisualisationReady = createAction('gotVisualisationReady');
+export const gotVisualisationFail = createAction('gotVisualisationFail');
 
-export const getVisualisation = createThunkAction(
-  'getVisualisation',
-  VisualisationId => dispatch => {
-    dispatch(getVisualisationInit());
-    CWAPI.get(`my_cw/visualizations/${VisualisationId}`)
-      .then(Visualisation => {
-        dispatch(getVisualisationReady(Visualisation));
-      })
-      .catch(e => {
-        console.warn(e);
-        dispatch(getVisualisationFail());
-      });
-  }
-);
-
-export const saveVisualisation = createThunkAction(
-  'saveVisualisation',
+export const gotVisualisation = createThunkAction(
+  'gotVisualisation',
   ({ id = '' }) => (dispatch, getState) => {
-    dispatch(saveVisualisationInit());
+    dispatch(gotVisualisationInit());
     const { vizCreator } = getState();
     const visualisation = {
       visualization: {
@@ -154,7 +180,7 @@ export const saveVisualisation = createThunkAction(
     };
 
     const handleResponse = () => {
-      // dispatch(saveVisualisationReady(response));
+      // dispatch(gotVisualisationReady(response));
       dispatch(visActions.fetchVisualisations());
       dispatch(closeCreator());
     };
@@ -163,14 +189,14 @@ export const saveVisualisation = createThunkAction(
         .then(handleResponse)
         .catch(e => {
           console.warn(e);
-          dispatch(saveVisualisationFail());
+          dispatch(gotVisualisationFail());
         });
     } else {
       CWAPI.post('my_cw/visualizations', visualisation)
         .then(handleResponse)
         .catch(e => {
           console.warn(e);
-          dispatch(saveVisualisationFail());
+          dispatch(gotVisualisationFail());
         });
     }
   }

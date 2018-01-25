@@ -1,8 +1,6 @@
 import { get } from 'js-lenses';
 import { assign } from 'app/utils';
-import _find from 'lodash/find';
-import groupBy from 'lodash/groupBy';
-import uniqBy from 'lodash/uniqBy';
+import find from 'lodash/find';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
 import { updateIn, mapFilter } from './viz-creator-utils';
@@ -105,7 +103,7 @@ export default {
   [actions.selectModel]: (state, { payload }) => {
     const child = get($scenarios, initialState);
     const filters = filtersSelector(state);
-    const scenariosFilter = _find(filters, { name: child.name });
+    const scenariosFilter = find(filters, { name: child.name });
     if (scenariosFilter && scenariosFilter.selected === 'all') {
       child.selected = mapFilter(child.data);
     }
@@ -122,7 +120,7 @@ export default {
       data: payload
     };
     const filters = filtersSelector(state);
-    const scenariosFilter = _find(filters, { name: 'scenarios' });
+    const scenariosFilter = find(filters, { name: 'scenarios' });
     if (scenariosFilter && scenariosFilter.selected === 'all') {
       scenarios.selected = mapFilter(payload);
     }
@@ -136,42 +134,6 @@ export default {
     );
     return newState;
   },
-  // Indicators
-  [actions.fetchIndicators]: state => {
-    const child = get($categories, initialState);
-    // Set categories and subcategories
-    child.loading = true;
-    child.child.loading = true;
-
-    return updateIn(
-      $indicators,
-      {
-        loading: true,
-        child
-      },
-      state
-    );
-  },
-  [actions.gotIndicators]: (state, { payload }) => {
-    const child = get($categories, initialState);
-    // Set categories and subcategories
-    child.loading = false;
-    child.child.loading = false;
-    child.disabled = false;
-    child.child.disabled = true;
-
-    const indicators = {
-      loading: false,
-      loaded: true,
-      data: [],
-      allIndicators: payload,
-      disabled: true,
-      child
-    };
-    return updateIn($indicators, indicators, state);
-  },
-  [actions.selectIndicator]: (state, { payload }) =>
-    updateIn($indicators, { selected: payload }, state),
 
   // Categories
   [actions.gotCategories]: (state, { payload }) =>
@@ -184,29 +146,25 @@ export default {
       },
       state
     ),
-  [actions.selectCategory]: (state, { payload }) => {
-    const child = get($subcategories, state);
-    const { allIndicators } = get($indicators, state);
 
-    const categories = groupBy(allIndicators, 'category.id');
-    const subCategories = (categories[payload.value] || [])
-      .map(i => i.subcategory);
-
-    child.data = uniqBy(subCategories, 'id');
-    child.selected = null;
-    child.disabled = false;
-
-    const indicatorsUpdateState = updateIn(
-      $indicators,
-      { selected: [], disabled: true },
+  // SubCategories
+  [actions.gotSubCategories]: (state, { payload }) =>
+    updateIn(
+      $subcategories,
+      {
+        loading: false,
+        loaded: true,
+        data: payload
+      },
       state
-    );
-    return updateIn(
+    ),
+
+  [actions.selectCategory]: (state, { payload }) =>
+    updateIn(
       $categories,
-      { selected: payload, child },
-      indicatorsUpdateState
-    );
-  },
+      { selected: payload, child: get($subcategories, initialState) },
+      state
+    ),
 
   // Subategories
   [actions.gotSubCategories]: (state, { payload }) =>
@@ -219,33 +177,41 @@ export default {
       },
       state
     ),
-  [actions.selectSubcategory]: (state, { payload }) => {
-    const indicators = { ...get($indicators, state) };
-    const allIndicators = [...indicators.allIndicators];
-    const subcategories = groupBy(allIndicators, 'subcategory.id');
-    const indicatorSelected = (subcategories[payload.value] || [])
-      .map(i => ({ value: i.id, label: i.name }));
-
-    indicators.data = indicatorSelected || [];
-    indicators.disabled = false;
-
-    const filters = filtersSelector(state);
-    const indicatorsFilter = _find(filters, { name: 'indicators' });
-    if (indicatorsFilter && indicatorsFilter.selected === 'all') {
-      indicators.selected = mapFilter(indicatorSelected);
-    }
-
-    const updatedIndicators = updateIn($indicators, indicators, state);
-
-    const child = get($timeseries, initialState);
-    const newState = updateIn(
+  [actions.selectSubcategory]: (state, { payload }) =>
+    updateIn(
       $subcategories,
-      { selected: payload, child },
-      updatedIndicators
-    );
+      { selected: payload, child: get($indicators, initialState) },
+      state
+    ),
 
-    return newState;
+  // Indicators
+  [actions.fetchIndicators]: state =>
+    updateIn(
+      $indicators,
+      {
+        loading: true
+      },
+      state
+    ),
+
+  [actions.gotIndicators]: (state, { payload }) => {
+    const filters = filtersSelector(state);
+    const indicatorsFilter = find(filters, { name: 'indicators' });
+    const indicators = {
+      loading: false,
+      loaded: true,
+      data: payload,
+      selected:
+        indicatorsFilter && indicatorsFilter.selected === 'all'
+          ? mapFilter(payload)
+          : [],
+      child: get($timeseries, initialState)
+    };
+
+    return updateIn($indicators, indicators, state);
   },
+  [actions.selectIndicator]: (state, { payload }) =>
+    updateIn($indicators, { selected: payload }, state),
 
   // Timeseries
   [actions.fetchTimeseries]: state =>

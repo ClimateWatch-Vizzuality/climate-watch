@@ -60,6 +60,8 @@ class VizCreator extends Component {
       models,
       scenarios,
       indicators,
+      categories,
+      subcategories,
       timeseries
     } = props;
 
@@ -68,6 +70,8 @@ class VizCreator extends Component {
       fetchLocations,
       fetchModels,
       fetchScenarios,
+      fetchCategories,
+      fetchSubCategories,
       fetchIndicators,
       fetchTimeseries
     } = props;
@@ -90,26 +94,40 @@ class VizCreator extends Component {
             }
 
             if (scenarios.selected && scenarios.selected.length > 0) {
-              if (!indicators.loading && !indicators.loaded) {
-                fetchIndicators({
-                  location: locations.selected.value,
+              if (!categories.loading && !categories.loaded) {
+                fetchCategories({
+                  locations: locations.selected.value,
                   scenarios: scenarios.selected
                 });
               }
-              if (indicators.selected && indicators.selected.length > 0) {
-                const hasChanges =
-                  this.props.indicators.selected &&
-                  indicators.selected &&
-                  this.props.indicators.selected.length !==
-                    indicators.selected.length;
-                const notFetching =
-                  timeseries && !timeseries.loading && !timeseries.loaded;
-                if (hasChanges || notFetching) {
-                  fetchTimeseries({
+
+              if (categories.selected) {
+                if (!subcategories.loading && !subcategories.loaded) {
+                  fetchSubCategories({
+                    category: categories.selected,
                     locations: locations.selected.value,
-                    indicators: indicators.selected,
                     scenarios: scenarios.selected
                   });
+                }
+
+                if (subcategories.selected) {
+                  if (!indicators.loading && !indicators.loaded) {
+                    fetchIndicators({
+                      subcategory: subcategories.selected.value,
+                      locations: locations.selected.value,
+                      scenarios: scenarios.selected
+                    });
+                  }
+                }
+
+                if (indicators.selected && indicators.selected.length > 0) {
+                  if (!timeseries.loading && !timeseries.loaded) {
+                    fetchTimeseries({
+                      locations: locations.selected.value,
+                      indicators: indicators.selected,
+                      scenarios: scenarios.selected
+                    });
+                  }
                 }
               }
             }
@@ -147,6 +165,8 @@ VizCreator.propTypes = {
   locations: PropTypes.object.isRequired,
   models: PropTypes.object.isRequired,
   scenarios: PropTypes.object.isRequired,
+  categories: PropTypes.object.isRequired,
+  subcategories: PropTypes.object.isRequired,
   indicators: PropTypes.object.isRequired,
   timeseries: PropTypes.object,
   fetchDatasets: PropTypes.func.isRequired,
@@ -155,6 +175,8 @@ VizCreator.propTypes = {
   fetchModels: PropTypes.func.isRequired,
   fetchScenarios: PropTypes.func.isRequired,
   fetchIndicators: PropTypes.func.isRequired,
+  fetchCategories: PropTypes.func.isRequired,
+  fetchSubCategories: PropTypes.func.isRequired,
   fetchTimeseries: PropTypes.func.isRequired
 };
 

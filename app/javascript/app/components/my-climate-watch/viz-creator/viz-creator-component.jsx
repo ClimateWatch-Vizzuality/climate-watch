@@ -187,7 +187,7 @@ const VizCreator = props => {
     chartData,
     filters,
     updateVisualisationName,
-    saveVisualisation,
+    gotVisualisation,
     handleFilterSelect
   } = props;
 
@@ -209,7 +209,7 @@ const VizCreator = props => {
               timeseries={timeseries}
               chartData={chartData}
               onNameChange={updateVisualisationName}
-              onSaveClick={saveVisualisation}
+              onSaveClick={gotVisualisation}
             />
           )}
         </ul>
@@ -230,7 +230,7 @@ VizCreator.propTypes = {
   chartData: PropTypes.object,
   filters: PropTypes.object,
   updateVisualisationName: PropTypes.func.isRequired,
-  saveVisualisation: PropTypes.func.isRequired,
+  gotVisualisation: PropTypes.func.isRequired,
   handleFilterSelect: PropTypes.func.isRequired
 };
 

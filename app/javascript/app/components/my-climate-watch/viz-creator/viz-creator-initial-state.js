@@ -32,20 +32,19 @@ export default {
             loading: false,
             loaded: false,
             child: {
-              name: 'indicators',
+              name: 'categories',
               selected: null,
               data: [],
-              allIndicators: [],
               loading: false,
               loaded: false,
               child: {
-                name: 'categories',
+                name: 'subcategories',
                 selected: null,
                 data: [],
                 loading: false,
                 loaded: false,
                 child: {
-                  name: 'subcategories',
+                  name: 'indicators',
                   selected: null,
                   data: [],
                   loading: false,
