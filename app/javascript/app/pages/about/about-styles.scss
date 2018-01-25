@@ -17,10 +17,18 @@
   height: 50px;
   pointer-events: none;
   position: absolute;
+
+  @media screen and (min-width: 900px) {
+    display: none;
+  }
 }
 
 .header {
   background: linear-gradient(to top, $theme-color 25%, transparent);
+
+  @media screen and (min-width: 1230px) {
+    background: none;
+  }
 }
 
 .title {
