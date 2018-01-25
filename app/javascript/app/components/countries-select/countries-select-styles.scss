@@ -14,8 +14,11 @@
 .content {
   @extend %grid;
 
-  grid-template: 1fr / 1fr 3fr;
   grid-row-gap: 20px;
+
+  @media #{$tablet-landscape} {
+    grid-template: 1fr / 1fr 3fr;
+  }
 
   > * {
     &:first-child {
@@ -34,6 +37,15 @@
   }
 }
 
+.searchTitle {
+  color: $theme-color;
+  font-size: $font-size-m;
+
+  @media #{$tablet-landscape} {
+    display: none;
+  }
+}
+
 .search {
   grid-column: span 2;
 }
@@ -43,5 +55,12 @@
 }
 
 .list {
+  font-size: $font-size-m;
   max-height: 450px;
+  grid-column: span 2;
+
+  @media #{$tablet-landscape} {
+    grid-column: span 1;
+    font-size: $font-size;
+  }
 }
