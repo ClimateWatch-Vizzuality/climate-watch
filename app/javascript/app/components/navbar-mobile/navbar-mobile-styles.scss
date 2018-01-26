@@ -4,9 +4,10 @@
   position: fixed;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 60px;
   width: 100%;
-  padding-left: $gutter-padding;
+  padding: 0 $gutter-padding;
   background: white;
   z-index: 20;
   border-bottom: 1px solid $gray;
