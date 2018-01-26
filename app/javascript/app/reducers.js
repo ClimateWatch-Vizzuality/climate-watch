@@ -1,6 +1,7 @@
 /* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
+import { handleModule } from 'redux-tools';
 
 // Providers
 import * as countriesProvider from 'providers/countries-provider';
@@ -83,7 +84,7 @@ const componentsReducers = {
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
   countryNDCOverview: handleActions(countryNDCOverviewComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
-  hamburger: handleActions(HamburgerComponent)
+  hamburger: handleModule(HamburgerComponent)
 };
 
 export default combineReducers({

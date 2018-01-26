@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// import Icon from 'component/icon';
+// import arrow from 'assets/icons/arrow-down-tiny.svg';
+
 import styles from './hamburger-styles.scss';
 
 const Hamburger = ({ isOpen, openMenu, closeMenu }) => (
@@ -12,11 +15,17 @@ const Hamburger = ({ isOpen, openMenu, closeMenu }) => (
         onClick={() => closeMenu()}
         tabIndex="0"
       >
-        is Open
+        isopen
+        {/* <Icon icon={arrow} className={styles.arrowIcon} /> */}
       </div>
     )}
     {!isOpen && (
-      <div role="button" onClick={() => openMenu()} tabIndex="0">
+      <div
+        role="button"
+        className={styles.button}
+        onClick={() => openMenu()}
+        tabIndex="0"
+      >
         is Closed
       </div>
     )}

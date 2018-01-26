@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { TabletLandscape } from 'components/responsive';
 import Nav from 'components/nav';
 import ToolsNav from 'components/tools-nav';
 
@@ -12,7 +13,10 @@ class NavBar extends PureComponent {
     const { routes } = this.props;
     return (
       <div className={cx(layout.content, styles.navbar)}>
-        <Nav routes={routes} isRendered />
+        <Nav routes={routes} allowNested={false} />
+        <TabletLandscape>
+          <Nav routes={routes} isRendered />
+        </TabletLandscape>
         <ToolsNav />
       </div>
     );
