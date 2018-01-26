@@ -12,7 +12,7 @@ const NavBarMobile = () => (
     <NavLink exact to="/">
       <Icon className={styles.logo} icon={cwLogo} />
     </NavLink>
-    <Hamburger />
+    <Hamburger text={'MENU'} />
   </div>
 );
 
