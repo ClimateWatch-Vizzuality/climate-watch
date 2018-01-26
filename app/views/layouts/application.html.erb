@@ -39,6 +39,11 @@
     <%= stylesheet_link_tag 'application', media: 'all',
       'data-turbolinks-track': 'reload' %>
     <script><%= raw "window.__data = #{@data.to_json};" %></script>
+
+    <% if @is_contained %>
+      <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@3.5.1/js/iframeResizer.contentWindow.min.js"></script>
+    <% end %>
+
     <% if @is_production %>
       <%= stylesheet_pack_tag 'main' %>
     <% end %>
