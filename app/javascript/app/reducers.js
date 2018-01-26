@@ -67,6 +67,7 @@ import * as countryGhgEmissionsComponent from 'components/country/country-ghg-em
 import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
 import * as countryNDCOverviewComponent from 'components/country/country-ndc-overview';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
+import * as HamburgerComponent from 'components/hamburger';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -81,7 +82,8 @@ const componentsReducers = {
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
   countryNDCOverview: handleActions(countryNDCOverviewComponent),
-  ndcSdg: handleActions(ndcSdgLinkagesComponent)
+  ndcSdg: handleActions(ndcSdgLinkagesComponent),
+  hamburger: handleActions(HamburgerComponent)
 };
 
 export default combineReducers({
