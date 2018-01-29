@@ -1,14 +1,17 @@
 @import '~styles/settings.scss';
 
+.anchorContainer {
+  position: relative;
+}
+
 .anchorNav {
   display: flex;
   align-items: center;
-  margin-top: 15px;
   overflow-x: scroll;
-  width: 110%;
-  padding-left: 10%;
+  width: 100%;
+  margin-top: 15px;
+  padding-left: $gutter-padding;
   position: relative;
-  left: -10%;
 
   &::-webkit-scrollbar {
     display: none;
@@ -16,9 +19,6 @@
 
   @media #{$tablet-landscape} {
     overflow-x: none;
-    width: 100%;
-    padding-left: 0;
-    left: 0;
   }
 }
 
@@ -27,5 +27,26 @@
   padding: 15px 0;
   text-decoration: none;
   position: relative;
-  min-width: 170px;
+  display: inline-flex;
+  flex-shrink: 0;
+
+  &:last-child {
+    padding-right: $gutter-padding;
+  }
+}
+
+.gradient {
+  z-index: 5;
+  width: 100%;
+  height: 50px;
+  pointer-events: none;
+  position: absolute;
+  display: block;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  @media #{$tablet-landscape} {
+    display: none;
+  }
 }

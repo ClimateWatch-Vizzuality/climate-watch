@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
@@ -14,19 +13,17 @@ import styles from './about-styles.scss';
 
 const About = ({ route, anchorLinks, query }) => (
   <div>
+    <MetaDescription descriptionContext={ABOUT} subtitle="About" />
+    <SocialMetadata descriptionContext={ABOUT} href={location.href} />
     <Header route={route}>
-      <div className={styles.gradient} />
-      <div className={cx(layout.content, styles.header)}>
-        <MetaDescription descriptionContext={ABOUT} subtitle="About" />
-        <SocialMetadata descriptionContext={ABOUT} href={location.href} />
-        <Intro title="About" />
-        <AnchorNav
-          useRoutes
-          links={anchorLinks}
-          query={query}
-          theme={anchorNavRegularTheme}
-        />
-      </div>
+      <Intro title="About" className={layout.content} />
+      <AnchorNav
+        useRoutes
+        links={anchorLinks}
+        query={query}
+        theme={anchorNavRegularTheme}
+        gradientColor={route.headerColor}
+      />
     </Header>
     <div className={styles.wrapper}>
       <div className={layout.content}>{renderRoutes(route.routes)}</div>
