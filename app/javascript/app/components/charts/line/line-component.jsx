@@ -8,7 +8,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Label
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
@@ -31,7 +32,7 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
   </g>
 );
 
-const CustomizedYAxisTick = ({ index, x, y, payload }) => (
+const CustomizedYAxisTick = ({ index, x, y, payload, unit }) => (
   <g transform={`translate(${x},${y})`}>
     <text
       x="0"
@@ -45,7 +46,7 @@ const CustomizedYAxisTick = ({ index, x, y, payload }) => (
       {index === 0 && payload.value >= 0 ? (
         '0'
       ) : (
-        `${format('.2s')(payload.value)}t`
+        `${format(unit ? '.2r' : '.2s')(payload.value)}${unit ? '' : 't'}`
       )}
     </text>
   </g>
@@ -64,7 +65,22 @@ class ChartLine extends PureComponent {
   };
 
   render() {
-    const { config, data, height, domain } = this.props;
+    const { config, data, height, domain, espGraph } = this.props;
+    const unit =
+      config && config.axes && config.axes.yLeft && config.axes.yLeft.unit
+        ? config.axes.yLeft.unit
+        : null;
+    const yAxisLabel = (
+      <Label
+        position="top"
+        offset={20}
+        content={() => (
+          <text x="8" y="20">
+            {unit}
+          </text>
+        )}
+      />
+    );
     return (
       <ResponsiveContainer height={height}>
         <LineChart
@@ -81,9 +97,12 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={<CustomizedYAxisTick unit={'CO2e'} />}
+            tick={<CustomizedYAxisTick unit={unit} />}
             domain={domain || ['0', 'auto']}
-          />
+          >
+            {espGraph && yAxisLabel}
+          </YAxis>
+
           <CartesianGrid vertical={false} />
           <Tooltip
             isAnimationActive={false}
@@ -124,7 +143,8 @@ CustomizedYAxisTick.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   index: PropTypes.number,
-  payload: PropTypes.object
+  payload: PropTypes.object,
+  unit: PropTypes.string
 };
 
 ChartLine.propTypes = {
@@ -132,12 +152,14 @@ ChartLine.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  domain: PropTypes.array
+  domain: PropTypes.array,
+  espGraph: PropTypes.bool.isRequired
 };
 
 ChartLine.defaultProps = {
   height: '100%',
-  onMouseMove: () => {}
+  onMouseMove: () => {},
+  espGraph: false
 };
 
 export default ChartLine;
