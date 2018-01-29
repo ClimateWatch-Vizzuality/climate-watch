@@ -111,6 +111,7 @@ class ChartLine extends PureComponent {
             padding={{ left: 15, right: 20 }}
             tickSize={8}
             domain={domain && domain.x}
+            interval="preserveStartEnd"
           />
           <YAxis
             axisLine={false}
@@ -175,9 +176,9 @@ ChartLine.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  domain: PropTypes.object,
   forceTwoDecimals: PropTypes.bool,
   margin: PropTypes.object,
+  domain: PropTypes.array,
   espGraph: PropTypes.bool.isRequired
 };
 
