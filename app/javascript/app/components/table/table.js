@@ -50,6 +50,10 @@ class TableContainer extends PureComponent {
       : dataSorted;
   };
 
+  toggleOptionsOpen = () => {
+    this.setState(state => ({ optionsOpen: !state.optionsOpen }));
+  };
+
   handleSortChange = ({ sortBy, sortDirection }) => {
     const { data } = this.state;
     const sortedData = this.getDataSorted(data, sortBy, sortDirection);
@@ -80,7 +84,8 @@ class TableContainer extends PureComponent {
       handleSortChange: this.handleSortChange,
       handleColumnChange: this.handleColumnChange,
       setOptionsOpen: this.setOptionsOpen,
-      setOptionsClose: this.setOptionsClose
+      setOptionsClose: this.setOptionsClose,
+      toggleOptionsOpen: this.toggleOptionsOpen
     });
   }
 }

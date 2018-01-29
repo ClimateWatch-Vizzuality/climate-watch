@@ -25,6 +25,7 @@ class SimpleTable extends PureComponent {
       fullTextColumns,
       setOptionsOpen,
       setOptionsClose,
+      toggleOptionsOpen,
       optionsOpen
     } = this.props;
 
@@ -38,7 +39,13 @@ class SimpleTable extends PureComponent {
         )}
       >
         {hasColumnSelectedOptions && (
-          <div onMouseEnter={setOptionsOpen} onMouseLeave={setOptionsClose}>
+          <div
+            role="button"
+            tabIndex={0}
+            onTouchEnd={toggleOptionsOpen}
+            onMouseEnter={setOptionsOpen}
+            onMouseLeave={setOptionsClose}
+          >
             <MultiSelect
               parentClassName={styles.columnSelector}
               values={activeColumns || []}
@@ -102,6 +109,7 @@ SimpleTable.propTypes = {
   handleSortChange: PropTypes.func.isRequired,
   setOptionsOpen: PropTypes.func.isRequired,
   setOptionsClose: PropTypes.func.isRequired,
+  toggleOptionsOpen: PropTypes.func.isRequired,
   fullTextColumns: PropTypes.array // 'Columns with full text, no ellipsis'
 };
 
