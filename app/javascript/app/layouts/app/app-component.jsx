@@ -20,8 +20,10 @@ class App extends PureComponent {
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
-        <NavBarMobile />
-        <NavBar routes={navRoutes} />
+        <NavBarMobile routes={navRoutes} />
+        <TabletLandscape>
+          <NavBar routes={navRoutes} />
+        </TabletLandscape>
         {renderRoutes(route.routes.filter(r => r.path))}
         <TabletLandscape>
           <Footer routes={navRoutes} />
