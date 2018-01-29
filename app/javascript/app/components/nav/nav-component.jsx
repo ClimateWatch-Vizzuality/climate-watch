@@ -23,6 +23,7 @@ class Nav extends PureComponent {
       isRendered,
       allowNested
     } = this.props;
+
     const showLogo = !hideLogo && location.pathname !== '/';
     return (
       <nav className={cx(styles.navbar, className)}>

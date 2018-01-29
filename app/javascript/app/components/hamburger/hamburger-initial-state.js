@@ -1,3 +1,3 @@
 export default {
-  isOpen: true
+  isOpen: false
 };

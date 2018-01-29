@@ -1,7 +1,7 @@
 @import '~styles/layout.scss';
 
 .navbar {
-  position: relative;
+  position: fixed;
   top: 60px;
   display: flex;
   flex-direction: column;
@@ -9,8 +9,10 @@
   justify-content: space-between;
   height: calc(100vh - 60px);
   background-color: $white;
+  z-index: 11;
 
   @media #{$tablet-landscape} {
+    position: relative;
     flex-direction: row;
     align-items: center;
     height: $navbar-height;
