@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'components/modal/modal-component';
-import ModalHeader from 'components/modal/modal-header-component';
+import CustomModal from 'components/modal/modal-component';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 
@@ -111,17 +110,16 @@ class ModalMetadata extends PureComponent {
   render() {
     const { isOpen, title, tabTitles } = this.props;
     return (
-      <Modal isOpen={isOpen} onRequestClose={this.handleOnRequestClose}>
-        {title && (
-          <ModalHeader
-            title={title}
-            tabTitles={tabTitles}
-            selectedIndex={this.state.selectedIndex}
-            handleTabIndexChange={i => this.setState({ selectedIndex: i })}
-          />
-        )}
+      <CustomModal
+        isOpen={isOpen}
+        title={title}
+        tabTitles={tabTitles}
+        selectedIndex={this.state.selectedIndex}
+        onRequestClose={this.handleOnRequestClose}
+        handleTabIndexChange={i => this.setState({ selectedIndex: i })}
+      >
         {this.getContent()}
-      </Modal>
+      </CustomModal>
     );
   }
 }

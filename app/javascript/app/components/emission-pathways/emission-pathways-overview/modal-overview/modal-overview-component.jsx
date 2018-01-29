@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
-import ModalHeader from 'components/modal/modal-header-component';
 import NoContent from 'components/no-content';
 import startCase from 'lodash/startCase';
 import styles from './modal-overview-styles.scss';
@@ -41,8 +40,11 @@ class ModalOverview extends PureComponent {
   render() {
     const { isOpen, title } = this.props;
     return (
-      <Modal isOpen={isOpen} onRequestClose={this.handleOnRequestClose}>
-        <ModalHeader title={title} />
+      <Modal
+        isOpen={isOpen}
+        title={title}
+        onRequestClose={this.handleOnRequestClose}
+      >
         {this.renderData()}
       </Modal>
     );

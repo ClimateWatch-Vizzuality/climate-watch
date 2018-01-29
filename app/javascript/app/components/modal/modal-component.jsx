@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import Button from 'components/button';
-import Icon from 'components/icon';
+import cx from 'classnames';
 
-import closeIcon from 'assets/icons/sidebar-close.svg';
+import ModalHeader from './modal-header-component';
 import styles from './modal-styles.scss';
 
 class CustomModal extends PureComponent {
@@ -12,22 +11,17 @@ class CustomModal extends PureComponent {
   render() {
     const {
       isOpen,
-      onRequestClose,
       customStyles,
       contentLabel,
+      tabTitles,
       children
     } = this.props;
     return (
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={onRequestClose}
-        style={customStyles}
-        contentLabel={contentLabel}
-      >
-        <Button onClick={onRequestClose} className={styles.closeBtn} square>
-          <Icon icon={closeIcon} className={styles.close} />
-        </Button>
-        {children}
+      <Modal isOpen={isOpen} style={customStyles} contentLabel={contentLabel}>
+        <ModalHeader {...this.props} />
+        <div className={cx(styles.content, { [styles.withTabs]: !!tabTitles })}>
+          {children}
+        </div>
       </Modal>
     );
   }
@@ -35,8 +29,8 @@ class CustomModal extends PureComponent {
 
 CustomModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  onRequestClose: PropTypes.func.isRequired,
   contentLabel: PropTypes.string,
+  tabTitles: PropTypes.array,
   customStyles: PropTypes.object,
   children: PropTypes.node
 };
