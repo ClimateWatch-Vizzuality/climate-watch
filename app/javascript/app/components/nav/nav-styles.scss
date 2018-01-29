@@ -31,10 +31,13 @@
   font-size: $font-size-s;
   font-weight: $font-weight-bold;
   letter-spacing: 1px;
-  margin-right: 40px;
-  text-decoration: none;
-  position: relative;
-  height: 100%;
+
+  @media #{$tablet-landscape} {
+    margin-right: 40px;
+    text-decoration: none;
+    position: relative;
+    height: 100%;
+  }
 
   &.active::after {
     content: "";
