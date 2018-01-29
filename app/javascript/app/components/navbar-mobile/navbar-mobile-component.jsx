@@ -19,13 +19,19 @@ const NavBarMobile = ({ routes, hamburgerIsOpen }) => (
       <NavLink exact to="/">
         <Icon className={styles.logo} icon={cwLogo} />
       </NavLink>
-      <Hamburger text={'MENU'} />
+      <Hamburger
+        text={'MENU'}
+        className={cx(
+          styles.hamburgerIcon,
+          hamburgerIsOpen ? styles.isOpen : ''
+        )}
+      />
     </div>
     {hamburgerIsOpen && (
       <div className={styles.fullMenu}>
         <Nav routes={routes} allowNested={false} className={styles.navMenu} />
         <div className={styles.toolsContainer}>
-          <ToolsNav />
+          <ToolsNav className={styles.tools} />
           <Contact />
         </div>
       </div>

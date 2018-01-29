@@ -3,12 +3,13 @@ import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
 import ShareMenu from 'components/share-menu';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 import download from 'assets/icons/download.svg';
 import styles from './tools-nav-styles.scss';
 
-const ToolsNav = () => (
-  <div className={styles.toolsNav}>
+const ToolsNav = ({ className }) => (
+  <div className={cx(styles.toolsNav, className)}>
     <NavLink
       className={cx(styles.link, styles.disabled)}
       activeClassName={styles.linkActive}
@@ -28,5 +29,9 @@ const ToolsNav = () => (
     <ShareMenu className={styles.shareButton} />
   </div>
 );
+
+ToolsNav.propTypes = {
+  className: PropTypes.string
+};
 
 export default ToolsNav;

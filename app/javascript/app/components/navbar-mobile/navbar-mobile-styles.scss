@@ -34,6 +34,17 @@
   }
 }
 
+.hamburgerIcon {
+  color: $white;
+  fill: $white;
+
+  &.isScrolled,
+  &.isOpen {
+    color: $theme-color;
+    fill: $theme-color;
+  }
+}
+
 .fullMenu {
   position: fixed;
   z-index: 20;
@@ -53,4 +64,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.tools {
+  border: none;
 }
