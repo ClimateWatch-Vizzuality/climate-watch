@@ -43,6 +43,15 @@ const AXES_CONFIG = {
   }
 };
 
+const DEFAULT_SELECTIONS = {
+  model: 'GCAM',
+  subcategory: {
+    best: 'GHG Emissions by gas with LULUCF',
+    secondBest: 'Total GHG Emissions'
+  },
+  indicator: 'CO2'
+};
+
 // meta data for selectors
 const getLocations = state => state.locations || null;
 const getModels = state => state.models || null;
@@ -118,7 +127,9 @@ export const getModelSelected = createSelector(
   (models, modelSelected) => {
     if (!models) return null;
     if (!modelSelected) {
-      const defaultModel = models.find(m => m.label === 'GCAM');
+      const defaultModel = models.find(
+        m => m.label === DEFAULT_SELECTIONS.model
+      );
       return defaultModel || models[0];
     }
     return models.find(m => modelSelected === m.value);
@@ -225,8 +236,12 @@ export const getSubcategorySelected = createSelector(
     if (!subcategories) return null;
     if (!subcategorySelected) {
       const defaultSubcategory =
-        subcategories.find(s => s.label === 'GHG Emissions by gas') ||
-        subcategories.find(s => s.label === 'Total GHG Emissions');
+        subcategories.find(
+          s => s.label === DEFAULT_SELECTIONS.subcategory.best
+        ) ||
+        subcategories.find(
+          s => s.label === DEFAULT_SELECTIONS.subcategory.secondBest
+        );
       return defaultSubcategory || subcategories[0];
     }
     return subcategories.find(s => subcategorySelected === s.value);
@@ -258,7 +273,9 @@ export const getIndicatorSelected = createSelector(
   (indicators, indicatorSelected) => {
     if (!indicators || !indicators.length) return null;
     if (!indicatorSelected) {
-      const defaultIndicator = indicators.find(i => i.label === 'CO2');
+      const defaultIndicator = indicators.find(
+        i => i.label === DEFAULT_SELECTIONS.indicator
+      );
       return defaultIndicator || indicators[0];
     }
     return indicators.find(i => indicatorSelected === i.value);
