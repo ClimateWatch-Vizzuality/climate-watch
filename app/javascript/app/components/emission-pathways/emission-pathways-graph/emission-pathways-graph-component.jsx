@@ -52,7 +52,7 @@ class EmissionPathwayGraph extends PureComponent {
           <div className={styles.col5}>
             <h2 className={styles.title}>Emission Pathways</h2>
             <ButtonGroup
-              className={styles.colEnd}
+              className={styles.btnGroup}
               onInfoClick={handleInfoClick}
               shareUrl="/embed/emission-pathways"
               analyticsGraphName="Emission pathway"

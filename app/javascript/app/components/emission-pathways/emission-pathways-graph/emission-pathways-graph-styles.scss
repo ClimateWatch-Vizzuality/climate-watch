@@ -18,7 +18,9 @@ $min-height: 450px;
   margin-bottom: 40px;
 }
 
-.colEnd {
+.btnGroup {
+  margin-top: 25px; // To fix IE margin top button
+  -ms-grid-column: 9 !important; // To fix IE grid position
   grid-column-end: -1;
 }
 

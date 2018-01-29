@@ -35,4 +35,6 @@
 .searchBox,
 .uploadButton {
   grid-column-end: -1;
+  margin-top: 25px; // To fix IE margin top button grid
+  -ms-grid-column: 7 !important; // To fix IE grid position
 }
