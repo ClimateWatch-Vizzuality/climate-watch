@@ -22,7 +22,10 @@ class SimpleTable extends PureComponent {
       sortBy,
       sortDirection,
       handleSortChange,
-      fullTextColumns
+      fullTextColumns,
+      setOptionsOpen,
+      setOptionsClose,
+      optionsOpen
     } = this.props;
 
     if (!data.length) return null;
@@ -35,15 +38,18 @@ class SimpleTable extends PureComponent {
         )}
       >
         {hasColumnSelectedOptions && (
-          <MultiSelect
-            parentClassName={styles.columnSelector}
-            values={activeColumns || []}
-            options={columnsOptions || []}
-            onMultiValueChange={handleColumnChange}
-            hideResetButton
-          >
-            <span className={styles.selectorValue}>...</span>
-          </MultiSelect>
+          <div onMouseEnter={setOptionsOpen} onMouseLeave={setOptionsClose}>
+            <MultiSelect
+              parentClassName={styles.columnSelector}
+              values={activeColumns || []}
+              options={columnsOptions || []}
+              onMultiValueChange={handleColumnChange}
+              hideResetButton
+              open={optionsOpen}
+            >
+              <span className={styles.selectorValue}>...</span>
+            </MultiSelect>
+          </div>
         )}
         <AutoSizer disableHeight>
           {({ width }) => (
@@ -84,6 +90,7 @@ class SimpleTable extends PureComponent {
 
 SimpleTable.propTypes = {
   data: PropTypes.array,
+  optionsOpen: PropTypes.bool,
   hasColumnSelect: PropTypes.bool,
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
@@ -93,6 +100,8 @@ SimpleTable.propTypes = {
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   handleSortChange: PropTypes.func.isRequired,
+  setOptionsOpen: PropTypes.func.isRequired,
+  setOptionsClose: PropTypes.func.isRequired,
   fullTextColumns: PropTypes.array // 'Columns with full text, no ellipsis'
 };
 

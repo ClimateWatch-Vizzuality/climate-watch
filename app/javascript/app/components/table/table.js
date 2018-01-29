@@ -15,6 +15,7 @@ class TableContainer extends PureComponent {
     const columns = defaultColumns || Object.keys(data[0]);
     this.state = {
       data,
+      optionsOpen: false,
       sortBy: Object.keys(data[0])[0],
       sortDirection: SortDirection.ASC,
       activeColumns: columns.map(d => ({
@@ -33,6 +34,14 @@ class TableContainer extends PureComponent {
       this.setState({ data: nextProps.data });
     }
   }
+
+  setOptionsClose = () => {
+    this.setState({ optionsOpen: false });
+  };
+
+  setOptionsOpen = () => {
+    this.setState({ optionsOpen: true });
+  };
 
   getDataSorted = (data, sortBy, sortDirection) => {
     const dataSorted = _sortBy(data, sortBy);
@@ -57,17 +66,21 @@ class TableContainer extends PureComponent {
       sortBy,
       sortDirection,
       activeColumns,
-      columnsOptions
+      columnsOptions,
+      optionsOpen
     } = this.state;
     return createElement(Component, {
       ...this.props,
       data,
       sortBy,
+      optionsOpen,
       sortDirection,
       activeColumns,
       columnsOptions,
       handleSortChange: this.handleSortChange,
-      handleColumnChange: this.handleColumnChange
+      handleColumnChange: this.handleColumnChange,
+      setOptionsOpen: this.setOptionsOpen,
+      setOptionsClose: this.setOptionsClose
     });
   }
 }
