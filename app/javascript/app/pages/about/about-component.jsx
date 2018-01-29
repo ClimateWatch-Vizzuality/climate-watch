@@ -13,18 +13,17 @@ import styles from './about-styles.scss';
 
 const About = ({ route, anchorLinks, query }) => (
   <div>
+    <MetaDescription descriptionContext={ABOUT} subtitle="About" />
+    <SocialMetadata descriptionContext={ABOUT} href={location.href} />
     <Header route={route}>
-      <div className={layout.content}>
-        <MetaDescription descriptionContext={ABOUT} subtitle="About" />
-        <SocialMetadata descriptionContext={ABOUT} href={location.href} />
-        <Intro title="About" />
-        <AnchorNav
-          useRoutes
-          links={anchorLinks}
-          query={query}
-          theme={anchorNavRegularTheme}
-        />
-      </div>
+      <Intro title="About" className={layout.content} />
+      <AnchorNav
+        useRoutes
+        links={anchorLinks}
+        query={query}
+        theme={anchorNavRegularTheme}
+        gradientColor={route.headerColor}
+      />
     </Header>
     <div className={styles.wrapper}>
       <div className={layout.content}>{renderRoutes(route.routes)}</div>

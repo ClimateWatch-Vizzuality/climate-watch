@@ -50,6 +50,7 @@ class Country extends PureComponent {
               links={anchorLinks}
               className={layout.content}
               theme={anchorNavRegularTheme}
+              gradientColor={route.headerColor}
             />
           </Sticky>
         </Header>
