@@ -90,9 +90,13 @@ class ChartLine extends PureComponent {
         >
           <XAxis
             dataKey="x"
+            scale="linear"
+            type="number"
             tick={<CustomizedXAxisTick />}
+            domain={domain || ['0', 'auto']}
             padding={{ left: 15, right: 20 }}
             tickSize={8}
+            interval="preserveStartEnd"
           />
           <YAxis
             axisLine={false}
