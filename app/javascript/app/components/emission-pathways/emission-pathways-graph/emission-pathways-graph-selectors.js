@@ -47,7 +47,8 @@ const DEFAULT_SELECTIONS = {
   model: 'GCAM',
   subcategory: {
     best: 'GHG Emissions by gas with LULUCF',
-    secondBest: 'Total GHG Emissions'
+    secondBest: 'GHG emissions by gas without LULUCF',
+    thirdBest: 'Total GHG Emissions'
   },
   indicator: 'CO2'
 };
@@ -235,13 +236,12 @@ export const getSubcategorySelected = createSelector(
   (subcategories, subcategorySelected) => {
     if (!subcategories) return null;
     if (!subcategorySelected) {
-      const defaultSubcategory =
-        subcategories.find(
-          s => s.label === DEFAULT_SELECTIONS.subcategory.best
-        ) ||
-        subcategories.find(
-          s => s.label === DEFAULT_SELECTIONS.subcategory.secondBest
-        );
+      const defaultSubcategory = subcategories.find(
+        s =>
+          s.label === DEFAULT_SELECTIONS.subcategory.best ||
+          s.label === DEFAULT_SELECTIONS.subcategory.secondBest ||
+          s.label === DEFAULT_SELECTIONS.subcategory.thirdBest
+      );
       return defaultSubcategory || subcategories[0];
     }
     return subcategories.find(s => subcategorySelected === s.value);
