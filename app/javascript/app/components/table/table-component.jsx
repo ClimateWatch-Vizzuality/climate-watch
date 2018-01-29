@@ -22,7 +22,11 @@ class SimpleTable extends PureComponent {
       sortBy,
       sortDirection,
       handleSortChange,
-      fullTextColumns
+      fullTextColumns,
+      setOptionsOpen,
+      setOptionsClose,
+      toggleOptionsOpen,
+      optionsOpen
     } = this.props;
 
     if (!data.length) return null;
@@ -35,15 +39,24 @@ class SimpleTable extends PureComponent {
         )}
       >
         {hasColumnSelectedOptions && (
-          <MultiSelect
-            parentClassName={styles.columnSelector}
-            values={activeColumns || []}
-            options={columnsOptions || []}
-            onMultiValueChange={handleColumnChange}
-            hideResetButton
+          <div
+            role="button"
+            tabIndex={0}
+            onTouchEnd={toggleOptionsOpen}
+            onMouseEnter={setOptionsOpen}
+            onMouseLeave={setOptionsClose}
           >
-            <span className={styles.selectorValue}>...</span>
-          </MultiSelect>
+            <MultiSelect
+              parentClassName={styles.columnSelector}
+              values={activeColumns || []}
+              options={columnsOptions || []}
+              onMultiValueChange={handleColumnChange}
+              hideResetButton
+              open={optionsOpen}
+            >
+              <span className={styles.selectorValue}>...</span>
+            </MultiSelect>
+          </div>
         )}
         <AutoSizer disableHeight>
           {({ width }) => (
@@ -84,6 +97,7 @@ class SimpleTable extends PureComponent {
 
 SimpleTable.propTypes = {
   data: PropTypes.array,
+  optionsOpen: PropTypes.bool,
   hasColumnSelect: PropTypes.bool,
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
@@ -93,6 +107,9 @@ SimpleTable.propTypes = {
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   handleSortChange: PropTypes.func.isRequired,
+  setOptionsOpen: PropTypes.func.isRequired,
+  setOptionsClose: PropTypes.func.isRequired,
+  toggleOptionsOpen: PropTypes.func.isRequired,
   fullTextColumns: PropTypes.array // 'Columns with full text, no ellipsis'
 };
 
