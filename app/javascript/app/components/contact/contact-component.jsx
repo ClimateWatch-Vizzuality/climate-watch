@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import Icon from 'components/Icon';
+import Icon from 'components/icon';
 import contactIcon from 'assets/icons/contact.svg';
 
 import styles from './contact-styles.scss';
