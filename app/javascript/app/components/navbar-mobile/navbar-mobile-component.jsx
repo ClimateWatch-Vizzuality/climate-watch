@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import cx from 'classNames';
+import cx from 'classnames';
 
 import Icon from 'components/icon';
 import Hamburger from 'components/hamburger';
