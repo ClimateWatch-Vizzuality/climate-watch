@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import remove from 'lodash/remove';
+import { sanitize } from 'app/utils';
 import { ESP_BLACKLIST } from 'data/constants';
 
 const getId = stateWithId => stateWithId.id || null;
@@ -20,28 +21,29 @@ export const getModalTitle = createSelector([getOverviewData], data => {
   return data.full_name || 'Overview';
 });
 
-export const parseArraysOverviewData = createSelector(
-  [getOverviewData],
+const parseArraysOverviewData = createSelector([getOverviewData], data => {
+  if (isEmpty(data)) return null;
+  const parsedData = {};
+  Object.keys(data).forEach(key => {
+    parsedData[key] = sanitize(data[key]);
+  });
+  return parsedData;
+});
+
+const removeEmptyFieldsfromData = createSelector(
+  [parseArraysOverviewData],
   data => {
-    if (isEmpty(data)) return null;
-    const parsedData = {};
-    Object.keys(data).forEach(key => {
-      let fieldData = data[key];
-      if (
-        fieldData &&
-        typeof fieldData !== 'string' &&
-        typeof fieldData !== 'number'
-      ) {
-        fieldData = fieldData.join(', ');
-      }
-      parsedData[key] = fieldData;
+    if (!data || isEmpty(data)) return null;
+    const fieldsWithData = {};
+    Object.keys(data).forEach(k => {
+      if (data[k]) fieldsWithData[k] = data[k];
     });
-    return parsedData;
+    return fieldsWithData;
   }
 );
 
 export const filterDataByBlackList = createSelector(
-  [parseArraysOverviewData],
+  [removeEmptyFieldsfromData],
   data => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(
@@ -63,7 +65,12 @@ export const selectOverviewData = createSelector(
         'time_horizon',
         'license'
       ],
-      Scenarios: [],
+      Scenarios: [
+        'model',
+        'mantainer_name',
+        'sectoral_coverage',
+        'time_horizon'
+      ],
       Indicators: []
     };
     return pick(data, overviewFields[category]);
