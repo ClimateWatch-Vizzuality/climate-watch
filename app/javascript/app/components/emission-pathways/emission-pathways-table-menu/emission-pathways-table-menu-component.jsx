@@ -18,9 +18,16 @@ class EmissionPathwaysTableMenu extends PureComponent {
           tabIndex={-1}
         >
           <AnchorNav useRoutes links={routeLinks} theme={anchorNavLightTheme} />
+          <span className={styles.butonDetail}>
+            Want to have your model in Climate Watch?
+          </span>
           {uploadButton && (
-            <Button color="yellow" className={styles.uploadButton}>
-              Upload your model
+            <Button
+              color="yellow"
+              className={styles.uploadButton}
+              href="mailto:ClimateWatch@WRI.org"
+            >
+              Get in touch
             </Button>
           )}
         </div>
