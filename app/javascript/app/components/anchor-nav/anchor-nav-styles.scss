@@ -2,9 +2,7 @@
 
 .anchorContainer {
   position: relative;
-  width: 100%;
-  max-width: $max-width;
-  margin: 0 auto;
+  padding: 0;
 }
 
 .anchorNav {
@@ -18,10 +16,6 @@
 
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  @media #{$tablet-landscape} {
-    overflow-x: none;
   }
 }
 
