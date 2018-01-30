@@ -15,7 +15,7 @@ const NavWithChildMenu = ({ title, options, closeMenu }) => (
         className={styles.link}
         activeClassName={styles.active}
       >
-        {option.label}
+        {option.label.toUpperCase()}
       </NavLink>
     ))}
   </div>
