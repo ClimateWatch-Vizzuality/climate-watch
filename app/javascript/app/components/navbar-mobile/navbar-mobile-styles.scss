@@ -38,7 +38,7 @@
 
   .navMenu {
     height: calc(100vh - 120px);
-    padding-top: $gutter-padding;
+    padding-top: 10px;
   }
 }
 
@@ -50,4 +50,8 @@
 
 .tools {
   border: none;
+
+  > :first-child {
+    margin-left: 0;
+  }
 }
