@@ -25,6 +25,8 @@ import {
 const mapStateToProps = ({ vizCreator }) => ({
   id: vizCreator.id,
   title: vizCreator.title,
+  description: vizCreator.description,
+  creationStatus: vizCreator.creationStatus,
   datasets: datasetsSelector(vizCreator),
   visualisations: visualisationsSelector(vizCreator),
   locations: locationsSelector(vizCreator),

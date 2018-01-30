@@ -1,6 +1,11 @@
 export default {
   creatorIsOpen: false,
   title: '',
+  description: '',
+  creationStatus: {
+    failed: false,
+    fields: []
+  },
   datasets: {
     name: 'datasets',
     selected: null,

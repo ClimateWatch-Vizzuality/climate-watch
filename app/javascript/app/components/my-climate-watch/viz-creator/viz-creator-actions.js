@@ -2,6 +2,7 @@ import { createAction, createThunkAction } from 'redux-tools';
 import { get } from 'js-lenses';
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 import { EPAPI, CWAPI } from 'services/api';
 
 import { actions as visActions } from 'components/my-climate-watch/my-visualisations';
@@ -119,11 +120,11 @@ export const fetchVisualisation = createThunkAction(
     dispatch(fetchVisualisationInit());
     CWAPI.get(`my_cw/visualizations/${VisualisationId}`)
       .then(Visualisation => {
-        dispatch(fetchVisualisationReady(Visualisation));
+        dispatch(gotVisualization(Visualisation));
       })
       .catch(e => {
         console.warn(e);
-        dispatch(fetchVisualisationFail());
+        dispatch(gotVisualizationFail());
       });
   }
 );
@@ -158,46 +159,80 @@ export const selectSubcategory = createAction('selectSubcategory');
 export const gotTimeseries = createAction('gotTimeseries');
 
 export const updateVisualisationName = createAction('updateVisualisationName');
+export const updateVisualisationDescription = createAction(
+  'updateVisualisationDescription'
+);
 
 export const clearVisualisation = createAction('clearVisualisation');
-export const fetchVisualisationInit = createAction('fetchVisualisationInit');
-export const fetchVisualisationReady = createAction('fetchVisualisationReady');
-export const fetchVisualisationFail = createAction('fetchVisualisationFail');
-export const gotVisualisationInit = createAction('gotVisualisationInit');
-export const gotVisualisationReady = createAction('gotVisualisationReady');
-export const gotVisualisationFail = createAction('gotVisualisationFail');
 
-export const gotVisualisation = createThunkAction(
-  'gotVisualisation',
+export const fetchVisualisationInit = createAction('fetchVisualisationInit');
+export const gotVisualization = createAction('gotVisualization');
+export const gotVisualizationFail = createAction('fetchVisualisationFail');
+
+export const saveVisualisationReady = createAction('saveVisualisationReady');
+export const saveVisualisationFail = createAction('saveVisualisationFail');
+
+export const fetchVisualization = createThunkAction(
+  'fetchVisualization',
+  VisualisationId => dispatch => {
+    CWAPI.get(`my_cw/visualizations/${VisualisationId}`)
+      .then(Visualisation => {
+        dispatch(gotVisualization(Visualisation));
+      })
+      .catch(e => {
+        console.warn(e);
+        dispatch(gotVisualizationFail());
+      });
+  }
+);
+
+export const saveVisualisation = createThunkAction(
+  'saveVisualisation',
   ({ id = '' }) => (dispatch, getState) => {
-    dispatch(gotVisualisationInit());
+    // eslint-disable-line
     const { vizCreator } = getState();
-    const visualisation = {
+    let failed = false;
+    if (isEmpty(vizCreator.title)) {
+      failed = true;
+      dispatch(
+        saveVisualisationFail({
+          field: 'title',
+          message: 'Title cannot be empty.'
+        })
+      );
+    }
+    if (isEmpty(vizCreator.description)) {
+      failed = true;
+      dispatch(
+        saveVisualisationFail({
+          field: 'description',
+          message: 'Description cannot be empty.'
+        })
+      );
+    }
+
+    if (failed) return;
+    const payload = {
       visualization: {
         title: vizCreator.title,
-        json_body: vizCreator.datasets
+        json_body: vizCreator.datasets,
+        description: vizCreator.description
       }
     };
 
     const handleResponse = () => {
-      // dispatch(gotVisualisationReady(response));
       dispatch(visActions.fetchVisualisations());
+      dispatch(saveVisualisationReady());
       dispatch(closeCreator());
     };
-    if (id) {
-      CWAPI.patch(`my_cw/visualizations/${id}`, visualisation)
-        .then(handleResponse)
-        .catch(e => {
-          console.warn(e);
-          dispatch(gotVisualisationFail());
-        });
-    } else {
-      CWAPI.post('my_cw/visualizations', visualisation)
-        .then(handleResponse)
-        .catch(e => {
-          console.warn(e);
-          dispatch(gotVisualisationFail());
-        });
-    }
+
+    const verb = id ? 'patch' : 'post';
+    const query = id ? `/${id}` : '';
+    CWAPI[verb](`my_cw/visualizations${query}`, payload)
+      .then(handleResponse)
+      .catch(e => {
+        console.warn(e);
+        dispatch(saveVisualisationFail());
+      });
   }
 );

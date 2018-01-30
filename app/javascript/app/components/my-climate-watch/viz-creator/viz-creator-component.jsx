@@ -4,18 +4,26 @@ import _map from 'lodash/map';
 import upperFirst from 'lodash/upperFirst';
 import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
+import _find from 'lodash/find';
+import Textarea from 'react-textarea-autosize';
 
 import MultiSelect from 'components/multiselect';
+import Fieldset from 'components/fieldset';
 import Dropdown from 'components/dropdown';
 import Search from 'components/search';
 import Button from 'components/button';
 import Loading from 'components/loading';
-import inputTextTheme from 'styles/themes/search/input-text.scss';
+import inputTextTheme from 'styles/themes/search/input-text';
 
 import LineChart from './components/charts/line';
 import SelectableList from './components/selectable-list';
 import CardContent from './components/card-content';
 import styles from './viz-creator-styles';
+
+const findField = (field, coll) => _find(coll, { field });
+const includesField = (field, coll) => Boolean(findField(field, coll));
+const findDescription = (field, coll) =>
+  findField(field, coll) && findField(field, coll).message;
 
 const Step1 = ({ datasets, selectDataset }) => (
   <li className={styles.step}>
@@ -153,27 +161,87 @@ Step3.propTypes = {
   handleFilterSelect: PropTypes.func.isRequired
 };
 
-const Step4 = props => {
-  const { title, chartData, onNameChange, timeseries } = props;
+class ControlledTextArea extends React.Component {
+  render() {
+    const { value, onDescriptionChange, failed, failMessage } = this.props;
+    return (
+      <Fieldset {...{ failed, failMessage }}>
+        <Textarea
+          className={styles.textArea}
+          minRows={8}
+          onChange={e => onDescriptionChange(e.target.value)}
+          placeholder="Add a description"
+          value={value}
+        />
+      </Fieldset>
+    );
+  }
+}
 
-  return (
-    <li className={styles.step}>
+ControlledTextArea.propTypes = {
+  value: PropTypes.string,
+  onDescriptionChange: PropTypes.func.isRequired,
+  failed: PropTypes.bool,
+  failMessage: PropTypes.string
+};
+
+const Step4 = props => {
+  const {
+    title,
+    chartData,
+    onNameChange,
+    onDescriptionChange,
+    timeseries,
+    saveVisualisation,
+    id,
+    description,
+    creationStatus
+  } = props;
+  return [
+    <li className={styles.step} key="step-4-last-li">
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
-      <Search
-        icon={false}
-        placeholder=""
-        value={title}
-        onChange={onNameChange}
-        className={styles.inputText}
-        theme={inputTextTheme}
-      />
+      <Fieldset
+        {...{
+          failed:
+            creationStatus.failed &&
+            includesField('title', creationStatus.fields),
+          failMessage: findDescription('title', creationStatus.fields)
+        }}
+      >
+        <Search
+          icon={false}
+          placeholder=""
+          value={title}
+          onChange={onNameChange}
+          className={styles.inputText}
+          theme={inputTextTheme}
+        />
+      </Fieldset>
       {timeseries.loading ? (
         <Loading light className={styles.timeseriesLoader} />
       ) : (
         <LineChart className={styles.chart} {...chartData} width="90%" />
       )}
+      <ControlledTextArea
+        onDescriptionChange={onDescriptionChange}
+        value={description}
+        failed={
+          creationStatus.failed &&
+          includesField('description', creationStatus.fields)
+        }
+        failMessage={findDescription('description', creationStatus.fields)}
+      />
+    </li>,
+    <li className={styles.saveContainer} key="step-4-button-li">
+      <Button
+        color="yellow"
+        onClick={() => saveVisualisation({ id })}
+        className={styles.saveBtn}
+      >
+        Save
+      </Button>
     </li>
-  );
+  ];
 };
 
 Step4.propTypes = {
@@ -181,13 +249,16 @@ Step4.propTypes = {
   title: PropTypes.string,
   timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
-  onNameChange: PropTypes.func.isRequired
+  onNameChange: PropTypes.func.isRequired,
+  saveVisualisation: PropTypes.func.isRequired,
+  creationStatus: PropTypes.object
 };
 
 const VizCreator = props => {
   const {
     id,
     title,
+    description,
     selectDataset,
     selectVisualisation,
     datasets,
@@ -197,8 +268,10 @@ const VizCreator = props => {
     chartData,
     filters,
     updateVisualisationName,
-    gotVisualisation,
-    handleFilterSelect
+    updateVisualisationDescription,
+    saveVisualisation,
+    handleFilterSelect,
+    creationStatus
   } = props;
 
   return (
@@ -215,20 +288,15 @@ const VizCreator = props => {
           <Step4
             id={id}
             title={title}
+            description={description}
             timeseries={timeseries}
             chartData={chartData}
             onNameChange={updateVisualisationName}
+            onDescriptionChange={updateVisualisationDescription}
+            saveVisualisation={saveVisualisation}
+            creationStatus={creationStatus}
           />
         )}
-        <li className={styles.saveContainer}>
-          <Button
-            color="yellow"
-            onClick={() => gotVisualisation({ id })}
-            className={styles.saveBtn}
-          >
-            Save
-          </Button>
-        </li>
       </ul>
     </div>
   );
@@ -237,6 +305,7 @@ const VizCreator = props => {
 VizCreator.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string,
+  description: PropTypes.string,
   selectDataset: PropTypes.func.isRequired,
   selectVisualisation: PropTypes.func.isRequired,
   datasets: PropTypes.object,
@@ -246,8 +315,10 @@ VizCreator.propTypes = {
   chartData: PropTypes.object,
   filters: PropTypes.object,
   updateVisualisationName: PropTypes.func.isRequired,
-  gotVisualisation: PropTypes.func.isRequired,
-  handleFilterSelect: PropTypes.func.isRequired
+  updateVisualisationDescription: PropTypes.func.isRequired,
+  saveVisualisation: PropTypes.func.isRequired,
+  handleFilterSelect: PropTypes.func.isRequired,
+  creationStatus: PropTypes.object
 };
 
 export default VizCreator;

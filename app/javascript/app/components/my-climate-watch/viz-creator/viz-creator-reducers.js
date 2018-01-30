@@ -1,6 +1,7 @@
 import { get } from 'js-lenses';
 import { assign } from 'app/utils';
 import find from 'lodash/find';
+import uniqBy from 'lodash/uniqBy';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
 import { updateIn, mapFilter } from './viz-creator-utils';
@@ -24,11 +25,14 @@ export default {
     creatorIsOpen: true,
     id: payload.id || null,
     title: payload.title || initialState.title,
+    description: payload.description || initialState.description,
     datasets: payload.datasets || initialState.datasets
   }),
   [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
   [actions.updateVisualisationName]: (state, { payload }) =>
     assign(state, { title: payload }),
+  [actions.updateVisualisationDescription]: (state, { payload }) =>
+    assign(state, { description: payload }),
   [actions.fetchDatasets]: state =>
     updateIn($datasets, { loading: true }, state),
   [actions.gotDatasets]: (state, { payload }) =>
@@ -231,5 +235,25 @@ export default {
         data: payload
       },
       state
-    )
+    ),
+
+  [actions.saveVisualisationFail]: (state, { payload }) => ({
+    ...state,
+    creationStatus: {
+      failed: true,
+      fields: uniqBy(
+        state.creationStatus.fields.concat([
+          {
+            field: payload.field,
+            message: payload.message
+          }
+        ]),
+        'field'
+      )
+    }
+  }),
+  [actions.saveVisualisationReady]: state => ({
+    ...state,
+    creationStatus: initialState.creationStatus
+  })
 };

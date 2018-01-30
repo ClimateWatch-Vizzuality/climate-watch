@@ -10,11 +10,7 @@ import styles from './my-cw-vis-card-styles.scss';
 
 class MyVisCard extends PureComponent {
   handleOnClick = () => {
-    this.props.onClick({
-      id: this.props.data.id,
-      title: this.props.data.title,
-      datasets: this.props.data.json_body
-    });
+    this.props.onClick();
   };
   render() {
     const { data, className } = this.props;

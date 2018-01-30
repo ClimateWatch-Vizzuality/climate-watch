@@ -1,0 +1,17 @@
+
+.fieldsetContainer {
+  border: 1px solid transparent;
+
+  &Failed {
+    border-color: red;
+  }
+}
+
+.fieldsetFailMessage {
+  display: none;
+  color: red;
+
+  &Failed {
+    display: block;
+  }
+}

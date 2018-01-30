@@ -25,7 +25,16 @@ const MyVisualisations = ({
     <ul className={styles.visContainer}>
       {data.map(vis => (
         <li key={vis.id} className={styles.visCard}>
-          <Card data={vis} onClick={openCreator} />
+          <Card
+            data={vis}
+            onClick={() =>
+              openCreator({
+                id: vis.id,
+                title: vis.title,
+                description: vis.description,
+                datasets: vis.json_body
+              })}
+          />
         </li>
       ))}
       <li key="action-card" className={styles.visCard}>

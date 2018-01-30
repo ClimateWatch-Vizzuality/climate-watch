@@ -22,32 +22,8 @@ export const subcategoriesSelector = state => get(lenses.$subcategories, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
 
 export const hasDataSelector = createSelector(
-  datasetsSelector,
-  visualisationsSelector,
-  locationsSelector,
-  modelsSelector,
-  scenariosSelector,
-  indicatorsSelector,
-  categoriesSelector,
-  subcategoriesSelector,
-  (
-    datasets,
-    visualisations,
-    locations,
-    models,
-    scenarios,
-    indicators,
-    categories
-    // subcategories
-  ) =>
-    datasets.selected &&
-    visualisations.selected &&
-    locations.selected &&
-    models.selected &&
-    scenarios.selected &&
-    indicators.selected &&
-    !isEmpty(categories.selected)
-  // subcategories.selected
+  timeseriesSelector,
+  timeseries => timeseries && !isEmpty(timeseries.data)
 );
 
 export const vizTypes = data => data && data['viz-types'];

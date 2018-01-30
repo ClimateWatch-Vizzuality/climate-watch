@@ -1,6 +1,6 @@
 import { ofPath } from 'js-lenses';
 
-const times = (n, s, sep = '|') =>
+export const times = (n, s, sep = '|') =>
   `${s}${sep}`
     .repeat(n)
     .split(sep)

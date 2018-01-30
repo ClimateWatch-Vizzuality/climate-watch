@@ -10,13 +10,6 @@ import initialState from './my-visualisations-initial-state';
 import * as reducers from './my-visualisations-reducers';
 import * as ownActions from './my-visualisations-actions';
 
-const actions = { ...creatorActions, ...ownActions };
-
-const mapStateToProps = ({ visualisations, vizCreator }) => ({
-  ...visualisations,
-  creatorIsOpen: vizCreator.creatorIsOpen
-});
-
 class MyVisualisations extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +26,13 @@ MyVisualisations.propTypes = {
   loading: PropTypes.bool.isRequired,
   fetchVisualisations: PropTypes.func
 };
+
+const actions = { ...creatorActions, ...ownActions };
+
+const mapStateToProps = ({ visualisations, vizCreator }) => ({
+  ...visualisations,
+  creatorIsOpen: vizCreator.creatorIsOpen
+});
 
 export { actions, reducers, initialState };
 
