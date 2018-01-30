@@ -1,22 +1,41 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Tab from 'components/tab';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import closeIcon from 'assets/icons/sidebar-close.svg';
-
+import Tab from 'components/tab';
+import cx from 'classnames';
 import styles from './modal-styles.scss';
 
 class ModalHeader extends PureComponent {
+  renderFakeHeader() {
+    const { title, tabTitles } = this.props;
+    return (
+      <div
+        className={cx(styles.fakeHeaderForSpacing, {
+          [styles.withTabs]: !!tabTitles
+        })}
+      >
+        {title && <h2 className={styles.headerTitle}>{title}</h2>}
+        {tabTitles && (
+          <Tab options={tabTitles} className={styles.fakeHeaderForSpacing} />
+        )}
+      </div>
+    );
+  }
+
   render() {
     const {
       title,
       tabTitles,
       selectedIndex,
       handleTabIndexChange,
-      onRequestClose
+      onRequestClose,
+      fakeHeaderForSpacing
     } = this.props;
-    return (
+    return fakeHeaderForSpacing ? (
+      this.renderFakeHeader()
+    ) : (
       <div className={styles.header}>
         {title && <h2 className={styles.headerTitle}>{title}</h2>}
         {tabTitles && (
@@ -39,7 +58,8 @@ ModalHeader.propTypes = {
   tabTitles: PropTypes.array,
   selectedIndex: PropTypes.number,
   handleTabIndexChange: PropTypes.func,
-  onRequestClose: PropTypes.func.isRequired
+  onRequestClose: PropTypes.func.isRequired,
+  fakeHeaderForSpacing: PropTypes.bool
 };
 
 export default ModalHeader;

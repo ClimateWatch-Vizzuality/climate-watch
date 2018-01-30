@@ -8,20 +8,21 @@ $close-position: 25px;
 }
 
 :global .ReactModal__Content {
-  max-height: initial !important;
+  width: 100% !important;
+  max-height: none !important;
   height: calc(100vh - #{$navbar-height}) !important;
   top: calc(#{$navbar-height} / 2) !important;
-  z-index: 19;
 
-  @media #{$tablet-portrait} {
+  @media #{$tablet-landscape} {
+    width: 770px !important;
     max-height: 640px !important;
     height: calc(100vh - 100px) !important;
     top: auto !important;
-    width: 770px !important;
   }
 }
 
 .header {
+  position: fixed;
   background-color: $light-gray;
   margin: -$modal-padding -40px;
   margin-bottom: 30px;
@@ -29,10 +30,9 @@ $close-position: 25px;
   padding-bottom: 0;
   min-height: 95px;
   border-bottom: solid 1px $border-color;
-  position: fixed;
   width: 100%;
 
-  @media #{$tablet-portrait} {
+  @media #{$tablet-landscape} {
     position: absolute;
   }
 }
@@ -53,27 +53,24 @@ $close-position: 25px;
   top: calc(#{$close-position} + #{$navbar-height});
   z-index: 20;
 
-  @media #{$tablet-portrait} {
+  @media #{$tablet-landscape} {
     position: absolute;
     top: $close-position;
   }
 }
 
 .content {
-  margin-top: 80px;
-  margin-bottom: 50px;
   padding: 0;
+  margin-top: 45px;
+  margin-bottom: -30px;
+}
+
+.fakeHeaderForSpacing {
+  position: relative;
+  opacity: 0;
+  z-index: -1;
 
   &.withTabs {
-    margin-top: 160px;
-  }
-
-  @media #{$tablet-portrait} {
-    margin-top: 90px;
-    margin-bottom: 0;
-
-    &.withTabs {
-      margin-top: 120px;
-    }
+    margin-top: -35px;
   }
 }

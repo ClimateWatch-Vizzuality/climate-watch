@@ -9,19 +9,12 @@ import styles from './modal-styles.scss';
 class CustomModal extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const {
-      isOpen,
-      customStyles,
-      contentLabel,
-      tabTitles,
-      children
-    } = this.props;
+    const { isOpen, customStyles, contentLabel, children } = this.props;
     return (
       <Modal isOpen={isOpen} style={customStyles} contentLabel={contentLabel}>
         <ModalHeader {...this.props} />
-        <div className={cx(styles.content, { [styles.withTabs]: !!tabTitles })}>
-          {children}
-        </div>
+        <ModalHeader {...this.props} fakeHeaderForSpacing />
+        <div className={cx(styles.content)}>{children}</div>
       </Modal>
     );
   }
