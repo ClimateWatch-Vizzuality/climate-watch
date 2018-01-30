@@ -2,6 +2,8 @@ import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 import upperFirst from 'lodash/upperFirst';
 import toLower from 'lodash/toLower';
+import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
 
 export function deburrUpper(string) {
   return toUpper(deburr(string));
@@ -47,6 +49,16 @@ export const truncateDecimals = (number, decimalPlaces) =>
 const r2lWrittedLanguages = ['AR'];
 export function isR2LWrittedLanguage(lang) {
   return r2lWrittedLanguages.indexOf(lang) > -1;
+}
+
+export function sanitize(data) {
+  if (isArray(data)) {
+    return data.join(', ');
+  }
+  if (data && !isString(data)) {
+    return data.name || data.full_name || '';
+  }
+  return data;
 }
 
 export default {

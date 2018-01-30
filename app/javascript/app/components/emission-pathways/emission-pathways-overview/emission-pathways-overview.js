@@ -14,17 +14,19 @@ const mapStateToProps = (state, { match, category }) => {
   const id = match.params.id;
   const categoryState = state[`esp${category}`];
   const categoryData = categoryState && categoryState.data;
+  const modelsData = state.espModels && state.espModels.data;
   const stateWithId = {
     id,
     category,
-    categoryData
+    categoryData,
+    modelsData
   };
 
   return {
     fullData: filterDataByBlackList(stateWithId),
     data: selectOverviewData(stateWithId),
     modalTitle: getModalTitle(stateWithId),
-    loading: state.espModels.loading
+    loading: categoryState.loading
   };
 };
 

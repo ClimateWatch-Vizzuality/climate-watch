@@ -76,7 +76,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
   componentDidMount() {
     const { location } = this.props.filtersSelected;
     if (location) {
-      this.props.findAvailableModels(location);
+      const locationId = location.value || location;
+      this.props.findAvailableModels(locationId);
     }
   }
 

@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { LineChart, Line } from 'recharts';
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
-
+import { sanitize } from 'app/utils';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import { NavLink } from 'react-router-dom';
 
@@ -17,23 +15,13 @@ const renderTrendLine = chartData => {
   );
 };
 
-const sanitizeCellData = cellData => {
-  if (isArray(cellData)) {
-    return cellData.join(', ');
-  }
-  if (cellData && !isString(cellData)) {
-    return cellData.name || cellData.full_name || '';
-  }
-  return cellData;
-};
-
 const cellRenderer = ({
   props: { parseHtml, titleLinks, trendLine },
   cell
 }) => {
   let { cellData } = cell;
   const { rowIndex, dataKey } = cell;
-  cellData = sanitizeCellData(cellData);
+  cellData = sanitize(cellData);
   // check for Trendline
   if (trendLine && dataKey === trendLine) {
     return renderTrendLine(cellData);
