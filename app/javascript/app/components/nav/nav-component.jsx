@@ -54,7 +54,7 @@ class Nav extends PureComponent {
             return (
               <NavLink
                 key={route.path}
-                className={cx(styles.link)}
+                className={styles.link}
                 activeClassName={hideActive ? '' : styles.active}
                 to={route.path}
                 onClick={isMobile ? closeMenu : null}
