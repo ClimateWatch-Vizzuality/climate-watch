@@ -32,6 +32,13 @@
   }
 }
 
+.butonDetail {
+  color: $dark-gray;
+  grid-column: span 2;
+  text-align: right;
+  margin-bottom: 15px;
+}
+
 .searchBox,
 .uploadButton {
   grid-column-end: -1;
