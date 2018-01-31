@@ -1,1 +1,28 @@
 @import '../../styles/base.scss';
+
+.embedContent {
+  margin-bottom: 10%;
+}
+
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  text-align: right;
+  background-color: $light-gray;
+  padding: 1.5% 5% 1.5% 0;
+  color: $theme-color;
+  line-height: $line-height-medium;
+}
+
+.embed {
+  height: 100vh;
+  position: absolute;
+}
+
+.logo {
+  margin-left: 0.5em;
+  margin-bottom: -0.1em;
+  width: 10em;
+  height: 1em;
+}
