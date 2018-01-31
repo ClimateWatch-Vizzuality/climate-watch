@@ -15,16 +15,21 @@
 
 .title {
   position: absolute;
-  top: $gutter-padding;
-  left: $gutter-padding;
+  top: 1rem;
+  left: 1rem;
   font-size: $font-size;
   color: $white;
   z-index: 1;
+
+  @media #{$tablet-portrait} {
+    top: $gutter-padding;
+    left: $gutter-padding;
+  }
 }
 
 .story {
   position: relative;
-  padding: $gutter-padding;
+  padding: 1rem;
   display: flex;
   align-items: flex-end;
   float: left;
@@ -36,6 +41,10 @@
   background-size: cover;
   background-position: center;
   transition: background-size 0.3s ease-in;
+
+  @media #{$tablet-portrait} {
+    padding: $gutter-padding;
+  }
 
   &::after {
     content: "";
