@@ -1,12 +1,11 @@
 @import '~styles/layout.scss';
 
 .wrapper {
-  padding-top: 50px;
+  padding: 50px 0;
   background-color: $light-gray;
 }
 
 .imageContainer {
-  overflow: hidden;
   padding: 0 20px;
   margin: -2px -20px;
 }

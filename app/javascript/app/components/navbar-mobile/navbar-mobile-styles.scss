@@ -1,0 +1,52 @@
+@import '~styles/layout.scss';
+
+.navbarMobile {
+  height: $navbar-height;
+  width: 100%;
+}
+
+.navbar {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: $navbar-height;
+  width: 100%;
+  padding: 0 $gutter-padding;
+  z-index: 21;
+  background: $white;
+  box-shadow: 0 0 25px -0 rgba(0, 0, 0, 0.1);
+
+  .logo {
+    width: 150px;
+  }
+}
+
+.fullMenu {
+  position: fixed;
+  z-index: 20;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  top: $navbar-height;
+  padding: 0 $gutter-padding;
+
+  .navMenu {
+    height: calc(100vh - 120px);
+    padding-top: 10px;
+  }
+}
+
+.toolsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tools {
+  border: none;
+
+  > :first-child {
+    margin-left: 0;
+  }
+}

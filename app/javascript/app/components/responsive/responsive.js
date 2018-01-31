@@ -8,6 +8,9 @@ export const TabletLandscape = props => (
 export const TabletPortrait = props => (
   <Responsive {...props} minWidth={'37.5rem'} />
 );
+export const TabletPortraitOnly = props => (
+  <Responsive {...props} maxWidth={'56.25rem'} />
+);
 export const MobileOnly = props => (
   <Responsive {...props} maxWidth={'37.4375rem'} />
 );
