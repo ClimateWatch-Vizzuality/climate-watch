@@ -1,6 +1,7 @@
 import { get } from 'js-lenses';
 import { assign } from 'app/utils';
 import find from 'lodash/find';
+import filter from 'lodash/filter';
 import uniqBy from 'lodash/uniqBy';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
@@ -19,6 +20,20 @@ import {
   $timeseries
 } from './viz-creator-lenses';
 
+const unfail = (title, state) => {
+  const failures = filter(
+    state.creationStatus.fields,
+    ({ field }) => field !== title
+  );
+  return {
+    ...state,
+    creationStatus: {
+      fields: failures,
+      failed: Boolean(failures.length)
+    }
+  };
+};
+
 export default {
   [actions.openCreator]: (state, { payload }) => ({
     ...state,
@@ -30,9 +45,9 @@ export default {
   }),
   [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
   [actions.updateVisualisationName]: (state, { payload }) =>
-    assign(state, { title: payload }),
+    unfail('title', assign(state, { title: payload })),
   [actions.updateVisualisationDescription]: (state, { payload }) =>
-    assign(state, { description: payload }),
+    unfail('description', assign(state, { description: payload })),
   [actions.fetchDatasets]: state =>
     updateIn($datasets, { loading: true }, state),
   [actions.gotDatasets]: (state, { payload }) =>

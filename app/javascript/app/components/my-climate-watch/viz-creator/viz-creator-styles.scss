@@ -62,18 +62,9 @@
   color: #8f8fa0;
 }
 
-.inputText {
-  width: 60%;
-  margin-bottom: 2rem;
-}
-
 .saveContainer {
   text-align: right;
   padding: 0 20px 20px;
-}
-
-.chart {
-  margin: 3rem 0;
 }
 
 .saveBtn,
@@ -94,10 +85,30 @@
   margin-bottom: 1.2rem;
 }
 
-.textArea {
-  border: solid 1px rgba(0, 0, 0, 0.09);
-  border-radius: 4px;
-  width: 50%;
-  padding: 1rem;
+.input,
+.textArea,
+.chart,
+.legend {
+  margin-bottom: 1rem;
 }
 
+.input,
+.textArea {
+  width: 60%;
+  border: solid 1px rgba(0, 0, 0, 0.09);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  color: $theme-color;
+  border-radius: 4px;
+  padding: 1em;
+}
+
+.input::placeholder {
+  color: $theme-color;
+  font-style: initial;
+  opacity: 0.5;
+}
+
+.input:focus,
+.textArea:focus {
+  border: solid 1px $theme-color;
+}

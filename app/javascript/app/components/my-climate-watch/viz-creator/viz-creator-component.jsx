@@ -10,10 +10,10 @@ import Textarea from 'react-textarea-autosize';
 import MultiSelect from 'components/multiselect';
 import Fieldset from 'components/fieldset';
 import Dropdown from 'components/dropdown';
-import Search from 'components/search';
+import Input from 'components/input';
+// import Search from 'components/search';
 import Button from 'components/button';
 import Loading from 'components/loading';
-import inputTextTheme from 'styles/themes/search/input-text';
 
 import LineChart from './components/charts/line';
 import Legend from './components/charts/legend';
@@ -164,13 +164,20 @@ Step3.propTypes = {
 
 class ControlledTextArea extends React.Component {
   render() {
-    const { value, onDescriptionChange, failed, failMessage } = this.props;
+    const {
+      value,
+      onDescriptionChange,
+      failed,
+      failMessage,
+      onFocus
+    } = this.props;
     return (
       <Fieldset {...{ failed, failMessage }}>
         <Textarea
           className={styles.textArea}
           minRows={8}
           onChange={e => onDescriptionChange(e.target.value)}
+          onFocus={e => onFocus(e.target.value)}
           placeholder="Add a description"
           value={value}
         />
@@ -182,6 +189,7 @@ class ControlledTextArea extends React.Component {
 ControlledTextArea.propTypes = {
   value: PropTypes.string,
   onDescriptionChange: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
   failed: PropTypes.bool,
   failMessage: PropTypes.string
 };
@@ -200,7 +208,16 @@ const Step4 = props => {
     description,
     creationStatus
   } = props;
-  console.log(legendData);
+
+  //   <Search
+  //   icon={false}
+  //   placeholder=""
+  //   value={title}
+  //   onChange={onNameChange}
+  //   className={styles.inputText}
+  //   theme={inputTextTheme}
+  // />
+
   return [
     <li className={styles.step} key="step-4-last-li">
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
@@ -212,13 +229,13 @@ const Step4 = props => {
           failMessage: findDescription('title', creationStatus.fields)
         }}
       >
-        <Search
-          icon={false}
+        <Input
           placeholder=""
           value={title}
           onChange={onNameChange}
+          onFocus={onNameChange}
           className={styles.inputText}
-          theme={inputTextTheme}
+          theme={styles}
         />
       </Fieldset>
       {timeseries.loading ? (
@@ -232,11 +249,12 @@ const Step4 = props => {
             width="90%"
             legend
           />,
-          <Legend key="legend" data={legendData} />
+          <Legend key="legend" theme={styles} data={legendData} />
         ]
       )}
       <ControlledTextArea
         onDescriptionChange={onDescriptionChange}
+        onFocus={onDescriptionChange}
         value={description}
         failed={
           creationStatus.failed &&
