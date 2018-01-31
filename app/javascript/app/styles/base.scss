@@ -28,11 +28,15 @@ html {
   font-weight: $font-weight;
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 body {
-  height: 100%;
   overflow-x: hidden;
+}
+
+body #root {
+  height: 100%;
 }
 
 a {

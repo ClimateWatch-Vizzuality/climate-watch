@@ -1,1 +1,9 @@
 @import '../../styles/base.scss';
+
+.app {
+  height: 100%;
+
+  &.mobileMenuOpen {
+    overflow: hidden;
+  }
+}

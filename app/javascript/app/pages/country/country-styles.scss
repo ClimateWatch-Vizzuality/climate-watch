@@ -14,6 +14,11 @@
     z-index: 12;
     background-color: #1c3c59;
     background-image: url('../../assets/headers/home.jpg');
+    top: 60px !important;
+
+    @media #{$tablet-landscape} {
+      top: 0 !important;
+    }
   }
 }
 
@@ -23,5 +28,9 @@
 
 .sectionHash {
   position: absolute;
-  top: -49px;
+  top: -120px;
+
+  @media #{$tablet-landscape} {
+    top: -49px;
+  }
 }

@@ -1,9 +1,8 @@
 @import '~styles/layout.scss';
 
 .navbarMobile {
-  @media #{$tablet-landscape} {
-    display: none;
-  }
+  height: $navbar-height;
+  width: 100%;
 }
 
 .navbar {
@@ -11,38 +10,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: $navbar-height;
   width: 100%;
   padding: 0 $gutter-padding;
   z-index: 22;
+  background: $white;
+  box-shadow: 0 0 25px -0 rgba(0, 0, 0, 0.1);
 
   .logo {
     width: 150px;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  &.scrolled,
-  &.isOpen {
-    background: $white;
-    box-shadow: 0 0 25px -0 rgba(0, 0, 0, 0.1);
-
-    .logo {
-      opacity: 1;
-      pointer-events: all;
-    }
   }
 }
 
 .hamburgerIcon {
-  color: $white;
-  fill: $white;
-
-  &.isScrolled,
-  &.isOpen {
-    color: $theme-color;
-    fill: $theme-color;
-  }
+  color: $theme-color;
+  fill: $theme-color;
 }
 
 .fullMenu {
@@ -51,12 +33,12 @@
   width: 100%;
   height: 100vh;
   background-color: white;
-  top: 60px;
+  top: $navbar-height;
   padding: 0 $gutter-padding;
 
   .navMenu {
     height: calc(100vh - 120px);
-    padding-top: $gutter-padding;
+    padding-top: 10px;
   }
 }
 
@@ -68,4 +50,8 @@
 
 .tools {
   border: none;
+
+  > :first-child {
+    margin-left: 0;
+  }
 }

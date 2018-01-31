@@ -12,14 +12,9 @@ const Hamburger = ({ isOpen, openMenu, closeMenu, text, className }) => (
   <div className={styles.container}>
     <p className={cx(styles.text, className)}>{text}</p>
     {isOpen && (
-      <div
-        role="button"
-        onClick={() => closeMenu()}
-        tabIndex="0"
-        className={styles.button}
-      >
+      <button onClick={closeMenu} className={styles.button}>
         <Icon icon={close} className={cx(styles.icon, className)} />
-      </div>
+      </button>
     )}
     {!isOpen && (
       <div

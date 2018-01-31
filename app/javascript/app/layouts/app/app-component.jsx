@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
+import cx from 'classnames';
 
 import CountriesProvider from 'providers/countries-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
@@ -14,9 +15,14 @@ import styles from './app-styles.scss'; // eslint-disable-line
 
 class App extends PureComponent {
   render() {
-    const { route, navRoutes, location } = this.props;
+    const { route, navRoutes, location, navbarMobileIsOpen } = this.props;
     return (
-      <div>
+      <div
+        className={cx(
+          styles.app,
+          navbarMobileIsOpen ? styles.mobileMenuOpen : ''
+        )}
+      >
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
@@ -38,7 +44,8 @@ class App extends PureComponent {
 App.propTypes = {
   route: Proptypes.object,
   navRoutes: Proptypes.array,
-  location: Proptypes.object.isRequired
+  location: Proptypes.object.isRequired,
+  navbarMobileIsOpen: Proptypes.bool
 };
 
 export default App;

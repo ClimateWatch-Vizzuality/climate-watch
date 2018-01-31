@@ -5,6 +5,11 @@
     z-index: 12;
     background-color: #81226b;
     background-image: url('../../assets/headers/emission-pathways.jpg');
+    top: 60px !important;
+
+    @media #{$tablet-landscape} {
+      top: 0 !important;
+    }
   }
 }
 
@@ -14,6 +19,10 @@
 
 .sectionHash {
   position: absolute;
-  top: -49px;
+  top: -120px;
+
+  @media #{$tablet-landscape} {
+    top: -49px;
+  }
 }
 
