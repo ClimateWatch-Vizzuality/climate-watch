@@ -22,6 +22,7 @@ const withBgByRoute = withProps(({ route }) => {
   if (!route || !route.headerImage) return null;
 
   return {
+    color: route.headerColor,
     image: images[route.headerImage] ? images[route.headerImage] : images.home
   };
 });
