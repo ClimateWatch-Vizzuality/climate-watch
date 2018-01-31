@@ -18,13 +18,7 @@ const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
       <NavLink exact to="/" onClick={closeMenu}>
         <Icon className={styles.logo} icon={cwLogo} />
       </NavLink>
-      <Hamburger
-        text={'MENU'}
-        className={cx(
-          styles.hamburgerIcon,
-          hamburgerIsOpen ? styles.isOpen : ''
-        )}
-      />
+      <Hamburger text={'MENU'} />
     </div>
     {hamburgerIsOpen && (
       <div className={styles.fullMenu}>

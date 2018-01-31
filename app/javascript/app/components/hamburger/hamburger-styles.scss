@@ -8,12 +8,20 @@
 .text {
   font-size: $font-size-s;
   margin-right: 0.5rem;
-  line-height: 15px;
   color: $gray;
+}
+
+.icon {
+  color: $theme-color;
+  fill: $theme-color;
+  width: 20px;
+  height: 16px;
 }
 
 .button {
   outline: none;
+  display: flex;
+  align-items: center;
 }
 
 .icon {
