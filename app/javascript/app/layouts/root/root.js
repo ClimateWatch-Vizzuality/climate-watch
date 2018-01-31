@@ -4,6 +4,8 @@ import { withRouter } from 'react-router';
 import ReactGA from 'react-ga';
 import { renderRoutes } from 'react-router-config';
 
+import './root-styles.scss';
+
 const { GOOGLE_ANALYTICS_ID } = process.env;
 
 function trackPage(page) {

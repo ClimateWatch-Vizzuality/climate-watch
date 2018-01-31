@@ -19,7 +19,7 @@ const requestLocation = createThunkAction(
         throw Error(response.statusText);
       })
       .then(data => {
-        const iso3 = countryCodes[data.countryCode] || '';
+        const iso3 = countryCodes[data.country_code] || '';
         const dataWithISO3 = {
           ...data,
           iso3
@@ -30,26 +30,6 @@ const requestLocation = createThunkAction(
         dispatch(requestLocationError(error));
         console.info(error);
       });
-
-    // const handleSucess = (position) => {
-    //   console.info(position);
-    //   dispatch(requestLocationReady(position));
-    // };
-
-    // const handleError = (positionError) => {
-    //   dispatch(requestLocationError(positionError));
-    //   console.info(positionError);
-    // };
-
-    // if (locationProvider && locationProvider.getCurrentPosition) {
-    //   locationProvider.getCurrentPosition(
-    //     handleSucess,
-    //     handleError,
-    //     options
-    //   );
-    // } else {
-    //   console.warn('Location provider not valid');
-    // }
   }
 );
 

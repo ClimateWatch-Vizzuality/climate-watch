@@ -2,6 +2,7 @@
 
 .anchorContainer {
   position: relative;
+  padding: 0;
 }
 
 .anchorNav {
@@ -15,10 +16,6 @@
 
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  @media #{$tablet-landscape} {
-    overflow-x: none;
   }
 }
 

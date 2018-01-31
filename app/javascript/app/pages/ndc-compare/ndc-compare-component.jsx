@@ -30,7 +30,7 @@ class NDCCountry extends PureComponent {
               <Intro title="NDC Comparison" />
             </div>
           </div>
-          <Sticky activeClass="sticky">
+          <Sticky activeClass="sticky" top="#navBarMobile">
             <AnchorNav
               useRoutes
               links={anchorLinks}

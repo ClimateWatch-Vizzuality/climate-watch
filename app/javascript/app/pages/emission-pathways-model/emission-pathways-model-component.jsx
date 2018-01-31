@@ -29,7 +29,7 @@ class EmissionPathwaysModel extends PureComponent {
                 description={model && model.description}
               />
             </div>
-            <Sticky activeClass="stickyEmissionsModel">
+            <Sticky activeClass="stickyEmissionsModel" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
                 className={layout.content}
