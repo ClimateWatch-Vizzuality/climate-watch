@@ -14,7 +14,7 @@ export const getCountriesOptions = createSelector([getCountries], countries => {
 
 export const getCountryLocationData = createSelector([getIpData], ipData => ({
   iso: ipData.iso3 || '',
-  country: ipData.country || ''
+  country: ipData.country_name || ''
 }));
 
 export default {
