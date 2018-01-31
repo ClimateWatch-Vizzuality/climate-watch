@@ -11,14 +11,17 @@ import Stories from 'components/stories';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
 import GeoLocationProvider from 'providers/geolocation-provider';
-import { TabletPortrait } from 'components/responsive';
+import { MobileOnly, TabletPortrait } from 'components/responsive';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
-import countryScreenshot from 'assets/screenshots/country-screenshot';
-import ndcScreenshot from 'assets/screenshots/ndc-explore-screenshot';
-import ndcSdgScreenshot from 'assets/screenshots/ndc-sdg-screenshot';
+import countryBgScreenshot from 'assets/screenshots/country-bg-screenshot';
+import countrySmScreenshot from 'assets/screenshots/country-sm-screenshot@2x';
+import ndcBgScreenshot from 'assets/screenshots/ndc-explore-bg-screenshot';
+import ndcSmScreenshot from 'assets/screenshots/ndc-explore-sm-screenshot@2x.png';
+import ndcSdgBgScreenshot from 'assets/screenshots/ndc-sdg-bg-screenshot';
+import ndcSdgSmScreenshot from 'assets/screenshots/ndc-sdg-sm-screenshot@2x.png';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
@@ -75,13 +78,20 @@ class Home extends PureComponent {
         <div className={cx(layout.content, styles.stories)}>
           <Stories />
         </div>
-        <Section className={cx(styles.section, styles.countries)}>
-          <div className={styles.column}>
-            <img
-              className={styles.imageTall}
-              src={countryScreenshot}
-              alt="Country section screenshot"
-            />
+        <Section
+          mobileConstrain
+          className={cx(styles.section, styles.countries)}
+        >
+          <div className={cx(styles.column, styles.constrainImage)}>
+            <MobileOnly>
+              {matches => (
+                <img
+                  className={matches ? '' : styles.imageTall}
+                  src={matches ? countrySmScreenshot : countryBgScreenshot}
+                  alt="Country section screenshot"
+                />
+              )}
+            </MobileOnly>
           </div>
           <div className={styles.column}>
             <Intro
@@ -115,7 +125,7 @@ class Home extends PureComponent {
             </div>
           </div>
         </Section>
-        <Section className={cx(styles.section, styles.ndcs)}>
+        <Section className={cx(styles.section, styles.ndcs)} mobileConstrain>
           <div className={styles.column}>
             <Intro
               theme={introDark}
@@ -131,22 +141,33 @@ class Home extends PureComponent {
               </Button>
             </div>
           </div>
-          <div className={styles.column}>
-            <img
-              className={styles.imageRight}
-              src={ndcScreenshot}
-              alt="Ndcs section screenshot"
-            />
-          </div>
+          <MobileOnly>
+            {matches => (
+              <div className={matches ? styles.ndcImageMobile : styles.column}>
+                <img
+                  className={matches ? '' : styles.imageRight}
+                  src={matches ? ndcSmScreenshot : ndcBgScreenshot}
+                  alt="Ndcs section screenshot"
+                />
+              </div>
+            )}
+          </MobileOnly>
         </Section>
-        <Section className={styles.section}>
-          <div className={styles.column}>
-            <img
-              className={styles.imageLeft}
-              src={ndcSdgScreenshot}
-              alt="NDC SDGs screenshot"
-            />
-          </div>
+        <Section
+          mobileConstrain
+          className={cx(styles.section, styles.sdgLinkages)}
+        >
+          <MobileOnly>
+            {matches => (
+              <div className={cx(styles.column, styles.constrainImage)}>
+                <img
+                  className={matches ? '' : styles.imageRight}
+                  src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
+                  alt="NDC SDGs screenshot"
+                />
+              </div>
+            )}
+          </MobileOnly>
           <div className={styles.column}>
             <Intro
               theme={introDark}

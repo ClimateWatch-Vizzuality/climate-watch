@@ -2,11 +2,23 @@
 @import '~styles/layout.scss';
 
 .doubleFold {
-  @extend %grid;
+  display: flex;
+  flex-direction: column;
 
-  @include msGridColumns(1fr, 1fr);
+  @media #{$tablet-portrait} {
+    flex-direction: row;
+  }
 
-  grid-template-columns: repeat(2, 1fr);
+  @media #{$tablet-portrait} {
+    //SASS does not allow to @extend grid inside @media
+    //so display and column-gap are 'hardcoded'
+    display: grid;
+    grid-column-gap: $gutter-padding;
+
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .homeBg {
@@ -17,7 +29,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 60px;
 
   @media #{$tablet-landscape} {
     margin-bottom: 0;
@@ -86,6 +97,26 @@
 }
 
 .countries {
+  display: flex;
   border-bottom: solid 1px $border-color;
   padding-bottom: 0;
+}
+
+.sdgLinkages {
+  display: flex;
+}
+
+.constrainImage {
+  order: 2;
+  width: 80%;
+  margin: 0 auto;
+
+  @media #{$tablet-landscape} {
+    order: 1;
+  }
+}
+
+.ndcImageMobile {
+  margin-right: -30px;
+  margin-left: -30px;
 }
