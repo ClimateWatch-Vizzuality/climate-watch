@@ -22,7 +22,7 @@ const Fieldset = ({ failed, failMessage, children }) => (
 );
 
 Fieldset.propTypes = {
-  children: PropTypes.obj.isRequired,
+  children: PropTypes.object.isRequired,
   failed: PropTypes.bool,
   failMessage: PropTypes.string
 };

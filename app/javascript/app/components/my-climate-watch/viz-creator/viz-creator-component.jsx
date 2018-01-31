@@ -193,6 +193,7 @@ const Step4 = props => {
     onDescriptionChange,
     timeseries,
     saveVisualisation,
+    deleteVisualisation,
     id,
     description,
     creationStatus
@@ -233,6 +234,15 @@ const Step4 = props => {
       />
     </li>,
     <li className={styles.saveContainer} key="step-4-button-li">
+      {id && (
+        <Button
+          color="red"
+          onClick={() => deleteVisualisation({ id })}
+          className={styles.deleteBtn}
+        >
+          Delete
+        </Button>
+      )}
       <Button
         color="yellow"
         onClick={() => saveVisualisation({ id })}
@@ -270,6 +280,7 @@ const VizCreator = props => {
     updateVisualisationName,
     updateVisualisationDescription,
     saveVisualisation,
+    deleteVisualisation,
     handleFilterSelect,
     creationStatus
   } = props;
@@ -294,6 +305,7 @@ const VizCreator = props => {
             onNameChange={updateVisualisationName}
             onDescriptionChange={updateVisualisationDescription}
             saveVisualisation={saveVisualisation}
+            deleteVisualisation={deleteVisualisation}
             creationStatus={creationStatus}
           />
         )}
@@ -317,6 +329,7 @@ VizCreator.propTypes = {
   updateVisualisationName: PropTypes.func.isRequired,
   updateVisualisationDescription: PropTypes.func.isRequired,
   saveVisualisation: PropTypes.func.isRequired,
+  deleteVisualisation: PropTypes.func.isRequired,
   handleFilterSelect: PropTypes.func.isRequired,
   creationStatus: PropTypes.object
 };

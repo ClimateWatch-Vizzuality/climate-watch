@@ -19,14 +19,14 @@ class API {
     this.baseURL = baseUrl;
   }
 
-  get = (endpoint, params, mock = false) => {
+  get(endpoint, params, mock = false) {
     const url = mock
       ? mockUrl(endpoint, params)
       : `${this.baseURL}/${endpoint}${params ? `?${params}` : ''}`;
     return fetch(url, this.config).then(handleResponse);
-  };
+  }
 
-  post = (endpoint, params, mock = false) => {
+  post(endpoint, params, mock = false) {
     const url = mock
       ? mockUrl(endpoint, params)
       : `${this.baseURL}/${endpoint}`;
@@ -35,9 +35,9 @@ class API {
       method: 'POST',
       body: JSON.stringify(params)
     }).then(handleResponse);
-  };
+  }
 
-  patch = (endpoint, params, mock = false) => {
+  patch(endpoint, params, mock = false) {
     const url = mock
       ? mockUrl(endpoint, params)
       : `${this.baseURL}/${endpoint}`;
@@ -46,7 +46,17 @@ class API {
       method: 'PATCH',
       body: JSON.stringify(params)
     }).then(handleResponse);
-  };
+  }
+
+  delete(endpoint, params, mock = false) {
+    const url = mock
+      ? mockUrl(endpoint, params)
+      : `${this.baseURL}/${endpoint}`;
+    return fetch(url, {
+      ...this.config,
+      method: 'DELETE'
+    }).then(handleResponse);
+  }
 }
 
 export const EPAPI = new API(ESP_API);

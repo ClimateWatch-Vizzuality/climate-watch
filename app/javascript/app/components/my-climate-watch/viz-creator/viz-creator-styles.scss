@@ -76,9 +76,14 @@
   margin: 3rem 0;
 }
 
-.saveBtn {
+.saveBtn,
+.deleteBtn {
   display: inline-block;
   width: 170px;
+}
+
+.deleteBtn {
+  margin-right: 10px;
 }
 
 .timeseriesLoader {

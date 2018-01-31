@@ -172,6 +172,11 @@ export const gotVisualizationFail = createAction('fetchVisualisationFail');
 export const saveVisualisationReady = createAction('saveVisualisationReady');
 export const saveVisualisationFail = createAction('saveVisualisationFail');
 
+export const deleteVisualisationReady = createAction(
+  'deleteVisualisationReady'
+);
+export const deleteVisualisationFail = createAction('deleteVisualisationFail');
+
 export const fetchVisualization = createThunkAction(
   'fetchVisualization',
   VisualisationId => dispatch => {
@@ -233,6 +238,24 @@ export const saveVisualisation = createThunkAction(
       .catch(e => {
         console.warn(e);
         dispatch(saveVisualisationFail());
+      });
+  }
+);
+
+export const deleteVisualisation = createThunkAction(
+  'deleteVisualisation',
+  ({ id = '' }) => dispatch => {
+    const handleResponse = () => {
+      dispatch(deleteVisualisationReady());
+      dispatch(closeCreator());
+      dispatch(visActions.fetchVisualisations());
+    };
+
+    CWAPI.delete(`my_cw/visualizations/${id}`)
+      .then(handleResponse)
+      .catch(e => {
+        console.warn(e);
+        dispatch(deleteVisualisationFail());
       });
   }
 );

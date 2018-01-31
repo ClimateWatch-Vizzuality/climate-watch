@@ -33,7 +33,7 @@ module Api
 
         def destroy
           if @visualization.destroy
-            render status: 200
+            render json: { status: 200 }
           else
             render json: resource_error(@visualization.errors)
           end

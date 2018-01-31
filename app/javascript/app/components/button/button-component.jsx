@@ -23,6 +23,7 @@ const Button = props => {
     [styles.yellow]: color === 'yellow',
     [styles.white]: color === 'white',
     [styles.plain]: color === 'plain',
+    [styles.red]: color === 'red',
     [styles.disabled]: !onClick && !link && !href,
     [styles.noSpace]: noSpace
   });
