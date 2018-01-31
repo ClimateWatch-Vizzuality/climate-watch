@@ -17,11 +17,21 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 60px;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
 }
 
 .section {
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding-top: 60px;
+  padding-bottom: 30px;
+
+  @media #{$tablet-landscape} {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
 }
 
 .stories {

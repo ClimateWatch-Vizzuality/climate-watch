@@ -6,6 +6,14 @@
   max-width: $max-width;
   margin: 0 auto;
   padding: 0 $gutter-padding;
+
+  &.mobileConstrain {
+    max-width: $tablet-max-width;
+
+    @media #{$tablet-landscape} {
+      max-width: $max-width;
+    }
+  }
 }
 
 %grid {

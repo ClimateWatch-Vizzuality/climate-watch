@@ -11,6 +11,7 @@ import Stories from 'components/stories';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
 import GeoLocationProvider from 'providers/geolocation-provider';
+import { TabletPortrait } from 'components/responsive';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
@@ -35,21 +36,27 @@ class Home extends PureComponent {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
       <div className={styles.homeBg}>
-        <Section className={styles.section} backgroundImage={background}>
+        <Section
+          className={styles.section}
+          backgroundImage={background}
+          mobileConstrain
+        >
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
-            <Button
-              color="yellow"
-              onClick={this.onClickFullscreen}
-              className={styles.fullscreen}
-              square
-            >
-              <Icon icon={fullscreen} />
-            </Button>
+            <TabletPortrait>
+              <Button
+                color="yellow"
+                onClick={this.onClickFullscreen}
+                className={styles.fullscreen}
+                square
+              >
+                <Icon icon={fullscreen} />
+              </Button>
+            </TabletPortrait>
             <ReactPlayer
               width="100%"
               height="100%"
