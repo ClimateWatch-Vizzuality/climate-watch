@@ -1,0 +1,11 @@
+.input {
+  background-color: transparent;
+
+  &:focus {
+    background-color: transparent;
+  }
+
+  &Error {
+    border-color: red;
+  }
+}
