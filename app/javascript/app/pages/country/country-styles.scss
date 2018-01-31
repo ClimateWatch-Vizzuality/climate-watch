@@ -28,5 +28,9 @@
 
 .sectionHash {
   position: absolute;
-  top: -49px;
+  top: -120px;
+
+  @media #{$tablet-landscape} {
+    top: -49px;
+  }
 }
