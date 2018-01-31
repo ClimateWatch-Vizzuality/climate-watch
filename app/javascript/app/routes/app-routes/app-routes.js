@@ -116,6 +116,7 @@ export default [
     component: NDCS,
     label: 'NDCs',
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCSRoutes
   },
   {
@@ -129,6 +130,7 @@ export default [
     path: '/countries/:iso',
     component: Country,
     headerImage: 'countries',
+    headerColor: '#045F61',
     sections: countrySections
   },
   {
@@ -143,6 +145,7 @@ export default [
     component: EmissionPathwaysModel,
     label: 'EMISSION PATHWAYS MODEL',
     headerImage: 'emission-pathways',
+    headerColor: '#74356A',
     sections: emissionPathwaysModelSections,
     routes: emissionPathwaysModelRoutes
   },
@@ -151,6 +154,7 @@ export default [
     component: EmissionPathwaysScenario,
     label: 'EMISSION PATHWAYS SCENARIO',
     headerImage: 'emission-pathways',
+    headerColor: '#74356A',
     sections: emissionPathwaysScenarioSections
   },
   {
@@ -159,7 +163,8 @@ export default [
     label: 'EMISSION PATHWAYS',
     headerImage: 'emission-pathways',
     sections: emissionPathwaysSections,
-    routes: emissionPathwaysRoutes
+    routes: emissionPathwaysRoutes,
+    headerColor: '#74356A'
   },
   {
     path: '/ndc-search',
@@ -180,6 +185,7 @@ export default [
     nav: true,
     label: 'ABOUT',
     headerImage: 'about',
+    headerColor: '#113750',
     routes: aboutRoutes
   },
   {
