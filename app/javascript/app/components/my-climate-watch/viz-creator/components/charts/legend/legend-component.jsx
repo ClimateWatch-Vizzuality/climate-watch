@@ -10,11 +10,7 @@ const LegendComponent = ({ className, data = [] }) => (
     <ul className={styles.tags}>
       {data.map(l => (
         <li key={l.label} className={styles.tagItem}>
-          <Tag
-            className={styles.tag}
-            label={l.label}
-            color={l.color}
-          />
+          <Tag className={styles.tag} label={l.label} color={l.color} />
         </li>
       ))}
     </ul>

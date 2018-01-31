@@ -6,7 +6,12 @@ import _find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 // import _filter from 'lodash/filter';
 // import { format } from 'd3-format';
-import { processLineData, processLegendData, flatMapVis, mapFilter } from './viz-creator-utils';
+import {
+  processLineData,
+  processLegendData,
+  flatMapVis,
+  mapFilter
+} from './viz-creator-utils';
 import * as lenses from './viz-creator-lenses';
 
 export const dataSelector = state => state;

@@ -8,7 +8,8 @@ import cx from 'classnames';
 import plusIcon from 'assets/icons/plus.svg';
 import styles from './legend-chart-styles.scss';
 
-class LegendChart extends PureComponent { // eslint-disable-line react/prefer-stateless-function
+class LegendChart extends PureComponent {
+  // eslint-disable-line react/prefer-stateless-function
   render() {
     const {
       config,
@@ -34,10 +35,9 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
             />
           ))}
         {dataOptions &&
-          dataSelected &&
-          dataSelected.length !==
-            dataOptions.length && (
-            <MultiSelect
+        dataSelected &&
+        dataSelected.length !== dataOptions.length && (
+        <MultiSelect
               parentClassName={styles.tagSelector}
               values={dataSelected || []}
               options={dataOptions || []}

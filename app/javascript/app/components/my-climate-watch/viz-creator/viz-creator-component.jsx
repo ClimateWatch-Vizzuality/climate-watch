@@ -225,7 +225,13 @@ const Step4 = props => {
         <Loading light className={styles.timeseriesLoader} />
       ) : (
         [
-          <LineChart key="line-chart" className={styles.chart} {...chartData} width="90%" legend />,
+          <LineChart
+            key="line-chart"
+            className={styles.chart}
+            {...chartData}
+            width="90%"
+            legend
+          />,
           <Legend key="legend" data={legendData} />
         ]
       )}
