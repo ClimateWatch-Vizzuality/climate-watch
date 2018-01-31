@@ -107,7 +107,7 @@ class Home extends PureComponent {
             >
               Connected from {geolocation.country}?
             </span>
-            <div className={styles.doubleFold}>
+            <div className={cx(styles.doubleFold, styles.doubleAction)}>
               <Button
                 color="yellow"
                 link={`/countries/${geolocation.iso ? geolocation.iso : ''}`}
@@ -132,7 +132,7 @@ class Home extends PureComponent {
               title="Explore and Compare Nationally Determined Contributions"
               description="Analyze and compare national climate pledges under the Paris Agreement."
             />
-            <div className={styles.doubleFold}>
+            <div className={cx(styles.doubleFold, styles.doubleAction)}>
               <Button color="yellow" link="/ndcs">
                 Explore NDC content
               </Button>

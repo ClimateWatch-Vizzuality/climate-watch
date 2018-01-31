@@ -4,6 +4,7 @@
 .doubleFold {
   display: flex;
   flex-direction: column;
+  padding-bottom: 3rem;
 
   @media #{$tablet-portrait} {
     flex-direction: row;
@@ -19,6 +20,11 @@
 
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.doubleAction {
+  justify-content: space-between;
+  height: 160px;
 }
 
 .homeBg {
