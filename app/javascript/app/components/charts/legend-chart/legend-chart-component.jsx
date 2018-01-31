@@ -18,6 +18,7 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
       handleAdd,
       className
     } = this.props;
+
     return (
       <div className={cx(styles.tags, className)}>
         {config &&
@@ -25,13 +26,10 @@ class LegendChart extends PureComponent { // eslint-disable-line react/prefer-st
           config.columns.y.map(column => (
             <Tag
               className={styles.tag}
-              key={`${column.value}`}
-              data={{
-                color: config.theme[column.value].stroke,
-                label: column.label,
-                id: column.value
-              }}
-              onRemove={handleRemove}
+              key={`${column.value}${column.labe}`}
+              label={column.label}
+              color={column.color}
+              onRemove={() => handleRemove(column.label)}
               canRemove={config.columns.y.length > 1}
             />
           ))}

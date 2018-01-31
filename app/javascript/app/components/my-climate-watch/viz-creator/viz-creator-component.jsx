@@ -16,6 +16,7 @@ import Loading from 'components/loading';
 import inputTextTheme from 'styles/themes/search/input-text';
 
 import LineChart from './components/charts/line';
+import Legend from './components/charts/legend';
 import SelectableList from './components/selectable-list';
 import CardContent from './components/card-content';
 import styles from './viz-creator-styles';
@@ -189,6 +190,7 @@ const Step4 = props => {
   const {
     title,
     chartData,
+    legendData,
     onNameChange,
     onDescriptionChange,
     timeseries,
@@ -198,6 +200,7 @@ const Step4 = props => {
     description,
     creationStatus
   } = props;
+  console.log(legendData);
   return [
     <li className={styles.step} key="step-4-last-li">
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
@@ -221,7 +224,10 @@ const Step4 = props => {
       {timeseries.loading ? (
         <Loading light className={styles.timeseriesLoader} />
       ) : (
-        <LineChart className={styles.chart} {...chartData} width="90%" />
+        [
+          <LineChart key="line-chart" className={styles.chart} {...chartData} width="90%" legend />,
+          <Legend key="legend" data={legendData} />
+        ]
       )}
       <ControlledTextArea
         onDescriptionChange={onDescriptionChange}
@@ -276,6 +282,7 @@ const VizCreator = props => {
     visualisations,
     hasData,
     chartData,
+    legendData,
     filters,
     updateVisualisationName,
     updateVisualisationDescription,
@@ -307,6 +314,7 @@ const VizCreator = props => {
             saveVisualisation={saveVisualisation}
             deleteVisualisation={deleteVisualisation}
             creationStatus={creationStatus}
+            legendData={legendData}
           />
         )}
       </ul>
@@ -331,7 +339,8 @@ VizCreator.propTypes = {
   saveVisualisation: PropTypes.func.isRequired,
   deleteVisualisation: PropTypes.func.isRequired,
   handleFilterSelect: PropTypes.func.isRequired,
-  creationStatus: PropTypes.object
+  creationStatus: PropTypes.object,
+  legendData: PropTypes.array
 };
 
 export default VizCreator;

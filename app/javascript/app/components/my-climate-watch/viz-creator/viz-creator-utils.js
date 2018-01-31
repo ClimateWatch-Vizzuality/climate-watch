@@ -1,5 +1,7 @@
 import isFunction from 'lodash/isFunction';
 import _startCase from 'lodash/startCase';
+import _camelCase from 'lodash/camelCase';
+import _map from 'lodash/map';
 import _ from 'lodash-inflection';
 import { update } from 'js-lenses';
 import { format } from 'd3-format';
@@ -31,6 +33,14 @@ export const flatMapVis = (vis = []) =>
 
 export const updateIn = (l, payload, state) =>
   update(l, s => assign(s, isFunction(payload) ? payload(s) : payload), state);
+
+export const processLegendData = (idc, scn) => {
+  const lineData = processLineData(idc, scn).lineProps;
+  return _map(scn, s => ({
+    label: s.name,
+    color: lineData[_camelCase(s.name)].fill
+  }));
+};
 
 export const processLineData = (idc, scn) => {
   const data = groupDataByScenario(idc, scn);

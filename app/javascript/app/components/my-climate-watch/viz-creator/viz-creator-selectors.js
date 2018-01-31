@@ -6,7 +6,7 @@ import _find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 // import _filter from 'lodash/filter';
 // import { format } from 'd3-format';
-import { processLineData, flatMapVis, mapFilter } from './viz-creator-utils';
+import { processLineData, processLegendData, flatMapVis, mapFilter } from './viz-creator-utils';
 import * as lenses from './viz-creator-lenses';
 
 export const dataSelector = state => state;
@@ -36,6 +36,14 @@ export const chartDataSelector = createSelector(
   (hasData, timeseries, scenarios) => {
     if (!hasData) return {};
     return { ...processLineData(timeseries.data, scenarios.data) };
+  }
+);
+
+export const legendDataSelector = createSelector(
+  [hasDataSelector, timeseriesSelector, scenariosSelector],
+  (hasData, timeseries, scenarios) => {
+    if (!hasData) return {};
+    return processLegendData(timeseries.data, scenarios.data);
   }
 );
 
