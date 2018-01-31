@@ -90,7 +90,7 @@ class NDCCountry extends PureComponent {
                 />
               </div>
             </div>
-            <Sticky activeClass="sticky">
+            <Sticky activeClass="sticky" top="#navBarMobile">
               <AnchorNav
                 useRoutes
                 links={anchorLinks}
