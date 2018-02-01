@@ -11,7 +11,7 @@ import Stories from 'components/stories';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
 import GeoLocationProvider from 'providers/geolocation-provider';
-import { MobileOnly, TabletPortrait } from 'components/responsive';
+import { MobileOnly, TabletLandscape } from 'components/responsive';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
@@ -50,7 +50,7 @@ class Home extends PureComponent {
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
-            <TabletPortrait>
+            <TabletLandscape>
               <Button
                 color="yellow"
                 onClick={this.onClickFullscreen}
@@ -59,7 +59,7 @@ class Home extends PureComponent {
               >
                 <Icon icon={fullscreen} />
               </Button>
-            </TabletPortrait>
+            </TabletLandscape>
             <ReactPlayer
               width="100%"
               height="100%"

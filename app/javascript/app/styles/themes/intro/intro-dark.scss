@@ -2,8 +2,12 @@
 
 .title {
   color: $theme-color;
-  font-size: $font-size-x-large;
+  font-size: $font-size-large;
   line-height: 1.25em;
+
+  @media #{$tablet-landscape} {
+    font-size: $font-size-x-large;
+  }
 }
 
 .description {
