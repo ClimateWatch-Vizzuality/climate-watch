@@ -1,17 +1,24 @@
+$pad: 0.8em;
 
 .fieldsetContainer {
+  font-size: 1rem;
   border: 1px solid transparent;
+  padding: 2 * $pad 0 0;
 
   &Failed {
+    padding: 0;
     border-color: red;
   }
 }
 
-.fieldsetFailMessage {
-  display: none;
+.fieldsetMessage {
+  opacity: 0;
   color: red;
+  margin-bottom: $pad;
+  height: 1rem;
 
   &Failed {
+    opacity: 1;
     display: block;
   }
 }

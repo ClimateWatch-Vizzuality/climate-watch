@@ -1,30 +1,33 @@
-import React from 'react';
-import cx from 'classnames';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import { themr } from 'react-css-themr';
+import cx from 'classnames';
 
 import styles from './fieldset-styles';
 
-const Fieldset = ({ failed, failMessage, children }) => (
+const Fieldset = ({ failed, failMessage, className, theme, children }) => (
   <div
-    className={cx(styles.fieldsetContainer, {
-      [styles.fieldsetContainerFailed]: failed
+    className={cx(className, theme.fieldsetContainer, {
+      [theme.fieldsetContainerFailed]: failed
     })}
   >
-    {children}
     <span
-      className={cx(styles.fieldsetFailMessage, {
-        [styles.fieldsetFailMessageFailed]: failed
+      className={cx(theme.fieldsetMessage, {
+        [theme.fieldsetMessageFailed]: failed
       })}
     >
       {failMessage}
     </span>
+    {React.Children.map(children, Child => cloneElement(Child, { failed }))}
   </div>
 );
 
 Fieldset.propTypes = {
   children: PropTypes.object.isRequired,
+  theme: PropTypes.object,
   failed: PropTypes.bool,
-  failMessage: PropTypes.string
+  failMessage: PropTypes.string,
+  className: PropTypes.string
 };
 
-export default Fieldset;
+export default themr('Fieldset', styles)(Fieldset);

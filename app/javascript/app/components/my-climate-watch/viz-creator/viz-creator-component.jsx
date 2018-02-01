@@ -5,12 +5,12 @@ import upperFirst from 'lodash/upperFirst';
 import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
-import Textarea from 'react-textarea-autosize';
 
 import MultiSelect from 'components/multiselect';
 import Fieldset from 'components/fieldset';
 import Dropdown from 'components/dropdown';
-import Input from 'components/input';
+import TextInput from 'components/text-input';
+import TextArea from 'components/text-area';
 // import Search from 'components/search';
 import Button from 'components/button';
 import Loading from 'components/loading';
@@ -162,38 +162,6 @@ Step3.propTypes = {
   handleFilterSelect: PropTypes.func.isRequired
 };
 
-class ControlledTextArea extends React.Component {
-  render() {
-    const {
-      value,
-      onDescriptionChange,
-      failed,
-      failMessage,
-      onFocus
-    } = this.props;
-    return (
-      <Fieldset {...{ failed, failMessage }}>
-        <Textarea
-          className={styles.textArea}
-          minRows={8}
-          onChange={e => onDescriptionChange(e.target.value)}
-          onFocus={e => onFocus(e.target.value)}
-          placeholder="Add a description"
-          value={value}
-        />
-      </Fieldset>
-    );
-  }
-}
-
-ControlledTextArea.propTypes = {
-  value: PropTypes.string,
-  onDescriptionChange: PropTypes.func.isRequired,
-  onFocus: PropTypes.func.isRequired,
-  failed: PropTypes.bool,
-  failMessage: PropTypes.string
-};
-
 const Step4 = props => {
   const {
     title,
@@ -222,6 +190,8 @@ const Step4 = props => {
     <li className={styles.step} key="step-4-last-li">
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
       <Fieldset
+        className={styles.fieldset}
+        theme={styles}
         {...{
           failed:
             creationStatus.failed &&
@@ -229,7 +199,7 @@ const Step4 = props => {
           failMessage: findDescription('title', creationStatus.fields)
         }}
       >
-        <Input
+        <TextInput
           placeholder=""
           value={title}
           onChange={onNameChange}
@@ -252,16 +222,24 @@ const Step4 = props => {
           <Legend key="legend" theme={styles} data={legendData} />
         ]
       )}
-      <ControlledTextArea
-        onDescriptionChange={onDescriptionChange}
-        onFocus={onDescriptionChange}
-        value={description}
-        failed={
-          creationStatus.failed &&
-          includesField('description', creationStatus.fields)
-        }
-        failMessage={findDescription('description', creationStatus.fields)}
-      />
+      <Fieldset
+        className={styles.fieldset}
+        theme={styles}
+        {...{
+          failed:
+            creationStatus.failed &&
+            includesField('description', creationStatus.fields),
+          failMessage: findDescription('description', creationStatus.fields)
+        }}
+      >
+        <TextArea
+          className={styles.textArea}
+          theme={styles}
+          onDescriptionChange={onDescriptionChange}
+          onFocus={onDescriptionChange}
+          value={description}
+        />
+      </Fieldset>
     </li>,
     <li className={styles.saveContainer} key="step-4-button-li">
       {id && (

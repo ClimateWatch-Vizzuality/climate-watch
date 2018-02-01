@@ -3,7 +3,7 @@ import { themr } from 'react-css-themr';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import styles from './input-styles';
+import styles from './text-input-styles';
 
 const InputComponent = ({
   className,
@@ -11,16 +11,14 @@ const InputComponent = ({
   theme,
   onChange,
   onFocus,
-  error,
-  ...props
+  failed
 }) => (
   <input
     onChange={e => onChange(e.target.value)}
     onFocus={e => onFocus(e.target.value)}
-    className={cx(className, theme.input, { [theme.inputError]: error })}
+    className={cx(className, theme.input, { [theme.inputFailed]: failed })}
     type="text"
     value={value}
-    {...{ props }}
   />
 );
 
@@ -29,8 +27,7 @@ InputComponent.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
-  error: PropTypes.bool,
-  data: PropTypes.array,
+  failed: PropTypes.bool,
   theme: PropTypes.object
 };
 
