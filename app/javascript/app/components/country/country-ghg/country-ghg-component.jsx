@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
-import GHGCountryEmissions from 'components/country/country-ghg-emissions';
-import GHGCountryMap from 'components/country/country-ghg-map';
+import CountryGHGEmissions from 'components/country/country-ghg-emissions';
+import CountryGHGMap from 'components/country/country-ghg-map';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import throttle from 'lodash/throttle';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import { TabletLandscape } from 'components/responsive';
 
 import layout from 'styles/layout.scss';
 import styles from './country-ghg-styles.scss';
@@ -35,14 +36,16 @@ class CountryGhg extends PureComponent {
       <div className={cx(layout.content, styles.grid)}>
         <EmissionsMetaProvider />
         {needsWBData && <WbCountryDataProvider />}
-        <GHGCountryEmissions handleYearHover={this.handleYearHover} />
-        <div className={styles.map}>
-          <GHGCountryMap
-            search={search}
-            className={styles.map}
-            year={this.state.year}
-          />
-        </div>
+        <CountryGHGEmissions handleYearHover={this.handleYearHover} />
+        <TabletLandscape>
+          <div className={styles.map}>
+            <CountryGHGMap
+              search={search}
+              className={styles.map}
+              year={this.state.year}
+            />
+          </div>
+        </TabletLandscape>
       </div>
     );
   }
