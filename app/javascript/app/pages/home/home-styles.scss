@@ -117,6 +117,12 @@
   display: flex;
 }
 
+.countries,
+.ndcs,
+.sdgLinkages {
+  background: linear-gradient(to top, $theme-color -100%, transparent 10%);
+}
+
 .constrainImage {
   order: 2;
   width: 80%;
