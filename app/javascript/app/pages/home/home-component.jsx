@@ -40,7 +40,7 @@ class Home extends PureComponent {
     return (
       <div className={styles.homeBg}>
         <Section className={styles.section} backgroundImage={background}>
-          <div className={styles.column}>
+          <div className={cx(styles.column, styles.homeIntro)}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
             <AutocompleteSearch />

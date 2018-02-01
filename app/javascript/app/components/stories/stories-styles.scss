@@ -5,11 +5,13 @@
   min-height: 700px;
 
   @media #{$tablet-portrait} {
-    min-height: 850px;
+    min-height: 1080px;
+    margin: 0 -8%;
   }
 
   @media #{$tablet-landscape} {
     min-height: 600px;
+    margin: 0;
   }
 }
 
@@ -64,12 +66,12 @@
 
   @media #{$tablet-portrait} {
     height: 33%;
+    font-size: $font-size-large;
   }
 
   @media #{$tablet-landscape} {
     width: 25%;
     height: 50%;
-    font-size: $font-size-large;
   }
 }
 
@@ -85,6 +87,8 @@
 
     @media #{$tablet-portrait} {
       height: 34%;
+      font-size: $font-size-x-large;
+      font-weight: $font-weight-light;
     }
 
     @media #{$tablet-landscape} {

@@ -29,6 +29,16 @@
   background-color: $light-gray;
 }
 
+.homeIntro {
+  @media #{$tablet-portrait} {
+    max-width: 450px;
+  }
+
+  @media #{$tablet-landscape} {
+    max-width: 100%;
+  }
+}
+
 .column {
   display: flex;
   flex-direction: column;
@@ -100,6 +110,10 @@
 .countries {
   display: flex;
   padding-bottom: 0;
+
+  @media #{$tablet-landscape} {
+    padding-bottom: 60px;
+  }
 }
 
 .sdgLinkages {
@@ -110,7 +124,7 @@
 .ndcs,
 .sdgLinkages {
   background-image: linear-gradient(to top, $theme-color -100%, transparent 10%);
-  border-bottom: solid 1px $light-gray;
+  border-bottom: solid 1px $border-color;
 
   @media #{$tablet-portrait} {
     background-image: none;
