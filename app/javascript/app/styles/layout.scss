@@ -1,18 +1,21 @@
 @import 'settings';
 
 .content {
-  width: 100%;
+  width: 80%;
   height: 100%;
   max-width: $max-width;
   margin: 0 auto;
-  padding: 0 $gutter-padding;
 
-  &.mobileConstrain {
-    max-width: $tablet-max-width;
+  @media #{$tablet-landscape} {
+    width: 100%;
+    max-width: $max-width;
+    padding: 0 $gutter-padding;
+  }
+}
 
-    @media #{$tablet-landscape} {
-      max-width: $max-width;
-    }
+.screenshotMobileLayout {
+  @media #{$mobile-only} {
+    padding: 0 $gutter-padding;
   }
 
   @media #{$mobile-only} {
@@ -41,6 +44,11 @@
 
     > *:nth-child(#{$i}) {
       -ms-grid-column: #{$i + ($i - 1)};
+
+      // Adding extra margin to fix safari and IE spacing
+      @if $i!=length($columns) {
+        margin-right: $gutter-padding;
+      }
     }
   }
 

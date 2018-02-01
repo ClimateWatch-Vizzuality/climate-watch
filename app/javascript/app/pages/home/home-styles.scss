@@ -4,11 +4,7 @@
 .doubleFold {
   display: flex;
   flex-direction: column;
-  padding-bottom: 3rem;
-
-  @media #{$tablet-portrait} {
-    flex-direction: row;
-  }
+  padding-bottom: 1.5rem;
 
   @media #{$tablet-portrait} {
     //SASS does not allow to @extend grid inside @media
@@ -22,9 +18,11 @@
   }
 }
 
-.doubleAction {
-  justify-content: space-between;
-  height: 160px;
+.mobileDoubleAction {
+  @media #{$mobile-only} {
+    justify-content: space-between;
+    height: 140px;
+  }
 }
 
 .homeBg {
@@ -50,10 +48,6 @@
     padding-top: 120px;
     padding-bottom: 120px;
   }
-}
-
-.stories {
-  padding-top: 60px;
 }
 
 .cwLogo {
@@ -93,10 +87,6 @@
   box-shadow: -10px 0 30px 0 rgba(37, 89, 124, 0.15);
 }
 
-.ndcs {
-  border-bottom: solid 1px $border-color;
-}
-
 .video {
   position: relative;
   background: #000;
@@ -109,7 +99,6 @@
 
 .countries {
   display: flex;
-  border-bottom: solid 1px $border-color;
   padding-bottom: 0;
 }
 
@@ -120,16 +109,20 @@
 .countries,
 .ndcs,
 .sdgLinkages {
-  background: linear-gradient(to top, $theme-color -100%, transparent 10%);
+  background-image: linear-gradient(to top, $theme-color -100%, transparent 10%);
+  border-bottom: solid 1px $light-gray;
+
+  @media #{$tablet-portrait} {
+    background-image: none;
+  }
 }
 
-.constrainImage {
+.invertOrder {
   order: 2;
-  width: 80%;
   margin: 0 auto;
 
   @media #{$tablet-landscape} {
-    order: 1;
+    order: initial;
   }
 }
 

@@ -39,11 +39,7 @@ class Home extends PureComponent {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
       <div className={styles.homeBg}>
-        <Section
-          className={styles.section}
-          backgroundImage={background}
-          mobileConstrain
-        >
+        <Section className={styles.section} backgroundImage={background}>
           <div className={styles.column}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
@@ -75,24 +71,27 @@ class Home extends PureComponent {
             />
           </div>
         </Section>
-        <div className={cx(layout.content, styles.stories)}>
+        <div className={cx(layout.content, styles.section)}>
           <Stories />
         </div>
-        <Section
-          mobileConstrain
-          className={cx(styles.section, styles.countries)}
-        >
-          <div className={cx(styles.column, styles.constrainImage)}>
-            <MobileOnly>
-              {matches => (
+        <Section className={cx(styles.section, styles.countries)}>
+          <MobileOnly>
+            {matches => (
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
                 <img
                   className={matches ? '' : styles.imageTall}
                   src={matches ? countrySmScreenshot : countryBgScreenshot}
                   alt="Country section screenshot"
                 />
-              )}
-            </MobileOnly>
-          </div>
+              </div>
+            )}
+          </MobileOnly>
           <div className={styles.column}>
             <Intro
               theme={introDark}
@@ -107,7 +106,7 @@ class Home extends PureComponent {
             >
               Connected from {geolocation.country}?
             </span>
-            <div className={cx(styles.doubleFold, styles.doubleAction)}>
+            <div className={cx(styles.doubleFold, styles.mobileDoubleAction)}>
               <Button
                 color="yellow"
                 link={`/countries/${geolocation.iso ? geolocation.iso : ''}`}
@@ -125,14 +124,14 @@ class Home extends PureComponent {
             </div>
           </div>
         </Section>
-        <Section className={cx(styles.section, styles.ndcs)} mobileConstrain>
+        <Section className={cx(styles.section, styles.ndcs)}>
           <div className={styles.column}>
             <Intro
               theme={introDark}
               title="Explore and Compare Nationally Determined Contributions"
               description="Analyze and compare national climate pledges under the Paris Agreement."
             />
-            <div className={cx(styles.doubleFold, styles.doubleAction)}>
+            <div className={cx(styles.doubleFold, styles.mobileDoubleAction)}>
               <Button color="yellow" link="/ndcs">
                 Explore NDC content
               </Button>
@@ -153,13 +152,16 @@ class Home extends PureComponent {
             )}
           </MobileOnly>
         </Section>
-        <Section
-          mobileConstrain
-          className={cx(styles.section, styles.sdgLinkages)}
-        >
+        <Section className={cx(styles.section, styles.sdgLinkages)}>
           <MobileOnly>
             {matches => (
-              <div className={cx(styles.column, styles.constrainImage)}>
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
                 <img
                   className={matches ? '' : styles.imageRight}
                   src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
