@@ -18,15 +18,11 @@
 }
 
 .section {
-  background: linear-gradient(to top, $theme-color -100%, transparent 10%);
-
-  @media #{$mobile-only} {
-    display: block;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    border-bottom: solid 1px $light-gray;
-  }
+  display: block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-bottom: solid 1px $light-gray;
 }
 
 .gray {
