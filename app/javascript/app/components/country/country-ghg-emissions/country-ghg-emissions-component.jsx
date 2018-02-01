@@ -48,6 +48,7 @@ class CountryGhgEmissions extends PureComponent {
           onInfoClick={handleInfoClick}
           shareUrl={`/embed/countries/${iso}/ghg-emissions`}
           analyticsGraphName="Country/Ghg-emissions"
+          reverseDropdown
         />
         <Button
           noSpace

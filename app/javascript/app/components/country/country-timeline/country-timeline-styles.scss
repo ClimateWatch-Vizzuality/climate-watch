@@ -13,11 +13,10 @@
   position: absolute;
 }
 
-.timelineContainer { // overwriting timeline styles
+.timelineContainer {
   overflow-x: hidden;
-  // the overflow-x is affecting the overflow y so we need this hack ▼ to keep the links visible
-  padding-top: 250px;
-  margin-top: -250px;
+
+  @include overflowFix();
 }
 
 .timeline { // overwriting timeline styles
