@@ -5,7 +5,7 @@
   font-size: $font-size-large;
   line-height: 1.25em;
 
-  @media #{$tablet-landscape} {
+  @media #{$tablet-portrait} {
     font-size: $font-size-x-large;
   }
 }
