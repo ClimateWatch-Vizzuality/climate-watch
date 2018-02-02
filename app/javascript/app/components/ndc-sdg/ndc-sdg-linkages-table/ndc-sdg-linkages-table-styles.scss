@@ -1,7 +1,14 @@
 @import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 .container {
   @include clearFix();
+
+  order: 2;
+
+  @media #{$tablet-landscape} {
+    order: 1;
+  }
 
   > div {
     float: left;

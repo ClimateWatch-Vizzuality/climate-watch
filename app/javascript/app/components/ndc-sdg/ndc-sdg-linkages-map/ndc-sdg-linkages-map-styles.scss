@@ -1,8 +1,14 @@
 @import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 .container {
   height: 100%;
   position: relative;
+  order: 1;
+
+  @media #{$tablet-landscape} {
+    order: 2;
+  }
 }
 
 .map {
