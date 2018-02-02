@@ -79,6 +79,7 @@
     @include msGridColumns(3fr, 1fr);
 
     grid-template-columns: 3fr 1fr;
+    margin-bottom: 0;
   }
 }
 
@@ -90,6 +91,10 @@
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: 60px;
   overflow: scroll;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
 }
 
 .cardContent {

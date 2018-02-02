@@ -151,6 +151,16 @@ class CountryNdcOverview extends PureComponent {
       );
     }
 
+    const description = hasSectors && (
+      <p
+        className={styles.descriptionContainer}
+        dangerouslySetInnerHTML={{
+          // eslint-disable-line react/no-danger
+          __html: values.indc_summary[0] && values.indc_summary[0].value
+        }}
+      />
+    );
+
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -168,6 +178,7 @@ class CountryNdcOverview extends PureComponent {
                     )
                   }
                 />
+                <TabletPortraitOnly>{description}</TabletPortraitOnly>
                 {actions && (
                   <div className={styles.actions}>
                     {this.renderInfoAndCompareButtons()}
@@ -177,13 +188,7 @@ class CountryNdcOverview extends PureComponent {
                   </div>
                 )}
               </div>
-              <p
-                className={styles.descriptionContainer}
-                dangerouslySetInnerHTML={{
-                  // eslint-disable-line react/no-danger
-                  __html: values.indc_summary[0] && values.indc_summary[0].value
-                }}
-              />
+              <TabletLandscape>{description}</TabletLandscape>
               {this.renderCards()}
               <TabletPortraitOnly>
                 {this.renderExploreButton()}
