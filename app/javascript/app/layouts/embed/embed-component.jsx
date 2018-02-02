@@ -17,7 +17,11 @@ class Embed extends PureComponent {
         <div className={styles.embedContent}>{renderRoutes(route.routes)}</div>
         <div className={styles.footer}>
           For more information, visit
-          <a href="https://www.climatewatchdata.org/" parent="_blank">
+          <a
+            href="https://www.climatewatchdata.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon className={styles.logo} icon={cwLogo} />
           </a>
         </div>
