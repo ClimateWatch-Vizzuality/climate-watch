@@ -13,18 +13,12 @@ import cwLogo from 'assets/icons/cw-logo.svg';
 import styles from './navbar-mobile-styles.scss';
 
 const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
-  <div className={styles.navbarMobile}>
+  <div className={styles.navbarMobile} id="navBarMobile">
     <div className={cx(styles.navbar, hamburgerIsOpen ? styles.isOpen : '')}>
       <NavLink exact to="/" onClick={closeMenu}>
         <Icon className={styles.logo} icon={cwLogo} />
       </NavLink>
-      <Hamburger
-        text={'MENU'}
-        className={cx(
-          styles.hamburgerIcon,
-          hamburgerIsOpen ? styles.isOpen : ''
-        )}
-      />
+      <Hamburger text={'MENU'} />
     </div>
     {hamburgerIsOpen && (
       <div className={styles.fullMenu}>
@@ -35,7 +29,7 @@ const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
           isMobile
         />
         <div className={styles.toolsContainer}>
-          <ToolsNav className={styles.tools} />
+          <ToolsNav className={styles.tools} reverse />
           <Contact />
         </div>
       </div>

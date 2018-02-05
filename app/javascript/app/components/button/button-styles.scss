@@ -62,9 +62,13 @@
 }
 
 .plain {
-  background-color: transparent;
+  background-color: $white;
   border: solid 1px $border-color;
   transition: background-color 150ms ease-out;
+
+  @media #{$desktop} {
+    background-color: transparent;
+  }
 
   &:hover {
     background-color: $white;

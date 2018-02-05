@@ -51,6 +51,8 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_AWS_SECRET_ACCESS_KEY
+          - name: CORS_WHITELIST
+            value: "*"
 
         ports:
           - containerPort: 3000
