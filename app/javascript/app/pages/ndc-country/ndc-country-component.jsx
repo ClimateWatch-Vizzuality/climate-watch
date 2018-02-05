@@ -90,12 +90,13 @@ class NDCCountry extends PureComponent {
                 />
               </div>
             </div>
-            <Sticky activeClass="sticky" top="#navBarMobile">
+            <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
               <AnchorNav
                 useRoutes
                 links={anchorLinks}
                 className={layout.content}
                 theme={anchorNavRegularTheme}
+                gradientColor={route.headerColor}
               />
             </Sticky>
           </Header>
