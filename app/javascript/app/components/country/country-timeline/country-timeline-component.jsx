@@ -54,21 +54,27 @@ class CountryTimeline extends PureComponent {
   render() {
     const { documentYears } = this.props;
     return (
-      <div className={styles.timeline}>
-        <TimelineProvider />
-        <h3 className={styles.timelineDescription}>
-          Timeline of UNFCCC Document Submissions
-        </h3>
-        {documentYears ? (
-          <HorizontalTimeline
-            index={this.state.index}
-            indexClick={index => {
-              this.setState({ index, previous: this.state.index, open: true });
-            }}
-            getLabel={(year, index) => this.getLabel(year, index)}
-            values={documentYears}
-          />
-        ) : null}
+      <div className={styles.timelineContainer}>
+        <div className={styles.timeline}>
+          <TimelineProvider />
+          <h3 className={styles.timelineDescription}>
+            Timeline of UNFCCC Document Submissions
+          </h3>
+          {documentYears ? (
+            <HorizontalTimeline
+              index={this.state.index}
+              indexClick={index => {
+                this.setState({
+                  index,
+                  previous: this.state.index,
+                  open: true
+                });
+              }}
+              getLabel={(year, index) => this.getLabel(year, index)}
+              values={documentYears}
+            />
+          ) : null}
+        </div>
       </div>
     );
   }

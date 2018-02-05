@@ -1,0 +1,30 @@
+@import '~styles/settings.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  font-size: $font-size-s;
+  margin-right: 0.5rem;
+  color: $gray;
+}
+
+.icon {
+  color: $theme-color;
+  fill: $theme-color;
+  width: 20px;
+  height: 16px;
+}
+
+.button {
+  outline: none;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  fill: $theme-color;
+  cursor: pointer;
+}
