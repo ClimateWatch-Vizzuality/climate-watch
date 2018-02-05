@@ -18,49 +18,49 @@ class CountryGhgEmissions extends PureComponent {
       calculationSelected,
       sourceSelected
     } = this.props;
-    return (
-      <div className={styles.graphControlsSection}>
-        <Dropdown
-          label="Data Source"
-          options={sources}
-          onValueChange={handleSourceChange}
-          value={sourceSelected}
-          hideResetButton
-        />
-        <Dropdown
-          label="Metric"
-          options={calculations}
-          onValueChange={handleCalculationChange}
-          value={calculationSelected}
-          hideResetButton
-        />
-      </div>
-    );
+    return [
+      <Dropdown
+        key="filter1"
+        label="Data Source"
+        options={sources}
+        onValueChange={handleSourceChange}
+        value={sourceSelected}
+        hideResetButton
+      />,
+      <Dropdown
+        key="filter2"
+        label="Metric"
+        options={calculations}
+        onValueChange={handleCalculationChange}
+        value={calculationSelected}
+        hideResetButton
+      />
+    ];
   }
 
   renderActionButtons() {
     const { iso, handleInfoClick, handleAnalyticsClick } = this.props;
 
-    return (
-      <div className={styles.graphControlsSection}>
-        <ButtonGroup
-          className={styles.btnGroup}
-          onInfoClick={handleInfoClick}
-          shareUrl={`/embed/countries/${iso}/ghg-emissions`}
-          analyticsGraphName="Country/Ghg-emissions"
-          reverseDropdown
-        />
-        <Button
-          noSpace
-          className={styles.exploreBtn}
-          color="yellow"
-          link={`/ghg-emissions?breakBy=location&filter=${iso}`}
-          onClick={handleAnalyticsClick}
-        >
-          Explore emissions
-        </Button>
-      </div>
-    );
+    return [
+      <ButtonGroup
+        key="action1"
+        className={styles.btnGroup}
+        onInfoClick={handleInfoClick}
+        shareUrl={`/embed/countries/${iso}/ghg-emissions`}
+        analyticsGraphName="Country/Ghg-emissions"
+        reverseDropdown
+      />,
+      <Button
+        key="action2"
+        noSpace
+        className={styles.exploreBtn}
+        color="yellow"
+        link={`/ghg-emissions?breakBy=location&filter=${iso}`}
+        onClick={handleAnalyticsClick}
+      >
+        Explore emissions
+      </Button>
+    ];
   }
 
   renderChart() {
@@ -89,31 +89,33 @@ class CountryGhgEmissions extends PureComponent {
         dataOptions={filtersOptions}
         dataSelected={filtersSelected}
         loading={loading}
-        height={320}
+        height={360}
       />
     );
   }
 
   render() {
     return (
-      <div className={styles.grid}>
-        <div className={styles.header}>
-          <h3 className={styles.title}>
-            Greenhouse Gas Emissions and Emissions Targets
-          </h3>
-          <TabletLandscape>
-            <div className={styles.graphControls}>
-              {this.renderFilterDropdowns()}
-              {this.renderActionButtons()}
-            </div>
-            {this.renderChart()}
-          </TabletLandscape>
-          <TabletPortraitOnly>
+      <div className={styles.container}>
+        <h3 className={styles.title}>
+          Greenhouse Gas Emissions and Emissions Targets
+        </h3>
+        <TabletLandscape>
+          <div className={styles.graphControls}>
             {this.renderFilterDropdowns()}
-            {this.renderChart()}
             {this.renderActionButtons()}
-          </TabletPortraitOnly>
-        </div>
+          </div>
+          {this.renderChart()}
+        </TabletLandscape>
+        <TabletPortraitOnly>
+          <div className={styles.graphControlsSection}>
+            {this.renderFilterDropdowns()}
+          </div>
+          {this.renderChart()}
+          <div className={styles.graphControlsSection}>
+            {this.renderActionButtons()}
+          </div>
+        </TabletPortraitOnly>
       </div>
     );
   }
