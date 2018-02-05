@@ -5,12 +5,15 @@ import upperFirst from 'lodash/upperFirst';
 import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
+import cx from 'classnames';
 
 import MultiSelect from 'components/multiselect';
 import Fieldset from 'components/fieldset';
 import Dropdown from 'components/dropdown';
 import TextInput from 'components/text-input';
 import TextArea from 'components/text-area';
+import btnThemes from 'styles/themes/button/buttons';
+
 // import Search from 'components/search';
 import Button from 'components/button';
 import Loading from 'components/loading';
@@ -177,15 +180,6 @@ const Step4 = props => {
     creationStatus
   } = props;
 
-  //   <Search
-  //   icon={false}
-  //   placeholder=""
-  //   value={title}
-  //   onChange={onNameChange}
-  //   className={styles.inputText}
-  //   theme={inputTextTheme}
-  // />
-
   return [
     <li className={styles.step} key="step-4-last-li">
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
@@ -244,9 +238,8 @@ const Step4 = props => {
     <li className={styles.saveContainer} key="step-4-button-li">
       {id && (
         <Button
-          color="red"
           onClick={() => deleteVisualisation({ id })}
-          className={styles.deleteBtn}
+          className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
         >
           Delete
         </Button>

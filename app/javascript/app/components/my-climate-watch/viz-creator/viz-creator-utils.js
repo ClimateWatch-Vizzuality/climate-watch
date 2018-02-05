@@ -38,7 +38,10 @@ export const processLegendData = (idc, scn) => {
   const lineData = processLineData(idc, scn).lineProps;
   return _map(scn, s => ({
     label: s.name,
-    color: lineData[_camelCase(s.name)].fill
+    color:
+      (lineData[_camelCase(s.name)] && lineData[_camelCase(s.name)].fill) ||
+      console.warn('no fill color for', _camelCase(s.name)) ||
+      '#ffffff'
   }));
 };
 

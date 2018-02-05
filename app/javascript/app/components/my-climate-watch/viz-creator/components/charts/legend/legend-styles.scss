@@ -1,10 +1,12 @@
 .legend {
   .tags {
     display: flex;
+    flex-wrap: wrap;
   }
 
   .tagItem {
     margin-right: 10px;
+    margin-bottom: 1rem;
   }
 
   .tag {

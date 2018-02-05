@@ -27,8 +27,12 @@ export const subcategoriesSelector = state => get(lenses.$subcategories, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
 
 export const hasDataSelector = createSelector(
-  timeseriesSelector,
-  timeseries => timeseries && !isEmpty(timeseries.data)
+  [timeseriesSelector, scenariosSelector],
+  (timeseries, scenarios) =>
+    timeseries &&
+    !isEmpty(timeseries.data) &&
+    scenarios &&
+    !isEmpty(scenarios.data)
 );
 
 export const vizTypes = data => data && data['viz-types'];
@@ -38,10 +42,8 @@ export const vizSelector = createSelector(datasetsSelector, sets =>
 
 export const chartDataSelector = createSelector(
   [hasDataSelector, timeseriesSelector, scenariosSelector],
-  (hasData, timeseries, scenarios) => {
-    if (!hasData) return {};
-    return { ...processLineData(timeseries.data, scenarios.data) };
-  }
+  (hasData, timeseries, scenarios) =>
+    (!hasData ? {} : { ...processLineData(timeseries.data, scenarios.data) })
 );
 
 export const legendDataSelector = createSelector(

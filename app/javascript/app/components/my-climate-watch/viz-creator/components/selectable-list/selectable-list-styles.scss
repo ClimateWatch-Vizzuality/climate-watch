@@ -10,20 +10,22 @@
   display: inline-block;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
   border: solid 1px rgba(26, 28, 34, 0.1);
+  margin-bottom: 20px;
+  $pad: 20px;
+  $border: 1px;
 
   &.dataset {
-    flex-basis: calc(50% - 20px);
-    margin: 0 10px 20px;
+    flex-basis: calc((100% / 2) - (#{$pad} + (2 * #{$border})));
+    // margin: 0 10px 20px;
 
     @media #{$tablet-landscape} {
-      flex-basis: calc(25% - 20px);
-      margin: 0 10px;
+      flex-basis: calc((100% / 4) - (#{$pad} + (2 * #{$border})));
+      // margin: 0 10px;
     }
   }
 
   &.visualisation {
-    flex-basis: calc(33% - 20px);
-    margin-bottom: 20px;
+    flex-basis: calc((100% / 3) - (#{$pad} + (2 * #{$border})));
   }
 
   &:hover, {

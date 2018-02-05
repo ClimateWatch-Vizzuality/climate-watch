@@ -121,11 +121,6 @@ export default {
     ),
   [actions.selectModel]: (state, { payload }) => {
     const child = get($scenarios, initialState);
-    const filters = filtersSelector(state);
-    const scenariosFilter = find(filters, { name: child.name });
-    if (scenariosFilter && scenariosFilter.selected === 'all') {
-      child.selected = mapFilter(child.data);
-    }
     return updateIn($models, { selected: payload, child }, state);
   },
 
@@ -148,7 +143,7 @@ export default {
   [actions.selectScenario]: (state, { payload }) => {
     const newState = updateIn(
       $scenarios,
-      { selected: payload, child: get($indicators, initialState) },
+      { selected: payload, child: get($categories, initialState) },
       state
     );
     return newState;

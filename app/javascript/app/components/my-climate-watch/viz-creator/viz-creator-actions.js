@@ -1,6 +1,7 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { get } from 'js-lenses';
 import find from 'lodash/find';
+import filter from 'lodash/filter';
 import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 import { EPAPI, CWAPI } from 'services/api';
@@ -73,13 +74,13 @@ export const fetchSubCategories = createThunkAction(
   'fetchSubCategories',
   ({ scenarios, locations, category }) => dispatch => {
     EPAPI.get(
-      'categories',
+      'subcategories',
       `scenario=${scenarios
         .map(s => s.value)
         .join(',')}&location=${locations}&time_series=true`
     ).then(d => {
-      const foundCategory = find(d, { id: category.value });
-      dispatch(gotSubCategories(foundCategory.subcategories));
+      const foundCategories = filter(d, { parent_id: category.value });
+      dispatch(gotSubCategories(foundCategories));
     });
   }
 );
