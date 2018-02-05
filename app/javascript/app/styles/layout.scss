@@ -7,24 +7,20 @@
   margin: 0 auto;
   padding: 0 $gutter-padding / 2;
 
-  @media #{$tablet-portrait} {
-    padding: 0 10%;
-  }
-
   @media #{$tablet-landscape} {
     width: 100%;
     max-width: $max-width;
     padding: 0 $gutter-padding;
+  }
+
+  @media #{$mobile-only} {
+    padding: 0 $gutter-padding-mobile;
   }
 }
 
 .screenshotMobileLayout {
   @media #{$mobile-only} {
     padding: 0 $gutter-padding * 2;
-  }
-
-  @media #{$mobile-only} {
-    padding: 0 $gutter-padding-mobile;
   }
 }
 
