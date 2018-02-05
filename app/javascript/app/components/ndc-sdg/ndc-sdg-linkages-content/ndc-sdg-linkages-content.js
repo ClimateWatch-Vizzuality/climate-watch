@@ -15,8 +15,7 @@ class NdcSdgLinkagesContentContainer extends PureComponent {
     this.state = {
       // using local state to better performant
       goalHover: null,
-      targetHover: null,
-      responsiveMapIsOpen: true
+      targetHover: null
     };
   }
   componentWillMount() {
@@ -41,7 +40,6 @@ class NdcSdgLinkagesContentContainer extends PureComponent {
       ...this.props,
       goalHover: this.state.goalHover,
       targetHover: this.state.targetHover,
-      responsiveMapIsOpen: this.state.responsiveMapIsOpen,
       handleGoalHover: this.handleGoalHover,
       handleTargetHover: this.handleTargetHover
     });

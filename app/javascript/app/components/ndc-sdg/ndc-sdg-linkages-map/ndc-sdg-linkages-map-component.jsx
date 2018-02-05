@@ -30,7 +30,7 @@ class NdcSdgLinkagesMap extends PureComponent {
         {matches => (
           <div
             className={cx(styles.container, this.props.className, {
-              [styles.isOpen]: this.props.responsiveMapIsOpen === true
+              [styles.isOpen]: this.props.goalSelected !== ''
             })}
           >
             {matches ? (
@@ -67,7 +67,7 @@ NdcSdgLinkagesMap.propTypes = {
   onCountryClick: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   className: PropTypes.string,
-  responsiveMapIsOpen: PropTypes.bool
+  goalSelected: PropTypes.string
 };
 
 export default NdcSdgLinkagesMap;
