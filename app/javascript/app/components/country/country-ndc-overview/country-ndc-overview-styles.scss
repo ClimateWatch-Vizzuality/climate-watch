@@ -6,25 +6,49 @@
   min-height: 450px;
 }
 
+.countryOverviewPadding {
+  padding-bottom: 2em;
+}
+
 .col2 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr);
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr);
 
-  grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .header {
   margin-top: 40px;
 }
 
+.infoAndCompareButtons {
+  @extend %grid;
+
+  @include msGridColumns(25%, 75%);
+
+  grid-template-columns: 25% 75%;
+  grid-column-gap: 0;
+
+  @media #{$tablet-landscape} {
+    grid-column-gap: 30px;
+  }
+}
+
 .actions {
   @extend %grid;
 
-  @include msGridColumns(45px, 1fr, 47%);
-
-  grid-template-columns: 45px 1fr 47%;
   margin-top: -6px;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(41% 1fr);
+
+    grid-template-columns: 41% 1fr;
+    grid-column-gap: 3.6em;
+    margin-left: -0.6em;
+  }
 }
 
 .subTitle {
@@ -49,10 +73,28 @@
 .cards {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(4, 1fr);
   margin-bottom: 60px;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(3fr, 1fr);
+
+    grid-template-columns: 3fr 1fr;
+    margin-bottom: 0;
+  }
+}
+
+.cardsRowContainer {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr);
+
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 60px;
+  overflow: scroll;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
 }
 
 .cardContent {

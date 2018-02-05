@@ -1,5 +1,15 @@
 @import '~styles/settings.scss';
 
+:global .resizable-input {
+  display: none;
+}
+
+.searchable {
+  :global .resizable-input {
+    display: initial;
+  }
+}
+
 .dropdownWrapper {
   width: 100%;
 }
