@@ -1,14 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 
-import { TabletLandscape } from 'components/responsive';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
-import NdcSdgLinkagesMap from 'components/ndc-sdg/ndc-sdg-linkages-map';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import { NDC_SDG_LINKAGES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
@@ -42,16 +39,6 @@ class NdcSdg extends PureComponent {
               <AutocompleteSearch />
             </div>
           </div>
-          <TabletLandscape>
-            {matches =>
-              (!matches ? (
-                <NdcSdgLinkagesMap
-                  className={cx(styles.map, {
-                    [styles.visible]: matches === false
-                  })}
-                />
-              ) : null)}
-          </TabletLandscape>
         </Header>
         <div className={styles.wrapper}>
           <NdcSdgLinkagesContent />
