@@ -101,7 +101,7 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={<CustomizedYAxisTick unit={unit} />}
+            tick={<CustomizedYAxisTick unit={espGraph && unit} />}
             domain={domain || ['0', 'auto']}
           >
             {espGraph && yAxisLabel}
