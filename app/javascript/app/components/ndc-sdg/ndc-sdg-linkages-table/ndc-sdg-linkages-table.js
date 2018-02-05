@@ -32,6 +32,7 @@ class NdcSdgLinkagesTableContainer extends PureComponent {
   }
 
   handleClickGoal = sdgNumber => {
+    this.props.onGoalTap(sdgNumber);
     this.updateUrlParam({ name: 'goal', value: sdgNumber });
     ReactGA.event({
       category: 'NDC-SDG map',
@@ -57,7 +58,8 @@ class NdcSdgLinkagesTableContainer extends PureComponent {
 NdcSdgLinkagesTableContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  onTargetHover: PropTypes.func.isRequired
+  onTargetHover: PropTypes.func.isRequired,
+  onGoalTap: PropTypes.func.isRequired
 };
 
 export { default as component } from './ndc-sdg-linkages-table-component';
