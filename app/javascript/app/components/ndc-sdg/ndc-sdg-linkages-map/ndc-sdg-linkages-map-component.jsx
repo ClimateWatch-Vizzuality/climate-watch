@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import LegendRange from './legend-range';
@@ -24,7 +25,7 @@ class NdcSdgLinkagesMap extends PureComponent {
   }
   render() {
     return (
-      <div className={styles.container}>
+      <div className={cx(styles.container, this.props.className)}>
         <h3 className={styles.title}>Global Linkage Overview</h3>
         <ButtonGroup
           className={styles.buttons}
@@ -51,7 +52,8 @@ NdcSdgLinkagesMap.propTypes = {
   paths: PropTypes.array.isRequired,
   targetHover: PropTypes.string,
   onCountryClick: PropTypes.func.isRequired,
-  handleInfoClick: PropTypes.func.isRequired
+  handleInfoClick: PropTypes.func.isRequired,
+  className: PropTypes.string
 };
 
 export default NdcSdgLinkagesMap;

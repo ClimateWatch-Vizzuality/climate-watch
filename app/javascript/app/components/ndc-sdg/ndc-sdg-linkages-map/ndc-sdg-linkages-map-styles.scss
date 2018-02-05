@@ -17,8 +17,12 @@
 
 .legend {
   position: absolute;
-  left: 0;
+  left: 15px;
   bottom: 15px;
+
+  @media #{$tablet-landscape} {
+    left: 0;
+  }
 }
 
 .buttons {
@@ -32,4 +36,9 @@
   position: absolute;
   left: 0;
   top: $gutter-padding;
+  display: none;
+
+  @media #{$tablet-landscape} {
+    display: block;
+  }
 }
