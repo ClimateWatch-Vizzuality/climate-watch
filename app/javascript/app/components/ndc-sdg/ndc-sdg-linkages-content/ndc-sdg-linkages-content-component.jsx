@@ -33,10 +33,12 @@ class NdcSdgLinkagesContent extends PureComponent {
               targetHover={targetHover}
               onTargetHover={handleTargetHover}
             />
-            <NdcSdgLinkagesMap
-              goalHover={goalHover}
-              targetHover={targetHover}
-            />
+            {matches ? (
+              <NdcSdgLinkagesMap
+                goalHover={goalHover}
+                targetHover={targetHover}
+              />
+            ) : null}
             <ModalMetadata />
           </div>
         )}
