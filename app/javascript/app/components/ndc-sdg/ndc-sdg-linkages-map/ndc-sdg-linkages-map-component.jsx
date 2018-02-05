@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
+import { TabletLandscape } from 'components/responsive';
 import LegendRange from './legend-range';
 import LegendSteps from './legend-steps';
 
@@ -25,24 +26,36 @@ class NdcSdgLinkagesMap extends PureComponent {
   }
   render() {
     return (
-      <div className={cx(styles.container, this.props.className)}>
-        <h3 className={styles.title}>Global Linkage Overview</h3>
-        <ButtonGroup
-          className={styles.buttons}
-          onInfoClick={this.props.handleInfoClick}
-          shareUrl="/embed/ndcs-sdg"
-          analyticsGraphName="Ndcs-Sdg"
-        />
-        <Map
-          style={{ height: '100%', width: '100%' }}
-          zoomEnable
-          paths={this.props.paths}
-          className={styles.map}
-          onCountryClick={this.props.onCountryClick}
-          controlPosition="bottom"
-        />
-        {this.getLegend()}
-      </div>
+      <TabletLandscape>
+        {matches => (
+          <div
+            className={cx(styles.container, this.props.className, {
+              [styles.isOpen]: this.props.responsiveMapIsOpen === true
+            })}
+          >
+            {matches ? (
+              <h3 className={styles.title}>Global Linkage Overview</h3>
+            ) : null}
+            {matches ? (
+              <ButtonGroup
+                className={styles.buttons}
+                onInfoClick={this.props.handleInfoClick}
+                shareUrl="/embed/ndcs-sdg"
+                analyticsGraphName="Ndcs-Sdg"
+              />
+            ) : null}
+            <Map
+              style={{ height: '100%', width: '100%' }}
+              zoomEnable
+              paths={this.props.paths}
+              className={styles.map}
+              onCountryClick={this.props.onCountryClick}
+              controlPosition="bottom"
+            />
+            {this.getLegend()}
+          </div>
+        )}
+      </TabletLandscape>
     );
   }
 }
@@ -53,7 +66,8 @@ NdcSdgLinkagesMap.propTypes = {
   targetHover: PropTypes.string,
   onCountryClick: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  responsiveMapIsOpen: PropTypes.bool
 };
 
 export default NdcSdgLinkagesMap;

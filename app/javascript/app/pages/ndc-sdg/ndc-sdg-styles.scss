@@ -7,16 +7,13 @@
 
 .header {
   padding-bottom: $gutter-padding;
-}
+  overflow: auto;
 
-.map {
-  position: absolute;
-  width: 100%;
-  top: -100%;
-  transition: all 0.2s ease-in-out;
-  background: $light-gray;
+  @media #{$mobile-only} {
+    height: 50vh;
+  }
 
-  &.visible {
-    top: 0;
+  @media #{$tablet-portrait} {
+    height: 45vh;
   }
 }

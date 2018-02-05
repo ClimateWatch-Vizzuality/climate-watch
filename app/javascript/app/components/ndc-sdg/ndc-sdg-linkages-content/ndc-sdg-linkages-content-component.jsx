@@ -17,6 +17,7 @@ class NdcSdgLinkagesContent extends PureComponent {
     const {
       goalHover,
       targetHover,
+      responsiveMapIsOpen,
       handleGoalHover,
       handleTargetHover
     } = this.props;
@@ -33,12 +34,11 @@ class NdcSdgLinkagesContent extends PureComponent {
               targetHover={targetHover}
               onTargetHover={handleTargetHover}
             />
-            {matches ? (
-              <NdcSdgLinkagesMap
-                goalHover={goalHover}
-                targetHover={targetHover}
-              />
-            ) : null}
+            <NdcSdgLinkagesMap
+              goalHover={goalHover}
+              targetHover={targetHover}
+              responsiveMapIsOpen={responsiveMapIsOpen}
+            />
             <ModalMetadata />
           </div>
         )}
@@ -50,6 +50,7 @@ class NdcSdgLinkagesContent extends PureComponent {
 NdcSdgLinkagesContent.propTypes = {
   goalHover: PropTypes.number,
   targetHover: PropTypes.string,
+  responsiveMapIsOpen: PropTypes.bool,
   handleGoalHover: PropTypes.func.isRequired,
   handleTargetHover: PropTypes.func.isRequired
 };
