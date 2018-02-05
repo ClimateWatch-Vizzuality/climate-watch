@@ -47,7 +47,7 @@ export const chartDataSelector = createSelector(
 export const legendDataSelector = createSelector(
   [hasDataSelector, timeseriesSelector, scenariosSelector],
   (hasData, timeseries, scenarios) => {
-    if (!hasData) return {};
+    if (!hasData) return [];
     return processLegendData(timeseries.data, scenarios.data);
   }
 );
