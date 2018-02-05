@@ -140,7 +140,8 @@ export default [
     component: GHGEmissions,
     exact: true,
     label: 'GHG EMISSIONS',
-    headerImage: 'emissions'
+    headerImage: 'emissions',
+    headerColor: '#46407D'
   },
   // {
   //   path: '/emission-pathways/models/:id',
