@@ -1,24 +1,31 @@
 $pad: 0.8em;
 
 .fieldsetContainer {
+  position: relative;
   font-size: 1rem;
   border: 1px solid transparent;
   padding: 2 * $pad 0 0;
 
   &Failed {
-    padding: 0;
     border-color: red;
   }
 }
 
 .fieldsetMessage {
+  display: block;
+  position: absolute;
+  padding: 0 0.7em;
+  top: 1em;
+  left: 1em;
+  pointer-events: none;
   opacity: 0;
   color: red;
   margin-bottom: $pad;
-  height: 1rem;
+  background-color: white;
+  height: 1.5em;
+  z-index: 1;
 
   &Failed {
     opacity: 1;
-    display: block;
   }
 }
