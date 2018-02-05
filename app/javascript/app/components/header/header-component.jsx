@@ -10,18 +10,21 @@ const Header = props => {
     [styles.medium]: size === 'medium',
     [styles.large]: size === 'large'
   });
-  const style = image ? { backgroundImage: `url(${image})` } : {};
+
+  let style = { backgroundColor: color };
+  if (image) {
+    style = {
+      ...style,
+      backgroundImage: `url(${image})`
+    };
+  }
 
   const gradientStyle = color
     ? { backgroundImage: `linear-gradient(to top, ${color} 25%, transparent)` }
     : null;
 
   return (
-    <div
-      className={cx(className, styles.header, sizeClass)}
-      style={style}
-      data-color={color}
-    >
+    <div className={cx(className, styles.header, sizeClass)} style={style}>
       {gradientStyle && (
         <span className={styles.gradient} style={gradientStyle} />
       )}

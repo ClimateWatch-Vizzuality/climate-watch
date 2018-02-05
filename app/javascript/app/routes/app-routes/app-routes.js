@@ -75,12 +75,14 @@ export default [
     path: '/ndcs/country/:iso',
     component: NDCCountry,
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCCountryRoutes
   },
   {
     path: '/ndcs/compare',
     component: NDCCompare,
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCCompareRoutes
   },
   {
@@ -138,7 +140,8 @@ export default [
     component: GHGEmissions,
     exact: true,
     label: 'GHG EMISSIONS',
-    headerImage: 'emissions'
+    headerImage: 'emissions',
+    headerColor: '#46407D'
   },
   // {
   //   path: '/emission-pathways/models/:id',

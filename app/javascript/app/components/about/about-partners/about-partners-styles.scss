@@ -22,10 +22,15 @@
 
   .partner {
     float: left;
-    width: 33.333%;
+    width: 100%;
     padding-right: $gutter-padding;
-    height: 220px;
-    margin-bottom: 30px;
+    margin-bottom: 4em;
+
+    @media #{$tablet-landscape} {
+      height: 220px;
+      width: 33.333%;
+      margin-bottom: 30px;
+    }
 
     .link {
       display: flex;
@@ -56,14 +61,23 @@
 
   &.col4 {
     .partner {
-      width: 25%;
+      width: 100%;
+
+      @media #{$tablet-landscape} {
+        width: 25%;
+      }
     }
   }
 
   &.additionalData {
     .partner {
-      width: 25%;
-      height: 80px;
+      width: 100%;
+      margin-bottom: 1em;
+
+      @media #{$tablet-landscape} {
+        width: 25%;
+        height: 80px;
+      }
     }
 
     .link {

@@ -5,10 +5,22 @@
   height: 100%;
   max-width: $max-width;
   margin: 0 auto;
-  padding: 0 $gutter-padding;
+  padding: 0 $gutter-padding / 2;
 
+  @media #{$tablet-portrait} {
+    padding: 0 10%;
+  }
+
+  @media #{$tablet-landscape} {
+    width: 100%;
+    max-width: $max-width;
+    padding: 0 $gutter-padding;
+  }
+}
+
+.screenshotMobileLayout {
   @media #{$mobile-only} {
-    padding: 0 $gutter-padding-mobile;
+    padding: 0 $gutter-padding * 2;
   }
 }
 
@@ -33,6 +45,11 @@
 
     > *:nth-child(#{$i}) {
       -ms-grid-column: #{$i + ($i - 1)};
+
+      // Adding extra margin to fix safari and IE spacing
+      @if $i!=length($columns) {
+        margin-right: $gutter-padding;
+      }
     }
   }
 

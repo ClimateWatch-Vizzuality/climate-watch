@@ -8,9 +8,9 @@ import styles from './section-styles.scss';
 const Section = ({ children, backgroundImage, className }) => (
   <section
     className={cn(styles.section, className)}
-    style={{
-      backgroundImage: `url(${backgroundImage})`
-    }}
+    style={
+      backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : null
+    }
   >
     <div className={cn(layout.content, styles.doubleFold)}>{children}</div>
   </section>
