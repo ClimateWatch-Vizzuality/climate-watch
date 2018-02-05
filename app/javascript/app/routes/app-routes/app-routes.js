@@ -75,12 +75,14 @@ export default [
     path: '/ndcs/country/:iso',
     component: NDCCountry,
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCCountryRoutes
   },
   {
     path: '/ndcs/compare',
     component: NDCCompare,
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCCompareRoutes
   },
   {
