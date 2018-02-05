@@ -4,10 +4,11 @@ import { renderRoutes } from 'react-router-config';
 import cx from 'classnames';
 
 import CountriesProvider from 'providers/countries-provider';
-import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import { TabletLandscape } from 'components/responsive';
 import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
+import BottomBar from 'components/footer/bottom-bar';
 import { HOME_PAGE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
@@ -26,15 +27,17 @@ class App extends PureComponent {
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
-        <TabletPortraitOnly>
-          <NavBarMobile routes={navRoutes} />
-        </TabletPortraitOnly>
         <TabletLandscape>
-          <NavBar routes={navRoutes} />
+          {matches =>
+            (matches ? (
+              <NavBar routes={navRoutes} />
+            ) : (
+              <NavBarMobile routes={navRoutes} />
+            ))}
         </TabletLandscape>
         {renderRoutes(route.routes.filter(r => r.path))}
         <TabletLandscape>
-          <Footer routes={navRoutes} />
+          {matches => (matches ? <Footer routes={navRoutes} /> : <BottomBar />)}
         </TabletLandscape>
       </div>
     );
