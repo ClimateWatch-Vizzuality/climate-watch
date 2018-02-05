@@ -19,7 +19,8 @@ const MyVisualisations = ({
   data,
   creatorIsOpen,
   openCreator,
-  closeCreator
+  closeCreator,
+  currentId
 }) => (
   <div>
     <ul className={styles.visContainer}>
@@ -51,7 +52,10 @@ const MyVisualisations = ({
       onRequestClose={closeCreator}
       shouldCloseOnOverlayClick={false}
     >
-      <ModalHeader theme={styles} title="Create a visualisation" />
+      <ModalHeader
+        theme={styles}
+        title={`${currentId ? 'Create a' : 'Edit'} visualisation`}
+      />
       <VizCreator onHideCreator={closeCreator} />
     </Modal>
   </div>
@@ -61,7 +65,8 @@ MyVisualisations.propTypes = {
   data: PropTypes.array,
   creatorIsOpen: PropTypes.bool,
   openCreator: PropTypes.func,
-  closeCreator: PropTypes.func
+  closeCreator: PropTypes.func,
+  currentId: PropTypes.number
 };
 
 export default MyVisualisations;

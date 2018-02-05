@@ -31,6 +31,7 @@ const actions = { ...creatorActions, ...ownActions };
 
 const mapStateToProps = ({ visualisations, vizCreator }) => ({
   ...visualisations,
+  currentId: vizCreator.id,
   creatorIsOpen: vizCreator.creatorIsOpen
 });
 
