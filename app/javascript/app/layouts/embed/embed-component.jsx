@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import CountriesProvider from 'providers/countries-provider';
 import cwLogo from 'assets/icons/cw-logo.svg';
+import cx from 'classnames';
 import Icon from 'components/icon';
 
 import layout from 'styles/layout';
@@ -12,7 +13,7 @@ class Embed extends PureComponent {
   render() {
     const { route } = this.props;
     return (
-      <div className={[layout.content, styles.embed]}>
+      <div className={cx(layout.content, styles.embed)}>
         <CountriesProvider />
         <div className={styles.embedContent}>{renderRoutes(route.routes)}</div>
         <div className={styles.footer}>
