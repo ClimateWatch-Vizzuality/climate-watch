@@ -1,13 +1,22 @@
 @import '~styles/layout.scss';
-
-.grid {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 2fr);
-
-  grid-template-columns: 1fr 2fr;
-}
+@import '~styles/settings.scss';
 
 .bg {
   background-color: $light-gray;
+}
+
+.header {
+  padding-bottom: $gutter-padding;
+}
+
+.map {
+  position: absolute;
+  width: 100%;
+  top: -100%;
+  transition: all 0.2s ease-in-out;
+  background: $light-gray;
+
+  &.visible {
+    top: 0;
+  }
 }
