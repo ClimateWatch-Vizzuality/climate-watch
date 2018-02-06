@@ -59,20 +59,6 @@ export const filterDataByBlackList = createSelector(
   }
 );
 
-export const flattenedData = createSelector([filterDataByBlackList], data => {
-  if (!data || isEmpty(data)) return null;
-  const attributesWithObjects = ['model', 'category', 'subcategory'];
-  return data.map(d => {
-    const flattenedD = d;
-    attributesWithObjects.forEach(a => {
-      if (Object.prototype.hasOwnProperty.call(d, a)) {
-        flattenedD[a] = d[a] && d[a].name;
-      }
-    });
-    return flattenedD;
-  });
-});
-
 export const defaultColumns = createSelector(getCategoryName, category => {
   const categoryDefaultColumns = {
     scenarios: ['name', 'category', 'description'],
@@ -95,7 +81,7 @@ export const titleLinks = createSelector(
 );
 
 export default {
-  flattenedData,
+  filterDataByBlackList,
   defaultColumns,
   titleLinks
 };
