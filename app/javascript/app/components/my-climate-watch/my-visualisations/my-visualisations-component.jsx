@@ -40,7 +40,7 @@ const MyVisualisations = ({
       ))}
       <li key="action-card" className={styles.visCard}>
         <ActionCard
-          text="Create a new visualization"
+          text={`${currentId ? 'Edit' : 'Create a new'} visualization`}
           action={{ type: 'action', onClick: openCreator }}
         />
       </li>
@@ -54,7 +54,7 @@ const MyVisualisations = ({
     >
       <ModalHeader
         theme={styles}
-        title={`${currentId ? 'Create a' : 'Edit'} visualisation`}
+        title={`${currentId ? 'Edit' : 'Create a new'} visualization`}
       />
       <VizCreator onHideCreator={closeCreator} />
     </Modal>
