@@ -61,13 +61,14 @@ const Step4 = props => {
         <Loading light className={styles.timeseriesLoader} />
       ) : (
         [
-          console.log(visualisationType) || createElement(charts[visualisationType], {
-            key: 'line-chart',
-            className: styles.chart,
-            width: '90%',
-            legend: true,
-            ...chartData
-          }),
+          console.log(visualisationType) ||
+            createElement(charts[visualisationType], {
+              key: 'line-chart',
+              className: styles.chart,
+              width: '90%',
+              legend: true,
+              ...chartData
+            }),
           <Legend key="legend" theme={styles} data={legendData} />
         ]
       )}

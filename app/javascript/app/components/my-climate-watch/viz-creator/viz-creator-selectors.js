@@ -60,12 +60,13 @@ export const selectedStructureSelector = createSelector(
 
 export const filtersSelector = createSelector(
   selectedStructureSelector,
-  (selectedStructure) => (selectedStructure && selectedStructure.filters) || []
+  selectedStructure => (selectedStructure && selectedStructure.filters) || []
 );
 
 export const visualisationType = createSelector(
   selectedStructureSelector,
-  (selectedStructure) => (selectedStructure && selectedStructure.chart && selectedStructure.chart.type)
+  selectedStructure =>
+    selectedStructure && selectedStructure.chart && selectedStructure.chart.type
 );
 
 export const chartDataSelector = createSelector(
@@ -77,7 +78,8 @@ export const chartDataSelector = createSelector(
       case 'LineChart':
         return { ...processLineData(timeseries.data, scenarios.data) };
 
-      default: return {};
+      default:
+        return {};
     }
   }
 );
