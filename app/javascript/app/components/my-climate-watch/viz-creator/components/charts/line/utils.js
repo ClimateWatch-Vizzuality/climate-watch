@@ -36,7 +36,7 @@ export const groupDataByScenario = (data, scenarios) =>
 export const getLineProps = (data, colors) =>
   _keys(data[0]).reduce(
     (rc, k, i) => {
-      const color = colors[i++]; // eslint-disable-line
+      const color = colors[i++] || '#bdbdbd'; // eslint-disable-line
       return Object.assign(rc, {
         [k]: {
           dataKey: k,
