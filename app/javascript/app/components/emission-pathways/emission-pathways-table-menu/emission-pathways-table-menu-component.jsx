@@ -5,6 +5,8 @@ import layout from 'styles/layout.scss';
 import Button from 'components/button';
 import cx from 'classnames';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
+import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+
 import styles from './emission-pathways-table-menu-styles.scss';
 
 class EmissionPathwaysTableMenu extends PureComponent {
@@ -21,20 +23,38 @@ class EmissionPathwaysTableMenu extends PureComponent {
             useRoutes
             links={routeLinks}
             theme={anchorNavLightTheme}
-            className={styles.noPaddingLeft}
+            className={styles.nav}
           />
-          <span className={styles.butonDetail}>
-            Want to have your model in Climate Watch?
-          </span>
-          {uploadButton && (
-            <Button
-              color="yellow"
-              className={styles.uploadButton}
-              href="mailto:ClimateWatch@WRI.org"
-            >
-              Get in touch
-            </Button>
-          )}
+          <TabletLandscape>
+            <span className={styles.buttonDetail}>
+              Want to have your model in Climate Watch?
+            </span>
+            {uploadButton && (
+              <Button
+                color="yellow"
+                className={styles.uploadButton}
+                href="mailto:ClimateWatch@WRI.org"
+              >
+                Get in touch
+              </Button>
+            )}
+          </TabletLandscape>
+          <TabletPortraitOnly>
+            <div>
+              <span className={styles.buttonDetail}>
+                Want to have your model in Climate Watch?
+              </span>
+              {uploadButton && (
+                <Button
+                  color="yellow"
+                  className={styles.uploadButton}
+                  href="mailto:ClimateWatch@WRI.org"
+                >
+                  Get in touch
+                </Button>
+              )}
+            </div>
+          </TabletPortraitOnly>
         </div>
       </div>
     );
