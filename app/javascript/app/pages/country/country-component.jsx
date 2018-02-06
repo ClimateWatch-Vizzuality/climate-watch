@@ -45,11 +45,12 @@ class Country extends PureComponent {
           <div className={layout.content}>
             <CountryTimeline />
           </div>
-          <Sticky activeClass="sticky">
+          <Sticky activeClass="sticky -country" top="#navBarMobile">
             <AnchorNav
               links={anchorLinks}
               className={layout.content}
               theme={anchorNavRegularTheme}
+              gradientColor={route.headerColor}
             />
           </Sticky>
         </Header>

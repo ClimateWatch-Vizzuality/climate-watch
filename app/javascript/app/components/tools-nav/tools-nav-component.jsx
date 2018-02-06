@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import download from 'assets/icons/download.svg';
 import styles from './tools-nav-styles.scss';
 
-const ToolsNav = ({ className }) => (
+const ToolsNav = ({ className, reverse }) => (
   <div className={cx(styles.toolsNav, className)}>
     <NavLink
       className={cx(styles.link, styles.disabled)}
@@ -26,12 +26,17 @@ const ToolsNav = ({ className }) => (
     >
       <Icon className={styles.download} icon={download} />
     </a>
-    <ShareMenu className={styles.shareButton} />
+    <ShareMenu className={styles.shareButton} reverse={reverse} />
   </div>
 );
 
 ToolsNav.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  reverse: PropTypes.bool
+};
+
+ToolsNav.defaultProps = {
+  reverse: false
 };
 
 export default ToolsNav;

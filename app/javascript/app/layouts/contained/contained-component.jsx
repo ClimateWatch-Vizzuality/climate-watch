@@ -6,8 +6,6 @@ import CountriesProvider from 'providers/countries-provider';
 import { HOME_PAGE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
-import styles from './contained-styles.scss'; // eslint-disable-line
-
 class App extends PureComponent {
   render() {
     const { route, location } = this.props;

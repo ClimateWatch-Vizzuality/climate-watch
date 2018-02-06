@@ -11,11 +11,6 @@
 .sticky {
   z-index: 2;
   position: relative;
-  top: 60px !important;
-
-  @media #{$tablet-landscape} {
-    top: 0 !important;
-  }
 }
 
 .actionsWrapper {

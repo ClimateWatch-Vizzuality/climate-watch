@@ -78,7 +78,7 @@ class NDCCountryFull extends PureComponent {
             </Button>
           </div>
         </Header>
-        <Sticky className={styles.sticky}>
+        <Sticky className={styles.sticky} top="#navBarMobile">
           <div className={styles.actionsWrapper}>
             <div className={cx(layout.content, styles.actions)}>
               <Dropdown
