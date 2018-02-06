@@ -17,7 +17,12 @@ class EmissionPathwaysTableMenu extends PureComponent {
           role="menubar"
           tabIndex={-1}
         >
-          <AnchorNav useRoutes links={routeLinks} theme={anchorNavLightTheme} />
+          <AnchorNav
+            useRoutes
+            links={routeLinks}
+            theme={anchorNavLightTheme}
+            className={styles.noPaddingLeft}
+          />
           <span className={styles.butonDetail}>
             Want to have your model in Climate Watch?
           </span>

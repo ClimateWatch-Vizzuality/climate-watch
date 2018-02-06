@@ -2,7 +2,7 @@ import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
-  flattenedData,
+  filterDataByBlackList,
   defaultColumns,
   titleLinks
 } from './emission-pathways-model-table-selectors';
@@ -22,7 +22,7 @@ const mapStateToProps = (state, { category, match }) => {
   };
 
   return {
-    data: flattenedData(EspData),
+    data: filterDataByBlackList(EspData),
     defaultColumns: defaultColumns(EspData),
     titleLinks: titleLinks(EspData),
     category,
