@@ -75,6 +75,20 @@
   padding-bottom: 5px;
 }
 
+.icon {
+  position: relative;
+  fill: $white;
+  stroke: $white;
+  transform: rotate(-90deg);
+  width: 10px;
+  margin-left: 5px;
+  top: 3px;
+
+  @media #{$tablet-landscape} {
+    display: none;
+  }
+}
+
 .tooltipText {
   color: $dark-gray;
 }

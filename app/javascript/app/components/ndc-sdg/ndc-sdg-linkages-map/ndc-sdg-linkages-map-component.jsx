@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Map from 'components/map';
+import Icon from 'components/icon';
+import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import ButtonGroup from 'components/button-group';
@@ -30,6 +32,7 @@ class NdcSdgLinkagesMap extends PureComponent {
       <div className={styles.tooltip}>
         <Link className={styles.link} to={`/countries/${country.id}`}>
           {country.name}
+          <Icon icon={accordionArrow} className={styles.icon} />
         </Link>
         <p className={styles.tooltipText}>{locations || '0'} targets linked</p>
       </div>
