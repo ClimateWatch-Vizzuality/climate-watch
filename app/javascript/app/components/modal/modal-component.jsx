@@ -1,20 +1,31 @@
 import React, { PureComponent } from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
+import { themr } from 'react-css-themr';
 
-import ModalHeader from './modal-header-component';
 import styles from './modal-styles.scss';
 
 class CustomModal extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { isOpen, customStyles, contentLabel, children } = this.props;
+    const {
+      isOpen,
+      defaultStyles,
+      customStyles,
+      contentLabel,
+      children,
+      shouldCloseOnOverlayClick
+    } = this.props;
+    const modalStyles = { ...defaultStyles, ...customStyles };
+
     return (
-      <Modal isOpen={isOpen} style={customStyles} contentLabel={contentLabel}>
-        <ModalHeader {...this.props} />
-        <ModalHeader {...this.props} fakeHeaderForSpacing />
-        <div className={cx(styles.content)}>{children}</div>
+      <Modal
+        style={modalStyles}
+        isOpen={isOpen}
+        contentLabel={contentLabel}
+        shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+      >
+        {children}
       </Modal>
     );
   }
@@ -22,14 +33,16 @@ class CustomModal extends PureComponent {
 
 CustomModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  shouldCloseOnOverlayClick: PropTypes.bool.isRequired,
   contentLabel: PropTypes.string,
-  tabTitles: PropTypes.array,
   customStyles: PropTypes.object,
-  children: PropTypes.node
+  defaultStyles: PropTypes.object,
+  children: PropTypes.node.isRequired
 };
 
 CustomModal.defaultProps = {
   contentLabel: 'Modal content',
+  shouldCloseOnOverlayClick: true,
   customStyles: {
     overlay: {
       zIndex: 20,
@@ -55,4 +68,4 @@ CustomModal.defaultProps = {
   }
 };
 
-export default CustomModal;
+export default themr('CustomModal', styles)(CustomModal);

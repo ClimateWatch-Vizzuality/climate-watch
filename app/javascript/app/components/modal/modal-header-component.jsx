@@ -1,29 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import Tab from 'components/tab';
+import { themr } from 'react-css-themr';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import closeIcon from 'assets/icons/sidebar-close.svg';
-import Tab from 'components/tab';
-import cx from 'classnames';
+
 import styles from './modal-styles.scss';
 
 class ModalHeader extends PureComponent {
-  renderFakeHeader() {
-    const { title, tabTitles } = this.props;
-    return (
-      <div
-        className={cx(styles.fakeHeaderForSpacing, {
-          [styles.withTabs]: !!tabTitles
-        })}
-      >
-        {title && <h2 className={styles.headerTitle}>{title}</h2>}
-        {tabTitles && (
-          <Tab options={tabTitles} className={styles.fakeHeaderForSpacing} />
-        )}
-      </div>
-    );
-  }
-
   render() {
     const {
       title,
@@ -31,13 +16,15 @@ class ModalHeader extends PureComponent {
       selectedIndex,
       handleTabIndexChange,
       onRequestClose,
-      fakeHeaderForSpacing
+      children,
+      theme
     } = this.props;
-    return fakeHeaderForSpacing ? (
-      this.renderFakeHeader()
-    ) : (
-      <div className={styles.header}>
-        {title && <h2 className={styles.headerTitle}>{title}</h2>}
+    return (
+      <div className={theme.header}>
+        <Button onClick={onRequestClose} className={theme.closeBtn} square>
+          <Icon icon={closeIcon} className={theme.close} />
+        </Button>
+        {title && <h2 className={theme.headerTitle}>{title}</h2>}
         {tabTitles && (
           <Tab
             options={tabTitles}
@@ -45,9 +32,7 @@ class ModalHeader extends PureComponent {
             handleTabIndexChange={handleTabIndexChange}
           />
         )}
-        <Button onClick={onRequestClose} className={styles.closeBtn} square>
-          <Icon icon={closeIcon} className={styles.close} />
-        </Button>
+        {children}
       </div>
     );
   }
@@ -58,8 +43,9 @@ ModalHeader.propTypes = {
   tabTitles: PropTypes.array,
   selectedIndex: PropTypes.number,
   handleTabIndexChange: PropTypes.func,
-  onRequestClose: PropTypes.func.isRequired,
-  fakeHeaderForSpacing: PropTypes.bool
+  children: PropTypes.node,
+  theme: PropTypes.object,
+  onRequestClose: PropTypes.func.isRequired
 };
 
-export default ModalHeader;
+export default themr('ModalHeader', styles)(ModalHeader);
