@@ -113,7 +113,7 @@ export const getModelsOptions = createSelector(
     models.forEach(m => {
       if (availableModels.indexOf(m.id) > -1) {
         modelOptions.push({
-          label: m.abbreviation,
+          label: m.full_name,
           value: m.id,
           scenarios: m.scenario_ids
         });
