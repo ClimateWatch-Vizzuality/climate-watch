@@ -44,7 +44,7 @@ const AXES_CONFIG = {
 };
 
 const DEFAULT_SELECTIONS = {
-  model: 'GCAM',
+  model: 'Global Change Assessment Model',
   subcategory: {
     best: 'GHG Emissions by gas with LULUCF',
     secondBest: 'GHG emissions by gas without LULUCF',
