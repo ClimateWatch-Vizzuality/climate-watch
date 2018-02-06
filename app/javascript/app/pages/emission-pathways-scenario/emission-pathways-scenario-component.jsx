@@ -37,7 +37,7 @@ class EmissionPathwaysScenario extends PureComponent {
                 textColumns
               />
             </div>
-            <Sticky activeClass="stickyEmissionsScenario">
+            <Sticky activeClass="sticky -emission" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
                 className={layout.content}

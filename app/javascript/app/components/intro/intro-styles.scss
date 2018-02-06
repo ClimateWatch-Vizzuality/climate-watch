@@ -27,10 +27,14 @@
 }
 
 .title {
-  font-size: $font-size-xl-large;
+  font-size: $font-size-large;
   margin-bottom: 10px;
   font-weight: $font-weight-light;
   line-height: 0.85em;
+
+  @media #{$tablet-landscape} {
+    font-size: $font-size-xl-large;
+  }
 }
 
 .description {

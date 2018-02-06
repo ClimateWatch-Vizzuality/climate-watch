@@ -13,6 +13,12 @@
   position: absolute;
 }
 
+.timelineContainer {
+  overflow-x: hidden;
+
+  @include overflowFix();
+}
+
 .timeline { // overwriting timeline styles
   display: block;
   position: relative;

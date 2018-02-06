@@ -2,12 +2,27 @@
 
 .tags {
   display: flex;
-  flex-wrap: wrap;
+  overflow: scroll;
+
+  @include overflowFix();
+
+  padding-top: 260px;
+
+  @media #{$tablet-landscape} {
+    flex-wrap: wrap;
+    overflow: auto;
+  }
 }
 
 .tag {
   margin-right: 10px;
-  margin-bottom: 10px;
+  padding: 1em 0.3em;
+  margin-bottom: 30px;
+
+  @media #{$tablet-landscape} {
+    padding: 5px;
+    margin-bottom: 10px;
+  }
 }
 
 .tagSelector :global {
@@ -22,8 +37,6 @@
   }
 
   .values {
-    width: 27px;
-    height: 27px;
     padding: 0;
     display: flex;
     justify-content: center;
@@ -36,6 +49,12 @@
     margin-right: -1px;
     border-radius: 4px;
     bottom: 28px !important;
+    box-shadow: none !important;
+    left: -171px;
+
+    @media #{$tablet-landscape} {
+      left: 0;
+    }
   }
 }
 

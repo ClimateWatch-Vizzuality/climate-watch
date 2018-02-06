@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
+import cx from 'classnames';
 
 import CountriesProvider from 'providers/countries-provider';
+import { TabletLandscape } from 'components/responsive';
+import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
+import BottomBar from 'components/footer/bottom-bar';
 import { HOME_PAGE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
@@ -12,15 +16,29 @@ import styles from './app-styles.scss'; // eslint-disable-line
 
 class App extends PureComponent {
   render() {
-    const { route, navRoutes, location } = this.props;
+    const { route, navRoutes, location, navbarMobileIsOpen } = this.props;
     return (
-      <div>
+      <div
+        className={cx(
+          styles.app,
+          navbarMobileIsOpen ? styles.mobileMenuOpen : ''
+        )}
+      >
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
-        <NavBar routes={navRoutes} />
+        <TabletLandscape>
+          {matches =>
+            (matches ? (
+              <NavBar routes={navRoutes} />
+            ) : (
+              <NavBarMobile routes={navRoutes} />
+            ))}
+        </TabletLandscape>
         {renderRoutes(route.routes.filter(r => r.path))}
-        <Footer routes={navRoutes} />
+        <TabletLandscape>
+          {matches => (matches ? <Footer routes={navRoutes} /> : <BottomBar />)}
+        </TabletLandscape>
       </div>
     );
   }
@@ -29,7 +47,8 @@ class App extends PureComponent {
 App.propTypes = {
   route: Proptypes.object,
   navRoutes: Proptypes.array,
-  location: Proptypes.object.isRequired
+  location: Proptypes.object.isRequired,
+  navbarMobileIsOpen: Proptypes.bool
 };
 
 export default App;

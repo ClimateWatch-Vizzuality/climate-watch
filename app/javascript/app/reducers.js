@@ -1,6 +1,7 @@
 /* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
+import { handleModule } from 'redux-tools';
 
 // Providers
 import * as countriesProvider from 'providers/countries-provider';
@@ -68,6 +69,7 @@ import * as countryGhgEmissionsComponent from 'components/country/country-ghg-em
 import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
 import * as countryNDCOverviewComponent from 'components/country/country-ndc-overview';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
+import * as HamburgerComponent from 'components/hamburger';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -83,7 +85,8 @@ const componentsReducers = {
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
   espGraph: handleActions(espGraphComponent),
   countryNDCOverview: handleActions(countryNDCOverviewComponent),
-  ndcSdg: handleActions(ndcSdgLinkagesComponent)
+  ndcSdg: handleActions(ndcSdgLinkagesComponent),
+  hamburger: handleModule(HamburgerComponent)
 };
 
 export default combineReducers({

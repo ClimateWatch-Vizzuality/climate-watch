@@ -2,11 +2,19 @@
 @import '~styles/layout.scss';
 
 .doubleFold {
-  @extend %grid;
+  display: flex;
+  flex-direction: column;
 
-  @include msGridColumns(1fr, 1fr);
+  @media #{$tablet-landscape} {
+    //SASS does not allow to @extend inside @media
+    //so display and column-gap are 'hardcoded'
+    display: grid;
+    grid-column-gap: $gutter-padding;
 
-  grid-template-columns: repeat(2, 1fr);
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .section {

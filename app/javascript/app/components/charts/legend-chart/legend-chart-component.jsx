@@ -19,8 +19,10 @@ class LegendChart extends PureComponent {
       handleAdd,
       className
     } = this.props;
+    const shouldShowMultiselect =
+      dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
     return (
-      <div className={cx(styles.tags, className)}>
+      <ul className={cx(styles.tags, className)}>
         {config &&
           config.columns &&
           config.columns.y.map(column => (
@@ -36,12 +38,9 @@ class LegendChart extends PureComponent {
               canRemove={config.columns.y.length > 0}
             />
           ))}
-        {dataOptions && (
+        {shouldShowMultiselect && (
           <MultiSelect
-            parentClassName={cx(styles.tagSelector, {
-              [styles.hidden]:
-                !dataSelected || dataOptions.length === dataSelected.length
-            })}
+            parentClassName={styles.tagSelector}
             values={dataSelected || []}
             options={dataOptions || []}
             onMultiValueChange={handleAdd}
@@ -53,7 +52,7 @@ class LegendChart extends PureComponent {
             <Icon className={styles.plusIcon} icon={plusIcon} />
           </MultiSelect>
         )}
-      </div>
+      </ul>
     );
   }
 }
