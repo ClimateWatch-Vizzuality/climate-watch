@@ -65,3 +65,18 @@
     display: block;
   }
 }
+
+.tooltip {
+  pointer-events: all;
+}
+
+.link {
+  display: inline-block;
+  color: $white;
+  font-size: $font-size;
+  padding-bottom: 5px;
+}
+
+.tooltipText {
+  color: $dark-gray;
+}
