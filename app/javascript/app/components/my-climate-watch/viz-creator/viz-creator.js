@@ -20,7 +20,8 @@ import {
   hasDataSelector,
   chartDataSelector,
   legendDataSelector,
-  getFormatFilters
+  getFormatFilters,
+  visualisationType
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
@@ -30,6 +31,7 @@ const mapStateToProps = ({ vizCreator }) => ({
   creationStatus: vizCreator.creationStatus,
   datasets: datasetsSelector(vizCreator),
   visualisations: visualisationsSelector(vizCreator),
+  visualisationType: visualisationType(vizCreator),
   locations: locationsSelector(vizCreator),
   models: modelsSelector(vizCreator),
   scenarios: scenariosSelector(vizCreator),

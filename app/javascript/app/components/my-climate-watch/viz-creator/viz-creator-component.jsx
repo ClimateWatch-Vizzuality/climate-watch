@@ -17,6 +17,7 @@ const VizCreator = props => {
     datasets,
     timeseries,
     visualisations,
+    visualisationType,
     hasData,
     chartData,
     legendData,
@@ -52,6 +53,7 @@ const VizCreator = props => {
             deleteVisualisation={deleteVisualisation}
             creationStatus={creationStatus}
             legendData={legendData}
+            visualisationType={visualisationType}
           />
         )}
       </ul>
@@ -67,6 +69,7 @@ VizCreator.propTypes = {
   selectVisualisation: PropTypes.func.isRequired,
   datasets: PropTypes.object,
   visualisations: PropTypes.object,
+  visualisationType: PropTypes.string,
   timeseries: PropTypes.object,
   hasData: PropTypes.bool,
   chartData: PropTypes.object,

@@ -40,12 +40,6 @@ export const vizSelector = createSelector(datasetsSelector, sets =>
   vizTypes(_find(sets.data, { id: sets.selected }))
 );
 
-export const chartDataSelector = createSelector(
-  [hasDataSelector, timeseriesSelector, scenariosSelector],
-  (hasData, timeseries, scenarios) =>
-    (!hasData ? {} : { ...processLineData(timeseries.data, scenarios.data) })
-);
-
 export const legendDataSelector = createSelector(
   [hasDataSelector, timeseriesSelector, scenariosSelector],
   (hasData, timeseries, scenarios) => {
@@ -54,13 +48,37 @@ export const legendDataSelector = createSelector(
   }
 );
 
-export const filtersSelector = createSelector(
+export const selectedStructureSelector = createSelector(
   [vizSelector, visualisationsSelector, locationsSelector],
   (vizStructure, visualisations) => {
     const selectedStructure = _find(flatMapVis(vizStructure), {
       id: visualisations && visualisations.selected
     });
-    return (selectedStructure && selectedStructure.filters) || [];
+    return selectedStructure || {};
+  }
+);
+
+export const filtersSelector = createSelector(
+  selectedStructureSelector,
+  (selectedStructure) => (selectedStructure && selectedStructure.filters) || []
+);
+
+export const visualisationType = createSelector(
+  selectedStructureSelector,
+  (selectedStructure) => (selectedStructure && selectedStructure.chart && selectedStructure.chart.type)
+);
+
+export const chartDataSelector = createSelector(
+  [hasDataSelector, timeseriesSelector, scenariosSelector, visualisationType],
+  (hasData, timeseries, scenarios, vizType) => {
+    if (!hasData) return {};
+
+    switch (vizType) {
+      case 'LineChart':
+        return { ...processLineData(timeseries.data, scenarios.data) };
+
+      default: return {};
+    }
   }
 );
 

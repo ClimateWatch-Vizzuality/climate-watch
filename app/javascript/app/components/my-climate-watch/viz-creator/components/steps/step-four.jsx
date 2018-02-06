@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 import _find from 'lodash/find';
 import cx from 'classnames';
@@ -11,7 +11,7 @@ import Button from 'components/button';
 
 import btnThemes from 'styles/themes/button/buttons';
 import Legend from '../charts/legend';
-import LineChart from '../charts/line';
+import charts from '../charts';
 
 import styles from './steps-styles';
 
@@ -32,9 +32,9 @@ const Step4 = props => {
     deleteVisualisation,
     id,
     description,
-    creationStatus
+    creationStatus,
+    visualisationType
   } = props;
-
   return [
     <li className={styles.step} key="step-4-last-li">
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
@@ -61,13 +61,13 @@ const Step4 = props => {
         <Loading light className={styles.timeseriesLoader} />
       ) : (
         [
-          <LineChart
-            key="line-chart"
-            className={styles.chart}
-            {...chartData}
-            width="90%"
-            legend
-          />,
+          console.log(visualisationType) || createElement(charts[visualisationType], {
+            key: 'line-chart',
+            className: styles.chart,
+            width: '90%',
+            legend: true,
+            ...chartData
+          }),
           <Legend key="legend" theme={styles} data={legendData} />
         ]
       )}
