@@ -25,11 +25,11 @@ class EmissionPathwaysTableMenu extends PureComponent {
             theme={anchorNavLightTheme}
             className={styles.nav}
           />
-          <TabletLandscape>
-            <span className={styles.buttonDetail}>
-              Want to have your model in Climate Watch?
-            </span>
-            {uploadButton && (
+          {uploadButton && (
+            <TabletLandscape>
+              <span className={styles.buttonDetail}>
+                Want to have your model in Climate Watch?
+              </span>)
               <Button
                 color="yellow"
                 className={styles.uploadButton}
@@ -37,14 +37,14 @@ class EmissionPathwaysTableMenu extends PureComponent {
               >
                 Get in touch
               </Button>
-            )}
-          </TabletLandscape>
-          <TabletPortraitOnly>
-            <div>
-              <span className={styles.buttonDetail}>
-                Want to have your model in Climate Watch?
-              </span>
-              {uploadButton && (
+            </TabletLandscape>
+          )}
+          {uploadButton && (
+            <TabletPortraitOnly>
+              <div>
+                <span className={styles.buttonDetail}>
+                  Want to have your model in Climate Watch?
+                </span>
                 <Button
                   color="yellow"
                   className={styles.uploadButton}
@@ -52,9 +52,9 @@ class EmissionPathwaysTableMenu extends PureComponent {
                 >
                   Get in touch
                 </Button>
-              )}
-            </div>
-          </TabletPortraitOnly>
+              </div>
+            </TabletPortraitOnly>
+          )}
         </div>
       </div>
     );

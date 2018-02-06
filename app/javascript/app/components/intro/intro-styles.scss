@@ -45,7 +45,9 @@
 }
 
 .columns {
-  max-width: 100%;
-  column-count: 2;
-  column-gap: 30px;
+  @media #{$tablet-landscape} {
+    max-width: 100%;
+    column-count: 2;
+    column-gap: 30px;
+  }
 }
