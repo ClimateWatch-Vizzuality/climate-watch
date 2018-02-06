@@ -4,6 +4,7 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import { COUNTRY_PROFILES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import { TabletLandscape } from 'components/responsive';
 
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
@@ -35,12 +36,14 @@ class Country extends PureComponent {
         <Header route={route}>
           <div className={cx(layout.content, styles.header)}>
             <Intro title={country.name} description={description} />
-            <Button
-              color="yellow"
-              link={`/countries/compare?locations=${country.iso}`}
-            >
-              Compare
-            </Button>
+            <TabletLandscape>
+              <Button
+                color="yellow"
+                link={`/countries/compare?locations=${country.iso}`}
+              >
+                Compare
+              </Button>
+            </TabletLandscape>
           </div>
           <div className={layout.content}>
             <CountryTimeline />

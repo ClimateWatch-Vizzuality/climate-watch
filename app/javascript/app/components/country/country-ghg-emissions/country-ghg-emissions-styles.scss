@@ -1,33 +1,10 @@
 @import '~styles/layout.scss';
 
-.grid {
-  @include msGridColumns(1fr);
-
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
-  grid-auto-flow: column;
-  grid-gap: 20px;
-  height: 600px;
-  padding-right: $gutter-padding;
-  margin-bottom: 5.6em;
+.container {
+  margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
-    margin-bottom: 0;
-  }
-
-  > div:nth-child(1) {
-    -ms-grid-row: 1;
-  }
-
-  > div:nth-child(2) {
-    -ms-grid-row: 2;
-    min-height: 140px;
-    height: 100%;
-  }
-
-  > div:nth-child(3) {
-    -ms-grid-row: 3;
+    height: 600px;
   }
 }
 
@@ -43,15 +20,23 @@
 
 .graph {
   position: relative;
+  min-height: 420px;
   max-height: 100%;
-  max-width: 93vw;
 
   > div {
-    margin-left: -0.6em;
+    margin-left: 0;
   }
 }
 
-.graphControls,
+.graphControls {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 10px;
+}
+
 .graphControlsSection {
   @extend %grid;
 
@@ -67,6 +52,7 @@
 
 .btnGroup {
   align-self: flex-end;
+  width: 100%;
 }
 
 .loader {
