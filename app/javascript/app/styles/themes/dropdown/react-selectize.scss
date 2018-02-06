@@ -147,7 +147,7 @@ $height: 45px;
       overflow: auto;
       position: absolute;
       max-height: 200px;
-      z-index: 10;
+      z-index: 21;
 
       &.tethered {
         min-width: 100%;
@@ -405,8 +405,24 @@ $height: 45px;
 }
 
 .plain :global {
+  .react-selectize-control {
+    background-color: $white !important;
+
+    @media #{$desktop} {
+      background-color: transparent !important;
+    }
+  }
+
   .dropdown-menu {
     background: $white !important;
+  }
+
+  .react-selectize-placeholder {
+    color: $theme-color !important;
+
+    @media #{$desktop} {
+      color: $gray !important;
+    }
   }
 
   .react-selectize-control {
@@ -420,6 +436,10 @@ $height: 45px;
   .open {
     .react-selectize-control {
       background: $white !important;
+    }
+
+    .react-selectize-placeholder {
+      color: $theme-color !important;
     }
   }
 }

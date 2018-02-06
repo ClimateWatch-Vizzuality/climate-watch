@@ -42,7 +42,7 @@ const About = () => (
           Comprehensive mapping of linkages between Nationally Determined
           Contributions (NDCs) and the Sustainable Development Goals (SDGs) and
           associated targets of the 2030 Agenda for Sustainable Development
-        </a>.
+        </a>;
       </li>
       <li>
         <a href="/emission-pathways" className={styles.link}>

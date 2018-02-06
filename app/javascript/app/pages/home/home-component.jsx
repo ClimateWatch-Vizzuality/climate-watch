@@ -11,13 +11,17 @@ import Stories from 'components/stories';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
 import GeoLocationProvider from 'providers/geolocation-provider';
+import { MobileOnly, TabletLandscape } from 'components/responsive';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
-import countryScreenshot from 'assets/screenshots/country-screenshot';
-import ndcScreenshot from 'assets/screenshots/ndc-explore-screenshot';
-import ndcSdgScreenshot from 'assets/screenshots/ndc-sdg-screenshot';
+import countryBgScreenshot from 'assets/screenshots/country-bg-screenshot';
+import countrySmScreenshot from 'assets/screenshots/country-sm-screenshot@2x';
+import ndcBgScreenshot from 'assets/screenshots/ndc-explore-bg-screenshot';
+import ndcSmScreenshot from 'assets/screenshots/ndc-explore-sm-screenshot@2x.png';
+import ndcSdgBgScreenshot from 'assets/screenshots/ndc-sdg-bg-screenshot';
+import ndcSdgSmScreenshot from 'assets/screenshots/ndc-sdg-sm-screenshot@2x.png';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
@@ -36,20 +40,22 @@ class Home extends PureComponent {
     return (
       <div className={styles.homeBg}>
         <Section className={styles.section} backgroundImage={background}>
-          <div className={styles.column}>
+          <div className={cx(styles.column, styles.homeIntro)}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
-            <Button
-              color="yellow"
-              onClick={this.onClickFullscreen}
-              className={styles.fullscreen}
-              square
-            >
-              <Icon icon={fullscreen} />
-            </Button>
+            <TabletLandscape>
+              <Button
+                color="yellow"
+                onClick={this.onClickFullscreen}
+                className={styles.fullscreen}
+                square
+              >
+                <Icon icon={fullscreen} />
+              </Button>
+            </TabletLandscape>
             <ReactPlayer
               width="100%"
               height="100%"
@@ -65,17 +71,27 @@ class Home extends PureComponent {
             />
           </div>
         </Section>
-        <div className={cx(layout.content, styles.stories)}>
+        <div className={cx(layout.content, styles.section)}>
           <Stories />
         </div>
         <Section className={cx(styles.section, styles.countries)}>
-          <div className={styles.column}>
-            <img
-              className={styles.imageTall}
-              src={countryScreenshot}
-              alt="Country section screenshot"
-            />
-          </div>
+          <MobileOnly>
+            {matches => (
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <img
+                  className={matches ? '' : styles.imageTall}
+                  src={matches ? countrySmScreenshot : countryBgScreenshot}
+                  alt="Country section screenshot"
+                />
+              </div>
+            )}
+          </MobileOnly>
           <div className={styles.column}>
             <Intro
               theme={introDark}
@@ -90,7 +106,7 @@ class Home extends PureComponent {
             >
               Connected from {geolocation.country}?
             </span>
-            <div className={styles.doubleFold}>
+            <div className={cx(styles.doubleFold, styles.mobileDoubleAction)}>
               <Button
                 color="yellow"
                 link={`/countries/${geolocation.iso ? geolocation.iso : ''}`}
@@ -115,7 +131,7 @@ class Home extends PureComponent {
               title="Explore and Compare Nationally Determined Contributions"
               description="Analyze and compare national climate pledges under the Paris Agreement."
             />
-            <div className={styles.doubleFold}>
+            <div className={cx(styles.doubleFold, styles.mobileDoubleAction)}>
               <Button color="yellow" link="/ndcs">
                 Explore NDC content
               </Button>
@@ -124,22 +140,36 @@ class Home extends PureComponent {
               </Button>
             </div>
           </div>
-          <div className={styles.column}>
-            <img
-              className={styles.imageRight}
-              src={ndcScreenshot}
-              alt="Ndcs section screenshot"
-            />
-          </div>
+          <MobileOnly>
+            {matches => (
+              <div className={matches ? styles.ndcImageMobile : styles.column}>
+                <img
+                  className={matches ? '' : styles.imageRight}
+                  src={matches ? ndcSmScreenshot : ndcBgScreenshot}
+                  alt="Ndcs section screenshot"
+                />
+              </div>
+            )}
+          </MobileOnly>
         </Section>
-        <Section className={styles.section}>
-          <div className={styles.column}>
-            <img
-              className={styles.imageLeft}
-              src={ndcSdgScreenshot}
-              alt="NDC SDGs screenshot"
-            />
-          </div>
+        <Section className={cx(styles.section, styles.sdgLinkages)}>
+          <MobileOnly>
+            {matches => (
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <img
+                  className={matches ? '' : styles.imageRight}
+                  src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
+                  alt="NDC SDGs screenshot"
+                />
+              </div>
+            )}
+          </MobileOnly>
           <div className={styles.column}>
             <Intro
               theme={introDark}

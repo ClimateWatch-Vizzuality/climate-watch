@@ -1,5 +1,13 @@
 @import '~styles/layout.scss';
 
+.wrapper {
+  margin-bottom: 40px;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
+}
+
 .header {
   margin-bottom: 20px;
   padding-top: 20px;
@@ -8,32 +16,68 @@
 .sdgs {
   @include clearFix();
 
-  > div {
-    float: left;
-    width: calc(33.333333% + 1px);
-  }
+  @media #{$tablet-landscape} {
+    > div {
+      float: left;
+      width: calc(33.333333% + 1px);
+    }
 
-  margin-bottom: 40px;
+    margin-bottom: 40px;
+  }
 }
 
 .titleContainer {
   @extend %grid;
 
-  @include msGridColumns(5fr, 1fr, 3fr 3fr);
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr);
 
-  grid-template-columns: 5fr 1fr 3fr 3fr;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0;
+  }
+}
+
+.buttons {
+  @extend %grid;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(46%, 1fr);
+
+    grid-template-columns: 46% 1fr;
+  }
+}
+
+.actionButtons {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 7fr);
+
+  grid-template-columns: 1fr 7fr;
+  grid-column-gap: 20px;
+
+  @media #{$tablet-landscape} {
+    grid-column-gap: $grid-gap;
+  }
+}
+
+.infoBtn {
+  margin-top: 20px;
+  margin-left: 0.3em;
+}
+
+.exploreBtn {
+  margin-top: 20px;
+  -ms-grid-column: 6;
 }
 
 .descriptionContainer {
-  display: flex;
-  align-content: space-between;
   color: $theme-color;
   line-height: $line-height-medium;
-  width: 50%;
+  padding-bottom: 20px;
 
-  div {
-    margin-right: 30px;
+  @media #{$tablet-landscape} {
     width: 50%;
+    padding-bottom: 0;
   }
 }
 
@@ -48,7 +92,12 @@
 }
 
 .tooltipContainer {
-  min-width: 500px;
+  position: absolute;
+  top: 50%;
+
+  @media #{$tablet-landscape} {
+    min-width: 500px;
+  }
 }
 
 .tooltip {
@@ -67,16 +116,6 @@
 
 .sectorSelector {
   padding-top: 15px;
-}
-
-.infoBtn {
-  margin-top: 20px;
-  margin-left: 45px;
-}
-
-.exploreBtn {
-  margin-top: 20px;
-  -ms-grid-column: 6;
 }
 
 .info {

@@ -18,7 +18,8 @@ const ButtonGroup = ({
   onAddToUserClick,
   disabled,
   shareUrl,
-  analyticsGraphName
+  analyticsGraphName,
+  reverseDropdown
 }) => (
   <div
     className={cx(
@@ -39,6 +40,7 @@ const ButtonGroup = ({
       path={shareUrl}
       inButtonGroup
       analyticsGraphName={analyticsGraphName}
+      reverse={reverseDropdown}
     />
     <Button
       className={styles.button}
@@ -64,7 +66,8 @@ ButtonGroup.propTypes = {
   onInfoClick: PropTypes.func,
   onDownloadClick: PropTypes.func,
   onAddToUserClick: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  reverseDropdown: PropTypes.bool
 };
 
 export default ButtonGroup;

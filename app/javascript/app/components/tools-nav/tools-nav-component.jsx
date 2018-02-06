@@ -2,12 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from 'components/icon';
 import ShareMenu from 'components/share-menu';
+import cx from 'classnames';
+import PropTypes from 'prop-types';
 
 import download from 'assets/icons/download.svg';
 import styles from './tools-nav-styles.scss';
 
-const ToolsNav = () => (
-  <div className={styles.toolsNav}>
+const ToolsNav = ({ className, reverse }) => (
+  <div className={cx(styles.toolsNav, className)}>
     <NavLink
       className={styles.link}
       activeClassName={styles.linkActive}
@@ -23,8 +25,17 @@ const ToolsNav = () => (
     >
       <Icon className={styles.download} icon={download} />
     </a>
-    <ShareMenu className={styles.shareButton} />
+    <ShareMenu className={styles.shareButton} reverse={reverse} />
   </div>
 );
+
+ToolsNav.propTypes = {
+  className: PropTypes.string,
+  reverse: PropTypes.bool
+};
+
+ToolsNav.defaultProps = {
+  reverse: false
+};
 
 export default ToolsNav;

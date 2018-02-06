@@ -75,6 +75,7 @@ import * as myInsights from 'components/my-climate-watch/my-insights';
 import * as myVisualisations from 'components/my-climate-watch/my-visualisations';
 import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creator';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
+import * as HamburgerComponent from 'components/hamburger';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -92,7 +93,8 @@ const componentsReducers = {
   insights: handleModule(myInsights),
   visualisations: handleModule(myVisualisations),
   vizCreator: handleModule(myVisualisationsCreator),
-  ndcSdg: handleActions(ndcSdgLinkagesComponent)
+  ndcSdg: handleActions(ndcSdgLinkagesComponent),
+  hamburger: handleModule(HamburgerComponent)
 };
 
 export default combineReducers({

@@ -16,22 +16,30 @@ class Dropdown extends PureComponent {
   componentDidUpdate() {
     this.selectorElement.highlightFirstSelectableOption();
   }
-
   render() {
+    const {
+      white,
+      label,
+      transparent,
+      plain,
+      dark,
+      blueBorder,
+      className,
+      disabled,
+      searchable
+    } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     return (
       <div className={styles.dropdownWrapper}>
-        {this.props.label && (
-          <span className={styles.label}>{this.props.label}</span>
-        )}
+        {label && <span className={styles.label}>{label}</span>}
         <div
           className={cx(
             theme.dropdown,
-            this.props.transparent ? theme.transparent : '',
-            this.props.white ? theme.white : '',
-            this.props.plain ? theme.plain : '',
-            this.props.dark ? theme.dark : '',
-            this.props.blueBorder ? theme.blueBorder : ''
+            transparent ? theme.transparent : '',
+            white ? theme.white : '',
+            plain ? theme.plain : '',
+            dark ? theme.dark : '',
+            blueBorder ? theme.blueBorder : ''
           )}
         >
           {this.props.loading && <Loading className={styles.loader} mini />}
@@ -39,7 +47,9 @@ class Dropdown extends PureComponent {
             ref={el => {
               this.selectorElement = el;
             }}
-            className={cx(this.props.className, this.props.disabled)}
+            className={cx(className, disabled, {
+              [styles.searchable]: searchable
+            })}
             renderToggleButton={() => <Icon icon={arrow} />}
             {...this.props}
           />
@@ -62,7 +72,12 @@ Dropdown.propTypes = {
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
   blueBorder: PropTypes.bool,
-  selectorRef: PropTypes.func
+  selectorRef: PropTypes.func,
+  searchable: PropTypes.bool.isRequired
+};
+
+Dropdown.defaultProps = {
+  searchable: false
 };
 
 export default themr('Dropdown', styles)(Dropdown);
