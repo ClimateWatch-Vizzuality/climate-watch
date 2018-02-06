@@ -38,8 +38,8 @@ export const fetchVisualisations = createThunkAction(
 
 export const fetchModels = createThunkAction(
   'fetchModels',
-  countryId => dispatch => {
-    EPAPI.get('models', `country=${countryId}&time_series=true`).then(d =>
+  locationId => dispatch => {
+    EPAPI.get('models', `location=${locationId}&time_series=true`).then(d =>
       dispatch(gotModels(d))
     );
   }
@@ -76,7 +76,9 @@ export const fetchSubCategories = createThunkAction(
       'subcategories',
       `scenario=${scenarios
         .map(s => s.value)
-        .join(',')}&location=${locations}&category=${category}&time_series=true`
+        .join(
+          ','
+        )}&location=${locations}&category=${category.value}&time_series=true`
     ).then(d => dispatch(gotSubCategories(d)));
   }
 );
