@@ -12,6 +12,9 @@ import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import startCase from 'lodash/startCase';
 import { FILTERS_BY_CATEGORY } from 'data/constants';
+import Collapse from 'components/collapse';
+import cx from 'classnames';
+
 import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
@@ -57,6 +60,7 @@ class EmissionPathwaysTable extends PureComponent {
         onValueChange={selected =>
           handleFilterChange(field, categoryName, selected && selected.value)}
         value={selectedFields ? selectedFields[field] : null}
+        plain
       />
     ));
   }
@@ -69,7 +73,12 @@ class EmissionPathwaysTable extends PureComponent {
         <EspScenariosProvider />
         <EspIndicatorsProvider />
         <div className={styles.col4}>
-          {this.renderFilters()}
+          <Collapse
+            contentRef={this.contentRef}
+            contentClassName={cx(styles.col2)}
+          >
+            {this.renderFilters()}
+          </Collapse>
           <Search
             input={query}
             theme={darkSearch}
@@ -79,6 +88,11 @@ class EmissionPathwaysTable extends PureComponent {
             plain
           />
         </div>
+        <div
+          ref={c => {
+            this.contentRef = c;
+          }}
+        />
         {this.renderTableContent()}
       </div>
     );

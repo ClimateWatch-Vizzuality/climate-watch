@@ -1,0 +1,22 @@
+@import '~styles/layout.scss';
+
+.content {
+  background-color: $light-gray;
+  padding: 1em;
+}
+
+.dropdown :global {
+  .react-selectize {
+    background-color: white;
+  }
+}
+
+.open {
+  background-color: $bg-blue;
+  color: $white;
+}
+
+.buttonLabel {
+  margin-left: 5px;
+  padding-bottom: 2px;
+}

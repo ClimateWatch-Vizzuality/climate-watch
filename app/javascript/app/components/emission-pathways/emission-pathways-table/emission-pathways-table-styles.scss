@@ -21,6 +21,17 @@ $min-height: 475px;
   }
 }
 
+.col2 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr);
+
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 20px;
+  margin-bottom: 20px;
+  align-items: end;
+}
+
 .searchBox {
   grid-column-end: -1;
 }
