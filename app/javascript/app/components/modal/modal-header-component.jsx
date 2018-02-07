@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Tab from 'components/tab';
 import { themr } from 'react-css-themr';
-import Button from 'components/button';
-import Icon from 'components/icon';
-import closeIcon from 'assets/icons/sidebar-close.svg';
 
 import styles from './modal-styles.scss';
 
@@ -15,15 +12,11 @@ class ModalHeader extends PureComponent {
       tabTitles,
       selectedIndex,
       handleTabIndexChange,
-      onRequestClose,
       children,
       theme
     } = this.props;
     return (
       <div className={theme.header}>
-        <Button onClick={onRequestClose} className={theme.closeBtn} square>
-          <Icon icon={closeIcon} className={theme.close} />
-        </Button>
         {title && <h2 className={theme.headerTitle}>{title}</h2>}
         {tabTitles && (
           <Tab
@@ -43,9 +36,8 @@ ModalHeader.propTypes = {
   tabTitles: PropTypes.array,
   selectedIndex: PropTypes.number,
   handleTabIndexChange: PropTypes.func,
-  children: PropTypes.node,
   theme: PropTypes.object,
-  onRequestClose: PropTypes.func.isRequired
+  children: PropTypes.node
 };
 
 export default themr('ModalHeader', styles)(ModalHeader);

@@ -111,14 +111,18 @@ class ModalMetadata extends PureComponent {
   render() {
     const { isOpen, title, tabTitles } = this.props;
     return (
-      <CustomModal isOpen={isOpen}>
-        <ModalHeader
-          selectedIndex={this.state.selectedIndex}
-          handleTabIndexChange={i => this.setState({ selectedIndex: i })}
-          title={title}
-          tabTitles={tabTitles}
-          onRequestClose={this.handleOnRequestClose}
-        />
+      <CustomModal
+        onRequestClose={this.handleOnRequestClose}
+        isOpen={isOpen}
+        header={
+          <ModalHeader
+            selectedIndex={this.state.selectedIndex}
+            handleTabIndexChange={i => this.setState({ selectedIndex: i })}
+            title={title}
+            tabTitles={tabTitles}
+          />
+        }
+      >
         {this.getContent()}
       </CustomModal>
     );

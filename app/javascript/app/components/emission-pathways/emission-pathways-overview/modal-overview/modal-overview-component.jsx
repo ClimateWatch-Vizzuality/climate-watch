@@ -41,8 +41,11 @@ class ModalOverview extends PureComponent {
   render() {
     const { isOpen, title } = this.props;
     return (
-      <Modal isOpen={isOpen} title={title}>
-        <ModalHeader onRequestClose={this.handleOnRequestClose} />
+      <Modal
+        isOpen={isOpen}
+        title={title}
+        header={<ModalHeader onRequestClose={this.handleOnRequestClose} />}
+      >
         {this.renderData()}
       </Modal>
     );
