@@ -178,7 +178,7 @@ ChartLine.propTypes = {
   onMouseMove: PropTypes.func.isRequired,
   forceTwoDecimals: PropTypes.bool,
   margin: PropTypes.object,
-  domain: PropTypes.array,
+  domain: PropTypes.object,
   espGraph: PropTypes.bool.isRequired
 };
 
