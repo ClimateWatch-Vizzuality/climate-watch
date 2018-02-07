@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
+import { pixelBreakpoints } from 'components/responsive';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
@@ -31,17 +32,20 @@ class SimpleTable extends PureComponent {
 
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
+    const getResponsiveWidth = width => {
+      let ratio = 1;
+      if (width < pixelBreakpoints.mobile) ratio = 2.5;
+      else if (width < pixelBreakpoints.landscape) ratio = 1.75;
+      return width * ratio;
+    };
+
     return (
-      <div
-        className={cx(
-          styles.tableWrapper,
-          hasColumnSelect ? styles.hasColumnSelect : ''
-        )}
-      >
+      <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (
           <div
             role="button"
             tabIndex={0}
+            className={styles.columnSelectorWrapper}
             onTouchEnd={toggleOptionsOpen}
             onMouseEnter={setOptionsOpen}
             onMouseLeave={setOptionsClose}
@@ -58,38 +62,40 @@ class SimpleTable extends PureComponent {
             </MultiSelect>
           </div>
         )}
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <Table
-              className={styles.table}
-              width={width}
-              height={460}
-              headerHeight={headerHeight}
-              rowHeight={rowHeight}
-              rowCount={data.length}
-              sort={handleSortChange}
-              sortBy={sortBy}
-              sortDirection={sortDirection}
-              rowGetter={({ index }) => data[index]}
-            >
-              {activeColumns.map(c => c.value).map(column => (
-                <Column
-                  className={cx(styles.column, {
-                    [styles.fullText]:
-                      fullTextColumns && fullTextColumns.indexOf(column) > -1
-                  })}
-                  key={column}
-                  label={lowerCase(column)}
-                  dataKey={column}
-                  width={200}
-                  flexGrow={1}
-                  cellRenderer={cell =>
-                    cellRenderer({ props: this.props, cell })}
-                />
-              ))}
-            </Table>
-          )}
-        </AutoSizer>
+        <div className={cx(styles.tableWrapper)}>
+          <AutoSizer disableHeight>
+            {({ width }) => (
+              <Table
+                className={styles.table}
+                width={getResponsiveWidth(width)}
+                height={460}
+                headerHeight={headerHeight}
+                rowHeight={rowHeight}
+                rowCount={data.length}
+                sort={handleSortChange}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                rowGetter={({ index }) => data[index]}
+              >
+                {activeColumns.map(c => c.value).map(column => (
+                  <Column
+                    className={cx(styles.column, {
+                      [styles.fullText]:
+                        fullTextColumns && fullTextColumns.indexOf(column) > -1
+                    })}
+                    key={column}
+                    label={lowerCase(column)}
+                    dataKey={column}
+                    width={200}
+                    flexGrow={1}
+                    cellRenderer={cell =>
+                      cellRenderer({ props: this.props, cell })}
+                  />
+                ))}
+              </Table>
+            )}
+          </AutoSizer>
+        </div>
       </div>
     );
   }
