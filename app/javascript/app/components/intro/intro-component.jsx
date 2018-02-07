@@ -3,25 +3,28 @@ import PropTypes from 'prop-types';
 import { themr } from 'react-css-themr';
 import Button from 'components/button';
 import cx from 'classnames';
-
+import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import styles from './intro-styles.scss';
 
 const Intro = props => {
   const { title, description, theme, textColumns, button, className } = props;
+  const actionButton = button && (
+    <Button color="yellow" className={theme.button} link={button.link}>
+      {button.text}
+    </Button>
+  );
+
   return (
     <div className={cx(className, theme.intro)}>
       <div className={theme.main}>
         <h2 className={theme.title}>{title}</h2>
-        {button && (
-          <Button color="yellow" className={theme.button} link={button.link}>
-            {button.text}
-          </Button>
-        )}
+        <TabletLandscape> {actionButton} </TabletLandscape>
       </div>
       <p
         className={cx(theme.description, textColumns ? theme.columns : '')}
         dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line
       />
+      <TabletPortraitOnly> {actionButton} </TabletPortraitOnly>
     </div>
   );
 };

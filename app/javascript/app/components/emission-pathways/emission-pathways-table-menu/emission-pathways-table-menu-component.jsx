@@ -12,6 +12,22 @@ import styles from './emission-pathways-table-menu-styles.scss';
 class EmissionPathwaysTableMenu extends PureComponent {
   render() {
     const { routeLinks, uploadButton } = this.props;
+    const wantToText = (
+      <span className={styles.buttonDetail}>
+        Want to have your model in Climate Watch?
+      </span>
+    );
+
+    const button = (
+      <Button
+        color="yellow"
+        className={styles.uploadButton}
+        href="mailto:ClimateWatch@WRI.org"
+      >
+        Get in touch
+      </Button>
+    );
+
     return (
       <div className={layout.content}>
         <div
@@ -27,31 +43,15 @@ class EmissionPathwaysTableMenu extends PureComponent {
           />
           {uploadButton && (
             <TabletLandscape>
-              <span className={styles.buttonDetail}>
-                Want to have your model in Climate Watch?
-              </span>)
-              <Button
-                color="yellow"
-                className={styles.uploadButton}
-                href="mailto:ClimateWatch@WRI.org"
-              >
-                Get in touch
-              </Button>
+              {wantToText}
+              {button}
             </TabletLandscape>
           )}
           {uploadButton && (
             <TabletPortraitOnly>
               <div>
-                <span className={styles.buttonDetail}>
-                  Want to have your model in Climate Watch?
-                </span>
-                <Button
-                  color="yellow"
-                  className={styles.uploadButton}
-                  href="mailto:ClimateWatch@WRI.org"
-                >
-                  Get in touch
-                </Button>
+                {wantToText}
+                {button}
               </div>
             </TabletPortraitOnly>
           )}

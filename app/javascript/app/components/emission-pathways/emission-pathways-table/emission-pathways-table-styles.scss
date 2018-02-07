@@ -21,6 +21,10 @@ $min-height: 475px;
   }
 }
 
+.searchBox {
+  grid-column-end: -1;
+}
+
 .loader {
   min-height: $min-height;
 }

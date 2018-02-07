@@ -57,4 +57,10 @@
 
 .nav {
   padding-left: 0;
+
+  > a {
+    &:last-child {
+      padding-right: 0;
+    }
+  }
 }
