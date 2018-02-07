@@ -13,8 +13,8 @@ import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import startCase from 'lodash/startCase';
 import { FILTERS_BY_CATEGORY } from 'data/constants';
 import Collapse from 'components/collapse';
+import { TabletLandscape } from 'components/responsive';
 import cx from 'classnames';
-
 import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
@@ -68,33 +68,43 @@ class EmissionPathwaysTable extends PureComponent {
   render() {
     const { query, handleSearchChange, categoryName } = this.props;
     return (
-      <div className={layout.content}>
-        <EspModelsProvider />
-        <EspScenariosProvider />
-        <EspIndicatorsProvider />
-        <div className={styles.col4}>
-          <Collapse
-            contentRef={this.contentRef}
-            contentClassName={cx(styles.col2)}
-          >
-            {this.renderFilters()}
-          </Collapse>
-          <Search
-            input={query}
-            theme={darkSearch}
-            onChange={handleSearchChange}
-            className={styles.searchBox}
-            placeholder={`Search in ${categoryName}`}
-            plain
-          />
-        </div>
-        <div
-          ref={c => {
-            this.contentRef = c;
-          }}
-        />
-        {this.renderTableContent()}
-      </div>
+      <TabletLandscape>
+        {landscape => (
+          <div className={layout.content}>
+            <EspModelsProvider />
+            <EspScenariosProvider />
+            <EspIndicatorsProvider />
+            <div className={styles.col4}>
+              {landscape ? (
+                this.renderFilters()
+              ) : (
+                <Collapse
+                  contentRef={this.contentRef}
+                  contentClassName={cx(styles.col2)}
+                >
+                  {this.renderFilters()}
+                </Collapse>
+              )}
+              <Search
+                input={query}
+                theme={darkSearch}
+                onChange={handleSearchChange}
+                className={styles.searchBox}
+                placeholder={`Search in ${categoryName}`}
+                plain
+              />
+            </div>
+            {!landscape && (
+              <div
+                ref={c => {
+                  this.contentRef = c;
+                }}
+              />
+            )}
+            {this.renderTableContent()}
+          </div>
+        )}
+      </TabletLandscape>
     );
   }
 }
