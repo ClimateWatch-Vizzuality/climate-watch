@@ -28,7 +28,7 @@ class LegendChart extends PureComponent {
           config.columns.y.map(column => (
             <Tag
               className={styles.tag}
-              key={`${column.value}${column.labe}`}
+              key={`${column.value}${column.label}`}
               label={column.label}
               color={config.theme[column.value].fill}
               onRemove={() => handleRemove(column.label)}
