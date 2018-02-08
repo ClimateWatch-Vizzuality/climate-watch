@@ -1,5 +1,5 @@
 class Story < ApplicationRecord
-  def self.stories_filter(tags, limit=5)
+  def self.stories_filter(tags, limit = 5)
     tags_array = tags.split(',') if tags
     tagged_stories = tagged_stories(tags_array, limit)
     return tagged_stories if tagged_stories.length >= limit.to_i
