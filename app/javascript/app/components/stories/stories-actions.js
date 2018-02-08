@@ -5,9 +5,11 @@ const fetchStoriesInit = createAction('fetchStoriesInit');
 const fetchStoriesReady = createAction('fetchStoriesReady');
 const fetchStoriesFail = createAction('fetchStoriesFail');
 
+const TAGS = ['NDC', 'ndcsdg', 'esp', 'climate watch'];
+
 const fetchStories = createThunkAction('fetchStories', () => dispatch => {
   dispatch(fetchStoriesInit());
-  fetch('/api/v1/stories')
+  fetch(`/api/v1/stories?tags=${TAGS}`)
     .then(response => {
       if (response.ok) return response.json();
       throw Error(response.statusText);
