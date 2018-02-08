@@ -8,12 +8,9 @@
 .header {
   padding-bottom: $gutter-padding;
   overflow: auto;
+  height: $header-height;
 
-  @media #{$mobile-only} {
-    height: 50vh;
-  }
-
-  @media #{$tablet-portrait} {
-    height: 45vh;
+  @media #{$tablet-landscape} {
+    height: auto;
   }
 }
