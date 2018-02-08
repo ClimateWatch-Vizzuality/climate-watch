@@ -25,6 +25,7 @@ export const scenariosSelector = state => get(lenses.$scenarios, state);
 export const indicatorsSelector = state => get(lenses.$indicators, state);
 export const categoriesSelector = state => get(lenses.$categories, state);
 export const subcategoriesSelector = state => get(lenses.$subcategories, state);
+export const yearsSelector = state => get(lenses.$years, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
 
 export const hasDataSelector = createSelector(

@@ -1,6 +1,8 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { get } from 'js-lenses';
 import find from 'lodash/find';
+import first from 'lodash/first';
+import last from 'lodash/last';
 import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
@@ -11,6 +13,7 @@ import { $datasets } from './viz-creator-lenses';
 
 const mapScenarios = (scenarios, cb) =>
   (isArray(scenarios) ? scenarios : [scenarios]).map(cb);
+const mapYears = (years, cb) => (isArray(years) ? years : [years]).map(cb);
 
 export const fetchDatasets = createThunkAction(
   'fetchDatasets',
@@ -100,8 +103,8 @@ export const fetchIndicators = createThunkAction(
   }
 );
 
-export const fetchTimeseries = createThunkAction(
-  'fetchTimeseries',
+export const fetchYears = createThunkAction(
+  'fetchYears',
   ({ locations, indicators, scenarios }) => dispatch => {
     const flatScenarios =
       mapScenarios(scenarios, s => s.value).join(',') || false;
@@ -110,6 +113,32 @@ export const fetchTimeseries = createThunkAction(
     EPAPI.get(
       'time_series_values',
       `location=${locations}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true`
+    ).then(d =>
+      dispatch(
+        gotYears(
+          uniqBy(
+            d.map(({ id, year }) => ({ value: id, label: `${year}` })),
+            'label'
+          )
+        )
+      )
+    );
+  }
+);
+
+export const fetchTimeseries = createThunkAction(
+  'fetchTimeseries',
+  ({ locations, indicators, scenarios, years }) => dispatch => {
+    const flatScenarios =
+      mapScenarios(scenarios, s => s.value).join(',') || false;
+    const flatIndicators = indicators.map(s => s.value).join(',') || false;
+    const ys = mapYears(years, y => y.label).sort();
+    console.log(ys);
+    const yearFrom = first(ys);
+    const yearTo = last(ys);
+    EPAPI.get(
+      'time_series_values',
+      `location=${locations}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true&year_from=${yearFrom}&year_to=${yearTo}`
     ).then(d => dispatch(gotTimeseries(d)));
   }
 );
@@ -157,6 +186,8 @@ export const gotSubCategories = createAction('gotSubCategories');
 export const selectSubcategory = createAction('selectSubcategory');
 
 export const gotTimeseries = createAction('gotTimeseries');
+export const gotYears = createAction('gotYears');
+export const selectYear = createAction('selectYear');
 
 export const updateVisualisationName = createAction('updateVisualisationName');
 export const updateVisualisationDescription = createAction(
@@ -176,20 +207,6 @@ export const deleteVisualisationReady = createAction(
   'deleteVisualisationReady'
 );
 export const deleteVisualisationFail = createAction('deleteVisualisationFail');
-
-export const fetchVisualization = createThunkAction(
-  'fetchVisualization',
-  VisualisationId => dispatch => {
-    CWAPI.get(`my_cw/visualizations/${VisualisationId}`)
-      .then(Visualisation => {
-        dispatch(gotVisualization(Visualisation));
-      })
-      .catch(e => {
-        console.warn(e);
-        dispatch(gotVisualizationFail());
-      });
-  }
-);
 
 export const saveVisualisation = createThunkAction(
   'saveVisualisation',
