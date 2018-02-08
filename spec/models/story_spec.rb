@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Story, type: :model do
   before(:each) do
-    FactoryGirl.create(:story, tags: ['NDC'])
-    FactoryGirl.create(:story, tags: ['NDC', 'esp'])
-    FactoryGirl.create(:story, tags: ['OP23'])
+    FactoryGirl.create(:story, tags: %w[NDC])
+    FactoryGirl.create(:story, tags: %w[NDC esp])
+    FactoryGirl.create(:story, tags: %w[OP23])
     FactoryGirl.create(:story, tags: nil)
   end
   describe '#tagged_stories' do
