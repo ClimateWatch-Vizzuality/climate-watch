@@ -2,32 +2,34 @@
 
 $close-position: 35px;
 
-:global .ReactModal__Body--open {
+.modal {
+  position: relative;
+  top: calc(#{$navbar-height} / 2);
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  max-height: none;
+  height: calc(100vh - #{$navbar-height});
+  padding: 0;
   overflow: hidden;
-  z-index: 19;
-}
-
-:global .ReactModal__Content {
-  width: 100% !important;
-  max-height: none !important;
-  height: calc(100vh - #{$navbar-height}) !important;
-  top: calc(#{$navbar-height} / 2) !important;
-  padding: 0 40px !important;
-  overflow: hidden !important;
   display: flex;
   flex-direction: column;
+  background-color: $white;
+  z-index: 19;
+  border: 'none';
+  border-radius: 0;
 
   @media #{$tablet-landscape} {
-    width: 770px !important;
-    max-height: 640px !important;
-    height: calc(100vh - 100px) !important;
-    top: auto !important;
+    width: 770px;
+    max-height: 640px;
+    height: calc(100vh - 100px);
+    top: auto;
   }
 }
 
 .header {
   background-color: $light-gray;
-  margin: 0 -40px;
   padding: $modal-padding 40px;
   padding-bottom: 0;
   min-height: 95px;
@@ -37,7 +39,9 @@ $close-position: 35px;
 .content {
   flex: 1;
   overflow: scroll;
-  padding: 30px 0;
+  padding: $modal-padding 40px;
+  word-break: break-word;
+  overscroll-behavior: none; /* stylelint-disable-line property-no-unknown */
 }
 
 .headerTitle {

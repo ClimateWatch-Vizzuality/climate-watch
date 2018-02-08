@@ -12,7 +12,6 @@ class CustomModal extends PureComponent {
   render() {
     const {
       isOpen,
-      defaultStyles,
       customStyles,
       contentLabel,
       onRequestClose,
@@ -21,10 +20,22 @@ class CustomModal extends PureComponent {
       shouldCloseOnOverlayClick,
       theme
     } = this.props;
+    const defaultStyles = {
+      overlay: {
+        zIndex: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 5px 15px 0 rgba(71, 44, 184, 0.1)',
+        backgroundColor: 'rgba(17, 55, 80, 0.4)',
+        overflow: 'hidden'
+      }
+    };
     const modalStyles = { ...defaultStyles, ...customStyles };
 
     return (
       <Modal
+        className={{ base: styles.modal }}
         style={modalStyles}
         isOpen={isOpen}
         contentLabel={contentLabel}
@@ -45,7 +56,6 @@ CustomModal.propTypes = {
   shouldCloseOnOverlayClick: PropTypes.bool.isRequired,
   contentLabel: PropTypes.string,
   customStyles: PropTypes.object,
-  defaultStyles: PropTypes.object,
   children: PropTypes.node.isRequired,
   header: PropTypes.node.isRequired,
   theme: PropTypes.object,
@@ -54,30 +64,7 @@ CustomModal.propTypes = {
 
 CustomModal.defaultProps = {
   contentLabel: 'Modal content',
-  shouldCloseOnOverlayClick: true,
-  customStyles: {
-    overlay: {
-      zIndex: 20,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      boxShadow: '0 5px 15px 0 rgba(71, 44, 184, 0.1)',
-      backgroundColor: 'rgba(17, 55, 80, 0.4)'
-    },
-    content: {
-      position: 'relative',
-      top: 'auto',
-      left: 'auto',
-      right: 'auto',
-      bottom: 'auto',
-      width: '770px',
-      padding: '35px 40px',
-      maxHeight: '640px',
-      height: 'calc(100vh - 100px)',
-      border: 'none',
-      borderRadius: 0
-    }
-  }
+  shouldCloseOnOverlayClick: true
 };
 
 export default themr('CustomModal', styles)(CustomModal);
