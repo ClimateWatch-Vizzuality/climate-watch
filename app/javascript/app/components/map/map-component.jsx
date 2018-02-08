@@ -9,6 +9,8 @@ import {
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import { Motion, spring } from 'react-motion';
+
+import { TabletLandscape } from 'components/responsive';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import mapZoomIn from 'assets/icons/map-zoom-in.svg';
@@ -35,92 +37,105 @@ class Map extends PureComponent {
       onCountryMove,
       onCountryEnter,
       onCountryLeave,
+      onCountryFocus,
+      onCountryBlur,
       defaultStyle,
       controlPosition
     } = this.props;
     return (
-      <div className={cx(styles.wrapper, className)}>
-        {zoomEnable && (
-          <div
-            className={cx(styles.actions, {
-              [styles.bottom]: controlPosition === 'bottom'
-            })}
-          >
-            <Button onClick={handleZoomIn}>
-              <Icon icon={mapZoomIn} />
-            </Button>
-            <Button disabled={zoom === 1} onClick={handleZoomOut}>
-              <Icon icon={mapZoomOut} />
-            </Button>
+      <TabletLandscape>
+        {matches => (
+          <div className={cx(styles.wrapper, className)}>
+            {zoomEnable && (
+              <div
+                className={cx(styles.actions, {
+                  [styles.bottom]: controlPosition === 'bottom'
+                })}
+              >
+                <Button onClick={handleZoomIn}>
+                  <Icon icon={mapZoomIn} />
+                </Button>
+                <Button disabled={zoom === 1} onClick={handleZoomOut}>
+                  <Icon icon={mapZoomOut} />
+                </Button>
+              </div>
+            )}
+            <Motion
+              defaultStyle={{
+                z: 1,
+                x: 20,
+                y: 10
+              }}
+              style={{
+                z: spring(zoom, { stiffness: 240, damping: 30 }),
+                x: spring((customCenter && customCenter[0]) || center[0], {
+                  stiffness: 240,
+                  damping: 30
+                }),
+                y: spring((customCenter && customCenter[1]) || center[1], {
+                  stiffness: 240,
+                  damping: 30
+                })
+              }}
+            >
+              {({ z, x, y }) => (
+                <ComposableMap projection="robinson" style={style}>
+                  <ZoomableGroup
+                    center={customCenter || [x, y]}
+                    zoom={z}
+                    disablePanning={!dragEnable}
+                  >
+                    <Geographies
+                      geographyPaths={paths}
+                      disableOptimization={forceUpdate || !cache}
+                    >
+                      {(geographies, projection) =>
+                        geographies.map(geography => {
+                          if (geography) {
+                            let commonProps = {
+                              key:
+                                geography.properties && geography.properties.id,
+                              geography,
+                              projection,
+                              onClick: onCountryClick,
+                              onMouseMove: onCountryMove,
+                              onMouseEnter: onCountryEnter,
+                              onMouseLeave: onCountryLeave,
+                              onFocus: onCountryFocus,
+                              onBlur: onCountryBlur,
+                              style: geography.style || defaultStyle
+                            };
+                            if (countryNameTooltip) {
+                              commonProps = {
+                                ...commonProps,
+                                'data-tip': geography.properties.name,
+                                'data-for': 'namesTooltip'
+                              };
+                            }
+                            if (tooltipId) {
+                              commonProps = {
+                                ...commonProps,
+                                'data-tip': '',
+                                'data-for': tooltipId,
+                                'data-event': matches ? 'mouseenter' : 'click',
+                                'data-event-off': matches
+                                  ? 'mouseleave'
+                                  : 'click'
+                              };
+                            }
+                            return <Geography {...commonProps} />;
+                          }
+                          return null;
+                        })}
+                    </Geographies>
+                  </ZoomableGroup>
+                </ComposableMap>
+              )}
+            </Motion>
+            {countryNameTooltip && <ReactTooltip id="namesTooltip" />}
           </div>
         )}
-        <Motion
-          defaultStyle={{
-            z: 1,
-            x: 20,
-            y: 10
-          }}
-          style={{
-            z: spring(zoom, { stiffness: 240, damping: 30 }),
-            x: spring((customCenter && customCenter[0]) || center[0], {
-              stiffness: 240,
-              damping: 30
-            }),
-            y: spring((customCenter && customCenter[1]) || center[1], {
-              stiffness: 240,
-              damping: 30
-            })
-          }}
-        >
-          {({ z, x, y }) => (
-            <ComposableMap projection="robinson" style={style}>
-              <ZoomableGroup
-                center={customCenter || [x, y]}
-                zoom={z}
-                disablePanning={!dragEnable}
-              >
-                <Geographies
-                  geographyPaths={paths}
-                  disableOptimization={forceUpdate || !cache}
-                >
-                  {(geographies, projection) =>
-                    geographies.map(geography => {
-                      if (geography) {
-                        let commonProps = {
-                          key: geography.properties && geography.properties.id,
-                          geography,
-                          projection,
-                          onClick: onCountryClick,
-                          onMouseMove: onCountryMove,
-                          onMouseEnter: onCountryEnter,
-                          onMouseLeave: onCountryLeave,
-                          style: geography.style || defaultStyle
-                        };
-                        if (countryNameTooltip) {
-                          commonProps = {
-                            ...commonProps,
-                            'data-tip': geography.properties.name,
-                            'data-for': 'namesTooltip'
-                          };
-                        }
-                        if (tooltipId) {
-                          commonProps = {
-                            ...commonProps,
-                            'data-tip': '',
-                            'data-for': tooltipId
-                          };
-                        }
-                        return <Geography {...commonProps} />;
-                      }
-                      return null;
-                    })}
-                </Geographies>
-              </ZoomableGroup>
-            </ComposableMap>
-          )}
-        </Motion>
-        {countryNameTooltip && <ReactTooltip id="namesTooltip" />}
-      </div>
+      </TabletLandscape>
     );
   }
 }
@@ -144,6 +159,8 @@ Map.propTypes = {
   onCountryClick: PropTypes.func,
   onCountryMove: PropTypes.func,
   onCountryLeave: PropTypes.func,
+  onCountryFocus: PropTypes.func,
+  onCountryBlur: PropTypes.func,
   controlPosition: PropTypes.string,
   defaultStyle: PropTypes.object.isRequired
 };

@@ -22,8 +22,12 @@
 }
 
 .button {
-  width: 170px;
+  width: 100%;
   margin-right: 20px;
+
+  @media #{$tablet-landscape} {
+    width: 170px;
+  }
 }
 
 .title {
@@ -45,7 +49,9 @@
 }
 
 .columns {
-  max-width: 100%;
-  column-count: 2;
-  column-gap: 30px;
+  @media #{$tablet-landscape} {
+    max-width: 100%;
+    column-count: 2;
+    column-gap: 30px;
+  }
 }

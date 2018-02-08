@@ -3,10 +3,16 @@
 .col4 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+  @include msGridColumns(1fr);
 
-  grid-template-columns: repeat(4, 1fr);
-  align-items: end;
+  grid-template-columns: 1fr;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(4, 1fr);
+    align-items: end;
+  }
 }
 
 .tableMenuContainer {
@@ -32,11 +38,14 @@
   }
 }
 
-.butonDetail {
+.buttonDetail {
   color: $dark-gray;
-  grid-column: span 2;
-  text-align: right;
-  margin-bottom: 15px;
+
+  @media #{$tablet-landscape} {
+    grid-column: span 2;
+    margin-bottom: 15px;
+    text-align: right;
+  }
 }
 
 .searchBox,
@@ -46,6 +55,12 @@
   -ms-grid-column: 7 !important; // To fix IE grid position
 }
 
-.noPaddingLeft {
+.nav {
   padding-left: 0;
+
+  > a {
+    &:last-child {
+      padding-right: 0;
+    }
+  }
 }

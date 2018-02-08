@@ -221,7 +221,7 @@ export const getSubCategoryOptions = createSelector(
   (indicators, category) => {
     if (!indicators || !category) return null;
     const indicatorsSelected = indicators.filter(
-      i => i.category.id === category.value
+      i => i.category && i.category.id === category.value
     );
     const subcategories = (indicatorsSelected || []).map(i => ({
       label: i.subcategory.name,

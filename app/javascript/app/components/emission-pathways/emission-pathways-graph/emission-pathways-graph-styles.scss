@@ -5,23 +5,39 @@ $min-height: 450px;
 .wrapper {
   border-bottom: solid 1px $theme-border;
   min-height: 450px;
-  padding-bottom: 50px;
+  padding-bottom: 70px;
+
+  @media #{$tablet-landscape} {
+    padding-bottom: 50px;
+  }
 }
 
 .col5 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
+  @include msGridColumns(1fr, 1fr);
 
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 20px;
   align-items: end;
   margin-bottom: 40px;
+
+  @media #{$tablet-landscape} {
+    grid-template-columns: repeat(5, 1fr);
+
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
+  }
 }
 
 .btnGroup {
-  margin-top: 25px; // To fix IE margin top button
-  -ms-grid-column: 9 !important; // To fix IE grid position
-  grid-column-end: -1;
+  margin-top: 0;
+  grid-column-end: 0;
+
+  @media #{$tablet-landscape} {
+    margin-top: 25px; // To fix IE margin top button
+    -ms-grid-column: 9 !important; // To fix IE grid position
+    grid-column-end: -1;
+  }
 }
 
 .title {

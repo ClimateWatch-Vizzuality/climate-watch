@@ -9,6 +9,7 @@ import ButtonGroup from 'components/button-group';
 import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
+import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-graph-styles.scss';
@@ -51,12 +52,14 @@ class EmissionPathwayGraph extends PureComponent {
           )}
           <div className={styles.col5}>
             <h2 className={styles.title}>Emission Pathways</h2>
-            <ButtonGroup
-              className={styles.btnGroup}
-              onInfoClick={handleInfoClick}
-              shareUrl="/embed/emission-pathways"
-              analyticsGraphName="Emission pathway"
-            />
+            <TabletLandscape>
+              <ButtonGroup
+                className={styles.btnGroup}
+                onInfoClick={handleInfoClick}
+                shareUrl="/embed/emission-pathways"
+                analyticsGraphName="Emission pathway"
+              />
+            </TabletLandscape>
           </div>
           <div className={styles.col5}>
             <Dropdown
@@ -122,6 +125,15 @@ class EmissionPathwayGraph extends PureComponent {
             margin={{ top: 50 }}
             espGraph
           />
+          <TabletPortraitOnly>
+            <ButtonGroup
+              className={styles.btnGroup}
+              onInfoClick={handleInfoClick}
+              shareUrl="/embed/emission-pathways"
+              analyticsGraphName="Emission pathway"
+              reverseDropdown
+            />
+          </TabletPortraitOnly>
           <ModalOverview
             data={modalData}
             title={'Emission Pathways Metadata'}

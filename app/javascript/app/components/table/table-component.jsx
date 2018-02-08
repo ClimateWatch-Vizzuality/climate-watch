@@ -3,11 +3,32 @@ import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
+import { pixelBreakpoints } from 'components/responsive';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
+
+const minColumnWidth = 140;
+const getResponsiveWidth = (columns, width) => {
+  if (columns.length === 1) return width;
+
+  const isMinColumSized = width / columns < minColumnWidth;
+
+  let responsiveRatio = 1.4; // Mobile
+  let responsiveColumnRatio = 0.2;
+  if (width > pixelBreakpoints.portrait && width < pixelBreakpoints.landscape) {
+    responsiveColumnRatio = 0.1;
+    responsiveRatio = 1.2; // Tablet
+  } else if (width > pixelBreakpoints.landscape) {
+    // Desktop
+    responsiveColumnRatio = 0.05;
+    responsiveRatio = 1;
+  }
+  const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
+  return width * responsiveRatio * (1 + (columnRatio * columns));
+};
 
 class SimpleTable extends PureComponent {
   render() {
@@ -32,16 +53,12 @@ class SimpleTable extends PureComponent {
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
     return (
-      <div
-        className={cx(
-          styles.tableWrapper,
-          hasColumnSelect ? styles.hasColumnSelect : ''
-        )}
-      >
+      <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (
           <div
             role="button"
             tabIndex={0}
+            className={styles.columnSelectorWrapper}
             onTouchEnd={toggleOptionsOpen}
             onMouseEnter={setOptionsOpen}
             onMouseLeave={setOptionsClose}
@@ -58,38 +75,40 @@ class SimpleTable extends PureComponent {
             </MultiSelect>
           </div>
         )}
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <Table
-              className={styles.table}
-              width={width}
-              height={460}
-              headerHeight={headerHeight}
-              rowHeight={rowHeight}
-              rowCount={data.length}
-              sort={handleSortChange}
-              sortBy={sortBy}
-              sortDirection={sortDirection}
-              rowGetter={({ index }) => data[index]}
-            >
-              {activeColumns.map(c => c.value).map(column => (
-                <Column
-                  className={cx(styles.column, {
-                    [styles.fullText]:
-                      fullTextColumns && fullTextColumns.indexOf(column) > -1
-                  })}
-                  key={column}
-                  label={lowerCase(column)}
-                  dataKey={column}
-                  width={200}
-                  flexGrow={1}
-                  cellRenderer={cell =>
-                    cellRenderer({ props: this.props, cell })}
-                />
-              ))}
-            </Table>
-          )}
-        </AutoSizer>
+        <div className={cx(styles.tableWrapper)}>
+          <AutoSizer disableHeight>
+            {({ width }) => (
+              <Table
+                className={styles.table}
+                width={getResponsiveWidth(activeColumns.length, width)}
+                height={460}
+                headerHeight={headerHeight}
+                rowHeight={rowHeight}
+                rowCount={data.length}
+                sort={handleSortChange}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                rowGetter={({ index }) => data[index]}
+              >
+                {activeColumns.map(c => c.value).map(column => (
+                  <Column
+                    className={cx(styles.column, {
+                      [styles.fullText]:
+                        fullTextColumns && fullTextColumns.indexOf(column) > -1
+                    })}
+                    key={column}
+                    label={lowerCase(column)}
+                    dataKey={column}
+                    width={200}
+                    flexGrow={1}
+                    cellRenderer={cell =>
+                      cellRenderer({ props: this.props, cell })}
+                  />
+                ))}
+              </Table>
+            )}
+          </AutoSizer>
+        </div>
       </div>
     );
   }
