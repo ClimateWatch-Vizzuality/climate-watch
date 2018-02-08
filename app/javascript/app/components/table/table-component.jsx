@@ -32,13 +32,9 @@ class SimpleTable extends PureComponent {
 
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
-    const getResponsiveWidth = width => {
-      let ratio = 1;
-      if (width < pixelBreakpoints.mobile) ratio = 2.5;
-      else if (width < pixelBreakpoints.landscape) ratio = 1.75;
-      return width * ratio;
-    };
-
+    const responsiveWidth = 1200;
+    const getResponsiveWidth = width =>
+      (width < pixelBreakpoints.landscape ? responsiveWidth : width);
     return (
       <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (
