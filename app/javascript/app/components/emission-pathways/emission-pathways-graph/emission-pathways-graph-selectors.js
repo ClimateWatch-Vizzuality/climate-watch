@@ -353,6 +353,10 @@ export const getChartXDomain = createSelector([getChartData], data => {
   return { x: [Math.min(...xValues), Math.max(...xValues)] };
 });
 
+// variable that caches chart elements assigned color
+// to avoid element color changing when the chart is updated
+let colorThemeCache = {};
+
 export const getChartConfig = createSelector(
   [filterDataByIndicator, getScenariosOptions, getIndicatorSelected],
   (data, scenarios, indicator) => {
@@ -368,6 +372,7 @@ export const getChartConfig = createSelector(
     });
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const theme = getThemeConfig(yColumnsChecked, COLORS);
+    colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     const axes = indicator
       ? {
@@ -378,7 +383,7 @@ export const getChartConfig = createSelector(
 
     return {
       axes,
-      theme,
+      theme: colorThemeCache,
       tooltip,
       columns: {
         x: [{ label: 'year', value: 'x' }],

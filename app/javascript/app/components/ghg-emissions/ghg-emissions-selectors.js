@@ -291,6 +291,10 @@ export const getChartXDomain = createSelector([getChartData], data => {
   return { x: [Math.min(...xValues), Math.max(...xValues)] };
 });
 
+// variable that caches chart elements assigned color
+// to avoid element color changing when the chart is updated
+let colorThemeCache = {};
+
 export const getChartConfig = createSelector(
   [filterData, getBreakSelected],
   (data, breakBy) => {
@@ -301,10 +305,11 @@ export const getChartConfig = createSelector(
     }));
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const theme = getThemeConfig(yColumnsChecked, CHART_COLORS);
+    colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     return {
       axes: DEFAULT_AXES_CONFIG,
-      theme,
+      theme: colorThemeCache,
       tooltip,
       animation: false,
       columns: {

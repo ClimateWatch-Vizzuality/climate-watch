@@ -291,6 +291,10 @@ export const getChartXDomain = createSelector([getChartData], data => {
   return { x: [Math.min(...xValues), Math.max(...xValues)] };
 });
 
+// variable that caches chart elements assigned color
+// to avoid element color changing when the chart is updated
+let colorThemeCache = {};
+
 export const getChartConfig = createSelector(
   [filterData, getCalculationSelected],
   (data, calculationSelected) => {
@@ -304,6 +308,7 @@ export const getChartConfig = createSelector(
       yColumnsChecked,
       getColorPalette(BASE_COLORS, yColumnsChecked.length)
     );
+    colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
     if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
@@ -322,7 +327,7 @@ export const getChartConfig = createSelector(
     };
     return {
       axes,
-      theme,
+      theme: colorThemeCache,
       tooltip,
       columns: {
         x: [{ label: 'year', value: 'x' }],
