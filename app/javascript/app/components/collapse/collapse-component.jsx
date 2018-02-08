@@ -22,13 +22,13 @@ class Collapse extends PureComponent {
   }
 
   render() {
-    const { handleToggleCollapse, opened } = this.props;
+    const { handleOnClick, opened } = this.props;
 
     return (
       <div>
         <Button
           className={cx({ [styles.open]: opened })}
-          onClick={() => handleToggleCollapse(c => !c)}
+          onClick={handleOnClick}
         >
           <Icon icon={filterIcon} theme={opened ? iconWhite : iconDefault} />
           <span className={styles.buttonLabel}>Filters</span>
@@ -41,7 +41,7 @@ class Collapse extends PureComponent {
 
 Collapse.propTypes = {
   opened: PropTypes.bool.isRequired,
-  handleToggleCollapse: PropTypes.func,
+  handleOnClick: PropTypes.func,
   children: PropTypes.node.isRequired,
   contentRef: PropTypes.object,
   contentClassName: PropTypes.string
