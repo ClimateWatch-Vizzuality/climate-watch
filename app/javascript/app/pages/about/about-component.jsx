@@ -10,7 +10,7 @@ import { ABOUT } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout.scss';
-import styles from './about-styles.scss';
+// import styles from './about-styles.scss';
 
 const About = ({ route, anchorLinks, query }) => (
   <div>
@@ -28,9 +28,7 @@ const About = ({ route, anchorLinks, query }) => (
         />
       </Sticky>
     </Header>
-    <div className={styles.wrapper}>
-      <div className={layout.content}>{renderRoutes(route.routes)}</div>
-    </div>
+    <div className={layout.content}>{renderRoutes(route.routes)}</div>
   </div>
 );
 

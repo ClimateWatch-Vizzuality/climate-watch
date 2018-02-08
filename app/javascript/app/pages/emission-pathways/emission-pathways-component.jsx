@@ -34,19 +34,18 @@ class EmissionPathways extends PureComponent {
         <EspScenariosProvider />
         <EspIndicatorsProvider />
         <Header route={route}>
-          <div className={layout.content}>
-            <Intro
-              title="Emission Pathways"
-              description={
-                'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
-              }
-            />
-          </div>
-          <Sticky activeClass="sticky -emission" top="#navBarMobile">
+          <Intro
+            title="Emission Pathways"
+            description={
+              'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
+            }
+            className={layout.content}
+          />
+          <Sticky activeClass="sticky -emissions" top="#navBarMobile">
             <AnchorNav
               links={anchorLinks}
-              className={layout.content}
               theme={anchorNavRegularTheme}
+              gradientColor={route.headerColor}
             />
           </Sticky>
         </Header>
@@ -58,7 +57,7 @@ class EmissionPathways extends PureComponent {
               <section.component routeLinks={routeLinks} uploadButton />
             </div>
           ))}
-        {renderRoutes(route.routes)} *
+        {renderRoutes(route.routes)}
       </div>
     );
   }
