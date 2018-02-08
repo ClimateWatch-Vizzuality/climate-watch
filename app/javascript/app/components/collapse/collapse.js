@@ -1,25 +1,27 @@
 import { PureComponent, createElement } from 'react';
-import Proptypes from 'prop-types';
-import { withState } from 'recompose';
 import Component from './collapse-component';
 
-const withOpen = withState('opened', 'handleToggleCollapse', false);
-
 class CollapseContainer extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      opened: false
+    };
+  }
+
   handleOnClick = () => {
-    this.props.handleToggleCollapse(c => !c);
+    this.setState(state => ({
+      opened: !state.opened
+    }));
   };
 
   render() {
     return createElement(Component, {
       ...this.props,
+      opened: this.state.opened,
       handleOnClick: this.handleOnClick
     });
   }
 }
 
-CollapseContainer.propTypes = {
-  handleToggleCollapse: Proptypes.func.isRequired
-};
-
-export default withOpen(CollapseContainer);
+export default CollapseContainer;

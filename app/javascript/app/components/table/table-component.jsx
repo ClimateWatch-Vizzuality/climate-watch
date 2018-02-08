@@ -10,6 +10,26 @@ import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
 
+const minColumnWidth = 140;
+const getResponsiveWidth = (columns, width) => {
+  if (columns.length === 1) return width;
+
+  const isMinColumSized = width / columns < minColumnWidth;
+
+  let responsiveRatio = 1.4; // Mobile
+  let responsiveColumnRatio = 0.2;
+  if (width > pixelBreakpoints.portrait && width < pixelBreakpoints.landscape) {
+    responsiveColumnRatio = 0.1;
+    responsiveRatio = 1.2; // Tablet
+  } else if (width > pixelBreakpoints.landscape) {
+    // Desktop
+    responsiveColumnRatio = 0.05;
+    responsiveRatio = 1;
+  }
+  const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
+  return width * responsiveRatio * (1 + (columnRatio * columns));
+};
+
 class SimpleTable extends PureComponent {
   render() {
     const {
@@ -32,9 +52,6 @@ class SimpleTable extends PureComponent {
 
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
-    const responsiveWidth = 1200;
-    const getResponsiveWidth = width =>
-      (width < pixelBreakpoints.landscape ? responsiveWidth : width);
     return (
       <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (
@@ -63,7 +80,7 @@ class SimpleTable extends PureComponent {
             {({ width }) => (
               <Table
                 className={styles.table}
-                width={getResponsiveWidth(width)}
+                width={getResponsiveWidth(activeColumns.length, width)}
                 height={460}
                 headerHeight={headerHeight}
                 rowHeight={rowHeight}
