@@ -29,7 +29,7 @@ class ImportStories
                                           published_at: published_at)
       story.link = feed.channel.link + item.link.split(/href="|">/)[1].sub!(/^\//, '')
       story.background_image_url = item.enclosure ? item.enclosure.url : ''
-      story.tags = item.category ? item.category.content.split(',') : nil
+      story.tags = item.category ? item.category.content.split(',').map(&:strip) : nil
       story.save
     end
     # rubocop:enable AbcSize
