@@ -2,26 +2,28 @@ module Api
   module V1
     class StoriesController < ApiController
       def index
-        stories = storiesFilter(params[:tags])
+        stories = stories_filter(params[:tags])
         render json: stories, each_serializer: Api::V1::StorySerializer
       end
 
       private
 
-      def storiesFilter tags
-        taggedStories = taggedStories(tags)
-        return taggedStories if taggedStories.length >= 5
-        moreStories = untaggedStories
-        return (taggedStories + moreStories).first(5) if taggedStories
-        return moreStories
+      def stories_filter(tags)
+        tagged_stories = tagged_stories(tags)
+        return tagged_stories if tagged_stories.length >= 5
+        more_stories = untagged_stories
+        return (tagged_stories + more_stories).first(5) if tagged_stories
+        more_stories
       end
 
-      def taggedStories tags
-        tagsArray = tags.split(',')
-        Story.where("tags && ARRAY[?]::varchar[]", tagsArray).order(published_at: :desc).limit(stories_limit)
+      def tagged_stories(tags)
+        tags_array = tags.split(',')
+        # rubocop:disable LineLength
+        Story.where('tags && ARRAY[?]::varchar[]', tags_array).order(published_at: :desc).limit(stories_limit)
+        # rubocop:enable LineLength
       end
 
-      def untaggedStories
+      def untagged_stories
         Story.order(published_at: :desc).limit(stories_limit)
       end
 

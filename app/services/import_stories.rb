@@ -14,6 +14,7 @@ class ImportStories
     Story.delete_all
   end
 
+  # rubocop:disable AbcSize
   def import_stories
     existing = Story.count
     url = 'http://www.wri.org/blog/rss2.xml'
@@ -29,8 +30,9 @@ class ImportStories
       story.link = feed.channel.link + item.link.split(/href="|">/)[1].sub!(/^\//, '')
       story.background_image_url = item.enclosure ? item.enclosure.url : ''
       story.tags = item.category ? item.category.content.split(',') : nil
-      story.save 
+      story.save
     end
+    # rubocop:enable AbcSize
     puts "#{Story.count - existing} new stories"
   end
 end
