@@ -14,11 +14,6 @@ class ImportStories
     Story.delete_all
   end
 
-  def filterByTag tags
-    allowedTags = ["climatewatch", "ndcsdg", "esp", "ndc"]
-    return tags if allowedTags.any? { |allowedTag| tags.downcase.include? allowedTag } 
-  end
-
   def import_stories
     existing = Story.count
     url = 'http://www.wri.org/blog/rss2.xml'
@@ -33,8 +28,8 @@ class ImportStories
                                           published_at: published_at)
       story.link = feed.channel.link + item.link.split(/href="|">/)[1].sub!(/^\//, '')
       story.background_image_url = item.enclosure ? item.enclosure.url : ''
-      story.tags = item.category ? filterByTag(item.category.content) : nil
-      story.save if story.tags
+      story.tags = item.category ? item.category.content.split(',') : nil
+      story.save 
     end
     puts "#{Story.count - existing} new stories"
   end
