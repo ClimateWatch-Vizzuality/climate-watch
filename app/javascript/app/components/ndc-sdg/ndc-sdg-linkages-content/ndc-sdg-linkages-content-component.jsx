@@ -23,10 +23,8 @@ class NdcSdgLinkagesContent extends PureComponent {
     } = this.props;
     return (
       <TabletLandscape>
-        {matches => (
-          <div
-            className={cx({ [layout.content]: matches === true }, styles.grid)}
-          >
+        {isLandscape => (
+          <div className={cx({ [layout.content]: isLandscape }, styles.grid)}>
             <NdcsSdgsMetaProvider />
             <NdcSdgLinkagesTable
               goalHover={goalHover}
