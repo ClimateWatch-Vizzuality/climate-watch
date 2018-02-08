@@ -27,14 +27,9 @@
 .infoAndCompareButtons {
   @extend %grid;
 
-  @include msGridColumns(25%, 75%);
+  @include msGridColumns(1fr, 6fr, 4fr);
 
-  grid-template-columns: 25% 75%;
-  grid-column-gap: 0;
-
-  @media #{$tablet-landscape} {
-    grid-column-gap: 30px;
-  }
+  grid-template-columns: 1fr 6fr 4fr;
 }
 
 .actions {

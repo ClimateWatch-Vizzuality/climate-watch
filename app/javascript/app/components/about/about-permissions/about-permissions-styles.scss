@@ -23,5 +23,6 @@
   a {
     color: $theme-color;
     border-bottom: solid 1px $theme-secondary;
+    word-wrap: break-word;
   }
 }

@@ -14,7 +14,7 @@
   }
 
   @media #{$mobile-only} {
-    padding: 0 $gutter-padding-mobile;
+    padding: 0 $gutter-padding / 2;
   }
 }
 
@@ -45,6 +45,10 @@
 
     > *:nth-child(#{$i}) {
       -ms-grid-column: #{$i + ($i - 1)};
+
+      @media #{$tablet-landscape} {
+        width: 100%;
+      }
 
       // Adding extra margin to fix safari and IE spacing
       @if $i!=length($columns) {
