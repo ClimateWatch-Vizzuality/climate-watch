@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
 
 import {
   LineChart,
@@ -7,10 +8,8 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  // Tooltip,
   ResponsiveContainer
 } from 'recharts';
-// import TooltipChart from 'components/charts/tooltip-chart';
 
 const ChartLine = ({
   width,
@@ -25,9 +24,9 @@ const ChartLine = ({
   <ResponsiveContainer className={className} width={width} height={height}>
     <LineChart {...config}>
       {cartesianGrid && <CartesianGrid {...cartesianGrid} />}
-      {lines && lines.map(l => <Line key={l} {...lineProps[l]} />)}
-      {axis.x && <XAxis {...axis.x.props || null} />}
-      {axis.y && <YAxis {...axis.y.props || null} />}
+      {!isEmpty(lines) && lines.map(l => <Line key={l} {...lineProps[l]} />)}
+      {axis && axis.x && <XAxis {...axis.x.props || null} />}
+      {axis && axis.y && <YAxis {...axis.y.props || null} />}
     </LineChart>
   </ResponsiveContainer>
 );

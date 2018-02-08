@@ -10,11 +10,11 @@
         "name": "Focus on the emissions of one country",
         "visualisations": [
           {
-            "id": "ndpe7e7v",
+            "id": "LineChart-1",
             "name": "See the change in a country's emmision's for a specified indicator for a specified indicator across multiple scenarios",
             "chart": {
               "type": "LineChart",
-              "options": []
+              "options": {}
             },
             "tags": [
               "Single country",
@@ -33,13 +33,12 @@
             ]
           },
           {
-            "id": "b4x8g4wx",
+            "id": "StackBarChart-1",
             "name": "See the change in a country's emmision's for a specified indicator for a specified indicator and scenario",
             "chart": {
               "type": "StackBarChart",
-              "options": [
+              "options":
                 { "layout": "vertical" }
-              ]
             },
             "tags": [
               "Single country",
@@ -51,18 +50,22 @@
             "filters": [
               {"name": "locations", "multi": false, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
-              {"name": "scenarios", "multi": true, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": true, "selected": "all", "active": true}
+              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "year", "multi": false, "selected": null, "active": true}
             ]
           },
           {
-            "id": "3zpj65qq",
+            "id": "PieChart-1",
             "name": "See a country’s relative emissions across multiple indicators for a specified scenario",
             "chart": {
               "type": "PieChart",
-              "options": []
+              "options": {
+                "innerRadius": 40,
+                "outerRadius": 80
+              }
             },
             "tags": [
               "Single country",
@@ -87,34 +90,34 @@
         "id": "4vzy7k28",
         "visualisations": [
           {
-            "id": "8dg8wny5",
+            "id": "LineChart-2",
             "name": "Compare changes per indicator across locations for a specified scenario",
             "chart": {
               "type": "LineChart",
-              "options": []
+              "options": {}
             },
             "tags": [
               "Multiple locations",
-              "Multiple indicators",
+              "Single indicator",
               "Single scenario",
               "Time series"
             ],
             "image": "compare-country-lines",
             "filters": [
-              {"name": "locations", "multi": false, "selected": "top-10", "active": true},
+              {"name": "locations", "multi": true, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": true, "selected": null, "active": true}
+              {"name": "indicators", "multi": false, "selected": null, "active": true}
             ]
           },
           {
-            "id": "r3zy99ww",
+            "id": "PieChart-2",
             "name": "Compare locations relative emissions for a specified indicator and scenario",
             "chart": {
               "type": "PieChart",
-              "options": []
+              "options": {}
             },
             "tags": [
               "Multiple locations",
@@ -124,24 +127,24 @@
             ],
             "image": "compare-country-donut",
             "filters": [
-              {"name": "locations", "multi": false, "selected": "top-10", "active": true},
+              {"name": "locations", "multi": true, "selected": "all", "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": true, "selected": null, "active": true}
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
+              {"name": "year", "multi": false, "selected": null, "active": true}              
             ]
           },
           {
-            "id": "8zmkjj28",
+            "id": "StackBarChart-2",
             "name": "Compare locations stacked emissions across a specifed indicator category",
             "chart": {
               "type": "StackBarChart",
-              "options": [
+              "options":
                 {
                   "layout": "horizontal"
                 }
-              ]
             },
             "tags": [
               "Multiple locations",
@@ -151,12 +154,13 @@
             ],
             "image": "compare-country-bars",
             "filters": [
-              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "locations", "multi": true, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
               {"name": "scenarios", "multi": true, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": true, "selected": "all", "active": true}
+              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "year", "multi": false, "selected": null, "active": true}              
             ]
           }
         ]

@@ -1,6 +1,8 @@
 import { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import isObject from 'lodash/isObject';
+import isArray from 'lodash/isArray';
 import { toSelector } from './viz-creator-utils';
 import VizCreatorComponent from './viz-creator-component';
 import * as reducers from './viz-creator-reducers';
@@ -21,7 +23,8 @@ import {
   chartDataSelector,
   legendDataSelector,
   getFormatFilters,
-  visualisationType
+  visualisationType,
+  visualisationOptions
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
@@ -32,6 +35,7 @@ const mapStateToProps = ({ vizCreator }) => ({
   datasets: datasetsSelector(vizCreator),
   visualisations: visualisationsSelector(vizCreator),
   visualisationType: visualisationType(vizCreator),
+  visualisationOptions: visualisationOptions(vizCreator),
   locations: locationsSelector(vizCreator),
   models: modelsSelector(vizCreator),
   scenarios: scenariosSelector(vizCreator),
@@ -99,7 +103,10 @@ class VizCreator extends Component {
               fetchScenarios(models.selected.value);
             }
 
-            if (scenarios.selected && scenarios.selected.length > 0) {
+            if (
+              scenarios.selected &&
+              (isObject(scenarios.selected) || isArray(scenarios.selected))
+            ) {
               if (!categories.loading && !categories.loaded) {
                 fetchCategories({
                   locations: locations.selected.value,
@@ -152,7 +159,6 @@ class VizCreator extends Component {
           value: filter.value,
           label: filter.label
         };
-
       this.props[actionName](filterParsed);
     }
   };

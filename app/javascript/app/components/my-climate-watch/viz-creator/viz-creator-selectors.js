@@ -9,6 +9,7 @@ import isEmpty from 'lodash/isEmpty';
 import {
   processLineData,
   processLegendData,
+  processPieData,
   flatMapVis,
   mapFilter
 } from './viz-creator-utils';
@@ -63,23 +64,40 @@ export const filtersSelector = createSelector(
   selectedStructure => (selectedStructure && selectedStructure.filters) || []
 );
 
-export const visualisationType = createSelector(
+export const visualisationChartSelector = createSelector(
   selectedStructureSelector,
-  selectedStructure =>
-    selectedStructure && selectedStructure.chart && selectedStructure.chart.type
+  selectedStructure => selectedStructure && selectedStructure.chart
+);
+
+export const visualisationType = createSelector(
+  visualisationChartSelector,
+  chart => chart && chart.type
+);
+
+export const visualisationOptions = createSelector(
+  visualisationChartSelector,
+  chart => chart && chart.options
 );
 
 export const chartDataSelector = createSelector(
-  [hasDataSelector, timeseriesSelector, scenariosSelector, visualisationType],
-  (hasData, timeseries, scenarios, vizType) => {
+  [
+    hasDataSelector,
+    timeseriesSelector,
+    scenariosSelector,
+    selectedStructureSelector
+  ],
+  (hasData, timeseries, scenarios, selectedStructure) => {
     if (!hasData) return {};
 
-    switch (vizType) {
-      case 'LineChart':
+    switch (selectedStructure.id) {
+      case 'LineChart-1':
         return { ...processLineData(timeseries.data, scenarios.data) };
 
+      case 'PieChart-1':
+        return { ...processPieData(timeseries.data, scenarios.data) };
+
       default:
-        return {};
+        return { ...processLineData(timeseries.data, scenarios.data) };
     }
   }
 );

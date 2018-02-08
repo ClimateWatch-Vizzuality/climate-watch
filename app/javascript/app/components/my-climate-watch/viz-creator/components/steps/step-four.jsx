@@ -33,7 +33,8 @@ const Step4 = props => {
     id,
     description,
     creationStatus,
-    visualisationType
+    visualisationType,
+    visualisationOptions
   } = props;
   return [
     <li className={styles.step} key="step-4-last-li">
@@ -61,14 +62,14 @@ const Step4 = props => {
         <Loading light className={styles.timeseriesLoader} />
       ) : (
         [
-          console.log(visualisationType) ||
-            createElement(charts[visualisationType], {
-              key: 'line-chart',
-              className: styles.chart,
-              width: '90%',
-              legend: true,
-              ...chartData
-            }),
+          createElement(charts[visualisationType], {
+            key: 'line-chart',
+            className: styles.chart,
+            width: '90%',
+            height: 300,
+            ...visualisationOptions,
+            ...chartData
+          }),
           <Legend key="legend" theme={styles} data={legendData} />
         ]
       )}
@@ -116,6 +117,7 @@ Step4.propTypes = {
   title: PropTypes.string,
   timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
+  visualisationOptions: PropTypes.object,
   onNameChange: PropTypes.func.isRequired,
   saveVisualisation: PropTypes.func.isRequired,
   creationStatus: PropTypes.object

@@ -18,6 +18,7 @@ const VizCreator = props => {
     timeseries,
     visualisations,
     visualisationType,
+    visualisationOptions,
     hasData,
     chartData,
     legendData,
@@ -54,6 +55,7 @@ const VizCreator = props => {
             creationStatus={creationStatus}
             legendData={legendData}
             visualisationType={visualisationType}
+            visualisationOptions={visualisationOptions}
           />
         )}
       </ul>
@@ -70,6 +72,7 @@ VizCreator.propTypes = {
   datasets: PropTypes.object,
   visualisations: PropTypes.object,
   visualisationType: PropTypes.string,
+  visualisationOptions: PropTypes.object,
   timeseries: PropTypes.object,
   hasData: PropTypes.bool,
   chartData: PropTypes.object,

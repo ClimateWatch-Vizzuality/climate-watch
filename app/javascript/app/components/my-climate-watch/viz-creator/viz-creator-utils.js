@@ -42,6 +42,10 @@ export const processLegendData = (idc, scn) => {
   }));
 };
 
+export const processPieData = (idc, scn) => {
+  console.log(scn, idc);
+};
+
 export const processLineData = (idc, scn) => {
   const data = groupDataByScenario(idc, scn);
   const lineData = pickByKey('value', data);
