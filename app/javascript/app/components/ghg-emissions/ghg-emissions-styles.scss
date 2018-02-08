@@ -5,11 +5,24 @@ $min-height: 500px;
 .col4 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(5, 1fr);
   align-items: end;
   margin-bottom: 15px;
+
+  @include msGridColumns(1fr, 1fr);
+
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 1em;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.buttonGroup {
+  display: inline-block;
+  padding-bottom: 30px;
 }
 
 .colEnd {
@@ -27,5 +40,8 @@ $min-height: 500px;
 .chartWrapper {
   position: relative;
   min-height: $min-height;
-  padding-bottom: 50px;
+
+  @media #{$tablet-landscape} {
+    padding-bottom: 50px;
+  }
 }

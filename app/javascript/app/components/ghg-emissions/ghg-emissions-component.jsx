@@ -7,6 +7,7 @@ import ButtonGroup from 'components/button-group';
 import MultiSelect from 'components/multiselect';
 import Chart from 'components/charts/chart';
 import ModalMetadata from 'components/modal-metadata';
+import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 
 import styles from './ghg-emissions-styles.scss';
 
@@ -33,6 +34,17 @@ class GhgEmissions extends PureComponent {
       loading,
       activeFilterRegion
     } = this.props;
+
+    const renderButtonGroup = reverseDropdown => (
+      <ButtonGroup
+        className={styles.colEnd}
+        onInfoClick={handleInfoClick}
+        shareUrl="/embed/ghg-emissions"
+        analyticsGraphName="Ghg-emissions"
+        reverseDropdown={reverseDropdown}
+      />
+    );
+
     return (
       <div>
         <h2 className={styles.title}>Global Historical Emissions</h2>
@@ -69,12 +81,7 @@ class GhgEmissions extends PureComponent {
             options={filters || []}
             onMultiValueChange={handleFilterChange}
           />
-          <ButtonGroup
-            className={styles.colEnd}
-            onInfoClick={handleInfoClick}
-            shareUrl="/embed/ghg-emissions"
-            analyticsGraphName="Ghg-emissions"
-          />
+          <TabletLandscape>{renderButtonGroup()}</TabletLandscape>
         </div>
         <Chart
           className={styles.chartWrapper}
@@ -86,6 +93,9 @@ class GhgEmissions extends PureComponent {
           height={500}
           loading={loading}
         />
+        <TabletPortraitOnly>
+          <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
+        </TabletPortraitOnly>
         <ModalMetadata />
       </div>
     );
