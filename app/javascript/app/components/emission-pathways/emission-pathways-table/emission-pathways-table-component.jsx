@@ -18,6 +18,12 @@ import cx from 'classnames';
 import styles from './emission-pathways-table-styles.scss';
 
 class EmissionPathwaysTable extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      contentRef: null
+    };
+  }
   renderTableContent() {
     const {
       loading,
@@ -79,7 +85,7 @@ class EmissionPathwaysTable extends PureComponent {
                 this.renderFilters()
               ) : (
                 <Collapse
-                  contentRef={this.contentRef}
+                  contentRef={this.state.contentRef}
                   contentClassName={cx(styles.col2)}
                 >
                   {this.renderFilters()}
@@ -97,7 +103,7 @@ class EmissionPathwaysTable extends PureComponent {
             {!landscape && (
               <div
                 ref={c => {
-                  this.contentRef = c;
+                  this.setState({ contentRef: c });
                 }}
               />
             )}
