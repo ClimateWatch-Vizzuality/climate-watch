@@ -53,8 +53,8 @@ const mapStateToProps = ({ vizCreator }) => ({
     scenarios: getFormatFilters('scenarios')(vizCreator),
     categories: getFormatFilters('categories')(vizCreator),
     subcategories: getFormatFilters('subcategories')(vizCreator),
-    years: getFormatFilters('years')(vizCreator),
-    indicators: getFormatFilters('indicators')(vizCreator)
+    indicators: getFormatFilters('indicators')(vizCreator),
+    years: getFormatFilters('years')(vizCreator)
   }
 });
 
@@ -100,7 +100,7 @@ class VizCreator extends Component {
         }
         if (!isEmpty(locations.selected)) {
           if (!models.loading && !models.loaded) {
-            fetchModels(locations.selected.value);
+            fetchModels(locations.selected);
           }
           if (!isEmpty(models.selected)) {
             if (!scenarios.loading && !scenarios.loaded) {
@@ -110,7 +110,7 @@ class VizCreator extends Component {
             if (!isEmpty(scenarios.selected)) {
               if (!categories.loading && !categories.loaded) {
                 fetchCategories({
-                  locations: locations.selected.value,
+                  locations: locations.selected,
                   scenarios: scenarios.selected
                 });
               }
@@ -119,7 +119,7 @@ class VizCreator extends Component {
                 if (!subcategories.loading && !subcategories.loaded) {
                   fetchSubCategories({
                     category: categories.selected,
-                    locations: locations.selected.value,
+                    locations: locations.selected,
                     scenarios: scenarios.selected
                   });
                 }
@@ -128,7 +128,7 @@ class VizCreator extends Component {
                   if (!indicators.loading && !indicators.loaded) {
                     fetchIndicators({
                       subcategory: subcategories.selected.value,
-                      locations: locations.selected.value,
+                      locations: locations.selected,
                       scenarios: scenarios.selected
                     });
                   }
@@ -136,7 +136,7 @@ class VizCreator extends Component {
                   if (!isEmpty(indicators.selected)) {
                     if (!years.loading && !years.loaded) {
                       fetchYears({
-                        locations: locations.selected.value,
+                        locations: locations.selected,
                         indicators: indicators.selected,
                         scenarios: scenarios.selected
                       });
@@ -145,7 +145,7 @@ class VizCreator extends Component {
                     if (!isEmpty(years.selected)) {
                       if (!timeseries.loading && !timeseries.loaded) {
                         fetchTimeseries({
-                          locations: locations.selected.value,
+                          locations: locations.selected,
                           indicators: indicators.selected,
                           scenarios: scenarios.selected,
                           years: years.selected

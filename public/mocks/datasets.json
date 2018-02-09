@@ -63,10 +63,7 @@
             "name": "See a country’s relative emissions across multiple indicators for a specified scenario",
             "chart": {
               "type": "PieChart",
-              "options": {
-                "innerRadius": 40,
-                "outerRadius": 80
-              }
+              "options": {}
             },
             "tags": [
               "Single country",
@@ -120,7 +117,10 @@
             "name": "Compare locations relative emissions for a specified indicator and scenario",
             "chart": {
               "type": "PieChart",
-              "options": {}
+              "options": {
+                "innerRadius": 40,
+                "outerRadius": 80
+              }
             },
             "tags": [
               "Multiple locations",

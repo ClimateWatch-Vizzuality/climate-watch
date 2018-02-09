@@ -94,11 +94,22 @@ export const chartDataSelector = createSelector(
       case 'LineChart-1':
         return { ...processLineData(timeseries.data, scenarios.data) };
 
+      case 'StackChart-1':
+        return {};
+
       case 'PieChart-1':
+        return {};
+
+      case 'LineChart-2':
+        return { ...processLineData(timeseries.data, scenarios.data) };
+
+      case 'PieChart-2':
         return { ...processPieData(timeseries.data, scenarios.data) };
 
-      default:
-        return { ...processLineData(timeseries.data, scenarios.data) };
+      case 'StackChart-2':
+        return {};
+
+      default: return {};
     }
   }
 );

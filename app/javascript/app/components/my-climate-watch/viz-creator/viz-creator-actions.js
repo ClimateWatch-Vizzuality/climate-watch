@@ -11,9 +11,7 @@ import { EPAPI, CWAPI } from 'services/api';
 import { actions as visActions } from 'components/my-climate-watch/my-visualisations';
 import { $datasets } from './viz-creator-lenses';
 
-const mapScenarios = (scenarios, cb) =>
-  (isArray(scenarios) ? scenarios : [scenarios]).map(cb);
-const mapYears = (years, cb) => (isArray(years) ? years : [years]).map(cb);
+const mapResourceValue = resource => (isArray(resource) ? resource : [resource]).map(r => r.value);
 
 export const fetchDatasets = createThunkAction(
   'fetchDatasets',
@@ -45,8 +43,8 @@ export const fetchVisualisations = createThunkAction(
 
 export const fetchModels = createThunkAction(
   'fetchModels',
-  locationId => dispatch => {
-    EPAPI.get('models', `location=${locationId}&time_series=true`).then(d =>
+  locations => dispatch => {
+    EPAPI.get('models', `location=${mapResourceValue(locations)}&time_series=true`).then(d =>
       dispatch(gotModels(d))
     );
   }
@@ -66,9 +64,9 @@ export const fetchCategories = createThunkAction(
   ({ scenarios, locations }) => dispatch => {
     EPAPI.get(
       'categories',
-      `scenario=${mapScenarios(scenarios, s => s.value).join(
+      `scenario=${mapResourceValue(scenarios).join(
         ','
-      )}&location=${locations}&time_series=true`
+      )}&location=${mapResourceValue(locations)}&time_series=true`
     ).then(d => {
       const categories = d.map(({ id, name }) => ({ id, name }));
       dispatch(gotCategories(categories));
@@ -81,9 +79,9 @@ export const fetchSubCategories = createThunkAction(
   ({ scenarios, locations, category }) => dispatch => {
     EPAPI.get(
       'subcategories',
-      `scenario=${mapScenarios(scenarios, s => s.value).join(
+      `scenario=${mapResourceValue(scenarios).join(
         ','
-      )}&location=${locations}&category=${category.value}&time_series=true`
+      )}&location=${mapResourceValue(locations)}&category=${category.value}&time_series=true`
     ).then(d => dispatch(gotSubCategories(d)));
   }
 );
@@ -93,9 +91,9 @@ export const fetchIndicators = createThunkAction(
   ({ locations, scenarios, subcategory }) => dispatch => {
     EPAPI.get(
       'indicators',
-      `scenario=${mapScenarios(scenarios, s => s.value).join(
+      `scenario=${mapResourceValue(scenarios).join(
         ','
-      )}&location=${locations}&time_series=true&subcategory=${subcategory}`
+      )}&location=${mapResourceValue(locations)}&time_series=true&subcategory=${subcategory}`
     ).then(d => {
       const indicators = uniqBy(d, 'id');
       dispatch(gotIndicators(indicators));
@@ -106,13 +104,12 @@ export const fetchIndicators = createThunkAction(
 export const fetchYears = createThunkAction(
   'fetchYears',
   ({ locations, indicators, scenarios }) => dispatch => {
-    const flatScenarios =
-      mapScenarios(scenarios, s => s.value).join(',') || false;
-    const flatIndicators = indicators.map(s => s.value).join(',') || false;
-
+    const flatScenarios = mapResourceValue(scenarios).join(',') || false;
+    const flatIndicators = mapResourceValue(indicators).join(',') || false;
+    console.warn('using temporary time_series_values endpoint in `fetchYears` for years until years endpoint its ready');
     EPAPI.get(
       'time_series_values',
-      `location=${locations}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true`
+      `location=${mapResourceValue(locations)}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true`
     ).then(d =>
       dispatch(
         gotYears(
@@ -130,15 +127,24 @@ export const fetchTimeseries = createThunkAction(
   'fetchTimeseries',
   ({ locations, indicators, scenarios, years }) => dispatch => {
     const flatScenarios =
-      mapScenarios(scenarios, s => s.value).join(',') || false;
-    const flatIndicators = indicators.map(s => s.value).join(',') || false;
-    const ys = mapYears(years, y => y.label).sort();
-    console.log(ys);
+      mapResourceValue(scenarios).join(',') || false;
+    const flatIndicators = mapResourceValue(indicators).join(',') || false;
+    const ys = mapResourceValue(years).sort();
     const yearFrom = first(ys);
     const yearTo = last(ys);
     EPAPI.get(
       'time_series_values',
-      `location=${locations}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true&year_from=${yearFrom}&year_to=${yearTo}`
+      `location=${
+        mapResourceValue(locations)
+      }&scenario=${
+        flatScenarios
+      }&indicator=${
+        flatIndicators
+      }&time_series=true&year_from=${
+        yearFrom
+      }&year_to=${
+        yearTo
+      }`
     ).then(d => dispatch(gotTimeseries(d)));
   }
 );

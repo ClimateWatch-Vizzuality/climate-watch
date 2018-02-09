@@ -226,7 +226,7 @@ export default {
     return updateIn($indicators, indicators, state);
   },
   [actions.selectIndicator]: (state, { payload }) =>
-    updateIn($indicators, { selected: payload }, state),
+    updateIn($indicators, { selected: payload, child: get($years, initialState) }, state),
 
   // Years
   [actions.fetchYears]: state =>
@@ -257,7 +257,7 @@ export default {
     );
   },
   [actions.selectYear]: (state, { payload }) =>
-    updateIn($years, { selected: payload }, state),
+    updateIn($years, { selected: payload, child: get($timeseries, initialState) }, state),
 
   // Timeseries
   [actions.fetchTimeseries]: state =>
