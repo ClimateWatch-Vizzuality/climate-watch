@@ -61,30 +61,44 @@
 }
 
 .tooltip {
+  display: flex;
+  justify-content: space-between;
+  //to correct padding: 8px 21px; fromreact-tooltip componet
+  margin: 7px -6px;
   pointer-events: all;
-}
 
-.link {
-  display: inline-block;
-  color: $white;
-  font-size: $font-size;
-  padding-bottom: 5px;
-}
+  .info {
+    display: flex;
+    flex-direction: column;
 
-.icon {
-  position: relative;
-  fill: $white;
-  stroke: $white;
-  transform: rotate(-90deg);
-  width: 10px;
-  margin-left: 5px;
-  top: 3px;
+    .countryName {
+      display: inline-block;
+      color: $white;
+      font-size: $font-size;
+      padding-bottom: 5px;
+    }
 
-  @media #{$tablet-landscape} {
-    display: none;
+    .text {
+      color: $dark-gray;
+    }
   }
-}
 
-.tooltipText {
-  color: $dark-gray;
+  .link {
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .icon {
+    align-self: center;
+    fill: $white;
+    stroke: $white;
+    transform: rotate(-90deg);
+    width: 10px;
+
+    @media #{$tablet-landscape} {
+      display: none;
+    }
+  }
 }
