@@ -54,6 +54,7 @@ const mapStateToProps = (state, { location }) => {
     'espIndicators',
     'espGraph'
   ];
+  const filtersSelected = getFiltersSelected(espData);
   return {
     data: getChartData(espData),
     domain: getChartXDomain(espData),
@@ -65,10 +66,10 @@ const mapStateToProps = (state, { location }) => {
       indicators: state.espIndicators.loading
     },
     filtersOptions: getFiltersOptions(espData),
-    filtersSelected: getFiltersSelected(espData),
+    filtersSelected,
     modalData: getModalData(espData),
     error: providers.some(p => state[p].error),
-    loading: providers.some(p => state[p].loading)
+    loading: providers.some(p => state[p].loading) || filtersSelected.model
   };
 };
 

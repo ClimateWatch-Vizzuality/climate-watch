@@ -108,7 +108,7 @@ export const getModelsOptions = createSelector(
       !availableModels ||
       isEmpty(availableModels)
     ) {
-      return [];
+      return null;
     }
     const modelOptions = [];
     models.forEach(m => {
