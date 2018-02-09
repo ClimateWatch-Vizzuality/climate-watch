@@ -18,7 +18,6 @@ class NdcSdgLinkagesContent extends PureComponent {
       goalHover,
       targetHover,
       handleGoalHover,
-      handleGoalTap,
       handleTargetHover
     } = this.props;
     return (
@@ -29,7 +28,6 @@ class NdcSdgLinkagesContent extends PureComponent {
             <NdcSdgLinkagesTable
               goalHover={goalHover}
               onGoalHover={handleGoalHover}
-              onGoalTap={handleGoalTap}
               targetHover={targetHover}
               onTargetHover={handleTargetHover}
             />
@@ -49,7 +47,6 @@ NdcSdgLinkagesContent.propTypes = {
   goalHover: PropTypes.number,
   targetHover: PropTypes.string,
   handleGoalHover: PropTypes.func.isRequired,
-  handleGoalTap: PropTypes.func.isRequired,
   handleTargetHover: PropTypes.func.isRequired
 };
 

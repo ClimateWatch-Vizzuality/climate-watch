@@ -41,7 +41,6 @@ class NdcSdgLinkagesContentContainer extends PureComponent {
       goalHover: this.state.goalHover,
       targetHover: this.state.targetHover,
       handleGoalHover: this.handleGoalHover,
-      handleGoalTap: this.handleGoalHover,
       handleTargetHover: this.handleTargetHover
     });
   }
