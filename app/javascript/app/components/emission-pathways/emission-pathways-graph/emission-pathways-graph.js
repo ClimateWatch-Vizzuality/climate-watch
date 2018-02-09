@@ -69,7 +69,7 @@ const mapStateToProps = (state, { location }) => {
     filtersSelected,
     modalData: getModalData(espData),
     error: providers.some(p => state[p].error),
-    loading: providers.some(p => state[p].loading) || filtersSelected.model
+    loading: providers.some(p => state[p].loading) || !filtersSelected.model
   };
 };
 
