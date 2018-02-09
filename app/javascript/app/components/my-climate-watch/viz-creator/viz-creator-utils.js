@@ -2,6 +2,7 @@ import isFunction from 'lodash/isFunction';
 import _startCase from 'lodash/startCase';
 import _camelCase from 'lodash/camelCase';
 import _map from 'lodash/map';
+import _find from 'lodash/find';
 import _ from 'lodash-inflection';
 import { update } from 'js-lenses';
 import { format } from 'd3-format';
@@ -43,8 +44,19 @@ export const processLegendData = (idc, scn) => {
 };
 
 export const processPieData = (idc, scn) => {
-  console.log(scn, idc);
+  // console.log(scn, idc); //eslint-disable-line
 };
+
+export const processStackChartData = (years, indicators) =>
+  years.reduce((result, y) => {
+    const d = _find(result, { year: y.year })
+      || ({ id: y.id, year: y.year, indicator: y.indicator_id, value: y.value, indicators: [] });
+    console.log(d, result);
+    const sc = _find(indicators, { id: d.indicator });
+    if (!sc) return result;
+    const idcs = _find(d.indicators, { id: sc.id }) || ({ id: sc.id, name: sc.name, value: d.value });
+    return result.concat([{ year: d.year, indicators: d.indicators.concat([idcs]) }]);
+  }, []);
 
 export const processLineData = (idc, scn) => {
   const data = groupDataByScenario(idc, scn);

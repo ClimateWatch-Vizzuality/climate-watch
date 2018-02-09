@@ -10,6 +10,7 @@ import {
   processLineData,
   processLegendData,
   processPieData,
+  processStackChartData,
   flatMapVis,
   mapFilter
 } from './viz-creator-utils';
@@ -85,17 +86,18 @@ export const chartDataSelector = createSelector(
     hasDataSelector,
     timeseriesSelector,
     scenariosSelector,
-    selectedStructureSelector
+    selectedStructureSelector,
+    indicatorsSelector
   ],
-  (hasData, timeseries, scenarios, selectedStructure) => {
+  (hasData, timeseries, scenarios, selectedStructure, indicators) => {
     if (!hasData) return {};
-
     switch (selectedStructure.id) {
       case 'LineChart-1':
         return { ...processLineData(timeseries.data, scenarios.data) };
 
-      case 'StackChart-1':
-        return {};
+      case 'StackBarChart-1':
+        console.log(processStackChartData(timeseries.data, indicators.data));
+        return { ...processStackChartData(timeseries.data, indicators.data) };
 
       case 'PieChart-1':
         return {};
@@ -106,7 +108,7 @@ export const chartDataSelector = createSelector(
       case 'PieChart-2':
         return { ...processPieData(timeseries.data, scenarios.data) };
 
-      case 'StackChart-2':
+      case 'StackBarChart-2':
         return {};
 
       default: return {};

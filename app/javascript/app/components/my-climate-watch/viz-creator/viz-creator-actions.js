@@ -4,6 +4,7 @@ import find from 'lodash/find';
 import first from 'lodash/first';
 import last from 'lodash/last';
 import uniqBy from 'lodash/uniqBy';
+import range from 'lodash/range';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import { EPAPI, CWAPI } from 'services/api';
@@ -108,15 +109,19 @@ export const fetchYears = createThunkAction(
     const flatIndicators = mapResourceValue(indicators).join(',') || false;
     console.warn('using temporary time_series_values endpoint in `fetchYears` for years until years endpoint its ready');
     EPAPI.get(
-      'time_series_values',
-      `location=${mapResourceValue(locations)}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true`
+      'time_series_values/years',
+      `location=${
+        mapResourceValue(locations)
+      }&scenario=${
+        flatScenarios
+      }&indicator=${
+        flatIndicators
+      }&time_series=true`
     ).then(d =>
       dispatch(
         gotYears(
-          uniqBy(
-            d.map(({ id, year }) => ({ value: id, label: `${year}` })),
-            'label'
-          )
+          d.years
+            .map(y => ({ value: y, label: `${y}` }))
         )
       )
     );
