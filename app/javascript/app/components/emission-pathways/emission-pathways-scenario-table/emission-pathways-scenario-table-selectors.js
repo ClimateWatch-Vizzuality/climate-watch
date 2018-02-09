@@ -148,7 +148,8 @@ export const dataWithTrendLine = createSelector(
   [filteredDataByCategory, getScenarioTrendData],
   (data, trendData) => {
     if (!data) return null;
-    return data.map(d => {
+    const dataWithTrendLines = [];
+    data.forEach(d => {
       const rowData = d;
       const indicatorId = d.id;
       const indicatorTrendData =
@@ -159,11 +160,10 @@ export const dataWithTrendLine = createSelector(
           : sortBy(indicatorTrendData.values, ['year']).map(v =>
             parseFloat(v.value)
           );
-      } else {
-        rowData.trend = null;
+        dataWithTrendLines.push(rowData);
       }
-      return rowData;
     });
+    return dataWithTrendLines;
   }
 );
 
