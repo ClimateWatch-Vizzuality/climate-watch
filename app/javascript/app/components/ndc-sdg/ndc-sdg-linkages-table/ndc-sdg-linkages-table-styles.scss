@@ -4,6 +4,9 @@
 .container {
   @include clearFix();
 
+  background-color: $white;
+  border: 1px solid $theme-border;
+  border-top: none;
   order: 2;
 
   @media #{$tablet-landscape} {
