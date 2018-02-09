@@ -29,13 +29,13 @@ class NdcSdgLinkagesMap extends PureComponent {
       this.props.goal.locations[country.id];
     const locations = targets && targets.length;
     return (
-      <div className={styles.tooltip}>
-        <Link className={styles.link} to={`/countries/${country.id}`}>
-          {country.name}
-          <Icon icon={accordionArrow} className={styles.icon} />
-        </Link>
-        <p className={styles.tooltipText}>{locations || '0'} targets linked</p>
-      </div>
+      <Link className={styles.tooltip} to={`/countries/${country.id}`}>
+        <div className={styles.info}>
+          <div className={styles.countryName}>{country.name}</div>
+          <p className={styles.text}>{locations || '0'} targets linked</p>
+        </div>
+        <Icon icon={accordionArrow} className={styles.icon} />
+      </Link>
     );
   }
 
