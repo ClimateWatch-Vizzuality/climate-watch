@@ -20,8 +20,8 @@ export const getNdcsSdgsGoalsDataSelected = createSelector(
   [getNdcsSdgsGoalsData, getGoalSelected, getGoalHover],
   (data, goalSelected, goalHover) => {
     if (!data) return null;
-    if (goalHover) return data[goalHover - 1];
-    return goalSelected ? data[goalSelected - 1] : data[0];
+    if (goalSelected) return data[goalSelected - 1];
+    return goalHover ? data[goalSelected - 1] : data[0];
   }
 );
 
