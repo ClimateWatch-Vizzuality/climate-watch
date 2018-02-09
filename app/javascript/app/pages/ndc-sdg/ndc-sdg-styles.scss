@@ -8,9 +8,33 @@
 .header {
   padding-bottom: $gutter-padding;
   overflow: auto;
-  height: $header-height;
+  height: auto;
+
+  &.isOpen {
+    height: $header-height;
+  }
 
   @media #{$tablet-landscape} {
-    height: auto;
+    padding-bottom: 0;
+
+    &.isOpen {
+      height: auto;
+    }
+  }
+}
+
+.wrapper {
+  height: auto;
+
+  &.isOpen {
+    height: 60vh;
+    overflow: hidden;
+  }
+
+  @media #{$tablet-landscape} {
+    &.isOpen {
+      height: auto;
+      overflow: auto;
+    }
   }
 }
