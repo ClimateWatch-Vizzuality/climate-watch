@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
 import uniqBy from 'lodash/uniqBy';
 import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
@@ -124,9 +125,9 @@ export const getModelsOptions = createSelector(
 );
 
 export const getModelSelected = createSelector(
-  [getModelsOptions, getModel],
-  (models, modelSelected) => {
-    if (!models) return null;
+  [getModelsOptions, getModel, getModels],
+  (models, modelSelected, allModels) => {
+    if (!models || isEmpty(allModels)) return null;
     if (!modelSelected) {
       const defaultModel = models.find(
         m => m.label === DEFAULT_SELECTIONS.model
@@ -134,6 +135,16 @@ export const getModelSelected = createSelector(
       return defaultModel || models[0];
     }
     return models.find(m => modelSelected === m.value);
+  }
+);
+
+export const getUnavailableModelSelected = createSelector(
+  [getModel, getModelSelected, getModels],
+  (modelSelected, availableModel, allModels) => {
+    if (isEmpty(allModels) || !modelSelected) return null;
+    if (availableModel) return availableModel;
+    const unavailableModel = allModels.find(m => modelSelected === m.id);
+    return { label: unavailableModel.full_name };
   }
 );
 
@@ -282,6 +293,18 @@ export const getIndicatorSelected = createSelector(
   }
 );
 
+export const getUnavailableIndicatorSelected = createSelector(
+  [getIndicator, getIndicatorSelected, getIndicators],
+  (indicatorSelected, availableIndicator, allIndicators) => {
+    if (isEmpty(allIndicators)) return null;
+    if (!isUndefined(availableIndicator)) return availableIndicator;
+    const unavailableIndicator = allIndicators.find(
+      m => indicatorSelected === m.id
+    );
+    return { label: unavailableIndicator.name };
+  }
+);
+
 export const filterDataByIndicator = createSelector(
   [filterDataByScenario, getIndicatorSelected],
   (data, indicator) => {
@@ -313,18 +336,29 @@ export const getFiltersSelected = createSelector(
   [
     getLocationSelected,
     getModelSelected,
+    getUnavailableModelSelected,
     getScenariosSelected,
     getCategorySelected,
     getSubcategorySelected,
-    getIndicatorSelected
+    getIndicatorSelected,
+    getUnavailableIndicatorSelected
   ],
-  (location, model, scenarios, category, subcategory, indicator) => ({
+  (
     location,
     model,
+    unavailableModel,
     scenarios,
     category,
     subcategory,
-    indicator
+    indicator,
+    unavailableIndicator
+  ) => ({
+    location,
+    model: model || unavailableModel,
+    scenarios,
+    category,
+    subcategory,
+    indicator: indicator || unavailableIndicator
   })
 );
 
