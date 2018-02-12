@@ -3,15 +3,22 @@
 
 .wrapper {
   position: relative;
+  margin-bottom: 40px;
 }
 
 .col4 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+  @include msGridColumns(1fr, 1fr);
 
-  grid-template-columns: repeat(4, 1fr);
-  align-items: end;
+  grid-template-columns: repeat(2, 1fr);
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(4, 1fr);
+    align-items: end;
+  }
 }
 
 .legend {
@@ -22,6 +29,11 @@
 
 .buttons {
   grid-column-end: -1;
+}
+
+.buttonGroup {
+  background-color: $white;
+  margin-top: 10px;
 }
 
 :global .__react_component_tooltip {
