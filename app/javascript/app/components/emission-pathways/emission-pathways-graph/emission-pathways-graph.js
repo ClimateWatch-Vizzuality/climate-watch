@@ -54,6 +54,7 @@ const mapStateToProps = (state, { location }) => {
     'espIndicators',
     'espGraph'
   ];
+  const filtersSelected = getFiltersSelected(espData);
   return {
     data: getChartData(espData),
     domain: getChartXDomain(espData),
@@ -65,10 +66,10 @@ const mapStateToProps = (state, { location }) => {
       indicators: state.espIndicators.loading
     },
     filtersOptions: getFiltersOptions(espData),
-    filtersSelected: getFiltersSelected(espData),
+    filtersSelected,
     modalData: getModalData(espData),
     error: providers.some(p => state[p].error),
-    loading: providers.some(p => state[p].loading)
+    loading: providers.some(p => state[p].loading) || !filtersSelected.model
   };
 };
 
@@ -116,6 +117,14 @@ class EmissionPathwayGraphContainer extends PureComponent {
     this.updateUrlParam(params, clear);
   };
 
+  handleClearSelection = () => {
+    const { location } = this.props.filtersSelected;
+    this.updateUrlParam(
+      { name: 'currentLocation', value: location.value },
+      true
+    );
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -130,7 +139,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
       ...this.props,
       handleInfoClick: this.handleInfoClick,
       handleModelChange: this.handleModelChange,
-      handleSelectorChange: this.handleSelectorChange
+      handleSelectorChange: this.handleSelectorChange,
+      handleClearSelection: this.handleClearSelection
     });
   }
 }
