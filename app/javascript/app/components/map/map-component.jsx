@@ -116,12 +116,15 @@ class Map extends PureComponent {
                               commonProps = {
                                 ...commonProps,
                                 'data-tip': '',
-                                'data-for': tooltipId,
-                                'data-event': matches ? 'mouseenter' : 'click',
-                                'data-event-off': matches
-                                  ? 'mouseleave'
-                                  : 'click'
+                                'data-for': tooltipId
                               };
+                              if (!matches) {
+                                commonProps = {
+                                  ...commonProps,
+                                  'data-event': 'click',
+                                  'data-event-off': 'click'
+                                };
+                              }
                             }
                             return <Geography {...commonProps} />;
                           }
