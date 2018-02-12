@@ -117,8 +117,8 @@ class ChartLine extends PureComponent {
             axisLine={false}
             tickLine={false}
             type="number"
-            tick={<CustomizedYAxisTick unit={unit} />}
-            domain={['dataMin', 'dataMax']}
+            tick={<CustomizedYAxisTick unit={espGraph && unit} />}
+            domain={domain || ['dataMin', 'dataMax']}
             interval={'preserveStartEnd'}
           >
             {espGraph && yAxisLabel}
