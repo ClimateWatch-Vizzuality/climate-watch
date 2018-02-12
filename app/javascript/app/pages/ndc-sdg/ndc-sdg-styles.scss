@@ -5,36 +5,37 @@
   background-color: $light-gray;
 }
 
+.bgOpen {
+  height: calc(100vh - #{$navbar-height});
+  overflow: hidden;
+}
+
 .header {
   padding-bottom: $gutter-padding;
   overflow: auto;
   height: auto;
+}
 
-  &.isOpen {
-    height: $header-height;
-  }
+.headerOpen {
+  height: $header-height;
+}
 
-  @media #{$tablet-landscape} {
-    padding-bottom: 0;
-
-    &.isOpen {
-      height: auto;
-    }
-  }
+@media #{$tablet-landscape} {
+  padding-bottom: 0;
+  height: auto;
 }
 
 .wrapper {
   height: auto;
+}
 
-  &.isOpen {
-    height: 60vh;
-    overflow: hidden;
-  }
+.wrapperOpen {
+  height: 60vh;
+  overflow: hidden;
 
   @media #{$tablet-landscape} {
-    &.isOpen {
-      height: auto;
-      overflow: auto;
-    }
+    height: auto;
+    overflow: auto;
   }
 }
+
