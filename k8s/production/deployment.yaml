@@ -64,6 +64,8 @@ spec:
             value: "https://data.emissionspathways.org/api/v1"
           - name: GFW_API
             value: "https://production-api.globalforestwatch.org/"
+          - name: CORS_WHITELIST
+            value: "http://www.globalforestwatch.org/"
 
         ports:
           - containerPort: 3000
