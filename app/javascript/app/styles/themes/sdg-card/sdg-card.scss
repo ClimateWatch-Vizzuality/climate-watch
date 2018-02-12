@@ -4,4 +4,13 @@
   position: relative;
   margin-bottom: -1px;
   border: solid 1px $theme-border;
+
+  &:last-child {
+    border-right: 1px solid transparent;
+    box-shadow: 1px 0 0 $theme-border;
+  }
+
+  &:not(:last-child) {
+    border-right: none;
+  }
 }
