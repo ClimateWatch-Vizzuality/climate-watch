@@ -9,6 +9,7 @@ import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
 import EspIndicatorsTrendDataProvider from 'providers/esp-indicators-trend-provider';
+import EspLocationsProvider from 'providers/esp-locations-provider';
 import styles from './emission-pathways-scenario-table-styles.scss';
 
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
@@ -43,6 +44,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
     } = this.props;
     return (
       <div className={layout.content}>
+        <EspLocationsProvider scenarioId={id} />
         {selectedLocation && (
           <EspIndicatorsTrendDataProvider
             scenarioId={id}
