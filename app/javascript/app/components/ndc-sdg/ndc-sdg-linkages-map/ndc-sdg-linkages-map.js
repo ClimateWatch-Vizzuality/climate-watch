@@ -14,7 +14,7 @@ import {
 
 const mapStateToProps = (state, { location, goalHover, targetHover }) => {
   const { data: goalsData } = state.ndcSdg;
-  const goalSelected = qs.parse(location.search).goal;
+  const goalSelected = qs.parse(location.search).goal || '';
   const data = {
     goalsData,
     goalSelected,
