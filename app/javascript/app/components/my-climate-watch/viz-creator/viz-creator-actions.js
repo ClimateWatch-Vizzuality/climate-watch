@@ -12,7 +12,10 @@ import { EPAPI, CWAPI } from 'services/api';
 import { actions as visActions } from 'components/my-climate-watch/my-visualisations';
 import { $datasets } from './viz-creator-lenses';
 
-const mapResourceValue = resource => (isArray(resource) ? resource : [resource]).map(r => r.value);
+const mapResource = (resource, key) =>
+  (isArray(resource) ? resource : [resource]).map(r => r[key]);
+const mapResourceValue = resource => mapResource(resource, 'value');
+const mapResourceLabel = resource => mapResource(resource, 'label');
 
 export const fetchDatasets = createThunkAction(
   'fetchDatasets',
@@ -45,9 +48,10 @@ export const fetchVisualisations = createThunkAction(
 export const fetchModels = createThunkAction(
   'fetchModels',
   locations => dispatch => {
-    EPAPI.get('models', `location=${mapResourceValue(locations)}&time_series=true`).then(d =>
-      dispatch(gotModels(d))
-    );
+    EPAPI.get(
+      'models',
+      `location=${mapResourceValue(locations)}&time_series=true`
+    ).then(d => dispatch(gotModels(d)));
   }
 );
 
@@ -82,7 +86,9 @@ export const fetchSubCategories = createThunkAction(
       'subcategories',
       `scenario=${mapResourceValue(scenarios).join(
         ','
-      )}&location=${mapResourceValue(locations)}&category=${category.value}&time_series=true`
+      )}&location=${mapResourceValue(
+        locations
+      )}&category=${category.value}&time_series=true`
     ).then(d => dispatch(gotSubCategories(d)));
   }
 );
@@ -94,7 +100,9 @@ export const fetchIndicators = createThunkAction(
       'indicators',
       `scenario=${mapResourceValue(scenarios).join(
         ','
-      )}&location=${mapResourceValue(locations)}&time_series=true&subcategory=${subcategory}`
+      )}&location=${mapResourceValue(
+        locations
+      )}&time_series=true&subcategory=${subcategory}`
     ).then(d => {
       const indicators = uniqBy(d, 'id');
       dispatch(gotIndicators(indicators));
@@ -107,23 +115,20 @@ export const fetchYears = createThunkAction(
   ({ locations, indicators, scenarios }) => dispatch => {
     const flatScenarios = mapResourceValue(scenarios).join(',') || false;
     const flatIndicators = mapResourceValue(indicators).join(',') || false;
-    console.warn('using temporary time_series_values endpoint in `fetchYears` for years until years endpoint its ready');
+    console.warn(
+      'using temporary time_series_values endpoint in `fetchYears` for years until years endpoint its ready'
+    );
     EPAPI.get(
       'time_series_values/years',
-      `location=${
-        mapResourceValue(locations)
-      }&scenario=${
+      `location=${mapResourceValue(
+        locations
+      )}&scenario=${
         flatScenarios
       }&indicator=${
         flatIndicators
       }&time_series=true`
     ).then(d =>
-      dispatch(
-        gotYears(
-          d.years
-            .map(y => ({ value: y, label: `${y}` }))
-        )
-      )
+      dispatch(gotYears(d.years.map(y => ({ value: y, label: `${y}` }))))
     );
   }
 );
@@ -131,24 +136,19 @@ export const fetchYears = createThunkAction(
 export const fetchTimeseries = createThunkAction(
   'fetchTimeseries',
   ({ locations, indicators, scenarios, years }) => dispatch => {
-    const flatScenarios =
-      mapResourceValue(scenarios).join(',') || false;
+    const flatScenarios = mapResourceValue(scenarios).join(',') || false;
     const flatIndicators = mapResourceValue(indicators).join(',') || false;
-    const ys = mapResourceValue(years).sort();
-    const yearFrom = first(ys);
-    const yearTo = last(ys);
+    const ys = mapResourceLabel(years).sort();
     EPAPI.get(
       'time_series_values',
-      `location=${
-        mapResourceValue(locations)
-      }&scenario=${
+      `location=${mapResourceValue(
+        locations
+      )}&scenario=${
         flatScenarios
       }&indicator=${
         flatIndicators
-      }&time_series=true&year_from=${
-        yearFrom
-      }&year_to=${
-        yearTo
+      }&time_series=true&years=${
+        ys.join(',')
       }`
     ).then(d => dispatch(gotTimeseries(d)));
   }

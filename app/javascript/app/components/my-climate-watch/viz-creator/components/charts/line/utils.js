@@ -54,22 +54,6 @@ export const pickByKey = (key, data) =>
     _reduce(l, (rr, item, k) => Object.assign(rr, { [k]: item[key] }), {})
   );
 
-export const COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759'
-];
-
 export const mergeLineProps = (withObject, theme) =>
   _reduce(
     theme,

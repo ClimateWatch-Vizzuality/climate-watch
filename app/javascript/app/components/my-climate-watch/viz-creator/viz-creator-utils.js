@@ -3,17 +3,19 @@ import _startCase from 'lodash/startCase';
 import _camelCase from 'lodash/camelCase';
 import _map from 'lodash/map';
 import _find from 'lodash/find';
+import _difference from 'lodash/difference';
 import _ from 'lodash-inflection';
 import { update } from 'js-lenses';
 import { format } from 'd3-format';
 import { assign } from 'app/utils';
 
+import { CHART_COLORS } from 'data/constants';
+
 import {
   groupDataByScenario,
   pickByKey,
   mergeLineProps,
-  getLineProps,
-  COLORS
+  getLineProps
 } from './components/charts/line/utils';
 
 export const toFetcher = name => `fetch${_.pluralize(_startCase(name))}`;
@@ -47,15 +49,17 @@ export const processPieData = (idc, scn) => {
   // console.log(scn, idc); //eslint-disable-line
 };
 
-export const processStackChartData = (years, indicators) =>
-  years.reduce((result, y) => {
-    const d = _find(result, { year: y.year })
-      || ({ id: y.id, year: y.year, indicator: y.indicator_id, value: y.value, indicators: [] });
-    console.log(d, result);
-    const sc = _find(indicators, { id: d.indicator });
-    if (!sc) return result;
-    const idcs = _find(d.indicators, { id: sc.id }) || ({ id: sc.id, name: sc.name, value: d.value });
-    return result.concat([{ year: d.year, indicators: d.indicators.concat([idcs]) }]);
+export const processStackChartData = (timeSeries, indicators) =>
+  timeSeries.reduce((data, ts) => {
+    const indicator = _find(indicators, { id: ts.indicator_id }) || ({ id: ts.indicator_id, value: ts.value });
+    const foundTs = _find(data, { year: ts.year });
+    const rest = _difference(data, [foundTs]);
+    return foundTs
+      ? rest.concat(Object.assign(foundTs, { [_camelCase(indicator.name)]: ts.value }))
+      : data.concat({
+        year: ts.year,
+        [_camelCase(indicator.name)]: ts.value
+      });
   }, []);
 
 export const processLineData = (idc, scn) => {
@@ -67,7 +71,7 @@ export const processLineData = (idc, scn) => {
       type: 'monotone',
       dot: false
     },
-    getLineProps(data, COLORS)
+    getLineProps(data, CHART_COLORS)
   );
 
   const lines =

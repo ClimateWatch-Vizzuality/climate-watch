@@ -96,8 +96,7 @@ export const chartDataSelector = createSelector(
         return { ...processLineData(timeseries.data, scenarios.data) };
 
       case 'StackBarChart-1':
-        console.log(processStackChartData(timeseries.data, indicators.data));
-        return { ...processStackChartData(timeseries.data, indicators.data) };
+        return { data: processStackChartData(timeseries.data, indicators.data) };
 
       case 'PieChart-1':
         return {};
@@ -111,7 +110,8 @@ export const chartDataSelector = createSelector(
       case 'StackBarChart-2':
         return {};
 
-      default: return {};
+      default:
+        return {};
     }
   }
 );
