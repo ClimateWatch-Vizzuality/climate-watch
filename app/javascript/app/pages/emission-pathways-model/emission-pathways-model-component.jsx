@@ -7,7 +7,6 @@ import Sticky from 'react-stickynode';
 import { renderRoutes } from 'react-router-config';
 import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
-import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 import styles from './emission-pathways-model-styles.scss';
@@ -20,7 +19,6 @@ class EmissionPathwaysModel extends PureComponent {
       <div>
         <EspModelsProvider />
         <EspScenariosProvider />
-        <EspIndicatorsProvider />
         <div>
           <Header route={route}>
             <div className={layout.content}>

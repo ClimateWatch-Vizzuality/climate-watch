@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 
@@ -17,9 +18,9 @@ import styles from './ndc-sdg-styles';
 class NdcSdg extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route } = this.props;
+    const { route, location, isOpen } = this.props;
     return (
-      <div className={styles.bg}>
+      <div className={cx(styles.bg, { [styles.bgOpen]: isOpen })}>
         <MetaDescription
           descriptionContext={NDC_SDG_LINKAGES}
           subtitle="NDC-SDG Linkages"
@@ -29,7 +30,13 @@ class NdcSdg extends PureComponent {
           href={location.href}
         />
         <NdcsSdgsMetaProvider />
-        <Header size="small" route={route}>
+        <Header
+          size="small"
+          route={route}
+          className={cx(styles.header, {
+            [styles.headerOpen]: isOpen
+          })}
+        >
           <div className={layout.content}>
             <div className={headerTheme.headerGrid}>
               <Intro
@@ -41,7 +48,11 @@ class NdcSdg extends PureComponent {
             </div>
           </div>
         </Header>
-        <div className={styles.wrapper}>
+        <div
+          className={cx(styles.wrapper, {
+            [styles.wrapperOpen]: isOpen
+          })}
+        >
           <NdcSdgLinkagesContent />
         </div>
       </div>
@@ -50,7 +61,9 @@ class NdcSdg extends PureComponent {
 }
 
 NdcSdg.propTypes = {
-  route: PropTypes.object.isRequired
+  route: PropTypes.object.isRequired,
+  isOpen: PropTypes.bool,
+  location: PropTypes.object.isRequired
 };
 
 export default NdcSdg;

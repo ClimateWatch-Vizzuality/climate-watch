@@ -16,6 +16,29 @@ import styles from './emission-pathways-graph-styles.scss';
 
 class EmissionPathwayGraph extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+  renderCustomMessage() {
+    const { filtersSelected, handleClearSelection } = this.props;
+    const getName = attribute =>
+      filtersSelected[attribute] && filtersSelected[attribute].label;
+    const unavailableIndicatorName = getName('indicator')
+      ? ` , ${getName('indicator')}`
+      : '';
+    return (
+      <span>
+        {`${getName('location')} doesn't have any data for ${getName(
+          'model'
+        )}${unavailableIndicatorName}. `}
+        <button
+          onClick={handleClearSelection}
+          type="button"
+          className={styles.clearButton}
+        >
+          Clear Selection
+        </button>
+      </span>
+    );
+  }
+
   render() {
     const {
       data,
@@ -37,6 +60,7 @@ class EmissionPathwayGraph extends PureComponent {
       filtersLoading.indicators ||
       filtersLoading.timeseries ||
       filtersLoading.models;
+
     return (
       <div className={styles.wrapper}>
         <div className={layout.content}>
@@ -116,7 +140,7 @@ class EmissionPathwayGraph extends PureComponent {
             domain={domain}
             dataOptions={filtersOptions.scenarios}
             dataSelected={filtersSelected.scenarios}
-            customMessage={'No data available for that indicator'}
+            customMessage={this.renderCustomMessage()}
             height={600}
             loading={loading}
             error={error}
@@ -161,7 +185,8 @@ EmissionPathwayGraph.propTypes = {
   filtersSelected: PropTypes.object,
   handleSelectorChange: PropTypes.func,
   handleInfoClick: PropTypes.func,
-  handleModelChange: PropTypes.func
+  handleModelChange: PropTypes.func,
+  handleClearSelection: PropTypes.func
 };
 
 export default EmissionPathwayGraph;

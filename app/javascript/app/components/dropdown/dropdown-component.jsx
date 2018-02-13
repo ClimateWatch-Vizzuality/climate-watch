@@ -44,7 +44,7 @@ class Dropdown extends PureComponent {
             ref={el => {
               this.selectorElement = el;
             }}
-            className={cx(className, disabled, styles.noScrollParent)}
+            className={cx(className, disabled)}
             renderToggleButton={() => <Icon icon={arrow} />}
             {...this.props}
           />

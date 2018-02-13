@@ -53,6 +53,10 @@
         .arrowIcon {
           transform: rotate(0deg);
         }
+
+        &::after {
+          bottom: -15px;
+        }
       }
     }
   }
@@ -74,6 +78,15 @@
     .button {
       &.active::after {
         bottom: -3px;
+      }
+    }
+
+    &.reverse {
+      .links {
+        bottom: 45px;
+        left: 0;
+        right: initial;
+        top: initial;
       }
     }
   }
