@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Tab from 'components/tab';
+import { themr } from 'react-css-themr';
 
 import styles from './modal-styles.scss';
 
@@ -9,13 +10,14 @@ class ModalHeader extends PureComponent {
     const {
       title,
       tabTitles,
-      children,
       selectedIndex,
-      handleTabIndexChange
+      handleTabIndexChange,
+      children,
+      theme
     } = this.props;
     return (
-      <div className={styles.header}>
-        {title && <h2 className={styles.headerTitle}>{title}</h2>}
+      <div className={theme.header}>
+        {title && <h2 className={theme.headerTitle}>{title}</h2>}
         {tabTitles && (
           <Tab
             options={tabTitles}
@@ -34,7 +36,8 @@ ModalHeader.propTypes = {
   tabTitles: PropTypes.array,
   selectedIndex: PropTypes.number,
   handleTabIndexChange: PropTypes.func,
+  theme: PropTypes.object,
   children: PropTypes.node
 };
 
-export default ModalHeader;
+export default themr('ModalHeader', styles)(ModalHeader);

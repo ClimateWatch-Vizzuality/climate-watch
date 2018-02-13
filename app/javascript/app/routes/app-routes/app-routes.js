@@ -75,12 +75,14 @@ export default [
     path: '/ndcs/country/:iso',
     component: NDCCountry,
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCCountryRoutes
   },
   {
     path: '/ndcs/compare',
     component: NDCCompare,
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCCompareRoutes
   },
   {
@@ -116,6 +118,7 @@ export default [
     component: NDCS,
     label: 'NDCs',
     headerImage: 'ndc',
+    headerColor: '#035388',
     routes: NDCSRoutes
   },
   {
@@ -129,6 +132,7 @@ export default [
     path: '/countries/:iso',
     component: Country,
     headerImage: 'countries',
+    headerColor: '#045F61',
     sections: countrySections
   },
   {
@@ -136,13 +140,15 @@ export default [
     component: GHGEmissions,
     exact: true,
     label: 'GHG EMISSIONS',
-    headerImage: 'emissions'
+    headerImage: 'emissions',
+    headerColor: '#46407D'
   },
   // {
   //   path: '/emission-pathways/models/:id',
   //   component: EmissionPathwaysModel,
   //   label: 'EMISSION PATHWAYS MODEL',
   //   headerImage: 'emission-pathways',
+  //   headerColor: '#74356A'
   //   sections: emissionPathwaysModelSections,
   //   routes: emissionPathwaysModelRoutes
   // },
@@ -151,13 +157,15 @@ export default [
   //   component: EmissionPathwaysScenario,
   //   label: 'EMISSION PATHWAYS SCENARIO',
   //   headerImage: 'emission-pathways',
+  //   headerColor: '#74356A'
   //   sections: emissionPathwaysScenarioSections
   // },
   {
     path: '/emission-pathways',
     component: EmissionPathways,
     label: 'EMISSION PATHWAYS',
-    headerImage: 'emission-pathways'
+    headerImage: 'emission-pathways',
+    headerColor: '#74356A'
     // sections: emissionPathwaysSections,
     // routes: emissionPathwaysRoutes
   },
@@ -165,7 +173,8 @@ export default [
     path: '/ndc-search',
     exact: true,
     component: NDCSearch,
-    headerImage: 'ndc'
+    headerImage: 'ndc',
+    headerColor: '#035388'
   },
   {
     path: '/stories',
@@ -180,6 +189,7 @@ export default [
     nav: true,
     label: 'ABOUT',
     headerImage: 'about',
+    headerColor: '#113750',
     routes: aboutRoutes
   },
   {

@@ -12,7 +12,7 @@ import Dropdown from 'components/dropdown';
 import isEqual from 'lodash/isEqual';
 import InfoButton from 'components/button/info-button';
 import Button from 'components/button';
-
+import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import layout from 'styles/layout.scss';
 import cardTheme from 'styles/themes/sdg-card/sdg-card';
 import styles from './country-ndc-sdg-linkages-styles.scss';
@@ -86,7 +86,11 @@ class CountrySDGLinkages extends PureComponent {
               />
             ))}
           </div>
-          <ReactTooltip className={styles.tooltipContainer} id="sdg-linkages">
+          <ReactTooltip
+            id="sdg-linkages"
+            className={styles.tooltipContainer}
+            scrollHide={false}
+          >
             {this.getTooltip()}
           </ReactTooltip>
         </div>
@@ -102,6 +106,29 @@ class CountrySDGLinkages extends PureComponent {
       handleInfoClick,
       handleAnalyticsClick
     } = this.props;
+    const description = (
+      <div className={styles.descriptionContainer}>
+        The colored dots represent the Sustainable Development Goals (SDGs) for
+        which there is an aligned climate target, action, policy measure or need
+        in the NDC. This alignment was identified based only on the information
+        communicated in the NDC, not the domestic policy context. It is
+        therefore only an entry point for considering the degree of potential
+        alignment between the country’s climate and sustainable development
+        objectives.
+      </div>
+    );
+
+    const exploreButton = (
+      <Button
+        className={styles.exploreBtn}
+        color="yellow"
+        link={`/ndcs-sdg${activeSector ? `?goal=${activeSector.value}` : ''}`}
+        onClick={handleAnalyticsClick}
+      >
+        Explore global linkages
+      </Button>
+    );
+
     return (
       <div className={styles.wrapper}>
         <NdcsSdgsDataProvider />
@@ -109,42 +136,31 @@ class CountrySDGLinkages extends PureComponent {
           <div className={styles.header}>
             <div className={styles.titleContainer}>
               <h3 className={styles.title}>NDC-SDG Linkages</h3>
-              <InfoButton
-                className={styles.infoBtn}
-                infoOpen={false}
-                handleInfoClick={handleInfoClick}
-                box
-              />
-              <Dropdown
-                label="Filter by sector"
-                placeholder="Choose a sector"
-                options={sectorOptions}
-                onValueChange={handleSectorChange}
-                value={activeSector}
-              />
-              <Button
-                className={styles.exploreBtn}
-                color="yellow"
-                link={`/ndcs-sdg${activeSector
-                  ? `?goal=${activeSector.value}`
-                  : ''}`}
-                onClick={handleAnalyticsClick}
-              >
-                Explore global linkages
-              </Button>
+              <div className={styles.buttons}>
+                <TabletPortraitOnly>{description}</TabletPortraitOnly>
+                <div className={styles.actionButtons}>
+                  <InfoButton
+                    className={styles.infoBtn}
+                    infoOpen={false}
+                    handleInfoClick={handleInfoClick}
+                    box
+                  />
+                  <Dropdown
+                    label="Filter by sector"
+                    placeholder="Choose a sector"
+                    options={sectorOptions}
+                    onValueChange={handleSectorChange}
+                    value={activeSector}
+                  />
+                </div>
+                <TabletLandscape>{exploreButton}</TabletLandscape>
+              </div>
             </div>
-            <div className={styles.descriptionContainer}>
-              The colored dots represent the Sutainable Development Goals (SDGs)
-              for which there is an aligned climate target, action, policy
-              measure or need in the NDC. This alignment was identified based
-              only on the information communicated in the NDC, not the domestic
-              policy context. It is therefore only an entry point for
-              considering the degree of potential alignment between the
-              country’s climate and sustainable development objectives.
-            </div>
+            <TabletLandscape>{description}</TabletLandscape>
           </div>
           <NdcsSdgsMetaProvider />
           {this.renderCards()}
+          <TabletPortraitOnly>{exploreButton}</TabletPortraitOnly>
         </div>
       </div>
     );

@@ -10,7 +10,7 @@ class Tag extends PureComponent {
   render() {
     const { data, onRemove, className, canRemove } = this.props;
     return (
-      <div className={cx(styles.tag, className)}>
+      <li className={cx(styles.tag, className)}>
         <span className={styles.dot} style={{ backgroundColor: data.color }} />
         <p className={styles.label}>{data.label}</p>
         {canRemove && (
@@ -18,7 +18,7 @@ class Tag extends PureComponent {
             <Icon icon={closeIcon} className={styles.icon} />
           </button>
         )}
-      </div>
+      </li>
     );
   }
 }

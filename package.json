@@ -25,7 +25,6 @@
     "d3-format": "^1.2.0",
     "d3-scale": "1.0.6",
     "dotenv": "^4.0.0",
-    "history": "4.7.2",
     "lodash": "4.17.4",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "15.6.0",
@@ -42,6 +41,7 @@
     "react-motion": "0.5.1",
     "react-player": "0.20.0",
     "react-redux": "^5.0.5",
+    "react-responsive": "^4.0.3",
     "react-router": "4.2.0",
     "react-router-config": "1.0.0-beta.4",
     "react-router-dom": "4.2.0",
@@ -57,6 +57,7 @@
     "redux": "^3.7.1",
     "redux-actions": "2.2.1",
     "redux-thunk": "2.2.0",
+    "redux-tools": "github:vectorsize/redux-tools",
     "reselect": "3.0.1",
     "screenfull": "^3.3.2",
     "topojson-client": "3.0.0"

@@ -90,7 +90,7 @@ class SimpleTable extends PureComponent {
                       }
                       return parseHtml ? (
                         <div
-                          dangerouslySetInnerHTML={{ __html: cell.cellData }}
+                          dangerouslySetInnerHTML={{ __html: cell.cellData }} // eslint-disable-line react/no-danger
                         />
                       ) : (
                         cell.cellData

@@ -2,30 +2,62 @@
 @import '~styles/layout.scss';
 
 .doubleFold {
-  @extend %grid;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
 
-  @include msGridColumns(1fr, 1fr);
+  @media #{$tablet-portrait} {
+    //SASS does not allow to @extend grid inside @media
+    //so display and column-gap are 'hardcoded'
+    display: grid;
+    grid-column-gap: $gutter-padding;
 
-  grid-template-columns: repeat(2, 1fr);
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.mobileDoubleAction {
+  @media #{$mobile-only} {
+    justify-content: space-between;
+    height: 140px;
+  }
 }
 
 .homeBg {
   background-color: $light-gray;
 }
 
+.homeIntro {
+  @media #{$tablet-portrait} {
+    max-width: 450px;
+  }
+
+  @media #{$tablet-landscape} {
+    max-width: 100%;
+  }
+}
+
 .column {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
 }
 
 .section {
-  padding-top: 120px;
-  padding-bottom: 120px;
-}
-
-.stories {
   padding-top: 60px;
+  padding-bottom: 60px;
+
+  @media #{$tablet-landscape} {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
 }
 
 .cwLogo {
@@ -65,17 +97,50 @@
   box-shadow: -10px 0 30px 0 rgba(37, 89, 124, 0.15);
 }
 
-.ndcs {
-  border-bottom: solid 1px $border-color;
-}
-
 .video {
   position: relative;
   background: #000;
   height: 315px;
+
+  @media #{$mobile-only} {
+    height: 200px;
+  }
 }
 
 .countries {
-  border-bottom: solid 1px $border-color;
+  display: flex;
   padding-bottom: 0;
+
+  @media #{$tablet-landscape} {
+    padding-bottom: 60px;
+  }
+}
+
+.sdgLinkages {
+  display: flex;
+}
+
+.countries,
+.ndcs,
+.sdgLinkages {
+  background-image: linear-gradient(to top, $theme-color -100%, transparent 10%);
+  border-bottom: solid 1px $border-color;
+
+  @media #{$tablet-portrait} {
+    background-image: none;
+  }
+}
+
+.invertOrder {
+  order: 2;
+  margin: 0 auto;
+
+  @media #{$tablet-landscape} {
+    order: initial;
+  }
+}
+
+.ndcImageMobile {
+  margin-right: -$gutter-padding / 2;
+  margin-left: -$gutter-padding / 2;
 }

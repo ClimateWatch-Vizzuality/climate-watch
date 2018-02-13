@@ -12,6 +12,7 @@ import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import Dropdown from 'components/dropdown';
 import { NDC_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import { TabletLandscape } from 'components/responsive';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
@@ -35,7 +36,7 @@ class NDCCountry extends PureComponent {
     return (
       <div>
         <MetaDescription
-          descriptionContext={NDC_COUNTRY}
+          descriptionContext={NDC_COUNTRY({ countryName })}
           subtitle={countryName}
         />
         <SocialMetadata
@@ -75,13 +76,15 @@ class NDCCountry extends PureComponent {
                     </div>
                   )}
                 </div>
-                <Button
-                  color="yellow"
-                  link={`/ndcs/compare/mitigation?locations=${match.params
-                    .iso}`}
-                >
-                  Compare
-                </Button>
+                <TabletLandscape>
+                  <Button
+                    color="yellow"
+                    link={`/ndcs/compare/mitigation?locations=${match.params
+                      .iso}`}
+                  >
+                    Compare
+                  </Button>
+                </TabletLandscape>
                 <Search
                   theme={lightSearch}
                   placeholder="Search"
@@ -90,12 +93,13 @@ class NDCCountry extends PureComponent {
                 />
               </div>
             </div>
-            <Sticky activeClass="sticky">
+            <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
               <AnchorNav
                 useRoutes
                 links={anchorLinks}
                 className={layout.content}
                 theme={anchorNavRegularTheme}
+                gradientColor={route.headerColor}
               />
             </Sticky>
           </Header>

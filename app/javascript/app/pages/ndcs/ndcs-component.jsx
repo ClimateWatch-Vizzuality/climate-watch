@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import Proptypes from 'prop-types';
+import cx from 'classnames';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
@@ -17,18 +18,16 @@ const NDC = ({ anchorLinks, query, route }) => (
     <MetaDescription descriptionContext={NDC_CONTENT} subtitle="NDC CONTENT" />
     <SocialMetadata descriptionContext={NDC_CONTENT} href={location.href} />
     <Header size="medium" route={route}>
-      <div className={layout.content}>
-        <div className={styles.cols}>
-          <Intro title="NDC Content" />
-          <AutocompleteSearch />
-        </div>
-        <AnchorNav
-          useRoutes
-          links={anchorLinks}
-          query={query}
-          theme={anchorNavRegularTheme}
-        />
+      <div className={cx(styles.cols, layout.content)}>
+        <Intro title="NDC Content" />
+        <AutocompleteSearch />
       </div>
+      <AnchorNav
+        useRoutes
+        links={anchorLinks}
+        query={query}
+        theme={anchorNavRegularTheme}
+      />
     </Header>
     <div className={styles.wrapper}>
       <div className={layout.content}>{renderRoutes(route.routes)}</div>

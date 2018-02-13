@@ -2,6 +2,7 @@
 @import '~styles/layout.scss';
 
 .wrapper {
+  min-height: calc(100vh - 102px);
   padding: $gutter-padding;
   left: 0;
   right: 0;
@@ -9,39 +10,44 @@
   background-color: $white;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
   border-top: solid 1px $theme-border;
+
+  @media #{$tablet-landscape} {
+    min-height: calc(100% - 196px); // 196px = font size plus footer padding
+  }
 }
 
 .content {
-  @extend %grid;
+  width: 100%;
+}
 
-  grid-template: 1fr / 1fr 3fr;
-  grid-row-gap: 20px;
+.searchTitle {
+  color: $theme-color;
+  font-size: $font-size-m;
 
-  > * {
-    &:first-child {
-      -ms-grid-column-span: 2;
-    }
-
-    &:nth-child(2) {
-      -ms-grid-column: 1;
-      -ms-grid-row: 2;
-    }
-
-    &:nth-child(3) {
-      -ms-grid-column: 2;
-      -ms-grid-row: 2;
-    }
+  @media #{$tablet-landscape} {
+    display: none;
   }
 }
 
 .search {
-  grid-column: span 2;
+  width: 100%;
 }
 
 .map {
+  display: inline-block;
+  width: calc(75% - #{$gutter-padding});
+  margin-left: $gutter-padding;
   text-align: center;
 }
 
 .list {
+  display: inline-block;
+  font-size: $font-size-m;
   max-height: 450px;
+  width: 100%;
+
+  @media #{$tablet-landscape} {
+    width: 25%;
+    font-size: $font-size;
+  }
 }

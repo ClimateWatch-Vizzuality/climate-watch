@@ -1,6 +1,7 @@
 @import '~styles/settings';
 
 .header {
+  position: relative;
   background-color: $theme-color;
   color: $white;
   padding-top: 50px;
@@ -9,6 +10,26 @@
   justify-content: flex-end;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.gradient {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  @media #{$desktop} {
+    background-image: none !important; // To overwrite the inline selector
+  }
+
+  // as we need can't use pseudo elements in react
+  // we need a element to set the background color so
+  // we need this to hack the z-index of the child elements
+  & ~ * {
+    z-index: 1;
+  }
 }
 
 .medium {
