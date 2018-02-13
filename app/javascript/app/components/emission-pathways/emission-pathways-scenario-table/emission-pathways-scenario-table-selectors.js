@@ -17,18 +17,22 @@ const getTrendData = state =>
   (!isEmpty(state.espTrendData) ? state.espTrendData : null);
 const getLocations = state =>
   (!isEmpty(state.espLocationsData) ? state.espLocationsData : null);
+const getAvailableLocations = state =>
+  (!isEmpty(state.espAvailableLocationsData)
+    ? state.espAvailableLocationsData
+    : null);
 
 const getLocationSelected = createSelector(
-  [getLocations, state => state.locationSelected],
+  [getAvailableLocations, state => state.locationSelected],
   (locations, selectedLocation) => {
     if (!locations) return null;
     if (!selectedLocation) {
+      const worldLocation = locations.find(l => l.name === 'World');
       return (
-        locations.find(l => l.name === 'World') &&
-        locations.find(l => l.name === 'World').id
+        (worldLocation && worldLocation.id) || (locations[0] && locations[0].id)
       );
     }
-    return selectedLocation;
+    return parseInt(selectedLocation, 10);
   }
 );
 
@@ -81,21 +85,22 @@ export const getSelectedCategoryOption = createSelector(
   }
 );
 
-export const getLocationOptions = createSelector([getLocations], locations => {
-  if (!locations) return null;
-  return locations.map(location => ({
-    value: location.id.toString(),
-    label: location.name
-  }));
-});
+export const getLocationOptions = createSelector(
+  [getAvailableLocations],
+  locations => {
+    if (!locations) return null;
+    return locations.map(location => ({
+      value: location.id.toString(),
+      label: location.name
+    }));
+  }
+);
 
 export const getSelectedLocationOption = createSelector(
   [getLocations, getLocationSelected],
   (locations, selectedLocation) => {
     if (!locations || !selectedLocation) return null;
-    const location = locations.find(
-      l => l.id.toString() === selectedLocation.toString()
-    );
+    const location = locations.find(l => l.id === selectedLocation);
     return {
       value: location.id,
       label: location.name
