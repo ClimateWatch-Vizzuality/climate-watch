@@ -17,6 +17,7 @@ import {
   Tooltip,
   ReferenceArea,
   ReferenceDot,
+  ReferenceLine,
   Label,
   ResponsiveContainer
 } from 'recharts';
@@ -127,13 +128,14 @@ class ChartStackedArea extends PureComponent {
           />
           <YAxis
             type="number"
-            domain={domain.y}
+            domain={['auto', domain.y[1]]}
             axisLine={false}
             padding={{ top: 0, bottom: 0 }}
             tickLine={false}
             tick={<CustomYAxisTick customstrokeWidth="0" unit="t" />}
           />
           <CartesianGrid vertical={false} />
+          <ReferenceLine y={0} strokeWidth="2" stroke="#666" fill="" />
           {tooltipVisibility && (
             <Tooltip
               viewBox={{ x: 0, y: 0, width: 100, height: 100 }}
