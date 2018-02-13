@@ -38,9 +38,9 @@ const BREAY_BY_OPTIONS = [
 
 // meta data for selectors
 const getMeta = state => state.meta || null;
-const getSources = state => state.meta.data_source || null;
+const getSources = state => (state.meta && state.meta.data_source) || null;
 const getRegions = state => state.regions || null;
-const getVersions = state => state.meta.gwp || null;
+const getVersions = state => (state.meta && state.meta.gwp) || null;
 
 // values from search
 const getSourceSelection = state => state.search.source || null;

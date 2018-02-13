@@ -168,7 +168,7 @@ CustomizedYAxisTick.propTypes = {
   y: PropTypes.number,
   index: PropTypes.number,
   payload: PropTypes.object,
-  unit: PropTypes.string
+  unit: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 };
 
 ChartLine.propTypes = {
