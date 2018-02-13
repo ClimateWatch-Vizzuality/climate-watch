@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import {
@@ -72,7 +73,7 @@ const getData = state => state.data || null;
 // Selector options
 export const getLocationsOptions = createSelector([getLocations], locations => {
   if (!locations || !locations.length) return [];
-  return locations.map(l => ({
+  return sortBy(locations, 'name').map(l => ({
     label: l.name,
     value: l.id
   }));
