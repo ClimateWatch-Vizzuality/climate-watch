@@ -255,7 +255,7 @@ export const getIndicatorsOptions = createSelector(
     let filteredIndicators = indicators;
     if (subcategory) {
       filteredIndicators = indicators.filter(
-        i => i.subcategory.id === subcategory.value
+        i => i.subcategory && i.subcategory.id === subcategory.value
       );
     }
 
