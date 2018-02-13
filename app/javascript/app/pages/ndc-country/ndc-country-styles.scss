@@ -3,17 +3,34 @@
 .doubleFold {
   @extend %grid;
 
-  @include msGridColumns(5fr, 7fr);
+  @include msGridColumns(1fr);
 
-  grid-template-columns: 5fr 7fr;
+  grid-template-columns: 1fr;
+  z-index: 2;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(5fr, 7fr);
+
+    grid-template-columns: 5fr 7fr;
+    z-index: 0;
+  }
 }
 
 .threeFold {
   @extend %grid;
 
-  @include msGridColumns(3fr, 2fr, 2fr);
+  height: 150px;
+  max-width: 450px;
 
-  grid-template-columns: 3fr 2fr 2fr;
+  @include msGridColumns(1fr);
+
+  grid-template-columns: 1fr;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(3fr, 2fr, 2fr);
+
+    grid-template-columns: 3fr 2fr 2fr;
+  }
 }
 
 .backButton {
