@@ -101,7 +101,7 @@ class ChartStackedArea extends PureComponent {
       y: [0, 'dataMax']
     };
 
-    if (points.length > 0) {
+    if (points.length > 1000000000) {
       domain.x[1] = max(points.map(p => p.x)) + 1;
       domain.y[1] =
         max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
