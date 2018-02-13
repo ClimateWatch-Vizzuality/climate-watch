@@ -8,6 +8,7 @@
 
   grid-template-columns: 1fr;
   margin-bottom: 15px;
+  z-index: 2;
 
   @media #{$tablet-landscape} {
     @include msGridColumns(6fr, 6fr);
