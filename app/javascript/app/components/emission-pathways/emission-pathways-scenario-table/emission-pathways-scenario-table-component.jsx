@@ -14,7 +14,15 @@ import styles from './emission-pathways-scenario-table-styles.scss';
 
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
   renderTable() {
-    const { data, noContentMsg, defaultColumns } = this.props;
+    const { data, noContentMsg, defaultColumns, error } = this.props;
+    if (error) {
+      return (
+        <NoContent
+          message={'Something went wrong'}
+          className={styles.noContent}
+        />
+      );
+    }
     return data && data.length > 0 ? (
       <Table
         data={data}
@@ -103,7 +111,8 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   selectedCategory: PropTypes.object,
   selectedLocation: PropTypes.object,
   handleCategoryChange: PropTypes.func,
-  handleLocationChange: PropTypes.func
+  handleLocationChange: PropTypes.func,
+  error: PropTypes.bool.isRequired
 };
 
 export default EmissionPathwaysScenarioTableComponent;
