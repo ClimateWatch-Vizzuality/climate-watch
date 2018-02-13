@@ -10,7 +10,12 @@
 .cols {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr);
+  grid-template-columns: 1fr;
 
-  grid-template-columns: repeat(2, 1fr);
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+  }
 }
