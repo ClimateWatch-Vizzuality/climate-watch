@@ -16,7 +16,7 @@ const BottomBar = ({ className }) => (
       </div>
       <div>
         <span className={styles.text}>
-          Climate Watch © 2017 Powered by Resource Watch
+          Climate Watch © {new Date().getFullYear()} Powered by Resource Watch
         </span>
       </div>
     </div>
