@@ -21,8 +21,18 @@ const mapStateToProps = (state, { category, match, location }) => {
   const espScenariosData = state.espScenarios && state.espScenarios.data;
   const espIndicatorsData = state.espIndicators && state.espIndicators.data;
   const espLocationsData = state.espLocations && state.espLocations.data;
+  const espAvailableLocationsData =
+    state.espLocations &&
+    state.espLocations.scenarios &&
+    state.espLocations.scenarios[id];
   const espTrendData =
     state.espIndicatorsTrend && state.espIndicatorsTrend.data;
+  const providers = [
+    'espScenarios',
+    'espIndicators',
+    'espLocations',
+    'espIndicatorsTrend'
+  ];
   const EspData = {
     categorySelected: search.category,
     locationSelected: search.location,
@@ -30,6 +40,7 @@ const mapStateToProps = (state, { category, match, location }) => {
     espScenariosData,
     espIndicatorsData,
     espLocationsData,
+    espAvailableLocationsData,
     espTrendData,
     category,
     id
@@ -47,7 +58,8 @@ const mapStateToProps = (state, { category, match, location }) => {
       state.espScenarios.loading ||
       state.espIndicators.loading ||
       state.espIndicatorsTrend.loading,
-    id
+    id,
+    error: providers.some(p => state[p].error)
   };
 };
 

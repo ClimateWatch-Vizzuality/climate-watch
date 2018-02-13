@@ -4,6 +4,7 @@ import isUndefined from 'lodash/isUndefined';
 import uniqBy from 'lodash/uniqBy';
 import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import {
@@ -73,7 +74,7 @@ const getData = state => state.data || null;
 // Selector options
 export const getLocationsOptions = createSelector([getLocations], locations => {
   if (!locations || !locations.length) return [];
-  return locations.map(l => ({
+  return sortBy(locations, 'name').map(l => ({
     label: l.name,
     value: l.id
   }));
@@ -235,8 +236,8 @@ export const getSubCategoryOptions = createSelector(
       i => i.category && i.category.id === category.value
     );
     const subcategories = (indicatorsSelected || []).map(i => ({
-      label: i.subcategory.name,
-      value: i.subcategory.id
+      label: i.subcategory && i.subcategory.name,
+      value: i.subcategory && i.subcategory.id
     }));
     return uniqBy(subcategories, 'value');
   }
@@ -266,7 +267,7 @@ export const getIndicatorsOptions = createSelector(
     let filteredIndicators = indicators;
     if (subcategory) {
       filteredIndicators = indicators.filter(
-        i => i.subcategory.id === subcategory.value
+        i => i.subcategory && i.subcategory.id === subcategory.value
       );
     }
 

@@ -33,10 +33,12 @@ class Chart extends PureComponent {
     };
 
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
+    const hasError = !loading && (error || !hasData);
+    const hasDataOptions = !loading && dataOptions;
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading && (error || !hasData) && (
+        {hasError && (
           <NoContent
             message={getMessage()}
             className={styles.noContent}
@@ -45,7 +47,7 @@ class Chart extends PureComponent {
           />
         )}
         {!loading && hasData && config && <ChartComponent {...this.props} />}
-        {!loading && dataOptions && (
+        {hasDataOptions && (
           <LegendChart
             className={styles.legend}
             config={config}

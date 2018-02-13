@@ -9,11 +9,20 @@ import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
 import EspIndicatorsTrendDataProvider from 'providers/esp-indicators-trend-provider';
+import EspLocationsProvider from 'providers/esp-locations-provider';
 import styles from './emission-pathways-scenario-table-styles.scss';
 
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
   renderTable() {
-    const { data, noContentMsg, defaultColumns } = this.props;
+    const { data, noContentMsg, defaultColumns, error } = this.props;
+    if (error) {
+      return (
+        <NoContent
+          message={'Something went wrong'}
+          className={styles.noContent}
+        />
+      );
+    }
     return data && data.length > 0 ? (
       <Table
         data={data}
@@ -43,6 +52,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
     } = this.props;
     return (
       <div className={layout.content}>
+        <EspLocationsProvider scenarioId={id} />
         {selectedLocation && (
           <EspIndicatorsTrendDataProvider
             scenarioId={id}
@@ -101,7 +111,8 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   selectedCategory: PropTypes.object,
   selectedLocation: PropTypes.object,
   handleCategoryChange: PropTypes.func,
-  handleLocationChange: PropTypes.func
+  handleLocationChange: PropTypes.func,
+  error: PropTypes.bool.isRequired
 };
 
 export default EmissionPathwaysScenarioTableComponent;

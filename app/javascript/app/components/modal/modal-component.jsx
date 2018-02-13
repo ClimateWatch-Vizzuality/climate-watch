@@ -56,7 +56,7 @@ CustomModal.propTypes = {
   shouldCloseOnOverlayClick: PropTypes.bool.isRequired,
   contentLabel: PropTypes.string,
   customStyles: PropTypes.object,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   header: PropTypes.node.isRequired,
   theme: PropTypes.object,
   onRequestClose: PropTypes.func.isRequired

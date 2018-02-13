@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
@@ -17,18 +18,22 @@ const getTrendData = state =>
   (!isEmpty(state.espTrendData) ? state.espTrendData : null);
 const getLocations = state =>
   (!isEmpty(state.espLocationsData) ? state.espLocationsData : null);
+const getAvailableLocations = state =>
+  (!isEmpty(state.espAvailableLocationsData)
+    ? state.espAvailableLocationsData
+    : null);
 
 const getLocationSelected = createSelector(
-  [getLocations, state => state.locationSelected],
+  [getAvailableLocations, state => state.locationSelected],
   (locations, selectedLocation) => {
     if (!locations) return null;
     if (!selectedLocation) {
+      const worldLocation = locations.find(l => l.name === 'World');
       return (
-        locations.find(l => l.name === 'World') &&
-        locations.find(l => l.name === 'World').id
+        (worldLocation && worldLocation.id) || (locations[0] && locations[0].id)
       );
     }
-    return selectedLocation;
+    return parseInt(selectedLocation, 10);
   }
 );
 
@@ -66,9 +71,9 @@ export const getCategories = createSelector(scenarioIndicatorsData, data => {
     if (c.category) categories.push(c.category);
   });
   return sortLabelByAlpha(
-    uniq(categories).map(c => ({
-      value: c,
-      label: c
+    uniqBy(categories, 'id').map(c => ({
+      value: c.name,
+      label: c.name
     }))
   );
 });
@@ -81,21 +86,22 @@ export const getSelectedCategoryOption = createSelector(
   }
 );
 
-export const getLocationOptions = createSelector([getLocations], locations => {
-  if (!locations) return null;
-  return locations.map(location => ({
-    value: location.id.toString(),
-    label: location.name
-  }));
-});
+export const getLocationOptions = createSelector(
+  [getAvailableLocations],
+  locations => {
+    if (!locations) return null;
+    return locations.map(location => ({
+      value: location.id.toString(),
+      label: location.name
+    }));
+  }
+);
 
 export const getSelectedLocationOption = createSelector(
   [getLocations, getLocationSelected],
   (locations, selectedLocation) => {
     if (!locations || !selectedLocation) return null;
-    const location = locations.find(
-      l => l.id.toString() === selectedLocation.toString()
-    );
+    const location = locations.find(l => l.id === selectedLocation);
     return {
       value: location.id,
       label: location.name
@@ -105,22 +111,8 @@ export const getSelectedLocationOption = createSelector(
 
 // DATA
 
-const flattenedData = createSelector(scenarioIndicatorsData, data => {
-  if (!data || isEmpty(data)) return null;
-  const attributesWithObjects = ['model', 'category', 'subcategory'];
-  return data.map(d => {
-    const flattenedD = d;
-    attributesWithObjects.forEach(a => {
-      if (Object.prototype.hasOwnProperty.call(d, a)) {
-        flattenedD[a] = d[a] && d[a].name;
-      }
-    });
-    return flattenedD;
-  });
-});
-
 const filteredDataBySearch = createSelector(
-  [flattenedData, getQuery],
+  [scenarioIndicatorsData, getQuery],
   (data, query) => {
     if (!data) return null;
     if (!query) return data;
@@ -140,7 +132,9 @@ export const filteredDataByCategory = createSelector(
   (data, category) => {
     if (!data) return null;
     if (!category) return data;
-    return data.filter(indicator => indicator.category.indexOf(category) > -1);
+    return data.filter(
+      indicator => indicator.category.name.indexOf(category) > -1
+    );
   }
 );
 
@@ -148,7 +142,8 @@ export const dataWithTrendLine = createSelector(
   [filteredDataByCategory, getScenarioTrendData],
   (data, trendData) => {
     if (!data) return null;
-    return data.map(d => {
+    const dataWithTrendLines = [];
+    data.forEach(d => {
       const rowData = d;
       const indicatorId = d.id;
       const indicatorTrendData =
@@ -159,11 +154,10 @@ export const dataWithTrendLine = createSelector(
           : sortBy(indicatorTrendData.values, ['year']).map(v =>
             parseFloat(v.value)
           );
-      } else {
-        rowData.trend = null;
+        dataWithTrendLines.push(rowData);
       }
-      return rowData;
     });
+    return dataWithTrendLines;
   }
 );
 
