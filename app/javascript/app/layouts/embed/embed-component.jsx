@@ -11,18 +11,15 @@ import styles from './embed-styles.scss';
 
 class Embed extends PureComponent {
   render() {
-    const { route } = this.props;
+    const { route, location } = this.props;
+    const link = location.pathname.replace('/embed', '');
+
     return (
       <div className={cx(layout.content, styles.embed)}>
         <CountriesProvider />
         <div className={styles.embedContent}>{renderRoutes(route.routes)}</div>
         <div className={styles.footer}>
-          For more information, visit
-          <a
-            href="https://www.climatewatchdata.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={link} target="_blank" rel="noopener noreferrer">
             <Icon className={styles.logo} icon={cwLogo} />
           </a>
         </div>
@@ -32,7 +29,8 @@ class Embed extends PureComponent {
 }
 
 Embed.propTypes = {
-  route: Proptypes.object
+  route: Proptypes.object.isRequired,
+  location: Proptypes.object.isRequired
 };
 
 export default Embed;
