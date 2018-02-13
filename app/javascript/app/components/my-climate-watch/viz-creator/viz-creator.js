@@ -21,7 +21,6 @@ import {
   timeseriesSelector,
   hasDataSelector,
   chartDataSelector,
-  legendDataSelector,
   getFormatFilters,
   visualisationType,
   visualisationOptions
@@ -46,7 +45,6 @@ const mapStateToProps = ({ vizCreator }) => ({
   timeseries: timeseriesSelector(vizCreator),
   hasData: hasDataSelector(vizCreator),
   chartData: chartDataSelector(vizCreator),
-  legendData: legendDataSelector(vizCreator),
   filters: {
     locations: getFormatFilters('locations')(vizCreator),
     models: getFormatFilters('models')(vizCreator),

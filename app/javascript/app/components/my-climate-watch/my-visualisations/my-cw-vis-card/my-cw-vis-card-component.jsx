@@ -23,7 +23,7 @@ class MyVisCard extends PureComponent {
         onClick={this.handleOnClick}
         className={cx(styles.card, className)}
       >
-        {chartData && <LineChart {...chartData} height={200} />}
+        {false && <LineChart {...chartData} height={200} />}
         <h2 className={styles.cardTitle}>{data.title}</h2>
       </Button>
     );

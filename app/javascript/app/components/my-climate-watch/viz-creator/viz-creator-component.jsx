@@ -21,7 +21,7 @@ const VizCreator = props => {
     visualisationOptions,
     hasData,
     chartData,
-    legendData,
+    legends,
     filters,
     updateVisualisationName,
     updateVisualisationDescription,
@@ -44,6 +44,7 @@ const VizCreator = props => {
         {hasData && (
           <Step4
             id={id}
+            legends={legends}
             title={title}
             description={description}
             timeseries={timeseries}
@@ -53,7 +54,6 @@ const VizCreator = props => {
             saveVisualisation={saveVisualisation}
             deleteVisualisation={deleteVisualisation}
             creationStatus={creationStatus}
-            legendData={legendData}
             visualisationType={visualisationType}
             visualisationOptions={visualisationOptions}
           />
@@ -83,7 +83,7 @@ VizCreator.propTypes = {
   deleteVisualisation: PropTypes.func.isRequired,
   handleFilterSelect: PropTypes.func.isRequired,
   creationStatus: PropTypes.object,
-  legendData: PropTypes.array
+  legends: PropTypes.object
 };
 
 export default VizCreator;

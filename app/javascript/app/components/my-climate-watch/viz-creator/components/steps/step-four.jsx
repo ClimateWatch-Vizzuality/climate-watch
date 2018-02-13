@@ -24,7 +24,6 @@ const Step4 = props => {
   const {
     title,
     chartData,
-    legendData,
     onNameChange,
     onDescriptionChange,
     timeseries,
@@ -33,8 +32,7 @@ const Step4 = props => {
     id,
     description,
     creationStatus,
-    visualisationType,
-    visualisationOptions
+    visualisationType
   } = props;
   return [
     <li className={styles.step} key="step-4-last-li">
@@ -63,14 +61,13 @@ const Step4 = props => {
       ) : (
         [
           createElement(charts[visualisationType], {
-            key: 'line-chart',
+            key: 'chart',
+            config: chartData,
             className: styles.chart,
             width: '90%',
-            height: 300,
-            ...visualisationOptions,
-            ...chartData
+            height: 300
           }),
-          <Legend key="legend" theme={styles} data={legendData} />
+          <Legend key="legend" theme={styles} data={chartData.legend} />
         ]
       )}
       <Fieldset

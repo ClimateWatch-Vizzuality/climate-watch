@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import isEmpty from 'lodash/isEmpty';
 
 import {
   LineChart,
@@ -11,22 +10,15 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-const ChartLine = ({
-  width,
-  height,
-  config,
-  lines,
-  lineProps,
-  axis,
-  cartesianGrid,
-  className
-}) => (
+const ChartLine = ({ width, height, className, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
-    <LineChart {...config}>
-      {cartesianGrid && <CartesianGrid {...cartesianGrid} />}
-      {!isEmpty(lines) && lines.map(l => <Line key={l} {...lineProps[l]} />)}
-      {axis && axis.x && <XAxis {...axis.x.props || null} />}
-      {axis && axis.y && <YAxis {...axis.y.props || null} />}
+    <LineChart {...config.chart}>
+      {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
+      {config.columns.y.map(y => (
+        <Line dataKey={y} key={y} {...config.theme[y]} />
+      ))}
+      {config.xAxis && <XAxis {...config.xAxis} />}
+      {config.yAxis && <YAxis {...config.yAxis} />}
     </LineChart>
   </ResponsiveContainer>
 );
@@ -35,20 +27,8 @@ ChartLine.propTypes = {
   className: PropTypes.string,
   width: PropTypes.any.isRequired,
   height: PropTypes.any.isRequired,
-  config: PropTypes.PropTypes.shape({
-    data: PropTypes.array.isRequired,
-    margin: PropTypes.object,
-    height: PropTypes.string
-  }),
-  lines: PropTypes.array.isRequired,
-  lineProps: PropTypes.object,
-  axis: PropTypes.object,
-  cartesianGrid: PropTypes.object
-};
-
-ChartLine.defaultProps = {
-  width: '100%',
-  height: 300
+  chart: PropTypes.PropTypes.object,
+  config: PropTypes.object
 };
 
 export default ChartLine;

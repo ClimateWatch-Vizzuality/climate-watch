@@ -2,19 +2,13 @@ import { createSelector } from 'reselect';
 import { get } from 'js-lenses';
 import _ from 'lodash-inflection';
 import _find from 'lodash/find';
-// import identity from 'lodash/identity';
-import isEmpty from 'lodash/isEmpty';
-// import _filter from 'lodash/filter';
-// import { format } from 'd3-format';
-import {
-  processLineData,
-  processLegendData,
-  processPieData,
-  processStackChartData,
-  flatMapVis,
-  mapFilter
-} from './viz-creator-utils';
+import _isEmpty from 'lodash/isEmpty';
+
+import { pieChart2Data, flatMapVis, mapFilter } from './viz-creator-utils';
+
 import * as lenses from './viz-creator-lenses';
+import lineChart1Data from './components/charts/line/line-config';
+import stackBarChart1Data from './components/charts/stack-bar/stack-bar-config';
 
 export const dataSelector = state => state;
 export const datasetsSelector = state => get(lenses.$datasets, state);
@@ -33,22 +27,14 @@ export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
   (timeseries, scenarios) =>
     timeseries &&
-    !isEmpty(timeseries.data) &&
+    !_isEmpty(timeseries.data) &&
     scenarios &&
-    !isEmpty(scenarios.data)
+    !_isEmpty(scenarios.data)
 );
 
 export const vizTypes = data => data && data['viz-types'];
 export const vizSelector = createSelector(datasetsSelector, sets =>
   vizTypes(_find(sets.data, { id: sets.selected }))
-);
-
-export const legendDataSelector = createSelector(
-  [hasDataSelector, timeseriesSelector, scenariosSelector],
-  (hasData, timeseries, scenarios) => {
-    if (!hasData) return [];
-    return processLegendData(timeseries.data, scenarios.data);
-  }
 );
 
 export const selectedStructureSelector = createSelector(
@@ -93,19 +79,19 @@ export const chartDataSelector = createSelector(
     if (!hasData) return {};
     switch (selectedStructure.id) {
       case 'LineChart-1':
-        return { ...processLineData(timeseries.data, scenarios.data) };
+        return lineChart1Data(timeseries.data, scenarios.data);
 
       case 'StackBarChart-1':
-        return { data: processStackChartData(timeseries.data, indicators.data) };
+        return stackBarChart1Data(timeseries.data, indicators.data);
 
       case 'PieChart-1':
         return {};
 
       case 'LineChart-2':
-        return { ...processLineData(timeseries.data, scenarios.data) };
+        return { ...lineChart1Data(timeseries.data, scenarios.data) };
 
       case 'PieChart-2':
-        return { ...processPieData(timeseries.data, scenarios.data) };
+        return { ...pieChart2Data(timeseries.data, scenarios.data) };
 
       case 'StackBarChart-2':
         return {};
