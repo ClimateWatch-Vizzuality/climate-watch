@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
@@ -70,9 +71,9 @@ export const getCategories = createSelector(scenarioIndicatorsData, data => {
     if (c.category) categories.push(c.category);
   });
   return sortLabelByAlpha(
-    uniq(categories).map(c => ({
-      value: c,
-      label: c
+    uniqBy(categories, 'id').map(c => ({
+      value: c.name,
+      label: c.name
     }))
   );
 });
@@ -110,22 +111,8 @@ export const getSelectedLocationOption = createSelector(
 
 // DATA
 
-const flattenedData = createSelector(scenarioIndicatorsData, data => {
-  if (!data || isEmpty(data)) return null;
-  const attributesWithObjects = ['model', 'category', 'subcategory'];
-  return data.map(d => {
-    const flattenedD = d;
-    attributesWithObjects.forEach(a => {
-      if (Object.prototype.hasOwnProperty.call(d, a)) {
-        flattenedD[a] = d[a] && d[a].name;
-      }
-    });
-    return flattenedD;
-  });
-});
-
 const filteredDataBySearch = createSelector(
-  [flattenedData, getQuery],
+  [scenarioIndicatorsData, getQuery],
   (data, query) => {
     if (!data) return null;
     if (!query) return data;
@@ -145,7 +132,9 @@ export const filteredDataByCategory = createSelector(
   (data, category) => {
     if (!data) return null;
     if (!category) return data;
-    return data.filter(indicator => indicator.category.indexOf(category) > -1);
+    return data.filter(
+      indicator => indicator.category.name.indexOf(category) > -1
+    );
   }
 );
 

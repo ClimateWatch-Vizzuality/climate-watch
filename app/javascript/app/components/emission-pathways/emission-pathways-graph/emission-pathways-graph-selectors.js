@@ -224,8 +224,8 @@ export const getSubCategoryOptions = createSelector(
       i => i.category && i.category.id === category.value
     );
     const subcategories = (indicatorsSelected || []).map(i => ({
-      label: i.subcategory.name,
-      value: i.subcategory.id
+      label: i.subcategory && i.subcategory.name,
+      value: i.subcategory && i.subcategory.id
     }));
     return uniqBy(subcategories, 'value');
   }
