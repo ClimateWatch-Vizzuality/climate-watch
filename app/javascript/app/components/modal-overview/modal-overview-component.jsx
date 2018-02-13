@@ -59,20 +59,26 @@ class ModalOverview extends PureComponent {
       );
     let selectedData = data;
     if (tabTitles) selectedData = data[this.state.selectedIndex];
-    if (isArray(selectedData)) return selectedData.map(d => renderKey(d, true));
-    return renderKey(selectedData);
+    return isArray(selectedData)
+      ? selectedData.map(d => renderKey(d, true))
+      : renderKey(selectedData);
   }
 
   render() {
     const { isOpen, title, tabTitles, onRequestClose } = this.props;
     return (
-      <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
-        <ModalHeader
-          title={title}
-          tabTitles={tabTitles}
-          selectedIndex={this.state.selectedIndex}
-          handleTabIndexChange={i => this.setState({ selectedIndex: i })}
-        />
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        header={
+          <ModalHeader
+            title={title}
+            tabTitles={tabTitles}
+            selectedIndex={this.state.selectedIndex}
+            handleTabIndexChange={i => this.setState({ selectedIndex: i })}
+          />
+        }
+      >
         {this.renderData()}
       </Modal>
     );
