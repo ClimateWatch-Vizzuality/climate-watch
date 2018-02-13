@@ -26,6 +26,14 @@
 
   grid-template-columns: 1fr;
 
+  @media #{$tablet-portrait} {
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+    max-width: 100%;
+  }
+
   @media #{$tablet-landscape} {
     @include msGridColumns(3fr, 2fr, 2fr);
 
