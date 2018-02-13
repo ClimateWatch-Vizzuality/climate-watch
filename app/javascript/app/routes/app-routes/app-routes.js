@@ -173,7 +173,8 @@ export default [
     path: '/ndc-search',
     exact: true,
     component: NDCSearch,
-    headerImage: 'ndc'
+    headerImage: 'ndc',
+    headerColor: '#035388'
   },
   {
     path: '/stories',
