@@ -75,11 +75,11 @@
             "filters": [
               {"name": "locations", "multi": false, "selected": null, "active": true},
               {"name": "models", "multi": false, "selected": null, "active": true},
-              {"name": "scenarios", "multi": true, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": true, "selected": "all", "active": true},
-              {"name": "years", "multi": true, "selected": "all", "hidden": true, "active": false}
+              {"name": "years", "multi": false, "selected": null, "hidden": false, "active": false}
             ]
           }
         ]

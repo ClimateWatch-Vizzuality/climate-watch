@@ -4,10 +4,11 @@ import _ from 'lodash-inflection';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
 
-import { pieChart2Data, flatMapVis, mapFilter } from './viz-creator-utils';
+import { flatMapVis, mapFilter } from './viz-creator-utils';
 
 import * as lenses from './viz-creator-lenses';
 import lineChart1Data from './components/charts/line/line-config';
+import pieChart1Data from './components/charts/pie/pie-config';
 import stackBarChart1Data from './components/charts/stack-bar/stack-bar-config';
 
 export const dataSelector = state => state;
@@ -85,16 +86,16 @@ export const chartDataSelector = createSelector(
         return stackBarChart1Data(timeseries.data, indicators.data);
 
       case 'PieChart-1':
-        return {};
+        return pieChart1Data(timeseries.data, indicators.data);
 
       case 'LineChart-2':
-        return { ...lineChart1Data(timeseries.data, scenarios.data) };
+        return {}; // lineChart2Data(timeseries.data, indicators.data);
 
       case 'PieChart-2':
-        return { ...pieChart2Data(timeseries.data, scenarios.data) };
+        return {}; // pieChart2Data(timeseries.data, scenarios.data);
 
       case 'StackBarChart-2':
-        return {};
+        return {}; // stackBarChart2Data(timeseries.data, indicators.data);
 
       default:
         return {};

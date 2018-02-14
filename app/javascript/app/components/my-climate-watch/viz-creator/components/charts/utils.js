@@ -1,6 +1,7 @@
 import _camelCase from 'lodash/camelCase';
 import _find from 'lodash/find';
 import _difference from 'lodash/difference';
+import _isUndefined from 'lodash/isUndefined';
 import { assign } from 'app/utils';
 
 export const groupBy = (key, data, group) =>
@@ -32,7 +33,7 @@ export const pick = (key, list) =>
     Object.keys(l).reduce(
       (r, k) =>
         assign(r, {
-          [k]: l[k][key] ? l[k][key] : l[k]
+          [k]: _isUndefined(l[k][key]) ? l[k] : l[k][key]
         }),
       {}
     )

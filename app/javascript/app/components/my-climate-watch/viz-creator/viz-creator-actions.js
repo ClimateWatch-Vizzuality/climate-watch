@@ -1,10 +1,7 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { get } from 'js-lenses';
 import find from 'lodash/find';
-import first from 'lodash/first';
-import last from 'lodash/last';
 import uniqBy from 'lodash/uniqBy';
-import range from 'lodash/range';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import { EPAPI, CWAPI } from 'services/api';
@@ -115,18 +112,11 @@ export const fetchYears = createThunkAction(
   ({ locations, indicators, scenarios }) => dispatch => {
     const flatScenarios = mapResourceValue(scenarios).join(',') || false;
     const flatIndicators = mapResourceValue(indicators).join(',') || false;
-    console.warn(
-      'using temporary time_series_values endpoint in `fetchYears` for years until years endpoint its ready'
-    );
     EPAPI.get(
       'time_series_values/years',
       `location=${mapResourceValue(
         locations
-      )}&scenario=${
-        flatScenarios
-      }&indicator=${
-        flatIndicators
-      }&time_series=true`
+      )}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true`
     ).then(d =>
       dispatch(gotYears(d.years.map(y => ({ value: y, label: `${y}` }))))
     );
@@ -143,13 +133,9 @@ export const fetchTimeseries = createThunkAction(
       'time_series_values',
       `location=${mapResourceValue(
         locations
-      )}&scenario=${
-        flatScenarios
-      }&indicator=${
-        flatIndicators
-      }&time_series=true&years=${
-        ys.join(',')
-      }`
+      )}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true&years=${ys.join(
+        ','
+      )}`
     ).then(d => dispatch(gotTimeseries(d)));
   }
 );
