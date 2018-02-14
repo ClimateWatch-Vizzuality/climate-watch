@@ -1,4 +1,4 @@
-@import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 .visContainer {
   display: flex;
@@ -30,25 +30,7 @@
   width: 250px;
 }
 
-// modal theme
-$top: 76px;
-$modalWidth: 90vw;
-$close-position: 25px;
-
-.closeBtn {
-  position: fixed;
-  top: calc(#{$top} - #{$close-position / 2});
-  z-index: 30;
-  left: calc(#{$modalWidth} - #{$close-position});
-  border: solid 1px rgba(202, 204, 208, 0.85);
-}
-
-.header {
-  position: fixed;
-  top: $top;
-  width: calc(#{$modalWidth} - 2px);
-  height: 95px;
-  padding: 25px 40px;
-  z-index: 20;
-  margin-left: 0;
+.modalContent {
+  padding-left: 0;
+  padding-right: 0;
 }

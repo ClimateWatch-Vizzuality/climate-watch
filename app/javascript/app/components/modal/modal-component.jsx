@@ -46,7 +46,7 @@ class CustomModal extends PureComponent {
         <Button onClick={onRequestClose} className={theme.closeBtn} square>
           <Icon icon={closeIcon} className={theme.close} />
         </Button>
-        <div className={theme.content}>{children}</div>
+        <div className={theme.modalContent}>{children}</div>
       </Modal>
     );
   }

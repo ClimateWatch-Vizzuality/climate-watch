@@ -1,4 +1,4 @@
-@import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 $close-position: 35px;
 
@@ -36,7 +36,7 @@ $close-position: 35px;
   border-bottom: solid 1px $border-color;
 }
 
-.content {
+.modalContent {
   flex: 1;
   overflow: scroll;
   padding: $modal-padding 40px;

@@ -1,11 +1,11 @@
-@import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 .step {
   min-height: 25%;
   border-bottom: 1px solid #cbccd0;
   padding-bottom: 40px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: $gutter-padding;
+  padding-right: $gutter-padding;
   margin-bottom: 30px;
 
   &:last-child {
