@@ -1,17 +1,18 @@
 @import '~styles/settings.scss';
 
 .dropdownWrapper {
-  position: relative;
+  display: flex;
   width: 100%;
 }
 
 .dot {
-  width: 12px;
+  width: 13px;
   height: 12px;
-  position: absolute;
+  position: relative;
   border-radius: 15px;
-  right: 65px;
-  top: 24px;
+  left: 15px;
+  top: 25px;
+  margin-right: 20px;
 }
 
 .label {
