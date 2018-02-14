@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import Loading from 'components/loading';
+import { TabletLandscape } from 'components/responsive';
 
 import AnchorNav from 'components/anchor-nav';
 import Header from 'components/header';
@@ -31,15 +32,15 @@ class SearchPage extends PureComponent {
     return (
       <div>
         <Header route={route}>
-          <div className={layout.content}>
-            <div className={styles.headerCols}>
-              <Intro title="NDC Content Search" />
-              <NdcsAutocompleteSearch
-                className={styles.select}
-                fetchSearchResults={fetchSearchResults}
-                global
-              />
-            </div>
+          <div className={cx(styles.headerCols, layout.content)}>
+            <Intro title="NDC Content Search" />
+            <NdcsAutocompleteSearch
+              className={styles.select}
+              fetchSearchResults={fetchSearchResults}
+              global
+            />
+          </div>
+          <Sticky activeClass="sticky -ndc-search" top="#navBarMobile">
             <div className={styles.anchorNav}>
               {docOptions.length > 1 && (
                 <AnchorNav
@@ -49,7 +50,7 @@ class SearchPage extends PureComponent {
                 />
               )}
             </div>
-          </div>
+          </Sticky>
         </Header>
         <div className={cx(styles.contentCols)}>
           <div className={styles.resultsList}>
@@ -67,9 +68,11 @@ class SearchPage extends PureComponent {
                 />
               ))}
           </div>
-          <Sticky className={styles.map} activeClass={styles.stickyMap}>
-            <NDCSearchMap />
-          </Sticky>
+          <TabletLandscape>
+            <Sticky className={styles.map} activeClass={styles.stickyMap}>
+              <NDCSearchMap />
+            </Sticky>
+          </TabletLandscape>
         </div>
       </div>
     );

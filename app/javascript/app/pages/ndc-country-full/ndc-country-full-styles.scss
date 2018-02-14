@@ -26,6 +26,34 @@
   grid-template-columns: 1fr 1fr 2fr;
   padding-top: 20px;
   padding-bottom: 30px;
+
+  > :first-child {
+    grid-column: 1 / 4;
+    margin-right: 0;
+    padding-bottom: 20px;
+  }
+
+  > :nth-child(2) {
+    grid-column: 1 / 4;
+    margin-right: 0;
+  }
+
+  @media #{$tablet-landscape} {
+    > :first-child {
+      grid-column: 1;
+      padding-bottom: 0;
+    }
+
+    > :nth-child(2) {
+      grid-column: 2 / 4;
+    }
+  }
+
+  @media #{$desktop} {
+    > :nth-child(2) {
+      grid-column: 3 / 4;
+    }
+  }
 }
 
 .select {

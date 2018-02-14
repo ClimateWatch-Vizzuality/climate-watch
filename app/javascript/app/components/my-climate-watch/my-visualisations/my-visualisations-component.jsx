@@ -51,11 +51,13 @@ const MyVisualisations = ({
       isOpen={creatorIsOpen}
       onRequestClose={closeCreator}
       shouldCloseOnOverlayClick={false}
+      header={
+        <ModalHeader
+          theme={styles}
+          title={`${currentId ? 'Edit' : 'Create a new'} visualization`}
+        />
+      }
     >
-      <ModalHeader
-        theme={styles}
-        title={`${currentId ? 'Edit' : 'Create a new'} visualization`}
-      />
       <VizCreator onHideCreator={closeCreator} />
     </Modal>
   </div>

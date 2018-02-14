@@ -7,9 +7,14 @@ import styles from './tab-styles.scss';
 class Tab extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { options, selectedIndex, handleTabIndexChange } = this.props;
+    const {
+      options,
+      selectedIndex,
+      handleTabIndexChange,
+      classNames
+    } = this.props;
     return (
-      <div className={styles.tab}>
+      <div className={cx(styles.tab, classNames)}>
         {options.map((option, i) => (
           <a
             key={option}
@@ -32,7 +37,13 @@ class Tab extends PureComponent {
 Tab.propTypes = {
   options: PropTypes.array.isRequired,
   selectedIndex: PropTypes.number.isRequired,
-  handleTabIndexChange: PropTypes.func.isRequired
+  handleTabIndexChange: PropTypes.func.isRequired,
+  classNames: PropTypes.string
+};
+
+Tab.defaultProps = {
+  selectedIndex: 0,
+  handleTabIndexChange: () => {}
 };
 
 export default Tab;

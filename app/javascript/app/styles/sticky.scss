@@ -1,7 +1,8 @@
 :global .sticky-outer-wrapper.sticky {
   // Keep this sync siwh the headerColor of the app-routes
   &.-ndcs,
-  &.-compare {
+  &.-compare,
+  &.-ndc-search {
     .sticky-inner-wrapper {
       background-color: #035388;
     }
