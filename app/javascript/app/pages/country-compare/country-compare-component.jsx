@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
+import { renderRoutes } from 'react-router-config';
 
 // import {  } from 'data/SEO';
 // import { MetaDescription, SocialMetadata } from 'components/seo';
@@ -38,6 +39,7 @@ const CountryCompare = ({ route, anchorLinks }) => (
       </Sticky>
     </Header>
     <CountryCompareSelector />
+    {renderRoutes(route.sections)}
   </div>
 );
 

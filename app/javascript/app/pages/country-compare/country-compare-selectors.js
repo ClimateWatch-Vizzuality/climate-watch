@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const getRouteSections = state => state.route.sections || [];
+const getRouteSections = route => route.sections || [];
 
 export const getAnchorLinks = createSelector(getRouteSections, sections =>
   sections.filter(section => section.anchor).map(section => ({

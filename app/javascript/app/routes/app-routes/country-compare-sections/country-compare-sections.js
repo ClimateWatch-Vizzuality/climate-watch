@@ -1,8 +1,11 @@
+import CompareGHGChart from 'components/compare-ghg-chart';
+
 export default [
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',
-    anchor: true
+    anchor: true,
+    component: CompareGHGChart
   },
   {
     hash: 'climate-vulnerability',
