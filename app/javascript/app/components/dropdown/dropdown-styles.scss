@@ -1,7 +1,17 @@
 @import '~styles/settings.scss';
 
 .dropdownWrapper {
+  position: relative;
   width: 100%;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  border-radius: 15px;
+  right: 65px;
+  top: 24px;
 }
 
 .label {

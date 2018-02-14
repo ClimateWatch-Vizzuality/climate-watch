@@ -15,12 +15,13 @@ const CountryCompareSelector = ({
   <div className={className}>
     {selectors.map((v, index) => (
       <Dropdown
-        key={index} // eslint-disable-line react/no-array-index-key
+        key={v.color}
         placeholder="Add a country"
         options={sortBy(countryOptions, ['label'])}
         onValueChange={selected => handleDropDownChange(index, selected)}
         value={activeCountryOptions[index]}
         transparent
+        colorDot={v.country ? v.color : null}
       />
     ))}
   </div>
