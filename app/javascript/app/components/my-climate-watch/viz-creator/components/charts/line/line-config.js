@@ -4,8 +4,7 @@ import { CHART_COLORS } from 'data/constants';
 
 import { groupBy, pick } from '../utils';
 
-const lineChart1Data = (timeSeries, scenarios) => {
-  const data = groupBy('scenario', timeSeries, scenarios);
+const makeConfig = data => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   const tick = { stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' };
   const names = pick('name', data); // only data name key
@@ -52,4 +51,8 @@ const lineChart1Data = (timeSeries, scenarios) => {
   };
 };
 
-export default lineChart1Data;
+export const lineChart1Data = (timeSeries, scenarios) =>
+  makeConfig(groupBy('scenario', timeSeries, scenarios));
+
+export const lineChart2Data = (timeSeries, locations) =>
+  makeConfig(groupBy('location', timeSeries, locations));

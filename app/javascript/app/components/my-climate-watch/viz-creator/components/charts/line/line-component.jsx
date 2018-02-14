@@ -14,9 +14,10 @@ const ChartLine = ({ width, height, className, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
     <LineChart {...config.chart}>
       {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
-      {config.columns.y.map(y => (
-        <Line dataKey={y} key={y} {...config.theme[y]} />
-      ))}
+      {config.columns &&
+        config.columns.y.map(y => (
+          <Line dataKey={y} key={y} {...config.theme[y]} />
+        ))}
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && <YAxis {...config.yAxis} />}
     </LineChart>

@@ -7,8 +7,14 @@ import _isEmpty from 'lodash/isEmpty';
 import { flatMapVis, mapFilter } from './viz-creator-utils';
 
 import * as lenses from './viz-creator-lenses';
-import lineChart1Data from './components/charts/line/line-config';
-import pieChart1Data from './components/charts/pie/pie-config';
+import {
+  lineChart1Data,
+  lineChart2Data
+} from './components/charts/line/line-config';
+import {
+  pieChart1Data,
+  pieChart2Data
+} from './components/charts/pie/pie-config';
 import stackBarChart1Data from './components/charts/stack-bar/stack-bar-config';
 
 export const dataSelector = state => state;
@@ -74,9 +80,17 @@ export const chartDataSelector = createSelector(
     timeseriesSelector,
     scenariosSelector,
     selectedStructureSelector,
-    indicatorsSelector
+    indicatorsSelector,
+    locationsSelector
   ],
-  (hasData, timeseries, scenarios, selectedStructure, indicators) => {
+  (
+    hasData,
+    timeseries,
+    scenarios,
+    selectedStructure,
+    indicators,
+    locations
+  ) => {
     if (!hasData) return {};
     switch (selectedStructure.id) {
       case 'LineChart-1':
@@ -89,10 +103,10 @@ export const chartDataSelector = createSelector(
         return pieChart1Data(timeseries.data, indicators.data);
 
       case 'LineChart-2':
-        return {}; // lineChart2Data(timeseries.data, indicators.data);
+        return lineChart2Data(timeseries.data, locations.data);
 
       case 'PieChart-2':
-        return {}; // pieChart2Data(timeseries.data, scenarios.data);
+        return pieChart2Data(timeseries.data, indicators.data, locations.data);
 
       case 'StackBarChart-2':
         return {}; // stackBarChart2Data(timeseries.data, indicators.data);
