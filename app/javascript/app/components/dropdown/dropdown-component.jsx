@@ -25,8 +25,7 @@ class Dropdown extends PureComponent {
       dark,
       blueBorder,
       className,
-      disabled,
-      searchable
+      disabled
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     return (
@@ -47,9 +46,7 @@ class Dropdown extends PureComponent {
             ref={el => {
               this.selectorElement = el;
             }}
-            className={cx(className, disabled, {
-              [styles.searchable]: searchable
-            })}
+            className={cx(className, disabled)}
             renderToggleButton={() => <Icon icon={arrow} />}
             {...this.props}
           />
@@ -72,12 +69,7 @@ Dropdown.propTypes = {
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
   blueBorder: PropTypes.bool,
-  selectorRef: PropTypes.func,
-  searchable: PropTypes.bool.isRequired
-};
-
-Dropdown.defaultProps = {
-  searchable: false
+  selectorRef: PropTypes.func
 };
 
 export default themr('Dropdown', styles)(Dropdown);

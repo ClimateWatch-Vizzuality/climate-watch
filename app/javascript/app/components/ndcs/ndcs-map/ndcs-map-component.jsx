@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import Dropdown from 'components/dropdown';
@@ -11,6 +12,16 @@ import ModalMetadata from 'components/modal-metadata';
 import styles from './ndcs-map-styles.scss';
 
 const getHtmlTooltip = content => ({ __html: content });
+
+const renderButtonGroup = (clickHandler, reverseDropdown = false) => (
+  <ButtonGroup
+    className={styles.buttons}
+    onInfoClick={clickHandler}
+    shareUrl="/embed/ndcs"
+    analyticsGraphName="Ndcs"
+    reverseDropdown={reverseDropdown}
+  />
+);
 
 const NDCMap = props => (
   <div className={styles.wrapper}>
@@ -32,12 +43,9 @@ const NDCMap = props => (
         hideResetButton
         plain
       />
-      <ButtonGroup
-        className={styles.buttons}
-        onInfoClick={props.handleInfoClick}
-        shareUrl="/embed/ndcs"
-        analyticsGraphName="Ndcs"
-      />
+      <TabletLandscape>
+        {renderButtonGroup(props.handleInfoClick)}
+      </TabletLandscape>
     </div>
     {props.loading && <Loading light className={styles.loader} />}
     <Map
@@ -46,6 +54,9 @@ const NDCMap = props => (
       onCountryClick={props.handleCountryClick}
       onCountryEnter={props.handleCountryEnter}
     />
+    <TabletPortraitOnly className={styles.buttonGroup}>
+      {renderButtonGroup(props.handleInfoClick, true)}
+    </TabletPortraitOnly>
     <ReactTooltip id="mapTooltip">
       {props.tooltipTxt && (
         <p dangerouslySetInnerHTML={getHtmlTooltip(props.tooltipTxt)} /> // eslint-disable-line

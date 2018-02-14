@@ -2,6 +2,11 @@
 
 .wrapper :global {
   position: relative;
+  padding-bottom: $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    padding-bottom: 0;
+  }
 
   .dropdown-menu {
     border-left: 0 !important;

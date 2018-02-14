@@ -38,9 +38,9 @@ const BREAY_BY_OPTIONS = [
 
 // meta data for selectors
 const getMeta = state => state.meta || null;
-const getSources = state => state.meta.data_source || null;
+const getSources = state => (state.meta && state.meta.data_source) || null;
 const getRegions = state => state.regions || null;
-const getVersions = state => state.meta.gwp || null;
+const getVersions = state => (state.meta && state.meta.gwp) || null;
 
 // values from search
 const getSourceSelection = state => state.search.source || null;
@@ -285,6 +285,10 @@ export const getChartData = createSelector(
   }
 );
 
+// variable that caches chart elements assigned color
+// to avoid element color changing when the chart is updated
+let colorThemeCache = {};
+
 export const getChartConfig = createSelector(
   [filterData, getBreakSelected],
   (data, breakBy) => {
@@ -295,10 +299,11 @@ export const getChartConfig = createSelector(
     }));
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const theme = getThemeConfig(yColumnsChecked, CHART_COLORS);
+    colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     return {
       axes: DEFAULT_AXES_CONFIG,
-      theme,
+      theme: colorThemeCache,
       tooltip,
       animation: false,
       columns: {

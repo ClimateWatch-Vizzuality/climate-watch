@@ -11,9 +11,9 @@ class ModalHeader extends PureComponent {
       title,
       theme,
       tabTitles,
-      children,
       selectedIndex,
-      handleTabIndexChange
+      handleTabIndexChange,
+      children
     } = this.props;
     return (
       <div className={theme.header}>
@@ -36,8 +36,8 @@ ModalHeader.propTypes = {
   tabTitles: PropTypes.array,
   selectedIndex: PropTypes.number,
   handleTabIndexChange: PropTypes.func,
-  children: PropTypes.node,
-  theme: PropTypes.object
+  theme: PropTypes.object,
+  children: PropTypes.node
 };
 
 export default themr('ModalHeader', styles)(ModalHeader);
