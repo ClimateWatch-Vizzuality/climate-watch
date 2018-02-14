@@ -8,6 +8,8 @@ import Sticky from 'react-stickynode';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
+import CountryCompareSelector from 'components/country-compare-selector';
+
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 
 import layout from 'styles/layout.scss';
@@ -35,6 +37,7 @@ const CountryCompare = ({ route, anchorLinks }) => (
         />
       </Sticky>
     </Header>
+    <CountryCompareSelector />
   </div>
 );
 
