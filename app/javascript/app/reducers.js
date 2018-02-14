@@ -21,11 +21,13 @@ import * as espModelsProvider from 'providers/esp-models-provider';
 import * as espScenariosProvider from 'providers/esp-scenarios-provider';
 import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
 import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-provider';
+import * as emissionsProvider from 'providers/emissions-provider';
 
 const providersReducers = {
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
   adaptations: handleActions(adaptationsProvider),
+  emissions: handleActions(emissionsProvider),
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
   ndcsSdgsData: handleActions(ndcsSdgsDataProvider),
   ghgEmissionsMeta: handleActions(ghgEmissionsProvider),
