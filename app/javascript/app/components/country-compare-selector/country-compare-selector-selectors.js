@@ -1,4 +1,7 @@
 import { createSelector } from 'reselect';
+import { COUNTRY_COMPARE_COLORS } from 'data/constants';
+
+const COUNTRIES_TO_SELECT = 3;
 
 const getCountries = state => state.countriesData || null;
 const getLocations = state => state.locations || null;
@@ -7,11 +10,12 @@ export const getSelectedCountries = createSelector(
   [getCountries, getLocations],
   (countries, locations) => {
     if (!countries && !countries.length) return null;
-    const selectedCountriesData = locations.concat([]);
-    if (locations.length === 1) selectedCountriesData.push(2, 3);
-    if (locations.length === 2) selectedCountriesData.push(3);
+    const selectedCountriesData = [...locations];
+    while (selectedCountriesData.length < COUNTRIES_TO_SELECT) {
+      selectedCountriesData.push(null);
+    }
     const selectedCountries = selectedCountriesData.map(location => {
-      if (parseInt(location, 10)) return null;
+      if (!location) return null;
       const countryDetail = countries.find(
         country => country.iso_code3 === location
       );
@@ -45,9 +49,9 @@ export const getCountryConfig = createSelector(
   [getSelectedCountries],
   countries => {
     if (!countries && !countries.length) return null;
-    return countries.map(country => ({
+    return countries.map((country, i) => ({
       country,
-      color: null
+      color: COUNTRY_COMPARE_COLORS[i]
     }));
   }
 );
