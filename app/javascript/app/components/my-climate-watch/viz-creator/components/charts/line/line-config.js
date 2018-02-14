@@ -52,7 +52,7 @@ const makeConfig = data => {
 };
 
 export const lineChart1Data = (timeSeries, scenarios) =>
-  makeConfig(groupBy('scenario', timeSeries, scenarios));
+  makeConfig(groupBy('year', 'scenario', timeSeries, scenarios));
 
 export const lineChart2Data = (timeSeries, locations) =>
-  makeConfig(groupBy('location', timeSeries, locations));
+  makeConfig(groupBy('year', 'location', timeSeries, locations));

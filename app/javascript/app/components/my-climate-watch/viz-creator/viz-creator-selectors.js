@@ -15,7 +15,10 @@ import {
   pieChart1Data,
   pieChart2Data
 } from './components/charts/pie/pie-config';
-import stackBarChart1Data from './components/charts/stack-bar/stack-bar-config';
+import {
+  stackBarChart1Data,
+  stackBarChart2Data
+} from './components/charts/stack-bar/stack-bar-config';
 
 export const dataSelector = state => state;
 export const datasetsSelector = state => get(lenses.$datasets, state);
@@ -109,7 +112,11 @@ export const chartDataSelector = createSelector(
         return pieChart2Data(timeseries.data, indicators.data, locations.data);
 
       case 'StackBarChart-2':
-        return {}; // stackBarChart2Data(timeseries.data, indicators.data);
+        return stackBarChart2Data(
+          timeseries.data,
+          locations.data,
+          indicators.data
+        );
 
       default:
         return {};

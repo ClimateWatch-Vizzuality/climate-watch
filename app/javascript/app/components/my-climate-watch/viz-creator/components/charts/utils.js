@@ -4,13 +4,14 @@ import _difference from 'lodash/difference';
 import _isUndefined from 'lodash/isUndefined';
 import { assign } from 'app/utils';
 
-export const groupBy = (key, data, group) =>
+export const groupBy = (keyA, keyB, data, group) =>
   data.reduce((rData, ts) => {
-    const g = _find(group, { id: ts[`${key}_id`] }) || {
-      id: ts[`${key}_id`],
+    const g = _find(group, { id: ts[`${keyB}_id`] }) || {
+      id: ts[`${keyB}_id`],
       value: ts.value
     };
-    const foundTs = _find(rData, { year: ts.year });
+    if (_isUndefined(g)) return rData;
+    const foundTs = _find(rData, { [keyA]: ts[keyA] });
     const rest = _difference(rData, [foundTs]);
     // data needs values for the graph and names for the legend
     const item = {
@@ -22,7 +23,7 @@ export const groupBy = (key, data, group) =>
     return foundTs
       ? rest.concat(Object.assign(foundTs, item))
       : rData.concat({
-        year: ts.year,
+        [keyA]: ts[keyA],
         ...item
       });
   }, []);
