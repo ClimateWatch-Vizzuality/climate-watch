@@ -1,0 +1,17 @@
+export default [
+  {
+    hash: 'ghg-emissions',
+    label: 'GHG Emissions',
+    anchor: true
+  },
+  {
+    hash: 'climate-vulnerability',
+    label: 'Climate Vulnerability and Readiness',
+    anchor: true
+  },
+  {
+    hash: 'ndc-content-overview',
+    label: 'NDC Content Overview',
+    anchor: true
+  }
+];
