@@ -108,8 +108,8 @@ export default [
         label: 'GHG EMISSIONS'
       },
       {
-        path: '/emission-pathways',
-        label: 'EMISSION PATHWAYS'
+        path: '/pathways',
+        label: 'PATHWAYS'
       }
     ]
   },
@@ -144,26 +144,26 @@ export default [
     headerColor: '#46407D'
   },
   {
-    path: '/emission-pathways/models/:id',
+    path: '/pathways/models/:id',
     component: EmissionPathwaysModel,
-    label: 'EMISSION PATHWAYS MODEL',
+    label: 'PATHWAYS MODEL',
     headerImage: 'emission-pathways',
     headerColor: '#74356A',
     sections: emissionPathwaysModelSections,
     routes: emissionPathwaysModelRoutes
   },
   {
-    path: '/emission-pathways/scenarios/:id',
+    path: '/pathways/scenarios/:id',
     component: EmissionPathwaysScenario,
-    label: 'EMISSION PATHWAYS SCENARIO',
+    label: 'PATHWAYS SCENARIO',
     headerImage: 'emission-pathways',
     headerColor: '#74356A',
     sections: emissionPathwaysScenarioSections
   },
   {
-    path: '/emission-pathways',
+    path: '/pathways',
     component: EmissionPathways,
-    label: 'EMISSION PATHWAYS',
+    label: 'PATHWAYS',
     headerImage: 'emission-pathways',
     sections: emissionPathwaysSections,
     routes: emissionPathwaysRoutes,

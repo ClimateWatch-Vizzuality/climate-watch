@@ -25,11 +25,11 @@ module SeoHelper
           'Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs)'\
           ' and associated targets of the 2030 Agenda for Sustainable Development.'},
     {path: '/emission-pathways',
-     subtitle: 'Emission pathways',
+     subtitle: 'Pathways',
      description: 'Data and visuals of emission scenario pathways for major'\
           ' emitting countries and sectors, derived from a growing library of models.'},
     {path: '/emission-pathways/models',
-     subtitle: 'Emission pathways',
+     subtitle: 'Pathways',
      description: 'Data and visuals of emission scenario pathways for major'\
           ' emitting countries and sectors, derived from a growing library of models.'},
     {path: '/ghg-emissions',

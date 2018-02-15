@@ -75,13 +75,13 @@ class EmissionPathwayGraph extends PureComponent {
             />
           )}
           <div className={styles.col5}>
-            <h2 className={styles.title}>Emission Pathways</h2>
+            <h2 className={styles.title}>Pathways</h2>
             <TabletLandscape>
               <ButtonGroup
                 className={styles.btnGroup}
                 onInfoClick={handleInfoClick}
-                shareUrl="/embed/emission-pathways"
-                analyticsGraphName="Emission pathway"
+                shareUrl="/embed/pathways"
+                analyticsGraphName="Pathways"
               />
             </TabletLandscape>
           </div>
@@ -153,14 +153,14 @@ class EmissionPathwayGraph extends PureComponent {
             <ButtonGroup
               className={styles.btnGroup}
               onInfoClick={handleInfoClick}
-              shareUrl="/embed/emission-pathways"
-              analyticsGraphName="Emission pathway"
+              shareUrl="/embed/pathways"
+              analyticsGraphName="Pathways"
               reverseDropdown
             />
           </TabletPortraitOnly>
           <ModalOverview
             data={modalData}
-            title={'Emission Pathways Metadata'}
+            title={'Pathways Metadata'}
             tabTitles={[
               'Model',
               'Scenarios',

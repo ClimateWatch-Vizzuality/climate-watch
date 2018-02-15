@@ -24,7 +24,7 @@ class EmissionPathways extends PureComponent {
       <div>
         <MetaDescription
           descriptionContext={EMISSION_PATHWAYS}
-          subtitle="Emission Pathways"
+          subtitle="Pathways"
         />
         <SocialMetadata
           descriptionContext={EMISSION_PATHWAYS}
@@ -35,7 +35,7 @@ class EmissionPathways extends PureComponent {
         <EspIndicatorsProvider />
         <Header route={route}>
           <Intro
-            title="Emission Pathways"
+            title="Pathways"
             description={
               'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
             }

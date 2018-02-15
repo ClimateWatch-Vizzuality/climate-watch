@@ -3,7 +3,7 @@ import EmissionPathwaysModelTable from 'components/emission-pathways/emission-pa
 
 export default [
   {
-    path: '/emission-pathways/models/:id',
+    path: '/pathways/models/:id',
     label: 'Scenarios',
     anchor: true,
     component: () =>
