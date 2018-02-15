@@ -45,7 +45,7 @@ const About = () => (
         </a>;
       </li>
       <li>
-        <a href="/emission-pathways" className={styles.link}>
+        <a href="/pathways" className={styles.link}>
           Data and visuals of emissions scenario pathways for major emitting
           countries, derived from a growing library of models
         </a>;

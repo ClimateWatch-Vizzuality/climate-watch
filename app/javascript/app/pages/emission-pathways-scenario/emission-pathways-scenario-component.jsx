@@ -30,7 +30,7 @@ class EmissionPathwaysScenario extends PureComponent {
                 description={scenario && scenario.description}
                 button={{
                   text: 'View model',
-                  link: `/emission-pathways/models/${scenario &&
+                  link: `/pathways/models/${scenario &&
                     scenario.model &&
                     scenario.model.id}`
                 }}

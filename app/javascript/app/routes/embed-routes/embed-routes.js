@@ -29,7 +29,7 @@ export default [
     exact: true
   },
   {
-    path: '/embed/emission-pathways',
+    path: '/embed/pathways',
     component: EmissionPathwaysGraph,
     exact: true
   },

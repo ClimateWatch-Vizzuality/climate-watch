@@ -43,7 +43,7 @@ export const titleLinks = createSelector([getFilteredData], data => {
   return data.map(d => [
     {
       columnName: 'name',
-      url: `/emission-pathways/scenarios/${d.id}`
+      url: `/pathways/scenarios/${d.id}`
     }
   ]);
 });
