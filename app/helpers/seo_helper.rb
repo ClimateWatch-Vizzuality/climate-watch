@@ -24,11 +24,11 @@ module SeoHelper
      description: 'Comprehensive mapping of linkages between Nationally '\
           'Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs)'\
           ' and associated targets of the 2030 Agenda for Sustainable Development.'},
-    {path: '/emission-pathways',
+    {path: '/pathways',
      subtitle: 'Pathways',
      description: 'Data and visuals of emission scenario pathways for major'\
           ' emitting countries and sectors, derived from a growing library of models.'},
-    {path: '/emission-pathways/models',
+    {path: '/pathways/models',
      subtitle: 'Pathways',
      description: 'Data and visuals of emission scenario pathways for major'\
           ' emitting countries and sectors, derived from a growing library of models.'},
@@ -49,8 +49,8 @@ module SeoHelper
     '/' => '/images/social-home.png',
     '/ndcs' => '/images/social-NDCs.png',
     '/ndcs-sdg' => '/images/social-NDCs-SDGs.png',
-    '/emission-pathways' => '/images/social-emission-pathways.png',
-    '/emission-pathways/models' => '/images/social-emission-pathways.png',
+    '/pathways' => '/images/social-emission-pathways.png',
+    '/pathways/models' => '/images/social-emission-pathways.png',
     '/countries' => '/images/social-country.png',
     '/ghg-emissions' => '/images/social-historical-emissions.png'
   }.freeze
