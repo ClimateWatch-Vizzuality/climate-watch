@@ -100,7 +100,9 @@ class CountryGhgEmissions extends PureComponent {
     return (
       <div className={styles.container}>
         <h3 className={styles.title}>
-          Greenhouse Gas Emissions and Emissions Targets
+          {`Greenhouse Gas Emissions and Emissions Targets ${this.props.isEmbed
+            ? `in ${this.props.countryName}`
+            : ''}`}
         </h3>
         <TabletLandscape>
           <div className={styles.graphControls}>
@@ -124,10 +126,12 @@ class CountryGhgEmissions extends PureComponent {
 }
 
 CountryGhgEmissions.propTypes = {
+  isEmbed: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
+  countryName: PropTypes.string.isRequired,
   quantifications: PropTypes.array.isRequired,
   calculations: PropTypes.array.isRequired,
   calculationSelected: PropTypes.object.isRequired,
