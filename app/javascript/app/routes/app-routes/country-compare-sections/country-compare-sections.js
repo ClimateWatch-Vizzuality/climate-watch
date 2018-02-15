@@ -1,3 +1,5 @@
+import ClimateVulnerability from 'components/country-compare/country-compare-climate-vulnerability/country-compare-climate-vulnerability';
+
 export default [
   {
     hash: 'ghg-emissions',
@@ -7,7 +9,8 @@ export default [
   {
     hash: 'climate-vulnerability',
     label: 'Climate Vulnerability and Readiness',
-    anchor: true
+    anchor: true,
+    component: ClimateVulnerability
   },
   {
     hash: 'ndc-content-overview',
