@@ -5,11 +5,11 @@ class Story < ApplicationRecord
 
     pinned_stories = pinned_stories(1)
     tagged_stories = tagged_stories(tags_array, limit)
-    main_stories = pinned_stories + tagged_stories
+    main_stories = (pinned_stories + tagged_stories).uniq
     return main_stories if main_stories.length >= limit
 
     more_stories = not_tagged_by(tags_array, limit)
-    return (main_stories + more_stories).first(limit) if main_stories
+    return (main_stories + more_stories).uniq.first(limit) if main_stories
     more_stories
   end
 
