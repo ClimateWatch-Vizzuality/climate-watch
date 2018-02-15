@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import _find from 'lodash/find';
 import cx from 'classnames';
@@ -11,7 +11,7 @@ import Button from 'components/button';
 
 import btnThemes from 'styles/themes/button/buttons';
 import Legend from '../charts/legend';
-import charts from '../charts';
+import RenderChart from '../render-chart';
 
 import styles from './steps-styles';
 
@@ -60,13 +60,14 @@ const Step4 = props => {
         <Loading light className={styles.timeseriesLoader} />
       ) : (
         [
-          createElement(charts[visualisationType], {
-            key: 'chart',
-            config: chartData,
-            className: styles.chart,
-            width: '90%',
-            height: 300
-          }),
+          <RenderChart
+            key="chart"
+            className={styles.chart}
+            chart={visualisationType}
+            config={chartData}
+            width="90%"
+            height={300}
+          />,
           <Legend key="legend" theme={styles} data={chartData.legend} />
         ]
       )}

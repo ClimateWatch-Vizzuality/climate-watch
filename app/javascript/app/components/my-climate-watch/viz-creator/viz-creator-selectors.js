@@ -21,6 +21,7 @@ import {
 } from './components/charts/stack-bar/stack-bar-config';
 
 export const dataSelector = state => state;
+export const smallSelector = state => state.small;
 export const datasetsSelector = state => get(lenses.$datasets, state);
 export const visualisationsSelector = state =>
   get(lenses.$visualisations, state);
@@ -84,7 +85,8 @@ export const chartDataSelector = createSelector(
     scenariosSelector,
     selectedStructureSelector,
     indicatorsSelector,
-    locationsSelector
+    locationsSelector,
+    smallSelector
   ],
   (
     hasData,
@@ -92,30 +94,37 @@ export const chartDataSelector = createSelector(
     scenarios,
     selectedStructure,
     indicators,
-    locations
+    locations,
+    small
   ) => {
     if (!hasData) return {};
     switch (selectedStructure.id) {
       case 'LineChart-1':
-        return lineChart1Data(timeseries.data, scenarios.data);
+        return lineChart1Data(timeseries.data, scenarios.data, small);
 
       case 'StackBarChart-1':
-        return stackBarChart1Data(timeseries.data, indicators.data);
+        return stackBarChart1Data(timeseries.data, indicators.data, small);
 
       case 'PieChart-1':
-        return pieChart1Data(timeseries.data, indicators.data);
+        return pieChart1Data(timeseries.data, indicators.data, small);
 
       case 'LineChart-2':
-        return lineChart2Data(timeseries.data, locations.data);
+        return lineChart2Data(timeseries.data, locations.data, small);
 
       case 'PieChart-2':
-        return pieChart2Data(timeseries.data, indicators.data, locations.data);
+        return pieChart2Data(
+          timeseries.data,
+          indicators.data,
+          locations.data,
+          small
+        );
 
       case 'StackBarChart-2':
         return stackBarChart2Data(
           timeseries.data,
           locations.data,
-          indicators.data
+          indicators.data,
+          small
         );
 
       default:
