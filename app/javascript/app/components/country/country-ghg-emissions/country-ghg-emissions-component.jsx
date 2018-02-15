@@ -67,7 +67,7 @@ class CountryGhgEmissions extends PureComponent {
     const {
       calculationSelected,
       data,
-      quantifications,
+      quantifications, // eslint-disable-line
       loading,
       config,
       handleYearHover,
@@ -85,7 +85,9 @@ class CountryGhgEmissions extends PureComponent {
         config={config}
         data={data}
         onMouseMove={handleYearHover}
-        points={quantifications}
+        // Remove the comment when they want the quantifications
+        // feature on production
+        // points={quantifications}
         dataOptions={filtersOptions}
         dataSelected={filtersSelected}
         loading={loading}
