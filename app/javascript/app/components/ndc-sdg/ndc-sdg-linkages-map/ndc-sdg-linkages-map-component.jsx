@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import ButtonGroup from 'components/button-group';
 import { TabletLandscape } from 'components/responsive';
+import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
+
 import LegendRange from './legend-range';
 import LegendSteps from './legend-steps';
 
@@ -29,12 +31,12 @@ class NdcSdgLinkagesMap extends PureComponent {
       this.props.goal.locations[country.id];
     const locations = targets && targets.length;
     return (
-      <Link className={styles.tooltip} to={`/countries/${country.id}`}>
-        <div className={styles.info}>
-          <div className={styles.countryName}>{country.name}</div>
-          <p className={styles.text}>{locations || '0'} targets linked</p>
+      <Link className={tooltipTheme.tooltip} to={`/countries/${country.id}`}>
+        <div className={tooltipTheme.info}>
+          <div className={tooltipTheme.countryName}>{country.name}</div>
+          <p className={tooltipTheme.text}>{locations || '0'} targets linked</p>
         </div>
-        <Icon icon={accordionArrow} className={styles.icon} />
+        <Icon icon={accordionArrow} className={tooltipTheme.icon} />
       </Link>
     );
   }
