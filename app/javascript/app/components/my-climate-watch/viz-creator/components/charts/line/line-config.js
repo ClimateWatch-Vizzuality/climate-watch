@@ -2,7 +2,7 @@ import { format } from 'd3-format';
 import { assign } from 'app/utils';
 import { CHART_COLORS } from 'data/constants';
 
-import { groupBy, pick } from '../utils';
+import { groupByYear, pick } from '../utils';
 
 const makeConfig = data => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
@@ -52,7 +52,7 @@ const makeConfig = data => {
 };
 
 export const lineChart1Data = (timeSeries, scenarios) =>
-  makeConfig(groupBy('year', 'scenario', timeSeries, scenarios));
+  makeConfig(groupByYear(timeSeries, 'scenario', scenarios));
 
 export const lineChart2Data = (timeSeries, locations) =>
-  makeConfig(groupBy('year', 'location', timeSeries, locations));
+  makeConfig(groupByYear(timeSeries, 'location', locations));
