@@ -29,6 +29,7 @@ const AboutPartners = ({ sections }) => (
                 >
                   {partner.img && (
                     <img
+                      className={partner.img.customClass || ''}
                       key={partner.img.alt}
                       src={partner.img.src}
                       alt={partner.img.alt}

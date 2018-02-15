@@ -37,10 +37,14 @@
       align-items: center;
       height: 80px;
 
-      img {
+      img:global {
         max-width: 190px;
         max-height: 100%;
         width: auto;
+
+        &.large {
+          max-width: 230px;
+        }
       }
 
       .linkLabel {

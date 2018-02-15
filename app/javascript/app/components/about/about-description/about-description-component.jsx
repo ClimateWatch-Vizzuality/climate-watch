@@ -70,17 +70,7 @@ const About = () => (
         rel="noopener noreferrer"
       >
         World Resources Institute
-      </a>{' '}
-      in collaboration with{' '}
-      <a
-        href="/about/partners"
-        target="_blank"
-        className={styles.link}
-        rel="noopener noreferrer"
-      >
-        partners
-      </a>{' '}
-      and is a flagship initiative of the{' '}
+      </a>. It is a contribution to the{' '}
       <a
         href="//ndcpartnership.org/"
         target="_blank"
