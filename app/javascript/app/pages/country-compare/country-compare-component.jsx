@@ -26,14 +26,16 @@ const CountryCompare = ({ route, anchorLinks }) => (
         />
       </Sticky>
     </Header>
-    <CountryCompareSelector className={styles.countrySelectors} />
-    {route.sections &&
-      route.sections.length > 0 &&
-      route.sections.map(section => (
-        <section key={section.hash} id={section.hash}>
-          {!!section.component && <section.component />}
-        </section>
-      ))}
+    <div className={layout.content}>
+      <CountryCompareSelector className={styles.countrySelectors} />
+      {route.sections &&
+        route.sections.length > 0 &&
+        route.sections.map(section => (
+          <section key={section.hash} id={section.hash}>
+            {!!section.component && <section.component />}
+          </section>
+        ))}
+    </div>
   </div>
 );
 

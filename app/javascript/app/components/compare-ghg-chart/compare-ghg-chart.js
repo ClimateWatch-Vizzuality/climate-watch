@@ -14,29 +14,39 @@ import {
   getSourceSelected,
   calculationOptions,
   getCalculationSelected,
-  getFiltersSelected
+  getFiltersSelected,
+  getChartData,
+  getChartConfig,
+  parseSelectedLocations
 } from './compare-ghg-chart-selectors';
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.ghgEmissions;
+  const { data } = state.emissions;
   const { meta } = state.ghgEmissionsMeta;
   const { data: regions } = state.regions;
   const search = qs.parse(location.search);
+  const calculationData = state.wbCountryData.data;
   const ghg = {
     data,
     regions,
     search,
-    meta
+    meta,
+    selectedLocations: search.locations,
+    calculationData
   };
   return {
-    // data: getChartData(ghg),
-    // config: getChartConfig(ghg),
     sourceOptions: getSourceOptions(ghg),
     sourceSelected: getSourceSelected(ghg),
     calculationOptions,
     calculationSelected: getCalculationSelected(ghg),
-    filters: getFiltersSelected(ghg),
-    loading: state.ghgEmissionsMeta.loading || state.ghgEmissions.loading
+    data: getChartData(ghg),
+    config: getChartConfig(ghg),
+    selectedLocations: parseSelectedLocations(ghg),
+    providerFilters: getFiltersSelected(ghg),
+    loading:
+      state.ghgEmissionsMeta.loading ||
+      state.ghgEmissions.loading ||
+      !getCalculationSelected(ghg)
   };
 };
 
@@ -53,7 +63,7 @@ class CompareGhgChartContainer extends PureComponent {
   handleCalculationChange = calculation => {
     this.updateUrlParam(
       { name: 'calculation', value: calculation.value },
-      true
+      false
     );
     ReactGA.event({
       category: 'Country comparison',

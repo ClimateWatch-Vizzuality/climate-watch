@@ -25,7 +25,7 @@ class EmissionsProvider extends PureComponent {
 
 EmissionsProvider.propTypes = {
   getEmissions: PropTypes.func.isRequired,
-  filters: PropTypes.array
+  filters: PropTypes.object
 };
 
 export { actions, reducers, initialState };
