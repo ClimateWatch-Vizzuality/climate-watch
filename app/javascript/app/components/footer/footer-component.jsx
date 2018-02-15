@@ -5,9 +5,8 @@ import cx from 'classnames';
 
 import Nav from 'components/nav';
 import BottomBar from 'components/footer/bottom-bar';
-import Icon from 'components/icon';
+import Contact from 'components/contact';
 
-import contactIcon from 'assets/icons/contact.svg';
 import layout from 'styles/layout.scss';
 import styles from './footer-styles.scss';
 
@@ -24,13 +23,14 @@ class Footer extends PureComponent {
     return (
       <footer className={className}>
         <div className={cx(layout.content, styles.nav)}>
-          <Nav routes={routes} hideLogo hideActive reverse />
-          <div className={styles.contactContainer}>
-            <a className={styles.contact} href="mailto:climatewatch@wri.org">
-              CONTACT US
-            </a>
-            <Icon icon={contactIcon} />
-          </div>
+          <Nav
+            routes={routes}
+            hideLogo
+            hideActive
+            reverse
+            allowNested={false}
+          />
+          <Contact />
         </div>
         <BottomBar className={layout.content} />
       </footer>

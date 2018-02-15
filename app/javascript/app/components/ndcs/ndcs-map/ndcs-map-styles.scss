@@ -1,0 +1,49 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.col4 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr);
+
+  grid-template-columns: repeat(2, 1fr);
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(4, 1fr);
+    align-items: end;
+  }
+}
+
+.legend {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.buttons {
+  grid-column-end: -1;
+}
+
+.buttonGroup {
+  background-color: $white;
+  margin-top: 10px;
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}

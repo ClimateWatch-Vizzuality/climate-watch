@@ -16,7 +16,6 @@ export default {
       ...state,
       data: groupBy(payload, 'location.iso_code3')
     };
-
     return setLoaded(true, setLoading(false, newState));
   }
 };

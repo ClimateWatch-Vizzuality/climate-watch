@@ -2,18 +2,39 @@
 
 .intro {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.main {
+  display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   color: $white;
   font-family: $font-family-1;
+
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+  }
+}
+
+.button {
+  min-width: 170px;
+  max-width: 200px;
+  margin-right: 20px;
 }
 
 .title {
-  font-size: $font-size-xl-large;
+  font-size: $font-size-large;
   margin-bottom: 10px;
   font-weight: $font-weight-light;
   line-height: 0.85em;
+
+  @media #{$tablet-landscape} {
+    font-size: $font-size-xl-large;
+  }
 }
 
 .description {

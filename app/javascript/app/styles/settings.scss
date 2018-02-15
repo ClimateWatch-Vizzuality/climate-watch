@@ -1,15 +1,14 @@
 // Font families
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,400i,700');
 $font-family-1: 'Lato', sans-serif;
 
 // Font sizes
-$font-size-s: 13px;
-$font-size-sm: 14px;
-$font-size: 16px;
-$font-size-m: 19px;
-$font-size-large: 24px;
-$font-size-x-large: 44px;
-$font-size-xl-large: 54px;
+$font-size-s: 0.8125rem; // 13px / 16px
+$font-size-sm: 0.875rem; // 14px / 16px
+$font-size: 1rem; // 16px / 16px
+$font-size-m: 1.1875rem; // 19px / 16px
+$font-size-large: 1.5rem; // 24px / 16px
+$font-size-x-large: 2.75rem; // 44px / 16px
+$font-size-xl-large: 3.375rem; // 54px / 16px
 
 //font-weights
 $font-weight-light: 300;
@@ -19,11 +18,17 @@ $font-weight-bold: 600;
 
 // line height
 $line-height-medium: 1.62;
+$line-height-small: 1.3;
+$line-height-modal: 26px;
 
 // Layout
-$max-width: 1210px;
 $gutter-padding: 30px;
+$max-width: 1230px;
+$grid-gap: 30px;
+$modal-padding: 35px;
 $navbar-height: 60px;
+$header-height: 40vh;
+$card-content-margin: 15px;
 $paragraph-max-width: 770px;
 
 // Colors
@@ -37,6 +42,7 @@ $light-gray: #f5f6f7;
 $gray: #b1b1c1;
 $dark-gray: #8f8fa1;
 $base-text: #424242;
+$placeholder-gray: #393f44;
 
 $bg-main: #00548b;
 $bg-blue: #1b3b5a;
@@ -44,18 +50,20 @@ $bg-blue: #1b3b5a;
 $border-color-base: rgb(26, 28, 34);
 $border-color: rgba($border-color-base, 0.1);
 
-// Breakpoitns
-$breakpoint-mobile: 320;
-$breakpoint-tablet: 768px;
-$breakpoint-desktop: 1280px;
+// Breakpoints
+$breakpoint-mobile-only: 37.4375rem; // 599px / 16px
+$breakpoint-tablet-portrait: 37.5rem; // 600px / 16px
+$breakpoint-tablet-landscape: 56.25rem; // 900px / 16px
+$breakpoint-desktop: 75rem; // 1200px / 16px
 
 // Media queries
-$mq-mobile: 'screen and (min-width: #{$breakpoint-mobile})';
-$mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
-$mq-desktop: 'screen and (min-width: #{$breakpoint-desktop})';
+$mobile-only: 'screen and (max-width: #{$breakpoint-mobile-only})';
+$tablet-portrait: 'screen and (min-width: #{$breakpoint-tablet-portrait})';
+$tablet-landscape: 'screen and (min-width: #{$breakpoint-tablet-landscape})';
+$desktop: 'screen and (min-width: #{$breakpoint-desktop})';
 
 // Fixed heights
-$vulnerability-chart-height: 160px;
+$vulnerability-chart-height: calc(100% - 30px);
 
 $sdg-1: #e5243b;
 $sdg-2: #dda63a;

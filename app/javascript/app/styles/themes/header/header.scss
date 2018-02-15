@@ -1,10 +1,15 @@
 @import '~styles/layout.scss';
-@import '~styles/settings.scss';
 
 .headerGrid {
   @extend %grid;
 
-  @include msGridColumns(7fr, 5fr);
+  @include msGridColumns(1fr);
 
-  grid-template-columns: 7fr 5fr;
+  grid-template-columns: 1fr;
+
+  @media #{$tablet-portrait} {
+    @include msGridColumns(7fr, 5fr);
+
+    grid-template-columns: 7fr 5fr;
+  }
 }

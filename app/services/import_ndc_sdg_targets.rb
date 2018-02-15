@@ -1,11 +1,13 @@
 require 'csv'
 
 class ImportNdcSdgTargets
+  NDC_SDG_TARGETS = "#{CW_FILES_PREFIX}sdgs/ndc_sdg_targets.csv"
+
   def call
+    @failed_lines = []
+
     cleanup
-    import_ndc_sdg_targets(
-      read_from_s3("#{CW_FILES_PREFIX}sdgs/ndc_sdg_targets.csv")
-    )
+    import_ndc_sdg_targets(S3CSVReader.read(NDC_SDG_TARGETS))
   end
 
   private
@@ -16,42 +18,45 @@ class ImportNdcSdgTargets
     NdcSdg::Sector.delete_all
   end
 
-  def read_from_s3(file_name)
-    bucket_name = Rails.application.secrets.s3_bucket_name
-    s3 = Aws::S3::Client.new
-    begin
-      file = s3.get_object(bucket: bucket_name, key: file_name)
-    rescue Aws::S3::Errors::NoSuchKey
-      Rails.logger.error "File #{file_name} not found in #{bucket_name}"
-      return
-    end
-    file.body.read
-  end
-
   def import_ndc_sdg_targets(content)
-    CSV.parse(content, headers: true).each.with_index(2) do |row|
+    content.each.with_index(2) do |row|
+      row[:indc_text] = TextNormalizer.normalize(row[:indc_text])
       ndc = ndc(row)
       target = target(row)
-      next unless ndc && target
-      indc_text = row['INDC_text'].strip
+
+      unless ndc && target
+        @failed_lines.append(row)
+        next
+      end
+
+      indc_text = row[:indc_text]
       starts_at = ndc.full_text.downcase.index(indc_text.downcase)
       ends_at = starts_at + indc_text.length - 1 if starts_at
       ndc_target = NdcSdg::NdcTarget.find_or_create_by(
         ndc: ndc,
         target: target,
         indc_text: indc_text,
-        status: row['Status'],
-        climate_response: row['Climate_response'],
-        type_of_information: row['Type_of_information'],
+        status: row[:status],
+        climate_response: row[:climate_response],
+        type_of_information: row[:type_of_information],
         starts_at: starts_at,
         ends_at: ends_at
       )
       import_ndc_target_sectors(row, ndc_target)
     end
+
+    unless @failed_lines.empty?
+      CSV.open("#{Rails.root}/tmp/ndc_sdg_targets_failed_rows.csv", 'wb') do |csv|
+        csv << @failed_lines.first.headers
+        @failed_lines.each do |line|
+          csv << line
+        end
+      end
+    end
   end
 
   def import_ndc_target_sectors(row, ndc_target)
-    sectors = row['Sector'] && row['Sector'].split(',').map(&:strip).uniq ||
+    sectors = row[:sector] && row[:sector].split(',').map(&:strip).uniq ||
       []
     sectors.each do |sector|
       sector_rec = NdcSdg::Sector.where('name ilike ?', sector).first
@@ -64,13 +69,13 @@ class ImportNdcSdgTargets
   end
 
   def ndc(row)
-    iso_code3 = row['iso_code3'] && row['iso_code3'].strip.upcase
+    iso_code3 = row[:iso_code3] && row[:iso_code3].upcase
     location = iso_code3 && Location.find_by_iso_code3(iso_code3)
     unless location
       Rails.logger.error "Location not found #{row}"
       return nil
     end
-    indc_text = row['INDC_text'].strip
+    indc_text = row[:indc_text]
     ndc = location.ndcs.detect do |n|
       !n.full_text.downcase.index(indc_text.downcase).nil?
     end
@@ -80,7 +85,7 @@ class ImportNdcSdgTargets
   end
 
   def target(row)
-    target_number = row['Target'] && row['Target'].strip.downcase
+    target_number = row[:target] && row[:target].downcase
     target = NdcSdg::Target.find_by_number(target_number)
     Rails.logger.error "SDG target not found #{row}" unless target
     target

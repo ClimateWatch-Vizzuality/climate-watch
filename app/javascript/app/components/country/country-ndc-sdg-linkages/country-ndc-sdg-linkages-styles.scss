@@ -1,0 +1,129 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  margin-bottom: 40px;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
+}
+
+.header {
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+
+.sdgs {
+  border-left: solid 1px $theme-border;
+
+  @include clearFix();
+
+  @media #{$tablet-landscape} {
+    > div {
+      float: left;
+      width: calc(33.333333%);
+    }
+
+    margin-bottom: 40px;
+  }
+}
+
+.titleContainer {
+  @extend %grid;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0;
+  }
+}
+
+.buttons {
+  @extend %grid;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(46%, 1fr);
+
+    grid-template-columns: 46% 1fr;
+  }
+}
+
+.actionButtons {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 7fr);
+
+  grid-template-columns: 1fr 7fr;
+  grid-column-gap: 20px;
+
+  @media #{$tablet-landscape} {
+    grid-column-gap: $grid-gap;
+  }
+}
+
+.infoBtn {
+  margin-top: 20px;
+  margin-left: 0.3em;
+}
+
+.exploreBtn {
+  margin-top: 20px;
+  -ms-grid-column: 6;
+}
+
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+  padding-bottom: 20px;
+
+  @media #{$tablet-landscape} {
+    width: 50%;
+    padding-bottom: 0;
+  }
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 25px;
+}
+
+.tooltipContainer {
+  position: absolute;
+  top: 50%;
+
+  @media #{$tablet-landscape} {
+    min-width: 500px;
+  }
+}
+
+.tooltip {
+  font-size: $font-size-s;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.tooltipTitle {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.sectorSelector {
+  padding-top: 15px;
+}
+
+.info {
+  flex-basis: 100%;
+}
+
+.loader {
+  min-height: 400px;
+}

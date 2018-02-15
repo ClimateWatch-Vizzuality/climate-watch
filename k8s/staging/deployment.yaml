@@ -30,6 +30,8 @@ spec:
             value: "3000"
           - name: RAILS_SERVE_STATIC_FILES
             value: "true"
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
           - name: POSTGRES_URL
             valueFrom:
                 secretKeyRef:
@@ -49,6 +51,12 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_AWS_SECRET_ACCESS_KEY
+          - name: ESP_API
+            value: "https://www.emissionspathways.org/api/v1"
+          - name: GFW_API
+            value: "https://production-api.globalforestwatch.org/"
+          - name: CORS_WHITELIST
+            value: "*"
 
         ports:
           - containerPort: 3000

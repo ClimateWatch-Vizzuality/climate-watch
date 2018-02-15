@@ -1,0 +1,32 @@
+:global .sticky-outer-wrapper.sticky {
+  // Keep this sync siwh the headerColor of the app-routes
+  &.-ndcs,
+  &.-compare,
+  &.-ndc-search {
+    .sticky-inner-wrapper {
+      background-color: #035388;
+    }
+  }
+
+  &.-country {
+    .sticky-inner-wrapper {
+      background-color: #045f61;
+    }
+  }
+
+  &.-about {
+    .sticky-inner-wrapper {
+      background-color: #113750;
+    }
+  }
+
+  &.-emissions {
+    .sticky-inner-wrapper {
+      background-color: #74356a;
+    }
+  }
+
+  .sticky-inner-wrapper {
+    z-index: 12;
+  }
+}

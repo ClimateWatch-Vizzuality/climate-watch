@@ -6,30 +6,42 @@ import cx from 'classnames';
 import styles from './tooltip-chart-styles.scss';
 
 class TooltipChart extends PureComponent {
-  getTotal = (keys, data) => {
+  getFormat() {
+    return this.props.forceTwoDecimals ? '.2f' : '.2s';
+  }
+
+  getTotal = (keys, data, unitIsCo2) => {
     if (!keys || !data) return '';
     let total = 0;
     keys.forEach(key => {
       if (data.payload[key.value]) total += data.payload[key.value];
     });
-    return `${format('.3s')(total)}t`;
+    return `${format(this.getFormat())(total)}${unitIsCo2 ? 't' : ''}`;
   };
 
   render() {
     const { config, content, showTotal } = this.props;
+
     const unit =
       config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
-
+    const unitIsCo2 = unit === 'CO<sub>2</sub>e';
     return (
       <div className={styles.tooltip}>
-        <span
-          className={styles.unit}
-          dangerouslySetInnerHTML={{ __html: unit }} // eslint-disable-line
-        />
+        <div className={styles.tooltipHeader}>
+          <span className={cx(styles.labelName, styles.labelNameBold)}>
+            {content.label}
+          </span>
+          <span
+            className={styles.unit}
+            dangerouslySetInnerHTML={{ __html: unit }} // eslint-disable-line
+          />
+        </div>
         {showTotal && (
           <div className={cx(styles.label, styles.labelTotal)}>
             <p>TOTAL</p>
-            <p>{this.getTotal(config.columns.y, content.payload[0])}</p>
+            <p>
+              {this.getTotal(config.columns.y, content.payload[0], unitIsCo2)}
+            </p>
           </div>
         )}
         {content &&
@@ -54,7 +66,13 @@ class TooltipChart extends PureComponent {
                     </p>
                   </div>
                   <p className={styles.labelValue}>
-                    {y.payload ? `${format('.3s')(y.payload[y.dataKey])}t` : ''}
+                    {y.payload ? (
+                      `${format(this.getFormat())(
+                        y.payload[y.dataKey]
+                      )}${unitIsCo2 ? 't' : ''}`
+                    ) : (
+                      ''
+                    )}
                   </p>
                 </div>
               ) : null)
@@ -68,7 +86,8 @@ class TooltipChart extends PureComponent {
 TooltipChart.propTypes = {
   content: Proptypes.object,
   config: Proptypes.object,
-  showTotal: Proptypes.bool
+  showTotal: Proptypes.bool,
+  forceTwoDecimals: Proptypes.bool
 };
 
 export default TooltipChart;

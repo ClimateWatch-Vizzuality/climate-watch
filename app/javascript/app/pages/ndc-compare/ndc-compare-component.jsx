@@ -9,6 +9,7 @@ import sortBy from 'lodash/sortBy';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 import styles from './ndc-compare-styles.scss';
 
@@ -29,11 +30,13 @@ class NDCCountry extends PureComponent {
               <Intro title="NDC Comparison" />
             </div>
           </div>
-          <Sticky activeClass="sticky">
+          <Sticky activeClass="sticky -compare" top="#navBarMobile">
             <AnchorNav
               useRoutes
               links={anchorLinks}
               className={layout.content}
+              theme={anchorNavRegularTheme}
+              gradientColor={route.headerColor}
             />
           </Sticky>
         </Header>

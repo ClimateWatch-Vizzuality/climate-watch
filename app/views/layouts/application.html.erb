@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Climate Watch: Data for Climate Action</title>
+    <title><%= title(@actual_path) %></title>
     <%= favicon_link_tag asset_path('favicons/apple-icon-57x57.png'), rel: 'apple-touch-icon', type: 'image/png' %>
     <%= favicon_link_tag asset_path('favicons/apple-icon-60x60.png'), rel: 'apple-touch-icon', type: 'image/png' %>
     <%= favicon_link_tag asset_path('favicons/apple-icon-72x72.png'), rel: 'apple-touch-icon', type: 'image/png' %>
@@ -22,21 +22,18 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
-    <meta itemprop="name" content="Climate Watch"/>
-    <meta itemprop="description" content="Data for Climate Action">
-    <meta name="description" content="Data for Climate Action"/>
-
-    <!-- Twitter Card data -->
-    <meta name="twitter:title" content="Climate Watch"/>
-    <meta name="twitter:creator" content="@vizzuality"/>
-    <meta name="twitter:description" content="Data for Climate Action"/>
-
-    <!-- Open Graph data -->
-    <meta property="og:title" content="Climate Watch"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="<%= request.original_url %>"/>
-    <meta property="og:description" content="Data for Climate Action"/>
+    <!-- SEO -->
+    <meta name="description" content='<%= description(@actual_path) %>' />
+    <meta name="twitter:creator" content="@vizzuality" />
+    <meta name="twitter:description" content='<%= description(@actual_path) %>' />
+    <meta name="twitter:image:src" content='<%= image_src(@actual_path) %>' />
+    <meta property="og:description" content='<%= description(@actual_path) %>' />
+    <meta property="og:title" content='<%= title(@actual_path) %>' />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content='<%= image_src(@actual_path) %>'>
+    <meta property="og:url" content='<%= asset_url(@actual_path) %>' />
 
     <script src="https://cdn.polyfill.io/v2/polyfill.js?features=default,fetch,es6,Array.prototype.includes,String.prototype.includes"></script>
     <%= csrf_meta_tags %>
@@ -44,6 +41,11 @@
     <%= stylesheet_link_tag 'application', media: 'all',
       'data-turbolinks-track': 'reload' %>
     <script><%= raw "window.__data = #{@data.to_json};" %></script>
+
+    <% if @is_contained %>
+      <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@3.5.1/js/iframeResizer.contentWindow.min.js"></script>
+    <% end %>
+
     <% if @is_production %>
       <%= stylesheet_pack_tag 'main' %>
     <% end %>

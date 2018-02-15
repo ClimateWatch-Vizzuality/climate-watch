@@ -1,0 +1,143 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  border-bottom: solid 1px $border-color;
+  border-top: solid 1px $border-color;
+  min-height: 450px;
+}
+
+.countryOverviewPadding {
+  padding-bottom: 2em;
+}
+
+.col2 {
+  @extend %grid;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.header {
+  margin-top: 40px;
+}
+
+.infoAndCompareButtons {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 6fr, 4fr);
+
+  grid-template-columns: 1fr 6fr 4fr;
+}
+
+.actions {
+  @extend %grid;
+
+  margin-top: -6px;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(41% 1fr);
+
+    grid-template-columns: 41% 1fr;
+    grid-column-gap: 3.6em;
+    margin-left: -0.6em;
+  }
+}
+
+.subTitle {
+  font-size: $font-size;
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  margin-bottom: 10px;
+}
+
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+  column-count: 2;
+  column-gap: 20px;
+  margin-bottom: 15px;
+
+  > ol > li {
+    margin-left: 5px;
+  }
+}
+
+.cards {
+  @extend %grid;
+
+  margin-bottom: 60px;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(3fr, 1fr);
+
+    grid-template-columns: 3fr 1fr;
+    margin-bottom: 0;
+  }
+}
+
+.cardsRowContainer {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr, 1fr);
+
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 60px;
+  overflow: scroll;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
+}
+
+.cardContent {
+  margin: 15px;
+
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+  }
+}
+
+.metaTitle {
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  margin-bottom: 5px;
+}
+
+.targetText {
+  display: block;
+  font-size: $font-size;
+  line-height: $line-height-small;
+  color: $theme-color;
+  margin-bottom: 15px;
+}
+
+.noContent {
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listItem {
+  font-size: $font-size;
+  color: $theme-color;
+  margin-bottom: 5px;
+}
+
+.adaptionList {
+  margin-top: -29px;
+}
+
+.loader {
+  min-height: 400px;
+}
+
+.noContentWrapper {
+  min-height: 450px;
+}

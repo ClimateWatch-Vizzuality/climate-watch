@@ -4,23 +4,39 @@
 .headerCols {
   @extend %grid;
 
-  @include msGridColumns(6fr, 6fr);
+  @include msGridColumns(1fr);
 
-  grid-template-columns: 6fr 6fr;
+  grid-template-columns: 1fr;
+  margin-bottom: 15px;
+  z-index: 2;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(6fr, 6fr);
+
+    grid-template-columns: 6fr 6fr;
+  }
 }
 
 .contentCols {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 50%);
+  display: block;
   background-color: $light-gray;
-}
 
-.anchorNav {
-  height: 49px;
-  margin-top: 15px;
+  @media #{$tablet-portrait} {
+    display: grid;
+
+    @include msGridColumns(1fr);
+
+    grid-template-columns: 1fr;
+  }
+
+  @media #{$tablet-landscape} {
+    display: grid;
+    grid-column-gap: 30px;
+
+    @include msGridColumns(1fr, 1fr);
+
+    grid-template-columns: repeat(2, 50%);
+  }
 }
 
 .resultsList {
@@ -31,8 +47,11 @@
 
 .resultCard {
   max-width: calc((#{$max-width} / 2));
-  float: right;
   padding-left: 30px;
+
+  @media #{$tablet-portrait} {
+    float: right;
+  }
 }
 
 .map :global {

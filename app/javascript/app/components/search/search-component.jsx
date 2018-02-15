@@ -12,13 +12,19 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: props.input
+      search: props.value
     };
   }
 
+  componentDidMount() {
+    if (this.props.autofocus) {
+      this.inputRef.focus();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.input !== this.props.input) {
-      this.setState({ search: nextProps.input });
+    if (nextProps.value !== this.props.value) {
+      this.setState({ search: nextProps.value });
     }
   }
 
@@ -32,13 +38,13 @@ class Search extends Component {
     if (onChange) {
       this.props.onChange(this.state.search);
     }
-  }, 150);
+  }, 300);
 
   render() {
     const { search } = this.state;
     const {
+      icon,
       theme,
-      input,
       placeholder,
       className,
       handleKeyUp,
@@ -48,6 +54,9 @@ class Search extends Component {
     return (
       <div className={cx(styles.search, className, theme.search)}>
         <input
+          ref={el => {
+            this.inputRef = el;
+          }}
           type="text"
           className={cx(styles.input, theme.input, plain ? styles.plain : '')}
           placeholder={placeholder}
@@ -56,18 +65,22 @@ class Search extends Component {
           onKeyUp={handleKeyUp}
           disabled={disabled}
         />
-        <Icon
-          icon={searchIcon}
-          className={cx(styles.iconSearch, theme.iconSearch)}
-        />
+        {icon && (
+          <Icon
+            icon={searchIcon}
+            className={cx(styles.iconSearch, theme.iconSearch)}
+          />
+        )}
       </div>
     );
   }
 }
 
 Search.propTypes = {
-  input: PropTypes.string,
+  icon: PropTypes.bool.isRequired,
+  value: PropTypes.string,
   placeholder: PropTypes.string,
+  autofocus: PropTypes.bool,
   onChange: PropTypes.func,
   className: PropTypes.string,
   theme: PropTypes.object,
@@ -77,7 +90,8 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
-  input: ''
+  icon: true,
+  value: ''
 };
 
 export default themr('Search', styles)(Search);

@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import Loading from 'components/loading';
+import { TabletLandscape } from 'components/responsive';
 
 import AnchorNav from 'components/anchor-nav';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
-import NDCSearchMap from 'components/ndcs-search-map';
+import NDCSearchMap from 'components/ndcs/ndcs-search-map';
 import NoContent from 'components/no-content';
-import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
+import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 
 import styles from './ndc-search-styles.scss';
@@ -30,21 +32,25 @@ class SearchPage extends PureComponent {
     return (
       <div>
         <Header route={route}>
-          <div className={layout.content}>
-            <div className={styles.headerCols}>
-              <Intro title="NDC Content Search" />
-              <NdcsAutocompleteSearch
-                className={styles.select}
-                fetchSearchResults={fetchSearchResults}
-                global
-              />
-            </div>
+          <div className={cx(styles.headerCols, layout.content)}>
+            <Intro title="NDC Content Search" />
+            <NdcsAutocompleteSearch
+              className={styles.select}
+              fetchSearchResults={fetchSearchResults}
+              global
+            />
+          </div>
+          <Sticky activeClass="sticky -ndc-search" top="#navBarMobile">
             <div className={styles.anchorNav}>
               {docOptions.length > 1 && (
-                <AnchorNav useRoutes links={anchorLinks} />
+                <AnchorNav
+                  useRoutes
+                  links={anchorLinks}
+                  theme={anchorNavRegularTheme}
+                />
               )}
             </div>
-          </div>
+          </Sticky>
         </Header>
         <div className={cx(styles.contentCols)}>
           <div className={styles.resultsList}>
@@ -62,9 +68,11 @@ class SearchPage extends PureComponent {
                 />
               ))}
           </div>
-          <Sticky className={styles.map} activeClass={styles.stickyMap}>
-            <NDCSearchMap />
-          </Sticky>
+          <TabletLandscape>
+            <Sticky className={styles.map} activeClass={styles.stickyMap}>
+              <NDCSearchMap />
+            </Sticky>
+          </TabletLandscape>
         </div>
       </div>
     );

@@ -8,6 +8,13 @@
   margin-bottom: 4px;
 }
 
+.loader {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  z-index: 1;
+}
+
 .multiSelectWrapper {
   position: relative;
 }
@@ -42,6 +49,12 @@
       padding: 12px 10px;
       position: relative;
     }
+  }
+}
+
+.hasChildren :global {
+  .react-selectize-control {
+    opacity: 0;
   }
 }
 

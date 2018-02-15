@@ -7,8 +7,9 @@ import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AutocompleteSearch from 'components/autocomplete-search';
-import NdcSdgLinkagesTable from 'components/ndc-sdg-linkages-table';
-import NdcSdgLinkagesMap from 'components/ndc-sdg-linkages-map';
+import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
+import { NDC_SDG_LINKAGES } from 'data/SEO';
+import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout';
 import headerTheme from 'styles/themes/header';
@@ -17,40 +18,41 @@ import styles from './ndc-sdg-styles';
 class NdcSdg extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const {
-      route,
-      goalHover,
-      targetHover,
-      handleGoalHover,
-      handleTargetHover
-    } = this.props;
+    const { route, location, isOpen } = this.props;
     return (
-      <div className={styles.bg}>
+      <div className={cx(styles.bg, { [styles.bgOpen]: isOpen })}>
+        <MetaDescription
+          descriptionContext={NDC_SDG_LINKAGES}
+          subtitle="NDC-SDG Linkages"
+        />
+        <SocialMetadata
+          descriptionContext={NDC_SDG_LINKAGES}
+          href={location.href}
+        />
         <NdcsSdgsMetaProvider />
-        <Header size="small" route={route}>
+        <Header
+          size="small"
+          route={route}
+          className={cx(styles.header, {
+            [styles.headerOpen]: isOpen
+          })}
+        >
           <div className={layout.content}>
             <div className={headerTheme.headerGrid}>
               <Intro
                 title="NDC-SDG Linkages"
-                description="Identify potential alignment between the targets, actions, policies measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
+                description="Mapping of linkages between Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) and associated targets of the 2030 Agenda for Sustainable Development. Explore points of alignment across information communicated in the NDCs and SDGs at the global, regional, or individual level to help achieve targets in a synergistic way."
               />
               <AutocompleteSearch />
             </div>
           </div>
         </Header>
-        <div className={styles.wrapper}>
-          <div className={cx(layout.content, styles.grid)}>
-            <NdcSdgLinkagesTable
-              goalHover={goalHover}
-              onGoalHover={handleGoalHover}
-              targetHover={targetHover}
-              onTargetHover={handleTargetHover}
-            />
-            <NdcSdgLinkagesMap
-              goalHover={goalHover}
-              targetHover={targetHover}
-            />
-          </div>
+        <div
+          className={cx(styles.wrapper, {
+            [styles.wrapperOpen]: isOpen
+          })}
+        >
+          <NdcSdgLinkagesContent />
         </div>
       </div>
     );
@@ -59,10 +61,8 @@ class NdcSdg extends PureComponent {
 
 NdcSdg.propTypes = {
   route: PropTypes.object.isRequired,
-  goalHover: PropTypes.number,
-  targetHover: PropTypes.string,
-  handleGoalHover: PropTypes.func.isRequired,
-  handleTargetHover: PropTypes.func.isRequired
+  isOpen: PropTypes.bool,
+  location: PropTypes.object.isRequired
 };
 
 export default NdcSdg;

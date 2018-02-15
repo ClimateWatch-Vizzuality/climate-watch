@@ -36,6 +36,7 @@ class ImportNdcTexts
 
     file = s3.get_object(bucket: bucket_name, key: object.key)
     html_content = html_content_with_resolved_image_paths(file.body.read)
+    html_content = TextNormalizer.normalize(html_content)
     Ndc.create!(
       location: location,
       full_text: html_content,

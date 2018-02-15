@@ -11,7 +11,7 @@ const fetchNDCSFail = createAction('fetchNDCSFail');
 
 const fetchNDCS = createThunkAction('fetchNDCS', () => (dispatch, state) => {
   const { ndcs } = state();
-  if (ndcs && isEmpty(ndcs.data)) {
+  if (ndcs && isEmpty(ndcs.data) && !ndcs.loading) {
     dispatch(fetchNDCSInit());
     fetch('/api/v1/ndcs?filter=map')
       .then(response => {

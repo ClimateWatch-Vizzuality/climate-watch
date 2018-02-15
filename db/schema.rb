@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109140033) do
+ActiveRecord::Schema.define(version: 20180208091529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 20171109140033) do
     t.text "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order"
     t.index ["category_type_id"], name: "index_indc_categories_on_category_type_id"
     t.index ["parent_id"], name: "index_indc_categories_on_parent_id"
     t.index ["slug", "category_type_id"], name: "index_indc_categories_on_slug_and_category_type_id", unique: true
@@ -106,6 +107,7 @@ ActiveRecord::Schema.define(version: 20171109140033) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order"
     t.index ["slug"], name: "index_indc_indicators_on_slug", unique: true
     t.index ["source_id"], name: "index_indc_indicators_on_source_id"
   end
@@ -303,6 +305,7 @@ ActiveRecord::Schema.define(version: 20171109140033) do
     t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tags", default: [], array: true
   end
 
   create_table "timeline_documents", force: :cascade do |t|
@@ -328,6 +331,31 @@ ActiveRecord::Schema.define(version: 20171109140033) do
 
   create_table "timeline_sources", force: :cascade do |t|
     t.text "name"
+  end
+
+  create_table "user_stories", force: :cascade do |t|
+    t.string "title"
+    t.jsonb "body"
+    t.boolean "public"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "ct_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ct_id"], name: "index_users_on_ct_id"
+  end
+
+  create_table "visualizations", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.jsonb "json_body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "wb_extra_country_data", force: :cascade do |t|
@@ -408,6 +436,8 @@ ActiveRecord::Schema.define(version: 20171109140033) do
   add_foreign_key "timeline_documents", "locations", on_delete: :cascade
   add_foreign_key "timeline_documents", "timeline_sources", column: "source_id", on_delete: :cascade
   add_foreign_key "timeline_notes", "timeline_documents", column: "document_id", on_delete: :cascade
+  add_foreign_key "user_stories", "users"
+  add_foreign_key "visualizations", "users"
   add_foreign_key "wb_extra_country_data", "locations", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_properties", column: "property_id", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_sources", column: "source_id", on_delete: :cascade

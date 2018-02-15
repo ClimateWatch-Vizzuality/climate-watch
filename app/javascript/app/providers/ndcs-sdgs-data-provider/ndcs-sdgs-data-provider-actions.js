@@ -21,6 +21,7 @@ const getNdcsSdgsData = createThunkAction(
         })
         .catch(error => {
           console.info(error);
+          dispatch(getNdcsSdgsDataReady({}));
         });
     }
   }

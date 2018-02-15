@@ -3,6 +3,7 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  height: 100%;
 
   .button {
     cursor: pointer;
@@ -10,7 +11,7 @@
     &.active::after {
       content: "";
       position: absolute;
-      bottom: -4px;
+      bottom: 0;
       left: 0;
       right: 0;
       background-color: $theme-secondary;
@@ -20,6 +21,12 @@
 
     &:focus {
       outline: none;
+    }
+
+    &.active {
+      .arrowIcon {
+        transform: rotate(180deg);
+      }
     }
   }
 
@@ -40,6 +47,18 @@
     .arrowIcon {
       transform: rotate(180deg);
     }
+
+    .button {
+      &.active {
+        .arrowIcon {
+          transform: rotate(0deg);
+        }
+
+        &::after {
+          bottom: -15px;
+        }
+      }
+    }
   }
 
   &.positionRight {
@@ -49,10 +68,33 @@
     }
   }
 
+  &.inButtonGroup {
+    width: 100%;
+
+    .links {
+      top: 48px;
+    }
+
+    .button {
+      &.active::after {
+        bottom: -3px;
+      }
+    }
+
+    &.reverse {
+      .links {
+        bottom: 45px;
+        left: 0;
+        right: initial;
+        top: initial;
+      }
+    }
+  }
+
   .links {
     display: none;
     position: absolute;
-    top: 55px;
+    top: 60px;
     right: 0;
     width: 225px;
     z-index: 20;

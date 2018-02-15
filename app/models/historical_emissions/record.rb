@@ -29,11 +29,12 @@ module HistoricalEmissions
       {
         historical_emissions_gases: :gas,
         historical_emissions_data_sources: :source,
-        historical_emissions_sectors: :sector,
-        historical_emissions_gwps: :gwp
+        historical_emissions_sectors: :sector
       }.each do |k, v|
         records = records.where(k => {id: params[v].split(',')}) if params[v]
       end
+
+      records = records.where(gwp_id: params[:gwp]) if params[:gwp]
 
       records
     end

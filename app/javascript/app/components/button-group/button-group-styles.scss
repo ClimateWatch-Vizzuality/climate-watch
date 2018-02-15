@@ -38,6 +38,10 @@
     box-shadow: none;
     fill: $theme-color;
   }
+
+  &.share {
+    height: 45px;
+  }
 }
 
 .first {

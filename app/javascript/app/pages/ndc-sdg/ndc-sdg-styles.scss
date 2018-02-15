@@ -1,13 +1,41 @@
 @import '~styles/layout.scss';
-
-.grid {
-  @extend %grid;
-
-  @include msGridColumns(4fr, 8fr);
-
-  grid-template-columns: 4fr 8fr;
-}
+@import '~styles/settings.scss';
 
 .bg {
   background-color: $light-gray;
 }
+
+.bgOpen {
+  height: calc(100vh - #{$navbar-height});
+  overflow: hidden;
+}
+
+.header {
+  padding-bottom: $gutter-padding;
+  overflow: auto;
+  height: auto;
+}
+
+.headerOpen {
+  height: $header-height;
+}
+
+@media #{$tablet-landscape} {
+  padding-bottom: 0;
+  height: auto;
+}
+
+.wrapper {
+  height: auto;
+}
+
+.wrapperOpen {
+  height: 60vh;
+  overflow: hidden;
+
+  @media #{$tablet-landscape} {
+    height: auto;
+    overflow: auto;
+  }
+}
+

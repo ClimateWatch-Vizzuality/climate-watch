@@ -1,20 +1,16 @@
 import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
-import Hashids from 'hashids';
+import upperFirst from 'lodash/upperFirst';
+import toLower from 'lodash/toLower';
 
-export const assign = (o, ...args) => Object.assign({}, o, ...args);
-
-const hd = new Hashids();
-export const hashId = string =>
-  hd.encode(
-    String(string)
-      .split('')
-      .map(s => s.charCodeAt(0))
-      .join('')
-  );
+export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
 export function deburrUpper(string) {
   return toUpper(deburr(string));
+}
+
+export function lowerUpperFirst(string) {
+  return upperFirst(toLower(string));
 }
 
 export function isCountryIncluded(countriesIncluded = [], iso) {
@@ -47,28 +43,41 @@ export function compareIndexByKey(attribute) {
   };
 }
 
-export const uniqueById = data =>
-  data.reduce(
-    (res, current) =>
-      (current &&
-        (find(res, { id: current.id }) ? res : res.concat([current]))) ||
-      res,
-    []
-  );
-
 export function importAllImagesFromFolder(r) {
   const images = {};
   const keys = r.keys();
   if (keys.length) {
     keys.forEach(item => {
-      images[item.replace('./', '').replace('.jpg', '')] = r(item);
+      images[
+        item
+          .replace('./', '')
+          .replace('.jpeg', '')
+          .replace('.jpg', '')
+          .replace('.png', '')
+      ] = r(item);
     });
   }
   return images;
 }
 
+export const truncateDecimals = (number, decimalPlaces) =>
+  number.toFixed(decimalPlaces) / 1;
+
+const r2lWrittedLanguages = ['AR'];
+export function isR2LWrittedLanguage(lang) {
+  return r2lWrittedLanguages.indexOf(lang) > -1;
+}
+
+export const excludekeys = (x, o) =>
+  Object.keys(o).reduce(
+    (r, k) => (x.includes(k) ? r : { ...r, [k]: o[k] }),
+    {}
+  );
+
 export default {
   compareIndexByKey,
   deburrUpper,
-  isCountryIncluded
+  isCountryIncluded,
+  importAllImagesFromFolder,
+  truncateDecimals
 };

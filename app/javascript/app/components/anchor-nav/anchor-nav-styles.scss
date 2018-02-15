@@ -1,26 +1,53 @@
 @import '~styles/settings.scss';
 
+.anchorContainer {
+  position: relative;
+  padding: 0;
+  z-index: 0;
+}
+
 .anchorNav {
   display: flex;
   align-items: center;
-  margin-top: 15px;
+  overflow-x: scroll;
+  width: 100%;
+  padding-left: $gutter-padding;
+  position: relative;
+
+  @media #{$tablet-landscape} {
+    padding-top: 15px;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .link {
-  color: $white;
   margin-right: 30px;
   padding: 15px 0;
   text-decoration: none;
   position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
 
-  &Active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: $theme-secondary;
-    width: 100%;
-    height: 4px;
+  &:last-child {
+    padding-right: $gutter-padding;
+  }
+}
+
+.gradient {
+  z-index: 5;
+  width: 100%;
+  height: 50px;
+  pointer-events: none;
+  position: absolute;
+  display: block;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  @media #{$tablet-landscape} {
+    display: none;
   }
 }

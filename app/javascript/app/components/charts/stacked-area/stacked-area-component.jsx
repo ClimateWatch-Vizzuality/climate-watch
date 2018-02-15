@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import max from 'lodash/max';
 import isArray from 'lodash/isArray';
-
+import {
+  CustomXAxisTick,
+  CustomYAxisTick
+} from 'components/axis-ticks/axis-ticks-component';
 import {
   ComposedChart,
   Area,
@@ -44,8 +47,6 @@ function getMaxValue(data, config) {
     y: max(values)
   };
 }
-
-const tickFormat = { fill: '#8f8fa1', strokeWidth: 0, fontSize: '13px' };
 
 class ChartStackedArea extends PureComponent {
   constructor() {
@@ -97,10 +98,10 @@ class ChartStackedArea extends PureComponent {
 
     const domain = {
       x: ['dataMin', 'dataMax'],
-      y: ['dataMin', 'dataMax']
+      y: [0, 'dataMax']
     };
 
-    if (points.length > 0) {
+    if (points.length > 1000000000) {
       domain.x[1] = max(points.map(p => p.x)) + 1;
       domain.y[1] =
         max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
@@ -119,8 +120,9 @@ class ChartStackedArea extends PureComponent {
             type="number"
             dataKey="x"
             padding={{ left: 30, right: 40 }}
-            tick={tickFormat}
+            tick={<CustomXAxisTick customstrokeWidth="0" />}
             tickSize={8}
+            allowDecimals={false}
             tickCount={data.length + points.length}
           />
           <YAxis
@@ -128,9 +130,8 @@ class ChartStackedArea extends PureComponent {
             domain={domain.y}
             axisLine={false}
             padding={{ top: 0, bottom: 0 }}
-            tickFormatter={tick => (tick === 0 ? 0 : `${format('.2s')(tick)}t`)}
             tickLine={false}
-            tick={tickFormat}
+            tick={<CustomYAxisTick customstrokeWidth="0" unit="t" />}
           />
           <CartesianGrid vertical={false} />
           {tooltipVisibility && (

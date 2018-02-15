@@ -57,7 +57,7 @@ node {
       switch ("${env.BRANCH_NAME}") {
 
         // Roll out to staging
-        case "develop":
+        case "staging":
           sh("echo Deploying to STAGING app")
           def service = sh([returnStdout: true, script: "kubectl get deploy ${appName}-staging || echo NotFound"]).trim()
           if ((service && service.indexOf("NotFound") > -1) || (forceCompleteDeploy)){

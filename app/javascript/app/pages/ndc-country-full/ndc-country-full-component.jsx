@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import Dropdown from 'components/dropdown';
-import NdcsAutocompleteSearch from 'components/ndcs-autocomplete-search';
+import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import isEmpty from 'lodash/isEmpty';
@@ -11,7 +11,9 @@ import ScrollToHighlightIndex from 'components/scroll-to-highlight-index';
 import Sticky from 'react-stickynode';
 import Button from 'components/button';
 import Loading from 'components/loading';
-import NdcTranslationDisclaimer from 'components/ndc-translation-disclaimer';
+import NdcTranslationDisclaimer from 'components/ndcs/ndc-translation-disclaimer';
+
+import { isR2LWrittedLanguage } from 'utils';
 
 import layout from 'styles/layout.scss';
 import contentStyles from 'styles/themes/content.scss';
@@ -30,7 +32,11 @@ class NDCCountryFull extends PureComponent {
                 <NdcTranslationDisclaimer className={styles.disclaimer} />
               )}
               <div
-                className={cx(contentStyles.content, styles.innerContent)}
+                className={cx(contentStyles.content, {
+                  [styles.innerContentRtl]: isR2LWrittedLanguage(
+                    content.language
+                  )
+                })}
                 dangerouslySetInnerHTML={{ __html: content.html }} // eslint-disable-line
               />
             </div>
@@ -72,7 +78,7 @@ class NDCCountryFull extends PureComponent {
             </Button>
           </div>
         </Header>
-        <Sticky className={styles.sticky}>
+        <Sticky className={styles.sticky} top="#navBarMobile">
           <div className={styles.actionsWrapper}>
             <div className={cx(layout.content, styles.actions)}>
               <Dropdown
@@ -114,6 +120,10 @@ NDCCountryFull.propTypes = {
   fetchCountryNDCFull: PropTypes.func,
   iso: PropTypes.string,
   loading: PropTypes.bool
+};
+
+NDCCountryFull.defaultProps = {
+  content: {}
 };
 
 export default NDCCountryFull;

@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
+import { TabletLandscape } from 'components/responsive';
 import Icon from 'components/icon';
 import SimpleMenu from 'components/simple-menu';
+import NavNestedMenu from 'components/nav/nav-nested-menu';
+import NavWithChildMenu from 'components/navbar-mobile/nav-with-child-menu';
 
 import cwLogo from 'assets/icons/cw-logo.svg';
 import styles from './nav-styles.scss';
@@ -17,17 +20,36 @@ class Nav extends PureComponent {
       className,
       hideLogo,
       hideActive,
-      reverse
+      reverse,
+      isRendered,
+      allowNested,
+      isMobile,
+      closeMenu
     } = this.props;
+
     const showLogo = !hideLogo && location.pathname !== '/';
     return (
       <nav className={cx(styles.navbar, className)}>
-        {showLogo && (
-          <NavLink exact className={styles.link} to="/">
-            <Icon className={styles.logo} icon={cwLogo} />
-          </NavLink>
-        )}
+        <TabletLandscape>
+          {showLogo && (
+            <NavLink exact className={styles.link} to="/">
+              <Icon className={styles.logo} icon={cwLogo} />
+            </NavLink>
+          )}
+        </TabletLandscape>
         {routes.map(route => {
+          if (route.navNestedMenu && allowNested) {
+            return (
+              <NavNestedMenu
+                key={route.label}
+                reverse={reverse}
+                isRendered={isRendered}
+                title={route.label}
+                className={cx(styles.link, styles.menuLink)}
+                Child={route.Child}
+              />
+            );
+          }
           if (route.path) {
             return (
               <NavLink
@@ -35,12 +57,21 @@ class Nav extends PureComponent {
                 className={styles.link}
                 activeClassName={hideActive ? '' : styles.active}
                 to={route.path}
+                onClick={isMobile ? closeMenu : null}
               >
                 {route.label}
               </NavLink>
             );
           }
-
+          if (isMobile) {
+            return (
+              <NavWithChildMenu
+                key={route.label}
+                options={route.routes}
+                title={route.label}
+              />
+            );
+          }
           return (
             <SimpleMenu
               key={route.label}
@@ -60,16 +91,22 @@ class Nav extends PureComponent {
 Nav.propTypes = {
   hideLogo: PropTypes.bool.isRequired,
   hideActive: PropTypes.bool.isRequired,
+  allowNested: PropTypes.bool.isRequired,
   reverse: PropTypes.bool,
+  isRendered: PropTypes.bool,
   routes: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  isMobile: PropTypes.bool,
+  closeMenu: PropTypes.func
 };
 
 Nav.defaultProps = {
   routes: [],
   hideLogo: false,
-  hideActive: false
+  hideActive: false,
+  allowNested: true,
+  isMobile: false
 };
 
 export default Nav;

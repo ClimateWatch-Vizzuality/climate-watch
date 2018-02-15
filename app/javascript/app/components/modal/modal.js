@@ -1,4 +1,6 @@
-import Component from './modal-component';
+import ModalHeader from './modal-header-component';
+import ModalComponent from './modal-component';
 
-export { default as ModalHeader } from './modal-header-component';
-export default Component;
+export { ModalHeader, ModalComponent };
+
+export default ModalComponent;

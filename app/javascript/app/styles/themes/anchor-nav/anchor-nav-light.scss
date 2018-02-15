@@ -1,0 +1,11 @@
+@import '~styles/settings.scss';
+
+.link {
+  font-size: $font-size-large;
+  color: $dark-gray;
+  cursor: pointer;
+
+  &Active {
+    color: $base-text;
+  }
+}

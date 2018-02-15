@@ -1,15 +1,28 @@
 @import '~styles/layout.scss';
 
-$min-height: 550px;
+$min-height: 500px;
 
 .col4 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(5, 1fr);
   align-items: end;
   margin-bottom: 15px;
+
+  @include msGridColumns(1fr, 1fr);
+
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 1em;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.buttonGroup {
+  display: inline-block;
+  padding-bottom: 30px;
 }
 
 .colEnd {
@@ -20,39 +33,15 @@ $min-height: 550px;
   font-size: $font-size-large;
   font-weight: $font-weight;
   color: $theme-color;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   margin-top: 35px;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  margin-bottom: 15px;
-}
-
-.tag {
-  margin-right: 10px;
-  margin-bottom: 10px;
 }
 
 .chartWrapper {
   position: relative;
   min-height: $min-height;
-}
 
-.loader {
-  min-height: $min-height;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-}
-
-.noContent {
-  min-height: $min-height;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
+  @media #{$tablet-landscape} {
+    padding-bottom: 50px;
+  }
 }

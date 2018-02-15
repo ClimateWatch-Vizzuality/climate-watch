@@ -10,7 +10,11 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import Dropdown from 'components/dropdown';
+import { NDC_COUNTRY } from 'data/SEO';
+import { MetaDescription, SocialMetadata } from 'components/seo';
+import { TabletLandscape } from 'components/responsive';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import layout from 'styles/layout.scss';
@@ -28,8 +32,17 @@ class NDCCountry extends PureComponent {
       documentsOptions,
       handleDropDownChange
     } = this.props;
+    const countryName = country && `${country.wri_standard_name}`;
     return (
       <div>
+        <MetaDescription
+          descriptionContext={NDC_COUNTRY({ countryName })}
+          subtitle={countryName}
+        />
+        <SocialMetadata
+          descriptionContext={NDC_COUNTRY({ countryName })}
+          href={location.href}
+        />
         <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>
@@ -63,26 +76,30 @@ class NDCCountry extends PureComponent {
                     </div>
                   )}
                 </div>
-                <Button
-                  color="yellow"
-                  link={`/ndcs/compare/mitigation?locations=${match.params
-                    .iso}`}
-                >
-                  Compare
-                </Button>
+                <TabletLandscape>
+                  <Button
+                    color="yellow"
+                    link={`/ndcs/compare/mitigation?locations=${match.params
+                      .iso}`}
+                  >
+                    Compare
+                  </Button>
+                </TabletLandscape>
                 <Search
                   theme={lightSearch}
                   placeholder="Search"
-                  input={search}
+                  value={search}
                   onChange={onSearchChange}
                 />
               </div>
             </div>
-            <Sticky activeClass="sticky">
+            <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
               <AnchorNav
                 useRoutes
                 links={anchorLinks}
                 className={layout.content}
+                theme={anchorNavRegularTheme}
+                gradientColor={route.headerColor}
               />
             </Sticky>
           </Header>

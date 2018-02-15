@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import { themr } from 'react-css-themr';
 import Icon from 'components/icon';
 import cx from 'classnames';
 
@@ -8,14 +9,15 @@ import styles from './tag-styles.scss';
 
 class Tag extends PureComponent {
   render() {
-    const { data, onRemove, className, canRemove } = this.props;
+    const { label, color, onRemove, className, canRemove, theme } = this.props;
     return (
-      <div className={cx(styles.tag, className)}>
-        <span className={styles.dot} style={{ backgroundColor: data.color }} />
-        <p className={styles.label}>{data.label}</p>
+      <div className={cx(className, theme.tag)}>
+        <span className={theme.dot} style={{ backgroundColor: color }} />
+        <p className={theme.label}>{label}</p>
+
         {canRemove && (
-          <button className={styles.closeButton} onClick={() => onRemove(data)}>
-            <Icon icon={closeIcon} className={styles.icon} />
+          <button className={theme.closeButton} onClick={onRemove}>
+            <Icon icon={closeIcon} className={theme.icon} />
           </button>
         )}
       </div>
@@ -24,14 +26,16 @@ class Tag extends PureComponent {
 }
 
 Tag.propTypes = {
-  data: Proptypes.object,
   onRemove: Proptypes.func,
   className: Proptypes.string,
-  canRemove: Proptypes.bool
+  label: Proptypes.string,
+  color: Proptypes.string,
+  canRemove: Proptypes.bool,
+  theme: Proptypes.object
 };
 
 Tag.defaultPropTypes = {
   canRemove: false
 };
 
-export default Tag;
+export default themr('Tag', styles)(Tag);

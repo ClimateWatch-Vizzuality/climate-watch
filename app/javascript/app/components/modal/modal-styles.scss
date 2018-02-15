@@ -1,19 +1,47 @@
-@import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
-$close-position: 25px;
+$close-position: 35px;
 
-:global .ReactModal__Body--open {
+.modal {
+  position: relative;
+  top: calc(#{$navbar-height} / 2);
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  max-height: none;
+  height: calc(100vh - #{$navbar-height});
+  padding: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  z-index: 19;
+  border: 'none';
+  border-radius: 0;
+
+  @media #{$tablet-landscape} {
+    width: 770px;
+    max-height: 640px;
+    height: calc(100vh - 100px);
+    top: auto;
+  }
 }
 
 .header {
   background-color: $light-gray;
-  margin: -$gutter-padding;
-  margin-bottom: $gutter-padding;
-  padding: $gutter-padding;
+  padding: $modal-padding $gutter-padding;
   padding-bottom: 0;
   min-height: 95px;
   border-bottom: solid 1px $border-color;
+}
+
+.modalContent {
+  flex: 1;
+  overflow: scroll;
+  padding: $modal-padding $gutter-padding;
+  word-break: break-word;
+  overscroll-behavior: none; /* stylelint-disable-line property-no-unknown */
 }
 
 .headerTitle {
@@ -22,12 +50,13 @@ $close-position: 25px;
   color: $theme-color;
   margin-top: 5px;
   margin-bottom: $gutter-padding;
-  padding-right: $gutter-padding + $close-position;
+  padding-right: $gutter-padding;
 }
 
 .closeBtn {
   position: absolute;
-  top: $close-position;
-  right: $close-position;
+  right: $gutter-padding;
+  top: $gutter-padding;
   border: solid 1px rgba(202, 204, 208, 0.85);
+  z-index: 20;
 }
