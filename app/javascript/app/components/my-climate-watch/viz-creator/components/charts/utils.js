@@ -29,7 +29,7 @@ export const groupBy = (keyA, keyB, data, group) =>
       });
   }, []);
 
-export const groupBys = ([keyA, keyB], data, groupA, groupB) =>
+export const groupBys = (data, [keyA, keyB], [groupA, groupB]) =>
   data.reduce((rData, ts) => {
     // find in 'indicators' the current time series indicator
     const gA = _find(groupA, { id: ts[`${keyA}_id`] });

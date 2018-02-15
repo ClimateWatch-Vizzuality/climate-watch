@@ -53,10 +53,9 @@ export const stackBarChart1Data = (timeSeries, indicators) =>
 
 export const stackBarChart2Data = (timeseries, locations, indicators) => {
   const data = groupBys(
-    ['location', 'indicator'],
     timeseries,
-    locations,
-    indicators
+    ['location', 'indicator'],
+    [locations, indicators]
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
   const names = pick('name', data); // only data name key
