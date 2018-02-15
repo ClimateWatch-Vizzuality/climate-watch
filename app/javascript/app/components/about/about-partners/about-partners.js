@@ -79,8 +79,7 @@ const partnershipWith = {
         alt: 'NDC Partnership',
         src: ndcImage
       },
-      description:
-        'Climate Watch is a flagship initiative of the NDC Partnership.'
+      description: 'Climate Watch is a contribution to the NDC Partnership.'
     },
     {
       link: 'https://www.sei-international.org/',
