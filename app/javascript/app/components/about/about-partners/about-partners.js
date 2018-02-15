@@ -11,7 +11,7 @@ import gizImage from 'assets/partners/giz.png';
 import googleImage from 'assets/partners/google.png';
 import fmencbnsImage from 'assets/partners/fmencbns.png';
 import dbeisImage from 'assets/partners/dbeis.png';
-import swissImage from 'assets/partners/swiss.png';
+import swissImage from 'assets/partners/swiss.jpg';
 import actsImage from 'assets/partners/acts.png';
 import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
@@ -79,8 +79,7 @@ const partnershipWith = {
         alt: 'NDC Partnership',
         src: ndcImage
       },
-      description:
-        'Climate Watch is a flagship initiative of the NDC Partnership.'
+      description: 'Climate Watch is a contribution to the NDC Partnership.'
     },
     {
       link: 'https://www.sei-international.org/',
@@ -208,7 +207,8 @@ const foundingBy = {
       link: 'https://www.bafu.admin.ch/bafu/en/home.html',
       img: {
         alt: 'SWISS',
-        src: swissImage
+        src: swissImage,
+        customClass: 'large'
       }
     },
     {
