@@ -36,7 +36,7 @@ class CountryCompareSelectorContainer extends PureComponent {
   handleDropDownChange = (index, selected) => {
     const { locations } = this.props;
     const newLocations = locations.slice();
-    newLocations[index] = selected ? selected.value : index + 1;
+    newLocations[index] = selected ? selected.value : null;
     this.updateUrlParam(
       { name: 'locations', value: newLocations.toString() },
       history,

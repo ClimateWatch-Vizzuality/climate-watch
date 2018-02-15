@@ -24,12 +24,16 @@ class Dropdown extends PureComponent {
       dark,
       blueBorder,
       className,
-      disabled
+      disabled,
+      colorDot
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     return (
       <div className={styles.dropdownWrapper}>
         {label && <span className={styles.label}>{label}</span>}
+        {colorDot && (
+          <span className={styles.dot} style={{ backgroundColor: colorDot }} />
+        )}
         <div
           className={cx(
             theme.dropdown,
@@ -66,7 +70,8 @@ Dropdown.propTypes = {
   hasSearch: PropTypes.bool,
   disabled: PropTypes.bool,
   blueBorder: PropTypes.bool,
-  selectorRef: PropTypes.func
+  selectorRef: PropTypes.func,
+  colorDot: PropTypes.string
 };
 
 export default themr('Dropdown', styles)(Dropdown);
