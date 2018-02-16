@@ -11,7 +11,7 @@ import Button from 'components/button';
 
 import btnThemes from 'styles/themes/button/buttons';
 import Legend from '../charts/legend';
-import LineChart from '../charts/line';
+import RenderChart from '../render-chart';
 
 import styles from './steps-styles';
 
@@ -24,7 +24,6 @@ const Step4 = props => {
   const {
     title,
     chartData,
-    legendData,
     onNameChange,
     onDescriptionChange,
     timeseries,
@@ -32,9 +31,9 @@ const Step4 = props => {
     deleteVisualisation,
     id,
     description,
-    creationStatus
+    creationStatus,
+    visualisationType
   } = props;
-
   return [
     <li className={styles.step} key="step-4-last-li">
       <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
@@ -61,14 +60,15 @@ const Step4 = props => {
         <Loading light className={styles.timeseriesLoader} />
       ) : (
         [
-          <LineChart
-            key="line-chart"
+          <RenderChart
+            key="chart"
             className={styles.chart}
-            {...chartData}
+            chart={visualisationType}
+            config={chartData}
             width="90%"
-            legend
+            height={300}
           />,
-          <Legend key="legend" theme={styles} data={legendData} />
+          <Legend key="legend" theme={styles} data={chartData.legend} />
         ]
       )}
       <Fieldset
@@ -115,6 +115,7 @@ Step4.propTypes = {
   title: PropTypes.string,
   timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
+  visualisationOptions: PropTypes.object,
   onNameChange: PropTypes.func.isRequired,
   saveVisualisation: PropTypes.func.isRequired,
   creationStatus: PropTypes.object

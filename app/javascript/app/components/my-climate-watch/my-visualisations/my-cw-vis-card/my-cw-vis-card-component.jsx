@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Button from 'components/button';
 
-import LineChart from 'components/my-climate-watch/viz-creator/components/charts/line/line';
-import { chartDataSelector } from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
+import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
+import {
+  chartDataSelector,
+  visualisationType
+} from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
 
 import styles from './my-cw-vis-card-styles.scss';
 
@@ -14,17 +17,23 @@ class MyVisCard extends PureComponent {
   };
   render() {
     const { data, className } = this.props;
-
+    const datasets = data.json_body;
     // Object with datasets key to reuse the selector keeping the same format that the reducer
-    const chartData = data.json_body
-      ? chartDataSelector({ datasets: data.json_body })
+    const chart = datasets ? visualisationType({ datasets }) : null;
+    const chartData = datasets
+      ? chartDataSelector({ datasets, small: true })
       : null;
+
     return (
       <Button
         onClick={this.handleOnClick}
         className={cx(styles.card, className)}
       >
-        {chartData && <LineChart {...chartData} height={200} />}
+        <div className={styles.chart}>
+          {datasets && (
+            <RenderChart chart={chart} config={chartData} height={200} />
+          )}
+        </div>
         <h2 className={styles.cardTitle}>{data.title}</h2>
       </Button>
     );

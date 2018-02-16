@@ -40,7 +40,7 @@ const MyVisualisations = ({
       ))}
       <li key="action-card" className={styles.visCard}>
         <ActionCard
-          text={`${currentId ? 'Edit' : 'Create a new'} visualization`}
+          text="Create a new visualization"
           action={{ type: 'action', onClick: openCreator }}
         />
       </li>

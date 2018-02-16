@@ -2,6 +2,8 @@ import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 import upperFirst from 'lodash/upperFirst';
 import toLower from 'lodash/toLower';
+import pickBy from 'lodash/pickBy';
+import includes from 'lodash/includes';
 
 export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
@@ -67,6 +69,12 @@ const r2lWrittedLanguages = ['AR'];
 export function isR2LWrittedLanguage(lang) {
   return r2lWrittedLanguages.indexOf(lang) > -1;
 }
+
+export const excludekeys = (x, o) =>
+  Object.keys(o).reduce(
+    (r, k) => (x.includes(k) ? r : { ...r, [k]: o[k] }),
+    {}
+  );
 
 export default {
   compareIndexByKey,

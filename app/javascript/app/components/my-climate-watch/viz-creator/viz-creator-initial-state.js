@@ -55,11 +55,18 @@ export default {
                   loading: false,
                   loaded: false,
                   child: {
-                    name: 'timeseries',
+                    name: 'years',
                     selected: null,
                     data: [],
                     loading: false,
-                    loaded: false
+                    loaded: false,
+                    child: {
+                      name: 'timeseries',
+                      selected: null,
+                      data: [],
+                      loading: false,
+                      loaded: false
+                    }
                   }
                 }
               }

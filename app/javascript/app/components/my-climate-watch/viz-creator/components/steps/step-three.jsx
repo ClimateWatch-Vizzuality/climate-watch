@@ -4,6 +4,7 @@ import _map from 'lodash/map';
 import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
 import upperFirst from 'lodash/upperFirst';
+import cx from 'classnames';
 
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
@@ -25,11 +26,13 @@ const Step3 = props => {
         key: `${d.label}-${Date.now()}`
       })),
       placeholder: f.placeholder || f.name,
+      hidden: f.hidden,
       loading: f.loading
     };
   };
 
   const { spec, handleFilterSelect } = props;
+
   return (
     <li className={styles.step}>
       <h2 className={styles.stepTitle}>3/4 - Filter the data</h2>
@@ -38,7 +41,14 @@ const Step3 = props => {
           {_map(spec, (f, i) => {
             if (!f.data) return null;
             return (
-              <li key={f.name || i} className={styles.selectsItem}>
+              <li
+                key={f.name || i}
+                className={cx(styles.selectsItem, {
+                  [styles.selectsItemHidden]:
+                    selectProps(f, 'values').hidden ||
+                    selectProps(f, 'value').hidden
+                })}
+              >
                 {f.multi ? (
                   <MultiSelect
                     className={styles.dropDowns}

@@ -2,29 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   ResponsiveContainer
 } from 'recharts';
 
-const ChartLine = ({ width, height, className, config }) => (
+const StackedBarChart = ({ className, width, height, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
-    <LineChart {...config.chart}>
-      {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
-      {config.columns &&
-        config.columns.y.map(y => (
-          <Line dataKey={y} key={y} {...config.theme[y]} />
-        ))}
+    <BarChart {...config.chart}>
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && <YAxis {...config.yAxis} />}
-    </LineChart>
+      {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
+      {config.columns.y.map(y => (
+        <Bar dataKey={y} key={y} {...config.theme[y]} stackId="a" />
+      ))}
+    </BarChart>
   </ResponsiveContainer>
 );
 
-ChartLine.propTypes = {
+StackedBarChart.propTypes = {
   className: PropTypes.string,
   width: PropTypes.any.isRequired,
   height: PropTypes.any.isRequired,
@@ -32,4 +31,4 @@ ChartLine.propTypes = {
   config: PropTypes.object
 };
 
-export default ChartLine;
+export default StackedBarChart;

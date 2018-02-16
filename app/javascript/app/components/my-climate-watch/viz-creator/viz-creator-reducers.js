@@ -17,6 +17,7 @@ import {
   $indicators,
   $categories,
   $subcategories,
+  $years,
   $timeseries
 } from './viz-creator-lenses';
 
@@ -219,13 +220,44 @@ export default {
         indicatorsFilter && indicatorsFilter.selected === 'all'
           ? mapFilter(payload)
           : [],
-      child: get($timeseries, initialState)
+      child: get($years, initialState)
     };
 
     return updateIn($indicators, indicators, state);
   },
   [actions.selectIndicator]: (state, { payload }) =>
-    updateIn($indicators, { selected: payload }, state),
+    updateIn($indicators, { selected: payload, child: get($years, initialState) }, state),
+
+  // Years
+  [actions.fetchYears]: state =>
+    updateIn(
+      $years,
+      {
+        loading: true
+      },
+      state
+    ),
+  [actions.gotYears]: (state, { payload }) => {
+    const filters = filtersSelector(state);
+    const yearsFilter = find(filters, { name: 'years' });
+
+    return updateIn(
+      $years,
+      {
+        loading: false,
+        loaded: true,
+        selected:
+          yearsFilter && yearsFilter.selected === 'all'
+            ? mapFilter(payload)
+            : [],
+        data: payload,
+        child: get($timeseries, initialState)
+      },
+      state
+    );
+  },
+  [actions.selectYear]: (state, { payload }) =>
+    updateIn($years, { selected: payload, child: get($timeseries, initialState) }, state),
 
   // Timeseries
   [actions.fetchTimeseries]: state =>
