@@ -28,6 +28,7 @@ const getCalculation = state => state.search.calculation || null;
 const getSelectedLocations = state => state.selectedLocations || null;
 const getQuantifications = state => state.quantifications || null;
 const getCalculationData = state => state.calculationData || null;
+const getCountriesData = state => state.countriesData || null;
 
 export const parseSelectedLocations = createSelector(
   getSelectedLocations,
@@ -51,10 +52,14 @@ const parseLocationCalculationData = createSelector(
 const getData = state => state.data || [];
 
 export const getSelectedLocationsName = createSelector(
-  [getData, parseSelectedLocations],
-  (data, selectedLocations) => {
-    if (!selectedLocations || !data || isEmpty(data)) return null;
-    return selectedLocations.map(l => data.find(d => d.iso_code3 === l));
+  [getCountriesData, parseSelectedLocations],
+  (countriesData, selectedLocations) => {
+    if (!selectedLocations || !countriesData || isEmpty(countriesData)) {
+      return null;
+    }
+    return selectedLocations.map(
+      l => (countriesData.find(d => d.iso_code3 === l) || {}).location || null
+    );
   }
 );
 
@@ -114,7 +119,9 @@ export const filterData = createSelector(
     // If the data has the AR4 version (latest) we only want to display that data to avoid duplicates
     const latestVersion = 'AR4';
     const hasLatestVersion = filteredData.some(d => d.gwp === latestVersion);
-    if (hasLatestVersion) { filteredData = filteredData.filter(d => d.gwp === latestVersion); }
+    if (hasLatestVersion) {
+      filteredData = filteredData.filter(d => d.gwp === latestVersion);
+    }
     const version = hasLatestVersion ? latestVersion : 'AR2';
     const filterSector =
       source.label === 'UNFCCC'
@@ -153,7 +160,7 @@ export const filterData = createSelector(
 );
 
 const calculatedRatio = (selected, calculationData, x) => {
-  if (!calculationData) return 1;
+  if (!calculationData || !calculationData[x]) return 1;
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
     // GDP is in dollars and we want to display it in million dollars
     return calculationData[x][0].gdp / DATA_SCALE;

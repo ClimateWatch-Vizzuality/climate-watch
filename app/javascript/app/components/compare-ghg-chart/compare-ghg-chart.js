@@ -32,7 +32,8 @@ const mapStateToProps = (state, { location }) => {
     search,
     meta,
     selectedLocations: search.locations,
-    calculationData
+    calculationData,
+    countriesData: state.countries.data
   };
   return {
     sourceOptions: getSourceOptions(ghg),
