@@ -21,7 +21,7 @@ export const getGhgEmissionDefaults = (source, meta) => {
 };
 
 export const calculatedRatio = (selected, calculationData, x) => {
-  if (!calculationData) return 1;
+  if (!calculationData || !calculationData[x]) return 1;
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
     // GDP is in dollars and we want to display it in million dollars
     return calculationData[x][0].gdp / DATA_SCALE;

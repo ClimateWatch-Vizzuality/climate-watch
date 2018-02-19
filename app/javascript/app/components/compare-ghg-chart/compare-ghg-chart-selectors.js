@@ -177,6 +177,7 @@ export const getChartData = createSelector(
     calculationSelected
   ) => {
     const absoluteValueIsSelected =
+      calculationSelected &&
       calculationSelected.value === CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
     if (
       !data ||
