@@ -23,13 +23,20 @@ class Dropdown extends PureComponent {
       plain,
       dark,
       blueBorder,
+      wrapperClassName,
       className,
       disabled,
       colorDot
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     return (
-      <div className={cx(styles.dropdownWrapper, { [styles.flex]: colorDot })}>
+      <div
+        className={cx(
+          styles.dropdownWrapper,
+          { [styles.flex]: colorDot },
+          wrapperClassName
+        )}
+      >
         {label && <span className={styles.label}>{label}</span>}
         {colorDot && (
           <span className={styles.dot} style={{ backgroundColor: colorDot }} />
@@ -61,6 +68,7 @@ class Dropdown extends PureComponent {
 Dropdown.propTypes = {
   label: PropTypes.string,
   openUp: PropTypes.bool,
+  wrapperClassName: PropTypes.string,
   className: PropTypes.string,
   transparent: PropTypes.bool,
   white: PropTypes.bool,

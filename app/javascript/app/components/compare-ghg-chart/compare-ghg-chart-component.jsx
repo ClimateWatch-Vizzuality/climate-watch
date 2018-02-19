@@ -9,7 +9,6 @@ import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import ModalMetadata from 'components/modal-metadata';
 import Chart from 'components/charts/chart';
-import layout from 'styles/layout.scss';
 import cx from 'classnames';
 import styles from './compare-ghg-chart-styles.scss';
 
@@ -38,7 +37,7 @@ class CompareGhgChart extends PureComponent {
         key="action1"
         className={styles.colEnd}
         onInfoClick={handleInfoClick}
-        shareUrl="/embed/ghg-emissions"
+        shareUrl="/embed/compare-ghg-chart"
         analyticsGraphName="Ghg-emissions"
         reverseDropdown={reverseDropdown}
       />,
@@ -71,11 +70,13 @@ class CompareGhgChart extends PureComponent {
       needsWBData
     } = this.props;
     return (
-      <div className={layout.content}>
+      <div>
         <EmissionsProvider filters={providerFilters} />
         <EmissionsMetaProvider />
         {needsWBData && <WbCountryDataProvider />}
-        <h2 className={styles.title}>Global Historical Emissions</h2>
+        <h2 className={styles.title}>
+          Historical GHG Emissions and Target Levels
+        </h2>
         <div className={styles.col6}>
           <Dropdown
             label="Source"
