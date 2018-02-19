@@ -3,10 +3,29 @@
 .col6 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
+  @include msGridColumns(1fr, 1fr);
 
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   margin-bottom: 10px;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.col2 {
+  @extend %grid;
+
+  @include msGridColumns(1fr, 1fr);
+
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 10px;
+
+  > div {
+    margin-right: 0 !important;
+  }
 }
 
 .title {
@@ -25,4 +44,8 @@
   > div {
     margin-left: 0;
   }
+}
+
+.colEnd {
+  align-self: flex-end;
 }

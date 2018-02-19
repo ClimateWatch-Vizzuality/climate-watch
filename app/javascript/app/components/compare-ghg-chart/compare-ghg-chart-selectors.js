@@ -48,6 +48,16 @@ export const parseSelectedLocations = createSelector(
   }
 );
 
+export const getSelectedLocationsFilter = createSelector(
+  getSelectedLocations,
+  selectedLocations => {
+    if (!selectedLocations) return null;
+    return selectedLocations
+      .split(',')
+      .filter(l => !parseInt(l, 10) && l !== '');
+  }
+);
+
 const parseLocationCalculationData = createSelector(
   [getCalculationData, parseSelectedLocations],
   (data, locations) => {
@@ -195,6 +205,7 @@ export const getChartData = createSelector(
       !data.length ||
       !filters ||
       !calculationSelected ||
+      !selectedLocations ||
       (!absoluteValueIsSelected && !locationCalculationData)
     ) {
       return [];
@@ -248,7 +259,7 @@ export const getChartData = createSelector(
 export const getChartConfig = createSelector(
   [getData, parseSelectedLocations, getSelectedLocationsName],
   (data, locations, locationNames) => {
-    if (!data || isEmpty(data)) return null;
+    if (!data || isEmpty(data) || !locations) return null;
     const yColumns = locations.map((l, i) => ({
       label: locationNames[i],
       value: getYColumnValue(locationNames[i]),
@@ -276,6 +287,7 @@ export default {
   calculationOptions,
   getCalculationSelected,
   parseSelectedLocations,
+  getSelectedLocationsFilter,
   getFiltersSelected,
   getChartData,
   getChartConfig

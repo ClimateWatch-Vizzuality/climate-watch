@@ -5,10 +5,12 @@ import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import Dropdown from 'components/dropdown';
+import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import ModalMetadata from 'components/modal-metadata';
 import Chart from 'components/charts/chart';
 import layout from 'styles/layout.scss';
+import cx from 'classnames';
 import styles from './compare-ghg-chart-styles.scss';
 
 class CompareGhgChart extends PureComponent {
@@ -24,6 +26,35 @@ class CompareGhgChart extends PureComponent {
       />
     );
   }
+
+  renderActionButtons(reverseDropdown) {
+    const {
+      handleInfoClick,
+      handleAnalyticsClick,
+      selectedLocationsFilter
+    } = this.props;
+    return [
+      <ButtonGroup
+        key="action1"
+        className={styles.colEnd}
+        onInfoClick={handleInfoClick}
+        shareUrl="/embed/ghg-emissions"
+        analyticsGraphName="Ghg-emissions"
+        reverseDropdown={reverseDropdown}
+      />,
+      <Button
+        key="action2"
+        noSpace
+        className={styles.colEnd}
+        color="yellow"
+        link={`/ghg-emissions?breakBy=location&filter=${selectedLocationsFilter}`}
+        onClick={handleAnalyticsClick}
+      >
+        Explore emissions
+      </Button>
+    ];
+  }
+
   render() {
     const {
       handleSourceChange,
@@ -60,7 +91,11 @@ class CompareGhgChart extends PureComponent {
             value={calculationSelected}
             hideResetButton
           />
-          <TabletLandscape>{this.renderButtonGroup()}</TabletLandscape>
+          <TabletLandscape>
+            <div />
+            <div />
+            {this.renderActionButtons()}
+          </TabletLandscape>
         </div>
         <Chart
           className={styles.chartWrapper}
@@ -74,8 +109,8 @@ class CompareGhgChart extends PureComponent {
           hideRemoveOptions
         />
         <TabletPortraitOnly>
-          <div className={styles.buttonGroup}>
-            {this.renderButtonGroup(true)}
+          <div className={cx(styles.buttonGroup, styles.col2)}>
+            {this.renderActionButtons(true)}
           </div>
         </TabletPortraitOnly>
         <ModalMetadata />
@@ -94,8 +129,10 @@ CompareGhgChart.propTypes = {
   handleSourceChange: PropTypes.func.isRequired,
   calculationOptions: PropTypes.array,
   calculationSelected: PropTypes.object,
+  selectedLocationsFilter: PropTypes.array,
   handleCalculationChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
+  handleAnalyticsClick: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   needsWBData: PropTypes.bool.isRequired
 };

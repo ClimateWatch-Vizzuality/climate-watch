@@ -1,8 +1,11 @@
 @import '~styles/settings.scss';
 
 .dropdownWrapper {
-  display: flex;
   width: 100%;
+
+  &.flex {
+    display: flex;
+  }
 }
 
 .dot {

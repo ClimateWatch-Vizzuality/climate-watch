@@ -16,7 +16,8 @@ import {
   getFiltersSelected,
   getChartData,
   getChartConfig,
-  parseSelectedLocations
+  parseSelectedLocations,
+  getSelectedLocationsFilter
 } from './compare-ghg-chart-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -45,6 +46,7 @@ const mapStateToProps = (state, { location }) => {
     data: getChartData(ghg),
     config: getChartConfig(ghg),
     selectedLocations: parseSelectedLocations(ghg),
+    selectedLocationsFilter: getSelectedLocationsFilter(ghg),
     providerFilters: getFiltersSelected(ghg),
     needsWBData,
     loading:
@@ -94,12 +96,21 @@ class CompareGhgChartContainer extends PureComponent {
     }
   };
 
+  handleAnalyticsClick = () => {
+    ReactGA.event({
+      category: 'Compare',
+      action: 'Leave page to explore data',
+      label: 'Ghg emissions'
+    });
+  };
+
   render() {
     return createElement(CompareGhgChartComponent, {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      handleAnalyticsClick: this.handleAnalyticsClick
     });
   }
 }
