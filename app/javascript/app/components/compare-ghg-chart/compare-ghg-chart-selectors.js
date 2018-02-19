@@ -18,6 +18,7 @@ import {
   getTooltipConfig,
   getThemeConfig
 } from 'utils/graphs';
+import { calculatedRatio } from 'utils/ghg-emissions';
 
 // meta data for selectors
 const getSources = state => state.meta.data_source || null;
@@ -58,7 +59,7 @@ export const getSelectedLocationsName = createSelector(
       return null;
     }
     return selectedLocations.map(
-      l => (countriesData.find(d => d.iso_code3 === l) || {}).location || null
+      l => countriesData.find(d => d.iso_code3 === l).wri_standard_name || null
     );
   }
 );
@@ -159,18 +160,6 @@ export const filterData = createSelector(
   }
 );
 
-const calculatedRatio = (selected, calculationData, x) => {
-  if (!calculationData || !calculationData[x]) return 1;
-  if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
-    // GDP is in dollars and we want to display it in million dollars
-    return calculationData[x][0].gdp / DATA_SCALE;
-  }
-  if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
-    return calculationData[x][0].population;
-  }
-  return 1;
-};
-
 export const getChartData = createSelector(
   [
     filterData,
@@ -187,20 +176,20 @@ export const getChartData = createSelector(
     selectedLocations,
     calculationSelected
   ) => {
-    const absoluteValue =
+    const absoluteValueIsSelected =
       calculationSelected.value === CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
     if (
       !data ||
       !data.length ||
       !filters ||
       !calculationSelected ||
-      (!absoluteValue && !locationCalculationData)
+      (!absoluteValueIsSelected && !locationCalculationData)
     ) {
       return [];
     }
     let xValues = [];
     xValues = data[0].emissions.map(d => d.year);
-    if (!absoluteValue) {
+    if (!absoluteValueIsSelected) {
       // Intersection of years betweeen the data and the calculation data years from the countries
       xValues = intersection(
         xValues,
@@ -219,7 +208,7 @@ export const getChartData = createSelector(
         const yData = d.emissions.find(e => e.year === x);
         const locationIndex = selectedLocations.indexOf(d.iso_code3);
         let calculationRatio = 1;
-        if (!absoluteValue) {
+        if (!absoluteValueIsSelected) {
           calculationRatio = calculatedRatio(
             calculationSelected.value,
             locationCalculationData[locationIndex],

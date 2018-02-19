@@ -8,7 +8,8 @@ import isArray from 'lodash/isArray';
 import orderBy from 'lodash/orderBy';
 import flatten from 'lodash/flatten';
 import sumBy from 'lodash/sumBy';
-import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
+import { getGhgEmissionDefaults, calculatedRatio } from 'utils/ghg-emissions';
+
 import {
   getYColumnValue,
   getThemeConfig,
@@ -186,18 +187,6 @@ export const filterData = createSelector(
     return filteredData;
   }
 );
-
-const calculatedRatio = (selected, calculationData, x) => {
-  if (!calculationData) return 1;
-  if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
-    // GDP is in dollars and we want to display it in million dollars
-    return calculationData[x][0].gdp / DATA_SCALE;
-  }
-  if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
-    return calculationData[x][0].population;
-  }
-  return 1;
-};
 
 export const getQuantificationsData = createSelector(
   getQuantifications,
