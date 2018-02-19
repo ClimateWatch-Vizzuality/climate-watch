@@ -16,3 +16,13 @@
   margin-bottom: 20px;
   margin-top: 35px;
 }
+
+.chartWrapper {
+  position: relative;
+  min-height: 420px;
+  max-height: 100%;
+
+  > div {
+    margin-left: 0;
+  }
+}
