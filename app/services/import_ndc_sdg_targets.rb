@@ -20,9 +20,12 @@ class ImportNdcSdgTargets
 
   def import_ndc_sdg_targets(content)
     content.each.with_index(2) do |row|
-      row[:indc_text] = TextNormalizer.normalize(row[:indc_text])
-      ndc = ndc(row)
-      target = target(row)
+      ndc = nil
+      if row[:indc_text].present?
+        row[:indc_text] = TextNormalizer.normalize(row[:indc_text])
+        ndc = ndc(row)
+        target = target(row)
+      end
 
       unless ndc && target
         @failed_lines.append(row)
