@@ -16,6 +16,7 @@ class LegendChart extends PureComponent {
       dataOptions,
       dataSelected,
       handleRemove,
+      hideRemoveOptions,
       handleAdd,
       className
     } = this.props;
@@ -35,7 +36,9 @@ class LegendChart extends PureComponent {
                 id: column.value
               }}
               onRemove={handleRemove}
-              canRemove={config.columns.y.length > 1}
+              canRemove={
+                hideRemoveOptions ? false : config.columns.y.length > 1
+              }
             />
           ))}
         {shouldShowMultiselect && (
@@ -62,6 +65,7 @@ LegendChart.propTypes = {
   handleAdd: PropTypes.func,
   dataOptions: PropTypes.array,
   dataSelected: PropTypes.array,
+  hideRemoveOptions: PropTypes.bool,
   className: PropTypes.string
 };
 

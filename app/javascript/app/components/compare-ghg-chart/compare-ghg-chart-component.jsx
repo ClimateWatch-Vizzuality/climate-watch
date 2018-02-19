@@ -8,7 +8,6 @@ import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import ModalMetadata from 'components/modal-metadata';
 import Chart from 'components/charts/chart';
-import { CALCULATION_OPTIONS } from 'app/data/constants';
 import layout from 'styles/layout.scss';
 import styles from './compare-ghg-chart-styles.scss';
 
@@ -37,11 +36,9 @@ class CompareGhgChart extends PureComponent {
       selectedLocations,
       config,
       data,
-      loading
+      loading,
+      needsWBData
     } = this.props;
-    const needsWBData =
-      calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
-
     return (
       <div className={layout.content}>
         <EmissionsProvider filters={providerFilters} />
@@ -74,7 +71,7 @@ class CompareGhgChart extends PureComponent {
           dataSelected={selectedLocations}
           height={500}
           loading={loading}
-          hideResetButton
+          hideRemoveOptions
         />
         <TabletPortraitOnly>
           <div className={styles.buttonGroup}>
@@ -99,7 +96,8 @@ CompareGhgChart.propTypes = {
   calculationSelected: PropTypes.object,
   handleCalculationChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  needsWBData: PropTypes.bool.isRequired
 };
 
 export default CompareGhgChart;

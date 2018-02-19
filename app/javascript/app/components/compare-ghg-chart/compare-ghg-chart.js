@@ -6,9 +6,8 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
 import ReactGA from 'react-ga';
+import { CALCULATION_OPTIONS } from 'app/data/constants';
 import CompareGhgChartComponent from './compare-ghg-chart-component';
-// getChartData,
-// getChartConfig,
 import {
   getSourceOptions,
   getSourceSelected,
@@ -35,6 +34,9 @@ const mapStateToProps = (state, { location }) => {
     calculationData,
     countriesData: state.countries.data
   };
+  const calculationSelected = getCalculationSelected(ghg);
+  const needsWBData =
+    calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
   return {
     sourceOptions: getSourceOptions(ghg),
     sourceSelected: getSourceSelected(ghg),
@@ -44,10 +46,13 @@ const mapStateToProps = (state, { location }) => {
     config: getChartConfig(ghg),
     selectedLocations: parseSelectedLocations(ghg),
     providerFilters: getFiltersSelected(ghg),
+    needsWBData,
     loading:
       state.ghgEmissionsMeta.loading ||
       state.ghgEmissions.loading ||
-      !getCalculationSelected(ghg)
+      state.emissions.loading ||
+      !calculationSelected ||
+      (needsWBData && state.wbCountryData.loading)
   };
 };
 
