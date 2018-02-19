@@ -35,9 +35,16 @@ export const parseSelectedLocations = createSelector(
   getSelectedLocations,
   selectedLocations => {
     if (!selectedLocations) return null;
-    return selectedLocations
-      .split(',')
-      .filter(l => !parseInt(l, 10) && l !== '');
+    const filteredLocations = [];
+    selectedLocations.split(',').forEach((l, index) => {
+      if (!parseInt(l, 10) && l !== '') {
+        filteredLocations.push({
+          iso_code3: l,
+          index
+        });
+      }
+    });
+    return filteredLocations;
   }
 );
 
@@ -45,7 +52,7 @@ const parseLocationCalculationData = createSelector(
   [getCalculationData, parseSelectedLocations],
   (data, locations) => {
     if (!data || isEmpty(data)) return null;
-    const locationData = locations.map(l => groupBy(data[l], 'year'));
+    const locationData = locations.map(l => groupBy(data[l.iso_code3], 'year'));
     return locationData;
   }
 );
@@ -59,7 +66,9 @@ export const getSelectedLocationsName = createSelector(
       return null;
     }
     return selectedLocations.map(
-      l => countriesData.find(d => d.iso_code3 === l).wri_standard_name || null
+      l =>
+        countriesData.find(d => d.iso_code3 === l.iso_code3)
+          .wri_standard_name || null
     );
   }
 );
@@ -137,7 +146,9 @@ export const filterData = createSelector(
     if (calculation.value !== 'ABSOLUTE_VALUE') {
       if (!locations || !locations.length) return null;
       const locationDataGroupedByYear = locations.map(l => {
-        const locationData = filteredData.filter(d => d.iso_code3 === l);
+        const locationData = filteredData.filter(
+          d => d.iso_code3 === l.iso_code3
+        );
         return groupBy(flatten(locationData.map(d => d.emissions)), 'year');
       });
 
@@ -235,19 +246,17 @@ export const getChartData = createSelector(
 );
 
 export const getChartConfig = createSelector(
-  [getData, parseSelectedLocations],
-  (data, locations) => {
+  [getData, parseSelectedLocations, getSelectedLocationsName],
+  (data, locations, locationNames) => {
     if (!data || isEmpty(data)) return null;
-    const yColumns = locations.map(l => {
-      const firstData = data.find(d => l === d.iso_code3);
-      const fullLocationName = (firstData || {}).location;
-      return {
-        label: fullLocationName,
-        value: getYColumnValue(fullLocationName)
-      };
-    });
+    const yColumns = locations.map((l, i) => ({
+      label: locationNames[i],
+      value: getYColumnValue(locationNames[i]),
+      index: l.index
+    }));
     const theme = getThemeConfig(yColumns, COUNTRY_COMPARE_COLORS);
     const tooltip = getTooltipConfig(yColumns);
+
     return {
       axes: DEFAULT_AXES_CONFIG,
       theme,

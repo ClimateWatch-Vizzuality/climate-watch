@@ -37,7 +37,8 @@ export const getYColumnValue = column => `y${upperFirst(camelCase(column))}`;
 
 export const getThemeConfig = (columns, colors) => {
   const theme = {};
-  columns.forEach((column, index) => {
+  columns.forEach((column, i) => {
+    const index = column.index || i;
     theme[column.value] = {
       stroke: colors[index],
       fill: colors[index]
