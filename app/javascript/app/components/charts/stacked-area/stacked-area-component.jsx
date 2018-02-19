@@ -125,6 +125,7 @@ class ChartStackedArea extends PureComponent {
             tickSize={8}
             allowDecimals={false}
             tickCount={data.length + points.length}
+            axisLine={false}
           />
           <YAxis
             type="number"
