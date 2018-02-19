@@ -15,7 +15,8 @@ import iconBarchart from 'assets/icons/barchart.svg';
 
 import createSideToolbarPlugin from './draft-js-side-toolbar-plugin';
 import Barchart from './components/barchart';
-import Picker from './components/widget-picker';
+// import Picker from 'components/my-climate-watch/widget-picker';
+import MyViz from 'components/my-climate-watch/my-visualisations';
 import VizCreator from 'components/my-climate-watch/viz-creator';
 
 import styles from './my-cw-editor-styles';
@@ -79,19 +80,20 @@ const StoryEditor = ({
 }) => (
   <div className={styles.container}>
     <Modal
-      styles={modalStyles}
+      customStyles={modalStyles}
       isOpen={pickerIsOpen}
       onRequestClose={hidePicker}
       header={<ModalHeader title="Select a visualisation" />}
     >
-      <Picker
-        onHidePicker={hidePicker}
-        onOpenCreator={showCreator}
+      <MyViz
+        closeCreator={hidePicker}
+        openCreator={showCreator}
         onSelectVis={pickVisualiation}
+        mode="add"
       />
     </Modal>
     <Modal
-      styles={modalStyles}
+      customStyles={modalStyles}
       isOpen={creatorIsOpen}
       onRequestClose={hideCreator}
       header={<ModalHeader title="Create a visualisation" />}

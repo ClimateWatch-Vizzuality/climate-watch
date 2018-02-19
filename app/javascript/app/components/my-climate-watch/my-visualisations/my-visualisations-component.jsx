@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import VizCreator from 'components/my-climate-watch/viz-creator';
 import ActionCard from 'components/my-climate-watch/my-cw-placeholder-card';
 import Card from 'components/my-climate-watch/my-visualisations/my-cw-vis-card';
+import { chartDataSelector, visualisationType } from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
 import styles from './my-visualisations-styles.scss';
 
 const modalStyles = {
@@ -19,8 +20,10 @@ const MyVisualisations = ({
   data,
   creatorIsOpen,
   openCreator,
+  onSelectVis,
   closeCreator,
-  currentId
+  currentId,
+  mode
 }) => (
   <div>
     <ul className={styles.visContainer}>
@@ -28,13 +31,20 @@ const MyVisualisations = ({
         <li key={vis.id} className={styles.visCard}>
           <Card
             data={vis}
-            onClick={() =>
-              openCreator({
+            onClick={() => {
+              const payload = {
                 id: vis.id,
                 title: vis.title,
                 description: vis.description,
                 datasets: vis.json_body
-              })}
+              };
+              mode === 'edit'
+                ? openCreator(payload)
+                : onSelectVis({type: 'barchart', data: {
+                  ...chartDataSelector({datasets: vis.json_body}),
+                  vizType: visualisationType({datasets: vis.json_body})
+                }})
+            }}
           />
         </li>
       ))}
@@ -68,7 +78,9 @@ MyVisualisations.propTypes = {
   creatorIsOpen: PropTypes.bool,
   openCreator: PropTypes.func,
   closeCreator: PropTypes.func,
-  currentId: PropTypes.number
+  onSelectVis: PropTypes.func,
+  currentId: PropTypes.number,
+  mode: PropTypes.string
 };
 
 export default MyVisualisations;

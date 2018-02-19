@@ -71,7 +71,7 @@ Editor.propTypes = {
   titlePlaceholder: PropTypes.string
 };
 
-const mapStateToProps = ({ editor }) => editor;
+const mapStateToProps = ({ myCWEditor }) => myCWEditor;
 
 export { actions, reducers, initialState };
 

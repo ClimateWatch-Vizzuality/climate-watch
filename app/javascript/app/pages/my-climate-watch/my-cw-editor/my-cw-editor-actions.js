@@ -19,7 +19,7 @@ export const updateTitle = createAction('updateTitle');
 export const logState = createThunkAction(
   'logState',
   () => (dispatch, getState) => {
-    const { editor: { content: editorState } } = getState();
+    const { myCWEditor: { content: editorState } } = getState();
     console.log(logEditorState(editorState)); // eslint-disable-line no-console
   }
 );
@@ -27,7 +27,7 @@ export const logState = createThunkAction(
 export const insertAtomic = createThunkAction(
   'insertAtomic',
   ({ type, mode, data }) => (dispatch, getState) => {
-    const { editor: { content: editorState } } = getState();
+    const { myCWEditor: { content: editorState } } = getState();
     const { entityKey, newEditorState } = updateEditorContent({
       editorState,
       type,

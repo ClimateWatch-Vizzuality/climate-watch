@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import initialState from './widget-picker-initial-state';
 import * as actions from './widget-picker-actions';
-import reducers from './widget-picker-reducers';
+import * as reducers from './widget-picker-reducers';
 import PickerComponent from './widget-picker-component';
 
 class Picker extends Component {
@@ -21,7 +21,7 @@ class Picker extends Component {
   }
 }
 
-const mapStateToProps = ({ picker }) => picker;
+const mapStateToProps = ({ myCWPicker, ...props }) => console.log(props) || myCWPicker;
 
 export { actions, reducers, initialState };
 
