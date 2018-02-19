@@ -26,8 +26,8 @@ const CountryCompare = ({ route, anchorLinks }) => (
         />
       </Sticky>
     </Header>
+    <CountryCompareSelector className={styles.countrySelectors} />
     <div className={layout.content}>
-      <CountryCompareSelector className={styles.countrySelectors} />
       {route.sections &&
         route.sections.length > 0 &&
         route.sections.map(section => (
