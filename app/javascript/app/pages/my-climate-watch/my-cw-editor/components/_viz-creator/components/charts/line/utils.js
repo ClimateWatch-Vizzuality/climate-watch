@@ -9,10 +9,12 @@ const getColumnValue = column => _camelCase(column);
 
 export const groupDataByScenario = (data, scenarios) =>
   data.reduce((res, d) => {
-    const year = { year: {
-      value: d.year,
-      label: 'year'
-    } };
+    const year = {
+      year: {
+        value: d.year,
+        label: 'year'
+      }
+    };
 
     const idx = _findIndex(res, rd => rd.year.value === year.year.value);
 
@@ -32,20 +34,25 @@ export const groupDataByScenario = (data, scenarios) =>
   }, []);
 
 export const getLineProps = (data, colors) =>
-  _keys(data[0])
-    .reduce((rc, k, i) => {
+  _keys(data[0]).reduce(
+    (rc, k, i) => {
       const color = colors[i++]; // eslint-disable-line
-      return Object.assign(rc, { [k]: {
-        dataKey: k,
-        fill: color,
-        stroke: color
-      } });
-    }, {}, -1);
+      return Object.assign(rc, {
+        [k]: {
+          dataKey: k,
+          fill: color,
+          stroke: color
+        }
+      });
+    },
+    {},
+    -1
+  );
 
 export const pickByKey = (key, data) =>
   data.map(l =>
-    _reduce(l, (rr, item, k) =>
-      Object.assign(rr, { [k]: item[key] }), {}));
+    _reduce(l, (rr, item, k) => Object.assign(rr, { [k]: item[key] }), {})
+  );
 
 export const COLORS = [
   '#2D9290',
@@ -63,8 +70,12 @@ export const COLORS = [
   '#7EA759'
 ];
 
-export const mergeLineProps = (withObject, theme) => _reduce(theme, (t, v, k) =>
-  Object.assign(t, {
-    [k]: Object.assign(v, withObject)
-  }), {}
-);
+export const mergeLineProps = (withObject, theme) =>
+  _reduce(
+    theme,
+    (t, v, k) =>
+      Object.assign(t, {
+        [k]: Object.assign(v, withObject)
+      }),
+    {}
+  );

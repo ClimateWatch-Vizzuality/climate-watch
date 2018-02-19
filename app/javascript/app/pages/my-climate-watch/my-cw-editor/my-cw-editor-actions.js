@@ -1,58 +1,52 @@
 import { createAction, createThunkAction } from 'redux-tools';
-import { CWAPI } from 'services/api';
 
-export const clearInsight = createAction('clearInsight');
-export const getInsightInit = createAction('getInsightInit');
-export const getInsightReady = createAction('getInsightReady');
-export const getInsightFail = createAction('getInsightFail');
-export const saveInsightInit = createAction('saveInsightInit');
-export const saveInsightReady = createAction('saveInsightReady');
-export const saveInsightFail = createAction('saveInsightFail');
+import {
+  updateEditorContent,
+  insertAtomicBlock,
+  logEditorState
+} from 'app/utils/draft';
 
-export const getInsight = createThunkAction(
-  'getInsight',
-  insightId => dispatch => {
-    dispatch(getInsightInit());
-    CWAPI.get(`my_cw/user_stories/${insightId}`)
-      .then(insight => {
-        dispatch(getInsightReady(insight));
-      })
-      .catch(e => {
-        console.warn(e);
-        dispatch(getInsightFail());
-      });
+export const openPicker = createAction('openPicker');
+export const closePicker = createAction('closePicker');
+export const openCreator = createAction('openCreator');
+export const closeCreator = createAction('closeCreator');
+
+export const updateContent = createAction('updateContent');
+export const focusEditor = createAction('focusEditor');
+export const focusTitle = createAction('focusTitle');
+export const updateTitle = createAction('updateTitle');
+
+export const logState = createThunkAction(
+  'logState',
+  () => (dispatch, getState) => {
+    const { editor: { content: editorState } } = getState();
+    console.log(logEditorState(editorState)); // eslint-disable-line no-console
   }
 );
 
-export const saveInsight = createThunkAction(
-  'saveInsight',
-  ({ content, id = '' }) => dispatch => {
-    dispatch(saveInsightInit());
-    const story = {
-      user_story: {
-        title: 'Insight test',
-        body: content,
-        public: true
-      }
-    };
-    if (id) {
-      CWAPI.patch(`my_cw/user_stories/${id}`, story)
-        .then(response => {
-          dispatch(saveInsightReady(response));
-        })
-        .catch(e => {
-          console.warn(e);
-          dispatch(saveInsightFail());
-        });
-    } else {
-      CWAPI.post('my_cw/user_stories', story)
-        .then(response => {
-          dispatch(saveInsightReady(response));
-        })
-        .catch(e => {
-          console.warn(e);
-          dispatch(saveInsightFail());
-        });
-    }
+export const insertAtomic = createThunkAction(
+  'insertAtomic',
+  ({ type, mode, data }) => (dispatch, getState) => {
+    const { editor: { content: editorState } } = getState();
+    const { entityKey, newEditorState } = updateEditorContent({
+      editorState,
+      type,
+      mode,
+      data
+    });
+    dispatch(
+      updateContent(
+        insertAtomicBlock({ editorState: newEditorState, entityKey, char: ' ' })
+      )
+    );
+    dispatch(focusEditor());
+  }
+);
+
+export const pickVisualiation = createThunkAction(
+  'pickVisualiation',
+  payload => dispatch => {
+    dispatch(insertAtomic(payload));
+    dispatch(closePicker());
   }
 );

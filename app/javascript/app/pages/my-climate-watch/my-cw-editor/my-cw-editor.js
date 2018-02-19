@@ -1,56 +1,78 @@
-import { createElement, PureComponent } from 'react';
-import { withRouter } from 'react-router';
+import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { parseInsight } from './my-cw-editor-selectors';
 import * as actions from './my-cw-editor-actions';
 import * as reducers from './my-cw-editor-reducers';
-import MyClimateWatchComponent from './my-cw-editor-component';
+import initialState from './my-cw-editor-initial-state';
+import EditorComponent from './my-cw-editor-component';
 
-const initialState = reducers.initialState;
-
-const mapStateToProps = ({ login, myCWEditor }) => ({
-  login,
-  saved: myCWEditor.saved,
-  loading: myCWEditor.loading,
-  insight: parseInsight(myCWEditor)
-});
-
-class MyClimateWatchContainer extends PureComponent {
-  componentWillMount() {
-    const { insightId } = this.props.match.params;
-    if (insightId) {
-      this.props.getInsight(insightId);
-    }
+class Editor extends Component {
+  componentWillReceiveProps({ editorIsFocused, titleIsFocused }) {
+    if (editorIsFocused && this.editor) setTimeout(() => this.focusEditor(), 0);
+    if (titleIsFocused && this.editor) setTimeout(() => this.focusTitle(), 0);
   }
 
-  componentDidUpdate() {
-    const { saved, history } = this.props;
-    if (saved) {
-      history.push('/my-climate-watch');
-    }
-  }
+  getEditorRef = ref => {
+    this.editor = ref;
+  };
 
-  componentWillUnmount() {
-    this.props.clearInsight();
-  }
+  getTitleRef = ref => {
+    this.title = ref;
+  };
+
+  focusEditor = () => {
+    this.editor.focus();
+  };
+
+  focusTitle = () => {
+    this.title.focus();
+  };
 
   render() {
-    return createElement(MyClimateWatchComponent, this.props);
+    const {
+      updateContent,
+      content,
+      openPicker,
+      closePicker,
+      openCreator,
+      closeCreator,
+      ...props
+    } = this.props;
+
+    return createElement(EditorComponent, {
+      showPicker: openPicker,
+      hidePicker: closePicker,
+      showCreator: openCreator,
+      hideCreator: closeCreator,
+      editorState: content,
+      onChange: updateContent,
+      getEditorRef: this.getEditorRef,
+      getTitleRef: this.getTitleRef,
+      focusEditor: this.focusEditor,
+      focusTitle: this.focusTitle,
+      ...props
+    });
   }
 }
 
-MyClimateWatchContainer.propTypes = {
-  match: PropTypes.object,
-  history: PropTypes.object,
-  saved: PropTypes.bool.isRequired,
-  getInsight: PropTypes.func.isRequired,
-  clearInsight: PropTypes.func.isRequired
+Editor.propTypes = {
+  updateContent: PropTypes.func.isRequired,
+  content: PropTypes.object.isRequired,
+  pickVisualiation: PropTypes.func.isRequired,
+  openPicker: PropTypes.func.isRequired,
+  closePicker: PropTypes.func.isRequired,
+  openCreator: PropTypes.func.isRequired,
+  closeCreator: PropTypes.func.isRequired,
+  pickerIsOpen: PropTypes.bool.isRequired,
+  updateTitle: PropTypes.func.isRequired,
+  logState: PropTypes.func,
+  title: PropTypes.string,
+  titlePlaceholder: PropTypes.string
 };
+
+const mapStateToProps = ({ editor }) => editor;
 
 export { actions, reducers, initialState };
 
-export default withRouter(
-  connect(mapStateToProps, actions)(MyClimateWatchContainer)
-);
+export default connect(mapStateToProps, actions)(Editor);

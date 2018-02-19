@@ -3,7 +3,7 @@ import { assign } from 'app/utils';
 import * as actions from './viz-creator-actions';
 
 const toggleSelect = (state, key, value) =>
-  (!isNull(value) && value === state[key] ? null : value);
+  !isNull(value) && value === state[key] ? null : value;
 
 const fetchData = (key, state) => ({
   ...state,

@@ -1,34 +1,33 @@
 import * as actions from './my-cw-editor-actions';
 
-export const initialState = {
-  loading: false,
-  loaded: false,
-  saving: false,
-  saved: false,
-  insight: {},
-  error: false
-};
+const closePicker = state => ({ ...state, pickerIsOpen: false });
 
 export default {
-  [actions.clearInsight]: () => initialState,
-  [actions.getInsightInit]: state => ({ ...state, loading: true }),
-  [actions.getInsightReady]: (state, { payload }) => ({
+  [actions.openPicker]: state => ({ ...state, pickerIsOpen: true }),
+  [actions.closePicker]: closePicker,
+
+  [actions.openCreator]: state =>
+    closePicker({ ...state, creatorIsOpen: true }),
+  [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
+
+  [actions.updateContent]: (state, { payload }) => ({
     ...state,
-    loading: false,
-    loaded: true,
-    insight: payload
+    content: payload,
+    titleIsFocused: false
   }),
-  [actions.getInsightFail]: state => ({
+  [actions.focusEditor]: state => ({
     ...state,
-    loading: false,
-    error: true
+    editorIsFocused: true,
+    titleIsFocused: false
   }),
-  [actions.saveInsightInit]: state => ({ ...state, saving: true }),
-  [actions.saveInsightReady]: (state, { payload }) => ({
+  [actions.focusTitle]: state => ({
     ...state,
-    saving: false,
-    saved: true,
-    insight: payload
+    titleIsFocused: true,
+    editorIsFocused: false
   }),
-  [actions.saveInsightFail]: state => ({ ...state, saving: false, error: true })
+  [actions.updateTitle]: (state, { payload }) => ({
+    ...state,
+    title: payload,
+    editorIsFocused: false
+  })
 };

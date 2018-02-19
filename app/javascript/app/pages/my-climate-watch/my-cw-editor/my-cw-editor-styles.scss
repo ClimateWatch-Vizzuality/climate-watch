@@ -1,27 +1,18 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
-.header {
-  background-color: $light-gray;
+.container {
+  // padding: 0 60px 60px;
 }
 
-.wrapper {
-  padding-top: 20px;
-  min-height: calc(100vh - 420px);
+.editor {
+  min-height: 80vh;
+  margin: $gutter-padding * 3;
 }
 
-.loginContainer {
-  min-height: calc(100vh - 420px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.login {
-  width: 200px;
-}
-
-.intro {
-  .title {
-    color: $theme-color;
-  }
+.title {
+  border: none;
+  width: 100%;
+  font-size: 2.7rem;
+  background-color: rgba($gray, 0.2);
+  padding: 1.25em $gutter-padding 1em;
 }

@@ -45,7 +45,9 @@ const Step2 = ({ visualisations, visualisation, selectViz }) => (
 
 const Step3 = ({ selectors, filters, selectFilter }) => {
   const selectProps = (f, value) => ({
-    disabled: (!isUndefined(filters[f.name].active) && filters[f.name].active) || isEmpty(filters[f.name].data),
+    disabled:
+      (!isUndefined(filters[f.name].active) && filters[f.name].active) ||
+      isEmpty(filters[f.name].data),
     [value]: filters[f.name].selected,
     options: filters[f.name].data,
     placeholder: filters[f.name].placeholder
@@ -73,8 +75,8 @@ const Step3 = ({ selectors, filters, selectFilter }) => {
                   <Dropdown
                     {...selectProps(f, 'value')}
                     label={filters[f.name].label}
-                    onValueChange={
-                      e => selectFilter({
+                    onValueChange={e =>
+                      selectFilter({
                         ...e,
                         type: f.name
                       })}
@@ -102,8 +104,13 @@ const pickChart = (charType, config) => {
 };
 
 const Step4 = ({ filters, visualisations, visualisation, timeseries }) => {
-  const allViz = reduce(visualisations, (r, v) => r.concat(v.visualisations), []);
-  const selectedVisualisation = visualisations && find(allViz, { id: visualisation });
+  const allViz = reduce(
+    visualisations,
+    (r, v) => r.concat(v.visualisations),
+    []
+  );
+  const selectedVisualisation =
+    visualisations && find(allViz, { id: visualisation });
   const charType = selectedVisualisation && selectedVisualisation.chart.type;
   return (
     <li className={styles.step}>

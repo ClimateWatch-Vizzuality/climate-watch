@@ -16,9 +16,7 @@ const ChartLine = ({ config, lines, lineProps, axis, cartesianGrid }) => (
   <ResponsiveContainer width="80%" height={300}>
     <LineChart {...config}>
       {cartesianGrid && <CartesianGrid {...cartesianGrid} />}
-      {lines && lines.map(l => (
-        <Line key={l} {...lineProps[l]} />
-      ))}
+      {lines && lines.map(l => <Line key={l} {...lineProps[l]} />)}
       {axis.x && <XAxis {...axis.x.props || null} />}
       {axis.y && <YAxis {...axis.y.props || null} />}
     </LineChart>

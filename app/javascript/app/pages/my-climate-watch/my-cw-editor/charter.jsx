@@ -23,10 +23,12 @@ const getColumnValue = column => _camelCase(column);
 
 const groupDataByScenario = (data, scenarios) =>
   data.reduce((res, d) => {
-    const year = { year: {
-      value: d.year,
-      label: 'year'
-    } };
+    const year = {
+      year: {
+        value: d.year,
+        label: 'year'
+      }
+    };
 
     const idx = _findIndex(res, rd => rd.year.value === year.year.value);
 
@@ -46,20 +48,25 @@ const groupDataByScenario = (data, scenarios) =>
   }, []);
 
 const getLineProps = (data, colors) =>
-  _keys(data[0])
-    .reduce((rc, k, i) => {
+  _keys(data[0]).reduce(
+    (rc, k, i) => {
       const color = colors[i++]; // eslint-disable-line
-      return Object.assign(rc, { [k]: {
-        dataKey: k,
-        fill: color,
-        stroke: color
-      } });
-    }, {}, -1);
+      return Object.assign(rc, {
+        [k]: {
+          dataKey: k,
+          fill: color,
+          stroke: color
+        }
+      });
+    },
+    {},
+    -1
+  );
 
 const pickByKey = (key, data) =>
   data.map(l =>
-    _reduce(l, (rr, item, k) =>
-      Object.assign(rr, { [k]: item[key] }), {}));
+    _reduce(l, (rr, item, k) => Object.assign(rr, { [k]: item[key] }), {})
+  );
 
 const COLORS = [
   '#2D9290',
@@ -77,19 +84,21 @@ const COLORS = [
   '#7EA759'
 ];
 
-const mergeLineProps = (withObject, theme) => _reduce(theme, (t, v, k) =>
-  Object.assign(t, {
-    [k]: Object.assign(v, withObject)
-  }), {}
-);
+const mergeLineProps = (withObject, theme) =>
+  _reduce(
+    theme,
+    (t, v, k) =>
+      Object.assign(t, {
+        [k]: Object.assign(v, withObject)
+      }),
+    {}
+  );
 
 const Liner = ({ config, lines, lineProps, axis, cartesianGrid }) => (
   <ResponsiveContainer width="80%" height={300}>
     <LineChart {...config}>
       {cartesianGrid && <CartesianGrid {...cartesianGrid} />}
-      {lines && lines.map(l => (
-        <Line key={l} {...lineProps[l]} />
-      ))}
+      {lines && lines.map(l => <Line key={l} {...lineProps[l]} />)}
       {axis.x && <XAxis {...axis.x.props || null} />}
       {axis.y && <YAxis {...axis.y.props || null} />}
     </LineChart>
@@ -100,7 +109,9 @@ class Charter extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    fetch('https://www.emissionspathways.org/api/v1/time_series_values?location=267&scenario=38,36,35,37&indicator=621')
+    fetch(
+      'https://www.emissionspathways.org/api/v1/time_series_values?location=267&scenario=38,36,35,37&indicator=621'
+    )
       .then(asJSON)
       .then(indicators => {
         fetch('https://www.emissionspathways.org/api/v1/scenarios?model=3')
@@ -115,10 +126,13 @@ class Charter extends Component {
     const data = groupDataByScenario(indicators, scenarios);
     const lineData = pickByKey('value', data);
 
-    const lineProps = mergeLineProps({
-      type: 'monotone',
-      dot: false
-    }, getLineProps(data, COLORS));
+    const lineProps = mergeLineProps(
+      {
+        type: 'monotone',
+        dot: false
+      },
+      getLineProps(data, COLORS)
+    );
 
     const lines = Object.keys(lineData[0]).slice(1);
     const axis = {
@@ -162,16 +176,14 @@ class Charter extends Component {
   }
 
   render() {
-    const {
-      config, lines, lineProps, axis, cartesianGrid
-    } = this.state;
+    const { config, lines, lineProps, axis, cartesianGrid } = this.state;
 
     return (
       <div>
         <h1>Charter</h1>
-        {config &&
+        {config && (
           <Liner {...{ config, lines, lineProps, axis, cartesianGrid }} />
-        }
+        )}
       </div>
     );
   }

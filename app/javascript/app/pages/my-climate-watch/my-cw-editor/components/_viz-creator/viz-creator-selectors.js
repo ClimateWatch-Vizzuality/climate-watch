@@ -158,5 +158,5 @@ export const timeseriesSelector = createSelector(
   timeseries,
   scenarios,
   (series, scn) =>
-    (isEmpty(series.data) ? series.data : processLineData(series.data, scn.data))
+    isEmpty(series.data) ? series.data : processLineData(series.data, scn.data)
 );
