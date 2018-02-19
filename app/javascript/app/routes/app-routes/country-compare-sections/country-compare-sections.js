@@ -1,4 +1,4 @@
-import ClimateVulnerability from 'components/country-compare/country-compare-climate-vulnerability/country-compare-climate-vulnerability';
+import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 
 export default [
   {
