@@ -6,8 +6,7 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import ReactGA from 'react-ga';
 
-import { actions as modalActions } from 'components/modal-metadata';
-import ownActions from './ghg-emissions-actions';
+import { actions } from 'components/modal-metadata';
 import reducers, { initialState } from './ghg-emissions-reducers';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -23,10 +22,9 @@ import {
   getFilterOptions,
   getFiltersSelected,
   getSelectorDefaults,
+  getProviderFilters,
   getActiveFilterRegion
 } from './ghg-emissions-selectors';
-
-const actions = { ...ownActions, ...modalActions };
 
 const groups = [
   {
@@ -40,7 +38,7 @@ const groups = [
 ];
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.ghgEmissions;
+  const { data } = state.emissions;
   const { meta } = state.ghgEmissionsMeta;
   const { data: regions } = state.regions;
   const search = qs.parse(location.search);
@@ -63,66 +61,13 @@ const mapStateToProps = (state, { location }) => {
     filtersSelected: getFiltersSelected(ghg),
     selectorDefaults: getSelectorDefaults(ghg),
     activeFilterRegion: getActiveFilterRegion(ghg),
-    loading: state.ghgEmissionsMeta.loading || state.ghgEmissions.loading,
+    providerFilters: getProviderFilters(ghg),
+    loading: state.ghgEmissionsMeta.loading || state.emissions.loading,
     groups
   };
 };
 
-function needsRequestData(props, nextProps) {
-  const { sourceSelected, breakSelected } = nextProps;
-  const hasValues = sourceSelected && breakSelected;
-  const hasChanged =
-    hasValues &&
-    (sourceSelected !== props.sourceSelected ||
-      breakSelected !== props.breakSelected);
-  return hasValues && hasChanged;
-}
-
-function getFiltersParsed(props) {
-  const { sourceSelected, breakSelected, selectorDefaults } = props;
-  const filter = {};
-  switch (breakSelected.value) {
-    case 'gas':
-      filter.location = selectorDefaults.location;
-      filter.sector = selectorDefaults.sector;
-      break;
-    case 'location':
-      filter.gas = selectorDefaults.gas;
-      filter.sector = selectorDefaults.sector;
-      break;
-    case 'sector':
-      filter.gas = selectorDefaults.gas;
-      filter.location = selectorDefaults.location;
-      break;
-    default:
-      break;
-  }
-
-  return {
-    ...filter,
-    source: sourceSelected.value
-  };
-}
-
 class GhgEmissionsContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-    const { sourceSelected, breakSelected } = props;
-    const hasValues = sourceSelected && breakSelected;
-    if (hasValues) {
-      const filters = getFiltersParsed(props);
-      props.fetchGhgEmissionsData(filters);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (needsRequestData(this.props, nextProps)) {
-      const { fetchGhgEmissionsData } = nextProps;
-      const filters = getFiltersParsed(nextProps);
-      fetchGhgEmissionsData(filters);
-    }
-  }
-
   handleSourceChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
     ReactGA.event({
@@ -223,7 +168,6 @@ GhgEmissionsContainer.propTypes = {
   sourceSelected: PropTypes.object,
   versionSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchGhgEmissionsData: PropTypes.func.isRequired,
   filtersSelected: PropTypes.array
 };
 

@@ -314,6 +314,35 @@ export const getChartConfig = createSelector(
   }
 );
 
+export const getProviderFilters = createSelector(
+  [getSourceSelected, getBreakSelected, getSelectorDefaults],
+  (sourceSelected, breakSelected, selectorDefaults) => {
+    if (!sourceSelected || !breakSelected) return null;
+    const filter = {};
+    switch (breakSelected.value) {
+      case 'gas':
+        filter.location = selectorDefaults.location;
+        filter.sector = selectorDefaults.sector;
+        break;
+      case 'location':
+        filter.gas = selectorDefaults.gas;
+        filter.sector = selectorDefaults.sector;
+        break;
+      case 'sector':
+        filter.gas = selectorDefaults.gas;
+        filter.location = selectorDefaults.location;
+        break;
+      default:
+        break;
+    }
+
+    return {
+      ...filter,
+      source: sourceSelected.value
+    };
+  }
+);
+
 export default {
   getSourceOptions,
   getSourceSelected,
@@ -321,5 +350,6 @@ export default {
   getBreakSelected,
   getFilterOptions,
   getFiltersSelected,
+  getProviderFilters,
   getActiveFilterRegion
 };

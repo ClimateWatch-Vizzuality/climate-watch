@@ -61,7 +61,6 @@ import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
-import * as ghgEmissionsComponent from 'components/ghg-emissions';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as modalESPOverviewComponent from 'components/emission-pathways/emission-pathways-overview/modal-overview';
 import * as ndcCountryAccordion from 'components/ndcs/ndcs-country-accordion';
@@ -77,7 +76,6 @@ const componentsReducers = {
   autocompleteSearch: handleActions(autocompleteSearchComponent),
   stories: handleActions(storiesComponent),
   countrySelect: handleActions(countrySelectComponent),
-  ghgEmissions: handleActions(ghgEmissionsComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
   ndcCountryAccordion: handleActions(ndcCountryAccordion),
