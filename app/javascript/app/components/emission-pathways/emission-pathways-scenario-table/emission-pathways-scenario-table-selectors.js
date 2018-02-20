@@ -138,11 +138,11 @@ const filteredDataByCategory = createSelector(
   }
 );
 
-const dataWithTrendLine = createSelector(
+const dataWithExtraColumns = createSelector(
   [filteredDataByCategory, getScenarioTrendData],
   (data, trendData) => {
     if (!data) return null;
-    const dataWithTrendLines = [];
+    const dataWithExtra = [];
     data.forEach(d => {
       const rowData = d;
       const indicatorId = d.id;
@@ -154,14 +154,20 @@ const dataWithTrendLine = createSelector(
           : sortBy(indicatorTrendData.values, ['year']).map(v =>
             parseFloat(v.value)
           );
-        dataWithTrendLines.push(rowData);
+        const round2D = n => Math.round(n * 100) / 100;
+        const firstData = indicatorTrendData.values[0];
+        const lastData =
+          indicatorTrendData.values[indicatorTrendData.values.length - 1];
+        rowData.first = `${firstData.year} | ${round2D(firstData.value)}`;
+        rowData.last = `${lastData.year} | ${round2D(lastData.value)}`;
+        dataWithExtra.push(rowData);
       }
     });
-    return dataWithTrendLines;
+    return dataWithExtra;
   }
 );
 
-const sortDataByCategory = createSelector([dataWithTrendLine], data => {
+const sortDataByCategory = createSelector([dataWithExtraColumns], data => {
   if (!data || isEmpty(data)) return null;
   return sortBy(data, d => d.category.name);
 });
@@ -208,6 +214,8 @@ export const defaultColumns = () => [
   'subcategory',
   'name',
   'unit',
+  'first',
+  'last',
   'trend'
 ];
 
