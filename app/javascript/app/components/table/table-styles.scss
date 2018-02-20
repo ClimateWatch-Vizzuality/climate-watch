@@ -112,5 +112,7 @@
 }
 
 .trendLink {
-  cursor: pointer;
+  > div {
+    cursor: pointer !important;
+  }
 }
