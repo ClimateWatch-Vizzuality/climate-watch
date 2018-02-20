@@ -11,12 +11,12 @@ import Component from './table-component';
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const { data, defaultColumns } = props;
+    const { data, defaultColumns, sortBy } = props;
     const columns = defaultColumns || Object.keys(data[0]);
     this.state = {
       data,
       optionsOpen: false,
-      sortBy: Object.keys(data[0])[0],
+      sortBy: sortBy || Object.keys(data[0])[0],
       sortDirection: SortDirection.ASC,
       activeColumns: columns.map(d => ({
         label: upperFirst(lowerCase(d)),
@@ -92,7 +92,8 @@ class TableContainer extends PureComponent {
 
 TableContainer.propTypes = {
   data: PropTypes.array.isRequired,
-  defaultColumns: PropTypes.array
+  defaultColumns: PropTypes.array,
+  sortBy: PropTypes.string.isRequired
 };
 
 TableContainer.defaultProps = {
