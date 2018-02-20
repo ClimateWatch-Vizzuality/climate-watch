@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :visualization, class: 'MyCw::Visualization' do
     user
     title 'Title'

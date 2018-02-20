@@ -9,10 +9,10 @@ describe Api::V1::MyCw::VisualizationsController, type: :controller do
 
   context do
     let!(:user) {
-      FactoryGirl.create(:user)
+      FactoryBot.create(:user)
     }
     let!(:some_visualization) {
-      FactoryGirl.create_list(:visualization, 3, user: user)
+      FactoryBot.create_list(:visualization, 3, user: user)
     }
 
     describe 'GET index' do

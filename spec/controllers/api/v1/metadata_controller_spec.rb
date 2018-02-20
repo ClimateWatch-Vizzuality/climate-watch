@@ -6,10 +6,10 @@ describe Api::V1::MetadataController, type: :controller do
       JSON.parse(response.body)
     }
     let!(:some_acronyms) {
-      FactoryGirl.create_list(:wri_metadata_acronym, 3)
+      FactoryBot.create_list(:wri_metadata_acronym, 3)
     }
     let!(:some_metadat_values) {
-      FactoryGirl.create_list(:wri_metadata_value, 5)
+      FactoryBot.create_list(:wri_metadata_value, 5)
     }
 
     describe 'GET index' do

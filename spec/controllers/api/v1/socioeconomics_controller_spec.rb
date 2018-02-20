@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Api::V1::SocioeconomicsController, type: :controller do
   context do
     let!(:polish_socioeconomics) {
-      location = FactoryGirl.create(:location, iso_code3: 'POL')
-      FactoryGirl.create_list(:socioeconomic_indicator, 2, location: location)
+      location = FactoryBot.create(:location, iso_code3: 'POL')
+      FactoryBot.create_list(:socioeconomic_indicator, 2, location: location)
     }
     let!(:other_socioeconomics) {
-      FactoryGirl.create_list(:socioeconomic_indicator, 2)
+      FactoryBot.create_list(:socioeconomic_indicator, 2)
     }
 
     describe 'GET index' do

@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Api::V1::WbExtraCountryDataController, type: :controller do
   context do
     let(:location) {
-      FactoryGirl.create(:location, iso_code3: 'AFG', location_type: 'COUNTRY')
+      FactoryBot.create(:location, iso_code3: 'AFG', location_type: 'COUNTRY')
     }
 
     let!(:wb_extra_country_data_1960) {
-      FactoryGirl.create(
+      FactoryBot.create(
         :wb_extra_country_data,
         location: location,
         year: 1960
@@ -15,7 +15,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
     }
 
     let!(:wb_extra_country_data_1990) {
-      FactoryGirl.create(
+      FactoryBot.create(
         :wb_extra_country_data,
         location: location,
         year: 1990
@@ -23,7 +23,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
     }
 
     let!(:wb_extra_country_data_2000) {
-      FactoryGirl.create(
+      FactoryBot.create(
         :wb_extra_country_data,
         location: location,
         year: 2000
@@ -31,7 +31,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
     }
 
     let!(:wb_extra_country_data_2000) {
-      FactoryGirl.create(
+      FactoryBot.create(
         :wb_extra_country_data,
         location: location,
         year: 2004
