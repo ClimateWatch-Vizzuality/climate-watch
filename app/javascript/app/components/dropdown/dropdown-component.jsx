@@ -37,10 +37,10 @@ class Dropdown extends PureComponent {
           wrapperClassName
         )}
       >
-        {label && <span className={styles.label}>{label}</span>}
         {colorDot && (
           <span className={styles.dot} style={{ backgroundColor: colorDot }} />
         )}
+        {label && <span className={styles.label}>{label}</span>}
         <div
           className={cx(
             theme.dropdown,
@@ -55,7 +55,7 @@ class Dropdown extends PureComponent {
             ref={el => {
               this.selectorElement = el;
             }}
-            className={cx(className, disabled)}
+            className={cx(className, disabled, { [styles.withDot]: colorDot })}
             renderToggleButton={() => <Icon icon={arrow} />}
             {...this.props}
           />

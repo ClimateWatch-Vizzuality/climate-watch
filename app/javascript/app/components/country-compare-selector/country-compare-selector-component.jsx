@@ -18,7 +18,6 @@ const CountryCompareSelector = ({
       {selectors.map((v, index) => (
         <Dropdown
           key={v.color}
-          wrapperClassName={styles.dropdown}
           placeholder="Add a country"
           options={sortBy(countryOptions, ['label'])}
           onValueChange={selected => handleDropDownChange(index, selected)}
