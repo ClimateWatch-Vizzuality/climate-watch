@@ -34,9 +34,16 @@ Rails.application.routes.draw do
         get :linkages_dataset, on: :collection, controller: :ndc_sdgs,
           action: :linkages_dataset, defaults: { format: :csv }
       end
+
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]
-      resources :socioeconomics, param: :code, only: [:show]
+
+      resources :locations, param: :code, only: [] do
+        resources :socioeconomics, only: [:index] do
+          get :latest, on: :member
+        end
+      end
+
       resources :metadata, param: :slug, only: [:index, :show] do
         get :acronyms, on: :collection, controller: :metadata, action: :acronyms
       end

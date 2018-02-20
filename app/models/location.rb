@@ -10,6 +10,8 @@ class Location < ApplicationRecord
            class_name: 'Indc::Indicator',
            through: :values
 
+  has_many :socioeconomic_indicators, class_name: 'Socioeconomic::Indicator'
+
   validates :iso_code3, presence: true, uniqueness: true
   validates :iso_code2, presence: true, uniqueness: true, if: proc { |l|
     l.show_in_cw? && l.country?

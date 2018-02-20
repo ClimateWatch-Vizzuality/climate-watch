@@ -16,7 +16,7 @@ const fetchSocioeconomics = createThunkAction(
       !socioeconomics.loading
     ) {
       dispatch(fetchSocioeconomicsInit());
-      fetch(`/api/v1/socioeconomics/${iso}`)
+      fetch(`/api/v1/locations/${iso}/socioeconomics`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
