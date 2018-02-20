@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { LineChart, Line } from 'recharts';
 import { sanitize } from 'app/utils';
 import 'react-virtualized/styles.css'; // only needs to be imported once
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styles from './table-styles.scss';
 
 const renderTrendLine = (chartData, titleLink) => {
@@ -15,9 +15,9 @@ const renderTrendLine = (chartData, titleLink) => {
     </LineChart>
   );
   return titleLink ? (
-    <a href={titleLink.url} className={styles.trendLink}>
+    <Link className={styles.trendLink} to={titleLink.url}>
       {chart}
-    </a>
+    </Link>
   ) : (
     chart
   );
