@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :location, aliases: [:location_country] do
     sequence :iso_code2 { |n| ('AA'..'ZZ').to_a[n] }
     sequence :iso_code3 { |n| ('AAA'..'ZZZ').to_a[n] }

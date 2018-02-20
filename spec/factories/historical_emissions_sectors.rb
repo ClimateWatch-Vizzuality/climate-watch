@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :historical_emissions_sector,
           class: 'HistoricalEmissions::Sector' do
     association :data_source,

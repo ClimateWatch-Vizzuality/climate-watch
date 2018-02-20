@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Story, type: :model do
   before(:each) do
-    FactoryGirl.create(:story, tags: %w[NDC])
-    FactoryGirl.create(:story, tags: %w[NDC esp mapping])
-    FactoryGirl.create(:story, tags: %w[OP23])
-    FactoryGirl.create(:story, tags: %w[climatewatch-pinned])
-    FactoryGirl.create(:story, tags: %w[climatewatch-pinned esp])
-    FactoryGirl.create(:story, tags: %w[OP])
-    FactoryGirl.create(:story, tags: nil)
+    FactoryBot.create(:story, tags: %w[NDC])
+    FactoryBot.create(:story, tags: %w[NDC esp mapping])
+    FactoryBot.create(:story, tags: %w[OP23])
+    FactoryBot.create(:story, tags: %w[climatewatch-pinned])
+    FactoryBot.create(:story, tags: %w[climatewatch-pinned esp])
+    FactoryBot.create(:story, tags: %w[OP])
+    FactoryBot.create(:story, tags: nil)
   end
 
   describe '#pinned_stories' do

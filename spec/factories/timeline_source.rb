@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :timeline_source, class: 'Timeline::Source' do
     name 'XYZZY'
 

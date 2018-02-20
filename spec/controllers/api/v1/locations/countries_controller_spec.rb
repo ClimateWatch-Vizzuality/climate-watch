@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::Locations::CountriesController, type: :controller do
   context do
     let!(:some_locations) {
-      FactoryGirl.create_list(:location_country, 3)
+      FactoryBot.create_list(:location_country, 3)
     }
 
     describe 'GET index' do
