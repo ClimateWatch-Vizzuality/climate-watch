@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import {
-  filterDataByBlackList,
+  sortDataByCategory,
   defaultColumns,
   getCategories,
   getLocationOptions,
@@ -47,7 +47,7 @@ const mapStateToProps = (state, { category, match, location }) => {
   };
 
   return {
-    data: filterDataByBlackList(EspData),
+    data: sortDataByCategory(EspData),
     defaultColumns: defaultColumns(EspData),
     categories: getCategories(EspData),
     locations: getLocationOptions(EspData),

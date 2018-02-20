@@ -27,7 +27,6 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       <Table
         data={data}
         rowHeight={60}
-        sortBy={'name'}
         hasColumnSelect
         defaultColumns={defaultColumns}
         trendLine={'trend'}

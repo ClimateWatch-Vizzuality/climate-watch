@@ -173,15 +173,24 @@ export const filterDataByBlackList = createSelector(
   }
 );
 
+export const sortDataByCategory = createSelector(
+  [filterDataByBlackList],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    return sortBy(data, d => d.category.name);
+  }
+);
+
 export const defaultColumns = () => [
-  'name',
   'category',
   'subcategory',
+  'name',
+  'unit',
   'trend'
 ];
 export default {
   getLocationOptions,
-  filterDataByBlackList,
+  sortDataByCategory,
   defaultColumns,
   getCategories,
   getSelectedCategoryOption,
