@@ -10,6 +10,7 @@ import ButtonGroup from 'components/button-group';
 import ModalMetadata from 'components/modal-metadata';
 import Chart from 'components/charts/chart';
 import cx from 'classnames';
+import layout from 'styles/layout.scss';
 import styles from './compare-ghg-chart-styles.scss';
 
 class CompareGhgChart extends PureComponent {
@@ -70,7 +71,7 @@ class CompareGhgChart extends PureComponent {
       needsWBData
     } = this.props;
     return (
-      <div>
+      <div className={layout.content}>
         <EmissionsProvider filters={providerFilters} />
         <EmissionsMetaProvider />
         {needsWBData && <WbCountryDataProvider />}
