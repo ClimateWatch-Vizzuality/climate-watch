@@ -31,7 +31,7 @@ const CountryCompare = ({ route, anchorLinks }) => (
       route.sections.length > 0 &&
       route.sections.map(section => (
         <section key={section.hash} id={section.hash}>
-          {/* <section.component /> */}
+          {!!section.component && <section.component />}
         </section>
       ))}
   </div>

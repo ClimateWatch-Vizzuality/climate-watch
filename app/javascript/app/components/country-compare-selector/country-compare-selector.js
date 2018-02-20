@@ -37,11 +37,7 @@ class CountryCompareSelectorContainer extends PureComponent {
     const { locations } = this.props;
     const newLocations = locations.slice();
     newLocations[index] = selected ? selected.value : null;
-    this.updateUrlParam(
-      { name: 'locations', value: newLocations.toString() },
-      history,
-      location
-    );
+    this.updateUrlParam({ name: 'locations', value: newLocations.toString() });
   };
 
   render() {

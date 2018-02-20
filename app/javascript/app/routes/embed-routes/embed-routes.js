@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import NDCMap from 'components/ndcs/ndcs-map';
 import GhgEmissionsGraph from 'components/ghg-emissions';
+import CompareGhgChart from 'components/compare-ghg-chart';
 import GHGCountryEmissions from 'components/country/country-ghg';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 
@@ -15,6 +16,11 @@ export default [
   {
     path: '/embed/ghg-emissions',
     component: GhgEmissionsGraph,
+    exact: true
+  },
+  {
+    path: '/embed/compare-ghg-chart',
+    component: CompareGhgChart,
     exact: true
   },
   {
