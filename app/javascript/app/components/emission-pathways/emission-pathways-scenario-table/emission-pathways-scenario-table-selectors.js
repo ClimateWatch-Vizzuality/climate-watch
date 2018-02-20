@@ -127,7 +127,7 @@ const filteredDataBySearch = createSelector(
   }
 );
 
-export const filteredDataByCategory = createSelector(
+const filteredDataByCategory = createSelector(
   [filteredDataBySearch, getCategorySelected],
   (data, category) => {
     if (!data) return null;
@@ -138,11 +138,11 @@ export const filteredDataByCategory = createSelector(
   }
 );
 
-export const dataWithTrendLine = createSelector(
+const dataWithExtraColumns = createSelector(
   [filteredDataByCategory, getScenarioTrendData],
   (data, trendData) => {
     if (!data) return null;
-    const dataWithTrendLines = [];
+    const dataWithExtra = [];
     data.forEach(d => {
       const rowData = d;
       const indicatorId = d.id;
@@ -154,15 +154,51 @@ export const dataWithTrendLine = createSelector(
           : sortBy(indicatorTrendData.values, ['year']).map(v =>
             parseFloat(v.value)
           );
-        dataWithTrendLines.push(rowData);
+        const round2D = n => Math.round(n * 100) / 100;
+        const firstData = indicatorTrendData.values[0];
+        const lastData =
+          indicatorTrendData.values[indicatorTrendData.values.length - 1];
+        rowData.first = `${firstData.year} | ${round2D(firstData.value)}`;
+        rowData.last = `${lastData.year} | ${round2D(lastData.value)}`;
+        dataWithExtra.push(rowData);
       }
     });
-    return dataWithTrendLines;
+    return dataWithExtra;
+  }
+);
+
+const sortDataByCategory = createSelector([dataWithExtraColumns], data => {
+  if (!data || isEmpty(data)) return null;
+  return sortBy(data, d => d.category.name);
+});
+
+export const titleLinks = createSelector(
+  [sortDataByCategory, getLocationSelected, getScenarioData],
+  (data, location, scenario) => {
+    if (
+      !data ||
+      isEmpty(data) ||
+      !location ||
+      !scenario ||
+      !scenario.id ||
+      !scenario.model ||
+      !scenario.model.id
+    ) {
+      return null;
+    }
+    return data.map(d => {
+      if (!d.subcategory || !d.subcategory.id) return null;
+      const url = `/pathways/indicators?currentLocation=${location}\
+        &indicator=${d.id}&category=${d.category.id}&subcategory=${d.subcategory
+  .id}\
+        &scenario=${scenario.id}&model=${scenario.model.id}`;
+      return [{ columnName: 'name', url }, { columnName: 'trend', url }];
+    });
   }
 );
 
 export const filterDataByBlackList = createSelector(
-  [dataWithTrendLine],
+  [sortDataByCategory],
   data => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(
@@ -174,16 +210,21 @@ export const filterDataByBlackList = createSelector(
 );
 
 export const defaultColumns = () => [
-  'name',
   'category',
   'subcategory',
+  'name',
+  'unit',
+  'first',
+  'last',
   'trend'
 ];
+
 export default {
   getLocationOptions,
   filterDataByBlackList,
   defaultColumns,
   getCategories,
   getSelectedCategoryOption,
-  getSelectedLocationOption
+  getSelectedLocationOption,
+  titleLinks
 };

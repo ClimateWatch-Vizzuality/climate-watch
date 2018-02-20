@@ -110,3 +110,9 @@
   right: 10px;
   top: 15px;
 }
+
+.trendLink {
+  > div {
+    cursor: pointer !important;
+  }
+}

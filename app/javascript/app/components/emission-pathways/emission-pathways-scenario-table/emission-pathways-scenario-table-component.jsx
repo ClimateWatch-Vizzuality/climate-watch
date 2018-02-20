@@ -14,7 +14,13 @@ import styles from './emission-pathways-scenario-table-styles.scss';
 
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
   renderTable() {
-    const { data, noContentMsg, defaultColumns, error } = this.props;
+    const {
+      data,
+      noContentMsg,
+      defaultColumns,
+      titleLinks,
+      error
+    } = this.props;
     if (error) {
       return (
         <NoContent
@@ -27,10 +33,10 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       <Table
         data={data}
         rowHeight={60}
-        sortBy={'name'}
         hasColumnSelect
         defaultColumns={defaultColumns}
         trendLine={'trend'}
+        titleLinks={titleLinks}
       />
     ) : (
       <NoContent message={noContentMsg} className={styles.noContent} />
@@ -108,6 +114,7 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   handleSearchChange: PropTypes.func,
   categories: PropTypes.array,
   locations: PropTypes.array,
+  titleLinks: PropTypes.array,
   selectedCategory: PropTypes.object,
   selectedLocation: PropTypes.object,
   handleCategoryChange: PropTypes.func,

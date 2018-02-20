@@ -10,7 +10,8 @@ import {
   getCategories,
   getLocationOptions,
   getSelectedCategoryOption,
-  getSelectedLocationOption
+  getSelectedLocationOption,
+  titleLinks
 } from './emission-pathways-scenario-table-selectors';
 import Component from './emission-pathways-scenario-table-component';
 
@@ -54,6 +55,7 @@ const mapStateToProps = (state, { category, match, location }) => {
     selectedCategory: getSelectedCategoryOption(EspData),
     selectedLocation: getSelectedLocationOption(EspData),
     query: search.search,
+    titleLinks: titleLinks(EspData),
     loading:
       state.espScenarios.loading ||
       state.espIndicators.loading ||

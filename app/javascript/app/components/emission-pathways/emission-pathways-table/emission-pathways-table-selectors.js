@@ -4,6 +4,7 @@ import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import uniq from 'lodash/uniq';
+import sortBy from 'lodash/sortBy';
 import { ESP_BLACKLIST, FILTERS_BY_CATEGORY } from 'data/constants';
 
 const getCategory = state =>
@@ -208,8 +209,17 @@ export const renameDataColumns = createSelector(
   }
 );
 
+export const sortDataByCategoryAttribute = createSelector(
+  [renameDataColumns, getCategory],
+  (data, category) => {
+    if (!data || isEmpty(data) || !category) return null;
+    if (category !== 'indicators') return data;
+    return sortBy(data, d => d.category.name);
+  }
+);
+
 export default {
-  renameDataColumns,
+  sortDataByCategoryAttribute,
   titleLinks,
   filteredDataByFilters,
   getFilterOptionsByCategory,
