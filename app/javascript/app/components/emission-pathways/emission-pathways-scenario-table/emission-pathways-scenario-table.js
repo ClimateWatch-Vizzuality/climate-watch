@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import {
-  sortDataByCategory,
+  filterDataByBlackList,
   defaultColumns,
   getCategories,
   getLocationOptions,
   getSelectedCategoryOption,
-  getSelectedLocationOption
+  getSelectedLocationOption,
+  titleLinks
 } from './emission-pathways-scenario-table-selectors';
 import Component from './emission-pathways-scenario-table-component';
 
@@ -47,13 +48,14 @@ const mapStateToProps = (state, { category, match, location }) => {
   };
 
   return {
-    data: sortDataByCategory(EspData),
+    data: filterDataByBlackList(EspData),
     defaultColumns: defaultColumns(EspData),
     categories: getCategories(EspData),
     locations: getLocationOptions(EspData),
     selectedCategory: getSelectedCategoryOption(EspData),
     selectedLocation: getSelectedLocationOption(EspData),
     query: search.search,
+    titleLinks: titleLinks(EspData),
     loading:
       state.espScenarios.loading ||
       state.espIndicators.loading ||

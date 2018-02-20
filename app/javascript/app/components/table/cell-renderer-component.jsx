@@ -4,14 +4,22 @@ import { LineChart, Line } from 'recharts';
 import { sanitize } from 'app/utils';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import { NavLink } from 'react-router-dom';
+import styles from './table-styles.scss';
 
-const renderTrendLine = chartData => {
+const renderTrendLine = (chartData, titleLink) => {
   const dataValues =
     chartData && chartData.split(',').map(v => ({ value: parseFloat(v) }));
-  return (
+  const chart = (
     <LineChart width={70} height={35} data={dataValues}>
       <Line dot={false} dataKey="value" stroke="#113750" strokeWidth={2} />
     </LineChart>
+  );
+  return titleLink ? (
+    <a href={titleLink.url} className={styles.trendLink}>
+      {chart}
+    </a>
+  ) : (
+    chart
   );
 };
 
@@ -22,15 +30,16 @@ const cellRenderer = ({
   let { cellData } = cell;
   const { rowIndex, dataKey } = cell;
   cellData = sanitize(cellData);
-  // check for Trendline
-  if (trendLine && dataKey === trendLine) {
-    return renderTrendLine(cellData);
-  }
   // check for TitleLink
   const titleLink =
     titleLinks &&
     titleLinks[rowIndex] &&
     titleLinks[rowIndex].find(t => t.columnName === dataKey);
+
+  // check for Trendline
+  if (trendLine && dataKey === trendLine) {
+    return renderTrendLine(cellData, titleLink);
+  }
   if (titleLink) {
     return titleLink.url === 'self' ? (
       <a target="_blank" href={cellData}>

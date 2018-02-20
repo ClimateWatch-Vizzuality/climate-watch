@@ -127,7 +127,7 @@ const filteredDataBySearch = createSelector(
   }
 );
 
-export const filteredDataByCategory = createSelector(
+const filteredDataByCategory = createSelector(
   [filteredDataBySearch, getCategorySelected],
   (data, category) => {
     if (!data) return null;
@@ -138,7 +138,7 @@ export const filteredDataByCategory = createSelector(
   }
 );
 
-export const dataWithTrendLine = createSelector(
+const dataWithTrendLine = createSelector(
   [filteredDataByCategory, getScenarioTrendData],
   (data, trendData) => {
     if (!data) return null;
@@ -161,8 +161,38 @@ export const dataWithTrendLine = createSelector(
   }
 );
 
+const sortDataByCategory = createSelector([dataWithTrendLine], data => {
+  if (!data || isEmpty(data)) return null;
+  return sortBy(data, d => d.category.name);
+});
+
+export const titleLinks = createSelector(
+  [sortDataByCategory, getLocationSelected, getScenarioData],
+  (data, location, scenario) => {
+    if (
+      !data ||
+      isEmpty(data) ||
+      !location ||
+      !scenario ||
+      !scenario.id ||
+      !scenario.model ||
+      !scenario.model.id
+    ) {
+      return null;
+    }
+    return data.map(d => {
+      if (!d.subcategory || !d.subcategory.id) return null;
+      const url = `/pathways/indicators?currentLocation=${location}\
+        &indicator=${d.id}&category=${d.category.id}&subcategory=${d.subcategory
+  .id}\
+        &scenario=${scenario.id}&model=${scenario.model.id}`;
+      return [{ columnName: 'name', url }, { columnName: 'trend', url }];
+    });
+  }
+);
+
 export const filterDataByBlackList = createSelector(
-  [dataWithTrendLine],
+  [sortDataByCategory],
   data => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(
@@ -173,14 +203,6 @@ export const filterDataByBlackList = createSelector(
   }
 );
 
-export const sortDataByCategory = createSelector(
-  [filterDataByBlackList],
-  data => {
-    if (!data || isEmpty(data)) return null;
-    return sortBy(data, d => d.category.name);
-  }
-);
-
 export const defaultColumns = () => [
   'category',
   'subcategory',
@@ -188,11 +210,13 @@ export const defaultColumns = () => [
   'unit',
   'trend'
 ];
+
 export default {
   getLocationOptions,
-  sortDataByCategory,
+  filterDataByBlackList,
   defaultColumns,
   getCategories,
   getSelectedCategoryOption,
-  getSelectedLocationOption
+  getSelectedLocationOption,
+  titleLinks
 };
