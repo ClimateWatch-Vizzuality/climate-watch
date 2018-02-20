@@ -20,29 +20,18 @@ export const CustomXAxisTick = ({ x, y, payload, customStrokeWidth }) => (
   </g>
 );
 
-export const CustomYAxisTick = ({
-  index,
-  x,
-  y,
-  payload,
-  customStrokeWidth,
-  unit
-}) => (
+export const CustomYAxisTick = ({ x, y, payload, customStrokeWidth, unit }) => (
   <g transform={`translate(${x},${y})`}>
     <text
-      x="0"
-      y="0"
+      x="5"
+      y="4"
       dy="0"
       textAnchor="end"
       stroke="#b1b1c1"
       strokeWidth={customStrokeWidth || '0.5'}
       fontSize="13px"
     >
-      {index === 0 && payload.value >= 0 ? (
-        '0'
-      ) : (
-        `${format('.2s')(payload.value)}${unit}`
-      )}
+      {payload.value === 0 ? '0' : `${format('.2s')(payload.value)}${unit}`}
     </text>
   </g>
 );
@@ -57,7 +46,6 @@ CustomXAxisTick.propTypes = {
 CustomYAxisTick.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
-  index: PropTypes.number,
   payload: PropTypes.object,
   customStrokeWidth: PropTypes.string,
   unit: PropTypes.string
