@@ -4,7 +4,7 @@ module Api
       def index
         indicators = ::Socioeconomic::Indicator.
           includes(:location).
-          where(locations: {iso_code3: params[:location]}).
+          where(locations: {iso_code3: params[:code]}).
           order(:year)
 
         render json: indicators,
