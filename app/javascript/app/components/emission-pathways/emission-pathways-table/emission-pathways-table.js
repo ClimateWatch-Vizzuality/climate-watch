@@ -5,7 +5,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
 import {
-  renameDataColumns,
+  sortDataByCategoryAttribute,
   titleLinks,
   getDefaultColumns,
   getFullTextColumns,
@@ -25,7 +25,7 @@ const mapStateToProps = (state, { category, location }) => {
   };
   return {
     titleLinks: titleLinks(espData),
-    data: renameDataColumns(espData),
+    data: sortDataByCategoryAttribute(espData),
     defaultColumns: getDefaultColumns(espData),
     fullTextColumns: getFullTextColumns(espData),
     categoryName: category,
