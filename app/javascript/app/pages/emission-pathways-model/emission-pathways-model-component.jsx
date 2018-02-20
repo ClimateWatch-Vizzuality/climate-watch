@@ -28,7 +28,7 @@ class EmissionPathwaysModel extends PureComponent {
                 textColumns
               />
             </div>
-            <Sticky activeClass="sticky -emission" top="#navBarMobile">
+            <Sticky activeClass="sticky -emissions" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
                 className={layout.content}
