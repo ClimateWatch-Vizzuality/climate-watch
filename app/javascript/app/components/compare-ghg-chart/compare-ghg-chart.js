@@ -51,7 +51,6 @@ const mapStateToProps = (state, { location }) => {
     needsWBData,
     loading:
       state.ghgEmissionsMeta.loading ||
-      state.ghgEmissions.loading ||
       state.emissions.loading ||
       !calculationSelected ||
       (needsWBData && state.wbCountryData.loading)

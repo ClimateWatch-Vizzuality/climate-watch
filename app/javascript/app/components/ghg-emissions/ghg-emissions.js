@@ -5,9 +5,7 @@ import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import ReactGA from 'react-ga';
-
 import { actions } from 'components/modal-metadata';
-import reducers, { initialState } from './ghg-emissions-reducers';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
 import {
@@ -174,8 +172,6 @@ GhgEmissionsContainer.propTypes = {
 GhgEmissionsContainer.defaultProps = {
   sourceSelected: null
 };
-
-export { actions, reducers, initialState };
 
 export default withRouter(
   connect(mapStateToProps, actions)(GhgEmissionsContainer)
