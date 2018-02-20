@@ -14,7 +14,7 @@ module Api
 
       def show
         country = Location.find_by(location_type: 'COUNTRY',
-                                   iso_code3: params[:iso])
+                                   iso_code3: params[:code])
         unless country
           render json: {
             error: 'Country not found',
