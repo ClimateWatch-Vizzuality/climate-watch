@@ -40,7 +40,7 @@ Rails.application.routes.draw do
 
       resources :locations, param: :code, only: [] do
         resources :socioeconomics, only: [:index] do
-          get :latest, on: :member
+          get :latest, on: :collection
         end
       end
 

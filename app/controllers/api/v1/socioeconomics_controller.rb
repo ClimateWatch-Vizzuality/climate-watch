@@ -10,6 +10,10 @@ module Api
                each_serializer: Api::V1::Socioeconomic::IndicatorSerializer
       end
 
+      def latest
+        render json: @location.latest_socioeconomics
+      end
+
       private
 
       def set_location
