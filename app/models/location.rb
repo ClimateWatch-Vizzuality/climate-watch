@@ -38,8 +38,7 @@ class Location < ApplicationRecord
   end
 
   def latest_socioeconomics
-    result = ActiveRecord::Base.connection.
-      execute(Socioeconomic::Indicator.latest_available_data_query(id)).first
+    result = socioeconomic_indicators.latest_available_data_query(id).first
 
     if !result
       return {}
