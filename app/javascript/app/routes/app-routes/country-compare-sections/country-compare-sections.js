@@ -1,4 +1,5 @@
 import CompareGHGChart from 'components/compare-ghg-chart';
+import CompareNDCContentOverview from 'components/compare-ndc-content-overview';
 
 export default [
   {
@@ -15,6 +16,7 @@ export default [
   {
     hash: 'ndc-content-overview',
     label: 'NDC Content Overview',
-    anchor: true
+    anchor: true,
+    component: CompareNDCContentOverview
   }
 ];
