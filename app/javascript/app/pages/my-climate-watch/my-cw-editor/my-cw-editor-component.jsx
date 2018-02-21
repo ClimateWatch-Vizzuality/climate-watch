@@ -4,52 +4,33 @@ import Editor from 'draft-js-plugins-editor';
 
 import createFocusPlugin from 'draft-js-focus-plugin';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
-import { createPlugin } from 'app/utils/draft';
 
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 import 'draft-js-focus-plugin/lib/plugin.css';
 
 import Modal, { ModalHeader } from 'components/modal';
-import Icon from 'components/icon';
-import iconBarchart from 'assets/icons/barchart.svg';
 
-import createSideToolbarPlugin from './draft-js-side-toolbar-plugin';
-import Barchart from './components/barchart';
-// import Picker from 'components/my-climate-watch/widget-picker';
 import MyViz from 'components/my-climate-watch/my-visualisations';
 import VizCreator from 'components/my-climate-watch/viz-creator';
-
 import styles from './my-cw-editor-styles';
 import focusTheme from './themes/focus-theme';
 
-const inlineToolbarPlugin = createInlineToolbarPlugin();
-const sideToolbarPlugin = createSideToolbarPlugin({
-  structure: [
-    ({ trigerTool }) => (
-      <button onClick={trigerTool}>
-        <Icon icon={iconBarchart} />
-      </button>
-    )
-  ]
-});
+import sideToolbarPlugin from './plugins/side-toolbar-plugin';
+import createMultichartPlugin from './plugins/multi-chart-plugin';
 
-const { SideToolbar } = sideToolbarPlugin;
-const { InlineToolbar } = inlineToolbarPlugin;
+const inlineToolbarPlugin = createInlineToolbarPlugin();
 const focusPlugin = createFocusPlugin({
   theme: focusTheme
 });
-
-const barchartPlugin = createPlugin({
-  decorator: focusPlugin.decorator,
-  component: Barchart,
-  type: 'barchart'
-});
+const multichartPlugin = createMultichartPlugin();
+const { SideToolbar } = sideToolbarPlugin;
+const { InlineToolbar } = inlineToolbarPlugin;
 
 const plugins = [
   focusPlugin,
-  barchartPlugin,
   inlineToolbarPlugin,
-  sideToolbarPlugin
+  sideToolbarPlugin,
+  multichartPlugin
 ];
 
 const modalStyles = {

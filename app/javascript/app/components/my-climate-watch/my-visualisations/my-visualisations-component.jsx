@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import VizCreator from 'components/my-climate-watch/viz-creator';
 import ActionCard from 'components/my-climate-watch/my-cw-placeholder-card';
 import Card from 'components/my-climate-watch/my-visualisations/my-cw-vis-card';
-import { chartDataSelector, visualisationType } from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
+import {
+  chartDataSelector,
+  visualisationType
+} from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
 import styles from './my-visualisations-styles.scss';
 
 const modalStyles = {
@@ -38,12 +41,18 @@ const MyVisualisations = ({
                 description: vis.description,
                 datasets: vis.json_body
               };
-              mode === 'edit'
+              return mode === 'edit'
                 ? openCreator(payload)
-                : onSelectVis({type: 'barchart', data: {
-                  ...chartDataSelector({datasets: vis.json_body}),
-                  vizType: visualisationType({datasets: vis.json_body})
-                }})
+                : onSelectVis({
+                  mode: 'IMMUTABLE',
+                  type: 'multichart',
+                  data: {
+                    chart: visualisationType({ datasets: vis.json_body }),
+                    config: chartDataSelector({ datasets: vis.json_body }),
+                    width: '90%',
+                    height: 300
+                  }
+                });
             }}
           />
         </li>

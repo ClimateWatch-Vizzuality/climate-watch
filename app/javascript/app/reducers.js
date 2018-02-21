@@ -54,7 +54,7 @@ const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
   ndcSearch: handleActions(ndcSearchPage),
-  myCWEditor: handleModule(myCWEditor)  
+  myCWEditor: handleModule(myCWEditor)
 };
 
 // Components
@@ -75,7 +75,7 @@ import * as myVisualisations from 'components/my-climate-watch/my-visualisations
 import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creator';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import * as HamburgerComponent from 'components/hamburger';
-import * as myCWPicker from 'components/my-climate-watch/widget-picker';
+// import * as myCWPicker from 'components/my-climate-watch/widget-picker';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -94,8 +94,8 @@ const componentsReducers = {
   visualisations: handleModule(myVisualisations),
   vizCreator: handleModule(myVisualisationsCreator),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
-  hamburger: handleModule(HamburgerComponent),
-  myCWPicker: handleModule(myCWPicker)
+  hamburger: handleModule(HamburgerComponent)
+  // myCWPicker: handleModule(myCWPicker)
 };
 
 export default combineReducers({

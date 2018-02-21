@@ -43,7 +43,7 @@ const blockRendererFn = (component, entityType) => (
 };
 
 export const createPlugin = (config = {}) => {
-  const Chart = filterProps([
+  const comp = filterProps([
     'block',
     'blockProps',
     'customStyleMap',
@@ -55,10 +55,10 @@ export const createPlugin = (config = {}) => {
     'tree',
     'contentState'
   ])(config.component || (() => null));
-
-  const component = config.decorator ? config.decorator(Chart) : Chart;
+  const renderer = config.renderer || blockRendererFn;
+  const component = config.decorator ? config.decorator(comp) : comp;
   return {
-    blockRendererFn: blockRendererFn(component, config.type)
+    blockRendererFn: renderer(component, config.type)
   };
 };
 

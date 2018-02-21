@@ -1,0 +1,16 @@
+@import '~styles/settings.scss';
+
+$editor-margin: 90px;
+
+.container {
+  width: 100vw;
+  margin-left: -$editor-margin;
+  background-color: $light-gray;
+  padding-left: $editor-margin;
+  user-select: none;
+  box-shadow: 0 0 0 2px transparent;
+
+  &Focussed {
+    box-shadow: 0 0 0 2px rgba(#accef7, 0.9);
+  }
+}
