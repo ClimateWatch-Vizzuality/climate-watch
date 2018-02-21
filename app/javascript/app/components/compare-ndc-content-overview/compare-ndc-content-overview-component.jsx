@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import layout from 'styles/layout';
 import Button from 'components/button';
+import NDCContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import styles from './compare-ndc-content-overview-styles.scss';
 
 class CompareNDCContentOverview extends PureComponent {
@@ -10,6 +11,7 @@ class CompareNDCContentOverview extends PureComponent {
     const { selectedLocationsFilter, handleAnalyticsClick } = this.props;
     return (
       <div className={layout.content}>
+        <NDCContentOverviewProvider locations={selectedLocationsFilter} />
         <div className={styles.col6}>
           <h2 className={styles.title}>NDC Content Overview</h2>
           <Button
