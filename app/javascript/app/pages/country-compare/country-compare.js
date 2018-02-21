@@ -1,11 +1,15 @@
-import { withProps } from 'recompose';
-
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { getAnchorLinks } from './country-compare-selectors';
 
 import Component from './country-compare-component';
 
-const withSections = withProps(state => ({
-  anchorLinks: getAnchorLinks(state)
-}));
+const mapStateToProps = (state, { route, location }) => {
+  const routerData = { route, location };
+  return {
+    anchorLinks: getAnchorLinks(routerData),
+    query: location.search
+  };
+};
 
-export default withSections(Component);
+export default withRouter(connect(mapStateToProps, null)(Component));

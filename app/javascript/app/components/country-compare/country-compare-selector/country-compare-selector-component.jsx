@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
 import Dropdown from 'components/dropdown';
-
-// import styles from './country-compare-selector-styles.scss';
+import layout from 'styles/layout.scss';
+import cx from 'classnames';
+import styles from './country-compare-selector-styles.scss';
 
 const CountryCompareSelector = ({
   countryOptions,
@@ -12,18 +13,20 @@ const CountryCompareSelector = ({
   selectors,
   className
 }) => (
-  <div className={className}>
-    {selectors.map((v, index) => (
-      <Dropdown
-        key={v.color}
-        placeholder="Add a country"
-        options={sortBy(countryOptions, ['label'])}
-        onValueChange={selected => handleDropDownChange(index, selected)}
-        value={activeCountryOptions[index]}
-        transparent
-        colorDot={v.country ? v.color : null}
-      />
-    ))}
+  <div className={styles.bottomBorder}>
+    <div className={cx(layout.content, className)}>
+      {selectors.map((v, index) => (
+        <Dropdown
+          key={v.color}
+          placeholder="Add a country"
+          options={sortBy(countryOptions, ['label'])}
+          onValueChange={selected => handleDropDownChange(index, selected)}
+          value={activeCountryOptions[index]}
+          transparent
+          colorDot={v.country ? v.color : null}
+        />
+      ))}
+    </div>
   </div>
 );
 

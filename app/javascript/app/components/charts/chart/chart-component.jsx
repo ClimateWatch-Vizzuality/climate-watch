@@ -8,7 +8,8 @@ import NoContent from 'components/no-content';
 
 import styles from './chart-styles.scss';
 
-class Chart extends PureComponent { // eslint-disable-line react/prefer-stateless-function
+class Chart extends PureComponent {
+  // eslint-disable-line react/prefer-stateless-function
   render() {
     const {
       className,
@@ -19,42 +20,43 @@ class Chart extends PureComponent { // eslint-disable-line react/prefer-stateles
       data,
       config,
       height,
-      targetParam
+      targetParam,
+      hideRemoveOptions
     } = this.props;
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
+    const noContent = (
+      <NoContent
+        message={
+          dataSelected && dataSelected.length ? (
+            'No data available'
+          ) : (
+            'No data selected'
+          )
+        }
+        className={styles.noContent}
+        minHeight={height}
+        icon
+      />
+    );
+    const legendChart = (
+      <LegendChart
+        className={styles.legend}
+        config={config}
+        dataOptions={dataOptions}
+        dataSelected={dataSelected}
+        targetParam={targetParam}
+        hideRemoveOptions={hideRemoveOptions}
+      />
+    );
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
+        {!loading && (!data || !data.length) && noContent}
         {!loading &&
-          (!data || !data.length) && (
-            <NoContent
-              message={
-                dataSelected && dataSelected.length ? (
-                  'No data available'
-                ) : (
-                  'No data selected'
-                )
-              }
-              className={styles.noContent}
-              minHeight={height}
-              icon
-            />
-          )
-        }
-        {!loading && data && data.length > 0 && config &&
-          <ChartComponent
-            {...this.props}
-          />
-        }
-        {!loading && dataOptions &&
-          <LegendChart
-            className={styles.legend}
-            config={config}
-            dataOptions={dataOptions}
-            dataSelected={dataSelected}
-            targetParam={targetParam}
-          />
-        }
+        data &&
+        data.length > 0 &&
+        config && <ChartComponent {...this.props} />}
+        {!loading && dataOptions && legendChart}
       </div>
     );
   }
@@ -64,19 +66,18 @@ Chart.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
+  hideRemoveOptions: PropTypes.bool.isRequired,
   dataOptions: PropTypes.array,
   dataSelected: PropTypes.array,
   data: PropTypes.array,
   config: PropTypes.object,
-  height: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   targetParam: PropTypes.string
 };
 
 Chart.defaultProps = {
-  height: 300
+  height: 300,
+  hideRemoveOptions: false
 };
 
 export default Chart;
