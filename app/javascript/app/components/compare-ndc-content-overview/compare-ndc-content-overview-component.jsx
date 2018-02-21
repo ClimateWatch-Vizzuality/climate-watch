@@ -7,7 +7,8 @@ import Loading from 'components/loading';
 import cx from 'classnames';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import iconDocument from 'assets/icons/document.svg';
-
+import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
+import { COUNTRY_COMPARE_COLORS } from 'data/constants';
 import styles from './compare-ndc-content-overview-styles.scss';
 
 class CompareNDCContentOverview extends PureComponent {
@@ -15,22 +16,29 @@ class CompareNDCContentOverview extends PureComponent {
 
   renderCountryOverview = (summary, i) => (
     <div className={styles.countryOverview} key={i}>
-      {summary &&
-      summary.text && (
-      <React.Fragment>
-            <div
-          className={styles.overviewText}
-          dangerouslySetInnerHTML={{ __html: summary.text }}
-        />
-            <Button
-          className={styles.button}
-          link={`/ndcs/country/${summary.location}`}
-          square
-        >
-          <Icon icon={iconDocument} />
-        </Button>
-          </React.Fragment>
-        )}
+      {summary && summary.text && (
+        <React.Fragment>
+          <TabletPortraitOnly>
+            <div className={cx(styles.countryHeader)}>
+              <div className={styles.dot} style={{ backgroundColor: COUNTRY_COMPARE_COLORS[i] }} />
+              <div className={styles.countryName}>
+                {summary.name}
+              </div>
+            </div>
+          </TabletPortraitOnly>
+          <div
+            className={styles.overviewText}
+            dangerouslySetInnerHTML={{ __html: summary.text }} // eslint-disable-line
+          />
+          <Button
+            className={styles.button}
+            link={`/ndcs/country/${summary.location}`}
+            square
+          >
+            <Icon className={styles.blueIcon} icon={iconDocument} />
+          </Button>
+        </React.Fragment>
+      )}
     </div>
   );
 
@@ -41,20 +49,26 @@ class CompareNDCContentOverview extends PureComponent {
       summaries,
       loading
     } = this.props;
+    const compareButton = (
+      <Button
+        noSpace
+        className={styles.colEnd}
+        color="yellow"
+        link={`/ndcs/compare/mitigation?locations=${selectedLocationsFilter}`}
+        onClick={handleAnalyticsClick}
+      >
+        Compare the NDCs
+      </Button>
+    );
+
     return (
       <div className={cx(layout.content, styles.ndcContentOverview)}>
         <NdcContentOverviewProvider locations={selectedLocationsFilter} />
         <div className={styles.col6}>
           <h2 className={styles.title}>NDC Content Overview</h2>
-          <Button
-            noSpace
-            className={styles.colEnd}
-            color="yellow"
-            link={`/ndcs/compare/mitigation?locations=${selectedLocationsFilter}`}
-            onClick={handleAnalyticsClick}
-          >
-            Compare the NDCs
-          </Button>
+          <TabletLandscape>
+            {compareButton}
+          </TabletLandscape>
         </div>
         {loading || !summaries ? (
           <Loading light className={styles.loader} />

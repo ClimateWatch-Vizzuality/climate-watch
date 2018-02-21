@@ -15,7 +15,7 @@
 .col3 {
   @extend %grid;
 
-  margin-bottom: 10px;
+  margin-bottom: 1em;
 
   @media #{$tablet-landscape} {
     @include msGridColumns(1fr, 1fr, 1fr);
@@ -35,6 +35,11 @@
 .countryOverview {
   color: $theme-color;
   line-height: $line-height-medium;
+  margin-bottom: 2em;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 1em;
+  }
 }
 
 .title {
@@ -52,5 +57,30 @@
 }
 
 .overviewText {
-  margin-bottom: 0.3em;
+  margin-bottom: 1em;
+  @media #{$tablet-landscape} {
+    margin-bottom: 0.3em;
+  }
+}
+
+.countryHeader {
+  position: relative;
+  margin-bottom: 1em;
+  display: flex;
+
+  .countryName {
+    font-weight: $font-weight-bold;
+    color: $theme-color;
+  }
+
+  .dot {
+    width: 13px;
+    height: 12px;
+    border-radius: 15px;
+    margin: 7px 7px 0 0;
+  }
+}
+
+.blueIcon {
+  fill: $theme-color;
 }
