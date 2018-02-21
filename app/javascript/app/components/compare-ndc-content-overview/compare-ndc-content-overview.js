@@ -5,7 +5,10 @@ import { withRouter } from 'react-router';
 import qs from 'query-string';
 
 import Component from './compare-ndc-content-overview-component';
-import { getSelectedLocationsFilter, getSummaryText } from './compare-ndc-content-overview-selectors';
+import {
+  getSelectedLocationsFilter,
+  getSummaryText
+} from './compare-ndc-content-overview-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);

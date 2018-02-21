@@ -15,26 +15,32 @@ class CompareNDCContentOverview extends PureComponent {
 
   renderCountryOverview = (summary, i) => (
     <div className={styles.countryOverview} key={i}>
-      {summary && summary.text && (
-        <React.Fragment>
-          <div
-            className={styles.overviewText}
-            dangerouslySetInnerHTML={{ __html: summary.text }} // eslint-disable-line
-          />
-          <Button
-            className={styles.button}
-            link={`/ndcs/country/${summary.location}`}
-            square
-          >
-            <Icon icon={iconDocument} />
-          </Button>
-        </React.Fragment>
-      )}
+      {summary &&
+      summary.text && (
+      <React.Fragment>
+            <div
+          className={styles.overviewText}
+          dangerouslySetInnerHTML={{ __html: summary.text }}
+        />
+            <Button
+          className={styles.button}
+          link={`/ndcs/country/${summary.location}`}
+          square
+        >
+          <Icon icon={iconDocument} />
+        </Button>
+          </React.Fragment>
+        )}
     </div>
   );
 
   render() {
-    const { selectedLocationsFilter, handleAnalyticsClick, summaries, loading } = this.props;
+    const {
+      selectedLocationsFilter,
+      handleAnalyticsClick,
+      summaries,
+      loading
+    } = this.props;
     return (
       <div className={cx(layout.content, styles.ndcContentOverview)}>
         <NdcContentOverviewProvider locations={selectedLocationsFilter} />
@@ -50,14 +56,15 @@ class CompareNDCContentOverview extends PureComponent {
             Compare the NDCs
           </Button>
         </div>
-        {(loading || !summaries) ?
-          <Loading light className={styles.loader} /> :
+        {loading || !summaries ? (
+          <Loading light className={styles.loader} />
+        ) : (
           <div className={styles.col3}>
-            {[0, 1, 2].map((i) =>
+            {[0, 1, 2].map(i =>
               this.renderCountryOverview(summaries.find(s => s.index === i), i)
             )}
           </div>
-        }
+        )}
       </div>
     );
   }

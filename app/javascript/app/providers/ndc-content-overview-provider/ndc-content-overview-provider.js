@@ -15,7 +15,9 @@ class ndcContentOverviewProvider extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { locations, getNdcContentOverview } = this.props;
-    if (locations && locations.length && (locations !== prevProps.locations)) getNdcContentOverview(locations);
+    if (locations && locations.length && locations !== prevProps.locations) {
+      getNdcContentOverview(locations);
+    }
   }
 
   render() {

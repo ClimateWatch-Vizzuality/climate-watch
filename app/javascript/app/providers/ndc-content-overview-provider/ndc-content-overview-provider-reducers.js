@@ -19,16 +19,16 @@ export default {
       (accum, l) => ({ ...accum, [l]: payload.data[l] }),
       {}
     );
-    console.log('l', locationCodes)
-    console.log('l', payload.data)
-    console.log('l', locations)
+    console.log('l', locationCodes);
+    console.log('l', payload.data);
+    console.log('l', locations);
     const newState = {
       ...state,
       data: {
         locations: { ...state.data.locations, ...locations }
       }
     };
-    console.log('n', newState)
+    console.log('n', newState);
     return setLoaded(true, setLoading(false, newState));
   },
   getNdcContentOverviewFail: state => setError(state, true)

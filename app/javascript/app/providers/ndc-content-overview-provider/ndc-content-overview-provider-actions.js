@@ -11,14 +11,13 @@ const getNdcContentOverview = createThunkAction(
     const promises = [];
     const locationsWithPromise = [];
     locations.forEach(location => {
-      const noLocationForData =
-        !(getState().ndcContentOverview.data &&
-        getState().ndcContentOverview.data.locations[location]);
+      const noLocationForData = !(
+        getState().ndcContentOverview.data &&
+        getState().ndcContentOverview.data.locations[location]
+      );
       if (noLocationForData) {
         promises.push(
-          fetch(
-            `/api/v1/ndcs/${location}/content_overview`
-          ).then(response => {
+          fetch(`/api/v1/ndcs/${location}/content_overview`).then(response => {
             if (response.ok) return response.json();
             throw Error(response.statusText);
           })
@@ -33,7 +32,10 @@ const getNdcContentOverview = createThunkAction(
           locationData[l] = data[index];
         });
         dispatch(
-          getNdcContentOverviewReady({ data: locationData, locations: locationsWithPromise })
+          getNdcContentOverviewReady({
+            data: locationData,
+            locations: locationsWithPromise
+          })
         );
       })
       .catch(error => {

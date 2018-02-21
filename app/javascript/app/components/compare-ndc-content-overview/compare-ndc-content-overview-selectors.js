@@ -21,15 +21,12 @@ export const parseSelectedLocations = createSelector(
   }
 );
 
-
 export const getSelectedLocationsFilter = createSelector(
   getSelectedLocations,
   selectedLocations => {
     if (!selectedLocations) return null;
     const locations = selectedLocations;
-    return locations
-      .split(',')
-      .filter(l => !parseInt(l, 10) && l !== '');
+    return locations.split(',').filter(l => !parseInt(l, 10) && l !== '');
   }
 );
 
@@ -38,11 +35,10 @@ export const getSummaryText = createSelector(
   (selectedLocations, data) => {
     if (!selectedLocations || !data || isEmpty(data)) return null;
     const locations = selectedLocations;
-    const s = locations.map((l) => {
+    const s = locations.map(l => {
       const d = data[l.iso_code3];
-      const text = d && d.values && d.values.find(v =>
-        v.slug === 'indc_summary'
-      ).value;
+      const text =
+        d && d.values && d.values.find(v => v.slug === 'indc_summary').value;
       return {
         text,
         index: l.index,
