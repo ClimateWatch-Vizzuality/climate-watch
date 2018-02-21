@@ -37,7 +37,7 @@ const providersReducers = {
   socioeconomics: handleActions(socioeconomicsProvider),
   timeline: handleActions(timelineProvider),
   ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
-  NDCContentOverview: handleActions(ndcContentOverviewProvider),
+  ndcContentOverview: handleActions(ndcContentOverviewProvider),
   espModels: handleActions(espModelsProvider),
   espScenarios: handleActions(espScenariosProvider),
   espIndicators: handleActions(espIndicatorsProvider),

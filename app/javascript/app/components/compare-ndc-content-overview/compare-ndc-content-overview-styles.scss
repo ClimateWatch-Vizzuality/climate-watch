@@ -12,6 +12,31 @@
   }
 }
 
+.col3 {
+  @extend %grid;
+
+  margin-bottom: 10px;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 1fr, 1fr);
+
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.loader {
+  min-height: 200px;
+}
+
+.ndcContentOverview {
+  min-height: 350px;
+}
+
+.countryOverview {
+  color: $theme-color;
+  line-height: $line-height-medium;
+}
+
 .title {
   font-size: $font-size-large;
   font-weight: $font-weight;
@@ -24,4 +49,8 @@
 .colEnd {
   grid-column-end: -1;
   align-self: flex-end;
+}
+
+.overviewText {
+  margin-bottom: 0.3em;
 }

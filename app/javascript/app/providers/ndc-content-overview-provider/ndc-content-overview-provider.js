@@ -10,12 +10,12 @@ import reducers, {
 class ndcContentOverviewProvider extends PureComponent {
   componentDidMount() {
     const { locations, getNdcContentOverview } = this.props;
-    getNdcContentOverview(locations);
+    if (locations && locations.length) getNdcContentOverview(locations);
   }
 
   componentDidUpdate(prevProps) {
     const { locations, getNdcContentOverview } = this.props;
-    if (locations !== prevProps.locations) getNdcContentOverview(locations);
+    if (locations && locations.length && (locations !== prevProps.locations)) getNdcContentOverview(locations);
   }
 
   render() {
@@ -24,7 +24,7 @@ class ndcContentOverviewProvider extends PureComponent {
 }
 
 ndcContentOverviewProvider.propTypes = {
-  locations: PropTypes.array.isRequired,
+  locations: PropTypes.array,
   getNdcContentOverview: PropTypes.func.isRequired
 };
 
