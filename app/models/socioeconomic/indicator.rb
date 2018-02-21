@@ -3,7 +3,7 @@ module Socioeconomic
     belongs_to :location
     validates :year, presence: true, uniqueness: {scope: :location_id}
 
-    def self.latest_available_data_query(location_id)
+    def self.latest_available_data_query
       select(<<-SQL
         socioeconomic_indicators.year AS population_year,
         socioeconomic_indicators.population AS population,
@@ -22,25 +22,27 @@ module Socioeconomic
         SQL
       ).joins(<<-SQL
         INNER JOIN socioeconomic_indicators soci_gdp
-          ON socioeconomic_indicators.location_id = soci_gdp.location_id
-          AND soci_gdp.gdp <> 0
-          AND soci_gdp.gdp IS NOT NULL
+        ON socioeconomic_indicators.location_id = soci_gdp.location_id
+        AND soci_gdp.gdp <> 0
+        AND soci_gdp.gdp IS NOT NULL
+
         INNER JOIN socioeconomic_indicators soci_pop_growth
-          ON socioeconomic_indicators.location_id = soci_pop_growth.location_id
-          AND soci_pop_growth.population_growth <> 0
-          AND soci_pop_growth.population_growth IS NOT NULL
+        ON socioeconomic_indicators.location_id = soci_pop_growth.location_id
+        AND soci_pop_growth.population_growth <> 0
+        AND soci_pop_growth.population_growth IS NOT NULL
+
         INNER JOIN socioeconomic_indicators soci_gdp_per_capita
-          ON socioeconomic_indicators.location_id = soci_gdp_per_capita.location_id
-          AND soci_gdp_per_capita.gdp_per_capita <> 0
-          AND soci_gdp_per_capita.gdp_per_capita IS NOT NULL
-        SQL
-     ).where.not(population: [0, nil]).
-     order(<<-SQL
+        ON socioeconomic_indicators.location_id = soci_gdp_per_capita.location_id
+        AND soci_gdp_per_capita.gdp_per_capita <> 0
+        AND soci_gdp_per_capita.gdp_per_capita IS NOT NULL
+      SQL
+      ).where.not(population: [0, nil]).
+      order(<<-SQL
         socioeconomic_indicators.year DESC,
         soci_gdp.year DESC, soci_pop_growth.year DESC,
         soci_gdp_per_capita.year DESC
-        SQL
-      ).limit(1)
+      SQL
+      ).first
     end
   end
 end

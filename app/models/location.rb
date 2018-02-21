@@ -38,7 +38,7 @@ class Location < ApplicationRecord
   end
 
   def latest_socioeconomics
-    result = socioeconomic_indicators.latest_available_data_query(id).first
+    result = socioeconomic_indicators.latest_available_data_query
 
     if !result
       return {}
