@@ -3,7 +3,6 @@
 .countrySelectors {
   display: flex;
   position: relative;
-  border: 1px solid $theme-border;
 
   > :not(:last-child) {
     border-right: 1px solid $theme-border;
