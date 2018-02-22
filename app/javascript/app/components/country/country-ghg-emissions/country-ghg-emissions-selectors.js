@@ -46,6 +46,22 @@ const getFilterSelection = state => state.search.filter;
 // data for the graph
 const getData = state => state.data || [];
 
+const getCountries = state => state.countries.data || null;
+const getIso = state => state.iso;
+
+const getCountryByIso = (countries = [], iso) =>
+  countries.find(country => country.iso_code3 === iso);
+
+export const getCountry = createSelector(
+  [getCountries, getIso],
+  getCountryByIso
+);
+
+export const getCountryName = createSelector(
+  [getCountry],
+  (country = {}) => country.wri_standard_name || ''
+);
+
 // Sources selectors
 export const getSources = createSelector(
   getMeta,
@@ -132,11 +148,11 @@ export const getFilterOptions = createSelector(
 );
 
 export const getFiltersSelected = createSelector(
-  [getFilterOptions, getFilterSelection],
-  (filters, selected) => {
+  [getFilterOptions, getFilterSelection, getCalculationSelected],
+  (filters, selected, calculation) => {
     if (!filters || !filters.length) return [];
     if (selected === '') return [];
-    if (!selected) return filters;
+    if (!selected || calculation.value !== 'ABSOLUTE_VALUE') return filters;
     let selectedFilters = [];
     const selectedValues = selected.split(',');
     const selectedValuesNum = selectedValues.map(d => parseInt(d, 10));

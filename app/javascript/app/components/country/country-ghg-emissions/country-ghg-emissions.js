@@ -12,6 +12,7 @@ import reducers, { initialState } from './country-ghg-emissions-reducers';
 
 import CountryGhgEmissionsComponent from './country-ghg-emissions-component';
 import {
+  getCountryName,
   getSourceOptions,
   getCalculationOptions,
   getSourceSelected,
@@ -30,18 +31,22 @@ const mapStateToProps = (state, { location, match }) => {
   const { data, quantifications } = state.countryGhgEmissions;
   const calculationData = state.wbCountryData.data;
   const { meta } = state.ghgEmissionsMeta;
+  const isEmbed = location.pathname.includes('/embed');
   const search = qs.parse(location.search);
   const iso = match.params.iso;
   const countryGhg = {
     iso,
     meta,
     data,
+    countries: state.countries,
     calculationData,
     search,
     quantifications
   };
   return {
     iso,
+    isEmbed,
+    countryName: getCountryName(countryGhg),
     loading: state.countryGhgEmissions.loading || state.wbCountryData.loading,
     data: getChartData(countryGhg),
     quantifications: getQuantificationsData(countryGhg),

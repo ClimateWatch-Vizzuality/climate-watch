@@ -3,12 +3,12 @@ require 'rails_helper'
 describe Api::V1::QuantificationsController, type: :controller do
   context do
     let!(:polish_quantifications) {
-      location = FactoryGirl.create(:location, iso_code3: 'POL')
-      FactoryGirl.create_list(:quantification_value, 2, location: location)
+      location = FactoryBot.create(:location, iso_code3: 'POL')
+      FactoryBot.create_list(:quantification_value, 2, location: location)
     }
     let!(:german_quantifications) {
-      location = FactoryGirl.create(:location, iso_code3: 'DEU')
-      FactoryGirl.create_list(:quantification_value, 3, location: location)
+      location = FactoryBot.create(:location, iso_code3: 'DEU')
+      FactoryBot.create_list(:quantification_value, 3, location: location)
     }
 
     describe 'GET index' do

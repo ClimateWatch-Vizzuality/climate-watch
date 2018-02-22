@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :indc_category, class: 'Indc::Category' do
     name 'MyName'
     sequence :slug { |n| 'my-slug-' + ('AA'..'ZZ').to_a[n] }

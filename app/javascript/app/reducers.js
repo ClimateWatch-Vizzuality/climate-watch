@@ -1,7 +1,8 @@
 /* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
-import { handleModule } from 'redux-tools';
+// Restore when library ready to IE
+// import { handleModule } from 'redux-tools';
 
 // Providers
 import * as loginProvider from 'providers/login-provider';
@@ -94,7 +95,7 @@ const componentsReducers = {
   visualisations: handleModule(myVisualisations),
   vizCreator: handleModule(myVisualisationsCreator),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
-  hamburger: handleModule(HamburgerComponent)
+  hamburger: handleActions(HamburgerComponent)
 };
 
 export default combineReducers({

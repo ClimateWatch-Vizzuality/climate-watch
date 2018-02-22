@@ -254,7 +254,7 @@ class ImportIndc
           next
         end
 
-        next unless r[:"#{indicator.slug}"]
+        next unless r[:"#{indicator.slug}"].present?
 
         Indc::Value.create!(
           value_cait_attributes(r, location, indicator)

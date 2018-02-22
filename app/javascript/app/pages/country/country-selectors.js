@@ -33,35 +33,28 @@ export const getAnchorLinks = createSelector(
     }))
 );
 
-export const getCountryDescription = createSelector(
+export const getDescriptionText = createSelector(
   [getSocioeconomicsData],
   socioeconomicsData => {
     if (!socioeconomicsData) return null;
-    return socioeconomicsData[socioeconomicsData.length - 1];
-  }
-);
-
-export const getDescriptionText = createSelector(
-  [getCountryDescription],
-  description => {
-    if (!description) return null;
     const gdpPerCapitaLocale =
-      description.gdp_per_capita &&
-      truncateDecimals(description.gdp_per_capita, 0).toLocaleString();
+      socioeconomicsData.gdp_per_capita &&
+      truncateDecimals(socioeconomicsData.gdp_per_capita, 0).toLocaleString();
     const populationLocale =
-      description.population && description.population.toLocaleString();
+      socioeconomicsData.population &&
+      socioeconomicsData.population.toLocaleString();
     const populationGrowthLocale = (Math.round(
-      description.population_growth * 100
+      socioeconomicsData.population_growth * 100
     ) / 100).toLocaleString();
 
     let text = '';
-    if (gdpPerCapitaLocale && description.gdp_per_capita_rank) {
-      text += `GDP per capita (${description.year}) - USD
-      ${gdpPerCapitaLocale} (ranked ${description.gdp_per_capita_rank} globally)
+    if (gdpPerCapitaLocale && socioeconomicsData.gdp_per_capita_rank) {
+      text += `GDP per capita (${socioeconomicsData.gdp_per_capita_year}) - USD
+      ${gdpPerCapitaLocale} (ranked ${socioeconomicsData.gdp_per_capita_rank} globally)
       <br/>`;
     }
     if (populationLocale && populationGrowthLocale) {
-      text += `Population (${description.year}) - ${populationLocale}
+      text += `Population (${socioeconomicsData.population_year}) - ${populationLocale}
       (${populationGrowthLocale}% annual growth)`;
     }
     return text;
@@ -70,6 +63,5 @@ export const getDescriptionText = createSelector(
 
 export default {
   getCountryName,
-  getCountryDescription,
   getAnchorLinks
 };

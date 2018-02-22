@@ -40,10 +40,10 @@ RSpec.describe ImportSocioeconomics do
   end
 
   before :each do
-    FactoryGirl.create(
+    FactoryBot.create(
       :location, iso_code3: 'AFG', wri_standard_name: 'Afghanistan'
     )
-    FactoryGirl.create(
+    FactoryBot.create(
       :location, iso_code3: 'ALB', wri_standard_name: 'Albania'
     )
   end

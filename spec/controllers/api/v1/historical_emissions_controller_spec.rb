@@ -3,13 +3,13 @@ require 'rails_helper'
 describe Api::V1::HistoricalEmissionsController, type: :controller do
 
   context do
-    let(:location) { FactoryGirl.create(:location) }
-    let(:data_source) { FactoryGirl.create(:historical_emissions_data_source) }
-    let(:gas) { FactoryGirl.create(:historical_emissions_gas) }
-    let(:gwp2) { FactoryGirl.create(:historical_emissions_gwp, name: 'AR2') }
-    let(:gwp4) { FactoryGirl.create(:historical_emissions_gwp, name: 'AR4') }
+    let(:location) { FactoryBot.create(:location) }
+    let(:data_source) { FactoryBot.create(:historical_emissions_data_source) }
+    let(:gas) { FactoryBot.create(:historical_emissions_gas) }
+    let(:gwp2) { FactoryBot.create(:historical_emissions_gwp, name: 'AR2') }
+    let(:gwp4) { FactoryBot.create(:historical_emissions_gwp, name: 'AR4') }
     let(:sector) do
-      FactoryGirl.create(
+      FactoryBot.create(
         :historical_emissions_sector,
         data_source: data_source
       )
@@ -17,7 +17,7 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
 
     let!(:some_historical_emissions_records) {
       [
-        FactoryGirl.create(
+        FactoryBot.create(
           :historical_emissions_record,
           data_source: data_source,
           sector: sector,
@@ -25,7 +25,7 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
           gwp: gwp2,
           location: location
         ),
-        FactoryGirl.create(
+        FactoryBot.create(
           :historical_emissions_record,
           data_source: data_source,
           sector: sector,
@@ -36,9 +36,9 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
       ]
     }
 
-    let(:data_source2) { FactoryGirl.create(:historical_emissions_data_source) }
+    let(:data_source2) { FactoryBot.create(:historical_emissions_data_source) }
     let!(:record_with_just_ar2) {
-      FactoryGirl.create(
+      FactoryBot.create(
         :historical_emissions_record,
         data_source: data_source2,
         sector: sector,
@@ -96,12 +96,14 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
 
   context do
     let!(:some_historical_emissions_records) {
-      data_source = FactoryGirl.create(:historical_emissions_data_source)
-      sector = FactoryGirl.create(:historical_emissions_sector,
-                                  data_source: data_source)
-      gas = FactoryGirl.create(:historical_emissions_gas)
-      gwp = FactoryGirl.create(:historical_emissions_gwp)
-      FactoryGirl.create_list(
+      data_source = FactoryBot.create(:historical_emissions_data_source)
+      sector = FactoryBot.create(
+        :historical_emissions_sector,
+        data_source: data_source
+      )
+      gas = FactoryBot.create(:historical_emissions_gas)
+      gwp = FactoryBot.create(:historical_emissions_gwp)
+      FactoryBot.create_list(
         :historical_emissions_record,
         3,
         data_source: data_source,
