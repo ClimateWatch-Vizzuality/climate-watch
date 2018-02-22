@@ -17,7 +17,7 @@ RSpec.describe ImportNdcTexts do
   end
 
   before(:each) do
-    @location = FactoryGirl.create(
+    @location = FactoryBot.create(
       :location, iso_code3: 'AFG', wri_standard_name: 'Afghanistan'
     )
   end

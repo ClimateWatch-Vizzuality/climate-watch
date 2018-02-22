@@ -148,11 +148,11 @@ export const getFilterOptions = createSelector(
 );
 
 export const getFiltersSelected = createSelector(
-  [getFilterOptions, getFilterSelection],
-  (filters, selected) => {
+  [getFilterOptions, getFilterSelection, getCalculationSelected],
+  (filters, selected, calculation) => {
     if (!filters || !filters.length) return [];
     if (selected === '') return [];
-    if (!selected) return filters;
+    if (!selected || calculation.value !== 'ABSOLUTE_VALUE') return filters;
     let selectedFilters = [];
     const selectedValues = selected.split(',');
     const selectedValuesNum = selectedValues.map(d => parseInt(d, 10));

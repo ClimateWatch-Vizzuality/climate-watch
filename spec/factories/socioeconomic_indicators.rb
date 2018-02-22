@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :socioeconomic_indicator, class: 'Socioeconomic::Indicator' do
     location
     sequence(:year) { |n| 2015 + n }

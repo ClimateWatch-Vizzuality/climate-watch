@@ -67,7 +67,7 @@ class NDCMapContainer extends PureComponent {
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
     return selectedIndicator.locations && selectedIndicator.locations[id]
       ? selectedIndicator.locations[id].value
-      : '';
+      : 'No data';
   }
 
   handleCountryClick = geography => {
@@ -84,11 +84,8 @@ class NDCMapContainer extends PureComponent {
   };
 
   handleCountryEnter = geography => {
-    const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
-    if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.setState({ geometryIdHover: iso });
-    }
+    if (iso) this.setState({ geometryIdHover: iso });
     this.setState({ country: geography.properties.name });
   };
 

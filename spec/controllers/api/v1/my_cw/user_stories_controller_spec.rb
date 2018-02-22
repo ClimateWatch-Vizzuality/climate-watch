@@ -9,10 +9,10 @@ describe Api::V1::MyCw::UserStoriesController, type: :controller do
 
   context do
     let!(:user) {
-      FactoryGirl.create(:user)
+      FactoryBot.create(:user)
     }
     let!(:some_user_stories) {
-      FactoryGirl.create_list(:user_story, 3, user: user)
+      FactoryBot.create_list(:user_story, 3, user: user)
     }
 
     describe 'GET index' do
