@@ -6,7 +6,7 @@ import qs from 'query-string';
 
 import Component from './compare-ndc-content-overview-component';
 import {
-  getSelectedLocationsFilter,
+  getLocationsFilter,
   getSummaryText
 } from './compare-ndc-content-overview-selectors';
 
@@ -20,7 +20,7 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     selectedLocations: search.locations,
-    selectedLocationsFilter: getSelectedLocationsFilter(ndcOverviewData),
+    selectedLocationsFilter: getLocationsFilter(ndcOverviewData),
     summaries: getSummaryText(ndcOverviewData),
     loading: state.ndcContentOverview.loading
   };

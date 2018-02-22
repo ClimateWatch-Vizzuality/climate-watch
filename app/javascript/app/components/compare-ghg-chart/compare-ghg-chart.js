@@ -16,8 +16,8 @@ import {
   getFiltersSelected,
   getChartData,
   getChartConfig,
-  parseSelectedLocations,
-  getSelectedLocationsFilter
+  parseLocations,
+  getLocationsFilter
 } from './compare-ghg-chart-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -45,8 +45,8 @@ const mapStateToProps = (state, { location }) => {
     calculationSelected: getCalculationSelected(ghg),
     data: getChartData(ghg),
     config: getChartConfig(ghg),
-    selectedLocations: parseSelectedLocations(ghg),
-    selectedLocationsFilter: getSelectedLocationsFilter(ghg),
+    selectedLocations: parseLocations(ghg),
+    selectedLocationsFilter: getLocationsFilter(ghg),
     providerFilters: getFiltersSelected(ghg),
     needsWBData,
     loading:

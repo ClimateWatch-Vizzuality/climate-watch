@@ -18,6 +18,11 @@ import {
   getTooltipConfig,
   getThemeConfig
 } from 'utils/graphs';
+import {
+  parseSelectedLocations,
+  getSelectedLocationsFilter,
+  addSelectedNameToLocations
+} from 'selectors/compare';
 import { calculatedRatio } from 'utils/ghg-emissions';
 
 // meta data for selectors
@@ -31,35 +36,17 @@ const getQuantifications = state => state.quantifications || null;
 const getCalculationData = state => state.calculationData || null;
 const getCountriesData = state => state.countriesData || null;
 
-export const parseSelectedLocations = createSelector(
-  getSelectedLocations,
-  selectedLocations => {
-    if (!selectedLocations) return null;
-    const filteredLocations = [];
-    selectedLocations.split(',').forEach((l, index) => {
-      if (!parseInt(l, 10) && l !== '') {
-        filteredLocations.push({
-          iso_code3: l,
-          index
-        });
-      }
-    });
-    return filteredLocations;
-  }
+export const parseLocations = parseSelectedLocations(getSelectedLocations);
+export const getLocationsFilter = getSelectedLocationsFilter(
+  getSelectedLocations
 );
-
-export const getSelectedLocationsFilter = createSelector(
-  getSelectedLocations,
-  selectedLocations => {
-    if (!selectedLocations) return null;
-    return selectedLocations
-      .split(',')
-      .filter(l => !parseInt(l, 10) && l !== '');
-  }
+export const addNameToLocations = addSelectedNameToLocations(
+  getCountriesData,
+  parseLocations
 );
 
 const parseLocationCalculationData = createSelector(
-  [getCalculationData, parseSelectedLocations],
+  [getCalculationData, parseLocations],
   (data, locations) => {
     if (!data || isEmpty(data)) return null;
     const locationData = locations.map(l => groupBy(data[l.iso_code3], 'year'));
@@ -68,20 +55,6 @@ const parseLocationCalculationData = createSelector(
 );
 // data for the graph
 const getData = state => state.data || [];
-
-export const getSelectedLocationsName = createSelector(
-  [getCountriesData, parseSelectedLocations],
-  (countriesData, selectedLocations) => {
-    if (!selectedLocations || !countriesData || isEmpty(countriesData)) {
-      return null;
-    }
-    return selectedLocations.map(
-      l =>
-        countriesData.find(d => d.iso_code3 === l.iso_code3)
-          .wri_standard_name || null
-    );
-  }
-);
 
 // Sources selectors
 export const getCalculationSelected = createSelector(
@@ -126,16 +99,11 @@ export const calculationOptions = Object.keys(CALCULATION_OPTIONS).map(
 );
 
 export const filterData = createSelector(
-  [
-    getData,
-    getSourceSelected,
-    getCalculationSelected,
-    parseSelectedLocations,
-    getSelectedLocationsName
-  ],
-  (data, source, calculation, locations, locationsName) => {
+  [getData, getSourceSelected, getCalculationSelected, addNameToLocations],
+  (data, source, calculation, locations) => {
     if (!data || !data.length) return [];
     let filteredData = data;
+    // Filter by version
     // If the data has the AR4 version (latest) we only want to display that data to avoid duplicates
     const latestVersion = 'AR4';
     const hasLatestVersion = filteredData.some(d => d.gwp === latestVersion);
@@ -143,6 +111,8 @@ export const filterData = createSelector(
       filteredData = filteredData.filter(d => d.gwp === latestVersion);
     }
     const version = hasLatestVersion ? latestVersion : 'AR2';
+
+    // Filter by sector
     const filterSector =
       source.label === 'UNFCCC'
         ? DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version]
@@ -153,6 +123,8 @@ export const filterData = createSelector(
         d.sector === filterSector &&
         (d.gas === 'All GHG' || d.gas === 'Aggregate GHGs')
     );
+
+    // Group values if they need a calculation
     if (calculation.value !== 'ABSOLUTE_VALUE') {
       if (!locations || !locations.length) return null;
       const locationDataGroupedByYear = locations.map(l => {
@@ -170,8 +142,8 @@ export const filterData = createSelector(
       );
       const compressedData = locationDataSummed.map((d, i) => ({
         ...filteredData[0],
-        iso_code3: locations[i],
-        location: locationsName[i],
+        iso_code3: locations[i].iso_code3,
+        location: locations[i].name,
         sector: filterSector,
         emissions: d
       }));
@@ -186,7 +158,7 @@ export const getChartData = createSelector(
     filterData,
     getFiltersSelected,
     parseLocationCalculationData,
-    parseSelectedLocations,
+    parseLocations,
     getCalculationSelected,
     getQuantifications
   ],
@@ -229,7 +201,9 @@ export const getChartData = createSelector(
       data.forEach(d => {
         const yKey = getYColumnValue(d.location);
         const yData = d.emissions.find(e => e.year === x);
-        const locationIndex = selectedLocations.indexOf(d.iso_code3);
+        const locationIndex = selectedLocations
+          .map(l => l.iso_code3)
+          .indexOf(d.iso_code3);
         let calculationRatio = 1;
         if (!absoluteValueIsSelected) {
           calculationRatio = calculatedRatio(
@@ -257,12 +231,13 @@ export const getChartData = createSelector(
 );
 
 export const getChartConfig = createSelector(
-  [getData, parseSelectedLocations, getSelectedLocationsName],
-  (data, locations, locationNames) => {
+  [getData, addNameToLocations],
+  (data, locations) => {
     if (!data || isEmpty(data) || !locations) return null;
-    const yColumns = locations.map((l, i) => ({
-      label: locationNames[i],
-      value: getYColumnValue(locationNames[i]),
+
+    const yColumns = locations.map(l => ({
+      label: l.name,
+      value: getYColumnValue(l.name),
       index: l.index
     }));
     const theme = getThemeConfig(yColumns, COUNTRY_COMPARE_COLORS);
@@ -286,8 +261,8 @@ export default {
   getSourceSelected,
   calculationOptions,
   getCalculationSelected,
-  parseSelectedLocations,
-  getSelectedLocationsFilter,
+  parseLocations,
+  getLocationsFilter,
   getFiltersSelected,
   getChartData,
   getChartConfig
