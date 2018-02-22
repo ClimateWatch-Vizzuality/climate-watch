@@ -6,6 +6,7 @@ import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import CountryCompareSelector from 'components/country-compare/country-compare-selector';
+import CountrySelectorFooter from 'components/country-selector-footer';
 import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout.scss';
@@ -42,6 +43,7 @@ const CountryCompare = ({ route, anchorLinks }) => (
               {!!section.component && <section.component />}
             </section>
           ))}
+        {!isLandscape ? <CountrySelectorFooter /> : null}
         <ModalMetadata />
       </div>
     )}
