@@ -14,33 +14,37 @@ import styles from './compare-ndc-content-overview-styles.scss';
 class CompareNDCContentOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
-  renderCountryOverview = (summary, i) => (
-    <div className={styles.countryOverview} key={i}>
-      {summary && summary.text && (
-        <React.Fragment>
-          <TabletPortraitOnly>
-            <div className={cx(styles.countryHeader)}>
-              <div className={styles.dot} style={{ backgroundColor: COUNTRY_COMPARE_COLORS[i] }} />
-              <div className={styles.countryName}>
-                {summary.name}
+  renderCountryOverview = (summary, i) => {
+    const summaryText = summary && summary.text;
+    return (
+      <div className={styles.countryOverview} key={i}>
+        {summaryText && (
+          <React.Fragment>
+            <TabletPortraitOnly>
+              <div className={cx(styles.countryHeader)}>
+                <div
+                  className={styles.dot}
+                  style={{ backgroundColor: COUNTRY_COMPARE_COLORS[i] }}
+                />
+                <div className={styles.countryName}>{summary.name}</div>
               </div>
-            </div>
-          </TabletPortraitOnly>
-          <div
-            className={styles.overviewText}
-            dangerouslySetInnerHTML={{ __html: summary.text }} // eslint-disable-line
-          />
-          <Button
-            className={styles.button}
-            link={`/ndcs/country/${summary.location}`}
-            square
-          >
-            <Icon className={styles.blueIcon} icon={iconDocument} />
-          </Button>
-        </React.Fragment>
-      )}
-    </div>
-  );
+            </TabletPortraitOnly>
+            <div
+              className={styles.overviewText}
+              dangerouslySetInnerHTML={{ __html: summary.text }} // eslint-disable-line
+            />
+            <Button
+              className={styles.button}
+              link={`/ndcs/country/${summary.iso_code3}`}
+              square
+            >
+              <Icon className={styles.blueIcon} icon={iconDocument} />
+            </Button>
+          </React.Fragment>
+        )}
+      </div>
+    );
+  };
 
   render() {
     const {
@@ -66,9 +70,7 @@ class CompareNDCContentOverview extends PureComponent {
         <NdcContentOverviewProvider locations={selectedLocationsFilter} />
         <div className={styles.col6}>
           <h2 className={styles.title}>NDC Content Overview</h2>
-          <TabletLandscape>
-            {compareButton}
-          </TabletLandscape>
+          <TabletLandscape>{compareButton}</TabletLandscape>
         </div>
         {loading || !summaries ? (
           <Loading light className={styles.loader} />
