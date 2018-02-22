@@ -44,6 +44,16 @@
   > div {
     margin-left: 0;
   }
+
+  > ul {
+    display: none;
+  }
+
+  @media #{$tablet-landscape} {
+    > ul {
+      display: flex;
+    }
+  }
 }
 
 .colEnd {
