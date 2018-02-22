@@ -1,5 +1,6 @@
 import CompareGHGChart from 'components/compare-ghg-chart';
 import CompareNDCContentOverview from 'components/compare-ndc-content-overview';
+import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 
 export default [
   {
@@ -11,7 +12,8 @@ export default [
   {
     hash: 'climate-vulnerability',
     label: 'Climate Vulnerability and Readiness',
-    anchor: true
+    anchor: true,
+    component: ClimateVulnerability
   },
   {
     hash: 'ndc-content-overview',
