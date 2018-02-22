@@ -10,7 +10,11 @@
 
 .circularChart {
   display: block;
-  height: 160px;
+  height: 130px;
+
+  @media #{$tablet-landscape} {
+    height: 160px;
+  }
 }
 
 .circleEmpty {
