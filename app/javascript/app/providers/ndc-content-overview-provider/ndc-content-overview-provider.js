@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import actions from './ndc-content-overview-provider-actions';
 import reducers, {
   initialState
@@ -15,7 +14,12 @@ class ndcContentOverviewProvider extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { locations, getNdcContentOverview } = this.props;
-    if (locations && locations.length && locations !== prevProps.locations) {
+
+    if (
+      locations &&
+      locations.length &&
+      locations.sort().join() !== prevProps.locations.sort().join()
+    ) {
       getNdcContentOverview(locations);
     }
   }

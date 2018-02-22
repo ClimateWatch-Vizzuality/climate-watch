@@ -10,6 +10,7 @@ import InfoButton from 'components/button/info-button';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
+import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import styles from './country-ndc-overview-styles.scss';
 
 class CountryNdcOverview extends PureComponent {
@@ -64,16 +65,16 @@ class CountryNdcOverview extends PureComponent {
                     <span className={styles.metaTitle}>Target type</span>
                     <p
                       className={styles.targetText}
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
-                        // eslint-disable-line
                         __html: values.ghg_target_type[0].value
                       }}
                     />
                     <span className={styles.metaTitle}>Target year</span>
                     <p
                       className={styles.targetText}
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
-                        // eslint-disable-line react/no-danger
                         __html: values.time_target_year[0].value
                       }}
                     />
@@ -88,8 +89,8 @@ class CountryNdcOverview extends PureComponent {
                 {values && values.non_ghg_target ? (
                   <p
                     className={styles.targetText}
+                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      // eslint-disable-line react/no-danger
                       __html: values.non_ghg_target[0].value
                     }}
                   />
@@ -103,8 +104,8 @@ class CountryNdcOverview extends PureComponent {
                 {values && values.coverage_sectors_short ? (
                   <p
                     className={styles.targetText}
+                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      // eslint-disable-line react/no-danger
                       __html: values.coverage_sectors_short[0].value
                     }}
                   />
@@ -140,17 +141,8 @@ class CountryNdcOverview extends PureComponent {
   }
 
   render() {
-    const { sectors, values, loading, actions } = this.props;
+    const { sectors, values, loading, actions, iso } = this.props;
     const hasSectors = values && sectors;
-    if (!hasSectors && !loading) {
-      return (
-        <NoContent
-          message="No overview content data"
-          className={styles.noContentWrapper}
-        />
-      );
-    }
-
     const description = hasSectors && (
       <p
         className={styles.descriptionContainer}
@@ -163,39 +155,47 @@ class CountryNdcOverview extends PureComponent {
 
     return (
       <div className={styles.wrapper}>
-        <div className={layout.content}>
-          {loading && <Loading light className={styles.loader} />}
-          {hasSectors && (
-            <div className={styles.countryOverviewPadding}>
-              <div className={cx(styles.header, actions ? styles.col2 : '')}>
-                <Intro
-                  theme={introTheme}
-                  title={
-                    actions ? (
-                      'Nationally Determined Contribution (NDC) Overview'
-                    ) : (
-                      'Overview'
-                    )
-                  }
-                />
-                <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                {actions && (
-                  <div className={styles.actions}>
-                    {this.renderInfoAndCompareButtons()}
-                    <TabletLandscape>
-                      {this.renderExploreButton()}
-                    </TabletLandscape>
-                  </div>
-                )}
+        <NdcContentOverviewProvider locations={[iso]} />
+        {!hasSectors && !loading ? (
+          <NoContent
+            message="No overview content data"
+            className={styles.noContentWrapper}
+          />
+        ) : (
+          <div className={layout.content}>
+            {loading && <Loading light className={styles.loader} />}
+            {hasSectors && (
+              <div className={styles.countryOverviewPadding}>
+                <div className={cx(styles.header, actions ? styles.col2 : '')}>
+                  <Intro
+                    theme={introTheme}
+                    title={
+                      actions ? (
+                        'Nationally Determined Contribution (NDC) Overview'
+                      ) : (
+                        'Overview'
+                      )
+                    }
+                  />
+                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
+                  {actions && (
+                    <div className={styles.actions}>
+                      {this.renderInfoAndCompareButtons()}
+                      <TabletLandscape>
+                        {this.renderExploreButton()}
+                      </TabletLandscape>
+                    </div>
+                  )}
+                </div>
+                <TabletLandscape>{description}</TabletLandscape>
+                {this.renderCards()}
+                <TabletPortraitOnly>
+                  {this.renderExploreButton()}
+                </TabletPortraitOnly>
               </div>
-              <TabletLandscape>{description}</TabletLandscape>
-              {this.renderCards()}
-              <TabletPortraitOnly>
-                {this.renderExploreButton()}
-              </TabletPortraitOnly>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     );
   }
