@@ -1,19 +1,4 @@
-// import { AtomicBlockUtils, RichUtils } from 'draft-js';
 import MultiChartPlugin from './multi-chart-plugin-component';
-
-// const addMultichart = (editorState, data) => {
-//   if (RichUtils.getCurrentBlockType(editorState) === 'atomic') {
-//     return editorState;
-//   }
-//   const contentState = editorState.getCurrentContent();
-//   const contentStateWithEntity = contentState.createEntity(
-//     'multichart',
-//     'IMMUTABLE',
-//     data
-//   );
-//   const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-//   return AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ');
-// };
 
 const makeMultiChartPlugin = (config = {}) => {
   let Comp = MultiChartPlugin;
@@ -40,7 +25,6 @@ const makeMultiChartPlugin = (config = {}) => {
 
       return null;
     }
-    // addMultichart
   };
 };
 

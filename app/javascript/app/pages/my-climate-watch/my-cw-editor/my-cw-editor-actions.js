@@ -1,16 +1,16 @@
 import { createAction, createThunkAction } from 'redux-tools';
-import { RichUtils, SelectionState, EditorState } from 'draft-js';
 
 import {
   updateEditorContent,
   insertAtomicBlock,
+  deleteAtomicBlock,
   logEditorState
 } from 'app/utils/draft';
 
 export const openPicker = createAction('openPicker');
 export const closePicker = createAction('closePicker');
-export const openCreator = createAction('openCreator');
-export const closeCreator = createAction('closeCreator');
+// export const openCreator = createAction('openCreator');
+// export const closeCreator = createAction('closeCreator');
 
 export const updateContent = createAction('updateContent');
 export const focusEditor = createAction('focusEditor');
@@ -48,31 +48,21 @@ export const deleteAtomic = createThunkAction(
   'deleteAtomic',
   atomic => (dispatch, getState) => {
     const { myCWEditor: { content: editorState } } = getState();
-    const content = editorState.getCurrentContent();
-    const atomicKey = atomic.block.getKey();
-    const blockBefore = content.getBlockBefore(atomicKey);
-    const keyBefore = blockBefore.getKey();
-    const lengthBefore = blockBefore.getLength();
-
-    const withSelectionAboveAtomic = EditorState.forceSelection(
-      editorState,
-      new SelectionState({
-        anchorKey: keyBefore,
-        anchorOffset: lengthBefore,
-        focusKey: keyBefore,
-        focusOffset: lengthBefore
-      })
-    );
-    const newContentState = RichUtils.onDelete(withSelectionAboveAtomic);
-    dispatch(updateContent(newContentState));
+    dispatch(updateContent(deleteAtomicBlock(atomic, editorState)));
     dispatch(focusEditor());
   }
 );
 
 export const pickVisualiation = createThunkAction(
   'pickVisualiation',
-  payload => dispatch => {
-    dispatch(insertAtomic(payload));
+  data => dispatch => {
+    dispatch(
+      insertAtomic({
+        mode: 'IMMUTABLE',
+        type: 'multichart',
+        data
+      })
+    );
     dispatch(closePicker());
   }
 );

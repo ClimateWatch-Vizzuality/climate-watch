@@ -4,27 +4,37 @@ import cx from 'classnames';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import styles from './multi-chart-plugin-styles';
 
-// const deleteBlock = (block) => {
-//   Modifier.applyEntity({
-
-//   })
-//   SelectionState.createEmpty(block.getKey())
-//     .merge({ focusOffset: block.getText().length });
-// };
-
 class MultiChartPlugin extends PureComponent {
   render() {
     const { blockProps } = this.props;
+    const { isFocused, deleteAtomic, title, description, editViz } = blockProps;
     return (
       <div
         className={cx(styles.container, {
-          [styles.containerFocussed]: blockProps.isFocused
+          [styles.containerFocussed]: isFocused
         })}
       >
+        <h1 className={styles.title}>{title}</h1>
         <RenderChart {...blockProps} />
-        <a href="#" onClick={() => blockProps.deleteAtomic(this.props)}>
-          [X]
-        </a>
+        <p className={styles.description}>{description}</p>
+        <ul className={styles.tools}>
+          <li>
+            <button
+              className={cx(styles.tool, styles.edit)}
+              onClick={() => editViz(this.props)}
+            >
+              X
+            </button>
+          </li>
+          <li>
+            <button
+              className={cx(styles.tool, styles.delete)}
+              onClick={() => deleteAtomic(this.props)}
+            >
+              X
+            </button>
+          </li>
+        </ul>
       </div>
     );
   }
@@ -32,9 +42,8 @@ class MultiChartPlugin extends PureComponent {
 
 MultiChartPlugin.propTypes = {
   blockProps: PropTypes.object,
-  deleteAtomic: PropTypes.func,
-  block: PropTypes.any,
-  selection: PropTypes.any
+  isFocused: PropTypes.bool,
+  deleteAtomic: PropTypes.func
 };
 
 export default MultiChartPlugin;

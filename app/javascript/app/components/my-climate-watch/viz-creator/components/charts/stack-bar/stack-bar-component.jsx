@@ -25,10 +25,15 @@ const StackedBarChart = ({ className, width, height, config }) => (
 
 StackedBarChart.propTypes = {
   className: PropTypes.string,
-  width: PropTypes.any.isRequired,
-  height: PropTypes.any.isRequired,
+  width: PropTypes.any,
+  height: PropTypes.any,
   chart: PropTypes.PropTypes.object,
   config: PropTypes.object
+};
+
+StackedBarChart.defaultProps = {
+  width: '100%',
+  height: '300px'
 };
 
 export default StackedBarChart;

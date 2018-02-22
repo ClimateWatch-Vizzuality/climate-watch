@@ -1,16 +1,21 @@
-import { PureComponent, createElement } from 'react';
+import React, { PureComponent, createElement } from 'react';
 import PropTypes from 'prop-types';
 import charts from '../charts';
+import styles from './render-chart-styles';
 
 class RenderChart extends PureComponent {
   render() {
     const { chart, ...props } = this.props;
-    return createElement(charts[chart], props);
+    return (
+      <div className={styles.container}>
+        {createElement(charts[chart], props)}
+      </div>
+    );
   }
 }
 
 RenderChart.propTypes = {
-  chart: PropTypes.object
+  chart: PropTypes.string
 };
 
 export default RenderChart;

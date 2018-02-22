@@ -2,6 +2,7 @@ import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { actions as creatorActions } from 'components/my-climate-watch/viz-creator';
 import * as actions from './my-cw-editor-actions';
 import * as reducers from './my-cw-editor-reducers';
 import initialState from './my-cw-editor-initial-state';
@@ -75,4 +76,6 @@ const mapStateToProps = ({ myCWEditor }) => myCWEditor;
 
 export { actions, reducers, initialState };
 
-export default connect(mapStateToProps, actions)(Editor);
+export default connect(mapStateToProps, { ...actions, ...creatorActions })(
+  Editor
+);

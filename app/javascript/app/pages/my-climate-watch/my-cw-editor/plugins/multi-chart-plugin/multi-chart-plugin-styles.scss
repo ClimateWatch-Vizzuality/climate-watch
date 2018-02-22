@@ -7,8 +7,39 @@ $editor-margin: 90px;
   margin-left: -$editor-margin;
   background-color: $light-gray;
   padding-left: $editor-margin;
-  // user-select: none;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  user-select: none;
+  position: relative;
   box-shadow: 0 0 0 2px transparent;
+  color: $theme-color;
+
+  .title {
+    font-size: 1rem;
+    margin-bottom: 2em;
+  }
+
+  .description {
+
+  }
+
+  .tools {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 40px;
+  }
+
+  .tool {
+    border: 1px solid;
+    border-radius: 3px;
+    cursor: pointer;
+  }
 
   &Focussed {
     box-shadow: 0 0 0 2px rgba(#accef7, 0.9);
