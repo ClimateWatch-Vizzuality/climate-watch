@@ -1,4 +1,5 @@
 import { createAction, createThunkAction } from 'redux-tools';
+import { RichUtils, SelectionState, EditorState } from 'draft-js';
 
 import {
   updateEditorContent,
@@ -39,6 +40,31 @@ export const insertAtomic = createThunkAction(
         insertAtomicBlock({ editorState: newEditorState, entityKey, char: ' ' })
       )
     );
+    dispatch(focusEditor());
+  }
+);
+
+export const deleteAtomic = createThunkAction(
+  'deleteAtomic',
+  atomic => (dispatch, getState) => {
+    const { myCWEditor: { content: editorState } } = getState();
+    const content = editorState.getCurrentContent();
+    const atomicKey = atomic.block.getKey();
+    const blockBefore = content.getBlockBefore(atomicKey);
+    const keyBefore = blockBefore.getKey();
+    const lengthBefore = blockBefore.getLength();
+
+    const withSelectionAboveAtomic = EditorState.forceSelection(
+      editorState,
+      new SelectionState({
+        anchorKey: keyBefore,
+        anchorOffset: lengthBefore,
+        focusKey: keyBefore,
+        focusOffset: lengthBefore
+      })
+    );
+    const newContentState = RichUtils.onDelete(withSelectionAboveAtomic);
+    dispatch(updateContent(newContentState));
     dispatch(focusEditor());
   }
 );

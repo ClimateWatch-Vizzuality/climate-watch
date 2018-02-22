@@ -75,7 +75,6 @@ import * as myVisualisations from 'components/my-climate-watch/my-visualisations
 import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creator';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import * as HamburgerComponent from 'components/hamburger';
-// import * as myCWPicker from 'components/my-climate-watch/widget-picker';
 
 const componentsReducers = {
   map: handleActions(mapComponent),
@@ -95,7 +94,6 @@ const componentsReducers = {
   vizCreator: handleModule(myVisualisationsCreator),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleModule(HamburgerComponent)
-  // myCWPicker: handleModule(myCWPicker)
 };
 
 export default combineReducers({

@@ -7,7 +7,7 @@ $editor-margin: 90px;
   margin-left: -$editor-margin;
   background-color: $light-gray;
   padding-left: $editor-margin;
-  user-select: none;
+  // user-select: none;
   box-shadow: 0 0 0 2px transparent;
 
   &Focussed {

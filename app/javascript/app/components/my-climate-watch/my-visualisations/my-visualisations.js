@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Loading from 'components/loading';
 
 import { actions as creatorActions } from 'components/my-climate-watch/viz-creator';
+import * as myCWEditorActions from 'pages/my-climate-watch/my-cw-editor/my-cw-editor-actions';
 
 import MyVisualisationsComponent from './my-visualisations-component';
 import initialState from './my-visualisations-initial-state';
@@ -27,7 +28,7 @@ MyVisualisations.propTypes = {
   fetchVisualisations: PropTypes.func
 };
 
-const actions = { ...creatorActions, ...ownActions };
+const actions = { ...creatorActions, ...ownActions, ...myCWEditorActions };
 
 const mapStateToProps = ({ visualisations, vizCreator }) => ({
   ...visualisations,

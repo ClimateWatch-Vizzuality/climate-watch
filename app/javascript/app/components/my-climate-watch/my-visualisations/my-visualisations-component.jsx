@@ -26,7 +26,8 @@ const MyVisualisations = ({
   onSelectVis,
   closeCreator,
   currentId,
-  mode
+  mode,
+  deleteAtomic
 }) => (
   <div>
     <ul className={styles.visContainer}>
@@ -49,6 +50,7 @@ const MyVisualisations = ({
                   data: {
                     chart: visualisationType({ datasets: vis.json_body }),
                     config: chartDataSelector({ datasets: vis.json_body }),
+                    deleteAtomic,
                     width: '90%',
                     height: 300
                   }
@@ -89,7 +91,8 @@ MyVisualisations.propTypes = {
   closeCreator: PropTypes.func,
   onSelectVis: PropTypes.func,
   currentId: PropTypes.number,
-  mode: PropTypes.string
+  mode: PropTypes.string,
+  deleteAtomic: PropTypes.func
 };
 
 export default MyVisualisations;
