@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import Button from 'components/button';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
+import Legend from 'components/my-climate-watch/viz-creator/components/charts/legend';
+
 import styles from './multi-chart-plugin-styles';
 
 class MultiChartPlugin extends PureComponent {
@@ -16,23 +19,24 @@ class MultiChartPlugin extends PureComponent {
       >
         <h1 className={styles.title}>{title}</h1>
         <RenderChart {...blockProps} />
+        <Legend className={styles.legend} data={blockProps.config.legend} />
         <p className={styles.description}>{description}</p>
         <ul className={styles.tools}>
           <li>
-            <button
+            <Button
               className={cx(styles.tool, styles.edit)}
               onClick={() => editViz(this.props)}
             >
               X
-            </button>
+            </Button>
           </li>
           <li>
-            <button
+            <Button
               className={cx(styles.tool, styles.delete)}
               onClick={() => deleteAtomic(this.props)}
             >
               X
-            </button>
+            </Button>
           </li>
         </ul>
       </div>
@@ -42,8 +46,7 @@ class MultiChartPlugin extends PureComponent {
 
 MultiChartPlugin.propTypes = {
   blockProps: PropTypes.object,
-  isFocused: PropTypes.bool,
-  deleteAtomic: PropTypes.func
+  isFocused: PropTypes.bool
 };
 
 export default MultiChartPlugin;

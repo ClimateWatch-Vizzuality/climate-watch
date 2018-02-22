@@ -30,7 +30,6 @@ const MyVisualisations = props => {
     mode,
     deleteAtomic
   } = props;
-  // console.log(props)
   const onClick = vis =>
     (mode === 'add'
       ? onSelectVis({

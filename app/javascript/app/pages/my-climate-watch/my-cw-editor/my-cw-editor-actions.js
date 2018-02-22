@@ -9,8 +9,6 @@ import {
 
 export const openPicker = createAction('openPicker');
 export const closePicker = createAction('closePicker');
-// export const openCreator = createAction('openCreator');
-// export const closeCreator = createAction('closeCreator');
 
 export const updateContent = createAction('updateContent');
 export const focusEditor = createAction('focusEditor');
