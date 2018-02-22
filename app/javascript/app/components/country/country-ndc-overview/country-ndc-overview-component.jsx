@@ -146,8 +146,8 @@ class CountryNdcOverview extends PureComponent {
     const description = hasSectors && (
       <p
         className={styles.descriptionContainer}
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          // eslint-disable-line react/no-danger
           __html: values.indc_summary[0] && values.indc_summary[0].value
         }}
       />
