@@ -1,17 +1,25 @@
 @import '~styles/layout.scss';
 
+.circularChartWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  transform: rotate(-90deg);
+}
+
 .circularChart {
   display: block;
-  height: 100px;
+  height: 160px;
 }
 
-.circleBg {
+.circleEmpty {
   fill: none;
-  stroke: #eee;
-  stroke-width: 1.2;
+  stroke: $theme-border;
+  stroke-width: 1;
 }
 
-.circle {
+.circleValue {
   fill: none;
   stroke-width: 1;
   stroke-linecap: round;
@@ -24,13 +32,3 @@
   }
 }
 
-.circularChart .circle {
-  stroke: #113750;
-}
-
-.percentage {
-  fill: #113750;
-  font-size: 0.4em;
-  text-anchor: middle;
-  font-weight: bold;
-}
