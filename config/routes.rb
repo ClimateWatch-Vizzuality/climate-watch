@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get 'auth/login', to: 'auth#login'
       get 'auth/logout', to: 'auth#logout'
 
-      resources :wb_extra, param: :iso, only: [:index, :show], controller: 'wb_extra_country_data'
+      resources :wb_extra, param: :code, only: [:index, :show], controller: 'wb_extra_country_data'
 
       resources :emissions, only: [:index], controller: :historical_emissions do
         get :meta, on: :collection
@@ -34,9 +34,16 @@ Rails.application.routes.draw do
         get :linkages_dataset, on: :collection, controller: :ndc_sdgs,
           action: :linkages_dataset, defaults: { format: :csv }
       end
+
       resources :adaptations, only: [:index]
       resources :quantifications, only: [:index]
-      get 'socioeconomics/:location', to: 'socioeconomics#index'
+
+      resources :locations, param: :code, only: [] do
+        resources :socioeconomics, only: [:index] do
+          get :latest, on: :collection
+        end
+      end
+
       resources :metadata, param: :slug, only: [:index, :show] do
         get :acronyms, on: :collection, controller: :metadata, action: :acronyms
       end
