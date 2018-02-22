@@ -23,19 +23,34 @@ RSpec.describe Location, type: :model do
         FactoryBot.create(:location)
       }
       let!(:socio_gdp) {
-        FactoryBot.create(:socioeconomic_indicator, gdp: 1, population: 0,
-                          population_growth: 2, year: 2016,
-                          location_id: location.id)
+        FactoryBot.create(
+          :socioeconomic_indicator,
+          gdp: 1,
+          population: 0,
+          population_growth: 2,
+          year: 2016,
+          location_id: location.id
+        )
       }
       let!(:socio_ignore) {
-        FactoryBot.create(:socioeconomic_indicator, gdp: 23, population: 0,
-                          population_growth: 3, year: 2015,
-                          location_id: location.id)
+        FactoryBot.create(
+          :socioeconomic_indicator,
+          gdp: 23,
+          population: 0,
+          population_growth: 3,
+          year: 2015,
+          location_id: location.id
+        )
       }
       let!(:socio_population) {
-        FactoryBot.create(:socioeconomic_indicator, gdp: 0, population: 2,
-                          population_growth: 4, year: 2014,
-                          location_id: location.id)
+        FactoryBot.create(
+          :socioeconomic_indicator,
+          gdp: 0,
+          population: 2,
+          population_growth: 4,
+          year: 2014,
+          location_id: location.id
+        )
       }
       it 'returns gdp and population_growth of :socio_gdp, and population of :socio_population' do
         result = location.latest_socioeconomics

@@ -97,8 +97,9 @@ describe Api::V1::HistoricalEmissionsController, type: :controller do
   context do
     let!(:some_historical_emissions_records) {
       data_source = FactoryBot.create(:historical_emissions_data_source)
-      sector = FactoryBot.create(:historical_emissions_sector,
-                                  data_source: data_source)
+      sector = FactoryBot.create(
+        :historical_emissions_sector,
+        data_source: data_source)
       gas = FactoryBot.create(:historical_emissions_gas)
       gwp = FactoryBot.create(:historical_emissions_gwp)
       FactoryBot.create_list(

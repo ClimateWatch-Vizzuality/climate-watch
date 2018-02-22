@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::SocioeconomicsController, type: :controller do
   context do
     let(:location) {
-      location = FactoryBot.create(:location, iso_code3: 'POL')
+      FactoryBot.create(:location, iso_code3: 'POL')
     }
 
     let!(:polish_socioeconomics) {
