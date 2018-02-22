@@ -7,10 +7,13 @@ const mockUrl = (endpoint, params) =>
   `/mocks/${endpoint}.json${params ? `?${params}` : ''}`;
 
 const handleResponse = d => {
-  const data = isFunction(d.json) ? d.json() : d;
-  // fallback
-  data.json = () => data;
-  return data;
+  if (d.status >= 200 && d.status <= 300) {
+    const data = isFunction(d.json) ? d.json() : d;
+    // fallback
+    data.json = () => data;
+    return data;
+  }
+  throw new Error(d.statusText);
 };
 
 class API {

@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 // Restore when library ready to IE
-// import { handleModule } from 'redux-tools';
+import { handleModule } from 'redux-tools';
 
 // Providers
 import * as loginProvider from 'providers/login-provider';

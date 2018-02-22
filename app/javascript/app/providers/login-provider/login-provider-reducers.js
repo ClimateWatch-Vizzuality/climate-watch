@@ -21,6 +21,7 @@ export default {
     ...state,
     loading: false,
     loaded: true,
+    logged: false,
     error: true
   })
 };
