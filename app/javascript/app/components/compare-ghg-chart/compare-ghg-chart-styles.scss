@@ -28,6 +28,10 @@
   }
 }
 
+.section {
+  border-bottom: 1px solid $border-color;
+}
+
 .title {
   font-size: $font-size-large;
   font-weight: $font-weight;

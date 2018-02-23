@@ -11,6 +11,7 @@ import * as espTimeSeriesProvider from 'providers/esp-time-series-provider';
 import * as adaptationsProvider from 'providers/adaptations-provider';
 import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ndcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
+import * as ndcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
 import * as geoLocationProvider from 'providers/geolocation-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
@@ -36,6 +37,7 @@ const providersReducers = {
   socioeconomics: handleActions(socioeconomicsProvider),
   timeline: handleActions(timelineProvider),
   ndcsDocumentsMeta: handleActions(ndcsDocumentsMetaProvider),
+  ndcContentOverview: handleActions(ndcContentOverviewProvider),
   espModels: handleActions(espModelsProvider),
   espScenarios: handleActions(espScenariosProvider),
   espIndicators: handleActions(espIndicatorsProvider),
@@ -67,7 +69,6 @@ import * as ndcCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
-import * as countryNDCOverviewComponent from 'components/country/country-ndc-overview';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import * as HamburgerComponent from 'components/hamburger';
 
@@ -82,7 +83,6 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
-  countryNDCOverview: handleActions(countryNDCOverviewComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleModule(HamburgerComponent)
 };
