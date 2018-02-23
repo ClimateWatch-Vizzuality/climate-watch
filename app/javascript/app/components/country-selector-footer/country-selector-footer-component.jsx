@@ -32,15 +32,15 @@ const CountrySelectorFooter = ({
                   id: `${country.label}`,
                   value: country.value
                 }}
-                canRemove
+                canRemove={locationsValues.length > 1}
                 onRemove={handleRemove}
               />
             ) : null)
         )}
     </div>
     {countryOptions &&
-    locationsValues.length < 3 && (
-    <MultiSelect
+      locationsValues.length < 3 && (
+        <MultiSelect
           className={styles.footerTagSelector}
           values={locationsValues || []}
           options={countryOptions}
