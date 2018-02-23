@@ -4,6 +4,9 @@ import cx from 'classnames';
 import Button from 'components/button';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import Legend from 'components/my-climate-watch/viz-creator/components/charts/legend';
+import Icon from 'components/icon';
+import editIcon from 'assets/icons/edit.svg';
+import deleteIcon from 'assets/icons/delete.svg';
 
 import styles from './multi-chart-plugin-styles';
 
@@ -27,7 +30,7 @@ class MultiChartPlugin extends PureComponent {
               className={cx(styles.tool, styles.edit)}
               onClick={() => editViz(this.props)}
             >
-              X
+              <Icon icon={editIcon} />
             </Button>
           </li>
           <li>
@@ -35,7 +38,7 @@ class MultiChartPlugin extends PureComponent {
               className={cx(styles.tool, styles.delete)}
               onClick={() => deleteAtomic(this.props)}
             >
-              X
+              <Icon icon={deleteIcon} />
             </Button>
           </li>
         </ul>

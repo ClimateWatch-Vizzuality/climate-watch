@@ -1,4 +1,4 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable */
 import React from 'react';
 import DraftOffsetKey from 'draft-js/lib/DraftOffsetKey';
 
@@ -22,14 +22,14 @@ export default class Toolbar extends React.Component {
 
   onEditorStateChange = editorState => {
     const selection = editorState.getSelection();
-    if (!selection.getHasFocus()) {
-      this.setState({
-        position: {
-          transform: 'scale(0)'
-        }
-      });
-      return;
-    }
+    // if (!selection.getHasFocus()) {
+    //   this.setState({
+    //     position: {
+    //       transform: 'scale(0)'
+    //     }
+    //   });
+    //   return;
+    // }
 
     const currentContent = editorState.getCurrentContent();
     const currentBlock = currentContent.getBlockForKey(selection.getStartKey());

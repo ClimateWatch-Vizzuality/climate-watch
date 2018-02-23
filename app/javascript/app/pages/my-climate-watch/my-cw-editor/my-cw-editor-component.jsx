@@ -105,7 +105,10 @@ const StoryEditor = ({
         plugins={plugins}
       />
       <InlineToolbar />
-      <SideToolbar trigerTool={() => showPicker()} />
+      <SideToolbar
+        trigerTool={() => showPicker()}
+        structure={[<button>Add Viz</button>]}
+      />
     </div>
   </div>
 );

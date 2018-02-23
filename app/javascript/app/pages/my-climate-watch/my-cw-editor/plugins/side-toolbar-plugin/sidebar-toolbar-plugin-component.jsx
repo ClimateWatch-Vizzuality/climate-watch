@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/icon';
-import iconBarchart from 'assets/icons/barchart.svg';
+import graphIcon from 'assets/icons/graph.svg';
+
+import styles from './side-toolbar-theme';
 
 const SidebarToolbarPLugin = ({ trigerTool }) => (
   <button onClick={trigerTool}>
-    <Icon icon={iconBarchart} />
+    <Icon icon={graphIcon} className={styles.icon} />
   </button>
 );
 
