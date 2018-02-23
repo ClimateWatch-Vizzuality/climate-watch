@@ -7,14 +7,18 @@
   border-left: solid 1px rgba($gray, 0.5);
 }
 
-.shareButton {
+.shareButton,
+.downloadButton {
   fill: $dark-gray;
-  margin-left: 20px;
-  padding: 17px 20px;
+  padding: 22px 15px 0;
 
   &.active {
     border-bottom: 3px solid $theme-secondary;
   }
+}
+
+.myCwButton {
+  margin-right: 12px;
 }
 
 .link {

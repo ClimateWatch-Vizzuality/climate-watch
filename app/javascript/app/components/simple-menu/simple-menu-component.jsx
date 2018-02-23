@@ -88,7 +88,7 @@ class SimpleMenu extends PureComponent {
     ) : (
       <a
         className={styles.link}
-        target="_blank"
+        target={option.target || '_blank'}
         href={option.link}
         onClick={this.handleLinkClick}
       >
