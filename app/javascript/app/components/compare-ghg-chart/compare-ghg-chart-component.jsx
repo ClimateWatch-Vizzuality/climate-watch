@@ -71,51 +71,53 @@ class CompareGhgChart extends PureComponent {
       needsWBData
     } = this.props;
     return (
-      <div className={layout.content}>
-        <EmissionsProvider filters={providerFilters} />
-        <EmissionsMetaProvider />
-        {needsWBData && <WbCountryDataProvider />}
-        <h2 className={styles.title}>
-          Historical GHG Emissions and Target Levels
-        </h2>
-        <div className={styles.col6}>
-          <Dropdown
-            label="Source"
-            options={sourceOptions}
-            onValueChange={handleSourceChange}
-            value={sourceSelected}
-            hideResetButton
-          />
-          <Dropdown
-            label="Calculation"
-            options={calculationOptions}
-            onValueChange={handleCalculationChange}
-            value={calculationSelected}
-            hideResetButton
-          />
-          <TabletLandscape>
-            <div />
-            <div />
-            {this.renderActionButtons()}
-          </TabletLandscape>
-        </div>
-        <Chart
-          className={styles.chartWrapper}
-          type="line"
-          config={config}
-          data={data}
-          dataOptions={selectedLocations}
-          dataSelected={selectedLocations}
-          height={500}
-          loading={loading}
-          hideRemoveOptions
-        />
-        <TabletPortraitOnly>
-          <div className={cx(styles.buttonGroup, styles.col2)}>
-            {this.renderActionButtons(true)}
+      <div className={styles.section}>
+        <div className={layout.content}>
+          <EmissionsProvider filters={providerFilters} />
+          <EmissionsMetaProvider />
+          {needsWBData && <WbCountryDataProvider />}
+          <h2 className={styles.title}>
+            Historical GHG Emissions and Target Levels
+          </h2>
+          <div className={styles.col6}>
+            <Dropdown
+              label="Source"
+              options={sourceOptions}
+              onValueChange={handleSourceChange}
+              value={sourceSelected}
+              hideResetButton
+            />
+            <Dropdown
+              label="Calculation"
+              options={calculationOptions}
+              onValueChange={handleCalculationChange}
+              value={calculationSelected}
+              hideResetButton
+            />
+            <TabletLandscape>
+              <div />
+              <div />
+              {this.renderActionButtons()}
+            </TabletLandscape>
           </div>
-        </TabletPortraitOnly>
-        <ModalMetadata />
+          <Chart
+            className={styles.chartWrapper}
+            type="line"
+            config={config}
+            data={data}
+            dataOptions={selectedLocations}
+            dataSelected={selectedLocations}
+            height={500}
+            loading={loading}
+            hideRemoveOptions
+          />
+          <TabletPortraitOnly>
+            <div className={cx(styles.buttonGroup, styles.col2)}>
+              {this.renderActionButtons(true)}
+            </div>
+          </TabletPortraitOnly>
+          <ModalMetadata />
+        </div>
       </div>
     );
   }

@@ -19,6 +19,12 @@ class TooltipChart extends PureComponent {
     return `${format(this.getFormat())(total)}${unitIsCo2 ? 't' : ''}`;
   };
 
+  sortByValue = payload => {
+    const yValues = payload[0].payload;
+    const compare = (a, b) => yValues[b.dataKey] - yValues[a.dataKey];
+    return payload.sort(compare);
+  };
+
   render() {
     const { config, content, showTotal } = this.props;
 
@@ -47,7 +53,7 @@ class TooltipChart extends PureComponent {
         {content &&
           content.payload &&
           content.payload.length > 0 &&
-          content.payload.map(
+          this.sortByValue(content.payload, config).map(
             y =>
               (y.payload && y.dataKey !== 'total' ? (
                 <div key={`${y.dataKey}`} className={styles.label}>
