@@ -8,11 +8,6 @@
 
   grid-template-columns: 1fr;
 
-  &.isOpen {
-    height: 60vh;
-    overflow: hidden;
-  }
-
   @media #{$tablet-landscape} {
     @include msGridColumns(1fr, 2fr);
 

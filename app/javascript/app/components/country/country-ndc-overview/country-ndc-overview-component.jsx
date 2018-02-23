@@ -64,16 +64,16 @@ class CountryNdcOverview extends PureComponent {
                     <span className={styles.metaTitle}>Target type</span>
                     <p
                       className={styles.targetText}
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
-                        // eslint-disable-line
                         __html: values.ghg_target_type[0].value
                       }}
                     />
                     <span className={styles.metaTitle}>Target year</span>
                     <p
                       className={styles.targetText}
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
-                        // eslint-disable-line react/no-danger
                         __html: values.time_target_year[0].value
                       }}
                     />
@@ -88,8 +88,8 @@ class CountryNdcOverview extends PureComponent {
                 {values && values.non_ghg_target ? (
                   <p
                     className={styles.targetText}
+                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      // eslint-disable-line react/no-danger
                       __html: values.non_ghg_target[0].value
                     }}
                   />
@@ -103,8 +103,8 @@ class CountryNdcOverview extends PureComponent {
                 {values && values.coverage_sectors_short ? (
                   <p
                     className={styles.targetText}
+                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      // eslint-disable-line react/no-danger
                       __html: values.coverage_sectors_short[0].value
                     }}
                   />
@@ -154,8 +154,8 @@ class CountryNdcOverview extends PureComponent {
     const description = hasSectors && (
       <p
         className={styles.descriptionContainer}
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          // eslint-disable-line react/no-danger
           __html: values.indc_summary[0] && values.indc_summary[0].value
         }}
       />
