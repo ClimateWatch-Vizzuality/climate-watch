@@ -21,6 +21,7 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     locations,
+    locationsValues: locations.filter(l => l !== null && l !== ''),
     countryOptions: getCountriesOptions(selectorsState),
     activeCountryOptions: getSelectedCountries(selectorsState)
   };
@@ -36,14 +37,21 @@ class CountrySelectorFooterContainer extends PureComponent {
     const lastSelectedElement = selected[selected.length - 1];
     const { locations } = this.props;
     const newLocations = locations.slice();
-    newLocations.push(lastSelectedElement.value);
+    const availableTag = newLocations.indexOf('');
+    if (availableTag === -1) {
+      newLocations.push(lastSelectedElement.value);
+    } else {
+      newLocations[availableTag] = lastSelectedElement.value;
+    }
     this.updateUrlParam({ name: 'locations', value: newLocations.toString() });
   };
 
   handleRemove = target => {
     const unselected = target.value;
     const { locations } = this.props;
-    const newLocations = locations.filter(country => country !== unselected);
+    const newLocations = locations.map(
+      country => (country !== unselected ? country : null)
+    );
     this.updateUrlParam({ name: 'locations', value: newLocations.toString() });
   };
 
