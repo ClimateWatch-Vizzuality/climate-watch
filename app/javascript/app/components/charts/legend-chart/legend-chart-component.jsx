@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import MultiSelect from 'components/multiselect';
-import Icon from 'components/icon';
 import Tag from 'components/tag';
 import cx from 'classnames';
 
@@ -50,9 +49,8 @@ class LegendChart extends PureComponent {
             hideResetButton
             closeOnSelect
             dropdownDirection={-1}
-          >
-            <Icon className={styles.plusIcon} icon={plusIcon} />
-          </MultiSelect>
+            icon={plusIcon}
+          />
         )}
       </ul>
     );
