@@ -9,7 +9,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
     describe 'GET index' do
       let!(:some_ndc_sdg_goals) {
-        FactoryGirl.create_list(:ndc_sdg_goal, 1, :with_dependants)
+        FactoryBot.create_list(:ndc_sdg_goal, 1, :with_dependants)
       }
 
       it 'returns a successful 200 response' do
@@ -38,7 +38,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
     describe 'GET show' do
       let!(:some_ndc_sdg_goal) {
-        FactoryGirl.create(:ndc_sdg_goal, :with_dependants)
+        FactoryBot.create(:ndc_sdg_goal, :with_dependants)
       }
 
       let(:some_ndc_sdg_goal_location) {
@@ -70,7 +70,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
     describe 'GET sdgs_overview' do
       let!(:some_ndc_sdg_goals) {
-        FactoryGirl.create_list(:ndc_sdg_goal, 5, :with_dependants)
+        FactoryBot.create_list(:ndc_sdg_goal, 5, :with_dependants)
       }
 
       it 'returns a successful 200 response' do
@@ -86,7 +86,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
     describe 'GET linkages_dataset' do
       let!(:some_ndc_sdg_goals) {
-        FactoryGirl.create_list(:ndc_sdg_goal, 5, :with_dependants)
+        FactoryBot.create_list(:ndc_sdg_goal, 5, :with_dependants)
       }
 
       it 'returns a successful 200 response' do

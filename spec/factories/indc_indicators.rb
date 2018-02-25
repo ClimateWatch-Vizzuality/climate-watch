@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :indc_indicator, class: 'Indc::Indicator' do
     name 'MyName'
     association :source, factory: :indc_source

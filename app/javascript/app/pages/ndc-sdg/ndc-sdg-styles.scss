@@ -6,7 +6,8 @@
 }
 
 .bgOpen {
-  height: calc(100vh - #{$navbar-height});
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -18,6 +19,10 @@
 
 .headerOpen {
   height: $header-height;
+
+  @media #{$tablet-landscape} {
+    height: auto;
+  }
 }
 
 @media #{$tablet-landscape} {
@@ -30,12 +35,5 @@
 }
 
 .wrapperOpen {
-  height: 60vh;
-  overflow: hidden;
-
-  @media #{$tablet-landscape} {
-    height: auto;
-    overflow: auto;
-  }
+  overflow: auto;
 }
-

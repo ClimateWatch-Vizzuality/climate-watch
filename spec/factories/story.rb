@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :story do
     sequence :title { |n| "#{n} Stories about climate and love" }
     link 'http://my.dreams.com'

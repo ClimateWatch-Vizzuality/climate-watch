@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user_story, class: 'MyCw::UserStory' do
     user
     title 'Title'

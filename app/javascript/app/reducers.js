@@ -1,7 +1,8 @@
 /* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
-import { handleModule } from 'redux-tools';
+// Restore when library ready to IE
+// import { handleModule } from 'redux-tools';
 
 // Providers
 import * as countriesProvider from 'providers/countries-provider';
@@ -84,7 +85,7 @@ const componentsReducers = {
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
-  hamburger: handleModule(HamburgerComponent)
+  hamburger: handleActions(HamburgerComponent)
 };
 
 export default combineReducers({

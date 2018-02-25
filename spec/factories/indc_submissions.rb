@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :indc_submission, class: 'Indc::Submission' do
     location
     submission_type 'MySubmissionType'

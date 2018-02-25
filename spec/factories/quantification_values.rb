@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :quantification_value, class: 'Quantification::Value' do
     location
     association :label, factory: :quantification_label

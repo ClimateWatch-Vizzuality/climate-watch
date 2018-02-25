@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :ndc_sdg_target, class: 'NdcSdg::Target' do
     association :goal, factory: :ndc_sdg_goal
     sequence :number { |n| ('00'..'99').to_a[n] }
