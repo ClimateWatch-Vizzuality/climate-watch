@@ -1,30 +1,23 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Icon from 'components/icon';
+import DownloadMenu from 'components/download-menu';
 import ShareMenu from 'components/share-menu';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 
-import download from 'assets/icons/download.svg';
 import styles from './tools-nav-styles.scss';
 
 const ToolsNav = ({ className, reverse }) => (
   <div className={cx(styles.toolsNav, className)}>
     <NavLink
-      className={styles.link}
+      className={cx(styles.link, styles.disabled, styles.myCwButton)}
       activeClassName={styles.linkActive}
       to="/my-climate-watch"
       title="My climate watch"
     >
       MY CW
     </NavLink>
-    <a
-      href="//climate-watch-dev.s3.amazonaws.com/climate-watch-download-zip/data-download.zip"
-      className={styles.link}
-      title="Download all Climate Watch data"
-    >
-      <Icon className={styles.download} icon={download} />
-    </a>
+    <DownloadMenu className={styles.downloadButton} reverse={reverse} />
     <ShareMenu className={styles.shareButton} reverse={reverse} />
   </div>
 );
