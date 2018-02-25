@@ -1,4 +1,5 @@
 import { mapProps } from 'recompose';
+import sortBy from 'lodash/sortBy';
 import Component from './dropdown-component';
 
 const optionsSanitizer = mapProps(props => {
@@ -17,4 +18,12 @@ const optionsSanitizer = mapProps(props => {
   return updatedProps;
 });
 
-export default optionsSanitizer(Component);
+const optionsSort = mapProps(props => {
+  let updatedProps = props;
+  if (updatedProps.options && updatedProps.options.length) {
+    updatedProps = { ...props, options: sortBy(props.options, 'label') };
+  }
+  return updatedProps;
+});
+
+export default optionsSort(optionsSanitizer(Component));

@@ -111,7 +111,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
     if (param === 'category') {
       params.push({ name: 'subcategory', value: '' });
     }
-    if (param === 'subcategory') {
+    if (param === 'category' || param === 'subcategory') {
       params.push({ name: 'indicator', value: '' });
     }
     this.updateUrlParam(params, clear);

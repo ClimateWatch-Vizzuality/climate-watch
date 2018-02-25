@@ -100,20 +100,6 @@ export default [
     ]
   },
   {
-    label: 'GHG EMISSIONS',
-    nav: true,
-    routes: [
-      {
-        path: '/ghg-emissions',
-        label: 'GHG EMISSIONS'
-      },
-      {
-        path: '/pathways',
-        label: 'PATHWAYS'
-      }
-    ]
-  },
-  {
     path: '/ndcs',
     component: NDCS,
     label: 'NDCs',
@@ -138,6 +124,7 @@ export default [
   {
     path: '/ghg-emissions',
     component: GHGEmissions,
+    nav: true,
     exact: true,
     label: 'GHG EMISSIONS',
     headerImage: 'emissions',
@@ -163,6 +150,7 @@ export default [
   {
     path: '/pathways',
     component: EmissionPathways,
+    nav: true,
     label: 'PATHWAYS',
     headerImage: 'emission-pathways',
     sections: emissionPathwaysSections,
