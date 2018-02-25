@@ -35,11 +35,11 @@ RSpec.describe ImportTimeline do
   end
 
   before :each do
-    FactoryGirl.create(
+    FactoryBot.create(
       :location, iso_code3: 'AND', wri_standard_name: 'Andorra'
     )
 
-    FactoryGirl.create(
+    FactoryBot.create(
       :location, iso_code3: 'BRA', wri_standard_name: 'Brazil'
     )
   end

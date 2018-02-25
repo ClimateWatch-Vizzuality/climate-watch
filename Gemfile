@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.2'
+gem 'rails', '~> 5.1.5'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.20'
 gem 'pg_search'
@@ -55,7 +55,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'rspec-collection_matchers'
   gem 'rails-controller-testing'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'

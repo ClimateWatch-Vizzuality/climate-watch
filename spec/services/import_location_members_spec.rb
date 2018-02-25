@@ -17,8 +17,8 @@ RSpec.describe ImportLocationMembers do
   end
 
   before(:each) do
-    FactoryGirl.create(:location, iso_code3: 'EU28', location_type: 'GROUP')
-    FactoryGirl.create(:location, iso_code3: 'POL', location_type: 'COUNTRY')
+    FactoryBot.create(:location, iso_code3: 'EU28', location_type: 'GROUP')
+    FactoryBot.create(:location, iso_code3: 'POL', location_type: 'COUNTRY')
   end
 
   it 'Creates a new location member' do

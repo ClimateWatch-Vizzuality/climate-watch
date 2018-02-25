@@ -2,25 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Story, type: :model do
   before(:each) do
-    FactoryGirl.create(:story, tags: %w[NDC])
-    FactoryGirl.create(:story, tags: %w[NDC esp mapping])
-    FactoryGirl.create(:story, tags: %w[OP23])
-    FactoryGirl.create(:story, tags: %w[climatewatch-pinned])
-    FactoryGirl.create(:story, tags: %w[climatewatch-pinned esp])
-    FactoryGirl.create(:story, tags: %w[OP])
-    FactoryGirl.create(:story, tags: nil)
-  end
-
-  describe '#pinned_stories' do
-    it 'should return one story' do
-      expect(Story.pinned_stories(1)).to have(1).items
-    end
-  end
-
-  describe '#pinned_stories' do
-    it 'should return two story' do
-      expect(Story.pinned_stories(2)).to have(2).items
-    end
+    FactoryBot.create(:story, tags: %w[NDC])
+    FactoryBot.create(:story, tags: %w[NDC esp mapping])
+    FactoryBot.create(:story, tags: %w[OP23])
+    FactoryBot.create(:story, tags: %w[climatewatch-pinned])
+    FactoryBot.create(:story, tags: %w[climatewatch-pinned esp])
+    FactoryBot.create(:story, tags: %w[OP])
+    FactoryBot.create(:story, tags: nil)
   end
 
   describe '#tagged_stories' do
@@ -37,7 +25,7 @@ RSpec.describe Story, type: :model do
 
   describe '#pinned_stories plus tagged_stories' do
     it 'should return four stories' do
-      pinned = Story.pinned_stories(1)
+      pinned = Story.tagged_stories(['climatewatch-pinned'], 1)
       tagged = Story.tagged_stories(['NDC', 'esp', 'climate watch'], 5)
       expect((pinned + tagged).uniq).to have(4).items
     end

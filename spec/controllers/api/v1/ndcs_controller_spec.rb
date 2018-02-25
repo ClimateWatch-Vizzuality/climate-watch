@@ -6,7 +6,7 @@ describe Api::V1::NdcsController, type: :controller do
       JSON.parse(response.body)
     }
     let!(:some_indc_values) {
-      FactoryGirl.create_list(
+      FactoryBot.create_list(
         :indc_indicator,
         3,
         :with_dependants

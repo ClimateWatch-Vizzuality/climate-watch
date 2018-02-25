@@ -9,7 +9,7 @@ describe Api::V1::MyCw::UsersController, type: :controller do
 
   context do
     let!(:user) {
-      FactoryGirl.create(:user)
+      FactoryBot.create(:user)
     }
 
     describe 'GET show' do

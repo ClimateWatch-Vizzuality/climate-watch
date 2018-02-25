@@ -54,7 +54,7 @@ const fetchStoriesInit = createAction('fetchStoriesInit');
 const fetchStoriesReady = createAction('fetchStoriesReady');
 const fetchStoriesFail = createAction('fetchStoriesFail');
 
-// const TAGS = ['NDC', 'ndcsdg', 'esp', 'climate watch'];
+// const TAGS = ['NDC', 'ndcsdg', 'esp', 'climatewatch'];
 
 const fetchStories = createThunkAction('fetchStories', () => dispatch => {
   dispatch(fetchStoriesReady(stories));

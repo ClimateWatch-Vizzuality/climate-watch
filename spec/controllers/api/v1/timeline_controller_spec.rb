@@ -3,10 +3,10 @@ require 'rails_helper'
 describe Api::V1::TimelineController, type: :controller do
   context do
     let!(:some_location) {
-      FactoryGirl.create(:location)
+      FactoryBot.create(:location)
     }
     let!(:some_documents) {
-      FactoryGirl.create_list(:timeline_document, 3, location: some_location)
+      FactoryBot.create_list(:timeline_document, 3, location: some_location)
     }
 
     describe 'GET index' do

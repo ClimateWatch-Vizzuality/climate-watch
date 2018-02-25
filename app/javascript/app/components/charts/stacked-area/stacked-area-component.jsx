@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import max from 'lodash/max';
 import isArray from 'lodash/isArray';
+import { getCustomTicks } from 'utils/graphs';
+
 import {
   CustomXAxisTick,
   CustomYAxisTick
@@ -17,6 +19,7 @@ import {
   Tooltip,
   ReferenceArea,
   ReferenceDot,
+  ReferenceLine,
   Label,
   ResponsiveContainer
 } from 'recharts';
@@ -96,9 +99,10 @@ class ChartStackedArea extends PureComponent {
       maxData.y = dataParsed[dataParsed.length - 1].total;
     }
 
+    const tickValues = getCustomTicks(config.columns, data);
     const domain = {
       x: ['dataMin', 'dataMax'],
-      y: [0, 'dataMax']
+      y: [tickValues.minValue, tickValues.maxValue]
     };
 
     if (points.length > 1000000000) {
@@ -114,6 +118,7 @@ class ChartStackedArea extends PureComponent {
           onMouseMove={this.handleMouseMove}
           onMouseLeave={() => this.setLastPoint(true)}
           onMouseEnter={() => this.setLastPoint(false)}
+          stackOffset="sign"
         >
           <XAxis
             domain={domain.x}
@@ -124,16 +129,20 @@ class ChartStackedArea extends PureComponent {
             tickSize={8}
             allowDecimals={false}
             tickCount={data.length + points.length}
+            axisLine={false}
           />
           <YAxis
             type="number"
             domain={domain.y}
+            interval={0}
             axisLine={false}
             padding={{ top: 0, bottom: 0 }}
+            ticks={tickValues.ticks}
             tickLine={false}
             tick={<CustomYAxisTick customstrokeWidth="0" unit="t" />}
           />
           <CartesianGrid vertical={false} />
+          <ReferenceLine y={0} strokeWidth="2" stroke="#666" fill="" />
           {tooltipVisibility && (
             <Tooltip
               viewBox={{ x: 0, y: 0, width: 100, height: 100 }}

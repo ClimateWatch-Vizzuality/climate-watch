@@ -84,7 +84,7 @@ describe ImportIndc do
       iso_code2: 'AD',
       wri_standard_name: 'Andorra'
     }].each do |c|
-      FactoryGirl.create(:location, c)
+      FactoryBot.create(:location, c)
     end
   end
 

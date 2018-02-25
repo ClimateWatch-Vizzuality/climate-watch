@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::NdcTextsController, type: :controller do
   let(:pol) {
-    FactoryGirl.create(:location, iso_code3: 'POL', location_type: 'COUNTRY')
+    FactoryBot.create(:location, iso_code3: 'POL', location_type: 'COUNTRY')
   }
   let(:prt) {
-    FactoryGirl.create(:location, iso_code3: 'PRT', location_type: 'COUNTRY')
+    FactoryBot.create(:location, iso_code3: 'PRT', location_type: 'COUNTRY')
   }
   let(:pol_img_src) { 'POL-1.PNG' }
   let(:pol_html) {
@@ -33,13 +33,13 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
   }
   let(:prt_html) { 'foo bar baz' }
   let!(:pol_ndc) {
-    FactoryGirl.create(:ndc, location: pol, full_text: pol_html)
+    FactoryBot.create(:ndc, location: pol, full_text: pol_html)
   }
   let!(:prt_ndc) {
-    FactoryGirl.create(:ndc, location: prt, full_text: prt_html)
+    FactoryBot.create(:ndc, location: prt, full_text: prt_html)
   }
   let!(:pol_ndc_sdg_ndc_target) {
-    FactoryGirl.create(
+    FactoryBot.create(
       :ndc_sdg_ndc_target,
       ndc: pol_ndc,
       indc_text: pol_html_linkage_text,
@@ -48,7 +48,7 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
     )
   }
   let!(:pol_ndc_sdg_ndc_target_sector) {
-    FactoryGirl.create(
+    FactoryBot.create(
       :ndc_sdg_ndc_target_sector,
       ndc_target: pol_ndc_sdg_ndc_target
     )
