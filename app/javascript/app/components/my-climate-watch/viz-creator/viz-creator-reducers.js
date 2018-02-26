@@ -36,14 +36,20 @@ const unfail = (title, state) => {
 };
 
 export default {
-  [actions.openCreator]: (state, { payload }) => ({
-    ...state,
-    creatorIsOpen: true,
-    id: payload.id || null,
-    title: payload.title || initialState.title,
-    description: payload.description || initialState.description,
-    datasets: payload.datasets || initialState.datasets
-  }),
+  [actions.openCreator]: (state, { payload }) =>
+    (!payload
+      ? {
+        ...state,
+        creatorIsOpen: true
+      }
+      : {
+        ...state,
+        creatorIsOpen: true,
+        id: payload.id || null,
+        title: payload.title || initialState.title,
+        description: payload.description || initialState.description,
+        datasets: payload.datasets || initialState.datasets
+      }),
   [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
   [actions.updateVisualisationName]: (state, { payload }) =>
     unfail('title', assign(state, { title: payload })),
