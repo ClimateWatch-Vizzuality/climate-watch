@@ -21,6 +21,36 @@
   padding-bottom: 40px;
 }
 
+.partnersContainer {
+  display: flex;
+  align-items: center;
+  width: 85%;
+  justify-content: space-around;
+}
+
+.logoContainer,
+.rectangular,
+.narrow,
+.narrower {
+  margin-right: $logos-right-margin;
+}
+
+.logoContainer {
+  width: 40px;
+}
+
+.rectangular {
+  width: 50px;
+}
+
+.narrow {
+  width: 85px;
+}
+
+.narrower {
+  width: 120px;
+}
+
 .contactContainer {
   display: flex;
   align-items: center;
@@ -33,4 +63,5 @@
   text-transform: uppercase;
   color: $dark-gray;
   margin-right: 10px;
+  min-width: 90px;
 }
