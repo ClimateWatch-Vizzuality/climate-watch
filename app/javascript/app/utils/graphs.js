@@ -20,6 +20,7 @@ export const sortLabelByAlpha = array =>
 
 export const sortEmissionsByValue = array =>
   array.sort((a, b) => {
+    if (!a.emissions.length || !b.emissions.length) return 0;
     if (
       a.emissions[a.emissions.length - 1].value >
       b.emissions[a.emissions.length - 1].value
@@ -39,7 +40,8 @@ export const getYColumnValue = column => `y${upperFirst(camelCase(column))}`;
 
 export const getThemeConfig = (columns, colors) => {
   const theme = {};
-  columns.forEach((column, index) => {
+  columns.forEach((column, i) => {
+    const index = column.index || i;
     theme[column.value] = {
       stroke: colors[index],
       fill: colors[index]
