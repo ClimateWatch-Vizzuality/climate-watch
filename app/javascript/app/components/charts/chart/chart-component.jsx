@@ -22,7 +22,8 @@ class Chart extends PureComponent {
       config,
       height,
       targetParam,
-      customMessage
+      customMessage,
+      hideRemoveOptions
     } = this.props;
     const hasData = data && data.length > 0;
     const getMessage = () => {
@@ -54,6 +55,7 @@ class Chart extends PureComponent {
             dataOptions={dataOptions}
             dataSelected={dataSelected}
             targetParam={targetParam}
+            hideRemoveOptions={hideRemoveOptions}
           />
         )}
       </div>
@@ -66,17 +68,19 @@ Chart.propTypes = {
   type: PropTypes.string.isRequired,
   error: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
+  hideRemoveOptions: PropTypes.bool.isRequired,
   dataOptions: PropTypes.array,
   dataSelected: PropTypes.array,
   data: PropTypes.array,
   config: PropTypes.object,
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  targetParam: PropTypes.string,
-  customMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  customMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  targetParam: PropTypes.string
 };
 
 Chart.defaultProps = {
-  height: 300
+  height: 300,
+  hideRemoveOptions: false
 };
 
 export default Chart;

@@ -1,7 +1,22 @@
 @import '~styles/settings.scss';
 
 .dropdownWrapper {
+  position: relative;
   width: 100%;
+
+  &.flex {
+    display: flex;
+  }
+}
+
+.dot {
+  width: 13px;
+  height: 12px;
+  position: absolute;
+  border-radius: 15px;
+  left: 15px;
+  top: 25px;
+  margin-right: 20px;
 }
 
 .label {
@@ -14,4 +29,10 @@
 
 .noScrollParent {
   overscroll-behavior: contain; /* stylelint-disable-line property-no-unknown */
+}
+
+.withDot {
+  :global .react-selectize-control {
+    margin-left: 2em;
+  }
 }

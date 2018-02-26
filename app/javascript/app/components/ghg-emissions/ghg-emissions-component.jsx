@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
+import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
@@ -32,6 +33,7 @@ class GhgEmissions extends PureComponent {
       filters,
       filtersSelected,
       handleFilterChange,
+      providerFilters,
       loading,
       activeFilterRegion
     } = this.props;
@@ -51,6 +53,7 @@ class GhgEmissions extends PureComponent {
         <h2 className={styles.title}>Global Historical Emissions</h2>
         <RegionsProvider />
         <EmissionsMetaProvider />
+        <EmissionsProvider filters={providerFilters} />
         <div className={styles.col4}>
           <Dropdown
             label="Source"
@@ -118,6 +121,7 @@ GhgEmissions.propTypes = {
   handleSourceChange: PropTypes.func.isRequired,
   breaksBy: PropTypes.array,
   breakSelected: PropTypes.object,
+  providerFilters: PropTypes.object,
   handleBreakByChange: PropTypes.func.isRequired,
   filters: PropTypes.array,
   filtersSelected: PropTypes.array,

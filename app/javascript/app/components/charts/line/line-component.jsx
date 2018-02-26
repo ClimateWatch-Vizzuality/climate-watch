@@ -110,7 +110,7 @@ class ChartLine extends PureComponent {
             tick={<CustomizedXAxisTick />}
             padding={{ left: 15, right: 20 }}
             tickSize={8}
-            domain={domain && domain.x}
+            domain={(domain && domain.x) || ['auto', 'auto']}
             interval="preserveStartEnd"
           />
           <YAxis
@@ -118,7 +118,7 @@ class ChartLine extends PureComponent {
             tickLine={false}
             type="number"
             tick={<CustomizedYAxisTick unit={espGraph && unit} />}
-            domain={domain.y || ['dataMin', 'dataMax']}
+            domain={(domain && domain.y) || ['auto', 'auto']}
             interval={'preserveStartEnd'}
           >
             {espGraph && yAxisLabel}

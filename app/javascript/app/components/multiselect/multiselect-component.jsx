@@ -52,7 +52,8 @@ class Multiselect extends Component {
       label,
       parentClassName,
       children,
-      hideSelected
+      hideSelected,
+      icon
     } = this.props;
     return (
       <div className={cx(styles.multiSelectWrapper, parentClassName)}>
@@ -93,7 +94,7 @@ class Multiselect extends Component {
             renderToggleButton={({ open }) => (
               <Icon
                 className={open ? styles.isOpen : ''}
-                icon={dropdownArrow}
+                icon={icon || dropdownArrow}
               />
             )}
             onSearchChange={s => this.setState({ search: s })}
@@ -117,7 +118,8 @@ Multiselect.propTypes = {
   label: Proptypes.string,
   selectedLabel: Proptypes.string,
   children: Proptypes.node,
-  hideSelected: Proptypes.bool
+  hideSelected: Proptypes.bool,
+  icon: Proptypes.object
 };
 
 Multiselect.defaultProps = {

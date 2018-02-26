@@ -34,6 +34,7 @@ import countrySections from './country-sections';
 import emissionPathwaysModelSections from './emission-pathways-model-sections';
 import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
 import emissionPathwaysSections from './emission-pathways-sections';
+import countryCompareSections from './country-compare-sections';
 
 export default [
   {
@@ -56,7 +57,9 @@ export default [
     path: '/countries/compare',
     component: CountryCompare,
     exact: true,
-    headerImage: 'ndc'
+    headerImage: 'countries',
+    headerColor: '#045F61',
+    sections: countryCompareSections
   },
   {
     path: '/sectors',
