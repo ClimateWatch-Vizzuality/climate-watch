@@ -4,7 +4,8 @@ $editor-margin: 90px;
 
 .container {
   width: 100vw;
-  margin-left: -$editor-margin;
+  margin-left: - (2 * $editor-margin);
+  margin-bottom: 1rem;
   background-color: $light-gray;
   padding: 3rem $editor-margin;
   user-select: none;
@@ -35,7 +36,7 @@ $editor-margin: 90px;
     right: 20px;
     display: flex;
     justify-content: space-between;
-    width: 100px;
+    // width: 100px;
   }
 
   .tool {

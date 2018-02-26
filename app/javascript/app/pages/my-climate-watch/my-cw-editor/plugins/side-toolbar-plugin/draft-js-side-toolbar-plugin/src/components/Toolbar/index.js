@@ -22,15 +22,6 @@ export default class Toolbar extends React.Component {
 
   onEditorStateChange = editorState => {
     const selection = editorState.getSelection();
-    // if (!selection.getHasFocus()) {
-    //   this.setState({
-    //     position: {
-    //       transform: 'scale(0)'
-    //     }
-    //   });
-    //   return;
-    // }
-
     const currentContent = editorState.getCurrentContent();
     const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
     // TODO verify that always a key-0-0 exists
@@ -47,7 +38,6 @@ export default class Toolbar extends React.Component {
       this.setState({
         position: {
           top: top + scrollY,
-          left: editor.getBoundingClientRect().left - 80,
           transform: 'scale(1)',
           transition: 'transform 0.15s cubic-bezier(.3,1.2,.2,1)'
         }

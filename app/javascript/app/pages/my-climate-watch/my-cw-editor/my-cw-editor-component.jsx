@@ -1,33 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'draft-js-plugins-editor';
-
-import createFocusPlugin from 'draft-js-focus-plugin';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 import 'draft-js-focus-plugin/lib/plugin.css';
 
 import Modal, { ModalHeader } from 'components/modal';
-
+import Button from 'components/button';
 import MyViz from 'components/my-climate-watch/my-visualisations';
 import VizCreator from 'components/my-climate-watch/viz-creator';
 import styles from './my-cw-editor-styles';
-import focusTheme from './themes/focus-theme';
 
 import sideToolbarPlugin from './plugins/side-toolbar-plugin';
 import createMultichartPlugin from './plugins/multi-chart-plugin';
 
 const inlineToolbarPlugin = createInlineToolbarPlugin();
-const focusPlugin = createFocusPlugin({
-  theme: focusTheme
-});
 const multichartPlugin = createMultichartPlugin();
 const { SideToolbar } = sideToolbarPlugin;
 const { InlineToolbar } = inlineToolbarPlugin;
 
 const plugins = [
-  focusPlugin,
   inlineToolbarPlugin,
   sideToolbarPlugin,
   multichartPlugin
@@ -57,7 +50,8 @@ const StoryEditor = ({
   title,
   titlePlaceholder,
   focusEditor,
-  focusTitle
+  focusTitle,
+  saveInsight
 }) => (
   <div className={styles.container}>
     <Modal
@@ -81,20 +75,28 @@ const StoryEditor = ({
     >
       <VizCreator onHideCreator={hideCreator} />
     </Modal>
-    <input
-      type="text"
-      onKeyUp={e => {
-        if (e.keyCode === 13) {
-          focusEditor();
-        }
-      }}
-      onClick={focusTitle}
-      ref={getTitleRef}
-      className={styles.title}
-      placeholder={titlePlaceholder}
-      onChange={e => updateTitle(e.target.value)}
-      value={title}
-    />
+    <div className={styles.title}>
+      <input
+        type="text"
+        onKeyUp={e => {
+          if (e.keyCode === 13) {
+            focusEditor();
+          }
+        }}
+        onClick={focusTitle}
+        ref={getTitleRef}
+        className={styles.titleField}
+        placeholder={titlePlaceholder}
+        onChange={e => updateTitle(e.target.value)}
+        value={title}
+      />
+      <Button
+        className={styles.saveBtn}
+        onClick={() => saveInsight({ title, content: editorState })}
+      >
+        Save
+      </Button>
+    </div>
     <div className={styles.editor}>
       <Editor
         onClick={focusEditor}
@@ -128,6 +130,7 @@ StoryEditor.propTypes = {
   updateTitle: PropTypes.func.isRequired,
   focusTitle: PropTypes.func.isRequired,
   focusEditor: PropTypes.func.isRequired,
+  saveInsight: PropTypes.func.isRequired,
   title: PropTypes.string,
   titlePlaceholder: PropTypes.string
 };

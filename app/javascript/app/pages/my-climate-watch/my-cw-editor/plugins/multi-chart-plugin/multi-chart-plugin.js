@@ -11,7 +11,9 @@ const makeMultiChartPlugin = (config = {}) => {
       if (block.getType() === 'atomic') {
         // TODO subject to change for draft-js next release
         const contentState = getEditorState().getCurrentContent();
-        const entity = contentState.getEntity(block.getEntityAt(0));
+        const current = block.getEntityAt(0);
+        if (!current) return null;
+        const entity = contentState.getEntity(current);
         const type = entity.getType();
         const data = entity.getData();
         if (type === 'multichart') {

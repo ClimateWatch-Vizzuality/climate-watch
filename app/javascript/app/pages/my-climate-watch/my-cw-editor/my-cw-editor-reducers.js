@@ -1,4 +1,5 @@
 import * as actions from './my-cw-editor-actions';
+import initialState from './my-cw-editor-initial-state';
 
 const closePicker = state => ({ ...state, pickerIsOpen: false });
 
@@ -29,5 +30,32 @@ export default {
     ...state,
     title: payload,
     editorIsFocused: false
-  })
+  }),
+  [actions.clearInsight]: () => initialState,
+  [actions.getInsightInit]: state => ({ ...state, story: { ...state.story, loading: true } }),
+  [actions.getInsightReady]: (state, { payload }) => ({
+    ...state,
+    story: { ...state.story,
+      loading: false,
+      loaded: true,
+      insight: payload
+    }
+  }),
+  [actions.getInsightFail]: state => ({
+    ...state,
+    story: { ...state.story,
+      loading: false,
+      error: true
+    }
+  }),
+  [actions.saveInsightInit]: state => ({ ...state, saving: true }),
+  [actions.saveInsightReady]: (state, { payload }) => ({
+    ...state,
+    story: { ...state.story,
+      saving: false,
+      saved: true,
+      insight: payload
+    }
+  }),
+  [actions.saveInsightFail]: state => ({ ...state, story: { ...state.story, saving: false, error: true } })
 };

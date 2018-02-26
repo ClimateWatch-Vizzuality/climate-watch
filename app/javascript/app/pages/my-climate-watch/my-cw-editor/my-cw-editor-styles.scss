@@ -1,18 +1,28 @@
 @import '~styles/settings.scss';
 
-.container {
-  // padding: 0 60px 60px;
-}
-
 .editor {
   min-height: 80vh;
-  margin: $gutter-padding * 3;
+  margin: $gutter-padding * 3 $gutter-padding * 6;
 }
 
 .title {
+  position: relative;
+  background-color: rgba($gray, 0.2);
+}
+
+.titleField {
   border: none;
   width: 100%;
   font-size: 2.7rem;
-  background-color: rgba($gray, 0.2);
   padding: 1.25em $gutter-padding 1em;
+  padding-right: 20vw;
+  background-color: transparent;
+}
+
+.saveBtn {
+  position: absolute;
+  top: 50px;
+  width: 100px;
+  right: 7vw;
+  background-color: white;
 }

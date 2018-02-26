@@ -7,5 +7,13 @@ export default {
   titlePlaceholder: 'Title of the insight',
   content: EditorState.createEmpty(),
   titleIsFocused: true,
-  editorIsFocused: false
+  editorIsFocused: false,
+  story: {
+    loading: false,
+    loaded: false,
+    saving: false,
+    saved: false,
+    insight: {},
+    error: false
+  }
 };
