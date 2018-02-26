@@ -24,12 +24,23 @@ class Dropdown extends PureComponent {
       plain,
       dark,
       blueBorder,
+      wrapperClassName,
       className,
-      disabled
+      disabled,
+      colorDot
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     return (
-      <div className={styles.dropdownWrapper}>
+      <div
+        className={cx(
+          styles.dropdownWrapper,
+          { [styles.flex]: colorDot },
+          wrapperClassName
+        )}
+      >
+        {colorDot && (
+          <span className={styles.dot} style={{ backgroundColor: colorDot }} />
+        )}
         {label && <span className={styles.label}>{label}</span>}
         <div
           className={cx(
@@ -46,7 +57,7 @@ class Dropdown extends PureComponent {
             ref={el => {
               this.selectorElement = el;
             }}
-            className={cx(className, disabled)}
+            className={cx(className, disabled, { [styles.withDot]: colorDot })}
             renderToggleButton={() => <Icon icon={arrow} />}
             {...this.props}
           />
@@ -59,6 +70,7 @@ class Dropdown extends PureComponent {
 Dropdown.propTypes = {
   label: PropTypes.string,
   openUp: PropTypes.bool,
+  wrapperClassName: PropTypes.string,
   className: PropTypes.string,
   transparent: PropTypes.bool,
   white: PropTypes.bool,
@@ -69,7 +81,8 @@ Dropdown.propTypes = {
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
   blueBorder: PropTypes.bool,
-  selectorRef: PropTypes.func
+  selectorRef: PropTypes.func,
+  colorDot: PropTypes.string
 };
 
 export default themr('Dropdown', styles)(Dropdown);
