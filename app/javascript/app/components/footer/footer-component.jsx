@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
 import cx from 'classnames';
 
-import Nav from 'components/nav';
 import BottomBar from 'components/footer/bottom-bar';
 import Contact from 'components/contact';
 
@@ -13,23 +11,29 @@ import styles from './footer-styles.scss';
 class Footer extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { routes } = this.props;
-    const { pathname } = this.props.location;
-    const isNdcs = pathname === '/ndcs' || pathname === '/ndcs/table';
-    const isHomePage = pathname === '/';
-    const className = cx(styles.footer, styles.border, {
-      [styles.gray]: isHomePage || isNdcs
-    });
+    const { partners } = this.props;
+    const className = cx(styles.footer, styles.border);
     return (
       <footer className={className}>
         <div className={cx(layout.content, styles.nav)}>
-          <Nav
-            routes={routes}
-            hideLogo
-            hideActive
-            reverse
-            allowNested={false}
-          />
+          <div className={styles.partnersContainer}>
+            {partners.map(
+              partner =>
+                partner.img && (
+                  <a
+                    key={partner.img.alt}
+                    className={
+                      styles[partner.img.customClass] || styles.logoContainer
+                    }
+                    href={partner.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src={partner.img.src} alt={partner.img.alt} />
+                  </a>
+                )
+            )}
+          </div>
           <Contact />
         </div>
         <BottomBar className={layout.content} />
@@ -39,8 +43,7 @@ class Footer extends PureComponent {
 }
 
 Footer.propTypes = {
-  location: PropTypes.object.isRequired,
-  routes: PropTypes.array.isRequired
+  partners: PropTypes.array.isRequired
 };
 
-export default withRouter(Footer);
+export default Footer;
