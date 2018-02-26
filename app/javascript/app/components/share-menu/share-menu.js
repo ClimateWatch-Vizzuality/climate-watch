@@ -27,7 +27,7 @@ const mapStateToProps = (state, { path }) => {
       link: `https://twitter.com/intent/tweet?url=${url}`
     },
     {
-      label: 'Copy link',
+      label: 'Copy embed link',
       icon: linkIcon,
       action: copyUrl
     }
