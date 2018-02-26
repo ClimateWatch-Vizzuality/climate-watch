@@ -28,6 +28,7 @@ const CountryCompare = ({ route, anchorLinks }) => (
               className={layout.content}
               theme={anchorNavRegularTheme}
               gradientColor={route.headerColor}
+              offset={[-150, -100, -100]}
             />
           </Sticky>
         </Header>
