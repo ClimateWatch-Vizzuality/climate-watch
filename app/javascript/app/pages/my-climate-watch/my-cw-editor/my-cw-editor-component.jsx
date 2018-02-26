@@ -20,11 +20,7 @@ const multichartPlugin = createMultichartPlugin();
 const { SideToolbar } = sideToolbarPlugin;
 const { InlineToolbar } = inlineToolbarPlugin;
 
-const plugins = [
-  inlineToolbarPlugin,
-  sideToolbarPlugin,
-  multichartPlugin
-];
+const plugins = [inlineToolbarPlugin, sideToolbarPlugin, multichartPlugin];
 
 const modalStyles = {
   content: {

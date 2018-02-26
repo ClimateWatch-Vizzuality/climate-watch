@@ -66,7 +66,6 @@ export const pickVisualiation = createThunkAction(
   }
 );
 
-
 export const clearInsight = createAction('clearInsight');
 export const getInsightInit = createAction('getInsightInit');
 export const getInsightReady = createAction('getInsightReady');
