@@ -142,9 +142,8 @@ const additionalData = {
       alt: 'Center for Policy Research India'
     },
     {
-      link: 'https://www.ulisboa.pt/en',
-      alt:
-        'Department of Sciences and Environmental Engineering - New University of Lisbon'
+      link: 'https://www.cense.fct.unl.pt/',
+      alt: 'CENSE/NOVA University Lisbon'
     },
     {
       link: 'http://energyinnovation.org/',
