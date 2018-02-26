@@ -49,7 +49,8 @@ class NDCMapContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      geometryIdHover: null
+      geometryIdHover: null,
+      country: null
     };
   }
 
@@ -66,7 +67,7 @@ class NDCMapContainer extends PureComponent {
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
     return selectedIndicator.locations && selectedIndicator.locations[id]
       ? selectedIndicator.locations[id].value
-      : '';
+      : 'No data';
   }
 
   handleCountryClick = geography => {
@@ -83,11 +84,9 @@ class NDCMapContainer extends PureComponent {
   };
 
   handleCountryEnter = geography => {
-    const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
-    if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.setState({ geometryIdHover: iso });
-    }
+    if (iso) this.setState({ geometryIdHover: iso });
+    this.setState({ country: geography.properties.name });
   };
 
   handleCategoryChange = category => {
@@ -121,7 +120,7 @@ class NDCMapContainer extends PureComponent {
   handleInfoClick = () => {
     this.props.setModalMetadata({
       category: 'NDC Content Map',
-      slugs: 'ndc_wb',
+      slugs: ['ndc_cait', 'ndc_wb'],
       open: true
     });
   };
@@ -140,7 +139,8 @@ class NDCMapContainer extends PureComponent {
       handleCountryEnter: this.handleCountryEnter,
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
-      handleInfoClick: this.handleInfoClick
+      handleInfoClick: this.handleInfoClick,
+      countryName: this.state.country
     });
   }
 }

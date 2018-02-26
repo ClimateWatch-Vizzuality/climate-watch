@@ -1,7 +1,22 @@
 @import '~styles/settings.scss';
 
 .dropdownWrapper {
+  position: relative;
   width: 100%;
+
+  &.flex {
+    display: flex;
+  }
+}
+
+.dot {
+  width: 13px;
+  height: 12px;
+  position: absolute;
+  border-radius: 15px;
+  left: 15px;
+  top: 25px;
+  margin-right: 20px;
 }
 
 .label {
@@ -10,4 +25,10 @@
   font-weight: $font-weight-bold;
   color: $theme-color;
   margin-bottom: 4px;
+}
+
+.withDot {
+  :global .react-selectize-control {
+    margin-left: 2em;
+  }
 }

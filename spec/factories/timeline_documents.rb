@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :timeline_document, class: 'Timeline::Document' do
     association :source, factory: :timeline_source
     location

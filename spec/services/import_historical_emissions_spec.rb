@@ -35,7 +35,7 @@ RSpec.describe ImportHistoricalEmissions do
   end
 
   before :each do
-    FactoryGirl.create(
+    FactoryBot.create(
       :location, iso_code3: 'ABW', wri_standard_name: 'Aruba'
     )
   end

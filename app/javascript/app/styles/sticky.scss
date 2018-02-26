@@ -1,13 +1,15 @@
 :global .sticky-outer-wrapper.sticky {
   // Keep this sync siwh the headerColor of the app-routes
   &.-ndcs,
-  &.-compare {
+  &.-compare,
+  &.-ndc-search {
     .sticky-inner-wrapper {
       background-color: #035388;
     }
   }
 
-  &.-country {
+  &.-country,
+  &.-country-compare {
     .sticky-inner-wrapper {
       background-color: #045f61;
     }
@@ -25,6 +27,7 @@
     }
   }
 
+  .sticky-outer-wrapper,
   .sticky-inner-wrapper {
     z-index: 12;
   }

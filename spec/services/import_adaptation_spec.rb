@@ -27,7 +27,7 @@ RSpec.describe ImportAdaptation do
   end
 
   before :each do
-    FactoryGirl.create(
+    FactoryBot.create(
       :location, iso_code3: 'AFG', wri_standard_name: 'Afghanistan'
     )
   end

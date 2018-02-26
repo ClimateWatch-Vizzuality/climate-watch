@@ -31,6 +31,7 @@ import aboutRoutes from './about-routes';
 
 // sections
 import countrySections from './country-sections';
+import countryCompareSections from './country-compare-sections';
 // import emissionPathwaysModelSections from './emission-pathways-model-sections';
 // import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
 // import emissionPathwaysSections from './emission-pathways-sections';
@@ -56,7 +57,9 @@ export default [
     path: '/countries/compare',
     component: CountryCompare,
     exact: true,
-    headerImage: 'ndc'
+    headerImage: 'countries',
+    headerColor: '#045F61',
+    sections: countryCompareSections
   },
   {
     path: '/sectors',
@@ -173,7 +176,8 @@ export default [
     path: '/ndc-search',
     exact: true,
     component: NDCSearch,
-    headerImage: 'ndc'
+    headerImage: 'ndc',
+    headerColor: '#035388'
   },
   {
     path: '/stories',

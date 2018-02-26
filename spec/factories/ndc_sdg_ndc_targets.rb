@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :ndc_sdg_ndc_target, class: 'NdcSdg::NdcTarget' do
     ndc
     association :target, factory: :ndc_sdg_target

@@ -51,6 +51,12 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_AWS_SECRET_ACCESS_KEY
+          - name: ESP_API
+            value: "https://www.emissionspathways.org/api/v1"
+          - name: S3_BUCKET_NAME
+            value: "climate-watch-dev"
+          - name: GFW_API
+            value: "https://production-api.globalforestwatch.org"
           - name: CORS_WHITELIST
             value: "*"
 

@@ -1,8 +1,29 @@
 @import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 .container {
-  height: 100%;
-  position: relative;
+  position: absolute;
+  width: 100%;
+  top: $navbar-height;
+  height: $header-height;
+  background-color: $light-gray;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in;
+
+  &.isOpen {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  @media #{$tablet-landscape} {
+    position: relative;
+    height: 100%;
+    opacity: 1;
+    pointer-events: all;
+    top: 0;
+    background-color: transparent;
+  }
 }
 
 .map {
@@ -11,8 +32,12 @@
 
 .legend {
   position: absolute;
-  left: 0;
+  left: 15px;
   bottom: 15px;
+
+  @media #{$tablet-landscape} {
+    left: 0;
+  }
 }
 
 .buttons {
@@ -26,4 +51,13 @@
   position: absolute;
   left: 0;
   top: $gutter-padding;
+  opacity: 1;
+  width: 100%;
+  font-weight: $font-weight;
+  font-size: $font-size-large;
+  color: $theme-color;
+
+  @media #{$tablet-landscape} {
+    display: block;
+  }
 }

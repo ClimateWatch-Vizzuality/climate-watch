@@ -38,9 +38,9 @@ const BREAY_BY_OPTIONS = [
 
 // meta data for selectors
 const getMeta = state => state.meta || null;
-const getSources = state => state.meta.data_source || null;
+const getSources = state => (state.meta && state.meta.data_source) || null;
 const getRegions = state => state.regions || null;
-const getVersions = state => state.meta.gwp || null;
+const getVersions = state => (state.meta && state.meta.gwp) || null;
 
 // values from search
 const getSourceSelection = state => state.search.source || null;
@@ -314,6 +314,35 @@ export const getChartConfig = createSelector(
   }
 );
 
+export const getProviderFilters = createSelector(
+  [getSourceSelected, getBreakSelected, getSelectorDefaults],
+  (sourceSelected, breakSelected, selectorDefaults) => {
+    if (!sourceSelected || !breakSelected) return null;
+    const filter = {};
+    switch (breakSelected.value) {
+      case 'gas':
+        filter.location = selectorDefaults.location;
+        filter.sector = selectorDefaults.sector;
+        break;
+      case 'location':
+        filter.gas = selectorDefaults.gas;
+        filter.sector = selectorDefaults.sector;
+        break;
+      case 'sector':
+        filter.gas = selectorDefaults.gas;
+        filter.location = selectorDefaults.location;
+        break;
+      default:
+        break;
+    }
+
+    return {
+      ...filter,
+      source: sourceSelected.value
+    };
+  }
+);
+
 export default {
   getSourceOptions,
   getSourceSelected,
@@ -321,5 +350,6 @@ export default {
   getBreakSelected,
   getFilterOptions,
   getFiltersSelected,
+  getProviderFilters,
   getActiveFilterRegion
 };

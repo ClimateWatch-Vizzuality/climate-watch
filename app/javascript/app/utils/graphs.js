@@ -1,6 +1,9 @@
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import chroma from 'chroma-js';
+import minBy from 'lodash/minBy';
+import maxBy from 'lodash/maxBy';
+import { getNiceTickValues } from 'recharts-scale';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -17,6 +20,7 @@ export const sortLabelByAlpha = array =>
 
 export const sortEmissionsByValue = array =>
   array.sort((a, b) => {
+    if (!a.emissions.length || !b.emissions.length) return 0;
     if (
       a.emissions[a.emissions.length - 1].value >
       b.emissions[a.emissions.length - 1].value
@@ -36,7 +40,8 @@ export const getYColumnValue = column => `y${upperFirst(camelCase(column))}`;
 
 export const getThemeConfig = (columns, colors) => {
   const theme = {};
-  columns.forEach((column, index) => {
+  columns.forEach((column, i) => {
+    const index = column.index || i;
     theme[column.value] = {
       stroke: colors[index],
       fill: colors[index]
@@ -55,3 +60,35 @@ export const getTooltipConfig = columns => {
 
 export const getColorPalette = (colorRange, quantity) =>
   chroma.scale(colorRange).colors(quantity);
+
+export function getCustomTicks(
+  columns,
+  data,
+  tickNumber = 8,
+  decimals = false
+) {
+  const totalValues = [];
+  const yValues = columns.y.map(c => data.map(d => d[[c.value]]));
+  for (let index = 0; index < yValues[0].length; index++) {
+    const total = {
+      positive: 0,
+      negative: 0
+    };
+    for (let e = 0; e < yValues.length; e++) {
+      if (yValues[e][index] > 0) {
+        total.positive += yValues[e][index] || 0;
+      } else {
+        total.negative += yValues[e][index] || 0;
+      }
+    }
+    totalValues.push(total);
+  }
+
+  const minValue = minBy(totalValues, 'negative').negative;
+  const maxValue = maxBy(totalValues, 'positive').positive;
+  return {
+    min: minValue,
+    max: maxValue,
+    ticks: getNiceTickValues([minValue, maxValue], tickNumber, decimals)
+  };
+}

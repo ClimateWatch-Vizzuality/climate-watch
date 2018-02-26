@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::StoriesController, type: :controller do
   context do
     let!(:some_stories) {
-      FactoryGirl.create_list(:story, 7)
+      FactoryBot.create_list(:story, 7)
     }
 
     describe 'GET index' do

@@ -3,11 +3,15 @@ class Story < ApplicationRecord
     tags_array = tags.try(:split, ',')
     limit = limit.try(:to_i) || 5
 
+    pinned_stories = tagged_stories(['climatewatch-pinned'], limit)
+    return pinned_stories if pinned_stories.length >= limit
+
     tagged_stories = tagged_stories(tags_array, limit)
-    return tagged_stories if tagged_stories.length >= limit
+    main_stories = (pinned_stories + tagged_stories).uniq.first(limit)
+    return main_stories if main_stories.length >= limit
 
     more_stories = not_tagged_by(tags_array, limit)
-    return (tagged_stories + more_stories).first(limit) if tagged_stories
+    return (main_stories + more_stories).uniq.first(limit) if main_stories
     more_stories
   end
 

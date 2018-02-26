@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :historical_emissions_record,
           class: 'HistoricalEmissions::Record' do
     location

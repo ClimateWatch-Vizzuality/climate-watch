@@ -1,9 +1,16 @@
 @import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 .grid {
   @extend %grid;
 
-  @include msGridColumns(1fr, 2fr);
+  @include msGridColumns(1fr);
 
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr;
+
+  @media #{$tablet-landscape} {
+    @include msGridColumns(1fr, 2fr);
+
+    grid-template-columns: 1fr 2fr;
+  }
 }
