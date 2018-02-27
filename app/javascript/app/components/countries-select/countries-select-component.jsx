@@ -19,6 +19,7 @@ class CountriesSelect extends PureComponent {
       paths,
       className,
       autofocus,
+      opened,
       countrySelectFilter,
       countriesList,
       onCountryClick,
@@ -38,7 +39,7 @@ class CountriesSelect extends PureComponent {
             onChange={countrySelectFilter}
             className={styles.search}
             theme={searchCountriesTheme}
-            autofocus={autofocus}
+            autofocus={opened || autofocus}
           />
           <ResultsList
             list={countriesList}
@@ -74,6 +75,7 @@ CountriesSelect.propTypes = {
   onCountryMouseEnter: Proptypes.func.isRequired,
   onCountryMouseLeave: Proptypes.func.isRequired,
   handleClickAnalytics: Proptypes.func.isRequired,
+  opened: Proptypes.bool,
   countriesList: Proptypes.array,
   paths: Proptypes.array
 };
