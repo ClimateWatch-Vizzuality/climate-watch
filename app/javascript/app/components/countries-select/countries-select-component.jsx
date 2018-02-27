@@ -58,6 +58,7 @@ class CountriesSelect extends PureComponent {
               className={styles.map}
               onCountryClick={onCountryClick}
               customCenter={[20, 15]}
+              dragEnable={false}
             />
           </TabletLandscape>
         </div>
