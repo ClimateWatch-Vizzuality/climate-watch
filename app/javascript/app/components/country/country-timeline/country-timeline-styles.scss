@@ -14,14 +14,9 @@
 }
 
 .timelineContainer {
-  overflow-x: hidden;
+  overflow-x: auto;
 
   @include overflowFix();
-
-  @media #{$tablet-landscape} {
-    padding-top: 0;
-    margin-top: 0;
-  }
 }
 
 .timeline { // overwriting timeline styles
