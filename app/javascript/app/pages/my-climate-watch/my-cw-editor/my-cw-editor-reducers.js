@@ -32,14 +32,14 @@ export default {
     editorIsFocused: false
   }),
   [actions.clearInsight]: () => initialState,
-  [actions.getInsightInit]: state => ({
+  [actions.getInsight]: state => ({
     ...state,
-    story: { ...state.story, loading: true }
+    insight: { ...state.insight, loading: true }
   }),
   [actions.getInsightReady]: (state, { payload }) => ({
     ...state,
-    story: {
-      ...state.story,
+    insight: {
+      ...state.insight,
       loading: false,
       loaded: true,
       insight: payload
@@ -47,17 +47,19 @@ export default {
   }),
   [actions.getInsightFail]: state => ({
     ...state,
-    story: {
-      ...state.story,
+    insight: {
+      ...state.insight,
       loading: false,
       error: true
     }
   }),
-  [actions.saveInsightInit]: state => ({ ...state, saving: true }),
+  [actions.saveInsight]: state => ({ ...state,
+    insight: {
+      ...state.insight, saving: true } }),
   [actions.saveInsightReady]: (state, { payload }) => ({
     ...state,
-    story: {
-      ...state.story,
+    insight: {
+      ...state.insight,
       saving: false,
       saved: true,
       insight: payload
@@ -65,6 +67,22 @@ export default {
   }),
   [actions.saveInsightFail]: state => ({
     ...state,
-    story: { ...state.story, saving: false, error: true }
+    insight: { ...state.insight, saving: false, error: true }
+  }),
+  [actions.deleteInsight]: state => ({ ...state,
+    insight: {
+      ...state.insight, deleting: true } }),
+  [actions.deleteInsightReady]: state => ({
+    ...state,
+    insight: {
+      ...state.insight,
+      deleting: false,
+      deleted: true,
+      insight: {}
+    }
+  }),
+  [actions.deleteInsightFail]: state => ({
+    ...state,
+    insight: { ...state.insight, deleting: false, error: true }
   })
 };

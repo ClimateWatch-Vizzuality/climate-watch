@@ -8,8 +8,10 @@ import 'draft-js-focus-plugin/lib/plugin.css';
 
 import Modal, { ModalHeader } from 'components/modal';
 import Button from 'components/button';
+import Loading from 'components/loading';
 import MyViz from 'components/my-climate-watch/my-visualisations';
 import VizCreator from 'components/my-climate-watch/viz-creator';
+import layoutStyles from 'app/styles/layout';
 import styles from './my-cw-editor-styles';
 
 import sideToolbarPlugin from './plugins/side-toolbar-plugin';
@@ -47,7 +49,8 @@ const StoryEditor = ({
   titlePlaceholder,
   focusEditor,
   focusTitle,
-  saveInsight
+  saveInsight,
+  insight
 }) => (
   <div className={styles.container}>
     <Modal
@@ -71,49 +74,58 @@ const StoryEditor = ({
     >
       <VizCreator onHideCreator={hideCreator} />
     </Modal>
-    <div className={styles.title}>
-      <input
-        type="text"
-        onKeyUp={e => {
-          if (e.keyCode === 13) {
-            focusEditor();
+    {
+      [insight.saving && <div className={layoutStyles.loadingModal} key="loader-block">
+        <Loading />
+      </div>,
+      <div className={styles.title} key="title-block">
+        <input
+          type="text"
+          onKeyUp={e => {
+            if (e.keyCode === 13) {
+              focusEditor();
+            }
+          }}
+          onClick={focusTitle}
+          ref={getTitleRef}
+          className={styles.titleField}
+          placeholder={titlePlaceholder}
+          onChange={e => updateTitle(e.target.value)}
+          value={title}
+        />
+        <Button
+          className={styles.saveBtn}
+          onClick={() =>
+            saveInsight({ title, content: editorState })
           }
-        }}
-        onClick={focusTitle}
-        ref={getTitleRef}
-        className={styles.titleField}
-        placeholder={titlePlaceholder}
-        onChange={e => updateTitle(e.target.value)}
-        value={title}
-      />
-      <Button
-        className={styles.saveBtn}
-        onClick={() => saveInsight({ title, content: editorState })}
-      >
-        Save
-      </Button>
-    </div>
-    <div className={styles.editor}>
-      <Editor
-        onClick={focusEditor}
-        editorState={editorState}
-        onChange={onChange}
-        ref={getEditorRef}
-        spellCheck
-        plugins={plugins}
-      />
-      <InlineToolbar />
-      <SideToolbar
-        trigerTool={() => showPicker()}
-        structure={[<button>Add Viz</button>]}
-      />
-    </div>
+        >
+            Save
+        </Button>
+      </div>,
+      <div className={styles.editor} key="editor-block">
+        <Editor
+          onClick={focusEditor}
+          editorState={editorState}
+          onChange={onChange}
+          ref={getEditorRef}
+          spellCheck
+          plugins={plugins}
+        />
+        <InlineToolbar />
+        <SideToolbar
+          trigerTool={() => showPicker()}
+          structure={[<button>Add Viz</button>]}
+        />
+      </div>
+      ]
+    }
   </div>
 );
 
 StoryEditor.propTypes = {
   showPicker: PropTypes.func.isRequired,
   editorState: PropTypes.object.isRequired,
+  insight: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   pickVisualiation: PropTypes.func.isRequired,
   getEditorRef: PropTypes.func.isRequired,

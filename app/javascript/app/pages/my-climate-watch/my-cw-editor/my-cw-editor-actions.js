@@ -67,17 +67,16 @@ export const pickVisualiation = createThunkAction(
 );
 
 export const clearInsight = createAction('clearInsight');
-export const getInsightInit = createAction('getInsightInit');
 export const getInsightReady = createAction('getInsightReady');
 export const getInsightFail = createAction('getInsightFail');
-export const saveInsightInit = createAction('saveInsightInit');
 export const saveInsightReady = createAction('saveInsightReady');
 export const saveInsightFail = createAction('saveInsightFail');
+export const deleteInsightFail = createAction('deleteInsightFail');
+export const deleteInsightReady = createAction('deleteInsightReady');
 
 export const getInsight = createThunkAction(
   'getInsight',
   insightId => dispatch => {
-    dispatch(getInsightInit());
     CWAPI.get(`my_cw/user_stories/${insightId}`)
       .then(insight => {
         dispatch(getInsightReady(insight));
@@ -91,8 +90,7 @@ export const getInsight = createThunkAction(
 
 export const saveInsight = createThunkAction(
   'saveInsight',
-  ({ content, title, id = '' }) => dispatch => {
-    dispatch(saveInsightInit());
+  ({ content, title, id }) => dispatch => {
     const story = {
       user_story: {
         title,
@@ -100,25 +98,30 @@ export const saveInsight = createThunkAction(
         public: true
       }
     };
-    if (id) {
-      CWAPI.patch(`my_cw/user_stories/${id}`, story)
-        .then(response => {
-          dispatch(saveInsightReady(response));
-          dispatch(clearInsight(response));
-        })
-        .catch(e => {
-          console.warn(e);
-          dispatch(saveInsightFail());
-        });
-    } else {
-      CWAPI.post('my_cw/user_stories', story)
-        .then(response => {
-          dispatch(saveInsightReady(response));
-        })
-        .catch(e => {
-          console.warn(e);
-          dispatch(saveInsightFail());
-        });
-    }
+
+    const req = id
+      ? CWAPI.patch(`my_cw/user_stories/${id}`, story)
+      : CWAPI.post('my_cw/user_stories', story);
+
+    return req.then(response => {
+      dispatch(saveInsightReady(response));
+      dispatch(clearInsight());
+    })
+      .catch(e => {
+        console.warn(e);
+        dispatch(saveInsightFail());
+      });
   }
+);
+
+export const deleteInsight = createThunkAction(
+  'deleteInsight',
+  id => dispatch => CWAPI.delete(`my_cw/user_stories/${id}`)
+    .then(response => {
+      dispatch(deleteInsightReady(response));
+    })
+    .catch(e => {
+      console.warn(e);
+      dispatch(deleteInsightFail());
+    })
 );

@@ -9,9 +9,10 @@ import initialState from './my-cw-editor-initial-state';
 import EditorComponent from './my-cw-editor-component';
 
 class Editor extends Component {
-  componentWillReceiveProps({ editorIsFocused, titleIsFocused }) {
+  componentWillReceiveProps({ editorIsFocused, titleIsFocused, insight, ...props }) {
     if (editorIsFocused && this.editor) setTimeout(() => this.focusEditor(), 0);
     if (titleIsFocused && this.editor) setTimeout(() => this.focusTitle(), 0);
+    if (insight.saved) props.history.push('/my-climate-watch');
   }
 
   getEditorRef = ref => {
@@ -23,11 +24,11 @@ class Editor extends Component {
   };
 
   focusEditor = () => {
-    this.editor.focus();
+    if (this.editor) this.editor.focus();
   };
 
   focusTitle = () => {
-    this.title.focus();
+    if (this.title) this.title.focus();
   };
 
   render() {
@@ -38,6 +39,7 @@ class Editor extends Component {
       closePicker,
       openCreator,
       closeCreator,
+      insight,
       ...props
     } = this.props;
 
@@ -48,6 +50,7 @@ class Editor extends Component {
       hideCreator: closeCreator,
       editorState: content,
       onChange: updateContent,
+      insight,
       getEditorRef: this.getEditorRef,
       getTitleRef: this.getTitleRef,
       focusEditor: this.focusEditor,
@@ -60,6 +63,7 @@ class Editor extends Component {
 Editor.propTypes = {
   updateContent: PropTypes.func.isRequired,
   content: PropTypes.object.isRequired,
+  insight: PropTypes.object.isRequired,
   pickVisualiation: PropTypes.func.isRequired,
   openPicker: PropTypes.func.isRequired,
   closePicker: PropTypes.func.isRequired,

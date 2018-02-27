@@ -97,3 +97,13 @@
   padding-top: 250px;
   margin-top: -250px;
 }
+
+.loadingModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 50;
+}

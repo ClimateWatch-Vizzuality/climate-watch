@@ -8,7 +8,7 @@ export default {
   content: EditorState.createEmpty(),
   titleIsFocused: true,
   editorIsFocused: false,
-  story: {
+  insight: {
     loading: false,
     loaded: false,
     saving: false,
