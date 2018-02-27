@@ -20,17 +20,18 @@ class Footer extends PureComponent {
             {partners.map(
               partner =>
                 partner.img && (
-                  <a
-                    key={partner.img.alt}
-                    className={
-                      styles[partner.img.customClass] || styles.logoContainer
-                    }
-                    href={partner.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img src={partner.img.src} alt={partner.img.alt} />
-                  </a>
+                  <div key={partner.img.alt} className={styles.logoContainer}>
+                    <a
+                      className={
+                        styles[partner.img.customClass] || styles.defaultLogo
+                      }
+                      href={partner.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img src={partner.img.src} alt={partner.img.alt} />
+                    </a>
+                  </div>
                 )
             )}
           </div>

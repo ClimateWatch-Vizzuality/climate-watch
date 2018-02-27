@@ -25,17 +25,37 @@
   display: flex;
   align-items: center;
   width: 85%;
-  justify-content: space-around;
+  justify-content: space-between;
+  overflow: auto;
 }
 
-.logoContainer,
+.partnersContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.logoContainer {
+  width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.defaultLogo,
 .rectangular,
 .narrow,
 .narrower {
   margin-right: $logos-right-margin;
+  filter: grayscale(100%);
 }
 
-.logoContainer {
+.defaultLogo:hover,
+.rectangular:hover,
+.narrow:hover,
+.narrower:hover {
+  filter: grayscale(0%);
+}
+
+.defaultLogo {
   width: 40px;
 }
 

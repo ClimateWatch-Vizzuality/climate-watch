@@ -9,6 +9,10 @@
   display: flex;
   justify-content: space-between;
   color: $white;
+
+  @media #{$mobile-only} {
+    flex-direction: column;
+  }
 }
 
 .text {

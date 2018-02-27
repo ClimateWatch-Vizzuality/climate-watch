@@ -3,9 +3,6 @@ import { withRouter } from 'react-router';
 
 import PropTypes from 'prop-types';
 
-// import fmencbnsImage from 'assets/partners/fmencbns_simple.png';
-// import dbeisImage from 'assets/partners/dbeis.png';
-// import swissImage from 'assets/partners/swiss_simple.jpg';
 import googleImage from 'assets/partners/google.png';
 import ndcImage from 'assets/partners/ndcp.png';
 import wriImage from 'assets/partners/wri_simple.png';
