@@ -9,7 +9,12 @@ import initialState from './my-cw-editor-initial-state';
 import EditorComponent from './my-cw-editor-component';
 
 class Editor extends Component {
-  componentWillReceiveProps({ editorIsFocused, titleIsFocused, insight, ...props }) {
+  componentWillReceiveProps({
+    editorIsFocused,
+    titleIsFocused,
+    insight,
+    ...props
+  }) {
     if (editorIsFocused && this.editor) setTimeout(() => this.focusEditor(), 0);
     if (titleIsFocused && this.editor) setTimeout(() => this.focusTitle(), 0);
     if (insight.saved) props.history.push('/my-climate-watch');
@@ -64,6 +69,7 @@ Editor.propTypes = {
   updateContent: PropTypes.func.isRequired,
   content: PropTypes.object.isRequired,
   insight: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   pickVisualiation: PropTypes.func.isRequired,
   openPicker: PropTypes.func.isRequired,
   closePicker: PropTypes.func.isRequired,

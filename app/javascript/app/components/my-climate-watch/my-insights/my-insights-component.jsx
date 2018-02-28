@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ActionCard from 'components/my-climate-watch/my-cw-placeholder-card';
-import Card from 'components/my-climate-watch/my-insights/my-cw-insight-card';
 import Loading from 'components/loading';
 import layoutStyles from 'app/styles/layout';
 
+import Card from './my-cw-insight-card';
 import styles from './my-insights-styles.scss';
 
 const MyInsights = ({ loaded, insights, insight, deleteInsight }) => {
@@ -13,17 +13,19 @@ const MyInsights = ({ loaded, insights, insight, deleteInsight }) => {
   }
   return (
     <div>
-      {insight.deleting && <div className={layoutStyles.loadingModal}><Loading /></div>}
+      {insight.deleting && (
+        <div className={layoutStyles.loadingModal}>
+          <Loading />
+        </div>
+      )}
       <ul className={styles.insightsContainer}>
         {insights.map(item => (
           <li key={item.id} className={styles.insightsCard}>
             <Card
               data={item}
               link={`/my-climate-watch/editor/${item.id}`}
+              deleteInsight={deleteInsight}
             />
-            <button onClick={() => deleteInsight(item.id)}>
-              delete
-            </button>
           </li>
         ))}
         <li key="action-card" className={styles.insightsCard}>

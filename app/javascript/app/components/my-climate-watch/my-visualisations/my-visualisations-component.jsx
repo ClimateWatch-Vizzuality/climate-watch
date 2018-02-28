@@ -33,6 +33,7 @@ const MyVisualisations = props => {
   const onClick = vis =>
     (mode === 'add'
       ? onSelectVis({
+        id: vis.id,
         title: vis.title,
         description: vis.description,
         chart: visualisationType({ datasets: vis.json_body }),

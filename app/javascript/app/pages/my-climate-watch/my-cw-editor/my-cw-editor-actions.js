@@ -1,5 +1,6 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { CWAPI } from 'services/api';
+import { convertToRaw } from 'draft-js';
 
 import {
   updateEditorContent,
@@ -91,10 +92,11 @@ export const getInsight = createThunkAction(
 export const saveInsight = createThunkAction(
   'saveInsight',
   ({ content, title, id }) => dispatch => {
+    const body = content.getCurrentContent();
     const story = {
       user_story: {
         title,
-        body: content,
+        body: convertToRaw(body),
         public: true
       }
     };
@@ -103,10 +105,11 @@ export const saveInsight = createThunkAction(
       ? CWAPI.patch(`my_cw/user_stories/${id}`, story)
       : CWAPI.post('my_cw/user_stories', story);
 
-    return req.then(response => {
-      dispatch(saveInsightReady(response));
-      dispatch(clearInsight());
-    })
+    return req
+      .then(response => {
+        dispatch(saveInsightReady(response));
+        dispatch(clearInsight());
+      })
       .catch(e => {
         console.warn(e);
         dispatch(saveInsightFail());
@@ -116,12 +119,13 @@ export const saveInsight = createThunkAction(
 
 export const deleteInsight = createThunkAction(
   'deleteInsight',
-  id => dispatch => CWAPI.delete(`my_cw/user_stories/${id}`)
-    .then(response => {
-      dispatch(deleteInsightReady(response));
-    })
-    .catch(e => {
-      console.warn(e);
-      dispatch(deleteInsightFail());
-    })
+  id => dispatch =>
+    CWAPI.delete(`my_cw/user_stories/${id}`)
+      .then(response => {
+        dispatch(deleteInsightReady(response));
+      })
+      .catch(e => {
+        console.warn(e);
+        dispatch(deleteInsightFail());
+      })
 );

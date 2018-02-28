@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'draft-js-plugins-editor';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
-
+import Sticky from 'react-stickynode';
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 import 'draft-js-focus-plugin/lib/plugin.css';
+import cx from 'classnames';
 
 import Modal, { ModalHeader } from 'components/modal';
 import Button from 'components/button';
@@ -74,34 +75,39 @@ const StoryEditor = ({
     >
       <VizCreator onHideCreator={hideCreator} />
     </Modal>
-    {
-      [insight.saving && <div className={layoutStyles.loadingModal} key="loader-block">
+    {insight.saving && (
+      <div className={layoutStyles.loadingModal} key="loader-block">
         <Loading />
-      </div>,
-      <div className={styles.title} key="title-block">
-        <input
-          type="text"
-          onKeyUp={e => {
-            if (e.keyCode === 13) {
-              focusEditor();
-            }
-          }}
-          onClick={focusTitle}
-          ref={getTitleRef}
-          className={styles.titleField}
-          placeholder={titlePlaceholder}
-          onChange={e => updateTitle(e.target.value)}
-          value={title}
-        />
-        <Button
-          className={styles.saveBtn}
-          onClick={() =>
-            saveInsight({ title, content: editorState })
-          }
-        >
+      </div>
+    )}
+    {[
+      <Sticky
+        activeClass={cx('sticky', styles.stickyWrapper)}
+        key="title-block"
+      >
+        <div className={styles.title}>
+          <input
+            type="text"
+            onKeyUp={e => {
+              if (e.keyCode === 13) {
+                focusEditor();
+              }
+            }}
+            onClick={focusTitle}
+            ref={getTitleRef}
+            className={styles.titleField}
+            placeholder={titlePlaceholder}
+            onChange={e => updateTitle(e.target.value)}
+            value={title}
+          />
+          <Button
+            className={styles.saveBtn}
+            onClick={() => saveInsight({ title, content: editorState })}
+          >
             Save
-        </Button>
-      </div>,
+          </Button>
+        </div>
+      </Sticky>,
       <div className={styles.editor} key="editor-block">
         <Editor
           onClick={focusEditor}
@@ -117,8 +123,7 @@ const StoryEditor = ({
           structure={[<button>Add Viz</button>]}
         />
       </div>
-      ]
-    }
+    ]}
   </div>
 );
 
