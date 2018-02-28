@@ -5,8 +5,8 @@
   display: flex;
   flex-direction: column;
 
-  @media #{$tablet-portrait} {
-    @include columns(2);
+  @media #{$tablet-landscape} {
+    @include columns(2, true);
   }
 }
 
