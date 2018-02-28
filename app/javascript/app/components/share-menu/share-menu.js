@@ -4,12 +4,16 @@ import facebookIcon from 'assets/icons/facebook.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
 import mailIcon from 'assets/icons/mail.svg';
 import linkIcon from 'assets/icons/link.svg';
+import codeIcon from 'assets/icons/code.svg';
 import copy from 'copy-to-clipboard';
 import Component from './share-menu-component';
 
 const mapStateToProps = (state, { path }) => {
   const url = location.origin + (path || location.pathname) + location.search;
   const copyUrl = () => copy(url);
+  const iframeCode = `<iframe src="${url}" frameborder="0" style="height: 600px; width: 1230px"></iframe>`;
+  const copyCode = () => copy(iframeCode);
+  const isNavMenu = !path;
   const shareMenuOptions = [
     {
       label: 'Email',
@@ -27,12 +31,19 @@ const mapStateToProps = (state, { path }) => {
       link: `https://twitter.com/intent/tweet?url=${url}`
     },
     {
-      label: 'Copy embed link',
+      label: path ? 'Copy Embed URL' : 'Copy Link',
       icon: linkIcon,
       action: copyUrl
     }
   ];
 
+  if (!isNavMenu) {
+    shareMenuOptions.push({
+      label: 'Copy Embed code',
+      icon: codeIcon,
+      action: copyCode
+    });
+  }
   return {
     shareMenuOptions,
     shareIcon
