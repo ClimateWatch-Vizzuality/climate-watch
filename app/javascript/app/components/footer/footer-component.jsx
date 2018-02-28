@@ -11,31 +11,35 @@ import styles from './footer-styles.scss';
 class Footer extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { partners } = this.props;
+    const { partners, includePartners } = this.props;
     const className = cx(styles.footer, styles.border);
     return (
       <footer className={className}>
-        <div className={cx(layout.content, styles.nav)}>
-          <div className={styles.partnersContainer}>
-            {partners.map(
-              partner =>
-                partner.img && (
-                  <a
-                    key={partner.img.alt}
-                    className={
-                      styles[partner.img.customClass] || styles.logoContainer
-                    }
-                    href={partner.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img src={partner.img.src} alt={partner.img.alt} />
-                  </a>
-                )
-            )}
+        {includePartners && (
+          <div className={cx(layout.content, styles.nav)}>
+            <div className={styles.partnersContainer}>
+              {partners.map(
+                partner =>
+                  partner.img && (
+                    <div key={partner.img.alt} className={styles.logoContainer}>
+                      <a
+                        className={cx(
+                          styles.logo,
+                          styles[partner.img.customClass] || styles.defaultLogo
+                        )}
+                        href={partner.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img src={partner.img.src} alt={partner.img.alt} />
+                      </a>
+                    </div>
+                  )
+              )}
+            </div>
+            <Contact />
           </div>
-          <Contact />
-        </div>
+        )}
         <BottomBar className={layout.content} />
       </footer>
     );
@@ -43,7 +47,8 @@ class Footer extends PureComponent {
 }
 
 Footer.propTypes = {
-  partners: PropTypes.array.isRequired
+  partners: PropTypes.array.isRequired,
+  includePartners: PropTypes.bool
 };
 
 export default Footer;
