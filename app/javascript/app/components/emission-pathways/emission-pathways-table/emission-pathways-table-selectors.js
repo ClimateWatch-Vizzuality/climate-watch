@@ -24,7 +24,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
         'url'
       ];
     case 'scenarios':
-      return ['model', 'name', 'category', 'geographic_coverage_country'];
+      return ['model', 'name', 'category', 'url'];
     case 'indicators':
       return ['category', 'subcategory', 'name'];
     default:
@@ -117,7 +117,10 @@ export const titleLinks = createSelector(
         { columnName: 'full_name', linkToId: true },
         { columnName: 'url' }
       ],
-      scenarios: [{ columnName: 'name', linkToId: true }],
+      scenarios: [
+        { columnName: 'name', linkToId: true },
+        { columnName: 'url' }
+      ],
       indicators: []
     };
     const updatedData = data;
