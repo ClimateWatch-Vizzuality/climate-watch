@@ -11,11 +11,11 @@ import styles from './footer-styles.scss';
 class Footer extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { partners, location } = this.props;
+    const { partners, includePartners } = this.props;
     const className = cx(styles.footer, styles.border);
     return (
       <footer className={className}>
-        {!location.pathname.includes('/about') && (
+        {includePartners && (
           <div className={cx(layout.content, styles.nav)}>
             <div className={styles.partnersContainer}>
               {partners.map(
@@ -23,9 +23,10 @@ class Footer extends PureComponent {
                   partner.img && (
                     <div key={partner.img.alt} className={styles.logoContainer}>
                       <a
-                        className={
+                        className={cx(
+                          styles.logo,
                           styles[partner.img.customClass] || styles.defaultLogo
-                        }
+                        )}
                         href={partner.link}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -47,7 +48,7 @@ class Footer extends PureComponent {
 
 Footer.propTypes = {
   partners: PropTypes.array.isRequired,
-  location: PropTypes.object
+  includePartners: PropTypes.bool
 };
 
 export default Footer;

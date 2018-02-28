@@ -130,9 +130,11 @@ const getLogos = pathname => {
 class FooterContainer extends PureComponent {
   render() {
     const partners = getLogos(this.props.location.pathname);
+    const includePartners = !location.pathname.includes('/about');
     return createElement(Component, {
       ...this.props,
-      partners
+      partners,
+      includePartners
     });
   }
 }
