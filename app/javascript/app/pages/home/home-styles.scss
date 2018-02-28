@@ -7,14 +7,7 @@
   padding-bottom: 1.5rem;
 
   @media #{$tablet-portrait} {
-    //SASS does not allow to @extend grid inside @media
-    //so display and column-gap are 'hardcoded'
-    display: grid;
-    grid-column-gap: $gutter-padding;
-
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: repeat(2, 1fr);
+    @include columns(2, true);
   }
 }
 
