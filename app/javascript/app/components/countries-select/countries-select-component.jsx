@@ -34,7 +34,7 @@ class CountriesSelect extends PureComponent {
             Please type the name of a country:
           </p>
           <Search
-            placeholder=""
+            placeholder="Search a country"
             value={query}
             onChange={countrySelectFilter}
             className={styles.search}
