@@ -16,7 +16,7 @@ $grid-padding-gutters: $gutter-padding;
   margin: 0 auto;
   padding: 0 $gutter-padding / 2;
 
-  @media #{$tablet-landscape} {
+  @media #{$tablet-portrait} {
     padding: 0 $gutter-padding;
   }
 }
