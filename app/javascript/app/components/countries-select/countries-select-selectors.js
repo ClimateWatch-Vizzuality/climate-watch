@@ -61,7 +61,7 @@ const countryStyles = {
 const activeCountryStyles = {
   ...countryStyles,
   default: {
-    ...countryStyles.defaut,
+    ...countryStyles.default,
     fill: '#ffc735',
     fillOpacity: 1
   }

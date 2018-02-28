@@ -5,6 +5,10 @@
   position: relative;
   overflow: hidden;
   cursor: grab;
+
+  &.notDraggable {
+    cursor: pointer;
+  }
 }
 
 .actions {

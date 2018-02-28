@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import MultiSelect from 'components/multiselect';
-import Icon from 'components/icon';
 import Tag from 'components/tag';
 import cx from 'classnames';
 
@@ -16,6 +15,7 @@ class LegendChart extends PureComponent {
       dataOptions,
       dataSelected,
       handleRemove,
+      hideRemoveOptions,
       handleAdd,
       className
     } = this.props;
@@ -35,7 +35,9 @@ class LegendChart extends PureComponent {
                 id: column.value
               }}
               onRemove={handleRemove}
-              canRemove={config.columns.y.length > 1}
+              canRemove={
+                hideRemoveOptions ? false : config.columns.y.length > 1
+              }
             />
           ))}
         {shouldShowMultiselect && (
@@ -47,9 +49,8 @@ class LegendChart extends PureComponent {
             hideResetButton
             closeOnSelect
             dropdownDirection={-1}
-          >
-            <Icon className={styles.plusIcon} icon={plusIcon} />
-          </MultiSelect>
+            icon={plusIcon}
+          />
         )}
       </ul>
     );
@@ -62,6 +63,7 @@ LegendChart.propTypes = {
   handleAdd: PropTypes.func,
   dataOptions: PropTypes.array,
   dataSelected: PropTypes.array,
+  hideRemoveOptions: PropTypes.bool,
   className: PropTypes.string
 };
 

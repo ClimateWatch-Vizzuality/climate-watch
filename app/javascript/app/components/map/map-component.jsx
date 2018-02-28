@@ -45,7 +45,11 @@ class Map extends PureComponent {
     return (
       <TabletLandscape>
         {matches => (
-          <div className={cx(styles.wrapper, className)}>
+          <div
+            className={cx(styles.wrapper, className, {
+              [styles.notDraggable]: !dragEnable
+            })}
+          >
             {zoomEnable && (
               <div
                 className={cx(styles.actions, {

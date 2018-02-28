@@ -2,14 +2,12 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import qs from 'query-string';
 
-const fetchGhgEmissionsInit = createAction('fetchGhgEmissionsInit');
-const fetchGhgEmissionsFail = createAction('fetchGhgEmissionsFail');
-
-const fetchGhgEmissionsDataReady = createAction('fetchGhgEmissionsDataReady');
-const fetchGhgEmissionsData = createThunkAction(
-  'fetchGhgEmissionsData',
-  filters => dispatch => {
-    dispatch(fetchGhgEmissionsInit());
+const getEmissionsInit = createAction('getEmissionsInit');
+const getEmissionsFail = createAction('getEmissionsFail');
+const getEmissionsReady = createAction('getEmissionsReady');
+const getEmissions = createThunkAction('getEmissions', filters => dispatch => {
+  dispatch(getEmissionsInit());
+  if (filters) {
     fetch(`/api/v1/emissions?${qs.stringify(filters)}`)
       .then(response => {
         if (response.ok) return response.json();
@@ -22,18 +20,18 @@ const fetchGhgEmissionsData = createThunkAction(
           sector: d.sector.trim(),
           location: d.location.trim()
         }));
-        dispatch(fetchGhgEmissionsDataReady(parsedData));
+        dispatch(getEmissionsReady(parsedData));
       })
       .catch(error => {
         console.warn(error);
-        dispatch(fetchGhgEmissionsFail());
+        dispatch(getEmissionsFail());
       });
   }
-);
+});
 
 export default {
-  fetchGhgEmissionsInit,
-  fetchGhgEmissionsFail,
-  fetchGhgEmissionsData,
-  fetchGhgEmissionsDataReady
+  getEmissionsInit,
+  getEmissionsFail,
+  getEmissions,
+  getEmissionsReady
 };

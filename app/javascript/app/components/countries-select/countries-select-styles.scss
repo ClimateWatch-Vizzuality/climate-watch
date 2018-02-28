@@ -45,6 +45,7 @@
   font-size: $font-size-m;
   max-height: 450px;
   width: 100%;
+  vertical-align: top;
 
   @media #{$tablet-landscape} {
     width: 25%;

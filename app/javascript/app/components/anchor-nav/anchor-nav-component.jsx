@@ -3,14 +3,22 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { themr } from 'react-css-themr';
 import { NavLink } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
+import { NavHashLink } from 'react-router-hash-link';
 import qs from 'query-string';
 
 import layout from 'styles/layout.scss';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
-  const { links, useRoutes, className, query, theme, gradientColor } = props;
+  const {
+    links,
+    useRoutes,
+    className,
+    query,
+    theme,
+    gradientColor,
+    offset
+  } = props;
   const gradientStyle = gradientColor
     ? {
       background: `radial-gradient(40px 30px ellipse at 0%, ${gradientColor}, transparent), radial-gradient(50px 30px ellipse at 100%, ${gradientColor}, transparent)`
@@ -57,9 +65,17 @@ const AnchorNav = props => {
           linkProps.isActive = (match, location) =>
             `#${link.hash}` === location.hash;
           return (
-            <HashLink {...linkProps} replace>
+            <NavHashLink
+              {...linkProps}
+              smooth
+              scroll={el => {
+                el.scrollIntoView(true);
+                if (offset) window.scrollBy(0, offset[index]);
+              }}
+              replace
+            >
               {link.label}
-            </HashLink>
+            </NavHashLink>
           );
         })}
       </nav>
@@ -73,7 +89,8 @@ AnchorNav.propTypes = {
   className: PropTypes.string,
   query: PropTypes.string,
   theme: PropTypes.object,
-  gradientColor: PropTypes.string
+  gradientColor: PropTypes.string,
+  offset: PropTypes.array
 };
 
 AnchorNav.defaultProps = {

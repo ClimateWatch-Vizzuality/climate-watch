@@ -21,6 +21,51 @@
   padding-bottom: 40px;
 }
 
+.partnersContainer {
+  display: flex;
+  align-items: center;
+  width: 85%;
+  justify-content: flex-start;
+  overflow: auto;
+}
+
+.partnersContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.logoContainer {
+  max-width: 120px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: $gutter-padding;
+}
+
+.logo {
+  margin-right: $logos-right-margin;
+  filter: grayscale(100%);
+
+  &:hover {
+    filter: grayscale(0%);
+  }
+}
+
+.defaultLogo {
+  width: 40px;
+}
+
+.rectangular {
+  width: 50px;
+}
+
+.narrow {
+  width: 85px;
+}
+
+.narrower {
+  width: 120px;
+}
+
 .contactContainer {
   display: flex;
   align-items: center;
@@ -33,4 +78,5 @@
   text-transform: uppercase;
   color: $dark-gray;
   margin-right: 10px;
+  min-width: 90px;
 }
