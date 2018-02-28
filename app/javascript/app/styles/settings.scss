@@ -55,6 +55,15 @@ $breakpoint-tablet-portrait: 37.5rem; // 600px / 16px
 $breakpoint-tablet-landscape: 56.25rem; // 900px / 16px
 $breakpoint-desktop: 75rem; // 1200px / 16px
 
+//Foundation xy-grid breakpoints
+$breakpoints: (
+  small: 0,
+  medium: $breakpoint-tablet-portrait,
+  large: $breakpoint-tablet-landscape,
+  xlarge: $breakpoint-desktop,
+  xxlarge: 1440px,
+);
+
 // Media queries
 $mobile-only: 'screen and (max-width: #{$breakpoint-mobile-only})';
 $tablet-portrait: 'screen and (min-width: #{$breakpoint-tablet-portrait})';
