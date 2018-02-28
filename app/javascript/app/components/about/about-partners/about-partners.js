@@ -214,7 +214,8 @@ const foundingBy = {
       link: 'http://www.bmub.bund.de/en/',
       img: {
         alt: 'FMENCBNS',
-        src: fmencbnsImage
+        src: fmencbnsImage,
+        customClass: 'large'
       },
       description:
         'This initiative is a part of the International Climate Initiative (IKI).'
