@@ -1,6 +1,15 @@
 @import 'settings';
+@import "~foundation-sites/scss/global";
+@import "~foundation-sites/scss/util/util";
+@import "~foundation-sites/scss/xy-grid/xy-grid";
+
+$grid-container: $max-width;
+$grid-margin-gutters: $gutter-padding;
+$grid-padding-gutters: $gutter-padding;
 
 .content {
+  @include xy-grid-container;
+
   width: 100%;
   height: 100%;
   max-width: $max-width;
@@ -8,19 +17,22 @@
   padding: 0 $gutter-padding / 2;
 
   @media #{$tablet-landscape} {
-    width: 100%;
-    max-width: $max-width;
     padding: 0 $gutter-padding;
-  }
-
-  @media #{$mobile-only} {
-    padding: 0 $gutter-padding / 2;
   }
 }
 
 .screenshotMobileLayout {
   @media #{$mobile-only} {
     padding: 0 $gutter-padding * 2;
+  }
+}
+
+@mixin columns($number, $inner: false) {
+  @include xy-grid($wrap: true);
+  @include xy-gutters($negative: $inner);
+
+  > * {
+    @include xy-cell(12/$number);
   }
 }
 
