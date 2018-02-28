@@ -25,7 +25,7 @@
   display: flex;
   align-items: center;
   width: 85%;
-  justify-content: space-between;
+  justify-content: flex-start;
   overflow: auto;
 }
 
@@ -38,21 +38,16 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-right: $gutter-padding;
 }
 
-.defaultLogo,
-.rectangular,
-.narrow,
-.narrower {
+.logo {
   margin-right: $logos-right-margin;
   filter: grayscale(100%);
-}
 
-.defaultLogo:hover,
-.rectangular:hover,
-.narrow:hover,
-.narrower:hover {
-  filter: grayscale(0%);
+  &:hover {
+    filter: grayscale(0%);
+  }
 }
 
 .defaultLogo {
