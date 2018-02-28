@@ -1,34 +1,40 @@
-:global .sticky-outer-wrapper.sticky {
-  // Keep this sync siwh the headerColor of the app-routes
-  &.-ndcs,
-  &.-compare,
-  &.-ndc-search {
-    .sticky-inner-wrapper {
-      background-color: #035388;
-    }
-  }
-
-  &.-country,
-  &.-country-compare {
-    .sticky-inner-wrapper {
-      background-color: #045f61;
-    }
-  }
-
-  &.-about {
-    .sticky-inner-wrapper {
-      background-color: #113750;
-    }
-  }
-
-  &.-emissions {
-    .sticky-inner-wrapper {
-      background-color: #74356a;
-    }
-  }
-
-  .sticky-outer-wrapper,
+:global .sticky-outer-wrapper {
   .sticky-inner-wrapper {
-    z-index: 12;
+    z-index: 2;
+  }
+
+  &.sticky {
+    // Keep this sync siwh the headerColor of the app-routes
+    &.-ndcs,
+    &.-compare,
+    &.-ndc-search {
+      .sticky-inner-wrapper {
+        background-color: #035388;
+      }
+    }
+
+    &.-country,
+    &.-country-compare {
+      .sticky-inner-wrapper {
+        background-color: #045f61;
+      }
+    }
+
+    &.-about {
+      .sticky-inner-wrapper {
+        background-color: #113750;
+      }
+    }
+
+    &.-emissions {
+      .sticky-inner-wrapper {
+        background-color: #74356a;
+      }
+    }
+
+    .sticky-outer-wrapper,
+    .sticky-inner-wrapper {
+      z-index: 12;
+    }
   }
 }

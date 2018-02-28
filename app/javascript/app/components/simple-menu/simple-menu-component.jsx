@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import uniq from 'lodash/uniq';
 import Icon from 'components/icon';
 import checkIcon from 'assets/icons/check.svg';
 import ClickOutside from 'react-click-outside';
@@ -16,22 +17,25 @@ class SimpleMenu extends PureComponent {
     super();
     this.state = {
       open: false,
-      actionSuccessful: false
+      succesfulActions: []
     };
     this.handleActionClick = this.handleActionClick.bind(this);
     this.handleLinkClick = this.handleLinkClick.bind(this);
   }
 
   componentDidUpdate() {
-    const { actionSuccessful, open } = this.state;
-    if (!open && actionSuccessful) {
-      this.setState({ actionSuccessful: false }); // eslint-disable-line
+    const { succesfulActions, open } = this.state;
+    if (!open && succesfulActions.length) {
+      this.setState({ succesfulActions: [] }); // eslint-disable-line
     }
   }
 
-  handleActionClick(action) {
-    action();
-    this.setState({ actionSuccessful: true });
+  handleActionClick(option) {
+    option.action();
+    const updatedActions = uniq(
+      this.state.succesfulActions.concat(option.label)
+    );
+    this.setState({ succesfulActions: updatedActions });
     this.handleAnalyticsClick();
   }
 
@@ -52,11 +56,11 @@ class SimpleMenu extends PureComponent {
   }
 
   renderInsideLink(option, withAction = false) {
-    const { actionSuccessful } = this.state;
+    const { succesfulActions } = this.state;
     return (
       <div className={styles.documentLink} key={option.label}>
         {option.icon &&
-          (withAction && actionSuccessful ? (
+          (withAction && succesfulActions.includes(option.label) ? (
             <Icon icon={checkIcon} className={styles.icon} />
           ) : (
             <Icon icon={option.icon} className={styles.icon} />
@@ -82,7 +86,7 @@ class SimpleMenu extends PureComponent {
     return option.action ? (
       <button
         className={styles.link}
-        onClick={() => this.handleActionClick(option.action)}
+        onClick={() => this.handleActionClick(option)}
       >
         {this.renderInsideLink(option, true)}
       </button>

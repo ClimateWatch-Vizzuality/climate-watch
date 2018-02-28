@@ -27,6 +27,12 @@ class Search extends Component {
       this.setState({ search: nextProps.input });
     }
   }
+  componentDidUpdate(prevProps) {
+    const { autofocus } = this.props;
+    if (autofocus && autofocus !== prevProps.autofocus) {
+      this.inputRef.focus();
+    }
+  }
 
   handleChange = value => {
     this.setState({ search: value });
