@@ -11,7 +11,12 @@ import styles from './footer-styles.scss';
 class Footer extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { partners, includePartners } = this.props;
+    const {
+      partners,
+      includePartners,
+      includeContact,
+      includeBottom
+    } = this.props;
     const className = cx(styles.footer, styles.border);
     return (
       <footer className={className}>
@@ -37,10 +42,10 @@ class Footer extends PureComponent {
                   )
               )}
             </div>
-            <Contact />
+            {includeContact && <Contact />}
           </div>
         )}
-        <BottomBar className={layout.content} />
+        {includeBottom && <BottomBar className={layout.content} />}
       </footer>
     );
   }
@@ -48,7 +53,15 @@ class Footer extends PureComponent {
 
 Footer.propTypes = {
   partners: PropTypes.array.isRequired,
-  includePartners: PropTypes.bool
+  includePartners: PropTypes.bool,
+  includeContact: PropTypes.bool,
+  includeBottom: PropTypes.bool
+};
+
+Footer.defaultProps = {
+  includePartners: true,
+  includeContact: true,
+  includeBottom: true
 };
 
 export default Footer;
