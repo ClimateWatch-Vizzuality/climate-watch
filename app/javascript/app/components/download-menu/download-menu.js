@@ -7,11 +7,17 @@ const server = `http://${S3_BUCKET_NAME}.s3.amazonaws.com`;
 const folder = '/climate-watch-download-zip';
 const url = `${server}${folder}`;
 
-// The NDC quantification file should not be made public before the functionality and data are available on production site
+// The NDC quantification and pathway files should not be made public
+// before the functionality and data are available on production site
 // {
 //   label: 'NDC quantification (367 kB)',
-//     link: `${url}/ndc-quantification.zip`,
-//       target: '_self'
+//   link: `${url}/ndc-quantification.zip`,
+//   target: '_self'
+// },
+// {
+//   label: 'Pathways (2.1 MB)',
+//   link: `${url}/pathways.zip`,
+//   target: '_self'
 // }
 
 const downloadMenuOptions = [
@@ -38,11 +44,6 @@ const downloadMenuOptions = [
   {
     label: 'Socioeconomic (450 kB)',
     link: `${url}/socioeconomic-indicators.zip`,
-    target: '_self'
-  },
-  {
-    label: 'Pathways (2.1 MB)',
-    link: `${url}/pathways.zip`,
     target: '_self'
   }
 ];
