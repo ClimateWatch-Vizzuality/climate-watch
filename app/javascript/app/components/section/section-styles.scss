@@ -6,7 +6,7 @@
   flex-direction: column;
 
   @media #{$tablet-landscape} {
-    @include columns(2, true);
+    @include columns(2, $inner: true);
   }
 }
 
