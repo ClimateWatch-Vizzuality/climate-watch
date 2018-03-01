@@ -27,12 +27,26 @@ $grid-padding-gutters: $gutter-padding;
   }
 }
 
-@mixin columns($number, $inner: false) {
+@mixin columns($number, $gutter-size: $grid-margin-gutters, $inner: false) {
   @include xy-grid($wrap: true);
-  @include xy-gutters($negative: $inner);
+  @include xy-gutters($gutters: $gutter-size, $negative: $inner);
 
   > * {
-    @include xy-cell(12/$number);
+    @include xy-cell($size: 12/$number, $gutters: $gutter-size);
+  }
+}
+
+@mixin customColumns($columns, $grid-gutters: $gutter-padding, $cell-gutters: $gutter-padding) {
+  @include xy-grid($wrap: true);
+  @include xy-gutters($gutters: $grid-gutters);
+
+  @for $i from 1 through length($columns) {
+    $size: nth($columns, $i);
+
+    > *:nth-child(#{$i}) {
+      @include xy-cell($size of 12);
+      @include xy-gutters($gutters: $cell-gutters);
+    }
   }
 }
 
