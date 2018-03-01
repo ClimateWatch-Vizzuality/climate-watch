@@ -1,12 +1,12 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { CWAPI } from 'services/api';
-import { convertToRaw } from 'draft-js';
 
 import {
   updateEditorContent,
   insertAtomicBlock,
   deleteAtomicBlock,
-  logEditorState
+  logEditorState,
+  toRaw
 } from 'app/utils/draft';
 
 export const openPicker = createAction('openPicker');
@@ -68,23 +68,23 @@ export const pickVisualiation = createThunkAction(
 );
 
 export const clearInsight = createAction('clearInsight');
-export const getInsightReady = createAction('getInsightReady');
-export const getInsightFail = createAction('getInsightFail');
+export const fetchInsightReady = createAction('fetchInsightReady');
+export const fetchInsightFail = createAction('fetchInsightFail');
 export const saveInsightReady = createAction('saveInsightReady');
 export const saveInsightFail = createAction('saveInsightFail');
 export const deleteInsightFail = createAction('deleteInsightFail');
 export const deleteInsightReady = createAction('deleteInsightReady');
 
-export const getInsight = createThunkAction(
-  'getInsight',
+export const fetchInsight = createThunkAction(
+  'fetchInsight',
   insightId => dispatch => {
     CWAPI.get(`my_cw/user_stories/${insightId}`)
       .then(insight => {
-        dispatch(getInsightReady(insight));
+        dispatch(fetchInsightReady(insight));
       })
       .catch(e => {
         console.warn(e);
-        dispatch(getInsightFail());
+        dispatch(fetchInsightFail());
       });
   }
 );
@@ -96,7 +96,7 @@ export const saveInsight = createThunkAction(
     const story = {
       user_story: {
         title,
-        body: convertToRaw(body),
+        body: toRaw(body),
         public: true
       }
     };

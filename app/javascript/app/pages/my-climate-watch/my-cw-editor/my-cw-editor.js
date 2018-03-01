@@ -13,11 +13,25 @@ class Editor extends Component {
     editorIsFocused,
     titleIsFocused,
     insight,
+    insightId,
+    fetchInsight,
+    clearInsight,
     ...props
   }) {
     if (editorIsFocused && this.editor) setTimeout(() => this.focusEditor(), 0);
     if (titleIsFocused && this.editor) setTimeout(() => this.focusTitle(), 0);
     if (insight.saved) props.history.push('/my-climate-watch');
+    if (insightId && !insight.loading && !insight.loaded) {
+      if (insightId !== insight.insight) {
+        fetchInsight(insightId);
+      } else {
+        clearInsight();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearInsight();
   }
 
   getEditorRef = ref => {
@@ -78,11 +92,11 @@ Editor.propTypes = {
   pickerIsOpen: PropTypes.bool.isRequired,
   updateTitle: PropTypes.func.isRequired,
   logState: PropTypes.func,
-  title: PropTypes.string,
+  clearInsight: PropTypes.func,
   titlePlaceholder: PropTypes.string
 };
 
-const mapStateToProps = ({ myCWEditor }) => myCWEditor;
+const mapStateToProps = ({ myCWEditor }, router) => ({ ...myCWEditor, insightId: router.match.params.insightId });
 
 export { actions, reducers, initialState };
 

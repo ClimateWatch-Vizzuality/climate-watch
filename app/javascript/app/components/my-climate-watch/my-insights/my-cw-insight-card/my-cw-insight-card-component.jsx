@@ -16,8 +16,7 @@ class MyInsightCard extends PureComponent {
         <h2 className={styles.cardTitle}>{data.title}</h2>
         <p
           className={styles.cardContent}
-          dangerouslySetInnerHTML={{
-            // eslint-disable-line
+          dangerouslySetInnerHTML={{// eslint-disable-line
             __html: convertFromRaw(data.body).getPlainText()
           }}
         />

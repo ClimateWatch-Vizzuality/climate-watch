@@ -98,11 +98,11 @@ const StoryEditor = ({
             className={styles.titleField}
             placeholder={titlePlaceholder}
             onChange={e => updateTitle(e.target.value)}
-            value={title}
+            value={insight.insight.title || ''}
           />
           <Button
             className={styles.saveBtn}
-            onClick={() => saveInsight({ title, content: editorState })}
+            onClick={() => saveInsight({ title, content: editorState, id: insight.insight.id })}
           >
             Save
           </Button>

@@ -1,3 +1,4 @@
+import { fromRaw } from 'utils/draft';
 import * as actions from './my-cw-editor-actions';
 import initialState from './my-cw-editor-initial-state';
 
@@ -32,12 +33,13 @@ export default {
     editorIsFocused: false
   }),
   [actions.clearInsight]: () => initialState,
-  [actions.getInsight]: state => ({
+  [actions.fetchInsight]: state => ({
     ...state,
     insight: { ...state.insight, loading: true }
   }),
-  [actions.getInsightReady]: (state, { payload }) => ({
+  [actions.fetchInsightReady]: (state, { payload }) => ({
     ...state,
+    content: fromRaw(payload.body),
     insight: {
       ...state.insight,
       loading: false,
@@ -45,7 +47,7 @@ export default {
       insight: payload
     }
   }),
-  [actions.getInsightFail]: state => ({
+  [actions.fetchInsightFail]: state => ({
     ...state,
     insight: {
       ...state.insight,

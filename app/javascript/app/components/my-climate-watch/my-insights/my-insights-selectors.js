@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 
-const getInsights = state => state.data || null;
+const fetchInsights = state => state.data || null;
 
-export const parseInsights = createSelector(getInsights, data => {
+export const parseInsights = createSelector(fetchInsights, data => {
   if (!data || isEmpty(data)) return [];
   return data.map(d => {
     if (!d.body) return {};
