@@ -34,8 +34,8 @@ node {
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "master":
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_STORIES=true --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_STORIES=true --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_STORIES=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_STORIES=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${dockerUsername}/${appName}:latest .")
           break
         case "staging":
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_STORIES=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${imageTag} .")
