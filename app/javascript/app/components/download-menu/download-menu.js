@@ -13,11 +13,6 @@ const url = `${server}${folder}`;
 //   label: 'NDC quantification (367 kB)',
 //   link: `${url}/ndc-quantification.zip`,
 //   target: '_self'
-// },
-// {
-//   label: 'Pathways (2.1 MB)',
-//   link: `${url}/pathways.zip`,
-//   target: '_self'
 // }
 
 const downloadMenuOptions = [
@@ -44,6 +39,11 @@ const downloadMenuOptions = [
   {
     label: 'Socioeconomic (450 kB)',
     link: `${url}/socioeconomic-indicators.zip`,
+    target: '_self'
+  },
+  {
+    label: 'Pathways (2.1 MB)',
+    link: `${url}/pathways.zip`,
     target: '_self'
   }
 ];
