@@ -52,6 +52,7 @@ class Multiselect extends Component {
       label,
       parentClassName,
       children,
+      hideSelected,
       icon
     } = this.props;
     return (
@@ -76,12 +77,17 @@ class Multiselect extends Component {
             renderOption={option => {
               const className = option.isSelected ? selectedClassName : '';
               return (
-                <div
-                  className={cx(className, option.groupId ? styles.nested : '')}
-                >
-                  {option.label}
-                  {option.isSelected && <span className={styles.checked} />}
-                </div>
+                (!hideSelected || !option.isSelected) && (
+                  <div
+                    className={cx(
+                      className,
+                      option.groupId ? styles.nested : ''
+                    )}
+                  >
+                    {option.label}
+                    {option.isSelected && <span className={styles.checked} />}
+                  </div>
+                )
               );
             }}
             onValuesChange={handleChange}
@@ -112,6 +118,7 @@ Multiselect.propTypes = {
   label: Proptypes.string,
   selectedLabel: Proptypes.string,
   children: Proptypes.node,
+  hideSelected: Proptypes.bool,
   icon: Proptypes.object
 };
 

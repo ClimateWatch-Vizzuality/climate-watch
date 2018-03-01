@@ -11,11 +11,12 @@ import Component from './table-component';
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const { data, defaultColumns } = props;
+    const { data, defaultColumns, sortBy } = props;
     const columns = defaultColumns || Object.keys(data[0]);
     this.state = {
       data,
-      sortBy: Object.keys(data[0])[0],
+      optionsOpen: false,
+      sortBy: sortBy || Object.keys(data[0])[0],
       sortDirection: SortDirection.ASC,
       activeColumns: columns.map(d => ({
         label: upperFirst(lowerCase(d)),
@@ -34,11 +35,23 @@ class TableContainer extends PureComponent {
     }
   }
 
+  setOptionsClose = () => {
+    this.setState({ optionsOpen: false });
+  };
+
+  setOptionsOpen = () => {
+    this.setState({ optionsOpen: true });
+  };
+
   getDataSorted = (data, sortBy, sortDirection) => {
     const dataSorted = _sortBy(data, sortBy);
     return sortDirection === SortDirection.DESC
       ? reverse(dataSorted)
       : dataSorted;
+  };
+
+  toggleOptionsOpen = () => {
+    this.setState(state => ({ optionsOpen: !state.optionsOpen }));
   };
 
   handleSortChange = ({ sortBy, sortDirection }) => {
@@ -57,24 +70,30 @@ class TableContainer extends PureComponent {
       sortBy,
       sortDirection,
       activeColumns,
-      columnsOptions
+      columnsOptions,
+      optionsOpen
     } = this.state;
     return createElement(Component, {
       ...this.props,
       data,
       sortBy,
+      optionsOpen,
       sortDirection,
       activeColumns,
       columnsOptions,
       handleSortChange: this.handleSortChange,
-      handleColumnChange: this.handleColumnChange
+      handleColumnChange: this.handleColumnChange,
+      setOptionsOpen: this.setOptionsOpen,
+      setOptionsClose: this.setOptionsClose,
+      toggleOptionsOpen: this.toggleOptionsOpen
     });
   }
 }
 
 TableContainer.propTypes = {
   data: PropTypes.array.isRequired,
-  defaultColumns: PropTypes.array
+  defaultColumns: PropTypes.array,
+  sortBy: PropTypes.string.isRequired
 };
 
 TableContainer.defaultProps = {

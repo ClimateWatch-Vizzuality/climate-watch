@@ -109,10 +109,12 @@ export const getFilteredData = createSelector(
 
 export const getTitleLinks = createSelector([getFilteredData], data => {
   if (!data || isEmpty(data)) return null;
-  return data.map(d => ({
-    fieldName: 'country',
-    url: `country/${d.iso}`
-  }));
+  return data.map(d => [
+    {
+      columnName: 'country',
+      url: `country/${d.iso}`
+    }
+  ]);
 });
 
 export const removeIsoFromData = createSelector([getFilteredData], data => {

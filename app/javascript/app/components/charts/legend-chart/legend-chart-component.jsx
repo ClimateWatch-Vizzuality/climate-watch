@@ -49,6 +49,7 @@ class LegendChart extends PureComponent {
             hideResetButton
             closeOnSelect
             dropdownDirection={-1}
+            hideSelected
             icon={plusIcon}
           />
         )}

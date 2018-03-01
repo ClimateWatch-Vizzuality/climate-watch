@@ -2,6 +2,7 @@
 
 .tableWrapper {
   position: relative;
+  overflow: scroll;
 }
 
 .table :global {
@@ -55,6 +56,13 @@
   }
 }
 
+.column {
+  &.fullText {
+    white-space: normal;
+    overflow: visible !important;
+  }
+}
+
 .hasColumnSelect :global {
   .ReactVirtualized__Table__headerRow {
     padding-left: 30px;
@@ -69,12 +77,22 @@
   }
 }
 
+.columnSelectorWrapper {
+  position: relative;
+}
+
 .columnSelector :global {
   position: absolute;
   right: 0;
-  width: 50px;
   z-index: 10;
   border-bottom: solid 1px $theme-color-light;
+  width: 25px;
+  background-color: white;
+
+  @media #{$tablet-landscape} {
+    width: 50px;
+    background-color: initial;
+  }
 
   .dropdown-menu {
     width: 200px !important;
@@ -91,4 +109,10 @@
   position: absolute;
   right: 10px;
   top: 15px;
+}
+
+.trendLink {
+  > div {
+    cursor: pointer !important;
+  }
 }
