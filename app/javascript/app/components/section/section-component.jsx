@@ -1,18 +1,20 @@
 import React from 'react';
 import Proptypes from 'prop-types';
-import cn from 'classnames';
+import cx from 'classnames';
 
 import layout from 'styles/layout.scss';
 import styles from './section-styles.scss';
 
 const Section = ({ children, backgroundImage, className }) => (
   <section
-    className={cn(styles.section, className)}
+    className={cx(styles.section, className)}
     style={
       backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : null
     }
   >
-    <div className={cn(layout.content, styles.doubleFold)}>{children}</div>
+    <div className={layout.content}>
+      <div className={styles.doubleFold}>{children}</div>
+    </div>
   </section>
 );
 

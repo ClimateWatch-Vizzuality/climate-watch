@@ -77,17 +77,41 @@
 }
 
 .grid {
-  @include xy-grid($direction: 'vertical', $wrap: true);
+  @include xy-grid($wrap: true);
 
   height: 100%;
 
+  @media #{$tablet-landscape} {
+    @include xy-grid($direction: 'vertical', $wrap: true);
+  }
+
   > a {
-    @include xy-cell(3, $gutters: 0);
-    @include xy-cell(50%, $gutters: 0, $vertical:true);
+    @include xy-cell(6, $gutters: 0);
+    @include xy-cell(25%, $gutters: 0, $vertical:true);
+
+    @media #{$tablet-portrait} {
+      @include xy-cell(6, $gutters: 0);
+      @include xy-cell(33.333333%, $gutters: 0, $vertical:true);
+    }
+
+    @media #{$tablet-landscape} {
+      @include xy-cell(3, $gutters: 0);
+      @include xy-cell(50%, $gutters: 0, $vertical:true);
+    }
   }
 
   & :first-child {
-    @include xy-cell(6, $gutters: 0);
-    @include xy-cell(100%, $gutters: 0, $vertical:true);
+    @include xy-cell(12, $gutters: 0);
+    @include xy-cell(50%, $gutters: 0, $vertical:true);
+
+    @media #{$tablet-portrait} {
+      @include xy-cell(12, $gutters: 0);
+      @include xy-cell(33.333333%, $gutters: 0, $vertical:true);
+    }
+
+    @media #{$tablet-landscape} {
+      @include xy-cell(6, $gutters: 0);
+      @include xy-cell(100%, $gutters: 0, $vertical:true);
+    }
   }
 }
