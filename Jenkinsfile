@@ -44,7 +44,7 @@ node {
         default:
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_STORIES=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${imageTag} .")
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_STORIES=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${dockerUsername}/${appName}:latest .")
-
+      }
     }
 
     stage ('Run Tests') {
