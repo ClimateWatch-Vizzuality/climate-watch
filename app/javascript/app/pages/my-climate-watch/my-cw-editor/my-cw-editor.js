@@ -1,6 +1,7 @@
 import { createElement, Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 
 import { actions as creatorActions } from 'components/my-climate-watch/viz-creator';
 import * as actions from './my-cw-editor-actions';
@@ -8,7 +9,24 @@ import * as reducers from './my-cw-editor-reducers';
 import initialState from './my-cw-editor-initial-state';
 import EditorComponent from './my-cw-editor-component';
 
+import sideToolbarPlugin from './plugins/side-toolbar-plugin';
+import createMultichartPlugin from './plugins/multi-chart-plugin';
+
 class Editor extends Component {
+  constructor(props) {
+    super(props);
+    const { deleteAtomic } = props;
+    // instantiate and cache plugins when we need them to be redux aware i.e. deleteAtomic action
+    const inlineToolbarPlugin = createInlineToolbarPlugin();
+    const multichartPlugin = createMultichartPlugin({ deleteAtomic });
+    const { SideToolbar } = sideToolbarPlugin;
+    const { InlineToolbar } = inlineToolbarPlugin;
+    this.plugins = [inlineToolbarPlugin, sideToolbarPlugin, multichartPlugin];
+    this.pluginComps = {
+      SideToolbar,
+      InlineToolbar
+    };
+  }
   componentWillReceiveProps({
     editorIsFocused,
     titleIsFocused,
@@ -74,6 +92,8 @@ class Editor extends Component {
       getTitleRef: this.getTitleRef,
       focusEditor: this.focusEditor,
       focusTitle: this.focusTitle,
+      plugins: this.plugins,
+      pluginComps: this.pluginComps,
       ...props
     });
   }
@@ -92,11 +112,15 @@ Editor.propTypes = {
   pickerIsOpen: PropTypes.bool.isRequired,
   updateTitle: PropTypes.func.isRequired,
   logState: PropTypes.func,
+  deleteAtomic: PropTypes.func,
   clearInsight: PropTypes.func,
   titlePlaceholder: PropTypes.string
 };
 
-const mapStateToProps = ({ myCWEditor }, router) => ({ ...myCWEditor, insightId: router.match.params.insightId });
+const mapStateToProps = ({ myCWEditor }, router) => ({
+  ...myCWEditor,
+  insightId: router.match.params.insightId
+});
 
 export { actions, reducers, initialState };
 

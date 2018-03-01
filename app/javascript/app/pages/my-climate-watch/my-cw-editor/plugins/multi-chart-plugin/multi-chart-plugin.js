@@ -1,6 +1,7 @@
 import MultiChartPlugin from './multi-chart-plugin-component';
 
 const makeMultiChartPlugin = (config = {}) => {
+  const { deleteAtomic } = config;
   let Comp = MultiChartPlugin;
   if (config.decorator) {
     Comp = config.decorator(Comp);
@@ -20,7 +21,7 @@ const makeMultiChartPlugin = (config = {}) => {
           return {
             component: Comp,
             editable: false,
-            props: data
+            props: { ...data, deleteAtomic }
           };
         }
       }

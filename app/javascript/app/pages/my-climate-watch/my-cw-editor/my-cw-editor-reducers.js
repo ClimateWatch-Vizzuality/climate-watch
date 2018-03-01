@@ -40,6 +40,7 @@ export default {
   [actions.fetchInsightReady]: (state, { payload }) => ({
     ...state,
     content: fromRaw(payload.body),
+    title: payload.title,
     insight: {
       ...state.insight,
       loading: false,
@@ -55,9 +56,13 @@ export default {
       error: true
     }
   }),
-  [actions.saveInsight]: state => ({ ...state,
+  [actions.saveInsight]: state => ({
+    ...state,
     insight: {
-      ...state.insight, saving: true } }),
+      ...state.insight,
+      saving: true
+    }
+  }),
   [actions.saveInsightReady]: (state, { payload }) => ({
     ...state,
     insight: {
@@ -71,9 +76,13 @@ export default {
     ...state,
     insight: { ...state.insight, saving: false, error: true }
   }),
-  [actions.deleteInsight]: state => ({ ...state,
+  [actions.deleteInsight]: state => ({
+    ...state,
     insight: {
-      ...state.insight, deleting: true } }),
+      ...state.insight,
+      deleting: true
+    }
+  }),
   [actions.deleteInsightReady]: state => ({
     ...state,
     insight: {

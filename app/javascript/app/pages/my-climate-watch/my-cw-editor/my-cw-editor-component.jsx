@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Editor from 'draft-js-plugins-editor';
-import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 import Sticky from 'react-stickynode';
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 import 'draft-js-focus-plugin/lib/plugin.css';
@@ -14,16 +13,6 @@ import MyViz from 'components/my-climate-watch/my-visualisations';
 import VizCreator from 'components/my-climate-watch/viz-creator';
 import layoutStyles from 'app/styles/layout';
 import styles from './my-cw-editor-styles';
-
-import sideToolbarPlugin from './plugins/side-toolbar-plugin';
-import createMultichartPlugin from './plugins/multi-chart-plugin';
-
-const inlineToolbarPlugin = createInlineToolbarPlugin();
-const multichartPlugin = createMultichartPlugin();
-const { SideToolbar } = sideToolbarPlugin;
-const { InlineToolbar } = inlineToolbarPlugin;
-
-const plugins = [inlineToolbarPlugin, sideToolbarPlugin, multichartPlugin];
 
 const modalStyles = {
   content: {
@@ -51,6 +40,8 @@ const StoryEditor = ({
   focusEditor,
   focusTitle,
   saveInsight,
+  plugins,
+  pluginComps: { InlineToolbar, SideToolbar },
   insight
 }) => (
   <div className={styles.container}>
@@ -98,11 +89,16 @@ const StoryEditor = ({
             className={styles.titleField}
             placeholder={titlePlaceholder}
             onChange={e => updateTitle(e.target.value)}
-            value={insight.insight.title || ''}
+            value={title}
           />
           <Button
             className={styles.saveBtn}
-            onClick={() => saveInsight({ title, content: editorState, id: insight.insight.id })}
+            onClick={() =>
+              saveInsight({
+                title,
+                content: editorState,
+                id: insight.insight.id
+              })}
           >
             Save
           </Button>
@@ -145,6 +141,8 @@ StoryEditor.propTypes = {
   focusEditor: PropTypes.func.isRequired,
   saveInsight: PropTypes.func.isRequired,
   title: PropTypes.string,
+  plugins: PropTypes.array,
+  pluginComps: PropTypes.object,
   titlePlaceholder: PropTypes.string
 };
 
