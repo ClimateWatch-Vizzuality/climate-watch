@@ -8,6 +8,8 @@ import Chart from 'components/charts/chart';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import styles from './country-ghg-emissions-styles.scss';
 
+const { FEATURE_QUANTIFICATIONS } = process.env;
+
 class CountryGhgEmissions extends PureComponent {
   renderFilterDropdowns() {
     const {
@@ -67,7 +69,7 @@ class CountryGhgEmissions extends PureComponent {
     const {
       calculationSelected,
       data,
-      quantifications, // eslint-disable-line
+      quantifications,
       loading,
       config,
       handleYearHover,
@@ -75,9 +77,11 @@ class CountryGhgEmissions extends PureComponent {
       filtersSelected
     } = this.props;
 
+    const points = FEATURE_QUANTIFICATIONS === 'true' ? quantifications : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
+
     return (
       <Chart
         className={styles.graph}
@@ -85,9 +89,7 @@ class CountryGhgEmissions extends PureComponent {
         config={config}
         data={data}
         onMouseMove={handleYearHover}
-        // Remove the comment when they want the quantifications
-        // feature on production
-        // points={quantifications}
+        points={points}
         dataOptions={filtersOptions}
         dataSelected={filtersSelected}
         loading={loading}

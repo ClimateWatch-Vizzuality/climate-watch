@@ -29,9 +29,14 @@ COPY Gemfile Gemfile.lock ./
 
 RUN bundle install --without development test --jobs 4 --deployment
 
-# Bundle app source
+# Env variables
 ARG secretKey
 ENV SECRET_KEY_BASE $secretKey
+
+ARG FEATURE_QUANTIFICATIONS
+ENV FEATURE_QUANTIFICATIONS $FEATURE_QUANTIFICATIONS
+
+# Bundle app source
 COPY . ./
 
 EXPOSE 3000

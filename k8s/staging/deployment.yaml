@@ -59,6 +59,8 @@ spec:
             value: "https://production-api.globalforestwatch.org"
           - name: CORS_WHITELIST
             value: "*"
+          - name: FEATURE_QUANTIFICATIONS
+            value: true
 
         ports:
           - containerPort: 3000
