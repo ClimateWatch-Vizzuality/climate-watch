@@ -8,6 +8,8 @@ import image3 from 'assets/news/3.jpg';
 import image4 from 'assets/news/4.jpg';
 import image6 from 'assets/news/6.jpg';
 
+const { FEATURE_STORIES } = process.env;
+
 const stories = [
   {
     id: 1,
@@ -54,24 +56,26 @@ const fetchStoriesInit = createAction('fetchStoriesInit');
 const fetchStoriesReady = createAction('fetchStoriesReady');
 const fetchStoriesFail = createAction('fetchStoriesFail');
 
-// const TAGS = ['NDC', 'ndcsdg', 'esp', 'climatewatch'];
+const TAGS = ['NDC', 'ndcsdg', 'esp', 'climatewatch'];
 
 const fetchStories = createThunkAction('fetchStories', () => dispatch => {
-  dispatch(fetchStoriesReady(stories));
-  // GET BACK WHEN FEATURE READY
-  // dispatch(fetchStoriesInit());
-  // fetch(`/api/v1/stories?tags=${TAGS}`)
-  //   .then(response => {
-  //     if (response.ok) return response.json();
-  //     throw Error(response.statusText);
-  //   })
-  //   .then(data => {
-  //     dispatch(fetchStoriesReady(data));
-  //   })
-  //   .catch(error => {
-  //     console.info(error);
-  //     dispatch(fetchStoriesFail());
-  //   });
+  if (FEATURE_STORIES === 'true') {
+    dispatch(fetchStoriesInit());
+    fetch(`/api/v1/stories?tags=${TAGS}`)
+      .then(response => {
+        if (response.ok) return response.json();
+        throw Error(response.statusText);
+      })
+      .then(data => {
+        dispatch(fetchStoriesReady(data));
+      })
+      .catch(error => {
+        console.info(error);
+        dispatch(fetchStoriesFail());
+      });
+  } else {
+    dispatch(fetchStoriesReady(stories));
+  }
 });
 
 export default {

@@ -8,7 +8,6 @@ import { TabletLandscape } from 'components/responsive';
 import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
-import BottomBar from 'components/footer/bottom-bar';
 import { HOME_PAGE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
@@ -36,9 +35,7 @@ class App extends PureComponent {
             ))}
         </TabletLandscape>
         {renderRoutes(route.routes.filter(r => r.path))}
-        <TabletLandscape>
-          {matches => (matches ? <Footer routes={navRoutes} /> : <BottomBar />)}
-        </TabletLandscape>
+        <Footer />
       </div>
     );
   }

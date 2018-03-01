@@ -28,9 +28,6 @@
 .tagSelector :global {
   width: 29px;
   height: 29px;
-  border: solid 1px $border-color;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
-  border-radius: 4px;
 
   .react-selectize-control {
     background-color: $white !important;
