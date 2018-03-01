@@ -2,15 +2,11 @@
 @import '~styles/settings.scss';
 
 .grid {
-  @extend %grid;
+  @include columns(1, $gutter-size: 0, $inner: true);
 
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
+  overflow: hidden;
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 2fr);
-
-    grid-template-columns: 1fr 2fr;
+    @include customColumns((5, 7));
   }
 }
