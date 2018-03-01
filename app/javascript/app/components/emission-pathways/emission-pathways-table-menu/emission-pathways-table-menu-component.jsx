@@ -14,7 +14,7 @@ class EmissionPathwaysTableMenu extends PureComponent {
     const { routeLinks, uploadButton } = this.props;
     const wantToText = (
       <span className={styles.buttonDetail}>
-        Want to have your model in Climate Watch?
+        Want to provide feedback or add data for a model?
       </span>
     );
 
