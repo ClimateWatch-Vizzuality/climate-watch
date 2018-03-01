@@ -3,12 +3,32 @@ import PropTypes from 'prop-types';
 import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
-import { LineChart, Line } from 'recharts';
+import { pixelBreakpoints } from 'components/responsive';
 
 import lowerCase from 'lodash/lowerCase';
 import 'react-virtualized/styles.css'; // only needs to be imported once
-import { NavLink } from 'react-router-dom';
+import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
+
+const minColumnWidth = 140;
+const getResponsiveWidth = (columns, width) => {
+  if (columns.length === 1) return width;
+
+  const isMinColumSized = width / columns < minColumnWidth;
+
+  let responsiveRatio = 1.4; // Mobile
+  let responsiveColumnRatio = 0.2;
+  if (width > pixelBreakpoints.portrait && width < pixelBreakpoints.landscape) {
+    responsiveColumnRatio = 0.1;
+    responsiveRatio = 1.2; // Tablet
+  } else if (width > pixelBreakpoints.landscape) {
+    // Desktop
+    responsiveColumnRatio = 0.05;
+    responsiveRatio = 1;
+  }
+  const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
+  return width * responsiveRatio * (1 + (columnRatio * columns));
+};
 
 class SimpleTable extends PureComponent {
   render() {
@@ -23,85 +43,72 @@ class SimpleTable extends PureComponent {
       sortBy,
       sortDirection,
       handleSortChange,
-      parseHtml,
-      titleLinks,
-      trendLine
+      fullTextColumns,
+      setOptionsOpen,
+      setOptionsClose,
+      toggleOptionsOpen,
+      optionsOpen
     } = this.props;
 
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
-    const renderTrendLine = chartData => (
-      <LineChart width={70} height={35} data={chartData}>
-        <Line dot={false} dataKey="value" stroke="#113750" strokeWidth={2} />
-      </LineChart>
-    );
     return (
-      <div
-        className={cx(
-          styles.tableWrapper,
-          hasColumnSelect ? styles.hasColumnSelect : ''
-        )}
-      >
+      <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (
-          <MultiSelect
-            parentClassName={styles.columnSelector}
-            values={activeColumns || []}
-            options={columnsOptions || []}
-            onMultiValueChange={handleColumnChange}
-            hideResetButton
+          <div
+            role="button"
+            tabIndex={0}
+            className={styles.columnSelectorWrapper}
+            onTouchEnd={toggleOptionsOpen}
+            onMouseEnter={setOptionsOpen}
+            onMouseLeave={setOptionsClose}
           >
-            <span className={styles.selectorValue}>...</span>
-          </MultiSelect>
-        )}
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <Table
-              className={styles.table}
-              width={width}
-              height={460}
-              headerHeight={headerHeight}
-              rowHeight={rowHeight}
-              rowCount={data.length}
-              sort={handleSortChange}
-              sortBy={sortBy}
-              sortDirection={sortDirection}
-              rowGetter={({ index }) => data[index]}
+            <MultiSelect
+              parentClassName={styles.columnSelector}
+              values={activeColumns || []}
+              options={columnsOptions || []}
+              onMultiValueChange={handleColumnChange}
+              hideResetButton
+              open={optionsOpen}
             >
-              {activeColumns.map(c => c.value).map((column, i) => {
-                const flexGrow = i === 0 ? 0 : 1;
-                return (
+              <span className={styles.selectorValue}>...</span>
+            </MultiSelect>
+          </div>
+        )}
+        <div className={cx(styles.tableWrapper)}>
+          <AutoSizer disableHeight>
+            {({ width }) => (
+              <Table
+                className={styles.table}
+                width={getResponsiveWidth(activeColumns.length, width)}
+                height={460}
+                headerHeight={headerHeight}
+                rowHeight={rowHeight}
+                rowCount={data.length}
+                sort={handleSortChange}
+                sortBy={sortBy}
+                sortDirection={sortDirection}
+                rowGetter={({ index }) => data[index]}
+              >
+                {activeColumns.map(c => c.value).map(column => (
                   <Column
-                    className={styles.column}
+                    className={cx(styles.column, {
+                      [styles.fullText]:
+                        fullTextColumns && fullTextColumns.indexOf(column) > -1
+                    })}
                     key={column}
                     label={lowerCase(column)}
                     dataKey={column}
                     width={200}
-                    flexGrow={flexGrow}
-                    cellRenderer={cell => {
-                      const titleLink = titleLinks && titleLinks[cell.rowIndex];
-                      if (trendLine && cell.dataKey === trendLine) {
-                        return renderTrendLine(cell.cellData);
-                      }
-
-                      if (titleLink && cell.dataKey === titleLink.fieldName) {
-                        return (
-                          <NavLink to={titleLink.url}>{cell.cellData}</NavLink>
-                        );
-                      }
-                      return parseHtml ? (
-                        <div
-                          dangerouslySetInnerHTML={{ __html: cell.cellData }} // eslint-disable-line react/no-danger
-                        />
-                      ) : (
-                        cell.cellData
-                      );
-                    }}
+                    flexGrow={1}
+                    cellRenderer={cell =>
+                      cellRenderer({ props: this.props, cell })}
                   />
-                );
-              })}
-            </Table>
-          )}
-        </AutoSizer>
+                ))}
+              </Table>
+            )}
+          </AutoSizer>
+        </div>
       </div>
     );
   }
@@ -109,6 +116,7 @@ class SimpleTable extends PureComponent {
 
 SimpleTable.propTypes = {
   data: PropTypes.array,
+  optionsOpen: PropTypes.bool,
   hasColumnSelect: PropTypes.bool,
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
@@ -118,9 +126,10 @@ SimpleTable.propTypes = {
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   handleSortChange: PropTypes.func.isRequired,
-  titleLinks: PropTypes.array, // {fieldName: 'title field name in the table', url:'/destination-url-for-the-link'}
-  trendLine: PropTypes.string, // 'field name of the trend line column'
-  parseHtml: PropTypes.bool
+  setOptionsOpen: PropTypes.func.isRequired,
+  setOptionsClose: PropTypes.func.isRequired,
+  toggleOptionsOpen: PropTypes.func.isRequired,
+  fullTextColumns: PropTypes.array // 'Columns with full text, no ellipsis'
 };
 
 SimpleTable.defaultProps = {

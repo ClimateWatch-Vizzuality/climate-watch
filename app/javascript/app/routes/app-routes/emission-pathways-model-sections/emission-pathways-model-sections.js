@@ -14,10 +14,14 @@ export default [
       })
   },
   {
-    hash: 'scenarios-indicators',
-    label: 'Scenarios & Indicators',
+    hash: 'scenarios',
+    label: 'Scenarios',
     anchor: true,
     nav: true,
-    component: EmissionPathwaysTableMenu
+    component: props =>
+      createElement(EmissionPathwaysTableMenu, {
+        routeLinks: props.routeLinks,
+        uploadButton: true
+      })
   }
 ];

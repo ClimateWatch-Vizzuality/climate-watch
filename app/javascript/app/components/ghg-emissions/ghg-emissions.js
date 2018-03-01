@@ -10,6 +10,7 @@ import { actions } from 'components/modal-metadata';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import {
   getChartData,
+  getChartXDomain,
   getChartConfig,
   getSourceOptions,
   getSourceSelected,
@@ -48,6 +49,7 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     data: getChartData(ghg),
+    domain: getChartXDomain(ghg),
     config: getChartConfig(ghg),
     sources: getSourceOptions(ghg),
     sourceSelected: getSourceSelected(ghg),

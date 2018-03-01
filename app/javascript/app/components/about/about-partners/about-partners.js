@@ -73,7 +73,7 @@ const partnershipWith = {
         src: googleImage
       },
       description:
-        'Google provided support in developing concepts and functions for the Emission Pathways module.'
+        'Google provided support in developing concepts and functions for the Pathways module.'
     },
     {
       link: 'http://www.ndcpartnership.org/',

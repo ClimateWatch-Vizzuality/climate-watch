@@ -285,6 +285,12 @@ export const getChartData = createSelector(
   }
 );
 
+export const getChartXDomain = createSelector([getChartData], data => {
+  if (!data) return null;
+  const xValues = data.map(d => d.x);
+  return { x: [Math.min(...xValues), Math.max(...xValues)] };
+});
+
 // variable that caches chart elements assigned color
 // to avoid element color changing when the chart is updated
 let colorThemeCache = {};
