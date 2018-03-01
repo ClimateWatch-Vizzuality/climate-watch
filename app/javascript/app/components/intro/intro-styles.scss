@@ -48,6 +48,12 @@
   color: $white;
 }
 
+.disclaimer {
+  color: $white;
+  font-style: italic;
+  opacity: 0.75;
+}
+
 .columns {
   @media #{$tablet-landscape} {
     max-width: 100%;

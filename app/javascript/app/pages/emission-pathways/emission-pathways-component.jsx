@@ -39,6 +39,7 @@ class EmissionPathways extends PureComponent {
             description={
               'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
             }
+            disclaimer="This page is under development. More data and new functions will be added over time."
             className={layout.content}
           />
           <Sticky activeClass="sticky -emissions" top="#navBarMobile">
