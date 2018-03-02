@@ -21,7 +21,7 @@ class LegendChart extends PureComponent {
     } = this.props;
     const shouldShowMultiselect =
       dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
-    const mirrorX = dataSelected.length < 3;
+    const mirrorX = dataSelected.length < 2;
     return (
       <ul className={cx(styles.tags, className)}>
         {config &&
