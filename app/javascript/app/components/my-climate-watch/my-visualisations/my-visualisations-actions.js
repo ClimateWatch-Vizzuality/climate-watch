@@ -1,4 +1,4 @@
-import { createAction, createThunkAction } from 'redux-tools';
+import { createAction, createThunkAction } from 'utils/redux-tools';
 import { CWAPI } from 'services/api';
 
 export const fetchVisualisationsInit = createAction('fetchVisualisationsInit');

@@ -5,7 +5,6 @@ import { createAction as CA, handleActions as handle } from 'redux-actions';
 // be used with handleActions
 // passes all state as a third argument
 export const bindActionsToReducers = (actions, reducerList) =>
-  console.log(actions, reducerList) ||
   Object.keys(actions).reduce((result, k) => {
     const c = {};
     const name = actions[k];
