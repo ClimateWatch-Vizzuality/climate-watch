@@ -14,11 +14,6 @@ $grid-padding-gutters: $gutter-padding;
   height: 100%;
   max-width: $max-width;
   margin: 0 auto;
-  padding: 0 $gutter-padding / 2;
-
-  @media #{$tablet-landscape} {
-    padding: 0 $gutter-padding;
-  }
 }
 
 .screenshotMobileLayout {
@@ -27,12 +22,26 @@ $grid-padding-gutters: $gutter-padding;
   }
 }
 
-@mixin columns($number, $inner: false) {
+@mixin columns($number, $grid-gutters: $gutter-padding, $cell-gutters: $gutter-padding, $inner: false) {
   @include xy-grid($wrap: true);
-  @include xy-gutters($negative: $inner);
+  @include xy-gutters($gutters: $grid-gutters, $negative: $inner);
 
   > * {
-    @include xy-cell(12/$number);
+    @include xy-cell($size: 12/$number, $gutters: $cell-gutters);
+  }
+}
+
+@mixin customColumns($columns, $grid-gutters: $gutter-padding, $cell-gutters: $gutter-padding, $inner: false) {
+  @include xy-grid($wrap: true);
+  @include xy-gutters($gutters: $grid-gutters, $negative: $inner);
+
+  @for $i from 1 through length($columns) {
+    $size: nth($columns, $i);
+
+    > *:nth-child(#{$i}) {
+      @include xy-cell($size of 12);
+      @include xy-gutters($gutters: $cell-gutters);
+    }
   }
 }
 

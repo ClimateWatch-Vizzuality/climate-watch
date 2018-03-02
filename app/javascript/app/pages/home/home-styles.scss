@@ -7,7 +7,7 @@
   padding-bottom: 1.5rem;
 
   @media #{$tablet-portrait} {
-    @include columns(2, true);
+    @include columns(2, $inner: true);
   }
 }
 
