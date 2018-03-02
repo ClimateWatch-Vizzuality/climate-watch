@@ -18,11 +18,12 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 10px;
 }
 
 .partnersContainer {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   width: 85%;
   justify-content: flex-start;
@@ -39,6 +40,7 @@
   justify-content: flex-start;
   align-items: center;
   margin-right: $gutter-padding;
+  margin-bottom: $gutter-padding;
 }
 
 .logo {
