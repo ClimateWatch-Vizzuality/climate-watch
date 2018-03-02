@@ -2,11 +2,14 @@
 @import '~styles/settings.scss';
 
 .grid {
-  @include columns(1, $gutter-size: 0, $inner: true);
+  @include columns(1, $inner: true);
 
   overflow: hidden;
 
   @media #{$tablet-landscape} {
-    @include customColumns((5, 7));
+    @include customColumns((5, 7), $grid-gutters: 0);
+
+    max-width: 1230px;
+    margin: 0 auto;
   }
 }
