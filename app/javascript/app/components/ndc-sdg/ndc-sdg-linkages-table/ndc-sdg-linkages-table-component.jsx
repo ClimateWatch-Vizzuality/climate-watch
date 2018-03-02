@@ -24,43 +24,37 @@ class NdcSdgLinkagesTable extends PureComponent {
     } = this.props;
 
     if (!goals || !goals.length) return <Loading className={styles.loading} />;
-    return (
-      <div>
-        {selectedGoal ? (
-          <NdcSdgLinkagesList
-            targetHover={targetHover}
-            onTargetHover={onTargetHover}
-            onCloseClick={handleClickClose}
-            goal={selectedGoal}
-          />
-        ) : (
-          <div className={styles.container}>
-            {goals.map((goal, i) => {
-              let isSelected = false;
-              if (goalHover) {
-                isSelected = goal.id === goalHover;
-              } else {
-                isSelected = selectedGoal
-                  ? goal.id === selectedGoal.id
-                  : i === 0;
-              }
+    return selectedGoal ? (
+      <NdcSdgLinkagesList
+        targetHover={targetHover}
+        onTargetHover={onTargetHover}
+        onCloseClick={handleClickClose}
+        goal={selectedGoal}
+      />
+    ) : (
+      <div className={styles.container}>
+        {goals.map((goal, i) => {
+          let isSelected = false;
+          if (goalHover) {
+            isSelected = goal.id === goalHover;
+          } else {
+            isSelected = selectedGoal ? goal.id === selectedGoal.id : i === 0;
+          }
 
-              return (
-                <SDGCard
-                  square
-                  hover
-                  selected={isSelected}
-                  onMouseEnter={() => onGoalHover(goal.number)}
-                  onClick={() => handleClickGoal(goal.number)}
-                  key={goal.title}
-                  goal={goal}
-                  tooltipId="sdg-linkages"
-                  className={cx(cardTheme.card, cardTheme.squaredCard)}
-                />
-              );
-            })}
-          </div>
-        )}
+          return (
+            <SDGCard
+              square
+              hover
+              selected={isSelected}
+              onMouseEnter={() => onGoalHover(goal.number)}
+              onClick={() => handleClickGoal(goal.number)}
+              key={goal.title}
+              goal={goal}
+              tooltipId="sdg-linkages"
+              className={cx(cardTheme.card, cardTheme.squaredCard)}
+            />
+          );
+        })}
       </div>
     );
   }
