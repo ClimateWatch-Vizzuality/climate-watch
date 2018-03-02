@@ -16,7 +16,7 @@
 .timelineContainer {
   overflow-x: auto;
 
-  @include overflowFix();
+  @include overflowFix(120px);
 }
 
 .timeline { // overwriting timeline styles
