@@ -2,7 +2,7 @@
 @import '~styles/settings.scss';
 
 .container {
-  @include columns(3, $gutter-size: 0);
+  @include columns(3, $grid-gutters: 0, $cell-gutters: 0);
 
   background-color: $white;
   border-left: 1px solid $theme-border;
@@ -10,15 +10,15 @@
   order: 2;
 
   @media screen and (min-width: 650px) {
-    @include columns(4, $gutter-size: 0);
+    @include columns(4, $grid-gutters: 0, $cell-gutters: 0);
   }
 
   @media screen and (min-width: 800px) {
-    @include columns(5, $gutter-size: 0);
+    @include columns(5, $grid-gutters: 0, $cell-gutters: 0);
   }
 
   @media #{$tablet-landscape} {
-    @include columns(3, $gutter-size: 0, $inner: true);
+    @include columns(3, $cell-gutters: 0, $inner: true);
 
     order: 1;
   }
