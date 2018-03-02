@@ -31,15 +31,14 @@ class EmissionPathwaysTable extends PureComponent {
       noContentMsg,
       defaultColumns,
       titleLinks,
-      fullTextColumns,
-      categoryName
+      fullTextColumns
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     return data && data.length > 0 ? (
       <Table
         data={data}
         titleLinks={titleLinks}
-        rowHeight={categoryName === 'Scenarios' ? 150 : 60}
+        rowHeight={60}
         hasColumnSelect
         defaultColumns={defaultColumns}
         fullTextColumns={fullTextColumns}
