@@ -37,7 +37,7 @@ export const getFullTextColumns = createSelector([getCategory], category => {
     case 'models':
       return ['full_name'];
     case 'scenarios':
-      return [];
+      return ['description'];
     case 'indicators':
       return [];
     default:
