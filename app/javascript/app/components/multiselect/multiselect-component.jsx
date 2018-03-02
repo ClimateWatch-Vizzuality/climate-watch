@@ -52,6 +52,7 @@ class Multiselect extends Component {
       label,
       parentClassName,
       children,
+      mirrorX,
       hideSelected,
       icon
     } = this.props;
@@ -63,6 +64,7 @@ class Multiselect extends Component {
             theme.dropdown,
             styles.multiSelect,
             children ? styles.hasChildren : '',
+            { [styles.mirrorX]: mirrorX },
             { [styles.searchable]: !icon }
           )}
         >
@@ -120,6 +122,7 @@ Multiselect.propTypes = {
   selectedLabel: Proptypes.string,
   children: Proptypes.node,
   hideSelected: Proptypes.bool,
+  mirrorX: Proptypes.bool,
   icon: Proptypes.object
 };
 

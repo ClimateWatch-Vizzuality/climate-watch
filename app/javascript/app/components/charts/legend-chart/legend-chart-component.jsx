@@ -21,6 +21,7 @@ class LegendChart extends PureComponent {
     } = this.props;
     const shouldShowMultiselect =
       dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
+    const mirrorX = dataSelected.length < 3;
     return (
       <ul className={cx(styles.tags, className)}>
         {config &&
@@ -51,6 +52,7 @@ class LegendChart extends PureComponent {
             dropdownDirection={-1}
             hideSelected
             icon={plusIcon}
+            mirrorX={mirrorX}
           />
         )}
       </ul>
