@@ -62,7 +62,8 @@ class Multiselect extends Component {
           className={cx(
             theme.dropdown,
             styles.multiSelect,
-            children ? styles.hasChildren : ''
+            children ? styles.hasChildren : '',
+            { [styles.searchable]: !icon }
           )}
         >
           <div className={cx(styles.values, 'values')}>

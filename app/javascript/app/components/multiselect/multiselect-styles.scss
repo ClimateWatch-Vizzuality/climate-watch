@@ -51,6 +51,14 @@
   }
 }
 
+:global .react-selectize-search-field-and-selected-values .resizable-input {
+  opacity: 0;
+}
+
+.searchable :global .react-selectize-search-field-and-selected-values .resizable-input {
+  opacity: 1;
+}
+
 .selected {
   display: flex;
   justify-content: space-between;
