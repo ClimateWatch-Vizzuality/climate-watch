@@ -4,6 +4,10 @@
   display: flex;
   position: relative;
 
+  :global .simple-value span {
+    font-size: $font-size-large;
+  }
+
   > :not(:last-child) {
     border-right: 1px solid $theme-border;
   }
