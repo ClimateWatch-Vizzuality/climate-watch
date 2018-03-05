@@ -44,7 +44,7 @@
   position: absolute;
   right: 10px;
   top: $gutter-padding;
-  z-index: 1;
+  z-index: 2;
 }
 
 .title {
@@ -56,6 +56,7 @@
   font-weight: $font-weight;
   font-size: $font-size-large;
   color: $theme-color;
+  z-index: 2;
 
   @media #{$tablet-landscape} {
     display: block;
