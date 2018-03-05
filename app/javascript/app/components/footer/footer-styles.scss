@@ -42,9 +42,11 @@
   align-items: center;
   width: 100%;
   justify-content: flex-start;
+  padding-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
-    width: 90%;
+    width: 85%;
+    padding-bottom: 0;
   }
 }
 
@@ -53,7 +55,7 @@
 }
 
 .logoContainer {
-  max-width: 120px;
+  width: 120px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
