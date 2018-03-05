@@ -36,7 +36,7 @@
   bottom: 15px;
 
   @media #{$tablet-landscape} {
-    left: 0;
+    left: $gutter-padding;
   }
 }
 
@@ -49,7 +49,7 @@
 
 .title {
   position: absolute;
-  left: 0;
+  left: $gutter-padding;
   top: $gutter-padding;
   opacity: 1;
   width: 100%;
