@@ -20,7 +20,7 @@ $min-height: 450px;
   grid-template-columns: repeat(2, 1fr);
   grid-row-gap: 20px;
   align-items: end;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   @media #{$tablet-landscape} {
     grid-template-columns: repeat(5, 1fr);
