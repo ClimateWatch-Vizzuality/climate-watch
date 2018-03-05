@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: flex-start;
 
-  @media #{$desktop} {
+  @media #{$tablet-landscape} {
     flex-direction: row;
     align-items: center;
     height: 100%;
@@ -46,7 +46,7 @@
     height: 3px;
   }
 
-  @media #{$desktop} {
+  @media #{$tablet-landscape} {
     margin-right: 40px;
     text-decoration: none;
     position: relative;

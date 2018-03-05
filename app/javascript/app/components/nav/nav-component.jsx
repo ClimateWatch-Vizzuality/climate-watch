@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
-import { Desktop } from 'components/responsive';
+import { TabletLandscape } from 'components/responsive';
 import Icon from 'components/icon';
 import SimpleMenu from 'components/simple-menu';
 import NavNestedMenu from 'components/nav/nav-nested-menu';
@@ -30,13 +30,13 @@ class Nav extends PureComponent {
     const showLogo = !hideLogo && location.pathname !== '/';
     return (
       <nav className={cx(styles.navbar, className)}>
-        <Desktop>
+        <TabletLandscape>
           {showLogo && (
             <NavLink exact className={styles.link} to="/">
               <Icon className={styles.logo} icon={cwLogo} />
             </NavLink>
           )}
-        </Desktop>
+        </TabletLandscape>
         {routes.map(route => {
           if (route.navNestedMenu && allowNested) {
             return (
