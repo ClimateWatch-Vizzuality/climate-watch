@@ -20,7 +20,7 @@ import styles from './map-styles.scss';
 
 class Map extends PureComponent {
   render() {
-    const { zoom, center, customCenter } = this.props;
+    const { zoom, center, mobileCenter, customCenter } = this.props;
     const { className } = this.props;
     const {
       forceUpdate,
@@ -42,6 +42,27 @@ class Map extends PureComponent {
       defaultStyle,
       controlPosition
     } = this.props;
+    const getMotionStyle = landscape => {
+      const customX = customCenter && customCenter[0];
+      const customY = customCenter && customCenter[1];
+      const xCenter = landscape
+        ? customX || center[0]
+        : customX || mobileCenter[0];
+      const yCenter = landscape
+        ? customY || center[1]
+        : customY || mobileCenter[1];
+      return {
+        z: spring(zoom, { stiffness: 240, damping: 30 }),
+        x: spring(xCenter, {
+          stiffness: 240,
+          damping: 30
+        }),
+        y: spring(yCenter, {
+          stiffness: 240,
+          damping: 30
+        })
+      };
+    };
     return (
       <TabletLandscape>
         {matches => (
@@ -70,17 +91,7 @@ class Map extends PureComponent {
                 x: 20,
                 y: 10
               }}
-              style={{
-                z: spring(zoom, { stiffness: 240, damping: 30 }),
-                x: spring((customCenter && customCenter[0]) || center[0], {
-                  stiffness: 240,
-                  damping: 30
-                }),
-                y: spring((customCenter && customCenter[1]) || center[1], {
-                  stiffness: 240,
-                  damping: 30
-                })
-              }}
+              style={getMotionStyle(matches)}
             >
               {({ z, x, y }) => (
                 <ComposableMap projection="robinson" style={style}>
@@ -150,6 +161,7 @@ class Map extends PureComponent {
 Map.propTypes = {
   style: PropTypes.object.isRequired,
   center: PropTypes.array.isRequired,
+  mobileCenter: PropTypes.array.isRequired,
   customCenter: PropTypes.array,
   zoom: PropTypes.number.isRequired,
   zoomEnable: PropTypes.bool,
@@ -177,6 +189,7 @@ Map.defaultProps = {
     width: '100%'
   },
   center: [20, 10],
+  mobileCenter: [20, 0],
   zoom: 1,
   zoomEnable: false,
   dragEnable: true,

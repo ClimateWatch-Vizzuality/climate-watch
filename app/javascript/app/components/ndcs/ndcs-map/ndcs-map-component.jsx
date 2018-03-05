@@ -73,6 +73,7 @@ const NDCMap = ({
       tooltipId="mapTooltip"
       onCountryClick={handleCountryClick}
       onCountryEnter={handleCountryEnter}
+      dragEnable={false}
     />
     <TabletPortraitOnly className={styles.buttonGroup}>
       {renderButtonGroup(handleInfoClick, true)}
