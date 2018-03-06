@@ -22,27 +22,34 @@ class Footer extends PureComponent {
       <footer className={className}>
         {includePartners && (
           <div className={cx(layout.content, styles.nav)}>
-            <div className={styles.partnersContainer}>
-              {partners.map(
-                partner =>
-                  partner.img && (
-                    <div key={partner.img.alt} className={styles.logoContainer}>
-                      <a
-                        className={cx(
-                          styles.logo,
-                          styles[partner.img.customClass] || styles.defaultLogo
-                        )}
-                        href={partner.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
+            <div>Partners</div>
+            <div className={styles.contentWrapper}>
+              <div className={styles.partnersContainer}>
+                {partners.map(
+                  partner =>
+                    partner.img && (
+                      <div
+                        key={partner.img.alt}
+                        className={styles.logoContainer}
                       >
-                        <img src={partner.img.src} alt={partner.img.alt} />
-                      </a>
-                    </div>
-                  )
-              )}
+                        <a
+                          className={cx(
+                            styles.logo,
+                            styles[partner.img.customClass] ||
+                              styles.defaultLogo
+                          )}
+                          href={partner.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img src={partner.img.src} alt={partner.img.alt} />
+                        </a>
+                      </div>
+                    )
+                )}
+              </div>
+              {includeContact && <Contact />}
             </div>
-            {includeContact && <Contact />}
           </div>
         )}
         {includeBottom && <BottomBar className={layout.content} />}

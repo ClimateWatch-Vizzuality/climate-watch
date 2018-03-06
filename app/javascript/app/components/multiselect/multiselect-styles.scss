@@ -34,6 +34,12 @@
   }
 }
 
+.mirrorX :global {
+  .dropdown-menu {
+    left: 0 !important;
+  }
+}
+
 .multiSelect :global {
   position: relative;
 
@@ -49,6 +55,14 @@
   .react-selectize-control {
     opacity: 0;
   }
+}
+
+:global .react-selectize-search-field-and-selected-values .resizable-input {
+  opacity: 0;
+}
+
+.searchable :global .react-selectize-search-field-and-selected-values .resizable-input {
+  opacity: 1;
 }
 
 .selected {

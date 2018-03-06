@@ -10,7 +10,7 @@ import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
 
-const minColumnWidth = 140;
+const minColumnWidth = 180;
 const getResponsiveWidth = (columns, width) => {
   if (columns.length === 1) return width;
 
@@ -23,11 +23,12 @@ const getResponsiveWidth = (columns, width) => {
     responsiveRatio = 1.2; // Tablet
   } else if (width > pixelBreakpoints.landscape) {
     // Desktop
-    responsiveColumnRatio = 0.05;
+    responsiveColumnRatio = 0.1;
     responsiveRatio = 1;
   }
   const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
-  return width * responsiveRatio * (1 + (columnRatio * columns));
+  const columnExtraWidth = columnRatio * columns;
+  return width * responsiveRatio * (1 + columnExtraWidth);
 };
 
 class SimpleTable extends PureComponent {
