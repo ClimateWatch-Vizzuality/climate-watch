@@ -2,8 +2,6 @@ import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 import upperFirst from 'lodash/upperFirst';
 import toLower from 'lodash/toLower';
-import pickBy from 'lodash/pickBy';
-import includes from 'lodash/includes';
 
 export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 

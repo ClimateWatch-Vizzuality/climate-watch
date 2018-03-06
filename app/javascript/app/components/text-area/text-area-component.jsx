@@ -18,7 +18,9 @@ class TextArea extends Component {
     } = this.props;
     return (
       <ResizableTextarea
-        className={cx(className, theme.textArea, { [theme.textAreaFailed]: failed })}
+        className={cx(className, theme.textArea, {
+          [theme.textAreaFailed]: failed
+        })}
         minRows={8}
         style={{ fontSize: '1rem', ...style }}
         onChange={e => onDescriptionChange(e.target.value)}

@@ -6,7 +6,14 @@ import map from 'lodash/map';
 
 import styles from './selectable-list-styles';
 
-const SelectableList = ({ type, data = [], selected, onClick, children, className }) => (
+const SelectableList = ({
+  type,
+  data = [],
+  selected,
+  onClick,
+  children,
+  className
+}) => (
   <ul className={cx(styles.container, styles[`${type}s`], className)}>
     {map(data, item => (
       <li
@@ -16,7 +23,10 @@ const SelectableList = ({ type, data = [], selected, onClick, children, classNam
           [styles[`${type}Selected`]]: selected === item.id
         })}
       >
-        <button className={styles.button} onClick={() => !item.disabled && onClick(item.id)}>
+        <button
+          className={styles.button}
+          onClick={() => !item.disabled && onClick(item.id)}
+        >
           {children(item)}
         </button>
       </li>

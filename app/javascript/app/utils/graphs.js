@@ -4,6 +4,9 @@ import chroma from 'chroma-js';
 import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
 import { getNiceTickValues } from 'recharts-scale';
+import map from 'lodash/map';
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -17,6 +20,36 @@ export const sortLabelByAlpha = array =>
     if (a.label > b.label) return 1;
     return 0;
   });
+
+const flatmap = (res, v) => Object.assign(res, v);
+export const extractValues = data => key =>
+  data.map(d =>
+    map(d, (v, k) => ({ [k]: d[k][key] || v })).reduce(flatmap, {})
+  );
+
+export const getColumns = data =>
+  Object.keys(data[0]).map(d => ({ label: data[0][d].label, value: d }));
+
+const found = v => v !== -1;
+
+export const groupDataByScenario = (data, scenarios) =>
+  data.reduce((res, d) => {
+    const year = d.year;
+    const idx = findIndex(res, { year });
+    // append y values if x exists, otherwise create new row
+    const row = found(idx) ? res[idx] : { year };
+
+    const label = scenarios
+      ? // use real name if scenarios are passed
+      find(scenarios, { id: d.scenario_id }).name
+      : d.scenario_id;
+    const key = getColumnValue(label);
+
+    row[key] = parseInt(d.value, 10);
+    // override row if exists otherwise append new row
+    res[found(idx) ? idx : res.length] = row;
+    return res;
+  }, []);
 
 export const sortEmissionsByValue = array =>
   array.sort((a, b) => {
@@ -36,7 +69,8 @@ export const sortEmissionsByValue = array =>
     return 0;
   });
 
-export const getYColumnValue = column => `y${upperFirst(camelCase(column))}`;
+export const getColumnValue = column => upperFirst(camelCase(column));
+export const getYColumnValue = column => `y${getColumnValue(column)}`;
 
 export const getThemeConfig = (columns, colors) => {
   const theme = {};

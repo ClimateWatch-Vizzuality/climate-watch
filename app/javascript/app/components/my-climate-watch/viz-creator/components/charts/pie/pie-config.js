@@ -55,7 +55,6 @@ export const pieChart2Data = (timeSeries, indicators, locations) => {
     chart: {
       data,
       dataKey: 'value',
-      radius: '100%',
       innerRadius: '50%'
     },
     theme: data.reduce(

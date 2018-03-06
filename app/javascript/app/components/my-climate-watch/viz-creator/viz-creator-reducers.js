@@ -36,14 +36,20 @@ const unfail = (title, state) => {
 };
 
 export default {
-  [actions.openCreator]: (state, { payload }) => ({
-    ...state,
-    creatorIsOpen: true,
-    id: payload.id || null,
-    title: payload.title || initialState.title,
-    description: payload.description || initialState.description,
-    datasets: payload.datasets || initialState.datasets
-  }),
+  [actions.openCreator]: (state, { payload }) =>
+    (!payload
+      ? {
+        ...state,
+        creatorIsOpen: true
+      }
+      : {
+        ...state,
+        creatorIsOpen: true,
+        id: payload.id || null,
+        title: payload.title || initialState.title,
+        description: payload.description || initialState.description,
+        datasets: payload.datasets || initialState.datasets
+      }),
   [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
   [actions.updateVisualisationName]: (state, { payload }) =>
     unfail('title', assign(state, { title: payload })),
@@ -226,7 +232,11 @@ export default {
     return updateIn($indicators, indicators, state);
   },
   [actions.selectIndicator]: (state, { payload }) =>
-    updateIn($indicators, { selected: payload, child: get($years, initialState) }, state),
+    updateIn(
+      $indicators,
+      { selected: payload, child: get($years, initialState) },
+      state
+    ),
 
   // Years
   [actions.fetchYears]: state =>
@@ -257,7 +267,11 @@ export default {
     );
   },
   [actions.selectYear]: (state, { payload }) =>
-    updateIn($years, { selected: payload, child: get($timeseries, initialState) }, state),
+    updateIn(
+      $years,
+      { selected: payload, child: get($timeseries, initialState) },
+      state
+    ),
 
   // Timeseries
   [actions.fetchTimeseries]: state =>

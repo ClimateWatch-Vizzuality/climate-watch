@@ -1,27 +1,40 @@
 @import '~styles/settings.scss';
 
-.header {
+.editor {
+  min-height: 80vh;
+  margin: $gutter-padding * 3 $gutter-padding * 6;
+}
+
+.title {
+  position: relative;
   background-color: $light-gray;
 }
 
-.wrapper {
-  padding-top: 20px;
-  min-height: calc(100vh - 420px);
-}
-
-.loginContainer {
-  min-height: calc(100vh - 420px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.login {
-  width: 200px;
-}
-
-.intro {
-  .title {
-    color: $theme-color;
+.stickyWrapper {
+  .titleField {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(26, 28, 34, 0.07);
   }
+
+  .saveBtn {
+    top: 20px;
+  }
+}
+
+.titleField {
+  border: none;
+  width: 100%;
+  font-size: 2.7rem;
+  padding: 1.25em $gutter-padding 1em;
+  padding-right: 20vw;
+  background-color: transparent;
+}
+
+.saveBtn {
+  position: absolute;
+  top: 50px;
+  width: 100px;
+  right: 7vw;
+  background-color: white;
 }

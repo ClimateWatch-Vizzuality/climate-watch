@@ -1,34 +1,99 @@
+import { fromRaw } from 'utils/draft';
 import * as actions from './my-cw-editor-actions';
+import initialState from './my-cw-editor-initial-state';
 
-export const initialState = {
-  loading: false,
-  loaded: false,
-  saving: false,
-  saved: false,
-  insight: {},
-  error: false
-};
+const closePicker = state => ({ ...state, pickerIsOpen: false });
 
 export default {
+  [actions.openPicker]: state => ({ ...state, pickerIsOpen: true }),
+  [actions.closePicker]: closePicker,
+
+  [actions.openCreator]: state =>
+    closePicker({ ...state, creatorIsOpen: true }),
+  [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
+
+  [actions.updateContent]: (state, { payload }) => ({
+    ...state,
+    content: payload,
+    titleIsFocused: false
+  }),
+  [actions.focusEditor]: state => ({
+    ...state,
+    editorIsFocused: true,
+    titleIsFocused: false
+  }),
+  [actions.focusTitle]: state => ({
+    ...state,
+    titleIsFocused: true,
+    editorIsFocused: false
+  }),
+  [actions.updateTitle]: (state, { payload }) => ({
+    ...state,
+    title: payload,
+    editorIsFocused: false
+  }),
   [actions.clearInsight]: () => initialState,
-  [actions.getInsightInit]: state => ({ ...state, loading: true }),
-  [actions.getInsightReady]: (state, { payload }) => ({
+  [actions.fetchInsight]: state => ({
     ...state,
-    loading: false,
-    loaded: true,
-    insight: payload
+    insight: { ...state.insight, loading: true }
   }),
-  [actions.getInsightFail]: state => ({
+  [actions.fetchInsightReady]: (state, { payload }) => ({
     ...state,
-    loading: false,
-    error: true
+    content: fromRaw(payload.body),
+    title: payload.title,
+    insight: {
+      ...state.insight,
+      loading: false,
+      loaded: true,
+      insight: payload
+    }
   }),
-  [actions.saveInsightInit]: state => ({ ...state, saving: true }),
+  [actions.fetchInsightFail]: state => ({
+    ...state,
+    insight: {
+      ...state.insight,
+      loading: false,
+      error: true
+    }
+  }),
+  [actions.saveInsight]: state => ({
+    ...state,
+    insight: {
+      ...state.insight,
+      saving: true
+    }
+  }),
   [actions.saveInsightReady]: (state, { payload }) => ({
     ...state,
-    saving: false,
-    saved: true,
-    insight: payload
+    insight: {
+      ...state.insight,
+      saving: false,
+      saved: true,
+      insight: payload
+    }
   }),
-  [actions.saveInsightFail]: state => ({ ...state, saving: false, error: true })
+  [actions.saveInsightFail]: state => ({
+    ...state,
+    insight: { ...state.insight, saving: false, error: true }
+  }),
+  [actions.deleteInsight]: state => ({
+    ...state,
+    insight: {
+      ...state.insight,
+      deleting: true
+    }
+  }),
+  [actions.deleteInsightReady]: state => ({
+    ...state,
+    insight: {
+      ...state.insight,
+      deleting: false,
+      deleted: true,
+      insight: {}
+    }
+  }),
+  [actions.deleteInsightFail]: state => ({
+    ...state,
+    insight: { ...state.insight, deleting: false, error: true }
+  })
 };

@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import { EPAPI, CWAPI } from 'services/api';
 
-import { actions as visActions } from 'components/my-climate-watch/my-visualisations';
+import { fetchMyVisualisations } from 'components/my-climate-watch/my-visualisations/my-visualisations-actions';
 import { $datasets } from './viz-creator-lenses';
 
 const mapResource = (resource, key) =>
@@ -36,6 +36,7 @@ export const fetchVisualisations = createThunkAction(
   'fetchVisualisations',
   payload => (dispatch, getState) => {
     const datasets = get($datasets, getState().vizCreator);
+    if (!datasets.data) return;
     const visualisations = find(datasets.data, { id: payload });
     const spec = visualisations['viz-types'] || {};
     dispatch(gotVisualisations(spec));
@@ -239,7 +240,7 @@ export const saveVisualisation = createThunkAction(
     };
 
     const handleResponse = () => {
-      dispatch(visActions.fetchVisualisations());
+      dispatch(fetchMyVisualisations());
       dispatch(saveVisualisationReady());
       dispatch(closeCreator());
     };
@@ -261,7 +262,7 @@ export const deleteVisualisation = createThunkAction(
     const handleResponse = () => {
       dispatch(deleteVisualisationReady());
       dispatch(closeCreator());
-      dispatch(visActions.fetchVisualisations());
+      dispatch(fetchMyVisualisations());
     };
 
     CWAPI.delete(`my_cw/visualizations/${id}`)

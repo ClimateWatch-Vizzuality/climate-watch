@@ -3,17 +3,18 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Loading from 'components/loading';
 
-import { actions as creatorActions } from 'components/my-climate-watch/viz-creator';
+import * as creatorActions from 'components/my-climate-watch/viz-creator/viz-creator-actions';
+import * as myCWEditorActions from 'pages/my-climate-watch/my-cw-editor/my-cw-editor-actions';
 
 import MyVisualisationsComponent from './my-visualisations-component';
 import initialState from './my-visualisations-initial-state';
 import * as reducers from './my-visualisations-reducers';
-import * as ownActions from './my-visualisations-actions';
+import * as actions from './my-visualisations-actions';
 
 class MyVisualisations extends Component {
   constructor(props) {
     super(props);
-    props.fetchVisualisations();
+    props.fetchMyVisualisations();
   }
 
   render() {
@@ -24,10 +25,8 @@ class MyVisualisations extends Component {
 
 MyVisualisations.propTypes = {
   loading: PropTypes.bool.isRequired,
-  fetchVisualisations: PropTypes.func
+  fetchMyVisualisations: PropTypes.func
 };
-
-const actions = { ...creatorActions, ...ownActions };
 
 const mapStateToProps = ({ visualisations, vizCreator }) => ({
   ...visualisations,
@@ -37,4 +36,8 @@ const mapStateToProps = ({ visualisations, vizCreator }) => ({
 
 export { actions, reducers, initialState };
 
-export default connect(mapStateToProps, actions)(MyVisualisations);
+export default connect(mapStateToProps, {
+  ...actions,
+  ...creatorActions,
+  ...myCWEditorActions
+})(MyVisualisations);

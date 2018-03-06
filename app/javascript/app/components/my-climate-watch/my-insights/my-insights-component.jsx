@@ -1,23 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ActionCard from 'components/my-climate-watch/my-cw-placeholder-card';
-import Card from 'components/my-climate-watch/my-insights/my-cw-insight-card';
 import Loading from 'components/loading';
+import layoutStyles from 'app/styles/layout';
 
+import Card from './my-cw-insight-card';
 import styles from './my-insights-styles.scss';
 
-const MyInsights = ({ loaded, insights }) => {
+const MyInsights = ({ loaded, insights, insight, deleteInsight }) => {
   if (!loaded) {
     return <Loading className={styles.loading} />;
   }
   return (
     <div>
+      {insight.deleting && (
+        <div className={layoutStyles.loadingModal}>
+          <Loading />
+        </div>
+      )}
       <ul className={styles.insightsContainer}>
-        {insights.map(insight => (
-          <li key={insight.id} className={styles.insightsCard}>
+        {insights.map(item => (
+          <li key={item.id} className={styles.insightsCard}>
             <Card
-              data={insight}
-              link={`/my-climate-watch/editor/${insight.id}`}
+              data={item}
+              link={`/my-climate-watch/editor/${item.id}`}
+              deleteInsight={deleteInsight}
             />
           </li>
         ))}
@@ -34,7 +41,9 @@ const MyInsights = ({ loaded, insights }) => {
 
 MyInsights.propTypes = {
   loaded: PropTypes.bool.isRequired,
-  insights: PropTypes.array
+  insights: PropTypes.array,
+  insight: PropTypes.object,
+  deleteInsight: PropTypes.func
 };
 
 export default MyInsights;

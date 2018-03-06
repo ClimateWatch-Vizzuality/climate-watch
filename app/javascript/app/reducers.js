@@ -51,7 +51,6 @@ const providersReducers = {
 
 // Pages
 import * as NDCSPage from 'pages/ndcs';
-
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as ndcSearchPage from 'pages/ndc-search';
 import * as myCWEditor from 'pages/my-climate-watch/my-cw-editor';

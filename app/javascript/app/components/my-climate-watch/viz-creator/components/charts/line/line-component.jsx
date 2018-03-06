@@ -24,10 +24,15 @@ const ChartLine = ({ width, height, className, config }) => (
   </ResponsiveContainer>
 );
 
+ChartLine.defaultProps = {
+  width: '100%',
+  height: '300px'
+};
+
 ChartLine.propTypes = {
   className: PropTypes.string,
-  width: PropTypes.any.isRequired,
-  height: PropTypes.any.isRequired,
+  width: PropTypes.any,
+  height: PropTypes.any,
   chart: PropTypes.PropTypes.object,
   config: PropTypes.object
 };

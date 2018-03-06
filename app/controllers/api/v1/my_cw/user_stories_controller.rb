@@ -33,7 +33,7 @@ module Api
 
         def destroy
           if @user_story.destroy
-            render status: 200
+            render json: {code: 200, status: "Successfully deleted #{params[:id]}"}
           else
             render json: resource_error(@user_story.errors)
           end

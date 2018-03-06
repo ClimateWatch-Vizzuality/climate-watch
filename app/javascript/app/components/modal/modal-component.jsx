@@ -43,7 +43,11 @@ class CustomModal extends PureComponent {
         shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       >
         {header}
-        <Button onClick={onRequestClose} className={theme.closeBtn} square>
+        <Button
+          onClick={() => onRequestClose()}
+          className={theme.closeBtn}
+          square
+        >
           <Icon icon={closeIcon} className={theme.close} />
         </Button>
         <div className={theme.modalContent}>{children}</div>

@@ -190,15 +190,15 @@ export default [
     label: 'STORIES'
   },
   {
-    path: '/my-climate-watch',
-    component: MyClimateWatch,
-    routes: MyCwRoutes
-  },
-  {
     label: 'MyEditor',
     path: '/my-climate-watch/editor/:insightId?',
     component: MyCWEditor,
     exact: true
+  },
+  {
+    path: '/my-climate-watch',
+    component: MyClimateWatch,
+    routes: MyCwRoutes
   },
   {
     path: '/about',

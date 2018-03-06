@@ -1,0 +1,23 @@
+@import '~styles/settings.scss';
+$pad: 8px;
+$brdr-width: 1px;
+
+.wrapper {
+  position: absolute;
+  left: $gutter-padding * 3;
+  margin-top: -$pad - (2 * $brdr-width);
+}
+
+.btn {
+  border: solid $brdr-width rgba(202, 204, 208, 0.85);
+  border-radius: 100%;
+  background-color: white;
+  padding: $pad;
+}
+
+.icon {
+  $icon-size: 24px;
+
+  width: $icon-size;
+  height: $icon-size;
+}

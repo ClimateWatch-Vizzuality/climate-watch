@@ -7,7 +7,7 @@ export const fetchVisualisationsReady = createAction(
 );
 export const fetchVisualisationsFail = createAction('fetchVisualisationsFail');
 
-export const fetchVisualisations = createThunkAction(
+export const fetchMyVisualisations = createThunkAction(
   'fetchMyVisualisations',
   () => (dispatch, getState) => {
     const { visualisations } = getState();
