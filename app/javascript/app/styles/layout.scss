@@ -7,11 +7,19 @@ $grid-container: $max-width;
 $grid-margin-gutters: $gutter-padding;
 $grid-padding-gutters: $gutter-padding;
 
-@mixin row($columns: full, $wrap: true) {
-  @include xy-grid($wrap: $wrap);
+@mixin row($columns: full, $wrap: true, $gridDirection: 'horizontal') {
+  @include xy-grid($wrap: $wrap, $direction: $gridDirection);
   @include xy-gutters();
   @include xy-grid-container;
-  @include shared-column($columns);
+  @include shared-column($columns, $gridDirection);
+}
+
+@mixin setGutters($gridDirection) {
+  @if $gridDirection == 'vertical' {
+    @include xy-gutters('top', 'bottom');
+  } @else {
+    @include xy-gutters();
+  }
 }
 
 @mixin columns($columns: full, $wrap: true, $gutters: true) {
@@ -34,13 +42,19 @@ $grid-padding-gutters: $gutter-padding;
   @include xy-cell-offset($number);
 }
 
-@mixin shared-column($columns, $gutters: $grid-margin-gutters) {
+@mixin shared-column($columns, $gridDirection, $gutters: $grid-margin-gutters) {
   @if type-of($columns) == list {
     @for $i from 1 through length($columns) {
       $size: nth($columns, $i);
 
       > *:nth-child(#{$i}) {
-        @include xy-cell($size);
+        @if $gridDirection == 'vertical' {
+          @include xy-cell('full');
+          @include xy-cell($size, $vertical: true);
+          @include xy-gutters($gutter-position: ('top', 'bottom'));
+        } @else {
+          @include xy-cell($size);
+        }
       }
     }
   }
