@@ -20,7 +20,11 @@ const optionsSanitizer = mapProps(props => {
 
 const optionsSort = mapProps(props => {
   let updatedProps = props;
-  if (updatedProps.options && updatedProps.options.length) {
+  if (
+    !updatedProps.noAutoSort &&
+    updatedProps.options &&
+    updatedProps.options.length
+  ) {
     updatedProps = { ...props, options: sortBy(props.options, 'label') };
   }
   return updatedProps;
