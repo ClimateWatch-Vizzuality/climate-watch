@@ -65,31 +65,23 @@
   }
 }
 
-.cards {
-  @extend %grid;
+.row {
+  @include columns();
+}
 
-  margin-bottom: 60px;
+.cards {
+  @include columns();
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(3fr, 1fr);
-
-    grid-template-columns: 3fr 1fr;
-    margin-bottom: 0;
+    @include columns((9, 3));
   }
 }
 
 .cardsRowContainer {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 60px;
-  overflow: scroll;
+  @include columns(8, $wrap: false);
 
   @media #{$tablet-landscape} {
-    margin-bottom: 0;
-    overflow: hidden;
+    @include columns(4);
   }
 }
 

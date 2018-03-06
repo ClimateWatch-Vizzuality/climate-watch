@@ -16,15 +16,10 @@
 .sdgs {
   border-left: solid 1px $theme-border;
 
-  @include clearFix();
+  @include columns(12, $gutters: false);
 
   @media #{$tablet-landscape} {
-    > div {
-      float: left;
-      width: calc(33.333333%);
-    }
-
-    margin-bottom: 40px;
+    @include columns(4, $gutters: false);
   }
 }
 

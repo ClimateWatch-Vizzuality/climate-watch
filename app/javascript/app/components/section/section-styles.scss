@@ -1,12 +1,11 @@
 @import '../../styles/settings.scss';
 @import '~styles/layout.scss';
 
-.doubleFold {
-  display: flex;
-  flex-direction: column;
+.row {
+  @include row(12);
 
-  @media #{$tablet-portrait} {
-    @include columns(2);
+  @media #{$tablet-landscape} {
+    @include row(6);
   }
 }
 

@@ -4,6 +4,10 @@
   padding-top: 20px;
 }
 
+.row {
+  @include row((10, 2));
+}
+
 .gray {
   background-color: $light-gray;
 }

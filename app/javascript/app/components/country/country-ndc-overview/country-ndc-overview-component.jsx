@@ -55,85 +55,91 @@ class CountryNdcOverview extends PureComponent {
     const { sectors, values } = this.props;
     return (
       <div>
-        <h4 className={styles.subTitle}>Mitigation contribution</h4>
-        <div className={styles.cards}>
-          <div className={styles.cardsRowContainer}>
-            <Card title="GHG Target">
-              <div className={styles.cardContent}>
-                {values && values.ghg_target_type ? (
-                  <div>
-                    <span className={styles.metaTitle}>Target type</span>
-                    <p
-                      className={styles.targetText}
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={{
-                        __html: values.ghg_target_type[0].value
-                      }}
-                    />
-                    <span className={styles.metaTitle}>Target year</span>
-                    <p
-                      className={styles.targetText}
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={{
-                        __html: values.time_target_year[0].value
-                      }}
-                    />
+        <div className={styles.row}>
+          <h4 className={styles.subTitle}>Mitigation contribution</h4>
+          <div className="layout-card-container">
+            <div className={styles.cards}>
+              <div>
+                <div className={styles.cardsRowContainer}>
+                  <Card title="GHG Target">
+                    <div className={styles.cardContent}>
+                      {values && values.ghg_target_type ? (
+                        <div>
+                          <span className={styles.metaTitle}>Target type</span>
+                          <p
+                            className={styles.targetText}
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={{
+                              __html: values.ghg_target_type[0].value
+                            }}
+                          />
+                          <span className={styles.metaTitle}>Target year</span>
+                          <p
+                            className={styles.targetText}
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={{
+                              __html: values.time_target_year[0].value
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className={styles.noContent}>Not included</div>
+                      )}
+                    </div>
+                  </Card>
+                  <Card title="Non-GHG Target">
+                    <div className={styles.cardContent}>
+                      {values && values.non_ghg_target ? (
+                        <p
+                          className={styles.targetText}
+                          // eslint-disable-next-line react/no-danger
+                          dangerouslySetInnerHTML={{
+                            __html: values.non_ghg_target[0].value
+                          }}
+                        />
+                      ) : (
+                        <div className={styles.noContent}>Not included</div>
+                      )}
+                    </div>
+                  </Card>
+                  <Card title="Identified Sectors for Mitigation Action">
+                    <div className={styles.cardContent}>
+                      {values && values.coverage_sectors_short ? (
+                        <p
+                          className={styles.targetText}
+                          // eslint-disable-next-line react/no-danger
+                          dangerouslySetInnerHTML={{
+                            __html: values.coverage_sectors_short[0].value
+                          }}
+                        />
+                      ) : (
+                        <div className={styles.noContent}>Not included</div>
+                      )}
+                    </div>
+                  </Card>
+                </div>
+              </div>
+              <div>
+                <h4 className={cx(styles.subTitle, styles.adaptionList)}>
+                  Adaptation Contribution
+                </h4>
+                <Card title="Identified Sectors for Adaptation Action">
+                  <div className={styles.cardContent}>
+                    {sectors.length ? (
+                      <ul className={styles.list}>
+                        {sectors.map(sector => (
+                          <li key={sector} className={styles.listItem}>
+                            {sector}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className={styles.noContent}>Not included</div>
+                    )}
                   </div>
-                ) : (
-                  <div className={styles.noContent}>Not included</div>
-                )}
+                </Card>
               </div>
-            </Card>
-            <Card title="Non-GHG Target">
-              <div className={styles.cardContent}>
-                {values && values.non_ghg_target ? (
-                  <p
-                    className={styles.targetText}
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{
-                      __html: values.non_ghg_target[0].value
-                    }}
-                  />
-                ) : (
-                  <div className={styles.noContent}>Not included</div>
-                )}
-              </div>
-            </Card>
-            <Card title="Identified Sectors for Mitigation Action">
-              <div className={styles.cardContent}>
-                {values && values.coverage_sectors_short ? (
-                  <p
-                    className={styles.targetText}
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{
-                      __html: values.coverage_sectors_short[0].value
-                    }}
-                  />
-                ) : (
-                  <div className={styles.noContent}>Not included</div>
-                )}
-              </div>
-            </Card>
-          </div>
-          <div>
-            <h4 className={cx(styles.subTitle, styles.adaptionList)}>
-              Adaptation Contribution
-            </h4>
-            <Card title="Identified Sectors for Adaptation Action">
-              <div className={styles.cardContent}>
-                {sectors.length ? (
-                  <ul className={styles.list}>
-                    {sectors.map(sector => (
-                      <li key={sector} className={styles.listItem}>
-                        {sector}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className={styles.noContent}>Not included</div>
-                )}
-              </div>
-            </Card>
+            </div>
           </div>
         </div>
       </div>
@@ -162,10 +168,10 @@ class CountryNdcOverview extends PureComponent {
             className={styles.noContentWrapper}
           />
         ) : (
-          <div className={layout.content}>
+          <div className="layout-container">
             {loading && <Loading light className={styles.loader} />}
             {hasSectors && (
-              <div className={styles.countryOverviewPadding}>
+              <div className={layout.content}>
                 <div className={cx(styles.header, actions ? styles.col2 : '')}>
                   <Intro
                     theme={introTheme}

@@ -15,7 +15,7 @@ class Footer extends PureComponent {
     const className = cx(styles.footer, styles.border);
     return (
       <footer className={className}>
-        <div className={cx(layout.content, styles.nav)}>
+        <div className={cx(styles.row, styles.nav)}>
           <div className={styles.partnersContainer}>
             {partners.map(
               partner =>

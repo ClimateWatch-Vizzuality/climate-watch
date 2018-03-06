@@ -7,12 +7,10 @@
 
   @media #{$tablet-portrait} {
     min-height: 1080px;
-    margin: 0 -$gutter-padding / 2;
   }
 
   @media #{$tablet-landscape} {
     min-height: 600px;
-    margin: 0;
   }
 }
 

@@ -2,12 +2,26 @@
 @import '~styles/layout.scss';
 
 .doubleFold {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 1.5rem;
+  @include columns(6);
+}
+
+.storiesLayout {
+  @include row();
+}
+
+.imgLayout {
+  @include columns(8);
+
+  > *:first-child {
+    @include column-offset(2);
+  }
 
   @media #{$tablet-portrait} {
-    @include columns(2, true);
+    @include columns(12);
+
+    > *:first-child {
+      @include column-offset(0);
+    }
   }
 }
 
@@ -136,4 +150,5 @@
 .ndcImageMobile {
   margin-right: -$gutter-padding / 2;
   margin-left: -$gutter-padding / 2;
+  width: calc(100% + #{$gutter-padding});
 }

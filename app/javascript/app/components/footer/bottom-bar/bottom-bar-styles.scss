@@ -1,8 +1,13 @@
 @import '~styles/layout.scss';
 
+.row {
+  @include row(6);
+}
+
 .container {
   background-color: $bg-blue;
-  padding: 10px 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .bottomBar {
@@ -20,4 +25,8 @@
   @media #{$tablet-landscape} {
     font-size: $font-size-sm;
   }
+}
+
+.right {
+  text-align: right;
 }

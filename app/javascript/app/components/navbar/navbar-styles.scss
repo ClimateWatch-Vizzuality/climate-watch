@@ -1,5 +1,9 @@
 @import '~styles/layout.scss';
 
+.row {
+  @include row((10, 2));
+}
+
 .navbar {
   position: fixed;
   top: 60px;
