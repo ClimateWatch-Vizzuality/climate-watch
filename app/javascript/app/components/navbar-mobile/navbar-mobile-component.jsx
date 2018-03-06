@@ -15,19 +15,21 @@ import styles from './navbar-mobile-styles.scss';
 const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
   <div className={styles.navbarMobile} id="navBarMobile">
     <div className={cx(styles.navbar, hamburgerIsOpen ? styles.isOpen : '')}>
-      <NavLink exact to="/" onClick={closeMenu}>
+      <NavLink exact to="/" onClick={closeMenu} className={styles.homeLink}>
         <Icon className={styles.logo} icon={cwLogo} />
       </NavLink>
       <Hamburger text={'MENU'} />
     </div>
     {hamburgerIsOpen && (
       <div className={styles.fullMenu}>
-        <Nav
-          routes={routes}
-          allowNested={false}
-          className={styles.navMenu}
-          isMobile
-        />
+        <div className="grid-layout-element">
+          <Nav
+            routes={routes}
+            allowNested={false}
+            className={styles.navMenu}
+            isMobile
+          />
+        </div>
         <div className={styles.toolsContainer}>
           <ToolsNav className={styles.tools} reverse />
           <Contact />

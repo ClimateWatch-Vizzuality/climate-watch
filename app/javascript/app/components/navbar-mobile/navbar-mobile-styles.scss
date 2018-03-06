@@ -1,44 +1,43 @@
 @import '~styles/layout.scss';
 
 .navbarMobile {
-  height: $navbar-height;
+  position: fixed;
   width: 100%;
+  height: $navbar-height;
+  z-index: 11; // index inside global stacking context
 }
 
 .navbar {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: $navbar-height;
-  width: 100%;
-  padding: 0 $gutter-padding / 2;
-  z-index: 22;
-  background: $white;
-  box-shadow: 0 0 25px -0 rgba(0, 0, 0, 0.1);
+  @include row((10, 2));
 
-  @media #{$tablet-landscape} {
-    padding: 0 $gutter-padding;
+  position: relative;
+  height: 100%;
+  background: $white;
+  box-shadow: 0 0 15px -0 rgba(0, 0, 0, 0.1);
+
+  .homeLink {
+    display: flex;
+    align-items: center;
   }
 
   .logo {
     width: 150px;
   }
+
+  > *:last-child { // hamburger inner positioning
+    justify-content: flex-end;
+  }
 }
 
 .fullMenu {
-  position: fixed;
-  z-index: 21;
-  width: 100%;
-  height: 100vh;
-  background-color: white;
-  top: $navbar-height;
-  padding: 0 $gutter-padding;
+  @include row((11, 1), $gridDirection: 'vertical');
 
-  .navMenu {
-    height: calc(100vh - 120px);
-    padding-top: 10px;
-  }
+  height: calc(100vh - #{$gutter-padding * 2});
+  background-color: white;
+}
+
+.navMenu {
+  @include columns(2, $gridDirection: 'vertical');
 }
 
 .toolsContainer {
