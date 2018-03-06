@@ -128,16 +128,21 @@ const alphabetically = (a, b) => {
   return 0;
 };
 
+const parsedPath = pathname => {
+  if (pathname === '/ghg-emissions' || pathname === '/ndcs-sdg') { return 'ghg & ndcs-sdg'; }
+  if (pathname.includes('/countries') || pathname.includes('/ndcs')) { return 'countries & ndcs'; }
+  if (pathname.includes('/pathways')) return 'pathways';
+  return 'default';
+};
+
 const getLogos = pathname => {
-  const parsedPath = pathname.includes('/countries') ? '/countries' : pathname;
-  switch (parsedPath) {
-    case '/ghg-emissions':
-    case '/ndcs-sdg':
+  const path = parsedPath(pathname);
+  switch (path) {
+    case 'ghg & ndcs-sdg':
       return [...basePartners];
-    case '/ndcs':
-    case '/countries':
+    case 'countries & ndcs':
       return [...basePartners, ...ndcPartners].sort(alphabetically);
-    case '/pathways/models':
+    case 'pathways':
       return [...basePartners, ...espPartners].sort(alphabetically);
     default:
       return [...basePartners, ...ndcPartners, ...espPartners].sort(
