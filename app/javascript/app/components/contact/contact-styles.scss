@@ -3,11 +3,6 @@
 .contactContainer {
   display: flex;
   align-items: center;
-  padding-left: $gutter-padding / 2;
-
-  @media #{$tablet-landscape} {
-    padding-left: 0;
-  }
 }
 
 .contact {
@@ -17,5 +12,5 @@
   text-transform: uppercase;
   color: $dark-gray;
   margin-right: 10px;
-  min-width: 90px;
+  min-width: 95px;
 }

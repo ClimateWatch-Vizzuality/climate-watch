@@ -20,6 +20,7 @@ import Component from './footer-component';
 const basePartners = [
   {
     link: 'http://climateactiontracker.org/',
+    orderingString: 'action',
     img: {
       alt: 'Climate action',
       src: climateActionTrackerImage,
@@ -28,6 +29,7 @@ const basePartners = [
   },
   {
     link: 'http://climateanalytics.org/',
+    orderingString: 'analytics',
     img: {
       alt: 'Climate analytics',
       src: climateAnalyticsImage,
@@ -36,6 +38,7 @@ const basePartners = [
   },
   {
     link: 'https://www.giz.de/en/html/index.html',
+    orderingString: 'giz',
     img: {
       alt: 'Giz',
       src: gizImage
@@ -43,6 +46,7 @@ const basePartners = [
   },
   {
     link: 'http://www.ndcpartnership.org/',
+    orderingString: 'ndc',
     img: {
       alt: 'NDC Partnership',
       src: ndcImage,
@@ -51,6 +55,7 @@ const basePartners = [
   },
   {
     link: 'http://newsroom.unfccc.int/',
+    orderingString: 'unfcc',
     img: {
       alt: 'UNFCCC',
       src: ccImage,
@@ -59,6 +64,7 @@ const basePartners = [
   },
   {
     link: 'http://www.worldbank.org/',
+    orderingString: 'worldbank',
     img: {
       alt: 'The world bank',
       src: worldBankImage
@@ -66,6 +72,7 @@ const basePartners = [
   },
   {
     link: 'http://www.wri.org/',
+    orderingString: 'worldresources',
     img: {
       alt: 'WRI',
       src: wriImage
@@ -76,6 +83,7 @@ const basePartners = [
 const ndcPartners = [
   {
     link: 'http://www.acts-net.org/',
+    orderingString: 'acts',
     img: {
       alt: 'African Center for Technology Studies',
       src: actsImage,
@@ -84,6 +92,7 @@ const ndcPartners = [
   },
   {
     link: 'https://www.sei-international.org/',
+    orderingString: 'sei',
     img: {
       alt: 'Stockholm Environment Institute',
       src: seiImage,
@@ -92,6 +101,7 @@ const ndcPartners = [
   },
   {
     link: 'https://www.die-gdi.de',
+    orderingString: 'gdi',
     img: {
       alt: 'German Development Institute',
       src: dieImage,
@@ -103,6 +113,7 @@ const ndcPartners = [
 const espPartners = [
   {
     link: 'https://www.google.com/intl/en/about/',
+    orderingString: 'google',
     img: {
       alt: 'Google',
       src: googleImage,
@@ -111,19 +122,32 @@ const espPartners = [
   }
 ];
 
+const alphabetically = (a, b) => {
+  if (a.orderingString < b.orderingString) return -1;
+  if (a.orderingString > b.orderingString) return 1;
+  return 0;
+};
+
+const parsedPath = pathname => {
+  if (pathname === '/ghg-emissions' || pathname === '/ndcs-sdg') { return 'ghg & ndcs-sdg'; }
+  if (pathname.includes('/countries') || pathname.includes('/ndcs')) { return 'countries & ndcs'; }
+  if (pathname.includes('/pathways')) return 'pathways';
+  return 'default';
+};
+
 const getLogos = pathname => {
-  const parsedPath = pathname.includes('/countries') ? '/countries' : pathname;
-  switch (parsedPath) {
-    case '/ghg-emissions':
-    case '/ndcs-sdg':
+  const path = parsedPath(pathname);
+  switch (path) {
+    case 'ghg & ndcs-sdg':
       return [...basePartners];
-    case '/ndcs':
-    case '/countries':
-      return [...basePartners, ...ndcPartners];
-    case '/emission-pathways':
-      return [...basePartners, ...espPartners];
+    case 'countries & ndcs':
+      return [...basePartners, ...ndcPartners].sort(alphabetically);
+    case 'pathways':
+      return [...basePartners, ...espPartners].sort(alphabetically);
     default:
-      return [...basePartners, ...ndcPartners, ...espPartners];
+      return [...basePartners, ...ndcPartners, ...espPartners].sort(
+        alphabetically
+      );
   }
 };
 
