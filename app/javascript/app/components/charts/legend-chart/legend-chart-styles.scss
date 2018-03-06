@@ -4,7 +4,7 @@
   display: flex;
   overflow: scroll;
 
-  @include overflowFix(250px);
+  @include overflowFix('large');
 
   padding-top: 260px;
 
