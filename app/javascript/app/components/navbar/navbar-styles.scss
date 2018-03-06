@@ -4,22 +4,12 @@
   @include row((10, 2));
 }
 
-.navbar {
-  position: fixed;
-  top: 60px;
+.navigationWrapper {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  height: calc(100vh - 60px);
-  background-color: $white;
-  z-index: 11;
+  align-items: center;
+}
 
-  @media #{$tablet-landscape} {
-    position: relative;
-    flex-direction: row;
-    align-items: center;
-    height: $navbar-height;
-    top: 0;
-  }
+.navigation {
+  @include columns('auto');
+  align-items: center;
 }
