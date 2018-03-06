@@ -68,12 +68,18 @@ const NDCMap = ({
       <TabletLandscape>{renderButtonGroup(handleInfoClick)}</TabletLandscape>
     </div>
     {loading && <Loading light className={styles.loader} />}
-    <Map
-      paths={paths}
-      tooltipId="mapTooltip"
-      onCountryClick={handleCountryClick}
-      onCountryEnter={handleCountryEnter}
-    />
+    <TabletPortraitOnly>
+      {matches => (
+        <Map
+          paths={paths}
+          tooltipId="mapTooltip"
+          onCountryClick={handleCountryClick}
+          onCountryEnter={handleCountryEnter}
+          dragEnable={false}
+          customCenter={matches ? [10, -50] : null}
+        />
+      )}
+    </TabletPortraitOnly>
     <TabletPortraitOnly className={styles.buttonGroup}>
       {renderButtonGroup(handleInfoClick, true)}
     </TabletPortraitOnly>
