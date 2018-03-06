@@ -45,7 +45,7 @@ class Nav extends PureComponent {
                 reverse={reverse}
                 isRendered={isRendered}
                 title={route.label}
-                className={cx(styles.link, styles.menuLink)}
+                className={styles.link}
                 Child={route.Child}
               />
             );
