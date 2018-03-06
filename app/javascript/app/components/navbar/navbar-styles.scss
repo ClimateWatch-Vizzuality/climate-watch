@@ -11,5 +11,6 @@
 
 .navigation {
   @include columns('auto');
+
   align-items: center;
 }
