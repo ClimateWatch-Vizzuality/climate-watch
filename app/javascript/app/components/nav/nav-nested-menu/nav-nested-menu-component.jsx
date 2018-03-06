@@ -33,29 +33,33 @@ class NavNestedMenuComponent extends PureComponent {
   };
 
   render() {
-    const { className } = this.props;
+    const { className, reverse, isRendered, title } = this.props;
+    const { isHidden } = this.state;
     return (
       <div
         className={cx(
           styles.navNestedMenuContainer,
-          { [styles.isHidden]: this.state.isHidden },
-          { [styles.reverse]: this.props.reverse },
-          { [styles.regular]: !this.props.reverse }
+          { [styles.isHidden]: isHidden },
+          { [styles.reverse]: reverse },
+          { [styles.regular]: !reverse }
         )}
       >
         <ClickOutside onClickOutside={this.closeMenu}>
           <button
             onClick={() => this.toggleMenu()}
             className={cx(className, styles.button, {
-              [styles.active]: this.props.isRendered && !this.state.isHidden
+              [styles.active]: isRendered && !isHidden
             })}
           >
-            <span>{this.props.title}</span>
+            <span>{title}</span>
             <Icon icon={arrow} className={styles.arrowIcon} />
           </button>
           {this.props.isRendered && (
             <div className={styles.navNestedMenuWrapper}>
-              <this.props.Child className={cx(styles.navNestedMenu)} />
+              <this.props.Child
+                className={cx(styles.navNestedMenu)}
+                opened={!isHidden}
+              />
             </div>
           )}
         </ClickOutside>

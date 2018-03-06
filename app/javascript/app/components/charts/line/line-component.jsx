@@ -43,7 +43,7 @@ const CustomizedYAxisTick = ({ index, x, y, payload, unit }) => (
       strokeWidth="0.5"
       fontSize="13px"
     >
-      {index === 0 && payload.value >= 0 ? (
+      {index === 0 && (payload.value < 0 && payload.value > -0.001) ? (
         '0'
       ) : (
         `${format(unit ? '.2r' : '.2s')(payload.value)}${unit ? '' : 't'}`
@@ -65,11 +65,26 @@ class ChartLine extends PureComponent {
   };
 
   render() {
-    const { config, data, height, domain, espGraph } = this.props;
+    const {
+      config,
+      data,
+      height,
+      margin,
+      domain,
+      forceTwoDecimals,
+      espGraph
+    } = this.props;
     const unit =
-      config && config.axes && config.axes.yLeft && config.axes.yLeft.unit
+      espGraph &&
+      config &&
+      config.axes &&
+      config.axes.yLeft &&
+      config.axes.yLeft.unit
         ? config.axes.yLeft.unit
         : null;
+    const LineChartMargin = espGraph
+      ? { top: 50, right: 0, left: 0, bottom: 0 }
+      : { top: 10, right: 0, left: -10, bottom: 0 };
     const yAxisLabel = (
       <Label
         position="top"
@@ -82,37 +97,42 @@ class ChartLine extends PureComponent {
       />
     );
     return (
-      <ResponsiveContainer height={height}>
+      <ResponsiveContainer height={height} margin={margin}>
         <LineChart
           data={data}
-          margin={{ top: 20, right: 0, left: -10, bottom: 0 }}
+          margin={LineChartMargin}
           onMouseMove={this.handleMouseMove}
         >
           <XAxis
             dataKey="x"
-            scale="linear"
+            scale="time"
             type="number"
             tick={<CustomizedXAxisTick />}
-            domain={domain || ['0', 'auto']}
             padding={{ left: 15, right: 20 }}
             tickSize={8}
+            domain={(domain && domain.x) || ['auto', 'auto']}
             interval="preserveStartEnd"
           />
           <YAxis
             axisLine={false}
             tickLine={false}
+            type="number"
             tick={<CustomizedYAxisTick unit={espGraph && unit} />}
-            domain={domain || ['0', 'auto']}
+            domain={(domain && domain.y) || ['auto', 'auto']}
+            interval={'preserveStartEnd'}
           >
             {espGraph && yAxisLabel}
           </YAxis>
-
           <CartesianGrid vertical={false} />
           <Tooltip
             isAnimationActive={false}
             cursor={{ stroke: '#113750', strokeWidth: 2 }}
             content={content => (
-              <TooltipChart content={content} config={config} />
+              <TooltipChart
+                content={content}
+                config={config}
+                forceTwoDecimals={forceTwoDecimals}
+              />
             )}
           />
           {config.columns &&
@@ -156,7 +176,9 @@ ChartLine.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  domain: PropTypes.array,
+  forceTwoDecimals: PropTypes.bool,
+  margin: PropTypes.object,
+  domain: PropTypes.object,
   espGraph: PropTypes.bool.isRequired
 };
 

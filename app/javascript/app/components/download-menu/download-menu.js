@@ -6,6 +6,15 @@ const { S3_BUCKET_NAME } = process.env;
 const server = `http://${S3_BUCKET_NAME}.s3.amazonaws.com`;
 const folder = '/climate-watch-download-zip';
 const url = `${server}${folder}`;
+
+// The NDC quantification and pathway files should not be made public
+// before the functionality and data are available on production site
+// {
+//   label: 'NDC quantification (367 kB)',
+//   link: `${url}/ndc-quantification.zip`,
+//   target: '_self'
+// }
+
 const downloadMenuOptions = [
   {
     label: 'All (12.3 MB)',
@@ -35,11 +44,6 @@ const downloadMenuOptions = [
   {
     label: 'Pathways (2.1 MB)',
     link: `${url}/pathways.zip`,
-    target: '_self'
-  },
-  {
-    label: 'NDC quantification (367 kB)',
-    link: `${url}/ndc-quantification.zip`,
     target: '_self'
   }
 ];

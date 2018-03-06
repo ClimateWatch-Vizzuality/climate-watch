@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect';
+import omit from 'lodash/omit';
+import qs from 'query-string';
 
 const getSections = routeData => routeData.route.sections || null;
 const getSearch = routeData => routeData.location.search || null;
@@ -23,7 +25,7 @@ export const getRouteLinks = createSelector(
     routes.filter(r => r.anchor).map(route => ({
       label: route.label,
       path: route.path,
-      search,
+      search: qs.stringify(omit(qs.parse(search), 'search')), // we want to reset the search on tabs change
       hash
     }))
 );

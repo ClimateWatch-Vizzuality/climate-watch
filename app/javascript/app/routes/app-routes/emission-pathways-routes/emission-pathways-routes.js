@@ -5,7 +5,7 @@ import EmissionPathwaysTable from 'components/emission-pathways/emission-pathway
 
 export default [
   {
-    path: '/emission-pathways/models',
+    path: '/pathways/models',
     label: 'Models',
     anchor: true,
     component: () =>
@@ -14,7 +14,7 @@ export default [
       })
   },
   {
-    path: '/emission-pathways/scenarios',
+    path: '/pathways/scenarios',
     label: 'Scenarios',
     anchor: true,
     component: () =>
@@ -23,7 +23,7 @@ export default [
       })
   },
   {
-    path: '/emission-pathways/indicators',
+    path: '/pathways/indicators',
     label: 'Indicators',
     anchor: true,
     component: () =>
@@ -32,10 +32,9 @@ export default [
       })
   },
   {
-    path: '/emission-pathways',
-    label: 'emission-pathways',
+    path: '/pathways',
+    label: 'Pathways',
     exact: true,
-    component: () =>
-      createElement(Redirect, { to: '/emission-pathways/models' })
+    component: () => createElement(Redirect, { to: '/pathways/models' })
   }
 ];

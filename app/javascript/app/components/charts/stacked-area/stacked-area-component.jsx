@@ -102,14 +102,14 @@ class ChartStackedArea extends PureComponent {
     const tickValues = getCustomTicks(config.columns, data);
     const domain = {
       x: ['dataMin', 'dataMax'],
-      y: [tickValues.minValue, tickValues.maxValue]
+      y: ['auto', 'auto']
     };
 
-    if (points.length > 1000000000) {
+    if (points && points.length > 0) {
       domain.x[1] = max(points.map(p => p.x)) + 1;
-      domain.y[1] =
-        max(points.map(p => (isArray(p.y) ? max(p.y) : p.y))) + 1000000;
+      domain.y[1] = max(points.map(p => (isArray(p.y) ? max(p.y) : p.y)));
     }
+
     return (
       <ResponsiveContainer height={height}>
         <ComposedChart
@@ -129,7 +129,6 @@ class ChartStackedArea extends PureComponent {
             tickSize={8}
             allowDecimals={false}
             tickCount={data.length + points.length}
-            axisLine={false}
           />
           <YAxis
             type="number"
@@ -137,12 +136,13 @@ class ChartStackedArea extends PureComponent {
             interval={0}
             axisLine={false}
             padding={{ top: 0, bottom: 0 }}
-            ticks={tickValues.ticks}
             tickLine={false}
             tick={<CustomYAxisTick customstrokeWidth="0" unit="t" />}
           />
           <CartesianGrid vertical={false} />
-          <ReferenceLine y={0} strokeWidth="2" stroke="#666" fill="" />
+          {tickValues.min < 0 && (
+            <ReferenceLine y={0} strokeWidth="2" stroke="#666" fill="" />
+          )}
           {tooltipVisibility && (
             <Tooltip
               viewBox={{ x: 0, y: 0, width: 100, height: 100 }}
@@ -206,7 +206,8 @@ class ChartStackedArea extends PureComponent {
               />
             </ReferenceDot>
           )}
-          {points.length > 0 &&
+          {points &&
+            points.length > 0 &&
             points.map(point => {
               const isActivePoint =
                 activePoint &&
@@ -341,7 +342,7 @@ class ChartStackedArea extends PureComponent {
 ChartStackedArea.propTypes = {
   config: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
-  points: PropTypes.array.isRequired,
+  points: PropTypes.array,
   height: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string // % accepted

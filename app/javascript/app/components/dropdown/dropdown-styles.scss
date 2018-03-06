@@ -27,6 +27,10 @@
   margin-bottom: 4px;
 }
 
+.noScrollParent {
+  overscroll-behavior: contain; /* stylelint-disable-line property-no-unknown */
+}
+
 .withDot {
   :global .react-selectize-control {
     margin-left: 2em;

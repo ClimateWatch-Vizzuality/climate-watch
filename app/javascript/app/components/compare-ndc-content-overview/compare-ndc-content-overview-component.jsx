@@ -34,7 +34,7 @@ class CompareNDCContentOverview extends PureComponent {
               dangerouslySetInnerHTML={{ __html: summary.text }} // eslint-disable-line
             />
             <Button
-              className={styles.button}
+              className={cx(styles.button, styles.buttonOutlined)}
               link={`/ndcs/country/${summary.iso_code3}`}
               square
             >

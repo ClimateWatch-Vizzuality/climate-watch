@@ -19,6 +19,7 @@ class CountriesSelect extends PureComponent {
       paths,
       className,
       autofocus,
+      opened,
       countrySelectFilter,
       countriesList,
       onCountryClick,
@@ -33,12 +34,12 @@ class CountriesSelect extends PureComponent {
             Please type the name of a country:
           </p>
           <Search
-            placeholder=""
+            placeholder="Search a country"
             value={query}
             onChange={countrySelectFilter}
             className={styles.search}
             theme={searchCountriesTheme}
-            autofocus={autofocus}
+            autofocus={opened || autofocus}
           />
           <ResultsList
             list={countriesList}
@@ -57,6 +58,7 @@ class CountriesSelect extends PureComponent {
               className={styles.map}
               onCountryClick={onCountryClick}
               customCenter={[20, 15]}
+              dragEnable={false}
             />
           </TabletLandscape>
         </div>
@@ -74,6 +76,7 @@ CountriesSelect.propTypes = {
   onCountryMouseEnter: Proptypes.func.isRequired,
   onCountryMouseLeave: Proptypes.func.isRequired,
   handleClickAnalytics: Proptypes.func.isRequired,
+  opened: Proptypes.bool,
   countriesList: Proptypes.array,
   paths: Proptypes.array
 };

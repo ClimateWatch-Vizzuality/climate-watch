@@ -11,39 +11,64 @@ import styles from './footer-styles.scss';
 class Footer extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { partners } = this.props;
+    const {
+      partners,
+      includePartners,
+      includeContact,
+      includeBottom
+    } = this.props;
     const className = cx(styles.footer, styles.border);
     return (
       <footer className={className}>
-        <div className={cx(styles.row, styles.nav)}>
-          <div className={styles.partnersContainer}>
-            {partners.map(
-              partner =>
-                partner.img && (
-                  <a
-                    key={partner.img.alt}
-                    className={
-                      styles[partner.img.customClass] || styles.logoContainer
-                    }
-                    href={partner.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img src={partner.img.src} alt={partner.img.alt} />
-                  </a>
-                )
-            )}
+        {includePartners && (
+          <div className={cx(layout.content, styles.nav)}>
+            <div>Partners</div>
+            <div className={styles.contentWrapper}>
+              <div className={styles.partnersContainer}>
+                {partners.map(
+                  partner =>
+                    partner.img && (
+                      <div
+                        key={partner.img.alt}
+                        className={styles.logoContainer}
+                      >
+                        <a
+                          className={cx(
+                            styles.logo,
+                            styles[partner.img.customClass] ||
+                              styles.defaultLogo
+                          )}
+                          href={partner.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img src={partner.img.src} alt={partner.img.alt} />
+                        </a>
+                      </div>
+                    )
+                )}
+              </div>
+              {includeContact && <Contact />}
+            </div>
           </div>
-          <Contact />
-        </div>
-        <BottomBar className={layout.content} />
+        )}
+        {includeBottom && <BottomBar className={layout.content} />}
       </footer>
     );
   }
 }
 
 Footer.propTypes = {
-  partners: PropTypes.array.isRequired
+  partners: PropTypes.array.isRequired,
+  includePartners: PropTypes.bool,
+  includeContact: PropTypes.bool,
+  includeBottom: PropTypes.bool
+};
+
+Footer.defaultProps = {
+  includePartners: true,
+  includeContact: true,
+  includeBottom: true
 };
 
 export default Footer;

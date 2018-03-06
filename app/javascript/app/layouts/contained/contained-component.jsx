@@ -5,6 +5,7 @@ import { renderRoutes } from 'react-router-config';
 import CountriesProvider from 'providers/countries-provider';
 import { HOME_PAGE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import Footer from 'components/footer';
 
 class App extends PureComponent {
   render() {
@@ -15,6 +16,7 @@ class App extends PureComponent {
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
         {renderRoutes(route.routes.filter(r => r.path))}
+        <Footer includeBottom={false} includeContact={false} />
       </div>
     );
   }

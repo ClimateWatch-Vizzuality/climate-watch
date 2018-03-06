@@ -8,6 +8,7 @@ import styles from './button-styles.scss';
 const Button = props => {
   const {
     link,
+    href,
     children,
     className,
     square,
@@ -22,9 +23,18 @@ const Button = props => {
     [styles.yellow]: color === 'yellow',
     [styles.white]: color === 'white',
     [styles.plain]: color === 'plain',
-    [styles.disabled]: !onClick && !link,
+    [styles.disabled]: !onClick && !link && !href,
     [styles.noSpace]: noSpace
   });
+
+  if (href) {
+    return (
+      <a className={classNames} href={href}>
+        {children}
+      </a>
+    );
+  }
+
   return link ? (
     <NavLink className={classNames} to={link} onClick={onClick}>
       {children}
@@ -43,6 +53,7 @@ const Button = props => {
 
 Button.propTypes = {
   children: PropTypes.node,
+  href: PropTypes.string,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   link: PropTypes.string,
   square: PropTypes.bool,
@@ -54,7 +65,8 @@ Button.propTypes = {
 
 Button.defaultProps = {
   noSpace: false,
-  disabled: false
+  disabled: false,
+  href: null
 };
 
 export default Button;

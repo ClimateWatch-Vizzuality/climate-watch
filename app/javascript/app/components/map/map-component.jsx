@@ -42,10 +42,29 @@ class Map extends PureComponent {
       defaultStyle,
       controlPosition
     } = this.props;
+    const getMotionStyle = () => {
+      const xCenter = (customCenter && customCenter[0]) || center[0];
+      const yCenter = (customCenter && customCenter[1]) || center[1];
+      return {
+        z: spring(zoom, { stiffness: 240, damping: 30 }),
+        x: spring(xCenter, {
+          stiffness: 240,
+          damping: 30
+        }),
+        y: spring(yCenter, {
+          stiffness: 240,
+          damping: 30
+        })
+      };
+    };
     return (
       <TabletLandscape>
         {matches => (
-          <div className={cx(styles.wrapper, className)}>
+          <div
+            className={cx(styles.wrapper, className, {
+              [styles.notDraggable]: !dragEnable
+            })}
+          >
             {zoomEnable && (
               <div
                 className={cx(styles.actions, {
@@ -66,17 +85,7 @@ class Map extends PureComponent {
                 x: 20,
                 y: 10
               }}
-              style={{
-                z: spring(zoom, { stiffness: 240, damping: 30 }),
-                x: spring((customCenter && customCenter[0]) || center[0], {
-                  stiffness: 240,
-                  damping: 30
-                }),
-                y: spring((customCenter && customCenter[1]) || center[1], {
-                  stiffness: 240,
-                  damping: 30
-                })
-              }}
+              style={getMotionStyle()}
             >
               {({ z, x, y }) => (
                 <ComposableMap projection="robinson" style={style}>

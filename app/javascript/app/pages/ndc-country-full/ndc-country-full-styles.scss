@@ -24,8 +24,8 @@
   @include msGridColumns(1fr, 1fr, 2fr);
 
   grid-template-columns: 1fr 1fr 2fr;
-  padding-top: 20px;
-  padding-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 15px;
 
   > :first-child {
     grid-column: 1 / 4;

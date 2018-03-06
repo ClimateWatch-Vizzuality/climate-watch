@@ -41,7 +41,8 @@ class NdcSdg extends PureComponent {
             <div className={headerTheme.headerGrid}>
               <Intro
                 title="NDC-SDG Linkages"
-                description="Mapping of linkages between Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) and associated targets of the 2030 Agenda for Sustainable Development. Explore points of alignment across information communicated in the NDCs and SDGs at the global, regional, or individual level to help achieve targets in a synergistic way."
+                description={`Identify potential alignment between the targets, actions, policy measures and needs in countries'
+                Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs).`}
               />
               <AutocompleteSearch />
             </div>
