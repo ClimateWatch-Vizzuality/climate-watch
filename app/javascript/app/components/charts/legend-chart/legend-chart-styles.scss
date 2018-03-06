@@ -4,7 +4,7 @@
   display: flex;
   overflow: scroll;
 
-  @include overflowFix();
+  @include overflowFix('large');
 
   padding-top: 260px;
 
@@ -28,6 +28,7 @@
 .tagSelector :global {
   width: 29px;
   height: 29px;
+  z-index: 0;
 
   .react-selectize-control {
     background-color: $white !important;

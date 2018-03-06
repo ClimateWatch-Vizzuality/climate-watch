@@ -74,7 +74,7 @@ class EmissionPathwayGraph extends PureComponent {
               model={filtersSelected.model.value}
             />
           )}
-          <div className={styles.col5}>
+          <div className={styles.titleAndBtnsWrapper}>
             <h2 className={styles.title}>Pathways</h2>
             <TabletLandscape>
               <ButtonGroup
@@ -85,7 +85,7 @@ class EmissionPathwayGraph extends PureComponent {
               />
             </TabletLandscape>
           </div>
-          <div className={styles.col5}>
+          <div className={styles.selectorsWrapper}>
             <Dropdown
               label="Country/Region"
               options={filtersOptions.locations}

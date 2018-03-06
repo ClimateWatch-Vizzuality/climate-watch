@@ -56,7 +56,7 @@ const fetchStoriesInit = createAction('fetchStoriesInit');
 const fetchStoriesReady = createAction('fetchStoriesReady');
 const fetchStoriesFail = createAction('fetchStoriesFail');
 
-const TAGS = ['NDC', 'ndcsdg', 'esp', 'climatewatch'];
+const TAGS = ['climatewatch'];
 
 const fetchStories = createThunkAction('fetchStories', () => dispatch => {
   if (FEATURE_STORIES === 'true') {

@@ -46,6 +46,12 @@ class NDCCountryFullContainer extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    const { match, clearCountryNDCFull } = this.props;
+    const { iso } = match.params;
+    clearCountryNDCFull(iso);
+  }
+
   onDocumentChange = selected => {
     this.updateUrlParam({ name: 'document', value: selected.value });
   };
@@ -71,7 +77,8 @@ NDCCountryFullContainer.propTypes = {
   location: Proptypes.object.isRequired,
   fetched: Proptypes.array,
   loading: Proptypes.bool,
-  fetchCountryNDCFull: Proptypes.func
+  fetchCountryNDCFull: Proptypes.func,
+  clearCountryNDCFull: Proptypes.func
 };
 
 export { actions, reducers, initialState };

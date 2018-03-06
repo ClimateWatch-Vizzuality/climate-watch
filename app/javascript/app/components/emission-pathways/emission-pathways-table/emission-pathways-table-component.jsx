@@ -39,7 +39,7 @@ class EmissionPathwaysTable extends PureComponent {
       <Table
         data={data}
         titleLinks={titleLinks}
-        rowHeight={categoryName === 'Scenarios' ? 150 : 60}
+        rowHeight={categoryName === 'Scenarios' ? 146 : 60}
         hasColumnSelect
         defaultColumns={defaultColumns}
         fullTextColumns={fullTextColumns}

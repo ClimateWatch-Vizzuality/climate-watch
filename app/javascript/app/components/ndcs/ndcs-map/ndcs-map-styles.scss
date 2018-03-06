@@ -12,6 +12,7 @@
   @include msGridColumns(1fr, 1fr);
 
   grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 40px;
 
   @media #{$tablet-landscape} {
     @include msGridColumns(1fr, 1fr, 1fr, 1fr);

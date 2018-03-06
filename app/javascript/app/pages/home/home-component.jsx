@@ -65,7 +65,10 @@ class Home extends PureComponent {
               url="https://youtu.be/C2nIcBqrHsk"
               controls
               youtubeConfig={{
-                playerVars: { playsinline: 0 },
+                playerVars: {
+                  playsinline: 0,
+                  fs: 0 // remove full screen button
+                },
                 preload: true
               }}
             />
@@ -124,7 +127,9 @@ class Home extends PureComponent {
             </div>
           </div>
         </Section>
-        <Section className={cx(styles.section, styles.ndcs)}>
+        <Section
+          className={cx(styles.section, styles.extraPadding, styles.ndcs)}
+        >
           <div className={styles.column}>
             <Intro
               theme={introDark}
@@ -152,7 +157,13 @@ class Home extends PureComponent {
             )}
           </MobileOnly>
         </Section>
-        <Section className={cx(styles.section, styles.sdgLinkages)}>
+        <Section
+          className={cx(
+            styles.section,
+            styles.extraPadding,
+            styles.sdgLinkages
+          )}
+        >
           <MobileOnly>
             {matches => (
               <div
@@ -174,7 +185,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Examine Links Between Sustainable Development and Climate Goals"
-              description="Identify potential alignment between the targets, actions, policies policy measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
+              description="Identify potential alignment between the targets, actions, policy measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/ndcs-sdg'}>
