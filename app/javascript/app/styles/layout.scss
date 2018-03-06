@@ -24,7 +24,7 @@ $grid-padding-gutters: $gutter-padding;
   }
 }
 
-@mixin columns($columns: full, $wrap: true, $gutters: true) {
+@mixin columns($columns: full, $wrap: true, $gutters: true, $gridDirection: 'horizontal') {
   @include xy-grid($wrap: $wrap);
   $negative: true;
   $gutters-value: $grid-margin-gutters;
@@ -37,7 +37,7 @@ $grid-padding-gutters: $gutter-padding;
     @include xy-gutters($negative: $negative);
   }
 
-  @include shared-column($columns, $gutters-value);
+  @include shared-column($columns, $gridDirection, $gutters-value);
 }
 
 @mixin column-offset($number: 0) {
@@ -65,7 +65,15 @@ $grid-padding-gutters: $gutter-padding;
 
   @else {
     > * {
-      @include xy-cell($columns, $gutters: $gutters);
+      @if $gridDirection == 'vertical' {
+        @include xy-cell('full');
+        @include xy-cell($columns, $vertical: true);
+        @include xy-gutters($gutter-position: ('top', 'bottom'));
+      }
+
+      @else {
+        @include xy-cell($columns, $gutters: $gutters);
+      }
     }
   }
 }
