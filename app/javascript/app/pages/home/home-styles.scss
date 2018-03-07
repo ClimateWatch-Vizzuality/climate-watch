@@ -2,7 +2,11 @@
 @import '~styles/layout.scss';
 
 .doubleFold {
-  @include columns(6);
+  @include columns(12);
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+  }
 }
 
 .storiesLayout {
@@ -10,17 +14,17 @@
 }
 
 .imgLayout {
-  @include columns(8);
+  @include columns(12);
 
   > *:first-child {
-    @include column-offset(2);
+    @include column-offset(0);
   }
 
-  @media #{$tablet-portrait} {
-    @include columns(12);
+  @media #{$mobile-only} {
+    @include columns(8);
 
     > *:first-child {
-      @include column-offset(0);
+      @include column-offset(2);
     }
   }
 }
@@ -124,6 +128,7 @@
 
 .countries {
   display: flex;
+  padding-bottom: 0;
 }
 
 .sdgLinkages {
@@ -143,10 +148,21 @@
 
 .invertOrder {
   order: 2;
-  margin: 0 auto;
+  margin-bottom: 0;
 
   @media #{$tablet-landscape} {
     order: initial;
+  }
+}
+
+.imgContainer {
+  @media #{$tablet-portrait} {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media #{$tablet-landscape} {
+    display: block;
   }
 }
 

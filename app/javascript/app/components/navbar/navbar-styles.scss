@@ -2,15 +2,23 @@
 
 .row {
   @include row((10, 2));
+
+  height: $navbar-height;
 }
 
 .navigationWrapper {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .navigation {
   @include columns('auto');
 
+  height: 100%;
   align-items: center;
+
+  > * {
+    flex-basis: auto;
+  }
 }

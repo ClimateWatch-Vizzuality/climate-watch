@@ -1,7 +1,11 @@
 @import '~styles/layout.scss';
 
 .row {
-  @include row(6);
+  @include row((4, 8));
+
+  @media #{$mobile-only} {
+    @include row(12);
+  }
 }
 
 .container {
@@ -31,6 +35,10 @@
   }
 }
 
-.right {
+.align {
   text-align: right;
+
+  @media #{$mobile-only} {
+    text-align: left;
+  }
 }

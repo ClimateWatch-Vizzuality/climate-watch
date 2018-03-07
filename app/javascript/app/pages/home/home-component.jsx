@@ -26,6 +26,7 @@ import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';
+import layout from 'styles/layout.scss';
 import styles from './home-styles.scss';
 
 class Home extends PureComponent {
@@ -38,7 +39,10 @@ class Home extends PureComponent {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
       <div className={styles.homeBg}>
-        <Section className={styles.section} backgroundImage={background}>
+        <Section
+          className={cx(styles.section, styles.extraPadding)}
+          backgroundImage={background}
+        >
           <div className={cx(styles.column, styles.homeIntro)}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
@@ -73,18 +77,24 @@ class Home extends PureComponent {
             />
           </div>
         </Section>
-        <div className={cx(styles.storiesLayout, styles.section)}>
+        <div className={cx(layout.content, styles.section)}>
           <Stories />
         </div>
         <Section className={cx(styles.section, styles.countries)}>
           <MobileOnly>
-            {isMobile => (
-              <div className={cx(styles.column, styles.invertOrder)}>
-                <div className={styles.imgLayout}>
-                  <div className="grid-column">
+            {matches => (
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <div className={matches ? styles.imgLayout : ''}>
+                  <div className={styles.imgContainer}>
                     <img
-                      className={isMobile ? '' : styles.imageTall}
-                      src={isMobile ? countrySmScreenshot : countryBgScreenshot}
+                      className={matches ? '' : styles.imageTall}
+                      src={matches ? countrySmScreenshot : countryBgScreenshot}
                       alt="Country section screenshot"
                     />
                   </div>
@@ -145,11 +155,13 @@ class Home extends PureComponent {
           <MobileOnly>
             {matches => (
               <div className={matches ? styles.ndcImageMobile : styles.column}>
-                <img
-                  className={matches ? '' : styles.imageRight}
-                  src={matches ? ndcSmScreenshot : ndcBgScreenshot}
-                  alt="Ndcs section screenshot"
-                />
+                <div className={styles.imgContainer}>
+                  <img
+                    className={matches ? '' : styles.imageRight}
+                    src={matches ? ndcSmScreenshot : ndcBgScreenshot}
+                    alt="Ndcs section screenshot"
+                  />
+                </div>
               </div>
             )}
           </MobileOnly>
@@ -163,12 +175,22 @@ class Home extends PureComponent {
         >
           <MobileOnly>
             {matches => (
-              <div className={cx(styles.column, styles.invertOrder)}>
-                <img
-                  className={matches ? '' : styles.imageRight}
-                  src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
-                  alt="NDC SDGs screenshot"
-                />
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <div className={matches ? styles.imgLayout : ''}>
+                  <div className={styles.imgContainer}>
+                    <img
+                      className={matches ? '' : styles.imageRight}
+                      src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
+                      alt="NDC SDGs screenshot"
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </MobileOnly>

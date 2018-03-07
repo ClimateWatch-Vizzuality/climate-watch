@@ -11,7 +11,7 @@ const BottomBar = ({ className }) => (
       <Link className={styles.text} to="/about/permissions">
         Permissions & Licensing
       </Link>
-      <span className={cx(styles.text, styles.right)}>
+      <span className={cx(styles.text, styles.align)}>
         Climate Watch © {new Date().getFullYear()} Powered by Resource Watch
       </span>
     </div>
