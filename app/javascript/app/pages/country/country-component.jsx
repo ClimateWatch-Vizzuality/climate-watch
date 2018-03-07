@@ -11,6 +11,7 @@ import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
 import ModalMetadata from 'components/modal-metadata';
+import Disclaimer from 'components/disclaimer';
 import SocioeconomicsProvider from 'providers/socioeconomics-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 
@@ -62,7 +63,13 @@ class Country extends PureComponent {
               <section.component />
             </div>
           ))}
-        <ModalMetadata />
+        <ModalMetadata
+          extraContent={{
+            'Greenhouse Gas Emissions and Emissions Targets': (
+              <Disclaimer onlyText />
+            )
+          }}
+        />
       </div>
     );
   }

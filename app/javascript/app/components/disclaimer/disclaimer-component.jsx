@@ -16,7 +16,13 @@ class Disclaimer extends PureComponent {
       onlyText
     } = this.props;
     return onlyText || !hasBeenShown ? (
-      <div className={cx(styles.disclaimerBox, className)}>
+      <div
+        className={cx(
+          styles.disclaimerBox,
+          { [styles.onlyText]: onlyText },
+          className
+        )}
+      >
         <div className={styles.firstText}>
           Please note that the level of emissions in future years are estimated
           based on greenhouse gas reduction targets communicated by countries,
@@ -31,6 +37,8 @@ class Disclaimer extends PureComponent {
           <a
             className={styles.link}
             href="https://www.wri.org/sites/default/files/Translating_Targets_into_Numbers.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Translating Targets into Numbers: Quantifying the Greenhouse Gas
             Targets of the G20 Countries for G20 countries, and UNEP’s Pledge

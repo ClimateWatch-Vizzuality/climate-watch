@@ -109,7 +109,7 @@ class ModalMetadata extends PureComponent {
   }
 
   render() {
-    const { isOpen, title, tabTitles } = this.props;
+    const { isOpen, title, tabTitles, extraContent } = this.props;
     return (
       <CustomModal
         onRequestClose={this.handleOnRequestClose}
@@ -124,6 +124,9 @@ class ModalMetadata extends PureComponent {
         }
       >
         {this.getContent()}
+        {extraContent &&
+          Object.keys(extraContent).indexOf(title) > -1 &&
+          extraContent[title]}
       </CustomModal>
     );
   }
@@ -133,6 +136,7 @@ ModalMetadata.propTypes = {
   title: PropTypes.string,
   tabTitles: PropTypes.array,
   data: PropTypes.array,
+  extraContent: PropTypes.node,
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired

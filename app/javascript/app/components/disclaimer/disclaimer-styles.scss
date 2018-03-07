@@ -10,6 +10,13 @@
   background-color: $white;
   flex-direction: column;
 
+  &.onlyText {
+    box-shadow: none;
+    padding: 0;
+    background-color: transparent;
+    margin-top: 20px;
+  }
+
   @media #{$tablet-landscape} {
     padding: 20px;
     flex-direction: row;
