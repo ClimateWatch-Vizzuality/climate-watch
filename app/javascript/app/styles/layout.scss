@@ -25,7 +25,7 @@ $grid-padding-gutters: $gutter-padding;
 }
 
 @mixin columns($columns: full, $wrap: true, $gutters: true, $gridDirection: 'horizontal') {
-  @include xy-grid($wrap: $wrap);
+  @include xy-grid($wrap: $wrap, $direction: $gridDirection);
   $negative: true;
   $gutters-value: $grid-margin-gutters;
 
@@ -66,10 +66,10 @@ $grid-padding-gutters: $gutter-padding;
   @else {
     > * {
       @if $gridDirection == 'vertical' {
-        @include xy-cell('full');
-        @include xy-cell($columns, $vertical: true);
-        @include xy-gutters($gutter-position: ('top', 'bottom'));
-      }
+          @include xy-cell('full');
+          @include xy-cell($columns, $vertical: true);
+          @include xy-gutters($gutter-position: ('top', 'bottom'));
+        }
 
       @else {
         @include xy-cell($columns, $gutters: $gutters);

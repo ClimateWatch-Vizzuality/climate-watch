@@ -2,6 +2,7 @@
 
 .row {
   @include row((10, 2));
+
   height: $navbar-height;
 }
 
