@@ -1,14 +1,17 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
 
-.header {
-  @extend %grid;
-
-  @include msGridColumns(10fr, 2fr);
-
-  grid-template-columns: 10fr 2fr;
+.sectionWrapper {
+  @include navbarFix();
 }
 
+.header {
+  @include row((8, 4));
+
+  @media #{$tablet-landscape} {
+    @include row((10, 2));
+  }
+}
 .section {
   position: relative;
 }
@@ -20,4 +23,8 @@
   @media #{$tablet-landscape} {
     top: -49px;
   }
+}
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
 }
