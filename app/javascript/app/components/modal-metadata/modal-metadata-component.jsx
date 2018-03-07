@@ -136,7 +136,7 @@ ModalMetadata.propTypes = {
   title: PropTypes.string,
   tabTitles: PropTypes.array,
   data: PropTypes.array,
-  extraContent: PropTypes.node,
+  extraContent: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired
