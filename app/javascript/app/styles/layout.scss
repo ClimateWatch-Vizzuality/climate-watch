@@ -79,7 +79,7 @@ $grid-padding-gutters: $gutter-padding;
 }
 
 .content {
-  @include row();
+  @include row(12);
 }
 
 %grid {
