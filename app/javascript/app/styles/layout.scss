@@ -66,10 +66,10 @@ $grid-padding-gutters: $gutter-padding;
   @else {
     > * {
       @if $gridDirection == 'vertical' {
-          @include xy-cell('full');
-          @include xy-cell($columns, $vertical: true);
-          @include xy-gutters($gutter-position: ('top', 'bottom'));
-        }
+        @include xy-cell('full');
+        @include xy-cell($columns, $vertical: true);
+        @include xy-gutters($gutter-position: ('top', 'bottom'));
+      }
 
       @else {
         @include xy-cell($columns, $gutters: $gutters);
