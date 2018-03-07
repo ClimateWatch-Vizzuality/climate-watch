@@ -29,7 +29,7 @@
   }
 }
 
-.fullMenu {
+.navigation {
   @include row((11, 1), $gridDirection: 'vertical');
 
   height: calc(100vh - #{$gutter-padding * 2});
@@ -38,6 +38,11 @@
 
 .navMenu {
   @include columns(2, $gridDirection: 'vertical');
+
+  > * {
+    position: relative;
+    width: fit-content;
+  }
 }
 
 .toolsContainer {

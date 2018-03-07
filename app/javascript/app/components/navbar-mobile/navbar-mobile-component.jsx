@@ -21,7 +21,7 @@ const NavBarMobile = ({ closeMenu, hamburgerIsOpen, routes }) => (
       <Hamburger text={'MENU'} />
     </div>
     {hamburgerIsOpen && (
-      <div className={styles.fullMenu}>
+      <div className={styles.navigation}>
         <div className="grid-layout-element">
           <Nav
             routes={routes}
