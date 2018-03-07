@@ -26,6 +26,7 @@ import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
 import introDark from 'styles/themes/intro/intro-dark.scss';
+import layout from 'styles/layout.scss';
 import styles from './home-styles.scss';
 
 class Home extends PureComponent {
@@ -76,22 +77,24 @@ class Home extends PureComponent {
             />
           </div>
         </Section>
-        <div className={cx(styles.storiesLayout, styles.section)}>
+        <div className={cx(layout.content, styles.section)}>
           <Stories />
         </div>
         <Section className={cx(styles.section, styles.countries)}>
           <MobileOnly>
-            {isMobile => (
-              <div className={cx(styles.column, styles.invertOrder)}>
-                <div className={styles.imgLayout}>
-                  <div className="grid-column">
-                    <img
-                      className={isMobile ? '' : styles.imageTall}
-                      src={isMobile ? countrySmScreenshot : countryBgScreenshot}
-                      alt="Country section screenshot"
-                    />
-                  </div>
-                </div>
+            {matches => (
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <img
+                  className={matches ? '' : styles.imageTall}
+                  src={matches ? countrySmScreenshot : countryBgScreenshot}
+                  alt="Country section screenshot"
+                />
               </div>
             )}
           </MobileOnly>
@@ -166,7 +169,13 @@ class Home extends PureComponent {
         >
           <MobileOnly>
             {matches => (
-              <div className={cx(styles.column, styles.invertOrder)}>
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
                 <img
                   className={matches ? '' : styles.imageRight}
                   src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
