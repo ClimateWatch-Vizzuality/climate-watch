@@ -140,13 +140,6 @@ $grid-padding-gutters: $gutter-padding;
 }
 // the overflow-x scroll prevents the overflow-y to be visible so we need this hack to keep the dropdowns visible
 @mixin overflowFix($size) {
-  @if $size=='small' {
-    padding-top: 100px;
-    margin-top: -100px;
-  }
-
-  @if $size=='large' {
-    padding-top: 250px;
-    margin-top: -250px;
-  }
+  padding-top: $size;
+  margin-top: -#{$size};
 }

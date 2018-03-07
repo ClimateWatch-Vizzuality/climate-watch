@@ -38,7 +38,10 @@ class Home extends PureComponent {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
     return (
       <div className={styles.homeBg}>
-        <Section className={styles.section} backgroundImage={background}>
+        <Section
+          className={cx(styles.section, styles.extraPadding)}
+          backgroundImage={background}
+        >
           <div className={cx(styles.column, styles.homeIntro)}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
             <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
