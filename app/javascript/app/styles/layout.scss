@@ -78,6 +78,14 @@ $grid-padding-gutters: $gutter-padding;
   }
 }
 
+@mixin navbarFix() {
+  padding-top: $navbar-height;
+
+  @media #{$desktop} {
+    padding-top: 0;
+  }
+}
+
 .content {
   @include row(12);
 }
