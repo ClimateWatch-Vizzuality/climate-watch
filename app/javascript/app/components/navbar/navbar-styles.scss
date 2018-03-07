@@ -17,4 +17,8 @@
 
   height: 100%;
   align-items: center;
+
+  > * {
+    flex-basis: auto;
+  }
 }
