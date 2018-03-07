@@ -5,7 +5,6 @@ import { themr } from 'react-css-themr';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import closeIcon from 'assets/icons/sidebar-close.svg';
-import ClickOutside from 'react-click-outside';
 import styles from './modal-styles.scss';
 
 class CustomModal extends PureComponent {
@@ -35,21 +34,20 @@ class CustomModal extends PureComponent {
     const modalStyles = { ...defaultStyles, ...customStyles };
 
     return (
-      <ClickOutside onClickOutside={onRequestClose}>
-        <Modal
-          className={{ base: styles.modal }}
-          style={modalStyles}
-          isOpen={isOpen}
-          contentLabel={contentLabel}
-          shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-        >
-          {header}
-          <Button onClick={onRequestClose} className={theme.closeBtn} square>
-            <Icon icon={closeIcon} className={theme.close} />
-          </Button>
-          <div className={theme.content}>{children}</div>
-        </Modal>
-      </ClickOutside>
+      <Modal
+        className={{ base: styles.modal }}
+        style={modalStyles}
+        isOpen={isOpen}
+        contentLabel={contentLabel}
+        onRequestClose={onRequestClose}
+        shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+      >
+        {header}
+        <Button onClick={onRequestClose} className={theme.closeBtn} square>
+          <Icon icon={closeIcon} className={theme.close} />
+        </Button>
+        <div className={theme.content}>{children}</div>
+      </Modal>
     );
   }
 }
