@@ -16,3 +16,11 @@
   margin-left: $gutter-padding / 2;
   padding: 30px 0;
 }
+
+.disclaimer {
+  margin: -180px -15px 0 -15px;
+
+  @media #{$tablet-landscape} {
+    margin: -140px 0 0 0;
+  }
+}
