@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import { COUNTRY_PROFILES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
@@ -22,7 +21,7 @@ class Country extends PureComponent {
     const { route, country, anchorLinks, description } = this.props;
     const countryName = (country && country.name) || '';
     return (
-      <div>
+      <div className={styles.sectionWrapper}>
         <MetaDescription
           descriptionContext={COUNTRY_PROFILES}
           subtitle={countryName}
@@ -33,7 +32,7 @@ class Country extends PureComponent {
         />
         <SocioeconomicsProvider />
         <Header route={route}>
-          <div className={cx(layout.content, styles.header)}>
+          <div className={styles.header}>
             <Intro title={country.name} description={description} />
             <Button
               color="yellow"
@@ -48,7 +47,7 @@ class Country extends PureComponent {
           <Sticky activeClass="sticky -country" top="#navBarMobile">
             <AnchorNav
               links={anchorLinks}
-              className={layout.content}
+              className={styles.anchorNav}
               theme={anchorNavRegularTheme}
               gradientColor={route.headerColor}
             />
