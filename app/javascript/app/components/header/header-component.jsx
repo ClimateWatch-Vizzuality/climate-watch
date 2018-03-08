@@ -13,13 +13,20 @@ const Header = props => {
   });
   const getStyle = isLandscape => {
     let style = { backgroundColor: color };
-    if (image) {
+    if (color && image) {
       const gradient = `linear-gradient(to top, ${color} 25%, transparent), `;
       style = {
         ...style,
         backgroundImage: `${isLandscape ? '' : gradient}url(${image})`
       };
     }
+
+    if (image && !color) {
+      style = {
+        backgroundImage: `url(${image})`
+      };
+    }
+
     return style;
   };
 
