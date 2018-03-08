@@ -2,36 +2,25 @@
 @import '~styles/settings.scss';
 
 .container {
-  @include clearFix();
+  @include columns(4, $gutters: false);
 
   background-color: $white;
   border-left: 1px solid $theme-border;
   border-top: none;
   order: 2;
 
+  @media screen and (min-width: 650px) {
+    @include columns(3, $gutters: false);
+  }
+
+  @media screen and (min-width: 800px) {
+    @include columns(20%, $gutters: false);
+  }
+
   @media #{$tablet-landscape} {
+    @include columns(4, $gutters: false);
     order: 1;
   }
-
-  > div {
-    float: left;
-    width: 33.333333%;
-    background-color: $white;
-
-    @media screen and (min-width: 650px) {
-      width: 25%;
-    }
-
-    @media screen and (min-width: 800px) {
-      width: 20%;
-    }
-
-    @media #{$tablet-landscape} {
-      width: 33.333333%;
-    }
-  }
-
-  margin-bottom: -1px;
 }
 
 .loading {
