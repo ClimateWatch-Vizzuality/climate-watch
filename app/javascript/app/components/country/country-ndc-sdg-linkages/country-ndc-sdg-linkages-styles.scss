@@ -17,9 +17,15 @@
   border-left: solid 1px $theme-border;
 
   @include columns(12, $gutters: false);
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  @media #{$tablet-portrait} {
+    @include columns(6, $gutters: false);
+  }
 
   @media #{$tablet-landscape} {
     @include columns(4, $gutters: false);
+    @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
   }
 }
 
