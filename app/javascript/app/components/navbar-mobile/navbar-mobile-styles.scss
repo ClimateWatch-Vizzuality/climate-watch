@@ -4,7 +4,7 @@
   position: fixed;
   width: 100%;
   height: $navbar-height;
-  z-index: 11; // index inside global stacking context
+  z-index: 21; // index inside global stacking context
 }
 
 .navbar {
