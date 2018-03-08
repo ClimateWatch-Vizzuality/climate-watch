@@ -15,6 +15,7 @@ const Button = props => {
     color,
     disabled,
     onClick,
+    noBox,
     noSpace
   } = props;
   const classNames = cx(className, styles.button, {
@@ -23,6 +24,7 @@ const Button = props => {
     [styles.yellow]: color === 'yellow',
     [styles.white]: color === 'white',
     [styles.plain]: color === 'plain',
+    [styles.noBox]: noBox,
     [styles.disabled]: !onClick && !link && !href,
     [styles.noSpace]: noSpace
   });
@@ -59,6 +61,7 @@ Button.propTypes = {
   square: PropTypes.bool,
   color: PropTypes.string,
   noSpace: PropTypes.bool,
+  noBox: PropTypes.bool,
   disabled: PropTypes.bool,
   onClick: PropTypes.func
 };
