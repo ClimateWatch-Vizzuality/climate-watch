@@ -19,6 +19,7 @@
 
   @media #{$tablet-landscape} {
     @include columns(4, $gutters: false);
+
     order: 1;
   }
 }
