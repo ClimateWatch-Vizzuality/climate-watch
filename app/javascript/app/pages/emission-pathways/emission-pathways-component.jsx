@@ -21,7 +21,7 @@ class EmissionPathways extends PureComponent {
   render() {
     const { route, anchorLinks, routeLinks } = this.props;
     return (
-      <div>
+      <div className={styles.sectionWrapper}>
         <MetaDescription
           descriptionContext={EMISSION_PATHWAYS}
           subtitle="Pathways"
@@ -47,6 +47,7 @@ class EmissionPathways extends PureComponent {
               links={anchorLinks}
               theme={anchorNavRegularTheme}
               gradientColor={route.headerColor}
+              className={styles.anchorNav}
             />
           </Sticky>
         </Header>

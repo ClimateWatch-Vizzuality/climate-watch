@@ -1,5 +1,9 @@
 @import '~styles/layout.scss';
 
+.sectionWrapper {
+  @include navbarFix();
+}
+
 .section {
   position: relative;
 }
