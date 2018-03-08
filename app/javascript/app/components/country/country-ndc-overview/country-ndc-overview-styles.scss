@@ -131,3 +131,10 @@
 .noContentWrapper {
   min-height: 450px;
 }
+
+.exploreBtn {
+  margin-bottom: $gutter-padding;
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
+}

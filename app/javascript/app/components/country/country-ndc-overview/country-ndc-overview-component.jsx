@@ -31,11 +31,7 @@ class CountryNdcOverview extends PureComponent {
   renderCompareButton() {
     const { iso } = this.props;
     return (
-      <Button
-        className={styles.exploreBtn}
-        color="white"
-        link={`/ndcs/compare/mitigation?locations=${iso}`}
-      >
+      <Button color="white" link={`/ndcs/compare/mitigation?locations=${iso}`}>
         Compare
       </Button>
     );
