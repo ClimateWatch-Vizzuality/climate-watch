@@ -4,7 +4,7 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import { COUNTRY_PROFILES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
-
+import { COUNTRY_GHG_TITLE } from 'data/constants';
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
 import Intro from 'components/intro';
@@ -65,9 +65,7 @@ class Country extends PureComponent {
           ))}
         <ModalMetadata
           extraContent={{
-            'Greenhouse Gas Emissions and Emissions Targets': (
-              <Disclaimer onlyText />
-            )
+            [COUNTRY_GHG_TITLE]: <Disclaimer onlyText />
           }}
         />
       </div>

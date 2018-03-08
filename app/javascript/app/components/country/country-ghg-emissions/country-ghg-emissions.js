@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import ReactGA from 'react-ga';
+import { COUNTRY_GHG_TITLE } from 'data/constants';
 
 import { actions as modalActions } from 'components/modal-metadata';
 import ownActions from './country-ghg-emissions-actions';
@@ -101,14 +102,11 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
   handleInfoClick = () => {
     const { source } = this.props.sourceSelected;
-
-    // hide quantification sources from prod
-    // slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
     if (source) {
       this.props.setModalMetadata({
         category: 'Country',
         slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
-        customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
+        customTitle: COUNTRY_GHG_TITLE,
         open: true
       });
     }
