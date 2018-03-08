@@ -2,20 +2,15 @@
 
 .wrapper {
   border-bottom: solid 1px $theme-border;
-  padding-bottom: 30px;
+  padding-bottom: $gutter-padding;
+  padding-top: 70px;
 }
 
 .col5 {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
+  @include columns(6);
 
   @media #{$tablet-portrait} {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr 1fr);
-
-    grid-template-columns: repeat(5, 1fr);
+    @include columns(2.4);
   }
 }
 
@@ -23,30 +18,19 @@
   color: $theme-color;
 
   .item {
-    display: flex;
-    flex-direction: column;
-    margin-top: 71px;
-
-    &:last-child {
-      margin-right: 0;
-    }
+    word-wrap: break-word;
 
     .title {
       font-weight: bold;
-      margin-bottom: 11px;
+      margin-bottom: 12px;
     }
   }
 }
 
 .seeAllButton {
-  grid-column-end: -1;
-  margin-top: 20px;
-
-  @media #{$tablet-portrait} {
-    margin-top: 0;
-  }
+  @include column-offset(9.6);
 }
 
 .loader {
-  min-height: 240px;
+  min-height: 220px;
 }

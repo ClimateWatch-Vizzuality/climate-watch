@@ -16,23 +16,25 @@ class EmissionPathwaysOverview extends PureComponent {
       <div className={styles.wrapper}>
         <div className={layout.content}>
           {loading && <Loading light className={styles.loader} />}
-          <div className={cx(styles.col5, styles.overview)}>
-            {data &&
-              Object.keys(data).map(key => (
-                <div key={key} className={styles.item}>
-                  <div className={styles.title}>{startCase(key)}</div>
-                  <div className={styles.itemData}>{data[key]}</div>
-                </div>
-              ))}
-          </div>
-          <div className={styles.col5}>
-            <Button
-              className={(styles.col5, styles.seeAllButton)}
-              onClick={handleInfoClick}
-              color="plain"
-            >
-              See all
-            </Button>
+          <div className="grid-column-item">
+            <div className={cx(styles.col5, styles.overview)}>
+              {data &&
+                Object.keys(data).map(key => (
+                  <div key={key} className={styles.item}>
+                    <div className={styles.title}>{startCase(key)}</div>
+                    <div className={styles.itemData}>{data[key]}</div>
+                  </div>
+                ))}
+            </div>
+            <div className={styles.col5}>
+              <Button
+                className={(styles.col5, styles.seeAllButton)}
+                onClick={handleInfoClick}
+                color="plain"
+              >
+                See all
+              </Button>
+            </div>
           </div>
         </div>
         <ModalOverview data={fullData} title={modalTitle} />
