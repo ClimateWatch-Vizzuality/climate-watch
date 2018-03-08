@@ -178,8 +178,6 @@ export const CLIMATE_VULNERABILITY_DEFINITIONS = {
 };
 
 export const DISCLAIMER_SHOWN = 'disclaimerShown';
-export const COUNTRY_GHG_TITLE =
-  'Greenhouse Gas Emissions and Emissions Targets';
 
 export default {
   CALCULATION_OPTIONS,
@@ -194,6 +192,5 @@ export default {
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS,
   CLIMATE_VULNERABILITY_DEFINITIONS,
-  DISCLAIMER_SHOWN,
-  COUNTRY_GHG_TITLE
+  DISCLAIMER_SHOWN
 };

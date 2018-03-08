@@ -3,6 +3,7 @@ export const initialState = {
   loading: false,
   isOpen: false,
   customTitle: '',
+  showDisclaimer: false,
   active: [],
   data: {}
 };
@@ -11,6 +12,7 @@ const setModalMetadataParams = (state, { payload }) => ({
   ...state,
   isOpen: payload.open,
   active: typeof payload.slugs === 'string' ? [payload.slugs] : payload.slugs,
+  showDisclaimer: payload.showDisclaimer || false,
   customTitle: payload.customTitle || state.title
 });
 

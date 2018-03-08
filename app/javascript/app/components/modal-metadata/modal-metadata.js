@@ -16,7 +16,8 @@ const mapStateToProps = ({ modalMetadata }) => ({
   loading: modalMetadata.loading,
   title: getModalTitle(modalMetadata),
   tabTitles: getTabTitles(modalMetadata),
-  data: getModalData(modalMetadata)
+  data: getModalData(modalMetadata),
+  showDisclaimer: modalMetadata.showDisclaimer
 });
 
 const includeActions = withHandlers({
