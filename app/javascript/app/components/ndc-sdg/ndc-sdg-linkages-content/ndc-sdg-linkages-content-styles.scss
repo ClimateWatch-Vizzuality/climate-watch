@@ -1,17 +1,15 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
 
-.grid {
-  @extend %grid;
-
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
+.layout {
+  @include columns(12);
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 2fr);
+    @include row((4, 8));
 
-    grid-column-gap: 0;
-    grid-template-columns: 1fr 2fr;
+    > :nth-child(2) {
+      order: 1;
+      height: auto;
+    }
   }
 }
