@@ -2,6 +2,7 @@
 
 .row {
   @include row(12);
+
   @media #{$tablet-portrait} {
     @include row((4, 8));
   }
