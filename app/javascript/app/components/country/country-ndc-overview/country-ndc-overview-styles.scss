@@ -11,12 +11,8 @@
 }
 
 .col2 {
-  @extend %grid;
-
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: repeat(2, 1fr);
+    @include columns((6, 6));
   }
 }
 
@@ -24,25 +20,12 @@
   margin-top: 40px;
 }
 
-.infoAndCompareButtons {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 6fr, 4fr);
-
-  grid-template-columns: 1fr 6fr 4fr;
-}
-
 .actions {
-  @extend %grid;
-
-  margin-top: -6px;
+  @include columns((2, 6));
+  @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(41% 1fr);
-
-    grid-template-columns: 41% 1fr;
-    grid-column-gap: 3.6em;
-    margin-left: -0.6em;
+    @include columns((2, 4, 6));
   }
 }
 
@@ -56,12 +39,11 @@
 .descriptionContainer {
   color: $theme-color;
   line-height: $line-height-medium;
-  column-count: 2;
-  column-gap: 20px;
+  column-count: 1;
   margin-bottom: 15px;
 
-  > ol > li {
-    margin-left: 5px;
+  @media #{$tablet-landscape} {
+    column-count: 2;
   }
 }
 
@@ -69,8 +51,16 @@
   @include columns();
 }
 
+.subtitles {
+  @include columns((9, 3));
+}
+
 .cards {
   @include columns();
+
+  > div {
+    @include xy-gutters($gutter-position: ('top', 'bottom'));
+  }
 
   @media #{$tablet-landscape} {
     @include columns((9, 3));
@@ -78,10 +68,20 @@
 }
 
 .cardsRowContainer {
-  @include columns(8, $wrap: false);
+  @include columns('shrink', $wrap: false);
+
+  > div {
+    width: 270px;
+  }
+
+  overflow: auto;
 
   @media #{$tablet-landscape} {
-    @include columns(4);
+    @include columns((4, 4, 4));
+
+    > div {
+      width: 100%;
+    }
   }
 }
 
@@ -121,10 +121,6 @@
   font-size: $font-size;
   color: $theme-color;
   margin-bottom: 5px;
-}
-
-.adaptionList {
-  margin-top: -29px;
 }
 
 .loader {
