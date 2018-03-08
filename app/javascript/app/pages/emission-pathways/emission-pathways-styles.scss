@@ -12,3 +12,7 @@
     top: -49px;
   }
 }
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
