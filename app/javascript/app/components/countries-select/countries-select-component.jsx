@@ -41,26 +41,28 @@ class CountriesSelect extends PureComponent {
             theme={searchCountriesTheme}
             autofocus={opened || autofocus}
           />
-          <ResultsList
-            list={countriesList}
-            className={styles.list}
-            emptyDataMsg="No results"
-            theme={resultsListLightTheme}
-            handleMouseItemEnter={onCountryMouseEnter}
-            handleMouseItemLeave={onCountryMouseLeave}
-            handleClick={handleClickAnalytics}
-          />
-          <TabletLandscape>
-            <Map
-              cache={false}
-              paths={paths}
-              zoomEnable={false}
-              className={styles.map}
-              onCountryClick={onCountryClick}
-              customCenter={[20, 15]}
-              dragEnable={false}
+          <div className="grid-column-item">
+            <ResultsList
+              list={countriesList}
+              className={styles.list}
+              emptyDataMsg="No results"
+              theme={resultsListLightTheme}
+              handleMouseItemEnter={onCountryMouseEnter}
+              handleMouseItemLeave={onCountryMouseLeave}
+              handleClick={handleClickAnalytics}
             />
-          </TabletLandscape>
+            <TabletLandscape>
+              <Map
+                cache={false}
+                paths={paths}
+                zoomEnable={false}
+                className={styles.map}
+                onCountryClick={onCountryClick}
+                customCenter={[20, 15]}
+                dragEnable={false}
+              />
+            </TabletLandscape>
+          </div>
         </div>
       </div>
     );
