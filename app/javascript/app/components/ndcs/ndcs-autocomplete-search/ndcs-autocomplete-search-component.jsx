@@ -39,6 +39,7 @@ class NdcsAutocompleteSearch extends PureComponent {
           value={optionSelected}
           hideResetButton
           white={!dark}
+          noAutoSort
         />
         <Search
           theme={dark ? darkSearch : lightSearch}

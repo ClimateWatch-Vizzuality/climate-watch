@@ -1,0 +1,33 @@
+@import '~styles/layout.scss';
+
+.content {
+  position: relative;
+  background-color: $light-gray;
+  padding: 1em;
+
+  &::before {
+    top: -10px;
+    left: 55px;
+    display: inline-block;
+    position: absolute;
+    content: "";
+
+    @include triangle($light-gray, 'up');
+  }
+}
+
+.dropdown :global {
+  .react-selectize {
+    background-color: white;
+  }
+}
+
+.open {
+  background-color: $bg-blue;
+  color: $white;
+}
+
+.buttonLabel {
+  margin-left: 5px;
+  padding-bottom: 2px;
+}

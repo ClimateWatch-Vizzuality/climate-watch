@@ -4,12 +4,13 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-direction: column;
 }
 
 .main {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  width: 100%;
+  justify-content: space-between;
   align-items: flex-start;
   color: $white;
   font-family: $font-family-1;
@@ -21,8 +22,12 @@
 }
 
 .button {
-  width: 170px;
+  width: 100%;
   margin-right: 20px;
+
+  @media #{$tablet-landscape} {
+    width: 170px;
+  }
 }
 
 .title {
@@ -40,10 +45,19 @@
   margin-bottom: 20px;
   line-height: $line-height-medium;
   max-width: 580px;
+  color: $white;
+}
+
+.disclaimer {
+  color: $white;
+  font-style: italic;
+  opacity: 0.75;
 }
 
 .columns {
-  max-width: 100%;
-  column-count: 2;
-  column-gap: 30px;
+  @media #{$tablet-landscape} {
+    max-width: 100%;
+    column-count: 2;
+    column-gap: 30px;
+  }
 }

@@ -26,59 +26,61 @@ const AnchorNav = props => {
     : null;
 
   return (
-    <div className={cx(layout.content, styles.anchorContainer)}>
+    <div>
       {gradientStyle && (
         <span className={styles.gradient} style={gradientStyle} />
       )}
-      <nav className={cx(className, theme.anchorNav)}>
-        {links.map((link, index) => {
-          const linkProps = {
-            key: link.label,
-            className: theme.link,
-            activeClassName: theme.linkActive,
-            to: {
-              search: link.search || query,
-              pathname: link.path,
-              hash: link.hash
-            }
-          };
-          if (link.activeQuery) {
-            linkProps.isActive = (match, location) => {
-              const activeSearchQuery = qs.parse(location.search)[
-                link.activeQuery.key
-              ];
-              const linkSearchQuery = link.activeQuery.value;
-              return (
-                activeSearchQuery === linkSearchQuery ||
-                (index === 0 && !activeSearchQuery)
-              );
+      <div className={cx(layout.content, styles.anchorContainer)}>
+        <nav className={cx(className, theme.anchorNav)}>
+          {links.map((link, index) => {
+            const linkProps = {
+              key: link.label,
+              className: theme.link,
+              activeClassName: theme.linkActive,
+              to: {
+                search: link.search || query,
+                pathname: link.path,
+                hash: link.hash
+              }
             };
-          }
-          if (useRoutes) {
-            linkProps.exact = true;
+            if (link.activeQuery) {
+              linkProps.isActive = (match, location) => {
+                const activeSearchQuery = qs.parse(location.search)[
+                  link.activeQuery.key
+                ];
+                const linkSearchQuery = link.activeQuery.value;
+                return (
+                  activeSearchQuery === linkSearchQuery ||
+                  (index === 0 && !activeSearchQuery)
+                );
+              };
+            }
+            if (useRoutes) {
+              linkProps.exact = true;
+              return (
+                <NavLink {...linkProps} replace>
+                  {link.label}
+                </NavLink>
+              );
+            }
+            linkProps.isActive = (match, location) =>
+              `#${link.hash}` === location.hash;
             return (
-              <NavLink {...linkProps} replace>
+              <NavHashLink
+                {...linkProps}
+                smooth
+                scroll={el => {
+                  el.scrollIntoView(true);
+                  if (offset) window.scrollBy(0, offset[index]);
+                }}
+                replace
+              >
                 {link.label}
-              </NavLink>
+              </NavHashLink>
             );
-          }
-          linkProps.isActive = (match, location) =>
-            `#${link.hash}` === location.hash;
-          return (
-            <NavHashLink
-              {...linkProps}
-              smooth
-              scroll={el => {
-                el.scrollIntoView(true);
-                if (offset) window.scrollBy(0, offset[index]);
-              }}
-              replace
-            >
-              {link.label}
-            </NavHashLink>
-          );
-        })}
-      </nav>
+          })}
+        </nav>
+      </div>
     </div>
   );
 };

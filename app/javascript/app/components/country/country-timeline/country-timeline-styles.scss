@@ -16,7 +16,7 @@
 .timelineContainer {
   overflow-x: auto;
 
-  @include overflowFix();
+  @include overflowFix(80px);
 }
 
 .timeline { // overwriting timeline styles
@@ -93,7 +93,7 @@
 
         .links {
           display: block;
-          min-width: 120px;
+          min-width: 220px;
           position: relative;
           overflow: auto;
           max-height: 140px;

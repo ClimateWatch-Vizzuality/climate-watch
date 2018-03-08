@@ -3,6 +3,7 @@
 .contactContainer {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .contact {
@@ -12,4 +13,5 @@
   text-transform: uppercase;
   color: $dark-gray;
   margin-right: 10px;
+  min-width: 95px;
 }

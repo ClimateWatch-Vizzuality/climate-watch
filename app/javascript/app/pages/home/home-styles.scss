@@ -2,12 +2,30 @@
 @import '~styles/layout.scss';
 
 .doubleFold {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 1.5rem;
+  @include columns(12);
 
   @media #{$tablet-portrait} {
-    @include columns(2, true);
+    @include columns(6);
+  }
+}
+
+.storiesLayout {
+  @include row();
+}
+
+.imgLayout {
+  @include columns(12);
+
+  > *:first-child {
+    @include column-offset(0);
+  }
+
+  @media #{$mobile-only} {
+    @include columns(8);
+
+    > *:first-child {
+      @include column-offset(2);
+    }
   }
 }
 
@@ -20,6 +38,10 @@
 
 .homeBg {
   background-color: $light-gray;
+
+  > *:first-child {
+    padding-top: 120px;
+  }
 }
 
 .homeIntro {
@@ -48,8 +70,12 @@
   padding-bottom: 60px;
 
   @media #{$tablet-landscape} {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-bottom: 0;
+
+    &.extraPadding {
+      padding-top: 120px;
+      padding-bottom: 120px;
+    }
   }
 }
 
@@ -103,10 +129,6 @@
 .countries {
   display: flex;
   padding-bottom: 0;
-
-  @media #{$tablet-landscape} {
-    padding-bottom: 60px;
-  }
 }
 
 .sdgLinkages {
@@ -126,14 +148,26 @@
 
 .invertOrder {
   order: 2;
-  margin: 0 auto;
+  margin-bottom: 0;
 
   @media #{$tablet-landscape} {
     order: initial;
   }
 }
 
+.imgContainer {
+  @media #{$tablet-portrait} {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media #{$tablet-landscape} {
+    display: block;
+  }
+}
+
 .ndcImageMobile {
   margin-right: -$gutter-padding / 2;
   margin-left: -$gutter-padding / 2;
+  width: calc(100% + #{$gutter-padding});
 }

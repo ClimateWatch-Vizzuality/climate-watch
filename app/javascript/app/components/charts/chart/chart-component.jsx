@@ -14,6 +14,7 @@ class Chart extends PureComponent {
     const {
       className,
       type,
+      error,
       loading,
       dataOptions,
       dataSelected,
@@ -21,42 +22,42 @@ class Chart extends PureComponent {
       config,
       height,
       targetParam,
+      customMessage,
       hideRemoveOptions
     } = this.props;
+    const hasData = data && data.length > 0;
+    const getMessage = () => {
+      if (error) return 'Something went wrong';
+      if (customMessage) return customMessage;
+      if (!dataSelected || !dataSelected.length > 0) return 'No data selected';
+      return 'No data available';
+    };
+
     const ChartComponent = type === 'line' ? LineChart : ChartStackedArea;
-    const noContent = (
-      <NoContent
-        message={
-          dataSelected && dataSelected.length ? (
-            'No data available'
-          ) : (
-            'No data selected'
-          )
-        }
-        className={styles.noContent}
-        minHeight={height}
-        icon
-      />
-    );
-    const legendChart = (
-      <LegendChart
-        className={styles.legend}
-        config={config}
-        dataOptions={dataOptions}
-        dataSelected={dataSelected}
-        targetParam={targetParam}
-        hideRemoveOptions={hideRemoveOptions}
-      />
-    );
+    const hasError = !loading && (error || !hasData);
+    const hasDataOptions = !loading && dataOptions;
     return (
       <div className={className}>
         {loading && <Loading light className={styles.loader} />}
-        {!loading && (!data || !data.length) && noContent}
-        {!loading &&
-        data &&
-        data.length > 0 &&
-        config && <ChartComponent {...this.props} />}
-        {!loading && dataOptions && legendChart}
+        {hasError && (
+          <NoContent
+            message={getMessage()}
+            className={styles.noContent}
+            minHeight={height}
+            icon
+          />
+        )}
+        {!loading && hasData && config && <ChartComponent {...this.props} />}
+        {hasDataOptions && (
+          <LegendChart
+            className={styles.legend}
+            config={config}
+            dataOptions={dataOptions}
+            dataSelected={dataSelected}
+            targetParam={targetParam}
+            hideRemoveOptions={hideRemoveOptions}
+          />
+        )}
       </div>
     );
   }
@@ -65,6 +66,7 @@ class Chart extends PureComponent {
 Chart.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string.isRequired,
+  error: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   hideRemoveOptions: PropTypes.bool.isRequired,
   dataOptions: PropTypes.array,
@@ -72,6 +74,7 @@ Chart.propTypes = {
   data: PropTypes.array,
   config: PropTypes.object,
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  customMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   targetParam: PropTypes.string
 };
 

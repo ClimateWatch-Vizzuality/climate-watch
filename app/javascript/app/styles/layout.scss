@@ -7,33 +7,87 @@ $grid-container: $max-width;
 $grid-margin-gutters: $gutter-padding;
 $grid-padding-gutters: $gutter-padding;
 
-.content {
+@mixin row($columns: full, $wrap: true, $gridDirection: 'horizontal') {
+  @include xy-grid($wrap: $wrap, $direction: $gridDirection);
+  @include xy-gutters();
   @include xy-grid-container;
+  @include shared-column($columns, $gridDirection);
+}
 
-  width: 100%;
-  height: 100%;
-  max-width: $max-width;
-  margin: 0 auto;
-  padding: 0 $gutter-padding / 2;
+@mixin setGutters($gridDirection) {
+  @if $gridDirection == 'vertical' {
+    @include xy-gutters('top', 'bottom');
+  }
 
-  @media #{$tablet-landscape} {
-    padding: 0 $gutter-padding;
+  @else {
+    @include xy-gutters();
   }
 }
 
-.screenshotMobileLayout {
-  @media #{$mobile-only} {
-    padding: 0 $gutter-padding * 2;
+@mixin columns($columns: full, $wrap: true, $gutters: true, $gridDirection: 'horizontal') {
+  @include xy-grid($wrap: $wrap, $direction: $gridDirection);
+  $negative: true;
+  $gutters-value: $grid-margin-gutters;
+
+  @if $gutters == false {
+    $gutters-value: 0;
+  }
+
+  @else {
+    @include xy-gutters($negative: $negative);
+  }
+
+  @include shared-column($columns, $gridDirection, $gutters-value);
+}
+
+@mixin column-offset($number: 0) {
+  @include xy-cell-offset($number);
+}
+
+@mixin shared-column($columns, $gridDirection, $gutters: $grid-margin-gutters) {
+  @if type-of($columns) == list {
+    @for $i from 1 through length($columns) {
+      $size: nth($columns, $i);
+
+      > *:nth-child(#{$i}) {
+        @if $gridDirection == 'vertical' {
+          @include xy-cell('full');
+          @include xy-cell($size, $vertical: true);
+          @include xy-gutters($gutter-position: ('top', 'bottom'));
+        }
+
+        @else {
+          @include xy-cell($size);
+        }
+      }
+    }
+  }
+
+  @else {
+    > * {
+      @if $gridDirection == 'vertical' {
+        @include xy-cell('full');
+        @include xy-cell($columns, $vertical: true);
+        @include xy-gutters($gutter-position: ('top', 'bottom'));
+      }
+
+      @else {
+        @include xy-cell($columns, $gutters: $gutters);
+      }
+    }
   }
 }
 
-@mixin columns($number, $inner: false) {
-  @include xy-grid($wrap: true);
-  @include xy-gutters($negative: $inner);
+@mixin navbarFix() {
+  padding-top: $navbar-height;
 
-  > * {
-    @include xy-cell(12/$number);
+  @media #{$desktop} {
+    padding-top: 0;
   }
+}
+
+.content {
+  @include row(12);
 }
 
 %grid {
@@ -92,9 +146,8 @@ $grid-padding-gutters: $gutter-padding;
     *zoom: 1;
   }
 }
-
 // the overflow-x scroll prevents the overflow-y to be visible so we need this hack to keep the dropdowns visible
-@mixin overflowFix() {
-  padding-top: 250px;
-  margin-top: -250px;
+@mixin overflowFix($size) {
+  padding-top: $size;
+  margin-top: -#{$size};
 }

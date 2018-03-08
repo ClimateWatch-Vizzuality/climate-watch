@@ -4,6 +4,7 @@ import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import uniq from 'lodash/uniq';
+import sortBy from 'lodash/sortBy';
 import { ESP_BLACKLIST, FILTERS_BY_CATEGORY } from 'data/constants';
 
 const getCategory = state =>
@@ -17,40 +18,40 @@ export const getDefaultColumns = createSelector([getCategory], category => {
     case 'models':
       return [
         'full_name',
-        'description',
-        'license',
-        'time_step',
-        'time_horizon'
+        'developed_by',
+        'geographic_coverage',
+        'time_horizon',
+        'url'
       ];
     case 'scenarios':
-      return ['name', 'category', 'description'];
+      return ['model', 'name', 'category', 'url'];
     case 'indicators':
-      return ['name', 'category', 'unit'];
+      return ['category', 'subcategory', 'name'];
     default:
       return null;
   }
 });
 
-export const flattenedData = createSelector([getData], data => {
-  if (!data || isEmpty(data)) return null;
-  const attributesWithObjects = ['model', 'category', 'subcategory'];
-  return data.map(d => {
-    const flattenedD = d;
-    attributesWithObjects.forEach(a => {
-      if (Object.prototype.hasOwnProperty.call(d, a)) {
-        flattenedD[a] = d[a] && d[a].name;
-      }
-    });
-    return flattenedD;
-  });
+export const getFullTextColumns = createSelector([getCategory], category => {
+  switch (category) {
+    case 'models':
+      return ['full_name'];
+    case 'scenarios':
+      return ['description'];
+    case 'indicators':
+      return [];
+    default:
+      return null;
+  }
 });
 
 export const filteredDataBySearch = createSelector(
-  [flattenedData, getQuery],
+  [getData, getQuery],
   (data, query) => {
-    if (!data) return null;
+    if (!data || isEmpty(data)) return null;
     if (!query) return data;
-    return data.filter(d =>
+    const updatedData = data;
+    return updatedData.filter(d =>
       Object.keys(d).some(key => {
         if (Object.prototype.hasOwnProperty.call(d, key) && d[key] !== null) {
           return deburrUpper(d[key]).indexOf(query) > -1;
@@ -61,27 +62,24 @@ export const filteredDataBySearch = createSelector(
   }
 );
 
-export const titleLinks = createSelector(
-  [getCategory, getData],
-  (categoryName, data) => {
-    if (!data || isEmpty(data) || !categoryName) return null;
-    const categoryId = {
-      models: 'full_name',
-      scenarios: 'name'
-    };
-    return data.map(d => ({
-      fieldName: categoryId[categoryName],
-      url: `${categoryName}/${d.id}`
-    }));
+const getSelectedFields = createSelector(
+  [getSearch, getCategory],
+  (search, category) => {
+    if (!search) return null;
+    let selectedFields = search;
+    const selectedKeys = Object.keys(selectedFields).filter(k =>
+      k.startsWith(category)
+    );
+    selectedFields = pick(selectedFields, selectedKeys);
+
+    const fieldsWithoutPrefix = {};
+    Object.keys(selectedFields).forEach(k => {
+      const keyWithoutPrefix = k.replace(`${category}-`, '');
+      fieldsWithoutPrefix[keyWithoutPrefix] = selectedFields[k];
+    });
+    return fieldsWithoutPrefix;
   }
 );
-
-const getSelectedFields = createSelector([getSearch], search => {
-  if (!search) return null;
-  const selectedFields = search;
-  delete selectedFields.search;
-  return selectedFields;
-});
 
 export const getSelectedFieldOptions = createSelector(
   [getSelectedFields],
@@ -103,16 +101,56 @@ export const filteredDataByFilters = createSelector(
     let filteredData = data;
     Object.keys(filters).forEach(key => {
       filteredData = filteredData.filter(
-        d => d[key] === undefined || d[key] === filters[key]
+        d => d[key] && (d[key] === filters[key] || d[key].name === filters[key])
       );
     });
     return filteredData;
   }
 );
 
-export const getFilterOptionsByCategory = createSelector(
+export const titleLinks = createSelector(
   [getCategory, filteredDataByFilters],
-  (category, data) => {
+  (categoryName, data) => {
+    if (!data || isEmpty(data) || !categoryName) return null;
+    const linkInfo = {
+      models: [
+        { columnName: 'full_name', linkToId: true },
+        { columnName: 'url' }
+      ],
+      scenarios: [
+        { columnName: 'name', linkToId: true },
+        { columnName: 'url' }
+      ],
+      indicators: []
+    };
+    const updatedData = data;
+    return updatedData.map(d =>
+      linkInfo[categoryName].map(l => ({
+        columnName: l.columnName,
+        url: l.linkToId ? `${categoryName}/${d.id}` : 'self'
+      }))
+    );
+  }
+);
+
+export const getAvailableSubcategories = createSelector(
+  [filteredDataBySearch, getSelectedFields],
+  (data, filters) => {
+    if (!data) return null;
+    if (!filters || !filters.category) return [];
+    const availableSubcategories = [];
+    data.forEach(d => {
+      if (d.category.name === filters.category) {
+        availableSubcategories.push(d.subcategory.name);
+      }
+    });
+    return uniq(availableSubcategories);
+  }
+);
+
+export const getFilterOptionsByCategory = createSelector(
+  [getCategory, getData, getAvailableSubcategories],
+  (category, data, subcategories) => {
     if (!category || !data || isEmpty(data)) return null;
     const filters = FILTERS_BY_CATEGORY[category];
     const categoryOptions = {};
@@ -124,8 +162,13 @@ export const getFilterOptionsByCategory = createSelector(
           sanitizedFilterData.push(filterName);
         }
       });
-
-      categoryOptions[f] = uniq(sanitizedFilterData).map(filterData => ({
+      let availableData = uniq(sanitizedFilterData);
+      if (f === 'subcategory') {
+        availableData = uniq(sanitizedFilterData).filter(
+          d => subcategories.indexOf(d) > -1
+        );
+      }
+      categoryOptions[f] = availableData.map(filterData => ({
         value: filterData,
         label: filterData
       }));
@@ -146,8 +189,40 @@ export const filterDataByBlackList = createSelector(
   }
 );
 
+export const renameDataColumns = createSelector(
+  [filterDataByBlackList, getCategory],
+  (data, category) => {
+    if (!data || isEmpty(data)) return null;
+    if (category === 'models') {
+      let renamedData = data;
+      const changes = [{ old: 'maintainer_name', new: 'developed_by' }];
+      renamedData = renamedData.map(d => {
+        const updatedD = d;
+        changes.forEach(change => {
+          if (d[change.old]) {
+            updatedD[change.new] = d[change.old];
+            delete updatedD[change.old];
+          }
+        });
+        return updatedD;
+      });
+      return renamedData;
+    }
+    return data;
+  }
+);
+
+export const sortDataByCategoryAttribute = createSelector(
+  [renameDataColumns, getCategory],
+  (data, category) => {
+    if (!data || isEmpty(data) || !category) return null;
+    if (category !== 'indicators') return data;
+    return sortBy(data, d => d.category.name);
+  }
+);
+
 export default {
-  filterDataByBlackList,
+  sortDataByCategoryAttribute,
   titleLinks,
   filteredDataByFilters,
   getFilterOptionsByCategory,

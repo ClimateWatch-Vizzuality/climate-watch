@@ -4,7 +4,7 @@
   display: flex;
   overflow: scroll;
 
-  @include overflowFix();
+  @include overflowFix(250px);
 
   padding-top: 260px;
 
@@ -28,6 +28,7 @@
 .tagSelector :global {
   width: 29px;
   height: 29px;
+  z-index: 0;
 
   .react-selectize-control {
     background-color: $white !important;
@@ -62,3 +63,11 @@
   }
 }
 
+.plusIcon {
+  width: 10px;
+  height: 10px;
+}
+
+.hidden {
+  opacity: 0;
+}

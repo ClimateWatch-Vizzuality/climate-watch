@@ -1,16 +1,4 @@
-@import '~styles/settings.scss';
-
-.navbar {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  @media #{$tablet-landscape} {
-    flex-direction: row;
-    align-items: center;
-    height: 100%;
-  }
-}
+@import '~styles/layout.scss';
 
 .logo {
   width: 136px;
@@ -21,10 +9,6 @@
   height: 100%;
 }
 
-.menuLink {
-  padding: 17px 0 18px;
-}
-
 .link {
   display: flex;
   align-items: center;
@@ -32,8 +16,6 @@
   font-size: $font-size-s;
   font-weight: $font-weight-bold;
   letter-spacing: 1px;
-  padding-top: 20px;
-  position: relative;
 
   &.active::after {
     content: "";
@@ -47,11 +29,9 @@
   }
 
   @media #{$tablet-landscape} {
-    margin-right: 40px;
     text-decoration: none;
     position: relative;
     height: 100%;
-    padding: 0;
 
     &.active::after {
       content: "";

@@ -3,7 +3,7 @@ class Story < ApplicationRecord
     tags_array = tags.try(:split, ',')
     limit = limit.try(:to_i) || 5
 
-    pinned_stories = tagged_stories(['climatewatch-pinned'], limit)
+    pinned_stories = tagged_stories(['climatewatch-pinned'], 2)
     return pinned_stories if pinned_stories.length >= limit
 
     tagged_stories = tagged_stories(tags_array, limit)

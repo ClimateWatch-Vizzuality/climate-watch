@@ -1,12 +1,12 @@
 import EmissionPathwaysTableMenu from 'components/emission-pathways/emission-pathways-table-menu';
-import EmissionPathwayGraph from 'components/emission-pathways/emission-pathway-graph';
+import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
 
 export default [
   {
     hash: 'overview',
     label: 'Overview',
     anchor: true,
-    component: EmissionPathwayGraph
+    component: EmissionPathwaysGraph
   },
   {
     hash: 'models-scenarios-indicators',

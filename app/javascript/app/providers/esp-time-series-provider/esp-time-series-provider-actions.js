@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 
 const getEspTimeSeriesInit = createAction('getEspTimeSeriesInit');
+const getEspLocationsFail = createAction('getEspLocationsFail');
 const getEspTimeSeriesReady = createAction('getEspTimeSeriesReady');
 const { ESP_API } = process.env;
 
@@ -22,7 +23,7 @@ const getEspTimeSeries = createThunkAction(
         })
         .catch(error => {
           console.info(error);
-          getEspTimeSeriesReady({});
+          dispatch(getEspLocationsFail());
         });
     }
   }
