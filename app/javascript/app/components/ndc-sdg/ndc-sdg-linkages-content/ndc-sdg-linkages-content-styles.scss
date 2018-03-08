@@ -2,10 +2,10 @@
 @import '~styles/settings.scss';
 
 .layout {
-  @include columns(12);
+  @include columns(12, $gutters: false);
 
   @media #{$tablet-landscape} {
-    @include row((4, 8));
+    @include row((4,8), $innerGutters: false);
 
     > :nth-child(2) {
       order: 1;

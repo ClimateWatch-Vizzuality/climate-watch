@@ -7,11 +7,11 @@ $grid-container: $max-width;
 $grid-margin-gutters: $gutter-padding;
 $grid-padding-gutters: $gutter-padding;
 
-@mixin row($columns: full, $wrap: true, $gridDirection: 'horizontal') {
+@mixin row($columns: full, $wrap: true, $gridDirection: 'horizontal', $innerGutters: true) {
   @include xy-grid($wrap: $wrap, $direction: $gridDirection);
   @include xy-gutters();
   @include xy-grid-container;
-  @include shared-column($columns, $gridDirection);
+  @include shared-column($columns, $gridDirection, $innerGutters);
 }
 
 @mixin setGutters($gridDirection) {
@@ -27,6 +27,7 @@ $grid-padding-gutters: $gutter-padding;
 @mixin columns($columns: full, $wrap: true, $gutters: true, $gridDirection: 'horizontal') {
   @include xy-grid($wrap: $wrap, $direction: $gridDirection);
   $negative: true;
+  $innerGutters: $negative;
   $gutters-value: $grid-margin-gutters;
 
   @if $gutters == false {
@@ -37,14 +38,14 @@ $grid-padding-gutters: $gutter-padding;
     @include xy-gutters($negative: $negative);
   }
 
-  @include shared-column($columns, $gridDirection, $gutters-value);
+  @include shared-column($columns, $gridDirection, $innerGutters, $gutters-value);
 }
 
 @mixin column-offset($number: 0) {
   @include xy-cell-offset($number);
 }
 
-@mixin shared-column($columns, $gridDirection, $gutters: $grid-margin-gutters) {
+@mixin shared-column($columns, $gridDirection, $innerGutters, $gutters: $grid-margin-gutters) {
   @if type-of($columns) == list {
     @for $i from 1 through length($columns) {
       $size: nth($columns, $i);
@@ -57,7 +58,13 @@ $grid-padding-gutters: $gutter-padding;
         }
 
         @else {
-          @include xy-cell($size);
+          @if $innerGutters == true {
+            @include xy-cell($size, $gutters: $gutters);
+          }
+
+          @else {
+            @include xy-cell($size, $gutters: 0);
+          }
         }
       }
     }
@@ -72,7 +79,13 @@ $grid-padding-gutters: $gutter-padding;
       }
 
       @else {
-        @include xy-cell($columns, $gutters: $gutters);
+        @if $innerGutters == true {
+          @include xy-cell($size, $gutters: $gutters);
+        }
+
+        @else {
+          @include xy-cell($size, $gutters: 0);
+        }
       }
     }
   }
