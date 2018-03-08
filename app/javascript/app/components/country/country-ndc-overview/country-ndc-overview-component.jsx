@@ -58,11 +58,8 @@ class CountryNdcOverview extends PureComponent {
   renderCards() {
     const { sectors, values } = this.props;
     const renderSubtitle = text => <h4 className={styles.subTitle}>{text}</h4>;
-    const adaptationTitle = (
-      <h4 className={styles.subTitle}>Adaptation contribution</h4>
-    );
     return (
-      <div>
+      <div className="grid-column-item">
         <div className={styles.row}>
           <div className="layout-card-container">
             <div className={styles.subtitles}>
@@ -77,7 +74,7 @@ class CountryNdcOverview extends PureComponent {
                   <Card title="GHG Target">
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
-                        <div>
+                        <React.Fragment>
                           <span className={styles.metaTitle}>Target type</span>
                           <p
                             className={styles.targetText}
@@ -94,7 +91,7 @@ class CountryNdcOverview extends PureComponent {
                               __html: values.time_target_year[0].value
                             }}
                           />
-                        </div>
+                        </React.Fragment>
                       ) : (
                         <div className={styles.noContent}>Not included</div>
                       )}
@@ -132,7 +129,9 @@ class CountryNdcOverview extends PureComponent {
                   </Card>
                 </div>
               </div>
-              <TabletPortraitOnly>{adaptationTitle}</TabletPortraitOnly>
+              <TabletPortraitOnly>
+                {renderSubtitle('Adaptation contribution')}
+              </TabletPortraitOnly>
               <div className={styles.adaptationList}>
                 <Card title="Identified Sectors for Adaptation Action">
                   <div className={styles.cardContent}>
@@ -183,7 +182,7 @@ class CountryNdcOverview extends PureComponent {
             {loading && <Loading light className={styles.loader} />}
             {hasSectors && (
               <div className={layout.content}>
-                <div>
+                <div className="grid-column-item">
                   <div
                     className={cx(styles.header, actions ? styles.col2 : '')}
                   >
@@ -199,7 +198,7 @@ class CountryNdcOverview extends PureComponent {
                     />
                     <TabletPortraitOnly>{description}</TabletPortraitOnly>
                     {actions && (
-                      <div>
+                      <div className="grid-column-item">
                         <div className={styles.actions}>
                           {this.renderInfoButton()}
                           {this.renderCompareButton()}
