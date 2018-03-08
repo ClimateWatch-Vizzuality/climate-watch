@@ -1,10 +1,9 @@
 @import '~styles/layout.scss';
 
 .row {
-  @include row((4, 8));
-
-  @media #{$mobile-only} {
-    @include row(12);
+  @include row(12);
+  @media #{$tablet-portrait} {
+    @include row((4, 8));
   }
 }
 
