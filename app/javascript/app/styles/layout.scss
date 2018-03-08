@@ -80,11 +80,11 @@ $grid-padding-gutters: $gutter-padding;
 
       @else {
         @if $innerGutters == true {
-          @include xy-cell($size, $gutters: $gutters);
+          @include xy-cell($columns, $gutters: $gutters);
         }
 
         @else {
-          @include xy-cell($size, $gutters: 0);
+          @include xy-cell($columns, $gutters: 0);
         }
       }
     }
