@@ -17,54 +17,29 @@
   border-left: solid 1px $theme-border;
 
   @include columns(12, $gutters: false);
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  @media #{$tablet-portrait} {
+    @include columns(6, $gutters: false);
+  }
 
   @media #{$tablet-landscape} {
     @include columns(4, $gutters: false);
-  }
-}
-
-.titleContainer {
-  @extend %grid;
-
-  @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 0;
+    @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
   }
 }
 
 .buttons {
-  @extend %grid;
+  @include columns((12, 12, 2, 10));
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(46%, 1fr);
-
-    grid-template-columns: 46% 1fr;
+    @include columns((6, 1, 2, 3));
   }
-}
 
-.actionButtons {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 7fr);
-
-  grid-template-columns: 1fr 7fr;
-  grid-column-gap: 20px;
-
-  @media #{$tablet-landscape} {
-    grid-column-gap: $grid-gap;
+  .infoBtn,
+  .exploreBtn {
+    margin-top: 20px;
   }
-}
-
-.infoBtn {
-  margin-top: 20px;
-  margin-left: 0.3em;
-}
-
-.exploreBtn {
-  margin-top: 20px;
-  -ms-grid-column: 6;
 }
 
 .descriptionContainer {

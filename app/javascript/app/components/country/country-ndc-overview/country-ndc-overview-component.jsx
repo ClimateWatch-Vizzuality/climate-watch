@@ -16,24 +16,24 @@ import styles from './country-ndc-overview-styles.scss';
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
-  renderInfoAndCompareButtons() {
-    const { iso, handleInfoClick } = this.props;
+  renderInfoButton() {
+    const { handleInfoClick } = this.props;
     return (
-      <div className={styles.infoAndCompareButtons}>
-        <InfoButton
-          className={styles.infoBtn}
-          infoOpen={false}
-          handleInfoClick={handleInfoClick}
-          box
-        />
-        <Button
-          className={styles.exploreBtn}
-          color="white"
-          link={`/ndcs/compare/mitigation?locations=${iso}`}
-        >
-          Compare
-        </Button>
-      </div>
+      <InfoButton
+        className={styles.infoBtn}
+        infoOpen={false}
+        handleInfoClick={handleInfoClick}
+        box
+      />
+    );
+  }
+
+  renderCompareButton() {
+    const { iso } = this.props;
+    return (
+      <Button color="white" link={`/ndcs/compare/mitigation?locations=${iso}`}>
+        Compare
+      </Button>
     );
   }
 
@@ -53,18 +53,24 @@ class CountryNdcOverview extends PureComponent {
 
   renderCards() {
     const { sectors, values } = this.props;
+    const renderSubtitle = text => <h4 className={styles.subTitle}>{text}</h4>;
     return (
-      <div>
+      <div className="grid-column-item">
         <div className={styles.row}>
-          <h4 className={styles.subTitle}>Mitigation contribution</h4>
           <div className="layout-card-container">
+            <div className={styles.subtitles}>
+              {renderSubtitle('Mitigation contribution')}
+              <TabletLandscape>
+                {renderSubtitle('Adaptation contribution')}
+              </TabletLandscape>
+            </div>
             <div className={styles.cards}>
-              <div>
+              <div className="grid-column-item">
                 <div className={styles.cardsRowContainer}>
                   <Card title="GHG Target">
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
-                        <div>
+                        <React.Fragment>
                           <span className={styles.metaTitle}>Target type</span>
                           <p
                             className={styles.targetText}
@@ -81,7 +87,7 @@ class CountryNdcOverview extends PureComponent {
                               __html: values.time_target_year[0].value
                             }}
                           />
-                        </div>
+                        </React.Fragment>
                       ) : (
                         <div className={styles.noContent}>Not included</div>
                       )}
@@ -119,10 +125,10 @@ class CountryNdcOverview extends PureComponent {
                   </Card>
                 </div>
               </div>
-              <div>
-                <h4 className={cx(styles.subTitle, styles.adaptionList)}>
-                  Adaptation Contribution
-                </h4>
+              <TabletPortraitOnly>
+                {renderSubtitle('Adaptation contribution')}
+              </TabletPortraitOnly>
+              <div className={styles.adaptationList}>
                 <Card title="Identified Sectors for Adaptation Action">
                   <div className={styles.cardContent}>
                     {sectors.length ? (
@@ -172,32 +178,39 @@ class CountryNdcOverview extends PureComponent {
             {loading && <Loading light className={styles.loader} />}
             {hasSectors && (
               <div className={layout.content}>
-                <div className={cx(styles.header, actions ? styles.col2 : '')}>
-                  <Intro
-                    theme={introTheme}
-                    title={
-                      actions ? (
-                        'Nationally Determined Contribution (NDC) Overview'
-                      ) : (
-                        'Overview'
-                      )
-                    }
-                  />
-                  <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                  {actions && (
-                    <div className={styles.actions}>
-                      {this.renderInfoAndCompareButtons()}
-                      <TabletLandscape>
-                        {this.renderExploreButton()}
-                      </TabletLandscape>
-                    </div>
-                  )}
+                <div className="grid-column-item">
+                  <div
+                    className={cx(styles.header, actions ? styles.col2 : '')}
+                  >
+                    <Intro
+                      theme={introTheme}
+                      title={
+                        actions ? (
+                          'Nationally Determined Contribution (NDC) Overview'
+                        ) : (
+                          'Overview'
+                        )
+                      }
+                    />
+                    <TabletPortraitOnly>{description}</TabletPortraitOnly>
+                    {actions && (
+                      <div className="grid-column-item">
+                        <div className={styles.actions}>
+                          {this.renderInfoButton()}
+                          {this.renderCompareButton()}
+                          <TabletLandscape>
+                            {this.renderExploreButton()}
+                          </TabletLandscape>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <TabletLandscape>{description}</TabletLandscape>
+                  {this.renderCards()}
+                  <TabletPortraitOnly>
+                    {this.renderExploreButton()}
+                  </TabletPortraitOnly>
                 </div>
-                <TabletLandscape>{description}</TabletLandscape>
-                {this.renderCards()}
-                <TabletPortraitOnly>
-                  {this.renderExploreButton()}
-                </TabletPortraitOnly>
               </div>
             )}
           </div>

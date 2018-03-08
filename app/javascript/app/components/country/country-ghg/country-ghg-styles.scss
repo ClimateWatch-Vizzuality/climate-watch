@@ -1,18 +1,9 @@
 @import '~styles/layout.scss';
 
 .grid {
-  @media #{$tablet-landscape} {
-    display: grid;
-    grid-template-columns: 8fr 4fr;
-
-    > div:nth-child(2) {
-      -ms-grid-column: 2;
-    }
-  }
-}
-
-.map {
-  position: relative;
-  margin-left: $gutter-padding / 2;
   padding: 30px 0;
+
+  @media #{$tablet-landscape} {
+    @include row((8,4));
+  }
 }

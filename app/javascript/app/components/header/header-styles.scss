@@ -3,11 +3,8 @@
 .header {
   position: relative;
   background-color: $theme-color;
-  color: $white;
   padding-top: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  color: $white;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -22,13 +19,6 @@
 
   @media #{$desktop} {
     background-image: none !important; // To overwrite the inline selector
-  }
-
-  // as we need can't use pseudo elements in react
-  // we need a element to set the background color so
-  // we need this to hack the z-index of the child elements
-  & ~ * {
-    z-index: 1;
   }
 }
 

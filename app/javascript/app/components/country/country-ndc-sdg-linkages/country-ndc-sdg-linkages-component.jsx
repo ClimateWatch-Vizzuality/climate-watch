@@ -134,27 +134,23 @@ class CountrySDGLinkages extends PureComponent {
         <NdcsSdgsDataProvider />
         <div className={layout.content}>
           <div className={styles.header}>
-            <div className={styles.titleContainer}>
+            <div className={styles.buttons}>
               <h3 className={styles.title}>NDC-SDG Linkages</h3>
-              <div className={styles.buttons}>
-                <TabletPortraitOnly>{description}</TabletPortraitOnly>
-                <div className={styles.actionButtons}>
-                  <InfoButton
-                    className={styles.infoBtn}
-                    infoOpen={false}
-                    handleInfoClick={handleInfoClick}
-                    box
-                  />
-                  <Dropdown
-                    label="Filter by sector"
-                    placeholder="Choose a sector"
-                    options={sectorOptions}
-                    onValueChange={handleSectorChange}
-                    value={activeSector}
-                  />
-                </div>
-                <TabletLandscape>{exploreButton}</TabletLandscape>
-              </div>
+              <TabletPortraitOnly>{description}</TabletPortraitOnly>
+              <InfoButton
+                className={styles.infoBtn}
+                infoOpen={false}
+                handleInfoClick={handleInfoClick}
+                box
+              />
+              <Dropdown
+                label="Filter by sector"
+                placeholder="Choose a sector"
+                options={sectorOptions}
+                onValueChange={handleSectorChange}
+                value={activeSector}
+              />
+              <TabletLandscape>{exploreButton}</TabletLandscape>
             </div>
             <TabletLandscape>{description}</TabletLandscape>
           </div>
