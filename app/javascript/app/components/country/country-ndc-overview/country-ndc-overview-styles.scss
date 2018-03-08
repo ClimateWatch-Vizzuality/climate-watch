@@ -40,6 +40,7 @@
   color: $theme-color;
   line-height: $line-height-medium;
   column-count: 1;
+  column-gap: $gutter-padding;
   margin-bottom: 15px;
 
   @media #{$tablet-landscape} {
