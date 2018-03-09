@@ -65,7 +65,7 @@ class NDCCountryFull extends PureComponent {
       content
     } = this.props;
     return (
-      <div>
+      <div className={styles.page}>
         <Header route={route}>
           <div className={cx(layout.content, styles.header, styles.twoFold)}>
             <div className={styles.title}>
@@ -90,12 +90,14 @@ class NDCCountryFull extends PureComponent {
                 blueBorder
                 disabled={contentOptions.length === 1}
               />
-              <NdcsAutocompleteSearch
-                className={styles.select}
-                fetchSearchResults={fetchCountryNDCFull}
-                dark
-                label
-              />
+              <div className={styles.search}>
+                <NdcsAutocompleteSearch
+                  className={styles.select}
+                  fetchSearchResults={fetchCountryNDCFull}
+                  dark
+                  label
+                />
+              </div>
             </div>
           </div>
         </Sticky>

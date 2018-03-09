@@ -17,7 +17,6 @@ import { TabletLandscape } from 'components/responsive';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
-import layout from 'styles/layout.scss';
 import styles from './ndc-country-styles.scss';
 
 class NDCCountry extends PureComponent {
@@ -34,7 +33,7 @@ class NDCCountry extends PureComponent {
     } = this.props;
     const countryName = country && `${country.wri_standard_name}`;
     return (
-      <div>
+      <div className={styles.page}>
         <MetaDescription
           descriptionContext={NDC_COUNTRY({ countryName })}
           subtitle={countryName}
@@ -46,17 +45,15 @@ class NDCCountry extends PureComponent {
         <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>
-            <div
-              className={cx(layout.content, styles.doubleFold, styles.header)}
-            >
+            <div className={cx(styles.doubleFold, styles.header)}>
               <div className={styles.title}>
                 <Intro title={country.wri_standard_name} />
               </div>
-              <div className={styles.threeFold}>
-                <div>
-                  {documentsOptions && (
-                    <div>
-                      {documentsOptions.length > 1 ? (
+              <div className="grid-layout-item">
+                <div className={styles.threeFold}>
+                  <div>
+                    {documentsOptions &&
+                      (documentsOptions.length > 1 ? (
                         <Dropdown
                           className={theme.dropdownOptionWithArrow}
                           placeholder="Select a document"
@@ -72,25 +69,24 @@ class NDCCountry extends PureComponent {
                         >
                           {`View ${documentsOptions[0].label} Document`}
                         </Button>
-                      )}
-                    </div>
-                  )}
+                      ))}
+                  </div>
+                  <TabletLandscape>
+                    <Button
+                      color="yellow"
+                      link={`/ndcs/compare/mitigation?locations=${match.params
+                        .iso}`}
+                    >
+                      Compare
+                    </Button>
+                  </TabletLandscape>
+                  <Search
+                    theme={lightSearch}
+                    placeholder="Search"
+                    input={search}
+                    onChange={onSearchChange}
+                  />
                 </div>
-                <TabletLandscape>
-                  <Button
-                    color="yellow"
-                    link={`/ndcs/compare/mitigation?locations=${match.params
-                      .iso}`}
-                  >
-                    Compare
-                  </Button>
-                </TabletLandscape>
-                <Search
-                  theme={lightSearch}
-                  placeholder="Search"
-                  input={search}
-                  onChange={onSearchChange}
-                />
               </div>
             </div>
             <Sticky activeClass="sticky -ndcs" top="#navBarMobile">

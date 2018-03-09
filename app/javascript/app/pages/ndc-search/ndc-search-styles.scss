@@ -1,45 +1,36 @@
 @import '~styles/settings.scss';
 @import '~styles/layout.scss';
 
+.page {
+  @media #{$mobile-only} {
+    padding-top: $navbar-height;
+  }
+}
+
 .anchorNav {
   @include row('shrink', $wrap: false);
 }
 
 .headerCols {
-  @extend %grid;
+  @include row();
 
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
   margin-bottom: 15px;
   z-index: 2;
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(6fr, 6fr);
-
-    grid-template-columns: 6fr 6fr;
+    @include row((6,6));
   }
 }
 
-.contentCols {
-  display: block;
+.wrapperCols {
   background-color: $light-gray;
+}
 
-  @media #{$tablet-portrait} {
-    display: grid;
-
-    @include msGridColumns(1fr);
-
-    grid-template-columns: 1fr;
-  }
+.contentCols {
+  @include row();
 
   @media #{$tablet-landscape} {
-    display: grid;
-    grid-column-gap: 30px;
-
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: repeat(2, 50%);
+    @include row((6,6));
   }
 }
 

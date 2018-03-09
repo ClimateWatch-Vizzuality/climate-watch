@@ -1,47 +1,41 @@
 @import '~styles/layout.scss';
 
+.page {
+  @media #{$mobile-only} {
+    padding-top: $navbar-height;
+  }
+}
+
 .anchorNav {
   @include row('shrink', $wrap: false);
 }
 
 .doubleFold {
-  @extend %grid;
+  @include row();
 
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
   z-index: 2;
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(5fr, 7fr);
+    @include row((5, 7));
 
-    grid-template-columns: 5fr 7fr;
     z-index: 0;
   }
 }
 
 .threeFold {
-  @extend %grid;
+  @include columns();
 
-  height: 150px;
-  max-width: 450px;
-
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
+  height: 100px;
 
   @media #{$tablet-portrait} {
-    @include msGridColumns(1fr, 1fr);
+    @include columns(6);
 
-    grid-template-columns: 1fr 1fr;
     height: auto;
     max-width: 100%;
   }
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(3fr, 2fr, 2fr);
-
-    grid-template-columns: 3fr 2fr 2fr;
+    @include columns((5, 3, 4));
   }
 }
 

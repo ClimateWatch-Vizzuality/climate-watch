@@ -40,8 +40,14 @@ $grid-padding-gutters: $gutter-padding;
   @include shared-column($columns, $gridDirection, $gutters-value);
 }
 
-@mixin column-offset($number: 0) {
-  @include xy-cell-offset($number);
+@mixin column-offset($number: 0, $gutters: false) {
+  $gutters-value: $grid-margin-gutters;
+
+  @if $gutters == false {
+    $gutters-value: 0;
+  }
+
+  @include xy-cell-offset($number, $gutters: $gutters-value);
 }
 
 @mixin shared-column($columns, $gridDirection, $gutters: $grid-margin-gutters) {

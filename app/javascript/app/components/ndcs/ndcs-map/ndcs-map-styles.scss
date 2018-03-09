@@ -16,6 +16,10 @@
   }
 }
 
+.column {
+  @include columns();
+}
+
 .buttonGroup {
   @media #{$tablet-landscape} {
     @include column-offset(3);

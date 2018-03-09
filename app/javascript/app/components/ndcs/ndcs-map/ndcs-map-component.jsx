@@ -80,8 +80,8 @@ const NDCMap = ({
         />
       )}
     </TabletPortraitOnly>
-    <TabletPortraitOnly className={styles.buttonGroup}>
-      {renderButtonGroup(handleInfoClick, true)}
+    <TabletPortraitOnly className={styles.column}>
+      <div>{renderButtonGroup(handleInfoClick, true)}</div>
     </TabletPortraitOnly>
     <ReactTooltip id="mapTooltip">
       {tooltipTxt && getTooltip(countryName, tooltipTxt)}
