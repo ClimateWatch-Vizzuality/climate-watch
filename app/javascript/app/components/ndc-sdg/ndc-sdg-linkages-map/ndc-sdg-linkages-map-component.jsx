@@ -66,17 +66,19 @@ class NdcSdgLinkagesMap extends PureComponent {
               [styles.isOpen]: this.props.goalSelected !== ''
             })}
           >
-            {isTablet ? (
-              <h3 className={styles.title}>Global Linkage Overview</h3>
-            ) : null}
-            {isTablet ? (
-              <ButtonGroup
-                className={styles.buttons}
-                onInfoClick={this.props.handleInfoClick}
-                shareUrl="/embed/ndcs-sdg"
-                analyticsGraphName="Ndcs-Sdg"
-              />
-            ) : null}
+            <div className={styles.row}>
+              {isTablet ? (
+                <h3 className={styles.title}>Global Linkage Overview</h3>
+              ) : null}
+              {isTablet ? (
+                <ButtonGroup
+                  className={styles.buttons}
+                  onInfoClick={this.props.handleInfoClick}
+                  shareUrl="/embed/ndcs-sdg"
+                  analyticsGraphName="Ndcs-Sdg"
+                />
+              ) : null}
+            </div>
             <Map
               style={{ height: '100%', width: '100%' }}
               zoomEnable={isTablet}

@@ -14,7 +14,7 @@
   position: relative;
 
   @media #{$tablet-landscape} {
-    padding-top: 15px;
+    overflow-x: auto;
   }
 
   &::-webkit-scrollbar {

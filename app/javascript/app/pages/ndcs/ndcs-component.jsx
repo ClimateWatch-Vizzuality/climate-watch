@@ -26,6 +26,7 @@ const NDC = ({ anchorLinks, query, route }) => (
         useRoutes
         links={anchorLinks}
         query={query}
+        className={styles.anchorNav}
         theme={anchorNavRegularTheme}
       />
     </Header>
