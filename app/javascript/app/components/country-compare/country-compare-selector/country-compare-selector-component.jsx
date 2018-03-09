@@ -13,18 +13,20 @@ const CountryCompareSelector = ({
   className
 }) => (
   <div className={styles.bottomBorder}>
-    <div className={cx(styles.layout, className)}>
-      {selectors.map((v, index) => (
-        <Dropdown
-          key={v.color}
-          placeholder="Add a country"
-          options={sortBy(countryOptions, ['label'])}
-          onValueChange={selected => handleDropDownChange(index, selected)}
-          value={activeCountryOptions[index]}
-          transparent
-          colorDot={v.country ? v.color : null}
-        />
-      ))}
+    <div className="grid-column-item">
+      <div className={cx(styles.layout, className)}>
+        {selectors.map((v, index) => (
+          <Dropdown
+            key={v.color}
+            placeholder="Add a country"
+            options={sortBy(countryOptions, ['label'])}
+            onValueChange={selected => handleDropDownChange(index, selected)}
+            value={activeCountryOptions[index]}
+            transparent
+            colorDot={v.country ? v.color : null}
+          />
+        ))}
+      </div>
     </div>
   </div>
 );
