@@ -20,26 +20,16 @@
   }
 }
 
-.content {
-  width: 100%;
-}
-
-.searchTitle {
-  color: $theme-color;
-  font-size: $font-size-m;
+.columns {
+  @include columns();
 
   @media #{$tablet-landscape} {
-    display: none;
+    @include columns((4,8));
   }
-}
-
-.search {
-  width: 100%;
 }
 
 .map {
   display: inline-block;
-  width: calc(75% - #{$gutter-padding});
   margin-left: $gutter-padding;
   text-align: center;
 }
@@ -48,11 +38,9 @@
   display: inline-block;
   font-size: $font-size-m;
   max-height: 450px;
-  width: 100%;
   vertical-align: top;
 
   @media #{$tablet-landscape} {
-    width: 25%;
     font-size: $font-size;
   }
 }

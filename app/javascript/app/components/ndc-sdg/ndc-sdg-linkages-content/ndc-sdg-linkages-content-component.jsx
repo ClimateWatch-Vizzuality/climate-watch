@@ -18,16 +18,18 @@ class NdcSdgLinkagesContent extends PureComponent {
       handleTargetHover
     } = this.props;
     return (
-      <div className={styles.layout}>
-        <NdcsSdgsMetaProvider />
-        <NdcSdgLinkagesTable
-          goalHover={goalHover}
-          onGoalHover={handleGoalHover}
-          targetHover={targetHover}
-          onTargetHover={handleTargetHover}
-        />
-        <NdcSdgLinkagesMap goalHover={goalHover} targetHover={targetHover} />
-        <ModalMetadata />
+      <div className={styles.row}>
+        <div className={styles.layout}>
+          <NdcsSdgsMetaProvider />
+          <NdcSdgLinkagesTable
+            goalHover={goalHover}
+            onGoalHover={handleGoalHover}
+            targetHover={targetHover}
+            onTargetHover={handleTargetHover}
+          />
+          <NdcSdgLinkagesMap goalHover={goalHover} targetHover={targetHover} />
+          <ModalMetadata />
+        </div>
       </div>
     );
   }
