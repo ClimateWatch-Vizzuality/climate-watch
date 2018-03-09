@@ -2,8 +2,7 @@
 @import '~styles/settings.scss';
 
 .section {
-  padding: 40px 30px;
-  margin: 0 -30px;
+  padding: 50px 0 $gutter-padding 0;
 
   &:not(:last-child) {
     border-bottom: 1px solid $border-color;
@@ -14,24 +13,21 @@
   font-size: $font-size-large;
   font-weight: $font-weight;
   color: $theme-color;
-  margin-bottom: 30px;
+  margin-bottom: $gutter-padding;
 }
 
 .partners {
   @include clearFix();
+  @include columns(12);
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding * 4);
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(4);
+  }
 
   .partner {
-    float: left;
-    width: 100%;
-    padding-right: $gutter-padding;
-    margin-bottom: 4em;
-
-    @media #{$tablet-landscape} {
-      height: 220px;
-      width: 33.333%;
-      margin-bottom: 30px;
-    }
-
     .link {
       display: flex;
       align-items: center;
@@ -64,30 +60,26 @@
   }
 
   &.col4 {
-    .partner {
-      width: 100%;
+    @include columns(12);
 
-      @media #{$tablet-landscape} {
-        width: 25%;
-      }
+    @media #{$tablet-landscape} {
+      @include columns(3);
     }
   }
 
   &.additionalData {
-    .partner {
-      width: 100%;
-      margin-bottom: 1em;
+    @include columns(12);
 
-      @media #{$tablet-landscape} {
-        width: 25%;
-        height: 80px;
-      }
+    .partner {
+        @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+    }
+
+    @media #{$tablet-landscape} {
+      @include columns(3);
     }
 
     .link {
       display: inline-block;
     }
-
-    grid-template-columns: repeat(4, 1fr);
   }
 }
