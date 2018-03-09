@@ -19,6 +19,7 @@
 .partners {
   @include clearFix();
   @include columns(12);
+
   > * {
     @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding * 4);
   }
@@ -71,7 +72,7 @@
     @include columns(12);
 
     .partner {
-        @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
     }
 
     @media #{$tablet-landscape} {
