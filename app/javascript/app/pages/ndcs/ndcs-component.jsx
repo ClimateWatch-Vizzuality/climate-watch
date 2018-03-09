@@ -16,7 +16,7 @@ const NDC = ({ anchorLinks, query, route }) => (
   <div className={styles.sectionWrapper}>
     <MetaDescription descriptionContext={NDC_CONTENT} subtitle="NDC CONTENT" />
     <SocialMetadata descriptionContext={NDC_CONTENT} href={location.href} />
-    <Header size="medium" route={route}>
+    <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">
           <div className={styles.headerLayout}>

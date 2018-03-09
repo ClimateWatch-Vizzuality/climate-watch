@@ -17,14 +17,10 @@
 }
 
 .buttonGroup {
-  background-color: $white;
-  min-width: 100%;
-
   @media #{$tablet-landscape} {
     @include column-offset(3);
 
     margin-top: 20px;
-    min-width: unset;
   }
 }
 
