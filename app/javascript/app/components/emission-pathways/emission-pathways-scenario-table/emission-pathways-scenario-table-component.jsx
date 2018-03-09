@@ -65,34 +65,36 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
             locationId={selectedLocation.value}
           />
         )}
-        <div className={cx(styles.tableMenu)}>
-          <li className={cx(styles.singleTitle, styles.active)}>
-            {'Indicators'}
-          </li>
+        <div className="grid-column-item">
+          <div className={cx(styles.tableMenu)}>
+            <li>{'Indicators'}</li>
+          </div>
         </div>
-        <div className={styles.col4}>
-          <Dropdown
-            label="Country/Region"
-            placeholder="Select a Country/Region"
-            options={locations}
-            onValueChange={handleLocationChange}
-            value={selectedLocation}
-          />
-          <Dropdown
-            label="Category"
-            placeholder="Select a category"
-            options={categories}
-            onValueChange={handleCategoryChange}
-            value={selectedCategory}
-          />
-          <Search
-            input={query}
-            theme={darkSearch}
-            onChange={handleSearchChange}
-            className={styles.searchBox}
-            placeholder={'Search by all fields'}
-            plain
-          />
+        <div className="grid-column-item">
+          <div className={styles.col4}>
+            <Dropdown
+              label="Country/Region"
+              placeholder="Select a Country/Region"
+              options={locations}
+              onValueChange={handleLocationChange}
+              value={selectedLocation}
+            />
+            <Dropdown
+              label="Category"
+              placeholder="Select a category"
+              options={categories}
+              onValueChange={handleCategoryChange}
+              value={selectedCategory}
+            />
+            <Search
+              input={query}
+              theme={darkSearch}
+              onChange={handleSearchChange}
+              className={styles.searchBox}
+              placeholder={'Search by all fields'}
+              plain
+            />
+          </div>
         </div>
         {loading ? (
           <Loading light className={styles.loader} />

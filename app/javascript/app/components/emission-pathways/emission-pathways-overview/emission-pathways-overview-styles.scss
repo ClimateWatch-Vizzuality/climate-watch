@@ -18,7 +18,7 @@
     @include columns(2.4);
 
     > * {
-     @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
     }
   }
 }

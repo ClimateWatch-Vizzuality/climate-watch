@@ -17,7 +17,7 @@ class EmissionPathwaysScenario extends PureComponent {
   render() {
     const { route, anchorLinks, scenario, id } = this.props;
     return (
-      <div>
+      <div className={styles.sectionWrapper}>
         <EspModelsProvider />
         <EspScenariosProvider />
         <EspIndicatorsProvider />
@@ -40,7 +40,7 @@ class EmissionPathwaysScenario extends PureComponent {
             <Sticky activeClass="sticky -emissions" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
-                className={layout.content}
+                className={styles.anchorNav}
                 theme={anchorNavRegularTheme}
               />
             </Sticky>
