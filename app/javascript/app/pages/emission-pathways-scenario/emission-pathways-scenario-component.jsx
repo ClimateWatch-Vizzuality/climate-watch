@@ -17,7 +17,7 @@ class EmissionPathwaysScenario extends PureComponent {
   render() {
     const { route, anchorLinks, scenario, id } = this.props;
     return (
-      <div>
+      <div className={styles.sectionWrapper}>
         <EspModelsProvider />
         <EspScenariosProvider />
         <EspIndicatorsProvider />
@@ -25,22 +25,24 @@ class EmissionPathwaysScenario extends PureComponent {
         <div>
           <Header route={route}>
             <div className={layout.content}>
-              <Intro
-                title={scenario && scenario.name}
-                description={scenario && scenario.description}
-                button={{
-                  text: 'View model',
-                  link: `/pathways/models/${scenario &&
-                    scenario.model &&
-                    scenario.model.id}`
-                }}
-                textColumns
-              />
+              <div className="grid-column-item">
+                <Intro
+                  title={scenario && scenario.name}
+                  description={scenario && scenario.description}
+                  button={{
+                    text: 'View model',
+                    link: `/pathways/models/${scenario &&
+                      scenario.model &&
+                      scenario.model.id}`
+                  }}
+                  textColumns
+                />
+              </div>
             </div>
             <Sticky activeClass="sticky -emissions" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
-                className={layout.content}
+                className={styles.anchorNav}
                 theme={anchorNavRegularTheme}
               />
             </Sticky>

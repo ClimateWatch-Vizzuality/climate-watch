@@ -2,6 +2,10 @@
 
 $country-filter-height: 60px;
 
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
 .accordion {
   margin-bottom: 40px;
 }

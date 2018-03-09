@@ -21,7 +21,7 @@ class EmissionPathways extends PureComponent {
   render() {
     const { route, anchorLinks, routeLinks } = this.props;
     return (
-      <div>
+      <div className={styles.sectionWrapper}>
         <MetaDescription
           descriptionContext={EMISSION_PATHWAYS}
           subtitle="Pathways"
@@ -34,19 +34,23 @@ class EmissionPathways extends PureComponent {
         <EspScenariosProvider />
         <EspIndicatorsProvider />
         <Header route={route}>
-          <Intro
-            title="Pathways"
-            description={
-              'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
-            }
-            disclaimer="This page is under development. More data and new functions will be added over time."
-            className={layout.content}
-          />
+          <div className={layout.content}>
+            <div className="grid-column-item">
+              <Intro
+                title="Pathways"
+                description={
+                  'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
+                }
+                disclaimer="This page is under development. More data and new functions will be added over time."
+              />
+            </div>
+          </div>
           <Sticky activeClass="sticky -emissions" top="#navBarMobile">
             <AnchorNav
               links={anchorLinks}
               theme={anchorNavRegularTheme}
               gradientColor={route.headerColor}
+              className={styles.anchorNav}
             />
           </Sticky>
         </Header>

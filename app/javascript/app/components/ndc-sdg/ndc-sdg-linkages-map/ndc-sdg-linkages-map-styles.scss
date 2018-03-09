@@ -26,6 +26,10 @@
   }
 }
 
+.row {
+  @include columns((8, 4));
+}
+
 .map {
   height: 100%;
 }
@@ -45,6 +49,7 @@
   right: 0;
   top: $gutter-padding;
   z-index: 2;
+  width: 100%;
 }
 
 .title {
