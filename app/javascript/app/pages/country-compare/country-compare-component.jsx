@@ -50,7 +50,7 @@ const CountryCompare = ({ route, anchorLinks }) => {
           <Desktop>
             {isDesktop =>
               (isLandscape ? (
-                <Sticky activeClass="sticky" top={isDesktop ? 64 : 105}>
+                <Sticky activeClass="sticky" top={isDesktop ? 49 : 105}>
                   <CountryCompareSelector className={styles.countrySelectors} />
                 </Sticky>
               ) : null)}
