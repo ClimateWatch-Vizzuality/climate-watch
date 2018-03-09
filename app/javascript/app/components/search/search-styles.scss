@@ -2,6 +2,8 @@
 
 .search {
   position: relative;
+  display: flex;
+  align-items: flex-end;
 }
 
 .input {
@@ -41,6 +43,7 @@
 
 .iconSearch {
   position: absolute;
+  bottom: -5px;
   right: 0;
   width: 50px;
   height: 50px;

@@ -20,12 +20,6 @@ $min-height: 475px;
   }
 }
 
-.searchBox {
-  @media #{$tablet-landscape} {
-    margin-top: 20px;
-  }
-}
-
 .loader {
   min-height: $min-height;
 }

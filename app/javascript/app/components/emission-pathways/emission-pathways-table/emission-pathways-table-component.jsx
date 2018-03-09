@@ -96,7 +96,6 @@ class EmissionPathwaysTable extends PureComponent {
                   input={query}
                   theme={darkSearch}
                   onChange={handleSearchChange}
-                  className={styles.searchBox}
                   placeholder={`Search in ${categoryName}`}
                   plain
                 />

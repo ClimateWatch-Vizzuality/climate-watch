@@ -1,13 +1,17 @@
 @import '~styles/layout.scss';
 
+.nav {
+  padding-top: 0;
+}
+
 .tableMenuContainer {
   @include columns((12));
-  @include xy-gutters($gutter-position: ('bottom'));
+  @include xy-gutters($gutter-position: ('top', 'bottom'));
 
   @media #{$tablet-landscape} {
     @include columns((5.6, 4, 2.4)); // Last column has to be 12/5
 
-    align-items: end;
+    align-items: center;
   }
 }
 
@@ -15,12 +19,6 @@
   color: $dark-gray;
 
   @media #{$tablet-landscape} {
-    margin-top: 38px;
     text-align: right;
   }
-}
-
-.searchBox,
-.uploadButton {
-  margin-top: 25px; // To fix IE margin top button grid
 }

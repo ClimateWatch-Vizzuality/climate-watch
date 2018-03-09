@@ -40,7 +40,8 @@ $height: 45px;
 
         .react-selectize-placeholder {
           display: block;
-          line-height: 1.2em;
+          line-height: 45px;
+          top: 0;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
