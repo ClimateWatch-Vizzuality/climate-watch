@@ -3,6 +3,11 @@
 
 .bg {
   background-color: $light-gray;
+  padding-top: $navbar-height;
+
+  @media #{$desktop} {
+    padding-top: 0;
+  }
 }
 
 .bgOpen {
@@ -12,9 +17,17 @@
 }
 
 .header {
-  padding-bottom: $gutter-padding;
   overflow: auto;
   height: auto;
+}
+
+.headerGrid {
+  @include row(12);
+
+  @media #{$tablet-landscape} {
+    @include row((8, 4));
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
 }
 
 .headerOpen {
@@ -23,11 +36,6 @@
   @media #{$tablet-landscape} {
     height: auto;
   }
-}
-
-@media #{$tablet-landscape} {
-  padding-bottom: 0;
-  height: auto;
 }
 
 .wrapper {

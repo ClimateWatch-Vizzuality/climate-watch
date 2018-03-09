@@ -25,7 +25,7 @@ class NdcSdgLinkagesTable extends PureComponent {
 
     if (!goals || !goals.length) return <Loading className={styles.loading} />;
     return (
-      <div>
+      <div className="grid-column-item">
         {selectedGoal ? (
           <NdcSdgLinkagesList
             targetHover={targetHover}
