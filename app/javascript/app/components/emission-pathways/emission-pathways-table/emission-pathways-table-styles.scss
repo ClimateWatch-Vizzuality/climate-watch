@@ -3,37 +3,21 @@
 
 $min-height: 475px;
 
-.col4 {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
-  grid-row-gap: 20px;
-  margin-bottom: 20px;
-  align-items: end;
+.filtersLayout {
+  @include columns(6);
+  @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
-
-    grid-template-columns: repeat(4, 1fr);
-    align-items: end;
+    @include columns(3);
   }
 }
 
 .col2 {
-  @extend %grid;
+  @include columns(6);
 
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
-  grid-row-gap: 20px;
-  margin-bottom: 20px;
-  align-items: end;
-}
-
-.searchBox {
-  grid-column-end: -1;
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
 }
 
 .loader {

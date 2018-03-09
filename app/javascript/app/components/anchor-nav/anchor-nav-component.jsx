@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import qs from 'query-string';
 
-import layout from 'styles/layout.scss';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
@@ -30,7 +29,7 @@ const AnchorNav = props => {
       {gradientStyle && (
         <span className={styles.gradient} style={gradientStyle} />
       )}
-      <div className={cx(layout.content, styles.anchorContainer)}>
+      <div className={cx(styles.anchorContainer)}>
         <nav className={cx(className, theme.anchorNav)}>
           {links.map((link, index) => {
             const linkProps = {
