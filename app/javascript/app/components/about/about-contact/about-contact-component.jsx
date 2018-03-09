@@ -1,8 +1,10 @@
 import React from 'react';
+import cx from 'classnames';
+import layout from 'styles/layout';
 import styles from './about-contact-styles.scss';
 
 const AboutContact = () => (
-  <div className={styles.aboutContact}>
+  <div className={cx(styles.aboutContact, layout.content)}>
     <p>
       We’d love to hear from you. Please submit questions, comments or feedback
       to <a href="mailto:ClimateWatch@WRI.org">ClimateWatch@WRI.org</a>

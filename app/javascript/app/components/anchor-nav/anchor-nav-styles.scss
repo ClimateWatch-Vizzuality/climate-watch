@@ -32,6 +32,10 @@
 
   &:last-child {
     padding-right: $gutter-padding;
+
+    @media #{$tablet-landscape} {
+      padding-right: 0;
+    }
   }
 }
 

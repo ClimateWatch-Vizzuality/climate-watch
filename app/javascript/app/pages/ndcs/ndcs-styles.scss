@@ -5,21 +5,20 @@
   @include row('shrink', $wrap: false);
 }
 
+.sectionWrapper {
+  @include navbarFix();
+}
+
 .wrapper {
   padding-top: $gutter-padding;
   padding-bottom: $gutter-padding;
   background-color: $light-gray;
 }
 
-.cols {
-  @extend %grid;
-
-  grid-template-columns: 1fr;
+.headerLayout {
+  @include columns(12);
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: repeat(2, 1fr);
-    width: 100%;
+    @include columns(6);
   }
 }
