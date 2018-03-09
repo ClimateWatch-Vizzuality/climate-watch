@@ -32,7 +32,7 @@ const CountryCompare = ({ route, anchorLinks }) => {
   return (
     <TabletLandscape>
       {isLandscape => (
-        <div>
+        <div className={styles.compareWrapper}>
           <Header route={route}>
             <div className={layout.content}>
               <Intro title={'Country Comparison'} />
@@ -40,7 +40,7 @@ const CountryCompare = ({ route, anchorLinks }) => {
             <Sticky activeClass="sticky -country-compare" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
-                className={layout.content}
+                className={styles.anchorNav}
                 theme={anchorNavRegularTheme}
                 gradientColor={route.headerColor}
                 offset={[-150, -100, -100]}

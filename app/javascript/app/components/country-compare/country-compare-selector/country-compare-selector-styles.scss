@@ -4,3 +4,7 @@
   background-color: $white;
   border-bottom: solid 1px $border-color;
 }
+
+.layout {
+  @include row(4);
+}
