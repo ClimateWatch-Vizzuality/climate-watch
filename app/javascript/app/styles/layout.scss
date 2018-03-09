@@ -57,7 +57,7 @@ $grid-padding-gutters: $gutter-padding;
         }
 
         @else {
-          @include xy-cell($size);
+          @include xy-cell($size, $gutters: $gutters);
         }
       }
     }

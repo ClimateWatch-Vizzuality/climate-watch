@@ -18,6 +18,7 @@
 
 .link {
   color: $dark-gray;
+  padding: $gutter-padding / 2;
 
   &:hover {
     color: $theme-color;

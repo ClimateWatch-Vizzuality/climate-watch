@@ -11,8 +11,6 @@ import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import { NDC_SDG_LINKAGES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
-import layout from 'styles/layout';
-import headerTheme from 'styles/themes/header';
 import styles from './ndc-sdg-styles';
 
 class NdcSdg extends PureComponent {
@@ -37,15 +35,13 @@ class NdcSdg extends PureComponent {
             [styles.headerOpen]: isOpen
           })}
         >
-          <div className={layout.content}>
-            <div className={headerTheme.headerGrid}>
-              <Intro
-                title="NDC-SDG Linkages"
-                description={`Identify potential alignment between the targets, actions, policy measures and needs in countries'
+          <div className={styles.headerGrid}>
+            <Intro
+              title="NDC-SDG Linkages"
+              description={`Identify potential alignment between the targets, actions, policy measures and needs in countries'
                 Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs).`}
-              />
-              <AutocompleteSearch />
-            </div>
+            />
+            <AutocompleteSearch />
           </div>
         </Header>
         <div

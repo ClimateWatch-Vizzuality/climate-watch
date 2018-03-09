@@ -88,7 +88,14 @@ class Map extends PureComponent {
               style={getMotionStyle()}
             >
               {({ z, x, y }) => (
-                <ComposableMap projection="robinson" style={style}>
+                <ComposableMap
+                  projection="robinson"
+                  projectionConfig={{
+                    scale: 145,
+                    rotation: [0, 0, 0]
+                  }}
+                  style={style}
+                >
                   <ZoomableGroup
                     center={customCenter || [x, y]}
                     zoom={z}
