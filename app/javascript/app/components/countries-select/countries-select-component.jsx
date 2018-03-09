@@ -30,9 +30,6 @@ class CountriesSelect extends PureComponent {
     return (
       <div className={cx(styles.wrapper, className)}>
         <div className={cx(layout.content, styles.content)}>
-          <p className={styles.searchTitle}>
-            Please type the name of a country:
-          </p>
           <Search
             placeholder="Search a country"
             value={query}
@@ -41,26 +38,30 @@ class CountriesSelect extends PureComponent {
             theme={searchCountriesTheme}
             autofocus={opened || autofocus}
           />
-          <ResultsList
-            list={countriesList}
-            className={styles.list}
-            emptyDataMsg="No results"
-            theme={resultsListLightTheme}
-            handleMouseItemEnter={onCountryMouseEnter}
-            handleMouseItemLeave={onCountryMouseLeave}
-            handleClick={handleClickAnalytics}
-          />
-          <TabletLandscape>
-            <Map
-              cache={false}
-              paths={paths}
-              zoomEnable={false}
-              className={styles.map}
-              onCountryClick={onCountryClick}
-              customCenter={[20, 15]}
-              dragEnable={false}
-            />
-          </TabletLandscape>
+          <div className="grid-colum-item">
+            <div className={styles.columns}>
+              <ResultsList
+                list={countriesList}
+                className={styles.list}
+                emptyDataMsg="No results"
+                theme={resultsListLightTheme}
+                handleMouseItemEnter={onCountryMouseEnter}
+                handleMouseItemLeave={onCountryMouseLeave}
+                handleClick={handleClickAnalytics}
+              />
+              <TabletLandscape>
+                <Map
+                  cache={false}
+                  paths={paths}
+                  zoomEnable={false}
+                  className={styles.map}
+                  onCountryClick={onCountryClick}
+                  customCenter={[20, 15]}
+                  dragEnable={false}
+                />
+              </TabletLandscape>
+            </div>
+          </div>
         </div>
       </div>
     );
