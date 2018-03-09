@@ -9,7 +9,6 @@ import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import ModalMetadata from 'components/modal-metadata';
 import Chart from 'components/charts/chart';
-import cx from 'classnames';
 import layout from 'styles/layout.scss';
 import styles from './compare-ghg-chart-styles.scss';
 
@@ -79,26 +78,28 @@ class CompareGhgChart extends PureComponent {
           <h2 className={styles.title}>
             Historical GHG Emissions and Target Levels
           </h2>
-          <div className={styles.col6}>
-            <Dropdown
-              label="Source"
-              options={sourceOptions}
-              onValueChange={handleSourceChange}
-              value={sourceSelected}
-              hideResetButton
-            />
-            <Dropdown
-              label="Calculation"
-              options={calculationOptions}
-              onValueChange={handleCalculationChange}
-              value={calculationSelected}
-              hideResetButton
-            />
-            <TabletLandscape>
-              <div />
-              <div />
-              {this.renderActionButtons()}
-            </TabletLandscape>
+          <div className="grid-column-item">
+            <div className={styles.dropDownsLayout}>
+              <Dropdown
+                label="Source"
+                options={sourceOptions}
+                onValueChange={handleSourceChange}
+                value={sourceSelected}
+                hideResetButton
+              />
+              <Dropdown
+                label="Calculation"
+                options={calculationOptions}
+                onValueChange={handleCalculationChange}
+                value={calculationSelected}
+                hideResetButton
+              />
+              <TabletLandscape>
+                <div />
+                <div />
+                {this.renderActionButtons()}
+              </TabletLandscape>
+            </div>
           </div>
           <Chart
             className={styles.chartWrapper}
@@ -112,8 +113,10 @@ class CompareGhgChart extends PureComponent {
             hideRemoveOptions
           />
           <TabletPortraitOnly>
-            <div className={cx(styles.buttonGroup, styles.col2)}>
-              {this.renderActionButtons(true)}
+            <div className="grid-column-item">
+              <div className={styles.mobileActionButtonsLayout}>
+                {this.renderActionButtons(true)}
+              </div>
             </div>
           </TabletPortraitOnly>
           <ModalMetadata />
