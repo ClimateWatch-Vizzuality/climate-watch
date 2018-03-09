@@ -82,23 +82,31 @@ class EmissionPathwaysTable extends PureComponent {
             <EspIndicatorsProvider />
             <div className="grid-column-item">
               <div className={styles.filtersLayout}>
-                {landscape ? (
-                  this.renderFilters()
-                ) : (
-                  <Collapse
-                    contentRef={this.state.contentRef}
-                    contentClassName={cx(styles.col2)}
-                  >
-                    {this.renderFilters()}
-                  </Collapse>
-                )}
-                <Search
-                  input={query}
-                  theme={darkSearch}
-                  onChange={handleSearchChange}
-                  placeholder={`Search in ${categoryName}`}
-                  plain
-                />
+                <div className="grid-column-item">
+                  <div className={styles.filters}>
+                    {landscape ? (
+                      this.renderFilters()
+                    ) : (
+                      <Collapse
+                        contentRef={this.state.contentRef}
+                        contentClassName={cx(styles.col2)}
+                      >
+                        {this.renderFilters()}
+                      </Collapse>
+                    )}
+                  </div>
+                </div>
+                <div className="grid-column-item">
+                  <div className={styles.searchLayout}>
+                    <Search
+                      input={query}
+                      theme={darkSearch}
+                      onChange={handleSearchChange}
+                      placeholder={`Search in ${categoryName}`}
+                      plain
+                    />
+                  </div>
+                </div>
               </div>
               {!landscape && (
                 <div

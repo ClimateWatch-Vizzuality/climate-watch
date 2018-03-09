@@ -3,12 +3,26 @@
 
 $min-height: 475px;
 
+.filters {
+  @include columns(12);
+
+  @media #{$tablet-landscape} {
+    @include columns(4);
+  }
+}
+
 .filtersLayout {
   @include columns(6);
   @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
-    @include columns(3);
+    @include columns((9,3));
+  }
+}
+
+.searchLayout {
+  @media #{$tablet-landscape} {
+    padding-top: 20px;
   }
 }
 

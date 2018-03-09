@@ -11,10 +11,12 @@
   }
 }
 
-.buttonDetail {
+.actionText {
   color: $dark-gray;
+  margin-bottom: 20px;
 
   @media #{$tablet-landscape} {
+    margin-bottom: 0;
     text-align: right;
   }
 }

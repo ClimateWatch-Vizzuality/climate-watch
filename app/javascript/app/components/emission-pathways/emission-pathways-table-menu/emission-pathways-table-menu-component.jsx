@@ -12,9 +12,9 @@ class EmissionPathwaysTableMenu extends PureComponent {
   render() {
     const { routeLinks, uploadButton } = this.props;
     const wantToText = (
-      <span className={styles.buttonDetail}>
+      <div className={styles.actionText}>
         Want to provide feedback or add data for a model?
-      </span>
+      </div>
     );
 
     const button = (
