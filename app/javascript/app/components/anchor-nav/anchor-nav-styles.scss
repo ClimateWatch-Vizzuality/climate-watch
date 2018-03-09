@@ -14,11 +14,6 @@
   padding-left: $gutter-padding / 2;
   position: relative;
 
-  @media #{$tablet-landscape} {
-    padding-left: $gutter-padding;
-    padding-top: 15px;
-  }
-
   &::-webkit-scrollbar {
     display: none;
   }
