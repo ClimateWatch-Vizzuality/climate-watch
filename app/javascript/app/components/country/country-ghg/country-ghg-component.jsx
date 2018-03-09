@@ -8,6 +8,7 @@ import throttle from 'lodash/throttle';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import { TabletLandscape } from 'components/responsive';
 import Disclaimer from 'components/disclaimer';
+import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout.scss';
 import styles from './country-ghg-styles.scss';
@@ -49,6 +50,7 @@ class CountryGhg extends PureComponent {
           </TabletLandscape>
         </div>
         <Disclaimer className={styles.disclaimer} />
+        <ModalMetadata disclaimer={<Disclaimer onlyText />} />
       </div>
     );
   }
