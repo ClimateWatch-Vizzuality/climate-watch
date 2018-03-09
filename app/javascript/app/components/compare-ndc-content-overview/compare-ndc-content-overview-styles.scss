@@ -2,10 +2,12 @@
 
 .col6 {
   @include columns();
+
   margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
     @include columns((6, 2, 1, 3));
+
     align-items: center;
 
     > :nth-child(2) {

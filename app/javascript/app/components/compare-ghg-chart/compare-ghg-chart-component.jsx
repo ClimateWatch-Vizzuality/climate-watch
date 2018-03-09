@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import EmissionsProvider from 'providers/emissions-provider/emissions-provider';
-import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import {
+  MobileOnly,
+  TabletLandscape,
+  TabletPortraitOnly
+} from 'components/responsive';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import Dropdown from 'components/dropdown';
@@ -101,17 +105,21 @@ class CompareGhgChart extends PureComponent {
               </TabletLandscape>
             </div>
           </div>
-          <Chart
-            className={styles.chartWrapper}
-            type="line"
-            config={config}
-            data={data}
-            dataOptions={selectedLocations}
-            dataSelected={selectedLocations}
-            height={500}
-            loading={loading}
-            hideRemoveOptions
-          />
+          <MobileOnly>
+            {isMobile => (
+              <Chart
+                className={styles.chartWrapper}
+                type="line"
+                config={config}
+                data={data}
+                dataOptions={selectedLocations}
+                dataSelected={selectedLocations}
+                height={isMobile ? 350 : 500}
+                loading={loading}
+                hideRemoveOptions
+              />
+            )}
+          </MobileOnly>
           <TabletPortraitOnly>
             <div className="grid-column-item">
               <div className={styles.mobileActionButtonsLayout}>

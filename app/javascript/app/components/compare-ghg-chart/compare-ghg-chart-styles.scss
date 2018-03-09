@@ -3,7 +3,7 @@
 .dropDownsLayout {
   @include columns(6);
 
-  margin-bottom: 15px;
+  margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
     @include columns((2, 2, 2, 1, 3, 2));
@@ -13,7 +13,15 @@
 .mobileActionButtonsLayout {
   @include columns(6);
 
-  margin-bottom: 15px;
+  @media #{$mobile-only} {
+    @include columns();
+
+    > div {
+      @include xy-gutters($gutter-position: ('bottom'));
+    }
+  }
+
+  margin-bottom: $gutter-padding;
 }
 
 .section {
@@ -31,6 +39,10 @@
 .chartWrapper {
   min-height: 560px;
   max-height: 100%;
+
+  @media #{$mobile-only} {
+    min-height: 380px;
+  }
 
   > ul {
     display: none;
