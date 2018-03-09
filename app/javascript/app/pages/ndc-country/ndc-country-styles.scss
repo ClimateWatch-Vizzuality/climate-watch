@@ -1,5 +1,9 @@
 @import '~styles/layout.scss';
 
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
 .doubleFold {
   @extend %grid;
 

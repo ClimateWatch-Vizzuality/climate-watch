@@ -1,9 +1,5 @@
 @import '~styles/layout.scss';
 
-.nav {
-  padding-top: 0;
-}
-
 .tableMenuContainer {
   @include columns((12));
   @include xy-gutters($gutter-position: ('top', 'bottom'));

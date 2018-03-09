@@ -46,6 +46,7 @@ class SearchPage extends PureComponent {
                 <AnchorNav
                   useRoutes
                   links={anchorLinks}
+                  className={styles.anchorNav}
                   theme={anchorNavRegularTheme}
                 />
               )}

@@ -35,7 +35,6 @@ class EmissionPathwaysTableMenu extends PureComponent {
               useRoutes
               links={routeLinks}
               theme={anchorNavLightTheme}
-              className={styles.nav}
             />
             {uploadButton && (
               <React.Fragment>

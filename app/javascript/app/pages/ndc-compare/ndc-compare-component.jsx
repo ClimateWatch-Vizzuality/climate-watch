@@ -34,7 +34,7 @@ class NDCCountry extends PureComponent {
             <AnchorNav
               useRoutes
               links={anchorLinks}
-              className={layout.content}
+              className={styles.anchorNav}
               theme={anchorNavRegularTheme}
               gradientColor={route.headerColor}
             />
