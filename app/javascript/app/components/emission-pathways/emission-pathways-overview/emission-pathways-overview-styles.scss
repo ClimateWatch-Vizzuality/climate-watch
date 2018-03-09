@@ -7,10 +7,19 @@
 }
 
 .col5 {
-  @include columns(6);
+  @include columns(12);
+  @include xy-gutters($gutter-position: ('bottom'));
 
-  @media #{$tablet-portrait} {
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  @media #{$tablet-landscape} {
     @include columns(2.4);
+
+    > * {
+     @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
   }
 }
 
@@ -28,7 +37,9 @@
 }
 
 .seeAllButton {
-  @include column-offset(9.6);
+  @media #{$tablet-landscape} {
+    @include column-offset(9.6);
+  }
 }
 
 .loader {
