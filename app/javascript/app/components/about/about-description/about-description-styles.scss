@@ -4,20 +4,19 @@
 .aboutDescription {
   padding-top: 50px;
   width: 100%;
-  max-width: 770px;
   line-height: $line-height-medium;
   font-size: $font-size-m;
   text-align: left;
   color: $theme-color;
 
   p {
-    margin-bottom: 40px;
+    margin-bottom: $gutter-padding;
   }
 
   > ul {
-    margin-bottom: 40px;
+    margin-bottom: $gutter-padding;
     list-style: initial;
-    margin-left: 20px;
+    margin-left: 35px;
   }
 
   a {

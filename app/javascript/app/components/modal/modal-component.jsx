@@ -39,6 +39,7 @@ class CustomModal extends PureComponent {
         style={modalStyles}
         isOpen={isOpen}
         contentLabel={contentLabel}
+        onRequestClose={onRequestClose}
         shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       >
         {header}

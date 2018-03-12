@@ -177,6 +177,8 @@ export const CLIMATE_VULNERABILITY_DEFINITIONS = {
     Source: IPCC, " Annex II: Glossary," 2014. [Online]. Available: http://www.ipcc.ch/pdf/assessment-report/ar5/wg3/ipcc_wg3_ar5_annex-ii.pdf`
 };
 
+export const DISCLAIMER_SHOWN = 'disclaimerShown';
+
 export default {
   CALCULATION_OPTIONS,
   TOP_EMITTERS,
@@ -189,5 +191,6 @@ export default {
   FILTERS_BY_CATEGORY,
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS,
-  CLIMATE_VULNERABILITY_DEFINITIONS
+  CLIMATE_VULNERABILITY_DEFINITIONS,
+  DISCLAIMER_SHOWN
 };

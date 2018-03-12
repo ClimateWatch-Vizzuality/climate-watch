@@ -1,8 +1,10 @@
 import React from 'react';
+import cx from 'classnames';
+import layout from 'styles/layout';
 import styles from './about-permissions-styles.scss';
 
 const AboutPermissions = () => (
-  <div className={styles.aboutPermissions}>
+  <div className={cx(layout.content, styles.aboutPermissions)}>
     <p>
       Climate Watch has an open data commitment and intends to provide
       information free of constraints and restrictions on use. Except as noted

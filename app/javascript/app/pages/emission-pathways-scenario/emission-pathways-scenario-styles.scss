@@ -1,5 +1,9 @@
 @import '~styles/layout.scss';
 
+.sectionWrapper {
+  @include navbarFix();
+}
+
 .section {
   position: relative;
 }
@@ -11,4 +15,8 @@
   @media #{$tablet-landscape} {
     top: -49px;
   }
+}
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
 }
