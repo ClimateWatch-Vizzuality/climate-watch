@@ -217,8 +217,7 @@ export const getChartData = createSelector(
       const locationIndex = selectedLocations
         .map(l => l.iso_code3)
         .indexOf(d.iso_code3);
-      const yearsWithData = yearsForLocation[locationIndex];
-
+      const yearsWithData = yearsForLocation[locationIndex] || [];
       yearsWithData.forEach(year => {
         const yData = d.emissions.find(e => e.year === year);
         if (yData) {
