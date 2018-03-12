@@ -3,10 +3,6 @@
 
 .page {
   background-color: $light-gray;
-
-  @media #{$mobile-only} {
-    padding-top: $navbar-height;
-  }
 }
 
 .anchorNav {
