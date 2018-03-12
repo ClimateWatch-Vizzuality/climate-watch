@@ -153,6 +153,29 @@ export const filterData = createSelector(
   }
 );
 
+const getYearsForLocation = (
+  data,
+  absoluteValueIsSelected,
+  locationCalculationData
+) => {
+  let yearsForLocation = [];
+  yearsForLocation = data.map(location => location.emissions.map(d => d.year));
+  if (!absoluteValueIsSelected) {
+    // Intersection of years betweeen the data and the calculation data years from the countries
+    yearsForLocation = yearsForLocation.map((locationValues, i) =>
+      intersection(
+        locationValues,
+        flatten(
+          Object.keys(locationCalculationData[i] || []).map(y =>
+            parseInt(y, 10)
+          )
+        )
+      )
+    );
+  }
+  return yearsForLocation;
+};
+
 export const getChartData = createSelector(
   [
     filterData,
@@ -182,51 +205,48 @@ export const getChartData = createSelector(
     ) {
       return [];
     }
-    let xValues = [];
-    xValues = data[0].emissions.map(d => d.year);
-    if (!absoluteValueIsSelected) {
-      // Intersection of years betweeen the data and the calculation data years from the countries
-      xValues = intersection(
-        xValues,
-        flatten(
-          locationCalculationData.map(l =>
-            Object.keys(l || []).map(y => parseInt(y, 10))
-          )
-        )
-      );
-    }
 
-    const dataParsed = xValues.map(x => {
-      const yItems = {};
-      data.forEach(d => {
-        const yKey = getYColumnValue(d.location);
-        const yData = d.emissions.find(e => e.year === x);
-        const locationIndex = selectedLocations
-          .map(l => l.iso_code3)
-          .indexOf(d.iso_code3);
-        let calculationRatio = 1;
-        if (!absoluteValueIsSelected) {
-          calculationRatio = calculatedRatio(
-            calculationSelected.value,
-            locationCalculationData[locationIndex],
-            x
-          );
-        }
+    const yearsForLocation = getYearsForLocation(
+      data,
+      absoluteValueIsSelected,
+      locationCalculationData
+    );
+    const yearData = [];
+    data.forEach(d => {
+      const yLocationKey = getYColumnValue(d.location);
+      const locationIndex = selectedLocations
+        .map(l => l.iso_code3)
+        .indexOf(d.iso_code3);
+      const yearsWithData = yearsForLocation[locationIndex];
+
+      yearsWithData.forEach(year => {
+        const yData = d.emissions.find(e => e.year === year);
         if (yData) {
+          const calculationRatio = absoluteValueIsSelected
+            ? 1
+            : calculatedRatio(
+              calculationSelected.value,
+              locationCalculationData[locationIndex],
+              year
+            );
           const scaledYData = yData.value * DATA_SCALE;
+          const yKey = { [yLocationKey]: scaledYData / calculationRatio };
           if (yData.value) {
-            yItems[yKey] = scaledYData / calculationRatio;
+            const existingYearData =
+              yearData.length && yearData.find(yearD => yearD.x === year);
+            if (existingYearData) {
+              yearData[yearData.indexOf(existingYearData)] = {
+                ...existingYearData,
+                ...yKey
+              };
+            } else {
+              yearData.push({ x: year, ...yKey });
+            }
           }
         }
       });
-
-      const item = {
-        x,
-        ...yItems
-      };
-      return item;
     });
-    return dataParsed;
+    return yearData;
   }
 );
 
