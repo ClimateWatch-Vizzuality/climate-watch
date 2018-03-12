@@ -18,6 +18,7 @@ import {
   getSourceSelected,
   getCalculationSelected,
   getChartData,
+  getChartXDomain,
   getChartConfig,
   getSelectorDefaults,
   getQuantificationsData,
@@ -49,6 +50,7 @@ const mapStateToProps = (state, { location, match }) => {
     countryName: getCountryName(countryGhg),
     loading: state.countryGhgEmissions.loading || state.wbCountryData.loading,
     data: getChartData(countryGhg),
+    domain: getChartXDomain(countryGhg),
     quantifications: getQuantificationsData(countryGhg),
     calculations: getCalculationOptions(countryGhg),
     calculationSelected: getCalculationSelected(countryGhg),
@@ -99,14 +101,12 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
   handleInfoClick = () => {
     const { source } = this.props.sourceSelected;
-
-    // hide quantification sources from prod
-    // slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
     if (source) {
       this.props.setModalMetadata({
         category: 'Country',
         slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
+        showDisclaimer: true,
         open: true
       });
     }

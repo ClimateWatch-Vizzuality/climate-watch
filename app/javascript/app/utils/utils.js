@@ -2,6 +2,8 @@ import deburr from 'lodash/deburr';
 import toUpper from 'lodash/toUpper';
 import upperFirst from 'lodash/upperFirst';
 import toLower from 'lodash/toLower';
+import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
 
 export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
@@ -73,6 +75,16 @@ export const excludekeys = (x, o) =>
     (r, k) => (x.includes(k) ? r : { ...r, [k]: o[k] }),
     {}
   );
+
+export function sanitize(data) {
+  if (isArray(data)) {
+    return data.join(', ');
+  }
+  if (data && !isString(data)) {
+    return data.name || data.full_name || '';
+  }
+  return data;
+}
 
 export default {
   compareIndexByKey,

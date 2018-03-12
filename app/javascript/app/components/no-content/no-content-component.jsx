@@ -15,7 +15,7 @@ const NoContent = ({ className, message, icon, minHeight }) => (
 NoContent.propTypes = {
   icon: PropTypes.bool,
   className: PropTypes.string,
-  message: PropTypes.string,
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   minHeight: PropTypes.number
 };
 

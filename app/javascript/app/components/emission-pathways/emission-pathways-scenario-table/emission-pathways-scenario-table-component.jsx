@@ -9,15 +9,43 @@ import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
 import EspIndicatorsTrendDataProvider from 'providers/esp-indicators-trend-provider';
+import EspLocationsProvider from 'providers/esp-locations-provider';
 import styles from './emission-pathways-scenario-table-styles.scss';
 
 class EmissionPathwaysScenarioTableComponent extends PureComponent {
-  getTableContent() {
+  renderTable() {
     const {
-      loading,
       data,
       noContentMsg,
       defaultColumns,
+      titleLinks,
+      error
+    } = this.props;
+    if (error) {
+      return (
+        <NoContent
+          message={'Something went wrong'}
+          className={styles.noContent}
+        />
+      );
+    }
+    return data && data.length > 0 ? (
+      <Table
+        data={data}
+        rowHeight={60}
+        hasColumnSelect
+        defaultColumns={defaultColumns}
+        trendLine={'trend'}
+        titleLinks={titleLinks}
+      />
+    ) : (
+      <NoContent message={noContentMsg} className={styles.noContent} />
+    );
+  }
+
+  render() {
+    const {
+      loading,
       query,
       handleSearchChange,
       categories,
@@ -29,66 +57,50 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       id
     } = this.props;
     return (
-      <div>
+      <div className={layout.content}>
+        <EspLocationsProvider scenarioId={id} />
         {selectedLocation && (
           <EspIndicatorsTrendDataProvider
             scenarioId={id}
             locationId={selectedLocation.value}
           />
         )}
+        <div className={cx(styles.tableMenu)}>
+          <li className={cx(styles.singleTitle, styles.active)}>
+            {'Indicators'}
+          </li>
+        </div>
+        <div className={styles.col4}>
+          <Dropdown
+            label="Country/Region"
+            placeholder="Select a Country/Region"
+            options={locations}
+            onValueChange={handleLocationChange}
+            value={selectedLocation}
+          />
+          <Dropdown
+            label="Category"
+            placeholder="Select a category"
+            options={categories}
+            onValueChange={handleCategoryChange}
+            value={selectedCategory}
+          />
+          <Search
+            input={query}
+            theme={darkSearch}
+            onChange={handleSearchChange}
+            className={styles.searchBox}
+            placeholder={'Search by all fields'}
+            plain
+          />
+        </div>
         {loading ? (
           <Loading light className={styles.loader} />
         ) : (
-          <div>
-            <div className={cx(styles.tableMenu)}>
-              <li className={cx(styles.singleTitle, styles.active)}>
-                {'Indicators'}
-              </li>
-            </div>
-            <div className={styles.col4}>
-              <Dropdown
-                label="Country/Region"
-                placeholder="Select a Country/Region"
-                options={locations}
-                onValueChange={handleLocationChange}
-                value={selectedLocation}
-              />
-              <Dropdown
-                label="Category"
-                placeholder="Select a category"
-                options={categories}
-                onValueChange={handleCategoryChange}
-                value={selectedCategory}
-              />
-              <Search
-                value={query}
-                theme={darkSearch}
-                onChange={handleSearchChange}
-                className={styles.searchBox}
-                placeholder={'Search by all fields'}
-                plain
-              />
-            </div>
-            {data && data.length > 0 ? (
-              <Table
-                data={data}
-                rowHeight={60}
-                sortBy={'name'}
-                hasColumnSelect
-                defaultColumns={defaultColumns}
-                trendLine={'trend'}
-              />
-            ) : (
-              <NoContent message={noContentMsg} className={styles.noContent} />
-            )}
-          </div>
+          this.renderTable()
         )}
       </div>
     );
-  }
-
-  render() {
-    return <div className={layout.content}>{this.getTableContent()}</div>;
   }
 }
 
@@ -102,10 +114,12 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   handleSearchChange: PropTypes.func,
   categories: PropTypes.array,
   locations: PropTypes.array,
+  titleLinks: PropTypes.array,
   selectedCategory: PropTypes.object,
   selectedLocation: PropTypes.object,
   handleCategoryChange: PropTypes.func,
-  handleLocationChange: PropTypes.func
+  handleLocationChange: PropTypes.func,
+  error: PropTypes.bool.isRequired
 };
 
 export default EmissionPathwaysScenarioTableComponent;

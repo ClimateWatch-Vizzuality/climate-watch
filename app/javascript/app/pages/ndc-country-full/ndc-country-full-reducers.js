@@ -11,6 +11,10 @@ const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
   fetchCountryNDCFullInit: state => setLoaded(false, setLoading(true, state)),
+  clearCountryNDCFull: (state, { payload }) => ({
+    ...state,
+    data: { ...state.data, [payload]: null }
+  }),
   fetchCountryNDCFullReady: (state, { payload }) => {
     if (isEmpty(payload)) {
       return setLoaded(true, setLoading(false, state));

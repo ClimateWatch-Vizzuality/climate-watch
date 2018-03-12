@@ -54,6 +54,8 @@ class Multiselect extends Component {
       parentClassName,
       loading,
       children,
+      mirrorX,
+      hideSelected,
       icon
     } = this.props;
     return (
@@ -63,7 +65,9 @@ class Multiselect extends Component {
           className={cx(
             theme.dropdown,
             styles.multiSelect,
-            children ? styles.hasChildren : ''
+            children ? styles.hasChildren : '',
+            { [styles.mirrorX]: mirrorX },
+            { [styles.searchable]: !icon }
           )}
         >
           <div className={cx(styles.values, 'values')}>
@@ -79,12 +83,17 @@ class Multiselect extends Component {
             renderOption={option => {
               const className = option.isSelected ? selectedClassName : '';
               return (
-                <div
-                  className={cx(className, option.groupId ? styles.nested : '')}
-                >
-                  {option.label}
-                  {option.isSelected && <span className={styles.checked} />}
-                </div>
+                (!hideSelected || !option.isSelected) && (
+                  <div
+                    className={cx(
+                      className,
+                      option.groupId ? styles.nested : ''
+                    )}
+                  >
+                    {option.label}
+                    {option.isSelected && <span className={styles.checked} />}
+                  </div>
+                )
               );
             }}
             onValuesChange={handleChange}
@@ -114,8 +123,10 @@ Multiselect.propTypes = {
   handleChange: PropTypes.func,
   label: PropTypes.string,
   selectedLabel: PropTypes.string,
-  loading: PropTypes.bool,
   children: PropTypes.node,
+  loading: PropTypes.bool,
+  hideSelected: PropTypes.bool,
+  mirrorX: PropTypes.bool,
   icon: PropTypes.object
 };
 

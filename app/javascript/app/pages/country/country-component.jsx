@@ -4,13 +4,11 @@ import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import { COUNTRY_PROFILES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
-
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
 import Intro from 'components/intro';
 import Button from 'components/button';
 import AnchorNav from 'components/anchor-nav';
-import ModalMetadata from 'components/modal-metadata';
 import SocioeconomicsProvider from 'providers/socioeconomics-provider';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 
@@ -62,7 +60,6 @@ class Country extends PureComponent {
               <section.component />
             </div>
           ))}
-        <ModalMetadata />
       </div>
     );
   }

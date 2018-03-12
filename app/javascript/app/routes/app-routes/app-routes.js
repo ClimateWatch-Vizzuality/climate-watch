@@ -20,8 +20,8 @@ import NDCSearch from 'pages/ndc-search';
 import error from 'pages/error';
 import MyClimateWatch from 'pages/my-climate-watch';
 import MyCWEditor from 'pages/my-climate-watch/my-cw-editor';
-// import EmissionPathwaysModel from 'pages/emission-pathways-model';
-// import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
+import EmissionPathwaysModel from 'pages/emission-pathways-model';
+import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 
 // routes
 import NDCCountryRoutes from './NDCCountry-routes';
@@ -29,15 +29,15 @@ import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSRoutes from './NDCS-routes';
 import MyCwRoutes from './my-cw-routes';
 import aboutRoutes from './about-routes';
-// import emissionPathwaysRoutes from './emission-pathways-routes';
-// import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
+import emissionPathwaysRoutes from './emission-pathways-routes';
+import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
 
 // sections
 import countrySections from './country-sections';
+import emissionPathwaysModelSections from './emission-pathways-model-sections';
+import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
+import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
-// import emissionPathwaysModelSections from './emission-pathways-model-sections';
-// import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
-// import emissionPathwaysSections from './emission-pathways-sections';
 
 export default [
   {
@@ -106,20 +106,6 @@ export default [
     ]
   },
   {
-    label: 'GHG EMISSIONS',
-    nav: true,
-    routes: [
-      {
-        path: '/ghg-emissions',
-        label: 'GHG EMISSIONS'
-      },
-      {
-        path: '/emission-pathways',
-        label: 'EMISSION PATHWAYS'
-      }
-    ]
-  },
-  {
     path: '/ndcs',
     component: NDCS,
     label: 'NDCs',
@@ -144,36 +130,38 @@ export default [
   {
     path: '/ghg-emissions',
     component: GHGEmissions,
+    nav: true,
     exact: true,
     label: 'GHG EMISSIONS',
     headerImage: 'emissions',
     headerColor: '#46407D'
   },
-  // {
-  //   path: '/emission-pathways/models/:id',
-  //   component: EmissionPathwaysModel,
-  //   label: 'EMISSION PATHWAYS MODEL',
-  //   headerImage: 'emission-pathways',
-  //   headerColor: '#74356A'
-  //   sections: emissionPathwaysModelSections,
-  //   routes: emissionPathwaysModelRoutes
-  // },
-  // {
-  //   path: '/emission-pathways/scenarios/:id',
-  //   component: EmissionPathwaysScenario,
-  //   label: 'EMISSION PATHWAYS SCENARIO',
-  //   headerImage: 'emission-pathways',
-  //   headerColor: '#74356A'
-  //   sections: emissionPathwaysScenarioSections
-  // },
   {
-    path: '/emission-pathways',
-    component: EmissionPathways,
-    label: 'EMISSION PATHWAYS',
+    path: '/pathways/models/:id',
+    component: EmissionPathwaysModel,
+    label: 'PATHWAYS MODEL',
     headerImage: 'emission-pathways',
+    headerColor: '#74356A',
+    sections: emissionPathwaysModelSections,
+    routes: emissionPathwaysModelRoutes
+  },
+  {
+    path: '/pathways/scenarios/:id',
+    component: EmissionPathwaysScenario,
+    label: 'PATHWAYS SCENARIO',
+    headerImage: 'emission-pathways',
+    headerColor: '#74356A',
+    sections: emissionPathwaysScenarioSections
+  },
+  {
+    path: '/pathways',
+    component: EmissionPathways,
+    nav: true,
+    label: 'PATHWAYS',
+    headerImage: 'emission-pathways',
+    sections: emissionPathwaysSections,
+    routes: emissionPathwaysRoutes,
     headerColor: '#74356A'
-    // sections: emissionPathwaysSections,
-    // routes: emissionPathwaysRoutes
   },
   {
     path: '/ndc-search',

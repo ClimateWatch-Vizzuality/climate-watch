@@ -8,9 +8,15 @@
 .col5 {
   @extend %grid;
 
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr 1fr);
+  @include msGridColumns(1fr, 1fr);
 
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+
+  @media #{$tablet-portrait} {
+    @include msGridColumns(1fr, 1fr, 1fr, 1fr 1fr);
+
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 .overview {
@@ -34,6 +40,11 @@
 
 .seeAllButton {
   grid-column-end: -1;
+  margin-top: 20px;
+
+  @media #{$tablet-portrait} {
+    margin-top: 0;
+  }
 }
 
 .loader {

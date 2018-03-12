@@ -11,6 +11,8 @@ import gizImage from 'assets/partners/giz.png';
 import googleImage from 'assets/partners/google.png';
 import fmencbnsImage from 'assets/partners/fmencbns.png';
 import dbeisImage from 'assets/partners/dbeis.png';
+import bmzImage from 'assets/partners/bmz.png';
+import aidImage from 'assets/partners/irish_aid.jpg';
 import swissImage from 'assets/partners/swiss.jpg';
 import actsImage from 'assets/partners/acts.png';
 import dieImage from 'assets/partners/die.jpg';
@@ -71,7 +73,7 @@ const partnershipWith = {
         src: googleImage
       },
       description:
-        'Google provided support in developing concepts and functions for the Emission Pathways module.'
+        'Google provided support in developing concepts and functions for the Pathways module.'
     },
     {
       link: 'http://www.ndcpartnership.org/',
@@ -142,9 +144,8 @@ const additionalData = {
       alt: 'Center for Policy Research India'
     },
     {
-      link: 'https://www.ulisboa.pt/en',
-      alt:
-        'Department of Sciences and Environmental Engineering - New University of Lisbon'
+      link: 'https://www.cense.fct.unl.pt/',
+      alt: 'CENSE/NOVA University Lisbon'
     },
     {
       link: 'http://energyinnovation.org/',
@@ -188,20 +189,36 @@ const foundingBy = {
   type: 'col4',
   partners: [
     {
+      link:
+        'https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy',
+      img: {
+        alt: 'DBEIS',
+        src: dbeisImage
+      }
+    },
+    {
+      link: 'https://www.irishaid.ie',
+      img: {
+        alt: 'Irish Aid',
+        src: aidImage
+      }
+    },
+    {
+      link: 'https://www.bmz.de/en/',
+      img: {
+        alt: 'FMBMZ',
+        src: bmzImage
+      }
+    },
+    {
       link: 'http://www.bmub.bund.de/en/',
       img: {
         alt: 'FMENCBNS',
-        src: fmencbnsImage
+        src: fmencbnsImage,
+        customClass: 'large'
       },
       description:
         'This initiative is a part of the International Climate Initiative (IKI).'
-    },
-    {
-      link: 'https://www.google.com/intl/en/about/',
-      img: {
-        alt: 'Google',
-        src: googleImage
-      }
     },
     {
       link: 'https://www.bafu.admin.ch/bafu/en/home.html',
@@ -212,11 +229,10 @@ const foundingBy = {
       }
     },
     {
-      link:
-        'https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy',
+      link: 'https://www.google.com/intl/en/about/',
       img: {
-        alt: 'DBEIS',
-        src: dbeisImage
+        alt: 'Google',
+        src: googleImage
       }
     }
   ]

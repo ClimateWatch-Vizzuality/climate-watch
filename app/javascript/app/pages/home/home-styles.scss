@@ -55,8 +55,12 @@
   padding-bottom: 60px;
 
   @media #{$tablet-landscape} {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-bottom: 0;
+
+    &.extraPadding {
+      padding-top: 120px;
+      padding-bottom: 120px;
+    }
   }
 }
 
@@ -109,11 +113,6 @@
 
 .countries {
   display: flex;
-  padding-bottom: 0;
-
-  @media #{$tablet-landscape} {
-    padding-bottom: 60px;
-  }
 }
 
 .sdgLinkages {

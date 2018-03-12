@@ -29,8 +29,7 @@ class ModalMetadata extends PureComponent {
   }
 
   getContent() {
-    const { data, loading } = this.props;
-
+    const { data, loading, showDisclaimer, disclaimer } = this.props;
     if (loading) {
       return <Loading className={styles.loadingContainer} />;
     }
@@ -99,6 +98,7 @@ class ModalMetadata extends PureComponent {
             </a>
           </MetadataProp>
         )}
+        {showDisclaimer && disclaimer}
       </div>
     );
   }
@@ -133,9 +133,15 @@ ModalMetadata.propTypes = {
   title: PropTypes.string,
   tabTitles: PropTypes.array,
   data: PropTypes.array,
+  disclaimer: PropTypes.node,
+  showDisclaimer: PropTypes.bool.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired
+};
+
+ModalMetadata.defaultProps = {
+  showDisclaimer: false
 };
 
 export default ModalMetadata;

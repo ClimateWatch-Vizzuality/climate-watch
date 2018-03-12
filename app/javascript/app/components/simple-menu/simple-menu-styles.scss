@@ -96,7 +96,7 @@
     position: absolute;
     top: 60px;
     right: 0;
-    width: 225px;
+    width: 210px;
     z-index: 20;
     border-top: 1px solid $theme-border;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
@@ -121,7 +121,7 @@
         .documentLink {
           font-weight: bold;
           height: 60px;
-          padding: 0 15px;
+          padding: 0 30px 0 15px;
           display: flex;
           justify-content: flex-start;
           align-items: center;

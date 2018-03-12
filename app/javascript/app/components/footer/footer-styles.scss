@@ -15,10 +15,75 @@
 
 .nav {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: $gutter-padding;
+  color: $dark-gray;
+  font-weight: $font-weight-semi-bold;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.partnersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  padding-bottom: $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    width: 85%;
+    padding-bottom: 0;
+  }
+}
+
+.partnersContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.logoContainer {
+  width: 120px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: $logos-top-bottom-margin $gutter-padding $logos-top-bottom-margin 0;
+}
+
+.logo {
+  filter: grayscale(100%);
+
+  &:hover {
+    filter: grayscale(0%);
+  }
+}
+
+.defaultLogo {
+  width: 40px;
+}
+
+.rectangular {
+  width: 50px;
+}
+
+.narrow {
+  width: 85px;
+}
+
+.narrower {
+  width: 120px;
 }
 
 .contactContainer {
@@ -33,4 +98,5 @@
   text-transform: uppercase;
   color: $dark-gray;
   margin-right: 10px;
+  min-width: 90px;
 }

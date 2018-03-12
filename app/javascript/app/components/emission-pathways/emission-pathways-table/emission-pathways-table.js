@@ -5,9 +5,10 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import qs from 'query-string';
 import PropTypes from 'prop-types';
 import {
-  filterDataByBlackList,
+  sortDataByCategoryAttribute,
   titleLinks,
   getDefaultColumns,
+  getFullTextColumns,
   getFilterOptionsByCategory,
   getSelectedFieldOptions
 } from './emission-pathways-table-selectors';
@@ -24,8 +25,9 @@ const mapStateToProps = (state, { category, location }) => {
   };
   return {
     titleLinks: titleLinks(espData),
-    data: filterDataByBlackList(espData),
+    data: sortDataByCategoryAttribute(espData),
     defaultColumns: getDefaultColumns(espData),
+    fullTextColumns: getFullTextColumns(espData),
     categoryName: category,
     query: espData.query,
     loading: categoryData.loading,
@@ -39,9 +41,25 @@ class EmissionPathwaysTableComponent extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
-  handleFilterChange = (filterName, value) => {
-    this.updateUrlParam({ name: filterName, value });
+  handleFilterChange = (filterName, categoryName, value) => {
+    if (categoryName === 'Indicators' && filterName === 'category') {
+      this.deleteSubcategoriesParam();
+    }
+    this.updateUrlParam({
+      name: `${categoryName.toLowerCase()}-${filterName}`,
+      value
+    });
   };
+
+  deleteSubcategoriesParam() {
+    const { history, location } = this.props;
+    history.replace(
+      getLocationParamUpdated(location, {
+        name: 'indicators-subcategory',
+        value: undefined
+      })
+    );
+  }
 
   updateUrlParam(param) {
     const { history, location } = this.props;

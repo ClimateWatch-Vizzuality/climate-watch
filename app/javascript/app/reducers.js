@@ -68,7 +68,8 @@ import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalMetadataComponent from 'components/modal-metadata';
-import * as modalESPOverviewComponent from 'components/emission-pathways/emission-pathways-overview/modal-overview';
+import * as modalESPOverviewComponent from 'components/modal-overview';
+import * as espGraphComponent from 'components/emission-pathways/emission-pathways-graph';
 import * as ndcCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country/country-ghg-emissions';
@@ -93,6 +94,7 @@ const componentsReducers = {
   insights: handleModule(myInsights),
   visualisations: handleModule(myVisualisations),
   vizCreator: handleModule(myVisualisationsCreator),
+  espGraph: handleActions(espGraphComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleActions(HamburgerComponent)
 };

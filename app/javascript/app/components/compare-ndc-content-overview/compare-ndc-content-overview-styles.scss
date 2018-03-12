@@ -58,6 +58,7 @@
 
 .overviewText {
   margin-bottom: 1em;
+
   @media #{$tablet-landscape} {
     margin-bottom: 0.3em;
   }
@@ -83,4 +84,8 @@
 
 .blueIcon {
   fill: $theme-color;
+}
+
+.buttonOutlined {
+  border: 1px solid $border-color;
 }

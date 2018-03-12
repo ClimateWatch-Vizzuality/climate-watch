@@ -2,6 +2,7 @@
 $font-family-1: 'Lato', sans-serif;
 
 // Font sizes
+$font-size-xs: 0.75rem; // 12px / 16px
 $font-size-s: 0.8125rem; // 13px / 16px
 $font-size-sm: 0.875rem; // 14px / 16px
 $font-size: 1rem; // 16px / 16px
@@ -30,6 +31,7 @@ $navbar-height: 60px;
 $header-height: 40vh;
 $card-content-margin: 15px;
 $paragraph-max-width: 770px;
+$logos-top-bottom-margin: 15px;
 
 // Colors
 $black: #333;
@@ -97,3 +99,20 @@ $climate-risk-9: #5165a3;
 $climate-risk-10: #3c4483;
 
 $climate-risk-colors: $climate-risk-1 ,$climate-risk-2 ,$climate-risk-3 ,$climate-risk-4 ,$climate-risk-5 ,$climate-risk-6 ,$climate-risk-7 ,$climate-risk-8 ,$climate-risk-9 ,$climate-risk-10;
+
+@mixin triangle($color, $direction) {
+  width: 0;
+  height: 0;
+
+  @if ($direction == 'up') {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid $color;
+  }
+
+  @if ($direction == 'down') {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid $color;
+  }
+}
