@@ -38,10 +38,19 @@
 
 .actions {
   @include row();
+  @include xy-gutters($gutter-position: ('top', 'bottom'));
+
+  > :nth-child(1) {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
 
   @media #{$desktop} {
     @include row((4, 6));
     @include xy-gutters($gutter-position: ('top', 'bottom'));
+
+    > :nth-child(1) {
+      @include xy-gutters(0, $gutter-position: ('bottom'));
+    }
 
     > :nth-child(2) {
       @include column-offset(2);
