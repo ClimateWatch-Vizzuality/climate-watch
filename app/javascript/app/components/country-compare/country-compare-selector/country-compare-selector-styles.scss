@@ -1,12 +1,14 @@
 @import '~styles/layout.scss';
 
 .bottomBorder {
-  @include row();
-
   background-color: $white;
   border-bottom: solid 1px $border-color;
 }
 
-.layout {
+.selectorsLayout {
+  @include row();
+}
+
+.columns {
   @include columns(4, $gutters: false);
 }

@@ -13,8 +13,8 @@ const CountryCompareSelector = ({
   className
 }) => (
   <div className={styles.bottomBorder}>
-    <div className="grid-column-item">
-      <div className={cx(styles.layout, className)}>
+    <div className={styles.selectorsLayout}>
+      <div className={cx(styles.columns, className)}>
         {selectors.map((v, index) => (
           <Dropdown
             key={v.color}
