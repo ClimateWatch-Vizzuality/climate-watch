@@ -33,6 +33,7 @@
 
   > li {
     height: 45px;
+
     @include xy-gutters(0, $gutter-position: ('right'));
   }
 }
