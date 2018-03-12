@@ -47,7 +47,6 @@ class SearchPage extends PureComponent {
                 <AnchorNav
                   useRoutes
                   links={anchorLinks}
-                  className={styles.anchorNav}
                   theme={anchorNavRegularTheme}
                 />
               )}
@@ -56,25 +55,33 @@ class SearchPage extends PureComponent {
         </Header>
         <div className={cx(styles.wrapperCols)}>
           <div className={cx(styles.contentCols)}>
-            <div className={styles.resultsList}>
-              {loading && <Loading light className={styles.loader} />}
-              {!results &&
-              !loading && <NoContent message="No results for this search" />}
-              {results &&
-                !loading &&
-                results.map(result => (
-                  <ResultCard
-                    className={styles.resultCard}
-                    key={result.location.iso_code3}
-                    result={result}
-                    search={search}
-                  />
-                ))}
+            <div className="grid-column-item">
+              <div className={styles.resultsList}>
+                {loading && <Loading light className={styles.loader} />}
+                {!results &&
+                !loading && <NoContent message="No results for this search" />}
+                {results &&
+                  !loading &&
+                  results.map(result => (
+                    <ResultCard
+                      className={styles.resultCard}
+                      key={result.location.iso_code3}
+                      result={result}
+                      search={search}
+                    />
+                  ))}
+              </div>
             </div>
             <TabletLandscape>
-              <Sticky className={styles.map} activeClass={styles.stickyMap}>
-                <NDCSearchMap />
-              </Sticky>
+              <div className="grid-map-container">
+                <Sticky
+                  className={styles.map}
+                  activeClass={styles.stickyMap}
+                  top="#navBarMobile"
+                >
+                  <NDCSearchMap />
+                </Sticky>
+              </div>
             </TabletLandscape>
           </div>
         </div>
