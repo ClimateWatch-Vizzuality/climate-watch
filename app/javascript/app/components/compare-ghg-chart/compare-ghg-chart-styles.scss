@@ -6,8 +6,13 @@
   margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
-    @include columns((2, 2, 2, 1, 3, 2));
+    @include columns((2, 2, 2, 2));
+
     align-items: flex-end;
+
+    > :nth-child(3) {
+      @include column-offset(4);
+    }
   }
 }
 

@@ -98,11 +98,7 @@ class CompareGhgChart extends PureComponent {
                 value={calculationSelected}
                 hideResetButton
               />
-              <TabletLandscape>
-                <div />
-                <div />
-                {this.renderActionButtons()}
-              </TabletLandscape>
+              <TabletLandscape>{this.renderActionButtons()}</TabletLandscape>
             </div>
           </div>
           <MobileOnly>
