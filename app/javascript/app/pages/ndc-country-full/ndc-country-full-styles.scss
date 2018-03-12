@@ -1,6 +1,7 @@
 @import '~styles/layout.scss';
 
 .page {
+  padding-top: $navbar-height;
   @media #{$mobile-only} {
     padding-top: $navbar-height;
   }
@@ -11,8 +12,8 @@
 
   padding-bottom: $gutter-padding / 2;
 
-  @media #{$desktop} {
-    @include row(9, 3);
+  @media #{$tablet-landscape} {
+    @include row((9, 3));
   }
 }
 
