@@ -101,14 +101,12 @@ class CountryGhgEmissionsContainer extends PureComponent {
 
   handleInfoClick = () => {
     const { source } = this.props.sourceSelected;
-
-    // hide quantification sources from prod
-    // slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
     if (source) {
       this.props.setModalMetadata({
         category: 'Country',
         slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
+        showDisclaimer: true,
         open: true
       });
     }

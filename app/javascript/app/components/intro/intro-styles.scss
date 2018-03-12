@@ -1,19 +1,15 @@
+@import '~styles/layout';
 @import '~styles/settings';
 
-.intro {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-direction: column;
-}
-
 .main {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: flex-start;
   color: $white;
   font-family: $font-family-1;
+
+  @include columns(12);
+
+  @media #{$tablet-landscape} {
+    @include columns((9.6, 2.4));
+  }
 
   a {
     color: $theme-color;
@@ -21,20 +17,11 @@
   }
 }
 
-.button {
-  width: 100%;
-  margin-right: 20px;
-
-  @media #{$tablet-landscape} {
-    width: 170px;
-  }
-}
-
 .title {
   font-size: $font-size-large;
-  margin-bottom: 10px;
   font-weight: $font-weight-light;
-  line-height: 0.85em;
+  line-height: $line-height-xs;
+  margin-bottom: 10px;
 
   @media #{$tablet-landscape} {
     font-size: $font-size-xl-large;
@@ -44,7 +31,6 @@
 .description {
   margin-bottom: 20px;
   line-height: $line-height-medium;
-  max-width: 580px;
   color: $white;
 }
 
@@ -58,6 +44,6 @@
   @media #{$tablet-landscape} {
     max-width: 100%;
     column-count: 2;
-    column-gap: 30px;
+    column-gap: $gutter-padding;
   }
 }

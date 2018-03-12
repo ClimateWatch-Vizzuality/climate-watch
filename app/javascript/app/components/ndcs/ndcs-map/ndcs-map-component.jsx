@@ -23,7 +23,7 @@ const getTooltip = (country, tooltipTxt) => (
 
 const renderButtonGroup = (clickHandler, reverseDropdown = false) => (
   <ButtonGroup
-    className={styles.buttons}
+    className={styles.buttonGroup}
     onInfoClick={clickHandler}
     shareUrl="/embed/ndcs"
     analyticsGraphName="Ndcs"
@@ -47,7 +47,7 @@ const NDCMap = ({
   handleCountryEnter
 }) => (
   <div className={styles.wrapper}>
-    <div className={styles.col4}>
+    <div className={styles.filtersLayout}>
       <Dropdown
         label="Category"
         paceholder="Select a category"

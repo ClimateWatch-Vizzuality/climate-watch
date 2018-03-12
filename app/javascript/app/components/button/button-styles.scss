@@ -37,6 +37,16 @@
   }
 }
 
+.noBox {
+  width: 45px;
+  background-color: transparent;
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
 .square {
   width: 45px;
   padding: 0;

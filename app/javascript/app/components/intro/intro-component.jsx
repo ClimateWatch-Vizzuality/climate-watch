@@ -23,7 +23,7 @@ const Intro = props => {
   );
 
   return (
-    <div className={cx(className, theme.intro)}>
+    <div className={cx(className)}>
       <div className={theme.main}>
         <h2 className={theme.title}>{title}</h2>
         <TabletLandscape> {actionButton} </TabletLandscape>
