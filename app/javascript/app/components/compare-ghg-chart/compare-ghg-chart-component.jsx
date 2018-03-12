@@ -110,6 +110,7 @@ class CompareGhgChart extends PureComponent {
             height={500}
             loading={loading}
             hideRemoveOptions
+            noConnectNulls
           />
           <TabletPortraitOnly>
             <div className={cx(styles.buttonGroup, styles.col2)}>
