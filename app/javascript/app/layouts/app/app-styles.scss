@@ -1,7 +1,16 @@
+@import '~styles/settings.scss';
 .app {
   height: 100%;
 
   &.mobileMenuOpen {
     overflow: hidden;
+  }
+}
+
+.pageWrapper {
+  padding-top: $navbar-height;
+
+  @media #{$desktop} {
+    padding-top: 0;
   }
 }

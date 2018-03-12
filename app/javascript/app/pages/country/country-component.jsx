@@ -19,7 +19,7 @@ class Country extends PureComponent {
     const { route, country, anchorLinks, description } = this.props;
     const countryName = (country && country.name) || '';
     return (
-      <div className={styles.sectionWrapper}>
+      <div>
         <MetaDescription
           descriptionContext={COUNTRY_PROFILES}
           subtitle={countryName}

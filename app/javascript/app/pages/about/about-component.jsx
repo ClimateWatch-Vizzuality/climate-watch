@@ -13,7 +13,7 @@ import layout from 'styles/layout.scss';
 import styles from './about-styles.scss';
 
 const About = ({ route, anchorLinks, query }) => (
-  <div className={styles.sectionWrapper}>
+  <div>
     <MetaDescription descriptionContext={ABOUT} subtitle="About" />
     <SocialMetadata descriptionContext={ABOUT} href={location.href} />
     <Header route={route}>

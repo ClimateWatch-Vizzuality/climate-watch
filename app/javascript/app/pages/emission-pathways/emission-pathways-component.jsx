@@ -21,7 +21,7 @@ class EmissionPathways extends PureComponent {
   render() {
     const { route, anchorLinks, routeLinks } = this.props;
     return (
-      <div className={styles.sectionWrapper}>
+      <div>
         <MetaDescription
           descriptionContext={EMISSION_PATHWAYS}
           subtitle="Pathways"

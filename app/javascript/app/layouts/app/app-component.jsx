@@ -34,7 +34,9 @@ class App extends PureComponent {
               <NavBarMobile routes={navRoutes} />
             ))}
         </Desktop>
-        {renderRoutes(route.routes.filter(r => r.path))}
+        <div className={styles.pageWrapper}>
+          {renderRoutes(route.routes.filter(r => r.path))}
+        </div>
         <Footer />
       </div>
     );
