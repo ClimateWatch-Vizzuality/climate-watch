@@ -68,7 +68,7 @@ const MyVisualisations = props => {
         customStyles={modalStyles}
         theme={styles}
         isOpen={creatorIsOpen}
-        onRequestClose={() => closeCreator()}
+        onRequestClose={closeCreator}
         shouldCloseOnOverlayClick={false}
         header={
           <ModalHeader
@@ -77,7 +77,7 @@ const MyVisualisations = props => {
           />
         }
       >
-        <VizCreator onHideCreator={() => closeCreator()} />
+        <VizCreator onHideCreator={closeCreator} />
       </Modal>
     </div>
   );

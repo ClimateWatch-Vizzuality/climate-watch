@@ -1,4 +1,5 @@
 import { fromRaw } from 'utils/draft';
+import * as vizzCreatorActions from 'components/my-climate-watch/viz-creator/viz-creator-actions';
 import * as actions from './my-cw-editor-actions';
 import initialState from './my-cw-editor-initial-state';
 
@@ -8,9 +9,12 @@ export default {
   [actions.openPicker]: state => ({ ...state, pickerIsOpen: true }),
   [actions.closePicker]: closePicker,
 
-  [actions.openCreator]: state =>
+  [vizzCreatorActions.openCreator]: state =>
     closePicker({ ...state, creatorIsOpen: true }),
-  [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
+  [vizzCreatorActions.closeCreator]: state => ({
+    ...state,
+    creatorIsOpen: false
+  }),
 
   [actions.updateContent]: (state, { payload }) => ({
     ...state,
