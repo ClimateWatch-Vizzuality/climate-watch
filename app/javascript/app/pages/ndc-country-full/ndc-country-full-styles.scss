@@ -38,7 +38,7 @@
 
 .actions {
   @include row();
-  @include xy-gutters($gutter-position: ('top', 'bottom'));
+  @include xy-gutters($gutter-type: 'padding', $gutter-position: ('top', 'bottom'));
 
   > :nth-child(1) {
     @include xy-gutters($gutter-position: ('bottom'));
@@ -46,7 +46,7 @@
 
   @media #{$desktop} {
     @include row((4, 6));
-    @include xy-gutters($gutter-position: ('top', 'bottom'));
+    @include xy-gutters($gutter-type: 'padding', $gutter-position: ('top', 'bottom'));
 
     > :nth-child(1) {
       @include xy-gutters(0, $gutter-position: ('bottom'));
