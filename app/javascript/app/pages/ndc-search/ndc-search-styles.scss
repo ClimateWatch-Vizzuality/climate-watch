@@ -28,7 +28,7 @@
   @media #{$tablet-landscape} {
     @include row();
 
-    min-height: 700px;
+    min-height: 400px;
   }
 
   @media #{$tablet-landscape} {
@@ -61,5 +61,9 @@
   position: absolute;
   left: 0;
   right: 0;
+  min-height: 400px;
+}
+
+.noContent {
   min-height: 400px;
 }
