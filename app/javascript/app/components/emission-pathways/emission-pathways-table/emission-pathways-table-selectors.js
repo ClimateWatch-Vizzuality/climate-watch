@@ -4,6 +4,7 @@ import { deburrUpper } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import uniq from 'lodash/uniq';
+import flatten from 'lodash/flatten';
 import sortBy from 'lodash/sortBy';
 import { ESP_BLACKLIST, FILTERS_BY_CATEGORY } from 'data/constants';
 
@@ -18,7 +19,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
     case 'models':
       return [
         'full_name',
-        'developed_by',
+        'maintainer_institute',
         'geographic_coverage',
         'time_horizon',
         'url'
@@ -100,9 +101,16 @@ export const filteredDataByFilters = createSelector(
     if (!filters) return data;
     let filteredData = data;
     Object.keys(filters).forEach(key => {
-      filteredData = filteredData.filter(
-        d => d[key] && (d[key] === filters[key] || d[key].name === filters[key])
-      );
+      if (key === 'country') {
+        filteredData = filteredData.filter(
+          d => d.geographic_coverage.indexOf(filters.country) > -1
+        );
+      } else {
+        filteredData = filteredData.filter(
+          d =>
+            d[key] && (d[key] === filters[key] || d[key].name === filters[key])
+        );
+      }
     });
     return filteredData;
   }
@@ -167,6 +175,9 @@ export const getFilterOptionsByCategory = createSelector(
         availableData = uniq(sanitizedFilterData).filter(
           d => subcategories.indexOf(d) > -1
         );
+      }
+      if (f === 'country') {
+        availableData = uniq(flatten(data.map(d => d.geographic_coverage)));
       }
       categoryOptions[f] = availableData.map(filterData => ({
         value: filterData,
