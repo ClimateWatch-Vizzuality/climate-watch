@@ -24,7 +24,7 @@ const renderTrendLine = (chartData, titleLink) => {
 };
 
 const cellRenderer = ({
-  props: { parseHtml, titleLinks, trendLine },
+  props: { parseHtml, titleLinks, trendLine, emptyValueLabel },
   cell
 }) => {
   let { cellData } = cell;
@@ -53,7 +53,12 @@ const cellRenderer = ({
   return parseHtml ? (
     <div dangerouslySetInnerHTML={{ __html: cellData }} />
   ) : (
-    cellData || ''
+    cellData ||
+    (emptyValueLabel ? (
+      <div className={styles.emptyValue}>{emptyValueLabel}</div>
+    ) : (
+      ''
+    ))
   );
 };
 
@@ -62,8 +67,13 @@ cellRenderer.propTypes = {
   props: PropTypes.shape({
     titleLinks: PropTypes.array, // [ [ {columnName: 'title field name in the table', url:'/destination-url' or 'self'}, ... ] ]
     trendLine: PropTypes.string, // 'field name of the trend line column'
-    parseHtml: PropTypes.bool
+    parseHtml: PropTypes.bool,
+    emptyValueLabel: PropTypes.bool.isRequired
   })
+};
+
+cellRenderer.defaultProps = {
+  emptyValueLabel: null
 };
 
 export default cellRenderer;
