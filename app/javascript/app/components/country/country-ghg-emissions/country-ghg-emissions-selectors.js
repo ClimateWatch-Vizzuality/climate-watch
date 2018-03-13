@@ -117,7 +117,10 @@ export const getVersionSelected = createSelector(
   [getVersionOptions, getVersionSelection],
   (versions, selected) => {
     if (!versions || !versions.length) return {};
-    if (!selected) return versions[0];
+    if (!selected) {
+      const AR4Version = versions.find(version => version.label === 'AR4');
+      return AR4Version || versions[0];
+    }
     return versions.find(version => version.value === parseInt(selected, 10));
   }
 );
@@ -125,7 +128,7 @@ export const getVersionSelected = createSelector(
 export const getAllowedSectors = createSelector(
   [getSourceSelected, getVersionSelected],
   (source, version) => {
-    if (!source || !version) return null;
+    if (!source || isEmpty(source) || !version || isEmpty(version)) return null;
     if (source.label === 'UNFCCC') {
       return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
     }
