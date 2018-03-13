@@ -28,6 +28,7 @@ class SearchPage extends PureComponent {
       anchorLinks,
       fetchSearchResults
     } = this.props;
+    const hasNoContent = !results && !loading;
     return (
       <div className={styles.page}>
         <Header route={route}>
@@ -58,8 +59,12 @@ class SearchPage extends PureComponent {
             <div className="grid-column-item">
               <div className={styles.resultsList} id="resultList">
                 {loading && <Loading light className={styles.loader} />}
-                {!results &&
-                !loading && <NoContent message="No results for this search" />}
+                {hasNoContent && (
+                  <NoContent
+                    className={styles.noContent}
+                    message="No results for this search"
+                  />
+                )}
                 {results &&
                   !loading &&
                   results.map(result => (
