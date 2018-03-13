@@ -2,7 +2,9 @@
 @import '~styles/layout.scss';
 
 .page {
-  background-color: $light-gray;
+  @media #{$tablet-landscape} {
+    background-image: linear-gradient(to right, #{$white}, #{$white} 50%, #{$light-gray} 50%, #{$light-gray});
+  }
 }
 
 .anchorNav {
@@ -30,7 +32,7 @@
   }
 
   @media #{$tablet-landscape} {
-    background-color: $light-gray;
+    background-color: transparent;
   }
 }
 
