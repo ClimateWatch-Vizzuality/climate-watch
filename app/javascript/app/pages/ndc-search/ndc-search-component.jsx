@@ -56,7 +56,7 @@ class SearchPage extends PureComponent {
         <div className={cx(styles.wrapperCols)}>
           <div className={cx(styles.contentCols)}>
             <div className="grid-column-item">
-              <div className={styles.resultsList}>
+              <div className={styles.resultsList} id="resultList">
                 {loading && <Loading light className={styles.loader} />}
                 {!results &&
                 !loading && <NoContent message="No results for this search" />}
@@ -78,6 +78,7 @@ class SearchPage extends PureComponent {
                   className={styles.map}
                   activeClass={styles.stickyMap}
                   top="#navBarMobile"
+                  bottomBoundary="#resultList"
                 >
                   <NDCSearchMap />
                 </Sticky>
