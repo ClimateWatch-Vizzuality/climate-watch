@@ -9,10 +9,10 @@ import styles from './my-cw-insight-card-styles.scss';
 class MyInsightCard extends PureComponent {
   render() {
     const { data, className, link, deleteInsight } = this.props;
-    const { chart: { data: chartData } } = data;
+    const chartData = data && data.chart && data.chart.data;
     return [
       <Link to={link} className={cx(styles.card, className)} key="card-content">
-        <RenderChart chart={chartData.chart} {...chartData} />
+        {chartData && <RenderChart chart={chartData.chart} {...chartData} />}
         <h2 className={styles.cardTitle}>{data.title}</h2>
         <p
           className={styles.cardContent}
