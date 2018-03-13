@@ -33,7 +33,7 @@ class NDCCountry extends PureComponent {
     } = this.props;
     const countryName = country && `${country.wri_standard_name}`;
     return (
-      <div className={styles.page}>
+      <div>
         <MetaDescription
           descriptionContext={NDC_COUNTRY({ countryName })}
           subtitle={countryName}

@@ -1,11 +1,5 @@
 @import '~styles/layout.scss';
 
-.page {
-  @media #{$mobile-only} {
-    padding-top: $navbar-height;
-  }
-}
-
 .anchorNav {
   @include row('shrink', $wrap: false);
 }
