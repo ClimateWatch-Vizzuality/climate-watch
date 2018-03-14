@@ -13,24 +13,26 @@ class DefinitionList extends PureComponent {
         {definitions &&
           definitions.length > 0 &&
           definitions.map(def => (
-            <div
-              key={`${def.slug}-${def.title}-${Math.random()}`}
-              className={cx(
-                compare ? styles.definitionCompare : styles.definition
-              )}
-            >
-              <dt className={styles.definitionTitle}>{def.title}</dt>
-              {def.descriptions &&
-                def.descriptions.map(desc => (
-                  <dd
-                    key={`${def.slug}-${desc.iso}`}
-                    className={styles.definitionDesc}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
-                    />
-                  </dd>
-                ))}
+            <div className="grid-column-item">
+              <div
+                key={`${def.slug}-${def.title}-${Math.random()}`}
+                className={cx(
+                  compare ? styles.definitionCompare : styles.definition
+                )}
+              >
+                <dt className={styles.definitionTitle}>{def.title}</dt>
+                {def.descriptions &&
+                  def.descriptions.map(desc => (
+                    <dd
+                      key={`${def.slug}-${desc.iso}`}
+                      className={styles.definitionDesc}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{ __html: desc.value }} // eslint-disable-line
+                      />
+                    </dd>
+                  ))}
+              </div>
             </div>
           ))}
       </dl>
