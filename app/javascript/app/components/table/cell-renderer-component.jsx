@@ -53,7 +53,12 @@ const cellRenderer = ({
   return parseHtml ? (
     <div dangerouslySetInnerHTML={{ __html: cellData }} />
   ) : (
-    cellData || emptyValueLabel || ''
+    cellData ||
+    (emptyValueLabel ? (
+      <div className={styles.emptyValue}>{emptyValueLabel}</div>
+    ) : (
+      ''
+    ))
   );
 };
 
