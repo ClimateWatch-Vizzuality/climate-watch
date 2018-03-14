@@ -3,11 +3,6 @@
 
 .bg {
   background-color: $light-gray;
-  padding-top: $navbar-height;
-
-  @media #{$desktop} {
-    padding-top: 0;
-  }
 }
 
 .bgOpen {

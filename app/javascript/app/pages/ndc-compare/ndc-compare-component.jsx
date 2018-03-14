@@ -41,35 +41,46 @@ class NDCCountry extends PureComponent {
           </Sticky>
         </Header>
         <div className={styles.countrySelector}>
-          <div className={cx(layout.content, styles.fourFold)}>
-            <div
-              className={cx(styles.selector, styles.offset, styles.separator)}
-            >
-              <Dropdown
-                placeholder="Add a country"
-                options={sortBy(countriesOptions, ['label'])}
-                onValueChange={selected => handleDropDownChange(0, selected)}
-                value={activeCountriesOptions[0]}
-                transparent
-              />
-            </div>
-            <div className={cx(styles.selector, styles.separator)}>
-              <Dropdown
-                placeholder="Add a second country"
-                options={sortBy(countriesOptions, ['label'])}
-                onValueChange={selected => handleDropDownChange(1, selected)}
-                value={activeCountriesOptions[1]}
-                transparent
-              />
-            </div>
-            <div className={styles.selector}>
-              <Dropdown
-                placeholder="Add a third country"
-                options={sortBy(countriesOptions, ['label'])}
-                onValueChange={selected => handleDropDownChange(2, selected)}
-                value={activeCountriesOptions[2]}
-                transparent
-              />
+          <div className={styles.row}>
+            <div className="grid-layout-item">
+              <div className={styles.fourFold}>
+                <div
+                  className={cx(
+                    styles.selector,
+                    styles.offset,
+                    styles.separator
+                  )}
+                >
+                  <Dropdown
+                    placeholder="Add a country"
+                    options={sortBy(countriesOptions, ['label'])}
+                    onValueChange={selected =>
+                      handleDropDownChange(0, selected)}
+                    value={activeCountriesOptions[0]}
+                    transparent
+                  />
+                </div>
+                <div className={cx(styles.selector, styles.separator)}>
+                  <Dropdown
+                    placeholder="Add a second country"
+                    options={sortBy(countriesOptions, ['label'])}
+                    onValueChange={selected =>
+                      handleDropDownChange(1, selected)}
+                    value={activeCountriesOptions[1]}
+                    transparent
+                  />
+                </div>
+                <div className={styles.selector}>
+                  <Dropdown
+                    placeholder="Add a third country"
+                    options={sortBy(countriesOptions, ['label'])}
+                    onValueChange={selected =>
+                      handleDropDownChange(2, selected)}
+                    value={activeCountriesOptions[2]}
+                    transparent
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

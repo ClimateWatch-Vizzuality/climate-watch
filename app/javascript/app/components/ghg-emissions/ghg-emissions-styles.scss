@@ -3,20 +3,16 @@
 $min-height: 600px;
 
 .col4 {
-  @extend %grid;
+  @include columns((6, 6, 6, 6));
 
-  align-items: end;
-  margin-bottom: 15px;
-
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
-  grid-row-gap: 1em;
+  > div {
+    @include xy-gutters(30px, $gutter-position: 'bottom');
+  }
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
+    @include columns((20%, 20%, 20%, 20%, 20%));
 
-    grid-template-columns: repeat(5, 1fr);
+    align-items: flex-end;
   }
 }
 
@@ -26,7 +22,11 @@ $min-height: 600px;
 }
 
 .colEnd {
-  grid-column-end: -1;
+  width: 180px;
+
+  @media #{$tablet-landscape} {
+    width: auto;
+  }
 }
 
 .title {

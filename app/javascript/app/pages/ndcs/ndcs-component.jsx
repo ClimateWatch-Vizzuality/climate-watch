@@ -13,7 +13,7 @@ import layout from 'styles/layout.scss';
 import styles from './ndcs-styles.scss';
 
 const NDC = ({ anchorLinks, query, route }) => (
-  <div className={styles.sectionWrapper}>
+  <div>
     <MetaDescription descriptionContext={NDC_CONTENT} subtitle="NDC CONTENT" />
     <SocialMetadata descriptionContext={NDC_CONTENT} href={location.href} />
     <Header route={route}>

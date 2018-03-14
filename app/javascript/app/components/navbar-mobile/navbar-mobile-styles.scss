@@ -37,11 +37,13 @@
 }
 
 .navMenu {
-  @include columns(2, $gridDirection: 'vertical');
+  display: flex;
+  flex-direction: column;
 
   > * {
     position: relative;
     width: fit-content;
+    margin-bottom: 25px;
   }
 }
 

@@ -1,6 +1,10 @@
 @import '~styles/layout';
 @import '~styles/settings';
 
+.wrapper {
+  width: 100%;
+}
+
 .main {
   color: $white;
   font-family: $font-family-1;
@@ -8,7 +12,7 @@
   @include columns(12);
 
   @media #{$tablet-landscape} {
-    @include columns((9.6, 2.4));
+    @include columns((9, 3));
   }
 
   a {

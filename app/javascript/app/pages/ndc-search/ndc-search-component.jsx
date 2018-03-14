@@ -14,7 +14,6 @@ import NoContent from 'components/no-content';
 import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import layout from 'styles/layout.scss';
 
 import styles from './ndc-search-styles.scss';
 
@@ -29,16 +28,19 @@ class SearchPage extends PureComponent {
       anchorLinks,
       fetchSearchResults
     } = this.props;
+    const hasNoContent = !results && !loading;
     return (
-      <div>
+      <div className={styles.page}>
         <Header route={route}>
-          <div className={cx(styles.headerCols, layout.content)}>
+          <div className={styles.headerCols}>
             <Intro title="NDC Content Search" />
-            <NdcsAutocompleteSearch
-              className={styles.select}
-              fetchSearchResults={fetchSearchResults}
-              global
-            />
+            <div>
+              <NdcsAutocompleteSearch
+                className={styles.select}
+                fetchSearchResults={fetchSearchResults}
+                global
+              />
+            </div>
           </div>
           <Sticky activeClass="sticky -ndc-search" top="#navBarMobile">
             <div className={styles.anchorNav}>
@@ -46,34 +48,48 @@ class SearchPage extends PureComponent {
                 <AnchorNav
                   useRoutes
                   links={anchorLinks}
-                  className={styles.anchorNav}
                   theme={anchorNavRegularTheme}
                 />
               )}
             </div>
           </Sticky>
         </Header>
-        <div className={cx(styles.contentCols)}>
-          <div className={styles.resultsList}>
-            {loading && <Loading light className={styles.loader} />}
-            {!results &&
-            !loading && <NoContent message="No results for this search" />}
-            {results &&
-              !loading &&
-              results.map(result => (
-                <ResultCard
-                  className={styles.resultCard}
-                  key={result.location.iso_code3}
-                  result={result}
-                  search={search}
-                />
-              ))}
+        <div className={cx(styles.wrapperCols)}>
+          <div className={cx(styles.contentCols)}>
+            <div className="grid-column-item">
+              <div className={styles.resultsList} id="resultList">
+                {loading && <Loading light className={styles.loader} />}
+                {hasNoContent && (
+                  <NoContent
+                    className={styles.noContent}
+                    message="No results for this search"
+                  />
+                )}
+                {results &&
+                  !loading &&
+                  results.map(result => (
+                    <ResultCard
+                      className={styles.resultCard}
+                      key={result.location.iso_code3}
+                      result={result}
+                      search={search}
+                    />
+                  ))}
+              </div>
+            </div>
+            <TabletLandscape>
+              <div className="grid-map-container">
+                <Sticky
+                  className={styles.map}
+                  activeClass={styles.stickyMap}
+                  top="#navBarMobile"
+                  bottomBoundary="#resultList"
+                >
+                  <NDCSearchMap />
+                </Sticky>
+              </div>
+            </TabletLandscape>
           </div>
-          <TabletLandscape>
-            <Sticky className={styles.map} activeClass={styles.stickyMap}>
-              <NDCSearchMap />
-            </Sticky>
-          </TabletLandscape>
         </div>
       </div>
     );

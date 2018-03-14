@@ -1,31 +1,33 @@
 @import '~styles/layout.scss';
 
-.col6 {
-  @extend %grid;
+.dropDownsLayout {
+  @include columns(6);
 
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 10px;
+  margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr, 1fr);
+    @include columns((2, 2, 2, 2));
 
-    grid-template-columns: repeat(6, 1fr);
+    align-items: flex-end;
+
+    > :nth-child(3) {
+      @include column-offset(4);
+    }
   }
 }
 
-.col2 {
-  @extend %grid;
+.mobileActionButtonsLayout {
+  @include columns(6);
 
-  @include msGridColumns(1fr, 1fr);
+  @media #{$mobile-only} {
+    @include columns();
 
-  grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 10px;
-
-  > div {
-    margin-right: 0 !important;
+    > div {
+      @include xy-gutters($gutter-position: ('bottom'));
+    }
   }
+
+  margin-bottom: $gutter-padding;
 }
 
 .section {
@@ -41,12 +43,11 @@
 }
 
 .chartWrapper {
-  position: relative;
   min-height: 560px;
   max-height: 100%;
 
-  > div {
-    margin-left: 0;
+  @media #{$mobile-only} {
+    min-height: 380px;
   }
 
   > ul {
@@ -58,8 +59,4 @@
       display: flex;
     }
   }
-}
-
-.colEnd {
-  align-self: flex-end;
 }
