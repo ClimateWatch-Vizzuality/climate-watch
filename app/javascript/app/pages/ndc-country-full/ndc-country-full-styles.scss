@@ -40,6 +40,7 @@
 
   @media #{$desktop} {
     @include row((4, 6));
+
     > :nth-child(1) {
       @include xy-gutters(0, $gutter-position: ('bottom'));
     }
