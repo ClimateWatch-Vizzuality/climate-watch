@@ -40,26 +40,17 @@
 
   @media #{$desktop} {
     @include row((4, 6));
-    @include xy-gutters($gutter-type: 'padding', $gutter-position: ('top', 'bottom'));
-
     > :nth-child(1) {
       @include xy-gutters(0, $gutter-position: ('bottom'));
     }
 
     > :nth-child(2) {
-      @include column-offset(2);
+      @include column-offset(2, $gutters: true);
     }
   }
 }
 
-.search {
-  @media #{$mobile-only} {
-    margin-top: $gutter-padding / 2;
-  }
-}
-
 .select {
-  grid-column-start: 3;
   align-self: flex-end;
 }
 

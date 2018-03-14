@@ -9,7 +9,7 @@
 }
 
 .col2 {
-  @include columns(6);
+  @include columns((6,6));
 
   @media #{$mobile-only} {
     @include columns();

@@ -80,7 +80,7 @@ class NDCCountryFull extends PureComponent {
         </Header>
         <Sticky className={styles.sticky} top="#navBarMobile">
           <div className={styles.actionsWrapper}>
-            <div className={cx(layout.content, styles.actions)}>
+            <div className={styles.actions}>
               <Dropdown
                 label="Document"
                 options={contentOptions}
@@ -90,14 +90,12 @@ class NDCCountryFull extends PureComponent {
                 blueBorder
                 disabled={contentOptions.length === 1}
               />
-              <div className={styles.search}>
-                <NdcsAutocompleteSearch
-                  className={styles.select}
-                  fetchSearchResults={fetchCountryNDCFull}
-                  dark
-                  label
-                />
-              </div>
+              <NdcsAutocompleteSearch
+                className={styles.select}
+                fetchSearchResults={fetchCountryNDCFull}
+                dark
+                label
+              />
             </div>
           </div>
         </Sticky>
