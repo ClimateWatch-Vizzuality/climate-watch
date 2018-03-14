@@ -90,11 +90,15 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <img
-                  className={matches ? '' : styles.imageTall}
-                  src={matches ? countrySmScreenshot : countryBgScreenshot}
-                  alt="Country section screenshot"
-                />
+                <div className={matches ? styles.imgLayout : ''}>
+                  <div className={styles.imgContainer}>
+                    <img
+                      className={matches ? '' : styles.imageTall}
+                      src={matches ? countrySmScreenshot : countryBgScreenshot}
+                      alt="Country section screenshot"
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </MobileOnly>
@@ -151,11 +155,13 @@ class Home extends PureComponent {
           <MobileOnly>
             {matches => (
               <div className={matches ? styles.ndcImageMobile : styles.column}>
-                <img
-                  className={matches ? '' : styles.imageRight}
-                  src={matches ? ndcSmScreenshot : ndcBgScreenshot}
-                  alt="Ndcs section screenshot"
-                />
+                <div className={styles.imgContainer}>
+                  <img
+                    className={matches ? '' : styles.imageRight}
+                    src={matches ? ndcSmScreenshot : ndcBgScreenshot}
+                    alt="Ndcs section screenshot"
+                  />
+                </div>
               </div>
             )}
           </MobileOnly>
@@ -176,11 +182,15 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <img
-                  className={matches ? '' : styles.imageRight}
-                  src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
-                  alt="NDC SDGs screenshot"
-                />
+                <div className={matches ? styles.imgLayout : ''}>
+                  <div className={styles.imgContainer}>
+                    <img
+                      className={matches ? '' : styles.imageRight}
+                      src={matches ? ndcSdgSmScreenshot : ndcSdgBgScreenshot}
+                      alt="NDC SDGs screenshot"
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </MobileOnly>

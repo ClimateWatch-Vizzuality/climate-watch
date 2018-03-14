@@ -1,43 +1,22 @@
 @import '~styles/layout.scss';
 
-.doubleFold {
-  @extend %grid;
-
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
-  z-index: 2;
-
-  @media #{$tablet-landscape} {
-    @include msGridColumns(5fr, 7fr);
-
-    grid-template-columns: 5fr 7fr;
-    z-index: 0;
-  }
+.anchorNav {
+  @include row('shrink', $wrap: false);
 }
 
-.threeFold {
-  @extend %grid;
+.doubleFold {
+  @include row((12, 6, 6));
 
-  height: 150px;
-  max-width: 450px;
+  z-index: 2;
 
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
-
-  @media #{$tablet-portrait} {
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: 1fr 1fr;
-    height: auto;
-    max-width: 100%;
+  > :nth-child(4) {
+    height: 100%;
   }
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(3fr, 2fr, 2fr);
+    @include row((5, 3, 2, 2));
 
-    grid-template-columns: 3fr 2fr 2fr;
+    z-index: 0;
   }
 }
 

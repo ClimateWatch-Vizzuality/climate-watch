@@ -1,75 +1,68 @@
 @import '~styles/settings.scss';
 @import '~styles/layout.scss';
 
+.page {
+  @media #{$tablet-landscape} {
+    background-image: linear-gradient(to right, #{$white}, #{$white} 50%, #{$light-gray} 50%, #{$light-gray});
+  }
+}
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
 .headerCols {
-  @extend %grid;
+  @include row();
 
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
   margin-bottom: 15px;
   z-index: 2;
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(6fr, 6fr);
+    @include row((6,6));
+  }
+}
 
-    grid-template-columns: 6fr 6fr;
+.wrapperCols {
+  background-color: $white;
+
+  @media #{$tablet-landscape} {
+    @include row();
+
+    min-height: 400px;
+  }
+
+  @media #{$tablet-landscape} {
+    background-color: transparent;
   }
 }
 
 .contentCols {
-  display: block;
-  background-color: $light-gray;
-
-  @media #{$tablet-portrait} {
-    display: grid;
-
-    @include msGridColumns(1fr);
-
-    grid-template-columns: 1fr;
-  }
+  @include columns(12, $gutters: false);
+  @include column-offset(2);
 
   @media #{$tablet-landscape} {
-    display: grid;
-    grid-column-gap: 30px;
-
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: repeat(2, 50%);
+    @include columns((6,6), $gutters: false);
+    @include column-offset(0, $gutters: true);
   }
 }
 
 .resultsList {
+  @include columns($gutters: false);
+
   border-right: solid 1px #e5e5eb;
-  position: relative;
   background-color: $white;
-}
 
-.resultCard {
-  max-width: calc((#{$max-width} / 2));
-  padding-left: 30px;
-
-  @media #{$tablet-portrait} {
-    float: right;
-  }
-}
-
-.map :global {
-  max-width: calc((#{$max-width} / 2));
-  padding-right: 30px;
-  float: left;
-}
-
-.stickyMap :global {
-  .sticky-inner-wrapper {
-    max-width: calc((#{$max-width} / 2));
-    padding-right: 30px;
+  @media #{$desktop} {
+    @include columns($gutters: false);
   }
 }
 
 .loader {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: -25%;
+  min-height: 400px;
+}
+
+.noContent {
   min-height: 400px;
 }

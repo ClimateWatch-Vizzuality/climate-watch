@@ -17,7 +17,6 @@ import { TabletLandscape } from 'components/responsive';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
-import layout from 'styles/layout.scss';
 import styles from './ndc-country-styles.scss';
 
 class NDCCountry extends PureComponent {
@@ -46,58 +45,49 @@ class NDCCountry extends PureComponent {
         <NdcsDocumentsMetaProvider />
         {country && (
           <Header route={route}>
-            <div
-              className={cx(layout.content, styles.doubleFold, styles.header)}
-            >
+            <div className={cx(styles.doubleFold, styles.header)}>
               <div className={styles.title}>
                 <Intro title={country.wri_standard_name} />
               </div>
-              <div className={styles.threeFold}>
-                <div>
-                  {documentsOptions && (
-                    <div>
-                      {documentsOptions.length > 1 ? (
-                        <Dropdown
-                          className={theme.dropdownOptionWithArrow}
-                          placeholder="Select a document"
-                          options={documentsOptions}
-                          onValueChange={handleDropDownChange}
-                          white
-                          hideResetButton
-                        />
-                      ) : (
-                        <Button
-                          color="yellow"
-                          link={`/ndcs/country/${match.params.iso}/full`}
-                        >
-                          {`View ${documentsOptions[0].label} Document`}
-                        </Button>
-                      )}
-                    </div>
-                  )}
-                </div>
-                <TabletLandscape>
+              {documentsOptions &&
+                (documentsOptions.length > 1 ? (
+                  <Dropdown
+                    className={theme.dropdownOptionWithArrow}
+                    placeholder="Select a document"
+                    options={documentsOptions}
+                    onValueChange={handleDropDownChange}
+                    white
+                    hideResetButton
+                  />
+                ) : (
                   <Button
                     color="yellow"
-                    link={`/ndcs/compare/mitigation?locations=${match.params
-                      .iso}`}
+                    link={`/ndcs/country/${match.params.iso}/full`}
                   >
-                    Compare
+                    {`View ${documentsOptions[0].label} Document`}
                   </Button>
-                </TabletLandscape>
-                <Search
-                  theme={lightSearch}
-                  placeholder="Search"
-                  value={search}
-                  onChange={onSearchChange}
-                />
-              </div>
+                ))}
+              <TabletLandscape>
+                <Button
+                  color="yellow"
+                  link={`/ndcs/compare/mitigation?locations=${match.params
+                    .iso}`}
+                >
+                  Compare
+                </Button>
+              </TabletLandscape>
+              <Search
+                theme={lightSearch}
+                placeholder="Search"
+                input={search}
+                onChange={onSearchChange}
+              />
             </div>
             <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
               <AnchorNav
                 useRoutes
                 links={anchorLinks}
-                className={layout.content}
+                className={styles.anchorNav}
                 theme={anchorNavRegularTheme}
                 gradientColor={route.headerColor}
               />

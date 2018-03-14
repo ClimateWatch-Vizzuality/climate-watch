@@ -1,8 +1,10 @@
 import React from 'react';
+import layout from 'styles/layout';
+import cx from 'classnames';
 import styles from './about-description-styles.scss';
 
 const About = () => (
-  <div className={styles.aboutDescription}>
+  <div className={cx(layout.content, styles.aboutDescription)}>
     <p>
       Climate Watch is an online platform designed to empower policymakers,
       researchers, media and other stakeholders with the open climate data,

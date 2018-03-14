@@ -4,6 +4,10 @@
   padding-top: 20px;
 }
 
+.row {
+  @include row((10, 2));
+}
+
 .gray {
   background-color: $light-gray;
 }
@@ -17,41 +21,31 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: $gutter-padding;
+  padding-top: $gutter-padding;
+  padding-bottom: $gutter-padding;
   color: $dark-gray;
   font-weight: $font-weight-semi-bold;
 }
 
 .contentWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding-top: $gutter-padding;
+  @include columns(12);
+
+  > :nth-child(2) {
+    justify-content: flex-start;
+  }
 
   @media #{$tablet-landscape} {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    @include columns((10,2));
+
+    > :nth-child(2) {
+      justify-content: flex-end;
+    }
   }
 }
 
 .partnersContainer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-start;
-  padding-bottom: $gutter-padding;
-
-  @media #{$tablet-landscape} {
-    width: 85%;
-    padding-bottom: 0;
-  }
-}
-
-.partnersContainer::-webkit-scrollbar {
-  display: none;
+  @include columns('shrink', $gutters: false);
+  @include xy-gutters($gutter-position:('top', 'bottom'));
 }
 
 .logoContainer {

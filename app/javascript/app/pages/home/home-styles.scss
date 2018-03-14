@@ -2,19 +2,30 @@
 @import '~styles/layout.scss';
 
 .doubleFold {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 1.5rem;
+  @include columns(12);
 
   @media #{$tablet-portrait} {
-    //SASS does not allow to @extend grid inside @media
-    //so display and column-gap are 'hardcoded'
-    display: grid;
-    grid-column-gap: $gutter-padding;
+    @include columns(6);
+  }
+}
 
-    @include msGridColumns(1fr, 1fr);
+.storiesLayout {
+  @include row();
+}
 
-    grid-template-columns: repeat(2, 1fr);
+.imgLayout {
+  @include columns(12);
+
+  > *:first-child {
+    @include column-offset(0);
+  }
+
+  @media #{$mobile-only} {
+    @include columns(8);
+
+    > *:first-child {
+      @include column-offset(2);
+    }
   }
 }
 
@@ -113,6 +124,7 @@
 
 .countries {
   display: flex;
+  padding-bottom: 0;
 }
 
 .sdgLinkages {
@@ -132,14 +144,26 @@
 
 .invertOrder {
   order: 2;
-  margin: 0 auto;
+  margin-bottom: 0;
 
   @media #{$tablet-landscape} {
     order: initial;
   }
 }
 
+.imgContainer {
+  @media #{$tablet-portrait} {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media #{$tablet-landscape} {
+    display: block;
+  }
+}
+
 .ndcImageMobile {
   margin-right: -$gutter-padding / 2;
   margin-left: -$gutter-padding / 2;
+  width: calc(100% + #{$gutter-padding});
 }

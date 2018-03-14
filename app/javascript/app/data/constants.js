@@ -140,7 +140,7 @@ export const ESP_BLACKLIST = {
 };
 
 export const FILTERS_BY_CATEGORY = {
-  models: ['license', 'time_horizon', 'time_step'],
+  models: ['country'],
   scenarios: ['model'],
   indicators: ['category', 'subcategory']
 };

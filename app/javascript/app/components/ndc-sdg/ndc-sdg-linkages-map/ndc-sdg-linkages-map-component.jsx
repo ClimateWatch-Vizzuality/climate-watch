@@ -60,32 +60,35 @@ class NdcSdgLinkagesMap extends PureComponent {
   render() {
     return (
       <TabletLandscape>
-        {matches => (
+        {isTablet => (
           <div
             className={cx(styles.container, this.props.className, {
               [styles.isOpen]: this.props.goalSelected !== ''
             })}
           >
-            {matches ? (
-              <h3 className={styles.title}>Global Linkage Overview</h3>
-            ) : null}
-            {matches ? (
-              <ButtonGroup
-                className={styles.buttons}
-                onInfoClick={this.props.handleInfoClick}
-                shareUrl="/embed/ndcs-sdg"
-                analyticsGraphName="Ndcs-Sdg"
-              />
-            ) : null}
+            <div className={styles.row}>
+              {isTablet ? (
+                <h3 className={styles.title}>Global Linkage Overview</h3>
+              ) : null}
+              {isTablet ? (
+                <ButtonGroup
+                  className={styles.buttons}
+                  onInfoClick={this.props.handleInfoClick}
+                  shareUrl="/embed/ndcs-sdg"
+                  analyticsGraphName="Ndcs-Sdg"
+                />
+              ) : null}
+            </div>
             <Map
               style={{ height: '100%', width: '100%' }}
-              zoomEnable
-              dragEnable
+              zoomEnable={isTablet}
+              dragEnable={isTablet}
               paths={this.props.paths}
               className={styles.map}
               onCountryEnter={this.handleMapInteraction}
               onCountryFocus={this.handleMapInteraction}
               onCountryClick={this.props.onCountryClick}
+              customCenter={isTablet ? null : [10, 0]}
               controlPosition="bottom"
               tooltipId="sdg-linkages"
             />
@@ -93,7 +96,7 @@ class NdcSdgLinkagesMap extends PureComponent {
             <ReactTooltip
               className={styles.tooltipContainer}
               id="sdg-linkages"
-              delayHide={matches ? 0 : 3000}
+              delayHide={isTablet ? 0 : 3000}
             >
               {this.getTooltip()}
             </ReactTooltip>

@@ -34,7 +34,7 @@ class NDCTable extends PureComponent {
     } = this.props;
     return (
       <div>
-        <div className={styles.col4}>
+        <div className={styles.filtersLayout}>
           <Dropdown
             label="Category"
             options={categories}

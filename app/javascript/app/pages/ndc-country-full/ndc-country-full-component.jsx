@@ -65,7 +65,7 @@ class NDCCountryFull extends PureComponent {
       content
     } = this.props;
     return (
-      <div>
+      <div className={styles.page}>
         <Header route={route}>
           <div className={cx(layout.content, styles.header, styles.twoFold)}>
             <div className={styles.title}>
@@ -80,7 +80,7 @@ class NDCCountryFull extends PureComponent {
         </Header>
         <Sticky className={styles.sticky} top="#navBarMobile">
           <div className={styles.actionsWrapper}>
-            <div className={cx(layout.content, styles.actions)}>
+            <div className={styles.actions}>
               <Dropdown
                 label="Document"
                 options={contentOptions}

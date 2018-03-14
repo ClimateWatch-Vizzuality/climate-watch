@@ -26,6 +26,10 @@
   }
 }
 
+.row {
+  @include columns((8, 4));
+}
+
 .map {
   height: 100%;
 }
@@ -42,9 +46,10 @@
 
 .buttons {
   position: absolute;
-  right: 10px;
+  right: 0;
   top: $gutter-padding;
   z-index: 2;
+  width: 100%;
 }
 
 .title {

@@ -5,47 +5,45 @@ $min-height: 450px;
 .wrapper {
   border-bottom: solid 1px $theme-border;
   min-height: 450px;
-  padding-bottom: 70px;
+  padding-bottom: 50px;
+}
+
+.titleAndBtnsWrapper {
+  @include columns(6);
+
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
 
   @media #{$tablet-landscape} {
-    padding-bottom: 50px;
+    > *:last-child {
+      @include column-offset(7.2, $gutters: true);
+    }
+
+    @include columns(2.4);
   }
 }
 
-.titleAndBtnsWrapper,
 .selectorsWrapper {
-  @extend %grid;
+  @include columns(6);
 
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
-  grid-row-gap: 20px;
-  align-items: end;
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
 
   @media #{$tablet-landscape} {
-    grid-template-columns: repeat(5, 1fr);
-
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr, 1fr);
+    @include columns(2.4);
   }
 }
 
 .titleAndBtnsWrapper {
-  margin-bottom: 20px;
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  margin-top: $gutter-padding;
 }
 
 .selectorsWrapper {
   margin-bottom: 40px;
-}
-
-.btnGroup {
-  margin-top: 0;
-  grid-column-end: 0;
-
-  @media #{$tablet-landscape} {
-    margin-top: 25px; // To fix IE margin top button
-    -ms-grid-column: 9 !important; // To fix IE grid position
-    grid-column-end: -1;
-  }
 }
 
 .title {
@@ -53,8 +51,6 @@ $min-height: 450px;
   font-weight: $font-weight;
   color: $theme-color;
   margin-bottom: 10px;
-  padding-top: 35px;
-  grid-column: 1/5;
 }
 
 .chartWrapper {

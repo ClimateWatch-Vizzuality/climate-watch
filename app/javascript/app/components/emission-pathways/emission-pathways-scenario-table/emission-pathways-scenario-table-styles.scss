@@ -2,29 +2,20 @@
 @import '~styles/settings.scss';
 
 .col4 {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
+  @include columns(6);
+  @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr, 1fr, 1fr);
+    @include columns(3);
 
-    grid-template-columns: repeat(4, 1fr);
-    align-items: end;
+    > *:nth-child(3) {
+      @include column-offset(3);
+    }
   }
 }
 
 .loader {
   min-height: 475px;
-}
-
-.searchBox,
-.uploadButton {
-  margin-top: 25px; // To fix IE margin top button grid
-  grid-column-end: -1;
-  -ms-grid-column: 7 !important; // To fix IE grid position
 }
 
 .noContent {
@@ -33,21 +24,10 @@
 }
 
 .tableMenu {
-  display: flex;
-  color: $dark-gray;
+  @include columns((12));
+  @include xy-gutters($gutter-position: ('top', 'bottom'), $gutters: $gutter-padding * 2);
+
+  color: $base-text;
   font-size: $font-size-large;
-  margin-bottom: 20px;
-
-  li {
-    margin-right: 30px;
-    list-style: none;
-
-    &.singleTitle {
-      margin-top: 30px;
-    }
-
-    &.active {
-      color: $base-text;
-    }
-  }
+  list-style: none;
 }

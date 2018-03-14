@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { TabletLandscape } from 'components/responsive';
+
+import styles from './header-styles.scss';
 
 const Header = props => {
   const {
@@ -9,29 +12,42 @@ const Header = props => {
     children,
     size,
     theme,
-    gradientStyle,
     color
   } = props;
   const sizeClass = cx({
     [theme.medium]: size === 'medium',
     [theme.large]: size === 'large'
   });
+  const getStyle = isLandscape => {
+    let style = { backgroundColor: color };
+    if (color && image) {
+      const gradient = `linear-gradient(to top, ${color} 25%, transparent), `;
+      style = {
+        ...style,
+        backgroundImage: `${isLandscape ? '' : gradient}url(${image})`
+      };
+    }
 
-  let style = { backgroundColor: color };
-  if (image) {
-    style = {
-      ...style,
-      backgroundImage: `url(${image})`
-    };
-  }
+    if (image && !color) {
+      style = {
+        backgroundImage: `url(${image})`
+      };
+    }
+
+    return style;
+  };
 
   return (
-    <div className={cx(className, theme.header, sizeClass)} style={style}>
-      {gradientStyle && (
-        <span className={theme.gradient} style={gradientStyle} />
+    <TabletLandscape>
+      {isLandscape => (
+        <div
+          className={cx(className, styles.header, sizeClass)}
+          style={getStyle(isLandscape)}
+        >
+          {children}
+        </div>
       )}
-      {children}
-    </div>
+    </TabletLandscape>
   );
 };
 
@@ -41,8 +57,7 @@ Header.propTypes = {
   children: PropTypes.node,
   size: PropTypes.string,
   color: PropTypes.string,
-  theme: PropTypes.object,
-  gradientStyle: PropTypes.object
+  theme: PropTypes.object
 };
 
 export default Header;

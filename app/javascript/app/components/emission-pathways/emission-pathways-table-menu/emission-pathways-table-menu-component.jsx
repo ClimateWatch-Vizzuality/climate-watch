@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import AnchorNav from 'components/anchor-nav';
 import layout from 'styles/layout.scss';
 import Button from 'components/button';
-import cx from 'classnames';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 
@@ -13,48 +12,45 @@ class EmissionPathwaysTableMenu extends PureComponent {
   render() {
     const { routeLinks, uploadButton } = this.props;
     const wantToText = (
-      <span className={styles.buttonDetail}>
+      <div className={styles.actionText}>
         Want to provide feedback or add data for a model?
-      </span>
+      </div>
     );
 
     const button = (
-      <Button
-        color="yellow"
-        className={styles.uploadButton}
-        href="mailto:ClimateWatch@WRI.org"
-      >
+      <Button color="yellow" href="mailto:ClimateWatch@WRI.org">
         Get in touch
       </Button>
     );
 
     return (
       <div className={layout.content}>
-        <div
-          className={cx(styles.col4, styles.tableMenuContainer)}
-          role="menubar"
-          tabIndex={-1}
-        >
-          <AnchorNav
-            useRoutes
-            links={routeLinks}
-            theme={anchorNavLightTheme}
-            className={styles.nav}
-          />
-          {uploadButton && (
-            <TabletLandscape>
-              {wantToText}
-              {button}
-            </TabletLandscape>
-          )}
-          {uploadButton && (
-            <TabletPortraitOnly>
-              <div>
-                {wantToText}
-                {button}
-              </div>
-            </TabletPortraitOnly>
-          )}
+        <div className="grid-column-item">
+          <div
+            className={styles.tableMenuContainer}
+            role="menubar"
+            tabIndex={-1}
+          >
+            <AnchorNav
+              useRoutes
+              links={routeLinks}
+              theme={anchorNavLightTheme}
+            />
+            {uploadButton && (
+              <React.Fragment>
+                <TabletLandscape>
+                  {wantToText}
+                  {button}
+                </TabletLandscape>
+                <TabletPortraitOnly>
+                  <div>
+                    {wantToText}
+                    {button}
+                  </div>
+                </TabletPortraitOnly>
+              </React.Fragment>
+            )}
+          </div>
         </div>
       </div>
     );

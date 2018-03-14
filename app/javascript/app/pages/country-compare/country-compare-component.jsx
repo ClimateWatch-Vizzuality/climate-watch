@@ -14,7 +14,7 @@ import ModalMetadata from 'components/modal-metadata';
 
 import layout from 'styles/layout.scss';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import { TabletLandscape } from 'components/responsive';
+import { TabletLandscape, Desktop } from 'components/responsive';
 import styles from './country-compare-styles.scss';
 
 const { FEATURE_COUNTRY_COMPARISON } = process.env;
@@ -25,7 +25,7 @@ const CountryCompare = ({ route, anchorLinks }) => {
       <Teaser
         screenshot={compareScreenshot}
         title="Compare Countries"
-        description="Compare a snapshot of countries’ climate action progress, risks and vulnerability.<br /><br />Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
+        description="Compare a snapshot of countries’ climate action progress, risks and vulnerability.<br /><br />Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries." // eslint-disable-line max-len
       />
     );
   }
@@ -40,18 +40,21 @@ const CountryCompare = ({ route, anchorLinks }) => {
             <Sticky activeClass="sticky -country-compare" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
-                className={layout.content}
+                className={styles.anchorNav}
                 theme={anchorNavRegularTheme}
                 gradientColor={route.headerColor}
                 offset={[-150, -100, -100]}
               />
             </Sticky>
           </Header>
-          {isLandscape ? (
-            <Sticky activeClass="sticky" top={64}>
-              <CountryCompareSelector className={styles.countrySelectors} />
-            </Sticky>
-          ) : null}
+          <Desktop>
+            {isDesktop =>
+              (isLandscape ? (
+                <Sticky activeClass="sticky" top={isDesktop ? 49 : 105}>
+                  <CountryCompareSelector className={styles.countrySelectors} />
+                </Sticky>
+              ) : null)}
+          </Desktop>
           {route.sections &&
             route.sections.length > 0 &&
             route.sections.map(section => (

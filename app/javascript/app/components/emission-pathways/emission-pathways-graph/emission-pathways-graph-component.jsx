@@ -74,63 +74,68 @@ class EmissionPathwayGraph extends PureComponent {
               model={filtersSelected.model.value}
             />
           )}
-          <div className={styles.titleAndBtnsWrapper}>
-            <h2 className={styles.title}>Pathways</h2>
-            <TabletLandscape>
-              <ButtonGroup
-                className={styles.btnGroup}
-                onInfoClick={handleInfoClick}
-                shareUrl="/embed/pathways"
-                analyticsGraphName="Pathways"
-              />
-            </TabletLandscape>
+          <div className="grid-column-item">
+            <div className={styles.titleAndBtnsWrapper}>
+              <h2 className={styles.title}>Pathways</h2>
+              <TabletLandscape>
+                <ButtonGroup
+                  className={styles.btnGroup}
+                  onInfoClick={handleInfoClick}
+                  shareUrl="/embed/pathways"
+                  analyticsGraphName="Pathways"
+                />
+              </TabletLandscape>
+            </div>
           </div>
-          <div className={styles.selectorsWrapper}>
-            <Dropdown
-              label="Country/Region"
-              options={filtersOptions.locations}
-              onValueChange={option =>
-                handleSelectorChange(option, 'currentLocation')}
-              value={filtersSelected.location}
-              hideResetButton
-            />
-            <Dropdown
-              label="Model"
-              options={filtersOptions.models}
-              onValueChange={handleModelChange}
-              disabled={filtersLoading.location}
-              value={filtersSelected.model}
-              hideResetButton
-            />
-            <Dropdown
-              label="Category"
-              placeholder="Select a category"
-              options={filtersOptions.category}
-              hideResetButton
-              disabled={filtersDisabled}
-              onValueChange={option => handleSelectorChange(option, 'category')}
-              value={filtersSelected.category}
-            />
-            <Dropdown
-              label="Subcategory"
-              placeholder="Select a subcategory"
-              options={filtersOptions.subcategory}
-              hideResetButton
-              disabled={filtersDisabled}
-              onValueChange={option =>
-                handleSelectorChange(option, 'subcategory')}
-              value={filtersSelected.subcategory}
-            />
-            <Dropdown
-              label="Indicator"
-              placeholder="Select an indicator"
-              options={filtersOptions.indicators}
-              hideResetButton
-              disabled={filtersDisabled}
-              onValueChange={option =>
-                handleSelectorChange(option, 'indicator')}
-              value={filtersSelected.indicator}
-            />
+          <div className="grid-column-item">
+            <div className={styles.selectorsWrapper}>
+              <Dropdown
+                label="Country/Region"
+                options={filtersOptions.locations}
+                onValueChange={option =>
+                  handleSelectorChange(option, 'currentLocation')}
+                value={filtersSelected.location}
+                hideResetButton
+              />
+              <Dropdown
+                label="Model"
+                options={filtersOptions.models}
+                onValueChange={handleModelChange}
+                disabled={filtersLoading.location}
+                value={filtersSelected.model}
+                hideResetButton
+              />
+              <Dropdown
+                label="Category"
+                placeholder="Select a category"
+                options={filtersOptions.category}
+                hideResetButton
+                disabled={filtersDisabled}
+                onValueChange={option =>
+                  handleSelectorChange(option, 'category')}
+                value={filtersSelected.category}
+              />
+              <Dropdown
+                label="Subcategory"
+                placeholder="Select a subcategory"
+                options={filtersOptions.subcategory}
+                hideResetButton
+                disabled={filtersDisabled}
+                onValueChange={option =>
+                  handleSelectorChange(option, 'subcategory')}
+                value={filtersSelected.subcategory}
+              />
+              <Dropdown
+                label="Indicator"
+                placeholder="Select an indicator"
+                options={filtersOptions.indicators}
+                hideResetButton
+                disabled={filtersDisabled}
+                onValueChange={option =>
+                  handleSelectorChange(option, 'indicator')}
+                value={filtersSelected.indicator}
+              />
+            </div>
           </div>
           <Chart
             className={styles.chartWrapper}

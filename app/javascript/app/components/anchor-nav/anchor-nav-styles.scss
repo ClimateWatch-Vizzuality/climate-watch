@@ -11,12 +11,10 @@
   align-items: center;
   overflow-x: scroll;
   width: 100%;
-  padding-left: $gutter-padding / 2;
   position: relative;
 
   @media #{$tablet-landscape} {
-    padding-left: $gutter-padding;
-    padding-top: 15px;
+    overflow-x: auto;
   }
 
   &::-webkit-scrollbar {
@@ -34,6 +32,10 @@
 
   &:last-child {
     padding-right: $gutter-padding;
+
+    @media #{$tablet-landscape} {
+      padding-right: 0;
+    }
   }
 }
 
