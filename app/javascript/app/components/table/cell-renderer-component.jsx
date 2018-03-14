@@ -63,12 +63,8 @@ cellRenderer.propTypes = {
     titleLinks: PropTypes.array, // [ [ {columnName: 'title field name in the table', url:'/destination-url' or 'self'}, ... ] ]
     trendLine: PropTypes.string, // 'field name of the trend line column'
     parseHtml: PropTypes.bool,
-    emptyValueLabel: PropTypes.bool.isRequired
+    emptyValueLabel: PropTypes.string
   })
-};
-
-cellRenderer.defaultProps = {
-  emptyValueLabel: null
 };
 
 export default cellRenderer;
