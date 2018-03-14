@@ -11,7 +11,7 @@
     align-items: center;
 
     > :nth-child(2) {
-      @include column-offset(4);
+      @include column-offset(4, $gutters: true);
     }
   }
 }

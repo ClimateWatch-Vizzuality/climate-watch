@@ -13,8 +13,6 @@
 
   @media #{$mobile-only} {
     @include columns();
-
-    height: 120px;
   }
 }
 

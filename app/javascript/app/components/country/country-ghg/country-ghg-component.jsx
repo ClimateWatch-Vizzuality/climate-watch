@@ -10,7 +10,6 @@ import { TabletLandscape } from 'components/responsive';
 import Disclaimer from 'components/disclaimer';
 import ModalMetadata from 'components/modal-metadata';
 
-import layout from 'styles/layout.scss';
 import styles from './country-ghg-styles.scss';
 
 class CountryGhg extends PureComponent {
@@ -34,7 +33,7 @@ class CountryGhg extends PureComponent {
       search.calculation &&
       search.calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
     return (
-      <div className={layout.content}>
+      <div>
         <div className={styles.grid}>
           <EmissionsMetaProvider />
           {needsWBData && <WbCountryDataProvider />}

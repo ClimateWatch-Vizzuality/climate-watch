@@ -25,14 +25,14 @@ const CountryCompare = ({ route, anchorLinks }) => {
       <Teaser
         screenshot={compareScreenshot}
         title="Compare Countries"
-        description="Compare a snapshot of countries’ climate action progress, risks and vulnerability.<br /><br />Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
+        description="Compare a snapshot of countries’ climate action progress, risks and vulnerability.<br /><br />Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries." // eslint-disable-line max-len
       />
     );
   }
   return (
     <TabletLandscape>
       {isLandscape => (
-        <div className={styles.compareWrapper}>
+        <div>
           <Header route={route}>
             <div className={layout.content}>
               <Intro title={'Country Comparison'} />
