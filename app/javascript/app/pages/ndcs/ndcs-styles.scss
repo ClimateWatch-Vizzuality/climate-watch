@@ -5,10 +5,6 @@
   @include row('shrink', $wrap: false);
 }
 
-.sectionWrapper {
-  @include navbarFix();
-}
-
 .wrapper {
   padding-top: $gutter-padding;
   padding-bottom: $gutter-padding;

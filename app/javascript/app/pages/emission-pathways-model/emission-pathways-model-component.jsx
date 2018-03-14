@@ -16,7 +16,7 @@ class EmissionPathwaysModel extends PureComponent {
   render() {
     const { route, routeLinks, anchorLinks, model, id } = this.props;
     return (
-      <div className={styles.sectionWrapper}>
+      <div>
         <EspModelsProvider />
         <EspScenariosProvider />
         <div>

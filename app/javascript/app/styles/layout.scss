@@ -40,8 +40,14 @@ $grid-padding-gutters: $gutter-padding;
   @include shared-column($columns, $gridDirection, $gutters-value);
 }
 
-@mixin column-offset($number: 0) {
-  @include xy-cell-offset($number);
+@mixin column-offset($number: 0, $gutters: false) {
+  $gutters-value: $grid-margin-gutters;
+
+  @if $gutters == false {
+    $gutters-value: 0;
+  }
+
+  @include xy-cell-offset($number, $gutters: $gutters-value);
 }
 
 @mixin shared-column($columns, $gridDirection, $gutters: $grid-margin-gutters) {
@@ -78,53 +84,8 @@ $grid-padding-gutters: $gutter-padding;
   }
 }
 
-@mixin navbarFix() {
-  padding-top: $navbar-height;
-
-  @media #{$desktop} {
-    padding-top: 0;
-  }
-}
-
 .content {
   @include row(12);
-}
-
-%grid {
-  display: grid;
-  grid-column-gap: $gutter-padding;
-}
-
-@mixin msGridColumns($columns...) {
-  $frs: ();
-
-  @for $i from 1 through length($columns) {
-    $item: nth($columns, $i);
-
-    @if $i==$columns {
-      $frs: append($frs, $item);
-    }
-
-    @else {
-      $frs: append($frs, $item $gutter-padding);
-    }
-
-    > *:nth-child(#{$i}) {
-      -ms-grid-column: #{$i + ($i - 1)};
-
-      @media #{$tablet-landscape} {
-        width: 100%;
-      }
-
-      // Adding extra margin to fix safari and IE spacing
-      @if $i!=length($columns) {
-        margin-right: $gutter-padding;
-      }
-    }
-  }
-
-  display: -ms-grid;
-  -ms-grid-columns: $frs;
 }
 
 @mixin clearFix() {

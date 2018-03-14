@@ -47,6 +47,9 @@
   line-height: 1.5em;
   position: relative;
   transition: color 150ms ease-out;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: 100%;
 
   .text :global {
     margin-right: 80px;

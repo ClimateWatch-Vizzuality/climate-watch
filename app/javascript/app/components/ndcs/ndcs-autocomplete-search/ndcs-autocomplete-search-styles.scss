@@ -9,16 +9,11 @@
 }
 
 .col2 {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr);
-
-  grid-template-columns: repeat(2, 1fr);
+  @include columns((6,6));
 
   @media #{$mobile-only} {
-    @include msGridColumns(1fr);
+    @include columns();
 
-    grid-template-columns: 1fr;
     height: 120px;
   }
 }

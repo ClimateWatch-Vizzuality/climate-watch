@@ -3,10 +3,14 @@
 .header {
   position: relative;
   background-color: $theme-color;
-  padding-top: 50px;
+  padding-top: 20px;
   color: $white;
   background-size: cover;
   background-repeat: no-repeat;
+
+  @media #{$desktop} {
+    padding-top: 50px;
+  }
 }
 
 .gradient {

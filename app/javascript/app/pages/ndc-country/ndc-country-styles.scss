@@ -5,43 +5,18 @@
 }
 
 .doubleFold {
-  @extend %grid;
+  @include row((12, 6, 6));
 
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
   z-index: 2;
 
-  @media #{$tablet-landscape} {
-    @include msGridColumns(5fr, 7fr);
+  > :nth-child(4) {
+    height: 100%;
+  }
 
-    grid-template-columns: 5fr 7fr;
+  @media #{$tablet-landscape} {
+    @include row((5, 3, 2, 2));
+
     z-index: 0;
-  }
-}
-
-.threeFold {
-  @extend %grid;
-
-  height: 150px;
-  max-width: 450px;
-
-  @include msGridColumns(1fr);
-
-  grid-template-columns: 1fr;
-
-  @media #{$tablet-portrait} {
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: 1fr 1fr;
-    height: auto;
-    max-width: 100%;
-  }
-
-  @media #{$tablet-landscape} {
-    @include msGridColumns(3fr, 2fr, 2fr);
-
-    grid-template-columns: 3fr 2fr 2fr;
   }
 }
 
