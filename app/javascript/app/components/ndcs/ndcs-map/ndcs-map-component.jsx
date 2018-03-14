@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
+import ReactTooltip from 'react-tooltip';
+import { Link } from 'react-router-dom';
+import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
-import ReactTooltip from 'react-tooltip';
+import Icon from 'components/icon';
+import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 
@@ -13,12 +16,13 @@ import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-map-styles.scss';
 
 const getTooltip = (country, tooltipTxt) => (
-  <div className={tooltipTheme.container}>
+  <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
     <div className={tooltipTheme.info}>
-      <div className={tooltipTheme.countryName}>{country}</div>
+      <div className={tooltipTheme.countryName}>{country.name}</div>
       <p className={tooltipTheme.text}>{tooltipTxt}</p>
     </div>
-  </div>
+    <Icon icon={accordionArrow} className={tooltipTheme.icon} />
+  </Link>
 );
 
 const renderButtonGroup = (clickHandler, reverseDropdown = false) => (
@@ -39,62 +43,70 @@ const NDCMap = ({
   loading,
   paths,
   tooltipTxt,
-  countryName,
+  countryData,
   handleIndicatorChange,
   handleCategoryChange,
   handleInfoClick,
   handleCountryClick,
   handleCountryEnter
 }) => (
-  <div className={styles.wrapper}>
-    <div className={styles.filtersLayout}>
-      <Dropdown
-        label="Category"
-        paceholder="Select a category"
-        options={categories}
-        onValueChange={handleCategoryChange}
-        value={selectedCategory}
-        hideResetButton
-        plain
-      />
-      <Dropdown
-        label="Indicator"
-        options={indicators}
-        onValueChange={handleIndicatorChange}
-        value={selectedIndicator}
-        hideResetButton
-        plain
-      />
-      <TabletLandscape>{renderButtonGroup(handleInfoClick)}</TabletLandscape>
-    </div>
-    {loading && <Loading light className={styles.loader} />}
-    <TabletPortraitOnly>
-      {matches => (
+  <TabletLandscape>
+    {isTablet => (
+      <div className={styles.wrapper}>
+        <div className={styles.filtersLayout}>
+          <Dropdown
+            label="Category"
+            paceholder="Select a category"
+            options={categories}
+            onValueChange={handleCategoryChange}
+            value={selectedCategory}
+            hideResetButton
+            plain
+          />
+          <Dropdown
+            label="Indicator"
+            options={indicators}
+            onValueChange={handleIndicatorChange}
+            value={selectedIndicator}
+            hideResetButton
+            plain
+          />
+          {isTablet && renderButtonGroup(handleInfoClick)}
+        </div>
+        {loading && <Loading light className={styles.loader} />}
         <Map
           paths={paths}
-          tooltipId="mapTooltip"
+          tooltipId="map-tooltip"
           onCountryClick={handleCountryClick}
           onCountryEnter={handleCountryEnter}
           dragEnable={false}
-          customCenter={matches ? [10, -50] : null}
+          customCenter={!isTablet ? [10, -50] : null}
         />
-      )}
-    </TabletPortraitOnly>
-    <TabletPortraitOnly className={styles.column}>
-      <div>{renderButtonGroup(handleInfoClick, true)}</div>
-    </TabletPortraitOnly>
-    <ReactTooltip id="mapTooltip">
-      {tooltipTxt && getTooltip(countryName, tooltipTxt)}
-    </ReactTooltip>
-    {selectedIndicator && (
-      <MapLegend
-        className={styles.legend}
-        title={selectedIndicator.legend}
-        buckets={selectedIndicator.legendBuckets}
-      />
+        {!isTablet && (
+          <div className={styles.column}>
+            {renderButtonGroup(handleInfoClick, true)}
+          </div>
+        )}
+        {countryData && (
+          <ReactTooltip
+            className={styles.tooltipContainer}
+            id="map-tooltip"
+            delayHide={isTablet ? 0 : 3000}
+          >
+            {getTooltip(countryData, tooltipTxt)}
+          </ReactTooltip>
+        )}
+        {selectedIndicator && (
+          <MapLegend
+            className={styles.legend}
+            title={selectedIndicator.legend}
+            buckets={selectedIndicator.legendBuckets}
+          />
+        )}
+        <ModalMetadata />
+      </div>
     )}
-    <ModalMetadata />
-  </div>
+  </TabletLandscape>
 );
 
 NDCMap.propTypes = {
@@ -105,7 +117,7 @@ NDCMap.propTypes = {
   selectedIndicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,
-  countryName: PropTypes.string,
+  countryData: PropTypes.object,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleCategoryChange: PropTypes.func.isRequired,
