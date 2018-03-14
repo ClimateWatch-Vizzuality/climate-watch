@@ -43,6 +43,7 @@ class EmissionPathwaysTable extends PureComponent {
         hasColumnSelect
         defaultColumns={defaultColumns}
         fullTextColumns={fullTextColumns}
+        emptyValueLabel={'Not specified'}
       />
     ) : (
       <NoContent className={styles.noContent} message={noContentMsg} icon />

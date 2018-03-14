@@ -37,6 +37,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
         defaultColumns={defaultColumns}
         trendLine={'trend'}
         titleLinks={titleLinks}
+        emptyValueLabel={'Not specified'}
       />
     ) : (
       <NoContent message={noContentMsg} className={styles.noContent} />
