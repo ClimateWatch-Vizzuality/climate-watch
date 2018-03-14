@@ -49,45 +49,40 @@ class NDCCountry extends PureComponent {
               <div className={styles.title}>
                 <Intro title={country.wri_standard_name} />
               </div>
-              <div className="grid-layout-item">
-                <div className={styles.threeFold}>
-                  <div>
-                    {documentsOptions &&
-                      (documentsOptions.length > 1 ? (
-                        <Dropdown
-                          className={theme.dropdownOptionWithArrow}
-                          placeholder="Select a document"
-                          options={documentsOptions}
-                          onValueChange={handleDropDownChange}
-                          white
-                          hideResetButton
-                        />
-                      ) : (
-                        <Button
-                          color="yellow"
-                          link={`/ndcs/country/${match.params.iso}/full`}
-                        >
-                          {`View ${documentsOptions[0].label} Document`}
-                        </Button>
-                      ))}
-                  </div>
-                  <TabletLandscape>
-                    <Button
-                      color="yellow"
-                      link={`/ndcs/compare/mitigation?locations=${match.params
-                        .iso}`}
-                    >
-                      Compare
-                    </Button>
-                  </TabletLandscape>
-                  <Search
-                    theme={lightSearch}
-                    placeholder="Search"
-                    input={search}
-                    onChange={onSearchChange}
+              {documentsOptions &&
+                (documentsOptions.length > 1 ? (
+                  <Dropdown
+                    className={theme.dropdownOptionWithArrow}
+                    placeholder="Select a document"
+                    options={documentsOptions}
+                    onValueChange={handleDropDownChange}
+                    white
+                    hideResetButton
                   />
-                </div>
-              </div>
+                ) : (
+                  <Button
+                    color="yellow"
+                    link={`/ndcs/country/${match.params.iso}/full`}
+                  >
+                    {`View ${documentsOptions[0].label} Document`}
+                  </Button>
+                ))}
+              {/* </div> */}
+              <TabletLandscape>
+                <Button
+                  color="yellow"
+                  link={`/ndcs/compare/mitigation?locations=${match.params
+                    .iso}`}
+                >
+                  Compare
+                </Button>
+              </TabletLandscape>
+              <Search
+                theme={lightSearch}
+                placeholder="Search"
+                input={search}
+                onChange={onSearchChange}
+              />
             </div>
             <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
               <AnchorNav
