@@ -11,22 +11,26 @@
   overflow: hidden;
 }
 
-.header {
-  overflow: auto;
-  height: auto;
-}
-
 .headerGrid {
+  visibility: visible;
+
   @include row(12);
 
   @media #{$tablet-landscape} {
     @include row((8, 4));
-    @include xy-gutters($gutter-position: ('bottom'));
   }
 }
 
 .headerOpen {
   height: $header-height;
+
+  .headerGrid {
+    visibility: hidden;
+
+    @media #{$tablet-landscape} {
+      visibility: visible;
+    }
+  }
 
   @media #{$tablet-landscape} {
     height: auto;
