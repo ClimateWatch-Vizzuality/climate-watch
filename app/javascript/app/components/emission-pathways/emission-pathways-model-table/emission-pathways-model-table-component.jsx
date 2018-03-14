@@ -24,6 +24,7 @@ class EmissionPathwaysModelTableComponent extends PureComponent {
         sortBy={'name'}
         hasColumnSelect
         defaultColumns={defaultColumns}
+        emptyValueLabel={'Not specified'}
       />
     ) : (
       <NoContent message={noContentMsg} />

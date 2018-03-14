@@ -116,3 +116,8 @@
     cursor: pointer !important;
   }
 }
+
+.emptyValue {
+  font-style: italic;
+  font-weight: $font-weight-light;
+}
