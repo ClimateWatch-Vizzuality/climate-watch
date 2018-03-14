@@ -11,12 +11,8 @@
 }
 
 .col2 {
-  @extend %grid;
-
   @media #{$tablet-landscape} {
-    @include msGridColumns(1fr, 1fr);
-
-    grid-template-columns: repeat(2, 1fr);
+    @include columns((6, 6));
   }
 }
 
@@ -24,25 +20,12 @@
   margin-top: 40px;
 }
 
-.infoAndCompareButtons {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 6fr, 4fr);
-
-  grid-template-columns: 1fr 6fr 4fr;
-}
-
 .actions {
-  @extend %grid;
-
-  margin-top: -6px;
+  @include columns((2, 6));
+  @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(41% 1fr);
-
-    grid-template-columns: 41% 1fr;
-    grid-column-gap: 3.6em;
-    margin-left: -0.6em;
+    @include columns((2, 4, 6));
   }
 }
 
@@ -56,40 +39,50 @@
 .descriptionContainer {
   color: $theme-color;
   line-height: $line-height-medium;
-  column-count: 2;
-  column-gap: 20px;
+  column-count: 1;
+  column-gap: $gutter-padding;
   margin-bottom: 15px;
 
-  > ol > li {
-    margin-left: 5px;
+  @media #{$tablet-landscape} {
+    column-count: 2;
   }
 }
 
-.cards {
-  @extend %grid;
+.row {
+  @include columns();
+}
 
-  margin-bottom: 60px;
+.subtitles {
+  @include columns((9, 3));
+}
+
+.cards {
+  @include columns();
+
+  > div {
+    @include xy-gutters($gutter-position: ('top', 'bottom'));
+  }
 
   @media #{$tablet-landscape} {
-    @include msGridColumns(3fr, 1fr);
-
-    grid-template-columns: 3fr 1fr;
-    margin-bottom: 0;
+    @include columns((9, 3));
   }
 }
 
 .cardsRowContainer {
-  @extend %grid;
+  @include columns('shrink', $wrap: false);
 
-  @include msGridColumns(1fr, 1fr, 1fr);
+  > div {
+    width: 270px;
+  }
 
-  grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 60px;
-  overflow: scroll;
+  overflow: auto;
 
   @media #{$tablet-landscape} {
-    margin-bottom: 0;
-    overflow: hidden;
+    @include columns((4, 4, 4));
+
+    > div {
+      width: 100%;
+    }
   }
 }
 
@@ -131,14 +124,17 @@
   margin-bottom: 5px;
 }
 
-.adaptionList {
-  margin-top: -29px;
-}
-
 .loader {
   min-height: 400px;
 }
 
 .noContentWrapper {
   min-height: 450px;
+}
+
+.exploreBtn {
+  margin-bottom: $gutter-padding;
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
 }

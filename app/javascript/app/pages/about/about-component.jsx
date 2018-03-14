@@ -10,14 +10,18 @@ import { ABOUT } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
 import layout from 'styles/layout.scss';
-// import styles from './about-styles.scss';
+import styles from './about-styles.scss';
 
 const About = ({ route, anchorLinks, query }) => (
   <div>
     <MetaDescription descriptionContext={ABOUT} subtitle="About" />
     <SocialMetadata descriptionContext={ABOUT} href={location.href} />
     <Header route={route}>
-      <Intro title="About" className={layout.content} />
+      <div className={layout.content}>
+        <div className="grid-column-item">
+          <Intro title="About" />
+        </div>
+      </div>
       <Sticky activeClass="sticky -about" top="#navBarMobile">
         <AnchorNav
           useRoutes
@@ -25,10 +29,11 @@ const About = ({ route, anchorLinks, query }) => (
           query={query}
           theme={anchorNavRegularTheme}
           gradientColor={route.headerColor}
+          className={styles.anchorNav}
         />
       </Sticky>
     </Header>
-    <div className={layout.content}>{renderRoutes(route.routes)}</div>
+    <div>{renderRoutes(route.routes)}</div>
   </div>
 );
 

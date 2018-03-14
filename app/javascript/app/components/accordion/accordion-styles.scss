@@ -40,7 +40,7 @@
 .iconArrow {
   transition: transform 0.25s ease-in-out;
   position: absolute;
-  right: 0;
+  right: 10px;
   top: calc(50% - 5px);
 
   &.isOpen {

@@ -2,6 +2,10 @@
 
 $country-filter-height: 60px;
 
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
 .accordion {
   margin-bottom: 40px;
 }
@@ -23,24 +27,24 @@ $country-filter-height: 60px;
 }
 
 .countrySelector {
-  height: $country-filter-height;
   border-bottom: solid 1px rgba($theme-color, 0.3);
+}
+
+.row {
+  @include row();
+
+  height: $country-filter-height;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .fourFold {
-  @extend %grid;
-
-  @include msGridColumns(1fr, 1fr, 1fr, 1fr);
-
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 0;
+  @include columns(3, $gutters: false);
 }
 
 .offset {
-  grid-column-start: 2;
+  @include column-offset(3, $gutters: false);
 }
 
 .separator {

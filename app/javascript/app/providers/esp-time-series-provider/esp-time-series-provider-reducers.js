@@ -12,7 +12,10 @@ const setError = (error, state) => ({ ...state, error });
 export default {
   getEspTimeSeriesInit: state => setLoading(true, state),
   getEspTimeSeriesReady: (state, { payload }) =>
-    setError(false, setLoaded(true, setLoading(false, { ...state, data: payload }))),
+    setError(
+      false,
+      setLoaded(true, setLoading(false, { ...state, data: payload }))
+    ),
   getEspTimeSeriesFail: state =>
     setError(true, setLoading(false, setLoaded(true, { ...state })))
 };

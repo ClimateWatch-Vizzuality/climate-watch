@@ -55,8 +55,6 @@ class CompareNDCContentOverview extends PureComponent {
     } = this.props;
     const compareButton = (
       <Button
-        noSpace
-        className={styles.colEnd}
         color="yellow"
         link={`/ndcs/compare/mitigation?locations=${selectedLocationsFilter}`}
         onClick={handleAnalyticsClick}
@@ -68,17 +66,24 @@ class CompareNDCContentOverview extends PureComponent {
     return (
       <div className={cx(layout.content, styles.ndcContentOverview)}>
         <NdcContentOverviewProvider locations={selectedLocationsFilter} />
-        <div className={styles.col6}>
-          <h2 className={styles.title}>NDC Content Overview</h2>
-          <TabletLandscape>{compareButton}</TabletLandscape>
+        <div className="grid-column-item">
+          <div className={styles.col6}>
+            <h2 className={styles.title}>NDC Content Overview</h2>
+            <TabletLandscape>{compareButton}</TabletLandscape>
+          </div>
         </div>
         {loading || !summaries ? (
           <Loading light className={styles.loader} />
         ) : (
-          <div className={styles.col3}>
-            {[0, 1, 2].map(i =>
-              this.renderCountryOverview(summaries.find(s => s.index === i), i)
-            )}
+          <div className="grid-column-item">
+            <div className={styles.col3}>
+              {[0, 1, 2].map(i =>
+                this.renderCountryOverview(
+                  summaries.find(s => s.index === i),
+                  i
+                )
+              )}
+            </div>
           </div>
         )}
       </div>

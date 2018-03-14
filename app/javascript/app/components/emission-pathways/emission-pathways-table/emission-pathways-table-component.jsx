@@ -81,34 +81,43 @@ class EmissionPathwaysTable extends PureComponent {
             <EspModelsProvider />
             <EspScenariosProvider />
             <EspIndicatorsProvider />
-            <div className={styles.col4}>
-              {landscape ? (
-                this.renderFilters()
-              ) : (
-                <Collapse
-                  contentRef={this.state.contentRef}
-                  contentClassName={cx(styles.col2)}
-                >
-                  {this.renderFilters()}
-                </Collapse>
+            <div className="grid-column-item">
+              <div className={styles.filtersLayout}>
+                <div className="grid-column-item">
+                  <div className={styles.filters}>
+                    {landscape ? (
+                      this.renderFilters()
+                    ) : (
+                      <Collapse
+                        contentRef={this.state.contentRef}
+                        contentClassName={cx(styles.col2)}
+                      >
+                        {this.renderFilters()}
+                      </Collapse>
+                    )}
+                  </div>
+                </div>
+                <div className="grid-column-item">
+                  <div className={styles.searchLayout}>
+                    <Search
+                      input={query}
+                      theme={darkSearch}
+                      onChange={handleSearchChange}
+                      placeholder={`Search in ${categoryName}`}
+                      plain
+                    />
+                  </div>
+                </div>
+              </div>
+              {!landscape && (
+                <div
+                  ref={c => {
+                    this.setState({ contentRef: c });
+                  }}
+                />
               )}
-              <Search
-                input={query}
-                theme={darkSearch}
-                onChange={handleSearchChange}
-                className={styles.searchBox}
-                placeholder={`Search in ${categoryName}`}
-                plain
-              />
+              {this.renderTableContent()}
             </div>
-            {!landscape && (
-              <div
-                ref={c => {
-                  this.setState({ contentRef: c });
-                }}
-              />
-            )}
-            {this.renderTableContent()}
           </div>
         )}
       </TabletLandscape>

@@ -12,7 +12,8 @@ const setError = (error, state) => ({ ...state, error });
 export default {
   findAvailableModelsInit: state => setLoading(true, state),
   findAvailableModelsReady: (state, { payload }) =>
-    setError(false,
+    setError(
+      false,
       setLoaded(
         true,
         setLoading(false, {

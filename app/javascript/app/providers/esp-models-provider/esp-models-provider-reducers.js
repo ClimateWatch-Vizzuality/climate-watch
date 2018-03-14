@@ -12,7 +12,10 @@ const setLoaded = (loaded, state) => ({ ...state, loaded });
 export default {
   fetchEspModelsInit: state => setLoading(true, state),
   fetchEspModelsReady: (state, { payload }) =>
-    setError(false, setLoaded(true, setLoading(false, { ...state, data: payload }))),
+    setError(
+      false,
+      setLoaded(true, setLoading(false, { ...state, data: payload }))
+    ),
   fetchEspModelsFail: state =>
     setError(true, setLoading(false, setLoaded(true, { ...state })))
 };

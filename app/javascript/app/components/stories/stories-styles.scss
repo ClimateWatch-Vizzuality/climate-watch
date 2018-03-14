@@ -2,16 +2,14 @@
 
 .container {
   position: relative;
-  min-height: 700px;
+  height: 700px;
 
   @media #{$tablet-portrait} {
-    min-height: 1080px;
-    margin: 0 -$gutter-padding / 2;
+    height: 1080px;
   }
 
   @media #{$tablet-landscape} {
-    min-height: 600px;
-    margin: 0;
+    height: 600px;
   }
 }
 
@@ -76,24 +74,41 @@
 }
 
 .grid {
-  display: block;
-  position: absolute;
+  @include xy-grid($wrap: true);
+
   height: 100%;
 
-  & :first-child {
-    width: 100%;
-    height: 50%;
-    font-size: $font-size-large;
+  @media #{$tablet-landscape} {
+    @include xy-grid($direction: 'vertical', $wrap: true);
+  }
+
+  > a {
+    @include xy-cell(6, $gutters: 0);
+    @include xy-cell(25%, $gutters: 0, $vertical:true);
 
     @media #{$tablet-portrait} {
-      height: 34%;
-      font-size: $font-size-x-large;
-      font-weight: $font-weight-light;
+      @include xy-cell(6, $gutters: 0);
+      @include xy-cell(33.333333%, $gutters: 0, $vertical:true);
     }
 
     @media #{$tablet-landscape} {
-      width: 50%;
-      height: 100%;
+      @include xy-cell(3, $gutters: 0);
+      @include xy-cell(50%, $gutters: 0, $vertical:true);
+    }
+  }
+
+  & :first-child {
+    @include xy-cell(12, $gutters: 0);
+    @include xy-cell(50%, $gutters: 0, $vertical:true);
+
+    @media #{$tablet-portrait} {
+      @include xy-cell(12, $gutters: 0);
+      @include xy-cell(33.333333%, $gutters: 0, $vertical:true);
+    }
+
+    @media #{$tablet-landscape} {
+      @include xy-cell(6, $gutters: 0);
+      @include xy-cell(100%, $gutters: 0, $vertical:true);
     }
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { TabletLandscape } from 'components/responsive';
 
 import styles from './header-styles.scss';
 
@@ -10,26 +11,36 @@ const Header = props => {
     [styles.medium]: size === 'medium',
     [styles.large]: size === 'large'
   });
+  const getStyle = isLandscape => {
+    let style = { backgroundColor: color };
+    if (color && image) {
+      const gradient = `linear-gradient(to top, ${color} 25%, transparent), `;
+      style = {
+        ...style,
+        backgroundImage: `${isLandscape ? '' : gradient}url(${image})`
+      };
+    }
 
-  let style = { backgroundColor: color };
-  if (image) {
-    style = {
-      ...style,
-      backgroundImage: `url(${image})`
-    };
-  }
+    if (image && !color) {
+      style = {
+        backgroundImage: `url(${image})`
+      };
+    }
 
-  const gradientStyle = color
-    ? { backgroundImage: `linear-gradient(to top, ${color} 25%, transparent)` }
-    : null;
+    return style;
+  };
 
   return (
-    <div className={cx(className, styles.header, sizeClass)} style={style}>
-      {gradientStyle && (
-        <span className={styles.gradient} style={gradientStyle} />
+    <TabletLandscape>
+      {isLandscape => (
+        <div
+          className={cx(className, styles.header, sizeClass)}
+          style={getStyle(isLandscape)}
+        >
+          {children}
+        </div>
       )}
-      {children}
-    </div>
+    </TabletLandscape>
   );
 };
 

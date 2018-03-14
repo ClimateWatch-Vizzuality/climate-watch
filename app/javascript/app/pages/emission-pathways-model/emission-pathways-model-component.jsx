@@ -31,8 +31,9 @@ class EmissionPathwaysModel extends PureComponent {
             <Sticky activeClass="sticky -emissions" top="#navBarMobile">
               <AnchorNav
                 links={anchorLinks}
-                className={layout.content}
                 theme={anchorNavRegularTheme}
+                gradientColor={route.headerColor}
+                className={styles.anchorNav}
               />
             </Sticky>
           </Header>

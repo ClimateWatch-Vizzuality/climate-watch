@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import qs from 'query-string';
 
-import layout from 'styles/layout.scss';
+import { hexToRgba } from 'utils/utils';
 import styles from './anchor-nav-styles.scss';
 
 const AnchorNav = props => {
@@ -21,64 +21,72 @@ const AnchorNav = props => {
   } = props;
   const gradientStyle = gradientColor
     ? {
-      background: `radial-gradient(40px 30px ellipse at 0%, ${gradientColor}, transparent), radial-gradient(50px 30px ellipse at 100%, ${gradientColor}, transparent)`
+      background: `radial-gradient(40px 30px ellipse at 0%, ${gradientColor}, ${hexToRgba(
+        gradientColor,
+        0
+      )}), radial-gradient(50px 30px ellipse at 100%, ${gradientColor}, ${hexToRgba(
+        gradientColor,
+        0
+      )})`
     }
     : null;
 
   return (
-    <div className={cx(layout.content, styles.anchorContainer)}>
+    <div>
       {gradientStyle && (
         <span className={styles.gradient} style={gradientStyle} />
       )}
-      <nav className={cx(className, theme.anchorNav)}>
-        {links.map((link, index) => {
-          const linkProps = {
-            key: link.label,
-            className: theme.link,
-            activeClassName: theme.linkActive,
-            to: {
-              search: link.search || query,
-              pathname: link.path,
-              hash: link.hash
-            }
-          };
-          if (link.activeQuery) {
-            linkProps.isActive = (match, location) => {
-              const activeSearchQuery = qs.parse(location.search)[
-                link.activeQuery.key
-              ];
-              const linkSearchQuery = link.activeQuery.value;
-              return (
-                activeSearchQuery === linkSearchQuery ||
-                (index === 0 && !activeSearchQuery)
-              );
+      <div className={cx(styles.anchorContainer)}>
+        <nav className={cx(className, theme.anchorNav)}>
+          {links.map((link, index) => {
+            const linkProps = {
+              key: link.label,
+              className: theme.link,
+              activeClassName: theme.linkActive,
+              to: {
+                search: link.search || query,
+                pathname: link.path,
+                hash: link.hash
+              }
             };
-          }
-          if (useRoutes) {
-            linkProps.exact = true;
+            if (link.activeQuery) {
+              linkProps.isActive = (match, location) => {
+                const activeSearchQuery = qs.parse(location.search)[
+                  link.activeQuery.key
+                ];
+                const linkSearchQuery = link.activeQuery.value;
+                return (
+                  activeSearchQuery === linkSearchQuery ||
+                  (index === 0 && !activeSearchQuery)
+                );
+              };
+            }
+            if (useRoutes) {
+              linkProps.exact = true;
+              return (
+                <NavLink {...linkProps} replace>
+                  {link.label}
+                </NavLink>
+              );
+            }
+            linkProps.isActive = (match, location) =>
+              `#${link.hash}` === location.hash;
             return (
-              <NavLink {...linkProps} replace>
+              <NavHashLink
+                {...linkProps}
+                smooth
+                scroll={el => {
+                  el.scrollIntoView(true);
+                  if (offset) window.scrollBy(0, offset[index]);
+                }}
+                replace
+              >
                 {link.label}
-              </NavLink>
+              </NavHashLink>
             );
-          }
-          linkProps.isActive = (match, location) =>
-            `#${link.hash}` === location.hash;
-          return (
-            <NavHashLink
-              {...linkProps}
-              smooth
-              scroll={el => {
-                el.scrollIntoView(true);
-                if (offset) window.scrollBy(0, offset[index]);
-              }}
-              replace
-            >
-              {link.label}
-            </NavHashLink>
-          );
-        })}
-      </nav>
+          })}
+        </nav>
+      </div>
     </div>
   );
 };

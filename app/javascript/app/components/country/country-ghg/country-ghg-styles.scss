@@ -1,13 +1,13 @@
 @import '~styles/layout.scss';
 
 .grid {
-  @media #{$tablet-landscape} {
-    display: grid;
-    grid-template-columns: 8fr 4fr;
+  @include row(12);
 
-    > div:nth-child(2) {
-      -ms-grid-column: 2;
-    }
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+  @media #{$tablet-landscape} {
+    @include row((8,4));
   }
 }
 

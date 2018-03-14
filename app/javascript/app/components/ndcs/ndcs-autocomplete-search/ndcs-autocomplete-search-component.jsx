@@ -27,27 +27,29 @@ class NdcsAutocompleteSearch extends PureComponent {
       dark
     } = this.props;
     return (
-      <div className={cx(styles.wrapper, styles.col2, className)}>
-        {global ? <NdcsSdgsMetaProvider /> : <NdcsSdgsDataProvider />}
-        <Dropdown
-          label={label ? 'Explore linkages between NDCs and SDGs' : ''}
-          className={theme.dropdownOptionWithArrow}
-          placeholder="Select a goal or target"
-          groups={groups}
-          options={searchList}
-          onValueChange={onSearchChange}
-          value={optionSelected}
-          hideResetButton
-          white={!dark}
-          noAutoSort
-        />
-        <Search
-          theme={dark ? darkSearch : lightSearch}
-          className={label ? styles.search : ''}
-          placeholder="e.g. “reduce emissions by 37%”"
-          input={search.searchBy === 'query' ? search.query : ''}
-          handleKeyUp={handleKeyUp}
-        />
+      <div className={cx(styles.wrapper, className)}>
+        <div className={styles.col2}>
+          {global ? <NdcsSdgsMetaProvider /> : <NdcsSdgsDataProvider />}
+          <Dropdown
+            label={label ? 'Explore linkages between NDCs and SDGs' : ''}
+            className={theme.dropdownOptionWithArrow}
+            placeholder="Select a goal or target"
+            groups={groups}
+            options={searchList}
+            onValueChange={onSearchChange}
+            value={optionSelected}
+            hideResetButton
+            white={!dark}
+            noAutoSort
+          />
+          <Search
+            theme={dark ? darkSearch : lightSearch}
+            className={label ? styles.search : ''}
+            placeholder="e.g. “reduce emissions by 37%”"
+            input={search.searchBy === 'query' ? search.query : ''}
+            handleKeyUp={handleKeyUp}
+          />
+        </div>
       </div>
     );
   }

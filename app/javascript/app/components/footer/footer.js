@@ -129,8 +129,12 @@ const alphabetically = (a, b) => {
 };
 
 const parsedPath = pathname => {
-  if (pathname === '/ghg-emissions' || pathname === '/ndcs-sdg') { return 'ghg & ndcs-sdg'; }
-  if (pathname.includes('/countries') || pathname.includes('/ndcs')) { return 'countries & ndcs'; }
+  if (pathname === '/ghg-emissions' || pathname === '/ndcs-sdg') {
+    return 'ghg & ndcs-sdg';
+  }
+  if (pathname.includes('/countries') || pathname.includes('/ndcs')) {
+    return 'countries & ndcs';
+  }
   if (pathname.includes('/pathways')) return 'pathways';
   return 'default';
 };
