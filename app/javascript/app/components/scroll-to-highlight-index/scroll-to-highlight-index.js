@@ -16,12 +16,11 @@ class ScrollToHighlightIndex extends PureComponent {
 
   handleScroll = () => {
     const { idx, targetElementsSelector } = this.props;
-    const e = idx
+    const target = idx
       ? document.querySelectorAll(targetElementsSelector)[idx]
       : document.querySelectorAll(targetElementsSelector)[0];
-
-    if (e) {
-      scrollIt(document.querySelector(targetElementsSelector), 300, 'smooth');
+    if (target) {
+      scrollIt(target, 300, 'smooth');
     }
   };
 
