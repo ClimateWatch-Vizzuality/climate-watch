@@ -143,13 +143,15 @@ class Home extends PureComponent {
               title="Explore and Compare Nationally Determined Contributions"
               description="Analyze and compare national climate pledges under the Paris Agreement."
             />
-            <div className={cx(styles.doubleFold, styles.mobileDoubleAction)}>
+            <div className={styles.doubleFold}>
               <Button color="yellow" link="/ndcs">
                 Explore NDC content
               </Button>
-              <Button color="plain" link="/ndcs/compare">
-                Compare NDCs
-              </Button>
+              <TabletLandscape>
+                <Button color="plain" link="/ndcs/compare">
+                  Compare NDCs
+                </Button>
+              </TabletLandscape>
             </div>
           </div>
           <MobileOnly>

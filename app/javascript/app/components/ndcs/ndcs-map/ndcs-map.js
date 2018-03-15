@@ -86,7 +86,7 @@ class NDCMapContainer extends PureComponent {
   handleCountryEnter = geography => {
     const iso = geography.properties && geography.properties.id;
     if (iso) this.setState({ geometryIdHover: iso });
-    this.setState({ country: geography.properties.name });
+    this.setState({ country: geography.properties });
   };
 
   handleCategoryChange = category => {
@@ -140,7 +140,7 @@ class NDCMapContainer extends PureComponent {
       handleCategoryChange: this.handleCategoryChange,
       handleIndicatorChange: this.handleIndicatorChange,
       handleInfoClick: this.handleInfoClick,
-      countryName: this.state.country
+      countryData: this.state.country
     });
   }
 }
