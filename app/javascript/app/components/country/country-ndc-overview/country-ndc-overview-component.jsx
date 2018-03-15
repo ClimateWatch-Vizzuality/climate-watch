@@ -208,7 +208,7 @@ class CountryNdcOverview extends PureComponent {
                   <TabletLandscape>{description}</TabletLandscape>
                   {this.renderCards()}
                   <TabletPortraitOnly>
-                    {this.renderExploreButton()}
+                    {actions && this.renderExploreButton()}
                   </TabletPortraitOnly>
                 </div>
               </div>
