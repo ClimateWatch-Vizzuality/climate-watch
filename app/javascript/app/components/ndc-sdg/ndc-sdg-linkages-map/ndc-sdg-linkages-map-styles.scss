@@ -30,8 +30,13 @@
   @include columns((8, 4));
 }
 
+// Heights of the map needed for IE
 .map {
-  height: 100%;
+  height: 40vh;
+
+  @media #{$tablet-landscape} {
+    height: 85vh;
+  }
 }
 
 .legend {
