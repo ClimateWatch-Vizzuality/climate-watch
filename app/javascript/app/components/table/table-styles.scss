@@ -2,7 +2,11 @@
 
 .tableWrapper {
   position: relative;
-  overflow: auto;
+  overflow-x: hidden;
+
+  &.horizontalScroll {
+    overflow-x: auto;
+  }
 }
 
 .table :global {
