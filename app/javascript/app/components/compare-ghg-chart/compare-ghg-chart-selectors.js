@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
 import intersection from 'lodash/intersection';
+import sortBy from 'lodash/sortBy';
 import sumBy from 'lodash/sumBy';
 import {
   CALCULATION_OPTIONS,
@@ -245,7 +246,7 @@ export const getChartData = createSelector(
         }
       });
     });
-    return yearData;
+    return sortBy(yearData, 'x');
   }
 );
 
