@@ -17,7 +17,7 @@
 
 .searchBox {
   @media #{$tablet-landscape} {
-    @include column-offset(3);
+    @include column-offset(3, $gutters: true);
   }
 }
 

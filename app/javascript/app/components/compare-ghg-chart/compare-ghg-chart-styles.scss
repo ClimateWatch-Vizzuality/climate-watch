@@ -11,7 +11,7 @@
     align-items: flex-end;
 
     > :nth-child(3) {
-      @include column-offset(4);
+      @include column-offset(4, $gutters: true);
     }
   }
 }
