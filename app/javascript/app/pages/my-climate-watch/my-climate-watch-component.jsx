@@ -10,6 +10,7 @@ import Loading from 'components/loading';
 
 import { LOGIN_URL } from 'data/constants';
 
+import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
 import styles from './my-climate-watch-styles';
 
@@ -41,7 +42,12 @@ const MyCw = ({ location, route, login, openCreator }) => {
       <Header theme={styles}>
         <div className={layout.content}>
           <Intro theme={styles} title="My Climate Watch" button={button} />
-          <AnchorNav useRoutes links={route.routes} theme={styles} />
+          <AnchorNav
+            useRoutes
+            links={route.routes}
+            theme={anchorNavRegularTheme}
+            gradientColor={route.headerColor}
+          />
         </div>
       </Header>
       <LoginProvider />
