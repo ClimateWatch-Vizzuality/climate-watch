@@ -14,7 +14,7 @@ import cx from 'classnames';
 import layout from 'styles/layout';
 import styles from './country-ghg-styles.scss';
 
-const { FEATURE_QUANTIFICATIONS } = process.env;
+const FEATURE_QUANTIFICATIONS = process.env.FEATURE_QUANTIFICATIONS === 'true';
 
 class CountryGhg extends PureComponent {
   constructor() {
