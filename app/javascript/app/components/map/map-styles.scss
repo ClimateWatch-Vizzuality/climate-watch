@@ -7,7 +7,11 @@
   cursor: grab;
 
   &.notDraggable {
-    cursor: pointer;
+    cursor: default;
+
+    @media #{$tablet-landscape} {
+      cursor: pointer;
+    }
   }
 }
 
