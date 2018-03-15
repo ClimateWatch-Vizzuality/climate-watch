@@ -76,9 +76,10 @@ const NDCMap = ({
         {loading && <Loading light className={styles.loader} />}
         <Map
           paths={paths}
-          tooltipId="map-tooltip"
+          tooltipId="ndcs-map-tooltip"
           onCountryClick={handleCountryClick}
           onCountryEnter={handleCountryEnter}
+          onCountryFocus={handleCountryEnter}
           dragEnable={false}
           customCenter={!isTablet ? [10, -50] : null}
         />
@@ -90,7 +91,7 @@ const NDCMap = ({
         {countryData && (
           <ReactTooltip
             className={styles.tooltipContainer}
-            id="map-tooltip"
+            id="ndcs-map-tooltip"
             delayHide={isTablet ? 0 : 3000}
           >
             {getTooltip(countryData, tooltipTxt)}
