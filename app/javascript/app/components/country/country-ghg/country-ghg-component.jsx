@@ -14,6 +14,8 @@ import cx from 'classnames';
 import layout from 'styles/layout';
 import styles from './country-ghg-styles.scss';
 
+const { FEATURE_QUANTIFICATIONS } = process.env;
+
 class CountryGhg extends PureComponent {
   constructor() {
     super();
@@ -50,7 +52,9 @@ class CountryGhg extends PureComponent {
             </div>
           </TabletLandscape>
         </div>
-        <Disclaimer className={cx(styles.disclaimer, layout.content)} />
+        {FEATURE_QUANTIFICATIONS && (
+          <Disclaimer className={cx(styles.disclaimer, layout.content)} />
+        )}
         <ModalMetadata disclaimer={<Disclaimer onlyText />} />
       </div>
     );
