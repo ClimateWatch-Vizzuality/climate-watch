@@ -72,8 +72,7 @@ class ChartLine extends PureComponent {
       margin,
       domain,
       forceTwoDecimals,
-      espGraph,
-      noConnectNulls
+      espGraph
     } = this.props;
     const unit =
       espGraph &&
@@ -149,7 +148,6 @@ class ChartLine extends PureComponent {
                   dataKey={column.value}
                   stroke={color}
                   strokeWidth={2}
-                  connectNulls={!noConnectNulls}
                 />
               );
             })}
@@ -181,15 +179,13 @@ ChartLine.propTypes = {
   forceTwoDecimals: PropTypes.bool,
   margin: PropTypes.object,
   domain: PropTypes.object,
-  espGraph: PropTypes.bool.isRequired,
-  noConnectNulls: PropTypes.bool.isRequired
+  espGraph: PropTypes.bool.isRequired
 };
 
 ChartLine.defaultProps = {
   height: '100%',
   onMouseMove: () => {},
-  espGraph: false,
-  noConnectNulls: false
+  espGraph: false
 };
 
 export default ChartLine;
