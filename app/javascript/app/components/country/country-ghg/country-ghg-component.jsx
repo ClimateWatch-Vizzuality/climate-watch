@@ -9,7 +9,9 @@ import { CALCULATION_OPTIONS } from 'app/data/constants';
 import { TabletLandscape } from 'components/responsive';
 import Disclaimer from 'components/disclaimer';
 import ModalMetadata from 'components/modal-metadata';
+import cx from 'classnames';
 
+import layout from 'styles/layout';
 import styles from './country-ghg-styles.scss';
 
 class CountryGhg extends PureComponent {
@@ -48,7 +50,7 @@ class CountryGhg extends PureComponent {
             </div>
           </TabletLandscape>
         </div>
-        <Disclaimer className={styles.disclaimer} />
+        <Disclaimer className={cx(styles.disclaimer, layout.content)} />
         <ModalMetadata disclaimer={<Disclaimer onlyText />} />
       </div>
     );
