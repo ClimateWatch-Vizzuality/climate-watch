@@ -13,7 +13,7 @@ class DefinitionList extends PureComponent {
         {definitions &&
           definitions.length > 0 &&
           definitions.map(def => (
-            <div className="grid-column-item">
+            <div className="grid-column-item" key={def.slug}>
               <div
                 key={`${def.slug}-${def.title}-${Math.random()}`}
                 className={cx(

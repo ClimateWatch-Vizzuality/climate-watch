@@ -38,6 +38,7 @@
   position: absolute;
   left: 15px;
   bottom: 15px;
+  pointer-events: none;
 
   @media #{$tablet-landscape} {
     left: $gutter-padding;
