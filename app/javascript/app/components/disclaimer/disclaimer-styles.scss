@@ -1,47 +1,50 @@
 @import '~styles/layout.scss';
 
+.disclaimerLayout {
+  @include columns(12);
+
+  > *:not(:last-child) {
+    @include xy-gutters($gutter-position: 'bottom');
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(6);
+  }
+}
+
 .disclaimerBox {
   box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
-  display: flex;
   padding: $gutter-padding;
   position: relative;
   line-height: $line-height-medium;
   font-size: $font-size-xs;
   background-color: $white;
-  flex-direction: column;
 
   &.onlyText {
     box-shadow: none;
     padding: 0;
     background-color: transparent;
-    margin-top: 20px;
+    margin: 20px 0;
   }
 
   @media #{$tablet-landscape} {
     padding: 20px;
-    flex-direction: row;
   }
 }
 
 .firstText {
   color: $theme-color;
-  flex: 1;
 }
 
 .secondText {
   color: $dark-gray;
-  flex: 1;
-  margin: 10px 0 0;
-
-  @media #{$tablet-landscape} {
-    margin: 0 20px;
-  }
 }
 
 .closeButton {
   position: absolute;
   top: 0;
   right: 0;
+  width: 45px;
 }
 
 .link {
