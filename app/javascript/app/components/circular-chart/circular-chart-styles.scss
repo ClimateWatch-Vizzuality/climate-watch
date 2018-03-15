@@ -5,12 +5,13 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  transform: rotate(-90deg);
+  width: 100%;
 }
 
 .circularChart {
   display: block;
   height: 130px;
+  transform: rotate(-90deg);
 
   @media #{$tablet-landscape} {
     height: 160px;
