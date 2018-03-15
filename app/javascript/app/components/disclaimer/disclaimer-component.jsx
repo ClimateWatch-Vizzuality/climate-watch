@@ -15,7 +15,7 @@ class Disclaimer extends PureComponent {
       className,
       onlyText
     } = this.props;
-    return onlyText || hasBeenShown ? (
+    return onlyText || !hasBeenShown ? (
       <div className="grid-column-item">
         <div
           className={cx(
@@ -48,16 +48,16 @@ class Disclaimer extends PureComponent {
                 Pledge Pipeline for other countries.
               </a>
             </div>
+            {!onlyText && (
+              <Button
+                className={styles.closeButton}
+                onClick={handleOnRequestClose}
+                noBox
+              >
+                <Icon icon={closeIcon} className={styles.close} />
+              </Button>
+            )}
           </div>
-          {!onlyText && (
-            <Button
-              className={styles.closeButton}
-              onClick={() => alert('clicked') || handleOnRequestClose}
-              noBox
-            >
-              <Icon icon={closeIcon} className={styles.close} />
-            </Button>
-          )}
         </div>
       </div>
     ) : null;
