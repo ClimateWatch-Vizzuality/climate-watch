@@ -13,10 +13,16 @@ class TooltipChart extends PureComponent {
   getTotal = (keys, data, unitIsCo2) => {
     if (!keys || !data) return '';
     let total = 0;
+    let hasData = false;
     keys.forEach(key => {
-      if (data.payload[key.value]) total += data.payload[key.value];
+      if (data.payload[key.value]) {
+        hasData = true;
+        total += data.payload[key.value];
+      }
     });
-    return `${format(this.getFormat())(total)}${unitIsCo2 ? 't' : ''}`;
+    return hasData
+      ? `${format(this.getFormat())(total)}${unitIsCo2 ? 't' : ''}`
+      : 'n/a';
   };
 
   sortByValue = payload => {
