@@ -15,7 +15,10 @@ class TooltipChart extends PureComponent {
     let total = 0;
     let hasData = false;
     keys.forEach(key => {
-      if (data.payload[key.value]) {
+      if (
+        data.payload[key.value] !== undefined ||
+        data.payload[key.value] !== null
+      ) {
         hasData = true;
         total += data.payload[key.value];
       }
@@ -87,7 +90,7 @@ class TooltipChart extends PureComponent {
                     </p>
                   </div>
                   <p className={styles.labelValue}>
-                    {y.payload && y.payload[y.dataKey] ? (
+                    {y.payload && y.payload[y.dataKey] !== undefined ? (
                       `${format(this.getFormat())(
                         y.payload[y.dataKey]
                       )}${unitIsCo2 ? 't' : ''}`
