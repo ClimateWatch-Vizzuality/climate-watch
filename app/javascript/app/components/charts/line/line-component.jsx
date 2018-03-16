@@ -32,7 +32,25 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
   </g>
 );
 
-const CustomizedYAxisTick = ({ index, x, y, payload, unit }) => (
+const decimalPlaces = num => {
+  const match = (`${num}`).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+  if (!match) {
+    return 0;
+  }
+  return Math.max(
+    0,
+    (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0)
+  );
+};
+
+const getYLabelformat = (unit, espGraph, value) => {
+  const decimals = espGraph ? 4 + decimalPlaces(value) : '2';
+  return `${format(unit ? `.${decimals}r` : `.${decimals}s`)(value)}${unit
+    ? ''
+    : 't'}`;
+};
+
+const CustomizedYAxisTick = ({ index, x, y, payload, unit, espGraph }) => (
   <g transform={`translate(${x},${y})`}>
     <text
       x="0"
@@ -46,7 +64,7 @@ const CustomizedYAxisTick = ({ index, x, y, payload, unit }) => (
       {index === 0 && (payload.value < 0 && payload.value > -0.001) ? (
         '0'
       ) : (
-        `${format(unit ? '.2r' : '.2s')(payload.value)}${unit ? '' : 't'}`
+        getYLabelformat(unit, espGraph, payload.value)
       )}
     </text>
   </g>
@@ -117,7 +135,12 @@ class ChartLine extends PureComponent {
             axisLine={false}
             tickLine={false}
             type="number"
-            tick={<CustomizedYAxisTick unit={espGraph && unit} />}
+            tick={
+              <CustomizedYAxisTick
+                espGraph={espGraph}
+                unit={espGraph && unit}
+              />
+            }
             domain={(domain && domain.y) || ['auto', 'auto']}
             interval={'preserveStartEnd'}
           >
@@ -169,7 +192,8 @@ CustomizedYAxisTick.propTypes = {
   y: PropTypes.number,
   index: PropTypes.number,
   payload: PropTypes.object,
-  unit: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+  unit: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  espGraph: PropTypes.bool
 };
 
 ChartLine.propTypes = {
