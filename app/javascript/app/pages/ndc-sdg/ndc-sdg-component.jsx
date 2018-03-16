@@ -31,9 +31,7 @@ class NdcSdg extends PureComponent {
         <Header
           size="small"
           route={route}
-          className={cx(styles.header, {
-            [styles.headerOpen]: isOpen
-          })}
+          className={cx({ [styles.headerOpen]: isOpen })}
         >
           <div className={styles.headerGrid}>
             <Intro
