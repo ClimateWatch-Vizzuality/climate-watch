@@ -9,12 +9,12 @@
 .anchorNav {
   display: flex;
   align-items: center;
-  overflow-x: scroll;
+  overflow-x: auto;
   width: 100%;
   position: relative;
 
   @media #{$tablet-landscape} {
-    overflow-x: auto;
+    overflow-x: hidden;
   }
 
   &::-webkit-scrollbar {

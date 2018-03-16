@@ -85,11 +85,11 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
   handleFetchContent = option => {
     const { fetchSearchResults, iso } = this.props;
     if (option && option.groupId) {
-      const optionValues = {
+      const search = {
         searchBy: option.groupId,
         query: option.value
       };
-      fetchSearchResults(optionValues, iso);
+      fetchSearchResults({ search, iso });
     }
   };
 
