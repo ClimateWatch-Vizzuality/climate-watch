@@ -48,7 +48,8 @@ class SimpleTable extends PureComponent {
       setOptionsOpen,
       setOptionsClose,
       toggleOptionsOpen,
-      optionsOpen
+      optionsOpen,
+      horizontalScroll
     } = this.props;
 
     if (!data.length) return null;
@@ -76,7 +77,11 @@ class SimpleTable extends PureComponent {
             </MultiSelect>
           </div>
         )}
-        <div className={cx(styles.tableWrapper)}>
+        <div
+          className={cx(styles.tableWrapper, {
+            [styles.horizontalScroll]: horizontalScroll
+          })}
+        >
           <AutoSizer disableHeight>
             {({ width }) => (
               <Table
@@ -130,12 +135,14 @@ SimpleTable.propTypes = {
   setOptionsOpen: PropTypes.func.isRequired,
   setOptionsClose: PropTypes.func.isRequired,
   toggleOptionsOpen: PropTypes.func.isRequired,
-  fullTextColumns: PropTypes.array // 'Columns with full text, no ellipsis'
+  fullTextColumns: PropTypes.array, // 'Columns with full text, no ellipsis'
+  horizontalScroll: PropTypes.bool.isRequired
 };
 
 SimpleTable.defaultProps = {
   rowHeight: 45,
-  headerHeight: 30
+  headerHeight: 30,
+  horizontalScroll: false
 };
 
 export default SimpleTable;

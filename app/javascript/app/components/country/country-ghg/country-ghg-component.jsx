@@ -9,8 +9,12 @@ import { CALCULATION_OPTIONS } from 'app/data/constants';
 import { TabletLandscape } from 'components/responsive';
 import Disclaimer from 'components/disclaimer';
 import ModalMetadata from 'components/modal-metadata';
+import cx from 'classnames';
 
+import layout from 'styles/layout';
 import styles from './country-ghg-styles.scss';
+
+const FEATURE_QUANTIFICATIONS = process.env.FEATURE_QUANTIFICATIONS === 'true';
 
 class CountryGhg extends PureComponent {
   constructor() {
@@ -48,7 +52,9 @@ class CountryGhg extends PureComponent {
             </div>
           </TabletLandscape>
         </div>
-        <Disclaimer className={styles.disclaimer} />
+        {FEATURE_QUANTIFICATIONS && (
+          <Disclaimer className={cx(styles.disclaimer, layout.content)} />
+        )}
         <ModalMetadata disclaimer={<Disclaimer onlyText />} />
       </div>
     );
