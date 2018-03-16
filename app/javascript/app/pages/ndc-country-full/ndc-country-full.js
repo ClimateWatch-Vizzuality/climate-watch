@@ -42,7 +42,7 @@ class NDCCountryFullContainer extends PureComponent {
     const { iso } = match.params;
     const search = qs.parse(location.search);
     if (iso && !loading && !fetched) {
-      fetchCountryNDCFull(search, iso);
+      fetchCountryNDCFull({ search, iso });
     }
   }
 
