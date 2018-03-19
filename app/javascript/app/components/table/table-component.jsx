@@ -62,7 +62,7 @@ class SimpleTable extends PureComponent {
             role="button"
             tabIndex={0}
             className={styles.columnSelectorWrapper}
-            onTouchEnd={toggleOptionsOpen}
+            onBlur={toggleOptionsOpen}
             onMouseEnter={setOptionsOpen}
             onMouseLeave={setOptionsClose}
           >
