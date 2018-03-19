@@ -32,25 +32,23 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
   </g>
 );
 
-const decimalPlaces = num => {
-  const match = (`${num}`).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
-  if (!match) {
-    return 0;
-  }
-  return Math.max(
-    0,
-    (match[1] ? match[1].length : 0) - (match[2] ? +match[2] : 0)
-  );
+const getYLabelformat = (unit, espGraph, precision, value) => {
+  const decimals = espGraph && precision ? precision : '2';
+  let typeValue = unit ? 'r' : 's';
+  if (precision) typeValue = 'f';
+  const suffix = unit ? '' : 't';
+  return `${format(`.${decimals}${typeValue}`)(value)}${suffix}`;
 };
 
-const getYLabelformat = (unit, espGraph, value) => {
-  const decimals = espGraph ? 4 + decimalPlaces(value) : '2';
-  return `${format(unit ? `.${decimals}r` : `.${decimals}s`)(value)}${unit
-    ? ''
-    : 't'}`;
-};
-
-const CustomizedYAxisTick = ({ index, x, y, payload, unit, espGraph }) => (
+const CustomizedYAxisTick = ({
+  index,
+  x,
+  y,
+  payload,
+  unit,
+  espGraph,
+  precision
+}) => (
   <g transform={`translate(${x},${y})`}>
     <text
       x="0"
@@ -61,11 +59,12 @@ const CustomizedYAxisTick = ({ index, x, y, payload, unit, espGraph }) => (
       strokeWidth="0.5"
       fontSize="13px"
     >
-      {index === 0 && (payload.value < 0 && payload.value > -0.001) ? (
-        '0'
-      ) : (
-        getYLabelformat(unit, espGraph, payload.value)
-      )}
+      {index === 0 &&
+      (payload.value === 0 || (payload.value < 0 && payload.value > -0.001)) ? (
+          '0'
+        ) : (
+          getYLabelformat(unit, espGraph, precision, payload.value)
+        )}
     </text>
   </g>
 );
@@ -89,7 +88,7 @@ class ChartLine extends PureComponent {
       height,
       margin,
       domain,
-      forceTwoDecimals,
+      forceFourDecimals,
       espGraph
     } = this.props;
     const unit =
@@ -100,8 +99,10 @@ class ChartLine extends PureComponent {
       config.axes.yLeft.unit
         ? config.axes.yLeft.unit
         : null;
+    const marginOffset =
+      espGraph && config.precision ? config.precision * 10 : 0;
     const LineChartMargin = espGraph
-      ? { top: 50, right: 0, left: 0, bottom: 0 }
+      ? { top: 50, right: 0, left: marginOffset, bottom: 0 }
       : { top: 10, right: 0, left: -10, bottom: 0 };
     const yAxisLabel = (
       <Label
@@ -134,10 +135,10 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
-            type="number"
             tick={
               <CustomizedYAxisTick
                 espGraph={espGraph}
+                precision={config.precision}
                 unit={espGraph && unit}
               />
             }
@@ -155,7 +156,7 @@ class ChartLine extends PureComponent {
               <TooltipChart
                 content={content}
                 config={config}
-                forceTwoDecimals={forceTwoDecimals}
+                forceFourDecimals={forceFourDecimals}
               />
             )}
           />
@@ -193,7 +194,8 @@ CustomizedYAxisTick.propTypes = {
   index: PropTypes.number,
   payload: PropTypes.object,
   unit: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  espGraph: PropTypes.bool
+  espGraph: PropTypes.bool,
+  precision: PropTypes.number
 };
 
 ChartLine.propTypes = {
@@ -201,7 +203,7 @@ ChartLine.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  forceTwoDecimals: PropTypes.bool,
+  forceFourDecimals: PropTypes.bool,
   margin: PropTypes.object,
   domain: PropTypes.object,
   espGraph: PropTypes.bool.isRequired

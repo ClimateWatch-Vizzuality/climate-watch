@@ -382,10 +382,20 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
   return dataMapped;
 });
 
-export const getChartXDomain = createSelector([getChartData], data => {
+export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
   const xValues = data.map(d => d.x);
-  return { x: [Math.min(...xValues), Math.max(...xValues)] };
+  const yValues = [];
+  data.forEach(d => {
+    Object.keys(d).forEach(k => {
+      if (k !== 'x') yValues.push(d[k]);
+    });
+  });
+
+  return {
+    x: [Math.min(...xValues), Math.max(...xValues)],
+    y: [Math.min(...yValues), Math.max(...yValues)]
+  };
 });
 
 // variable that caches chart elements assigned color
@@ -393,9 +403,23 @@ export const getChartXDomain = createSelector([getChartData], data => {
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [filterDataByIndicator, getScenariosOptions, getIndicatorSelected],
-  (data, scenarios, indicator) => {
+  [
+    filterDataByIndicator,
+    getScenariosOptions,
+    getIndicatorSelected,
+    getChartDomain
+  ],
+  (data, scenarios, indicator, domain) => {
     if (!data || !scenarios) return null;
+    const yValuesDifference = domain.y[1] - domain.y[0];
+    const decimalZerosBeforeNumber = String(yValuesDifference).match(
+      /0\.(0+)[^0]/
+    );
+    let neededPrecision =
+      decimalZerosBeforeNumber &&
+      decimalZerosBeforeNumber[1] &&
+      decimalZerosBeforeNumber.length;
+    neededPrecision = neededPrecision && neededPrecision + 1;
     const yColumns = data.map(d => {
       const scenario = scenarios.find(
         s => parseInt(s.value, 10) === d.scenario_id
@@ -420,6 +444,7 @@ export const getChartConfig = createSelector(
       axes,
       theme: colorThemeCache,
       tooltip,
+      precision: neededPrecision,
       columns: {
         x: [{ label: 'year', value: 'x' }],
         y: yColumnsChecked
@@ -530,7 +555,7 @@ export const getModalData = createSelector(
 
 export default {
   getChartData,
-  getChartXDomain,
+  getChartDomain,
   getChartConfig,
   getFiltersOptions,
   getFiltersSelected
