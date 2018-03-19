@@ -6,7 +6,7 @@ import ActionCard from 'components/my-climate-watch/my-cw-placeholder-card';
 import Card from 'components/my-climate-watch/my-visualisations/my-cw-vis-card';
 import {
   chartDataSelector,
-  visualisationType
+  getVisualisationType
 } from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
 import styles from './my-visualisations-styles';
 
@@ -36,7 +36,7 @@ const MyVisualisations = props => {
         id: vis.id,
         title: vis.title,
         description: vis.description,
-        chart: visualisationType({ datasets: vis.json_body }),
+        chart: getVisualisationType({ datasets: vis.json_body }),
         config: chartDataSelector({ datasets: vis.json_body }),
         deleteAtomic,
         width: '90%',

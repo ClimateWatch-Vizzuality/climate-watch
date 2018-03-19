@@ -178,8 +178,17 @@ class VizCreator extends Component {
   };
 
   render() {
+    const { categories, subcategories } = this.props;
+    const categorySelected =
+      (categories.selected && categories.selected.label) || '';
+    const subscategorySelected =
+      (subcategories.selected && subcategories.selected.label) || '';
+    const placeholder =
+      categorySelected +
+      (subscategorySelected ? ` - ${subscategorySelected}` : '');
     return createElement(VizCreatorComponent, {
       ...this.props,
+      placeholder,
       handleFilterSelect: this.handleFilterSelect
     });
   }
