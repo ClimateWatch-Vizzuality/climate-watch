@@ -107,7 +107,6 @@ class SimpleTable extends PureComponent {
                     label={lowerCase(column)}
                     dataKey={column}
                     width={setColumnWidth(column)}
-                    height={50}
                     flexGrow={1}
                     cellRenderer={cell =>
                       cellRenderer({ props: this.props, cell })}
