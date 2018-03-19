@@ -22,8 +22,8 @@ import {
   hasDataSelector,
   chartDataSelector,
   getFormatFilters,
-  visualisationType,
-  visualisationOptions
+  getVisualisationType,
+  getVisualisationOptions
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
@@ -33,8 +33,8 @@ const mapStateToProps = ({ vizCreator }) => ({
   creationStatus: vizCreator.creationStatus,
   datasets: datasetsSelector(vizCreator),
   visualisations: visualisationsSelector(vizCreator),
-  visualisationType: visualisationType(vizCreator),
-  visualisationOptions: visualisationOptions(vizCreator),
+  visualisationType: getVisualisationType(vizCreator),
+  visualisationOptions: getVisualisationOptions(vizCreator),
   locations: locationsSelector(vizCreator),
   models: modelsSelector(vizCreator),
   scenarios: scenariosSelector(vizCreator),
@@ -73,7 +73,8 @@ class VizCreator extends Component {
       categories,
       subcategories,
       years,
-      timeseries
+      timeseries,
+      visualisationType
     } = props;
 
     const {
@@ -124,10 +125,13 @@ class VizCreator extends Component {
 
                 if (!isEmpty(subcategories.selected)) {
                   if (!indicators.loading && !indicators.loaded) {
+                    const stackable =
+                      visualisationType && visualisationType.includes('Stack');
                     fetchIndicators({
                       subcategory: subcategories.selected.value,
                       locations: locations.selected,
-                      scenarios: scenarios.selected
+                      scenarios: scenarios.selected,
+                      stackable
                     });
                   }
 
@@ -174,8 +178,17 @@ class VizCreator extends Component {
   };
 
   render() {
+    const { categories, subcategories } = this.props;
+    const categorySelected =
+      (categories.selected && categories.selected.label) || '';
+    const subscategorySelected =
+      (subcategories.selected && subcategories.selected.label) || '';
+    const placeholder =
+      categorySelected +
+      (subscategorySelected ? ` - ${subscategorySelected}` : '');
     return createElement(VizCreatorComponent, {
       ...this.props,
+      placeholder,
       handleFilterSelect: this.handleFilterSelect
     });
   }
@@ -192,6 +205,7 @@ VizCreator.propTypes = {
   indicators: PropTypes.object.isRequired,
   years: PropTypes.object.isRequired,
   timeseries: PropTypes.object,
+  visualisationType: PropTypes.string,
   fetchDatasets: PropTypes.func.isRequired,
   fetchVisualisations: PropTypes.func.isRequired,
   fetchLocations: PropTypes.func.isRequired,

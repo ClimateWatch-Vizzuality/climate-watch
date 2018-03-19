@@ -11,6 +11,7 @@ const VizCreator = props => {
   const {
     id,
     title,
+    placeholder,
     description,
     selectDataset,
     selectVisualisation,
@@ -46,6 +47,7 @@ const VizCreator = props => {
             id={id}
             legends={legends}
             title={title}
+            placeholder={placeholder}
             description={description}
             timeseries={timeseries}
             chartData={chartData}
@@ -66,6 +68,7 @@ const VizCreator = props => {
 VizCreator.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string,
+  placeholder: PropTypes.string,
   description: PropTypes.string,
   selectDataset: PropTypes.func.isRequired,
   selectVisualisation: PropTypes.func.isRequired,

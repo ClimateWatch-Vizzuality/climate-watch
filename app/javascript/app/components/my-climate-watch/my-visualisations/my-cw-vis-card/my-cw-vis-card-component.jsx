@@ -6,7 +6,7 @@ import Button from 'components/button';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import {
   chartDataSelector,
-  visualisationType
+  getVisualisationType
 } from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
 
 import styles from './my-cw-vis-card-styles.scss';
@@ -19,7 +19,7 @@ class MyVisCard extends PureComponent {
     const { data, className } = this.props;
     const datasets = data.json_body;
     // Object with datasets key to reuse the selector keeping the same format that the reducer
-    const chart = datasets ? visualisationType({ datasets }) : null;
+    const chart = datasets ? getVisualisationType({ datasets }) : null;
     const chartData = datasets
       ? chartDataSelector({ datasets, small: true })
       : null;
