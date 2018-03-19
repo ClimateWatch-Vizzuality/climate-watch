@@ -68,12 +68,12 @@ export const visualisationChartSelector = createSelector(
   selectedStructure => selectedStructure && selectedStructure.chart
 );
 
-export const visualisationType = createSelector(
+export const getVisualisationType = createSelector(
   visualisationChartSelector,
   chart => chart && chart.type
 );
 
-export const visualisationOptions = createSelector(
+export const getVisualisationOptions = createSelector(
   visualisationChartSelector,
   chart => chart && chart.options
 );

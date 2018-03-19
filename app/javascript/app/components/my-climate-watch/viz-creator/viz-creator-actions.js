@@ -93,15 +93,17 @@ export const fetchSubCategories = createThunkAction(
 
 export const fetchIndicators = createThunkAction(
   'fetchIndicators',
-  ({ locations, scenarios, subcategory }) => dispatch => {
-    EPAPI.get(
-      'indicators',
-      `scenario=${mapResourceValue(scenarios).join(
-        ','
-      )}&location=${mapResourceValue(
-        locations
-      )}&time_series=true&subcategory=${subcategory}`
-    ).then(d => {
+  ({ locations, scenarios, subcategory, stackable }) => dispatch => {
+    let params = `scenario=${mapResourceValue(scenarios).join(
+      ','
+    )}&location=${mapResourceValue(
+      locations
+    )}&time_series=true&subcategory=${subcategory}`;
+    if (stackable) {
+      params += '&stackable=true';
+    }
+
+    EPAPI.get('indicators', params).then(d => {
       const indicators = uniqBy(d, 'id');
       dispatch(gotIndicators(indicators));
     });

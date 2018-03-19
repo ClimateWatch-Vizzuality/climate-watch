@@ -55,7 +55,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": true, "selected": "all", "active": true},
-              {"name": "years", "multi": true, "selected": null, "active": true}
+              {"name": "years", "multi": true, "selected": "all", "active": true}
             ]
           },
           {
@@ -163,7 +163,7 @@
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
               {"name": "indicators", "multi": true, "selected": "all", "active": true},
-              {"name": "years", "multi": false, "selected": null, "active": true}
+              {"name": "years", "multi": false, "selected": "all", "active": true}
             ]
           }
         ]
