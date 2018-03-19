@@ -398,6 +398,38 @@ export const getChartDomain = createSelector([getChartData], data => {
   };
 });
 
+export const getChartNeededPrecision = createSelector(
+  [getChartDomain],
+  domain => {
+    if (!domain) return null;
+    const yValuesDifference = domain.y[1] - domain.y[0];
+    const decimalZerosBeforeNumber = String(yValuesDifference).match(
+      /0\.(0+)[^0]/
+    );
+    const neededPrecision =
+      decimalZerosBeforeNumber &&
+      decimalZerosBeforeNumber[1] &&
+      decimalZerosBeforeNumber.length;
+    return neededPrecision && neededPrecision + 1;
+  }
+);
+// The y axis domain has some margins added when the values are very similar to each other to represent this little difference
+export const getChartDomainWithYMargins = createSelector(
+  [getChartDomain, getChartNeededPrecision],
+  (domain, neededPrecision) => {
+    if (!domain) return null;
+    if (!neededPrecision) return domain;
+    const y = [
+      dataMin => dataMin - (10 ** ((neededPrecision - 1) * -1)),
+      dataMax => dataMax + (10 ** ((neededPrecision - 1) * -1))
+    ];
+    return {
+      x: domain.x,
+      y
+    };
+  }
+);
+
 // variable that caches chart elements assigned color
 // to avoid element color changing when the chart is updated
 let colorThemeCache = {};
@@ -407,19 +439,10 @@ export const getChartConfig = createSelector(
     filterDataByIndicator,
     getScenariosOptions,
     getIndicatorSelected,
-    getChartDomain
+    getChartNeededPrecision
   ],
-  (data, scenarios, indicator, domain) => {
+  (data, scenarios, indicator, precision) => {
     if (!data || !scenarios) return null;
-    const yValuesDifference = domain.y[1] - domain.y[0];
-    const decimalZerosBeforeNumber = String(yValuesDifference).match(
-      /0\.(0+)[^0]/
-    );
-    let neededPrecision =
-      decimalZerosBeforeNumber &&
-      decimalZerosBeforeNumber[1] &&
-      decimalZerosBeforeNumber.length;
-    neededPrecision = neededPrecision && neededPrecision + 1;
     const yColumns = data.map(d => {
       const scenario = scenarios.find(
         s => parseInt(s.value, 10) === d.scenario_id
@@ -444,7 +467,7 @@ export const getChartConfig = createSelector(
       axes,
       theme: colorThemeCache,
       tooltip,
-      precision: neededPrecision,
+      precision,
       columns: {
         x: [{ label: 'year', value: 'x' }],
         y: yColumnsChecked
@@ -555,7 +578,7 @@ export const getModalData = createSelector(
 
 export default {
   getChartData,
-  getChartDomain,
+  getChartDomainWithYMargins,
   getChartConfig,
   getFiltersOptions,
   getFiltersSelected
