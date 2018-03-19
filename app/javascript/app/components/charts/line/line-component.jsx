@@ -33,11 +33,12 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
 );
 
 const getYLabelformat = (unit, espGraph, precision, value) => {
-  const decimals = espGraph && precision ? precision : '2';
+  const wholeDigitsNumber = String(Math.abs(Math.trunc(value))).length;
+  const precisionNumber = espGraph && precision ? precision : wholeDigitsNumber;
   let typeValue = unit ? 'r' : 's';
   if (precision) typeValue = 'f';
   const suffix = unit ? '' : 't';
-  return `${format(`.${decimals}${typeValue}`)(value)}${suffix}`;
+  return `${format(`.${precisionNumber}${typeValue}`)(value)}${suffix}`;
 };
 
 const CustomizedYAxisTick = ({
