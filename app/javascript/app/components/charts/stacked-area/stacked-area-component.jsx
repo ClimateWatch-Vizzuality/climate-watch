@@ -92,6 +92,7 @@ class ChartStackedArea extends PureComponent {
     if (!data.length) return null;
 
     const maxData = getMaxValue(data, config);
+    const isEdgeBrowser = navigator.userAgent.indexOf('Edge') !== -1;
 
     let dataParsed = data;
     if (includeTotalLine) {
@@ -192,7 +193,7 @@ class ChartStackedArea extends PureComponent {
                 fontSize="13px"
                 offset={25}
                 stroke="#fff"
-                strokeWidth={8}
+                strokeWidth={isEdgeBrowser ? 0 : 8}
                 style={{ paintOrder: 'stroke' }}
               />
               <Label
@@ -201,7 +202,7 @@ class ChartStackedArea extends PureComponent {
                 fill="#113750"
                 fontSize="18px"
                 stroke="#fff"
-                strokeWidth={8}
+                strokeWidth={isEdgeBrowser ? 0 : 8}
                 style={{ paintOrder: 'stroke' }}
               />
             </ReferenceDot>
@@ -222,7 +223,7 @@ class ChartStackedArea extends PureComponent {
                   position="top"
                   fill="#8f8fa1"
                   stroke="#fff"
-                  strokeWidth={8}
+                  strokeWidth={isEdgeBrowser ? 0 : 8}
                   style={{ paintOrder: 'stroke' }}
                   fontSize="13px"
                   offset={25}
@@ -240,7 +241,7 @@ class ChartStackedArea extends PureComponent {
                   value={valueLabelValue}
                   position="top"
                   stroke="#fff"
-                  strokeWidth={4}
+                  strokeWidth={isEdgeBrowser ? 0 : 4}
                   style={{ paintOrder: 'stroke' }}
                   fill="#113750"
                   fontSize="18px"
@@ -292,7 +293,7 @@ class ChartStackedArea extends PureComponent {
                         position="top"
                         fill="#8f8fa1"
                         stroke="#fff"
-                        strokeWidth={8}
+                        strokeWidth={isEdgeBrowser ? 0 : 8}
                         style={{ paintOrder: 'stroke' }}
                         fontSize="13px"
                         offset={25}
@@ -305,7 +306,7 @@ class ChartStackedArea extends PureComponent {
                         position="top"
                         fill="#8f8fa1"
                         stroke="#fff"
-                        strokeWidth={8}
+                        strokeWidth={isEdgeBrowser ? 0 : 8}
                         style={{ paintOrder: 'stroke' }}
                         fontSize="13px"
                         offset={8}
