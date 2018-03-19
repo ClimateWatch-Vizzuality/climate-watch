@@ -5,6 +5,7 @@
   position: absolute;
   width: 100%;
   top: $navbar-height;
+  left: 0;
   height: $header-height;
   background-color: $light-gray;
   opacity: 0;
@@ -30,14 +31,20 @@
   @include columns((8, 4));
 }
 
+// Heights of the map needed for IE
 .map {
-  height: 100%;
+  height: 40vh;
+
+  @media #{$tablet-landscape} {
+    height: 684px;
+  }
 }
 
 .legend {
   position: absolute;
   left: 15px;
   bottom: 15px;
+  pointer-events: none;
 
   @media #{$tablet-landscape} {
     left: $gutter-padding;

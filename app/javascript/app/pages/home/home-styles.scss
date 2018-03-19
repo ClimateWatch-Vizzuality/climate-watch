@@ -24,7 +24,7 @@
     @include columns(8);
 
     > *:first-child {
-      @include column-offset(2);
+      @include column-offset(2, $gutters: true);
     }
   }
 }

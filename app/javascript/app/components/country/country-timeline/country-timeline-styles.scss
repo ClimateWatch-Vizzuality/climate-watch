@@ -14,7 +14,7 @@
 }
 
 .timelineContainer {
-  overflow-x: auto;
+  overflow-x: hidden;
 
   @include overflowFix(80px);
 }
