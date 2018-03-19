@@ -135,6 +135,8 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
+            scale="linear"
+            type="number"
             tick={
               <CustomizedYAxisTick
                 espGraph={espGraph}
