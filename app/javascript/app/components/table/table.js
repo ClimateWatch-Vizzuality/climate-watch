@@ -35,6 +35,23 @@ class TableContainer extends PureComponent {
     }
   }
 
+  setRowsHeight = columns => {
+    if (columns.find(c => c.value === 'description')) {
+      return 150;
+    }
+    return 50;
+  };
+
+  setColumnWidth = column => {
+    if (column === 'year') {
+      return 80;
+    }
+    if (column === 'description') {
+      return 400;
+    }
+    return 200;
+  };
+
   setOptionsClose = () => {
     this.setState({ optionsOpen: false });
   };
@@ -83,6 +100,8 @@ class TableContainer extends PureComponent {
       columnsOptions,
       handleSortChange: this.handleSortChange,
       handleColumnChange: this.handleColumnChange,
+      setRowsHeight: this.setRowsHeight,
+      setColumnWidth: this.setColumnWidth,
       setOptionsOpen: this.setOptionsOpen,
       setOptionsClose: this.setOptionsClose,
       toggleOptionsOpen: this.toggleOptionsOpen

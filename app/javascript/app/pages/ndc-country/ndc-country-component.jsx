@@ -49,24 +49,26 @@ class NDCCountry extends PureComponent {
               <div className={styles.title}>
                 <Intro title={country.wri_standard_name} />
               </div>
-              {documentsOptions &&
-                (documentsOptions.length > 1 ? (
-                  <Dropdown
-                    className={theme.dropdownOptionWithArrow}
-                    placeholder="Select a document"
-                    options={documentsOptions}
-                    onValueChange={handleDropDownChange}
-                    white
-                    hideResetButton
-                  />
-                ) : (
-                  <Button
-                    color="yellow"
-                    link={`/ndcs/country/${match.params.iso}/full`}
-                  >
-                    {`View ${documentsOptions[0].label} Document`}
-                  </Button>
-                ))}
+              <div>
+                {documentsOptions &&
+                  (documentsOptions.length > 1 ? (
+                    <Dropdown
+                      className={theme.dropdownOptionWithArrow}
+                      placeholder="Select a document"
+                      options={documentsOptions}
+                      onValueChange={handleDropDownChange}
+                      white
+                      hideResetButton
+                    />
+                  ) : (
+                    <Button
+                      color="yellow"
+                      link={`/ndcs/country/${match.params.iso}/full`}
+                    >
+                      {`View ${documentsOptions[0].label} Document`}
+                    </Button>
+                  ))}
+              </div>
               <TabletLandscape>
                 <Button
                   color="yellow"
