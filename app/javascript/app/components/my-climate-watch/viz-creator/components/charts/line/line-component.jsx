@@ -7,8 +7,11 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Tooltip
 } from 'recharts';
+
+import CustomTooltip from '../tooltip';
 
 const ChartLine = ({ width, height, className, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
@@ -20,6 +23,10 @@ const ChartLine = ({ width, height, className, config }) => (
         ))}
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && <YAxis {...config.yAxis} />}
+      <Tooltip
+        cursor={{ stroke: '#113750', strokeWidth: 2 }}
+        content={<CustomTooltip active {...config} />}
+      />
     </LineChart>
   </ResponsiveContainer>
 );
