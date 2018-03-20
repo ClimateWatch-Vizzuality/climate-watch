@@ -70,8 +70,10 @@ export function hexToRgba(hex, opacity) {
 }
 
 // Detects if user browser is Edge or Explorer 11
-export const isMicrosoftBrowser = userAgent =>
-  userAgent.indexOf('Edge') !== -1 || userAgent.indexOf('Trident/') !== -1;
+export const isMicrosoftBrowser = () => {
+  const ua = navigator.userAgent;
+  return ua.indexOf('Edge') !== -1 || ua.indexOf('Trident/') !== -1;
+};
 
 export default {
   compareIndexByKey,

@@ -93,7 +93,7 @@ class ChartStackedArea extends PureComponent {
     if (!data.length) return null;
 
     const maxData = getMaxValue(data, config);
-    const isEdgeOrExplorer = isMicrosoftBrowser(navigator.userAgent);
+    const isEdgeOrExplorer = isMicrosoftBrowser();
 
     let dataParsed = data;
     if (includeTotalLine) {
