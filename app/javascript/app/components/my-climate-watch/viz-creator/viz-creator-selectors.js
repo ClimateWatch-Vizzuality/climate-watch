@@ -33,6 +33,7 @@ export const categoriesSelector = state => get(lenses.$categories, state);
 export const subcategoriesSelector = state => get(lenses.$subcategories, state);
 export const yearsSelector = state => get(lenses.$years, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
+export const getTitle = state => state.title || null;
 
 export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
@@ -86,6 +87,7 @@ export const chartDataSelector = createSelector(
     selectedStructureSelector,
     indicatorsSelector,
     locationsSelector,
+    subcategoriesSelector,
     smallSelector
   ],
   (
@@ -95,21 +97,46 @@ export const chartDataSelector = createSelector(
     selectedStructure,
     indicators,
     locations,
+    subcategories,
     small
   ) => {
     if (!hasData) return {};
+    const indicatorLabel =
+      indicators && indicators.selected && indicators.selected.label;
+    const categoryLabel =
+      subcategories.selected && subcategories.selected.label;
+    const yAxisLabel = selectedStructure.filters.find(
+      f => f.name === 'indicators'
+    ).multi
+      ? categoryLabel
+      : indicatorLabel;
     switch (selectedStructure.id) {
       case 'LineChart-1':
-        return lineChart1Data(timeseries.data, scenarios.data, small);
+        return lineChart1Data(
+          timeseries.data,
+          scenarios.data,
+          yAxisLabel,
+          small
+        );
 
       case 'StackBarChart-1':
-        return stackBarChart1Data(timeseries.data, indicators.data, small);
+        return stackBarChart1Data(
+          timeseries.data,
+          indicators.data,
+          yAxisLabel,
+          small
+        );
 
       case 'PieChart-1':
         return pieChart1Data(timeseries.data, indicators.data, small);
 
       case 'LineChart-2':
-        return lineChart2Data(timeseries.data, locations.data, small);
+        return lineChart2Data(
+          timeseries.data,
+          locations.data,
+          yAxisLabel,
+          small
+        );
 
       case 'PieChart-2':
         return pieChart2Data(
@@ -124,6 +151,7 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           locations.data,
           indicators.data,
+          yAxisLabel,
           small
         );
 
@@ -155,3 +183,16 @@ export const getFormatFilters = name =>
 
     return filter;
   });
+
+export const getVisualisationTitle = createSelector(
+  [getTitle, selectedStructureSelector, categoriesSelector],
+  (title, selectedStructure, category) => {
+    if (!title || !selectedStructure) return undefined;
+    const singleIndicator = !selectedStructure.filters.find(
+      f => f.name === 'indicators'
+    ).multi;
+    return singleIndicator
+      ? title
+      : category.selected && category.selected.label;
+  }
+);

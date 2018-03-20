@@ -5,7 +5,7 @@ import { groupByYear, groupBy, pick } from '../utils';
 
 import Tick from '../tick';
 
-const makeConfig = (data, keys, small) => {
+const makeConfig = (data, keys, yAxisLabel, small) => {
   const names = pick('name', data); // only data name key
   return {
     chart: {
@@ -25,7 +25,8 @@ const makeConfig = (data, keys, small) => {
     yAxis: {
       axisLine: false,
       tickLine: false,
-      tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />
+      tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />,
+      label: yAxisLabel
     },
     cartesianGrid: small
       ? false
@@ -49,16 +50,22 @@ const makeConfig = (data, keys, small) => {
   };
 };
 
-export const stackBarChart1Data = (timeSeries, indicators, small) => {
+export const stackBarChart1Data = (
+  timeSeries,
+  indicators,
+  yAxisLabel,
+  small
+) => {
   const data = groupByYear(timeSeries, 'indicator', indicators);
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
-  return makeConfig(data, keys, small);
+  return makeConfig(data, keys, yAxisLabel, small);
 };
 
 export const stackBarChart2Data = (
   timeseries,
   locations,
   indicators,
+  yAxisLabel,
   small
 ) => {
   const data = groupBy(
@@ -67,7 +74,7 @@ export const stackBarChart2Data = (
     [locations, indicators]
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
-  const baseConfig = makeConfig(data, keys, small);
+  const baseConfig = makeConfig(data, keys, yAxisLabel, small);
   return assign(baseConfig, {
     chart: {
       ...baseConfig.chart,

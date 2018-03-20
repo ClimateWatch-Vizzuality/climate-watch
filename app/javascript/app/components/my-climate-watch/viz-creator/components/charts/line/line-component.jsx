@@ -19,7 +19,16 @@ const ChartLine = ({ width, height, className, config }) => (
           <Line dataKey={y} key={y} {...config.theme[y]} />
         ))}
       {config.xAxis && <XAxis {...config.xAxis} />}
-      {config.yAxis && <YAxis {...config.yAxis} />}
+      {config.yAxis && (
+        <YAxis
+          label={{
+            value: config.yAxis.label,
+            angle: -90,
+            position: 'left',
+            offset: -20
+          }}
+        />
+      )}
     </LineChart>
   </ResponsiveContainer>
 );

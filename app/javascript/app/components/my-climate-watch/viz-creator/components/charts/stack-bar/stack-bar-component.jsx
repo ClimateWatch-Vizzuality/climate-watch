@@ -14,7 +14,16 @@ const StackedBarChart = ({ className, width, height, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
     <BarChart {...config.chart}>
       {config.xAxis && <XAxis {...config.xAxis} />}
-      {config.yAxis && <YAxis {...config.yAxis} />}
+      {config.yAxis && (
+        <YAxis
+          label={{
+            value: config.yAxis.label,
+            angle: -90,
+            position: 'left',
+            offset: -20
+          }}
+        />
+      )}
       {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
       {config.columns.y.map(y => (
         <Bar dataKey={y} key={y} {...config.theme[y]} stackId="a" />

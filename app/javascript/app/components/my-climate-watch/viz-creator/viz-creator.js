@@ -23,12 +23,13 @@ import {
   chartDataSelector,
   getFormatFilters,
   getVisualisationType,
-  getVisualisationOptions
+  getVisualisationOptions,
+  getVisualisationTitle
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
   id: vizCreator.id,
-  title: vizCreator.title,
+  title: getVisualisationTitle(vizCreator),
   description: vizCreator.description,
   creationStatus: vizCreator.creationStatus,
   datasets: datasetsSelector(vizCreator),

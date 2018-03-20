@@ -1,10 +1,9 @@
 import { format } from 'd3-format';
 import { assign } from 'app/utils';
 import { CHART_COLORS } from 'data/constants';
-
 import { groupByYear, pick } from '../utils';
 
-const makeConfig = (data, small) => {
+const makeConfig = (data, yAxisLabel, small) => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   const tick = { stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' };
   const names = pick('name', data); // only data name key
@@ -30,7 +29,8 @@ const makeConfig = (data, small) => {
       axisLine: false,
       tickLine: false,
       tick: small ? false : tick,
-      domain: ['auto', 'auto']
+      domain: ['auto', 'auto'],
+      label: yAxisLabel
     },
     cartesianGrid: small
       ? false
@@ -55,8 +55,8 @@ const makeConfig = (data, small) => {
   };
 };
 
-export const lineChart1Data = (timeSeries, scenarios, small) =>
-  makeConfig(groupByYear(timeSeries, 'scenario', scenarios), small);
+export const lineChart1Data = (timeSeries, scenarios, yAxisLabel, small) =>
+  makeConfig(groupByYear(timeSeries, 'scenario', scenarios), yAxisLabel, small);
 
-export const lineChart2Data = (timeSeries, locations, small) =>
-  makeConfig(groupByYear(timeSeries, 'location', locations), small);
+export const lineChart2Data = (timeSeries, locations, yAxisLabel, small) =>
+  makeConfig(groupByYear(timeSeries, 'location', locations), yAxisLabel, small);
