@@ -33,13 +33,18 @@ const CustomizedXAxisTick = ({ x, y, payload }) => (
 );
 
 const getYLabelformat = (unit, espGraph, precision, value) => {
-  const wholeDigitsNumber = String(Math.abs(Math.trunc(value))).length;
-  const wholePrecision = wholeDigitsNumber < 2 ? 2 : wholeDigitsNumber;
-  const precisionNumber = espGraph && precision ? precision : wholePrecision;
-  let typeValue = unit ? 'r' : 's';
+  let precisionNumber = '.2s';
+  if (espGraph) {
+    const wholeDigitsNumber = String(Math.abs(Math.trunc(value))).length;
+    const wholePrecision = wholeDigitsNumber < 2 ? 2 : wholeDigitsNumber;
+    precisionNumber = precision || wholePrecision;
+  }
+  let typeValue = espGraph && unit ? 'r' : 's';
   if (precision) typeValue = 'f';
   const suffix = unit ? '' : 't';
-  return `${format(`.${precisionNumber}${typeValue}`)(value)}${suffix}`;
+  return `${format(`.${espGraph ? precisionNumber : 2}${typeValue}`)(
+    value
+  )}${suffix}`;
 };
 
 const CustomizedYAxisTick = ({
