@@ -39,7 +39,8 @@ class SimpleTable extends PureComponent {
       activeColumns,
       columnsOptions,
       handleColumnChange,
-      rowHeight,
+      setRowsHeight,
+      setColumnWidth,
       headerHeight,
       sortBy,
       sortDirection,
@@ -61,7 +62,7 @@ class SimpleTable extends PureComponent {
             role="button"
             tabIndex={0}
             className={styles.columnSelectorWrapper}
-            onTouchEnd={toggleOptionsOpen}
+            onBlur={toggleOptionsOpen}
             onMouseEnter={setOptionsOpen}
             onMouseLeave={setOptionsClose}
           >
@@ -89,7 +90,7 @@ class SimpleTable extends PureComponent {
                 width={getResponsiveWidth(activeColumns.length, width)}
                 height={460}
                 headerHeight={headerHeight}
-                rowHeight={rowHeight}
+                rowHeight={setRowsHeight(activeColumns)}
                 rowCount={data.length}
                 sort={handleSortChange}
                 sortBy={sortBy}
@@ -105,7 +106,7 @@ class SimpleTable extends PureComponent {
                     key={column}
                     label={lowerCase(column)}
                     dataKey={column}
-                    width={200}
+                    width={setColumnWidth(column)}
                     flexGrow={1}
                     cellRenderer={cell =>
                       cellRenderer({ props: this.props, cell })}
@@ -127,7 +128,8 @@ SimpleTable.propTypes = {
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
   handleColumnChange: PropTypes.func,
-  rowHeight: PropTypes.number.isRequired,
+  setRowsHeight: PropTypes.func.isRequired,
+  setColumnWidth: PropTypes.func.isRequired,
   headerHeight: PropTypes.number.isRequired,
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
@@ -140,7 +142,6 @@ SimpleTable.propTypes = {
 };
 
 SimpleTable.defaultProps = {
-  rowHeight: 45,
   headerHeight: 30,
   horizontalScroll: false
 };

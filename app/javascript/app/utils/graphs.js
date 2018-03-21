@@ -76,9 +76,11 @@ export const getThemeConfig = (columns, colors) => {
   const theme = {};
   columns.forEach((column, i) => {
     const index = column.index || i;
+    const correctedIndex =
+      index < colors.length ? index : index - colors.length;
     theme[column.value] = {
-      stroke: colors[index],
-      fill: colors[index]
+      stroke: colors[correctedIndex],
+      fill: colors[correctedIndex]
     };
   });
   return theme;
