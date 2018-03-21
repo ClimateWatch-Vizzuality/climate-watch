@@ -13,21 +13,33 @@ class TooltipChart extends PureComponent {
   getTotal = (keys, data, unitIsCo2) => {
     if (!keys || !data) return '';
     let total = 0;
+    let hasData = false;
     keys.forEach(key => {
-      if (data.payload[key.value]) total += data.payload[key.value];
+      if (
+        data.payload[key.value] !== undefined ||
+        data.payload[key.value] !== null
+      ) {
+        hasData = true;
+        total += data.payload[key.value];
+      }
     });
-    return `${format(this.getFormat())(total)}${unitIsCo2 ? 't' : ''}`;
+    return hasData
+      ? `${format(this.getFormat())(total)}${unitIsCo2 ? 't' : ''}`
+      : 'n/a';
   };
 
   sortByValue = payload => {
     const yValues = payload[0].payload;
-    const compare = (a, b) => yValues[b.dataKey] - yValues[a.dataKey];
+    const compare = (a, b) => {
+      if (yValues[b.dataKey] === undefined) return -1;
+      if (yValues[a.dataKey] === undefined) return 1;
+      return yValues[b.dataKey] - yValues[a.dataKey];
+    };
     return payload.sort(compare);
   };
 
   render() {
     const { config, content, showTotal } = this.props;
-
     const unit =
       config && config.axes && config.axes.yLeft && config.axes.yLeft.unit;
     const unitIsCo2 = unit === 'CO<sub>2</sub>e';
@@ -66,18 +78,24 @@ class TooltipChart extends PureComponent {
                           config.theme[y.dataKey].stroke
                       }}
                     />
-                    <p className={styles.labelName}>
+                    <p
+                      className={cx(styles.labelName, {
+                        [styles.notAvailable]: !(
+                          y.payload && y.payload[y.dataKey]
+                        )
+                      })}
+                    >
                       {config.theme[y.dataKey] &&
                         config.tooltip[y.dataKey].label}
                     </p>
                   </div>
                   <p className={styles.labelValue}>
-                    {y.payload ? (
+                    {y.payload && y.payload[y.dataKey] !== undefined ? (
                       `${format(this.getFormat())(
                         y.payload[y.dataKey]
                       )}${unitIsCo2 ? 't' : ''}`
                     ) : (
-                      ''
+                      'n/a'
                     )}
                   </p>
                 </div>
