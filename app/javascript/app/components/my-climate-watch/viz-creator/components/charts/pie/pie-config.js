@@ -29,6 +29,12 @@ export const pieChart1Data = (timeSeries, indicators) => {
         }),
       {}
     ),
+    tooltip: data.map((k, i) => ({
+      color: CHART_COLORS[i],
+      label: k.name,
+      value: k.value,
+      unit: indicators[0].unit
+    })),
     legend: data.map((k, i) => ({
       color: CHART_COLORS[i],
       label: k.name
@@ -66,6 +72,12 @@ export const pieChart2Data = (timeSeries, indicators, locations) => {
         }),
       {}
     ),
+    tooltip: data.map((k, i) => ({
+      color: CHART_COLORS[i],
+      label: k.name,
+      value: k.value,
+      unit: indicators[0].unit
+    })),
     legend: data.map((k, i) => ({
       color: CHART_COLORS[i],
       label: k.name
