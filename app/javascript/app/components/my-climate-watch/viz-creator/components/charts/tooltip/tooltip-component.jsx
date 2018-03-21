@@ -9,16 +9,18 @@ const Tooltip = ({ label, tooltip }) => (
   <div className={theme.tooltip}>
     <div className={theme.tooltipHeader}>
       <span className={cx(theme.labelName, theme.labelNameBold)}>{label}</span>
-      <span
-        className={theme.unit}
-        // dangerouslySetInnerHTML={{ __html: unit }} // eslint-disable-line
-      />
+      <span className={theme.unit}>{tooltip[0].unit}</span>
     </div>
     {tooltip.map(l => (
-      <div className={theme.legend} key={l.label}>
-        <span className={theme.labelDot} style={{ backgroundColor: l.color }} />
-        <span className={theme.labelName}>{l.label}</span>
-        <span className={theme.labelValue}>{l.value}</span>
+      <div className={theme.label} key={l.label}>
+        <div className={theme.legend}>
+          <span
+            className={theme.labelDot}
+            style={{ backgroundColor: l.color }}
+          />
+          <p className={theme.labelName}>{l.label}</p>
+        </div>
+        <p className={theme.labelValue}>{l.value}</p>
       </div>
     ))}
   </div>
