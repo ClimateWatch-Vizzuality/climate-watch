@@ -115,6 +115,7 @@ export const chartDataSelector = createSelector(
         return lineChart1Data(
           timeseries.data,
           scenarios.data,
+          indicators.data,
           yAxisLabel,
           small
         );
@@ -134,6 +135,7 @@ export const chartDataSelector = createSelector(
         return lineChart2Data(
           timeseries.data,
           locations.data,
+          indicators.data,
           yAxisLabel,
           small
         );

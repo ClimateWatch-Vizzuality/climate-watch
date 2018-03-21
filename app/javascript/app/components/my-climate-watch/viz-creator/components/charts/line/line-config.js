@@ -3,14 +3,15 @@ import { assign } from 'app/utils';
 import { CHART_COLORS } from 'data/constants';
 import { groupByYear, pick } from '../utils';
 
-const makeConfig = (data, yAxisLabel, small) => {
+const makeConfig = (data, indicators, yAxisLabel, small) => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   const tick = { stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' };
   const names = pick('name', data); // only data name key
+  const unit = indicators[0] && indicators[0].unit;
   return {
     chart: {
       data: pick('value', data), // only data value key
-      margin: { top: 20, right: 0, left: -10, bottom: 0 }
+      margin: { top: 50, right: 0, left: -10, bottom: 0 }
     },
     columns: {
       x: ['year'],
@@ -30,7 +31,8 @@ const makeConfig = (data, yAxisLabel, small) => {
       tickLine: false,
       tick: small ? false : tick,
       domain: ['auto', 'auto'],
-      label: yAxisLabel
+      label: yAxisLabel,
+      unit
     },
     cartesianGrid: small
       ? false
@@ -55,8 +57,30 @@ const makeConfig = (data, yAxisLabel, small) => {
   };
 };
 
-export const lineChart1Data = (timeSeries, scenarios, yAxisLabel, small) =>
-  makeConfig(groupByYear(timeSeries, 'scenario', scenarios), yAxisLabel, small);
+export const lineChart1Data = (
+  timeSeries,
+  scenarios,
+  indicators,
+  yAxisLabel,
+  small
+) =>
+  makeConfig(
+    groupByYear(timeSeries, 'scenario', scenarios),
+    indicators,
+    yAxisLabel,
+    small
+  );
 
-export const lineChart2Data = (timeSeries, locations, yAxisLabel, small) =>
-  makeConfig(groupByYear(timeSeries, 'location', locations), yAxisLabel, small);
+export const lineChart2Data = (
+  timeSeries,
+  locations,
+  indicators,
+  yAxisLabel,
+  small
+) =>
+  makeConfig(
+    groupByYear(timeSeries, 'location', locations),
+    indicators,
+    yAxisLabel,
+    small
+  );
