@@ -23,10 +23,12 @@ const ChartLine = ({ width, height, className, config }) => (
         ))}
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && <YAxis {...config.yAxis} />}
-      <Tooltip
-        cursor={{ stroke: '#113750', strokeWidth: 2 }}
-        content={<CustomTooltip active {...config} />}
-      />
+      {config.tooltip && (
+        <Tooltip
+          cursor={{ stroke: '#113750', strokeWidth: 2 }}
+          content={<CustomTooltip {...config} />}
+        />
+      )}
     </LineChart>
   </ResponsiveContainer>
 );
