@@ -19,12 +19,20 @@
     text-transform: capitalize;
     font-weight: $font-weight-bold;
     font-family: $font-family-1;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .ReactVirtualized__Grid,
   .ReactVirtualized__Table__Grid {
     background-color: $light-gray;
     border-top: solid 1px $theme-color-light;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .ReactVirtualized__Table__row {
@@ -83,6 +91,10 @@
 
 .columnSelectorWrapper {
   position: relative;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .columnSelector :global {

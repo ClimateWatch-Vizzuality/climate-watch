@@ -9,9 +9,7 @@ export function scrollIt(
       return t;
     },
     smooth(t) {
-      return t < 0.5 ?
-        (2 * t * t) :
-        ((-1 + (4 - (2 * t))) * t);
+      return t < 0.5 ? 2 * t * t : (-1 + (4 - 2) * t) * t;
     }
   };
 
@@ -55,7 +53,7 @@ export function scrollIt(
     const timeFunction = easings[easing](time);
     window.scroll(
       0,
-      Math.ceil(timeFunction * ((destinationOffsetToScroll - start) + start))
+      Math.ceil(timeFunction * (destinationOffsetToScroll - start + start))
     );
 
     if (window.pageYOffset === destinationOffsetToScroll) {
