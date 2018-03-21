@@ -23,7 +23,12 @@ const StackedBarChart = ({ className, width, height, config }) => (
         config.columns.y.map(y => (
           <Bar dataKey={y} key={y} {...config.theme[y]} stackId="a" />
         ))}
-      {config.tooltip && <Tooltip content={<CustomTooltip {...config} />} />}
+      {config.tooltip && (
+        <Tooltip
+          cursor={{ stroke: 'none', fill: 'none' }}
+          content={<CustomTooltip {...config} />}
+        />
+      )}
     </BarChart>
   </ResponsiveContainer>
 );
