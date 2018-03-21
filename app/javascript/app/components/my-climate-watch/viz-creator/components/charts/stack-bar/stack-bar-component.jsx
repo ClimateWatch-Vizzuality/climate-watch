@@ -9,20 +9,17 @@ import {
   CartesianGrid,
   ResponsiveContainer
 } from 'recharts';
+import { yAxisIndicatorLabel, yAxisUnitLabel } from '../labels';
 
 const StackedBarChart = ({ className, width, height, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
     <BarChart {...config.chart}>
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && (
-        <YAxis
-          label={{
-            value: config.yAxis.label,
-            angle: -90,
-            position: 'left',
-            offset: -20
-          }}
-        />
+        <YAxis>
+          {yAxisUnitLabel(config.yAxis.unit)}
+          {yAxisIndicatorLabel(config.yAxis.label, height)}
+        </YAxis>
       )}
       {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
       {config.columns.y.map(y => (
