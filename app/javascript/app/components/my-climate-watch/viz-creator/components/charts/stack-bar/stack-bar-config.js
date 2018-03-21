@@ -10,7 +10,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
   return {
     chart: {
       data: pick('value', data), // only data value key
-      margin: { top: 20, right: 30, left: 20, bottom: 5 }
+      margin: { top: 50, right: 30, left: 0, bottom: 5 }
     },
     columns: {
       x: ['year'],
@@ -93,10 +93,14 @@ export const stackBarChart2Data = (
       tick: !small
     },
     yAxis: small
-      ? false
+      ? {
+        unit: indicators[0].unit
+      }
       : {
         type: 'category',
-        dataKey: 'location'
+        dataKey: 'location',
+        label: yAxisLabel,
+        unit: indicators[0].unit
       }
   });
 };
