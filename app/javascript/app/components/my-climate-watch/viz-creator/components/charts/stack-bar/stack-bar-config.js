@@ -42,6 +42,13 @@ const makeConfig = (data, keys, small) => {
         }),
       {}
     ),
+    tooltip: small
+      ? null
+      : keys.map((k, i) => ({
+        color: CHART_COLORS[i],
+        label: names[0][k],
+        value: pick('value', data).find(d => d[k])[k]
+      })),
     legend: keys.map((k, i) => ({
       color: CHART_COLORS[i],
       label: names[0][k]
