@@ -40,7 +40,7 @@ export const getFullTextColumns = createSelector([getCategory], category => {
     case 'scenarios':
       return ['description'];
     case 'indicators':
-      return [];
+      return ['definition', 'composite_name'];
     default:
       return null;
   }

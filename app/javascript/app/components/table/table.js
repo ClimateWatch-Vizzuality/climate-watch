@@ -38,6 +38,12 @@ class TableContainer extends PureComponent {
   setRowsHeight = columns => {
     if (columns.find(c => c.value === 'description')) {
       return 150;
+    } else if (
+      columns.find(
+        c => c.value === 'composite_name' || c.value === 'definition'
+      )
+    ) {
+      return 80;
     }
     return 50;
   };
