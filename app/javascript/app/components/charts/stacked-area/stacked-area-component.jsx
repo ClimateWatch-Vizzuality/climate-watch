@@ -153,6 +153,7 @@ class ChartStackedArea extends PureComponent {
               content={content => (
                 <TooltipChart content={content} config={config} showTotal />
               )}
+              filterNull={false}
             />
           )}
           {config.columns &&

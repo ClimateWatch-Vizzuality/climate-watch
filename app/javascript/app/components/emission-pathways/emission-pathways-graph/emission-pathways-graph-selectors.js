@@ -382,19 +382,66 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
   return dataMapped;
 });
 
-export const getChartXDomain = createSelector([getChartData], data => {
+export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
   const xValues = data.map(d => d.x);
-  return { x: [Math.min(...xValues), Math.max(...xValues)] };
+  const yValues = [];
+  data.forEach(d => {
+    Object.keys(d).forEach(k => {
+      if (k !== 'x') yValues.push(d[k]);
+    });
+  });
+
+  return {
+    x: [Math.min(...xValues), Math.max(...xValues)],
+    y: [Math.min(...yValues), Math.max(...yValues)]
+  };
 });
+
+export const getChartNeededPrecision = createSelector(
+  [getChartDomain],
+  domain => {
+    if (!domain) return null;
+    const yValuesDifference = domain.y[1] - domain.y[0];
+    const decimalZerosBeforeNumber = String(yValuesDifference).match(
+      /0\.(0+)[^0]/
+    );
+    const neededPrecision =
+      decimalZerosBeforeNumber &&
+      decimalZerosBeforeNumber[1] &&
+      decimalZerosBeforeNumber.length;
+    return neededPrecision && neededPrecision + 1;
+  }
+);
+// The y axis domain has some margins added when the values are very similar to each other to represent this little difference
+export const getChartDomainWithYMargins = createSelector(
+  [getChartDomain, getChartNeededPrecision],
+  (domain, neededPrecision) => {
+    if (!domain) return null;
+    if (!neededPrecision) return domain;
+    const y = [
+      dataMin => dataMin - (10 ** ((neededPrecision - 1) * -1)),
+      dataMax => dataMax + (10 ** ((neededPrecision - 1) * -1))
+    ];
+    return {
+      x: domain.x,
+      y
+    };
+  }
+);
 
 // variable that caches chart elements assigned color
 // to avoid element color changing when the chart is updated
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [filterDataByIndicator, getScenariosOptions, getIndicatorSelected],
-  (data, scenarios, indicator) => {
+  [
+    filterDataByIndicator,
+    getScenariosOptions,
+    getIndicatorSelected,
+    getChartNeededPrecision
+  ],
+  (data, scenarios, indicator, precision) => {
     if (!data || !scenarios) return null;
     const yColumns = data.map(d => {
       const scenario = scenarios.find(
@@ -420,6 +467,7 @@ export const getChartConfig = createSelector(
       axes,
       theme: colorThemeCache,
       tooltip,
+      precision,
       columns: {
         x: [{ label: 'year', value: 'x' }],
         y: yColumnsChecked
@@ -530,7 +578,7 @@ export const getModalData = createSelector(
 
 export default {
   getChartData,
-  getChartXDomain,
+  getChartDomainWithYMargins,
   getChartConfig,
   getFiltersOptions,
   getFiltersSelected
