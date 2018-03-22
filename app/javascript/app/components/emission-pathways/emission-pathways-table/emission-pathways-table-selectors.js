@@ -36,7 +36,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
 export const getFullTextColumns = createSelector([getCategory], category => {
   switch (category) {
     case 'models':
-      return ['full_name', 'description'];
+      return ['full_name', 'description', 'policy_coverage'];
     case 'scenarios':
       return [
         'description',
