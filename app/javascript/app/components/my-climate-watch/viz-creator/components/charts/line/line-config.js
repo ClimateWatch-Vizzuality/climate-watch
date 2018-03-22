@@ -11,7 +11,9 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
   return {
     chart: {
       data: pick('value', data), // only data value key
-      margin: { top: 50, right: 0, left: -10, bottom: 0 }
+      margin: { top: 50, right: 0, left: 0, bottom: 0 },
+      yAxisLabel: small ? null : yAxisLabel,
+      unit: small ? null : unit
     },
     columns: {
       x: ['year'],
@@ -32,9 +34,7 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
         axisLine: false,
         tickLine: false,
         tick,
-        domain: ['auto', 'auto'],
-        label: yAxisLabel,
-        unit
+        domain: ['auto', 'auto']
       },
     cartesianGrid: small
       ? false

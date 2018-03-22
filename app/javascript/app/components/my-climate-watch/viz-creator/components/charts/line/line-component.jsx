@@ -26,8 +26,8 @@ const ChartLine = ({ width, height, className, config }) => (
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && (
         <YAxis tick={<CustomizedYAxisTick unit={config.yAxis.unit} />}>
-          {yAxisUnitLabel(config.yAxis.unit)}
-          {yAxisIndicatorLabel(config.yAxis.label, height)}
+          {yAxisUnitLabel(config.chart.unit)}
+          {yAxisIndicatorLabel(config.chart.yAxisLabel, height)}
         </YAxis>
       )}
     </LineChart>
