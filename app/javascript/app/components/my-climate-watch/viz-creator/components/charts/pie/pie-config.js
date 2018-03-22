@@ -2,6 +2,7 @@ import find from 'lodash/find';
 import camelCase from 'lodash/camelCase';
 import { CHART_COLORS } from 'data/constants';
 import { assign } from 'app/utils';
+import { pick } from '../utils';
 
 export const pieChart1Data = (timeSeries, indicators, small) => {
   const data = timeSeries.map(ts => {
@@ -14,6 +15,9 @@ export const pieChart1Data = (timeSeries, indicators, small) => {
       }
       : false;
   });
+
+  const names = pick('name', data); // only data name key
+  const unit = indicators[0].unit;
 
   return {
     chart: {
@@ -29,14 +33,7 @@ export const pieChart1Data = (timeSeries, indicators, small) => {
         }),
       {}
     ),
-    tooltip: small
-      ? null
-      : data.map((k, i) => ({
-        color: CHART_COLORS[i],
-        label: k.name,
-        value: k.value,
-        unit: indicators[0].unit
-      })),
+    tooltip: small ? null : { unit, names, pie: true },
     legend: data.map((k, i) => ({
       color: CHART_COLORS[i],
       label: k.name
@@ -59,6 +56,9 @@ export const pieChart2Data = (timeSeries, indicators, locations, small) => {
       : false;
   });
 
+  const names = pick('name', data); // only data name key
+  const unit = indicators[0].unit;
+
   return {
     chart: {
       data,
@@ -74,14 +74,7 @@ export const pieChart2Data = (timeSeries, indicators, locations, small) => {
         }),
       {}
     ),
-    tooltip: small
-      ? null
-      : data.map((k, i) => ({
-        color: CHART_COLORS[i],
-        label: k.name,
-        value: k.value,
-        unit: indicators[0].unit
-      })),
+    tooltip: small ? null : { unit, names, pie: true },
     legend: data.map((k, i) => ({
       color: CHART_COLORS[i],
       label: k.name

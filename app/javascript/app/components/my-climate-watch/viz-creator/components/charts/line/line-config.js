@@ -49,13 +49,7 @@ const makeConfig = (data, indicators, small) => {
         }),
       {}
     ),
-    tooltip: small
-      ? null
-      : keys.map((k, i) => ({
-        color: CHART_COLORS[i],
-        label: names[0][k],
-        unit
-      })),
+    tooltip: small ? null : { unit, names },
     legend: keys.map((k, i) => ({
       color: CHART_COLORS[i],
       label: names[0][k]
