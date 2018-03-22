@@ -79,7 +79,10 @@ export const stackBarChart2Data = (
   return assign(baseConfig, {
     chart: {
       ...baseConfig.chart,
-      layout: 'vertical'
+      layout: 'vertical',
+      unit: indicators[0].unit,
+      yAxisLabel,
+      margin: { top: 50, right: 30, left: 40, bottom: 5 }
     },
     cartesianGrid: small
       ? false
@@ -93,14 +96,10 @@ export const stackBarChart2Data = (
       tick: !small
     },
     yAxis: small
-      ? {
-        unit: indicators[0].unit
-      }
+      ? false
       : {
         type: 'category',
-        dataKey: 'location',
-        label: yAxisLabel,
-        unit: indicators[0].unit
+        dataKey: 'location'
       }
   });
 };

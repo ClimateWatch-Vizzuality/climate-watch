@@ -16,9 +16,9 @@ const StackedBarChart = ({ className, width, height, config }) => (
     <BarChart {...config.chart}>
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && (
-        <YAxis>
-          {yAxisUnitLabel(config.yAxis.unit)}
-          {yAxisIndicatorLabel(config.yAxis.label, height)}
+        <YAxis {...config.yAxis}>
+          {yAxisUnitLabel(config.chart.unit)}
+          {yAxisIndicatorLabel(config.chart.yAxisLabel, height)}
         </YAxis>
       )}
       {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
