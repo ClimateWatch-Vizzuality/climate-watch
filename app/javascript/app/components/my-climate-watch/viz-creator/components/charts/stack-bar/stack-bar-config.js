@@ -10,7 +10,9 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
   return {
     chart: {
       data: pick('value', data), // only data value key
-      margin: { top: 50, right: 30, left: 0, bottom: 5 }
+      margin: { top: 50, right: 30, left: 0, bottom: 5 },
+      unit: !small && indicators[0].unit,
+      yAxisLabel: !small && yAxisLabel
     },
     columns: {
       x: ['year'],
@@ -25,9 +27,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
     yAxis: {
       axisLine: false,
       tickLine: false,
-      tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />,
-      label: yAxisLabel,
-      unit: indicators[0] && indicators[0].unit
+      tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />
     },
     cartesianGrid: small
       ? false
@@ -80,8 +80,6 @@ export const stackBarChart2Data = (
     chart: {
       ...baseConfig.chart,
       layout: 'vertical',
-      unit: indicators[0].unit,
-      yAxisLabel,
       margin: { top: 50, right: 30, left: 40, bottom: 5 }
     },
     cartesianGrid: small

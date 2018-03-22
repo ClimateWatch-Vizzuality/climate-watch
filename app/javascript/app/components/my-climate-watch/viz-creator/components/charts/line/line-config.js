@@ -25,15 +25,17 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
       padding: { left: 15, right: 20 },
       tickSize: 8
     },
-    yAxis: {
-      tickFormatter: t => `${format('.2s')(t)}t`,
-      axisLine: false,
-      tickLine: false,
-      tick: small ? false : tick,
-      domain: ['auto', 'auto'],
-      label: yAxisLabel,
-      unit
-    },
+    yAxis: small
+      ? false
+      : {
+        tickFormatter: t => `${format('.2s')(t)}t`,
+        axisLine: false,
+        tickLine: false,
+        tick,
+        domain: ['auto', 'auto'],
+        label: yAxisLabel,
+        unit
+      },
     cartesianGrid: small
       ? false
       : {
