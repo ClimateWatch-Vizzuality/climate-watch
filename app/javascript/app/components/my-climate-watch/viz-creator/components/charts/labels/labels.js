@@ -1,1 +1,1 @@
-export { default } from './labels-component';
+export * from './labels-component';
