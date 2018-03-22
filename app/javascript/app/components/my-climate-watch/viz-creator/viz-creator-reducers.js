@@ -40,6 +40,7 @@ export default {
     (!payload
       ? {
         ...state,
+        id: null,
         creatorIsOpen: true
       }
       : {
