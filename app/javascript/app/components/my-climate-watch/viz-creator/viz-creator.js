@@ -24,12 +24,12 @@ import {
   getFormatFilters,
   getVisualisationType,
   getVisualisationOptions,
-  getVisualisationTitle
+  getTitle
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
   id: vizCreator.id,
-  title: getVisualisationTitle(vizCreator),
+  title: getTitle(vizCreator),
   description: vizCreator.description,
   creationStatus: vizCreator.creationStatus,
   datasets: datasetsSelector(vizCreator),
