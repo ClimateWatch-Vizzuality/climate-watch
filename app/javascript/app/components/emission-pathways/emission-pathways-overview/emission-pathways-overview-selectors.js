@@ -44,17 +44,21 @@ const sanitizeData = createSelector([addMantainerNameToScenario], data => {
   return parsedData;
 });
 
-const removeEmptyFieldsfromData = createSelector([sanitizeData], data => {
+const addNotSpecToEmptyFields = createSelector([sanitizeData], data => {
   if (!data || isEmpty(data)) return null;
   const fieldsWithData = {};
   Object.keys(data).forEach(k => {
-    if (data[k]) fieldsWithData[k] = data[k];
+    if (data[k]) {
+      fieldsWithData[k] = data[k];
+    } else {
+      fieldsWithData[k] = 'Not Specified';
+    }
   });
   return fieldsWithData;
 });
 
 export const filterDataByBlackList = createSelector(
-  [removeEmptyFieldsfromData],
+  [addNotSpecToEmptyFields],
   data => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(
