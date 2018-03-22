@@ -7,7 +7,7 @@ import styles from './tooltip-chart-styles.scss';
 
 class TooltipChart extends PureComponent {
   getFormat() {
-    return this.props.forceTwoDecimals ? '.2f' : '.2s';
+    return this.props.forceFourDecimals ? '.4f' : '.2s';
   }
 
   getTotal = (keys, data, unitIsCo2) => {
@@ -111,7 +111,7 @@ TooltipChart.propTypes = {
   content: Proptypes.object,
   config: Proptypes.object,
   showTotal: Proptypes.bool,
-  forceTwoDecimals: Proptypes.bool
+  forceFourDecimals: Proptypes.bool
 };
 
 export default TooltipChart;
