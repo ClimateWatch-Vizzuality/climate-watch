@@ -40,7 +40,13 @@ class TableContainer extends PureComponent {
       return 150;
     } else if (
       columns.find(
-        c => c.value === 'composite_name' || c.value === 'definition'
+        c =>
+          c.value === 'composite_name' ||
+          c.value === 'definition' ||
+          c.value === 'technology_coverage' ||
+          c.value === 'purpose_or_objective' ||
+          c.value === 'socieconomics' ||
+          c.value === 'policy_coverage'
       )
     ) {
       return 80;

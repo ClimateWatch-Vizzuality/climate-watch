@@ -38,7 +38,13 @@ export const getFullTextColumns = createSelector([getCategory], category => {
     case 'models':
       return ['full_name', 'description'];
     case 'scenarios':
-      return ['description'];
+      return [
+        'description',
+        'technology_coverage',
+        'purpose_or_objective',
+        'socioeconomics',
+        'policy_coverage'
+      ];
     case 'indicators':
       return ['definition', 'composite_name'];
     default:
