@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { Label } from 'recharts';
+import styles from './label-styles.scss';
 
 export const yAxisUnitLabel = unit => (
   <Label
     position="top"
     content={() => (
-      <text x="22" y="20">
+      <text className={styles.label} x="22" y="20">
         {unit}
       </text>
     )}
@@ -20,6 +20,7 @@ export const yAxisIndicatorLabel = (label, height) => (
     angle={-90}
     content={() => (
       <text
+        className={styles.label}
         x={height * -0.5}
         y="15"
         textAnchor="middle"
@@ -30,6 +31,23 @@ export const yAxisIndicatorLabel = (label, height) => (
     )}
   />
 );
+
+export const pieLabel = (width, y, text) => {
+  const getWidth = w => {
+    const isPercent = w[w.length - 1] === '%';
+    return isPercent ? '50%' : w / 2;
+  };
+  return (
+    <text
+      className={styles.label}
+      x={getWidth(width)}
+      y={y}
+      textAnchor="middle"
+    >
+      {text}
+    </text>
+  );
+};
 
 export const CustomizedYAxisTick = ({ payload, unit, x, y }) => (
   <g transform={`translate(${x},${y})`}>
@@ -57,5 +75,6 @@ CustomizedYAxisTick.propTypes = {
 export default {
   yAxisUnitLabel,
   yAxisIndicatorLabel,
-  CustomizedYAxisTick
+  CustomizedYAxisTick,
+  pieLabel
 };

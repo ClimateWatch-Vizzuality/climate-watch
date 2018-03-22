@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PieChart, Pie as RePie, ResponsiveContainer, Cell } from 'recharts';
-
-const getWidth = width => {
-  const isPercent = width[width.length - 1] === '%';
-  return isPercent ? '50%' : width / 2;
-};
+import { pieLabel } from '../labels';
 
 const Pie = ({ className, width, height, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
@@ -15,9 +11,7 @@ const Pie = ({ className, width, height, config }) => (
           <Cell key={d.key} fill={config.theme[d.key].fill} />
         ))}
       </RePie>
-      <text x={getWidth(width)} y={config.chart.topLabel.y} textAnchor="middle">
-        {config.chart.topLabel.text}
-      </text>
+      {pieLabel(width, config.chart.topLabel.y, config.chart.topLabel.text)}
     </PieChart>
   </ResponsiveContainer>
 );
