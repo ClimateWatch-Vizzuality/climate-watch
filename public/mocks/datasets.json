@@ -7,11 +7,11 @@
     "viz-types": [
       {
         "id": "m8dv72zm",
-        "name": "Focus on the emissions of one country",
+        "name": "Focus on a particular country",
         "visualisations": [
           {
             "id": "LineChart-1",
-            "name": "See the change in a country's emmision's for a specified indicator for a specified indicator across multiple scenarios",
+            "name": "Compare multiple scenarios for a particular country for an indicator time series",
             "chart": {
               "type": "LineChart",
               "options": {}
@@ -35,7 +35,7 @@
           },
           {
             "id": "StackBarChart-1",
-            "name": "See the change in a country's emmision's for a specified indicator for a specified indicator and scenario",
+            "name": "Stack a group of indicators in a time series for a particular country and scenario",
             "chart": {
               "type": "StackBarChart",
               "options":
@@ -60,7 +60,7 @@
           },
           {
             "id": "PieChart-1",
-            "name": "See a country’s relative emissions across multiple indicators for a specified scenario",
+            "name": "Visualize a group of indicators for a particular country and scenario",
             "chart": {
               "type": "PieChart",
               "options": {}
@@ -85,12 +85,12 @@
         ]
       },
       {
-        "name": "Compare locations’ emissions",
+        "name": "Compare countries/regions",
         "id": "4vzy7k28",
         "visualisations": [
           {
             "id": "LineChart-2",
-            "name": "Compare changes per indicator across locations for a specified scenario",
+            "name": "Compare an indicator time series for a particular scenario across multiple countries/regions",
             "chart": {
               "type": "LineChart",
               "options": {}
@@ -114,7 +114,7 @@
           },
           {
             "id": "PieChart-2",
-            "name": "Compare locations relative emissions for a specified indicator and scenario",
+            "name": "Visualize an indicator for a group of countries/regions for a particular scenario",
             "chart": {
               "type": "PieChart",
               "options": {
@@ -141,7 +141,7 @@
           },
           {
             "id": "StackBarChart-2",
-            "name": "Compare locations stacked emissions across a specifed indicator category",
+            "name": "Stack a group of indicators for a particular scenario and year for multiple countries/regions",
             "chart": {
               "type": "StackBarChart",
               "options":

@@ -100,7 +100,12 @@ export const chartDataSelector = createSelector(
     if (!hasData) return {};
     switch (selectedStructure.id) {
       case 'LineChart-1':
-        return lineChart1Data(timeseries.data, scenarios.data, small);
+        return lineChart1Data(
+          timeseries.data,
+          scenarios.data,
+          indicators.data,
+          small
+        );
 
       case 'StackBarChart-1':
         return stackBarChart1Data(timeseries.data, indicators.data, small);
@@ -109,7 +114,12 @@ export const chartDataSelector = createSelector(
         return pieChart1Data(timeseries.data, indicators.data, small);
 
       case 'LineChart-2':
-        return lineChart2Data(timeseries.data, locations.data, small);
+        return lineChart2Data(
+          timeseries.data,
+          locations.data,
+          indicators.data,
+          small
+        );
 
       case 'PieChart-2':
         return pieChart2Data(

@@ -3,7 +3,7 @@ import Proptypes from 'prop-types';
 import { format } from 'd3-format';
 import cx from 'classnames';
 
-import styles from './tooltip-chart-styles.scss';
+import styles from 'styles/themes/chart-tooltip/chart-tooltip.scss';
 
 class TooltipChart extends PureComponent {
   getFormat() {
