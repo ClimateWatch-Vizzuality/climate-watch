@@ -4,10 +4,11 @@ import { CHART_COLORS } from 'data/constants';
 
 import { groupByYear, pick } from '../utils';
 
-const makeConfig = (data, small) => {
+const makeConfig = (data, indicators, small) => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   const tick = { stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' };
   const names = pick('name', data); // only data name key
+  const unit = indicators[0] && indicators[0].unit;
   return {
     chart: {
       data: pick('value', data), // only data value key
@@ -48,6 +49,7 @@ const makeConfig = (data, small) => {
         }),
       {}
     ),
+    tooltip: small ? null : { unit, names },
     legend: keys.map((k, i) => ({
       color: CHART_COLORS[i],
       label: names[0][k]
@@ -55,8 +57,8 @@ const makeConfig = (data, small) => {
   };
 };
 
-export const lineChart1Data = (timeSeries, scenarios, small) =>
-  makeConfig(groupByYear(timeSeries, 'scenario', scenarios), small);
+export const lineChart1Data = (timeSeries, scenarios, indicators, small) =>
+  makeConfig(groupByYear(timeSeries, 'scenario', scenarios), indicators, small);
 
-export const lineChart2Data = (timeSeries, locations, small) =>
-  makeConfig(groupByYear(timeSeries, 'location', locations), small);
+export const lineChart2Data = (timeSeries, locations, indicators, small) =>
+  makeConfig(groupByYear(timeSeries, 'location', locations), indicators, small);

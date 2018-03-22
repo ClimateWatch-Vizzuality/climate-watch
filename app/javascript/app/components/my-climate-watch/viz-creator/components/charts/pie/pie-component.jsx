@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PieChart, Pie as RePie, ResponsiveContainer, Cell } from 'recharts';
+import {
+  PieChart,
+  Pie as RePie,
+  ResponsiveContainer,
+  Cell,
+  Tooltip
+} from 'recharts';
+
+import CustomTooltip from '../tooltip';
 
 const Pie = ({ className, width, height, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
@@ -10,6 +18,12 @@ const Pie = ({ className, width, height, config }) => (
           <Cell key={d.key} fill={config.theme[d.key].fill} />
         ))}
       </RePie>
+      {config.tooltip && (
+        <Tooltip
+          cursor={{ stroke: '#113750', strokeWidth: 2 }}
+          content={<CustomTooltip {...config} />}
+        />
+      )}
     </PieChart>
   </ResponsiveContainer>
 );

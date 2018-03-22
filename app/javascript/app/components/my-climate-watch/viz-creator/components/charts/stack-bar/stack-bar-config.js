@@ -5,8 +5,9 @@ import { groupByYear, groupBy, pick } from '../utils';
 
 import Tick from '../tick';
 
-const makeConfig = (data, keys, small) => {
+const makeConfig = (data, keys, indicators, small) => {
   const names = pick('name', data); // only data name key
+  const unit = indicators[0] && indicators[0].unit;
   return {
     chart: {
       data: pick('value', data), // only data value key
@@ -42,6 +43,7 @@ const makeConfig = (data, keys, small) => {
         }),
       {}
     ),
+    tooltip: small ? null : { unit, names },
     legend: keys.map((k, i) => ({
       color: CHART_COLORS[i],
       label: names[0][k]
@@ -52,7 +54,7 @@ const makeConfig = (data, keys, small) => {
 export const stackBarChart1Data = (timeSeries, indicators, small) => {
   const data = groupByYear(timeSeries, 'indicator', indicators);
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
-  return makeConfig(data, keys, small);
+  return makeConfig(data, keys, indicators, small);
 };
 
 export const stackBarChart2Data = (
@@ -67,7 +69,7 @@ export const stackBarChart2Data = (
     [locations, indicators]
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
-  const baseConfig = makeConfig(data, keys, small);
+  const baseConfig = makeConfig(data, keys, indicators, small);
   return assign(baseConfig, {
     chart: {
       ...baseConfig.chart,
