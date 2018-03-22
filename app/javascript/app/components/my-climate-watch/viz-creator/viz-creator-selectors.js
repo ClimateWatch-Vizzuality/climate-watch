@@ -129,7 +129,12 @@ export const chartDataSelector = createSelector(
         );
 
       case 'PieChart-1':
-        return pieChart1Data(timeseries.data, indicators.data, small);
+        return pieChart1Data(
+          timeseries.data,
+          indicators.data,
+          yAxisLabel,
+          small
+        );
 
       case 'LineChart-2':
         return lineChart2Data(
@@ -145,6 +150,7 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           indicators.data,
           locations.data,
+          yAxisLabel,
           small
         );
 
