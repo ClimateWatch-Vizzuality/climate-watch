@@ -10,7 +10,11 @@ const getNdcsSdgsData = createThunkAction(
     const { ndcsSdgsData } = state();
     if (ndcsSdgsData) {
       dispatch(getNdcsSdgsDataInit());
-      const documentFilter = document ? `?document=${document}` : '';
+      const documentFilter = document
+        ? `?document_type=${document.split('-')[0]}&language=${document.split(
+          '-'
+        )[1]}`
+        : '';
       fetch(`/api/v1/ndcs/${iso}/sdgs${documentFilter}`)
         .then(response => {
           if (response.ok) return response.json();
