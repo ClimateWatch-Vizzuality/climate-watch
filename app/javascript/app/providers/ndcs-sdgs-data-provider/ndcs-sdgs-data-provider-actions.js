@@ -1,17 +1,17 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import isEmpty from 'lodash/isEmpty';
 
 const getNdcsSdgsDataInit = createAction('getNdcsSdgsDataInit');
 const getNdcsSdgsDataReady = createAction('getNdcsSdgsDataReady');
 
 const getNdcsSdgsData = createThunkAction(
   'getNdcsSdgsData',
-  iso => (dispatch, state) => {
+  (iso, document) => (dispatch, state) => {
     const { ndcsSdgsData } = state();
-    if (ndcsSdgsData && isEmpty(ndcsSdgsData.data[iso])) {
+    if (ndcsSdgsData) {
       dispatch(getNdcsSdgsDataInit());
-      fetch(`/api/v1/ndcs/${iso}/sdgs`)
+      const documentFilter = document ? `?document=${document}` : '';
+      fetch(`/api/v1/ndcs/${iso}/sdgs${documentFilter}`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
