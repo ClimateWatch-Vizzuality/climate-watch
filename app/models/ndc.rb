@@ -79,7 +79,7 @@ class Ndc < ApplicationRecord
       sort_by(&:starts_at)
   end
 
-  def self.linkages_for(iso_code3, document_type, language)
+  def self.linkages_for(iso_code3, document_type = nil, language = nil)
     ndc = Ndc.
       includes(
         :location,

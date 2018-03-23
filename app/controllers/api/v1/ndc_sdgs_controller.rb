@@ -19,7 +19,7 @@ module Api
       def show
         linkages_params = [params[:code]]
         if params[:document]
-          linkages_params.concat((params[:document].split("-")))
+          linkages_params.concat(params[:document].split('-'))
         end
         ndcs = Ndc.linkages_for(*linkages_params)
 
