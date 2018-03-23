@@ -17,7 +17,11 @@ module Api
       end
 
       def show
-        ndcs = Ndc.linkages_for(params[:code])
+        linkages_params = [params[:code]]
+        if params[:document]
+          linkages_params.concat((params[:document].split("-")))
+        end
+        ndcs = Ndc.linkages_for(*linkages_params)
 
         unless ndcs.length.positive?
           render json: {
