@@ -9,7 +9,8 @@ export function scrollIt(
       return t;
     },
     smooth(t) {
-      return t < 0.5 ? 2 * t * t : (-1 + (4 - 2) * t) * t;
+      const twiceTime = 2 * t;
+      return t < 0.5 ? twiceTime * t : (-1 + (4 - twiceTime)) * t;
     }
   };
 
@@ -51,12 +52,19 @@ export function scrollIt(
       'now' in window.performance ? performance.now() : new Date().getTime();
     const time = Math.min(1, (now - startTime) / duration);
     const timeFunction = easings[easing](time);
-    window.scroll(
-      0,
-      Math.ceil(timeFunction * (destinationOffsetToScroll - start + start))
-    );
+    const offset = destinationOffsetToScroll - start;
+    window.scroll(0, Math.ceil(timeFunction * (offset + start)));
 
-    if (window.pageYOffset === destinationOffsetToScroll) {
+    const DESTINATION_OFFSET = 10;
+    const destinationRangeMax =
+      Math.ceil(window.pageYOffset) + DESTINATION_OFFSET;
+    const destinationRangeMin =
+      Math.ceil(window.pageYOffset) - DESTINATION_OFFSET;
+
+    if (
+      destinationOffsetToScroll > destinationRangeMin &&
+      destinationOffsetToScroll < destinationRangeMax
+    ) {
       if (callback) {
         callback();
       }
