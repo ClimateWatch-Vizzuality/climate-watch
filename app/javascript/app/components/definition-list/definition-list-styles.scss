@@ -9,11 +9,23 @@
 }
 
 .definition {
-  @include columns((3, 9));
+  @include columns(12);
   @include xy-gutters(40px, $gutter-position: ('top', 'bottom'), $gutter-type: padding);
-  @include xy-gutters(60px);
+
+  > *:first-child {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
 
   border-bottom: solid 1px rgba(#9090b2, 0.15);
+
+  @media #{$tablet-landscape} {
+    @include columns((3, 9));
+    @include xy-gutters(60px);
+
+    > * {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
+  }
 }
 
 .definitionTitle {

@@ -7,6 +7,7 @@ import Tick from '../tick';
 
 const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
   const names = pick('name', data); // only data name key
+  const unit = indicators[0] && indicators[0].unit;
   return {
     chart: {
       data: pick('value', data), // only data value key
@@ -44,6 +45,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
         }),
       {}
     ),
+    tooltip: small ? null : { unit, names },
     legend: keys.map((k, i) => ({
       color: CHART_COLORS[i],
       label: names[0][k]

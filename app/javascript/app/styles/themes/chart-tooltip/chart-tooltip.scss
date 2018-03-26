@@ -60,4 +60,9 @@
 
 .labelValue {
   color: $dark-gray;
+  min-width: 30px;
+}
+
+.notAvailable {
+  color: $gray;
 }

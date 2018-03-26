@@ -50,6 +50,7 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
         }),
       {}
     ),
+    tooltip: small ? null : { unit, names },
     legend: keys.map((k, i) => ({
       color: CHART_COLORS[i],
       label: names[0][k]

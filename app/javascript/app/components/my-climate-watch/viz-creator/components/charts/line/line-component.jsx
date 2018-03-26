@@ -6,7 +6,8 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Tooltip
 } from 'recharts';
 
 import {
@@ -14,6 +15,7 @@ import {
   yAxisUnitLabel,
   CustomizedYAxisTick
 } from '../labels';
+import CustomTooltip from '../tooltip';
 
 const ChartLine = ({ width, height, className, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
@@ -29,6 +31,12 @@ const ChartLine = ({ width, height, className, config }) => (
           {yAxisUnitLabel(config.yAxis.unit)}
           {yAxisIndicatorLabel(config.yAxis.label, height)}
         </YAxis>
+      )}
+      {config.tooltip && (
+        <Tooltip
+          cursor={{ stroke: '#113750', strokeWidth: 2 }}
+          content={<CustomTooltip {...config} />}
+        />
       )}
     </LineChart>
   </ResponsiveContainer>
