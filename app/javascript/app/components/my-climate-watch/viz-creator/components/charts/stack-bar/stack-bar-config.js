@@ -32,7 +32,13 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
       : {
         axisLine: false,
         tickLine: false,
-        tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />
+        tick: small
+          ? false
+          : tick => {
+            const tickProps = tick;
+            delete tickProps.verticalAnchor; // verticalAnchor prop is not supported
+            return tick.index % 2 && <Tick {...tickProps} />;
+          }
       },
     cartesianGrid: small
       ? false
