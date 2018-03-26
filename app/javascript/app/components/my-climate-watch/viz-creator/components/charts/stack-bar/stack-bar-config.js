@@ -11,25 +11,29 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
   return {
     chart: {
       data: pick('value', data), // only data value key
-      margin: { top: 50, right: 30, left: 0, bottom: 5 }
+      margin: { top: 50, right: 30, left: 45, bottom: 5 },
+      yAxisLabel,
+      unit
     },
     columns: {
       x: ['year'],
       y: keys
     },
-    xAxis: {
-      dataKey: 'year',
-      axisLine: false,
-      tickLine: false,
-      tick: !small
-    },
-    yAxis: {
-      axisLine: false,
-      tickLine: false,
-      tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />,
-      label: yAxisLabel,
-      unit: indicators[0] && indicators[0].unit
-    },
+    xAxis: small
+      ? false
+      : {
+        dataKey: 'year',
+        axisLine: false,
+        tickLine: false,
+        tick: !small
+      },
+    yAxis: small
+      ? false
+      : {
+        axisLine: false,
+        tickLine: false,
+        tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />
+      },
     cartesianGrid: small
       ? false
       : {
@@ -81,7 +85,8 @@ export const stackBarChart2Data = (
   return assign(baseConfig, {
     chart: {
       ...baseConfig.chart,
-      layout: 'vertical'
+      layout: 'vertical',
+      unit: indicators[0].unit
     },
     cartesianGrid: small
       ? false
@@ -95,14 +100,10 @@ export const stackBarChart2Data = (
       tick: !small
     },
     yAxis: small
-      ? {
-        unit: indicators[0].unit
-      }
+      ? false
       : {
         type: 'category',
-        dataKey: 'location',
-        label: yAxisLabel,
-        unit: indicators[0].unit
+        dataKey: 'location'
       }
   });
 };

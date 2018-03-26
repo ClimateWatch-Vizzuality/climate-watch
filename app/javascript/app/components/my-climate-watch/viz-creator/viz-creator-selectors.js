@@ -190,9 +190,10 @@ export const getVisualisationTitle = createSelector(
   [getTitle, selectedStructureSelector, categoriesSelector],
   (title, selectedStructure, category) => {
     if (!title || !selectedStructure) return undefined;
-    const singleIndicator = !selectedStructure.filters.find(
-      f => f.name === 'indicators'
-    ).multi;
+    const indicators =
+      selectedStructure.filters &&
+      selectedStructure.filters.find(f => f.name === 'indicators');
+    const singleIndicator = !indicators || !indicators.multi;
     return singleIndicator
       ? title
       : category.selected && category.selected.label;
