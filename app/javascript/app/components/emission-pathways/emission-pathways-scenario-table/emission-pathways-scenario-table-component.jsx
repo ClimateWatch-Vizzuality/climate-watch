@@ -18,6 +18,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       data,
       noContentMsg,
       defaultColumns,
+      fullTextColumns,
       titleLinks,
       error
     } = this.props;
@@ -34,6 +35,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
         data={data}
         rowHeight={60}
         hasColumnSelect
+        fullTextColumns={fullTextColumns}
         defaultColumns={defaultColumns}
         trendLine={'trend'}
         titleLinks={titleLinks}
@@ -113,6 +115,7 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   id: PropTypes.string,
   data: PropTypes.array,
   defaultColumns: PropTypes.array,
+  fullTextColumns: PropTypes.array,
   query: PropTypes.string,
   handleSearchChange: PropTypes.func,
   categories: PropTypes.array,
