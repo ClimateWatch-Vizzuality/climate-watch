@@ -25,7 +25,8 @@ const Pie = ({ className, width, height, config }) => (
           content={<CustomTooltip {...config} />}
         />
       )}
-      {pieLabel(width, config.chart.topLabel.y, config.chart.topLabel.text)}
+      {config.chart.topLabel &&
+        pieLabel(width, config.chart.topLabel.y, config.chart.topLabel.text)}
     </PieChart>
   </ResponsiveContainer>
 );
