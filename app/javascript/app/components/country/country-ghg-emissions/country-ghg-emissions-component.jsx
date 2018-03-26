@@ -44,7 +44,7 @@ class CountryGhgEmissions extends PureComponent {
   }
 
   renderActionButtons() {
-    const { iso, handleInfoClick, handleAnalyticsClick } = this.props;
+    const { iso, handleInfoClick, handleAnalyticsClick, isEmbed } = this.props;
 
     return [
       <ButtonGroup
@@ -53,7 +53,7 @@ class CountryGhgEmissions extends PureComponent {
         onInfoClick={handleInfoClick}
         shareUrl={`/embed/countries/${iso}/ghg-emissions`}
         analyticsGraphName="Country/Ghg-emissions"
-        reverseDropdown
+        reverseDropdown={!isEmbed}
       />,
       <Button
         key="action2"
