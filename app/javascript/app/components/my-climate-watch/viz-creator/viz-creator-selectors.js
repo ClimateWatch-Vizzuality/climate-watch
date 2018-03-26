@@ -33,7 +33,7 @@ export const categoriesSelector = state => get(lenses.$categories, state);
 export const subcategoriesSelector = state => get(lenses.$subcategories, state);
 export const yearsSelector = state => get(lenses.$years, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
-export const getTitle = state => state.title || null;
+export const titleSelector = state => state.title || null;
 
 export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
@@ -129,7 +129,12 @@ export const chartDataSelector = createSelector(
         );
 
       case 'PieChart-1':
-        return pieChart1Data(timeseries.data, indicators.data, small);
+        return pieChart1Data(
+          timeseries.data,
+          indicators.data,
+          yAxisLabel,
+          small
+        );
 
       case 'LineChart-2':
         return lineChart2Data(
@@ -145,6 +150,7 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           indicators.data,
           locations.data,
+          yAxisLabel,
           small
         );
 
@@ -186,8 +192,8 @@ export const getFormatFilters = name =>
     return filter;
   });
 
-export const getVisualisationTitle = createSelector(
-  [getTitle, selectedStructureSelector, categoriesSelector],
+export const getTitle = createSelector(
+  [titleSelector, selectedStructureSelector, categoriesSelector],
   (title, selectedStructure, category) => {
     if (!title || !selectedStructure) return undefined;
     const indicators =

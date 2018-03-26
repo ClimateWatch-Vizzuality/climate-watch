@@ -86,7 +86,8 @@ export const stackBarChart2Data = (
     chart: {
       ...baseConfig.chart,
       layout: 'vertical',
-      unit: indicators[0].unit
+      unit: indicators[0].unit,
+      margin: { top: 50, right: 30, left: 40, bottom: 5 }
     },
     cartesianGrid: small
       ? false
