@@ -419,10 +419,8 @@ export const getChartDomainWithYMargins = createSelector(
   (domain, neededPrecision) => {
     if (!domain) return null;
     if (!neededPrecision) return domain;
-    const y = [
-      dataMin => dataMin - (10 ** ((neededPrecision - 1) * -1)),
-      dataMax => dataMax + (10 ** ((neededPrecision - 1) * -1))
-    ];
+    const margin = 10 ** ((neededPrecision - 1) * -1);
+    const y = [dataMin => dataMin - margin, dataMax => dataMax + margin];
     return {
       x: domain.x,
       y
