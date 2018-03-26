@@ -61,6 +61,7 @@ class NDCCountryFull extends PureComponent {
       route,
       fetchCountryNDCFull,
       iso,
+      search,
       loading,
       content
     } = this.props;
@@ -93,6 +94,7 @@ class NDCCountryFull extends PureComponent {
               <NdcsAutocompleteSearch
                 className={styles.select}
                 fetchSearchResults={fetchCountryNDCFull}
+                document={search.document}
                 dark
                 label
               />

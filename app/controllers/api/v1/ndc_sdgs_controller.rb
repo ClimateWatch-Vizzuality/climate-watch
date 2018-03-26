@@ -17,8 +17,7 @@ module Api
       end
 
       def show
-        ndcs = Ndc.linkages_for(params[:code])
-
+        ndcs = Ndc.linkages_for(params[:code], params[:document_type], params[:language])
         unless ndcs.length.positive?
           render json: {
             error: 'NDC not found',

@@ -79,8 +79,8 @@ class Ndc < ApplicationRecord
       sort_by(&:starts_at)
   end
 
-  def self.linkages_for(iso_code3)
-    Ndc.
+  def self.linkages_for(iso_code3, document_type = nil, language = nil)
+    ndc = Ndc.
       includes(
         :location,
         ndc_targets: [
@@ -94,8 +94,13 @@ class Ndc < ApplicationRecord
           ndc_target_sectors: :sectors,
           targets: :goals
         ]
-      ).
-      where(
+      )
+
+    if document_type && language
+      ndc = ndc.where(document_type: document_type, language: language)
+    end
+
+    ndc.where(
         locations: {
           iso_code3: iso_code3.upcase
         }

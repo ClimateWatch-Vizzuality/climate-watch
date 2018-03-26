@@ -139,6 +139,16 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
+export const ESP_HIGH_ROWS = ['description'];
+export const ESP_MEDIUM_ROWS = [
+  'composite_name',
+  'definition',
+  'technology_coverage',
+  'purpose_or_objective',
+  'socieconomics',
+  'policy_coverage'
+];
+
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],
   scenarios: ['model'],
@@ -193,6 +203,8 @@ export default {
   DEFAULT_AXES_CONFIG,
   DATA_SCALE,
   ESP_BLACKLIST,
+  ESP_HIGH_ROWS,
+  ESP_MEDIUM_ROWS,
   FILTERS_BY_CATEGORY,
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS,
