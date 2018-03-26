@@ -5,6 +5,14 @@ import pick from 'lodash/pick';
 import { ESP_BLACKLIST } from 'data/constants';
 
 export const defaultColumns = ['name', 'category', 'description'];
+export const fullTextColumns = [
+  'description',
+  'technology_coverage',
+  'purpose_or_objective',
+  'socioeconomics',
+  'policy_coverage',
+  'climate_target'
+];
 const getModelId = state => state.modelId || null;
 const getData = state =>
   (!isEmpty(state.espModelsData) ? state.espModelsData : null);
@@ -51,5 +59,6 @@ export const titleLinks = createSelector([getFilteredData], data => {
 export default {
   filterDataByBlackList,
   defaultColumns,
+  fullTextColumns,
   titleLinks
 };

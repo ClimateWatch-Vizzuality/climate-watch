@@ -33,6 +33,7 @@ export const categoriesSelector = state => get(lenses.$categories, state);
 export const subcategoriesSelector = state => get(lenses.$subcategories, state);
 export const yearsSelector = state => get(lenses.$years, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
+export const titleSelector = state => state.title || null;
 
 export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
@@ -86,6 +87,7 @@ export const chartDataSelector = createSelector(
     selectedStructureSelector,
     indicatorsSelector,
     locationsSelector,
+    subcategoriesSelector,
     smallSelector
   ],
   (
@@ -95,29 +97,51 @@ export const chartDataSelector = createSelector(
     selectedStructure,
     indicators,
     locations,
+    subcategories,
     small
   ) => {
     if (!hasData) return {};
+    const indicatorLabel =
+      indicators && indicators.selected && indicators.selected.label;
+    const categoryLabel =
+      subcategories.selected && subcategories.selected.label;
+    const yAxisLabel = selectedStructure.filters.find(
+      f => f.name === 'indicators'
+    ).multi
+      ? categoryLabel
+      : indicatorLabel;
     switch (selectedStructure.id) {
       case 'LineChart-1':
         return lineChart1Data(
           timeseries.data,
           scenarios.data,
           indicators.data,
+          yAxisLabel,
           small
         );
 
       case 'StackBarChart-1':
-        return stackBarChart1Data(timeseries.data, indicators.data, small);
+        return stackBarChart1Data(
+          timeseries.data,
+          indicators.data,
+          yAxisLabel,
+          small
+        );
 
       case 'PieChart-1':
-        return pieChart1Data(timeseries.data, indicators.data, small);
+        return pieChart1Data(
+          timeseries.data,
+          indicators.data,
+          yAxisLabel,
+          small
+        );
 
       case 'LineChart-2':
         return lineChart2Data(
           timeseries.data,
           locations.data,
           indicators.data,
+          yAxisLabel,
           small
         );
 
@@ -126,6 +150,7 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           indicators.data,
           locations.data,
+          yAxisLabel,
           small
         );
 
@@ -134,6 +159,7 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           locations.data,
           indicators.data,
+          yAxisLabel,
           small
         );
 
@@ -165,3 +191,17 @@ export const getFormatFilters = name =>
 
     return filter;
   });
+
+export const getTitle = createSelector(
+  [titleSelector, selectedStructureSelector, categoriesSelector],
+  (title, selectedStructure, category) => {
+    if (!title || !selectedStructure) return undefined;
+    const indicators =
+      selectedStructure.filters &&
+      selectedStructure.filters.find(f => f.name === 'indicators');
+    const singleIndicator = !indicators || !indicators.multi;
+    return singleIndicator
+      ? title
+      : category.selected && category.selected.label;
+  }
+);

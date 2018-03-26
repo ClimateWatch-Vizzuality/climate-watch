@@ -19,6 +19,7 @@ class NdcsAutocompleteSearch extends PureComponent {
       onSearchChange,
       searchList,
       groups,
+      document,
       optionSelected,
       label,
       global,
@@ -29,7 +30,11 @@ class NdcsAutocompleteSearch extends PureComponent {
     return (
       <div className={cx(styles.wrapper, className)}>
         <div className={styles.col2}>
-          {global ? <NdcsSdgsMetaProvider /> : <NdcsSdgsDataProvider />}
+          {global ? (
+            <NdcsSdgsMetaProvider />
+          ) : (
+            <NdcsSdgsDataProvider document={document} />
+          )}
           <Dropdown
             label={label ? 'Explore linkages between NDCs and SDGs' : ''}
             className={theme.dropdownOptionWithArrow}
@@ -60,6 +65,7 @@ NdcsAutocompleteSearch.propTypes = {
   onSearchChange: Proptypes.func.isRequired,
   searchList: Proptypes.array,
   groups: Proptypes.array,
+  document: Proptypes.string,
   optionSelected: Proptypes.object,
   label: Proptypes.bool,
   global: Proptypes.bool,

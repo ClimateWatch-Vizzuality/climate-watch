@@ -8,15 +8,16 @@ import reducers, { initialState } from './ndcs-sdgs-data-provider-reducers';
 
 class NdcsSdgsDataProvider extends PureComponent {
   componentDidMount() {
-    const { getNdcsSdgsData, match } = this.props;
-    getNdcsSdgsData(match.params.iso);
+    const { getNdcsSdgsData, match, document } = this.props;
+    getNdcsSdgsData(match.params.iso, document);
   }
 
   componentWillReceiveProps(nextProps) {
     const iso = this.props.match.params.iso;
     const nextIso = nextProps.match.params.iso;
-    if (iso !== nextIso) {
-      this.props.getNdcsSdgsData(nextIso);
+
+    if (iso !== nextIso || this.props.document !== nextProps.document) {
+      this.props.getNdcsSdgsData(nextIso, nextProps.document);
     }
   }
 
@@ -27,7 +28,8 @@ class NdcsSdgsDataProvider extends PureComponent {
 
 NdcsSdgsDataProvider.propTypes = {
   getNdcsSdgsData: PropTypes.func.isRequired,
-  match: PropTypes.object
+  match: PropTypes.object,
+  document: PropTypes.string
 };
 
 export { actions, reducers, initialState };
