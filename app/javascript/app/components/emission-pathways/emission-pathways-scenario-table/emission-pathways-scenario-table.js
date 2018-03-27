@@ -7,7 +7,7 @@ import qs from 'query-string';
 import {
   filterDataByBlackList,
   defaultColumns,
-  fullTextColumns,
+  ellipsisColumns,
   getCategories,
   getLocationOptions,
   getSelectedCategoryOption,
@@ -51,7 +51,7 @@ const mapStateToProps = (state, { category, match, location }) => {
   return {
     data: filterDataByBlackList(EspData),
     defaultColumns: defaultColumns(EspData),
-    fullTextColumns,
+    ellipsisColumns,
     categories: getCategories(EspData),
     locations: getLocationOptions(EspData),
     selectedCategory: getSelectedCategoryOption(EspData),
