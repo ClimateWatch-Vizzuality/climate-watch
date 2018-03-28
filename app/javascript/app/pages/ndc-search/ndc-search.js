@@ -38,6 +38,11 @@ class SearchContainer extends PureComponent {
     fetchSearchResults(search);
   }
 
+  componentDidUpdate(nextProps) {
+    const { fetchSearchResults, search } = this.props;
+    if (nextProps.search.query !== this.props.search.query) { fetchSearchResults(search); }
+  }
+
   render() {
     return createElement(SearchComponent, {
       ...this.props,
