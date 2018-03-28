@@ -9,8 +9,7 @@ export function scrollIt(
       return t;
     },
     smooth(t) {
-      const twiceTime = 2 * t;
-      return t < 0.5 ? twiceTime * t : (-1 + (4 - twiceTime)) * t;
+      return t * (2 - t);
     }
   };
 

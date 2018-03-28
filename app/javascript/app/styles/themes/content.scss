@@ -176,5 +176,9 @@
 
   .highlight {
     background-color: $theme-secondary;
+
+    * {
+      background-color: $theme-secondary;
+    }
   }
 }

@@ -33,7 +33,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
   }
 });
 
-export const getEllipsisColumns = () => '[url]';
+export const getEllipsisColumns = () => ['url'];
 export const filteredDataBySearch = createSelector(
   [getData, getQuery],
   (data, query) => {
