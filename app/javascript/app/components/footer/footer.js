@@ -20,16 +20,16 @@ import Component from './footer-component';
 const basePartners = [
   {
     link: 'http://climateactiontracker.org/',
-    orderingString: 'action',
+    orderingString: 'climateaction',
     img: {
       alt: 'Climate action',
       src: climateActionTrackerImage,
-      customClass: 'narrow'
+      customClass: 'rectangularL'
     }
   },
   {
     link: 'http://climateanalytics.org/',
-    orderingString: 'analytics',
+    orderingString: 'climateanalytics',
     img: {
       alt: 'Climate analytics',
       src: climateAnalyticsImage,
@@ -38,7 +38,7 @@ const basePartners = [
   },
   {
     link: 'https://www.giz.de/en/html/index.html',
-    orderingString: 'giz',
+    orderingString: 'deutch-giz',
     img: {
       alt: 'Giz',
       src: gizImage,
@@ -90,7 +90,7 @@ const ndcPartners = [
     img: {
       alt: 'African Center for Technology Studies',
       src: actsImage,
-      customClass: 'narrow'
+      customClass: 'rectangularXl'
     }
   },
   {
