@@ -45,11 +45,6 @@
     color: $theme-color;
     font-size: $font-size-sm;
 
-    > div {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
     a {
       line-height: $line-height-medium;
       color: $theme-color;
@@ -69,12 +64,16 @@
 }
 
 .column {
-  &.fullText {
-    white-space: normal;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 8;
-    -webkit-box-orient: vertical;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+
+  &.ellipsis {
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 

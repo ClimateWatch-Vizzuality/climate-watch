@@ -219,13 +219,13 @@ export const defaultColumns = () => [
   'trend'
 ];
 
-export const fullTextColumns = ['definition', 'composite_name'];
+export const ellipsisColumns = [];
 
 export default {
   getLocationOptions,
   filterDataByBlackList,
   defaultColumns,
-  fullTextColumns,
+  ellipsisColumns,
   getCategories,
   getSelectedCategoryOption,
   getSelectedLocationOption,

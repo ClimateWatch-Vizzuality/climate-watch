@@ -146,7 +146,9 @@ export const ESP_MEDIUM_ROWS = [
   'technology_coverage',
   'purpose_or_objective',
   'socieconomics',
-  'policy_coverage'
+  'policy_coverage',
+  'geographic_coverage',
+  'reference'
 ];
 
 export const FILTERS_BY_CATEGORY = {
