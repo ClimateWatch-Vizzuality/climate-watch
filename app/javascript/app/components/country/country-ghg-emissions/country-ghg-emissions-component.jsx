@@ -6,6 +6,7 @@ import Button from 'components/button';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import Chart from 'components/charts/chart';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
+import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
 
@@ -107,6 +108,7 @@ class CountryGhgEmissions extends PureComponent {
     return (
       <div className={styles.container}>
         <EmissionsMetaProvider />
+        <WbCountryDataProvider />
         <h3 className={styles.title}>
           {`Greenhouse Gas Emissions and Emissions Targets ${isEmbed
             ? `in ${countryName}`
