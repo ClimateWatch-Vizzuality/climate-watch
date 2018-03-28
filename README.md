@@ -251,3 +251,15 @@ format:
 - SDG: The Sustainable Development Goals (SDGs) are a set of 17 "Global Goals" with 169 targets. These goals and targets cover a broad range of sustainable development issues.
 
 - Category: (in Emission Pathways Section) stand for the different models related to the ESP data. i.e models, scenarios and indicators
+
+
+### Release
+To release using a [fork of zeit release](https://github.com/vizzuality/release) to generate the changelog automatically with all of the PR included since the last release just run:
+
+(Be sure you have all of your branches sync first)
+
+```bash
+npx release 'major' | 'minor' | 'patch'
+```
+
+and push to master!
