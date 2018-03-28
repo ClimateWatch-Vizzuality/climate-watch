@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import {
   filterDataByBlackList,
   defaultColumns,
-  fullTextColumns,
+  ellipsisColumns,
   titleLinks
 } from './emission-pathways-model-table-selectors';
 import Component from './emission-pathways-model-table-component';
@@ -23,7 +23,7 @@ const mapStateToProps = (state, { category, match }) => {
   return {
     data: filterDataByBlackList(EspData),
     defaultColumns,
-    fullTextColumns,
+    ellipsisColumns,
     titleLinks: titleLinks(EspData),
     category,
     loading: state.espModels.loading || state.espScenarios.loading

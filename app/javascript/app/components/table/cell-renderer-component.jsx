@@ -51,6 +51,7 @@ const cellRenderer = ({
   }
   // render Html or finally cellData
   return parseHtml ? (
+    // eslint-disable-next-line react/no-danger
     <div dangerouslySetInnerHTML={{ __html: cellData }} />
   ) : (
     cellData ||
