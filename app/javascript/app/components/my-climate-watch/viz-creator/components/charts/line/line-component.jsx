@@ -36,6 +36,7 @@ const ChartLine = ({ width, height, className, config }) => (
         <Tooltip
           cursor={{ stroke: '#113750', strokeWidth: 2 }}
           content={<CustomTooltip {...config} />}
+          sort
         />
       )}
     </LineChart>

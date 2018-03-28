@@ -23,6 +23,7 @@ const Pie = ({ className, width, height, config }) => (
         <Tooltip
           cursor={{ stroke: '#113750', strokeWidth: 2 }}
           content={<CustomTooltip {...config} />}
+          sort
         />
       )}
       {config.chart.topLabel &&

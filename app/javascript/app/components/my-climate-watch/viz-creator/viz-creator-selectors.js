@@ -74,6 +74,11 @@ export const getVisualisationType = createSelector(
   chart => chart && chart.type
 );
 
+export const getOnlyStackable = createSelector(
+  selectedStructureSelector,
+  structure => structure && structure.onlyStackableIndicators
+);
+
 export const getVisualisationOptions = createSelector(
   visualisationChartSelector,
   chart => chart && chart.options
