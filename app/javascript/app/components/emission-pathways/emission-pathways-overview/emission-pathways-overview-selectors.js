@@ -28,7 +28,7 @@ const addMantainerNameToScenario = createSelector(
   [getOverviewData, getModelsData, getCategory],
   (data, models, category) => {
     if (category !== 'Scenarios') return data;
-    if (!data || isEmpty(data) || !models) return null;
+    if (!data || isEmpty(data) || !models || !models.length) return null;
     const model = models.find(m => m.id === data.model.id);
     const maintainer = model && model.maintainer_name;
     return maintainer ? { ...data, maintainer } : data;
@@ -51,7 +51,7 @@ const addNotSpecToEmptyFields = createSelector([sanitizeData], data => {
     if (data[k]) {
       fieldsWithData[k] = data[k];
     } else {
-      fieldsWithData[k] = 'Not Specified';
+      fieldsWithData[k] = 'Not specified';
     }
   });
   return fieldsWithData;
