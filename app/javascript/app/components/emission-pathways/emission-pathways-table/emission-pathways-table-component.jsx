@@ -31,7 +31,7 @@ class EmissionPathwaysTable extends PureComponent {
       noContentMsg,
       defaultColumns,
       titleLinks,
-      fullTextColumns
+      ellipsisColumns
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     return data && data.length > 0 ? (
@@ -40,7 +40,7 @@ class EmissionPathwaysTable extends PureComponent {
         titleLinks={titleLinks}
         hasColumnSelect
         defaultColumns={defaultColumns}
-        fullTextColumns={fullTextColumns}
+        ellipsisColumns={ellipsisColumns}
         emptyValueLabel={'Not specified'}
         horizontalScroll
       />
@@ -129,7 +129,7 @@ EmissionPathwaysTable.propTypes = {
   noContentMsg: PropTypes.string,
   data: PropTypes.array,
   defaultColumns: PropTypes.array,
-  fullTextColumns: PropTypes.array,
+  ellipsisColumns: PropTypes.array,
   categoryName: PropTypes.string.isRequired,
   titleLinks: PropTypes.array,
   query: PropTypes.string,
