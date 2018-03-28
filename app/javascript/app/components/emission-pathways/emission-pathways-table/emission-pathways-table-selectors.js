@@ -33,19 +33,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
   }
 });
 
-export const getFullTextColumns = createSelector([getCategory], category => {
-  switch (category) {
-    case 'models':
-      return ['full_name'];
-    case 'scenarios':
-      return ['description'];
-    case 'indicators':
-      return [];
-    default:
-      return null;
-  }
-});
-
+export const getEllipsisColumns = () => ['url'];
 export const filteredDataBySearch = createSelector(
   [getData, getQuery],
   (data, query) => {
@@ -123,11 +111,11 @@ export const titleLinks = createSelector(
     const linkInfo = {
       models: [
         { columnName: 'full_name', linkToId: true },
-        { columnName: 'url' }
+        { columnName: 'url', url: 'self' }
       ],
       scenarios: [
         { columnName: 'name', linkToId: true },
-        { columnName: 'url' }
+        { columnName: 'url', url: 'self' }
       ],
       indicators: []
     };

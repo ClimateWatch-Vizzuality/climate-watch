@@ -5,6 +5,7 @@ import pick from 'lodash/pick';
 import { ESP_BLACKLIST } from 'data/constants';
 
 export const defaultColumns = ['name', 'category', 'description'];
+export const ellipsisColumns = ['url'];
 const getModelId = state => state.modelId || null;
 const getData = state =>
   (!isEmpty(state.espModelsData) ? state.espModelsData : null);
@@ -44,12 +45,14 @@ export const titleLinks = createSelector([getFilteredData], data => {
     {
       columnName: 'name',
       url: `/pathways/scenarios/${d.id}`
-    }
+    },
+    { columnName: 'url', url: 'self' }
   ]);
 });
 
 export default {
   filterDataByBlackList,
   defaultColumns,
+  ellipsisColumns,
   titleLinks
 };

@@ -5,6 +5,7 @@ import _sortBy from 'lodash/sortBy';
 import reverse from 'lodash/reverse';
 import lowerCase from 'lodash/lowerCase';
 import upperFirst from 'lodash/upperFirst';
+import { ESP_HIGH_ROWS, ESP_MEDIUM_ROWS } from 'data/constants';
 
 import Component from './table-component';
 
@@ -34,6 +35,25 @@ class TableContainer extends PureComponent {
       this.setState({ data: nextProps.data });
     }
   }
+
+  setRowsHeight = columns => {
+    if (columns.find(c => ESP_HIGH_ROWS.indexOf(c.value) > -1)) {
+      return 150;
+    } else if (columns.find(c => ESP_MEDIUM_ROWS.indexOf(c.value) > -1)) {
+      return 80;
+    }
+    return 50;
+  };
+
+  setColumnWidth = column => {
+    if (column === 'year') {
+      return 80;
+    }
+    if (column === 'description') {
+      return 400;
+    }
+    return 200;
+  };
 
   setOptionsClose = () => {
     this.setState({ optionsOpen: false });
@@ -83,6 +103,8 @@ class TableContainer extends PureComponent {
       columnsOptions,
       handleSortChange: this.handleSortChange,
       handleColumnChange: this.handleColumnChange,
+      setRowsHeight: this.setRowsHeight,
+      setColumnWidth: this.setColumnWidth,
       setOptionsOpen: this.setOptionsOpen,
       setOptionsClose: this.setOptionsClose,
       toggleOptionsOpen: this.toggleOptionsOpen

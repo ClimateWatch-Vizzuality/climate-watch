@@ -39,16 +39,18 @@ class SimpleTable extends PureComponent {
       activeColumns,
       columnsOptions,
       handleColumnChange,
-      rowHeight,
+      setRowsHeight,
+      setColumnWidth,
       headerHeight,
       sortBy,
       sortDirection,
       handleSortChange,
-      fullTextColumns,
+      ellipsisColumns,
       setOptionsOpen,
       setOptionsClose,
       toggleOptionsOpen,
-      optionsOpen
+      optionsOpen,
+      horizontalScroll
     } = this.props;
 
     if (!data.length) return null;
@@ -60,7 +62,7 @@ class SimpleTable extends PureComponent {
             role="button"
             tabIndex={0}
             className={styles.columnSelectorWrapper}
-            onTouchEnd={toggleOptionsOpen}
+            onBlur={toggleOptionsOpen}
             onMouseEnter={setOptionsOpen}
             onMouseLeave={setOptionsClose}
           >
@@ -76,7 +78,11 @@ class SimpleTable extends PureComponent {
             </MultiSelect>
           </div>
         )}
-        <div className={cx(styles.tableWrapper)}>
+        <div
+          className={cx(styles.tableWrapper, {
+            [styles.horizontalScroll]: horizontalScroll
+          })}
+        >
           <AutoSizer disableHeight>
             {({ width }) => (
               <Table
@@ -84,7 +90,7 @@ class SimpleTable extends PureComponent {
                 width={getResponsiveWidth(activeColumns.length, width)}
                 height={460}
                 headerHeight={headerHeight}
-                rowHeight={rowHeight}
+                rowHeight={setRowsHeight(activeColumns)}
                 rowCount={data.length}
                 sort={handleSortChange}
                 sortBy={sortBy}
@@ -94,13 +100,13 @@ class SimpleTable extends PureComponent {
                 {activeColumns.map(c => c.value).map(column => (
                   <Column
                     className={cx(styles.column, {
-                      [styles.fullText]:
-                        fullTextColumns && fullTextColumns.indexOf(column) > -1
+                      [styles.ellipsis]:
+                        ellipsisColumns && ellipsisColumns.indexOf(column) > -1
                     })}
                     key={column}
                     label={lowerCase(column)}
                     dataKey={column}
-                    width={200}
+                    width={setColumnWidth(column)}
                     flexGrow={1}
                     cellRenderer={cell =>
                       cellRenderer({ props: this.props, cell })}
@@ -122,7 +128,8 @@ SimpleTable.propTypes = {
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
   handleColumnChange: PropTypes.func,
-  rowHeight: PropTypes.number.isRequired,
+  setRowsHeight: PropTypes.func.isRequired,
+  setColumnWidth: PropTypes.func.isRequired,
   headerHeight: PropTypes.number.isRequired,
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
@@ -130,12 +137,13 @@ SimpleTable.propTypes = {
   setOptionsOpen: PropTypes.func.isRequired,
   setOptionsClose: PropTypes.func.isRequired,
   toggleOptionsOpen: PropTypes.func.isRequired,
-  fullTextColumns: PropTypes.array // 'Columns with full text, no ellipsis'
+  ellipsisColumns: PropTypes.array, // 'Columns with ellipsis intext, not full columns'
+  horizontalScroll: PropTypes.bool.isRequired
 };
 
 SimpleTable.defaultProps = {
-  rowHeight: 45,
-  headerHeight: 30
+  headerHeight: 30,
+  horizontalScroll: false
 };
 
 export default SimpleTable;

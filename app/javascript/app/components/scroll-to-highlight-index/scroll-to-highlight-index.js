@@ -1,5 +1,6 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { scrollIt } from 'utils/scroll';
 
 class ScrollToHighlightIndex extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -15,7 +16,7 @@ class ScrollToHighlightIndex extends PureComponent {
 
   handleScroll = () => {
     const { idx, targetElementsSelector } = this.props;
-    const e = idx
+    const target = idx
       ? document.querySelectorAll(targetElementsSelector)[idx]
       : document.querySelectorAll(targetElementsSelector)[0];
 
@@ -30,12 +31,8 @@ class ScrollToHighlightIndex extends PureComponent {
       return elementPosition + PADDING;
     };
 
-    if (e) {
-      window.scrollTo({
-        behavior: 'smooth',
-        left: 0,
-        top: topPosition(e)
-      });
+    if (target) {
+      scrollIt(topPosition(target), 300, 'smooth');
     }
   };
 

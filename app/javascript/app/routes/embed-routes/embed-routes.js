@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import NDCMap from 'components/ndcs/ndcs-map';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare-ghg-chart';
-import GHGCountryEmissions from 'components/country/country-ghg';
+import CountryGhgEmissions from 'components/country/country-ghg-emissions';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
 
@@ -26,7 +26,7 @@ export default [
   },
   {
     path: '/embed/countries/:iso/ghg-emissions',
-    component: GHGCountryEmissions,
+    component: CountryGhgEmissions,
     exact: true
   },
   {

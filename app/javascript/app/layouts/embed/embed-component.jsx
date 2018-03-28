@@ -15,9 +15,11 @@ class Embed extends PureComponent {
     const link = location.pathname.replace('/embed', '');
 
     return (
-      <div className={cx(layout.content, styles.embed)}>
+      <div className={styles.embed}>
         <CountriesProvider />
-        <div className={styles.embedContent}>{renderRoutes(route.routes)}</div>
+        <div className={cx(layout.content, styles.embedContent)}>
+          {renderRoutes(route.routes)}
+        </div>
         <div className={styles.footer}>
           <a href={link} target="_blank" rel="noopener noreferrer">
             <Icon className={styles.logo} icon={cwLogo} />

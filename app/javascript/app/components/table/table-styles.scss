@@ -2,7 +2,11 @@
 
 .tableWrapper {
   position: relative;
-  overflow: scroll;
+  overflow-x: hidden;
+
+  &.horizontalScroll {
+    overflow-x: auto;
+  }
 }
 
 .table :global {
@@ -15,12 +19,20 @@
     text-transform: capitalize;
     font-weight: $font-weight-bold;
     font-family: $font-family-1;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .ReactVirtualized__Grid,
   .ReactVirtualized__Table__Grid {
     background-color: $light-gray;
     border-top: solid 1px $theme-color-light;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .ReactVirtualized__Table__row {
@@ -32,11 +44,6 @@
   .ReactVirtualized__Table__rowColumn {
     color: $theme-color;
     font-size: $font-size-sm;
-
-    > div {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
 
     a {
       line-height: $line-height-medium;
@@ -57,9 +64,16 @@
 }
 
 .column {
-  &.fullText {
-    white-space: normal;
-    overflow: visible !important;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+
+  &.ellipsis {
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -79,6 +93,10 @@
 
 .columnSelectorWrapper {
   position: relative;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .columnSelector :global {

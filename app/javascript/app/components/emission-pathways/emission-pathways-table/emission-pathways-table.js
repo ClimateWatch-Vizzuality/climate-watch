@@ -8,7 +8,7 @@ import {
   sortDataByCategoryAttribute,
   titleLinks,
   getDefaultColumns,
-  getFullTextColumns,
+  getEllipsisColumns,
   getFilterOptionsByCategory,
   getSelectedFieldOptions
 } from './emission-pathways-table-selectors';
@@ -27,7 +27,7 @@ const mapStateToProps = (state, { category, location }) => {
     titleLinks: titleLinks(espData),
     data: sortDataByCategoryAttribute(espData),
     defaultColumns: getDefaultColumns(espData),
-    fullTextColumns: getFullTextColumns(espData),
+    ellipsisColumns: getEllipsisColumns(espData),
     categoryName: category,
     query: espData.query,
     loading: categoryData.loading,

@@ -12,7 +12,6 @@ import {
   DATA_SCALE,
   DEFAULT_EMISSIONS_SELECTIONS
 } from 'data/constants';
-// sortLabelByAlpha
 import {
   getYColumnValue,
   sortEmissionsByValue,

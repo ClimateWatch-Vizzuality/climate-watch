@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 
 import googleImage from 'assets/partners/google.png';
 import ndcImage from 'assets/partners/ndcp.png';
-import wriImage from 'assets/partners/wri_simple.png';
+import wriImage from 'assets/partners/wri.png';
 import climateAnalyticsImage from 'assets/partners/climate-analytics.png';
 import climateActionTrackerImage from 'assets/partners/climate-action-tracker.png';
-import worldBankImage from 'assets/partners/the-world-bank_simple.png';
-import ccImage from 'assets/partners/unfccc_simple.jpg';
-import gizImage from 'assets/partners/giz_simple.png';
-import actsImage from 'assets/partners/acts_simple.png';
-import dieImage from 'assets/partners/die_simple.jpg';
+import worldBankImage from 'assets/partners/the-world-bank.png';
+import ccImage from 'assets/partners/unfccc.jpg';
+import gizImage from 'assets/partners/giz.png';
+import actsImage from 'assets/partners/acts.png';
+import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
 
 import Component from './footer-component';
@@ -20,16 +20,16 @@ import Component from './footer-component';
 const basePartners = [
   {
     link: 'http://climateactiontracker.org/',
-    orderingString: 'action',
+    orderingString: 'climateaction',
     img: {
       alt: 'Climate action',
       src: climateActionTrackerImage,
-      customClass: 'rectangular'
+      customClass: 'rectangularL'
     }
   },
   {
     link: 'http://climateanalytics.org/',
-    orderingString: 'analytics',
+    orderingString: 'climateanalytics',
     img: {
       alt: 'Climate analytics',
       src: climateAnalyticsImage,
@@ -38,10 +38,11 @@ const basePartners = [
   },
   {
     link: 'https://www.giz.de/en/html/index.html',
-    orderingString: 'giz',
+    orderingString: 'deutch-giz',
     img: {
       alt: 'Giz',
-      src: gizImage
+      src: gizImage,
+      customClass: 'narrower'
     }
   },
   {
@@ -59,15 +60,16 @@ const basePartners = [
     img: {
       alt: 'UNFCCC',
       src: ccImage,
-      customClass: 'rectangular'
+      customClass: 'narrower'
     }
   },
   {
     link: 'http://www.worldbank.org/',
     orderingString: 'worldbank',
     img: {
-      alt: 'The world bank',
-      src: worldBankImage
+      alt: 'The World Bank',
+      src: worldBankImage,
+      customClass: 'narrower'
     }
   },
   {
@@ -75,7 +77,8 @@ const basePartners = [
     orderingString: 'worldresources',
     img: {
       alt: 'WRI',
-      src: wriImage
+      src: wriImage,
+      customClass: 'narrower'
     }
   }
 ];
@@ -87,7 +90,7 @@ const ndcPartners = [
     img: {
       alt: 'African Center for Technology Studies',
       src: actsImage,
-      customClass: 'rectangular'
+      customClass: 'rectangularXl'
     }
   },
   {
@@ -105,7 +108,7 @@ const ndcPartners = [
     img: {
       alt: 'German Development Institute',
       src: dieImage,
-      customClass: 'rectangular'
+      customClass: 'narrower'
     }
   }
 ];
