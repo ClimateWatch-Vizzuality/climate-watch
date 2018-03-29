@@ -5,6 +5,18 @@ import NDCCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 
 export default [
   {
+    path: '/ndcs/compare/overview',
+    component: () =>
+      createElement(NDCCountryAccordion, {
+        category: 'overview',
+        compare: true
+      }),
+    exact: true,
+    anchor: true,
+    label: 'New Overview',
+    param: 'overview'
+  },
+  {
     path: '/ndcs/compare/mitigation',
     component: () =>
       createElement(NDCCountryAccordion, {
