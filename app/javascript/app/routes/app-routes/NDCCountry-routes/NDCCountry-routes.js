@@ -13,6 +13,17 @@ export default [
     label: 'Overview'
   },
   {
+    path: '/ndcs/country/:iso/new-overview',
+    component: () =>
+      createElement(NDCCountryAccordion, {
+        category: 'overview'
+      }),
+    exact: true,
+    anchor: true,
+    label: 'New Overview',
+    param: 'new-overview'
+  },
+  {
     path: '/ndcs/country/:iso/mitigation',
     component: () =>
       createElement(NDCCountryAccordion, {
