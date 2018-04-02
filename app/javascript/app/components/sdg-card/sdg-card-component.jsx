@@ -20,7 +20,8 @@ class SDGCard extends PureComponent {
       icons,
       hover,
       onClick,
-      onMouseEnter
+      onMouseEnter,
+      handleOnDotClick
     } = this.props;
     const cardStyle = cx(
       styles.card,
@@ -47,7 +48,7 @@ class SDGCard extends PureComponent {
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
           {targets &&
-            targets.map(target => {
+            targets.map((target, i) => {
               const isSmall =
                 target.sectors &&
                 activeSector &&
@@ -58,6 +59,11 @@ class SDGCard extends PureComponent {
                 targetData.targets[target.number].sectors;
               return (
                 <span
+                  role="link"
+                  tabIndex={i}
+                  onClick={
+                    hasSectors && (() => handleOnDotClick(target.number))
+                  }
                   key={target.id}
                   data-for={tooltipId}
                   data-tip
@@ -98,6 +104,7 @@ SDGCard.propTypes = {
   className: PropTypes.string,
   activeSector: PropTypes.object,
   onClick: PropTypes.func,
+  handleOnDotClick: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func
 };
 

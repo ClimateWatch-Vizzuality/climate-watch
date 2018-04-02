@@ -60,7 +60,8 @@ class CountrySDGLinkages extends PureComponent {
       targetsData,
       activeSector,
       loading,
-      setTooltipData
+      setTooltipData,
+      handleOnDotClick
     } = this.props;
 
     const hasGoals = goals && goals.length > 0;
@@ -83,6 +84,7 @@ class CountrySDGLinkages extends PureComponent {
                 setTooltipData={setTooltipData}
                 indicators
                 className={cardTheme.card}
+                handleOnDotClick={handleOnDotClick}
               />
             ))}
           </div>
@@ -176,6 +178,7 @@ CountrySDGLinkages.propTypes = {
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object,
   handleInfoClick: Proptypes.func.isRequired,
+  handleOnDotClick: Proptypes.func.isRequired,
   handleAnalyticsClick: Proptypes.func.isRequired
 };
 

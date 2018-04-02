@@ -44,7 +44,8 @@ const mapStateToProps = (state, { match, location }) => {
       !isEmpty(ndcsSdgsData.data) && ndcsSdgsData.data[iso]
         ? ndcsSdgsData.data[iso].sdgs
         : {},
-    loading: !ndcsSdgsData.error && ndcsSdgsData.loading
+    loading: !ndcsSdgsData.error && ndcsSdgsData.loading,
+    iso
   };
 };
 
@@ -67,6 +68,14 @@ const CountrySDGLinkagesContainer = props => {
     });
   };
 
+  const handleOnDotClick = target => {
+    const { iso } = props;
+    if (iso && target) {
+      const path = `/ndcs/country/${iso}/full?query=${target}&searchBy=target`;
+      history.push(path);
+    }
+  };
+
   const handleSectorChange = option => {
     updateUrlParam({ name: 'sector', value: option ? option.value : '' });
     if (option) {
@@ -86,7 +95,8 @@ const CountrySDGLinkagesContainer = props => {
     ...props,
     handleSectorChange,
     handleInfoClick,
-    handleAnalyticsClick
+    handleAnalyticsClick,
+    handleOnDotClick
   });
 };
 
