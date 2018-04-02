@@ -1,3 +1,4 @@
+@import '~styles/layout.scss';
 @import '~styles/settings.scss';
 
 .editor {
@@ -6,7 +7,9 @@
 }
 
 .title {
-  position: relative;
+  @include row((10, 2));
+  @include xy-gutters(5rem, $gutter-type: padding, $gutter-position: ('top' 'bottom'));
+
   background-color: $light-gray;
 }
 
@@ -24,17 +27,10 @@
 
 .titleField {
   border: none;
-  width: 100%;
   font-size: 2.7rem;
-  padding: 1.25em $gutter-padding 1em;
-  padding-right: 20vw;
   background-color: transparent;
 }
 
 .saveBtn {
-  position: absolute;
-  top: 50px;
-  width: 100px;
-  right: 7vw;
   background-color: white;
 }
