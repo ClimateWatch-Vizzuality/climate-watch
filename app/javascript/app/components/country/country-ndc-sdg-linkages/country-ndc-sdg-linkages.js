@@ -68,10 +68,11 @@ const CountrySDGLinkagesContainer = props => {
     });
   };
 
-  const handleOnDotClick = target => {
+  const handleOnDotClick = (targetNumber, targetData) => {
     const { iso } = props;
-    if (iso && target) {
-      const path = `/ndcs/country/${iso}/full?query=${target}&searchBy=target`;
+    if (iso && targetNumber) {
+      const { document_type, language } = targetData;
+      const path = `/ndcs/country/${iso}/full?query=${targetNumber}&searchBy=target&document=${document_type}-${language}`;
       history.push(path);
     }
   };

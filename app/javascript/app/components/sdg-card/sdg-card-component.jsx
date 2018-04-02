@@ -62,7 +62,12 @@ class SDGCard extends PureComponent {
                   role="link"
                   tabIndex={i}
                   onClick={
-                    hasSectors && (() => handleOnDotClick(target.number))
+                    hasSectors &&
+                    (() =>
+                      handleOnDotClick(
+                        target.number,
+                        targetData.targets[target.number]
+                      ))
                   }
                   key={target.id}
                   data-for={tooltipId}
