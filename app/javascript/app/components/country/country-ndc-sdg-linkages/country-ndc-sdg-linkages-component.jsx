@@ -67,7 +67,12 @@ class CountrySDGLinkages extends PureComponent {
     const hasGoals = goals && goals.length > 0;
     if (loading) return <Loading light className={styles.loader} />;
     if (isEmpty(goals) || isEmpty(targetsData)) {
-      return <NoContent message="No SDG data available" />;
+      return (
+        <NoContent
+          className={styles.noContent}
+          message="No SDG data available"
+        />
+      );
     }
     return (
       hasGoals && (
