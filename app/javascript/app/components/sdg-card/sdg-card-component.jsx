@@ -73,7 +73,11 @@ class SDGCard extends PureComponent {
                   data-for={tooltipId}
                   data-tip
                   onMouseEnter={() => setTooltipData(target)}
-                  className={cx(styles.dot, { [styles.small]: isSmall })}
+                  className={cx(
+                    styles.dot,
+                    { [styles.small]: isSmall },
+                    { [styles.clickable]: hasSectors }
+                  )}
                   style={{
                     backgroundColor: hasSectors ? goal.colour : ''
                   }}

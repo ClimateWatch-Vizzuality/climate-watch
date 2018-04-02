@@ -88,6 +88,10 @@ $animation-delay-time: 0.1s;
     margin-right: 5px;
     margin-bottom: 5px;
   }
+
+  &.clickable {
+    cursor: pointer;
+  }
 }
 
 .small {
