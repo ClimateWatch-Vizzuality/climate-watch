@@ -420,8 +420,8 @@ export const getChartDomainWithYMargins = createSelector(
     if (!domain) return null;
     if (!neededPrecision) return domain;
     const y = [
-      dataMin => dataMin - (10 ** ((neededPrecision - 1) * -1)),
-      dataMax => dataMax + (10 ** ((neededPrecision - 1) * -1))
+      dataMin => dataMin - 10 ** ((neededPrecision - 1) * -1),
+      dataMax => dataMax + 10 ** ((neededPrecision - 1) * -1)
     ];
     return {
       x: domain.x,
@@ -449,7 +449,8 @@ export const getChartConfig = createSelector(
       );
       return {
         label: scenario ? scenario.label : null,
-        value: getYColumnValue(d.scenario_id)
+        value: getYColumnValue(d.scenario_id),
+        url: `/pathways/scenarios/${scenario.value}`
       };
     });
     const yColumnsChecked = uniqBy(yColumns, 'value');
