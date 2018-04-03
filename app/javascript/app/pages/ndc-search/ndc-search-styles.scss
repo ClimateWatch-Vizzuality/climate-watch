@@ -19,6 +19,7 @@
 
   @media #{$tablet-landscape} {
     @include row((4, 8));
+
     > *:first-child {
       @include xy-gutters($gutter-position: ('right'), $gutters: 0);
     }

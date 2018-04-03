@@ -9,12 +9,21 @@ import Icon from 'components/icon';
 import iconLink from 'assets/icons/dropdown-arrow.svg';
 import styles from './result-card-styles.scss';
 
+const renderDocument = (search, result) => {
+  const { document } = search;
+  return !document || document === 'all'
+    ? ` - ${result.document_type.toUpperCase()}`
+    : '';
+};
+
 const ResultCard = props => {
   const { result, search, className } = props;
   return (
     <div className={cx(styles.resultCard, className)}>
       <div className={styles.header}>
-        <h4 className={styles.title}>{result.location.name}</h4>
+        <h4 className={styles.title}>
+          {`${result.location.name}${renderDocument(search, result)}`}
+        </h4>
         <span className={styles.count}>{result.matches.length}</span>
       </div>
       {result.matches &&
