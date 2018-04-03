@@ -61,7 +61,8 @@ class CountrySDGLinkages extends PureComponent {
       activeSector,
       loading,
       setTooltipData,
-      handleOnDotClick
+      handleOnDotClick,
+      iso
     } = this.props;
 
     const hasGoals = goals && goals.length > 0;
@@ -83,6 +84,7 @@ class CountrySDGLinkages extends PureComponent {
                 activeSector={activeSector}
                 key={goal.title}
                 goal={goal}
+                iso={iso}
                 targets={targets[goal.number]}
                 targetData={targetsData[goal.number]}
                 tooltipId="sdg-linkages"
@@ -182,6 +184,7 @@ CountrySDGLinkages.propTypes = {
   setTooltipData: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object,
+  iso: Proptypes.string,
   handleInfoClick: Proptypes.func.isRequired,
   handleOnDotClick: Proptypes.func.isRequired,
   handleAnalyticsClick: Proptypes.func.isRequired

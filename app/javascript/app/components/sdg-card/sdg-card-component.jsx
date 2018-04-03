@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Icon from 'components/icon';
+import Dot from './dot';
+
 import styles from './sdg-card-styles.scss';
 
 class SDGCard extends PureComponent {
@@ -10,18 +12,18 @@ class SDGCard extends PureComponent {
       selected,
       goal,
       targets,
-      targetData,
       indicators,
       square,
-      tooltipId,
-      setTooltipData,
       className,
-      activeSector,
       icons,
       hover,
       onClick,
       onMouseEnter,
-      handleOnDotClick
+      targetData,
+      tooltipId,
+      setTooltipData,
+      iso,
+      activeSector
     } = this.props;
     const cardStyle = cx(
       styles.card,
@@ -48,42 +50,18 @@ class SDGCard extends PureComponent {
         <h4 className={styles.title}>{title}</h4>
         <div className={styles.dots}>
           {targets &&
-            targets.map((target, i) => {
-              const isSmall =
-                target.sectors &&
-                activeSector &&
-                target.sectors.indexOf(parseInt(activeSector.value, 10)) === -1;
-              const hasSectors =
-                targetData &&
-                targetData.targets[target.number] &&
-                targetData.targets[target.number].sectors;
-              return (
-                <span
-                  role="link"
-                  tabIndex={i}
-                  onClick={
-                    hasSectors &&
-                    (() =>
-                      handleOnDotClick(
-                        target.number,
-                        targetData.targets[target.number]
-                      ))
-                  }
-                  key={target.id}
-                  data-for={tooltipId}
-                  data-tip
-                  onMouseEnter={() => setTooltipData(target)}
-                  className={cx(
-                    styles.dot,
-                    { [styles.small]: isSmall },
-                    { [styles.clickable]: hasSectors }
-                  )}
-                  style={{
-                    backgroundColor: hasSectors ? goal.colour : ''
-                  }}
-                />
-              );
-            })}
+            targets.map(target => (
+              <Dot
+                key={target.id}
+                target={target}
+                targetData={targetData}
+                tooltipId={tooltipId}
+                setTooltipData={setTooltipData}
+                iso={iso}
+                activeSector={activeSector}
+                goal={goal}
+              />
+            ))}
         </div>
         {(!indicators || square) && (
           <div className={styles.number}>{goal.number}</div>
@@ -111,9 +89,9 @@ SDGCard.propTypes = {
   tooltipId: PropTypes.string,
   setTooltipData: PropTypes.func,
   className: PropTypes.string,
+  iso: PropTypes.string,
   activeSector: PropTypes.object,
   onClick: PropTypes.func,
-  handleOnDotClick: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func
 };
 
