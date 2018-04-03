@@ -46,7 +46,8 @@ class SearchPage extends PureComponent {
                   results.map(result => (
                     <ResultCard
                       className={styles.resultCard}
-                      key={result.location.iso_code3}
+                      key={`${result.location
+                        .iso_code3}-${result.document_type}-${result.language}`}
                       result={result}
                       search={search}
                     />

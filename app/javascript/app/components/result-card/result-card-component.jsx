@@ -22,7 +22,10 @@ const ResultCard = props => {
     <div className={cx(styles.resultCard, className)}>
       <div className={styles.header}>
         <h4 className={styles.title}>
-          {`${result.location.name}${renderDocument(search, result)}`}
+          {`${result.location.name}${renderDocument(
+            search,
+            result
+          )} - ${result.language}`}
         </h4>
         <span className={styles.count}>{result.matches.length}</span>
       </div>
