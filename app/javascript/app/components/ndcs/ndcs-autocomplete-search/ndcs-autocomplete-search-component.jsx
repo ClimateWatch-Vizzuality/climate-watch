@@ -17,10 +17,13 @@ class NdcsAutocompleteSearch extends PureComponent {
     const {
       className,
       onSearchChange,
+      onDocumentChange,
       searchList,
       groups,
       document,
       optionSelected,
+      documentOptions,
+      documentSelected,
       label,
       global,
       search,
@@ -29,12 +32,19 @@ class NdcsAutocompleteSearch extends PureComponent {
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
-        <div className={styles.col2}>
+        <div className={styles.dropdownsLayout}>
           {global ? (
             <NdcsSdgsMetaProvider />
           ) : (
             <NdcsSdgsDataProvider document={document} />
           )}
+          <Dropdown
+            options={documentOptions}
+            onValueChange={onDocumentChange}
+            value={documentSelected}
+            hideResetButton
+            white={!dark}
+          />
           <Dropdown
             label={label ? 'Explore linkages between NDCs and SDGs' : ''}
             className={theme.dropdownOptionWithArrow}
@@ -63,6 +73,9 @@ class NdcsAutocompleteSearch extends PureComponent {
 NdcsAutocompleteSearch.propTypes = {
   className: Proptypes.string,
   onSearchChange: Proptypes.func.isRequired,
+  onDocumentChange: Proptypes.func.isRequired,
+  documentOptions: Proptypes.array,
+  documentSelected: Proptypes.object,
   searchList: Proptypes.array,
   groups: Proptypes.array,
   document: Proptypes.string,

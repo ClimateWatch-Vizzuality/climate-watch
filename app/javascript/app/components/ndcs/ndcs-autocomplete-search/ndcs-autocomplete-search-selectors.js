@@ -5,6 +5,7 @@ const getSDGs = state => state.sdgs || null;
 const getTargets = state => state.data.targets || null;
 const getGoals = state => state.data.goals || null;
 const getSearch = state => state.search || null;
+const getDocSelected = state => state.search.document || null;
 
 export const getGoalsMapped = createSelector([getSDGs], sdgs => {
   if (!sdgs) return null;
@@ -78,9 +79,34 @@ export const getOptionSelectedMeta = createSelector(
   }
 );
 
+export const documentOptions = [
+  {
+    label: 'All documents',
+    value: 'all'
+  },
+  {
+    label: 'NDC',
+    value: 'ndc'
+  },
+  {
+    label: 'INDC',
+    value: 'indc'
+  }
+];
+
+export const getDocumentSelected = createSelector(
+  [getDocSelected],
+  documentSelected => {
+    if (!documentSelected) return documentOptions[0];
+    return documentOptions.find(d => d.value === documentSelected);
+  }
+);
+
 export default {
   getSearchListData,
   getSearchListMeta,
   getOptionSelectedMeta,
-  getOptionSelectedData
+  getOptionSelectedData,
+  getDocumentSelected,
+  documentOptions
 };

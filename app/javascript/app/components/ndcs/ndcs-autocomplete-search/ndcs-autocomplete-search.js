@@ -11,7 +11,9 @@ import {
   getSearchListMeta,
   getSearchListData,
   getOptionSelectedMeta,
-  getOptionSelectedData
+  getOptionSelectedData,
+  getDocumentSelected,
+  documentOptions
 } from './ndcs-autocomplete-search-selectors';
 
 const groups = [
@@ -47,7 +49,9 @@ const mapStateToProps = (state, props) => {
     optionSelected: global
       ? getOptionSelectedMeta(searchListMeta)
       : getOptionSelectedData(searchListData),
-    groups
+    groups,
+    documentOptions,
+    documentSelected: getDocumentSelected(searchListData)
   };
 };
 
@@ -64,6 +68,12 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
         action: 'Searches within an NDC',
         label: option.label
       });
+    }
+  };
+
+  onDocumentChange = option => {
+    if (option) {
+      this.updateUrlParam([{ name: 'document', value: option.value }]);
     }
   };
 
@@ -102,7 +112,8 @@ class NdcsAutocompleteSearchContainer extends PureComponent {
     return createElement(NdcsAutocompleteSearchComponent, {
       ...this.props,
       handleKeyUp: this.handleKeyUp,
-      onSearchChange: this.onSearchChange
+      onSearchChange: this.onSearchChange,
+      onDocumentChange: this.onDocumentChange
     });
   }
 }
