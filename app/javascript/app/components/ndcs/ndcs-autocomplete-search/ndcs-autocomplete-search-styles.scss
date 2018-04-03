@@ -8,11 +8,15 @@
   }
 }
 
-.col2 {
-  @include columns((6,6));
+.dropdownsLayout {
+  @include columns(12);
 
-  @media #{$mobile-only} {
-    @include columns();
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  @media #{$tablet-portrait} {
+    @include columns((3, 4.5, 4.5));
   }
 }
 

@@ -18,7 +18,10 @@
   z-index: 2;
 
   @media #{$tablet-landscape} {
-    @include row((6,6));
+    @include row((4, 8));
+    > *:first-child {
+      @include xy-gutters($gutter-position: ('right'), $gutters: 0);
+    }
   }
 }
 

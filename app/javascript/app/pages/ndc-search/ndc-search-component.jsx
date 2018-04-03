@@ -22,14 +22,12 @@ class SearchPage extends PureComponent {
       <div className={styles.page}>
         <Header route={route}>
           <div className={styles.headerCols}>
-            <Intro title="NDC Content Search" />
-            <div>
-              <NdcsAutocompleteSearch
-                className={styles.select}
-                fetchSearchResults={fetchSearchResults}
-                global
-              />
-            </div>
+            <Intro title="NDC Search" />
+            <NdcsAutocompleteSearch
+              className={styles.select}
+              fetchSearchResults={fetchSearchResults}
+              global
+            />
           </div>
         </Header>
         <div className={cx(styles.wrapperCols)}>
