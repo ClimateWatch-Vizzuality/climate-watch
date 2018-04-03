@@ -34,7 +34,8 @@ class LegendChart extends PureComponent {
                 color: config.theme[column.value].stroke,
                 label: column.label,
                 id: column.value,
-                url: column.url ? column.url : null
+                url: column.url ? column.url : null,
+                title: column.title ? column.title : null
               }}
               onRemove={handleRemove}
               canRemove={

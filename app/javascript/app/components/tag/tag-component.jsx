@@ -16,7 +16,11 @@ class Tag extends PureComponent {
   render() {
     const { data, onRemove, className, canRemove } = this.props;
     return data.url ? (
-      <Link to={data.url} className={cx(styles.tag, className)}>
+      <Link
+        to={data.url}
+        className={cx(styles.tag, className)}
+        title={data.title}
+      >
         <span className={styles.dot} style={{ backgroundColor: data.color }} />
         <p className={styles.label}>{data.label}</p>
         {canRemove && (
