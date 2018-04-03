@@ -11,14 +11,6 @@ import {
 import styles from './my-visualisations-styles';
 
 const modalStyles = {
-  content: {
-    width: 'calc(100vw - 60px)',
-    maxWidth: '1230px',
-    maxHeight: 'inherit',
-    height: 'auto',
-    padding: 0,
-    margin: '60px auto'
-  },
   overlay: {
     zIndex: 40,
     boxShadow: '0 5px 15px 0 rgba(71, 44, 184, 0.1)',
@@ -74,6 +66,7 @@ const MyVisualisations = props => {
       </ul>
       <Modal
         customStyles={modalStyles}
+        theme={styles}
         isOpen={creatorIsOpen}
         onRequestClose={closeCreator}
         shouldCloseOnOverlayClick={false}
