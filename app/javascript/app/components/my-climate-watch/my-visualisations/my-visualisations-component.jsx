@@ -13,9 +13,19 @@ import styles from './my-visualisations-styles';
 const modalStyles = {
   content: {
     width: '90vw',
-    maxHeight: '90vh',
-    height: '90vh',
-    padding: 0
+    maxHeight: 'inherit',
+    height: 'auto',
+    padding: 0,
+    margin: '50px 0'
+  },
+  overlay: {
+    zIndex: 20,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 5px 15px 0 rgba(71, 44, 184, 0.1)',
+    backgroundColor: 'rgba(17, 55, 80, 0.4)',
+    overflow: 'auto'
   }
 };
 
