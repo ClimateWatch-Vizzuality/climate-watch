@@ -5,6 +5,8 @@ import { PATH_LAYERS } from 'app/data/constants';
 const getResultsData = state => state.data.data || [];
 const getLoading = state => state.data.loading || null;
 const getDocument = state => state.search.document || null;
+export const getTotalCountriesNumber = state =>
+  (state.countriesData && state.countriesData.length) || null;
 
 export const getCountriesIncluded = createSelector(
   [getResultsData, getDocument],
@@ -75,5 +77,6 @@ export const getPathsWithStyles = createSelector(
 
 export default {
   getCountriesIncluded,
-  getPathsWithStyles
+  getPathsWithStyles,
+  getTotalCountriesNumber
 };
