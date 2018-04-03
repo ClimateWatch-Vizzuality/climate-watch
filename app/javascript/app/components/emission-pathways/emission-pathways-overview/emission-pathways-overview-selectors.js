@@ -75,14 +75,8 @@ export const selectOverviewData = createSelector(
   [sanitizeData, getCategory],
   (data, category) => {
     const overviewFields = {
-      Models: [
-        'maintainer_name',
-        'geographic_coverage_region',
-        'sectoral_coverage',
-        'time_horizon',
-        'license'
-      ],
-      Scenarios: ['model', 'maintainer', 'sectoral_coverage', 'time_horizon'],
+      Models: ['sectoral_coverage', 'time_horizon', 'license', 'url'],
+      Scenarios: ['model', 'category', 'year', 'url'],
       Indicators: []
     };
     return pick(data, overviewFields[category]);
