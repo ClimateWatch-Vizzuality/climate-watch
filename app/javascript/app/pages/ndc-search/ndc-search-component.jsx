@@ -26,6 +26,7 @@ class SearchPage extends PureComponent {
             <NdcsAutocompleteSearch
               className={styles.select}
               fetchSearchResults={fetchSearchResults}
+              documentSelector
               global
             />
           </div>

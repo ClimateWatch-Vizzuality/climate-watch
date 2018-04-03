@@ -28,23 +28,30 @@ class NdcsAutocompleteSearch extends PureComponent {
       global,
       search,
       handleKeyUp,
-      dark
+      dark,
+      documentSelector
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
-        <div className={styles.dropdownsLayout}>
+        <div
+          className={cx(styles.dropdownsLayout, {
+            [styles.withDocumentSelector]: documentSelector
+          })}
+        >
           {global ? (
             <NdcsSdgsMetaProvider />
           ) : (
             <NdcsSdgsDataProvider document={document} />
           )}
-          <Dropdown
-            options={documentOptions}
-            onValueChange={onDocumentChange}
-            value={documentSelected}
-            hideResetButton
-            white={!dark}
-          />
+          {documentSelector && (
+            <Dropdown
+              options={documentOptions}
+              onValueChange={onDocumentChange}
+              value={documentSelected}
+              hideResetButton
+              white={!dark}
+            />
+          )}
           <Dropdown
             label={label ? 'Explore linkages between NDCs and SDGs' : ''}
             className={theme.dropdownOptionWithArrow}
@@ -84,7 +91,8 @@ NdcsAutocompleteSearch.propTypes = {
   global: Proptypes.bool,
   search: Proptypes.object,
   handleKeyUp: Proptypes.func,
-  dark: Proptypes.bool
+  dark: Proptypes.bool,
+  documentSelector: Proptypes.bool
 };
 
 export default NdcsAutocompleteSearch;

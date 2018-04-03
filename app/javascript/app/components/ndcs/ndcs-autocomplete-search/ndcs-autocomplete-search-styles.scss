@@ -14,9 +14,15 @@
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
   }
-
   @media #{$tablet-portrait} {
-    @include columns((3, 4.5, 4.5));
+    @include columns(6);
+    > * {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
+
+    &.withDocumentSelector {
+      @include columns((3, 4.5, 4.5));
+    }
   }
 }
 
