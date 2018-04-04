@@ -35,7 +35,7 @@ class CustomModal extends PureComponent {
 
     return (
       <Modal
-        className={{ base: styles.modal }}
+        className={theme.modal}
         style={modalStyles}
         isOpen={isOpen}
         onRequestClose={onRequestClose}

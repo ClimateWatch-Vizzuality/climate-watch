@@ -39,8 +39,8 @@ rules:
   camelcase: 0
   prefer-arrow-callback: 0
   func-names: 0
-  react/jsx-indent: 0
-
+  react/jsx-indent: 1
+  no-mixed-operators: 1
 settings:
   import/resolver:
     node:

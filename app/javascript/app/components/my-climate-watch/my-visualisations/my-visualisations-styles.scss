@@ -30,7 +30,17 @@
   width: 250px;
 }
 
+.modal {
+  width: calc(100vw - #{$gutter-padding});
+  max-width: $max-width;
+  max-height: inherit;
+  height: auto;
+  padding: 0;
+  margin: $navbar-height auto;
+}
+
 .modalContent {
   padding-left: 0;
   padding-right: 0;
+  overscroll-behavior: auto; /* stylelint-disable-line property-no-unknown */
 }

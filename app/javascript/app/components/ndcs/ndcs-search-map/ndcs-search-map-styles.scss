@@ -1,2 +1,16 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
+
+.mapWrapper {
+  padding: $gutter-padding;
+}
+
+.countriesCount {
+  color: $dark-gray;
+  font-size: $font-size;
+  min-height: 20px;
+}
+
+.includedCountriesCount {
+  color: $theme-color;
+}
