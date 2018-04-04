@@ -158,7 +158,8 @@ export const getScenariosOptions = createSelector(
     );
     return filteredScenarios.map(s => ({
       label: s.name,
-      value: s.id
+      value: s.id,
+      purpose: s.purpose_or_objective || ''
     }));
   }
 );
@@ -452,8 +453,7 @@ export const getChartConfig = createSelector(
         label: scenario ? scenario.label : null,
         value: getYColumnValue(d.scenario_id),
         url: `/pathways/scenarios/${scenario.value}`,
-        legendTooltip: scenarios.find(s => s.id === scenario.value)
-          .purpose_or_objective
+        legendTooltip: scenario.purpose
       };
     });
     const yColumnsChecked = uniqBy(yColumns, 'value');
