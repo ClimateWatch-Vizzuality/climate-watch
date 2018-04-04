@@ -1,10 +1,16 @@
 import { format } from 'd3-format';
 import { assign } from 'app/utils';
-import { CHART_COLORS } from 'data/constants';
+import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
+import { setChartColors } from 'app/utils/graphs';
 import { groupByYear, pick } from '../utils';
 
 const makeConfig = (data, indicators, yAxisLabel, small) => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
+  const chartColors = setChartColors(
+    keys.length,
+    CHART_COLORS,
+    CHART_COLORS_EXTENDED
+  );
   const tick = { stroke: '#8f8fa1', strokeWidth: 0.5, fontSize: '13px' };
   const names = pick('name', data); // only data name key
   const unit = indicators[0] && indicators[0].unit;
@@ -49,7 +55,7 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
       (th, k, i) =>
         assign(th, {
           [k]: {
-            stroke: CHART_COLORS[i],
+            stroke: chartColors[i],
             type: 'monotone',
             dot: false
           }
@@ -58,7 +64,7 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
     ),
     tooltip: small ? null : { unit, names },
     legend: keys.map((k, i) => ({
-      color: CHART_COLORS[i],
+      color: chartColors[i],
       label: names[0][k]
     }))
   };

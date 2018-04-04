@@ -1,6 +1,7 @@
 import React from 'react';
-import { CHART_COLORS } from 'data/constants';
+import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { assign } from 'app/utils';
+import { setChartColors } from 'app/utils/graphs';
 import { groupByYear, groupBy, pick } from '../utils';
 
 import Tick from '../tick';
@@ -8,6 +9,11 @@ import Tick from '../tick';
 const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
   const names = pick('name', data); // only data name key
   const unit = indicators[0] && indicators[0].unit;
+  const chartColors = setChartColors(
+    keys.length,
+    CHART_COLORS,
+    CHART_COLORS_EXTENDED
+  );
   return {
     chart: {
       data: pick('value', data), // only data value key
@@ -49,7 +55,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
       (th, k, i) =>
         assign(th, {
           [k]: {
-            fill: CHART_COLORS[i],
+            fill: chartColors[i],
             stroke: ''
           }
         }),
@@ -57,7 +63,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
     ),
     tooltip: small ? null : { unit, names },
     legend: keys.map((k, i) => ({
-      color: CHART_COLORS[i],
+      color: chartColors[i],
       label: names[0][k]
     }))
   };
