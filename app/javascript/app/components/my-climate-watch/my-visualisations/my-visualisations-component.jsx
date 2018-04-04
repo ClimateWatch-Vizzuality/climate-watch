@@ -11,11 +11,11 @@ import {
 import styles from './my-visualisations-styles';
 
 const modalStyles = {
-  content: {
-    width: '90vw',
-    maxHeight: '90vh',
-    height: '90vh',
-    padding: 0
+  overlay: {
+    zIndex: 40,
+    boxShadow: '0 5px 15px 0 rgba(71, 44, 184, 0.1)',
+    backgroundColor: 'rgba(17, 55, 80, 0.4)',
+    overflow: 'auto'
   }
 };
 
