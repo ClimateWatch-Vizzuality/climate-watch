@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
+import { NDC_DOCUMENT_OPTIONS } from 'data/constants';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
@@ -17,23 +18,39 @@ class NdcsAutocompleteSearch extends PureComponent {
     const {
       className,
       onSearchChange,
+      onDocumentChange,
       searchList,
       groups,
       document,
       optionSelected,
+      documentSelected,
       label,
       global,
       search,
       handleKeyUp,
-      dark
+      dark,
+      documentSelector
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
-        <div className={styles.col2}>
+        <div
+          className={cx(styles.dropdownsLayout, {
+            [styles.withDocumentSelector]: documentSelector
+          })}
+        >
           {global ? (
             <NdcsSdgsMetaProvider />
           ) : (
             <NdcsSdgsDataProvider document={document} />
+          )}
+          {documentSelector && (
+            <Dropdown
+              options={NDC_DOCUMENT_OPTIONS}
+              onValueChange={onDocumentChange}
+              value={documentSelected}
+              hideResetButton
+              white={!dark}
+            />
           )}
           <Dropdown
             label={label ? 'Explore linkages between NDCs and SDGs' : ''}
@@ -63,6 +80,8 @@ class NdcsAutocompleteSearch extends PureComponent {
 NdcsAutocompleteSearch.propTypes = {
   className: Proptypes.string,
   onSearchChange: Proptypes.func.isRequired,
+  onDocumentChange: Proptypes.func.isRequired,
+  documentSelected: Proptypes.object,
   searchList: Proptypes.array,
   groups: Proptypes.array,
   document: Proptypes.string,
@@ -71,7 +90,8 @@ NdcsAutocompleteSearch.propTypes = {
   global: Proptypes.bool,
   search: Proptypes.object,
   handleKeyUp: Proptypes.func,
-  dark: Proptypes.bool
+  dark: Proptypes.bool,
+  documentSelector: Proptypes.bool
 };
 
 export default NdcsAutocompleteSearch;
