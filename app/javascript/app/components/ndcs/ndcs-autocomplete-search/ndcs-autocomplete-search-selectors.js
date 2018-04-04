@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { compareIndexByKey } from 'utils/utils';
+import { NDC_DOCUMENT_OPTIONS } from 'data/constants';
 
 const getSDGs = state => state.sdgs || null;
 const getTargets = state => state.data.targets || null;
@@ -79,26 +80,11 @@ export const getOptionSelectedMeta = createSelector(
   }
 );
 
-export const documentOptions = [
-  {
-    label: 'All documents',
-    value: 'all'
-  },
-  {
-    label: 'NDC',
-    value: 'ndc'
-  },
-  {
-    label: 'INDC',
-    value: 'indc'
-  }
-];
-
 export const getDocumentSelected = createSelector(
   [getDocSelected],
   documentSelected => {
-    if (!documentSelected) return documentOptions[0];
-    return documentOptions.find(d => d.value === documentSelected);
+    if (!documentSelected) return NDC_DOCUMENT_OPTIONS[0];
+    return NDC_DOCUMENT_OPTIONS.find(d => d.value === documentSelected);
   }
 );
 
@@ -107,6 +93,5 @@ export default {
   getSearchListMeta,
   getOptionSelectedMeta,
   getOptionSelectedData,
-  getDocumentSelected,
-  documentOptions
+  getDocumentSelected
 };

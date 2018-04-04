@@ -12,8 +12,7 @@ import {
   getSearchListData,
   getOptionSelectedMeta,
   getOptionSelectedData,
-  getDocumentSelected,
-  documentOptions
+  getDocumentSelected
 } from './ndcs-autocomplete-search-selectors';
 
 const groups = [
@@ -50,7 +49,6 @@ const mapStateToProps = (state, props) => {
       ? getOptionSelectedMeta(searchListMeta)
       : getOptionSelectedData(searchListData),
     groups,
-    documentOptions,
     documentSelected: getDocumentSelected(searchListData)
   };
 };

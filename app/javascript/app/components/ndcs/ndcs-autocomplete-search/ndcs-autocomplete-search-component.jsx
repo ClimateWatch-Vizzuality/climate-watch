@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
+import { NDC_DOCUMENT_OPTIONS } from 'data/constants';
 
 import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import NdcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
@@ -22,7 +23,6 @@ class NdcsAutocompleteSearch extends PureComponent {
       groups,
       document,
       optionSelected,
-      documentOptions,
       documentSelected,
       label,
       global,
@@ -45,7 +45,7 @@ class NdcsAutocompleteSearch extends PureComponent {
           )}
           {documentSelector && (
             <Dropdown
-              options={documentOptions}
+              options={NDC_DOCUMENT_OPTIONS}
               onValueChange={onDocumentChange}
               value={documentSelected}
               hideResetButton
@@ -81,7 +81,6 @@ NdcsAutocompleteSearch.propTypes = {
   className: Proptypes.string,
   onSearchChange: Proptypes.func.isRequired,
   onDocumentChange: Proptypes.func.isRequired,
-  documentOptions: Proptypes.array,
   documentSelected: Proptypes.object,
   searchList: Proptypes.array,
   groups: Proptypes.array,
