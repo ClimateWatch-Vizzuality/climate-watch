@@ -198,15 +198,16 @@ export const getFormatFilters = name =>
   });
 
 export const getTitle = createSelector(
-  [titleSelector, selectedStructureSelector, categoriesSelector],
-  (title, selectedStructure, category) => {
-    if (!title || !selectedStructure) return undefined;
+  [selectedStructureSelector, categoriesSelector, indicatorsSelector],
+  (selectedStructure, category, indicator) => {
+    if (!selectedStructure || !category.selected || !indicator.selected) { return undefined; }
     const indicators =
       selectedStructure.filters &&
       selectedStructure.filters.find(f => f.name === 'indicators');
     const singleIndicator = !indicators || !indicators.multi;
     return singleIndicator
-      ? title
-      : category.selected && category.selected.label;
+      ? `${category.selected.label} - ${category.child.selected
+        .label} - ${indicator.selected.label}`
+      : `${category.selected.label} - ${category.child.selected.label}`;
   }
 );
