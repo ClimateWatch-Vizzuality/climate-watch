@@ -30,7 +30,7 @@ module Api
               {
                 numbers: value.map(&:last).uniq.sort,
                 document_type: value.first.second,
-                language: value.first.third,
+                language: value.first.third
               }
             end
         end
