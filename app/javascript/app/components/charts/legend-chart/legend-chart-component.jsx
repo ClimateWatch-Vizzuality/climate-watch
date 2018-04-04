@@ -42,6 +42,7 @@ class LegendChart extends PureComponent {
                 url: column.url ? column.url : null,
                 title: column.legendTooltip ? column.legendTooltip : null
               }}
+              tooltipId="legend-tooltip"
               onRemove={handleRemove}
               canRemove={
                 hideRemoveOptions ? false : config.columns.y.length > 1

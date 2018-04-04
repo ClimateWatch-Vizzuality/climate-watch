@@ -14,15 +14,15 @@ const handleClick = (e, data, onRemove) => {
 
 class Tag extends PureComponent {
   render() {
-    const { data, onRemove, className, canRemove } = this.props;
+    const { data, onRemove, className, canRemove, tooltipId } = this.props;
     const tagContent = (
       <React.Fragment>
         <span className={styles.dot} style={{ backgroundColor: data.color }} />
-        {data.title ? (
+        {data.title && tooltipId ? (
           <p
             className={styles.label}
-            data-tip={`${data.title}`}
-            data-for="legend-tooltip"
+            data-tip={data.title}
+            data-for={tooltipId}
           >
             {data.label}
           </p>
@@ -54,12 +54,14 @@ class Tag extends PureComponent {
 Tag.propTypes = {
   data: Proptypes.object,
   onRemove: Proptypes.func,
+  tooltipId: Proptypes.string,
   className: Proptypes.string,
   canRemove: Proptypes.bool
 };
 
 Tag.defaultPropTypes = {
-  canRemove: false
+  canRemove: false,
+  tooltipId: ''
 };
 
 export default Tag;
