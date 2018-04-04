@@ -156,13 +156,23 @@ format:
   {
     "id": 35,
     "locations": {
-      "AFG": [
-        "1.1",
-        "1.5"
-      ],
-      "AGO": [
-        "1.1"
-      ]
+      "AFG": {
+        numbers:
+          [
+            "1.1",
+            "1.5"
+          ],
+        document_type: 'ndc',
+        language: 'EN'
+      }
+      "AGO": {
+        numbers:
+          [
+            "1.1"
+          ],
+        document_type: 'indc',
+        language: 'EN'
+      }
     },
     "number": "1",
     "targets": [
