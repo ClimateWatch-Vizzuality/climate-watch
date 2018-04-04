@@ -3,7 +3,6 @@ import Proptypes from 'prop-types';
 import Icon from 'components/icon';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
 
 import closeIcon from 'assets/icons/legend-close.svg';
 import styles from './tag-styles.scss';
@@ -16,40 +15,38 @@ const handleClick = (e, data, onRemove) => {
 class Tag extends PureComponent {
   render() {
     const { data, onRemove, className, canRemove } = this.props;
-    return data.url ? (
-      <div>
-        <Link
-          to={data.url}
-          className={cx(styles.tag, className)}
-          data-for={`${data.value}`}
-          data-tip={`${data.title}`}
-        >
-          <span
-            className={styles.dot}
-            style={{ backgroundColor: data.color }}
-          />
-          <p className={styles.label}>{data.label}</p>
-          {canRemove && (
-            <button
-              className={styles.closeButton}
-              onClick={e => handleClick(e, data, onRemove)}
-            >
-              <Icon icon={closeIcon} className={styles.icon} />
-            </button>
-          )}
-        </Link>
-        {data.title && <ReactTooltip id={`${data.value}`} />}
-      </div>
-    ) : (
-      <li className={cx(styles.tag, className)}>
+    const tagContent = (
+      <React.Fragment>
         <span className={styles.dot} style={{ backgroundColor: data.color }} />
-        <p className={styles.label}>{data.label}</p>
+        {data.title ? (
+          <p
+            className={styles.label}
+            data-tip={`${data.title}`}
+            data-for="legend-tooltip"
+          >
+            {data.label}
+          </p>
+        ) : (
+          <p className={styles.label}>{data.label}</p>
+        )}
         {canRemove && (
-          <button className={styles.closeButton} onClick={() => onRemove(data)}>
+          <button
+            className={styles.closeButton}
+            onClick={e => handleClick(e, data, onRemove)}
+          >
             <Icon icon={closeIcon} className={styles.icon} />
           </button>
         )}
-      </li>
+      </React.Fragment>
+    );
+    return data.url ? (
+      <div>
+        <Link to={data.url} className={cx(styles.tag, className)}>
+          {tagContent}
+        </Link>
+      </div>
+    ) : (
+      <li className={cx(styles.tag, className)}>{tagContent}</li>
     );
   }
 }
