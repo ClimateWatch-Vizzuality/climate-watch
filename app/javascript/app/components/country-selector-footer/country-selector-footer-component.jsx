@@ -24,10 +24,10 @@ const CountrySelectorFooter = ({
               (country && country.label ? (
                 <Tag
                   key={`${country.label}`}
+                  label={country.label}
+                  color={COUNTRY_COMPARE_COLORS[index]}
                   data={{
-                    color: COUNTRY_COMPARE_COLORS[index],
-                    label: country.label,
-                    id: `${country.label}`,
+                    id: country.label,
                     value: country.value
                   }}
                   canRemove={locationsValues.length > 1}
@@ -37,20 +37,19 @@ const CountrySelectorFooter = ({
           )}
       </div>
     </div>
-    {countryOptions &&
-    locationsValues.length < 3 && (
-    <MultiSelect
-          className={styles.footerTagSelector}
-          values={locationsValues || []}
-          options={countryOptions}
-          onMultiValueChange={handleSelectionChange}
-          hideResetButton
-          closeOnSelect
-          dropdownDirection={-1}
-          icon={plusIcon}
-          searchInput={false}
-        />
-      )}
+    {countryOptions && locationsValues.length < 3 && (
+      <MultiSelect
+        className={styles.footerTagSelector}
+        values={locationsValues || []}
+        options={countryOptions}
+        onMultiValueChange={handleSelectionChange}
+        hideResetButton
+        closeOnSelect
+        dropdownDirection={-1}
+        icon={plusIcon}
+        searchInput={false}
+      />
+    )}
   </div>
 );
 

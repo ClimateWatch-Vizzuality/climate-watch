@@ -36,12 +36,12 @@ class LegendChart extends PureComponent {
               className={styles.tag}
               key={`${column.value}`}
               data={{
-                color: config.theme[column.value].stroke,
-                label: column.label,
                 id: column.value,
-                url: column.url ? column.url : null,
-                title: column.legendTooltip ? column.legendTooltip : null
+                url: column.url || null,
+                title: column.legendTooltip || null
               }}
+              label={column.label}
+              color={config.theme[column.value].stroke}
               tooltipId="legend-tooltip"
               onRemove={handleRemove}
               canRemove={

@@ -10,7 +10,7 @@ class LegendChartContainer extends PureComponent {
     const { dataSelected, targetParam } = this.props;
     const newFilters = [];
     dataSelected.forEach(d => {
-      if (d.label !== data.label) {
+      if (d.label !== data) {
         newFilters.push(d.value);
       }
     });

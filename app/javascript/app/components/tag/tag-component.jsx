@@ -7,33 +7,32 @@ import { Link } from 'react-router-dom';
 import closeIcon from 'assets/icons/legend-close.svg';
 import styles from './tag-styles.scss';
 
-const handleClick = (e, data, onRemove) => {
-  e.preventDefault();
-  onRemove(data);
-};
-
 class Tag extends PureComponent {
+  handleClick = e => {
+    const { label, onRemove } = this.props;
+    e.preventDefault();
+    onRemove(label);
+  };
+
   render() {
-    const { data, onRemove, className, canRemove, tooltipId } = this.props;
+    const { data, color, label, className, canRemove, tooltipId } = this.props;
+
     const tagContent = (
       <React.Fragment>
-        <span className={styles.dot} style={{ backgroundColor: data.color }} />
+        <span className={styles.dot} style={{ backgroundColor: color }} />
         {data.title && tooltipId ? (
           <p
             className={styles.label}
             data-tip={data.title}
             data-for={tooltipId}
           >
-            {data.label}
+            {label}
           </p>
         ) : (
-          <p className={styles.label}>{data.label}</p>
+          <p className={styles.label}>{label}</p>
         )}
         {canRemove && (
-          <button
-            className={styles.closeButton}
-            onClick={e => handleClick(e, data, onRemove)}
-          >
+          <button className={styles.closeButton} onClick={this.handleClick}>
             <Icon icon={closeIcon} className={styles.icon} />
           </button>
         )}
@@ -55,6 +54,8 @@ Tag.propTypes = {
   data: Proptypes.object,
   onRemove: Proptypes.func,
   tooltipId: Proptypes.string,
+  label: Proptypes.string,
+  color: Proptypes.string,
   className: Proptypes.string,
   canRemove: Proptypes.bool
 };
