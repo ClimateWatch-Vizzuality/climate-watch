@@ -39,10 +39,13 @@ export const getPathsWithStyles = createSelector(
         let clickAllowed = false;
         const iso = path.properties && path.properties.id;
         if (data && data.locations && data.locations[iso]) {
-          let percentage = data.locations[iso].length / data.targets.length;
+          let percentage =
+            data.locations[iso].numbers.length / data.targets.length;
           clickAllowed = true;
           if (targetHover) {
-            const isIncluded = data.locations[iso].includes(targetHover);
+            const isIncluded = data.locations[iso].numbers.includes(
+              targetHover
+            );
             clickAllowed = isIncluded;
             percentage = isIncluded ? 1 : 0;
           }
