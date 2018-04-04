@@ -196,6 +196,21 @@ export const CLIMATE_VULNERABILITY_DEFINITIONS = {
 
 export const DISCLAIMER_SHOWN = 'disclaimerShown';
 
+export const NDC_DOCUMENT_OPTIONS = [
+  {
+    label: 'All documents',
+    value: 'all'
+  },
+  {
+    label: 'NDC',
+    value: 'ndc'
+  },
+  {
+    label: 'INDC',
+    value: 'indc'
+  }
+];
+
 export default {
   CALCULATION_OPTIONS,
   TOP_EMITTERS,
@@ -211,5 +226,6 @@ export default {
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS,
   CLIMATE_VULNERABILITY_DEFINITIONS,
-  DISCLAIMER_SHOWN
+  DISCLAIMER_SHOWN,
+  NDC_DOCUMENT_OPTIONS
 };

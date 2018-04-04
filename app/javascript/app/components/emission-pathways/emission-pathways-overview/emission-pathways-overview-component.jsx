@@ -22,7 +22,18 @@ class EmissionPathwaysOverview extends PureComponent {
                 Object.keys(data).map(key => (
                   <div key={key} className={styles.item}>
                     <div className={styles.title}>{startCase(key)}</div>
-                    <div className={styles.itemData}>{data[key]}</div>
+                    {key !== 'url' ? (
+                      <p className={styles.itemData}>{data[key]}</p>
+                    ) : (
+                      <a
+                        href={data[key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cx(styles.itemData, styles.itemLink)}
+                      >
+                        {data[key]}
+                      </a>
+                    )}
                   </div>
                 ))}
             </div>

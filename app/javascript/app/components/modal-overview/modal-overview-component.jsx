@@ -51,7 +51,13 @@ class ModalOverview extends PureComponent {
                 </NavLink>
               ) : (
                 <MetadataProp key={key} title={key}>
-                  {d[key]}
+                  <span
+                    className={cx({
+                      [styles.empty]: d[key] === 'Not specified'
+                    })}
+                  >
+                    {d[key]}
+                  </span>
                 </MetadataProp>
               ))
           )}

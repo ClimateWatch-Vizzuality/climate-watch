@@ -8,7 +8,14 @@ import reducers, { initialState } from './esp-locations-provider-reducers';
 class EspLocationsProvider extends PureComponent {
   componentDidMount() {
     const { withTimeSeries, scenarioId } = this.props;
-    this.props.getEspLocations(withTimeSeries, scenarioId);
+    this.props.getEspLocations({ withTimeSeries, scenarioId });
+  }
+
+  componentWillReceiveProps(props) {
+    const { withTimeSeries, scenarioId } = props;
+    if (this.props.scenarioId !== scenarioId) {
+      this.props.getEspLocations({ withTimeSeries, scenarioId });
+    }
   }
 
   render() {

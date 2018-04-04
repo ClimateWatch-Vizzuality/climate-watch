@@ -42,7 +42,7 @@ class TableContainer extends PureComponent {
     } else if (columns.find(c => ESP_MEDIUM_ROWS.indexOf(c.value) > -1)) {
       return 80;
     }
-    return 50;
+    return 60;
   };
 
   setColumnWidth = column => {

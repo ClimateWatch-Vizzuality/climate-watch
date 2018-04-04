@@ -17,8 +17,22 @@
   margin-bottom: 15px;
   z-index: 2;
 
+  @media #{$tablet-portrait} {
+    > * {
+      @include xy-gutters($gutter-position: ('bottom'));
+    }
+  }
+
   @media #{$tablet-landscape} {
-    @include row((6,6));
+    @include row((4, 8));
+
+    > * {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
+
+    > *:first-child {
+      @include xy-gutters($gutter-position: ('right'), $gutters: 0);
+    }
   }
 }
 

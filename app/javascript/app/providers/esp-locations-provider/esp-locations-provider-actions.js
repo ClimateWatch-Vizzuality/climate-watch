@@ -12,7 +12,7 @@ const { ESP_API } = process.env;
 
 const getEspLocations = createThunkAction(
   'getEspLocations',
-  (withTimeSeries, scenarioId) => (dispatch, state) => {
+  ({ withTimeSeries, scenarioId }) => (dispatch, state) => {
     const { espLocations } = state();
     if (
       (espLocations.data &&
