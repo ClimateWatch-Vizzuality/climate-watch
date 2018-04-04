@@ -38,7 +38,12 @@ export const getPathsWithStyles = createSelector(
         let color = '#E5E5EB'; // default color
         let clickAllowed = false;
         const iso = path.properties && path.properties.id;
-        if (data && data.locations && data.locations[iso]) {
+        if (
+          data &&
+          data.locations &&
+          data.locations[iso] &&
+          data.locations[iso].numbers
+        ) {
           let percentage =
             data.locations[iso].numbers.length / data.targets.length;
           clickAllowed = true;

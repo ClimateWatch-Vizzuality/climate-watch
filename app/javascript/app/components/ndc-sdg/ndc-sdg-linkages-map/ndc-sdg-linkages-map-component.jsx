@@ -29,7 +29,7 @@ class NdcSdgLinkagesMap extends PureComponent {
       this.props.goal &&
       this.props.goal.locations &&
       this.props.goal.locations[country.id];
-    const locations = targets && targets.numbers.length;
+    const locations = targets && targets.numbers && targets.numbers.length;
     return (
       <Link className={tooltipTheme.container} to={`/countries/${country.id}`}>
         <div className={tooltipTheme.info}>
