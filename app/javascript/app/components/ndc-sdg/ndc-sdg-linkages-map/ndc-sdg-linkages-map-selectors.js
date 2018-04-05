@@ -38,11 +38,19 @@ export const getPathsWithStyles = createSelector(
         let color = '#E5E5EB'; // default color
         let clickAllowed = false;
         const iso = path.properties && path.properties.id;
-        if (data && data.locations && data.locations[iso]) {
-          let percentage = data.locations[iso].length / data.targets.length;
+        if (
+          data &&
+          data.locations &&
+          data.locations[iso] &&
+          data.locations[iso].numbers
+        ) {
+          let percentage =
+            data.locations[iso].numbers.length / data.targets.length;
           clickAllowed = true;
           if (targetHover) {
-            const isIncluded = data.locations[iso].includes(targetHover);
+            const isIncluded = data.locations[iso].numbers.includes(
+              targetHover
+            );
             clickAllowed = isIncluded;
             percentage = isIncluded ? 1 : 0;
           }

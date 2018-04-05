@@ -28,7 +28,7 @@ const addMantainerNameToScenario = createSelector(
   [getOverviewData, getModelsData, getCategory],
   (data, models, category) => {
     if (category !== 'Scenarios') return data;
-    if (!data || isEmpty(data) || !models) return null;
+    if (!data || isEmpty(data) || !models || !models.length) return null;
     const model = models.find(m => m.id === data.model.id);
     const maintainer = model && model.maintainer_name;
     return maintainer ? { ...data, maintainer } : data;
@@ -51,7 +51,7 @@ const addNotSpecToEmptyFields = createSelector([sanitizeData], data => {
     if (data[k]) {
       fieldsWithData[k] = data[k];
     } else {
-      fieldsWithData[k] = 'Not Specified';
+      fieldsWithData[k] = 'Not specified';
     }
   });
   return fieldsWithData;
@@ -75,14 +75,8 @@ export const selectOverviewData = createSelector(
   [sanitizeData, getCategory],
   (data, category) => {
     const overviewFields = {
-      Models: [
-        'maintainer_name',
-        'geographic_coverage_region',
-        'sectoral_coverage',
-        'time_horizon',
-        'license'
-      ],
-      Scenarios: ['model', 'maintainer', 'sectoral_coverage', 'time_horizon'],
+      Models: ['sectoral_coverage', 'time_horizon', 'license', 'url'],
+      Scenarios: ['model', 'category', 'year', 'url'],
       Indicators: []
     };
     return pick(data, overviewFields[category]);

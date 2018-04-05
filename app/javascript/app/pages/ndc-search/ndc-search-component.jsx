@@ -5,7 +5,6 @@ import Sticky from 'react-stickynode';
 import Loading from 'components/loading';
 import { TabletLandscape } from 'components/responsive';
 
-import AnchorNav from 'components/anchor-nav';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
@@ -13,46 +12,24 @@ import NDCSearchMap from 'components/ndcs/ndcs-search-map';
 import NoContent from 'components/no-content';
 import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 
-import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-
 import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
   render() {
-    const {
-      loading,
-      results,
-      search,
-      route,
-      docOptions,
-      anchorLinks,
-      fetchSearchResults
-    } = this.props;
+    const { loading, results, search, route, fetchSearchResults } = this.props;
     const hasNoContent = !results && !loading;
     return (
       <div className={styles.page}>
         <Header route={route}>
           <div className={styles.headerCols}>
-            <Intro title="NDC Content Search" />
-            <div>
-              <NdcsAutocompleteSearch
-                className={styles.select}
-                fetchSearchResults={fetchSearchResults}
-                global
-              />
-            </div>
+            <Intro title="NDC Search" />
+            <NdcsAutocompleteSearch
+              className={styles.select}
+              fetchSearchResults={fetchSearchResults}
+              documentSelector
+              global
+            />
           </div>
-          <Sticky activeClass="sticky -ndc-search" top="#navBarMobile">
-            <div className={styles.anchorNav}>
-              {docOptions.length > 1 && (
-                <AnchorNav
-                  useRoutes
-                  links={anchorLinks}
-                  theme={anchorNavRegularTheme}
-                />
-              )}
-            </div>
-          </Sticky>
         </Header>
         <div className={cx(styles.wrapperCols)}>
           <div className={cx(styles.contentCols)}>
@@ -70,7 +47,8 @@ class SearchPage extends PureComponent {
                   results.map(result => (
                     <ResultCard
                       className={styles.resultCard}
-                      key={result.location.iso_code3}
+                      key={`${result.location
+                        .iso_code3}-${result.document_type}-${result.language}`}
                       result={result}
                       search={search}
                     />
@@ -101,8 +79,6 @@ SearchPage.propTypes = {
   route: PropTypes.object.isRequired,
   search: PropTypes.object,
   results: PropTypes.array,
-  docOptions: PropTypes.array,
-  anchorLinks: PropTypes.array.isRequired,
   fetchSearchResults: PropTypes.func
 };
 

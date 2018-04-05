@@ -146,7 +146,8 @@ export const getScenariosOptions = createSelector(
     );
     return filteredScenarios.map(s => ({
       label: s.name,
-      value: s.id
+      value: s.id,
+      purpose: s.purpose_or_objective || ''
     }));
   }
 );
@@ -407,8 +408,10 @@ export const getChartDomainWithYMargins = createSelector(
   (domain, neededPrecision) => {
     if (!domain) return null;
     if (!neededPrecision) return domain;
-    const margin = 10 ** ((neededPrecision - 1) * -1);
-    const y = [dataMin => dataMin - margin, dataMax => dataMax + margin];
+    const y = [
+      dataMin => dataMin - 10 ** ((neededPrecision - 1) * -1),
+      dataMax => dataMax + 10 ** ((neededPrecision - 1) * -1)
+    ];
     return {
       x: domain.x,
       y
@@ -423,19 +426,22 @@ let colorThemeCache = {};
 export const getChartConfig = createSelector(
   [
     filterDataByIndicator,
+    getScenarios,
     getScenariosOptions,
     getIndicatorSelected,
     getChartNeededPrecision
   ],
-  (data, scenarios, indicator, precision) => {
+  (data, scenarios, scenariosInChart, indicator, precision) => {
     if (!data || !scenarios) return null;
     const yColumns = data.map(d => {
-      const scenario = scenarios.find(
+      const scenario = scenariosInChart.find(
         s => parseInt(s.value, 10) === d.scenario_id
       );
       return {
         label: scenario ? scenario.label : null,
-        value: getYColumnValue(d.scenario_id)
+        value: getYColumnValue(d.scenario_id),
+        url: `/pathways/scenarios/${scenario.value}`,
+        legendTooltip: scenario.purpose
       };
     });
     const yColumnsChecked = uniqBy(yColumns, 'value');

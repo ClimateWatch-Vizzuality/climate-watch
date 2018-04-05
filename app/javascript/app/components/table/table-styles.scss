@@ -44,6 +44,7 @@
   .ReactVirtualized__Table__rowColumn {
     color: $theme-color;
     font-size: $font-size-sm;
+    white-space: normal;
 
     a {
       line-height: $line-height-medium;

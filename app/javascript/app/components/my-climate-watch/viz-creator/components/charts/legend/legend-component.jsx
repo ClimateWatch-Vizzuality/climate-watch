@@ -10,9 +10,12 @@ const LegendComponent = ({ className, data = [], theme }) => (
   <div className={cx(className, theme.legend)}>
     <ul className={theme.tags}>
       {data.map(l => (
-        <li key={l.label} className={theme.tagItem}>
-          <Tag className={theme.tag} label={l.label} color={l.color} />
-        </li>
+        <Tag
+          key={l.label}
+          className={theme.tagItem}
+          label={l.label}
+          color={l.color}
+        />
       ))}
     </ul>
   </div>

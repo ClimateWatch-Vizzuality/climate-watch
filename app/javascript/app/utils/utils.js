@@ -4,6 +4,7 @@ import upperFirst from 'lodash/upperFirst';
 import toLower from 'lodash/toLower';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
+import isFinite from 'lodash/isFinite';
 
 export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
@@ -81,6 +82,7 @@ export function sanitize(data) {
     return data.join(', ');
   }
   if (data && !isString(data)) {
+    if (isFinite(data)) return data.toString();
     return data.name || data.full_name || '';
   }
   return data;
