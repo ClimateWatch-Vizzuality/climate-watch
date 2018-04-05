@@ -10,7 +10,7 @@ export default [
     component: () => createElement(CountryNdcOverview, { textColumns: true }),
     exact: true,
     anchor: true,
-    label: 'Overview'
+    label: 'Summary'
   },
   {
     path: '/ndcs/country/:iso/new-overview',
@@ -20,7 +20,7 @@ export default [
       }),
     exact: true,
     anchor: true,
-    label: 'New Overview',
+    label: 'Overview',
     param: 'new-overview'
   },
   {
