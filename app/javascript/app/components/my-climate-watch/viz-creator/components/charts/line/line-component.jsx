@@ -23,7 +23,10 @@ const ChartLine = ({ width, height, className, config }) => (
         ))}
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && (
-        <YAxis tick={<CustomizedYAxisTick unit={config.yAxis.unit} />}>
+        <YAxis
+          tick={<CustomizedYAxisTick unit={config.yAxis.unit} />}
+          {...config.yAxis}
+        >
           {yAxisUnitLabel(config.chart.unit)}
         </YAxis>
       )}
