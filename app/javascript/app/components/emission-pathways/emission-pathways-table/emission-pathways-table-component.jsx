@@ -99,7 +99,7 @@ class EmissionPathwaysTable extends PureComponent {
                 <div className="grid-column-item">
                   <div className={styles.searchLayout}>
                     <Search
-                      input={query}
+                      value={query}
                       theme={darkSearch}
                       onChange={handleSearchChange}
                       placeholder={`Search in ${categoryName}`}
