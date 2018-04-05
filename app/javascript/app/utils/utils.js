@@ -6,21 +6,17 @@ import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import isFinite from 'lodash/isFinite';
 
-export function deburrUpper(string) {
-  return toUpper(deburr(string));
-}
+export const deburrUpper = string => toUpper(deburr(string));
 
-export function lowerUpperFirst(string) {
-  return upperFirst(toLower(string));
-}
+export const lowerUpperFirst = string => upperFirst(toLower(string));
 
-export function isCountryIncluded(countriesIncluded = [], iso) {
+export const isCountryIncluded = (countriesIncluded = [], iso) => {
   if (!countriesIncluded.length) return false;
   return countriesIncluded.includes(iso);
-}
+};
 
-export function compareIndexByKey(attribute) {
-  return function compareIndex(a, b) {
+export const compareIndexByKey = attribute =>
+  function compareIndex(a, b) {
     const divideByDot = /(.*)\.(.*)/;
     const isNotNumber = /[^0-9.]/;
     const match = x => x[attribute].match(divideByDot);
@@ -42,7 +38,6 @@ export function compareIndexByKey(attribute) {
     }
     return parseInt(decimalA, 10) - parseInt(decimalB, 10);
   };
-}
 
 export const truncateDecimals = (number, decimalPlaces) =>
   number.toFixed(decimalPlaces) / 1;
@@ -52,7 +47,7 @@ export function isR2LWrittedLanguage(lang) {
   return r2lWrittedLanguages.indexOf(lang) > -1;
 }
 
-export function sanitize(data) {
+export const sanitize = data => {
   if (isArray(data)) {
     return data.join(', ');
   }
@@ -61,15 +56,18 @@ export function sanitize(data) {
     return data.name || data.full_name || '';
   }
   return data;
-}
+};
 
-export function hexToRgba(hex, opacity) {
+export const sanitizeUrl = url =>
+  (url.startsWith('http') ? url : `http://${url}`);
+
+export const hexToRgba = (hex, opacity) => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
 
   return `rgba(${r} ,${g} ,${b},${opacity})`;
-}
+};
 
 // Detects if user browser is Edge or Explorer 11
 export const isMicrosoftBrowser = () => {
