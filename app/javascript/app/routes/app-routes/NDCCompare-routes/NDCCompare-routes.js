@@ -13,7 +13,7 @@ export default [
       }),
     exact: true,
     anchor: true,
-    label: 'New Overview',
+    label: 'Overview',
     param: 'overview'
   },
   {
