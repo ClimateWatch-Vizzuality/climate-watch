@@ -122,7 +122,6 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           scenarios.data,
           indicators.data,
-          yAxisLabel,
           small
         );
 
@@ -147,7 +146,6 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           locations.data,
           indicators.data,
-          yAxisLabel,
           small
         );
 

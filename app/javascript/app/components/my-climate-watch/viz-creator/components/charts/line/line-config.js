@@ -4,7 +4,7 @@ import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { setChartColors } from 'app/utils/graphs';
 import { groupByYear, pick } from '../utils';
 
-const makeConfig = (data, indicators, yAxisLabel, small) => {
+const makeConfig = (data, indicators, small) => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   const chartColors = setChartColors(
     keys.length,
@@ -18,7 +18,6 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
     chart: {
       data: pick('value', data), // only data value key
       margin: { top: 50, right: 0, left: 0, bottom: 0 },
-      yAxisLabel: small ? null : yAxisLabel,
       unit: small ? null : unit
     },
     columns: {
@@ -29,9 +28,6 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
       ? false
       : {
         dataKey: 'year',
-        tick: small ? false : tick,
-        tickLine: !small,
-        axisLine: !small,
         padding: { left: 15, right: 20 },
         tickSize: 8
       },
@@ -54,8 +50,11 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
         assign(th, {
           [k]: {
             stroke: chartColors[i],
+            fill: chartColors[i],
             type: 'monotone',
-            dot: false
+            dot: !small
+              ? { fill: chartColors[i], strokeWidth: 0, radius: 0.5 }
+              : false
           }
         }),
       {}
@@ -68,30 +67,8 @@ const makeConfig = (data, indicators, yAxisLabel, small) => {
   };
 };
 
-export const lineChart1Data = (
-  timeSeries,
-  scenarios,
-  indicators,
-  yAxisLabel,
-  small
-) =>
-  makeConfig(
-    groupByYear(timeSeries, 'scenario', scenarios),
-    indicators,
-    yAxisLabel,
-    small
-  );
+export const lineChart1Data = (timeSeries, scenarios, indicators, small) =>
+  makeConfig(groupByYear(timeSeries, 'scenario', scenarios), indicators, small);
 
-export const lineChart2Data = (
-  timeSeries,
-  locations,
-  indicators,
-  yAxisLabel,
-  small
-) =>
-  makeConfig(
-    groupByYear(timeSeries, 'location', locations),
-    indicators,
-    yAxisLabel,
-    small
-  );
+export const lineChart2Data = (timeSeries, locations, indicators, small) =>
+  makeConfig(groupByYear(timeSeries, 'location', locations), indicators, small);
