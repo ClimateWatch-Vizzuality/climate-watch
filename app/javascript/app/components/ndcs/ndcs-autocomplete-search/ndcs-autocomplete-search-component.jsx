@@ -68,7 +68,7 @@ class NdcsAutocompleteSearch extends PureComponent {
             theme={dark ? darkSearch : lightSearch}
             className={label ? styles.search : ''}
             placeholder="e.g. “reduce emissions by 37%”"
-            input={search.searchBy === 'query' ? search.query : ''}
+            value={search.searchBy === 'query' ? search.query : ''}
             handleKeyUp={handleKeyUp}
           />
         </div>
