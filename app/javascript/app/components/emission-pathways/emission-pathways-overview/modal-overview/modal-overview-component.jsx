@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
 import ModalHeader from 'components/modal/modal-header-component';
 import NoContent from 'components/no-content';
-import startCase from 'lodash/startCase';
+import { toStartCase } from 'app/utils';
 import styles from './modal-overview-styles.scss';
 
 const MetadataProp = ({ title, children }) => (
   <p className={styles.text}>
-    <span className={styles.textHighlight}>{startCase(title)}: </span>
+    <span className={styles.textHighlight}>{toStartCase(title)}: </span>
     {children}
   </p>
 );

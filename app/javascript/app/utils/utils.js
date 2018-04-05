@@ -5,8 +5,15 @@ import toLower from 'lodash/toLower';
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import isFinite from 'lodash/isFinite';
+import startCase from 'lodash/startCase';
 
 export const deburrUpper = string => toUpper(deburr(string));
+export const toStartCase = string => {
+  const parsedString = startCase(string);
+  return parsedString.indexOf('Co 2') === -1
+    ? parsedString
+    : parsedString.replace(/Co 2/g, 'CO2');
+};
 
 export const lowerUpperFirst = string => upperFirst(toLower(string));
 
@@ -80,5 +87,6 @@ export default {
   deburrUpper,
   isCountryIncluded,
   truncateDecimals,
-  isMicrosoftBrowser
+  isMicrosoftBrowser,
+  toStartCase
 };
