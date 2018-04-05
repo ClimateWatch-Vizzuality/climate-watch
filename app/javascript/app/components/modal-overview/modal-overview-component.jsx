@@ -5,13 +5,13 @@ import { NavLink } from 'react-router-dom';
 import ModalHeader from 'components/modal/modal-header-component';
 import NoContent from 'components/no-content';
 import cx from 'classnames';
-import startCase from 'lodash/startCase';
+import { toStartCase } from 'app/utils';
 import isArray from 'lodash/isArray';
 import styles from './modal-overview-styles.scss';
 
 const MetadataProp = ({ title, children }) => (
   <p className={styles.text}>
-    <span className={styles.textHighlight}>{startCase(title)}: </span>
+    <span className={styles.textHighlight}>{toStartCase(title)}: </span>
     {children || null}
   </p>
 );

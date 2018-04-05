@@ -26,6 +26,11 @@ RUN mkdir -p /usr/src/$NAME
 WORKDIR /usr/src/$NAME
 # VOLUME /usr/src/$NAME
 
+# Install and run scheduling
+RUN gem install whenever
+RUN whenever --load-file config/schedule.rb
+RUN whenever --update-crontab
+
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./
 

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import remove from 'lodash/remove';
-import { sanitize } from 'app/utils';
+import { sanitize, sanitizeUrl } from 'app/utils';
 import { ESP_BLACKLIST } from 'data/constants';
 
 const getId = state => state.id || null;
@@ -39,7 +39,11 @@ const sanitizeData = createSelector([addMantainerNameToScenario], data => {
   if (isEmpty(data)) return null;
   const parsedData = {};
   Object.keys(data).forEach(key => {
-    parsedData[key] = sanitize(data[key]);
+    if (key === 'url') {
+      parsedData.url = sanitizeUrl(data.url);
+    } else {
+      parsedData[key] = sanitize(data[key]);
+    }
   });
   return parsedData;
 });

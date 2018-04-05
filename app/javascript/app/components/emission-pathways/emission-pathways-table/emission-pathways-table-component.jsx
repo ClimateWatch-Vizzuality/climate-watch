@@ -10,7 +10,7 @@ import layout from 'styles/layout.scss';
 import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
-import startCase from 'lodash/startCase';
+import { toStartCase } from 'app/utils';
 import { FILTERS_BY_CATEGORY } from 'data/constants';
 import Collapse from 'components/collapse';
 import { TabletLandscape } from 'components/responsive';
@@ -60,8 +60,8 @@ class EmissionPathwaysTable extends PureComponent {
     return FILTERS_BY_CATEGORY[category].map(field => (
       <Dropdown
         key={field}
-        label={startCase(field)}
-        placeholder={`Filter by ${startCase(field)}`}
+        label={toStartCase(field)}
+        placeholder={`Filter by ${toStartCase(field)}`}
         options={filterOptions ? filterOptions[field] : []}
         onValueChange={selected =>
           handleFilterChange(field, categoryName, selected && selected.value)}

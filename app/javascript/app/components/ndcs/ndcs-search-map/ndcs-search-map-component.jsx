@@ -7,7 +7,7 @@ const NDCSearchMap = props => (
   <div className={styles.mapWrapper}>
     {!props.loading && (
       <div className={styles.countriesCount}>
-        {props.countriesIncluded.length && (
+        {props.countriesIncluded.length ? (
           <Fragment>
             <span className={styles.includedCountriesCount}>
               {props.countriesIncluded.length}
@@ -15,7 +15,7 @@ const NDCSearchMap = props => (
             {` of ${props.totalCountriesNumber ||
               'all'} countries mention this`}
           </Fragment>
-        )}
+        ) : null}
       </div>
     )}
     <Map
