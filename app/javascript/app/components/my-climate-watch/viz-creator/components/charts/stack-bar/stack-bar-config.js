@@ -19,6 +19,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
       data: pick('value', data), // only data value key
       margin: { top: 50, right: 30, left: 45, bottom: 5 },
       yAxisLabel,
+      stackOffset: 'sign',
       unit
     },
     columns: {
