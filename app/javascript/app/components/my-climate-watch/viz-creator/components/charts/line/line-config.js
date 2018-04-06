@@ -52,6 +52,7 @@ const makeConfig = (data, indicators, small) => {
             stroke: chartColors[i],
             fill: chartColors[i],
             type: 'monotone',
+            isAnimationActive: false,
             dot: !small
               ? { fill: chartColors[i], strokeWidth: 0, radius: 0.5 }
               : false
