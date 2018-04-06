@@ -7,7 +7,8 @@ import qs from 'query-string';
 import Component from './ndcs-search-map-component';
 import {
   getPathsWithStyles,
-  getCountriesIncluded,
+  getIncludedCountriesCount,
+  getIncludedDocumentsCount,
   getTotalCountriesNumber
 } from './ndcs-search-map-selectors';
 
@@ -21,7 +22,8 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     paths: getPathsWithStyles(ndcsSearchData),
-    countriesIncluded: getCountriesIncluded(ndcsSearchData),
+    includedCountriesNumber: getIncludedCountriesCount(ndcsSearchData),
+    includedDocumentsNumber: getIncludedDocumentsCount(ndcsSearchData),
     totalCountriesNumber: getTotalCountriesNumber(ndcsSearchData),
     loading: state.ndcSearch.loading
   };
