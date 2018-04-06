@@ -91,7 +91,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
               value={selectedCategory}
             />
             <Search
-              input={query}
+              value={query}
               theme={darkSearch}
               onChange={handleSearchChange}
               placeholder={'Search by all fields'}
