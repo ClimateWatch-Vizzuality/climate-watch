@@ -60,19 +60,19 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
     it 'renders a list of NDCs' do
       get :index
       json_response = JSON.parse(response.body)
-      ndcs = json_response["ndcs"]
+      ndcs = json_response['ndcs']
       expect(ndcs.length).to eq(2)
     end
     it 'renders a list of matching NDCS' do
       get :index, params: {query: 'hello'}
       json_response = JSON.parse(response.body)
-      ndcs = json_response["ndcs"]
+      ndcs = json_response['ndcs']
       expect(ndcs.length).to eq(1)
     end
     it 'renders fragments with correct highlight indexes' do
       get :index, params: {query: 'hello'}
       json_response = JSON.parse(response.body)
-      ndcs = json_response["ndcs"]
+      ndcs = json_response['ndcs']
       expect(ndcs.first['matches'].last['idx']).to equal(2)
     end
   end

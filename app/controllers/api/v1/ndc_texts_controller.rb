@@ -17,7 +17,7 @@ module Api
                adapter: :json,
                each_serializer: Api::V1::NdcTextSearchResultSerializer,
                params: params,
-               meta: { total_count: total_count }
+               meta: {total_count: total_count}
       end
 
       def show
