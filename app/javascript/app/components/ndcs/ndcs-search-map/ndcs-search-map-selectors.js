@@ -3,9 +3,11 @@ import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import uniq from 'lodash/uniq';
 
-const getResultsData = state => state.data.data || [];
-const getLoading = state => state.data.loading || null;
+const getResultsData = state => state.data || [];
+const getLoading = state => state.loading || null;
 const getDocument = state => state.search.document || null;
+export const getTotalDocumentsNumber = state =>
+  (state.meta && state.meta.total_count) || null;
 export const getTotalCountriesNumber = state =>
   (state.countriesData && state.countriesData.length) || null;
 

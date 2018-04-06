@@ -12,7 +12,8 @@ const NDCSearchMap = props => (
             <span className={styles.includedCountriesCount}>
               {props.includedDocumentsNumber || '-'}
             </span>
-            {` documents representing
+            {` of ${props.totalDocumentsNumber || '-'}
+             documents representing
             ${props.includedCountriesNumber || '-'}
             of ${props.totalCountriesNumber || '-'}
              parties to the UNFCCC mention this`}
@@ -31,6 +32,7 @@ const NDCSearchMap = props => (
 
 NDCSearchMap.propTypes = {
   paths: PropTypes.array.isRequired,
+  totalDocumentsNumber: PropTypes.number,
   totalCountriesNumber: PropTypes.number,
   includedDocumentsNumber: PropTypes.number,
   includedCountriesNumber: PropTypes.number,

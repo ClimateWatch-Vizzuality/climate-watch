@@ -7,8 +7,9 @@ import qs from 'query-string';
 import Component from './ndcs-search-map-component';
 import {
   getPathsWithStyles,
-  getIncludedCountriesCount,
   getIncludedDocumentsCount,
+  getIncludedCountriesCount,
+  getTotalDocumentsNumber,
   getTotalCountriesNumber
 } from './ndcs-search-map-selectors';
 
@@ -16,14 +17,17 @@ const mapStateToProps = (state, { location }) => {
   const { ndcSearch } = state;
   const search = qs.parse(location.search);
   const ndcsSearchData = {
-    data: ndcSearch,
+    data: ndcSearch.data && ndcSearch.data.ndcs,
+    meta: ndcSearch.data && ndcSearch.data.meta,
+    loading: ndcSearch.loading,
     search,
     countriesData: state.countries.data
   };
   return {
     paths: getPathsWithStyles(ndcsSearchData),
-    includedCountriesNumber: getIncludedCountriesCount(ndcsSearchData),
     includedDocumentsNumber: getIncludedDocumentsCount(ndcsSearchData),
+    includedCountriesNumber: getIncludedCountriesCount(ndcsSearchData),
+    totalDocumentsNumber: getTotalDocumentsNumber(ndcsSearchData),
     totalCountriesNumber: getTotalCountriesNumber(ndcsSearchData),
     loading: state.ndcSearch.loading
   };
