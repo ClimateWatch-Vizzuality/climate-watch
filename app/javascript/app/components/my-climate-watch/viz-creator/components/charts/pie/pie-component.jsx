@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 
 import CustomTooltip from '../tooltip';
+import { pieLabel } from '../labels';
 
 const Pie = ({ className, width, height, config }) => (
   <ResponsiveContainer className={className} width={width} height={height}>
@@ -22,8 +23,11 @@ const Pie = ({ className, width, height, config }) => (
         <Tooltip
           cursor={{ stroke: '#113750', strokeWidth: 2 }}
           content={<CustomTooltip {...config} />}
+          sort
         />
       )}
+      {config.chart.topLabel &&
+        pieLabel(width, config.chart.topLabel.y, config.chart.topLabel.text)}
     </PieChart>
   </ResponsiveContainer>
 );

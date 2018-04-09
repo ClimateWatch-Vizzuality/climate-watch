@@ -8,12 +8,7 @@ import actions from './ndc-search-actions';
 import reducers, { initialState } from './ndc-search-reducers';
 
 import SearchComponent from './ndc-search-component';
-import {
-  getSearchResultsSorted,
-  getDocumentOptions,
-  getDocumentSelected,
-  getAnchorLinks
-} from './ndc-search-selectors';
+import { getSearchResultsSorted } from './ndc-search-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
@@ -25,10 +20,7 @@ const mapStateToProps = (state, { location }) => {
   return {
     search,
     loading: state.ndcSearch.loading,
-    results: getSearchResultsSorted(stateWithQuery),
-    docOptions: getDocumentOptions(stateWithQuery),
-    docSelected: getDocumentSelected(stateWithQuery),
-    anchorLinks: getAnchorLinks(stateWithQuery)
+    results: getSearchResultsSorted(stateWithQuery)
   };
 };
 
@@ -36,6 +28,13 @@ class SearchContainer extends PureComponent {
   componentWillMount() {
     const { fetchSearchResults, search } = this.props;
     fetchSearchResults(search);
+  }
+
+  componentDidUpdate(nextProps) {
+    const { fetchSearchResults, search } = this.props;
+    if (nextProps.search.query !== this.props.search.query) {
+      fetchSearchResults(search);
+    }
   }
 
   render() {

@@ -5,7 +5,7 @@ import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
 import { pixelBreakpoints } from 'components/responsive';
 
-import lowerCase from 'lodash/lowerCase';
+import { toStartCase } from 'app/utils';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
@@ -45,7 +45,7 @@ class SimpleTable extends PureComponent {
       sortBy,
       sortDirection,
       handleSortChange,
-      fullTextColumns,
+      ellipsisColumns,
       setOptionsOpen,
       setOptionsClose,
       toggleOptionsOpen,
@@ -100,11 +100,11 @@ class SimpleTable extends PureComponent {
                 {activeColumns.map(c => c.value).map(column => (
                   <Column
                     className={cx(styles.column, {
-                      [styles.fullText]:
-                        fullTextColumns && fullTextColumns.indexOf(column) > -1
+                      [styles.ellipsis]:
+                        ellipsisColumns && ellipsisColumns.indexOf(column) > -1
                     })}
                     key={column}
-                    label={lowerCase(column)}
+                    label={toStartCase(column)}
                     dataKey={column}
                     width={setColumnWidth(column)}
                     flexGrow={1}
@@ -137,7 +137,7 @@ SimpleTable.propTypes = {
   setOptionsOpen: PropTypes.func.isRequired,
   setOptionsClose: PropTypes.func.isRequired,
   toggleOptionsOpen: PropTypes.func.isRequired,
-  fullTextColumns: PropTypes.array, // 'Columns with full text, no ellipsis'
+  ellipsisColumns: PropTypes.array, // 'Columns with ellipsis intext, not full columns'
   horizontalScroll: PropTypes.bool.isRequired
 };
 

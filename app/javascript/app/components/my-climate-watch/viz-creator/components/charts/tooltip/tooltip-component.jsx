@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { themr } from 'react-css-themr';
-
+import { format } from 'd3-format';
 import theme from 'styles/themes/chart-tooltip/chart-tooltip.scss';
 
 const sortByValue = payload => {
@@ -10,7 +10,7 @@ const sortByValue = payload => {
   return payload.sort(compare);
 };
 
-const Tooltip = ({ label, tooltip, payload }) => (
+const Tooltip = ({ label, tooltip, payload, sort }) => (
   <div className={theme.tooltip}>
     <div className={theme.tooltipHeader}>
       <span className={cx(theme.labelName, theme.labelNameBold)}>{label}</span>
@@ -18,7 +18,7 @@ const Tooltip = ({ label, tooltip, payload }) => (
     </div>
     {payload &&
       payload.length &&
-      sortByValue(payload).map(v => (
+      (sort ? sortByValue(payload) : payload).map(v => (
         <div className={theme.label} key={v.name}>
           <div className={theme.legend}>
             <span
@@ -35,7 +35,7 @@ const Tooltip = ({ label, tooltip, payload }) => (
               {tooltip.pie ? v.name : tooltip.names[0][v.name]}
             </p>
           </div>
-          <p className={theme.labelValue}>{v.value}</p>
+          <p className={theme.labelValue}>{format('.3f')(v.value)}</p>
         </div>
       ))}
   </div>
@@ -44,7 +44,12 @@ const Tooltip = ({ label, tooltip, payload }) => (
 Tooltip.propTypes = {
   label: PropTypes.any,
   tooltip: PropTypes.object,
-  payload: PropTypes.array
+  payload: PropTypes.array,
+  sort: PropTypes.bool.isRequired
+};
+
+Tooltip.defaultProps = {
+  sort: false
 };
 
 export default themr('Tooltip', theme)(Tooltip);

@@ -16,6 +16,7 @@
               "type": "LineChart",
               "options": {}
             },
+            "onlyStackableIndicators": false,
             "tags": [
               "Single country",
               "Single indicator",
@@ -29,7 +30,7 @@
               {"name": "scenarios", "multi": true, "selected": "all", "active": true},
               {"name": "categories", "multi": false, "selected": null, "active": true},
               {"name": "subcategories", "multi": false, "selected": null, "active": true},
-              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
               {"name": "years", "multi": true, "selected": "all", "hidden": true, "active": false}
             ]
           },
@@ -41,6 +42,7 @@
               "options":
                 { "layout": "vertical" }
             },
+            "onlyStackableIndicators": true,
             "tags": [
               "Single country",
               "Multiple indicator",
@@ -65,6 +67,7 @@
               "type": "PieChart",
               "options": {}
             },
+            "onlyStackableIndicators": true,
             "tags": [
               "Single country",
               "Multiple indicators",
@@ -95,6 +98,7 @@
               "type": "LineChart",
               "options": {}
             },
+            "onlyStackableIndicators": false,
             "tags": [
               "Multiple locations",
               "Single indicator",
@@ -122,6 +126,7 @@
                 "outerRadius": 80
               }
             },
+            "onlyStackableIndicators": false,
             "tags": [
               "Multiple locations",
               "Single indicator",
@@ -149,6 +154,7 @@
                   "layout": "horizontal"
                 }
             },
+            "onlyStackableIndicators": true,
             "tags": [
               "Multiple locations",
               "Multiple indicators",

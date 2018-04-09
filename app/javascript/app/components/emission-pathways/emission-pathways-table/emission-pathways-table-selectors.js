@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import { deburrUpper } from 'app/utils';
+import { deburrUpper, sanitizeUrl } from 'app/utils';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import uniq from 'lodash/uniq';
@@ -33,19 +33,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
   }
 });
 
-export const getFullTextColumns = createSelector([getCategory], category => {
-  switch (category) {
-    case 'models':
-      return ['full_name', 'description'];
-    case 'scenarios':
-      return ['description'];
-    case 'indicators':
-      return [];
-    default:
-      return null;
-  }
-});
-
+export const getEllipsisColumns = () => ['url'];
 export const filteredDataBySearch = createSelector(
   [getData, getQuery],
   (data, query) => {
@@ -123,11 +111,11 @@ export const titleLinks = createSelector(
     const linkInfo = {
       models: [
         { columnName: 'full_name', linkToId: true },
-        { columnName: 'url' }
+        { columnName: 'url', url: 'self' }
       ],
       scenarios: [
         { columnName: 'name', linkToId: true },
-        { columnName: 'url' }
+        { columnName: 'url', url: 'self' }
       ],
       indicators: []
     };
@@ -188,8 +176,19 @@ export const getFilterOptionsByCategory = createSelector(
   }
 );
 
+const sanitizeUrls = createSelector([filteredDataByFilters], data => {
+  if (isEmpty(data)) return null;
+  const parsedData = data;
+  data.map(d => {
+    const updatedD = d;
+    if (d.url) updatedD.url = sanitizeUrl(d.url);
+    return updatedD;
+  });
+  return parsedData;
+});
+
 export const filterDataByBlackList = createSelector(
-  [filteredDataByFilters, getCategory],
+  [sanitizeUrls, getCategory],
   (data, category) => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(

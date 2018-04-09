@@ -24,6 +24,7 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
   return {
     goal: getNdcsSdgsGoalsDataSelected(data),
     paths: getPathsWithStyles(data),
+    goalsData,
     goalSelected,
     goalHover,
     targetHover
@@ -31,16 +32,19 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
 };
 class NdcSdgLinkagesMapContainer extends PureComponent {
   onCountryClick = geometry => {
-    const { history, targetHover, goalSelected, goalHover } = this.props;
+    const { history, targetHover, goalSelected, goalHover, goal } = this.props;
     const iso = geometry.properties.id;
     if (iso && geometry.clickAllowed) {
-      let path = `/ndcs/country/${iso}/full?query=1&searchBy=goal`;
+      const { document_type, language } = goal.locations[iso];
+      const documentParam = `?document=${document_type}-${language}`;
+      const commonPath = `/ndcs/country/${iso}/full${documentParam}&query=`;
+      let path = `${commonPath}1&searchBy=goal`;
       if (targetHover) {
-        path = `/ndcs/country/${iso}/full?query=${targetHover}&searchBy=target`;
+        path = `${commonPath}${targetHover}&searchBy=target`;
       } else if (goalSelected) {
-        path = `/ndcs/country/${iso}/full?query=${goalSelected}&searchBy=goal`;
+        path = `${commonPath}${goalSelected}&searchBy=goal`;
       } else if (goalHover) {
-        path = `/ndcs/country/${iso}/full?query=${goalHover}&searchBy=goal`;
+        path = `${commonPath}${goalHover}&searchBy=goal`;
       }
       history.push(path);
     }
@@ -67,6 +71,7 @@ NdcSdgLinkagesMapContainer.propTypes = {
   targetHover: PropTypes.string,
   goalSelected: PropTypes.string,
   goalHover: PropTypes.number,
+  goal: PropTypes.object,
   history: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired
 };

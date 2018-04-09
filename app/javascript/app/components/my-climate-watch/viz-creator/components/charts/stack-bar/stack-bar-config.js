@@ -5,29 +5,41 @@ import { groupByYear, groupBy, pick } from '../utils';
 
 import Tick from '../tick';
 
-const makeConfig = (data, keys, indicators, small) => {
+const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
   const names = pick('name', data); // only data name key
   const unit = indicators[0] && indicators[0].unit;
   return {
     chart: {
       data: pick('value', data), // only data value key
-      margin: { top: 20, right: 30, left: 20, bottom: 5 }
+      margin: { top: 50, right: 30, left: 45, bottom: 5 },
+      yAxisLabel,
+      unit
     },
     columns: {
       x: ['year'],
       y: keys
     },
-    xAxis: {
-      dataKey: 'year',
-      axisLine: false,
-      tickLine: false,
-      tick: !small
-    },
-    yAxis: {
-      axisLine: false,
-      tickLine: false,
-      tick: small ? false : tick => tick.index % 2 && <Tick {...tick} />
-    },
+    xAxis: small
+      ? false
+      : {
+        dataKey: 'year',
+        axisLine: false,
+        tickLine: false,
+        tick: !small
+      },
+    yAxis: small
+      ? false
+      : {
+        axisLine: false,
+        tickLine: false,
+        tick: small
+          ? false
+          : tick => {
+            const tickProps = tick;
+            delete tickProps.verticalAnchor; // verticalAnchor prop is not supported
+            return tick.index % 2 && <Tick {...tickProps} />;
+          }
+      },
     cartesianGrid: small
       ? false
       : {
@@ -51,16 +63,22 @@ const makeConfig = (data, keys, indicators, small) => {
   };
 };
 
-export const stackBarChart1Data = (timeSeries, indicators, small) => {
+export const stackBarChart1Data = (
+  timeSeries,
+  indicators,
+  yAxisLabel,
+  small
+) => {
   const data = groupByYear(timeSeries, 'indicator', indicators);
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
-  return makeConfig(data, keys, indicators, small);
+  return makeConfig(data, keys, indicators, yAxisLabel, small);
 };
 
 export const stackBarChart2Data = (
   timeseries,
   locations,
   indicators,
+  yAxisLabel,
   small
 ) => {
   const data = groupBy(
@@ -69,11 +87,13 @@ export const stackBarChart2Data = (
     [locations, indicators]
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
-  const baseConfig = makeConfig(data, keys, indicators, small);
+  const baseConfig = makeConfig(data, keys, indicators, yAxisLabel, small);
   return assign(baseConfig, {
     chart: {
       ...baseConfig.chart,
-      layout: 'vertical'
+      layout: 'vertical',
+      unit: indicators[0].unit,
+      margin: { top: 50, right: 30, left: 40, bottom: 5 }
     },
     cartesianGrid: small
       ? false

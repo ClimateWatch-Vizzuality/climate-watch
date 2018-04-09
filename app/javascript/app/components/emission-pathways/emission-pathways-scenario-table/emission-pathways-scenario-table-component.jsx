@@ -18,6 +18,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
       data,
       noContentMsg,
       defaultColumns,
+      ellipsisColumns,
       titleLinks,
       error
     } = this.props;
@@ -34,6 +35,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
         data={data}
         rowHeight={60}
         hasColumnSelect
+        ellipsisColumns={ellipsisColumns}
         defaultColumns={defaultColumns}
         trendLine={'trend'}
         titleLinks={titleLinks}
@@ -89,7 +91,7 @@ class EmissionPathwaysScenarioTableComponent extends PureComponent {
               value={selectedCategory}
             />
             <Search
-              input={query}
+              value={query}
               theme={darkSearch}
               onChange={handleSearchChange}
               placeholder={'Search by all fields'}
@@ -113,6 +115,7 @@ EmissionPathwaysScenarioTableComponent.propTypes = {
   id: PropTypes.string,
   data: PropTypes.array,
   defaultColumns: PropTypes.array,
+  ellipsisColumns: PropTypes.array,
   query: PropTypes.string,
   handleSearchChange: PropTypes.func,
   categories: PropTypes.array,

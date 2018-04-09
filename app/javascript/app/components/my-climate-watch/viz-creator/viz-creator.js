@@ -23,12 +23,14 @@ import {
   chartDataSelector,
   getFormatFilters,
   getVisualisationType,
-  getVisualisationOptions
+  getVisualisationOptions,
+  getOnlyStackable,
+  getTitle
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
   id: vizCreator.id,
-  title: vizCreator.title,
+  title: getTitle(vizCreator),
   description: vizCreator.description,
   creationStatus: vizCreator.creationStatus,
   datasets: datasetsSelector(vizCreator),
@@ -45,6 +47,7 @@ const mapStateToProps = ({ vizCreator }) => ({
   timeseries: timeseriesSelector(vizCreator),
   hasData: hasDataSelector(vizCreator),
   chartData: chartDataSelector(vizCreator),
+  onlyStackableIndicators: getOnlyStackable(vizCreator),
   filters: {
     locations: getFormatFilters('locations')(vizCreator),
     models: getFormatFilters('models')(vizCreator),
@@ -74,10 +77,7 @@ class VizCreator extends Component {
       subcategories,
       years,
       timeseries,
-      visualisationType
-    } = props;
-
-    const {
+      onlyStackableIndicators,
       fetchVisualisations,
       fetchLocations,
       fetchModels,
@@ -125,13 +125,11 @@ class VizCreator extends Component {
 
                 if (!isEmpty(subcategories.selected)) {
                   if (!indicators.loading && !indicators.loaded) {
-                    const stackable =
-                      visualisationType && visualisationType.includes('Stack');
                     fetchIndicators({
                       subcategory: subcategories.selected.value,
                       locations: locations.selected,
                       scenarios: scenarios.selected,
-                      stackable
+                      stackable: onlyStackableIndicators
                     });
                   }
 
@@ -205,7 +203,7 @@ VizCreator.propTypes = {
   indicators: PropTypes.object.isRequired,
   years: PropTypes.object.isRequired,
   timeseries: PropTypes.object,
-  visualisationType: PropTypes.string,
+  onlyStackableIndicators: PropTypes.bool,
   fetchDatasets: PropTypes.func.isRequired,
   fetchVisualisations: PropTypes.func.isRequired,
   fetchLocations: PropTypes.func.isRequired,

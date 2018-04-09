@@ -60,13 +60,20 @@ class CountrySDGLinkages extends PureComponent {
       targetsData,
       activeSector,
       loading,
-      setTooltipData
+      setTooltipData,
+      handleOnDotClick,
+      iso
     } = this.props;
 
     const hasGoals = goals && goals.length > 0;
     if (loading) return <Loading light className={styles.loader} />;
     if (isEmpty(goals) || isEmpty(targetsData)) {
-      return <NoContent message="No SDG data available" />;
+      return (
+        <NoContent
+          className={styles.noContent}
+          message="No SDG data available"
+        />
+      );
     }
     return (
       hasGoals && (
@@ -77,12 +84,14 @@ class CountrySDGLinkages extends PureComponent {
                 activeSector={activeSector}
                 key={goal.title}
                 goal={goal}
+                iso={iso}
                 targets={targets[goal.number]}
                 targetData={targetsData[goal.number]}
                 tooltipId="sdg-linkages"
                 setTooltipData={setTooltipData}
                 indicators
                 className={cardTheme.card}
+                handleOnDotClick={handleOnDotClick}
               />
             ))}
           </div>
@@ -175,7 +184,9 @@ CountrySDGLinkages.propTypes = {
   setTooltipData: Proptypes.func,
   tooltipData: Proptypes.object,
   targetsMeta: Proptypes.object,
+  iso: Proptypes.string,
   handleInfoClick: Proptypes.func.isRequired,
+  handleOnDotClick: Proptypes.func.isRequired,
   handleAnalyticsClick: Proptypes.func.isRequired
 };
 

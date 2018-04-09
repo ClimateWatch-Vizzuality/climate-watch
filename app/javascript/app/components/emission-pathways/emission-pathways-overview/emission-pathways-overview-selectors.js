@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import remove from 'lodash/remove';
-import { sanitize } from 'app/utils';
+import { sanitize, sanitizeUrl } from 'app/utils';
 import { ESP_BLACKLIST } from 'data/constants';
 
 const getId = state => state.id || null;
@@ -28,7 +28,7 @@ const addMantainerNameToScenario = createSelector(
   [getOverviewData, getModelsData, getCategory],
   (data, models, category) => {
     if (category !== 'Scenarios') return data;
-    if (!data || isEmpty(data) || !models) return null;
+    if (!data || isEmpty(data) || !models || !models.length) return null;
     const model = models.find(m => m.id === data.model.id);
     const maintainer = model && model.maintainer_name;
     return maintainer ? { ...data, maintainer } : data;
@@ -39,22 +39,30 @@ const sanitizeData = createSelector([addMantainerNameToScenario], data => {
   if (isEmpty(data)) return null;
   const parsedData = {};
   Object.keys(data).forEach(key => {
-    parsedData[key] = sanitize(data[key]);
+    if (key === 'url') {
+      parsedData.url = sanitizeUrl(data.url);
+    } else {
+      parsedData[key] = sanitize(data[key]);
+    }
   });
   return parsedData;
 });
 
-const removeEmptyFieldsfromData = createSelector([sanitizeData], data => {
+const addNotSpecToEmptyFields = createSelector([sanitizeData], data => {
   if (!data || isEmpty(data)) return null;
   const fieldsWithData = {};
   Object.keys(data).forEach(k => {
-    if (data[k]) fieldsWithData[k] = data[k];
+    if (data[k]) {
+      fieldsWithData[k] = data[k];
+    } else {
+      fieldsWithData[k] = 'Not specified';
+    }
   });
   return fieldsWithData;
 });
 
 export const filterDataByBlackList = createSelector(
-  [removeEmptyFieldsfromData],
+  [addNotSpecToEmptyFields],
   data => {
     if (!data || isEmpty(data)) return null;
     const whiteList = remove(
@@ -71,14 +79,8 @@ export const selectOverviewData = createSelector(
   [sanitizeData, getCategory],
   (data, category) => {
     const overviewFields = {
-      Models: [
-        'maintainer_name',
-        'geographic_coverage_region',
-        'sectoral_coverage',
-        'time_horizon',
-        'license'
-      ],
-      Scenarios: ['model', 'maintainer', 'sectoral_coverage', 'time_horizon'],
+      Models: ['sectoral_coverage', 'time_horizon', 'license', 'url'],
+      Scenarios: ['model', 'category', 'year', 'url'],
       Indicators: []
     };
     return pick(data, overviewFields[category]);

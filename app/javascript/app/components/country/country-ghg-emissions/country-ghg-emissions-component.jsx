@@ -5,7 +5,11 @@ import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import Chart from 'components/charts/chart';
+import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
+import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import ModalMetadata from 'components/modal-metadata';
+
 import styles from './country-ghg-emissions-styles.scss';
 
 const { FEATURE_QUANTIFICATIONS } = process.env;
@@ -41,7 +45,7 @@ class CountryGhgEmissions extends PureComponent {
   }
 
   renderActionButtons() {
-    const { iso, handleInfoClick, handleAnalyticsClick } = this.props;
+    const { iso, handleInfoClick, handleAnalyticsClick, isEmbed } = this.props;
 
     return [
       <ButtonGroup
@@ -50,7 +54,7 @@ class CountryGhgEmissions extends PureComponent {
         onInfoClick={handleInfoClick}
         shareUrl={`/embed/countries/${iso}/ghg-emissions`}
         analyticsGraphName="Country/Ghg-emissions"
-        reverseDropdown
+        reverseDropdown={!isEmbed}
       />,
       <Button
         key="action2"
@@ -99,11 +103,15 @@ class CountryGhgEmissions extends PureComponent {
   }
 
   render() {
+    const { isEmbed, countryName } = this.props;
+
     return (
       <div className={styles.container}>
+        <EmissionsMetaProvider />
+        <WbCountryDataProvider />
         <h3 className={styles.title}>
-          {`Greenhouse Gas Emissions and Emissions Targets ${this.props.isEmbed
-            ? `in ${this.props.countryName}`
+          {`Greenhouse Gas Emissions and Emissions Targets ${isEmbed
+            ? `in ${countryName}`
             : ''}`}
         </h3>
         <TabletLandscape>
@@ -122,6 +130,7 @@ class CountryGhgEmissions extends PureComponent {
             {this.renderActionButtons()}
           </div>
         </TabletPortraitOnly>
+        <ModalMetadata />
       </div>
     );
   }
@@ -143,7 +152,7 @@ CountryGhgEmissions.propTypes = {
   filtersSelected: PropTypes.array,
   handleInfoClick: PropTypes.func.isRequired,
   handleAnalyticsClick: PropTypes.func.isRequired,
-  handleYearHover: PropTypes.func.isRequired,
+  handleYearHover: PropTypes.func,
   handleSourceChange: PropTypes.func.isRequired,
   handleCalculationChange: PropTypes.func.isRequired
 };

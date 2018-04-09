@@ -40,6 +40,8 @@ export default {
     (!payload
       ? {
         ...state,
+        id: null,
+        description: initialState.description,
         creatorIsOpen: true
       }
       : {

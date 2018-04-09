@@ -5,8 +5,6 @@ import uniqBy from 'lodash/uniqBy';
 
 const getResultsData = state => state.results || null;
 const getDocQuery = state => state.search.document || null;
-const getLocation = state => state.location || null;
-const getSearch = state => state.search || null;
 
 export const getDocumentOptions = createSelector([getResultsData], results => {
   if (!results) return null;
@@ -17,7 +15,7 @@ export const getDocumentOptions = createSelector([getResultsData], results => {
   }));
 });
 
-export const getDocumentSelected = createSelector(
+const getDocumentSelected = createSelector(
   [getDocumentOptions, getDocQuery],
   (docs, docQuery) => {
     if (!docs) return null;
@@ -30,6 +28,7 @@ export const filterSearchResults = createSelector(
   [getResultsData, getDocumentSelected],
   (results, docSelected) => {
     if (!results) return null;
+    if (!docSelected) return results;
     return uniqBy(
       results.filter(d => d.document_type === docSelected.value),
       'location.iso_code3'
@@ -49,23 +48,6 @@ export const getSearchResultsSorted = createSelector(
   }
 );
 
-export const getAnchorLinks = createSelector(
-  [getDocumentOptions, getLocation, getSearch],
-  (docs, location, search) =>
-    docs.map(d => ({
-      label: d.label,
-      path: `${location.pathname}`,
-      search: `?document=${d.value}&searchBy=${search.searchBy}&query=${search.query}`,
-      activeQuery: {
-        key: 'document',
-        value: d.value
-      }
-    }))
-);
-
 export default {
-  getSearchResultsSorted,
-  getDocumentOptions,
-  getDocumentSelected,
-  getAnchorLinks
+  getSearchResultsSorted
 };

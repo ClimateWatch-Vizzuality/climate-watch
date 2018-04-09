@@ -3,8 +3,10 @@ import isEmpty from 'lodash/isEmpty';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
 import { ESP_BLACKLIST } from 'data/constants';
+import { sanitizeUrl } from 'app/utils';
 
 export const defaultColumns = ['name', 'category', 'description'];
+export const ellipsisColumns = ['url'];
 const getModelId = state => state.modelId || null;
 const getData = state =>
   (!isEmpty(state.espModelsData) ? state.espModelsData : null);
@@ -28,7 +30,16 @@ const getFilteredData = createSelector(
   }
 );
 
-export const filterDataByBlackList = createSelector([getFilteredData], data => {
+const sanitizeUrls = createSelector([getFilteredData], data => {
+  if (isEmpty(data)) return null;
+  const parsedData = data;
+  Object.keys(data).forEach(key => {
+    if (key === 'url') parsedData.url = sanitizeUrl(data.url);
+  });
+  return parsedData;
+});
+
+export const filterDataByBlackList = createSelector([sanitizeUrls], data => {
   if (!data || isEmpty(data)) return null;
   const whiteList = remove(
     Object.keys(data[0]),
@@ -44,12 +55,14 @@ export const titleLinks = createSelector([getFilteredData], data => {
     {
       columnName: 'name',
       url: `/pathways/scenarios/${d.id}`
-    }
+    },
+    { columnName: 'url', url: 'self' }
   ]);
 });
 
 export default {
   filterDataByBlackList,
   defaultColumns,
+  ellipsisColumns,
   titleLinks
 };

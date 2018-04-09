@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   LineChart,
   Line,
@@ -11,6 +10,11 @@ import {
   Tooltip
 } from 'recharts';
 
+import {
+  yAxisIndicatorLabel,
+  yAxisUnitLabel,
+  CustomizedYAxisTick
+} from '../labels';
 import CustomTooltip from '../tooltip';
 
 const ChartLine = ({ width, height, className, config }) => (
@@ -22,11 +26,17 @@ const ChartLine = ({ width, height, className, config }) => (
           <Line dataKey={y} key={y} {...config.theme[y]} />
         ))}
       {config.xAxis && <XAxis {...config.xAxis} />}
-      {config.yAxis && <YAxis {...config.yAxis} />}
+      {config.yAxis && (
+        <YAxis tick={<CustomizedYAxisTick unit={config.yAxis.unit} />}>
+          {yAxisUnitLabel(config.chart.unit)}
+          {yAxisIndicatorLabel(config.chart.yAxisLabel, height)}
+        </YAxis>
+      )}
       {config.tooltip && (
         <Tooltip
           cursor={{ stroke: '#113750', strokeWidth: 2 }}
           content={<CustomTooltip {...config} />}
+          sort
         />
       )}
     </LineChart>

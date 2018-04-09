@@ -2,6 +2,12 @@ import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { scrollIt } from 'utils/scroll';
 
+const sendScrollMessage = targetPosition => {
+  const targetWindow = window.parent;
+  const parentWebsite = '*';
+  if (targetWindow) targetWindow.postMessage(targetPosition, parentWebsite);
+};
+
 class ScrollToHighlightIndex extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   componentDidMount() {
@@ -19,8 +25,21 @@ class ScrollToHighlightIndex extends PureComponent {
     const target = idx
       ? document.querySelectorAll(targetElementsSelector)[idx]
       : document.querySelectorAll(targetElementsSelector)[0];
+
+    const topPosition = element => {
+      const PADDING = -200;
+      let firstLevelElement = element;
+      let elementPosition = firstLevelElement.offsetTop;
+      while (firstLevelElement.id !== 'ndc-content-container') {
+        elementPosition += firstLevelElement.offsetParent.offsetTop;
+        firstLevelElement = firstLevelElement.offsetParent;
+      }
+      return elementPosition + PADDING;
+    };
+
     if (target) {
-      scrollIt(target, 300, 'smooth');
+      scrollIt(topPosition(target), 300, 'smooth');
+      sendScrollMessage(topPosition(target));
     }
   };
 

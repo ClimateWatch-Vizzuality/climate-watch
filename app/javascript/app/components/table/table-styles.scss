@@ -16,7 +16,7 @@
     font-size: $font-size-sm;
     color: $theme-color;
     padding: 30px 0 15px;
-    text-transform: capitalize;
+    text-transform: none;
     font-weight: $font-weight-bold;
     font-family: $font-family-1;
 
@@ -44,11 +44,7 @@
   .ReactVirtualized__Table__rowColumn {
     color: $theme-color;
     font-size: $font-size-sm;
-
-    > div {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    white-space: normal;
 
     a {
       line-height: $line-height-medium;
@@ -69,9 +65,16 @@
 }
 
 .column {
-  &.fullText {
-    white-space: normal;
-    overflow: visible !important;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+
+  &.ellipsis {
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 

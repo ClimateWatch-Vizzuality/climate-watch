@@ -10,7 +10,7 @@ import layout from 'styles/layout.scss';
 import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
-import startCase from 'lodash/startCase';
+import { toStartCase } from 'app/utils';
 import { FILTERS_BY_CATEGORY } from 'data/constants';
 import Collapse from 'components/collapse';
 import { TabletLandscape } from 'components/responsive';
@@ -31,7 +31,7 @@ class EmissionPathwaysTable extends PureComponent {
       noContentMsg,
       defaultColumns,
       titleLinks,
-      fullTextColumns
+      ellipsisColumns
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     return data && data.length > 0 ? (
@@ -40,7 +40,7 @@ class EmissionPathwaysTable extends PureComponent {
         titleLinks={titleLinks}
         hasColumnSelect
         defaultColumns={defaultColumns}
-        fullTextColumns={fullTextColumns}
+        ellipsisColumns={ellipsisColumns}
         emptyValueLabel={'Not specified'}
         horizontalScroll
       />
@@ -60,8 +60,8 @@ class EmissionPathwaysTable extends PureComponent {
     return FILTERS_BY_CATEGORY[category].map(field => (
       <Dropdown
         key={field}
-        label={startCase(field)}
-        placeholder={`Filter by ${startCase(field)}`}
+        label={toStartCase(field)}
+        placeholder={`Filter by ${toStartCase(field)}`}
         options={filterOptions ? filterOptions[field] : []}
         onValueChange={selected =>
           handleFilterChange(field, categoryName, selected && selected.value)}
@@ -99,7 +99,7 @@ class EmissionPathwaysTable extends PureComponent {
                 <div className="grid-column-item">
                   <div className={styles.searchLayout}>
                     <Search
-                      input={query}
+                      value={query}
                       theme={darkSearch}
                       onChange={handleSearchChange}
                       placeholder={`Search in ${categoryName}`}
@@ -129,7 +129,7 @@ EmissionPathwaysTable.propTypes = {
   noContentMsg: PropTypes.string,
   data: PropTypes.array,
   defaultColumns: PropTypes.array,
-  fullTextColumns: PropTypes.array,
+  ellipsisColumns: PropTypes.array,
   categoryName: PropTypes.string.isRequired,
   titleLinks: PropTypes.array,
   query: PropTypes.string,

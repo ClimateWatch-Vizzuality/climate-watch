@@ -219,10 +219,13 @@ export const defaultColumns = () => [
   'trend'
 ];
 
+export const ellipsisColumns = [];
+
 export default {
   getLocationOptions,
   filterDataByBlackList,
   defaultColumns,
+  ellipsisColumns,
   getCategories,
   getSelectedCategoryOption,
   getSelectedLocationOption,

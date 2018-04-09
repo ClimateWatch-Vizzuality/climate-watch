@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { SortDirection } from 'react-virtualized';
 import _sortBy from 'lodash/sortBy';
 import reverse from 'lodash/reverse';
-import lowerCase from 'lodash/lowerCase';
-import upperFirst from 'lodash/upperFirst';
+import { toStartCase } from 'app/utils';
+import { ESP_HIGH_ROWS, ESP_MEDIUM_ROWS } from 'data/constants';
 
 import Component from './table-component';
 
@@ -19,11 +19,11 @@ class TableContainer extends PureComponent {
       sortBy: sortBy || Object.keys(data[0])[0],
       sortDirection: SortDirection.ASC,
       activeColumns: columns.map(d => ({
-        label: upperFirst(lowerCase(d)),
+        label: toStartCase(d),
         value: d
       })),
       columnsOptions: Object.keys(data[0]).map(d => ({
-        label: upperFirst(lowerCase(d)),
+        label: toStartCase(d),
         value: d
       }))
     };
@@ -36,10 +36,12 @@ class TableContainer extends PureComponent {
   }
 
   setRowsHeight = columns => {
-    if (columns.find(c => c.value === 'description')) {
+    if (columns.find(c => ESP_HIGH_ROWS.indexOf(c.value) > -1)) {
       return 150;
+    } else if (columns.find(c => ESP_MEDIUM_ROWS.indexOf(c.value) > -1)) {
+      return 80;
     }
-    return 50;
+    return 60;
   };
 
   setColumnWidth = column => {

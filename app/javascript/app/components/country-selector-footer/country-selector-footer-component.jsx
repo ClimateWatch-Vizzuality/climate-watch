@@ -14,32 +14,33 @@ const CountrySelectorFooter = ({
   handleSelectionChange,
   handleRemove,
   locationsValues
-}) => (
-  <div className={styles.footerContainer}>
-    <div className="grid-column-item">
-      <div className={styles.tagsContainer}>
-        {activeCountryOptions &&
-          activeCountryOptions.map(
-            (country, index) =>
-              (country && country.label ? (
-                <Tag
-                  key={`${country.label}`}
-                  data={{
-                    color: COUNTRY_COMPARE_COLORS[index],
-                    label: country.label,
-                    id: `${country.label}`,
-                    value: country.value
-                  }}
-                  canRemove={locationsValues.length > 1}
-                  onRemove={handleRemove}
-                />
-              ) : null)
-          )}
+}) => {
+  const showSelect = countryOptions && locationsValues.length < 3;
+  return (
+    <div className={styles.footerContainer}>
+      <div className="grid-column-item">
+        <div className={styles.tagsContainer}>
+          {activeCountryOptions &&
+            activeCountryOptions.map(
+              (country, index) =>
+                (country && country.label ? (
+                  <Tag
+                    key={`${country.label}`}
+                    label={country.label}
+                    color={COUNTRY_COMPARE_COLORS[index]}
+                    data={{
+                      id: country.label,
+                      value: country.value
+                    }}
+                    canRemove={locationsValues.length > 1}
+                    onRemove={handleRemove}
+                  />
+                ) : null)
+            )}
+        </div>
       </div>
-    </div>
-    {countryOptions &&
-    locationsValues.length < 3 && (
-    <MultiSelect
+      {showSelect && (
+        <MultiSelect
           className={styles.footerTagSelector}
           values={locationsValues || []}
           options={countryOptions}
@@ -51,8 +52,9 @@ const CountrySelectorFooter = ({
           searchInput={false}
         />
       )}
-  </div>
-);
+    </div>
+  );
+};
 
 CountrySelectorFooter.propTypes = {
   locationsValues: PropTypes.array,
