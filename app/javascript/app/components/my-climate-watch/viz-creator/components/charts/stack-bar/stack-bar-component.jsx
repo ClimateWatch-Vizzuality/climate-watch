@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   Tooltip
 } from 'recharts';
-import { yAxisIndicatorLabel, yAxisUnitLabel } from '../labels';
+import { yAxisUnitLabel } from '../labels';
 
 import CustomTooltip from '../tooltip';
 
@@ -19,10 +19,7 @@ const StackedBarChart = ({ className, width, height, config }) => (
     <BarChart {...config.chart}>
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && (
-        <YAxis {...config.yAxis}>
-          {yAxisUnitLabel(config.chart.unit)}
-          {yAxisIndicatorLabel(config.chart.yAxisLabel, height)}
-        </YAxis>
+        <YAxis {...config.yAxis}>{yAxisUnitLabel(config.chart.unit)}</YAxis>
       )}
       {config.cartesianGrid && <CartesianGrid {...config.cartesianGrid} />}
       {config.columns &&

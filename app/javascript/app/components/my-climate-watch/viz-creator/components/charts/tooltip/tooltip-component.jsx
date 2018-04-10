@@ -18,7 +18,7 @@ const Tooltip = ({ label, tooltip, payload, sort }) => (
     </div>
     {payload &&
       payload.length &&
-      (sort ? sortByValue(payload) : payload).map(v => (
+      (sort ? sortByValue(payload) : payload.reverse()).map(v => (
         <div className={theme.label} key={v.name}>
           <div className={theme.legend}>
             <span

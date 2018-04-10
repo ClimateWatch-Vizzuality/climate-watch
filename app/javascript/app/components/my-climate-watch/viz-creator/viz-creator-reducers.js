@@ -42,6 +42,8 @@ export default {
         ...state,
         id: null,
         description: initialState.description,
+        title: initialState.title,
+        datasets: initialState.datasets,
         creatorIsOpen: true
       }
       : {

@@ -94,8 +94,13 @@ export const getTooltipConfig = columns => {
   return tooltip;
 };
 
+export const setChartColors = (chartElementsLength, palette, extendedPalette) =>
+  (chartElementsLength < 11 ? palette : extendedPalette);
+
 export const getColorPalette = (colorRange, quantity) =>
   chroma.scale(colorRange).colors(quantity);
+
+export const darkenColor = color => chroma(color).darken();
 
 export function getCustomTicks(
   columns,

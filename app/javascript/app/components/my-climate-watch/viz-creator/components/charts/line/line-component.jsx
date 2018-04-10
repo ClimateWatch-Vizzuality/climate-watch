@@ -10,11 +10,7 @@ import {
   Tooltip
 } from 'recharts';
 
-import {
-  yAxisIndicatorLabel,
-  yAxisUnitLabel,
-  CustomizedYAxisTick
-} from '../labels';
+import { yAxisUnitLabel, CustomizedYAxisTick } from '../labels';
 import CustomTooltip from '../tooltip';
 
 const ChartLine = ({ width, height, className, config }) => (
@@ -27,9 +23,11 @@ const ChartLine = ({ width, height, className, config }) => (
         ))}
       {config.xAxis && <XAxis {...config.xAxis} />}
       {config.yAxis && (
-        <YAxis tick={<CustomizedYAxisTick unit={config.yAxis.unit} />}>
+        <YAxis
+          tick={<CustomizedYAxisTick unit={config.yAxis.unit} />}
+          {...config.yAxis}
+        >
           {yAxisUnitLabel(config.chart.unit)}
-          {yAxisIndicatorLabel(config.chart.yAxisLabel, height)}
         </YAxis>
       )}
       {config.tooltip && (

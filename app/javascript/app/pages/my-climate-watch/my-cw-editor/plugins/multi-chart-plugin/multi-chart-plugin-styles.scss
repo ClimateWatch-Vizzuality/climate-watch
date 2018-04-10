@@ -45,6 +45,10 @@ $editor-margin: 90px;
     cursor: pointer;
   }
 
+  .delete {
+    fill: $theme-color;
+  }
+
   &Focussed {
     box-shadow: 0 0 0 2px rgba(#accef7, 0.9);
   }
