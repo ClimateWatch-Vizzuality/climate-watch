@@ -4,9 +4,11 @@
   width: 100%;
   background-color: $light-gray;
 }
+
 .container {
   @include row();
   @include xy-gutters($gutter-position: ('top', 'bottom'), $gutter-type: padding);
+
   margin-bottom: 1rem;
   user-select: none;
   position: relative;

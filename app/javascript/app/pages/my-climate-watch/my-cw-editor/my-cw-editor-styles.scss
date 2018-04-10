@@ -16,6 +16,7 @@
 
 .title {
   @include row((10, 2));
+
   align-items: center;
 }
 
