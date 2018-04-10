@@ -92,7 +92,7 @@ spec:
           - name: GFW_API
             value: "https://production-api.globalforestwatch.org"
           - name: CORS_WHITELIST
-            value: http://www.globalforestwatch.org
+            value: https://www.globalforestwatch.org
 
         ports:
           - containerPort: 3000
