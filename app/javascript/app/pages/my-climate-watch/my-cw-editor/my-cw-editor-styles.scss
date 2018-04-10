@@ -1,27 +1,27 @@
 @import '~styles/layout.scss';
-@import '~styles/settings.scss';
 
 .editor {
+  //@include row();
+  width: 100%;
   min-height: 80vh;
-  margin: $gutter-padding * 3 $gutter-padding * 6;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.headerWrapper {
+  width: 100%;
+  background-color: $light-gray;
+  padding: 2.5rem 0;
 }
 
 .title {
   @include row((10, 2));
-  @include xy-gutters(5rem, $gutter-type: padding, $gutter-position: ('top' 'bottom'));
-
-  background-color: $light-gray;
+  align-items: center;
 }
 
 .stickyWrapper {
-  .titleField {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(26, 28, 34, 0.07);
-  }
-
-  .saveBtn {
-    top: 20px;
+  .headerWrapper {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
   }
 }
 
