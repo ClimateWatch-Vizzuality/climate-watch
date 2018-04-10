@@ -3,11 +3,18 @@ class ImportSdgs
   SDG_TARGETS_FILEPATH = "#{CW_FILES_PREFIX}sdgs/sdg_targets.csv"
 
   def call
+    cleanup
+
     import_sdgs(S3CSVReader.read(SDGS_FILEPATH))
     import_sdg_targets(S3CSVReader.read(SDG_TARGETS_FILEPATH))
   end
 
   private
+
+  def cleanup
+    NdcSdg::Target.delete_all
+    NdcSdg::Goal.delete_all
+  end
 
   def import_sdgs(content)
     content.each.with_index(2) do |row|
