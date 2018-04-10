@@ -5,7 +5,7 @@ import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
 import { pixelBreakpoints } from 'components/responsive';
 
-import lowerCase from 'lodash/lowerCase';
+import { toStartCase } from 'app/utils';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
@@ -104,7 +104,7 @@ class SimpleTable extends PureComponent {
                         ellipsisColumns && ellipsisColumns.indexOf(column) > -1
                     })}
                     key={column}
-                    label={lowerCase(column)}
+                    label={toStartCase(column)}
                     dataKey={column}
                     width={setColumnWidth(column)}
                     flexGrow={1}

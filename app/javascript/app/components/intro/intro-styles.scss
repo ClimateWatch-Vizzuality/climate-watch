@@ -11,8 +11,10 @@
 
   @include columns(12);
 
-  @media #{$tablet-landscape} {
-    @include columns((9, 3));
+  &.withButton {
+    @media #{$tablet-landscape} {
+      @include columns((9, 3));
+    }
   }
 
   a {

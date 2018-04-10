@@ -24,7 +24,7 @@ const Intro = props => {
 
   return (
     <div className={cx(styles.wrapper, className)}>
-      <div className={theme.main}>
+      <div className={cx(theme.main, { [styles.withButton]: !!actionButton })}>
         <h2 className={theme.title}>{title}</h2>
         <TabletLandscape> {actionButton} </TabletLandscape>
       </div>

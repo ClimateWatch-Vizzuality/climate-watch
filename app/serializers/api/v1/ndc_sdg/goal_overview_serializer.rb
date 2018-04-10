@@ -18,6 +18,8 @@ module Api
               target.ndc_targets.map do |ndc_target|
                 [
                   ndc_target.ndc.location.iso_code3,
+                  ndc_target.ndc.document_type,
+                  ndc_target.ndc.language,
                   target.number
                 ]
               end
@@ -25,7 +27,11 @@ module Api
 
           targets.group_by(&:first).
             transform_values do |value|
-              value.map(&:last).uniq.sort
+              {
+                numbers: value.map(&:last).uniq.sort,
+                document_type: value.first.second,
+                language: value.first.third
+              }
             end
         end
       end

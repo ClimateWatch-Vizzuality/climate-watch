@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import Button from 'components/button';
 import ModalOverview from 'components/modal-overview';
 import PropTypes from 'prop-types';
-import startCase from 'lodash/startCase';
 import Loading from 'components/loading';
 import layout from 'styles/layout.scss';
 import cx from 'classnames';
+import { toStartCase } from 'app/utils';
 import styles from './emission-pathways-overview-styles.scss';
 
 class EmissionPathwaysOverview extends PureComponent {
@@ -21,8 +21,19 @@ class EmissionPathwaysOverview extends PureComponent {
               {data &&
                 Object.keys(data).map(key => (
                   <div key={key} className={styles.item}>
-                    <div className={styles.title}>{startCase(key)}</div>
-                    <div className={styles.itemData}>{data[key]}</div>
+                    <div className={styles.title}>{toStartCase(key)}</div>
+                    {key !== 'url' ? (
+                      <p className={styles.itemData}>{data[key]}</p>
+                    ) : (
+                      <a
+                        href={data[key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cx(styles.itemData, styles.itemLink)}
+                      >
+                        {data[key]}
+                      </a>
+                    )}
                   </div>
                 ))}
             </div>

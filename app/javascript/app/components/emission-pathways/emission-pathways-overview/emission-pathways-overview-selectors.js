@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import remove from 'lodash/remove';
-import { sanitize } from 'app/utils';
+import { sanitize, sanitizeUrl } from 'app/utils';
 import { ESP_BLACKLIST } from 'data/constants';
 
 const getId = state => state.id || null;
@@ -39,7 +39,11 @@ const sanitizeData = createSelector([addMantainerNameToScenario], data => {
   if (isEmpty(data)) return null;
   const parsedData = {};
   Object.keys(data).forEach(key => {
-    parsedData[key] = sanitize(data[key]);
+    if (key === 'url') {
+      parsedData.url = sanitizeUrl(data.url);
+    } else {
+      parsedData[key] = sanitize(data[key]);
+    }
   });
   return parsedData;
 });
@@ -75,14 +79,8 @@ export const selectOverviewData = createSelector(
   [sanitizeData, getCategory],
   (data, category) => {
     const overviewFields = {
-      Models: [
-        'maintainer_name',
-        'geographic_coverage_region',
-        'sectoral_coverage',
-        'time_horizon',
-        'license'
-      ],
-      Scenarios: ['model', 'maintainer', 'sectoral_coverage', 'time_horizon'],
+      Models: ['sectoral_coverage', 'time_horizon', 'license', 'url'],
+      Scenarios: ['model', 'category', 'year', 'url'],
       Indicators: []
     };
     return pick(data, overviewFields[category]);

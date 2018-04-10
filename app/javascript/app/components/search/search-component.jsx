@@ -12,7 +12,7 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: props.input
+      search: props.value
     };
   }
 
@@ -23,8 +23,8 @@ class Search extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.input !== this.props.input) {
-      this.setState({ search: nextProps.input });
+    if (nextProps.value !== this.props.value) {
+      this.setState({ search: nextProps.value });
     }
   }
   componentDidUpdate(prevProps) {
@@ -50,7 +50,6 @@ class Search extends Component {
     const { search } = this.state;
     const {
       theme,
-      input,
       placeholder,
       className,
       handleKeyUp,
@@ -81,7 +80,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-  input: PropTypes.string,
+  value: PropTypes.string,
   placeholder: PropTypes.string,
   autofocus: PropTypes.bool,
   onChange: PropTypes.func,
@@ -93,7 +92,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
-  input: ''
+  value: ''
 };
 
 export default themr('Search', styles)(Search);

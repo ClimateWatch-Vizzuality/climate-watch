@@ -38,6 +38,7 @@ rules:
   camelcase: 0
   prefer-arrow-callback: 0
   func-names: 0
+  no-mixed-operators: 1
 settings:
   import/resolver:
     node:

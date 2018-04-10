@@ -36,6 +36,15 @@
   }
 }
 
+.itemData {
+  line-height: 1.1;
+  color: $theme-color;
+}
+
+.itemLink {
+  border-bottom: 1px solid #ffc735;
+}
+
 .seeAllButton {
   @media #{$tablet-landscape} {
     @include column-offset(9.6);
