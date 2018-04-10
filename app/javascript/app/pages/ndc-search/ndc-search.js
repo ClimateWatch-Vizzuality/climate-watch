@@ -15,7 +15,7 @@ const mapStateToProps = (state, { location }) => {
   const stateWithQuery = {
     search,
     location,
-    results: state.ndcSearch.data
+    results: state.ndcSearch.data && state.ndcSearch.data.ndcs
   };
   return {
     search,

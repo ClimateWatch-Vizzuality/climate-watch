@@ -7,13 +7,16 @@ const NDCSearchMap = props => (
   <div className={styles.mapWrapper}>
     {!props.loading && (
       <div className={styles.countriesCount}>
-        {props.countriesIncluded.length ? (
+        {props.includedDocumentsNumber && props.includedDocumentsNumber > 0 ? (
           <Fragment>
             <span className={styles.includedCountriesCount}>
-              {props.countriesIncluded.length}
+              {props.includedDocumentsNumber || '-'}
             </span>
-            {` of ${props.totalCountriesNumber ||
-              'all'} countries mention this`}
+            {` of ${props.totalDocumentsNumber || '-'}
+             documents representing
+            ${props.includedCountriesNumber || '-'}
+            of ${props.totalCountriesNumber || '-'}
+             parties to the UNFCCC mention this`}
           </Fragment>
         ) : null}
       </div>
@@ -29,8 +32,10 @@ const NDCSearchMap = props => (
 
 NDCSearchMap.propTypes = {
   paths: PropTypes.array.isRequired,
+  totalDocumentsNumber: PropTypes.number,
   totalCountriesNumber: PropTypes.number,
-  countriesIncluded: PropTypes.array,
+  includedDocumentsNumber: PropTypes.number,
+  includedCountriesNumber: PropTypes.number,
   loading: PropTypes.bool,
   handleCountryClick: PropTypes.func.isRequired
 };
