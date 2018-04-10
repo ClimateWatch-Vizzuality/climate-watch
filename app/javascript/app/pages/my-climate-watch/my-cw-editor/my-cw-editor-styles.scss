@@ -38,6 +38,7 @@
 
 span[data-text] {
   @include row();
+
   padding-left: 90px !important;
   padding-right: 90px !important;
 }

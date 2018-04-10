@@ -20,20 +20,22 @@ class MultiChartPlugin extends PureComponent {
             [styles.containerFocussed]: isFocused
           })}
         >
-          <h1 className={styles.title}>{title}</h1>
+          <div className={styles.titleRow}>
+            <h1 className={styles.title}>{title}</h1>
+            <ul className={styles.tools}>
+              <li>
+                <Button
+                  className={cx(styles.tool, styles.delete)}
+                  onClick={() => deleteAtomic(this.props)}
+                >
+                  <Icon icon={deleteIcon} />
+                </Button>
+              </li>
+            </ul>
+          </div>
           <RenderChart {...blockProps} />
           <Legend className={styles.legend} data={blockProps.config.legend} />
           <p className={styles.description}>{description}</p>
-          <ul className={styles.tools}>
-            <li>
-              <Button
-                className={cx(styles.tool, styles.delete)}
-                onClick={() => deleteAtomic(this.props)}
-              >
-                <Icon icon={deleteIcon} />
-              </Button>
-            </li>
-          </ul>
         </div>
       </div>
     );

@@ -3,6 +3,7 @@
 .wrapper {
   width: 100%;
   background-color: $light-gray;
+  margin: $gutter-padding 0;
 }
 
 .container {
@@ -15,9 +16,14 @@
   box-shadow: 0 0 0 2px transparent;
   color: $theme-color;
 
+  .titleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .title {
     font-size: 1rem;
-    margin-bottom: 2em;
   }
 
   .legend {
@@ -27,17 +33,6 @@
   .description {
     column-count: 2;
     font-size: 1rem;
-  }
-
-  .tools {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    justify-content: space-between;
   }
 
   .tool {
