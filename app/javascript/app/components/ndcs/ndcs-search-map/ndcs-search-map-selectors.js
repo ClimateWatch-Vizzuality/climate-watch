@@ -1,23 +1,39 @@
 import { createSelector } from 'reselect';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
+import uniq from 'lodash/uniq';
 
-const getResultsData = state => state.data.data || [];
-const getLoading = state => state.data.loading || null;
+const getResultsData = state => state.data || [];
+const getLoading = state => state.loading || null;
 const getDocument = state => state.search.document || null;
+export const getTotalDocumentsNumber = state =>
+  (state.meta && state.meta.total_count) || null;
 export const getTotalCountriesNumber = state =>
   (state.countriesData && state.countriesData.length) || null;
 
-export const getCountriesIncluded = createSelector(
+const getIncludedDocuments = createSelector(
   [getResultsData, getDocument],
   (results, document) => {
     if (!results || !results.length) return [];
-    const resultsFiltered =
-      document && document !== 'all'
-        ? results.filter(result => result.document_type === document)
-        : results;
-    return resultsFiltered.map(result => result.location.iso_code3);
+    return document && document !== 'all'
+      ? results.filter(result => result.document_type === document)
+      : results;
   }
+);
+
+const getIncludedCountries = createSelector([getResultsData], results => {
+  if (!results || !results.length) return [];
+  return uniq(results.map(result => result.location.iso_code3));
+});
+
+export const getIncludedDocumentsCount = createSelector(
+  [getIncludedDocuments],
+  documents => (documents ? documents.length : null)
+);
+
+export const getIncludedCountriesCount = createSelector(
+  [getIncludedCountries],
+  countries => (countries ? countries.length : null)
 );
 
 const countryStyle = {
@@ -57,7 +73,7 @@ const activeCountryStyle = {
 };
 
 export const getPathsWithStyles = createSelector(
-  [getCountriesIncluded, getLoading],
+  [getIncludedCountries, getLoading],
   (countriesIncluded, loading) => {
     const paths = [];
     worldPaths.forEach(path => {
@@ -76,7 +92,8 @@ export const getPathsWithStyles = createSelector(
 );
 
 export default {
-  getCountriesIncluded,
+  getIncludedDocumentsCount,
+  getIncludedCountriesCount,
   getPathsWithStyles,
   getTotalCountriesNumber
 };
