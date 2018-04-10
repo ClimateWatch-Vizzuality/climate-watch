@@ -1,13 +1,13 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
-$editor-margin: 90px;
-
-.container {
-  width: 100vw;
-  margin-left: - (2 * $editor-margin);
-  margin-bottom: 1rem;
+.wrapper {
+  width: 100%;
   background-color: $light-gray;
-  padding: 3rem $editor-margin;
+}
+.container {
+  @include row();
+  @include xy-gutters($gutter-position: ('top', 'bottom'), $gutter-type: padding);
+  margin-bottom: 1rem;
   user-select: none;
   position: relative;
   box-shadow: 0 0 0 2px transparent;
@@ -36,7 +36,6 @@ $editor-margin: 90px;
     right: 20px;
     display: flex;
     justify-content: space-between;
-    // width: 100px;
   }
 
   .tool {
