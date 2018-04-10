@@ -114,7 +114,6 @@ const StoryEditor = ({
           ref={getEditorRef}
           spellCheck
           plugins={plugins}
-          className={styles.red}
         />
         <InlineToolbar />
         <SideToolbar
