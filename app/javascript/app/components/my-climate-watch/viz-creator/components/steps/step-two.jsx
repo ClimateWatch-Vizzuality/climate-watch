@@ -20,6 +20,7 @@ const Step2 = ({ visualisations, selectVisualisation }) => (
         selected={visualisations.selected}
         key={`v-${vs.id}`}
         onClick={selectVisualisation}
+        className={styles.step2ListContainer}
       >
         {d => (
           <CardContent

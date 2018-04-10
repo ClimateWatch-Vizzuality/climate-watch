@@ -1,11 +1,5 @@
 @import '~styles/layout.scss';
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 .card {
   display: inline-block;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
@@ -13,20 +7,6 @@
   margin-bottom: 20px;
   $pad: 20px;
   $border: 1px;
-
-  &.dataset {
-    flex-basis: calc((100% / 2) - (#{$pad} + (2 * #{$border})));
-    // margin: 0 10px 20px;
-
-    @media #{$tablet-landscape} {
-      flex-basis: calc((100% / 4) - (#{$pad} + (2 * #{$border})));
-      // margin: 0 10px;
-    }
-  }
-
-  &.visualisation {
-    flex-basis: calc((100% / 3) - (#{$pad} + (2 * #{$border})));
-  }
 
   &:hover, {
     border: solid 1px $theme-color;

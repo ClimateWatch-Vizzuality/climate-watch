@@ -38,5 +38,6 @@
 .modalContent {
   padding-left: 0;
   padding-right: 0;
+  overflow: hidden;
   overscroll-behavior: auto; /* stylelint-disable-line property-no-unknown */
 }

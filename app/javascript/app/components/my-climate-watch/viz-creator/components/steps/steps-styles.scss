@@ -1,11 +1,9 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
 .step {
   min-height: 25%;
   border-bottom: 1px solid #cbccd0;
   padding-bottom: 40px;
-  padding-left: $gutter-padding;
-  padding-right: $gutter-padding;
   margin-bottom: 30px;
 
   &:last-child {
@@ -26,14 +24,23 @@
   color: $theme-color;
 }
 
+.step1ListContainer,
 .selectsContainer {
-  display: flex;
-  flex-wrap: wrap;
+  @include columns(3);
+}
+
+.step2ListContainer {
+  @include columns(4);
+}
+
+.selectsContainer {
+  > *:nth-child(4) {
+    // force element to jump to next line
+    margin-left: 1rem;
+  }
 }
 
 .selectsItem {
-  flex-basis: 25%;
-  margin-right: 30px;
 
   &Hidden {
     display: none;
@@ -56,19 +63,11 @@
 }
 
 .saveContainer {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px 20px;
-}
+  @include columns(2);
 
-.saveBtn,
-.deleteBtn {
-  display: inline-block;
-  width: 170px;
-}
-
-.deleteBtn {
-  margin-right: 10px;
+  > *:nth-child(2) {
+    @include column-offset($number: 8, $gutters: true);
+  }
 }
 
 .timeseriesLoader {

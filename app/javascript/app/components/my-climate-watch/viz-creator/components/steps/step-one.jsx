@@ -13,6 +13,7 @@ const Step1 = ({ datasets, selectDataset }) => (
       data={datasets.data}
       selected={datasets.selected}
       onClick={selectDataset}
+      className={styles.step1ListContainer}
     >
       {d => (
         <CardContent placeholder={d.placeholder} image={d.image} type="dataset">

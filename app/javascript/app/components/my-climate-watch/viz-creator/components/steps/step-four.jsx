@@ -98,22 +98,24 @@ class Step4 extends Component {
           />
         </Fieldset>
       </li>,
-      <li className={styles.saveContainer} key="step-4-button-li">
-        {id && (
+      <li className="grid-column-element" key="step-4-button-li">
+        <div className={styles.saveContainer}>
+          {id && (
+            <Button
+              onClick={() => deleteVisualisation({ id })}
+              className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
+            >
+              Delete
+            </Button>
+          )}
           <Button
-            onClick={() => deleteVisualisation({ id })}
-            className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
+            color="yellow"
+            onClick={() => saveVisualisation({ id })}
+            className={styles.saveBtn}
           >
-            Delete
+            Save
           </Button>
-        )}
-        <Button
-          color="yellow"
-          onClick={() => saveVisualisation({ id })}
-          className={styles.saveBtn}
-        >
-          Save
-        </Button>
+        </div>
       </li>
     ];
   }
