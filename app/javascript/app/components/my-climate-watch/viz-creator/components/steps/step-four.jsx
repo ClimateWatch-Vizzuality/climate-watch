@@ -72,9 +72,9 @@ class Step4 extends Component {
               key="chart"
               className={styles.chart}
               chart={visualisationType}
-              config={chartData}
-              width="90%"
-              height={300}
+              config={{ small: false, ...chartData }}
+              width="100%"
+              height={350}
             />,
             <Legend key="legend" theme={styles} data={chartData.legend} />
           ]

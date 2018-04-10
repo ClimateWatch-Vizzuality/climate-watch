@@ -33,7 +33,8 @@ export const categoriesSelector = state => get(lenses.$categories, state);
 export const subcategoriesSelector = state => get(lenses.$subcategories, state);
 export const yearsSelector = state => get(lenses.$years, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
-export const titleSelector = state => state.title || null;
+export const titleSelector = state => state.title;
+export const placeholderSelector = state => state.placeholder;
 
 export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
@@ -121,7 +122,6 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           scenarios.data,
           indicators.data,
-          yAxisLabel,
           small
         );
 
@@ -146,7 +146,6 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           locations.data,
           indicators.data,
-          yAxisLabel,
           small
         );
 
@@ -197,16 +196,27 @@ export const getFormatFilters = name =>
     return filter;
   });
 
-export const getTitle = createSelector(
-  [titleSelector, selectedStructureSelector, categoriesSelector],
-  (title, selectedStructure, category) => {
-    if (!title || !selectedStructure) return undefined;
+export const getPlaceholder = createSelector(
+  [
+    placeholderSelector,
+    selectedStructureSelector,
+    categoriesSelector,
+    indicatorsSelector
+  ],
+  (placeholder, selectedStructure, category, indicator) => {
+    if (!selectedStructure || !category.selected || !indicator.selected) {
+      return undefined;
+    }
     const indicators =
       selectedStructure.filters &&
       selectedStructure.filters.find(f => f.name === 'indicators');
     const singleIndicator = !indicators || !indicators.multi;
-    return singleIndicator
-      ? title
-      : category.selected && category.selected.label;
+    return (
+      placeholder ||
+      (singleIndicator
+        ? `${category.selected.label} - ${category.child.selected
+          .label} - ${indicator.selected.label}`
+        : `${category.selected.label} - ${category.child.selected.label}`)
+    );
   }
 );
