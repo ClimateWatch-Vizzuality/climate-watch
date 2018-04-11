@@ -32,24 +32,26 @@ class CountryGhg extends PureComponent {
   }, 10);
 
   render() {
-    const { search } = this.props;
+    const { search, isEmbedded } = this.props;
     const needsWBData =
       search.calculation &&
       search.calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
     return (
       <div>
-        <div className={styles.grid}>
+        <div className={cx(styles.grid, { [styles.embedded]: isEmbedded })}>
           <EmissionsMetaProvider />
           {needsWBData && <WbCountryDataProvider />}
           <CountryGHGEmissions handleYearHover={this.handleYearHover} />
           <TabletLandscape>
-            <div className={styles.map}>
-              <CountryGHGMap
-                search={search}
-                className={styles.map}
-                year={this.state.year}
-              />
-            </div>
+            {!isEmbedded && (
+              <div className={styles.map}>
+                <CountryGHGMap
+                  search={search}
+                  className={styles.map}
+                  year={this.state.year}
+                />
+              </div>
+            )}
           </TabletLandscape>
         </div>
         {FEATURE_QUANTIFICATIONS && (
@@ -62,7 +64,8 @@ class CountryGhg extends PureComponent {
 }
 
 CountryGhg.propTypes = {
-  search: PropTypes.object
+  search: PropTypes.object,
+  isEmbedded: PropTypes.bool
 };
 
 export default CountryGhg;
