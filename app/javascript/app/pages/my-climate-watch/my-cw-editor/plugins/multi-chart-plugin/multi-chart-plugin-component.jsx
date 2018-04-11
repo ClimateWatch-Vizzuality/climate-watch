@@ -33,7 +33,7 @@ class MultiChartPlugin extends PureComponent {
               </li>
             </ul>
           </div>
-          <RenderChart {...blockProps} />
+          <RenderChart {...blockProps} width="100%" height={350} />
           <Legend className={styles.legend} data={blockProps.config.legend} />
           <p className={styles.description}>{description}</p>
         </div>
