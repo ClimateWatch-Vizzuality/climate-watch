@@ -9,7 +9,7 @@ import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
-
+import Disclaimer from 'components/disclaimer';
 import styles from './country-ghg-emissions-styles.scss';
 
 const { FEATURE_QUANTIFICATIONS } = process.env;
@@ -130,7 +130,7 @@ class CountryGhgEmissions extends PureComponent {
             {this.renderActionButtons()}
           </div>
         </TabletPortraitOnly>
-        <ModalMetadata />
+        <ModalMetadata disclaimer={<Disclaimer onlyText />} />
       </div>
     );
   }

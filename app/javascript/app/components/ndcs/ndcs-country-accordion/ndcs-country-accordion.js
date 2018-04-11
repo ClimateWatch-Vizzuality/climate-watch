@@ -52,7 +52,11 @@ class NdcsCountryAccordionContainer extends PureComponent {
     const newLocations = qs.parse(nextProps.location.search).locations;
     const oldLocations = qs.parse(this.props.location.search).locations;
     if (newLocations !== oldLocations) {
-      fetchNdcsCountryAccordion(newLocations, nextProps.category, compare);
+      fetchNdcsCountryAccordion({
+        locations: newLocations,
+        category: nextProps.category,
+        compare
+      });
     }
   }
 

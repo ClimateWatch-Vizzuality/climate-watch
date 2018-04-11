@@ -58,3 +58,11 @@
 .noContent {
   min-height: 300px;
 }
+
+.disclaimer {
+  margin-top: -180px;
+
+  @media #{$tablet-landscape} {
+    margin-top: -140px;
+  }
+}

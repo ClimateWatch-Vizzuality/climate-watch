@@ -11,7 +11,7 @@ export const getTotalDocumentsNumber = state =>
 export const getTotalCountriesNumber = state =>
   (state.countriesData && state.countriesData.length) || null;
 
-const getIncludedDocuments = createSelector(
+const getIncludedDocumentsResults = createSelector(
   [getResultsData, getDocument],
   (results, document) => {
     if (!results || !results.length) return [];
@@ -27,13 +27,16 @@ const getIncludedCountries = createSelector([getResultsData], results => {
 });
 
 export const getIncludedDocumentsCount = createSelector(
-  [getIncludedDocuments],
+  [getIncludedDocumentsResults],
   documents => (documents ? documents.length : null)
 );
 
 export const getIncludedCountriesCount = createSelector(
-  [getIncludedCountries],
-  countries => (countries ? countries.length : null)
+  [getIncludedDocumentsResults],
+  results => {
+    if (!results) return null;
+    return uniq(results.map(result => result.location.iso_code3)).length;
+  }
 );
 
 const countryStyle = {
