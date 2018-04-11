@@ -25,12 +25,13 @@ import {
   getVisualisationType,
   getVisualisationOptions,
   getOnlyStackable,
-  getTitle
+  getPlaceholder
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
   id: vizCreator.id,
-  title: getTitle(vizCreator),
+  title: vizCreator.title,
+  placeholder: getPlaceholder(vizCreator),
   description: vizCreator.description,
   creationStatus: vizCreator.creationStatus,
   datasets: datasetsSelector(vizCreator),
@@ -176,17 +177,8 @@ class VizCreator extends Component {
   };
 
   render() {
-    const { categories, subcategories } = this.props;
-    const categorySelected =
-      (categories.selected && categories.selected.label) || '';
-    const subscategorySelected =
-      (subcategories.selected && subcategories.selected.label) || '';
-    const placeholder =
-      categorySelected +
-      (subscategorySelected ? ` - ${subscategorySelected}` : '');
     return createElement(VizCreatorComponent, {
       ...this.props,
-      placeholder,
       handleFilterSelect: this.handleFilterSelect
     });
   }

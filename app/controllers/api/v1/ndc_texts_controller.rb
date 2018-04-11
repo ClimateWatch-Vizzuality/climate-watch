@@ -2,6 +2,7 @@ module Api
   module V1
     class NdcTextsController < ApiController
       def index
+        total_count = Ndc.all.count
         ndcs = Ndc.includes(:location)
         ndcs =
           if params[:target] || params[:goal] || params[:sector]
@@ -13,8 +14,10 @@ module Api
           end
 
         render json: ndcs,
+               adapter: :json,
                each_serializer: Api::V1::NdcTextSearchResultSerializer,
-               params: params
+               params: params,
+               meta: {total_count: total_count}
       end
 
       def show

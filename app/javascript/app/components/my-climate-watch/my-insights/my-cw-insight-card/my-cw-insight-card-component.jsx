@@ -3,29 +3,29 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
-import { convertFromRaw } from 'draft-js';
+import Icon from 'components/icon';
+import deleteIcon from 'assets/icons/delete.svg';
 import styles from './my-cw-insight-card-styles.scss';
 
 class MyInsightCard extends PureComponent {
   render() {
     const { data, className, link, deleteInsight } = this.props;
     const chartData = data && data.chart && data.chart.data;
-    return [
-      <Link to={link} className={cx(styles.card, className)} key="card-content">
-        {chartData && <RenderChart chart={chartData.chart} {...chartData} />}
-        <h2 className={styles.cardTitle}>{data.title}</h2>
-        <p
-          className={styles.cardContent}
-          dangerouslySetInnerHTML={{
-            // eslint-disable-line
-            __html: convertFromRaw(data.body).getPlainText()
-          }}
-        />
-      </Link>,
-      <button onClick={() => deleteInsight(data.id)} key="delete-btn">
-        delete
-      </button>
-    ];
+    return (
+      <div className={cx(styles.card, className)}>
+        <Link to={link}>
+          {chartData && <RenderChart chart={chartData.chart} {...chartData} />}
+          <h2 className={styles.cardTitle}>{data.title}</h2>
+          <p className={styles.cardContent}>{data.body.blocks[0].text}</p>
+        </Link>
+        <button
+          className={styles.cardDelete}
+          onClick={() => deleteInsight(data.id)}
+        >
+          <Icon icon={deleteIcon} className={styles.icon} />
+        </button>
+      </div>
+    );
   }
 }
 

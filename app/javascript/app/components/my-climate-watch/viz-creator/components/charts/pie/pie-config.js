@@ -1,7 +1,8 @@
 import find from 'lodash/find';
 import camelCase from 'lodash/camelCase';
-import { CHART_COLORS } from 'data/constants';
+import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { assign } from 'app/utils';
+import { setChartColors } from 'app/utils/graphs';
 import { pick } from '../utils';
 
 export const pieChart1Data = (timeSeries, indicators, yAxisLabel, small) => {
@@ -17,6 +18,11 @@ export const pieChart1Data = (timeSeries, indicators, yAxisLabel, small) => {
   });
 
   const names = pick('name', data); // only data name key
+  const chartColors = setChartColors(
+    names.length,
+    CHART_COLORS,
+    CHART_COLORS_EXTENDED
+  );
   const unit = indicators[0].unit;
 
   return {
@@ -34,14 +40,14 @@ export const pieChart1Data = (timeSeries, indicators, yAxisLabel, small) => {
       (r, d, i) =>
         assign(r, {
           [d.key]: {
-            fill: CHART_COLORS[i]
+            fill: chartColors[i]
           }
         }),
       {}
     ),
     tooltip: small ? null : { unit, names, pie: true },
     legend: data.map((k, i) => ({
-      color: CHART_COLORS[i],
+      color: chartColors[i],
       label: k.name
     }))
   };
@@ -70,6 +76,11 @@ export const pieChart2Data = (
 
   const names = pick('name', data); // only data name key
   const unit = indicators[0].unit;
+  const chartColors = setChartColors(
+    names.length,
+    CHART_COLORS,
+    CHART_COLORS_EXTENDED
+  );
 
   return {
     chart: {
@@ -87,14 +98,14 @@ export const pieChart2Data = (
       (r, d, i) =>
         assign(r, {
           [d.key]: {
-            fill: CHART_COLORS[i]
+            fill: chartColors[i]
           }
         }),
       {}
     ),
     tooltip: small ? null : { unit, names, pie: true },
     legend: data.map((k, i) => ({
-      color: CHART_COLORS[i],
+      color: chartColors[i],
       label: k.name
     }))
   };

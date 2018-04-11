@@ -31,6 +31,14 @@ const Step3 = props => {
     };
   };
 
+  const sortMultiselectLabels = (f, format) => {
+    const labels = selectProps(f, format);
+    const optionsSorted = labels.options.sort(
+      (a, b) => (a.label > b.label ? 1 : -1)
+    );
+    return { options: optionsSorted, ...labels };
+  };
+
   const { spec, handleFilterSelect } = props;
 
   return (
@@ -52,7 +60,7 @@ const Step3 = props => {
                 {f.multi ? (
                   <MultiSelect
                     className={styles.dropDowns}
-                    {...selectProps(f, 'values')}
+                    {...sortMultiselectLabels(f, 'values')}
                     label={upperFirst(f.name)}
                     onMultiValueChange={e =>
                       handleFilterSelect({

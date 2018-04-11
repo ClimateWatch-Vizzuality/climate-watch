@@ -14,24 +14,6 @@ export const yAxisUnitLabel = unit => (
   />
 );
 
-export const yAxisIndicatorLabel = (label, height) => (
-  <Label
-    position="left"
-    angle={-90}
-    content={() => (
-      <text
-        className={styles.label}
-        x={height * -0.5}
-        y="15"
-        textAnchor="middle"
-        transform="rotate(-90)"
-      >
-        {label}
-      </text>
-    )}
-  />
-);
-
 export const pieLabel = (width, y, text) => {
   const getWidth = w => {
     const isPercent = w[w.length - 1] === '%';
@@ -74,7 +56,6 @@ CustomizedYAxisTick.propTypes = {
 
 export default {
   yAxisUnitLabel,
-  yAxisIndicatorLabel,
   CustomizedYAxisTick,
   pieLabel
 };
