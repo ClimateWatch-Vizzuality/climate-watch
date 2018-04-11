@@ -57,6 +57,7 @@
 
   @media #{$tablet-landscape} {
     @include columns(3);
+
     > *:nth-child(4) {
       // force element to jump to next line
       margin-left: 1rem;
