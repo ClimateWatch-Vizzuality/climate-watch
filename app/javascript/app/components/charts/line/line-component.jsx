@@ -95,7 +95,7 @@ class ChartLine extends PureComponent {
       height,
       margin,
       domain,
-      forceFourDecimals,
+      forceFixedFormatDecimals,
       espGraph
     } = this.props;
     const unit =
@@ -165,7 +165,7 @@ class ChartLine extends PureComponent {
               <TooltipChart
                 content={content}
                 config={config}
-                forceFourDecimals={forceFourDecimals}
+                forceFixedFormatDecimals={forceFixedFormatDecimals}
               />
             )}
           />
@@ -212,7 +212,7 @@ ChartLine.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.any.isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  forceFourDecimals: PropTypes.bool,
+  forceFixedFormatDecimals: PropTypes.number,
   margin: PropTypes.object,
   domain: PropTypes.object,
   espGraph: PropTypes.bool.isRequired
