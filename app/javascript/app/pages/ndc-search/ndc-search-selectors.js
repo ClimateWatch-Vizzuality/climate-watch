@@ -18,8 +18,7 @@ export const getDocumentOptions = createSelector([getResultsData], results => {
 const getDocumentSelected = createSelector(
   [getDocumentOptions, getDocQuery],
   (docs, docQuery) => {
-    if (!docs) return null;
-    if (!docQuery) return docs[0];
+    if (!docs || !docQuery || docQuery === 'all') return null;
     return docs.find(d => d.value === docQuery);
   }
 );
