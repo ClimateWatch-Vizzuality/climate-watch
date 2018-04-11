@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
 import toUpper from 'lodash/toUpper';
 import uniqBy from 'lodash/uniqBy';
-import sortBy from 'lodash/sortBy';
 
 const getResultsData = state => state.results || null;
 const getDocQuery = state => state.search.document || null;
@@ -41,14 +40,13 @@ export const getSearchResultsSorted = createSelector(
   filterSearchResults,
   results => {
     if (!results || !results.length) return null;
-    return sortBy(
-      results.sort((a, b) => {
-        if (a.matches.length > b.matches.length) return -1;
-        if (a.matches.length < b.matches.length) return 1;
-        return 0;
-      }),
-      'location.iso_code3'
-    );
+    return results.sort((a, b) => {
+      if (a.matches.length > b.matches.length) return -1;
+      if (a.matches.length < b.matches.length) return 1;
+      if (a.location.name > b.location.name) return 1;
+      if (a.location.name < b.location.name) return -1;
+      return 0;
+    });
   }
 );
 
