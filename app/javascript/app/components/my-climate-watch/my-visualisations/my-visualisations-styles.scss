@@ -1,7 +1,15 @@
 @import '~styles/layout.scss';
 
 .visContainer {
-  @include columns(4);
+  @include columns();
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+  }
+
+  @media #{$desktop} {
+    @include columns(4);
+  }
 }
 
 .visCard {
