@@ -24,19 +24,43 @@
   color: $theme-color;
 }
 
-.step1ListContainer,
-.selectsContainer {
-  @include columns(3);
+.step1ListContainer {
+  @include columns();
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(3);
+  }
 }
 
 .step2ListContainer {
-  @include columns(4);
+  @include columns();
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(4);
+  }
 }
 
 .selectsContainer {
-  > *:nth-child(4) {
-    // force element to jump to next line
-    margin-left: 1rem;
+  @include columns();
+
+  @media #{$tablet-portrait} {
+    @include columns(4);
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(3);
+    > *:nth-child(4) {
+      // force element to jump to next line
+      margin-left: 1rem;
+    }
   }
 }
 
