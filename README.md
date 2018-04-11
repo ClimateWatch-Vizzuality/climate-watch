@@ -266,7 +266,8 @@ format:
 ### Release
 To release using a [fork of zeit release](https://github.com/vizzuality/release) to generate the changelog automatically with all of the PR included since the last release just run:
 
-(Be sure you have all of your branches sync first)
+(Be sure you have all of your branches sync first,
+and merge the changes that you want in master locally before running the command)
 
 ```bash
 npx release 'major' | 'minor' | 'patch'
