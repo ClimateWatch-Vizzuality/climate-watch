@@ -4,13 +4,16 @@ import groupBy from 'lodash/groupBy';
 import flatten from 'lodash/flatten';
 import intersection from 'lodash/intersection';
 import sortBy from 'lodash/sortBy';
+import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
 import {
   CALCULATION_OPTIONS,
   DEFAULT_AXES_CONFIG,
   COUNTRY_COMPARE_COLORS,
   DATA_SCALE,
-  DEFAULT_EMISSIONS_SELECTIONS
+  DEFAULT_EMISSIONS_SELECTIONS,
+  ALLOWED_SECTORS_BY_SOURCE,
+  LATEST_VERSION
 } from 'data/constants';
 import {
   getYColumnValue,
@@ -31,6 +34,8 @@ const getSources = state => state.meta.data_source || null;
 // values from search
 const getSourceSelection = state => state.search.source || null;
 const getCalculation = state => state.search.calculation || null;
+const getSectors = state =>
+  (state.search.sectors && state.search.sectors.split(',')) || null;
 const getSelectedLocations = state => state.selectedLocations || null;
 const getQuantifications = state => state.quantifications || null;
 const getCalculationData = state => state.calculationData || null;
@@ -83,6 +88,45 @@ export const getSourceSelected = createSelector(
   }
 );
 
+export const getVersion = createSelector([getData], data => {
+  if (!data || isEmpty(data)) return null;
+  const hasLatestVersion = data.some(d => d.gwp === LATEST_VERSION);
+  return hasLatestVersion ? LATEST_VERSION : 'AR2';
+});
+
+export const getAllowedSectors = createSelector(
+  [getSourceSelected, getVersion],
+  (source, version) => {
+    if (!source || !version) return null;
+    if (source.label === 'UNFCCC') {
+      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
+    }
+    return ALLOWED_SECTORS_BY_SOURCE[source.label];
+  }
+);
+
+export const getSectorOptions = createSelector(
+  [getData, getAllowedSectors],
+  (data, sectorsAllowed) => {
+    const defaultSector = [];
+    if (!sectorsAllowed || isEmpty(data)) return defaultSector;
+    const dataSectors = uniq(data.map(d => d.sector));
+    const sectorOptions = dataSectors
+      .filter(sector => sectorsAllowed.indexOf(sector) > -1)
+      .map(s => ({ label: s, value: s }));
+    return defaultSector.concat(sectorOptions);
+  }
+);
+
+export const getSectorsSelected = createSelector(
+  [getSectorOptions, getSectors],
+  (sectors, selected) => {
+    if (!sectors) return null;
+    if (!selected) return sectors;
+    return sectors.filter(s => selected.indexOf(s.value) !== -1);
+  }
+);
+
 export const getFiltersSelected = createSelector(
   [getSourceSelected, getSelectedLocations],
   (sourceSelected, selectedLocations) => {
@@ -99,19 +143,21 @@ export const calculationOptions = Object.keys(CALCULATION_OPTIONS).map(
 );
 
 export const filterData = createSelector(
-  [getData, getSourceSelected, getCalculationSelected, addNameToLocations],
-  (data, source, calculation, locations) => {
+  [
+    getData,
+    getSourceSelected,
+    getCalculationSelected,
+    addNameToLocations,
+    getVersion
+  ],
+  (data, source, calculation, locations, version) => {
     if (!data || !data.length) return [];
     let filteredData = data;
     // Filter by version
     // If the data has the AR4 version (latest) we only want to display that data to avoid duplicates
-    const latestVersion = 'AR4';
-    const hasLatestVersion = filteredData.some(d => d.gwp === latestVersion);
-    if (hasLatestVersion) {
-      filteredData = filteredData.filter(d => d.gwp === latestVersion);
+    if (version === LATEST_VERSION) {
+      filteredData = filteredData.filter(d => d.gwp === LATEST_VERSION);
     }
-    const version = hasLatestVersion ? latestVersion : 'AR2';
-
     // Filter by sector
     const filterSector =
       source.label === 'UNFCCC'
@@ -280,6 +326,7 @@ export default {
   getSourceSelected,
   calculationOptions,
   getCalculationSelected,
+  getSectorsSelected,
   parseLocations,
   getLocationsFilter,
   getFiltersSelected,

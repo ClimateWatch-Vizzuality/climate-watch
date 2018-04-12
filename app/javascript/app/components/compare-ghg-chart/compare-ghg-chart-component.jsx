@@ -9,6 +9,7 @@ import {
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import Dropdown from 'components/dropdown';
+import MultiSelect from 'components/multiselect';
 import Button from 'components/button';
 import ButtonGroup from 'components/button-group';
 import ModalMetadata from 'components/modal-metadata';
@@ -61,11 +62,14 @@ class CompareGhgChart extends PureComponent {
   render() {
     const {
       handleSourceChange,
+      handleCalculationChange,
+      handleSectorChange,
       sourceOptions,
       sourceSelected,
       calculationOptions,
       calculationSelected,
-      handleCalculationChange,
+      sectorOptions,
+      sectorsSelected,
       providerFilters,
       selectedLocations,
       config,
@@ -97,6 +101,13 @@ class CompareGhgChart extends PureComponent {
                 onValueChange={handleCalculationChange}
                 value={calculationSelected}
                 hideResetButton
+              />
+
+              <MultiSelect
+                label="Sectors"
+                values={sectorsSelected || []}
+                options={sectorOptions || []}
+                onMultiValueChange={handleSectorChange}
               />
               <TabletLandscape>{this.renderActionButtons()}</TabletLandscape>
             </div>
@@ -137,11 +148,14 @@ CompareGhgChart.propTypes = {
   selectedLocations: PropTypes.array,
   data: PropTypes.array,
   config: PropTypes.object,
-  handleSourceChange: PropTypes.func.isRequired,
   calculationOptions: PropTypes.array,
   calculationSelected: PropTypes.object,
+  sectorOptions: PropTypes.array,
+  sectorsSelected: PropTypes.array,
   selectedLocationsFilter: PropTypes.array,
+  handleSourceChange: PropTypes.func.isRequired,
   handleCalculationChange: PropTypes.func.isRequired,
+  handleSectorChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   handleAnalyticsClick: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
