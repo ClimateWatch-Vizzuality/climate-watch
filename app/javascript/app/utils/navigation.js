@@ -21,6 +21,11 @@ export function getLocationParamUpdated(location, params = [], clear = false) {
   };
 }
 
+export function isPageContained() {
+  return window.location.pathname.split('/')[1] === 'contained';
+}
+
 export default {
-  getLocationParamUpdated
+  getLocationParamUpdated,
+  isPageContained
 };
