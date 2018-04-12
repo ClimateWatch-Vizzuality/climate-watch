@@ -6,10 +6,18 @@ import uniq from 'lodash/uniq';
 const getResultsData = state => state.data || [];
 const getLoading = state => state.loading || null;
 const getDocument = state => state.search.document || null;
-export const getTotalDocumentsNumber = state =>
-  (state.meta && state.meta.total_count) || null;
 export const getTotalCountriesNumber = state =>
   (state.countriesData && state.countriesData.length) || null;
+
+export const getTotalDocumentsNumber = createSelector(
+  [state => state.meta, getDocument],
+  (meta, document) => {
+    if (!meta || !document) return null;
+    return document && document !== 'all'
+      ? meta[`total_${document}_count`]
+      : meta.total_ndc_count + meta.total_indc_count;
+  }
+);
 
 const getIncludedDocumentsResults = createSelector(
   [getResultsData, getDocument],
