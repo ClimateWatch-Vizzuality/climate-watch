@@ -98,7 +98,6 @@
   @include row(6);
 
   @media #{$tablet-landscape} {
-
     @include row(2);
 
     > *:nth-child(2) {
