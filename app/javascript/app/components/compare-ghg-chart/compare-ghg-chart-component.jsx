@@ -6,6 +6,7 @@ import {
   TabletLandscape,
   TabletPortraitOnly
 } from 'components/responsive';
+import { CALCULATION_OPTIONS } from 'data/constants';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import Dropdown from 'components/dropdown';
@@ -77,6 +78,8 @@ class CompareGhgChart extends PureComponent {
       loading,
       needsWBData
     } = this.props;
+    const isAbsoluteValue =
+      calculationSelected !== CALCULATION_OPTIONS.ABSOLUTE_VALUE;
     return (
       <div className={styles.section}>
         <div className={layout.content}>
@@ -108,6 +111,8 @@ class CompareGhgChart extends PureComponent {
                 values={sectorsSelected || []}
                 options={sectorOptions || []}
                 onMultiValueChange={handleSectorChange}
+                disabled={isAbsoluteValue}
+                hideResetButton={isAbsoluteValue}
               />
               <TabletLandscape>{this.renderActionButtons()}</TabletLandscape>
             </div>

@@ -108,21 +108,21 @@ export const getAllowedSectors = createSelector(
 export const getSectorOptions = createSelector(
   [getData, getAllowedSectors],
   (data, sectorsAllowed) => {
-    const defaultSector = [];
-    if (!sectorsAllowed || isEmpty(data)) return defaultSector;
+    if (!sectorsAllowed || isEmpty(data)) return null;
     const dataSectors = uniq(data.map(d => d.sector));
     const sectorOptions = dataSectors
       .filter(sector => sectorsAllowed.indexOf(sector) > -1)
       .map(s => ({ label: s, value: s }));
-    return defaultSector.concat(sectorOptions);
+    return sectorOptions;
   }
 );
 
 export const getSectorsSelected = createSelector(
-  [getSectorOptions, getSectors],
-  (sectors, selected) => {
+  [getSectorOptions, getSectors, getCalculationSelected],
+  (sectors, selected, calculation) => {
     if (!sectors) return null;
     if (!selected) return sectors;
+    if (calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE) return sectors;
     return sectors.filter(s => selected.indexOf(s.value) !== -1);
   }
 );
@@ -180,7 +180,6 @@ export const filterData = createSelector(
     filteredData = filteredData.filter(
       d => sectorFilters.indexOf(d.sector) !== -1
     );
-
     if (!locations || !locations.length) return null;
     const locationDataGroupedByYear = locations.map(l => {
       const locationData = filteredData.filter(
