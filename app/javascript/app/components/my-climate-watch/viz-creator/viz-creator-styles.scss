@@ -2,8 +2,5 @@
 
 .container {
   height: 100%;
-}
-
-.steps {
-  @include row();
+  width: 100%;
 }

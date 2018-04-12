@@ -11,6 +11,10 @@
   }
 }
 
+.stepContainer {
+  @include row();
+}
+
 .stepTitle {
   padding-bottom: 30px;
   font-size: $font-size-large;
@@ -86,11 +90,20 @@
   color: #8f8fa0;
 }
 
-.saveContainer {
-  @include columns(2);
+.step4Container {
+  height: 100%;
+}
 
-  > *:nth-child(2) {
-    @include column-offset($number: 8, $gutters: true);
+.saveContainer {
+  @include row(6);
+
+  @media #{$tablet-landscape} {
+
+    @include row(2);
+
+    > *:nth-child(2) {
+      @include column-offset($number: 8, $gutters: true);
+    }
   }
 }
 
