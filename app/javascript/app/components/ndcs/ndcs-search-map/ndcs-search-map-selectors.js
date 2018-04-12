@@ -21,10 +21,13 @@ const getIncludedDocumentsResults = createSelector(
   }
 );
 
-const getIncludedCountries = createSelector([getResultsData], results => {
-  if (!results || !results.length) return [];
-  return uniq(results.map(result => result.location.iso_code3));
-});
+const getIncludedCountries = createSelector(
+  [getIncludedDocumentsResults],
+  results => {
+    if (!results || !results.length) return [];
+    return uniq(results.map(result => result.location.iso_code3));
+  }
+);
 
 export const getIncludedDocumentsCount = createSelector(
   [getIncludedDocumentsResults],
