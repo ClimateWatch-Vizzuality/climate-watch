@@ -99,7 +99,7 @@ export const getAllowedSectors = createSelector(
   (source, version) => {
     if (!source || !version) return null;
     if (source.label === 'UNFCCC') {
-      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
+      return ALLOWED_SECTORS_BY_SOURCE[source.label][version];
     }
     return ALLOWED_SECTORS_BY_SOURCE[source.label];
   }
@@ -188,13 +188,13 @@ export const filterData = createSelector(
       );
       return groupBy(flatten(locationData.map(d => d.emissions)), 'year');
     });
-
     const locationDataSummed = locationDataGroupedByYear.map(l =>
       Object.keys(l).map(year => ({
         year: parseInt(year, 10),
         value: sumBy(l[year], 'value')
       }))
     );
+
     const compressedData = locationDataSummed.map((d, i) => ({
       ...filteredData[0],
       iso_code3: locations[i].iso_code3,
