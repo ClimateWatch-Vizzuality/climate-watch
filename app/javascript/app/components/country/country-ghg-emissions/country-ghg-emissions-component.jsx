@@ -74,6 +74,7 @@ class CountryGhgEmissions extends PureComponent {
       calculationSelected,
       data,
       quantifications,
+      isContained,
       loading,
       config,
       handleYearHover,
@@ -81,7 +82,8 @@ class CountryGhgEmissions extends PureComponent {
       filtersSelected
     } = this.props;
 
-    const points = FEATURE_QUANTIFICATIONS === 'true' ? quantifications : [];
+    const points =
+      FEATURE_QUANTIFICATIONS === 'true' && !isContained ? quantifications : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
@@ -104,7 +106,6 @@ class CountryGhgEmissions extends PureComponent {
 
   render() {
     const { isEmbed, countryName } = this.props;
-
     return (
       <div className={styles.container}>
         <EmissionsMetaProvider />
@@ -138,6 +139,7 @@ class CountryGhgEmissions extends PureComponent {
 
 CountryGhgEmissions.propTypes = {
   isEmbed: PropTypes.bool.isRequired,
+  isContained: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
