@@ -9,7 +9,7 @@ import {
 
 import Component from './country-component';
 
-const mapStateToProps = (state, { location, match, route }) => {
+const mapStateToProps = (state, { location, match, route, isContained }) => {
   const iso = match.params.iso;
   const { data } = state.socioeconomics;
   const stateWithIso = {
@@ -30,7 +30,8 @@ const mapStateToProps = (state, { location, match, route }) => {
       name: getCountryName(stateWithIso)
     },
     description: getDescriptionText(stateWithIso),
-    anchorLinks: getAnchorLinks(routeData)
+    anchorLinks: getAnchorLinks(routeData),
+    isContained
   };
 };
 

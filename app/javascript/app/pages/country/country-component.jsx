@@ -16,7 +16,13 @@ import styles from './country-styles.scss';
 
 class Country extends PureComponent {
   render() {
-    const { route, country, anchorLinks, description } = this.props;
+    const {
+      route,
+      country,
+      anchorLinks,
+      description,
+      isContained
+    } = this.props;
     const countryName = (country && country.name) || '';
     return (
       <div>
@@ -56,7 +62,7 @@ class Country extends PureComponent {
           route.sections.map(section => (
             <div key={section.hash} className={styles.section}>
               <div id={section.hash} className={styles.sectionHash} />
-              <section.component />
+              <section.component isContained={isContained} />
             </div>
           ))}
       </div>
@@ -71,7 +77,8 @@ Country.propTypes = {
   }).isRequired,
   description: PropTypes.string,
   anchorLinks: PropTypes.array.isRequired,
-  route: PropTypes.object.isRequired
+  route: PropTypes.object.isRequired,
+  isContained: PropTypes.bool
 };
 
 export default Country;
