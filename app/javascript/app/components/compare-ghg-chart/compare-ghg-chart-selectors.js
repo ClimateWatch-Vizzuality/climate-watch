@@ -148,9 +148,11 @@ export const filterData = createSelector(
     getSourceSelected,
     getCalculationSelected,
     addNameToLocations,
-    getVersion
+    getVersion,
+    getSectorOptions,
+    getSectorsSelected
   ],
-  (data, source, calculation, locations, version) => {
+  (data, source, calculation, locations, version, sectorOptions, sectors) => {
     if (!data || !data.length) return [];
     let filteredData = data;
     // Filter by version
@@ -158,44 +160,49 @@ export const filterData = createSelector(
     if (version === LATEST_VERSION) {
       filteredData = filteredData.filter(d => d.gwp === LATEST_VERSION);
     }
-    // Filter by sector
-    const filterSector =
-      source.label === 'UNFCCC'
-        ? DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version]
-        : DEFAULT_EMISSIONS_SELECTIONS[source.label].sector;
+
+    // Filter by source and gas
     filteredData = filteredData.filter(
       d =>
         d.source === source.label &&
-        d.sector === filterSector &&
         (d.gas === 'All GHG' || d.gas === 'Aggregate GHGs')
     );
 
-    // Group values if they need a calculation
-    if (calculation.value !== 'ABSOLUTE_VALUE') {
-      if (!locations || !locations.length) return null;
-      const locationDataGroupedByYear = locations.map(l => {
-        const locationData = filteredData.filter(
-          d => d.iso_code3 === l.iso_code3
-        );
-        return groupBy(flatten(locationData.map(d => d.emissions)), 'year');
-      });
+    // Filter by sector
+    const defaultSector =
+      source.label === 'UNFCCC'
+        ? [DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version]]
+        : [DEFAULT_EMISSIONS_SELECTIONS[source.label].sector];
+    const sectorFilters =
+      sectors && sectors.length && sectorOptions.length !== sectors.length
+        ? sectors.map(s => s.label)
+        : defaultSector;
+    filteredData = filteredData.filter(
+      d => sectorFilters.indexOf(d.sector) !== -1
+    );
 
-      const locationDataSummed = locationDataGroupedByYear.map(l =>
-        Object.keys(l).map(year => ({
-          year: parseInt(year, 10),
-          value: sumBy(l[year], 'value')
-        }))
+    if (!locations || !locations.length) return null;
+    const locationDataGroupedByYear = locations.map(l => {
+      const locationData = filteredData.filter(
+        d => d.iso_code3 === l.iso_code3
       );
-      const compressedData = locationDataSummed.map((d, i) => ({
-        ...filteredData[0],
-        iso_code3: locations[i].iso_code3,
-        location: locations[i].name,
-        sector: filterSector,
-        emissions: d
-      }));
-      return sortEmissionsByValue(compressedData);
-    }
-    return sortEmissionsByValue(filteredData);
+      return groupBy(flatten(locationData.map(d => d.emissions)), 'year');
+    });
+
+    const locationDataSummed = locationDataGroupedByYear.map(l =>
+      Object.keys(l).map(year => ({
+        year: parseInt(year, 10),
+        value: sumBy(l[year], 'value')
+      }))
+    );
+    const compressedData = locationDataSummed.map((d, i) => ({
+      ...filteredData[0],
+      iso_code3: locations[i].iso_code3,
+      location: locations[i].name,
+      sector: sectorFilters,
+      emissions: d
+    }));
+    return sortEmissionsByValue(compressedData);
   }
 );
 
