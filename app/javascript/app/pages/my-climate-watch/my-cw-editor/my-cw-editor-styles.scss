@@ -36,7 +36,7 @@
   background-color: white;
 }
 
-span[data-text] {
+div[data-block] {
   @include row();
 
   padding-left: 90px !important;
