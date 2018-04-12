@@ -12,7 +12,7 @@ export const getTotalCountriesNumber = state =>
 export const getTotalDocumentsNumber = createSelector(
   [state => state.meta, getDocument],
   (meta, document) => {
-    if (!meta || !document) return null;
+    if (!meta) return null;
     return document && document !== 'all'
       ? meta[`total_${document}_count`]
       : meta.total_ndc_count + meta.total_indc_count;
