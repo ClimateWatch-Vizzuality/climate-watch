@@ -1,17 +1,16 @@
 import { createSelector } from 'reselect';
+import { isPageContained } from 'utils/navigation';
 
 const getRouteSections = state => state.route.sections || [];
 const getSearch = state => state.location.search;
-const getIsContained = state => state.isContained || null;
 
 export const getAnchorLinks = createSelector(
-  [getRouteSections, getSearch, getIsContained],
-  (sections, search, isContained) =>
+  [getRouteSections, getSearch],
+  (sections, search) =>
     sections
       .filter(
         section =>
-          section.anchor &&
-          !(isContained && section.hash === 'climate-vulnerability')
+          section.anchor && !(isPageContained && section.excludeFromContained)
       )
       .map(section => ({
         label: section.label,
