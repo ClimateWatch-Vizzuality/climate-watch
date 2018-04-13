@@ -10,7 +10,7 @@ class CountryTimeline extends PureComponent {
   constructor() {
     super();
     this.state = {
-      index: 0,
+      index: null,
       previous: 0,
       open: false
     };
@@ -62,7 +62,7 @@ class CountryTimeline extends PureComponent {
           </h3>
           {documentYears ? (
             <HorizontalTimeline
-              index={this.state.index}
+              index={this.state.index || documentYears.length - 1}
               indexClick={index => {
                 this.setState({
                   index,
