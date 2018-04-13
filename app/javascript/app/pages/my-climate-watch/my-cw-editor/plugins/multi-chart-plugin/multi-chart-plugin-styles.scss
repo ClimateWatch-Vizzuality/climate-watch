@@ -1,21 +1,29 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
-$editor-margin: 90px;
+.wrapper {
+  width: 100%;
+  background-color: $light-gray;
+  margin: $gutter-padding 0;
+}
 
 .container {
-  width: 100vw;
-  margin-left: - (2 * $editor-margin);
+  @include row();
+  @include xy-gutters($gutter-position: ('top', 'bottom'), $gutter-type: padding);
+
   margin-bottom: 1rem;
-  background-color: $light-gray;
-  padding: 3rem $editor-margin;
   user-select: none;
   position: relative;
   box-shadow: 0 0 0 2px transparent;
   color: $theme-color;
 
+  .titleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .title {
     font-size: 1rem;
-    margin-bottom: 2em;
   }
 
   .legend {
@@ -25,18 +33,6 @@ $editor-margin: 90px;
   .description {
     column-count: 2;
     font-size: 1rem;
-  }
-
-  .tools {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    justify-content: space-between;
-    // width: 100px;
   }
 
   .tool {

@@ -1,15 +1,19 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
 .visContainer {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
+  @include columns();
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+  }
+
+  @media #{$desktop} {
+    @include columns(4);
+  }
 }
 
 .visCard {
-  flex-basis: calc(33% - 20px);
-  margin-bottom: 20px;
-  margin-right: 20px;
+  @include xy-gutters($gutter-position: ('top','bottom'), $gutters: $gutter-padding);
 }
 
 .placeholder {
@@ -42,5 +46,6 @@
 .modalContent {
   padding-left: 0;
   padding-right: 0;
+  overflow: hidden;
   overscroll-behavior: auto; /* stylelint-disable-line property-no-unknown */
 }

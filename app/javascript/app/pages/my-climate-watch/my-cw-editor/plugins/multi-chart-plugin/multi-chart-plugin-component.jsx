@@ -14,25 +14,29 @@ class MultiChartPlugin extends PureComponent {
     const { blockProps } = this.props;
     const { isFocused, deleteAtomic, title, description } = blockProps;
     return (
-      <div
-        className={cx(styles.container, {
-          [styles.containerFocussed]: isFocused
-        })}
-      >
-        <h1 className={styles.title}>{title}</h1>
-        <RenderChart {...blockProps} />
-        <Legend className={styles.legend} data={blockProps.config.legend} />
-        <p className={styles.description}>{description}</p>
-        <ul className={styles.tools}>
-          <li>
-            <Button
-              className={cx(styles.tool, styles.delete)}
-              onClick={() => deleteAtomic(this.props)}
-            >
-              <Icon icon={deleteIcon} />
-            </Button>
-          </li>
-        </ul>
+      <div className={styles.wrapper}>
+        <div
+          className={cx(styles.container, {
+            [styles.containerFocussed]: isFocused
+          })}
+        >
+          <div className={styles.titleRow}>
+            <h1 className={styles.title}>{title}</h1>
+            <ul className={styles.tools}>
+              <li>
+                <Button
+                  className={cx(styles.tool, styles.delete)}
+                  onClick={() => deleteAtomic(this.props)}
+                >
+                  <Icon icon={deleteIcon} />
+                </Button>
+              </li>
+            </ul>
+          </div>
+          <RenderChart {...blockProps} width="100%" height={350} />
+          <Legend className={styles.legend} data={blockProps.config.legend} />
+          <p className={styles.description}>{description}</p>
+        </div>
       </div>
     );
   }
