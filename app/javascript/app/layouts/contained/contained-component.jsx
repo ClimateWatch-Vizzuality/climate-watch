@@ -15,7 +15,7 @@ class App extends PureComponent {
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
-        {renderRoutes(route.routes.filter(r => r.path), { isContained: true })}
+        {renderRoutes(route.routes.filter(r => r.path))}
         <Footer includeBottom={false} includeContact={false} />
       </div>
     );

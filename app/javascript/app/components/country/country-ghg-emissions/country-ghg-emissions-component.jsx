@@ -10,6 +10,8 @@ import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
 import Disclaimer from 'components/disclaimer';
+import { isPageContained } from 'utils/navigation';
+
 import styles from './country-ghg-emissions-styles.scss';
 
 const { FEATURE_QUANTIFICATIONS } = process.env;
@@ -74,7 +76,6 @@ class CountryGhgEmissions extends PureComponent {
       calculationSelected,
       data,
       quantifications,
-      isContained,
       loading,
       config,
       handleYearHover,
@@ -83,7 +84,9 @@ class CountryGhgEmissions extends PureComponent {
     } = this.props;
 
     const points =
-      FEATURE_QUANTIFICATIONS === 'true' && !isContained ? quantifications : [];
+      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained
+        ? quantifications
+        : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
@@ -139,7 +142,6 @@ class CountryGhgEmissions extends PureComponent {
 
 CountryGhgEmissions.propTypes = {
   isEmbed: PropTypes.bool.isRequired,
-  isContained: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,

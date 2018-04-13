@@ -1,5 +1,6 @@
 import qs from 'query-string';
 import isArray from 'lodash/isArray';
+import { CONTAINED_PATHNAME } from 'data/constants';
 
 export function getLocationParamUpdated(location, params = [], clear = false) {
   const search = qs.parse(location.search);
@@ -21,9 +22,8 @@ export function getLocationParamUpdated(location, params = [], clear = false) {
   };
 }
 
-export function isPageContained() {
-  return window.location.pathname.split('/')[1] === 'contained';
-}
+export const isPageContained =
+  window.location.pathname.split('/')[1] === CONTAINED_PATHNAME;
 
 export default {
   getLocationParamUpdated,
