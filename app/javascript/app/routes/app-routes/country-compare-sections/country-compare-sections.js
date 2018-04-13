@@ -13,7 +13,7 @@ export default [
     hash: 'climate-vulnerability',
     label: 'Climate Vulnerability and Readiness',
     anchor: true,
-    excludeFromContainer: true,
+    excludeFromContained: true,
     component: ClimateVulnerability
   },
   {

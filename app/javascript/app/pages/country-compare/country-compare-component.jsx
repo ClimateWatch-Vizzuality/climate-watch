@@ -58,7 +58,7 @@ const CountryCompare = ({ route, anchorLinks, isContained }) => {
           {route.sections &&
             route.sections.length > 0 &&
             route.sections
-              .filter(s => !(isContained && s.excludeFromContainer))
+              .filter(s => !(isContained && s.excludeFromContained))
               .map(section => (
                 <section
                   key={section.hash}
