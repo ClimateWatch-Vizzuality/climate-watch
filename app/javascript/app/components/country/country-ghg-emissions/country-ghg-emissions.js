@@ -2,7 +2,7 @@ import { createElement, PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getLocationParamUpdated } from 'utils/navigation';
+import { getLocationParamUpdated, isPageContained } from 'utils/navigation';
 import qs from 'query-string';
 import ReactGA from 'react-ga';
 
@@ -106,7 +106,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
         category: 'Country',
         slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
-        showDisclaimer: true,
+        showDisclaimer: !isPageContained,
         open: true
       });
     }
