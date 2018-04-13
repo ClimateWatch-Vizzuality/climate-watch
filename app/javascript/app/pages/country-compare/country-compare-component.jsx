@@ -19,7 +19,7 @@ import styles from './country-compare-styles.scss';
 
 const { FEATURE_COUNTRY_COMPARISON } = process.env;
 
-const CountryCompare = ({ route, anchorLinks }) => {
+const CountryCompare = ({ route, anchorLinks, isContained }) => {
   if (FEATURE_COUNTRY_COMPARISON === 'false') {
     return (
       <Teaser
@@ -57,11 +57,17 @@ const CountryCompare = ({ route, anchorLinks }) => {
           </Desktop>
           {route.sections &&
             route.sections.length > 0 &&
-            route.sections.map(section => (
-              <section key={section.hash} id={section.hash}>
-                {!!section.component && <section.component />}
-              </section>
-            ))}
+            route.sections
+              .filter(s => !(isContained && s.excludeFromContained))
+              .map(section => (
+                <section
+                  key={section.hash}
+                  id={section.hash}
+                  className={styles.section}
+                >
+                  <section.component />
+                </section>
+              ))}
           {!isLandscape ? <CountrySelectorFooter /> : null}
           <ModalMetadata />
         </div>
@@ -72,7 +78,8 @@ const CountryCompare = ({ route, anchorLinks }) => {
 
 CountryCompare.propTypes = {
   route: PropTypes.object.isRequired,
-  anchorLinks: PropTypes.array.isRequired
+  anchorLinks: PropTypes.array.isRequired,
+  isContained: PropTypes.bool
 };
 
 export default CountryCompare;

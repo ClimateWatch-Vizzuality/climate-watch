@@ -27,7 +27,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
     case 'scenarios':
       return ['model', 'name', 'category', 'url'];
     case 'indicators':
-      return ['category', 'subcategory', 'name'];
+      return ['category', 'subcategory', 'name', 'definition'];
     default:
       return null;
   }
