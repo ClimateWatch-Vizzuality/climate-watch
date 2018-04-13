@@ -75,6 +75,12 @@ Hello fermentum quam et nunc finibus, ac tincidunt urna mollis."
       ndcs = json_response['ndcs']
       expect(ndcs.first['matches'].last['idx']).to equal(2)
     end
+    it 'returns ndc and indc total document count as metadata' do
+      get :index
+      json_response = JSON.parse(response.body)
+      meta = json_response['meta']
+      expect(meta).to match('total_ndc_count' => 2, 'total_indc_count' => 0)
+    end
   end
 
   describe 'GET show' do
