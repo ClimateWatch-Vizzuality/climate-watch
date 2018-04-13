@@ -104,7 +104,9 @@ class CountryGhgEmissionsContainer extends PureComponent {
     if (source) {
       this.props.setModalMetadata({
         category: 'Country',
-        slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
+        slugs: isPageContained
+          ? [source]
+          : [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
         showDisclaimer: !isPageContained,
         open: true
