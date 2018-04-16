@@ -7,21 +7,30 @@ import styles from './steps-styles';
 
 const Step1 = ({ datasets, selectDataset }) => (
   <li className={styles.step}>
-    <h2 className={styles.stepTitle}>1/4 - Select a dataset</h2>
-    <SelectableList
-      type="dataset"
-      data={datasets.data}
-      selected={datasets.selected}
-      onClick={selectDataset}
-    >
-      {d => (
-        <CardContent placeholder={d.placeholder} image={d.image} type="dataset">
-          <div className={styles.cardContent}>
-            <p className={styles.cardTitle}>{d.name}</p>
-          </div>
-        </CardContent>
-      )}
-    </SelectableList>
+    <div className={styles.stepContainer}>
+      <h2 className={styles.stepTitle}>1/4 - Select a dataset</h2>
+      <div className="layout-item-container">
+        <SelectableList
+          type="dataset"
+          data={datasets.data}
+          selected={datasets.selected}
+          onClick={selectDataset}
+          className={styles.step1ListContainer}
+        >
+          {d => (
+            <CardContent
+              placeholder={d.placeholder}
+              image={d.image}
+              type="dataset"
+            >
+              <div className={styles.cardContent}>
+                <p className={styles.cardTitle}>{d.name}</p>
+              </div>
+            </CardContent>
+          )}
+        </SelectableList>
+      </div>
+    </div>
   </li>
 );
 

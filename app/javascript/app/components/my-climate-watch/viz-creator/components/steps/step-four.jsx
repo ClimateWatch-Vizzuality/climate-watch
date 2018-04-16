@@ -38,75 +38,84 @@ class Step4 extends Component {
     } = this.props;
     return [
       <li className={styles.step} key="step-4-last-li">
-        <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
-        <Fieldset
-          className={styles.fieldset}
-          theme={styles}
-          {...{
-            failed:
-              creationStatus.failed &&
-              includesField('title', creationStatus.fields),
-            failMessage: findDescription('title', creationStatus.fields)
-          }}
-        >
-          <TextInput
-            value={title || placeholder}
-            onChange={onNameChange}
-            onFocus={onNameChange}
-            className={styles.inputText}
-            theme={styles}
-          />
-        </Fieldset>
-        {timeseries.loading ? (
-          <Loading light className={styles.timeseriesLoader} />
-        ) : (
-          [
-            <RenderChart
-              key="chart"
-              className={styles.chart}
-              chart={visualisationType}
-              config={{ small: false, ...chartData }}
-              width="100%"
-              height={350}
-            />,
-            <Legend key="legend" theme={styles} data={chartData.legend} />
-          ]
-        )}
-        <Fieldset
-          className={styles.fieldset}
-          theme={styles}
-          {...{
-            failed:
-              creationStatus.failed &&
-              includesField('description', creationStatus.fields),
-            failMessage: findDescription('description', creationStatus.fields)
-          }}
-        >
-          <TextArea
-            className={styles.textArea}
-            theme={styles}
-            onDescriptionChange={onDescriptionChange}
-            onFocus={onDescriptionChange}
-            value={description}
-          />
-        </Fieldset>
+        <div className={styles.stepContainer}>
+          <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
+          <div className={styles.step4Container}>
+            <Fieldset
+              className={styles.fieldset}
+              theme={styles}
+              {...{
+                failed:
+                  creationStatus.failed &&
+                  includesField('title', creationStatus.fields),
+                failMessage: findDescription('title', creationStatus.fields)
+              }}
+            >
+              <TextInput
+                value={title || placeholder}
+                onChange={onNameChange}
+                onFocus={onNameChange}
+                className={styles.inputText}
+                theme={styles}
+              />
+            </Fieldset>
+            {timeseries.loading ? (
+              <Loading light className={styles.timeseriesLoader} />
+            ) : (
+              [
+                <RenderChart
+                  key="chart"
+                  className={styles.chart}
+                  chart={visualisationType}
+                  config={{ small: false, ...chartData }}
+                  width="100%"
+                  height={350}
+                />,
+                <Legend key="legend" theme={styles} data={chartData.legend} />
+              ]
+            )}
+            <Fieldset
+              className={styles.fieldset}
+              theme={styles}
+              {...{
+                failed:
+                  creationStatus.failed &&
+                  includesField('description', creationStatus.fields),
+                failMessage: findDescription(
+                  'description',
+                  creationStatus.fields
+                )
+              }}
+            >
+              <TextArea
+                className={styles.textArea}
+                theme={styles}
+                onDescriptionChange={onDescriptionChange}
+                onFocus={onDescriptionChange}
+                value={description}
+              />
+            </Fieldset>
+          </div>
+        </div>
       </li>,
-      <li className={styles.saveContainer} key="step-4-button-li">
-        {id && (
+      <li className="grid-column-element" key="step-4-button-li">
+        <div className={styles.saveContainer}>
+          {id && (
+            <Button
+              onClick={() => deleteVisualisation({ id })}
+              className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
+            >
+              Delete
+            </Button>
+          )}
           <Button
-            onClick={() => deleteVisualisation({ id })}
-            className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
+            color="yellow"
+            onClick={() => saveVisualisation({ id })}
+            className={styles.saveBtn}
           >
-            Delete
+            Save
           </Button>
-        )}
-        <Button
-          color="yellow"
-          onClick={() => saveVisualisation({ id })}
-          className={styles.saveBtn}
-        >
-          Save
-        </Button>
+        </div>
       </li>
     ];
   }

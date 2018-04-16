@@ -1,40 +1,44 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
 .editor {
+  //@include row();
+  width: 100%;
   min-height: 80vh;
-  margin: $gutter-padding * 3 $gutter-padding * 6;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.headerWrapper {
+  width: 100%;
+  background-color: $light-gray;
+  padding: 2.5rem 0;
 }
 
 .title {
-  position: relative;
-  background-color: $light-gray;
+  @include row((10, 2));
+
+  align-items: center;
 }
 
 .stickyWrapper {
-  .titleField {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(26, 28, 34, 0.07);
-  }
-
-  .saveBtn {
-    top: 20px;
+  .headerWrapper {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
   }
 }
 
 .titleField {
   border: none;
-  width: 100%;
   font-size: 2.7rem;
-  padding: 1.25em $gutter-padding 1em;
-  padding-right: 20vw;
   background-color: transparent;
 }
 
 .saveBtn {
-  position: absolute;
-  top: 50px;
-  width: 100px;
-  right: 7vw;
   background-color: white;
+}
+
+div[data-block] {
+  @include row();
+
+  padding-left: 90px !important;
+  padding-right: 90px !important;
 }

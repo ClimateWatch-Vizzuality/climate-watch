@@ -76,32 +76,34 @@ const StoryEditor = ({
         activeClass={cx('sticky', styles.stickyWrapper)}
         key="title-block"
       >
-        <div className={styles.title}>
-          <input
-            type="text"
-            onKeyUp={e => {
-              if (e.keyCode === 13) {
-                focusEditor();
-              }
-            }}
-            onClick={focusTitle}
-            ref={getTitleRef}
-            className={styles.titleField}
-            placeholder={titlePlaceholder}
-            onChange={e => updateTitle(e.target.value)}
-            value={title}
-          />
-          <Button
-            className={styles.saveBtn}
-            onClick={() =>
-              saveInsight({
-                title,
-                content: editorState,
-                id: insight.insight.id
-              })}
-          >
-            Save
-          </Button>
+        <div className={styles.headerWrapper}>
+          <div className={styles.title}>
+            <input
+              type="text"
+              onKeyUp={e => {
+                if (e.keyCode === 13) {
+                  focusEditor();
+                }
+              }}
+              onClick={focusTitle}
+              ref={getTitleRef}
+              className={styles.titleField}
+              placeholder={titlePlaceholder}
+              onChange={e => updateTitle(e.target.value)}
+              value={title}
+            />
+            <Button
+              className={styles.saveBtn}
+              onClick={() =>
+                saveInsight({
+                  title,
+                  content: editorState,
+                  id: insight.insight.id
+                })}
+            >
+              Save
+            </Button>
+          </div>
         </div>
       </Sticky>,
       <div className={styles.editor} key="editor-block">

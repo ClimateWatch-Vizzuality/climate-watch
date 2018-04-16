@@ -43,50 +43,54 @@ const Step3 = props => {
 
   return (
     <li className={styles.step}>
-      <h2 className={styles.stepTitle}>3/4 - Filter the data</h2>
-      {spec && (
-        <ul className={styles.selectsContainer}>
-          {_map(spec, (f, i) => {
-            if (!f.data) return null;
-            return (
-              <li
-                key={f.name || i}
-                className={cx(styles.selectsItem, {
-                  [styles.selectsItemHidden]:
-                    selectProps(f, 'values').hidden ||
-                    selectProps(f, 'value').hidden
-                })}
-              >
-                {f.multi ? (
-                  <MultiSelect
-                    className={styles.dropDowns}
-                    {...sortMultiselectLabels(f, 'values')}
-                    label={upperFirst(f.name)}
-                    onMultiValueChange={e =>
-                      handleFilterSelect({
-                        values: e,
-                        type: f.name,
-                        multi: f.multi
-                      })}
-                  />
-                ) : (
-                  <Dropdown
-                    {...selectProps(f, 'value')}
-                    className={styles.dropDowns}
-                    label={upperFirst(f.label)}
-                    onValueChange={e =>
-                      handleFilterSelect({
-                        ...e,
-                        type: f.name
-                      })}
-                    hideResetButton
-                  />
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <div className={styles.stepContainer}>
+        <h2 className={styles.stepTitle}>3/4 - Filter the data</h2>
+        <div className="layout-item-container">
+          {spec && (
+            <ul className={styles.selectsContainer}>
+              {_map(spec, (f, i) => {
+                if (!f.data) return null;
+                return (
+                  <li
+                    key={f.name || i}
+                    className={cx(styles.selectsItem, {
+                      [styles.selectsItemHidden]:
+                        selectProps(f, 'values').hidden ||
+                        selectProps(f, 'value').hidden
+                    })}
+                  >
+                    {f.multi ? (
+                      <MultiSelect
+                        className={styles.dropDowns}
+                        {...sortMultiselectLabels(f, 'values')}
+                        label={upperFirst(f.name)}
+                        onMultiValueChange={e =>
+                          handleFilterSelect({
+                            values: e,
+                            type: f.name,
+                            multi: f.multi
+                          })}
+                      />
+                    ) : (
+                      <Dropdown
+                        {...selectProps(f, 'value')}
+                        className={styles.dropDowns}
+                        label={upperFirst(f.label)}
+                        onValueChange={e =>
+                          handleFilterSelect({
+                            ...e,
+                            type: f.name
+                          })}
+                        hideResetButton
+                      />
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </div>
     </li>
   );
 };
