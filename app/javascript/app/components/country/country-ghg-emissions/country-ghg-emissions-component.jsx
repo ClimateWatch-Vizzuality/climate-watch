@@ -10,6 +10,8 @@ import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
 import Disclaimer from 'components/disclaimer';
+import { isPageContained } from 'utils/navigation';
+
 import styles from './country-ghg-emissions-styles.scss';
 
 const { FEATURE_QUANTIFICATIONS } = process.env;
@@ -81,7 +83,10 @@ class CountryGhgEmissions extends PureComponent {
       filtersSelected
     } = this.props;
 
-    const points = FEATURE_QUANTIFICATIONS === 'true' ? quantifications : [];
+    const points =
+      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained
+        ? quantifications
+        : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
@@ -104,7 +109,6 @@ class CountryGhgEmissions extends PureComponent {
 
   render() {
     const { isEmbed, countryName } = this.props;
-
     return (
       <div className={styles.container}>
         <EmissionsMetaProvider />

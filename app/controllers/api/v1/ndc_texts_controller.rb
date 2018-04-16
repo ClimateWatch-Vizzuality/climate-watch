@@ -2,7 +2,8 @@ module Api
   module V1
     class NdcTextsController < ApiController
       def index
-        total_count = Ndc.all.count
+        total_ndc_count = Ndc.all.where(document_type: 'ndc').count
+        total_indc_count = Ndc.all.where(document_type: 'indc').count
         ndcs = Ndc.includes(:location)
         ndcs =
           if params[:target] || params[:goal] || params[:sector]
@@ -17,7 +18,11 @@ module Api
                adapter: :json,
                each_serializer: Api::V1::NdcTextSearchResultSerializer,
                params: params,
-               meta: {total_count: total_count}
+               meta:
+                 {
+                   total_ndc_count: total_ndc_count,
+                   total_indc_count: total_indc_count
+                 }
       end
 
       def show
@@ -111,17 +116,9 @@ module Api
         include_not_matched = true
       )
         unless include_not_matched
-          if params[:target]
-            ndcs = ndcs.where(id: ::NdcSdg::Target.ndc_ids(params[:target]))
-          end
-
-          if params[:goal]
-            ndcs = ndcs.where(id: ::NdcSdg::Goal.ndc_ids(params[:goal]))
-          end
-
-          if params[:sector]
-            ndcs = ndcs.where(id: ::NdcSdg::Sector.ndc_ids(params[:sector]))
-          end
+          ndcs = ndcs.where(id: ::NdcSdg::Target.ndc_ids(params[:target])) if params[:target]
+          ndcs = ndcs.where(id: ::NdcSdg::Goal.ndc_ids(params[:goal])) if params[:goal]
+          ndcs = ndcs.where(id: ::NdcSdg::Sector.ndc_ids(params[:sector])) if params[:sector]
         end
 
         linkages = Ndc.linkages(params)
