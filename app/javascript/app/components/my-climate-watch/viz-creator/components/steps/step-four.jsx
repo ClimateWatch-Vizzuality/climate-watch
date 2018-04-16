@@ -21,16 +21,10 @@ const findDescription = (field, coll) =>
   findField(field, coll) && findField(field, coll).message;
 
 class Step4 extends Component {
-  componentDidMount() {
-    const { title, placeholder, onNameChange } = this.props;
-    if (!title && placeholder) {
-      onNameChange(placeholder);
-    }
-  }
-
   render() {
     const {
       title,
+      placeholder,
       chartData,
       onNameChange,
       onDescriptionChange,
@@ -58,8 +52,7 @@ class Step4 extends Component {
               }}
             >
               <TextInput
-                placeholder=""
-                value={title}
+                value={title || placeholder}
                 onChange={onNameChange}
                 onFocus={onNameChange}
                 className={styles.inputText}
