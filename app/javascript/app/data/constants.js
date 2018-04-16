@@ -206,6 +206,7 @@ export const NDC_DOCUMENT_OPTIONS = [
   }
 ];
 
+export const LATEST_VERSION = 'AR4';
 export const CONTAINED_PATHNAME = 'contained';
 
 export default {
@@ -225,5 +226,6 @@ export default {
   CLIMATE_VULNERABILITY_DEFINITIONS,
   DISCLAIMER_SHOWN,
   NDC_DOCUMENT_OPTIONS,
+  LATEST_VERSION,
   CONTAINED_PATHNAME
 };

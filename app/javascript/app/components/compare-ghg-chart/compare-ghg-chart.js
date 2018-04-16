@@ -17,7 +17,9 @@ import {
   getChartData,
   getChartConfig,
   parseLocations,
-  getLocationsFilter
+  getLocationsFilter,
+  getSectorOptions,
+  getSectorsSelected
 } from './compare-ghg-chart-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -40,7 +42,9 @@ const mapStateToProps = (state, { location }) => {
     calculationSelected.value !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
   return {
     sourceOptions: getSourceOptions(ghg),
+    sectorOptions: getSectorOptions(ghg),
     sourceSelected: getSourceSelected(ghg),
+    sectorsSelected: getSectorsSelected(ghg),
     calculationOptions,
     calculationSelected: getCalculationSelected(ghg),
     data: getChartData(ghg),
@@ -79,6 +83,18 @@ class CompareGhgChartContainer extends PureComponent {
     });
   };
 
+  handleSectorChange = sectors => {
+    const sectorLabels = sectors.map(s => s.label);
+    this.updateUrlParam({ name: 'sectors', value: sectorLabels.toString() });
+    if (sectors.length > 0) {
+      ReactGA.event({
+        category: 'Country comparison',
+        action: 'Sector selected',
+        label: sectorLabels.toString()
+      });
+    }
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -108,6 +124,7 @@ class CompareGhgChartContainer extends PureComponent {
       ...this.props,
       handleSourceChange: this.handleSourceChange,
       handleCalculationChange: this.handleCalculationChange,
+      handleSectorChange: this.handleSectorChange,
       handleInfoClick: this.handleInfoClick,
       handleAnalyticsClick: this.handleAnalyticsClick
     });

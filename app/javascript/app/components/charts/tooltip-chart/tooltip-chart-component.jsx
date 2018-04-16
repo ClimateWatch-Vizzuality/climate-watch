@@ -15,10 +15,7 @@ class TooltipChart extends PureComponent {
     let total = 0;
     let hasData = false;
     keys.forEach(key => {
-      if (
-        data.payload[key.value] !== undefined ||
-        data.payload[key.value] !== null
-      ) {
+      if (data.payload[key.value] || data.payload[key.value] === 0) {
         hasData = true;
         total += data.payload[key.value];
       }

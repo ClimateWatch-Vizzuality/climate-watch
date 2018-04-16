@@ -1,6 +1,6 @@
 :global .sticky-outer-wrapper {
   .sticky-inner-wrapper {
-    z-index: 2;
+    z-index: 10;
   }
 
   &.sticky {
