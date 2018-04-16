@@ -112,6 +112,7 @@ export const getSectorOptions = createSelector(
     const dataSectors = uniq(data.map(d => d.sector));
     const sectorOptions = dataSectors
       .filter(sector => sectorsAllowed.indexOf(sector) > -1)
+      .sort()
       .map(s => ({ label: s, value: s }));
     return sectorOptions;
   }
