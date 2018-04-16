@@ -2,7 +2,6 @@ export default {
   creatorIsOpen: false,
   title: '',
   description: '',
-  placeholder: '',
   creationStatus: {
     failed: false,
     fields: []
