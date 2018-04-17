@@ -88,7 +88,9 @@ const partnershipWith = {
       img: {
         alt: 'Stockholm Environment Institute',
         src: seiImage
-      }
+      },
+      description:
+        'contributes to Climate Watch by providing NDC-related data based on the NDC Explorer.'
     },
     {
       link: 'http://newsroom.unfccc.int/',
