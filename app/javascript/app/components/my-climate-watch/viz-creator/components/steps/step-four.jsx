@@ -110,7 +110,12 @@ class Step4 extends Component {
           )}
           <Button
             color="yellow"
-            onClick={() => saveVisualisation({ id })}
+            onClick={() => {
+              if (!title) {
+                onNameChange(placeholder);
+              }
+              saveVisualisation({ id });
+            }}
             className={styles.saveBtn}
           >
             Save
