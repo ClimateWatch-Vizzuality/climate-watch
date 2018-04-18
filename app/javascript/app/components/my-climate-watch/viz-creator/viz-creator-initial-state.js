@@ -1,6 +1,6 @@
 export default {
   creatorIsOpen: false,
-  title: '',
+  title: undefined,
   description: '',
   creationStatus: {
     failed: false,
