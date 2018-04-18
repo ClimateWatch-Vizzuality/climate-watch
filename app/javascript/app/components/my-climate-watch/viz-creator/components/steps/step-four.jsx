@@ -21,6 +21,12 @@ const findDescription = (field, coll) =>
   findField(field, coll) && findField(field, coll).message;
 
 class Step4 extends Component {
+  updateTitleValue() {
+    return this.props.title === undefined
+      ? this.props.placeholder
+      : this.props.title;
+  }
+
   render() {
     const {
       title,
@@ -52,7 +58,7 @@ class Step4 extends Component {
               }}
             >
               <TextInput
-                value={title}
+                value={this.updateTitleValue()}
                 onChange={onNameChange}
                 onFocus={onNameChange}
                 className={styles.inputText}
