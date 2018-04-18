@@ -52,7 +52,7 @@ class Step4 extends Component {
               }}
             >
               <TextInput
-                value={title || placeholder}
+                value={title}
                 onChange={onNameChange}
                 onFocus={onNameChange}
                 className={styles.inputText}
@@ -111,7 +111,7 @@ class Step4 extends Component {
           <Button
             color="yellow"
             onClick={() => {
-              if (!title) {
+              if (title === undefined) {
                 onNameChange(placeholder);
               }
               saveVisualisation({ id });
