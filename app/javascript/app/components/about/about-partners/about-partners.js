@@ -30,7 +30,9 @@ const partnershipWith = {
       img: {
         alt: 'African Center for Technology Studies',
         src: actsImage
-      }
+      },
+      description:
+        'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
     },
     {
       link: 'http://climateactiontracker.org/',
@@ -64,7 +66,9 @@ const partnershipWith = {
       img: {
         alt: 'German Development Institute',
         src: dieImage
-      }
+      },
+      description:
+        'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
     },
     {
       link: 'https://www.google.com/intl/en/about/',
@@ -73,7 +77,7 @@ const partnershipWith = {
         src: googleImage
       },
       description:
-        'Google provided support in developing concepts and functions for the Pathways module.'
+        'provided support in developing concepts and functions for the Pathways module.'
     },
     {
       link: 'http://www.ndcpartnership.org/',
@@ -90,7 +94,7 @@ const partnershipWith = {
         src: seiImage
       },
       description:
-        'contributes to Climate Watch by providing NDC-related data based on the NDC Explorer.'
+        'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
     },
     {
       link: 'http://newsroom.unfccc.int/',
