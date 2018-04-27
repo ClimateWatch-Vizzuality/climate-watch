@@ -200,13 +200,24 @@ export const getPlaceholder = createSelector(
   [
     placeholderSelector,
     selectedStructureSelector,
+    locationsSelector,
     categoriesSelector,
     indicatorsSelector
   ],
-  (placeholder, selectedStructure, category, indicator) => {
+  (placeholder, selectedStructure, location, category, indicator) => {
     if (!selectedStructure || !category.selected || !indicator.selected) {
       return undefined;
     }
+    const locationsFilter =
+      selectedStructure.filters &&
+      selectedStructure.filters.find(f => f.name === 'locations');
+    const locationsLabel =
+      !locationsFilter || !locationsFilter.multi
+        ? `${location.selected.label} - `
+        : '';
+    const placeholderText = `${locationsLabel}${category.selected
+      .label} - ${category.child.selected.label}`;
+
     const indicators =
       selectedStructure.filters &&
       selectedStructure.filters.find(f => f.name === 'indicators');
@@ -214,9 +225,8 @@ export const getPlaceholder = createSelector(
     return (
       placeholder ||
       (singleIndicator
-        ? `${category.selected.label} - ${category.child.selected
-          .label} - ${indicator.selected.label}`
-        : `${category.selected.label} - ${category.child.selected.label}`)
+        ? `${placeholderText} - ${indicator.selected.label}`
+        : `${placeholderText}`)
     );
   }
 );
