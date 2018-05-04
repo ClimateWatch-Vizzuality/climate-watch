@@ -3,15 +3,23 @@
 .dropDownsLayout {
   @include columns(6);
 
+  > *:first-child {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
   margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
-    @include columns((2, 2, 2, 2));
+    @include columns((2, 2, 2, 2, 2));
+
+    > *:first-child {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
 
     align-items: flex-end;
 
-    > :nth-child(3) {
-      @include column-offset(4, $gutters: true);
+    > :nth-child(4) {
+      @include column-offset(2);
     }
   }
 }
@@ -43,6 +51,7 @@
 }
 
 .chartWrapper {
+  position: relative;
   min-height: 560px;
   max-height: 100%;
 

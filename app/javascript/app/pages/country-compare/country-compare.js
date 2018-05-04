@@ -4,12 +4,11 @@ import { getAnchorLinks } from './country-compare-selectors';
 
 import Component from './country-compare-component';
 
-const mapStateToProps = (state, { route, location, isContained }) => {
-  const routerData = { route, location, isContained };
+const mapStateToProps = (state, { route, location }) => {
+  const routerData = { route, location };
   return {
     anchorLinks: getAnchorLinks(routerData),
-    query: location.search,
-    isContained
+    query: location.search
   };
 };
 
