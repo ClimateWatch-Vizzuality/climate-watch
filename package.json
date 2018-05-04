@@ -1,6 +1,6 @@
 {
   "name": "climate-watch",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "scripts": {
     "start": "run-s rails:db:migrate servers",
     "rails:install": "bundle install",
