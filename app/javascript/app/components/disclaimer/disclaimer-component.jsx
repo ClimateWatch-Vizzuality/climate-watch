@@ -26,26 +26,17 @@ class Disclaimer extends PureComponent {
         <div className={cx({ [styles.disclaimerLayout]: !onlyText })}>
           <div className={styles.firstText}>
             Please note that the level of emissions in future years is estimated
-            based on the greenhouse gas reduction targets communicated by
-            countries, which might differ from historical emissions presented in
-            terms of source, sector and gas coverage, GWP values and inventory
-            methodologies used. The historical levels of emissions and future
-            target levels of emissions are presented on the same chart for
-            illustration only and analysis drawn directly from the chart is
-            therefore limited.
+            based on the mitigation targets communicated by countries in their
+            pre-2020 pledges and nationally determined contributions, which
+            might differ from historical emissions presented in terms of source,
+            sector and gas coverage, GWP values and inventory methodologies
+            used. The historical levels of emissions and future target levels of
+            emissions are presented on the same chart for illustration only and
+            analysis drawn directly from the chart is therefore limited.
           </div>
           <div className={styles.secondText}>
             For detailed methodology and data sources used, please refer to
-            WRI’s publication Translating Targets into Numbers:{' '}
-            <a
-              className={styles.link}
-              href="https://www.wri.org/sites/default/files/Translating_Targets_into_Numbers.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Quantifying the Greenhouse Gas Targets of the G20 Countries
-            </a>{' '}
-            for G20 countries, and UNEP’s{' '}
+            UNEP’s{' '}
             <a
               className={styles.link}
               href="https://www.unenvironment.org/explore-topics/climate-change/what-we-do/mitigation/pledge-pipeline"
@@ -53,8 +44,7 @@ class Disclaimer extends PureComponent {
               rel="noopener noreferrer"
             >
               Pledge Pipeline
-            </a>{' '}
-            for other countries.
+            </a>.
           </div>
           {!onlyText && (
             <Button
