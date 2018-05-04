@@ -86,9 +86,7 @@ class CompareGhgChart extends PureComponent {
           <EmissionsProvider filters={providerFilters} />
           <EmissionsMetaProvider />
           {needsWBData && <WbCountryDataProvider />}
-          <h2 className={styles.title}>
-            Historical GHG Emissions and Target Levels
-          </h2>
+          <h2 className={styles.title}>Historical GHG Emissions</h2>
           <div className="grid-column-item">
             <div className={styles.dropDownsLayout}>
               <Dropdown
