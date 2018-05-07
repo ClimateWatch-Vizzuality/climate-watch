@@ -16,7 +16,7 @@ export const CALCULATION_OPTIONS = {
 export const QUANTIFICATION_COLORS = {
   BAU: '#f03b21',
   QUANTIFIED: '#fecc5c',
-  NOT_QUANTIFICABLE: '#b1b1c1'
+  NOT_QUANTIFIABLE: '#b1b1c1'
 };
 
 export const QUANTIFICATIONS_CONFIG = {
@@ -25,9 +25,9 @@ export const QUANTIFICATIONS_CONFIG = {
     label: 'Quantified targets',
     color: QUANTIFICATION_COLORS.QUANTIFIED
   },
-  not_quantificable: {
+  not_quantifiable: {
     label: 'Target not quantifiable',
-    color: QUANTIFICATION_COLORS.NOT_QUANTIFICABLE
+    color: QUANTIFICATION_COLORS.NOT_QUANTIFIABLE
   }
 };
 

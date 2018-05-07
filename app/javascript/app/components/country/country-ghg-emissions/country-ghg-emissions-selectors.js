@@ -260,7 +260,7 @@ export const getQuantificationsTagsConfig = createSelector(
       config.push(QUANTIFICATIONS_CONFIG.quantified);
     }
     if (nq) {
-      config.push(QUANTIFICATIONS_CONFIG.not_quantificable);
+      config.push(QUANTIFICATIONS_CONFIG.not_quantifiable);
     }
     return config;
   }
