@@ -17,13 +17,18 @@ const url = `${server}${folder}`;
 
 const downloadMenuOptions = [
   {
-    label: 'All (62 MB)',
+    label: 'All data (62 MB)',
     link: `${url}/all.zip`,
     target: '_self'
   },
   {
     label: 'NDC Content (6.4 MB)',
     link: `${url}/ndc-content.zip`,
+    target: '_self'
+  },
+  {
+    label: 'NDC Targets (329 KB)',
+    link: `${url}/NDC_quantification.zip`,
     target: '_self'
   },
   {
