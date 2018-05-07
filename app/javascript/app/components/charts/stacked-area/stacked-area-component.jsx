@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
+import min from 'lodash/min';
 import max from 'lodash/max';
 import isArray from 'lodash/isArray';
 import { getCustomTicks } from 'utils/graphs';
@@ -109,6 +110,7 @@ class ChartStackedArea extends PureComponent {
 
     if (points && points.length > 0) {
       domain.x[1] = max(points.map(p => p.x)) + 1;
+      domain.y[0] = min(points.map(p => (isArray(p.y) ? min(p.y) : p.y)));
       domain.y[1] = max(points.map(p => (isArray(p.y) ? max(p.y) : p.y)));
     }
 
@@ -272,69 +274,26 @@ class ChartStackedArea extends PureComponent {
                     {valueLabel}
                   </ReferenceArea>
                 );
-              } else if (point.y === 0) {
+              } else if (point.x && point.y !== null) {
                 return (
-                  <ReferenceArea
+                  <ReferenceDot
                     key={`${point.label}-${point.x + point.y}`}
-                    x1={point.x - 0.01}
-                    x2={point.x + 0.01}
-                    y1={maxData.y}
-                    y2={point.y}
-                    fill="transparent"
-                    fillOpacity={0}
-                    stroke={colorPoint}
-                    strokeOpacity={1}
-                    strokeWidth={isActivePoint ? 4 : 3}
-                    strokeLinejoin="round"
+                    x={point.x}
+                    y={point.y}
+                    fill={colorPoint}
+                    fillOpacity={1}
+                    stroke="#fff"
+                    strokeWidth={2}
+                    r={isActivePoint ? 8 : 6}
                     onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
                   >
-                    {isActivePoint && (
-                      <Label
-                        value={`${point.x}`}
-                        position="top"
-                        fill="#8f8fa1"
-                        stroke="#fff"
-                        strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                        style={{ paintOrder: 'stroke' }}
-                        fontSize="13px"
-                        offset={25}
-                        isFront
-                      />
-                    )}
-                    {isActivePoint && (
-                      <Label
-                        value={`${point.label}`}
-                        position="top"
-                        fill="#8f8fa1"
-                        stroke="#fff"
-                        strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                        style={{ paintOrder: 'stroke' }}
-                        fontSize="13px"
-                        offset={8}
-                        isFront
-                      />
-                    )}
-                  </ReferenceArea>
+                    {yearLabel}
+                    {valueLabel}
+                  </ReferenceDot>
                 );
               }
-              return (
-                <ReferenceDot
-                  key={`${point.label}-${point.x + point.y}`}
-                  x={point.x}
-                  y={point.y}
-                  fill={colorPoint}
-                  fillOpacity={1}
-                  stroke="#fff"
-                  strokeWidth={2}
-                  r={isActivePoint ? 8 : 6}
-                  onMouseEnter={() => this.handlePointeHover(point)}
-                  onMouseLeave={() => this.handlePointeHover(null)}
-                >
-                  {yearLabel}
-                  {valueLabel}
-                </ReferenceDot>
-              );
+              return null;
             })}
         </ComposedChart>
       </ResponsiveContainer>
