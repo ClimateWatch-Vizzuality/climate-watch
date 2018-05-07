@@ -4,7 +4,12 @@ import { SortDirection } from 'react-virtualized';
 import _sortBy from 'lodash/sortBy';
 import reverse from 'lodash/reverse';
 import { toStartCase } from 'app/utils';
-import { ESP_HIGH_ROWS, ESP_MEDIUM_ROWS } from 'data/constants';
+import {
+  ESP_HIGH_ROWS,
+  ESP_MEDIUM_ROWS,
+  ESP_NARROW_COLUMNS,
+  ESP_WIDE_COLUMNS
+} from 'data/constants';
 
 import Component from './table-component';
 
@@ -45,12 +50,10 @@ class TableContainer extends PureComponent {
   };
 
   setColumnWidth = column => {
-    const narrowColumns = ['year', 'unit', 'first', 'last'];
-    const wideColumns = ['description'];
-    if (narrowColumns.indexOf(column) !== -1) {
+    if (ESP_NARROW_COLUMNS.indexOf(column) !== -1) {
       return 80;
     }
-    if (wideColumns.indexOf(column) !== -1) {
+    if (ESP_WIDE_COLUMNS.indexOf(column) !== -1) {
       return 400;
     }
     return 200;

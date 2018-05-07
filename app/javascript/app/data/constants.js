@@ -145,6 +145,8 @@ export const ESP_MEDIUM_ROWS = [
   'geographic_coverage',
   'reference'
 ];
+const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
+const ESP_WIDE_COLUMNS = ['description'];
 
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],
@@ -220,6 +222,8 @@ export default {
   ESP_BLACKLIST,
   ESP_HIGH_ROWS,
   ESP_MEDIUM_ROWS,
+  ESP_NARROW_COLUMNS,
+  ESP_WIDE_COLUMNS,
   FILTERS_BY_CATEGORY,
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS,
