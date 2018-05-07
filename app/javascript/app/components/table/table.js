@@ -45,10 +45,12 @@ class TableContainer extends PureComponent {
   };
 
   setColumnWidth = column => {
-    if (column === 'year') {
+    const narrowColumns = ['year', 'unit', 'first', 'last'];
+    const wideColumns = ['description'];
+    if (narrowColumns.indexOf(column) !== -1) {
       return 80;
     }
-    if (column === 'description') {
+    if (wideColumns.indexOf(column) !== -1) {
       return 400;
     }
     return 200;
