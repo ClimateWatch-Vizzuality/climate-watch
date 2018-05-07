@@ -16,7 +16,8 @@ const mapStateToProps = (state, { location }) => {
     search,
     selectedLocations: search.locations,
     countriesData: state.countries.data,
-    ndcContentOverviewData: state.ndcContentOverview.data.locations
+    ndcContentOverviewData:
+      state.ndcContentOverview.data && state.ndcContentOverview.data.locations
   };
   return {
     selectedLocations: search.locations,
