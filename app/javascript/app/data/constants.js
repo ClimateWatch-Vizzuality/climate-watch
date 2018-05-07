@@ -12,10 +12,23 @@ export const CALCULATION_OPTIONS = {
     value: 'PER_GDP'
   }
 };
+
+export const QUANTIFICATION_COLORS = {
+  BAU: '#f03b21',
+  QUANTIFIED: '#fecc5c',
+  NOT_QUANTIFICABLE: '#b1b1c1'
+};
+
 export const QUANTIFICATIONS_CONFIG = {
-  quantified: { label: 'Quantified targets', color: '#ffc735' },
-  bau: { label: 'Business as usual', color: '#113750' },
-  not_quantificable: { label: 'Target not quantifiable', color: '#b1b1c1' }
+  bau: { label: 'Business as usual', color: QUANTIFICATION_COLORS.BAU },
+  quantified: {
+    label: 'Quantified targets',
+    color: QUANTIFICATION_COLORS.QUANTIFIED
+  },
+  not_quantificable: {
+    label: 'Target not quantifiable',
+    color: QUANTIFICATION_COLORS.NOT_QUANTIFICABLE
+  }
 };
 
 export const DATA_SCALE = 1000000;
@@ -216,6 +229,7 @@ export const CONTAINED_PATHNAME = 'contained';
 
 export default {
   CALCULATION_OPTIONS,
+  QUANTIFICATION_COLORS,
   QUANTIFICATIONS_CONFIG,
   TOP_EMITTERS,
   ALLOWED_SECTORS_BY_SOURCE,

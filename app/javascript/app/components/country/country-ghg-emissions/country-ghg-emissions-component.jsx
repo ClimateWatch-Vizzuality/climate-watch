@@ -13,6 +13,7 @@ import ModalMetadata from 'components/modal-metadata';
 import Disclaimer from 'components/disclaimer';
 import { isPageContained } from 'utils/navigation';
 
+import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
 const { FEATURE_QUANTIFICATIONS } = process.env;
@@ -115,6 +116,7 @@ class CountryGhgEmissions extends PureComponent {
         {!loading &&
           quantificationsTagsConfig.map(q => (
             <Tag
+              theme={quantificationTagTheme}
               key={q.label}
               canRemove={false}
               label={q.label}
