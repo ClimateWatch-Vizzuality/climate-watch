@@ -145,8 +145,9 @@ export const ESP_MEDIUM_ROWS = [
   'geographic_coverage',
   'reference'
 ];
-const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
-const ESP_WIDE_COLUMNS = ['description'];
+
+export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
+export const ESP_WIDE_COLUMNS = ['description'];
 
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],
