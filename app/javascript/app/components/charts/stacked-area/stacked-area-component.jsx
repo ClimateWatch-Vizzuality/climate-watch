@@ -27,6 +27,8 @@ import {
 import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
 
+import { QUANTIFICATION_COLORS } from 'data/constants';
+
 function includeTotalData(data, config) {
   return data.map(d => {
     let total = null;
@@ -215,9 +217,12 @@ class ChartStackedArea extends PureComponent {
               const isActivePoint =
                 activePoint &&
                 (point.x === activePoint.x && point.y === activePoint.y);
-              let colorPoint = point.label === 'BAU' ? '#113750' : '#ffc735';
+              let colorPoint =
+                point.label === 'BAU'
+                  ? QUANTIFICATION_COLORS.BAU
+                  : QUANTIFICATION_COLORS.QUANTIFIED;
               if (point.label === 'No quantifiable target') {
-                colorPoint = '#b1b1c1';
+                colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
               }
               const yearLabel = isActivePoint ? (
                 <Label

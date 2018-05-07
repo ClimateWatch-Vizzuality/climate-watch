@@ -13,6 +13,24 @@ export const CALCULATION_OPTIONS = {
   }
 };
 
+export const QUANTIFICATION_COLORS = {
+  BAU: '#f03b21',
+  QUANTIFIED: '#fecc5c',
+  NOT_QUANTIFIABLE: '#b1b1c1'
+};
+
+export const QUANTIFICATIONS_CONFIG = {
+  bau: { label: 'Business as usual', color: QUANTIFICATION_COLORS.BAU },
+  quantified: {
+    label: 'Quantified targets',
+    color: QUANTIFICATION_COLORS.QUANTIFIED
+  },
+  not_quantifiable: {
+    label: 'Target not quantifiable',
+    color: QUANTIFICATION_COLORS.NOT_QUANTIFIABLE
+  }
+};
+
 export const DATA_SCALE = 1000000;
 
 export const ALLOWED_SECTORS_BY_SOURCE = {
@@ -211,6 +229,8 @@ export const CONTAINED_PATHNAME = 'contained';
 
 export default {
   CALCULATION_OPTIONS,
+  QUANTIFICATION_COLORS,
+  QUANTIFICATIONS_CONFIG,
   TOP_EMITTERS,
   ALLOWED_SECTORS_BY_SOURCE,
   DEFAULT_EMISSIONS_SELECTIONS,
