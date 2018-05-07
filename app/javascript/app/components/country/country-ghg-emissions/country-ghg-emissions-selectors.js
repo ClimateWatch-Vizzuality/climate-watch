@@ -20,6 +20,7 @@ import {
 } from 'utils/graphs';
 import {
   CALCULATION_OPTIONS,
+  QUANTIFICATIONS_CONFIG,
   DEFAULT_AXES_CONFIG,
   ALLOWED_SECTORS_BY_SOURCE,
   DATA_SCALE
@@ -239,6 +240,29 @@ export const getQuantificationsData = createSelector(
     });
     // Sort desc to avoid z-index problem in the graph
     return orderBy(qParsed, 'x', 'desc');
+  }
+);
+
+export const getQuantificationsTagsConfig = createSelector(
+  getQuantifications,
+  quantifications => {
+    if (!quantifications) return [];
+    const config = [];
+    const bau = quantifications.find(q => q.label === 'BAU');
+    const qua = quantifications.find(
+      q => q.label === 'Unconditional' || q.label === 'Conditional'
+    );
+    const nq = quantifications.find(q => q.label === 'No quantifiable target');
+    if (bau) {
+      config.push(QUANTIFICATIONS_CONFIG.bau);
+    }
+    if (qua) {
+      config.push(QUANTIFICATIONS_CONFIG.quantified);
+    }
+    if (nq) {
+      config.push(QUANTIFICATIONS_CONFIG.not_quantificable);
+    }
+    return config;
   }
 );
 
