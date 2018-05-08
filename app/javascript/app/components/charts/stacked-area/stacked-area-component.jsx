@@ -226,10 +226,11 @@ class ChartStackedArea extends PureComponent {
               if (point.label === 'No quantifiable target') {
                 colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
               }
+              const isLowTarget = point.y < '100';
               const yearLabel = isActivePoint ? (
                 <Label
-                  value={`${point.x} - ${point.label}`}
-                  position="bottom"
+                  value={`${point.x}${isLowTarget ? '' : `- ${point.label}`}`}
+                  position={isLowTarget ? 'top' : 'bottom'}
                   fill="#8f8fa1"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 8}
@@ -237,6 +238,18 @@ class ChartStackedArea extends PureComponent {
                   fontSize="13px"
                   offset={25}
                   isFront
+                />
+              ) : null;
+              const extraLabelLine = isLowTarget ? (
+                <Label
+                  value={point.label}
+                  position="top"
+                  fill="#8f8fa1"
+                  stroke="#fff"
+                  strokeWidth={isEdgeOrExplorer ? 0 : 8}
+                  style={{ paintOrder: 'stroke', zIndex: 500 }}
+                  fontSize="13px"
+                  offset={60}
                 />
               ) : null;
 
@@ -276,6 +289,7 @@ class ChartStackedArea extends PureComponent {
                     onMouseLeave={() => this.handlePointeHover(null)}
                   >
                     {yearLabel}
+                    {extraLabelLine}
                     {valueLabel}
                   </ReferenceArea>
                 );
