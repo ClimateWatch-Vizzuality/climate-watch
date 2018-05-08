@@ -89,6 +89,16 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_APP_SIGNAL_STAGING
+          - name: HTTP_AUTH_USERNAME
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: CW_HTTP_AUTH_USERNAME_STAGING
+          - name: HTTP_AUTH_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: CW_HTTP_AUTH_PASSWORD_STAGING
 
         ports:
           - containerPort: 3000
