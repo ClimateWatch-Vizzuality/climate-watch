@@ -229,11 +229,11 @@ class ChartStackedArea extends PureComponent {
               const yearLabel = isActivePoint ? (
                 <Label
                   value={`${point.x} - ${point.label}`}
-                  position="top"
+                  position="bottom"
                   fill="#8f8fa1"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                  style={{ paintOrder: 'stroke' }}
+                  style={{ paintOrder: 'stroke', zIndex: 500 }}
                   fontSize="13px"
                   offset={25}
                   isFront
@@ -248,7 +248,7 @@ class ChartStackedArea extends PureComponent {
               const valueLabel = isActivePoint ? (
                 <Label
                   value={valueLabelValue}
-                  position="top"
+                  position="bottom"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 4}
                   style={{ paintOrder: 'stroke' }}
@@ -269,7 +269,7 @@ class ChartStackedArea extends PureComponent {
                     fill="transparent"
                     fillOpacity={0}
                     stroke={colorPoint}
-                    strokeOpacity={1}
+                    strokeOpacity={0.65}
                     strokeWidth={isActivePoint ? 10 : 8}
                     strokeLinejoin="round"
                     onMouseEnter={() => this.handlePointeHover(point)}
@@ -286,7 +286,7 @@ class ChartStackedArea extends PureComponent {
                     x={point.x}
                     y={point.y}
                     fill={colorPoint}
-                    fillOpacity={1}
+                    fillOpacity={0.65}
                     stroke="#fff"
                     strokeWidth={2}
                     r={isActivePoint ? 8 : 6}
