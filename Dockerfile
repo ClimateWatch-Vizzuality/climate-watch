@@ -28,8 +28,9 @@ WORKDIR /usr/src/$NAME
 
 # Install and run scheduling
 RUN gem install whenever
-RUN whenever --load-file config/schedule.rb
-RUN whenever --update-crontab
+#RUN gem install whenever
+#RUN whenever --load-file config/schedule.rb
+#RUN whenever --update-crontab
 
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./
