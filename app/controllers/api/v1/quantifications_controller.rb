@@ -2,7 +2,8 @@ module Api
   module V1
     class QuantificationsController < ApiController
       def index
-        values = ::Quantification::Value.includes(:location, :label)
+        values = ::Quantification::Value.includes(:location, :label).
+          where.not(first_value: nil)
         values = values.where(locations: {iso_code3: locations}) if locations
 
         render json: values,
