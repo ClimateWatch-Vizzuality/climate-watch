@@ -37,7 +37,7 @@ node {
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${imageTag} .")
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${dockerUsername}/${appName}:latest .")
           break
-        case "staging":
+        case "sandbox":
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${imageTag} .")
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${dockerUsername}/${appName}:latest .")
           break
@@ -67,8 +67,8 @@ node {
       sh("kubectl config use-context gke_${GCLOUD_PROJECT}_${GCLOUD_GCE_ZONE}_${KUBE_PROD_CLUSTER}")
       switch ("${env.BRANCH_NAME}") {
 
-        // Roll out to staging
-        case "staging":
+        // Roll out to sandbox
+        case "sandbox":
           sh("echo Deploying to STAGING app")
           def service = sh([returnStdout: true, script: "kubectl get deploy ${appName}-staging || echo NotFound"]).trim()
           if ((service && service.indexOf("NotFound") > -1) || (forceCompleteDeploy)){
@@ -120,7 +120,7 @@ node {
     }
 
     // Notify Success
-    slackSend (color: '#00FF00', channel: '#climate-watch-magic', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (color: '#00FF00', channel: '#climate-watch-dev', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     emailext (
       subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -133,7 +133,7 @@ node {
 
     currentBuild.result = "FAILURE"
     // Notify Error
-    slackSend (color: '#FF0000', channel: '#climate-watch-magic', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (color: '#FF0000', channel: '#climate-watch-dev', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     emailext (
       subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
