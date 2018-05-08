@@ -4,6 +4,8 @@ MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 ENV NAME climate-watch
 ENV RAKE_ENV production
 ENV RAILS_ENV production
+ENV CW_API /api/v1
+ENV GFW_API https://production-api.globalforestwatch.org
 ENV ESP_API https://data.emissionspathways.org/api/v1
 ENV S3_BUCKET_NAME climate-watch-dev
 ENV GOOGLE_ANALYTICS_ID UA-1981881-51
@@ -23,6 +25,11 @@ RUN gem install bundler --no-ri --no-rdoc
 RUN mkdir -p /usr/src/$NAME
 WORKDIR /usr/src/$NAME
 # VOLUME /usr/src/$NAME
+
+# Install and run scheduling
+RUN gem install whenever
+RUN whenever --load-file config/schedule.rb
+RUN whenever --update-crontab
 
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./

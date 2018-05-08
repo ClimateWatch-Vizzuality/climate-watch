@@ -7,6 +7,8 @@ import isString from 'lodash/isString';
 import isFinite from 'lodash/isFinite';
 import startCase from 'lodash/startCase';
 
+export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
+
 export const deburrUpper = string => toUpper(deburr(string));
 export const toStartCase = string => {
   const parsedString = startCase(string);
@@ -45,6 +47,23 @@ export const compareIndexByKey = attribute =>
     }
     return parseInt(decimalA, 10) - parseInt(decimalB, 10);
   };
+
+export function importAllImagesFromFolder(r) {
+  const images = {};
+  const keys = r.keys();
+  if (keys.length) {
+    keys.forEach(item => {
+      images[
+        item
+          .replace('./', '')
+          .replace('.jpeg', '')
+          .replace('.jpg', '')
+          .replace('.png', '')
+      ] = r(item);
+    });
+  }
+  return images;
+}
 
 export const truncateDecimals = (number, decimalPlaces) =>
   number.toFixed(decimalPlaces) / 1;
@@ -86,6 +105,7 @@ export default {
   compareIndexByKey,
   deburrUpper,
   isCountryIncluded,
+  importAllImagesFromFolder,
   truncateDecimals,
   isMicrosoftBrowser,
   toStartCase

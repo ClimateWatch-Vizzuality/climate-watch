@@ -29,8 +29,12 @@ class Tag extends PureComponent {
     const tagContent = (
       <React.Fragment>
         <span className={theme.dot} style={{ backgroundColor: color }} />
-        {data.title && tooltipId ? (
-          <p className={theme.label} data-tip={data.title} data-for={tooltipId}>
+        {data && data.title && tooltipId ? (
+          <p
+            className={styles.label}
+            data-tip={data.title}
+            data-for={tooltipId}
+          >
             {label}
           </p>
         ) : (
@@ -43,12 +47,12 @@ class Tag extends PureComponent {
         )}
       </React.Fragment>
     );
-    return data.url ? (
-      <div>
+    return data && data.url ? (
+      <li>
         <Link to={data.url} className={cx(theme.tag, className)}>
           {tagContent}
         </Link>
-      </div>
+      </li>
     ) : (
       <li className={cx(theme.tag, className)}>{tagContent}</li>
     );
@@ -68,7 +72,8 @@ Tag.propTypes = {
 
 Tag.defaultPropTypes = {
   canRemove: false,
-  tooltipId: ''
+  tooltipId: '',
+  data: {}
 };
 
 export default themr('Tag', styles)(Tag);

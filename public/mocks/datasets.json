@@ -1,0 +1,200 @@
+[
+  {
+    "id": "zp89bjdm",
+    "name": "Pathways",
+    "image": "emissions",
+    "placeholder": "",
+    "viz-types": [
+      {
+        "id": "m8dv72zm",
+        "name": "Focus on a particular country",
+        "visualisations": [
+          {
+            "id": "LineChart-1",
+            "name": "Compare multiple scenarios for a particular country for an indicator time series",
+            "chart": {
+              "type": "LineChart",
+              "options": {}
+            },
+            "onlyStackableIndicators": false,
+            "tags": [
+              "Single country",
+              "Single indicator",
+              "Multiple scenarios",
+              "Time series"
+            ],
+            "image": "one-country-lines",
+            "filters": [
+              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": true, "selected": "all", "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
+              {"name": "years", "multi": true, "selected": "all", "hidden": true, "active": false}
+            ]
+          },
+          {
+            "id": "StackBarChart-1",
+            "name": "Stack a group of indicators in a time series for a particular country and scenario",
+            "chart": {
+              "type": "StackBarChart",
+              "options":
+                { "layout": "vertical" }
+            },
+            "onlyStackableIndicators": true,
+            "tags": [
+              "Single country",
+              "Multiple indicator",
+              "Single scenario",
+              "Time series"
+            ],
+            "image": "one-country-bars",
+            "filters": [
+              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "years", "multi": true, "selected": "all", "active": true}
+            ]
+          },
+          {
+            "id": "PieChart-1",
+            "name": "Visualize a group of indicators for a particular country and scenario",
+            "chart": {
+              "type": "PieChart",
+              "options": {}
+            },
+            "onlyStackableIndicators": true,
+            "tags": [
+              "Single country",
+              "Multiple indicators",
+              "Single scenario",
+              "Single year"
+            ],
+            "image": "one-country-donut",
+            "filters": [
+              {"name": "locations", "multi": false, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "years", "multi": false, "selected": null, "hidden": false, "active": false}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Compare countries/regions",
+        "id": "4vzy7k28",
+        "visualisations": [
+          {
+            "id": "LineChart-2",
+            "name": "Compare an indicator time series for a particular scenario across multiple countries/regions",
+            "chart": {
+              "type": "LineChart",
+              "options": {}
+            },
+            "onlyStackableIndicators": false,
+            "tags": [
+              "Multiple locations",
+              "Single indicator",
+              "Single scenario",
+              "Time series"
+            ],
+            "image": "compare-country-lines",
+            "filters": [
+              {"name": "locations", "multi": true, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
+              {"name": "years", "multi": true, "selected": "all", "hidden": true, "active": false}
+            ]
+          },
+          {
+            "id": "PieChart-2",
+            "name": "Visualize an indicator for a group of countries/regions for a particular scenario",
+            "chart": {
+              "type": "PieChart",
+              "options": {
+                "innerRadius": 40,
+                "outerRadius": 80
+              }
+            },
+            "onlyStackableIndicators": false,
+            "tags": [
+              "Multiple locations",
+              "Single indicator",
+              "Single scenario",
+              "Single year"
+            ],
+            "image": "compare-country-donut",
+            "filters": [
+              {"name": "locations", "multi": true, "selected": "all", "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": false, "selected": null, "active": true},
+              {"name": "years", "multi": false, "selected": null, "active": true}
+            ]
+          },
+          {
+            "id": "StackBarChart-2",
+            "name": "Stack a group of indicators for a particular scenario and year for multiple countries/regions",
+            "chart": {
+              "type": "StackBarChart",
+              "options":
+                {
+                  "layout": "horizontal"
+                }
+            },
+            "onlyStackableIndicators": true,
+            "tags": [
+              "Multiple locations",
+              "Multiple indicators",
+              "Single scenario",
+              "Single year"
+            ],
+            "image": "compare-country-bars",
+            "filters": [
+              {"name": "locations", "multi": true, "selected": null, "active": true},
+              {"name": "models", "multi": false, "selected": null, "active": true},
+              {"name": "scenarios", "multi": false, "selected": null, "active": true},
+              {"name": "categories", "multi": false, "selected": null, "active": true},
+              {"name": "subcategories", "multi": false, "selected": null, "active": true},
+              {"name": "indicators", "multi": true, "selected": "all", "active": true},
+              {"name": "years", "multi": false, "selected": "all", "active": true}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "32pda52d",
+    "name": "NDC content",
+    "image": "",
+    "placeholder": "Cooming soon",
+    "disabled": true
+  },
+  {
+    "id": "rjn2523z",
+    "name": "NDC-SDG linkages",
+    "image": "",
+    "placeholder": "Cooming soon",
+    "disabled": true
+  },
+  {
+    "id": "a4g2vz65",
+    "name": "historical GHG emissions",
+    "image": "",
+    "placeholder": "Cooming soon",
+    "disabled": true
+  }
+]

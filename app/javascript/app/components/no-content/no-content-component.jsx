@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import monete from 'assets/icons/monete.png';
+import monete from 'assets/icon-pngs/monete.png';
 import styles from './no-content-styles.scss';
 
 const NoContent = ({ className, message, icon, minHeight }) => (

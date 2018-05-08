@@ -49,6 +49,7 @@ class Search extends Component {
   render() {
     const { search } = this.state;
     const {
+      icon,
       theme,
       placeholder,
       className,
@@ -70,16 +71,19 @@ class Search extends Component {
           onKeyUp={handleKeyUp}
           disabled={disabled}
         />
-        <Icon
-          icon={searchIcon}
-          className={cx(styles.iconSearch, theme.iconSearch)}
-        />
+        {icon && (
+          <Icon
+            icon={searchIcon}
+            className={cx(styles.iconSearch, theme.iconSearch)}
+          />
+        )}
       </div>
     );
   }
 }
 
 Search.propTypes = {
+  icon: PropTypes.bool.isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string,
   autofocus: PropTypes.bool,
@@ -92,6 +96,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
+  icon: true,
   value: ''
 };
 

@@ -6,10 +6,10 @@ import { TabletLandscape } from 'components/responsive';
 import styles from './header-styles.scss';
 
 const Header = props => {
-  const { image, className, children, size, color } = props;
+  const { image, className, children, size, theme, color } = props;
   const sizeClass = cx({
-    [styles.medium]: size === 'medium',
-    [styles.large]: size === 'large'
+    [theme.medium]: size === 'medium',
+    [theme.large]: size === 'large'
   });
   const getStyle = isLandscape => {
     let style = { backgroundColor: color };
@@ -49,11 +49,8 @@ Header.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   size: PropTypes.string,
-  color: PropTypes.string
-};
-
-Header.defaultProps = {
-  color: ''
+  color: PropTypes.string,
+  theme: PropTypes.object
 };
 
 export default Header;
