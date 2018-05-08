@@ -234,7 +234,8 @@ class ImportIndc
       to_h
 
     indicators.each do |indicator_name, labels|
-      indicator = Indc::Indicator.find_by!(slug: indicator_name)
+      indicator = Indc::Indicator.find_by(slug: indicator_name)
+      next if !indicator
       labels.each_with_index do |label, index|
         Indc::Label.create!(
           indicator: indicator,
