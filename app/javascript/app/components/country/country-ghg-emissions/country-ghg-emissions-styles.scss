@@ -55,6 +55,13 @@
   left: 0;
 }
 
+.quantificationsTags {
+  width: fit-content;
+  max-height: 30px;
+  display: inline-flex;
+  margin-right: 10px;
+}
+
 .noContent {
   min-height: 300px;
 }

@@ -1,0 +1,29 @@
+@import '~styles/layout.scss';
+
+.tag {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  flex-grow: 0;
+}
+
+.dot {
+  display: inline-block;
+  width: 20px;
+  height: 10px;
+  border-radius: 5px;
+  margin-right: 5px;
+  opacity: 0.65;
+}
+
+.label {
+  padding: 5px 0;
+  margin-right: 8px;
+  width: max-content;
+}

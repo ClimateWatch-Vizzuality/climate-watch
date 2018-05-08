@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
+import Tag from 'components/tag';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
 import Chart from 'components/charts/chart';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
@@ -12,6 +13,7 @@ import ModalMetadata from 'components/modal-metadata';
 import Disclaimer from 'components/disclaimer';
 import { isPageContained } from 'utils/navigation';
 
+import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
 const { FEATURE_QUANTIFICATIONS } = process.env;
@@ -107,6 +109,26 @@ class CountryGhgEmissions extends PureComponent {
     );
   }
 
+  renderQuantificationsTags() {
+    const { loading, quantificationsTagsConfig } = this.props;
+    return (
+      <ul>
+        {!loading &&
+          quantificationsTagsConfig.map(q => (
+            <Tag
+              theme={quantificationTagTheme}
+              key={q.label}
+              canRemove={false}
+              label={q.label}
+              color={q.color}
+              data={q}
+              className={styles.quantificationsTags}
+            />
+          ))}
+      </ul>
+    );
+  }
+
   render() {
     const { isEmbed, countryName } = this.props;
     return (
@@ -124,12 +146,14 @@ class CountryGhgEmissions extends PureComponent {
             {this.renderActionButtons()}
           </div>
           {this.renderChart()}
+          {this.renderQuantificationsTags()}
         </TabletLandscape>
         <TabletPortraitOnly>
           <div className={styles.graphControlsSection}>
             {this.renderFilterDropdowns()}
           </div>
           {this.renderChart()}
+          {this.renderQuantificationsTags()}
           <div className={styles.graphControlsSection}>
             {this.renderActionButtons()}
           </div>
@@ -148,6 +172,7 @@ CountryGhgEmissions.propTypes = {
   iso: PropTypes.string.isRequired,
   countryName: PropTypes.string.isRequired,
   quantifications: PropTypes.array.isRequired,
+  quantificationsTagsConfig: PropTypes.array.isRequired,
   calculations: PropTypes.array.isRequired,
   calculationSelected: PropTypes.object.isRequired,
   sources: PropTypes.array.isRequired,

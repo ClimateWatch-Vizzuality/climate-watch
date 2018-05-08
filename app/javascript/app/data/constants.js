@@ -13,6 +13,24 @@ export const CALCULATION_OPTIONS = {
   }
 };
 
+export const QUANTIFICATION_COLORS = {
+  BAU: '#113750',
+  QUANTIFIED: '#fecc5c',
+  NOT_QUANTIFIABLE: '#b1b1c1'
+};
+
+export const QUANTIFICATIONS_CONFIG = {
+  bau: { label: 'Business as usual', color: QUANTIFICATION_COLORS.BAU },
+  quantified: {
+    label: 'Quantified targets',
+    color: QUANTIFICATION_COLORS.QUANTIFIED
+  },
+  not_quantifiable: {
+    label: 'Target not quantifiable',
+    color: QUANTIFICATION_COLORS.NOT_QUANTIFIABLE
+  }
+};
+
 export const DATA_SCALE = 1000000;
 
 export const ALLOWED_SECTORS_BY_SOURCE = {
@@ -146,6 +164,9 @@ export const ESP_MEDIUM_ROWS = [
   'reference'
 ];
 
+export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
+export const ESP_WIDE_COLUMNS = ['description'];
+
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],
   scenarios: ['model'],
@@ -211,6 +232,8 @@ export const CONTAINED_PATHNAME = 'contained';
 
 export default {
   CALCULATION_OPTIONS,
+  QUANTIFICATION_COLORS,
+  QUANTIFICATIONS_CONFIG,
   TOP_EMITTERS,
   ALLOWED_SECTORS_BY_SOURCE,
   DEFAULT_EMISSIONS_SELECTIONS,
@@ -220,6 +243,8 @@ export default {
   ESP_BLACKLIST,
   ESP_HIGH_ROWS,
   ESP_MEDIUM_ROWS,
+  ESP_NARROW_COLUMNS,
+  ESP_WIDE_COLUMNS,
   FILTERS_BY_CATEGORY,
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS,

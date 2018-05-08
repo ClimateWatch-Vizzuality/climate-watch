@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
+import min from 'lodash/min';
 import max from 'lodash/max';
 import isArray from 'lodash/isArray';
 import { getCustomTicks } from 'utils/graphs';
@@ -26,6 +27,8 @@ import {
 } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
+
+import { QUANTIFICATION_COLORS } from 'data/constants';
 
 function includeTotalData(data, config) {
   return data.map(d => {
@@ -109,6 +112,7 @@ class ChartStackedArea extends PureComponent {
 
     if (points && points.length > 0) {
       domain.x[1] = max(points.map(p => p.x)) + 1;
+      domain.y[0] = min(points.map(p => (isArray(p.y) ? min(p.y) : p.y)));
       domain.y[1] = max(points.map(p => (isArray(p.y) ? max(p.y) : p.y)));
     }
 
@@ -215,18 +219,21 @@ class ChartStackedArea extends PureComponent {
               const isActivePoint =
                 activePoint &&
                 (point.x === activePoint.x && point.y === activePoint.y);
-              let colorPoint = point.label === 'BAU' ? '#113750' : '#ffc735';
+              let colorPoint =
+                point.label === 'BAU'
+                  ? QUANTIFICATION_COLORS.BAU
+                  : QUANTIFICATION_COLORS.QUANTIFIED;
               if (point.label === 'No quantifiable target') {
-                colorPoint = '#b1b1c1';
+                colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
               }
               const yearLabel = isActivePoint ? (
                 <Label
                   value={`${point.x} - ${point.label}`}
-                  position="top"
+                  position="bottom"
                   fill="#8f8fa1"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                  style={{ paintOrder: 'stroke' }}
+                  style={{ paintOrder: 'stroke', zIndex: 500 }}
                   fontSize="13px"
                   offset={25}
                   isFront
@@ -241,7 +248,7 @@ class ChartStackedArea extends PureComponent {
               const valueLabel = isActivePoint ? (
                 <Label
                   value={valueLabelValue}
-                  position="top"
+                  position="bottom"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 4}
                   style={{ paintOrder: 'stroke' }}
@@ -262,7 +269,7 @@ class ChartStackedArea extends PureComponent {
                     fill="transparent"
                     fillOpacity={0}
                     stroke={colorPoint}
-                    strokeOpacity={1}
+                    strokeOpacity={0.65}
                     strokeWidth={isActivePoint ? 10 : 8}
                     strokeLinejoin="round"
                     onMouseEnter={() => this.handlePointeHover(point)}
@@ -272,69 +279,26 @@ class ChartStackedArea extends PureComponent {
                     {valueLabel}
                   </ReferenceArea>
                 );
-              } else if (point.y === 0) {
+              } else if (point.x && point.y !== null) {
                 return (
-                  <ReferenceArea
+                  <ReferenceDot
                     key={`${point.label}-${point.x + point.y}`}
-                    x1={point.x - 0.01}
-                    x2={point.x + 0.01}
-                    y1={maxData.y}
-                    y2={point.y}
-                    fill="transparent"
-                    fillOpacity={0}
-                    stroke={colorPoint}
-                    strokeOpacity={1}
-                    strokeWidth={isActivePoint ? 4 : 3}
-                    strokeLinejoin="round"
+                    x={point.x}
+                    y={point.y}
+                    fill={colorPoint}
+                    fillOpacity={0.65}
+                    stroke="#fff"
+                    strokeWidth={2}
+                    r={isActivePoint ? 8 : 6}
                     onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
                   >
-                    {isActivePoint && (
-                      <Label
-                        value={`${point.x}`}
-                        position="top"
-                        fill="#8f8fa1"
-                        stroke="#fff"
-                        strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                        style={{ paintOrder: 'stroke' }}
-                        fontSize="13px"
-                        offset={25}
-                        isFront
-                      />
-                    )}
-                    {isActivePoint && (
-                      <Label
-                        value={`${point.label}`}
-                        position="top"
-                        fill="#8f8fa1"
-                        stroke="#fff"
-                        strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                        style={{ paintOrder: 'stroke' }}
-                        fontSize="13px"
-                        offset={8}
-                        isFront
-                      />
-                    )}
-                  </ReferenceArea>
+                    {yearLabel}
+                    {valueLabel}
+                  </ReferenceDot>
                 );
               }
-              return (
-                <ReferenceDot
-                  key={`${point.label}-${point.x + point.y}`}
-                  x={point.x}
-                  y={point.y}
-                  fill={colorPoint}
-                  fillOpacity={1}
-                  stroke="#fff"
-                  strokeWidth={2}
-                  r={isActivePoint ? 8 : 6}
-                  onMouseEnter={() => this.handlePointeHover(point)}
-                  onMouseLeave={() => this.handlePointeHover(null)}
-                >
-                  {yearLabel}
-                  {valueLabel}
-                </ReferenceDot>
-              );
+              return null;
             })}
         </ComposedChart>
       </ResponsiveContainer>

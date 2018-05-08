@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
 import { COUNTRY_PROFILES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import { isPageContained } from 'utils/navigation';
 import Header from 'components/header';
 import CountryTimeline from 'components/country/country-timeline';
 import Intro from 'components/intro';
@@ -32,12 +33,14 @@ class Country extends PureComponent {
         <Header route={route}>
           <div className={styles.header}>
             <Intro title={country.name} description={description} />
-            <Button
-              color="yellow"
-              link={`/countries/compare?locations=${country.iso}`}
-            >
-              Compare
-            </Button>
+            {!isPageContained && (
+              <Button
+                color="yellow"
+                link={`/countries/compare?locations=${country.iso}`}
+              >
+                Compare
+              </Button>
+            )}
           </div>
           <div className={layout.content}>
             <CountryTimeline />
