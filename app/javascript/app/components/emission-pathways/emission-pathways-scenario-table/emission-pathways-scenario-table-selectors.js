@@ -155,9 +155,9 @@ const dataWithExtraColumns = createSelector(
             parseFloat(v.value)
           );
         const round2D = n => Math.round(n * 100) / 100;
-        const firstData = indicatorTrendData.values[0];
-        const lastData =
-          indicatorTrendData.values[indicatorTrendData.values.length - 1];
+        const trendDataValues = sortBy(indicatorTrendData.values, 'year');
+        const firstData = trendDataValues[0];
+        const lastData = trendDataValues[indicatorTrendData.values.length - 1];
         rowData.first = `${firstData.year} | ${round2D(firstData.value)}`;
         rowData.last = `${lastData.year} | ${round2D(lastData.value)}`;
         dataWithExtra.push(rowData);
