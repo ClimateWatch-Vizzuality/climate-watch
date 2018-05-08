@@ -34,16 +34,16 @@ node {
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "master":
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg -t ${dockerUsername}/${appName}:latest .")
           break
         case "sandbox":
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg -t ${dockerUsername}/${appName}:latest .")
           break
         default:
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg -t ${dockerUsername}/${appName}:latest .")
       }
     }
 
