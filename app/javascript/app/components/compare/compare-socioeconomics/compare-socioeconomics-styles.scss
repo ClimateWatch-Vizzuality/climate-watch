@@ -1,0 +1,85 @@
+@import '~styles/layout.scss';
+
+.col6 {
+  @include columns();
+
+  margin-bottom: $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    @include columns((6, 2));
+
+    align-items: center;
+
+    > :nth-child(2) {
+      @include column-offset(4, $gutters: true);
+    }
+  }
+}
+
+.col3 {
+  @include columns();
+
+  @media #{$tablet-landscape} {
+    @include columns(4);
+  }
+}
+
+.loader {
+  min-height: 200px;
+}
+
+.ndcContentOverview {
+  min-height: 350px;
+  padding-top: 40px;
+}
+
+.countryOverview {
+  color: $theme-color;
+  line-height: $line-height-medium;
+  margin-bottom: 2em;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 1em;
+  }
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  grid-column-start: span 3;
+}
+
+.overviewText {
+  margin-bottom: 1em;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0.3em;
+  }
+}
+
+.countryHeader {
+  position: relative;
+  margin-bottom: 1em;
+  display: flex;
+
+  .countryName {
+    font-weight: $font-weight-bold;
+    color: $theme-color;
+  }
+
+  .dot {
+    width: 13px;
+    height: 12px;
+    border-radius: 15px;
+    margin: 7px 7px 0 0;
+  }
+}
+
+.blueIcon {
+  fill: $theme-color;
+}
+
+.buttonOutlined {
+  border: 1px solid $border-color;
+}
