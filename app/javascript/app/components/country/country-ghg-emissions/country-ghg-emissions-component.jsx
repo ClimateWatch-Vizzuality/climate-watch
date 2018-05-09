@@ -111,9 +111,12 @@ class CountryGhgEmissions extends PureComponent {
 
   renderQuantificationsTags() {
     const { loading, quantificationsTagsConfig } = this.props;
+    const showQuantifications =
+      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained;
     return (
       <ul>
         {!loading &&
+          showQuantifications &&
           quantificationsTagsConfig.map(q => (
             <Tag
               theme={quantificationTagTheme}

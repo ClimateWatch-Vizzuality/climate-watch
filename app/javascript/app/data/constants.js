@@ -15,7 +15,7 @@ export const CALCULATION_OPTIONS = {
 
 export const QUANTIFICATION_COLORS = {
   BAU: '#113750',
-  QUANTIFIED: '#fecc5c',
+  QUANTIFIED: '#ffc735',
   NOT_QUANTIFIABLE: '#b1b1c1'
 };
 

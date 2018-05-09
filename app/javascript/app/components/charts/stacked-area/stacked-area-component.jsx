@@ -219,21 +219,21 @@ class ChartStackedArea extends PureComponent {
                 activePoint &&
                 (point.x === activePoint.x && point.y === activePoint.y);
               let colorPoint =
-                point.label === 'BAU'
+                point.label.includes('BAU') && point.y > 0
                   ? QUANTIFICATION_COLORS.BAU
                   : QUANTIFICATION_COLORS.QUANTIFIED;
-              if (point.label === 'No quantifiable target') {
+              if (point.y === null) {
                 colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
               }
               const isLowTarget = point.y < '100';
               const yearLabel = isActivePoint ? (
                 <Label
                   value={`${point.x}${isLowTarget ? '' : `- ${point.label}`}`}
-                  position={isLowTarget ? 'top' : 'bottom'}
+                  position="top"
                   fill="#8f8fa1"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                  style={{ paintOrder: 'stroke', zIndex: 500 }}
+                  style={{ paintOrder: 'stroke' }}
                   fontSize="13px"
                   offset={25}
                 />
@@ -272,7 +272,7 @@ class ChartStackedArea extends PureComponent {
               const valueLabel = isActivePoint ? (
                 <Label
                   value={valueLabelValue}
-                  position={isLowTarget ? 'top' : 'bottom'}
+                  position="top"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 4}
                   style={{ paintOrder: 'stroke' }}
@@ -280,15 +280,15 @@ class ChartStackedArea extends PureComponent {
                   fontSize="18px"
                 />
               ) : null;
-
-              if (point.isRange) {
+              if (point.isRange || point.y === null) {
                 return (
                   <ReferenceArea
-                    key={`${point.label}-${point.x + point.y[0] + point.y[1]}`}
+                    key={`${point.label}-${point.y &&
+                      point.x + point.y[0] + point.y[1]}`}
                     x1={point.x - 0.01}
                     x2={point.x + 0.01}
-                    y1={point.y[0]}
-                    y2={point.y[1]}
+                    y1={point.y ? point.y[0] : 0}
+                    y2={point.y ? point.y[1] : maxData.y}
                     fill="transparent"
                     fillOpacity={0}
                     stroke={colorPoint}
@@ -300,7 +300,7 @@ class ChartStackedArea extends PureComponent {
                   >
                     {yearLabel}
                     {extraLabelLine}
-                    {valueLabel}
+                    {point.y && valueLabel}
                   </ReferenceArea>
                 );
               } else if (point.x && point.y !== null) {
