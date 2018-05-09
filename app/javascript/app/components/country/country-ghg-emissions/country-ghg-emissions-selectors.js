@@ -249,12 +249,12 @@ export const getQuantificationsTagsConfig = createSelector(
     if (!quantifications) return [];
     const config = [];
     const bau = quantifications.find(
-      q => q.label.includes('BAU') && q.value > 0
+      q => q.label.includes('BAU') && q.value !== null
     );
     const qua = quantifications.find(
       q => q.label === 'Unconditional' || q.label === 'Conditional'
     );
-    const nq = quantifications.find(q => !q.value || q.value === 0);
+    const nq = quantifications.find(q => q.value === null);
     if (bau) {
       config.push(QUANTIFICATIONS_CONFIG.bau);
     }

@@ -223,7 +223,7 @@ class ChartStackedArea extends PureComponent {
                 point.label.includes('BAU') && point.y > 0
                   ? QUANTIFICATION_COLORS.BAU
                   : QUANTIFICATION_COLORS.QUANTIFIED;
-              if (!point.y) {
+              if (point.y === null) {
                 colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
               }
               const yearLabel = isActivePoint ? (
