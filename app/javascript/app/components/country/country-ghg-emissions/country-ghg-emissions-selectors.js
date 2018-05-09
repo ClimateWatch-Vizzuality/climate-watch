@@ -252,7 +252,7 @@ export const getQuantificationsTagsConfig = createSelector(
     const qua = quantifications.find(
       q => q.label === 'Unconditional' || q.label === 'Conditional'
     );
-    const nq = quantifications.find(q => q.label.includes('BAU not available'));
+    const nq = quantifications.find(q => !q.value || q.value === 0);
     if (bau) {
       config.push(QUANTIFICATIONS_CONFIG.bau);
     }
