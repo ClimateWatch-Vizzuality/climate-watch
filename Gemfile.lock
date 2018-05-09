@@ -45,6 +45,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    appsignal (2.6.1)
+      rack
     arel (8.0.0)
     ast (2.3.0)
     aws-sdk (2.10.108)
@@ -270,6 +272,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
+  appsignal
   aws-sdk (~> 2)
   byebug
   capybara (~> 2.13)

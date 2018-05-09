@@ -47,6 +47,7 @@ gem 'scenic'
 # Moved to global gems because of this
 # https://github.com/rails/rails/issues/24063
 gem 'listen', '>= 3.0.5', '< 3.2'
+gem 'appsignal'
 
 group :development, :test do
   gem 'dotenv-rails'
