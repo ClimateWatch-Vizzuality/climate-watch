@@ -225,10 +225,13 @@ class ChartStackedArea extends PureComponent {
               if (point.y === null) {
                 colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
               }
-              const isLowTarget = point.y < '100';
-              const yearLabel = isActivePoint ? (
+
+              // yearLabel
+              const LENGHT_LIMIT = 30;
+              const isLongLabel = point.label.length > LENGHT_LIMIT;
+              const yearLabel = (
                 <Label
-                  value={`${point.x}${isLowTarget ? '' : `- ${point.label}`}`}
+                  value={`${point.x}${isLongLabel ? '' : `- ${point.label}`}`}
                   position="top"
                   fill="#8f8fa1"
                   stroke="#fff"
@@ -237,13 +240,17 @@ class ChartStackedArea extends PureComponent {
                   fontSize="13px"
                   offset={25}
                 />
-              ) : null;
+              );
 
-              const LabelLine = (text, offset) => (
+              // extraLabelLine - For long labels
+              const MAX_LINE_LENGHT = 20;
+              const LABEL_OFFSET = 10;
+              const DY = 20;
+              const extraLabelLine = (text, offset) => (
                 <Label
                   key={text}
                   value={text}
-                  position="top"
+                  position="insideTop"
                   fill="#8f8fa1"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 8}
@@ -252,24 +259,18 @@ class ChartStackedArea extends PureComponent {
                   offset={offset}
                 />
               );
+              const extraLabel = wordWrap(
+                point.label,
+                MAX_LINE_LENGHT
+              ).map((l, i) => extraLabelLine(l, LABEL_OFFSET + i * DY));
 
-              const MAX_LINE_LENGHT = 20;
-              const LINE_OFFSET = 50;
-              const splittedLines =
-                point.label.length > 30
-                  ? wordWrap(point.label, MAX_LINE_LENGHT).map((l, i) =>
-                    LabelLine(l, LINE_OFFSET + i * 20)
-                  )
-                  : LabelLine(point.label, LINE_OFFSET);
-              const extraLabelLine =
-                isActivePoint && isLowTarget ? splittedLines : null;
-
+              // value label
               const valueLabelValue = point.isRange
                 ? `${format('.3s')(point.y[0])}t - ${format('.3s')(
                   point.y[1]
                 )}t`
                 : `${format('.3s')(point.y)}t`;
-              const valueLabel = isActivePoint ? (
+              const valueLabel = (
                 <Label
                   value={valueLabelValue}
                   position="top"
@@ -279,7 +280,8 @@ class ChartStackedArea extends PureComponent {
                   fill="#113750"
                   fontSize="18px"
                 />
-              ) : null;
+              );
+
               if (point.isRange || point.y === null) {
                 return (
                   <ReferenceArea
@@ -298,9 +300,9 @@ class ChartStackedArea extends PureComponent {
                     onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
                   >
-                    {yearLabel}
-                    {extraLabelLine}
-                    {point.y && valueLabel}
+                    {isActivePoint ? yearLabel : null}
+                    {isActivePoint && isLongLabel ? extraLabel : null}
+                    {isActivePoint && point.y ? valueLabel : null}
                   </ReferenceArea>
                 );
               } else if (point.x && point.y !== null) {
@@ -317,9 +319,9 @@ class ChartStackedArea extends PureComponent {
                     onMouseEnter={() => this.handlePointeHover(point)}
                     onMouseLeave={() => this.handlePointeHover(null)}
                   >
-                    {yearLabel}
-                    {extraLabelLine}
-                    {valueLabel}
+                    {isActivePoint ? yearLabel : null}
+                    {isActivePoint && isLongLabel ? extraLabel : null}
+                    {isActivePoint ? valueLabel : null}
                   </ReferenceDot>
                 );
               }

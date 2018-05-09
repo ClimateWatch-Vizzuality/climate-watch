@@ -115,7 +115,7 @@ export const wordWrap = (long_string, max_char) => {
     split_out[i] = split_out[i].join(' ');
   }
 
-  return split_out.reverse();
+  return split_out;
 };
 
 export default {
