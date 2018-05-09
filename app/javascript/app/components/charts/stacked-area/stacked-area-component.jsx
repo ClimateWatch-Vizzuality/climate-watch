@@ -5,8 +5,7 @@ import min from 'lodash/min';
 import max from 'lodash/max';
 import isArray from 'lodash/isArray';
 import { getCustomTicks } from 'utils/graphs';
-import { isMicrosoftBrowser } from 'utils';
-
+import { isMicrosoftBrowser, wordWrap } from 'utils';
 import {
   CustomXAxisTick,
   CustomYAxisTick
@@ -237,21 +236,33 @@ class ChartStackedArea extends PureComponent {
                   style={{ paintOrder: 'stroke', zIndex: 500 }}
                   fontSize="13px"
                   offset={25}
-                  isFront
                 />
               ) : null;
-              const extraLabelLine = isLowTarget ? (
+
+              const LabelLine = (text, offset) => (
                 <Label
-                  value={point.label}
+                  key={text}
+                  value={text}
                   position="top"
                   fill="#8f8fa1"
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 8}
                   style={{ paintOrder: 'stroke', zIndex: 500 }}
                   fontSize="13px"
-                  offset={60}
+                  offset={offset}
                 />
-              ) : null;
+              );
+
+              const MAX_LINE_LENGHT = 20;
+              const LINE_OFFSET = 50;
+              const splittedLines =
+                point.label.length > 30
+                  ? wordWrap(point.label, MAX_LINE_LENGHT).map((l, i) =>
+                    LabelLine(l, LINE_OFFSET + i * 20)
+                  )
+                  : LabelLine(point.label, LINE_OFFSET);
+              const extraLabelLine =
+                isActivePoint && isLowTarget ? splittedLines : null;
 
               const valueLabelValue = point.isRange
                 ? `${format('.3s')(point.y[0])}t - ${format('.3s')(
@@ -261,13 +272,12 @@ class ChartStackedArea extends PureComponent {
               const valueLabel = isActivePoint ? (
                 <Label
                   value={valueLabelValue}
-                  position="bottom"
+                  position={isLowTarget ? 'top' : 'bottom'}
                   stroke="#fff"
                   strokeWidth={isEdgeOrExplorer ? 0 : 4}
                   style={{ paintOrder: 'stroke' }}
                   fill="#113750"
                   fontSize="18px"
-                  isFront
                 />
               ) : null;
 
@@ -308,6 +318,7 @@ class ChartStackedArea extends PureComponent {
                     onMouseLeave={() => this.handlePointeHover(null)}
                   >
                     {yearLabel}
+                    {extraLabelLine}
                     {valueLabel}
                   </ReferenceDot>
                 );

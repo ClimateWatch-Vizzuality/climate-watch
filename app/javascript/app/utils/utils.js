@@ -82,11 +82,48 @@ export const isMicrosoftBrowser = () => {
   return ua.indexOf('Edge') !== -1 || ua.indexOf('Trident/') !== -1;
 };
 
+// Splits the long_string into an array of strings
+export const wordWrap = (long_string, max_char) => {
+  const sum_length_of_words = function (word_array) {
+    let out = 0;
+    if (word_array.length !== 0) {
+      for (let i = 0; i < word_array.length; i++) {
+        const word = word_array[i];
+        out += word.length;
+      }
+    }
+    return out;
+  };
+  let split_out = [[]];
+  const split_string = long_string.split(' ');
+  for (let i = 0; i < split_string.length; i++) {
+    const word = split_string[i];
+
+    if (
+      sum_length_of_words(split_out[split_out.length - 1]) + word.length >
+      max_char
+    ) {
+      split_out = split_out.concat([[]]);
+    }
+
+    split_out[split_out.length - 1] = split_out[split_out.length - 1].concat(
+      word
+    );
+  }
+
+  for (let i = 0; i < split_out.length; i++) {
+    split_out[i] = split_out[i].join(' ');
+  }
+
+  return split_out.reverse();
+};
+
 export default {
   compareIndexByKey,
   deburrUpper,
   isCountryIncluded,
   truncateDecimals,
   isMicrosoftBrowser,
-  toStartCase
+  toStartCase,
+  wordWrap
 };
