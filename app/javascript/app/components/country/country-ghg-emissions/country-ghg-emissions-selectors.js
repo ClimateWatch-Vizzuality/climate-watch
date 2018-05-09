@@ -227,7 +227,7 @@ export const getQuantificationsData = createSelector(
               : v.value * DATA_SCALE;
             valuesParsed = {
               x: v.year,
-              y: yValue,
+              y: v.value ? yValue : null,
               label: v.label,
               isRange
             };
@@ -239,7 +239,7 @@ export const getQuantificationsData = createSelector(
       });
     });
     // Sort desc to avoid z-index problem in the graph
-    return orderBy(qParsed, 'x', 'desc');
+    return orderBy(qParsed, 'y', 'desc');
   }
 );
 
