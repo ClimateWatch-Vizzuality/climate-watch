@@ -220,7 +220,7 @@ class ChartStackedArea extends PureComponent {
                 activePoint &&
                 (point.x === activePoint.x && point.y === activePoint.y);
               let colorPoint =
-                point.label === 'BAU'
+                point.label.includes('BAU') && point.y > 0
                   ? QUANTIFICATION_COLORS.BAU
                   : QUANTIFICATION_COLORS.QUANTIFIED;
               if (!point.y || point.y === 0) {

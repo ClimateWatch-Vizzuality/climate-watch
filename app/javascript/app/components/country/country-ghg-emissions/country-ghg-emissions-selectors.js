@@ -248,7 +248,9 @@ export const getQuantificationsTagsConfig = createSelector(
   quantifications => {
     if (!quantifications) return [];
     const config = [];
-    const bau = quantifications.find(q => q.label === 'BAU');
+    const bau = quantifications.find(
+      q => q.label.includes('BAU') && q.value > 0
+    );
     const qua = quantifications.find(
       q => q.label === 'Unconditional' || q.label === 'Conditional'
     );
