@@ -1,32 +1,34 @@
 import { createSelector } from 'reselect';
 import { truncateDecimals } from 'utils/utils';
+import isEmpty from 'lodash/isEmpty';
 
-const getSocioeconomicsData = state => state.socioeconomics || null;
+const getLocations = state => state.locations || null;
+const getSocioeconomicsData = state => state.socioeconomics.data || null;
 export const getCountrySocioeconomics = createSelector(
-  [getSocioeconomicsData],
-  socioeconomicsData => {
-    if (!socioeconomicsData) return null;
-    const gdpPerCapitaLocale =
-      socioeconomicsData.gdp_per_capita &&
-      truncateDecimals(socioeconomicsData.gdp_per_capita, 0).toLocaleString();
-    const populationLocale =
-      socioeconomicsData.population &&
-      socioeconomicsData.population.toLocaleString();
-    const populationGrowthLocale = (Math.round(
-      socioeconomicsData.population_growth * 100
-    ) / 100).toLocaleString();
+  [getLocations, getSocioeconomicsData],
+  (locations, socioeconomicsData) => {
+    if (!locations || !locations.length || isEmpty(socioeconomicsData)) { return null; }
+    return locations.map(location => {
+      const locationData = socioeconomicsData[location];
+      if (!locationData) return null;
+      const gdpPerCapitaLocale =
+        locationData.gdp_per_capita &&
+        truncateDecimals(locationData.gdp_per_capita, 0).toLocaleString();
+      const populationLocale =
+        locationData.population && locationData.population.toLocaleString();
+      const populationGrowthLocale = (Math.round(
+        locationData.population_growth * 100
+      ) / 100).toLocaleString();
 
-    let text = '';
-    if (gdpPerCapitaLocale && socioeconomicsData.gdp_per_capita_rank) {
-      text += `GDP per capita (${socioeconomicsData.gdp_per_capita_year}) - USD
-      ${gdpPerCapitaLocale} (ranked ${socioeconomicsData.gdp_per_capita_rank} globally)
-      <br/>`;
-    }
-    if (populationLocale && populationGrowthLocale) {
-      text += `Population (${socioeconomicsData.population_year}) - ${populationLocale}
-      (${populationGrowthLocale}% annual growth)`;
-    }
-    return [text];
+      return {
+        gdpPerCapitaLocale,
+        gdp_per_capita_rank: locationData.gdp_per_capita_rank,
+        gdp_per_capita_year: locationData.gdp_per_capita_year,
+        populationLocale,
+        populationGrowthLocale,
+        population_year: locationData.population_year
+      };
+    });
   }
 );
 

@@ -8,9 +8,14 @@ import { getCountrySocioeconomics } from './compare-socioeconomics-selectors';
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
   const locations = search.locations ? search.locations.split(',') : [];
+  const socioeconomicsData = {
+    locations,
+    socioeconomics: state.socioeconomics
+  };
+
   return {
     loading: state.socioeconomics.loading,
-    countrySocioeconomics: getCountrySocioeconomics(state.socioeconomics),
+    countrySocioeconomics: getCountrySocioeconomics(socioeconomicsData),
     locations
   };
 };

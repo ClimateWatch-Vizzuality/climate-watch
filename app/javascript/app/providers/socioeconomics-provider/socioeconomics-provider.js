@@ -14,7 +14,9 @@ class SocioeconomicsProvider extends PureComponent {
   componentDidMount() {
     const { match, locations, fetchSocioeconomics } = this.props;
     const iso = match.params.iso;
-    fetchSocioeconomics(iso || locations);
+    if (iso || (locations && locations.length)) {
+      fetchSocioeconomics(iso ? [iso] : locations);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -24,9 +26,11 @@ class SocioeconomicsProvider extends PureComponent {
     const nextLocations = nextProps.locations;
     if (
       iso !== nextIso ||
-      (locations && !isEqual(locations.sort(), nextLocations.sort()))
+      (locations &&
+        locations.length &&
+        !isEqual(locations.sort(), nextLocations.sort()))
     ) {
-      this.props.fetchSocioeconomics(nextIso);
+      this.props.fetchSocioeconomics(nextIso ? [nextIso] : nextLocations);
     }
   }
 
