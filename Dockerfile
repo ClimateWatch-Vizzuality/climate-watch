@@ -2,8 +2,13 @@ FROM ruby:2.4.1
 MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 
 ENV NAME climate-watch
-ENV RAKE_ENV production
-ENV RAILS_ENV production
+
+# Set application environment
+ARG $RAILS_ENV
+ENV RAILS_ENV $RAILS_ENV
+ENV RACK_ENV $RAILS_ENV
+ENV NODE_ENV $RAILS_ENV
+
 ENV ESP_API https://data.emissionspathways.org/api/v1
 ENV S3_BUCKET_NAME climate-watch-dev
 ENV GOOGLE_ANALYTICS_ID UA-1981881-51
