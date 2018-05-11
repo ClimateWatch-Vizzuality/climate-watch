@@ -22,7 +22,10 @@ class SocioeconomicsProvider extends PureComponent {
     const nextIso = nextProps.match.params.iso;
     const locations = this.props.locations;
     const nextLocations = nextProps.locations;
-    if (iso !== nextIso || !isEqual(locations.sort(), nextLocations.sort())) {
+    if (
+      iso !== nextIso ||
+      (locations && !isEqual(locations.sort(), nextLocations.sort()))
+    ) {
       this.props.fetchSocioeconomics(nextIso);
     }
   }
@@ -35,7 +38,7 @@ class SocioeconomicsProvider extends PureComponent {
 SocioeconomicsProvider.propTypes = {
   fetchSocioeconomics: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  locations: PropTypes.array.isRequired
+  locations: PropTypes.array
 };
 
 export default withRouter(connect(null, actions)(SocioeconomicsProvider));
