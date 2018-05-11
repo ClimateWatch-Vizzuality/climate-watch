@@ -82,3 +82,7 @@ test:
 production:
   <<: *default
   url: <%= ENV['POSTGRES_URL'] %>
+
+staging:
+  <<: *default
+  url: <%= ENV['POSTGRES_URL'] %>
