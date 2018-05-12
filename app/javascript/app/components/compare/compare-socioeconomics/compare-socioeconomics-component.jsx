@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import layout from 'styles/layout';
 import Loading from 'components/loading';
 import SocioeconomicsProvider from 'providers/socioeconomics-provider';
+import NoContent from 'components/no-content';
 import styles from './compare-socioeconomics-styles.scss';
 
 class CompareSocioeconomics extends PureComponent {
@@ -10,7 +11,13 @@ class CompareSocioeconomics extends PureComponent {
 
   render() {
     const renderSocioeconomics = (data, index) => {
-      if (!data) { return <div className={styles.compareSocioeconomics} key={index} />; }
+      if (!data) {
+        return loading ? (
+          <Loading light className={styles.loader} />
+        ) : (
+          <div className={styles.compareSocioeconomics} key={index} />
+        );
+      }
       const {
         gdpPerCapitaLocale,
         gdp_per_capita_rank,
@@ -44,24 +51,26 @@ class CompareSocioeconomics extends PureComponent {
         </div>
       );
     };
-
     const { countrySocioeconomics, locations, loading } = this.props;
     return (
       <div className={styles.section}>
         <div className={layout.content}>
           <SocioeconomicsProvider locations={locations} />
-          {loading ? (
-            <Loading light className={styles.loader} />
-          ) : (
-            <div className="grid-column-item">
-              <div className={styles.col3}>
-                {countrySocioeconomics &&
-                  countrySocioeconomics.map((countrySocioeconomicData, i) =>
-                    renderSocioeconomics(countrySocioeconomicData, i)
-                  )}
-              </div>
+          <div className="grid-column-item">
+            <div className={styles.col3}>
+              {countrySocioeconomics && countrySocioeconomics.some(c => c) ? (
+                countrySocioeconomics.map((countrySocioeconomicData, i) =>
+                  renderSocioeconomics(countrySocioeconomicData, i)
+                )
+              ) : (
+                <NoContent
+                  message={'No data selected'}
+                  icon
+                  className={styles.noData}
+                />
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     );

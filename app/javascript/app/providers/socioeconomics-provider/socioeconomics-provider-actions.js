@@ -12,7 +12,6 @@ const fetchSocioeconomics = createThunkAction(
     const { socioeconomics } = state();
     const promises = [];
     const locationsWithPromise = [];
-    dispatch(fetchSocioeconomicsInit());
     const sanitizedLocations = [];
     locations.forEach(location => {
       if (location !== '') sanitizedLocations.push(location);
@@ -33,7 +32,7 @@ const fetchSocioeconomics = createThunkAction(
         );
         locationsWithPromise.push(iso);
       }
-
+      dispatch(fetchSocioeconomicsInit());
       Promise.all(promises)
         .then(response => {
           const locationData = {};

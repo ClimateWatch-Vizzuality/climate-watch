@@ -26,6 +26,17 @@
   padding-bottom: 30px;
 }
 
+.loader {
+  min-height: 175px;
+}
+
+.noData {
+  font-size: $font-size;
+  color: $theme-color;
+  margin: auto;
+  min-height: 175px;
+}
+
 .section {
   border-bottom: 1px solid $border-color;
 }
