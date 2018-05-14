@@ -227,7 +227,8 @@ class ChartStackedArea extends PureComponent {
       height,
       points,
       includeTotalLine,
-      domain
+      domain,
+      stepped
     } = this.props;
     if (!dataWithTotal.length) return null;
     const tickValues = getCustomTicks(config.columns, dataWithTotal);
@@ -285,7 +286,7 @@ class ChartStackedArea extends PureComponent {
                 stroke={'transparent' || ''}
                 strokeWidth={0}
                 fill={config.theme[column.value].fill || ''}
-                type="step"
+                type={stepped ? 'step' : 'linear'}
               />
             ))}
           {includeTotalLine && (
@@ -295,7 +296,7 @@ class ChartStackedArea extends PureComponent {
               dot={false}
               stroke="#113750"
               strokeWidth={2}
-              type="step"
+              type={stepped ? 'step' : 'linear'}
             />
           )}
           {showLastPoint && this.renderLastPoint()}
@@ -318,13 +319,15 @@ ChartStackedArea.propTypes = {
     PropTypes.string // % accepted
   ]).isRequired,
   onMouseMove: PropTypes.func.isRequired,
-  includeTotalLine: PropTypes.bool
+  includeTotalLine: PropTypes.bool.isRequired,
+  stepped: PropTypes.bool.isRequired
 };
 
 ChartStackedArea.defaultProps = {
   height: 500,
   onMouseMove: () => {},
   includeTotalLine: true,
+  stepped: false,
   points: []
 };
 
