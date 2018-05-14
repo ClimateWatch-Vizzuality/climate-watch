@@ -61,8 +61,8 @@ export const getDomain = createSelector(
       points.filter(p => p.y).map(p => (isArray(p.y) ? min(p.y) : p.y))
     );
     domain.x[1] = max(points.filter(p => p.x).map(p => p.x)) + 1;
-    domain.y[0] = pointsMax || dataMax;
-    domain.y[1] = pointsMin || dataMin;
+    domain.y[0] = pointsMin || dataMin;
+    domain.y[1] = pointsMax || dataMax;
     return domain;
   }
 );
