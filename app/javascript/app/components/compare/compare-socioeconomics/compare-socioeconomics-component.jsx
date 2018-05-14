@@ -45,7 +45,7 @@ class CompareSocioeconomics extends PureComponent {
               >{`Population (${population_year})`}</div>
               <div
                 className={styles.value}
-              >{`${populationLocale}(${populationGrowthLocale}% annual growth)`}</div>
+              >{`${populationLocale} (${populationGrowthLocale}% annual growth)`}</div>
             </div>
           ) : null}
         </div>
