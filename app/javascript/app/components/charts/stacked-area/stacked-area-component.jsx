@@ -89,8 +89,128 @@ class ChartStackedArea extends PureComponent {
     this.setState({ activePoint });
   }
 
+  renderQuantificationPoints(maxData) {
+    const { points } = this.props;
+    const { activePoint } = this.state;
+    const isEdgeOrExplorer = isMicrosoftBrowser();
+
+    return (
+      points &&
+      points.length > 0 &&
+      points.map(point => {
+        const isActivePoint =
+          activePoint &&
+          (point.x === activePoint.x && point.y === activePoint.y);
+        let colorPoint = point.label.includes('BAU')
+          ? QUANTIFICATION_COLORS.BAU
+          : QUANTIFICATION_COLORS.QUANTIFIED;
+        if (point.y === null) {
+          colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
+        }
+
+        // yearLabel
+        const LENGHT_LIMIT = 30;
+        const isLongLabel = point.label.length > LENGHT_LIMIT;
+        const yearLabel = (
+          <Label
+            value={`${point.x}${isLongLabel ? '' : `- ${point.label}`}`}
+            position="top"
+            fill="#8f8fa1"
+            stroke="#fff"
+            strokeWidth={isEdgeOrExplorer ? 0 : 8}
+            style={{ paintOrder: 'stroke' }}
+            fontSize="13px"
+            offset={25}
+          />
+        );
+
+        // extraLabelLine - For long labels
+        const MAX_LINE_LENGHT = 20;
+        const LABEL_OFFSET = 10;
+        const DY = 20;
+        const extraLabelLine = (text, offset) => (
+          <Label
+            key={text}
+            value={text}
+            position="insideTop"
+            fill="#8f8fa1"
+            stroke="#fff"
+            strokeWidth={isEdgeOrExplorer ? 0 : 8}
+            style={{ paintOrder: 'stroke', zIndex: 500 }}
+            fontSize="13px"
+            offset={offset}
+          />
+        );
+        const extraLabel = wordWrap(point.label, MAX_LINE_LENGHT).map((l, i) =>
+          extraLabelLine(l, LABEL_OFFSET + i * DY)
+        );
+
+        // value label
+        const valueLabelValue = point.isRange
+          ? `${format('.3s')(point.y[0])}t - ${format('.3s')(point.y[1])}t`
+          : `${format('.3s')(point.y)}t`;
+        const valueLabel = (
+          <Label
+            value={valueLabelValue}
+            position="top"
+            stroke="#fff"
+            strokeWidth={isEdgeOrExplorer ? 0 : 4}
+            style={{ paintOrder: 'stroke' }}
+            fill="#113750"
+            fontSize="18px"
+          />
+        );
+
+        if (point.isRange || point.y === null) {
+          return (
+            <ReferenceArea
+              key={`${point.label}-${point.y &&
+                point.x + point.y[0] + point.y[1]}`}
+              x1={point.x - 0.01}
+              x2={point.x + 0.01}
+              y1={point.y ? point.y[0] : 0}
+              y2={point.y ? point.y[1] : maxData.y}
+              fill="transparent"
+              fillOpacity={0}
+              stroke={colorPoint}
+              strokeOpacity={0.65}
+              strokeWidth={isActivePoint ? 10 : 8}
+              strokeLinejoin="round"
+              onMouseEnter={() => this.handlePointeHover(point)}
+              onMouseLeave={() => this.handlePointeHover(null)}
+            >
+              {isActivePoint ? yearLabel : null}
+              {isActivePoint && isLongLabel ? extraLabel : null}
+              {isActivePoint && point.y ? valueLabel : null}
+            </ReferenceArea>
+          );
+        } else if (point.x && point.y !== null) {
+          return (
+            <ReferenceDot
+              key={`${point.label}-${point.x + point.y}`}
+              x={point.x}
+              y={point.y}
+              fill={colorPoint}
+              fillOpacity={0.65}
+              stroke="#fff"
+              strokeWidth={2}
+              r={isActivePoint ? 8 : 6}
+              onMouseEnter={() => this.handlePointeHover(point)}
+              onMouseLeave={() => this.handlePointeHover(null)}
+            >
+              {isActivePoint ? yearLabel : null}
+              {isActivePoint && isLongLabel ? extraLabel : null}
+              {isActivePoint ? valueLabel : null}
+            </ReferenceDot>
+          );
+        }
+        return null;
+      })
+    );
+  }
+
   render() {
-    const { activePoint, tooltipVisibility, showLastPoint } = this.state;
+    const { tooltipVisibility, showLastPoint } = this.state;
     const { config, data, height, points, includeTotalLine } = this.props;
     if (!data.length) return null;
 
@@ -212,121 +332,7 @@ class ChartStackedArea extends PureComponent {
               />
             </ReferenceDot>
           )}
-          {points &&
-            points.length > 0 &&
-            points.map(point => {
-              const isActivePoint =
-                activePoint &&
-                (point.x === activePoint.x && point.y === activePoint.y);
-              let colorPoint =
-                point.label.includes('BAU') && point.y > 0
-                  ? QUANTIFICATION_COLORS.BAU
-                  : QUANTIFICATION_COLORS.QUANTIFIED;
-              if (point.y === null) {
-                colorPoint = QUANTIFICATION_COLORS.NOT_QUANTIFIABLE;
-              }
-
-              // yearLabel
-              const LENGHT_LIMIT = 30;
-              const isLongLabel = point.label.length > LENGHT_LIMIT;
-              const yearLabel = (
-                <Label
-                  value={`${point.x}${isLongLabel ? '' : `- ${point.label}`}`}
-                  position="top"
-                  fill="#8f8fa1"
-                  stroke="#fff"
-                  strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                  style={{ paintOrder: 'stroke' }}
-                  fontSize="13px"
-                  offset={25}
-                />
-              );
-
-              // extraLabelLine - For long labels
-              const MAX_LINE_LENGHT = 20;
-              const LABEL_OFFSET = 10;
-              const DY = 20;
-              const extraLabelLine = (text, offset) => (
-                <Label
-                  key={text}
-                  value={text}
-                  position="insideTop"
-                  fill="#8f8fa1"
-                  stroke="#fff"
-                  strokeWidth={isEdgeOrExplorer ? 0 : 8}
-                  style={{ paintOrder: 'stroke', zIndex: 500 }}
-                  fontSize="13px"
-                  offset={offset}
-                />
-              );
-              const extraLabel = wordWrap(
-                point.label,
-                MAX_LINE_LENGHT
-              ).map((l, i) => extraLabelLine(l, LABEL_OFFSET + i * DY));
-
-              // value label
-              const valueLabelValue = point.isRange
-                ? `${format('.3s')(point.y[0])}t - ${format('.3s')(
-                  point.y[1]
-                )}t`
-                : `${format('.3s')(point.y)}t`;
-              const valueLabel = (
-                <Label
-                  value={valueLabelValue}
-                  position="top"
-                  stroke="#fff"
-                  strokeWidth={isEdgeOrExplorer ? 0 : 4}
-                  style={{ paintOrder: 'stroke' }}
-                  fill="#113750"
-                  fontSize="18px"
-                />
-              );
-
-              if (point.isRange || point.y === null) {
-                return (
-                  <ReferenceArea
-                    key={`${point.label}-${point.y &&
-                      point.x + point.y[0] + point.y[1]}`}
-                    x1={point.x - 0.01}
-                    x2={point.x + 0.01}
-                    y1={point.y ? point.y[0] : 0}
-                    y2={point.y ? point.y[1] : maxData.y}
-                    fill="transparent"
-                    fillOpacity={0}
-                    stroke={colorPoint}
-                    strokeOpacity={0.65}
-                    strokeWidth={isActivePoint ? 10 : 8}
-                    strokeLinejoin="round"
-                    onMouseEnter={() => this.handlePointeHover(point)}
-                    onMouseLeave={() => this.handlePointeHover(null)}
-                  >
-                    {isActivePoint ? yearLabel : null}
-                    {isActivePoint && isLongLabel ? extraLabel : null}
-                    {isActivePoint && point.y ? valueLabel : null}
-                  </ReferenceArea>
-                );
-              } else if (point.x && point.y !== null) {
-                return (
-                  <ReferenceDot
-                    key={`${point.label}-${point.x + point.y}`}
-                    x={point.x}
-                    y={point.y}
-                    fill={colorPoint}
-                    fillOpacity={0.65}
-                    stroke="#fff"
-                    strokeWidth={2}
-                    r={isActivePoint ? 8 : 6}
-                    onMouseEnter={() => this.handlePointeHover(point)}
-                    onMouseLeave={() => this.handlePointeHover(null)}
-                  >
-                    {isActivePoint ? yearLabel : null}
-                    {isActivePoint && isLongLabel ? extraLabel : null}
-                    {isActivePoint ? valueLabel : null}
-                  </ReferenceDot>
-                );
-              }
-              return null;
-            })}
+          {this.renderQuantificationPoints(maxData)}
         </ComposedChart>
       </ResponsiveContainer>
     );
