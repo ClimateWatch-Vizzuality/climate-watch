@@ -1,0 +1,42 @@
+@import '~styles/layout.scss';
+
+.compareSocioeconomics {
+  margin-top: $gutter-padding;
+}
+
+.col3 {
+  @include columns();
+
+  @media #{$tablet-landscape} {
+    @include columns(4);
+  }
+}
+
+.title {
+  font-size: $font-size;
+  color: $dark-gray;
+}
+
+.value {
+  font-size: $font-size-m;
+  color: $theme-color;
+}
+
+.line {
+  padding-bottom: 30px;
+}
+
+.loader {
+  min-height: 175px;
+}
+
+.noData {
+  font-size: $font-size;
+  color: $theme-color;
+  margin: auto;
+  min-height: 175px;
+}
+
+.section {
+  border-bottom: 1px solid $border-color;
+}
