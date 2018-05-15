@@ -42,7 +42,7 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
     new ExtractTextPlugin(
-      env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'
+      ['staging', 'production'].indexOf(env.NODE_ENV) > -1 ? '[name]-[hash].css' : '[name].css'
     ),
     new ManifestPlugin({
       publicPath: output.publicPath,
