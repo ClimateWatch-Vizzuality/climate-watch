@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
+import Waypoint from 'react-waypoint';
 import { COUNTRY_PROFILES } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { isPageContained } from 'utils/navigation';
@@ -17,7 +18,13 @@ import styles from './country-styles.scss';
 
 class Country extends PureComponent {
   render() {
-    const { route, country, anchorLinks, description } = this.props;
+    const {
+      route,
+      country,
+      anchorLinks,
+      description,
+      setActiveSection
+    } = this.props;
     const countryName = (country && country.name) || '';
     return (
       <div>
@@ -57,10 +64,19 @@ class Country extends PureComponent {
         {route.sections &&
           route.sections.length > 0 &&
           route.sections.map(section => (
-            <div key={section.hash} className={styles.section}>
-              <div id={section.hash} className={styles.sectionHash} />
-              <section.component />
-            </div>
+            <Waypoint
+              bottomOffset={'40%'}
+              topOffset={'40%'}
+              onEnter={() => {
+                setActiveSection(section.hash);
+              }}
+              key={section.hash}
+            >
+              <div className={styles.section}>
+                <div id={section.hash} className={styles.sectionHash} />
+                <section.component />
+              </div>
+            </Waypoint>
           ))}
       </div>
     );
@@ -74,7 +90,8 @@ Country.propTypes = {
   }).isRequired,
   description: PropTypes.string,
   anchorLinks: PropTypes.array.isRequired,
-  route: PropTypes.object.isRequired
+  route: PropTypes.object.isRequired,
+  setActiveSection: PropTypes.func.isRequired
 };
 
 export default Country;
