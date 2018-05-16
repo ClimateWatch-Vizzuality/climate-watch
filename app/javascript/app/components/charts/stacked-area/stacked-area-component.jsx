@@ -137,10 +137,12 @@ class ChartStackedArea extends PureComponent {
         // RANGES AND POINTS
         const isNotQuantifiable = point.y === null;
         if (point.isRange || isNotQuantifiable) {
+          const key = `${point.label}-${point.y
+            ? point.x + point.y[0] + point.y[1]
+            : point.x}`;
           return (
             <ReferenceArea
-              key={`${point.label}-${point.y &&
-                point.x + point.y[0] + point.y[1]}`}
+              key={key}
               x1={point.x - 0.01}
               x2={point.x + 0.01}
               y1={isNotQuantifiable ? dataMaxMin.min : point.y[0]}
