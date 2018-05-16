@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
+import Waypoint from 'react-waypoint';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -15,7 +16,7 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import { TabletLandscape, Desktop } from 'components/responsive';
 import styles from './country-compare-styles.scss';
 
-const CountryCompare = ({ route, anchorLinks }) => (
+const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
   <TabletLandscape>
     {isLandscape => (
       <div>
@@ -46,13 +47,18 @@ const CountryCompare = ({ route, anchorLinks }) => (
           route.sections
             .filter(s => !(isPageContained && s.excludeFromContained))
             .map(section => (
-              <section
+              <Waypoint
+                bottomOffset={'40%'}
+                topOffset={'40%'}
+                onEnter={() => {
+                  setActiveSection(section.hash);
+                }}
                 key={section.hash}
-                id={section.hash}
-                className={styles.section}
               >
-                <section.component />
-              </section>
+                <section id={section.hash} className={styles.section}>
+                  <section.component />
+                </section>
+              </Waypoint>
             ))}
         {!isLandscape ? <CountrySelectorFooter /> : null}
         <ModalMetadata />
@@ -63,7 +69,8 @@ const CountryCompare = ({ route, anchorLinks }) => (
 
 CountryCompare.propTypes = {
   route: PropTypes.object.isRequired,
-  anchorLinks: PropTypes.array.isRequired
+  anchorLinks: PropTypes.array.isRequired,
+  setActiveSection: PropTypes.func.isRequired
 };
 
 export default CountryCompare;
