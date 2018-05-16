@@ -70,6 +70,7 @@ class Country extends PureComponent {
               onEnter={() => {
                 setActiveSection(section.hash);
               }}
+              fireOnRapidScroll={false}
               key={section.hash}
             >
               <div className={styles.section}>

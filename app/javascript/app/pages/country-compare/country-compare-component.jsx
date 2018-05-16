@@ -53,6 +53,7 @@ const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
                 onEnter={() => {
                   setActiveSection(section.hash);
                 }}
+                fireOnRapidScroll={false}
                 key={section.hash}
               >
                 <section id={section.hash} className={styles.section}>
