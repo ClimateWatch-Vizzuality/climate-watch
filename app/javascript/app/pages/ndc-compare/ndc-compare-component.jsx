@@ -8,6 +8,8 @@ import Dropdown from 'components/dropdown';
 import sortBy from 'lodash/sortBy';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
+import { Desktop } from 'components/responsive';
+import { STICKY_OFFSET } from 'styles/constants';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -40,50 +42,59 @@ class NDCCountry extends PureComponent {
             />
           </Sticky>
         </Header>
-        <div className={styles.countrySelector}>
-          <div className={styles.row}>
-            <div className="grid-layout-item">
-              <div className={styles.fourFold}>
-                <div
-                  className={cx(
-                    styles.selector,
-                    styles.offset,
-                    styles.separator
-                  )}
-                >
-                  <Dropdown
-                    placeholder="Add a country"
-                    options={sortBy(countriesOptions, ['label'])}
-                    onValueChange={selected =>
-                      handleDropDownChange(0, selected)}
-                    value={activeCountriesOptions[0]}
-                    transparent
-                  />
-                </div>
-                <div className={cx(styles.selector, styles.separator)}>
-                  <Dropdown
-                    placeholder="Add a second country"
-                    options={sortBy(countriesOptions, ['label'])}
-                    onValueChange={selected =>
-                      handleDropDownChange(1, selected)}
-                    value={activeCountriesOptions[1]}
-                    transparent
-                  />
-                </div>
-                <div className={styles.selector}>
-                  <Dropdown
-                    placeholder="Add a third country"
-                    options={sortBy(countriesOptions, ['label'])}
-                    onValueChange={selected =>
-                      handleDropDownChange(2, selected)}
-                    value={activeCountriesOptions[2]}
-                    transparent
-                  />
+        <Desktop>
+          {isDesktop => (
+            <Sticky
+              activeClass="sticky -country-selector"
+              top={isDesktop ? STICKY_OFFSET.desktop : STICKY_OFFSET.mobile}
+            >
+              <div className={styles.countrySelector}>
+                <div className={styles.row}>
+                  <div className="grid-layout-item">
+                    <div className={styles.fourFold}>
+                      <div
+                        className={cx(
+                          styles.selector,
+                          styles.offset,
+                          styles.separator
+                        )}
+                      >
+                        <Dropdown
+                          placeholder="Add a country"
+                          options={sortBy(countriesOptions, ['label'])}
+                          onValueChange={selected =>
+                            handleDropDownChange(0, selected)}
+                          value={activeCountriesOptions[0]}
+                          transparent
+                        />
+                      </div>
+                      <div className={cx(styles.selector, styles.separator)}>
+                        <Dropdown
+                          placeholder="Add a second country"
+                          options={sortBy(countriesOptions, ['label'])}
+                          onValueChange={selected =>
+                            handleDropDownChange(1, selected)}
+                          value={activeCountriesOptions[1]}
+                          transparent
+                        />
+                      </div>
+                      <div className={styles.selector}>
+                        <Dropdown
+                          placeholder="Add a third country"
+                          options={sortBy(countriesOptions, ['label'])}
+                          onValueChange={selected =>
+                            handleDropDownChange(2, selected)}
+                          value={activeCountriesOptions[2]}
+                          transparent
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </Sticky>
+          )}
+        </Desktop>
         <div className={styles.wrapper}>{renderRoutes(route.routes)}</div>
       </div>
     );
