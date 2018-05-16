@@ -15,7 +15,8 @@ import {
   getSectorOptionsSorted,
   groupTargetsMeta,
   getSectorSelected,
-  getSectorsMapped
+  getSectorsMapped,
+  getTooltipSectorIds
 } from './country-ndc-sdg-linkages-selectors';
 
 const actions = {
@@ -27,23 +28,27 @@ const mapStateToProps = (state, { match, location }) => {
   const { countrySDGLinkages, ndcsSdgsMeta, ndcsSdgsData } = state;
   const { iso } = match.params;
   const search = qs.parse(location.search);
+  const tooltipData = countrySDGLinkages.tooltipData;
+  const targetsData =
+    !isEmpty(ndcsSdgsData.data) && ndcsSdgsData.data[iso]
+      ? ndcsSdgsData.data[iso].sdgs
+      : {};
   const sdgsData = {
     data: ndcsSdgsMeta.data,
-    activeSector: search.sector
+    activeSector: search.sector,
+    tooltipData,
+    targetsData
   };
-
   return {
     fetched: ndcsSdgsData.data[iso],
     activeSector: getSectorSelected(sdgsData),
-    tooltipData: countrySDGLinkages.tooltipData,
+    tooltipData,
     sectors: getSectorsMapped(sdgsData),
+    tooltipSectorIds: getTooltipSectorIds(sdgsData),
     sectorOptions: getSectorOptionsSorted(sdgsData),
     goals: (!isEmpty(ndcsSdgsData.data) && ndcsSdgsMeta.data.goals) || [],
     targets: groupTargetsMeta(ndcsSdgsMeta),
-    targetsData:
-      !isEmpty(ndcsSdgsData.data) && ndcsSdgsData.data[iso]
-        ? ndcsSdgsData.data[iso].sdgs
-        : {},
+    targetsData,
     loading:
       (!ndcsSdgsData.error && ndcsSdgsData.loading) || ndcsSdgsMeta.loading,
     iso

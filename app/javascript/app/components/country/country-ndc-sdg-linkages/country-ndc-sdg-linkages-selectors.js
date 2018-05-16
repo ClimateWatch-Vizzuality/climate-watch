@@ -1,12 +1,16 @@
 import { createSelector } from 'reselect';
 import upperFirst from 'lodash/upperFirst';
 import groupBy from 'lodash/groupBy';
+import isEmpty from 'lodash/isEmpty';
 import { compareIndexByKey } from 'utils/utils';
 
 const getSectors = state => {
   if (!state.data) return null;
   return state.data.sectors;
 };
+
+const getTooltipData = state => state.tooltipData || null;
+const getTargetsData = state => state.targetsData || null;
 
 const getTargets = state => {
   if (!state.data.targets) return null;
@@ -62,9 +66,24 @@ export const groupTargetsMeta = createSelector([getTargets], targets => {
   return groupBy(targets.sort(compareIndexByKey('number')), 'goal_number');
 });
 
+export const getTooltipSectorIds = createSelector(
+  [getTooltipData, getTargetsData],
+  (tooltip, targets) => {
+    if (!tooltip || !targets || isEmpty(tooltip) || isEmpty(targets)) { return null; }
+    return (
+      (targets[tooltip.goal_number] &&
+        targets[tooltip.goal_number].targets &&
+        targets[tooltip.goal_number].targets[tooltip.number] &&
+        targets[tooltip.goal_number].targets[tooltip.number].sectors) ||
+      null
+    );
+  }
+);
+
 export default {
   getSectorOptionsSorted,
   groupTargetsMeta,
   getSectorSelected,
-  getSectorsMapped
+  getSectorsMapped,
+  getTooltipSectorIds
 };
