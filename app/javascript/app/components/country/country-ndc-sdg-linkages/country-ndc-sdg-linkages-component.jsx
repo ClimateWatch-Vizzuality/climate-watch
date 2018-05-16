@@ -28,10 +28,9 @@ class CountrySDGLinkages extends PureComponent {
   }
 
   getTooltip() {
-    const { sectors, tooltipData, targets } = this.props;
+    const { sectors, tooltipData, targets, tooltipSectorIds } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
-    const hasTooltipData =
-      tooltipData.sectors && tooltipData.sectors.length > 0;
+    const hasTooltipData = tooltipSectorIds && tooltipSectorIds.length > 0;
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
@@ -41,10 +40,10 @@ class CountrySDGLinkages extends PureComponent {
         {hasTooltipData && (
           <p className={styles.sectors}>
             <b>Sectors: </b>
-            {tooltipData.sectors.map((sector, index) => (
+            {tooltipSectorIds.map((sector, index) => (
               <span key={`${tooltipData.targetKey}-${sector}`}>
                 {sectors[sector]}
-                {index === tooltipData.sectors.length - 1 ? '' : ', '}
+                {index === tooltipSectorIds.length - 1 ? '' : ', '}
               </span>
             ))}
           </p>
@@ -64,7 +63,6 @@ class CountrySDGLinkages extends PureComponent {
       handleOnDotClick,
       iso
     } = this.props;
-
     const hasGoals = goals && goals.length > 0;
     if (loading) return <Loading light className={styles.loader} />;
     if (isEmpty(goals) || isEmpty(targetsData)) {
@@ -183,6 +181,7 @@ CountrySDGLinkages.propTypes = {
   loading: Proptypes.bool,
   setTooltipData: Proptypes.func,
   tooltipData: Proptypes.object,
+  tooltipSectorIds: Proptypes.array,
   targetsMeta: Proptypes.object,
   iso: Proptypes.string,
   handleInfoClick: Proptypes.func.isRequired,

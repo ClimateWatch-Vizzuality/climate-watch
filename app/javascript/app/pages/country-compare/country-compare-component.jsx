@@ -10,6 +10,7 @@ import CountryCompareSelector from 'components/country-compare/country-compare-s
 import CountrySelectorFooter from 'components/country-selector-footer';
 import ModalMetadata from 'components/modal-metadata';
 import { isPageContained } from 'utils/navigation';
+import { STICKY_OFFSET } from 'styles/constants';
 
 import layout from 'styles/layout.scss';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
@@ -37,7 +38,10 @@ const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
         <Desktop>
           {isDesktop =>
             (isLandscape ? (
-              <Sticky activeClass="sticky" top={isDesktop ? 49 : 105}>
+              <Sticky
+                activeClass="sticky"
+                top={isDesktop ? STICKY_OFFSET.desktop : STICKY_OFFSET.mobile}
+              >
                 <CountryCompareSelector className={styles.countrySelectors} />
               </Sticky>
             ) : null)}
