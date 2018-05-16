@@ -34,16 +34,16 @@ node {
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "master":
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false -t ${dockerUsername}/${appName}:latest .")
           break
         case "sandbox":
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${dockerUsername}/${appName}:latest .")
           break
         default:
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${dockerUsername}/${appName}:latest .")
       }
     }
 
@@ -83,7 +83,8 @@ node {
           def userInput = true
           def didTimeout = false
           try {
-            timeout(time: 60, unit: 'SECONDS') {
+            slackSend (color: '#551A8B', channel: '#climate-watch-dev', message: "WAITING APPROVAL ON JENKINS (90seconds): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            timeout(time: 90, unit: 'SECONDS') {
               userInput = input(
                 id: 'Proceed1', message: 'Confirm deployment', parameters: [
                 [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this deployment']
@@ -92,6 +93,7 @@ node {
           }
           catch(err) { // timeout reached or input false
               sh("echo Aborted by user or timeout")
+              slackSend (color: '#FFA500', channel: '#climate-watch-dev', message: "DEPLOY CANCELLED (lack of approval): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
               if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
                   didTimeout = true
               } else {

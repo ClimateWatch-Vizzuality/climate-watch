@@ -182,6 +182,7 @@ class ChartLine extends PureComponent {
                   dataKey={column.value}
                   stroke={color}
                   strokeWidth={2}
+                  type="monotone"
                 />
               );
             })}

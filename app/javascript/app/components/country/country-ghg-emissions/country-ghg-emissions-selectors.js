@@ -227,7 +227,7 @@ export const getQuantificationsData = createSelector(
               : v.value * DATA_SCALE;
             valuesParsed = {
               x: v.year,
-              y: yValue,
+              y: v.value !== null || v.value !== undefined ? yValue : null,
               label: v.label,
               isRange
             };
@@ -239,7 +239,7 @@ export const getQuantificationsData = createSelector(
       });
     });
     // Sort desc to avoid z-index problem in the graph
-    return orderBy(qParsed, 'x', 'desc');
+    return orderBy(qParsed, 'y', 'desc');
   }
 );
 
@@ -248,11 +248,13 @@ export const getQuantificationsTagsConfig = createSelector(
   quantifications => {
     if (!quantifications) return [];
     const config = [];
-    const bau = quantifications.find(q => q.label === 'BAU');
+    const bau = quantifications.find(
+      q => q.label.includes('BAU') && q.value !== null
+    );
     const qua = quantifications.find(
       q => q.label === 'Unconditional' || q.label === 'Conditional'
     );
-    const nq = quantifications.find(q => q.label === 'No quantifiable target');
+    const nq = quantifications.find(q => q.value === null);
     if (bau) {
       config.push(QUANTIFICATIONS_CONFIG.bau);
     }

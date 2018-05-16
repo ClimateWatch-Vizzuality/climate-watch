@@ -8,7 +8,7 @@ module.exports = {
       options: {
         publicPath,
         name:
-          env.NODE_ENV === 'production' ? '[name]-[hash].[ext]' : '[name].[ext]'
+          ['staging', 'production'].indexOf(env.NODE_ENV) > -1 ? '[name]-[hash].[ext]' : '[name].[ext]'
       }
     }
   ]

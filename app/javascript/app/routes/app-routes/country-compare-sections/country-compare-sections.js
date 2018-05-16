@@ -1,8 +1,15 @@
-import CompareGHGChart from 'components/compare-ghg-chart';
-import CompareNDCContentOverview from 'components/compare-ndc-content-overview';
+import CompareSocioeconomics from 'components/compare/compare-socioeconomics';
+import CompareGHGChart from 'components/compare/compare-ghg-chart';
+import CompareNDCContentOverview from 'components/compare/compare-ndc-content-overview';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 
 export default [
+  {
+    hash: 'socio-economic-indicators',
+    label: 'Socio Economic Indicators',
+    anchor: true,
+    component: CompareSocioeconomics
+  },
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',
