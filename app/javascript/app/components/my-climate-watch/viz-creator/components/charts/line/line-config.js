@@ -29,7 +29,10 @@ const makeConfig = (data, indicators, small) => {
       : {
         dataKey: 'year',
         padding: { left: 15, right: 20 },
-        tickSize: 8
+        tickSize: 8,
+        scale: 'time',
+        type: 'number',
+        domain: ['auto', 'auto']
       },
     yAxis: small
       ? false
