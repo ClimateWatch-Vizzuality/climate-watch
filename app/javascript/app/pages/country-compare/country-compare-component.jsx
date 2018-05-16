@@ -48,7 +48,8 @@ const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
             .filter(s => !(isPageContained && s.excludeFromContained))
             .map(section => (
               <Waypoint
-                bottomOffset={'60%'}
+                scrollableAncestor={window}
+                bottomOffset={'69%'}
                 topOffset={'30%'}
                 onEnter={() => {
                   setActiveSection(section.hash);
