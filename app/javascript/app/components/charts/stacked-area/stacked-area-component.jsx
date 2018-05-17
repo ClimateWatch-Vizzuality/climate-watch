@@ -82,11 +82,11 @@ class ChartStackedArea extends PureComponent {
 
         // LABELS
         // yearLabel
-        const LENGHT_LIMIT = 30;
+        const LENGHT_LIMIT = 15;
         const isLongLabel = point.label.length > LENGHT_LIMIT;
         const yearLabel = (
           <Label
-            value={`${point.x}${isLongLabel ? '' : `- ${point.label}`}`}
+            value={`${point.x}${isLongLabel ? '' : ` - ${point.label}`}`}
             position="top"
             fill="#8f8fa1"
             stroke="#fff"
@@ -98,7 +98,7 @@ class ChartStackedArea extends PureComponent {
         );
 
         // extraLabelLine - For long labels
-        const MAX_LINE_LENGHT = 20;
+        const MAX_LINE_LENGHT = 15;
         const LABEL_OFFSET = 10;
         const DY = 20;
         const extraLabelLine = (text, offset) => (
@@ -137,10 +137,12 @@ class ChartStackedArea extends PureComponent {
         // RANGES AND POINTS
         const isNotQuantifiable = point.y === null;
         if (point.isRange || isNotQuantifiable) {
+          const key = `${point.label}-${point.y
+            ? point.x + point.y[0] + point.y[1]
+            : point.x}`;
           return (
             <ReferenceArea
-              key={`${point.label}-${point.y &&
-                point.x + point.y[0] + point.y[1]}`}
+              key={key}
               x1={point.x - 0.01}
               x2={point.x + 0.01}
               y1={isNotQuantifiable ? dataMaxMin.min : point.y[0]}

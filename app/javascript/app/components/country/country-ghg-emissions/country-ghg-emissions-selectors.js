@@ -227,7 +227,7 @@ export const getQuantificationsData = createSelector(
               : v.value * DATA_SCALE;
             valuesParsed = {
               x: v.year,
-              y: v.value !== null || v.value !== undefined ? yValue : null,
+              y: v.value !== null && v.value !== undefined ? yValue : null,
               label: v.label,
               isRange
             };
