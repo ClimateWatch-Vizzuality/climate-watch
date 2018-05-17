@@ -8,31 +8,46 @@ const fetchSocioeconomicsFail = createAction('fetchSocioeconomicsFail');
 
 const fetchSocioeconomics = createThunkAction(
   'fetchSocioeconomics',
-  iso => (dispatch, state) => {
+  locations => (dispatch, state) => {
     const { socioeconomics } = state();
-    if (
-      socioeconomics.data &&
-      isEmpty(socioeconomics.data[iso]) &&
-      !socioeconomics.loading
-    ) {
+    const promises = [];
+    const locationsWithPromise = [];
+    const sanitizedLocations = [];
+    locations.forEach(location => {
+      if (location !== '') sanitizedLocations.push(location);
+    });
+    sanitizedLocations.forEach(iso => {
+      if (
+        socioeconomics.data &&
+        isEmpty(socioeconomics.data[iso]) &&
+        !socioeconomics.loading
+      ) {
+        promises.push(
+          fetch(
+            `/api/v1/locations/${iso}/socioeconomics/latest`
+          ).then(response => {
+            if (response.ok) return response.json();
+            throw Error(response.statusText);
+          })
+        );
+        locationsWithPromise.push(iso);
+      }
       dispatch(fetchSocioeconomicsInit());
-      fetch(`/api/v1/locations/${iso}/socioeconomics/latest`)
+      Promise.all(promises)
         .then(response => {
-          if (response.ok) return response.json();
-          throw Error(response.statusText);
-        })
-        .then(data => {
-          if (data) {
-            dispatch(fetchSocioeconomicsReady({ [iso]: data }));
-          } else {
-            dispatch(fetchSocioeconomicsReady({}));
-          }
+          const locationData = {};
+          locationsWithPromise.forEach((l, index) => {
+            if (response[index]) {
+              locationData[l] = response[index];
+            }
+          });
+          dispatch(fetchSocioeconomicsReady(locationData));
         })
         .catch(error => {
           console.warn(error);
           dispatch(fetchSocioeconomicsFail());
         });
-    }
+    });
   }
 );
 

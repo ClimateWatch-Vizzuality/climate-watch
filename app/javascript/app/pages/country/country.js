@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { actions } from 'components/anchor-nav';
 
 import {
   getCountryName,
@@ -34,4 +35,4 @@ const mapStateToProps = (state, { location, match, route }) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Component));
+export default withRouter(connect(mapStateToProps, actions)(Component));

@@ -9,12 +9,14 @@ import { CALCULATION_OPTIONS } from 'app/data/constants';
 import { TabletLandscape } from 'components/responsive';
 import Disclaimer from 'components/disclaimer';
 import ModalMetadata from 'components/modal-metadata';
+import { isPageContained } from 'utils/navigation';
 import cx from 'classnames';
 
 import layout from 'styles/layout';
 import styles from './country-ghg-styles.scss';
 
 const FEATURE_QUANTIFICATIONS = process.env.FEATURE_QUANTIFICATIONS === 'true';
+const showDisclaimer = FEATURE_QUANTIFICATIONS && !isPageContained;
 
 class CountryGhg extends PureComponent {
   constructor() {
@@ -32,27 +34,29 @@ class CountryGhg extends PureComponent {
   }, 10);
 
   render() {
-    const { search } = this.props;
+    const { search, isEmbedded } = this.props;
     const needsWBData =
       search.calculation &&
       search.calculation !== CALCULATION_OPTIONS.ABSOLUTE_VALUE.value;
     return (
       <div>
-        <div className={styles.grid}>
+        <div className={cx(styles.grid, { [styles.embedded]: isEmbedded })}>
           <EmissionsMetaProvider />
           {needsWBData && <WbCountryDataProvider />}
           <CountryGHGEmissions handleYearHover={this.handleYearHover} />
           <TabletLandscape>
-            <div className={styles.map}>
-              <CountryGHGMap
-                search={search}
-                className={styles.map}
-                year={this.state.year}
-              />
-            </div>
+            {!isEmbedded && (
+              <div className={styles.map}>
+                <CountryGHGMap
+                  search={search}
+                  className={styles.map}
+                  year={this.state.year}
+                />
+              </div>
+            )}
           </TabletLandscape>
         </div>
-        {FEATURE_QUANTIFICATIONS && (
+        {showDisclaimer && (
           <Disclaimer className={cx(styles.disclaimer, layout.content)} />
         )}
         <ModalMetadata disclaimer={<Disclaimer onlyText />} />
@@ -62,7 +66,8 @@ class CountryGhg extends PureComponent {
 }
 
 CountryGhg.propTypes = {
-  search: PropTypes.object
+  search: PropTypes.object,
+  isEmbedded: PropTypes.bool
 };
 
 export default CountryGhg;

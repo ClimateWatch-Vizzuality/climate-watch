@@ -18,6 +18,24 @@ export const CALCULATION_OPTIONS = {
   }
 };
 
+export const QUANTIFICATION_COLORS = {
+  BAU: '#113750',
+  QUANTIFIED: '#ffc735',
+  NOT_QUANTIFIABLE: '#b1b1c1'
+};
+
+export const QUANTIFICATIONS_CONFIG = {
+  bau: { label: 'Business as usual', color: QUANTIFICATION_COLORS.BAU },
+  quantified: {
+    label: 'Quantified targets',
+    color: QUANTIFICATION_COLORS.QUANTIFIED
+  },
+  not_quantifiable: {
+    label: 'Target not quantifiable',
+    color: QUANTIFICATION_COLORS.NOT_QUANTIFIABLE
+  }
+};
+
 export const DATA_SCALE = 1000000;
 
 export const ALLOWED_SECTORS_BY_SOURCE = {
@@ -56,6 +74,10 @@ export const ALLOWED_SECTORS_BY_SOURCE = {
       'Other'
     ]
   }
+};
+
+export const EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL = {
+  CAIT: ['Bunker Fuels']
 };
 
 export const DEFAULT_EMISSIONS_SELECTIONS = {
@@ -171,6 +193,9 @@ export const ESP_MEDIUM_ROWS = [
   'reference'
 ];
 
+export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
+export const ESP_WIDE_COLUMNS = ['description'];
+
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],
   scenarios: ['model'],
@@ -231,10 +256,16 @@ export const NDC_DOCUMENT_OPTIONS = [
   }
 ];
 
+export const LATEST_VERSION = 'AR4';
+export const CONTAINED_PATHNAME = 'contained';
+
 export default {
   CALCULATION_OPTIONS,
+  QUANTIFICATION_COLORS,
+  QUANTIFICATIONS_CONFIG,
   TOP_EMITTERS,
   ALLOWED_SECTORS_BY_SOURCE,
+  EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
   DEFAULT_EMISSIONS_SELECTIONS,
   CHART_COLORS,
   DEFAULT_AXES_CONFIG,
@@ -242,10 +273,14 @@ export default {
   ESP_BLACKLIST,
   ESP_HIGH_ROWS,
   ESP_MEDIUM_ROWS,
+  ESP_NARROW_COLUMNS,
+  ESP_WIDE_COLUMNS,
   FILTERS_BY_CATEGORY,
   MIN_ZOOM_SHOW_ISLANDS,
   PATH_LAYERS,
   CLIMATE_VULNERABILITY_DEFINITIONS,
   DISCLAIMER_SHOWN,
-  NDC_DOCUMENT_OPTIONS
+  NDC_DOCUMENT_OPTIONS,
+  LATEST_VERSION,
+  CONTAINED_PATHNAME
 };
