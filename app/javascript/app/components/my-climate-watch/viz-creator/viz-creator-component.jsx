@@ -40,7 +40,7 @@ const VizCreator = props => {
           <Step2 {...{ visualisations, selectVisualisation }} />
         )}
         {visualisations.selected && (
-          <Step3 {...{ spec: filters, handleFilterSelect }} />
+          <Step3 {...{ spec: filters, handleFilterSelect, hasData }} />
         )}
         {hasData && (
           <Step4

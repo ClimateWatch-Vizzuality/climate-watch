@@ -39,11 +39,15 @@ const Step3 = props => {
     return { options: optionsSorted, ...labels };
   };
 
-  const { spec, handleFilterSelect } = props;
+  const { spec, handleFilterSelect, hasData } = props;
 
   return (
     <li className={styles.step}>
-      <div className={styles.stepContainer}>
+      <div
+        className={cx(styles.stepContainer, {
+          [styles.openDropdownPadding]: !hasData
+        })}
+      >
         <h2 className={styles.stepTitle}>3/4 - Filter the data</h2>
         <div className="layout-item-container">
           {spec && (
@@ -97,7 +101,8 @@ const Step3 = props => {
 
 Step3.propTypes = {
   spec: PropTypes.object.isRequired,
-  handleFilterSelect: PropTypes.func.isRequired
+  handleFilterSelect: PropTypes.func.isRequired,
+  hasData: PropTypes.bool
 };
 
 export default Step3;
