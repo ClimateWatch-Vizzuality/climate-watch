@@ -39,6 +39,9 @@ import emissionPathwaysScenarioSections from './emission-pathways-scenario-secti
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 
+// flags
+const MYCW_INSIGHTS = process.env.MYCW_INSIGHTS === 'true';
+
 export default [
   {
     path: '/',
@@ -186,7 +189,9 @@ export default [
   {
     path: '/my-climate-watch',
     component: MyClimateWatch,
-    routes: MyCwRoutes
+    routes: MYCW_INSIGHTS
+      ? MyCwRoutes
+      : MyCwRoutes.filter(route => route.label !== 'My Insights')
   },
   {
     path: '/about',
