@@ -2,12 +2,15 @@ import { createSelector } from 'reselect';
 import { truncateDecimals } from 'utils/utils';
 import isEmpty from 'lodash/isEmpty';
 
+const getCountriesData = state => state.countriesData || null;
 const getLocations = state => state.locations || null;
 const getSocioeconomicsData = state => state.socioeconomics.data || null;
 export const getCountrySocioeconomics = createSelector(
   [getLocations, getSocioeconomicsData],
   (locations, socioeconomicsData) => {
-    if (!locations || !locations.length || isEmpty(socioeconomicsData)) { return null; }
+    if (!locations || !locations.length || isEmpty(socioeconomicsData)) {
+      return null;
+    }
     return locations.map(location => {
       const locationData = socioeconomicsData[location];
       if (!locationData) return null;
@@ -32,6 +35,18 @@ export const getCountrySocioeconomics = createSelector(
   }
 );
 
+export const getLocationNames = createSelector(
+  [getLocations, getCountriesData],
+  (locations, countries) => {
+    if (!locations || !locations.length || !countries || !countries.length) { return null; }
+    return locations.map(location => {
+      const country = countries.find(c => location === c.iso_code3);
+      return country.wri_standard_name || null;
+    });
+  }
+);
+
 export default {
-  getCountrySocioeconomics
+  getCountrySocioeconomics,
+  getLocationNames
 };
