@@ -6,12 +6,20 @@ import uniq from 'lodash/uniq';
 const getResultsData = state => state.data || [];
 const getLoading = state => state.loading || null;
 const getDocument = state => state.search.document || null;
-export const getTotalDocumentsNumber = state =>
-  (state.meta && state.meta.total_count) || null;
 export const getTotalCountriesNumber = state =>
   (state.countriesData && state.countriesData.length) || null;
 
-const getIncludedDocuments = createSelector(
+export const getTotalDocumentsNumber = createSelector(
+  [state => state.meta, getDocument],
+  (meta, document) => {
+    if (!meta) return null;
+    return document && document !== 'all'
+      ? meta[`total_${document}_count`]
+      : meta.total_ndc_count + meta.total_indc_count;
+  }
+);
+
+const getIncludedDocumentsResults = createSelector(
   [getResultsData, getDocument],
   (results, document) => {
     if (!results || !results.length) return [];
@@ -21,19 +29,25 @@ const getIncludedDocuments = createSelector(
   }
 );
 
-const getIncludedCountries = createSelector([getResultsData], results => {
-  if (!results || !results.length) return [];
-  return uniq(results.map(result => result.location.iso_code3));
-});
+const getIncludedCountries = createSelector(
+  [getIncludedDocumentsResults],
+  results => {
+    if (!results || !results.length) return [];
+    return uniq(results.map(result => result.location.iso_code3));
+  }
+);
 
 export const getIncludedDocumentsCount = createSelector(
-  [getIncludedDocuments],
+  [getIncludedDocumentsResults],
   documents => (documents ? documents.length : null)
 );
 
 export const getIncludedCountriesCount = createSelector(
-  [getIncludedCountries],
-  countries => (countries ? countries.length : null)
+  [getIncludedDocumentsResults],
+  results => {
+    if (!results) return null;
+    return uniq(results.map(result => result.location.iso_code3)).length;
+  }
 );
 
 const countryStyle = {

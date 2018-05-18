@@ -34,16 +34,16 @@ node {
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "master":
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_COUNTRY_COMPARISON=false -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false -t ${dockerUsername}/${appName}:latest .")
           break
-        case "staging":
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${dockerUsername}/${appName}:latest .")
+        case "sandbox":
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${dockerUsername}/${appName}:latest .")
           break
         default:
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_COUNTRY_COMPARISON=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true -t ${dockerUsername}/${appName}:latest .")
       }
     }
 
@@ -67,8 +67,8 @@ node {
       sh("kubectl config use-context gke_${GCLOUD_PROJECT}_${GCLOUD_GCE_ZONE}_${KUBE_PROD_CLUSTER}")
       switch ("${env.BRANCH_NAME}") {
 
-        // Roll out to staging
-        case "staging":
+        // Roll out to sandbox
+        case "sandbox":
           sh("echo Deploying to STAGING app")
           def service = sh([returnStdout: true, script: "kubectl get deploy ${appName}-staging || echo NotFound"]).trim()
           if ((service && service.indexOf("NotFound") > -1) || (forceCompleteDeploy)){
@@ -83,7 +83,8 @@ node {
           def userInput = true
           def didTimeout = false
           try {
-            timeout(time: 60, unit: 'SECONDS') {
+            slackSend (color: '#551A8B', channel: '#climate-watch-dev', message: "WAITING APPROVAL ON JENKINS (90seconds): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            timeout(time: 90, unit: 'SECONDS') {
               userInput = input(
                 id: 'Proceed1', message: 'Confirm deployment', parameters: [
                 [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this deployment']
@@ -92,6 +93,7 @@ node {
           }
           catch(err) { // timeout reached or input false
               sh("echo Aborted by user or timeout")
+              slackSend (color: '#FFA500', channel: '#climate-watch-dev', message: "DEPLOY CANCELLED (lack of approval): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
               if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
                   didTimeout = true
               } else {
@@ -120,7 +122,7 @@ node {
     }
 
     // Notify Success
-    slackSend (color: '#00FF00', channel: '#climate-watch-magic', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (color: '#00FF00', channel: '#climate-watch-dev', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     emailext (
       subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -133,7 +135,7 @@ node {
 
     currentBuild.result = "FAILURE"
     // Notify Error
-    slackSend (color: '#FF0000', channel: '#climate-watch-magic', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    slackSend (color: '#FF0000', channel: '#climate-watch-dev', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     emailext (
       subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>

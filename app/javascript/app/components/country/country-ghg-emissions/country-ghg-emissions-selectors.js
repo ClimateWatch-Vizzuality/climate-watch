@@ -20,6 +20,7 @@ import {
 } from 'utils/graphs';
 import {
   CALCULATION_OPTIONS,
+  QUANTIFICATIONS_CONFIG,
   DEFAULT_AXES_CONFIG,
   ALLOWED_SECTORS_BY_SOURCE,
   DATA_SCALE
@@ -226,7 +227,7 @@ export const getQuantificationsData = createSelector(
               : v.value * DATA_SCALE;
             valuesParsed = {
               x: v.year,
-              y: yValue,
+              y: v.value !== null && v.value !== undefined ? yValue : null,
               label: v.label,
               isRange
             };
@@ -238,7 +239,32 @@ export const getQuantificationsData = createSelector(
       });
     });
     // Sort desc to avoid z-index problem in the graph
-    return orderBy(qParsed, 'x', 'desc');
+    return orderBy(qParsed, 'y', 'desc');
+  }
+);
+
+export const getQuantificationsTagsConfig = createSelector(
+  getQuantifications,
+  quantifications => {
+    if (!quantifications) return [];
+    const config = [];
+    const bau = quantifications.find(
+      q => q.label.includes('BAU') && q.value !== null
+    );
+    const qua = quantifications.find(
+      q => q.label === 'Unconditional' || q.label === 'Conditional'
+    );
+    const nq = quantifications.find(q => q.value === null);
+    if (bau) {
+      config.push(QUANTIFICATIONS_CONFIG.bau);
+    }
+    if (qua) {
+      config.push(QUANTIFICATIONS_CONFIG.quantified);
+    }
+    if (nq) {
+      config.push(QUANTIFICATIONS_CONFIG.not_quantifiable);
+    }
+    return config;
   }
 );
 

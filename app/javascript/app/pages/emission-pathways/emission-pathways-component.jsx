@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import Waypoint from 'react-waypoint';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
@@ -19,7 +20,7 @@ import styles from './emission-pathways-styles.scss';
 class EmissionPathways extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route, anchorLinks, routeLinks } = this.props;
+    const { route, anchorLinks, routeLinks, setActiveSection } = this.props;
     return (
       <div>
         <MetaDescription
@@ -57,10 +58,20 @@ class EmissionPathways extends PureComponent {
         {route.sections &&
           route.sections.length > 0 &&
           route.sections.map(section => (
-            <div key={section.hash} className={styles.section}>
-              <div id={section.hash} className={styles.sectionHash} />
-              <section.component routeLinks={routeLinks} uploadButton />
-            </div>
+            <Waypoint
+              bottomOffset={'40%'}
+              topOffset={'40%'}
+              onEnter={() => {
+                setActiveSection(section.hash);
+              }}
+              fireOnRapidScroll={false}
+              key={section.hash}
+            >
+              <div className={styles.section}>
+                <div id={section.hash} className={styles.sectionHash} />
+                <section.component routeLinks={routeLinks} uploadButton />
+              </div>
+            </Waypoint>
           ))}
         {renderRoutes(route.routes)}
       </div>
@@ -71,7 +82,8 @@ class EmissionPathways extends PureComponent {
 EmissionPathways.propTypes = {
   route: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array.isRequired,
-  routeLinks: PropTypes.array.isRequired
+  routeLinks: PropTypes.array.isRequired,
+  setActiveSection: PropTypes.func.isRequired
 };
 
 export default EmissionPathways;

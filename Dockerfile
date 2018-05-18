@@ -2,11 +2,16 @@ FROM ruby:2.4.1
 MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 
 ENV NAME climate-watch
-ENV RAKE_ENV production
-ENV RAILS_ENV production
+
+# Set application environment
+ARG $RAILS_ENV
+ENV RAILS_ENV $RAILS_ENV
+ENV RACK_ENV $RAILS_ENV
+ENV NODE_ENV $RAILS_ENV
+
+ENV ESP_API https://data.emissionspathways.org/api/v1
 ENV CW_API /api/v1
 ENV GFW_API https://production-api.globalforestwatch.org
-ENV ESP_API https://data.emissionspathways.org/api/v1
 ENV S3_BUCKET_NAME climate-watch-dev
 ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
@@ -27,9 +32,9 @@ WORKDIR /usr/src/$NAME
 # VOLUME /usr/src/$NAME
 
 # Install and run scheduling
-RUN gem install whenever
-RUN whenever --load-file config/schedule.rb
-RUN whenever --update-crontab
+#RUN gem install whenever
+#RUN whenever --load-file config/schedule.rb
+#RUN whenever --update-crontab
 
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./
@@ -42,9 +47,6 @@ ENV SECRET_KEY_BASE $secretKey
 
 ARG FEATURE_QUANTIFICATIONS
 ENV FEATURE_QUANTIFICATIONS $FEATURE_QUANTIFICATIONS
-
-ARG FEATURE_COUNTRY_COMPARISON
-ENV FEATURE_COUNTRY_COMPARISON $FEATURE_COUNTRY_COMPARISON
 
 # Bundle app source
 COPY . ./

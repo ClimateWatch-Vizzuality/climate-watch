@@ -5,7 +5,9 @@ import Component from './country-ghg-component';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
-  return { search };
+  const pathname = location.pathname;
+  const isEmbedded = pathname.startsWith('/embed');
+  return { search, isEmbedded };
 };
 
 export default withRouter(connect(mapStateToProps, null)(Component));

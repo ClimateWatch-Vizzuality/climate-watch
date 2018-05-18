@@ -18,8 +18,7 @@ export const getDocumentOptions = createSelector([getResultsData], results => {
 const getDocumentSelected = createSelector(
   [getDocumentOptions, getDocQuery],
   (docs, docQuery) => {
-    if (!docs) return null;
-    if (!docQuery) return docs[0];
+    if (!docs || !docQuery || docQuery === 'all') return null;
     return docs.find(d => d.value === docQuery);
   }
 );
@@ -43,6 +42,8 @@ export const getSearchResultsSorted = createSelector(
     return results.sort((a, b) => {
       if (a.matches.length > b.matches.length) return -1;
       if (a.matches.length < b.matches.length) return 1;
+      if (a.location.name > b.location.name) return 1;
+      if (a.location.name < b.location.name) return -1;
       return 0;
     });
   }

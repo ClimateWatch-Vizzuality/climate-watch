@@ -17,7 +17,8 @@ const AnchorNav = props => {
     query,
     theme,
     gradientColor,
-    offset
+    offset,
+    activeSection
   } = props;
   const gradientStyle = gradientColor
     ? {
@@ -68,8 +69,7 @@ const AnchorNav = props => {
                 </NavLink>
               );
             }
-            linkProps.isActive = (match, location) =>
-              `#${link.hash}` === location.hash;
+            linkProps.isActive = () => link.hash === activeSection;
             return (
               <NavHashLink
                 {...linkProps}
@@ -97,6 +97,7 @@ AnchorNav.propTypes = {
   query: PropTypes.string,
   theme: PropTypes.object,
   gradientColor: PropTypes.string,
+  activeSection: PropTypes.string,
   offset: PropTypes.array
 };
 

@@ -2,7 +2,7 @@ import { createElement, PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getLocationParamUpdated } from 'utils/navigation';
+import { getLocationParamUpdated, isPageContained } from 'utils/navigation';
 import qs from 'query-string';
 import ReactGA from 'react-ga';
 
@@ -22,6 +22,7 @@ import {
   getChartConfig,
   getSelectorDefaults,
   getQuantificationsData,
+  getQuantificationsTagsConfig,
   getFilterOptions,
   getFiltersSelected
 } from './country-ghg-emissions-selectors';
@@ -52,6 +53,7 @@ const mapStateToProps = (state, { location, match }) => {
     data: getChartData(countryGhg),
     domain: getChartXDomain(countryGhg),
     quantifications: getQuantificationsData(countryGhg),
+    quantificationsTagsConfig: getQuantificationsTagsConfig(countryGhg),
     calculations: getCalculationOptions(countryGhg),
     calculationSelected: getCalculationSelected(countryGhg),
     sources: getSourceOptions(countryGhg),
@@ -104,9 +106,9 @@ class CountryGhgEmissionsContainer extends PureComponent {
     if (source) {
       this.props.setModalMetadata({
         category: 'Country',
-        slugs: [source, 'ndc_quantification_UNDP', 'ndc_quantification_WRI'],
+        slugs: isPageContained ? [source] : [source, 'ndc_quantification_UNDP'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
-        showDisclaimer: true,
+        showDisclaimer: !isPageContained,
         open: true
       });
     }
@@ -150,7 +152,6 @@ class CountryGhgEmissionsContainer extends PureComponent {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
   }
-
   render() {
     return createElement(CountryGhgEmissionsComponent, {
       ...this.props,

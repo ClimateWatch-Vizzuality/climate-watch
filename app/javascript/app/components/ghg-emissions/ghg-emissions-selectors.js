@@ -19,6 +19,7 @@ import {
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG,
   ALLOWED_SECTORS_BY_SOURCE,
+  EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
   DEFAULT_EMISSIONS_SELECTIONS,
   DATA_SCALE
 } from 'data/constants';
@@ -110,7 +111,9 @@ export const getAllowedSectors = createSelector(
     if (source.label === 'UNFCCC') {
       return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
     }
-    return ALLOWED_SECTORS_BY_SOURCE[source.label];
+    return ALLOWED_SECTORS_BY_SOURCE[source.label].concat(
+      EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL[source.label]
+    );
   }
 );
 
