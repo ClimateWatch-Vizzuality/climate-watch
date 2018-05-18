@@ -73,6 +73,7 @@ end
 
 group :test do
   gem 'simplecov', require: false
+  gem 'json-schema'
   gem 'vcr'
   gem 'webmock'
 end
