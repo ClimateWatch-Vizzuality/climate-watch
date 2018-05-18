@@ -1,0 +1,103 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "array",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "items": {
+    "$id": "http://example.com/example.json/items",
+    "type": "object",
+    "properties": {
+      "region": {
+        "$id": "http://example.com/example.json/items/properties/region",
+        "type": "string",
+        "title": "The Region Schema ",
+        "default": "",
+        "examples": [
+          "Saint Helena"
+        ]
+      },
+      "iso_code3": {
+        "$id": "http://example.com/example.json/items/properties/iso_code3",
+        "type": "string",
+        "title": "The Iso_code3 Schema ",
+        "default": "",
+        "examples": [
+          "SHN"
+        ]
+      },
+      "gas": {
+        "$id": "http://example.com/example.json/items/properties/gas",
+        "type": "string",
+        "title": "The Gas Schema ",
+        "default": "",
+        "examples": [
+          "CO2"
+        ]
+      },
+      "data_source": {
+        "$id": "http://example.com/example.json/items/properties/data_source",
+        "type": "string",
+        "title": "The Data_source Schema ",
+        "default": "",
+        "examples": [
+          "PIK"
+        ]
+      },
+      "sector": {
+        "$id": "http://example.com/example.json/items/properties/sector",
+        "type": "string",
+        "title": "The Sector Schema ",
+        "default": "",
+        "examples": [
+          "Energy"
+        ]
+      },
+      "gwp": {
+        "$id": "http://example.com/example.json/items/properties/gwp",
+        "type": "string",
+        "title": "The Gwp Schema ",
+        "default": "",
+        "examples": [
+          "AR2"
+        ]
+      },
+      "unit": {
+        "$id": "http://example.com/example.json/items/properties/unit",
+        "type": "string",
+        "title": "The Unit Schema ",
+        "default": "",
+        "examples": [
+          "C02e"
+        ]
+      },
+      "emissions": {
+        "$id": "http://example.com/example.json/items/properties/emissions",
+        "type": "array",
+        "items": {
+          "$id": "http://example.com/example.json/items/properties/emissions/items",
+          "type": "object",
+          "properties": {
+            "year": {
+              "$id": "http://example.com/example.json/items/properties/emissions/items/properties/year",
+              "type": "integer",
+              "title": "The Year Schema ",
+              "default": 0,
+              "examples": [
+                1990
+              ]
+            },
+            "value": {
+              "$id": "http://example.com/example.json/items/properties/emissions/items/properties/value",
+              "type": "number",
+              "title": "The Value Schema ",
+              "default": 0,
+              "examples": [
+                0.007329999934881926
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

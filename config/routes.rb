@@ -51,6 +51,12 @@ Rails.application.routes.draw do
 
       resources :stories, only: [:index]
 
+      namespace :data do
+        resources :historical_emissions, only: [:index] do
+          get :meta, on: :collection
+        end
+      end
+
       get :login, to: 'auth#login'
 
       get '(*endpoint)', controller: :api, action: :route_not_found
