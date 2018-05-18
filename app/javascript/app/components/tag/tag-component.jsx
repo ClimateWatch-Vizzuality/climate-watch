@@ -29,7 +29,7 @@ class Tag extends PureComponent {
     const tagContent = (
       <React.Fragment>
         <span className={theme.dot} style={{ backgroundColor: color }} />
-        {data.title && tooltipId ? (
+        {data && data.title && tooltipId ? (
           <p className={theme.label} data-tip={data.title} data-for={tooltipId}>
             {label}
           </p>
@@ -43,7 +43,7 @@ class Tag extends PureComponent {
         )}
       </React.Fragment>
     );
-    return data.url ? (
+    return data && data.url ? (
       <div>
         <Link to={data.url} className={cx(theme.tag, className)}>
           {tagContent}
