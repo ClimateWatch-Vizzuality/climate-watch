@@ -73,15 +73,19 @@ class CompareSocioeconomics extends PureComponent {
                     className={styles.compareSocioeconomics}
                   >
                     <TabletPortraitOnly>
-                      <div className={cx(styles.countryHeader)}>
-                        <div
-                          className={styles.dot}
-                          style={{ backgroundColor: COUNTRY_COMPARE_COLORS[i] }}
-                        />
-                        <div className={styles.countryName}>
-                          {locationNames[i]}
+                      {locationNames[i] && (
+                        <div className={cx(styles.countryHeader)}>
+                          <div
+                            className={styles.dot}
+                            style={{
+                              backgroundColor: COUNTRY_COMPARE_COLORS[i]
+                            }}
+                          />
+                          <div className={styles.countryName}>
+                            {locationNames[i]}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </TabletPortraitOnly>
                     {renderSocioeconomics(countrySocioeconomicData, i)}
                   </div>
