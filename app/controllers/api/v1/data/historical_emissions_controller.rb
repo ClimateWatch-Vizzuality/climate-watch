@@ -16,7 +16,12 @@ module Api
         end
 
         def download
-          # TODO: csv download
+          csv_string = Api::V1::Data::HistoricalEmissionsCsvContent.new(@filter).call
+          send_data(
+            csv_string,
+            type: 'text/csv; charset=utf-8; header=present',
+            disposition: 'attachment; filename=historical_emissions.csv'
+          )
         end
 
         private

@@ -53,6 +53,7 @@ Rails.application.routes.draw do
 
       namespace :data do
         resources :historical_emissions, only: [:index] do
+          get :download, on: :collection, defaults: { format: 'csv' }
           get :meta, on: :collection
         end
       end
