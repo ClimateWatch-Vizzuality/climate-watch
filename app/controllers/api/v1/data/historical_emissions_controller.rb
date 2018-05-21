@@ -5,7 +5,7 @@ module Api
         before_action :parametrise_filter, only: [:index, :download]
 
         def index
-          @records = @filter.call
+          @records = paginate @filter.call, per_page: @per_page
           render json: @records,
                  each_serializer: Api::V1::Data::HistoricalEmissions::RecordSerializer,
                  params: params

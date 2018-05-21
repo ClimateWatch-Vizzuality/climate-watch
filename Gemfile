@@ -38,6 +38,8 @@ gem 'turbolinks', '~> 5'
 gem 'aws-sdk', '~> 2'
 
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'api-pagination'
+gem 'kaminari'
 gem 'oj'
 gem 'scenic'
 

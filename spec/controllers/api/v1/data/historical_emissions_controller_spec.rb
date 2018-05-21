@@ -14,5 +14,10 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
       }
       expect(@response).to match_response_schema('historical_emissions')
     end
+
+    it 'sets pagination headers' do
+      get :index
+      expect(@response.headers).to include('Total')
+    end
   end
 end
