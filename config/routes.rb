@@ -56,6 +56,12 @@ Rails.application.routes.draw do
           get :download, on: :collection, defaults: { format: 'csv' }
           get :meta, on: :collection
         end
+        namespace :historical_emissions do
+          resources :data_sources, only: [:index]
+          resources :gwps, only: [:index]
+          resources :gases, only: [:index]
+          resources :sectors, only: [:index]
+        end
       end
 
       get :login, to: 'auth#login'

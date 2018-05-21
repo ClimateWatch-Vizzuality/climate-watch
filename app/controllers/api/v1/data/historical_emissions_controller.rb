@@ -12,7 +12,15 @@ module Api
         end
 
         def meta
-          # TODO: links to meta resource endpoints
+          links = (headers['Link'] || '').split(',').map(&:strip)
+          [:data_sources, :gwps, :gases, :sectors].each do |he_resource|
+            url = [
+              '/api/v1/data/historical_emissions', he_resource
+            ].join('/')
+            links << %(<#{url}>; rel="meta #{he_resource}")
+          end
+          links << %(</api/v1/locations/regions>; rel="meta locations")
+          headers['Link'] = links.join(', ')
         end
 
         def download

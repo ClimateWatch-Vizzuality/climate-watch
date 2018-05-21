@@ -29,4 +29,16 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
         to eq('attachment; filename=historical_emissions.csv')
     end
   end
+
+  describe 'HEAD meta' do
+    it 'returns a header link with path to data sources' do
+      head :meta
+      links = response.headers['Link'].split(',')
+      data_sources_link = links.find do |l|
+        _path, rel = l.split(';')
+        rel =~ /meta data_sources/
+      end
+      expect(data_sources_link).to be_present
+    end
+  end
 end
