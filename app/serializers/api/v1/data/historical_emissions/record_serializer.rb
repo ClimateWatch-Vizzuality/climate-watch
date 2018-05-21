@@ -10,14 +10,7 @@ module Api
           attribute :sector { object['sector'] }
           attribute :gwp { object['gwp'] }
           attribute :unit { 'C02e' }
-          attribute :emissions do
-            start_year = @instance_options[:params]['start_year']&.to_i
-            end_year = @instance_options[:params]['end_year']&.to_i
-
-            ::HistoricalEmissions::EmissionsTransformation.new(object.emissions).
-              filter(start_year, end_year).
-              transformed_emissions
-          end
+          attribute :emissions
         end
       end
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208091529) do
+ActiveRecord::Schema.define(version: 20180521091644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -441,4 +441,20 @@ ActiveRecord::Schema.define(version: 20180208091529) do
   add_foreign_key "wb_extra_country_data", "locations", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_properties", column: "property_id", on_delete: :cascade
   add_foreign_key "wri_metadata_values", "wri_metadata_sources", column: "source_id", on_delete: :cascade
+
+  create_view "historical_emissions_records_per_year", materialized: true,  sql_definition: <<-SQL
+      SELECT historical_emissions_records.id,
+      historical_emissions_records.location_id,
+      historical_emissions_records.data_source_id,
+      historical_emissions_records.sector_id,
+      historical_emissions_records.gas_id,
+      historical_emissions_records.gwp_id,
+      ((e.e ->> 'year'::text))::integer AS year,
+      ((e.e ->> 'value'::text))::double precision AS value
+     FROM (historical_emissions_records
+       CROSS JOIN LATERAL jsonb_array_elements(historical_emissions_records.emissions) e(e));
+  SQL
+
+  add_index "historical_emissions_records_per_year", ["year", "id"], name: "index_historical_emissions_records_per_year_on_year_and_id", unique: true
+
 end
