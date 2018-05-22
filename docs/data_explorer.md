@@ -41,6 +41,14 @@ Source | Gwp | Iso code 3 | Region | Gas | Unit | Sector | year 1 | year 2 | ...
 ]
 ```
 
+Response is paginated. Pagination headers are in place.
+
+```
+Link: <http://localhost:3000/api/v1/data/historical_emissions?page=622&start_year=2000>; rel="last", <http://localhost:3000/api/v1/data/historical_emissions?page=2&start_year=2000>; rel="next"
+Per-Page: 50
+Total: 31090
+```
+
 #### Metadata
 
 `/api/v1/data/historical_emissions/meta`
