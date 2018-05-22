@@ -9,17 +9,20 @@ AllCops:
     - 'config/*'
     - 'node_modules/**/*'
 
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
-Style/DotPosition:
+Layout/DotPosition:
   EnforcedStyle: trailing
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
 
 Style/SymbolArray:
   EnforcedStyle: brackets
