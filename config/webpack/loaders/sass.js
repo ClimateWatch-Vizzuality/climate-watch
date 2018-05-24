@@ -35,6 +35,9 @@ const prodConfig = ExtractTextPlugin.extract({
 
 module.exports = {
   test: /\.(scss|sass)$/i,
-  use: ['staging', 'production'].indexOf(env.NODE_ENV) > -1 ? prodConfig : devConfig,
+  use:
+    ['staging', 'production'].indexOf(env.NODE_ENV) > -1
+      ? prodConfig
+      : devConfig,
   exclude: /node_modules/
 };

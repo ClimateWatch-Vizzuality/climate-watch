@@ -27,8 +27,11 @@
   margin-bottom: 4px;
 }
 
-.noScrollParent {
-  overscroll-behavior: contain; /* stylelint-disable-line property-no-unknown */
+.loader {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  z-index: 1;
 }
 
 .withDot {

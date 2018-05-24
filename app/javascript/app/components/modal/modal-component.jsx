@@ -35,18 +35,22 @@ class CustomModal extends PureComponent {
 
     return (
       <Modal
-        className={{ base: styles.modal }}
+        className={theme.modal}
         style={modalStyles}
         isOpen={isOpen}
-        contentLabel={contentLabel}
         onRequestClose={onRequestClose}
+        contentLabel={contentLabel}
         shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       >
         {header}
-        <Button onClick={onRequestClose} className={theme.closeBtn} square>
+        <Button
+          onClick={() => onRequestClose()}
+          className={theme.closeBtn}
+          square
+        >
           <Icon icon={closeIcon} className={theme.close} />
         </Button>
-        <div className={theme.content}>{children}</div>
+        <div className={theme.modalContent}>{children}</div>
       </Modal>
     );
   }

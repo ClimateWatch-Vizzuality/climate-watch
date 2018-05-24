@@ -18,6 +18,8 @@ import EmissionPathways from 'pages/emission-pathways';
 import GHGEmissions from 'pages/ghg-emissions';
 import NDCSearch from 'pages/ndc-search';
 import error from 'pages/error';
+import MyClimateWatch from 'pages/my-climate-watch';
+import MyCWEditor from 'pages/my-climate-watch/my-cw-editor';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 
@@ -25,6 +27,7 @@ import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSRoutes from './NDCS-routes';
+import MyCwRoutes from './my-cw-routes';
 import aboutRoutes from './about-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
@@ -173,6 +176,17 @@ export default [
     exact: true,
     nav: false,
     label: 'STORIES'
+  },
+  {
+    label: 'MyEditor',
+    path: '/my-climate-watch/editor/:insightId?',
+    component: MyCWEditor,
+    exact: true
+  },
+  {
+    path: '/my-climate-watch',
+    component: MyClimateWatch,
+    routes: MyCwRoutes
   },
   {
     path: '/about',

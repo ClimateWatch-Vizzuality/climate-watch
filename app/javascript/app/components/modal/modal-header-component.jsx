@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Tab from 'components/tab';
 import { themr } from 'react-css-themr';
+import Tab from 'components/tab';
 
 import styles from './modal-styles.scss';
 
@@ -9,11 +9,11 @@ class ModalHeader extends PureComponent {
   render() {
     const {
       title,
+      theme,
       tabTitles,
       selectedIndex,
       handleTabIndexChange,
-      children,
-      theme
+      children
     } = this.props;
     return (
       <div className={theme.header}>

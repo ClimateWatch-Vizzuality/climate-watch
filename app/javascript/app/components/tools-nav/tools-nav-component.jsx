@@ -10,11 +10,10 @@ import styles from './tools-nav-styles.scss';
 const ToolsNav = ({ className, reverse }) => (
   <div className={cx(styles.toolsNav, className)}>
     <NavLink
-      className={cx(styles.link, styles.disabled, styles.myCwButton)}
+      className={cx(styles.link, styles.myCwButton)}
       activeClassName={styles.linkActive}
-      to=""
-      disabled
-      title="Coming soon"
+      to="/my-climate-watch"
+      title="My climate watch"
     >
       MY CW
     </NavLink>

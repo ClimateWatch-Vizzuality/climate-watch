@@ -10,11 +10,13 @@ import {
   getThemeConfig,
   getTooltipConfig,
   sortEmissionsByValue,
-  sortLabelByAlpha
+  sortLabelByAlpha,
+  setChartColors
 } from 'utils/graphs';
 import {
   TOP_EMITTERS,
   CHART_COLORS,
+  CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG,
   ALLOWED_SECTORS_BY_SOURCE,
   EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
@@ -141,7 +143,7 @@ export const filterAndSortData = createSelector(
         ? data.filter(
           d =>
             d.sector.trim() ===
-            DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version.label]
+              DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version.label]
         )
         : data;
     const dataBySector =
@@ -307,7 +309,12 @@ export const getChartConfig = createSelector(
       value: getYColumnValue(d[breakBy.value])
     }));
     const yColumnsChecked = uniqBy(yColumns, 'value');
-    const theme = getThemeConfig(yColumnsChecked, CHART_COLORS);
+    const chartColors = setChartColors(
+      yColumnsChecked.length,
+      CHART_COLORS,
+      CHART_COLORS_EXTENDED
+    );
+    const theme = getThemeConfig(yColumnsChecked, chartColors);
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     return {

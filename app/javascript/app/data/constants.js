@@ -1,3 +1,8 @@
+const { GFW_API } = process.env;
+const { CW_API } = process.env;
+
+export const LOGIN_URL = `${GFW_API}/auth/login?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
+
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
     label: 'Absolute value',
@@ -120,10 +125,30 @@ export const CHART_COLORS = [
   '#F97DA1',
   '#00971D',
   '#F1933B',
-  '#938126',
+  '#938126'
+];
+
+export const CHART_COLORS_EXTENDED = [
   '#2D9290',
+  '#96C8C7',
   '#B25BD0',
-  '#7EA759'
+  '#D8ADE7',
+  '#7EA759',
+  '#BED2AB',
+  '#FF0D3A',
+  '#FF859C',
+  '#687AB7',
+  '#B3BCDA',
+  '#BC6332',
+  '#DDB098',
+  '#F97DA1',
+  '#FBBDCF',
+  '#00971D',
+  '#7FCA8D',
+  '#F1933B',
+  '#F7C89C',
+  '#938126',
+  '#C8BF92'
 ];
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#b25bd0', '#f1933b'];

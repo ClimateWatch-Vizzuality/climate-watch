@@ -150,7 +150,7 @@ class EmissionPathwayGraph extends PureComponent {
             loading={loading}
             error={error}
             targetParam="scenario"
-            forceFourDecimals
+            forceFixedFormatDecimals={3}
             margin={{ top: 50 }}
             espGraph
           />
