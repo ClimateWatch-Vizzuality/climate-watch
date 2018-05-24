@@ -2693,11 +2693,11 @@ dir-glob@^2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
-directory-named-webpack-plugin@2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/directory-named-webpack-plugin/-/directory-named-webpack-plugin-2.2.3.tgz#bea70ed327461449e8d89946a4629cbd7040d482"
+directory-named-webpack-plugin@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/directory-named-webpack-plugin/-/directory-named-webpack-plugin-4.0.0.tgz#b68220d4143c990a87ae8e09661bea700afe5f3c"
   dependencies:
-    enhanced-resolve "^3.0.2"
+    enhanced-resolve "^4.0.0"
     object-assign "^4.1.0"
 
 dns-equal@^1.0.0:
@@ -2988,7 +2988,7 @@ enhanced-resolve@^2.2.2:
     object-assign "^4.0.1"
     tapable "^0.2.3"
 
-enhanced-resolve@^3.0.2, enhanced-resolve@^3.3.0, enhanced-resolve@^3.4.0:
+enhanced-resolve@^3.3.0, enhanced-resolve@^3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-3.4.1.tgz#0421e339fd71419b3da13d129b3979040230476e"
   dependencies:
@@ -2996,6 +2996,14 @@ enhanced-resolve@^3.0.2, enhanced-resolve@^3.3.0, enhanced-resolve@^3.4.0:
     memory-fs "^0.4.0"
     object-assign "^4.0.1"
     tapable "^0.2.7"
+
+enhanced-resolve@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-4.0.0.tgz#e34a6eaa790f62fccd71d93959f56b2b432db10a"
+  dependencies:
+    graceful-fs "^4.1.2"
+    memory-fs "^0.4.0"
+    tapable "^1.0.0"
 
 enhanced-resolve@~0.9.0:
   version "0.9.1"
@@ -9581,6 +9589,10 @@ tapable@^0.1.8:
 tapable@^0.2.3, tapable@^0.2.7, tapable@~0.2.5:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-0.2.8.tgz#99372a5c999bf2df160afc0d74bed4f47948cd22"
+
+tapable@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.0.0.tgz#cbb639d9002eed9c6b5975eb20598d7936f1f9f2"
 
 tar-pack@^3.4.0:
   version "3.4.0"
