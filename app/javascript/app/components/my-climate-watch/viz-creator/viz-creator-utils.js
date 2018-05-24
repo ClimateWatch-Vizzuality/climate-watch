@@ -15,7 +15,7 @@ export const mapFilter = data =>
       label: o.label || o.name || o.full_name || o.alias,
       value: o.value || o.id
     }))) ||
-  null;
+  [];
 
 export const flatMapVis = (vis = []) =>
   vis.reduce((vv, v) => vv.concat(v.visualisations), []);

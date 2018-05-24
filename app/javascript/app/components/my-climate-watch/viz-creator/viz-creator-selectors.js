@@ -3,6 +3,7 @@ import { get } from 'js-lenses';
 import _ from 'lodash-inflection';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
+import _uniqBy from 'lodash/uniqBy';
 
 import { flatMapVis, mapFilter } from './viz-creator-utils';
 
@@ -173,13 +174,54 @@ export const chartDataSelector = createSelector(
   }
 );
 
+const filterLocationsByModel = (locations, models) => {
+  if (!locations || !locations.length) return null;
+  if (!models) return locations;
+
+  const modelsLocations = models.map(m => m.geographic_coverage);
+  const locationsArray = locations.filter(location =>
+    modelsLocations.reduce(
+      (acc, model) => acc || model.includes(location.name),
+      false
+    )
+  );
+  return _uniqBy(locationsArray, 'id');
+};
+
+const filterModelsByLocations = (models, locations) => {
+  if (!models || !models.length) return null;
+  if (!locations) return models;
+
+  const locationsSelected = locations.map(l => l.label);
+  return models.filter(model =>
+    locationsSelected.reduce(
+      (acc, location) => acc && model.geographic_coverage.includes(location),
+      true
+    )
+  );
+};
+
+const filterSelection = (name, lense, state) => {
+  const hasChild = lense.child && lense.child.data.length > 0;
+  const hasData = lense.data.length > 0;
+  if (name === 'locations' && hasChild) {
+    const models = filterModelsByLocations(lense.child.data, lense.selected);
+    return mapFilter(filterLocationsByModel(lense.data, models));
+  } else if (name === 'models' && hasData) {
+    return mapFilter(
+      filterModelsByLocations(lense.data, locationsSelector(state).selected)
+    );
+  }
+  return mapFilter(lense.data);
+};
+
 export const getFormatFilters = name =>
   createSelector([dataSelector, filtersSelector], (state, spec) => {
     if (!spec || !spec.length > 0) return {};
 
     const filter = { ...(_find(spec, { name }) || {}) };
     const lense = get(lenses[`$${name}`], state) || {};
-    filter.data = mapFilter(lense.data || []);
+    filter.data = filterSelection(name, lense, state);
     filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
     filter.label = _.titleize(name);
     filter.loading = lense.loading;
