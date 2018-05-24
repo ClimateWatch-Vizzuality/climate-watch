@@ -36,6 +36,7 @@
     "draft-js-focus-plugin": "2.0.1",
     "draft-js-inline-toolbar-plugin": "2.0.1",
     "draft-js-plugins-editor": "2.0.4",
+    "enhanced-resolve": "4.0.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "foundation-sites": "6.4.3",
     "history": "4.7.2",
@@ -83,7 +84,7 @@
     "screenfull": "3.3.2",
     "topojson-client": "3.0.0",
     "uuid": "3.2.1",
-    "webpack": "3.4.1",
+    "webpack": "3.3.0",
     "webpack-manifest-plugin": "1.2.1",
     "webpack-merge": "4.1.0"
   },
