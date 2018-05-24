@@ -48,9 +48,9 @@ spec:
             cpu: "0m"
         env:
           - name: RACK_ENV
-            value: staging
+            value: production
           - name: RAILS_ENV
-            value: staging
+            value: production
           - name: PORT
             value: "3000"
           - name: RAILS_SERVE_STATIC_FILES
@@ -89,6 +89,8 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_APP_SIGNAL_STAGING
+          - name: PASSWORD_PROTECT_SITE
+            value: "true"
           - name: HTTP_AUTH_USERNAME
             valueFrom:
                 secretKeyRef:

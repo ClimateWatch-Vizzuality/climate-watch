@@ -4,10 +4,9 @@ MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 ENV NAME climate-watch
 
 # Set application environment
-ARG RAILS_ENV
-ENV RAILS_ENV $RAILS_ENV
-ENV RACK_ENV $RAILS_ENV
-ENV NODE_ENV $RAILS_ENV
+ENV RAILS_ENV production
+ENV RACK_ENV production
+ENV NODE_ENV production
 
 ENV ESP_API https://data.emissionspathways.org/api/v1
 ENV CW_API /api/v1
@@ -53,8 +52,10 @@ COPY . ./
 
 EXPOSE 3000
 
+RUN yarn install
+
 # Rails assets compile
-RUN bundle exec rake assets:precompile
+RUN bundle exec rails assets:precompile
 
 # Start app
-CMD bundle exec rake tmp:clear db:migrate && bundle exec rails s -b 0.0.0.0
+CMD bundle exec rails tmp:clear db:migrate && bundle exec rails s -b 0.0.0.0
