@@ -1,100 +1,158 @@
 {
   "$id": "http://example.com/example.json",
-  "type": "array",
+  "type": "object",
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "items": {
-    "$id": "http://example.com/example.json/items",
-    "type": "object",
-    "properties": {
-      "region": {
-        "$id": "http://example.com/example.json/items/properties/region",
-        "type": "string",
-        "title": "The Region Schema ",
-        "default": "",
-        "examples": [
-          "Saint Helena"
-        ]
-      },
-      "iso_code3": {
-        "$id": "http://example.com/example.json/items/properties/iso_code3",
-        "type": "string",
-        "title": "The Iso_code3 Schema ",
-        "default": "",
-        "examples": [
-          "SHN"
-        ]
-      },
-      "gas": {
-        "$id": "http://example.com/example.json/items/properties/gas",
-        "type": "string",
-        "title": "The Gas Schema ",
-        "default": "",
-        "examples": [
-          "CO2"
-        ]
-      },
-      "data_source": {
-        "$id": "http://example.com/example.json/items/properties/data_source",
-        "type": "string",
-        "title": "The Data_source Schema ",
-        "default": "",
-        "examples": [
-          "PIK"
-        ]
-      },
-      "sector": {
-        "$id": "http://example.com/example.json/items/properties/sector",
-        "type": "string",
-        "title": "The Sector Schema ",
-        "default": "",
-        "examples": [
-          "Energy"
-        ]
-      },
-      "gwp": {
-        "$id": "http://example.com/example.json/items/properties/gwp",
-        "type": "string",
-        "title": "The Gwp Schema ",
-        "default": "",
-        "examples": [
-          "AR2"
-        ]
-      },
-      "unit": {
-        "$id": "http://example.com/example.json/items/properties/unit",
-        "type": "string",
-        "title": "The Unit Schema ",
-        "default": "",
-        "examples": [
-          "C02e"
-        ]
-      },
-      "emissions": {
-        "$id": "http://example.com/example.json/items/properties/emissions",
-        "type": "array",
-        "items": {
-          "$id": "http://example.com/example.json/items/properties/emissions/items",
-          "type": "object",
-          "properties": {
-            "year": {
-              "$id": "http://example.com/example.json/items/properties/emissions/items/properties/year",
-              "type": "integer",
-              "title": "The Year Schema ",
-              "default": 0,
-              "examples": [
-                1990
-              ]
-            },
-            "value": {
-              "$id": "http://example.com/example.json/items/properties/emissions/items/properties/value",
-              "type": "number",
-              "title": "The Value Schema ",
-              "default": 0,
-              "examples": [
-                0.007329999934881926
-              ]
+  "properties": {
+    "data": {
+      "$id": "/properties/data",
+      "type": "array",
+      "items": {
+        "$id": "/properties/data/items",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$id": "/properties/data/items/properties/id",
+            "type": "integer",
+            "title": "The Id Schema ",
+            "default": 0,
+            "examples": [
+              66310
+            ]
+          },
+          "region": {
+            "$id": "/properties/data/items/properties/region",
+            "type": "string",
+            "title": "The Region Schema ",
+            "default": "",
+            "examples": [
+              "Aruba"
+            ]
+          },
+          "iso_code3": {
+            "$id": "/properties/data/items/properties/iso_code3",
+            "type": "string",
+            "title": "The Iso_code3 Schema ",
+            "default": "",
+            "examples": [
+              "ABW"
+            ]
+          },
+          "data_source": {
+            "$id": "/properties/data/items/properties/data_source",
+            "type": "string",
+            "title": "The Data_source Schema ",
+            "default": "",
+            "examples": [
+              "PIK"
+            ]
+          },
+          "gwp": {
+            "$id": "/properties/data/items/properties/gwp",
+            "type": "string",
+            "title": "The Gwp Schema ",
+            "default": "",
+            "examples": [
+              "AR2"
+            ]
+          },
+          "sector": {
+            "$id": "/properties/data/items/properties/sector",
+            "type": "string",
+            "title": "The Sector Schema ",
+            "default": "",
+            "examples": [
+              "Total including LULUCF"
+            ]
+          },
+          "gas": {
+            "$id": "/properties/data/items/properties/gas",
+            "type": "string",
+            "title": "The Gas Schema ",
+            "default": "",
+            "examples": [
+              "CH4"
+            ]
+          },
+          "unit": {
+            "$id": "/properties/data/items/properties/unit",
+            "type": "string",
+            "title": "The Unit Schema ",
+            "default": "",
+            "examples": [
+              "C02e"
+            ]
+          },
+          "emissions": {
+            "$id": "/properties/data/items/properties/emissions",
+            "type": "array",
+            "items": {
+              "$id": "/properties/data/items/properties/emissions/items",
+              "type": "object",
+              "properties": {
+                "year": {
+                  "$id": "/properties/data/items/properties/emissions/items/properties/year",
+                  "type": "integer",
+                  "title": "The Year Schema ",
+                  "default": 0,
+                  "examples": [
+                    2011
+                  ]
+                },
+                "value": {
+                  "$id": "/properties/data/items/properties/emissions/items/properties/value",
+                  "type": "number",
+                  "title": "The Value Schema ",
+                  "default": 0,
+                  "examples": [
+                    0.02246999926865101
+                  ]
+                }
+              }
             }
+          }
+        }
+      }
+    },
+    "meta": {
+      "$id": "/properties/meta",
+      "type": "object",
+      "properties": {
+        "years": {
+          "$id": "/properties/meta/properties/years",
+          "type": "array",
+          "items": {
+            "$id": "/properties/meta/properties/years/items",
+            "type": "integer",
+            "title": "The 0th Schema ",
+            "default": 0,
+            "examples": [
+              1990,
+              1991,
+              1992,
+              1993,
+              1994,
+              1995,
+              1996,
+              1997,
+              1998,
+              1999,
+              2000,
+              2001,
+              2002,
+              2003,
+              2004,
+              2005,
+              2006,
+              2007,
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014
+            ]
           }
         }
       }

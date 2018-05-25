@@ -17,7 +17,8 @@
 
 File format:
 
-Source | Gwp | Iso code 3 | Region | Gas | Unit | Sector | year 1 | year 2 | ...
+Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 | ...
+
 
 ### JSON API endpoint
 
@@ -26,19 +27,31 @@ Source | Gwp | Iso code 3 | Region | Gas | Unit | Sector | year 1 | year 2 | ...
 `/api/v1/data/historical_emissions`
 
 ```
-[
-  {
-    "source": "name",
-    "gwp": "name",
-    "region": "name",
-    "gas": "name",
-    "unit": "name",
-    "sector": "name",
-    "emissions": [
-      {"year": 2000, "value": 0.9090}
-    ]
-  }
-]
+{
+   "data":[
+      {
+         "id":66319,
+         "region":"string",
+         "iso_code3":"ISO code 3",
+         "data_source":"string",
+         "gwp":"string",
+         "sector":"string",
+         "gas":"string",
+         "unit":"string",
+         "emissions":[
+            {
+               "year":integer,
+               "value":double
+            }
+         ]
+      }
+   ],
+   "meta":{
+      "years":[
+         integer
+      ]
+   }
+}
 ```
 
 Response is paginated. Pagination headers are in place.
@@ -66,8 +79,8 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 ```
 [
    {
-      "id":7,
-      "name":"CAIT"
+      "id":number,
+      "name":"string e.g. CAIT"
    }
 ]
 ```
@@ -79,8 +92,8 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 ```
 [
    {
-      "id":1,
-      "name":"AR2"
+      "id":number,
+      "name":"string e.g. AR2"
    }
 ]
 ```
@@ -92,8 +105,8 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 ```
 [
    {
-      "id":25,
-      "name":"All GHG"
+      "id":number,
+      "name":"atring e.g. All GHG"
    }
 ]
 ```
@@ -105,11 +118,11 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 ```
 [
    {
-      "id":69,
-      "name":"Total excluding LUCF",
-      "parent_id":null,
-      "data_source_id":7,
-      "annex_type":null
+      "id":number,
+      "name":"string",
+      "parent_id":number or null,
+      "data_source_id":number,
+      "annex_type":"string or null"
    }
 ]
 ```
@@ -121,26 +134,26 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 ```
 [
    {
-      "iso_code3":"AILAC",
-      "pik_name":null,
-      "cait_name":null,
-      "ndcp_navigators_name":null,
-      "wri_standard_name":"AILAC",
-      "unfccc_group":null,
-      "centroid":null,
+      "iso_code3":"ISO code 3 or region abbreviation",
+      "pik_name":"string or null",
+      "cait_name":"string or null",
+      "ndcp_navigators_name":"string or null",
+      "wri_standard_name":"string",
+      "unfccc_group":"string or null",
+      "centroid":"string or null",
       "members":[
          {
-            "iso_code3":"CHL",
-            "pik_name":"Chile",
-            "cait_name":"Chile",
-            "ndcp_navigators_name":null,
-            "wri_standard_name":"Chile",
-            "unfccc_group":"UNFCCC Non-Annex I",
+            "iso_code3":"ISO code 3",
+            "pik_name":"string",
+            "cait_name":"string",
+            "ndcp_navigators_name":"string or null",
+            "wri_standard_name":"string",
+            "unfccc_group":"string or null",
             "centroid":{
                "type":"Point",
                "coordinates":[
-                  -71.3643727120124,
-                  -37.7436220064921
+                  double,
+                  double
                ]
             }
          }

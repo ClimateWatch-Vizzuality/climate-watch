@@ -47,12 +47,12 @@ module Api
         private_class_method def self.select_columns_with_aliases
           [
             ['id'],
-            ['historical_emissions_data_sources.name', 'data_source'],
-            ['historical_emissions_gwps.name', 'gwp'],
             ['locations.iso_code3', 'iso_code3'],
             ['locations.wri_standard_name', 'region'],
-            ['historical_emissions_gases.name', 'gas'],
+            ['historical_emissions_data_sources.name', 'data_source'],
+            ['historical_emissions_gwps.name', 'gwp'],
             ['historical_emissions_sectors.name', 'sector'],
+            ['historical_emissions_gases.name', 'gas'],
             ["'CO2e'::TEXT", 'unit'],
             [
               "ARRAY_AGG(('{\"year\": ' || year || ', \"value\": ' || value || '}')::jsonb)",
