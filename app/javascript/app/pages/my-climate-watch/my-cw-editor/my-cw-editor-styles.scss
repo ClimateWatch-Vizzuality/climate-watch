@@ -1,0 +1,44 @@
+@import '~styles/layout.scss';
+
+.editor {
+  //@include row();
+  width: 100%;
+  min-height: 80vh;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.headerWrapper {
+  width: 100%;
+  background-color: $light-gray;
+  padding: 2.5rem 0;
+}
+
+.title {
+  @include row((10, 2));
+
+  align-items: center;
+}
+
+.stickyWrapper {
+  .headerWrapper {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  }
+}
+
+.titleField {
+  border: none;
+  font-size: 2.7rem;
+  background-color: transparent;
+}
+
+.saveBtn {
+  background-color: white;
+}
+
+div[data-block] {
+  @include row();
+
+  padding-left: 90px !important;
+  padding-right: 90px !important;
+}

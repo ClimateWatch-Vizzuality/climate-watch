@@ -30,7 +30,9 @@ module AuthHelper
     else
       user_data = JSON.parse response.body
       @current_user = user_data.symbolize_keys!
-      @current_user[:user_id] = ::MyCw::User.find_by ct_id: @current_user[:id]
+      temp_user = ::MyCw::User.find_by ct_id: @current_user[:id]
+      temp_user = ::MyCw::User.create!(ct_id: @current_user[:id]) if temp_user.blank?
+      @current_user[:user_id] = temp_user
       true
     end
   end

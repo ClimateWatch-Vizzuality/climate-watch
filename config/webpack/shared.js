@@ -42,11 +42,14 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
     new ExtractTextPlugin(
-      ['staging', 'production'].indexOf(env.NODE_ENV) > -1 ? '[name]-[hash].css' : '[name].css'
+      env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'
     ),
     new ManifestPlugin({
       publicPath: output.publicPath,
       writeToFileEmit: true
+    }),
+    new webpack.DefinePlugin({
+      'process.env.JSCOV': JSON.stringify(false)
     })
   ],
 

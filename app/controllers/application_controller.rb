@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  if Rails.env.staging?
+  if ENV['PASSWORD_PROTECT_SITE']
     http_basic_authenticate_with name: ENV['HTTP_AUTH_USERNAME'],
                                  password: ENV['HTTP_AUTH_PASSWORD']
   end

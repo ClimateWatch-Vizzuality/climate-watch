@@ -31,7 +31,6 @@ const AnchorNav = props => {
       )})`
     }
     : null;
-
   return (
     <div>
       {gradientStyle && (
