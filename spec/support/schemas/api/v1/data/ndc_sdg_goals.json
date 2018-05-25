@@ -1,0 +1,48 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "array",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "items": {
+    "$id": "http://example.com/example.json/items",
+    "type": "object",
+    "properties": {
+      "id": {
+        "$id": "http://example.com/example.json/items/properties/id",
+        "type": "integer",
+        "title": "The Id Schema ",
+        "default": 0,
+        "examples": [
+          18
+        ]
+      },
+      "number": {
+        "$id": "http://example.com/example.json/items/properties/number",
+        "type": "string",
+        "title": "The Number Schema ",
+        "default": "",
+        "examples": [
+          "1"
+        ]
+      },
+      "title": {
+        "$id": "http://example.com/example.json/items/properties/title",
+        "type": "string",
+        "title": "The Title Schema ",
+        "default": "",
+        "examples": [
+          "End poverty in all its forms everywhere"
+        ]
+      },
+      "cw_title": {
+        "$id": "http://example.com/example.json/items/properties/cw_title",
+        "type": "string",
+        "title": "The Cw_title Schema ",
+        "default": "",
+        "examples": [
+          "No poverty"
+        ]
+      }
+    }
+  }
+}

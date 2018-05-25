@@ -66,10 +66,10 @@ Rails.application.routes.draw do
           get :download, on: :collection, defaults: { format: 'csv' }
           get :meta, on: :collection
         end
-        namespace :ndc_sdgs do
-          resources :sdg_goals
-          resources :sdg_targets
-          resources :ndc_targets
+        namespace :ndc_sdg do
+          resources :goals, only: [:index]
+          resources :targets, only: [:index]
+          resources :sectors, only: [:index]
         end
       end
 

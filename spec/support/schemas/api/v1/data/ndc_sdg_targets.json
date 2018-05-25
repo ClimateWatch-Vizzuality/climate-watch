@@ -1,0 +1,48 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "array",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "items": {
+    "$id": "http://example.com/example.json/items",
+    "type": "object",
+    "properties": {
+      "id": {
+        "$id": "http://example.com/example.json/items/properties/id",
+        "type": "integer",
+        "title": "The Id Schema ",
+        "default": 0,
+        "examples": [
+          171
+        ]
+      },
+      "goal_id": {
+        "$id": "http://example.com/example.json/items/properties/goal_id",
+        "type": "integer",
+        "title": "The Goal_id Schema ",
+        "default": 0,
+        "examples": [
+          18
+        ]
+      },
+      "number": {
+        "$id": "http://example.com/example.json/items/properties/number",
+        "type": "string",
+        "title": "The Number Schema ",
+        "default": "",
+        "examples": [
+          "1.1"
+        ]
+      },
+      "title": {
+        "$id": "http://example.com/example.json/items/properties/title",
+        "type": "string",
+        "title": "The Title Schema ",
+        "default": "",
+        "examples": [
+          "By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day"
+        ]
+      }
+    }
+  }
+}
