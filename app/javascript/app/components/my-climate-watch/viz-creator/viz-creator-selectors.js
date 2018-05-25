@@ -210,7 +210,7 @@ const filterSelection = (name, lense, state, multi = false) => {
     const location = locationsSelector(state);
     return mapFilter(filterModelsByLocations(lense.data, location.selected));
   }
-  return mapFilter(lense.data || []);
+  return mapFilter(lense.data);
 };
 
 export const getFormatFilters = name =>
