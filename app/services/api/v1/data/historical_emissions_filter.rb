@@ -88,7 +88,7 @@ module Api
         def apply_location_filter
           return unless @regions
           @query = @query.where(
-            'historical_emissions_locations.iso_code3' => @regions
+            'locations.iso_code3' => @regions
           )
         end
 

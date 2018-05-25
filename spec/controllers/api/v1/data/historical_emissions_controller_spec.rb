@@ -6,6 +6,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
   describe 'GET index' do
     it 'renders emissions records' do
       get :index, params: {
+        regions: [spain.iso_code3],
         source_ids: [source_CAIT.id],
         gwp_ids: [gwp_AR2.id],
         gas_ids: [gas_CO2.id],

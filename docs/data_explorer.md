@@ -3,9 +3,9 @@
 ## Historical emissions
 
 ### Parameters
+- regions[] (ISO code 3)
 - source_ids[]
 - gwp_ids[]
-- region_ids[]
 - gas_ids[]
 - sector_ids[]
 - years[]
