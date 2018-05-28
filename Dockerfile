@@ -4,7 +4,7 @@ MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 ENV NAME climate-watch
 
 # Set application environment
-ARG $RAILS_ENV
+ARG RAILS_ENV
 ENV RAILS_ENV $RAILS_ENV
 ENV RACK_ENV $RAILS_ENV
 ENV NODE_ENV $RAILS_ENV
