@@ -93,7 +93,7 @@ node {
           }
           catch(err) { // timeout reached or input false
               sh("echo Aborted by user or timeout")
-              slackSend (color: '#FFA500', channel: '#climate-watch-dev', message: "DEPLOY CANCELLED (lack of approval): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+              slackSend (color: '#FFA500', channel: '#climate-watch-dev', message: "CANCELLED (lack of approval): Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
               if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
                   didTimeout = true
               } else {
