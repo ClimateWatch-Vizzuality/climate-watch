@@ -1,12 +1,11 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { scrollIt } from 'utils/scroll';
+import postRobot from 'post-robot';
 
-const sendScrollMessage = targetPosition => {
-  const targetWindow = window.parent;
-  const parentWebsite = '*';
-  if (targetWindow) targetWindow.postMessage(targetPosition, parentWebsite);
-};
+function sendScrollMessage(targetPosition) {
+  postRobot.sendToParent('scrollingPosition', { targetPosition });
+}
 
 class ScrollToHighlightIndex extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
