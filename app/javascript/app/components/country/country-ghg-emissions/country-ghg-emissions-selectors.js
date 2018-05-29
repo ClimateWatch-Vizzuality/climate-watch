@@ -227,7 +227,7 @@ export const getQuantificationsData = createSelector(
               : v.value * DATA_SCALE;
             valuesParsed = {
               x: v.year,
-              y: v.value ? yValue : null,
+              y: v.value !== null && v.value !== undefined ? yValue : null,
               label: v.label,
               isRange
             };
@@ -252,7 +252,7 @@ export const getQuantificationsTagsConfig = createSelector(
       q => q.label.includes('BAU') && q.value !== null
     );
     const qua = quantifications.find(
-      q => q.label === 'Unconditional' || q.label === 'Conditional'
+      q => q.label !== null && !q.label.includes('BAU')
     );
     const nq = quantifications.find(q => q.value === null);
     if (bau) {

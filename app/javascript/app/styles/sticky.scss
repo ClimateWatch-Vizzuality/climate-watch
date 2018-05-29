@@ -1,3 +1,5 @@
+@import 'settings';
+
 :global .sticky-outer-wrapper {
   .sticky-inner-wrapper {
     z-index: 2;
@@ -9,26 +11,32 @@
     &.-compare,
     &.-ndc-search {
       .sticky-inner-wrapper {
-        background-color: #035388;
+        background-color: $light-blue;
+      }
+    }
+
+    &.-country-selector {
+      .sticky-inner-wrapper {
+        background-color: $white;
       }
     }
 
     &.-country,
     &.-country-compare {
       .sticky-inner-wrapper {
-        background-color: #045f61;
+        background-color: $teal-blue;
       }
     }
 
     &.-about {
       .sticky-inner-wrapper {
-        background-color: #113750;
+        background-color: $theme-color;
       }
     }
 
     &.-emissions {
       .sticky-inner-wrapper {
-        background-color: #74356a;
+        background-color: $purple;
       }
     }
 

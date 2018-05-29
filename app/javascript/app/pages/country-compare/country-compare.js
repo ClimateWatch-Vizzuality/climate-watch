@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { actions } from 'components/anchor-nav';
 import { getAnchorLinks } from './country-compare-selectors';
 
 import Component from './country-compare-component';
@@ -12,4 +13,4 @@ const mapStateToProps = (state, { route, location }) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, null)(Component));
+export default withRouter(connect(mapStateToProps, actions)(Component));

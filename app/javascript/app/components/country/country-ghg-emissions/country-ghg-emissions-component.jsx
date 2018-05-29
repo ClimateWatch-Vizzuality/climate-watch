@@ -82,7 +82,8 @@ class CountryGhgEmissions extends PureComponent {
       config,
       handleYearHover,
       filtersOptions,
-      filtersSelected
+      filtersSelected,
+      sourceSelected
     } = this.props;
 
     const points =
@@ -105,6 +106,7 @@ class CountryGhgEmissions extends PureComponent {
         dataSelected={filtersSelected}
         loading={loading}
         height={360}
+        stepped={sourceSelected.label === 'UNFCCC'}
       />
     );
   }

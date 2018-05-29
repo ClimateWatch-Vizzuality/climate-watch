@@ -1,7 +1,13 @@
 @import '~styles/layout.scss';
 
 .compareSocioeconomics {
-  margin-top: $gutter-padding;
+  &:first-child {
+    margin-top: $gutter-padding;
+  }
+
+  @media #{$tablet-landscape} {
+    margin-top: $gutter-padding;
+  }
 }
 
 .col3 {
@@ -39,4 +45,23 @@
 
 .section {
   border-bottom: 1px solid $border-color;
+}
+
+.countryHeader {
+  position: relative;
+  margin-bottom: 1em;
+  display: flex;
+
+  .countryName {
+    font-weight: $font-weight-bold;
+    color: $theme-color;
+    line-height: $line-height-medium;
+  }
+
+  .dot {
+    width: 13px;
+    height: 12px;
+    border-radius: 15px;
+    margin: 7px 7px 0 0;
+  }
 }

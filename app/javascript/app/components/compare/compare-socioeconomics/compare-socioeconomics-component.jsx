@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import layout from 'styles/layout';
 import Loading from 'components/loading';
 import SocioeconomicsProvider from 'providers/socioeconomics-provider';
+import { TabletPortraitOnly } from 'components/responsive';
+import { COUNTRY_COMPARE_COLORS } from 'data/constants';
+import cx from 'classnames';
 import NoContent from 'components/no-content';
 import styles from './compare-socioeconomics-styles.scss';
 
@@ -27,7 +30,7 @@ class CompareSocioeconomics extends PureComponent {
         population_year
       } = data;
       return (
-        <div className={styles.compareSocioeconomics} key={index}>
+        <div key={index}>
           {gdpPerCapitaLocale && gdp_per_capita_rank ? (
             <div className={styles.line}>
               <div
@@ -51,7 +54,12 @@ class CompareSocioeconomics extends PureComponent {
         </div>
       );
     };
-    const { countrySocioeconomics, locations, loading } = this.props;
+    const {
+      countrySocioeconomics,
+      locations,
+      locationNames,
+      loading
+    } = this.props;
     return (
       <div className={styles.section}>
         <div className={layout.content}>
@@ -59,9 +67,29 @@ class CompareSocioeconomics extends PureComponent {
           <div className="grid-column-item">
             <div className={styles.col3}>
               {countrySocioeconomics && countrySocioeconomics.some(c => c) ? (
-                countrySocioeconomics.map((countrySocioeconomicData, i) =>
-                  renderSocioeconomics(countrySocioeconomicData, i)
-                )
+                countrySocioeconomics.map((countrySocioeconomicData, i) => (
+                  <div
+                    key={`socioeconomic-${i}{${locations[i]}`}
+                    className={styles.compareSocioeconomics}
+                  >
+                    <TabletPortraitOnly>
+                      {locationNames[i] && (
+                        <div className={cx(styles.countryHeader)}>
+                          <div
+                            className={styles.dot}
+                            style={{
+                              backgroundColor: COUNTRY_COMPARE_COLORS[i]
+                            }}
+                          />
+                          <div className={styles.countryName}>
+                            {locationNames[i]}
+                          </div>
+                        </div>
+                      )}
+                    </TabletPortraitOnly>
+                    {renderSocioeconomics(countrySocioeconomicData, i)}
+                  </div>
+                ))
               ) : (
                 <NoContent
                   message={'No data selected'}
@@ -80,6 +108,7 @@ class CompareSocioeconomics extends PureComponent {
 CompareSocioeconomics.propTypes = {
   countrySocioeconomics: PropTypes.array,
   locations: PropTypes.array,
+  locationNames: PropTypes.array,
   loading: PropTypes.bool
 };
 

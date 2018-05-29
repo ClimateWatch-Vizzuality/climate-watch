@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Sticky from 'react-stickynode';
+import Waypoint from 'react-waypoint';
 
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -9,13 +10,14 @@ import CountryCompareSelector from 'components/country-compare/country-compare-s
 import CountrySelectorFooter from 'components/country-selector-footer';
 import ModalMetadata from 'components/modal-metadata';
 import { isPageContained } from 'utils/navigation';
+import { STICKY_OFFSET } from 'styles/constants';
 
 import layout from 'styles/layout.scss';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import { TabletLandscape, Desktop } from 'components/responsive';
 import styles from './country-compare-styles.scss';
 
-const CountryCompare = ({ route, anchorLinks }) => (
+const CountryCompare = ({ route, anchorLinks, setActiveSection }) => (
   <TabletLandscape>
     {isLandscape => (
       <div>
@@ -36,7 +38,10 @@ const CountryCompare = ({ route, anchorLinks }) => (
         <Desktop>
           {isDesktop =>
             (isLandscape ? (
-              <Sticky activeClass="sticky" top={isDesktop ? 49 : 105}>
+              <Sticky
+                activeClass="sticky"
+                top={isDesktop ? STICKY_OFFSET.desktop : STICKY_OFFSET.mobile}
+              >
                 <CountryCompareSelector className={styles.countrySelectors} />
               </Sticky>
             ) : null)}
@@ -46,13 +51,20 @@ const CountryCompare = ({ route, anchorLinks }) => (
           route.sections
             .filter(s => !(isPageContained && s.excludeFromContained))
             .map(section => (
-              <section
+              <Waypoint
+                scrollableAncestor={window}
+                bottomOffset={'69%'}
+                topOffset={'30%'}
+                onEnter={() => {
+                  setActiveSection(section.hash);
+                }}
+                fireOnRapidScroll={false}
                 key={section.hash}
-                id={section.hash}
-                className={styles.section}
               >
-                <section.component />
-              </section>
+                <section id={section.hash} className={styles.section}>
+                  <section.component />
+                </section>
+              </Waypoint>
             ))}
         {!isLandscape ? <CountrySelectorFooter /> : null}
         <ModalMetadata />
@@ -63,7 +75,8 @@ const CountryCompare = ({ route, anchorLinks }) => (
 
 CountryCompare.propTypes = {
   route: PropTypes.object.isRequired,
-  anchorLinks: PropTypes.array.isRequired
+  anchorLinks: PropTypes.array.isRequired,
+  setActiveSection: PropTypes.func.isRequired
 };
 
 export default CountryCompare;
