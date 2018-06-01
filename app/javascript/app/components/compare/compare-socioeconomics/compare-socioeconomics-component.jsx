@@ -69,19 +69,23 @@ class CompareSocioeconomics extends PureComponent {
               {countrySocioeconomics && countrySocioeconomics.some(c => c) ? (
                 countrySocioeconomics.map((countrySocioeconomicData, i) => (
                   <div
-                    key={`socioeconomic-${locations[i]}`}
+                    key={`socioeconomic-${i}{${locations[i]}`}
                     className={styles.compareSocioeconomics}
                   >
                     <TabletPortraitOnly>
-                      <div className={cx(styles.countryHeader)}>
-                        <div
-                          className={styles.dot}
-                          style={{ backgroundColor: COUNTRY_COMPARE_COLORS[i] }}
-                        />
-                        <div className={styles.countryName}>
-                          {locationNames[i]}
+                      {locationNames[i] && (
+                        <div className={cx(styles.countryHeader)}>
+                          <div
+                            className={styles.dot}
+                            style={{
+                              backgroundColor: COUNTRY_COMPARE_COLORS[i]
+                            }}
+                          />
+                          <div className={styles.countryName}>
+                            {locationNames[i]}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </TabletPortraitOnly>
                     {renderSocioeconomics(countrySocioeconomicData, i)}
                   </div>
