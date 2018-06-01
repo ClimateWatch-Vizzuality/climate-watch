@@ -1,119 +1,125 @@
 {
   "$id": "http://example.com/example.json",
-  "type": "array",
+  "type": "object",
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "items": {
-    "$id": "http://example.com/example.json/items",
-    "type": "object",
-    "properties": {
-      "id": {
-        "$id": "http://example.com/example.json/items/properties/id",
-        "type": "integer",
-        "title": "The Id Schema ",
-        "default": 0,
-        "examples": [
-          281248
-        ]
-      },
-      "country": {
-        "$id": "http://example.com/example.json/items/properties/country",
-        "type": "string",
-        "title": "The Country Schema ",
-        "default": "",
-        "examples": [
-          "Afghanistan"
-        ]
-      },
-      "iso_code3": {
-        "$id": "http://example.com/example.json/items/properties/iso_code3",
-        "type": "string",
-        "title": "The Iso_code3 Schema ",
-        "default": "",
-        "examples": [
-          "AFG"
-        ]
-      },
-      "indc_text": {
-        "$id": "http://example.com/example.json/items/properties/indc_text",
-        "type": "string",
-        "title": "The Indc_text Schema ",
-        "default": "",
-        "examples": [
-          "South-south collaboration on low-carbon agriculture, study tours."
-        ]
-      },
-      "status": {
-        "$id": "http://example.com/example.json/items/properties/status",
-        "type": "string",
-        "title": "The Status Schema ",
-        "default": "",
-        "examples": [
-          "Future"
-        ]
-      },
-      "climate_response": {
-        "$id": "http://example.com/example.json/items/properties/climate_response",
-        "type": "string",
-        "title": "The Climate_response Schema ",
-        "default": "",
-        "examples": [
-          "Adaptation"
-        ]
-      },
-      "type_of_information": {
-        "$id": "http://example.com/example.json/items/properties/type_of_information",
-        "type": "string",
-        "title": "The Type_of_information Schema ",
-        "default": "",
-        "examples": [
-          "Needs & Gaps"
-        ]
-      },
-      "sector": {
-        "$id": "http://example.com/example.json/items/properties/sector",
-        "type": "string",
-        "title": "The Sector Schema ",
-        "default": "",
-        "examples": [
-          "Forest and land use"
-        ]
-      },
-      "target_number": {
-        "$id": "http://example.com/example.json/items/properties/target_number",
-        "type": "string",
-        "title": "The Target_number Schema ",
-        "default": "",
-        "examples": [
-          "17.6"
-        ]
-      },
-      "target": {
-        "$id": "http://example.com/example.json/items/properties/target",
-        "type": "string",
-        "title": "The Target Schema ",
-        "default": "",
-        "examples": [
-          "Enhance North-South, South-South and triangular regional and international cooperation on and access to science, technology and innovation and enhance knowledge sharing on mutually agreed terms, including through improved coordination among existing mechanisms, in particular at the United Nations level, and through a global technology facilitation mechanism"
-        ]
-      },
-      "goal_number": {
-        "$id": "http://example.com/example.json/items/properties/goal_number",
-        "type": "string",
-        "title": "The Goal_number Schema ",
-        "default": "",
-        "examples": [
-          "17"
-        ]
-      },
-      "goal": {
-        "$id": "http://example.com/example.json/items/properties/goal",
-        "type": "string",
-        "title": "The Goal Schema ",
-        "default": "",
-        "examples": [
-          "Strengthen the means of implementation and revitalize the global partnership for sustainable development"
-        ]
+  "properties": {
+    "data": {
+      "$id": "/properties/data",
+      "type": "array",
+      "items": {
+        "$id": "/properties/data/items",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$id": "/properties/data/items/properties/id",
+            "type": "integer",
+            "title": "The Id Schema ",
+            "default": 0,
+            "examples": [
+              282271
+            ]
+          },
+          "country": {
+            "$id": "/properties/data/items/properties/country",
+            "type": "string",
+            "title": "The Country Schema ",
+            "default": "",
+            "examples": [
+              "Brazil"
+            ]
+          },
+          "iso_code3": {
+            "$id": "/properties/data/items/properties/iso_code3",
+            "type": "string",
+            "title": "The Iso_code3 Schema ",
+            "default": "",
+            "examples": [
+              "BRA"
+            ]
+          },
+          "indc_text": {
+            "$id": "/properties/data/items/properties/indc_text",
+            "type": "string",
+            "title": "The Indc_text Schema ",
+            "default": "",
+            "examples": [
+              "strengthening policies and measures with a view to achieve, in the Brazilian Amazonia, zero illegal deforestation by 2030 and compensating for greenhouse gas emissions from legal suppression of vegetation by 2030;"
+            ]
+          },
+          "status": {
+            "$id": "/properties/data/items/properties/status",
+            "type": "string",
+            "title": "The Status Schema ",
+            "default": "",
+            "examples": [
+              "Future"
+            ]
+          },
+          "climate_response": {
+            "$id": "/properties/data/items/properties/climate_response",
+            "type": "string",
+            "title": "The Climate_response Schema ",
+            "default": "",
+            "examples": [
+              "both"
+            ]
+          },
+          "type_of_information": {
+            "$id": "/properties/data/items/properties/type_of_information",
+            "type": "string",
+            "title": "The Type_of_information Schema ",
+            "default": "",
+            "examples": [
+              "action"
+            ]
+          },
+          "sector": {
+            "$id": "/properties/data/items/properties/sector",
+            "type": "string",
+            "title": "The Sector Schema ",
+            "default": "",
+            "examples": [
+              "Forest and land use"
+            ]
+          },
+          "target_number": {
+            "$id": "/properties/data/items/properties/target_number",
+            "type": "string",
+            "title": "The Target_number Schema ",
+            "default": "",
+            "examples": [
+              "15.2"
+            ]
+          },
+          "target": {
+            "$id": "/properties/data/items/properties/target",
+            "type": "string",
+            "title": "The Target Schema ",
+            "default": "",
+            "examples": [
+              "By 2020, promote the implementation of sustainable management of all types of forests, halt deforestation, restore degraded forests and substantially increase afforestation and reforestation globally"
+            ]
+          },
+          "goal_number": {
+            "$id": "/properties/data/items/properties/goal_number",
+            "type": "string",
+            "title": "The Goal_number Schema ",
+            "default": "",
+            "examples": [
+              "15"
+            ]
+          },
+          "goal": {
+            "$id": "/properties/data/items/properties/goal",
+            "type": "string",
+            "title": "The Goal Schema ",
+            "default": "",
+            "examples": [
+              "Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss"
+            ]
+          }
+        }
       }
     }
   }

@@ -196,22 +196,24 @@ Id | Iso code3 | Country | Indc text | Status | Climate response | Type of infor
 `/api/v1/data/ndc_sdg`
 
 ```
-[
-   {
-      "id":1,
-      "country":"name",
-      "iso_code3":"ISO code 3",
-      "indc_text":"Matching text",
-      "status":"Future",
-      "climate_response":"Adaptation",
-      "type_of_information":"Needs \u0026 Gaps",
-      "sector":"Forest and land use",
-      "target_number":"17.6",
-      "target":"Enhance North-South, South-South and triangular regional and international cooperation on and access to science, technology and innovation and enhance knowledge sharing on mutually agreed terms, including through improved coordination among existing mechanisms, in particular at the United Nations level, and through a global technology facilitation mechanism",
-      "goal_number":"17",
-      "goal":"Strengthen the means of implementation and revitalize the global partnership for sustainable development"
-   }
-]
+{
+   "data":[
+      {
+         "id":1,
+         "country":"name",
+         "iso_code3":"ISO code 3",
+         "indc_text":"Matching text",
+         "status":"Future",
+         "climate_response":"Adaptation",
+         "type_of_information":"Needs \u0026 Gaps",
+         "sector":"Forest and land use",
+         "target_number":"17.6",
+         "target":"Enhance North-South, South-South and triangular regional and international cooperation on and access to science, technology and innovation and enhance knowledge sharing on mutually agreed terms, including through improved coordination among existing mechanisms, in particular at the United Nations level, and through a global technology facilitation mechanism",
+         "goal_number":"17",
+         "goal":"Strengthen the means of implementation and revitalize the global partnership for sustainable development"
+      }
+   ]
+}
 ```
 
 Response is paginated. Pagination headers are in place.

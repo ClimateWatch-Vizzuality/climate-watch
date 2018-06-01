@@ -7,8 +7,10 @@ module Api
         def index
           @records = paginate @filter.call
           render json: @records,
+                 adapter: :json,
                  each_serializer: Api::V1::Data::NdcSdg::NdcSdgSerializer,
-                 params: params
+                 params: params,
+                 root: :data
         end
 
         def meta
