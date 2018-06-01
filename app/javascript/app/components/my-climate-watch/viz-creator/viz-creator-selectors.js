@@ -6,6 +6,7 @@ import _isEmpty from 'lodash/isEmpty';
 import _uniqBy from 'lodash/uniqBy';
 
 import { flatMapVis, mapFilter } from './viz-creator-utils';
+import { updateCacheItem, visCreatorCache } from './viz-creator-cache';
 
 import * as lenses from './viz-creator-lenses';
 import {
@@ -225,14 +226,15 @@ export const getFormatFilters = name =>
     filter.loading = lense.loading;
     filter.disabled = lense.disabled;
 
-    if (lense.selected) {
+    if (!_isEmpty(visCreatorCache[name])) {
       filter.selected = filter.multi
-        ? [...lense.selected]
-        : { ...lense.selected };
+        ? [...visCreatorCache[name].selected]
+        : { ...visCreatorCache[name].selected };
     } else {
       filter.selected = filter.multi ? [] : {};
     }
-
+    updateCacheItem(name, filter);
+    if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) { return visCreatorCache[name]; }
     return filter;
   });
 
