@@ -8,7 +8,8 @@
 - gwp_ids[]
 - gas_ids[]
 - sector_ids[]
-- years[]
+- start_year
+- end_year
 
 ### CSV download endpoint
 
