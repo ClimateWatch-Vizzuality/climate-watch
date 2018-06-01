@@ -5,7 +5,9 @@ module Api
         class GasesController < ApiController
           def index
             render json: ::HistoricalEmissions::Gas.all,
-                   each_serializer: Api::V1::Data::HistoricalEmissions::GasSerializer
+                   adapter: :json,
+                   each_serializer: Api::V1::Data::HistoricalEmissions::GasSerializer,
+                   root: :data
           end
         end
       end

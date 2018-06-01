@@ -5,7 +5,9 @@ module Api
         class SectorsController < ApiController
           def index
             render json: ::HistoricalEmissions::Sector.all,
-                   each_serializer: Api::V1::Data::HistoricalEmissions::SectorSerializer
+                   adapter: :json,
+                   each_serializer: Api::V1::Data::HistoricalEmissions::SectorSerializer,
+                   root: :data
           end
         end
       end

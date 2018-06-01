@@ -5,7 +5,9 @@ module Api
         class DataSourcesController < ApiController
           def index
             render json: ::HistoricalEmissions::DataSource.all,
-                   each_serializer: Api::V1::Data::HistoricalEmissions::DataSourceSerializer
+                   adapter: :json,
+                   each_serializer: Api::V1::Data::HistoricalEmissions::DataSourceSerializer,
+                   root: :data
           end
         end
       end

@@ -77,12 +77,14 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 `/api/v1/data/historical_emissions/data_sources`
 
 ```
-[
-   {
-      "id":number,
-      "name":"string e.g. CAIT"
-   }
-]
+{
+   "data":[
+      {
+         "id":number,
+         "name":"string e.g. CAIT"
+      }
+   ]
+}
 ```
 
 ### GWPs
@@ -90,12 +92,14 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 `/api/v1/data/historical_emissions/gwps`
 
 ```
-[
-   {
-      "id":number,
-      "name":"string e.g. AR2"
-   }
-]
+{
+   "data":[
+      {
+         "id":number,
+         "name":"string e.g. AR2"
+      }
+   ]
+}
 ```
 
 ### Gases
@@ -103,12 +107,14 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 `/api/v1/data/historical_emissions/gases`
 
 ```
-[
-   {
-      "id":number,
-      "name":"atring e.g. All GHG"
-   }
-]
+{
+   "data":[
+      {
+         "id":number,
+         "name":"string e.g. All GHG"
+      }
+   ]
+}
 ```
 
 ### Sectors
@@ -116,15 +122,17 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 `/api/v1/data/historical_emissions/sectors`
 
 ```
-[
-   {
-      "id":number,
-      "name":"string",
-      "parent_id":number or null,
-      "data_source_id":number,
-      "annex_type":"string or null"
-   }
-]
+{
+   "data":[
+      {
+         "id":number,
+         "name":"string",
+         "parent_id":number or null,
+         "data_source_id":number,
+         "annex_type":"string or null"
+      }
+   ]
+}
 ```
 
 ### Regions

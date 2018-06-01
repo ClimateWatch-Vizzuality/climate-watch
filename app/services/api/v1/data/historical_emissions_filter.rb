@@ -3,6 +3,13 @@ module Api
     module Data
       class HistoricalEmissionsFilter
         attr_reader :years
+
+        # @param params [Hash]
+        # @option params [Array<String>] :regions
+        # @option params [Array<Integer>] :data_source_ids
+        # @option params [Array<Integer>] :gwp_ids
+        # @option params [Array<Integer>] :gas_ids
+        # @option params [Array<Integer>] :sector_ids
         def initialize(params)
           initialize_filters(params)
           @query = ::HistoricalEmissions::Record.all

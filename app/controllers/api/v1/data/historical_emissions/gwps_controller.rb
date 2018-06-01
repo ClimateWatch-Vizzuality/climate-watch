@@ -5,7 +5,9 @@ module Api
         class GwpsController < ApiController
           def index
             render json: ::HistoricalEmissions::Gwp.all,
-                   each_serializer: Api::V1::Data::HistoricalEmissions::GwpSerializer
+                   adapter: :json,
+                   each_serializer: Api::V1::Data::HistoricalEmissions::GwpSerializer,
+                   root: :data
           end
         end
       end
