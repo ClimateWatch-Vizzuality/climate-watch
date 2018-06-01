@@ -18,7 +18,7 @@ module Api
               ary = @headers.map { |h| record[h] }
               ary += @years.map do |y|
                 emission = record.emissions.find { |e| e['year'] == y }
-                emission['value']
+                emission && emission['value']
               end
               csv << ary
             end
