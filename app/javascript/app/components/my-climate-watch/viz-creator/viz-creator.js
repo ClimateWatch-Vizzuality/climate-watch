@@ -7,7 +7,12 @@ import VizCreatorComponent from './viz-creator-component';
 import * as reducers from './viz-creator-reducers';
 import * as actions from './viz-creator-actions';
 import initialState from './viz-creator-initial-state';
-
+import {
+  updateCacheItemValue,
+  visCreatorCache,
+  clearCache,
+  filterCache
+} from './viz-creator-cache';
 import {
   datasetsSelector,
   visualisationsSelector,
@@ -87,7 +92,11 @@ class VizCreator extends Component {
       fetchSubCategories,
       fetchIndicators,
       fetchYears,
-      fetchTimeseries
+      fetchTimeseries,
+      selectModel,
+      selectScenario,
+      selectCategory,
+      selectSubcategory
     } = props;
 
     if (!isEmpty(datasets.selected)) {
@@ -96,19 +105,52 @@ class VizCreator extends Component {
       }
       if (!isEmpty(visualisations.selected)) {
         if (!locations.loading && !locations.loaded) {
+          clearCache();
           fetchLocations(visualisations.selected);
         }
         if (!isEmpty(locations.selected)) {
-          if (!models.loading && !models.loaded) {
+          filterCache('models');
+          if (
+            !isEmpty(visCreatorCache.models.selected) &&
+            !models.loading &&
+            !models.loaded
+          ) {
+            selectModel(visCreatorCache.models.selected);
+          }
+          if (isEmpty(models.selected) && !models.loading && !models.loaded) {
             fetchModels(locations.selected);
           }
           if (!isEmpty(models.selected)) {
-            if (!scenarios.loading && !scenarios.loaded) {
+            filterCache('scenarios');
+            if (
+              !isEmpty(visCreatorCache.scenarios.selected) &&
+              !scenarios.loading &&
+              !scenarios.loaded
+            ) {
+              selectScenario(visCreatorCache.scenarios.selected);
+            }
+            if (
+              isEmpty(scenarios.selected) &&
+              !scenarios.loading &&
+              !scenarios.loaded
+            ) {
               fetchScenarios(models.selected.value);
             }
 
             if (!isEmpty(scenarios.selected)) {
-              if (!categories.loading && !categories.loaded) {
+              filterCache('categories');
+              if (
+                !isEmpty(visCreatorCache.categories.selected) &&
+                !categories.loading &&
+                !categories.loaded
+              ) {
+                selectCategory(visCreatorCache.categories.selected);
+              }
+              if (
+                isEmpty(categories.selected) &&
+                !categories.loading &&
+                !categories.loaded
+              ) {
                 fetchCategories({
                   locations: locations.selected,
                   scenarios: scenarios.selected
@@ -116,7 +158,19 @@ class VizCreator extends Component {
               }
 
               if (!isEmpty(categories.selected)) {
-                if (!subcategories.loading && !subcategories.loaded) {
+                filterCache('subcategories');
+                if (
+                  !isEmpty(visCreatorCache.subcategories.selected) &&
+                  !subcategories.loading &&
+                  !subcategories.loaded
+                ) {
+                  selectSubcategory(visCreatorCache.subcategories.selected);
+                }
+                if (
+                  isEmpty(subcategories.selected) &&
+                  !subcategories.loading &&
+                  !subcategories.loaded
+                ) {
                   fetchSubCategories({
                     category: categories.selected,
                     locations: locations.selected,
@@ -164,6 +218,7 @@ class VizCreator extends Component {
   }
 
   handleFilterSelect = filter => {
+    updateCacheItemValue(filter);
     const actionName = toSelector(filter.type);
     if (this.props[actionName]) {
       const filterParsed = filter.multi
@@ -205,7 +260,11 @@ VizCreator.propTypes = {
   fetchCategories: PropTypes.func.isRequired,
   fetchSubCategories: PropTypes.func.isRequired,
   fetchYears: PropTypes.func.isRequired,
-  fetchTimeseries: PropTypes.func.isRequired
+  fetchTimeseries: PropTypes.func.isRequired,
+  selectModel: PropTypes.func.isRequired,
+  selectScenario: PropTypes.func.isRequired,
+  selectCategory: PropTypes.func.isRequired,
+  selectSubcategory: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
