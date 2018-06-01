@@ -12,7 +12,6 @@ class ImportHistoricalEmissions
     import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
     import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
     import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH))
-    MaterializedView.refresh('historical_emissions_records_per_year')
   end
 
   private

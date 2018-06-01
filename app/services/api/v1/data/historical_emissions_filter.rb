@@ -2,24 +2,30 @@ module Api
   module V1
     module Data
       class HistoricalEmissionsFilter
+        attr_reader :years
         def initialize(params)
-          @query = ::HistoricalEmissions::RecordPerYear.
-            joins(:data_source, :gwp, :location, :sector, :gas)
           initialize_filters(params)
+          @query = ::HistoricalEmissions::Record.all
         end
 
         def call
           apply_filters
-          @grouped_query = @query.
-            select(self.class.select_columns).
-            group(self.class.group_columns)
+          years_query = ::HistoricalEmissions::Record.select(
+            "ARRAY_AGG(DISTINCT (e->>'year')::INT) AS years"
+          ).from(
+            <<-SQL
+              (#{@query.select('emissions').to_sql}) s
+              CROSS JOIN LATERAL JSONB_ARRAY_ELEMENTS(#{emissions_select_column}) e (e)
+            SQL
+          )
+          @years = years_query.any? && years_query[0]['years'] || []
+          @query.
+            joins(:location, :data_source, :gwp, :sector, :gas).
+            select(select_columns).
+            group(group_columns)
         end
 
-        def years
-          @query.pluck(:year).uniq
-        end
-
-        def self.column_aliases
+        def column_aliases
           column_aliases = select_columns_with_aliases.map do |column, column_alias|
             column_alias || column
           end
@@ -27,7 +33,9 @@ module Api
           column_aliases
         end
 
-        def self.select_columns
+        private
+
+        def select_columns
           select_columns_with_aliases.map do |column, column_alias|
             if column_alias
               [column, 'AS', column_alias].join(' ')
@@ -37,14 +45,12 @@ module Api
           end
         end
 
-        def self.group_columns
+        def group_columns
           columns = select_columns_with_aliases.map(&:first)
           columns[0..columns.length - 3]
         end
 
-        private
-
-        private_class_method def self.select_columns_with_aliases
+        def select_columns_with_aliases
           [
             ['id'],
             ['locations.iso_code3', 'iso_code3'],
@@ -54,11 +60,17 @@ module Api
             ['historical_emissions_sectors.name', 'sector'],
             ['historical_emissions_gases.name', 'gas'],
             ["'CO2e'::TEXT", 'unit'],
-            [
-              "ARRAY_AGG(('{\"year\": ' || year || ', \"value\": ' || value || '}')::jsonb)",
-              'emissions'
-            ]
+            [emissions_select_column, 'emissions']
           ]
+        end
+
+        def emissions_select_column
+          args_str = [
+            'emissions',
+            (@start_year || 'NULL').to_s + '::INT',
+            (@end_year || 'NULL').to_s + '::INT'
+          ].join(', ')
+          "emissions_filter_by_year_range(#{args_str})::JSONB"
         end
 
         def initialize_filters(params)
@@ -71,30 +83,21 @@ module Api
             end
             instance_variable_set(:"@#{param_name}", value)
           end
-          @regions = params[:regions]
+          # rubocop:disable Style/IfUnlessModifier
+          if params[:regions]
+            @location_ids = Location.where(iso_code3: params[:regions]).pluck(:id)
+          end
+          # rubocop:enable Style/IfUnlessModifier
           @start_year = params[:start_year]
           @end_year = params[:end_year]
         end
 
         def apply_filters
-          apply_location_filter
-          apply_year_filter
           @query = @query.where(data_source_id: @source_ids) if @source_ids
           @query = @query.where(gwp_id: @gwp_ids) if @gwp_ids
           @query = @query.where(gas_id: @gas_ids) if @gas_ids
           @query = @query.where(sector_id: @sector_ids) if @sector_ids
-        end
-
-        def apply_location_filter
-          return unless @regions
-          @query = @query.where(
-            'locations.iso_code3' => @regions
-          )
-        end
-
-        def apply_year_filter
-          @query = @query.where('year >= ?', @start_year) if @start_year
-          @query = @query.where('year <= ?', @end_year) if @end_year
+          @query = @query.where(location_id: @location_ids) if @location_ids
         end
       end
     end

@@ -6,7 +6,7 @@ module Api
       class HistoricalEmissionsCsvContent
         def initialize(filter)
           @grouped_query = filter.call
-          @headers = filter.class.column_aliases
+          @headers = filter.column_aliases
           @headers.shift
           @years = filter.years
         end
