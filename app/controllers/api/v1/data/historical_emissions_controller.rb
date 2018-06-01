@@ -1,7 +1,7 @@
 module Api
   module V1
     module Data
-      class HistoricalEmissionsController < ApiController
+      class HistoricalEmissionsController < Api::V1::Data::ApiController
         before_action :parametrise_filter, only: [:index, :download]
 
         def index
@@ -16,15 +16,14 @@ module Api
         end
 
         def meta
-          links = (headers['Link'] || '').split(',').map(&:strip)
-          [:data_sources, :gwps, :gases, :sectors].each do |he_resource|
-            url = [
-              '/api/v1/data/historical_emissions', he_resource
-            ].join('/')
-            links << %(<#{url}>; rel="meta #{he_resource}")
-          end
-          links << %(</api/v1/locations/regions>; rel="meta locations")
-          headers['Link'] = links.join(', ')
+          set_links_header(
+            [:data_sources, :gwps, :gases, :sectors].map do |he_resource|
+              {
+                link: "/api/v1/data/historical_emissions/#{he_resource}",
+                rel: "meta #{he_resource}"
+              }
+            end + [{link: '/api/v1/locations/regions', rel: 'meta locations'}]
+          )
         end
 
         def download
