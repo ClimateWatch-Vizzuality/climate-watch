@@ -24,8 +24,10 @@ module Api
               targets = targets.includes(:sectors)
             end
             render json: targets,
+                   adapter: :json,
                    each_serializer: Api::V1::Data::NdcSdg::TargetSerializer,
-                   include: includes
+                   include: includes,
+                   root: :data
           end
         end
       end

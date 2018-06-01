@@ -239,28 +239,30 @@ Link: </api/v1/data/ndc_sdgs/goals>; rel="meta goals", </api/v1/data/ndc_sdgs/ta
 `/api/v1/data/ndc_sdg/goals?inlude_targets=1&include_sectors=1`
 
 ```
-[
-   {
-      "id":18,
-      "number":"1",
-      "title":"End poverty in all its forms everywhere",
-      "cw_title":"No poverty",
-      "targets":[
-         {
-            "id":177,
-            "goal_id":18,
-            "number":"1.b",
-            "title":"Create sound policy frameworks at the national, regional and international levels, based on pro-poor and gender-sensitive development strategies, to support accelerated investment in poverty eradication actions",
-            "sectors":[
-               {
-                  "id":589,
-                  "name":"Rural Development"
-               }
-            ]
-         }
-      ]
-   }
-]
+{
+   "data":[
+      {
+         "id":18,
+         "number":"1",
+         "title":"End poverty in all its forms everywhere",
+         "cw_title":"No poverty",
+         "targets":[
+            {
+               "id":177,
+               "goal_id":18,
+               "number":"1.b",
+               "title":"Create sound policy frameworks at the national, regional and international levels, based on pro-poor and gender-sensitive development strategies, to support accelerated investment in poverty eradication actions",
+               "sectors":[
+                  {
+                     "id":589,
+                     "name":"Rural Development"
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}
 ```
 
 ### Targets
@@ -268,20 +270,22 @@ Link: </api/v1/data/ndc_sdgs/goals>; rel="meta goals", </api/v1/data/ndc_sdgs/ta
 `/api/v1/data/ndc_sdg/targets?goal_id=18&include_sectors=1`
 
 ```
-[
-   {
-      "id":171,
-      "goal_id":18,
-      "number":"1.1",
-      "title":"By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day",
-      "sectors":[
-         {
-            "id":581,
-            "name":"Water"
-         }
-      ]
-   }
-]
+{
+   "data":[
+      {
+         "id":171,
+         "goal_id":18,
+         "number":"1.1",
+         "title":"By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day",
+         "sectors":[
+            {
+               "id":581,
+               "name":"Water"
+            }
+         ]
+      }
+   ]
+}
 ```
 
 ### Sectors
@@ -289,12 +293,14 @@ Link: </api/v1/data/ndc_sdgs/goals>; rel="meta goals", </api/v1/data/ndc_sdgs/ta
 `/api/v1/data/ndc_sdg/sectors`
 
 ```
-[
-   {
-      "id":577,
-      "name":"Forest and land use"
-   }
-]
+{
+   "data":[
+      {
+         "id":577,
+         "name":"Forest and land use"
+      }
+   ]
+}
 ```
 
 ### Countries

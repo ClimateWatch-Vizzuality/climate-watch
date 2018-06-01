@@ -5,7 +5,9 @@ module Api
         class SectorsController < Api::V1::Data::ApiController
           def index
             render json: ::NdcSdg::Sector.all,
-                   each_serializer: Api::V1::Data::NdcSdg::SectorSerializer
+                   adapter: :json,
+                   each_serializer: Api::V1::Data::NdcSdg::SectorSerializer,
+                   root: :data
           end
         end
       end

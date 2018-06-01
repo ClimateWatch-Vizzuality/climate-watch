@@ -22,8 +22,10 @@ module Api
               goals = goals.includes(:targets)
             end
             render json: goals,
+                   adapter: :json,
                    each_serializer: Api::V1::Data::NdcSdg::GoalSerializer,
-                   include: includes
+                   include: includes,
+                   root: :data
           end
         end
       end
