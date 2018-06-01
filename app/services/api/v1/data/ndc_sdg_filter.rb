@@ -69,9 +69,11 @@ module Api
 
         def apply_filters
           apply_location_filter
+          # rubocop:disable Style/IfUnlessModifier
           if @goal_ids
             @query = @query.where('ndc_sdg_targets.goal_id' => @goal_ids)
           end
+          # rubocop:enable Style/IfUnlessModifier
           if @target_ids
             @query = @query.where(
               'ndc_sdg_ndc_targets.target_id' => @target_ids

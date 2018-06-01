@@ -6,6 +6,7 @@ module Api
 
         private
 
+        # rubocop:disable Naming/AccessorMethodName
         def set_caching_headers
           return true if Rails.env.development?
           expires_in 2.hours, public: true
@@ -19,6 +20,7 @@ module Api
           end
           headers['Link'] = links.join(', ')
         end
+        # rubocop:enable Naming/AccessorMethodName
       end
     end
   end
