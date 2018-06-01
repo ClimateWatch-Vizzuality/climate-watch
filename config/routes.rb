@@ -51,6 +51,19 @@ Rails.application.routes.draw do
 
       resources :stories, only: [:index]
 
+      namespace :data do
+        resources :historical_emissions, only: [:index] do
+          get :download, on: :collection, defaults: { format: 'csv' }
+          get :meta, on: :collection
+        end
+        namespace :historical_emissions do
+          resources :data_sources, only: [:index]
+          resources :gwps, only: [:index]
+          resources :gases, only: [:index]
+          resources :sectors, only: [:index]
+        end
+      end
+
       get :login, to: 'auth#login'
 
       get '(*endpoint)', controller: :api, action: :route_not_found
