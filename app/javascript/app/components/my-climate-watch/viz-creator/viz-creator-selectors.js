@@ -225,6 +225,7 @@ export const getFormatFilters = name =>
     filter.label = _.titleize(name);
     filter.loading = lense.loading;
     filter.disabled = lense.disabled;
+    filter.child = lense.child.name;
 
     if (!_isEmpty(visCreatorCache[name])) {
       filter.selected = filter.multi
@@ -234,7 +235,9 @@ export const getFormatFilters = name =>
       filter.selected = filter.multi ? [] : {};
     }
     updateCacheItem(name, filter);
-    if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) { return visCreatorCache[name]; }
+    if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) {
+      return visCreatorCache[name];
+    }
     return filter;
   });
 
