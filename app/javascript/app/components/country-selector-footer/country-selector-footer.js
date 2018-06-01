@@ -47,10 +47,11 @@ class CountrySelectorFooterContainer extends PureComponent {
   };
 
   handleRemove = target => {
-    const unselected = target.value;
-    const { locations } = this.props;
-    const newLocations = locations.map(
-      country => (country !== unselected ? country : null)
+    const unselected = target;
+    const { activeCountryOptions } = this.props;
+    const newLocations = activeCountryOptions.map(
+      country =>
+        country && (country.label !== unselected ? country.value : null)
     );
     this.updateUrlParam({ name: 'locations', value: newLocations.toString() });
   };
@@ -67,7 +68,8 @@ class CountrySelectorFooterContainer extends PureComponent {
 CountrySelectorFooterContainer.propTypes = {
   history: Proptypes.object.isRequired,
   location: Proptypes.object.isRequired,
-  locations: Proptypes.array
+  locations: Proptypes.array,
+  activeCountryOptions: Proptypes.array
 };
 
 export default withRouter(
