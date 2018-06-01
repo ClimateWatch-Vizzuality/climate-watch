@@ -161,21 +161,11 @@ export default {
   },
 
   // Categories
+  [actions.fetchCategories]: state =>
+    updateIn($categories, { loading: true }, state),
   [actions.gotCategories]: (state, { payload }) =>
     updateIn(
       $categories,
-      {
-        loading: false,
-        loaded: true,
-        data: payload
-      },
-      state
-    ),
-
-  // SubCategories
-  [actions.gotSubCategories]: (state, { payload }) =>
-    updateIn(
-      $subcategories,
       {
         loading: false,
         loaded: true,
@@ -192,6 +182,8 @@ export default {
     ),
 
   // Subategories
+  [actions.fetchSubCategories]: state =>
+    updateIn($subcategories, { loading: true }, state),
   [actions.gotSubCategories]: (state, { payload }) =>
     updateIn(
       $subcategories,
