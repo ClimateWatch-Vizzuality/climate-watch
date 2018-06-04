@@ -21,6 +21,7 @@ const VizCreator = props => {
     visualisationType,
     visualisationOptions,
     hasData,
+    hasCacheData,
     chartData,
     legends,
     filters,
@@ -42,7 +43,7 @@ const VizCreator = props => {
         {visualisations.selected && (
           <Step3 {...{ spec: filters, handleFilterSelect, hasData }} />
         )}
-        {hasData && (
+        {(hasData || hasCacheData) && (
           <Step4
             id={id}
             legends={legends}
@@ -78,6 +79,7 @@ VizCreator.propTypes = {
   visualisationOptions: PropTypes.object,
   timeseries: PropTypes.object,
   hasData: PropTypes.bool,
+  hasCacheData: PropTypes.bool,
   chartData: PropTypes.object,
   filters: PropTypes.object,
   updateVisualisationName: PropTypes.func.isRequired,

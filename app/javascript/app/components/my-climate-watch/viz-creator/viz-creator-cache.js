@@ -32,6 +32,10 @@ export function clearCache(arg = null) {
   }
 }
 
+export function updateTimeseriesCache(data) {
+  visCreatorCache.timeseries = data;
+}
+
 export function filterCache(type) {
   const isMulti = visCreatorCache[type].multi;
   const availableData = visCreatorCache[type].data;

@@ -11,7 +11,8 @@ import {
   updateCacheItemValue,
   visCreatorCache,
   clearCache,
-  filterCache
+  filterCache,
+  updateTimeseriesCache
 } from './viz-creator-cache';
 import {
   datasetsSelector,
@@ -30,7 +31,8 @@ import {
   getVisualisationType,
   getVisualisationOptions,
   getOnlyStackable,
-  getPlaceholder
+  getPlaceholder,
+  hasCacheDataSelector
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
@@ -52,6 +54,7 @@ const mapStateToProps = ({ vizCreator }) => ({
   years: yearsSelector(vizCreator),
   timeseries: timeseriesSelector(vizCreator),
   hasData: hasDataSelector(vizCreator),
+  hasCacheData: hasCacheDataSelector(visCreatorCache),
   chartData: chartDataSelector(vizCreator),
   onlyStackableIndicators: getOnlyStackable(vizCreator),
   filters: {
@@ -96,7 +99,9 @@ class VizCreator extends Component {
       selectModel,
       selectScenario,
       selectCategory,
-      selectSubcategory
+      selectSubcategory,
+      selectIndicator,
+      selectYear
     } = props;
 
     if (!isEmpty(datasets.selected)) {
@@ -179,6 +184,14 @@ class VizCreator extends Component {
                 }
 
                 if (!isEmpty(subcategories.selected)) {
+                  filterCache('indicators');
+                  if (
+                    !isEmpty(visCreatorCache.indicators.selected) &&
+                    !indicators.loading &&
+                    !indicators.loaded
+                  ) {
+                    selectIndicator(visCreatorCache.indicators.selected);
+                  }
                   if (!indicators.loading && !indicators.loaded) {
                     fetchIndicators({
                       subcategory: subcategories.selected.value,
@@ -189,6 +202,15 @@ class VizCreator extends Component {
                   }
 
                   if (!isEmpty(indicators.selected)) {
+                    filterCache('years');
+                    updateTimeseriesCache(timeseries);
+                    if (
+                      !isEmpty(visCreatorCache.years.selected) &&
+                      !years.loading &&
+                      !years.loaded
+                    ) {
+                      selectYear(visCreatorCache.years.selected);
+                    }
                     if (!years.loading && !years.loaded) {
                       fetchYears({
                         locations: locations.selected,
@@ -264,7 +286,9 @@ VizCreator.propTypes = {
   selectModel: PropTypes.func.isRequired,
   selectScenario: PropTypes.func.isRequired,
   selectCategory: PropTypes.func.isRequired,
-  selectSubcategory: PropTypes.func.isRequired
+  selectSubcategory: PropTypes.func.isRequired,
+  selectIndicator: PropTypes.func.isRequired,
+  selectYear: PropTypes.func.isRequired
 };
 
 export { actions, reducers, initialState };
