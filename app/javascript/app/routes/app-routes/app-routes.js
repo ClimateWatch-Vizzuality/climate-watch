@@ -94,7 +94,15 @@ export default [
     routes: [
       {
         path: '/ndcs',
-        label: 'NDC Content'
+        label: 'NDC Explorer'
+      },
+      {
+        path: '/ndcs/compare/mitigation',
+        label: 'NDC Comparison'
+      },
+      {
+        path: '/ndc-search',
+        label: 'NDC Search'
       },
       {
         path: '/ndcs-sdg',
