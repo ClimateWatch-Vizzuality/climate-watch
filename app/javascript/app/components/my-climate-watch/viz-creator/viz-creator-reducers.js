@@ -44,7 +44,8 @@ export default {
         description: initialState.description,
         title: initialState.title,
         datasets: initialState.datasets,
-        creatorIsOpen: true
+        creatorIsOpen: true,
+        creatorIsEditing: true
       }
       : {
         ...state,
@@ -54,7 +55,15 @@ export default {
         description: payload.description || initialState.description,
         datasets: payload.datasets || initialState.datasets
       }),
-  [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
+  [actions.closeCreator]: state => ({
+    ...state,
+    creatorIsOpen: false,
+    creatorIsEditing: false
+  }),
+  [actions.editVisualisationData]: state => ({
+    ...state,
+    creatorIsEditing: false
+  }),
   [actions.updateVisualisationName]: (state, { payload }) =>
     unfail('title', assign(state, { title: payload })),
   [actions.updateVisualisationDescription]: (state, { payload }) =>

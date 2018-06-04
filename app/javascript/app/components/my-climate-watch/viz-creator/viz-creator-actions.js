@@ -161,6 +161,8 @@ export const fetchVisualisation = createThunkAction(
 export const openCreator = createAction('openCreator');
 export const closeCreator = createAction('closeCreator');
 
+export const editVisualisationData = createAction('editVisualisationData');
+
 export const gotDatasets = createAction('gotDatasets');
 export const selectDataset = createAction('selectDataset');
 
