@@ -1,4 +1,5 @@
 export default {
+  creatorIsEditing: false,
   creatorIsOpen: false,
   title: undefined,
   description: '',
