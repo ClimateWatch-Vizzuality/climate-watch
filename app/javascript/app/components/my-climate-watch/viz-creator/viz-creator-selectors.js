@@ -37,6 +37,7 @@ export const yearsSelector = state => get(lenses.$years, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
 export const titleSelector = state => state.title;
 export const placeholderSelector = state => state.placeholder;
+export const editingSelector = state => state.creatorIsEditing;
 
 export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
@@ -221,31 +222,42 @@ const filterSelection = (name, lense, state, multi = false) => {
 };
 
 export const getFormatFilters = name =>
-  createSelector([dataSelector, filtersSelector], (state, spec) => {
-    if (!spec || !spec.length > 0) return {};
+  createSelector(
+    [dataSelector, filtersSelector, editingSelector],
+    (state, spec, editing) => {
+      if (!spec || !spec.length > 0) return {};
 
-    const filter = { ...(_find(spec, { name }) || {}) };
-    const lense = get(lenses[`$${name}`], state) || {};
-    filter.data = filterSelection(name, lense, state, filter.multi);
-    filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
-    filter.label = _.titleize(name);
-    filter.loading = lense.loading;
-    filter.disabled = lense.disabled;
-    filter.child = lense.child.name;
+      const filter = { ...(_find(spec, { name }) || {}) };
+      const lense = get(lenses[`$${name}`], state) || {};
+      filter.data = filterSelection(name, lense, state, filter.multi);
+      filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
+      filter.label = _.titleize(name);
+      filter.loading = lense.loading;
+      filter.disabled = lense.disabled;
+      filter.child = lense.child.name;
 
-    if (!_isEmpty(visCreatorCache[name])) {
-      filter.selected = filter.multi
-        ? [...visCreatorCache[name].selected]
-        : { ...visCreatorCache[name].selected };
-    } else {
-      filter.selected = filter.multi ? [] : {};
+      if (!editing) {
+        if (!_isEmpty(lense.selected)) {
+          filter.selected = filter.multi
+            ? [...lense.selected]
+            : { ...lense.selected };
+        } else {
+          filter.selected = filter.multi ? [] : {};
+        }
+      } else if (!_isEmpty(visCreatorCache[name])) {
+        filter.selected = filter.multi
+          ? [...visCreatorCache[name].selected]
+          : { ...visCreatorCache[name].selected };
+      } else {
+        filter.selected = filter.multi ? [] : {};
+      }
+      updateCacheItem(name, filter);
+      if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) {
+        return visCreatorCache[name];
+      }
+      return filter;
     }
-    updateCacheItem(name, filter);
-    if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) {
-      return visCreatorCache[name];
-    }
-    return filter;
-  });
+  );
 
 export const getPlaceholder = createSelector(
   [
