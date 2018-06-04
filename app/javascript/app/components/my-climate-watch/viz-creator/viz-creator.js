@@ -218,8 +218,14 @@ class VizCreator extends Component {
                         scenarios: scenarios.selected
                       });
                     }
-
                     if (!isEmpty(years.selected)) {
+                      if (
+                        !isEmpty(visCreatorCache.timeseries.selected) &&
+                        !timeseries.loading &&
+                        !timeseries.loaded
+                      ) {
+                        selectYear(visCreatorCache.years.selected);
+                      }
                       if (!timeseries.loading && !timeseries.loaded) {
                         fetchTimeseries({
                           locations: locations.selected,

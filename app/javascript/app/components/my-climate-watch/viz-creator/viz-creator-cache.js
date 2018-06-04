@@ -5,6 +5,7 @@ export let visCreatorCache = {};
 
 export function updateCacheItem(item, data) {
   visCreatorCache[`${item}`] = data;
+  if (item === 'years') { updateYearsCache(); }
 }
 
 export function updateCacheItemValue(field) {
@@ -29,6 +30,12 @@ export function clearCache(arg = null) {
     }
   } else {
     visCreatorCache = {};
+  }
+}
+
+export function updateYearsCache() {
+  if (!isEmpty(visCreatorCache.years.data)) {
+    visCreatorCache.years = { ...visCreatorCache.years, selected: visCreatorCache.years.data };
   }
 }
 
