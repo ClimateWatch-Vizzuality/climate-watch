@@ -48,12 +48,6 @@ export const hasDataSelector = createSelector(
     !_isEmpty(scenarios.data)
 );
 
-export const hasCacheDataSelector = cache =>
-  !_isEmpty(cache) &&
-  !_isEmpty(cache.categories.data) &&
-  cache.timeseries &&
-  !_isEmpty(cache.timeseries.data);
-
 export const vizTypes = data => data && data['viz-types'];
 export const vizSelector = createSelector(datasetsSelector, sets =>
   vizTypes(_find(sets.data, { id: sets.selected }))
@@ -239,6 +233,7 @@ export const getFormatFilters = name =>
       filter.data = filterSelection(name, lense, state, filter.multi);
       filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
       filter.label = _.titleize(name);
+      filter.loaded = lense.loaded;
       filter.loading = lense.loading;
       filter.disabled = lense.disabled;
       filter.child = lense.child.name;

@@ -78,7 +78,6 @@ VizCreator.propTypes = {
   visualisationOptions: PropTypes.object,
   timeseries: PropTypes.object,
   hasData: PropTypes.bool,
-  hasCacheData: PropTypes.bool,
   chartData: PropTypes.object,
   filters: PropTypes.object,
   updateVisualisationName: PropTypes.func.isRequired,
