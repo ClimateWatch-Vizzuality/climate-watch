@@ -31,13 +31,13 @@ import {
   getVisualisationType,
   getVisualisationOptions,
   getOnlyStackable,
-  getPlaceholder,
-  hasCacheDataSelector
+  getPlaceholder
 } from './viz-creator-selectors';
 
 const mapStateToProps = ({ vizCreator }) => ({
   id: vizCreator.id,
   title: vizCreator.title,
+  creatorIsEditing: vizCreator.creatorIsEditing,
   placeholder: getPlaceholder(vizCreator),
   description: vizCreator.description,
   creationStatus: vizCreator.creationStatus,
@@ -54,7 +54,6 @@ const mapStateToProps = ({ vizCreator }) => ({
   years: yearsSelector(vizCreator),
   timeseries: timeseriesSelector(vizCreator),
   hasData: hasDataSelector(vizCreator),
-  hasCacheData: hasCacheDataSelector(visCreatorCache),
   chartData: chartDataSelector(vizCreator),
   onlyStackableIndicators: getOnlyStackable(vizCreator),
   filters: {
@@ -114,7 +113,9 @@ class VizCreator extends Component {
           fetchLocations(visualisations.selected);
         }
         if (!isEmpty(locations.selected)) {
-          filterCache('models');
+          if (filterCache('models')) {
+            selectModel([]);
+          }
           if (
             !isEmpty(visCreatorCache.models.selected) &&
             !models.loading &&
@@ -126,7 +127,9 @@ class VizCreator extends Component {
             fetchModels(locations.selected);
           }
           if (!isEmpty(models.selected)) {
-            filterCache('scenarios');
+            if (filterCache('scenarios')) {
+              selectScenario([]);
+            }
             if (
               !isEmpty(visCreatorCache.scenarios.selected) &&
               !scenarios.loading &&
@@ -143,7 +146,9 @@ class VizCreator extends Component {
             }
 
             if (!isEmpty(scenarios.selected)) {
-              filterCache('categories');
+              if (filterCache('categories')) {
+                selectCategory([]);
+              }
               if (
                 !isEmpty(visCreatorCache.categories.selected) &&
                 !categories.loading &&
@@ -163,7 +168,9 @@ class VizCreator extends Component {
               }
 
               if (!isEmpty(categories.selected)) {
-                filterCache('subcategories');
+                if (filterCache('subcategories')) {
+                  selectSubcategory([]);
+                }
                 if (
                   !isEmpty(visCreatorCache.subcategories.selected) &&
                   !subcategories.loading &&
@@ -184,7 +191,9 @@ class VizCreator extends Component {
                 }
 
                 if (!isEmpty(subcategories.selected)) {
-                  filterCache('indicators');
+                  if (filterCache('indicators')) {
+                    selectIndicator([]);
+                  }
                   if (
                     !isEmpty(visCreatorCache.indicators.selected) &&
                     !indicators.loading &&
@@ -192,7 +201,11 @@ class VizCreator extends Component {
                   ) {
                     selectIndicator(visCreatorCache.indicators.selected);
                   }
-                  if (!indicators.loading && !indicators.loaded) {
+                  if (
+                    isEmpty(indicators.selected) &&
+                    !indicators.loading &&
+                    !indicators.loaded
+                  ) {
                     fetchIndicators({
                       subcategory: subcategories.selected.value,
                       locations: locations.selected,
@@ -200,7 +213,6 @@ class VizCreator extends Component {
                       stackable: onlyStackableIndicators
                     });
                   }
-
                   if (!isEmpty(indicators.selected)) {
                     filterCache('years');
                     updateTimeseriesCache(timeseries);
