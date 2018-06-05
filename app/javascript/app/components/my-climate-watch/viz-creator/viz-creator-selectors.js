@@ -221,6 +221,13 @@ const filterSelection = (name, lense, state, multi = false) => {
   return mapFilter(lense.data);
 };
 
+function isFilterMulti(multi, dataStructure) {
+  if (!_isEmpty(dataStructure) && !_isEmpty(dataStructure.selected)) {
+    return multi ? [...dataStructure.selected] : { ...dataStructure.selected };
+  }
+  return multi ? [] : {};
+}
+
 export const getFormatFilters = name =>
   createSelector(
     [dataSelector, filtersSelector, editingSelector],
@@ -235,22 +242,10 @@ export const getFormatFilters = name =>
       filter.loading = lense.loading;
       filter.disabled = lense.disabled;
       filter.child = lense.child.name;
+      filter.selected = editing
+        ? isFilterMulti(filter.multi, visCreatorCache[name])
+        : isFilterMulti(filter.multi, lense);
 
-      if (!editing) {
-        if (!_isEmpty(lense.selected)) {
-          filter.selected = filter.multi
-            ? [...lense.selected]
-            : { ...lense.selected };
-        } else {
-          filter.selected = filter.multi ? [] : {};
-        }
-      } else if (!_isEmpty(visCreatorCache[name])) {
-        filter.selected = filter.multi
-          ? [...visCreatorCache[name].selected]
-          : { ...visCreatorCache[name].selected };
-      } else {
-        filter.selected = filter.multi ? [] : {};
-      }
       updateCacheItem(name, filter);
       if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) {
         return visCreatorCache[name];
