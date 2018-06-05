@@ -6,6 +6,8 @@ import cx from 'classnames';
 import iconInfo from 'assets/icons/info.svg';
 import iconDownload from 'assets/icons/download.svg';
 import iconAddToUser from 'assets/icons/add-to-user.svg';
+import iconEdit from 'assets/icons/edit.svg';
+import iconDelete from 'assets/icons/delete.svg';
 import PropTypes from 'prop-types';
 import ShareMenu from 'components/share-menu';
 
@@ -67,6 +69,30 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
               disabled={!buttonConfig.onAddToUserClick}
             >
               <Icon icon={iconAddToUser} />
+            </Button>
+          );
+          break;
+        case 'edit':
+          button = (
+            <Button
+              key={buttonConfig.type}
+              className={cx(styles.button, styles.last)}
+              onClick={buttonConfig.onEditClick}
+              disabled={!buttonConfig.onEditClick}
+            >
+              <Icon icon={iconEdit} />
+            </Button>
+          );
+          break;
+        case 'delete':
+          button = (
+            <Button
+              key={buttonConfig.type}
+              className={cx(styles.button, styles.last)}
+              onClick={buttonConfig.onDeleteClick}
+              disabled={!buttonConfig.onDeleteClick}
+            >
+              <Icon icon={iconDelete} />
             </Button>
           );
           break;
