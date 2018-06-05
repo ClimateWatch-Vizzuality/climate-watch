@@ -28,7 +28,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
           button = (
             <Button
               key={buttonConfig.type}
-              className={cx(styles.button, styles.first)}
+              className={styles.button}
               onClick={buttonConfig.onInfoClick}
               disabled={!buttonConfig.onInfoClick}
             >
@@ -64,7 +64,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
           button = (
             <Button
               key={buttonConfig.type}
-              className={cx(styles.button, styles.last)}
+              className={styles.button}
               onClick={buttonConfig.onAddToUserClick}
               disabled={!buttonConfig.onAddToUserClick}
             >
@@ -76,7 +76,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
           button = (
             <Button
               key={buttonConfig.type}
-              className={cx(styles.button, styles.last)}
+              className={styles.button}
               onClick={buttonConfig.onEditClick}
               disabled={!buttonConfig.onEditClick}
             >
@@ -88,7 +88,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
           button = (
             <Button
               key={buttonConfig.type}
-              className={cx(styles.button, styles.last)}
+              className={styles.button}
               onClick={buttonConfig.onDeleteClick}
               disabled={!buttonConfig.onDeleteClick}
             >
