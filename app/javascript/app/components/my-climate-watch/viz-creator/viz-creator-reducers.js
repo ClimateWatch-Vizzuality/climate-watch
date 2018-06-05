@@ -230,7 +230,7 @@ export default {
       selected:
         indicatorsFilter && indicatorsFilter.selected === 'all'
           ? mapFilter(payload)
-          : [],
+          : get($indicators, state).selected || [],
       child: get($years, initialState)
     };
 
@@ -261,11 +261,11 @@ export default {
       {
         loading: false,
         loaded: true,
+        data: payload,
         selected:
           yearsFilter && yearsFilter.selected === 'all'
             ? mapFilter(payload)
             : [],
-        data: payload,
         child: get($timeseries, initialState)
       },
       state
