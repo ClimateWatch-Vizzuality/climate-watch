@@ -1,11 +1,10 @@
 import isEmpty from 'lodash/isEmpty';
 import findIndex from 'lodash/findIndex';
 
-export let visCreatorCache = {};
+export let visCreatorCache = {}; // eslint-disable-line import/no-mutable-exports
 
 export function updateCacheItem(item, data) {
   visCreatorCache[`${item}`] = data;
-  if (item === 'years') { updateYearsCache(); }
 }
 
 export function updateCacheItemValue(field) {
@@ -24,18 +23,17 @@ export function updateCacheItemValue(field) {
 
 export function clearCache(arg = null) {
   if (arg) {
-    visCreatorCache[arg] = { ...visCreatorCache[arg], data: [], selected: [] };
+    visCreatorCache[arg] = {
+      ...visCreatorCache[arg],
+      loaded: true,
+      data: [],
+      selected: []
+    };
     if (arg !== 'timeseries') {
       clearCache(visCreatorCache[arg].child);
     }
   } else {
     visCreatorCache = {};
-  }
-}
-
-export function updateYearsCache() {
-  if (!isEmpty(visCreatorCache.years.data)) {
-    visCreatorCache.years = { ...visCreatorCache.years, selected: visCreatorCache.years.data };
   }
 }
 
@@ -48,7 +46,7 @@ export function filterCache(type) {
   const availableData = visCreatorCache[type].data;
   const selectedData = visCreatorCache[type].selected;
   if (isMulti) {
-    if (!isEmpty(availableData)) {
+    if (!isEmpty(availableData) && !isEmpty(selectedData)) {
       if (
         selectedData.forEach(
           element =>
@@ -57,12 +55,16 @@ export function filterCache(type) {
         )
       ) {
         clearCache(type);
+        return true;
       }
     }
   } else if (
     !isEmpty(availableData) &&
+    !isEmpty(selectedData) &&
     findIndex(availableData, item => item.value === selectedData.value) === -1
   ) {
     clearCache(type);
+    return true;
   }
+  return false;
 }
