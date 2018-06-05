@@ -24,10 +24,24 @@ class CompareGhgChart extends PureComponent {
     return (
       <ButtonGroup
         className={styles.colEnd}
-        onInfoClick={this.props.handleInfoClick}
-        shareUrl="/embed/ghg-emissions"
-        analyticsGraphName="Ghg-emissions"
-        reverseDropdown={reverseDropdown}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onInfoClick: this.props.handleInfoClick
+          },
+          {
+            type: 'share',
+            shareUrl: '/embed/ghg-emissions',
+            analyticsGraphName: 'Ghg-emissions',
+            reverseDropdown
+          },
+          {
+            type: 'download'
+          },
+          {
+            type: 'add-to-user'
+          }
+        ]}
       />
     );
   }
@@ -42,10 +56,24 @@ class CompareGhgChart extends PureComponent {
       <ButtonGroup
         key="action1"
         className={styles.colEnd}
-        onInfoClick={handleInfoClick}
-        shareUrl="/embed/compare-ghg-chart"
-        analyticsGraphName="Ghg-emissions"
-        reverseDropdown={reverseDropdown}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onInfoClick: handleInfoClick
+          },
+          {
+            type: 'share',
+            shareUrl: '/embed/compare-ghg-chart',
+            analyticsGraphName: 'Ghg-emissions',
+            reverseDropdown
+          },
+          {
+            type: 'download'
+          },
+          {
+            type: 'add-to-user'
+          }
+        ]}
       />,
       <Button
         key="action2"

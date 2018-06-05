@@ -55,10 +55,24 @@ class CountryGhgEmissions extends PureComponent {
       <ButtonGroup
         key="action1"
         className={styles.btnGroup}
-        onInfoClick={handleInfoClick}
-        shareUrl={`/embed/countries/${iso}/ghg-emissions`}
-        analyticsGraphName="Country/Ghg-emissions"
-        reverseDropdown={!isEmbed}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onInfoClick: handleInfoClick
+          },
+          {
+            type: 'share',
+            shareUrl: `/embed/countries/${iso}/ghg-emissions`,
+            analyticsGraphName: 'Country/Ghg-emissions',
+            reverseDropdown: !isEmbed
+          },
+          {
+            type: 'download'
+          },
+          {
+            type: 'add-to-user'
+          }
+        ]}
       />,
       <Button
         key="action2"

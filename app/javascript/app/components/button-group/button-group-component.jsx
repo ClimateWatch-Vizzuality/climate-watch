@@ -11,16 +11,7 @@ import ShareMenu from 'components/share-menu';
 
 import styles from './button-group-styles.scss';
 
-const ButtonGroup = ({
-  className,
-  onInfoClick,
-  onDownloadClick,
-  onAddToUserClick,
-  disabled,
-  shareUrl,
-  analyticsGraphName,
-  reverseDropdown
-}) => (
+const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
   <div
     className={cx(
       styles.buttonGroup,
@@ -28,46 +19,69 @@ const ButtonGroup = ({
       className
     )}
   >
-    <Button
-      className={cx(styles.button, styles.first)}
-      onClick={onInfoClick}
-      disabled={!onInfoClick}
-    >
-      <Icon icon={iconInfo} />
-    </Button>
-    <ShareMenu
-      className={cx(styles.button, styles.share)}
-      path={shareUrl}
-      inButtonGroup
-      analyticsGraphName={analyticsGraphName}
-      reverse={reverseDropdown}
-    />
-    <Button
-      className={styles.button}
-      onClick={onDownloadClick}
-      disabled={!onDownloadClick}
-    >
-      <Icon icon={iconDownload} />
-    </Button>
-    <Button
-      className={cx(styles.button, styles.last)}
-      onClick={onAddToUserClick}
-      disabled={!onAddToUserClick}
-    >
-      <Icon icon={iconAddToUser} />
-    </Button>
+    {buttonsConfig.map(buttonConfig => {
+      let button = null;
+      switch (buttonConfig.type) {
+        case 'info':
+          button = (
+            <Button
+              key={buttonConfig.type}
+              className={cx(styles.button, styles.first)}
+              onClick={buttonConfig.onInfoClick}
+              disabled={!buttonConfig.onInfoClick}
+            >
+              <Icon icon={iconInfo} />
+            </Button>
+          );
+          break;
+        case 'share':
+          button = (
+            <ShareMenu
+              key={buttonConfig.type}
+              className={cx(styles.button, styles.share)}
+              path={buttonConfig.shareUrl}
+              inButtonGroup
+              analyticsGraphName={buttonConfig.analyticsGraphName}
+              reverse={buttonConfig.reverseDropdown}
+            />
+          );
+          break;
+        case 'download':
+          button = (
+            <Button
+              key={buttonConfig.type}
+              className={styles.button}
+              onClick={buttonConfig.onDownloadClick}
+              disabled={!buttonConfig.onDownloadClick}
+            >
+              <Icon icon={iconDownload} />
+            </Button>
+          );
+          break;
+        case 'add-to-user':
+          button = (
+            <Button
+              key={buttonConfig.type}
+              className={cx(styles.button, styles.last)}
+              onClick={buttonConfig.onAddToUserClick}
+              disabled={!buttonConfig.onAddToUserClick}
+            >
+              <Icon icon={iconAddToUser} />
+            </Button>
+          );
+          break;
+        default:
+          break;
+      }
+      return button;
+    })}
   </div>
 );
 
 ButtonGroup.propTypes = {
   className: PropTypes.string,
-  shareUrl: PropTypes.string,
-  analyticsGraphName: PropTypes.string,
-  onInfoClick: PropTypes.func,
-  onDownloadClick: PropTypes.func,
-  onAddToUserClick: PropTypes.func,
-  disabled: PropTypes.bool,
-  reverseDropdown: PropTypes.bool
+  buttonsConfig: PropTypes.array,
+  disabled: PropTypes.bool
 };
 
 export default ButtonGroup;

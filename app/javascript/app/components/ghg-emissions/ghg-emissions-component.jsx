@@ -41,10 +41,24 @@ class GhgEmissions extends PureComponent {
     const renderButtonGroup = reverseDropdown => (
       <ButtonGroup
         className={styles.colEnd}
-        onInfoClick={handleInfoClick}
-        shareUrl="/embed/ghg-emissions"
-        analyticsGraphName="Ghg-emissions"
-        reverseDropdown={reverseDropdown}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onInfoClick: handleInfoClick
+          },
+          {
+            type: 'share',
+            shareUrl: '/embed/ghg-emissions',
+            analyticsGraphName: 'Ghg-emissions',
+            reverseDropdown
+          },
+          {
+            type: 'download'
+          },
+          {
+            type: 'add-to-user'
+          }
+        ]}
       />
     );
 

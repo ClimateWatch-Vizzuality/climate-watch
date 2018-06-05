@@ -80,9 +80,23 @@ class EmissionPathwayGraph extends PureComponent {
               <TabletLandscape>
                 <ButtonGroup
                   className={styles.btnGroup}
-                  onInfoClick={handleInfoClick}
-                  shareUrl="/embed/pathways"
-                  analyticsGraphName="Pathways"
+                  buttonsConfig={[
+                    {
+                      type: 'info',
+                      onInfoClick: handleInfoClick
+                    },
+                    {
+                      type: 'share',
+                      shareUrl: '/embed/pathways',
+                      analyticsGraphName: 'Pathways'
+                    },
+                    {
+                      type: 'download'
+                    },
+                    {
+                      type: 'add-to-user'
+                    }
+                  ]}
                 />
               </TabletLandscape>
             </div>
@@ -157,10 +171,24 @@ class EmissionPathwayGraph extends PureComponent {
           <TabletPortraitOnly>
             <ButtonGroup
               className={styles.btnGroup}
-              onInfoClick={handleInfoClick}
-              shareUrl="/embed/pathways"
-              analyticsGraphName="Pathways"
-              reverseDropdown
+              buttonsConfig={[
+                {
+                  type: 'info',
+                  onInfoClick: handleInfoClick
+                },
+                {
+                  type: 'share',
+                  shareUrl: '/embed/pathways',
+                  analyticsGraphName: 'Pathways',
+                  reverseDropdown: true
+                },
+                {
+                  type: 'download'
+                },
+                {
+                  type: 'add-to-user'
+                }
+              ]}
             />
           </TabletPortraitOnly>
           <ModalOverview
