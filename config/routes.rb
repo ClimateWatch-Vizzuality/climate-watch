@@ -71,6 +71,10 @@ Rails.application.routes.draw do
           resources :targets, only: [:index]
           resources :sectors, only: [:index]
         end
+        resources :ndc_content, only: [:index] do
+          get :download, on: :collection, defaults: { format: 'csv' }
+          get :meta, on: :collection
+        end
       end
 
       get :login, to: 'auth#login'

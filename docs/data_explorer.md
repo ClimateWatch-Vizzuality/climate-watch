@@ -327,3 +327,53 @@ Link: </api/v1/data/ndc_sdgs/goals>; rel="meta goals", </api/v1/data/ndc_sdgs/ta
 ]
 ```
 
+## NDC content
+
+### Parameters
+- countries[]
+- indicator_ids[]
+- category_ids[]
+- label_ids[]
+- sector_ids[]
+
+### CSV download endpoint
+
+`/api/v1/data/ndc_content/download.csv`
+
+
+File format:
+
+Id | Iso code3 | Country | Indicator | Source | Label | Sector | Value | Categories
+
+
+### JSON API endpoint
+
+#### Data
+
+`/api/v1/data/ndc_content`
+
+```
+{
+   "data":[
+      {
+         "id":1096025,
+         "country":"string",
+         "iso_code3":"ISO code 3",
+         "indicator":"string",
+         "value":"string",
+         "source":"string",
+         "categories":"comma-separated string",
+         "label":"string or null",
+         "sector":"string or null"
+      }
+   ]
+}
+```
+
+Response is paginated. Pagination headers are in place.
+
+```
+Link: <http://localhost:3000/api/v1/data/ndc_content?page=1933>; rel="last", <http://localhost:3000/api/v1/data/ndc_content?page=2>; rel="next"
+Per-Page: 50
+Total: 96650
+```
