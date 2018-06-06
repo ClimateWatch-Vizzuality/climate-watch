@@ -97,7 +97,6 @@ export default [
   {
     path: '/ndcs-explorer',
     component: NDCS,
-    label: 'NDCs',
     headerImage: 'ndc',
     headerColor: '#035388',
     routes: NDCSExplorerRoutes
@@ -106,7 +105,6 @@ export default [
     path: '/ndcs-sdg',
     component: NDCSDG,
     exact: true,
-    label: 'SDG LINKAGES',
     headerImage: 'ndc-sdg'
   },
   {
