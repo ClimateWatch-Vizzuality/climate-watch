@@ -22,9 +22,10 @@ import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 
 // routes
+import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
-import NDCSRoutes from './NDCS-routes';
+import NDCSExplorerRoutes from './NDCSExplorer-routes';
 import aboutRoutes from './about-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
@@ -89,34 +90,17 @@ export default [
     routes: NDCCompareRoutes
   },
   {
-    label: 'NDCs',
     nav: true,
-    routes: [
-      {
-        path: '/ndcs',
-        label: 'NDC Explorer'
-      },
-      {
-        path: '/ndcs/compare/mitigation',
-        label: 'NDC Comparison'
-      },
-      {
-        path: '/ndc-search',
-        label: 'NDC Search'
-      },
-      {
-        path: '/ndcs-sdg',
-        label: 'NDC-SDG LINKAGES'
-      }
-    ]
+    label: 'NDCs',
+    routes: NDCSRoutes
   },
   {
-    path: '/ndcs',
+    path: '/ndcs-explorer',
     component: NDCS,
     label: 'NDCs',
     headerImage: 'ndc',
     headerColor: '#035388',
-    routes: NDCSRoutes
+    routes: NDCSExplorerRoutes
   },
   {
     path: '/ndcs-sdg',
