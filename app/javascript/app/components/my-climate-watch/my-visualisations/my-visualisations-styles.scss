@@ -1,7 +1,7 @@
 @import '~styles/layout.scss';
 
 .visContainer {
-  @include columns(12);
+  @include columns(6);
 }
 
 .visCard {

@@ -27,15 +27,13 @@ $padding: 20px;
   background-color: $white;
 }
 
-.cardDelete {
+.chart {
+  padding: $padding 10px;
+}
+
+.cardActions {
   position: absolute;
   right: 10px;
   bottom: 10px;
-  fill: #8f8fa1;
-  z-index: 3;
-  cursor: pointer;
-}
-
-.chart {
-  padding: $padding 10px;
+  width: 120px;
 }
