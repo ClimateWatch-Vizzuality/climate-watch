@@ -6,7 +6,12 @@ import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
-import { updateIn, mapFilter, getCachedSelectedProperty, buildChildLense } from './viz-creator-utils';
+import {
+  updateIn,
+  mapFilter,
+  getCachedSelectedProperty,
+  buildChildLense
+} from './viz-creator-utils';
 import { filtersSelector } from './viz-creator-selectors';
 
 import {
@@ -163,60 +168,81 @@ export default {
     };
     const filters = filtersSelector(state);
     const scenariosFilter = find(filters, { name: 'scenarios' });
-    if (isEmpty(selected) && scenariosFilter && scenariosFilter.selected === 'all') {
+    if (
+      isEmpty(selected) &&
+      scenariosFilter &&
+      scenariosFilter.selected === 'all'
+    ) {
       scenarios.selected = mapFilter(payload);
     }
     return updateIn($scenarios, scenarios, state);
   },
   [actions.selectScenario]: (state, { payload }) => {
-    const newState = updateIn(
-      $scenarios,
-      { selected: payload, child: get($categories, initialState) },
-      state
-    );
+    const child = { ...get($categories, state), loaded: false, loading: false };
+    const newState = updateIn($scenarios, { selected: payload, child }, state);
     return newState;
   },
 
   // Categories
   [actions.fetchCategories]: state =>
     updateIn($categories, { loading: true }, state),
-  [actions.gotCategories]: (state, { payload }) =>
-    updateIn(
+  [actions.gotCategories]: (state, { payload }) => {
+    const selected = getCachedSelectedProperty(
+      get($categories, state),
+      payload
+    );
+    const child = buildChildLense(
+      $subcategories,
+      selected,
+      state,
+      initialState
+    );
+    return updateIn(
       $categories,
       {
         loading: false,
         loaded: true,
-        data: payload
+        data: payload,
+        selected,
+        child
       },
       state
-    ),
-
-  [actions.selectCategory]: (state, { payload }) =>
-    updateIn(
-      $categories,
-      { selected: payload, child: get($subcategories, initialState) },
-      state
-    ),
+    );
+  },
+  [actions.selectCategory]: (state, { payload }) => {
+    const child = {
+      ...get($subcategories, state),
+      loaded: false,
+      loading: false
+    };
+    return updateIn($categories, { selected: payload, child }, state);
+  },
 
   // Subategories
   [actions.fetchSubCategories]: state =>
     updateIn($subcategories, { loading: true }, state),
-  [actions.gotSubCategories]: (state, { payload }) =>
-    updateIn(
+  [actions.gotSubCategories]: (state, { payload }) => {
+    const selected = getCachedSelectedProperty(
+      get($subcategories, state),
+      payload
+    );
+    const child = buildChildLense($indicators, selected, state, initialState);
+    return updateIn(
       $subcategories,
       {
         loading: false,
         loaded: true,
-        data: payload
+        data: payload,
+        selected,
+        child
       },
       state
-    ),
-  [actions.selectSubcategory]: (state, { payload }) =>
-    updateIn(
-      $subcategories,
-      { selected: payload, child: get($indicators, initialState) },
-      state
-    ),
+    );
+  },
+  [actions.selectSubcategory]: (state, { payload }) => {
+    const child = { ...get($indicators, state), loaded: false, loading: false };
+    return updateIn($subcategories, { selected: payload, child }, state);
+  },
 
   // Indicators
   [actions.fetchIndicators]: state =>
@@ -231,25 +257,28 @@ export default {
   [actions.gotIndicators]: (state, { payload }) => {
     const filters = filtersSelector(state);
     const indicatorsFilter = find(filters, { name: 'indicators' });
+    const selected = getCachedSelectedProperty(
+      get($indicators, state),
+      payload
+    );
+    const child = buildChildLense($years, selected, state, initialState);
     const indicators = {
       loading: false,
       loaded: true,
       data: payload,
-      selected:
-        indicatorsFilter && indicatorsFilter.selected === 'all'
-          ? mapFilter(payload)
-          : get($indicators, state).selected || [],
-      child: get($years, initialState)
+      selected,
+      child
     };
+    if (indicatorsFilter && indicatorsFilter.selected === 'all') {
+      indicators.selected = mapFilter(payload);
+    }
 
     return updateIn($indicators, indicators, state);
   },
-  [actions.selectIndicator]: (state, { payload }) =>
-    updateIn(
-      $indicators,
-      { selected: payload, child: get($years, initialState) },
-      state
-    ),
+  [actions.selectIndicator]: (state, { payload }) => {
+    const child = { ...get($years, state), loaded: false, loading: false };
+    return updateIn($indicators, { selected: payload, child }, state);
+  },
 
   // Years
   [actions.fetchYears]: state =>
@@ -263,28 +292,32 @@ export default {
   [actions.gotYears]: (state, { payload }) => {
     const filters = filtersSelector(state);
     const yearsFilter = find(filters, { name: 'years' });
-
-    return updateIn(
-      $years,
-      {
-        loading: false,
-        loaded: true,
-        data: payload,
-        selected:
-          yearsFilter && yearsFilter.selected === 'all'
-            ? mapFilter(payload)
-            : [],
-        child: get($timeseries, initialState)
-      },
-      state
-    );
+    const selected = getCachedSelectedProperty(get($years, state), payload);
+    // const child = buildChildLense($timeseries, selected, state, initialState);
+    const years = {
+      loading: false,
+      loaded: true,
+      data: payload,
+      selected,
+      child: {
+        ...get($timeseries, initialState),
+        loaded: false,
+        loading: false
+      }
+    };
+    if (isEmpty(selected) && yearsFilter && yearsFilter.selected === 'all') {
+      years.selected = mapFilter(payload);
+    }
+    return updateIn($years, years, state);
   },
-  [actions.selectYear]: (state, { payload }) =>
-    updateIn(
-      $years,
-      { selected: payload, child: get($timeseries, initialState) },
-      state
-    ),
+  [actions.selectYear]: (state, { payload }) => {
+    const child = {
+      ...get($timeseries, initialState),
+      loaded: false,
+      loading: false
+    };
+    return updateIn($years, { selected: payload, child }, state);
+  },
 
   // Timeseries
   [actions.fetchTimeseries]: state =>
