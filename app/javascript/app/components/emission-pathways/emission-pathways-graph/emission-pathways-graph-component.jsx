@@ -83,7 +83,7 @@ class EmissionPathwayGraph extends PureComponent {
                   buttonsConfig={[
                     {
                       type: 'info',
-                      onInfoClick: handleInfoClick
+                      onClick: handleInfoClick
                     },
                     {
                       type: 'share',
@@ -94,7 +94,7 @@ class EmissionPathwayGraph extends PureComponent {
                       type: 'download'
                     },
                     {
-                      type: 'add-to-user'
+                      type: 'addToUser'
                     }
                   ]}
                 />
@@ -174,7 +174,7 @@ class EmissionPathwayGraph extends PureComponent {
               buttonsConfig={[
                 {
                   type: 'info',
-                  onInfoClick: handleInfoClick
+                  onClick: handleInfoClick
                 },
                 {
                   type: 'share',
@@ -186,7 +186,7 @@ class EmissionPathwayGraph extends PureComponent {
                   type: 'download'
                 },
                 {
-                  type: 'add-to-user'
+                  type: 'addToUser'
                 }
               ]}
             />

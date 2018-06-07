@@ -31,7 +31,7 @@ const renderButtonGroup = (clickHandler, reverseDropdown = false) => (
     buttonsConfig={[
       {
         type: 'info',
-        onInfoClick: clickHandler
+        onClick: clickHandler
       },
       {
         type: 'share',
@@ -43,7 +43,7 @@ const renderButtonGroup = (clickHandler, reverseDropdown = false) => (
         type: 'download'
       },
       {
-        type: 'add-to-user'
+        type: 'addToUser'
       }
     ]}
   />

@@ -44,7 +44,7 @@ class GhgEmissions extends PureComponent {
         buttonsConfig={[
           {
             type: 'info',
-            onInfoClick: handleInfoClick
+            onClick: handleInfoClick
           },
           {
             type: 'share',
@@ -56,7 +56,7 @@ class GhgEmissions extends PureComponent {
             type: 'download'
           },
           {
-            type: 'add-to-user'
+            type: 'addToUser'
           }
         ]}
       />

@@ -76,7 +76,7 @@ class NdcSdgLinkagesMap extends PureComponent {
                   buttonsConfig={[
                     {
                       type: 'info',
-                      onInfoClick: this.props.handleInfoClick
+                      onClick: this.props.handleInfoClick
                     },
                     {
                       type: 'share',
@@ -87,7 +87,7 @@ class NdcSdgLinkagesMap extends PureComponent {
                       type: 'download'
                     },
                     {
-                      type: 'add-to-user'
+                      type: 'addToUser'
                     }
                   ]}
                 />

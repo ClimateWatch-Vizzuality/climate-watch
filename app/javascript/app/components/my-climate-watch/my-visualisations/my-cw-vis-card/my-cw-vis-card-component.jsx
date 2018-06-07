@@ -40,11 +40,11 @@ class MyVisCard extends PureComponent {
           buttonsConfig={[
             {
               type: 'edit',
-              onEditClick: this.handleOnClick
+              onClick: this.handleOnClick
             },
             {
               type: 'delete',
-              onDeleteClick: () => deleteVisualisation({ id })
+              onClick: () => deleteVisualisation({ id })
             },
             {
               type: 'share',

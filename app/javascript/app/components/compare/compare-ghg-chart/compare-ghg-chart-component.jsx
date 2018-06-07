@@ -27,7 +27,7 @@ class CompareGhgChart extends PureComponent {
         buttonsConfig={[
           {
             type: 'info',
-            onInfoClick: this.props.handleInfoClick
+            onClick: this.props.handleInfoClick
           },
           {
             type: 'share',
@@ -39,7 +39,7 @@ class CompareGhgChart extends PureComponent {
             type: 'download'
           },
           {
-            type: 'add-to-user'
+            type: 'addToUser'
           }
         ]}
       />
@@ -59,7 +59,7 @@ class CompareGhgChart extends PureComponent {
         buttonsConfig={[
           {
             type: 'info',
-            onInfoClick: handleInfoClick
+            onClick: handleInfoClick
           },
           {
             type: 'share',
@@ -71,7 +71,7 @@ class CompareGhgChart extends PureComponent {
             type: 'download'
           },
           {
-            type: 'add-to-user'
+            type: 'addToUser'
           }
         ]}
       />,

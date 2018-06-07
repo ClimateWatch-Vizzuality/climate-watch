@@ -13,6 +13,14 @@ import ShareMenu from 'components/share-menu';
 
 import styles from './button-group-styles.scss';
 
+const iconsMap = {
+  info: iconInfo,
+  download: iconDownload,
+  addToUser: iconAddToUser,
+  edit: iconEdit,
+  delete: iconDelete
+};
+
 const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
   <div
     className={cx(
@@ -23,81 +31,28 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
   >
     {buttonsConfig.map(buttonConfig => {
       let button = null;
-      switch (buttonConfig.type) {
-        case 'info':
-          button = (
-            <Button
-              key={buttonConfig.type}
-              className={styles.button}
-              onClick={buttonConfig.onInfoClick}
-              disabled={!buttonConfig.onInfoClick}
-            >
-              <Icon icon={iconInfo} />
-            </Button>
-          );
-          break;
-        case 'share':
-          button = (
-            <ShareMenu
-              key={buttonConfig.type}
-              className={cx(styles.button, styles.share)}
-              path={buttonConfig.shareUrl}
-              inButtonGroup
-              analyticsGraphName={buttonConfig.analyticsGraphName}
-              reverse={buttonConfig.reverseDropdown}
-            />
-          );
-          break;
-        case 'download':
-          button = (
-            <Button
-              key={buttonConfig.type}
-              className={styles.button}
-              onClick={buttonConfig.onDownloadClick}
-              disabled={!buttonConfig.onDownloadClick}
-            >
-              <Icon icon={iconDownload} />
-            </Button>
-          );
-          break;
-        case 'add-to-user':
-          button = (
-            <Button
-              key={buttonConfig.type}
-              className={styles.button}
-              onClick={buttonConfig.onAddToUserClick}
-              disabled={!buttonConfig.onAddToUserClick}
-            >
-              <Icon icon={iconAddToUser} />
-            </Button>
-          );
-          break;
-        case 'edit':
-          button = (
-            <Button
-              key={buttonConfig.type}
-              className={styles.button}
-              onClick={buttonConfig.onEditClick}
-              disabled={buttonConfig.disabled || !buttonConfig.onEditClick}
-            >
-              <Icon icon={iconEdit} />
-            </Button>
-          );
-          break;
-        case 'delete':
-          button = (
-            <Button
-              key={buttonConfig.type}
-              className={styles.button}
-              onClick={buttonConfig.onDeleteClick}
-              disabled={buttonConfig.disabled || !buttonConfig.onDeleteClick}
-            >
-              <Icon icon={iconDelete} />
-            </Button>
-          );
-          break;
-        default:
-          break;
+      if (buttonConfig.type === 'share') {
+        button = (
+          <ShareMenu
+            key={buttonConfig.type}
+            className={cx(styles.button, styles.share)}
+            path={buttonConfig.shareUrl}
+            inButtonGroup
+            analyticsGraphName={buttonConfig.analyticsGraphName}
+            reverse={buttonConfig.reverseDropdown}
+          />
+        );
+      } else {
+        button = (
+          <Button
+            key={buttonConfig.type}
+            className={styles.button}
+            onClick={buttonConfig.onClick}
+            disabled={buttonConfig.disabled || !buttonConfig.onClick}
+          >
+            <Icon icon={iconsMap[buttonConfig.type]} />
+          </Button>
+        );
       }
       return button;
     })}
