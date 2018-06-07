@@ -1,5 +1,4 @@
 @import '~styles/layout.scss';
-$padding: 20px;
 
 .cardContainer {
   position: relative;
@@ -16,19 +15,25 @@ $padding: 20px;
   height: 100%;
 }
 
-.cardTitle {
-  padding: $padding;
-  font-size: $font-size;
-  font-weight: $font-weight-bold;
-  line-height: 1.38;
-  color: $theme-color;
-  text-align: left;
+.cardTexts {
+  padding: 20px 20px 69px 20px;
   min-height: 126px;
+  color: $theme-color;
   background-color: $white;
+
+  .cardTitle {
+    font-size: $font-size;
+    font-weight: $font-weight-bold;
+    line-height: 1.38;
+  }
+
+  .cardDescription {
+    margin-top: 10px;
+  }
 }
 
 .chart {
-  padding: $padding 10px;
+  padding: 20px 10px;
 }
 
 .cardActions {

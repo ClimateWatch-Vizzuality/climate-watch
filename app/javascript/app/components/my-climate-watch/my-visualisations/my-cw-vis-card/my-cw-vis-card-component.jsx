@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import Dotdotdot from 'react-dotdotdot';
 import ButtonGroup from 'components/button-group';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import {
@@ -32,7 +33,12 @@ class MyVisCard extends PureComponent {
               <RenderChart chart={chart} config={chartData} height={200} />
             )}
           </div>
-          <h2 className={styles.cardTitle}>{data.title}</h2>
+          <div className={styles.cardTexts}>
+            <h2 className={styles.cardTitle}>{data.title}</h2>
+            <Dotdotdot className={styles.cardDescription} clamp={3}>
+              {data.description}
+            </Dotdotdot>
+          </div>
         </div>
         <ButtonGroup
           key={`action${id}`}
