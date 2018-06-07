@@ -1,7 +1,10 @@
 import isFunction from 'lodash/isFunction';
+import isArray from 'lodash/isArray';
+import findIndex from 'lodash/findIndex';
+import isEmpty from 'lodash/isEmpty';
 import _startCase from 'lodash/startCase';
 import _ from 'lodash-inflection';
-import { update } from 'js-lenses';
+import { update, get } from 'js-lenses';
 import { assign } from 'app/utils';
 
 export const toFetcher = name => `fetch${_.pluralize(_startCase(name))}`;
@@ -23,9 +26,22 @@ export const flatMapVis = (vis = []) =>
 export const updateIn = (l, payload, state) =>
   update(l, s => assign(s, isFunction(payload) ? payload(s) : payload), state);
 
-// CHARTS
-// --
+export function getCachedSelectedProperty(lense, data) {
+  const cachedSelection = lense.selected;
+  console.log('PREVIOUS SELECTION', cachedSelection);
+  console.log(`DATA ${lense.name}`, data);
+  if (cachedSelection) {
+    if (isArray(cachedSelection)) {
+      console.log(cachedSelection.forEach(element => findIndex(data, item => item.id === element.value) !== -1));
+      return cachedSelection.forEach(element => findIndex(data, item => item.id === element.value) !== -1)
+        ? cachedSelection
+        : [];
+    }
+    console.log(findIndex(data, item => item.id === cachedSelection.value) === -1);
+    return findIndex(data, item => item.id === cachedSelection.value) !== -1 ? cachedSelection : {};
+  }
+}
 
-export const pieChart2Data = () => {
-  // console.log(scn, idc); //eslint-disable-line
-};
+export function buildChildLense(childLense, selected, state, initialState) {
+  return { ...get(childLense, isEmpty(selected) ? initialState : state), loaded: false, loading: false };
+}

@@ -217,6 +217,7 @@ const filterSelection = (name, lense, state, multi = false) => {
 
 function isFilterMulti(multi, dataStructure) {
   if (!_isEmpty(dataStructure) && !_isEmpty(dataStructure.selected)) {
+    // console.log(dataStructure)
     return multi ? [...dataStructure.selected] : { ...dataStructure.selected };
   }
   return multi ? [] : {};
@@ -225,7 +226,7 @@ function isFilterMulti(multi, dataStructure) {
 export const getFormatFilters = name =>
   createSelector(
     [dataSelector, filtersSelector, editingSelector],
-    (state, spec, editing) => {
+    (state, spec) => {
       if (!spec || !spec.length > 0) return {};
 
       const filter = { ...(_find(spec, { name }) || {}) };
@@ -237,9 +238,7 @@ export const getFormatFilters = name =>
       filter.loading = lense.loading;
       filter.disabled = lense.disabled;
       filter.child = lense.child.name;
-      filter.selected = editing
-        ? isFilterMulti(filter.multi, visCreatorCache[name])
-        : isFilterMulti(filter.multi, lense);
+      filter.selected = isFilterMulti(filter.multi, lense);
 
       updateCacheItem(name, filter);
       if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) {

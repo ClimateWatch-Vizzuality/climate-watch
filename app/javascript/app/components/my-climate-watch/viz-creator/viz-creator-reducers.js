@@ -3,9 +3,10 @@ import { assign } from 'app/utils';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
-import { updateIn, mapFilter } from './viz-creator-utils';
+import { updateIn, mapFilter, getCachedSelectedProperty, buildChildLense } from './viz-creator-utils';
 import { filtersSelector } from './viz-creator-selectors';
 
 import {
@@ -120,27 +121,30 @@ export default {
       },
       state
     ),
-  [actions.selectLocation]: (state, { payload }) =>
-    updateIn(
-      $locations,
-      { selected: payload, child: get($models, initialState) },
-      state
-    ),
+  [actions.selectLocation]: (state, { payload }) => {
+    const child = { ...get($models, state), loaded: false, loading: false };
+    return updateIn($locations, { selected: payload, child }, state);
+  },
 
   // Models
   [actions.fetchModels]: state => updateIn($models, { loading: true }, state),
-  [actions.gotModels]: (state, { payload }) =>
-    updateIn(
+  [actions.gotModels]: (state, { payload }) => {
+    const selected = getCachedSelectedProperty(get($models, state), payload);
+    const child = buildChildLense($scenarios, selected, state, initialState);
+    return updateIn(
       $models,
       {
         loading: false,
         loaded: true,
-        data: payload
+        data: payload,
+        selected,
+        child
       },
       state
-    ),
+    );
+  },
   [actions.selectModel]: (state, { payload }) => {
-    const child = get($scenarios, initialState);
+    const child = { ...get($scenarios, state), loaded: false, loading: false };
     return updateIn($models, { selected: payload, child }, state);
   },
 
@@ -148,14 +152,18 @@ export default {
   [actions.fetchScenarios]: state =>
     updateIn($scenarios, { loading: true }, state),
   [actions.gotScenarios]: (state, { payload }) => {
+    const selected = getCachedSelectedProperty(get($scenarios, state), payload);
+    const child = buildChildLense($categories, selected, state, initialState);
     const scenarios = {
       loading: false,
       loaded: true,
-      data: payload
+      data: payload,
+      selected,
+      child
     };
     const filters = filtersSelector(state);
     const scenariosFilter = find(filters, { name: 'scenarios' });
-    if (scenariosFilter && scenariosFilter.selected === 'all') {
+    if (isEmpty(selected) && scenariosFilter && scenariosFilter.selected === 'all') {
       scenarios.selected = mapFilter(payload);
     }
     return updateIn($scenarios, scenarios, state);

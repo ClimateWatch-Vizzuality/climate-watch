@@ -109,36 +109,35 @@ class VizCreator extends Component {
       }
       if (!isEmpty(visualisations.selected)) {
         if (!locations.loading && !locations.loaded) {
-          clearCache();
+          // clearCache();
           fetchLocations(visualisations.selected);
         }
         if (!isEmpty(locations.selected)) {
-          if (filterCache('models')) {
-            selectModel([]);
-          }
-          if (
-            !isEmpty(visCreatorCache.models.selected) &&
-            !models.loading &&
-            !models.loaded
-          ) {
-            selectModel(visCreatorCache.models.selected);
-          }
-          if (isEmpty(models.selected) && !models.loading && !models.loaded) {
+          // if (filterCache('models')) {
+          //   selectModel([]);
+          // }
+          // if (
+          //   !isEmpty(visCreatorCache.models.selected) &&
+          //   !models.loading &&
+          //   !models.loaded
+          // ) {
+          //   selectModel(visCreatorCache.models.selected);
+          // }
+          if (!models.loading && !models.loaded) {
             fetchModels(locations.selected);
           }
           if (!isEmpty(models.selected)) {
-            if (filterCache('scenarios')) {
-              selectScenario([]);
-            }
+            // if (filterCache('scenarios')) {
+            //   selectScenario([]);
+            // }
+            // if (
+            //   !isEmpty(visCreatorCache.scenarios.selected) &&
+            //   !scenarios.loading &&
+            //   !scenarios.loaded
+            // ) {
+            //   selectScenario(visCreatorCache.scenarios.selected);
+            // }
             if (
-              !isEmpty(visCreatorCache.scenarios.selected) &&
-              !scenarios.loading &&
-              !scenarios.loaded
-            ) {
-              selectScenario(visCreatorCache.scenarios.selected);
-            }
-            if (
-              isEmpty(scenarios.selected) &&
               !scenarios.loading &&
               !scenarios.loaded
             ) {
@@ -146,18 +145,17 @@ class VizCreator extends Component {
             }
 
             if (!isEmpty(scenarios.selected)) {
-              if (filterCache('categories')) {
-                selectCategory([]);
-              }
+              // if (filterCache('categories')) {
+              //   selectCategory([]);
+              // }
+              // if (
+              //   !isEmpty(visCreatorCache.categories.selected) &&
+              //   !categories.loading &&
+              //   !categories.loaded
+              // ) {
+              //   selectCategory(visCreatorCache.categories.selected);
+              // }
               if (
-                !isEmpty(visCreatorCache.categories.selected) &&
-                !categories.loading &&
-                !categories.loaded
-              ) {
-                selectCategory(visCreatorCache.categories.selected);
-              }
-              if (
-                isEmpty(categories.selected) &&
                 !categories.loading &&
                 !categories.loaded
               ) {
@@ -258,7 +256,7 @@ class VizCreator extends Component {
   }
 
   handleFilterSelect = filter => {
-    updateCacheItemValue(filter);
+    // updateCacheItemValue(filter);
     const actionName = toSelector(filter.type);
     if (this.props[actionName]) {
       const filterParsed = filter.multi
