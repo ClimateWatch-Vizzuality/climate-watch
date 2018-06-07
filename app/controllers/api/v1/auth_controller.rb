@@ -8,6 +8,7 @@ module Api
         token = params[:token]
         cookies['user_token'] = token
         redirect_to_api_gateway_login(api_v1_login_url, params[:network]) and return if token.blank? || !ensure_logged_in
+        redirect_to('/my-climate-watch')
       end
       # rubocop:enable LineLength
 

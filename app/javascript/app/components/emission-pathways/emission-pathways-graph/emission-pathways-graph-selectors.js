@@ -10,27 +10,15 @@ import pick from 'lodash/pick';
 import {
   getYColumnValue,
   getThemeConfig,
-  getTooltipConfig
+  getTooltipConfig,
+  setChartColors
 } from 'utils/graphs';
 
-import { ESP_BLACKLIST } from 'data/constants';
-
-// constants needed for data parsing
-const COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759'
-];
+import {
+  ESP_BLACKLIST,
+  CHART_COLORS,
+  CHART_COLORS_EXTENDED
+} from 'data/constants';
 
 const AXES_CONFIG = {
   xBottom: {
@@ -457,7 +445,12 @@ export const getChartConfig = createSelector(
       };
     });
     const yColumnsChecked = uniqBy(yColumns, 'value');
-    const theme = getThemeConfig(yColumnsChecked, COLORS);
+    const chartColors = setChartColors(
+      yColumnsChecked,
+      CHART_COLORS,
+      CHART_COLORS_EXTENDED
+    );
+    const theme = getThemeConfig(yColumnsChecked, chartColors);
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     const axes = indicator

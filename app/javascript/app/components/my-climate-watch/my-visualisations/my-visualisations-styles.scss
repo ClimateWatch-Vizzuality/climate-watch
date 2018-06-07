@@ -1,0 +1,51 @@
+@import '~styles/layout.scss';
+
+.visContainer {
+  @include columns();
+
+  @media #{$tablet-portrait} {
+    @include columns(6);
+  }
+
+  @media #{$desktop} {
+    @include columns(4);
+  }
+}
+
+.visCard {
+  @include xy-gutters($gutter-position: ('top','bottom'), $gutters: $gutter-padding);
+}
+
+.placeholder {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $theme-color;
+}
+
+.loading {
+  min-height: 300px;
+}
+
+.createBtn {
+  margin-top: 20px;
+  width: 250px;
+}
+
+.modal {
+  width: calc(100vw - #{$gutter-padding});
+  max-width: $max-width;
+  max-height: inherit;
+  height: auto;
+  padding: 0;
+  margin: $navbar-height auto;
+}
+
+.modalContent {
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+  overscroll-behavior: auto; /* stylelint-disable-line property-no-unknown */
+}

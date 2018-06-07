@@ -1,0 +1,21 @@
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: absolute;
+  left: $gutter-padding;
+}
+
+.btn {
+  border: solid 1px rgba(202, 204, 208, 0.85);
+  border-radius: 100%;
+  background-color: white;
+  padding: 0;
+  width: 45px;
+}
+
+.icon {
+  $icon-size: 24px;
+
+  width: $icon-size;
+  height: $icon-size;
+}

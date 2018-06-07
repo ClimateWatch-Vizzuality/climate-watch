@@ -38,8 +38,7 @@ export const getCountrySocioeconomics = createSelector(
 export const getLocationNames = createSelector(
   [getLocations, getCountriesData],
   (locations, countries) => {
-    if (!locations || !locations.length || !countries || !countries.length)
-      return null;
+    if (!locations || !locations.length || !countries || !countries.length) { return null; }
     return locations.map(location => {
       const country = countries.find(c => location === c.iso_code3);
       return (country && country.wri_standard_name) || null;

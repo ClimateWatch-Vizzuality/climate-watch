@@ -18,6 +18,7 @@ import EmissionPathways from 'pages/emission-pathways';
 import GHGEmissions from 'pages/ghg-emissions';
 import NDCSearch from 'pages/ndc-search';
 import error from 'pages/error';
+import MyClimateWatch from 'pages/my-climate-watch';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 
@@ -25,6 +26,7 @@ import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSRoutes from './NDCS-routes';
+import MyCwRoutes from './my-cw-routes';
 import aboutRoutes from './about-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
@@ -35,6 +37,17 @@ import emissionPathwaysModelSections from './emission-pathways-model-sections';
 import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
+
+// flags
+const FEATURE_MY_CLIMATEWATCH = process.env.FEATURE_MY_CLIMATEWATCH === 'true';
+
+const mycw = FEATURE_MY_CLIMATEWATCH
+  ? {
+    path: '/my-climate-watch',
+    component: MyClimateWatch,
+    routes: MyCwRoutes
+  }
+  : {};
 
 export default [
   {
@@ -174,6 +187,7 @@ export default [
     nav: false,
     label: 'STORIES'
   },
+  mycw,
   {
     path: '/about',
     component: About,

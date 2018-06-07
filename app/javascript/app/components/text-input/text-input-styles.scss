@@ -1,0 +1,11 @@
+.input {
+  font-size: 1rem;
+
+  &:focus {
+    background-color: transparent;
+  }
+
+  &Failed {
+    background-color: transparent;
+  }
+}

@@ -1,4 +1,4 @@
-@import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 $close-position: 35px;
 
@@ -30,16 +30,16 @@ $close-position: 35px;
 
 .header {
   background-color: $light-gray;
-  padding: $modal-padding 40px;
+  padding: $modal-padding $gutter-padding;
   padding-bottom: 0;
   min-height: 95px;
   border-bottom: solid 1px $border-color;
 }
 
-.content {
+.modalContent {
   flex: 1;
   overflow: scroll;
-  padding: $modal-padding 40px;
+  padding: $modal-padding $gutter-padding;
   word-break: break-word;
   overscroll-behavior: none; /* stylelint-disable-line property-no-unknown */
 }
@@ -49,14 +49,18 @@ $close-position: 35px;
   font-weight: $font-weight;
   color: $theme-color;
   margin-top: 5px;
-  margin-bottom: 30px;
-  padding-right: $gutter-padding + $close-position;
+  margin-bottom: $gutter-padding;
+  padding-right: $gutter-padding;
 }
 
 .closeBtn {
   position: absolute;
-  right: $close-position;
-  top: $close-position;
+  right: $gutter-padding;
+  top: $gutter-padding;
   border: solid 1px rgba(202, 204, 208, 0.85);
   z-index: 20;
+}
+
+:global .ReactModal__Body--open {
+  overflow: hidden;
 }
