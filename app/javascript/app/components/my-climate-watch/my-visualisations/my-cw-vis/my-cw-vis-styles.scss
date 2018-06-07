@@ -15,12 +15,16 @@
 
 .visActions {
   float: none;
-  width: 120px;
-  margin-bottom: 10px;
+  width: 180px;
+  margin-bottom: 25px;
 }
 
 .visDescription {
   color: $theme-color;
   line-height: $line-height-medium;
   margin-top: 15px;
+}
+
+.vizChartContainer {
+  height: auto;
 }

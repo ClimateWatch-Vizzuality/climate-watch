@@ -14,9 +14,8 @@ class MyVis extends PureComponent {
     this.props.onClick();
   };
   render() {
-    const { data, deleteVisualisation } = this.props;
+    const { data, deleteVisualisation, isEmbed } = this.props;
     const datasets = data.json_body;
-    // Object with datasets key to reuse the selector keeping the same format that the reducer
     const chart = datasets ? getVisualisationType({ datasets }) : null;
     const chartData = datasets ? chartDataSelector({ datasets }) : null;
     const id = data.id;
@@ -29,22 +28,29 @@ class MyVis extends PureComponent {
           buttonsConfig={[
             {
               type: 'edit',
-              onEditClick: this.handleOnClick
+              onEditClick: this.handleOnClick,
+              disabled: isEmbed
             },
             {
               type: 'delete',
-              onDeleteClick: () => deleteVisualisation({ id })
+              onDeleteClick: () => deleteVisualisation({ id }),
+              disabled: isEmbed
             },
             {
               type: 'share',
-              shareUrl: '',
-              analyticsGraphName: '',
-              reverseDropdown: true
+              shareUrl: `/embed/my-visualizations/${id}`,
+              analyticsGraphName: 'MyCW-visualizations',
+              reverseDropdown: false
             }
           ]}
         />
         {datasets && (
-          <RenderChart chart={chart} config={chartData} height={360} />
+          <RenderChart
+            className={styles.vizChartContainer}
+            chart={chart}
+            config={chartData}
+            height={360}
+          />
         )}
         <div className={styles.visDescription}>{data.description}</div>
       </div>
@@ -53,12 +59,13 @@ class MyVis extends PureComponent {
 }
 
 MyVis.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   deleteVisualisation: PropTypes.func.isRequired,
+  isEmbed: PropTypes.bool.isRequired,
   data: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    json_body: PropTypes.object.isRequired
+    id: PropTypes.number,
+    title: PropTypes.string,
+    json_body: PropTypes.object
   }).isRequired
 };
 

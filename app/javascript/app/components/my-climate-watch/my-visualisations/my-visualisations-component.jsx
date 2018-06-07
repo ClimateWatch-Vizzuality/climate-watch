@@ -3,7 +3,7 @@ import Modal, { ModalHeader } from 'components/modal';
 import PropTypes from 'prop-types';
 import VizCreator from 'components/my-climate-watch/viz-creator';
 import ActionCard from 'components/my-climate-watch/my-cw-placeholder-card';
-import Vis from 'components/my-climate-watch/my-visualisations/my-cw-vis';
+import MyVis from 'components/my-climate-watch/my-visualisations/my-cw-vis';
 import {
   chartDataSelector,
   getVisualisationType
@@ -54,7 +54,7 @@ const MyVisualisations = props => {
       <ul className={styles.visContainer}>
         {data.map(vis => (
           <li key={vis.id} className={styles.visCard}>
-            <Vis data={vis} onClick={() => onClick(vis)} />
+            <MyVis data={vis} onClick={() => onClick(vis)} isEmbed={false} />
           </li>
         ))}
         <li key="action-card" className={styles.visCard}>
