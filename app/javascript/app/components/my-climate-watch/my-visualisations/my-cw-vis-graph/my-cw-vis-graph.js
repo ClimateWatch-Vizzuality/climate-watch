@@ -9,21 +9,23 @@ import * as actions from './my-cw-vis-graph-actions';
 
 import MyVisGraphComponent from './my-cw-vis-graph-component';
 
-const mapStateToProps = (state, { location }) => {
+const mapStateToProps = (state, { location, match }) => {
+  const id = match.params.id;
   const { data } = state.vizGraph;
   const isEmbed = location.pathname.includes('/embed');
   return {
     location,
     isEmbed,
+    id,
     data
   };
 };
 
 class MyVisGraphContainer extends PureComponent {
   componentDidMount() {
-    const { location, fetchVisualisation } = this.props;
+    const { location, id, fetchVisualisation } = this.props;
     if (location) {
-      fetchVisualisation(1);
+      fetchVisualisation(id);
     }
   }
 
@@ -36,6 +38,7 @@ class MyVisGraphContainer extends PureComponent {
 
 MyVisGraphContainer.propTypes = {
   location: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
   fetchVisualisation: PropTypes.func.isRequired
 };
 
