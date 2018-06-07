@@ -1,0 +1,7 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  border-bottom: solid 1px $theme-border;
+  min-height: 450px;
+  padding-bottom: 50px;
+}
