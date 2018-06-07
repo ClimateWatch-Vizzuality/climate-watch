@@ -10,7 +10,10 @@ import {
   updateIn,
   mapFilter,
   getCachedSelectedProperty,
-  buildChildLense
+  buildChildLense,
+  filterLocationsByMultipleModels,
+  filterModelsByLocations,
+  filterLocationsByModel
 } from './viz-creator-utils';
 import { filtersSelector } from './viz-creator-selectors';
 
@@ -116,41 +119,66 @@ export default {
   // Locations
   [actions.fetchLocations]: state =>
     updateIn($locations, { loading: true }, state),
-  [actions.gotLocations]: (state, { payload }) =>
-    updateIn(
-      $locations,
-      {
-        loading: false,
-        loaded: true,
-        data: payload
-      },
-      state
-    ),
+  [actions.gotLocations]: (state, { payload }) => updateIn(
+    $locations,
+    {
+      loading: false,
+      loaded: true,
+      data: payload
+    },
+    state
+  ),
   [actions.selectLocation]: (state, { payload }) => {
-    const child = { ...get($models, state), loaded: false, loading: false };
-    return updateIn($locations, { selected: payload, child }, state);
+    const child = buildChildLense($models, payload, state, initialState);
+    return updateIn(
+      $locations,
+      { selected: payload, child, loaded: !isEmpty(payload) },
+      state
+    );
   },
 
   // Models
   [actions.fetchModels]: state => updateIn($models, { loading: true }, state),
   [actions.gotModels]: (state, { payload }) => {
-    const selected = getCachedSelectedProperty(get($models, state), payload);
+    const locations = get($locations, state);
+    const filteredModels = filterModelsByLocations(payload, locations.selected);
+    const filteredLocations = filterLocationsByMultipleModels(
+      locations.data,
+      filteredModels,
+      true
+    );
+    const selected = getCachedSelectedProperty(
+      get($models, state),
+      filteredModels
+    );
     const child = buildChildLense($scenarios, selected, state, initialState);
+    const newState = updateIn($locations, { data: filteredLocations }, state);
     return updateIn(
       $models,
       {
         loading: false,
         loaded: true,
-        data: payload,
+        data: filteredModels,
         selected,
         child
       },
-      state
+      newState
     );
   },
   [actions.selectModel]: (state, { payload }) => {
+    const modelsData = get($models, state).data;
+    const locations = get($locations, state);
+    const getCoverage = (data, selected) =>
+      data.filter(m => m.id === selected.value);
+    const modelSelectedCoverage = getCoverage(modelsData, payload)[0]
+      .geographic_coverage;
+    const filteredLocations = filterLocationsByModel(
+      locations.data,
+      modelSelectedCoverage
+    );
+    const newState = updateIn($locations, { data: filteredLocations }, state);
     const child = { ...get($scenarios, state), loaded: false, loading: false };
-    return updateIn($models, { selected: payload, child }, state);
+    return updateIn($models, { selected: payload, child }, newState);
   },
 
   // Scenarios
@@ -293,7 +321,6 @@ export default {
     const filters = filtersSelector(state);
     const yearsFilter = find(filters, { name: 'years' });
     const selected = getCachedSelectedProperty(get($years, state), payload);
-    // const child = buildChildLense($timeseries, selected, state, initialState);
     const years = {
       loading: false,
       loaded: true,
