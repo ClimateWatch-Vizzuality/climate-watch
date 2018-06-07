@@ -12,10 +12,8 @@ import MyVisGraphComponent from './my-cw-vis-graph-component';
 const mapStateToProps = (state, { location, match }) => {
   const id = match.params.id;
   const { data } = state.vizGraph;
-  const isEmbed = location.pathname.includes('/embed');
   return {
     location,
-    isEmbed,
     id,
     data
   };

@@ -1,27 +1,40 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import MyVis from 'components/my-climate-watch/my-visualisations/my-cw-vis';
+import cx from 'classnames';
 
-import layout from 'styles/layout.scss';
+import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
+import {
+  chartDataSelector,
+  getVisualisationType
+} from 'components/my-climate-watch/viz-creator/viz-creator-selectors';
+
 import styles from './my-cw-vis-graph-styles.scss';
 
 class MyVisGraph extends PureComponent {
   render() {
-    const { data, isEmbed } = this.props;
-
+    const { data } = this.props;
+    const datasets = data.json_body;
+    const chart = datasets ? getVisualisationType({ datasets }) : null;
+    const chartData = datasets ? chartDataSelector({ datasets }) : null;
     return (
-      <div className={styles.wrapper}>
-        <div className={layout.content}>
-          <MyVis data={data} isEmbed={isEmbed} />
-        </div>
+      <div className={cx(styles.visContainer)}>
+        <h3 className={styles.visTitle}>{data.title}</h3>
+        {datasets && (
+          <RenderChart
+            className={styles.vizChartContainer}
+            chart={chart}
+            config={chartData}
+            height={360}
+          />
+        )}
+        <div className={styles.visDescription}>{data.description}</div>
       </div>
     );
   }
 }
 
 MyVisGraph.propTypes = {
-  data: PropTypes.object,
-  isEmbed: PropTypes.bool
+  data: PropTypes.object
 };
 
 export default MyVisGraph;
