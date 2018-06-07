@@ -6,7 +6,6 @@ import _isEmpty from 'lodash/isEmpty';
 import _uniqBy from 'lodash/uniqBy';
 
 import { flatMapVis, mapFilter } from './viz-creator-utils';
-import { updateCacheItem, visCreatorCache } from './viz-creator-cache';
 
 import * as lenses from './viz-creator-lenses';
 import {
@@ -217,7 +216,6 @@ const filterSelection = (name, lense, state, multi = false) => {
 
 function isFilterMulti(multi, dataStructure) {
   if (!_isEmpty(dataStructure) && !_isEmpty(dataStructure.selected)) {
-    // console.log(dataStructure)
     return multi ? [...dataStructure.selected] : { ...dataStructure.selected };
   }
   return multi ? [] : {};
@@ -239,11 +237,6 @@ export const getFormatFilters = name =>
       filter.disabled = lense.disabled;
       filter.child = lense.child.name;
       filter.selected = isFilterMulti(filter.multi, lense);
-
-      updateCacheItem(name, filter);
-      if (visCreatorCache[name] && !_isEmpty(visCreatorCache[name].selected)) {
-        return visCreatorCache[name];
-      }
       return filter;
     }
   );
