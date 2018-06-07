@@ -22,6 +22,8 @@ import ndcBgScreenshot from 'assets/screenshots/ndc-explore-bg-screenshot';
 import ndcSmScreenshot from 'assets/screenshots/ndc-explore-sm-screenshot@2x.png';
 import ndcSdgBgScreenshot from 'assets/screenshots/ndc-sdg-bg-screenshot';
 import ndcSdgSmScreenshot from 'assets/screenshots/ndc-sdg-sm-screenshot@2x.png';
+import ghgBgScreenshot from 'assets/screenshots/ghg-bg-screenshot@2x.png';
+import pathwaysBgScreenshot from 'assets/screenshots/pathways-bg-screenshot@2x.png';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
@@ -106,7 +108,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="View Country Profiles"
-              description="A snapshot of countries' climate action progress, risks and vulnerability. Navigate through historical and future emissions, climate vulnerabilities and readiness, identify sustainable development linkages and make comparisons between countries."
+              description="Climate Watch country profiles present a snapshot of countries' historical emissions, national climate commitments, climate vulnerabilities and readiness, and sustainable development linkages, also allowing for comparison of this information across countries."
             />
             <GeoLocationProvider />
             <span
@@ -205,6 +207,72 @@ class Home extends PureComponent {
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/ndcs-sdg'}>
                 Explore NDC-SDG Linkages
+              </Button>
+            </div>
+          </div>
+        </Section>
+        <Section
+          className={cx(styles.section, styles.extraPadding, styles.ghg)}
+        >
+          <div className={styles.column}>
+            <Intro
+              theme={introDark}
+              title="Explore Historical Greenhouse Gas Emissions"
+              description="Climate Watch inclides a comprehensive inventory for all parties to the UNFCC, including datasets from independent research organizations such as WRI’s CAIT dataset, PIK’s PRIMAP-hist dataset, and country self reported inventories in the UNFCCC."
+            />
+            <div className={styles.doubleFold}>
+              <Button color="yellow" link="/ghg-emissions">
+                Explore Historical GHG Emissions
+              </Button>
+            </div>
+          </div>
+          <MobileOnly>
+            {matches => (
+              <div className={matches ? styles.ndcImageMobile : styles.column}>
+                <div className={styles.imgContainer}>
+                  <img
+                    className={matches ? '' : styles.imageRight}
+                    src={ghgBgScreenshot}
+                    alt="GHG Emissions section screenshot"
+                  />
+                </div>
+              </div>
+            )}
+          </MobileOnly>
+        </Section>
+        <Section
+          className={cx(styles.section, styles.extraPadding, styles.pathways)}
+        >
+          <MobileOnly>
+            {matches => (
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <div className={matches ? styles.imgLayout : ''}>
+                  <div className={styles.imgContainer}>
+                    <img
+                      className={matches ? '' : styles.imageRight}
+                      src={pathwaysBgScreenshot}
+                      alt="Pathways section screenshot"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </MobileOnly>
+          <div className={styles.column}>
+            <Intro
+              theme={introDark}
+              title="Chart and Visualize Decarbonization Pathways"
+              description="Explore 30 potential future pathways of modeling teams around the world to see where countries could be heading and what action they can take to reduce emissions, increase ambition, and reach development goals."
+            />
+            <div className={styles.doubleFold}>
+              <Button color="yellow" link={'/pathways'}>
+                Explore Pathways
               </Button>
             </div>
           </div>

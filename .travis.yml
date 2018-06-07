@@ -14,7 +14,7 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - psql -c 'create database "climate-watch_test"' -U postgres
-  - RAILS_ENV=test bundle exec rake db:migrate
+  - bundle exec rake db:structure:load RAILS_ENV=test
 script:
   - bundle exec rspec
   # Preferably you will run test-reporter on branch update events. But

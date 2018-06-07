@@ -26,7 +26,7 @@ const Button = props => {
     [styles.plain]: color === 'plain',
     [styles.red]: color === 'red',
     [styles.noBox]: noBox,
-    [styles.disabled]: !onClick && !link && !href,
+    [styles.disabled]: disabled || (!onClick && !link && !href),
     [styles.noSpace]: noSpace
   });
   if (href) {

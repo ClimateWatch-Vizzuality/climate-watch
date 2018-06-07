@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Button from 'components/button';
-import Icon from 'components/icon';
-import deleteIcon from 'assets/icons/delete.svg';
-
+import Dotdotdot from 'react-dotdotdot';
+import ButtonGroup from 'components/button-group';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import {
   chartDataSelector,
@@ -23,29 +21,44 @@ class MyVisCard extends PureComponent {
     // Object with datasets key to reuse the selector keeping the same format that the reducer
     const chart = datasets ? getVisualisationType({ datasets }) : null;
     const chartData = datasets
-      ? chartDataSelector({ datasets, small: true })
+      ? chartDataSelector({ datasets, small: false })
       : null;
     const id = data.id;
 
     return (
       <div className={styles.cardContainer}>
-        <Button
-          onClick={this.handleOnClick}
-          className={cx(styles.card, className)}
-        >
+        <div className={cx(styles.card, className)}>
           <div className={styles.chart}>
             {datasets && (
               <RenderChart chart={chart} config={chartData} height={200} />
             )}
           </div>
-          <h2 className={styles.cardTitle}>{data.title}</h2>
-        </Button>
-        <button
-          className={styles.cardDelete}
-          onClick={() => deleteVisualisation({ id })}
-        >
-          <Icon icon={deleteIcon} className={styles.icon} />
-        </button>
+          <div className={styles.cardTexts}>
+            <h2 className={styles.cardTitle}>{data.title}</h2>
+            <Dotdotdot className={styles.cardDescription} clamp={3}>
+              {data.description}
+            </Dotdotdot>
+          </div>
+        </div>
+        <ButtonGroup
+          key={`action${id}`}
+          className={styles.cardActions}
+          buttonsConfig={[
+            {
+              type: 'edit',
+              onClick: this.handleOnClick
+            },
+            {
+              type: 'delete',
+              onClick: () => deleteVisualisation({ id })
+            },
+            {
+              type: 'share',
+              shareUrl: `/embed/my-visualizations/${id}`,
+              analyticsGraphName: 'MyCW-visualizations'
+            }
+          ]}
+        />
       </div>
     );
   }

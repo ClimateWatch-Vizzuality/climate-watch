@@ -13,6 +13,14 @@
   &:hover {
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
   }
+
+  & > :first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  & > :last-child {
+    border-radius: 0 4px 4px 0;
+  }
 }
 
 .disabled {
@@ -41,12 +49,4 @@
   &.share {
     height: 45px;
   }
-}
-
-.first {
-  border-radius: 4px 0 0 4px;
-}
-
-.last {
-  border-radius: 0 4px 4px 0;
 }

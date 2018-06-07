@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Api::V1::HistoricalEmissionsController, type: :controller do
-
   context do
     let(:location) { FactoryBot.create(:location) }
     let(:data_source) { FactoryBot.create(:historical_emissions_data_source) }

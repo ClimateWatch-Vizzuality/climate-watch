@@ -10,7 +10,7 @@ module Api
         end
 
         def show
-          render json: @visualization, serializer: Api::V1::MyCw::UserStorySerializer
+          render json: @visualization, serializer: Api::V1::MyCw::VisualizationSerializer
         end
 
         def update

@@ -20,7 +20,7 @@ const NDC = ({ anchorLinks, query, route }) => (
       <div className={layout.content}>
         <div className="grid-column-item">
           <div className={styles.headerLayout}>
-            <Intro title="NDC Content" />
+            <Intro title="NDC Explorer" />
             <AutocompleteSearch />
           </div>
         </div>

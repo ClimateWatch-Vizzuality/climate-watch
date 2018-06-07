@@ -1,0 +1,25 @@
+@import '~styles/layout.scss';
+
+.visContainer {
+  @include row(12);
+  padding-top: 28px;
+}
+
+.visTitle {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  line-height: 1.38;
+  color: $theme-color;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.visDescription {
+  color: $theme-color;
+  line-height: $line-height-medium;
+  margin-top: 15px;
+}
+
+.vizChartContainer {
+  height: auto;
+}
