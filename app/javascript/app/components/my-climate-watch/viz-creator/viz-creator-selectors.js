@@ -4,6 +4,7 @@ import _ from 'lodash-inflection';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
 
+import { LENSES_SELECTOR_INFO } from 'data/constants';
 import { flatMapVis, mapFilter } from './viz-creator-utils';
 
 import * as lenses from './viz-creator-lenses';
@@ -174,11 +175,15 @@ export const chartDataSelector = createSelector(
   }
 );
 
-function isFilterMulti(multi, dataStructure) {
+function isMultiFilter(multi, dataStructure) {
   if (!_isEmpty(dataStructure) && !_isEmpty(dataStructure.selected)) {
     return multi ? [...dataStructure.selected] : { ...dataStructure.selected };
   }
   return multi ? [] : {};
+}
+
+function getInfoText(name) {
+  return LENSES_SELECTOR_INFO[name] || null;
 }
 
 export const getFormatFilters = name =>
@@ -196,7 +201,8 @@ export const getFormatFilters = name =>
       filter.loading = lense.loading;
       filter.disabled = lense.disabled;
       filter.child = lense.child.name;
-      filter.selected = isFilterMulti(filter.multi, lense);
+      filter.selected = isMultiFilter(filter.multi, lense);
+      filter.info = getInfoText(name);
       return filter;
     }
   );
