@@ -78,7 +78,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
               key={buttonConfig.type}
               className={styles.button}
               onClick={buttonConfig.onEditClick}
-              disabled={!buttonConfig.onEditClick}
+              disabled={buttonConfig.disabled || !buttonConfig.onEditClick}
             >
               <Icon icon={iconEdit} />
             </Button>
@@ -90,7 +90,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
               key={buttonConfig.type}
               className={styles.button}
               onClick={buttonConfig.onDeleteClick}
-              disabled={!buttonConfig.onDeleteClick}
+              disabled={buttonConfig.disabled || !buttonConfig.onDeleteClick}
             >
               <Icon icon={iconDelete} />
             </Button>
