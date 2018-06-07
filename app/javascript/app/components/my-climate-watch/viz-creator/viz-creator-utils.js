@@ -28,17 +28,12 @@ export const updateIn = (l, payload, state) =>
 
 export function getCachedSelectedProperty(lense, data) {
   const cachedSelection = lense.selected;
-  console.log('PREVIOUS SELECTION', cachedSelection);
-  console.log(`DATA ${lense.name}`, data);
+  const val = lense.name === 'years' ? 'value' : 'id';
   if (cachedSelection) {
     if (isArray(cachedSelection)) {
-      console.log(cachedSelection.forEach(element => findIndex(data, item => item.id === element.value) !== -1));
-      return cachedSelection.forEach(element => findIndex(data, item => item.id === element.value) !== -1)
-        ? cachedSelection
-        : [];
+      return findIndex(data, item => item[val] === cachedSelection[0].value) !== -1 ? cachedSelection : [];
     }
-    console.log(findIndex(data, item => item.id === cachedSelection.value) === -1);
-    return findIndex(data, item => item.id === cachedSelection.value) !== -1 ? cachedSelection : {};
+    return findIndex(data, item => item[val] === cachedSelection.value) !== -1 ? cachedSelection : {};
   }
 }
 
