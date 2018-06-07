@@ -96,7 +96,6 @@ class VizCreator extends Component {
       }
       if (!isEmpty(visualisations.selected)) {
         if (!locations.loading && !locations.loaded) {
-          // clearCache();
           fetchLocations(visualisations.selected);
         }
         if (!isEmpty(locations.selected)) {
