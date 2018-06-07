@@ -1,10 +1,10 @@
 @import '~styles/layout.scss';
 
 .visContainer {
-  @include columns(6);
+  @include columns(12);
 
-  @media #{$mobile-only} {
-    @include columns(12);
+  @media #{$tablet-portrait} {
+    @include columns(6);
   }
 }
 
