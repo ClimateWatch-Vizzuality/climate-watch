@@ -2,6 +2,10 @@
 
 .visContainer {
   @include columns(6);
+
+  @media #{$mobile-only} {
+    @include columns(12);
+  }
 }
 
 .visCard {
