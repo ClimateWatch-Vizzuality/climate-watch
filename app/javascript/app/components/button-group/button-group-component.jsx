@@ -6,21 +6,22 @@ import cx from 'classnames';
 import iconInfo from 'assets/icons/info.svg';
 import iconDownload from 'assets/icons/download.svg';
 import iconAddToUser from 'assets/icons/add-to-user.svg';
+import iconEdit from 'assets/icons/edit.svg';
+import iconDelete from 'assets/icons/delete.svg';
 import PropTypes from 'prop-types';
 import ShareMenu from 'components/share-menu';
 
 import styles from './button-group-styles.scss';
 
-const ButtonGroup = ({
-  className,
-  onInfoClick,
-  onDownloadClick,
-  onAddToUserClick,
-  disabled,
-  shareUrl,
-  analyticsGraphName,
-  reverseDropdown
-}) => (
+const iconsMap = {
+  info: iconInfo,
+  download: iconDownload,
+  addToUser: iconAddToUser,
+  edit: iconEdit,
+  delete: iconDelete
+};
+
+const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
   <div
     className={cx(
       styles.buttonGroup,
@@ -28,46 +29,40 @@ const ButtonGroup = ({
       className
     )}
   >
-    <Button
-      className={cx(styles.button, styles.first)}
-      onClick={onInfoClick}
-      disabled={!onInfoClick}
-    >
-      <Icon icon={iconInfo} />
-    </Button>
-    <ShareMenu
-      className={cx(styles.button, styles.share)}
-      path={shareUrl}
-      inButtonGroup
-      analyticsGraphName={analyticsGraphName}
-      reverse={reverseDropdown}
-    />
-    <Button
-      className={styles.button}
-      onClick={onDownloadClick}
-      disabled={!onDownloadClick}
-    >
-      <Icon icon={iconDownload} />
-    </Button>
-    <Button
-      className={cx(styles.button, styles.last)}
-      onClick={onAddToUserClick}
-      disabled={!onAddToUserClick}
-    >
-      <Icon icon={iconAddToUser} />
-    </Button>
+    {buttonsConfig.map(buttonConfig => {
+      let button = null;
+      if (buttonConfig.type === 'share') {
+        button = (
+          <ShareMenu
+            key={buttonConfig.type}
+            className={cx(styles.button, styles.share)}
+            path={buttonConfig.shareUrl}
+            inButtonGroup
+            analyticsGraphName={buttonConfig.analyticsGraphName}
+            reverse={buttonConfig.reverseDropdown}
+          />
+        );
+      } else {
+        button = (
+          <Button
+            key={buttonConfig.type}
+            className={styles.button}
+            onClick={buttonConfig.onClick}
+            disabled={buttonConfig.disabled || !buttonConfig.onClick}
+          >
+            <Icon icon={iconsMap[buttonConfig.type]} />
+          </Button>
+        );
+      }
+      return button;
+    })}
   </div>
 );
 
 ButtonGroup.propTypes = {
   className: PropTypes.string,
-  shareUrl: PropTypes.string,
-  analyticsGraphName: PropTypes.string,
-  onInfoClick: PropTypes.func,
-  onDownloadClick: PropTypes.func,
-  onAddToUserClick: PropTypes.func,
-  disabled: PropTypes.bool,
-  reverseDropdown: PropTypes.bool
+  buttonsConfig: PropTypes.array,
+  disabled: PropTypes.bool
 };
 
 export default ButtonGroup;
