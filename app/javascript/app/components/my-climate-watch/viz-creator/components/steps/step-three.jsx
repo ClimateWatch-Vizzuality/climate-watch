@@ -42,6 +42,9 @@ const Step3 = props => {
     return { options: optionsSorted, ...labels };
   };
 
+  const selectorClearable = (type, selection) =>
+    type !== 'locations' || _isEmpty(selection);
+
   const { spec, handleFilterSelect, hasData } = props;
 
   return (
@@ -93,7 +96,7 @@ const Step3 = props => {
                             ...e,
                             type: f.name
                           })}
-                        hideResetButton
+                        hideResetButton={selectorClearable(f.name, f.selected)}
                       />
                     )}
                     <ReactTooltip />
