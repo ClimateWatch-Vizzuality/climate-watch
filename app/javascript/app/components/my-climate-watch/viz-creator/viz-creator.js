@@ -164,13 +164,16 @@ class VizCreator extends Component {
   handleFilterSelect = filter => {
     const actionName = toSelector(filter.type);
     if (this.props[actionName]) {
-      const filterParsed = filter.multi
-        ? filter.values
-        : {
+      if (filter.multi) {
+        this.props[actionName](filter.values)
+      } else if (filter.value) {
+        this.props[actionName]({
           value: filter.value,
           label: filter.label
-        };
-      this.props[actionName](filterParsed);
+        })
+      } else {
+        this.props[actionName](null)
+      }
     }
   };
 

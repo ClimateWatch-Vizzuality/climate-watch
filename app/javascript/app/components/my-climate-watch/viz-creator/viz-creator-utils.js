@@ -44,24 +44,47 @@ export function getCachedSelectedProperty(lense, data) {
 }
 
 export function buildChildLense(childLense, selected, state, initialState) {
+  // sanitizes the selection to avoid an empty object going down the line
+  let selection;
+  if (isArray(selected)) {
+    selection = selected
+  } else if (selected) {
+    selection = selected.value
+  } else { selection = null }
+  
   return {
-    ...get(childLense, isEmpty(selected) ? initialState : state),
+    ...get(childLense, isEmpty(selection) ? initialState : state),
     loaded: false,
     loading: false
   };
 }
 
 function isEqual(model, location) {
-  return model === location
+  return model === location;
 }
 
 function isIncluded(model, location) {
-  return model.includes(location)
+  return model.includes(location);
 }
 
-export function filterLocationsByModel(locations, modelsCoverage, cb = isEqual) {
+export function getCoverage(data, selected) {
+  if (isEmpty(selected)) {
+    return [];
+  }
+  return data.filter(m => m.id === selected.value)[0].geographic_coverage;
+}
+
+export function filterLocationsByModel(
+  locations,
+  modelsCoverage,
+  cb = isEqual
+) {
+  if (!modelsCoverage || isEmpty(modelsCoverage)) return locations;
   const locationsArray = locations.filter(location =>
-    modelsCoverage.reduce((acc, model) => acc || cb(model, location.name), false)
+    modelsCoverage.reduce(
+      (acc, model) => acc || cb(model, location.name),
+      false
+    )
   );
   return uniqBy(locationsArray, 'id');
 }
@@ -71,7 +94,7 @@ export const filterLocationsByMultipleModels = (locations, models) => {
   if (!models || isEmpty(models)) return locations;
 
   const modelsCoverage = models.map(m => m.geographic_coverage);
-  return filterLocationsByModel(locations, modelsCoverage, isIncluded)
+  return filterLocationsByModel(locations, modelsCoverage, isIncluded);
 };
 
 export const filterModelsByLocations = (modelsData, locationSelected) => {
