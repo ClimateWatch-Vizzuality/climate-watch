@@ -41,7 +41,6 @@ export function getCachedSelectedProperty(lense, data) {
       ? cachedSelection
       : {};
   }
-  return [];
 }
 
 export function buildChildLense(childLense, selected, state, initialState) {
@@ -52,9 +51,17 @@ export function buildChildLense(childLense, selected, state, initialState) {
   };
 }
 
-export function filterLocationsByModel(locations, modelsCoverage) {
+function isEqual(model, location) {
+  return model === location
+}
+
+function isIncluded(model, location) {
+  return model.includes(location)
+}
+
+export function filterLocationsByModel(locations, modelsCoverage, cb = isEqual) {
   const locationsArray = locations.filter(location =>
-    modelsCoverage.reduce((acc, model) => acc || model === location.name, false)
+    modelsCoverage.reduce((acc, model) => acc || cb(model, location.name), false)
   );
   return uniqBy(locationsArray, 'id');
 }
@@ -64,13 +71,7 @@ export const filterLocationsByMultipleModels = (locations, models) => {
   if (!models || isEmpty(models)) return locations;
 
   const modelsCoverage = models.map(m => m.geographic_coverage);
-  const locationsArray = locations.filter(location =>
-    modelsCoverage.reduce(
-      (acc, model) => acc || model.includes(location.name),
-      false
-    )
-  );
-  return uniqBy(locationsArray, 'id');
+  return filterLocationsByModel(locations, modelsCoverage, isIncluded)
 };
 
 export const filterModelsByLocations = (modelsData, locationSelected) => {
