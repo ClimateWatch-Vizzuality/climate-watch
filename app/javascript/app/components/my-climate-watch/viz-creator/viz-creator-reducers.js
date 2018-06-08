@@ -13,7 +13,8 @@ import {
   buildChildLense,
   filterLocationsByMultipleModels,
   filterModelsByLocations,
-  filterLocationsByModel
+  filterLocationsByModel,
+  getCoverage
 } from './viz-creator-utils';
 import { filtersSelector } from './viz-creator-selectors';
 
@@ -119,15 +120,16 @@ export default {
   // Locations
   [actions.fetchLocations]: state =>
     updateIn($locations, { loading: true }, state),
-  [actions.gotLocations]: (state, { payload }) => updateIn(
-    $locations,
-    {
-      loading: false,
-      loaded: true,
-      data: payload
-    },
-    state
-  ),
+  [actions.gotLocations]: (state, { payload }) =>
+    updateIn(
+      $locations,
+      {
+        loading: false,
+        loaded: true,
+        data: payload
+      },
+      state
+    ),
   [actions.selectLocation]: (state, { payload }) => {
     const child = buildChildLense($models, payload, state, initialState);
     return updateIn(
@@ -168,10 +170,7 @@ export default {
   [actions.selectModel]: (state, { payload }) => {
     const modelsData = get($models, state).data;
     const locations = get($locations, state);
-    const getCoverage = (data, selected) =>
-      data.filter(m => m.id === selected.value);
-    const modelSelectedCoverage = getCoverage(modelsData, payload)[0]
-      .geographic_coverage;
+    const modelSelectedCoverage = getCoverage(modelsData, payload);
     const filteredLocations = filterLocationsByModel(
       locations.data,
       modelSelectedCoverage
