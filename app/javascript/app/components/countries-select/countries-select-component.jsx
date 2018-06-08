@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import cx from 'classnames';
 
+import Button from 'components/button';
 import Search from 'components/search';
 import ResultsList from 'components/results-list';
 import Map from 'components/map/map-component';
@@ -30,14 +31,20 @@ class CountriesSelect extends PureComponent {
     return (
       <div className={cx(styles.wrapper, className)}>
         <div className={cx(layout.content, styles.content)}>
-          <Search
-            placeholder="Search a country"
-            value={query}
-            onChange={countrySelectFilter}
-            className={styles.search}
-            theme={searchCountriesTheme}
-            autofocus={opened || autofocus}
-          />
+          <div className="grid-layout-element">
+            <div className={styles.searchAndCompare}>
+              <Search
+                placeholder="Search a country"
+                value={query}
+                onChange={countrySelectFilter}
+                theme={searchCountriesTheme}
+                autofocus={opened || autofocus}
+              />
+              <Button color="plain" link="/countries/compare">
+                Compare
+              </Button>
+            </div>
+          </div>
           <div className="grid-colum-item">
             <div className={styles.columns}>
               <ResultsList
