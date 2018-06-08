@@ -36,11 +36,10 @@ export function getCachedSelectedProperty(lense, data) {
       -1
         ? cachedSelection
         : [];
-    } else {
-      return findIndex(data, item => item[val] === cachedSelection.value) !== -1
-        ? cachedSelection
-        : {};
     }
+    return findIndex(data, item => item[val] === cachedSelection.value) !== -1
+      ? cachedSelection
+      : {};
   }
 }
 
@@ -48,11 +47,13 @@ export function buildChildLense(childLense, selected, state, initialState) {
   // sanitizes the selection to avoid an empty object going down the line
   let selection;
   if (isArray(selected)) {
-    selection = !isEmpty(selected)
-  } else if (selected) {
-    selection = true
-  } else { selection = false }
-  
+    selection = !isEmpty(selected);
+  } else if (selected && !isEmpty(selected)) {
+    selection = true;
+  } else {
+    selection = false;
+  }
+
   return {
     ...get(childLense, selection === false ? initialState : state),
     loaded: false,
