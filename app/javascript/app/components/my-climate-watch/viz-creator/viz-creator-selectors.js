@@ -3,8 +3,8 @@ import { get } from 'js-lenses';
 import _ from 'lodash-inflection';
 import _find from 'lodash/find';
 import _isEmpty from 'lodash/isEmpty';
-import _uniqBy from 'lodash/uniqBy';
 
+import { LENSES_SELECTOR_INFO } from 'data/constants';
 import { flatMapVis, mapFilter } from './viz-creator-utils';
 
 import * as lenses from './viz-creator-lenses';
@@ -36,6 +36,7 @@ export const yearsSelector = state => get(lenses.$years, state);
 export const timeseriesSelector = state => get(lenses.$timeseries, state);
 export const titleSelector = state => state.title;
 export const placeholderSelector = state => state.placeholder;
+export const editingSelector = state => state.creatorIsEditing;
 
 export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
@@ -174,67 +175,37 @@ export const chartDataSelector = createSelector(
   }
 );
 
-const filterLocationsByModel = (locations, models, multi) => {
-  if (!locations || !locations.length) return null;
-  if (!models || !multi) return locations;
-
-  const modelsLocations = models.map(m => m.geographic_coverage);
-  const locationsArray = locations.filter(location =>
-    modelsLocations.reduce(
-      (acc, model) => acc || model.includes(location.name),
-      false
-    )
-  );
-  return _uniqBy(locationsArray, 'id');
-};
-
-const filterModelsByLocations = (models, locations) => {
-  if (!models || !models.length) return null;
-  if (!locations) return models;
-  const locationsSelected = [...locations].map(l => l.label);
-  return models.filter(model =>
-    locationsSelected.reduce(
-      (acc, location) => acc && model.geographic_coverage.includes(location),
-      true
-    )
-  );
-};
-
-const filterSelection = (name, lense, state, multi = false) => {
-  const hasChild = lense.child && lense.child.data.length > 0;
-  const hasData = lense.data.length > 0;
-  if (name === 'locations' && hasChild) {
-    const models = filterModelsByLocations(lense.child.data, lense.selected);
-    return mapFilter(filterLocationsByModel(lense.data, models, multi));
-  } else if (name === 'models' && hasData) {
-    const location = locationsSelector(state);
-    return mapFilter(filterModelsByLocations(lense.data, location.selected));
+function isMultiFilter(multi, dataStructure) {
+  if (!_isEmpty(dataStructure) && !_isEmpty(dataStructure.selected)) {
+    return multi ? [...dataStructure.selected] : { ...dataStructure.selected };
   }
-  return mapFilter(lense.data);
-};
+  return multi ? [] : {};
+}
+
+function getInfoText(name) {
+  return LENSES_SELECTOR_INFO[name] || null;
+}
 
 export const getFormatFilters = name =>
-  createSelector([dataSelector, filtersSelector], (state, spec) => {
-    if (!spec || !spec.length > 0) return {};
+  createSelector(
+    [dataSelector, filtersSelector, editingSelector],
+    (state, spec) => {
+      if (!spec || !spec.length > 0) return {};
 
-    const filter = { ...(_find(spec, { name }) || {}) };
-    const lense = get(lenses[`$${name}`], state) || {};
-    filter.data = filterSelection(name, lense, state, filter.multi);
-    filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
-    filter.label = _.titleize(name);
-    filter.loading = lense.loading;
-    filter.disabled = lense.disabled;
-
-    if (lense.selected) {
-      filter.selected = filter.multi
-        ? [...lense.selected]
-        : { ...lense.selected };
-    } else {
-      filter.selected = filter.multi ? [] : {};
+      const filter = { ...(_find(spec, { name }) || {}) };
+      const lense = get(lenses[`$${name}`], state) || {};
+      filter.data = mapFilter(lense.data);
+      filter.placeholder = `Select ${_.singularize(_.titleize(name))}`;
+      filter.label = _.titleize(name);
+      filter.loaded = lense.loaded;
+      filter.loading = lense.loading;
+      filter.disabled = lense.disabled;
+      filter.child = lense.child.name;
+      filter.selected = isMultiFilter(filter.multi, lense);
+      filter.info = getInfoText(name);
+      return filter;
     }
-
-    return filter;
-  });
+  );
 
 export const getPlaceholder = createSelector(
   [
