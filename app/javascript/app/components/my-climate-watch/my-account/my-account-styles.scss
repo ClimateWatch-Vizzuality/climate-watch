@@ -1,0 +1,37 @@
+@import '~styles/layout.scss';
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: $gutter-padding;
+}
+
+.input {
+  margin-bottom: $gutter-padding;
+}
+
+.personalInfo,
+.organizationalInfo {
+  @include columns(12);
+
+  @media #{$tablet-landscape} {
+    @include columns((6, 6));
+  }
+
+  @media #{$desktop} {
+    @include columns((4, 4));
+  }
+}
+
+.updateButton {
+  @include columns(6);
+
+  @media #{$tablet-landscape} {
+    @include columns(3);
+  }
+
+  @media #{$desktop} {
+    @include columns(2);
+  }
+}
