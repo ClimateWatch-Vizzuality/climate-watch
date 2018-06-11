@@ -233,7 +233,15 @@ class ChartStackedArea extends PureComponent {
       stepped
     } = this.props;
     if (!dataWithTotal.length) return null;
-    const tickValues = getCustomTicks(config.columns, dataWithTotal);
+    const tickColumns = {
+      x: config.columns.x,
+      y: config.columns.y.concat({ value: 'y' })
+    };
+    const tickValues = getCustomTicks(
+      tickColumns,
+      dataWithTotal.concat(points),
+      5
+    );
     return (
       <ResponsiveContainer height={height}>
         <ComposedChart
@@ -262,6 +270,7 @@ class ChartStackedArea extends PureComponent {
             padding={{ top: 0, bottom: 0 }}
             tickLine={false}
             tick={<CustomYAxisTick customstrokeWidth="0" unit="t" />}
+            ticks={tickValues.ticks}
           />
           <CartesianGrid vertical={false} />
           {tickValues.min < 0 && (
