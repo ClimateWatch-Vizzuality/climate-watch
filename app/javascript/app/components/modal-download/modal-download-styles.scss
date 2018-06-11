@@ -1,0 +1,28 @@
+@import '~styles/layout.scss';
+
+.text {
+  font-size: $font-size;
+  line-height: $line-height-modal;
+  color: $theme-color;
+  margin-bottom: 5px;
+
+  &Highlight {
+    font-weight: $font-weight-bold;
+  }
+}
+
+.empty {
+  opacity: 0.7;
+}
+
+.marginBottom {
+  margin-bottom: 30px;
+}
+
+.link {
+  font-size: $font-size;
+  line-height: $line-height-medium;
+  height: 1.62;
+  color: $theme-color;
+  border-bottom: 1px solid $theme-secondary;
+}
