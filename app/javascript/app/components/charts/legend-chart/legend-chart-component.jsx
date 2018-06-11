@@ -29,42 +29,56 @@ class LegendChart extends PureComponent {
     const hasColumns = config && config.columns && config.columns.y.length;
 
     return (
-      <ul className={cx(styles.tags, className)}>
-        {hasColumns &&
-          config.columns.y.map(column => (
-            <Tag
-              className={styles.tag}
-              key={`${column.value}`}
-              data={{
-                id: column.value,
-                url: column.url || null,
-                title: column.legendTooltip || null
-              }}
-              label={column.label}
-              color={config.theme[column.value].stroke}
-              tooltipId="legend-tooltip"
-              onRemove={handleRemove}
-              canRemove={
-                hideRemoveOptions ? false : config.columns.y.length > 1
-              }
-            />
-          ))}
-        {hasColumns && <ReactTooltip id="legend-tooltip" />}
-        {shouldShowMultiselect && (
-          <MultiSelect
-            parentClassName={styles.tagSelector}
-            values={dataSelected || []}
-            options={dataOptions || []}
-            onMultiValueChange={handleAdd}
-            hideResetButton
-            closeOnSelect
-            dropdownDirection={-1}
-            hideSelected
-            icon={plusIcon}
-            mirrorX={mirrorX}
+      <div className={styles.legendChart}>
+        <div>
+          <ul className={cx(styles.tags, className)}>
+            {hasColumns &&
+              config.columns.y.map(column => (
+                <Tag
+                  className={styles.tag}
+                  key={`${column.value}`}
+                  data={{
+                    id: column.value,
+                    url: column.url || null,
+                    title: column.legendTooltip || null
+                  }}
+                  label={column.label}
+                  color={config.theme[column.value].stroke}
+                  tooltipId="legend-tooltip"
+                  onRemove={handleRemove}
+                  canRemove={
+                    hideRemoveOptions ? false : config.columns.y.length > 1
+                  }
+                />
+              ))}
+            {hasColumns && <ReactTooltip id="legend-tooltip" />}
+            {shouldShowMultiselect && (
+              <MultiSelect
+                parentClassName={styles.tagSelector}
+                values={dataSelected || []}
+                options={dataOptions || []}
+                onMultiValueChange={handleAdd}
+                hideResetButton
+                closeOnSelect
+                dropdownDirection={-1}
+                hideSelected
+                icon={plusIcon}
+                mirrorX={mirrorX}
+              />
+            )}
+          </ul>
+          <div className={styles.tagDescription}>
+            Click on each scenarios to see the assumptions behind it.
+          </div>
+        </div>
+        <div className={styles.legendLogo}>
+          <img
+            src={
+              'http://www.pnwr.com/images/pacific-northwest-realty-group-logo.png'
+            }
           />
-        )}
-      </ul>
+        </div>
+      </div>
     );
   }
 }
