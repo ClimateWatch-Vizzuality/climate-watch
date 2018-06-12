@@ -23,5 +23,20 @@ export default {
     loaded: true,
     logged: false,
     error: true
-  })
+  }),
+  [actions.updateUserName]: (state, { payload }) => {
+    const user = state.user.user_id;
+    user.name = payload;
+    return { ...state, ...user };
+  },
+  [actions.updateUserOrganization]: (state, { payload }) => {
+    const user = state.user.user_id;
+    user.organization = payload;
+    return { ...state, ...user };
+  },
+  [actions.updateUserAreaOfWork]: (state, { payload }) => {
+    const user = state.user.user_id;
+    user.areaOfWork = payload;
+    return { ...state, ...user };
+  }
 };
