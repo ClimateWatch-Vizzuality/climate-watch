@@ -1,9 +1,10 @@
 @import '~styles/layout.scss';
 
-$margin-top-container: 10px;
+$margin-container: 10px;
 
 .legendChart {
   overflow: auto;
+  margin-bottom: $margin-container;
 
   @media #{$tablet-landscape} {
     display: flex;
@@ -15,7 +16,7 @@ $margin-top-container: 10px;
 .tags {
   display: flex;
   overflow: scroll;
-  margin-top: $margin-top-container;
+  margin-top: $margin-container;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
@@ -40,7 +41,7 @@ $margin-top-container: 10px;
 
 .legendLogo {
   width: 120px;
-  margin: $margin-top-container 0;
+  margin-top: $margin-container;
 
   img {
     width: 100%;
