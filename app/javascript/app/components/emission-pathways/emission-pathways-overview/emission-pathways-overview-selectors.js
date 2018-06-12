@@ -79,7 +79,7 @@ export const selectOverviewData = createSelector(
   [sanitizeData, getCategory],
   (data, category) => {
     const overviewFields = {
-      Models: ['sectoral_coverage', 'time_horizon', 'license', 'url'],
+      Models: ['logo', 'sectoral_coverage', 'time_horizon', 'license', 'url'],
       Scenarios: ['model', 'category', 'year', 'url'],
       Indicators: []
     };
