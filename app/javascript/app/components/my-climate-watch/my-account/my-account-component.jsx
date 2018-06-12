@@ -12,7 +12,7 @@ class MyAccount extends Component {
     this.state = {
       name: '',
       organization: '',
-      workArea: ''
+      areaOfWork: ''
     };
   }
 
@@ -53,20 +53,17 @@ class MyAccount extends Component {
           <TextInput
             className={styles.input}
             theme={theme}
-            placeholder={user.user_id.work_area || 'Add an area of work'}
+            placeholder={user.user_id.areaOfWork || 'Add an area of work'}
             label={'Area of work'}
             inputType={'text'}
-            onChange={value => this.setState({ workArea: value })}
+            onChange={value => this.setState({ areaOfWork: value })}
           />
         </div>
         <div className={styles.updateButton}>
           <Button
             color={'yellow'}
             onClick={() => {
-              updateUser(id, {
-                name: this.state.name,
-                organization: this.state.organization
-              });
+              updateUser(id, this.state);
             }}
           >
             <span>Update profile</span>

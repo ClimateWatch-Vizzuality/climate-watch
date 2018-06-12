@@ -1156,7 +1156,8 @@ CREATE TABLE users (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     name character varying,
-    organization character varying
+    organization character varying,
+    "areaOfWork" character varying
 );
 
 
@@ -2789,6 +2790,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180208091437'),
 ('20180208091529'),
 ('20180601080231'),
-('20180611080520');
+('20180611080520'),
+('20180612074749');
 
 
