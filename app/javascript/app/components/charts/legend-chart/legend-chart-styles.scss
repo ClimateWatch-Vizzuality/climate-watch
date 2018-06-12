@@ -4,7 +4,6 @@ $margin-top-container: 10px;
 
 .legendChart {
   overflow: auto;
-  margin-top: -$margin-top-container;
 
   @media #{$tablet-landscape} {
     display: flex;
@@ -16,7 +15,7 @@ $margin-top-container: 10px;
 .tags {
   display: flex;
   overflow: scroll;
-  padding-top: $margin-top-container * 2;
+  margin-top: $margin-top-container;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
@@ -40,12 +39,16 @@ $margin-top-container: 10px;
 }
 
 .legendLogo {
-  width: 200px;
-  margin: ($margin-top-container * 2) 0;
+  width: 120px;
+  margin: $margin-top-container 0;
 
   img {
     width: 100%;
     height: auto;
+  }
+
+  @media #{$tablet-landscape} {
+    width: 200px;
   }
 }
 
