@@ -74,7 +74,7 @@ class LegendChart extends PureComponent {
         </div>
         {logo && (
           <div className={styles.legendLogo}>
-            <img src={logo} />
+            <img src={`https:${logo}`} />
           </div>
         )}
       </div>
