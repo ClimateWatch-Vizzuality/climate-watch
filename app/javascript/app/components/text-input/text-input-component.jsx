@@ -30,7 +30,7 @@ class InputComponent extends Component {
     if (onChange) {
       this.props.onChange(this.state.value);
     }
-  }, 100);
+  }, 0);
 
   render() {
     const {
