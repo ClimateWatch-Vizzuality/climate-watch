@@ -105,7 +105,8 @@ export const getModelsOptions = createSelector(
         modelOptions.push({
           label: m.full_name,
           value: m.id,
-          scenarios: m.scenario_ids
+          scenarios: m.scenario_ids,
+          logo: m.logo
         });
       }
     });

@@ -52,6 +52,7 @@ class EmissionPathwayGraph extends PureComponent {
       handleSelectorChange,
       handleInfoClick,
       modalData,
+      model,
       handleModelChange
     } = this.props;
     const needsTimeSeries =
@@ -167,6 +168,7 @@ class EmissionPathwayGraph extends PureComponent {
             forceFixedFormatDecimals={3}
             margin={{ top: 50 }}
             espGraph
+            logo={(model && model.logo) || null}
           />
           <TabletPortraitOnly>
             <ButtonGroup
@@ -210,6 +212,7 @@ EmissionPathwayGraph.propTypes = {
   data: PropTypes.array,
   domain: PropTypes.object,
   modalData: PropTypes.array,
+  model: PropTypes.object,
   config: PropTypes.object,
   loading: PropTypes.bool,
   error: PropTypes.bool,

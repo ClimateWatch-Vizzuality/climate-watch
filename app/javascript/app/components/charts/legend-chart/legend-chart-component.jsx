@@ -18,6 +18,7 @@ class LegendChart extends PureComponent {
       config,
       dataOptions,
       dataSelected,
+      logo,
       handleRemove,
       hideRemoveOptions,
       handleAdd,
@@ -71,13 +72,11 @@ class LegendChart extends PureComponent {
             Click on each scenarios to see the assumptions behind it.
           </div>
         </div>
-        <div className={styles.legendLogo}>
-          <img
-            src={
-              'http://www.pnwr.com/images/pacific-northwest-realty-group-logo.png'
-            }
-          />
-        </div>
+        {logo && (
+          <div className={styles.legendLogo}>
+            <img src={logo} />
+          </div>
+        )}
       </div>
     );
   }
@@ -89,6 +88,7 @@ LegendChart.propTypes = {
   handleAdd: PropTypes.func,
   dataOptions: PropTypes.array,
   dataSelected: PropTypes.array,
+  logo: PropTypes.string,
   hideRemoveOptions: PropTypes.bool,
   className: PropTypes.string
 };
