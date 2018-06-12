@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import _map from 'lodash/map';
 import _isUndefined from 'lodash/isUndefined';
 import _isEmpty from 'lodash/isEmpty';
@@ -8,6 +9,8 @@ import cx from 'classnames';
 
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
+import Icon from 'components/icon';
+import infoIcon from 'assets/icons/info.svg';
 import styles from './steps-styles';
 
 const Step3 = props => {
@@ -39,6 +42,9 @@ const Step3 = props => {
     return { options: optionsSorted, ...labels };
   };
 
+  const selectorClearable = (type, selection) =>
+    type !== 'locations' || _isEmpty(selection);
+
   const { spec, handleFilterSelect, hasData } = props;
 
   return (
@@ -63,6 +69,11 @@ const Step3 = props => {
                         selectProps(f, 'value').hidden
                     })}
                   >
+                    {f.info && (
+                      <div data-tip={f.info} className={styles.infoContainer}>
+                        <Icon icon={infoIcon} className={styles.infoIcon} />
+                      </div>
+                    )}
                     {f.multi ? (
                       <MultiSelect
                         className={styles.dropDowns}
@@ -85,9 +96,10 @@ const Step3 = props => {
                             ...e,
                             type: f.name
                           })}
-                        hideResetButton
+                        hideResetButton={selectorClearable(f.name, f.selected)}
                       />
                     )}
+                    <ReactTooltip />
                   </li>
                 );
               })}

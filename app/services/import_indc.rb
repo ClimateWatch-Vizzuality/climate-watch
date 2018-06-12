@@ -29,6 +29,7 @@ class ImportIndc
     import_values_cait
     import_sectors
     import_values_wb
+    reject_map_indicators_without_values_or_labels
     import_submissions
   end
 
@@ -314,6 +315,24 @@ class ImportIndc
   def import_submissions
     @submissions.each do |sub|
       Indc::Submission.create!(submission_attributes(sub))
+    end
+  end
+
+  def reject_map_indicators_without_values_or_labels
+    map_indicators = Indc::Category.
+      joins(:category_type).
+      where('indc_category_types.name' => 'map').
+      includes(:indicators).map(&:indicators).flatten
+    map_indicators.each do |indicator|
+      if indicator.values.empty?
+        Rails.logger.debug "Rejecting indicator without values: #{indicator.slug}"
+        indicator.destroy
+        next
+      end
+      if indicator.labels.empty?
+        Rails.logger.debug "Rejecting indicator without labels: #{indicator.slug}"
+        indicator.destroy
+      end
     end
   end
 end
