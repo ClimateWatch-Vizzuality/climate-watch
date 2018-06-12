@@ -1,8 +1,8 @@
 const activeId = 'ndc';
 export default [
   {
-    path: '/ndcs-explorer',
-    label: 'NDC explorer',
+    path: '/ndcs-content',
+    label: 'NDC Content',
     activeId
   },
   {

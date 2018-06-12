@@ -6,14 +6,14 @@ import NDCTable from 'components/ndcs/ndcs-table';
 
 export default [
   {
-    path: '/ndcs-explorer',
+    path: '/ndcs-content',
     component: NDCMap,
     exact: true,
     anchor: true,
     label: 'Map'
   },
   {
-    path: '/ndcs-explorer/table',
+    path: '/ndcs-content/table',
     component: NDCTable,
     exact: true,
     anchor: true,
@@ -21,6 +21,6 @@ export default [
   },
   {
     path: '/ndcs',
-    component: () => createElement(Redirect, { to: '/ndcs-explorer' })
+    component: () => createElement(Redirect, { to: '/ndcs-content' })
   }
 ];
