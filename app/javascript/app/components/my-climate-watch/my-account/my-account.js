@@ -10,7 +10,7 @@ const updateUser = (id, payload) => {
 
 const mapStateToProps = ({ login }) => ({
   user: login.user,
-  id: login.user.id,
+  id: login.user.user_id.id,
   updateUser
 });
 
