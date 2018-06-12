@@ -25,7 +25,7 @@ class EmissionPathwaysOverview extends PureComponent {
           </a>
         );
         break;
-      case 'logo':
+      case 'mainteiner':
         element = (
           <div className={styles.itemLogo}>
             <img src={`https:${data[key]}`} />
