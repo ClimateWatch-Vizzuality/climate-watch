@@ -377,3 +377,114 @@ Link: <http://localhost:3000/api/v1/data/ndc_content?page=1933>; rel="last", <ht
 Per-Page: 50
 Total: 96650
 ```
+
+#### Metadata
+
+`/api/v1/data/ndc_content/meta`
+
+Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)
+
+```
+Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/data/ndc_content/categories>; rel="meta categories", </api/v1/data/ndc_content/labels>; rel="meta labels", </api/v1/data/ndc_content/sectors>; rel="meta sectors", </api/v1/locations/countries>; rel="meta locations"
+```
+
+### Data sources
+
+`/api/v1/data/ndc_content/data_sources`
+
+```
+{
+   "data":[
+      {
+         "id":53,
+         "name":"CAIT"
+      },
+      {
+         "id":54,
+         "name":"WB"
+      }
+   ]
+}
+```
+
+### Indicators
+
+`/api/v1/data/ndc_content/indicators`
+
+```
+{
+   "data":[
+      {
+         "id":6709,
+         "slug":"indc_summary",
+         "name":"(I)NDC summary",
+         "description":null,
+         "source_id":53,
+         "category_ids":[
+            821,
+            817
+         ]
+      }
+   ]
+}
+```
+
+### Labels
+
+`/api/v1/data/ndc_content/labels`
+
+```
+{
+   "data":[
+      {
+         "id":2947,
+         "indicator_id":6722,
+         "value":"INDC Submitted"
+      }
+   ]
+}
+```
+
+### Categories
+
+`/api/v1/data/ndc_content/categories`
+
+```
+{
+   "data":[
+      {
+         "id":817,
+         "slug":"overview",
+         "name":"Overview",
+         "parent_id":null
+      },
+      {
+         "id":839,
+         "slug":"adaptation",
+         "name":"Adaptation",
+         "parent_id":817
+      }
+   ]
+}
+```
+
+### Sectors
+
+`/api/v1/data/ndc_content/sectors`
+
+```
+{
+   "data":[
+      {
+         "id":5538,
+         "name":"Waste",
+         "parent_id":null
+      },
+      {
+         "id":5539,
+         "name":"Waste: General",
+         "parent_id":5538
+      }
+   ]
+}
+```
