@@ -1,0 +1,14 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.header {
+  background-color: $light-gray;
+}
+
+.intro {
+  @include row();
+}
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}

@@ -19,6 +19,7 @@ import GHGEmissions from 'pages/ghg-emissions';
 import NDCSearch from 'pages/ndc-search';
 import error from 'pages/error';
 import MyClimateWatch from 'pages/my-climate-watch';
+import DataExplorer from 'pages/data-explorer';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 
@@ -28,6 +29,7 @@ import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSContentRoutes from './NDCSContent-routes';
 import MyCwRoutes from './my-cw-routes';
+import DataExplorerRoutes from './data-explorer-routes';
 import aboutRoutes from './about-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
@@ -41,6 +43,15 @@ import countryCompareSections from './country-compare-sections';
 
 // flags
 const FEATURE_MY_CLIMATEWATCH = process.env.FEATURE_MY_CLIMATEWATCH === 'true';
+const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
+
+const dataExplorer = FEATURE_DATA_EXPLORER
+  ? {
+    path: '/data-explorer',
+    component: DataExplorer,
+    routes: DataExplorerRoutes
+  }
+  : {};
 
 const mycw = FEATURE_MY_CLIMATEWATCH
   ? {
@@ -178,6 +189,7 @@ export default [
     label: 'STORIES'
   },
   mycw,
+  dataExplorer,
   {
     path: '/about',
     component: About,
