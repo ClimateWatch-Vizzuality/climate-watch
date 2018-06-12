@@ -7,7 +7,8 @@ import Component from './modal-download-component';
 
 const mapStateToProps = ({ modalDownload }) => ({
   isOpen: modalDownload.isOpen,
-  downloadUrl: modalDownload.downloadUrl
+  downloadUrl: modalDownload.downloadUrl,
+  size: modalDownload.size
 });
 
 const includeActions = withHandlers({

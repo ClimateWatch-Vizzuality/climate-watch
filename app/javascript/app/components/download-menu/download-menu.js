@@ -25,17 +25,11 @@ const mapStateToProps = ({ modalDownload }) => ({
 });
 
 class DownloadMenuContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opened: false
-    };
-  }
-
-  handleOnClick = downloadUrl => {
+  handleOnClick = (downloadUrl, size) => {
     this.props.setModalDownloadParams({
       open: true,
-      downloadUrl
+      downloadUrl,
+      size
     });
   };
 
@@ -45,42 +39,59 @@ class DownloadMenuContainer extends PureComponent {
       downloadMenuOptions: [
         {
           label: 'All data (62 MB)',
-          link: `${url}/all.zip`,
-          target: '_self'
+          action: this.handleOnClick.bind(this, `${url}/all.zip`, '62 MB')
         },
         {
           label: 'NDC Content (6.4 MB)',
-          link: `${url}/ndc-content.zip`,
-          target: '_self'
+          action: this.handleOnClick.bind(
+            this,
+            `${url}/ndc-content.zip`,
+            '6.4 MB'
+          )
         },
         {
-          label: 'NDC Targets (329 KB)',
-          link: `${url}/NDC_quantification.zip`,
-          target: '_self'
+          label: 'NDC Targets (329 kB)',
+          action: this.handleOnClick.bind(
+            this,
+            `${url}/NDC_quantification.zip`,
+            '329 kB'
+          )
         },
         {
           label: 'NDC Text in HTML (53 MB)',
-          link: `${url}/NDC_text_HTML.zip`,
-          target: '_self'
+          action: this.handleOnClick.bind(
+            this,
+            `${url}/NDC_text_HTML.zip`,
+            '53 MB'
+          )
         },
         {
           label: 'GHG emissions (3.5 MB)',
-          link: `${url}/ghg-emissions.zip`,
-          target: '_self'
+          action: this.handleOnClick.bind(
+            this,
+            `${url}/ghg-emissions.zip`,
+            '3.5 MB'
+          )
         },
         {
           label: 'Adaptation (357 kB)',
-          link: `${url}/adaptation.zip`,
-          target: '_self'
+          action: this.handleOnClick.bind(
+            this,
+            `${url}/adaptation.zip`,
+            '357 kB'
+          )
         },
         {
           label: 'Socioeconomic (450 kB)',
-          link: `${url}/socioeconomic-indicators.zip`,
-          target: '_self'
+          action: this.handleOnClick.bind(
+            this,
+            `${url}/socioeconomic-indicators.zip`,
+            '450 kB'
+          )
         },
         {
           label: 'Pathways (2.1 MB)',
-          action: this.handleOnClick.bind(this, `${url}/pathways.zip`)
+          action: this.handleOnClick.bind(this, `${url}/pathways.zip`, '2.1 MB')
         }
       ]
     });
@@ -88,6 +99,7 @@ class DownloadMenuContainer extends PureComponent {
 }
 
 DownloadMenuContainer.propTypes = {
+  downloadMenuOptions: PropTypes.array,
   setModalDownloadParams: PropTypes.func.isRequired
 };
 
