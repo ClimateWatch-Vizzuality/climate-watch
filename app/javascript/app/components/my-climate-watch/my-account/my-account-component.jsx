@@ -27,10 +27,11 @@ const MyAccount = props => {
         <TextInput
           className={styles.input}
           theme={theme}
-          placeholder={name || 'Add a name'}
+          placeholder={'Add a name'}
           label={'Name'}
           inputType={'text'}
           onChange={updateUserName}
+          value={name}
         />
         <TextInput
           className={styles.input}
@@ -45,7 +46,8 @@ const MyAccount = props => {
         <TextInput
           className={styles.input}
           theme={theme}
-          placeholder={organization || 'Add an organization'}
+          value={organization}
+          placeholder={'Add an organization'}
           label={'Organization'}
           inputType={'text'}
           focus
@@ -54,7 +56,8 @@ const MyAccount = props => {
         <TextInput
           className={styles.input}
           theme={theme}
-          placeholder={areaOfWork || 'Add an area of work'}
+          value={areaOfWork}
+          placeholder={'Add an area of work'}
           label={'Area of work'}
           inputType={'text'}
           onChange={updateUserAreaOfWork}

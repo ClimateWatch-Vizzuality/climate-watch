@@ -19,7 +19,7 @@ module Api
         def update
           user = ::MyCw::User.find params[:id]
           if user.update(user_params)
-            render json:user, serializer: Api::V1::MyCw::UserSerializer
+            render json: user, serializer: Api::V1::MyCw::UserSerializer
           else
             resource_error(user)
           end

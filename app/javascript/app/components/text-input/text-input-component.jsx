@@ -30,7 +30,7 @@ class InputComponent extends Component {
     if (onChange) {
       this.props.onChange(this.state.value);
     }
-  }, 300);
+  }, 100);
 
   render() {
     const {
@@ -65,13 +65,6 @@ class InputComponent extends Component {
             {label}
           </label>
         )}
-        {/* <input
-          onChange={e => onChange(e.target.value)}
-          onFocus={e => onFocus(e.target.value)}
-          className={cx(className, theme.input, { [theme.inputFailed]: failed }, { [theme.disabled]: disabled })}
-          type="text"
-          value={value}
-        /> */}
         <input type="text" {...inputProps} {...labelProp} />
       </div>
     );
