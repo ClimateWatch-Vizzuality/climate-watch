@@ -8,6 +8,13 @@ const SPREADSHEET_URL =
   'https://script.google.com/macros/s/AKfycbynUpTR6EHAcGwfgaI26U3jFH4WKaPNTsR8qZBkSwNs7OCh7TJF/exec';
 
 class ModalDownload extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      isSubmitting: false
+    };
+  }
+
   submit(event) {
     event.preventDefault();
 
@@ -25,17 +32,17 @@ class ModalDownload extends PureComponent {
       key => `${key}=${encodeURIComponent(payload[key])}`
     );
 
-    this.submitInput.disabled = 'disabled';
+    this.setState({ isSubmitting: true });
 
-    fetch(`${SPREADSHEET_URL}?${params.join('&')}`).then(response => {
-      this.submitInput.disabled = null;
-      window.location.assign(this.props.downloadUrl);
-    });
+    fetch(`${SPREADSHEET_URL}?${params.join('&')}`)
+      .then(() => window.location.assign(this.props.downloadUrl))
+      .finally(() => this.setState({ isSubmitting: false }));
   }
 
   renderForm() {
     const { size } = this.props;
     const submit = this.submit.bind(this);
+    const { isSubmitting } = this.state;
 
     return (
       <div>
@@ -128,7 +135,7 @@ class ModalDownload extends PureComponent {
           <input
             type="submit"
             value={`Download ${size}`}
-            ref={el => (this.submitInput = el)}
+            disabled={isSubmitting}
           />
 
           <p>
