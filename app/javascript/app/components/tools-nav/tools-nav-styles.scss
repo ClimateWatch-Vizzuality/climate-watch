@@ -8,7 +8,9 @@
 }
 
 .shareButton {
-  margin-left: 15px;
+  @media #{$desktop} {
+    margin-left: 15px;
+  }
 }
 
 .downloadButton {

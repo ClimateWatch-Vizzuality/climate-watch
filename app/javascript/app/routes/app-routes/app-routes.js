@@ -204,6 +204,20 @@ export default [
     component: error
   },
   {
+    path: '/error-page',
+    component: error
+  },
+  {
+    path: '/my-climate-watch',
+    label: 'MY CW',
+    navMobile: true
+  },
+  {
+    path: '/data-explorer',
+    label: 'DATA EXPLORER',
+    navMobile: true
+  },
+  {
     path: '/',
     component: () => createElement(Redirect, { to: '/error-page' })
   }
