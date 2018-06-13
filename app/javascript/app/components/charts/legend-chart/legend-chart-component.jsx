@@ -31,7 +31,7 @@ class LegendChart extends PureComponent {
 
     return (
       <div className={styles.legendChart}>
-        <div>
+        <div className={styles.legendContainer}>
           <ul className={cx(styles.tags, className)}>
             {hasColumns &&
               config.columns.y.map(column => (

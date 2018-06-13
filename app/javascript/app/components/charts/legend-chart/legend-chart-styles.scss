@@ -6,10 +6,28 @@ $margin-container: 10px;
   overflow: auto;
   margin-bottom: $margin-container;
 
+  .legendContainer {
+    flex: 1;
+  }
+
+  .legendLogo {
+    width: 120px;
+    margin-top: $margin-container;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
   @media #{$tablet-landscape} {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-between;
+
+    .legendLogo {
+      width: 150px;
+    }
   }
 }
 
@@ -37,20 +55,6 @@ $margin-container: 10px;
 
 .tagDescription {
   color: $dark-gray;
-}
-
-.legendLogo {
-  width: 120px;
-  margin-top: $margin-container;
-
-  img {
-    width: 100%;
-    height: auto;
-  }
-
-  @media #{$tablet-landscape} {
-    width: 200px;
-  }
 }
 
 .tagSelector :global {
