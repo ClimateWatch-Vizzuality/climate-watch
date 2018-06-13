@@ -12,13 +12,18 @@ const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
 const mycwLinkConfig = FEATURE_MY_CLIMATEWATCH
   ? { to: '/my-climate-watch', title: 'My climate watch' }
   : { to: '', disabled: true, title: 'Coming soon' };
+const navLinkProps = {
+  isActive: (match, location) =>
+    match && location.pathname.includes(match.path),
+  activeClassName: styles.linkActive
+};
 
 const DataExplorerLink = (
   <NavLink
-    className={cx(styles.link, styles.noWrap, {})}
-    activeClassName={styles.linkActive}
+    className={cx(styles.link, styles.noWrap)}
     to="/data-explorer"
     title="Data Explorer"
+    {...navLinkProps}
   >
     {' '}
     DATA EXPLORER
@@ -30,8 +35,8 @@ const ToolsNav = ({ className, reverse }) => (
       className={cx(styles.link, styles.myCwButton, styles.noWrap, {
         [styles.disabled]: mycwLinkConfig.disabled
       })}
-      activeClassName={styles.linkActive}
       {...mycwLinkConfig}
+      {...navLinkProps}
     >
       MY CW
     </NavLink>
