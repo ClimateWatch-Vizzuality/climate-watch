@@ -106,7 +106,8 @@ export const getModelsOptions = createSelector(
           label: m.full_name,
           value: m.id,
           scenarios: m.scenario_ids,
-          logo: m.logo
+          logo: m.logo,
+          url: m.url
         });
       }
     });

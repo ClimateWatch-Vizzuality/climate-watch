@@ -168,7 +168,7 @@ class EmissionPathwayGraph extends PureComponent {
             forceFixedFormatDecimals={3}
             margin={{ top: 50 }}
             espGraph
-            logo={(model && model.logo) || null}
+            model={model || null}
           />
           <TabletPortraitOnly>
             <ButtonGroup

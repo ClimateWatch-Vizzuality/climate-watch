@@ -23,7 +23,7 @@ class Chart extends PureComponent {
       height,
       targetParam,
       customMessage,
-      logo,
+      model,
       hideRemoveOptions
     } = this.props;
     const hasData = data && data.length > 0;
@@ -56,7 +56,7 @@ class Chart extends PureComponent {
             dataOptions={dataOptions}
             dataSelected={dataSelected}
             targetParam={targetParam}
-            logo={logo}
+            model={model}
             hideRemoveOptions={hideRemoveOptions}
           />
         )}
@@ -77,7 +77,7 @@ Chart.propTypes = {
   config: PropTypes.object,
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   customMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  logo: PropTypes.string,
+  model: PropTypes.object,
   targetParam: PropTypes.string
 };
 
