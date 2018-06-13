@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LoginProvider from 'providers/login-provider';
 import TextInput from 'components/text-input';
+import Dropdown from 'components/dropdown';
 import Button from 'components/button';
 
 import theme from 'styles/themes/input/text-input-theme.scss';
@@ -10,12 +11,23 @@ import styles from './my-account-styles.scss';
 const MyAccount = props => {
   const {
     email,
-    name,
+    firstName,
+    lastName,
     organization,
-    areaOfWork,
-    updateUserName,
+    sector,
+    country,
+    countries,
+    sectors,
+    dataUsage,
+    tester,
+    isProfileUpdated,
+    updateUserFirstName,
+    updateUserLastName,
     updateUserOrganization,
-    updateUserAreaOfWork,
+    updateUserSector,
+    updateUserCountry,
+    updateUserDataUsage,
+    updateUserTester,
     saveUserData
   } = props;
 
@@ -28,10 +40,19 @@ const MyAccount = props => {
           className={styles.input}
           theme={theme}
           placeholder={'Add a name'}
-          label={'Name'}
+          label={'First name'}
           inputType={'text'}
-          onChange={updateUserName}
-          value={name}
+          onChange={updateUserFirstName}
+          value={firstName}
+        />
+        <TextInput
+          className={styles.input}
+          theme={theme}
+          placeholder={'Add a name'}
+          label={'Last name'}
+          inputType={'text'}
+          onChange={updateUserLastName}
+          value={lastName}
         />
         <TextInput
           className={styles.input}
@@ -53,20 +74,50 @@ const MyAccount = props => {
           focus
           onChange={updateUserOrganization}
         />
-        <TextInput
-          className={styles.input}
-          theme={theme}
-          value={areaOfWork}
-          placeholder={'Add an area of work'}
-          label={'Area of work'}
-          inputType={'text'}
-          onChange={updateUserAreaOfWork}
+        <Dropdown
+          className={styles.dropdown}
+          label="Sector"
+          options={sectors}
+          onValueChange={updateUserSector}
+          value={sector}
+          hideResetButton
         />
+        <Dropdown
+          className={styles.dropdown}
+          label="Country"
+          options={countries}
+          value={country}
+          onValueChange={updateUserCountry}
+          hideResetButton
+        />
+      </div>
+      <div className={styles.dataUsageInfo}>
+        <TextInput
+          className={styles.textarea}
+          theme={theme}
+          label={'How do you intend to use the data?'}
+          inputType={'textarea'}
+          onChange={updateUserDataUsage}
+          value={dataUsage}
+        />
+      </div>
+      <div className={styles.optIn}>
+        <input
+          type="checkbox"
+          onChange={e => {
+            updateUserTester(e.target.checked);
+          }}
+          checked={tester}
+        />
+        <span className={styles.disclaimer}>
+          Do you want to test new developments of Climate Watch platform?
+        </span>
       </div>
       <div className={styles.updateButton}>
         <Button color={'yellow'} onClick={saveUserData}>
           <span>Update profile</span>
         </Button>
+        {isProfileUpdated && <span>Profile updated succesfully</span>}
       </div>
     </div>
   );
@@ -74,12 +125,23 @@ const MyAccount = props => {
 
 MyAccount.propTypes = {
   email: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  organization: PropTypes.string.isRequired,
-  areaOfWork: PropTypes.string.isRequired,
-  updateUserName: PropTypes.func.isRequired,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  organization: PropTypes.string,
+  sector: PropTypes.object,
+  dataUsage: PropTypes.string,
+  tester: PropTypes.string,
+  countries: PropTypes.array.isRequired,
+  country: PropTypes.object,
+  sectors: PropTypes.array.isRequired,
+  isProfileUpdated: PropTypes.bool.isRequired,
+  updateUserFirstName: PropTypes.func.isRequired,
+  updateUserLastName: PropTypes.func.isRequired,
   updateUserOrganization: PropTypes.func.isRequired,
-  updateUserAreaOfWork: PropTypes.func.isRequired,
+  updateUserSector: PropTypes.func.isRequired,
+  updateUserCountry: PropTypes.func.isRequired,
+  updateUserDataUsage: PropTypes.func.isRequired,
+  updateUserTester: PropTypes.func.isRequired,
   saveUserData: PropTypes.func.isRequired
 };
 
