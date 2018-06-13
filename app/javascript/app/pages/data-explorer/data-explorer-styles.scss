@@ -2,11 +2,21 @@
 @import '~styles/layout.scss';
 
 .header {
+  margin-bottom: $gutter-padding;
   background-color: $light-gray;
+  box-shadow: inset 0 33px 30px -20px rgba(0, 0, 0, 0.1);
 }
 
 .intro {
-  @include row();
+  > * {
+    @include xy-gutters($gutter-position: 'left', $gutters: 0);
+  }
+
+  .title {
+    @include row();
+
+    color: $theme-color;
+  }
 }
 
 .anchorNav {

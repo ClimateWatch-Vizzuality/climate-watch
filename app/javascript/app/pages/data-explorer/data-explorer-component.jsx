@@ -5,7 +5,7 @@ import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
 
-import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
+import anchorNavThemeColorTheme from 'styles/themes/anchor-nav/anchor-nav-theme-color.scss';
 import layout from 'styles/layout.scss';
 import styles from './data-explorer-styles';
 
@@ -16,7 +16,7 @@ const DataExplorer = ({ route }) => (
       <AnchorNav
         useRoutes
         links={route.routes.filter(r => r.anchor)}
-        theme={anchorNavRegularTheme}
+        theme={anchorNavThemeColorTheme}
         className={styles.anchorNav}
       />
     </Header>
