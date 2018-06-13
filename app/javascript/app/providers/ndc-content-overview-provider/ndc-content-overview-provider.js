@@ -14,10 +14,10 @@ class ndcContentOverviewProvider extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { locations, getNdcContentOverview } = this.props;
-
     if (
       locations &&
       locations.length &&
+      prevProps.locations &&
       locations.sort().join() !== prevProps.locations.sort().join()
     ) {
       getNdcContentOverview(locations);
