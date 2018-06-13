@@ -6,6 +6,7 @@
   left: 0;
   right: 0;
   bottom: auto;
+  padding-top: 15px;
   background-color: $white;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
   border-top: solid 1px $theme-border;
@@ -16,6 +17,14 @@
 
   @media #{$desktop} {
     padding-top: $gutter-padding;
+  }
+}
+
+.searchAndCompare {
+  @include columns((8,4));
+
+  @media #{$tablet-landscape} {
+    @include columns((10,2));
   }
 }
 

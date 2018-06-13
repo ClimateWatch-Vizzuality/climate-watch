@@ -70,6 +70,8 @@
 }
 
 .selectsItem {
+  position: relative;
+
   &Hidden {
     display: none;
   }
@@ -165,4 +167,15 @@
 
 .openDropdownPadding {
   padding-bottom: 110px;
+}
+
+.infoContainer {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.infoIcon {
+  fill: $gray;
 }

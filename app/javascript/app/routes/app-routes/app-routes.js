@@ -26,7 +26,7 @@ import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
-import NDCSExplorerRoutes from './NDCSExplorer-routes';
+import NDCSContentRoutes from './NDCSContent-routes';
 import MyCwRoutes from './my-cw-routes';
 import aboutRoutes from './about-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
@@ -108,11 +108,11 @@ export default [
     routes: NDCSRoutes
   },
   {
-    path: '/ndcs-explorer',
+    path: '/ndcs-content',
     component: NDCS,
     headerImage: 'ndc',
     headerColor: '#035388',
-    routes: NDCSExplorerRoutes
+    routes: NDCSContentRoutes
   },
   {
     path: '/ndcs-sdg',

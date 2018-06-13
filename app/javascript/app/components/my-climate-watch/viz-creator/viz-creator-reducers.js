@@ -3,9 +3,19 @@ import { assign } from 'app/utils';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 import initialState from './viz-creator-initial-state';
 import * as actions from './viz-creator-actions';
-import { updateIn, mapFilter } from './viz-creator-utils';
+import {
+  updateIn,
+  mapFilter,
+  getCachedSelectedProperty,
+  buildChildLense,
+  filterLocationsByMultipleModels,
+  filterModelsByLocations,
+  filterLocationsByModel,
+  getCoverage
+} from './viz-creator-utils';
 import { filtersSelector } from './viz-creator-selectors';
 
 import {
@@ -44,7 +54,8 @@ export default {
         description: initialState.description,
         title: initialState.title,
         datasets: initialState.datasets,
-        creatorIsOpen: true
+        creatorIsOpen: true,
+        creatorIsEditing: true
       }
       : {
         ...state,
@@ -54,7 +65,15 @@ export default {
         description: payload.description || initialState.description,
         datasets: payload.datasets || initialState.datasets
       }),
-  [actions.closeCreator]: state => ({ ...state, creatorIsOpen: false }),
+  [actions.closeCreator]: state => ({
+    ...state,
+    creatorIsOpen: false,
+    creatorIsEditing: false
+  }),
+  [actions.editVisualisationData]: state => ({
+    ...state,
+    creatorIsEditing: false
+  }),
   [actions.updateVisualisationName]: (state, { payload }) =>
     unfail('title', assign(state, { title: payload })),
   [actions.updateVisualisationDescription]: (state, { payload }) =>
@@ -111,103 +130,146 @@ export default {
       },
       state
     ),
-  [actions.selectLocation]: (state, { payload }) =>
-    updateIn(
+  [actions.selectLocation]: (state, { payload }) => {
+    const child = buildChildLense($models, payload, state, initialState);
+    return updateIn(
       $locations,
-      { selected: payload, child: get($models, initialState) },
+      { selected: payload, child, loaded: !isEmpty(payload) },
       state
-    ),
+    );
+  },
 
   // Models
   [actions.fetchModels]: state => updateIn($models, { loading: true }, state),
-  [actions.gotModels]: (state, { payload }) =>
-    updateIn(
+  [actions.gotModels]: (state, { payload }) => {
+    const locations = get($locations, state);
+    const filteredModels = filterModelsByLocations(payload, locations.selected);
+    const filteredLocations = filterLocationsByMultipleModels(
+      locations.data,
+      filteredModels,
+      true
+    );
+    const selected = getCachedSelectedProperty(
+      get($models, state),
+      filteredModels
+    );
+    const child = buildChildLense($scenarios, selected, state, initialState);
+    const newState = updateIn($locations, { data: filteredLocations }, state);
+    return updateIn(
       $models,
       {
         loading: false,
         loaded: true,
-        data: payload
+        data: filteredModels,
+        selected,
+        child
       },
-      state
-    ),
+      newState
+    );
+  },
   [actions.selectModel]: (state, { payload }) => {
-    const child = get($scenarios, initialState);
-    return updateIn($models, { selected: payload, child }, state);
+    const modelsData = get($models, state).data;
+    const locations = get($locations, state);
+    const modelSelectedCoverage = getCoverage(modelsData, payload);
+    const filteredLocations = filterLocationsByModel(
+      locations.data,
+      modelSelectedCoverage
+    );
+    const newState = updateIn($locations, { data: filteredLocations }, state);
+    const child = { ...get($scenarios, state), loaded: false, loading: false };
+    return updateIn($models, { selected: payload, child }, newState);
   },
 
   // Scenarios
   [actions.fetchScenarios]: state =>
     updateIn($scenarios, { loading: true }, state),
   [actions.gotScenarios]: (state, { payload }) => {
+    const selected = getCachedSelectedProperty(get($scenarios, state), payload);
+    const child = buildChildLense($categories, selected, state, initialState);
     const scenarios = {
       loading: false,
       loaded: true,
-      data: payload
+      data: payload,
+      selected,
+      child
     };
     const filters = filtersSelector(state);
     const scenariosFilter = find(filters, { name: 'scenarios' });
-    if (scenariosFilter && scenariosFilter.selected === 'all') {
+    if (
+      isEmpty(selected) &&
+      scenariosFilter &&
+      scenariosFilter.selected === 'all'
+    ) {
       scenarios.selected = mapFilter(payload);
     }
     return updateIn($scenarios, scenarios, state);
   },
   [actions.selectScenario]: (state, { payload }) => {
-    const newState = updateIn(
-      $scenarios,
-      { selected: payload, child: get($categories, initialState) },
-      state
-    );
+    const child = { ...get($categories, state), loaded: false, loading: false };
+    const newState = updateIn($scenarios, { selected: payload, child }, state);
     return newState;
   },
 
   // Categories
-  [actions.gotCategories]: (state, { payload }) =>
-    updateIn(
-      $categories,
-      {
-        loading: false,
-        loaded: true,
-        data: payload
-      },
-      state
-    ),
-
-  // SubCategories
-  [actions.gotSubCategories]: (state, { payload }) =>
-    updateIn(
+  [actions.fetchCategories]: state =>
+    updateIn($categories, { loading: true }, state),
+  [actions.gotCategories]: (state, { payload }) => {
+    const selected = getCachedSelectedProperty(
+      get($categories, state),
+      payload
+    );
+    const child = buildChildLense(
       $subcategories,
+      selected,
+      state,
+      initialState
+    );
+    return updateIn(
+      $categories,
       {
         loading: false,
         loaded: true,
-        data: payload
+        data: payload,
+        selected,
+        child
       },
       state
-    ),
-
-  [actions.selectCategory]: (state, { payload }) =>
-    updateIn(
-      $categories,
-      { selected: payload, child: get($subcategories, initialState) },
-      state
-    ),
+    );
+  },
+  [actions.selectCategory]: (state, { payload }) => {
+    const child = {
+      ...get($subcategories, state),
+      loaded: false,
+      loading: false
+    };
+    return updateIn($categories, { selected: payload, child }, state);
+  },
 
   // Subategories
-  [actions.gotSubCategories]: (state, { payload }) =>
-    updateIn(
+  [actions.fetchSubCategories]: state =>
+    updateIn($subcategories, { loading: true }, state),
+  [actions.gotSubCategories]: (state, { payload }) => {
+    const selected = getCachedSelectedProperty(
+      get($subcategories, state),
+      payload
+    );
+    const child = buildChildLense($indicators, selected, state, initialState);
+    return updateIn(
       $subcategories,
       {
         loading: false,
         loaded: true,
-        data: payload
+        data: payload,
+        selected,
+        child
       },
       state
-    ),
-  [actions.selectSubcategory]: (state, { payload }) =>
-    updateIn(
-      $subcategories,
-      { selected: payload, child: get($indicators, initialState) },
-      state
-    ),
+    );
+  },
+  [actions.selectSubcategory]: (state, { payload }) => {
+    const child = { ...get($indicators, state), loaded: false, loading: false };
+    return updateIn($subcategories, { selected: payload, child }, state);
+  },
 
   // Indicators
   [actions.fetchIndicators]: state =>
@@ -222,25 +284,28 @@ export default {
   [actions.gotIndicators]: (state, { payload }) => {
     const filters = filtersSelector(state);
     const indicatorsFilter = find(filters, { name: 'indicators' });
+    const selected = getCachedSelectedProperty(
+      get($indicators, state),
+      payload
+    );
+    const child = buildChildLense($years, selected, state, initialState);
     const indicators = {
       loading: false,
       loaded: true,
       data: payload,
-      selected:
-        indicatorsFilter && indicatorsFilter.selected === 'all'
-          ? mapFilter(payload)
-          : [],
-      child: get($years, initialState)
+      selected,
+      child
     };
+    if (indicatorsFilter && indicatorsFilter.selected === 'all') {
+      indicators.selected = mapFilter(payload);
+    }
 
     return updateIn($indicators, indicators, state);
   },
-  [actions.selectIndicator]: (state, { payload }) =>
-    updateIn(
-      $indicators,
-      { selected: payload, child: get($years, initialState) },
-      state
-    ),
+  [actions.selectIndicator]: (state, { payload }) => {
+    const child = { ...get($years, state), loaded: false, loading: false };
+    return updateIn($indicators, { selected: payload, child }, state);
+  },
 
   // Years
   [actions.fetchYears]: state =>
@@ -254,28 +319,31 @@ export default {
   [actions.gotYears]: (state, { payload }) => {
     const filters = filtersSelector(state);
     const yearsFilter = find(filters, { name: 'years' });
-
-    return updateIn(
-      $years,
-      {
-        loading: false,
-        loaded: true,
-        selected:
-          yearsFilter && yearsFilter.selected === 'all'
-            ? mapFilter(payload)
-            : [],
-        data: payload,
-        child: get($timeseries, initialState)
-      },
-      state
-    );
+    const selected = getCachedSelectedProperty(get($years, state), payload);
+    const years = {
+      loading: false,
+      loaded: true,
+      data: payload,
+      selected,
+      child: {
+        ...get($timeseries, initialState),
+        loaded: false,
+        loading: false
+      }
+    };
+    if (isEmpty(selected) && yearsFilter && yearsFilter.selected === 'all') {
+      years.selected = mapFilter(payload);
+    }
+    return updateIn($years, years, state);
   },
-  [actions.selectYear]: (state, { payload }) =>
-    updateIn(
-      $years,
-      { selected: payload, child: get($timeseries, initialState) },
-      state
-    ),
+  [actions.selectYear]: (state, { payload }) => {
+    const child = {
+      ...get($timeseries, initialState),
+      loaded: false,
+      loading: false
+    };
+    return updateIn($years, { selected: payload, child }, state);
+  },
 
   // Timeseries
   [actions.fetchTimeseries]: state =>

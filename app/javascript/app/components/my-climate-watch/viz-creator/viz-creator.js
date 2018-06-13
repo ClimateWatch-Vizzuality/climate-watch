@@ -7,7 +7,6 @@ import VizCreatorComponent from './viz-creator-component';
 import * as reducers from './viz-creator-reducers';
 import * as actions from './viz-creator-actions';
 import initialState from './viz-creator-initial-state';
-
 import {
   datasetsSelector,
   visualisationsSelector,
@@ -31,6 +30,7 @@ import {
 const mapStateToProps = ({ vizCreator }) => ({
   id: vizCreator.id,
   title: vizCreator.title,
+  creatorIsEditing: vizCreator.creatorIsEditing,
   placeholder: getPlaceholder(vizCreator),
   description: vizCreator.description,
   creationStatus: vizCreator.creationStatus,
@@ -133,7 +133,6 @@ class VizCreator extends Component {
                       stackable: onlyStackableIndicators
                     });
                   }
-
                   if (!isEmpty(indicators.selected)) {
                     if (!years.loading && !years.loaded) {
                       fetchYears({
@@ -142,7 +141,6 @@ class VizCreator extends Component {
                         scenarios: scenarios.selected
                       });
                     }
-
                     if (!isEmpty(years.selected)) {
                       if (!timeseries.loading && !timeseries.loaded) {
                         fetchTimeseries({
@@ -166,13 +164,16 @@ class VizCreator extends Component {
   handleFilterSelect = filter => {
     const actionName = toSelector(filter.type);
     if (this.props[actionName]) {
-      const filterParsed = filter.multi
-        ? filter.values
-        : {
+      if (filter.multi) {
+        this.props[actionName](filter.values)
+      } else if (filter.value) {
+        this.props[actionName]({
           value: filter.value,
           label: filter.label
-        };
-      this.props[actionName](filterParsed);
+        })
+      } else {
+        this.props[actionName](null)
+      }
     }
   };
 

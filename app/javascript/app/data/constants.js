@@ -259,6 +259,24 @@ export const NDC_DOCUMENT_OPTIONS = [
 export const LATEST_VERSION = 'AR4';
 export const CONTAINED_PATHNAME = 'contained';
 
+export const LENSES_SELECTOR_INFO = {
+  locations: `Every model has only a certain range of locations available. After one location is selected, 
+      all the locations which do not have a model in common with the selected location are filtered out. 
+      Hence, only the locations which have a model in common are displayed and are available for selection. `,
+  models: `This drop-down menu shows only models which have information for all of the locations selected 
+      in the locations menu. You can select fewer locations to get a wider range of models.`
+};
+
+export const USERS_PROFESIONAL_SECTORS = [
+  'Academic',
+  'Commercial',
+  'Internatioonal Organization',
+  'Media',
+  'National Government',
+  'NGO',
+  'Other'
+];
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -282,5 +300,7 @@ export default {
   DISCLAIMER_SHOWN,
   NDC_DOCUMENT_OPTIONS,
   LATEST_VERSION,
-  CONTAINED_PATHNAME
+  CONTAINED_PATHNAME,
+  LENSES_SELECTOR_INFO,
+  USERS_PROFESIONAL_SECTORS
 };
