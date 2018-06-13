@@ -1,0 +1,45 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "properties": {
+    "data": {
+      "$id": "/properties/data",
+      "type": "array",
+      "items": {
+        "$id": "/properties/data/items",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$id": "/properties/data/items/properties/id",
+            "type": "integer",
+            "title": "The Id Schema ",
+            "default": 0,
+            "examples": [
+              2943
+            ]
+          },
+          "indicator_id": {
+            "$id": "/properties/data/items/properties/indicator_id",
+            "type": "integer",
+            "title": "The Indicator_id Schema ",
+            "default": 0,
+            "examples": [
+              6721
+            ]
+          },
+          "value": {
+            "$id": "/properties/data/items/properties/value",
+            "type": "string",
+            "title": "The Value Schema ",
+            "default": "",
+            "examples": [
+              "Signed Agreement"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
