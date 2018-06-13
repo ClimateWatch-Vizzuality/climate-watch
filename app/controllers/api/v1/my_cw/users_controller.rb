@@ -28,7 +28,7 @@ module Api
         private
 
         def user_params
-          params.require(:user).permit(:ct_id, :name, :organization, :areaOfWork)
+          params.require(:user).permit(:ct_id, :first_name, :last_name, :organization, :sector, :country, :tester, :data_usage)
         end
       end
     end
