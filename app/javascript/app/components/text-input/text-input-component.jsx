@@ -40,7 +40,8 @@ class InputComponent extends Component {
       disabled,
       value,
       placeholder,
-      label
+      label,
+      inputType
     } = this.props;
 
     const inputProps = {
@@ -52,11 +53,17 @@ class InputComponent extends Component {
         [theme.inputFailed]: failed
       }),
       onChange: e => this.handleChange(e.target.value),
-      value,
+      value: value || '',
       disabled,
       placeholder
     };
     const labelProp = label ? { id: label } : {};
+
+    const input = inputType === 'textarea' ? (
+      <textarea {...inputProps} {...labelProp} />
+    ) : (
+      <input {...inputProps} {...labelProp} />
+    );
 
     return (
       <div>
@@ -65,7 +72,7 @@ class InputComponent extends Component {
             {label}
           </label>
         )}
-        <input type="text" {...inputProps} {...labelProp} />
+        {input}
       </div>
     );
   }
@@ -76,6 +83,7 @@ InputComponent.propTypes = {
   value: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  inputType: PropTypes.string,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
   failed: PropTypes.bool,
