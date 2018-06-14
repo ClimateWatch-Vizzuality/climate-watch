@@ -1,0 +1,11 @@
+module Api
+  module V1
+    module Data
+      module NdcContent
+        class SectorSerializer < ActiveModel::Serializer
+          attributes :id, :name, :parent_id
+        end
+      end
+    end
+  end
+end

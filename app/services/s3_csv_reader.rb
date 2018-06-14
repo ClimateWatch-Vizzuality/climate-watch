@@ -7,7 +7,8 @@ module S3CSVReader
     end.to_h
   end
 
-  def self.read(filename)
+  # @param header_converter [Symbol] default :symbol
+  def self.read(filename, header_converter = nil)
     bucket_name = Rails.application.secrets.s3_bucket_name
     s3 = Aws::S3::Client.new
     begin
@@ -17,13 +18,13 @@ module S3CSVReader
       return
     end
 
-    strip_converter = lambda { |field, _| field.strip }
+    strip_converter = ->(field, _) { field.strip }
 
     CSV.parse(
       file.body.read,
       headers: true,
       converters: [strip_converter],
-      header_converters: :symbol
+      header_converters: header_converter || :symbol
     )
   end
 end

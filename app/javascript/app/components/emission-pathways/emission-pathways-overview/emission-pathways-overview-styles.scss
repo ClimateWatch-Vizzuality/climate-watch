@@ -45,6 +45,16 @@
   border-bottom: 1px solid #ffc735;
 }
 
+.itemLogo {
+  width: 100%;
+  max-width: 200px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
 .seeAllButton {
   @media #{$tablet-landscape} {
     @include column-offset(9.6);

@@ -113,9 +113,7 @@ class SimpleMenu extends PureComponent {
     const { open } = this.state;
 
     const paths = options.map(option => option.path);
-    const activeId = options[0].activeId;
-    const active =
-      includes(paths, currentPathname) || includes(currentPathname, activeId);
+    const active = includes(paths, currentPathname);
 
     return (
       <button
