@@ -49,7 +49,7 @@ class ImportIndc
   def load_csvs
     # relaxed symbol converter that lets through '-'
     symbol_converter = lambda { |h|
-      h.downcase.gsub(/[^\s\w-]+/, "").strip.gsub(/\s+/, "_").to_sym
+      h.downcase.gsub(/[^\s\w-]+/, '').strip.gsub(/\s+/, '_').to_sym
     }
     @cait_data = S3CSVReader.read(
       DATA_CAIT_FILEPATH, [symbol_converter]
@@ -242,7 +242,7 @@ class ImportIndc
 
     indicators.each do |indicator_name, labels|
       indicator = Indc::Indicator.find_by(slug: indicator_name)
-      next if !indicator
+      next unless indicator
       labels.each_with_index do |label, index|
         Indc::Label.create!(
           indicator: indicator,

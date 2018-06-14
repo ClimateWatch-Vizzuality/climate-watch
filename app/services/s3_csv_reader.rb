@@ -18,7 +18,7 @@ module S3CSVReader
       return
     end
 
-    strip_converter = lambda { |field, _| field.strip }
+    strip_converter = ->(field, _) { field.strip }
 
     CSV.parse(
       file.body.read,
