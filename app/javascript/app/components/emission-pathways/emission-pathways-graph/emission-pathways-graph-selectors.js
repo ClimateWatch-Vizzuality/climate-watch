@@ -470,7 +470,8 @@ export const getChartConfig = createSelector(
       columns: {
         x: [{ label: 'year', value: 'x' }],
         y: yColumnsChecked
-      }
+      },
+      legendNote: true
     };
   }
 );
