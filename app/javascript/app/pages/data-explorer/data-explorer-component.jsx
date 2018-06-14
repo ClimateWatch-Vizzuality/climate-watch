@@ -7,12 +7,10 @@ import PropTypes from 'prop-types';
 
 import anchorNavThemeColorTheme from 'styles/themes/anchor-nav/anchor-nav-theme-color.scss';
 import layout from 'styles/layout.scss';
-import DataExplorerProvider from 'providers/data-explorer-provider/data-explorer-provider';
 import styles from './data-explorer-styles';
 
 const DataExplorer = ({ route }) => (
   <div>
-    <DataExplorerProvider />
     <Header theme={styles}>
       <Intro theme={styles} className={styles.intro} title="Data Explorer" />
       <AnchorNav

@@ -5,11 +5,16 @@ export const fetchDataExplorerInit = createAction('fetchDataExplorerInit');
 export const fetchDataExplorerReady = createAction('fetchDataExplorerReady');
 export const fetchDataExplorerFail = createAction('fetchDataExplorerFail');
 
+const SECTION_NAMES = {
+  'historical-emissions': 'historical_emissions',
+  'ndc-sdg-linkages': 'ndc_sdg',
+  'emission-pathways': 'emission_pathways'
+};
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
-  () => dispatch => {
+  section => dispatch => {
     dispatch(fetchDataExplorerInit());
-    fetch('/api/v1/data/historical_emissions')
+    fetch(`/api/v1/data/${SECTION_NAMES[section]}`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -18,7 +23,7 @@ export const fetchDataExplorer = createThunkAction(
       })
       .then(data => {
         if (data) {
-          dispatch(fetchDataExplorerReady(data));
+          dispatch(fetchDataExplorerReady({ data, section }));
         } else {
           dispatch(fetchDataExplorerReady({}));
         }

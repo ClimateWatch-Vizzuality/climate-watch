@@ -1,16 +1,13 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import reducers, { initialState } from './data-explorer-provider-reducers';
 import * as actions from './data-explorer-provider-actions';
-import * as reducers from './data-explorer-provider-reducers';
-
-const initialState = reducers.initialState;
 
 class DataExplorerProvider extends PureComponent {
   componentDidMount() {
-    const { fetchDataExplorer } = this.props;
-    fetchDataExplorer();
+    const { fetchDataExplorer, section } = this.props;
+    fetchDataExplorer(section);
   }
 
   render() {
@@ -19,7 +16,8 @@ class DataExplorerProvider extends PureComponent {
 }
 
 DataExplorerProvider.propTypes = {
-  fetchDataExplorer: PropTypes.func.isRequired
+  fetchDataExplorer: PropTypes.func.isRequired,
+  section: PropTypes.string
 };
 
 export { actions, reducers, initialState };

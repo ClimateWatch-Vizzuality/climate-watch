@@ -5,7 +5,7 @@ export default {
   [actions.fetchDataExplorerReady]: (state, { payload }) => ({
     ...state,
     loading: false,
-    data: payload,
+    data: { ...state.data, ...{ [payload.section]: payload.data } },
     error: false
   }),
   [actions.fetchDataExplorerFail]: state => ({
