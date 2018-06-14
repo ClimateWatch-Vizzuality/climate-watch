@@ -118,11 +118,15 @@ const MyAccount = props => {
         <Button color={'yellow'} onClick={() => saveUserData()}>
           <span>Update profile</span>
         </Button>
-        {isProfileUpdated && <span>Profile updated succesfully</span>}
+        {isProfileUpdated && (
+          <div className={styles.updateMessage}>
+            Profile updated succesfully
+          </div>
+        )}
         {updateError && (
-          <span>
-            There has been some error on the update. Please try again later
-          </span>
+          <div className={styles.updateMessage}>
+            There has been some error on the update
+          </div>
         )}
       </div>
     </div>

@@ -29,6 +29,11 @@
   height: 200px;
 }
 
+.updateMessage {
+  font-size: $font-size-sm;
+  color: $gray;
+}
+
 .personalInfo,
 .organizationalInfo {
   @include columns(12);
