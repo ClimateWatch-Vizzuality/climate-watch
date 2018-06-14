@@ -47,7 +47,13 @@ class ImportIndc
   end
 
   def load_csvs
-    @cait_data = S3CSVReader.read(DATA_CAIT_FILEPATH).map(&:to_h)
+    # relaxed symbol converter that lets through '-'
+    symbol_converter = lambda { |h|
+      h.downcase.gsub(/[^\s\w-]+/, "").strip.gsub(/\s+/, "_").to_sym
+    }
+    @cait_data = S3CSVReader.read(
+      DATA_CAIT_FILEPATH, [symbol_converter]
+    ).map(&:to_h)
     @cait_labels = S3CSVReader.read(LEGEND_CAIT_FILEPATH).map(&:to_h)
     @wb_wide_data = S3CSVReader.read(DATA_WB_WIDE_FILEPATH).map(&:to_h)
     @wb_sectoral_data = S3CSVReader.read(DATA_WB_SECTORAL_FILEPATH).map(&:to_h)
