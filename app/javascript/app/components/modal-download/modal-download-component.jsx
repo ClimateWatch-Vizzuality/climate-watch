@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
 import ModalHeader from 'components/modal/modal-header-component';
 import TextInput from 'components/text-input';
-import TextArea from 'components/text-area';
 import Dropdown from 'components/dropdown';
 
 import theme from 'styles/themes/input/text-input-theme.scss';
@@ -11,27 +10,28 @@ import styles from './modal-download-styles.scss';
 
 class ModalDownload extends PureComponent {
   renderForm() {
-    const {
-      countries,
-      sectors,
-      isSubmitting,
-      downloadSize,
-      onSubmit,
-      updateFirstName,
-      updateLastName,
-      updateEmail,
-      updateCountry,
-      updateOrganization,
-      updateSector,
-      updateExplanation,
-      firstName,
-      lastName,
-      email,
-      country,
-      organization,
-      sector,
-      explanation
-    } = this.props;
+    const { countries, sectors, isSubmitting, downloadSize } = this.props;
+
+    const onBlur = () => {};
+
+    const onSubmit = event => {
+      event.preventDefault();
+
+      this.props.onSubmit({
+        first_name: this.firstNameInput.state.value,
+        last_name: this.lastNameInput.state.value,
+        email: this.emailInput.state.value,
+        subscribe: this.subscribeInput.checked,
+        organization: this.organizationInput.state.value,
+        sector:
+          this.sectorInput.selectorElement.state.value &&
+          this.sectorInput.selectorElement.state.value.value,
+        country:
+          this.countryInput.selectorElement.state.value &&
+          this.countryInput.selectorElement.state.value.value,
+        explanation: this.explanationInput.state.value
+      });
+    };
 
     return (
       <div>
@@ -47,9 +47,9 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             label={'First name'}
-            inputType={'text'}
-            onChange={updateFirstName}
-            value={firstName}
+            inputType="text"
+            onBlur={onBlur}
+            innerRef={el => (this.firstNameInput = el)}
             required
           />
 
@@ -57,17 +57,19 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             label={'Last name'}
-            inputType={'text'}
-            onChange={updateLastName}
+            inputType="text"
+            onBlur={onBlur}
+            innerRef={el => (this.lastNameInput = el)}
             required
           />
 
           <TextInput
             className={styles.input}
             theme={theme}
-            inputType={'email'}
+            inputType="email"
             label={'Email'}
-            onChange={updateEmail}
+            onBlur={onBlur}
+            innerRef={el => (this.emailInput = el)}
             required
           />
 
@@ -75,7 +77,8 @@ class ModalDownload extends PureComponent {
             className={styles.dropdown}
             label="Country"
             options={countries}
-            onValueChange={updateCountry}
+            onBlur={onBlur}
+            innerRef={el => (this.countryInput = el)}
             hideResetButton
             required
           />
@@ -83,26 +86,28 @@ class ModalDownload extends PureComponent {
           <label>
             Subscribe to email updates
             <input
+              ref={el => (this.subscribeInput = el)}
               name="subscribe"
               type="checkbox"
               value="true"
-              ref={el => (this.subscribeInput = el)}
             />
           </label>
 
           <TextInput
             className={styles.input}
             theme={theme}
-            inputType={'text'}
+            inputType="text"
             label={'Organization'}
-            onChange={updateOrganization}
+            innerRef={el => (this.organizationInput = el)}
+            onBlur={onBlur}
           />
 
           <Dropdown
             className={styles.dropdown}
             label="Sector"
             options={sectors}
-            onValueChange={updateSector}
+            onBlur={onBlur}
+            innerRef={el => (this.sectorInput = el)}
             hideResetButton
           />
 
@@ -110,9 +115,9 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             inputType="textarea"
-            label="How do you intend to use the data?"
-            onDescriptionChange={updateExplanation}
-            onFocus={updateExplanation}
+            onBlur={onBlur}
+            innerRef={el => (this.explanationInput = el)}
+            label={'How do you intend to use the data?'}
           />
 
           <input
@@ -146,27 +151,12 @@ class ModalDownload extends PureComponent {
 
 ModalDownload.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  downloadUrl: PropTypes.string.isRequired,
   downloadSize: PropTypes.string.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   countries: PropTypes.array.isRequired,
-  sectors: PropTypes.array.isRequired,
-  updateFirstName: PropTypes.func.isRequired,
-  updateLastName: PropTypes.func.isRequired,
-  updateEmail: PropTypes.func.isRequired,
-  updateCountry: PropTypes.func.isRequired,
-  updateOrganization: PropTypes.func.isRequired,
-  updateSector: PropTypes.func.isRequired,
-  updateExplanation: PropTypes.func.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  country: PropTypes.string.isRequired,
-  organization: PropTypes.string.isRequired,
-  sector: PropTypes.string.isRequired,
-  explanation: PropTypes.string.isRequired
+  sectors: PropTypes.array.isRequired
 };
 
 export default ModalDownload;

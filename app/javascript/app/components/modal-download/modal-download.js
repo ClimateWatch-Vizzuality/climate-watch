@@ -26,33 +26,19 @@ const includeActions = withHandlers({
     props.toggleModalDownload({ open: false });
   },
 
-  updateFirstName: props => firstName => {
-    props.firstName = firstName;
+  onSubmit: props => event => {
+    console.log(event);
+
+    // const params = Object.keys(payload).map(
+    //   key => `${key}=${encodeURIComponent(payload[key])}`
+    // );
+
+    // this.setState({ isSubmitting: true });
+
+    // fetch(`${SPREADSHEET_URL}?${params.join('&')}`)
+    //   .then(() => window.location.assign(this.props.downloadUrl))
+    //   .finally(() => this.setState({ isSubmitting: false }));
   }
-
-  //   onSubmit: props => event => {
-  //     event.preventDefault();
-
-  //     // const payload = {
-  //     //   first_name: this.firstNameInput.value,
-  //     //   last_name: this.lastNameInput.value,
-  //     //   email: this.emailInput.value,
-  //     //   subscribe: this.subscribeInput.checked,
-  //     //   organization: this.organizationInput.value,
-  //     //   sector: this.sectorInput.value,
-  //     //   explanation: this.explanationInput.value
-  //     // };
-
-  //     const params = Object.keys(payload).map(
-  //       key => `${key}=${encodeURIComponent(payload[key])}`
-  //     );
-
-  //     this.setState({ isSubmitting: true });
-
-  //     fetch(`${SPREADSHEET_URL}?${params.join('&')}`)
-  //       .then(() => window.location.assign(this.props.downloadUrl))
-  //       .finally(() => this.setState({ isSubmitting: false }));
-  //   }
 });
 
 export { actions, reducers, initialState };
