@@ -19,25 +19,25 @@ export default [
       }),
     anchor: true,
     exact: true
-  },
-  {
-    label: 'Emission Pathways',
-    path: '/data-explorer/emission-pathways',
-    component: () =>
-      createElement(DataExplorerContent, {
-        section: 'emission-pathways'
-      }),
-    anchor: true,
-    exact: true
-  },
-  {
-    label: 'NDC-SDG Linkages',
-    path: '/data-explorer/ndc-sdg-linkages',
-    component: () =>
-      createElement(DataExplorerContent, {
-        section: 'ndc-sdg-linkages'
-      }),
-    anchor: true,
-    exact: true
   }
+  // {
+  //   label: 'Emission Pathways',
+  //   path: '/data-explorer/emission-pathways',
+  //   component: () =>
+  //     createElement(DataExplorerContent, {
+  //       section: 'emission-pathways'
+  //     }),
+  //   anchor: true,
+  //   exact: true
+  // },
+  // {
+  //   label: 'NDC-SDG Linkages',
+  //   path: '/data-explorer/ndc-sdg-linkages',
+  //   component: () =>
+  //     createElement(DataExplorerContent, {
+  //       section: 'ndc-sdg-linkages'
+  //     }),
+  //   anchor: true,
+  //   exact: true
+  // }
 ];
