@@ -34,7 +34,7 @@ export const getIndicatorsParsed = createSelector(
           const legendBuckets =
             Object.keys(i.locations) === isos
               ? i.labels
-              : { ...i.labels, 0: { name: 'No data', index: 0 } };
+              : { ...i.labels, 0: { name: 'Not Applicable', index: 0 } };
           return {
             label: i.name,
             value: i.slug,
