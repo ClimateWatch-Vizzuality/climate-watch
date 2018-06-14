@@ -42,7 +42,7 @@ const MyAccount = props => {
           placeholder={'Add a name'}
           label={'First name'}
           inputType={'text'}
-          onChange={updateUserFirstName}
+          onBlur={updateUserFirstName}
           value={firstName}
         />
         <TextInput
@@ -51,7 +51,7 @@ const MyAccount = props => {
           placeholder={'Add a name'}
           label={'Last name'}
           inputType={'text'}
-          onChange={updateUserLastName}
+          onBlur={updateUserLastName}
           value={lastName}
         />
         <TextInput
@@ -72,7 +72,7 @@ const MyAccount = props => {
           label={'Organization'}
           inputType={'text'}
           focus
-          onChange={updateUserOrganization}
+          onBlur={updateUserOrganization}
         />
         <Dropdown
           className={styles.dropdown}
@@ -97,7 +97,7 @@ const MyAccount = props => {
           theme={theme}
           label={'How do you intend to use the data?'}
           inputType={'textarea'}
-          onChange={updateUserDataUsage}
+          onBlur={updateUserDataUsage}
           value={dataUsage}
         />
       </div>
@@ -114,7 +114,7 @@ const MyAccount = props => {
         </span>
       </div>
       <div className={styles.updateButton}>
-        <Button color={'yellow'} onClick={saveUserData}>
+        <Button color={'yellow'} onClick={() => saveUserData()}>
           <span>Update profile</span>
         </Button>
         {isProfileUpdated && <span>Profile updated succesfully</span>}
@@ -130,7 +130,7 @@ MyAccount.propTypes = {
   organization: PropTypes.string,
   sector: PropTypes.object,
   dataUsage: PropTypes.string,
-  tester: PropTypes.string,
+  tester: PropTypes.bool,
   countries: PropTypes.array.isRequired,
   country: PropTypes.object,
   sectors: PropTypes.array.isRequired,

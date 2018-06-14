@@ -6,14 +6,30 @@ import cx from 'classnames';
 import styles from './text-input-styles';
 
 class InputComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: props.value
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== this.props.value) {
+      this.setState({ value: nextProps.value });
+    }
+  }
+
+  handleChange = value => {
+    this.setState({ value });
+  };
+
   render() {
     const {
       theme,
       className,
       failed,
       disabled,
-      value,
-      onChange,
+      onBlur,
       placeholder,
       label,
       inputType
@@ -27,9 +43,10 @@ class InputComponent extends Component {
         [theme.disabled]: disabled,
         [theme.inputFailed]: failed
       }),
-      onChange: e => onChange(e.target.value),
-      value: value || '',
+      onChange: e => this.handleChange(e.target.value),
+      onBlur: () => onBlur(this.state.value),
       disabled,
+      value: this.state.value,
       placeholder
     };
     const labelProp = label ? { id: label } : {};
@@ -61,7 +78,7 @@ InputComponent.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   inputType: PropTypes.string,
-  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
   onFocus: PropTypes.func,
   failed: PropTypes.bool,
   disabled: PropTypes.bool,
