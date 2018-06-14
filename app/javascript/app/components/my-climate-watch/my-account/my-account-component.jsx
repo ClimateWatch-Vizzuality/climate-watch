@@ -21,6 +21,7 @@ const MyAccount = props => {
     dataUsage,
     tester,
     isProfileUpdated,
+    updateError,
     updateUserFirstName,
     updateUserLastName,
     updateUserOrganization,
@@ -118,6 +119,11 @@ const MyAccount = props => {
           <span>Update profile</span>
         </Button>
         {isProfileUpdated && <span>Profile updated succesfully</span>}
+        {updateError && (
+          <span>
+            There has been some error on the update. Please try again later
+          </span>
+        )}
       </div>
     </div>
   );
@@ -135,6 +141,7 @@ MyAccount.propTypes = {
   country: PropTypes.object,
   sectors: PropTypes.array.isRequired,
   isProfileUpdated: PropTypes.bool.isRequired,
+  updateError: PropTypes.bool,
   updateUserFirstName: PropTypes.func.isRequired,
   updateUserLastName: PropTypes.func.isRequired,
   updateUserOrganization: PropTypes.func.isRequired,

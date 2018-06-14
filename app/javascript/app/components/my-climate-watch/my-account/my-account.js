@@ -20,6 +20,7 @@ const mapStateToProps = ({ login, countries }) => {
 
   return {
     isProfileUpdated: login.profileUpdated,
+    updateError: login.profileUpdateError,
     email: login.user.email,
     id: login.user.user_id.id,
     tester: login.user.user_id.tester,
