@@ -2,47 +2,36 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
 import ModalHeader from 'components/modal/modal-header-component';
+import TextInput from 'components/text-input';
+import TextArea from 'components/text-area';
+import Dropdown from 'components/dropdown';
+
+import theme from 'styles/themes/input/text-input-theme.scss';
 import styles from './modal-download-styles.scss';
 
-const SPREADSHEET_URL =
-  'https://script.google.com/macros/s/AKfycbynUpTR6EHAcGwfgaI26U3jFH4WKaPNTsR8qZBkSwNs7OCh7TJF/exec';
-
 class ModalDownload extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      isSubmitting: false
-    };
-  }
-
-  submit(event) {
-    event.preventDefault();
-
-    const payload = {
-      first_name: this.firstNameInput.value,
-      last_name: this.lastNameInput.value,
-      email: this.emailInput.value,
-      subscribe: this.subscribeInput.checked,
-      organization: this.organizationInput.value,
-      sector: this.sectorInput.value,
-      explanation: this.explanationInput.value
-    };
-
-    const params = Object.keys(payload).map(
-      key => `${key}=${encodeURIComponent(payload[key])}`
-    );
-
-    this.setState({ isSubmitting: true });
-
-    fetch(`${SPREADSHEET_URL}?${params.join('&')}`)
-      .then(() => window.location.assign(this.props.downloadUrl))
-      .finally(() => this.setState({ isSubmitting: false }));
-  }
-
   renderForm() {
-    const { size } = this.props;
-    const submit = this.submit.bind(this);
-    const { isSubmitting } = this.state;
+    const {
+      countries,
+      sectors,
+      isSubmitting,
+      downloadSize,
+      onSubmit,
+      updateFirstName,
+      updateLastName,
+      updateEmail,
+      updateCountry,
+      updateOrganization,
+      updateSector,
+      updateExplanation,
+      firstName,
+      lastName,
+      email,
+      country,
+      organization,
+      sector,
+      explanation
+    } = this.props;
 
     return (
       <div>
@@ -53,48 +42,43 @@ class ModalDownload extends PureComponent {
           about how you intend to use the data.
         </p>
 
-        <form onSubmit={submit}>
-          <div>
-            <div>
-              <label>
-                First name
-                <input
-                  name="first_name"
-                  ref={el => (this.firstNameInput = el)}
-                  required
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Last name
-                <input
-                  name="last_name"
-                  ref={el => (this.lastNameInput = el)}
-                  required
-                />
-              </label>
-            </div>
-          </div>
+        <form onSubmit={onSubmit}>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            label={'First name'}
+            inputType={'text'}
+            onChange={updateFirstName}
+            value={firstName}
+            required
+          />
 
-          <label>
-            Email address
-            <input
-              type="email"
-              name="email"
-              ref={el => (this.emailInput = el)}
-              required
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            label={'Last name'}
+            inputType={'text'}
+            onChange={updateLastName}
+            required
+          />
 
-          <label>
-            Country
-            <input
-              name="country"
-              ref={el => (this.countryInput = el)}
-              required
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            inputType={'email'}
+            label={'Email'}
+            onChange={updateEmail}
+            required
+          />
+
+          <Dropdown
+            className={styles.dropdown}
+            label="Country"
+            options={countries}
+            onValueChange={updateCountry}
+            hideResetButton
+            required
+          />
 
           <label>
             Subscribe to email updates
@@ -106,35 +90,34 @@ class ModalDownload extends PureComponent {
             />
           </label>
 
-          <label>
-            Organization
-            <input
-              id="organization"
-              name="organization"
-              ref={el => (this.organizationInput = el)}
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            inputType={'text'}
+            label={'Organization'}
+            onChange={updateOrganization}
+          />
 
-          <label>
-            Sector
-            <input
-              id="sector"
-              name="sector"
-              ref={el => (this.sectorInput = el)}
-            />
-          </label>
+          <Dropdown
+            className={styles.dropdown}
+            label="Sector"
+            options={sectors}
+            onValueChange={updateSector}
+            hideResetButton
+          />
 
-          <label>
-            How do you intend to use the data?
-            <textarea
-              name="explanation"
-              ref={el => (this.explanationInput = el)}
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            inputType="textarea"
+            label="How do you intend to use the data?"
+            onDescriptionChange={updateExplanation}
+            onFocus={updateExplanation}
+          />
 
           <input
             type="submit"
-            value={`Download ${size}`}
+            value={`Download ${downloadSize}`}
             disabled={isSubmitting}
           />
 
@@ -164,8 +147,26 @@ class ModalDownload extends PureComponent {
 ModalDownload.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   downloadUrl: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
-  onRequestClose: PropTypes.func.isRequired
+  downloadSize: PropTypes.string.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  countries: PropTypes.array.isRequired,
+  sectors: PropTypes.array.isRequired,
+  updateFirstName: PropTypes.func.isRequired,
+  updateLastName: PropTypes.func.isRequired,
+  updateEmail: PropTypes.func.isRequired,
+  updateCountry: PropTypes.func.isRequired,
+  updateOrganization: PropTypes.func.isRequired,
+  updateSector: PropTypes.func.isRequired,
+  updateExplanation: PropTypes.func.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  country: PropTypes.string.isRequired,
+  organization: PropTypes.string.isRequired,
+  sector: PropTypes.string.isRequired,
+  explanation: PropTypes.string.isRequired
 };
 
 export default ModalDownload;
