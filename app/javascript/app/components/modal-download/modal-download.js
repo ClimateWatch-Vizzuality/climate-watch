@@ -26,8 +26,9 @@ const includeActions = withHandlers({
     props.toggleModalDownload({ open: false });
   },
 
-  onSubmit: props => event => {
-    console.log(event);
+  onSubmit: e => props => {
+    console.log(props);
+    console.log(e);
 
     // const params = Object.keys(payload).map(
     //   key => `${key}=${encodeURIComponent(payload[key])}`
