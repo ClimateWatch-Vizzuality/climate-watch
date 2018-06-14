@@ -277,6 +277,16 @@ export const DATA_EXPLORER_FIRST_COLUMN_HEADERS = [
   'unit'
 ];
 
+export const USERS_PROFESIONAL_SECTORS = [
+  'Academic',
+  'Commercial',
+  'Internatioonal Organization',
+  'Media',
+  'National Government',
+  'NGO',
+  'Other'
+];
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -303,5 +313,6 @@ export default {
   CONTAINED_PATHNAME,
   LENSES_SELECTOR_INFO,
   DATA_EXPLORER_BLACKLIST,
-  DATA_EXPLORER_FIRST_COLUMN_HEADERS
+  DATA_EXPLORER_FIRST_COLUMN_HEADERS,
+  USERS_PROFESIONAL_SECTORS
 };

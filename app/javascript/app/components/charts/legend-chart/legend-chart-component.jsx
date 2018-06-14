@@ -68,9 +68,11 @@ class LegendChart extends PureComponent {
               />
             )}
           </ul>
-          <div className={styles.tagDescription}>
-            Click on each scenarios to see the assumptions behind it.
-          </div>
+          {config && config.legendNote && (
+            <div className={styles.tagDescription}>
+                Click on each scenarios to see the assumptions behind it.
+            </div>
+          )}
         </div>
         {model && (
           <div className={styles.legendLogo}>
