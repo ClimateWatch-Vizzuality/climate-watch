@@ -5,8 +5,8 @@ export const initialState = {
   loaded: false,
   logged: false,
   profileUpdated: false,
-  user: {},
-  error: false
+  profileUpdateError: false,
+  user: {}
 };
 
 function updateUserState(state, user, newUserData) {
@@ -81,5 +81,14 @@ export default {
     newUserData.tester = payload;
     return updateUserState(state, user, newUserData);
   },
-  [actions.profileUpdated]: state => ({ ...state, profileUpdated: true })
+  [actions.profileUpdated]: state => ({
+    ...state,
+    profileUpdated: true,
+    profileUpdateError: false
+  }),
+  [actions.profileUpdateError]: state => ({
+    ...state,
+    profileUpdated: false,
+    profileUpdateError: true
+  })
 };

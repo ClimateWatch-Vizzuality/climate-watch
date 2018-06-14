@@ -10,6 +10,35 @@ import styles from './emission-pathways-overview-styles.scss';
 
 class EmissionPathwaysOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+  getElement = (key, data) => {
+    let element = null;
+    switch (key) {
+      case 'url':
+        element = (
+          <a
+            href={data[key]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cx(styles.itemData, styles.itemLink)}
+          >
+            {data[key]}
+          </a>
+        );
+        break;
+      case 'mainteiner':
+        element = (
+          <div className={styles.itemLogo}>
+            <img src={`https:${data[key]}`} />
+          </div>
+        );
+        break;
+      default:
+        element = <p className={styles.itemData}>{data[key]}</p>;
+        break;
+    }
+    return element;
+  };
+
   render() {
     const { data, fullData, modalTitle, loading, handleInfoClick } = this.props;
     return (
@@ -22,18 +51,7 @@ class EmissionPathwaysOverview extends PureComponent {
                 Object.keys(data).map(key => (
                   <div key={key} className={styles.item}>
                     <div className={styles.title}>{toStartCase(key)}</div>
-                    {key !== 'url' ? (
-                      <p className={styles.itemData}>{data[key]}</p>
-                    ) : (
-                      <a
-                        href={data[key]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cx(styles.itemData, styles.itemLink)}
-                      >
-                        {data[key]}
-                      </a>
-                    )}
+                    {this.getElement(key, data)}
                   </div>
                 ))}
             </div>

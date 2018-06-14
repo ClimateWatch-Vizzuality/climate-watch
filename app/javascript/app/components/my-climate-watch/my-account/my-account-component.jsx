@@ -21,6 +21,7 @@ const MyAccount = props => {
     dataUsage,
     tester,
     isProfileUpdated,
+    updateError,
     updateUserFirstName,
     updateUserLastName,
     updateUserOrganization,
@@ -117,7 +118,16 @@ const MyAccount = props => {
         <Button color={'yellow'} onClick={() => saveUserData()}>
           <span>Update profile</span>
         </Button>
-        {isProfileUpdated && <span>Profile updated succesfully</span>}
+        {isProfileUpdated && (
+          <div className={styles.updateMessage}>
+            Profile updated succesfully
+          </div>
+        )}
+        {updateError && (
+          <div className={styles.updateMessage}>
+            There has been some error on the update
+          </div>
+        )}
       </div>
     </div>
   );
@@ -135,6 +145,7 @@ MyAccount.propTypes = {
   country: PropTypes.object,
   sectors: PropTypes.array.isRequired,
   isProfileUpdated: PropTypes.bool.isRequired,
+  updateError: PropTypes.bool,
   updateUserFirstName: PropTypes.func.isRequired,
   updateUserLastName: PropTypes.func.isRequired,
   updateUserOrganization: PropTypes.func.isRequired,

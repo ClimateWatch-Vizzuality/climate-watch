@@ -2,18 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { TabletLandscape } from 'components/responsive';
+import { themr } from 'react-css-themr';
 
 import styles from './header-styles.scss';
 
 const Header = props => {
-  const {
-    image,
-    className,
-    children,
-    size,
-    theme,
-    color
-  } = props;
+  const { image, className, children, size, theme, color } = props;
   const sizeClass = cx({
     [theme.medium]: size === 'medium',
     [theme.large]: size === 'large'
@@ -41,7 +35,7 @@ const Header = props => {
     <TabletLandscape>
       {isLandscape => (
         <div
-          className={cx(className, styles.header, sizeClass)}
+          className={cx(className, styles.header, theme.header, sizeClass)}
           style={getStyle(isLandscape)}
         >
           {children}
@@ -60,4 +54,4 @@ Header.propTypes = {
   theme: PropTypes.object
 };
 
-export default Header;
+export default themr('Header', styles)(Header);

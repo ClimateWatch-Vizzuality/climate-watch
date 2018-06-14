@@ -12,6 +12,7 @@ export const updateUserCountry = createAction('updateUserCountry');
 export const updateUserDataUsage = createAction('updateUserDataUsage');
 export const updateUserTester = createAction('updateUserTester');
 export const profileUpdated = createAction('profileUpdated');
+export const profileUpdateError = createAction('profileUpdateError');
 
 export const getUser = createThunkAction('getUser', () => (dispatch, state) => {
   const { login } = state();
@@ -34,6 +35,7 @@ export const saveUserData = createThunkAction(
       .then(dispatch(profileUpdated()))
       .catch(e => {
         console.warn(e);
+        dispatch(profileUpdateError());
       });
   }
 );

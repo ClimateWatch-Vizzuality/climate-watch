@@ -1,0 +1,54 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "properties": {
+    "data": {
+      "$id": "/properties/data",
+      "type": "array",
+      "items": {
+        "$id": "/properties/data/items",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$id": "/properties/data/items/properties/id",
+            "type": "integer",
+            "title": "The Id Schema ",
+            "default": 0,
+            "examples": [
+              817
+            ]
+          },
+          "slug": {
+            "$id": "/properties/data/items/properties/slug",
+            "type": "string",
+            "title": "The Slug Schema ",
+            "default": "",
+            "examples": [
+              "overview"
+            ]
+          },
+          "name": {
+            "$id": "/properties/data/items/properties/name",
+            "type": "string",
+            "title": "The Name Schema ",
+            "default": "",
+            "examples": [
+              "Overview"
+            ]
+          },
+          "parent_id": {
+            "$id": "/properties/data/items/properties/parent_id",
+            "type": ["null", "integer"],
+            "title": "The Parent_id Schema ",
+            "default": null,
+            "examples": [
+              null
+            ]
+          }
+        }
+      }
+    }
+  }
+}

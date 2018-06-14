@@ -1,12 +1,40 @@
 @import '~styles/layout.scss';
 
+$margin-container: 10px;
+
+.legendChart {
+  overflow: auto;
+  margin-bottom: $margin-container;
+
+  .legendContainer {
+    flex: 1;
+  }
+
+  .legendLogo {
+    width: 120px;
+    margin-top: $margin-container;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    .legendLogo {
+      width: 150px;
+    }
+  }
+}
+
 .tags {
   display: flex;
   overflow: scroll;
-
-  @include overflowFix(250px);
-
-  padding-top: 260px;
+  margin-top: $margin-container;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
@@ -23,6 +51,10 @@
     padding: 0 5px;
     margin-bottom: 10px;
   }
+}
+
+.tagDescription {
+  color: $dark-gray;
 }
 
 .tagSelector :global {

@@ -25,7 +25,13 @@
 }
 
 .textarea {
+  padding-top: 0.5rem;
   height: 200px;
+}
+
+.updateMessage {
+  font-size: $font-size-sm;
+  color: $gray;
 }
 
 .personalInfo,
