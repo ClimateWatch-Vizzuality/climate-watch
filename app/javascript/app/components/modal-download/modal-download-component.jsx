@@ -2,47 +2,36 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'components/modal/modal-component';
 import ModalHeader from 'components/modal/modal-header-component';
+import TextInput from 'components/text-input';
+import Dropdown from 'components/dropdown';
+
+import theme from 'styles/themes/input/text-input-theme.scss';
 import styles from './modal-download-styles.scss';
 
-const SPREADSHEET_URL =
-  'https://script.google.com/macros/s/AKfycbynUpTR6EHAcGwfgaI26U3jFH4WKaPNTsR8qZBkSwNs7OCh7TJF/exec';
-
 class ModalDownload extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      isSubmitting: false
-    };
-  }
-
-  submit(event) {
-    event.preventDefault();
-
-    const payload = {
-      first_name: this.firstNameInput.value,
-      last_name: this.lastNameInput.value,
-      email: this.emailInput.value,
-      subscribe: this.subscribeInput.checked,
-      organization: this.organizationInput.value,
-      sector: this.sectorInput.value,
-      explanation: this.explanationInput.value
-    };
-
-    const params = Object.keys(payload).map(
-      key => `${key}=${encodeURIComponent(payload[key])}`
-    );
-
-    this.setState({ isSubmitting: true });
-
-    fetch(`${SPREADSHEET_URL}?${params.join('&')}`)
-      .then(() => window.location.assign(this.props.downloadUrl))
-      .finally(() => this.setState({ isSubmitting: false }));
-  }
-
   renderForm() {
-    const { size } = this.props;
-    const submit = this.submit.bind(this);
-    const { isSubmitting } = this.state;
+    const { countries, sectors, isSubmitting, downloadSize } = this.props;
+
+    const onBlur = () => {};
+
+    const onSubmit = event => {
+      event.preventDefault();
+
+      this.props.onSubmit({
+        first_name: this.firstNameInput.state.value,
+        last_name: this.lastNameInput.state.value,
+        email: this.emailInput.state.value,
+        subscribe: this.subscribeInput.checked,
+        organization: this.organizationInput.state.value,
+        sector:
+          this.sectorInput.selectorElement.state.value &&
+          this.sectorInput.selectorElement.state.value.value,
+        country:
+          this.countryInput.selectorElement.state.value &&
+          this.countryInput.selectorElement.state.value.value,
+        explanation: this.explanationInput.state.value
+      });
+    };
 
     return (
       <div>
@@ -53,88 +42,87 @@ class ModalDownload extends PureComponent {
           about how you intend to use the data.
         </p>
 
-        <form onSubmit={submit}>
-          <div>
-            <div>
-              <label>
-                First name
-                <input
-                  name="first_name"
-                  ref={el => (this.firstNameInput = el)}
-                  required
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Last name
-                <input
-                  name="last_name"
-                  ref={el => (this.lastNameInput = el)}
-                  required
-                />
-              </label>
-            </div>
-          </div>
+        <form onSubmit={onSubmit}>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            label={'First name'}
+            inputType="text"
+            onBlur={onBlur}
+            innerRef={el => (this.firstNameInput = el)}
+            required
+          />
 
-          <label>
-            Email address
-            <input
-              type="email"
-              name="email"
-              ref={el => (this.emailInput = el)}
-              required
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            label={'Last name'}
+            inputType="text"
+            onBlur={onBlur}
+            innerRef={el => (this.lastNameInput = el)}
+            required
+          />
 
-          <label>
-            Country
-            <input
-              name="country"
-              ref={el => (this.countryInput = el)}
-              required
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            inputType="email"
+            label={'Email'}
+            onBlur={onBlur}
+            innerRef={el => (this.emailInput = el)}
+            required
+          />
+
+          <Dropdown
+            className={styles.dropdown}
+            label="Country"
+            options={countries}
+            onBlur={onBlur}
+            innerRef={el => (this.countryInput = el)}
+            hideResetButton
+            required
+          />
 
           <label>
             Subscribe to email updates
             <input
+              ref={el => (this.subscribeInput = el)}
               name="subscribe"
               type="checkbox"
               value="true"
-              ref={el => (this.subscribeInput = el)}
             />
           </label>
 
-          <label>
-            Organization
-            <input
-              id="organization"
-              name="organization"
-              ref={el => (this.organizationInput = el)}
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            inputType="text"
+            label={'Organization'}
+            innerRef={el => (this.organizationInput = el)}
+            onBlur={onBlur}
+          />
 
-          <label>
-            Sector
-            <input
-              id="sector"
-              name="sector"
-              ref={el => (this.sectorInput = el)}
-            />
-          </label>
+          <Dropdown
+            className={styles.dropdown}
+            label="Sector"
+            options={sectors}
+            onBlur={onBlur}
+            innerRef={el => (this.sectorInput = el)}
+            hideResetButton
+          />
 
-          <label>
-            How do you intend to use the data?
-            <textarea
-              name="explanation"
-              ref={el => (this.explanationInput = el)}
-            />
-          </label>
+          <TextInput
+            className={styles.input}
+            theme={theme}
+            inputType="textarea"
+            onBlur={onBlur}
+            innerRef={el => (this.explanationInput = el)}
+            label={'How do you intend to use the data?'}
+          />
 
           <input
             type="submit"
-            value={`Download ${size}`}
+            value={`Download ${downloadSize}`}
             disabled={isSubmitting}
           />
 
@@ -163,9 +151,12 @@ class ModalDownload extends PureComponent {
 
 ModalDownload.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  downloadUrl: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
-  onRequestClose: PropTypes.func.isRequired
+  downloadSize: PropTypes.string.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  countries: PropTypes.array.isRequired,
+  sectors: PropTypes.array.isRequired
 };
 
 export default ModalDownload;

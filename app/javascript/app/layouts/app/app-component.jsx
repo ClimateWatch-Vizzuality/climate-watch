@@ -15,7 +15,13 @@ import styles from './app-styles.scss'; // eslint-disable-line
 
 class App extends PureComponent {
   render() {
-    const { route, navRoutes, location, navbarMobileIsOpen } = this.props;
+    const {
+      route,
+      navRoutes,
+      navMobileRoutes,
+      location,
+      navbarMobileIsOpen
+    } = this.props;
     return (
       <div
         className={cx(
@@ -31,7 +37,7 @@ class App extends PureComponent {
             (isDesktop ? (
               <NavBar routes={navRoutes} />
             ) : (
-              <NavBarMobile routes={navRoutes} />
+              <NavBarMobile routes={navRoutes.concat(navMobileRoutes)} />
             ))}
         </Desktop>
         <div className={styles.pageWrapper}>
@@ -46,6 +52,7 @@ class App extends PureComponent {
 App.propTypes = {
   route: Proptypes.object,
   navRoutes: Proptypes.array,
+  navMobileRoutes: Proptypes.array,
   location: Proptypes.object.isRequired,
   navbarMobileIsOpen: Proptypes.bool
 };

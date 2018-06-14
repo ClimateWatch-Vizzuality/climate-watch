@@ -267,6 +267,16 @@ export const LENSES_SELECTOR_INFO = {
       in the locations menu. You can select fewer locations to get a wider range of models.`
 };
 
+export const USERS_PROFESIONAL_SECTORS = [
+  'Academic',
+  'Commercial',
+  'Internatioonal Organization',
+  'Media',
+  'National Government',
+  'NGO',
+  'Other'
+];
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -291,5 +301,6 @@ export default {
   NDC_DOCUMENT_OPTIONS,
   LATEST_VERSION,
   CONTAINED_PATHNAME,
-  LENSES_SELECTOR_INFO
+  LENSES_SELECTOR_INFO,
+  USERS_PROFESIONAL_SECTORS
 };

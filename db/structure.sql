@@ -1,5 +1,6 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -1152,7 +1153,14 @@ CREATE TABLE public.users (
     id bigint NOT NULL,
     ct_id character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    organization character varying,
+    first_name character varying,
+    last_name character varying,
+    country character varying,
+    sector character varying,
+    data_usage text,
+    tester boolean
 );
 
 
@@ -2784,6 +2792,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180123085343'),
 ('20180208091437'),
 ('20180208091529'),
-('20180601080231');
+('20180601080231'),
+('20180611080520'),
+('20180612074749'),
+('20180613114503'),
+('20180613114709'),
+('20180613124118');
 
 

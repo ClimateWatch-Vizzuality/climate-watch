@@ -17,7 +17,8 @@ import {
   getChartConfig,
   getFiltersOptions,
   getFiltersSelected,
-  getModalData
+  getModalData,
+  getModelSelected
 } from './emission-pathways-graph-selectors';
 
 const actions = { ...ownActions, ...modalActions };
@@ -68,6 +69,7 @@ const mapStateToProps = (state, { location }) => {
     filtersOptions: getFiltersOptions(espData),
     filtersSelected,
     modalData: getModalData(espData),
+    model: getModelSelected(espData),
     error: providers.some(p => state[p].error),
     loading: providers.some(p => state[p].loading) || !filtersSelected.model
   };
