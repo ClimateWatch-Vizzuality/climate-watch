@@ -8,7 +8,8 @@ export const fetchDataExplorerFail = createAction('fetchDataExplorerFail');
 const SECTION_NAMES = {
   'historical-emissions': 'historical_emissions',
   'ndc-sdg-linkages': 'ndc_sdg',
-  'emission-pathways': 'emission_pathways'
+  'emission-pathways': 'emission_pathways',
+  'ndc-content': 'ndc_content'
 };
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
