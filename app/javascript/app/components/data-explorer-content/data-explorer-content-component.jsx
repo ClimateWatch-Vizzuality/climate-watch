@@ -4,6 +4,7 @@ import DataExplorerProvider from 'providers/data-explorer-provider/data-explorer
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
+import Button from 'components/button';
 import styles from './data-explorer-content-styles.scss';
 
 class DataExplorerContent extends PureComponent {
@@ -23,15 +24,25 @@ class DataExplorerContent extends PureComponent {
     );
   }
   render() {
-    const { section, loading } = this.props;
+    const { section, loading, href, downloadHref } = this.props;
     return (
       <div>
         <DataExplorerProvider section={section} />
-        {loading ? (
-          <Loading light className={styles.loader} />
-        ) : (
-          this.renderTable()
-        )}
+        <div className={styles.tableContainer}>
+          {loading ? (
+            <Loading light className={styles.loader} />
+          ) : (
+            this.renderTable()
+          )}
+        </div>
+        <div className={styles.buttons}>
+          <Button className={styles.button} href={href} color="plain">
+            View in module page
+          </Button>
+          <Button className={styles.button} href={downloadHref} color="yellow">
+            Download
+          </Button>
+        </div>
       </div>
     );
   }
@@ -41,7 +52,9 @@ DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   data: PropTypes.array,
   firstColumnHeaders: PropTypes.array,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  href: PropTypes.string,
+  downloadHref: PropTypes.string
 };
 
 export default DataExplorerContent;

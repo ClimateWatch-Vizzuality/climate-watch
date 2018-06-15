@@ -4,3 +4,16 @@
 .noData {
   min-height: 600px;
 }
+
+.buttons {
+  @include columns(4);
+  @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding * 2);
+
+  > :nth-child(2) {
+    @include column-offset(4);
+  }
+}
+
+.tableContainer {
+  @include xy-gutters($gutter-position: 'bottom');
+}
