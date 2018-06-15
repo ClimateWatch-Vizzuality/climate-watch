@@ -67,6 +67,7 @@ class ImportAdaptation
     }
 
     return nil if d[k].nil?
+    s[:year] = d[:poverty_year] if k == :poverty_14
     return s.merge(boolean_value: d[k] == 'YES') if %w(YES NO).include?(d[k])
     return s.merge(number_value: d[k]) if d[k].numeric?
     return s.merge(string_value: d[k]) if d[k] != '#N/A'

@@ -60,7 +60,8 @@ CREATE TABLE adaptation_values (
     absolute_rank integer,
     relative_rank double precision,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    year integer
 );
 
 
@@ -2798,6 +2799,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180612074749'),
 ('20180613114503'),
 ('20180613114709'),
-('20180613124118');
+('20180613124118'),
+('20180615113815');
 
 
