@@ -8,9 +8,10 @@ import NdcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import SDGCard from 'components/sdg-card';
 import ReactTooltip from 'react-tooltip';
 import NoContent from 'components/no-content';
+import ButtonGroup from 'components/button-group';
 import Dropdown from 'components/dropdown';
+import ModalMetadata from 'components/modal-metadata';
 import isEqual from 'lodash/isEqual';
-import InfoButton from 'components/button/info-button';
 import Button from 'components/button';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import layout from 'styles/layout.scss';
@@ -107,8 +108,11 @@ class CountrySDGLinkages extends PureComponent {
 
   render() {
     const {
+      iso,
       activeSector,
       sectorOptions,
+      isNdcp,
+      isEmbed,
       handleSectorChange,
       handleInfoClick,
       handleAnalyticsClick
@@ -125,15 +129,40 @@ class CountrySDGLinkages extends PureComponent {
       </div>
     );
 
+    const href = `http://ndcpartnership.org/climate-watch/ndcs-sdg${activeSector
+      ? `?goal=${activeSector.value}`
+      : ''}`;
+    const link = `/ndcs-sdg${activeSector
+      ? `?goal=${activeSector.value}`
+      : ''}`;
+
     const exploreButton = (
       <Button
         className={styles.exploreBtn}
         color="yellow"
-        link={`/ndcs-sdg${activeSector ? `?goal=${activeSector.value}` : ''}`}
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
       >
         Explore global linkages
       </Button>
+    );
+    const buttonGroupConfig = isEmbed
+      ? [{ type: 'info', onClick: handleInfoClick }]
+      : [
+        { type: 'info', onClick: handleInfoClick },
+        {
+          type: 'share',
+          shareUrl: `/embed/countries/${iso}/ndc-sdg-linkages`
+        }
+      ];
+
+    const buttonGroup = (
+      <ButtonGroup
+        key="action1"
+        className={styles.exploreBtn}
+        buttonsConfig={buttonGroupConfig}
+      />
     );
 
     return (
@@ -144,12 +173,7 @@ class CountrySDGLinkages extends PureComponent {
             <div className={styles.buttons}>
               <h3 className={styles.title}>NDC-SDG Linkages</h3>
               <TabletPortraitOnly>{description}</TabletPortraitOnly>
-              <InfoButton
-                className={styles.infoBtn}
-                infoOpen={false}
-                handleInfoClick={handleInfoClick}
-                box
-              />
+              {buttonGroup}
               <Dropdown
                 label="Filter by sector"
                 placeholder="Choose a sector"
@@ -165,6 +189,7 @@ class CountrySDGLinkages extends PureComponent {
           {this.renderCards()}
           <TabletPortraitOnly>{exploreButton}</TabletPortraitOnly>
         </div>
+        <ModalMetadata />
       </div>
     );
   }
@@ -178,6 +203,8 @@ CountrySDGLinkages.propTypes = {
   sectors: Proptypes.object,
   handleSectorChange: Proptypes.func,
   activeSector: Proptypes.object,
+  isNdcp: Proptypes.bool,
+  isEmbed: Proptypes.bool,
   loading: Proptypes.bool,
   setTooltipData: Proptypes.func,
   tooltipData: Proptypes.object,
