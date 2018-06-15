@@ -52,13 +52,16 @@ class ImportAdaptation
     end
   end
 
+  # rubocop:disable Naming/UncommunicativeMethodParamName
   def variable_attributes(m)
     {
       slug: m[:column_name],
       name: m[:long_name]
     }
   end
+  # rubocop:enable Naming/UncommunicativeMethodParamName
 
+  # rubocop:disable Naming/UncommunicativeMethodParamName
   def value_attributes(k, d, l, r)
     s = {
       location: l,
@@ -72,6 +75,7 @@ class ImportAdaptation
     return s.merge(number_value: d[k]) if d[k].numeric?
     return s.merge(string_value: d[k]) if d[k] != '#N/A'
   end
+  # rubocop:enable Naming/UncommunicativeMethodParamName
 
   def update_ranks
     sql = <<~END
