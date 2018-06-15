@@ -25,6 +25,7 @@ import * as espScenariosProvider from 'providers/esp-scenarios-provider';
 import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
 import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-provider';
 import * as emissionsProvider from 'providers/emissions-provider';
+import * as dataExplorerProvider from 'providers/data-explorer-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -46,7 +47,8 @@ const providersReducers = {
   espIndicators: handleActions(espIndicatorsProvider),
   espIndicatorsTrend: handleActions(espIndicatorsTrendProvider),
   espLocations: handleActions(espLocationsProvider),
-  espTimeSeries: handleActions(espTimeSeriesProvider)
+  espTimeSeries: handleActions(espTimeSeriesProvider),
+  dataExplorer: handleActions(dataExplorerProvider)
 };
 
 // Pages
