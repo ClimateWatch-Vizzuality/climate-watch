@@ -19,7 +19,7 @@ class DataExplorerContent extends PureComponent {
         horizontalScroll
       />
     ) : (
-      <NoContent message={'No data'} />
+      <NoContent message={'No data'} className={styles.noData} />
     );
   }
   render() {

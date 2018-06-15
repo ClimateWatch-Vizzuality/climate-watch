@@ -12,7 +12,7 @@ export const getData = createSelector(
 );
 
 export const parseData = createSelector([getData], data => {
-  if (!data) return null;
+  if (!data || !data.length) return null;
   const updatedData = data;
   const expandedEmissionsData = updatedData.map(d => {
     const yearEmissions = {};
