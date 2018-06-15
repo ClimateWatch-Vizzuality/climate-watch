@@ -4,9 +4,10 @@ import Button from 'components/button';
 import Card from 'components/card';
 import Intro from 'components/intro';
 import cx from 'classnames';
+import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
 import NoContent from 'components/no-content';
-import InfoButton from 'components/button/info-button';
+import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
@@ -17,33 +18,53 @@ class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
   renderInfoButton() {
-    const { handleInfoClick } = this.props;
+    const { handleInfoClick, isEmbed, iso } = this.props;
+    const buttonGroupConfig = isEmbed
+      ? [{ type: 'info', onClick: handleInfoClick }]
+      : [
+        { type: 'info', onClick: handleInfoClick },
+        {
+          type: 'share',
+          shareUrl: `/embed/countries/${iso}/ndc-sdg-linkages`
+        }
+      ];
+
     return (
-      <InfoButton
-        className={styles.infoBtn}
-        infoOpen={false}
-        handleInfoClick={handleInfoClick}
-        box
+      <ButtonGroup
+        key="action1"
+        className={styles.exploreBtn}
+        buttonsConfig={buttonGroupConfig}
       />
     );
   }
 
   renderCompareButton() {
-    const { iso } = this.props;
+    const { iso, isNdcp } = this.props;
+    const href = 'http://ndcpartnership.org/climate-watch/ndcs';
+    const link = `/ndcs/compare/mitigation?locations=${iso}`;
     return (
-      <Button color="white" link={`/ndcs/compare/mitigation?locations=${iso}`}>
+      <Button
+        color="white"
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
+      >
         Compare
       </Button>
     );
   }
 
   renderExploreButton() {
-    const { iso, handleAnalyticsClick } = this.props;
+    const { iso, handleAnalyticsClick, isNdcp } = this.props;
+
+    const href = 'http://ndcpartnership.org/climate-watch/ndcs';
+    const link = `/ndcs/country/${iso}`;
+
     return (
       <Button
         className={styles.exploreBtn}
         color="yellow"
-        link={`/ndcs/country/${iso}`}
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
       >
         Explore NDC content
@@ -153,7 +174,7 @@ class CountryNdcOverview extends PureComponent {
   }
 
   render() {
-    const { sectors, values, loading, actions, iso } = this.props;
+    const { sectors, values, loading, actions, iso, isEmbed } = this.props;
     const hasSectors = values && sectors;
     const description = hasSectors && (
       <p
@@ -166,7 +187,7 @@ class CountryNdcOverview extends PureComponent {
     );
 
     return (
-      <div className={styles.wrapper}>
+      <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
         <NdcContentOverviewProvider locations={[iso]} />
         {!hasSectors && !loading ? (
           <NoContent
@@ -215,6 +236,7 @@ class CountryNdcOverview extends PureComponent {
             )}
           </div>
         )}
+        <ModalMetadata />
       </div>
     );
   }
@@ -226,6 +248,8 @@ CountryNdcOverview.propTypes = {
   values: PropTypes.object,
   loading: PropTypes.bool,
   actions: PropTypes.bool,
+  isNdcp: PropTypes.bool,
+  isEmbed: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired,
   handleAnalyticsClick: PropTypes.func.isRequired
 };

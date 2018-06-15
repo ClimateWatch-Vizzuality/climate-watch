@@ -34,8 +34,8 @@ export default [
   },
   {
     path: '/embed/countries/:iso/ndc-content-overview',
-    component: CountryNdcOverview,
-    exact: true
+    exact: true,
+    component: () => createElement(CountryNdcOverview, { actions: true })
   },
   {
     path: '/embed/countries/:iso/ndc-sdg-linkages',
