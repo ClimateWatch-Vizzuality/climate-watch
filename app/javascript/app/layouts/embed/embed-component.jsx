@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import CountriesProvider from 'providers/countries-provider';
+import { isPageNdcp } from 'utils/navigation';
 import cwLogo from 'assets/icons/cw-logo.svg';
 import cx from 'classnames';
 import Icon from 'components/icon';
@@ -13,18 +14,20 @@ class Embed extends PureComponent {
   render() {
     const { route, location } = this.props;
     const link = location.pathname.replace('/embed', '');
-
+    const isNdcp = isPageNdcp(location);
     return (
       <div className={styles.embed}>
         <CountriesProvider />
         <div className={cx(layout.content, styles.embedContent)}>
           {renderRoutes(route.routes)}
         </div>
-        <div className={styles.footer}>
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            <Icon className={styles.logo} icon={cwLogo} />
-          </a>
-        </div>
+        {!isNdcp && (
+          <div className={styles.footer}>
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              <Icon className={styles.logo} icon={cwLogo} />
+            </a>
+          </div>
+        )}
       </div>
     );
   }
