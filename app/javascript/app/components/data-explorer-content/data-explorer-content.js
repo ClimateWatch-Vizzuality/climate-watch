@@ -11,6 +11,7 @@ import { parseData, getMeta } from './data-explorer-content-selectors';
 const mapStateToProps = (state, { section, location }) => {
   const dataState = {
     data: state.dataExplorer && state.dataExplorer.data,
+    meta: state.dataExplorer && state.dataExplorer.metadata,
     section
   };
   const SECTION_HREFS = {
@@ -23,7 +24,7 @@ const mapStateToProps = (state, { section, location }) => {
   return {
     data: parseData(dataState),
     meta: getMeta(dataState),
-    metadataSection: location.hash && location.hash === '#meta',
+    metadataSection: !!location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
     href: SECTION_HREFS[section],

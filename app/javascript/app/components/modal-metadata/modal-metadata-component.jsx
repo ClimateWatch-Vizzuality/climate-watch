@@ -8,18 +8,6 @@ import NoContent from 'components/no-content';
 
 import styles from './modal-metadata-styles.scss';
 
-const MetadataProp = ({ title, children }) => (
-  <p className={styles.text}>
-    <span className={styles.textHighlight}>{title}: </span>
-    {children}
-  </p>
-);
-
-MetadataProp.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node
-};
-
 class ModalMetadata extends PureComponent {
   constructor() {
     super();

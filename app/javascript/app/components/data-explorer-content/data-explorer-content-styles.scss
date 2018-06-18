@@ -17,3 +17,7 @@
 .tableContainer {
   @include xy-gutters($gutter-position: 'bottom');
 }
+
+.metadataText {
+  @include xy-gutters($gutter-position: ('top', 'bottom'));
+}

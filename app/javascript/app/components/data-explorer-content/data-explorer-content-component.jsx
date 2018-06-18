@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import DataExplorerProvider from 'providers/data-explorer-provider/data-explorer-provider';
 import Table from 'components/table';
+import MetadataText from 'components/metadata-text';
 import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
@@ -9,11 +10,12 @@ import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import styles from './data-explorer-content-styles.scss';
 
+const noData = <NoContent message={'No data'} className={styles.noData} />;
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderContent() {
     const { metadataSection } = this.props;
-    return metadataSection ? 'meta' : this.renderTable();
+    return metadataSection ? this.renderMeta() : this.renderTable();
   }
 
   renderTable() {
@@ -27,7 +29,16 @@ class DataExplorerContent extends PureComponent {
         horizontalScroll
       />
     ) : (
-      <NoContent message={'No data'} className={styles.noData} />
+      noData
+    );
+  }
+
+  renderMeta() {
+    const { meta } = this.props;
+    return meta ? (
+      <MetadataText className={styles.metadataText} data={meta} />
+    ) : (
+      noData
     );
   }
 
@@ -67,6 +78,7 @@ DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   metadataSection: PropTypes.bool,
   data: PropTypes.array,
+  meta: PropTypes.array,
   firstColumnHeaders: PropTypes.array,
   loading: PropTypes.bool,
   href: PropTypes.string,

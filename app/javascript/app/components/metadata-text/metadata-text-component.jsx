@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import styles from './metadata-text-styles.scss';
 
 const MetadataProp = ({ title, children }) => (
@@ -17,7 +18,7 @@ MetadataProp.propTypes = {
 class MetadataText extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { showDisclaimer, disclaimer, data } = this.props;
+    const { showDisclaimer, disclaimer, data, className } = this.props;
     const {
       learn_more_link,
       source_organization,
@@ -33,7 +34,7 @@ class MetadataText extends PureComponent {
     } = this.props.data;
 
     return (
-      <div key={data.source} className={styles.textContainer}>
+      <div key={data.source} className={cx(styles.textContainer, className)}>
         {technical_title && (
           <MetadataProp title="Title">{technical_title}</MetadataProp>
         )}
@@ -86,7 +87,8 @@ class MetadataText extends PureComponent {
 MetadataText.propTypes = {
   data: PropTypes.object,
   showDisclaimer: PropTypes.bool.isRequired,
-  disclaimer: PropTypes.node
+  disclaimer: PropTypes.node,
+  className: PropTypes.string
 };
 
 MetadataText.defaultProps = {

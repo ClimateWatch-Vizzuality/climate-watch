@@ -1,7 +1,11 @@
 import { createSelector } from 'reselect';
 import remove from 'lodash/remove';
+import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
-import { DATA_EXPLORER_BLACKLIST } from 'data/constants';
+import {
+  DATA_EXPLORER_BLACKLIST,
+  DATA_EXPLORER_METADATA_SOURCE
+} from 'data/constants';
 
 export const getData = createSelector(
   [state => state.data, state => state.section],
@@ -12,10 +16,13 @@ export const getData = createSelector(
 );
 
 export const getMeta = createSelector(
-  [state => state.data, state => state.section],
-  (data, section) => {
-    if (!data || !section) return null;
-    return (data && data[section] && data[section].meta) || null;
+  [state => state.meta, state => state.section],
+  (meta, section) => {
+    if (!meta || isEmpty(meta) || !section) return null;
+    const sectionMetadata = meta['section-metadata'];
+    return sectionMetadata.find(
+      s => s.source === DATA_EXPLORER_METADATA_SOURCE[section]
+    );
   }
 );
 
