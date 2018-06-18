@@ -1,7 +1,12 @@
 import { createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getLocationParamUpdated } from 'utils/navigation';
+import {
+  getLocationParamUpdated,
+  isPageNdcp,
+  isPageContained,
+  isEmbededComponent
+} from 'utils/navigation';
 import qs from 'query-string';
 import isEmpty from 'lodash/isEmpty';
 import ReactGA from 'react-ga';
@@ -28,6 +33,8 @@ const mapStateToProps = (state, { match, location }) => {
   const { countrySDGLinkages, ndcsSdgsMeta, ndcsSdgsData } = state;
   const { iso } = match.params;
   const search = qs.parse(location.search);
+  const isNdcp = isPageNdcp(location) || isPageContained;
+  const isEmbed = isEmbededComponent(location);
   const tooltipData = countrySDGLinkages.tooltipData;
   const targetsData =
     !isEmpty(ndcsSdgsData.data) && ndcsSdgsData.data[iso]
@@ -51,7 +58,9 @@ const mapStateToProps = (state, { match, location }) => {
     targetsData,
     loading:
       (!ndcsSdgsData.error && ndcsSdgsData.loading) || ndcsSdgsMeta.loading,
-    iso
+    iso,
+    isNdcp,
+    isEmbed
   };
 };
 

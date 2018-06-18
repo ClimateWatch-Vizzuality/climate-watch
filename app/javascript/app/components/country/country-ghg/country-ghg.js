@@ -1,12 +1,12 @@
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
+import { isEmbededComponent } from 'utils/navigation';
 import { connect } from 'react-redux';
 import Component from './country-ghg-component';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
-  const pathname = location.pathname;
-  const isEmbedded = pathname.startsWith('/embed');
+  const isEmbedded = isEmbededComponent(location);
   return { search, isEmbedded };
 };
 
