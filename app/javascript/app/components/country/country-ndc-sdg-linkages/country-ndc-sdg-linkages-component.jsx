@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import cx from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 import Loading from 'components/loading';
@@ -62,7 +63,8 @@ class CountrySDGLinkages extends PureComponent {
       loading,
       setTooltipData,
       handleOnDotClick,
-      iso
+      iso,
+      isEmbed
     } = this.props;
     const hasGoals = goals && goals.length > 0;
     if (loading) return <Loading light className={styles.loader} />;
@@ -77,7 +79,7 @@ class CountrySDGLinkages extends PureComponent {
     return (
       hasGoals && (
         <div>
-          <div className={styles.sdgs}>
+          <div className={cx(styles.sdgs, { [styles.sdgsEmbed]: isEmbed })}>
             {goals.map(goal => (
               <SDGCard
                 activeSector={activeSector}

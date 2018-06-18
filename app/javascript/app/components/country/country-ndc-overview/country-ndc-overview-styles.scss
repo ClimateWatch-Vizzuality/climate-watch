@@ -29,7 +29,7 @@
   @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
-    @include columns((2, 4, 6));
+    @include columns((2.4, 3.6, 6));
   }
 }
 

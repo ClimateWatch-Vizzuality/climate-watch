@@ -29,11 +29,15 @@
   }
 }
 
+.sdgsEmbed {
+  margin-bottom: 1px;
+}
+
 .buttons {
   @include columns((12, 12, 2, 10));
 
   @media #{$tablet-landscape} {
-    @include columns((6, 1, 2, 3));
+    @include columns((6, 1.2, 1.8, 3));
   }
 
   .infoBtn,
