@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Proptypes from 'prop-types';
+import cx from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 import Loading from 'components/loading';
@@ -30,24 +31,33 @@ class CountrySDGLinkages extends PureComponent {
   getTooltip() {
     const { sectors, tooltipData, targets, tooltipSectorIds } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
-    const hasTooltipData = tooltipSectorIds && tooltipSectorIds.length > 0;
+    const hasTooltipData = sector => {
+      if (tooltipSectorIds) return tooltipSectorIds.includes(sector);
+      return false;
+    };
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
-        {hasTooltipData && (
-          <p className={styles.sectors}>
-            <b>Sectors: </b>
-            {tooltipSectorIds.map((sector, index) => (
-              <span key={`${tooltipData.targetKey}-${sector}`}>
+        <p className={styles.sectors}>
+          <b>Sectors: </b>
+          {tooltipData.sectors.map((sector, index) => (
+            <span key={`${tooltipData.targetKey}-${sector}`}>
+              <span
+                className={cx({
+                  [styles.sectorIcluded]: hasTooltipData(sector)
+                })}
+              >
                 {sectors[sector]}
-                {index === tooltipSectorIds.length - 1 ? '' : ', '}
               </span>
-            ))}
-          </p>
-        )}
+              <span>
+                {index === tooltipData.sectors.length - 1 ? '' : ', '}
+              </span>
+            </span>
+          ))}
+        </p>
       </div>
     ) : null;
   }
