@@ -78,7 +78,7 @@ DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   metadataSection: PropTypes.bool,
   data: PropTypes.array,
-  meta: PropTypes.array,
+  meta: PropTypes.object,
   firstColumnHeaders: PropTypes.array,
   loading: PropTypes.bool,
   href: PropTypes.string,
