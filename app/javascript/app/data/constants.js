@@ -287,6 +287,13 @@ export const USERS_PROFESIONAL_SECTORS = [
   'Other'
 ];
 
+export const DATA_EXPLORER_SECTION_NAMES = {
+  'historical-emissions': 'historical_emissions',
+  'ndc-sdg-linkages': 'ndc_sdg',
+  'emission-pathways': 'emission_pathways',
+  'ndc-content': 'ndc_content'
+};
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -314,5 +321,6 @@ export default {
   LENSES_SELECTOR_INFO,
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
+  DATA_EXPLORER_SECTION_NAMES,
   USERS_PROFESIONAL_SECTORS
 };

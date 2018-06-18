@@ -13,17 +13,19 @@ export const getData = createSelector(
 
 export const parseData = createSelector([getData], data => {
   if (!data || !data.length) return null;
-  const updatedData = data;
-  const expandedEmissionsData = updatedData.map(d => {
-    const yearEmissions = {};
-    d.emissions.forEach(e => {
-      yearEmissions[e.year] = e.value;
+  let updatedData = data;
+  if (updatedData[0].emissions) {
+    updatedData = updatedData.map(d => {
+      const yearEmissions = {};
+      d.emissions.forEach(e => {
+        yearEmissions[e.year] = e.value;
+      });
+      return { ...d, ...yearEmissions };
     });
-    return { ...d, ...yearEmissions };
-  });
+  }
   const whiteList = remove(
-    Object.keys(expandedEmissionsData[0]),
+    Object.keys(updatedData[0]),
     n => DATA_EXPLORER_BLACKLIST.indexOf(n) === -1
   );
-  return expandedEmissionsData.map(d => pick(d, whiteList));
+  return updatedData.map(d => pick(d, whiteList));
 });
