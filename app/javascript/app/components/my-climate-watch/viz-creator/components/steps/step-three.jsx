@@ -45,7 +45,7 @@ const Step3 = props => {
   const selectorClearable = (type, selection) =>
     type !== 'locations' || _isEmpty(selection);
 
-  const { spec, handleFilterSelect, hasData } = props;
+  const { spec, handleFilterSelect, hasData, isMultipleLocationVis } = props;
 
   return (
     <li className={styles.step}>
@@ -69,11 +69,12 @@ const Step3 = props => {
                         selectProps(f, 'value').hidden
                     })}
                   >
-                    {f.info && (
-                      <div data-tip={f.info} className={styles.infoContainer}>
-                        <Icon icon={infoIcon} className={styles.infoIcon} />
-                      </div>
-                    )}
+                    {f.info &&
+                    isMultipleLocationVis && (
+                    <div data-tip={f.info} className={styles.infoContainer}>
+                          <Icon icon={infoIcon} className={styles.infoIcon} />
+                        </div>
+                      )}
                     {f.multi ? (
                       <MultiSelect
                         className={styles.dropDowns}
@@ -114,7 +115,8 @@ const Step3 = props => {
 Step3.propTypes = {
   spec: PropTypes.object.isRequired,
   handleFilterSelect: PropTypes.func.isRequired,
-  hasData: PropTypes.bool
+  hasData: PropTypes.bool,
+  isMultipleLocationVis: PropTypes.bool
 };
 
 export default Step3;

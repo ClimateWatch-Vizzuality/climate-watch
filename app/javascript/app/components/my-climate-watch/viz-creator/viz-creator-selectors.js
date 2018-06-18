@@ -38,6 +38,18 @@ export const titleSelector = state => state.title;
 export const placeholderSelector = state => state.placeholder;
 export const editingSelector = state => state.creatorIsEditing;
 
+export const isMultipleLocationVis = createSelector(
+  visualisationsSelector,
+  vis => {
+    if (vis && vis.data && vis.selected) {
+      return _isEmpty(
+        vis.data[0].visualisations.filter(v => v.id === vis.selected)
+      );
+    }
+    return false;
+  }
+);
+
 export const hasDataSelector = createSelector(
   [timeseriesSelector, scenariosSelector],
   (timeseries, scenarios) =>

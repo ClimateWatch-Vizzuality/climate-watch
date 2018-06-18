@@ -10,6 +10,7 @@ import initialState from './viz-creator-initial-state';
 import {
   datasetsSelector,
   visualisationsSelector,
+  isMultipleLocationVis,
   locationsSelector,
   modelsSelector,
   scenariosSelector,
@@ -38,6 +39,7 @@ const mapStateToProps = ({ vizCreator }) => ({
   visualisations: visualisationsSelector(vizCreator),
   visualisationType: getVisualisationType(vizCreator),
   visualisationOptions: getVisualisationOptions(vizCreator),
+  isMultipleLocationVis: isMultipleLocationVis(vizCreator),
   locations: locationsSelector(vizCreator),
   models: modelsSelector(vizCreator),
   scenarios: scenariosSelector(vizCreator),
@@ -165,14 +167,14 @@ class VizCreator extends Component {
     const actionName = toSelector(filter.type);
     if (this.props[actionName]) {
       if (filter.multi) {
-        this.props[actionName](filter.values)
+        this.props[actionName](filter.values);
       } else if (filter.value) {
         this.props[actionName]({
           value: filter.value,
           label: filter.label
-        })
+        });
       } else {
-        this.props[actionName](null)
+        this.props[actionName](null);
       }
     }
   };
