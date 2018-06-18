@@ -11,6 +11,14 @@ export const getData = createSelector(
   }
 );
 
+export const getMeta = createSelector(
+  [state => state.data, state => state.section],
+  (data, section) => {
+    if (!data || !section) return null;
+    return (data && data[section] && data[section].meta) || null;
+  }
+);
+
 export const parseData = createSelector([getData], data => {
   if (!data || !data.length) return null;
   const updatedData = data;

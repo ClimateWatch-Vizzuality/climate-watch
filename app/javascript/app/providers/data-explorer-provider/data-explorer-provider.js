@@ -6,8 +6,9 @@ import * as actions from './data-explorer-provider-actions';
 
 class DataExplorerProvider extends PureComponent {
   componentDidMount() {
-    const { fetchDataExplorer, section } = this.props;
+    const { fetchDataExplorer, fetchInitialMetadata, section } = this.props;
     fetchDataExplorer(section);
+    fetchInitialMetadata();
   }
 
   render() {
@@ -17,6 +18,7 @@ class DataExplorerProvider extends PureComponent {
 
 DataExplorerProvider.propTypes = {
   fetchDataExplorer: PropTypes.func.isRequired,
+  fetchInitialMetadata: PropTypes.func.isRequired,
   section: PropTypes.string
 };
 

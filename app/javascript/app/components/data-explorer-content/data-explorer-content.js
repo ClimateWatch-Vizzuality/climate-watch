@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { DATA_EXPLORER_FIRST_COLUMN_HEADERS } from 'data/constants';
 import DataExplorerComponent from './data-explorer-content-component';
 
-import { parseData } from './data-explorer-content-selectors';
+import { parseData, getMeta } from './data-explorer-content-selectors';
 
-const mapStateToProps = (state, { section }) => {
+const mapStateToProps = (state, { section, location }) => {
   const dataState = {
     data: state.dataExplorer && state.dataExplorer.data,
     section
@@ -12,6 +13,8 @@ const mapStateToProps = (state, { section }) => {
 
   return {
     data: parseData(dataState),
+    meta: getMeta(dataState),
+    metadataSection: location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
     href: '/ghg-emissions',
@@ -19,4 +22,6 @@ const mapStateToProps = (state, { section }) => {
   };
 };
 
-export default connect(mapStateToProps, null)(DataExplorerComponent);
+export default withRouter(
+  connect(mapStateToProps, null)(DataExplorerComponent)
+);
