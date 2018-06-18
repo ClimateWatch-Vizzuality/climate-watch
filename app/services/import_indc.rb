@@ -243,12 +243,17 @@ class ImportIndc
     indicators.each do |indicator_name, labels|
       indicator = Indc::Indicator.find_by(slug: indicator_name)
       next unless indicator
+      nds_label = labels.delete('No Document Submitted')
       labels.each_with_index do |label, index|
         Indc::Label.create!(
           indicator: indicator,
           value: label,
           index: index + 1
         )
+      end
+      if nds_label.present?
+        # fixed index for the No Document Submitted label
+        Indc::Label.create!(indicator: indicator, value: nds_label, index: -2)
       end
     end
   end
