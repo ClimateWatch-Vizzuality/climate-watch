@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
@@ -49,37 +50,51 @@ class CountryGhgEmissions extends PureComponent {
   }
 
   renderActionButtons() {
-    const { iso, handleInfoClick, handleAnalyticsClick, isEmbed } = this.props;
+    const {
+      iso,
+      handleInfoClick,
+      handleAnalyticsClick,
+      isEmbed,
+      isNdcp
+    } = this.props;
+
+    const buttonGroupConfig = isEmbed
+      ? [{ type: 'info', onClick: handleInfoClick }]
+      : [
+        {
+          type: 'info',
+          onClick: handleInfoClick
+        },
+        {
+          type: 'share',
+          shareUrl: `/embed/countries/${iso}/ghg-emissions`,
+          analyticsGraphName: 'Country/Ghg-emissions',
+          reverseDropdown: !isEmbed
+        },
+        {
+          type: 'download'
+        },
+        {
+          type: 'addToUser'
+        }
+      ];
+
+    const link = `/ghg-emissions?breakBy=location&filter=${iso}`;
+    const href = `http://ndcpartnership.org/climate-watch/ghg-emissions?breakBy=location&filter=${iso}`;
 
     return [
       <ButtonGroup
         key="action1"
         className={styles.btnGroup}
-        buttonsConfig={[
-          {
-            type: 'info',
-            onClick: handleInfoClick
-          },
-          {
-            type: 'share',
-            shareUrl: `/embed/countries/${iso}/ghg-emissions`,
-            analyticsGraphName: 'Country/Ghg-emissions',
-            reverseDropdown: !isEmbed
-          },
-          {
-            type: 'download'
-          },
-          {
-            type: 'addToUser'
-          }
-        ]}
+        buttonsConfig={buttonGroupConfig}
       />,
       <Button
         key="action2"
         noSpace
         className={styles.exploreBtn}
         color="yellow"
-        link={`/ghg-emissions?breakBy=location&filter=${iso}`}
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
       >
         Explore emissions
@@ -160,7 +175,11 @@ class CountryGhgEmissions extends PureComponent {
             : ''}`}
         </h3>
         <TabletLandscape>
-          <div className={styles.graphControls}>
+          <div
+            className={cx(styles.graphControls, {
+              [styles.graphControlsEmbed]: isEmbed
+            })}
+          >
             {this.renderFilterDropdowns()}
             {this.renderActionButtons()}
           </div>
@@ -184,7 +203,8 @@ class CountryGhgEmissions extends PureComponent {
 }
 
 CountryGhgEmissions.propTypes = {
-  isEmbed: PropTypes.bool.isRequired,
+  isEmbed: PropTypes.bool,
+  isNdcp: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
