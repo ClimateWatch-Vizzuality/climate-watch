@@ -47,8 +47,8 @@ export function getColorByIndex(data, index) {
 }
 
 export function createLegendBuckets(locations, labels, isos) {
-  const notSubmitted = Object.keys(labels).filter(l => labels[l].index === -2);
   if (Object.keys(locations) === isos) return labels;
+  const notSubmitted = Object.keys(labels).filter(l => labels[l].index === -2);
   if (notSubmitted) {
     const notApplicableKey = notSubmitted + 1;
     return {
