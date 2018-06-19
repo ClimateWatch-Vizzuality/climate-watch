@@ -13,7 +13,7 @@ class Dot extends PureComponent {
       hasSectors,
       tooltipId,
       setTooltipData,
-      isSmall,
+      hideDot,
       path
     } = this.props;
 
@@ -23,7 +23,7 @@ class Dot extends PureComponent {
       'data-tip': true,
       className: cx(
         styles.dot,
-        { [styles.small]: isSmall },
+        { [styles.hidden]: hideDot },
         { [styles.clickable]: hasSectors }
       ),
       style: { backgroundColor: hasSectors ? goal.colour : '' }
@@ -40,7 +40,7 @@ Dot.propTypes = {
   hasSectors: PropTypes.bool,
   tooltipId: PropTypes.string,
   setTooltipData: PropTypes.func,
-  isSmall: PropTypes.bool,
+  hideDot: PropTypes.bool,
   path: PropTypes.string
 };
 

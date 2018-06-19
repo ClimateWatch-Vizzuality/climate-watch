@@ -5,7 +5,7 @@ import DotComponent from './dot-component';
 class DotContainer extends PureComponent {
   render() {
     const { target, targetData, activeSector, iso } = this.props;
-    const isSmall =
+    const hideDot =
       activeSector && targetData && targetData.targets[target.number]
         ? targetData.targets[target.number].sectors.indexOf(
           parseInt(activeSector.value, 10)
@@ -24,7 +24,7 @@ class DotContainer extends PureComponent {
     return createElement(DotComponent, {
       ...this.props,
       path,
-      isSmall,
+      hideDot,
       hasSectors
     });
   }
