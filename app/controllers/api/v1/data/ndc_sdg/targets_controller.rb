@@ -7,7 +7,7 @@ module Api
             set_links_header(
               [
                 {
-                  link: '/api/v1/data/ndc_sdgs/goals',
+                  link: '/api/v1/data/ndc_sdg/goals',
                   rel: 'meta goals'
                 }
               ]
