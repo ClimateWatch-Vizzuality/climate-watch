@@ -45,7 +45,7 @@ class EmissionPathwaysTable extends PureComponent {
         horizontalScroll
       />
     ) : (
-      <NoContent className={styles.noContent} message={noContentMsg} icon />
+      <NoContent className={styles.noContent} message={noContentMsg} />
     );
   }
 

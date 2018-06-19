@@ -93,7 +93,6 @@ class CompareSocioeconomics extends PureComponent {
               ) : (
                 <NoContent
                   message={'No data selected'}
-                  icon
                   className={styles.noData}
                 />
               )}
