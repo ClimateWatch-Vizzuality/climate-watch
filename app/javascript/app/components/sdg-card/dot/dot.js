@@ -6,9 +6,11 @@ class DotContainer extends PureComponent {
   render() {
     const { target, targetData, activeSector, iso } = this.props;
     const isSmall =
-      target.sectors &&
-      activeSector &&
-      target.sectors.indexOf(parseInt(activeSector.value, 10)) === -1;
+      activeSector && targetData && targetData.targets[target.number]
+        ? targetData.targets[target.number].sectors.indexOf(
+          parseInt(activeSector.value, 10)
+        ) === -1 || !target.sectors.includes(activeSector.value)
+        : activeSector && !target.sectors.includes(activeSector.value);
     const hasSectors = !!(
       targetData &&
       targetData.targets[target.number] &&
