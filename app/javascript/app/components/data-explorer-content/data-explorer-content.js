@@ -26,6 +26,7 @@ const mapStateToProps = (state, { section, location }) => {
     meta: getMeta(dataState),
     metadataSection: !!location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
+    loadingMeta: state.dataExplorer && state.dataExplorer.loadingMeta,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
     href: SECTION_HREFS[section],
     downloadHref: `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[

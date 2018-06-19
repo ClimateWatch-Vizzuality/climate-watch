@@ -13,13 +13,9 @@ import styles from './data-explorer-content-styles.scss';
 const noData = <NoContent message={'No data'} className={styles.noData} />;
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
-  renderContent() {
-    const { metadataSection } = this.props;
-    return metadataSection ? this.renderMeta() : this.renderTable();
-  }
-
   renderTable() {
-    const { data, firstColumnHeaders } = this.props;
+    const { data, firstColumnHeaders, loading } = this.props;
+    if (loading) return <Loading light className={styles.loader} />;
     return data ? (
       <Table
         data={data}
@@ -34,7 +30,8 @@ class DataExplorerContent extends PureComponent {
   }
 
   renderMeta() {
-    const { meta } = this.props;
+    const { meta, loadingMeta } = this.props;
+    if (loadingMeta) return <Loading light className={styles.loader} />;
     return meta ? (
       <MetadataText className={styles.metadataText} data={meta} />
     ) : (
@@ -43,7 +40,7 @@ class DataExplorerContent extends PureComponent {
   }
 
   render() {
-    const { section, loading, href, downloadHref } = this.props;
+    const { section, href, downloadHref, metadataSection } = this.props;
     return (
       <div>
         <DataExplorerProvider section={section} />
@@ -55,11 +52,7 @@ class DataExplorerContent extends PureComponent {
           theme={anchorNavLightTheme}
         />
         <div className={styles.tableContainer}>
-          {loading ? (
-            <Loading light className={styles.loader} />
-          ) : (
-            this.renderContent()
-          )}
+          {metadataSection ? this.renderMeta() : this.renderTable()}
         </div>
         <div className={styles.buttons}>
           <Button className={styles.button} href={href} color="plain">
@@ -81,6 +74,7 @@ DataExplorerContent.propTypes = {
   meta: PropTypes.object,
   firstColumnHeaders: PropTypes.array,
   loading: PropTypes.bool,
+  loadingMeta: PropTypes.bool,
   href: PropTypes.string,
   downloadHref: PropTypes.string
 };
