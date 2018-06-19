@@ -49,8 +49,8 @@ class DataExplorerContent extends PureComponent {
         <DataExplorerProvider section={section} />
         <AnchorNav
           links={[
-            { label: 'Raw Data', hash: 'data' },
-            { label: 'Methodology', hash: 'meta' }
+            { label: 'Raw Data', hash: 'data', defaultActiveHash: true },
+            { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
           ]}
           theme={anchorNavLightTheme}
         />
