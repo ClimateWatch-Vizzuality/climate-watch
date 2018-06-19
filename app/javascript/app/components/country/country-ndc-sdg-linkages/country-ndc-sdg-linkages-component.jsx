@@ -41,23 +41,25 @@ class CountrySDGLinkages extends PureComponent {
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
-        <p className={styles.sectors}>
-          <b>Sectors: </b>
-          {tooltipData.sectors.map((sector, index) => (
-            <span key={`${tooltipData.targetKey}-${sector}`}>
-              <span
-                className={cx({
-                  [styles.sectorIcluded]: hasTooltipData(sector)
-                })}
-              >
-                {sectors[sector]}
+        {!isEmpty(tooltipData.sectors) && (
+          <p className={styles.sectors}>
+            <b>Sectors: </b>
+            {tooltipData.sectors.map((sector, index) => (
+              <span key={`${tooltipData.targetKey}-${sector}`}>
+                <span
+                  className={cx({
+                    [styles.sectorIcluded]: hasTooltipData(sector)
+                  })}
+                >
+                  {sectors[sector]}
+                </span>
+                <span>
+                  {index === tooltipData.sectors.length - 1 ? '' : ', '}
+                </span>
               </span>
-              <span>
-                {index === tooltipData.sectors.length - 1 ? '' : ', '}
-              </span>
-            </span>
-          ))}
-        </p>
+            ))}
+          </p>
+        )}
       </div>
     ) : null;
   }
