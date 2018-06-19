@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { getColorByIndex } from 'utils/map';
+import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
@@ -31,10 +31,11 @@ export const getIndicatorsParsed = createSelector(
     sortBy(
       uniqBy(
         indicators.map(i => {
-          const legendBuckets =
-            Object.keys(i.locations) === isos
-              ? i.labels
-              : { ...i.labels, 0: { name: 'Not Applicable', index: 0 } };
+          const legendBuckets = createLegendBuckets(
+            i.locations,
+            i.labels,
+            isos
+          );
           return {
             label: i.name,
             value: i.slug,
