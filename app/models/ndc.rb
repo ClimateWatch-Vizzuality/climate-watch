@@ -104,14 +104,16 @@ class Ndc < ApplicationRecord
         ]
       )
 
+    # rubocop:disable Style/IfUnlessModifier
     if document_type && language
       ndc = ndc.where(document_type: document_type, language: language)
     end
+    # rubocop:enable Style/IfUnlessModifier
 
     ndc.where(
-        locations: {
-          iso_code3: iso_code3.upcase
-        }
-      )
+      locations: {
+        iso_code3: iso_code3.upcase
+      }
+    )
   end
 end
