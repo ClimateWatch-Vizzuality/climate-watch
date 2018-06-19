@@ -21,17 +21,32 @@ export default {
     loading: false,
     error: true
   }),
-  [actions.fetchInitialMetadataInit]: state => ({
+  [actions.fetchSectionMetadataInit]: state => ({
     ...state,
     metadataLoading: true
   }),
-  [actions.fetchInitialMetadataReady]: (state, { payload }) => ({
+  [actions.fetchSectionMetadataReady]: (state, { payload }) => ({
     ...state,
     metadataLoading: false,
     metadata: { ...state.metadata, ...payload.metadata },
     error: false
   }),
-  [actions.fetchInitialMetadataFail]: state => ({
+  [actions.fetchSectionMetadataFail]: state => ({
+    ...state,
+    metadataLoading: false,
+    error: true
+  }),
+  [actions.fetchMetadataInit]: state => ({
+    ...state,
+    metadataLoading: true
+  }),
+  [actions.fetchMetadataReady]: (state, { payload }) => ({
+    ...state,
+    metadataLoading: false,
+    metadata: { ...state.metadata, ...{ [payload.section]: payload.metadata } },
+    error: false
+  }),
+  [actions.fetchMetadataFail]: state => ({
     ...state,
     metadataLoading: false,
     error: true
