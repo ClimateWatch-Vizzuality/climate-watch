@@ -25,7 +25,7 @@ RSpec.describe Api::V1::Data::NdcSdgController, type: :controller do
       get :download
       expect(response.content_type).to eq('text/csv')
       expect(response.headers['Content-Disposition']).
-        to eq('attachment; filename=ndc_sdgs.csv')
+        to eq('attachment; filename=ndc_sdg.csv')
     end
   end
 
