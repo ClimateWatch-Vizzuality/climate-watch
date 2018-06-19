@@ -301,6 +301,24 @@ export const DATA_EXPLORER_METADATA_SOURCE = {
   'emission-pathways': null // model, scenario and indicator related metadata
 };
 
+export const DATA_EXPLORER_FILTERS = {
+  'historical-emissions': [
+    'source_IPCC_version',
+    'gases',
+    'locations',
+    'sectors'
+  ],
+  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
+  'emission-pathways': [],
+  'ndc-content': [
+    'data_sources',
+    'categories',
+    'indicators',
+    'sectors',
+    'labels'
+  ]
+};
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,

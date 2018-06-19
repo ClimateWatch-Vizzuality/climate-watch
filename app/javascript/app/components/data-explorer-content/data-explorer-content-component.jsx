@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import DataExplorerProvider from 'providers/data-explorer-provider/data-explorer-provider';
 import Table from 'components/table';
+import Dropdown from 'components/dropdown';
 import MetadataText from 'components/metadata-text';
 import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
+import { toStartCase } from 'app/utils';
 import styles from './data-explorer-content-styles.scss';
 
 const noData = <NoContent message={'No data'} className={styles.noData} />;
@@ -39,11 +41,34 @@ class DataExplorerContent extends PureComponent {
     );
   }
 
+  renderFilters() {
+    const {
+      handleFilterChange,
+      selectedOptions,
+      filterOptions,
+      filters
+    } = this.props;
+
+    return filters.map(field => (
+      <Dropdown
+        key={field}
+        label={toStartCase(field)}
+        placeholder={`Filter by ${toStartCase(field)}`}
+        options={filterOptions ? filterOptions[field] : []}
+        onValueChange={selected =>
+          handleFilterChange(field, selected && selected.slug)}
+        value={selectedOptions ? selectedOptions[field] : null}
+        plain
+      />
+    ));
+  }
+
   render() {
     const { section, href, downloadHref, metadataSection } = this.props;
     return (
       <div>
         <DataExplorerProvider section={section} />
+        <div className={styles.filtersContainer}>{this.renderFilters()}</div>
         <AnchorNav
           links={[
             { label: 'Raw Data', hash: 'data', defaultActiveHash: true },
@@ -69,6 +94,10 @@ class DataExplorerContent extends PureComponent {
 
 DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
+  handleFilterChange: PropTypes.func.isRequired,
+  filters: PropTypes.array,
+  selectedOptions: PropTypes.object,
+  filterOptions: PropTypes.object,
   metadataSection: PropTypes.bool,
   data: PropTypes.array,
   meta: PropTypes.object,

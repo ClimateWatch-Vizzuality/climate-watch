@@ -105,7 +105,6 @@ export const fetchMetadata = createThunkAction(
         })
         .then(links => {
           const parsedLinks = links;
-          delete parsedLinks['meta locations']; // We aready should have locations in the store
           return Object.keys(parsedLinks).map(key => ({
             rel: key.substring('meta '.length),
             href: parsedLinks[key].href

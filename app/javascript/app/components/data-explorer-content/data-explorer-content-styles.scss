@@ -18,6 +18,11 @@
   @include xy-gutters($gutter-position: 'bottom');
 }
 
+.filtersContainer {
+  @include columns(3);
+  @include xy-gutters($gutter-position: 'bottom');
+}
+
 .metadataText {
   @include xy-gutters($gutter-position: ('top', 'bottom'));
 }

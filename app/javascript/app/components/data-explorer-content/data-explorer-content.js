@@ -1,18 +1,29 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { PureComponent, createElement } from 'react';
+import { getLocationParamUpdated } from 'utils/navigation';
+import { PropTypes } from 'prop-types';
+import qs from 'query-string';
 import {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
-  DATA_EXPLORER_SECTION_NAMES
+  DATA_EXPLORER_SECTION_NAMES,
+  DATA_EXPLORER_FILTERS
 } from 'data/constants';
-import DataExplorerComponent from './data-explorer-content-component';
-
-import { parseData, getMeta } from './data-explorer-content-selectors';
+import DataExplorerContentComponent from './data-explorer-content-component';
+import {
+  parseData,
+  getMeta,
+  getFilterOptions,
+  getSelectedOptions
+} from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
+  const search = qs.parse(location.search);
   const dataState = {
     data: state.dataExplorer && state.dataExplorer.data,
     meta: state.dataExplorer && state.dataExplorer.metadata,
-    section
+    section,
+    search
   };
   const SECTION_HREFS = {
     'historical-emissions': '/ghg-emissions',
@@ -20,7 +31,6 @@ const mapStateToProps = (state, { section, location }) => {
     'ndc-content': '/ndcs-content',
     'emission-pathways': '/pathways'
   };
-
   return {
     data: parseData(dataState),
     meta: getMeta(dataState),
@@ -31,10 +41,41 @@ const mapStateToProps = (state, { section, location }) => {
     href: SECTION_HREFS[section],
     downloadHref: `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
       section
-    ]}/download.csv`
+    ]}/download.csv`,
+    filters: DATA_EXPLORER_FILTERS[section],
+    filterOptions: getFilterOptions(dataState),
+    selectedOptions: getSelectedOptions(dataState)
   };
 };
 
+class DataExplorerContentContainer extends PureComponent {
+  handleFilterChange = (filterName, value) => {
+    const { section } = this.props;
+    this.updateUrlParam({
+      name: `${section}-${filterName}`,
+      value
+    });
+  };
+
+  updateUrlParam(params, clear) {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  }
+
+  render() {
+    return createElement(DataExplorerContentComponent, {
+      ...this.props,
+      handleFilterChange: this.handleFilterChange
+    });
+  }
+}
+
+DataExplorerContentContainer.propTypes = {
+  section: PropTypes.string,
+  history: PropTypes.object,
+  location: PropTypes.object
+};
+
 export default withRouter(
-  connect(mapStateToProps, null)(DataExplorerComponent)
+  connect(mapStateToProps, null)(DataExplorerContentContainer)
 );
