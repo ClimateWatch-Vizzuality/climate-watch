@@ -116,39 +116,39 @@ export const TOP_EMITTERS = [
 ];
 
 export const CHART_COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126'
+  '#00B4D2',
+  '#0677B3',
+  '#D2187C',
+  '#FFB400',
+  '#FF7800',
+  '#FF88AA',
+  '#AB0000',
+  '#20D5B7',
+  '#383F45',
+  '#CACCD0'
 ];
 
 export const CHART_COLORS_EXTENDED = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
-  '#96C8C7',
-  '#D8ADE7',
-  '#BED2AB',
-  '#FF859C',
-  '#B3BCDA',
-  '#DDB098',
-  '#FBBDCF',
-  '#7FCA8D',
-  '#F7C89C',
-  '#C8BF92'
+  '#00B4D2',
+  '#0677B3',
+  '#D2187C',
+  '#FFB400',
+  '#FF7800',
+  '#FF88AA',
+  '#AB0000',
+  '#20D5B7',
+  '#383F45',
+  '#CACCD0',
+  '#80DAE9',
+  '#93BBD9',
+  '#E98CBE',
+  '#FFDA80',
+  '#FFBC80',
+  '#FFC4D5',
+  '#D58080',
+  '#90EADB',
+  '#9C9FA2',
+  '#E5E6E8'
 ];
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#b25bd0', '#f1933b'];
@@ -287,6 +287,13 @@ export const USERS_PROFESIONAL_SECTORS = [
   'Other'
 ];
 
+export const DATA_EXPLORER_SECTION_NAMES = {
+  'historical-emissions': 'historical_emissions',
+  'ndc-sdg-linkages': 'ndc_sdg',
+  'emission-pathways': 'emission_pathways',
+  'ndc-content': 'ndc_content'
+};
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -314,5 +321,6 @@ export default {
   LENSES_SELECTOR_INFO,
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
+  DATA_EXPLORER_SECTION_NAMES,
   USERS_PROFESIONAL_SECTORS
 };

@@ -45,7 +45,6 @@ class Chart extends PureComponent {
             message={getMessage()}
             className={styles.noContent}
             minHeight={height}
-            icon
           />
         )}
         {!loading && hasData && config && <ChartComponent {...this.props} />}

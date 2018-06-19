@@ -38,6 +38,10 @@
   margin-bottom: 20px;
   line-height: $line-height-medium;
   color: $white;
+
+  br {
+    line-height: 200%;
+  }
 }
 
 .disclaimer {
