@@ -47,7 +47,15 @@ class Ndc < ApplicationRecord
 
   def self.refresh_full_text_tsv
     sql = <<~EOT
-      full_text_tsv = to_tsvector('#{PG_SEARCH_TSEARCH_DICTIONARY}', COALESCE(full_text, ''))
+      full_text_tsv = to_tsvector(
+        '#{PG_SEARCH_TSEARCH_DICTIONARY}',
+        REGEXP_REPLACE(
+          COALESCE(full_text, ''),
+          '<sub>(\d+?)</sub>',
+          E'\\1',
+          'g'
+        )
+      )
     EOT
     update_all(sql)
   end
