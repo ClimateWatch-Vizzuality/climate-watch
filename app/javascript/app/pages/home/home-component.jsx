@@ -108,7 +108,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="View Country Profiles"
-              description="Climate Watch country profiles present a snapshot of countries' historical emissions, national climate commitments, climate vulnerabilities and readiness, and sustainable development linkages, also allowing for comparison of this information across countries."
+              description="Gain insights on individual countries historical emissions, national climate commitments, climate vulnerabilities and readiness, and sustainable development linkages – and compare this information across countries."
             />
             <GeoLocationProvider />
             <span
@@ -143,7 +143,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Explore and Compare Nationally Determined Contributions"
-              description="Analyze and compare national climate pledges under the Paris Agreement."
+              description="169 nationally determined contributions (NDCs) representing 192 countries and the European Union have been submitted to the UN Framework Convention on Climate Change.<br />Analyze and compare NDCs of all countries using 150 structured indicators and search the full text for key terms."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link="/ndcs">
@@ -202,7 +202,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Examine Links Between Sustainable Development and Climate Goals"
-              description="Identify potential alignment between the targets, actions, policy measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
+              description="Our research shows that climate actions in NDCs align with at least 154 of the 169 targets of the Sustainable Development Goals (SDGs), demonstrating the enormous potential for linking climate and sustainable development efforts.<br />Identify potential alignment between the targets, actions, policy measures and needs in countries’ NDCs and the targets of the SDGs."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/ndcs-sdg'}>
@@ -218,7 +218,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Explore Historical Greenhouse Gas Emissions"
-              description="Climate Watch inclides a comprehensive inventory for all parties to the UNFCC, including datasets from independent research organizations such as WRI’s CAIT dataset, PIK’s PRIMAP-hist dataset, and country self reported inventories in the UNFCCC."
+              description="The 10 countries that emit the most greenhouse gases account for over 60% of global emissions, while the 100 least emitters contributed less than 3%.<br />Explore and download over 160 years of greenhouse gas emissions data from 196 countries and the EU, across seven sectors. Our inventory includes datasets sourced from independent research organizations and country self-reported inventories to the UNFCCC."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link="/ghg-emissions">
@@ -268,7 +268,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Chart and Visualize Decarbonization Pathways"
-              description="Explore 30 potential future pathways of modeling teams around the world to see where countries could be heading and what action they can take to reduce emissions, increase ambition, and reach development goals."
+              description="Where are global emissions and global temperatures headed? That all depends on the paths we take.<br />Draw insights from 30 potential future pathways developed by modeling teams from around the world. Pathways helps you navigate through multiple models and visualize scenarios for countries, regions and sectors."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/pathways'}>
