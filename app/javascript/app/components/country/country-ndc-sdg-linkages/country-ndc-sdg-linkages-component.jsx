@@ -48,7 +48,7 @@ class CountrySDGLinkages extends PureComponent {
               <span key={`${tooltipData.targetKey}-${sector}`}>
                 <span
                   className={cx({
-                    [styles.sectorIcluded]: hasTooltipData(sector)
+                    [styles.sectorIncluded]: hasTooltipData(sector)
                   })}
                 >
                   {sectors[sector]}
