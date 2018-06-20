@@ -22,7 +22,7 @@
   @include columns(3);
   @include xy-gutters($gutter-position: 'bottom');
 
-   > :nth-child(5) {
+  > :nth-child(5) {
     @include xy-gutters($gutter-position: 'top');
   }
 }
