@@ -14,7 +14,8 @@ import {
   parseData,
   getInfoMetadata,
   getFilterOptions,
-  getSelectedOptions
+  getSelectedOptions,
+  getFilterQuery
 } from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
@@ -57,17 +58,33 @@ const mapStateToProps = (state, { section, location }) => {
     filterOptions: getFilterOptions(dataState),
     selectedOptions: getSelectedOptions(dataState),
     anchorLinks,
-    query: location.search
+    query: location.search,
+    filterQuery: getFilterQuery(dataState)
   };
 };
 
 class DataExplorerContentContainer extends PureComponent {
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
-    this.updateUrlParam({
-      name: `${section}-${filterName}`,
-      value
-    });
+    const SOURCE_AND_VERSION_KEY = 'source_IPCC_version';
+    if (filterName === SOURCE_AND_VERSION_KEY) {
+      const values = value && value.split(' - ');
+      this.updateUrlParam([
+        {
+          name: `${section}-data-sources`,
+          value: value && values[0]
+        },
+        {
+          name: `${section}-gwps`,
+          value: value && values[1]
+        }
+      ]);
+    } else {
+      this.updateUrlParam({
+        name: `${section}-${filterName}`,
+        value
+      });
+    }
   };
 
   updateUrlParam(params, clear) {

@@ -24,7 +24,7 @@ export const fetchMetadataFail = createAction('fetchMetadataFail');
 
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
-  section => (dispatch, state) => {
+  (section, query) => (dispatch, state) => {
     const { dataExplorer } = state();
     if (
       dataExplorer &&
@@ -34,7 +34,11 @@ export const fetchDataExplorer = createThunkAction(
           (isEmpty(dataExplorer.data[section].data) && !dataExplorer.loading)))
     ) {
       dispatch(fetchDataExplorerInit());
-      fetch(`/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[section]}`)
+      fetch(
+        `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[section]}${query
+          ? `?${query}`
+          : ''}`
+      )
         .then(response => {
           if (response.ok) {
             return response.json();

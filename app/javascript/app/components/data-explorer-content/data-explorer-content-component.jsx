@@ -71,11 +71,12 @@ class DataExplorerContent extends PureComponent {
       downloadHref,
       metadataSection,
       anchorLinks,
+      filterQuery,
       query
     } = this.props;
     return (
       <div>
-        <DataExplorerProvider section={section} />
+        <DataExplorerProvider section={section} query={filterQuery} />
         <RegionsProvider />
         <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
@@ -115,6 +116,7 @@ DataExplorerContent.propTypes = {
   href: PropTypes.string,
   downloadHref: PropTypes.string,
   anchorLinks: PropTypes.array,
+  filterQuery: PropTypes.string,
   query: PropTypes.string
 };
 

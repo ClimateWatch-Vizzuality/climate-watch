@@ -10,9 +10,10 @@ class DataExplorerProvider extends PureComponent {
       fetchDataExplorer,
       fetchSectionMetadata,
       fetchMetadata,
-      section
+      section,
+      query
     } = this.props;
-    fetchDataExplorer(section);
+    fetchDataExplorer(section, query);
     fetchSectionMetadata();
     fetchMetadata(section);
   }
@@ -26,6 +27,7 @@ DataExplorerProvider.propTypes = {
   fetchDataExplorer: PropTypes.func.isRequired,
   fetchSectionMetadata: PropTypes.func.isRequired,
   fetchMetadata: PropTypes.func.isRequired,
+  query: PropTypes.string,
   section: PropTypes.string
 };
 
