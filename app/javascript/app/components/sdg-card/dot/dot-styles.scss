@@ -8,6 +8,8 @@
   background-color: $theme-border;
   margin-right: 10px;
   margin-bottom: 10px;
+  opacity: 1;
+  transition: opacity 250ms ease-out;
 
   @media #{$tablet-landscape} {
     height: 10px;
@@ -22,5 +24,6 @@
 }
 
 .hidden {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
