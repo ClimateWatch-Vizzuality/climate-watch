@@ -9,13 +9,13 @@ import anchorNavThemeColorTheme from 'styles/themes/anchor-nav/anchor-nav-theme-
 import layout from 'styles/layout.scss';
 import styles from './data-explorer-styles';
 
-const DataExplorer = ({ route }) => (
+const DataExplorer = ({ navLinks, route }) => (
   <div>
     <Header theme={styles}>
       <Intro theme={styles} className={styles.intro} title="Data Explorer" />
       <AnchorNav
         useRoutes
-        links={route.routes.filter(r => r.anchor)}
+        links={navLinks}
         theme={anchorNavThemeColorTheme}
         className={styles.anchorNav}
       />
@@ -27,6 +27,7 @@ const DataExplorer = ({ route }) => (
 );
 
 DataExplorer.propTypes = {
+  navLinks: PropTypes.array,
   route: PropTypes.object.isRequired
 };
 

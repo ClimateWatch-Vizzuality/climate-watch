@@ -69,7 +69,7 @@ class CompareSocioeconomics extends PureComponent {
               {countrySocioeconomics && countrySocioeconomics.some(c => c) ? (
                 countrySocioeconomics.map((countrySocioeconomicData, i) => (
                   <div
-                    key={`socioeconomic-${i}{${locations[i]}`}
+                    key={`socioeconomic-${i}{${locations[i]}`} //eslint-disable-line
                     className={styles.compareSocioeconomics}
                   >
                     <TabletPortraitOnly>
