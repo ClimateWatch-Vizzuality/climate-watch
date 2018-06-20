@@ -23,7 +23,9 @@ import ndcSmScreenshot from 'assets/screenshots/ndc-explore-sm-screenshot@2x.png
 import ndcSdgBgScreenshot from 'assets/screenshots/ndc-sdg-bg-screenshot';
 import ndcSdgSmScreenshot from 'assets/screenshots/ndc-sdg-sm-screenshot@2x.png';
 import ghgBgScreenshot from 'assets/screenshots/ghg-screenshot@1x.png';
+import ghgMobileScreenshot from 'assets/screenshots/ghg-mobile-screenshot@2x.png';
 import pathwaysBgScreenshot from 'assets/screenshots/pathways-screenshot@1x.png';
+import pathwaysMobileScreenshot from 'assets/screenshots/pathways-mobile-screenshot@2x.png';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
@@ -243,7 +245,7 @@ class Home extends PureComponent {
                   <div className={styles.imgContainer}>
                     <img
                       className={matches ? '' : styles.imageRight}
-                      src={ghgBgScreenshot}
+                      src={matches ? ghgMobileScreenshot : ghgBgScreenshot}
                       alt="GHG Emissions section screenshot"
                     />
                   </div>
@@ -268,7 +270,13 @@ class Home extends PureComponent {
                   <div className={styles.imgContainer}>
                     <img
                       className={matches ? '' : styles.imageRight}
-                      src={pathwaysBgScreenshot}
+                      src={
+                        matches ? (
+                          pathwaysMobileScreenshot
+                        ) : (
+                          pathwaysBgScreenshot
+                        )
+                      }
                       alt="Pathways section screenshot"
                     />
                   </div>
