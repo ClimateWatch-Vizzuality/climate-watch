@@ -305,7 +305,7 @@ export const DATA_EXPLORER_FILTERS = {
   'historical-emissions': [
     'source_IPCC_version',
     'gases',
-    'locations',
+    'regions',
     'sectors'
   ],
   'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
@@ -315,7 +315,7 @@ export const DATA_EXPLORER_FILTERS = {
     'categories',
     'indicators',
     'sectors',
-    'labels'
+    'countries'
   ]
 };
 

@@ -21,6 +21,8 @@ const mapStateToProps = (state, { section, location }) => {
   const search = qs.parse(location.search);
   const dataState = {
     data: state.dataExplorer && state.dataExplorer.data,
+    countries: state.countries && state.countries.data,
+    regions: state.regions && state.regions.data,
     meta: state.dataExplorer && state.dataExplorer.metadata,
     section,
     search

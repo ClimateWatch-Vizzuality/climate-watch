@@ -10,6 +10,8 @@ import {
 
 const getSection = state => state.section || null;
 const getSearch = state => state.search || null;
+const getCountries = state => state.countries || null;
+const getRegions = state => state.regions || null;
 
 export const getData = createSelector(
   [state => state.data, getSection],
@@ -31,21 +33,27 @@ export const getMeta = createSelector(
 );
 
 export const getFilterOptions = createSelector(
-  [state => state.meta, getSection],
-  (meta, section) => {
+  [state => state.meta, getSection, getCountries, getRegions],
+  (meta, section, countries, regions) => {
     if (!section || isEmpty(meta)) return null;
     const filters = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = meta[section];
     if (!filtersMeta) return null;
 
     const filterOptions = {};
+    if (filters.includes('regions')) filtersMeta.regions = regions;
+    if (filters.includes('countries')) filtersMeta.countries = countries;
     filters.forEach(f => {
       const options = filtersMeta[f];
       if (options) {
         const parsedOptions = options.map(option => ({
-          slug: option.slug || option.name || option.value,
-          value: option.name || option.value,
-          label: option.name || option.value
+          slug:
+            option.slug ||
+            option.name ||
+            option.value ||
+            option.wri_standard_name,
+          value: option.name || option.value || option.wri_standard_name,
+          label: option.name || option.value || option.wri_standard_name
         }));
         filterOptions[f] = parsedOptions;
       }

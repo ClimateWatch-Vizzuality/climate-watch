@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import DataExplorerProvider from 'providers/data-explorer-provider/data-explorer-provider';
+import RegionsProvider from 'providers/regions-provider/regions-provider';
+import CountriesProvider from 'providers/countries-provider/countries-provider';
 import Table from 'components/table';
 import Dropdown from 'components/dropdown';
 import MetadataText from 'components/metadata-text';
@@ -68,6 +70,8 @@ class DataExplorerContent extends PureComponent {
     return (
       <div>
         <DataExplorerProvider section={section} />
+        <RegionsProvider />
+        <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
         <AnchorNav
           links={[
