@@ -65,7 +65,14 @@ class DataExplorerContent extends PureComponent {
   }
 
   render() {
-    const { section, href, downloadHref, metadataSection } = this.props;
+    const {
+      section,
+      href,
+      downloadHref,
+      metadataSection,
+      anchorLinks,
+      query
+    } = this.props;
     return (
       <div>
         <DataExplorerProvider section={section} />
@@ -73,11 +80,9 @@ class DataExplorerContent extends PureComponent {
         <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
         <AnchorNav
-          links={[
-            { label: 'Raw Data', hash: 'data', defaultActiveHash: true },
-            { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
-          ]}
+          links={anchorLinks}
           theme={anchorNavLightTheme}
+          query={query}
         />
         <div className={styles.tableContainer}>
           {metadataSection ? this.renderMeta() : this.renderTable()}
@@ -108,7 +113,9 @@ DataExplorerContent.propTypes = {
   loading: PropTypes.bool,
   loadingMeta: PropTypes.bool,
   href: PropTypes.string,
-  downloadHref: PropTypes.string
+  downloadHref: PropTypes.string,
+  anchorLinks: PropTypes.array,
+  query: PropTypes.string
 };
 
 export default DataExplorerContent;

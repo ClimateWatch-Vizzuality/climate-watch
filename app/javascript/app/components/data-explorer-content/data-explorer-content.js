@@ -33,6 +33,15 @@ const mapStateToProps = (state, { section, location }) => {
     'ndc-content': '/ndcs-content',
     'emission-pathways': '/pathways'
   };
+  const anchorLinks = [
+    {
+      label: 'Raw Data',
+      hash: 'data',
+      defaultActiveHash: true
+    },
+    { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
+  ];
+
   return {
     data: parseData(dataState),
     meta: getInfoMetadata(dataState),
@@ -46,7 +55,9 @@ const mapStateToProps = (state, { section, location }) => {
     ]}/download.csv`,
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: getFilterOptions(dataState),
-    selectedOptions: getSelectedOptions(dataState)
+    selectedOptions: getSelectedOptions(dataState),
+    anchorLinks,
+    query: location.search
   };
 };
 
