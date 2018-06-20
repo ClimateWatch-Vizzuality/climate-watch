@@ -5,7 +5,8 @@ import pick from 'lodash/pick';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METADATA_SOURCE,
-  DATA_EXPLORER_FILTERS
+  DATA_EXPLORER_FILTERS,
+  DATA_EXPLORER_SOURCE_IPCC_VERSIONS
 } from 'data/constants';
 
 const getSection = state => state.section || null;
@@ -21,17 +22,6 @@ export const getData = createSelector(
   }
 );
 
-export const getMeta = createSelector(
-  [state => state.meta, getSection],
-  (meta, section) => {
-    if (!meta || isEmpty(meta) || !section) return null;
-    const sectionMetadata = meta['section-metadata'];
-    return sectionMetadata.find(
-      s => s.source === DATA_EXPLORER_METADATA_SOURCE[section]
-    );
-  }
-);
-
 export const getFilterOptions = createSelector(
   [state => state.meta, getSection, getCountries, getRegions],
   (meta, section, countries, regions) => {
@@ -43,6 +33,9 @@ export const getFilterOptions = createSelector(
     const filterOptions = {};
     if (filters.includes('regions')) filtersMeta.regions = regions;
     if (filters.includes('countries')) filtersMeta.countries = countries;
+    if (filters.includes('source_IPCC_version')) {
+      filtersMeta.source_IPCC_version = DATA_EXPLORER_SOURCE_IPCC_VERSIONS;
+    }
     filters.forEach(f => {
       const options = filtersMeta[f];
       if (options) {
@@ -53,7 +46,8 @@ export const getFilterOptions = createSelector(
             option.value ||
             option.wri_standard_name,
           value: option.name || option.value || option.wri_standard_name,
-          label: option.name || option.value || option.wri_standard_name
+          label: option.name || option.value || option.wri_standard_name,
+          ...option
         }));
         filterOptions[f] = parsedOptions;
       }
@@ -91,6 +85,24 @@ const getSelectedFilters = createSelector(
       );
     });
     return selectedFilterObjects;
+  }
+);
+
+export const getInfoMetadata = createSelector(
+  [state => state.meta, getSection, getSelectedFilters],
+  (meta, section, selectedfilters) => {
+    if (!meta || isEmpty(meta) || !section || !selectedfilters) return null;
+    const sectionMetadata = meta['section-metadata'];
+    let metaSource = DATA_EXPLORER_METADATA_SOURCE[section];
+    if (selectedfilters.source_IPCC_version) {
+      const source = selectedfilters.source_IPCC_version.source_slug;
+      metaSource = DATA_EXPLORER_METADATA_SOURCE[section][source];
+    }
+    if (selectedfilters.data_sources) {
+      const source = selectedfilters.data_sources.value;
+      metaSource = DATA_EXPLORER_METADATA_SOURCE[section][source];
+    }
+    return sectionMetadata.find(s => s.source === metaSource);
   }
 );
 

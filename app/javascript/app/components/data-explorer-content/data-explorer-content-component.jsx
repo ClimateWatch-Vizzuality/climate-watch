@@ -14,7 +14,6 @@ import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss'
 import { toStartCase } from 'app/utils';
 import styles from './data-explorer-content-styles.scss';
 
-const noData = <NoContent message={'No data'} className={styles.noData} />;
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderTable() {
@@ -29,7 +28,7 @@ class DataExplorerContent extends PureComponent {
         horizontalScroll
       />
     ) : (
-      noData
+      <NoContent message={'No data'} className={styles.noData} />
     );
   }
 
@@ -39,7 +38,7 @@ class DataExplorerContent extends PureComponent {
     return meta ? (
       <MetadataText className={styles.metadataText} data={meta} />
     ) : (
-      noData
+      <NoContent message={'Select a source'} className={styles.noData} />
     );
   }
 
