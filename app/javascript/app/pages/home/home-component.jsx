@@ -24,7 +24,7 @@ import ndcSdgBgScreenshot from 'assets/screenshots/ndc-sdg-bg-screenshot';
 import ndcSdgSmScreenshot from 'assets/screenshots/ndc-sdg-sm-screenshot@2x.png';
 import ghgBgScreenshot from 'assets/screenshots/ghg-screenshot@1x.png';
 import ghgMobileScreenshot from 'assets/screenshots/ghg-mobile-screenshot@2x.png';
-import pathwaysBgScreenshot from 'assets/screenshots/pathways-screenshot@1x.png';
+import pathwaysBgScreenshot from 'assets/screenshots/pathways-screenshot@2x.png';
 import pathwaysMobileScreenshot from 'assets/screenshots/pathways-mobile-screenshot@2x.png';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';

@@ -21,10 +21,15 @@
   }
 
   @media #{$tablet-portrait} {
-    @include columns(10);
-
+    justify-content: center;
     > *:first-child {
-      @include column-offset(1, $gutters: true);
+      min-width: 500px;
+      @include column-offset(0, $gutters: true);
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 
@@ -33,6 +38,10 @@
 
     > *:first-child {
       @include column-offset(0, $gutters: true);
+      min-width: 400px;
+      img {
+        height: auto;
+      }
     }
   }
 }
