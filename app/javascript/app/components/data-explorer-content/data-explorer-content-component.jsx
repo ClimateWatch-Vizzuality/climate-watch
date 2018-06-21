@@ -65,6 +65,7 @@ class DataExplorerContent extends PureComponent {
         value={selectedOptions ? selectedOptions[field] : null}
         plain
         disabled={disabled}
+        noAutoSort={field === 'goals' || field === 'targets'}
       />
     ));
   }
