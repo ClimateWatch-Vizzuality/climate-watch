@@ -70,12 +70,13 @@ class LegendChart extends PureComponent {
           </ul>
           {config && config.legendNote && (
             <div className={styles.tagDescription}>
-                Click on each scenarios to see the assumptions behind it.
+              Click on each scenarios to see the assumptions behind it.
             </div>
           )}
         </div>
         {model && (
           <div className={styles.legendLogo}>
+            <div className={styles.legendLogoTitle}>Data provided by:</div>
             <a href={model.url} target="_blank">
               <img src={`https:${model.logo}`} />
             </a>

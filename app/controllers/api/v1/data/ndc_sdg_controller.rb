@@ -17,7 +17,7 @@ module Api
           set_links_header(
             [:goals, :targets, :sectors].map do |resource|
               {
-                link: "/api/v1/data/ndc_sdgs/#{resource}",
+                link: "/api/v1/data/ndc_sdg/#{resource}",
                 rel: "meta #{resource}"
               }
             end + [{link: '/api/v1/locations/countries', rel: 'meta locations'}]
@@ -29,7 +29,7 @@ module Api
           send_data(
             csv_string,
             type: 'text/csv; charset=utf-8; header=present',
-            disposition: 'attachment; filename=ndc_sdgs.csv'
+            disposition: 'attachment; filename=ndc_sdg.csv'
           )
         end
 

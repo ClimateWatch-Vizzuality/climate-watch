@@ -67,7 +67,7 @@ class NDCMapContainer extends PureComponent {
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
     return selectedIndicator.locations && selectedIndicator.locations[id]
       ? selectedIndicator.locations[id].value
-      : 'No data';
+      : 'Not Applicable';
   }
 
   handleCountryClick = geography => {

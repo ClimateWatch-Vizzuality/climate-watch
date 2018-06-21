@@ -20,6 +20,7 @@ const VizCreator = props => {
     visualisations,
     visualisationType,
     visualisationOptions,
+    isMultipleLocationVis,
     hasData,
     chartData,
     legends,
@@ -40,7 +41,14 @@ const VizCreator = props => {
           <Step2 {...{ visualisations, selectVisualisation }} />
         )}
         {visualisations.selected && (
-          <Step3 {...{ spec: filters, handleFilterSelect, hasData }} />
+          <Step3
+            {...{
+              spec: filters,
+              handleFilterSelect,
+              hasData,
+              isMultipleLocationVis
+            }}
+          />
         )}
         {hasData && (
           <Step4
@@ -76,6 +84,7 @@ VizCreator.propTypes = {
   visualisations: PropTypes.object,
   visualisationType: PropTypes.string,
   visualisationOptions: PropTypes.object,
+  isMultipleLocationVis: PropTypes.bool,
   timeseries: PropTypes.object,
   hasData: PropTypes.bool,
   chartData: PropTypes.object,

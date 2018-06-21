@@ -32,20 +32,31 @@ class CountrySDGLinkages extends PureComponent {
   getTooltip() {
     const { sectors, tooltipData, targets, tooltipSectorIds } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
-    const hasTooltipData = tooltipSectorIds && tooltipSectorIds.length > 0;
+    const hasTooltipData = sector => {
+      if (tooltipSectorIds) return tooltipSectorIds.includes(sector);
+      return false;
+    };
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
           <b>{tooltipData.number}: </b>
           {tooltipData.title}
         </p>
-        {hasTooltipData && (
+        {!isEmpty(tooltipData.sectors) && (
           <p className={styles.sectors}>
             <b>Sectors: </b>
-            {tooltipSectorIds.map((sector, index) => (
+            {tooltipData.sectors.map((sector, index) => (
               <span key={`${tooltipData.targetKey}-${sector}`}>
-                {sectors[sector]}
-                {index === tooltipSectorIds.length - 1 ? '' : ', '}
+                <span
+                  className={cx({
+                    [styles.sectorIncluded]: hasTooltipData(sector)
+                  })}
+                >
+                  {sectors[sector]}
+                </span>
+                <span>
+                  {index === tooltipData.sectors.length - 1 ? '' : ', '}
+                </span>
               </span>
             ))}
           </p>
@@ -167,6 +178,9 @@ class CountrySDGLinkages extends PureComponent {
       />
     );
 
+    const sectorFilterDescription =
+      'Only linkages relevant to the selected sector are shown';
+
     return (
       <div className={styles.wrapper}>
         <NdcsSdgsDataProvider />
@@ -182,6 +196,8 @@ class CountrySDGLinkages extends PureComponent {
                 options={sectorOptions}
                 onValueChange={handleSectorChange}
                 value={activeSector}
+                info
+                infoText={sectorFilterDescription}
               />
               <TabletLandscape>{exploreButton}</TabletLandscape>
             </div>
@@ -192,6 +208,7 @@ class CountrySDGLinkages extends PureComponent {
           <TabletPortraitOnly>{exploreButton}</TabletPortraitOnly>
         </div>
         <ModalMetadata />
+        {isEmbed && <ReactTooltip />}
       </div>
     );
   }

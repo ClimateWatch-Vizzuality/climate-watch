@@ -7,6 +7,7 @@ import cx from 'classnames';
 import Loading from 'components/loading';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
+import infoIcon from 'assets/icons/info.svg';
 import dropdownArrowWhite from 'assets/icons/dropdown-arrow-white.svg';
 
 import theme from 'styles/themes/dropdown/react-selectize.scss';
@@ -27,7 +28,9 @@ class Dropdown extends PureComponent {
       wrapperClassName,
       className,
       disabled,
-      colorDot
+      colorDot,
+      info,
+      infoText
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     return (
@@ -42,6 +45,11 @@ class Dropdown extends PureComponent {
           <span className={styles.dot} style={{ backgroundColor: colorDot }} />
         )}
         {label && <span className={styles.label}>{label}</span>}
+        {info && (
+          <div data-tip={infoText} className={styles.infoContainer}>
+            <Icon icon={infoIcon} className={styles.infoIcon} />
+          </div>
+        )}
         <div
           className={cx(
             theme.dropdown,
@@ -76,6 +84,8 @@ Dropdown.propTypes = {
   white: PropTypes.bool,
   plain: PropTypes.bool,
   dark: PropTypes.bool,
+  info: PropTypes.bool,
+  infoText: PropTypes.string,
   theme: PropTypes.object,
   hasSearch: PropTypes.bool,
   loading: PropTypes.bool,
