@@ -33,9 +33,12 @@ class CountrySDGLinkages extends PureComponent {
     const { sectors, tooltipData, targets, tooltipSectorIds } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
     const hasTooltipData = sector => {
-      if (tooltipSectorIds) return tooltipSectorIds.includes(sector);
+      if (tooltipSectorIds) { return !!tooltipSectorIds.find(id => sectors[id] === sector); }
       return false;
     };
+    const sectorsLabels =
+      !isEmpty(tooltipData.sectors) &&
+      (tooltipData.sectors.map(sector => sectors[sector]) || []).sort();
     return tooltipData && targetsContent ? (
       <div className={styles.tooltip}>
         <p className={styles.tooltipTitle}>
@@ -45,14 +48,14 @@ class CountrySDGLinkages extends PureComponent {
         {!isEmpty(tooltipData.sectors) && (
           <p className={styles.sectors}>
             <b>Sectors: </b>
-            {tooltipData.sectors.map((sector, index) => (
+            {sectorsLabels.map((sector, index) => (
               <span key={`${tooltipData.targetKey}-${sector}`}>
                 <span
                   className={cx({
                     [styles.sectorIncluded]: hasTooltipData(sector)
                   })}
                 >
-                  {sectors[sector]}
+                  {sector}
                 </span>
                 <span>
                   {index === tooltipData.sectors.length - 1 ? '' : ', '}
