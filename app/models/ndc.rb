@@ -51,8 +51,8 @@ class Ndc < ApplicationRecord
         '#{PG_SEARCH_TSEARCH_DICTIONARY}',
         REGEXP_REPLACE(
           COALESCE(full_text, ''),
-          '<sub>(\d+?)</sub>',
-          E'\\1',
+          '<sub>(\\d+?)</sub>',
+          E'\\\\1',
           'g'
         )
       )
