@@ -294,13 +294,13 @@ export const DATA_EXPLORER_SECTION_NAMES = {
   'ndc-content': 'ndc_content'
 };
 
-export const DATA_EXPLORER_METADATA_SOURCE = {
+export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
     PIK: 'historical_emissions_pik',
     CAIT: 'historical_emissions_cait',
     UNFCCC: 'historical_emissions_unfccc'
   },
-  'ndc-sdg-linkages': 'ndc_sdc_all_indicators',
+  'ndc-sdg-linkages': 'ndc_sdc_all indicators',
   'ndc-content': { CAIT: 'ndc_cait', WB: 'ndc_wb' },
   'emission-pathways': null // model, scenario and indicator related metadata
 };
@@ -359,7 +359,7 @@ export default {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
-  DATA_EXPLORER_METADATA_SOURCE,
+  DATA_EXPLORER_METHODOLOGY_SOURCE,
   SOURCE_IPCC_VERSIONS,
   USERS_PROFESIONAL_SECTORS
 };

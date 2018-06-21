@@ -12,7 +12,7 @@ import {
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
-  getInfoMetadata,
+  getMethodology,
   getFilterOptions,
   getSelectedOptions,
   getFilterQuery
@@ -45,7 +45,7 @@ const mapStateToProps = (state, { section, location }) => {
   const filterQuery = getFilterQuery(dataState);
   return {
     data: parseData(dataState),
-    meta: getInfoMetadata(dataState),
+    meta: getMethodology(dataState),
     metadataSection: !!location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
     loadingMeta: state.dataExplorer && state.dataExplorer.loadingMeta,

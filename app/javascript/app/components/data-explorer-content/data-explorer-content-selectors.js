@@ -6,7 +6,7 @@ import qs from 'query-string';
 import { parseQuery } from 'utils/data-explorer';
 import {
   DATA_EXPLORER_BLACKLIST,
-  DATA_EXPLORER_METADATA_SOURCE,
+  DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
   SOURCE_IPCC_VERSIONS
 } from 'data/constants';
@@ -92,12 +92,12 @@ export const getFilterOptions = createSelector(
     const filters = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = meta[section];
     if (!filtersMeta) return null;
-    const filterOptions = {};
     if (filters.includes('regions')) filtersMeta.regions = regions;
     if (filters.includes('countries')) filtersMeta.countries = countries;
     if (filters.includes('source_IPCC_version')) {
       filtersMeta.source_IPCC_version = sourceVersions;
     }
+    const filterOptions = {};
     filters.forEach(f => {
       const options = filtersMeta[f];
       if (options) {
@@ -108,13 +108,13 @@ export const getFilterOptions = createSelector(
             option.value ||
             option.wri_standard_name ||
             option.number;
-          const label =
+          let label =
             option.name ||
             option.value ||
             option.wri_standard_name ||
             option.cw_title ||
             option.number;
-
+          if (f === 'goals') label = `${option.number}: ${label}`;
           return {
             slug,
             value: label,
@@ -173,21 +173,21 @@ const getSelectedFilters = createSelector(
   }
 );
 
-export const getInfoMetadata = createSelector(
+export const getMethodology = createSelector(
   [state => state.meta, getSection, getSelectedFilters],
   (meta, section, selectedfilters) => {
     if (!meta || isEmpty(meta) || !section || !selectedfilters) return null;
-    const sectionMetadata = meta.methodology;
-    let metaSource = DATA_EXPLORER_METADATA_SOURCE[section];
+    const methodology = meta.methodology;
+    let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (selectedfilters.source_IPCC_version) {
       const source = selectedfilters.source_IPCC_version.source_slug;
-      metaSource = DATA_EXPLORER_METADATA_SOURCE[section][source];
+      metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
     if (selectedfilters.data_sources) {
       const source = selectedfilters.data_sources.value;
-      metaSource = DATA_EXPLORER_METADATA_SOURCE[section][source];
+      metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
-    return sectionMetadata.find(s => s.source === metaSource);
+    return methodology.find(s => s.source === metaSource);
   }
 );
 
