@@ -22,8 +22,10 @@
 
   @media #{$tablet-portrait} {
     justify-content: center;
+
     > *:first-child {
       min-width: 500px;
+
       @include column-offset(0, $gutters: true);
 
       img {
@@ -38,7 +40,9 @@
 
     > *:first-child {
       @include column-offset(0, $gutters: true);
+
       min-width: 400px;
+
       img {
         height: auto;
       }
