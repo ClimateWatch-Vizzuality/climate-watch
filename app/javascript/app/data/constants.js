@@ -323,7 +323,7 @@ export const DATA_EXPLORER_FILTERS = {
   ]
 };
 
-export const DATA_EXPLORER_SOURCE_IPCC_VERSIONS = [
+export const SOURCE_IPCC_VERSIONS = [
   { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
   { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
   { name: 'CAIT - AR2', source_slug: 'CAIT', version_slug: 'AR2' },
@@ -360,6 +360,6 @@ export default {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METADATA_SOURCE,
-  DATA_EXPLORER_SOURCE_IPCC_VERSIONS,
+  SOURCE_IPCC_VERSIONS,
   USERS_PROFESIONAL_SECTORS
 };

@@ -47,7 +47,8 @@ class DataExplorerContent extends PureComponent {
       handleFilterChange,
       selectedOptions,
       filterOptions,
-      filters
+      filters,
+      loading
     } = this.props;
 
     return filters.map(field => (
@@ -60,6 +61,7 @@ class DataExplorerContent extends PureComponent {
           handleFilterChange(field, selected && selected.slug)}
         value={selectedOptions ? selectedOptions[field] : null}
         plain
+        disabled={loading}
       />
     ));
   }

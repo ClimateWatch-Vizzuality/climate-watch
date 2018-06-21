@@ -8,7 +8,7 @@ import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METADATA_SOURCE,
   DATA_EXPLORER_FILTERS,
-  DATA_EXPLORER_SOURCE_IPCC_VERSIONS
+  SOURCE_IPCC_VERSIONS
 } from 'data/constants';
 
 const getSection = state => state.section || null;
@@ -36,7 +36,7 @@ export const getSourceIPCCOptions = createSelector(
     ) {
       return null;
     }
-    return DATA_EXPLORER_SOURCE_IPCC_VERSIONS.map(option => {
+    return SOURCE_IPCC_VERSIONS.map(option => {
       const data_source = meta[section].data_sources.find(
         s => s.name === option.source_slug
       );
@@ -61,16 +61,18 @@ export const getFilterQuery = createSelector(
     const filterIds = {};
     Object.keys(parsedFilters).forEach(key => {
       const parsedKey = key.replace('-', '_');
-      const filter = metadata[parsedKey].find(
-        option =>
-          option.name === parsedFilters[key] ||
-          option.wri_standard_name === parsedFilters[key] ||
-          option.value === parsedFilters[key] ||
-          option.cw_title === parsedFilters[key] ||
-          option.slug === parsedFilters[key] ||
-          option.number === parsedFilters[key]
-      );
-      filterIds[parsedKey] = filter.id || filter.iso_code3;
+      const filter =
+        metadata[parsedKey] &&
+        metadata[parsedKey].find(
+          option =>
+            option.name === parsedFilters[key] ||
+            option.value === parsedFilters[key] ||
+            option.wri_standard_name === parsedFilters[key] ||
+            option.cw_title === parsedFilters[key] ||
+            option.slug === parsedFilters[key] ||
+            option.number === parsedFilters[key]
+        );
+      filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
     });
     const filterQuery = qs.stringify(filterIds);
     return filterQuery && parseQuery(filterQuery);
