@@ -21,6 +21,7 @@ class CountriesSelect extends PureComponent {
       className,
       autofocus,
       opened,
+      isCompareVisible,
       countrySelectFilter,
       countriesList,
       onCountryClick,
@@ -28,11 +29,16 @@ class CountriesSelect extends PureComponent {
       onCountryMouseLeave,
       handleClickAnalytics
     } = this.props;
+
     return (
       <div className={cx(styles.wrapper, className)}>
         <div className={cx(layout.content, styles.content)}>
           <div className="grid-layout-element">
-            <div className={styles.searchAndCompare}>
+            <div
+              className={cx({
+                [styles.searchAndCompare]: isCompareVisible
+              })}
+            >
               <Search
                 placeholder="Search a country"
                 value={query}
@@ -40,9 +46,11 @@ class CountriesSelect extends PureComponent {
                 theme={searchCountriesTheme}
                 autofocus={opened || autofocus}
               />
-              <Button color="plain" link="/countries/compare">
-                Compare
-              </Button>
+              {isCompareVisible && (
+                <Button color="plain" link="/countries/compare">
+                  Compare
+                </Button>
+              )}
             </div>
           </div>
           <div className="grid-colum-item">
@@ -85,6 +93,7 @@ CountriesSelect.propTypes = {
   onCountryMouseLeave: Proptypes.func.isRequired,
   handleClickAnalytics: Proptypes.func.isRequired,
   opened: Proptypes.bool,
+  isCompareVisible: Proptypes.bool,
   countriesList: Proptypes.array,
   paths: Proptypes.array
 };
