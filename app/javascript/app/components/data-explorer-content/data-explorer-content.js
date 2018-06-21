@@ -53,7 +53,7 @@ const mapStateToProps = (state, { section, location }) => {
     href: SECTION_HREFS[section],
     downloadHref: `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
       section
-    ]}/download.csv`,
+    ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`,
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: getFilterOptions(dataState),
     selectedOptions: getSelectedOptions(dataState),
