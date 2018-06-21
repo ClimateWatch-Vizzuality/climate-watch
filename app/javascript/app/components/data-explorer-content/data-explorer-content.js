@@ -42,7 +42,7 @@ const mapStateToProps = (state, { section, location }) => {
     },
     { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
   ];
-
+  const filterQuery = getFilterQuery(dataState);
   return {
     data: parseData(dataState),
     meta: getInfoMetadata(dataState),
@@ -59,7 +59,7 @@ const mapStateToProps = (state, { section, location }) => {
     selectedOptions: getSelectedOptions(dataState),
     anchorLinks,
     query: location.search,
-    filterQuery: getFilterQuery(dataState)
+    filterQuery
   };
 };
 

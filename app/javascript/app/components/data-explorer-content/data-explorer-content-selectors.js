@@ -3,6 +3,7 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import qs from 'query-string';
+import { parseQuery } from 'utils/data-explorer';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METADATA_SOURCE,
@@ -71,7 +72,8 @@ export const getFilterQuery = createSelector(
       );
       filterIds[parsedKey] = filter.id || filter.iso_code3;
     });
-    return qs.stringify(filterIds);
+    const filterQuery = qs.stringify(filterIds);
+    return filterQuery && parseQuery(filterQuery);
   }
 );
 
@@ -97,27 +99,27 @@ export const getFilterOptions = createSelector(
     filters.forEach(f => {
       const options = filtersMeta[f];
       if (options) {
-        const parsedOptions = options.map(option => ({
-          slug:
+        const parsedOptions = options.map(option => {
+          const slug =
             option.slug ||
             option.name ||
             option.value ||
             option.wri_standard_name ||
-            option.number,
-          value:
+            option.number;
+          const label =
             option.name ||
             option.value ||
             option.wri_standard_name ||
             option.cw_title ||
-            option.number,
-          label:
-            option.name ||
-            option.value ||
-            option.wri_standard_name ||
-            option.cw_title ||
-            option.number,
-          ...option
-        }));
+            option.number;
+
+          return {
+            slug,
+            value: label,
+            label,
+            ...option
+          };
+        });
         filterOptions[f] = parsedOptions;
       }
     });
