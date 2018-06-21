@@ -175,7 +175,7 @@ export const getInfoMetadata = createSelector(
   [state => state.meta, getSection, getSelectedFilters],
   (meta, section, selectedfilters) => {
     if (!meta || isEmpty(meta) || !section || !selectedfilters) return null;
-    const sectionMetadata = meta['section-metadata'];
+    const sectionMetadata = meta.methodology;
     let metaSource = DATA_EXPLORER_METADATA_SOURCE[section];
     if (selectedfilters.source_IPCC_version) {
       const source = selectedfilters.source_IPCC_version.source_slug;

@@ -76,7 +76,7 @@ export const fetchSectionMetadata = createThunkAction(
         if (data) {
           dispatch(
             fetchSectionMetadataReady({
-              metadata: { 'section-metadata': data }
+              metadata: { methodology: data }
             })
           );
         } else {
