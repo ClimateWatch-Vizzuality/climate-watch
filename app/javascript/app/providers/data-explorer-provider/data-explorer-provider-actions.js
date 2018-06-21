@@ -3,6 +3,7 @@ import { createThunkAction } from 'utils/redux';
 import { DATA_EXPLORER_SECTION_NAMES } from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
 import { parseLinkHeader } from 'utils/utils';
+import { parseQuery } from 'utils/data-explorer';
 
 export const fetchDataExplorerInit = createAction('fetchDataExplorerInit');
 export const fetchDataExplorerReady = createAction('fetchDataExplorerReady');
@@ -24,19 +25,19 @@ export const fetchMetadataFail = createAction('fetchMetadataFail');
 
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
-  (section, query) => (dispatch, state) => {
+  ({ section, query }) => (dispatch, state) => {
     const { dataExplorer } = state();
     if (
       dataExplorer &&
       (isEmpty(dataExplorer) ||
         (dataExplorer.data && !dataExplorer.data[section]) ||
-        (dataExplorer.data &&
-          (isEmpty(dataExplorer.data[section].data) && !dataExplorer.loading)))
+        (dataExplorer.data && !dataExplorer.loading))
     ) {
       dispatch(fetchDataExplorerInit());
+      const parsedQuery = parseQuery(query);
       fetch(
-        `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[section]}${query
-          ? `?${query}`
+        `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[section]}${parsedQuery
+          ? `?${parsedQuery}`
           : ''}`
       )
         .then(response => {
