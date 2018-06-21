@@ -48,9 +48,12 @@ class DataExplorerContent extends PureComponent {
       selectedOptions,
       filterOptions,
       filters,
-      loading
+      loading,
+      loadingMeta,
+      section
     } = this.props;
-
+    const disabled =
+      section === ('data' && loading) || (section === 'meta' && loadingMeta);
     return filters.map(field => (
       <Dropdown
         key={field}
@@ -61,7 +64,7 @@ class DataExplorerContent extends PureComponent {
           handleFilterChange(field, selected && selected.slug)}
         value={selectedOptions ? selectedOptions[field] : null}
         plain
-        disabled={loading}
+        disabled={disabled}
       />
     ));
   }
