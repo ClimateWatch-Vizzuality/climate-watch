@@ -178,6 +178,9 @@ class CountrySDGLinkages extends PureComponent {
       />
     );
 
+    const sectorFilterDescription =
+      'Only linkages relevant to the selected sector are shown';
+
     return (
       <div className={styles.wrapper}>
         <NdcsSdgsDataProvider />
@@ -193,6 +196,8 @@ class CountrySDGLinkages extends PureComponent {
                 options={sectorOptions}
                 onValueChange={handleSectorChange}
                 value={activeSector}
+                info
+                infoText={sectorFilterDescription}
               />
               <TabletLandscape>{exploreButton}</TabletLandscape>
             </div>
@@ -203,6 +208,7 @@ class CountrySDGLinkages extends PureComponent {
           <TabletPortraitOnly>{exploreButton}</TabletPortraitOnly>
         </div>
         <ModalMetadata />
+        {isEmbed && <ReactTooltip />}
       </div>
     );
   }

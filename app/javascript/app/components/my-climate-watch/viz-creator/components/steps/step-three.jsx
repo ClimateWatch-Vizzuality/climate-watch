@@ -9,8 +9,6 @@ import cx from 'classnames';
 
 import MultiSelect from 'components/multiselect';
 import Dropdown from 'components/dropdown';
-import Icon from 'components/icon';
-import infoIcon from 'assets/icons/info.svg';
 import styles from './steps-styles';
 
 class Step3 extends Component {
@@ -50,7 +48,17 @@ class Step3 extends Component {
     const selectorClearable = (type, selection) =>
       type !== 'locations' || _isEmpty(selection);
 
-    const { spec, handleFilterSelect, hasData, isMultipleLocationVis } = this.props;
+    const hasInfo = (info, multiple) => {
+      if (info && multiple) return true;
+      return false;
+    };
+
+    const {
+      spec,
+      handleFilterSelect,
+      hasData,
+      isMultipleLocationVis
+    } = this.props;
 
     return (
       <li className={styles.step}>
@@ -74,13 +82,10 @@ class Step3 extends Component {
                           selectProps(f, 'value').hidden
                       })}
                     >
-                      {f.info && isMultipleLocationVis && (
-                        <div data-tip={f.info} className={styles.infoContainer}>
-                          <Icon icon={infoIcon} className={styles.infoIcon} />
-                        </div>
-                      )}
                       {f.multi ? (
                         <MultiSelect
+                          info={hasInfo(f.info, isMultipleLocationVis)}
+                          infoText={f.info}
                           className={styles.dropDowns}
                           {...sortMultiselectLabels(f, 'values')}
                           label={upperFirst(f.name)}
@@ -93,6 +98,8 @@ class Step3 extends Component {
                         />
                       ) : (
                         <Dropdown
+                          info={hasInfo(f.info, isMultipleLocationVis)}
+                          infoText={f.info}
                           {...selectProps(f, 'value')}
                           className={styles.dropDowns}
                           label={upperFirst(f.label)}
@@ -101,7 +108,10 @@ class Step3 extends Component {
                               ...e,
                               type: f.name
                             })}
-                          hideResetButton={selectorClearable(f.name, f.selected)}
+                          hideResetButton={selectorClearable(
+                            f.name,
+                            f.selected
+                          )}
                         />
                       )}
                       <ReactTooltip />
@@ -116,7 +126,6 @@ class Step3 extends Component {
     );
   }
 }
-
 
 Step3.propTypes = {
   spec: PropTypes.object.isRequired,

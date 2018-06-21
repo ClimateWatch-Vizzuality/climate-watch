@@ -294,6 +294,44 @@ export const DATA_EXPLORER_SECTION_NAMES = {
   'ndc-content': 'ndc_content'
 };
 
+export const DATA_EXPLORER_METADATA_SOURCE = {
+  'historical-emissions': {
+    PIK: 'historical_emissions_pik',
+    CAIT: 'historical_emissions_cait',
+    UNFCCC: 'historical_emissions_unfccc'
+  },
+  'ndc-sdg-linkages': 'ndc_sdc_all_indicators',
+  'ndc-content': { CAIT: 'ndc_cait', WB: 'ndc_wb' },
+  'emission-pathways': null // model, scenario and indicator related metadata
+};
+
+export const DATA_EXPLORER_FILTERS = {
+  'historical-emissions': [
+    'source_IPCC_version',
+    'gases',
+    'regions',
+    'sectors'
+  ],
+  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
+  'emission-pathways': [],
+  'ndc-content': [
+    'data_sources',
+    'categories',
+    'indicators',
+    'sectors',
+    'countries'
+  ]
+};
+
+export const DATA_EXPLORER_SOURCE_IPCC_VERSIONS = [
+  { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
+  { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
+  { name: 'CAIT - AR2', source_slug: 'CAIT', version_slug: 'AR2' },
+  { name: 'CAIT - AR4', source_slug: 'CAIT', version_slug: 'AR4' },
+  { name: 'UNFCCC - AR2', source_slug: 'UNFCCC', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR4', source_slug: 'UNFCCC', version_slug: 'AR4' }
+];
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -322,5 +360,7 @@ export default {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
+  DATA_EXPLORER_METADATA_SOURCE,
+  DATA_EXPLORER_SOURCE_IPCC_VERSIONS,
   USERS_PROFESIONAL_SECTORS
 };

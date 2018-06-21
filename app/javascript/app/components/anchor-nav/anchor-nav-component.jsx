@@ -69,7 +69,11 @@ const AnchorNav = props => {
                 </NavLink>
               );
             }
-            linkProps.isActive = () => link.hash === activeSection;
+            linkProps.isActive = (match, location) =>
+              link.hash === activeSection ||
+              (link.defaultActiveHash &&
+                (`#${link.hash}` === location.hash ||
+                  (!location.hash && index === 0)));
             return (
               <NavHashLink
                 {...linkProps}

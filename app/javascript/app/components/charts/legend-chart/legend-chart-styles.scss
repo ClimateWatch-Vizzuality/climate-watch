@@ -11,13 +11,19 @@ $margin-container: 10px;
   }
 
   .legendLogo {
-    width: 120px;
-    margin-top: $margin-container;
+    position: relative;
+    width: 130px;
+    margin-top: 20px;
 
     img {
       width: 100%;
       height: auto;
+      margin-left: 5px;
     }
+  }
+
+  .legendLogoTitle {
+    color: $dark-gray;
   }
 
   @media #{$tablet-landscape} {
@@ -25,8 +31,15 @@ $margin-container: 10px;
     flex-wrap: nowrap;
     justify-content: space-between;
 
+    .legendLogoTitle {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
     .legendLogo {
-      width: 150px;
+      width: 250px;
+      padding-left: 125px;
     }
   }
 }
