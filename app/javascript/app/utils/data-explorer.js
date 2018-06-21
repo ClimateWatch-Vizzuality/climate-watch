@@ -10,7 +10,8 @@ const REPLACEMENTS = {
   indicators: 'indicator_ids[]',
   categories: 'category_ids[]',
   labels: 'label_ids[]',
-  countries: 'countries[]'
+  countries: 'countries[]',
+  targets: 'target_ids[]'
 };
 
 export const parseQuery = query => query && replaceAll(query, REPLACEMENTS);
