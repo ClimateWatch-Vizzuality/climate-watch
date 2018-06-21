@@ -16,14 +16,16 @@ import { MobileOnly, TabletLandscape } from 'components/responsive';
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
-import countryBgScreenshot from 'assets/screenshots/country-bg-screenshot';
-import countrySmScreenshot from 'assets/screenshots/country-sm-screenshot@2x';
+import countryBgScreenshot from 'assets/screenshots/country-with-quantifications@1x.png';
+import countrySmScreenshot from 'assets/screenshots/country-mobile-screenshot@2x.png';
 import ndcBgScreenshot from 'assets/screenshots/ndc-explore-bg-screenshot';
 import ndcSmScreenshot from 'assets/screenshots/ndc-explore-sm-screenshot@2x.png';
 import ndcSdgBgScreenshot from 'assets/screenshots/ndc-sdg-bg-screenshot';
 import ndcSdgSmScreenshot from 'assets/screenshots/ndc-sdg-sm-screenshot@2x.png';
-import ghgBgScreenshot from 'assets/screenshots/ghg-bg-screenshot@2x.png';
-import pathwaysBgScreenshot from 'assets/screenshots/pathways-bg-screenshot@2x.png';
+import ghgBgScreenshot from 'assets/screenshots/ghg-screenshot@1x.png';
+import ghgMobileScreenshot from 'assets/screenshots/ghg-mobile-screenshot@2x.png';
+import pathwaysBgScreenshot from 'assets/screenshots/pathways-screenshot@2x.png';
+import pathwaysMobileScreenshot from 'assets/screenshots/pathways-mobile-screenshot@2x.png';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
@@ -92,13 +94,17 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <div className={matches ? styles.imgLayout : ''}>
-                  <div className={styles.imgContainer}>
-                    <img
-                      className={matches ? '' : styles.imageTall}
-                      src={matches ? countrySmScreenshot : countryBgScreenshot}
-                      alt="Country section screenshot"
-                    />
+                <div>
+                  <div className={styles.imgLayout}>
+                    <div className={styles.imgContainer}>
+                      <img
+                        className={matches ? '' : styles.imageTall}
+                        src={
+                          matches ? countrySmScreenshot : countryBgScreenshot
+                        }
+                        alt="Country section screenshot"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -186,7 +192,7 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <div className={matches ? styles.imgLayout : ''}>
+                <div className={styles.imgLayout}>
                   <div className={styles.imgContainer}>
                     <img
                       className={matches ? '' : styles.imageRight}
@@ -228,13 +234,21 @@ class Home extends PureComponent {
           </div>
           <MobileOnly>
             {matches => (
-              <div className={matches ? styles.ndcImageMobile : styles.column}>
-                <div className={styles.imgContainer}>
-                  <img
-                    className={matches ? '' : styles.imageRight}
-                    src={ghgBgScreenshot}
-                    alt="GHG Emissions section screenshot"
-                  />
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <div className={styles.imgLayout}>
+                  <div className={styles.imgContainer}>
+                    <img
+                      className={matches ? '' : styles.imageRight}
+                      src={matches ? ghgMobileScreenshot : ghgBgScreenshot}
+                      alt="GHG Emissions section screenshot"
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -252,11 +266,17 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <div className={matches ? styles.imgLayout : ''}>
+                <div className={styles.imgLayout}>
                   <div className={styles.imgContainer}>
                     <img
                       className={matches ? '' : styles.imageRight}
-                      src={pathwaysBgScreenshot}
+                      src={
+                        matches ? (
+                          pathwaysMobileScreenshot
+                        ) : (
+                          pathwaysBgScreenshot
+                        )
+                      }
                       alt="Pathways section screenshot"
                     />
                   </div>
