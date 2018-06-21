@@ -32,7 +32,9 @@ export const getSourceIPCCOptions = createSelector(
       !section ||
       section !== 'historical-emissions' ||
       !meta[section]
-    ) { return null; }
+    ) {
+      return null;
+    }
     return DATA_EXPLORER_SOURCE_IPCC_VERSIONS.map(option => {
       const data_source = meta[section].data_sources.find(
         s => s.name === option.source_slug
@@ -63,7 +65,8 @@ export const getFilterQuery = createSelector(
           option.name === parsedFilters[key] ||
           option.wri_standard_name === parsedFilters[key] ||
           option.value === parsedFilters[key] ||
-          option.cw_title === parsedFilters[key]
+          option.cw_title === parsedFilters[key] ||
+          option.slug === parsedFilters[key]
       );
       filterIds[parsedKey] = filter.id || filter.iso_code3;
     });
