@@ -66,7 +66,8 @@ export const getFilterQuery = createSelector(
           option.wri_standard_name === parsedFilters[key] ||
           option.value === parsedFilters[key] ||
           option.cw_title === parsedFilters[key] ||
-          option.slug === parsedFilters[key]
+          option.slug === parsedFilters[key] ||
+          option.number === parsedFilters[key]
       );
       filterIds[parsedKey] = filter.id || filter.iso_code3;
     });
@@ -107,12 +108,14 @@ export const getFilterOptions = createSelector(
             option.name ||
             option.value ||
             option.wri_standard_name ||
-            option.cw_title,
+            option.cw_title ||
+            option.number,
           label:
             option.name ||
             option.value ||
             option.wri_standard_name ||
-            option.cw_title,
+            option.cw_title ||
+            option.number,
           ...option
         }));
         filterOptions[f] = parsedOptions;
