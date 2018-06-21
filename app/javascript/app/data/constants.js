@@ -327,7 +327,6 @@ export const DATA_EXPLORER_SOURCE_IPCC_VERSIONS = [
   { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
   { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
   { name: 'CAIT - AR2', source_slug: 'CAIT', version_slug: 'AR2' },
-  { name: 'CAIT - AR4', source_slug: 'CAIT', version_slug: 'AR4' },
   { name: 'UNFCCC - AR2', source_slug: 'UNFCCC', version_slug: 'AR2' },
   { name: 'UNFCCC - AR4', source_slug: 'UNFCCC', version_slug: 'AR4' }
 ];
