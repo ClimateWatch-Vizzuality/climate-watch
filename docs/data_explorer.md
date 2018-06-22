@@ -331,6 +331,7 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 
 ### Parameters
 - countries[]
+- source_ids[]
 - indicator_ids[]
 - category_ids[]
 - label_ids[]
