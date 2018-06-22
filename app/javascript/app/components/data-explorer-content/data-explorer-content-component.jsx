@@ -5,6 +5,7 @@ import RegionsProvider from 'providers/regions-provider/regions-provider';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
 import Table from 'components/table';
 import Dropdown from 'components/dropdown';
+import MultiDropdown from 'components/dropdown/multi-dropdown';
 import MetadataText from 'components/metadata-text';
 import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
@@ -54,20 +55,46 @@ class DataExplorerContent extends PureComponent {
     } = this.props;
     const disabled =
       section === ('data' && loading) || (section === 'meta' && loadingMeta);
-    return filters.map(field => (
-      <Dropdown
-        key={field}
-        label={toStartCase(field)}
-        placeholder={`Filter by ${toStartCase(field)}`}
-        options={filterOptions ? filterOptions[field] : []}
-        onValueChange={selected =>
-          handleFilterChange(field, selected && selected.slug)}
-        value={selectedOptions ? selectedOptions[field] : null}
-        plain
-        disabled={disabled}
-        noAutoSort={field === 'goals' || field === 'targets'}
-      />
-    ));
+    return filters.map(
+      field =>
+        (field === 'sectors' ? (
+          <MultiDropdown
+            key={field}
+            label={toStartCase(field)}
+            placeholder={`Filter by ${toStartCase(field)}`}
+            options={filterOptions ? filterOptions[field] : []}
+            // value: PropTypes.oneOfType([
+            //   PropTypes.object,
+            //   PropTypes.string,
+            //   PropTypes.number
+            // ]),
+            // onInputClick: PropTypes.func,
+            // onSelectorClick: PropTypes.func,
+            // inputValue: PropTypes.string,
+            // inputValue: PropTypes.string,
+            // showGroup: PropTypes.string,
+            // handleSelectGroup: PropTypes.func,
+            // buildInputProps: PropTypes.func,
+            // items: PropTypes.array,
+            // activeValue: PropTypes.object,
+            // activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+            // ));
+          />
+        ) : (
+          <Dropdown
+            key={field}
+            label={toStartCase(field)}
+            placeholder={`Filter by ${toStartCase(field)}`}
+            options={filterOptions ? filterOptions[field] : []}
+            onValueChange={selected =>
+              handleFilterChange(field, selected && selected.slug)}
+            value={selectedOptions ? selectedOptions[field] : null}
+            plain
+            disabled={disabled}
+            noAutoSort={field === 'goals' || field === 'targets'}
+          />
+        ))
+    );
   }
 
   render() {
