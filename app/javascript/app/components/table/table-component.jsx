@@ -6,6 +6,7 @@ import cx from 'classnames';
 import { pixelBreakpoints } from 'components/responsive';
 
 import { toStartCase } from 'app/utils';
+import difference from 'lodash/difference';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
@@ -50,11 +51,16 @@ class SimpleTable extends PureComponent {
       setOptionsClose,
       toggleOptionsOpen,
       optionsOpen,
-      horizontalScroll
+      horizontalScroll,
+      firstColumnHeaders
     } = this.props;
 
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
+    const activeColumnNames = activeColumns.map(c => c.value);
+    const columnData = activeColumnNames
+      .filter(c => firstColumnHeaders.includes(c))
+      .concat(difference(activeColumnNames, firstColumnHeaders));
     return (
       <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (
@@ -97,7 +103,7 @@ class SimpleTable extends PureComponent {
                 sortDirection={sortDirection}
                 rowGetter={({ index }) => data[index]}
               >
-                {activeColumns.map(c => c.value).map(column => (
+                {columnData.map(column => (
                   <Column
                     className={cx(styles.column, {
                       [styles.ellipsis]:
@@ -138,12 +144,14 @@ SimpleTable.propTypes = {
   setOptionsClose: PropTypes.func.isRequired,
   toggleOptionsOpen: PropTypes.func.isRequired,
   ellipsisColumns: PropTypes.array, // 'Columns with ellipsis intext, not full columns'
-  horizontalScroll: PropTypes.bool.isRequired
+  horizontalScroll: PropTypes.bool.isRequired,
+  firstColumnHeaders: PropTypes.array.isRequired
 };
 
 SimpleTable.defaultProps = {
   headerHeight: 30,
-  horizontalScroll: false
+  horizontalScroll: false,
+  firstColumnHeaders: []
 };
 
 export default SimpleTable;

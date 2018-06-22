@@ -1,0 +1,68 @@
+@import '~styles/layout.scss';
+
+.title,
+.disclaimer {
+  font-weight: $font-weight;
+  color: $theme-color;
+}
+
+.title {
+  font-size: $font-size-large;
+  margin-bottom: $gutter-padding;
+}
+
+.disclaimer {
+  font-size: $font-size-sm;
+  padding-left: 10px;
+}
+
+.input,
+.dropdown,
+.textarea,
+.optIn,
+.updateButton {
+  margin-bottom: $gutter-padding;
+}
+
+.textarea {
+  padding-top: 0.5rem;
+  height: 200px;
+}
+
+.updateMessage {
+  font-size: $font-size-sm;
+  color: $gray;
+}
+
+.personalInfo,
+.organizationalInfo {
+  @include columns(12);
+
+  @media #{$tablet-landscape} {
+    @include columns((4, 4, 4));
+  }
+
+  @media #{$desktop} {
+    @include columns((3, 3, 3));
+  }
+}
+
+.dataUsageInfo {
+  @include columns(12);
+
+  @media #{$desktop} {
+    @include columns(9);
+  }
+}
+
+.updateButton {
+  @include columns(6);
+
+  @media #{$tablet-landscape} {
+    @include columns(3);
+  }
+
+  @media #{$desktop} {
+    @include columns(2);
+  }
+}

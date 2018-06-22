@@ -2,7 +2,12 @@ import { createElement, PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getLocationParamUpdated, isPageContained } from 'utils/navigation';
+import {
+  getLocationParamUpdated,
+  isPageContained,
+  isEmbededComponent,
+  isPageNdcp
+} from 'utils/navigation';
 import qs from 'query-string';
 import ReactGA from 'react-ga';
 
@@ -33,7 +38,8 @@ const mapStateToProps = (state, { location, match }) => {
   const { data, quantifications } = state.countryGhgEmissions;
   const calculationData = state.wbCountryData.data;
   const { meta } = state.ghgEmissionsMeta;
-  const isEmbed = location.pathname.includes('/embed');
+  const isEmbed = isEmbededComponent(location);
+  const isNdcp = isPageNdcp(location) || isPageContained;
   const search = qs.parse(location.search);
   const iso = match.params.iso;
   const countryGhg = {
@@ -48,6 +54,7 @@ const mapStateToProps = (state, { location, match }) => {
   return {
     iso,
     isEmbed,
+    isNdcp,
     countryName: getCountryName(countryGhg),
     loading: state.countryGhgEmissions.loading || state.wbCountryData.loading,
     data: getChartData(countryGhg),

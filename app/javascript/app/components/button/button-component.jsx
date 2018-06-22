@@ -24,11 +24,11 @@ const Button = props => {
     [styles.yellow]: color === 'yellow',
     [styles.white]: color === 'white',
     [styles.plain]: color === 'plain',
+    [styles.red]: color === 'red',
     [styles.noBox]: noBox,
-    [styles.disabled]: !onClick && !link && !href,
+    [styles.disabled]: disabled || (!onClick && !link && !href),
     [styles.noSpace]: noSpace
   });
-
   if (href) {
     return (
       <a className={classNames} href={href}>
@@ -36,7 +36,6 @@ const Button = props => {
       </a>
     );
   }
-
   return link ? (
     <NavLink className={classNames} to={link} onClick={onClick}>
       {children}

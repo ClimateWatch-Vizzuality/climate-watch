@@ -8,7 +8,11 @@ Table of Contents:
 
 ## Local setup
 
-### Installing dependencies
+### System dependencies
+
+- postgres 9.6
+
+### Installing application dependencies
 
 ```
 yarn run js:install

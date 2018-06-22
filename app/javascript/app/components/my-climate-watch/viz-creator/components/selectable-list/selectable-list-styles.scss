@@ -1,0 +1,29 @@
+@import '~styles/layout.scss';
+
+.card {
+  display: inline-block;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
+  border: solid 1px rgba(26, 28, 34, 0.1);
+  margin-bottom: 20px;
+  $pad: 20px;
+  $border: 1px;
+
+  &:hover, {
+    border: solid 1px $theme-color;
+  }
+}
+
+.datasetSelected,
+.visualisationSelected {
+  border: solid 1px $theme-color;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.09);
+}
+
+.cardDisabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.button {
+  width: 100%;
+}

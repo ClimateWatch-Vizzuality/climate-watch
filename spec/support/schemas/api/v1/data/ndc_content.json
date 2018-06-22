@@ -1,0 +1,99 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "properties": {
+    "data": {
+      "$id": "/properties/data",
+      "type": "array",
+      "items": {
+        "$id": "/properties/data/items",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$id": "/properties/data/items/properties/id",
+            "type": "integer",
+            "title": "The Id Schema ",
+            "default": 0,
+            "examples": [
+              712096
+            ]
+          },
+          "country": {
+            "$id": "/properties/data/items/properties/country",
+            "type": "string",
+            "title": "The Country Schema ",
+            "default": "",
+            "examples": [
+              "Poland"
+            ]
+          },
+          "iso_code3": {
+            "$id": "/properties/data/items/properties/iso_code3",
+            "type": "string",
+            "title": "The Iso_code3 Schema ",
+            "default": "",
+            "examples": [
+              "POL"
+            ]
+          },
+          "indicator": {
+            "$id": "/properties/data/items/properties/indicator",
+            "type": "string",
+            "title": "The Indicator Schema ",
+            "default": "",
+            "examples": [
+              "NDC summary"
+            ]
+          },
+          "value": {
+            "$id": "/properties/data/items/properties/value",
+            "type": "string",
+            "title": "The Value Schema ",
+            "default": "",
+            "examples": [
+              "<p>The European Union and its 28 Member States submitted a joint NDC.</p>"
+            ]
+          },
+          "source": {
+            "$id": "/properties/data/items/properties/source",
+            "type": "string",
+            "title": "The Source Schema ",
+            "default": "",
+            "examples": [
+              "CAIT"
+            ]
+          },
+          "categories": {
+            "$id": "/properties/data/items/properties/categories",
+            "type": "string",
+            "title": "The Categories Schema ",
+            "default": "",
+            "examples": [
+              "NDC, Overview"
+            ]
+          },
+          "label": {
+            "$id": "/properties/data/items/properties/label",
+            "type": ["string", "null"],
+            "title": "The Label Schema ",
+            "default": null,
+            "examples": [
+              null
+            ]
+          },
+          "sector": {
+            "$id": "/properties/data/items/properties/sector",
+            "type": ["string", "null"],
+            "title": "The Sector Schema ",
+            "default": null,
+            "examples": [
+              null
+            ]
+          }
+        }
+      }
+    }
+  }
+}

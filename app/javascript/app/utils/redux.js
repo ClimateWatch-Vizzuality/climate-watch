@@ -24,8 +24,15 @@ export const handleActions = ({ actions, reducers, initialState }) =>
 // our own actioncreattor that can handle thunks
 // fires the action as init
 // and leaves resolve/reject to the thunk creator
-export const createThunkAction = (name, thunkAction) => {
-  if (!thunkAction) return CA(name);
-  thunkAction.toString = () => name; // eslint-disable-line
-  return thunkAction;
+export const createThunkAction = (name, thunkAction, metaCreator) => {
+  const action = CA(name, null, metaCreator);
+  if (!thunkAction) return action;
+
+  const returnAction = payload => (dispatch, getState) => {
+    dispatch(action());
+    return thunkAction(payload)(dispatch, getState);
+  };
+
+  returnAction.toString = () => name;
+  return returnAction;
 };

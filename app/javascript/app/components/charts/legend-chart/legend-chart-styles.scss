@@ -1,12 +1,53 @@
 @import '~styles/layout.scss';
 
+$margin-container: 10px;
+
+.legendChart {
+  overflow: auto;
+  margin-bottom: $margin-container;
+
+  .legendContainer {
+    flex: 1;
+  }
+
+  .legendLogo {
+    position: relative;
+    width: 130px;
+    margin-top: 20px;
+
+    img {
+      width: 100%;
+      height: auto;
+      margin-left: 5px;
+    }
+  }
+
+  .legendLogoTitle {
+    color: $dark-gray;
+  }
+
+  @media #{$tablet-landscape} {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    .legendLogoTitle {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .legendLogo {
+      width: 250px;
+      padding-left: 125px;
+    }
+  }
+}
+
 .tags {
   display: flex;
   overflow: scroll;
-
-  @include overflowFix(250px);
-
-  padding-top: 260px;
+  margin-top: $margin-container;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
@@ -23,6 +64,10 @@
     padding: 0 5px;
     margin-bottom: 10px;
   }
+}
+
+.tagDescription {
+  color: $dark-gray;
 }
 
 .tagSelector :global {

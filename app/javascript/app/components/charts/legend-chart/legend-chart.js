@@ -6,11 +6,11 @@ import { withRouter } from 'react-router';
 import LegendChartComponent from './legend-chart-component';
 
 class LegendChartContainer extends PureComponent {
-  handleRemove = data => {
+  handleRemove = label => {
     const { dataSelected, targetParam } = this.props;
     const newFilters = [];
     dataSelected.forEach(d => {
-      if (d.label !== data) {
+      if (d.label !== label) {
         newFilters.push(d.value);
       }
     });

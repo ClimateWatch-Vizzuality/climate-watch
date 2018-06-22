@@ -73,9 +73,23 @@ class NdcSdgLinkagesMap extends PureComponent {
               {isTablet ? (
                 <ButtonGroup
                   className={styles.buttons}
-                  onInfoClick={this.props.handleInfoClick}
-                  shareUrl="/embed/ndcs-sdg"
-                  analyticsGraphName="Ndcs-Sdg"
+                  buttonsConfig={[
+                    {
+                      type: 'info',
+                      onClick: this.props.handleInfoClick
+                    },
+                    {
+                      type: 'share',
+                      shareUrl: '/embed/ndcs-sdg',
+                      analyticsGraphName: 'Ndcs-Sdg'
+                    },
+                    {
+                      type: 'download'
+                    },
+                    {
+                      type: 'addToUser'
+                    }
+                  ]}
                 />
               ) : null}
             </div>

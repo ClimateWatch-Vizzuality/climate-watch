@@ -29,6 +29,7 @@ class ImportIndc
     import_values_cait
     import_sectors
     import_values_wb
+    reject_map_indicators_without_values_or_labels
     import_submissions
   end
 
@@ -46,7 +47,13 @@ class ImportIndc
   end
 
   def load_csvs
-    @cait_data = S3CSVReader.read(DATA_CAIT_FILEPATH).map(&:to_h)
+    # relaxed symbol converter that lets through '-'
+    symbol_converter = lambda { |h|
+      h.downcase.gsub(/[^\s\w-]+/, '').strip.gsub(/\s+/, '_').to_sym
+    }
+    @cait_data = S3CSVReader.read(
+      DATA_CAIT_FILEPATH, [symbol_converter]
+    ).map(&:to_h)
     @cait_labels = S3CSVReader.read(LEGEND_CAIT_FILEPATH).map(&:to_h)
     @wb_wide_data = S3CSVReader.read(DATA_WB_WIDE_FILEPATH).map(&:to_h)
     @wb_sectoral_data = S3CSVReader.read(DATA_WB_SECTORAL_FILEPATH).map(&:to_h)
@@ -235,13 +242,18 @@ class ImportIndc
 
     indicators.each do |indicator_name, labels|
       indicator = Indc::Indicator.find_by(slug: indicator_name)
-      next if !indicator
+      next unless indicator
+      nds_label = labels.delete('No Document Submitted')
       labels.each_with_index do |label, index|
         Indc::Label.create!(
           indicator: indicator,
           value: label,
           index: index + 1
         )
+      end
+      if nds_label.present?
+        # fixed index for the No Document Submitted label
+        Indc::Label.create!(indicator: indicator, value: nds_label, index: -2)
       end
     end
   end
@@ -314,6 +326,24 @@ class ImportIndc
   def import_submissions
     @submissions.each do |sub|
       Indc::Submission.create!(submission_attributes(sub))
+    end
+  end
+
+  def reject_map_indicators_without_values_or_labels
+    map_indicators = Indc::Category.
+      joins(:category_type).
+      where('indc_category_types.name' => 'map').
+      includes(:indicators).map(&:indicators).flatten
+    map_indicators.each do |indicator|
+      if indicator.values.empty?
+        Rails.logger.debug "Rejecting indicator without values: #{indicator.slug}"
+        indicator.destroy
+        next
+      end
+      if indicator.labels.empty?
+        Rails.logger.debug "Rejecting indicator without labels: #{indicator.slug}"
+        indicator.destroy
+      end
     end
   end
 end

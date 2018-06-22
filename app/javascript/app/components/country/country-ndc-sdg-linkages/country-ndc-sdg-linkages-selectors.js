@@ -69,7 +69,9 @@ export const groupTargetsMeta = createSelector([getTargets], targets => {
 export const getTooltipSectorIds = createSelector(
   [getTooltipData, getTargetsData],
   (tooltip, targets) => {
-    if (!tooltip || !targets || isEmpty(tooltip) || isEmpty(targets)) { return null; }
+    if (!tooltip || !targets || isEmpty(tooltip) || isEmpty(targets)) {
+      return null;
+    }
     return (
       (targets[tooltip.goal_number] &&
         targets[tooltip.goal_number].targets &&

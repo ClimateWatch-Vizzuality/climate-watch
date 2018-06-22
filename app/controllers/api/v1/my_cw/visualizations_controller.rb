@@ -10,7 +10,7 @@ module Api
         end
 
         def show
-          render json: @visualization, serializer: Api::V1::MyCw::UserStorySerializer
+          render json: @visualization, serializer: Api::V1::MyCw::VisualizationSerializer
         end
 
         def update
@@ -23,7 +23,7 @@ module Api
 
         def create
           @visualization = ::MyCw::Visualization.new(visualization_params)
-          @visualization.user_id = @current_user[:user_id]
+          @visualization.user = @current_user[:user_id]
           if @visualization.save
             render json: @visualization, serializer: Api::V1::MyCw::VisualizationSerializer
           else
@@ -33,7 +33,7 @@ module Api
 
         def destroy
           if @visualization.destroy
-            render status: 200
+            render json: { status: 200 }
           else
             render json: resource_error(@visualization.errors)
           end
@@ -42,12 +42,12 @@ module Api
         private
 
         def visualization_params
-          params.require(:visualization).permit(:title, :description, :json_body)
+          params.require(:visualization).permit(:title, :description, json_body: {})
         end
 
         def visualization
           @visualization = ::MyCw::Visualization.find params[:id]
-          render status: 401 unless @visualization.user_id == @current_user[:user_id]
+          render status: 401 unless @visualization.user == @current_user[:user_id]
         end
       end
     end

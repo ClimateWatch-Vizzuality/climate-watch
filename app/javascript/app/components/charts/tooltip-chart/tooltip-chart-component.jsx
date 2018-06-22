@@ -3,11 +3,12 @@ import Proptypes from 'prop-types';
 import { format } from 'd3-format';
 import cx from 'classnames';
 
-import styles from './tooltip-chart-styles.scss';
+import styles from 'styles/themes/chart-tooltip/chart-tooltip.scss';
 
 class TooltipChart extends PureComponent {
   getFormat() {
-    return this.props.forceFourDecimals ? '.4f' : '.2s';
+    const { forceFixedFormatDecimals } = this.props;
+    return forceFixedFormatDecimals ? `.${forceFixedFormatDecimals}f` : '.2s';
   }
 
   getTotal = (keys, data, unitIsCo2) => {
@@ -108,7 +109,7 @@ TooltipChart.propTypes = {
   content: Proptypes.object,
   config: Proptypes.object,
   showTotal: Proptypes.bool,
-  forceFourDecimals: Proptypes.bool
+  forceFixedFormatDecimals: Proptypes.number
 };
 
 export default TooltipChart;

@@ -52,6 +52,7 @@ class EmissionPathwayGraph extends PureComponent {
       handleSelectorChange,
       handleInfoClick,
       modalData,
+      model,
       handleModelChange
     } = this.props;
     const needsTimeSeries =
@@ -80,9 +81,23 @@ class EmissionPathwayGraph extends PureComponent {
               <TabletLandscape>
                 <ButtonGroup
                   className={styles.btnGroup}
-                  onInfoClick={handleInfoClick}
-                  shareUrl="/embed/pathways"
-                  analyticsGraphName="Pathways"
+                  buttonsConfig={[
+                    {
+                      type: 'info',
+                      onClick: handleInfoClick
+                    },
+                    {
+                      type: 'share',
+                      shareUrl: '/embed/pathways',
+                      analyticsGraphName: 'Pathways'
+                    },
+                    {
+                      type: 'download'
+                    },
+                    {
+                      type: 'addToUser'
+                    }
+                  ]}
                 />
               </TabletLandscape>
             </div>
@@ -150,17 +165,32 @@ class EmissionPathwayGraph extends PureComponent {
             loading={loading}
             error={error}
             targetParam="scenario"
-            forceFourDecimals
+            forceFixedFormatDecimals={3}
             margin={{ top: 50 }}
             espGraph
+            model={model || null}
           />
           <TabletPortraitOnly>
             <ButtonGroup
               className={styles.btnGroup}
-              onInfoClick={handleInfoClick}
-              shareUrl="/embed/pathways"
-              analyticsGraphName="Pathways"
-              reverseDropdown
+              buttonsConfig={[
+                {
+                  type: 'info',
+                  onClick: handleInfoClick
+                },
+                {
+                  type: 'share',
+                  shareUrl: '/embed/pathways',
+                  analyticsGraphName: 'Pathways',
+                  reverseDropdown: true
+                },
+                {
+                  type: 'download'
+                },
+                {
+                  type: 'addToUser'
+                }
+              ]}
             />
           </TabletPortraitOnly>
           <ModalOverview
@@ -182,6 +212,7 @@ EmissionPathwayGraph.propTypes = {
   data: PropTypes.array,
   domain: PropTypes.object,
   modalData: PropTypes.array,
+  model: PropTypes.object,
   config: PropTypes.object,
   loading: PropTypes.bool,
   error: PropTypes.bool,

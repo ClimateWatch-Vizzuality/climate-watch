@@ -4,28 +4,65 @@ import DownloadMenu from 'components/download-menu';
 import ShareMenu from 'components/share-menu';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-
+import { Desktop } from 'components/responsive';
 import styles from './tools-nav-styles.scss';
 
-const ToolsNav = ({ className, reverse }) => (
-  <div className={cx(styles.toolsNav, className)}>
-    <NavLink
-      className={cx(styles.link, styles.disabled, styles.myCwButton)}
-      activeClassName={styles.linkActive}
-      to=""
-      disabled
-      title="Coming soon"
-    >
-      MY CW
-    </NavLink>
-    <DownloadMenu className={styles.downloadButton} reverse={reverse} />
-    <ShareMenu className={styles.shareButton} reverse={reverse} />
+const FEATURE_MY_CLIMATEWATCH = process.env.FEATURE_MY_CLIMATEWATCH === 'true';
+const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
+const mycwLinkConfig = FEATURE_MY_CLIMATEWATCH
+  ? { to: '/my-climate-watch', title: 'My climate watch' }
+  : { to: '', disabled: true, title: 'Coming soon' };
+const isActive = (match, location) =>
+  match && location.pathname.includes(match.path);
+const activeProps = location => ({
+  isActive: match => isActive(match, location),
+  activeClassName: styles.linkActive
+});
+const renderDataExplorerLink = location => (
+  <NavLink
+    className={cx(styles.link, styles.noWrap)}
+    to="/data-explorer"
+    title="Data Explorer"
+    {...activeProps(location)}
+  >
+    DATA EXPLORER
+  </NavLink>
+);
+const renderMyCWLink = location => (
+  <NavLink
+    className={cx(styles.link, styles.noWrap, styles.myCwButton, {
+      [styles.disabled]: mycwLinkConfig.disabled
+    })}
+    {...mycwLinkConfig}
+    {...activeProps(location)}
+  >
+    MY CW
+  </NavLink>
+);
+const ToolsNav = props => (
+  <div className={cx(styles.toolsNav, props.className)}>
+    <Desktop>
+      {renderMyCWLink(props.location)}
+      {FEATURE_DATA_EXPLORER ? (
+        renderDataExplorerLink(props.location)
+      ) : (
+        <DownloadMenu
+          className={cx(styles.iconButton, styles.downloadButton)}
+          reverse={props.reverse}
+        />
+      )}
+    </Desktop>
+    <ShareMenu
+      className={cx(styles.iconButton, styles.shareButton)}
+      reverse={props.reverse}
+    />
   </div>
 );
 
 ToolsNav.propTypes = {
   className: PropTypes.string,
-  reverse: PropTypes.bool
+  reverse: PropTypes.bool,
+  location: PropTypes.object
 };
 
 ToolsNav.defaultProps = {

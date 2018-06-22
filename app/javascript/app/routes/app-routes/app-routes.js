@@ -18,13 +18,18 @@ import EmissionPathways from 'pages/emission-pathways';
 import GHGEmissions from 'pages/ghg-emissions';
 import NDCSearch from 'pages/ndc-search';
 import error from 'pages/error';
+import MyClimateWatch from 'pages/my-climate-watch';
+import DataExplorer from 'pages/data-explorer';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 
 // routes
+import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
-import NDCSRoutes from './NDCS-routes';
+import NDCSContentRoutes from './NDCSContent-routes';
+import MyCwRoutes from './my-cw-routes';
+import DataExplorerRoutes from './data-explorer-routes';
 import aboutRoutes from './about-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
@@ -35,6 +40,26 @@ import emissionPathwaysModelSections from './emission-pathways-model-sections';
 import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
+
+// flags
+const FEATURE_MY_CLIMATEWATCH = process.env.FEATURE_MY_CLIMATEWATCH === 'true';
+const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
+
+const dataExplorer = FEATURE_DATA_EXPLORER
+  ? {
+    path: '/data-explorer',
+    component: DataExplorer,
+    routes: DataExplorerRoutes
+  }
+  : {};
+
+const mycw = FEATURE_MY_CLIMATEWATCH
+  ? {
+    path: '/my-climate-watch',
+    component: MyClimateWatch,
+    routes: MyCwRoutes
+  }
+  : {};
 
 export default [
   {
@@ -89,32 +114,21 @@ export default [
     routes: NDCCompareRoutes
   },
   {
-    label: 'NDCs',
     nav: true,
-    routes: [
-      {
-        path: '/ndcs',
-        label: 'NDC Content'
-      },
-      {
-        path: '/ndcs-sdg',
-        label: 'NDC-SDG LINKAGES'
-      }
-    ]
+    label: 'NDCs',
+    routes: NDCSRoutes
   },
   {
-    path: '/ndcs',
+    path: '/ndcs-content',
     component: NDCS,
-    label: 'NDCs',
     headerImage: 'ndc',
     headerColor: '#035388',
-    routes: NDCSRoutes
+    routes: NDCSContentRoutes
   },
   {
     path: '/ndcs-sdg',
     component: NDCSDG,
     exact: true,
-    label: 'SDG LINKAGES',
     headerImage: 'ndc-sdg'
   },
   {
@@ -174,6 +188,8 @@ export default [
     nav: false,
     label: 'STORIES'
   },
+  mycw,
+  dataExplorer,
   {
     path: '/about',
     component: About,
@@ -186,6 +202,20 @@ export default [
   {
     path: '/error-page',
     component: error
+  },
+  {
+    path: '/error-page',
+    component: error
+  },
+  {
+    path: '/my-climate-watch',
+    label: 'MY CW',
+    navMobile: true
+  },
+  {
+    path: '/data-explorer',
+    label: 'DATA EXPLORER',
+    navMobile: true
   },
   {
     path: '/',

@@ -29,15 +29,18 @@ rules:
   import/extensions: [error, {"js": never, "jsx": never}]
   import/no-unresolved: 0
   import/no-extraneous-dependencies: 0
+  import/prefer-default-export: 0
   no-use-before-define: 0
   no-underscore-dangle: 0
   react/forbid-prop-types: 0
   react/prefer-stateless-function: 0
   jsx-a11y/href-no-hash: 0
+  jsx-a11y/alt-text: 0
   react/jsx-filename-extension: 0
   camelcase: 0
   prefer-arrow-callback: 0
   func-names: 0
+  react/jsx-indent: 1
   no-mixed-operators: 1
 settings:
   import/resolver:

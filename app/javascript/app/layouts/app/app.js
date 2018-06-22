@@ -6,6 +6,7 @@ const mapStateToProps = (state, { route }) => ({
   countriesLoaded: state.countries.loaded,
   navbarMobileIsOpen: state.hamburger.isOpen,
   navRoutes: route.routes.filter(r => r.nav),
+  navMobileRoutes: route.routes.filter(r => r.navMobile),
   pathRoutes: route.routes.filter(r => r.path),
   location
 });

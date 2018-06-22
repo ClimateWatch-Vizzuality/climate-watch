@@ -1,0 +1,31 @@
+@import '~styles/layout.scss';
+
+.insightsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.insightsCard {
+  flex-basis: calc(33% - 20px);
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.placeholder {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $theme-color;
+}
+
+.loading {
+  min-height: 300px;
+}
+
+.createBtn {
+  margin-top: 20px;
+  width: 250px;
+}

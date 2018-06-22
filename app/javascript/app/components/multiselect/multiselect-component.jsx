@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { ReactSelectize, MultiSelect } from 'react-selectize'; // eslint-disable-line
+import Loading from 'components/loading';
 import Icon from 'components/icon';
 import { themr } from 'react-css-themr';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
+import infoIcon from 'assets/icons/info.svg';
 import theme from 'styles/themes/dropdown/react-selectize.scss';
 import styles from './multiselect-styles.scss';
 
@@ -51,14 +53,22 @@ class Multiselect extends Component {
       filterOptions,
       label,
       parentClassName,
+      loading,
       children,
       mirrorX,
       hideSelected,
-      icon
+      icon,
+      info,
+      infoText
     } = this.props;
     return (
       <div className={cx(styles.multiSelectWrapper, parentClassName)}>
         {label && <span className={styles.label}>{label}</span>}
+        {info && (
+          <div data-tip={infoText} className={styles.infoContainer}>
+            <Icon icon={infoIcon} className={styles.infoIcon} />
+          </div>
+        )}
         <div
           className={cx(
             theme.dropdown,
@@ -71,6 +81,7 @@ class Multiselect extends Component {
           <div className={cx(styles.values, 'values')}>
             {this.getSelectorValue()}
           </div>
+          {loading && <Loading className={styles.loader} mini />}
           <MultiSelect
             ref={el => {
               this.selectorElement = el;
@@ -111,23 +122,27 @@ class Multiselect extends Component {
 }
 
 Multiselect.propTypes = {
-  parentClassName: Proptypes.string,
-  values: Proptypes.array.isRequired,
-  options: Proptypes.array.isRequired,
-  selectedClassName: Proptypes.string,
-  onMultiValueChange: Proptypes.func,
-  filterOptions: Proptypes.func,
-  handleChange: Proptypes.func,
-  label: Proptypes.string,
-  selectedLabel: Proptypes.string,
-  children: Proptypes.node,
-  hideSelected: Proptypes.bool,
-  mirrorX: Proptypes.bool,
-  icon: Proptypes.object
+  parentClassName: PropTypes.string,
+  values: PropTypes.array.isRequired,
+  options: PropTypes.array.isRequired,
+  selectedClassName: PropTypes.string,
+  onMultiValueChange: PropTypes.func,
+  filterOptions: PropTypes.func,
+  handleChange: PropTypes.func,
+  info: PropTypes.bool,
+  infoText: PropTypes.string,
+  label: PropTypes.string,
+  selectedLabel: PropTypes.string,
+  children: PropTypes.node,
+  loading: PropTypes.bool,
+  hideSelected: PropTypes.bool,
+  mirrorX: PropTypes.bool,
+  icon: PropTypes.object
 };
 
 Multiselect.defaultProps = {
-  selectedClassName: styles.selected
+  selectedClassName: styles.selected,
+  loading: false
 };
 
 export default themr('MultiSelect', styles)(Multiselect);

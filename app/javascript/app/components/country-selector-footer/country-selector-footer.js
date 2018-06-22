@@ -50,7 +50,8 @@ class CountrySelectorFooterContainer extends PureComponent {
     const unselected = target;
     const { activeCountryOptions } = this.props;
     const newLocations = activeCountryOptions.map(
-      country => country && (country.label !== unselected ? country.value : null)
+      country =>
+        country && (country.label !== unselected ? country.value : null)
     );
     this.updateUrlParam({ name: 'locations', value: newLocations.toString() });
   };

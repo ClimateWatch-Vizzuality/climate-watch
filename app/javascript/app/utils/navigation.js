@@ -25,7 +25,17 @@ export function getLocationParamUpdated(location, params = [], clear = false) {
 export const isPageContained =
   window.location.pathname.split('/')[1] === CONTAINED_PATHNAME;
 
+export const isPageNdcp = location => {
+  const search = qs.parse(location.search);
+  return search && search.isNdcp && search.isNdcp === 'true';
+};
+
+export const isEmbededComponent = location =>
+  location.pathname.includes('/embed');
+
 export default {
   getLocationParamUpdated,
-  isPageContained
+  isPageContained,
+  isPageNdcp,
+  isEmbededComponent
 };

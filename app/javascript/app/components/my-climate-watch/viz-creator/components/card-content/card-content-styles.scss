@@ -1,0 +1,34 @@
+@import '~styles/layout.scss';
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $light-gray;
+}
+
+.cardImage {
+  width: 100%;
+}
+
+.placeholder {
+  font-size: $font-size-sm;
+  font-style: italic;
+  color: $dark-gray;
+}
+
+.cardContent {
+  min-height: 60px;
+  padding: 10px;
+  font-size: $font-size;
+  font-weight: $font-weight-bold;
+  line-height: 1.38;
+  text-align: left;
+  color: $theme-color;
+}

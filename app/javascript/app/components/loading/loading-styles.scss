@@ -1,7 +1,9 @@
 @import '~styles/layout.scss';
 
 $loader-size: 60px;
+$loader-size-mini: 15px;
 $loader-border-size: 4px;
+$loader-border-size-mini: 2px;
 $loading-color: $theme-secondary;
 
 .container {
@@ -20,6 +22,25 @@ $loading-color: $theme-secondary;
   margin: $loader-size/-2 0 0 $loader-size/-2;
   width: $loader-size;
   height: $loader-size;
+}
+
+.loaderMini {
+  margin: $loader-size-mini/-2 0 0 $loader-size-mini/-2;
+  width: $loader-size-mini;
+  height: $loader-size-mini;
+
+  > .loaderLight {
+    width: $loader-size-mini;
+    height: $loader-size-mini;
+    border-radius: $loader-size-mini;
+    box-shadow: 0 $loader-border-size-mini 6px $loading-color;
+  }
+
+  > .loaderTrack {
+    width: $loader-size-mini;
+    height: $loader-size-mini;
+    border-radius: $loader-size-mini;
+  }
 }
 
 .loaderLight {

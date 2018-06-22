@@ -5,6 +5,7 @@ module Api
         attribute :location
         attribute :value
         attribute :rank, if: -> { object.absolute_rank }
+        attribute :year, if: -> { object.year? }
 
         def location
           object.location.iso_code3

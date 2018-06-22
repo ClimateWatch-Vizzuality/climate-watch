@@ -2,9 +2,10 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
 // Restore when library ready to IE
-// import { handleModule } from 'redux-tools';
+import { handleModule } from 'redux-tools';
 
 // Providers
+import * as loginProvider from 'providers/login-provider';
 import * as countriesProvider from 'providers/countries-provider';
 import * as regionsProvider from 'providers/regions-provider';
 import * as espLocationsProvider from 'providers/esp-locations-provider';
@@ -24,8 +25,10 @@ import * as espScenariosProvider from 'providers/esp-scenarios-provider';
 import * as espIndicatorsProvider from 'providers/esp-indicators-provider';
 import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-provider';
 import * as emissionsProvider from 'providers/emissions-provider';
+import * as dataExplorerProvider from 'providers/data-explorer-provider';
 
 const providersReducers = {
+  login: handleModule(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
   adaptations: handleActions(adaptationsProvider),
@@ -44,19 +47,21 @@ const providersReducers = {
   espIndicators: handleActions(espIndicatorsProvider),
   espIndicatorsTrend: handleActions(espIndicatorsTrendProvider),
   espLocations: handleActions(espLocationsProvider),
-  espTimeSeries: handleActions(espTimeSeriesProvider)
+  espTimeSeries: handleActions(espTimeSeriesProvider),
+  dataExplorer: handleActions(dataExplorerProvider)
 };
 
 // Pages
 import * as NDCSPage from 'pages/ndcs';
-
 import * as countryNDCFullPage from 'pages/ndc-country-full';
 import * as ndcSearchPage from 'pages/ndc-search';
+import * as myCWEditor from 'pages/my-climate-watch/my-cw-editor';
 
 const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
-  ndcSearch: handleActions(ndcSearchPage)
+  ndcSearch: handleActions(ndcSearchPage),
+  myCWEditor: handleModule(myCWEditor)
 };
 
 // Components
@@ -71,6 +76,10 @@ import * as ndcCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
+import * as myInsights from 'components/my-climate-watch/my-insights';
+import * as myVisualisations from 'components/my-climate-watch/my-visualisations';
+import * as myVisualisationsCreator from 'components/my-climate-watch/viz-creator';
+import * as myVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
 import * as ndcSdgLinkagesComponent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import * as HamburgerComponent from 'components/hamburger';
 import * as AnchorNavComponent from 'components/anchor-nav';
@@ -86,6 +95,10 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
+  insights: handleModule(myInsights),
+  visualisations: handleModule(myVisualisations),
+  vizCreator: handleModule(myVisualisationsCreator),
+  vizGraph: handleModule(myVisualisationsGraphComponent),
   espGraph: handleActions(espGraphComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleActions(HamburgerComponent),

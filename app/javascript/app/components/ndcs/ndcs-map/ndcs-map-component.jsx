@@ -28,10 +28,24 @@ const getTooltip = (country, tooltipTxt) => (
 const renderButtonGroup = (clickHandler, reverseDropdown = false) => (
   <ButtonGroup
     className={styles.buttonGroup}
-    onInfoClick={clickHandler}
-    shareUrl="/embed/ndcs"
-    analyticsGraphName="Ndcs"
-    reverseDropdown={reverseDropdown}
+    buttonsConfig={[
+      {
+        type: 'info',
+        onClick: clickHandler
+      },
+      {
+        type: 'share',
+        shareUrl: '/embed/ndcs',
+        analyticsGraphName: 'Ndcs',
+        reverseDropdown
+      },
+      {
+        type: 'download'
+      },
+      {
+        type: 'addToUser'
+      }
+    ]}
   />
 );
 

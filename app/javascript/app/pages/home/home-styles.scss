@@ -14,17 +14,38 @@
 }
 
 .imgLayout {
-  @include columns(12);
+  @include columns(8);
 
   > *:first-child {
-    @include column-offset(0);
+    @include column-offset(2, $gutters: true);
   }
 
-  @media #{$mobile-only} {
-    @include columns(8);
+  @media #{$tablet-portrait} {
+    justify-content: center;
 
     > *:first-child {
-      @include column-offset(2, $gutters: true);
+      min-width: 500px;
+
+      @include column-offset(0, $gutters: true);
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(12);
+
+    > *:first-child {
+      @include column-offset(0, $gutters: true);
+
+      min-width: 400px;
+
+      img {
+        height: auto;
+      }
     }
   }
 }
@@ -133,7 +154,9 @@
 
 .countries,
 .ndcs,
-.sdgLinkages {
+.sdgLinkages,
+.ghg,
+.pathways {
   background-image: linear-gradient(to top, $theme-color -100%, transparent 10%);
   border-bottom: solid 1px $border-color;
 

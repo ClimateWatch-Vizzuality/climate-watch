@@ -17,7 +17,7 @@ const Intro = props => {
     className
   } = props;
   const actionButton = button && (
-    <Button color="yellow" className={theme.button} link={button.link}>
+    <Button color="yellow" className={theme.button} {...button}>
       {button.text}
     </Button>
   );

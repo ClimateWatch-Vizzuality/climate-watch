@@ -1,3 +1,8 @@
+const { GFW_API } = process.env;
+const { CW_API } = process.env;
+
+export const LOGIN_URL = `${GFW_API}/auth/login?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
+
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
     label: 'Absolute value',
@@ -111,19 +116,39 @@ export const TOP_EMITTERS = [
 ];
 
 export const CHART_COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759'
+  '#00B4D2',
+  '#0677B3',
+  '#D2187C',
+  '#FFB400',
+  '#FF7800',
+  '#FF88AA',
+  '#AB0000',
+  '#20D5B7',
+  '#383F45',
+  '#CACCD0'
+];
+
+export const CHART_COLORS_EXTENDED = [
+  '#00B4D2',
+  '#0677B3',
+  '#D2187C',
+  '#FFB400',
+  '#FF7800',
+  '#FF88AA',
+  '#AB0000',
+  '#20D5B7',
+  '#383F45',
+  '#CACCD0',
+  '#80DAE9',
+  '#93BBD9',
+  '#E98CBE',
+  '#FFDA80',
+  '#FFBC80',
+  '#FFC4D5',
+  '#D58080',
+  '#90EADB',
+  '#9C9FA2',
+  '#E5E6E8'
 ];
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#b25bd0', '#f1933b'];
@@ -234,6 +259,79 @@ export const NDC_DOCUMENT_OPTIONS = [
 export const LATEST_VERSION = 'AR4';
 export const CONTAINED_PATHNAME = 'contained';
 
+export const LENSES_SELECTOR_INFO = {
+  locations: `Every model has only a certain range of locations available. After one location is selected,
+      all the locations which do not have a model in common with the selected location are filtered out.
+      Hence, only the locations which have a model in common are displayed and are available for selection. `,
+  models: `This drop-down menu shows only models which have information for all of the locations selected
+      in the locations menu. You can select fewer locations to get a wider range of models.`
+};
+
+export const DATA_EXPLORER_BLACKLIST = ['id', 'iso_code3', 'emissions'];
+export const DATA_EXPLORER_FIRST_COLUMN_HEADERS = [
+  'region',
+  'data_source',
+  'gwp',
+  'sector',
+  'gas',
+  'unit'
+];
+
+export const USERS_PROFESIONAL_SECTORS = [
+  'Academic',
+  'Commercial',
+  'Internatioonal Organization',
+  'Media',
+  'National Government',
+  'NGO',
+  'Other'
+];
+
+export const DATA_EXPLORER_SECTION_NAMES = {
+  'historical-emissions': 'historical_emissions',
+  'ndc-sdg-linkages': 'ndc_sdg',
+  'emission-pathways': 'emission_pathways',
+  'ndc-content': 'ndc_content'
+};
+
+export const DATA_EXPLORER_METADATA_SOURCE = {
+  'historical-emissions': {
+    PIK: 'historical_emissions_pik',
+    CAIT: 'historical_emissions_cait',
+    UNFCCC: 'historical_emissions_unfccc'
+  },
+  'ndc-sdg-linkages': 'ndc_sdc_all_indicators',
+  'ndc-content': { CAIT: 'ndc_cait', WB: 'ndc_wb' },
+  'emission-pathways': null // model, scenario and indicator related metadata
+};
+
+export const DATA_EXPLORER_FILTERS = {
+  'historical-emissions': [
+    'source_IPCC_version',
+    'gases',
+    'regions',
+    'sectors'
+  ],
+  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
+  'emission-pathways': [],
+  'ndc-content': [
+    'data_sources',
+    'categories',
+    'indicators',
+    'sectors',
+    'countries'
+  ]
+};
+
+export const DATA_EXPLORER_SOURCE_IPCC_VERSIONS = [
+  { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
+  { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
+  { name: 'CAIT - AR2', source_slug: 'CAIT', version_slug: 'AR2' },
+  { name: 'CAIT - AR4', source_slug: 'CAIT', version_slug: 'AR4' },
+  { name: 'UNFCCC - AR2', source_slug: 'UNFCCC', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR4', source_slug: 'UNFCCC', version_slug: 'AR4' }
+];
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -257,5 +355,12 @@ export default {
   DISCLAIMER_SHOWN,
   NDC_DOCUMENT_OPTIONS,
   LATEST_VERSION,
-  CONTAINED_PATHNAME
+  CONTAINED_PATHNAME,
+  LENSES_SELECTOR_INFO,
+  DATA_EXPLORER_BLACKLIST,
+  DATA_EXPLORER_FIRST_COLUMN_HEADERS,
+  DATA_EXPLORER_SECTION_NAMES,
+  DATA_EXPLORER_METADATA_SOURCE,
+  DATA_EXPLORER_SOURCE_IPCC_VERSIONS,
+  USERS_PROFESIONAL_SECTORS
 };

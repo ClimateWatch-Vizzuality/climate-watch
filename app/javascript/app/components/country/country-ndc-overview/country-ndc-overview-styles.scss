@@ -6,6 +6,10 @@
   min-height: 450px;
 }
 
+.embededWrapper {
+  border: none;
+}
+
 .countryOverviewPadding {
   padding-bottom: 2em;
 }
@@ -25,7 +29,7 @@
   @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
-    @include columns((2, 4, 6));
+    @include columns((2.4, 3.6, 6));
   }
 }
 
@@ -134,6 +138,7 @@
 
 .exploreBtn {
   margin-bottom: $gutter-padding;
+
   @media #{$tablet-landscape} {
     margin-bottom: 0;
   }

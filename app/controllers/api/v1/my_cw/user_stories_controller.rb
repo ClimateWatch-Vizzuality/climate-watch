@@ -23,7 +23,7 @@ module Api
 
         def create
           @user_story = ::MyCw::UserStory.new(user_story_params)
-          @user_story.user_id = @current_user[:user_id]
+          @user_story.user = @current_user[:user_id]
           if @user_story.save
             render json: @user_story, serializer: Api::V1::MyCw::UserStorySerializer
           else
@@ -33,7 +33,7 @@ module Api
 
         def destroy
           if @user_story.destroy
-            render status: 200
+            render json: {code: 200, status: "Successfully deleted #{params[:id]}"}
           else
             render json: resource_error(@user_story.errors)
           end
@@ -42,12 +42,12 @@ module Api
         private
 
         def user_story_params
-          params.require(:user_story).permit(:title, :body, :public)
+          params.require(:user_story).permit(:title, :public, body: {})
         end
 
         def user_story
           @user_story = ::MyCw::UserStory.find params[:id]
-          render status: 401 unless @user_story.user_id == @current_user[:user_id]
+          render status: 401 unless @user_story.user_id == @current_user[:user_id]&.id
         end
       end
     end

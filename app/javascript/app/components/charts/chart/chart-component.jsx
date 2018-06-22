@@ -23,6 +23,7 @@ class Chart extends PureComponent {
       height,
       targetParam,
       customMessage,
+      model,
       hideRemoveOptions
     } = this.props;
     const hasData = data && data.length > 0;
@@ -44,7 +45,6 @@ class Chart extends PureComponent {
             message={getMessage()}
             className={styles.noContent}
             minHeight={height}
-            icon
           />
         )}
         {!loading && hasData && config && <ChartComponent {...this.props} />}
@@ -55,6 +55,7 @@ class Chart extends PureComponent {
             dataOptions={dataOptions}
             dataSelected={dataSelected}
             targetParam={targetParam}
+            model={model}
             hideRemoveOptions={hideRemoveOptions}
           />
         )}
@@ -75,6 +76,7 @@ Chart.propTypes = {
   config: PropTypes.object,
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   customMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  model: PropTypes.object,
   targetParam: PropTypes.string
 };
 
