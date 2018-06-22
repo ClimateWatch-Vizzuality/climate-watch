@@ -10,11 +10,18 @@ class DataExplorerProvider extends PureComponent {
       fetchDataExplorer,
       fetchSectionMetadata,
       fetchMetadata,
-      section
+      section,
+      query
     } = this.props;
-    fetchDataExplorer(section);
+    fetchDataExplorer({ section, query });
     fetchSectionMetadata();
     fetchMetadata(section);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { fetchDataExplorer, section, query } = this.props;
+    const { section: prevSection, query: prevQuery } = prevProps;
+    if (section !== prevSection || query !== prevQuery) { fetchDataExplorer({ section, query }); }
   }
 
   render() {
@@ -26,6 +33,7 @@ DataExplorerProvider.propTypes = {
   fetchDataExplorer: PropTypes.func.isRequired,
   fetchSectionMetadata: PropTypes.func.isRequired,
   fetchMetadata: PropTypes.func.isRequired,
+  query: PropTypes.string,
   section: PropTypes.string
 };
 
