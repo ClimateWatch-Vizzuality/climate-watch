@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import MultiSelect from 'components/multiselect';
 import plusIcon from 'assets/icons/plus.svg';
-import { COUNTRY_COMPARE_COLORS } from 'data/constants';
+import { CHART_COLORS } from 'data/constants';
 
 import styles from './country-selector-footer-styles.scss';
 
@@ -27,7 +27,7 @@ const CountrySelectorFooter = ({
                   <Tag
                     key={`${country.label}`}
                     label={country.label}
-                    color={COUNTRY_COMPARE_COLORS[index]}
+                    color={CHART_COLORS[index]}
                     data={{
                       id: country.label,
                       value: country.value
