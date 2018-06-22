@@ -8,7 +8,7 @@ import actions from './ndc-search-actions';
 import reducers, { initialState } from './ndc-search-reducers';
 
 import SearchComponent from './ndc-search-component';
-import { getSearchResultsSorted } from './ndc-search-selectors';
+import { getSearchResultsSorted, getMessageText } from './ndc-search-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
@@ -20,7 +20,8 @@ const mapStateToProps = (state, { location }) => {
   return {
     search,
     loading: state.ndcSearch.loading,
-    results: getSearchResultsSorted(stateWithQuery)
+    results: getSearchResultsSorted(stateWithQuery),
+    searchMessageText: getMessageText(search.searchBy)
   };
 };
 
