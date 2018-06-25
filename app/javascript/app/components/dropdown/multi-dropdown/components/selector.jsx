@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Icon from 'components/icon';
-
+import cx from 'classnames';
 import arrowDownIcon from 'assets/icons/arrow-down.svg';
 import closeIcon from 'assets/icons/close.svg';
+import styles from '../multi-dropdown-styles.scss';
 
 const Selector = props => {
   const {
@@ -21,35 +22,41 @@ const Selector = props => {
     innerRef
   } = props;
 
+  const showCloseIcon = clearable && activeValue;
   return (
-    <div ref={innerRef} className={`container ${isOpen ? 'is-open' : ''}`}>
-      <div className={`selector ${arrowPosition ? 'align-left' : ''}`}>
+    <div
+      ref={innerRef}
+      className={cx(styles.container, { [styles.isOpen]: isOpen })}
+    >
+      <div
+        className={cx(styles.selector, { [styles.alignLeft]: arrowPosition })}
+      >
         {arrowPosition === 'left' && (
-          <button className="arrow-btn" onClick={onSelectorClick}>
-            <Icon className="arrow" icon={arrowDownIcon} />
+          <button className={styles.arrowBtn} onClick={onSelectorClick}>
+            <Icon className={styles.arrow} icon={arrowDownIcon} />
           </button>
         )}
         <span
-          className={`value ${!activeValue ? 'no-value' : ''} ${
-            clearable && activeValue ? 'clearable' : ''
-          }`}
+          className={cx(styles.value, {
+            [styles.noValue]: !activeValue,
+            [styles.clearable]: clearable && activeValue
+          })}
         >
           {(isOpen && !searchable) || !isOpen ? activeLabel : ''}
         </span>
         <input {...inputProps()} />
-        {clearable &&
-          activeValue && (
-            <button className="clear-btn" onClick={handleClearSelection}>
-              <Icon icon={closeIcon} className="clear-icon" />
-            </button>
-          )}
+        {showCloseIcon && (
+          <button className={styles.clearBtn} onClick={handleClearSelection}>
+            <Icon icon={closeIcon} className={styles.clearIcon} />
+          </button>
+        )}
         {arrowPosition !== 'left' && (
-          <button className="arrow-btn" onClick={onSelectorClick}>
-            <Icon className="arrow" icon={arrowDownIcon} />
+          <button className={styles.arrowBtn} onClick={onSelectorClick}>
+            <Icon className={styles.arrow} icon={arrowDownIcon} />
           </button>
         )}
       </div>
-      <div className="menu-arrow" />
+      <div className={styles.menuArrow} />
       {children}
     </div>
   );

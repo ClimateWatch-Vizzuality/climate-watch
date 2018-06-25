@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 
 import Icon from 'components/icon';
 import Button from 'components/button';
+import cx from 'classnames';
 
-import arrowDownIcon from 'assets/icons/arrow-down.svg';
+import arrowDownIcon from 'assets/icons/dropdown-arrow.svg';
 import infoIcon from 'assets/icons/info.svg';
+import styles from '../multi-dropdown-styles.scss';
 
 const Item = props => {
   const {
@@ -31,20 +33,20 @@ const Item = props => {
     activeLabel === label ||
     (groupParent && groupParent === showGroup) ||
     (groupParent && activeValue && groupParent === activeValue.group);
-
+  const showArrowIcon = groupParent && showGroup !== groupParent;
   return (
     <div
-      className={`item-wrapper
-        ${isActive ? 'show' : ''}
-        ${!group ? 'base' : ''}
-        ${isGroupParentActive ? 'selected' : ''}
-        ${groupParent ? 'group-parent' : ''}
-      `}
+      className={cx(styles.itemWrapper, {
+        [styles.show]: isActive,
+        [styles.base]: !group,
+        [styles.selected]: isGroupParentActive,
+        [styles.groupParent]: groupParent
+      })}
     >
       {isGroupParentActive && (
         <Icon
           icon={arrowDownIcon}
-          className="group-icon selected"
+          className={cx(styles.groupIcon, styles.selected)}
           onClick={() => handleSelectGroup(item)}
         />
       )}
@@ -52,7 +54,7 @@ const Item = props => {
         {...getItemProps({
           item,
           index,
-          className: `item ${isHighlighted ? 'highlight' : ''}`
+          className: cx(styles.item, { [styles.highlight]: isHighlighted })
         })}
         {...!!groupParent && {
           onClick: () => handleSelectGroup(item)
@@ -62,18 +64,22 @@ const Item = props => {
       </div>
       {metaKey && (
         <Button
-          className="theme-button-small square info-button"
+          className={cx(
+            styles.themeButtonSmall,
+            styles.square,
+            styles.infoButton
+          )}
           onClick={() => optionsAction(item[optionsActionKey])}
         >
-          <Icon icon={infoIcon} className="info-icon" />
+          <Icon icon={infoIcon} className={styles.infoIcon} />
         </Button>
       )}
-      {(groupParent && showGroup !== groupParent) && (
+      {showArrowIcon && (
         <Icon
           icon={arrowDownIcon}
-          className={`group-icon ${showGroup === groupParent
-            ? 'selected'
-            : ''}`}
+          className={cx(styles.groupIcon, {
+            [styles.selected]: showGroup === groupParent
+          })}
         />
       )}
     </div>

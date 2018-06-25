@@ -6,12 +6,11 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 
 import infoIcon from 'assets/icons/info.svg';
+import cx from 'classnames';
 
 import Selector from './components/selector';
 import Menu from './components/menu';
-
-import './multi-dropdown-styles.scss';
-import './themes/dropdown-button.scss';
+import styles from './multi-dropdown-styles.scss';
 
 class Dropdown extends PureComponent {
   render() {
@@ -79,16 +78,13 @@ class Dropdown extends PureComponent {
     );
 
     return (
-      <div className={`c-dropdown ${theme || ''} ${className || ''}`}>
+      <div className={cx(styles.cropdown, theme, className)}>
         {label && (
-          <div className="label">
+          <div className={styles.label}>
             {label}
             {infoAction && (
-              <Button
-                className="theme-button-small square info-button"
-                onClick={infoAction}
-              >
-                <Icon icon={infoIcon} className="info-icon" />
+              <Button className={styles.infoButton} onClick={infoAction}>
+                <Icon icon={infoIcon} className={styles.infoIcon} />
               </Button>
             )}
           </div>

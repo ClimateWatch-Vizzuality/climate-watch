@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import Item from './item';
+import styles from '../multi-dropdown-styles.scss';
 
 const Menu = props => {
   const {
@@ -19,7 +21,7 @@ const Menu = props => {
   } = props;
 
   return !isOpen ? null : (
-    <div className="menu">
+    <div className={styles.menu}>
       {items && items.length ? (
         items.map((item, index) => (
           <Item
@@ -37,7 +39,7 @@ const Menu = props => {
           />
         ))
       ) : (
-        <div className="item not-found">
+        <div className={cx(styles.item, styles.notFound)}>
           {noItemsFound || 'No results found'}
         </div>
       )}
