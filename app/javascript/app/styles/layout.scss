@@ -2,6 +2,7 @@
 @import "~foundation-sites/scss/global";
 @import "~foundation-sites/scss/util/util";
 @import "~foundation-sites/scss/xy-grid/xy-grid";
+@import '~styles/utils.scss';
 
 $grid-container: $max-width;
 $grid-margin-gutters: $gutter-padding;

@@ -1,8 +1,7 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
-$dd-height: 34px;
-$dd-font-size: $font-size;
-$border: 10px;
+$dd-height: rem(34px);
+$dd-font-size: rem(13px);
 
 .c-dropdown {
   color: $slate;
@@ -40,7 +39,7 @@ $border: 10px;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    border: solid 1px $border;
+    border: solid 1px $border-color;
     height: $dd-height;
     padding: 0 rem(10px);
     cursor: pointer;
@@ -71,7 +70,7 @@ $border: 10px;
       font-size: $dd-font-size;
 
       &.clearable {
-        padding-right: 28px;
+        padding-right: rem(28px);
       }
     }
 
@@ -123,7 +122,7 @@ $border: 10px;
   }
 
   .menu {
-    border: solid 1px $border;
+    border: solid 1px $border-color;
     margin-top: -1px;
     z-index: 1;
     max-height: rem(400px);

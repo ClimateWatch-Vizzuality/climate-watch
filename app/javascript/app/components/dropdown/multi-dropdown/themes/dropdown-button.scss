@@ -1,15 +1,16 @@
-@import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
-$dd-button-height: 28px; // rem
+$dd-button-height: rem(28px);
+$pop-box-shadow: 1px 1px 10px 0 rgba($slate, 0.25);
 
 .theme-dropdown-button {
   text-align: center;
 
   .container {
-    max-width: 70px; // rem
+    max-width: rem(70px);
 
     .selector {
-      border-radius: 25px; // rem
+      border-radius: rem(25px);
       border-color: $theme-color;
       height: $dd-button-height;
 
@@ -30,7 +31,7 @@ $dd-button-height: 28px; // rem
         border-right: none;
         transform-origin: 0 0;
         transform: rotate(-45deg);
-        top: calc(#{$dd-button-height} + #{11px}); // rem
+        top: calc(#{$dd-button-height} + #{rem(11px)});
         left: calc(50% - 14px);
         border-bottom-color: #fff;
         box-shadow: 1px -2px 3px 0 rgba(85, 85, 85, 0.1);
@@ -39,9 +40,9 @@ $dd-button-height: 28px; // rem
     }
 
     .menu {
-      top: calc(#{$dd-button-height} + #{12px}); // rem
+      top: calc(#{$dd-button-height} + #{rem(12px)});
       border: 0;
-      box-shadow: 1px 1px 10px 0 rgba($slate, 0.25);;
+      box-shadow: $pop-box-shadow;
     }
   }
 
