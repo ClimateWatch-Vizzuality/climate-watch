@@ -51,34 +51,44 @@ class DataExplorerContent extends PureComponent {
       filters,
       loading,
       loadingMeta,
-      section
+      section,
+      metadataSection
     } = this.props;
     const disabled =
-      section === ('data' && loading) || (section === 'meta' && loadingMeta);
+      (!metadataSection && loading) || (metadataSection && loadingMeta);
+    const parseGroups = options => {
+      const groupParents = [];
+      const finalOptions = options
+        .map(option => {
+          const updatedOption = option;
+          if (!option.parent_id) {
+            updatedOption.group = option.name;
+            groupParents.push({ parentId: option.id, name: option.name });
+          }
+          return updatedOption;
+        })
+        .map(option => {
+          const updatedOption = option;
+          if (option.parent_id) {
+            updatedOption.groupParent = groupParents.find(
+              o => option.parent_id === o.parentId
+            ).name;
+          }
+          return updatedOption;
+        });
+      return finalOptions;
+    };
     return filters.map(
       field =>
-        (field === 'sectors' ? (
+        (section === 'ndc-content' && field === 'sectors' ? (
           <MultiDropdown
             key={field}
             label={toStartCase(field)}
             placeholder={`Filter by ${toStartCase(field)}`}
-            options={filterOptions ? filterOptions[field] : []}
-            // value: PropTypes.oneOfType([
-            //   PropTypes.object,
-            //   PropTypes.string,
-            //   PropTypes.number
-            // ]),
-            // onInputClick: PropTypes.func,
-            // onSelectorClick: PropTypes.func,
-            // inputValue: PropTypes.string,
-            // inputValue: PropTypes.string,
-            // showGroup: PropTypes.string,
-            // handleSelectGroup: PropTypes.func,
-            // buildInputProps: PropTypes.func,
-            // items: PropTypes.array,
-            // activeValue: PropTypes.object,
-            // activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-            // ));
+            options={filterOptions ? parseGroups(filterOptions[field]) : []}
+            // onChange={option =>
+            //   console.log(option)
+            // }
           />
         ) : (
           <Dropdown

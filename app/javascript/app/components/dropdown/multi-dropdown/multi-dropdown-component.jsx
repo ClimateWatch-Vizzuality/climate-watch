@@ -117,7 +117,6 @@ Dropdown.propTypes = {
   noSelectedValue: PropTypes.string,
   clearable: PropTypes.bool,
   groupKey: PropTypes.string,
-  checkModalCloing: PropTypes.func,
   handleStateChange: PropTypes.func,
   handleClearSelection: PropTypes.func,
   onInputClick: PropTypes.func,
