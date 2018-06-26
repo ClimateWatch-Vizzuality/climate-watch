@@ -40,7 +40,7 @@ class EmissionPathways extends PureComponent {
               <Intro
                 title="Pathways"
                 description={
-                  'Chart and visualize decarbonization pathways and identify opportunities to implement climate action goals and increase ambition. In addition to national-level insights, explore temperature impacts of different emission trajectories.'
+                  'Explore economic and emissions scenarios to identify opportunities for delivering on countries’ sustainable development and climate goals. Choose from a comprehensive database of models from the IPCC, private sector and country-specific providers to see its assumptions and results.'
                 }
                 disclaimer="This page is under development. More data and new functions will be added over time."
               />

@@ -152,7 +152,7 @@ class Home extends PureComponent {
               description="169 nationally determined contributions (NDCs) representing 192 countries and the European Union have been submitted to the UN Framework Convention on Climate Change.<br />Analyze and compare NDCs of all countries using 150 structured indicators and search the full text for key terms."
             />
             <div className={styles.doubleFold}>
-              <Button color="yellow" link="/ndcs">
+              <Button color="yellow" link="/ndcs-content">
                 Explore NDC content
               </Button>
               <TabletLandscape>
