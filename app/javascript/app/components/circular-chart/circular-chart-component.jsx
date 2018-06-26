@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CHART_COLORS } from 'data/constants';
 import styles from './circular-chart-styles.scss';
 
 const CircularChart = ({
   value,
   index,
+  color,
   setRadius,
   setArcLength,
   normalizeCircunference
@@ -27,7 +27,7 @@ const CircularChart = ({
           value,
           index
         )}, ${normalizeCircunference(index)}`}
-        style={{ stroke: CHART_COLORS[index] }}
+        style={{ stroke: color }}
       />
     </svg>
   </div>
@@ -36,6 +36,7 @@ const CircularChart = ({
 CircularChart.propTypes = {
   value: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
   setRadius: PropTypes.func.isRequired,
   setArcLength: PropTypes.func.isRequired,
   normalizeCircunference: PropTypes.func.isRequired

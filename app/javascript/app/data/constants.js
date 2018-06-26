@@ -151,6 +151,8 @@ export const CHART_COLORS_EXTENDED = [
   '#E5E6E8'
 ];
 
+export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
+
 export const DEFAULT_AXES_CONFIG = {
   xBottom: {
     name: 'Year',

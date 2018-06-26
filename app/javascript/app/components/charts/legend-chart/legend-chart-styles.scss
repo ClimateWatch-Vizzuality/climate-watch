@@ -3,7 +3,6 @@
 $margin-container: 10px;
 
 .legendChart {
-  overflow: auto;
   margin-bottom: $margin-container;
 
   .legendContainer {
@@ -44,14 +43,40 @@ $margin-container: 10px;
   }
 }
 
-.tags {
-  display: flex;
-  overflow: scroll;
-  margin-top: $margin-container;
+.tagsContainer {
+  position: relative;
+  min-height: 120px;
+
+  @media #{$tablet-landscape} {
+    min-height: 85px;
+  }
+
+  @media #{$desktop} {
+    min-height: 50px;
+  }
+}
+
+.tagsWrapper {
+  position: absolute;
+  width: 100%;
+  height: 300px;
+  bottom: 0;
+  overflow-x: scroll;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
-    overflow: auto;
+    overflow: visible;
+  }
+}
+
+.tags {
+  display: flex;
+  margin-top: $margin-container;
+  position: absolute;
+  bottom: 0;
+
+  @media #{$tablet-landscape} {
+    flex-wrap: wrap;
   }
 }
 
