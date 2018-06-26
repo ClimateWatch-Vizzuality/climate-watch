@@ -46,8 +46,12 @@ $margin-container: 10px;
 .tagsContainer {
   position: relative;
   min-height: 120px;
-  
+
   @media #{$tablet-landscape} {
+    min-height: 85px;
+  }
+
+  @media #{$desktop} {
     min-height: 50px;
   }
 }
