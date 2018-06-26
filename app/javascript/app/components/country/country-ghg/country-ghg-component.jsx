@@ -59,7 +59,7 @@ class CountryGhg extends PureComponent {
         {showDisclaimer && (
           <Disclaimer className={cx(styles.disclaimer, layout.content)} />
         )}
-        <ModalMetadata disclaimer={<Disclaimer onlyText />} />
+        <ModalMetadata />
       </div>
     );
   }
