@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { COUNTRY_COMPARE_COLORS } from 'data/constants';
+import { CHART_COLORS } from 'data/constants';
 import styles from './circular-chart-styles.scss';
 
 const CircularChart = ({
@@ -27,7 +27,7 @@ const CircularChart = ({
           value,
           index
         )}, ${normalizeCircunference(index)}`}
-        style={{ stroke: COUNTRY_COMPARE_COLORS[index] }}
+        style={{ stroke: CHART_COLORS[index] }}
       />
     </svg>
   </div>

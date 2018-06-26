@@ -12,9 +12,10 @@ import {
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
-  getInfoMetadata,
+  getMethodology,
   getFilterOptions,
-  getSelectedOptions
+  getSelectedOptions,
+  getFilterQuery
 } from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
@@ -41,10 +42,10 @@ const mapStateToProps = (state, { section, location }) => {
     },
     { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
   ];
-
+  const filterQuery = getFilterQuery(dataState);
   return {
     data: parseData(dataState),
-    meta: getInfoMetadata(dataState),
+    meta: getMethodology(dataState),
     metadataSection: !!location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
     loadingMeta: state.dataExplorer && state.dataExplorer.loadingMeta,
@@ -52,22 +53,38 @@ const mapStateToProps = (state, { section, location }) => {
     href: SECTION_HREFS[section],
     downloadHref: `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
       section
-    ]}/download.csv`,
+    ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`,
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: getFilterOptions(dataState),
     selectedOptions: getSelectedOptions(dataState),
     anchorLinks,
-    query: location.search
+    query: location.search,
+    filterQuery
   };
 };
 
 class DataExplorerContentContainer extends PureComponent {
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
-    this.updateUrlParam({
-      name: `${section}-${filterName}`,
-      value
-    });
+    const SOURCE_AND_VERSION_KEY = 'source_IPCC_version';
+    if (filterName === SOURCE_AND_VERSION_KEY) {
+      const values = value && value.split(' - ');
+      this.updateUrlParam([
+        {
+          name: `${section}-data-sources`,
+          value: value && values[0]
+        },
+        {
+          name: `${section}-gwps`,
+          value: value && values[1]
+        }
+      ]);
+    } else {
+      this.updateUrlParam({
+        name: `${section}-${filterName}`,
+        value
+      });
+    }
   };
 
   updateUrlParam(params, clear) {

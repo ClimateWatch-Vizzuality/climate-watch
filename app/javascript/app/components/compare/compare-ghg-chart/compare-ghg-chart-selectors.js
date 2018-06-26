@@ -9,7 +9,7 @@ import sumBy from 'lodash/sumBy';
 import {
   CALCULATION_OPTIONS,
   DEFAULT_AXES_CONFIG,
-  COUNTRY_COMPARE_COLORS,
+  CHART_COLORS,
   DATA_SCALE,
   DEFAULT_EMISSIONS_SELECTIONS,
   ALLOWED_SECTORS_BY_SOURCE,
@@ -312,7 +312,7 @@ export const getChartConfig = createSelector(
       value: getYColumnValue(l.name),
       index: l.index
     }));
-    const theme = getThemeConfig(yColumns, COUNTRY_COMPARE_COLORS);
+    const theme = getThemeConfig(yColumns, CHART_COLORS);
     const tooltip = getTooltipConfig(yColumns);
 
     return {

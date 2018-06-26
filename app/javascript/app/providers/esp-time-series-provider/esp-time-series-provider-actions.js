@@ -8,7 +8,7 @@ const { ESP_API } = process.env;
 
 const getEspTimeSeries = createThunkAction(
   'getEspTimeSeries',
-  (location, model) => (dispatch, state) => {
+  ({ location, model }) => (dispatch, state) => {
     const { espTimeSeries } = state();
     if (espTimeSeries && !espTimeSeries.loading) {
       dispatch(getEspTimeSeriesInit());

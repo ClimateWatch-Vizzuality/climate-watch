@@ -16,7 +16,14 @@ import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
   render() {
-    const { loading, results, search, route, fetchSearchResults } = this.props;
+    const {
+      loading,
+      results,
+      search,
+      route,
+      fetchSearchResults,
+      searchMessageText
+    } = this.props;
     const hasNoContent = !results && !loading;
     return (
       <div className={styles.page}>
@@ -39,7 +46,7 @@ class SearchPage extends PureComponent {
                 {hasNoContent && (
                   <NoContent
                     className={styles.noContent}
-                    message="No results for this search"
+                    message={searchMessageText}
                   />
                 )}
                 {results &&
@@ -79,6 +86,7 @@ SearchPage.propTypes = {
   route: PropTypes.object.isRequired,
   search: PropTypes.object,
   results: PropTypes.array,
+  searchMessageText: PropTypes.string,
   fetchSearchResults: PropTypes.func
 };
 

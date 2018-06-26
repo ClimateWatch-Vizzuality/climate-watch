@@ -28,11 +28,18 @@ const mapStateToProps = (state, { match, location, route }) => {
     iso,
     data: state.ndcsDocumentsMeta.data
   };
+  const pathname = location.pathname.split('/');
+  const notOverview = [
+    'mitigation',
+    'adaptation',
+    'sectoral-information'
+  ].includes(pathname[pathname.length - 1]);
   return {
     country: getCountry(countryData),
     search: search.search,
     anchorLinks: getAnchorLinks(routeData),
-    documentsOptions: getDocumentsOptions(documentsData)
+    documentsOptions: getDocumentsOptions(documentsData),
+    notOverview
   };
 };
 

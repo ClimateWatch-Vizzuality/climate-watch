@@ -4,6 +4,7 @@ module Api
       class NdcContentFilter
         # @param params [Hash]
         # @option params [Array<String>] :countries
+        # @option params [Array<Integer>] :source_ids
         # @option params [Array<Integer>] :indicator_ids
         # @option params [Array<Integer>] :category_ids
         # @option params [Array<Integer>] :label_ids
@@ -71,7 +72,7 @@ module Api
         def initialize_filters(params)
           # integer arrays
           [
-            :indicator_ids, :category_ids, :label_ids, :sector_ids
+            :source_ids, :indicator_ids, :category_ids, :label_ids, :sector_ids
           ].map do |param_name|
             if params[param_name].present? && params[param_name].is_a?(Array)
               value = params[param_name].map(&:to_i)
@@ -83,6 +84,11 @@ module Api
 
         def apply_filters
           apply_location_filter
+          if @source_ids
+            @query = @query.where(
+              'indc_indicators.source_id' => @source_ids
+            )
+          end
           @query = @query.where(indicator_id: @indicator_ids) if @indicator_ids
           if @category_ids
             @query = @query.where(

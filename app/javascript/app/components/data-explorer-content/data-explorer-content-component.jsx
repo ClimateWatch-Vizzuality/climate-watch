@@ -47,9 +47,13 @@ class DataExplorerContent extends PureComponent {
       handleFilterChange,
       selectedOptions,
       filterOptions,
-      filters
+      filters,
+      loading,
+      loadingMeta,
+      section
     } = this.props;
-
+    const disabled =
+      section === ('data' && loading) || (section === 'meta' && loadingMeta);
     return filters.map(field => (
       <Dropdown
         key={field}
@@ -60,6 +64,8 @@ class DataExplorerContent extends PureComponent {
           handleFilterChange(field, selected && selected.slug)}
         value={selectedOptions ? selectedOptions[field] : null}
         plain
+        disabled={disabled}
+        noAutoSort={field === 'goals' || field === 'targets'}
       />
     ));
   }
@@ -71,11 +77,12 @@ class DataExplorerContent extends PureComponent {
       downloadHref,
       metadataSection,
       anchorLinks,
+      filterQuery,
       query
     } = this.props;
     return (
       <div>
-        <DataExplorerProvider section={section} />
+        <DataExplorerProvider section={section} query={filterQuery} />
         <RegionsProvider />
         <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
@@ -115,6 +122,7 @@ DataExplorerContent.propTypes = {
   href: PropTypes.string,
   downloadHref: PropTypes.string,
   anchorLinks: PropTypes.array,
+  filterQuery: PropTypes.string,
   query: PropTypes.string
 };
 

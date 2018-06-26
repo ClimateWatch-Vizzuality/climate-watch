@@ -7,6 +7,7 @@ RSpec.describe Api::V1::Data::NdcContentController, type: :controller do
     it 'renders NDC values' do
       get :index, params: {
         countries: [spain.iso_code3],
+        source_ids: [wb.id],
         indicator_ids: [ghg_target_type.id],
         category_ids: [overview.id],
         label_ids: [baseline_scenario_target.id]

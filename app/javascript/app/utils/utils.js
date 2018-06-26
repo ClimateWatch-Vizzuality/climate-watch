@@ -138,7 +138,9 @@ export const wordWrap = (long_string, max_char) => {
 };
 
 const unquote = value => {
-  if (value.charAt(0) === '"' && value.charAt(value.length - 1) === '"') { return value.substring(1, value.length - 1); }
+  if (value.charAt(0) === '"' && value.charAt(value.length - 1) === '"') {
+    return value.substring(1, value.length - 1);
+  }
   return value;
 };
 
@@ -162,13 +164,19 @@ export const parseLinkHeader = header => {
       const name = paramsplit[0];
       link[name] = unquote(paramsplit[1]);
     }
-
     if (link.rel !== undefined) {
       rels[link.rel] = link;
     }
   }
-
   return rels;
+};
+
+export const replaceAll = (text, replacements) => {
+  let updatedText = text;
+  Object.keys(replacements).forEach(x => {
+    updatedText = updatedText.replace(new RegExp(x, 'g'), replacements[x]);
+  });
+  return updatedText;
 };
 
 export default {
@@ -180,5 +188,6 @@ export default {
   isMicrosoftBrowser,
   toStartCase,
   wordWrap,
-  parseLinkHeader
+  parseLinkHeader,
+  replaceAll
 };
