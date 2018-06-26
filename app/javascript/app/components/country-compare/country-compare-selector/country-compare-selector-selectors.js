@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { CHART_COLORS } from 'data/constants';
+import { COUNTRY_COMPARE_COLORS } from 'data/constants';
 
 const COUNTRIES_TO_SELECT = 3;
 
@@ -51,7 +51,7 @@ export const getCountryConfig = createSelector(
     if (!countries && !countries.length) return null;
     return countries.map((country, i) => ({
       country,
-      color: CHART_COLORS[i]
+      color: COUNTRY_COMPARE_COLORS[i]
     }));
   }
 );
