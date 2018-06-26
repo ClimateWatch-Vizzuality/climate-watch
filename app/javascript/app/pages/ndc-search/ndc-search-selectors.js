@@ -52,9 +52,9 @@ export const getSearchResultsSorted = createSelector(
 
 export function getMessageText(search) {
   if (isEmpty(search)) {
-    return 'Please select an option from the available filters or type a keyword to search through the NDC';
+    return 'Please select an option from the available filters or type a keyword to search through the NDCs.';
   }
-  return 'No results for this search';
+  return 'No results for this search.';
 }
 
 export default {
