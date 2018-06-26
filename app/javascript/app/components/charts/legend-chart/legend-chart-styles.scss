@@ -3,7 +3,6 @@
 $margin-container: 10px;
 
 .legendChart {
-  overflow: auto;
   margin-bottom: $margin-container;
 
   .legendContainer {
@@ -51,7 +50,7 @@ $margin-container: 10px;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
-    overflow: auto;
+    overflow: visible;
   }
 }
 
