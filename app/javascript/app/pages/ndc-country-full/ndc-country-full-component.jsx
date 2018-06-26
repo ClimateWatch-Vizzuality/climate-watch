@@ -94,7 +94,10 @@ class NDCCountryFull extends PureComponent {
               <NdcsAutocompleteSearch
                 className={styles.select}
                 fetchSearchResults={fetchCountryNDCFull}
-                document={search.document}
+                document={
+                  search.document ||
+                  (contentOptionSelected && contentOptionSelected.value)
+                }
                 dark
                 label
               />
