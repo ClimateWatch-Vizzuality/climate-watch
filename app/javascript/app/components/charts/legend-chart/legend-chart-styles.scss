@@ -43,14 +43,36 @@ $margin-container: 10px;
   }
 }
 
-.tags {
-  display: flex;
-  overflow: scroll;
-  margin-top: $margin-container;
+.tagsContainer {
+  position: relative;
+  min-height: 120px;
+  
+  @media #{$tablet-landscape} {
+    min-height: 50px;
+  }
+}
+
+.tagsWrapper {
+  position: absolute;
+  width: 100%;
+  height: 200px;
+  bottom: 0;
+  overflow-x: scroll;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
     overflow: visible;
+  }
+}
+
+.tags {
+  display: flex;
+  margin-top: $margin-container;
+  position: absolute;
+  bottom: 0;
+
+  @media #{$tablet-landscape} {
+    flex-wrap: wrap;
   }
 }
 
