@@ -209,7 +209,7 @@ class CountryNdcOverview extends PureComponent {
                         actions ? (
                           'Nationally Determined Contribution (NDC) Overview'
                         ) : (
-                          'Overview'
+                          'Summary'
                         )
                       }
                     />

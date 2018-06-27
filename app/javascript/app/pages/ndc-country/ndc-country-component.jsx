@@ -30,7 +30,7 @@ class NDCCountry extends PureComponent {
       anchorLinks,
       documentsOptions,
       handleDropDownChange,
-      notOverview
+      notSummary
     } = this.props;
     const countryName = country && `${country.wri_standard_name}`;
     return (
@@ -79,7 +79,7 @@ class NDCCountry extends PureComponent {
                   Compare
                 </Button>
               </TabletLandscape>
-              {notOverview && (
+              {notSummary && (
                 <Search
                   theme={lightSearch}
                   placeholder="Search"
@@ -114,7 +114,7 @@ NDCCountry.propTypes = {
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
-  notOverview: PropTypes.bool
+  notSummary: PropTypes.bool
 };
 
 export default NDCCountry;

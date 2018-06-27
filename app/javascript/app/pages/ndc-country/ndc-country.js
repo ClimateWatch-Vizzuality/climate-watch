@@ -29,7 +29,8 @@ const mapStateToProps = (state, { match, location, route }) => {
     data: state.ndcsDocumentsMeta.data
   };
   const pathname = location.pathname.split('/');
-  const notOverview = [
+  const notSummary = [
+    'overview',
     'mitigation',
     'adaptation',
     'sectoral-information'
@@ -39,7 +40,7 @@ const mapStateToProps = (state, { match, location, route }) => {
     search: search.search,
     anchorLinks: getAnchorLinks(routeData),
     documentsOptions: getDocumentsOptions(documentsData),
-    notOverview
+    notSummary
   };
 };
 
