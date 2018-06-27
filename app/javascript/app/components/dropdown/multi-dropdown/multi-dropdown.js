@@ -100,20 +100,13 @@ class DropdownContainer extends PureComponent {
     }
   };
 
-  checkModalClosing = () => {
-    const { modalOpen, modalClosing } = this.props;
-    if (!modalOpen && !modalClosing) {
-      this.setState({ isOpen: false });
-    }
-  };
-
   handleClearSelection = () => {
     const { onChange } = this.props;
     onChange();
     this.setState({ isOpen: false, showGroup: '', inputValue: '' });
   };
 
-  handleSelectGroup = item => {
+  toggleOpenGroup = item => {
     const { showGroup } = this.state;
     this.setState({
       showGroup: item.groupParent === showGroup ? '' : item.groupParent,
@@ -159,19 +152,18 @@ class DropdownContainer extends PureComponent {
       highlightedIndex,
       checkModalClosing: this.checkModalClosing,
       handleStateChange: this.handleStateChange,
+      handleSelectGroup: this.props.onChange,
       onInputClick: this.onInputClick,
       onSelectorClick: this.onSelectorClick,
       handleClearSelection: this.handleClearSelection,
       buildInputProps: this.buildInputProps,
-      handleSelectGroup: this.handleSelectGroup,
+      toggleOpenGroup: this.toggleOpenGroup,
       items: this.getGroupedItems()
     });
   }
 }
 
 DropdownContainer.propTypes = {
-  modalOpen: PropTypes.bool,
-  modalClosing: PropTypes.bool,
   searchable: PropTypes.bool,
   options: PropTypes.array,
   groupKey: PropTypes.string,

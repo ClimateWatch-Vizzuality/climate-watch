@@ -2,10 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import Downshift from 'downshift';
-import Button from 'components/button';
-import Icon from 'components/icon';
-
-import infoIcon from 'assets/icons/info.svg';
 import cx from 'classnames';
 
 import Selector from './components/selector';
@@ -18,7 +14,6 @@ class Dropdown extends PureComponent {
       className,
       theme,
       label,
-      infoAction,
       searchable,
       clearable,
       noItemsFound,
@@ -28,6 +23,7 @@ class Dropdown extends PureComponent {
       checkModalClosing,
       handleStateChange,
       handleClearSelection,
+      toggleOpenGroup,
       handleSelectGroup,
       buildInputProps,
       onSelectorClick,
@@ -70,6 +66,7 @@ class Dropdown extends PureComponent {
               optionsAction={optionsAction}
               optionsActionKey={optionsActionKey}
               noItemsFound={noItemsFound}
+              toggleOpenGroup={toggleOpenGroup}
               handleSelectGroup={handleSelectGroup}
             />
           </Selector>
@@ -79,16 +76,7 @@ class Dropdown extends PureComponent {
 
     return (
       <div className={cx(styles.cropdown, theme, className)}>
-        {label && (
-          <div className={styles.label}>
-            {label}
-            {infoAction && (
-              <Button className={styles.infoButton} onClick={infoAction}>
-                <Icon icon={infoIcon} className={styles.infoIcon} />
-              </Button>
-            )}
-          </div>
-        )}
+        {label && <div className={styles.label}>{label}</div>}
         {dropdown}
       </div>
     );
@@ -100,7 +88,6 @@ Dropdown.propTypes = {
   label: PropTypes.string,
   theme: PropTypes.string,
   options: PropTypes.array,
-  infoAction: PropTypes.func,
   modalOpen: PropTypes.bool,
   modalClosing: PropTypes.bool,
   value: PropTypes.oneOfType([
@@ -124,6 +111,7 @@ Dropdown.propTypes = {
   inputValue: PropTypes.string,
   isOpen: PropTypes.bool,
   showGroup: PropTypes.string,
+  toggleOpenGroup: PropTypes.func,
   handleSelectGroup: PropTypes.func,
   buildInputProps: PropTypes.func,
   checkModalClosing: PropTypes.func,

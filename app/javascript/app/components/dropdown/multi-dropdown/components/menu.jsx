@@ -17,6 +17,7 @@ const Menu = props => {
     optionsAction,
     optionsActionKey,
     noItemsFound,
+    toggleOpenGroup,
     handleSelectGroup
   } = props;
 
@@ -31,6 +32,7 @@ const Menu = props => {
             showGroup={showGroup}
             highlightedIndex={highlightedIndex}
             getItemProps={getItemProps}
+            toggleOpenGroup={toggleOpenGroup}
             handleSelectGroup={handleSelectGroup}
             optionsAction={optionsAction}
             optionsActionKey={optionsActionKey}
@@ -58,6 +60,7 @@ Menu.propTypes = {
   optionsAction: PropTypes.func,
   optionsActionKey: PropTypes.string,
   noItemsFound: PropTypes.string,
+  toggleOpenGroup: PropTypes.func,
   handleSelectGroup: PropTypes.func
 };
 

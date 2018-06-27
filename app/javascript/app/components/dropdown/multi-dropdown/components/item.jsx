@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Icon from 'components/icon';
-import Button from 'components/button';
 import cx from 'classnames';
 
 import arrowDownIcon from 'assets/icons/dropdown-arrow.svg';
-import infoIcon from 'assets/icons/info.svg';
 import styles from '../multi-dropdown-styles.scss';
 
 const Item = props => {
@@ -17,12 +15,11 @@ const Item = props => {
     highlightedIndex,
     getItemProps,
     handleSelectGroup,
-    optionsAction,
-    optionsActionKey,
+    toggleOpenGroup,
     activeValue,
     activeLabel
   } = props;
-  const { group, groupParent, label, metaKey } = item;
+  const { group, groupParent, label } = item;
 
   const isActive =
     (!showGroup && !group) ||
@@ -33,7 +30,7 @@ const Item = props => {
     activeLabel === label ||
     (groupParent && groupParent === showGroup) ||
     (groupParent && activeValue && groupParent === activeValue.group);
-  const showArrowIcon = groupParent && showGroup !== groupParent;
+  const showArrowIcon = groupParent && showGroup !== groupParent && isActive;
   return (
     <div
       className={cx(styles.itemWrapper, {
@@ -42,12 +39,15 @@ const Item = props => {
         [styles.selected]: isGroupParentActive,
         [styles.groupParent]: groupParent
       })}
+      onClick={() => toggleOpenGroup(item)}
+      role="button"
+      tabIndex={-1}
     >
       {isGroupParentActive && (
         <Icon
           icon={arrowDownIcon}
           className={cx(styles.groupIcon, styles.selected)}
-          onClick={() => handleSelectGroup(item)}
+          onClick={() => toggleOpenGroup(item)}
         />
       )}
       <div
@@ -56,27 +56,23 @@ const Item = props => {
           index,
           className: cx(styles.item, { [styles.highlight]: isHighlighted })
         })}
-        {...!!groupParent && {
-          onClick: () => handleSelectGroup(item)
-        }}
       >
-        {label}
-      </div>
-      {metaKey && (
-        <Button
-          className={cx(
-            styles.themeButtonSmall,
-            styles.square,
-            styles.infoButton
-          )}
-          onClick={() => optionsAction(item[optionsActionKey])}
+        <div
+          {...(groupParent
+            ? {
+              onClick: () => handleSelectGroup(item)
+            }
+            : {})}
+          role="button"
+          tabIndex={0}
         >
-          <Icon icon={infoIcon} className={styles.infoIcon} />
-        </Button>
-      )}
+          {label}
+        </div>
+      </div>
       {showArrowIcon && (
         <Icon
           icon={arrowDownIcon}
+          style={{ 'background-color': 'red' }}
           className={cx(styles.groupIcon, {
             [styles.selected]: showGroup === groupParent
           })}
@@ -93,6 +89,7 @@ Item.propTypes = {
   highlightedIndex: PropTypes.number,
   getItemProps: PropTypes.func,
   handleSelectGroup: PropTypes.func,
+  toggleOpenGroup: PropTypes.func,
   optionsAction: PropTypes.func,
   optionsActionKey: PropTypes.string,
   activeValue: PropTypes.object,

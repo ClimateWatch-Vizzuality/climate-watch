@@ -60,19 +60,26 @@ class DataExplorerContent extends PureComponent {
       const groupParents = [];
       const finalOptions = options
         .map(option => {
-          const updatedOption = option;
+          let updatedOption = option;
           if (!option.parent_id) {
-            updatedOption.group = option.name;
+            updatedOption = {
+              groupParent: option.name,
+              value: option.value,
+              label: option.label
+            };
             groupParents.push({ parentId: option.id, name: option.name });
           }
           return updatedOption;
         })
         .map(option => {
-          const updatedOption = option;
+          let updatedOption = option;
           if (option.parent_id) {
-            updatedOption.groupParent = groupParents.find(
-              o => option.parent_id === o.parentId
-            ).name;
+            updatedOption = {
+              group: groupParents.find(o => option.parent_id === o.parentId)
+                .name,
+              value: option.value,
+              label: option.label
+            };
           }
           return updatedOption;
         });
@@ -86,9 +93,13 @@ class DataExplorerContent extends PureComponent {
             label={toStartCase(field)}
             placeholder={`Filter by ${toStartCase(field)}`}
             options={filterOptions ? parseGroups(filterOptions[field]) : []}
-            // onChange={option =>
-            //   console.log(option)
-            // }
+            value={selectedOptions ? selectedOptions[field] : null}
+            disabled={disabled}
+            onChange={option =>
+              handleFilterChange(
+                field,
+                option && (option.label || option.slug)
+              )}
           />
         ) : (
           <Dropdown
