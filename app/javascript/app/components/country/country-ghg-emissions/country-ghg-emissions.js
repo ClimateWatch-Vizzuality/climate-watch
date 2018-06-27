@@ -115,7 +115,10 @@ class CountryGhgEmissionsContainer extends PureComponent {
         category: 'Country',
         slugs: isPageContained ? [source] : [source, 'ndc_quantification_UNDP'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
-        showDisclaimer: !isPageContained,
+        disclaimerConfig: {
+          display: !isPageContained,
+          onlyText: true
+        },
         open: true
       });
     }
