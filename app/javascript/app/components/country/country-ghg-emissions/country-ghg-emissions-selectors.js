@@ -346,14 +346,12 @@ export const getChartConfig = createSelector(
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
-    let precision = null;
     if (calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value) {
       unit = `${unit}/ million $ GDP`;
     } else if (
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
     ) {
       unit = `${unit} per capita`;
-      precision = 2;
     }
     const axes = {
       ...DEFAULT_AXES_CONFIG,
@@ -369,8 +367,7 @@ export const getChartConfig = createSelector(
       columns: {
         x: [{ label: 'year', value: 'x' }],
         y: yColumnsChecked
-      },
-      precision
+      }
     };
   }
 );

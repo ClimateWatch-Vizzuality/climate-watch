@@ -123,6 +123,10 @@ class CountryGhgEmissions extends PureComponent {
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
+    const forceFixedFormatDecimals =
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
+        ? 2
+        : 0;
 
     return (
       <Chart
@@ -137,6 +141,7 @@ class CountryGhgEmissions extends PureComponent {
         dataSelected={filtersSelected}
         loading={loading}
         height={360}
+        forceFixedFormatDecimals={forceFixedFormatDecimals}
         stepped={sourceSelected.label === 'UNFCCC'}
       />
     );
