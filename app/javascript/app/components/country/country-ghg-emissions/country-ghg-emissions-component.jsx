@@ -106,6 +106,7 @@ class CountryGhgEmissions extends PureComponent {
     const {
       calculationSelected,
       data,
+      domain,
       quantifications,
       loading,
       config,
@@ -129,6 +130,7 @@ class CountryGhgEmissions extends PureComponent {
         type={useLineChart ? 'line' : 'area'}
         config={config}
         data={data}
+        domain={useLineChart && domain}
         onMouseMove={handleYearHover}
         points={points}
         dataOptions={filtersOptions}
@@ -207,6 +209,7 @@ CountryGhgEmissions.propTypes = {
   isNdcp: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  domain: PropTypes.object,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
   countryName: PropTypes.string.isRequired,
