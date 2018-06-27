@@ -112,7 +112,7 @@ export const getTitleLinks = createSelector([getFilteredData], data => {
   return data.map(d => [
     {
       columnName: 'country',
-      url: `country/${d.iso}`
+      url: `/ndcs/country/${d.iso}`
     }
   ]);
 });
