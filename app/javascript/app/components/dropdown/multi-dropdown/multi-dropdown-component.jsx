@@ -32,7 +32,8 @@ class Dropdown extends PureComponent {
       items,
       activeValue,
       activeLabel,
-      highlightedIndex
+      highlightedIndex,
+      disabled
     } = this.props;
 
     const dropdown = (
@@ -53,6 +54,7 @@ class Dropdown extends PureComponent {
             searchable={searchable}
             inputProps={() => buildInputProps(getInputProps)}
             handleClearSelection={() => handleClearSelection()}
+            disabled={disabled}
             {...getRootProps({ refKey: 'innerRef' })}
           >
             <Menu
@@ -110,6 +112,7 @@ Dropdown.propTypes = {
   onSelectorClick: PropTypes.func,
   inputValue: PropTypes.string,
   isOpen: PropTypes.bool,
+  disabled: PropTypes.bool,
   showGroup: PropTypes.string,
   toggleOpenGroup: PropTypes.func,
   handleSelectGroup: PropTypes.func,

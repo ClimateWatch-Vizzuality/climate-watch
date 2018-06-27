@@ -10,6 +10,7 @@ import styles from '../multi-dropdown-styles.scss';
 const Selector = props => {
   const {
     isOpen,
+    disabled,
     arrowPosition,
     onSelectorClick,
     clearable,
@@ -23,13 +24,17 @@ const Selector = props => {
   } = props;
 
   const showCloseIcon = clearable && activeValue;
+  const showDownArrow = arrowPosition !== 'left' && !disabled;
   return (
     <div
       ref={innerRef}
       className={cx(styles.container, { [styles.isOpen]: isOpen })}
     >
       <div
-        className={cx(styles.selector, { [styles.alignLeft]: arrowPosition })}
+        className={cx(styles.selector, {
+          [styles.alignLeft]: arrowPosition,
+          [styles.disabled]: disabled
+        })}
       >
         {arrowPosition === 'left' && (
           <button className={styles.arrowBtn} onClick={onSelectorClick}>
@@ -50,7 +55,7 @@ const Selector = props => {
             <Icon icon={closeIcon} className={styles.clearIcon} />
           </button>
         )}
-        {arrowPosition !== 'left' && (
+        {showDownArrow && (
           <button className={styles.arrowBtn} onClick={onSelectorClick}>
             <Icon className={styles.arrow} icon={arrowDownIcon} />
           </button>
@@ -65,6 +70,7 @@ const Selector = props => {
 Selector.propTypes = {
   children: PropTypes.node,
   isOpen: PropTypes.bool,
+  disabled: PropTypes.bool,
   arrowPosition: PropTypes.string,
   onSelectorClick: PropTypes.func,
   clearable: PropTypes.bool,

@@ -95,6 +95,7 @@ class DataExplorerContent extends PureComponent {
             options={filterOptions ? parseGroups(filterOptions[field]) : []}
             value={selectedOptions ? selectedOptions[field] : null}
             disabled={disabled}
+            clearable
             onChange={option =>
               handleFilterChange(
                 field,
