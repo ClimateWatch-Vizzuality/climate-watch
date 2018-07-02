@@ -14,7 +14,6 @@ const Item = props => {
     showGroup,
     highlightedIndex,
     getItemProps,
-    handleSelectGroup,
     toggleOpenGroup,
     activeValue,
     activeLabel
@@ -39,9 +38,6 @@ const Item = props => {
         [styles.selected]: isGroupParentActive,
         [styles.groupParent]: groupParent
       })}
-      onClick={() => toggleOpenGroup(item)}
-      role="button"
-      tabIndex={-1}
     >
       {isGroupParentActive && (
         <Icon
@@ -57,17 +53,7 @@ const Item = props => {
           className: cx(styles.item, { [styles.highlight]: isHighlighted })
         })}
       >
-        <div
-          {...(groupParent
-            ? {
-              onClick: () => handleSelectGroup(item)
-            }
-            : {})}
-          role="button"
-          tabIndex={0}
-        >
-          {label}
-        </div>
+        {label}
       </div>
       {showArrowIcon && (
         <Icon
@@ -76,6 +62,7 @@ const Item = props => {
           className={cx(styles.groupIcon, {
             [styles.selected]: showGroup === groupParent
           })}
+          onClick={() => toggleOpenGroup(item)}
         />
       )}
     </div>
@@ -88,7 +75,6 @@ Item.propTypes = {
   showGroup: PropTypes.string,
   highlightedIndex: PropTypes.number,
   getItemProps: PropTypes.func,
-  handleSelectGroup: PropTypes.func,
   toggleOpenGroup: PropTypes.func,
   optionsAction: PropTypes.func,
   optionsActionKey: PropTypes.string,

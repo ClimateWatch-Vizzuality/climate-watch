@@ -12,6 +12,7 @@ import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
+import sortBy from 'lodash/sortBy';
 import { toStartCase } from 'app/utils';
 import styles from './data-explorer-content-styles.scss';
 
@@ -83,7 +84,7 @@ class DataExplorerContent extends PureComponent {
           }
           return updatedOption;
         });
-      return finalOptions;
+      return sortBy(finalOptions, 'label');
     };
     return filters.map(
       field =>

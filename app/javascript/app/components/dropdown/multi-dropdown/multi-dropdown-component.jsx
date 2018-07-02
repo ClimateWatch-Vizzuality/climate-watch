@@ -24,7 +24,6 @@ class Dropdown extends PureComponent {
       handleStateChange,
       handleClearSelection,
       toggleOpenGroup,
-      handleSelectGroup,
       buildInputProps,
       onSelectorClick,
       isOpen,
@@ -69,7 +68,6 @@ class Dropdown extends PureComponent {
               optionsActionKey={optionsActionKey}
               noItemsFound={noItemsFound}
               toggleOpenGroup={toggleOpenGroup}
-              handleSelectGroup={handleSelectGroup}
             />
           </Selector>
         )}
@@ -115,7 +113,6 @@ Dropdown.propTypes = {
   disabled: PropTypes.bool,
   showGroup: PropTypes.string,
   toggleOpenGroup: PropTypes.func,
-  handleSelectGroup: PropTypes.func,
   buildInputProps: PropTypes.func,
   checkModalClosing: PropTypes.func,
   items: PropTypes.array,

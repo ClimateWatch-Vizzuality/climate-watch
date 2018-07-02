@@ -152,7 +152,6 @@ class DropdownContainer extends PureComponent {
       highlightedIndex,
       checkModalClosing: this.checkModalClosing,
       handleStateChange: this.handleStateChange,
-      handleSelectGroup: this.props.onChange,
       onInputClick: this.onInputClick,
       onSelectorClick: this.onSelectorClick,
       handleClearSelection: this.handleClearSelection,

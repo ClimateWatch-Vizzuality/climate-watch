@@ -160,7 +160,7 @@ $dd-height: 45px;
   .groupParent {
     .item {
       padding-right: rem(25px);
-      z-index: 2;
+      z-index: 5;
     }
 
     &.selected {
@@ -171,7 +171,7 @@ $dd-height: 45px;
     }
 
     .groupIcon {
-      z-index: 1;
+      z-index: 6;
     }
   }
 
