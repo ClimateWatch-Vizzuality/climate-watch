@@ -187,6 +187,7 @@ $dd-height: 45px;
     &:hover {
       fill: $theme-color;
     }
+
     &.selected {
       transform: rotate(90deg);
       left: rem(10px);
