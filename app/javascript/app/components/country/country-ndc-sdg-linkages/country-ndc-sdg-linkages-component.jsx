@@ -33,7 +33,9 @@ class CountrySDGLinkages extends PureComponent {
     const { sectors, tooltipData, targets, tooltipSectorIds } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
     const hasTooltipData = sector => {
-      if (tooltipSectorIds) { return !!tooltipSectorIds.find(id => sectors[id] === sector); }
+      if (tooltipSectorIds) {
+        return !!tooltipSectorIds.find(id => sectors[id] === sector);
+      }
       return false;
     };
     const sectorsLabels =
@@ -169,7 +171,8 @@ class CountrySDGLinkages extends PureComponent {
         { type: 'info', onClick: handleInfoClick },
         {
           type: 'share',
-          shareUrl: `/embed/countries/${iso}/ndc-sdg-linkages`
+          shareUrl: `/embed/countries/${iso}/ndc-sdg-linkages`,
+          reverseDropdown: true
         }
       ];
 
