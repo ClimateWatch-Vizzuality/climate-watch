@@ -16,8 +16,6 @@ import { isPageContained } from 'utils/navigation';
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
 
-const { FEATURE_QUANTIFICATIONS } = process.env;
-
 class CountryGhgEmissions extends PureComponent {
   renderFilterDropdowns() {
     const {
@@ -114,10 +112,7 @@ class CountryGhgEmissions extends PureComponent {
       sourceSelected
     } = this.props;
 
-    const points =
-      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained
-        ? quantifications
-        : [];
+    const points = !isPageContained ? quantifications : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
@@ -141,12 +136,10 @@ class CountryGhgEmissions extends PureComponent {
 
   renderQuantificationsTags() {
     const { loading, quantificationsTagsConfig } = this.props;
-    const showQuantifications =
-      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained;
     return (
       <ul>
         {!loading &&
-          showQuantifications &&
+          !isPageContained &&
           quantificationsTagsConfig.map(q => (
             <Tag
               theme={quantificationTagTheme}
