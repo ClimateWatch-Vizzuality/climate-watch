@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import qs from 'query-string';
 import { parseQuery } from 'utils/data-explorer';
+import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
@@ -129,6 +130,44 @@ export const getFilterOptions = createSelector(
   }
 );
 
+const parseOptions = options => {
+  const groupParents = [];
+  const finalOptions = options
+    .map(option => {
+      const updatedOption = option;
+      if (!option.parent_id) {
+        updatedOption.groupParent = option.name;
+        groupParents.push({ parentId: option.id, name: option.name });
+      }
+      return updatedOption;
+    })
+    .map(option => {
+      const updatedOption = option;
+      if (option.parent_id) {
+        updatedOption.group = groupParents.find(
+          o => option.parent_id === o.parentId
+        ).name;
+      }
+      return updatedOption;
+    });
+  return sortBy(finalOptions, 'label');
+};
+
+export const parseGroupsInOptions = createSelector(
+  [getFilterOptions, getSection],
+  (options, section) => {
+    const MULTIPLE_LEVEL_SECTIONS = { 'ndc-content': ['sectors'] };
+    if (!options || !section || MULTIPLE_LEVEL_SECTIONS[section] === undefined) { return options; }
+    const updatedOptions = options;
+    Object.keys(options).forEach(key => {
+      if (MULTIPLE_LEVEL_SECTIONS[section].includes(key)) {
+        updatedOptions[key] = parseOptions(updatedOptions[key]);
+      }
+    });
+    return updatedOptions;
+  }
+);
+
 const removeFiltersPrefix = (selectedFields, prefix) => {
   const fieldsWithoutPrefix = {};
   Object.keys(selectedFields).forEach(k => {
@@ -198,7 +237,7 @@ export const getSelectedOptions = createSelector(
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
       selectedOptions[key] = {
-        value: selectedFields[key].slug || selectedFields[key].label,
+        value: selectedFields[key].label || selectedFields[key].slug,
         label: selectedFields[key].label,
         id: selectedFields[key].id ||
         selectedFields[key].iso_code3 || [

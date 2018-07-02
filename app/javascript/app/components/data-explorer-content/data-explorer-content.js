@@ -13,7 +13,7 @@ import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
   getMethodology,
-  getFilterOptions,
+  parseGroupsInOptions,
   getSelectedOptions,
   getFilterQuery
 } from './data-explorer-content-selectors';
@@ -55,7 +55,7 @@ const mapStateToProps = (state, { section, location }) => {
       section
     ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`,
     filters: DATA_EXPLORER_FILTERS[section],
-    filterOptions: getFilterOptions(dataState),
+    filterOptions: parseGroupsInOptions(dataState),
     selectedOptions: getSelectedOptions(dataState),
     anchorLinks,
     query: location.search,

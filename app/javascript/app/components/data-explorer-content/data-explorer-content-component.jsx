@@ -12,7 +12,6 @@ import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
-import sortBy from 'lodash/sortBy';
 import { toStartCase } from 'app/utils';
 import styles from './data-explorer-content-styles.scss';
 
@@ -57,35 +56,6 @@ class DataExplorerContent extends PureComponent {
     } = this.props;
     const disabled =
       (!metadataSection && loading) || (metadataSection && loadingMeta);
-    const parseGroups = options => {
-      const groupParents = [];
-      const finalOptions = options
-        .map(option => {
-          let updatedOption = option;
-          if (!option.parent_id) {
-            updatedOption = {
-              groupParent: option.name,
-              value: option.value,
-              label: option.label
-            };
-            groupParents.push({ parentId: option.id, name: option.name });
-          }
-          return updatedOption;
-        })
-        .map(option => {
-          let updatedOption = option;
-          if (option.parent_id) {
-            updatedOption = {
-              group: groupParents.find(o => option.parent_id === o.parentId)
-                .name,
-              value: option.value,
-              label: option.label
-            };
-          }
-          return updatedOption;
-        });
-      return sortBy(finalOptions, 'label');
-    };
     return filters.map(
       field =>
         (section === 'ndc-content' && field === 'sectors' ? (
@@ -93,7 +63,7 @@ class DataExplorerContent extends PureComponent {
             key={field}
             label={toStartCase(field)}
             placeholder={`Filter by ${toStartCase(field)}`}
-            options={filterOptions ? parseGroups(filterOptions[field]) : []}
+            options={filterOptions ? filterOptions[field] : []}
             value={selectedOptions ? selectedOptions[field] : null}
             disabled={disabled}
             clearable
