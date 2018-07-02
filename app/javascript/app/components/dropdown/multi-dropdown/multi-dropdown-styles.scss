@@ -112,8 +112,11 @@ $dd-height: 45px;
 
   .arrow {
     fill: $theme-color;
-    width: 12px;
-    height: 12px;
+    stroke: $theme-color;
+    width: 13px;
+    height: 13px;
+    stroke-width: 2px;
+    margin-right: rem(6px);
   }
 }
 
@@ -124,8 +127,8 @@ $dd-height: 45px;
   .clearIcon {
     max-width: rem(8px);
     max-height: rem(8px);
-    margin-right: rem(5px);
-    fill: $theme-color;
+    margin-right: rem(16px);
+    fill: $dark-gray;
   }
 }
 
@@ -177,10 +180,13 @@ $dd-height: 45px;
 
   .groupIcon {
     transform: rotate(-90deg);
-    fill: $theme-color;
     position: absolute;
     right: rem(10px);
+    fill: $dark-gray;
 
+    &:hover {
+      fill: $theme-color;
+    }
     &.selected {
       transform: rotate(90deg);
       left: rem(10px);
@@ -188,7 +194,9 @@ $dd-height: 45px;
   }
 
   .highlight {
-    color: $theme-color;
+    &:hover {
+      color: $theme-color;
+    }
   }
 }
 
