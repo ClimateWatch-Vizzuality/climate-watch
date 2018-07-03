@@ -54,11 +54,8 @@ class DropdownContainer extends PureComponent {
   getGroupedItems = () => {
     const newItems = this.filterItems();
     const groups = remove(Object.keys(newItems), r => r !== 'undefined');
-    const list = newItems.undefined || [];
-    const listWithGroups = list.concat(
-      groups.map(g => ({ label: g, value: g, groupParent: g }))
-    );
-    let listWithGroupsAndItems = listWithGroups;
+    const orphansList = newItems.undefined || [];
+    let listWithGroupsAndItems = orphansList;
     groups.forEach(g => {
       listWithGroupsAndItems = listWithGroupsAndItems.concat(newItems[g]);
     });
