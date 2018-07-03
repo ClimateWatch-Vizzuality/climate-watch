@@ -306,12 +306,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': [
-    'source_IPCC_version',
-    'gases',
-    'regions',
-    'sectors'
-  ],
+  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
   'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
   'emission-pathways': [],
   'ndc-content': [
