@@ -12,6 +12,7 @@ import Loading from 'components/loading';
 import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import { toStartCase } from 'app/utils';
+import cx from 'classnames';
 import styles from './data-explorer-content-styles.scss';
 
 class DataExplorerContent extends PureComponent {
@@ -35,8 +36,14 @@ class DataExplorerContent extends PureComponent {
   renderMeta() {
     const { meta, loadingMeta } = this.props;
     if (loadingMeta) return <Loading light className={styles.loader} />;
-    return meta ? (
-      <MetadataText className={styles.metadataText} data={meta} />
+    return meta && meta.length > 0 ? (
+      meta.map((m, i) => (
+        <MetadataText
+          key={m.technical_title}
+          className={cx(styles.metadataText, { [styles.topPadded]: i > 0 })}
+          data={m}
+        />
+      ))
     ) : (
       <NoContent message={'Select a source'} className={styles.noData} />
     );
@@ -115,7 +122,7 @@ DataExplorerContent.propTypes = {
   filterOptions: PropTypes.object,
   metadataSection: PropTypes.bool,
   data: PropTypes.array,
-  meta: PropTypes.object,
+  meta: PropTypes.array,
   firstColumnHeaders: PropTypes.array,
   loading: PropTypes.bool,
   loadingMeta: PropTypes.bool,

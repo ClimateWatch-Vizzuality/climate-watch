@@ -49,4 +49,8 @@
 
 .metadataText {
   @include xy-gutters($gutter-position: ('top', 'bottom'));
+
+  &.topPadded {
+    @include xy-gutters($gutter-position: 'top', $gutters: $gutter-padding * 3);
+  }
 }

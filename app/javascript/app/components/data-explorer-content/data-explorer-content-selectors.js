@@ -176,18 +176,20 @@ const getSelectedFilters = createSelector(
 export const getMethodology = createSelector(
   [state => state.meta, getSection, getSelectedFilters],
   (meta, section, selectedfilters) => {
-    if (!meta || isEmpty(meta) || !section || !selectedfilters) return null;
+    const sectionHasSources = section === 'historical-emissions';
+    if (
+      !meta ||
+      isEmpty(meta) ||
+      !section ||
+      (sectionHasSources && isEmpty(selectedfilters))
+    ) { return null; }
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
-    if (selectedfilters.source) {
+    if (sectionHasSources) {
       const source = selectedfilters.source.source_slug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
-    if (selectedfilters.data_sources) {
-      const source = selectedfilters.data_sources.value;
-      metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
-    }
-    return methodology.find(s => s.source === metaSource);
+    return methodology.filter(s => metaSource.includes(s.source));
   }
 );
 
