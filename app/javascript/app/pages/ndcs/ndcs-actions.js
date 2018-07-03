@@ -7,13 +7,18 @@ import indcTransform from 'utils/indctransform';
 
 const fetchNDCSInit = createAction('fetchNDCSInit');
 const fetchNDCSReady = createAction('fetchNDCSReady');
+const fetchNDCSMapIndicatorsReady = createAction('fetchNDCSMapIndicatorsReady');
 const fetchNDCSFail = createAction('fetchNDCSFail');
 
 const fetchNDCS = createThunkAction('fetchNDCS', () => (dispatch, state) => {
   const { ndcs } = state();
-  if (ndcs && isEmpty(ndcs.data) && !ndcs.loading) {
+  if (
+    ndcs &&
+    (isEmpty(ndcs.data) || isEmpty(ndcs.data.indicators)) &&
+    !ndcs.loading
+  ) {
     dispatch(fetchNDCSInit());
-    fetch('/api/v1/ndcs?filter=map')
+    fetch('/api/v1/ndcs?filter=global')
       .then(response => {
         if (response.ok) return response.json();
         throw Error(response.statusText);
@@ -29,9 +34,38 @@ const fetchNDCS = createThunkAction('fetchNDCS', () => (dispatch, state) => {
   }
 });
 
+const fetchNDCSMapIndicators = createThunkAction(
+  'fetchNDCSMapIndicators',
+  () => (dispatch, state) => {
+    const { ndcs } = state();
+    if (
+      ndcs &&
+      (isEmpty(ndcs.data) || isEmpty(ndcs.data.mapIndicators)) &&
+      !ndcs.loading
+    ) {
+      dispatch(fetchNDCSInit());
+      fetch('/api/v1/ndcs?filter=map')
+        .then(response => {
+          if (response.ok) return response.json();
+          throw Error(response.statusText);
+        })
+        .then(data => indcTransform(data))
+        .then(data => {
+          dispatch(fetchNDCSMapIndicatorsReady(data));
+        })
+        .catch(error => {
+          console.warn(error);
+          dispatch(fetchNDCSFail());
+        });
+    }
+  }
+);
+
 export default {
   fetchNDCS,
   fetchNDCSInit,
   fetchNDCSReady,
-  fetchNDCSFail
+  fetchNDCSFail,
+  fetchNDCSMapIndicators,
+  fetchNDCSMapIndicatorsReady
 };
