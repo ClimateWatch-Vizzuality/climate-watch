@@ -5,12 +5,20 @@
   min-height: 600px;
 }
 
+.button {
+  text-align: center;
+}
+
 .buttons {
-  @include columns(4);
+  @include columns(6);
   @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding * 2);
 
-  > :nth-child(2) {
-    @include column-offset(4);
+  @media #{$tablet-landscape} {
+    @include columns(4);
+
+    > :nth-child(2) {
+      @include column-offset(4);
+    }
   }
 }
 
@@ -19,11 +27,23 @@
 }
 
 .filtersContainer {
-  @include columns(3);
+  @include columns(6);
   @include xy-gutters($gutter-position: 'bottom');
 
-  > :nth-child(5) {
+  > :nth-child(n+3) {
     @include xy-gutters($gutter-position: 'top');
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(3);
+
+    > :nth-child(n+3) {
+      @include xy-gutters($gutter-position: 'top', $gutters: 0);
+    }
+
+    > :nth-child(5) {
+      @include xy-gutters($gutter-position: 'top');
+    }
   }
 }
 
