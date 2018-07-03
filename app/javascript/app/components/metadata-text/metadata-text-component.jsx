@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import Disclaimer from 'components/disclaimer';
 import styles from './metadata-text-styles.scss';
 
 const MetadataProp = ({ title, children }) => (
@@ -18,7 +19,7 @@ MetadataProp.propTypes = {
 class MetadataText extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { showDisclaimer, disclaimer, data, className } = this.props;
+    const { disclaimerConfig, data, className } = this.props;
     const {
       learn_more_link,
       source_organization,
@@ -78,7 +79,9 @@ class MetadataText extends PureComponent {
             </a>
           </MetadataProp>
         )}
-        {showDisclaimer && disclaimer}
+        {disclaimerConfig && disclaimerConfig.display && (
+          <Disclaimer onlyText={disclaimerConfig.onlyText} />
+        )}
       </div>
     );
   }
@@ -86,13 +89,8 @@ class MetadataText extends PureComponent {
 
 MetadataText.propTypes = {
   data: PropTypes.object,
-  showDisclaimer: PropTypes.bool.isRequired,
-  disclaimer: PropTypes.node,
+  disclaimerConfig: PropTypes.object,
   className: PropTypes.string
-};
-
-MetadataText.defaultProps = {
-  showDisclaimer: false
 };
 
 export default MetadataText;

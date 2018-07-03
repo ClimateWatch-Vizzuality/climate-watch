@@ -11,13 +11,10 @@ import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
-import Disclaimer from 'components/disclaimer';
 import { isPageContained } from 'utils/navigation';
 
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
-
-const { FEATURE_QUANTIFICATIONS } = process.env;
 
 class CountryGhgEmissions extends PureComponent {
   renderFilterDropdowns() {
@@ -106,6 +103,7 @@ class CountryGhgEmissions extends PureComponent {
     const {
       calculationSelected,
       data,
+      domain,
       quantifications,
       loading,
       config,
@@ -115,13 +113,14 @@ class CountryGhgEmissions extends PureComponent {
       sourceSelected
     } = this.props;
 
-    const points =
-      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained
-        ? quantifications
-        : [];
+    const points = !isPageContained ? quantifications : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
+    const forceFixedFormatDecimals =
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
+        ? 2
+        : 0;
 
     return (
       <Chart
@@ -129,12 +128,14 @@ class CountryGhgEmissions extends PureComponent {
         type={useLineChart ? 'line' : 'area'}
         config={config}
         data={data}
+        domain={useLineChart && domain}
         onMouseMove={handleYearHover}
         points={points}
         dataOptions={filtersOptions}
         dataSelected={filtersSelected}
         loading={loading}
         height={360}
+        forceFixedFormatDecimals={forceFixedFormatDecimals}
         stepped={sourceSelected.label === 'UNFCCC'}
       />
     );
@@ -142,12 +143,10 @@ class CountryGhgEmissions extends PureComponent {
 
   renderQuantificationsTags() {
     const { loading, quantificationsTagsConfig } = this.props;
-    const showQuantifications =
-      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained;
     return (
       <ul>
         {!loading &&
-          showQuantifications &&
+          !isPageContained &&
           quantificationsTagsConfig.map(q => (
             <Tag
               theme={quantificationTagTheme}
@@ -196,7 +195,7 @@ class CountryGhgEmissions extends PureComponent {
             {this.renderActionButtons()}
           </div>
         </TabletPortraitOnly>
-        <ModalMetadata disclaimer={<Disclaimer onlyText />} />
+        <ModalMetadata />
       </div>
     );
   }
@@ -207,6 +206,7 @@ CountryGhgEmissions.propTypes = {
   isNdcp: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  domain: PropTypes.object,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
   countryName: PropTypes.string.isRequired,

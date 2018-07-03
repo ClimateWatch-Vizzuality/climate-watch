@@ -1,7 +1,11 @@
 import { format } from 'd3-format';
 import { assign } from 'app/utils';
 import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
-import { setChartColors } from 'app/utils/graphs';
+import {
+  setChartColors,
+  setXAxisDomain,
+  setYAxisDomain
+} from 'app/utils/graphs';
 import { groupByYear, pick } from '../utils';
 
 const makeConfig = (data, indicators, small) => {
@@ -32,7 +36,7 @@ const makeConfig = (data, indicators, small) => {
         tickSize: 8,
         scale: 'time',
         type: 'number',
-        domain: ['auto', 'auto']
+        domain: setXAxisDomain()
       },
     yAxis: small
       ? false
@@ -41,7 +45,7 @@ const makeConfig = (data, indicators, small) => {
         axisLine: false,
         tickLine: false,
         tick,
-        domain: ['auto', 'auto']
+        domain: setYAxisDomain()
       },
     cartesianGrid: small
       ? false
