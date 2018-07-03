@@ -11,6 +11,8 @@ import {
   getYColumnValue,
   getThemeConfig,
   getTooltipConfig,
+  setXAxisDomain,
+  setYAxisDomain,
   setChartColors
 } from 'utils/graphs';
 
@@ -375,18 +377,7 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
 
 export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
-  const xValues = data.map(d => d.x);
-  const yValues = [];
-  data.forEach(d => {
-    Object.keys(d).forEach(k => {
-      if (k !== 'x') yValues.push(d[k]);
-    });
-  });
-
-  return {
-    x: [Math.min(...xValues), Math.max(...xValues)],
-    y: [Math.min(...yValues), Math.max(...yValues)]
-  };
+  return { x: setXAxisDomain(), y: setYAxisDomain() };
 });
 
 export const getChartNeededPrecision = createSelector(
