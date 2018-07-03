@@ -102,6 +102,19 @@ export const getColorPalette = (colorRange, quantity) =>
 
 export const darkenColor = color => chroma(color).darken();
 
+export function setYAxisDomain() {
+  return [setBuffer, dataMax => dataMax];
+}
+
+function setBuffer(min) {
+  if (min <= 0) return 'auto';
+  return min * 0.7;
+}
+
+export function setXAxisDomain() {
+  return ['dataMin', 'dataMax'];
+}
+
 export function getCustomTicks(
   columns,
   data,

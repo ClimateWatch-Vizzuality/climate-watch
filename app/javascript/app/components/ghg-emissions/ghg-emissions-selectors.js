@@ -11,7 +11,9 @@ import {
   getTooltipConfig,
   sortEmissionsByValue,
   sortLabelByAlpha,
-  setChartColors
+  setChartColors,
+  setXAxisDomain,
+  setYAxisDomain
 } from 'utils/graphs';
 import {
   TOP_EMITTERS,
@@ -290,10 +292,9 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartXDomain = createSelector([getChartData], data => {
+export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
-  const xValues = data.map(d => d.x);
-  return { x: [Math.min(...xValues), Math.max(...xValues)] };
+  return { x: setXAxisDomain(), y: setYAxisDomain() };
 });
 
 // variable that caches chart elements assigned color

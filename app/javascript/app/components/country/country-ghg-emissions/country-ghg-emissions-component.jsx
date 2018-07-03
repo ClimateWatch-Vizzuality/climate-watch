@@ -103,6 +103,7 @@ class CountryGhgEmissions extends PureComponent {
     const {
       calculationSelected,
       data,
+      domain,
       quantifications,
       loading,
       config,
@@ -116,6 +117,10 @@ class CountryGhgEmissions extends PureComponent {
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
+    const forceFixedFormatDecimals =
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
+        ? 2
+        : 0;
 
     return (
       <Chart
@@ -123,12 +128,14 @@ class CountryGhgEmissions extends PureComponent {
         type={useLineChart ? 'line' : 'area'}
         config={config}
         data={data}
+        domain={useLineChart && domain}
         onMouseMove={handleYearHover}
         points={points}
         dataOptions={filtersOptions}
         dataSelected={filtersSelected}
         loading={loading}
         height={360}
+        forceFixedFormatDecimals={forceFixedFormatDecimals}
         stepped={sourceSelected.label === 'UNFCCC'}
       />
     );
@@ -199,6 +206,7 @@ CountryGhgEmissions.propTypes = {
   isNdcp: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  domain: PropTypes.object,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
   countryName: PropTypes.string.isRequired,
