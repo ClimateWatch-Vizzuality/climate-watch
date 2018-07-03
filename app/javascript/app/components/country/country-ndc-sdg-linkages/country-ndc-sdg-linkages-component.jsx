@@ -149,7 +149,7 @@ class CountrySDGLinkages extends PureComponent {
 
     const href = `/contained/ndcs-sdg${activeSector
       ? `?goal=${activeSector.value}`
-      : ''}?isNdcp=true`;
+      : ''}`;
     const link = `/ndcs-sdg${activeSector
       ? `?goal=${activeSector.value}`
       : ''}`;
