@@ -77,7 +77,7 @@ class CountryGhgEmissions extends PureComponent {
       ];
 
     const link = `/ghg-emissions?breakBy=location&filter=${iso}`;
-    const href = `http://ndcpartnership.org/climate-watch/ghg-emissions?breakBy=location&filter=${iso}`;
+    const href = `/contained/ghg-emissions?breakBy=location&filter=${iso}&isNdcp=true`;
 
     return [
       <ButtonGroup

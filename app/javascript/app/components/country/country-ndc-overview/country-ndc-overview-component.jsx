@@ -40,7 +40,7 @@ class CountryNdcOverview extends PureComponent {
 
   renderCompareButton() {
     const { iso, isNdcp } = this.props;
-    const href = 'http://ndcpartnership.org/climate-watch/ndcs';
+    const href = `/contained/ndcs/compare/mitigation?locations=${iso}`;
     const link = `/ndcs/compare/mitigation?locations=${iso}`;
     return (
       <Button
@@ -56,7 +56,7 @@ class CountryNdcOverview extends PureComponent {
   renderExploreButton() {
     const { iso, handleAnalyticsClick, isNdcp } = this.props;
 
-    const href = 'http://ndcpartnership.org/climate-watch/ndcs';
+    const href = `/contained/ndcs/country/${iso}`;
     const link = `/ndcs/country/${iso}`;
 
     return (

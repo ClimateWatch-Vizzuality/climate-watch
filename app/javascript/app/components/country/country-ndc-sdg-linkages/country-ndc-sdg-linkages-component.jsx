@@ -33,7 +33,9 @@ class CountrySDGLinkages extends PureComponent {
     const { sectors, tooltipData, targets, tooltipSectorIds } = this.props;
     const targetsContent = targets && targets[tooltipData.goal_number];
     const hasTooltipData = sector => {
-      if (tooltipSectorIds) { return !!tooltipSectorIds.find(id => sectors[id] === sector); }
+      if (tooltipSectorIds) {
+        return !!tooltipSectorIds.find(id => sectors[id] === sector);
+      }
       return false;
     };
     const sectorsLabels =
@@ -145,12 +147,8 @@ class CountrySDGLinkages extends PureComponent {
       </div>
     );
 
-    const href = `http://ndcpartnership.org/climate-watch/ndcs-sdg${activeSector
-      ? `?goal=${activeSector.value}`
-      : ''}`;
-    const link = `/ndcs-sdg${activeSector
-      ? `?goal=${activeSector.value}`
-      : ''}`;
+    const href = '/contained/ndcs-sdg?isNdcp=true';
+    const link = '/ndcs-sdg';
 
     const exploreButton = (
       <Button
