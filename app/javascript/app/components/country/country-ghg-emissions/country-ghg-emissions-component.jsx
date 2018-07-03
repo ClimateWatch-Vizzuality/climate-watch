@@ -66,7 +66,7 @@ class CountryGhgEmissions extends PureComponent {
           type: 'share',
           shareUrl: `/embed/countries/${iso}/ghg-emissions`,
           analyticsGraphName: 'Country/Ghg-emissions',
-          reverseDropdown: !isEmbed
+          positionRight: true
         },
         {
           type: 'download'

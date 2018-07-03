@@ -38,7 +38,7 @@ class GhgEmissions extends PureComponent {
       activeFilterRegion
     } = this.props;
 
-    const renderButtonGroup = reverseDropdown => (
+    const renderButtonGroup = () => (
       <ButtonGroup
         className={styles.colEnd}
         buttonsConfig={[
@@ -50,7 +50,7 @@ class GhgEmissions extends PureComponent {
             type: 'share',
             shareUrl: '/embed/ghg-emissions',
             analyticsGraphName: 'Ghg-emissions',
-            reverseDropdown
+            positionRight: true
           },
           {
             type: 'download'

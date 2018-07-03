@@ -26,7 +26,7 @@ class CountryNdcOverview extends PureComponent {
         {
           type: 'share',
           shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
-          reverseDropdown: true
+          positionRight: true
         }
       ];
 

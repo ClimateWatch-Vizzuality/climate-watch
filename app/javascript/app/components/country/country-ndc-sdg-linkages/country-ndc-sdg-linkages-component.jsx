@@ -172,7 +172,7 @@ class CountrySDGLinkages extends PureComponent {
         {
           type: 'share',
           shareUrl: `/embed/countries/${iso}/ndc-sdg-linkages`,
-          reverseDropdown: true
+          positionRight: true
         }
       ];
 
