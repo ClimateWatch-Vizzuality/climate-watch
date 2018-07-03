@@ -181,8 +181,11 @@ export const getMethodology = createSelector(
       !meta ||
       isEmpty(meta) ||
       !section ||
-      (sectionHasSources && isEmpty(selectedfilters))
-    ) { return null; }
+      (sectionHasSources &&
+        (isEmpty(selectedfilters) || !selectedfilters.source))
+    ) {
+      return null;
+    }
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
