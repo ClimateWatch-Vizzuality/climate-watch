@@ -15,7 +15,8 @@ import {
   getMethodology,
   parseGroupsInOptions,
   getSelectedOptions,
-  getFilterQuery
+  parseFilterQuery,
+  getLink
 } from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
@@ -28,12 +29,6 @@ const mapStateToProps = (state, { section, location }) => {
     section,
     search
   };
-  const SECTION_HREFS = {
-    'historical-emissions': '/ghg-emissions',
-    'ndc-sdg-linkages': '/ndcs-sdg',
-    'ndc-content': '/ndcs-content',
-    'emission-pathways': '/pathways'
-  };
   const anchorLinks = [
     {
       label: 'Raw Data',
@@ -42,7 +37,7 @@ const mapStateToProps = (state, { section, location }) => {
     },
     { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
   ];
-  const filterQuery = getFilterQuery(dataState);
+  const filterQuery = parseFilterQuery(dataState);
   return {
     data: parseData(dataState),
     meta: getMethodology(dataState),
@@ -50,7 +45,7 @@ const mapStateToProps = (state, { section, location }) => {
     loading: state.dataExplorer && state.dataExplorer.loading,
     loadingMeta: state.dataExplorer && state.dataExplorer.loadingMeta,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
-    href: SECTION_HREFS[section],
+    href: getLink(dataState),
     downloadHref: `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
       section
     ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`,

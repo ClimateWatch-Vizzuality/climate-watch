@@ -75,8 +75,58 @@ export const getFilterQuery = createSelector(
         );
       filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
     });
-    const filterQuery = qs.stringify(filterIds);
-    return filterQuery && parseQuery(filterQuery);
+    return filterIds;
+  }
+);
+
+export const parseFilterQuery = createSelector([getFilterQuery], filterIds => {
+  if (!filterIds || isEmpty(filterIds)) return null;
+  const filterQuery = qs.stringify(filterIds);
+  return filterQuery && parseQuery(filterQuery);
+});
+
+export const getLink = createSelector(
+  [getFilterQuery, getSection, state => state.meta],
+  (filterQuery, section, meta) => {
+    if (!section) return null;
+    const DATA_EXPLORER_TO_MODULES_PARAMS = {
+      'historical-emissions': {
+        data_sources: { key: 'source' },
+        gwps: { key: 'version' }
+      },
+      'ndc-sdg-linkages': {
+        goals: {
+          key: 'goal',
+          idLabel: 'number'
+        }
+      },
+      'ndc-content': {},
+      'emission-pathways': {}
+    };
+
+    const parsedQuery = {};
+    if (filterQuery && !isEmpty(filterQuery)) {
+      Object.keys(filterQuery).forEach(key => {
+        const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
+        const parsedKey = parsedKeyData && parsedKeyData.key;
+        if (parsedKey) {
+          const { idLabel } = parsedKeyData;
+          const id = idLabel
+            ? meta[section][key].find(m => m.id === filterQuery[key])[idLabel]
+            : filterQuery[key];
+          parsedQuery[parsedKey] = id;
+        }
+      });
+    }
+    const stringifiedQuery = qs.stringify(parsedQuery);
+    const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
+    const SECTION_BASE_URIS = {
+      'historical-emissions': '/ghg-emissions',
+      'ndc-sdg-linkages': '/ndcs-sdg',
+      'ndc-content': '/ndcs-content',
+      'emission-pathways': '/pathways'
+    };
+    return `${SECTION_BASE_URIS[section]}${urlParameters}`;
   }
 );
 
@@ -157,7 +207,13 @@ export const parseGroupsInOptions = createSelector(
   [getFilterOptions, getSection],
   (options, section) => {
     const MULTIPLE_LEVEL_SECTIONS = { 'ndc-content': ['sectors'] };
-    if (!options || !section || MULTIPLE_LEVEL_SECTIONS[section] === undefined) { return options; }
+    if (
+      !options ||
+      !section ||
+      MULTIPLE_LEVEL_SECTIONS[section] === undefined
+    ) {
+      return options;
+    }
     const updatedOptions = options;
     Object.keys(options).forEach(key => {
       if (MULTIPLE_LEVEL_SECTIONS[section].includes(key)) {
