@@ -81,7 +81,8 @@ class NdcSdgLinkagesMap extends PureComponent {
                     {
                       type: 'share',
                       shareUrl: '/embed/ndcs-sdg',
-                      analyticsGraphName: 'Ndcs-Sdg'
+                      analyticsGraphName: 'Ndcs-Sdg',
+                      positionRight: true
                     },
                     {
                       type: 'download'
