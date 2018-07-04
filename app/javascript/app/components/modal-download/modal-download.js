@@ -17,8 +17,7 @@ const mapStateToProps = ({ modalDownload, countries }) => ({
   downloadSize: modalDownload.downloadSize,
   countries: countriesSelector({ countries }),
   sectors: sectorsSelector({ sectors }),
-  isSubmitting: false,
-  firstName: modalDownload.firstName
+  isSubmitting: false
 });
 
 const includeActions = withHandlers({

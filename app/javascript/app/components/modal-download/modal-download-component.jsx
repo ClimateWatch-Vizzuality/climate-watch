@@ -18,20 +18,22 @@ class ModalDownload extends PureComponent {
       lastName: '',
       email: '',
       organization: '',
-      sector: '',
-      country: '',
+      sector: {},
+      country: {},
       explanation: ''
     };
   }
 
-  handleChange = (value, target) => {
-    this.setState({ [target]: value });
+  handleChange = (event, input) => {
+    this.setState({ [input]: event.target.value });
+  }
+
+  updateDropdownValue = (valueObject, dropdownId) => {
+    this.setState({ [dropdownId]: valueObject });
   }
 
   renderForm() {
     const { countries, sectors, isSubmitting, downloadSize } = this.props;
-
-    const onBlur = () => {};
 
     const onSubmit = event => {
       event.preventDefault();
@@ -52,12 +54,9 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             label={'First name'}
-            id={'firstName'}
             value={this.state.first_name}
             inputType="text"
-            // onBlur={onBlur}
-            onChange={this.handleChange}
-            // innerRef={el => (this.firstNameInput = el)}
+            onChange={e => this.handleChange(e, 'firstName')}
             required
           />
 
@@ -65,11 +64,9 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             label={'Last name'}
+            value={this.state.lastName}
             inputType="text"
-            id={'lastName'}
-            // onBlur={onBlur}
-            onChange={this.handleChange}
-            // innerRef={el => (this.lastNameInput = el)}
+            onChange={e => this.handleChange(e, 'lastName')}
             required
           />
 
@@ -78,18 +75,18 @@ class ModalDownload extends PureComponent {
             theme={theme}
             inputType="email"
             label={'Email'}
-            // onBlur={onBlur}
-            onChange={this.handleChange}
-            // innerRef={el => (this.emailInput = el)}
+            value={this.state.email}
+            onChange={e => this.handleChange(e, 'email')}
             required
           />
 
           <Dropdown
             className={styles.dropdown}
+            id={'firstName'}
             label="Country"
             options={countries}
-            onBlur={onBlur}
-            // innerRef={el => (this.countryInput = el)}
+            onValueChange={selected => this.updateDropdownValue(selected, 'country')}
+            value={this.state.country}
             hideResetButton
             required
           />
@@ -97,7 +94,6 @@ class ModalDownload extends PureComponent {
           <label>
             Subscribe to email updates
             <input
-              // ref={el => (this.subscribeInput = el)}
               name="subscribe"
               type="checkbox"
               value="true"
@@ -109,17 +105,16 @@ class ModalDownload extends PureComponent {
             theme={theme}
             inputType="text"
             label={'Organization'}
-            onChange={this.handleChange}
-            // innerRef={el => (this.organizationInput = el)}
-            // onBlur={onBlur}
+            value={this.state.organization}
+            onChange={e => this.handleChange(e, 'organization')}
           />
 
           <Dropdown
             className={styles.dropdown}
             label="Sector"
             options={sectors}
-            // onBlur={onBlur}
-            // innerRef={el => (this.sectorInput = el)}
+            onValueChange={selected => this.updateDropdownValue(selected, 'sector')}
+            value={this.state.sector}
             hideResetButton
           />
 
@@ -127,10 +122,9 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             inputType="textarea"
-            // onBlur={onBlur}
-            onChange={this.handleChange}
-            // innerRef={el => (this.explanationInput = el)}
             label={'How do you intend to use the data?'}
+            value={this.state.explanation}
+            onChange={e => this.handleChange(e, 'explanation')}
           />
 
           <input
@@ -164,7 +158,7 @@ class ModalDownload extends PureComponent {
 
 ModalDownload.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  downloadSize: PropTypes.string.isRequired,
+  downloadSize: PropTypes.string,
   onRequestClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
