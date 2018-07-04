@@ -4,6 +4,7 @@ import { PureComponent, createElement } from 'react';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import qs from 'query-string';
+import { actions } from 'components/modal-download';
 import {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
@@ -87,6 +88,14 @@ class DataExplorerContentContainer extends PureComponent {
     }
   };
 
+  handleDownloadModalOpen = () => {
+    const { downloadHref, setModalDownloadParams } = this.props;
+    setModalDownloadParams({
+      open: true,
+      downloadUrl: downloadHref
+    });
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -95,7 +104,8 @@ class DataExplorerContentContainer extends PureComponent {
   render() {
     return createElement(DataExplorerContentComponent, {
       ...this.props,
-      handleFilterChange: this.handleFilterChange
+      handleFilterChange: this.handleFilterChange,
+      handleDownloadModalOpen: this.handleDownloadModalOpen
     });
   }
 }
@@ -103,9 +113,11 @@ class DataExplorerContentContainer extends PureComponent {
 DataExplorerContentContainer.propTypes = {
   section: PropTypes.string,
   history: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  downloadHref: PropTypes.string,
+  setModalDownloadParams: PropTypes.func
 };
 
 export default withRouter(
-  connect(mapStateToProps, null)(DataExplorerContentContainer)
+  connect(mapStateToProps, actions)(DataExplorerContentContainer)
 );
