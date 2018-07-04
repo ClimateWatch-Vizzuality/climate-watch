@@ -66,7 +66,7 @@ const mapStateToProps = (state, { section, location }) => {
 class DataExplorerContentContainer extends PureComponent {
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
-    const SOURCE_AND_VERSION_KEY = 'source_IPCC_version';
+    const SOURCE_AND_VERSION_KEY = 'source';
     if (filterName === SOURCE_AND_VERSION_KEY) {
       const values = value && value.split(' - ');
       this.updateUrlParam([
