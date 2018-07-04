@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import storiesDefaultImage from 'assets/backgrounds/stories-default';
 
 import styles from './stories-styles.scss';
 
@@ -15,7 +16,10 @@ class Stories extends PureComponent {
             <a
               key={story.link}
               className={styles.story}
-              style={{ backgroundImage: `url(${story.background_image_url})` }}
+              style={{
+                backgroundImage: `url(${story.background_image_url ||
+                  storiesDefaultImage})`
+              }}
               href={story.link}
               target="_blank"
               rel="noopener noreferrer"

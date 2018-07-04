@@ -40,6 +40,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
             inButtonGroup
             analyticsGraphName={buttonConfig.analyticsGraphName}
             reverse={buttonConfig.reverseDropdown}
+            positionRight={buttonConfig.positionRight}
           />
         );
       } else {

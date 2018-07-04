@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { withHandlers } from 'recompose';
-
 import actions from './modal-metadata-actions';
 import reducers, { initialState } from './modal-metadata-reducers';
 
@@ -17,7 +16,8 @@ const mapStateToProps = ({ modalMetadata }) => ({
   title: getModalTitle(modalMetadata),
   tabTitles: getTabTitles(modalMetadata),
   data: getModalData(modalMetadata),
-  showDisclaimer: modalMetadata.showDisclaimer
+  disclaimerConfig: modalMetadata.disclaimerConfig,
+  mounted: modalMetadata.mounted
 });
 
 const includeActions = withHandlers({

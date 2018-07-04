@@ -40,6 +40,7 @@
   box-shadow: none;
   fill: rgba($theme-color, 0.7);
   transition: fill 150ms ease-out;
+  min-width: 20px;
 
   &:hover {
     box-shadow: none;

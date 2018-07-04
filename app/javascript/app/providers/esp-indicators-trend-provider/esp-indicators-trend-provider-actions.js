@@ -8,7 +8,7 @@ const { ESP_API } = process.env;
 
 const getIndicatorsTrendData = createThunkAction(
   'getIndicatorsTrendData',
-  (locationId, scenarioId) => (dispatch, state) => {
+  ({ locationId, scenarioId }) => (dispatch, state) => {
     const { espIndicatorsTrend } = state();
     if (
       espIndicatorsTrend &&

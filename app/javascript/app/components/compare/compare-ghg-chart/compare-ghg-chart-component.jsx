@@ -20,7 +20,7 @@ import styles from './compare-ghg-chart-styles.scss';
 
 class CompareGhgChart extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
-  renderButtonGroup(reverseDropdown) {
+  renderButtonGroup() {
     return (
       <ButtonGroup
         className={styles.colEnd}
@@ -33,7 +33,7 @@ class CompareGhgChart extends PureComponent {
             type: 'share',
             shareUrl: '/embed/ghg-emissions',
             analyticsGraphName: 'Ghg-emissions',
-            reverseDropdown
+            positionRight: true
           },
           {
             type: 'download'
@@ -46,7 +46,7 @@ class CompareGhgChart extends PureComponent {
     );
   }
 
-  renderActionButtons(reverseDropdown) {
+  renderActionButtons() {
     const {
       handleInfoClick,
       handleAnalyticsClick,
@@ -65,7 +65,7 @@ class CompareGhgChart extends PureComponent {
             type: 'share',
             shareUrl: '/embed/compare-ghg-chart',
             analyticsGraphName: 'Ghg-emissions',
-            reverseDropdown
+            positionRight: true
           },
           {
             type: 'download'

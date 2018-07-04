@@ -89,7 +89,8 @@ class EmissionPathwayGraph extends PureComponent {
                     {
                       type: 'share',
                       shareUrl: '/embed/pathways',
-                      analyticsGraphName: 'Pathways'
+                      analyticsGraphName: 'Pathways',
+                      positionRight: true
                     },
                     {
                       type: 'download'
@@ -182,7 +183,7 @@ class EmissionPathwayGraph extends PureComponent {
                   type: 'share',
                   shareUrl: '/embed/pathways',
                   analyticsGraphName: 'Pathways',
-                  reverseDropdown: true
+                  positionRight: true
                 },
                 {
                   type: 'download'

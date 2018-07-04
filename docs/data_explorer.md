@@ -231,7 +231,7 @@ Total: 8498
 Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)
 
 ```
-Link: </api/v1/data/ndc_sdgs/goals>; rel="meta goals", </api/v1/data/ndc_sdgs/targets>; rel="meta targets", </api/v1/data/ndc_sdgs/sectors>; rel="meta sectors", </api/v1/locations/countries>; rel="meta locations"
+Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targets>; rel="meta targets", </api/v1/data/ndc_sdg/sectors>; rel="meta sectors", </api/v1/locations/countries>; rel="meta locations"
 ```
 
 ### Goals
@@ -331,6 +331,7 @@ Link: </api/v1/data/ndc_sdgs/goals>; rel="meta goals", </api/v1/data/ndc_sdgs/ta
 
 ### Parameters
 - countries[]
+- source_ids[]
 - indicator_ids[]
 - category_ids[]
 - label_ids[]

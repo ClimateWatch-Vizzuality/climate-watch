@@ -29,7 +29,8 @@ class NDCCountry extends PureComponent {
       route,
       anchorLinks,
       documentsOptions,
-      handleDropDownChange
+      handleDropDownChange,
+      notSummary
     } = this.props;
     const countryName = country && `${country.wri_standard_name}`;
     return (
@@ -78,12 +79,14 @@ class NDCCountry extends PureComponent {
                   Compare
                 </Button>
               </TabletLandscape>
-              <Search
-                theme={lightSearch}
-                placeholder="Search"
-                value={search}
-                onChange={onSearchChange}
-              />
+              {notSummary && (
+                <Search
+                  theme={lightSearch}
+                  placeholder="Search"
+                  value={search}
+                  onChange={onSearchChange}
+                />
+              )}
             </div>
             <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
               <AnchorNav
@@ -110,7 +113,8 @@ NDCCountry.propTypes = {
   search: PropTypes.string,
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,
-  handleDropDownChange: PropTypes.func
+  handleDropDownChange: PropTypes.func,
+  notSummary: PropTypes.bool
 };
 
 export default NDCCountry;

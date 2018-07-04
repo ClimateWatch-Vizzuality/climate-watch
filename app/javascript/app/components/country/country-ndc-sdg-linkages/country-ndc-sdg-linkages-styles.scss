@@ -29,8 +29,12 @@
   }
 }
 
+.sdgsEmbed {
+  margin-bottom: 1px;
+}
+
 .buttons {
-  @include columns((12, 12, 2, 10));
+  @include columns((12, 12, 4, 8));
 
   @media #{$tablet-landscape} {
     @include columns((6, 1, 2, 3));
@@ -88,6 +92,10 @@
 
 .sectorSelector {
   padding-top: 15px;
+}
+
+.sectorIncluded {
+  text-decoration: underline;
 }
 
 .info {

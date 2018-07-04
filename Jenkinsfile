@@ -34,16 +34,16 @@ node {
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "master":
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_MY_CLIMATEWATCH=false --build-arg FEATURE_DATA_EXPLORER=false -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=false --build-arg FEATURE_MY_CLIMATEWATCH=false --build-arg FEATURE_DATA_EXPLORER=false -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_MY_CLIMATEWATCH=false --build-arg FEATURE_DATA_EXPLORER=false -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_MY_CLIMATEWATCH=false --build-arg FEATURE_DATA_EXPLORER=false -t ${dockerUsername}/${appName}:latest .")
           break
         case "sandbox":
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${dockerUsername}/${appName}:latest .")
           break
         default:
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_QUANTIFICATIONS=true --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_MY_CLIMATEWATCH=true --build-arg FEATURE_DATA_EXPLORER=true -t ${dockerUsername}/${appName}:latest .")
       }
     }
 

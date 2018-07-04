@@ -42,9 +42,25 @@ const buckets = [
 
 export function getColorByIndex(data, index) {
   const length = Object.keys(data).length;
+  if (index === -2) return '#ddd';
   return buckets[length - 2][index - 1] || '#E5E5EB';
 }
 
+export function createLegendBuckets(locations, labels, isos) {
+  if (Object.keys(locations) === isos) return labels;
+  // An index of -2 is applied in the backend to 'No Data Submitted'
+  const notSubmitted = Object.keys(labels).find(l => labels[l].index === -2);
+  if (notSubmitted) {
+    const notApplicableKey = parseInt(notSubmitted, 10) + 1;
+    return {
+      ...labels,
+      [notApplicableKey]: { name: 'Not Applicable', index: 0 }
+    };
+  }
+  return { ...labels, 0: { name: 'Not Applicable', index: 0 } };
+}
+
 export default {
-  getColorByIndex
+  getColorByIndex,
+  createLegendBuckets
 };

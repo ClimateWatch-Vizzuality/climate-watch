@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Button from 'components/button';
@@ -10,13 +11,10 @@ import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import ModalMetadata from 'components/modal-metadata';
-import Disclaimer from 'components/disclaimer';
 import { isPageContained } from 'utils/navigation';
 
 import quantificationTagTheme from 'styles/themes/tag/quantification-tag.scss';
 import styles from './country-ghg-emissions-styles.scss';
-
-const { FEATURE_QUANTIFICATIONS } = process.env;
 
 class CountryGhgEmissions extends PureComponent {
   renderFilterDropdowns() {
@@ -49,37 +47,51 @@ class CountryGhgEmissions extends PureComponent {
   }
 
   renderActionButtons() {
-    const { iso, handleInfoClick, handleAnalyticsClick, isEmbed } = this.props;
+    const {
+      iso,
+      handleInfoClick,
+      handleAnalyticsClick,
+      isEmbed,
+      isNdcp
+    } = this.props;
+
+    const buttonGroupConfig = isEmbed
+      ? [{ type: 'info', onClick: handleInfoClick }]
+      : [
+        {
+          type: 'info',
+          onClick: handleInfoClick
+        },
+        {
+          type: 'share',
+          shareUrl: `/embed/countries/${iso}/ghg-emissions`,
+          analyticsGraphName: 'Country/Ghg-emissions',
+          positionRight: true
+        },
+        {
+          type: 'download'
+        },
+        {
+          type: 'addToUser'
+        }
+      ];
+
+    const link = `/ghg-emissions?breakBy=location&filter=${iso}`;
+    const href = `/contained/ghg-emissions?breakBy=location&filter=${iso}&isNdcp=true`;
 
     return [
       <ButtonGroup
         key="action1"
         className={styles.btnGroup}
-        buttonsConfig={[
-          {
-            type: 'info',
-            onClick: handleInfoClick
-          },
-          {
-            type: 'share',
-            shareUrl: `/embed/countries/${iso}/ghg-emissions`,
-            analyticsGraphName: 'Country/Ghg-emissions',
-            reverseDropdown: !isEmbed
-          },
-          {
-            type: 'download'
-          },
-          {
-            type: 'addToUser'
-          }
-        ]}
+        buttonsConfig={buttonGroupConfig}
       />,
       <Button
         key="action2"
         noSpace
         className={styles.exploreBtn}
         color="yellow"
-        link={`/ghg-emissions?breakBy=location&filter=${iso}`}
+        href={isNdcp ? href : null}
+        link={isNdcp ? null : link}
         onClick={handleAnalyticsClick}
       >
         Explore emissions
@@ -91,6 +103,7 @@ class CountryGhgEmissions extends PureComponent {
     const {
       calculationSelected,
       data,
+      domain,
       quantifications,
       loading,
       config,
@@ -100,13 +113,14 @@ class CountryGhgEmissions extends PureComponent {
       sourceSelected
     } = this.props;
 
-    const points =
-      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained
-        ? quantifications
-        : [];
+    const points = !isPageContained ? quantifications : [];
     const useLineChart =
       calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value ||
       calculationSelected.value === CALCULATION_OPTIONS.PER_GDP.value;
+    const forceFixedFormatDecimals =
+      calculationSelected.value === CALCULATION_OPTIONS.PER_CAPITA.value
+        ? 2
+        : 0;
 
     return (
       <Chart
@@ -114,12 +128,14 @@ class CountryGhgEmissions extends PureComponent {
         type={useLineChart ? 'line' : 'area'}
         config={config}
         data={data}
+        domain={useLineChart && domain}
         onMouseMove={handleYearHover}
         points={points}
         dataOptions={filtersOptions}
         dataSelected={filtersSelected}
         loading={loading}
         height={360}
+        forceFixedFormatDecimals={forceFixedFormatDecimals}
         stepped={sourceSelected.label === 'UNFCCC'}
       />
     );
@@ -127,12 +143,10 @@ class CountryGhgEmissions extends PureComponent {
 
   renderQuantificationsTags() {
     const { loading, quantificationsTagsConfig } = this.props;
-    const showQuantifications =
-      FEATURE_QUANTIFICATIONS === 'true' && !isPageContained;
     return (
       <ul>
         {!loading &&
-          showQuantifications &&
+          !isPageContained &&
           quantificationsTagsConfig.map(q => (
             <Tag
               theme={quantificationTagTheme}
@@ -160,7 +174,11 @@ class CountryGhgEmissions extends PureComponent {
             : ''}`}
         </h3>
         <TabletLandscape>
-          <div className={styles.graphControls}>
+          <div
+            className={cx(styles.graphControls, {
+              [styles.graphControlsEmbed]: isEmbed
+            })}
+          >
             {this.renderFilterDropdowns()}
             {this.renderActionButtons()}
           </div>
@@ -177,16 +195,18 @@ class CountryGhgEmissions extends PureComponent {
             {this.renderActionButtons()}
           </div>
         </TabletPortraitOnly>
-        <ModalMetadata disclaimer={<Disclaimer onlyText />} />
+        <ModalMetadata />
       </div>
     );
   }
 }
 
 CountryGhgEmissions.propTypes = {
-  isEmbed: PropTypes.bool.isRequired,
+  isEmbed: PropTypes.bool,
+  isNdcp: PropTypes.bool,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  domain: PropTypes.object,
   config: PropTypes.object.isRequired,
   iso: PropTypes.string.isRequired,
   countryName: PropTypes.string.isRequired,

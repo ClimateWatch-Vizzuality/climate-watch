@@ -8,7 +8,7 @@ import cx from 'classnames';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import iconDocument from 'assets/icons/document.svg';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
-import { COUNTRY_COMPARE_COLORS } from 'data/constants';
+import { CHART_COLORS } from 'data/constants';
 import styles from './compare-ndc-content-overview-styles.scss';
 
 class CompareNDCContentOverview extends PureComponent {
@@ -24,7 +24,7 @@ class CompareNDCContentOverview extends PureComponent {
               <div className={cx(styles.countryHeader)}>
                 <div
                   className={styles.dot}
-                  style={{ backgroundColor: COUNTRY_COMPARE_COLORS[i] }}
+                  style={{ backgroundColor: CHART_COLORS[i] }}
                 />
                 <div className={styles.countryName}>{summary.name}</div>
               </div>

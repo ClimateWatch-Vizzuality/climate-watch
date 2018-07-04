@@ -10,7 +10,18 @@ export default [
     component: () => createElement(CountryNdcOverview, { textColumns: true }),
     exact: true,
     anchor: true,
-    label: 'Overview'
+    label: 'Summary'
+  },
+  {
+    path: '/ndcs/country/:iso/overview',
+    component: () =>
+      createElement(NDCCountryAccordion, {
+        category: 'overview'
+      }),
+    exact: true,
+    anchor: true,
+    label: 'Overview',
+    param: 'overview'
   },
   {
     path: '/ndcs/country/:iso/mitigation',

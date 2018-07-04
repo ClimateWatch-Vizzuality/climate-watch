@@ -11,13 +11,13 @@ import reducers, {
 class EspIndicatorsTrendDataProvider extends PureComponent {
   componentDidMount() {
     const { getIndicatorsTrendData, locationId, scenarioId } = this.props;
-    getIndicatorsTrendData(locationId, scenarioId);
+    getIndicatorsTrendData({ locationId, scenarioId });
   }
 
   componentWillReceiveProps(nextProps) {
     const { getIndicatorsTrendData, locationId, scenarioId } = nextProps;
     if (locationId !== this.props.locationId) {
-      getIndicatorsTrendData(locationId, scenarioId);
+      getIndicatorsTrendData({ locationId, scenarioId });
     }
   }
 
