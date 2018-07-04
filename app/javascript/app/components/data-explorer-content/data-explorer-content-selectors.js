@@ -276,13 +276,12 @@ export const parseExternalParams = createSelector(
         ];
         const labelObject = meta[section][metaMatchingKey].find(
           i =>
-            findEqual(
-              i,
-              possibleLabelFields,
-              parseInt(externalFields[k], 10)
-            ) || findEqual(i, possibleLabelFields, externalFields[k])
+            i.id === parseInt(externalFields[k], 10) ||
+            i.number === externalFields[k]
         );
-        const label = possibleLabelFields.find(f => labelObject[f]);
+        const label = possibleLabelFields.find(
+          f => labelObject && labelObject[f]
+        );
         parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
           labelObject[label];
       }
