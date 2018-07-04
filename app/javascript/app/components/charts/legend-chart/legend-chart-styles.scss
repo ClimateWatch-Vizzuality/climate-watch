@@ -66,6 +66,8 @@ $margin-container: 10px;
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
     overflow: visible;
+    position: relative;
+    height: unset;
   }
 }
 
@@ -77,6 +79,7 @@ $margin-container: 10px;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
+    position: relative;
   }
 }
 

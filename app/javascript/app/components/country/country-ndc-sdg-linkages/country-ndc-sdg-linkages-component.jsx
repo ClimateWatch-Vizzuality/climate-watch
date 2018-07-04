@@ -167,7 +167,8 @@ class CountrySDGLinkages extends PureComponent {
         { type: 'info', onClick: handleInfoClick },
         {
           type: 'share',
-          shareUrl: `/embed/countries/${iso}/ndc-sdg-linkages`
+          shareUrl: `/embed/countries/${iso}/ndc-sdg-linkages`,
+          positionRight: true
         }
       ];
 

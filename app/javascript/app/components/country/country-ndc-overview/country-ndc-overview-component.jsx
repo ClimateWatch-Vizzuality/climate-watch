@@ -25,7 +25,8 @@ class CountryNdcOverview extends PureComponent {
         { type: 'info', onClick: handleInfoClick },
         {
           type: 'share',
-          shareUrl: `/embed/countries/${iso}/ndc-content-overview`
+          shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
+          positionRight: true
         }
       ];
 
