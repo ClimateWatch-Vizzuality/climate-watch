@@ -46,7 +46,7 @@ class InputComponent extends Component {
         [theme.disabled]: disabled,
         [theme.inputFailed]: failed
       }),
-      onChange: e => onChange(e.target.value, id),
+      onChange,
       // onChange,
       // onBlur: () => onBlur(this.state.value),
       disabled,

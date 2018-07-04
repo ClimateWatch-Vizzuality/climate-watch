@@ -8,8 +8,6 @@ import Dropdown from 'components/dropdown';
 import theme from 'styles/themes/input/text-input-theme.scss';
 import styles from './modal-download-styles.scss';
 
-
-
 class ModalDownload extends PureComponent {
   constructor(props) {
     super(props);
@@ -26,11 +24,11 @@ class ModalDownload extends PureComponent {
 
   handleChange = (event, input) => {
     this.setState({ [input]: event.target.value });
-  }
+  };
 
   updateDropdownValue = (valueObject, dropdownId) => {
     this.setState({ [dropdownId]: valueObject });
-  }
+  };
 
   renderForm() {
     const { countries, sectors, isSubmitting, downloadSize } = this.props;
@@ -85,7 +83,8 @@ class ModalDownload extends PureComponent {
             id={'firstName'}
             label="Country"
             options={countries}
-            onValueChange={selected => this.updateDropdownValue(selected, 'country')}
+            onValueChange={selected =>
+              this.updateDropdownValue(selected, 'country')}
             value={this.state.country}
             hideResetButton
             required
@@ -93,11 +92,7 @@ class ModalDownload extends PureComponent {
 
           <label>
             Subscribe to email updates
-            <input
-              name="subscribe"
-              type="checkbox"
-              value="true"
-            />
+            <input name="subscribe" type="checkbox" value="true" />
           </label>
 
           <TextInput
@@ -113,7 +108,8 @@ class ModalDownload extends PureComponent {
             className={styles.dropdown}
             label="Sector"
             options={sectors}
-            onValueChange={selected => this.updateDropdownValue(selected, 'sector')}
+            onValueChange={selected =>
+              this.updateDropdownValue(selected, 'sector')}
             value={this.state.sector}
             hideResetButton
           />
