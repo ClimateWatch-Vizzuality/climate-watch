@@ -9,7 +9,9 @@ import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
-  SOURCE_IPCC_VERSIONS
+  DATA_EXPLORER_SECTION_BASE_URIS,
+  SOURCE_IPCC_VERSIONS,
+  DATA_EXPLORER_EXTERNAL_PREFIX
 } from 'data/constants';
 
 const getSection = state => state.section || null;
@@ -52,6 +54,18 @@ export const getSourceIPCCOptions = createSelector(
   }
 );
 
+const removeFiltersPrefix = (selectedFields, prefix) => {
+  const fieldsWithoutPrefix = {};
+  Object.keys(selectedFields).forEach(k => {
+    const keyWithoutPrefix = k.replace(`${prefix}-`, '');
+    fieldsWithoutPrefix[keyWithoutPrefix] = selectedFields[k];
+  });
+  return fieldsWithoutPrefix;
+};
+
+const findEqual = (parent, children, value) =>
+  children.find(c => parent[c] === value);
+
 export const getFilterQuery = createSelector(
   [state => state.meta, getSearch, getSection],
   (meta, search, section) => {
@@ -64,14 +78,19 @@ export const getFilterQuery = createSelector(
       const parsedKey = key.replace('-', '_');
       const filter =
         metadata[parsedKey] &&
-        metadata[parsedKey].find(
-          option =>
-            option.name === parsedFilters[key] ||
-            option.value === parsedFilters[key] ||
-            option.wri_standard_name === parsedFilters[key] ||
-            option.cw_title === parsedFilters[key] ||
-            option.slug === parsedFilters[key] ||
-            option.number === parsedFilters[key]
+        metadata[parsedKey].find(option =>
+          findEqual(
+            option,
+            [
+              'name',
+              'value',
+              'wri_standard_name',
+              'cw_title',
+              'slug',
+              'number'
+            ],
+            parsedFilters[key]
+          )
         );
       filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
     });
@@ -120,13 +139,7 @@ export const getLink = createSelector(
     }
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
-    const SECTION_BASE_URIS = {
-      'historical-emissions': '/ghg-emissions',
-      'ndc-sdg-linkages': '/ndcs-sdg',
-      'ndc-content': '/ndcs-content',
-      'emission-pathways': '/pathways'
-    };
-    return `${SECTION_BASE_URIS[section]}${urlParameters}`;
+    return `/${DATA_EXPLORER_SECTION_BASE_URIS[section]}${urlParameters}`;
   }
 );
 
@@ -224,15 +237,6 @@ export const parseGroupsInOptions = createSelector(
   }
 );
 
-const removeFiltersPrefix = (selectedFields, prefix) => {
-  const fieldsWithoutPrefix = {};
-  Object.keys(selectedFields).forEach(k => {
-    const keyWithoutPrefix = k.replace(`${prefix}-`, '');
-    fieldsWithoutPrefix[keyWithoutPrefix] = selectedFields[k];
-  });
-  return fieldsWithoutPrefix;
-};
-
 const mergeSourcesAndVersions = filters => {
   const dataSourceFilter = filters['data-sources'];
   const versionFilter = filters.gwps;
@@ -245,19 +249,66 @@ const mergeSourcesAndVersions = filters => {
   return updatedFilters;
 };
 
-const getSelectedFilters = createSelector(
-  [getSearch, getSection, getFilterOptions],
-  (search, section, filterOptions) => {
-    if (!search || !section || !filterOptions) return null;
-    let selectedFields = search;
+export const parseExternalParams = createSelector(
+  [getSearch, getSection, getFilterOptions, state => state.meta],
+  (search, section, filterOptions, meta) => {
+    if (!search || !section || !filterOptions || !meta) return null;
+    const selectedFields = search;
     const selectedKeys = Object.keys(selectedFields).filter(k =>
-      k.startsWith(section)
+      k.startsWith(`${DATA_EXPLORER_EXTERNAL_PREFIX}-${section}`)
     );
-    selectedFields = pick(selectedFields, selectedKeys);
-    const parsedSelectedFilters = mergeSourcesAndVersions(
-      removeFiltersPrefix(selectedFields, section)
-    );
+    if (selectedKeys.length < 1) return null;
+    const externalFields = pick(selectedFields, selectedKeys);
+    const parsedFields = {};
+    Object.keys(externalFields).forEach(k => {
+      const keyWithoutPrefix = k
+        .replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')
+        .replace(`${section}-`, '');
+      const metaMatchingKey = keyWithoutPrefix.replace('-', '_');
+      if (metaMatchingKey !== 'undefined') {
+        const possibleLabelFields = [
+          'name',
+          'value',
+          'wri_standard_name',
+          'slug',
+          'number',
+          'cw_title'
+        ];
+        const labelObject = meta[section][metaMatchingKey].find(
+          i =>
+            findEqual(
+              i,
+              possibleLabelFields,
+              parseInt(externalFields[k], 10)
+            ) || findEqual(i, possibleLabelFields, externalFields[k])
+        );
+        const label = possibleLabelFields.find(f => labelObject[f]);
+        parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
+          labelObject[label];
+      }
+    });
+    return parsedFields;
+  }
+);
 
+const getSelectedFilters = createSelector(
+  [
+    getSearch,
+    getSection,
+    getFilterOptions,
+    state => state.meta,
+    parseExternalParams
+  ],
+  (search, section, filterOptions, meta) => {
+    if (!search || !section || !filterOptions || !meta) return null;
+    const selectedFields = search;
+    const nonExternalKeys = Object.keys(selectedFields).filter(
+      k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
+    );
+    const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
+    const sectionRelatedFields = pick(selectedFields, selectedKeys);
+    const parsedRegular = removeFiltersPrefix(sectionRelatedFields, section);
+    const parsedSelectedFilters = mergeSourcesAndVersions({ ...parsedRegular });
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       selectedFilterObjects[filterKey] = filterOptions[filterKey].find(

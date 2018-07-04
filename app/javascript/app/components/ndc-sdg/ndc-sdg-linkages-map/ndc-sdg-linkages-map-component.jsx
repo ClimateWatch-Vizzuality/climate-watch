@@ -58,6 +58,7 @@ class NdcSdgLinkagesMap extends PureComponent {
     this.setState({ country: country.properties });
 
   render() {
+    const { search } = this.props;
     return (
       <TabletLandscape>
         {isTablet => (
@@ -85,7 +86,9 @@ class NdcSdgLinkagesMap extends PureComponent {
                       positionRight: true
                     },
                     {
-                      type: 'download'
+                      type: 'download',
+                      section: 'ndcs-sdg',
+                      filters: search
                     },
                     {
                       type: 'addToUser'
@@ -129,7 +132,8 @@ NdcSdgLinkagesMap.propTypes = {
   onCountryClick: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   className: PropTypes.string,
-  goalSelected: PropTypes.string
+  goalSelected: PropTypes.string,
+  search: PropTypes.object
 };
 
 export default NdcSdgLinkagesMap;

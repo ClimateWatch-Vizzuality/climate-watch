@@ -4,10 +4,13 @@ import { PureComponent, createElement } from 'react';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import qs from 'query-string';
+import isEmpty from 'lodash/isEmpty';
+import pick from 'lodash/pick';
 import {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
-  DATA_EXPLORER_FILTERS
+  DATA_EXPLORER_FILTERS,
+  DATA_EXPLORER_EXTERNAL_PREFIX
 } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
@@ -16,6 +19,7 @@ import {
   parseGroupsInOptions,
   getSelectedOptions,
   parseFilterQuery,
+  parseExternalParams,
   getLink
 } from './data-explorer-content-selectors';
 
@@ -54,11 +58,35 @@ const mapStateToProps = (state, { section, location }) => {
     selectedOptions: getSelectedOptions(dataState),
     anchorLinks,
     query: location.search,
-    filterQuery
+    filterQuery,
+    parsedExternalParams: parseExternalParams(dataState),
+    search
   };
 };
 
 class DataExplorerContentContainer extends PureComponent {
+  componentDidUpdate(prevProps) {
+    const { parsedExternalParams, search } = this.props;
+    if (
+      prevProps.parsedExternalParams !== parsedExternalParams &&
+      !isEmpty(parsedExternalParams)
+    ) {
+      const validKeys = Object.keys(search).filter(
+        k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
+      );
+      const validParams = {
+        ...pick(search, validKeys),
+        ...parsedExternalParams
+      };
+
+      const paramsToUpdate = Object.keys(validParams).map(key => ({
+        name: key,
+        value: validParams[key]
+      }));
+      this.updateUrlParam(paramsToUpdate, true);
+    }
+  }
+
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source_IPCC_version';
@@ -97,8 +125,10 @@ class DataExplorerContentContainer extends PureComponent {
 
 DataExplorerContentContainer.propTypes = {
   section: PropTypes.string,
+  parsedExternalParams: PropTypes.object,
   history: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  search: PropTypes.object
 };
 
 export default withRouter(

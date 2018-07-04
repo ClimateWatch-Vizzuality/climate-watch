@@ -323,6 +323,13 @@ export const DATA_EXPLORER_FILTERS = {
   ]
 };
 
+export const DATA_EXPLORER_SECTION_BASE_URIS = {
+  'historical-emissions': 'ghg-emissions',
+  'ndc-sdg-linkages': 'ndcs-sdg',
+  'ndc-content': 'ndcs-content',
+  'emission-pathways': 'pathways'
+};
+export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
 export const SOURCE_IPCC_VERSIONS = [
   { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
   { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
@@ -361,5 +368,7 @@ export default {
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   SOURCE_IPCC_VERSIONS,
-  USERS_PROFESIONAL_SECTORS
+  USERS_PROFESIONAL_SECTORS,
+  DATA_EXPLORER_SECTION_BASE_URIS,
+  DATA_EXPLORER_EXTERNAL_PREFIX
 };

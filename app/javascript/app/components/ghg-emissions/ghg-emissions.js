@@ -63,7 +63,8 @@ const mapStateToProps = (state, { location }) => {
     activeFilterRegion: getActiveFilterRegion(ghg),
     providerFilters: getProviderFilters(ghg),
     loading: state.ghgEmissionsMeta.loading || state.emissions.loading,
-    groups
+    groups,
+    search
   };
 };
 
