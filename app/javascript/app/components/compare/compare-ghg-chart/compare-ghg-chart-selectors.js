@@ -19,7 +19,9 @@ import {
   getYColumnValue,
   sortEmissionsByValue,
   getTooltipConfig,
-  getThemeConfig
+  getThemeConfig,
+  setXAxisDomain,
+  setYAxisDomain
 } from 'utils/graphs';
 import {
   parseSelectedLocations,
@@ -60,6 +62,11 @@ const parseLocationCalculationData = createSelector(
 );
 // data for the graph
 const getData = state => state.data || [];
+
+export const getChartDomain = createSelector(getData, data => {
+  if (!data) return null;
+  return { x: setXAxisDomain(), y: setYAxisDomain() };
+});
 
 // Sources selectors
 export const getCalculationSelected = createSelector(
@@ -338,5 +345,6 @@ export default {
   getLocationsFilter,
   getFiltersSelected,
   getChartData,
+  getChartDomain,
   getChartConfig
 };
