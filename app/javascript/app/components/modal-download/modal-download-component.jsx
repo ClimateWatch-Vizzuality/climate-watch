@@ -4,6 +4,7 @@ import Modal from 'components/modal/modal-component';
 import ModalHeader from 'components/modal/modal-header-component';
 import TextInput from 'components/text-input';
 import Dropdown from 'components/dropdown';
+import Button from 'components/button';
 
 import theme from 'styles/themes/input/text-input-theme.scss';
 import styles from './modal-download-styles.scss';
@@ -40,14 +41,14 @@ class ModalDownload extends PureComponent {
 
     return (
       <div>
-        <p>
+        <p className={styles.introText}>
           Climate Watch has an open data commitment and intends to provide
           information free of constraints and restrictions on use. However, to
           help improve Climate Watch we request that you provide some feedback
           about how you intend to use the data.
         </p>
 
-        <form onSubmit={onSubmit}>
+        <form className={styles.form}>
           <TextInput
             className={styles.input}
             theme={theme}
@@ -67,16 +68,26 @@ class ModalDownload extends PureComponent {
             onChange={e => this.handleChange(e, 'lastName')}
             required
           />
-
-          <TextInput
-            className={styles.input}
-            theme={theme}
-            inputType="email"
-            label={'Email'}
-            value={this.state.email}
-            onChange={e => this.handleChange(e, 'email')}
-            required
-          />
+          <div>
+            <TextInput
+              className={styles.input}
+              theme={theme}
+              inputType="email"
+              label={'Email'}
+              value={this.state.email}
+              onChange={e => this.handleChange(e, 'email')}
+              required
+            />
+            <label htmlFor="subscription">
+              Subscribe to email updates
+              <input
+                name="subscribe"
+                type="checkbox"
+                value="true"
+                id="subscription"
+              />
+            </label>
+          </div>
 
           <Dropdown
             className={styles.dropdown}
@@ -89,11 +100,6 @@ class ModalDownload extends PureComponent {
             hideResetButton
             required
           />
-
-          <label>
-            Subscribe to email updates
-            <input name="subscribe" type="checkbox" value="true" />
-          </label>
 
           <TextInput
             className={styles.input}
@@ -122,18 +128,37 @@ class ModalDownload extends PureComponent {
             value={this.state.explanation}
             onChange={e => this.handleChange(e, 'explanation')}
           />
-
-          <input
-            type="submit"
-            value={`Download ${downloadSize}`}
-            disabled={isSubmitting}
-          />
-
-          <p>
-            These data carry the Creative Commons CC BY 4.0 license. By clicking
-            Download you agree to our Data privacy policy.
-          </p>
         </form>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          onClick={onSubmit}
+          color="yellow"
+          className={styles.downloadButton}
+        >
+          {`Download (${downloadSize})`}
+        </Button>
+        <p className={styles.licenseAndPolicy}>
+          These data carry the{' '}
+          <a
+            href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Creative Commons CC BY 4.0
+          </a>{' '}
+          license.
+        </p>
+        <p className={styles.licenseAndPolicy}>
+          By clicking Download you agree to our{' '}
+          <a
+            href="http://www.wri.org/about/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Data privacy policy.
+          </a>
+        </p>
       </div>
     );
   }

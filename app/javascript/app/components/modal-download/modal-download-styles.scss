@@ -1,1 +1,33 @@
 @import '~styles/layout.scss';
+
+.introText {
+  margin-bottom: $grid-gap;
+  color: $theme-color;
+  font-size: $font-size-sm;
+  line-height: $line-height-medium;
+}
+
+.form {
+  @include columns((6,6,6,6,6,6,12));
+
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'), $gutters: 60px);
+  }
+}
+
+.downloadButton {
+  width: 270px;
+  margin: 0 auto $grid-gap;
+}
+
+.licenseAndPolicy {
+  font-size: $font-size-sm;
+  line-height: $line-height-medium;
+  color: $dark-gray;
+
+  > a {
+    font-size: $font-size-sm;
+    color: $dark-gray;
+    border-bottom: 1px solid $theme-secondary;
+  }
+}
