@@ -14,4 +14,12 @@ RSpec.shared_context 'NDC sectors' do
       name: 'Vehicle Fleet'
     )
   }
+
+  let!(:aviation) {
+    FactoryBot.create(
+      :indc_sector,
+      parent: transport,
+      name: 'Aviation'
+    )
+  }
 end

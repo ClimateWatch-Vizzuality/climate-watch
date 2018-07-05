@@ -31,7 +31,16 @@ RSpec.shared_context 'NDC categories' do
       :indc_category,
       parent: sectoral_information,
       slug: 'sectoral_plans',
-      name: 'Sectoral Plans'
+      name: 'Sectoral Mitigation Plans'
+    )
+  }
+
+  let!(:sectoral_targets) {
+    FactoryBot.create(
+      :indc_category,
+      parent: sectoral_information,
+      slug: 'sectoral_targets',
+      name: 'Sectoral Mitigation Targets'
     )
   }
 end
