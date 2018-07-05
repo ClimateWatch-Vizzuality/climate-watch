@@ -69,6 +69,12 @@ const mapStateToProps = (state, { location }) => {
 };
 
 class GhgEmissionsContainer extends PureComponent {
+  componentDidUpdate() {
+    const { search, sourceSelected, versionSelected } = this.props;
+    if (!search.source && sourceSelected) { this.updateUrlParam({ name: 'source', value: sourceSelected.value }); }
+    if (!search.version && versionSelected) { this.updateUrlParam({ name: 'version', value: versionSelected.value }); }
+  }
+
   handleSourceChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
     ReactGA.event({
@@ -169,7 +175,8 @@ GhgEmissionsContainer.propTypes = {
   sourceSelected: PropTypes.object,
   versionSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
-  filtersSelected: PropTypes.array
+  filtersSelected: PropTypes.array,
+  search: PropTypes.object
 };
 
 GhgEmissionsContainer.defaultProps = {
