@@ -180,7 +180,7 @@ CompareGhgChart.propTypes = {
   providerFilters: PropTypes.object,
   selectedLocations: PropTypes.array,
   data: PropTypes.array,
-  domain: PropTypes.array,
+  domain: PropTypes.object,
   config: PropTypes.object,
   calculationOptions: PropTypes.array,
   calculationSelected: PropTypes.object,
