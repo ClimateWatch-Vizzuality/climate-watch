@@ -8,6 +8,7 @@ RSpec.shared_context 'NDC values' do
     FactoryBot.create(
       :indc_value,
       indicator: ghg_target_type,
+      sector: aviation,
       label: baseline_scenario_target,
       location: spain,
       value: 'Baseline scenario target'

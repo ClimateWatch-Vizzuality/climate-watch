@@ -96,7 +96,7 @@ module Api
             )
           end
           @query = @query.where(label_id: @label_ids) if @label_ids
-          @query = @query.where(sector_id: @sector_ids) if @sector_ids
+          apply_sector_filter
         end
 
         def apply_location_filter
@@ -104,6 +104,19 @@ module Api
           @query = @query.where(
             'locations.iso_code3' => @countries
           )
+        end
+
+        def apply_sector_filter
+          return unless @sector_ids
+          top_level_sector_ids = ::Indc::Sector.
+            where(parent_id: nil, id: @sector_ids).
+            pluck(:id)
+          subsector_ids = @sector_ids +
+            ::Indc::Sector.where(
+              parent_id: top_level_sector_ids
+            ).pluck(:id)
+
+          @query = @query.where(sector_id: subsector_ids)
         end
       end
     end
