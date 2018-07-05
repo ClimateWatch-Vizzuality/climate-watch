@@ -15,7 +15,8 @@ import {
   getMethodology,
   parseGroupsInOptions,
   getSelectedOptions,
-  getFilterQuery
+  getFilterQuery,
+  getPathwaysMetodology
 } from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
@@ -48,9 +49,13 @@ const mapStateToProps = (state, { section, location }) => {
   const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
     section
   ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
+  const meta =
+    section === 'emission-pathways'
+      ? getPathwaysMetodology(dataState)
+      : getMethodology(dataState);
   return {
     data: parseData(dataState),
-    meta: getMethodology(dataState),
+    meta,
     metadataSection: !!location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
     loadingMeta: state.dataExplorer && state.dataExplorer.loadingMeta,

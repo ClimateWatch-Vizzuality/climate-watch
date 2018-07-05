@@ -9,7 +9,8 @@ import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
-  SOURCE_IPCC_VERSIONS
+  SOURCE_IPCC_VERSIONS,
+  ESP_BLACKLIST
 } from 'data/constants';
 
 const getSection = state => state.section || null;
@@ -226,15 +227,27 @@ export const getMethodology = createSelector(
   [state => state.meta, getSection, getSelectedFilters],
   (meta, section, selectedfilters) => {
     const sectionHasSources = section === 'historical-emissions';
+    const emissionPathwaysSection = section === 'emission-pathways';
     if (
       !meta ||
       isEmpty(meta) ||
       !section ||
       (sectionHasSources &&
-        (isEmpty(selectedfilters) || !selectedfilters.source))
+        (isEmpty(selectedfilters) || !selectedfilters.source)) ||
+      (emissionPathwaysSection &&
+        (isEmpty(selectedfilters) ||
+          (!selectedfilters.indicators &&
+            !selectedfilters.models &&
+            !selectedfilters.scenarios)))
     ) {
       return null;
     }
+
+    const { models, scenarios, indicators } = selectedfilters;
+    if (emissionPathwaysSection) {
+      return [models, scenarios, indicators].filter(m => m);
+    }
+
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
@@ -284,3 +297,47 @@ export const parseData = createSelector([getData], data => {
   );
   return updatedData.map(d => pick(d, whiteList));
 });
+
+// Pathways Modal Data
+
+const getModelSelectedMetadata = createSelector(
+  [getSelectedFilters, state => state.meta],
+  (filters, meta) => {
+    if (!filters || !filters.models || !meta) return null;
+    const metadata = meta['emission-pathways'];
+    if (!metadata || !metadata.models) return null;
+    return metadata.models.find(m => filters.models.id === m.id);
+  }
+);
+
+const addLinktoModelSelectedMetadata = createSelector(
+  [getModelSelectedMetadata],
+  model => {
+    if (!model) return null;
+    return {
+      ...model,
+      Link: `/pathways/models/${model.id}`
+    };
+  }
+);
+
+export const filterModelsByBlackList = createSelector(
+  [addLinktoModelSelectedMetadata],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data),
+      n => ESP_BLACKLIST.models.indexOf(n) === -1
+    );
+    return pick(data, whiteList);
+  }
+);
+
+export const getPathwaysMetodology = createSelector(
+  [
+    filterModelsByBlackList
+    // getScenariosSelectedMetadata,
+    // parseObjectsInIndicators
+  ],
+  model => [model].filter(m => m)
+);
