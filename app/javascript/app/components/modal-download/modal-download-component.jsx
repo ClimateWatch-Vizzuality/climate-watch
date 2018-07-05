@@ -5,6 +5,7 @@ import ModalHeader from 'components/modal/modal-header-component';
 import TextInput from 'components/text-input';
 import Dropdown from 'components/dropdown';
 import Button from 'components/button';
+import CheckInput from 'components/check-input';
 
 import theme from 'styles/themes/input/text-input-theme.scss';
 import styles from './modal-download-styles.scss';
@@ -19,12 +20,17 @@ class ModalDownload extends PureComponent {
       organization: '',
       sector: {},
       country: {},
-      explanation: ''
+      explanation: '',
+      subscription: true
     };
   }
 
   handleChange = (event, input) => {
     this.setState({ [input]: event.target.value });
+  };
+
+  handleCheckOnChange = (event, input) => {
+    this.setState({ [input]: event.target.checked });
   };
 
   updateDropdownValue = (valueObject, dropdownId) => {
@@ -78,15 +84,13 @@ class ModalDownload extends PureComponent {
               onChange={e => this.handleChange(e, 'email')}
               required
             />
-            <label htmlFor="subscription">
-              Subscribe to email updates
-              <input
-                name="subscribe"
-                type="checkbox"
-                value="true"
-                id="subscription"
-              />
-            </label>
+            <CheckInput
+              className={styles.checkbox}
+              checked={this.state.subscription}
+              label={'Subscribe to email updates'}
+              onChange={e => this.handleCheckOnChange(e, 'subscription')}
+              toggleFirst
+            />
           </div>
 
           <Dropdown
