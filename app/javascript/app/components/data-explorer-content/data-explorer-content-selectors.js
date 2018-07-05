@@ -67,13 +67,15 @@ export const getFilterQuery = createSelector(
         metadata[parsedKey].find(
           option =>
             option.name === parsedFilters[key] ||
+            option.full_name === parsedFilters[key] ||
             option.value === parsedFilters[key] ||
             option.wri_standard_name === parsedFilters[key] ||
             option.cw_title === parsedFilters[key] ||
             option.slug === parsedFilters[key] ||
             option.number === parsedFilters[key]
         );
-      filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
+      filterIds[parsedKey] =
+        filter && (filter.iso_code || filter.id || filter.iso_code3);
     });
     const filterQuery = qs.stringify(filterIds);
     return filterQuery && parseQuery(filterQuery);
@@ -106,11 +108,13 @@ export const getFilterOptions = createSelector(
           const slug =
             option.slug ||
             option.name ||
+            option.full_name ||
             option.value ||
             option.wri_standard_name ||
             option.number;
           let label =
             option.name ||
+            option.full_name ||
             option.value ||
             option.wri_standard_name ||
             option.cw_title ||
@@ -157,7 +161,13 @@ export const parseGroupsInOptions = createSelector(
   [getFilterOptions, getSection],
   (options, section) => {
     const MULTIPLE_LEVEL_SECTIONS = { 'ndc-content': ['sectors'] };
-    if (!options || !section || MULTIPLE_LEVEL_SECTIONS[section] === undefined) { return options; }
+    if (
+      !options ||
+      !section ||
+      MULTIPLE_LEVEL_SECTIONS[section] === undefined
+    ) {
+      return options;
+    }
     const updatedOptions = options;
     Object.keys(options).forEach(key => {
       if (MULTIPLE_LEVEL_SECTIONS[section].includes(key)) {
@@ -244,7 +254,8 @@ export const getSelectedOptions = createSelector(
       selectedOptions[key] = {
         value: selectedFields[key].label || selectedFields[key].slug,
         label: selectedFields[key].label,
-        id: selectedFields[key].id ||
+        id: selectedFields[key].iso_code ||
+        selectedFields[key].id ||
         selectedFields[key].iso_code3 || [
           selectedFields[key].source_id,
           selectedFields[key].version_id
