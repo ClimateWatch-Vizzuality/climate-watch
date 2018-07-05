@@ -112,7 +112,7 @@ function setBuffer(min) {
 }
 
 export function setXAxisDomain() {
-  return ['dataMin', 'dataMax'];
+  return ['auto', 'auto'];
 }
 
 export function getCustomTicks(
