@@ -90,13 +90,9 @@ module Api
             )
           end
           @query = @query.where(indicator_id: @indicator_ids) if @indicator_ids
-          if @category_ids
-            @query = @query.where(
-              'indc_indicators_categories.category_id' => @category_ids
-            )
-          end
           @query = @query.where(label_id: @label_ids) if @label_ids
           apply_sector_filter
+          apply_category_filter
         end
 
         def apply_location_filter
@@ -117,6 +113,21 @@ module Api
             ).pluck(:id)
 
           @query = @query.where(sector_id: subsector_ids)
+        end
+
+        def apply_category_filter
+          return unless @category_ids
+          top_level_category_ids = ::Indc::Category.
+            where(parent_id: nil, id: @category_ids).
+            pluck(:id)
+          subcategory_ids = @category_ids +
+            ::Indc::Category.where(
+              parent_id: top_level_category_ids
+            ).pluck(:id)
+
+          @query = @query.where(
+            'indc_indicators_categories.category_id' => subcategory_ids
+          )
         end
       end
     end

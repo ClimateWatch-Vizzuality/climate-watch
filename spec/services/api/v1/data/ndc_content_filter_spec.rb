@@ -8,12 +8,26 @@ RSpec.describe Api::V1::Data::NdcContentFilter do
       filter = Api::V1::Data::NdcContentFilter.new(
         sector_ids: [vehicle_fleet.id]
       )
-      expect(filter.call.length).to eq(1)
+      expect(filter.call.length).to eq(2)
     end
 
     it 'filters by top level sector' do
       filter = Api::V1::Data::NdcContentFilter.new(
         sector_ids: [transport.id]
+      )
+      expect(filter.call.length).to eq(3)
+    end
+
+    it 'filters by subcategory' do
+      filter = Api::V1::Data::NdcContentFilter.new(
+        category_ids: [sectoral_plans.id]
+      )
+      expect(filter.call.length).to eq(1)
+    end
+
+    it 'filters by top level category' do
+      filter = Api::V1::Data::NdcContentFilter.new(
+        category_ids: [sectoral_information.id]
       )
       expect(filter.call.length).to eq(2)
     end
