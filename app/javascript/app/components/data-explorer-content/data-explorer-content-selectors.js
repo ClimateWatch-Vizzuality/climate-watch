@@ -300,6 +300,25 @@ export const parseData = createSelector([getData], data => {
 
 // Pathways Modal Data
 
+const getScenarioSelectedMetadata = createSelector(
+  [getSelectedFilters, state => state.meta],
+  (filters, meta) => {
+    if (!filters || !filters.scenarios || !meta) return null;
+    const metadata = meta['emission-pathways'];
+    if (!metadata || !metadata.scenarios) return null;
+    const scenario = metadata.scenarios.find(
+      m => filters.scenarios.id === m.id
+    );
+    return (
+      scenario && {
+        name: scenario.name,
+        description: scenario.description,
+        Link: `/pathways/scenarios/${scenario.id}`
+      }
+    );
+  }
+);
+
 const getModelSelectedMetadata = createSelector(
   [getSelectedFilters, state => state.meta],
   (filters, meta) => {
@@ -307,6 +326,16 @@ const getModelSelectedMetadata = createSelector(
     const metadata = meta['emission-pathways'];
     if (!metadata || !metadata.models) return null;
     return metadata.models.find(m => filters.models.id === m.id);
+  }
+);
+
+export const getIndicatorSelectedMetadata = createSelector(
+  [getSelectedFilters, state => state.meta],
+  (filters, meta) => {
+    if (!filters || !filters.indicators || !meta) return null;
+    const metadata = meta['emission-pathways'];
+    if (!metadata || !metadata.indicators) return null;
+    return metadata.indicators.find(m => filters.indicators.id === m.id);
   }
 );
 
@@ -333,11 +362,43 @@ export const filterModelsByBlackList = createSelector(
   }
 );
 
+const filterIndicatorsByBlackList = createSelector(
+  [getIndicatorSelectedMetadata],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data),
+      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
+    );
+    return pick(data, whiteList);
+  }
+);
+
+export const parseObjectsInIndicators = createSelector(
+  [filterIndicatorsByBlackList],
+  data => {
+    if (isEmpty(data)) return null;
+    const parsedData = {};
+    Object.keys(data).forEach(key => {
+      let fieldData = data[key];
+      if (
+        fieldData &&
+        typeof fieldData !== 'string' &&
+        typeof fieldData !== 'number'
+      ) {
+        fieldData = fieldData.name;
+      }
+      parsedData[key] = fieldData;
+    });
+    return parsedData;
+  }
+);
+
 export const getPathwaysMetodology = createSelector(
   [
-    filterModelsByBlackList
-    // getScenariosSelectedMetadata,
-    // parseObjectsInIndicators
+    filterModelsByBlackList,
+    getScenarioSelectedMetadata,
+    parseObjectsInIndicators
   ],
-  model => [model].filter(m => m)
+  (model, scenario, indicator) => [model, scenario, indicator].filter(m => m)
 );

@@ -44,7 +44,7 @@ class DataExplorerContent extends PureComponent {
     return meta && meta.length > 0 ? (
       meta.map((m, i) => (
         <MetadataText
-          key={m.technical_title || m.full_name}
+          key={m.technical_title || m.full_name || m.name}
           className={cx(styles.metadataText, { [styles.topPadded]: i > 0 })}
           data={m}
           showAll
