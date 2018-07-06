@@ -30,14 +30,20 @@ class Dropdown extends PureComponent {
       disabled,
       colorDot,
       info,
-      infoText
+      infoText,
+      required,
+      optional
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
+    const hasNotValue = this.props.value && !this.props.value.value;
     return (
       <div
         className={cx(
           styles.dropdownWrapper,
-          { [styles.flex]: colorDot },
+          {
+            [styles.flex]: colorDot,
+            [styles.requiredError]: required && hasNotValue
+          },
           wrapperClassName
         )}
       >
@@ -45,6 +51,11 @@ class Dropdown extends PureComponent {
           <span className={styles.dot} style={{ backgroundColor: colorDot }} />
         )}
         {label && <span className={styles.label}>{label}</span>}
+        {hasNotValue &&
+        required && (
+        <span className={styles.requiredError}>This field is required</span>
+          )}
+        {optional && <span className={styles.optional}>(optional)</span>}
         {info && (
           <div data-tip={infoText} className={styles.infoContainer}>
             <Icon icon={infoIcon} className={styles.infoIcon} />
@@ -92,7 +103,10 @@ Dropdown.propTypes = {
   disabled: PropTypes.bool,
   blueBorder: PropTypes.bool,
   selectorRef: PropTypes.func,
-  colorDot: PropTypes.string
+  colorDot: PropTypes.string,
+  required: PropTypes.bool,
+  optional: PropTypes.bool,
+  value: PropTypes.object
 };
 
 export default themr('Dropdown', styles)(Dropdown);
