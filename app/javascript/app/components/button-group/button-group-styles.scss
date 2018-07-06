@@ -50,4 +50,11 @@
   &.share {
     height: 45px;
   }
+
+  &.download {
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

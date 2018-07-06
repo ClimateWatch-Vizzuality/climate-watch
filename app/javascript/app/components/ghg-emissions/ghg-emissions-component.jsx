@@ -35,7 +35,8 @@ class GhgEmissions extends PureComponent {
       handleFilterChange,
       providerFilters,
       loading,
-      activeFilterRegion
+      activeFilterRegion,
+      search
     } = this.props;
 
     const renderButtonGroup = () => (
@@ -53,7 +54,9 @@ class GhgEmissions extends PureComponent {
             positionRight: true
           },
           {
-            type: 'download'
+            type: 'download',
+            section: 'ghg-emissions',
+            filters: search
           },
           {
             type: 'addToUser'
@@ -141,7 +144,8 @@ GhgEmissions.propTypes = {
   filtersSelected: PropTypes.array,
   handleFilterChange: PropTypes.func.isRequired,
   loading: PropTypes.bool,
-  activeFilterRegion: PropTypes.object
+  activeFilterRegion: PropTypes.object,
+  search: PropTypes.object
 };
 
 export default GhgEmissions;
