@@ -320,6 +320,9 @@ export const SOURCE_IPCC_VERSIONS = [
   { name: 'UNFCCC - AR4', source_slug: 'UNFCCC', version_slug: 'AR4' }
 ];
 
+export const USER_SURVEY_SPREADSHEET_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vRb64x_PcXXmouoteocoSYkS-cC3lbyqbIGghLvUzi3QNQKKoc9sM6fS9LC3LRHjfnoArSeyPsq59Pj/pubhtml';
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -350,5 +353,6 @@ export default {
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   SOURCE_IPCC_VERSIONS,
-  USERS_PROFESIONAL_SECTORS
+  USERS_PROFESIONAL_SECTORS,
+  USER_SURVEY_SPREADSHEET_URL
 };

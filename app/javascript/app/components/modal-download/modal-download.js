@@ -1,15 +1,12 @@
 import { connect } from 'react-redux';
 import { withHandlers } from 'recompose';
-import actions from './modal-download-actions';
 import { USERS_PROFESIONAL_SECTORS as sectors } from 'data/constants';
+import actions from './modal-download-actions';
 import reducers, { initialState } from './modal-download-reducers';
 
 import Component from './modal-download-component';
 
 import { countriesSelector, sectorsSelector } from './modal-download-selectors';
-
-const SPREADSHEET_URL =
-  'https://script.google.com/macros/s/AKfycbynUpTR6EHAcGwfgaI26U3jFH4WKaPNTsR8qZBkSwNs7OCh7TJF/exec';
 
 const mapStateToProps = ({ modalDownload, countries }) => ({
   isOpen: modalDownload.isOpen,
@@ -17,27 +14,25 @@ const mapStateToProps = ({ modalDownload, countries }) => ({
   downloadSize: modalDownload.downloadSize,
   countries: countriesSelector({ countries }),
   sectors: sectorsSelector({ sectors }),
-  isSubmitting: false
+  requiredError: modalDownload.requiredError
 });
 
+const encodeParams = internalState =>
+  Object.keys(internalState).map(
+    key =>
+      (key === 'sector' || key === 'country'
+        ? `${key}=${encodeURIComponent(internalState[key].value)}`
+        : `${key}=${encodeURIComponent(internalState[key])}`)
+  );
 const includeActions = withHandlers({
   onRequestClose: props => () => {
     props.toggleModalDownload({ open: false });
   },
 
-  onSubmit: e => props => {
-    console.log(props);
-    console.log(e);
-
-    // const params = Object.keys(payload).map(
-    //   key => `${key}=${encodeURIComponent(payload[key])}`
-    // );
-
-    // this.setState({ isSubmitting: true });
-
-    // fetch(`${SPREADSHEET_URL}?${params.join('&')}`)
-    //   .then(() => window.location.assign(this.props.downloadUrl))
-    //   .finally(() => this.setState({ isSubmitting: false }));
+  onSubmit: ({ setRequiredFieldsError, saveSurveyData }) => internalState => {
+    setRequiredFieldsError(internalState);
+    const params = encodeParams(internalState);
+    saveSurveyData(params);
   }
 });
 
