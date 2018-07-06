@@ -21,7 +21,7 @@ class ModalDownload extends PureComponent {
       sector: {},
       country: {},
       explanation: '',
-      subscription: true
+      subscription: false
     };
   }
 
@@ -29,7 +29,7 @@ class ModalDownload extends PureComponent {
     this.setState({ [input]: event.target.value });
   };
 
-  handleCheckOnChange = (event, input) => {
+  updateCheckValue = (event, input) => {
     this.setState({ [input]: event.target.checked });
   };
 
@@ -38,7 +38,7 @@ class ModalDownload extends PureComponent {
   };
 
   renderForm() {
-    const { countries, sectors, isSubmitting, downloadSize } = this.props;
+    const { countries, sectors, downloadSize, requiredError } = this.props;
 
     const onSubmit = event => {
       event.preventDefault();
@@ -59,10 +59,10 @@ class ModalDownload extends PureComponent {
             className={styles.input}
             theme={theme}
             label={'First name'}
-            value={this.state.first_name}
+            value={this.state.firstName}
             inputType="text"
             onChange={e => this.handleChange(e, 'firstName')}
-            required
+            required={requiredError}
           />
 
           <TextInput
@@ -72,7 +72,7 @@ class ModalDownload extends PureComponent {
             value={this.state.lastName}
             inputType="text"
             onChange={e => this.handleChange(e, 'lastName')}
-            required
+            required={requiredError}
           />
           <div>
             <TextInput
@@ -82,27 +82,26 @@ class ModalDownload extends PureComponent {
               label={'Email'}
               value={this.state.email}
               onChange={e => this.handleChange(e, 'email')}
-              required
+              optional
             />
             <CheckInput
               className={styles.checkbox}
               checked={this.state.subscription}
               label={'Subscribe to email updates'}
-              onChange={e => this.handleCheckOnChange(e, 'subscription')}
+              onChange={e => this.updateCheckValue(e, 'subscription')}
               toggleFirst
             />
           </div>
 
           <Dropdown
             className={styles.dropdown}
-            id={'firstName'}
             label="Country"
             options={countries}
             onValueChange={selected =>
               this.updateDropdownValue(selected, 'country')}
             value={this.state.country}
             hideResetButton
-            required
+            optional
           />
 
           <TextInput
@@ -112,6 +111,7 @@ class ModalDownload extends PureComponent {
             label={'Organization'}
             value={this.state.organization}
             onChange={e => this.handleChange(e, 'organization')}
+            required={requiredError}
           />
 
           <Dropdown
@@ -122,6 +122,7 @@ class ModalDownload extends PureComponent {
               this.updateDropdownValue(selected, 'sector')}
             value={this.state.sector}
             hideResetButton
+            optional
           />
 
           <TextInput
@@ -131,11 +132,11 @@ class ModalDownload extends PureComponent {
             label={'How do you intend to use the data?'}
             value={this.state.explanation}
             onChange={e => this.handleChange(e, 'explanation')}
+            optional
           />
         </form>
         <Button
           type="submit"
-          disabled={isSubmitting}
           onClick={onSubmit}
           color="yellow"
           className={styles.downloadButton}
@@ -186,9 +187,9 @@ ModalDownload.propTypes = {
   downloadSize: PropTypes.string,
   onRequestClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
   countries: PropTypes.array.isRequired,
-  sectors: PropTypes.array.isRequired
+  sectors: PropTypes.array.isRequired,
+  requiredError: PropTypes.bool
 };
 
 export default ModalDownload;

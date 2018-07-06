@@ -1,15 +1,29 @@
 export const initialState = {
   isOpen: false,
+  requiredError: false,
   downloadUrl: '',
-  size: ''
+  downloadSize: ''
 };
 
 const setModalDownloadParams = (state, { payload }) => ({
   ...state,
   isOpen: payload.open,
   downloadUrl: payload.downloadUrl,
-  size: payload.size
+  downloadSize: payload.size
 });
+
+const setRequiredFieldsError = (state, { payload }) => {
+  let isFieldRequiredEmpty = 0;
+  ['firstName', 'lastName', 'organization'].forEach(f => {
+    if (!payload[f] || payload[f] === '') {
+      isFieldRequiredEmpty += 1;
+    }
+  });
+  return {
+    ...state,
+    requiredError: isFieldRequiredEmpty > 0
+  };
+};
 
 const toggleModalDownload = (state, { payload }) => ({
   ...state,
@@ -18,5 +32,6 @@ const toggleModalDownload = (state, { payload }) => ({
 
 export default {
   setModalDownloadParams,
+  setRequiredFieldsError,
   toggleModalDownload
 };
