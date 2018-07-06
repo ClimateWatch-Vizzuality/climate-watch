@@ -6,17 +6,48 @@ import { toStartCase } from 'utils/utils';
 import { isArray } from 'util';
 import styles from './metadata-text-styles.scss';
 
-const MetadataProp = ({ title, children }) =>
-  children && (
+const MetadataAllProps = ({ data }) =>
+  Object.keys(data)
+    .sort(a => (a === 'logo' ? 1 : -1))
+    .map(
+      key =>
+        data[key] &&
+        !isArray(data[key]) && (
+          <MetadataProp key={key} title={key} data={data[key]} />
+        )
+    );
+
+MetadataAllProps.propTypes = {
+  data: PropTypes.array.isRequired
+};
+
+const urlTitles = ['url', 'Link'];
+const MetadataProp = ({ title, data }) =>
+  data &&
+  (title === 'logo' ? (
+    <img src={`https:${data}`} />
+  ) : (
     <p className={styles.text}>
       <span className={styles.textHighlight}>{toStartCase(title)}: </span>
-      {children}
+      {urlTitles.includes(title) ? (
+        <a className={styles.link} href={data}>
+          {data}
+        </a>
+      ) : (
+        <span
+          className={cx({
+            [styles.empty]: data === 'Not specified'
+          })}
+        >
+          {data}
+        </span>
+      )}
     </p>
-  );
+  ));
 
 MetadataProp.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node
+  title: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired
 };
 
 class MetadataText extends PureComponent {
@@ -37,24 +68,11 @@ class MetadataText extends PureComponent {
       terms_of_service_link
     } = this.props.data;
     const displayDisclaimer = disclaimerConfig && disclaimerConfig.display;
+
     return (
       <div key={data.source} className={cx(styles.textContainer, className)}>
         {showAll ? (
-          Object.keys(data).map(
-            key =>
-              data[key] &&
-              !isArray(data[key]) && (
-                <MetadataProp key={key} title={key}>
-                  <span
-                    className={cx({
-                      [styles.empty]: data[key] === 'Not specified'
-                    })}
-                  >
-                    {data[key]}
-                  </span>
-                </MetadataProp>
-              )
-          )
+          <MetadataAllProps data={data} />
         ) : (
           <div>
             {technical_title && (

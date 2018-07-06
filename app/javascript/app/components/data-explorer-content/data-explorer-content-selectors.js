@@ -243,8 +243,8 @@ export const getMethodology = createSelector(
       return null;
     }
 
-    const { models, scenarios, indicators } = selectedfilters;
     if (emissionPathwaysSection) {
+      const { models, scenarios, indicators } = selectedfilters;
       return [models, scenarios, indicators].filter(m => m);
     }
 
