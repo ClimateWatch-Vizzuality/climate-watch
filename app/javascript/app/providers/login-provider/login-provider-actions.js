@@ -13,6 +13,7 @@ export const updateUserDataUsage = createAction('updateUserDataUsage');
 export const updateUserTester = createAction('updateUserTester');
 export const profileUpdated = createAction('profileUpdated');
 export const profileUpdateError = createAction('profileUpdateError');
+export const updateUserData = createAction('updateUserData');
 
 export const getUser = createThunkAction('getUser', () => (dispatch, state) => {
   const { login } = state();
@@ -29,9 +30,10 @@ export const getUser = createThunkAction('getUser', () => (dispatch, state) => {
 
 export const saveUserData = createThunkAction(
   'saveUserData',
-  () => (dispatch, getState) => {
+  formData => (dispatch, getState) => {
+    dispatch(updateUserData(formData));
     const { login } = getState();
-    CWAPI.patch(`my_cw/users/${login.user.user_id.id}`, login.user.user_id)
+    CWAPI.patch(`my_cw/users/${login.user.user_id.id}`, formData)
       .then(dispatch(profileUpdated()))
       .catch(e => {
         console.warn(e);
