@@ -69,7 +69,8 @@ class CountryGhgEmissions extends PureComponent {
           positionRight: true
         },
         {
-          type: 'download'
+          type: 'download',
+          section: 'ghg-emissions'
         },
         {
           type: 'addToUser'

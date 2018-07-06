@@ -103,6 +103,7 @@ class CompareGhgChart extends PureComponent {
       selectedLocations,
       config,
       data,
+      domain,
       loading,
       needsWBData
     } = this.props;
@@ -150,6 +151,7 @@ class CompareGhgChart extends PureComponent {
                 type="line"
                 config={config}
                 data={data}
+                domain={domain}
                 dataOptions={selectedLocations}
                 dataSelected={selectedLocations}
                 height={isMobile ? 350 : 500}
@@ -178,6 +180,7 @@ CompareGhgChart.propTypes = {
   providerFilters: PropTypes.object,
   selectedLocations: PropTypes.array,
   data: PropTypes.array,
+  domain: PropTypes.object,
   config: PropTypes.object,
   calculationOptions: PropTypes.array,
   calculationSelected: PropTypes.object,
