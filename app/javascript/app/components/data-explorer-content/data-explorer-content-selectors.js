@@ -85,6 +85,7 @@ export const getFilterQuery = createSelector(
             option,
             [
               'name',
+              'full_name',
               'value',
               'wri_standard_name',
               'cw_title',
@@ -127,7 +128,11 @@ export const getLink = createSelector(
     }
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
-    return `/${DATA_EXPLORER_SECTION_BASE_URIS[section]}${urlParameters}`;
+    const subSection =
+      DATA_EXPLORER_SECTION_BASE_URIS[section] === 'pathways' ? '/models' : '';
+    return `/${DATA_EXPLORER_SECTION_BASE_URIS[
+      section
+    ]}${subSection}${urlParameters}`;
   }
 );
 
@@ -259,6 +264,7 @@ export const parseExternalParams = createSelector(
       if (metaMatchingKey !== 'undefined') {
         const possibleLabelFields = [
           'name',
+          'full_name',
           'value',
           'wri_standard_name',
           'slug',

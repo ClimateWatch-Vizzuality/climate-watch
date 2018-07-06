@@ -25,6 +25,7 @@ const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
+  const search = qs.parse(location.search);
   const {
     currentLocation,
     model,
@@ -32,7 +33,7 @@ const mapStateToProps = (state, { location }) => {
     scenario,
     category,
     subcategory
-  } = qs.parse(location.search);
+  } = search;
   const espData = {
     data,
     locations: state.espLocations.data,
@@ -56,6 +57,10 @@ const mapStateToProps = (state, { location }) => {
     'espGraph'
   ];
   const filtersSelected = getFiltersSelected(espData);
+  const downloadFilters = {};
+  ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
+    if (search[f] && search[f] !== '') downloadFilters[f] = search[f];
+  });
   return {
     data: getChartData(espData),
     domain: getChartDomainWithYMargins(espData),
@@ -71,7 +76,8 @@ const mapStateToProps = (state, { location }) => {
     modalData: getModalData(espData),
     model: getModelSelected(espData),
     error: providers.some(p => state[p].error),
-    loading: providers.some(p => state[p].loading) || !filtersSelected.model
+    loading: providers.some(p => state[p].loading) || !filtersSelected.model,
+    downloadFilters
   };
 };
 

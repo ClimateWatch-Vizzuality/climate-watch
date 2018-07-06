@@ -372,7 +372,23 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     }
   },
   'ndc-content': {},
-  'emission-pathways': {}
+  'emission-pathways': {
+    locations: {
+      key: 'currentLocation'
+    },
+    models: {
+      key: 'model'
+    },
+    scenarios: {
+      key: 'scenario'
+    },
+    indicators: {
+      key: 'indicator'
+    },
+    categories: {
+      key: 'category'
+    }
+  }
 };
 export const SOURCE_IPCC_VERSIONS = [
   { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
