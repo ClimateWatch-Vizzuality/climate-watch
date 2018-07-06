@@ -11,7 +11,6 @@ import {
   getYColumnValue,
   getThemeConfig,
   getTooltipConfig,
-  setXAxisDomain,
   setYAxisDomain,
   setChartColors
 } from 'utils/graphs';
@@ -377,7 +376,12 @@ export const getChartData = createSelector([filterDataByIndicator], data => {
 
 export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
-  return { x: setXAxisDomain(), y: setYAxisDomain() };
+  const xValues = data.map(d => d.x);
+
+  return {
+    x: [Math.min(...xValues), Math.max(...xValues)],
+    y: setYAxisDomain()
+  };
 });
 
 export const getChartNeededPrecision = createSelector(

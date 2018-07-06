@@ -110,7 +110,6 @@ export const stackBarChart2Data = (
       },
     xAxis: {
       type: 'number',
-      hide: true,
       tick: !small
     },
     yAxis: small

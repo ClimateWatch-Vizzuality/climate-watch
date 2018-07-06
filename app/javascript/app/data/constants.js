@@ -296,31 +296,20 @@ export const DATA_EXPLORER_SECTION_NAMES = {
 
 export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
-    PIK: 'historical_emissions_pik',
-    CAIT: 'historical_emissions_cait',
-    UNFCCC: 'historical_emissions_unfccc'
+    PIK: ['historical_emissions_pik'],
+    CAIT: ['historical_emissions_cait'],
+    UNFCCC: ['historical_emissions_unfccc']
   },
-  'ndc-sdg-linkages': 'ndc_sdc_all indicators',
-  'ndc-content': { CAIT: 'ndc_cait', WB: 'ndc_wb' },
-  'emission-pathways': null // model, scenario and indicator related metadata
+  'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
+  'ndc-content': ['ndc_cait', 'ndc_wb'],
+  'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': [
-    'source_IPCC_version',
-    'gases',
-    'regions',
-    'sectors'
-  ],
+  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
   'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
   'emission-pathways': [],
-  'ndc-content': [
-    'data_sources',
-    'categories',
-    'indicators',
-    'sectors',
-    'countries'
-  ]
+  'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
 };
 
 export const DATA_EXPLORER_SECTION_BASE_URIS = {
