@@ -27,15 +27,14 @@ class InputComponent extends Component {
     const {
       theme,
       className,
-      failed,
       disabled,
-      // onBlur,
       onChange,
-      // id,
       value,
       placeholder,
       label,
-      inputType
+      inputType,
+      required,
+      optional
     } = this.props;
 
     const inputProps = {
@@ -44,11 +43,9 @@ class InputComponent extends Component {
       },
       className: cx(styles.input, className, theme.input, {
         [theme.disabled]: disabled,
-        [theme.inputFailed]: failed
+        [theme.inputFailed]: required && !value
       }),
       onChange,
-      // onChange,
-      // onBlur: () => onBlur(this.state.value),
       disabled,
       value,
       placeholder
@@ -70,6 +67,11 @@ class InputComponent extends Component {
             {label}
           </label>
         )}
+        {!value &&
+        required && (
+        <span className={theme.requiredError}>This field is required</span>
+          )}
+        {optional && <span className={theme.optional}>(optional)</span>}
         {input}
       </div>
     );
@@ -84,7 +86,8 @@ InputComponent.propTypes = {
   inputType: PropTypes.string,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
-  failed: PropTypes.bool,
+  required: PropTypes.bool,
+  optional: PropTypes.bool,
   disabled: PropTypes.bool,
   theme: PropTypes.object
 };
