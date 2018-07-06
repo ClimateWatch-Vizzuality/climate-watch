@@ -114,7 +114,11 @@ class DataExplorerContent extends PureComponent {
     } = this.props;
     return (
       <div>
-        <DataExplorerProvider section={section} query={filterQuery} />
+        <DataExplorerProvider
+          section={section}
+          query={filterQuery}
+          noFilters={query === ''}
+        />
         <RegionsProvider />
         <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
