@@ -77,6 +77,7 @@ const mapStateToProps = (state, { location }) => {
     model: getModelSelected(espData),
     error: providers.some(p => state[p].error),
     loading: providers.some(p => state[p].loading) || !filtersSelected.model,
+    search,
     downloadFilters
   };
 };
@@ -97,6 +98,11 @@ class EmissionPathwayGraphContainer extends PureComponent {
       const currentLocation = this.props.filtersSelected.location;
       this.props.findAvailableModels(currentLocation.value);
     }
+
+    const { search, filtersSelected } = this.props;
+    ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
+      if (!search[f] && filtersSelected[f]) { this.updateUrlParam({ name: f, value: filtersSelected[f].value }); }
+    });
   }
 
   handleModelChange = model => {
@@ -158,7 +164,8 @@ EmissionPathwayGraphContainer.propTypes = {
   location: PropTypes.object.isRequired,
   filtersSelected: PropTypes.object.isRequired,
   toggleModalOverview: PropTypes.func.isRequired,
-  findAvailableModels: PropTypes.func.isRequired
+  findAvailableModels: PropTypes.func.isRequired,
+  search: PropTypes.object
 };
 
 export { actions, reducers, initialState };
