@@ -13,7 +13,10 @@ import ShareMenu from 'components/share-menu';
 import { Link } from 'react-router-dom';
 import invert from 'lodash/invert';
 import invertBy from 'lodash/invertBy';
-import { DATA_EXPLORER_SECTION_BASE_URIS } from 'data/constants';
+import {
+  DATA_EXPLORER_SECTION_BASE_URIS,
+  DATA_EXPLORER_TO_MODULES_PARAMS
+} from 'data/constants';
 
 import styles from './button-group-styles.scss';
 
@@ -25,21 +28,6 @@ const iconsMap = {
   delete: iconDelete
 };
 const renderButton = buttonConfig => {
-  const DATA_EXPLORER_TO_MODULES_PARAMS = {
-    'historical-emissions': {
-      'data-sources': { key: 'source' },
-      gwps: { key: 'version' }
-    },
-    'ndc-sdg-linkages': {
-      goals: {
-        key: 'goal',
-        idLabel: 'number'
-      }
-    },
-    'ndc-content': {},
-    'emission-pathways': {}
-  };
-
   const section = invert(DATA_EXPLORER_SECTION_BASE_URIS)[buttonConfig.section];
   const parseFilters = filters => {
     const modulesToDataExplorerParamsSchema = invertBy(
@@ -50,7 +38,7 @@ const renderButton = buttonConfig => {
     Object.keys(filters).forEach(key => {
       const parsedKey = `external-${section}-${modulesToDataExplorerParamsSchema[
         key
-      ]}`;
+      ]}`.replace('_', '-');
       parsedFilters[parsedKey] = filters[key];
     });
     return parsedFilters;

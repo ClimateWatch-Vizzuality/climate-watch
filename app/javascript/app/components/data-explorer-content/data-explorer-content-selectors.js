@@ -11,7 +11,8 @@ import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_SECTION_BASE_URIS,
   SOURCE_IPCC_VERSIONS,
-  DATA_EXPLORER_EXTERNAL_PREFIX
+  DATA_EXPLORER_EXTERNAL_PREFIX,
+  DATA_EXPLORER_TO_MODULES_PARAMS
 } from 'data/constants';
 
 const getSection = state => state.section || null;
@@ -108,21 +109,6 @@ export const getLink = createSelector(
   [getFilterQuery, getSection, state => state.meta],
   (filterQuery, section, meta) => {
     if (!section) return null;
-    const DATA_EXPLORER_TO_MODULES_PARAMS = {
-      'historical-emissions': {
-        data_sources: { key: 'source' },
-        gwps: { key: 'version' }
-      },
-      'ndc-sdg-linkages': {
-        goals: {
-          key: 'goal',
-          idLabel: 'number'
-        }
-      },
-      'ndc-content': {},
-      'emission-pathways': {}
-    };
-
     const parsedQuery = {};
     if (filterQuery && !isEmpty(filterQuery)) {
       Object.keys(filterQuery).forEach(key => {
@@ -239,9 +225,10 @@ export const parseGroupsInOptions = createSelector(
 
 const mergeSourcesAndVersions = filters => {
   const dataSourceFilter = filters['data-sources'];
-  const versionFilter = filters.gwps;
+  let versionFilter = filters.gwps;
   const updatedFilters = filters;
   if (dataSourceFilter) {
+    if (dataSourceFilter === 'CAIT') versionFilter = 'AR2'; // Remove when GHG emissions has the correct version options
     updatedFilters.source_IPCC_version = `${dataSourceFilter} - ${versionFilter}`;
     delete updatedFilters['data-sources'];
     delete updatedFilters.gwps;
@@ -306,8 +293,9 @@ const getSelectedFilters = createSelector(
     );
     const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
-    const parsedRegular = removeFiltersPrefix(sectionRelatedFields, section);
-    const parsedSelectedFilters = mergeSourcesAndVersions({ ...parsedRegular });
+    const parsedSelectedFilters = mergeSourcesAndVersions(
+      removeFiltersPrefix(sectionRelatedFields, section)
+    );
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       selectedFilterObjects[filterKey] = filterOptions[filterKey].find(

@@ -330,6 +330,20 @@ export const DATA_EXPLORER_SECTION_BASE_URIS = {
   'emission-pathways': 'pathways'
 };
 export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
+export const DATA_EXPLORER_TO_MODULES_PARAMS = {
+  'historical-emissions': {
+    data_sources: { key: 'source' },
+    gwps: { key: 'version' }
+  },
+  'ndc-sdg-linkages': {
+    goals: {
+      key: 'goal',
+      idLabel: 'number'
+    }
+  },
+  'ndc-content': {},
+  'emission-pathways': {}
+};
 export const SOURCE_IPCC_VERSIONS = [
   { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
   { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
@@ -370,5 +384,6 @@ export default {
   SOURCE_IPCC_VERSIONS,
   USERS_PROFESIONAL_SECTORS,
   DATA_EXPLORER_SECTION_BASE_URIS,
-  DATA_EXPLORER_EXTERNAL_PREFIX
+  DATA_EXPLORER_EXTERNAL_PREFIX,
+  DATA_EXPLORER_TO_MODULES_PARAMS
 };
