@@ -334,11 +334,11 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'emission-pathways': {}
 };
 export const SOURCE_VERSIONS = [
-  { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
-  { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
-  { name: 'CAIT - AR2', source_slug: 'CAIT', version_slug: 'AR2' },
-  { name: 'UNFCCC - AR2', source_slug: 'UNFCCC', version_slug: 'AR2' },
-  { name: 'UNFCCC - AR4', source_slug: 'UNFCCC', version_slug: 'AR4' }
+  { name: 'PIK - AR2', data_source_slug: 'PIK', version_slug: 'AR2' },
+  { name: 'PIK - AR4', data_source_slug: 'PIK', version_slug: 'AR4' },
+  { name: 'CAIT - AR2', data_source_slug: 'CAIT', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR2', data_source_slug: 'UNFCCC', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR4', data_source_slug: 'UNFCCC', version_slug: 'AR4' }
 ];
 
 export default {
