@@ -66,7 +66,7 @@ module Api
             ['historical_emissions_gwps.name', 'gwp'],
             ['historical_emissions_sectors.name', 'sector'],
             ['historical_emissions_gases.name', 'gas'],
-            ["'CO2e'::TEXT", 'unit'],
+            ["'MtCO\u2082e'::TEXT", 'unit'],
             [emissions_select_column, 'emissions']
           ]
         end
