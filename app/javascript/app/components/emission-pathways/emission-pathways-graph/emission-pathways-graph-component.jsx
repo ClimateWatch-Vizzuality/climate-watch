@@ -93,7 +93,8 @@ class EmissionPathwayGraph extends PureComponent {
                       positionRight: true
                     },
                     {
-                      type: 'download'
+                      type: 'download',
+                      section: 'pathways'
                     },
                     {
                       type: 'addToUser'
@@ -186,7 +187,8 @@ class EmissionPathwayGraph extends PureComponent {
                   positionRight: true
                 },
                 {
-                  type: 'download'
+                  type: 'download',
+                  section: 'pathways'
                 },
                 {
                   type: 'addToUser'

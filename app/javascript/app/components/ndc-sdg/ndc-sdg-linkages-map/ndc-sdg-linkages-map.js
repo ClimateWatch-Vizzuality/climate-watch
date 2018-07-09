@@ -14,7 +14,8 @@ import {
 
 const mapStateToProps = (state, { location, goalHover, targetHover }) => {
   const { data: goalsData } = state.ndcSdg;
-  const goalSelected = qs.parse(location.search).goal || '';
+  const search = qs.parse(location.search);
+  const goalSelected = search.goal || '';
   const data = {
     goalsData,
     goalSelected,
@@ -27,7 +28,8 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     goalsData,
     goalSelected,
     goalHover,
-    targetHover
+    targetHover,
+    search
   };
 };
 class NdcSdgLinkagesMapContainer extends PureComponent {

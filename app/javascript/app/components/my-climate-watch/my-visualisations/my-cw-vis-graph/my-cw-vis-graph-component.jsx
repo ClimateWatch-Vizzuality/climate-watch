@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
+import Legend from 'components/my-climate-watch/viz-creator/components/charts/legend';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import {
   chartDataSelector,
@@ -19,14 +20,15 @@ class MyVisGraph extends PureComponent {
     return (
       <div className={cx(styles.visContainer)}>
         <h3 className={styles.visTitle}>{data.title}</h3>
-        {datasets && (
+        {datasets && [
           <RenderChart
             className={styles.vizChartContainer}
             chart={chart}
             config={chartData}
             height={360}
-          />
-        )}
+          />,
+          <Legend key="legend" theme={styles} data={chartData.legend} />
+        ]}
         <div className={styles.visDescription}>{data.description}</div>
       </div>
     );

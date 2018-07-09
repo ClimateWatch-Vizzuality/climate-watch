@@ -40,7 +40,8 @@ const renderButtonGroup = clickHandler => (
         positionRight: true
       },
       {
-        type: 'download'
+        type: 'download',
+        section: 'ndcs-content'
       },
       {
         type: 'addToUser'
