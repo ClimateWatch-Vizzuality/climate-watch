@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import { USER_SURVEY_SPREADSHEET_URL } from 'data/constants';
+
+const USER_SURVEY_SPREADSHEET_URL = process.env.USER_SURVEY_SPREADSHEET_URL;
 
 const setModalDownloadParams = createAction('setModalDownloadParams');
 const setRequiredFieldsError = createAction('setRequiredFieldsError');
