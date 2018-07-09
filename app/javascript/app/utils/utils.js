@@ -179,6 +179,9 @@ export const replaceAll = (text, replacements) => {
   return updatedText;
 };
 
+export const findEqual = (parent, children, value) =>
+  children.find(c => parent[c] === value);
+
 export default {
   compareIndexByKey,
   deburrUpper,
@@ -189,5 +192,6 @@ export default {
   toStartCase,
   wordWrap,
   parseLinkHeader,
-  replaceAll
+  replaceAll,
+  findEqual
 };

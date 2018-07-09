@@ -4,13 +4,14 @@ import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import qs from 'query-string';
 import { parseQuery } from 'utils/data-explorer';
+import { findEqual } from 'utils/utils';
 import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
+  SOURCE_VERSIONS,
   DATA_EXPLORER_SECTION_BASE_URIS,
-  SOURCE_IPCC_VERSIONS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS
 } from 'data/constants';
@@ -28,7 +29,7 @@ export const getData = createSelector(
   }
 );
 
-export const getSourceIPCCOptions = createSelector(
+export const getSourceOptions = createSelector(
   [state => state.meta, getSection],
   (meta, section) => {
     if (
@@ -40,7 +41,7 @@ export const getSourceIPCCOptions = createSelector(
     ) {
       return null;
     }
-    return SOURCE_IPCC_VERSIONS.map(option => {
+    return SOURCE_VERSIONS.map(option => {
       const data_source = meta[section].data_sources.find(
         s => s.name === option.source_slug
       );
@@ -63,9 +64,6 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
   });
   return fieldsWithoutPrefix;
 };
-
-const findEqual = (parent, children, value) =>
-  children.find(c => parent[c] === value);
 
 export const getFilterQuery = createSelector(
   [state => state.meta, getSearch, getSection],
@@ -130,13 +128,7 @@ export const getLink = createSelector(
 );
 
 export const getFilterOptions = createSelector(
-  [
-    state => state.meta,
-    getSection,
-    getCountries,
-    getRegions,
-    getSourceIPCCOptions
-  ],
+  [state => state.meta, getSection, getCountries, getRegions, getSourceOptions],
   (meta, section, countries, regions, sourceVersions) => {
     if (!section || isEmpty(meta)) return null;
     const filters = DATA_EXPLORER_FILTERS[section];
