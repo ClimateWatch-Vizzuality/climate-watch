@@ -41,17 +41,15 @@ const renderMyCWLink = location => (
 );
 const ToolsNav = props => (
   <div className={cx(styles.toolsNav, props.className)}>
-    <Desktop>
-      {renderMyCWLink(props.location)}
-      {FEATURE_DATA_EXPLORER ? (
-        renderDataExplorerLink(props.location)
-      ) : (
-        <DownloadMenu
-          className={cx(styles.iconButton, styles.downloadButton)}
-          reverse={props.reverse}
-        />
-      )}
-    </Desktop>
+    {renderMyCWLink(props.location)}
+    {FEATURE_DATA_EXPLORER ? (
+      <Desktop>{renderDataExplorerLink(props.location)}</Desktop>
+    ) : (
+      <DownloadMenu
+        className={cx(styles.iconButton, styles.downloadButton)}
+        reverse={props.reverse}
+      />
+    )}
     <ShareMenu
       className={cx(styles.iconButton, styles.shareButton)}
       reverse={props.reverse}
