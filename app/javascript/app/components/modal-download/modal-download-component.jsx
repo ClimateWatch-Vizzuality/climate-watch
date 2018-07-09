@@ -141,7 +141,7 @@ class ModalDownload extends PureComponent {
           color="yellow"
           className={styles.downloadButton}
         >
-          {`Download (${downloadSize})`}
+          {`Download ${downloadSize ? `(${downloadSize})` : ''}`}
         </Button>
         <p className={styles.licenseAndPolicy}>
           These data carry the{' '}
