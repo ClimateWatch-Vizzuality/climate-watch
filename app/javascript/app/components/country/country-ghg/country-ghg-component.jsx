@@ -15,9 +15,6 @@ import cx from 'classnames';
 import layout from 'styles/layout';
 import styles from './country-ghg-styles.scss';
 
-const FEATURE_QUANTIFICATIONS = process.env.FEATURE_QUANTIFICATIONS === 'true';
-const showDisclaimer = FEATURE_QUANTIFICATIONS && !isPageContained;
-
 class CountryGhg extends PureComponent {
   constructor() {
     super();
@@ -56,10 +53,10 @@ class CountryGhg extends PureComponent {
             )}
           </TabletLandscape>
         </div>
-        {showDisclaimer && (
+        {!isPageContained && (
           <Disclaimer className={cx(styles.disclaimer, layout.content)} />
         )}
-        <ModalMetadata disclaimer={<Disclaimer onlyText />} />
+        <ModalMetadata />
       </div>
     );
   }

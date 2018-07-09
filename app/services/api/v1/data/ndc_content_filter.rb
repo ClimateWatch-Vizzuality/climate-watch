@@ -4,6 +4,7 @@ module Api
       class NdcContentFilter
         # @param params [Hash]
         # @option params [Array<String>] :countries
+        # @option params [Array<Integer>] :source_ids
         # @option params [Array<Integer>] :indicator_ids
         # @option params [Array<Integer>] :category_ids
         # @option params [Array<Integer>] :label_ids
@@ -71,7 +72,7 @@ module Api
         def initialize_filters(params)
           # integer arrays
           [
-            :indicator_ids, :category_ids, :label_ids, :sector_ids
+            :source_ids, :indicator_ids, :category_ids, :label_ids, :sector_ids
           ].map do |param_name|
             if params[param_name].present? && params[param_name].is_a?(Array)
               value = params[param_name].map(&:to_i)
@@ -83,20 +84,49 @@ module Api
 
         def apply_filters
           apply_location_filter
-          @query = @query.where(indicator_id: @indicator_ids) if @indicator_ids
-          if @category_ids
+          if @source_ids
             @query = @query.where(
-              'indc_indicators_categories.category_id' => @category_ids
+              'indc_indicators.source_id' => @source_ids
             )
           end
+          @query = @query.where(indicator_id: @indicator_ids) if @indicator_ids
           @query = @query.where(label_id: @label_ids) if @label_ids
-          @query = @query.where(sector_id: @sector_ids) if @sector_ids
+          apply_sector_filter
+          apply_category_filter
         end
 
         def apply_location_filter
           return unless @countries
           @query = @query.where(
             'locations.iso_code3' => @countries
+          )
+        end
+
+        def apply_sector_filter
+          return unless @sector_ids
+          top_level_sector_ids = ::Indc::Sector.
+            where(parent_id: nil, id: @sector_ids).
+            pluck(:id)
+          subsector_ids = @sector_ids +
+            ::Indc::Sector.where(
+              parent_id: top_level_sector_ids
+            ).pluck(:id)
+
+          @query = @query.where(sector_id: subsector_ids)
+        end
+
+        def apply_category_filter
+          return unless @category_ids
+          top_level_category_ids = ::Indc::Category.
+            where(parent_id: nil, id: @category_ids).
+            pluck(:id)
+          subcategory_ids = @category_ids +
+            ::Indc::Category.where(
+              parent_id: top_level_category_ids
+            ).pluck(:id)
+
+          @query = @query.where(
+            'indc_indicators_categories.category_id' => subcategory_ids
           )
         end
       end

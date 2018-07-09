@@ -6,7 +6,7 @@ const getNdcsSdgsDataReady = createAction('getNdcsSdgsDataReady');
 
 const getNdcsSdgsData = createThunkAction(
   'getNdcsSdgsData',
-  (iso, document) => (dispatch, state) => {
+  ({ iso, document }) => (dispatch, state) => {
     const { ndcsSdgsData } = state();
     if (ndcsSdgsData) {
       dispatch(getNdcsSdgsDataInit());

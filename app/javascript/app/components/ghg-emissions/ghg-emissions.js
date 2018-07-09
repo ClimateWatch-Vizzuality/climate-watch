@@ -10,7 +10,7 @@ import { actions } from 'components/modal-metadata';
 import GhgEmissionsComponent from './ghg-emissions-component';
 import {
   getChartData,
-  getChartXDomain,
+  getChartDomain,
   getChartConfig,
   getSourceOptions,
   getSourceSelected,
@@ -49,7 +49,7 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     data: getChartData(ghg),
-    domain: getChartXDomain(ghg),
+    domain: getChartDomain(ghg),
     config: getChartConfig(ghg),
     sources: getSourceOptions(ghg),
     sourceSelected: getSourceSelected(ghg),
@@ -63,11 +63,18 @@ const mapStateToProps = (state, { location }) => {
     activeFilterRegion: getActiveFilterRegion(ghg),
     providerFilters: getProviderFilters(ghg),
     loading: state.ghgEmissionsMeta.loading || state.emissions.loading,
-    groups
+    groups,
+    search
   };
 };
 
 class GhgEmissionsContainer extends PureComponent {
+  componentDidUpdate() {
+    const { search, sourceSelected, versionSelected } = this.props;
+    if (!search.source && sourceSelected) { this.updateUrlParam({ name: 'source', value: sourceSelected.value }); }
+    if (!search.version && versionSelected) { this.updateUrlParam({ name: 'version', value: versionSelected.value }); }
+  }
+
   handleSourceChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
     ReactGA.event({
@@ -168,7 +175,8 @@ GhgEmissionsContainer.propTypes = {
   sourceSelected: PropTypes.object,
   versionSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
-  filtersSelected: PropTypes.array
+  filtersSelected: PropTypes.array,
+  search: PropTypes.object
 };
 
 GhgEmissionsContainer.defaultProps = {

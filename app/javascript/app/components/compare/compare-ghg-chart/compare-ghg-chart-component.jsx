@@ -20,7 +20,7 @@ import styles from './compare-ghg-chart-styles.scss';
 
 class CompareGhgChart extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
-  renderButtonGroup(reverseDropdown) {
+  renderButtonGroup() {
     return (
       <ButtonGroup
         className={styles.colEnd}
@@ -33,7 +33,7 @@ class CompareGhgChart extends PureComponent {
             type: 'share',
             shareUrl: '/embed/ghg-emissions',
             analyticsGraphName: 'Ghg-emissions',
-            reverseDropdown
+            positionRight: true
           },
           {
             type: 'download'
@@ -46,7 +46,7 @@ class CompareGhgChart extends PureComponent {
     );
   }
 
-  renderActionButtons(reverseDropdown) {
+  renderActionButtons() {
     const {
       handleInfoClick,
       handleAnalyticsClick,
@@ -65,7 +65,7 @@ class CompareGhgChart extends PureComponent {
             type: 'share',
             shareUrl: '/embed/compare-ghg-chart',
             analyticsGraphName: 'Ghg-emissions',
-            reverseDropdown
+            positionRight: true
           },
           {
             type: 'download'
@@ -103,6 +103,7 @@ class CompareGhgChart extends PureComponent {
       selectedLocations,
       config,
       data,
+      domain,
       loading,
       needsWBData
     } = this.props;
@@ -150,6 +151,7 @@ class CompareGhgChart extends PureComponent {
                 type="line"
                 config={config}
                 data={data}
+                domain={domain}
                 dataOptions={selectedLocations}
                 dataSelected={selectedLocations}
                 height={isMobile ? 350 : 500}
@@ -178,6 +180,7 @@ CompareGhgChart.propTypes = {
   providerFilters: PropTypes.object,
   selectedLocations: PropTypes.array,
   data: PropTypes.array,
+  domain: PropTypes.object,
   config: PropTypes.object,
   calculationOptions: PropTypes.array,
   calculationSelected: PropTypes.object,

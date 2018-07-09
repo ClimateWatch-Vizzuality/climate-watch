@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
 import toUpper from 'lodash/toUpper';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 
 const getResultsData = state => state.results || null;
 const getDocQuery = state => state.search.document || null;
@@ -49,6 +50,14 @@ export const getSearchResultsSorted = createSelector(
   }
 );
 
+export function getMessageText(search) {
+  if (isEmpty(search)) {
+    return 'Please select an option from the available filters or type a keyword to search through the NDCs.';
+  }
+  return 'No results for this search.';
+}
+
 export default {
-  getSearchResultsSorted
+  getSearchResultsSorted,
+  getMessageText
 };

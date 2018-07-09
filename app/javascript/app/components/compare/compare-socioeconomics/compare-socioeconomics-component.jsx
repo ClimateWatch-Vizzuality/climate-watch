@@ -4,7 +4,7 @@ import layout from 'styles/layout';
 import Loading from 'components/loading';
 import SocioeconomicsProvider from 'providers/socioeconomics-provider';
 import { TabletPortraitOnly } from 'components/responsive';
-import { COUNTRY_COMPARE_COLORS } from 'data/constants';
+import { CHART_COLORS } from 'data/constants';
 import cx from 'classnames';
 import NoContent from 'components/no-content';
 import styles from './compare-socioeconomics-styles.scss';
@@ -69,7 +69,7 @@ class CompareSocioeconomics extends PureComponent {
               {countrySocioeconomics && countrySocioeconomics.some(c => c) ? (
                 countrySocioeconomics.map((countrySocioeconomicData, i) => (
                   <div
-                    key={`socioeconomic-${i}{${locations[i]}`}
+                    key={`socioeconomic-${i}{${locations[i]}`} //eslint-disable-line
                     className={styles.compareSocioeconomics}
                   >
                     <TabletPortraitOnly>
@@ -78,7 +78,7 @@ class CompareSocioeconomics extends PureComponent {
                           <div
                             className={styles.dot}
                             style={{
-                              backgroundColor: COUNTRY_COMPARE_COLORS[i]
+                              backgroundColor: CHART_COLORS[i]
                             }}
                           />
                           <div className={styles.countryName}>
@@ -93,7 +93,6 @@ class CompareSocioeconomics extends PureComponent {
               ) : (
                 <NoContent
                   message={'No data selected'}
-                  icon
                   className={styles.noData}
                 />
               )}

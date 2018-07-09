@@ -137,6 +137,48 @@ export const wordWrap = (long_string, max_char) => {
   return split_out;
 };
 
+const unquote = value => {
+  if (value.charAt(0) === '"' && value.charAt(value.length - 1) === '"') {
+    return value.substring(1, value.length - 1);
+  }
+  return value;
+};
+
+export const parseLinkHeader = header => {
+  // eslint-disable-next-line no-useless-escape
+  const linkexp = /<[^>]*>\s*(\s*;\s*[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*")))*(,|$)/g;
+  const paramexp = /[^\(\)<>@,;:"\/\[\]\?={} \t]+=(([^\(\)<>@,;:"\/\[\]\?={} \t]+)|("[^"]*"))/g; // eslint-disable-line no-useless-escape
+
+  const matches = header.match(linkexp);
+  const rels = {};
+  for (let i = 0; i < matches.length; i++) {
+    const split = matches[i].split('>');
+    const href = split[0].substring(1);
+    const ps = split[1];
+    const link = {};
+    link.href = href;
+    const s = ps.match(paramexp);
+    for (let j = 0; j < s.length; j++) {
+      const p = s[j];
+      const paramsplit = p.split('=');
+      const name = paramsplit[0];
+      link[name] = unquote(paramsplit[1]);
+    }
+    if (link.rel !== undefined) {
+      rels[link.rel] = link;
+    }
+  }
+  return rels;
+};
+
+export const replaceAll = (text, replacements) => {
+  let updatedText = text;
+  Object.keys(replacements).forEach(x => {
+    updatedText = updatedText.replace(new RegExp(x, 'g'), replacements[x]);
+  });
+  return updatedText;
+};
+
 export default {
   compareIndexByKey,
   deburrUpper,
@@ -145,5 +187,7 @@ export default {
   truncateDecimals,
   isMicrosoftBrowser,
   toStartCase,
-  wordWrap
+  wordWrap,
+  parseLinkHeader,
+  replaceAll
 };

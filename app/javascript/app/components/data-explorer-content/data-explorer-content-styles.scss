@@ -1,1 +1,56 @@
 @import '~styles/layout.scss';
+
+.loader,
+.noData {
+  min-height: 600px;
+}
+
+.button {
+  text-align: center;
+}
+
+.buttons {
+  @include columns(6);
+  @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding * 2);
+
+  @media #{$tablet-landscape} {
+    @include columns(4);
+
+    > :nth-child(2) {
+      @include column-offset(4);
+    }
+  }
+}
+
+.tableContainer {
+  @include xy-gutters($gutter-position: 'bottom');
+}
+
+.filtersContainer {
+  @include columns(6);
+  @include xy-gutters($gutter-position: 'bottom');
+
+  > :nth-child(n+3) {
+    @include xy-gutters($gutter-position: 'top');
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(3);
+
+    > :nth-child(n+3) {
+      @include xy-gutters($gutter-position: 'top', $gutters: 0);
+    }
+
+    > :nth-child(5) {
+      @include xy-gutters($gutter-position: 'top');
+    }
+  }
+}
+
+.metadataText {
+  @include xy-gutters($gutter-position: ('top', 'bottom'));
+
+  &.topPadded {
+    @include xy-gutters($gutter-position: 'top', $gutters: $gutter-padding * 3);
+  }
+}

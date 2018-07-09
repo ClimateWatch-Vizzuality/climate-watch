@@ -6,7 +6,7 @@ module Api
 
         # @param params [Hash]
         # @option params [Array<String>] :regions
-        # @option params [Array<Integer>] :data_source_ids
+        # @option params [Array<Integer>] :source_ids
         # @option params [Array<Integer>] :gwp_ids
         # @option params [Array<Integer>] :gas_ids
         # @option params [Array<Integer>] :sector_ids
@@ -103,8 +103,21 @@ module Api
           @query = @query.where(data_source_id: @source_ids) if @source_ids
           @query = @query.where(gwp_id: @gwp_ids) if @gwp_ids
           @query = @query.where(gas_id: @gas_ids) if @gas_ids
-          @query = @query.where(sector_id: @sector_ids) if @sector_ids
           @query = @query.where(location_id: @location_ids) if @location_ids
+          apply_sector_filter
+        end
+
+        def apply_sector_filter
+          return unless @sector_ids
+          top_level_sector_ids = ::HistoricalEmissions::Sector.
+            where(parent_id: nil, id: @sector_ids).
+            pluck(:id)
+          subsector_ids = @sector_ids +
+            ::HistoricalEmissions::Sector.where(
+              parent_id: top_level_sector_ids
+            ).pluck(:id)
+
+          @query = @query.where(sector_id: subsector_ids)
         end
       end
     end

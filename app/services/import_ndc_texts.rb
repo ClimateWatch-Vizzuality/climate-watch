@@ -13,6 +13,9 @@ class ImportNdcTexts
 
   private
 
+  # rubocop:disable Naming/UncommunicativeMethodParamName
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def import_object(s3, bucket_name, object)
     object.key =~
       /#{CW_FILES_PREFIX}ndc_texts\/(.+?)-(.+?)-(.+?)(-.+?)?(\.md)?\.html/
@@ -45,6 +48,9 @@ class ImportNdcTexts
       translated: translated
     )
   end
+  # rubocop:enable Naming/UncommunicativeMethodParamName
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def html_content_with_resolved_image_paths(html_content)
     begin

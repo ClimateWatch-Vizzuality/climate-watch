@@ -5,18 +5,23 @@ import { withRouter } from 'react-router';
 import isEmpty from 'lodash/isEmpty';
 import ReactGA from 'react-ga';
 
+import { isPageNdcp, isEmbededComponent } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
 
 import CountryNdcOverviewComponent from './country-ndc-overview-component';
 import { getValuesGrouped } from './country-ndc-overview-selectors';
 
-const mapStateToProps = (state, { match }) => {
+const mapStateToProps = (state, { location, match }) => {
   const { iso } = match.params;
   const overviewData =
     state.ndcContentOverview.data && state.ndcContentOverview.data.locations;
   const countryData = overviewData ? overviewData[iso] : null;
+  const isNdcp = isPageNdcp(location);
+  const isEmbed = isEmbededComponent(location);
   return {
     iso,
+    isNdcp,
+    isEmbed,
     values: getValuesGrouped(countryData),
     loading: state.ndcContentOverview.loading,
     sectors: countryData ? countryData.sectors : null,

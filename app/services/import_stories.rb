@@ -28,7 +28,7 @@ class ImportStories
       story = Story.find_or_initialize_by(title: title,
                                           published_at: published_at)
       story.link = feed.channel.link + item.link.split(/href="|">/)[1].sub!(/^\//, '')
-      story.background_image_url = item.enclosure ? item.enclosure.url : ''
+      story.background_image_url = item.enclosure ? item.enclosure.url : nil
       story.tags = item.category ? item.category.content.split(',').map(&:strip) : nil
       story.save
     end

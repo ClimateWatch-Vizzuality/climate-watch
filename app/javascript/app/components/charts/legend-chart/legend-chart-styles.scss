@@ -3,7 +3,6 @@
 $margin-container: 10px;
 
 .legendChart {
-  overflow: auto;
   margin-bottom: $margin-container;
 
   .legendContainer {
@@ -11,8 +10,9 @@ $margin-container: 10px;
   }
 
   .legendLogo {
-    width: 120px;
-    margin-top: $margin-container;
+    position: relative;
+    width: 130px;
+    margin-top: 20px;
 
     img {
       width: 100%;
@@ -20,25 +20,65 @@ $margin-container: 10px;
     }
   }
 
+  .legendLogoTitle {
+    color: $dark-gray;
+  }
+
   @media #{$tablet-landscape} {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
 
-    .legendLogo {
-      width: 150px;
+    .legendLogoTitle {
+      position: absolute;
+      top: 0;
+      left: 0;
     }
+
+    .legendLogo {
+      width: 250px;
+      padding-left: 130px;
+    }
+  }
+}
+
+.tagsContainer {
+  position: relative;
+  min-height: 120px;
+
+  @media #{$tablet-landscape} {
+    min-height: 85px;
+  }
+
+  @media #{$desktop} {
+    min-height: 50px;
+  }
+}
+
+.tagsWrapper {
+  position: absolute;
+  width: 100%;
+  height: 300px;
+  bottom: 0;
+  overflow-x: scroll;
+
+  @media #{$tablet-landscape} {
+    flex-wrap: wrap;
+    overflow: visible;
+    position: relative;
+    height: unset;
   }
 }
 
 .tags {
   display: flex;
-  overflow: scroll;
   margin-top: $margin-container;
+  position: absolute;
+  bottom: 0;
 
   @media #{$tablet-landscape} {
     flex-wrap: wrap;
-    overflow: auto;
+    position: relative;
   }
 }
 

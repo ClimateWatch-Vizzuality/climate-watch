@@ -4,6 +4,7 @@ import Dropdown from 'components/dropdown';
 import Search from 'components/search';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
+import Loading from 'components/loading';
 
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import styles from './ndcs-table-styles.scss';
@@ -12,13 +13,13 @@ class NDCTable extends PureComponent {
   getTableContent() {
     const { loading, data, noContentMsg, titleLinks } = this.props;
 
-    if (loading) return null;
-
-    return data && data.length > 0 ? (
-      <Table parseHtml titleLinks={titleLinks} data={data} rowHeight={60} />
-    ) : (
-      <NoContent className={styles.noContent} message={noContentMsg} />
-    );
+    if (loading) return <Loading light className={styles.loader} />;
+    if (data && data.length > 0) {
+      return (
+        <Table parseHtml titleLinks={titleLinks} data={data} rowHeight={60} />
+      );
+    }
+    return <NoContent className={styles.noContent} message={noContentMsg} />;
   }
 
   render() {

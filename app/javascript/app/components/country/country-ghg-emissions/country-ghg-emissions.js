@@ -2,7 +2,12 @@ import { createElement, PureComponent } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getLocationParamUpdated, isPageContained } from 'utils/navigation';
+import {
+  getLocationParamUpdated,
+  isPageContained,
+  isEmbededComponent,
+  isPageNdcp
+} from 'utils/navigation';
 import qs from 'query-string';
 import ReactGA from 'react-ga';
 
@@ -18,7 +23,7 @@ import {
   getSourceSelected,
   getCalculationSelected,
   getChartData,
-  getChartXDomain,
+  getChartDomain,
   getChartConfig,
   getSelectorDefaults,
   getQuantificationsData,
@@ -33,7 +38,8 @@ const mapStateToProps = (state, { location, match }) => {
   const { data, quantifications } = state.countryGhgEmissions;
   const calculationData = state.wbCountryData.data;
   const { meta } = state.ghgEmissionsMeta;
-  const isEmbed = location.pathname.includes('/embed');
+  const isEmbed = isEmbededComponent(location);
+  const isNdcp = isPageNdcp(location) || isPageContained;
   const search = qs.parse(location.search);
   const iso = match.params.iso;
   const countryGhg = {
@@ -48,10 +54,11 @@ const mapStateToProps = (state, { location, match }) => {
   return {
     iso,
     isEmbed,
+    isNdcp,
     countryName: getCountryName(countryGhg),
     loading: state.countryGhgEmissions.loading || state.wbCountryData.loading,
     data: getChartData(countryGhg),
-    domain: getChartXDomain(countryGhg),
+    domain: getChartDomain(countryGhg),
     quantifications: getQuantificationsData(countryGhg),
     quantificationsTagsConfig: getQuantificationsTagsConfig(countryGhg),
     calculations: getCalculationOptions(countryGhg),
@@ -108,7 +115,10 @@ class CountryGhgEmissionsContainer extends PureComponent {
         category: 'Country',
         slugs: isPageContained ? [source] : [source, 'ndc_quantification_UNDP'],
         customTitle: 'Greenhouse Gas Emissions and Emissions Targets',
-        showDisclaimer: !isPageContained,
+        disclaimerConfig: {
+          display: !isPageContained,
+          onlyText: true
+        },
         open: true
       });
     }

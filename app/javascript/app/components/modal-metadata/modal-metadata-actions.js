@@ -48,7 +48,7 @@ const fetchModalMetaData = createThunkAction(
 
       Promise.all(promises)
         .then(data => {
-          dispatch(fetchModalMetaDataReady({ slugs, data }));
+          dispatch(fetchModalMetaDataReady({ slugs: slugsToFetch, data }));
         })
         .catch(error => {
           console.warn(error);

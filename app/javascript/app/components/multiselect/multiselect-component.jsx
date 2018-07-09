@@ -7,6 +7,7 @@ import { themr } from 'react-css-themr';
 import cx from 'classnames';
 
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
+import infoIcon from 'assets/icons/info.svg';
 import theme from 'styles/themes/dropdown/react-selectize.scss';
 import styles from './multiselect-styles.scss';
 
@@ -56,11 +57,18 @@ class Multiselect extends Component {
       children,
       mirrorX,
       hideSelected,
-      icon
+      icon,
+      info,
+      infoText
     } = this.props;
     return (
       <div className={cx(styles.multiSelectWrapper, parentClassName)}>
         {label && <span className={styles.label}>{label}</span>}
+        {info && (
+          <div data-tip={infoText} className={styles.infoContainer}>
+            <Icon icon={infoIcon} className={styles.infoIcon} />
+          </div>
+        )}
         <div
           className={cx(
             theme.dropdown,
@@ -121,6 +129,8 @@ Multiselect.propTypes = {
   onMultiValueChange: PropTypes.func,
   filterOptions: PropTypes.func,
   handleChange: PropTypes.func,
+  info: PropTypes.bool,
+  infoText: PropTypes.string,
   label: PropTypes.string,
   selectedLabel: PropTypes.string,
   children: PropTypes.node,

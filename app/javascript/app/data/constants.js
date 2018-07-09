@@ -116,42 +116,42 @@ export const TOP_EMITTERS = [
 ];
 
 export const CHART_COLORS = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126'
+  '#00B4D2',
+  '#0677B3',
+  '#D2187C',
+  '#FFB400',
+  '#FF7800',
+  '#FF88AA',
+  '#AB0000',
+  '#20D5B7',
+  '#383F45',
+  '#CACCD0'
 ];
 
 export const CHART_COLORS_EXTENDED = [
-  '#2D9290',
-  '#B25BD0',
-  '#7EA759',
-  '#FF0D3A',
-  '#687AB7',
-  '#BC6332',
-  '#F97DA1',
-  '#00971D',
-  '#F1933B',
-  '#938126',
-  '#96C8C7',
-  '#D8ADE7',
-  '#BED2AB',
-  '#FF859C',
-  '#B3BCDA',
-  '#DDB098',
-  '#FBBDCF',
-  '#7FCA8D',
-  '#F7C89C',
-  '#C8BF92'
+  '#00B4D2',
+  '#0677B3',
+  '#D2187C',
+  '#FFB400',
+  '#FF7800',
+  '#FF88AA',
+  '#AB0000',
+  '#20D5B7',
+  '#383F45',
+  '#CACCD0',
+  '#80DAE9',
+  '#93BBD9',
+  '#E98CBE',
+  '#FFDA80',
+  '#FFBC80',
+  '#FFC4D5',
+  '#D58080',
+  '#90EADB',
+  '#9C9FA2',
+  '#E5E6E8'
 ];
 
-export const COUNTRY_COMPARE_COLORS = ['#113750', '#b25bd0', '#f1933b'];
+export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
 
 export const DEFAULT_AXES_CONFIG = {
   xBottom: {
@@ -260,12 +260,22 @@ export const LATEST_VERSION = 'AR4';
 export const CONTAINED_PATHNAME = 'contained';
 
 export const LENSES_SELECTOR_INFO = {
-  locations: `Every model has only a certain range of locations available. After one location is selected, 
-      all the locations which do not have a model in common with the selected location are filtered out. 
+  locations: `Every model has only a certain range of locations available. After one location is selected,
+      all the locations which do not have a model in common with the selected location are filtered out.
       Hence, only the locations which have a model in common are displayed and are available for selection. `,
-  models: `This drop-down menu shows only models which have information for all of the locations selected 
+  models: `This drop-down menu shows only models which have information for all of the locations selected
       in the locations menu. You can select fewer locations to get a wider range of models.`
 };
+
+export const DATA_EXPLORER_BLACKLIST = ['id', 'iso_code3', 'emissions'];
+export const DATA_EXPLORER_FIRST_COLUMN_HEADERS = [
+  'region',
+  'data_source',
+  'gwp',
+  'sector',
+  'gas',
+  'unit'
+];
 
 export const USERS_PROFESIONAL_SECTORS = [
   'Academic',
@@ -275,6 +285,60 @@ export const USERS_PROFESIONAL_SECTORS = [
   'National Government',
   'NGO',
   'Other'
+];
+
+export const DATA_EXPLORER_SECTION_NAMES = {
+  'historical-emissions': 'historical_emissions',
+  'ndc-sdg-linkages': 'ndc_sdg',
+  'emission-pathways': 'emission_pathways',
+  'ndc-content': 'ndc_content'
+};
+
+export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
+  'historical-emissions': {
+    PIK: ['historical_emissions_pik'],
+    CAIT: ['historical_emissions_cait'],
+    UNFCCC: ['historical_emissions_unfccc']
+  },
+  'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
+  'ndc-content': ['ndc_cait', 'ndc_wb'],
+  'emission-pathways': [null] // model, scenario and indicator related metadata
+};
+
+export const DATA_EXPLORER_FILTERS = {
+  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
+  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
+  'emission-pathways': [],
+  'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
+};
+
+export const DATA_EXPLORER_SECTION_BASE_URIS = {
+  'historical-emissions': 'ghg-emissions',
+  'ndc-sdg-linkages': 'ndcs-sdg',
+  'ndc-content': 'ndcs-content',
+  'emission-pathways': 'pathways'
+};
+export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
+export const DATA_EXPLORER_TO_MODULES_PARAMS = {
+  'historical-emissions': {
+    data_sources: { key: 'source' },
+    gwps: { key: 'version' }
+  },
+  'ndc-sdg-linkages': {
+    goals: {
+      key: 'goal',
+      idLabel: 'number'
+    }
+  },
+  'ndc-content': {},
+  'emission-pathways': {}
+};
+export const SOURCE_IPCC_VERSIONS = [
+  { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
+  { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
+  { name: 'CAIT - AR2', source_slug: 'CAIT', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR2', source_slug: 'UNFCCC', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR4', source_slug: 'UNFCCC', version_slug: 'AR4' }
 ];
 
 export default {
@@ -302,5 +366,13 @@ export default {
   LATEST_VERSION,
   CONTAINED_PATHNAME,
   LENSES_SELECTOR_INFO,
-  USERS_PROFESIONAL_SECTORS
+  DATA_EXPLORER_BLACKLIST,
+  DATA_EXPLORER_FIRST_COLUMN_HEADERS,
+  DATA_EXPLORER_SECTION_NAMES,
+  DATA_EXPLORER_METHODOLOGY_SOURCE,
+  SOURCE_IPCC_VERSIONS,
+  USERS_PROFESIONAL_SECTORS,
+  DATA_EXPLORER_SECTION_BASE_URIS,
+  DATA_EXPLORER_EXTERNAL_PREFIX,
+  DATA_EXPLORER_TO_MODULES_PARAMS
 };

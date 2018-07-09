@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { isCountryIncluded } from 'app/utils';
 import ReactGA from 'react-ga';
+import { isPageContained, isPageNdcp } from 'utils/navigation';
 
 import actions from './countries-select-actions';
 import reducers, { initialState } from './countries-select-reducers';
@@ -16,7 +17,7 @@ import {
   getPathsWithStyles
 } from './countries-select-selectors';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, { location }) => {
   const { countrySelect, countries } = state;
   const stateWithFilters = {
     ...countrySelect,
@@ -28,7 +29,8 @@ const mapStateToProps = state => {
     query: getFilterUpper(stateWithFilters),
     preSelect: getPreSelect(stateWithFilters),
     isoCountries: getISOCountries(stateWithFilters),
-    countriesList: getFilteredCountriesWithPath(stateWithFilters)
+    countriesList: getFilteredCountriesWithPath(stateWithFilters),
+    isCompareVisible: !isPageNdcp(location) && !isPageContained
   };
 };
 

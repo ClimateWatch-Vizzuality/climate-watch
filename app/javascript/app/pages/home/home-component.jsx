@@ -16,14 +16,16 @@ import { MobileOnly, TabletLandscape } from 'components/responsive';
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import fullscreen from 'assets/icons/map-fullscreen.svg';
 import background from 'assets/headers/home.jpg';
-import countryBgScreenshot from 'assets/screenshots/country-bg-screenshot';
-import countrySmScreenshot from 'assets/screenshots/country-sm-screenshot@2x';
+import countryBgScreenshot from 'assets/screenshots/country-with-quantifications@1x.png';
+import countrySmScreenshot from 'assets/screenshots/country-mobile-screenshot@2x.png';
 import ndcBgScreenshot from 'assets/screenshots/ndc-explore-bg-screenshot';
 import ndcSmScreenshot from 'assets/screenshots/ndc-explore-sm-screenshot@2x.png';
 import ndcSdgBgScreenshot from 'assets/screenshots/ndc-sdg-bg-screenshot';
 import ndcSdgSmScreenshot from 'assets/screenshots/ndc-sdg-sm-screenshot@2x.png';
-import ghgBgScreenshot from 'assets/screenshots/ghg-bg-screenshot@2x.png';
-import pathwaysBgScreenshot from 'assets/screenshots/pathways-bg-screenshot@2x.png';
+import ghgBgScreenshot from 'assets/screenshots/ghg-screenshot@1x.png';
+import ghgMobileScreenshot from 'assets/screenshots/ghg-mobile-screenshot@2x.png';
+import pathwaysBgScreenshot from 'assets/screenshots/pathways-screenshot@2x.png';
+import pathwaysMobileScreenshot from 'assets/screenshots/pathways-mobile-screenshot@2x.png';
 import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import screenfull from 'screenfull';
 
@@ -92,13 +94,17 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <div className={matches ? styles.imgLayout : ''}>
-                  <div className={styles.imgContainer}>
-                    <img
-                      className={matches ? '' : styles.imageTall}
-                      src={matches ? countrySmScreenshot : countryBgScreenshot}
-                      alt="Country section screenshot"
-                    />
+                <div>
+                  <div className={styles.imgLayout}>
+                    <div className={styles.imgContainer}>
+                      <img
+                        className={matches ? '' : styles.imageTall}
+                        src={
+                          matches ? countrySmScreenshot : countryBgScreenshot
+                        }
+                        alt="Country section screenshot"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -108,7 +114,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="View Country Profiles"
-              description="Climate Watch country profiles present a snapshot of countries' historical emissions, national climate commitments, climate vulnerabilities and readiness, and sustainable development linkages, also allowing for comparison of this information across countries."
+              description="Gain insights on individual countries historical emissions, national climate commitments, climate vulnerabilities and readiness, and sustainable development linkages – and compare this information across countries."
             />
             <GeoLocationProvider />
             <span
@@ -143,10 +149,10 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Explore and Compare Nationally Determined Contributions"
-              description="Analyze and compare national climate pledges under the Paris Agreement."
+              description="169 nationally determined contributions (NDCs) representing 192 countries and the European Union have been submitted to the UN Framework Convention on Climate Change.<br />Analyze and compare NDCs of all countries using 150 structured indicators and search the full text for key terms."
             />
             <div className={styles.doubleFold}>
-              <Button color="yellow" link="/ndcs">
+              <Button color="yellow" link="/ndcs-content">
                 Explore NDC content
               </Button>
               <TabletLandscape>
@@ -186,7 +192,7 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <div className={matches ? styles.imgLayout : ''}>
+                <div className={styles.imgLayout}>
                   <div className={styles.imgContainer}>
                     <img
                       className={matches ? '' : styles.imageRight}
@@ -202,7 +208,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Examine Links Between Sustainable Development and Climate Goals"
-              description="Identify potential alignment between the targets, actions, policy measures and needs in countries’ Nationally Determined Contributions (NDCs) and the targets of the Sustainable Development Goals (SDGs)."
+              description="Our research shows that climate actions in NDCs align with at least 154 of the 169 targets of the Sustainable Development Goals (SDGs), demonstrating the enormous potential for linking climate and sustainable development efforts.<br />Identify potential alignment between the targets, actions, policy measures and needs in countries’ NDCs and the targets of the SDGs."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/ndcs-sdg'}>
@@ -218,7 +224,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Explore Historical Greenhouse Gas Emissions"
-              description="Climate Watch inclides a comprehensive inventory for all parties to the UNFCC, including datasets from independent research organizations such as WRI’s CAIT dataset, PIK’s PRIMAP-hist dataset, and country self reported inventories in the UNFCCC."
+              description="The 10 countries that emit the most greenhouse gases account for over 60% of global emissions, while the 100 least emitters contributed less than 3%.<br />Explore and download over 160 years of greenhouse gas emissions data from 196 countries and the EU, across seven sectors. Our inventory includes datasets sourced from independent research organizations and country self-reported inventories to the UNFCCC."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link="/ghg-emissions">
@@ -228,13 +234,21 @@ class Home extends PureComponent {
           </div>
           <MobileOnly>
             {matches => (
-              <div className={matches ? styles.ndcImageMobile : styles.column}>
-                <div className={styles.imgContainer}>
-                  <img
-                    className={matches ? '' : styles.imageRight}
-                    src={ghgBgScreenshot}
-                    alt="GHG Emissions section screenshot"
-                  />
+              <div
+                className={cx(
+                  styles.column,
+                  styles.invertOrder,
+                  layout.screenshotMobileLayout
+                )}
+              >
+                <div className={styles.imgLayout}>
+                  <div className={styles.imgContainer}>
+                    <img
+                      className={matches ? '' : styles.imageRight}
+                      src={matches ? ghgMobileScreenshot : ghgBgScreenshot}
+                      alt="GHG Emissions section screenshot"
+                    />
+                  </div>
                 </div>
               </div>
             )}
@@ -252,11 +266,17 @@ class Home extends PureComponent {
                   layout.screenshotMobileLayout
                 )}
               >
-                <div className={matches ? styles.imgLayout : ''}>
+                <div className={styles.imgLayout}>
                   <div className={styles.imgContainer}>
                     <img
                       className={matches ? '' : styles.imageRight}
-                      src={pathwaysBgScreenshot}
+                      src={
+                        matches ? (
+                          pathwaysMobileScreenshot
+                        ) : (
+                          pathwaysBgScreenshot
+                        )
+                      }
                       alt="Pathways section screenshot"
                     />
                   </div>
@@ -268,7 +288,7 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Chart and Visualize Decarbonization Pathways"
-              description="Explore 30 potential future pathways of modeling teams around the world to see where countries could be heading and what action they can take to reduce emissions, increase ambition, and reach development goals."
+              description="Where are global emissions and global temperatures headed? That all depends on the paths we take.<br />Draw insights from 30 potential future pathways developed by modeling teams from around the world. Pathways helps you navigate through multiple models and visualize scenarios for countries, regions and sectors."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/pathways'}>

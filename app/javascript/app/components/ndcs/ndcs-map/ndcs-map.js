@@ -55,7 +55,7 @@ class NDCMapContainer extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.fetchNDCS();
+    this.props.fetchNDCSMapIndicators();
   }
 
   getTooltipText() {
@@ -67,7 +67,7 @@ class NDCMapContainer extends PureComponent {
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
     return selectedIndicator.locations && selectedIndicator.locations[id]
       ? selectedIndicator.locations[id].value
-      : 'No data';
+      : 'Not Applicable';
   }
 
   handleCountryClick = geography => {
@@ -119,6 +119,7 @@ class NDCMapContainer extends PureComponent {
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
+      customTitle: 'NDC Content',
       category: 'NDC Content Map',
       slugs: ['ndc_cait', 'ndc_wb'],
       open: true
@@ -151,7 +152,7 @@ NDCMapContainer.propTypes = {
   isoCountries: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchNDCS: PropTypes.func.isRequired
+  fetchNDCSMapIndicators: PropTypes.func.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, actions)(NDCMapContainer));
