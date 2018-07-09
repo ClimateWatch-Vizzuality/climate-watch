@@ -10,7 +10,7 @@ module Api
           attribute(:gwp) { object['gwp'] }
           attribute(:sector) { object['sector'] }
           attribute(:gas) { object['gas'] }
-          attribute(:unit) { 'C02e' }
+          attribute(:unit) { "MtCO\u2082e" }
           attribute(:emissions)
         end
       end
