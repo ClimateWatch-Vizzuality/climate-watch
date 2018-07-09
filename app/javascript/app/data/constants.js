@@ -374,7 +374,9 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'ndc-content': {},
   'emission-pathways': {
     locations: {
-      key: 'currentLocation'
+      key: 'currentLocation',
+      idLabel: 'id',
+      currentId: 'iso_code'
     },
     models: {
       key: 'model'

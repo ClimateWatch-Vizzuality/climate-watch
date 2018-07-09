@@ -118,9 +118,11 @@ export const getLink = createSelector(
         const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
         const parsedKey = parsedKeyData && parsedKeyData.key;
         if (parsedKey) {
-          const { idLabel } = parsedKeyData;
+          const { idLabel, currentId } = parsedKeyData;
           const id = idLabel
-            ? meta[section][key].find(m => m.id === filterQuery[key])[idLabel]
+            ? meta[section][key].find(m =>
+              findEqual(m, ['id', currentId], filterQuery[key])
+            )[idLabel]
             : filterQuery[key];
           parsedQuery[parsedKey] = id;
         }
