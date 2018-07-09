@@ -6,7 +6,7 @@ import cx from 'classnames';
 import styles from './check-input-styles';
 
 const CheckInputComponent = props => {
-  const { className, label, checked, onChange, theme, toggleFirst } = props;
+  const { className, label, checked, onChange, theme, toggleFirst, disabled } = props;
   return (
     <div className={className}>
       <label
@@ -19,6 +19,7 @@ const CheckInputComponent = props => {
           checked={checked}
           onChange={onChange}
           id="checkbox"
+          disabled={disabled}
         />
         <span className={theme.label}>{label}</span>
         <div className={cx(theme.slider, theme.round)} />

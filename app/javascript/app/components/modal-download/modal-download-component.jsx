@@ -90,6 +90,7 @@ class ModalDownload extends PureComponent {
               label={'Subscribe to email updates'}
               onChange={e => this.updateCheckValue(e, 'subscription')}
               toggleFirst
+              disabled={!this.state.email && true}
             />
           </div>
 
