@@ -342,7 +342,7 @@ export const SOURCE_IPCC_VERSIONS = [
 ];
 
 export const USER_SURVEY_SPREADSHEET_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vRb64x_PcXXmouoteocoSYkS-cC3lbyqbIGghLvUzi3QNQKKoc9sM6fS9LC3LRHjfnoArSeyPsq59Pj/pubhtml';
+  'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec';
 
 export default {
   CALCULATION_OPTIONS,
