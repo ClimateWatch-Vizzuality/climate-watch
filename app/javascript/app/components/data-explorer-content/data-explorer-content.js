@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { PureComponent, createElement } from 'react';
+import { getStorageWithExpiration } from 'utils/localStorage';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import qs from 'query-string';
@@ -113,7 +114,11 @@ class DataExplorerContentContainer extends PureComponent {
 
   handleDownloadModalOpen = () => {
     const { downloadHref, setModalDownloadParams } = this.props;
-    setModalDownloadParams({
+    if (getStorageWithExpiration('userSurvey')) {
+      return window.location.assign(downloadHref);
+    }
+
+    return setModalDownloadParams({
       open: true,
       downloadUrl: downloadHref
     });
