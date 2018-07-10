@@ -1,5 +1,9 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
+import {
+  setStorageWithExpiration,
+  getStorageWithExpiration
+} from 'utils/localStorage';
 
 const USER_SURVEY_SPREADSHEET_URL = process.env.USER_SURVEY_SPREADSHEET_URL;
 
@@ -12,6 +16,9 @@ const saveSurveyData = createThunkAction(
   requestParams => (dispatch, getState) => {
     const { modalDownload } = getState();
     if (!modalDownload.requiredError) {
+      if (!getStorageWithExpiration('userSurvey')) {
+        setStorageWithExpiration('userSurvey', true, 5);
+      }
       fetch(
         `${USER_SURVEY_SPREADSHEET_URL}?${requestParams.join('&')}`
       ).then(() => {

@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 import { createElement, PureComponent } from 'react';
+import { getStorageWithExpiration } from 'utils/localStorage';
+import PropTypes from 'prop-types';
+
 import { actions } from 'components/modal-download';
 
 import Component from './download-menu-component';
@@ -12,21 +13,17 @@ const server = `http://${S3_BUCKET_NAME}.s3.amazonaws.com`;
 const folder = '/climate-watch-download-zip';
 const url = `${server}${folder}`;
 
-// The NDC quantification and pathway files should not be made public
-// before the functionality and data are available on production site
-// {
-//   label: 'NDC quantification (367 kB)',
-//   link: `${url}/ndc-quantification.zip`,
-//   target: '_self'
-// }
-
 const mapStateToProps = ({ modalDownload }) => ({
   isOpen: modalDownload.isOpen
 });
 
 class DownloadMenuContainer extends PureComponent {
   handleOnClick = (downloadUrl, size) => {
-    this.props.setModalDownloadParams({
+    if (getStorageWithExpiration('userSurvey')) {
+      return window.location.assign(downloadUrl);
+    }
+
+    return this.props.setModalDownloadParams({
       open: true,
       downloadUrl,
       size
@@ -99,7 +96,6 @@ class DownloadMenuContainer extends PureComponent {
 }
 
 DownloadMenuContainer.propTypes = {
-  downloadMenuOptions: PropTypes.array,
   setModalDownloadParams: PropTypes.func.isRequired
 };
 
