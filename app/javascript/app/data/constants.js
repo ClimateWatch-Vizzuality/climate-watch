@@ -267,13 +267,25 @@ export const LENSES_SELECTOR_INFO = {
       in the locations menu. You can select fewer locations to get a wider range of models.`
 };
 
-export const DATA_EXPLORER_BLACKLIST = ['id', 'iso_code3', 'emissions'];
+export const DATA_EXPLORER_BLACKLIST = [
+  'id',
+  'iso_code3',
+  'iso_code2',
+  'emissions'
+];
 export const DATA_EXPLORER_FIRST_COLUMN_HEADERS = [
   'region',
   'data_source',
   'gwp',
   'sector',
   'gas',
+  'location',
+  'model',
+  'scenario',
+  'category',
+  'subcategory',
+  'indicator',
+  'definition',
   'unit'
 ];
 
@@ -296,33 +308,90 @@ export const DATA_EXPLORER_SECTION_NAMES = {
 
 export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
-    PIK: 'historical_emissions_pik',
-    CAIT: 'historical_emissions_cait',
-    UNFCCC: 'historical_emissions_unfccc'
+    PIK: ['historical_emissions_pik'],
+    CAIT: ['historical_emissions_cait'],
+    UNFCCC: ['historical_emissions_unfccc']
   },
-  'ndc-sdg-linkages': 'ndc_sdc_all indicators',
-  'ndc-content': { CAIT: 'ndc_cait', WB: 'ndc_wb' },
-  'emission-pathways': null // model, scenario and indicator related metadata
+  'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
+  'ndc-content': ['ndc_cait', 'ndc_wb'],
+  'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': [
-    'source_IPCC_version',
-    'gases',
-    'regions',
-    'sectors'
-  ],
+  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
   'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
-  'emission-pathways': [],
-  'ndc-content': [
-    'data_sources',
+  'emission-pathways': [
+    'locations',
+    'models',
+    'scenarios',
     'categories',
-    'indicators',
-    'sectors',
-    'countries'
-  ]
+    'indicators'
+  ],
+  'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
 };
 
+export const DATA_EXPLORER_PATHWAYS_META_LINKS = {
+  'meta locations': {
+    href: '/api/v1/data/emission_pathways/locations',
+    rel: 'meta locations'
+  },
+  'meta models': {
+    href: '/api/v1/data/emission_pathways/models',
+    rel: 'meta models'
+  },
+  'meta scenarios': {
+    href: '/api/v1/data/emission_pathways/scenarios',
+    rel: 'meta scenarios'
+  },
+  'meta categories': {
+    href: '/api/v1/data/emission_pathways/categories',
+    rel: 'meta categories'
+  },
+  'meta indicators': {
+    href: '/api/v1/data/emission_pathways/indicators',
+    rel: 'meta indicators'
+  }
+};
+
+export const DATA_EXPLORER_SECTION_BASE_URIS = {
+  'historical-emissions': 'ghg-emissions',
+  'ndc-sdg-linkages': 'ndcs-sdg',
+  'ndc-content': 'ndcs-content',
+  'emission-pathways': 'pathways'
+};
+export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
+export const DATA_EXPLORER_TO_MODULES_PARAMS = {
+  'historical-emissions': {
+    data_sources: { key: 'source' },
+    gwps: { key: 'version' }
+  },
+  'ndc-sdg-linkages': {
+    goals: {
+      key: 'goal',
+      idLabel: 'number'
+    }
+  },
+  'ndc-content': {},
+  'emission-pathways': {
+    locations: {
+      key: 'currentLocation',
+      idLabel: 'id',
+      currentId: 'iso_code'
+    },
+    models: {
+      key: 'model'
+    },
+    scenarios: {
+      key: 'scenario'
+    },
+    indicators: {
+      key: 'indicator'
+    },
+    categories: {
+      key: 'category'
+    }
+  }
+};
 export const SOURCE_IPCC_VERSIONS = [
   { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
   { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
@@ -360,6 +429,10 @@ export default {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
+  DATA_EXPLORER_PATHWAYS_META_LINKS,
   SOURCE_IPCC_VERSIONS,
-  USERS_PROFESIONAL_SECTORS
+  USERS_PROFESIONAL_SECTORS,
+  DATA_EXPLORER_SECTION_BASE_URIS,
+  DATA_EXPLORER_EXTERNAL_PREFIX,
+  DATA_EXPLORER_TO_MODULES_PARAMS
 };

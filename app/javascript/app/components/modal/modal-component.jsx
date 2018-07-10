@@ -5,6 +5,7 @@ import { themr } from 'react-css-themr';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import closeIcon from 'assets/icons/sidebar-close.svg';
+import cx from 'classnames';
 import styles from './modal-styles.scss';
 
 class CustomModal extends PureComponent {
@@ -35,7 +36,7 @@ class CustomModal extends PureComponent {
 
     return (
       <Modal
-        className={theme.modal}
+        className={cx(theme.modal, 'modal')}
         style={modalStyles}
         isOpen={isOpen}
         onRequestClose={onRequestClose}

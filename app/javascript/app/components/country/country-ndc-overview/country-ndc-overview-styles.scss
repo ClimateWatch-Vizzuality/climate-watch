@@ -25,7 +25,7 @@
 }
 
 .actions {
-  @include columns((2, 6));
+  @include columns((6, 6));
   @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {

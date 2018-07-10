@@ -8,7 +8,7 @@ import { PATH_LAYERS } from 'app/data/constants';
 
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || {};
-const getIndicatorsData = state => state.indicators || [];
+const getIndicatorsData = state => state.mapIndicators || [];
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)

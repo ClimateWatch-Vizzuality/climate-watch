@@ -5,6 +5,7 @@ import RegionsProvider from 'providers/regions-provider/regions-provider';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
 import Table from 'components/table';
 import Dropdown from 'components/dropdown';
+import MultiDropdown from 'components/dropdown/multi-dropdown';
 import MetadataText from 'components/metadata-text';
 import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
@@ -12,6 +13,7 @@ import Loading from 'components/loading';
 import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import { toStartCase } from 'app/utils';
+import cx from 'classnames';
 import styles from './data-explorer-content-styles.scss';
 
 class DataExplorerContent extends PureComponent {
@@ -33,12 +35,23 @@ class DataExplorerContent extends PureComponent {
   }
 
   renderMeta() {
-    const { meta, loadingMeta } = this.props;
+    const { meta, loadingMeta, section } = this.props;
     if (loadingMeta) return <Loading light className={styles.loader} />;
-    return meta ? (
-      <MetadataText className={styles.metadataText} data={meta} />
+    const noContentMessage =
+      section === 'emission-pathways'
+        ? 'Select a model, scenario or indicator'
+        : 'Select a source';
+    return meta && meta.length > 0 ? (
+      meta.map((m, i) => (
+        <MetadataText
+          key={m.technical_title || m.full_name || m.name}
+          className={cx(styles.metadataText, { [styles.topPadded]: i > 0 })}
+          data={m}
+          showAll
+        />
+      ))
     ) : (
-      <NoContent message={'Select a source'} className={styles.noData} />
+      <NoContent message={noContentMessage} className={styles.noData} />
     );
   }
 
@@ -50,24 +63,43 @@ class DataExplorerContent extends PureComponent {
       filters,
       loading,
       loadingMeta,
-      section
+      section,
+      metadataSection
     } = this.props;
     const disabled =
-      section === ('data' && loading) || (section === 'meta' && loadingMeta);
-    return filters.map(field => (
-      <Dropdown
-        key={field}
-        label={toStartCase(field)}
-        placeholder={`Filter by ${toStartCase(field)}`}
-        options={filterOptions ? filterOptions[field] : []}
-        onValueChange={selected =>
-          handleFilterChange(field, selected && selected.slug)}
-        value={selectedOptions ? selectedOptions[field] : null}
-        plain
-        disabled={disabled}
-        noAutoSort={field === 'goals' || field === 'targets'}
-      />
-    ));
+      (!metadataSection && loading) || (metadataSection && loadingMeta);
+    return filters.map(
+      field =>
+        (section === 'ndc-content' && field === 'sectors' ? (
+          <MultiDropdown
+            key={field}
+            label={toStartCase(field)}
+            placeholder={`Filter by ${toStartCase(field)}`}
+            options={filterOptions ? filterOptions[field] : []}
+            value={selectedOptions ? selectedOptions[field] : null}
+            disabled={disabled}
+            clearable
+            onChange={option =>
+              handleFilterChange(
+                field,
+                option && (option.label || option.slug)
+              )}
+          />
+        ) : (
+          <Dropdown
+            key={field}
+            label={toStartCase(field)}
+            placeholder={`Filter by ${toStartCase(field)}`}
+            options={filterOptions ? filterOptions[field] : []}
+            onValueChange={selected =>
+              handleFilterChange(field, selected && selected.slug)}
+            value={selectedOptions ? selectedOptions[field] : null}
+            plain
+            disabled={disabled}
+            noAutoSort={field === 'goals' || field === 'targets'}
+          />
+        ))
+    );
   }
 
   render() {
@@ -82,7 +114,11 @@ class DataExplorerContent extends PureComponent {
     } = this.props;
     return (
       <div>
-        <DataExplorerProvider section={section} query={filterQuery} />
+        <DataExplorerProvider
+          section={section}
+          query={filterQuery}
+          noFilters={query === ''}
+        />
         <RegionsProvider />
         <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
@@ -115,7 +151,7 @@ DataExplorerContent.propTypes = {
   filterOptions: PropTypes.object,
   metadataSection: PropTypes.bool,
   data: PropTypes.array,
-  meta: PropTypes.object,
+  meta: PropTypes.array,
   firstColumnHeaders: PropTypes.array,
   loading: PropTypes.bool,
   loadingMeta: PropTypes.bool,

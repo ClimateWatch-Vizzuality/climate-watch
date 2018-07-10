@@ -13,7 +13,7 @@ RSpec.shared_context 'NDC indicators' do
     i
   }
 
-  let!(:sectoral_plan_on) {
+  let!(:sectoral_plans_on) {
     i = FactoryBot.create(
       :indc_indicator,
       source: wb,
@@ -21,6 +21,17 @@ RSpec.shared_context 'NDC indicators' do
       name: 'Sectoral plans on'
     )
     i.categories = [sectoral_information, sectoral_plans]
+    i
+  }
+
+  let!(:sectoral_targets_on) {
+    i = FactoryBot.create(
+      :indc_indicator,
+      source: wb,
+      slug: 'M_SecTar1',
+      name: 'Sectoral targets on'
+    )
+    i.categories = [sectoral_information, sectoral_targets]
     i
   }
 end

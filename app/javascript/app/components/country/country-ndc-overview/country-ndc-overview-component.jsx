@@ -25,7 +25,8 @@ class CountryNdcOverview extends PureComponent {
         { type: 'info', onClick: handleInfoClick },
         {
           type: 'share',
-          shareUrl: `/embed/countries/${iso}/ndc-content-overview`
+          shareUrl: `/embed/countries/${iso}/ndc-content-overview`,
+          positionRight: true
         }
       ];
 
@@ -40,7 +41,7 @@ class CountryNdcOverview extends PureComponent {
 
   renderCompareButton() {
     const { iso, isNdcp } = this.props;
-    const href = 'http://ndcpartnership.org/climate-watch/ndcs';
+    const href = `/contained/ndcs/compare/mitigation?locations=${iso}`;
     const link = `/ndcs/compare/mitigation?locations=${iso}`;
     return (
       <Button
@@ -56,7 +57,7 @@ class CountryNdcOverview extends PureComponent {
   renderExploreButton() {
     const { iso, handleAnalyticsClick, isNdcp } = this.props;
 
-    const href = 'http://ndcpartnership.org/climate-watch/ndcs';
+    const href = `/contained/ndcs/country/${iso}`;
     const link = `/ndcs/country/${iso}`;
 
     return (
@@ -181,7 +182,10 @@ class CountryNdcOverview extends PureComponent {
         className={styles.descriptionContainer}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          __html: values.indc_summary[0] && values.indc_summary[0].value
+          __html:
+            values.indc_summary &&
+            values.indc_summary[0] &&
+            values.indc_summary[0].value
         }}
       />
     );
