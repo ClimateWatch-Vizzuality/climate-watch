@@ -25,6 +25,7 @@ const actions = { ...ownActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
+  const search = qs.parse(location.search);
   const {
     currentLocation,
     model,
@@ -32,7 +33,7 @@ const mapStateToProps = (state, { location }) => {
     scenario,
     category,
     subcategory
-  } = qs.parse(location.search);
+  } = search;
   const espData = {
     data,
     locations: state.espLocations.data,
@@ -56,6 +57,10 @@ const mapStateToProps = (state, { location }) => {
     'espGraph'
   ];
   const filtersSelected = getFiltersSelected(espData);
+  const downloadFilters = {};
+  ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
+    if (search[f] && search[f] !== '') downloadFilters[f] = search[f];
+  });
   return {
     data: getChartData(espData),
     domain: getChartDomainWithYMargins(espData),
@@ -71,7 +76,9 @@ const mapStateToProps = (state, { location }) => {
     modalData: getModalData(espData),
     model: getModelSelected(espData),
     error: providers.some(p => state[p].error),
-    loading: providers.some(p => state[p].loading) || !filtersSelected.model
+    loading: providers.some(p => state[p].loading) || !filtersSelected.model,
+    search,
+    downloadFilters
   };
 };
 
@@ -91,6 +98,13 @@ class EmissionPathwayGraphContainer extends PureComponent {
       const currentLocation = this.props.filtersSelected.location;
       this.props.findAvailableModels(currentLocation.value);
     }
+
+    const { search, filtersSelected } = this.props;
+    ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
+      if (!search[f] && filtersSelected[f]) {
+        this.updateUrlParam({ name: f, value: filtersSelected[f].value });
+      }
+    });
   }
 
   handleModelChange = model => {
@@ -152,7 +166,8 @@ EmissionPathwayGraphContainer.propTypes = {
   location: PropTypes.object.isRequired,
   filtersSelected: PropTypes.object.isRequired,
   toggleModalOverview: PropTypes.func.isRequired,
-  findAvailableModels: PropTypes.func.isRequired
+  findAvailableModels: PropTypes.func.isRequired,
+  search: PropTypes.object
 };
 
 export { actions, reducers, initialState };

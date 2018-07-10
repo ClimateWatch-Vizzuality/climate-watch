@@ -12,6 +12,7 @@ import {
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
   SOURCE_VERSIONS,
+  ESP_BLACKLIST,
   DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS
@@ -84,6 +85,7 @@ export const getFilterQuery = createSelector(
             option,
             [
               'name',
+              'full_name',
               'value',
               'wri_standard_name',
               'cw_title',
@@ -93,7 +95,8 @@ export const getFilterQuery = createSelector(
             parsedFilters[key]
           )
         );
-      filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
+      filterIds[parsedKey] =
+        filter && (filter.iso_code || filter.id || filter.iso_code3);
     });
     return filterIds;
   }
@@ -115,9 +118,11 @@ export const getLink = createSelector(
         const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
         const parsedKey = parsedKeyData && parsedKeyData.key;
         if (parsedKey) {
-          const { idLabel } = parsedKeyData;
+          const { idLabel, currentId } = parsedKeyData;
           const id = idLabel
-            ? meta[section][key].find(m => m.id === filterQuery[key])[idLabel]
+            ? meta[section][key].find(m =>
+              findEqual(m, ['id', currentId], filterQuery[key])
+            )[idLabel]
             : filterQuery[key];
           parsedQuery[parsedKey] = id;
         }
@@ -125,7 +130,11 @@ export const getLink = createSelector(
     }
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
-    return `/${DATA_EXPLORER_SECTION_BASE_URIS[section]}${urlParameters}`;
+    const subSection =
+      DATA_EXPLORER_SECTION_BASE_URIS[section] === 'pathways' ? '/models' : '';
+    return `/${DATA_EXPLORER_SECTION_BASE_URIS[
+      section
+    ]}${subSection}${urlParameters}`;
   }
 );
 
@@ -150,11 +159,13 @@ export const getFilterOptions = createSelector(
           const slug =
             option.slug ||
             option.name ||
+            option.full_name ||
             option.value ||
             option.wri_standard_name ||
             option.number;
           let label =
             option.name ||
+            option.full_name ||
             option.value ||
             option.wri_standard_name ||
             option.cw_title ||
@@ -250,6 +261,7 @@ export const parseExternalParams = createSelector(
       if (metaMatchingKey !== 'undefined') {
         const possibleLabelFields = [
           'name',
+          'full_name',
           'value',
           'wri_standard_name',
           'slug',
@@ -354,15 +366,27 @@ export const getMethodology = createSelector(
   [getMeta, getSection, getSelectedFilters],
   (meta, section, selectedfilters) => {
     const sectionHasSources = section === 'historical-emissions';
+    const emissionPathwaysSection = section === 'emission-pathways';
     if (
       !meta ||
       isEmpty(meta) ||
       !section ||
       (sectionHasSources &&
-        (isEmpty(selectedfilters) || !selectedfilters.source))
+        (isEmpty(selectedfilters) || !selectedfilters.source)) ||
+      (emissionPathwaysSection &&
+        (isEmpty(selectedfilters) ||
+          (!selectedfilters.indicators &&
+            !selectedfilters.models &&
+            !selectedfilters.scenarios)))
     ) {
       return null;
     }
+
+    if (emissionPathwaysSection) {
+      const { models, scenarios, indicators } = selectedfilters;
+      return [models, scenarios, indicators].filter(m => m);
+    }
+
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
@@ -382,7 +406,8 @@ export const getSelectedOptions = createSelector(
       selectedOptions[key] = {
         value: selectedFields[key].label || selectedFields[key].slug,
         label: selectedFields[key].label,
-        id: selectedFields[key].id ||
+        id: selectedFields[key].iso_code ||
+        selectedFields[key].id ||
         selectedFields[key].iso_code3 || [
           selectedFields[key].data_source_id,
           selectedFields[key].version_id
@@ -411,3 +436,108 @@ export const parseData = createSelector([getData], data => {
   );
   return updatedData.map(d => pick(d, whiteList));
 });
+
+// Pathways Modal Data
+
+const getScenarioSelectedMetadata = createSelector(
+  [getSelectedFilters, state => state.meta],
+  (filters, meta) => {
+    if (!filters || !filters.scenarios || !meta) return null;
+    const metadata = meta['emission-pathways'];
+    if (!metadata || !metadata.scenarios) return null;
+    const scenario = metadata.scenarios.find(
+      m => filters.scenarios.id === m.id
+    );
+    return (
+      scenario && {
+        name: scenario.name,
+        description: scenario.description,
+        Link: `/pathways/scenarios/${scenario.id}`
+      }
+    );
+  }
+);
+
+const getModelSelectedMetadata = createSelector(
+  [getSelectedFilters, state => state.meta],
+  (filters, meta) => {
+    if (!filters || !filters.models || !meta) return null;
+    const metadata = meta['emission-pathways'];
+    if (!metadata || !metadata.models) return null;
+    return metadata.models.find(m => filters.models.id === m.id);
+  }
+);
+
+export const getIndicatorSelectedMetadata = createSelector(
+  [getSelectedFilters, state => state.meta],
+  (filters, meta) => {
+    if (!filters || !filters.indicators || !meta) return null;
+    const metadata = meta['emission-pathways'];
+    if (!metadata || !metadata.indicators) return null;
+    return metadata.indicators.find(m => filters.indicators.id === m.id);
+  }
+);
+
+const addLinktoModelSelectedMetadata = createSelector(
+  [getModelSelectedMetadata],
+  model => {
+    if (!model) return null;
+    return {
+      ...model,
+      Link: `/pathways/models/${model.id}`
+    };
+  }
+);
+
+export const filterModelsByBlackList = createSelector(
+  [addLinktoModelSelectedMetadata],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data),
+      n => ESP_BLACKLIST.models.indexOf(n) === -1
+    );
+    return pick(data, whiteList);
+  }
+);
+
+const filterIndicatorsByBlackList = createSelector(
+  [getIndicatorSelectedMetadata],
+  data => {
+    if (!data || isEmpty(data)) return null;
+    const whiteList = remove(
+      Object.keys(data),
+      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
+    );
+    return pick(data, whiteList);
+  }
+);
+
+export const parseObjectsInIndicators = createSelector(
+  [filterIndicatorsByBlackList],
+  data => {
+    if (isEmpty(data)) return null;
+    const parsedData = {};
+    Object.keys(data).forEach(key => {
+      let fieldData = data[key];
+      if (
+        fieldData &&
+        typeof fieldData !== 'string' &&
+        typeof fieldData !== 'number'
+      ) {
+        fieldData = fieldData.name;
+      }
+      parsedData[key] = fieldData;
+    });
+    return parsedData;
+  }
+);
+
+export const getPathwaysMetodology = createSelector(
+  [
+    filterModelsByBlackList,
+    getScenarioSelectedMetadata,
+    parseObjectsInIndicators
+  ],
+  (model, scenario, indicator) => [model, scenario, indicator].filter(m => m)
+);

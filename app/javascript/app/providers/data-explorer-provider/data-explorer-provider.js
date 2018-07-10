@@ -7,21 +7,23 @@ import * as actions from './data-explorer-provider-actions';
 class DataExplorerProvider extends PureComponent {
   componentDidMount() {
     const {
-      fetchDataExplorer,
       fetchSectionMetadata,
       fetchMetadata,
       section,
-      query
+      noFilters,
+      fetchDataExplorer
     } = this.props;
-    fetchDataExplorer({ section, query });
     fetchSectionMetadata();
     fetchMetadata(section);
+    if (noFilters) fetchDataExplorer({ section });
   }
 
   componentDidUpdate(prevProps) {
     const { fetchDataExplorer, section, query } = this.props;
     const { section: prevSection, query: prevQuery } = prevProps;
-    if (section !== prevSection || query !== prevQuery) { fetchDataExplorer({ section, query }); }
+    if (section !== prevSection || query !== prevQuery) {
+      fetchDataExplorer({ section, query });
+    }
   }
 
   render() {
@@ -34,6 +36,7 @@ DataExplorerProvider.propTypes = {
   fetchSectionMetadata: PropTypes.func.isRequired,
   fetchMetadata: PropTypes.func.isRequired,
   query: PropTypes.string,
+  noFilters: PropTypes.bool,
   section: PropTypes.string
 };
 

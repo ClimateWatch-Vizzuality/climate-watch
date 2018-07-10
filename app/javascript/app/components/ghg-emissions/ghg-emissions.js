@@ -71,8 +71,12 @@ const mapStateToProps = (state, { location }) => {
 class GhgEmissionsContainer extends PureComponent {
   componentDidUpdate() {
     const { search, sourceSelected, versionSelected } = this.props;
-    if (!search.source && sourceSelected) { this.updateUrlParam({ name: 'source', value: sourceSelected.value }); }
-    if (!search.version && versionSelected) { this.updateUrlParam({ name: 'version', value: versionSelected.value }); }
+    if (!search.source && sourceSelected) {
+      this.updateUrlParam({ name: 'source', value: sourceSelected.value });
+    }
+    if (!search.version && versionSelected) {
+      this.updateUrlParam({ name: 'version', value: versionSelected.value });
+    }
   }
 
   handleSourceChange = category => {
