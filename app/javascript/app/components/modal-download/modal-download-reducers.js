@@ -13,15 +13,13 @@ const setModalDownloadParams = (state, { payload }) => ({
 });
 
 const setRequiredFieldsError = (state, { payload }) => {
-  let isFieldRequiredEmpty = 0;
-  ['firstName', 'lastName', 'organization'].forEach(f => {
-    if (!payload[f] || payload[f] === '') {
-      isFieldRequiredEmpty += 1;
-    }
-  });
+  const requiredFields = ['firstName', 'lastName', 'organization'];
+  const isFieldRequiredEmpty = requiredFields.some(
+    f => !payload[f] || payload[f] === ''
+  );
   return {
     ...state,
-    requiredError: isFieldRequiredEmpty > 0
+    requiredError: isFieldRequiredEmpty
   };
 };
 
