@@ -20,7 +20,7 @@ const MyCw = ({ location, route, login, openCreator }) => {
     if (location.pathname.indexOf('account-settings') > -1) {
       button = { text: 'Logout' };
     } else {
-      button = { text: 'Create a visualisation', onClick: () => openCreator() };
+      button = { text: 'Create a Visualization', onClick: () => openCreator() };
     }
   }
   let content = <Loading className={styles.loading} height={300} />;

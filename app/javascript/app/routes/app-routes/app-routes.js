@@ -42,7 +42,6 @@ import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 
 // flags
-const FEATURE_MY_CLIMATEWATCH = process.env.FEATURE_MY_CLIMATEWATCH === 'true';
 const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
 
 const dataExplorer = FEATURE_DATA_EXPLORER
@@ -50,14 +49,6 @@ const dataExplorer = FEATURE_DATA_EXPLORER
     path: '/data-explorer',
     component: DataExplorer,
     routes: DataExplorerRoutes
-  }
-  : {};
-
-const mycw = FEATURE_MY_CLIMATEWATCH
-  ? {
-    path: '/my-climate-watch',
-    component: MyClimateWatch,
-    routes: MyCwRoutes
   }
   : {};
 
@@ -188,7 +179,11 @@ export default [
     nav: false,
     label: 'STORIES'
   },
-  mycw,
+  {
+    path: '/my-climate-watch',
+    component: MyClimateWatch,
+    routes: MyCwRoutes
+  },
   dataExplorer,
   {
     path: '/about',
