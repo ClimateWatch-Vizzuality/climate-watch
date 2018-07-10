@@ -47,7 +47,7 @@ const MetadataProp = ({ title, data }) =>
 
 MetadataProp.propTypes = {
   title: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired
+  data: PropTypes.node.isRequired
 };
 
 class MetadataText extends PureComponent {
@@ -76,57 +76,60 @@ class MetadataText extends PureComponent {
         ) : (
           <div>
             {technical_title && (
-              <MetadataProp title="Title">{technical_title}</MetadataProp>
+              <MetadataProp title="Title" data={technical_title} />
             )}
             {date_of_content && (
-              <MetadataProp title="Date of content">
-                {date_of_content}
-              </MetadataProp>
+              <MetadataProp title="Date of content" data={date_of_content} />
             )}
             {source_organization && (
-              <MetadataProp title="Source organization">
-                {source_organization}
-              </MetadataProp>
+              <MetadataProp
+                title="Source organization"
+                data={source_organization}
+              />
             )}
-            {summary && <MetadataProp title="Summary">{summary}</MetadataProp>}
+            {summary && <MetadataProp title="Summary" data={summary} />}
             {description && (
-              <MetadataProp title="Description">{description}</MetadataProp>
+              <MetadataProp title="Description" data={description} />
             )}
             {geographic_coverage && (
-              <MetadataProp title="Geographic Coverage">
-                {geographic_coverage}
-              </MetadataProp>
+              <MetadataProp
+                title="Geographic Coverage"
+                data={geographic_coverage}
+              />
             )}
-            {cautions && (
-              <MetadataProp title="Cautions">{cautions}</MetadataProp>
-            )}
+            {cautions && <MetadataProp title="Cautions" data={cautions} />}
             {learn_more_link && (
-              <MetadataProp title="Read more">
-                <a key="link" className={styles.link} href={learn_more_link}>
-                  {' '}
-                  {learn_more_link}{' '}
-                </a>
-              </MetadataProp>
+              <MetadataProp
+                title="Read more"
+                data={
+                  <a key="link" className={styles.link} href={learn_more_link}>
+                    {' '}
+                    {learn_more_link}{' '}
+                  </a>
+                }
+              />
             )}
             {summary_of_licenses && (
-              <MetadataProp title="Summary of licenses">
-                {summary_of_licenses}
-              </MetadataProp>
+              <MetadataProp
+                title="Summary of licenses"
+                data={summary_of_licenses}
+              />
             )}
-            {citation && (
-              <MetadataProp title="Citation">{citation}</MetadataProp>
-            )}
+            {citation && <MetadataProp title="Citation" data={citation} />}
             {terms_of_service_link && (
-              <MetadataProp title="Terms of service link">
-                <a
-                  key="link"
-                  className={styles.link}
-                  href={terms_of_service_link}
-                >
-                  {' '}
-                  {terms_of_service_link}{' '}
-                </a>
-              </MetadataProp>
+              <MetadataProp
+                title="Terms of service link"
+                data={
+                  <a
+                    key="link"
+                    className={styles.link}
+                    href={terms_of_service_link}
+                  >
+                    {' '}
+                    {terms_of_service_link}{' '}
+                  </a>
+                }
+              />
             )}
             {displayDisclaimer && (
               <Disclaimer onlyText={disclaimerConfig.onlyText} />
