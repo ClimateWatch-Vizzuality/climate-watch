@@ -267,13 +267,25 @@ export const LENSES_SELECTOR_INFO = {
       in the locations menu. You can select fewer locations to get a wider range of models.`
 };
 
-export const DATA_EXPLORER_BLACKLIST = ['id', 'iso_code3', 'emissions'];
+export const DATA_EXPLORER_BLACKLIST = [
+  'id',
+  'iso_code3',
+  'iso_code2',
+  'emissions'
+];
 export const DATA_EXPLORER_FIRST_COLUMN_HEADERS = [
   'region',
   'data_source',
   'gwp',
   'sector',
   'gas',
+  'location',
+  'model',
+  'scenario',
+  'category',
+  'subcategory',
+  'indicator',
+  'definition',
   'unit'
 ];
 
@@ -308,8 +320,37 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 export const DATA_EXPLORER_FILTERS = {
   'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
   'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
-  'emission-pathways': [],
+  'emission-pathways': [
+    'locations',
+    'models',
+    'scenarios',
+    'categories',
+    'indicators'
+  ],
   'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
+};
+
+export const DATA_EXPLORER_PATHWAYS_META_LINKS = {
+  'meta locations': {
+    href: '/api/v1/data/emission_pathways/locations',
+    rel: 'meta locations'
+  },
+  'meta models': {
+    href: '/api/v1/data/emission_pathways/models',
+    rel: 'meta models'
+  },
+  'meta scenarios': {
+    href: '/api/v1/data/emission_pathways/scenarios',
+    rel: 'meta scenarios'
+  },
+  'meta categories': {
+    href: '/api/v1/data/emission_pathways/categories',
+    rel: 'meta categories'
+  },
+  'meta indicators': {
+    href: '/api/v1/data/emission_pathways/indicators',
+    rel: 'meta indicators'
+  }
 };
 
 export const DATA_EXPLORER_SECTION_BASE_URIS = {
@@ -331,7 +372,25 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     }
   },
   'ndc-content': {},
-  'emission-pathways': {}
+  'emission-pathways': {
+    locations: {
+      key: 'currentLocation',
+      idLabel: 'id',
+      currentId: 'iso_code'
+    },
+    models: {
+      key: 'model'
+    },
+    scenarios: {
+      key: 'scenario'
+    },
+    indicators: {
+      key: 'indicator'
+    },
+    categories: {
+      key: 'category'
+    }
+  }
 };
 export const SOURCE_IPCC_VERSIONS = [
   { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
@@ -370,6 +429,7 @@ export default {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
+  DATA_EXPLORER_PATHWAYS_META_LINKS,
   SOURCE_IPCC_VERSIONS,
   USERS_PROFESIONAL_SECTORS,
   DATA_EXPLORER_SECTION_BASE_URIS,

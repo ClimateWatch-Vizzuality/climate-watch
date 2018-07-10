@@ -182,7 +182,10 @@ class CountryNdcOverview extends PureComponent {
         className={styles.descriptionContainer}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          __html: values.indc_summary[0] && values.indc_summary[0].value
+          __html:
+            values.indc_summary &&
+            values.indc_summary[0] &&
+            values.indc_summary[0].value
         }}
       />
     );

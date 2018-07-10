@@ -36,18 +36,23 @@ class DataExplorerContent extends PureComponent {
   }
 
   renderMeta() {
-    const { meta, loadingMeta } = this.props;
+    const { meta, loadingMeta, section } = this.props;
     if (loadingMeta) return <Loading light className={styles.loader} />;
+    const noContentMessage =
+      section === 'emission-pathways'
+        ? 'Select a model, scenario or indicator'
+        : 'Select a source';
     return meta && meta.length > 0 ? (
       meta.map((m, i) => (
         <MetadataText
-          key={m.technical_title}
+          key={m.technical_title || m.full_name || m.name}
           className={cx(styles.metadataText, { [styles.topPadded]: i > 0 })}
           data={m}
+          showAll
         />
       ))
     ) : (
-      <NoContent message={'Select a source'} className={styles.noData} />
+      <NoContent message={noContentMessage} className={styles.noData} />
     );
   }
 
@@ -110,7 +115,11 @@ class DataExplorerContent extends PureComponent {
     } = this.props;
     return (
       <div>
-        <DataExplorerProvider section={section} query={filterQuery} />
+        <DataExplorerProvider
+          section={section}
+          query={filterQuery}
+          noFilters={query === ''}
+        />
         <RegionsProvider />
         <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
