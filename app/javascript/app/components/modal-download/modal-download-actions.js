@@ -14,7 +14,10 @@ const saveSurveyData = createThunkAction(
     if (!modalDownload.requiredError) {
       fetch(
         `${USER_SURVEY_SPREADSHEET_URL}?${requestParams.join('&')}`
-      ).then(() => window.location.assign(modalDownload.downloadUrl));
+      ).then(() => {
+        window.location.assign(modalDownload.downloadUrl);
+        return dispatch(toggleModalDownload({ open: false }));
+      });
     }
   }
 );
