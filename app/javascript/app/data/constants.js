@@ -280,7 +280,7 @@ export const DATA_EXPLORER_FIRST_COLUMN_HEADERS = [
 export const USERS_PROFESIONAL_SECTORS = [
   'Academic',
   'Commercial',
-  'Internatioonal Organization',
+  'International Organization',
   'Media',
   'National Government',
   'NGO',
