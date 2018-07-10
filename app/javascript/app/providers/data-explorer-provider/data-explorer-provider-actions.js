@@ -1,6 +1,9 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import { DATA_EXPLORER_SECTION_NAMES } from 'data/constants';
+import {
+  DATA_EXPLORER_SECTION_NAMES,
+  DATA_EXPLORER_PATHWAYS_META_LINKS
+} from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
 import { parseLinkHeader } from 'utils/utils';
 import { parseQuery } from 'utils/data-explorer';
@@ -23,6 +26,9 @@ export const fetchMetadataInit = createAction('fetchMetadataInit');
 export const fetchMetadataReady = createAction('fetchMetadataReady');
 export const fetchMetadataFail = createAction('fetchMetadataFail');
 
+const devESPURL = section =>
+  (section === 'emission-pathways' ? 'https://data.emissionspathways.org' : '');
+
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
   ({ section, query }) => (dispatch, state) => {
@@ -36,9 +42,9 @@ export const fetchDataExplorer = createThunkAction(
       dispatch(fetchDataExplorerInit());
       const parsedQuery = parseQuery(query);
       fetch(
-        `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[section]}${parsedQuery
-          ? `?${parsedQuery}`
-          : ''}`
+        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
+          section
+        ]}${parsedQuery ? `?${parsedQuery}` : ''}`
       )
         .then(response => {
           if (response.ok) {
@@ -101,10 +107,17 @@ export const fetchMetadata = createThunkAction(
         isEmpty(dataExplorer.metadata) ||
         !dataExplorer.metadata[section])
     ) {
-      fetch(`/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[section]}/meta`)
+      fetch(
+        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
+          section
+        ]}/meta`
+      )
         .then(response => {
-          if (response.ok && response.headers.get('Link')) {
-            return parseLinkHeader(response.headers.get('Link'));
+          if (response.ok) {
+            const links = response.headers.get('Link');
+            return links
+              ? parseLinkHeader(links)
+              : DATA_EXPLORER_PATHWAYS_META_LINKS;
           }
           throw Error(response.statusText);
         })
@@ -117,7 +130,7 @@ export const fetchMetadata = createThunkAction(
         })
         .then(parsedLinks => {
           const promises = parsedLinks.map(l =>
-            fetch(l.href).then(response => {
+            fetch(`${devESPURL(section)}${l.href}`).then(response => {
               if (response.ok) return response.json();
               throw Error(response.statusText);
             })

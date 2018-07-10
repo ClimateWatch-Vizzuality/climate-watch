@@ -18,6 +18,7 @@ import {
   getMethodology,
   parseGroupsInOptions,
   getSelectedOptions,
+  getPathwaysMetodology,
   parseFilterQuery,
   parseExternalParams,
   getLink
@@ -42,17 +43,24 @@ const mapStateToProps = (state, { section, location }) => {
     { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
   ];
   const filterQuery = parseFilterQuery(dataState);
+  const devESPURL =
+    section === 'emission-pathways' ? 'https://data.emissionspathways.org' : '';
+  const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
+    section
+  ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
+  const meta =
+    section === 'emission-pathways'
+      ? getPathwaysMetodology(dataState)
+      : getMethodology(dataState);
   return {
     data: parseData(dataState),
-    meta: getMethodology(dataState),
+    meta,
     metadataSection: !!location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
     loadingMeta: state.dataExplorer && state.dataExplorer.loadingMeta,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
     href: getLink(dataState),
-    downloadHref: `/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
-      section
-    ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`,
+    downloadHref,
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: parseGroupsInOptions(dataState),
     selectedOptions: getSelectedOptions(dataState),
