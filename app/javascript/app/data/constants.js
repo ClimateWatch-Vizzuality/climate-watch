@@ -400,6 +400,11 @@ export const SOURCE_VERSIONS = [
   { name: 'UNFCCC - AR4', data_source_slug: 'UNFCCC', version_slug: 'AR4' }
 ];
 
+export const DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS = {
+  'ndc-content': ['sectors', 'categories'],
+  'emission-pathways': ['categories']
+};
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -434,5 +439,6 @@ export default {
   USERS_PROFESIONAL_SECTORS,
   DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_TO_MODULES_PARAMS
+  DATA_EXPLORER_TO_MODULES_PARAMS,
+  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
 };

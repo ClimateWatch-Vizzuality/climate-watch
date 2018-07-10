@@ -15,7 +15,8 @@ import {
   ESP_BLACKLIST,
   DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_TO_MODULES_PARAMS
+  DATA_EXPLORER_TO_MODULES_PARAMS,
+  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
 } from 'data/constants';
 
 const getMeta = state => state.meta || null;
@@ -211,17 +212,16 @@ const parseOptions = options => {
 const parseGroupsInOptions = createSelector(
   [getFilterOptions, getSection],
   (options, section) => {
-    const MULTIPLE_LEVEL_SECTIONS = { 'ndc-content': ['sectors'] };
     if (
       !options ||
       !section ||
-      MULTIPLE_LEVEL_SECTIONS[section] === undefined
+      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] === undefined
     ) {
       return options;
     }
     const updatedOptions = options;
     Object.keys(options).forEach(key => {
-      if (MULTIPLE_LEVEL_SECTIONS[section].includes(key)) {
+      if (DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].includes(key)) {
         updatedOptions[key] = parseOptions(updatedOptions[key]);
       }
     });
@@ -300,7 +300,9 @@ const getSelectedFilters = createSelector(
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       selectedFilterObjects[filterKey] = filterOptions[filterKey].find(
-        f => f.slug === parsedSelectedFilters[filterKey]
+        f =>
+          f.slug === parsedSelectedFilters[filterKey] ||
+          f.label === parsedSelectedFilters[filterKey]
       );
     });
     return selectedFilterObjects;
@@ -312,24 +314,51 @@ export const getFilteredOptions = createSelector(
   (options, section, selectedFilters) => {
     const FILTERED_FIELDS = {
       'historical-emissions': {
-        sectors: {
-          parent: 'source',
-          id: 'data_source_id'
-        }
+        sectors: [
+          {
+            parent: 'source',
+            id: 'data_source_id'
+          }
+        ]
       },
       'ndc-sdg-linkages': {
-        targets: {
-          parent: 'goals',
-          parentId: 'id',
-          id: 'goal_id'
-        }
+        targets: [
+          {
+            parent: 'goals',
+            parentId: 'id',
+            id: 'goal_id'
+          }
+        ]
       },
       'ndc-content': {
-        indicators: {
-          parent: 'categories',
-          parentId: 'id',
-          id: 'category_ids'
-        }
+        indicators: [
+          {
+            parent: 'categories',
+            parentId: 'id',
+            id: 'category_ids'
+          }
+        ]
+      },
+      'emission-pathways': {
+        scenarios: [
+          {
+            parent: 'models',
+            idObject: 'model',
+            id: 'id'
+          }
+        ],
+        indicators: [
+          {
+            parent: 'categories',
+            idObject: 'category',
+            id: 'id'
+          },
+          {
+            parent: 'scenarios',
+            parentId: 'indicator_ids',
+            id: 'id'
+          }
+        ]
       }
     };
     if (
@@ -345,16 +374,35 @@ export const getFilteredOptions = createSelector(
     Object.keys(updatedOptions).forEach(key => {
       const filterableKeys = Object.keys(FILTERED_FIELDS[section]);
       if (filterableKeys.includes(key)) {
-        updatedOptions[key] = updatedOptions[key].filter(i => {
-          const parentIdLabel =
-            FILTERED_FIELDS[section][key].parentId ||
-            FILTERED_FIELDS[section][key].id;
-          const idLabelToFilterBy = FILTERED_FIELDS[section][key].id;
-          const fieldParent = FILTERED_FIELDS[section][key].parent;
-          const selectedId = selectedFilters[fieldParent][parentIdLabel];
-          return isArray(i[idLabelToFilterBy])
-            ? i[idLabelToFilterBy].includes(selectedId)
-            : i[idLabelToFilterBy] === selectedId;
+        FILTERED_FIELDS[section][key].forEach(f => {
+          updatedOptions[key] = updatedOptions[key].filter(i => {
+            const parentIdLabel = f.parentId || f.id;
+
+            const { id: idLabelToFilterBy, parent: parentLabel } = f;
+            let { idObject: idObjectLabel } = f;
+
+            if (
+              section === 'emission-pathways' &&
+              parentLabel === 'categories' &&
+              selectedFilters.categories &&
+              selectedFilters.categories.parent_id
+            ) {
+              idObjectLabel = 'subcategory';
+            }
+
+            const selectedId =
+              selectedFilters[parentLabel] &&
+              selectedFilters[parentLabel][parentIdLabel];
+            if (!selectedId) return true;
+            const id = idObjectLabel
+              ? i[idObjectLabel][idLabelToFilterBy]
+              : i[idLabelToFilterBy];
+
+            if (isArray(id)) return id.includes(selectedId);
+            return isArray(selectedId)
+              ? selectedId.includes(id)
+              : id === selectedId;
+          });
         });
       }
     });

@@ -14,6 +14,7 @@ import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import { toStartCase } from 'app/utils';
 import cx from 'classnames';
+import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
 import styles from './data-explorer-content-styles.scss';
 
 class DataExplorerContent extends PureComponent {
@@ -68,9 +69,12 @@ class DataExplorerContent extends PureComponent {
     } = this.props;
     const disabled =
       (!metadataSection && loading) || (metadataSection && loadingMeta);
+    const isMultiple = field =>
+      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] &&
+      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].includes(field);
     return filters.map(
       field =>
-        (section === 'ndc-content' && field === 'sectors' ? (
+        (isMultiple(field) ? (
           <MultiDropdown
             key={field}
             label={toStartCase(field)}
