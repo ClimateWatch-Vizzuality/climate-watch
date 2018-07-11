@@ -2,7 +2,7 @@ import React from 'react';
 import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { assign } from 'app/utils';
 import { setChartColors } from 'app/utils/graphs';
-import { groupByYear, groupBy, pick } from '../utils';
+import { groupByYear, groupBy, pick, orderAlphabetically } from '../utils';
 
 import Tick from '../tick';
 
@@ -14,6 +14,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
     CHART_COLORS,
     CHART_COLORS_EXTENDED
   );
+
   return {
     chart: {
       data: pick('value', data), // only data value key
@@ -52,21 +53,27 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
       : {
         vertical: false
       },
-    theme: keys.reduce(
-      (th, k, i) =>
-        assign(th, {
-          [k]: {
-            fill: chartColors[i],
-            stroke: ''
-          }
-        }),
-      {}
-    ),
+    theme: keys
+      .slice()
+      .sort()
+      .reduce(
+        (th, k, i) =>
+          assign(th, {
+            [k]: {
+              fill: chartColors[i],
+              stroke: ''
+            }
+          }),
+        {}
+      ),
     tooltip: small ? null : { unit, names },
-    legend: keys.map((k, i) => ({
-      color: chartColors[i],
-      label: names[0][k]
-    }))
+    legend: keys
+      .slice()
+      .sort()
+      .map((k, i) => ({
+        color: chartColors[i],
+        label: names[0][k]
+      }))
   };
 };
 
@@ -76,7 +83,9 @@ export const stackBarChart1Data = (
   yAxisLabel,
   small
 ) => {
-  const data = groupByYear(timeSeries, 'indicator', indicators);
+  const data = orderAlphabetically(
+    groupByYear(timeSeries, 'indicator', indicators)
+  );
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   return makeConfig(data, keys, indicators, yAxisLabel, small);
 };
@@ -88,10 +97,8 @@ export const stackBarChart2Data = (
   yAxisLabel,
   small
 ) => {
-  const data = groupBy(
-    timeseries,
-    ['location', 'indicator'],
-    [locations, indicators]
+  const data = orderAlphabetically(
+    groupBy(timeseries, ['location', 'indicator'], [locations, indicators])
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
   const baseConfig = makeConfig(data, keys, indicators, yAxisLabel, small);
