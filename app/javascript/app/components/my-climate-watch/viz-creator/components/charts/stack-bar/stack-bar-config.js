@@ -97,10 +97,8 @@ export const stackBarChart2Data = (
   yAxisLabel,
   small
 ) => {
-  const data = groupBy(
-    timeseries,
-    ['location', 'indicator'],
-    [locations, indicators]
+  const data = orderAlphabetically(
+    groupBy(timeseries, ['location', 'indicator'], [locations, indicators])
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
   const baseConfig = makeConfig(data, keys, indicators, yAxisLabel, small);
