@@ -84,6 +84,7 @@ export const orderAlphabetically = unorderedObjectsArray => {
   unorderedObjectsArray.forEach(obj => {
     const orderedObject = {};
     Object.keys(obj)
+      .slice()
       .sort(sortStringsReverse)
       .forEach(function (key) {
         orderedObject[key] = obj[key];

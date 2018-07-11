@@ -64,10 +64,13 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
       {}
     ),
     tooltip: small ? null : { unit, names },
-    legend: keys.map((k, i) => ({
-      color: chartColors[i],
-      label: names[0][k]
-    }))
+    legend: keys
+      .slice()
+      .sort()
+      .map((k, i) => ({
+        color: chartColors[i],
+        label: names[0][k]
+      }))
   };
 };
 
