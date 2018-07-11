@@ -20,6 +20,8 @@ import {
 
 import styles from './button-group-styles.scss';
 
+const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
+
 const iconsMap = {
   info: iconInfo,
   download: iconDownload,
@@ -48,6 +50,16 @@ const renderButton = buttonConfig => {
   const params = buttonConfig.filters
     ? `?${qs.stringify(parseFilters(buttonConfig.filters))}`
     : '';
+  const defaultButton = (
+    <Button
+      key={buttonConfig.type}
+      className={styles.button}
+      onClick={buttonConfig.onClick}
+      disabled={buttonConfig.disabled || !buttonConfig.onClick}
+    >
+      <Icon icon={iconsMap[buttonConfig.type]} />
+    </Button>
+  );
   const downloadLink = `/data-explorer${sectionUrl}${params}`;
   switch (buttonConfig.type) {
     case 'share':
@@ -63,7 +75,7 @@ const renderButton = buttonConfig => {
         />
       );
     case 'download':
-      return (
+      return FEATURE_DATA_EXPLORER ? (
         <Link
           key={buttonConfig.type}
           className={cx(styles.button, styles.download)}
@@ -72,18 +84,11 @@ const renderButton = buttonConfig => {
         >
           <Icon icon={iconsMap[buttonConfig.type]} />
         </Link>
+      ) : (
+        defaultButton
       );
     default:
-      return (
-        <Button
-          key={buttonConfig.type}
-          className={styles.button}
-          onClick={buttonConfig.onClick}
-          disabled={buttonConfig.disabled || !buttonConfig.onClick}
-        >
-          <Icon icon={iconsMap[buttonConfig.type]} />
-        </Button>
-      );
+      return defaultButton;
   }
 };
 
