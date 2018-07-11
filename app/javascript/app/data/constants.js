@@ -330,6 +330,10 @@ export const DATA_EXPLORER_FILTERS = {
   'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
 };
 
+export const DATA_EXPLORER_DEPENDENCIES = {
+  'emission-pathways': { indicators: ['categories'] }
+};
+
 export const DATA_EXPLORER_PATHWAYS_META_LINKS = {
   'meta locations': {
     href: '/api/v1/data/emission_pathways/locations',
@@ -438,6 +442,7 @@ export default {
   DATA_EXPLORER_PATHWAYS_META_LINKS,
   USERS_PROFESIONAL_SECTORS,
   DATA_EXPLORER_SECTION_BASE_URIS,
+  DATA_EXPLORER_DEPENDENCIES,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS

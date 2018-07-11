@@ -63,13 +63,10 @@ class DataExplorerContent extends PureComponent {
       selectedOptions,
       filterOptions,
       filters,
-      loading,
-      loadingMeta,
       section,
-      metadataSection
+      isDisabled
     } = this.props;
-    const disabled =
-      (!metadataSection && loading) || (metadataSection && loadingMeta);
+
     const isMultiple = field =>
       DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] &&
       DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].includes(field);
@@ -82,7 +79,7 @@ class DataExplorerContent extends PureComponent {
             placeholder={`Filter by ${toStartCase(field)}`}
             options={filterOptions ? filterOptions[field] : []}
             value={selectedOptions ? selectedOptions[field] : null}
-            disabled={disabled}
+            disabled={isDisabled(field)}
             clearable
             onChange={option =>
               handleFilterChange(
@@ -100,7 +97,7 @@ class DataExplorerContent extends PureComponent {
               handleFilterChange(field, selected && selected.slug)}
             value={selectedOptions ? selectedOptions[field] : null}
             plain
-            disabled={disabled}
+            disabled={isDisabled(field)}
             noAutoSort={field === 'goals' || field === 'targets'}
           />
         ))
@@ -156,6 +153,7 @@ class DataExplorerContent extends PureComponent {
 DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
+  isDisabled: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,
