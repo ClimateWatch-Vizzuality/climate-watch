@@ -60,7 +60,7 @@ class CountryTimeline extends PureComponent {
           <h3 className={styles.timelineDescription}>
             Timeline of UNFCCC Document Submissions
           </h3>
-          {documentYears ? (
+          {documentYears && documentYears.length > 0 ? (
             <HorizontalTimeline
               index={this.state.index || documentYears.length - 1}
               indexClick={index => {

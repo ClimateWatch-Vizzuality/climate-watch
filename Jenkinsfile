@@ -38,12 +38,12 @@ node {
           sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=false -t ${dockerUsername}/${appName}:latest .")
           break
         case "sandbox":
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest .")
           break
         default:
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true -t ${imageTag} .")
-          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg RAILS_ENV=staging --build-arg secretKey=${secretKey} --build-arg FEATURE_DATA_EXPLORER=true --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest .")
       }
     }
 
