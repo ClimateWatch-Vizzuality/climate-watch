@@ -205,12 +205,12 @@ export default [
   {
     path: '/my-climate-watch',
     label: 'MY CW',
-    navMobile: true
+    navMobile: !!FEATURE_DATA_EXPLORER
   },
   {
     path: '/data-explorer',
     label: 'DATA EXPLORER',
-    navMobile: true
+    navMobile: !!FEATURE_DATA_EXPLORER
   },
   {
     path: '/',

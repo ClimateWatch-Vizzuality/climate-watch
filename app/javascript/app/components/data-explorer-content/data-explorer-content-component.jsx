@@ -11,6 +11,7 @@ import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import Button from 'components/button';
+import ModalDownload from 'components/modal-download';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import { toStartCase } from 'app/utils';
 import cx from 'classnames';
@@ -106,11 +107,11 @@ class DataExplorerContent extends PureComponent {
     const {
       section,
       href,
-      downloadHref,
       metadataSection,
       anchorLinks,
       filterQuery,
-      query
+      query,
+      handleDownloadModalOpen
     } = this.props;
     return (
       <div>
@@ -134,10 +135,15 @@ class DataExplorerContent extends PureComponent {
           <Button className={styles.button} href={href} color="plain">
             View in module page
           </Button>
-          <Button className={styles.button} href={downloadHref} color="yellow">
+          <Button
+            className={styles.button}
+            onClick={handleDownloadModalOpen}
+            color="yellow"
+          >
             Download
           </Button>
         </div>
+        <ModalDownload />
       </div>
     );
   }
@@ -146,6 +152,7 @@ class DataExplorerContent extends PureComponent {
 DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
+  handleDownloadModalOpen: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,
   filterOptions: PropTypes.object,
@@ -156,7 +163,6 @@ DataExplorerContent.propTypes = {
   loading: PropTypes.bool,
   loadingMeta: PropTypes.bool,
   href: PropTypes.string,
-  downloadHref: PropTypes.string,
   anchorLinks: PropTypes.array,
   filterQuery: PropTypes.string,
   query: PropTypes.string
