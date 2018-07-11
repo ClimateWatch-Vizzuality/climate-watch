@@ -8,7 +8,7 @@ import {
 } from 'app/utils/graphs';
 import { groupByYear, pick } from '../utils';
 
-const makeConfig = (data, indicators, small) => {
+const makeConfig = (data, indicators, small, models) => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   const chartColors = setChartColors(
     keys.length,
@@ -68,15 +68,42 @@ const makeConfig = (data, indicators, small) => {
       {}
     ),
     tooltip: small ? null : { unit, names },
-    legend: keys.map((k, i) => ({
-      color: chartColors[i],
-      label: names[0][k]
-    }))
+    legend: {
+      theme: keys.map((k, i) => ({
+        color: chartColors[i],
+        label: names[0][k]
+      })),
+      logo: models.data.find(model => model.id === models.selected.value).logo,
+      modelUrl: models.data.find(model => model.id === models.selected.value)
+        .url
+    }
   };
 };
 
-export const lineChart1Data = (timeSeries, scenarios, indicators, small) =>
-  makeConfig(groupByYear(timeSeries, 'scenario', scenarios), indicators, small);
+export const lineChart1Data = (
+  timeSeries,
+  scenarios,
+  indicators,
+  small,
+  models
+) =>
+  makeConfig(
+    groupByYear(timeSeries, 'scenario', scenarios),
+    indicators,
+    small,
+    models
+  );
 
-export const lineChart2Data = (timeSeries, locations, indicators, small) =>
-  makeConfig(groupByYear(timeSeries, 'location', locations), indicators, small);
+export const lineChart2Data = (
+  timeSeries,
+  locations,
+  indicators,
+  small,
+  models
+) =>
+  makeConfig(
+    groupByYear(timeSeries, 'location', locations),
+    indicators,
+    small,
+    models
+  );

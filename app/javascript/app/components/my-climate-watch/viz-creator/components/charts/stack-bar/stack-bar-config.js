@@ -6,7 +6,7 @@ import { groupByYear, groupBy, pick } from '../utils';
 
 import Tick from '../tick';
 
-const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
+const makeConfig = (data, keys, indicators, yAxisLabel, small, models) => {
   const names = pick('name', data); // only data name key
   const unit = indicators[0] && indicators[0].unit;
   const chartColors = setChartColors(
@@ -63,10 +63,15 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
       {}
     ),
     tooltip: small ? null : { unit, names },
-    legend: keys.map((k, i) => ({
-      color: chartColors[i],
-      label: names[0][k]
-    }))
+    legend: {
+      theme: keys.map((k, i) => ({
+        color: chartColors[i],
+        label: names[0][k]
+      })),
+      logo: models.data.find(model => model.id === models.selected.value).logo,
+      modelUrl: models.data.find(model => model.id === models.selected.value)
+        .url
+    }
   };
 };
 
@@ -74,11 +79,12 @@ export const stackBarChart1Data = (
   timeSeries,
   indicators,
   yAxisLabel,
-  small
+  small,
+  models
 ) => {
   const data = groupByYear(timeSeries, 'indicator', indicators);
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
-  return makeConfig(data, keys, indicators, yAxisLabel, small);
+  return makeConfig(data, keys, indicators, yAxisLabel, small, models);
 };
 
 export const stackBarChart2Data = (
@@ -86,7 +92,8 @@ export const stackBarChart2Data = (
   locations,
   indicators,
   yAxisLabel,
-  small
+  small,
+  models
 ) => {
   const data = groupBy(
     timeseries,
@@ -94,7 +101,14 @@ export const stackBarChart2Data = (
     [locations, indicators]
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
-  const baseConfig = makeConfig(data, keys, indicators, yAxisLabel, small);
+  const baseConfig = makeConfig(
+    data,
+    keys,
+    indicators,
+    yAxisLabel,
+    small,
+    models
+  );
   return assign(baseConfig, {
     chart: {
       ...baseConfig.chart,
