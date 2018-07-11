@@ -405,8 +405,8 @@ export const SOURCE_VERSIONS = [
 ];
 
 export const DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS = {
-  'ndc-content': ['sectors', 'categories'],
-  'emission-pathways': ['categories']
+  'ndc-content': [{ key: 'sectors' }, { key: 'categories' }],
+  'emission-pathways': [{ key: 'categories', noSelectableParent: true }]
 };
 
 export default {

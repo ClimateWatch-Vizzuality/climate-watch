@@ -221,7 +221,9 @@ const parseGroupsInOptions = createSelector(
     }
     const updatedOptions = options;
     Object.keys(options).forEach(key => {
-      if (DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].includes(key)) {
+      if (
+        DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === key)
+      ) {
         updatedOptions[key] = parseOptions(updatedOptions[key]);
       }
     });

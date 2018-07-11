@@ -67,12 +67,12 @@ class DataExplorerContent extends PureComponent {
       isDisabled
     } = this.props;
 
-    const isMultiple = field =>
+    const multipleSector = field =>
       DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] &&
-      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].includes(field);
+      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === field);
     return filters.map(
       field =>
-        (isMultiple(field) ? (
+        (multipleSector(field) ? (
           <MultiDropdown
             key={field}
             label={toStartCase(field)}
@@ -86,6 +86,7 @@ class DataExplorerContent extends PureComponent {
                 field,
                 option && (option.label || option.slug)
               )}
+            noParentSelection={multipleSector(field).noSelectableParent}
           />
         ) : (
           <Dropdown
