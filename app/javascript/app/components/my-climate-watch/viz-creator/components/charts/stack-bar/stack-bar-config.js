@@ -53,16 +53,19 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
       : {
         vertical: false
       },
-    theme: keys.reduce(
-      (th, k, i) =>
-        assign(th, {
-          [k]: {
-            fill: chartColors[i],
-            stroke: ''
-          }
-        }),
-      {}
-    ),
+    theme: keys
+      .slice()
+      .sort()
+      .reduce(
+        (th, k, i) =>
+          assign(th, {
+            [k]: {
+              fill: chartColors[i],
+              stroke: ''
+            }
+          }),
+        {}
+      ),
     tooltip: small ? null : { unit, names },
     legend: keys
       .slice()
