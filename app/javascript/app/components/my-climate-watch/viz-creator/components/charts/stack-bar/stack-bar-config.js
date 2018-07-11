@@ -2,7 +2,7 @@ import React from 'react';
 import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { assign } from 'app/utils';
 import { setChartColors } from 'app/utils/graphs';
-import { groupByYear, groupBy, pick } from '../utils';
+import { groupByYear, groupBy, pick, orderAlphabetically } from '../utils';
 
 import Tick from '../tick';
 
@@ -14,6 +14,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small) => {
     CHART_COLORS,
     CHART_COLORS_EXTENDED
   );
+
   return {
     chart: {
       data: pick('value', data), // only data value key
@@ -76,7 +77,9 @@ export const stackBarChart1Data = (
   yAxisLabel,
   small
 ) => {
-  const data = groupByYear(timeSeries, 'indicator', indicators);
+  const data = orderAlphabetically(
+    groupByYear(timeSeries, 'indicator', indicators)
+  );
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   return makeConfig(data, keys, indicators, yAxisLabel, small);
 };
