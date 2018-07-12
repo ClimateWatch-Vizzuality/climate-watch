@@ -10,15 +10,11 @@
 }
 
 .buttons {
-  @include columns(6);
+  @include columns(4);
   @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding * 2);
 
   @media #{$tablet-landscape} {
     @include columns(4);
-
-    > :nth-child(2) {
-      @include column-offset(4);
-    }
   }
 }
 
@@ -52,5 +48,27 @@
 
   &.topPadded {
     @include xy-gutters($gutter-position: 'top', $gutters: $gutter-padding * 3);
+  }
+}
+
+.paginate {
+  display: inline-block;
+  padding: 10px 15px;
+  text-align: center;
+
+  a {
+    color: $dark-gray;
+    cursor: pointer;
+  }
+
+  li {
+    padding: 0 5px;
+    display: inline-block;
+  }
+}
+
+.active {
+  a {
+    color: $theme-secondary;
   }
 }

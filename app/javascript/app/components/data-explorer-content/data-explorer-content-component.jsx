@@ -14,6 +14,7 @@ import Button from 'components/button';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import { toStartCase } from 'app/utils';
 import cx from 'classnames';
+import ReactPaginate from 'react-paginate';
 import styles from './data-explorer-content-styles.scss';
 
 class DataExplorerContent extends PureComponent {
@@ -110,7 +111,11 @@ class DataExplorerContent extends PureComponent {
       metadataSection,
       anchorLinks,
       filterQuery,
-      query
+      query,
+      handlePageChange,
+      pageCount,
+      initialPage,
+      loading
     } = this.props;
     return (
       <div>
@@ -134,6 +139,22 @@ class DataExplorerContent extends PureComponent {
           <Button className={styles.button} href={href} color="plain">
             View in module page
           </Button>
+          {loading ? (
+            <div className={styles.blank} />
+          ) : (
+            <ReactPaginate
+              containerClassName={styles.paginate}
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel={<a href="">...</a>}
+              pageCount={pageCount}
+              pageRangeDisplayed={3}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageChange}
+              initialPage={initialPage}
+              activeClassName={styles.active}
+            />
+          )}
           <Button className={styles.button} href={downloadHref} color="yellow">
             Download
           </Button>
@@ -146,6 +167,7 @@ class DataExplorerContent extends PureComponent {
 DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,
   filterOptions: PropTypes.object,
@@ -159,7 +181,9 @@ DataExplorerContent.propTypes = {
   downloadHref: PropTypes.string,
   anchorLinks: PropTypes.array,
   filterQuery: PropTypes.string,
-  query: PropTypes.string
+  query: PropTypes.string,
+  pageCount: PropTypes.number,
+  initialPage: PropTypes.number
 };
 
 export default DataExplorerContent;

@@ -52,8 +52,16 @@ const mapStateToProps = (state, { section, location }) => {
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
       : getMethodology(dataState);
+  const data = parseData(dataState);
+  const itemsPerPage = 7;
+  const dataLenght =
+    state.dataExplorer &&
+    state.dataExplorer.data &&
+    state.dataExplorer.data[section] &&
+    state.dataExplorer.data[section].total;
   return {
-    data: parseData(dataState),
+    data,
+    pageCount: dataLenght ? dataLenght / itemsPerPage : 0,
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',
     loading: state.dataExplorer && state.dataExplorer.loading,
@@ -68,7 +76,8 @@ const mapStateToProps = (state, { section, location }) => {
     query: location.search,
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
-    search
+    search,
+    initialPage: parseInt(search.page, 10) - 1 || 0
   };
 };
 
@@ -98,9 +107,14 @@ class DataExplorerContentContainer extends PureComponent {
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source';
+    const resetPageParam = {
+      name: 'page',
+      value: 1
+    };
+    const paramsToUpdate = [];
     if (filterName === SOURCE_AND_VERSION_KEY) {
       const values = value && value.split(' - ');
-      this.updateUrlParam([
+      paramsToUpdate.concat([
         {
           name: `${section}-data-sources`,
           value: value && values[0]
@@ -111,11 +125,16 @@ class DataExplorerContentContainer extends PureComponent {
         }
       ]);
     } else {
-      this.updateUrlParam({
+      paramsToUpdate.push({
         name: `${section}-${filterName}`,
         value
       });
     }
+    this.updateUrlParam(paramsToUpdate.concat(resetPageParam));
+  };
+
+  handlePageChange = page => {
+    this.updateUrlParam({ name: 'page', value: page.selected + 1 });
   };
 
   updateUrlParam(params, clear) {
@@ -126,7 +145,8 @@ class DataExplorerContentContainer extends PureComponent {
   render() {
     return createElement(DataExplorerContentComponent, {
       ...this.props,
-      handleFilterChange: this.handleFilterChange
+      handleFilterChange: this.handleFilterChange,
+      handlePageChange: this.handlePageChange
     });
   }
 }

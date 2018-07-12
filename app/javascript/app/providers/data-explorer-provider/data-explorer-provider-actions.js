@@ -46,15 +46,20 @@ export const fetchDataExplorer = createThunkAction(
           section
         ]}${parsedQuery ? `?${parsedQuery}` : ''}`
       )
+        .then(response =>
+          response.json().then(json => {
+            if (response.ok) {
+              return {
+                total: response.headers.get('Total'),
+                data: json.data
+              };
+            }
+            throw Error(response.statusText);
+          })
+        )
         .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw Error(response.statusText);
-        })
-        .then(data => {
-          if (data) {
-            dispatch(fetchDataExplorerReady({ data, section }));
+          if (response) {
+            dispatch(fetchDataExplorerReady({ data: response, section }));
           } else {
             dispatch(fetchDataExplorerReady({}));
           }

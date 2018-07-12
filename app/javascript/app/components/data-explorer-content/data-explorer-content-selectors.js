@@ -98,6 +98,8 @@ export const getFilterQuery = createSelector(
       filterIds[parsedKey] =
         filter && (filter.iso_code || filter.id || filter.iso_code3);
     });
+    filterIds.page = search.page || 1;
+    filterIds.per_page = 7;
     return filterIds;
   }
 );
