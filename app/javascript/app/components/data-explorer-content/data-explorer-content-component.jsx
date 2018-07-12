@@ -16,6 +16,7 @@ import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss'
 import { toStartCase } from 'app/utils';
 import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
+import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
 import styles from './data-explorer-content-styles.scss';
 
 class DataExplorerContent extends PureComponent {
@@ -63,29 +64,30 @@ class DataExplorerContent extends PureComponent {
       selectedOptions,
       filterOptions,
       filters,
-      loading,
-      loadingMeta,
       section,
-      metadataSection
+      isDisabled
     } = this.props;
-    const disabled =
-      (!metadataSection && loading) || (metadataSection && loadingMeta);
+
+    const multipleSector = field =>
+      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] &&
+      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === field);
     return filters.map(
       field =>
-        (section === 'ndc-content' && field === 'sectors' ? (
+        (multipleSector(field) ? (
           <MultiDropdown
             key={field}
             label={toStartCase(field)}
             placeholder={`Filter by ${toStartCase(field)}`}
             options={filterOptions ? filterOptions[field] : []}
             value={selectedOptions ? selectedOptions[field] : null}
-            disabled={disabled}
+            disabled={isDisabled(field)}
             clearable
             onChange={option =>
               handleFilterChange(
                 field,
                 option && (option.label || option.slug)
               )}
+            noParentSelection={multipleSector(field).noSelectableParent}
           />
         ) : (
           <Dropdown
@@ -97,7 +99,7 @@ class DataExplorerContent extends PureComponent {
               handleFilterChange(field, selected && selected.slug)}
             value={selectedOptions ? selectedOptions[field] : null}
             plain
-            disabled={disabled}
+            disabled={isDisabled(field)}
             noAutoSort={field === 'goals' || field === 'targets'}
           />
         ))
@@ -175,6 +177,7 @@ DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
+  isDisabled: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,

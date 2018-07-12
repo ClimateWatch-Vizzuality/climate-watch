@@ -1,21 +1,25 @@
 import { createSelector } from 'reselect';
 import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
+import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import qs from 'query-string';
 import { parseQuery } from 'utils/data-explorer';
+import { findEqual } from 'utils/utils';
 import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
-  SOURCE_IPCC_VERSIONS,
+  SOURCE_VERSIONS,
   ESP_BLACKLIST,
   DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_TO_MODULES_PARAMS
+  DATA_EXPLORER_TO_MODULES_PARAMS,
+  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
 } from 'data/constants';
 
+const getMeta = state => state.meta || null;
 const getSection = state => state.section || null;
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -29,8 +33,8 @@ export const getData = createSelector(
   }
 );
 
-export const getSourceIPCCOptions = createSelector(
-  [state => state.meta, getSection],
+export const getSourceOptions = createSelector(
+  [getMeta, getSection],
   (meta, section) => {
     if (
       !meta ||
@@ -41,15 +45,15 @@ export const getSourceIPCCOptions = createSelector(
     ) {
       return null;
     }
-    return SOURCE_IPCC_VERSIONS.map(option => {
+    return SOURCE_VERSIONS.map(option => {
       const data_source = meta[section].data_sources.find(
-        s => s.name === option.source_slug
+        s => s.name === option.data_source_slug
       );
       const version = meta[section].gwps.find(
         s => s.name === option.version_slug
       );
       const updatedOption = option;
-      updatedOption.source_id = data_source && data_source.id;
+      updatedOption.data_source_id = data_source && data_source.id;
       updatedOption.version_id = version && version.id;
       return updatedOption;
     });
@@ -65,11 +69,8 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
   return fieldsWithoutPrefix;
 };
 
-const findEqual = (parent, children, value) =>
-  children.find(c => parent[c] === value);
-
 export const getFilterQuery = createSelector(
-  [state => state.meta, getSearch, getSection],
+  [getMeta, getSearch, getSection],
   (meta, search, section) => {
     if (!meta || isEmpty(meta) || !section) return null;
     const metadata = meta[section];
@@ -141,25 +142,20 @@ export const getLink = createSelector(
 );
 
 export const getFilterOptions = createSelector(
-  [
-    state => state.meta,
-    getSection,
-    getCountries,
-    getRegions,
-    getSourceIPCCOptions
-  ],
+  [getMeta, getSection, getCountries, getRegions, getSourceOptions],
   (meta, section, countries, regions, sourceVersions) => {
     if (!section || isEmpty(meta)) return null;
-    const filters = DATA_EXPLORER_FILTERS[section];
+    const filterKeys = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = meta[section];
+
     if (!filtersMeta) return null;
-    if (filters.includes('regions')) filtersMeta.regions = regions;
-    if (filters.includes('countries')) filtersMeta.countries = countries;
-    if (filters.includes('source')) {
+    if (filterKeys.includes('regions')) filtersMeta.regions = regions;
+    if (filterKeys.includes('countries')) filtersMeta.countries = countries;
+    if (filterKeys.includes('source')) {
       filtersMeta.source = sourceVersions;
     }
     const filterOptions = {};
-    filters.forEach(f => {
+    filterKeys.forEach(f => {
       const options = filtersMeta[f];
       if (options) {
         const parsedOptions = options.map(option => {
@@ -215,20 +211,21 @@ const parseOptions = options => {
   return sortBy(finalOptions, 'label');
 };
 
-export const parseGroupsInOptions = createSelector(
+const parseGroupsInOptions = createSelector(
   [getFilterOptions, getSection],
   (options, section) => {
-    const MULTIPLE_LEVEL_SECTIONS = { 'ndc-content': ['sectors'] };
     if (
       !options ||
       !section ||
-      MULTIPLE_LEVEL_SECTIONS[section] === undefined
+      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] === undefined
     ) {
       return options;
     }
     const updatedOptions = options;
     Object.keys(options).forEach(key => {
-      if (MULTIPLE_LEVEL_SECTIONS[section].includes(key)) {
+      if (
+        DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === key)
+      ) {
         updatedOptions[key] = parseOptions(updatedOptions[key]);
       }
     });
@@ -292,15 +289,9 @@ export const parseExternalParams = createSelector(
 );
 
 const getSelectedFilters = createSelector(
-  [
-    getSearch,
-    getSection,
-    getFilterOptions,
-    state => state.meta,
-    parseExternalParams
-  ],
-  (search, section, filterOptions, meta) => {
-    if (!search || !section || !filterOptions || !meta) return null;
+  [getSearch, getSection, getFilterOptions],
+  (search, section, filterOptions) => {
+    if (!search || !section || !filterOptions) return null;
     const selectedFields = search;
     const nonExternalKeys = Object.keys(selectedFields).filter(
       k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
@@ -313,15 +304,118 @@ const getSelectedFilters = createSelector(
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       selectedFilterObjects[filterKey] = filterOptions[filterKey].find(
-        f => f.slug === parsedSelectedFilters[filterKey]
+        f =>
+          f.slug === parsedSelectedFilters[filterKey] ||
+          f.label === parsedSelectedFilters[filterKey]
       );
     });
     return selectedFilterObjects;
   }
 );
 
+export const getFilteredOptions = createSelector(
+  [parseGroupsInOptions, getSection, getSelectedFilters],
+  (options, section, selectedFilters) => {
+    const FILTERED_FIELDS = {
+      'historical-emissions': {
+        sectors: [
+          {
+            parent: 'source',
+            id: 'data_source_id'
+          }
+        ]
+      },
+      'ndc-sdg-linkages': {
+        targets: [
+          {
+            parent: 'goals',
+            parentId: 'id',
+            id: 'goal_id'
+          }
+        ]
+      },
+      'ndc-content': {
+        indicators: [
+          {
+            parent: 'categories',
+            parentId: 'id',
+            id: 'category_ids'
+          }
+        ]
+      },
+      'emission-pathways': {
+        scenarios: [
+          {
+            parent: 'models',
+            idObject: 'model',
+            id: 'id'
+          }
+        ],
+        indicators: [
+          {
+            parent: 'categories',
+            idObject: 'category',
+            id: 'id'
+          },
+          {
+            parent: 'scenarios',
+            parentId: 'indicator_ids',
+            id: 'id'
+          }
+        ]
+      }
+    };
+    if (
+      !section ||
+      !FILTERED_FIELDS[section] ||
+      !selectedFilters ||
+      isEmpty(selectedFilters) ||
+      FILTERED_FIELDS[section] === undefined
+    ) {
+      return options;
+    }
+    const updatedOptions = { ...options };
+    Object.keys(updatedOptions).forEach(key => {
+      const filterableKeys = Object.keys(FILTERED_FIELDS[section]);
+      if (filterableKeys.includes(key)) {
+        FILTERED_FIELDS[section][key].forEach(f => {
+          updatedOptions[key] = updatedOptions[key].filter(i => {
+            const parentIdLabel = f.parentId || f.id;
+
+            const { id: idLabelToFilterBy, parent: parentLabel } = f;
+            let { idObject: idObjectLabel } = f;
+
+            if (
+              section === 'emission-pathways' &&
+              parentLabel === 'categories' &&
+              selectedFilters.categories &&
+              selectedFilters.categories.parent_id
+            ) {
+              idObjectLabel = 'subcategory';
+            }
+
+            const selectedId =
+              selectedFilters[parentLabel] &&
+              selectedFilters[parentLabel][parentIdLabel];
+            if (!selectedId) return true;
+            const id = idObjectLabel
+              ? i[idObjectLabel][idLabelToFilterBy]
+              : i[idLabelToFilterBy];
+
+            if (isArray(id)) return id.includes(selectedId);
+            return isArray(selectedId)
+              ? selectedId.includes(id)
+              : id === selectedId;
+          });
+        });
+      }
+    });
+    return updatedOptions;
+  }
+);
+
 export const getMethodology = createSelector(
-  [state => state.meta, getSection, getSelectedFilters],
+  [getMeta, getSection, getSelectedFilters],
   (meta, section, selectedfilters) => {
     const sectionHasSources = section === 'historical-emissions';
     const emissionPathwaysSection = section === 'emission-pathways';
@@ -348,7 +442,7 @@ export const getMethodology = createSelector(
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source = selectedfilters.source.source_slug;
+      const source = selectedfilters.source.data_source_slug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
     return methodology.filter(s => metaSource.includes(s.source));
@@ -367,7 +461,7 @@ export const getSelectedOptions = createSelector(
         id: selectedFields[key].iso_code ||
         selectedFields[key].id ||
         selectedFields[key].iso_code3 || [
-          selectedFields[key].source_id,
+          selectedFields[key].data_source_id,
           selectedFields[key].version_id
         ]
       };

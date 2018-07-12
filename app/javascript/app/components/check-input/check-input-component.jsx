@@ -40,10 +40,10 @@ CheckInputComponent.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   checked: PropTypes.bool,
+  disabled: PropTypes.bool,
   onChange: PropTypes.func,
   toggleFirst: PropTypes.bool,
-  theme: PropTypes.object,
-  disabled: PropTypes.bool
+  theme: PropTypes.object
 };
 
 export default themr('CheckInputComponent', styles)(CheckInputComponent);

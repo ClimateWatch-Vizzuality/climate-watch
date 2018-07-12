@@ -101,7 +101,9 @@ class EmissionPathwayGraphContainer extends PureComponent {
 
     const { search, filtersSelected } = this.props;
     ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
-      if (!search[f] && filtersSelected[f]) { this.updateUrlParam({ name: f, value: filtersSelected[f].value }); }
+      if (!search[f] && filtersSelected[f]) {
+        this.updateUrlParam({ name: f, value: filtersSelected[f].value });
+      }
     });
   }
 

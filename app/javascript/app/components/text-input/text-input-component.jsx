@@ -42,7 +42,6 @@ class InputComponent extends Component {
         <input {...inputProps} {...labelProp} />
       );
     const isRequired = !value && required;
-
     return (
       <div>
         {label && (
