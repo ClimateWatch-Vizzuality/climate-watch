@@ -108,7 +108,8 @@ export const chartDataSelector = createSelector(
     indicatorsSelector,
     locationsSelector,
     subcategoriesSelector,
-    smallSelector
+    smallSelector,
+    modelsSelector
   ],
   (
     hasData,
@@ -118,7 +119,8 @@ export const chartDataSelector = createSelector(
     indicators,
     locations,
     subcategories,
-    small
+    small,
+    models
   ) => {
     if (!hasData) return {};
     const indicatorLabel =
@@ -136,7 +138,8 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           scenarios.data,
           indicators.data,
-          small
+          small,
+          models
         );
 
       case 'StackBarChart-1':
@@ -144,7 +147,8 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           indicators.data,
           yAxisLabel,
-          small
+          small,
+          models
         );
 
       case 'PieChart-1':
@@ -152,7 +156,8 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           indicators.data,
           yAxisLabel,
-          small
+          small,
+          models
         );
 
       case 'LineChart-2':
@@ -160,7 +165,8 @@ export const chartDataSelector = createSelector(
           timeseries.data,
           locations.data,
           indicators.data,
-          small
+          small,
+          models
         );
 
       case 'PieChart-2':
@@ -169,7 +175,8 @@ export const chartDataSelector = createSelector(
           indicators.data,
           locations.data,
           yAxisLabel,
-          small
+          small,
+          models
         );
 
       case 'StackBarChart-2':
@@ -178,7 +185,8 @@ export const chartDataSelector = createSelector(
           locations.data,
           indicators.data,
           yAxisLabel,
-          small
+          small,
+          models
         );
 
       default:

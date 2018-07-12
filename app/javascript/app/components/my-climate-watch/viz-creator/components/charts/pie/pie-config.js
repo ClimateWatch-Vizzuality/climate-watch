@@ -5,7 +5,13 @@ import { assign } from 'app/utils';
 import { setChartColors } from 'app/utils/graphs';
 import { pick } from '../utils';
 
-export const pieChart1Data = (timeSeries, indicators, yAxisLabel, small) => {
+export const pieChart1Data = (
+  timeSeries,
+  indicators,
+  yAxisLabel,
+  small,
+  models
+) => {
   const data = timeSeries.map(ts => {
     const found = find(indicators, { id: ts.indicator_id });
     return found
@@ -46,10 +52,15 @@ export const pieChart1Data = (timeSeries, indicators, yAxisLabel, small) => {
       {}
     ),
     tooltip: small ? null : { unit, names, pie: true },
-    legend: data.map((k, i) => ({
-      color: chartColors[i],
-      label: k.name
-    }))
+    legend: {
+      theme: data.map((k, i) => ({
+        color: chartColors[i],
+        label: k.name
+      })),
+      logo: models.data.find(model => model.id === models.selected.value).logo,
+      modelUrl: models.data.find(model => model.id === models.selected.value)
+        .url
+    }
   };
 };
 
@@ -58,7 +69,8 @@ export const pieChart2Data = (
   indicators,
   locations,
   yAxisLabel,
-  small
+  small,
+  models
 ) => {
   const data = timeSeries.map(ts => {
     const indicator = find(indicators, { id: ts.indicator_id });
@@ -104,10 +116,15 @@ export const pieChart2Data = (
       {}
     ),
     tooltip: small ? null : { unit, names, pie: true },
-    legend: data.map((k, i) => ({
-      color: chartColors[i],
-      label: k.name
-    }))
+    legend: {
+      theme: data.map((k, i) => ({
+        color: chartColors[i],
+        label: k.name
+      })),
+      logo: models.data.find(model => model.id === models.selected.value).logo,
+      modelUrl: models.data.find(model => model.id === models.selected.value)
+        .url
+    }
   };
 };
 

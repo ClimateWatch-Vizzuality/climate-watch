@@ -1,9 +1,11 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { PureComponent, createElement } from 'react';
+import { getStorageWithExpiration } from 'utils/localStorage';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import qs from 'query-string';
+import { actions } from 'components/modal-download';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import {
@@ -137,6 +139,18 @@ class DataExplorerContentContainer extends PureComponent {
     this.updateUrlParam({ name: 'page', value: page.selected + 1 });
   };
 
+  handleDownloadModalOpen = () => {
+    const { downloadHref, setModalDownloadParams } = this.props;
+    if (getStorageWithExpiration('userSurvey')) {
+      return window.location.assign(downloadHref);
+    }
+
+    return setModalDownloadParams({
+      open: true,
+      downloadUrl: downloadHref
+    });
+  };
+
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, params, clear));
@@ -146,7 +160,8 @@ class DataExplorerContentContainer extends PureComponent {
     return createElement(DataExplorerContentComponent, {
       ...this.props,
       handleFilterChange: this.handleFilterChange,
-      handlePageChange: this.handlePageChange
+      handlePageChange: this.handlePageChange,
+      handleDownloadModalOpen: this.handleDownloadModalOpen
     });
   }
 }
@@ -156,9 +171,11 @@ DataExplorerContentContainer.propTypes = {
   parsedExternalParams: PropTypes.object,
   history: PropTypes.object,
   location: PropTypes.object,
+  downloadHref: PropTypes.string,
+  setModalDownloadParams: PropTypes.func,
   search: PropTypes.object
 };
 
 export default withRouter(
-  connect(mapStateToProps, null)(DataExplorerContentContainer)
+  connect(mapStateToProps, actions)(DataExplorerContentContainer)
 );

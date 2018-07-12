@@ -69,6 +69,7 @@ import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
 import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
+import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as modalESPOverviewComponent from 'components/modal-overview';
 import * as espGraphComponent from 'components/emission-pathways/emission-pathways-graph';
@@ -89,6 +90,7 @@ const componentsReducers = {
   autocompleteSearch: handleActions(autocompleteSearchComponent),
   stories: handleActions(storiesComponent),
   countrySelect: handleActions(countrySelectComponent),
+  modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
   ndcCountryAccordion: handleActions(ndcCountryAccordion),
