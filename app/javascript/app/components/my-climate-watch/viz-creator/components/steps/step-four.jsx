@@ -5,7 +5,6 @@ import cx from 'classnames';
 
 import Fieldset from 'components/fieldset';
 import TextInput from 'components/text-input';
-import TextArea from 'components/text-area';
 import Loading from 'components/loading';
 import Button from 'components/button';
 
@@ -21,24 +20,26 @@ const findDescription = (field, coll) =>
   findField(field, coll) && findField(field, coll).message;
 
 class Step4 extends Component {
-  updateTitleValue() {
-    return this.props.title === undefined
-      ? this.props.placeholder
-      : this.props.title;
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: props.title === undefined ? props.placeholder : props.title || '',
+      description: props.description || '',
+      placeholder: props.placeholder || ''
+    };
   }
+
+  onInputChange = (e, input) => this.setState({ [input]: e.target.value });
 
   render() {
     const {
-      title,
-      placeholder,
       chartData,
-      onNameChange,
-      onDescriptionChange,
+      saveTitle,
+      saveDescription,
       timeseries,
       saveVisualisation,
       deleteVisualisation,
       id,
-      description,
       creationStatus,
       visualisationType
     } = this.props;
@@ -58,9 +59,8 @@ class Step4 extends Component {
               }}
             >
               <TextInput
-                value={this.updateTitleValue()}
-                onChange={onNameChange}
-                onFocus={onNameChange}
+                value={this.state.title}
+                onChange={e => this.onInputChange(e, 'title')}
                 className={styles.inputText}
                 theme={styles}
               />
@@ -93,12 +93,12 @@ class Step4 extends Component {
                 )
               }}
             >
-              <TextArea
+              <TextInput
+                inputType="textarea"
+                value={this.state.description}
+                onChange={e => this.onInputChange(e, 'description')}
                 className={styles.textArea}
                 theme={styles}
-                onDescriptionChange={onDescriptionChange}
-                onFocus={onDescriptionChange}
-                value={description}
               />
             </Fieldset>
           </div>
@@ -117,9 +117,8 @@ class Step4 extends Component {
           <Button
             color="yellow"
             onClick={() => {
-              if (title === undefined) {
-                onNameChange(placeholder);
-              }
+              saveTitle(this.state.title);
+              saveDescription(this.state.description);
               saveVisualisation({ id });
             }}
             className={styles.saveBtn}
@@ -139,13 +138,13 @@ Step4.propTypes = {
   timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
   visualisationOptions: PropTypes.object,
-  onNameChange: PropTypes.func.isRequired,
+  saveTitle: PropTypes.func.isRequired,
   saveVisualisation: PropTypes.func.isRequired,
   creationStatus: PropTypes.object,
   visualisationType: PropTypes.string,
   description: PropTypes.string,
   deleteVisualisation: PropTypes.func.isRequired,
-  onDescriptionChange: PropTypes.func.isRequired
+  saveDescription: PropTypes.func.isRequired
 };
 
 export default Step4;
