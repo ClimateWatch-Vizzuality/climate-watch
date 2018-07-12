@@ -85,6 +85,8 @@ const mapStateToProps = (state, { section, location }) => {
     query: location.search,
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
+    loading,
+    loadingMeta,
     search
   };
 };
