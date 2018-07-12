@@ -5,7 +5,8 @@ module Api
         before_action :visualization, only: %w(show update destroy)
 
         def index
-          visualizations = ::MyCw::Visualization.where(user_id: @current_user[:user_id])
+          visualizations = ::MyCw::Visualization.where(user_id: @current_user[:user_id]).
+            order(:created_at)
           render json: visualizations, each_serializer: Api::V1::MyCw::VisualizationSerializer
         end
 
