@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-// import Dotdotdot from 'react-dotdotdot';
+import Dotdotdot from 'react-dotdotdot';
 import ButtonGroup from 'components/button-group';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import {
@@ -35,9 +35,9 @@ class MyVisCard extends PureComponent {
           </div>
           <div className={styles.cardTexts}>
             <h2 className={styles.cardTitle}>{data.title}</h2>
-            {/* <Dotdotdot className={styles.cardDescription} clamp={3}>
+            <Dotdotdot className={styles.cardDescription} clamp={2}>
               {data.description}
-            </Dotdotdot> */}
+            </Dotdotdot>
           </div>
         </div>
         <ButtonGroup

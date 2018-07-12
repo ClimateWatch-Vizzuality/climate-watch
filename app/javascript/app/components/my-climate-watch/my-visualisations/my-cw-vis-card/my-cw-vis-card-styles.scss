@@ -16,7 +16,7 @@
 }
 
 .cardTexts {
-  padding: 20px 20px 69px 20px;
+  padding: 20px;
   min-height: 126px;
   color: $theme-color;
   background-color: $white;
@@ -38,7 +38,16 @@
 
 .cardActions {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 0;
+  top: 0;
   width: 120px;
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  button {
+    border: none;
+  }
 }
