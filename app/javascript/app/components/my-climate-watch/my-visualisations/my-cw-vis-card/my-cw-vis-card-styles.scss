@@ -17,6 +17,7 @@
 
 .cardTexts {
   padding: 20px;
+  padding-bottom: 40px;
   min-height: 126px;
   color: $theme-color;
   background-color: $white;
@@ -49,5 +50,17 @@
 
   button {
     border: none;
+  }
+}
+
+.providerNote {
+  text-decoration: none;
+  font-size: $font-size-xs;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+
+  a {
+    color: $gray;
   }
 }
