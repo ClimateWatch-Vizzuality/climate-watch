@@ -2,7 +2,7 @@ import React from 'react';
 import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { assign } from 'app/utils';
 import { setChartColors } from 'app/utils/graphs';
-import { groupByYear, groupBy, pick } from '../utils';
+import { groupByYear, groupBy, pick, orderAlphabetically } from '../utils';
 
 import Tick from '../tick';
 
@@ -14,6 +14,7 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small, models) => {
     CHART_COLORS,
     CHART_COLORS_EXTENDED
   );
+
   return {
     chart: {
       data: pick('value', data), // only data value key
@@ -52,22 +53,28 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small, models) => {
       : {
         vertical: false
       },
-    theme: keys.reduce(
-      (th, k, i) =>
-        assign(th, {
-          [k]: {
-            fill: chartColors[i],
-            stroke: ''
-          }
-        }),
-      {}
-    ),
+    theme: keys
+      .slice()
+      .sort()
+      .reduce(
+        (th, k, i) =>
+          assign(th, {
+            [k]: {
+              fill: chartColors[i],
+              stroke: ''
+            }
+          }),
+        {}
+      ),
     tooltip: small ? null : { unit, names },
     legend: {
-      theme: keys.map((k, i) => ({
-        color: chartColors[i],
-        label: names[0][k]
-      })),
+      theme: keys
+        .slice()
+        .sort()
+        .map((k, i) => ({
+          color: chartColors[i],
+          label: names[0][k]
+        })),
       logo: models.data.find(model => model.id === models.selected.value).logo,
       modelUrl: models.data.find(model => model.id === models.selected.value)
         .url
@@ -82,7 +89,9 @@ export const stackBarChart1Data = (
   small,
   models
 ) => {
-  const data = groupByYear(timeSeries, 'indicator', indicators);
+  const data = orderAlphabetically(
+    groupByYear(timeSeries, 'indicator', indicators)
+  );
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
   return makeConfig(data, keys, indicators, yAxisLabel, small, models);
 };
@@ -95,10 +104,8 @@ export const stackBarChart2Data = (
   small,
   models
 ) => {
-  const data = groupBy(
-    timeseries,
-    ['location', 'indicator'],
-    [locations, indicators]
+  const data = orderAlphabetically(
+    groupBy(timeseries, ['location', 'indicator'], [locations, indicators])
   );
   const keys = Object.keys(data[0]).filter(k => k !== 'location');
   const baseConfig = makeConfig(

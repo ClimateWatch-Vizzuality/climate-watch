@@ -9,6 +9,9 @@ import cx from 'classnames';
 import styles from './modal-styles.scss';
 
 class CustomModal extends PureComponent {
+  componentWillMount() {
+    Modal.setAppElement('body');
+  }
   // eslint-disable-line react/prefer-stateless-function
   render() {
     const {
