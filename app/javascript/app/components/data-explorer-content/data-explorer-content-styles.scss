@@ -15,15 +15,18 @@
 
   .button {
     order: 2;
+
     @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding);
   }
 
   @media #{$tablet-landscape} {
     @include columns(4);
+
     .button {
       &:first-child {
         order: 1;
       }
+
       &:last-child {
         order: 3;
       }
@@ -93,4 +96,9 @@
   a {
     color: $theme-secondary;
   }
+}
+
+.more {
+  cursor: default;
+  color: $dark-gray;
 }

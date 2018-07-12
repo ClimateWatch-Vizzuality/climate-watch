@@ -145,7 +145,7 @@ class DataExplorerContent extends PureComponent {
               containerClassName={styles.paginate}
               previousLabel="<"
               nextLabel=">"
-              breakLabel={<a href="">...</a>}
+              breakLabel={<span className={styles.more}>...</span>}
               pageCount={pageCount}
               pageRangeDisplayed={3}
               marginPagesDisplayed={2}
