@@ -39,10 +39,11 @@
 
 .cardActions {
   position: absolute;
-  right: 0;
+  right: 8px;
   top: 0;
   width: 120px;
   box-shadow: none;
+  border: none;
 
   &:hover {
     box-shadow: none;
@@ -58,7 +59,7 @@
   font-size: $font-size-xs;
   position: absolute;
   bottom: 10px;
-  right: 10px;
+  right: 20px;
 
   a {
     color: $gray;
