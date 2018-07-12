@@ -115,7 +115,8 @@ class DataExplorerContent extends PureComponent {
       handlePageChange,
       pageCount,
       initialPage,
-      loading
+      loading,
+      data
     } = this.props;
     return (
       <div>
@@ -139,9 +140,7 @@ class DataExplorerContent extends PureComponent {
           <Button className={styles.button} href={href} color="plain">
             View in module page
           </Button>
-          {loading ? (
-            <div className={styles.blank} />
-          ) : (
+          {!loading && data ? (
             <ReactPaginate
               containerClassName={styles.paginate}
               previousLabel="<"
@@ -154,6 +153,8 @@ class DataExplorerContent extends PureComponent {
               initialPage={initialPage}
               activeClassName={styles.active}
             />
+          ) : (
+            <div className={styles.blank} />
           )}
           <Button className={styles.button} href={downloadHref} color="yellow">
             Download

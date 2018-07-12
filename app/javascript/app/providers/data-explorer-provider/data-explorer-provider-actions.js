@@ -35,6 +35,8 @@ export const fetchDataExplorer = createThunkAction(
     const { dataExplorer } = state();
     if (
       dataExplorer &&
+      query &&
+      query.includes('page') &&
       (isEmpty(dataExplorer) ||
         (dataExplorer.data && !dataExplorer.data[section]) ||
         (dataExplorer.data && !dataExplorer.loading))

@@ -2,7 +2,7 @@
 
 .loader,
 .noData {
-  min-height: 600px;
+  min-height: 475px;
 }
 
 .button {
@@ -10,11 +10,24 @@
 }
 
 .buttons {
-  @include columns(4);
-  @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding * 2);
+  @include columns(12);
+  @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding);
+
+  .button {
+    order: 2;
+    @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding);
+  }
 
   @media #{$tablet-landscape} {
     @include columns(4);
+    .button {
+      &:first-child {
+        order: 1;
+      }
+      &:last-child {
+        order: 3;
+      }
+    }
   }
 }
 
@@ -51,10 +64,19 @@
   }
 }
 
+.blank {
+  order: 2;
+}
+
 .paginate {
   display: inline-block;
   padding: 10px 15px;
   text-align: center;
+  order: 1;
+
+  @media #{$tablet-landscape} {
+    order: 2;
+  }
 
   a {
     color: $dark-gray;
