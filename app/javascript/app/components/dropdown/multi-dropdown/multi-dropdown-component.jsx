@@ -32,6 +32,7 @@ class Dropdown extends PureComponent {
       activeValue,
       activeLabel,
       highlightedIndex,
+      noParentSelection,
       disabled
     } = this.props;
 
@@ -68,6 +69,7 @@ class Dropdown extends PureComponent {
               optionsActionKey={optionsActionKey}
               noItemsFound={noItemsFound}
               toggleOpenGroup={toggleOpenGroup}
+              noParentSelection={noParentSelection}
             />
           </Selector>
         )}
@@ -102,6 +104,7 @@ Dropdown.propTypes = {
   optionsActionKey: PropTypes.string,
   arrowPosition: PropTypes.string,
   noSelectedValue: PropTypes.string,
+  noParentSelection: PropTypes.bool,
   clearable: PropTypes.bool,
   groupKey: PropTypes.string,
   handleStateChange: PropTypes.func,

@@ -18,7 +18,7 @@ const MetadataAllProps = ({ data }) =>
     );
 
 MetadataAllProps.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.object.isRequired
 };
 
 const urlTitles = ['url', 'Link'];

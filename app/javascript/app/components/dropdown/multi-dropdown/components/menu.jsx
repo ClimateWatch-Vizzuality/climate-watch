@@ -17,7 +17,8 @@ const Menu = props => {
     optionsAction,
     optionsActionKey,
     noItemsFound,
-    toggleOpenGroup
+    toggleOpenGroup,
+    noParentSelection
   } = props;
 
   return !isOpen ? null : (
@@ -25,7 +26,7 @@ const Menu = props => {
       {items && items.length ? (
         items.map((item, index) => (
           <Item
-            key={item.value}
+            key={`${item.slug}${item.id}`}
             index={index}
             item={item}
             showGroup={showGroup}
@@ -36,6 +37,7 @@ const Menu = props => {
             optionsActionKey={optionsActionKey}
             activeValue={activeValue}
             activeLabel={activeLabel}
+            noParentSelection={noParentSelection}
           />
         ))
       ) : (
@@ -58,6 +60,7 @@ Menu.propTypes = {
   optionsAction: PropTypes.func,
   optionsActionKey: PropTypes.string,
   noItemsFound: PropTypes.string,
+  noParentSelection: PropTypes.bool,
   toggleOpenGroup: PropTypes.func.isRequired
 };
 

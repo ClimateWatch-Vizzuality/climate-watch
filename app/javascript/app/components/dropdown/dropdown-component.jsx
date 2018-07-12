@@ -36,6 +36,7 @@ class Dropdown extends PureComponent {
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     const hasNotValue = this.props.value && !this.props.value.value;
+    const isRequired = hasNotValue && required;
     return (
       <div
         className={cx(
@@ -51,10 +52,9 @@ class Dropdown extends PureComponent {
           <span className={styles.dot} style={{ backgroundColor: colorDot }} />
         )}
         {label && <span className={styles.label}>{label}</span>}
-        {hasNotValue &&
-        required && (
-        <span className={styles.requiredError}>This field is required</span>
-          )}
+        {isRequired && (
+          <span className={styles.requiredError}>This field is required</span>
+        )}
         {optional && <span className={styles.optional}>(optional)</span>}
         {info && (
           <div data-tip={infoText} className={styles.infoContainer}>
