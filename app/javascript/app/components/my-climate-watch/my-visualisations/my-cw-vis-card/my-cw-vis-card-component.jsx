@@ -27,7 +27,11 @@ class MyVisCard extends PureComponent {
     return (
       <div className={styles.cardContainer}>
         <div className={cx(styles.card, className)}>
-          <div className={styles.chart}>
+          <div
+            className={cx(styles.chart, {
+              [styles.pieChart]: chart === 'PieChart'
+            })}
+          >
             {datasets && (
               <RenderChart chart={chart} config={chartData} height={200} />
             )}
