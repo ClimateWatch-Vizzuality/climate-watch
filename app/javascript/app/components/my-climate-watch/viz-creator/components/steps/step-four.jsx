@@ -9,15 +9,11 @@ import Loading from 'components/loading';
 import Button from 'components/button';
 
 import btnThemes from 'styles/themes/button/buttons';
+import textInputTheme from 'styles/themes/input/text-input-theme';
 import Legend from '../charts/legend';
 import RenderChart from '../render-chart';
 
 import styles from './steps-styles';
-
-const findField = (field, coll) => _find(coll, { field });
-const includesField = (field, coll) => Boolean(findField(field, coll));
-const findDescription = (field, coll) =>
-  findField(field, coll) && findField(field, coll).message;
 
 class Step4 extends Component {
   constructor(props) {
@@ -48,21 +44,13 @@ class Step4 extends Component {
         <div className={styles.stepContainer}>
           <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
           <div className={styles.step4Container}>
-            <Fieldset
-              className={styles.fieldset}
-              theme={styles}
-              {...{
-                failed:
-                  creationStatus.failed &&
-                  includesField('title', creationStatus.fields),
-                failMessage: findDescription('title', creationStatus.fields)
-              }}
-            >
+            <Fieldset className={styles.fieldset} theme={styles}>
               <TextInput
                 value={this.state.title}
                 onChange={e => this.onInputChange(e, 'title')}
-                className={styles.inputText}
-                theme={styles}
+                theme={textInputTheme}
+                required={creationStatus.failed}
+                label="Title"
               />
             </Fieldset>
             {timeseries.loading ? (
@@ -80,25 +68,14 @@ class Step4 extends Component {
                 <Legend key="legend" theme={styles} data={chartData.legend} />
               ]
             )}
-            <Fieldset
-              className={styles.fieldset}
-              theme={styles}
-              {...{
-                failed:
-                  creationStatus.failed &&
-                  includesField('description', creationStatus.fields),
-                failMessage: findDescription(
-                  'description',
-                  creationStatus.fields
-                )
-              }}
-            >
+            <Fieldset className={styles.fieldset} theme={styles}>
               <TextInput
                 inputType="textarea"
                 value={this.state.description}
                 onChange={e => this.onInputChange(e, 'description')}
-                className={styles.textArea}
-                theme={styles}
+                theme={textInputTheme}
+                required={creationStatus.failed}
+                label="Description"
               />
             </Fieldset>
           </div>
@@ -137,7 +114,6 @@ Step4.propTypes = {
   placeholder: PropTypes.string,
   timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
-  visualisationOptions: PropTypes.object,
   saveTitle: PropTypes.func.isRequired,
   saveVisualisation: PropTypes.func.isRequired,
   creationStatus: PropTypes.object,

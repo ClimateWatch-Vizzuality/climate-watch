@@ -26,7 +26,8 @@ class InputComponent extends Component {
       },
       className: cx(styles.input, className, theme.input, {
         [theme.disabled]: disabled,
-        [theme.inputFailed]: required && !value
+        [theme.inputFailed]: required && !value,
+        [theme.textArea]: inputType === 'textarea'
       }),
       onChange,
       disabled,
@@ -52,7 +53,7 @@ class InputComponent extends Component {
         )}
         {!value &&
         required && (
-        <span className={theme.requiredError}>This field is required</span>
+         <span className={theme.requiredError}>This field is required</span>
           )}
         {optional && <span className={theme.optional}>(optional)</span>}
         {input}
