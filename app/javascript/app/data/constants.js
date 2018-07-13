@@ -330,6 +330,10 @@ export const DATA_EXPLORER_FILTERS = {
   'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
 };
 
+export const DATA_EXPLORER_DEPENDENCIES = {
+  'emission-pathways': { indicators: ['categories'] }
+};
+
 export const DATA_EXPLORER_PATHWAYS_META_LINKS = {
   'meta locations': {
     href: '/api/v1/data/emission_pathways/locations',
@@ -392,13 +396,18 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     }
   }
 };
-export const SOURCE_IPCC_VERSIONS = [
-  { name: 'PIK - AR2', source_slug: 'PIK', version_slug: 'AR2' },
-  { name: 'PIK - AR4', source_slug: 'PIK', version_slug: 'AR4' },
-  { name: 'CAIT - AR2', source_slug: 'CAIT', version_slug: 'AR2' },
-  { name: 'UNFCCC - AR2', source_slug: 'UNFCCC', version_slug: 'AR2' },
-  { name: 'UNFCCC - AR4', source_slug: 'UNFCCC', version_slug: 'AR4' }
+export const SOURCE_VERSIONS = [
+  { name: 'PIK - AR2', data_source_slug: 'PIK', version_slug: 'AR2' },
+  { name: 'PIK - AR4', data_source_slug: 'PIK', version_slug: 'AR4' },
+  { name: 'CAIT - AR2', data_source_slug: 'CAIT', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR2', data_source_slug: 'UNFCCC', version_slug: 'AR2' },
+  { name: 'UNFCCC - AR4', data_source_slug: 'UNFCCC', version_slug: 'AR4' }
 ];
+
+export const DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS = {
+  'ndc-content': [{ key: 'sectors' }, { key: 'categories' }],
+  'emission-pathways': [{ key: 'categories', noSelectableParent: true }]
+};
 
 export default {
   CALCULATION_OPTIONS,
@@ -429,10 +438,12 @@ export default {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
+  SOURCE_VERSIONS,
   DATA_EXPLORER_PATHWAYS_META_LINKS,
-  SOURCE_IPCC_VERSIONS,
   USERS_PROFESIONAL_SECTORS,
   DATA_EXPLORER_SECTION_BASE_URIS,
+  DATA_EXPLORER_DEPENDENCIES,
   DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_TO_MODULES_PARAMS
+  DATA_EXPLORER_TO_MODULES_PARAMS,
+  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
 };

@@ -12,13 +12,14 @@ import {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_FILTERS,
-  DATA_EXPLORER_EXTERNAL_PREFIX
+  DATA_EXPLORER_EXTERNAL_PREFIX,
+  DATA_EXPLORER_DEPENDENCIES
 } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
   getMethodology,
-  parseGroupsInOptions,
+  getFilteredOptions,
   getSelectedOptions,
   getPathwaysMetodology,
   parseFilterQuery,
@@ -54,24 +55,56 @@ const mapStateToProps = (state, { section, location }) => {
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
       : getMethodology(dataState);
+  const metadataSection = !!location.hash && location.hash === '#meta';
+  const loading = state.dataExplorer && state.dataExplorer.loading;
+  const loadingMeta = state.dataExplorer && state.dataExplorer.loadingMeta;
+  const selectedOptions = getSelectedOptions(dataState);
+  const filterDependencyMissing = key =>
+    DATA_EXPLORER_DEPENDENCIES[section] &&
+    DATA_EXPLORER_DEPENDENCIES[section][key] &&
+    selectedOptions &&
+    !DATA_EXPLORER_DEPENDENCIES[section][key].every(k =>
+      Object.keys(selectedOptions).includes(k)
+    );
+  const isDisabled = key =>
+    (!metadataSection && loading) ||
+    (metadataSection && loadingMeta) ||
+    filterDependencyMissing(key);
   return {
     data: parseData(dataState),
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',
-    loading: state.dataExplorer && state.dataExplorer.loading,
-    loadingMeta: state.dataExplorer && state.dataExplorer.loadingMeta,
+    isDisabled,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
     href: getLink(dataState),
     downloadHref,
     filters: DATA_EXPLORER_FILTERS[section],
-    filterOptions: parseGroupsInOptions(dataState),
-    selectedOptions: getSelectedOptions(dataState),
+    filterOptions: getFilteredOptions(dataState),
+    selectedOptions,
     anchorLinks,
     query: location.search,
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
+    loading,
+    loadingMeta,
     search
   };
+};
+
+const getDependentKeysToDelete = (value, section, filterName) => {
+  const dependentKeysToDelete = [];
+  if (value === undefined && DATA_EXPLORER_DEPENDENCIES[section]) {
+    Object.keys(
+      DATA_EXPLORER_DEPENDENCIES[section]
+    ).forEach(dependentFilterKey => {
+      const parentFilterKeys =
+        DATA_EXPLORER_DEPENDENCIES[section][dependentFilterKey];
+      if (parentFilterKeys.includes(filterName)) {
+        dependentKeysToDelete.push(dependentFilterKey);
+      }
+    });
+  }
+  return dependentKeysToDelete;
 };
 
 class DataExplorerContentContainer extends PureComponent {
@@ -100,9 +133,16 @@ class DataExplorerContentContainer extends PureComponent {
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source';
+    const dependentKeysToDeleteParams = getDependentKeysToDelete(
+      value,
+      section,
+      filterName
+    ).map(k => ({ name: `${section}-${k}`, value: undefined }));
+
+    let paramsToUpdate = [];
     if (filterName === SOURCE_AND_VERSION_KEY) {
       const values = value && value.split(' - ');
-      this.updateUrlParam([
+      paramsToUpdate = [
         {
           name: `${section}-data-sources`,
           value: value && values[0]
@@ -111,13 +151,11 @@ class DataExplorerContentContainer extends PureComponent {
           name: `${section}-gwps`,
           value: value && values[1]
         }
-      ]);
+      ];
     } else {
-      this.updateUrlParam({
-        name: `${section}-${filterName}`,
-        value
-      });
+      paramsToUpdate = [{ name: `${section}-${filterName}`, value }];
     }
+    this.updateUrlParam(dependentKeysToDeleteParams.concat(paramsToUpdate));
   };
 
   handleDownloadModalOpen = () => {

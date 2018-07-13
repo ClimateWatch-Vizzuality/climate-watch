@@ -6,7 +6,15 @@ import cx from 'classnames';
 import styles from './check-input-styles';
 
 const CheckInputComponent = props => {
-  const { className, label, checked, onChange, theme, toggleFirst, disabled } = props;
+  const {
+    className,
+    label,
+    checked,
+    onChange,
+    theme,
+    toggleFirst,
+    disabled
+  } = props;
   return (
     <div className={className}>
       <label
@@ -32,6 +40,7 @@ CheckInputComponent.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   checked: PropTypes.bool,
+  disabled: PropTypes.bool,
   onChange: PropTypes.func,
   toggleFirst: PropTypes.bool,
   theme: PropTypes.object

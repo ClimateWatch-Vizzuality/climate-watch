@@ -42,7 +42,7 @@ class InputComponent extends Component {
       ) : (
         <input {...inputProps} {...labelProp} />
       );
-
+    const isRequired = !value && required;
     return (
       <div>
         {label && (
@@ -51,10 +51,9 @@ class InputComponent extends Component {
             {label}
           </label>
         )}
-        {!value &&
-        required && (
-         <span className={theme.requiredError}>This field is required</span>
-          )}
+        {isRequired && (
+          <span className={theme.requiredError}>This field is required</span>
+        )}
         {optional && <span className={theme.optional}>(optional)</span>}
         {input}
       </div>

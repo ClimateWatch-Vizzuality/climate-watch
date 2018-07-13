@@ -16,7 +16,8 @@ const Item = props => {
     getItemProps,
     toggleOpenGroup,
     activeValue,
-    activeLabel
+    activeLabel,
+    noParentSelection
   } = props;
   const { group, groupParent, label } = item;
 
@@ -30,6 +31,10 @@ const Item = props => {
     (groupParent && groupParent === showGroup) ||
     (groupParent && activeValue && groupParent === activeValue.group);
   const showArrowIcon = groupParent && showGroup !== groupParent && isActive;
+  const parentClickProp =
+    noParentSelection && (!showGroup || isGroupParentActive)
+      ? { onClick: () => toggleOpenGroup(item) }
+      : {};
   return (
     <div
       className={cx(styles.itemWrapper, {
@@ -52,6 +57,7 @@ const Item = props => {
           index,
           className: cx(styles.item, { [styles.highlight]: isHighlighted })
         })}
+        {...parentClickProp}
       >
         {label}
       </div>
@@ -79,7 +85,8 @@ Item.propTypes = {
   optionsAction: PropTypes.func,
   optionsActionKey: PropTypes.string,
   activeValue: PropTypes.object,
-  activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  noParentSelection: PropTypes.bool
 };
 
 export default Item;
