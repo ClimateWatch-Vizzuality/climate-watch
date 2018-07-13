@@ -21,11 +21,11 @@ export const getDates = createSelector(
         });
       }
     });
-    // add year 2020 as due date for new NDCS submissions
+    // add year 2020 as due date for new NDCs submissions
     documents.push({
       year: '2020',
       link: null,
-      label: 'new NDCS submissions due date'
+      label: 'New NDCs submissions due date'
     });
     return groupBy(documents, 'year');
   }
