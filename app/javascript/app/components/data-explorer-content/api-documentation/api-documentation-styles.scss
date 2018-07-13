@@ -1,0 +1,56 @@
+@import '~styles/layout.scss';
+.documentation {
+  color: $theme-color;
+
+  p {
+    padding-bottom: 1em;
+  }
+}
+
+.sectionTitle {
+  font-size: $font-size-large;
+  padding-bottom: 1em;
+}
+
+.call {
+  padding-bottom: 1em;
+}
+
+.title {
+  font-weight: $font-weight-bold;
+  padding-bottom: 1em;
+}
+
+.description {
+  padding-bottom: 1em;
+}
+
+.extra {
+  color: $dark-gray;
+}
+
+.tryLink {
+  padding-left: 1em;
+  color: $dark-gray;
+
+  svg {
+    fill: $dark-gray;
+    height: 13px;
+    width: 13px;
+  }
+}
+
+.queryParamsList {
+  padding: 0 2em 1em;
+  > div {
+    margin-bottom: 1em;
+  }
+
+  .parameterName {
+    font-weight: $font-weight-bold;
+    background-color: $light-gray;
+    padding: 0 0.2em;
+    margin-bottom: 1em;
+  }
+}
+

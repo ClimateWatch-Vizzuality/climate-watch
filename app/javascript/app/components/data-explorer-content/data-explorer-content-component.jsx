@@ -16,6 +16,7 @@ import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss'
 import { toStartCase } from 'app/utils';
 import cx from 'classnames';
 import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
+import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
 
 class DataExplorerContent extends PureComponent {
@@ -145,6 +146,7 @@ class DataExplorerContent extends PureComponent {
             Download
           </Button>
         </div>
+        <ApiDocumentation section={section} />
         <ModalDownload />
       </div>
     );
