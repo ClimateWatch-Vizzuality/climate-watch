@@ -20,14 +20,14 @@ const LegendComponent = ({ className, data = [], theme }) => (
         ))}
     </ul>
     {data &&
-    data.logo && (
-      <div className={theme.legendLogo}>
-        <div className={theme.legendLogoTitle}>Data provided by:</div>
-        <a href={data.modelUrl} target="_blank">
-          <img src={`https:${data.logo}`} />
-        </a>
-      </div>
-    )}
+      data.logo && (
+        <div className={theme.legendLogoContainer}>
+          <div className={theme.legendLogoTitle}>Data provided by:</div>
+          <a href={data.modelUrl} target="_blank" className={theme.legendLogo}>
+            <img id="logoImage" src={`https:${data.logo}`} />
+          </a>
+        </div>
+      )}
   </div>
 );
 
