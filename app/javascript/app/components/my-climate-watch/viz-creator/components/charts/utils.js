@@ -93,3 +93,6 @@ export const orderAlphabetically = unorderedObjectsArray => {
   });
   return orderedObjectsArray;
 };
+
+export const getSelectedModel = models =>
+  models.data.find(model => model.id === models.selected.value);

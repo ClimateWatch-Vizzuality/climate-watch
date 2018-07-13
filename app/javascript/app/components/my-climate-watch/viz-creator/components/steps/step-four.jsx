@@ -5,40 +5,37 @@ import cx from 'classnames';
 
 import Fieldset from 'components/fieldset';
 import TextInput from 'components/text-input';
-import TextArea from 'components/text-area';
 import Loading from 'components/loading';
 import Button from 'components/button';
 
 import btnThemes from 'styles/themes/button/buttons';
+import textInputTheme from 'styles/themes/input/text-input-theme';
 import Legend from '../charts/legend';
 import RenderChart from '../render-chart';
 
 import styles from './steps-styles';
 
-const findField = (field, coll) => _find(coll, { field });
-const includesField = (field, coll) => Boolean(findField(field, coll));
-const findDescription = (field, coll) =>
-  findField(field, coll) && findField(field, coll).message;
-
 class Step4 extends Component {
-  updateTitleValue() {
-    return this.props.title === undefined
-      ? this.props.placeholder
-      : this.props.title;
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: props.title === undefined ? props.placeholder : props.title || '',
+      description: props.description || '',
+      placeholder: props.placeholder || ''
+    };
   }
+
+  onInputChange = (e, input) => this.setState({ [input]: e.target.value });
 
   render() {
     const {
-      title,
-      placeholder,
       chartData,
-      onNameChange,
-      onDescriptionChange,
+      saveTitle,
+      saveDescription,
       timeseries,
       saveVisualisation,
       deleteVisualisation,
       id,
-      description,
       creationStatus,
       visualisationType
     } = this.props;
@@ -47,22 +44,13 @@ class Step4 extends Component {
         <div className={styles.stepContainer}>
           <h2 className={styles.stepTitle}>4/4 - Annotate the visualisation</h2>
           <div className={styles.step4Container}>
-            <Fieldset
-              className={styles.fieldset}
-              theme={styles}
-              {...{
-                failed:
-                  creationStatus.failed &&
-                  includesField('title', creationStatus.fields),
-                failMessage: findDescription('title', creationStatus.fields)
-              }}
-            >
+            <Fieldset className={styles.fieldset} theme={styles}>
               <TextInput
-                value={this.updateTitleValue()}
-                onChange={onNameChange}
-                onFocus={onNameChange}
-                className={styles.inputText}
-                theme={styles}
+                value={this.state.title}
+                onChange={e => this.onInputChange(e, 'title')}
+                theme={textInputTheme}
+                required={creationStatus.failed}
+                label="Title"
               />
             </Fieldset>
             {timeseries.loading ? (
@@ -80,25 +68,14 @@ class Step4 extends Component {
                 <Legend key="legend" theme={styles} data={chartData.legend} />
               ]
             )}
-            <Fieldset
-              className={styles.fieldset}
-              theme={styles}
-              {...{
-                failed:
-                  creationStatus.failed &&
-                  includesField('description', creationStatus.fields),
-                failMessage: findDescription(
-                  'description',
-                  creationStatus.fields
-                )
-              }}
-            >
-              <TextArea
-                className={styles.textArea}
-                theme={styles}
-                onDescriptionChange={onDescriptionChange}
-                onFocus={onDescriptionChange}
-                value={description}
+            <Fieldset className={styles.fieldset} theme={styles}>
+              <TextInput
+                inputType="textarea"
+                value={this.state.description}
+                onChange={e => this.onInputChange(e, 'description')}
+                theme={textInputTheme}
+                required={creationStatus.failed}
+                label="Description"
               />
             </Fieldset>
           </div>
@@ -117,9 +94,8 @@ class Step4 extends Component {
           <Button
             color="yellow"
             onClick={() => {
-              if (title === undefined) {
-                onNameChange(placeholder);
-              }
+              saveTitle(this.state.title);
+              saveDescription(this.state.description);
               saveVisualisation({ id });
             }}
             className={styles.saveBtn}
@@ -138,14 +114,13 @@ Step4.propTypes = {
   placeholder: PropTypes.string,
   timeseries: PropTypes.object,
   chartData: PropTypes.object.isRequired,
-  visualisationOptions: PropTypes.object,
-  onNameChange: PropTypes.func.isRequired,
+  saveTitle: PropTypes.func.isRequired,
   saveVisualisation: PropTypes.func.isRequired,
   creationStatus: PropTypes.object,
   visualisationType: PropTypes.string,
   description: PropTypes.string,
   deleteVisualisation: PropTypes.func.isRequired,
-  onDescriptionChange: PropTypes.func.isRequired
+  saveDescription: PropTypes.func.isRequired
 };
 
 export default Step4;

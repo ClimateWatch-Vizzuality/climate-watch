@@ -3,7 +3,7 @@ import camelCase from 'lodash/camelCase';
 import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { assign } from 'app/utils';
 import { setChartColors } from 'app/utils/graphs';
-import { pick } from '../utils';
+import { pick, getSelectedModel } from '../utils';
 
 export const pieChart1Data = (
   timeSeries,
@@ -121,9 +121,9 @@ export const pieChart2Data = (
         color: chartColors[i],
         label: k.name
       })),
-      logo: models.data.find(model => model.id === models.selected.value).logo,
-      modelUrl: models.data.find(model => model.id === models.selected.value)
-        .url
+      dataProvider: getSelectedModel(models).maintainer_institute,
+      logo: getSelectedModel(models).logo,
+      modelUrl: getSelectedModel(models).url
     }
   };
 };
