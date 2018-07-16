@@ -5,14 +5,49 @@ import Component from './api-documentation-component';
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
 
+const startYearParam = {
+  name: 'start_year',
+  parameter: 'start_year',
+  description: 'Show results from this year onwards'
+};
+const endYearParam = {
+  name: 'end_year',
+  parameter: 'end_year',
+  description: 'Show results up to this year'
+};
+const sectorsParam = {
+  name: 'sectors',
+  parameter: 'sector_ids[]',
+  description: 'sector id'
+};
+const categoriesParam = {
+  name: 'categories',
+  parameter: 'category_ids[]',
+  description: 'category id'
+};
+const countriesParam = {
+  name: 'countries',
+  parameter: 'countries[]',
+  description: 'country ISO code'
+};
+const indicatorsParam = {
+  name: 'indicators',
+  parameter: 'indicator_ids[]',
+  description: 'indicator id'
+};
+const linkHeaderDescription =
+  'Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)';
+const linkHeaderExtra = 'This response only has headers not body';
+const multipleValuesExtra =
+  'All this parameters accept multiple values, separated by commas. Response is paginated. Pagination headers are in place.';
+
 const API_CALLS = {
   'historical-emissions': [
     {
       title: 'GET /api/v1/data/historical_emissions/meta',
       url: `${CW_API}/data/historical_emissions/meta`,
-      description:
-        'Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)',
-      extra: 'This response only has headers not body'
+      description: linkHeaderDescription,
+      extra: linkHeaderExtra
     },
     {
       title: 'GET /api/v1/data/historical_emissions',
@@ -34,38 +69,24 @@ const API_CALLS = {
           parameter: 'gas_ids[]',
           description: 'emission data source id (CAIT, PIK, UNFCCC)'
         },
-        {
-          name: 'sectors',
-          parameter: 'sector_ids[]',
-          description: 'sector id'
-        },
+        sectorsParam,
         {
           name: 'regions',
           parameter: 'regions[]',
           description: 'region ISO code 3'
         },
-        {
-          name: 'start_year',
-          parameter: 'start_year',
-          description: 'Show results from this year onwards'
-        },
-        {
-          name: 'end_year',
-          parameter: 'end_year',
-          description: 'Show results up to this year'
-        }
+        startYearParam,
+        endYearParam
       ],
-      extra:
-        'All this parameters accept multiple values, separated by commas. Response is paginated. Pagination headers are in place.'
+      extra: multipleValuesExtra
     }
   ],
   'emission-pathways': [
     {
       title: 'GET /api/v1/data/emission_pathways/meta',
-      url: `${ESP_API}/data/emission_pathways/meta`,
-      description:
-        'Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)',
-      extra: 'This response only has headers not body'
+      url: `${ESP_API}/data/emission_pathways/meta.json`,
+      description: linkHeaderDescription,
+      extra: linkHeaderExtra
     },
     {
       title: 'GET /api/v1/data/emission_pathways',
@@ -82,43 +103,25 @@ const API_CALLS = {
           parameter: 'scenario_ids[]',
           description: 'scenario id'
         },
-        {
-          name: 'categories',
-          parameter: 'category_ids[]',
-          description: 'category id'
-        },
-        {
-          name: 'indicators',
-          parameter: 'indicator_ids[]',
-          description: 'indicator id'
-        },
+        categoriesParam,
+        indicatorsParam,
         {
           name: 'locations',
           parameter: 'locations[]',
           description: 'locations ISO code 3'
         },
-        {
-          name: 'start_year',
-          parameter: 'start_year',
-          description: 'Show results from this year onwards'
-        },
-        {
-          name: 'end_year',
-          parameter: 'end_year',
-          description: 'Show results up to this year'
-        }
+        startYearParam,
+        endYearParam
       ],
-      extra:
-        'All this parameters accept multiple values, separated by commas. Response is paginated. Pagination headers are in place.'
+      extra: multipleValuesExtra
     }
   ],
   'ndc-sdg-linkages': [
     {
       title: 'GET /api/v1/data/ndc_sdg/meta',
       url: `${CW_API}/data/ndc_sdg/meta`,
-      description:
-        'Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)',
-      extra: 'This response only has headers not body'
+      description: linkHeaderDescription,
+      extra: linkHeaderExtra
     },
     {
       title: 'GET /api/v1/data/ndc_sdg',
@@ -135,67 +138,40 @@ const API_CALLS = {
           parameter: 'target_ids[]',
           description: 'target id'
         },
-        {
-          name: 'sectors',
-          parameter: 'sector_ids[]',
-          description: 'sector id'
-        },
-        {
-          name: 'countries',
-          parameter: 'countries[]',
-          description: 'country ISO code'
-        }
+        sectorsParam,
+        countriesParam
       ],
-      extra:
-        'All this parameters accept multiple values, separated by commas. Response is paginated. Pagination headers are in place.'
+      extra: multipleValuesExtra
     }
   ],
   'ndc-content': [
     {
       title: 'GET /api/v1/data/ndc_content/meta',
       url: `${CW_API}/data/ndc_content/meta`,
-      description:
-        'Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)',
-      extra: 'This response only has headers not body'
+      description: linkHeaderDescription,
+      extra: linkHeaderExtra
     },
     {
       title: 'GET /api/v1/data/ndc_content',
       url: `${CW_API}/data/ndc_content`,
       description: 'Retrieves time series data for NDC content',
       queryParams: [
-        {
-          name: 'countries',
-          parameter: 'countries[]',
-          description: 'country ISO code'
-        },
+        countriesParam,
         {
           name: 'sources',
           parameter: 'source_ids[]',
           description: 'source id'
         },
-        {
-          name: 'indicators',
-          parameter: 'indicator_ids[]',
-          description: 'indicator id'
-        },
-        {
-          name: 'categories',
-          parameter: 'category_ids[]',
-          description: 'category id'
-        },
+        indicatorsParam,
+        categoriesParam,
         {
           name: 'labels',
           parameter: 'label_ids[]',
           description: 'label id'
         },
-        {
-          name: 'sectors',
-          parameter: 'sector_ids[]',
-          description: 'sector id'
-        }
+        sectorsParam
       ],
-      extra:
-        'All this parameters accept multiple values, separated by commas. Response is paginated. Pagination headers are in place.'
+      extra: multipleValuesExtra
     }
   ]
 };

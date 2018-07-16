@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import infoIcon from 'assets/icons/link.svg';
+import linkIcon from 'assets/icons/link.svg';
 import Icon from 'components/icon';
 import styles from './api-documentation-styles.scss';
 
@@ -17,7 +17,7 @@ class ApiDocumentationContent extends PureComponent {
             <p className={styles.title}>
               {d.title}
               <a className={styles.tryLink} href={d.url} target="_blank">
-                <Icon icon={infoIcon} />
+                <Icon icon={linkIcon} />
                 <span> TRY IT </span>
               </a>
             </p>
