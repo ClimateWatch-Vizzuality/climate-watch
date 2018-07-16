@@ -2,7 +2,13 @@ import React from 'react';
 import { CHART_COLORS, CHART_COLORS_EXTENDED } from 'data/constants';
 import { assign } from 'app/utils';
 import { setChartColors } from 'app/utils/graphs';
-import { groupByYear, groupBy, pick, orderAlphabetically } from '../utils';
+import {
+  groupByYear,
+  groupBy,
+  pick,
+  orderAlphabetically,
+  getSelectedModel
+} from '../utils';
 
 import Tick from '../tick';
 
@@ -75,9 +81,9 @@ const makeConfig = (data, keys, indicators, yAxisLabel, small, models) => {
           color: chartColors[i],
           label: names[0][k]
         })),
-      logo: models.data.find(model => model.id === models.selected.value).logo,
-      modelUrl: models.data.find(model => model.id === models.selected.value)
-        .url
+      dataProvider: getSelectedModel(models).maintainer_institute,
+      logo: getSelectedModel(models).logo,
+      modelUrl: getSelectedModel(models).url
     }
   };
 };
