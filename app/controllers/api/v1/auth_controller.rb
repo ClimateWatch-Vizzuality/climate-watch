@@ -13,7 +13,11 @@ module Api
       # rubocop:enable LineLength
 
       def logout
-        redirect_to_api_gateway_logout(api_v1_login_url)
+        cookies['user_token'] = nil
+        render json: {
+          code: 200,
+          status: 'ok'
+        }
       end
     end
   end

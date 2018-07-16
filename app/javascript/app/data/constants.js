@@ -2,6 +2,7 @@ const { GFW_API } = process.env;
 const { CW_API } = process.env;
 
 export const LOGIN_URL = `${GFW_API}/auth/login?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
+export const LOGOUT_URL = '/auth/logout';
 
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {

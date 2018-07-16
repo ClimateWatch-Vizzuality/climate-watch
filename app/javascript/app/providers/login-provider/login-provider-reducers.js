@@ -51,6 +51,11 @@ export default {
     newUserData.tester = payload.tester;
     return updateUserState(state, user, newUserData);
   },
+  [actions.deleteUserData]: state => ({
+    ...state,
+    logged: false,
+    user: {}
+  }),
   [actions.profileUpdated]: state => ({
     ...state,
     profileUpdated: true,
