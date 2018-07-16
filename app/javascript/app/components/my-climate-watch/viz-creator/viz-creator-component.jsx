@@ -28,7 +28,7 @@ const VizCreator = props => {
     updateVisualisationName,
     updateVisualisationDescription,
     saveVisualisation,
-    deleteVisualisation,
+    closeCreator,
     handleFilterSelect,
     creationStatus
   } = props;
@@ -62,7 +62,7 @@ const VizCreator = props => {
             saveTitle={updateVisualisationName}
             saveDescription={updateVisualisationDescription}
             saveVisualisation={saveVisualisation}
-            deleteVisualisation={deleteVisualisation}
+            closeCreator={closeCreator}
             creationStatus={creationStatus}
             visualisationType={visualisationType}
             visualisationOptions={visualisationOptions}
@@ -92,7 +92,7 @@ VizCreator.propTypes = {
   updateVisualisationName: PropTypes.func.isRequired,
   updateVisualisationDescription: PropTypes.func.isRequired,
   saveVisualisation: PropTypes.func.isRequired,
-  deleteVisualisation: PropTypes.func.isRequired,
+  closeCreator: PropTypes.func.isRequired,
   handleFilterSelect: PropTypes.func.isRequired,
   creationStatus: PropTypes.object,
   legends: PropTypes.object

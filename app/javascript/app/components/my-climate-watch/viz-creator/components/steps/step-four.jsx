@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _find from 'lodash/find';
 import cx from 'classnames';
 
 import Fieldset from 'components/fieldset';
@@ -34,7 +33,7 @@ class Step4 extends Component {
       saveDescription,
       timeseries,
       saveVisualisation,
-      deleteVisualisation,
+      closeCreator,
       id,
       creationStatus,
       visualisationType
@@ -85,10 +84,10 @@ class Step4 extends Component {
         <div className={styles.saveContainer}>
           {id && (
             <Button
-              onClick={() => deleteVisualisation({ id })}
+              onClick={closeCreator}
               className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
             >
-              Delete
+              Cancel
             </Button>
           )}
           <Button
@@ -119,7 +118,7 @@ Step4.propTypes = {
   creationStatus: PropTypes.object,
   visualisationType: PropTypes.string,
   description: PropTypes.string,
-  deleteVisualisation: PropTypes.func.isRequired,
+  closeCreator: PropTypes.func.isRequired,
   saveDescription: PropTypes.func.isRequired
 };
 
