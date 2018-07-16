@@ -107,7 +107,7 @@ export function setYAxisDomain() {
 }
 
 function setBuffer(min) {
-  if (min < 0) return 0 - Math.abs(min);
+  if (min <= 0.1) return min;
   return min * 0.7;
 }
 
