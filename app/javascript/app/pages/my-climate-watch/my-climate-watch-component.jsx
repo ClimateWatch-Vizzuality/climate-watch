@@ -14,16 +14,13 @@ import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.s
 import layout from 'styles/layout.scss';
 import styles from './my-climate-watch-styles';
 
-const MyCw = ({ location, route, login, openCreator, logout, history }) => {
+const MyCw = ({ location, route, login, openCreator, logout }) => {
   let button = null;
   if (login.logged) {
     if (location.pathname.indexOf('account-settings') > -1) {
       button = {
         text: 'Logout',
-        onClick: () => {
-          logout();
-          history.replace('/my-climate-watch');
-        }
+        onClick: logout
       };
     } else {
       button = { text: 'Create a Visualization', onClick: () => openCreator() };
@@ -67,8 +64,7 @@ MyCw.propTypes = {
   route: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   openCreator: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-  history: PropTypes.object
+  logout: PropTypes.func.isRequired
 };
 
 export default MyCw;

@@ -1,6 +1,6 @@
 import { createAction, createThunkAction } from 'redux-tools';
 import { CWAPI } from 'services/api';
-import { deleteCookie } from 'utils/cookies';
+import { LOGOUT_URL } from 'data/constants';
 
 export const getUserInit = createAction('getUserInit');
 export const getUserReady = createAction('getUserReady');
@@ -38,6 +38,9 @@ export const saveUserData = createThunkAction(
 );
 
 export const logout = createThunkAction('logout', () => dispatch => {
-  deleteCookie('user_token');
-  dispatch(deleteUserData());
+  CWAPI.get(LOGOUT_URL)
+    .then(dispatch(deleteUserData()))
+    .catch(e => {
+      console.warn(e);
+    });
 });
