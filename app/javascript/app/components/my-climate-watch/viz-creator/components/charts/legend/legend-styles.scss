@@ -25,7 +25,8 @@
   align-items: center;
   color: $dark-gray;
   min-width: 110px;
-  font-size: $font-size-sm;
+  //Fixed font size to avoid layout breacking with rem
+  font-size: 14px;
 }
 
 .legendLogoTitle {
