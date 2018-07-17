@@ -82,14 +82,12 @@ class Step4 extends Component {
       </li>,
       <li className="grid-column-element" key="step-4-button-li">
         <div className={styles.saveContainer}>
-          {id && (
-            <Button
-              onClick={closeCreator}
-              className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
-            >
-              Cancel
-            </Button>
-          )}
+          <Button
+            onClick={closeCreator}
+            className={cx(btnThemes.btnSecondary, styles.cancelBtn)}
+          >
+            Cancel
+          </Button>
           <Button
             color="yellow"
             onClick={() => {
