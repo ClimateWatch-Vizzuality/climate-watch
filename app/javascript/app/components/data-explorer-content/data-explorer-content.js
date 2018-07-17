@@ -142,7 +142,7 @@ class DataExplorerContentContainer extends PureComponent {
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source';
-    const paramsToUpdate = [];
+    let paramsToUpdate = [];
     const resetPageParam = {
       name: 'page',
       value: 1
@@ -155,7 +155,7 @@ class DataExplorerContentContainer extends PureComponent {
 
     if (filterName === SOURCE_AND_VERSION_KEY) {
       const values = value && value.split(' - ');
-      paramsToUpdate.concat([
+      paramsToUpdate = paramsToUpdate.concat([
         {
           name: `${section}-data-sources`,
           value: value && values[0]
