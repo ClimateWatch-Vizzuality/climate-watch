@@ -6,7 +6,7 @@ import {
   setXAxisDomain,
   setYAxisDomain
 } from 'app/utils/graphs';
-import { groupByYear, pick } from '../utils';
+import { groupByYear, pick, getSelectedModel } from '../utils';
 
 const makeConfig = (data, indicators, small, models) => {
   const keys = Object.keys(data[0]).filter(k => k !== 'year');
@@ -73,9 +73,9 @@ const makeConfig = (data, indicators, small, models) => {
         color: chartColors[i],
         label: names[0][k]
       })),
-      logo: models.data.find(model => model.id === models.selected.value).logo,
-      modelUrl: models.data.find(model => model.id === models.selected.value)
-        .url
+      dataProvider: getSelectedModel(models).maintainer_institute,
+      logo: getSelectedModel(models).logo,
+      modelUrl: getSelectedModel(models).url
     }
   };
 };

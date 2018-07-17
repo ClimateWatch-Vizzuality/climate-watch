@@ -20,11 +20,11 @@ const LegendComponent = ({ className, data = [], theme }) => (
           />
         ))}
     </ul>
-    {hasLogo(data) && (
-      <div className={theme.legendLogo}>
+    {hasLogo && (
+      <div className={theme.legendLogoContainer}>
         <div className={theme.legendLogoTitle}>Data provided by:</div>
-        <a href={data.modelUrl} target="_blank">
-          <img src={`https:${data.logo}`} />
+        <a href={data.modelUrl} target="_blank" className={theme.legendLogo}>
+          <img id="logoImage" src={`https:${data.logo}`} />
         </a>
       </div>
     )}

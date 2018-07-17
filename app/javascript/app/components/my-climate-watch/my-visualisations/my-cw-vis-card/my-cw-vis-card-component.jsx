@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-// import Dotdotdot from 'react-dotdotdot';
+import Dotdotdot from 'react-dotdotdot';
 import ButtonGroup from 'components/button-group';
 import RenderChart from 'components/my-climate-watch/viz-creator/components/render-chart';
 import {
@@ -24,20 +24,34 @@ class MyVisCard extends PureComponent {
       ? chartDataSelector({ datasets, small: false })
       : null;
     const id = data.id;
-
     return (
       <div className={styles.cardContainer}>
         <div className={cx(styles.card, className)}>
-          <div className={styles.chart}>
+          <div
+            className={cx(styles.chart, {
+              [styles.pieChart]: chart === 'PieChart'
+            })}
+          >
             {datasets && (
               <RenderChart chart={chart} config={chartData} height={200} />
             )}
           </div>
           <div className={styles.cardTexts}>
             <h2 className={styles.cardTitle}>{data.title}</h2>
-            {/* <Dotdotdot className={styles.cardDescription} clamp={3}>
+            <Dotdotdot className={styles.cardDescription} clamp={2}>
               {data.description}
-            </Dotdotdot> */}
+            </Dotdotdot>
+          </div>
+          <div className={styles.providerNote}>
+            {chartData.legend.dataProvider && (
+              <a
+                href={chartData.legend.modelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Data provided by: {chartData.legend.dataProvider}
+              </a>
+            )}
           </div>
         </div>
         <ButtonGroup

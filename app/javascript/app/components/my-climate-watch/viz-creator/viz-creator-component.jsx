@@ -59,8 +59,8 @@ const VizCreator = props => {
             description={description}
             timeseries={timeseries}
             chartData={chartData}
-            onNameChange={updateVisualisationName}
-            onDescriptionChange={updateVisualisationDescription}
+            saveTitle={updateVisualisationName}
+            saveDescription={updateVisualisationDescription}
             saveVisualisation={saveVisualisation}
             deleteVisualisation={deleteVisualisation}
             creationStatus={creationStatus}
