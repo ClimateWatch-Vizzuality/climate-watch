@@ -144,7 +144,7 @@ class DataExplorerContent extends PureComponent {
           <Button className={styles.button} href={href} color="plain">
             View in module page
           </Button>
-          {!loading && data ? (
+          {!loading && data && !metadataSection ? (
             <ReactPaginate
               containerClassName={styles.paginate}
               previousLabel="<"

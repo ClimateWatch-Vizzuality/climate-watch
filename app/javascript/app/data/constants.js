@@ -1,8 +1,11 @@
 const { GFW_API } = process.env;
 const { CW_API } = process.env;
+const { ESP_API } = process.env;
 
 export const LOGIN_URL = `${GFW_API}/auth/login?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
 export const LOGOUT_URL = '/auth/logout';
+
+export const ESP_HOST = ESP_API.replace('/api/v1', '');
 
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
@@ -335,29 +338,6 @@ export const DATA_EXPLORER_DEPENDENCIES = {
   'emission-pathways': { indicators: ['categories'] }
 };
 
-export const DATA_EXPLORER_PATHWAYS_META_LINKS = {
-  'meta locations': {
-    href: '/api/v1/data/emission_pathways/locations',
-    rel: 'meta locations'
-  },
-  'meta models': {
-    href: '/api/v1/data/emission_pathways/models',
-    rel: 'meta models'
-  },
-  'meta scenarios': {
-    href: '/api/v1/data/emission_pathways/scenarios',
-    rel: 'meta scenarios'
-  },
-  'meta categories': {
-    href: '/api/v1/data/emission_pathways/categories',
-    rel: 'meta categories'
-  },
-  'meta indicators': {
-    href: '/api/v1/data/emission_pathways/indicators',
-    rel: 'meta indicators'
-  }
-};
-
 export const DATA_EXPLORER_SECTION_BASE_URIS = {
   'historical-emissions': 'ghg-emissions',
   'ndc-sdg-linkages': 'ndcs-sdg',
@@ -440,11 +420,11 @@ export default {
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   SOURCE_VERSIONS,
-  DATA_EXPLORER_PATHWAYS_META_LINKS,
   USERS_PROFESIONAL_SECTORS,
   DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_DEPENDENCIES,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
+  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  ESP_HOST
 };

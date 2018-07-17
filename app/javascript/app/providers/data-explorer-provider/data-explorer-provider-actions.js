@@ -1,9 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import {
-  DATA_EXPLORER_SECTION_NAMES,
-  DATA_EXPLORER_PATHWAYS_META_LINKS
-} from 'data/constants';
+import { DATA_EXPLORER_SECTION_NAMES, ESP_HOST } from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
 import { parseLinkHeader } from 'utils/utils';
 import { parseQuery } from 'utils/data-explorer';
@@ -26,8 +23,7 @@ export const fetchMetadataInit = createAction('fetchMetadataInit');
 export const fetchMetadataReady = createAction('fetchMetadataReady');
 export const fetchMetadataFail = createAction('fetchMetadataFail');
 
-const devESPURL = section =>
-  (section === 'emission-pathways' ? 'https://data.emissionspathways.org' : '');
+const devESPURL = section => (section === 'emission-pathways' ? ESP_HOST : '');
 
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
@@ -122,9 +118,7 @@ export const fetchMetadata = createThunkAction(
         .then(response => {
           if (response.ok) {
             const links = response.headers.get('Link');
-            return links
-              ? parseLinkHeader(links)
-              : DATA_EXPLORER_PATHWAYS_META_LINKS;
+            return parseLinkHeader(links);
           }
           throw Error(response.statusText);
         })

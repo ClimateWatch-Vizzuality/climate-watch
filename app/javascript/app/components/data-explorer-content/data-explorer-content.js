@@ -13,7 +13,8 @@ import {
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_DEPENDENCIES
+  DATA_EXPLORER_DEPENDENCIES,
+  ESP_HOST
 } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
@@ -46,8 +47,7 @@ const mapStateToProps = (state, { section, location }) => {
     { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
   ];
   const filterQuery = parseFilterQuery(dataState);
-  const devESPURL =
-    section === 'emission-pathways' ? 'https://data.emissionspathways.org' : '';
+  const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
   const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
     section
   ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;

@@ -83,13 +83,13 @@ const API_CALLS = {
   ],
   'emission-pathways': [
     {
-      title: 'GET /api/v1/data/emission_pathways/meta',
+      title: `GET ${ESP_API}/data/emission_pathways/meta`,
       url: `${ESP_API}/data/emission_pathways/meta.json`,
       description: linkHeaderDescription,
       extra: linkHeaderExtra
     },
     {
-      title: 'GET /api/v1/data/emission_pathways',
+      title: `GET ${ESP_API}/data/emission_pathways`,
       url: `${ESP_API}/data/emission_pathways`,
       description: 'Retrieves time series data for Emission Pathways',
       queryParams: [
