@@ -33,6 +33,7 @@ class Dropdown extends PureComponent {
       activeLabel,
       highlightedIndex,
       noParentSelection,
+      placeholder,
       disabled
     } = this.props;
 
@@ -55,6 +56,7 @@ class Dropdown extends PureComponent {
             inputProps={() => buildInputProps(getInputProps)}
             handleClearSelection={() => handleClearSelection()}
             disabled={disabled}
+            placeholder={placeholder}
             {...getRootProps({ refKey: 'innerRef' })}
           >
             <Menu
