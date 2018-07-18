@@ -63,7 +63,12 @@ const mapStateToProps = (state, { section, location }) => {
     state.dataExplorer.data[section] &&
     state.dataExplorer.data[section].total;
   const metadataSection = !!location.hash && location.hash === '#meta';
-  const loading = state.dataExplorer && state.dataExplorer.loading;
+  const hasFetchedData =
+    state.dataExplorer &&
+    state.dataExplorer.data &&
+    state.dataExplorer.data[section];
+  const loading =
+    (state.dataExplorer && state.dataExplorer.loading) || !hasFetchedData;
   const loadingMeta = state.dataExplorer && state.dataExplorer.loadingMeta;
   const selectedOptions = getSelectedOptions(dataState);
   const filterDependencyMissing = key =>
@@ -80,6 +85,7 @@ const mapStateToProps = (state, { section, location }) => {
   return {
     data,
     pageCount: dataLength ? dataLength / itemsPerPage : 0,
+    initialPage: search.page && parseInt(search.page, 10) - 1,
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',
     isDisabled,
@@ -94,7 +100,6 @@ const mapStateToProps = (state, { section, location }) => {
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
     search,
-    initialPage: parseInt(search.page, 10) - 1 || 0,
     loading,
     loadingMeta
   };
@@ -116,7 +121,19 @@ const getDependentKeysToDelete = (value, section, filterName) => {
   return dependentKeysToDelete;
 };
 
+const resetPageParam = {
+  name: 'page',
+  value: 1
+};
+
 class DataExplorerContentContainer extends PureComponent {
+  componentDidMount() {
+    const { search } = this.props;
+    if (!search.page) {
+      this.updateUrlParam(resetPageParam);
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const { parsedExternalParams, search } = this.props;
     if (
@@ -143,10 +160,6 @@ class DataExplorerContentContainer extends PureComponent {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source';
     let paramsToUpdate = [];
-    const resetPageParam = {
-      name: 'page',
-      value: 1
-    };
     const dependentKeysToDeleteParams = getDependentKeysToDelete(
       value,
       section,

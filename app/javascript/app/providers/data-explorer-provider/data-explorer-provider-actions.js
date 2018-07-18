@@ -4,6 +4,7 @@ import { DATA_EXPLORER_SECTION_NAMES, ESP_HOST } from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
 import { parseLinkHeader } from 'utils/utils';
 import { parseQuery } from 'utils/data-explorer';
+import qs from 'query-string';
 
 export const fetchDataExplorerInit = createAction('fetchDataExplorerInit');
 export const fetchDataExplorerReady = createAction('fetchDataExplorerReady');
@@ -31,18 +32,21 @@ export const fetchDataExplorer = createThunkAction(
     const { dataExplorer } = state();
     if (
       dataExplorer &&
-      query &&
-      query.includes('page') &&
       (isEmpty(dataExplorer) ||
         (dataExplorer.data && !dataExplorer.data[section]) ||
         (dataExplorer.data && !dataExplorer.loading))
     ) {
       dispatch(fetchDataExplorerInit());
-      const parsedQuery = parseQuery(query);
+
+      const updatedQuery = qs.parse(query) || {};
+      if (!updatedQuery.page) updatedQuery.page = 1;
+      if (!updatedQuery.per_page) updatedQuery.per_page = 7;
+      const parsedQuery = parseQuery(qs.stringify(updatedQuery));
+
       fetch(
         `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
           section
-        ]}${parsedQuery ? `?${parsedQuery}` : ''}`
+        ]}?${parsedQuery}`
       )
         .then(response =>
           response.json().then(json => {
