@@ -12,8 +12,11 @@
 }
 
 .intro {
+
   > * {
-    @include xy-gutters($gutter-position: 'left', $gutters: $gutter-padding);
+    @media #{$tablet-landscape} {
+      @include xy-gutters($gutter-position: 'left', $gutters: $gutter-padding);
+    }
   }
 
   .title {
