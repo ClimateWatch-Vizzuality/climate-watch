@@ -9,7 +9,7 @@ import anchorNavThemeColorTheme from 'styles/themes/anchor-nav/anchor-nav-theme-
 import layout from 'styles/layout.scss';
 import styles from './data-explorer-styles';
 
-const DataExplorer = ({ navLinks, route, allDataUrl }) => (
+const DataExplorer = ({ navLinks, route, handleDownloadModalOpen }) => (
   <div>
     <Header theme={styles}>
       <div className={styles.introWrapper}>
@@ -19,7 +19,7 @@ const DataExplorer = ({ navLinks, route, allDataUrl }) => (
           title="Data Explorer"
           button={{
             text: 'Download All Data (62 MB)',
-            href: allDataUrl,
+            onClick: handleDownloadModalOpen,
             color: 'white',
             className: styles.button
           }}
@@ -41,7 +41,7 @@ const DataExplorer = ({ navLinks, route, allDataUrl }) => (
 DataExplorer.propTypes = {
   navLinks: PropTypes.array,
   route: PropTypes.object.isRequired,
-  allDataUrl: PropTypes.string.isRequired
+  handleDownloadModalOpen: PropTypes.func.isRequired
 };
 
 export default DataExplorer;
