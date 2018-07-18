@@ -1,6 +1,10 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import { DATA_EXPLORER_SECTION_NAMES, ESP_HOST } from 'data/constants';
+import {
+  DATA_EXPLORER_SECTION_NAMES,
+  ESP_HOST,
+  DATA_EXPLORER_PER_PAGE
+} from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
 import { parseLinkHeader } from 'utils/utils';
 import { parseQuery } from 'utils/data-explorer';
@@ -28,7 +32,7 @@ const devESPURL = section => (section === 'emission-pathways' ? ESP_HOST : '');
 
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
-  ({ section, query }) => (dispatch, state) => {
+  ({ section, query, page }) => (dispatch, state) => {
     const { dataExplorer } = state();
     if (
       dataExplorer &&
@@ -39,8 +43,8 @@ export const fetchDataExplorer = createThunkAction(
       dispatch(fetchDataExplorerInit());
 
       const updatedQuery = qs.parse(query) || {};
-      if (!updatedQuery.page) updatedQuery.page = 1;
-      if (!updatedQuery.per_page) updatedQuery.per_page = 7;
+      if (!updatedQuery.page) updatedQuery.page = page || 1;
+      if (!updatedQuery.per_page) { updatedQuery.per_page = DATA_EXPLORER_PER_PAGE; }
       const parsedQuery = parseQuery(qs.stringify(updatedQuery));
 
       fetch(

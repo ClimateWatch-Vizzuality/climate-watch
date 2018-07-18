@@ -120,11 +120,16 @@ class DataExplorerContent extends PureComponent {
       initialPage,
       loading,
       data,
-      handleDownloadModalOpen
+      handleDownloadModalOpen,
+      search
     } = this.props;
     return (
       <div>
-        <DataExplorerProvider section={section} query={filterQuery} />
+        <DataExplorerProvider
+          section={section}
+          query={filterQuery}
+          page={search.page}
+        />
         <RegionsProvider />
         <CountriesProvider />
         <div className={styles.filtersContainer}>{this.renderFilters()}</div>
@@ -191,6 +196,7 @@ DataExplorerContent.propTypes = {
   filterQuery: PropTypes.string,
   query: PropTypes.string,
   pageCount: PropTypes.number,
+  search: PropTypes.object,
   initialPage: PropTypes.number
 };
 

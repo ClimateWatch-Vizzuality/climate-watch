@@ -14,6 +14,7 @@ import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_DEPENDENCIES,
+  DATA_EXPLORER_PER_PAGE,
   ESP_HOST
 } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
@@ -56,7 +57,6 @@ const mapStateToProps = (state, { section, location }) => {
       ? getPathwaysMetodology(dataState)
       : getMethodology(dataState);
   const data = parseData(dataState);
-  const itemsPerPage = 7;
   const dataLength =
     state.dataExplorer &&
     state.dataExplorer.data &&
@@ -84,7 +84,7 @@ const mapStateToProps = (state, { section, location }) => {
     filterDependencyMissing(key);
   return {
     data,
-    pageCount: dataLength ? dataLength / itemsPerPage : 0,
+    pageCount: dataLength ? dataLength / DATA_EXPLORER_PER_PAGE : 0,
     initialPage: search.page && parseInt(search.page, 10) - 1,
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',

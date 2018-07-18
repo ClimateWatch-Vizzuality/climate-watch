@@ -390,6 +390,8 @@ export const DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS = {
   'emission-pathways': [{ key: 'categories', noSelectableParent: true }]
 };
 
+export const DATA_EXPLORER_PER_PAGE = 20;
+
 export default {
   CALCULATION_OPTIONS,
   QUANTIFICATION_COLORS,
@@ -426,5 +428,6 @@ export default {
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  DATA_EXPLORER_PER_PAGE,
   ESP_HOST
 };
