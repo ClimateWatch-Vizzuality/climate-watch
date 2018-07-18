@@ -17,6 +17,7 @@ import { toStartCase } from 'app/utils';
 import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
 import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
+import isEmpty from 'lodash/isEmpty';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
 
@@ -25,17 +26,21 @@ class DataExplorerContent extends PureComponent {
   renderTable() {
     const { data, firstColumnHeaders, loading } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
-    return data ? (
-      <Table
-        data={data}
-        rowHeight={60}
-        sortBy={'region'}
-        firstColumnHeaders={firstColumnHeaders}
-        horizontalScroll
-      />
-    ) : (
-      <NoContent message={'No data'} className={styles.noData} />
-    );
+    if (data && data.length) {
+      const columns = data && Object.keys(data[0]);
+      const sortBy =
+        columns.find(c => firstColumnHeaders.includes(c)) || columns[0];
+      return (
+        <Table
+          data={data}
+          rowHeight={60}
+          sortBy={sortBy}
+          firstColumnHeaders={firstColumnHeaders}
+          horizontalScroll
+        />
+      );
+    }
+    return <NoContent message={'No data'} className={styles.noData} />;
   }
 
   renderMeta() {
@@ -121,8 +126,12 @@ class DataExplorerContent extends PureComponent {
       loading,
       data,
       handleDownloadModalOpen,
-      search
+      search,
+      selectedOptions
     } = this.props;
+    const downloadButtonText = isEmpty(selectedOptions)
+      ? `Download ${toStartCase(section)} data`
+      : 'Download selected data';
     return (
       <div>
         <DataExplorerProvider
@@ -165,8 +174,9 @@ class DataExplorerContent extends PureComponent {
             className={styles.button}
             onClick={handleDownloadModalOpen}
             color="yellow"
+            disabled={!data}
           >
-            Download
+            {downloadButtonText}
           </Button>
         </div>
         <ApiDocumentation section={section} />
