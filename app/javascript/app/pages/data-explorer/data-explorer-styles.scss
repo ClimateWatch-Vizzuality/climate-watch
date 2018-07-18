@@ -12,7 +12,6 @@
 }
 
 .intro {
-
   > * {
     @media #{$tablet-landscape} {
       @include xy-gutters($gutter-position: 'left', $gutters: $gutter-padding);
