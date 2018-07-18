@@ -7,18 +7,24 @@
   box-shadow: inset 0 33px 30px -20px rgba(0, 0, 0, 0.1);
 }
 
+.introWrapper {
+  @include row();
+}
+
 .intro {
   > * {
-    @include xy-gutters($gutter-position: 'left', $gutters: 0);
+    @include xy-gutters($gutter-position: 'left', $gutters: $gutter-padding);
   }
 
   .title {
-    @include row();
-
     color: $theme-color;
   }
 }
 
 .anchorNav {
   @include row('shrink', $wrap: false);
+}
+
+.button {
+  border-bottom: none;
 }
