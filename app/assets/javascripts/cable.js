@@ -6,7 +6,7 @@
 //= require_tree ./channels
 
 (function () {
-  this.App || (this.App = {});
+  this.App || (this.App = {}); // eslint-disable-line no-unused-expressions
 
-  App.cable = ActionCable.createConsumer();
+  App.cable = ActionCable.createConsumer(); // eslint-disable-line no-undef
 }.call(this));

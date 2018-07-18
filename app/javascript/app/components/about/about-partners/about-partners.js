@@ -41,7 +41,8 @@ const partnershipWith = {
         src: climateActionTrackerImage
       },
       description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
+        'joined the Climate Watch development team and provided support in developing concepts for the ' +
+        'scope and functions of Climate Watch.'
     },
     {
       link: 'http://climateanalytics.org/',
@@ -50,7 +51,8 @@ const partnershipWith = {
         src: climateAnalyticsImage
       },
       description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
+        'joined the Climate Watch development team and provided support in developing concepts for the ' +
+        'scope and functions of Climate Watch.'
     },
     {
       link: 'https://www.giz.de/en/html/index.html',
@@ -59,7 +61,8 @@ const partnershipWith = {
         src: gizImage
       },
       description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
+        'joined the Climate Watch development team and provided support in developing concepts for the scope and ' +
+        'functions of Climate Watch.'
     },
     {
       link: 'https://www.die-gdi.de',

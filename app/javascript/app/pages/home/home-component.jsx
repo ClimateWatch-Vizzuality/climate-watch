@@ -49,7 +49,9 @@ class Home extends PureComponent {
         >
           <div className={cx(styles.column, styles.homeIntro)}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
-            <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
+            <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, \
+              researchers and other stakeholders gather insights on countries' climate progress."
+            />
             <AutocompleteSearch />
           </div>
           <div className={cx(styles.column, styles.video)}>
@@ -114,7 +116,9 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="View Country Profiles"
-              description="Gain insights on individual countries historical emissions, national climate commitments, climate vulnerabilities and readiness, and sustainable development linkages – and compare this information across countries."
+              description="Gain insights on individual countries historical emissions, national climate commitments, \
+                climate vulnerabilities and readiness, and sustainable development linkages – and \
+                compare this information across countries."
             />
             <GeoLocationProvider />
             <span
@@ -149,7 +153,9 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Explore and Compare Nationally Determined Contributions"
-              description="169 nationally determined contributions (NDCs) representing 192 countries and the European Union have been submitted to the UN Framework Convention on Climate Change.<br />Analyze and compare NDCs of all countries using 150 structured indicators and search the full text for key terms."
+              description="169 nationally determined contributions (NDCs) representing 192 countries and the European \
+                Union have been submitted to the UN Framework Convention on Climate Change.<br />Analyze and compare NDCs \
+                of all countries using 150 structured indicators and search the full text for key terms."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link="/ndcs-content">
@@ -208,7 +214,10 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Examine Links Between Sustainable Development and Climate Goals"
-              description="Our research shows that climate actions in NDCs align with at least 154 of the 169 targets of the Sustainable Development Goals (SDGs), demonstrating the enormous potential for linking climate and sustainable development efforts.<br />Identify potential alignment between the targets, actions, policy measures and needs in countries’ NDCs and the targets of the SDGs."
+              description="Our research shows that climate actions in NDCs align with at least 154 of the 169 targets \
+                of the Sustainable Development Goals (SDGs), demonstrating the enormous potential for linking climate \
+                and sustainable development efforts.<br />Identify potential alignment between the targets, actions, \
+                policy measures and needs in countries’ NDCs and the targets of the SDGs."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/ndcs-sdg'}>
@@ -224,7 +233,10 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Explore Historical Greenhouse Gas Emissions"
-              description="The 10 countries that emit the most greenhouse gases account for over 60% of global emissions, while the 100 least emitters contributed less than 3%.<br />Explore and download over 160 years of greenhouse gas emissions data from 196 countries and the EU, across seven sectors. Our inventory includes datasets sourced from independent research organizations and country self-reported inventories to the UNFCCC."
+              description="The 10 countries that emit the most greenhouse gases account for over 60% of global emissions, \
+                while the 100 least emitters contributed less than 3%.<br />Explore and download over 160 years of \
+                greenhouse gas emissions data from 196 countries and the EU, across seven sectors. Our inventory includes \
+                datasets sourced from independent research organizations and country self-reported inventories to the UNFCCC."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link="/ghg-emissions">
@@ -288,7 +300,10 @@ class Home extends PureComponent {
             <Intro
               theme={introDark}
               title="Chart and Visualize Decarbonization Pathways"
-              description="Where are global emissions and global temperatures headed? That all depends on the paths we take.<br />Draw insights from 30 potential future pathways developed by modeling teams from around the world. Pathways helps you navigate through multiple models and visualize scenarios for countries, regions and sectors."
+              description="Where are global emissions and global temperatures headed? That all depends on the paths \
+                we take.<br />Draw insights from 30 potential future pathways developed by modeling teams from around \
+                the world. Pathways helps you navigate through multiple models and visualize scenarios for countries, \
+                regions and sectors."
             />
             <div className={styles.doubleFold}>
               <Button color="yellow" link={'/pathways'}>
