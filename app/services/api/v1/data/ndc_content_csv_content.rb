@@ -11,10 +11,10 @@ module Api
         end
 
         def call
-            @output << @headers.map(&:humanize).to_csv
-            @query.each do |record|
-              ary = @headers.map { |h| record[h] }
-              @output << ary.to_csv
+          @output << @headers.map(&:humanize).to_csv
+          @query.each do |record|
+            ary = @headers.map { |h| record[h] }
+            @output << ary.to_csv
           end
         end
       end

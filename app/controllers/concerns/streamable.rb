@@ -12,9 +12,9 @@ module Streamable
   def stream_file(filename)
     create_headers filename
     self.response_body =
-        Enumerator.new do |y|
-          yield (y)
-        end
+      Enumerator.new do |y|
+        yield y
+      end
     response.status = 200
   end
 end
