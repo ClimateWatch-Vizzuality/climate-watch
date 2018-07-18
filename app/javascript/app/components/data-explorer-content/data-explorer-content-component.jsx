@@ -147,8 +147,8 @@ class DataExplorerContent extends PureComponent {
               nextLabel=">"
               breakLabel={<span className={styles.more}>...</span>}
               pageCount={pageCount}
-              pageRangeDisplayed={3}
-              marginPagesDisplayed={2}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={1}
               onPageChange={handlePageChange}
               initialPage={initialPage}
               activeClassName={styles.active}
