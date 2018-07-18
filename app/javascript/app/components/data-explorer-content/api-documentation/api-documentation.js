@@ -39,7 +39,7 @@ const linkHeaderDescription =
   'Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)';
 const linkHeaderExtra = 'This response only has headers not body';
 const multipleValuesExtra =
-  'All this parameters accept multiple values, separated by commas. Response is paginated. Pagination headers are in place.';
+  'All these parameters accept multiple values, separated by commas. Response is paginated. Pagination headers are in place.';
 
 const API_CALLS = {
   'historical-emissions': [
