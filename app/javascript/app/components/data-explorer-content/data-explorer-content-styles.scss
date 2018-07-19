@@ -2,7 +2,7 @@
 
 .loader,
 .noData {
-  min-height: 600px;
+  min-height: 475px;
 }
 
 .button {
@@ -10,14 +10,26 @@
 }
 
 .buttons {
-  @include columns(6);
-  @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding * 2);
+  @include columns(12);
+  @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding);
+
+  .button {
+    order: 2;
+
+    @include xy-gutters($gutter-position: 'bottom', $gutters: $gutter-padding);
+  }
 
   @media #{$tablet-landscape} {
     @include columns(4);
 
-    > :nth-child(2) {
-      @include column-offset(4);
+    .button {
+      &:first-child {
+        order: 1;
+      }
+
+      &:last-child {
+        order: 3;
+      }
     }
   }
 }
@@ -53,4 +65,40 @@
   &.topPadded {
     @include xy-gutters($gutter-position: 'top', $gutters: $gutter-padding * 3);
   }
+}
+
+.blank {
+  order: 2;
+}
+
+.paginate {
+  display: inline-block;
+  padding: 10px 15px;
+  text-align: center;
+  order: 1;
+
+  @media #{$tablet-landscape} {
+    order: 2;
+  }
+
+  a {
+    color: $dark-gray;
+    cursor: pointer;
+  }
+
+  li {
+    padding: 0 5px;
+    display: inline-block;
+  }
+}
+
+.active {
+  a {
+    color: $theme-color;
+  }
+}
+
+.more {
+  cursor: default;
+  color: $dark-gray;
 }

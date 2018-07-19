@@ -6,6 +6,7 @@ import { themr } from 'react-css-themr';
 
 import styles from './legend-styles';
 
+const hasLogo = data => data && data.logo;
 const LegendComponent = ({ className, data = [], theme }) => (
   <div className={cx(className, theme.legend)}>
     <ul className={theme.tags}>
@@ -19,15 +20,14 @@ const LegendComponent = ({ className, data = [], theme }) => (
           />
         ))}
     </ul>
-    {data &&
-      data.logo && (
-        <div className={theme.legendLogoContainer}>
-          <div className={theme.legendLogoTitle}>Data provided by:</div>
-          <a href={data.modelUrl} target="_blank" className={theme.legendLogo}>
-            <img id="logoImage" src={`https:${data.logo}`} />
-          </a>
-        </div>
-      )}
+    {hasLogo && (
+      <div className={theme.legendLogoContainer}>
+        <div className={theme.legendLogoTitle}>Data provided by:</div>
+        <a href={data.modelUrl} target="_blank" className={theme.legendLogo}>
+          <img id="logoImage" src={`https:${data.logo}`} />
+        </a>
+      </div>
+    )}
   </div>
 );
 
