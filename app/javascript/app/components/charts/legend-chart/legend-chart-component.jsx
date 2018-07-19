@@ -28,7 +28,7 @@ class LegendChart extends PureComponent {
       dataOptions && dataSelected && dataSelected.length !== dataOptions.length;
     const mirrorX = dataSelected.length < 2;
     const hasColumns = config && config.columns && config.columns.y.length;
-
+    const hasLegendNote = config && config.legendNote;
     return (
       <div className={styles.legendChart}>
         <div className={styles.legendContainer}>
@@ -72,12 +72,11 @@ class LegendChart extends PureComponent {
               </ul>
             </div>
           </div>
-          {config &&
-          config.legendNote && (
-              <div className={styles.tagDescription}>
+          {hasLegendNote && (
+            <div className={styles.tagDescription}>
               Click on each scenarios to see the assumptions behind it.
-              </div>
-            )}
+            </div>
+          )}
         </div>
         {model && (
           <div className={styles.legendLogo}>

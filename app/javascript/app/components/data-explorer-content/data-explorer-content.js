@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { PureComponent, createElement } from 'react';
-import { getStorageWithExpiration } from 'utils/localStorage';
+import { openDownloadModal } from 'utils/data-explorer';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import qs from 'query-string';
@@ -45,7 +45,7 @@ const mapStateToProps = (state, { section, location }) => {
       hash: 'data',
       defaultActiveHash: true
     },
-    { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
+    { label: 'Sources', hash: 'meta', defaultActiveHash: true }
   ];
   const filterQuery = parseFilterQuery(dataState);
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
@@ -199,15 +199,8 @@ class DataExplorerContentContainer extends PureComponent {
   };
 
   handleDownloadModalOpen = () => {
-    const { downloadHref, setModalDownloadParams } = this.props;
-    if (getStorageWithExpiration('userSurvey')) {
-      return window.location.assign(downloadHref);
-    }
-
-    return setModalDownloadParams({
-      open: true,
-      downloadUrl: downloadHref
-    });
+    const { setModalDownloadParams, downloadHref } = this.props;
+    openDownloadModal(downloadHref, setModalDownloadParams);
   };
 
   updateUrlParam(params, clear) {

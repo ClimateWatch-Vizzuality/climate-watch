@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Tag from 'components/tag';
 import cx from 'classnames';
 import { themr } from 'react-css-themr';
+import Logo from './logo-component';
 
 import styles from './legend-styles';
 
@@ -20,14 +21,7 @@ const LegendComponent = ({ className, data = [], theme }) => (
           />
         ))}
     </ul>
-    {hasLogo && (
-      <div className={theme.legendLogoContainer}>
-        <div className={theme.legendLogoTitle}>Data provided by:</div>
-        <a href={data.modelUrl} target="_blank" className={theme.legendLogo}>
-          <img id="logoImage" src={`https:${data.logo}`} />
-        </a>
-      </div>
-    )}
+    {hasLogo && <Logo data={data} />}
   </div>
 );
 

@@ -12,9 +12,13 @@ export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 export const deburrUpper = string => toUpper(deburr(string));
 export const toStartCase = string => {
   const parsedString = startCase(string);
-  return parsedString.indexOf('Co 2') === -1
-    ? parsedString
-    : parsedString.replace(/Co 2/g, 'CO2');
+  const replacements = {
+    'Ndc Sdg': 'NDC-SDG',
+    Ndc: 'NDC',
+    Sdg: 'SDG',
+    'Co 2': 'CO2'
+  };
+  return replaceAll(parsedString, replacements);
 };
 
 export const lowerUpperFirst = string => upperFirst(toLower(string));
