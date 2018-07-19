@@ -44,7 +44,9 @@ export const fetchDataExplorer = createThunkAction(
 
       const updatedQuery = qs.parse(query) || {};
       if (!updatedQuery.page) updatedQuery.page = page || 1;
-      if (!updatedQuery.per_page) { updatedQuery.per_page = DATA_EXPLORER_PER_PAGE; }
+      if (!updatedQuery.per_page) {
+        updatedQuery.per_page = DATA_EXPLORER_PER_PAGE;
+      }
       const parsedQuery = parseQuery(qs.stringify(updatedQuery));
 
       fetch(
