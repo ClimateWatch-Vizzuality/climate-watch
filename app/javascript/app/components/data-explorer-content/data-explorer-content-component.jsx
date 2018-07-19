@@ -19,6 +19,8 @@ import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
 
+const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
+
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderTable() {
@@ -114,8 +116,10 @@ class DataExplorerContent extends PureComponent {
       anchorLinks,
       filterQuery,
       query,
-      handleDownloadModalOpen
+      handleDownloadModalOpen,
+      handleDataDownload
     } = this.props;
+
     return (
       <div>
         <DataExplorerProvider
@@ -140,14 +144,16 @@ class DataExplorerContent extends PureComponent {
           </Button>
           <Button
             className={styles.button}
-            onClick={handleDownloadModalOpen}
+            onClick={
+              FEATURE_DATA_SURVEY ? handleDownloadModalOpen : handleDataDownload
+            }
             color="yellow"
           >
             Download
           </Button>
         </div>
         <ApiDocumentation section={section} />
-        <ModalDownload />
+        {FEATURE_DATA_SURVEY && <ModalDownload />}
       </div>
     );
   }
@@ -158,6 +164,7 @@ DataExplorerContent.propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
+  handleDataDownload: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,
   filterOptions: PropTypes.object,

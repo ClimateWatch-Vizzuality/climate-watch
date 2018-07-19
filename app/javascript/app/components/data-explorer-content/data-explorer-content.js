@@ -158,6 +158,11 @@ class DataExplorerContentContainer extends PureComponent {
     this.updateUrlParam(dependentKeysToDeleteParams.concat(paramsToUpdate));
   };
 
+  handleDataDownload = () => {
+    const { downloadHref } = this.props;
+    return window.location.assign(downloadHref);
+  };
+
   handleDownloadModalOpen = () => {
     const { downloadHref, setModalDownloadParams } = this.props;
     if (getStorageWithExpiration('userSurvey')) {
@@ -179,7 +184,8 @@ class DataExplorerContentContainer extends PureComponent {
     return createElement(DataExplorerContentComponent, {
       ...this.props,
       handleFilterChange: this.handleFilterChange,
-      handleDownloadModalOpen: this.handleDownloadModalOpen
+      handleDownloadModalOpen: this.handleDownloadModalOpen,
+      handleDataDownload: this.handleDataDownload
     });
   }
 }
