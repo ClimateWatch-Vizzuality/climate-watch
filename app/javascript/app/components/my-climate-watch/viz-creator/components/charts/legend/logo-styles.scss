@@ -1,0 +1,18 @@
+@import '~styles/layout.scss';
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: $dark-gray;
+  min-width: 110px;
+  font-size: $font-size-sm;
+}
+
+.logoTitle {
+  padding-bottom: 10px;
+}
+
+.logo {
+  width: 100px;
+}
