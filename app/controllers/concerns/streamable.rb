@@ -16,5 +16,7 @@ module Streamable
         yield y
       end
     response.status = 200
+  ensure
+    response.stream.close
   end
 end
