@@ -2,7 +2,7 @@
   "name": "climate-watch",
   "version": "1.4.0",
   "engines": {
-    "node": "8.0.0"
+    "node": ">=8.0.0 <9"
   },
   "scripts": {
     "start": "run-s rails:db:migrate servers",
