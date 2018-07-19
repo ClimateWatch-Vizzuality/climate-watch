@@ -73,7 +73,7 @@ class LegendChart extends PureComponent {
             </div>
           </div>
           {config &&
-           config.legendNote && (
+          config.legendNote && (
               <div className={styles.tagDescription}>
               Click on each scenarios to see the assumptions behind it.
               </div>
