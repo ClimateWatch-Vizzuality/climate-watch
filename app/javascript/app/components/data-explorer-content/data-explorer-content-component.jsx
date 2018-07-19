@@ -15,6 +15,7 @@ import ModalDownload from 'components/modal-download';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
 import { toStartCase } from 'app/utils';
 import cx from 'classnames';
+import ReactPaginate from 'react-paginate';
 import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
@@ -114,14 +115,20 @@ class DataExplorerContent extends PureComponent {
       anchorLinks,
       filterQuery,
       query,
-      handleDownloadModalOpen
+      handlePageChange,
+      pageCount,
+      initialPage,
+      loading,
+      data,
+      handleDownloadModalOpen,
+      search
     } = this.props;
     return (
       <div>
         <DataExplorerProvider
           section={section}
           query={filterQuery}
-          noFilters={query === ''}
+          page={search.page}
         />
         <RegionsProvider />
         <CountriesProvider />
@@ -138,6 +145,22 @@ class DataExplorerContent extends PureComponent {
           <Button className={styles.button} href={href} color="plain">
             View in module page
           </Button>
+          {!loading && data && !metadataSection ? (
+            <ReactPaginate
+              containerClassName={styles.paginate}
+              previousLabel="<"
+              nextLabel=">"
+              breakLabel={<span className={styles.more}>...</span>}
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={1}
+              onPageChange={handlePageChange}
+              initialPage={initialPage}
+              activeClassName={styles.active}
+            />
+          ) : (
+            <div className={styles.blank} />
+          )}
           <Button
             className={styles.button}
             onClick={handleDownloadModalOpen}
@@ -156,6 +179,7 @@ class DataExplorerContent extends PureComponent {
 DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
   filters: PropTypes.array,
@@ -170,7 +194,10 @@ DataExplorerContent.propTypes = {
   href: PropTypes.string,
   anchorLinks: PropTypes.array,
   filterQuery: PropTypes.string,
-  query: PropTypes.string
+  query: PropTypes.string,
+  pageCount: PropTypes.number,
+  search: PropTypes.object,
+  initialPage: PropTypes.number
 };
 
 export default DataExplorerContent;

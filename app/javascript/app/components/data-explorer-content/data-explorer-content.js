@@ -13,7 +13,9 @@ import {
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_DEPENDENCIES
+  DATA_EXPLORER_DEPENDENCIES,
+  DATA_EXPLORER_PER_PAGE,
+  ESP_HOST
 } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
@@ -46,8 +48,7 @@ const mapStateToProps = (state, { section, location }) => {
     { label: 'Methodology', hash: 'meta', defaultActiveHash: true }
   ];
   const filterQuery = parseFilterQuery(dataState);
-  const devESPURL =
-    section === 'emission-pathways' ? 'https://data.emissionspathways.org' : '';
+  const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
   const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
     section
   ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
@@ -55,8 +56,19 @@ const mapStateToProps = (state, { section, location }) => {
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
       : getMethodology(dataState);
+  const data = parseData(dataState);
+  const dataLength =
+    state.dataExplorer &&
+    state.dataExplorer.data &&
+    state.dataExplorer.data[section] &&
+    state.dataExplorer.data[section].total;
   const metadataSection = !!location.hash && location.hash === '#meta';
-  const loading = state.dataExplorer && state.dataExplorer.loading;
+  const hasFetchedData =
+    state.dataExplorer &&
+    state.dataExplorer.data &&
+    state.dataExplorer.data[section];
+  const loading =
+    (state.dataExplorer && state.dataExplorer.loading) || !hasFetchedData;
   const loadingMeta = state.dataExplorer && state.dataExplorer.loadingMeta;
   const selectedOptions = getSelectedOptions(dataState);
   const filterDependencyMissing = key =>
@@ -71,7 +83,9 @@ const mapStateToProps = (state, { section, location }) => {
     (metadataSection && loadingMeta) ||
     filterDependencyMissing(key);
   return {
-    data: parseData(dataState),
+    data,
+    pageCount: dataLength ? dataLength / DATA_EXPLORER_PER_PAGE : 0,
+    initialPage: search.page && parseInt(search.page, 10) - 1,
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',
     isDisabled,
@@ -85,9 +99,9 @@ const mapStateToProps = (state, { section, location }) => {
     query: location.search,
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
+    search,
     loading,
-    loadingMeta,
-    search
+    loadingMeta
   };
 };
 
@@ -107,7 +121,19 @@ const getDependentKeysToDelete = (value, section, filterName) => {
   return dependentKeysToDelete;
 };
 
+const resetPageParam = {
+  name: 'page',
+  value: 1
+};
+
 class DataExplorerContentContainer extends PureComponent {
+  componentDidMount() {
+    const { search } = this.props;
+    if (!search.page) {
+      this.updateUrlParam(resetPageParam);
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const { parsedExternalParams, search } = this.props;
     if (
@@ -133,16 +159,16 @@ class DataExplorerContentContainer extends PureComponent {
   handleFilterChange = (filterName, value) => {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source';
+    let paramsToUpdate = [];
     const dependentKeysToDeleteParams = getDependentKeysToDelete(
       value,
       section,
       filterName
     ).map(k => ({ name: `${section}-${k}`, value: undefined }));
 
-    let paramsToUpdate = [];
     if (filterName === SOURCE_AND_VERSION_KEY) {
       const values = value && value.split(' - ');
-      paramsToUpdate = [
+      paramsToUpdate = paramsToUpdate.concat([
         {
           name: `${section}-data-sources`,
           value: value && values[0]
@@ -151,11 +177,20 @@ class DataExplorerContentContainer extends PureComponent {
           name: `${section}-gwps`,
           value: value && values[1]
         }
-      ];
+      ]);
     } else {
-      paramsToUpdate = [{ name: `${section}-${filterName}`, value }];
+      paramsToUpdate.push({
+        name: `${section}-${filterName}`,
+        value
+      });
     }
-    this.updateUrlParam(dependentKeysToDeleteParams.concat(paramsToUpdate));
+    this.updateUrlParam(
+      paramsToUpdate.concat(resetPageParam).concat(dependentKeysToDeleteParams)
+    );
+  };
+
+  handlePageChange = page => {
+    this.updateUrlParam({ name: 'page', value: page.selected + 1 });
   };
 
   handleDownloadModalOpen = () => {
@@ -179,6 +214,7 @@ class DataExplorerContentContainer extends PureComponent {
     return createElement(DataExplorerContentComponent, {
       ...this.props,
       handleFilterChange: this.handleFilterChange,
+      handlePageChange: this.handlePageChange,
       handleDownloadModalOpen: this.handleDownloadModalOpen
     });
   }

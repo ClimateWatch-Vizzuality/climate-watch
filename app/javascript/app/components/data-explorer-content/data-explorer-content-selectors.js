@@ -96,8 +96,7 @@ export const getFilterQuery = createSelector(
             parsedFilters[key]
           )
         );
-      filterIds[parsedKey] =
-        filter && (filter.iso_code || filter.id || filter.iso_code3);
+      filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
     });
     return filterIds;
   }
@@ -456,8 +455,7 @@ export const getSelectedOptions = createSelector(
       selectedOptions[key] = {
         value: selectedFields[key].label || selectedFields[key].slug,
         label: selectedFields[key].label,
-        id: selectedFields[key].iso_code ||
-        selectedFields[key].id ||
+        id: selectedFields[key].id ||
         selectedFields[key].iso_code3 || [
           selectedFields[key].data_source_id,
           selectedFields[key].version_id
