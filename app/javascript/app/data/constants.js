@@ -28,7 +28,7 @@ export const QUANTIFICATION_COLORS = {
 export const QUANTIFICATIONS_CONFIG = {
   bau: { label: 'Business as usual', color: QUANTIFICATION_COLORS.BAU },
   quantified: {
-    label: 'Quantified targets',
+    label: 'Quantified emission targets',
     color: QUANTIFICATION_COLORS.QUANTIFIED
   },
   not_quantifiable: {
