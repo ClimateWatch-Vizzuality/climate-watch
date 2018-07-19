@@ -4,6 +4,8 @@ import SimpleMenu from 'components/simple-menu';
 import downloadIcon from 'assets/icons/download.svg';
 import ModalDownload from 'components/modal-download';
 
+const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
+
 class DownloadMenu extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -17,7 +19,7 @@ class DownloadMenu extends PureComponent {
           icon={downloadIcon}
           reverse={reverse}
         />
-        <ModalDownload />
+        {FEATURE_DATA_SURVEY && <ModalDownload />}
       </Fragment>
     );
   }

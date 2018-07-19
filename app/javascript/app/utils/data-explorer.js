@@ -1,6 +1,8 @@
 import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
 
+const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
+
 const REPLACEMENTS = {
   regions: 'regions[]',
   data_sources: 'source_ids[]',
@@ -15,16 +17,15 @@ const REPLACEMENTS = {
   targets: 'target_ids[]',
   models: 'model_ids[]',
   scenarios: 'scenario_ids[]',
-  locations: 'locations'
+  locations: 'location_ids[]'
 };
 
 export const parseQuery = query => query && replaceAll(query, REPLACEMENTS);
 
 export const openDownloadModal = (downloadUrl, setModalDownloadParams) => {
-  if (getStorageWithExpiration('userSurvey')) {
+  if (!FEATURE_DATA_SURVEY || getStorageWithExpiration('userSurvey')) {
     return window.location.assign(downloadUrl);
   }
-
   return setModalDownloadParams({
     open: true,
     downloadUrl

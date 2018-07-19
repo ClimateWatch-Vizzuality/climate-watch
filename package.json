@@ -1,12 +1,15 @@
 {
   "name": "climate-watch",
   "version": "1.4.0",
+  "engines": {
+    "node": ">=8.0.0 <9"
+  },
   "scripts": {
     "start": "run-s rails:db:migrate servers",
     "rails:install": "bundle install",
     "js:install": "yarn install",
     "js:reinstall": "rm -rf ./node_modules && yarn install",
-    "js:server": "./bin/webpack-dev-server",
+    "js:server": "yarn install && ./bin/webpack-dev-server",
     "rails:db:create": "RAILS_ENV=development bundle exec rails db:create",
     "rails:db:migrate": "RAILS_ENV=development bundle exec rails db:migrate",
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",

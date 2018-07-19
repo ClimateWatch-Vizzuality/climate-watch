@@ -33,7 +33,7 @@ class Step4 extends Component {
       saveDescription,
       timeseries,
       saveVisualisation,
-      deleteVisualisation,
+      closeCreator,
       id,
       creationStatus,
       visualisationType
@@ -82,14 +82,12 @@ class Step4 extends Component {
       </li>,
       <li className="grid-column-element" key="step-4-button-li">
         <div className={styles.saveContainer}>
-          {id && (
-            <Button
-              onClick={() => deleteVisualisation({ id })}
-              className={cx(btnThemes.btnSecondary, styles.deleteBtn)}
-            >
-              Delete
-            </Button>
-          )}
+          <Button
+            onClick={closeCreator}
+            className={cx(btnThemes.btnSecondary, styles.cancelBtn)}
+          >
+            Cancel
+          </Button>
           <Button
             color="yellow"
             onClick={() => {
@@ -118,7 +116,7 @@ Step4.propTypes = {
   creationStatus: PropTypes.object,
   visualisationType: PropTypes.string,
   description: PropTypes.string,
-  deleteVisualisation: PropTypes.func.isRequired,
+  closeCreator: PropTypes.func.isRequired,
   saveDescription: PropTypes.func.isRequired
 };
 

@@ -41,6 +41,7 @@ export function getCachedSelectedProperty(lense, data) {
       ? cachedSelection
       : {};
   }
+  return null;
 }
 
 export function buildChildLense(childLense, selected, state, initialState) {

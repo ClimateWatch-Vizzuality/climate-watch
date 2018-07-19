@@ -6,6 +6,7 @@ import Button from 'components/button';
 import Icon from 'components/icon';
 import closeIcon from 'assets/icons/sidebar-close.svg';
 import cx from 'classnames';
+import { isMicrosoftBrowser } from 'utils';
 import styles from './modal-styles.scss';
 
 class CustomModal extends PureComponent {
@@ -36,10 +37,13 @@ class CustomModal extends PureComponent {
       }
     };
     const modalStyles = { ...defaultStyles, ...customStyles };
+    const isMicrosoftBrowserTest = isMicrosoftBrowser();
 
     return (
       <Modal
-        className={cx(theme.modal, 'modal')}
+        className={cx(theme.modal, 'modal', {
+          [theme.microsoftBrowserModal]: isMicrosoftBrowserTest
+        })}
         style={modalStyles}
         isOpen={isOpen}
         onRequestClose={onRequestClose}
@@ -54,7 +58,13 @@ class CustomModal extends PureComponent {
         >
           <Icon icon={closeIcon} className={theme.close} />
         </Button>
-        <div className={theme.modalContent}>{children}</div>
+        <div
+          className={cx(theme.modalContent, {
+            [theme.microsoftBrowserModalContent]: isMicrosoftBrowserTest
+          })}
+        >
+          {children}
+        </div>
       </Modal>
     );
   }
