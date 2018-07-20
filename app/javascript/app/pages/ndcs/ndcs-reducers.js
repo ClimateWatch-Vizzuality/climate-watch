@@ -18,6 +18,7 @@ export default {
           ...state,
           data: {
             categories: payload.categories,
+            mapCategories: state.data.mapCategories || {},
             sectors: payload.sectors,
             mapIndicators: state.data.mapIndicators || [],
             indicators: payload.indicators
@@ -33,7 +34,8 @@ export default {
         {
           ...state,
           data: {
-            categories: payload.categories,
+            categories: state.data.categories || {},
+            mapCategories: payload.categories,
             sectors: payload.sectors,
             indicators: state.data.indicators || [],
             mapIndicators: payload.indicators
