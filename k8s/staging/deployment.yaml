@@ -50,7 +50,7 @@ spec:
           - name: RACK_ENV
             value: staging
           - name: RAILS_ENV
-            value: staging
+            value: production
           - name: PORT
             value: "3000"
           - name: RAILS_SERVE_STATIC_FILES
@@ -84,11 +84,6 @@ spec:
             value: "https://production-api.globalforestwatch.org"
           - name: CORS_WHITELIST
             value: "*"
-          - name: APPSIGNAL_PUSH_API_KEY
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_APP_SIGNAL_STAGING
           - name: HTTP_AUTH_USERNAME
             valueFrom:
                 secretKeyRef:

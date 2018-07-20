@@ -93,11 +93,6 @@ spec:
             value: "https://production-api.globalforestwatch.org"
           - name: CORS_WHITELIST
             value: https://www.globalforestwatch.org
-          - name: APPSIGNAL_PUSH_API_KEY
-            valueFrom:
-                secretKeyRef:
-                  name: appsecrets
-                  key: CW_APP_SIGNAL_PROD
 
         ports:
           - containerPort: 3000
