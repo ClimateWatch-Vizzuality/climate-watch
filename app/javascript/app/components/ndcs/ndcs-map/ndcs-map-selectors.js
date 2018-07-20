@@ -7,7 +7,7 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
 
 const getCountries = state => state.countries || null;
-const getCategoriesData = state => state.categories || {};
+const getCategoriesData = state => state.mapCategories || {};
 const getIndicatorsData = state => state.mapIndicators || [];
 
 export const getISOCountries = createSelector([getCountries], countries =>
