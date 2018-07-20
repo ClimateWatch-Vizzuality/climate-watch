@@ -53,7 +53,7 @@ node {
           break
         case "sandbox":
           sh("docker -H :2375 build
-            --build-arg RAILS_ENV=staging
+            --build-arg RAILS_ENV=production
             --build-arg secretKey=${secretKey}
             --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}
             --build-arg FEATURE_DATA_EXPLORER=true
@@ -62,7 +62,7 @@ node {
             -t ${imageTag} ."
           )
           sh("docker -H :2375 build
-            --build-arg RAILS_ENV=staging
+            --build-arg RAILS_ENV=production
             --build-arg secretKey=${secretKey}
             --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}
             --build-arg FEATURE_DATA_EXPLORER=true
@@ -73,7 +73,7 @@ node {
           break
         default:
           sh("docker -H :2375 build
-            --build-arg RAILS_ENV=staging
+            --build-arg RAILS_ENV=production
             --build-arg secretKey=${secretKey}
             --build-arg FEATURE_DATA_EXPLORER=true
             --build-arg FEATURE_DATA_SURVEY=true
@@ -81,7 +81,7 @@ node {
             -t ${imageTag} ."
           )
           sh("docker -H :2375 build
-            --build-arg RAILS_ENV=staging
+            --build-arg RAILS_ENV=production
             --build-arg secretKey=${secretKey}
             --build-arg FEATURE_DATA_EXPLORER=true
             --build-arg FEATURE_DATA_SURVEY=true

@@ -50,7 +50,7 @@ spec:
           - name: RACK_ENV
             value: staging
           - name: RAILS_ENV
-            value: staging
+            value: production
           - name: PORT
             value: "3000"
           - name: RAILS_SERVE_STATIC_FILES
