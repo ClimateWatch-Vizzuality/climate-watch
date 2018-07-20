@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller do
   include_context 'historical emissions records'
 
+  before(:each) do
+    HistoricalEmissions::NormalisedRecord.refresh
+  end
+
   describe 'GET index' do
     it 'renders emissions records' do
       get :index, params: {

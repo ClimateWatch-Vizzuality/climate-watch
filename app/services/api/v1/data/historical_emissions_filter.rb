@@ -13,23 +13,28 @@ module Api
         def initialize(params)
           initialize_filters(params)
           @query = ::HistoricalEmissions::Record.all
+          @years_query = ::HistoricalEmissions::NormalisedRecord.all
         end
 
         def call
-          apply_filters
-          years_query = ::HistoricalEmissions::Record.select(
-            "ARRAY_AGG(DISTINCT (e->>'year')::INT) AS years"
-          ).from(
-            <<-SQL
-              (#{@query.select('emissions').to_sql}) s
-              CROSS JOIN LATERAL JSONB_ARRAY_ELEMENTS(#{emissions_select_column}) e (e)
-            SQL
-          )
-          @years = years_query.any? && years_query[0]['years'] || []
-          @query.
+          @query = apply_filters(@query)
+          @years_query = apply_filters(@years_query)
+          # rubocop:disable Style/IfUnlessModifier
+          if @start_year
+            @years_query = @years_query.where('year >= ?', @start_year)
+          end
+          if @end_year
+            @years_query = @years_query.where('year <= ?', @end_year)
+          end
+          # rubocop:enable Style/IfUnlessModifier
+          @years = @years_query.distinct(:year).pluck(:year).sort
+
+          results = @query.
             joins(:location, :data_source, :gwp, :sector, :gas).
             select(select_columns).
             group(group_columns)
+
+          results
         end
 
         def column_aliases
@@ -72,6 +77,7 @@ module Api
         end
 
         def emissions_select_column
+          return 'emissions' unless @start_year || @end_year
           args_str = [
             'emissions',
             (@start_year || 'NULL').to_s + '::INT',
@@ -99,16 +105,17 @@ module Api
           @end_year = params[:end_year]
         end
 
-        def apply_filters
-          @query = @query.where(data_source_id: @source_ids) if @source_ids
-          @query = @query.where(gwp_id: @gwp_ids) if @gwp_ids
-          @query = @query.where(gas_id: @gas_ids) if @gas_ids
-          apply_location_filter
-          apply_sector_filter
+        def apply_filters(query)
+          query = query.where(data_source_id: @source_ids) if @source_ids
+          query = query.where(gwp_id: @gwp_ids) if @gwp_ids
+          query = query.where(gas_id: @gas_ids) if @gas_ids
+          query = apply_location_filter(query)
+          query = apply_sector_filter(query)
+          query
         end
 
-        def apply_sector_filter
-          return unless @sector_ids
+        def apply_sector_filter(query)
+          return query unless @sector_ids
           top_level_sector_ids = ::HistoricalEmissions::Sector.
             where(parent_id: nil, id: @sector_ids).
             pluck(:id)
@@ -117,11 +124,11 @@ module Api
               parent_id: top_level_sector_ids
             ).pluck(:id)
 
-          @query = @query.where(sector_id: subsector_ids)
+          query.where(sector_id: subsector_ids)
         end
 
-        def apply_location_filter
-          return unless @location_ids
+        def apply_location_filter(query)
+          return query unless @location_ids
           top_level_location_ids = Location.
             where("location_type <> 'COUNTRY'").
             where(id: @location_ids).
@@ -131,7 +138,7 @@ module Api
             joins(:location_members).
             pluck(:member_id)
 
-          @query = @query.where(location_id: sublocation_ids)
+          query.where(location_id: sublocation_ids)
         end
       end
     end

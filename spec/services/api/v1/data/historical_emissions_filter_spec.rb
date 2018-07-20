@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe Api::V1::Data::HistoricalEmissionsFilter do
   include_context 'historical emissions records'
 
+  before(:each) do
+    HistoricalEmissions::NormalisedRecord.refresh
+  end
+
   describe :call do
     it 'filters by subsector' do
       filter = Api::V1::Data::HistoricalEmissionsFilter.new(
