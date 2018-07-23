@@ -60,6 +60,7 @@ class CompareSocioeconomics extends PureComponent {
       locationNames,
       loading
     } = this.props;
+    const hasLocationNames = locationNames && locationNames.length;
     return (
       <div className={styles.section}>
         <div className={layout.content}>
@@ -73,13 +74,11 @@ class CompareSocioeconomics extends PureComponent {
                     className={styles.compareSocioeconomics}
                   >
                     <TabletPortraitOnly>
-                      {locationNames[i] && (
+                      {hasLocationNames && locationNames[i] && (
                         <div className={cx(styles.countryHeader)}>
                           <div
                             className={styles.dot}
-                            style={{
-                              backgroundColor: CHART_COLORS[i]
-                            }}
+                            style={{ backgroundColor: CHART_COLORS[i] }}
                           />
                           <div className={styles.countryName}>
                             {locationNames[i]}
