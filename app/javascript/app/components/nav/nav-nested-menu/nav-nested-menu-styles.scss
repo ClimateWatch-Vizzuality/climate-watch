@@ -46,15 +46,6 @@
     transition: opacity 0.2s ease;
   }
 
-  &.regular {
-    .navNestedMenu {
-      position: absolute;
-      top: 0;
-      left: -25px;
-      right: -25px;
-    }
-  }
-
   &.isHidden {
     .navNestedMenuWrapper {
       opacity: 0;

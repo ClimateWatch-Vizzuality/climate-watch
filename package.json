@@ -1,12 +1,15 @@
 {
   "name": "climate-watch",
   "version": "1.12.0",
+  "engines": {
+    "node": ">=8.0.0 <9"
+  },
   "scripts": {
     "start": "run-s rails:db:migrate servers",
     "rails:install": "bundle install",
     "js:install": "yarn install",
     "js:reinstall": "rm -rf ./node_modules && yarn install",
-    "js:server": "./bin/webpack-dev-server",
+    "js:server": "yarn install && ./bin/webpack-dev-server",
     "rails:db:create": "RAILS_ENV=development bundle exec rails db:create",
     "rails:db:migrate": "RAILS_ENV=development bundle exec rails db:migrate",
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",
@@ -82,8 +85,9 @@
     "react-helmet": "5.2.0",
     "react-horizontal-timeline": "1.4.0",
     "react-hot-loader": "3.0.0-beta.7",
-    "react-modal": "3.0.0",
+    "react-modal": "3.5.1",
     "react-motion": "0.5.1",
+    "react-paginate": "^5.2.3",
     "react-player": "0.20.0",
     "react-redux": "5.0.5",
     "react-responsive": "4.0.3",

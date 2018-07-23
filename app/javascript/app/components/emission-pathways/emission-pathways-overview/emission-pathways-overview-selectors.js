@@ -42,7 +42,7 @@ const sanitizeData = createSelector([addMantainerNameToScenario], data => {
     if (key === 'url') {
       parsedData.url = sanitizeUrl(data.url);
     } else if (key === 'logo') {
-      parsedData.mainteiner = data.logo;
+      parsedData.maintainer = data.logo;
     } else {
       parsedData[key] = sanitize(data[key]);
     }
@@ -82,7 +82,7 @@ export const selectOverviewData = createSelector(
   (data, category) => {
     const overviewFields = {
       Models: [
-        'mainteiner',
+        'maintainer',
         'sectoral_coverage',
         'time_horizon',
         'license',

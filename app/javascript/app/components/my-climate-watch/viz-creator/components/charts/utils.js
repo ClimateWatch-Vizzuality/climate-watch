@@ -68,3 +68,31 @@ export const pick = (key, list) =>
       {}
     )
   );
+
+const sortStringsReverse = (a, b) => {
+  if (a > b) {
+    return -1;
+  }
+  if (a < b) {
+    return 1;
+  }
+  return 0;
+};
+
+export const orderAlphabetically = unorderedObjectsArray => {
+  const orderedObjectsArray = [];
+  unorderedObjectsArray.forEach(obj => {
+    const orderedObject = {};
+    Object.keys(obj)
+      .slice()
+      .sort(sortStringsReverse)
+      .forEach(function (key) {
+        orderedObject[key] = obj[key];
+      });
+    orderedObjectsArray.push(orderedObject);
+  });
+  return orderedObjectsArray;
+};
+
+export const getSelectedModel = models =>
+  models.data.find(model => model.id === models.selected.value);

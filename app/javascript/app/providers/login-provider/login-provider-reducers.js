@@ -39,48 +39,23 @@ export default {
     error: true,
     profileUpdated: false
   }),
-  [actions.updateUserFirstName]: (state, { payload }) => {
+  [actions.updateUserData]: (state, { payload }) => {
     const user = state.user;
     const newUserData = state.user.user_id;
-    newUserData.first_name = payload;
+    newUserData.first_name = payload.firstName;
+    newUserData.last_name = payload.lastName;
+    newUserData.organization = payload.organization;
+    newUserData.sector = payload.sector.value;
+    newUserData.country = payload.country.value;
+    newUserData.data_usage = payload.dataUsage;
+    newUserData.tester = payload.tester;
     return updateUserState(state, user, newUserData);
   },
-  [actions.updateUserLastName]: (state, { payload }) => {
-    const user = state.user;
-    const newUserData = state.user.user_id;
-    newUserData.last_name = payload;
-    return updateUserState(state, user, newUserData);
-  },
-  [actions.updateUserOrganization]: (state, { payload }) => {
-    const user = state.user;
-    const newUserData = state.user.user_id;
-    newUserData.organization = payload;
-    return updateUserState(state, user, newUserData);
-  },
-  [actions.updateUserSector]: (state, { payload }) => {
-    const user = state.user;
-    const newUserData = state.user.user_id;
-    newUserData.sector = payload.value;
-    return updateUserState(state, user, newUserData);
-  },
-  [actions.updateUserCountry]: (state, { payload }) => {
-    const user = state.user;
-    const newUserData = state.user.user_id;
-    newUserData.country = payload.value;
-    return updateUserState(state, user, newUserData);
-  },
-  [actions.updateUserDataUsage]: (state, { payload }) => {
-    const user = state.user;
-    const newUserData = state.user.user_id;
-    newUserData.data_usage = payload;
-    return updateUserState(state, user, newUserData);
-  },
-  [actions.updateUserTester]: (state, { payload }) => {
-    const user = state.user;
-    const newUserData = state.user.user_id;
-    newUserData.tester = payload;
-    return updateUserState(state, user, newUserData);
-  },
+  [actions.deleteUserData]: state => ({
+    ...state,
+    logged: false,
+    user: {}
+  }),
   [actions.profileUpdated]: state => ({
     ...state,
     profileUpdated: true,

@@ -127,9 +127,9 @@ const NDCMap = ({
 
 NDCMap.propTypes = {
   loading: PropTypes.bool,
-  categories: PropTypes.array.isRequired,
+  categories: PropTypes.array,
+  indicators: PropTypes.array,
   selectedCategory: PropTypes.object,
-  indicators: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,

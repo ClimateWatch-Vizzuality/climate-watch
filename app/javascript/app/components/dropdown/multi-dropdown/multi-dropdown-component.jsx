@@ -32,6 +32,8 @@ class Dropdown extends PureComponent {
       activeValue,
       activeLabel,
       highlightedIndex,
+      noParentSelection,
+      placeholder,
       disabled
     } = this.props;
 
@@ -54,6 +56,7 @@ class Dropdown extends PureComponent {
             inputProps={() => buildInputProps(getInputProps)}
             handleClearSelection={() => handleClearSelection()}
             disabled={disabled}
+            placeholder={placeholder}
             {...getRootProps({ refKey: 'innerRef' })}
           >
             <Menu
@@ -68,6 +71,7 @@ class Dropdown extends PureComponent {
               optionsActionKey={optionsActionKey}
               noItemsFound={noItemsFound}
               toggleOpenGroup={toggleOpenGroup}
+              noParentSelection={noParentSelection}
             />
           </Selector>
         )}
@@ -102,6 +106,7 @@ Dropdown.propTypes = {
   optionsActionKey: PropTypes.string,
   arrowPosition: PropTypes.string,
   noSelectedValue: PropTypes.string,
+  noParentSelection: PropTypes.bool,
   clearable: PropTypes.bool,
   groupKey: PropTypes.string,
   handleStateChange: PropTypes.func,

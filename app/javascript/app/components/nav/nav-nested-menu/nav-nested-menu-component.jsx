@@ -40,8 +40,7 @@ class NavNestedMenuComponent extends PureComponent {
         className={cx(
           styles.navNestedMenuContainer,
           { [styles.isHidden]: isHidden },
-          { [styles.reverse]: reverse },
-          { [styles.regular]: !reverse }
+          { [styles.reverse]: reverse }
         )}
       >
         <ClickOutside onClickOutside={this.closeMenu}>

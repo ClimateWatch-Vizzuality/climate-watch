@@ -11,15 +11,19 @@
 
   @include columns(12);
 
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+  }
+
   &.withButton {
     @media #{$tablet-landscape} {
       @include columns((9, 3));
     }
-  }
 
-  a {
-    color: $theme-color;
-    border-bottom: solid 1px $theme-secondary;
+    a {
+      border-bottom: none;
+    }
   }
 }
 

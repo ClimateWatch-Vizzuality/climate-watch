@@ -7,6 +7,12 @@
   &.flex {
     display: flex;
   }
+
+  &.requiredError {
+    :global .react-selectize-control {
+      border: 1px solid $error !important;
+    }
+  }
 }
 
 .dot {
@@ -20,11 +26,24 @@
 }
 
 .label {
-  display: block;
+  display: inline-block;
   font-size: $font-size-s;
   font-weight: $font-weight-bold;
   color: $theme-color;
   margin-bottom: 4px;
+  margin-right: 4px;
+}
+
+.requiredError {
+  font-size: $font-size-s;
+  font-weight: $font-weight;
+  color: $error;
+}
+
+.optional {
+  font-size: $font-size-s;
+  font-weight: $font-weight;
+  color: $gray;
 }
 
 .loader {

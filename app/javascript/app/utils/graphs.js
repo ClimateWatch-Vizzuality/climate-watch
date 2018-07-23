@@ -103,11 +103,11 @@ export const getColorPalette = (colorRange, quantity) =>
 export const darkenColor = color => chroma(color).darken();
 
 export function setYAxisDomain() {
-  return [setBuffer, dataMax => dataMax];
+  return [setBuffer, 'auto'];
 }
 
 function setBuffer(min) {
-  if (min <= 0) return 'auto';
+  if (min <= 0.1) return min;
   return min * 0.7;
 }
 

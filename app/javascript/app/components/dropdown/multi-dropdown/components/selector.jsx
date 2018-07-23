@@ -20,7 +20,8 @@ const Selector = props => {
     inputProps,
     handleClearSelection,
     children,
-    innerRef
+    innerRef,
+    placeholder
   } = props;
 
   const showCloseIcon = clearable && activeValue;
@@ -44,10 +45,11 @@ const Selector = props => {
         <span
           className={cx(styles.value, {
             [styles.noValue]: !activeValue,
-            [styles.clearable]: clearable && activeValue
+            [styles.clearable]: clearable,
+            [styles.placeholder]: !isOpen && !activeLabel
           })}
         >
-          {(isOpen && !searchable) || !isOpen ? activeLabel : ''}
+          {(isOpen && !searchable) || !isOpen ? activeLabel || placeholder : ''}
         </span>
         <input {...inputProps()} />
         {showCloseIcon && (
@@ -79,6 +81,7 @@ Selector.propTypes = {
   searchable: PropTypes.bool,
   inputProps: PropTypes.func,
   handleClearSelection: PropTypes.func,
+  placeholder: PropTypes.string,
   innerRef: PropTypes.func
 };
 

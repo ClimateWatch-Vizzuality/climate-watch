@@ -17,26 +17,8 @@ export default {
         {
           ...state,
           data: {
-            categories: payload.categories,
-            sectors: payload.sectors,
-            mapIndicators: state.data.mapIndicators || [],
-            indicators: payload.indicators
-          }
-        },
-        false
-      ),
-      true
-    ),
-  fetchNDCSMapIndicatorsReady: (state, { payload }) =>
-    setLoaded(
-      setLoading(
-        {
-          ...state,
-          data: {
-            categories: payload.categories,
-            sectors: payload.sectors,
-            indicators: state.data.indicators || [],
-            mapIndicators: payload.indicators
+            ...state.data,
+            ...payload
           }
         },
         false

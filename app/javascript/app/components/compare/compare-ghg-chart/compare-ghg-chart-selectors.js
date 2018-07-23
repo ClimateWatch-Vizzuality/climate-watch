@@ -31,7 +31,7 @@ import {
 import { calculatedRatio } from 'utils/ghg-emissions';
 
 // meta data for selectors
-const getSources = state => state.meta.data_source || null;
+const getSources = state => (state.meta && state.meta.data_source) || null;
 
 // values from search
 const getSourceSelection = state => state.search.source || null;

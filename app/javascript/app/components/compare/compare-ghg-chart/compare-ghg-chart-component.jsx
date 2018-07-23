@@ -107,6 +107,7 @@ class CompareGhgChart extends PureComponent {
       loading,
       needsWBData
     } = this.props;
+
     const isAbsoluteValue =
       calculationSelected !== CALCULATION_OPTIONS.ABSOLUTE_VALUE;
     return (

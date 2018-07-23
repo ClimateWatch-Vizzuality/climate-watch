@@ -55,7 +55,7 @@ class NDCMapContainer extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.fetchNDCSMapIndicators();
+    this.props.fetchNDCS();
   }
 
   getTooltipText() {
@@ -152,7 +152,7 @@ NDCMapContainer.propTypes = {
   isoCountries: PropTypes.array.isRequired,
   selectedIndicator: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchNDCSMapIndicators: PropTypes.func.isRequired
+  fetchNDCS: PropTypes.func.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, actions)(NDCMapContainer));

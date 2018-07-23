@@ -1,5 +1,6 @@
 import { PureComponent, createElement } from 'react';
 import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import actions from './ndcs-actions';
@@ -14,10 +15,18 @@ const mapStateToProps = (state, { route, location }) => ({
 });
 
 class NDCContainer extends PureComponent {
+  componentWillMount() {
+    this.props.fetchNDCS();
+  }
+
   render() {
     return createElement(Component, this.props);
   }
 }
+
+NDCContainer.propTypes = {
+  fetchNDCS: PropTypes.func.isRequired
+};
 
 export { actions, reducers, initialState };
 export default withRouter(connect(mapStateToProps, actions)(NDCContainer));

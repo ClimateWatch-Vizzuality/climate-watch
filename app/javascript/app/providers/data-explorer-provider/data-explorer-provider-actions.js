@@ -2,11 +2,13 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import {
   DATA_EXPLORER_SECTION_NAMES,
-  DATA_EXPLORER_PATHWAYS_META_LINKS
+  ESP_HOST,
+  DATA_EXPLORER_PER_PAGE
 } from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
 import { parseLinkHeader } from 'utils/utils';
 import { parseQuery } from 'utils/data-explorer';
+import qs from 'query-string';
 
 export const fetchDataExplorerInit = createAction('fetchDataExplorerInit');
 export const fetchDataExplorerReady = createAction('fetchDataExplorerReady');
@@ -26,12 +28,11 @@ export const fetchMetadataInit = createAction('fetchMetadataInit');
 export const fetchMetadataReady = createAction('fetchMetadataReady');
 export const fetchMetadataFail = createAction('fetchMetadataFail');
 
-const devESPURL = section =>
-  (section === 'emission-pathways' ? 'https://data.emissionspathways.org' : '');
+const devESPURL = section => (section === 'emission-pathways' ? ESP_HOST : '');
 
 export const fetchDataExplorer = createThunkAction(
   'fetchDataExplorer',
-  ({ section, query }) => (dispatch, state) => {
+  ({ section, query, page }) => (dispatch, state) => {
     const { dataExplorer } = state();
     if (
       dataExplorer &&
@@ -40,21 +41,33 @@ export const fetchDataExplorer = createThunkAction(
         (dataExplorer.data && !dataExplorer.loading))
     ) {
       dispatch(fetchDataExplorerInit());
-      const parsedQuery = parseQuery(query);
+
+      const updatedQuery = qs.parse(query) || {};
+      if (!updatedQuery.page) updatedQuery.page = page || 1;
+      if (!updatedQuery.per_page) {
+        updatedQuery.per_page = DATA_EXPLORER_PER_PAGE;
+      }
+      const parsedQuery = parseQuery(qs.stringify(updatedQuery));
+
       fetch(
         `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
           section
-        ]}${parsedQuery ? `?${parsedQuery}` : ''}`
+        ]}?${parsedQuery}`
       )
+        .then(response =>
+          response.json().then(json => {
+            if (response.ok) {
+              return {
+                total: response.headers.get('Total'),
+                data: json.data
+              };
+            }
+            throw Error(response.statusText);
+          })
+        )
         .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw Error(response.statusText);
-        })
-        .then(data => {
-          if (data) {
-            dispatch(fetchDataExplorerReady({ data, section }));
+          if (response) {
+            dispatch(fetchDataExplorerReady({ data: response, section }));
           } else {
             dispatch(fetchDataExplorerReady({}));
           }
@@ -115,9 +128,7 @@ export const fetchMetadata = createThunkAction(
         .then(response => {
           if (response.ok) {
             const links = response.headers.get('Link');
-            return links
-              ? parseLinkHeader(links)
-              : DATA_EXPLORER_PATHWAYS_META_LINKS;
+            return parseLinkHeader(links);
           }
           throw Error(response.statusText);
         })

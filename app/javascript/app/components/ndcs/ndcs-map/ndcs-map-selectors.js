@@ -7,28 +7,30 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
 
 const getCountries = state => state.countries || null;
-const getCategoriesData = state => state.categories || {};
-const getIndicatorsData = state => state.mapIndicators || [];
+const getCategoriesData = state => state.categories || null;
+const getIndicatorsData = state => state.indicators || null;
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
 );
 
-export const getCategories = createSelector(getCategoriesData, categories =>
-  sortBy(
+export const getCategories = createSelector(getCategoriesData, categories => {
+  if (!categories) return null;
+  return sortBy(
     Object.keys(categories).map(category => ({
       label: categories[category].name,
       value: categories[category].slug,
       id: category
     })),
     'label'
-  )
-);
+  );
+});
 
 export const getIndicatorsParsed = createSelector(
   [getIndicatorsData, getISOCountries],
-  (indicators, isos) =>
-    sortBy(
+  (indicators, isos) => {
+    if (!indicators || !indicators.length) return null;
+    return sortBy(
       uniqBy(
         indicators.map(i => {
           const legendBuckets = createLegendBuckets(
@@ -47,7 +49,8 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    )
+    );
+  }
 );
 
 export const getSelectedCategory = createSelector(
@@ -69,6 +72,7 @@ export const getSelectedCategory = createSelector(
 export const getCategoryIndicators = createSelector(
   [getIndicatorsParsed, getSelectedCategory],
   (indicatorsParsed, category) => {
+    if (!indicatorsParsed) return null;
     const categoryIndicators = indicatorsParsed.filter(
       indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
     );

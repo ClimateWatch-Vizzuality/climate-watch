@@ -43,6 +43,10 @@ $dd-height: 45px;
   position: relative;
 }
 
+.placeholder {
+  color: $dark-gray;
+}
+
 .selector {
   display: flex;
   justify-content: space-between;

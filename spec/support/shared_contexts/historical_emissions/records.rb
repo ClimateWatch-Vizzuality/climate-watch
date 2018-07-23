@@ -29,8 +29,8 @@ RSpec.shared_context 'historical emissions records' do
       gwp: gwp_AR4,
       location: uk,
       emissions: [
-        {year: 1990, value: 1},
-        {year: 1991, value: 2}
+        {year: 1990, value: 3},
+        {year: 1991, value: 4}
       ]
     )
   }

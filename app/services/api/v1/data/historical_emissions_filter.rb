@@ -103,7 +103,7 @@ module Api
           @query = @query.where(data_source_id: @source_ids) if @source_ids
           @query = @query.where(gwp_id: @gwp_ids) if @gwp_ids
           @query = @query.where(gas_id: @gas_ids) if @gas_ids
-          @query = @query.where(location_id: @location_ids) if @location_ids
+          apply_location_filter
           apply_sector_filter
         end
 
@@ -118,6 +118,20 @@ module Api
             ).pluck(:id)
 
           @query = @query.where(sector_id: subsector_ids)
+        end
+
+        def apply_location_filter
+          return unless @location_ids
+          top_level_location_ids = Location.
+            where("location_type <> 'COUNTRY'").
+            where(id: @location_ids).
+            pluck(:id)
+          sublocation_ids = @location_ids + Location.
+            where(id: top_level_location_ids).
+            joins(:location_members).
+            pluck(:member_id)
+
+          @query = @query.where(location_id: sublocation_ids)
         end
       end
     end

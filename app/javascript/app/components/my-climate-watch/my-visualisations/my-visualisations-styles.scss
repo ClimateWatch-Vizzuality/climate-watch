@@ -39,9 +39,18 @@
   margin: $navbar-height auto;
 }
 
+.microsoftBrowserModal {
+  height: 600px;
+}
+
 .modalContent {
   padding-left: 0;
   padding-right: 0;
   overflow: hidden;
   overscroll-behavior: auto; /* stylelint-disable-line property-no-unknown */
+}
+
+.microsoftBrowserModalContent {
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

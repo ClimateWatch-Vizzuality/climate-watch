@@ -6,7 +6,7 @@ import ClimateVulnerability from 'components/country/country-climate-vulnerabili
 export default [
   {
     hash: 'socio-economic-indicators',
-    label: 'Socio Economic Indicators',
+    label: 'Socioeconomic Indicators',
     anchor: true,
     component: CompareSocioeconomics
   },

@@ -15,14 +15,14 @@ export const getQueryUpper = state => deburrUpper(state.query);
 const addCountriesPath = (countries, query) => {
   const ndcResults = countries.reduce((ndcResult, country) => {
     ndcResult.push({
+      value: `${country.iso_code3}`,
+      label: `${country.wri_standard_name} Country Page`,
+      path: `/countries/${country.iso_code3}`
+    });
+    ndcResult.push({
       value: `${country.iso_code3}-overview`,
       label: `${country.wri_standard_name} NDC - Overview`,
       path: `/ndcs/country/${country.iso_code3}`
-    });
-    ndcResult.push({
-      value: `${country.iso_code3}-full`,
-      label: `${country.wri_standard_name} NDC - Full Text`,
-      path: `/ndcs/country/${country.iso_code3}/full`
     });
     return ndcResult;
   }, []);
