@@ -9,6 +9,7 @@ const CountryCompareSelector = ({
   countryOptions,
   handleDropDownChange,
   activeCountryOptions,
+  hideResetButton,
   selectors,
   className
 }) => (
@@ -24,6 +25,7 @@ const CountryCompareSelector = ({
             value={activeCountryOptions[index]}
             transparent
             colorDot={v.country ? v.color : null}
+            hideResetButton={hideResetButton}
           />
         ))}
       </div>
@@ -32,6 +34,7 @@ const CountryCompareSelector = ({
 );
 
 CountryCompareSelector.propTypes = {
+  hideResetButton: PropTypes.bool,
   activeCountryOptions: PropTypes.array,
   selectors: PropTypes.array,
   countryOptions: PropTypes.array,

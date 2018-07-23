@@ -6,6 +6,8 @@ import {
 
 export const getGhgEmissionDefaults = (source, meta) => {
   const defaults = DEFAULT_EMISSIONS_SELECTIONS[source];
+  if (!defaults) return {};
+
   const sectorDefaults =
     source === 'UNFCCC'
       ? Object.keys(defaults.sector).map(key => defaults.sector[key])

@@ -9,7 +9,8 @@ import CountryCompareSelectorComponent from './country-compare-selector-componen
 import {
   getCountriesOptions,
   getSelectedCountries,
-  getCountryConfig
+  getCountryConfig,
+  getHideResetButton
 } from './country-compare-selector-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -23,6 +24,7 @@ const mapStateToProps = (state, { location }) => {
     locations,
     countryOptions: getCountriesOptions(selectorsState),
     activeCountryOptions: getSelectedCountries(selectorsState),
+    hideResetButton: getHideResetButton(selectorsState),
     selectors: getCountryConfig(selectorsState)
   };
 };
