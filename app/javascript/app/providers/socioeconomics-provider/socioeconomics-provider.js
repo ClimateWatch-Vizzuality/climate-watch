@@ -26,9 +26,7 @@ class SocioeconomicsProvider extends PureComponent {
     const nextLocations = nextProps.locations;
     if (
       iso !== nextIso ||
-      (locations &&
-        locations.length &&
-        !isEqual(locations.sort(), nextLocations.sort()))
+      (locations && !isEqual(locations.sort(), nextLocations.sort()))
     ) {
       this.props.fetchSocioeconomics(nextIso ? [nextIso] : nextLocations);
     }
