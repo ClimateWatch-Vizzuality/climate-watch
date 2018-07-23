@@ -2,6 +2,7 @@ import { mapProps } from 'recompose';
 import sortBy from 'lodash/sortBy';
 import Component from './dropdown-component';
 
+const { NODE_ENV } = process.env;
 const optionsSanitizer = mapProps(props => {
   let updatedProps = props;
   if (updatedProps.options && updatedProps.options.length) {
@@ -9,7 +10,9 @@ const optionsSanitizer = mapProps(props => {
       let sanitizedOption = option;
       if (!option.label || !option.value) {
         sanitizedOption = { label: '', value: '' };
-        console.warn(`Option from ${props.label} is empty`);
+        if (NODE_ENV === 'development') {
+          console.warn(`Option from ${props.label} is empty`);
+        }
       }
       return sanitizedOption;
     });

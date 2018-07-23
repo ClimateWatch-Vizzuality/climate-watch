@@ -49,7 +49,8 @@ module.exports = {
       writeToFileEmit: true
     }),
     new webpack.DefinePlugin({
-      'process.env.JSCOV': JSON.stringify(false)
+      'process.env.JSCOV': JSON.stringify(false),
+      'process.env.NODE_ENV': env.NODE_ENV
     })
   ],
 
