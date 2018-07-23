@@ -16,7 +16,7 @@ class AutocompleteSearch extends PureComponent {
       <div className={styles.wrapper}>
         <Dropdown
           className={theme.dropdownOptionWithArrow}
-          placeholder="Search across NDC Content for all countries"
+          placeholder="Search for a country or keyword"
           options={searchList}
           onSearchChange={handleSearchChange}
           onValueChange={handleValueClick}
