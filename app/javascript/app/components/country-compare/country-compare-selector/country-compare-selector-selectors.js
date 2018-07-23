@@ -28,6 +28,11 @@ export const getSelectedCountries = createSelector(
   }
 );
 
+export const getHideResetButton = createSelector(
+  [getSelectedCountries],
+  countries => countries.filter(c => c && !!c.value).length === 1
+);
+
 export const getCountriesOptions = createSelector(
   [getCountries, getSelectedCountries],
   (countries, selectedCountries) => {
