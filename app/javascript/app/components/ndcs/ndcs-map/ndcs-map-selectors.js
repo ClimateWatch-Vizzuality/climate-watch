@@ -81,11 +81,22 @@ export const getCategoryIndicators = createSelector(
 );
 
 export const getSelectedIndicator = createSelector(
-  [state => state.indicatorSelected, getCategoryIndicators],
-  (selected, indicators = []) => {
+  [
+    state => state.indicatorSelected,
+    getCategoryIndicators,
+    getSelectedCategory
+  ],
+  (selected, indicators = [], categorySelected) => {
     if (!indicators || !indicators.length) return {};
     if (!selected) {
-      return indicators.find(ind => ind.value === 'pa_status') || indicators[0];
+      const defaultSelection =
+        {
+          mitigation: 'coverage_gas',
+          sectoral_mitigation_actions: 'm_agriculture'
+        }[categorySelected.value] || 'pa_status';
+      return (
+        indicators.find(ind => ind.value === defaultSelection) || indicators[0]
+      );
     }
     return (
       indicators.find(indicator => indicator.value === selected) ||
