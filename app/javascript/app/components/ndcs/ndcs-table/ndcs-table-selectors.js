@@ -32,24 +32,18 @@ export const getindicatorsParsed = createSelector(
 );
 
 export const getSelectedCategory = createSelector(
-  [state => state.categorySelected, getCategories, getIndicatorsData],
-  (selected, categories = [], indicators) => {
-    if (categories.length > 0) {
-      if (selected) {
-        const filtered = categories.filter(
-          category => category.value === selected
-        );
-        return filtered.length > 0 ? filtered[0] : {};
-      }
-      const firstCategorywithIndicators = categories.find(category =>
-        indicators.some(
-          indicator =>
-            indicator.category_ids.indexOf(parseInt(category.id, 10)) > -1
-        )
+  [state => state.categorySelected, getCategories],
+  (selected, categories = []) => {
+    if (!categories || !categories.length) return null;
+    const defaultCategory =
+      categories.find(cat => cat.value === 'unfccc_process') || categories[0];
+    if (selected) {
+      return (
+        categories.find(category => category.value === selected) ||
+        defaultCategory
       );
-      return firstCategorywithIndicators || categories[0];
     }
-    return {};
+    return defaultCategory;
   }
 );
 
@@ -64,21 +58,29 @@ export const getCategoryIndicators = createSelector(
 );
 
 export const getSelectedIndicator = createSelector(
-  [state => state.indicatorSelected, getCategoryIndicators],
-  (selected, indicators = []) => {
-    if (indicators.length > 0) {
-      if (selected) {
-        const filtered = indicators.filter(
-          indicator => indicator.value === selected
-        );
-        if (filtered.length > 0) return filtered[0];
-      }
-      return indicators[0];
+  [
+    state => state.indicatorSelected,
+    getCategoryIndicators,
+    getSelectedCategory
+  ],
+  (selected, indicators = [], categorySelected) => {
+    if (!indicators || !indicators.length) return {};
+    if (!selected) {
+      const defaultSelection =
+        {
+          mitigation: 'mitigation_contribution_type',
+          sectoral_mitigation_actions: 'm_industries'
+        }[categorySelected.value] || 'pa_status';
+      return (
+        indicators.find(ind => ind.value === defaultSelection) || indicators[0]
+      );
     }
-    return {};
+    return (
+      indicators.find(indicator => indicator.value === selected) ||
+      indicators[0]
+    );
   }
 );
-
 export const getSelectedData = createSelector(
   [getSelectedIndicator, getCountries],
   (selectedIndicator, countries) => {
