@@ -24,8 +24,8 @@ export const getDates = createSelector(
     // add year 2020 as due date for new NDCs submissions
     documents.push({
       year: '2020',
-      link: null,
-      label: 'New NDCs submissions due date'
+      link: 'http://www.wri.org/sites/default/files/WRI17_NDC.pdf',
+      label: 'All Parties are requested to to communicate new NDCs by 2020'
     });
     return groupBy(documents, 'year');
   }
