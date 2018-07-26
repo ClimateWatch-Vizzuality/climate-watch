@@ -26,12 +26,12 @@ class ModalDownload extends PureComponent {
     };
   }
 
-  handleChange = (event, input) => {
-    this.setState({ [input]: event.target.value });
+  handleChange = (event, name) => {
+    this.setState({ [name]: event.target.value });
   };
 
-  updateCheckValue = (event, input) => {
-    this.setState({ [input]: event.target.checked });
+  updateCheckValue = (event, name) => {
+    this.setState({ [name]: event.target.checked });
   };
 
   updateDropdownValue = (valueObject, dropdownId) => {
@@ -93,6 +93,7 @@ class ModalDownload extends PureComponent {
               toggleFirst
               disabled={!this.state.email && true}
               id="subscription"
+              errorText="Please enter a valid email to subscribe"
             />
           </div>
 
@@ -147,6 +148,7 @@ class ModalDownload extends PureComponent {
             toggleFirst
             disabled={!this.state.email && true}
             id="testUser"
+            errorText="Please enter a valid email to optin"
           />
         </form>
         <Button
