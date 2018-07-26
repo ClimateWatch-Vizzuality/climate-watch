@@ -13,20 +13,21 @@ const CheckInputComponent = props => {
     onChange,
     theme,
     toggleFirst,
-    disabled
+    disabled,
+    id
   } = props;
   return (
     <div className={className}>
       <label
         className={cx(theme.switch, { [styles.toggleFirst]: toggleFirst })}
-        htmlFor="checkbox"
+        htmlFor={id}
       >
         <input
           className={theme.checkbox}
           type="checkbox"
           checked={checked}
           onChange={onChange}
-          id="checkbox"
+          id={id}
           disabled={disabled}
         />
         <span className={theme.label}>{label}</span>
@@ -43,6 +44,7 @@ CheckInputComponent.propTypes = {
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
   toggleFirst: PropTypes.bool,
+  id: PropTypes.string,
   theme: PropTypes.object
 };
 
