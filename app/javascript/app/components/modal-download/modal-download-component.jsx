@@ -21,7 +21,8 @@ class ModalDownload extends PureComponent {
       sector: {},
       country: {},
       explanation: '',
-      subscription: false
+      subscription: false,
+      testUser: false
     };
   }
 
@@ -91,6 +92,7 @@ class ModalDownload extends PureComponent {
               onChange={e => this.updateCheckValue(e, 'subscription')}
               toggleFirst
               disabled={!this.state.email && true}
+              id="subscription"
             />
           </div>
 
@@ -134,6 +136,17 @@ class ModalDownload extends PureComponent {
             value={this.state.explanation}
             onChange={e => this.handleChange(e, 'explanation')}
             optional
+          />
+
+          <CheckInput
+            checked={this.state.testUser}
+            label={
+              'Do you want to test new developments of Climate Watch platform?'
+            }
+            onChange={e => this.updateCheckValue(e, 'testUser')}
+            toggleFirst
+            disabled={!this.state.email && true}
+            id="testUser"
           />
         </form>
         <Button
