@@ -1,5 +1,8 @@
 module HistoricalEmissions
   class Record < ApplicationRecord
+    has_many :normalised_records,
+             class_name: 'HistoricalEmissions::NormalisedRecord',
+             foreign_key: :id
     belongs_to :location
     belongs_to :data_source, class_name: 'HistoricalEmissions::DataSource'
     belongs_to :sector, class_name: 'HistoricalEmissions::Sector'

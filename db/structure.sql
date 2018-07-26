@@ -236,6 +236,23 @@ CREATE TABLE public.historical_emissions_records (
 
 
 --
+-- Name: historical_emissions_normalised_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.historical_emissions_normalised_records AS
+ SELECT historical_emissions_records.id,
+    historical_emissions_records.data_source_id,
+    historical_emissions_records.gwp_id,
+    historical_emissions_records.location_id,
+    historical_emissions_records.sector_id,
+    historical_emissions_records.gas_id,
+    ((jsonb_array_elements(historical_emissions_records.emissions) ->> 'year'::text))::integer AS year,
+    (jsonb_array_elements(historical_emissions_records.emissions) ->> 'value'::text) AS value
+   FROM public.historical_emissions_records
+  WITH NO DATA;
+
+
+--
 -- Name: historical_emissions_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2010,6 +2027,55 @@ CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_vari
 
 
 --
+-- Name: index_historical_emissions_normalised_records_on_data_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_normalised_records_on_data_source_id ON public.historical_emissions_normalised_records USING btree (data_source_id);
+
+
+--
+-- Name: index_historical_emissions_normalised_records_on_gas_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_normalised_records_on_gas_id ON public.historical_emissions_normalised_records USING btree (gas_id);
+
+
+--
+-- Name: index_historical_emissions_normalised_records_on_gwp_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_normalised_records_on_gwp_id ON public.historical_emissions_normalised_records USING btree (gwp_id);
+
+
+--
+-- Name: index_historical_emissions_normalised_records_on_id_and_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_historical_emissions_normalised_records_on_id_and_year ON public.historical_emissions_normalised_records USING btree (id, year);
+
+
+--
+-- Name: index_historical_emissions_normalised_records_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_normalised_records_on_location_id ON public.historical_emissions_normalised_records USING btree (location_id);
+
+
+--
+-- Name: index_historical_emissions_normalised_records_on_sector_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_normalised_records_on_sector_id ON public.historical_emissions_normalised_records USING btree (sector_id);
+
+
+--
+-- Name: index_historical_emissions_normalised_records_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_normalised_records_on_year ON public.historical_emissions_normalised_records USING btree (year);
+
+
+--
 -- Name: index_historical_emissions_records_on_data_source_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2799,6 +2865,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180613114503'),
 ('20180613114709'),
 ('20180613124118'),
-('20180615113815');
+('20180615113815'),
+('20180720105038');
 
 
