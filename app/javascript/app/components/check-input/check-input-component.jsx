@@ -14,24 +14,34 @@ const CheckInputComponent = props => {
     theme,
     toggleFirst,
     disabled,
-    id
+    id,
+    errorText
   } = props;
   return (
     <div className={className}>
       <label
-        className={cx(theme.switch, { [styles.toggleFirst]: toggleFirst })}
+        className={cx(theme.switch, {
+          [styles.toggleFirst]: toggleFirst,
+          [styles.disabled]: disabled
+        })}
         htmlFor={id}
       >
         <input
           className={theme.checkbox}
           type="checkbox"
-          checked={checked}
+          checked={!disabled && checked}
           onChange={onChange}
           id={id}
           disabled={disabled}
         />
         <span className={theme.label}>{label}</span>
-        <div className={cx(theme.slider, theme.round)} />
+        <div
+          className={cx(theme.slider, theme.round, {
+            [styles.disabled]: disabled
+          })}
+        />
+        {disabled &&
+        errorText && <div className={styles.errorText}>{errorText}</div>}
       </label>
     </div>
   );
@@ -40,6 +50,7 @@ const CheckInputComponent = props => {
 CheckInputComponent.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
+  errorText: PropTypes.string,
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
