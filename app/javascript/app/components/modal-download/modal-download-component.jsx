@@ -21,16 +21,17 @@ class ModalDownload extends PureComponent {
       sector: {},
       country: {},
       explanation: '',
-      subscription: false
+      subscription: false,
+      testUser: false
     };
   }
 
-  handleChange = (event, input) => {
-    this.setState({ [input]: event.target.value });
+  handleChange = (event, name) => {
+    this.setState({ [name]: event.target.value });
   };
 
-  updateCheckValue = (event, input) => {
-    this.setState({ [input]: event.target.checked });
+  updateCheckValue = (event, name) => {
+    this.setState({ [name]: event.target.checked });
   };
 
   updateDropdownValue = (valueObject, dropdownId) => {
@@ -91,6 +92,8 @@ class ModalDownload extends PureComponent {
               onChange={e => this.updateCheckValue(e, 'subscription')}
               toggleFirst
               disabled={!this.state.email && true}
+              id="subscription"
+              errorText="Please enter a valid email to subscribe"
             />
           </div>
 
@@ -134,6 +137,18 @@ class ModalDownload extends PureComponent {
             value={this.state.explanation}
             onChange={e => this.handleChange(e, 'explanation')}
             optional
+          />
+
+          <CheckInput
+            checked={this.state.testUser}
+            label={
+              'Do you want to test new developments of Climate Watch platform?'
+            }
+            onChange={e => this.updateCheckValue(e, 'testUser')}
+            toggleFirst
+            disabled={!this.state.email && true}
+            id="testUser"
+            errorText="Please enter a valid email to optin"
           />
         </form>
         <Button
