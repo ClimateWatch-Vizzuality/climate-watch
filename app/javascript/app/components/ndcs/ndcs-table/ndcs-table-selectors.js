@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
+import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
 
 const getCategoriesData = state => state.categories || {};
@@ -19,15 +20,18 @@ export const getCategories = createSelector(getCategoriesData, categories =>
 export const getindicatorsParsed = createSelector(
   getIndicatorsData,
   indicators =>
-    uniqBy(
-      indicators.map(item => ({
-        label: item.name,
-        value: item.slug,
-        categoryIds: item.category_ids,
-        locations: item.locations,
-        legendBuckets: item.labels
-      })),
-      'value'
+    sortBy(
+      uniqBy(
+        indicators.map(item => ({
+          label: item.name,
+          value: item.slug,
+          categoryIds: item.category_ids,
+          locations: item.locations,
+          legendBuckets: item.labels
+        })),
+        'value'
+      ),
+      'label'
     )
 );
 
@@ -53,34 +57,22 @@ export const getCategoryIndicators = createSelector(
     const categoryIndicators = indicatorsParsed.filter(
       indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
     );
-    return categoryIndicators;
+    return sortBy(categoryIndicators, 'label');
   }
 );
 
 export const getSelectedIndicator = createSelector(
-  [
-    state => state.indicatorSelected,
-    getCategoryIndicators,
-    getSelectedCategory
-  ],
-  (selected, indicators = [], categorySelected) => {
+  [state => state.indicatorSelected, getCategoryIndicators],
+  (selected, indicators = []) => {
     if (!indicators || !indicators.length) return {};
-    if (!selected) {
-      const defaultSelection =
-        {
-          mitigation: 'mitigation_contribution_type',
-          sectoral_mitigation_actions: 'm_industries'
-        }[categorySelected.value] || 'pa_status';
-      return (
-        indicators.find(ind => ind.value === defaultSelection) || indicators[0]
-      );
-    }
-    return (
-      indicators.find(indicator => indicator.value === selected) ||
-      indicators[0]
-    );
+    const defaultSelection = indicators[0];
+    return selected
+      ? indicators.find(indicator => indicator.value === selected) ||
+        defaultSelection
+      : defaultSelection;
   }
 );
+
 export const getSelectedData = createSelector(
   [getSelectedIndicator, getCountries],
   (selectedIndicator, countries) => {
