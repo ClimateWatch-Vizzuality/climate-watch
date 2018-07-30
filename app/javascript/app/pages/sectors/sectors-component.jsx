@@ -9,8 +9,7 @@ class Sectors extends PureComponent {
       <Teaser
         screenshot={sectorsScreenshot}
         title="Explore Different Sectors"
-        description="A breakdown of historical greenhouse gas (GHG) emissions by economic sector. \
-          Explore by country and global shares, and use it to dive into future sector emissions projections."
+        description="A breakdown of historical greenhouse gas (GHG) emissions by economic sector. Explore by country and global shares, and use it to dive into future sector emissions projections."
       />
     );
   }
