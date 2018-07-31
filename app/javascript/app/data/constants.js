@@ -310,6 +310,13 @@ export const DATA_EXPLORER_SECTION_NAMES = {
   'ndc-content': 'ndc_content'
 };
 
+export const DATA_EXPLORER_SECTION_LABELS = {
+  'historical-emissions': 'historical-emissions',
+  'ndc-sdg-linkages': 'ndc-sdg-linkages',
+  'emission-pathways': 'pathways',
+  'ndc-content': 'ndc-content'
+};
+
 export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
     PIK: ['historical_emissions_pik'],
@@ -322,7 +329,12 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
+  'historical-emissions': [
+    'source',
+    'gases',
+    'countries and regions',
+    'sectors'
+  ],
   'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
   'emission-pathways': [
     'locations',
@@ -428,6 +440,7 @@ export default {
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  DATA_EXPLORER_SECTION_LABELS,
   DATA_EXPLORER_PER_PAGE,
   ESP_HOST
 };
