@@ -25,7 +25,7 @@ export const getDates = createSelector(
     documents.push({
       year: '2020',
       link: 'http://www.wri.org/sites/default/files/WRI17_NDC.pdf',
-      label: 'All Parties are requested to to communicate new NDCs by 2020'
+      label: 'All Parties are requested to communicate new NDCs by 2020'
     });
     return groupBy(documents, 'year');
   }
