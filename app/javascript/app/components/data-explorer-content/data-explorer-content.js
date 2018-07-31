@@ -21,6 +21,7 @@ import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
   getMethodology,
+  getSectionLabel,
   getFilteredOptions,
   getSelectedOptions,
   getPathwaysMetodology,
@@ -91,6 +92,7 @@ const mapStateToProps = (state, { section, location }) => {
     isDisabled,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
     href: getLink(dataState),
+    sectionLabel: getSectionLabel(dataState),
     downloadHref,
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: getFilteredOptions(dataState),

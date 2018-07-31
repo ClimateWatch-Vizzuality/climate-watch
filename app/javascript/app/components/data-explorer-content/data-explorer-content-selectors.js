@@ -16,7 +16,8 @@ import {
   DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
+  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  DATA_EXPLORER_SECTION_LABELS
 } from 'data/constants';
 
 const getMeta = state => state.meta || null;
@@ -31,6 +32,11 @@ export const getData = createSelector(
     if (!data || !section) return null;
     return (data && data[section] && data[section].data) || null;
   }
+);
+
+export const getSectionLabel = createSelector(
+  getSection,
+  section => DATA_EXPLORER_SECTION_LABELS[section]
 );
 
 export const getSourceOptions = createSelector(
