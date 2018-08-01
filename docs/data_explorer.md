@@ -10,6 +10,8 @@
 - sector_ids[]
 - start_year
 - end_year
+- sort_dir (ASC / DESC)
+- sort_col (column name for sortable columns - see meta)
 
 ### CSV download endpoint
 
@@ -50,12 +52,15 @@ Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 
    "meta":{
       "years":[
          integer
+      ],
+      "columns":[
+         {"name":"string", "sortable":boolean, "current":"string"}
       ]
    }
 }
 ```
 
-Response is paginated. Pagination headers are in place.
+Response is paginated. Pagination headers are in place. Meta section is to inform the rendering of data in a tabular form: it lists available years of data (useful when used as headers) and all available data columns together with information on whether they are sortable or not. Column which is currently used for sorting will additionaly have the "current" property set to either "ASC" or "DESC".
 
 ```
 Link: <http://localhost:3000/api/v1/data/historical_emissions?page=622&start_year=2000>; rel="last", <http://localhost:3000/api/v1/data/historical_emissions?page=2&start_year=2000>; rel="next"
