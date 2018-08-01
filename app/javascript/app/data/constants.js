@@ -329,6 +329,7 @@ export const DATA_EXPLORER_FILTERS = {
     'models',
     'scenarios',
     'categories',
+    'subcategories',
     'indicators'
   ],
   'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
@@ -374,6 +375,9 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     categories: {
       key: 'category'
+    },
+    subcategories: {
+      key: 'subcategories'
     }
   }
 };
@@ -386,8 +390,7 @@ export const SOURCE_VERSIONS = [
 ];
 
 export const DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS = {
-  'ndc-content': [{ key: 'sectors' }, { key: 'categories' }],
-  'emission-pathways': [{ key: 'categories', noSelectableParent: true }]
+  'ndc-content': [{ key: 'sectors' }, { key: 'categories' }]
 };
 
 export const DATA_EXPLORER_PER_PAGE = 20;
