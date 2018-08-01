@@ -94,6 +94,49 @@
           }
         }
       }
+    },
+    "meta": {
+      "$id": "/properties/meta",
+      "type": "object",
+      "properties": {
+        "columns": {
+          "$id": "/properties/meta/properties/columns",
+          "type": "array",
+          "items": {
+            "$id": "/properties/meta/properties/columns/items",
+            "type": "object",
+            "properties": {
+              "name": {
+                "$id": "/properties/meta/properties/columns/items/properties/name",
+                "type": "string",
+                "title": "The Name Schema ",
+                "default": "",
+                "examples": [
+                  "indicator"
+                ]
+              },
+              "sortable": {
+                "$id": "/properties/meta/properties/columns/items/properties/sortable",
+                "type": "boolean",
+                "title": "The Sortable Schema ",
+                "default": false,
+                "examples": [
+                  true
+                ]
+              },
+              "current": {
+                "$id": "/properties/meta/properties/columns/items/properties/current",
+                "type": "string",
+                "title": "The Current Schema ",
+                "default": "",
+                "examples": [
+                  "ASC"
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

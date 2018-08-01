@@ -2,6 +2,9 @@ module Api
   module V1
     module Data
       class NdcContentFilter
+        include Api::V1::Data::SanitisedSorting
+        include Api::V1::Data::ColumnHelpers
+
         # @param params [Hash]
         # @option params [Array<String>] :countries
         # @option params [Array<Integer>] :source_ids
@@ -9,65 +12,73 @@ module Api
         # @option params [Array<Integer>] :category_ids
         # @option params [Array<Integer>] :label_ids
         # @option params [Array<Integer>] :sector_ids
+        # @option params [String] :sort_col
+        # @option params [String] :sort_dir
         def initialize(params)
           initialize_filters(params)
+          initialise_sorting(params[:sort_col], params[:sort_dir])
           @query = ::Indc::Value.all
         end
 
         def call
           apply_filters
           @query.
-            select(self.class.select_columns).
+            select(select_columns).
             joins(:location, indicator: [:source, :categories]).
             joins('LEFT JOIN indc_labels ON label_id = indc_labels.id').
             joins('LEFT JOIN indc_sectors ON sector_id = indc_sectors.id').
-            group(self.class.group_columns).
-            order(self.class.order_columns)
-        end
-
-        def self.order_columns
-          ['indc_categories.order', 'indc_indicators.order']
-        end
-
-        def self.column_aliases
-          select_columns_with_aliases.map do |column, column_alias|
-            column_alias || column
-          end
-        end
-
-        def self.select_columns
-          select_columns_with_aliases.map do |column, column_alias|
-            if column_alias
-              [column, 'AS', column_alias].join(' ')
-            else
-              column
-            end
-          end
-        end
-
-        def self.group_columns
-          columns = select_columns_with_aliases.map(&:first)
-          columns[0..columns.length - 2] + order_columns
+            group(group_columns).
+            order(sanitised_order)
         end
 
         private
 
-        private_class_method def self.select_columns_with_aliases
+        # rubocop:disable Metrics/MethodLength
+        def select_columns_map
           [
-            ['id'],
-            ['locations.iso_code3', 'iso_code3'],
-            ['locations.wri_standard_name', 'country'],
-            ['indc_indicators.name', 'indicator'],
-            ['indc_sources.name', 'source'],
-            ['indc_labels.value', 'label'],
-            ['indc_sectors.name', 'sector'],
-            ['indc_values.value', 'value'],
-            [
-              "ARRAY_TO_STRING(ARRAY_AGG(indc_categories.name), ', ')",
-              'categories'
-            ]
+            {
+              column: 'id',
+              alias: 'id'
+            },
+            {
+              column: 'locations.iso_code3',
+              alias: 'iso_code3'
+            },
+            {
+              column: 'locations.wri_standard_name',
+              alias: 'country'
+            },
+            {
+              column: 'indc_indicators.name',
+              alias: 'indicator'
+            },
+            {
+              column: 'indc_sources.name',
+              alias: 'source'
+            },
+            {
+              column: 'indc_labels.value',
+              alias: 'label'
+            },
+            {
+              column: 'indc_sectors.name',
+              alias: 'sector'
+            },
+            {
+              column: 'indc_values.value',
+              alias: 'value'
+            },
+            {
+              # rubocop:disable Metrics/LineLength
+              column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT indc_categories.name ORDER BY indc_categories.name), ', ')",
+              alias: 'categories',
+              order: false,
+              group: false
+              # rubocop:enable Metrics/LineLength
+            }
           ]
         end
+        # rubocop:enable Metrics/MethodLength
 
         def initialize_filters(params)
           # integer arrays

@@ -11,7 +11,8 @@ module Api
                  adapter: :json,
                  each_serializer: Api::V1::Data::NdcContent::NdcContentSerializer,
                  params: params,
-                 root: :data
+                 root: :data,
+                 meta: {columns: @filter.column_manifest}
         end
 
         def meta
