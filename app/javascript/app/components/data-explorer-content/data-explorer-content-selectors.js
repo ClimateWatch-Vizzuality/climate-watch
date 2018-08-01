@@ -138,6 +138,19 @@ export const getLink = createSelector(
   }
 );
 
+function getOptions(section, filter, filtersMeta) {
+  if (section !== 'emission-pathways') return filtersMeta[filter];
+  if (filter === 'categories' || filter === 'subcategories') { return filtersMeta.categories; }
+  return filtersMeta[filter];
+}
+
+function parseOptions(section, filter, options) {
+  if (section !== 'emission-pathways') return options;
+  if (filter === 'categories') { return options.filter(option => option.parent_id === null); }
+  if (filter === 'subcategories') { return options.filter(option => option.parent_id !== null); }
+  return options;
+}
+
 export const getFilterOptions = createSelector(
   [getMeta, getSection, getCountries, getRegions, getSourceOptions],
   (meta, section, countries, regions, sourceVersions) => {
@@ -153,9 +166,10 @@ export const getFilterOptions = createSelector(
     }
     const filterOptions = {};
     filterKeys.forEach(f => {
-      const options = filtersMeta[f];
+      const options = getOptions(section, f, filtersMeta);
       if (options) {
-        const parsedOptions = options.map(option => {
+        const parsedOptions = parseOptions(section, f, options);
+        const optionsArray = parsedOptions.map(option => {
           const slug =
             option.slug ||
             option.name ||
@@ -178,14 +192,14 @@ export const getFilterOptions = createSelector(
             ...option
           };
         });
-        filterOptions[f] = parsedOptions;
+        filterOptions[f] = optionsArray;
       }
     });
     return filterOptions;
   }
 );
 
-const parseOptions = options => {
+const parseMultipleLevelOptions = options => {
   const groupParents = [];
   const finalOptions = options
     .map(option => {
@@ -223,7 +237,7 @@ const parseGroupsInOptions = createSelector(
       if (
         DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === key)
       ) {
-        updatedOptions[key] = parseOptions(updatedOptions[key]);
+        updatedOptions[key] = parseMultipleLevelOptions(updatedOptions[key]);
       }
     });
     return updatedOptions;
