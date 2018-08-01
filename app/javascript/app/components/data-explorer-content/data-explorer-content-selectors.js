@@ -485,6 +485,23 @@ export const parseData = createSelector([getData], data => {
   return updatedData.map(d => pick(d, whiteList));
 });
 
+export const getTitleLinks = createSelector(
+  [parseData, getSection, getCountries],
+  (data, section, countries) => {
+    if (!data || !data.length || section !== 'ndc-sdg-linkages') return null;
+    return data.map(d => {
+      const country = countries.find(c => c.wri_standard_name === d.country);
+      return [
+        {
+          columnName: 'indc_text',
+          url: `/ndcs/country/${country &&
+            country.iso_code3}/full?query=${d.target_number}&searchBy=target`
+        }
+      ];
+    });
+  }
+);
+
 // Pathways Modal Data
 
 const getScenarioSelectedMetadata = createSelector(
@@ -589,3 +606,5 @@ export const getPathwaysMetodology = createSelector(
   ],
   (model, scenario, indicator) => [model, scenario, indicator].filter(m => m)
 );
+
+// End of Pathways Modal Data

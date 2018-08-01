@@ -26,7 +26,7 @@ const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderTable() {
-    const { data, firstColumnHeaders, loading } = this.props;
+    const { data, firstColumnHeaders, loading, titleLinks } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
       const columns = data && Object.keys(data[0]);
@@ -39,6 +39,7 @@ class DataExplorerContent extends PureComponent {
           sortBy={sortBy}
           firstColumnHeaders={firstColumnHeaders}
           horizontalScroll
+          titleLinks={titleLinks}
         />
       );
     }
@@ -215,7 +216,8 @@ DataExplorerContent.propTypes = {
   query: PropTypes.string,
   pageCount: PropTypes.number,
   search: PropTypes.object,
-  initialPage: PropTypes.number
+  initialPage: PropTypes.number,
+  titleLinks: PropTypes.array
 };
 
 export default DataExplorerContent;
