@@ -9,7 +9,6 @@ import { actions } from 'components/modal-download';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import {
-  DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
@@ -21,6 +20,7 @@ import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
   getMethodology,
+  getFirstColumnHeaders,
   getFilteredOptions,
   getSelectedOptions,
   getPathwaysMetodology,
@@ -89,7 +89,7 @@ const mapStateToProps = (state, { section, location }) => {
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',
     isDisabled,
-    firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
+    firstColumnHeaders: getFirstColumnHeaders(dataState),
     href: getLink(dataState),
     downloadHref,
     filters: DATA_EXPLORER_FILTERS[section],

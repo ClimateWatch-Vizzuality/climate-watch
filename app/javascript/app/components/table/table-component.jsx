@@ -58,9 +58,11 @@ class SimpleTable extends PureComponent {
     if (!data.length) return null;
     const hasColumnSelectedOptions = hasColumnSelect && columnsOptions;
     const activeColumnNames = activeColumns.map(c => c.value);
-    const columnData = activeColumnNames
-      .filter(c => firstColumnHeaders.includes(c))
-      .concat(difference(activeColumnNames, firstColumnHeaders));
+    let columnData = [];
+    firstColumnHeaders.forEach(c => {
+      if (activeColumnNames.includes(c)) columnData.push(c)
+    });
+    columnData = columnData.concat(difference(activeColumnNames, firstColumnHeaders))
     return (
       <div className={cx({ [styles.hasColumnSelect]: hasColumnSelect })}>
         {hasColumnSelectedOptions && (

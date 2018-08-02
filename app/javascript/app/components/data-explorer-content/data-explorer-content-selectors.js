@@ -16,7 +16,8 @@ import {
   DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
+  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  DATA_EXPLORER_FIRST_COLUMN_HEADERS
 } from 'data/constants';
 
 const getMeta = state => state.meta || null;
@@ -483,6 +484,13 @@ export const parseData = createSelector([getData], data => {
     n => DATA_EXPLORER_BLACKLIST.indexOf(n) === -1
   );
   return updatedData.map(d => pick(d, whiteList));
+});
+
+export const getFirstColumnHeaders = createSelector([parseData], data => {
+  if (!data || !data.length) return null;
+  const isANumber = (i) => !isNaN(parseInt(i, 10))
+  const yearColumnKeys = Object.keys(data[0]).filter(k => isANumber(k)).reverse();
+  return DATA_EXPLORER_FIRST_COLUMN_HEADERS.concat(yearColumnKeys);
 });
 
 // Pathways Modal Data
