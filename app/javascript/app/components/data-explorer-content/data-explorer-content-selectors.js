@@ -69,41 +69,53 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
   return fieldsWithoutPrefix;
 };
 
+function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
+  const filterIds = {};
+  Object.keys(parsedFilters).forEach(key => {
+    let correctedKey = key;
+    if (key === 'subcategories' && !isLinkQuery) {
+      correctedKey = 'categories';
+    }
+    const parsedKey = correctedKey.replace('-', '_');
+    const filter =
+      metadata[parsedKey] &&
+      metadata[parsedKey].find(option =>
+        findEqual(
+          option,
+          [
+            'name',
+            'full_name',
+            'value',
+            'wri_standard_name',
+            'cw_title',
+            'slug',
+            'number'
+          ],
+          parsedFilters[key]
+        )
+      );
+    filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
+  });
+  return filterIds;
+}
+
+function filterQueryIds(meta, search, section, isLinkQuery) {
+  if (!meta || isEmpty(meta) || !section) return null;
+  const metadata = meta[section];
+  if (!metadata) return null;
+  const parsedFilters = removeFiltersPrefix(search, section);
+  const filterIds = extractFilterIds(parsedFilters, metadata, isLinkQuery);
+  return filterIds;
+}
+
 export const getFilterQuery = createSelector(
   [getMeta, getSearch, getSection],
-  (meta, search, section) => {
-    if (!meta || isEmpty(meta) || !section) return null;
-    const metadata = meta[section];
-    if (!metadata) return null;
-    const parsedFilters = removeFiltersPrefix(search, section);
-    const filterIds = {};
-    Object.keys(parsedFilters).forEach(key => {
-      let correctedKey = key;
-      if (key === 'subcategories') {
-        correctedKey = 'categories';
-      }
-      const parsedKey = correctedKey.replace('-', '_');
-      const filter =
-        metadata[parsedKey] &&
-        metadata[parsedKey].find(option =>
-          findEqual(
-            option,
-            [
-              'name',
-              'full_name',
-              'value',
-              'wri_standard_name',
-              'cw_title',
-              'slug',
-              'number'
-            ],
-            parsedFilters[key]
-          )
-        );
-      filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
-    });
-    return filterIds;
-  }
+  (meta, search, section) => filterQueryIds(meta, search, section, false)
+);
+
+export const getLinkFilterQuery = createSelector(
+  [getMeta, getSearch, getSection],
+  (meta, search, section) => filterQueryIds(meta, search, section, true)
 );
 
 export const parseFilterQuery = createSelector([getFilterQuery], filterIds => {
@@ -113,7 +125,7 @@ export const parseFilterQuery = createSelector([getFilterQuery], filterIds => {
 });
 
 export const getLink = createSelector(
-  [getFilterQuery, getSection, state => state.meta],
+  [getLinkFilterQuery, getSection, state => state.meta],
   (filterQuery, section, meta) => {
     if (!section) return null;
     const parsedQuery = {};
