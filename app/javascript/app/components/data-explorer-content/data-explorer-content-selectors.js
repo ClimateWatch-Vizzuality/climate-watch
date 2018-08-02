@@ -78,7 +78,11 @@ export const getFilterQuery = createSelector(
     const parsedFilters = removeFiltersPrefix(search, section);
     const filterIds = {};
     Object.keys(parsedFilters).forEach(key => {
-      const parsedKey = key.replace('-', '_');
+      let correctedKey = key;
+      if (key === 'subcategories') {
+        correctedKey = 'categories';
+      }
+      const parsedKey = correctedKey.replace('-', '_');
       const filter =
         metadata[parsedKey] &&
         metadata[parsedKey].find(option =>
@@ -140,14 +144,20 @@ export const getLink = createSelector(
 
 function getOptions(section, filter, filtersMeta) {
   if (section !== 'emission-pathways') return filtersMeta[filter];
-  if (filter === 'categories' || filter === 'subcategories') { return filtersMeta.categories; }
+  if (filter === 'categories' || filter === 'subcategories') {
+    return filtersMeta.categories;
+  }
   return filtersMeta[filter];
 }
 
 function parseOptions(section, filter, options) {
   if (section !== 'emission-pathways') return options;
-  if (filter === 'categories') { return options.filter(option => option.parent_id === null); }
-  if (filter === 'subcategories') { return options.filter(option => option.parent_id !== null); }
+  if (filter === 'categories') {
+    return options.filter(option => option.parent_id === null);
+  }
+  if (filter === 'subcategories') {
+    return options.filter(option => option.parent_id !== null);
+  }
   return options;
 }
 
