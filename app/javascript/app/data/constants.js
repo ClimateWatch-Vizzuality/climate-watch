@@ -336,7 +336,7 @@ export const DATA_EXPLORER_FILTERS = {
 };
 
 export const DATA_EXPLORER_DEPENDENCIES = {
-  'emission-pathways': { indicators: ['categories'] }
+  'emission-pathways': { indicators: ['subcategories'] }
 };
 
 export const DATA_EXPLORER_SECTION_BASE_URIS = {
