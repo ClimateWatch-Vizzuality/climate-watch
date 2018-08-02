@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
+import isNaN from 'lodash/isNaN';
 import uniq from 'lodash/uniq';
 import sortBy from 'lodash/sortBy';
 import snakeCase from 'lodash/snakeCase';
@@ -85,27 +86,23 @@ export const parsedCategoriesWithSectors = createSelector(
           cat.sectors.map(sec => {
             const definitions = [];
             cat.indicators.forEach(ind => {
-              const descriptions = [];
-              let hasValue = false;
-              countries.forEach(loc => {
-                const value = ind.locations[loc]
+              const descriptions = countries.map(loc => {
+                const valueObject = ind.locations[loc]
                   ? ind.locations[loc].find(v => v.sector_id === sec)
                   : null;
-                if (value && value.value) {
-                  hasValue = true;
-                  descriptions.push({
-                    iso: loc,
-                    value: value.value
-                  });
-                }
+                const value =
+                  (valueObject && valueObject.value) ||
+                  (isNaN(parseInt(loc, 10)) ? '-' : null);
+                return {
+                  iso: loc,
+                  value
+                };
               });
-              if (hasValue) {
-                definitions.push({
-                  title: ind.name,
-                  slug: ind.slug,
-                  descriptions
-                });
-              }
+              definitions.push({
+                title: ind.name,
+                slug: ind.slug,
+                descriptions
+              });
             });
             const parent =
               sectors[sec].parent_id && sectors[sectors[sec].parent_id];
