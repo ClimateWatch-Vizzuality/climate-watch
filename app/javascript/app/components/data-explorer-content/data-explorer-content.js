@@ -2,9 +2,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { PureComponent, createElement } from 'react';
 import { openDownloadModal } from 'utils/data-explorer';
-import { getLocationParamUpdated } from 'utils/navigation';
+import { getSearch, getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
-import qs from 'query-string';
 import { actions } from 'components/modal-download';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
@@ -30,7 +29,7 @@ import {
 } from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
-  const search = qs.parse(location.search);
+  const search = getSearch(location);
   const dataState = {
     data: state.dataExplorer && state.dataExplorer.data,
     countries: state.countries && state.countries.data,
