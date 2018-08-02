@@ -17,7 +17,7 @@ import {
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
-  DATA_EXPLORER_SECTION_LABELS
+  DATA_EXPLORER_SECTIONS
 } from 'data/constants';
 
 const getMeta = state => state.meta || null;
@@ -36,7 +36,7 @@ export const getData = createSelector(
 
 export const getSectionLabel = createSelector(
   getSection,
-  section => DATA_EXPLORER_SECTION_LABELS[section]
+  section => DATA_EXPLORER_SECTIONS[section].label
 );
 
 export const getSourceOptions = createSelector(
