@@ -23,7 +23,7 @@ export const parseIndicatorsDefs = createSelector(
       const parsedDefinitions = categoryIndicators.map(def => {
         const descriptions = countries.map(country => ({
           iso: country,
-          value: def.locations[country] ? def.locations[country][0].value : null
+          value: def.locations[country] ? def.locations[country][0].value : '-'
         }));
         return {
           title: def.name,
