@@ -303,18 +303,21 @@ export const USERS_PROFESIONAL_SECTORS = [
   'Other'
 ];
 
-export const DATA_EXPLORER_SECTION_NAMES = {
-  'historical-emissions': 'historical_emissions',
-  'ndc-sdg-linkages': 'ndc_sdg',
-  'emission-pathways': 'emission_pathways',
-  'ndc-content': 'ndc_content'
+export const DATA_EXPLORER_SECTIONS = {
+  'historical-emissions': {
+    requestPath: 'historical_emissions',
+    label: 'historical-emissions'
+  },
+  'ndc-sdg-linkages': { requestPath: 'ndc_sdg', label: 'ndc-sdg-linkages' },
+  'emission-pathways': { requestPath: 'emission_pathways', label: 'pathways' },
+  'ndc-content': { requestPath: 'ndc_content', label: 'ndc-content' }
 };
 
-export const DATA_EXPLORER_SECTION_LABELS = {
-  'historical-emissions': 'historical-emissions',
-  'ndc-sdg-linkages': 'ndc-sdg-linkages',
-  'emission-pathways': 'pathways',
-  'ndc-content': 'ndc-content'
+export const DATA_EXPLORER_SECTION_BASE_URIS = {
+  'historical-emissions': 'ghg-emissions',
+  'ndc-sdg-linkages': 'ndcs-sdg',
+  'ndc-content': 'ndcs-content',
+  'emission-pathways': 'pathways'
 };
 
 export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
@@ -329,12 +332,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': [
-    'source',
-    'gases',
-    'countries and regions',
-    'sectors'
-  ],
+  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
   'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
   'emission-pathways': [
     'locations',
@@ -350,12 +348,6 @@ export const DATA_EXPLORER_DEPENDENCIES = {
   'emission-pathways': { indicators: ['categories'] }
 };
 
-export const DATA_EXPLORER_SECTION_BASE_URIS = {
-  'historical-emissions': 'ghg-emissions',
-  'ndc-sdg-linkages': 'ndcs-sdg',
-  'ndc-content': 'ndcs-content',
-  'emission-pathways': 'pathways'
-};
 export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
 export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'historical-emissions': {
@@ -431,7 +423,6 @@ export default {
   LENSES_SELECTOR_INFO,
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
-  DATA_EXPLORER_SECTION_NAMES,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   SOURCE_VERSIONS,
   USERS_PROFESIONAL_SECTORS,
@@ -440,7 +431,7 @@ export default {
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
-  DATA_EXPLORER_SECTION_LABELS,
+  DATA_EXPLORER_SECTIONS,
   DATA_EXPLORER_PER_PAGE,
   ESP_HOST
 };
