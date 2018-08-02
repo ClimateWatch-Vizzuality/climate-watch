@@ -2,57 +2,94 @@ module Api
   module V1
     module Data
       class NdcSdgFilter
+        include Api::V1::Data::SanitisedSorting
+        include Api::V1::Data::ColumnHelpers
+
         # @param params [Hash]
         # @option params [Array<String>] :countries
         # @option params [Array<Integer>] :goal_ids
         # @option params [Array<Integer>] :target_ids
         # @option params [Array<Integer>] :sector_ids
+        # @option params [String] :sort_col
+        # @option params [String] :sort_dir
         def initialize(params)
+          initialize_filters(params)
+          initialise_sorting(params[:sort_col], params[:sort_dir])
           @query = ::NdcSdg::NdcTargetSector.
             joins(:sector, ndc_target: [{ndc: :location}, {target: :goal}])
-          initialize_filters(params)
         end
 
         def call
           apply_filters
           @query.
-            select(self.class.select_columns)
-        end
-
-        def self.column_aliases
-          select_columns_with_aliases.map do |column, column_alias|
-            column_alias || column
-          end
-        end
-
-        def self.select_columns
-          select_columns_with_aliases.map do |column, column_alias|
-            if column_alias
-              [column, 'AS', column_alias].join(' ')
-            else
-              column
-            end
-          end
+            select(select_columns).
+            order(sanitised_order)
         end
 
         private
 
-        private_class_method def self.select_columns_with_aliases
+        # rubocop:disable Metrics/MethodLength
+        def select_columns_map
           [
-            ['id'],
-            ['locations.iso_code3', 'iso_code3'],
-            ['locations.wri_standard_name', 'country'],
-            ['ndc_sdg_ndc_targets.indc_text', 'indc_text'],
-            ['ndc_sdg_ndc_targets.status', 'status'],
-            ['ndc_sdg_ndc_targets.climate_response', 'climate_response'],
-            ['ndc_sdg_ndc_targets.type_of_information', 'type_of_information'],
-            ['ndc_sdg_sectors.name', 'sector'],
-            ['ndc_sdg_targets.number', 'target_number'],
-            ['ndc_sdg_targets.title', 'target'],
-            ['ndc_sdg_goals.number', 'goal_number'],
-            ['ndc_sdg_goals.title', 'goal']
+            {
+              column: 'id',
+              alias: 'id'
+            },
+            {
+              column: 'locations.iso_code3',
+              alias: 'iso_code3'
+            },
+            {
+              column: 'locations.wri_standard_name',
+              alias: 'country'
+            },
+            {
+              column: 'ndc_sdg_ndc_targets.indc_text',
+              alias: 'indc_text'
+            },
+            {
+              column: 'ndc_sdg_ndc_targets.status',
+              alias: 'status'
+            },
+            {
+              column: 'ndc_sdg_ndc_targets.climate_response',
+              alias: 'climate_response'
+            },
+            {
+              column: 'ndc_sdg_ndc_targets.type_of_information',
+              alias: 'type_of_information'
+            },
+            {
+              column: 'ndc_sdg_sectors.name',
+              alias: 'sector'
+            },
+            {
+              column: 'ndc_sdg_targets.number',
+              alias: 'target_number'
+            },
+            {
+              column: 'ndc_sdg_targets.title',
+              alias: 'target'
+            },
+            {
+              column: 'ndc_sdg_goals.number',
+              alias: 'goal_number'
+            },
+            {
+              column: 'ndc_sdg_goals.title',
+              alias: 'goal'
+            },
+            {
+              column: 'ndcs.document_type',
+              alias: 'document_type'
+            },
+            {
+              column: 'ndcs.language',
+              alias: 'language'
+            }
           ]
         end
+        # rubocop:enable Metrics/MethodLength
 
         def initialize_filters(params)
           # integer arrays
