@@ -19,6 +19,66 @@ import {
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS
 } from 'data/constants';
 
+const SECTION_NAMES = {
+  pathways: 'emission-pathways',
+  historicalEmissions: 'historical-emissions'
+};
+
+const FILTER_NAMES = {
+  categories: 'categories',
+  subcategories: 'subcategories'
+};
+
+const FILTERED_FIELDS = {
+  'historical-emissions': {
+    sectors: [
+      {
+        parent: 'source',
+        id: 'data_source_id'
+      }
+    ]
+  },
+  'ndc-sdg-linkages': {
+    targets: [
+      {
+        parent: 'goals',
+        parentId: 'id',
+        id: 'goal_id'
+      }
+    ]
+  },
+  'ndc-content': {
+    indicators: [
+      {
+        parent: FILTER_NAMES.categories,
+        parentId: 'id',
+        id: 'category_ids'
+      }
+    ]
+  },
+  'emission-pathways': {
+    scenarios: [
+      {
+        parent: 'models',
+        idObject: 'model',
+        id: 'id'
+      }
+    ],
+    indicators: [
+      {
+        parent: FILTER_NAMES.categories,
+        idObject: 'category',
+        id: 'id'
+      },
+      {
+        parent: 'scenarios',
+        parentId: 'indicator_ids',
+        id: 'id'
+      }
+    ]
+  }
+};
+
 const getMeta = state => state.meta || null;
 const getSection = state => state.section || null;
 const getSearch = state => state.search || null;
@@ -40,7 +100,7 @@ export const getSourceOptions = createSelector(
       !meta ||
       isEmpty(meta) ||
       !section ||
-      section !== 'historical-emissions' ||
+      section !== SECTION_NAMES.historicalEmissions ||
       !meta[section]
     ) {
       return null;
@@ -73,8 +133,8 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
   Object.keys(parsedFilters).forEach(key => {
     let correctedKey = key;
-    if (key === 'subcategories' && !isLinkQuery) {
-      correctedKey = 'categories';
+    if (key === FILTER_NAMES.subcategories && !isLinkQuery) {
+      correctedKey = FILTER_NAMES.categories;
     }
     const parsedKey = correctedKey.replace('-', '_');
     const filter =
@@ -155,19 +215,22 @@ export const getLink = createSelector(
 );
 
 function getOptions(section, filter, filtersMeta) {
-  if (section !== 'emission-pathways') return filtersMeta[filter];
-  if (filter === 'categories' || filter === 'subcategories') {
+  if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
+  if (
+    filter === FILTER_NAMES.categories ||
+    filter === FILTER_NAMES.subcategories
+  ) {
     return filtersMeta.categories;
   }
   return filtersMeta[filter];
 }
 
 function parseOptions(section, filter, options) {
-  if (section !== 'emission-pathways') return options;
+  if (section !== SECTION_NAMES.pathways) return options;
   switch (filter) {
-    case 'categories':
+    case FILTER_NAMES.categories:
       return options.filter(option => option.parent_id === null);
-    case 'subcategories':
+    case FILTER_NAMES.subcategories:
       return options.filter(option => option.parent_id !== null);
     default:
       return options;
@@ -350,55 +413,6 @@ const getSelectedFilters = createSelector(
 export const getFilteredOptions = createSelector(
   [parseGroupsInOptions, getSection, getSelectedFilters],
   (options, section, selectedFilters) => {
-    const FILTERED_FIELDS = {
-      'historical-emissions': {
-        sectors: [
-          {
-            parent: 'source',
-            id: 'data_source_id'
-          }
-        ]
-      },
-      'ndc-sdg-linkages': {
-        targets: [
-          {
-            parent: 'goals',
-            parentId: 'id',
-            id: 'goal_id'
-          }
-        ]
-      },
-      'ndc-content': {
-        indicators: [
-          {
-            parent: 'categories',
-            parentId: 'id',
-            id: 'category_ids'
-          }
-        ]
-      },
-      'emission-pathways': {
-        scenarios: [
-          {
-            parent: 'models',
-            idObject: 'model',
-            id: 'id'
-          }
-        ],
-        indicators: [
-          {
-            parent: 'categories',
-            idObject: 'category',
-            id: 'id'
-          },
-          {
-            parent: 'scenarios',
-            parentId: 'indicator_ids',
-            id: 'id'
-          }
-        ]
-      }
-    };
     if (
       !section ||
       !FILTERED_FIELDS[section] ||
@@ -420,8 +434,8 @@ export const getFilteredOptions = createSelector(
             let { idObject: idObjectLabel } = f;
 
             if (
-              section === 'emission-pathways' &&
-              parentLabel === 'categories' &&
+              section === SECTION_NAMES.pathways &&
+              parentLabel === FILTER_NAMES.categories &&
               selectedFilters.categories &&
               selectedFilters.categories.parent_id
             ) {
@@ -451,8 +465,8 @@ export const getFilteredOptions = createSelector(
 export const getMethodology = createSelector(
   [getMeta, getSection, getSelectedFilters],
   (meta, section, selectedfilters) => {
-    const sectionHasSources = section === 'historical-emissions';
-    const emissionPathwaysSection = section === 'emission-pathways';
+    const sectionHasSources = section === SECTION_NAMES.historicalEmissions;
+    const emissionPathwaysSection = section === SECTION_NAMES.pathways;
     if (
       !meta ||
       isEmpty(meta) ||
@@ -528,7 +542,7 @@ const getScenarioSelectedMetadata = createSelector(
   [getSelectedFilters, state => state.meta],
   (filters, meta) => {
     if (!filters || !filters.scenarios || !meta) return null;
-    const metadata = meta['emission-pathways'];
+    const metadata = meta[SECTION_NAMES.pathways];
     if (!metadata || !metadata.scenarios) return null;
     const scenario = metadata.scenarios.find(
       m => filters.scenarios.id === m.id
@@ -547,7 +561,7 @@ const getModelSelectedMetadata = createSelector(
   [getSelectedFilters, state => state.meta],
   (filters, meta) => {
     if (!filters || !filters.models || !meta) return null;
-    const metadata = meta['emission-pathways'];
+    const metadata = meta[SECTION_NAMES.pathways];
     if (!metadata || !metadata.models) return null;
     return metadata.models.find(m => filters.models.id === m.id);
   }
@@ -557,7 +571,7 @@ export const getIndicatorSelectedMetadata = createSelector(
   [getSelectedFilters, state => state.meta],
   (filters, meta) => {
     if (!filters || !filters.indicators || !meta) return null;
-    const metadata = meta['emission-pathways'];
+    const metadata = meta[SECTION_NAMES.pathways];
     if (!metadata || !metadata.indicators) return null;
     return metadata.indicators.find(m => filters.indicators.id === m.id);
   }
