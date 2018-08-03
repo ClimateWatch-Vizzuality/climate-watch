@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import {
-  DATA_EXPLORER_SECTION_NAMES,
+  DATA_EXPLORER_SECTIONS,
   ESP_HOST,
   DATA_EXPLORER_PER_PAGE
 } from 'data/constants';
@@ -50,9 +50,8 @@ export const fetchDataExplorer = createThunkAction(
       const parsedQuery = parseQuery(qs.stringify(updatedQuery));
 
       fetch(
-        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
-          section
-        ]}?${parsedQuery}`
+        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTIONS[section]
+          .requestPath}?${parsedQuery}`
       )
         .then(response =>
           response.json().then(json => {
@@ -121,9 +120,8 @@ export const fetchMetadata = createThunkAction(
         !dataExplorer.metadata[section])
     ) {
       fetch(
-        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
-          section
-        ]}/meta`
+        `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTIONS[section]
+          .requestPath}/meta`
       )
         .then(response => {
           if (response.ok) {

@@ -21,7 +21,7 @@ export default [
     exact: true
   },
   {
-    label: 'Emission Pathways',
+    label: 'Pathways',
     path: '/data-explorer/emission-pathways',
     component: () =>
       createElement(DataExplorerContent, {

@@ -10,7 +10,7 @@ import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import {
   DATA_EXPLORER_FIRST_COLUMN_HEADERS,
-  DATA_EXPLORER_SECTION_NAMES,
+  DATA_EXPLORER_SECTIONS,
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_DEPENDENCIES,
@@ -21,6 +21,7 @@ import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
   getMethodology,
+  getSectionLabel,
   getFilteredOptions,
   getSelectedOptions,
   getPathwaysMetodology,
@@ -49,9 +50,9 @@ const mapStateToProps = (state, { section, location }) => {
   ];
   const filterQuery = parseFilterQuery(dataState);
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
-  const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTION_NAMES[
+  const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTIONS[
     section
-  ]}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
+  ].requestPath}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
   const meta =
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
@@ -91,6 +92,7 @@ const mapStateToProps = (state, { section, location }) => {
     isDisabled,
     firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
     href: getLink(dataState),
+    sectionLabel: getSectionLabel(dataState),
     downloadHref,
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: getFilteredOptions(dataState),
