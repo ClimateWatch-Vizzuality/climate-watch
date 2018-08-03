@@ -164,13 +164,14 @@ function getOptions(section, filter, filtersMeta) {
 
 function parseOptions(section, filter, options) {
   if (section !== 'emission-pathways') return options;
-  if (filter === 'categories') {
-    return options.filter(option => option.parent_id === null);
+  switch (filter) {
+    case 'categories':
+      return options.filter(option => option.parent_id === null);
+    case 'subcategories':
+      return options.filter(option => option.parent_id !== null);
+    default:
+      return options;
   }
-  if (filter === 'subcategories') {
-    return options.filter(option => option.parent_id !== null);
-  }
-  return options;
 }
 
 export const getFilterOptions = createSelector(
