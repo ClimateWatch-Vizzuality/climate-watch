@@ -5,6 +5,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
 
   before(:each) do
     HistoricalEmissions::NormalisedRecord.refresh
+    HistoricalEmissions::SearchableRecord.refresh
   end
 
   describe 'GET index' do

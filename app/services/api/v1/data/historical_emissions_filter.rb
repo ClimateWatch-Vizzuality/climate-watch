@@ -12,12 +12,16 @@ module Api
         # @option params [Array<Integer>] :gwp_ids
         # @option params [Array<Integer>] :gas_ids
         # @option params [Array<Integer>] :sector_ids
+        # @option params [Integer] :start_year
+        # @option params [Integer] :end_year
         # @option params [String] :sort_col
         # @option params [String] :sort_dir
         def initialize(params)
           initialize_filters(params)
           initialise_sorting(params[:sort_col], params[:sort_dir])
-          @query = ::HistoricalEmissions::Record.all
+          @query = ::HistoricalEmissions::Record.
+            from('historical_emissions_searchable_records historical_emissions_records').
+            all
           @years_query = ::HistoricalEmissions::NormalisedRecord.all
         end
 
@@ -35,12 +39,14 @@ module Api
           @years = @years_query.distinct(:year).pluck(:year).sort
 
           results = @query.
-            joins(:location, :data_source, :gwp, :sector, :gas).
             select(select_columns).
-            group(group_columns).
             order(sanitised_order)
 
           results
+        end
+
+        def year_value_column(year)
+          "emissions_dict->'#{year}'"
         end
 
         private
@@ -49,44 +55,42 @@ module Api
         def select_columns_map
           [
             {
-              column: 'id',
+              column: 'historical_emissions_records.id',
               alias: 'id'
             },
             {
-              column: 'locations.iso_code3',
+              column: 'iso_code3',
               alias: 'iso_code3'
             },
             {
-              column: 'locations.wri_standard_name',
+              column: 'region',
               alias: 'region'
             },
             {
-              column: 'historical_emissions_data_sources.name',
+              column: 'data_source',
               alias: 'data_source'
             },
             {
-              column: 'historical_emissions_gwps.name',
+              column: 'gwp',
               alias: 'gwp'
             },
             {
-              column: 'historical_emissions_sectors.name',
+              column: 'sector',
               alias: 'sector'
             },
             {
-              column: 'historical_emissions_gases.name',
+              column: 'gas',
               alias: 'gas'
             },
             {
               column: "'MtCO\u2082e'::TEXT",
               alias: 'unit',
-              order: false,
-              group: false
+              order: false
             },
             {
               column: emissions_select_column,
               alias: 'emissions',
-              order: false,
-              group: false
+              order: false
             }
           ]
         end
