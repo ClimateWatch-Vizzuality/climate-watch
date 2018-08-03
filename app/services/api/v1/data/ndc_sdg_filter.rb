@@ -50,7 +50,9 @@ module Api
             ['ndc_sdg_targets.number', 'target_number'],
             ['ndc_sdg_targets.title', 'target'],
             ['ndc_sdg_goals.number', 'goal_number'],
-            ['ndc_sdg_goals.title', 'goal']
+            ['ndc_sdg_goals.title', 'goal'],
+            ['ndcs.document_type', 'document_type'],
+            ['ndcs.language', 'document_language']
           ]
         end
 
