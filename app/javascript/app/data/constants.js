@@ -377,7 +377,7 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
       key: 'category'
     },
     subcategories: {
-      key: 'subcategories'
+      key: 'subcategory'
     }
   }
 };
