@@ -49,6 +49,12 @@ module Api
           "emissions_dict->'#{year}'"
         end
 
+        def meta
+          {
+            years: @years
+          }.merge(sorting_manifest).merge(column_manifest)
+        end
+
         private
 
         # rubocop:disable Metrics/MethodLength

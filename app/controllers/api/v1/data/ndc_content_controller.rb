@@ -12,7 +12,7 @@ module Api
                  each_serializer: Api::V1::Data::NdcContent::NdcContentSerializer,
                  params: params,
                  root: :data,
-                 meta: {columns: @filter.column_manifest}
+                 meta: @filter.meta
         end
 
         def meta

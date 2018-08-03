@@ -156,41 +156,47 @@
             ]
           }
         },
+        "sorting": {
+          "$id": "/properties/meta/properties/sorting",
+          "type": "object",
+          "properties": {
+            "sort_col": {
+              "$id": "/properties/meta/properties/sorting/properties/sort_col",
+              "type": "string",
+              "title": "The Sort_col Schema ",
+              "default": "",
+              "examples": [
+                "iso_code3"
+              ]
+            },
+            "sort_dir": {
+              "$id": "/properties/meta/properties/sorting/properties/sort_dir",
+              "type": "string",
+              "title": "The Sort_dir Schema ",
+              "default": "",
+              "examples": [
+                "ASC"
+              ]
+            }
+          }
+        },
         "columns": {
           "$id": "/properties/meta/properties/columns",
           "type": "array",
           "items": {
             "$id": "/properties/meta/properties/columns/items",
-            "type": "object",
-            "properties": {
-              "name": {
-                "$id": "/properties/meta/properties/columns/items/properties/name",
-                "type": "string",
-                "title": "The Name Schema ",
-                "default": "",
-                "examples": [
-                  "gas"
-                ]
-              },
-              "sortable": {
-                "$id": "/properties/meta/properties/columns/items/properties/sortable",
-                "type": "boolean",
-                "title": "The Sortable Schema ",
-                "default": false,
-                "examples": [
-                  true
-                ]
-              },
-              "current": {
-                "$id": "/properties/meta/properties/columns/items/properties/current",
-                "type": ["string", "null"],
-                "title": "The Current Schema ",
-                "default": "",
-                "examples": [
-                  "ASC"
-                ]
-              }
-            }
+            "type": "string",
+            "title": "The 0th Schema ",
+            "default": "",
+            "examples": [
+              "id",
+              "iso_code3",
+              "region",
+              "data_source",
+              "gwp",
+              "sector",
+              "gas"
+            ]
           }
         }
       }

@@ -31,6 +31,10 @@ module Api
             order(sanitised_order)
         end
 
+        def meta
+          sorting_manifest.merge(column_manifest)
+        end
+
         private
 
         # rubocop:disable Metrics/MethodLength
