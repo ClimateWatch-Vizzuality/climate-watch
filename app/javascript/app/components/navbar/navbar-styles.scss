@@ -6,6 +6,12 @@
   height: $navbar-height;
 }
 
+.withDataExplorerLayout {
+  @include row((9, 3));
+
+  height: $navbar-height;
+}
+
 .navigationWrapper {
   display: flex;
   align-items: center;

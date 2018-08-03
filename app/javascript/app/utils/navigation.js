@@ -2,8 +2,10 @@ import qs from 'query-string';
 import isArray from 'lodash/isArray';
 import { CONTAINED_PATHNAME } from 'data/constants';
 
+export const getSearch = location => qs.parse(location.search);
+
 export function getLocationParamUpdated(location, params = [], clear = false) {
-  const search = qs.parse(location.search);
+  const search = getSearch(location);
   const newFilters = {};
   const paramsArray = isArray(params) ? params : [params];
   paramsArray.forEach(param => {
@@ -34,6 +36,7 @@ export const isEmbededComponent = location =>
   location.pathname.includes('/embed');
 
 export default {
+  getSearch,
   getLocationParamUpdated,
   isPageContained,
   isPageNdcp,
