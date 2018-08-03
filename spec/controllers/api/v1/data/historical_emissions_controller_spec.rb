@@ -31,7 +31,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
       get :download
       expect(response.content_type).to eq('text/csv')
       expect(response.headers['Content-Disposition']).
-        to eq('attachment; filename=historical_emissions.csv')
+        to eq('attachment; filename="historical_emissions.csv"')
     end
   end
 
