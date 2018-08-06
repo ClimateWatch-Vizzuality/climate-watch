@@ -26,6 +26,7 @@ const SECTION_NAMES = {
 };
 
 const FILTER_NAMES = {
+  models: 'models',
   categories: 'categories',
   subcategories: 'subcategories'
 };
@@ -220,15 +221,37 @@ export const getLink = createSelector(
   }
 );
 
-function getOptions(section, filter, filtersMeta) {
+function getPathwaysModelOptions(query, filtersMeta, filter) {
+  if (!query || !query.locations) return filtersMeta[filter];
+  const locationId = query.locations;
+  const locationsSelected = filtersMeta.locations.filter(
+    location => location.id === locationId
+  );
+  return filtersMeta[filter].filter(model =>
+    model.geographic_coverage.includes(locationsSelected[0].name)
+  );
+}
+
+function getPathwaysScenarioOptions(query, filtersMeta, filter) {
+  if (!query || !query.models) return filtersMeta[filter];
+  const selectedModelId = query.models;
+  return filtersMeta[filter].filter(
+    scenario => scenario.model.id === selectedModelId
+  );
+}
+
+function getOptions(section, filter, filtersMeta, query) {
   if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
-  if (
-    filter === FILTER_NAMES.categories ||
-    filter === FILTER_NAMES.subcategories
-  ) {
-    return filtersMeta.categories;
+  switch (filter) {
+    case FILTER_NAMES.models:
+      return getPathwaysModelOptions(query, filtersMeta, filter);
+    case FILTER_NAMES.scenarios:
+      return getPathwaysScenarioOptions(query, filtersMeta, filter);
+    case FILTER_NAMES.subcategories:
+      return filtersMeta.categories;
+    default:
+      return filtersMeta[filter];
   }
-  return filtersMeta[filter];
 }
 
 function parseOptions(section, filter, options) {
@@ -244,8 +267,15 @@ function parseOptions(section, filter, options) {
 }
 
 export const getFilterOptions = createSelector(
-  [getMeta, getSection, getCountries, getRegions, getSourceOptions],
-  (meta, section, countries, regions, sourceVersions) => {
+  [
+    getMeta,
+    getSection,
+    getCountries,
+    getRegions,
+    getSourceOptions,
+    getFilterQuery
+  ],
+  (meta, section, countries, regions, sourceVersions, query) => {
     if (!section || isEmpty(meta)) return null;
     const filterKeys = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = meta[section];
@@ -258,7 +288,7 @@ export const getFilterOptions = createSelector(
     }
     const filterOptions = {};
     filterKeys.forEach(f => {
-      const options = getOptions(section, f, filtersMeta);
+      const options = getOptions(section, f, filtersMeta, query);
       if (options) {
         const parsedOptions = parseOptions(section, f, options);
         const optionsArray = parsedOptions.map(option => {
