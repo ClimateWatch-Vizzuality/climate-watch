@@ -5,6 +5,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsFilter do
 
   before(:each) do
     HistoricalEmissions::NormalisedRecord.refresh
+    HistoricalEmissions::SearchableRecord.refresh
   end
 
   describe :call do

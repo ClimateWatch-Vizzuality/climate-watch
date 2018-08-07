@@ -2,6 +2,8 @@ module Api
   module V1
     module Data
       class HistoricalEmissionsFilter
+        include Api::V1::Data::SanitisedSorting
+        include Api::V1::Data::ColumnHelpers
         attr_reader :years
 
         # @param params [Hash]
@@ -10,9 +12,16 @@ module Api
         # @option params [Array<Integer>] :gwp_ids
         # @option params [Array<Integer>] :gas_ids
         # @option params [Array<Integer>] :sector_ids
+        # @option params [Integer] :start_year
+        # @option params [Integer] :end_year
+        # @option params [String] :sort_col
+        # @option params [String] :sort_dir
         def initialize(params)
           initialize_filters(params)
-          @query = ::HistoricalEmissions::Record.all
+          initialise_sorting(params[:sort_col], params[:sort_dir])
+          @query = ::HistoricalEmissions::Record.
+            from('historical_emissions_searchable_records historical_emissions_records').
+            all
           @years_query = ::HistoricalEmissions::NormalisedRecord.all
         end
 
@@ -30,51 +39,68 @@ module Api
           @years = @years_query.distinct(:year).pluck(:year).sort
 
           results = @query.
-            joins(:location, :data_source, :gwp, :sector, :gas).
             select(select_columns).
-            group(group_columns)
+            order(sanitised_order)
 
           results
         end
 
-        def column_aliases
-          column_aliases = select_columns_with_aliases.map do |column, column_alias|
-            column_alias || column
-          end
-          column_aliases.pop
-          column_aliases
+        def year_value_column(year)
+          "emissions_dict->'#{year}'"
+        end
+
+        def meta
+          {
+            years: @years
+          }.merge(sorting_manifest).merge(column_manifest)
         end
 
         private
 
-        def select_columns
-          select_columns_with_aliases.map do |column, column_alias|
-            if column_alias
-              [column, 'AS', column_alias].join(' ')
-            else
-              column
-            end
-          end
-        end
-
-        def group_columns
-          columns = select_columns_with_aliases.map(&:first)
-          columns[0..columns.length - 3]
-        end
-
-        def select_columns_with_aliases
+        # rubocop:disable Metrics/MethodLength
+        def select_columns_map
           [
-            ['id'],
-            ['locations.iso_code3', 'iso_code3'],
-            ['locations.wri_standard_name', 'region'],
-            ['historical_emissions_data_sources.name', 'data_source'],
-            ['historical_emissions_gwps.name', 'gwp'],
-            ['historical_emissions_sectors.name', 'sector'],
-            ['historical_emissions_gases.name', 'gas'],
-            ["'MtCO\u2082e'::TEXT", 'unit'],
-            [emissions_select_column, 'emissions']
+            {
+              column: 'historical_emissions_records.id',
+              alias: 'id'
+            },
+            {
+              column: 'iso_code3',
+              alias: 'iso_code3'
+            },
+            {
+              column: 'region',
+              alias: 'region'
+            },
+            {
+              column: 'data_source',
+              alias: 'data_source'
+            },
+            {
+              column: 'gwp',
+              alias: 'gwp'
+            },
+            {
+              column: 'sector',
+              alias: 'sector'
+            },
+            {
+              column: 'gas',
+              alias: 'gas'
+            },
+            {
+              column: "'MtCO\u2082e'::TEXT",
+              alias: 'unit',
+              order: false
+            },
+            {
+              column: emissions_select_column,
+              alias: 'emissions',
+              order: false
+            }
           ]
         end
+        # rubocop:enable Metrics/MethodLength
 
         def emissions_select_column
           return 'emissions' unless @start_year || @end_year

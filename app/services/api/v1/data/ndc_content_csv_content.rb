@@ -6,7 +6,7 @@ module Api
       class NdcContentCsvContent
         def initialize(filter, output)
           @query = filter.call
-          @headers = filter.class.column_aliases
+          @headers = filter.column_aliases
           @output = output
         end
 
