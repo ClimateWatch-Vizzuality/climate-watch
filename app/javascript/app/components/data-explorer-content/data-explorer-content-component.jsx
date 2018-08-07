@@ -26,19 +26,29 @@ const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderTable() {
-    const { data, firstColumnHeaders, loading } = this.props;
+    const {
+      data,
+      firstColumnHeaders,
+      loading,
+      handleSortChange,
+      search
+    } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
       const columns = data && Object.keys(data[0]);
       const sortBy =
-        columns.find(c => firstColumnHeaders.includes(c)) || columns[0];
+        search.sort_col ||
+        columns.find(c => firstColumnHeaders.includes(c)) ||
+        columns[0];
       return (
         <Table
           data={data}
           rowHeight={60}
           sortBy={sortBy}
+          sortDirection={search.sort_dir}
           firstColumnHeaders={firstColumnHeaders}
           horizontalScroll
+          handleSortChange={handleSortChange}
         />
       );
     }
@@ -137,7 +147,6 @@ class DataExplorerContent extends PureComponent {
     const downloadButtonText = isEmpty(selectedOptions)
       ? `Download ${toStartCase(sectionLabel)} data`
       : 'Download selected data';
-
     return (
       <div>
         <DataExplorerProvider
@@ -202,6 +211,7 @@ DataExplorerContent.propTypes = {
   isDisabled: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
   handleDataDownload: PropTypes.func.isRequired,
+  handleSortChange: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,
   filterOptions: PropTypes.object,

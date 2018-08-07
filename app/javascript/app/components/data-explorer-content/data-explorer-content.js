@@ -199,6 +199,13 @@ class DataExplorerContentContainer extends PureComponent {
     return window.location.assign(downloadHref);
   };
 
+  handleSortChange = ({ sortBy, sortDirection }) => {
+    this.updateUrlParam([
+      { name: 'sort_col', value: sortBy },
+      { name: 'sort_dir', value: sortDirection }
+    ]);
+  };
+
   handleDownloadModalOpen = () => {
     const { setModalDownloadParams, downloadHref } = this.props;
     openDownloadModal(downloadHref, setModalDownloadParams);
@@ -215,6 +222,7 @@ class DataExplorerContentContainer extends PureComponent {
       handleFilterChange: this.handleFilterChange,
       handlePageChange: this.handlePageChange,
       handleDataDownload: this.handleDataDownload,
+      handleSortChange: this.handleSortChange,
       handleDownloadModalOpen: this.handleDownloadModalOpen
     });
   }
