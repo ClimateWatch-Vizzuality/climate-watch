@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { PureComponent, createElement } from 'react';
 import { openDownloadModal } from 'utils/data-explorer';
+import { isANumber } from 'utils/utils';
 import { getSearch, getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import { actions } from 'components/modal-download';
@@ -200,10 +201,12 @@ class DataExplorerContentContainer extends PureComponent {
   };
 
   handleSortChange = ({ sortBy, sortDirection }) => {
-    this.updateUrlParam([
-      { name: 'sort_col', value: sortBy },
-      { name: 'sort_dir', value: sortDirection }
-    ]);
+    if (!(this.props.section === 'emission-pathways' && isANumber(sortBy))) {
+      this.updateUrlParam([
+        { name: 'sort_col', value: sortBy },
+        { name: 'sort_dir', value: sortDirection }
+      ]);
+    }
   };
 
   handleDownloadModalOpen = () => {
