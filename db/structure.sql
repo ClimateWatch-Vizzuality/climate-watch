@@ -287,6 +287,61 @@ CREATE TABLE public.historical_emissions_sectors (
 
 
 --
+-- Name: locations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.locations (
+    id bigint NOT NULL,
+    iso_code3 text NOT NULL,
+    pik_name text,
+    cait_name text,
+    ndcp_navigators_name text,
+    wri_standard_name text NOT NULL,
+    unfccc_group text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    iso_code2 text NOT NULL,
+    location_type text NOT NULL,
+    show_in_cw boolean DEFAULT true,
+    topojson json,
+    centroid jsonb
+);
+
+
+--
+-- Name: historical_emissions_searchable_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.historical_emissions_searchable_records AS
+ SELECT records.id,
+    records.data_source_id,
+    data_sources.name AS data_source,
+    records.gwp_id,
+    gwps.name AS gwp,
+    records.location_id,
+    locations.iso_code3,
+    locations.wri_standard_name AS region,
+    records.sector_id,
+    sectors.name AS sector,
+    records.gas_id,
+    gases.name AS gas,
+    records_with_emissions_dict.emissions,
+    records_with_emissions_dict.emissions_dict
+   FROM ((((((public.historical_emissions_records records
+     JOIN public.historical_emissions_data_sources data_sources ON ((data_sources.id = records.data_source_id)))
+     JOIN public.historical_emissions_gwps gwps ON ((gwps.id = records.gwp_id)))
+     JOIN public.locations ON ((locations.id = records.location_id)))
+     JOIN public.historical_emissions_sectors sectors ON ((sectors.id = records.sector_id)))
+     JOIN public.historical_emissions_gases gases ON ((gases.id = records.gas_id)))
+     LEFT JOIN ( SELECT historical_emissions_normalised_records.id,
+            jsonb_agg(jsonb_build_object('year', historical_emissions_normalised_records.year, 'value', round((historical_emissions_normalised_records.value)::numeric, 2))) AS emissions,
+            jsonb_object_agg(historical_emissions_normalised_records.year, round((historical_emissions_normalised_records.value)::numeric, 2)) AS emissions_dict
+           FROM public.historical_emissions_normalised_records
+          GROUP BY historical_emissions_normalised_records.id) records_with_emissions_dict ON ((records.id = records_with_emissions_dict.id)))
+  WITH NO DATA;
+
+
+--
 -- Name: historical_emissions_sectors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -634,28 +689,6 @@ CREATE SEQUENCE public.location_members_id_seq
 --
 
 ALTER SEQUENCE public.location_members_id_seq OWNED BY public.location_members.id;
-
-
---
--- Name: locations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.locations (
-    id bigint NOT NULL,
-    iso_code3 text NOT NULL,
-    pik_name text,
-    cait_name text,
-    ndcp_navigators_name text,
-    wri_standard_name text NOT NULL,
-    unfccc_group text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    iso_code2 text NOT NULL,
-    location_type text NOT NULL,
-    show_in_cw boolean DEFAULT true,
-    topojson json,
-    centroid jsonb
-);
 
 
 --
@@ -2111,6 +2144,48 @@ CREATE INDEX index_historical_emissions_records_on_sector_id ON public.historica
 
 
 --
+-- Name: index_historical_emissions_searchable_records_on_data_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_searchable_records_on_data_source_id ON public.historical_emissions_searchable_records USING btree (data_source_id);
+
+
+--
+-- Name: index_historical_emissions_searchable_records_on_gas_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_searchable_records_on_gas_id ON public.historical_emissions_searchable_records USING btree (gas_id);
+
+
+--
+-- Name: index_historical_emissions_searchable_records_on_gwp_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_searchable_records_on_gwp_id ON public.historical_emissions_searchable_records USING btree (gwp_id);
+
+
+--
+-- Name: index_historical_emissions_searchable_records_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_historical_emissions_searchable_records_on_id ON public.historical_emissions_searchable_records USING btree (id);
+
+
+--
+-- Name: index_historical_emissions_searchable_records_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_searchable_records_on_location_id ON public.historical_emissions_searchable_records USING btree (location_id);
+
+
+--
+-- Name: index_historical_emissions_searchable_records_on_sector_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_emissions_searchable_records_on_sector_id ON public.historical_emissions_searchable_records USING btree (sector_id);
+
+
+--
 -- Name: index_historical_emissions_sectors_on_data_source_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2346,6 +2421,13 @@ CREATE INDEX index_quantification_values_on_label_id ON public.quantification_va
 --
 
 CREATE INDEX index_quantification_values_on_location_id ON public.quantification_values USING btree (location_id);
+
+
+--
+-- Name: index_searchable_emissions_path_ops; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_searchable_emissions_path_ops ON public.historical_emissions_searchable_records USING gin (emissions_dict jsonb_path_ops);
 
 
 --
@@ -2866,6 +2948,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180613114709'),
 ('20180613124118'),
 ('20180615113815'),
-('20180720105038');
+('20180720105038'),
+('20180803123629');
 
 

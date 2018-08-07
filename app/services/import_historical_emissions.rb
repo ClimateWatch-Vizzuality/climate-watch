@@ -12,6 +12,8 @@ class ImportHistoricalEmissions
     import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
     import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
     import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH))
+    HistoricalEmissions::NormalisedRecord.refresh
+    HistoricalEmissions::SearchableRecord.refresh
   end
 
   private
