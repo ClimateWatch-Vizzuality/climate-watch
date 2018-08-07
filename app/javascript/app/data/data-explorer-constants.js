@@ -31,11 +31,11 @@ export const DATA_EXPLORER_SECTIONS = {
   },
   'emission-pathways': {
     label: 'emission_pathways',
-    moduleName: 'ndcs-content'
+    moduleName: 'pathways'
   },
   'ndc-content': {
     label: 'ndc_content',
-    moduleName: 'pathways'
+    moduleName: 'ndcs-content'
   }
 };
 
