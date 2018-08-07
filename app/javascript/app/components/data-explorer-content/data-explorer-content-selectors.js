@@ -11,14 +11,13 @@ import {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_FILTERS,
-  SOURCE_VERSIONS,
-  ESP_BLACKLIST,
-  DATA_EXPLORER_SECTION_BASE_URIS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  DATA_EXPLORER_FIRST_TABLE_HEADERS,
   DATA_EXPLORER_SECTIONS
-} from 'data/constants';
+} from 'data/data-explorer-constants';
+import { SOURCE_VERSIONS, ESP_BLACKLIST } from 'data/constants';
 
 const SECTION_NAMES = {
   pathways: 'emission-pathways',
@@ -213,10 +212,11 @@ export const getLink = createSelector(
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
     const subSection =
-      DATA_EXPLORER_SECTION_BASE_URIS[section] === 'pathways' ? '/models' : '';
-    return `/${DATA_EXPLORER_SECTION_BASE_URIS[
-      section
-    ]}${subSection}${urlParameters}`;
+      DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
+        ? '/models'
+        : '';
+    return `/${DATA_EXPLORER_SECTIONS[section]
+      .moduleName}${subSection}${urlParameters}`;
   }
 );
 
@@ -558,6 +558,14 @@ export const getTitleLinks = createSelector(
     });
   }
 );
+export const getFirstTableHeaders = createSelector([parseData], data => {
+  if (!data || !data.length) return null;
+  const isANumber = i => !isNaN(parseInt(i, 10));
+  const yearColumnKeys = Object.keys(data[0])
+    .filter(k => isANumber(k))
+    .reverse();
+  return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(yearColumnKeys);
+});
 
 // Pathways Modal Data
 

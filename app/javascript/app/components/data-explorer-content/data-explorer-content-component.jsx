@@ -16,7 +16,7 @@ import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss'
 import { toStartCase, deburrCapitalize } from 'app/utils';
 import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
-import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
+import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/data-explorer-constants';
 import isEmpty from 'lodash/isEmpty';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';

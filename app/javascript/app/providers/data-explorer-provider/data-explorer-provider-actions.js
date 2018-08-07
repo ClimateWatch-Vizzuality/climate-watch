@@ -2,9 +2,9 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import {
   DATA_EXPLORER_SECTIONS,
-  ESP_HOST,
   DATA_EXPLORER_PER_PAGE
-} from 'data/constants';
+} from 'data/data-explorer-constants';
+import { ESP_HOST } from 'data/constants';
 import isEmpty from 'lodash/isEmpty';
 import { parseLinkHeader } from 'utils/utils';
 import { parseQuery } from 'utils/data-explorer';
@@ -51,7 +51,7 @@ export const fetchDataExplorer = createThunkAction(
 
       fetch(
         `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTIONS[section]
-          .requestPath}?${parsedQuery}`
+          .label}?${parsedQuery}`
       )
         .then(response =>
           response.json().then(json => {
@@ -121,7 +121,7 @@ export const fetchMetadata = createThunkAction(
     ) {
       fetch(
         `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTIONS[section]
-          .requestPath}/meta`
+          .label}/meta`
       )
         .then(response => {
           if (response.ok) {

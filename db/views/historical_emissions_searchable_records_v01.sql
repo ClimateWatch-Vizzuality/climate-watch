@@ -11,7 +11,7 @@ SELECT
   sectors.name AS sector,
   gas_id,
   gases.name AS gas,
-  records_with_emissions_dict.emissions,
+  records_emissions.emissions,
   emissions_dict
 FROM historical_emissions_records records
 JOIN historical_emissions_data_sources data_sources ON data_sources.id = records.data_source_id
@@ -19,18 +19,4 @@ JOIN historical_emissions_gwps gwps ON gwps.id = records.gwp_id
 JOIN locations ON locations.id = records.location_id
 JOIN historical_emissions_sectors sectors ON sectors.id = records.sector_id
 JOIN historical_emissions_gases gases ON gases.id = records.gas_id
-LEFT JOIN (
-  SELECT
-    id,
-    JSONB_AGG(
-        JSONB_BUILD_OBJECT(
-            'year', year,
-            'value', ROUND(value::NUMERIC, 2)
-        )
-    ) AS emissions,
-    JSONB_OBJECT_AGG(
-        year, ROUND(value::NUMERIC, 2)
-    ) AS emissions_dict
-  FROM historical_emissions_normalised_records
-  GROUP BY id
-) records_with_emissions_dict ON records.id = records_with_emissions_dict.id;
+LEFT JOIN historical_emissions_records_emissions records_emissions ON records.id = records_emissions.id;

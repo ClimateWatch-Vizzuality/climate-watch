@@ -8,19 +8,19 @@ import { actions } from 'components/modal-download';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import {
-  DATA_EXPLORER_FIRST_COLUMN_HEADERS,
   DATA_EXPLORER_SECTIONS,
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_DEPENDENCIES,
-  DATA_EXPLORER_PER_PAGE,
-  ESP_HOST
-} from 'data/constants';
+  DATA_EXPLORER_PER_PAGE
+} from 'data/data-explorer-constants';
+import { ESP_HOST } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
   getMethodology,
   getSectionLabel,
+  getFirstTableHeaders,
   getFilteredOptions,
   getSelectedOptions,
   getPathwaysMetodology,
@@ -52,7 +52,7 @@ const mapStateToProps = (state, { section, location }) => {
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
   const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTIONS[
     section
-  ].requestPath}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
+  ].label}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
   const meta =
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
@@ -86,7 +86,7 @@ const mapStateToProps = (state, { section, location }) => {
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',
     isDisabled,
-    firstColumnHeaders: DATA_EXPLORER_FIRST_COLUMN_HEADERS,
+    firstColumnHeaders: getFirstTableHeaders(dataState),
     href: getLink(dataState),
     sectionLabel: getSectionLabel(dataState),
     downloadHref,
