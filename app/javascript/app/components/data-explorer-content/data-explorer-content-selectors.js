@@ -3,6 +3,7 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
+import uniqBy from 'lodash/uniqBy';
 import qs from 'query-string';
 import { parseQuery } from 'utils/data-explorer';
 import { findEqual } from 'utils/utils';
@@ -27,6 +28,7 @@ const SECTION_NAMES = {
 
 const FILTER_NAMES = {
   models: 'models',
+  scenarios: 'scenarios',
   categories: 'categories',
   subcategories: 'subcategories'
 };
@@ -240,6 +242,43 @@ function getPathwaysScenarioOptions(query, filtersMeta, filter) {
   );
 }
 
+function getPathwaysCategoryOptions(query, filtersMeta) {
+  if (!query || !query.scenarios) { return filtersMeta.categories.filter(c => c.parent_id === null); }
+  const selectedScenarioId = query.scenarios;
+  const scenarioIndicatorsIds = filtersMeta.scenarios.find(
+    sc => sc.id === selectedScenarioId
+  ).indicator_ids;
+  const categories = [];
+  scenarioIndicatorsIds.forEach(indId =>
+    categories.push(
+      filtersMeta.indicators.find(ind => ind.id === indId).category
+    )
+  );
+  return uniqBy(categories, 'id');
+}
+
+function getPathwaysSubcategoryOptions(query, filtersMeta) {
+  if (!query || !query.scenarios) { return filtersMeta.categories.filter(c => c.parent_id !== null); }
+  const selectedScenarioId = query.scenarios;
+  const scenarioIndicatorsIds = filtersMeta.scenarios.find(
+    sc => sc.id === selectedScenarioId
+  ).indicator_ids;
+  const subcategories = [];
+  scenarioIndicatorsIds.forEach(indId =>
+    subcategories.push(
+      filtersMeta.indicators.find(ind => ind.id === indId).subcategory
+    )
+  );
+  if (!query.categories) {
+    return uniqBy(subcategories, 'id');
+  }
+  return [
+    uniqBy(subcategories, 'id').find(
+      subc => subc.parent_id === query.categories
+    ) || subcategories.find(subc => subc.id === query.categories)
+  ];
+}
+
 function getOptions(section, filter, filtersMeta, query) {
   if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
   switch (filter) {
@@ -247,22 +286,12 @@ function getOptions(section, filter, filtersMeta, query) {
       return getPathwaysModelOptions(query, filtersMeta, filter);
     case FILTER_NAMES.scenarios:
       return getPathwaysScenarioOptions(query, filtersMeta, filter);
+    case FILTER_NAMES.categories:
+      return getPathwaysCategoryOptions(query, filtersMeta);
     case FILTER_NAMES.subcategories:
-      return filtersMeta.categories;
+      return getPathwaysSubcategoryOptions(query, filtersMeta);
     default:
       return filtersMeta[filter];
-  }
-}
-
-function parseOptions(section, filter, options) {
-  if (section !== SECTION_NAMES.pathways) return options;
-  switch (filter) {
-    case FILTER_NAMES.categories:
-      return options.filter(option => option.parent_id === null);
-    case FILTER_NAMES.subcategories:
-      return options.filter(option => option.parent_id !== null);
-    default:
-      return options;
   }
 }
 
@@ -290,8 +319,7 @@ export const getFilterOptions = createSelector(
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query);
       if (options) {
-        const parsedOptions = parseOptions(section, f, options);
-        const optionsArray = parsedOptions.map(option => {
+        const optionsArray = options.map(option => {
           const slug =
             option.slug ||
             option.name ||
