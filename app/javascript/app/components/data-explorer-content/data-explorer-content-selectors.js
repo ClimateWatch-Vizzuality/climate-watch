@@ -495,7 +495,7 @@ export const getTitleLinks = createSelector(
         {
           columnName: 'indc_text',
           url: `/ndcs/country/${country &&
-            country.iso_code3}/full?query=${d.target_number}&searchBy=target`
+            country.iso_code3}/full?query=${d.target_number}&searchBy=target&document=${d.document_type}-${d.language}`
         }
       ];
     });
