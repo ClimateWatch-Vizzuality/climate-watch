@@ -11,12 +11,11 @@ import iconDelete from 'assets/icons/delete.svg';
 import PropTypes from 'prop-types';
 import ShareMenu from 'components/share-menu';
 import { Link } from 'react-router-dom';
-import invert from 'lodash/invert';
 import invertBy from 'lodash/invertBy';
 import {
-  DATA_EXPLORER_SECTION_BASE_URIS,
+  DATA_EXPLORER_SECTIONS,
   DATA_EXPLORER_TO_MODULES_PARAMS
-} from 'data/constants';
+} from 'data/data-explorer-constants';
 
 import styles from './button-group-styles.scss';
 
@@ -30,7 +29,10 @@ const iconsMap = {
   delete: iconDelete
 };
 const renderButton = buttonConfig => {
-  const section = invert(DATA_EXPLORER_SECTION_BASE_URIS)[buttonConfig.section];
+  const section = Object.keys(DATA_EXPLORER_SECTIONS).find(
+    k => DATA_EXPLORER_SECTIONS[k].moduleName === buttonConfig.section
+  );
+
   const parseFilters = filters => {
     const modulesToDataExplorerParamsSchema = invertBy(
       DATA_EXPLORER_TO_MODULES_PARAMS[section],

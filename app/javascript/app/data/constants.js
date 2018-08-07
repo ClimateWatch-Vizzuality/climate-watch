@@ -271,28 +271,6 @@ export const LENSES_SELECTOR_INFO = {
       in the locations menu. You can select fewer locations to get a wider range of models.`
 };
 
-export const DATA_EXPLORER_BLACKLIST = [
-  'id',
-  'iso_code3',
-  'iso_code2',
-  'emissions'
-];
-export const DATA_EXPLORER_FIRST_COLUMN_HEADERS = [
-  'region',
-  'data_source',
-  'gwp',
-  'sector',
-  'gas',
-  'location',
-  'model',
-  'scenario',
-  'category',
-  'subcategory',
-  'indicator',
-  'definition',
-  'unit'
-];
-
 export const USERS_PROFESIONAL_SECTORS = [
   'Academic',
   'Commercial',
@@ -303,88 +281,6 @@ export const USERS_PROFESIONAL_SECTORS = [
   'Other'
 ];
 
-export const DATA_EXPLORER_SECTIONS = {
-  'historical-emissions': {
-    requestPath: 'historical_emissions',
-    label: 'historical-emissions'
-  },
-  'ndc-sdg-linkages': { requestPath: 'ndc_sdg', label: 'ndc-sdg-linkages' },
-  'emission-pathways': { requestPath: 'emission_pathways', label: 'pathways' },
-  'ndc-content': { requestPath: 'ndc_content', label: 'ndc-content' }
-};
-
-export const DATA_EXPLORER_SECTION_BASE_URIS = {
-  'historical-emissions': 'ghg-emissions',
-  'ndc-sdg-linkages': 'ndcs-sdg',
-  'ndc-content': 'ndcs-content',
-  'emission-pathways': 'pathways'
-};
-
-export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
-  'historical-emissions': {
-    PIK: ['historical_emissions_pik'],
-    CAIT: ['historical_emissions_cait'],
-    UNFCCC: ['historical_emissions_unfccc']
-  },
-  'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
-  'ndc-content': ['ndc_cait', 'ndc_wb'],
-  'emission-pathways': [null] // model, scenario and indicator related metadata
-};
-
-export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
-  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
-  'emission-pathways': [
-    'locations',
-    'models',
-    'scenarios',
-    'categories',
-    'subcategories',
-    'indicators'
-  ],
-  'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
-};
-
-export const DATA_EXPLORER_DEPENDENCIES = {
-  'emission-pathways': { indicators: ['subcategories'] }
-};
-
-export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
-export const DATA_EXPLORER_TO_MODULES_PARAMS = {
-  'historical-emissions': {
-    data_sources: { key: 'source' },
-    gwps: { key: 'version' }
-  },
-  'ndc-sdg-linkages': {
-    goals: {
-      key: 'goal',
-      idLabel: 'number'
-    }
-  },
-  'ndc-content': {},
-  'emission-pathways': {
-    locations: {
-      key: 'currentLocation',
-      idLabel: 'id',
-      currentId: 'iso_code'
-    },
-    models: {
-      key: 'model'
-    },
-    scenarios: {
-      key: 'scenario'
-    },
-    indicators: {
-      key: 'indicator'
-    },
-    categories: {
-      key: 'category'
-    },
-    subcategories: {
-      key: 'subcategory'
-    }
-  }
-};
 export const SOURCE_VERSIONS = [
   { name: 'PIK - AR2', data_source_slug: 'PIK', version_slug: 'AR2' },
   { name: 'PIK - AR4', data_source_slug: 'PIK', version_slug: 'AR4' },
@@ -392,12 +288,6 @@ export const SOURCE_VERSIONS = [
   { name: 'UNFCCC - AR2', data_source_slug: 'UNFCCC', version_slug: 'AR2' },
   { name: 'UNFCCC - AR4', data_source_slug: 'UNFCCC', version_slug: 'AR4' }
 ];
-
-export const DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS = {
-  'ndc-content': [{ key: 'sectors' }, { key: 'categories' }]
-};
-
-export const DATA_EXPLORER_PER_PAGE = 20;
 
 export default {
   CALCULATION_OPTIONS,
@@ -424,17 +314,7 @@ export default {
   LATEST_VERSION,
   CONTAINED_PATHNAME,
   LENSES_SELECTOR_INFO,
-  DATA_EXPLORER_BLACKLIST,
-  DATA_EXPLORER_FIRST_COLUMN_HEADERS,
-  DATA_EXPLORER_METHODOLOGY_SOURCE,
   SOURCE_VERSIONS,
   USERS_PROFESIONAL_SECTORS,
-  DATA_EXPLORER_SECTION_BASE_URIS,
-  DATA_EXPLORER_DEPENDENCIES,
-  DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
-  DATA_EXPLORER_SECTIONS,
-  DATA_EXPLORER_PER_PAGE,
   ESP_HOST
 };
