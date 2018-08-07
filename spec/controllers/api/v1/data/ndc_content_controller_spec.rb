@@ -15,6 +15,22 @@ RSpec.describe Api::V1::Data::NdcContentController, type: :controller do
       expect(@response).to match_response_schema('ndc_content')
     end
 
+    it 'sorts by indicator ascending' do
+      get :index, params: {
+        sort_col: 'indicator', sort_dir: 'ASC'
+      }
+      records = JSON.parse(@response.body)['data']
+      expect(records.first['indicator']).to eq(ghg_target_type.name)
+    end
+
+    it 'sorts by indicator descending' do
+      get :index, params: {
+        sort_col: 'indicator', sort_dir: 'DESC'
+      }
+      records = JSON.parse(@response.body)['data']
+      expect(records.first['indicator']).to eq(sectoral_targets_on.name)
+    end
+
     it 'sets pagination headers' do
       get :index
       expect(@response.headers).to include('Total')
@@ -26,7 +42,7 @@ RSpec.describe Api::V1::Data::NdcContentController, type: :controller do
       get :download
       expect(response.content_type).to eq('text/csv')
       expect(response.headers['Content-Disposition']).
-        to eq('attachment; filename=ndc_content.csv')
+        to eq('attachment; filename="ndc_content.csv"')
     end
   end
 

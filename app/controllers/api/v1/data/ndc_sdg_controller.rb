@@ -2,6 +2,7 @@ module Api
   module V1
     module Data
       class NdcSdgController < Api::V1::Data::ApiController
+        include Streamable
         before_action :parametrise_filter, only: [:index, :download]
 
         def index
@@ -10,7 +11,8 @@ module Api
                  adapter: :json,
                  each_serializer: Api::V1::Data::NdcSdg::NdcSdgSerializer,
                  params: params,
-                 root: :data
+                 root: :data,
+                 meta: @filter.meta
         end
 
         def meta
@@ -25,12 +27,9 @@ module Api
         end
 
         def download
-          csv_string = Api::V1::Data::NdcSdgCsvContent.new(@filter).call
-          send_data(
-            csv_string,
-            type: 'text/csv; charset=utf-8; header=present',
-            disposition: 'attachment; filename=ndc_sdg.csv'
-          )
+          stream_file('ndc_sdg') do |stream|
+            Api::V1::Data::NdcSdgCsvContent.new(@filter, stream).call
+          end
         end
 
         private

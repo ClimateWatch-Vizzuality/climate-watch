@@ -14,6 +14,22 @@ RSpec.describe Api::V1::Data::NdcSdgController, type: :controller do
       expect(@response).to match_response_schema('ndc_sdgs')
     end
 
+    it 'sorts by iso_code3 ascending' do
+      get :index, params: {
+        sort_col: 'iso_code3', sort_dir: 'ASC'
+      }
+      records = JSON.parse(@response.body)['data']
+      expect(records.first['iso_code3']).to eq(spain.iso_code3)
+    end
+
+    it 'sorts by iso_code3 descending' do
+      get :index, params: {
+        sort_col: 'iso_code3', sort_dir: 'DESC'
+      }
+      records = JSON.parse(@response.body)['data']
+      expect(records.first['iso_code3']).to eq(uk.iso_code3)
+    end
+
     it 'sets pagination headers' do
       get :index
       expect(@response.headers).to include('Total')
@@ -25,7 +41,7 @@ RSpec.describe Api::V1::Data::NdcSdgController, type: :controller do
       get :download
       expect(response.content_type).to eq('text/csv')
       expect(response.headers['Content-Disposition']).
-        to eq('attachment; filename=ndc_sdg.csv')
+        to eq('attachment; filename="ndc_sdg.csv"')
     end
   end
 

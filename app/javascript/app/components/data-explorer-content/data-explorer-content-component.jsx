@@ -13,7 +13,7 @@ import Loading from 'components/loading';
 import Button from 'components/button';
 import ModalDownload from 'components/modal-download';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
-import { toStartCase } from 'app/utils';
+import { toStartCase, deburrCapitalize } from 'app/utils';
 import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
 import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/constants';
@@ -85,8 +85,8 @@ class DataExplorerContent extends PureComponent {
         (multipleSector(field) ? (
           <MultiDropdown
             key={field}
-            label={toStartCase(field)}
-            placeholder={`Filter by ${toStartCase(field)}`}
+            label={deburrCapitalize(field)}
+            placeholder={`Filter by ${deburrCapitalize(field)}`}
             options={filterOptions ? filterOptions[field] : []}
             value={selectedOptions ? selectedOptions[field] : null}
             disabled={isDisabled(field)}
@@ -101,8 +101,8 @@ class DataExplorerContent extends PureComponent {
         ) : (
           <Dropdown
             key={field}
-            label={toStartCase(field)}
-            placeholder={`Filter by ${toStartCase(field)}`}
+            label={deburrCapitalize(field)}
+            placeholder={`Filter by ${deburrCapitalize(field)}`}
             options={filterOptions ? filterOptions[field] : []}
             onValueChange={selected =>
               handleFilterChange(field, selected && selected.slug)}
@@ -118,6 +118,7 @@ class DataExplorerContent extends PureComponent {
   render() {
     const {
       section,
+      sectionLabel,
       href,
       metadataSection,
       anchorLinks,
@@ -135,7 +136,7 @@ class DataExplorerContent extends PureComponent {
     } = this.props;
 
     const downloadButtonText = isEmpty(selectedOptions)
-      ? `Download ${toStartCase(section)} data`
+      ? `Download ${toStartCase(sectionLabel)} data`
       : 'Download selected data';
 
     return (
@@ -158,7 +159,7 @@ class DataExplorerContent extends PureComponent {
         </div>
         <div className={styles.buttons}>
           <Button className={styles.button} href={href} color="plain">
-            {`View in ${toStartCase(section)}`}
+            {`View in ${toStartCase(sectionLabel)}`}
           </Button>
           {!loading && data && !metadataSection ? (
             <ReactPaginate
@@ -196,6 +197,7 @@ class DataExplorerContent extends PureComponent {
 
 DataExplorerContent.propTypes = {
   section: PropTypes.string.isRequired,
+  sectionLabel: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.func.isRequired,

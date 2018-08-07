@@ -5,6 +5,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
 
   before(:each) do
     HistoricalEmissions::NormalisedRecord.refresh
+    HistoricalEmissions::SearchableRecord.refresh
   end
 
   describe 'GET index' do
@@ -20,6 +21,22 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
       expect(@response).to match_response_schema('historical_emissions')
     end
 
+    it 'sorts by gas ascending' do
+      get :index, params: {
+        sort_col: 'gas', sort_dir: 'ASC'
+      }
+      records = JSON.parse(@response.body)['data']
+      expect(records.first['gas']).to eq(gas_CO2.name)
+    end
+
+    it 'sorts by gas descending' do
+      get :index, params: {
+        sort_col: 'gas', sort_dir: 'DESC'
+      }
+      records = JSON.parse(@response.body)['data']
+      expect(records.first['gas']).to eq(gas_N2O.name)
+    end
+
     it 'sets pagination headers' do
       get :index
       expect(@response.headers).to include('Total')
@@ -31,7 +48,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
       get :download
       expect(response.content_type).to eq('text/csv')
       expect(response.headers['Content-Disposition']).
-        to eq('attachment; filename=historical_emissions.csv')
+        to eq('attachment; filename="historical_emissions.csv"')
     end
   end
 

@@ -7,7 +7,6 @@ module Api
           attribute(:region) { object['region'] }
           attribute(:iso_code3) { object['iso_code3'] }
           attribute(:data_source) { object['data_source'] }
-          attribute(:gwp) { object['gwp'] }
           attribute(:sector) { object['sector'] }
           attribute(:gas) { object['gas'] }
           attribute(:unit) { "MtCO\u2082e" }

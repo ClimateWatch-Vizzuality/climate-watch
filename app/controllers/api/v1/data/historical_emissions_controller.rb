@@ -2,6 +2,7 @@ module Api
   module V1
     module Data
       class HistoricalEmissionsController < Api::V1::Data::ApiController
+        include Streamable
         before_action :parametrise_filter, only: [:index, :download]
 
         def index
@@ -12,7 +13,7 @@ module Api
                  each_serializer: Api::V1::Data::HistoricalEmissions::RecordSerializer,
                  params: params,
                  root: :data,
-                 meta: {years: @filter.years}
+                 meta: @filter.meta
         end
 
         def meta
@@ -27,12 +28,9 @@ module Api
         end
 
         def download
-          csv_string = Api::V1::Data::HistoricalEmissionsCsvContent.new(@filter).call
-          send_data(
-            csv_string,
-            type: 'text/csv; charset=utf-8; header=present',
-            disposition: 'attachment; filename=historical_emissions.csv'
-          )
+          stream_file('historical_emissions') do |stream|
+            Api::V1::Data::HistoricalEmissionsCsvContent.new(@filter, stream).call
+          end
         end
 
         private
