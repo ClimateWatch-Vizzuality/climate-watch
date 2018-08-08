@@ -54,12 +54,12 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsController, type: :controller d
     it 'replaces nulls with N/A' do
       require 'csv'
       get :download, params: {
-          regions: [uk.iso_code3],
-          source_ids: [source_PIK.id],
-          gwp_ids: [gwp_AR4.id],
-          gas_ids: [gas_N2O.id],
-          sector_ids: [sector_agriculture.id],
-          start_year: 1992
+        regions: [uk.iso_code3],
+        source_ids: [source_PIK.id],
+        gwp_ids: [gwp_AR4.id],
+        gas_ids: [gas_N2O.id],
+        sector_ids: [sector_agriculture.id],
+        start_year: 1992
       }
       parsed_csv = CSV.parse(response.body)
       expect(parsed_csv.last.last).to eq('N/A')
