@@ -3,7 +3,6 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
-import uniqBy from 'lodash/uniqBy';
 import qs from 'query-string';
 import { parseQuery } from 'utils/data-explorer';
 import { findEqual } from 'utils/utils';
@@ -19,6 +18,13 @@ import {
   DATA_EXPLORER_SECTIONS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS, ESP_BLACKLIST } from 'data/constants';
+import {
+  getPathwaysModelOptions,
+  getPathwaysScenarioOptions,
+  getPathwaysCategoryOptions,
+  getPathwaysSubcategoryOptions,
+  getPathwaysIndicatorsOptions
+} from './pathway-selector-utils';
 
 const SECTION_NAMES = {
   pathways: 'emission-pathways',
@@ -223,83 +229,6 @@ export const getLink = createSelector(
       .moduleName}${subSection}${urlParameters}`;
   }
 );
-
-function getPathwaysModelOptions(query, filtersMeta, filter) {
-  if (!query || !query.locations) return filtersMeta[filter];
-  const locationsSelected = filtersMeta.locations.filter(
-    location => location.id === query.locations
-  );
-  const modelSelected = filtersMeta.models.filter(
-    model => model.id === query.models
-  );
-  const locationHasModel = modelSelected.find(model =>
-    model.geographic_coverage.includes(locationsSelected[0].name)
-  );
-  if (modelSelected.length && !locationHasModel) return filtersMeta[filter];
-  return filtersMeta[filter].filter(model =>
-    model.geographic_coverage.includes(locationsSelected[0].name)
-  );
-}
-
-function getPathwaysScenarioOptions(query, filtersMeta, filter) {
-  if (!query || !query.models) return filtersMeta[filter];
-  const selectedModelId = query.models;
-  return filtersMeta[filter].filter(
-    scenario => scenario.model.id === selectedModelId
-  );
-}
-
-function getPathwaysCategoryOptions(query, filtersMeta) {
-  if (!query || !query.scenarios) {
-    return filtersMeta.categories.filter(c => c.parent_id === null);
-  }
-  const selectedScenarioId = query.scenarios;
-  const scenarioIndicatorsIds = filtersMeta.scenarios.find(
-    sc => sc.id === selectedScenarioId
-  ).indicator_ids;
-  const categories = [];
-  scenarioIndicatorsIds.forEach(indId =>
-    categories.push(
-      filtersMeta.indicators.find(ind => ind.id === indId).category
-    )
-  );
-  return uniqBy(categories, 'id');
-}
-
-function getPathwaysSubcategoryOptions(query, filtersMeta) {
-  if (!query || !query.scenarios || !query.categories) {
-    return filtersMeta.categories.filter(c => c.parent_id !== null);
-  }
-  const selectedScenarioId = query.scenarios;
-  const scenarioIndicatorsIds = filtersMeta.scenarios.find(
-    sc => sc.id === selectedScenarioId
-  ).indicator_ids;
-  const subcategories = [];
-  scenarioIndicatorsIds.forEach(indId =>
-    subcategories.push(
-      filtersMeta.indicators.find(ind => ind.id === indId).subcategory
-    )
-  );
-  if (!query.categories) {
-    return uniqBy(subcategories, 'id');
-  }
-  return [
-    uniqBy(subcategories, 'id').find(
-      subc => subc.parent_id === query.categories
-    ) || subcategories.find(subc => subc.id === query.categories)
-  ];
-}
-
-function getPathwaysIndicatorsOptions(query, filtersMeta, filter) {
-  if (!query || !query.categories) return filtersMeta[filter];
-  const subcategories = filtersMeta.indicators.filter(
-    indicator => indicator.subcategory.id === query.categories
-  );
-  const categories = filtersMeta.indicators.filter(
-    indicator => indicator.category.id === query.categories
-  );
-  return (subcategories.length && uniqBy(subcategories, 'id')) || categories;
-}
 
 function getOptions(section, filter, filtersMeta, query) {
   if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
