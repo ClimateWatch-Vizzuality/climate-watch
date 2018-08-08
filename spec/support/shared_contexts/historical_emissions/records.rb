@@ -30,7 +30,8 @@ RSpec.shared_context 'historical emissions records' do
       location: uk,
       emissions: [
         {year: 1990, value: 3},
-        {year: 1991, value: 4}
+        {year: 1991, value: 4},
+        {year: 1992, value: nil}
       ]
     )
   }
