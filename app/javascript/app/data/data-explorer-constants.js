@@ -65,7 +65,11 @@ export const DATA_EXPLORER_FILTERS = {
 };
 
 export const DATA_EXPLORER_DEPENDENCIES = {
-  'emission-pathways': { indicators: ['categories'] }
+  'emission-pathways': {
+    indicators: ['categories'],
+    scenarios: ['models'],
+    subcategories: ['categories']
+  }
 };
 
 export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';

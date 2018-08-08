@@ -29,7 +29,8 @@ const FILTER_NAMES = {
   models: 'models',
   scenarios: 'scenarios',
   categories: 'categories',
-  subcategories: 'subcategories'
+  subcategories: 'subcategories',
+  indicators: 'indicators'
 };
 
 const FILTERED_FIELDS = {
@@ -225,10 +226,16 @@ export const getLink = createSelector(
 
 function getPathwaysModelOptions(query, filtersMeta, filter) {
   if (!query || !query.locations) return filtersMeta[filter];
-  const locationId = query.locations;
   const locationsSelected = filtersMeta.locations.filter(
-    location => location.id === locationId
+    location => location.id === query.locations
   );
+  const modelSelected = filtersMeta.models.filter(
+    model => model.id === query.models
+  );
+  const locationHasModel = modelSelected.find(model =>
+    model.geographic_coverage.includes(locationsSelected[0].name)
+  );
+  if (modelSelected.length && !locationHasModel) return filtersMeta[filter];
   return filtersMeta[filter].filter(model =>
     model.geographic_coverage.includes(locationsSelected[0].name)
   );
@@ -243,7 +250,9 @@ function getPathwaysScenarioOptions(query, filtersMeta, filter) {
 }
 
 function getPathwaysCategoryOptions(query, filtersMeta) {
-  if (!query || !query.scenarios) { return filtersMeta.categories.filter(c => c.parent_id === null); }
+  if (!query || !query.scenarios) {
+    return filtersMeta.categories.filter(c => c.parent_id === null);
+  }
   const selectedScenarioId = query.scenarios;
   const scenarioIndicatorsIds = filtersMeta.scenarios.find(
     sc => sc.id === selectedScenarioId
@@ -258,7 +267,9 @@ function getPathwaysCategoryOptions(query, filtersMeta) {
 }
 
 function getPathwaysSubcategoryOptions(query, filtersMeta) {
-  if (!query || !query.scenarios) { return filtersMeta.categories.filter(c => c.parent_id !== null); }
+  if (!query || !query.scenarios || !query.categories) {
+    return filtersMeta.categories.filter(c => c.parent_id !== null);
+  }
   const selectedScenarioId = query.scenarios;
   const scenarioIndicatorsIds = filtersMeta.scenarios.find(
     sc => sc.id === selectedScenarioId
@@ -279,6 +290,17 @@ function getPathwaysSubcategoryOptions(query, filtersMeta) {
   ];
 }
 
+function getPathwaysIndicatorsOptions(query, filtersMeta, filter) {
+  if (!query || !query.categories) return filtersMeta[filter];
+  const subcategories = filtersMeta.indicators.filter(
+    indicator => indicator.subcategory.id === query.categories
+  );
+  const categories = filtersMeta.indicators.filter(
+    indicator => indicator.category.id === query.categories
+  );
+  return (subcategories.length && uniqBy(subcategories, 'id')) || categories;
+}
+
 function getOptions(section, filter, filtersMeta, query) {
   if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
   switch (filter) {
@@ -290,6 +312,8 @@ function getOptions(section, filter, filtersMeta, query) {
       return getPathwaysCategoryOptions(query, filtersMeta);
     case FILTER_NAMES.subcategories:
       return getPathwaysSubcategoryOptions(query, filtersMeta);
+    case FILTER_NAMES.indicators:
+      return getPathwaysIndicatorsOptions(query, filtersMeta, filter);
     default:
       return filtersMeta[filter];
   }
