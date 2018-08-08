@@ -76,7 +76,10 @@ export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
 export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'historical-emissions': {
     data_sources: { key: 'source' },
-    gwps: { key: 'version' }
+    gwps: { key: 'version' },
+    gases: { key: 'filter', break: 'gas' },
+    regions: { key: 'filter', break: 'location' },
+    sectors: { key: 'filter', break: 'sector' }
   },
   'ndc-sdg-linkages': {
     goals: {

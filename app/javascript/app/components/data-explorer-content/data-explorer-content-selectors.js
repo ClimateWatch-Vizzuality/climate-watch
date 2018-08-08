@@ -203,11 +203,15 @@ export const getLink = createSelector(
   [getLinkFilterQuery, getSection, state => state.meta],
   (filterQuery, section, meta) => {
     if (!section) return null;
+    const breakBy = ['gas'];
     const parsedQuery = {};
     if (filterQuery && !isEmpty(filterQuery)) {
       Object.keys(filterQuery).forEach(key => {
         const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
         const parsedKey = parsedKeyData && parsedKeyData.key;
+        if (parsedKeyData && parsedKeyData.break) {
+          breakBy.unshift(parsedKeyData.break);
+        }
         if (parsedKey) {
           const { idLabel, currentId } = parsedKeyData;
           const id = idLabel
@@ -225,8 +229,12 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
         ? '/models'
         : '';
+    const breakOnGHG =
+      DATA_EXPLORER_SECTIONS[section].moduleName === 'ghg-emissions'
+        ? `&breakBy=${breakBy[0]}`
+        : '';
     return `/${DATA_EXPLORER_SECTIONS[section]
-      .moduleName}${subSection}${urlParameters}`;
+      .moduleName}${subSection}${urlParameters}${breakOnGHG}`;
   }
 );
 
