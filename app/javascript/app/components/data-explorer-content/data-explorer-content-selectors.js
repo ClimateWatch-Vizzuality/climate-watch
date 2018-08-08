@@ -13,7 +13,7 @@ import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  MULTIPLE_LEVEL_SECTION_FIELDS,
   DATA_EXPLORER_FIRST_TABLE_HEADERS,
   DATA_EXPLORER_SECTIONS
 } from 'data/data-explorer-constants';
@@ -320,15 +320,13 @@ const parseGroupsInOptions = createSelector(
     if (
       !options ||
       !section ||
-      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] === undefined
+      MULTIPLE_LEVEL_SECTION_FIELDS[section] === undefined
     ) {
       return options;
     }
     const updatedOptions = options;
     Object.keys(options).forEach(key => {
-      if (
-        DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === key)
-      ) {
+      if (MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === key)) {
         updatedOptions[key] = parseMultipleLevelOptions(updatedOptions[key]);
       }
     });

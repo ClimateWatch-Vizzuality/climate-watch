@@ -6,6 +6,7 @@ import CountriesProvider from 'providers/countries-provider/countries-provider';
 import Table from 'components/table';
 import Dropdown from 'components/dropdown';
 import MultiDropdown from 'components/dropdown/multi-dropdown';
+import MultiSelect from 'components/multiselect';
 import MetadataText from 'components/metadata-text';
 import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
@@ -16,7 +17,10 @@ import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss'
 import { toStartCase, deburrCapitalize } from 'app/utils';
 import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
-import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/data-explorer-constants';
+import {
+  MULTIPLE_LEVEL_SECTION_FIELDS,
+  GROUPED_SELECT_FIELDS
+} from 'data/data-explorer-constants';
 import isEmpty from 'lodash/isEmpty';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
@@ -76,12 +80,15 @@ class DataExplorerContent extends PureComponent {
       isDisabled
     } = this.props;
 
-    const multipleSector = field =>
-      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] &&
-      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === field);
-    return filters.map(
-      field =>
-        (multipleSector(field) ? (
+    const multipleSection = field =>
+      MULTIPLE_LEVEL_SECTION_FIELDS[section] &&
+      MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === field);
+    const groupedSelect = field =>
+      GROUPED_SELECT_FIELDS[section] &&
+      GROUPED_SELECT_FIELDS[section].find(s => s.key === field);
+    return filters.map(field => {
+      if (multipleSection(field)) {
+        return (
           <MultiDropdown
             key={field}
             label={deburrCapitalize(field)}
@@ -95,23 +102,36 @@ class DataExplorerContent extends PureComponent {
                 field,
                 option && (option.label || option.slug)
               )}
-            noParentSelection={multipleSector(field).noSelectableParent}
+            noParentSelection={multipleSection(field).noSelectableParent}
           />
-        ) : (
-          <Dropdown
-            key={field}
-            label={deburrCapitalize(field)}
-            placeholder={`Filter by ${deburrCapitalize(field)}`}
+        );
+      } else if (groupedSelect(field)) {
+        return (
+          <MultiSelect
+            selectedLabel={'Label'}
+            label={'Countries and Regions'}
+            values={selectedOptions ? selectedOptions[field] : []}
             options={filterOptions ? filterOptions[field] : []}
-            onValueChange={selected =>
+            onMultiValueChange={selected =>
               handleFilterChange(field, selected && selected.slug)}
-            value={selectedOptions ? selectedOptions[field] : null}
-            plain
-            disabled={isDisabled(field)}
-            noAutoSort={field === 'goals' || field === 'targets'}
           />
-        ))
-    );
+        );
+      }
+      return (
+        <Dropdown
+          key={field}
+          label={deburrCapitalize(field)}
+          placeholder={`Filter by ${deburrCapitalize(field)}`}
+          options={filterOptions ? filterOptions[field] : []}
+          onValueChange={selected =>
+            handleFilterChange(field, selected && selected.slug)}
+          value={selectedOptions ? selectedOptions[field] : null}
+          plain
+          disabled={isDisabled(field)}
+          noAutoSort={field === 'goals' || field === 'targets'}
+        />
+      );
+    });
   }
 
   render() {

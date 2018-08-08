@@ -101,9 +101,13 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   }
 };
 
-export const DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS = {
+export const MULTIPLE_LEVEL_SECTION_FIELDS = {
   'ndc-content': [{ key: 'sectors' }, { key: 'categories' }],
   'emission-pathways': [{ key: 'categories', noSelectableParent: true }]
+};
+
+export const GROUPED_SELECT_FIELDS = {
+  'historical-emissions': [{ key: 'regions' }]
 };
 
 export const DATA_EXPLORER_PER_PAGE = 20;
@@ -116,6 +120,7 @@ export default {
   DATA_EXPLORER_DEPENDENCIES,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  MULTIPLE_LEVEL_SECTION_FIELDS,
+  GROUPED_SELECT_FIELDS,
   DATA_EXPLORER_PER_PAGE
 };
