@@ -254,6 +254,19 @@ CREATE MATERIALIZED VIEW historical_emissions_normalised_records AS
 
 
 --
+-- Name: historical_emissions_records_emissions; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.historical_emissions_records_emissions AS
+ SELECT historical_emissions_normalised_records.id,
+    jsonb_agg(jsonb_build_object('year', historical_emissions_normalised_records.year, 'value', round((historical_emissions_normalised_records.value)::numeric, 2))) AS emissions,
+    jsonb_object_agg(historical_emissions_normalised_records.year, round((historical_emissions_normalised_records.value)::numeric, 2)) AS emissions_dict
+   FROM public.historical_emissions_normalised_records
+  GROUP BY historical_emissions_normalised_records.id
+  WITH NO DATA;
+
+
+--
 -- Name: historical_emissions_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -326,19 +339,15 @@ CREATE MATERIALIZED VIEW historical_emissions_searchable_records AS
     sectors.name AS sector,
     records.gas_id,
     gases.name AS gas,
-    records_with_emissions_dict.emissions,
-    records_with_emissions_dict.emissions_dict
-   FROM ((((((historical_emissions_records records
-     JOIN historical_emissions_data_sources data_sources ON ((data_sources.id = records.data_source_id)))
-     JOIN historical_emissions_gwps gwps ON ((gwps.id = records.gwp_id)))
-     JOIN locations ON ((locations.id = records.location_id)))
-     JOIN historical_emissions_sectors sectors ON ((sectors.id = records.sector_id)))
-     JOIN historical_emissions_gases gases ON ((gases.id = records.gas_id)))
-     LEFT JOIN ( SELECT historical_emissions_normalised_records.id,
-            jsonb_agg(jsonb_build_object('year', historical_emissions_normalised_records.year, 'value', round((historical_emissions_normalised_records.value)::numeric, 2))) AS emissions,
-            jsonb_object_agg(historical_emissions_normalised_records.year, round((historical_emissions_normalised_records.value)::numeric, 2)) AS emissions_dict
-           FROM historical_emissions_normalised_records
-          GROUP BY historical_emissions_normalised_records.id) records_with_emissions_dict ON ((records.id = records_with_emissions_dict.id)))
+    records_emissions.emissions,
+    records_emissions.emissions_dict
+   FROM ((((((public.historical_emissions_records records
+     JOIN public.historical_emissions_data_sources data_sources ON ((data_sources.id = records.data_source_id)))
+     JOIN public.historical_emissions_gwps gwps ON ((gwps.id = records.gwp_id)))
+     JOIN public.locations ON ((locations.id = records.location_id)))
+     JOIN public.historical_emissions_sectors sectors ON ((sectors.id = records.sector_id)))
+     JOIN public.historical_emissions_gases gases ON ((gases.id = records.gas_id)))
+     LEFT JOIN public.historical_emissions_records_emissions records_emissions ON ((records.id = records_emissions.id)))
   WITH NO DATA;
 
 
@@ -2110,6 +2119,13 @@ CREATE INDEX index_historical_emissions_normalised_records_on_year ON historical
 
 
 --
+-- Name: index_historical_emissions_records_emissions_on_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_historical_emissions_records_emissions_on_id ON public.historical_emissions_records_emissions USING btree (id);
+
+
+--
 -- Name: index_historical_emissions_records_on_data_source_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2950,6 +2966,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180613124118'),
 ('20180615113815'),
 ('20180720105038'),
-('20180803123629');
+('20180803123629'),
+('20180807150412');
 
 

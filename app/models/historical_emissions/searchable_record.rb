@@ -16,6 +16,9 @@ module HistoricalEmissions
     end
 
     def self.refresh
+      Scenic.database.refresh_materialized_view(
+        :historical_emissions_records_emissions, concurrently: false
+      )
       Scenic.database.refresh_materialized_view(table_name, concurrently: false)
     end
   end
