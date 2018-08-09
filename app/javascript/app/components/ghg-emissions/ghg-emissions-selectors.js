@@ -26,6 +26,8 @@ import {
   DATA_SCALE
 } from 'data/constants';
 
+import { MODULES_TO_DATA_EXPLORER_PARAMS } from 'data/data-explorer-constants';
+
 const BREAY_BY_OPTIONS = [
   {
     label: 'Gas',
@@ -48,6 +50,7 @@ const getRegions = state => state.regions || null;
 const getVersions = state => (state.meta && state.meta.gwp) || null;
 
 // values from search
+const getSearch = state => state.search || null;
 const getSourceSelection = state => state.search.source || null;
 const getVersionSelection = state => state.search.version || null;
 const getBreakSelection = state => state.search.breakBy || null;
@@ -55,6 +58,16 @@ const getFilterSelection = state => state.search.filter;
 
 // data for the graph
 const getData = state => state.data || [];
+
+export const getLinkToDataExplorer = createSelector(getSearch, search => {
+  const section = 'historical-emissions';
+  const sectionPath = `/data-explorer/${section}`;
+  const paramsMap = MODULES_TO_DATA_EXPLORER_PARAMS[section];
+  const params = Object.keys(search)
+    .map(key => `external-${paramsMap[key]}=${search[key]}`)
+    .join('&');
+  return `${sectionPath}?${params}`;
+});
 
 // Sources selectors
 export const getSourceOptions = createSelector(getSources, sources => {
