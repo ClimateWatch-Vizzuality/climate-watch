@@ -18,6 +18,7 @@ import { ESP_HOST } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
 import {
   parseData,
+  getActiveFilterRegion,
   getMethodology,
   getSectionLabel,
   getFirstTableHeaders,
@@ -57,16 +58,12 @@ const mapStateToProps = (state, { section, location }) => {
       ? getPathwaysMetodology(dataState)
       : getMethodology(dataState);
   const data = parseData(dataState);
-  const dataLength =
-    state.dataExplorer &&
-    state.dataExplorer.data &&
-    state.dataExplorer.data[section] &&
-    state.dataExplorer.data[section].total;
-  const metadataSection = !!location.hash && location.hash === '#meta';
   const hasFetchedData =
     state.dataExplorer &&
     state.dataExplorer.data &&
     state.dataExplorer.data[section];
+  const dataLength = hasFetchedData && state.dataExplorer.data[section].total;
+  const metadataSection = !!location.hash && location.hash === '#meta';
   const loading =
     (state.dataExplorer && state.dataExplorer.loading) || !hasFetchedData;
   const loadingMeta = state.dataExplorer && state.dataExplorer.loadingMeta;
@@ -100,6 +97,7 @@ const mapStateToProps = (state, { section, location }) => {
     query: location.search,
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
+    activeFilterRegion: getActiveFilterRegion(dataState),
     search,
     loading,
     loadingMeta
@@ -157,7 +155,46 @@ class DataExplorerContentContainer extends PureComponent {
     }
   }
 
-  handleFilterChange = (filterName, value) => {
+  sourceAndVersionParam = (value, section) => {
+    const values = value && value.split(' - ');
+    return [
+      {
+        name: `${section}-data-sources`,
+        value: value && values[0]
+      },
+      {
+        name: `${section}-gwps`,
+        value: value && values[1]
+      }
+    ];
+  };
+
+  parsedMultipleValues = (filterName, value) => {
+    const { selectedOptions } = this.props;
+    const oldFilters = selectedOptions[filterName];
+    const removing = oldFilters && value.length < oldFilters.length;
+    const selectedFilter = !oldFilters
+      ? value[0]
+      : value
+        .filter(x => oldFilters.indexOf(x) === -1)
+        .concat(oldFilters.filter(x => value.indexOf(x) === -1))[0];
+    const filtersParam = [];
+    if (!removing && selectedFilter.groupId === 'regions') {
+      filtersParam.push(selectedFilter.value);
+      selectedFilter.members.forEach(m =>
+        filtersParam.push(m.wri_standard_name)
+      );
+    } else {
+      value.forEach(filter => {
+        if (filter.groupId !== 'regions') {
+          filtersParam.push(filter.value);
+        }
+      });
+    }
+    return filtersParam.toString();
+  };
+
+  handleFilterChange = (filterName, value, multiple) => {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source';
     let paramsToUpdate = [];
@@ -167,22 +204,17 @@ class DataExplorerContentContainer extends PureComponent {
       filterName
     ).map(k => ({ name: `${section}-${k}`, value: undefined }));
 
+    let parsedValue = value;
+    if (multiple) parsedValue = this.parsedMultipleValues(filterName, value);
+    parsedValue = parsedValue === '' ? undefined : parsedValue;
     if (filterName === SOURCE_AND_VERSION_KEY) {
-      const values = value && value.split(' - ');
-      paramsToUpdate = paramsToUpdate.concat([
-        {
-          name: `${section}-data-sources`,
-          value: value && values[0]
-        },
-        {
-          name: `${section}-gwps`,
-          value: value && values[1]
-        }
-      ]);
+      paramsToUpdate = paramsToUpdate.concat(
+        this.sourceAndVersionParam(value, section)
+      );
     } else {
       paramsToUpdate.push({
         name: `${section}-${filterName}`,
-        value
+        value: parsedValue
       });
     }
     this.updateUrlParam(
@@ -227,7 +259,8 @@ DataExplorerContentContainer.propTypes = {
   location: PropTypes.object,
   downloadHref: PropTypes.string,
   setModalDownloadParams: PropTypes.func,
-  search: PropTypes.object
+  search: PropTypes.object,
+  selectedOptions: PropTypes.object
 };
 
 export default withRouter(

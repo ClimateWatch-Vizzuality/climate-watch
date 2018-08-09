@@ -77,6 +77,7 @@ class DataExplorerContent extends PureComponent {
       filterOptions,
       filters,
       section,
+      activeFilterRegion,
       isDisabled
     } = this.props;
 
@@ -106,14 +107,21 @@ class DataExplorerContent extends PureComponent {
           />
         );
       } else if (groupedSelect(field)) {
+        const fieldInfo = GROUPED_SELECT_FIELDS[section].find(
+          f => f.key === field
+        );
         return (
           <MultiSelect
-            selectedLabel={'Label'}
-            label={'Countries and Regions'}
-            values={selectedOptions ? selectedOptions[field] : []}
+            key={field}
+            label={fieldInfo.label}
+            selectedLabel={activeFilterRegion}
+            placeholder={`Filter by ${fieldInfo.label}`}
+            values={(selectedOptions && selectedOptions[field]) || []}
             options={filterOptions ? filterOptions[field] : []}
+            groups={fieldInfo.groups}
+            disabled={isDisabled(field)}
             onMultiValueChange={selected =>
-              handleFilterChange(field, selected && selected.slug)}
+              handleFilterChange(field, selected, true)}
           />
         );
       }
@@ -125,7 +133,11 @@ class DataExplorerContent extends PureComponent {
           options={filterOptions ? filterOptions[field] : []}
           onValueChange={selected =>
             handleFilterChange(field, selected && selected.slug)}
-          value={selectedOptions ? selectedOptions[field] : null}
+          value={
+            selectedOptions && selectedOptions[field] ? (
+              selectedOptions[field][0]
+            ) : null
+          }
           plain
           disabled={isDisabled(field)}
           noAutoSort={field === 'goals' || field === 'targets'}
@@ -157,7 +169,6 @@ class DataExplorerContent extends PureComponent {
     const downloadButtonText = isEmpty(selectedOptions)
       ? `Download ${toStartCase(sectionLabel)} data`
       : 'Download selected data';
-
     return (
       <div>
         <DataExplorerProvider
@@ -215,6 +226,7 @@ class DataExplorerContent extends PureComponent {
 }
 
 DataExplorerContent.propTypes = {
+  activeFilterRegion: PropTypes.string,
   section: PropTypes.string.isRequired,
   sectionLabel: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,

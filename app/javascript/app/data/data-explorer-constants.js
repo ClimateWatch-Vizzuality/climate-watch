@@ -107,10 +107,79 @@ export const MULTIPLE_LEVEL_SECTION_FIELDS = {
 };
 
 export const GROUPED_SELECT_FIELDS = {
-  'historical-emissions': [{ key: 'regions' }]
+  'historical-emissions': [
+    {
+      key: 'regions',
+      label: 'Countries and Regions',
+      groups: [
+        { groupId: 'regions', title: 'Regions' },
+        { groupId: 'countries', title: 'Countries' }
+      ]
+    }
+  ]
 };
 
 export const DATA_EXPLORER_PER_PAGE = 20;
+
+export const SECTION_NAMES = {
+  pathways: 'emission-pathways',
+  historicalEmissions: 'historical-emissions'
+};
+
+export const FILTER_NAMES = {
+  categories: 'categories',
+  subcategories: 'subcategories'
+};
+
+export const FILTERED_FIELDS = {
+  'historical-emissions': {
+    sectors: [
+      {
+        parent: 'source',
+        id: 'data_source_id'
+      }
+    ]
+  },
+  'ndc-sdg-linkages': {
+    targets: [
+      {
+        parent: 'goals',
+        parentId: 'id',
+        id: 'goal_id'
+      }
+    ]
+  },
+  'ndc-content': {
+    indicators: [
+      {
+        parent: FILTER_NAMES.categories,
+        parentId: 'id',
+        id: 'category_ids'
+      }
+    ]
+  },
+  'emission-pathways': {
+    scenarios: [
+      {
+        parent: 'models',
+        idObject: 'model',
+        id: 'id'
+      }
+    ],
+    indicators: [
+      {
+        parent: FILTER_NAMES.categories,
+        idObject: 'category',
+        id: 'id'
+      },
+      {
+        parent: 'scenarios',
+        parentId: 'indicator_ids',
+        id: 'id'
+      }
+    ]
+  }
+};
 
 export default {
   DATA_EXPLORER_BLACKLIST,
