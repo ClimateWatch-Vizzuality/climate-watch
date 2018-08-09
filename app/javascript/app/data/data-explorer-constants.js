@@ -73,6 +73,15 @@ export const DATA_EXPLORER_DEPENDENCIES = {
 };
 
 export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
+export const MODULES_TO_DATA_EXPLORER_PARAMS = {
+  'historical-emissions': {
+    filter: 'filter',
+    source: 'data-sources',
+    version: 'gwps',
+    breakBy: 'breakBy'
+  }
+};
+
 export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'historical-emissions': {
     data_sources: { key: 'source' },
@@ -122,6 +131,7 @@ export default {
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_DEPENDENCIES,
   DATA_EXPLORER_EXTERNAL_PREFIX,
+  MODULES_TO_DATA_EXPLORER_PARAMS,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
   DATA_EXPLORER_PER_PAGE
