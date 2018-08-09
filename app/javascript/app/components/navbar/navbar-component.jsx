@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Nav from 'components/nav';
 import ToolsNav from 'components/tools-nav';
+import { isEnabled } from 'features/data-explorer';
 
 import styles from './navbar-styles.scss';
 
-const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
+const FEATURE_DATA_EXPLORER = isEnabled();
 
 class NavBar extends PureComponent {
   render() {
