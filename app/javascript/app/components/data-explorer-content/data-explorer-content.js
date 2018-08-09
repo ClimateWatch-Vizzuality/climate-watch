@@ -145,6 +145,7 @@ class DataExplorerContentContainer extends PureComponent {
       const validKeys = Object.keys(search).filter(
         k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
       );
+
       const validParams = {
         ...pick(search, validKeys),
         ...parsedExternalParams
@@ -154,6 +155,7 @@ class DataExplorerContentContainer extends PureComponent {
         name: key,
         value: validParams[key]
       }));
+
       this.updateUrlParam(paramsToUpdate, true);
     }
   }
@@ -172,17 +174,17 @@ class DataExplorerContentContainer extends PureComponent {
       const values = value && value.split(' - ');
       paramsToUpdate = paramsToUpdate.concat([
         {
-          name: `${section}-data-sources`,
+          name: 'data-sources',
           value: value && values[0]
         },
         {
-          name: `${section}-gwps`,
+          name: 'gwps',
           value: value && values[1]
         }
       ]);
     } else {
       paramsToUpdate.push({
-        name: `${section}-${filterName}`,
+        name: `${filterName}`,
         value
       });
     }
