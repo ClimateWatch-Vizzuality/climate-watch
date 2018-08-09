@@ -188,16 +188,24 @@ export const getFilterQuery = createSelector(
   (meta, search, section) => filterQueryIds(meta, search, section, false)
 );
 
+export const getSortQuery = createSelector([getSearch], search =>
+  qs.stringify(pick(search, ['sort_col', 'sort_dir']))
+);
+
 export const getLinkFilterQuery = createSelector(
   [getMeta, getSearch, getSection],
   (meta, search, section) => filterQueryIds(meta, search, section, true)
 );
 
-export const parseFilterQuery = createSelector([getFilterQuery], filterIds => {
-  if (!filterIds || isEmpty(filterIds)) return null;
-  const filterQuery = qs.stringify(filterIds);
-  return filterQuery && parseQuery(filterQuery);
-});
+export const parseFilterQuery = createSelector(
+  [getFilterQuery, getSortQuery],
+  (filterIds, sortQuery) => {
+    if (!filterIds || isEmpty(filterIds)) return null;
+    const sortParam = sortQuery ? `?${sortQuery}` : '';
+    const filterQuery = `${qs.stringify(filterIds)}${sortParam}`;
+    return filterQuery && parseQuery(filterQuery);
+  }
+);
 
 export const getLink = createSelector(
   [getLinkFilterQuery, getSection, state => state.meta],

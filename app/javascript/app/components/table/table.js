@@ -16,13 +16,13 @@ import Component from './table-component';
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const { data, defaultColumns, sortBy } = props;
+    const { data, defaultColumns, sortBy, sortDirection } = props;
     const columns = defaultColumns || Object.keys(data[0]);
     this.state = {
       data,
       optionsOpen: false,
       sortBy: sortBy || Object.keys(data[0])[0],
-      sortDirection: SortDirection.ASC,
+      sortDirection,
       activeColumns: columns.map(d => ({
         label: toStartCase(d),
         value: d
@@ -97,6 +97,7 @@ class TableContainer extends PureComponent {
       columnsOptions,
       optionsOpen
     } = this.state;
+    const { handleSortChange } = this.props;
     return createElement(Component, {
       ...this.props,
       data,
@@ -105,7 +106,7 @@ class TableContainer extends PureComponent {
       sortDirection,
       activeColumns,
       columnsOptions,
-      handleSortChange: this.handleSortChange,
+      handleSortChange: handleSortChange || this.handleSortChange,
       handleColumnChange: this.handleColumnChange,
       setRowsHeight: this.setRowsHeight,
       setColumnWidth: this.setColumnWidth,
@@ -119,12 +120,15 @@ class TableContainer extends PureComponent {
 TableContainer.propTypes = {
   data: PropTypes.array.isRequired,
   defaultColumns: PropTypes.array,
-  sortBy: PropTypes.string.isRequired
+  handleSortChange: PropTypes.func,
+  sortBy: PropTypes.string.isRequired,
+  sortDirection: PropTypes.string.isRequired
 };
 
 TableContainer.defaultProps = {
   data: [],
-  sortBy: 'value'
+  sortBy: 'value',
+  sortDirection: SortDirection.ASC
 };
 
 export default TableContainer;

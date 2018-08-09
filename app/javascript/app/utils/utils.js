@@ -23,6 +23,8 @@ export const toStartCase = string => {
   return replaceAll(parsedString, replacements);
 };
 
+export const isANumber = i => !isNaN(parseInt(i, 10));
+
 export const lowerUpperFirst = string => upperFirst(toLower(string));
 
 export const isCountryIncluded = (countriesIncluded = [], iso) => {
@@ -199,5 +201,6 @@ export default {
   wordWrap,
   parseLinkHeader,
   replaceAll,
-  findEqual
+  findEqual,
+  isANumber
 };

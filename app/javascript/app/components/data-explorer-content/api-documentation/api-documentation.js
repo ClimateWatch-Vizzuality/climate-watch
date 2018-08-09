@@ -35,6 +35,16 @@ const indicatorsParam = {
   parameter: 'indicator_ids[]',
   description: 'indicator id'
 };
+const sortColumnParam = {
+  name: 'sort_col',
+  parameter: 'sort_col',
+  description: 'column to sort the table by'
+};
+const sortDirectionParam = {
+  name: 'sort_dir',
+  parameter: 'sort_dir',
+  description: 'sort direction (ASC or DESC)'
+};
 const linkHeaderDescription =
   'Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)';
 const linkHeaderExtra = 'This response only has headers not body';
@@ -76,7 +86,9 @@ const API_CALLS = {
           description: 'region ISO code 3'
         },
         startYearParam,
-        endYearParam
+        endYearParam,
+        sortColumnParam,
+        sortDirectionParam
       ],
       extra: multipleValuesExtra
     }
@@ -111,7 +123,12 @@ const API_CALLS = {
           description: 'locations ISO code 3'
         },
         startYearParam,
-        endYearParam
+        endYearParam,
+        sortColumnParam,
+        {
+          ...sortDirectionParam,
+          description: `${sortDirectionParam.description}. Years are not sortable`
+        }
       ],
       extra: multipleValuesExtra
     }
@@ -139,7 +156,9 @@ const API_CALLS = {
           description: 'target id'
         },
         sectorsParam,
-        countriesParam
+        countriesParam,
+        sortColumnParam,
+        sortDirectionParam
       ],
       extra: multipleValuesExtra
     }
@@ -169,7 +188,9 @@ const API_CALLS = {
           parameter: 'label_ids[]',
           description: 'label id'
         },
-        sectorsParam
+        sectorsParam,
+        sortColumnParam,
+        sortDirectionParam
       ],
       extra: multipleValuesExtra
     }
