@@ -18,10 +18,11 @@ import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
 import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/data-explorer-constants';
 import isEmpty from 'lodash/isEmpty';
+import { isEnabled } from 'features/data-survey';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
 
-const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
+const FEATURE_DATA_SURVEY = isEnabled();
 
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
