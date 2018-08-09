@@ -41,6 +41,7 @@ const renderButton = buttonConfig => {
           className={styles.button}
           onClick={buttonConfig.onClick}
           link={buttonConfig.link}
+          href={buttonConfig.href}
           disabled={buttonConfig.disabled}
         >
           <Icon icon={iconsMap[buttonConfig.type]} />
