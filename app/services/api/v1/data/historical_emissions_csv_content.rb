@@ -6,8 +6,8 @@ module Api
       class HistoricalEmissionsCsvContent
         def initialize(filter, output)
           @grouped_query = filter.call
-          @headers = filter.column_aliases
-          @headers.shift
+          # FIXME: To remove id and emissions: Should this be here?
+          @headers = filter.column_aliases[1...-1]
           @years = filter.years
           @output = output
         end
@@ -18,7 +18,7 @@ module Api
             ary = @headers.map { |h| record[h] }
             ary += @years.map do |y|
               emission = record.emissions.find { |e| e['year'] == y }
-              emission && emission['value']
+              (emission && emission['value']) || 'N/A'
             end
             @output << ary.to_csv
           end
