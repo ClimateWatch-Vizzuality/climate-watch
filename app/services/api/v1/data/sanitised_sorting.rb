@@ -56,8 +56,8 @@ module Api
         end
 
         def default_sorting_column
-          if available_sorting_columns.include? 'iso_code3'
-            'iso_code3'
+          if available_sorting_columns.include? 'region'
+            'region'
           else
             available_sorting_columns.first
           end
