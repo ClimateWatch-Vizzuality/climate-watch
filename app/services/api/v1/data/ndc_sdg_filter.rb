@@ -89,7 +89,7 @@ module Api
             },
             {
               column: 'ndcs.language',
-              alias: 'language'
+              alias: 'document_language'
             }
           ]
         end

@@ -27,7 +27,8 @@ import {
   getPathwaysMetodology,
   parseFilterQuery,
   parseExternalParams,
-  getLink
+  getLink,
+  getTitleLinks
 } from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
@@ -58,16 +59,12 @@ const mapStateToProps = (state, { section, location }) => {
       ? getPathwaysMetodology(dataState)
       : getMethodology(dataState);
   const data = parseData(dataState);
-  const dataLength =
-    state.dataExplorer &&
-    state.dataExplorer.data &&
-    state.dataExplorer.data[section] &&
-    state.dataExplorer.data[section].total;
-  const metadataSection = !!location.hash && location.hash === '#meta';
   const hasFetchedData =
     state.dataExplorer &&
     state.dataExplorer.data &&
     state.dataExplorer.data[section];
+  const dataLength = hasFetchedData && state.dataExplorer.data[section].total;
+  const metadataSection = !!location.hash && location.hash === '#meta';
   const loading =
     (state.dataExplorer && state.dataExplorer.loading) || !hasFetchedData;
   const loadingMeta = state.dataExplorer && state.dataExplorer.loadingMeta;
@@ -101,6 +98,7 @@ const mapStateToProps = (state, { section, location }) => {
     query: location.search,
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
+    titleLinks: getTitleLinks(dataState),
     search,
     loading,
     loadingMeta
