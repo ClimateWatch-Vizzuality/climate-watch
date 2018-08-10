@@ -26,6 +26,8 @@ import {
   getPathwaysIndicatorsOptions
 } from './pathway-selector-utils';
 
+import { getGhgExternalParams } from './ghg-emissions-selector-utils';
+
 const SECTION_NAMES = {
   pathways: 'emission-pathways',
   historicalEmissions: 'historical-emissions'
@@ -382,39 +384,20 @@ export const parseExternalParams = createSelector(
     if (!search || !section || !filterOptions || !meta) return null;
     const selectedFields = search;
     const selectedKeys = Object.keys(selectedFields).filter(k =>
-      k.startsWith(`${DATA_EXPLORER_EXTERNAL_PREFIX}-${section}`)
+      k.startsWith(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`)
     );
     if (selectedKeys.length < 1) return null;
     const externalFields = pick(selectedFields, selectedKeys);
-    const parsedFields = {};
-    Object.keys(externalFields).forEach(k => {
-      const keyWithoutPrefix = k
-        .replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')
-        .replace(`${section}-`, '');
-      const metaMatchingKey = keyWithoutPrefix.replace('-', '_');
-      if (metaMatchingKey !== 'undefined') {
-        const possibleLabelFields = [
-          'name',
-          'full_name',
-          'value',
-          'wri_standard_name',
-          'slug',
-          'number',
-          'cw_title'
-        ];
-        const labelObject = meta[section][metaMatchingKey].find(
-          i =>
-            i.id === parseInt(externalFields[k], 10) ||
-            i.number === externalFields[k]
+    switch (section) {
+      case SECTION_NAMES.historicalEmissions:
+        return getGhgExternalParams(
+          externalFields,
+          meta,
+          DATA_EXPLORER_EXTERNAL_PREFIX
         );
-        const label = possibleLabelFields.find(
-          f => labelObject && labelObject[f]
-        );
-        parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
-          labelObject[label];
-      }
-    });
-    return parsedFields;
+      default:
+        return null;
+    }
   }
 );
 
@@ -426,7 +409,8 @@ const getSelectedFilters = createSelector(
     const nonExternalKeys = Object.keys(selectedFields).filter(
       k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
     );
-    const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
+    // const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
+    const selectedKeys = nonExternalKeys.filter(k => k !== 'page');
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
     const parsedSelectedFilters = mergeSourcesAndVersions(
       removeFiltersPrefix(sectionRelatedFields, section)
