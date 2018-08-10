@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import SimpleMenu from 'components/simple-menu';
 import downloadIcon from 'assets/icons/download.svg';
 import ModalDownload from 'components/modal-download';
+import { isEnabled } from 'features/data-survey';
 
-const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
+const FEATURE_DATA_SURVEY = isEnabled();
 
 class DownloadMenu extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function

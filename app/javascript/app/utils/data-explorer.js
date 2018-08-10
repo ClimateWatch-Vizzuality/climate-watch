@@ -1,7 +1,8 @@
 import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
+import { isEnabled } from 'features/data-survey';
 
-const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
+const FEATURE_DATA_SURVEY = isEnabled();
 
 const REPLACEMENTS = {
   regions: 'regions[]',

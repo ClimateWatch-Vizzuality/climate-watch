@@ -5,9 +5,10 @@ import ShareMenu from 'components/share-menu';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { Desktop } from 'components/responsive';
+import { isEnabled } from 'features/data-explorer';
 import styles from './tools-nav-styles.scss';
 
-const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
+const FEATURE_DATA_EXPLORER = isEnabled();
 const mycwLinkConfig = { to: '/my-climate-watch', title: 'My climate watch' };
 const isActive = (match, location) =>
   match && location.pathname.includes(match.path);

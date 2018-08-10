@@ -26,6 +26,8 @@ import {
   getPathwaysIndicatorsOptions
 } from './pathway-selector-utils';
 
+import { getGhgExternalParams } from './ghg-emissions-selector-utils';
+
 const SECTION_NAMES = {
   pathways: 'emission-pathways',
   historicalEmissions: 'historical-emissions'
@@ -211,11 +213,15 @@ export const getLink = createSelector(
   [getLinkFilterQuery, getSection, state => state.meta],
   (filterQuery, section, meta) => {
     if (!section) return null;
+    const breakBy = ['gas'];
     const parsedQuery = {};
     if (filterQuery && !isEmpty(filterQuery)) {
       Object.keys(filterQuery).forEach(key => {
         const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
         const parsedKey = parsedKeyData && parsedKeyData.key;
+        if (parsedKeyData && parsedKeyData.break) {
+          breakBy.unshift(parsedKeyData.break);
+        }
         if (parsedKey) {
           const { idLabel, currentId } = parsedKeyData;
           const id = idLabel
@@ -233,8 +239,12 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
         ? '/models'
         : '';
+    const breakOnGHG =
+      DATA_EXPLORER_SECTIONS[section].moduleName === 'ghg-emissions'
+        ? `&breakBy=${breakBy[0]}`
+        : '';
     return `/${DATA_EXPLORER_SECTIONS[section]
-      .moduleName}${subSection}${urlParameters}`;
+      .moduleName}${subSection}${urlParameters}${breakOnGHG}`;
   }
 );
 
@@ -374,39 +384,20 @@ export const parseExternalParams = createSelector(
     if (!search || !section || !filterOptions || !meta) return null;
     const selectedFields = search;
     const selectedKeys = Object.keys(selectedFields).filter(k =>
-      k.startsWith(`${DATA_EXPLORER_EXTERNAL_PREFIX}-${section}`)
+      k.startsWith(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`)
     );
     if (selectedKeys.length < 1) return null;
     const externalFields = pick(selectedFields, selectedKeys);
-    const parsedFields = {};
-    Object.keys(externalFields).forEach(k => {
-      const keyWithoutPrefix = k
-        .replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')
-        .replace(`${section}-`, '');
-      const metaMatchingKey = keyWithoutPrefix.replace('-', '_');
-      if (metaMatchingKey !== 'undefined') {
-        const possibleLabelFields = [
-          'name',
-          'full_name',
-          'value',
-          'wri_standard_name',
-          'slug',
-          'number',
-          'cw_title'
-        ];
-        const labelObject = meta[section][metaMatchingKey].find(
-          i =>
-            i.id === parseInt(externalFields[k], 10) ||
-            i.number === externalFields[k]
+    switch (section) {
+      case SECTION_NAMES.historicalEmissions:
+        return getGhgExternalParams(
+          externalFields,
+          meta,
+          DATA_EXPLORER_EXTERNAL_PREFIX
         );
-        const label = possibleLabelFields.find(
-          f => labelObject && labelObject[f]
-        );
-        parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
-          labelObject[label];
-      }
-    });
-    return parsedFields;
+      default:
+        return null;
+    }
   }
 );
 
@@ -418,7 +409,8 @@ const getSelectedFilters = createSelector(
     const nonExternalKeys = Object.keys(selectedFields).filter(
       k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
     );
-    const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
+    // const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
+    const selectedKeys = nonExternalKeys.filter(k => k !== 'page');
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
     const parsedSelectedFilters = mergeSourcesAndVersions(
       removeFiltersPrefix(sectionRelatedFields, section)

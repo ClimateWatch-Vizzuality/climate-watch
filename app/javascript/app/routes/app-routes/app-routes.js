@@ -1,6 +1,9 @@
 import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
 
+// feature flags
+import { isEnabled } from 'features/data-explorer';
+
 // components
 import Home from 'pages/home';
 import About from 'pages/about';
@@ -41,8 +44,7 @@ import emissionPathwaysScenarioSections from './emission-pathways-scenario-secti
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 
-// flags
-const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
+const FEATURE_DATA_EXPLORER = isEnabled();
 
 const dataExplorer = FEATURE_DATA_EXPLORER
   ? {

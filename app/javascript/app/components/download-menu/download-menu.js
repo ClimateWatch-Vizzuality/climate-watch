@@ -2,12 +2,14 @@ import { connect } from 'react-redux';
 import { createElement, PureComponent } from 'react';
 import { getStorageWithExpiration } from 'utils/localStorage';
 import PropTypes from 'prop-types';
+import { isEnabled } from 'features/data-survey';
 
 import { actions } from 'components/modal-download';
 
 import Component from './download-menu-component';
 
-const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
+const FEATURE_DATA_SURVEY = isEnabled();
+
 const { S3_BUCKET_NAME } = process.env;
 
 const server = `http://${S3_BUCKET_NAME}.s3.amazonaws.com`;
