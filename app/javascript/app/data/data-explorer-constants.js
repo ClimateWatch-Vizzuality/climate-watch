@@ -131,6 +131,9 @@ export const SECTION_NAMES = {
 };
 
 export const FILTER_NAMES = {
+  models: 'models',
+  scenarios: 'scenarios',
+  indicators: 'indicators',
   categories: 'categories',
   subcategories: 'subcategories'
 };
@@ -185,6 +188,16 @@ export const FILTERED_FIELDS = {
   }
 };
 
+export const POSSIBLE_LABEL_FIELDS = [
+  'name',
+  'full_name',
+  'value',
+  'wri_standard_name',
+  'slug',
+  'number',
+  'cw_title'
+];
+
 export default {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_FIRST_TABLE_HEADERS,
@@ -195,5 +208,6 @@ export default {
   DATA_EXPLORER_TO_MODULES_PARAMS,
   MULTIPLE_LEVEL_SECTION_FIELDS,
   GROUPED_SELECT_FIELDS,
-  DATA_EXPLORER_PER_PAGE
+  DATA_EXPLORER_PER_PAGE,
+  POSSIBLE_LABEL_FIELDS
 };

@@ -17,7 +17,8 @@ import {
   DATA_EXPLORER_SECTIONS,
   SECTION_NAMES,
   FILTER_NAMES,
-  FILTERED_FIELDS
+  FILTERED_FIELDS,
+  POSSIBLE_LABEL_FIELDS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS, ESP_BLACKLIST } from 'data/constants';
 import {
@@ -83,6 +84,9 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
   return fieldsWithoutPrefix;
 };
 
+const findSelectedObject = (meta, selectedName) =>
+  meta.find(option => findEqual(option, POSSIBLE_LABEL_FIELDS, selectedName));
+
 function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
   Object.keys(parsedFilters).forEach(key => {
@@ -91,24 +95,13 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       correctedKey = FILTER_NAMES.categories;
     }
     const parsedKey = correctedKey.replace('-', '_');
-    const selectedOptions = parsedFilters[key].split(',');
+    const selectedNames = parsedFilters[key].split(',');
     const filters = [];
     if (metadata[parsedKey]) {
-      selectedOptions.forEach(selectedOption => {
-        const foundSelectedOption = metadata[parsedKey].find(option =>
-          findEqual(
-            option,
-            [
-              'name',
-              'full_name',
-              'value',
-              'wri_standard_name',
-              'cw_title',
-              'slug',
-              'number'
-            ],
-            selectedOption
-          )
+      selectedNames.forEach(selectedName => {
+        const foundSelectedOption = findSelectedObject(
+          metadata[parsedKey],
+          selectedName
         );
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
@@ -153,7 +146,7 @@ export const parseFilterQuery = createSelector(
 );
 
 export const getLink = createSelector(
-  [getLinkFilterQuery, getSection, state => state.meta],
+  [getLinkFilterQuery, getSection, getMeta],
   (filterQuery, section, meta) => {
     if (!section) return null;
     const parsedQuery = {};
@@ -165,7 +158,7 @@ export const getLink = createSelector(
           const { idLabel, currentId } = parsedKeyData;
           const id = idLabel
             ? meta[section][key].find(m =>
-              findEqual(m, ['id', currentId], filterQuery[key])
+              findEqual(m, ['id', currentId], filterQuery[key][0])
             )[idLabel]
             : filterQuery[key];
           parsedQuery[parsedKey] = id;
@@ -183,7 +176,25 @@ export const getLink = createSelector(
   }
 );
 
-function getOptions(section, filter, filtersMeta, query) {
+export const getCategory = createSelector(
+  [getSearch, getSection, getMeta],
+  (rawQuery, section, meta) => {
+    if (
+      !rawQuery ||
+      isEmpty(rawQuery) ||
+      !section ||
+      !meta ||
+      isEmpty(meta) ||
+      !meta[section] ||
+      !meta[section].categories
+    ) { return null; }
+    const metadata = meta[section];
+    const parsedCategory = removeFiltersPrefix(rawQuery, section).categories;
+    return findSelectedObject(metadata.categories, parsedCategory);
+  }
+);
+
+function getOptions(section, filter, filtersMeta, query, category) {
   if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
   switch (filter) {
     case FILTER_NAMES.models:
@@ -193,7 +204,7 @@ function getOptions(section, filter, filtersMeta, query) {
     case FILTER_NAMES.categories:
       return getPathwaysCategoryOptions(query, filtersMeta);
     case FILTER_NAMES.subcategories:
-      return getPathwaysSubcategoryOptions(query, filtersMeta);
+      return getPathwaysSubcategoryOptions(query, filtersMeta, category);
     case FILTER_NAMES.indicators:
       return getPathwaysIndicatorsOptions(query, filtersMeta, filter);
     default:
@@ -215,13 +226,13 @@ export const getFilterOptions = createSelector(
     getCountries,
     getRegions,
     getSourceOptions,
-    getFilterQuery
+    getFilterQuery,
+    getCategory
   ],
-  (meta, section, countries, regions, sourceVersions, query) => {
+  (meta, section, countries, regions, sourceVersions, query, category) => {
     if (!section || isEmpty(meta)) return null;
     const filterKeys = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = meta[section];
-
     if (!filtersMeta) return null;
     if (
       section === SECTION_NAMES.historicalEmissions &&
@@ -236,24 +247,14 @@ export const getFilterOptions = createSelector(
       filtersMeta.source = sourceVersions;
     }
     const filterOptions = {};
+
     filterKeys.forEach(f => {
-      const options = getOptions(section, f, filtersMeta, query);
+      const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
         const optionsArray = options.map(option => {
-          const slug =
-            option.slug ||
-            option.name ||
-            option.full_name ||
-            option.value ||
-            option.wri_standard_name ||
-            option.number;
-          let label =
-            option.name ||
-            option.full_name ||
-            option.value ||
-            option.wri_standard_name ||
-            option.cw_title ||
-            option.number;
+          const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
+          let label = option[labelField];
+          const slug = option.slug || label;
           if (f === 'goals') label = `${option.number}: ${label}`;
           return {
             slug,
@@ -342,21 +343,12 @@ export const parseExternalParams = createSelector(
         .replace(`${section}-`, '');
       const metaMatchingKey = keyWithoutPrefix.replace('-', '_');
       if (metaMatchingKey !== 'undefined') {
-        const possibleLabelFields = [
-          'name',
-          'full_name',
-          'value',
-          'wri_standard_name',
-          'slug',
-          'number',
-          'cw_title'
-        ];
         const labelObject = meta[section][metaMatchingKey].find(
           i =>
             i.id === parseInt(externalFields[k], 10) ||
             i.number === externalFields[k]
         );
-        const label = possibleLabelFields.find(
+        const label = POSSIBLE_LABEL_FIELDS.find(
           f => labelObject && labelObject[f]
         );
         parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
@@ -421,6 +413,7 @@ export const getFilteredOptions = createSelector(
               section === SECTION_NAMES.pathways &&
               parentLabel === FILTER_NAMES.categories &&
               selectedFilters.categories &&
+              selectedFilters.categories[0] &&
               selectedFilters.categories[0].parent_id
             ) {
               idObjectLabel = 'subcategory';
@@ -656,5 +649,3 @@ export const getPathwaysMetodology = createSelector(
   ],
   (model, scenario, indicator) => [model, scenario, indicator].filter(m => m)
 );
-
-// End of Pathways Modal Data
