@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
 import reducers, { initialState } from './data-explorer-provider-reducers';
 import * as actions from './data-explorer-provider-actions';
 
@@ -19,11 +18,7 @@ class DataExplorerProvider extends PureComponent {
       query: prevQuery,
       page: prevPage
     } = prevProps;
-    if (
-      page !== prevPage ||
-      section !== prevSection ||
-      !isEqual(query, prevQuery)
-    ) {
+    if (page !== prevPage || section !== prevSection || query !== prevQuery) {
       fetchDataExplorer({ section, query, page });
     }
   }

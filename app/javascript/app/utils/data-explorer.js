@@ -17,7 +17,9 @@ const REPLACEMENTS = {
   targets: 'target_ids[]',
   models: 'model_ids[]',
   scenarios: 'scenario_ids[]',
-  locations: 'location_ids[]'
+  locations: 'location_ids[]',
+  sort_col: 'sort_col',
+  sort_dir: 'sort_dir'
 };
 
 export const parseQuery = query => query && replaceAll(query, REPLACEMENTS);
