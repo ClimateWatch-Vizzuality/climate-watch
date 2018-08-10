@@ -35,7 +35,8 @@ class DataExplorerContent extends PureComponent {
       firstColumnHeaders,
       loading,
       handleSortChange,
-      search
+      search,
+      titleLinks
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
@@ -52,6 +53,7 @@ class DataExplorerContent extends PureComponent {
           sortDirection={search.sort_dir}
           firstColumnHeaders={firstColumnHeaders}
           horizontalScroll
+          titleLinks={titleLinks}
           handleSortChange={handleSortChange}
         />
       );
@@ -260,7 +262,8 @@ DataExplorerContent.propTypes = {
   query: PropTypes.string,
   pageCount: PropTypes.number,
   search: PropTypes.object,
-  initialPage: PropTypes.number
+  initialPage: PropTypes.number,
+  titleLinks: PropTypes.array
 };
 
 export default DataExplorerContent;

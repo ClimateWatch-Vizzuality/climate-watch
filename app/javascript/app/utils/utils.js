@@ -17,6 +17,7 @@ export const toStartCase = string => {
   const replacements = {
     'Ndc Sdg': 'NDC-SDG',
     Ndc: 'NDC',
+    Indc: 'INDC',
     Sdg: 'SDG',
     'Co 2': 'CO2'
   };

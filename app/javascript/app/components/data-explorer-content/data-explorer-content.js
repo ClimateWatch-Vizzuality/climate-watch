@@ -28,7 +28,8 @@ import {
   getPathwaysMetodology,
   parseFilterQuery,
   parseExternalParams,
-  getLink
+  getLink,
+  getTitleLinks
 } from './data-explorer-content-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
@@ -99,6 +100,7 @@ const mapStateToProps = (state, { section, location }) => {
     filterQuery,
     parsedExternalParams: parseExternalParams(dataState),
     activeFilterRegion: getActiveFilterRegion(dataState),
+    titleLinks: getTitleLinks(dataState),
     search,
     loading,
     loadingMeta
