@@ -59,15 +59,29 @@ const getFilterSelection = state => state.search.filter;
 // data for the graph
 const getData = state => state.data || [];
 
-export const getLinkToDataExplorer = createSelector(getSearch, search => {
-  const section = 'historical-emissions';
-  const sectionPath = `/data-explorer/${section}`;
-  const paramsMap = MODULES_TO_DATA_EXPLORER_PARAMS[section];
-  const params = Object.keys(search)
-    .map(key => `external-${paramsMap[key]}=${search[key]}`)
-    .join('&');
-  return `${sectionPath}?${params}`;
-});
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getSources, getVersions],
+  (search, sources, versions) => {
+    const section = 'historical-emissions';
+    const sectionPath = `/data-explorer/${section}`;
+    const paramsMap = MODULES_TO_DATA_EXPLORER_PARAMS[section];
+    const getLabel = (key, type) =>
+      type && type.find(s => s.value === parseInt(search[key], 10)).label;
+    const params = Object.keys(search)
+      .map(key => {
+        switch (key) {
+          case 'source':
+            return `external-${paramsMap[key]}=${getLabel(key, sources)}`;
+          case 'version':
+            return `external-${paramsMap[key]}=${getLabel(key, versions)}`;
+          default:
+            return `external-${paramsMap[key]}=${search[key]}`;
+        }
+      })
+      .join('&');
+    return `${sectionPath}?${params}`;
+  }
+);
 
 // Sources selectors
 export const getSourceOptions = createSelector(getSources, sources => {
