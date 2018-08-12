@@ -187,7 +187,9 @@ export const getCategory = createSelector(
       isEmpty(meta) ||
       !meta[section] ||
       !meta[section].categories
-    ) { return null; }
+    ) {
+      return null;
+    }
     const metadata = meta[section];
     const parsedCategory = removeFiltersPrefix(rawQuery, section).categories;
     return findSelectedObject(metadata.categories, parsedCategory);
@@ -501,18 +503,22 @@ export const getSelectedOptions = createSelector(
   }
 );
 
-export const parseData = createSelector([getData], data => {
-  if (!data || !data.length) return null;
-  let updatedData = data;
-  if (updatedData[0].emissions) {
-    updatedData = updatedData.map(d => {
-      const yearEmissions = {};
-      d.emissions.forEach(e => {
-        yearEmissions[e.year] = e.value;
-      });
-      return { ...d, ...yearEmissions };
+export const parseEmissionsInData = createSelector([getData], data => {
+  if (!data || !data.length > 0) return null;
+  const updatedData = data;
+  if (!updatedData[0].emissions) return updatedData;
+  return updatedData.map(d => {
+    const yearEmissions = {};
+    d.emissions.forEach(e => {
+      yearEmissions[e.year] = e.value;
     });
-  }
+    return { ...d, ...yearEmissions };
+  });
+});
+
+export const parseData = createSelector([parseEmissionsInData], data => {
+  if (!data || !data.length > 0) return null;
+  const updatedData = data;
   const whiteList = remove(
     Object.keys(updatedData[0]),
     n => DATA_EXPLORER_BLACKLIST.indexOf(n) === -1
