@@ -18,7 +18,8 @@ import {
   SECTION_NAMES,
   FILTER_NAMES,
   FILTERED_FIELDS,
-  POSSIBLE_LABEL_FIELDS
+  POSSIBLE_LABEL_FIELDS,
+  POSSIBLE_VALUE_FIELDS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS } from 'data/constants';
 import {
@@ -362,7 +363,7 @@ export const parseExternalParams = createSelector(
             i.id === parseInt(externalFields[k], 10) ||
             i.number === externalFields[k]
         );
-        const label = POSSIBLE_LABEL_FIELDS.find(
+        const label = POSSIBLE_VALUE_FIELDS.find(
           f => labelObject && labelObject[f]
         );
         parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
@@ -392,12 +393,11 @@ export const getSelectedFilters = createSelector(
       const multipleParsedSelectedFilters = parsedSelectedFilters[
         filterKey
       ].split(',');
-      selectedFilterObjects[filterKey] = filterOptions[filterKey].filter(
-        f =>
-          multipleParsedSelectedFilters.includes(String(f.id)) ||
-          multipleParsedSelectedFilters.includes(f.iso_code) ||
-          multipleParsedSelectedFilters.includes(f.iso_code3) ||
-          multipleParsedSelectedFilters.includes(f.value)
+      selectedFilterObjects[filterKey] = filterOptions[filterKey].filter(f =>
+        POSSIBLE_VALUE_FIELDS.find(field => {
+          const value = field === 'id' ? String(f[field]) : f[field];
+          return multipleParsedSelectedFilters.includes(value);
+        })
       );
     });
 
