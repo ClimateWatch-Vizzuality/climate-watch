@@ -85,9 +85,10 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
   return fieldsWithoutPrefix;
 };
 
-const findSelectedObject = (meta, selectedId) =>
+const findSelectedValueObject = (meta, selectedId) =>
   meta.find(
     option =>
+      option.iso_code === selectedId ||
       option.iso_code3 === selectedId ||
       option.name === selectedId ||
       String(option.id) === selectedId
@@ -105,15 +106,18 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     const filters = [];
     if (metadata[parsedKey]) {
       selectedIds.forEach(selectedId => {
-        const foundSelectedOption = findSelectedObject(
+        const foundSelectedOption = findSelectedValueObject(
           metadata[parsedKey],
           selectedId
         );
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
     }
-    filterIds[parsedKey] =
-      filters && filters.length > 0 && filters.map(f => f.id || f.iso_code3);
+    if (filters && filters.length > 0) {
+      filterIds[parsedKey] = filters.map(
+        f => f.id || f.iso_code || f.iso_code3
+      );
+    }
   });
   return filterIds;
 }
@@ -198,7 +202,7 @@ export const getCategory = createSelector(
     }
     const metadata = meta[section];
     const parsedCategory = removeFiltersPrefix(rawQuery, section).categories;
-    return findSelectedObject(metadata.categories, parsedCategory);
+    return findSelectedValueObject(metadata.categories, parsedCategory);
   }
 );
 
@@ -388,19 +392,21 @@ export const getSelectedFilters = createSelector(
     const parsedSelectedFilters = mergeSourcesAndVersions(
       removeFiltersPrefix(sectionRelatedFields, section)
     );
+
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       const multipleParsedSelectedFilters = parsedSelectedFilters[
         filterKey
       ].split(',');
+
       selectedFilterObjects[filterKey] = filterOptions[filterKey].filter(f =>
         POSSIBLE_VALUE_FIELDS.find(field => {
-          const value = field === 'id' ? String(f[field]) : f[field];
+          const value =
+            field === 'id' ? f[field] && String(f[field]) : f[field];
           return multipleParsedSelectedFilters.includes(value);
         })
       );
     });
-
     return selectedFilterObjects;
   }
 );

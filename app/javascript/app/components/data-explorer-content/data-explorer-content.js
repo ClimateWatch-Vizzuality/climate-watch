@@ -109,7 +109,7 @@ const mapStateToProps = (state, { section, location }) => {
 
 const getDependentKeysToDelete = (value, section, filterName) => {
   const dependentKeysToDelete = [];
-  if (value === undefined && DATA_EXPLORER_DEPENDENCIES[section]) {
+  if (DATA_EXPLORER_DEPENDENCIES[section]) {
     Object.keys(
       DATA_EXPLORER_DEPENDENCIES[section]
     ).forEach(dependentFilterKey => {
