@@ -20,7 +20,7 @@ import {
   FILTERED_FIELDS,
   POSSIBLE_LABEL_FIELDS
 } from 'data/data-explorer-constants';
-import { SOURCE_VERSIONS, ESP_BLACKLIST } from 'data/constants';
+import { SOURCE_VERSIONS } from 'data/constants';
 import {
   getPathwaysModelOptions,
   getPathwaysScenarioOptions,
@@ -29,11 +29,11 @@ import {
   getPathwaysIndicatorsOptions
 } from './pathway-selector-utils';
 
-const getMeta = state => state.meta || null;
 const getSection = state => state.section || null;
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getRegions = state => state.regions || null;
+export const getMeta = state => state.meta || null;
 
 export const getData = createSelector(
   [state => state.data, getSection],
@@ -361,7 +361,7 @@ export const parseExternalParams = createSelector(
   }
 );
 
-const getSelectedFilters = createSelector(
+export const getSelectedFilters = createSelector(
   [getSearch, getSection, getFilterOptions],
   (search, section, filterOptions) => {
     if (!search || !section || !filterOptions) return null;
@@ -550,108 +550,3 @@ export const getFirstTableHeaders = createSelector([parseData], data => {
     .reverse();
   return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(yearColumnKeys);
 });
-
-// Pathways Modal Data
-
-const getScenarioSelectedMetadata = createSelector(
-  [getSelectedFilters, state => state.meta],
-  (filters, meta) => {
-    if (!filters || !filters.scenarios || !meta) return null;
-    const metadata = meta[SECTION_NAMES.pathways];
-    if (!metadata || !metadata.scenarios) return null;
-    const scenario = metadata.scenarios.find(
-      m => filters.scenarios.id === m.id
-    );
-    return (
-      scenario && {
-        name: scenario.name,
-        description: scenario.description,
-        Link: `/pathways/scenarios/${scenario.id}`
-      }
-    );
-  }
-);
-
-const getModelSelectedMetadata = createSelector(
-  [getSelectedFilters, state => state.meta],
-  (filters, meta) => {
-    if (!filters || !filters.models || !meta) return null;
-    const metadata = meta[SECTION_NAMES.pathways];
-    if (!metadata || !metadata.models) return null;
-    return metadata.models.find(m => filters.models.id === m.id);
-  }
-);
-
-export const getIndicatorSelectedMetadata = createSelector(
-  [getSelectedFilters, state => state.meta],
-  (filters, meta) => {
-    if (!filters || !filters.indicators || !meta) return null;
-    const metadata = meta[SECTION_NAMES.pathways];
-    if (!metadata || !metadata.indicators) return null;
-    return metadata.indicators.find(m => filters.indicators.id === m.id);
-  }
-);
-
-const addLinktoModelSelectedMetadata = createSelector(
-  [getModelSelectedMetadata],
-  model => {
-    if (!model) return null;
-    return {
-      ...model,
-      Link: `/pathways/models/${model.id}`
-    };
-  }
-);
-
-export const filterModelsByBlackList = createSelector(
-  [addLinktoModelSelectedMetadata],
-  data => {
-    if (!data || isEmpty(data)) return null;
-    const whiteList = remove(
-      Object.keys(data),
-      n => ESP_BLACKLIST.models.indexOf(n) === -1
-    );
-    return pick(data, whiteList);
-  }
-);
-
-const filterIndicatorsByBlackList = createSelector(
-  [getIndicatorSelectedMetadata],
-  data => {
-    if (!data || isEmpty(data)) return null;
-    const whiteList = remove(
-      Object.keys(data),
-      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
-    );
-    return pick(data, whiteList);
-  }
-);
-
-export const parseObjectsInIndicators = createSelector(
-  [filterIndicatorsByBlackList],
-  data => {
-    if (isEmpty(data)) return null;
-    const parsedData = {};
-    Object.keys(data).forEach(key => {
-      let fieldData = data[key];
-      if (
-        fieldData &&
-        typeof fieldData !== 'string' &&
-        typeof fieldData !== 'number'
-      ) {
-        fieldData = fieldData.name;
-      }
-      parsedData[key] = fieldData;
-    });
-    return parsedData;
-  }
-);
-
-export const getPathwaysMetodology = createSelector(
-  [
-    filterModelsByBlackList,
-    getScenarioSelectedMetadata,
-    parseObjectsInIndicators
-  ],
-  (model, scenario, indicator) => [model, scenario, indicator].filter(m => m)
-);

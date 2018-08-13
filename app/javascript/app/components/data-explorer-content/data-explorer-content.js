@@ -25,12 +25,12 @@ import {
   getFirstTableHeaders,
   getFilteredOptions,
   getSelectedOptions,
-  getPathwaysMetodology,
   parseFilterQuery,
   parseExternalParams,
   getLink,
   getTitleLinks
 } from './data-explorer-content-selectors';
+import { getPathwaysMetodology } from './data-explorer-content-pathways-modal-selectors';
 
 const mapStateToProps = (state, { section, location }) => {
   const search = getSearch(location);
