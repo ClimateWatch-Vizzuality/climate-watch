@@ -1,13 +1,16 @@
 import uniqBy from 'lodash/uniqBy';
 
 export function getPathwaysModelOptions(query, filtersMeta, filter) {
-  if (!query || !query.locations || !query.locations[0]) { return filtersMeta[filter]; }
+  if (!query || !query.locations || !query.locations[0]) {
+    return filtersMeta[filter];
+  }
   const queryLocation = query.locations[0];
+  const selectedModelId = query.models && query.models[0];
   const locationsSelected = filtersMeta.locations.find(
     location => location.id === queryLocation
   );
   const modelSelected = filtersMeta.models.filter(
-    model => model.id === query.models
+    model => model.id === selectedModelId
   );
   const locationHasModel = modelSelected.find(model =>
     model.geographic_coverage.includes(locationsSelected.name)
@@ -56,7 +59,9 @@ export function getPathwaysSubcategoryOptions(query, filtersMeta, category) {
 }
 
 export function getPathwaysIndicatorsOptions(query, filtersMeta, filter) {
-  if (!query || !query.categories || !query.categories[0]) { return filtersMeta[filter]; }
+  if (!query || !query.categories || !query.categories[0]) {
+    return filtersMeta[filter];
+  }
   const selectedCategories = query.categories[0];
   const subcategories = filtersMeta.indicators.filter(
     indicator => indicator.subcategory.id === selectedCategories

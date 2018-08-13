@@ -107,14 +107,15 @@ class DataExplorerContent extends PureComponent {
             label={deburrCapitalize(field)}
             placeholder={`Filter by ${deburrCapitalize(field)}`}
             options={filterOptions ? filterOptions[field] : []}
-            value={selectedOptions ? selectedOptions[field] : null}
+            value={
+              selectedOptions ? (
+                selectedOptions[field] && selectedOptions[field][0]
+              ) : null
+            }
             disabled={isDisabled(field)}
             clearable
             onChange={option =>
-              handleFilterChange(
-                field,
-                option && (option.label || option.slug)
-              )}
+              handleFilterChange(field, option && option.value)}
             noParentSelection={multipleSection(field).noSelectableParent}
           />
         );
@@ -144,7 +145,7 @@ class DataExplorerContent extends PureComponent {
           placeholder={`Filter by ${deburrCapitalize(field)}`}
           options={filterOptions ? filterOptions[field] : []}
           onValueChange={selected =>
-            handleFilterChange(field, selected && selected.slug)}
+            handleFilterChange(field, selected && selected.value)}
           value={
             selectedOptions && selectedOptions[field] ? (
               selectedOptions[field][0]

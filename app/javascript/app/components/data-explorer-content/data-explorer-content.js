@@ -23,7 +23,7 @@ import {
   getMethodology,
   getSectionLabel,
   getFirstTableHeaders,
-  getFilteredOptions,
+  getDependentOptions,
   getSelectedOptions,
   parseFilterQuery,
   parseExternalParams,
@@ -93,7 +93,7 @@ const mapStateToProps = (state, { section, location }) => {
     sectionLabel: getSectionLabel(dataState),
     downloadHref,
     filters: DATA_EXPLORER_FILTERS[section],
-    filterOptions: getFilteredOptions(dataState),
+    filterOptions: getDependentOptions(dataState),
     selectedOptions,
     anchorLinks,
     query: location.search,
@@ -137,25 +137,30 @@ class DataExplorerContentContainer extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { parsedExternalParams, search } = this.props;
+    const { parsedExternalParams } = this.props;
     if (
       prevProps.parsedExternalParams !== parsedExternalParams &&
       !isEmpty(parsedExternalParams)
     ) {
-      const validKeys = Object.keys(search).filter(
-        k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
-      );
-      const validParams = {
-        ...pick(search, validKeys),
-        ...parsedExternalParams
-      };
-
-      const paramsToUpdate = Object.keys(validParams).map(key => ({
-        name: key,
-        value: validParams[key]
-      }));
-      this.updateUrlParam(paramsToUpdate, true);
+      this.addExternalParamsToURL();
     }
+  }
+
+  addExternalParamsToURL() {
+    const { parsedExternalParams, search } = this.props;
+    const validKeys = Object.keys(search).filter(
+      k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
+    );
+    const validParams = {
+      ...pick(search, validKeys),
+      ...parsedExternalParams
+    };
+
+    const paramsToUpdate = Object.keys(validParams).map(key => ({
+      name: key,
+      value: validParams[key]
+    }));
+    this.updateUrlParam(paramsToUpdate, true);
   }
 
   sourceAndVersionParam = (value, section) => {
@@ -184,9 +189,7 @@ class DataExplorerContentContainer extends PureComponent {
     const filtersParam = [];
     if (!removing && selectedFilter.groupId === 'regions') {
       filtersParam.push(selectedFilter.value);
-      selectedFilter.members.forEach(m =>
-        filtersParam.push(m.wri_standard_name)
-      );
+      selectedFilter.members.forEach(m => filtersParam.push(m.iso_code3));
     } else {
       value.forEach(filter => {
         if (filter.groupId !== 'regions') {
@@ -206,7 +209,6 @@ class DataExplorerContentContainer extends PureComponent {
       section,
       filterName
     ).map(k => ({ name: `${section}-${k}`, value: undefined }));
-
     let parsedValue = value;
     if (multiple) parsedValue = this.parsedMultipleValues(filterName, value);
     parsedValue = parsedValue === '' ? undefined : parsedValue;

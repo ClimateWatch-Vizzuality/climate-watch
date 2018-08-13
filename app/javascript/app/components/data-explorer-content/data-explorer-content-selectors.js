@@ -84,8 +84,13 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
   return fieldsWithoutPrefix;
 };
 
-const findSelectedObject = (meta, selectedName) =>
-  meta.find(option => findEqual(option, POSSIBLE_LABEL_FIELDS, selectedName));
+const findSelectedObject = (meta, selectedId) =>
+  meta.find(
+    option =>
+      option.iso_code3 === selectedId ||
+      option.name === selectedId ||
+      String(option.id) === selectedId
+  );
 
 function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
@@ -95,19 +100,19 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       correctedKey = FILTER_NAMES.categories;
     }
     const parsedKey = correctedKey.replace('-', '_');
-    const selectedNames = parsedFilters[key].split(',');
+    const selectedIds = parsedFilters[key].split(',');
     const filters = [];
     if (metadata[parsedKey]) {
-      selectedNames.forEach(selectedName => {
+      selectedIds.forEach(selectedId => {
         const foundSelectedOption = findSelectedObject(
           metadata[parsedKey],
-          selectedName
+          selectedId
         );
         if (foundSelectedOption) filters.push(foundSelectedOption);
       });
     }
     filterIds[parsedKey] =
-      filters && filters.length && filters.map(f => f.id || f.iso_code3);
+      filters && filters.length > 0 && filters.map(f => f.id || f.iso_code3);
   });
   return filterIds;
 }
@@ -249,7 +254,6 @@ export const getFilterOptions = createSelector(
       filtersMeta.source = sourceVersions;
     }
     const filterOptions = {};
-
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
@@ -257,10 +261,17 @@ export const getFilterOptions = createSelector(
           const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
           let label = option[labelField];
           const slug = option.slug || label;
-          if (f === 'goals') label = `${option.number}: ${label}`;
+          if (f === 'goals' || f === 'targets') {
+            label = `${option.number}: ${label}`;
+          }
+          const value =
+            option.iso_code ||
+            option.iso_code3 ||
+            (option.id && String(option.id)) ||
+            label;
           return {
             slug,
-            value: label,
+            value,
             label,
             ...option
           };
@@ -325,6 +336,7 @@ const mergeSourcesAndVersions = filters => {
     delete updatedFilters['data-sources'];
     delete updatedFilters.gwps;
   }
+
   return updatedFilters;
 };
 
@@ -370,6 +382,7 @@ export const getSelectedFilters = createSelector(
       k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
     );
     const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
+
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
     const parsedSelectedFilters = mergeSourcesAndVersions(
       removeFiltersPrefix(sectionRelatedFields, section)
@@ -381,15 +394,18 @@ export const getSelectedFilters = createSelector(
       ].split(',');
       selectedFilterObjects[filterKey] = filterOptions[filterKey].filter(
         f =>
-          multipleParsedSelectedFilters.includes(f.slug) ||
-          multipleParsedSelectedFilters.includes(f.label)
+          multipleParsedSelectedFilters.includes(String(f.id)) ||
+          multipleParsedSelectedFilters.includes(f.iso_code) ||
+          multipleParsedSelectedFilters.includes(f.iso_code3) ||
+          multipleParsedSelectedFilters.includes(f.value)
       );
     });
+
     return selectedFilterObjects;
   }
 );
 
-export const getFilteredOptions = createSelector(
+export const getDependentOptions = createSelector(
   [parseGroupsInOptions, getSection, getSelectedFilters],
   (options, section, selectedFilters) => {
     if (
@@ -443,7 +459,7 @@ export const getFilteredOptions = createSelector(
 
 export const getMethodology = createSelector(
   [getMeta, getSection, getSelectedFilters],
-  (meta, section, selectedfilters) => {
+  (meta, section, selectedFilters) => {
     const sectionHasSources = section === SECTION_NAMES.historicalEmissions;
     const emissionPathwaysSection = section === SECTION_NAMES.pathways;
     if (
@@ -451,25 +467,27 @@ export const getMethodology = createSelector(
       isEmpty(meta) ||
       !section ||
       (sectionHasSources &&
-        (isEmpty(selectedfilters) || !selectedfilters.source)) ||
+        (isEmpty(selectedFilters) ||
+          !selectedFilters.source ||
+          !selectedFilters.source.length > 0)) ||
       (emissionPathwaysSection &&
-        (isEmpty(selectedfilters) ||
-          (!selectedfilters.indicators &&
-            !selectedfilters.models &&
-            !selectedfilters.scenarios)))
+        (isEmpty(selectedFilters) ||
+          (!selectedFilters.indicators &&
+            !selectedFilters.models &&
+            !selectedFilters.scenarios)))
     ) {
       return null;
     }
 
     if (emissionPathwaysSection) {
-      const { models, scenarios, indicators } = selectedfilters;
+      const { models, scenarios, indicators } = selectedFilters;
       return [models, scenarios, indicators].filter(m => m);
     }
 
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source = selectedfilters.source[0].data_source_slug;
+      const source = selectedFilters.source[0].data_source_slug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
     return methodology.filter(s => metaSource.includes(s.source));
@@ -496,7 +514,7 @@ export const getSelectedOptions = createSelector(
       selectedOptions[key] = selectedFields[key].map(f => ({
         value: f.label || f.slug,
         label: f.label,
-        id: f.id || f.iso_code3 || [f.data_source_id, f.version_id]
+        id: f.iso_code3 || f.id || [f.data_source_id, f.version_id]
       }));
     });
     return selectedOptions;

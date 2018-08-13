@@ -193,9 +193,10 @@ export const POSSIBLE_LABEL_FIELDS = [
   'full_name',
   'value',
   'wri_standard_name',
+  'cw_title',
+  'title',
   'slug',
-  'number',
-  'cw_title'
+  'number'
 ];
 
 export default {
