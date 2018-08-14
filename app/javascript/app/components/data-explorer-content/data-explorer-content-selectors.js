@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import qs from 'query-string';
-import { findEqual } from 'utils/utils';
+import { findEqual, isANumber } from 'utils/utils';
 import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
@@ -19,7 +19,8 @@ import {
   FILTER_NAMES,
   FILTERED_FIELDS,
   POSSIBLE_LABEL_FIELDS,
-  POSSIBLE_VALUE_FIELDS
+  POSSIBLE_VALUE_FIELDS,
+  NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS } from 'data/constants';
 import {
@@ -136,8 +137,16 @@ export const getFilterQuery = createSelector(
   (meta, search, section) => filterQueryIds(meta, search, section, false)
 );
 
-export const getSortQuery = createSelector([getSearch], search =>
-  qs.stringify(pick(search, ['sort_col', 'sort_dir']))
+export const getNonColumnQuery = createSelector(
+  [getSearch, getSection],
+  (search, section) => {
+    const nonColumnSectionKeys = NON_COLUMN_KEYS.map(k => `${section}-${k}`);
+    const nonColumnQuery = pick(
+      search,
+      ['sort_col', 'sort_dir'].concat(nonColumnSectionKeys)
+    );
+    return removeFiltersPrefix(nonColumnQuery, section);
+  }
 );
 
 export const getLinkFilterQuery = createSelector(
@@ -146,11 +155,10 @@ export const getLinkFilterQuery = createSelector(
 );
 
 export const parseFilterQuery = createSelector(
-  [getFilterQuery, getSortQuery],
-  (filterIds, sortQuery) => {
-    if (!filterIds || isEmpty(filterIds)) return null;
-    const sortParam = sortQuery ? `?${sortQuery}` : '';
-    const filterQuery = `${qs.stringify(filterIds)}${sortParam}`;
+  [getFilterQuery, getNonColumnQuery],
+  (filterIds, nonColumnQuery) => {
+    if (!filterIds || (isEmpty(filterIds) && isEmpty(nonColumnQuery))) { return null; }
+    const filterQuery = qs.stringify({ ...filterIds, ...nonColumnQuery });
     return filterQuery;
   }
 );
@@ -346,7 +354,7 @@ const mergeSourcesAndVersions = filters => {
 };
 
 export const parseExternalParams = createSelector(
-  [getSearch, getSection, getFilterOptions, state => state.meta],
+  [getSearch, getSection, getFilterOptions, getMeta],
   (search, section, filterOptions, meta) => {
     if (!search || !section || !filterOptions || !meta) return null;
     const selectedFields = search;
@@ -378,6 +386,14 @@ export const parseExternalParams = createSelector(
   }
 );
 
+const findFilterOptions = (options, selectedFilters) =>
+  options.filter(f =>
+    POSSIBLE_VALUE_FIELDS.find(field => {
+      const value = field === 'id' ? f[field] && String(f[field]) : f[field];
+      return selectedFilters.includes(value);
+    })
+  );
+
 export const getSelectedFilters = createSelector(
   [getSearch, getSection, getFilterOptions],
   (search, section, filterOptions) => {
@@ -398,14 +414,14 @@ export const getSelectedFilters = createSelector(
       const multipleParsedSelectedFilters = parsedSelectedFilters[
         filterKey
       ].split(',');
-
-      selectedFilterObjects[filterKey] = filterOptions[filterKey].filter(f =>
-        POSSIBLE_VALUE_FIELDS.find(field => {
-          const value =
-            field === 'id' ? f[field] && String(f[field]) : f[field];
-          return multipleParsedSelectedFilters.includes(value);
-        })
-      );
+      if (NON_COLUMN_KEYS.includes(filterKey)) {
+        selectedFilterObjects[filterKey] = multipleParsedSelectedFilters[0];
+      } else {
+        selectedFilterObjects[filterKey] = findFilterOptions(
+          filterOptions[filterKey],
+          multipleParsedSelectedFilters
+        );
+      }
     });
     return selectedFilterObjects;
   }
@@ -459,6 +475,49 @@ export const getDependentOptions = createSelector(
         });
       }
     });
+    return updatedOptions;
+  }
+);
+
+export const parseEmissionsInData = createSelector([getData], data => {
+  if (!data || !data.length > 0) return null;
+  const updatedData = data;
+  if (!updatedData[0].emissions) return updatedData;
+  return updatedData.map(d => {
+    const yearEmissions = {};
+    if (d.emissions) {
+      d.emissions.forEach(e => {
+        yearEmissions[e.year] = e.value;
+      });
+    }
+    return { ...d, ...yearEmissions };
+  });
+});
+
+export const addYearOptions = createSelector(
+  [getDependentOptions, getSection, parseEmissionsInData, getSelectedFilters],
+  (options, section, data, selectedFilters) => {
+    const sectionsWithYearsFilter = [
+      SECTION_NAMES.historicalEmissions,
+      SECTION_NAMES.pathways
+    ];
+    if (
+      !section ||
+      !sectionsWithYearsFilter.includes(section) ||
+      !options ||
+      !data
+    ) { return options; }
+    const yearColumns = Object.keys(data[0]).filter(k => isANumber(k));
+    const yearOptions = years => years.map(y => ({ label: y, value: y }));
+    const updatedOptions = { ...options };
+    const startYearValues = selectedFilters.end_year
+      ? yearColumns.filter(y => y <= selectedFilters.end_year)
+      : yearColumns;
+    const endYearValues = selectedFilters.start_year
+      ? yearColumns.filter(y => y >= selectedFilters.start_year)
+      : yearColumns;
+    updatedOptions.start_year = yearOptions(startYearValues);
+    updatedOptions.end_year = yearOptions(endYearValues);
     return updatedOptions;
   }
 );
@@ -517,28 +576,22 @@ export const getSelectedOptions = createSelector(
     if (!selectedFields) return null;
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
-      selectedOptions[key] = selectedFields[key].map(f => ({
-        value: f.label || f.slug,
-        label: f.label,
-        id: f.iso_code3 || f.id || [f.data_source_id, f.version_id]
-      }));
+      if (NON_COLUMN_KEYS.includes(key)) {
+        selectedOptions[key] = {
+          value: selectedFields[key],
+          label: selectedFields[key]
+        };
+      } else {
+        selectedOptions[key] = selectedFields[key].map(f => ({
+          value: f.label || f.slug,
+          label: f.label,
+          id: f.iso_code3 || f.id || [f.data_source_id, f.version_id]
+        }));
+      }
     });
     return selectedOptions;
   }
 );
-
-export const parseEmissionsInData = createSelector([getData], data => {
-  if (!data || !data.length > 0) return null;
-  const updatedData = data;
-  if (!updatedData[0].emissions) return updatedData;
-  return updatedData.map(d => {
-    const yearEmissions = {};
-    d.emissions.forEach(e => {
-      yearEmissions[e.year] = e.value;
-    });
-    return { ...d, ...yearEmissions };
-  });
-});
 
 export const parseData = createSelector([parseEmissionsInData], data => {
   if (!data || !data.length > 0) return null;
@@ -568,7 +621,6 @@ export const getTitleLinks = createSelector(
 );
 export const getFirstTableHeaders = createSelector([parseData], data => {
   if (!data || !data.length) return null;
-  const isANumber = i => !isNaN(parseInt(i, 10));
   const yearColumnKeys = Object.keys(data[0])
     .filter(k => isANumber(k))
     .reverse();
