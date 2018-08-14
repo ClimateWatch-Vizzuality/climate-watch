@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
 import MultiDropdown from 'components/dropdown/multi-dropdown';
 import MultiSelect from 'components/multiselect';
-import { toStartCase, deburrCapitalize } from 'app/utils';
+import { deburrCapitalize } from 'app/utils';
 import {
   MULTIPLE_LEVEL_SECTION_FIELDS,
   GROUPED_SELECT_FIELDS,
@@ -12,6 +12,33 @@ import {
 
 class DataExplorerFilters extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+
+  renderDropdown(field, isColumnField) {
+    const {
+      handleFilterChange,
+      selectedOptions,
+      filterOptions,
+      isDisabled
+    } = this.props;
+
+    const value = isColumnField
+      ? selectedOptions && selectedOptions[field] && selectedOptions[field][0]
+      : selectedOptions && selectedOptions[field];
+    return (
+      <Dropdown
+        key={field}
+        label={deburrCapitalize(field)}
+        placeholder={`Filter by ${deburrCapitalize(field)}`}
+        options={(filterOptions && filterOptions[field]) || []}
+        onValueChange={selected =>
+          handleFilterChange(field, selected && selected.value)}
+        value={value || null}
+        plain
+        disabled={isDisabled(field)}
+        noAutoSort={field === 'goals' || field === 'targets'}
+      />
+    );
+  }
 
   render() {
     const {
@@ -69,44 +96,16 @@ class DataExplorerFilters extends PureComponent {
           />
         );
       }
-      return (
-        <Dropdown
-          key={field}
-          label={deburrCapitalize(field)}
-          placeholder={`Filter by ${deburrCapitalize(field)}`}
-          options={(filterOptions && filterOptions[field]) || []}
-          onValueChange={selected =>
-            handleFilterChange(field, selected && selected.value)}
-          value={
-            (selectedOptions &&
-              selectedOptions[field] &&
-              selectedOptions[field][0]) ||
-            null
-          }
-          plain
-          disabled={isDisabled(field)}
-          noAutoSort={field === 'goals' || field === 'targets'}
-        />
-      );
+      return this.renderDropdown(field, true);
     });
     const hasYearFilters =
       section === SECTION_NAMES.historicalEmissions ||
       section === SECTION_NAMES.pathways;
     const yearFilters =
       hasYearFilters &&
-      ['start_year', 'end_year'].map(field => (
-        <Dropdown
-          key={field}
-          label={toStartCase(field)}
-          placeholder={`Filter by ${toStartCase(field)}`}
-          options={(filterOptions && filterOptions[field]) || []}
-          onValueChange={selected =>
-            handleFilterChange(field, selected && selected.value)}
-          value={(selectedOptions && selectedOptions[field]) || null}
-          plain
-          disabled={isDisabled(field)}
-        />
-      ));
+      ['start_year', 'end_year'].map(field =>
+        this.renderDropdown(field, false)
+      );
     return yearFilters ? fieldFilters.concat(yearFilters) : fieldFilters;
   }
 }
