@@ -1,3 +1,10 @@
+PATH
+  remote: engines/climate_watch_engine
+  specs:
+    climate_watch_engine (0.1.0)
+      aws-sdk (~> 2)
+      rails (~> 5.1.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -306,6 +313,7 @@ DEPENDENCIES
   bootsnap
   byebug
   capybara (~> 2.13)
+  climate_watch_engine!
   coffee-rails (~> 4.2)
   dotenv-rails
   factory_bot_rails
