@@ -125,7 +125,7 @@ export const GROUPED_SELECT_FIELDS = {
   ]
 };
 
-export const DATA_EXPLORER_PER_PAGE = 20;
+export const DATA_EXPLORER_PER_PAGE = 200;
 
 export const SECTION_NAMES = {
   pathways: 'emission-pathways',
@@ -189,6 +189,7 @@ export const FILTERED_FIELDS = {
     ]
   }
 };
+export const NON_COLUMN_KEYS = ['start_year', 'end_year'];
 
 export const POSSIBLE_LABEL_FIELDS = [
   'name',
