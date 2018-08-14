@@ -67,10 +67,16 @@ export const DATA_EXPLORER_FILTERS = {
 export const DATA_EXPLORER_DEPENDENCIES = {
   'emission-pathways': {
     models: ['locations'],
-    scenarios: ['models'],
-    categories: ['scenarios'],
-    subcategories: ['categories'],
-    indicators: ['subcategories', 'categories']
+    scenarios: ['models', 'locations'],
+    categories: ['scenarios', 'models', 'locations'],
+    subcategories: ['categories', 'scenarios', 'models', 'locations'],
+    indicators: [
+      'subcategories',
+      'categories',
+      'scenarios',
+      'models',
+      'locations'
+    ]
   }
 };
 

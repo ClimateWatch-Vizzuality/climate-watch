@@ -211,7 +211,6 @@ class DataExplorerContentContainer extends PureComponent {
     ).map(k => ({ name: `${section}-${k}`, value: undefined }));
     let parsedValue = value;
     if (multiple) parsedValue = this.parsedMultipleValues(filterName, value);
-    parsedValue = parsedValue === '' ? undefined : parsedValue;
     if (filterName === SOURCE_AND_VERSION_KEY) {
       paramsToUpdate = paramsToUpdate.concat(
         this.sourceAndVersionParam(value, section)
