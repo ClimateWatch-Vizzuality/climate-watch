@@ -11,7 +11,7 @@ module Api
       attribute :linkages
       attribute :html
 
-      belongs_to :location, serializer: Api::V1::LocationNanoSerializer
+      belongs_to :location, serializer: Locations::LocationNanoSerializer
 
       def links
         {self: text_api_v1_ndc_path(code: object.location.try(:iso_code3))}

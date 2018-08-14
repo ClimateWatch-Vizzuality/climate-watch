@@ -1,8 +1,15 @@
-PATH
-  remote: engines/climate_watch_engine
+GIT
+  remote: https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git
+  revision: 280b59a0356453c9583d692df2be0256a395b8fa
   specs:
     climate_watch_engine (0.1.0)
       aws-sdk (~> 2)
+      rails (~> 5.1.5)
+    cw_locations (0.1.0)
+      active_model_serializers (~> 0.10.0)
+      aws-sdk (~> 2)
+      climate_watch_engine
+      pg
       rails (~> 5.1.5)
 
 GEM
@@ -315,6 +322,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   climate_watch_engine!
   coffee-rails (~> 4.2)
+  cw_locations!
   dotenv-rails
   factory_bot_rails
   faraday

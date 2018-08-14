@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
+  mount Locations::Engine => 'api/v1/locations'
+
   namespace :api do
     namespace :v1 do
-      namespace :locations do
-        resources :countries, only: [:index], controller: :countries
-        resources :regions, only: [:index], controller: :regions
-      end
-
       namespace :my_cw do
         get 'user', to: 'users#current'
         resources :users, only: [:create, :update]

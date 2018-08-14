@@ -31,7 +31,7 @@ namespace :db do
     puts 'Deleting Socioeconomic::Indicator'
     Socioeconomic::Indicator.delete_all
     puts 'Deleting Locations'
-    Location.all.each(&:destroy)
+    Locations::Location.all.each(&:destroy)
     puts 'Starting the import'
     puts 'Deleting stories'
     Story.delete_all
