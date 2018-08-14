@@ -7,17 +7,17 @@ export const DATA_EXPLORER_BLACKLIST = [
 export const DATA_EXPLORER_FIRST_TABLE_HEADERS = [
   'region',
   'data_source',
-  'gwp',
   'sector',
+  'gwp',
   'gas',
+  'unit',
   'location',
   'model',
   'scenario',
   'category',
   'subcategory',
   'indicator',
-  'definition',
-  'unit'
+  'definition'
 ];
 
 export const DATA_EXPLORER_SECTIONS = {
@@ -51,8 +51,8 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
-  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
+  'historical-emissions': ['regions', 'source', 'sectors', 'gases'],
+  'ndc-sdg-linkages': ['countries', 'goals', 'targets', 'sectors'],
   'emission-pathways': [
     'locations',
     'models',
@@ -61,7 +61,7 @@ export const DATA_EXPLORER_FILTERS = {
     'subcategories',
     'indicators'
   ],
-  'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
+  'ndc-content': ['countries', 'categories', 'indicators', 'sectors']
 };
 
 export const DATA_EXPLORER_DEPENDENCIES = {
