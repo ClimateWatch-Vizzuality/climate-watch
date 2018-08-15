@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount Locations::Engine => 'api/v1/locations'
+  mount HistoricalEmissions::Engine => 'api/v1'
 
   namespace :api do
     namespace :v1 do
@@ -14,10 +15,6 @@ Rails.application.routes.draw do
       get 'auth/logout', to: 'auth#logout'
 
       resources :wb_extra, param: :code, only: [:index, :show], controller: 'wb_extra_country_data'
-
-      resources :emissions, only: [:index], controller: :historical_emissions do
-        get :meta, on: :collection
-      end
 
       resources :ndcs, param: :code, only: [:index] do
         get :text, on: :collection, controller: :ndc_texts, action: :index
