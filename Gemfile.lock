@@ -1,23 +1,23 @@
 GIT
   remote: https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git
-  revision: f269eb178544edff1fa7b8269b7069770ee707f7
+  revision: 4c21e2aef88ee4accdfcd9ce0c5ade54ee4d74b9
   specs:
-    climate_watch_engine (0.1.0)
+    climate_watch_engine (1.2.0)
       aws-sdk (~> 2)
-      rails (~> 5.1.5)
-    cw_historical_emissions (0.1.0)
+      rails (~> 5.2.0)
+    cw_historical_emissions (1.2.0)
       active_model_serializers (~> 0.10.0)
       aws-sdk (~> 2)
-      climate_watch_engine
-      cw_locations
+      climate_watch_engine (~> 1.2.0)
+      cw_locations (~> 1.2.0)
       pg
-      rails (~> 5.1.5)
-    cw_locations (0.1.0)
+      rails (~> 5.2.0)
+    cw_locations (1.2.0)
       active_model_serializers (~> 0.10.0)
       aws-sdk (~> 2)
-      climate_watch_engine
+      climate_watch_engine (~> 1.2.0)
       pg
-      rails (~> 5.1.5)
+      rails (~> 5.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -75,13 +75,13 @@ GEM
       rack
     arel (9.0.0)
     ast (2.4.0)
-    aws-sdk (2.11.126)
-      aws-sdk-resources (= 2.11.126)
-    aws-sdk-core (2.11.126)
+    aws-sdk (2.11.130)
+      aws-sdk-resources (= 2.11.130)
+    aws-sdk-core (2.11.130)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.11.126)
-      aws-sdk-core (= 2.11.126)
+    aws-sdk-resources (2.11.130)
+      aws-sdk-core (= 2.11.130)
     aws-sigv4 (1.0.3)
     bindex (0.5.0)
     bootsnap (1.3.1)
@@ -327,10 +327,10 @@ DEPENDENCIES
   bootsnap
   byebug
   capybara (~> 2.13)
-  climate_watch_engine!
+  climate_watch_engine (~> 1.2.0)!
   coffee-rails (~> 4.2)
-  cw_historical_emissions!
-  cw_locations!
+  cw_historical_emissions (~> 1.2.0)!
+  cw_locations (~> 1.2.0)!
   dotenv-rails
   factory_bot_rails
   faraday
@@ -366,4 +366,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.3
+   1.16.4
