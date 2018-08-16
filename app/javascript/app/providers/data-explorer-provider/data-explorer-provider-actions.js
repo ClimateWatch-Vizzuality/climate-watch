@@ -55,7 +55,8 @@ export const fetchDataExplorer = createThunkAction(
             if (response.ok) {
               return {
                 total: response.headers.get('Total'),
-                data: json.data
+                data: json.data,
+                meta: json.meta
               };
             }
             throw Error(response.statusText);
