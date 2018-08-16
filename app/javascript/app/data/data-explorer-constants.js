@@ -10,13 +10,13 @@ export const DATA_EXPLORER_FIRST_TABLE_HEADERS = [
   'sector',
   'gwp',
   'gas',
-  'unit',
   'location',
   'model',
   'scenario',
   'category',
   'subcategory',
   'indicator',
+  'unit',
   'definition'
 ];
 
@@ -110,6 +110,9 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     categories: {
       key: 'category'
+    },
+    subcategories: {
+      key: 'subcategory'
     }
   }
 };
