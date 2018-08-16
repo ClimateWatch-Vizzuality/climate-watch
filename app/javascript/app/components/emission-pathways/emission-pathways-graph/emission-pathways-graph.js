@@ -58,7 +58,13 @@ const mapStateToProps = (state, { location }) => {
   ];
   const filtersSelected = getFiltersSelected(espData);
   const downloadFilters = {};
-  ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
+  [
+    'model',
+    'category',
+    'subcategory',
+    'indicator',
+    'currentLocation'
+  ].forEach(f => {
     if (search[f] && search[f] !== '') downloadFilters[f] = search[f];
   });
   return {
@@ -100,7 +106,13 @@ class EmissionPathwayGraphContainer extends PureComponent {
     }
 
     const { search, filtersSelected } = this.props;
-    ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
+    [
+      'model',
+      'category',
+      'subcategory',
+      'indicator',
+      'currentLocation'
+    ].forEach(f => {
       if (!search[f] && filtersSelected[f]) {
         this.updateUrlParam({ name: f, value: filtersSelected[f].value });
       }

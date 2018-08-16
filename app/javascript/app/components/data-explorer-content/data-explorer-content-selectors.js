@@ -370,8 +370,9 @@ export const parseExternalParams = createSelector(
       const keyWithoutPrefix = k
         .replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')
         .replace(`${section}-`, '');
-      const metaMatchingKey = keyWithoutPrefix.replace('-', '_');
+      let metaMatchingKey = keyWithoutPrefix.replace('-', '_');
       if (metaMatchingKey !== 'undefined') {
+        if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
         const labelObject = meta[section][metaMatchingKey].find(
           i =>
             i.id === parseInt(externalFields[k], 10) ||
