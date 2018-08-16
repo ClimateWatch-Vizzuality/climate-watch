@@ -4,7 +4,6 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import qs from 'query-string';
-import { parseQuery } from 'utils/data-explorer';
 import { findEqual } from 'utils/utils';
 import sortBy from 'lodash/sortBy';
 import {
@@ -13,11 +12,16 @@ import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS,
+  MULTIPLE_LEVEL_SECTION_FIELDS,
   DATA_EXPLORER_FIRST_TABLE_HEADERS,
-  DATA_EXPLORER_SECTIONS
+  DATA_EXPLORER_SECTIONS,
+  SECTION_NAMES,
+  FILTER_NAMES,
+  FILTERED_FIELDS,
+  POSSIBLE_LABEL_FIELDS,
+  POSSIBLE_VALUE_FIELDS
 } from 'data/data-explorer-constants';
-import { SOURCE_VERSIONS, ESP_BLACKLIST } from 'data/constants';
+import { SOURCE_VERSIONS } from 'data/constants';
 import {
   getPathwaysModelOptions,
   getPathwaysScenarioOptions,
@@ -26,74 +30,11 @@ import {
   getPathwaysIndicatorsOptions
 } from './pathway-selector-utils';
 
-const SECTION_NAMES = {
-  pathways: 'emission-pathways',
-  historicalEmissions: 'historical-emissions'
-};
-
-const FILTER_NAMES = {
-  models: 'models',
-  scenarios: 'scenarios',
-  categories: 'categories',
-  subcategories: 'subcategories',
-  indicators: 'indicators'
-};
-
-const FILTERED_FIELDS = {
-  'historical-emissions': {
-    sectors: [
-      {
-        parent: 'source',
-        id: 'data_source_id'
-      }
-    ]
-  },
-  'ndc-sdg-linkages': {
-    targets: [
-      {
-        parent: 'goals',
-        parentId: 'id',
-        id: 'goal_id'
-      }
-    ]
-  },
-  'ndc-content': {
-    indicators: [
-      {
-        parent: FILTER_NAMES.categories,
-        parentId: 'id',
-        id: 'category_ids'
-      }
-    ]
-  },
-  'emission-pathways': {
-    scenarios: [
-      {
-        parent: 'models',
-        idObject: 'model',
-        id: 'id'
-      }
-    ],
-    indicators: [
-      {
-        parent: FILTER_NAMES.categories,
-        idObject: 'category',
-        id: 'id'
-      },
-      {
-        parent: 'scenarios',
-        parentId: 'indicator_ids',
-        id: 'id'
-      }
-    ]
-  }
-};
-
-const getMeta = state => state.meta || null;
 const getSection = state => state.section || null;
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getRegions = state => state.regions || null;
+export const getMeta = state => state.meta || null;
 
 export const getData = createSelector(
   [state => state.data, getSection],
@@ -144,6 +85,15 @@ const removeFiltersPrefix = (selectedFields, prefix) => {
   return fieldsWithoutPrefix;
 };
 
+const findSelectedValueObject = (meta, selectedId) =>
+  meta.find(
+    option =>
+      option.iso_code === selectedId ||
+      option.iso_code3 === selectedId ||
+      option.name === selectedId ||
+      String(option.id) === selectedId
+  );
+
 function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
   Object.keys(parsedFilters).forEach(key => {
@@ -152,24 +102,22 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       correctedKey = FILTER_NAMES.categories;
     }
     const parsedKey = correctedKey.replace('-', '_');
-    const filter =
-      metadata[parsedKey] &&
-      metadata[parsedKey].find(option =>
-        findEqual(
-          option,
-          [
-            'name',
-            'full_name',
-            'value',
-            'wri_standard_name',
-            'cw_title',
-            'slug',
-            'number'
-          ],
-          parsedFilters[key]
-        )
+    const selectedIds = parsedFilters[key].split(',');
+    const filters = [];
+    if (metadata[parsedKey]) {
+      selectedIds.forEach(selectedId => {
+        const foundSelectedOption = findSelectedValueObject(
+          metadata[parsedKey],
+          selectedId
+        );
+        if (foundSelectedOption) filters.push(foundSelectedOption);
+      });
+    }
+    if (filters && filters.length > 0) {
+      filterIds[parsedKey] = filters.map(
+        f => f.id || f.iso_code || f.iso_code3
       );
-    filterIds[parsedKey] = filter && (filter.id || filter.iso_code3);
+    }
   });
   return filterIds;
 }
@@ -203,12 +151,12 @@ export const parseFilterQuery = createSelector(
     if (!filterIds || isEmpty(filterIds)) return null;
     const sortParam = sortQuery ? `?${sortQuery}` : '';
     const filterQuery = `${qs.stringify(filterIds)}${sortParam}`;
-    return filterQuery && parseQuery(filterQuery);
+    return filterQuery;
   }
 );
 
 export const getLink = createSelector(
-  [getLinkFilterQuery, getSection, state => state.meta],
+  [getLinkFilterQuery, getSection, getMeta],
   (filterQuery, section, meta) => {
     if (!section) return null;
     const parsedQuery = {};
@@ -220,7 +168,7 @@ export const getLink = createSelector(
           const { idLabel, currentId } = parsedKeyData;
           const id = idLabel
             ? meta[section][key].find(m =>
-              findEqual(m, ['id', currentId], filterQuery[key])
+              findEqual(m, ['id', currentId], filterQuery[key][0])
             )[idLabel]
             : filterQuery[key];
           parsedQuery[parsedKey] = id;
@@ -238,7 +186,27 @@ export const getLink = createSelector(
   }
 );
 
-function getOptions(section, filter, filtersMeta, query) {
+export const getCategory = createSelector(
+  [getSearch, getSection, getMeta],
+  (rawQuery, section, meta) => {
+    if (
+      !rawQuery ||
+      isEmpty(rawQuery) ||
+      !section ||
+      !meta ||
+      isEmpty(meta) ||
+      !meta[section] ||
+      !meta[section].categories
+    ) {
+      return null;
+    }
+    const metadata = meta[section];
+    const parsedCategory = removeFiltersPrefix(rawQuery, section).categories;
+    return findSelectedValueObject(metadata.categories, parsedCategory);
+  }
+);
+
+function getOptions(section, filter, filtersMeta, query, category) {
   if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
   switch (filter) {
     case FILTER_NAMES.models:
@@ -248,13 +216,20 @@ function getOptions(section, filter, filtersMeta, query) {
     case FILTER_NAMES.categories:
       return getPathwaysCategoryOptions(query, filtersMeta);
     case FILTER_NAMES.subcategories:
-      return getPathwaysSubcategoryOptions(query, filtersMeta);
+      return getPathwaysSubcategoryOptions(query, filtersMeta, category);
     case FILTER_NAMES.indicators:
       return getPathwaysIndicatorsOptions(query, filtersMeta, filter);
     default:
       return filtersMeta[filter];
   }
 }
+
+const addGroupId = (object, groupId) =>
+  object.map(r => {
+    const updatedRegion = r;
+    updatedRegion.groupId = groupId;
+    return updatedRegion;
+  });
 
 export const getFilterOptions = createSelector(
   [
@@ -263,42 +238,45 @@ export const getFilterOptions = createSelector(
     getCountries,
     getRegions,
     getSourceOptions,
-    getFilterQuery
+    getFilterQuery,
+    getCategory
   ],
-  (meta, section, countries, regions, sourceVersions, query) => {
+  (meta, section, countries, regions, sourceVersions, query, category) => {
     if (!section || isEmpty(meta)) return null;
     const filterKeys = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = meta[section];
-
     if (!filtersMeta) return null;
-    if (filterKeys.includes('regions')) filtersMeta.regions = regions;
+    if (
+      section === SECTION_NAMES.historicalEmissions &&
+      filterKeys.includes('regions')
+    ) {
+      filtersMeta.regions = addGroupId(regions, 'regions').concat(
+        addGroupId(countries, 'countries')
+      );
+    }
     if (filterKeys.includes('countries')) filtersMeta.countries = countries;
     if (filterKeys.includes('source')) {
       filtersMeta.source = sourceVersions;
     }
     const filterOptions = {};
     filterKeys.forEach(f => {
-      const options = getOptions(section, f, filtersMeta, query);
+      const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
         const optionsArray = options.map(option => {
-          const slug =
-            option.slug ||
-            option.name ||
-            option.full_name ||
-            option.value ||
-            option.wri_standard_name ||
-            option.number;
-          let label =
-            option.name ||
-            option.full_name ||
-            option.value ||
-            option.wri_standard_name ||
-            option.cw_title ||
-            option.number;
-          if (f === 'goals') label = `${option.number}: ${label}`;
+          const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
+          let label = option[labelField];
+          const slug = option.slug || label;
+          if (f === 'goals' || f === 'targets') {
+            label = `${option.number}: ${label}`;
+          }
+          const value =
+            option.iso_code ||
+            option.iso_code3 ||
+            (option.id && String(option.id)) ||
+            label;
           return {
             slug,
-            value: label,
+            value,
             label,
             ...option
           };
@@ -339,15 +317,13 @@ const parseGroupsInOptions = createSelector(
     if (
       !options ||
       !section ||
-      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] === undefined
+      MULTIPLE_LEVEL_SECTION_FIELDS[section] === undefined
     ) {
       return options;
     }
     const updatedOptions = options;
     Object.keys(options).forEach(key => {
-      if (
-        DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === key)
-      ) {
+      if (MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === key)) {
         updatedOptions[key] = parseMultipleLevelOptions(updatedOptions[key]);
       }
     });
@@ -365,6 +341,7 @@ const mergeSourcesAndVersions = filters => {
     delete updatedFilters['data-sources'];
     delete updatedFilters.gwps;
   }
+
   return updatedFilters;
 };
 
@@ -385,21 +362,12 @@ export const parseExternalParams = createSelector(
         .replace(`${section}-`, '');
       const metaMatchingKey = keyWithoutPrefix.replace('-', '_');
       if (metaMatchingKey !== 'undefined') {
-        const possibleLabelFields = [
-          'name',
-          'full_name',
-          'value',
-          'wri_standard_name',
-          'slug',
-          'number',
-          'cw_title'
-        ];
         const labelObject = meta[section][metaMatchingKey].find(
           i =>
             i.id === parseInt(externalFields[k], 10) ||
             i.number === externalFields[k]
         );
-        const label = possibleLabelFields.find(
+        const label = POSSIBLE_VALUE_FIELDS.find(
           f => labelObject && labelObject[f]
         );
         parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
@@ -410,7 +378,7 @@ export const parseExternalParams = createSelector(
   }
 );
 
-const getSelectedFilters = createSelector(
+export const getSelectedFilters = createSelector(
   [getSearch, getSection, getFilterOptions],
   (search, section, filterOptions) => {
     if (!search || !section || !filterOptions) return null;
@@ -419,23 +387,31 @@ const getSelectedFilters = createSelector(
       k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
     );
     const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
+
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
     const parsedSelectedFilters = mergeSourcesAndVersions(
       removeFiltersPrefix(sectionRelatedFields, section)
     );
+
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
-      selectedFilterObjects[filterKey] = filterOptions[filterKey].find(
-        f =>
-          f.slug === parsedSelectedFilters[filterKey] ||
-          f.label === parsedSelectedFilters[filterKey]
+      const multipleParsedSelectedFilters = parsedSelectedFilters[
+        filterKey
+      ].split(',');
+
+      selectedFilterObjects[filterKey] = filterOptions[filterKey].filter(f =>
+        POSSIBLE_VALUE_FIELDS.find(field => {
+          const value =
+            field === 'id' ? f[field] && String(f[field]) : f[field];
+          return multipleParsedSelectedFilters.includes(value);
+        })
       );
     });
     return selectedFilterObjects;
   }
 );
 
-export const getFilteredOptions = createSelector(
+export const getDependentOptions = createSelector(
   [parseGroupsInOptions, getSection, getSelectedFilters],
   (options, section, selectedFilters) => {
     if (
@@ -457,19 +433,19 @@ export const getFilteredOptions = createSelector(
 
             const { id: idLabelToFilterBy, parent: parentLabel } = f;
             let { idObject: idObjectLabel } = f;
-
             if (
               section === SECTION_NAMES.pathways &&
               parentLabel === FILTER_NAMES.categories &&
               selectedFilters.categories &&
-              selectedFilters.categories.parent_id
+              selectedFilters.categories[0] &&
+              selectedFilters.categories[0].parent_id
             ) {
               idObjectLabel = 'subcategory';
             }
-
             const selectedId =
               selectedFilters[parentLabel] &&
-              selectedFilters[parentLabel][parentIdLabel];
+              selectedFilters[parentLabel][0] &&
+              selectedFilters[parentLabel][0][parentIdLabel];
             if (!selectedId) return true;
             const id = idObjectLabel
               ? i[idObjectLabel][idLabelToFilterBy]
@@ -489,7 +465,7 @@ export const getFilteredOptions = createSelector(
 
 export const getMethodology = createSelector(
   [getMeta, getSection, getSelectedFilters],
-  (meta, section, selectedfilters) => {
+  (meta, section, selectedFilters) => {
     const sectionHasSources = section === SECTION_NAMES.historicalEmissions;
     const emissionPathwaysSection = section === SECTION_NAMES.pathways;
     if (
@@ -497,28 +473,41 @@ export const getMethodology = createSelector(
       isEmpty(meta) ||
       !section ||
       (sectionHasSources &&
-        (isEmpty(selectedfilters) || !selectedfilters.source)) ||
+        (isEmpty(selectedFilters) ||
+          !selectedFilters.source ||
+          !selectedFilters.source.length > 0)) ||
       (emissionPathwaysSection &&
-        (isEmpty(selectedfilters) ||
-          (!selectedfilters.indicators &&
-            !selectedfilters.models &&
-            !selectedfilters.scenarios)))
+        (isEmpty(selectedFilters) ||
+          (!selectedFilters.indicators &&
+            !selectedFilters.models &&
+            !selectedFilters.scenarios)))
     ) {
       return null;
     }
 
     if (emissionPathwaysSection) {
-      const { models, scenarios, indicators } = selectedfilters;
+      const { models, scenarios, indicators } = selectedFilters;
       return [models, scenarios, indicators].filter(m => m);
     }
 
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source = selectedfilters.source.data_source_slug;
+      const source = selectedFilters.source[0].data_source_slug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
     return methodology.filter(s => metaSource.includes(s.source));
+  }
+);
+
+export const getActiveFilterRegion = createSelector(
+  [getSelectedFilters],
+  selectedFields => {
+    if (!selectedFields || !selectedFields.regions) return null;
+    const selectedRegion = selectedFields.regions.find(
+      f => f.groupId === 'regions'
+    );
+    return selectedRegion && selectedRegion.label;
   }
 );
 
@@ -528,32 +517,32 @@ export const getSelectedOptions = createSelector(
     if (!selectedFields) return null;
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
-      selectedOptions[key] = {
-        value: selectedFields[key].label || selectedFields[key].slug,
-        label: selectedFields[key].label,
-        id: selectedFields[key].id ||
-        selectedFields[key].iso_code3 || [
-          selectedFields[key].data_source_id,
-          selectedFields[key].version_id
-        ]
-      };
+      selectedOptions[key] = selectedFields[key].map(f => ({
+        value: f.label || f.slug,
+        label: f.label,
+        id: f.iso_code3 || f.id || [f.data_source_id, f.version_id]
+      }));
     });
     return selectedOptions;
   }
 );
 
-export const parseData = createSelector([getData], data => {
-  if (!data || !data.length) return null;
-  let updatedData = data;
-  if (updatedData[0].emissions) {
-    updatedData = updatedData.map(d => {
-      const yearEmissions = {};
-      d.emissions.forEach(e => {
-        yearEmissions[e.year] = e.value;
-      });
-      return { ...d, ...yearEmissions };
+export const parseEmissionsInData = createSelector([getData], data => {
+  if (!data || !data.length > 0) return null;
+  const updatedData = data;
+  if (!updatedData[0].emissions) return updatedData;
+  return updatedData.map(d => {
+    const yearEmissions = {};
+    d.emissions.forEach(e => {
+      yearEmissions[e.year] = e.value;
     });
-  }
+    return { ...d, ...yearEmissions };
+  });
+});
+
+export const parseData = createSelector([parseEmissionsInData], data => {
+  if (!data || !data.length > 0) return null;
+  const updatedData = data;
   const whiteList = remove(
     Object.keys(updatedData[0]),
     n => DATA_EXPLORER_BLACKLIST.indexOf(n) === -1
@@ -585,110 +574,3 @@ export const getFirstTableHeaders = createSelector([parseData], data => {
     .reverse();
   return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(yearColumnKeys);
 });
-
-// Pathways Modal Data
-
-const getScenarioSelectedMetadata = createSelector(
-  [getSelectedFilters, state => state.meta],
-  (filters, meta) => {
-    if (!filters || !filters.scenarios || !meta) return null;
-    const metadata = meta[SECTION_NAMES.pathways];
-    if (!metadata || !metadata.scenarios) return null;
-    const scenario = metadata.scenarios.find(
-      m => filters.scenarios.id === m.id
-    );
-    return (
-      scenario && {
-        name: scenario.name,
-        description: scenario.description,
-        Link: `/pathways/scenarios/${scenario.id}`
-      }
-    );
-  }
-);
-
-const getModelSelectedMetadata = createSelector(
-  [getSelectedFilters, state => state.meta],
-  (filters, meta) => {
-    if (!filters || !filters.models || !meta) return null;
-    const metadata = meta[SECTION_NAMES.pathways];
-    if (!metadata || !metadata.models) return null;
-    return metadata.models.find(m => filters.models.id === m.id);
-  }
-);
-
-export const getIndicatorSelectedMetadata = createSelector(
-  [getSelectedFilters, state => state.meta],
-  (filters, meta) => {
-    if (!filters || !filters.indicators || !meta) return null;
-    const metadata = meta[SECTION_NAMES.pathways];
-    if (!metadata || !metadata.indicators) return null;
-    return metadata.indicators.find(m => filters.indicators.id === m.id);
-  }
-);
-
-const addLinktoModelSelectedMetadata = createSelector(
-  [getModelSelectedMetadata],
-  model => {
-    if (!model) return null;
-    return {
-      ...model,
-      Link: `/pathways/models/${model.id}`
-    };
-  }
-);
-
-export const filterModelsByBlackList = createSelector(
-  [addLinktoModelSelectedMetadata],
-  data => {
-    if (!data || isEmpty(data)) return null;
-    const whiteList = remove(
-      Object.keys(data),
-      n => ESP_BLACKLIST.models.indexOf(n) === -1
-    );
-    return pick(data, whiteList);
-  }
-);
-
-const filterIndicatorsByBlackList = createSelector(
-  [getIndicatorSelectedMetadata],
-  data => {
-    if (!data || isEmpty(data)) return null;
-    const whiteList = remove(
-      Object.keys(data),
-      n => ESP_BLACKLIST.indicators.indexOf(n) === -1
-    );
-    return pick(data, whiteList);
-  }
-);
-
-export const parseObjectsInIndicators = createSelector(
-  [filterIndicatorsByBlackList],
-  data => {
-    if (isEmpty(data)) return null;
-    const parsedData = {};
-    Object.keys(data).forEach(key => {
-      let fieldData = data[key];
-      if (
-        fieldData &&
-        typeof fieldData !== 'string' &&
-        typeof fieldData !== 'number'
-      ) {
-        fieldData = fieldData.name;
-      }
-      parsedData[key] = fieldData;
-    });
-    return parsedData;
-  }
-);
-
-export const getPathwaysMetodology = createSelector(
-  [
-    filterModelsByBlackList,
-    getScenarioSelectedMetadata,
-    parseObjectsInIndicators
-  ],
-  (model, scenario, indicator) => [model, scenario, indicator].filter(m => m)
-);
-
-// End of Pathways Modal Data

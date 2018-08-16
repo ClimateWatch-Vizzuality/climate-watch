@@ -6,6 +6,7 @@ import CountriesProvider from 'providers/countries-provider/countries-provider';
 import Table from 'components/table';
 import Dropdown from 'components/dropdown';
 import MultiDropdown from 'components/dropdown/multi-dropdown';
+import MultiSelect from 'components/multiselect';
 import MetadataText from 'components/metadata-text';
 import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
@@ -16,7 +17,10 @@ import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss'
 import { toStartCase, deburrCapitalize } from 'app/utils';
 import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
-import { DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS } from 'data/data-explorer-constants';
+import {
+  MULTIPLE_LEVEL_SECTION_FIELDS,
+  GROUPED_SELECT_FIELDS
+} from 'data/data-explorer-constants';
 import isEmpty from 'lodash/isEmpty';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
@@ -85,45 +89,74 @@ class DataExplorerContent extends PureComponent {
       filterOptions,
       filters,
       section,
+      activeFilterRegion,
       isDisabled
     } = this.props;
 
-    const multipleSector = field =>
-      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section] &&
-      DATA_EXPLORER_MULTIPLE_LEVEL_SECTIONS[section].find(s => s.key === field);
-    return filters.map(
-      field =>
-        (multipleSector(field) ? (
+    const multipleSection = field =>
+      MULTIPLE_LEVEL_SECTION_FIELDS[section] &&
+      MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === field);
+    const groupedSelect = field =>
+      GROUPED_SELECT_FIELDS[section] &&
+      GROUPED_SELECT_FIELDS[section].find(s => s.key === field);
+    return filters.map(field => {
+      if (multipleSection(field)) {
+        return (
           <MultiDropdown
             key={field}
             label={deburrCapitalize(field)}
             placeholder={`Filter by ${deburrCapitalize(field)}`}
             options={filterOptions ? filterOptions[field] : []}
-            value={selectedOptions ? selectedOptions[field] : null}
+            value={
+              selectedOptions ? (
+                selectedOptions[field] && selectedOptions[field][0]
+              ) : null
+            }
             disabled={isDisabled(field)}
             clearable
             onChange={option =>
-              handleFilterChange(
-                field,
-                option && (option.label || option.slug)
-              )}
-            noParentSelection={multipleSector(field).noSelectableParent}
+              handleFilterChange(field, option && option.value)}
+            noParentSelection={multipleSection(field).noSelectableParent}
           />
-        ) : (
-          <Dropdown
+        );
+      } else if (groupedSelect(field)) {
+        const fieldInfo = GROUPED_SELECT_FIELDS[section].find(
+          f => f.key === field
+        );
+        return (
+          <MultiSelect
             key={field}
-            label={deburrCapitalize(field)}
-            placeholder={`Filter by ${deburrCapitalize(field)}`}
+            label={fieldInfo.label}
+            selectedLabel={activeFilterRegion}
+            placeholder={`Filter by ${fieldInfo.label}`}
+            values={(selectedOptions && selectedOptions[field]) || []}
             options={filterOptions ? filterOptions[field] : []}
-            onValueChange={selected =>
-              handleFilterChange(field, selected && selected.slug)}
-            value={selectedOptions ? selectedOptions[field] : null}
-            plain
+            groups={fieldInfo.groups}
             disabled={isDisabled(field)}
-            noAutoSort={field === 'goals' || field === 'targets'}
+            onMultiValueChange={selected =>
+              handleFilterChange(field, selected, true)}
           />
-        ))
-    );
+        );
+      }
+      return (
+        <Dropdown
+          key={field}
+          label={deburrCapitalize(field)}
+          placeholder={`Filter by ${deburrCapitalize(field)}`}
+          options={filterOptions ? filterOptions[field] : []}
+          onValueChange={selected =>
+            handleFilterChange(field, selected && selected.value)}
+          value={
+            selectedOptions && selectedOptions[field] ? (
+              selectedOptions[field][0]
+            ) : null
+          }
+          plain
+          disabled={isDisabled(field)}
+          noAutoSort={field === 'goals' || field === 'targets'}
+        />
+      );
+    });
   }
 
   render() {
@@ -206,6 +239,7 @@ class DataExplorerContent extends PureComponent {
 }
 
 DataExplorerContent.propTypes = {
+  activeFilterRegion: PropTypes.string,
   section: PropTypes.string.isRequired,
   sectionLabel: PropTypes.string.isRequired,
   handleFilterChange: PropTypes.func.isRequired,

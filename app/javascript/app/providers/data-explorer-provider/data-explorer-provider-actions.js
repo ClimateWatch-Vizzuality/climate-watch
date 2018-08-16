@@ -43,12 +43,9 @@ export const fetchDataExplorer = createThunkAction(
       dispatch(fetchDataExplorerInit());
 
       const updatedQuery = qs.parse(query) || {};
-      if (!updatedQuery.page) updatedQuery.page = page || 1;
-      if (!updatedQuery.per_page) {
-        updatedQuery.per_page = DATA_EXPLORER_PER_PAGE;
-      }
+      updatedQuery.page = page || 1;
+      updatedQuery.per_page = DATA_EXPLORER_PER_PAGE;
       const parsedQuery = parseQuery(qs.stringify(updatedQuery));
-
       fetch(
         `${devESPURL(section)}/api/v1/data/${DATA_EXPLORER_SECTIONS[section]
           .label}?${parsedQuery}`
