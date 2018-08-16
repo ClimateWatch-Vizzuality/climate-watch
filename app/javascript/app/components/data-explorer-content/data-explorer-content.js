@@ -91,6 +91,10 @@ const resetPageParam = {
 };
 
 class DataExplorerContentContainer extends PureComponent {
+  constructor() {
+    super();
+    this.dataFetchInitialized = false;
+  }
   componentDidMount() {
     const { search } = this.props;
     if (!search.page) {
@@ -99,6 +103,7 @@ class DataExplorerContentContainer extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
+    if (!this.dataFetchInitialized) this.dataFetchInitialized = true;
     const { parsedExternalParams } = this.props;
     if (
       prevProps.parsedExternalParams !== parsedExternalParams &&
@@ -156,6 +161,7 @@ class DataExplorerContentContainer extends PureComponent {
   render() {
     return createElement(DataExplorerContentComponent, {
       ...this.props,
+      dataFetchInitialized: this.dataFetchInitialized,
       handleFilterChange: this.handleFilterChange,
       handlePageChange: this.handlePageChange,
       handleDataDownload: this.handleDataDownload,

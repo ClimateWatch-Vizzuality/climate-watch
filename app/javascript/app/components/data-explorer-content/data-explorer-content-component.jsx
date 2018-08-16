@@ -93,7 +93,8 @@ class DataExplorerContent extends PureComponent {
       loading,
       data,
       search,
-      selectedOptions
+      selectedOptions,
+      dataFetchInitialized
     } = this.props;
 
     const downloadButtonText = isEmpty(selectedOptions)
@@ -105,6 +106,7 @@ class DataExplorerContent extends PureComponent {
           section={section}
           query={filterQuery}
           page={search.page}
+          initialized={dataFetchInitialized}
         />
         <RegionsProvider />
         <CountriesProvider />
@@ -178,7 +180,12 @@ DataExplorerContent.propTypes = {
   pageCount: PropTypes.number,
   search: PropTypes.object,
   initialPage: PropTypes.number,
-  titleLinks: PropTypes.array
+  titleLinks: PropTypes.array,
+  dataFetchInitialized: PropTypes.bool.isRequired
+};
+
+DataExplorerContent.defaultProps = {
+  initialized: false
 };
 
 export default DataExplorerContent;
