@@ -2,10 +2,12 @@ const { GFW_API } = process.env;
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
 
-export const LOGIN_URL = `${GFW_API}/auth/login?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
+export const loginURL = social =>
+  `${GFW_API}/auth/${social}?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
 export const LOGOUT_URL = '/auth/logout';
-
 export const ESP_HOST = ESP_API.replace('/api/v1', '');
+
+export const SOCIAL_APP_NAMES = ['twitter', 'facebook', 'google'];
 
 export const CALCULATION_OPTIONS = {
   ABSOLUTE_VALUE: {
@@ -316,5 +318,6 @@ export default {
   LENSES_SELECTOR_INFO,
   SOURCE_VERSIONS,
   USERS_PROFESIONAL_SECTORS,
-  ESP_HOST
+  ESP_HOST,
+  SOCIAL_APP_NAMES
 };

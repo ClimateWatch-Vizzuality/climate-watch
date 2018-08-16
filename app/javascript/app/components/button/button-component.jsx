@@ -20,11 +20,7 @@ const Button = props => {
   } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
-    [styles.transparent]: color === 'transparent',
-    [styles.yellow]: color === 'yellow',
-    [styles.white]: color === 'white',
-    [styles.plain]: color === 'plain',
-    [styles.red]: color === 'red',
+    [styles[color]]: !!color,
     [styles.noBox]: noBox,
     [styles.disabled]: disabled || (!onClick && !link && !href),
     [styles.noSpace]: noSpace
