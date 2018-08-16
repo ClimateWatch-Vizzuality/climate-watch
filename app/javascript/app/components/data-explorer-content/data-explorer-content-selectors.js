@@ -157,7 +157,9 @@ export const getLinkFilterQuery = createSelector(
 export const parseFilterQuery = createSelector(
   [getFilterQuery, getNonColumnQuery],
   (filterIds, nonColumnQuery) => {
-    if (!filterIds || (isEmpty(filterIds) && isEmpty(nonColumnQuery))) { return null; }
+    if (!filterIds || (isEmpty(filterIds) && isEmpty(nonColumnQuery))) {
+      return null;
+    }
     const filterQuery = qs.stringify({ ...filterIds, ...nonColumnQuery });
     return filterQuery;
   }
@@ -368,8 +370,9 @@ export const parseExternalParams = createSelector(
       const keyWithoutPrefix = k
         .replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')
         .replace(`${section}-`, '');
-      const metaMatchingKey = keyWithoutPrefix.replace('-', '_');
+      let metaMatchingKey = keyWithoutPrefix.replace('-', '_');
       if (metaMatchingKey !== 'undefined') {
+        if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
         const labelObject = meta[section][metaMatchingKey].find(
           i =>
             i.id === parseInt(externalFields[k], 10) ||
@@ -506,7 +509,9 @@ export const addYearOptions = createSelector(
       !sectionsWithYearsFilter.includes(section) ||
       !options ||
       !data
-    ) { return options; }
+    ) {
+      return options;
+    }
     const yearColumns = Object.keys(data[0]).filter(k => isANumber(k));
     const yearOptions = years => years.map(y => ({ label: y, value: y }));
     const updatedOptions = { ...options };
