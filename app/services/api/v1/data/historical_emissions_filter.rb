@@ -62,7 +62,8 @@ module Api
           [
             {
               column: 'historical_emissions_records.id',
-              alias: 'id'
+              alias: 'id',
+              visible: false
             },
             {
               column: 'iso_code3',
@@ -96,7 +97,8 @@ module Api
             {
               column: emissions_select_column,
               alias: 'emissions',
-              order: false
+              order: false,
+              visible: false
             }
           ]
         end
