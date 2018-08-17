@@ -157,9 +157,7 @@ export const getLinkFilterQuery = createSelector(
 export const parseFilterQuery = createSelector(
   [getFilterQuery, getNonColumnQuery],
   (filterIds, nonColumnQuery) => {
-    if (!filterIds || (isEmpty(filterIds) && isEmpty(nonColumnQuery))) {
-      return null;
-    }
+    if (!filterIds) return null;
     const filterQuery = qs.stringify({ ...filterIds, ...nonColumnQuery });
     return filterQuery;
   }
