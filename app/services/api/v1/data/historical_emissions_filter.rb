@@ -123,8 +123,8 @@ module Api
             @location_ids = Location.where(iso_code3: params[:regions]).pluck(:id)
           end
           # rubocop:enable Style/IfUnlessModifier
-          @start_year = params[:start_year]&.to_f
-          @end_year = params[:end_year]&.to_f
+          @start_year = params[:start_year]&.to_i
+          @end_year = params[:end_year]&.to_i
         end
 
         def apply_filters(query)
