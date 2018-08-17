@@ -8,7 +8,8 @@ import LoginProvider from 'providers/login-provider';
 import Button from 'components/button';
 import Loading from 'components/loading';
 import startCase from 'lodash/startCase';
-import { loginURL, SOCIAL_APP_NAMES } from 'data/constants';
+import { SOCIAL_APP_NAMES } from 'data/constants';
+import { getLoginUrlBySocial } from 'utils/my-cw';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -37,7 +38,7 @@ const MyCw = ({ location, route, login, openCreator, logout }) => {
             key={socialName}
             className={styles.login}
             color={socialName}
-            href={loginURL(socialName)}
+            href={getLoginUrlBySocial(socialName)}
           >
             Login with {startCase(socialName)}
           </Button>

@@ -2,8 +2,8 @@ const { GFW_API } = process.env;
 const { CW_API } = process.env;
 const { ESP_API } = process.env;
 
-export const loginURL = social =>
-  `${GFW_API}/auth/${social}?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
+export const LOGIN_URL = `${GFW_API}/auth/`;
+export const LOGIN_PARAMS = `?applications=climate-watch&token=true&callbackUrl=${location.origin}${CW_API}/auth/login`;
 export const LOGOUT_URL = '/auth/logout';
 export const ESP_HOST = ESP_API.replace('/api/v1', '');
 
