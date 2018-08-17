@@ -8,7 +8,7 @@ module Api
           @grouped_query = filter.call
           # FIXME: To remove id and emissions: Should this be here?
           @headers = filter.column_aliases[1...-1]
-          @years = filter.years
+          @years = filter.header_years
           @output = output
         end
 
