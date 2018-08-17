@@ -37,12 +37,21 @@ const getCountries = state => state.countries || null;
 const getRegions = state => state.regions || null;
 export const getMeta = state => state.meta || null;
 
-export const getData = createSelector(
+const getDataSection = createSelector(
   [state => state.data, getSection],
   (data, section) => {
     if (!data || !section) return null;
-    return (data && data[section] && data[section].data) || null;
+    return (data && data[section] && data[section]) || null;
   }
+);
+
+export const getData = createSelector(
+  [getDataSection],
+  data => (data && data.data) || null
+);
+const getAvailableYears = createSelector(
+  [getDataSection],
+  data => (data && data.meta && data.meta.years) || null
 );
 
 export const getSectionLabel = createSelector(
@@ -496,8 +505,8 @@ export const parseEmissionsInData = createSelector([getData], data => {
 });
 
 export const addYearOptions = createSelector(
-  [getDependentOptions, getSection, parseEmissionsInData, getSelectedFilters],
-  (options, section, data, selectedFilters) => {
+  [getDependentOptions, getSection, getSelectedFilters, getAvailableYears],
+  (options, section, selectedFilters, yearColumns) => {
     const sectionsWithYearsFilter = [
       SECTION_NAMES.historicalEmissions,
       SECTION_NAMES.pathways
@@ -506,19 +515,21 @@ export const addYearOptions = createSelector(
       !section ||
       !sectionsWithYearsFilter.includes(section) ||
       !options ||
-      !data
+      !yearColumns
     ) {
       return options;
     }
-    const yearColumns = Object.keys(data[0]).filter(k => isANumber(k));
-    const yearOptions = years => years.map(y => ({ label: y, value: y }));
+    const yearOptions = years =>
+      years.map(y => ({ label: String(y), value: String(y) }));
     const updatedOptions = { ...options };
-    const startYearValues = selectedFilters.end_year
-      ? yearColumns.filter(y => y <= selectedFilters.end_year)
-      : yearColumns;
-    const endYearValues = selectedFilters.start_year
-      ? yearColumns.filter(y => y >= selectedFilters.start_year)
-      : yearColumns;
+    const startYearValues =
+      selectedFilters && selectedFilters.end_year
+        ? yearColumns.filter(y => y <= selectedFilters.end_year)
+        : yearColumns;
+    const endYearValues =
+      selectedFilters && selectedFilters.start_year
+        ? yearColumns.filter(y => y >= selectedFilters.start_year)
+        : yearColumns;
     updatedOptions.start_year = yearOptions(startYearValues);
     updatedOptions.end_year = yearOptions(endYearValues);
     return updatedOptions;
