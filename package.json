@@ -1,6 +1,6 @@
 {
   "name": "climate-watch",
-  "version": "1.13.1",
+  "version": "1.14.0",
   "engines": {
     "node": ">=8.0.0 <9"
   },
