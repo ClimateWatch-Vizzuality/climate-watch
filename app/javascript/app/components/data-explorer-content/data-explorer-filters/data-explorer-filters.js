@@ -54,20 +54,11 @@ const mapStateToProps = (state, { section, location }) => {
   };
 };
 
-const getDependentKeysToDelete = (value, section, filterName) => {
-  const dependentKeysToDelete = [];
-  if (DATA_EXPLORER_DEPENDENCIES[section]) {
-    Object.keys(
-      DATA_EXPLORER_DEPENDENCIES[section]
-    ).forEach(dependentFilterKey => {
-      const parentFilterKeys =
-        DATA_EXPLORER_DEPENDENCIES[section][dependentFilterKey];
-      if (parentFilterKeys.includes(filterName)) {
-        dependentKeysToDelete.push(dependentFilterKey);
-      }
-    });
-  }
-  return dependentKeysToDelete;
+const getDependentKeysToDelete = (section, filterName) => {
+  const dependencies = DATA_EXPLORER_DEPENDENCIES[section];
+  return Object.keys(dependencies).filter(dependentFilterKey =>
+    dependencies[dependentFilterKey].includes(filterName)
+  );
 };
 
 const resetPageParam = {
@@ -117,14 +108,17 @@ class DataExplorerContentContainer extends PureComponent {
     const { section } = this.props;
     const SOURCE_AND_VERSION_KEY = 'source';
     let paramsToUpdate = [];
-    const dependentKeysToDeleteParams = getDependentKeysToDelete(
-      value,
-      section,
-      filterName
-    ).map(k => ({ name: `${section}-${k}`, value: undefined }));
-    let parsedValue = value;
-    if (multiple) parsedValue = this.parsedMultipleValues(filterName, value);
-    parsedValue = parsedValue === '' ? undefined : parsedValue;
+    const dependentKeysToDeleteParams = DATA_EXPLORER_DEPENDENCIES[section]
+      ? getDependentKeysToDelete(section, filterName).map(key => ({
+        name: `${section}-${key}`,
+        value: undefined
+      }))
+      : [];
+
+    const parsedValue = multiple
+      ? this.parsedMultipleValues(filterName, value)
+      : value;
+
     if (filterName === SOURCE_AND_VERSION_KEY) {
       paramsToUpdate = paramsToUpdate.concat(
         this.sourceAndVersionParam(value, section)
