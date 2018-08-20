@@ -5,7 +5,10 @@ module Api
         extend ActiveSupport::Concern
 
         def column_aliases
-          select_columns_map.map do |column_properties|
+          visible_columns = select_columns_map.select do |column_properties|
+            column_properties[:visible].nil? || column_properties[:visible] == true
+          end
+          visible_columns.map do |column_properties|
             column_properties[:alias]
           end
         end
