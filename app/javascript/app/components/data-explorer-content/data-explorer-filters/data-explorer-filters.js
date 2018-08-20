@@ -10,7 +10,7 @@ import {
 } from 'data/data-explorer-constants';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
-  getActiveFilterRegion,
+  getActiveFilterLabel,
   addYearOptions,
   getSelectedOptions
 } from '../data-explorer-content-selectors';
@@ -50,7 +50,7 @@ const mapStateToProps = (state, { section, location }) => {
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: addYearOptions(dataState),
     selectedOptions,
-    activeFilterRegion: getActiveFilterRegion(dataState)
+    activeFilterRegion: getActiveFilterLabel(dataState)
   };
 };
 
@@ -96,20 +96,12 @@ class DataExplorerContentContainer extends PureComponent {
     const removing = oldFilters && value.length < oldFilters.length;
     const selectedFilter = !oldFilters
       ? value[0]
-      : value
-        .filter(x => oldFilters.indexOf(x) === -1)
-        .concat(oldFilters.filter(x => value.indexOf(x) === -1))[0];
+      : value.filter(f => Object.keys(oldFilters).includes(!f.label));
     const filtersParam = [];
-    if (!removing && selectedFilter.groupId === 'regions') {
-      filtersParam.push(selectedFilter.value);
-      selectedFilter.members.forEach(m => filtersParam.push(m.iso_code3));
-    } else {
-      value.forEach(filter => {
-        if (filter.groupId !== 'regions') {
-          filtersParam.push(filter.value);
-        }
-      });
-    }
+    if (!removing) filtersParam.push(selectedFilter.value);
+    value.forEach(filter => {
+      filtersParam.push(filter.value);
+    });
     return filtersParam.toString();
   };
 

@@ -3,6 +3,7 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
+import snakeCase from 'lodash/snakeCase';
 import qs from 'query-string';
 import { findEqual, isANumber } from 'utils/utils';
 import sortBy from 'lodash/sortBy';
@@ -72,15 +73,15 @@ export const getSourceOptions = createSelector(
       return null;
     }
     return SOURCE_VERSIONS.map(option => {
-      const data_source = meta[section].data_sources.find(
-        s => s.name === option.data_source_slug
+      const dataSource = meta[section].data_sources.find(
+        s => s.name === option.dataSourceSlug
       );
       const version = meta[section].gwps.find(
-        s => s.name === option.version_slug
+        s => s.name === option.versionSlug
       );
       const updatedOption = option;
-      updatedOption.data_source_id = data_source && data_source.id;
-      updatedOption.version_id = version && version.id;
+      updatedOption.dataSourceId = dataSource && dataSource.id;
+      updatedOption.versionId = version && version.id;
       return updatedOption;
     });
   }
@@ -248,6 +249,34 @@ const addGroupId = (object, groupId) =>
     return updatedRegion;
   });
 
+const getExtraOptionFields = option => {
+  const extraOptionKeys = [
+    'slug',
+    'groupId',
+    'dataSourceId',
+    'dataSourceSlug',
+    'versionId',
+    'versionSlug'
+  ];
+  const extraOptions = {};
+  extraOptionKeys.forEach(k => {
+    const existingValue = option[snakeCase(k)] || option[k];
+    if (existingValue) {
+      extraOptions[k] = existingValue;
+    }
+  });
+  return extraOptions;
+};
+
+const getLabel = (option, filterKey) => {
+  const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
+  let label = option[labelField];
+  if (filterKey === 'goals' || filterKey === 'targets') {
+    label = `${option.number}: ${label}`;
+  }
+  return label;
+};
+
 export const getFilterOptions = createSelector(
   [
     getMeta,
@@ -272,31 +301,21 @@ export const getFilterOptions = createSelector(
       );
     }
     if (filterKeys.includes('countries')) filtersMeta.countries = countries;
-    if (filterKeys.includes('source')) {
-      filtersMeta.source = sourceVersions;
-    }
+    if (filterKeys.includes('source')) filtersMeta.source = sourceVersions;
+
     const filterOptions = {};
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
         const optionsArray = options.map(option => {
-          const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
-          let label = option[labelField];
-          const slug = option.slug || label;
-          if (f === 'goals' || f === 'targets') {
-            label = `${option.number}: ${label}`;
-          }
+          const label = getLabel(option, f);
           const value =
             option.iso_code ||
             option.iso_code3 ||
             (option.id && String(option.id)) ||
             label;
-          return {
-            slug,
-            value,
-            label,
-            ...option
-          };
+
+          return { value, label, ...getExtraOptionFields(option) };
         });
         filterOptions[f] = optionsArray;
       }
@@ -566,21 +585,19 @@ export const getMethodology = createSelector(
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source = selectedFilters.source[0].data_source_slug;
+      const source = selectedFilters.source[0].dataSourceSlug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
     return methodology.filter(s => metaSource.includes(s.source));
   }
 );
 
-export const getActiveFilterRegion = createSelector(
+export const getActiveFilterLabel = createSelector(
   [getSelectedFilters],
   selectedFields => {
-    if (!selectedFields || !selectedFields.regions) return null;
-    const selectedRegion = selectedFields.regions.find(
-      f => f.groupId === 'regions'
-    );
-    return selectedRegion && selectedRegion.label;
+    const regions = selectedFields && selectedFields.regions;
+    if (!regions || regions.length > 1) return null;
+    return regions[0] && regions[0].label;
   }
 );
 
