@@ -614,12 +614,13 @@ export const getSelectedOptions = createSelector(
         };
       } else {
         selectedOptions[key] = selectedFields[key].map(f => ({
-          value: f.label || f.slug,
+          value: f.value || f.slug,
           label: f.label,
           id: f.iso_code3 || f.id || [f.data_source_id, f.version_id]
         }));
       }
     });
+
     return selectedOptions;
   }
 );

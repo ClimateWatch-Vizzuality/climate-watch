@@ -87,11 +87,10 @@ class DataExplorerContentContainer extends PureComponent {
     const removing = oldFilters && value.length < oldFilters.length;
     const selectedFilter = !oldFilters
       ? value[0]
-      : value.filter(f => Object.keys(oldFilters).includes(!f.label));
+      : value.filter(f => !oldFilters.map(o => o.label).includes(f.label));
     const filtersParam = [];
-    if (!removing) filtersParam.push(selectedFilter.value);
     value.forEach(filter => {
-      filtersParam.push(filter.value);
+      if (!(removing && selectedFilter.value !== filter)) { filtersParam.push(filter.value); }
     });
     return filtersParam.toString();
   };
@@ -110,7 +109,6 @@ class DataExplorerContentContainer extends PureComponent {
     const parsedValue = multiple
       ? this.parsedMultipleValues(filterName, value)
       : value;
-
     if (filterName === SOURCE_AND_VERSION_KEY) {
       paramsToUpdate = paramsToUpdate.concat(
         this.sourceAndVersionParam(value, section)
