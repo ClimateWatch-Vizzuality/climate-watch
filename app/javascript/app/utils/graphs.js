@@ -3,6 +3,7 @@ import camelCase from 'lodash/camelCase';
 import chroma from 'chroma-js';
 import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
+import isArray from 'lodash/isArray';
 import { getNiceTickValues } from 'recharts-scale';
 import map from 'lodash/map';
 import find from 'lodash/find';
@@ -123,17 +124,16 @@ export function getCustomTicks(
 ) {
   const totalValues = [];
   const yValues = columns.y.map(c => data.map(d => d[[c.value]]));
+  const getSign = value => (value > 0 ? 'positive' : 'negative');
   for (let index = 0; index < yValues[0].length; index++) {
     const total = {
       positive: 0,
       negative: 0
     };
     for (let e = 0; e < yValues.length; e++) {
-      if (yValues[e][index] > 0) {
-        total.positive += yValues[e][index] || 0;
-      } else {
-        total.negative += yValues[e][index] || 0;
-      }
+      let value = yValues[e][index];
+      if (isArray(value)) value = value[1]; // Take the biggest value of the quantification pair
+      total[getSign(value)] += value || 0;
     }
     totalValues.push(total);
   }

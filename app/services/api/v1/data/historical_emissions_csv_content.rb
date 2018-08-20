@@ -6,9 +6,8 @@ module Api
       class HistoricalEmissionsCsvContent
         def initialize(filter, output)
           @grouped_query = filter.call
-          # FIXME: To remove id and emissions: Should this be here?
-          @headers = filter.column_aliases[1...-1]
-          @years = filter.header_years
+          @headers = filter.column_aliases
+          @years = filter.years
           @output = output
         end
 

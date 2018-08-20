@@ -42,7 +42,8 @@ module Api
           [
             {
               column: 'id',
-              alias: 'id'
+              alias: 'id',
+              visible: false
             },
             {
               column: 'locations.iso_code3',

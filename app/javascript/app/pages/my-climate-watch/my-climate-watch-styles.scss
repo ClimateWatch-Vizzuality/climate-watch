@@ -10,10 +10,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+
+  @media #{$tablet-landscape} {
+    flex-direction: row;
+  }
 }
 
 .login {
   width: 200px;
+  margin: 0 0 $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    margin: 0 $gutter-padding 0 0;
+    flex-direction: row;
+  }
 }
 
 .intro {
