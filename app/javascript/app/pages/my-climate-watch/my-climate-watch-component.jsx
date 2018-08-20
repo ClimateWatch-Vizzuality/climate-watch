@@ -7,8 +7,9 @@ import PropTypes from 'prop-types';
 import LoginProvider from 'providers/login-provider';
 import Button from 'components/button';
 import Loading from 'components/loading';
-
-import { LOGIN_URL } from 'data/constants';
+import startCase from 'lodash/startCase';
+import { SOCIAL_APP_NAMES } from 'data/constants';
+import { getLoginUrlBySocial } from 'utils/my-cw';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -32,9 +33,16 @@ const MyCw = ({ location, route, login, openCreator, logout }) => {
       renderRoutes(route.routes)
     ) : (
       <div className={styles.loginContainer}>
-        <Button className={styles.login} color="yellow" href={LOGIN_URL}>
-          Login
-        </Button>
+        {SOCIAL_APP_NAMES.map(socialName => (
+          <Button
+            key={socialName}
+            className={styles.login}
+            color={socialName}
+            href={getLoginUrlBySocial(socialName)}
+          >
+            Login with {startCase(socialName)}
+          </Button>
+        ))}
       </div>
     );
   }

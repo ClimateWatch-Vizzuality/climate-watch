@@ -58,8 +58,7 @@
   border: solid 1px rgba($white, 0.3);
 }
 
-.yellow {
-  background-color: $theme-secondary;
+.withShadow {
   transition: box-shadow 150ms ease-out;
 
   &:hover {
@@ -67,13 +66,37 @@
   }
 }
 
+.yellow {
+  background-color: $theme-secondary;
+
+  @extend .withShadow;
+}
+
 .red {
   background-color: $climate-risk-1;
-  transition: box-shadow 150ms ease-out;
 
-  &:hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
-  }
+  @extend .withShadow;
+}
+
+.twitter {
+  background-color: $twitter;
+  color: $white;
+
+  @extend .withShadow;
+}
+
+.facebook {
+  background-color: $facebook;
+  color: $white;
+
+  @extend .withShadow;
+}
+
+.google {
+  background-color: $google;
+  color: $white;
+
+  @extend .withShadow;
 }
 
 .white {
