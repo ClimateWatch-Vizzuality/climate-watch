@@ -7,8 +7,8 @@ export const DATA_EXPLORER_BLACKLIST = [
 export const DATA_EXPLORER_FIRST_TABLE_HEADERS = [
   'region',
   'data_source',
-  'gwp',
   'sector',
+  'gwp',
   'gas',
   'location',
   'model',
@@ -16,8 +16,8 @@ export const DATA_EXPLORER_FIRST_TABLE_HEADERS = [
   'category',
   'subcategory',
   'indicator',
-  'definition',
-  'unit'
+  'unit',
+  'definition'
 ];
 
 export const DATA_EXPLORER_SECTIONS = {
@@ -51,8 +51,8 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
-  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
+  'historical-emissions': ['regions', 'source', 'sectors', 'gases'],
+  'ndc-sdg-linkages': ['countries', 'goals', 'targets', 'sectors'],
   'emission-pathways': [
     'locations',
     'models',
@@ -61,7 +61,7 @@ export const DATA_EXPLORER_FILTERS = {
     'subcategories',
     'indicators'
   ],
-  'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
+  'ndc-content': ['countries', 'categories', 'indicators', 'sectors']
 };
 
 export const DATA_EXPLORER_DEPENDENCIES = {
@@ -110,6 +110,9 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     categories: {
       key: 'category'
+    },
+    subcategories: {
+      key: 'subcategory'
     }
   }
 };
@@ -131,7 +134,7 @@ export const GROUPED_SELECT_FIELDS = {
   ]
 };
 
-export const DATA_EXPLORER_PER_PAGE = 20;
+export const DATA_EXPLORER_PER_PAGE = 200;
 
 export const SECTION_NAMES = {
   pathways: 'emission-pathways',
@@ -195,6 +198,7 @@ export const FILTERED_FIELDS = {
     ]
   }
 };
+export const NON_COLUMN_KEYS = ['start_year', 'end_year'];
 
 export const POSSIBLE_LABEL_FIELDS = [
   'name',

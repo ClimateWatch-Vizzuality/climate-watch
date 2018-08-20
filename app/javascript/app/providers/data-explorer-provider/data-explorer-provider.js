@@ -37,6 +37,10 @@ DataExplorerProvider.propTypes = {
   page: PropTypes.string
 };
 
+DataExplorerProvider.defaultProps = {
+  initialized: false
+};
+
 export { actions, reducers, initialState };
 
 export default connect(null, actions)(DataExplorerProvider);

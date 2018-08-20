@@ -11,7 +11,8 @@ import capitalize from 'lodash/capitalize';
 export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
 export const deburrUpper = string => toUpper(deburr(string));
-export const deburrCapitalize = string => capitalize(deburr(string));
+export const deburrCapitalize = string =>
+  capitalize(deburr(string)).replace('_', ' ');
 export const toStartCase = string => {
   const parsedString = startCase(string);
   const replacements = {

@@ -4,7 +4,7 @@ module Api
       class HistoricalEmissionsFilter
         include Api::V1::Data::SanitisedSorting
         include Api::V1::Data::ColumnHelpers
-        attr_reader :years
+        attr_reader :header_years
 
         # @param params [Hash]
         # @option params [Array<String>] :regions
@@ -28,15 +28,10 @@ module Api
         def call
           @query = apply_filters(@query)
           @years_query = apply_filters(@years_query)
-          # rubocop:disable Style/IfUnlessModifier
-          if @start_year
-            @years_query = @years_query.where('year >= ?', @start_year)
-          end
-          if @end_year
-            @years_query = @years_query.where('year <= ?', @end_year)
-          end
-          # rubocop:enable Style/IfUnlessModifier
           @years = @years_query.distinct(:year).pluck(:year).sort
+          @header_years = @years.dup
+          @header_years.reject! { |y| y < @start_year } if @start_year
+          @header_years.reject! { |y| y > @end_year } if @end_year
 
           results = @query.
             select(select_columns).
@@ -51,7 +46,8 @@ module Api
 
         def meta
           {
-            years: @years
+            years: @years,
+            header_years: @header_years
           }.merge(sorting_manifest).merge(column_manifest)
         end
 
@@ -129,8 +125,8 @@ module Api
             @location_ids = Location.where(iso_code3: params[:regions]).pluck(:id)
           end
           # rubocop:enable Style/IfUnlessModifier
-          @start_year = params[:start_year]
-          @end_year = params[:end_year]
+          @start_year = params[:start_year]&.to_i
+          @end_year = params[:end_year]&.to_i
         end
 
         def apply_filters(query)
