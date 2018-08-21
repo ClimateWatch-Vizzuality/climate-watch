@@ -9,12 +9,12 @@ export const FIRST_TABLE_HEADERS = {
   'historical-emissions': ['region', 'data_source', 'sector', 'gas', 'unit'],
   'ndc-content': [
     'country',
-    'categories',
-    'category', // separe category from subcategory
-    'subcategory', // separe category from subcategory
+    'categories', // remove when it's splitted into global and overview category
+    'global_category',
+    'overview_category',
     'sector',
     'subsector',
-    'indicator_id', // Remove id in this case from the blacklist and rename it
+    'indicator_id',
     'indicator',
     'focus',
     'value'
@@ -73,8 +73,16 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': ['regions', 'source', 'sectors', 'gases'],
-  'ndc-sdg-linkages': ['countries', 'goals', 'targets', 'sectors'],
+  'historical-emissions': ['source', 'regions', 'sectors', 'gases'],
+  'ndc-sdg-linkages': [
+    'countries',
+    'goals',
+    'targets',
+    'status',
+    'sectors',
+    'climate_response',
+    'type_of_information'
+  ],
   'emission-pathways': [
     'locations',
     'models',
@@ -83,7 +91,7 @@ export const DATA_EXPLORER_FILTERS = {
     'subcategories',
     'indicators'
   ],
-  'ndc-content': ['countries', 'categories', 'indicators', 'sectors']
+  'ndc-content': ['categories', 'indicators', 'sectors', 'countries'] // TODO: add focus when ready
 };
 
 export const DATA_EXPLORER_DEPENDENCIES = {
