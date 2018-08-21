@@ -291,8 +291,7 @@ export const getFilterOptions = createSelector(
             option.iso_code3 ||
             (option.id && String(option.id)) ||
             (option.data_source_id &&
-              `${option.data_source_id}-${option.version_id}`) ||
-            label;
+              `${option.data_source_id}-${option.version_id}`);
           return {
             slug,
             value,
