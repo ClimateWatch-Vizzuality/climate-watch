@@ -13,7 +13,7 @@ import {
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   MULTIPLE_LEVEL_SECTION_FIELDS,
-  DATA_EXPLORER_FIRST_TABLE_HEADERS,
+  FIRST_TABLE_HEADERS,
   DATA_EXPLORER_SECTIONS,
   SECTION_NAMES,
   FILTER_NAMES,
@@ -633,10 +633,13 @@ export const getTitleLinks = createSelector(
     });
   }
 );
-export const getFirstTableHeaders = createSelector([parseData], data => {
-  if (!data || !data.length) return null;
-  const yearColumnKeys = Object.keys(data[0])
-    .filter(k => isANumber(k))
-    .reverse();
-  return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(yearColumnKeys);
-});
+export const getFirstTableHeaders = createSelector(
+  [parseData, getSection],
+  (data, section) => {
+    if (!data || !data.length || !section) return null;
+    const yearColumnKeys = Object.keys(data[0])
+      .filter(k => isANumber(k))
+      .reverse();
+    return FIRST_TABLE_HEADERS[section].concat(yearColumnKeys);
+  }
+);

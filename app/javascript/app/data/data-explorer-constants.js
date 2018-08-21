@@ -4,21 +4,43 @@ export const DATA_EXPLORER_BLACKLIST = [
   'iso_code2',
   'emissions'
 ];
-export const DATA_EXPLORER_FIRST_TABLE_HEADERS = [
-  'region',
-  'data_source',
-  'sector',
-  'gwp',
-  'gas',
-  'location',
-  'model',
-  'scenario',
-  'category',
-  'subcategory',
-  'indicator',
-  'unit',
-  'definition'
-];
+
+export const FIRST_TABLE_HEADERS = {
+  'historical-emissions': ['region', 'data_source', 'sector', 'gas', 'unit'],
+  'ndc-content': [
+    'country',
+    'categories',
+    'category', // separe category from subcategory
+    'subcategory', // separe category from subcategory
+    'sector',
+    'subsector',
+    'indicator_id', // Remove id in this case from the blacklist and rename it
+    'indicator',
+    'focus',
+    'value'
+  ],
+  'ndc-sdg-linkages': [
+    'country',
+    'goal',
+    'target',
+    'indc_text',
+    'status',
+    'sector',
+    'climate_response',
+    'type_of_information'
+  ],
+  'emission-pathways': [
+    'location',
+    'model',
+    'scenario',
+    'category',
+    'subcategory',
+    'indicator',
+    'composite_name',
+    'definition',
+    'unit'
+  ]
+};
 
 export const DATA_EXPLORER_SECTIONS = {
   'historical-emissions': {
@@ -215,7 +237,6 @@ export const POSSIBLE_VALUE_FIELDS = ['iso_code', 'iso_code3', 'id', 'value'];
 
 export default {
   DATA_EXPLORER_BLACKLIST,
-  DATA_EXPLORER_FIRST_TABLE_HEADERS,
   DATA_EXPLORER_SECTIONS,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_DEPENDENCIES,
