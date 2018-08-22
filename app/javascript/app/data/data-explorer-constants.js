@@ -162,7 +162,7 @@ export const FILTERED_FIELDS = {
     targets: [
       {
         parent: 'goals',
-        parentId: 'id',
+        parentId: 'value',
         id: 'goal_id'
       }
     ]
@@ -201,9 +201,9 @@ export const FILTERED_FIELDS = {
 export const NON_COLUMN_KEYS = ['start_year', 'end_year'];
 
 export const POSSIBLE_LABEL_FIELDS = [
+  'value',
   'name',
   'full_name',
-  'value',
   'wri_standard_name',
   'cw_title',
   'title',

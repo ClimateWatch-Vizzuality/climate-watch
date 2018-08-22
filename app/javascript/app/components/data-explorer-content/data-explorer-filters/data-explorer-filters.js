@@ -68,7 +68,7 @@ const resetPageParam = {
 
 class DataExplorerContentContainer extends PureComponent {
   sourceAndVersionParam = (value, section) => {
-    const values = value && value.split(' - ');
+    const values = value && value.split('-');
     return [
       {
         name: `${section}-data-sources`,
