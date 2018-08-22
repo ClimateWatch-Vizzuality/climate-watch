@@ -19,7 +19,8 @@ import {
   getSelectedCategory,
   getSelectedIndicator,
   getPathsWithStyles,
-  getISOCountries
+  getISOCountries,
+  getLinkToDataExplorer
 } from './ndcs-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -32,7 +33,8 @@ const mapStateToProps = (state, { location }) => {
     ...data,
     countries: countries.data,
     categorySelected: search.category,
-    indicatorSelected: search.indicator
+    indicatorSelected: search.indicator,
+    search
   };
   return {
     loading,
@@ -41,7 +43,8 @@ const mapStateToProps = (state, { location }) => {
     isoCountries: getISOCountries(ndcsWithSelection),
     indicators: getCategoryIndicators(ndcsWithSelection),
     selectedCategory: getSelectedCategory(ndcsWithSelection),
-    selectedIndicator: getSelectedIndicator(ndcsWithSelection)
+    selectedIndicator: getSelectedIndicator(ndcsWithSelection),
+    link: getLinkToDataExplorer(ndcsWithSelection)
   };
 };
 
