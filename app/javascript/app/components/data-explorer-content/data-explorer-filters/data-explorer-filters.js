@@ -81,19 +81,8 @@ class DataExplorerContentContainer extends PureComponent {
     ];
   };
 
-  parsedMultipleValues = (filterName, value) => {
-    const { selectedOptions } = this.props;
-    const oldFilters = selectedOptions[filterName];
-    const removing = oldFilters && value.length < oldFilters.length;
-    const selectedFilter = !oldFilters
-      ? value[0]
-      : value.filter(f => !oldFilters.map(o => o.label).includes(f.label));
-    const filtersParam = [];
-    value.forEach(filter => {
-      if (!(removing && selectedFilter.value !== filter)) { filtersParam.push(filter.value); }
-    });
-    return filtersParam.toString();
-  };
+  parsedMultipleValues = (filterName, value) =>
+    value.map(filter => filter.value).toString();
 
   handleFilterChange = (filterName, value, multiple) => {
     const { section } = this.props;
@@ -140,8 +129,7 @@ class DataExplorerContentContainer extends PureComponent {
 DataExplorerContentContainer.propTypes = {
   section: PropTypes.string,
   history: PropTypes.object,
-  location: PropTypes.object,
-  selectedOptions: PropTypes.object
+  location: PropTypes.object
 };
 
 export default withRouter(
