@@ -4,9 +4,11 @@ import { PureComponent, createElement } from 'react';
 import { getSearch, getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import { actions } from 'components/modal-download';
+import isArray from 'lodash/isArray';
 import {
   DATA_EXPLORER_FILTERS,
-  DATA_EXPLORER_DEPENDENCIES
+  DATA_EXPLORER_DEPENDENCIES,
+  FILTER_DEFAULTS
 } from 'data/data-explorer-constants';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
@@ -54,6 +56,15 @@ const mapStateToProps = (state, { section, location }) => {
   };
 };
 
+const getParamsFromDependentKeysToDelete = (section, filters) => {
+  if (!DATA_EXPLORER_DEPENDENCIES[section]) return [];
+  const filterName = Object.keys(filters)[0];
+  return getDependentKeysToDelete(section, filterName).map(key => ({
+    name: `${section}-${key}`,
+    value: undefined
+  }));
+};
+
 const getDependentKeysToDelete = (section, filterName) => {
   const dependencies = DATA_EXPLORER_DEPENDENCIES[section];
   return Object.keys(dependencies).filter(dependentFilterKey =>
@@ -61,67 +72,32 @@ const getDependentKeysToDelete = (section, filterName) => {
   );
 };
 
-const resetPageParam = {
-  name: 'page',
-  value: 1
+const sourceAndVersionParam = (value, section) => {
+  const values = value && value.split(' - ');
+  return [
+    {
+      name: `${section}-data-sources`,
+      value: value && values[0]
+    },
+    {
+      name: `${section}-gwps`,
+      value: value && values[1]
+    }
+  ];
 };
 
-class DataExplorerContentContainer extends PureComponent {
-  sourceAndVersionParam = (value, section) => {
-    const values = value && value.split(' - ');
-    return [
-      {
-        name: `${section}-data-sources`,
-        value: value && values[0]
-      },
-      {
-        name: `${section}-gwps`,
-        value: value && values[1]
-      }
-    ];
-  };
+const parsedMultipleValues = values =>
+  values.map(filter => filter.value).toString();
 
-  parsedMultipleValues = (filterName, value) => {
-    const { selectedOptions } = this.props;
-    const oldFilters = selectedOptions[filterName];
-    const removing = oldFilters && value.length < oldFilters.length;
-    const selectedFilter = !oldFilters
-      ? value[0]
-      : value
-        .filter(x => oldFilters.indexOf(x) === -1)
-        .concat(oldFilters.filter(x => value.indexOf(x) === -1))[0];
-    const filtersParam = [];
-    if (!removing && selectedFilter.groupId === 'regions') {
-      filtersParam.push(selectedFilter.value);
-      selectedFilter.members.forEach(m => filtersParam.push(m.iso_code3));
-    } else {
-      value.forEach(filter => {
-        if (filter.groupId !== 'regions') {
-          filtersParam.push(filter.value);
-        }
-      });
-    }
-    return filtersParam.toString();
-  };
-
-  handleFilterChange = (filterName, value, multiple) => {
-    const { section } = this.props;
-    const SOURCE_AND_VERSION_KEY = 'source';
-    let paramsToUpdate = [];
-    const dependentKeysToDeleteParams = DATA_EXPLORER_DEPENDENCIES[section]
-      ? getDependentKeysToDelete(section, filterName).map(key => ({
-        name: `${section}-${key}`,
-        value: undefined
-      }))
-      : [];
-
-    const parsedValue = multiple
-      ? this.parsedMultipleValues(filterName, value)
-      : value;
-
+const getParamsToUpdate = (updatedFilters, section) => {
+  const SOURCE_AND_VERSION_KEY = 'source';
+  let paramsToUpdate = [];
+  Object.keys(updatedFilters).forEach(filterName => {
+    const value = updatedFilters[filterName];
+    const parsedValue = isArray(value) ? parsedMultipleValues(value) : value;
     if (filterName === SOURCE_AND_VERSION_KEY) {
       paramsToUpdate = paramsToUpdate.concat(
-        this.sourceAndVersionParam(value, section)
+        sourceAndVersionParam(value, section)
       );
     } else {
       paramsToUpdate.push({
@@ -129,8 +105,46 @@ class DataExplorerContentContainer extends PureComponent {
         value: parsedValue
       });
     }
+  });
+  return paramsToUpdate;
+};
+
+const resetPageParam = {
+  name: 'page',
+  value: 1
+};
+
+class DataExplorerFiltersContainer extends PureComponent {
+  componentDidUpdate() {
+    const { selectedOptions, filterOptions, section } = this.props;
+    const defaultOptionsToUpdate = {};
+    const selectedOptionKeys = selectedOptions && Object.keys(selectedOptions);
+    const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
+    if (
+      selectedOptions &&
+      !filterDefaultKeys.every(r => selectedOptionKeys.includes(r))
+    ) {
+      Object.keys(FILTER_DEFAULTS[section]).forEach(key => {
+        if (!selectedOptions[key]) {
+          const defaultOption = filterOptions[key].find(
+            f => f.label === FILTER_DEFAULTS[section][key]
+          );
+          if (defaultOption && defaultOption.value) { defaultOptionsToUpdate[key] = defaultOption.value; }
+        }
+      });
+      this.handleFiltersChange(defaultOptionsToUpdate, true);
+    }
+  }
+
+  handleFiltersChange = (updatedFilters, isFilterDefaultChange) => {
+    const { section } = this.props;
+    const dependentKeysToDeleteParams = isFilterDefaultChange
+      ? []
+      : getParamsFromDependentKeysToDelete(section, updatedFilters);
     this.updateUrlParam(
-      paramsToUpdate.concat(resetPageParam).concat(dependentKeysToDeleteParams)
+      getParamsToUpdate(updatedFilters, section)
+        .concat(resetPageParam)
+        .concat(dependentKeysToDeleteParams)
     );
   };
 
@@ -142,18 +156,19 @@ class DataExplorerContentContainer extends PureComponent {
   render() {
     return createElement(DataExplorerFiltersComponent, {
       ...this.props,
-      handleFilterChange: this.handleFilterChange
+      handleFiltersChange: this.handleFiltersChange
     });
   }
 }
 
-DataExplorerContentContainer.propTypes = {
+DataExplorerFiltersContainer.propTypes = {
   section: PropTypes.string,
   history: PropTypes.object,
   location: PropTypes.object,
-  selectedOptions: PropTypes.object
+  selectedOptions: PropTypes.object,
+  filterOptions: PropTypes.object
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(DataExplorerContentContainer)
+  connect(mapStateToProps, actions)(DataExplorerFiltersContainer)
 );

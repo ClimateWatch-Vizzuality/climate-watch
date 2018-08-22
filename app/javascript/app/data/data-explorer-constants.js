@@ -41,6 +41,13 @@ export const FIRST_TABLE_HEADERS = {
   ]
 };
 
+export const FILTER_DEFAULTS = {
+  'historical-emissions': { source: 'CAIT - AR2' },
+  'ndc-content': {},
+  'ndc-sdg-linkages': {},
+  'emission-pathways': {}
+};
+
 export const DATA_EXPLORER_SECTIONS = {
   'historical-emissions': {
     label: 'historical_emissions',
