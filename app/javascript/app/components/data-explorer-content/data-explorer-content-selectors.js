@@ -290,7 +290,8 @@ export const getFilterOptions = createSelector(
             option.iso_code ||
             option.iso_code3 ||
             (option.id && String(option.id)) ||
-            label;
+            (option.data_source_id &&
+              `${option.data_source_id}-${option.version_id}`);
           return {
             slug,
             value,
@@ -350,15 +351,13 @@ const parseGroupsInOptions = createSelector(
 
 const mergeSourcesAndVersions = filters => {
   const dataSourceFilter = filters['data-sources'];
-  let versionFilter = filters.gwps;
+  const versionFilter = filters.gwps;
   const updatedFilters = filters;
   if (dataSourceFilter) {
-    if (dataSourceFilter === 'CAIT') versionFilter = 'AR2'; // Remove when GHG emissions has the correct version options
-    updatedFilters.source = `${dataSourceFilter} - ${versionFilter}`;
+    updatedFilters.source = `${dataSourceFilter}-${versionFilter}`;
     delete updatedFilters['data-sources'];
     delete updatedFilters.gwps;
   }
-
   return updatedFilters;
 };
 
@@ -399,10 +398,24 @@ export const parseExternalParams = createSelector(
 const findFilterOptions = (options, selectedFilters) =>
   options.filter(f =>
     POSSIBLE_VALUE_FIELDS.find(field => {
-      const value = field === 'id' ? f[field] && String(f[field]) : f[field];
+      const value = f[field] && String(f[field]);
       return selectedFilters.includes(value);
     })
   );
+
+const forceAR2OnCAIT = (parsedSelectedFilters, filterOptions) => {
+  const dataSourceId = parsedSelectedFilters.source.split('-')[0];
+  const selectedOption = filterOptions.source.find(o =>
+    o.value.startsWith(dataSourceId)
+  );
+  if (selectedOption.slug.startsWith('CAIT')) {
+    const CAIT_AR2_OPTION = filterOptions.source.find(
+      o => o.slug === 'CAIT - AR2'
+    );
+    return { ...parsedSelectedFilters, source: CAIT_AR2_OPTION.value };
+  }
+  return parsedSelectedFilters;
+};
 
 export const getSelectedFilters = createSelector(
   [getSearch, getSection, getFilterOptions],
@@ -415,18 +428,26 @@ export const getSelectedFilters = createSelector(
     const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
 
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
-    const parsedSelectedFilters = mergeSourcesAndVersions(
+    let parsedSelectedFilters = mergeSourcesAndVersions(
       removeFiltersPrefix(sectionRelatedFields, section)
     );
 
+    if (parsedSelectedFilters.source) {
+      parsedSelectedFilters = forceAR2OnCAIT(
+        parsedSelectedFilters,
+        filterOptions
+      );
+    } // Remove when GHG emissions has the correct version options
+
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
-      const multipleParsedSelectedFilters = parsedSelectedFilters[
-        filterKey
-      ].split(',');
-      if (NON_COLUMN_KEYS.includes(filterKey)) {
-        selectedFilterObjects[filterKey] = multipleParsedSelectedFilters[0];
+      const filterId = parsedSelectedFilters[filterKey];
+      const isNonColumnKey = NON_COLUMN_KEYS.includes(filterKey);
+
+      if (isNonColumnKey) {
+        selectedFilterObjects[filterKey] = filterId;
       } else {
+        const multipleParsedSelectedFilters = filterId.split(',');
         selectedFilterObjects[filterKey] = findFilterOptions(
           filterOptions[filterKey],
           multipleParsedSelectedFilters
@@ -599,7 +620,7 @@ export const getSelectedOptions = createSelector(
         selectedOptions[key] = selectedFields[key].map(f => ({
           value: f.label || f.slug,
           label: f.label,
-          id: f.iso_code3 || f.id || [f.data_source_id, f.version_id]
+          id: f.iso_code3 || f.id || `${f.data_source_id}-${f.version_id}`
         }));
       }
     });
