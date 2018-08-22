@@ -5,6 +5,7 @@ import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -48,6 +49,7 @@ const getRegions = state => state.regions || null;
 const getVersions = state => (state.meta && state.meta.gwp) || null;
 
 // values from search
+const getSearch = state => state.search || null;
 const getSourceSelection = state => state.search.source || null;
 const getVersionSelection = state => state.search.version || null;
 const getBreakSelection = state => state.search.breakBy || null;
@@ -359,6 +361,11 @@ export const getProviderFilters = createSelector(
     };
   }
 );
+
+export const getLinkToDataExplorer = createSelector([getSearch], search => {
+  const section = 'historical-emissions';
+  return generateLinkToDataExplorer(search, section);
+});
 
 export default {
   getSourceOptions,
