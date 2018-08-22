@@ -16,7 +16,6 @@ export const FIRST_TABLE_HEADERS = {
     'subsector',
     'indicator_id',
     'indicator',
-    'focus',
     'value'
   ],
   'ndc-sdg-linkages': [
