@@ -3,7 +3,6 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
-import snakeCase from 'lodash/snakeCase';
 import qs from 'query-string';
 import { findEqual, isANumber } from 'utils/utils';
 import sortBy from 'lodash/sortBy';
@@ -249,26 +248,6 @@ const addGroupId = (object, groupId) =>
     return updatedRegion;
   });
 
-const getExtraOptionFields = option => {
-  const extraOptionKeys = [
-    'slug',
-    'groupId',
-    'dataSourceId',
-    'dataSourceSlug',
-    'versionId',
-    'versionSlug',
-    'goal_id'
-  ];
-  const extraOptions = {};
-  extraOptionKeys.forEach(k => {
-    const existingValue = option[snakeCase(k)] || option[k];
-    if (existingValue) {
-      extraOptions[k] = existingValue;
-    }
-  });
-  return extraOptions;
-};
-
 const getLabel = (option, filterKey) => {
   const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
   let label = option[labelField];
@@ -316,7 +295,7 @@ export const getFilterOptions = createSelector(
             (option.id && String(option.id)) ||
             (option.dataSourceId &&
               `${option.dataSourceId}-${option.versionId}`);
-          return { value, label, ...getExtraOptionFields(option) };
+          return { ...option, value, label };
         });
         filterOptions[f] = optionsArray;
       }
@@ -524,11 +503,11 @@ export const getDependentOptions = createSelector(
               : i[idLabelToFilterBy];
 
             if (isArray(id)) return id.includes(selectedId);
-            id = String(id);
+            id = parseInt(id, 10);
 
             return isArray(selectedId)
               ? selectedId.includes(id)
-              : id === selectedId;
+              : id === parseInt(selectedId, 10);
           });
         });
       }
