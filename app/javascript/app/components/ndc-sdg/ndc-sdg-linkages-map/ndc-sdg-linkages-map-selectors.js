@@ -2,7 +2,9 @@ import { createSelector } from 'reselect';
 import { scaleLinear } from 'd3-scale';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 
+const getSearch = state => state.search || null;
 const getNdcsSdgsGoalsData = state => state.goalsData || null;
 const getGoalSelected = state => state.goalSelected || null;
 const getGoalHover = state => state.goalHover || null;
@@ -88,6 +90,11 @@ export const getPathsWithStyles = createSelector(
     return paths;
   }
 );
+
+export const getLinkToDataExplorer = createSelector([getSearch], search => {
+  const section = 'ndc-sdg-linkages';
+  return generateLinkToDataExplorer(search, section);
+});
 
 export default {
   getPathsWithStyles
