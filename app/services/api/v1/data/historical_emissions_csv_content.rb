@@ -7,7 +7,7 @@ module Api
         def initialize(filter, output)
           @grouped_query = filter.call
           @headers = filter.column_aliases
-          @years = filter.years
+          @years = filter.header_years
           @output = output
         end
 
