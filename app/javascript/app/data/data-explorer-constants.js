@@ -72,7 +72,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
-// Add this extra filters when they are available in the backend
+// Add the extra filters when they are available in the backend
 export const DATA_EXPLORER_FILTERS = {
   'historical-emissions': ['source', 'regions', 'sectors', 'gases'],
   'ndc-sdg-linkages': [
