@@ -81,8 +81,17 @@ class DataExplorerContentContainer extends PureComponent {
     ];
   };
 
-  parsedMultipleValues = (filterName, value) =>
-    value.map(filter => filter.value).toString();
+  parsedMultipleValues = (filterName, value) => {
+    const selectedValue = value[value.length - 1];
+    if (
+      selectedValue &&
+      selectedValue.groupId &&
+      selectedValue.groupId === 'regions'
+    ) {
+      return [selectedValue.value];
+    }
+    return value.map(filter => filter.value).toString();
+  };
 
   handleFilterChange = (filterName, value, multiple) => {
     const { section } = this.props;
