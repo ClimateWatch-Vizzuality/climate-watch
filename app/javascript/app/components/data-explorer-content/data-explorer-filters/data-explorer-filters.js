@@ -86,8 +86,17 @@ const sourceAndVersionParam = (value, section) => {
   ];
 };
 
-const parsedMultipleValues = values =>
-  values.map(filter => filter.value).toString();
+const parsedMultipleValues = value => {
+  const selectedValue = value[value.length - 1];
+  if (
+    selectedValue &&
+    selectedValue.groupId &&
+    selectedValue.groupId === 'regions'
+  ) {
+    return [selectedValue.value];
+  }
+  return value.map(filter => filter.value).toString();
+};
 
 const getParamsToUpdate = (updatedFilters, section) => {
   const SOURCE_AND_VERSION_KEY = 'source';
@@ -129,7 +138,9 @@ class DataExplorerFiltersContainer extends PureComponent {
           const defaultOption = filterOptions[key].find(
             f => f.label === FILTER_DEFAULTS[section][key]
           );
-          if (defaultOption && defaultOption.value) { defaultOptionsToUpdate[key] = defaultOption.value; }
+          if (defaultOption && defaultOption.value) {
+            defaultOptionsToUpdate[key] = defaultOption.value;
+          }
         }
       });
       this.handleFiltersChange(defaultOptionsToUpdate, true);
