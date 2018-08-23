@@ -12,9 +12,13 @@ export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
 export const deburrUpper = string => toUpper(deburr(string));
 export const deburrCapitalize = string =>
-  capitalize(deburr(string)).replace('_', ' ');
+  replaceAcronyms(capitalize(deburr(string)).replace('_', ' '));
 export const toStartCase = string => {
   const parsedString = startCase(string);
+  return replaceAcronyms(parsedString);
+};
+
+const replaceAcronyms = string => {
   const replacements = {
     'Ndc Sdg': 'NDC-SDG',
     Ndc: 'NDC',
@@ -22,7 +26,7 @@ export const toStartCase = string => {
     Sdg: 'SDG',
     'Co 2': 'CO2'
   };
-  return replaceAll(parsedString, replacements);
+  return replaceAll(string, replacements);
 };
 
 export const isANumber = i => !isNaN(parseInt(i, 10));
