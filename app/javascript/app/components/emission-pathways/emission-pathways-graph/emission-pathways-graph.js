@@ -18,7 +18,8 @@ import {
   getFiltersOptions,
   getFiltersSelected,
   getModalData,
-  getModelSelected
+  getModelSelected,
+  getLinkToDataExplorer
 } from './emission-pathways-graph-selectors';
 
 const actions = { ...ownActions, ...modalActions };
@@ -46,7 +47,8 @@ const mapStateToProps = (state, { location }) => {
     indicator,
     scenario,
     category,
-    subcategory
+    subcategory,
+    search
   };
   const providers = [
     'espTimeSeries',
@@ -57,16 +59,6 @@ const mapStateToProps = (state, { location }) => {
     'espGraph'
   ];
   const filtersSelected = getFiltersSelected(espData);
-  const downloadFilters = {};
-  [
-    'model',
-    'category',
-    'subcategory',
-    'indicator',
-    'currentLocation'
-  ].forEach(f => {
-    if (search[f] && search[f] !== '') downloadFilters[f] = search[f];
-  });
   return {
     data: getChartData(espData),
     domain: getChartDomainWithYMargins(espData),
@@ -84,7 +76,7 @@ const mapStateToProps = (state, { location }) => {
     error: providers.some(p => state[p].error),
     loading: providers.some(p => state[p].loading) || !filtersSelected.model,
     search,
-    downloadFilters
+    link: getLinkToDataExplorer(espData)
   };
 };
 
@@ -113,8 +105,17 @@ class EmissionPathwayGraphContainer extends PureComponent {
       'indicator',
       'currentLocation'
     ].forEach(f => {
-      if (!search[f] && filtersSelected[f]) {
-        this.updateUrlParam({ name: f, value: filtersSelected[f].value });
+      if (!search[f]) {
+        if (f === 'currentLocation' && filtersSelected.location) {
+          this.updateUrlParam({
+            name: f,
+            value:
+              (filtersSelected[f] && filtersSelected[f].value) ||
+              filtersSelected.location.value
+          });
+        } else if (f !== 'currentLocation' && filtersSelected[f]) {
+          this.updateUrlParam({ name: f, value: filtersSelected[f].value });
+        }
       }
     });
   }
