@@ -44,7 +44,7 @@ const mapStateToProps = (state, { location }) => {
     indicators: getCategoryIndicators(ndcsWithSelection),
     selectedCategory: getSelectedCategory(ndcsWithSelection),
     selectedIndicator: getSelectedIndicator(ndcsWithSelection),
-    link: getLinkToDataExplorer(ndcsWithSelection)
+    downloadLink: getLinkToDataExplorer(ndcsWithSelection)
   };
 };
 

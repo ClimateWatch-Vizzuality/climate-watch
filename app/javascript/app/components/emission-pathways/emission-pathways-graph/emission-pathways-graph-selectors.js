@@ -582,7 +582,7 @@ export const getLinkToDataExplorer = createSelector(
     if (!scenarios.length) return null;
     if (!search.scenario && search.model) {
       // Adds the first scenario belonging to the selected model to populate
-      // Data Downloader dropdown and table in case there's no scenario selected
+      // Data Explorer dropdown and table in case there's no scenario selected
       const scenarioId = scenarios.find(
         s => s.model.id === parseInt(search.model, 10)
       ).id;

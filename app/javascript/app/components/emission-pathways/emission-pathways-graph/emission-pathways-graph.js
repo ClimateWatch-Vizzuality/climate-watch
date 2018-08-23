@@ -76,7 +76,7 @@ const mapStateToProps = (state, { location }) => {
     error: providers.some(p => state[p].error),
     loading: providers.some(p => state[p].loading) || !filtersSelected.model,
     search,
-    link: getLinkToDataExplorer(espData)
+    downloadLink: getLinkToDataExplorer(espData)
   };
 };
 

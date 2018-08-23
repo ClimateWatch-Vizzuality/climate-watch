@@ -31,7 +31,7 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     goalSelected,
     goalHover,
     targetHover,
-    link: getLinkToDataExplorer(data)
+    downloadLink: getLinkToDataExplorer(data)
   };
 };
 class NdcSdgLinkagesMapContainer extends PureComponent {
