@@ -7,8 +7,8 @@ import { actions } from 'components/modal-download';
 import isArray from 'lodash/isArray';
 import {
   DATA_EXPLORER_FILTERS,
-  DATA_EXPLORER_DEPENDENCIES,
-  FILTER_DEFAULTS
+  DATA_EXPLORER_DEPENDENCIES
+  // FILTER_DEFAULTS
 } from 'data/data-explorer-constants';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
@@ -125,26 +125,28 @@ const resetPageParam = {
 
 class DataExplorerFiltersContainer extends PureComponent {
   componentDidUpdate() {
-    const { selectedOptions, filterOptions, section } = this.props;
-    const defaultOptionsToUpdate = {};
-    const selectedOptionKeys = selectedOptions && Object.keys(selectedOptions);
-    const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
-    if (
-      selectedOptions &&
-      !filterDefaultKeys.every(r => selectedOptionKeys.includes(r))
-    ) {
-      Object.keys(FILTER_DEFAULTS[section]).forEach(key => {
-        if (!selectedOptions[key]) {
-          const defaultOption = filterOptions[key].find(
-            f => f.label === FILTER_DEFAULTS[section][key]
-          );
-          if (defaultOption && defaultOption.value) {
-            defaultOptionsToUpdate[key] = defaultOption.value;
-          }
-        }
-      });
-      this.handleFiltersChange(defaultOptionsToUpdate, true);
-    }
+    // const { selectedOptions, filterOptions, section } = this.props;
+    // const defaultOptionsToUpdate = {};
+    // const selectedOptionKeys = selectedOptions && Object.keys(selectedOptions)
+    //   .filter(k => selectedOptions[k].length > 0); // Sometimes the value is empty when removing
+    // const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
+    // if (
+    //   selectedOptions &&
+    //   !filterDefaultKeys.every(r => selectedOptionKeys.includes(r))
+    // ) {
+    //   filterDefaultKeys.forEach(key => {
+    //     if (!selectedOptionKeys.includes(key)) {
+    //       const defaultValues = FILTER_DEFAULTS[section][key].split(',');
+    //       const defaultOptions = filterOptions[key].filter(
+    //         f => {defaultValues.includes(f.value || f.label)}
+    //       );
+    //       if (defaultOptions && defaultOptions.length && defaultOptions[0].value) {
+    //         defaultOptionsToUpdate[key] = defaultOptions.map(o => o.value).join(',');
+    //       }
+    //     }
+    //   });
+    // this.handleFiltersChange(defaultOptionsToUpdate, true);
+    // }
   }
 
   handleFiltersChange = (updatedFilters, isFilterDefaultChange) => {
@@ -175,9 +177,9 @@ class DataExplorerFiltersContainer extends PureComponent {
 DataExplorerFiltersContainer.propTypes = {
   section: PropTypes.string,
   history: PropTypes.object,
-  location: PropTypes.object,
-  selectedOptions: PropTypes.object,
-  filterOptions: PropTypes.object
+  location: PropTypes.object
+  // selectedOptions: PropTypes.object,
+  // filterOptions: PropTypes.object
 };
 
 export default withRouter(

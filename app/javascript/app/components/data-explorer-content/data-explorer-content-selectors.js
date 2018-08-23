@@ -20,7 +20,8 @@ import {
   FILTERED_FIELDS,
   POSSIBLE_LABEL_FIELDS,
   POSSIBLE_VALUE_FIELDS,
-  NON_COLUMN_KEYS
+  NON_COLUMN_KEYS,
+  FILTER_DEFAULTS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS } from 'data/constants';
 import {
@@ -143,7 +144,26 @@ function filterQueryIds(meta, search, section, isLinkQuery) {
 
 export const getFilterQuery = createSelector(
   [getMeta, getSearch, getSection],
-  (meta, search, section) => filterQueryIds(meta, search, section, false)
+  (meta, search, section) => {
+    const paramsToColumns = { 'data-sources': 'source' };
+    const searchKeys = Object.keys(search);
+    const parsedSearchKeys = searchKeys.map(k => {
+      const keyWithoutSectionPrefix = k.replace(`${section}-`, '');
+      return (
+        paramsToColumns[keyWithoutSectionPrefix] || keyWithoutSectionPrefix
+      );
+    });
+    const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
+    const noExternalParams = !searchKeys.some(s =>
+      s.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
+    );
+    const checkedDefaultParams = filterDefaultKeys.every(defaultKey =>
+      parsedSearchKeys.includes(defaultKey, section)
+    );
+    const isReadyForFetch = noExternalParams && checkedDefaultParams;
+    if (!isReadyForFetch) return null;
+    return filterQueryIds(meta, search, section, false);
+  }
 );
 
 export const getNonColumnQuery = createSelector(
@@ -426,7 +446,6 @@ export const getSelectedFilters = createSelector(
       k => !k.startsWith(DATA_EXPLORER_EXTERNAL_PREFIX)
     );
     const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
-
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
     let parsedSelectedFilters = mergeSourcesAndVersions(
       removeFiltersPrefix(sectionRelatedFields, section)
