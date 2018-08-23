@@ -16,7 +16,6 @@ export const FIRST_TABLE_HEADERS = {
     'subsector',
     'indicator_id',
     'indicator',
-    'focus',
     'value'
   ],
   'ndc-sdg-linkages': [
@@ -40,6 +39,13 @@ export const FIRST_TABLE_HEADERS = {
     'definition',
     'unit'
   ]
+};
+
+export const FILTER_DEFAULTS = {
+  'historical-emissions': { source: 'CAIT - AR2' },
+  'ndc-content': {},
+  'ndc-sdg-linkages': {},
+  'emission-pathways': {}
 };
 
 export const DATA_EXPLORER_SECTIONS = {

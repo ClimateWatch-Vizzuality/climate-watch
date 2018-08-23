@@ -15,7 +15,7 @@ class DataExplorerFilters extends PureComponent {
 
   renderDropdown(field, isColumnField) {
     const {
-      handleFilterChange,
+      handleFiltersChange,
       selectedOptions,
       filterOptions,
       isDisabled
@@ -31,7 +31,7 @@ class DataExplorerFilters extends PureComponent {
         placeholder={`Filter by ${deburrCapitalize(field)}`}
         options={(filterOptions && filterOptions[field]) || []}
         onValueChange={selected =>
-          handleFilterChange(field, selected && selected.value)}
+          handleFiltersChange({ [field]: selected && selected.value })}
         value={value || null}
         plain
         disabled={isDisabled(field)}
@@ -42,7 +42,7 @@ class DataExplorerFilters extends PureComponent {
 
   render() {
     const {
-      handleFilterChange,
+      handleFiltersChange,
       selectedOptions,
       filterOptions,
       filters,
@@ -73,7 +73,7 @@ class DataExplorerFilters extends PureComponent {
             disabled={isDisabled(field)}
             clearable
             onChange={option =>
-              handleFilterChange(field, option && option.value)}
+              handleFiltersChange({ [field]: option && option.value })}
             noParentSelection={multipleSection(field).noSelectableParent}
           />
         );
@@ -92,7 +92,7 @@ class DataExplorerFilters extends PureComponent {
             groups={fieldInfo.groups}
             disabled={isDisabled(field)}
             onMultiValueChange={selected =>
-              handleFilterChange(field, selected, true)}
+              handleFiltersChange({ [field]: selected })}
           />
         );
       }
@@ -113,7 +113,7 @@ class DataExplorerFilters extends PureComponent {
 DataExplorerFilters.propTypes = {
   activeFilterRegion: PropTypes.string,
   section: PropTypes.string.isRequired,
-  handleFilterChange: PropTypes.func.isRequired,
+  handleFiltersChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,
