@@ -28,7 +28,7 @@ module Api
         def call
           @query = apply_filters(@query)
           @years_query = apply_filters(@years_query)
-          @years = @years_query.distinct(:year).pluck(:year).sort
+          @years = @years_query.distinct(:year).pluck(:year).sort.reverse
           @header_years = @years.dup
           @header_years.reject! { |y| y < @start_year } if @start_year
           @header_years.reject! { |y| y > @end_year } if @end_year
@@ -63,11 +63,12 @@ module Api
             },
             {
               column: 'iso_code3',
-              alias: 'iso_code3'
+              alias: 'iso_code3',
+              visible: false
             },
             {
               column: 'region',
-              alias: 'region'
+              alias: 'country'
             },
             {
               column: 'data_source',
@@ -75,7 +76,8 @@ module Api
             },
             {
               column: 'gwp',
-              alias: 'gwp'
+              alias: 'gwp',
+              visible: false
             },
             {
               column: 'sector',

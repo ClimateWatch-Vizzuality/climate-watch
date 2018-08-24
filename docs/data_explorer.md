@@ -20,7 +20,7 @@
 
 File format:
 
-Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 | ...
+Country | Data source | Sector | Gas | Unit | year n | year n-1 | ...
 
 
 ### JSON API endpoint
@@ -34,10 +34,9 @@ Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 
    "data":[
       {
          "id":66319,
-         "region":"string",
          "iso_code3":"ISO code 3",
+         "country":"string",
          "data_source":"string",
-         "gwp":"string",
          "sector":"string",
          "gas":"string",
          "unit":"string",
