@@ -485,16 +485,24 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
    "data":[
       {
-         "id":817,
+         "id":1740,
          "slug":"overview",
          "name":"Overview",
-         "parent_id":null
+         "parent_id":null,
+         "category_type":{
+            "id":181,
+            "name":"global"
+         }
       },
       {
-         "id":839,
-         "slug":"adaptation",
-         "name":"Adaptation",
-         "parent_id":817
+         "id":1744,
+         "slug":"ndc",
+         "name":"NDC",
+         "parent_id":1740,
+         "category_type":{
+            "id":182,
+            "name":"overview"
+         }
       }
    ]
 }
