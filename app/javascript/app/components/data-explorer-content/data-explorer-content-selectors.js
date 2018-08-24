@@ -106,6 +106,12 @@ const findSelectedValueObject = (meta, selectedId) =>
 
 function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
+  const subcategories =
+    metadata.categories && metadata.categories.filter(cat => cat.parent_id);
+  // Subcategories are needed on Pathways
+  const metadataWithSubcategories = subcategories
+    ? { ...metadata, subcategories }
+    : metadata;
   Object.keys(parsedFilters).forEach(key => {
     let correctedKey = key;
     if (key === FILTER_NAMES.subcategories && !isLinkQuery) {
@@ -114,10 +120,10 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     const parsedKey = correctedKey.replace('-', '_');
     const selectedIds = parsedFilters[key].split(',');
     const filters = [];
-    if (metadata[parsedKey]) {
+    if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
         const foundSelectedOption = findSelectedValueObject(
-          metadata[parsedKey],
+          metadataWithSubcategories[parsedKey],
           selectedId
         );
         if (foundSelectedOption) filters.push(foundSelectedOption);
@@ -146,6 +152,11 @@ export const getFilterQuery = createSelector(
   (meta, search, section) => filterQueryIds(meta, search, section, false)
 );
 
+export const getLinkFilterQuery = createSelector(
+  [getMeta, getSearch, getSection],
+  (meta, search, section) => filterQueryIds(meta, search, section, true)
+);
+
 export const getNonColumnQuery = createSelector(
   [getSearch, getSection],
   (search, section) => {
@@ -156,11 +167,6 @@ export const getNonColumnQuery = createSelector(
     );
     return removeFiltersPrefix(nonColumnQuery, section);
   }
-);
-
-export const getLinkFilterQuery = createSelector(
-  [getMeta, getSearch, getSection],
-  (meta, search, section) => filterQueryIds(meta, search, section, true)
 );
 
 export const parseFilterQuery = createSelector(

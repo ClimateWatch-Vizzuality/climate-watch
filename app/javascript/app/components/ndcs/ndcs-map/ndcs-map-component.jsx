@@ -25,7 +25,7 @@ const getTooltip = (country, tooltipTxt) => (
   </Link>
 );
 
-const renderButtonGroup = clickHandler => (
+const renderButtonGroup = (clickHandler, downloadLink) => (
   <ButtonGroup
     className={styles.buttonGroup}
     buttonsConfig={[
@@ -41,7 +41,8 @@ const renderButtonGroup = clickHandler => (
       },
       {
         type: 'download',
-        section: 'ndcs-content'
+        section: 'ndcs-content',
+        link: downloadLink
       },
       {
         type: 'addToUser'
@@ -58,6 +59,7 @@ const NDCMap = ({
   loading,
   paths,
   tooltipTxt,
+  downloadLink,
   countryData,
   handleIndicatorChange,
   handleCategoryChange,
@@ -86,7 +88,7 @@ const NDCMap = ({
             hideResetButton
             plain
           />
-          {isTablet && renderButtonGroup(handleInfoClick)}
+          {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
         </div>
         {loading && <Loading light className={styles.loader} />}
         <Map
@@ -133,6 +135,7 @@ NDCMap.propTypes = {
   selectedIndicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,
+  downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
