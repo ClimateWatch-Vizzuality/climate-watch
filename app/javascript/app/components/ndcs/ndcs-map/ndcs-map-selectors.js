@@ -2,10 +2,12 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
 
+const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
@@ -167,6 +169,11 @@ export const getPathsWithStyles = createSelector(
     return paths;
   }
 );
+
+export const getLinkToDataExplorer = createSelector([getSearch], search => {
+  const section = 'ndc-content';
+  return generateLinkToDataExplorer(search, section);
+});
 
 export default {
   getCategories,

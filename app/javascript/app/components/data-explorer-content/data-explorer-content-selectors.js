@@ -73,15 +73,15 @@ export const getSourceOptions = createSelector(
       return null;
     }
     return SOURCE_VERSIONS.map(option => {
-      const data_source = meta[section].data_sources.find(
-        s => s.name === option.data_source_slug
+      const dataSource = meta[section].data_sources.find(
+        s => s.name === option.dataSourceSlug
       );
       const version = meta[section].gwps.find(
-        s => s.name === option.version_slug
+        s => s.name === option.versionSlug
       );
       const updatedOption = option;
-      updatedOption.data_source_id = data_source && data_source.id;
-      updatedOption.version_id = version && version.id;
+      updatedOption.dataSourceId = dataSource && dataSource.id;
+      updatedOption.versionId = version && version.id;
       return updatedOption;
     });
   }
@@ -107,6 +107,12 @@ const findSelectedValueObject = (meta, selectedId) =>
 
 function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
+  const subcategories =
+    metadata.categories && metadata.categories.filter(cat => cat.parent_id);
+  // Subcategories are needed on Pathways
+  const metadataWithSubcategories = subcategories
+    ? { ...metadata, subcategories }
+    : metadata;
   Object.keys(parsedFilters).forEach(key => {
     let correctedKey = key;
     if (key === FILTER_NAMES.subcategories && !isLinkQuery) {
@@ -115,10 +121,10 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     const parsedKey = correctedKey.replace('-', '_');
     const selectedIds = parsedFilters[key].split(',');
     const filters = [];
-    if (metadata[parsedKey]) {
+    if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
         const foundSelectedOption = findSelectedValueObject(
-          metadata[parsedKey],
+          metadataWithSubcategories[parsedKey],
           selectedId
         );
         if (foundSelectedOption) filters.push(foundSelectedOption);
@@ -166,6 +172,11 @@ export const getFilterQuery = createSelector(
   }
 );
 
+export const getLinkFilterQuery = createSelector(
+  [getMeta, getSearch, getSection],
+  (meta, search, section) => filterQueryIds(meta, search, section, true)
+);
+
 export const getNonColumnQuery = createSelector(
   [getSearch, getSection],
   (search, section) => {
@@ -176,11 +187,6 @@ export const getNonColumnQuery = createSelector(
     );
     return removeFiltersPrefix(nonColumnQuery, section);
   }
-);
-
-export const getLinkFilterQuery = createSelector(
-  [getMeta, getSearch, getSection],
-  (meta, search, section) => filterQueryIds(meta, search, section, true)
 );
 
 export const parseFilterQuery = createSelector(
@@ -268,6 +274,15 @@ const addGroupId = (object, groupId) =>
     return updatedRegion;
   });
 
+const getLabel = (option, filterKey) => {
+  const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
+  let label = option[labelField];
+  if (filterKey === 'goals' || filterKey === 'targets') {
+    label = `${option.number}: ${label}`;
+  }
+  return label;
+};
+
 export const getFilterOptions = createSelector(
   [
     getMeta,
@@ -292,32 +307,21 @@ export const getFilterOptions = createSelector(
       );
     }
     if (filterKeys.includes('countries')) filtersMeta.countries = countries;
-    if (filterKeys.includes('source')) {
-      filtersMeta.source = sourceVersions;
-    }
+    if (filterKeys.includes('source')) filtersMeta.source = sourceVersions;
+
     const filterOptions = {};
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
         const optionsArray = options.map(option => {
-          const labelField = POSSIBLE_LABEL_FIELDS.find(field => option[field]);
-          let label = option[labelField];
-          const slug = option.slug || label;
-          if (f === 'goals' || f === 'targets') {
-            label = `${option.number}: ${label}`;
-          }
+          const label = getLabel(option, f);
           const value =
             option.iso_code ||
             option.iso_code3 ||
             (option.id && String(option.id)) ||
-            (option.data_source_id &&
-              `${option.data_source_id}-${option.version_id}`);
-          return {
-            slug,
-            value,
-            label,
-            ...option
-          };
+            (option.dataSourceId &&
+              `${option.dataSourceId}-${option.versionId}`);
+          return { ...option, value, label };
         });
         filterOptions[f] = optionsArray;
       }
@@ -428,9 +432,9 @@ const forceAR2OnCAIT = (parsedSelectedFilters, filterOptions) => {
   const selectedOption = filterOptions.source.find(o =>
     o.value.startsWith(dataSourceId)
   );
-  if (selectedOption.slug.startsWith('CAIT')) {
+  if (selectedOption.dataSourceSlug === 'CAIT') {
     const CAIT_AR2_OPTION = filterOptions.source.find(
-      o => o.slug === 'CAIT - AR2'
+      o => o.label === 'CAIT - AR2'
     );
     return { ...parsedSelectedFilters, source: CAIT_AR2_OPTION.value };
   }
@@ -489,16 +493,18 @@ export const getDependentOptions = createSelector(
     ) {
       return options;
     }
+
     const updatedOptions = { ...options };
+
     Object.keys(updatedOptions).forEach(key => {
       const filterableKeys = Object.keys(FILTERED_FIELDS[section]);
       if (filterableKeys.includes(key)) {
         FILTERED_FIELDS[section][key].forEach(f => {
           updatedOptions[key] = updatedOptions[key].filter(i => {
+            const { parent: parentLabel } = f;
             const parentIdLabel = f.parentId || f.id;
-
-            const { id: idLabelToFilterBy, parent: parentLabel } = f;
             let { idObject: idObjectLabel } = f;
+
             if (
               section === SECTION_NAMES.pathways &&
               parentLabel === FILTER_NAMES.categories &&
@@ -508,19 +514,25 @@ export const getDependentOptions = createSelector(
             ) {
               idObjectLabel = 'subcategory';
             }
+
             const selectedId =
               selectedFilters[parentLabel] &&
               selectedFilters[parentLabel][0] &&
               selectedFilters[parentLabel][0][parentIdLabel];
+
             if (!selectedId) return true;
-            const id = idObjectLabel
+
+            const { id: idLabelToFilterBy } = f;
+            let id = idObjectLabel
               ? i[idObjectLabel][idLabelToFilterBy]
               : i[idLabelToFilterBy];
 
             if (isArray(id)) return id.includes(selectedId);
+            id = parseInt(id, 10);
+
             return isArray(selectedId)
               ? selectedId.includes(id)
-              : id === selectedId;
+              : id === parseInt(selectedId, 10);
           });
         });
       }
@@ -606,21 +618,19 @@ export const getMethodology = createSelector(
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source = selectedFilters.source[0].data_source_slug;
+      const source = selectedFilters.source[0].dataSourceSlug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
     return methodology.filter(s => metaSource.includes(s.source));
   }
 );
 
-export const getActiveFilterRegion = createSelector(
+export const getActiveFilterLabel = createSelector(
   [getSelectedFilters],
   selectedFields => {
-    if (!selectedFields || !selectedFields.regions) return null;
-    const selectedRegion = selectedFields.regions.find(
-      f => f.groupId === 'regions'
-    );
-    return selectedRegion && selectedRegion.label;
+    const regions = selectedFields && selectedFields.regions;
+    if (!regions || regions.length > 1) return null;
+    return regions[0] && regions[0].label;
   }
 );
 
@@ -637,12 +647,13 @@ export const getSelectedOptions = createSelector(
         };
       } else {
         selectedOptions[key] = selectedFields[key].map(f => ({
-          value: f.label || f.slug,
+          value: f.value || f.slug,
           label: f.label,
           id: f.iso_code3 || f.id || `${f.data_source_id}-${f.version_id}`
         }));
       }
     });
+
     return selectedOptions;
   }
 );

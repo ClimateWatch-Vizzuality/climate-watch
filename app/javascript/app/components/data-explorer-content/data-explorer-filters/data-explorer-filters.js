@@ -8,11 +8,10 @@ import isArray from 'lodash/isArray';
 import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_DEPENDENCIES
-  // FILTER_DEFAULTS
 } from 'data/data-explorer-constants';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
-  getActiveFilterRegion,
+  getActiveFilterLabel,
   addYearOptions,
   getSelectedOptions
 } from '../data-explorer-content-selectors';
@@ -52,7 +51,7 @@ const mapStateToProps = (state, { section, location }) => {
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: addYearOptions(dataState),
     selectedOptions,
-    activeFilterRegion: getActiveFilterRegion(dataState)
+    activeFilterRegion: getActiveFilterLabel(dataState)
   };
 };
 
@@ -73,7 +72,7 @@ const getDependentKeysToDelete = (section, filterName) => {
 };
 
 const sourceAndVersionParam = (value, section) => {
-  const values = value && value.split(' - ');
+  const values = value && value.split('-');
   return [
     {
       name: `${section}-data-sources`,
@@ -124,31 +123,6 @@ const resetPageParam = {
 };
 
 class DataExplorerFiltersContainer extends PureComponent {
-  componentDidUpdate() {
-    // const { selectedOptions, filterOptions, section } = this.props;
-    // const defaultOptionsToUpdate = {};
-    // const selectedOptionKeys = selectedOptions && Object.keys(selectedOptions)
-    //   .filter(k => selectedOptions[k].length > 0); // Sometimes the value is empty when removing
-    // const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
-    // if (
-    //   selectedOptions &&
-    //   !filterDefaultKeys.every(r => selectedOptionKeys.includes(r))
-    // ) {
-    //   filterDefaultKeys.forEach(key => {
-    //     if (!selectedOptionKeys.includes(key)) {
-    //       const defaultValues = FILTER_DEFAULTS[section][key].split(',');
-    //       const defaultOptions = filterOptions[key].filter(
-    //         f => {defaultValues.includes(f.value || f.label)}
-    //       );
-    //       if (defaultOptions && defaultOptions.length && defaultOptions[0].value) {
-    //         defaultOptionsToUpdate[key] = defaultOptions.map(o => o.value).join(',');
-    //       }
-    //     }
-    //   });
-    // this.handleFiltersChange(defaultOptionsToUpdate, true);
-    // }
-  }
-
   handleFiltersChange = (updatedFilters, isFilterDefaultChange) => {
     const { section } = this.props;
     const dependentKeysToDeleteParams = isFilterDefaultChange
@@ -178,8 +152,6 @@ DataExplorerFiltersContainer.propTypes = {
   section: PropTypes.string,
   history: PropTypes.object,
   location: PropTypes.object
-  // selectedOptions: PropTypes.object,
-  // filterOptions: PropTypes.object
 };
 
 export default withRouter(
