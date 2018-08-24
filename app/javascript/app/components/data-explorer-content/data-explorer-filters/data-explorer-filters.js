@@ -10,7 +10,7 @@ import {
 } from 'data/data-explorer-constants';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
-  getActiveFilterRegion,
+  getActiveFilterLabel,
   addYearOptions,
   getSelectedOptions
 } from '../data-explorer-content-selectors';
@@ -50,7 +50,7 @@ const mapStateToProps = (state, { section, location }) => {
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: addYearOptions(dataState),
     selectedOptions,
-    activeFilterRegion: getActiveFilterRegion(dataState)
+    activeFilterRegion: getActiveFilterLabel(dataState)
   };
 };
 
@@ -82,26 +82,15 @@ class DataExplorerContentContainer extends PureComponent {
   };
 
   parsedMultipleValues = (filterName, value) => {
-    const { selectedOptions } = this.props;
-    const oldFilters = selectedOptions[filterName];
-    const removing = oldFilters && value.length < oldFilters.length;
-    const selectedFilter = !oldFilters
-      ? value[0]
-      : value
-        .filter(x => oldFilters.indexOf(x) === -1)
-        .concat(oldFilters.filter(x => value.indexOf(x) === -1))[0];
-    const filtersParam = [];
-    if (!removing && selectedFilter.groupId === 'regions') {
-      filtersParam.push(selectedFilter.value);
-      selectedFilter.members.forEach(m => filtersParam.push(m.iso_code3));
-    } else {
-      value.forEach(filter => {
-        if (filter.groupId !== 'regions') {
-          filtersParam.push(filter.value);
-        }
-      });
+    const selectedValue = value[value.length - 1];
+    if (
+      selectedValue &&
+      selectedValue.groupId &&
+      selectedValue.groupId === 'regions'
+    ) {
+      return [selectedValue.value];
     }
-    return filtersParam.toString();
+    return value.map(filter => filter.value).toString();
   };
 
   handleFilterChange = (filterName, value, multiple) => {
@@ -118,7 +107,6 @@ class DataExplorerContentContainer extends PureComponent {
     const parsedValue = multiple
       ? this.parsedMultipleValues(filterName, value)
       : value;
-
     if (filterName === SOURCE_AND_VERSION_KEY) {
       paramsToUpdate = paramsToUpdate.concat(
         this.sourceAndVersionParam(value, section)
@@ -150,8 +138,7 @@ class DataExplorerContentContainer extends PureComponent {
 DataExplorerContentContainer.propTypes = {
   section: PropTypes.string,
   history: PropTypes.object,
-  location: PropTypes.object,
-  selectedOptions: PropTypes.object
+  location: PropTypes.object
 };
 
 export default withRouter(
