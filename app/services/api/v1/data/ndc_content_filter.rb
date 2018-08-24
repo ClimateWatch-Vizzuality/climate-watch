@@ -80,10 +80,6 @@ module Api
               alias: 'source'
             },
             {
-              column: 'indc_labels.value',
-              alias: 'label'
-            },
-            {
               column: 'indc_sectors.name',
               alias: 'sector'
             },

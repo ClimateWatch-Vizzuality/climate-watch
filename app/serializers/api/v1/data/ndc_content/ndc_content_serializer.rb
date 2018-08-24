@@ -10,7 +10,6 @@ module Api
           attribute(:short_name) { object['short_name'] }
           attribute(:value) { object['value'] }
           attribute(:source) { object['source'] }
-          attribute(:label) { object['label'] }
           attribute(:global_category) { object['global_category'] }
           attribute(:overview_category) { object['overview_category'] }
           attribute(:sector) { object['sector'] }
