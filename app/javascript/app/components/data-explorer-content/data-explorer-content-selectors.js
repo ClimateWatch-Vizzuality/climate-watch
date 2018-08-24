@@ -510,6 +510,46 @@ export const getSelectedFilters = createSelector(
   }
 );
 
+const filterKeyOptionsByDependencies = (
+  keyOptions,
+  filteringConfig,
+  section,
+  selectedFilters
+) =>
+  keyOptions.filter(option => {
+    const { parent: parentLabel } = filteringConfig;
+    const parentIdLabel = filteringConfig.parentId || filteringConfig.id;
+    let { idObject: idObjectLabel } = filteringConfig;
+
+    if (
+      section === SECTION_NAMES.pathways &&
+      parentLabel === FILTER_NAMES.categories &&
+      selectedFilters.categories &&
+      selectedFilters.categories[0] &&
+      selectedFilters.categories[0].parent_id
+    ) {
+      idObjectLabel = 'subcategory';
+    }
+
+    const selectedId =
+      selectedFilters[parentLabel] &&
+      selectedFilters[parentLabel][0] &&
+      selectedFilters[parentLabel][0][parentIdLabel];
+    if (!selectedId) return true;
+
+    const { id: idLabelToFilterBy } = filteringConfig;
+    let id = idObjectLabel
+      ? option[idObjectLabel][idLabelToFilterBy]
+      : option[idLabelToFilterBy];
+
+    if (isArray(id)) return id.includes(selectedId);
+    id = parseInt(id, 10);
+
+    return isArray(selectedId)
+      ? selectedId.includes(id)
+      : id === parseInt(selectedId, 10);
+  });
+
 export const getDependentOptions = createSelector(
   [parseGroupsInOptions, getSection, getSelectedFilters],
   (options, section, selectedFilters) => {
@@ -522,47 +562,17 @@ export const getDependentOptions = createSelector(
     ) {
       return options;
     }
-
     const updatedOptions = { ...options };
-
     Object.keys(updatedOptions).forEach(key => {
       const filterableKeys = Object.keys(FILTERED_FIELDS[section]);
       if (filterableKeys.includes(key)) {
-        FILTERED_FIELDS[section][key].forEach(f => {
-          updatedOptions[key] = updatedOptions[key].filter(i => {
-            const { parent: parentLabel } = f;
-            const parentIdLabel = f.parentId || f.id;
-            let { idObject: idObjectLabel } = f;
-
-            if (
-              section === SECTION_NAMES.pathways &&
-              parentLabel === FILTER_NAMES.categories &&
-              selectedFilters.categories &&
-              selectedFilters.categories[0] &&
-              selectedFilters.categories[0].parent_id
-            ) {
-              idObjectLabel = 'subcategory';
-            }
-
-            const selectedId =
-              selectedFilters[parentLabel] &&
-              selectedFilters[parentLabel][0] &&
-              selectedFilters[parentLabel][0][parentIdLabel];
-
-            if (!selectedId) return true;
-
-            const { id: idLabelToFilterBy } = f;
-            let id = idObjectLabel
-              ? i[idObjectLabel][idLabelToFilterBy]
-              : i[idLabelToFilterBy];
-
-            if (isArray(id)) return id.includes(selectedId);
-            id = parseInt(id, 10);
-
-            return isArray(selectedId)
-              ? selectedId.includes(id)
-              : id === parseInt(selectedId, 10);
-          });
+        FILTERED_FIELDS[section][key].forEach(filteringConfig => {
+          updatedOptions[key] = filterKeyOptionsByDependencies(
+            updatedOptions[key],
+            filteringConfig,
+            section,
+            selectedFilters
+          );
         });
       }
     });

@@ -101,7 +101,11 @@ export const DATA_EXPLORER_FILTERS = {
   'ndc-content': ['categories', 'indicators', 'sectors', 'countries'] // TODO: add focus when ready
 };
 
+// The dropdown named as the keys will be deleted if one of the values column changes
 export const DATA_EXPLORER_DEPENDENCIES = {
+  'historical-emissions': {
+    sectors: ['source']
+  },
   'emission-pathways': {
     models: ['locations'],
     scenarios: ['models', 'locations'],
@@ -199,6 +203,7 @@ export const FILTERED_FIELDS = {
     sectors: [
       {
         parent: 'source',
+        parentId: 'dataSourceId',
         id: 'data_source_id'
       }
     ]
