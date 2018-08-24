@@ -670,7 +670,7 @@ export const getFirstTableHeaders = createSelector(
   (data, section) => {
     if (!data || !data.length) return null;
     const yearColumnKeys = Object.keys(data[0]).filter(k => isANumber(k));
-    const reversedYearColumnKeys = yearColumnKeys.slice().reverse();
+    const reversedYearColumnKeys = [...yearColumnKeys].reverse();
     switch (section) {
       case 'emission-pathways':
         return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(yearColumnKeys);
