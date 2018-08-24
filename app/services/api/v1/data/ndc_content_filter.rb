@@ -10,7 +10,6 @@ module Api
         # @option params [Array<Integer>] :source_ids
         # @option params [Array<Integer>] :indicator_ids
         # @option params [Array<Integer>] :category_ids
-        # @option params [Array<Integer>] :label_ids
         # @option params [Array<Integer>] :sector_ids
         # @option params [String] :sort_col
         # @option params [String] :sort_dir
@@ -25,7 +24,6 @@ module Api
           @query = @query.
             select(select_columns).
             joins(:location, indicator: :source).
-            joins('LEFT JOIN indc_labels ON label_id = indc_labels.id').
             joins('LEFT JOIN indc_sectors ON sector_id = indc_sectors.id').
             group(group_columns).
             order(sanitised_order)
@@ -116,7 +114,7 @@ module Api
         def initialize_filters(params)
           # integer arrays
           [
-            :source_ids, :indicator_ids, :category_ids, :label_ids, :sector_ids
+            :source_ids, :indicator_ids, :category_ids, :sector_ids
           ].map do |param_name|
             if params[param_name].present? && params[param_name].is_a?(Array)
               value = params[param_name].map(&:to_i)
@@ -134,7 +132,6 @@ module Api
             )
           end
           @query = @query.where(indicator_id: @indicator_ids) if @indicator_ids
-          @query = @query.where(label_id: @label_ids) if @label_ids
           apply_sector_filter
           apply_category_filter
         end

@@ -355,7 +355,6 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 - source_ids[]
 - indicator_ids[]
 - category_ids[]
-- label_ids[]
 - sector_ids[]
 - sort_dir (ASC / DESC)
 - sort_col (column name for sortable columns - see meta)
