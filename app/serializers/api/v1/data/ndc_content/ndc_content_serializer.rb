@@ -9,8 +9,9 @@ module Api
           attribute(:indicator) { object['indicator'] }
           attribute(:value) { object['value'] }
           attribute(:source) { object['source'] }
-          attribute(:categories) { object['categories'] }
           attribute(:label) { object['label'] }
+          attribute(:global_category) { object['global_category'] }
+          attribute(:overview_category) { object['overview_category'] }
           attribute(:sector) { object['sector'] }
         end
       end

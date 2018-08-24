@@ -22,13 +22,29 @@ module Api
 
         def call
           apply_filters
-          @query.
+          @query = @query.
             select(select_columns).
-            joins(:location, indicator: [:source, :categories]).
+            joins(:location, indicator: :source).
             joins('LEFT JOIN indc_labels ON label_id = indc_labels.id').
             joins('LEFT JOIN indc_sectors ON sector_id = indc_sectors.id').
             group(group_columns).
             order(sanitised_order)
+          [
+            ::Indc::CategoryType::GLOBAL, ::Indc::CategoryType::OVERVIEW
+          ].each.with_index do |name, idx|
+            category_type = ::Indc::CategoryType.find_by_name(name)
+            @query = @query.joins(
+              <<~SQL
+              LEFT JOIN (
+                SELECT ic.category_id, ic.indicator_id, c.name
+                FROM indc_indicators_categories ic
+                JOIN indc_categories c ON ic.category_id = c.id
+                WHERE c.category_type_id = #{category_type&.id}
+              ) #{name}_categories ON #{name}_categories.indicator_id = indc_indicators.id
+              SQL
+            )
+          end
+          @query
         end
 
         def meta
@@ -75,11 +91,19 @@ module Api
             },
             {
               # rubocop:disable Metrics/LineLength
-              column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT indc_categories.name ORDER BY indc_categories.name), ', ')",
-              alias: 'categories',
+              column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT global_categories.name), ', ')",
+              # rubocop:enable Metrics/LineLength
+              alias: 'global_category',
               order: false,
               group: false
+            },
+            {
+              # rubocop:disable Metrics/LineLength
+              column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT overview_categories.name), ', ')",
               # rubocop:enable Metrics/LineLength
+              alias: 'overview_category',
+              order: false,
+              group: false
             }
           ]
         end
@@ -142,7 +166,7 @@ module Api
             ).pluck(:id)
 
           @query = @query.where(
-            'indc_indicators_categories.category_id' => subcategory_ids
+            'overview_categories.category_id' => subcategory_ids
           )
         end
       end
