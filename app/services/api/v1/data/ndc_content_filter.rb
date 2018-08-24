@@ -21,45 +21,13 @@ module Api
 
         def call
           apply_filters
-          # rubocop:disable Metrics/LineLength
-          subsectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NOT NULL'
-          sectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NULL'
-          # rubocop:enable Metrics/LineLength
           @query = @query.
             select(select_columns).
             joins(:location, indicator: :source).
-            joins(
-              # rubocop:disable Metrics/LineLength
-              "LEFT JOIN (#{subsectors_subquery}) subsectors ON sector_id = subsectors.id"
-              # rubocop:enable Metrics/LineLength
-            ).
-            joins(
-              # rubocop:disable Metrics/LineLength
-              "LEFT JOIN (#{sectors_subquery}) sectors ON sector_id = sectors.id"
-              # rubocop:enable Metrics/LineLength
-            ).
-            joins(
-              # rubocop:disable Metrics/LineLength
-              "LEFT JOIN (#{sectors_subquery}) parent_sectors ON subsectors.parent_id = parent_sectors.id"
-              # rubocop:enable Metrics/LineLength
-            ).
             group(group_columns).
             order(sanitised_order)
-          [
-            ::Indc::CategoryType::GLOBAL, ::Indc::CategoryType::OVERVIEW
-          ].each.with_index do |name, idx|
-            category_type = ::Indc::CategoryType.find_by_name(name)
-            @query = @query.joins(
-              <<~SQL
-              LEFT JOIN (
-                SELECT ic.category_id, ic.indicator_id, c.name
-                FROM indc_indicators_categories ic
-                JOIN indc_categories c ON ic.category_id = c.id
-                WHERE c.category_type_id = #{category_type&.id}
-              ) #{name}_categories ON #{name}_categories.indicator_id = indc_indicators.id
-              SQL
-            )
-          end
+          join_sectors
+          join_categories
           @query
         end
 
@@ -73,44 +41,31 @@ module Api
         def select_columns_map
           [
             {
-              column: 'id',
-              alias: 'id',
-              visible: false
+              column: 'id', alias: 'id', visible: false
             },
             {
-              column: 'indc_sources.name',
-              alias: 'source',
-              visible: false
+              column: 'indc_sources.name', alias: 'source', visible: false
             },
             {
-              column: 'locations.iso_code3',
-              alias: 'iso_code3',
-              visible: false
+              column: 'locations.iso_code3', alias: 'iso_code3', visible: false
             },
             {
-              column: 'locations.wri_standard_name',
-              alias: 'country'
+              column: 'locations.wri_standard_name', alias: 'country'
             },
             {
-              # rubocop:disable Metrics/LineLength
               column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT global_categories.name), ', ')",
-              # rubocop:enable Metrics/LineLength
               alias: 'global_category',
               order: false,
               group: false
             },
             {
-              # rubocop:disable Metrics/LineLength
               column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT overview_categories.name), ', ')",
-              # rubocop:enable Metrics/LineLength
               alias: 'overview_category',
               order: false,
               group: false
             },
             {
-              # rubocop:disable Metrics/LineLength
               column: "COALESCE(sectors.name, parent_sectors.name, 'Economy-wide')",
-              # rubocop:enable Metrics/LineLength
               alias: 'sector'
             },
             {
@@ -145,6 +100,35 @@ module Api
             instance_variable_set(:"@#{param_name}", value)
           end
           @countries = params[:countries]
+        end
+
+        def join_sectors
+          # rubocop:disable Metrics/LineLength
+          subsectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NOT NULL'
+          sectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NULL'
+          @query = @query.
+            joins("LEFT JOIN (#{subsectors_subquery}) subsectors ON sector_id = subsectors.id").
+            joins("LEFT JOIN (#{sectors_subquery}) sectors ON sector_id = sectors.id").
+            joins("LEFT JOIN (#{sectors_subquery}) parent_sectors ON subsectors.parent_id = parent_sectors.id")
+          # rubocop:enable Metrics/LineLength
+        end
+
+        def join_categories
+          [
+            ::Indc::CategoryType::GLOBAL, ::Indc::CategoryType::OVERVIEW
+          ].each do |name|
+            category_type = ::Indc::CategoryType.find_by_name(name)
+            @query = @query.joins(
+              <<~SQL
+                LEFT JOIN (
+                  SELECT ic.category_id, ic.indicator_id, c.name
+                  FROM indc_indicators_categories ic
+                  JOIN indc_categories c ON ic.category_id = c.id
+                  WHERE c.category_type_id = #{category_type&.id}
+                ) #{name}_categories ON #{name}_categories.indicator_id = indc_indicators.id
+              SQL
+            )
+          end
         end
 
         def apply_filters
