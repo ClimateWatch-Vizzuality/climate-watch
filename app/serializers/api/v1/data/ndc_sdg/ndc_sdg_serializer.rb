@@ -15,8 +15,8 @@ module Api
           attribute(:target) { object['target'] }
           attribute(:goal_number) { object['goal_number'] }
           attribute(:goal) { object['goal'] }
-          attribute(:document_type) { object["document_type"] }
-          attribute(:language) { object["document_language"] }
+          attribute(:document_type) { object['document_type'] }
+          attribute(:language) { object['document_language'] }
         end
       end
     end

@@ -20,6 +20,13 @@ module Api
         end
 
         def call
+          dict_columns = [:status, :climate_response, :type_of_information]
+          dict_query = @query.select(
+            dict_columns.map { |column| "INITCAP(#{column}) AS #{column}" }
+          )
+          @dict = Hash[dict_columns.map do |column|
+            [column, dict_query.map(&column).compact.uniq.sort]
+          end]
           apply_filters
           @query.
             select(select_columns).
@@ -27,7 +34,7 @@ module Api
         end
 
         def meta
-          sorting_manifest.merge(column_manifest)
+          @dict.merge(sorting_manifest).merge(column_manifest)
         end
 
         private

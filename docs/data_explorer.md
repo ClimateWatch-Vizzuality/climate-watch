@@ -230,6 +230,15 @@ Id | Iso code3 | Country | Indc text | Status | Climate response | Type of infor
       "columns":[
          "string"
       ],
+      "statuses":[
+        "string"
+      ],
+      "climate_responses":[
+        "string"
+      ],
+      "types_of_information":[
+        "string"
+      ]
       "sorting":{
          "sort_col":"string","sort_dir":"string"
       }
