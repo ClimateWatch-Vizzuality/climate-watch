@@ -463,22 +463,6 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 }
 ```
 
-### Labels
-
-`/api/v1/data/ndc_content/labels`
-
-```
-{
-   "data":[
-      {
-         "id":2947,
-         "indicator_id":6722,
-         "value":"INDC Submitted"
-      }
-   ]
-}
-```
-
 ### Categories
 
 `/api/v1/data/ndc_content/categories`
