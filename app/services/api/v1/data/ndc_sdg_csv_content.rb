@@ -6,14 +6,15 @@ module Api
       class NdcSdgCsvContent
         def initialize(filter, output)
           @query = filter.call
-          @headers = filter.column_aliases
+          @headers = filter.column_display_names
+          @aliases = filter.column_aliases
           @output = output
         end
 
         def call
-          @output << @headers.map(&:humanize).to_csv
+          @output << @headers.to_csv
           @query.each do |record|
-            ary = @headers.map { |h| record[h] }
+            ary = @aliases.map { |h| record[h] }
             @output << ary.to_csv
           end
         end

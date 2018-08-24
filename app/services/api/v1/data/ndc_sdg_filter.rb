@@ -49,11 +49,22 @@ module Api
             },
             {
               column: 'locations.iso_code3',
-              alias: 'iso_code3'
+              alias: 'iso_code3',
+              visible: false
             },
             {
               column: 'locations.wri_standard_name',
               alias: 'country'
+            },
+            {
+              column: "ndc_sdg_goals.number || '. ' || ndc_sdg_goals.title",
+              alias: 'sdg',
+              display: 'SDG'
+            },
+            {
+              column: "ndc_sdg_targets.number || '. ' || ndc_sdg_targets.title",
+              alias: 'sdg_target',
+              display: 'SDG target'
             },
             {
               column: 'ndc_sdg_ndc_targets.indc_text',
@@ -64,40 +75,16 @@ module Api
               alias: 'status'
             },
             {
+              column: 'ndc_sdg_sectors.name',
+              alias: 'sector'
+            },
+            {
               column: 'ndc_sdg_ndc_targets.climate_response',
               alias: 'climate_response'
             },
             {
               column: 'ndc_sdg_ndc_targets.type_of_information',
               alias: 'type_of_information'
-            },
-            {
-              column: 'ndc_sdg_sectors.name',
-              alias: 'sector'
-            },
-            {
-              column: 'ndc_sdg_targets.number',
-              alias: 'target_number'
-            },
-            {
-              column: 'ndc_sdg_targets.title',
-              alias: 'target'
-            },
-            {
-              column: 'ndc_sdg_goals.number',
-              alias: 'goal_number'
-            },
-            {
-              column: 'ndc_sdg_goals.title',
-              alias: 'goal'
-            },
-            {
-              column: 'ndcs.document_type',
-              alias: 'document_type'
-            },
-            {
-              column: 'ndcs.language',
-              alias: 'document_language'
             }
           ]
         end
