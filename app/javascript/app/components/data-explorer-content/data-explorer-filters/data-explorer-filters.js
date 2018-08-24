@@ -125,8 +125,35 @@ const resetPageParam = {
 
 class DataExplorerFiltersContainer extends PureComponent {
   componentDidUpdate() {
-    const { selectedOptions, filterOptions, section } = this.props;
+    this.checkDefaultFilters();
+  }
+
+  updateDefaultFilters(selectedOptionKeys, filterDefaultKeys) {
+    const { filterOptions, section } = this.props;
     const defaultOptionsToUpdate = {};
+    filterDefaultKeys.forEach(key => {
+      if (!selectedOptionKeys.includes(key)) {
+        const defaultValues = FILTER_DEFAULTS[section][key].split(',');
+        const defaultOptions = filterOptions[key].filter(
+          f =>
+            defaultValues.includes(f.value) || defaultValues.includes(f.label)
+        );
+        if (
+          defaultOptions &&
+          defaultOptions.length &&
+          defaultOptions[0].value
+        ) {
+          defaultOptionsToUpdate[key] = defaultOptions
+            .map(o => o.value)
+            .join(',');
+        }
+      }
+    });
+    this.handleFiltersChange(defaultOptionsToUpdate, true);
+  }
+
+  checkDefaultFilters() {
+    const { selectedOptions, section } = this.props;
     const selectedOptionKeys =
       selectedOptions &&
       Object.keys(selectedOptions).filter(k => selectedOptions[k].length > 0); // Sometimes the value is empty when removing
@@ -135,25 +162,7 @@ class DataExplorerFiltersContainer extends PureComponent {
       selectedOptions &&
       !filterDefaultKeys.every(r => selectedOptionKeys.includes(r))
     ) {
-      filterDefaultKeys.forEach(key => {
-        if (!selectedOptionKeys.includes(key)) {
-          const defaultValues = FILTER_DEFAULTS[section][key].split(',');
-          const defaultOptions = filterOptions[key].filter(
-            f =>
-              defaultValues.includes(f.value) || defaultValues.includes(f.label)
-          );
-          if (
-            defaultOptions &&
-            defaultOptions.length &&
-            defaultOptions[0].value
-          ) {
-            defaultOptionsToUpdate[key] = defaultOptions
-              .map(o => o.value)
-              .join(',');
-          }
-        }
-      });
-      this.handleFiltersChange(defaultOptionsToUpdate, true);
+      this.updateDefaultFilters(selectedOptionKeys, filterDefaultKeys);
     }
   }
 
