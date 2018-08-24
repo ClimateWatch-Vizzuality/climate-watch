@@ -60,32 +60,18 @@ module Api
               visible: false
             },
             {
+              column: 'indc_sources.name',
+              alias: 'source',
+              visible: false
+            },
+            {
               column: 'locations.iso_code3',
-              alias: 'iso_code3'
+              alias: 'iso_code3',
+              visible: false
             },
             {
               column: 'locations.wri_standard_name',
               alias: 'country'
-            },
-            {
-              column: 'indc_indicators.name',
-              alias: 'indicator'
-            },
-            {
-              column: 'indc_indicators.slug',
-              alias: 'short_name'
-            },
-            {
-              column: 'indc_sources.name',
-              alias: 'source'
-            },
-            {
-              column: 'indc_sectors.name',
-              alias: 'sector'
-            },
-            {
-              column: 'indc_values.value',
-              alias: 'value'
             },
             {
               # rubocop:disable Metrics/LineLength
@@ -102,6 +88,23 @@ module Api
               alias: 'overview_category',
               order: false,
               group: false
+            },
+            {
+              column: 'indc_sectors.name',
+              alias: 'sector'
+            },
+            {
+              column: 'indc_indicators.slug',
+              alias: 'indicator_slug',
+              display: 'Indicator ID'
+            },
+            {
+              column: 'indc_indicators.name',
+              alias: 'indicator_name'
+            },
+            {
+              column: 'indc_values.value',
+              alias: 'value'
             }
           ]
         end

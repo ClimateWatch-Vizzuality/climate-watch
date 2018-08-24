@@ -351,11 +351,11 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 ## NDC content
 
 ### Parameters
-- countries[]
 - source_ids[]
-- indicator_ids[]
+- countries[]
 - category_ids[]
 - sector_ids[]
+- indicator_ids[]
 - sort_dir (ASC / DESC)
 - sort_col (column name for sortable columns - see meta)
 
@@ -366,7 +366,7 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 
 File format:
 
-Id | Iso code3 | Country | Indicator | Short name | Source | Sector | Value | Global category | Overview category
+Country | Global category | Overview category | Sector | Indicator Id | Indicator name | Value
 
 
 ### JSON API endpoint
@@ -380,15 +380,15 @@ Id | Iso code3 | Country | Indicator | Short name | Source | Sector | Value | Gl
    "data":[
       {
          "id":1096025,
-         "country":"string",
-         "iso_code3":"ISO code 3",
-         "indicator":"string",
-         "short_name":"string",
-         "value":"string",
          "source":"string",
+         "iso_code3":"ISO code 3",
+         "country":"string",
          "global_category":"string",
          "overview_category":"string",
          "sector":"string or null"
+         "indicator_id":"string",
+         "indicator_name":"string",
+         "value":"string",
       }
    ],
    "meta":{
