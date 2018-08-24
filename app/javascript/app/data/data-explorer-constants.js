@@ -162,7 +162,7 @@ export const FILTERED_FIELDS = {
     sectors: [
       {
         parent: 'source',
-        id: 'data_source_id'
+        id: 'dataSourceId'
       }
     ]
   },
@@ -170,7 +170,7 @@ export const FILTERED_FIELDS = {
     targets: [
       {
         parent: 'goals',
-        parentId: 'id',
+        parentId: 'value',
         id: 'goal_id'
       }
     ]
