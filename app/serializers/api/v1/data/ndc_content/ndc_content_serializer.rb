@@ -7,6 +7,7 @@ module Api
           attribute(:country) { object['country'] }
           attribute(:iso_code3) { object['iso_code3'] }
           attribute(:indicator) { object['indicator'] }
+          attribute(:short_name) { object['short_name'] }
           attribute(:value) { object['value'] }
           attribute(:source) { object['source'] }
           attribute(:label) { object['label'] }
