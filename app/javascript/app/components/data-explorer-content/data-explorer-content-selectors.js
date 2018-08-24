@@ -41,7 +41,9 @@ export const getMeta = state => state.meta || null;
 const getSectionMeta = createSelector(
   [getMeta, getRegions, getCountries, getSection],
   (meta, regions, countries, section) => {
-    if (!meta || !meta[section] || !regions || !countries || !section) { return null; }
+    if (!meta || !meta[section] || !regions || !countries || !section) {
+      return null;
+    }
     const sectionMeta = meta[section];
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return { ...sectionMeta, regions, countries };
@@ -319,7 +321,9 @@ export const getFilterOptions = createSelector(
       !regions.length ||
       !countries ||
       !countries.length
-    ) { return null; }
+    ) {
+      return null;
+    }
     const filterKeys = DATA_EXPLORER_FILTERS[section];
     const filtersMeta = sectionMeta;
     if (!filtersMeta) return null;
@@ -674,7 +678,7 @@ export const getSelectedOptions = createSelector(
         selectedOptions[key] = selectedFields[key].map(f => ({
           value: f.value || f.slug,
           label: f.label,
-          id: f.iso_code3 || f.id || `${f.data_source_id}-${f.version_id}`
+          id: f.iso_code3 || f.id || `${f.dataSourceId}-${f.versionId}`
         }));
       }
     });

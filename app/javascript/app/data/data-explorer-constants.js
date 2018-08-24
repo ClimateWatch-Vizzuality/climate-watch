@@ -42,7 +42,7 @@ export const FIRST_TABLE_HEADERS = {
 };
 
 export const FILTER_DEFAULTS = {
-  'historical-emissions': { source: 'CAIT - AR2', regions: 'AILAC' },
+  'historical-emissions': { source: 'CAIT - AR2', regions: 'AILAC,AFG' },
   'ndc-content': {},
   'ndc-sdg-linkages': {},
   'emission-pathways': {}
@@ -199,7 +199,7 @@ export const FILTERED_FIELDS = {
     sectors: [
       {
         parent: 'source',
-        id: 'dataSourceId'
+        id: 'data_source_id'
       }
     ]
   },
