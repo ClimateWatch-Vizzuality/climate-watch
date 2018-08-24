@@ -10,6 +10,7 @@ module Api
           attribute(:global_category) { object['global_category'] }
           attribute(:overview_category) { object['overview_category'] }
           attribute(:sector) { object['sector'] }
+          attribute(:subsector) { object['subsector'] }
           attribute(:indicator_id) { object['indicator_slug'] }
           attribute(:indicator_name) { object['indicator_name'] }
           attribute(:value) { object['value'] }

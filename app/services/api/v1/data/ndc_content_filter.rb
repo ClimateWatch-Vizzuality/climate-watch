@@ -21,10 +21,28 @@ module Api
 
         def call
           apply_filters
+          # rubocop:disable Metrics/LineLength
+          subsectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NOT NULL'
+          sectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NULL'
+          # rubocop:enable Metrics/LineLength
           @query = @query.
             select(select_columns).
             joins(:location, indicator: :source).
-            joins('LEFT JOIN indc_sectors ON sector_id = indc_sectors.id').
+            joins(
+              # rubocop:disable Metrics/LineLength
+              "LEFT JOIN (#{subsectors_subquery}) subsectors ON sector_id = subsectors.id"
+              # rubocop:enable Metrics/LineLength
+            ).
+            joins(
+              # rubocop:disable Metrics/LineLength
+              "LEFT JOIN (#{sectors_subquery}) sectors ON sector_id = sectors.id"
+              # rubocop:enable Metrics/LineLength
+            ).
+            joins(
+              # rubocop:disable Metrics/LineLength
+              "LEFT JOIN (#{sectors_subquery}) parent_sectors ON subsectors.parent_id = parent_sectors.id"
+              # rubocop:enable Metrics/LineLength
+            ).
             group(group_columns).
             order(sanitised_order)
           [
@@ -90,8 +108,14 @@ module Api
               group: false
             },
             {
-              column: 'indc_sectors.name',
+              # rubocop:disable Metrics/LineLength
+              column: "COALESCE(sectors.name, parent_sectors.name, 'Economy-wide')",
+              # rubocop:enable Metrics/LineLength
               alias: 'sector'
+            },
+            {
+              column: "COALESCE(subsectors.name, 'Economy-wide')",
+              alias: 'subsector'
             },
             {
               column: 'indc_indicators.slug',

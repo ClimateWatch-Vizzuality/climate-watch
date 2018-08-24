@@ -366,7 +366,7 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 
 File format:
 
-Country | Global category | Overview category | Sector | Indicator Id | Indicator name | Value
+Country | Global category | Overview category | Sector | Subsector | Indicator Id | Indicator name | Value
 
 
 ### JSON API endpoint
@@ -385,7 +385,8 @@ Country | Global category | Overview category | Sector | Indicator Id | Indicato
          "country":"string",
          "global_category":"string",
          "overview_category":"string",
-         "sector":"string or null"
+         "sector":"string or null",
+         "subsector":"string or null",
          "indicator_id":"string",
          "indicator_name":"string",
          "value":"string",
