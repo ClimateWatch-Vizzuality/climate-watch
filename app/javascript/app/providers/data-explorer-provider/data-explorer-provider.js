@@ -18,7 +18,11 @@ class DataExplorerProvider extends PureComponent {
       query: prevQuery,
       page: prevPage
     } = prevProps;
-    if (page !== prevPage || section !== prevSection || query !== prevQuery) {
+    if (
+      page !== prevPage ||
+      section !== prevSection ||
+      (query && query !== prevQuery)
+    ) {
       fetchDataExplorer({ section, query, page });
     }
   }

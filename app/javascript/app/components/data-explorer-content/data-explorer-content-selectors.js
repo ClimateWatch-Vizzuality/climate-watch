@@ -38,6 +38,20 @@ const getCountries = state => state.countries || null;
 const getRegions = state => state.regions || null;
 export const getMeta = state => state.meta || null;
 
+const getSectionMeta = createSelector(
+  [getMeta, getRegions, getCountries, getSection],
+  (meta, regions, countries, section) => {
+    if (!meta || !meta[section] || !regions || !countries || !section) { return null; }
+    const sectionMeta = meta[section];
+    if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
+      return { ...sectionMeta, regions, countries };
+    } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
+      return { ...sectionMeta, countries };
+    }
+    return { ...sectionMeta };
+  }
+);
+
 const getDataSection = createSelector(
   [state => state.data, getSection],
   (data, section) => {
@@ -61,24 +75,20 @@ export const getSectionLabel = createSelector(
 );
 
 export const getSourceOptions = createSelector(
-  [getMeta, getSection],
-  (meta, section) => {
+  [getSectionMeta, getSection],
+  (sectionMeta, section) => {
     if (
-      !meta ||
-      isEmpty(meta) ||
+      !sectionMeta ||
       !section ||
-      section !== SECTION_NAMES.historicalEmissions ||
-      !meta[section]
+      section !== SECTION_NAMES.historicalEmissions
     ) {
       return null;
     }
     return SOURCE_VERSIONS.map(option => {
-      const dataSource = meta[section].data_sources.find(
+      const dataSource = sectionMeta.data_sources.find(
         s => s.name === option.dataSourceSlug
       );
-      const version = meta[section].gwps.find(
-        s => s.name === option.versionSlug
-      );
+      const version = sectionMeta.gwps.find(s => s.name === option.versionSlug);
       const updatedOption = option;
       updatedOption.dataSourceId = dataSource && dataSource.id;
       updatedOption.versionId = version && version.id;
@@ -118,8 +128,10 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     if (key === FILTER_NAMES.subcategories && !isLinkQuery) {
       correctedKey = FILTER_NAMES.categories;
     }
+
     const parsedKey = correctedKey.replace('-', '_');
     const selectedIds = parsedFilters[key].split(',');
+
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
       selectedIds.forEach(selectedId => {
@@ -136,21 +148,21 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       );
     }
   });
+
   return filterIds;
 }
 
-function filterQueryIds(meta, search, section, isLinkQuery) {
-  if (!meta || isEmpty(meta) || !section) return null;
-  const metadata = meta[section];
-  if (!metadata) return null;
+function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
+  if (!sectionMeta || isEmpty(sectionMeta) || !section) return null;
   const parsedFilters = removeFiltersPrefix(search, section);
-  const filterIds = extractFilterIds(parsedFilters, metadata, isLinkQuery);
+  const filterIds = extractFilterIds(parsedFilters, sectionMeta, isLinkQuery);
   return filterIds;
 }
 
 export const getFilterQuery = createSelector(
-  [getMeta, getSearch, getSection],
-  (meta, search, section) => {
+  [getSectionMeta, getSearch, getSection],
+  (sectionMeta, search, section) => {
+    if (!sectionMeta || isEmpty(sectionMeta)) return null;
     const paramsToColumns = { 'data-sources': 'source' };
     const searchKeys = Object.keys(search);
     const parsedSearchKeys = searchKeys.map(k => {
@@ -168,13 +180,14 @@ export const getFilterQuery = createSelector(
     );
     const isReadyForFetch = noExternalParams && checkedDefaultParams;
     if (!isReadyForFetch) return null;
-    return filterQueryIds(meta, search, section, false);
+    return filterQueryIds(sectionMeta, search, section, false);
   }
 );
 
 export const getLinkFilterQuery = createSelector(
-  [getMeta, getSearch, getSection],
-  (meta, search, section) => filterQueryIds(meta, search, section, true)
+  [getSectionMeta, getSearch, getSection],
+  (sectionMeta, search, section) =>
+    filterQueryIds(sectionMeta, search, section, true)
 );
 
 export const getNonColumnQuery = createSelector(
@@ -199,8 +212,8 @@ export const parseFilterQuery = createSelector(
 );
 
 export const getLink = createSelector(
-  [getLinkFilterQuery, getSection, getMeta],
-  (filterQuery, section, meta) => {
+  [getLinkFilterQuery, getSection, getSectionMeta],
+  (filterQuery, section, sectionMeta) => {
     if (!section) return null;
     const parsedQuery = {};
     if (filterQuery && !isEmpty(filterQuery)) {
@@ -210,7 +223,7 @@ export const getLink = createSelector(
         if (parsedKey) {
           const { idLabel, currentId } = parsedKeyData;
           const id = idLabel
-            ? meta[section][key].find(m =>
+            ? sectionMeta[key].find(m =>
               findEqual(m, ['id', currentId], filterQuery[key][0])
             )[idLabel]
             : filterQuery[key];
@@ -230,20 +243,17 @@ export const getLink = createSelector(
 );
 
 export const getCategory = createSelector(
-  [getSearch, getSection, getMeta],
-  (rawQuery, section, meta) => {
+  [getSearch, getSection, getSectionMeta],
+  (rawQuery, section, sectionMeta) => {
     if (
       !rawQuery ||
       isEmpty(rawQuery) ||
-      !section ||
-      !meta ||
-      isEmpty(meta) ||
-      !meta[section] ||
-      !meta[section].categories
+      !sectionMeta ||
+      !sectionMeta.categories
     ) {
       return null;
     }
-    const metadata = meta[section];
+    const metadata = sectionMeta;
     const parsedCategory = removeFiltersPrefix(rawQuery, section).categories;
     return findSelectedValueObject(metadata.categories, parsedCategory);
   }
@@ -285,7 +295,7 @@ const getLabel = (option, filterKey) => {
 
 export const getFilterOptions = createSelector(
   [
-    getMeta,
+    getSectionMeta,
     getSection,
     getCountries,
     getRegions,
@@ -293,10 +303,25 @@ export const getFilterOptions = createSelector(
     getFilterQuery,
     getCategory
   ],
-  (meta, section, countries, regions, sourceVersions, query, category) => {
-    if (!section || isEmpty(meta)) return null;
+  (
+    sectionMeta,
+    section,
+    countries,
+    regions,
+    sourceVersions,
+    query,
+    category
+  ) => {
+    if (
+      !section ||
+      !sectionMeta ||
+      !regions ||
+      !regions.length ||
+      !countries ||
+      !countries.length
+    ) { return null; }
     const filterKeys = DATA_EXPLORER_FILTERS[section];
-    const filtersMeta = meta[section];
+    const filtersMeta = sectionMeta;
     if (!filtersMeta) return null;
     if (
       section === SECTION_NAMES.historicalEmissions &&
@@ -386,9 +411,9 @@ const mergeSourcesAndVersions = filters => {
 };
 
 export const parseExternalParams = createSelector(
-  [getSearch, getSection, getFilterOptions, getMeta],
-  (search, section, filterOptions, meta) => {
-    if (!search || !section || !filterOptions || !meta) return null;
+  [getSearch, getSection, getFilterOptions, getSectionMeta],
+  (search, section, filterOptions, sectionMeta) => {
+    if (!search || !section || !filterOptions || !sectionMeta) return null;
     const selectedFields = search;
     const selectedKeys = Object.keys(selectedFields).filter(k =>
       k.startsWith(`${DATA_EXPLORER_EXTERNAL_PREFIX}-${section}`)
@@ -403,7 +428,7 @@ export const parseExternalParams = createSelector(
       let metaMatchingKey = keyWithoutPrefix.replace('-', '_');
       if (metaMatchingKey !== 'undefined') {
         if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
-        const labelObject = meta[section][metaMatchingKey].find(
+        const labelObject = sectionMeta[metaMatchingKey].find(
           i =>
             i.id === parseInt(externalFields[k], 10) ||
             i.number === externalFields[k]
