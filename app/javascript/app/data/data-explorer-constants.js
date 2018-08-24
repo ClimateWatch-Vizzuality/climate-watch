@@ -47,6 +47,8 @@ const ALL_COUNTRIES =
 export const FILTER_DEFAULTS = {
   'historical-emissions': {
     source: 'CAIT - AR2',
+    gases: 'All GHG',
+    sectors: 'Total including LUCF',
     regions: ALL_COUNTRIES
   },
   'ndc-content': {},

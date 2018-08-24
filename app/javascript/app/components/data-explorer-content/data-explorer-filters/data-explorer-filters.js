@@ -149,6 +149,12 @@ class DataExplorerFiltersContainer extends PureComponent {
         }
       }
     });
+    if (
+      selectedOptionKeys.length + Object.keys(defaultOptionsToUpdate).length !==
+      filterDefaultKeys.length
+    ) {
+      throw new Error('Default values do not match with current options');
+    }
     this.handleFiltersChange(defaultOptionsToUpdate, true);
   }
 
