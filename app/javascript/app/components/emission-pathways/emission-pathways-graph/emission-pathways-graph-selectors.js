@@ -591,6 +591,8 @@ export const getLinkToDataExplorer = createSelector(
         scenario: scenarioId
       };
       return generateLinkToDataExplorer(filtersWithScenario, section);
+    } else if (!search.scenario) {
+      return generateLinkToDataExplorer(search, section);
     }
     // Selects the first scenario to allow a valid selection on the data explorer
     // Once Data Explorer scenario dropdown is multiselect this logic could be changed

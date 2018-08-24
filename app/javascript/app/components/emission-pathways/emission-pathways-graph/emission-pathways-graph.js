@@ -98,27 +98,34 @@ class EmissionPathwayGraphContainer extends PureComponent {
     }
 
     const { search, filtersSelected } = this.props;
-    [
+    this.updateUrlWithNewParams(search, filtersSelected);
+  }
+
+  updateUrlWithNewParams = (search, filtersSelected) => {
+    const possibleParams = [
       'model',
       'category',
       'subcategory',
       'indicator',
       'currentLocation'
-    ].forEach(f => {
+    ];
+    const paramsToUpdate = [];
+    possibleParams.forEach(f => {
       if (!search[f]) {
         if (f === 'currentLocation' && filtersSelected.location) {
-          this.updateUrlParam({
+          paramsToUpdate.push({
             name: f,
             value:
               (filtersSelected[f] && filtersSelected[f].value) ||
               filtersSelected.location.value
           });
         } else if (f !== 'currentLocation' && filtersSelected[f]) {
-          this.updateUrlParam({ name: f, value: filtersSelected[f].value });
+          paramsToUpdate.push({ name: f, value: filtersSelected[f].value });
         }
       }
     });
-  }
+    if (paramsToUpdate.length) this.updateUrlParam(paramsToUpdate);
+  };
 
   handleModelChange = model => {
     const { location } = this.props.filtersSelected;
