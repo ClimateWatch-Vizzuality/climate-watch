@@ -157,10 +157,10 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
 function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
   if (!sectionMeta || isEmpty(sectionMeta) || !section) return null;
   const filtersWithoutPrefix = removeFiltersPrefix(search, section);
-  const noEmptyFilters = pick(
-    filtersWithoutPrefix,
-    Object.keys(filtersWithoutPrefix).map(key => filtersWithoutPrefix[key])
-  );
+  const noEmptyFilters = {};
+  Object.keys(filtersWithoutPrefix).forEach(key => {
+    if (filtersWithoutPrefix[key]) { noEmptyFilters[key] = filtersWithoutPrefix[key]; }
+  });
   const filterIds = extractFilterIds(noEmptyFilters, sectionMeta, isLinkQuery);
   return filterIds;
 }
