@@ -159,7 +159,9 @@ function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
   const filtersWithoutPrefix = removeFiltersPrefix(search, section);
   const noEmptyFilters = {};
   Object.keys(filtersWithoutPrefix).forEach(key => {
-    if (filtersWithoutPrefix[key]) { noEmptyFilters[key] = filtersWithoutPrefix[key]; }
+    if (filtersWithoutPrefix[key]) {
+      noEmptyFilters[key] = filtersWithoutPrefix[key];
+    }
   });
   const filterIds = extractFilterIds(noEmptyFilters, sectionMeta, isLinkQuery);
   return filterIds;
@@ -410,7 +412,7 @@ const mergeSourcesAndVersions = filters => {
   const dataSourceFilter = filters['data-sources'];
   const versionFilter = filters.gwps;
   const updatedFilters = filters;
-  if (dataSourceFilter) {
+  if (dataSourceFilter || dataSourceFilter === '') {
     updatedFilters.source = `${dataSourceFilter}-${versionFilter}`;
     delete updatedFilters['data-sources'];
     delete updatedFilters.gwps;

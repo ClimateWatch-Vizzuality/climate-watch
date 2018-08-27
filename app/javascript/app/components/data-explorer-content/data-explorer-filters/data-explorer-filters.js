@@ -62,7 +62,7 @@ const getParamsFromDependentKeysToDelete = (section, filters) => {
   const filterName = Object.keys(filters)[0];
   return getDependentKeysToDelete(section, filterName).map(key => ({
     name: `${section}-${key}`,
-    value: undefined
+    value: ''
   }));
 };
 
@@ -78,11 +78,11 @@ const sourceAndVersionParam = (value, section) => {
   return [
     {
       name: `${section}-data-sources`,
-      value: value && values[0]
+      value: (value && values[0]) || ''
     },
     {
       name: `${section}-gwps`,
-      value: value && values[1]
+      value: (value && values[1]) || ''
     }
   ];
 };
