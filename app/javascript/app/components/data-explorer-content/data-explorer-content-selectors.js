@@ -731,9 +731,14 @@ export const getFirstTableHeaders = createSelector(
   [parseData, getSection],
   (data, section) => {
     if (!data || !data.length || !section) return null;
-    const yearColumnKeys = Object.keys(data[0])
-      .filter(k => isANumber(k))
-      .reverse();
-    return FIRST_TABLE_HEADERS[section].concat(yearColumnKeys);
+    const yearColumnKeys = Object.keys(data[0]).filter(k => isANumber(k));
+    const reversedYearColumnKeys = [...yearColumnKeys].reverse();
+    const sectionFirstHeaders = FIRST_TABLE_HEADERS[section];
+    switch (section) {
+      case 'emission-pathways':
+        return sectionFirstHeaders.concat(yearColumnKeys);
+      default:
+        return sectionFirstHeaders.concat(reversedYearColumnKeys);
+    }
   }
 );

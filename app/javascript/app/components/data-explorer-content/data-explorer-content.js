@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { PureComponent, createElement } from 'react';
-import { openDownloadModal } from 'utils/data-explorer';
+import { parseQuery, openDownloadModal } from 'utils/data-explorer';
 import { isANumber } from 'utils/utils';
 import { getSearch, getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
@@ -49,7 +49,7 @@ const mapStateToProps = (state, { section, location }) => {
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
   const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTIONS[
     section
-  ].label}/download.csv${filterQuery ? `?${filterQuery}` : ''}`;
+  ].label}/download.csv${filterQuery ? `?${parseQuery(filterQuery)}` : ''}`;
   const meta =
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
