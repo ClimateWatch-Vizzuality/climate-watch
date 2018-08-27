@@ -156,8 +156,12 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
 
 function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
   if (!sectionMeta || isEmpty(sectionMeta) || !section) return null;
-  const parsedFilters = removeFiltersPrefix(search, section);
-  const filterIds = extractFilterIds(parsedFilters, sectionMeta, isLinkQuery);
+  const filtersWithoutPrefix = removeFiltersPrefix(search, section);
+  const noEmptyFilters = pick(
+    filtersWithoutPrefix,
+    Object.keys(filtersWithoutPrefix).map(key => filtersWithoutPrefix[key])
+  );
+  const filterIds = extractFilterIds(noEmptyFilters, sectionMeta, isLinkQuery);
   return filterIds;
 }
 

@@ -269,7 +269,7 @@ export const POSSIBLE_LABEL_FIELDS = [
   'number'
 ];
 
-export const POSSIBLE_VALUE_FIELDS = ['iso_code', 'iso_code3', 'id', 'value'];
+export const POSSIBLE_VALUE_FIELDS = ['id', 'value'];
 
 export default {
   DATA_EXPLORER_BLACKLIST,

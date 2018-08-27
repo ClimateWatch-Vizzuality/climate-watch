@@ -112,7 +112,7 @@ const getParamsToUpdate = (updatedFilters, section) => {
     } else {
       paramsToUpdate.push({
         name: `${section}-${filterName}`,
-        value: parsedValue
+        value: parsedValue || '' // Allow empty strings to override the defaults. These won't be fetched
       });
     }
   });
