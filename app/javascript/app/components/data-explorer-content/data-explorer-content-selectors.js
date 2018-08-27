@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import qs from 'query-string';
-import { findEqual, isANumber } from 'utils/utils';
+import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
 import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
@@ -157,13 +157,11 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
 function filterQueryIds(sectionMeta, search, section, isLinkQuery) {
   if (!sectionMeta || isEmpty(sectionMeta) || !section) return null;
   const filtersWithoutPrefix = removeFiltersPrefix(search, section);
-  const noEmptyFilters = {};
-  Object.keys(filtersWithoutPrefix).forEach(key => {
-    if (filtersWithoutPrefix[key]) {
-      noEmptyFilters[key] = filtersWithoutPrefix[key];
-    }
-  });
-  const filterIds = extractFilterIds(noEmptyFilters, sectionMeta, isLinkQuery);
+  const filterIds = extractFilterIds(
+    noEmptyValues(filtersWithoutPrefix),
+    sectionMeta,
+    isLinkQuery
+  );
   return filterIds;
 }
 
@@ -206,7 +204,7 @@ export const getNonColumnQuery = createSelector(
       search,
       ['sort_col', 'sort_dir'].concat(nonColumnSectionKeys)
     );
-    return removeFiltersPrefix(nonColumnQuery, section);
+    return removeFiltersPrefix(noEmptyValues(nonColumnQuery), section);
   }
 );
 

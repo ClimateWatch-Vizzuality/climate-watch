@@ -196,6 +196,16 @@ export const replaceAll = (text, replacements) => {
 export const findEqual = (parent, children, value) =>
   children.find(c => parent[c] === value);
 
+export function noEmptyValues(object) {
+  const noEmptyResult = {};
+  Object.keys(object).forEach(key => {
+    if (object[key]) {
+      noEmptyResult[key] = object[key];
+    }
+  });
+  return noEmptyResult;
+}
+
 export default {
   compareIndexByKey,
   deburrUpper,
@@ -208,5 +218,6 @@ export default {
   parseLinkHeader,
   replaceAll,
   findEqual,
-  isANumber
+  isANumber,
+  noEmptyValues
 };
