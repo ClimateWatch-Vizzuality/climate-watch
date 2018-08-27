@@ -665,10 +665,17 @@ export const getTitleLinks = createSelector(
     });
   }
 );
-export const getFirstTableHeaders = createSelector([parseData], data => {
-  if (!data || !data.length) return null;
-  const yearColumnKeys = Object.keys(data[0])
-    .filter(k => isANumber(k))
-    .reverse();
-  return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(yearColumnKeys);
-});
+export const getFirstTableHeaders = createSelector(
+  [parseData, getSection],
+  (data, section) => {
+    if (!data || !data.length) return null;
+    const yearColumnKeys = Object.keys(data[0]).filter(k => isANumber(k));
+    const reversedYearColumnKeys = [...yearColumnKeys].reverse();
+    switch (section) {
+      case 'emission-pathways':
+        return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(yearColumnKeys);
+      default:
+        return DATA_EXPLORER_FIRST_TABLE_HEADERS.concat(reversedYearColumnKeys);
+    }
+  }
+);
