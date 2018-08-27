@@ -119,8 +119,8 @@ const API_CALLS = {
         indicatorsParam,
         {
           name: 'locations',
-          parameter: 'locations[]',
-          description: 'locations ISO code 3'
+          parameter: 'location_ids[]',
+          description: 'location id'
         },
         startYearParam,
         endYearParam,
