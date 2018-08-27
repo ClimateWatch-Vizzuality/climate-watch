@@ -95,7 +95,8 @@ const parsedMultipleValues = value => {
   ) {
     return [selectedValue.value];
   }
-  return value.map(filter => filter.value).toString();
+  const parseValue = value.map(filter => filter.value);
+  return parseValue.length === 0 ? undefined : parseValue.toString();
 };
 
 const getParamsToUpdate = (updatedFilters, section) => {
@@ -138,31 +139,23 @@ class DataExplorerFiltersContainer extends PureComponent {
           f =>
             defaultValues.includes(f.value) || defaultValues.includes(f.label)
         );
+        let updatedOptions = '';
         if (
           defaultOptions &&
           defaultOptions.length &&
           defaultOptions[0].value
         ) {
-          defaultOptionsToUpdate[key] = defaultOptions
-            .map(o => o.value)
-            .join(',');
+          updatedOptions = defaultOptions.map(o => o.value).join(',');
         }
+        defaultOptionsToUpdate[key] = updatedOptions;
       }
     });
-    if (
-      selectedOptionKeys.length + Object.keys(defaultOptionsToUpdate).length !==
-      filterDefaultKeys.length
-    ) {
-      throw new Error('Default values do not match with current options');
-    }
     this.handleFiltersChange(defaultOptionsToUpdate, true);
   }
 
   checkDefaultFilters() {
     const { selectedOptions, section } = this.props;
-    const selectedOptionKeys =
-      selectedOptions &&
-      Object.keys(selectedOptions).filter(k => selectedOptions[k].length > 0); // Sometimes the value is empty when removing
+    const selectedOptionKeys = selectedOptions && Object.keys(selectedOptions);
     const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
     if (
       selectedOptions &&
