@@ -49,7 +49,9 @@ export const FILTER_DEFAULTS = {
     source: 'CAIT - AR2',
     gases: 'All GHG',
     sectors: 'Total including LUCF',
-    regions: ALL_COUNTRIES
+    regions: ALL_COUNTRIES,
+    start_year: '2014',
+    end_year: '2014'
   },
   'ndc-content': {},
   'ndc-sdg-linkages': {},

@@ -8,7 +8,8 @@ import isArray from 'lodash/isArray';
 import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_DEPENDENCIES,
-  FILTER_DEFAULTS
+  FILTER_DEFAULTS,
+  NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
@@ -134,20 +135,24 @@ class DataExplorerFiltersContainer extends PureComponent {
     const defaultOptionsToUpdate = {};
     filterDefaultKeys.forEach(key => {
       if (!selectedOptionKeys.includes(key)) {
-        const defaultValues = FILTER_DEFAULTS[section][key].split(',');
-        const defaultOptions = filterOptions[key].filter(
-          f =>
-            defaultValues.includes(f.value) || defaultValues.includes(f.label)
-        );
-        let updatedOptions = '';
-        if (
-          defaultOptions &&
-          defaultOptions.length &&
-          defaultOptions[0].value
-        ) {
-          updatedOptions = defaultOptions.map(o => o.value).join(',');
+        if (NON_COLUMN_KEYS.includes(key)) {
+          defaultOptionsToUpdate[key] = FILTER_DEFAULTS[section][key];
+        } else {
+          const defaultValues = FILTER_DEFAULTS[section][key].split(',');
+          const defaultOptions = filterOptions[key].filter(
+            f =>
+              defaultValues.includes(f.value) || defaultValues.includes(f.label)
+          );
+          let updatedOptions = '';
+          if (
+            defaultOptions &&
+            defaultOptions.length &&
+            defaultOptions[0].value
+          ) {
+            updatedOptions = defaultOptions.map(o => o.value).join(',');
+          }
+          defaultOptionsToUpdate[key] = updatedOptions;
         }
-        defaultOptionsToUpdate[key] = updatedOptions;
       }
     });
     this.handleFiltersChange(defaultOptionsToUpdate, true);
