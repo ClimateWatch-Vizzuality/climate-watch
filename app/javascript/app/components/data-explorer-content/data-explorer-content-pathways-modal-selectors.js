@@ -13,7 +13,7 @@ const getScenarioSelectedMetadata = createSelector(
     const metadata = meta[SECTION_NAMES.pathways];
     if (!metadata || !metadata.scenarios) return null;
     const scenario = metadata.scenarios.find(
-      m => filters.scenarios[0].id === m.id
+      m => (filters.scenarios[0] && filters.scenarios[0].id) === m.id
     );
     return (
       scenario && {
@@ -31,7 +31,9 @@ const getModelSelectedMetadata = createSelector(
     if (!filters || !filters.models || !meta) return null;
     const metadata = meta[SECTION_NAMES.pathways];
     if (!metadata || !metadata.models) return null;
-    return metadata.models.find(m => filters.models[0].id === m.id);
+    return metadata.models.find(
+      m => (filters.models[0] && filters.models[0].id) === m.id
+    );
   }
 );
 
@@ -41,7 +43,9 @@ export const getIndicatorSelectedMetadata = createSelector(
     if (!filters || !filters.indicators || !meta) return null;
     const metadata = meta[SECTION_NAMES.pathways];
     if (!metadata || !metadata.indicators) return null;
-    return metadata.indicators.find(m => filters.indicators[0].id === m.id);
+    return metadata.indicators.find(
+      m => (filters.indicators[0] && filters.indicators[0].id) === m.id
+    );
   }
 );
 
