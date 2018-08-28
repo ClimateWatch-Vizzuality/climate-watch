@@ -22,8 +22,8 @@ export const FIRST_TABLE_HEADERS = {
   ],
   'ndc-sdg-linkages': [
     'country',
-    'goal',
-    'target',
+    'sdg',
+    'sdg_target',
     'indc_text',
     'status',
     'sector',
@@ -90,17 +90,16 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
-// Add the extra filters when they are available in the backend
 export const DATA_EXPLORER_FILTERS = {
   'historical-emissions': ['source', 'regions', 'sectors', 'gases'],
   'ndc-sdg-linkages': [
     'countries',
     'goals',
     'targets',
-    // 'status',
-    'sectors'
-    // 'climate_response',
-    // 'type_of_information'
+    'status',
+    'sectors',
+    'climate_response',
+    'type_of_information'
   ],
   'emission-pathways': [
     'locations',
