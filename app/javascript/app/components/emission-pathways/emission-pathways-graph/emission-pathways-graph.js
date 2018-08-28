@@ -112,6 +112,19 @@ class EmissionPathwayGraphContainer extends PureComponent {
       'scenario'
     ];
     const paramsToUpdate = [];
+    const getFilterParamValue = f => {
+      if (isArray(filtersSelected[f])) {
+        return search[f]
+          ? filtersSelected[f]
+            .filter(selectedFilter =>
+              search[f].includes(selectedFilter.value)
+            )
+            .join(',')
+          : filtersSelected[f].map(filter => filter.value).join(',');
+      }
+      return filtersSelected[f].value;
+    };
+
     possibleParams.forEach(f => {
       if (!search[f]) {
         if (f === 'currentLocation' && filtersSelected.location) {
@@ -122,14 +135,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
               filtersSelected.location.value
           });
         } else if (f !== 'currentLocation' && filtersSelected[f]) {
-          const value = isArray(filtersSelected[f])
-            ? filtersSelected[f]
-              .filter(selectedFilter =>
-                search[f].includes(selectedFilter.value)
-              )
-              .join(',')
-            : filtersSelected[f].value;
-          paramsToUpdate.push({ name: f, value });
+          const value = getFilterParamValue(f);
+          if (value) paramsToUpdate.push({ name: f, value });
         }
       }
     });

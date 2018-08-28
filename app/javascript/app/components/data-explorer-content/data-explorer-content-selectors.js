@@ -429,26 +429,31 @@ export const parseExternalParams = createSelector(
     const selectedKeys = Object.keys(selectedFields).filter(k =>
       k.startsWith(`${DATA_EXPLORER_EXTERNAL_PREFIX}-${section}`)
     );
-    if (selectedKeys.length < 1) return null;
+    if (selectedKeys.length === 0) return null;
     const externalFields = pick(selectedFields, selectedKeys);
     const parsedFields = {};
     Object.keys(externalFields).forEach(k => {
-      const keyWithoutPrefix = k
-        .replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')
-        .replace(`${section}-`, '');
-      let metaMatchingKey = keyWithoutPrefix.replace('-', '_');
+      const keyWithoutPrefix = k.replace(
+        `${DATA_EXPLORER_EXTERNAL_PREFIX}-`,
+        ''
+      );
+      const keyWithoutSection = keyWithoutPrefix.replace(`${section}-`, '');
+      let metaMatchingKey = keyWithoutSection.replace('-', '_');
       if (metaMatchingKey !== 'undefined') {
         if (metaMatchingKey === 'subcategories') metaMatchingKey = 'categories';
-        const labelObject = sectionMeta[metaMatchingKey].find(
+        const ids = externalFields[k].split(',');
+        const filterObjects = sectionMeta[metaMatchingKey].filter(
           i =>
-            i.id === parseInt(externalFields[k], 10) ||
-            i.number === externalFields[k]
+            ids.map(f => parseInt(f, 10)).includes(i.id) ||
+            ids.includes(i.number)
         );
-        const label = POSSIBLE_VALUE_FIELDS.find(
-          f => labelObject && labelObject[f]
-        );
-        parsedFields[k.replace(`${DATA_EXPLORER_EXTERNAL_PREFIX}-`, '')] =
-          labelObject[label];
+        const selectedIds = filterObjects.map(labelObject => {
+          const label = POSSIBLE_VALUE_FIELDS.find(
+            f => labelObject && labelObject[f]
+          );
+          return labelObject[label];
+        });
+        parsedFields[keyWithoutPrefix] = selectedIds.join(',');
       }
     });
     return parsedFields;
