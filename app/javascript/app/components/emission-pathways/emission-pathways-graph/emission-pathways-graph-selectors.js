@@ -15,6 +15,8 @@ import {
   setChartColors
 } from 'utils/graphs';
 
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
+
 import {
   ESP_BLACKLIST,
   CHART_COLORS,
@@ -43,6 +45,8 @@ const DEFAULT_SELECTIONS = {
   },
   indicator: 'CO2'
 };
+
+const getSearch = state => state.search || null;
 
 // meta data for selectors
 const getLocations = state => state.locations || null;
@@ -569,6 +573,35 @@ export const getModalData = createSelector(
     parseObjectsInIndicators
   ],
   (model, scenarios, indicator) => [model, scenarios, indicator]
+);
+
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getScenarios],
+  (search, scenarios) => {
+    const section = 'emission-pathways';
+    if (!scenarios.length) return null;
+    if (!search.scenario && search.model) {
+      // Adds the first scenario belonging to the selected model to populate
+      // Data Explorer dropdown and table in case there's no scenario selected
+      const scenarioId = scenarios.find(
+        s => s.model.id === parseInt(search.model, 10)
+      ).id;
+      const filtersWithScenario = {
+        ...search,
+        scenario: scenarioId
+      };
+      return generateLinkToDataExplorer(filtersWithScenario, section);
+    } else if (!search.scenario) {
+      return generateLinkToDataExplorer(search, section);
+    }
+    // Selects the first scenario to allow a valid selection on the data explorer
+    // Once Data Explorer scenario dropdown is multiselect this logic could be changed
+    const filtersWithFirstScenario = {
+      ...search,
+      scenario: search.scenario.split(',')[0]
+    };
+    return generateLinkToDataExplorer(filtersWithFirstScenario, section);
+  }
 );
 
 export default {

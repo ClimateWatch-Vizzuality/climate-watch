@@ -22,7 +22,8 @@ import {
   getFiltersSelected,
   getSelectorDefaults,
   getProviderFilters,
-  getActiveFilterRegion
+  getActiveFilterRegion,
+  getLinkToDataExplorer
 } from './ghg-emissions-selectors';
 
 const groups = [
@@ -62,6 +63,7 @@ const mapStateToProps = (state, { location }) => {
     selectorDefaults: getSelectorDefaults(ghg),
     activeFilterRegion: getActiveFilterRegion(ghg),
     providerFilters: getProviderFilters(ghg),
+    downloadLink: getLinkToDataExplorer(ghg),
     loading: state.ghgEmissionsMeta.loading || state.emissions.loading,
     groups,
     search

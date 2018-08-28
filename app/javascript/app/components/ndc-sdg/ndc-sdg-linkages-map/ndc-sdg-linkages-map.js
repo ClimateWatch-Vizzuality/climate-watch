@@ -9,7 +9,8 @@ import { actions as modalActions } from 'components/modal-metadata';
 import NdcSdgLinkagesMapComponent from './ndc-sdg-linkages-map-component';
 import {
   getNdcsSdgsGoalsDataSelected,
-  getPathsWithStyles
+  getPathsWithStyles,
+  getLinkToDataExplorer
 } from './ndc-sdg-linkages-map-selectors';
 
 const mapStateToProps = (state, { location, goalHover, targetHover }) => {
@@ -20,7 +21,8 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     goalsData,
     goalSelected,
     goalHover,
-    targetHover
+    targetHover,
+    search
   };
   return {
     goal: getNdcsSdgsGoalsDataSelected(data),
@@ -29,7 +31,7 @@ const mapStateToProps = (state, { location, goalHover, targetHover }) => {
     goalSelected,
     goalHover,
     targetHover,
-    search
+    downloadLink: getLinkToDataExplorer(data)
   };
 };
 class NdcSdgLinkagesMapContainer extends PureComponent {
