@@ -1,3 +1,5 @@
+import { TOP_EMITTERS } from 'data/constants';
+
 export const DATA_EXPLORER_BLACKLIST = [
   'id',
   'iso_code3',
@@ -273,6 +275,13 @@ export const POSSIBLE_LABEL_FIELDS = [
 
 export const POSSIBLE_VALUE_FIELDS = ['id', 'value'];
 
+export const TOP_EMITTERS_OPTION = {
+  iso_code3: 'TOP',
+  label: 'Top Emitters',
+  value: TOP_EMITTERS.join(','),
+  groupId: 'regions'
+};
+
 export default {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_SECTIONS,
@@ -284,5 +293,6 @@ export default {
   GROUPED_SELECT_FIELDS,
   DATA_EXPLORER_PER_PAGE,
   POSSIBLE_LABEL_FIELDS,
-  POSSIBLE_VALUE_FIELDS
+  POSSIBLE_VALUE_FIELDS,
+  TOP_EMITTERS_OPTION
 };

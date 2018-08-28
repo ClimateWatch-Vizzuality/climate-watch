@@ -21,6 +21,7 @@ import {
   POSSIBLE_LABEL_FIELDS,
   POSSIBLE_VALUE_FIELDS,
   NON_COLUMN_KEYS,
+  TOP_EMITTERS_OPTION,
   FILTER_DEFAULTS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS } from 'data/constants';
@@ -356,6 +357,8 @@ export const getFilterOptions = createSelector(
               `${option.dataSourceId}-${option.versionId}`);
           return { ...option, value, label };
         });
+
+        if (f === 'regions') optionsArray.unshift(TOP_EMITTERS_OPTION);
         filterOptions[f] = optionsArray;
       }
     });
