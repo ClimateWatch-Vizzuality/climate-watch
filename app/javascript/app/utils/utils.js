@@ -199,7 +199,7 @@ export const findEqual = (parent, children, value) =>
 export function noEmptyValues(object) {
   const noEmptyResult = {};
   Object.keys(object).forEach(key => {
-    if (object[key]) {
+    if (object[key] && !(isArray(object[key]) && object[key].length === 0)) {
       noEmptyResult[key] = object[key];
     }
   });

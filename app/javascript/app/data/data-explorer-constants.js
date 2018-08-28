@@ -114,6 +114,7 @@ export const DATA_EXPLORER_FILTERS = {
 };
 
 // The dropdown named as the keys will be deleted if one of the values column changes
+// and will only be selectable if all the values are selected
 export const DATA_EXPLORER_DEPENDENCIES = {
   'historical-emissions': {
     sectors: ['source']
