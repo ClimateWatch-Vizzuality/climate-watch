@@ -213,6 +213,10 @@ export const POSSIBLE_LABEL_FIELDS = [
 
 export const POSSIBLE_VALUE_FIELDS = ['iso_code', 'iso_code3', 'id', 'value'];
 
+export const FIELD_ALIAS = {
+  'ndc-sdg-linkages': { goals: 'sdg', targets: 'sdg_target' }
+};
+
 export default {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_FIRST_TABLE_HEADERS,
@@ -225,5 +229,6 @@ export default {
   GROUPED_SELECT_FIELDS,
   DATA_EXPLORER_PER_PAGE,
   POSSIBLE_LABEL_FIELDS,
-  POSSIBLE_VALUE_FIELDS
+  POSSIBLE_VALUE_FIELDS,
+  FIELD_ALIAS
 };

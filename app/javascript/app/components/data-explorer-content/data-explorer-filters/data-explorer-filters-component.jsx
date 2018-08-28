@@ -7,7 +7,8 @@ import { deburrCapitalize } from 'app/utils';
 import {
   MULTIPLE_LEVEL_SECTION_FIELDS,
   GROUPED_SELECT_FIELDS,
-  SECTION_NAMES
+  SECTION_NAMES,
+  FIELD_ALIAS
 } from 'data/data-explorer-constants';
 
 class DataExplorerFilters extends PureComponent {
@@ -18,17 +19,18 @@ class DataExplorerFilters extends PureComponent {
       handleFilterChange,
       selectedOptions,
       filterOptions,
-      isDisabled
+      isDisabled,
+      section
     } = this.props;
-
+    const label = FIELD_ALIAS[section][field] || field;
     const value = isColumnField
       ? selectedOptions && selectedOptions[field] && selectedOptions[field][0]
       : selectedOptions && selectedOptions[field];
     return (
       <Dropdown
-        key={field}
-        label={deburrCapitalize(field)}
-        placeholder={`Filter by ${deburrCapitalize(field)}`}
+        key={label}
+        label={deburrCapitalize(label)}
+        placeholder={`Filter by ${deburrCapitalize(label)}`}
         options={(filterOptions && filterOptions[field]) || []}
         onValueChange={selected =>
           handleFilterChange(field, selected && selected.value)}
