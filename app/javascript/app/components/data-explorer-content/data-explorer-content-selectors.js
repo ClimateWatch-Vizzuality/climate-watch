@@ -218,26 +218,47 @@ export const parseFilterQuery = createSelector(
   }
 );
 
+const getParsedFilterId = (
+  parsedKey,
+  parsedKeyData,
+  sectionMeta,
+  key,
+  filterQuery
+) => {
+  if (!parsedKey) return null;
+  const { idLabel, currentId } = parsedKeyData;
+  const id = idLabel
+    ? sectionMeta[key].find(m =>
+      findEqual(m, ['id', currentId], filterQuery[key][0])
+    )[idLabel]
+    : filterQuery[key];
+  return isArray(id) ? id.join(',') : id;
+};
+
+const parseQuery = (filterQuery, section, sectionMeta) => {
+  const parsedQuery = {};
+  if (filterQuery && !isEmpty(filterQuery)) {
+    Object.keys(filterQuery).forEach(key => {
+      const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
+      const parsedKey = parsedKeyData && parsedKeyData.key;
+      const id = getParsedFilterId(
+        parsedKey,
+        parsedKeyData,
+        sectionMeta,
+        key,
+        filterQuery
+      );
+      if (id) parsedQuery[parsedKey] = id;
+    });
+  }
+  return parsedQuery;
+};
+
 export const getLink = createSelector(
   [getLinkFilterQuery, getSection, getSectionMeta],
   (filterQuery, section, sectionMeta) => {
     if (!section) return null;
-    const parsedQuery = {};
-    if (filterQuery && !isEmpty(filterQuery)) {
-      Object.keys(filterQuery).forEach(key => {
-        const parsedKeyData = DATA_EXPLORER_TO_MODULES_PARAMS[section][key];
-        const parsedKey = parsedKeyData && parsedKeyData.key;
-        if (parsedKey) {
-          const { idLabel, currentId } = parsedKeyData;
-          const id = idLabel
-            ? sectionMeta[key].find(m =>
-              findEqual(m, ['id', currentId], filterQuery[key][0])
-            )[idLabel]
-            : filterQuery[key];
-          parsedQuery[parsedKey] = id;
-        }
-      });
-    }
+    const parsedQuery = parseQuery(filterQuery, section, sectionMeta);
     const stringifiedQuery = qs.stringify(parsedQuery);
     const urlParameters = stringifiedQuery ? `?${stringifiedQuery}` : '';
     const subSection =
