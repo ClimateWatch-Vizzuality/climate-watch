@@ -30,7 +30,8 @@ class DataExplorerContent extends PureComponent {
       loading,
       handleSortChange,
       search,
-      titleLinks
+      titleLinks,
+      section
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
@@ -49,6 +50,8 @@ class DataExplorerContent extends PureComponent {
           horizontalScroll
           titleLinks={titleLinks}
           handleSortChange={handleSortChange}
+          hasStrechedColumns={section === 'emission-pathways'}
+          flexGrow={0}
         />
       );
     }
