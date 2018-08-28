@@ -163,7 +163,7 @@ class EmissionPathwayGraph extends PureComponent {
             data={data}
             domain={domain}
             dataOptions={filtersOptions.scenarios}
-            dataSelected={filtersSelected.scenarios}
+            dataSelected={filtersSelected.scenario}
             customMessage={this.renderCustomMessage()}
             height={600}
             loading={loading}
