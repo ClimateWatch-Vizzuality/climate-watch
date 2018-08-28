@@ -4,9 +4,12 @@ import { PureComponent, createElement } from 'react';
 import { getSearch, getLocationParamUpdated } from 'utils/navigation';
 import { PropTypes } from 'prop-types';
 import { actions } from 'components/modal-download';
+import isArray from 'lodash/isArray';
 import {
   DATA_EXPLORER_FILTERS,
-  DATA_EXPLORER_DEPENDENCIES
+  DATA_EXPLORER_DEPENDENCIES,
+  FILTER_DEFAULTS,
+  NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
@@ -54,6 +57,15 @@ const mapStateToProps = (state, { section, location }) => {
   };
 };
 
+const getParamsFromDependentKeysToDelete = (section, filters) => {
+  if (!DATA_EXPLORER_DEPENDENCIES[section]) return [];
+  const filterName = Object.keys(filters)[0];
+  return getDependentKeysToDelete(section, filterName).map(key => ({
+    name: `${section}-${key}`,
+    value: ''
+  }));
+};
+
 const getDependentKeysToDelete = (section, filterName) => {
   const dependencies = DATA_EXPLORER_DEPENDENCIES[section];
   return Object.keys(dependencies).filter(dependentFilterKey =>
@@ -61,64 +73,112 @@ const getDependentKeysToDelete = (section, filterName) => {
   );
 };
 
+const sourceAndVersionParam = (value, section) => {
+  const values = value && value.split('-');
+  return [
+    {
+      name: `${section}-data-sources`,
+      value: (value && values[0]) || ''
+    },
+    {
+      name: `${section}-gwps`,
+      value: (value && values[1]) || ''
+    }
+  ];
+};
+
+const parsedMultipleValues = value => {
+  const selectedValue = value[value.length - 1];
+  if (
+    selectedValue &&
+    selectedValue.groupId &&
+    selectedValue.groupId === 'regions'
+  ) {
+    return [selectedValue.value];
+  }
+  const parseValue = value.map(filter => filter.value);
+  return parseValue.length === 0 ? undefined : parseValue.toString();
+};
+
+const getParamsToUpdate = (updatedFilters, section) => {
+  const SOURCE_AND_VERSION_KEY = 'source';
+  let paramsToUpdate = [];
+  Object.keys(updatedFilters).forEach(filterName => {
+    const value = updatedFilters[filterName];
+    const parsedValue = isArray(value) ? parsedMultipleValues(value) : value;
+    if (filterName === SOURCE_AND_VERSION_KEY) {
+      paramsToUpdate = paramsToUpdate.concat(
+        sourceAndVersionParam(value, section)
+      );
+    } else {
+      paramsToUpdate.push({
+        name: `${section}-${filterName}`,
+        value: parsedValue || '' // Allow empty strings to override the defaults. These won't be fetched
+      });
+    }
+  });
+  return paramsToUpdate;
+};
+
 const resetPageParam = {
   name: 'page',
   value: 1
 };
 
-class DataExplorerContentContainer extends PureComponent {
-  sourceAndVersionParam = (value, section) => {
-    const values = value && value.split('-');
-    return [
-      {
-        name: `${section}-data-sources`,
-        value: value && values[0]
-      },
-      {
-        name: `${section}-gwps`,
-        value: value && values[1]
+class DataExplorerFiltersContainer extends PureComponent {
+  componentDidUpdate() {
+    this.checkDefaultFilters();
+  }
+
+  updateDefaultFilters(selectedOptionKeys, filterDefaultKeys) {
+    const { filterOptions, section } = this.props;
+    const defaultOptionsToUpdate = {};
+    filterDefaultKeys.forEach(key => {
+      if (!selectedOptionKeys.includes(key)) {
+        if (NON_COLUMN_KEYS.includes(key)) {
+          defaultOptionsToUpdate[key] = FILTER_DEFAULTS[section][key];
+        } else {
+          const defaultValues = FILTER_DEFAULTS[section][key].split(',');
+          const defaultOptions = filterOptions[key].filter(
+            f =>
+              defaultValues.includes(f.value) || defaultValues.includes(f.label)
+          );
+          let updatedOptions = '';
+          if (
+            defaultOptions &&
+            defaultOptions.length &&
+            defaultOptions[0].value
+          ) {
+            updatedOptions = defaultOptions.map(o => o.value).join(',');
+          }
+          defaultOptionsToUpdate[key] = updatedOptions;
+        }
       }
-    ];
-  };
+    });
+    this.handleFiltersChange(defaultOptionsToUpdate, true);
+  }
 
-  parsedMultipleValues = (filterName, value) => {
-    const selectedValue = value[value.length - 1];
+  checkDefaultFilters() {
+    const { selectedOptions, section } = this.props;
+    const selectedOptionKeys = selectedOptions && Object.keys(selectedOptions);
+    const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
     if (
-      selectedValue &&
-      selectedValue.groupId &&
-      selectedValue.groupId === 'regions'
+      selectedOptions &&
+      !filterDefaultKeys.every(r => selectedOptionKeys.includes(r))
     ) {
-      return [selectedValue.value];
+      this.updateDefaultFilters(selectedOptionKeys, filterDefaultKeys);
     }
-    return value.map(filter => filter.value).toString();
-  };
+  }
 
-  handleFilterChange = (filterName, value, multiple) => {
+  handleFiltersChange = (updatedFilters, isFilterDefaultChange) => {
     const { section } = this.props;
-    const SOURCE_AND_VERSION_KEY = 'source';
-    let paramsToUpdate = [];
-    const dependentKeysToDeleteParams = DATA_EXPLORER_DEPENDENCIES[section]
-      ? getDependentKeysToDelete(section, filterName).map(key => ({
-        name: `${section}-${key}`,
-        value: undefined
-      }))
-      : [];
-
-    const parsedValue = multiple
-      ? this.parsedMultipleValues(filterName, value)
-      : value;
-    if (filterName === SOURCE_AND_VERSION_KEY) {
-      paramsToUpdate = paramsToUpdate.concat(
-        this.sourceAndVersionParam(value, section)
-      );
-    } else {
-      paramsToUpdate.push({
-        name: `${section}-${filterName}`,
-        value: parsedValue
-      });
-    }
+    const dependentKeysToDeleteParams = isFilterDefaultChange
+      ? []
+      : getParamsFromDependentKeysToDelete(section, updatedFilters);
     this.updateUrlParam(
-      paramsToUpdate.concat(resetPageParam).concat(dependentKeysToDeleteParams)
+      getParamsToUpdate(updatedFilters, section)
+        .concat(resetPageParam)
+        .concat(dependentKeysToDeleteParams)
     );
   };
 
@@ -130,17 +190,19 @@ class DataExplorerContentContainer extends PureComponent {
   render() {
     return createElement(DataExplorerFiltersComponent, {
       ...this.props,
-      handleFilterChange: this.handleFilterChange
+      handleFiltersChange: this.handleFiltersChange
     });
   }
 }
 
-DataExplorerContentContainer.propTypes = {
+DataExplorerFiltersContainer.propTypes = {
   section: PropTypes.string,
   history: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
+  selectedOptions: PropTypes.object,
+  filterOptions: PropTypes.object
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(DataExplorerContentContainer)
+  connect(mapStateToProps, actions)(DataExplorerFiltersContainer)
 );
