@@ -18,7 +18,7 @@ module Api
         def meta
           set_links_header(
             [
-              :data_sources, :indicators, :categories, :labels, :sectors
+              :data_sources, :indicators, :categories, :sectors
             ].map do |resource|
               {
                 link: "/api/v1/data/ndc_content/#{resource}",

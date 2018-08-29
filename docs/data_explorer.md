@@ -20,7 +20,7 @@
 
 File format:
 
-Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 | ...
+Country | Data source | Sector | Gas | Unit | year n | year n-1 | ...
 
 
 ### JSON API endpoint
@@ -34,10 +34,9 @@ Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 
    "data":[
       {
          "id":66319,
-         "region":"string",
          "iso_code3":"ISO code 3",
+         "country":"string",
          "data_source":"string",
-         "gwp":"string",
          "sector":"string",
          "gas":"string",
          "unit":"string",
@@ -351,12 +350,11 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 ## NDC content
 
 ### Parameters
-- countries[]
 - source_ids[]
-- indicator_ids[]
+- countries[]
 - category_ids[]
-- label_ids[]
 - sector_ids[]
+- indicator_ids[]
 - sort_dir (ASC / DESC)
 - sort_col (column name for sortable columns - see meta)
 
@@ -367,7 +365,7 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 
 File format:
 
-Id | Iso code3 | Country | Indicator | Source | Label | Sector | Value | Categories
+Country | Global category | Overview category | Sector | Subsector | Indicator Id | Indicator name | Value
 
 
 ### JSON API endpoint
@@ -381,14 +379,16 @@ Id | Iso code3 | Country | Indicator | Source | Label | Sector | Value | Categor
    "data":[
       {
          "id":1096025,
-         "country":"string",
-         "iso_code3":"ISO code 3",
-         "indicator":"string",
-         "value":"string",
          "source":"string",
-         "categories":"comma-separated string",
-         "label":"string or null",
-         "sector":"string or null"
+         "iso_code3":"ISO code 3",
+         "country":"string",
+         "global_category":"string",
+         "overview_category":"string",
+         "sector":"string or null",
+         "subsector":"string or null",
+         "indicator_id":"string",
+         "indicator_name":"string",
+         "value":"string",
       }
    ],
    "meta":{
@@ -461,22 +461,6 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 }
 ```
 
-### Labels
-
-`/api/v1/data/ndc_content/labels`
-
-```
-{
-   "data":[
-      {
-         "id":2947,
-         "indicator_id":6722,
-         "value":"INDC Submitted"
-      }
-   ]
-}
-```
-
 ### Categories
 
 `/api/v1/data/ndc_content/categories`
@@ -485,16 +469,24 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
    "data":[
       {
-         "id":817,
+         "id":1740,
          "slug":"overview",
          "name":"Overview",
-         "parent_id":null
+         "parent_id":null,
+         "category_type":{
+            "id":181,
+            "name":"global"
+         }
       },
       {
-         "id":839,
-         "slug":"adaptation",
-         "name":"Adaptation",
-         "parent_id":817
+         "id":1744,
+         "slug":"ndc",
+         "name":"NDC",
+         "parent_id":1740,
+         "category_type":{
+            "id":182,
+            "name":"overview"
+         }
       }
    ]
 }
