@@ -4,6 +4,7 @@ import isUndefined from 'lodash/isUndefined';
 import uniqBy from 'lodash/uniqBy';
 import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
+import isArray from 'lodash/isArray';
 import sortBy from 'lodash/sortBy';
 import remove from 'lodash/remove';
 import pick from 'lodash/pick';
@@ -14,6 +15,8 @@ import {
   setYAxisDomain,
   setChartColors
 } from 'utils/graphs';
+
+import { generateLinkToDataExplorer } from 'utils/data-explorer';
 
 import {
   ESP_BLACKLIST,
@@ -44,15 +47,17 @@ const DEFAULT_SELECTIONS = {
   indicator: 'CO2'
 };
 
+const getSearch = state => state.search || null;
+
 // meta data for selectors
 const getLocations = state => state.locations || null;
 const getModels = state => state.models || null;
-const getScenarios = state => state.scenarios || null;
+const getAllScenarios = state => state.allScenarios || null;
 const getIndicators = state => state.indicators || null;
 
 const getLocation = state => parseInt(state.location, 10) || null;
 const getModel = state => parseInt(state.model, 10) || null;
-const getScenario = state => state.scenario || null;
+const getScenarios = state => state.scenario || null;
 const getIndicator = state => parseInt(state.indicator, 10) || null;
 const getCategory = state => parseInt(state.category, 10) || null;
 const getSubcategory = state => parseInt(state.subcategory, 10) || null;
@@ -141,10 +146,10 @@ export const getUnavailableModelSelected = createSelector(
 );
 
 export const getScenariosOptions = createSelector(
-  [getScenarios, getModelSelected],
-  (scenarios, modelSelected) => {
-    if (!modelSelected || !scenarios || !scenarios.length) return null;
-    const filteredScenarios = scenarios.filter(
+  [getAllScenarios, getModelSelected],
+  (allScenarios, modelSelected) => {
+    if (!modelSelected || !allScenarios || !allScenarios.length) return null;
+    const filteredScenarios = allScenarios.filter(
       s => modelSelected.scenarios.indexOf(s.id) > -1
     );
     return filteredScenarios.map(s => ({
@@ -156,18 +161,21 @@ export const getScenariosOptions = createSelector(
 );
 
 export const getScenariosSelected = createSelector(
-  [getScenariosOptions, getScenario, getModelSelected],
-  (scenarios, scenarioSelected, model) => {
+  [getScenariosOptions, getScenarios, getModelSelected],
+  (scenarios, scenariosSelected, model) => {
     if (!scenarios || !model) return null;
-    if ((!scenarioSelected && !model.scenarios) || scenarioSelected === '') {
+    if ((!scenariosSelected && !model.scenarios) || scenariosSelected === '') {
       return null;
     }
-    if (!scenarioSelected) {
+    if (!scenariosSelected) {
       return scenarios;
     }
-    const scenarioSelectedParsed = scenarioSelected
-      .split(',')
-      .map(s => parseInt(s, 10));
+    const scenarioSelectedArray = isArray(scenariosSelected)
+      ? scenariosSelected
+      : scenariosSelected.split(',');
+    const scenarioSelectedParsed = scenarioSelectedArray.map(s =>
+      parseInt(s, 10)
+    );
     return scenarios.filter(s => scenarioSelectedParsed.indexOf(s.value) > -1);
   }
 );
@@ -340,7 +348,7 @@ export const getFiltersSelected = createSelector(
     location,
     model,
     unavailableModel,
-    scenarios,
+    scenario,
     category,
     subcategory,
     indicator,
@@ -348,7 +356,7 @@ export const getFiltersSelected = createSelector(
   ) => ({
     location,
     model: model || unavailableModel,
-    scenarios,
+    scenario,
     category,
     subcategory,
     indicator: indicator || unavailableIndicator
@@ -423,13 +431,13 @@ let colorThemeCache = {};
 export const getChartConfig = createSelector(
   [
     filterDataByIndicator,
-    getScenarios,
+    getAllScenarios,
     getScenariosOptions,
     getIndicatorSelected,
     getChartNeededPrecision
   ],
-  (data, scenarios, scenariosInChart, indicator, precision) => {
-    if (!data || !scenarios) return null;
+  (data, allScenarios, scenariosInChart, indicator, precision) => {
+    if (!data || !allScenarios) return null;
     const yColumns = data.map(d => {
       const scenario = scenariosInChart.find(
         s => parseInt(s.value, 10) === d.scenario_id
@@ -441,6 +449,7 @@ export const getChartConfig = createSelector(
         legendTooltip: scenario.purpose
       };
     });
+
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const chartColors = setChartColors(
       yColumnsChecked,
@@ -456,7 +465,6 @@ export const getChartConfig = createSelector(
         yLeft: { ...AXES_CONFIG.yLeft, unit: indicator.unit }
       }
       : AXES_CONFIG;
-
     return {
       axes,
       theme: colorThemeCache,
@@ -492,11 +500,11 @@ const addLinktoModelSelectedMetadata = createSelector(
 );
 
 export const getScenariosSelectedMetadata = createSelector(
-  [getScenarios, getScenariosSelected],
-  (scenarios, scenariosSelected) => {
-    if (isEmpty(scenarios) || !scenariosSelected) return null;
+  [getAllScenarios, getScenariosSelected],
+  (allScenarios, scenariosSelected) => {
+    if (isEmpty(allScenarios) || !scenariosSelected) return null;
     const selectedScenarioIds = scenariosSelected.map(s => s.value);
-    const scenariosMetadata = scenarios.filter(
+    const scenariosMetadata = allScenarios.filter(
       s => selectedScenarioIds.indexOf(s.id) > -1
     );
     return (
@@ -569,6 +577,27 @@ export const getModalData = createSelector(
     parseObjectsInIndicators
   ],
   (model, scenarios, indicator) => [model, scenarios, indicator]
+);
+
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getAllScenarios],
+  (search, allScenarios) => {
+    const section = 'emission-pathways';
+    if (!allScenarios.length) return null;
+    if (!search.scenario && search.model) {
+      // Adds the first scenario belonging to the selected model to populate
+      // Data Explorer dropdown and table in case there's no scenario selected
+      const scenarioId = allScenarios.find(
+        s => s.model.id === parseInt(search.model, 10)
+      ).id;
+      const filtersWithScenario = {
+        ...search,
+        scenario: scenarioId
+      };
+      return generateLinkToDataExplorer(filtersWithScenario, section);
+    }
+    return generateLinkToDataExplorer(search, section);
+  }
 );
 
 export default {

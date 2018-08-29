@@ -6,7 +6,7 @@ import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {
   MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_SELECT_FIELDS,
+  GROUPED_OR_MULTI_SELECT_FIELDS,
   SECTION_NAMES
 } from 'data/data-explorer-constants';
 
@@ -15,7 +15,7 @@ class DataExplorerFilters extends PureComponent {
 
   renderDropdown(field, isColumnField) {
     const {
-      handleFilterChange,
+      handleFiltersChange,
       selectedOptions,
       filterOptions,
       isDisabled
@@ -31,7 +31,7 @@ class DataExplorerFilters extends PureComponent {
         placeholder={`Filter by ${deburrCapitalize(field)}`}
         options={(filterOptions && filterOptions[field]) || []}
         onValueChange={selected =>
-          handleFilterChange(field, selected && selected.value)}
+          handleFiltersChange({ [field]: selected && selected.value })}
         value={value || null}
         plain
         disabled={isDisabled(field)}
@@ -42,7 +42,7 @@ class DataExplorerFilters extends PureComponent {
 
   render() {
     const {
-      handleFilterChange,
+      handleFiltersChange,
       selectedOptions,
       filterOptions,
       filters,
@@ -50,13 +50,12 @@ class DataExplorerFilters extends PureComponent {
       activeFilterRegion,
       isDisabled
     } = this.props;
-
     const multipleSection = field =>
       MULTIPLE_LEVEL_SECTION_FIELDS[section] &&
       MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === field);
     const groupedSelect = field =>
-      GROUPED_SELECT_FIELDS[section] &&
-      GROUPED_SELECT_FIELDS[section].find(s => s.key === field);
+      GROUPED_OR_MULTI_SELECT_FIELDS[section] &&
+      GROUPED_OR_MULTI_SELECT_FIELDS[section].find(s => s.key === field);
     const fieldFilters = filters.map(field => {
       if (multipleSection(field)) {
         return (
@@ -73,26 +72,27 @@ class DataExplorerFilters extends PureComponent {
             disabled={isDisabled(field)}
             clearable
             onChange={option =>
-              handleFilterChange(field, option && option.value)}
+              handleFiltersChange({ [field]: option && option.value })}
             noParentSelection={multipleSection(field).noSelectableParent}
           />
         );
       } else if (groupedSelect(field)) {
-        const fieldInfo = GROUPED_SELECT_FIELDS[section].find(
+        const fieldInfo = GROUPED_OR_MULTI_SELECT_FIELDS[section].find(
           f => f.key === field
         );
+        const label = fieldInfo.label || fieldInfo.key;
         return (
           <MultiSelect
-            key={field}
-            label={fieldInfo.label}
+            key={fieldInfo.key}
+            label={deburrCapitalize(label)}
             selectedLabel={activeFilterRegion}
-            placeholder={`Filter by ${fieldInfo.label}`}
+            placeholder={`Filter by ${label}`}
             values={(selectedOptions && selectedOptions[field]) || []}
             options={filterOptions ? filterOptions[field] : []}
             groups={fieldInfo.groups}
             disabled={isDisabled(field)}
             onMultiValueChange={selected =>
-              handleFilterChange(field, selected, true)}
+              handleFiltersChange({ [field]: selected })}
           />
         );
       }
@@ -113,7 +113,7 @@ class DataExplorerFilters extends PureComponent {
 DataExplorerFilters.propTypes = {
   activeFilterRegion: PropTypes.string,
   section: PropTypes.string.isRequired,
-  handleFilterChange: PropTypes.func.isRequired,
+  handleFiltersChange: PropTypes.func.isRequired,
   isDisabled: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,

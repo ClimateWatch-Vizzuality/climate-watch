@@ -12,9 +12,13 @@ export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
 export const deburrUpper = string => toUpper(deburr(string));
 export const deburrCapitalize = string =>
-  capitalize(deburr(string)).replace('_', ' ');
+  replaceAcronyms(capitalize(deburr(string)).replace('_', ' '));
 export const toStartCase = string => {
   const parsedString = startCase(string);
+  return replaceAcronyms(parsedString);
+};
+
+const replaceAcronyms = string => {
   const replacements = {
     'Ndc Sdg': 'NDC-SDG',
     Ndc: 'NDC',
@@ -22,7 +26,7 @@ export const toStartCase = string => {
     Sdg: 'SDG',
     'Co 2': 'CO2'
   };
-  return replaceAll(parsedString, replacements);
+  return replaceAll(string, replacements);
 };
 
 export const isANumber = i => !isNaN(parseInt(i, 10));
@@ -192,6 +196,16 @@ export const replaceAll = (text, replacements) => {
 export const findEqual = (parent, children, value) =>
   children.find(c => parent[c] === value);
 
+export function noEmptyValues(object) {
+  const noEmptyResult = {};
+  Object.keys(object).forEach(key => {
+    if (object[key] && !(isArray(object[key]) && object[key].length === 0)) {
+      noEmptyResult[key] = object[key];
+    }
+  });
+  return noEmptyResult;
+}
+
 export default {
   compareIndexByKey,
   deburrUpper,
@@ -204,5 +218,6 @@ export default {
   parseLinkHeader,
   replaceAll,
   findEqual,
-  isANumber
+  isANumber,
+  noEmptyValues
 };
