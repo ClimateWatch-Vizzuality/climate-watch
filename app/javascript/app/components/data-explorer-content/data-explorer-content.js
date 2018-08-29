@@ -43,7 +43,7 @@ const mapStateToProps = (state, { section, location }) => {
       hash: 'data',
       defaultActiveHash: true
     },
-    { label: 'Sources', hash: 'meta', defaultActiveHash: true }
+    { label: 'Sources & metadata', hash: 'meta', defaultActiveHash: true }
   ];
   const filterQuery = parseFilterQuery(dataState);
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
