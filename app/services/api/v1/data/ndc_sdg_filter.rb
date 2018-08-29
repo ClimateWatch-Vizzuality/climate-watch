@@ -5,6 +5,8 @@ module Api
         include Api::V1::Data::SanitisedSorting
         include Api::V1::Data::ColumnHelpers
 
+        attr_reader :status, :climate_response, :type_of_information
+
         # @param params [Hash]
         # @option params [Array<String>] :countries
         # @option params [Array<Integer>] :goal_ids
@@ -85,6 +87,16 @@ module Api
             {
               column: 'ndc_sdg_ndc_targets.type_of_information',
               alias: 'type_of_information'
+            },
+            {
+              column: 'ndcs.document_type',
+              alias: 'document_type',
+              csv: false
+            },
+            {
+              column: 'ndcs.language',
+              alias: 'document_language',
+              csv: false
             }
           ]
         end
@@ -92,19 +104,24 @@ module Api
 
         def initialize_filters(params)
           # integer arrays
-          [
-            :goal_ids, :target_ids, :sector_ids
-          ].map do |param_name|
+          [:goal_ids, :target_ids, :sector_ids].map do |param_name|
             if params[param_name].present? && params[param_name].is_a?(Array)
               value = params[param_name].map(&:to_i)
             end
             instance_variable_set(:"@#{param_name}", value)
           end
           @countries = params[:countries]
+          @status = params[:status]
+          @climate_response = params[:climate_response]
+          @type_of_information = params[:type_of_information]
         end
 
         def apply_filters
           apply_location_filter
+          apply_status_filter
+          apply_climate_response_filter
+          apply_type_of_information_filter
+
           # rubocop:disable Style/IfUnlessModifier
           if @goal_ids
             @query = @query.where('ndc_sdg_targets.goal_id' => @goal_ids)
@@ -123,6 +140,21 @@ module Api
           @query = @query.where(
             'locations.iso_code3' => @countries
           )
+        end
+
+        def apply_status_filter
+          return unless status
+          @query = @query.where('ndc_sdg_ndc_targets.status' => status)
+        end
+
+        def apply_climate_response_filter
+          return unless climate_response
+          @query = @query.where('ndc_sdg_ndc_targets.climate_response' => climate_response)
+        end
+
+        def apply_type_of_information_filter
+          return unless type_of_information
+          @query = @query.where('ndc_sdg_ndc_targets.type_of_information' => type_of_information)
         end
       end
     end

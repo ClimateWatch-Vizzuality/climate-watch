@@ -13,6 +13,8 @@ module Api
           attribute(:sector) { object['sector'] }
           attribute(:climate_response) { object['climate_response'] }
           attribute(:type_of_information) { object['type_of_information'] }
+          attribute(:document_type) { object['document_type'] }
+          attribute(:language) { object['document_language'] }
         end
       end
     end

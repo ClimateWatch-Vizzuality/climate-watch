@@ -6,8 +6,8 @@ module Api
       class NdcSdgCsvContent
         def initialize(filter, output)
           @query = filter.call
-          @headers = filter.column_display_names
-          @aliases = filter.column_aliases
+          @headers = filter.csv_column_display_names
+          @aliases = filter.csv_column_aliases
           @output = output
         end
 
