@@ -170,10 +170,12 @@ export const getScenariosSelected = createSelector(
     if (!scenariosSelected) {
       return scenarios;
     }
-    let scenarioSelectedParsed = isArray(scenariosSelected)
+    const scenarioSelectedArray = isArray(scenariosSelected)
       ? scenariosSelected
       : scenariosSelected.split(',');
-    scenarioSelectedParsed = scenarioSelectedParsed.map(s => parseInt(s, 10));
+    const scenarioSelectedParsed = scenarioSelectedArray.map(s =>
+      parseInt(s, 10)
+    );
     return scenarios.filter(s => scenarioSelectedParsed.indexOf(s.value) > -1);
   }
 );
