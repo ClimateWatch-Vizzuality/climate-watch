@@ -12,12 +12,12 @@ export const assign = (o, ...rest) => Object.assign({}, o, ...rest);
 
 export const deburrUpper = string => toUpper(deburr(string));
 export const deburrCapitalize = string =>
-  replaceAcronyms(capitalize(deburr(string)).replace('_', ' '));
+  replaceLowDash(replaceAcronyms(capitalize(deburr(string))));
 export const toStartCase = string => {
   const parsedString = startCase(string);
   return replaceAcronyms(parsedString);
 };
-
+const replaceLowDash = string => replaceAll(string, { _: ' ' });
 const replaceAcronyms = string => {
   const replacements = {
     'Ndc Sdg': 'NDC-SDG',
