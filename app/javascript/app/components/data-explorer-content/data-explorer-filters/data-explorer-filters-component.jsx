@@ -22,7 +22,8 @@ class DataExplorerFilters extends PureComponent {
       isDisabled,
       section
     } = this.props;
-    const label = FIELD_ALIAS[section][field] || field;
+    const label =
+      (FIELD_ALIAS[section] && FIELD_ALIAS[section][field]) || field;
     const value = isColumnField
       ? selectedOptions && selectedOptions[field] && selectedOptions[field][0]
       : selectedOptions && selectedOptions[field];
