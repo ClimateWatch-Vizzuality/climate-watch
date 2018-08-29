@@ -5,7 +5,7 @@ export const DATA_EXPLORER_BLACKLIST = [
   'emissions'
 ];
 export const DATA_EXPLORER_FIRST_TABLE_HEADERS = [
-  'region',
+  'country',
   'data_source',
   'sector',
   'gwp',
