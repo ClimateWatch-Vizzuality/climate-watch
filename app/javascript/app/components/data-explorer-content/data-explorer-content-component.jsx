@@ -31,7 +31,8 @@ class DataExplorerContent extends PureComponent {
       handleSortChange,
       search,
       titleLinks,
-      section
+      section,
+      tableColumnsWidth
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
@@ -50,7 +51,7 @@ class DataExplorerContent extends PureComponent {
           horizontalScroll
           titleLinks={titleLinks}
           handleSortChange={handleSortChange}
-          hasStrechedColumns={section === 'emission-pathways'}
+          forcedColumnWidth={tableColumnsWidth[section] || null}
           flexGrow={0}
         />
       );
@@ -181,7 +182,8 @@ DataExplorerContent.propTypes = {
   pageCount: PropTypes.number,
   search: PropTypes.object,
   initialPage: PropTypes.number,
-  titleLinks: PropTypes.array
+  titleLinks: PropTypes.array,
+  tableColumnsWidth: PropTypes.object
 };
 
 DataExplorerContent.defaultProps = {
