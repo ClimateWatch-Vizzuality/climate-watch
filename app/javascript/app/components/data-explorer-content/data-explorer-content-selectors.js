@@ -5,6 +5,8 @@ import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
+import { isNoColumnField } from 'utils/data-explorer';
+
 import sortBy from 'lodash/sortBy';
 import {
   DATA_EXPLORER_BLACKLIST,
@@ -22,7 +24,8 @@ import {
   POSSIBLE_VALUE_FIELDS,
   NON_COLUMN_KEYS,
   TOP_EMITTERS_OPTION,
-  FILTER_DEFAULTS
+  FILTER_DEFAULTS,
+  FILTERS_DATA_WITHOUT_MODEL
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS } from 'data/constants';
 import {
@@ -39,27 +42,43 @@ const getCountries = state => state.countries || null;
 const getRegions = state => state.regions || null;
 export const getMeta = state => state.meta || null;
 
+const getDataSection = createSelector(
+  [state => state.data, getSection],
+  (data, section) => {
+    if (!data || !section) return null;
+    return (data && data[section] && data[section]) || null;
+  }
+);
+
+const getMetaForNoModelFilters = createSelector(
+  [getSection, getDataSection],
+  (section, dataSection) => {
+    const sectionFilters = FILTERS_DATA_WITHOUT_MODEL[section];
+    if (!dataSection || !sectionFilters) return null;
+    const noModelFiltersMeta = {};
+    sectionFilters.forEach(field => {
+      noModelFiltersMeta[field] = dataSection.meta[field].map(v => ({
+        id: v,
+        title: v
+      }));
+    });
+    return noModelFiltersMeta;
+  }
+);
+
 const getSectionMeta = createSelector(
-  [getMeta, getRegions, getCountries, getSection],
-  (meta, regions, countries, section) => {
+  [getMeta, getRegions, getCountries, getSection, getMetaForNoModelFilters],
+  (meta, regions, countries, section, noModelFiltersMeta) => {
     if (!meta || !meta[section] || !regions || !countries || !section) {
       return null;
     }
-    const sectionMeta = meta[section];
+    const sectionMeta = { ...meta[section], ...noModelFiltersMeta };
     if (DATA_EXPLORER_FILTERS[section].includes('regions')) {
       return { ...sectionMeta, regions, countries };
     } else if (DATA_EXPLORER_FILTERS[section].includes('countries')) {
       return { ...sectionMeta, countries };
     }
     return { ...sectionMeta };
-  }
-);
-
-const getDataSection = createSelector(
-  [state => state.data, getSection],
-  (data, section) => {
-    if (!data || !section) return null;
-    return (data && data[section] && data[section]) || null;
   }
 );
 
@@ -502,8 +521,8 @@ export const getSelectedFilters = createSelector(
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
       const filterId = parsedSelectedFilters[filterKey];
       const isNonColumnKey = NON_COLUMN_KEYS.includes(filterKey);
-
-      if (isNonColumnKey) {
+      const isNoModelColumnKey = isNoColumnField(section, filterKey);
+      if (isNonColumnKey || isNoModelColumnKey) {
         selectedFilterObjects[filterKey] = filterId;
       } else {
         const multipleParsedSelectedFilters = filterId.split(',');
@@ -681,12 +700,12 @@ export const getActiveFilterLabel = createSelector(
 );
 
 export const getSelectedOptions = createSelector(
-  [getSelectedFilters],
-  selectedFields => {
+  [getSelectedFilters, getSection],
+  (selectedFields, section) => {
     if (!selectedFields) return null;
     const selectedOptions = {};
     Object.keys(selectedFields).forEach(key => {
-      if (NON_COLUMN_KEYS.includes(key)) {
+      if (NON_COLUMN_KEYS.includes(key) || isNoColumnField(section, key)) {
         selectedOptions[key] = {
           value: selectedFields[key],
           label: selectedFields[key]

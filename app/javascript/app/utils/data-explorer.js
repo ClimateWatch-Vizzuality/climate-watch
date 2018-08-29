@@ -1,6 +1,9 @@
 import invertBy from 'lodash/invertBy';
 import qs from 'querystring';
-import { DATA_EXPLORER_TO_MODULES_PARAMS } from 'data/data-explorer-constants';
+import {
+  DATA_EXPLORER_TO_MODULES_PARAMS,
+  FILTERS_DATA_WITHOUT_MODEL
+} from 'data/data-explorer-constants';
 import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
 
@@ -60,4 +63,13 @@ export const generateLinkToDataExplorer = (search, section) => {
   return `/data-explorer${sectionUrl}${params}`;
 };
 
-export default { parseQuery, openDownloadModal, generateLinkToDataExplorer };
+export const isNoColumnField = (section, key) =>
+  FILTERS_DATA_WITHOUT_MODEL[section] &&
+  FILTERS_DATA_WITHOUT_MODEL[section].includes(key);
+
+export default {
+  parseQuery,
+  openDownloadModal,
+  generateLinkToDataExplorer,
+  isNoColumnField
+};

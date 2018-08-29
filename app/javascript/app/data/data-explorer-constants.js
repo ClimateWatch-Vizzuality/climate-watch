@@ -285,6 +285,10 @@ export const FIELD_ALIAS = {
   'ndc-sdg-linkages': { goals: 'sdg', targets: 'sdg_target' }
 };
 
+export const FILTERS_DATA_WITHOUT_MODEL = {
+  'ndc-sdg-linkages': ['status', 'climate_response', 'type_of_information']
+};
+
 export default {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_SECTIONS,
@@ -298,5 +302,6 @@ export default {
   POSSIBLE_LABEL_FIELDS,
   POSSIBLE_VALUE_FIELDS,
   FIELD_ALIAS,
-  TOP_EMITTERS_OPTION
+  TOP_EMITTERS_OPTION,
+  FILTERS_DATA_WITHOUT_MODEL
 };

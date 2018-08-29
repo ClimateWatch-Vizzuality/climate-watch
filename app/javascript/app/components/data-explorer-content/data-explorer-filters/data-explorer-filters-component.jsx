@@ -10,6 +10,7 @@ import {
   SECTION_NAMES,
   FIELD_ALIAS
 } from 'data/data-explorer-constants';
+import { isNoColumnField } from 'utils/data-explorer';
 
 class DataExplorerFilters extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -99,7 +100,7 @@ class DataExplorerFilters extends PureComponent {
           />
         );
       }
-      return this.renderDropdown(field, true);
+      return this.renderDropdown(field, !isNoColumnField(section, field));
     });
     const hasYearFilters =
       section === SECTION_NAMES.historicalEmissions ||
