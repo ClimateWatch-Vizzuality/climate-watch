@@ -8,7 +8,7 @@ export const DATA_EXPLORER_BLACKLIST = [
 ];
 
 export const FIRST_TABLE_HEADERS = {
-  'historical-emissions': ['region', 'data_source', 'sector', 'gas', 'unit'],
+  'historical-emissions': ['country', 'data_source', 'sector', 'gas', 'unit'],
   'ndc-content': [
     'country',
     'categories', // remove when it's splitted into global and overview category
