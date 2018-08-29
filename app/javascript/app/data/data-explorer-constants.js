@@ -113,6 +113,7 @@ export const DATA_EXPLORER_FILTERS = {
 };
 
 // The dropdown named as the keys will be deleted if one of the values column changes
+// and will only be selectable if all the values are selected
 export const DATA_EXPLORER_DEPENDENCIES = {
   'historical-emissions': {
     sectors: ['source']
@@ -181,7 +182,7 @@ export const MULTIPLE_LEVEL_SECTION_FIELDS = {
   'ndc-content': [{ key: 'sectors' }, { key: 'categories' }]
 };
 
-export const GROUPED_SELECT_FIELDS = {
+export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'historical-emissions': [
     {
       key: 'regions',
@@ -191,7 +192,8 @@ export const GROUPED_SELECT_FIELDS = {
         { groupId: 'countries', title: 'Countries' }
       ]
     }
-  ]
+  ],
+  'emission-pathways': [{ key: 'scenarios' }]
 };
 
 export const DATA_EXPLORER_PER_PAGE = 200;
@@ -297,7 +299,7 @@ export default {
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
   MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_SELECT_FIELDS,
+  GROUPED_OR_MULTI_SELECT_FIELDS,
   DATA_EXPLORER_PER_PAGE,
   POSSIBLE_LABEL_FIELDS,
   POSSIBLE_VALUE_FIELDS,

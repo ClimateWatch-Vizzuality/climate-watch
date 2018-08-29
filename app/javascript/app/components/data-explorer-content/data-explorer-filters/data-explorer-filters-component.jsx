@@ -6,9 +6,9 @@ import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {
   MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_SELECT_FIELDS,
   SECTION_NAMES,
-  FIELD_ALIAS
+  FIELD_ALIAS,
+  GROUPED_OR_MULTI_SELECT_FIELDS
 } from 'data/data-explorer-constants';
 import { isNoColumnField } from 'utils/data-explorer';
 
@@ -54,13 +54,12 @@ class DataExplorerFilters extends PureComponent {
       activeFilterRegion,
       isDisabled
     } = this.props;
-
     const multipleSection = field =>
       MULTIPLE_LEVEL_SECTION_FIELDS[section] &&
       MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === field);
     const groupedSelect = field =>
-      GROUPED_SELECT_FIELDS[section] &&
-      GROUPED_SELECT_FIELDS[section].find(s => s.key === field);
+      GROUPED_OR_MULTI_SELECT_FIELDS[section] &&
+      GROUPED_OR_MULTI_SELECT_FIELDS[section].find(s => s.key === field);
     const fieldFilters = filters.map(field => {
       if (multipleSection(field)) {
         return (
@@ -82,15 +81,16 @@ class DataExplorerFilters extends PureComponent {
           />
         );
       } else if (groupedSelect(field)) {
-        const fieldInfo = GROUPED_SELECT_FIELDS[section].find(
+        const fieldInfo = GROUPED_OR_MULTI_SELECT_FIELDS[section].find(
           f => f.key === field
         );
+        const label = fieldInfo.label || fieldInfo.key;
         return (
           <MultiSelect
-            key={field}
-            label={fieldInfo.label}
+            key={fieldInfo.key}
+            label={deburrCapitalize(label)}
             selectedLabel={activeFilterRegion}
-            placeholder={`Filter by ${fieldInfo.label}`}
+            placeholder={`Filter by ${label}`}
             values={(selectedOptions && selectedOptions[field]) || []}
             options={filterOptions ? filterOptions[field] : []}
             groups={fieldInfo.groups}

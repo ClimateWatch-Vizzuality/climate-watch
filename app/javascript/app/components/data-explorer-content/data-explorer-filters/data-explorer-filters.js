@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { PureComponent, createElement } from 'react';
 import { getSearch, getLocationParamUpdated } from 'utils/navigation';
+import { noEmptyValues } from 'utils/utils';
 import { PropTypes } from 'prop-types';
 import { actions } from 'components/modal-download';
 import isArray from 'lodash/isArray';
@@ -42,7 +43,7 @@ const mapStateToProps = (state, { section, location }) => {
     DATA_EXPLORER_DEPENDENCIES[section][key] &&
     selectedOptions &&
     !DATA_EXPLORER_DEPENDENCIES[section][key].every(k =>
-      Object.keys(selectedOptions).includes(k)
+      Object.keys(noEmptyValues(selectedOptions)).includes(k)
     );
   const isDisabled = key =>
     (!metadataSection && loading) ||

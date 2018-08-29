@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import isArray from 'lodash/isArray';
 
 import { actions as modalActions } from 'components/modal-overview';
 
@@ -39,7 +40,7 @@ const mapStateToProps = (state, { location }) => {
     data,
     locations: state.espLocations.data,
     models: state.espModels.data,
-    scenarios: state.espScenarios.data,
+    allScenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
     location: currentLocation,
     availableModels: state.espGraph.locations,
@@ -107,9 +108,23 @@ class EmissionPathwayGraphContainer extends PureComponent {
       'category',
       'subcategory',
       'indicator',
-      'currentLocation'
+      'currentLocation',
+      'scenario'
     ];
     const paramsToUpdate = [];
+    const getFilterParamValue = f => {
+      if (isArray(filtersSelected[f])) {
+        return search[f]
+          ? filtersSelected[f]
+            .filter(selectedFilter =>
+              search[f].includes(selectedFilter.value)
+            )
+            .join(',')
+          : filtersSelected[f].map(filter => filter.value).join(',');
+      }
+      return filtersSelected[f].value;
+    };
+
     possibleParams.forEach(f => {
       if (!search[f]) {
         if (f === 'currentLocation' && filtersSelected.location) {
@@ -120,7 +135,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
               filtersSelected.location.value
           });
         } else if (f !== 'currentLocation' && filtersSelected[f]) {
-          paramsToUpdate.push({ name: f, value: filtersSelected[f].value });
+          const value = getFilterParamValue(f);
+          if (value) paramsToUpdate.push({ name: f, value });
         }
       }
     });
