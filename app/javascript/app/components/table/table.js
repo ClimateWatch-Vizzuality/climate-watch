@@ -21,13 +21,13 @@ class TableContainer extends PureComponent {
       defaultColumns,
       sortBy,
       sortDirection,
-      hasStrechedColumns
+      forcedColumnWidth
     } = props;
     const columns = defaultColumns || Object.keys(data[0]);
     this.state = {
       data,
       optionsOpen: false,
-      hasStrechedColumns,
+      forcedColumnWidth,
       sortBy: sortBy || Object.keys(data[0])[0],
       sortDirection,
       activeColumns: columns.map(d => ({
@@ -57,8 +57,8 @@ class TableContainer extends PureComponent {
   };
 
   setColumnWidth = column => {
-    if (this.props.hasStrechedColumns) {
-      return 100;
+    if (this.props.forcedColumnWidth) {
+      return this.props.forcedColumnWidth;
     }
     if (ESP_NARROW_COLUMNS.indexOf(column) !== -1) {
       return 80;
@@ -133,14 +133,14 @@ TableContainer.propTypes = {
   handleSortChange: PropTypes.func,
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
-  hasStrechedColumns: PropTypes.bool
+  forcedColumnWidth: PropTypes.number
 };
 
 TableContainer.defaultProps = {
   data: [],
   sortBy: 'value',
   sortDirection: SortDirection.ASC,
-  hasStrechedColumns: false
+  hasStrechedColumns: null
 };
 
 export default TableContainer;
