@@ -51,7 +51,8 @@ class SimpleTable extends PureComponent {
       toggleOptionsOpen,
       optionsOpen,
       horizontalScroll,
-      firstColumnHeaders
+      firstColumnHeaders,
+      flexGrow
     } = this.props;
 
     if (!data.length) return null;
@@ -113,8 +114,8 @@ class SimpleTable extends PureComponent {
                     key={column}
                     label={deburrCapitalize(column)}
                     dataKey={column}
+                    flexGrow={flexGrow}
                     width={setColumnWidth(column)}
-                    flexGrow={1}
                     cellRenderer={cell =>
                       cellRenderer({ props: this.props, cell })}
                   />
@@ -132,6 +133,7 @@ SimpleTable.propTypes = {
   data: PropTypes.array,
   optionsOpen: PropTypes.bool,
   hasColumnSelect: PropTypes.bool,
+  flexGrow: PropTypes.number,
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
   handleColumnChange: PropTypes.func,
@@ -152,7 +154,8 @@ SimpleTable.propTypes = {
 SimpleTable.defaultProps = {
   headerHeight: 30,
   horizontalScroll: false,
-  firstColumnHeaders: []
+  firstColumnHeaders: [],
+  flexGrow: 1
 };
 
 export default SimpleTable;
