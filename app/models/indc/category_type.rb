@@ -1,5 +1,7 @@
 module Indc
   class CategoryType < ApplicationRecord
+    GLOBAL = 'global'.freeze
+    OVERVIEW = 'overview'.freeze
     has_many :categories, class_name: 'Indc::Category'
 
     validates :name, uniqueness: true

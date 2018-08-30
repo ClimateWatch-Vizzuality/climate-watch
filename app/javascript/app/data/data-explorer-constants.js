@@ -10,7 +10,7 @@ export const DATA_EXPLORER_BLACKLIST = [
 ];
 
 export const FIRST_TABLE_HEADERS = {
-  'historical-emissions': ['region', 'data_source', 'sector', 'gas', 'unit'],
+  'historical-emissions': ['country', 'data_source', 'sector', 'gas', 'unit'],
   'ndc-content': [
     'country',
     'categories', // remove when it's splitted into global and overview category
@@ -293,6 +293,10 @@ export const FILTERS_DATA_WITHOUT_MODEL = {
   'ndc-sdg-linkages': ['status', 'climate_response', 'type_of_information']
 };
 
+export const DATA_EXPLORER_TABLE_COLUMNS_WIDTH = {
+  'emission-pathways': 100
+};
+
 export default {
   DATA_EXPLORER_BLACKLIST,
   DATA_EXPLORER_SECTIONS,
@@ -300,6 +304,7 @@ export default {
   DATA_EXPLORER_DEPENDENCIES,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
+  DATA_EXPLORER_TABLE_COLUMNS_WIDTH,
   MULTIPLE_LEVEL_SECTION_FIELDS,
   GROUPED_OR_MULTI_SELECT_FIELDS,
   DATA_EXPLORER_PER_PAGE,

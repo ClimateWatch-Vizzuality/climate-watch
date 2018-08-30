@@ -11,7 +11,8 @@ import pick from 'lodash/pick';
 import {
   DATA_EXPLORER_SECTIONS,
   DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_PER_PAGE
+  DATA_EXPLORER_PER_PAGE,
+  DATA_EXPLORER_TABLE_COLUMNS_WIDTH
 } from 'data/data-explorer-constants';
 import { ESP_HOST } from 'data/constants';
 import DataExplorerContentComponent from './data-explorer-content-component';
@@ -43,7 +44,7 @@ const mapStateToProps = (state, { section, location }) => {
       hash: 'data',
       defaultActiveHash: true
     },
-    { label: 'Sources', hash: 'meta', defaultActiveHash: true }
+    { label: 'Sources & Metadata', hash: 'meta', defaultActiveHash: true }
   ];
   const filterQuery = parseFilterQuery(dataState);
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
@@ -67,6 +68,7 @@ const mapStateToProps = (state, { section, location }) => {
   return {
     data,
     pageCount: dataLength ? dataLength / DATA_EXPLORER_PER_PAGE : 0,
+    tableColumnsWidth: DATA_EXPLORER_TABLE_COLUMNS_WIDTH,
     initialPage: search.page && parseInt(search.page, 10) - 1,
     meta,
     metadataSection: !!location.hash && location.hash === '#meta',
