@@ -749,18 +749,8 @@ export const getSelectedOptions = createSelector(
   }
 );
 
-export const parseData = createSelector([parseEmissionsInData], data => {
-  if (!data || !data.length > 0) return null;
-  const updatedData = data;
-  const whiteList = remove(
-    Object.keys(updatedData[0]),
-    n => DATA_EXPLORER_BLACKLIST.indexOf(n) === -1
-  );
-  return updatedData.map(d => pick(d, whiteList));
-});
-
 export const getTitleLinks = createSelector(
-  [parseData, getSection, getCountries],
+  [parseEmissionsInData, getSection, getCountries],
   (data, section, countries) => {
     if (!data || !data.length || section !== 'ndc-sdg-linkages') return null;
     return data.map(d => {
@@ -776,6 +766,17 @@ export const getTitleLinks = createSelector(
     });
   }
 );
+
+export const parseData = createSelector([parseEmissionsInData], data => {
+  if (!data || !data.length > 0) return null;
+  const updatedData = data;
+  const whiteList = remove(
+    Object.keys(updatedData[0]),
+    n => DATA_EXPLORER_BLACKLIST.indexOf(n) === -1
+  );
+  return updatedData.map(d => pick(d, whiteList));
+});
+
 export const getFirstTableHeaders = createSelector(
   [parseData, getSection],
   (data, section) => {

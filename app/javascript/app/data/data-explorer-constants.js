@@ -4,7 +4,9 @@ export const DATA_EXPLORER_BLACKLIST = [
   'id',
   'iso_code3',
   'iso_code2',
-  'emissions'
+  'emissions',
+  'document_type',
+  'language'
 ];
 
 export const FIRST_TABLE_HEADERS = {
