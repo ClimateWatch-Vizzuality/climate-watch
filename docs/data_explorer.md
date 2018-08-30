@@ -198,8 +198,7 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 
 File format:
 
-Id | Iso code3 | Country | Indc text | Status | Climate response | Type of information | Sector | Target number | Target | Goal number | Goal
-
+Country | SDG | SDG Target | Indc text | Status | Sector | Climate response | Type of information
 
 ### JSON API endpoint
 
@@ -212,23 +211,30 @@ Id | Iso code3 | Country | Indc text | Status | Climate response | Type of infor
    "data":[
       {
          "id":1,
-         "country":"name",
          "iso_code3":"ISO code 3",
+         "country":"name",
+         "sdg":"17 Strengthen the means of implementation and revitalize the global partnership for sustainable development",
+         "sdg_target":"17.6 Enhance North-South, South-South and triangular regional and international cooperation on and access to science, technology and innovation and enhance knowledge sharing on mutually agreed terms, including through improved coordination among existing mechanisms, in particular at the United Nations level, and through a global technology facilitation mechanism",
          "indc_text":"Matching text",
          "status":"Future",
-         "climate_response":"Adaptation",
-         "type_of_information":"Needs \u0026 Gaps",
          "sector":"Forest and land use",
-         "target_number":"17.6",
-         "target":"Enhance North-South, South-South and triangular regional and international cooperation on and access to science, technology and innovation and enhance knowledge sharing on mutually agreed terms, including through improved coordination among existing mechanisms, in particular at the United Nations level, and through a global technology facilitation mechanism",
-         "goal_number":"17",
-         "goal":"Strengthen the means of implementation and revitalize the global partnership for sustainable development"
+         "climate_response":"Adaptation",
+         "type_of_information":"Needs \u0026 Gaps"
       }
    ],
    "meta":{
       "columns":[
          "string"
       ],
+      "statuses":[
+        "string"
+      ],
+      "climate_responses":[
+        "string"
+      ],
+      "types_of_information":[
+        "string"
+      ]
       "sorting":{
          "sort_col":"string","sort_dir":"string"
       }

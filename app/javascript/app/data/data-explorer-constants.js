@@ -4,7 +4,9 @@ export const DATA_EXPLORER_BLACKLIST = [
   'id',
   'iso_code3',
   'iso_code2',
-  'emissions'
+  'emissions',
+  'document_type',
+  'language'
 ];
 
 export const FIRST_TABLE_HEADERS = {
@@ -22,8 +24,8 @@ export const FIRST_TABLE_HEADERS = {
   ],
   'ndc-sdg-linkages': [
     'country',
-    'goal',
-    'target',
+    'sdg',
+    'sdg_target',
     'indc_text',
     'status',
     'sector',
@@ -90,17 +92,16 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
-// Add the extra filters when they are available in the backend
 export const DATA_EXPLORER_FILTERS = {
   'historical-emissions': ['source', 'regions', 'sectors', 'gases'],
   'ndc-sdg-linkages': [
     'countries',
     'goals',
     'targets',
-    // 'status',
-    'sectors'
-    // 'climate_response',
-    // 'type_of_information'
+    'status',
+    'sectors',
+    'climate_response',
+    'type_of_information'
   ],
   'emission-pathways': [
     'locations',
@@ -284,6 +285,14 @@ export const TOP_EMITTERS_OPTION = {
   groupId: 'regions'
 };
 
+export const FIELD_ALIAS = {
+  'ndc-sdg-linkages': { goals: 'sdg', targets: 'sdg_target' }
+};
+
+export const FILTERS_DATA_WITHOUT_MODEL = {
+  'ndc-sdg-linkages': ['status', 'climate_response', 'type_of_information']
+};
+
 export const DATA_EXPLORER_TABLE_COLUMNS_WIDTH = {
   'emission-pathways': 100
 };
@@ -301,5 +310,7 @@ export default {
   DATA_EXPLORER_PER_PAGE,
   POSSIBLE_LABEL_FIELDS,
   POSSIBLE_VALUE_FIELDS,
-  TOP_EMITTERS_OPTION
+  FIELD_ALIAS,
+  TOP_EMITTERS_OPTION,
+  FILTERS_DATA_WITHOUT_MODEL
 };

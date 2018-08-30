@@ -6,9 +6,11 @@ import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {
   MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_OR_MULTI_SELECT_FIELDS,
-  SECTION_NAMES
+  SECTION_NAMES,
+  FIELD_ALIAS,
+  GROUPED_OR_MULTI_SELECT_FIELDS
 } from 'data/data-explorer-constants';
+import { isNoColumnField } from 'utils/data-explorer';
 
 class DataExplorerFilters extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -18,17 +20,19 @@ class DataExplorerFilters extends PureComponent {
       handleFiltersChange,
       selectedOptions,
       filterOptions,
-      isDisabled
+      isDisabled,
+      section
     } = this.props;
-
+    const label =
+      (FIELD_ALIAS[section] && FIELD_ALIAS[section][field]) || field;
     const value = isColumnField
       ? selectedOptions && selectedOptions[field] && selectedOptions[field][0]
       : selectedOptions && selectedOptions[field];
     return (
       <Dropdown
-        key={field}
-        label={deburrCapitalize(field)}
-        placeholder={`Filter by ${deburrCapitalize(field)}`}
+        key={label}
+        label={deburrCapitalize(label)}
+        placeholder={`Filter by ${deburrCapitalize(label)}`}
         options={(filterOptions && filterOptions[field]) || []}
         onValueChange={selected =>
           handleFiltersChange({ [field]: selected && selected.value })}
@@ -96,7 +100,7 @@ class DataExplorerFilters extends PureComponent {
           />
         );
       }
-      return this.renderDropdown(field, true);
+      return this.renderDropdown(field, !isNoColumnField(section, field));
     });
     const hasYearFilters =
       section === SECTION_NAMES.historicalEmissions ||
