@@ -765,11 +765,12 @@ export const getTitleLinks = createSelector(
     if (!data || !data.length || section !== 'ndc-sdg-linkages') return null;
     return data.map(d => {
       const country = countries.find(c => c.wri_standard_name === d.country);
+      const target_number = d.sdg_target.split(' ')[0].slice(0, -1);
       return [
         {
           columnName: 'indc_text',
           url: `/ndcs/country/${country &&
-            country.iso_code3}/full?query=${d.target_number}&searchBy=target&document=${d.document_type}-${d.language}`
+            country.iso_code3}/full?query=${target_number}&searchBy=target&document=${d.document_type}-${d.language}`
         }
       ];
     });
