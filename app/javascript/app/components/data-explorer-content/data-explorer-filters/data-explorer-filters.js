@@ -12,6 +12,7 @@ import {
   FILTER_DEFAULTS,
   NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
+import { handleAnalytics } from 'utils/analytics';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
   getActiveFilterLabel,
@@ -126,6 +127,10 @@ const resetPageParam = {
   value: 1
 };
 
+const handleChangeSelectorAnalytics = () => {
+  handleAnalytics('Data Explorer', 'Change selector', 'Click');
+};
+
 class DataExplorerFiltersContainer extends PureComponent {
   componentDidUpdate() {
     this.checkDefaultFilters();
@@ -191,7 +196,8 @@ class DataExplorerFiltersContainer extends PureComponent {
   render() {
     return createElement(DataExplorerFiltersComponent, {
       ...this.props,
-      handleFiltersChange: this.handleFiltersChange
+      handleFiltersChange: this.handleFiltersChange,
+      handleChangeSelectorAnalytics
     });
   }
 }
