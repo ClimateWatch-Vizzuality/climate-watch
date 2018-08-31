@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 
 const setModalMetadataParams = createAction('setModalMetadataParams');
 
@@ -15,11 +15,11 @@ const setModalMetadata = createThunkAction(
     if (slugs) {
       if (typeof slugs === 'string') slugs = [slugs];
       dispatch(fetchModalMetaData(slugs));
-      ReactGA.event({
-        category: payload.category,
-        action: 'User opens an Info window',
-        label: payload.customTitle || slugs[0]
-      });
+      handleAnalytics(
+        payload.category,
+        'User opens an Info window',
+        payload.customTitle || slugs[0]
+      );
     }
   }
 );

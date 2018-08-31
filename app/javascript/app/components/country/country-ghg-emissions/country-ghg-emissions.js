@@ -9,8 +9,7 @@ import {
   isPageNdcp
 } from 'utils/navigation';
 import qs from 'query-string';
-import ReactGA from 'react-ga';
-
+import { handleAnalytics } from 'utils/analytics';
 import { actions as modalActions } from 'components/modal-metadata';
 import ownActions from './country-ghg-emissions-actions';
 import reducers, { initialState } from './country-ghg-emissions-reducers';
@@ -125,11 +124,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
   };
 
   handleAnalyticsClick = () => {
-    ReactGA.event({
-      category: 'Country',
-      action: 'Leave page to explore data',
-      label: 'Ghg emissions'
-    });
+    handleAnalytics('Country', 'Leave page to explore data', 'Ghg emissions');
   };
 
   handleSourceChange = category => {
@@ -144,11 +139,7 @@ class CountryGhgEmissionsContainer extends PureComponent {
         ],
         true
       );
-      ReactGA.event({
-        category: 'Country',
-        action: 'Change Emissions source',
-        label: category.label
-      });
+      handleAnalytics('Country', 'Change Emissions source', category.label);
     }
   };
 

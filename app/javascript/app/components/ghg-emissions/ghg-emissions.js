@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
+
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -83,11 +84,7 @@ class GhgEmissionsContainer extends PureComponent {
 
   handleSourceChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
-    ReactGA.event({
-      category: 'Historical Emissions',
-      action: 'Source selected',
-      label: category.label
-    });
+    handleAnalytics('Historical Emissions', 'Source selected', category.label);
   };
 
   handleBreakByChange = breakBy => {
@@ -98,20 +95,12 @@ class GhgEmissionsContainer extends PureComponent {
       { name: 'version', value: versionSelected.value }
     ];
     this.updateUrlParam(params, true);
-    ReactGA.event({
-      category: 'Historical Emissions',
-      action: 'Break by selected',
-      label: breakBy.label
-    });
+    handleAnalytics('Historical Emissions', 'Break by selected', breakBy.label);
   };
 
   handleVersionChange = version => {
     this.updateUrlParam({ name: 'version', value: version.value });
-    ReactGA.event({
-      category: 'Historical Emissions',
-      action: 'version selected',
-      label: version.label
-    });
+    handleAnalytics('Historical Emissions', 'version selected', version.label);
   };
 
   handleFilterChange = filters => {
@@ -138,11 +127,11 @@ class GhgEmissionsContainer extends PureComponent {
     this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
     const selectedFilterLabels = filters.map(f => f.label);
     if (selectedFilterLabels.length > 0) {
-      ReactGA.event({
-        category: 'Historical Emissions',
-        action: 'Filter by',
-        label: selectedFilterLabels.toString()
-      });
+      handleAnalytics(
+        'Historical Emissions',
+        'Filter by',
+        selectedFilterLabels.toString()
+      );
     }
   };
 

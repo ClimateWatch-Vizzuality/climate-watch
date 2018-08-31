@@ -5,8 +5,8 @@ import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
-import ReactGA from 'react-ga';
 import { CALCULATION_OPTIONS } from 'app/data/constants';
+import { handleAnalytics } from 'utils/analytics';
 import CompareGhgChartComponent from './compare-ghg-chart-component';
 import {
   getSourceOptions,
@@ -66,11 +66,7 @@ const mapStateToProps = (state, { location }) => {
 class CompareGhgChartContainer extends PureComponent {
   handleSourceChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
-    ReactGA.event({
-      category: 'Country comparison',
-      action: 'Source selected',
-      label: category.label
-    });
+    handleAnalytics('Country comparison', 'Source selected', category.label);
   };
 
   handleCalculationChange = calculation => {
@@ -78,22 +74,22 @@ class CompareGhgChartContainer extends PureComponent {
       { name: 'calculation', value: calculation.value },
       false
     );
-    ReactGA.event({
-      category: 'Country comparison',
-      action: 'Calculation selected',
-      label: calculation.label
-    });
+    handleAnalytics(
+      'Country comparison',
+      'Calculation selected',
+      calculation.label
+    );
   };
 
   handleSectorChange = sectors => {
     const sectorLabels = sectors.map(s => s.label);
     this.updateUrlParam({ name: 'sectors', value: sectorLabels.toString() });
     if (sectors.length > 0) {
-      ReactGA.event({
-        category: 'Country comparison',
-        action: 'Sector selected',
-        label: sectorLabels.toString()
-      });
+      handleAnalytics(
+        'Country comparison',
+        'Sector selected',
+        sectorLabels.toString()
+      );
     }
   };
 
@@ -114,11 +110,7 @@ class CompareGhgChartContainer extends PureComponent {
   };
 
   handleAnalyticsClick = () => {
-    ReactGA.event({
-      category: 'Compare',
-      action: 'Leave page to explore data',
-      label: 'Ghg emissions'
-    });
+    handleAnalytics('Compare', 'Leave page to explore data', 'Ghg emissions');
   };
 
   render() {

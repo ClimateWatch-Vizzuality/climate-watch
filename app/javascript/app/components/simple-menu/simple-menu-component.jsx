@@ -8,7 +8,7 @@ import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
 import arrow from 'assets/icons/arrow-down-tiny.svg';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 import styles from './simple-menu-styles.scss';
 
 class SimpleMenu extends PureComponent {
@@ -47,11 +47,7 @@ class SimpleMenu extends PureComponent {
   handleAnalyticsClick() {
     const { analyticsGraphName } = this.props;
     if (analyticsGraphName) {
-      ReactGA.event({
-        category: 'Share',
-        action: 'User shares a link',
-        label: analyticsGraphName
-      });
+      handleAnalytics('Share', 'User shares a link', analyticsGraphName);
     }
   }
 

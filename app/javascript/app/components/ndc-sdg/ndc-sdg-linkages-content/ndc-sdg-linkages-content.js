@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import { withRouter } from 'react-router';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 
 import actions from './ndc-sdg-linkages-content-actions';
 import reducers, { initialState } from './ndc-sdg-linkages-content-reducers';
@@ -24,11 +24,7 @@ class NdcSdgLinkagesContentContainer extends PureComponent {
 
   handleGoalHover = debounce(goal => {
     this.setState({ goalHover: goal });
-    ReactGA.event({
-      category: 'NDC-SDG map',
-      action: 'SDG being visualised',
-      label: goal.toString()
-    });
+    handleAnalytics('NDC-SDG map', 'SDG being visualised', goal.toString());
   }, 50);
 
   handleTargetHover = debounce(target => {
