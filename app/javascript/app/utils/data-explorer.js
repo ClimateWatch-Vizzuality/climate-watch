@@ -6,6 +6,7 @@ import {
 } from 'data/data-explorer-constants';
 import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
+import { handleAnalytics } from './analytics';
 
 const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
 
@@ -30,8 +31,17 @@ const REPLACEMENTS = {
 
 export const parseQuery = query => query && replaceAll(query, REPLACEMENTS);
 
-export const openDownloadModal = (downloadUrl, setModalDownloadParams) => {
+export const openDownloadModal = (
+  downloadUrl,
+  setModalDownloadParams,
+  section
+) => {
   if (!FEATURE_DATA_SURVEY || getStorageWithExpiration('userSurvey')) {
+    handleAnalytics(
+      'Data Explorer',
+      'Download Data',
+      section || 'Download All Data'
+    );
     return window.location.assign(downloadUrl);
   }
   return setModalDownloadParams({

@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
+import { handleAnalytics, getUrlSection } from 'utils/analytics';
 import {
   setStorageWithExpiration,
   getStorageWithExpiration
@@ -23,6 +24,11 @@ const saveSurveyData = createThunkAction(
         `${USER_SURVEY_SPREADSHEET_URL}?${requestParams.join('&')}`
       ).then(() => {
         window.location.assign(modalDownload.downloadUrl);
+        handleAnalytics(
+          'Data Explorer',
+          'Download Data',
+          getUrlSection(modalDownload.downloadUrl)
+        );
         return dispatch(toggleModalDownload({ open: false }));
       });
     }
