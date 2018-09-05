@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -78,11 +78,11 @@ class NDCMapContainer extends PureComponent {
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
       this.props.history.push(`/ndcs/country/${iso}`);
-      ReactGA.event({
-        category: 'NDC Content Map',
-        action: 'Use map to find country',
-        label: geography.properties.name
-      });
+      handleAnalytics(
+        'NDC Content Map',
+        'Use map to find country',
+        geography.properties.name
+      );
     }
   };
 
@@ -100,20 +100,12 @@ class NDCMapContainer extends PureComponent {
       },
       true
     );
-    ReactGA.event({
-      category: 'NDC Content Map',
-      action: 'Change category',
-      label: category.label
-    });
+    handleAnalytics('NDC Content Map', 'Change category', category.label);
   };
 
   handleIndicatorChange = indicator => {
     this.updateUrlParam({ name: 'indicator', value: indicator.value });
-    ReactGA.event({
-      category: 'NDC Content Map',
-      action: 'Change indicator',
-      label: indicator.label
-    });
+    handleAnalytics('NDC Content Map', 'Change indicator', indicator.label);
   };
 
   handleSearchChange = query => {

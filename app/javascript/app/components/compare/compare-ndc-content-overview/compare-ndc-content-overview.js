@@ -1,8 +1,8 @@
-import ReactGA from 'react-ga';
 import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
+import { handleAnalytics } from 'utils/analytics';
 
 import Component from './compare-ndc-content-overview-component';
 import {
@@ -29,11 +29,11 @@ const mapStateToProps = (state, { location }) => {
 
 class CompareNDCContentOverview extends PureComponent {
   handleAnalyticsClick = () => {
-    ReactGA.event({
-      category: 'Compare',
-      action: 'Leave page to NDC compare data',
-      label: 'NDC content overview'
-    });
+    handleAnalytics(
+      'Compare',
+      'Leave page to NDC compare data',
+      'NDC content overview'
+    );
   };
 
   render() {

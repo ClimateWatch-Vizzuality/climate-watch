@@ -146,8 +146,8 @@ class DataExplorerContentContainer extends PureComponent {
   };
 
   handleDownloadModalOpen = () => {
-    const { setModalDownloadParams, downloadHref } = this.props;
-    openDownloadModal(downloadHref, setModalDownloadParams);
+    const { setModalDownloadParams, downloadHref, section } = this.props;
+    openDownloadModal(downloadHref, setModalDownloadParams, section);
   };
 
   updateUrlParam(params, clear) {

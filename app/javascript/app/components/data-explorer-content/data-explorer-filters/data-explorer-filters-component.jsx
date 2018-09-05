@@ -18,6 +18,7 @@ class DataExplorerFilters extends PureComponent {
   renderDropdown(field, isColumnField) {
     const {
       handleFiltersChange,
+      handleChangeSelectorAnalytics,
       selectedOptions,
       filterOptions,
       isDisabled,
@@ -34,8 +35,10 @@ class DataExplorerFilters extends PureComponent {
         label={deburrCapitalize(label)}
         placeholder={`Filter by ${deburrCapitalize(label)}`}
         options={(filterOptions && filterOptions[field]) || []}
-        onValueChange={selected =>
-          handleFiltersChange({ [field]: selected && selected.value })}
+        onValueChange={selected => {
+          handleFiltersChange({ [field]: selected && selected.value });
+          handleChangeSelectorAnalytics();
+        }}
         value={value || null}
         plain
         disabled={isDisabled(field)}
@@ -52,7 +55,8 @@ class DataExplorerFilters extends PureComponent {
       filters,
       section,
       activeFilterRegion,
-      isDisabled
+      isDisabled,
+      handleChangeSelectorAnalytics
     } = this.props;
     const multipleSection = field =>
       MULTIPLE_LEVEL_SECTION_FIELDS[section] &&
@@ -75,8 +79,10 @@ class DataExplorerFilters extends PureComponent {
             }
             disabled={isDisabled(field)}
             clearable
-            onChange={option =>
-              handleFiltersChange({ [field]: option && option.value })}
+            onChange={option => {
+              handleFiltersChange({ [field]: option && option.value });
+              handleChangeSelectorAnalytics();
+            }}
             noParentSelection={multipleSection(field).noSelectableParent}
           />
         );
@@ -95,8 +101,10 @@ class DataExplorerFilters extends PureComponent {
             options={filterOptions ? filterOptions[field] : []}
             groups={fieldInfo.groups}
             disabled={isDisabled(field)}
-            onMultiValueChange={selected =>
-              handleFiltersChange({ [field]: selected })}
+            onMultiValueChange={selected => {
+              handleFiltersChange({ [field]: selected });
+              handleChangeSelectorAnalytics();
+            }}
           />
         );
       }
@@ -118,6 +126,7 @@ DataExplorerFilters.propTypes = {
   activeFilterRegion: PropTypes.string,
   section: PropTypes.string.isRequired,
   handleFiltersChange: PropTypes.func.isRequired,
+  handleChangeSelectorAnalytics: PropTypes.func.isRequired,
   isDisabled: PropTypes.func.isRequired,
   filters: PropTypes.array,
   selectedOptions: PropTypes.object,

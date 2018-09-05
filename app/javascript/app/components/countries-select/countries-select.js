@@ -3,8 +3,8 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { isCountryIncluded } from 'app/utils';
-import ReactGA from 'react-ga';
 import { isPageContained, isPageNdcp } from 'utils/navigation';
+import { handleAnalytics } from 'utils/analytics';
 
 import actions from './countries-select-actions';
 import reducers, { initialState } from './countries-select-reducers';
@@ -46,11 +46,7 @@ class CountrySelectContainer extends PureComponent {
     if (iso && isCountryIncluded(isoCountries, iso)) {
       history.push(`/countries/${iso}`);
     }
-    ReactGA.event({
-      category: 'Home',
-      action: 'Use map to find country',
-      label: iso
-    });
+    handleAnalytics('Home', 'Use map to find country', iso);
   };
 
   onCountryMouseEnter = country => {
@@ -62,11 +58,7 @@ class CountrySelectContainer extends PureComponent {
   };
 
   handleClickAnalytics = iso => {
-    ReactGA.event({
-      category: 'Home',
-      action: 'Search for a country',
-      label: iso
-    });
+    handleAnalytics('Home', 'Search for a country', iso);
   };
 
   render() {

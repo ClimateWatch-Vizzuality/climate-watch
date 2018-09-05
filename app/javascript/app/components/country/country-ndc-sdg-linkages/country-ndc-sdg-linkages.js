@@ -9,7 +9,7 @@ import {
 } from 'utils/navigation';
 import qs from 'query-string';
 import isEmpty from 'lodash/isEmpty';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 import { actions as modalMetadataActions } from 'components/modal-metadata';
 
 import ownActions from './country-ndc-sdg-linkages-actions';
@@ -68,11 +68,11 @@ const CountrySDGLinkagesContainer = props => {
   const { history, location } = props;
 
   const handleAnalyticsClick = () => {
-    ReactGA.event({
-      category: 'Country',
-      action: 'Leave page to explore data',
-      label: 'Ndc Sdg Linkages'
-    });
+    handleAnalytics(
+      'Country',
+      'Leave page to explore data',
+      'Ndc Sdg Linkages'
+    );
   };
 
   const handleInfoClick = () => {
@@ -95,11 +95,7 @@ const CountrySDGLinkagesContainer = props => {
   const handleSectorChange = option => {
     updateUrlParam({ name: 'sector', value: option ? option.value : '' });
     if (option) {
-      ReactGA.event({
-        category: 'Country',
-        action: 'Change SDG-NDC sector',
-        label: option.label
-      });
+      handleAnalytics('Country', 'Change SDG-NDC sector', option.label);
     }
   };
 
