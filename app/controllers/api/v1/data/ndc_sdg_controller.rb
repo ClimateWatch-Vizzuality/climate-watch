@@ -4,7 +4,6 @@ module Api
       class NdcSdgController < Api::V1::Data::ApiController
         include Streamable
         before_action :parametrise_filter, only: [:index, :download]
-        before_action :parametrise_metadata_filter, only: [:download]
 
         def index
           @records = paginate @filter.call
@@ -28,30 +27,14 @@ module Api
         end
 
         def download
-          filename = 'ndc_sdg'
-          metadata_filename = 'sources.csv'
-          zipped_download = Api::V1::Data::ZippedDownload.new(filename)
-          zipped_download.add_file_content(
-            Api::V1::Data::NdcSdgCsvContent.new(@filter).call,
-            filename + 'csv'
-          )
-          zipped_download.add_file_content(
-            Api::V1::Data::MetadataCsvContent.new(@metadata_filter).call,
-            metadata_filename
-          )
-          stream_file(filename) { zipped_download.call }
+          zipped_download = Api::V1::Data::NdcSdgZippedDownload.new(@filter)
+          stream_file(zipped_download.filename) { zipped_download.call }
         end
 
         private
 
         def parametrise_filter
           @filter = Data::NdcSdgFilter.new(params)
-        end
-
-        def parametrise_metadata_filter
-          @metadata_filter = Api::V1::Data::MetadataFilter.new(
-            source_names: ['ndc_sdc_all indicators']
-          )
         end
       end
     end
