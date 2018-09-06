@@ -109,7 +109,6 @@ module Api
               ::Indc::Sector.where(
                 parent_id: top_level_sector_ids
               ).pluck(:id)
-
             @query = @query.where(sector_id: subsector_ids)
           end
 
