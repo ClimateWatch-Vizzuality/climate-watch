@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import { getCustomTicks } from 'utils/graphs';
 import { isMicrosoftBrowser, wordWrap } from 'utils';
+import { isPageContained } from 'utils/navigation';
 import {
   CustomXAxisTick,
   CustomYAxisTick
@@ -312,7 +313,7 @@ class ChartStackedArea extends PureComponent {
               type={stepped ? 'step' : 'linear'}
             />
           )}
-          {DividerLine({ x: lastData.x })}
+          {!isPageContained && DividerLine({ x: lastData.x })}
           {showLastPoint && this.renderLastPoint()}
           {this.renderQuantificationPoints()}
         </ComposedChart>
