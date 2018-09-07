@@ -28,15 +28,18 @@ module Api
         end
 
         def download
-          stream_file('historical_emissions') do |stream|
-            Api::V1::Data::HistoricalEmissionsCsvContent.new(@filter, stream).call
-          end
+          zipped_download =
+            Api::V1::Data::HistoricalEmissions::ZippedDownload.new(
+              @filter,
+              source_ids: params[:source_ids]
+            )
+          stream_file(zipped_download.filename) { zipped_download.call }
         end
 
         private
 
         def parametrise_filter
-          @filter = Data::HistoricalEmissionsFilter.new(params)
+          @filter = Data::HistoricalEmissions::Filter.new(params)
         end
       end
     end

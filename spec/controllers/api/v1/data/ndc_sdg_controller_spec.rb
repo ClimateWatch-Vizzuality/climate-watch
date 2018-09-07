@@ -39,9 +39,9 @@ RSpec.describe Api::V1::Data::NdcSdgController, type: :controller do
   describe 'GET download' do
     it 'returns data as csv' do
       get :download
-      expect(response.content_type).to eq('text/csv')
+      expect(response.content_type).to eq('application/zip')
       expect(response.headers['Content-Disposition']).
-        to eq('attachment; filename="ndc_sdg.csv"')
+        to eq('attachment; filename="ndc_sdg.zip"')
     end
   end
 

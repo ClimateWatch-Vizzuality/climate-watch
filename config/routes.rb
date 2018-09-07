@@ -53,7 +53,7 @@ Rails.application.routes.draw do
 
       namespace :data do
         resources :historical_emissions, only: [:index] do
-          get :download, on: :collection, defaults: { format: 'csv' }
+          get :download, on: :collection, defaults: { format: 'zip' }
           get :meta, on: :collection
         end
         namespace :historical_emissions do
@@ -63,7 +63,7 @@ Rails.application.routes.draw do
           resources :sectors, only: [:index]
         end
         resources :ndc_sdg, only: [:index] do
-          get :download, on: :collection, defaults: { format: 'csv' }
+          get :download, on: :collection, defaults: { format: 'zip' }
           get :meta, on: :collection
         end
         namespace :ndc_sdg do
@@ -72,7 +72,7 @@ Rails.application.routes.draw do
           resources :sectors, only: [:index]
         end
         resources :ndc_content, only: [:index] do
-          get :download, on: :collection, defaults: { format: 'csv' }
+          get :download, on: :collection, defaults: { format: 'zip' }
           get :meta, on: :collection
         end
         namespace :ndc_content do

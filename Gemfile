@@ -14,6 +14,7 @@ gem 'sprockets',  '~> 3.7.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.20'
 gem 'pg_search'
+gem 'rubyzip'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets

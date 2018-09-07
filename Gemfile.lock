@@ -308,6 +308,7 @@ DEPENDENCIES
   rspec-collection_matchers
   rspec-rails (~> 3.5)
   rubocop
+  rubyzip
   sass-rails (~> 5.0)
   scenic
   selenium-webdriver
@@ -327,4 +328,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

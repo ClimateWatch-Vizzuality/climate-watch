@@ -50,7 +50,7 @@ const mapStateToProps = (state, { section, location }) => {
   const devESPURL = section === 'emission-pathways' ? ESP_HOST : '';
   const downloadHref = `${devESPURL}/api/v1/data/${DATA_EXPLORER_SECTIONS[
     section
-  ].label}/download.csv${filterQuery ? `?${parseQuery(filterQuery)}` : ''}`;
+  ].label}/download.zip${filterQuery ? `?${parseQuery(filterQuery)}` : ''}`;
   const meta =
     section === 'emission-pathways'
       ? getPathwaysMetodology(dataState)
