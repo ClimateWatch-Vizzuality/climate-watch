@@ -27,14 +27,14 @@ module Api
         end
 
         def download
-          zipped_download = Api::V1::Data::NdcSdgZippedDownload.new(@filter)
+          zipped_download = Api::V1::Data::NdcSdg::ZippedDownload.new(@filter)
           stream_file(zipped_download.filename) { zipped_download.call }
         end
 
         private
 
         def parametrise_filter
-          @filter = Data::NdcSdgFilter.new(params)
+          @filter = Data::NdcSdg::Filter.new(params)
         end
       end
     end

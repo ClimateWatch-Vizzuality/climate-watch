@@ -29,7 +29,7 @@ module Api
 
         def download
           zipped_download =
-            Api::V1::Data::HistoricalEmissionsZippedDownload.new(
+            Api::V1::Data::HistoricalEmissions::ZippedDownload.new(
               @filter,
               source_ids: params[:source_ids]
             )
@@ -39,7 +39,7 @@ module Api
         private
 
         def parametrise_filter
-          @filter = Data::HistoricalEmissionsFilter.new(params)
+          @filter = Data::HistoricalEmissions::Filter.new(params)
         end
       end
     end

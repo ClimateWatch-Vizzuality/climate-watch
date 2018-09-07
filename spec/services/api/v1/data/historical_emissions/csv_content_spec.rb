@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Data::HistoricalEmissionsCsvContent do
+RSpec.describe Api::V1::Data::HistoricalEmissions::CsvContent do
   include_context 'historical emissions records'
 
   before(:each) do
@@ -18,9 +18,9 @@ RSpec.describe Api::V1::Data::HistoricalEmissionsCsvContent do
         sector_ids: [sector_agriculture.id],
         start_year: 1992
       }
-      filter = Api::V1::Data::HistoricalEmissionsFilter.new(params)
+      filter = Api::V1::Data::HistoricalEmissions::Filter.new(params)
       parsed_csv = CSV.parse(
-        Api::V1::Data::HistoricalEmissionsCsvContent.new(filter).call
+        Api::V1::Data::HistoricalEmissions::CsvContent.new(filter).call
       )
       expect(parsed_csv.last.last).to eq('N/A')
     end
