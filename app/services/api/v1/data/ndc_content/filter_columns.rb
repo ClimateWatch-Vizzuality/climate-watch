@@ -35,11 +35,11 @@ module Api
                 group: false
               },
               {
-                column: "COALESCE(sectors.name, parent_sectors.name, 'Economy-wide')",
+                column: 'COALESCE(sectors.name, parent_sectors.name)',
                 alias: 'sector'
               },
               {
-                column: "COALESCE(subsectors.name, 'Economy-wide')",
+                column: 'COALESCE(subsectors.name)',
                 alias: 'subsector'
               },
               {
