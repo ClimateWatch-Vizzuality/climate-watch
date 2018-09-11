@@ -16,8 +16,9 @@ module Socioeconomic
         soci_gdp_per_capita.year AS gdp_per_capita_year,
         soci_gdp_per_capita.gdp_per_capita AS gdp_per_capita,
         soci_gdp_per_capita.gdp_per_capita_rank AS gdp_per_capita_rank
-        SQL
-            ).joins(<<-SQL
+      SQL
+            ).
+        joins(<<-SQL
         INNER JOIN socioeconomic_indicators soci_gdp
         ON socioeconomic_indicators.location_id = soci_gdp.location_id
         AND soci_gdp.gdp <> 0
@@ -31,13 +32,13 @@ module Socioeconomic
         AND soci_gdp_per_capita.gdp_per_capita <> 0
         AND soci_gdp_per_capita.gdp_per_capita IS NOT NULL
       SQL
-                   ).where.not(population: [0, nil]).
-      order(Arel.sql(<<-SQL
-        socioeconomic_indicators.year DESC,
-        soci_gdp.year DESC, soci_pop_growth.year DESC,
-        soci_gdp_per_capita.year DESC
-      SQL
-           )).first
+             ).where.not(population: [0, nil]).
+        order(Arel.sql(<<-SQL
+          socioeconomic_indicators.year DESC,
+          soci_gdp.year DESC, soci_pop_growth.year DESC,
+          soci_gdp_per_capita.year DESC
+        SQL
+                      )).first
     end
   end
 end
