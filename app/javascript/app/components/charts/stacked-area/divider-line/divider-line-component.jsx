@@ -13,7 +13,7 @@ const DividerLine = ({ x }) => (
             Historical emissions
           </text>
           <text x={content.viewBox.x + 12} y="35">
-            Emission targets
+            Emissions targets
           </text>
         </g>
       )}
