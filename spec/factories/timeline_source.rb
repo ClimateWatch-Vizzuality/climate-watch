@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :timeline_source, class: 'Timeline::Source' do
-    name 'XYZZY'
+    name { 'XYZZY' }
 
     trait :with_dependants do
       transient do
-        document_count 3
+        document_count { 3 }
       end
 
       after(:create) do |source, evaluator|

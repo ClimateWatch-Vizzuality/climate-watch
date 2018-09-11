@@ -14,7 +14,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
       it 'returns a successful 200 response' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns a list of sectors' do
@@ -48,7 +48,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
       it 'returns a successful 200 response' do
         get :show, params: {code: some_ndc_sdg_goal_location}
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns a 404 not found when givenm an invalid location' do
@@ -75,7 +75,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
       it 'returns a successful 200 response' do
         get :sdgs_overview
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns a list of goals' do
@@ -91,7 +91,7 @@ describe Api::V1::NdcSdgsController, type: :controller do
 
       it 'returns a successful 200 response' do
         get :linkages_dataset
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns a list of goals' do

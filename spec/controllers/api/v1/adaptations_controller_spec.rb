@@ -9,7 +9,7 @@ describe Api::V1::AdaptationsController, type: :controller do
     describe 'GET index' do
       it 'returns a successful 200 response' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'lists all adaptation variables' do

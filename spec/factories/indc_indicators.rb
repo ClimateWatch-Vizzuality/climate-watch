@@ -1,15 +1,15 @@
 FactoryBot.define do
   factory :indc_indicator, class: 'Indc::Indicator' do
-    name 'MyName'
+    name { 'MyName' }
     association :source, factory: :indc_source
     sequence(:slug) { |n| 'my-slug-' + ('AA'..'ZZ').to_a[n] }
 
     trait :with_dependants do
       transient do
-        values_count 3
-        labels_count 2
-        sectors_count 2
-        categories_count 2
+        values_count { 3 }
+        labels_count { 2 }
+        sectors_count { 2 }
+        categories_count { 2 }
       end
 
       after(:create) do |indicator, evaluator|

@@ -16,7 +16,7 @@ describe Api::V1::MyCw::UsersController, type: :controller do
       it 'returns a successful 200 response' do
         VCR.use_cassette('user_token') do
           get :current
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
@@ -25,7 +25,7 @@ describe Api::V1::MyCw::UsersController, type: :controller do
       it 'returns a successful 200 response' do
         VCR.use_cassette('user_token') do
           post :create, params: {user: {ct_id: 'AAAA'}}
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
