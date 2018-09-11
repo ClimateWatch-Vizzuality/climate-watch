@@ -3,6 +3,6 @@ FactoryBot.define do
           class: 'HistoricalEmissions::Sector' do
     association :data_source,
                 factory: :historical_emissions_data_source
-    name 'MyText'
+    name { 'MyText' }
   end
 end

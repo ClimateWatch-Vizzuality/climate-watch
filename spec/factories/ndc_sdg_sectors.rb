@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :ndc_sdg_sector, class: 'NdcSdg::Sector' do
-    name 'MyText'
+    name { 'MyText' }
   end
 end
