@@ -19,7 +19,7 @@ describe Api::V1::MyCw::UserStoriesController, type: :controller do
       it 'returns a successful 200 response' do
         VCR.use_cassette('user_token') do
           get :index
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
 

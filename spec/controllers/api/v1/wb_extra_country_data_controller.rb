@@ -40,7 +40,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
     describe 'GET index' do
       it 'returns a successful 200 response' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'lists all wb_extra_country_data' do
@@ -53,7 +53,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
     describe 'GET show' do
       it 'returns a successful 200 response' do
         get :show, params: {iso: 'AFG'}
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'lists all wb_extra_country_data for a country' do
@@ -65,7 +65,7 @@ describe Api::V1::WbExtraCountryDataController, type: :controller do
       it 'finds only the wb_extra_country_data
       between the start and the end year' do
         get :show, params: {iso: 'AFG', startYear: '1980', endYear: '2001'}
-        expect(response).to be_success
+        expect(response).to be_successful
         parsed_body = JSON.parse(response.body)
         expect(parsed_body.length).to eq(1)
       end

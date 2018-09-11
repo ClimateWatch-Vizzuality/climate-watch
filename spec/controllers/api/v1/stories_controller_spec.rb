@@ -9,7 +9,7 @@ describe Api::V1::StoriesController, type: :controller do
     describe 'GET index' do
       it 'returns a successful 200 response' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'lists six stories' do

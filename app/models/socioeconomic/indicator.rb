@@ -32,12 +32,12 @@ module Socioeconomic
         AND soci_gdp_per_capita.gdp_per_capita IS NOT NULL
       SQL
                    ).where.not(population: [0, nil]).
-      order(<<-SQL
+      order(Arel.sql(<<-SQL
         socioeconomic_indicators.year DESC,
         soci_gdp.year DESC, soci_pop_growth.year DESC,
         soci_gdp_per_capita.year DESC
       SQL
-           ).first
+           )).first
     end
   end
 end
