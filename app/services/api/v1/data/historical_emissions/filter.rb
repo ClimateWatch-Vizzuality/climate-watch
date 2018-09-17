@@ -84,19 +84,13 @@ module Api
 
           def apply_sector_filter(query)
             return query unless @sector_ids
-            top_level_sector_ids = ::HistoricalEmissions::Sector.
-              where(parent_id: nil, id: @sector_ids).
-              pluck(:id)
-            subsector_ids = @sector_ids +
-              ::HistoricalEmissions::Sector.where(
-                parent_id: top_level_sector_ids
-              ).pluck(:id)
 
-            query.where(sector_id: subsector_ids)
+            query.where(sector_id: @sector_ids)
           end
 
           def apply_location_filter(query)
             return query unless @location_ids
+
             top_level_location_ids = Location.
               where("location_type <> 'COUNTRY'").
               where(id: @location_ids).
