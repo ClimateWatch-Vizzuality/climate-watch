@@ -1,1 +1,0 @@
-DB_SHARED = YAML::load(ERB.new(File.read(Rails.root.join("config","shared_database.yml"))).result)[Rails.env]
