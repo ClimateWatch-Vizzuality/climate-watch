@@ -20,7 +20,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissions::Filter do
       filter = Api::V1::Data::HistoricalEmissions::Filter.new(
         sector_ids: [sector_total.id]
       )
-      expect(filter.call.length).to eq(2)
+      expect(filter.call.length).to eq(1)
     end
 
     it 'filters by country' do
@@ -34,7 +34,7 @@ RSpec.describe Api::V1::Data::HistoricalEmissions::Filter do
       filter = Api::V1::Data::HistoricalEmissions::Filter.new(
         regions: [eu.iso_code3]
       )
-      expect(filter.call.length).to eq(2)
+      expect(filter.call.length).to eq(3)
     end
   end
 end
