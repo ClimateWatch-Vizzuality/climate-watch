@@ -16,7 +16,7 @@ describe Api::V1::NdcsController, type: :controller do
     describe 'GET index' do
       it 'returns a successful 200 response' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'lists all indc indicators' do
@@ -29,7 +29,7 @@ describe Api::V1::NdcsController, type: :controller do
       it 'returns a successful 200 response' do
         code = some_indc_values.first.values.first.location.iso_code3
         get :content_overview, params: {code: code}
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns a 404 not found when given an invalid iso code' do

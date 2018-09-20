@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import isArray from 'lodash/isArray';
 
 import { actions as modalActions } from 'components/modal-overview';
 
@@ -18,7 +19,8 @@ import {
   getFiltersOptions,
   getFiltersSelected,
   getModalData,
-  getModelSelected
+  getModelSelected,
+  getLinkToDataExplorer
 } from './emission-pathways-graph-selectors';
 
 const actions = { ...ownActions, ...modalActions };
@@ -38,7 +40,7 @@ const mapStateToProps = (state, { location }) => {
     data,
     locations: state.espLocations.data,
     models: state.espModels.data,
-    scenarios: state.espScenarios.data,
+    allScenarios: state.espScenarios.data,
     indicators: state.espIndicators.data,
     location: currentLocation,
     availableModels: state.espGraph.locations,
@@ -46,7 +48,8 @@ const mapStateToProps = (state, { location }) => {
     indicator,
     scenario,
     category,
-    subcategory
+    subcategory,
+    search
   };
   const providers = [
     'espTimeSeries',
@@ -57,10 +60,6 @@ const mapStateToProps = (state, { location }) => {
     'espGraph'
   ];
   const filtersSelected = getFiltersSelected(espData);
-  const downloadFilters = {};
-  ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
-    if (search[f] && search[f] !== '') downloadFilters[f] = search[f];
-  });
   return {
     data: getChartData(espData),
     domain: getChartDomainWithYMargins(espData),
@@ -78,7 +77,7 @@ const mapStateToProps = (state, { location }) => {
     error: providers.some(p => state[p].error),
     loading: providers.some(p => state[p].loading) || !filtersSelected.model,
     search,
-    downloadFilters
+    downloadLink: getLinkToDataExplorer(espData)
   };
 };
 
@@ -100,12 +99,49 @@ class EmissionPathwayGraphContainer extends PureComponent {
     }
 
     const { search, filtersSelected } = this.props;
-    ['model', 'category', 'indicator', 'currentLocation'].forEach(f => {
-      if (!search[f] && filtersSelected[f]) {
-        this.updateUrlParam({ name: f, value: filtersSelected[f].value });
+    this.updateUrlWithNewParams(search, filtersSelected);
+  }
+
+  updateUrlWithNewParams = (search, filtersSelected) => {
+    const possibleParams = [
+      'model',
+      'category',
+      'subcategory',
+      'indicator',
+      'currentLocation',
+      'scenario'
+    ];
+    const paramsToUpdate = [];
+    const getFilterParamValue = f => {
+      if (isArray(filtersSelected[f])) {
+        return search[f]
+          ? filtersSelected[f]
+            .filter(selectedFilter =>
+              search[f].includes(selectedFilter.value)
+            )
+            .join(',')
+          : filtersSelected[f].map(filter => filter.value).join(',');
+      }
+      return filtersSelected[f].value;
+    };
+
+    possibleParams.forEach(f => {
+      if (!search[f]) {
+        if (f === 'currentLocation' && filtersSelected.location) {
+          paramsToUpdate.push({
+            name: f,
+            value:
+              (filtersSelected[f] && filtersSelected[f].value) ||
+              filtersSelected.location.value
+          });
+        } else if (f !== 'currentLocation' && filtersSelected[f]) {
+          const value = getFilterParamValue(f);
+          if (value) paramsToUpdate.push({ name: f, value });
+        }
       }
     });
-  }
+    if (paramsToUpdate.length) this.updateUrlParam(paramsToUpdate);
+  };
 
   handleModelChange = model => {
     const { location } = this.props.filtersSelected;

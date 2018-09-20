@@ -1,5 +1,6 @@
 import { createElement, PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
+import { handleAnalytics } from 'utils/analytics';
 import Component from './api-documentation-component';
 
 const { CW_API } = process.env;
@@ -119,8 +120,8 @@ const API_CALLS = {
         indicatorsParam,
         {
           name: 'locations',
-          parameter: 'locations[]',
-          description: 'locations ISO code 3'
+          parameter: 'location_ids[]',
+          description: 'location id'
         },
         startYearParam,
         endYearParam,
@@ -197,11 +198,14 @@ const API_CALLS = {
   ]
 };
 
+const handleAnalyticsTryLink = () =>
+  handleAnalytics('Data Explorer', 'User tries the API', 'Click');
 class ApiDocumentationContainer extends PureComponent {
   render() {
     const { section } = this.props;
     return createElement(Component, {
       ...this.props,
+      handleAnalyticsTryLink,
       data: section && API_CALLS[section]
     });
   }

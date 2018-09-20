@@ -8,7 +8,7 @@ class ApiDocumentationContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
   render() {
-    const { data } = this.props;
+    const { data, handleAnalyticsTryLink } = this.props;
     return (
       <div className={styles.documentation}>
         <h3 className={styles.sectionTitle}>API Calls</h3>
@@ -16,7 +16,12 @@ class ApiDocumentationContent extends PureComponent {
           <div key={d.title} className={styles.call}>
             <p className={styles.title}>
               {d.title}
-              <a className={styles.tryLink} href={d.url} target="_blank">
+              <a
+                className={styles.tryLink}
+                href={d.url}
+                target="_blank"
+                onClick={handleAnalyticsTryLink}
+              >
                 <Icon icon={linkIcon} />
                 <span> TRY IT </span>
               </a>
@@ -47,7 +52,8 @@ class ApiDocumentationContent extends PureComponent {
 }
 
 ApiDocumentationContent.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  handleAnalyticsTryLink: PropTypes.func.isRequired
 };
 
 export default ApiDocumentationContent;

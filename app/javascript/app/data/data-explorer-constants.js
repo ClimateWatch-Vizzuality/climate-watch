@@ -1,24 +1,62 @@
+import { TOP_EMITTERS } from 'data/constants';
+
 export const DATA_EXPLORER_BLACKLIST = [
   'id',
   'iso_code3',
   'iso_code2',
-  'emissions'
+  'emissions',
+  'document_type',
+  'language'
 ];
-export const DATA_EXPLORER_FIRST_TABLE_HEADERS = [
-  'region',
-  'data_source',
-  'gwp',
-  'sector',
-  'gas',
-  'location',
-  'model',
-  'scenario',
-  'category',
-  'subcategory',
-  'indicator',
-  'definition',
-  'unit'
-];
+
+export const FIRST_TABLE_HEADERS = {
+  'historical-emissions': ['country', 'data_source', 'sector', 'gas', 'unit'],
+  'ndc-content': [
+    'country',
+    'categories', // remove when it's splitted into global and overview category
+    'global_category',
+    'overview_category',
+    'sector',
+    'subsector',
+    'indicator_id',
+    'indicator',
+    'value'
+  ],
+  'ndc-sdg-linkages': [
+    'country',
+    'sdg',
+    'sdg_target',
+    'indc_text',
+    'status',
+    'sector',
+    'climate_response',
+    'type_of_information'
+  ],
+  'emission-pathways': [
+    'location',
+    'model',
+    'scenario',
+    'category',
+    'subcategory',
+    'indicator',
+    'composite_name',
+    'definition',
+    'unit'
+  ]
+};
+
+export const FILTER_DEFAULTS = {
+  'historical-emissions': {
+    source: 'CAIT - AR2',
+    gases: 'All GHG',
+    sectors: 'Total including LUCF',
+    start_year: '2014',
+    end_year: '2014'
+  },
+  'ndc-content': {},
+  'ndc-sdg-linkages': {},
+  'emission-pathways': {}
+};
 
 export const DATA_EXPLORER_SECTIONS = {
   'historical-emissions': {
@@ -51,8 +89,16 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': ['source', 'gases', 'regions', 'sectors'],
-  'ndc-sdg-linkages': ['goals', 'targets', 'sectors', 'countries'],
+  'historical-emissions': ['source', 'regions', 'sectors', 'gases'],
+  'ndc-sdg-linkages': [
+    'countries',
+    'goals',
+    'targets',
+    'status',
+    'sectors',
+    'climate_response',
+    'type_of_information'
+  ],
   'emission-pathways': [
     'locations',
     'models',
@@ -61,10 +107,15 @@ export const DATA_EXPLORER_FILTERS = {
     'subcategories',
     'indicators'
   ],
-  'ndc-content': ['categories', 'indicators', 'sectors', 'countries']
+  'ndc-content': ['categories', 'indicators', 'sectors', 'countries'] // TODO: add focus when ready
 };
 
+// The dropdown named as the keys will be deleted if one of the values column changes
+// and will only be selectable if all the values are selected
 export const DATA_EXPLORER_DEPENDENCIES = {
+  'historical-emissions': {
+    sectors: ['source']
+  },
   'emission-pathways': {
     models: ['locations'],
     scenarios: ['models', 'locations'],
@@ -81,6 +132,14 @@ export const DATA_EXPLORER_DEPENDENCIES = {
 };
 
 export const DATA_EXPLORER_EXTERNAL_PREFIX = 'external';
+export const MODULES_TO_DATA_EXPLORER_PARAMS = {
+  'historical-emissions': {
+    filter: 'filter',
+    source: 'data-sources',
+    version: 'gwps',
+    breakBy: 'breakBy'
+  }
+};
 export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'historical-emissions': {
     data_sources: { key: 'source' },
@@ -110,6 +169,9 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
     },
     categories: {
       key: 'category'
+    },
+    subcategories: {
+      key: 'subcategory'
     }
   }
 };
@@ -118,7 +180,7 @@ export const MULTIPLE_LEVEL_SECTION_FIELDS = {
   'ndc-content': [{ key: 'sectors' }, { key: 'categories' }]
 };
 
-export const GROUPED_SELECT_FIELDS = {
+export const GROUPED_OR_MULTI_SELECT_FIELDS = {
   'historical-emissions': [
     {
       key: 'regions',
@@ -128,10 +190,11 @@ export const GROUPED_SELECT_FIELDS = {
         { groupId: 'countries', title: 'Countries' }
       ]
     }
-  ]
+  ],
+  'emission-pathways': [{ key: 'scenarios' }]
 };
 
-export const DATA_EXPLORER_PER_PAGE = 20;
+export const DATA_EXPLORER_PER_PAGE = 200;
 
 export const SECTION_NAMES = {
   pathways: 'emission-pathways',
@@ -151,6 +214,7 @@ export const FILTERED_FIELDS = {
     sectors: [
       {
         parent: 'source',
+        parentId: 'dataSourceId',
         id: 'data_source_id'
       }
     ]
@@ -159,7 +223,7 @@ export const FILTERED_FIELDS = {
     targets: [
       {
         parent: 'goals',
-        parentId: 'id',
+        parentId: 'value',
         id: 'goal_id'
       }
     ]
@@ -195,11 +259,12 @@ export const FILTERED_FIELDS = {
     ]
   }
 };
+export const NON_COLUMN_KEYS = ['start_year', 'end_year'];
 
 export const POSSIBLE_LABEL_FIELDS = [
+  'value',
   'name',
   'full_name',
-  'value',
   'wri_standard_name',
   'cw_title',
   'title',
@@ -207,19 +272,41 @@ export const POSSIBLE_LABEL_FIELDS = [
   'number'
 ];
 
-export const POSSIBLE_VALUE_FIELDS = ['iso_code', 'iso_code3', 'id', 'value'];
+export const POSSIBLE_VALUE_FIELDS = ['id', 'value'];
+
+export const TOP_EMITTERS_OPTION = {
+  iso_code3: 'TOP',
+  label: 'Top Emitters',
+  value: TOP_EMITTERS.join(','),
+  groupId: 'regions'
+};
+
+export const FIELD_ALIAS = {
+  'ndc-sdg-linkages': { goals: 'sdg', targets: 'sdg_target' }
+};
+
+export const FILTERS_DATA_WITHOUT_MODEL = {
+  'ndc-sdg-linkages': ['status', 'climate_response', 'type_of_information']
+};
+
+export const DATA_EXPLORER_TABLE_COLUMNS_WIDTH = {
+  'emission-pathways': 100
+};
 
 export default {
   DATA_EXPLORER_BLACKLIST,
-  DATA_EXPLORER_FIRST_TABLE_HEADERS,
   DATA_EXPLORER_SECTIONS,
   DATA_EXPLORER_METHODOLOGY_SOURCE,
   DATA_EXPLORER_DEPENDENCIES,
   DATA_EXPLORER_EXTERNAL_PREFIX,
   DATA_EXPLORER_TO_MODULES_PARAMS,
+  DATA_EXPLORER_TABLE_COLUMNS_WIDTH,
   MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_SELECT_FIELDS,
+  GROUPED_OR_MULTI_SELECT_FIELDS,
   DATA_EXPLORER_PER_PAGE,
   POSSIBLE_LABEL_FIELDS,
-  POSSIBLE_VALUE_FIELDS
+  POSSIBLE_VALUE_FIELDS,
+  FIELD_ALIAS,
+  TOP_EMITTERS_OPTION,
+  FILTERS_DATA_WITHOUT_MODEL
 };

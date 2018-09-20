@@ -54,7 +54,7 @@ class EmissionPathwayGraph extends PureComponent {
       modalData,
       model,
       handleModelChange,
-      downloadFilters
+      downloadLink
     } = this.props;
     const needsTimeSeries =
       filtersSelected && filtersSelected.location && filtersSelected.model;
@@ -96,7 +96,7 @@ class EmissionPathwayGraph extends PureComponent {
                     {
                       type: 'download',
                       section: 'pathways',
-                      filters: downloadFilters
+                      link: downloadLink
                     },
                     {
                       type: 'addToUser'
@@ -163,7 +163,7 @@ class EmissionPathwayGraph extends PureComponent {
             data={data}
             domain={domain}
             dataOptions={filtersOptions.scenarios}
-            dataSelected={filtersSelected.scenarios}
+            dataSelected={filtersSelected.scenario}
             customMessage={this.renderCustomMessage()}
             height={600}
             loading={loading}
@@ -191,7 +191,7 @@ class EmissionPathwayGraph extends PureComponent {
                 {
                   type: 'download',
                   section: 'pathways',
-                  filters: downloadFilters
+                  link: downloadLink
                 },
                 {
                   type: 'addToUser'
@@ -220,7 +220,7 @@ EmissionPathwayGraph.propTypes = {
   modalData: PropTypes.array,
   model: PropTypes.object,
   config: PropTypes.object,
-  downloadFilters: PropTypes.object,
+  downloadLink: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.bool,
   filtersLoading: PropTypes.object,

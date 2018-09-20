@@ -13,7 +13,7 @@ describe 'VCR-RSpec integration' do
   skip 'without an explicit cassette name' do
     it 'records an http request' do
       VCR.use_cassette('user_token') do
-        expect(make_http_request).to be_success
+        expect(make_http_request).to be_successful
       end
     end
   end

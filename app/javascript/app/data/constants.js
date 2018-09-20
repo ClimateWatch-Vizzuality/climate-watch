@@ -33,7 +33,7 @@ export const QUANTIFICATION_COLORS = {
 export const QUANTIFICATIONS_CONFIG = {
   bau: { label: 'Business as usual', color: QUANTIFICATION_COLORS.BAU },
   quantified: {
-    label: 'Quantified emission targets',
+    label: 'Quantified emissions targets',
     color: QUANTIFICATION_COLORS.QUANTIFIED
   },
   not_quantifiable: {
@@ -284,11 +284,11 @@ export const USERS_PROFESIONAL_SECTORS = [
 ];
 
 export const SOURCE_VERSIONS = [
-  { name: 'PIK - AR2', data_source_slug: 'PIK', version_slug: 'AR2' },
-  { name: 'PIK - AR4', data_source_slug: 'PIK', version_slug: 'AR4' },
-  { name: 'CAIT - AR2', data_source_slug: 'CAIT', version_slug: 'AR2' },
-  { name: 'UNFCCC - AR2', data_source_slug: 'UNFCCC', version_slug: 'AR2' },
-  { name: 'UNFCCC - AR4', data_source_slug: 'UNFCCC', version_slug: 'AR4' }
+  { name: 'PIK - AR2', dataSourceSlug: 'PIK', versionSlug: 'AR2' },
+  { name: 'PIK - AR4', dataSourceSlug: 'PIK', versionSlug: 'AR4' },
+  { name: 'CAIT - AR2', dataSourceSlug: 'CAIT', versionSlug: 'AR2' },
+  { name: 'UNFCCC - AR2', dataSourceSlug: 'UNFCCC', versionSlug: 'AR2' },
+  { name: 'UNFCCC - AR4', dataSourceSlug: 'UNFCCC', versionSlug: 'AR4' }
 ];
 
 export default {

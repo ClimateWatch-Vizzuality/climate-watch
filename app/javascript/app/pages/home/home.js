@@ -2,7 +2,7 @@ import { createElement } from 'react';
 import { withRouter } from 'react-router';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 
 import HomeComponent from './home-component';
 import { getCountriesOptions, getCountryLocationData } from './home-selectors';
@@ -18,11 +18,7 @@ const mapStateToProps = state => ({
 const HomeContainer = props => {
   const handleDropDownChange = selected => {
     props.history.push(`/countries/${selected.value}`);
-    ReactGA.event({
-      category: 'Home',
-      action: 'Search for a country',
-      label: selected.value
-    });
+    handleAnalytics('Home', 'Search for a country', selected.value);
   };
 
   return createElement(HomeComponent, {

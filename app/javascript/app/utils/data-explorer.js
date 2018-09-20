@@ -1,5 +1,12 @@
+import invertBy from 'lodash/invertBy';
+import qs from 'querystring';
+import {
+  DATA_EXPLORER_TO_MODULES_PARAMS,
+  FILTERS_DATA_WITHOUT_MODEL
+} from 'data/data-explorer-constants';
 import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
+import { handleAnalytics } from './analytics';
 
 const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
 
@@ -24,8 +31,17 @@ const REPLACEMENTS = {
 
 export const parseQuery = query => query && replaceAll(query, REPLACEMENTS);
 
-export const openDownloadModal = (downloadUrl, setModalDownloadParams) => {
+export const openDownloadModal = (
+  downloadUrl,
+  setModalDownloadParams,
+  section
+) => {
   if (!FEATURE_DATA_SURVEY || getStorageWithExpiration('userSurvey')) {
+    handleAnalytics(
+      'Data Explorer',
+      'Download Data',
+      section || 'Download All Data'
+    );
     return window.location.assign(downloadUrl);
   }
   return setModalDownloadParams({
@@ -34,4 +50,36 @@ export const openDownloadModal = (downloadUrl, setModalDownloadParams) => {
   });
 };
 
-export default { parseQuery, openDownloadModal };
+const parseFilters = (search, section) => {
+  const modulesToDataExplorerParamsSchema = invertBy(
+    DATA_EXPLORER_TO_MODULES_PARAMS[section],
+    value => value.key
+  );
+  const parsedFilters = {};
+  Object.keys(search).forEach(key => {
+    const parsedKey = `external-${section}-${modulesToDataExplorerParamsSchema[
+      key
+    ]}`.replace('_', '-');
+    parsedFilters[parsedKey] = search[key];
+  });
+  return parsedFilters;
+};
+
+export const generateLinkToDataExplorer = (search, section) => {
+  const sectionUrl = section ? `/${section}` : '';
+  const params = search
+    ? `?${qs.stringify(parseFilters(search, section))}`
+    : '';
+  return `/data-explorer${sectionUrl}${params}`;
+};
+
+export const isNoColumnField = (section, key) =>
+  FILTERS_DATA_WITHOUT_MODEL[section] &&
+  FILTERS_DATA_WITHOUT_MODEL[section].includes(key);
+
+export default {
+  parseQuery,
+  openDownloadModal,
+  generateLinkToDataExplorer,
+  isNoColumnField
+};

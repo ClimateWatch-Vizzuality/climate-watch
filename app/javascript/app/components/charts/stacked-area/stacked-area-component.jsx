@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import { getCustomTicks } from 'utils/graphs';
 import { isMicrosoftBrowser, wordWrap } from 'utils';
+import { isPageContained } from 'utils/navigation';
 import {
   CustomXAxisTick,
   CustomYAxisTick
@@ -25,6 +26,7 @@ import TooltipChart from 'components/charts/tooltip-chart';
 import { format } from 'd3-format';
 
 import { QUANTIFICATION_COLORS } from 'data/constants';
+import DividerLine from './divider-line';
 
 class ChartStackedArea extends PureComponent {
   constructor() {
@@ -230,7 +232,8 @@ class ChartStackedArea extends PureComponent {
       points,
       includeTotalLine,
       domain,
-      stepped
+      stepped,
+      lastData
     } = this.props;
     if (!dataWithTotal.length) return null;
     const tickColumns = {
@@ -310,6 +313,7 @@ class ChartStackedArea extends PureComponent {
               type={stepped ? 'step' : 'linear'}
             />
           )}
+          {!isPageContained && DividerLine({ x: lastData.x })}
           {showLastPoint && this.renderLastPoint()}
           {this.renderQuantificationPoints()}
         </ComposedChart>

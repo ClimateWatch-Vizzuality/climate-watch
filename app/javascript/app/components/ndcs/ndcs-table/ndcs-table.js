@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { actions } from 'pages/ndcs';
 
@@ -52,20 +52,12 @@ class NDCTableContainer extends PureComponent {
       value: category.value,
       clear: true
     });
-    ReactGA.event({
-      category: 'NDC Content Table',
-      action: 'Change category',
-      label: category.label
-    });
+    handleAnalytics('NDC Content Table', 'Change category', category.label);
   };
 
   handleIndicatorChange = indicator => {
     this.updateUrlParam({ name: 'indicator', value: indicator.value });
-    ReactGA.event({
-      category: 'NDC Content Table',
-      action: 'Change indicator',
-      label: indicator.label
-    });
+    handleAnalytics('NDC Content Table', 'Change indicator', indicator.label);
   };
 
   handleSearchChange = query => {
@@ -75,11 +67,11 @@ class NDCTableContainer extends PureComponent {
   updateUrlParam(param) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, param));
-    ReactGA.event({
-      category: 'NDC Content Table',
-      action: 'Searches for something in the table',
-      label: param.value
-    });
+    handleAnalytics(
+      'NDC Content Table',
+      'Searches for something in the table',
+      param.value
+    );
   }
 
   render() {

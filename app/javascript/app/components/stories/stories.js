@@ -1,7 +1,7 @@
 import { PureComponent, createElement } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 
 import actions from './stories-actions';
 import reducers, { initialState } from './stories-reducers';
@@ -18,11 +18,7 @@ class StoriesContainer extends PureComponent {
 
   render() {
     const handleClickAnalytics = title => {
-      ReactGA.event({
-        category: 'Home',
-        action: 'Clicks from home page block',
-        label: title
-      });
+      handleAnalytics('Home', 'Clicks from home page block', title);
     };
 
     return createElement(StoriesComponent, {

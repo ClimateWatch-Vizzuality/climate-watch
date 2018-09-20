@@ -4,12 +4,11 @@ import { Column, Table, AutoSizer } from 'react-virtualized';
 import MultiSelect from 'components/multiselect';
 import cx from 'classnames';
 import { pixelBreakpoints } from 'components/responsive';
-
-import { toStartCase } from 'app/utils';
 import difference from 'lodash/difference';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
 import styles from './table-styles.scss';
+import { deburrCapitalize } from '../../utils/utils';
 
 const minColumnWidth = 180;
 const getResponsiveWidth = (columns, width) => {
@@ -52,7 +51,8 @@ class SimpleTable extends PureComponent {
       toggleOptionsOpen,
       optionsOpen,
       horizontalScroll,
-      firstColumnHeaders
+      firstColumnHeaders,
+      flexGrow
     } = this.props;
 
     if (!data.length) return null;
@@ -112,10 +112,10 @@ class SimpleTable extends PureComponent {
                         ellipsisColumns && ellipsisColumns.indexOf(column) > -1
                     })}
                     key={column}
-                    label={toStartCase(column)}
+                    label={deburrCapitalize(column)}
                     dataKey={column}
+                    flexGrow={flexGrow}
                     width={setColumnWidth(column)}
-                    flexGrow={1}
                     cellRenderer={cell =>
                       cellRenderer({ props: this.props, cell })}
                   />
@@ -133,6 +133,7 @@ SimpleTable.propTypes = {
   data: PropTypes.array,
   optionsOpen: PropTypes.bool,
   hasColumnSelect: PropTypes.bool,
+  flexGrow: PropTypes.number,
   activeColumns: PropTypes.array,
   columnsOptions: PropTypes.array,
   handleColumnChange: PropTypes.func,
@@ -153,7 +154,8 @@ SimpleTable.propTypes = {
 SimpleTable.defaultProps = {
   headerHeight: 30,
   horizontalScroll: false,
-  firstColumnHeaders: []
+  firstColumnHeaders: [],
+  flexGrow: 1
 };
 
 export default SimpleTable;

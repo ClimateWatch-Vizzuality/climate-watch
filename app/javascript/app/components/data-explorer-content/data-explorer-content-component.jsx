@@ -4,9 +4,6 @@ import DataExplorerProvider from 'providers/data-explorer-provider/data-explorer
 import RegionsProvider from 'providers/regions-provider/regions-provider';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
 import Table from 'components/table';
-import Dropdown from 'components/dropdown';
-import MultiDropdown from 'components/dropdown/multi-dropdown';
-import MultiSelect from 'components/multiselect';
 import MetadataText from 'components/metadata-text';
 import AnchorNav from 'components/anchor-nav';
 import NoContent from 'components/no-content';
@@ -14,14 +11,11 @@ import Loading from 'components/loading';
 import Button from 'components/button';
 import ModalDownload from 'components/modal-download';
 import anchorNavLightTheme from 'styles/themes/anchor-nav/anchor-nav-light.scss';
-import { toStartCase, deburrCapitalize } from 'app/utils';
+import { toStartCase } from 'app/utils';
 import cx from 'classnames';
 import ReactPaginate from 'react-paginate';
-import {
-  MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_SELECT_FIELDS
-} from 'data/data-explorer-constants';
 import isEmpty from 'lodash/isEmpty';
+import DataExplorerFilters from './data-explorer-filters';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
 
@@ -36,7 +30,9 @@ class DataExplorerContent extends PureComponent {
       loading,
       handleSortChange,
       search,
-      titleLinks
+      titleLinks,
+      section,
+      tableColumnsWidth
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
@@ -55,6 +51,8 @@ class DataExplorerContent extends PureComponent {
           horizontalScroll
           titleLinks={titleLinks}
           handleSortChange={handleSortChange}
+          forcedColumnWidth={tableColumnsWidth[section] || null}
+          flexGrow={0}
         />
       );
     }
@@ -80,83 +78,6 @@ class DataExplorerContent extends PureComponent {
     ) : (
       <NoContent message={noContentMessage} className={styles.noData} />
     );
-  }
-
-  renderFilters() {
-    const {
-      handleFilterChange,
-      selectedOptions,
-      filterOptions,
-      filters,
-      section,
-      activeFilterRegion,
-      isDisabled
-    } = this.props;
-
-    const multipleSection = field =>
-      MULTIPLE_LEVEL_SECTION_FIELDS[section] &&
-      MULTIPLE_LEVEL_SECTION_FIELDS[section].find(s => s.key === field);
-    const groupedSelect = field =>
-      GROUPED_SELECT_FIELDS[section] &&
-      GROUPED_SELECT_FIELDS[section].find(s => s.key === field);
-    return filters.map(field => {
-      if (multipleSection(field)) {
-        return (
-          <MultiDropdown
-            key={field}
-            label={deburrCapitalize(field)}
-            placeholder={`Filter by ${deburrCapitalize(field)}`}
-            options={filterOptions ? filterOptions[field] : []}
-            value={
-              selectedOptions ? (
-                selectedOptions[field] && selectedOptions[field][0]
-              ) : null
-            }
-            disabled={isDisabled(field)}
-            clearable
-            onChange={option =>
-              handleFilterChange(field, option && option.value)}
-            noParentSelection={multipleSection(field).noSelectableParent}
-          />
-        );
-      } else if (groupedSelect(field)) {
-        const fieldInfo = GROUPED_SELECT_FIELDS[section].find(
-          f => f.key === field
-        );
-        return (
-          <MultiSelect
-            key={field}
-            label={fieldInfo.label}
-            selectedLabel={activeFilterRegion}
-            placeholder={`Filter by ${fieldInfo.label}`}
-            values={(selectedOptions && selectedOptions[field]) || []}
-            options={filterOptions ? filterOptions[field] : []}
-            groups={fieldInfo.groups}
-            disabled={isDisabled(field)}
-            onMultiValueChange={selected =>
-              handleFilterChange(field, selected, true)}
-          />
-        );
-      }
-      return (
-        <Dropdown
-          key={field}
-          label={deburrCapitalize(field)}
-          placeholder={`Filter by ${deburrCapitalize(field)}`}
-          options={filterOptions ? filterOptions[field] : []}
-          onValueChange={selected =>
-            handleFilterChange(field, selected && selected.value)}
-          value={
-            selectedOptions && selectedOptions[field] ? (
-              selectedOptions[field][0]
-            ) : null
-          }
-          plain
-          disabled={isDisabled(field)}
-          noAutoSort={field === 'goals' || field === 'targets'}
-        />
-      );
-    });
   }
 
   render() {
@@ -191,7 +112,9 @@ class DataExplorerContent extends PureComponent {
         />
         <RegionsProvider />
         <CountriesProvider />
-        <div className={styles.filtersContainer}>{this.renderFilters()}</div>
+        <div className={styles.filtersContainer}>
+          <DataExplorerFilters section={section} />
+        </div>
         <AnchorNav
           links={anchorLinks}
           theme={anchorNavLightTheme}
@@ -239,18 +162,13 @@ class DataExplorerContent extends PureComponent {
 }
 
 DataExplorerContent.propTypes = {
-  activeFilterRegion: PropTypes.string,
   section: PropTypes.string.isRequired,
   sectionLabel: PropTypes.string.isRequired,
-  handleFilterChange: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
-  isDisabled: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
   handleDataDownload: PropTypes.func.isRequired,
   handleSortChange: PropTypes.func.isRequired,
-  filters: PropTypes.array,
   selectedOptions: PropTypes.object,
-  filterOptions: PropTypes.object,
   metadataSection: PropTypes.bool,
   data: PropTypes.array,
   meta: PropTypes.array,
@@ -264,7 +182,12 @@ DataExplorerContent.propTypes = {
   pageCount: PropTypes.number,
   search: PropTypes.object,
   initialPage: PropTypes.number,
-  titleLinks: PropTypes.array
+  titleLinks: PropTypes.array,
+  tableColumnsWidth: PropTypes.object
+};
+
+DataExplorerContent.defaultProps = {
+  hasParamsReady: false
 };
 
 export default DataExplorerContent;

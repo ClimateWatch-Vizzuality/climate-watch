@@ -40,7 +40,12 @@ class ImportHistoricalEmissions
 
   def import_sectors(content)
     content.each do |row|
-      next if HistoricalEmissions::Sector.find_by(name: row[:sector])
+      next if HistoricalEmissions::Sector.
+          joins(:data_source).
+          find_by(
+            name: row[:sector],
+            'historical_emissions_data_sources.name' => row[:source]
+          )
       sector = sector_attributes(row)
       HistoricalEmissions::Sector.create!(sector)
     end
@@ -56,7 +61,11 @@ class ImportHistoricalEmissions
     {
       location: Location.find_by(iso_code3: row[:country]),
       data_source: HistoricalEmissions::DataSource.find_by(name: row[:source]),
-      sector: HistoricalEmissions::Sector.find_by(name: row[:sector]),
+      sector: HistoricalEmissions::Sector.joins(:data_source).
+        find_by(
+          name: row[:sector],
+          'historical_emissions_data_sources.name' => row[:source]
+        ),
       gas: HistoricalEmissions::Gas.find_or_create_by(name: row[:gas]),
       gwp: HistoricalEmissions::Gwp.find_or_create_by(name: row[:gwp]),
       emissions: emissions(row)

@@ -27,7 +27,7 @@ RSpec.describe Story, type: :model do
     it 'should return four stories' do
       pinned = Story.tagged_stories(['climatewatch-pinned'], 1)
       tagged = Story.tagged_stories(['NDC', 'esp', 'climate watch'], 5)
-      expect((pinned + tagged).uniq).to have(4).items
+      expect((pinned + tagged)).to have(4).items
     end
   end
 

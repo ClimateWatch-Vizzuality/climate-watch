@@ -20,7 +20,7 @@
 
 File format:
 
-Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 | ...
+Country | Data source | Sector | Gas | Unit | year n | year n-1 | ...
 
 
 ### JSON API endpoint
@@ -34,10 +34,9 @@ Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 
    "data":[
       {
          "id":66319,
-         "region":"string",
          "iso_code3":"ISO code 3",
+         "country":"string",
          "data_source":"string",
-         "gwp":"string",
          "sector":"string",
          "gas":"string",
          "unit":"string",
@@ -53,6 +52,9 @@ Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 
       "years":[
          integer
       ],
+      "header_years":[
+         integer
+      ],
       "columns":[
          "string"
       ],
@@ -63,7 +65,7 @@ Iso code 3 | Region | Data source | Gwp | Sector | Gas | Unit | year 1 | year 2 
 }
 ```
 
-Response is paginated. Pagination headers are in place. Meta section is to inform the rendering of data in a tabular form: it lists available years of data (useful when used as headers) and all available data columns. Current sorting column and direction are also returned.
+Response is paginated. Pagination headers are in place. Meta section is to inform the rendering of data in a tabular form: it lists available years of data without year range filter applied (useful when used as dropdowns) and years of data with year range filter applied (useful when used as column headers) and all available data columns. Current sorting column and direction are also returned.
 
 ```
 Link: <http://localhost:3000/api/v1/data/historical_emissions?page=622&start_year=2000>; rel="last", <http://localhost:3000/api/v1/data/historical_emissions?page=2&start_year=2000>; rel="next"
@@ -196,8 +198,7 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
 
 File format:
 
-Id | Iso code3 | Country | Indc text | Status | Climate response | Type of information | Sector | Target number | Target | Goal number | Goal
-
+Country | SDG | SDG Target | Indc text | Status | Sector | Climate response | Type of information
 
 ### JSON API endpoint
 
@@ -210,23 +211,30 @@ Id | Iso code3 | Country | Indc text | Status | Climate response | Type of infor
    "data":[
       {
          "id":1,
-         "country":"name",
          "iso_code3":"ISO code 3",
+         "country":"name",
+         "sdg":"17 Strengthen the means of implementation and revitalize the global partnership for sustainable development",
+         "sdg_target":"17.6 Enhance North-South, South-South and triangular regional and international cooperation on and access to science, technology and innovation and enhance knowledge sharing on mutually agreed terms, including through improved coordination among existing mechanisms, in particular at the United Nations level, and through a global technology facilitation mechanism",
          "indc_text":"Matching text",
          "status":"Future",
-         "climate_response":"Adaptation",
-         "type_of_information":"Needs \u0026 Gaps",
          "sector":"Forest and land use",
-         "target_number":"17.6",
-         "target":"Enhance North-South, South-South and triangular regional and international cooperation on and access to science, technology and innovation and enhance knowledge sharing on mutually agreed terms, including through improved coordination among existing mechanisms, in particular at the United Nations level, and through a global technology facilitation mechanism",
-         "goal_number":"17",
-         "goal":"Strengthen the means of implementation and revitalize the global partnership for sustainable development"
+         "climate_response":"Adaptation",
+         "type_of_information":"Needs \u0026 Gaps"
       }
    ],
    "meta":{
       "columns":[
          "string"
       ],
+      "statuses":[
+        "string"
+      ],
+      "climate_responses":[
+        "string"
+      ],
+      "types_of_information":[
+        "string"
+      ]
       "sorting":{
          "sort_col":"string","sort_dir":"string"
       }
@@ -348,12 +356,11 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 ## NDC content
 
 ### Parameters
-- countries[]
 - source_ids[]
-- indicator_ids[]
+- countries[]
 - category_ids[]
-- label_ids[]
 - sector_ids[]
+- indicator_ids[]
 - sort_dir (ASC / DESC)
 - sort_col (column name for sortable columns - see meta)
 
@@ -364,7 +371,7 @@ Link: </api/v1/data/ndc_sdg/goals>; rel="meta goals", </api/v1/data/ndc_sdg/targ
 
 File format:
 
-Id | Iso code3 | Country | Indicator | Source | Label | Sector | Value | Categories
+Country | Global category | Overview category | Sector | Subsector | Indicator Id | Indicator name | Value
 
 
 ### JSON API endpoint
@@ -378,14 +385,16 @@ Id | Iso code3 | Country | Indicator | Source | Label | Sector | Value | Categor
    "data":[
       {
          "id":1096025,
-         "country":"string",
-         "iso_code3":"ISO code 3",
-         "indicator":"string",
-         "value":"string",
          "source":"string",
-         "categories":"comma-separated string",
-         "label":"string or null",
-         "sector":"string or null"
+         "iso_code3":"ISO code 3",
+         "country":"string",
+         "global_category":"string",
+         "overview_category":"string",
+         "sector":"string or null",
+         "subsector":"string or null",
+         "indicator_id":"string",
+         "indicator_name":"string",
+         "value":"string",
       }
    ],
    "meta":{
@@ -458,22 +467,6 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 }
 ```
 
-### Labels
-
-`/api/v1/data/ndc_content/labels`
-
-```
-{
-   "data":[
-      {
-         "id":2947,
-         "indicator_id":6722,
-         "value":"INDC Submitted"
-      }
-   ]
-}
-```
-
 ### Categories
 
 `/api/v1/data/ndc_content/categories`
@@ -482,16 +475,24 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
    "data":[
       {
-         "id":817,
+         "id":1740,
          "slug":"overview",
          "name":"Overview",
-         "parent_id":null
+         "parent_id":null,
+         "category_type":{
+            "id":181,
+            "name":"global"
+         }
       },
       {
-         "id":839,
-         "slug":"adaptation",
-         "name":"Adaptation",
-         "parent_id":817
+         "id":1744,
+         "slug":"ndc",
+         "name":"NDC",
+         "parent_id":1740,
+         "category_type":{
+            "id":182,
+            "name":"overview"
+         }
       }
    ]
 }

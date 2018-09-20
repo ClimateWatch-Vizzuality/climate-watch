@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
-import ReactGA from 'react-ga';
+import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -19,7 +19,8 @@ import {
   getSelectedCategory,
   getSelectedIndicator,
   getPathsWithStyles,
-  getISOCountries
+  getISOCountries,
+  getLinkToDataExplorer
 } from './ndcs-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -32,7 +33,8 @@ const mapStateToProps = (state, { location }) => {
     ...data,
     countries: countries.data,
     categorySelected: search.category,
-    indicatorSelected: search.indicator
+    indicatorSelected: search.indicator,
+    search
   };
   return {
     loading,
@@ -41,7 +43,8 @@ const mapStateToProps = (state, { location }) => {
     isoCountries: getISOCountries(ndcsWithSelection),
     indicators: getCategoryIndicators(ndcsWithSelection),
     selectedCategory: getSelectedCategory(ndcsWithSelection),
-    selectedIndicator: getSelectedIndicator(ndcsWithSelection)
+    selectedIndicator: getSelectedIndicator(ndcsWithSelection),
+    downloadLink: getLinkToDataExplorer(ndcsWithSelection)
   };
 };
 
@@ -75,11 +78,11 @@ class NDCMapContainer extends PureComponent {
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
       this.props.history.push(`/ndcs/country/${iso}`);
-      ReactGA.event({
-        category: 'NDC Content Map',
-        action: 'Use map to find country',
-        label: geography.properties.name
-      });
+      handleAnalytics(
+        'NDC Content Map',
+        'Use map to find country',
+        geography.properties.name
+      );
     }
   };
 
@@ -97,20 +100,12 @@ class NDCMapContainer extends PureComponent {
       },
       true
     );
-    ReactGA.event({
-      category: 'NDC Content Map',
-      action: 'Change category',
-      label: category.label
-    });
+    handleAnalytics('NDC Content Map', 'Change category', category.label);
   };
 
   handleIndicatorChange = indicator => {
     this.updateUrlParam({ name: 'indicator', value: indicator.value });
-    ReactGA.event({
-      category: 'NDC Content Map',
-      action: 'Change indicator',
-      label: indicator.label
-    });
+    handleAnalytics('NDC Content Map', 'Change indicator', indicator.label);
   };
 
   handleSearchChange = query => {
@@ -121,7 +116,7 @@ class NDCMapContainer extends PureComponent {
     this.props.setModalMetadata({
       customTitle: 'NDC Content',
       category: 'NDC Content Map',
-      slugs: ['ndc_cait', 'ndc_wb'],
+      slugs: ['ndc_cait', 'ndc_wb', 'ndc_die'],
       open: true
     });
   };

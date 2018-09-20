@@ -5,8 +5,14 @@ module Api
         extend ActiveSupport::Concern
 
         def column_aliases
-          select_columns_map.map do |column_properties|
+          visible_columns.map do |column_properties|
             column_properties[:alias]
+          end
+        end
+
+        def column_display_names
+          visible_columns.map do |column_properties|
+            column_properties[:display] || column_properties[:alias]&.humanize
           end
         end
 
@@ -21,7 +27,25 @@ module Api
           {columns: sortable_columns.map { |cp| cp[:alias] }}
         end
 
+        def csv_column_aliases
+          csv_columns.map do |column_properties|
+            column_properties[:alias]
+          end
+        end
+
+        def csv_column_display_names
+          csv_columns.map do |column_properties|
+            column_properties[:display] || column_properties[:alias]&.humanize
+          end
+        end
+
         private
+
+        def visible_columns
+          select_columns_map.select do |column_properties|
+            column_properties[:visible].nil? || column_properties[:visible] == true
+          end
+        end
 
         def alias_to_name(column_alias)
           tmp = select_columns_map.find do |column_properties|
@@ -48,6 +72,14 @@ module Api
           end
           groupable_columns.map do |column_properties|
             column_properties[:column]
+          end
+        end
+
+        ## CSV specific
+
+        def csv_columns
+          select_columns_map.select do |column_properties|
+            column_properties[:csv].nil? || column_properties[:csv] == true
           end
         end
       end

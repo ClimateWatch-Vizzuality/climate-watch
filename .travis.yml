@@ -7,7 +7,7 @@ dist: trusty
 sudo: false
 language: ruby
 rvm:
-- 2.4.1
+- 2.5.1
 addons:
   postgresql: 9.6
 before_script:
