@@ -1,5 +1,4 @@
 ActiveAdmin.register_page 'Download Cw Documents' do
-  include Streamable
   menu parent: 'Climate Watch Global', priority: 2
 
   content do
