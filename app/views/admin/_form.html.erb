@@ -1,0 +1,21 @@
+<% if documents.any? %>
+  <table class="index_table">
+    <thead>
+      <th class="col" style="width:10%">Filename</th>
+      <th class="col" style="width:10%">Created at</th>
+      <th class="col" style="width:10%">Link to document</th>
+    </thead>
+    <tbody>
+      <% documents.each do |document| %>
+        <% document.uploads.each do |upload| %>
+          <% upload.attachments.each do |attachment| %>
+            <tr>
+              <td><%= attachment.filename %>
+              <td><%= attachment.created_at %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
