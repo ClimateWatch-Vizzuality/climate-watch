@@ -1,10 +1,13 @@
 ActiveAdmin.register Document, as: 'CW Documents' do
-  menu parent: "Climate Watch Global"
+  menu parent: 'Climate Watch Global'
+
+  config.filters = false
+
   permit_params :uploads
 
-  form html: { multipart: true } do |f|
-    f.inputs "Uploads" do
-      f.input :uploads, as: :file, input_html: { multiple: true }
+  form html: {multipart: true} do |f|
+    f.inputs 'Uploads' do
+      f.input :uploads, as: :file, input_html: {multiple: true}
     end
     f.actions
   end
