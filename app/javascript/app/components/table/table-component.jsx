@@ -13,7 +13,6 @@ import { deburrCapitalize } from '../../utils/utils';
 const minColumnWidth = 180;
 const getResponsiveWidth = (columns, width) => {
   if (columns.length === 1) return width;
-
   const isMinColumSized = width / columns < minColumnWidth;
 
   let responsiveRatio = 1.4; // Mobile
@@ -23,11 +22,12 @@ const getResponsiveWidth = (columns, width) => {
     responsiveRatio = 1.2; // Tablet
   } else if (width > pixelBreakpoints.landscape) {
     // Desktop
-    responsiveColumnRatio = 0.1;
+    responsiveColumnRatio = 0.07;
     responsiveRatio = 1;
   }
   const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
   const columnExtraWidth = columnRatio * columns;
+
   return width * responsiveRatio * (1 + columnExtraWidth);
 };
 
