@@ -47,7 +47,7 @@ ActiveAdmin.register_page 'Global Cw Platform Indc' do
     datafile = dataset.datafile.attachment
     return unless datafile
 
-    Admin::S3Downloader.call(datafile, 'test')
+    Admin::S3Downloader.call(datafile, s3_folder_path)
 
     File.open("tmp_dir/#{datafile.filename}", 'r') do |f|
       send_data f.read.force_encoding('BINARY'),
@@ -66,7 +66,7 @@ ActiveAdmin.register_page 'Global Cw Platform Indc' do
     datafiles.empty? && return
 
     zip_filename = "#{platform_name}-#{section_name}-datafiles"
-    Admin::ZipAndDownload.call('test', zip_filename, datafiles)
+    Admin::ZipAndDownload.call(s3_folder_path, zip_filename, datafiles)
 
     File.open("tmp_dir/#{zip_filename}.zip", 'r') do |f|
       send_data f.read.force_encoding('BINARY'),

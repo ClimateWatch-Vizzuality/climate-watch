@@ -1,6 +1,7 @@
 ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
   section_name = 'ndc_texts'
   platform_name = 'global_cw_platform'
+  s3_folder_path = "#{CW_FILES_PREFIX_TEST}ndc_texts"
 
   menu parent: 'Climate Watch Global', label: section_name.split('_').map(&:capitalize).join(' ')
 
@@ -17,8 +18,14 @@ ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
   page_action :upload_datafile, method: :post do
     dataset = Admin::Dataset.find(params[:dataset_id])
 
+    if params[:datafile].content_type != 'application/zip'
+      redirect_to admin_global_cw_platform_ndc_texts_path, alert: "Upload failed
+        due to wrong file extension. File's extension should be .zip!"
+      return
+    end
+
     dataset.datafile.attach(params[:datafile])
-    Admin::UnzipAndUpload.call('test/test2', dataset.datafile.attachment)
+    Admin::UnzipAndUpload.call(s3_folder_path, dataset.datafile.attachment)
 
     notice = 'Uploaded succesfully!'
     redirect_to admin_global_cw_platform_ndc_texts_path, notice: notice
@@ -34,7 +41,7 @@ ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
 
     zip_filename = 'archive'
 
-    Admin::S3Downloader.call([], 'test/test2')
+    Admin::S3Downloader.call([], s3_folder_path)
 
     File.open("tmp_dir/#{zip_filename}.zip", 'r') do |f|
       send_data f.read.force_encoding('BINARY'),
