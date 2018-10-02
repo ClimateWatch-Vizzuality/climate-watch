@@ -47,7 +47,6 @@ ActiveAdmin.register_page 'Global Cw Platform Locations' do
     datafile = dataset.datafile.attachment
     return unless datafile
 
-    zip_filename = 
     Admin::S3Downloader.call(datafile, s3_folder_path)
 
     File.open("tmp_dir/#{datafile.filename}", 'r') do |f|
