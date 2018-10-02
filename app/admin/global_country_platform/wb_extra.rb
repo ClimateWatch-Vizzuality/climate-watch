@@ -18,6 +18,8 @@ ActiveAdmin.register_page 'Global Cw Platform Wb Extra' do
   end
 
   page_action :upload_datafile, method: :post do
+    return if params[:datafile].nil?
+
     dataset = Admin::Dataset.find(params[:dataset_id])
 
     if params[:datafile].content_type != 'text/csv'
