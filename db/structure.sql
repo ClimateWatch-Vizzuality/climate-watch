@@ -196,6 +196,36 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: datasets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.datasets (
+    id bigint NOT NULL,
+    name character varying,
+    section_id bigint
+);
+
+
+--
+-- Name: datasets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.datasets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: datasets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.datasets_id_seq OWNED BY public.datasets.id;
+
+
+--
 -- Name: documents; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1021,6 +1051,35 @@ ALTER SEQUENCE public.ndcs_id_seq OWNED BY public.ndcs.id;
 
 
 --
+-- Name: platforms; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.platforms (
+    id bigint NOT NULL,
+    name character varying
+);
+
+
+--
+-- Name: platforms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.platforms_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: platforms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.platforms_id_seq OWNED BY public.platforms.id;
+
+
+--
 -- Name: quantification_labels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1093,6 +1152,36 @@ ALTER SEQUENCE public.quantification_values_id_seq OWNED BY public.quantificatio
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: sections; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sections (
+    id bigint NOT NULL,
+    name character varying,
+    platform_id bigint
+);
+
+
+--
+-- Name: sections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sections_id_seq OWNED BY public.sections.id;
 
 
 --
@@ -1565,6 +1654,13 @@ ALTER TABLE ONLY public.adaptation_variables ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets ALTER COLUMN id SET DEFAULT nextval('public.datasets_id_seq'::regclass);
+
+
+--
 -- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1726,6 +1822,13 @@ ALTER TABLE ONLY public.ndcs ALTER COLUMN id SET DEFAULT nextval('public.ndcs_id
 
 
 --
+-- Name: platforms id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.platforms ALTER COLUMN id SET DEFAULT nextval('public.platforms_id_seq'::regclass);
+
+
+--
 -- Name: quantification_labels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1737,6 +1840,13 @@ ALTER TABLE ONLY public.quantification_labels ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.quantification_values ALTER COLUMN id SET DEFAULT nextval('public.quantification_values_id_seq'::regclass);
+
+
+--
+-- Name: sections id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections ALTER COLUMN id SET DEFAULT nextval('public.sections_id_seq'::regclass);
 
 
 --
@@ -1935,6 +2045,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: datasets datasets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT datasets_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2111,6 +2229,14 @@ ALTER TABLE ONLY public.ndcs
 
 
 --
+-- Name: platforms platforms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.platforms
+    ADD CONSTRAINT platforms_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: quantification_labels quantification_labels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2132,6 +2258,14 @@ ALTER TABLE ONLY public.quantification_values
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: sections sections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections
+    ADD CONSTRAINT sections_pkey PRIMARY KEY (id);
 
 
 --
@@ -2285,6 +2419,13 @@ CREATE INDEX index_adaptation_values_on_variable_id ON public.adaptation_values 
 --
 
 CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_variables USING btree (slug);
+
+
+--
+-- Name: index_datasets_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_datasets_on_section_id ON public.datasets USING btree (section_id);
 
 
 --
@@ -2708,6 +2849,13 @@ CREATE INDEX index_searchable_emissions_path_ops ON public.historical_emissions_
 
 
 --
+-- Name: index_sections_on_platform_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sections_on_platform_id ON public.sections USING btree (platform_id);
+
+
+--
 -- Name: index_socioeconomic_indicators_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2896,11 +3044,27 @@ ALTER TABLE ONLY public.wb_extra_country_data
 
 
 --
+-- Name: datasets fk_rails_4cf1467767; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT fk_rails_4cf1467767 FOREIGN KEY (section_id) REFERENCES public.sections(id);
+
+
+--
 -- Name: indc_values fk_rails_78b5d1bae9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.indc_values
     ADD CONSTRAINT fk_rails_78b5d1bae9 FOREIGN KEY (sector_id) REFERENCES public.indc_sectors(id) ON DELETE CASCADE;
+
+
+--
+-- Name: sections fk_rails_79731eb272; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections
+    ADD CONSTRAINT fk_rails_79731eb272 FOREIGN KEY (platform_id) REFERENCES public.platforms(id);
 
 
 --
@@ -3231,6 +3395,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180918170821'),
 ('20180918170838'),
 ('20180924154438'),
+('20180926092216'),
+('20180926092245'),
+('20180926092304'),
 ('20181009120234');
 
 
