@@ -16,6 +16,8 @@ ActiveAdmin.register_page 'Indonesia Platform Timeline' do
   end
 
   page_action :upload_datafile, method: :post do
+    return if params[:datafile].nil?
+
     dataset = Admin::Dataset.find(params[:dataset_id])
     dataset.datafile.attach(params[:datafile])
 
