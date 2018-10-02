@@ -3,7 +3,9 @@ ActiveAdmin.register_page 'Global Cw Platform Quantifications' do
   platform_name = 'global_cw_platform'
   s3_folder_path = "#{CW_FILES_PREFIX_TEST}quantifications"
 
-  menu parent: 'Climate Watch Global', label: section_name.capitalize
+  menu parent: 'Climate Watch Global',
+       label: section_name.capitalize,
+       if: proc { Admin::Ability.can_view?(platform_name) }
 
   content do
     render partial: 'admin/form_upload_datasets', locals: {

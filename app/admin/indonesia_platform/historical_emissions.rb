@@ -1,7 +1,9 @@
 ActiveAdmin.register_page 'Indonesia Platform Historical Emissions' do
   section_name = 'historical_emissions'
   platform_name = 'indonesia_platform'
-  menu parent: 'Indonesia Platform', label: section_name.split('_').map(&:capitalize).join(' ')
+  menu parent: 'Indonesia Platform',
+       label: section_name.split('_').map(&:capitalize).join(' '),
+       if: proc { Admin::Ability.can_view?(platform_name) }
 
   content do
     render partial: 'admin/form_upload_datasets', locals: {

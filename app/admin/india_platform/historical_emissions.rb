@@ -1,7 +1,9 @@
 ActiveAdmin.register_page 'India Platform Historical Emissions' do
   section_name = 'historical_emissions'
   platform_name = 'india_platform'
-  menu parent: 'India Platform', label: section_name.split('_').map(&:capitalize).join(' ')
+  menu parent: 'India Platform',
+       label: section_name.split('_').map(&:capitalize).join(' '),
+       if: proc { Admin::Ability.can_view?(platform_name) }
 
   content do
     render partial: 'admin/form_upload_datasets', locals: {

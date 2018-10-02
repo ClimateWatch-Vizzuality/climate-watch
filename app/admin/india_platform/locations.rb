@@ -1,7 +1,9 @@
 ActiveAdmin.register_page 'India Platform Locations' do
   section_name = 'locations'
   platform_name = 'india_platform'
-  menu parent: 'India Platform', label: section_name.capitalize
+  menu parent: 'India Platform',
+       label: section_name.capitalize,
+       if: proc { Admin::Ability.can_view?(platform_name) }
 
   content do
     render partial: 'admin/form_upload_datasets', locals: {

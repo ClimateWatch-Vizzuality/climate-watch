@@ -1,7 +1,9 @@
 ActiveAdmin.register_page 'Indonesia Platform Timeline' do
   section_name = 'timeline'
   platform_name = 'indonesia_platform'
-  menu parent: 'Indonesia Platform', label: section_name.capitalize
+  menu parent: 'Indonesia Platform',
+       label: section_name.capitalize,
+       if: proc { Admin::Ability.can_view?(platform_name) }
 
   content do
     render partial: 'admin/form_upload_datasets', locals: {
