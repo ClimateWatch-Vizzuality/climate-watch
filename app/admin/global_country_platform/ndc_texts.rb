@@ -1,4 +1,6 @@
 ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
+  include SharedAdmin
+
   section_name = 'ndc_texts'
   platform_name = 'global_cw_platform'
   s3_folder_path = "#{CW_FILES_PREFIX_TEST}ndc_texts"
@@ -7,11 +9,13 @@ ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
        label: section_name.split('_').map(&:capitalize).join(' '),
        if: proc { Admin::Ability.can_view?(platform_name) }
 
+  datasets = Admin::Dataset.joins(:section).
+    where(sections: {name: section_name}).
+    where(sections: {platform_id: Admin::Platform.find_by(name: platform_name).id})
+
   content do
     render partial: 'admin/form_upload_ndc_texts', locals: {
-      datasets: Admin::Dataset.joins(:section).
-        where(sections: {name: section_name}).
-        where(sections: {platform_id: Admin::Platform.find_by(name: platform_name).id}),
+      datasets: datasets,
       upload_path: admin_global_cw_platform_ndc_texts_upload_datafile_path,
       download_path: admin_global_cw_platform_ndc_texts_download_datafiles_path
     }
@@ -36,10 +40,6 @@ ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
   end
 
   page_action :download_datafiles, method: :post do
-    datasets = Admin::Dataset.joins(:section).
-      where(sections: {name: section_name}).
-      where(sections: {platform_id: Admin::Platform.find_by(name: platform_name).id})
-
     datafiles = datasets.map(&:datafile).map(&:attachment).compact
     datafiles.empty? && return
 

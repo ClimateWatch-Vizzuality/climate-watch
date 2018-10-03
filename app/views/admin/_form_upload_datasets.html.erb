@@ -36,7 +36,25 @@
     <%= submit_tag 'Download data files' %>
   <% end %> 
   <%= form_tag(import_path, class: 'importer-button') do %>
-    <%= submit_tag 'Run Importers' %>
+    <%= submit_tag 'Run Importers', disabled: import_button_disabled, data: { confirm: 'Are you sure?', disable_with: 'Importing...' } %>
+  <% end %>
+  <% if logs.any? %>
+    <table class="index_table logs_table">
+      <thead>
+        <th class="col" style="width:10%">Created at</th>
+        <th class="col" style="width:10%">Status</th>
+        <th class="col" style="width:10%">Error</th>
+      </thead>
+      <tbody>
+        <% logs.each do |log| %>
+          <tr>
+            <td><%= log.created_at %>
+            <td><%= log.state %>
+            <td><%= log.error %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   <% end %>
 <% end %>
 
