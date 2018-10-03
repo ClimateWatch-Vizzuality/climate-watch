@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
+  ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
   
   authenticate :admin_user do
     require 'sidekiq/web'
