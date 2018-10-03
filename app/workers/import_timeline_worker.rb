@@ -1,9 +1,7 @@
-class ImportTimelineWorker
-  include Sidekiq::Worker
+class ImportTimelineWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportTimeline.new.call
   end
 end

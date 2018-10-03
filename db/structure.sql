@@ -1498,6 +1498,40 @@ ALTER SEQUENCE public.wb_extra_country_data_id_seq OWNED BY public.wb_extra_coun
 
 
 --
+-- Name: worker_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.worker_logs (
+    id bigint NOT NULL,
+    state integer,
+    jid character varying,
+    section_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    error text
+);
+
+
+--
+-- Name: worker_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.worker_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worker_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.worker_logs_id_seq OWNED BY public.worker_logs.id;
+
+
+--
 -- Name: wri_metadata_acronyms; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1910,6 +1944,13 @@ ALTER TABLE ONLY public.visualizations ALTER COLUMN id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.wb_extra_country_data ALTER COLUMN id SET DEFAULT nextval('public.wb_extra_country_data_id_seq'::regclass);
+
+
+--
+-- Name: worker_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.worker_logs ALTER COLUMN id SET DEFAULT nextval('public.worker_logs_id_seq'::regclass);
 
 
 --
@@ -2338,6 +2379,14 @@ ALTER TABLE ONLY public.visualizations
 
 ALTER TABLE ONLY public.wb_extra_country_data
     ADD CONSTRAINT wb_extra_country_data_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worker_logs worker_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.worker_logs
+    ADD CONSTRAINT worker_logs_pkey PRIMARY KEY (id);
 
 
 --
@@ -2905,6 +2954,20 @@ CREATE INDEX index_wb_extra_country_data_on_location_id ON public.wb_extra_count
 
 
 --
+-- Name: index_worker_logs_on_jid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_worker_logs_on_jid ON public.worker_logs USING btree (jid);
+
+
+--
+-- Name: index_worker_logs_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_worker_logs_on_section_id ON public.worker_logs USING btree (section_id);
+
+
+--
 -- Name: index_wri_metadata_acronyms_on_acronym; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3073,6 +3136,14 @@ ALTER TABLE ONLY public.sections
 
 ALTER TABLE ONLY public.indc_indicators_categories
     ADD CONSTRAINT fk_rails_7f8ee8d66f FOREIGN KEY (indicator_id) REFERENCES public.indc_indicators(id) ON DELETE CASCADE;
+
+
+--
+-- Name: worker_logs fk_rails_81b253936f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.worker_logs
+    ADD CONSTRAINT fk_rails_81b253936f FOREIGN KEY (section_id) REFERENCES public.sections(id);
 
 
 --
@@ -3398,6 +3469,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180926092216'),
 ('20180926092245'),
 ('20180926092304'),
+('20181002152649'),
+('20181003090648'),
 ('20181009120234');
 
 

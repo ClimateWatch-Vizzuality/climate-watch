@@ -1,9 +1,7 @@
-class ImportWbExtraWorker
-  include Sidekiq::Worker
+class ImportWbExtraWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportWbExtra.new.call
   end
 end

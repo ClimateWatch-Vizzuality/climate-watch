@@ -1,9 +1,7 @@
-class ImportAdaptationWorker
-  include Sidekiq::Worker
+class ImportAdaptationWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportAdaptation.new.call
   end
 end

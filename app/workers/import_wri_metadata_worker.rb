@@ -1,9 +1,7 @@
-class ImportWriMetadataWorker
-  include Sidekiq::Worker
+class ImportWriMetadataWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportWriMetadata.new.call
   end
 end

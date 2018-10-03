@@ -1,9 +1,7 @@
-class ImportHistoricalEmissionsWorker
-  include Sidekiq::Worker
+class ImportHistoricalEmissionsWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportHistoricalEmissions.new.call
   end
 end

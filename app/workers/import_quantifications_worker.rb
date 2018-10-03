@@ -1,9 +1,7 @@
-class ImportQuantificationsWorker
-  include Sidekiq::Worker
+class ImportQuantificationsWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportQuantifications.new.call
   end
 end

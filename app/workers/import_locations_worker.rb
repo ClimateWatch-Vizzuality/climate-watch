@@ -1,9 +1,7 @@
-class ImportLocationsWorker
-  include Sidekiq::Worker
+class ImportLocationsWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportLocations.new.call
   end
 end

@@ -1,9 +1,7 @@
-class ImportSocioeconomicsWorker
-  include Sidekiq::Worker
+class ImportSocioeconomicsWorker < BaseImportWorker
+  private
 
-  sidekiq_options queue: :database
-
-  def perform
+  def import_data
     ImportSocioeconomics.new.call
   end
 end
