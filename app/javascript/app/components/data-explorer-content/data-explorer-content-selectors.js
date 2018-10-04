@@ -786,13 +786,13 @@ export const getFirstTableHeaders = createSelector(
 );
 
 export const getSortDefaults = createSelector(
-  [getSection, getSearch, getFirstTableHeaders],
-  (section, search, firstTableHeaders) => {
+  [getSection, getSearch],
+  (section, search) => {
     if (!section) return null;
     const sortCol =
       search.sort_col ||
       SORTING_DEFAULTS[section] ||
-      (firstTableHeaders && firstTableHeaders[0]);
+      FIRST_TABLE_HEADERS[section][0];
 
     const sortDir =
       search.sort_dir || (section === 'historical-emissions' ? 'DESC' : 'ASC');
@@ -804,7 +804,8 @@ export const parseFilterQuery = createSelector(
   [getFilterQuery, getNonColumnQuery, getSortDefaults],
   (filterIds, nonColumnQuery, sortDefaults) => {
     if (!filterIds) return null;
-    const isReady = sortDefaults && !!sortDefaults.sort_dir;
+    const isReady =
+      sortDefaults && !!sortDefaults.sort_dir && !!sortDefaults.sort_col;
     if (!isReady) return null;
     const filterQuery = qs.stringify({
       ...filterIds,
