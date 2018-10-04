@@ -114,7 +114,9 @@ export const DATA_EXPLORER_FILTERS = {
 // and will only be selectable if all the values are selected
 export const DATA_EXPLORER_DEPENDENCIES = {
   'historical-emissions': {
-    sectors: ['source']
+    regions: ['source'],
+    sectors: ['source'],
+    gases: ['source']
   },
   'emission-pathways': {
     models: ['locations'],
