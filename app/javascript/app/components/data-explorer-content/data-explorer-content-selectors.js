@@ -25,7 +25,8 @@ import {
   NON_COLUMN_KEYS,
   TOP_EMITTERS_OPTION,
   FILTER_DEFAULTS,
-  FILTERS_DATA_WITHOUT_MODEL
+  FILTERS_DATA_WITHOUT_MODEL,
+  SORTING_DEFAULTS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS } from 'data/constants';
 import {
@@ -789,7 +790,10 @@ export const getSortDefaults = createSelector(
   (section, search, firstTableHeaders) => {
     if (!section) return null;
     const sortCol =
-      search.sort_col || (firstTableHeaders && firstTableHeaders[0]);
+      search.sort_col ||
+      SORTING_DEFAULTS[section] ||
+      (firstTableHeaders && firstTableHeaders[0]);
+
     const sortDir =
       search.sort_dir || (section === 'historical-emissions' ? 'DESC' : 'ASC');
     return { sort_col: sortCol, sort_dir: sortDir };
