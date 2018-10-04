@@ -24,7 +24,8 @@ import {
   parseFilterQuery,
   parseExternalParams,
   getLink,
-  getTitleLinks
+  getTitleLinks,
+  getSortDefaults
 } from './data-explorer-content-selectors';
 import { getPathwaysMetodology } from './data-explorer-content-pathways-modal-selectors';
 
@@ -64,7 +65,6 @@ const mapStateToProps = (state, { section, location }) => {
   const loading =
     (state.dataExplorer && state.dataExplorer.loading) || !hasFetchedData;
   const loadingMeta = state.dataExplorer && state.dataExplorer.loadingMeta;
-
   return {
     data,
     pageCount: dataLength ? dataLength / DATA_EXPLORER_PER_PAGE : 0,
@@ -79,6 +79,7 @@ const mapStateToProps = (state, { section, location }) => {
     anchorLinks,
     query: location.search,
     filterQuery,
+    sortDefaults: getSortDefaults(dataState),
     parsedExternalParams: parseExternalParams(dataState),
     titleLinks: getTitleLinks(dataState),
     search,

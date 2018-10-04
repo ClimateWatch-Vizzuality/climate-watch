@@ -25,7 +25,8 @@ import {
   NON_COLUMN_KEYS,
   TOP_EMITTERS_OPTION,
   FILTER_DEFAULTS,
-  FILTERS_DATA_WITHOUT_MODEL
+  FILTERS_DATA_WITHOUT_MODEL,
+  SORTING_DEFAULTS
 } from 'data/data-explorer-constants';
 import { SOURCE_VERSIONS } from 'data/constants';
 import {
@@ -225,15 +226,6 @@ export const getNonColumnQuery = createSelector(
       ['sort_col', 'sort_dir'].concat(nonColumnSectionKeys)
     );
     return removeFiltersPrefix(noEmptyValues(nonColumnQuery), section);
-  }
-);
-
-export const parseFilterQuery = createSelector(
-  [getFilterQuery, getNonColumnQuery],
-  (filterIds, nonColumnQuery) => {
-    if (!filterIds) return null;
-    const filterQuery = qs.stringify({ ...filterIds, ...nonColumnQuery });
-    return filterQuery;
   }
 );
 
@@ -790,5 +782,37 @@ export const getFirstTableHeaders = createSelector(
       default:
         return sectionFirstHeaders.concat(reversedYearColumnKeys);
     }
+  }
+);
+
+export const getSortDefaults = createSelector(
+  [getSection, getSearch],
+  (section, search) => {
+    if (!section) return null;
+    const sortCol =
+      search.sort_col ||
+      SORTING_DEFAULTS[section] ||
+      FIRST_TABLE_HEADERS[section][0];
+
+    const sortDir =
+      search.sort_dir || (section === 'historical-emissions' ? 'DESC' : 'ASC');
+    return { sort_col: sortCol, sort_dir: sortDir };
+  }
+);
+
+export const parseFilterQuery = createSelector(
+  [getFilterQuery, getNonColumnQuery, getSortDefaults],
+  (filterIds, nonColumnQuery, sortDefaults) => {
+    if (!filterIds) return null;
+    const isReady =
+      sortDefaults && !!sortDefaults.sort_dir && !!sortDefaults.sort_col;
+    if (!isReady) return null;
+    const filterQuery = qs.stringify({
+      ...filterIds,
+      ...nonColumnQuery,
+      ...sortDefaults
+    });
+
+    return filterQuery;
   }
 );

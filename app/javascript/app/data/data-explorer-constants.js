@@ -114,7 +114,9 @@ export const DATA_EXPLORER_FILTERS = {
 // and will only be selectable if all the values are selected
 export const DATA_EXPLORER_DEPENDENCIES = {
   'historical-emissions': {
-    sectors: ['source']
+    regions: ['source'],
+    sectors: ['source'],
+    gases: ['source']
   },
   'emission-pathways': {
     models: ['locations'],
@@ -292,21 +294,6 @@ export const FILTERS_DATA_WITHOUT_MODEL = {
 export const DATA_EXPLORER_TABLE_COLUMNS_WIDTH = {
   'emission-pathways': 100
 };
-
-export default {
-  DATA_EXPLORER_BLACKLIST,
-  DATA_EXPLORER_SECTIONS,
-  DATA_EXPLORER_METHODOLOGY_SOURCE,
-  DATA_EXPLORER_DEPENDENCIES,
-  DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_TABLE_COLUMNS_WIDTH,
-  MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_OR_MULTI_SELECT_FIELDS,
-  DATA_EXPLORER_PER_PAGE,
-  POSSIBLE_LABEL_FIELDS,
-  POSSIBLE_VALUE_FIELDS,
-  FIELD_ALIAS,
-  TOP_EMITTERS_OPTION,
-  FILTERS_DATA_WITHOUT_MODEL
+export const SORTING_DEFAULTS = {
+  'historical-emissions': '2014'
 };
