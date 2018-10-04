@@ -228,15 +228,6 @@ export const getNonColumnQuery = createSelector(
   }
 );
 
-export const parseFilterQuery = createSelector(
-  [getFilterQuery, getNonColumnQuery],
-  (filterIds, nonColumnQuery) => {
-    if (!filterIds) return null;
-    const filterQuery = qs.stringify({ ...filterIds, ...nonColumnQuery });
-    return filterQuery;
-  }
-);
-
 const getParsedFilterId = (
   parsedKey,
   parsedKeyData,
@@ -790,5 +781,33 @@ export const getFirstTableHeaders = createSelector(
       default:
         return sectionFirstHeaders.concat(reversedYearColumnKeys);
     }
+  }
+);
+
+export const getSortDefaults = createSelector(
+  [getSection, getSearch, getFirstTableHeaders],
+  (section, search, firstTableHeaders) => {
+    if (!section) return null;
+    const sortCol =
+      search.sort_col || (firstTableHeaders && firstTableHeaders[0]);
+    const sortDir =
+      search.sort_dir || (section === 'historical-emissions' ? 'DESC' : 'ASC');
+    return { sort_col: sortCol, sort_dir: sortDir };
+  }
+);
+
+export const parseFilterQuery = createSelector(
+  [getFilterQuery, getNonColumnQuery, getSortDefaults],
+  (filterIds, nonColumnQuery, sortDefaults) => {
+    if (!filterIds) return null;
+    const isReady = sortDefaults && !!sortDefaults.sort_dir;
+    if (!isReady) return null;
+    const filterQuery = qs.stringify({
+      ...filterIds,
+      ...nonColumnQuery,
+      ...sortDefaults
+    });
+
+    return filterQuery;
   }
 );

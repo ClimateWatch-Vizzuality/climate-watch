@@ -29,24 +29,19 @@ class DataExplorerContent extends PureComponent {
       firstColumnHeaders,
       loading,
       handleSortChange,
-      search,
       titleLinks,
       section,
-      tableColumnsWidth
+      tableColumnsWidth,
+      sortDefaults
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
-      const columns = data && Object.keys(data[0]);
-      const sortBy =
-        search.sort_col ||
-        columns.find(c => firstColumnHeaders.includes(c)) ||
-        columns[0];
       return (
         <Table
           data={data}
           rowHeight={60}
-          sortBy={sortBy}
-          sortDirection={search.sort_dir}
+          sortBy={sortDefaults ? sortDefaults.sort_col : undefined}
+          sortDirection={sortDefaults ? sortDefaults.sort_dir : undefined}
           firstColumnHeaders={firstColumnHeaders}
           horizontalScroll
           titleLinks={titleLinks}
@@ -183,11 +178,13 @@ DataExplorerContent.propTypes = {
   search: PropTypes.object,
   initialPage: PropTypes.number,
   titleLinks: PropTypes.array,
+  sortDefaults: PropTypes.object,
   tableColumnsWidth: PropTypes.object
 };
 
 DataExplorerContent.defaultProps = {
-  hasParamsReady: false
+  hasParamsReady: false,
+  sortDefaults: null
 };
 
 export default DataExplorerContent;
