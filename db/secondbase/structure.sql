@@ -38,7 +38,8 @@ CREATE TABLE public.admin_users (
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    role character varying
 );
 
 
@@ -145,6 +146,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180918134121'),
 ('20180918135209'),
 ('20180918152250'),
-('20180918153412');
+('20180918153412'),
+('20181004091403');
 
 
