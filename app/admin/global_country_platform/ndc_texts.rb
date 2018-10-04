@@ -9,9 +9,10 @@ ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
        label: section_name.split('_').map(&:capitalize).join(' '),
        if: proc { Admin::Ability.can_view?(platform_name) }
 
-  datasets = Admin::Dataset.joins(:section).
-    where(sections: {name: section_name}).
-    where(sections: {platform_id: Admin::Platform.find_by(name: platform_name).id})
+  datasets = DatasetRepository.new.filter_by_section_and_platform(
+    section_name,
+    platform_name
+  )
 
   content do
     render partial: 'admin/form_upload_ndc_texts', locals: {

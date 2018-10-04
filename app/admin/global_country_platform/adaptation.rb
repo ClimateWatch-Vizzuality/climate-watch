@@ -21,20 +21,23 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
       admin_global_cw_platform_adaptation_path
     end
 
-    def datasets
-      Admin::Dataset.joins(:section).
-        where(sections: {name: section_name}).
-        where(sections: {platform_id: Admin::Platform.find_by(name: platform_name).id})
-    end
-
     def section
-      Admin::Section.
-        where(name: section_name).
-        find_by(platform_id: Admin::Platform.find_by(name: platform_name).id)
+      section_repository.filter_by_section_and_platform(
+        section_name,
+        platform_name
+      )
     end
 
     def import_worker
       ImportAdaptationWorker.perform_async(section.id)
+    end
+
+    def section_repository
+      @section_repository ||= SectionRepository.new
+    end
+
+    def dataset_repository
+      @dataset_repository ||= DatasetRepository.new
     end
   end
 
@@ -42,13 +45,12 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
        label: section_name.capitalize,
        if: proc { Admin::Ability.can_view?(platform_name) }
 
-  datasets = Admin::Dataset.joins(:section).
-    where(sections: {name: section_name}).
-    where(sections: {platform_id: Admin::Platform.find_by(name: platform_name).id})
+  section = SectionRepository.new.filter_by_section_and_platform(
+    section_name,
+    platform_name
+  )
 
-  section = Admin::Section.
-    where(name: section_name).
-    find_by(platform_id: Admin::Platform.find_by(name: platform_name).id)
+  datasets = DatasetRepository.new.filter_by_section(section.id)
 
   content do
     render partial: 'admin/form_upload_datasets', locals: {

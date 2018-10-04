@@ -5,64 +5,65 @@ module SharedAdmin
   # rubocop:disable Metrics/AbcSize
   def self.included(base)
     base.send(:page_action, :upload_datafile, method: :post) do
-      return if params[:datafile].nil?
-
-      dataset = Admin::Dataset.find(params[:dataset_id])
-
-      if params[:datafile].content_type != 'text/csv'
-        redirect_to path, alert: "Upload failed
-          due to wrong file extension. File's extension should be .csv!"
+      datafile_not_chosen = -> { return; }
+      datafile_wrong_content_type = lambda {
+        redirect_to path, alert: "Upload failed due to wrong file
+          extension. File's extension should be .csv"
         return
-      end
+      }
+      success = -> { redirect_to path, notice: 'Uploaded successfully' }
 
-      expected_filename = "#{dataset.name}.csv"
+      callbacks = {
+        datafile_not_chosen: datafile_not_chosen,
+        datafile_wrong_content_type: datafile_wrong_content_type,
+        success: success
+      }
 
-      params[:datafile].original_filename =
-        Admin::CheckAndCorrectFilename.call(params[:datafile].original_filename, expected_filename)
-
-      dataset.datafile.attach(params[:datafile])
-
-      Admin::S3Uploader.call(
-        dataset.datafile.attachment,
-        s3_folder_path
-      )
-
-      run_uploader
-
-      notice = 'Uploaded succesfully!'
-      redirect_to path, notice: notice
+      Admin::UseCase::UploadDatafile.
+        new(dataset_repository, s3_folder_path).
+        call(params, callbacks)
     end
 
     base.send(:page_action, :download_datafile, method: :post) do
-      dataset = Admin::Dataset.find(params[:dataset_id])
-      datafile = dataset.datafile.attachment
-      return unless datafile
-
-      Admin::S3Downloader.call(datafile, s3_folder_path)
-
-      File.open("tmp_dir/#{datafile.filename}", 'r') do |f|
-        send_data f.read.force_encoding('BINARY'),
+      no_datafile = -> { return; }
+      send_data_to_client = lambda { |file, datafile|
+        send_data file.read.force_encoding('BINARY'),
                   filename: datafile.filename.to_s,
                   disposition: 'attachment'
-      end
-      FileUtils.rm_rf('tmp_dir')
+      }
+
+      callbacks = {
+        no_datafile: no_datafile,
+        send_data_to_client: send_data_to_client
+      }
+
+      Admin::UseCase::DownloadDatafile.
+        new(dataset_repository, s3_folder_path).
+        call(params, callbacks)
     end
 
     base.send(:page_action, :download_datafiles, method: :post) do
-      datafiles = datasets.map(&:datafile).map(&:attachment).compact
-      datafiles.empty? && return
-
-      zip_filename = "#{platform_name}-#{section_name}-datafiles"
-
-      Admin::ZipAndDownload.call(s3_folder_path, zip_filename, datafiles)
-
-      File.open("tmp_dir/#{zip_filename}.zip", 'r') do |f|
-        send_data f.read.force_encoding('BINARY'),
+      datafiles_empty = -> { return; }
+      send_data_to_client = lambda { |file, zip_filename|
+        send_data file.read.force_encoding('BINARY'),
                   filename: "#{zip_filename}.zip",
                   type: 'application/zip',
                   disposition: 'attachment'
-      end
-      FileUtils.rm_rf('tmp_dir')
+      }
+
+      callbacks = {
+        datafiles_empty: datafiles_empty,
+        send_data_to_client: send_data_to_client
+      }
+
+      attrs = {
+        section_name: section_name,
+        platform_name: platform_name
+      }
+
+      Admin::UseCase::DownloadZippedDatafiles.
+        new(dataset_repository, s3_folder_path).
+        call(attrs, callbacks)
     end
 
     base.send(:page_action, :run_importer, method: :post) do
@@ -70,7 +71,7 @@ module SharedAdmin
       notice = "Files import scheduled. This might take to few minutes,
         please refresh the page to see the status in logs table below."
 
-      redirect_to admin_global_cw_platform_adaptation_path, notice: notice
+      redirect_to path, notice: notice
     end
   end
   # rubocop:enable Metrics/MethodLength
