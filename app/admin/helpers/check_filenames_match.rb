@@ -1,5 +1,5 @@
 module Admin
-  class CheckAndCorrectFilename
+  class CheckFilenamesMatch
     attr_reader :original_filename, :expected_filename
 
     def initialize(original_filename, expected_filename)

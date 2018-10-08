@@ -34,7 +34,7 @@ module Admin
         expected_filename = "#{dataset.name}.csv"
 
         params[:datafile].original_filename =
-          Admin::CheckAndCorrectFilename.call(
+          Admin::CheckFilenamesMatch.call(
             params[:datafile].original_filename,
             expected_filename
           )
