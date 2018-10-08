@@ -5,6 +5,15 @@ ActiveAdmin.register AdminUser do
     link_to 'Add new Admin User', new_admin_admin_user_path if current_admin_user.superuser?
   end
 
+  controller do
+    before_action :check_admin_role, only: [:new]
+
+    def check_admin_role
+      !current_admin_user.superuser? &&
+        redirect_to(admin_admin_users_path)
+    end
+  end
+
   index download_links: false, new_link: false do
     selectable_column
     id_column
