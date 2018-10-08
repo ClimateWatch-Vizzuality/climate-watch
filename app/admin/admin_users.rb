@@ -12,6 +12,16 @@ ActiveAdmin.register AdminUser do
       !current_admin_user.superuser? &&
         redirect_to(admin_admin_users_path)
     end
+
+    def update_resource(object, attributes)
+      update_method =
+        if attributes.first[:password].present?
+          :update_attributes
+        else
+          :update_without_password
+        end
+      object.send(update_method, *attributes)
+    end
   end
 
   index download_links: false, new_link: false do
