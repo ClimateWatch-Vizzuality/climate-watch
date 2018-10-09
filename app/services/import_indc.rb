@@ -31,6 +31,7 @@ class ImportIndc
     import_values_wb
     reject_map_indicators_without_values_or_labels
     import_submissions
+    Indc::SearchableValue.refresh
   end
 
   private
@@ -243,6 +244,7 @@ class ImportIndc
     indicators.each do |indicator_name, labels|
       indicator = Indc::Indicator.find_by(slug: indicator_name)
       next unless indicator
+
       nds_label = labels.delete('No Document Submitted')
       labels.each_with_index do |label, index|
         Indc::Label.create!(

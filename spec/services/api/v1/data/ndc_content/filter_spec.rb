@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe Api::V1::Data::NdcContent::Filter do
   include_context 'NDC values'
 
+  before(:each) do
+    Indc::SearchableValue.refresh
+  end
+
   describe :call do
     it 'filters by subsector' do
       filter = Api::V1::Data::NdcContent::Filter.new(
