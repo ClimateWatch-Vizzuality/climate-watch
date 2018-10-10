@@ -1712,6 +1712,71 @@ ALTER TABLE ONLY public.wri_metadata_values ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: indc_values indc_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_values
+    ADD CONSTRAINT indc_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_searchable_values; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.indc_searchable_values AS
+ SELECT indc_values.id,
+    indc_indicators.source_id,
+    indc_sources.name AS source,
+    locations.iso_code3,
+    locations.wri_standard_name AS country,
+    (array_agg(DISTINCT global_categories.category_id))::integer[] AS global_categories_ids,
+    array_to_string(array_agg(DISTINCT global_categories.name), ', '::text) AS global_category,
+    (array_agg(DISTINCT overview_categories.category_id))::integer[] AS overview_categories_ids,
+    array_to_string(array_agg(DISTINCT overview_categories.name), ', '::text) AS overview_category,
+    indc_values.sector_id,
+    COALESCE(sectors.name, parent_sectors.name) AS sector,
+    COALESCE(subsectors.name) AS subsector,
+    indc_values.indicator_id,
+    indc_indicators.slug AS indicator_slug,
+    indc_indicators.name AS indicator_name,
+    indc_values.value
+   FROM ((((((((public.indc_values
+     JOIN public.locations ON ((locations.id = indc_values.location_id)))
+     JOIN public.indc_indicators ON ((indc_indicators.id = indc_values.indicator_id)))
+     JOIN public.indc_sources ON ((indc_sources.id = indc_indicators.source_id)))
+     LEFT JOIN ( SELECT indc_sectors.id,
+            indc_sectors.parent_id,
+            indc_sectors.name
+           FROM public.indc_sectors
+          WHERE (indc_sectors.parent_id IS NOT NULL)) subsectors ON ((indc_values.sector_id = subsectors.id)))
+     LEFT JOIN ( SELECT indc_sectors.id,
+            indc_sectors.parent_id,
+            indc_sectors.name
+           FROM public.indc_sectors
+          WHERE (indc_sectors.parent_id IS NULL)) sectors ON ((indc_values.sector_id = sectors.id)))
+     LEFT JOIN ( SELECT indc_sectors.id,
+            indc_sectors.parent_id,
+            indc_sectors.name
+           FROM public.indc_sectors
+          WHERE (indc_sectors.parent_id IS NULL)) parent_sectors ON ((subsectors.parent_id = parent_sectors.id)))
+     LEFT JOIN ( SELECT ic.category_id,
+            ic.indicator_id,
+            c.name
+           FROM ((public.indc_indicators_categories ic
+             JOIN public.indc_categories c ON ((ic.category_id = c.id)))
+             JOIN public.indc_category_types ct ON (((c.category_type_id = ct.id) AND (upper(ct.name) = 'GLOBAL'::text))))) global_categories ON ((global_categories.indicator_id = indc_indicators.id)))
+     LEFT JOIN ( SELECT ic.category_id,
+            ic.indicator_id,
+            c.name
+           FROM ((public.indc_indicators_categories ic
+             JOIN public.indc_categories c ON ((ic.category_id = c.id)))
+             JOIN public.indc_category_types ct ON (((c.category_type_id = ct.id) AND (upper(ct.name) = 'OVERVIEW'::text))))) overview_categories ON ((overview_categories.indicator_id = indc_indicators.id)))
+  GROUP BY indc_values.id, indc_indicators.source_id, indc_sources.name, locations.iso_code3, locations.wri_standard_name, COALESCE(sectors.name, parent_sectors.name), COALESCE(subsectors.name), indc_indicators.slug, indc_indicators.name, indc_values.value
+  ORDER BY locations.wri_standard_name
+  WITH NO DATA;
+
+
+--
 -- Name: adaptation_values adaptation_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1837,14 +1902,6 @@ ALTER TABLE ONLY public.indc_sources
 
 ALTER TABLE ONLY public.indc_submissions
     ADD CONSTRAINT indc_submissions_pkey PRIMARY KEY (id);
-
-
---
--- Name: indc_values indc_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.indc_values
-    ADD CONSTRAINT indc_values_pkey PRIMARY KEY (id);
 
 
 --
@@ -2275,6 +2332,48 @@ CREATE INDEX index_indc_indicators_on_source_id ON public.indc_indicators USING 
 --
 
 CREATE INDEX index_indc_labels_on_indicator_id ON public.indc_labels USING btree (indicator_id);
+
+
+--
+-- Name: index_indc_searchable_values_on_global_categories_ids; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_global_categories_ids ON public.indc_searchable_values USING btree (global_categories_ids);
+
+
+--
+-- Name: index_indc_searchable_values_on_indicator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_indicator_id ON public.indc_searchable_values USING btree (indicator_id);
+
+
+--
+-- Name: index_indc_searchable_values_on_iso_code3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_iso_code3 ON public.indc_searchable_values USING btree (iso_code3);
+
+
+--
+-- Name: index_indc_searchable_values_on_overview_categories_ids; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_overview_categories_ids ON public.indc_searchable_values USING btree (overview_categories_ids);
+
+
+--
+-- Name: index_indc_searchable_values_on_sector_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_sector_id ON public.indc_searchable_values USING btree (sector_id);
+
+
+--
+-- Name: index_indc_searchable_values_on_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_source_id ON public.indc_searchable_values USING btree (source_id);
 
 
 --
@@ -2965,6 +3064,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180615113815'),
 ('20180720105038'),
 ('20180803123629'),
-('20180807150412');
+('20180807150412'),
+('20181009120234');
 
 
