@@ -1,0 +1,51 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+$circle-size: 50px;
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: scroll;
+  margin-bottom: 0;
+
+  @include columns(6);
+}
+
+.arrow {
+  height: 30px;
+}
+
+.arrowNavCircle {
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 2px #888;
+  height: $circle-size;
+  width: $circle-size;
+  justify-content: center;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.dotsPagination {
+  margin: 10px;
+  display: flex;
+}
+
+.dot {
+  height: 11px;
+  width: 11px;
+  border-radius: 50%;
+  border: 1px solid $black;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.filledDot {
+  background-color: $black;
+}
+
+.card {
+  list-style-type: none;
+}
