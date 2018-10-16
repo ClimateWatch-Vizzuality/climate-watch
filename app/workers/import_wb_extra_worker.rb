@@ -1,4 +1,4 @@
-class ImportWbExtraWorker < BaseImportWorker
+class ImportWbExtraWorker < DataUploader::BaseImportWorker
   private
 
   def import_data

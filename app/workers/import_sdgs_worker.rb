@@ -1,4 +1,4 @@
-class ImportSdgsWorker < BaseImportWorker
+class ImportSdgsWorker < DataUploader::BaseImportWorker
   private
 
   def import_data

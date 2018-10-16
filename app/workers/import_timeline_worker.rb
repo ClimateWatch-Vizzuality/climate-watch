@@ -1,4 +1,4 @@
-class ImportTimelineWorker < BaseImportWorker
+class ImportTimelineWorker < DataUploader::BaseImportWorker
   private
 
   def import_data

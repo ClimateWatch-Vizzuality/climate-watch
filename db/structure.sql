@@ -2045,6 +2045,7 @@ CREATE MATERIALIZED VIEW public.indc_searchable_values AS
   ORDER BY locations.wri_standard_name
   WITH NO DATA;
 
+
 --
 -- Name: active_storage_attachments active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --

@@ -1,4 +1,4 @@
-class ImportQuantificationsWorker < BaseImportWorker
+class ImportQuantificationsWorker < DataUploader::BaseImportWorker
   private
 
   def import_data
