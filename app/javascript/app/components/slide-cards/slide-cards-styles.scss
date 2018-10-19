@@ -6,10 +6,7 @@ $circle-size: 50px;
 .cardsContainer {
   display: flex;
   flex-wrap: nowrap;
-  overflow: scroll;
   margin-bottom: 0;
-
-  @include columns(6);
 }
 
 .arrow {
@@ -23,14 +20,28 @@ $circle-size: 50px;
   box-shadow: 0 0 2px #888;
   height: $circle-size;
   width: $circle-size;
+  background-color: $white;
   justify-content: center;
-  margin: 10px;
   cursor: pointer;
+}
+
+.arrowNavRight {
+  position: absolute;
+  top: 35%;
+  right: calc(0% - #{$circle-size} / 2);
+}
+
+.arrowNavLeft {
+  position: absolute;
+  top: 35%;
+  left: calc(0% - #{$circle-size} / 2);
+  z-index: 2;
 }
 
 .dotsPagination {
   margin: 10px;
   display: flex;
+  justify-content: center;
 }
 
 .dot {
@@ -48,4 +59,34 @@ $circle-size: 50px;
 
 .card {
   list-style-type: none;
+  width: 390px;
+  margin-left: -1px;
+  z-index: 0;
+}
+
+.cardInside {
+  height: 350px;
+  width: 390px;
+  box-shadow: none;
+}
+
+.cardContentContainer {
+  background-color: $light-gray;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+.cardTitle {
+  font-size: $font-size;
+  font-weight: $font-weight;
+}
+
+.cardData {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  position: relative;
 }
