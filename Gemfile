@@ -99,9 +99,9 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git', branch: 'gem/data-uploader-develop' do
-  gem 'cw_data_uploader', '~> 0.1.0', require: 'data_uploader'
+git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git' do
+  gem 'cw_data_uploader', '~> 0.1.3', require: 'data_uploader'
 end
 
 # for debugging
-# gem 'cw_data_uploader', '~> 0.1.0', require: 'data_uploader', path: '../climate-watch-gems'
+# gem 'cw_data_uploader', '~> 0.1.3', require: 'data_uploader', path: '../climate-watch-gems'
