@@ -29,6 +29,7 @@
 
 .actions {
   @include columns((6,6), $gutters: false);
+
   margin-bottom: 30px;
 }
 
@@ -64,13 +65,10 @@
 }
 
 .fixedCard {
-  width: 390px;
+  flex: 0 0 33%;
   height: 350px;
   box-shadow: 0 1px 25px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px rgba(26, 28, 34, 0.1);
-}
-
-.cardOutside {
   z-index: 1;
 }
 

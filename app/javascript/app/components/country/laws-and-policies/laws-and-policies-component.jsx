@@ -30,17 +30,31 @@ class LawsAndPolicies extends PureComponent {
   render() {
     const { cards, cardsInRow } = this.props;
 
+    const ndcContentPresent = true;
+
     return (
       <div className={layout.content}>
         <h3 className={styles.title}>Laws and Policies</h3>
         <div className={styles.descriptionContainer}>
           <div className="grid-column-item">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id.
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus
+            hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque,
+            aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula
+            sollicitudin laoreet viverra, tortor libero sodales leo, eget
+            blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse
+            potenti. Sed egestas, ante et vulputate volutpat, eros pede semper
+            est, vitae luctus metus libero eu augue. Morbi purus libero,
+            faucibus adipiscing, commodo quis, gravida id.
           </div>
           <div className={styles.logoContainer}>
             {
               // eslint-disable-next-line jsx-a11y/anchor-has-content
-            }<a href={'lselink'} className={styles.logo} target="_blank" rel="noopener noreferrer" />
+            }<a
+              href={'lselink'}
+              className={styles.logo}
+              target="_blank"
+              rel="noopener noreferrer"
+            />
           </div>
         </div>
         <div className={styles.actions}>
@@ -48,10 +62,10 @@ class LawsAndPolicies extends PureComponent {
             className={styles.dropdown}
             key="filter1"
             label="Filter by sector"
-            options={[{}, {}, {}]}
+            options={[{ value: 1, label: 'Sector 1' }, { value: 2, label: 'Sector 2' }, { value: 3, label: 'Sector 3' }]}
             onValueChange={this.handleSourceChange}
-            value={'source selected'}
-            disclaimer={'National Policies available for Germany'}
+            value={{ value: 1, label: 'Sector 1' }}
+            disclaimer={'3 National Policies available for Germany'}
             hideResetButton
           />
           <div className={styles.buttonContainer}>
@@ -67,45 +81,39 @@ class LawsAndPolicies extends PureComponent {
           </div>
         </div>
         <div className={styles.cardsContainer}>
-          <div className={styles.cardOutside}>
-            {true ? (
-              <Card
-                contentFirst
-                theme={{
-                  card: styles.fixedCard,
-                  contentContainer: styles.fixedCardContentContainer,
-                  title: styles.fixedCardTitle,
-                  data: styles.fixedCardData
-                }}
-                title="Submitted NDC"
-              >
-                <CardRow
-                  title="Targets type"
-                  description="Baseline year scenario"
-                />
-                <CardRow
-                  title="Targets"
-                  subtitle="Economy-wide targets"
-                  description="40% cut in GHG emissions in 2030, from 1990 levels"
-                />
-              </Card>
-            ) : (
-              <div className={cx(styles.fixedCard, styles.noContent)}>
-                No Renewable Energy targets found in the NDC
-              </div>
-            )}
-          </div>
+          {ndcContentPresent ? (
+            <Card
+              contentFirst
+              theme={{
+                card: styles.fixedCard,
+                contentContainer: styles.fixedCardContentContainer,
+                title: styles.fixedCardTitle,
+                data: styles.fixedCardData
+              }}
+              title="Submitted NDC"
+            >
+              <CardRow
+                title="Targets type"
+                description="Baseline year scenario"
+              />
+              <CardRow
+                title="Targets"
+                subtitle="Economy-wide targets"
+                description="40% cut in GHG emissions in 2030, from 1990 levels"
+              />
+            </Card>
+          ) : (
+            <div className={cx(styles.fixedCard, styles.noContent)}>
+              No Renewable Energy targets found in the NDC
+            </div>
+          )}
           {cards && cards.length > 0 ? (
-            <SlideCards
-              cards={cards}
-              cardsInRow={cardsInRow}
-            />
+            <SlideCards cards={cards} cardsInRow={cardsInRow} />
           ) : (
             <div className={styles.noContent}>
               There are no targets found in law and policies
             </div>
-          )
-          }
+          )}
         </div>
         <ModalMetadata />
       </div>
@@ -116,8 +124,7 @@ class LawsAndPolicies extends PureComponent {
 LawsAndPolicies.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
   cards: PropTypes.array.isRequired,
-  cardsInRow: PropTypes.number,
-  updateFilters: PropTypes.func.isRequired
+  cardsInRow: PropTypes.number
 };
 
 export default LawsAndPolicies;
