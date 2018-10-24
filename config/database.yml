@@ -88,7 +88,6 @@ secondbase:
   production:
     adapter: postgresql
     encoding: unicode
-    database: climate-watch-shared
     url: <%= ENV['SHARED_POSTGRES_URL'] %>
   development:
     adapter: postgresql
