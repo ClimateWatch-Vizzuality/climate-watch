@@ -3,7 +3,7 @@ import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
 // TODO: Fill the LSE API endpoint once it is ready
-const LSE_BASE_API = '';
+const LSE_BASE_API = 'https://grantham2017.helpful.ws/wp-json/wri/v1/targets';
 
 const generateApiEndpoint = iso => `${LSE_BASE_API}/${iso}`;
 
@@ -26,7 +26,10 @@ const fetchLawsAndPolicies = createThunkAction(
           throw Error(response.statusText);
         })
         .then(data => {
-          dispatch(fetchLawsAndPoliciesReady(data));
+          if (data) {
+            const dataEnhanced = { iso_code3: iso, payload: data };
+            dispatch(fetchLawsAndPoliciesReady(dataEnhanced));
+          } else dispatch(fetchLawsAndPoliciesReady({}));
         })
         .catch(error => {
           console.info(error);

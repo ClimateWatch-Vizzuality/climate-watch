@@ -8,6 +8,7 @@ import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import Card from 'components/card';
 import CardRow from 'components/card/card-row';
+import LawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import cx from 'classnames';
 
 import styles from './laws-and-policies-styles.scss';
@@ -116,6 +117,7 @@ class LawsAndPolicies extends PureComponent {
           )}
         </div>
         <ModalMetadata />
+        <LawsAndPoliciesProvider />
       </div>
     );
   }

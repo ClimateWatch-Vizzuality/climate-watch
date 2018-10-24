@@ -9,12 +9,12 @@ const setLoaded = (loaded, state) => ({ ...state, loaded });
 
 export default {
   fetchLawsAndPoliciesInit: state => setLoading(true, state),
-  fetchLawsAndPoliciesReady: (state, { payload }) => {
+  fetchLawsAndPoliciesReady: (state, { payload: { iso_code3, payload } }) => {
     const newState = {
       ...state,
       data: {
         ...state.data,
-        [payload.iso_code3]: payload
+        [iso_code3]: payload
       }
     };
     return setLoaded(true, setLoading(false, newState));
