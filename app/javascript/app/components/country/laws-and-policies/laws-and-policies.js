@@ -11,15 +11,7 @@ import ownActions from './laws-and-policies-actions';
 
 import Component from './laws-and-policies-component';
 
-import {
-  getSectors,
-  getAllLawsAndPolicies,
-  getCountryProfileLink,
-  getNdcContent,
-  getLawsAndPolicies,
-  getCurrentSector,
-  getCardsInRow
-} from './laws-and-policies-selectors';
+import { getCardsInRow, getAllData } from './laws-and-policies-selectors';
 
 const actions = { ...ownActions, ...modalActions };
 
@@ -32,30 +24,20 @@ const mapStateToProps = (state, { location, match }) => {
     iso
   };
 
-  const sectors = getSectors(lawsAndPoliciesData);
-  const ndcContent = getNdcContent(lawsAndPoliciesData);
-  const lawsTargets = getLawsAndPolicies(lawsAndPoliciesData);
-  const currentSector = getCurrentSector(lawsAndPoliciesData);
-  const allLawsTargets = getAllLawsAndPolicies(lawsAndPoliciesData);
-  const countryProfileLink = getCountryProfileLink(lawsAndPoliciesData);
+  const getTargetsData = getAllData(lawsAndPoliciesData);
+
   const countryData = {
     countries: state.countries.data,
     iso
   };
 
   const country = getCountry(countryData);
-
   const cardsInRow = getCardsInRow();
 
   return {
-    sectors,
-    ndcContent,
-    lawsTargets,
-    currentSector,
     cardsInRow,
     country,
-    allLawsTargets,
-    countryProfileLink
+    ...getTargetsData
   };
 };
 

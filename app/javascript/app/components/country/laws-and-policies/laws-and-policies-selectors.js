@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 
@@ -130,3 +130,12 @@ export const getLawsAndPoliciesForCurrentSector = createSelector(
 );
 
 export const getCardsInRow = () => CARDS_IN_ROW;
+
+export const getAllData = createStructuredSelector({
+  sectors: getSectors,
+  ndcContent: getNdcContent,
+  lawsTargets: getLawsAndPolicies,
+  currentSector: getCurrentSector,
+  allLawsTargets: getAllLawsAndPolicies,
+  countryProfileLink: getCountryProfileLink
+});
