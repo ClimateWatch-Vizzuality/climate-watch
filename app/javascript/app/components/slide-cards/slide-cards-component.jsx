@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import upperFirst from 'lodash/upperFirst';
 
 import Card from 'components/card';
 import CardRow from 'components/card/card-row';
@@ -56,10 +57,11 @@ class SlideCards extends Component {
         <div className={styles.cardsContainer}>
           {currentCardsInDisplay &&
             currentCardsInDisplay.map(card => (
-              <li key={card.name} className={styles.card}>
+              <li key={card.source.title} className={styles.card}>
                 <Card
+                  keyValue={card.source.title}
                   contentFirst
-                  title={card.title}
+                  title={card.source}
                   theme={{
                     contentContainer: styles.cardContentContainer,
                     title: styles.cardTitle,
@@ -67,13 +69,22 @@ class SlideCards extends Component {
                     card: styles.cardInside
                   }}
                 >
-                  {card.content.map(item => (
+                  {Object.keys(card.content).map((targetType, i) => [
                     <CardRow
-                      title={item.title}
-                      subtitle={item.subtitle}
-                      description={item.description}
-                    />
-                  ))}
+                      keyValue={`${i}-${targetType}`}
+                      title="Targets Type"
+                      subtitle=""
+                      description={targetType}
+                    />,
+                    card.content[targetType].map((target, ind) => (
+                      <CardRow
+                        keyValue={`${ind}-target.description`}
+                        title="Targets"
+                        subtitle={upperFirst(target.scope)}
+                        description={target.description}
+                      />
+                    ))
+                  ])}
                 </Card>
               </li>
             ))}
