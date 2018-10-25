@@ -16,7 +16,7 @@ const fetchLawsAndPolicies = createThunkAction(
     const { lawsAndPolicies } = state();
     if (
       lawsAndPolicies &&
-      isEmpty(lawsAndPolicies.data) &&
+      isEmpty(lawsAndPolicies.data[iso]) &&
       !lawsAndPolicies.loading
     ) {
       dispatch(fetchLawsAndPoliciesInit());
