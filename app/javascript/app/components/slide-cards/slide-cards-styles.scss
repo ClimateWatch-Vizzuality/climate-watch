@@ -90,3 +90,10 @@ $circle-size: 50px;
 .wrapper {
   position: relative;
 }
+
+.noContent {
+  background-color: $light-gray;
+  flex: 0 0 100%;
+  height: 350px;
+  padding: 20px;
+}

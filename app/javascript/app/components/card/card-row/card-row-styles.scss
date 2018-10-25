@@ -6,7 +6,10 @@ $extra-text-padding: 30px;
 .cardRow {
   background-color: $white;
   border-top: 1px solid $athens-gray;
-  flex: 0 0 50%;
+
+  &:last-child {
+    flex: 1;
+  }
 }
 
 p {

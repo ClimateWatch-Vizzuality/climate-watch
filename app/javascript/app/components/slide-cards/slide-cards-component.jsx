@@ -88,6 +88,9 @@ class SlideCards extends Component {
                 </Card>
               </li>
             ))}
+          {currentCardsInDisplay.length === 1 && (
+            <div className={styles.noContent} />
+          )}
           {cards[currentIndex + cardsInRow] && (
             <button
               className={cx(styles.arrowNavCircle, styles.arrowNavRight)}

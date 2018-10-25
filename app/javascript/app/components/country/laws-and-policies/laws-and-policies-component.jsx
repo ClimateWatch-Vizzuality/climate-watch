@@ -16,7 +16,6 @@ import styles from './laws-and-policies-styles.scss';
 
 class LawsAndPolicies extends PureComponent {
   handleSourceChange = sector => {
-    // TODO: Implement once API is ready
     const { updateUrlParam } = this.props;
     updateUrlParam(
       {
@@ -44,7 +43,6 @@ class LawsAndPolicies extends PureComponent {
       sectors,
       lawsTargets,
       countryProfileLink,
-      allLawsTargets,
       currentSector,
       country
     } = this.props;
@@ -78,7 +76,7 @@ class LawsAndPolicies extends PureComponent {
             >
               <span
                 className={styles.logoText}
-              >{`See all ${allLawsTargets.length} ${countryName} national policies on Climate Change Laws of the World`}</span>
+              >{`See all ${lawsTargets.length} ${countryName} national policies on Climate Change Laws of the World.`}</span>
             </a>
           </div>
         </div>
@@ -90,7 +88,7 @@ class LawsAndPolicies extends PureComponent {
             options={sectors}
             onValueChange={this.handleSourceChange}
             value={currentSector}
-            disclaimer={`${allLawsTargets.length} National Policies available for ${countryName}`}
+            disclaimer={`${lawsTargets.length} National Policies available for ${countryName} for the selected sector`}
             hideResetButton
           />
           <div className={styles.buttonContainer}>
@@ -120,7 +118,10 @@ class LawsAndPolicies extends PureComponent {
                 link: ndcContent.sources[0].link
               }}
             >
-              <CardRow title="Targets type" description={ndcContent.type} />
+              <CardRow
+                title="Targets type"
+                description={ndcContent.type || 'Target type not defined'}
+              />
               <CardRow
                 title="Targets"
                 subtitle="Economy-wide targets"
@@ -154,7 +155,6 @@ LawsAndPolicies.propTypes = {
   sectors: PropTypes.array.isRequired,
   ndcContent: PropTypes.object,
   lawsTargets: PropTypes.array.isRequired,
-  allLawsTargets: PropTypes.array.isRequired,
   cardsInRow: PropTypes.number,
   currentSector: PropTypes.object,
   country: PropTypes.object,

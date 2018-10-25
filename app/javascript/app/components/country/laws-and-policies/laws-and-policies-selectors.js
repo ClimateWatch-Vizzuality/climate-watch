@@ -48,16 +48,6 @@ export const getNdcContent = createSelector(
   }
 );
 
-export const getAllLawsAndPolicies = createSelector(
-  [getIso, getData],
-  (iso, { data }) => {
-    if (!data) return null;
-
-    const allTargets = (data && data[iso] && data[iso].targets) || [];
-    return allTargets.filter(target => target.doc_type === 'law');
-  }
-);
-
 export const getCountryProfileLink = createSelector(
   [getIso, getData],
   (iso, { data }) => {
@@ -136,6 +126,5 @@ export const getAllData = createStructuredSelector({
   ndcContent: getNdcContent,
   lawsTargets: getLawsAndPolicies,
   currentSector: getCurrentSector,
-  allLawsTargets: getAllLawsAndPolicies,
   countryProfileLink: getCountryProfileLink
 });
