@@ -47,7 +47,12 @@ gem 'api-pagination'
 gem 'kaminari'
 gem 'oj'
 gem 'scenic'
+
+# Add second shared database across country platforms
 gem 'secondbase'
+# Add activeadmin for simple CMS
+gem 'activeadmin'
+gem 'devise'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
