@@ -151,7 +151,7 @@ class LawsAndPolicies extends PureComponent {
 
 LawsAndPolicies.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
-  sectors: PropTypes.array.isRequired,
+  sectors: PropTypes.array,
   ndcContent: PropTypes.object,
   lawsTargets: PropTypes.array.isRequired,
   cardsInRow: PropTypes.number,
