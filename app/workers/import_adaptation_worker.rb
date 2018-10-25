@@ -1,4 +1,4 @@
-class ImportAdaptationWorker < BaseImportWorker
+class ImportAdaptationWorker < DataUploader::BaseImportWorker
   private
 
   def import_data

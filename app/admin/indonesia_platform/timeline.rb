@@ -3,7 +3,7 @@ ActiveAdmin.register_page 'Indonesia Platform Timeline' do
   platform_name = 'indonesia_platform'
   menu parent: 'Indonesia Platform',
        label: section_name.capitalize,
-       if: proc { Admin::Ability.can_view?(platform_name) }
+       if: proc { DataUploader::Helpers::Ability.can_view?(platform_name) }
 
   content do
     render partial: 'admin/form_upload_datasets', locals: {

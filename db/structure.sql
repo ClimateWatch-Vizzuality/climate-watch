@@ -2045,6 +2045,7 @@ CREATE MATERIALIZED VIEW public.indc_searchable_values AS
   ORDER BY locations.wri_standard_name
   WITH NO DATA;
 
+
 --
 -- Name: active_storage_attachments active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
@@ -2091,6 +2092,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.datasets
     ADD CONSTRAINT datasets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: datasets datasets_section_id_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT datasets_section_id_name_key UNIQUE (section_id, name);
 
 
 --
@@ -2270,6 +2279,14 @@ ALTER TABLE ONLY public.ndcs
 
 
 --
+-- Name: platforms platforms_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.platforms
+    ADD CONSTRAINT platforms_name_key UNIQUE (name);
+
+
+--
 -- Name: platforms platforms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2307,6 +2324,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.sections
     ADD CONSTRAINT sections_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sections sections_platform_id_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections
+    ADD CONSTRAINT sections_platform_id_name_key UNIQUE (platform_id, name);
 
 
 --
@@ -3471,6 +3496,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180926092304'),
 ('20181002152649'),
 ('20181003090648'),
-('20181009120234');
+('20181009120234'),
+('20181024105552');
 
 

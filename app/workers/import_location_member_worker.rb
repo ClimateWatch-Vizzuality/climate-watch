@@ -1,4 +1,4 @@
-class ImportLocationMembersWorker < BaseImportWorker
+class ImportLocationMembersWorker < DataUploader::BaseImportWorker
   private
 
   def import_data

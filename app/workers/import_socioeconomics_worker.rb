@@ -1,4 +1,4 @@
-class ImportSocioeconomicsWorker < BaseImportWorker
+class ImportSocioeconomicsWorker < DataUploader::BaseImportWorker
   private
 
   def import_data
