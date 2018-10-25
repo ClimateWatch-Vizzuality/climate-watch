@@ -11,32 +11,40 @@ const getData = state => state.lawsAndPolicies || null;
 const getActiveSector = state => state.activeSector;
 
 export const getSectors = createSelector([getIso, getData], (iso, { data }) => {
-  const sectors = (data && data[iso] && data[iso].sectors) || [];
-  const parsedSectors = sectors.map(sector => ({
-    label: sector.title,
-    value: sector.key
-  }));
+  const sectors = (data && data[iso] && data[iso].sectors) || null;
+  const parsedSectors =
+    sectors &&
+    sectors.map(sector => ({
+      label: sector.title,
+      value: sector.key
+    }));
 
   return parsedSectors;
 });
+
+const getAllTargets = createSelector(
+  [getIso, getData],
+  (iso, { data }) => (data && data[iso] && data[iso].targets) || []
+);
 
 export const getCurrentSector = createSelector(
   [getActiveSector, getSectors],
   (activeSector, sectors) => {
     if (isEmpty(activeSector)) return sectors[0];
 
-    return sectors.find(sector => sector.value === activeSector.sector);
+    return (
+      sectors && sectors.find(sector => sector.value === activeSector.sector)
+    );
   }
 );
 
 export const getNdcContent = createSelector(
-  [getIso, getData, getSectors, getActiveSector],
-  (iso, { data }, sectors, currentSector) => {
-    if (!data) return null;
+  [getAllTargets, getSectors, getActiveSector],
+  (targets, sectors, currentSector) => {
+    if (!targets) return null;
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) || sectors[0];
 
-    const targets = (data && data[iso] && data[iso].targets) || [];
     const ndcTargets = targets.filter(target => target.doc_type === 'ndc');
     const parsedNdcsPerSector = groupBy(ndcTargets, 'sector');
 
@@ -59,14 +67,13 @@ export const getCountryProfileLink = createSelector(
 );
 
 export const getLawsAndPolicies = createSelector(
-  [getIso, getData, getSectors, getActiveSector],
-  (iso, { data }, sectors, currentSector) => {
-    if (!data) return null;
+  [getAllTargets, getSectors, getActiveSector],
+  (targets, sectors, currentSector) => {
+    if (!targets) return null;
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) || sectors[0];
 
-    const allTargets = (data && data[iso] && data[iso].targets) || [];
-    const lawsTargets = allTargets.filter(target => target.doc_type === 'law');
+    const lawsTargets = targets.filter(target => target.doc_type === 'law');
     const parsedLawsTargetsPerSector = groupBy(lawsTargets, 'sector');
 
     const groupedBySources = [];

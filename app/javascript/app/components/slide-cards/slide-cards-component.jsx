@@ -15,7 +15,7 @@ import styles from './slide-cards-styles.scss';
 class SlideCards extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentIndex: props.cards && 0, currentDot: 0 };
+    this.state = { currentIndex: 0, currentDot: 0 };
   }
 
   handleRightSlide = () => {

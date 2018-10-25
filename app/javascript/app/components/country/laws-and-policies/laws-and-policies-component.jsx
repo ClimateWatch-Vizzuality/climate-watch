@@ -83,7 +83,6 @@ class LawsAndPolicies extends PureComponent {
         <div className={styles.actions}>
           <Dropdown
             className={styles.dropdown}
-            key="filter1"
             label="Filter by sector"
             options={sectors}
             onValueChange={this.handleSourceChange}
