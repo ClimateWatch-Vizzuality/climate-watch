@@ -15,7 +15,7 @@ class Card extends PureComponent {
       contentFirst,
       keyValue
     } = this.props;
-    const keyValueChildren = `${keyValue}-children`;
+    const keyValueChildren = `children-${keyValue}`;
 
     const renderChildren = () => (
       <div key={keyValueChildren} className={cx(styles.data, theme.data)}>
@@ -25,7 +25,7 @@ class Card extends PureComponent {
 
     const renderContent = () => (
       <div
-        key={`${keyValue}-content`}
+        key={`content-${keyValue}`}
         className={cx(styles.contentContainer, theme.contentContainer)}
       >
         {typeof title === 'object' ? (
