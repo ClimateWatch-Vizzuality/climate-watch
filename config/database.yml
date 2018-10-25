@@ -82,3 +82,19 @@ test:
 production:
   <<: *default
   url: <%= ENV['POSTGRES_URL'] %>
+
+# Config for second shared database
+secondbase:
+  production:
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV['SHARED_POSTGRES_URL'] %>
+  development:
+    adapter: postgresql
+    encoding: unicode
+    database: climate-watch-shared_development
+    url: <%= ENV['SHARED_POSTGRES_URL'] %>
+  test:
+    adapter: postgresql
+    encoding: unicode
+    database: climate-watch-shared_test

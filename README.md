@@ -54,11 +54,12 @@ These will satisfy both the frontend and backend's dependency requirements.
 #### Setting up the Rails environment
 
 Copy the sample `.env.sample` file to `.env` and modify it as needed to fit the
-project's settings. At the very least you'll need to have the `DATABASE_URL`
+project's settings. At the very least you'll need to have the `POSTGRES_URL` and `SHARED_POSTGRES_URL`
 env variable.
 
 ```
-DATABASE_URL=postgresql://postgres@localhost/climate-watch_development
+POSTGRES_URL=postgresql://postgres@localhost/climate-watch_development
+SHARED_POSTGRES_URL=postgresql://postgres@localhost/climate-watch-shared_development
 ```
 
 #### Setting up the database

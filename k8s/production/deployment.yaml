@@ -71,6 +71,11 @@ spec:
                 secretKeyRef:
                   name: dbsecrets
                   key: CW_POSTGRES_URL
+          - name: SHARED_POSTGRES_URL
+            valueFrom:
+              secretKeyRef:
+                  name: dbsecrets
+                  key: climate_watch_shared_db_production
           - name: S3_BUCKET_NAME
             value: "climate-watch-dev"
           - name: AWS_REGION
