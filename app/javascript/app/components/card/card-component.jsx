@@ -22,14 +22,18 @@ class Card extends PureComponent {
         {children}
       </div>
     );
+
     const renderContent = () => (
       <div
-        key={keyValue}
+        key={`${keyValue}-content`}
         className={cx(styles.contentContainer, theme.contentContainer)}
       >
-        {title && title.url ? (
-          <a href={title.url} className={cx(styles.title, theme.title)}>
-            {title.name}
+        {typeof title === 'object' ? (
+          <a
+            href={title.link}
+            className={cx(styles.title, styles.link, theme.title)}
+          >
+            {title.title}
           </a>
         ) : (
           title && <p className={cx(styles.title, theme.title)}>{title}</p>
@@ -39,6 +43,7 @@ class Card extends PureComponent {
         )}
       </div>
     );
+
     return (
       <div className={cx(styles.card, theme.card)} key={keyValue}>
         {contentFirst ? (
