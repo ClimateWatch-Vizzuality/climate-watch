@@ -1,0 +1,49 @@
+@import '~styles/settings.scss';
+
+$standard-text-padding: 20px;
+$extra-text-padding: 30px;
+
+.cardRow {
+  background-color: $white;
+  border-top: 1px solid $athens-gray;
+
+  &:last-child {
+    flex: 1;
+  }
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+.title {
+  color: $manatee;
+  font-size: $font-size-sm;
+  padding: {
+    top: 15px;
+    left: $standard-text-padding;
+    right: $standard-text-padding;
+  }
+}
+
+.subtitle {
+  color: $manatee;
+  font-size: $font-size-sm;
+  padding: {
+    left: $extra-text-padding;
+    right: $standard-text-padding;
+  }
+}
+
+.description {
+  color: $theme-color;
+  padding: {
+    left: $standard-text-padding;
+    right: $standard-text-padding;
+    bottom: $standard-text-padding;
+  }
+}
+
+.descriptionExtraPadding {
+  padding-left: $extra-text-padding;
+}
