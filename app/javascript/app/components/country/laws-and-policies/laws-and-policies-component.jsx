@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import isEmpty from 'lodash/isEmpty';
 import layout from 'styles/layout.scss';
 import SlideCards from 'components/slide-cards';
 import ModalMetadata from 'components/modal-metadata';
@@ -14,24 +15,42 @@ import cx from 'classnames';
 import styles from './laws-and-policies-styles.scss';
 
 class LawsAndPolicies extends PureComponent {
-  handleSourceChange = () => {
+  handleSourceChange = sector => {
     // TODO: Implement once API is ready
+    const { updateUrlParam } = this.props;
+    updateUrlParam(
+      {
+        name: 'sector',
+        value: sector.value
+      },
+      true
+    );
   };
 
   handleInfoOnClick = () => {
     // TODO: Change the slugs when laws and policies metadata is ready
     this.props.setModalMetadata({
       category: 'Country',
-      slugs: 'ndc_sdc_all indicators',
+      slugs: 'laws-and-policies',
       customTitle: 'Laws and Policies',
       open: true
     });
   };
 
   render() {
-    const { cards, cardsInRow } = this.props;
+    const {
+      cardsInRow,
+      ndcContent,
+      sectors,
+      lawsTargets,
+      countryProfileLink,
+      allLawsTargets,
+      currentSector,
+      country
+    } = this.props;
 
-    const ndcContentPresent = true;
+    const countryName = country && `${country.wri_standard_name}`;
+    const ndcContentPresent = !isEmpty(ndcContent);
 
     return (
       <div className={layout.content}>
@@ -50,12 +69,17 @@ class LawsAndPolicies extends PureComponent {
           <div className={styles.logoContainer}>
             {
               // eslint-disable-next-line jsx-a11y/anchor-has-content
-            }<a
-              href={'lselink'}
+            }
+            <a
+              href={countryProfileLink}
               className={styles.logo}
               target="_blank"
               rel="noopener noreferrer"
-            />
+            >
+              <span
+                className={styles.logoText}
+              >{`See all ${allLawsTargets.length} ${countryName} national policies on Climate Change Laws of the World`}</span>
+            </a>
           </div>
         </div>
         <div className={styles.actions}>
@@ -63,10 +87,10 @@ class LawsAndPolicies extends PureComponent {
             className={styles.dropdown}
             key="filter1"
             label="Filter by sector"
-            options={[{ value: 1, label: 'Sector 1' }, { value: 2, label: 'Sector 2' }, { value: 3, label: 'Sector 3' }]}
+            options={sectors}
             onValueChange={this.handleSourceChange}
-            value={{ value: 1, label: 'Sector 1' }}
-            disclaimer={'3 National Policies available for Germany'}
+            value={currentSector}
+            disclaimer={`${allLawsTargets.length} National Policies available for ${countryName}`}
             hideResetButton
           />
           <div className={styles.buttonContainer}>
@@ -91,25 +115,27 @@ class LawsAndPolicies extends PureComponent {
                 title: styles.fixedCardTitle,
                 data: styles.fixedCardData
               }}
-              title="Submitted NDC"
+              title={{
+                title: 'Submitted NDC',
+                link: ndcContent.sources[0].link
+              }}
             >
-              <CardRow
-                title="Targets type"
-                description="Baseline year scenario"
-              />
+              <CardRow title="Targets type" description={ndcContent.type} />
               <CardRow
                 title="Targets"
                 subtitle="Economy-wide targets"
-                description="40% cut in GHG emissions in 2030, from 1990 levels"
+                description={ndcContent.description}
               />
             </Card>
           ) : (
             <div className={cx(styles.fixedCard, styles.noContent)}>
-              No Renewable Energy targets found in the NDC
+              {currentSector &&
+                currentSector.value &&
+                `No ${currentSector.value} targets found in the NDC`}
             </div>
           )}
-          {cards && cards.length > 0 ? (
-            <SlideCards cards={cards} cardsInRow={cardsInRow} />
+          {lawsTargets && lawsTargets.length ? (
+            <SlideCards cards={lawsTargets} cardsInRow={cardsInRow} />
           ) : (
             <div className={styles.noContent}>
               There are no targets found in law and policies
@@ -125,8 +151,15 @@ class LawsAndPolicies extends PureComponent {
 
 LawsAndPolicies.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
-  cards: PropTypes.array.isRequired,
-  cardsInRow: PropTypes.number
+  sectors: PropTypes.array.isRequired,
+  ndcContent: PropTypes.object,
+  lawsTargets: PropTypes.array.isRequired,
+  allLawsTargets: PropTypes.array.isRequired,
+  cardsInRow: PropTypes.number,
+  currentSector: PropTypes.object,
+  country: PropTypes.object,
+  updateUrlParam: PropTypes.func.isRequired,
+  countryProfileLink: PropTypes.string
 };
 
 export default LawsAndPolicies;
