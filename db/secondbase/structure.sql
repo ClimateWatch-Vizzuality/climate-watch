@@ -38,7 +38,8 @@ CREATE TABLE public.admin_users (
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    role character varying
 );
 
 
@@ -134,6 +135,18 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_us
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20180917120344');
+('20180917120344'),
+('20180917164436'),
+('20180917173115'),
+('20180918090558'),
+('20180918101018'),
+('20180918101313'),
+('20180918101539'),
+('20180918101719'),
+('20180918134121'),
+('20180918135209'),
+('20180918152250'),
+('20180918153412'),
+('20181004091403');
 
 

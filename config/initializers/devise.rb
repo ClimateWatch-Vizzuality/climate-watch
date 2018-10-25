@@ -5,6 +5,7 @@ Devise.setup do |config|
 
   config.case_insensitive_keys = [:email]
   config.strip_whitespace_keys = [:email]
+  config.paranoid = true
   config.skip_session_storage = [:http_auth]
 
   config.stretches = Rails.env.test? ? 1 : 11

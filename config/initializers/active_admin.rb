@@ -10,4 +10,10 @@ ActiveAdmin.setup do |config|
   config.batch_actions = true
 
   config.localize_format = :long
+
+  config.namespace :admin do |admin|
+    admin.build_menu do |menu|
+      menu.add label: 'Dashboard', priority: 1
+    end
+  end
 end

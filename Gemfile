@@ -40,7 +40,7 @@ gem 'turbolinks', '~> 5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'aws-sdk', '~> 2'
+
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'api-pagination'
@@ -53,6 +53,11 @@ gem 'secondbase'
 # Add activeadmin for simple CMS
 gem 'activeadmin'
 gem 'devise'
+
+gem 'aws-sdk-rails', '~> 2'
+gem 'aws-sdk-s3', '~> 1'
+
+gem 'sidekiq'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
