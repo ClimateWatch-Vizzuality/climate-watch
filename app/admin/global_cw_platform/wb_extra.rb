@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Wb Extra' do
     end
 
     def import_worker
-      ImportWbExtraWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWbExtra')
     end
 
     def section_repository

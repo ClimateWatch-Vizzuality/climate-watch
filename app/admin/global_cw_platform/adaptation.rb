@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
     end
 
     def import_worker
-      ImportAdaptationWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportAdaptation')
     end
 
     def section_repository

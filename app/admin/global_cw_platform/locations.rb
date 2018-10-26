@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Locations' do
     end
 
     def import_worker
-      ImportLocationsWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportLocations')
     end
 
     def section_repository

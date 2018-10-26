@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Quantifications' do
     end
 
     def import_worker
-      ImportQuantificationsWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportQuantifications')
     end
 
     def section_repository

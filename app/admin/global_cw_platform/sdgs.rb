@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Sdgs' do
     end
 
     def import_worker
-      ImportSdgsWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportSdgs')
     end
 
     def section_repository
