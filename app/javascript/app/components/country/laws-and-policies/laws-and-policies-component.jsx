@@ -44,7 +44,8 @@ class LawsAndPolicies extends PureComponent {
       lawsTargets,
       countryProfileLink,
       currentSector,
-      country
+      country,
+      lawsAndPoliciesCount
     } = this.props;
 
     const countryName = country && `${country.wri_standard_name}`;
@@ -71,7 +72,7 @@ class LawsAndPolicies extends PureComponent {
             >
               <span
                 className={styles.logoText}
-              >{`See all ${lawsTargets.length} ${countryName} national policies on Climate Change Laws of the World.`}</span>
+              >{`See all ${lawsAndPoliciesCount} ${countryName} national policies on Climate Change Laws of the World.`}</span>
             </a>
           </div>
         </div>
@@ -153,7 +154,11 @@ LawsAndPolicies.propTypes = {
   currentSector: PropTypes.object,
   country: PropTypes.object,
   updateUrlParam: PropTypes.func.isRequired,
-  countryProfileLink: PropTypes.string
+  countryProfileLink: PropTypes.string,
+  lawsAndPoliciesCount: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ])
 };
 
 export default LawsAndPolicies;
