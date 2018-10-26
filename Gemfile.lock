@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git
-  revision: bca0c5dd5489b2c0d131e650bb6400bc79b995d4
+  revision: d47687c4462a33c6b20d489a043d5ec07062fc7c
   branch: feature/generic_data_upload_worker
   specs:
     climate_watch_engine (1.3.0)
