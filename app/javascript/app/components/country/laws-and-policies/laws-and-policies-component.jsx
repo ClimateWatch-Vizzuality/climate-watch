@@ -72,7 +72,7 @@ class LawsAndPolicies extends PureComponent {
             >
               <span
                 className={styles.logoText}
-              >{`See all ${lawsAndPoliciesCount} ${countryName} national policies on Climate Change Laws of the World.`}</span>
+              >{`See all ${lawsAndPoliciesCount} national laws and policies in ${countryName} on Climate Change Laws of the World.`}</span>
             </a>
           </div>
         </div>
