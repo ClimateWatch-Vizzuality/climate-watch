@@ -57,14 +57,22 @@ export const getNdcContent = createSelector(
   }
 );
 
-export const getCountryProfileLink = createSelector(
-  [getIso, getData],
-  (iso, { data }) => {
-    if (!data) return null;
+const getCountryMeta = createSelector([getIso, getData], (iso, { data }) => {
+  if (!data) return null;
 
-    const countryMeta = data && data[iso] && data[iso].country_meta;
-    return countryMeta && countryMeta[iso] && countryMeta[iso].country_profile;
-  }
+  return (data && data[iso] && data[iso].country_meta) || null;
+});
+
+export const getCountryProfileLink = createSelector(
+  [getCountryMeta, getIso],
+  (countryMeta, iso) =>
+    countryMeta && countryMeta[iso] && countryMeta[iso].country_profile
+);
+
+export const getLawsAndPoliciesCount = createSelector(
+  [getCountryMeta, getIso],
+  (countryMeta, iso) =>
+    (countryMeta && countryMeta[iso] && countryMeta[iso].lnp_count) || 0
 );
 
 export const getLawsAndPolicies = createSelector(
@@ -135,5 +143,6 @@ export const getAllData = createStructuredSelector({
   ndcContent: getNdcContent,
   lawsTargets: getLawsAndPolicies,
   currentSector: getCurrentSector,
-  countryProfileLink: getCountryProfileLink
+  countryProfileLink: getCountryProfileLink,
+  lawsAndPoliciesCount: getLawsAndPoliciesCount
 });
