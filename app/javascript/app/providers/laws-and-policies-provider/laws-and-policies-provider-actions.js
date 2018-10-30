@@ -2,7 +2,6 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-// TODO: Fill the LSE API endpoint once it is ready
 const LSE_BASE_API =
   'http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets';
 
