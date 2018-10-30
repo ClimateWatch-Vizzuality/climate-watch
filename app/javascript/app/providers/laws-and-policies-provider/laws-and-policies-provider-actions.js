@@ -34,7 +34,12 @@ const fetchLawsAndPolicies = createThunkAction(
         })
         .catch(error => {
           console.info(error);
-          dispatch(fetchLawsAndPoliciesReady({}));
+          dispatch(
+            fetchLawsAndPoliciesReady({
+              iso_code3: iso,
+              payload: { payload: null }
+            })
+          );
         });
     }
   }
