@@ -1,0 +1,76 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets/ARG
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - www.lse.ac.uk
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 31 Oct 2018 16:23:12 GMT
+      Strict-Transport-Security:
+      - max-age=63072000; preload
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      Vary:
+      - Accept-Encoding,Cookie
+      X-Robots-Tag:
+      - noindex
+      Link:
+      - <http://www.lse.ac.uk/GranthamInstitute/wp-json/>; rel="https://api.w.org/"
+      Access-Control-Expose-Headers:
+      - X-WP-Total, X-WP-TotalPages
+      Access-Control-Allow-Headers:
+      - Authorization, Content-Type
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Wed, 31 Oct 2018 16:23:12 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - POST, GET, OPTIONS, PUT, DELETE
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Content-Length:
+      - '2251'
+      Content-Type:
+      - application/json; charset=UTF-8
+    body:
+      encoding: UTF-8
+      string: '{"targets":[{"id":39163,"iso_code3":"ARG","country":"Argentina","doc_type":"law","type":"Fixed
+        Level Target","scope":"Renewable Energy","sector":"energy","description":"Wind
+        farms to be installed (10 MW in 2013, 2x 20 MW in 2015, total 2030 of 1 700
+        MW)","sources":[{"id":"36894","title":"Law 26.190 Regimen for the National
+        Promotion for the Production and Use of Renewable Sources of Electric Energy","link":"http:\/\/www.lse.ac.uk\/GranthamInstitute\/law\/law-26-190-regimen-for-the-national-promotion-for-the-production-and-use-of-renewable-sources-of-electric-energy\/"}]},{"id":39164,"iso_code3":"ARG","country":"Argentina","doc_type":"law","type":"Fixed
+        Level Target","scope":"Renewable Energy","sector":"energy","description":"Uptake
+        of share of national industrial capacity in the PV solar sector (targets set
+        for 60 % at 2013, 80 % at 2020, over 80 % at 2030)","sources":[{"id":"36895","title":"Law
+        27191 on Renewable Energy","link":"http:\/\/www.lse.ac.uk\/GranthamInstitute\/law\/law-27191-on-renewable-energy\/"}]},{"id":40107,"iso_code3":"ARG","country":"Argentina","doc_type":"ndc","type":"Fixed
+        Level Target","scope":"Economy Wide","sector":"economy-wide","description":"50%
+        of the managed waste fraction diverted from landfill to composting","sources":[{"title":null,"link":"http:\/\/www4.unfccc.int\/ndcregistry\/pages\/Party.aspx?party=ARG"}]}],"sectors":[{"key":"agriculture","title":"Agriculture"},{"key":"buildings","title":"Buildings"},{"key":"coastal-zones","title":"Coastal
+        Zones"},{"key":"cross-cutting-area","title":"Cross-Cutting Area"},{"key":"disaster-risk-management-drm","title":"Disaster
+        Risk Management (DRM)"},{"key":"economy-wide","title":"Economy Wide"},{"key":"energy","title":"Energy"},{"key":"environment","title":"Environment"},{"key":"health","title":"Health"},{"key":"industry","title":"Industry"},{"key":"lulucf","title":"LULUCF"},{"key":"social-development","title":"Social
+        Development"},{"key":"tourism","title":"Tourism"},{"key":"transportation","title":"Transportation"},{"key":"urban","title":"Urban"},{"key":"waste","title":"Waste"},{"key":"water","title":"Water"}],"country_meta":{"ARG":{"country_profile":"http:\/\/www.lse.ac.uk\/GranthamInstitute\/country-profiles\/argentina\/","lnp_count":"13"}}}'
+    http_version: 
+  recorded_at: Wed, 31 Oct 2018 16:23:13 GMT
+recorded_with: VCR 4.0.0
