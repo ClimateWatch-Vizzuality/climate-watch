@@ -120,7 +120,7 @@ class DataExplorerContent extends PureComponent {
         </div>
         <div className={styles.buttons}>
           <Button className={styles.button} href={href} color="plain">
-            {`View in ${toStartCase(sectionLabel)}`}
+            {`Visualize in ${toStartCase(sectionLabel)}`}
           </Button>
           {!loading && data && !metadataSection ? (
             <ReactPaginate
