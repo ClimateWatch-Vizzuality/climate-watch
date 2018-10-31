@@ -1,16 +1,13 @@
-# require 'httparty'
-
 class SingleRecordFetcher
-  attr_reader :url, :params
+  attr_reader :url, :id
 
-  def initialize(url, params)
-    @params = params
+  def initialize(url, id)
+    @id = id
     @url = url
   end
 
   def call
-    response = Net::HTTP.get(URI("#{url}/#{params[:id]}"))
-    JSON.parse(respone)
-    # response.parsed_response
+    response = Net::HTTP.get(URI("#{url}/#{id}"))
+    JSON.parse(response)
   end
 end

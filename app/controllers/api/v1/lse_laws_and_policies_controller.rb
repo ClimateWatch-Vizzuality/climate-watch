@@ -1,5 +1,3 @@
-require 'httparty'
-
 module Api
   module V1
     class LseLawsAndPoliciesController < ApiController
