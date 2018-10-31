@@ -1,0 +1,17 @@
+@import 'settings';
+
+:global {
+  .global_blueTooltip {
+    padding: 15px;
+    font-size: $font-size-xs;
+
+    &.__react_component_tooltip.type-dark {
+      color: $theme-color;
+      background-color: $light-gray;
+
+      &::after {
+        border-top-color: $light-gray !important;
+      }
+    }
+  }
+}

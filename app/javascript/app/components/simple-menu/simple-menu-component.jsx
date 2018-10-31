@@ -110,7 +110,6 @@ class SimpleMenu extends PureComponent {
 
     const paths = options.map(option => option.path);
     const active = includes(paths, currentPathname);
-
     return (
       <button
         className={cx(styles.button, buttonClassName, {
@@ -126,8 +125,19 @@ class SimpleMenu extends PureComponent {
   }
 
   render() {
-    const { options, reverse, positionRight, inButtonGroup } = this.props;
+    const {
+      options,
+      reverse,
+      positionRight,
+      inButtonGroup,
+      dataFor,
+      dataTip
+    } = this.props;
     const { open } = this.state;
+    const tooltipProps = {
+      'data-for': dataFor,
+      'data-tip': dataTip
+    };
     return (
       <ClickOutside
         onClickOutside={() => this.setState({ open: false })}
@@ -137,6 +147,7 @@ class SimpleMenu extends PureComponent {
           { [styles.positionRight]: positionRight },
           { [styles.inButtonGroup]: inButtonGroup }
         )}
+        {...tooltipProps}
       >
         {this.renderButton()}
         <ul className={cx(styles.links, { [styles.open]: open })}>
@@ -158,7 +169,14 @@ SimpleMenu.propTypes = {
   inButtonGroup: PropTypes.bool,
   buttonClassName: PropTypes.string,
   currentPathname: PropTypes.string,
-  analyticsGraphName: PropTypes.string
+  analyticsGraphName: PropTypes.string,
+  dataFor: PropTypes.string,
+  dataTip: PropTypes.string
+};
+
+SimpleMenu.defaultProps = {
+  dataFor: null,
+  dataTip: null
 };
 
 export default SimpleMenu;

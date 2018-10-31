@@ -4,6 +4,7 @@ import cx from 'classnames';
 import Button from 'components/button';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
+import ReactTooltip from 'react-tooltip';
 import styles from './info-button-styles.scss';
 
 class InfoButton extends PureComponent {
@@ -20,8 +21,11 @@ class InfoButton extends PureComponent {
         )}
         onClick={handleInfoClick}
         square={square}
+        dataFor="info-tooltip"
+        dataTip="Information"
       >
         <Icon icon={infoIcon} />
+        <ReactTooltip id="info-tooltip" effect="solid" />
       </Button>
     );
   }
