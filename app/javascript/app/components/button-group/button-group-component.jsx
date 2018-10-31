@@ -70,11 +70,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
     )}
   >
     {buttonsConfig.map(buttonConfig => renderButton(buttonConfig))}
-    <ReactTooltip
-      id="blueTooltip"
-      effect="solid"
-      className="global_blueTooltip"
-    />
+    <ReactTooltip id="blueTooltip" effect="solid" />
   </div>
 );
 
