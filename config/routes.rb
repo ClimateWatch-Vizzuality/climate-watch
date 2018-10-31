@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       resources :timeline, param: :code, only: [:index, :show]
 
       resources :stories, only: [:index]
+      resources :lse_laws_and_policies, only: [:index, :show]
 
       namespace :data do
         resources :historical_emissions, only: [:index] do
