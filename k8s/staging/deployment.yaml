@@ -46,6 +46,8 @@ spec:
           requests:
             memory: "0Mi"
             cpu: "0m"
+        args:
+          - start
         env:
           - name: RACK_ENV
             value: staging
@@ -102,5 +104,54 @@ spec:
 
         ports:
           - containerPort: 3000
+
+      - name: {name}-staging-sidekiq
+        image: vizzuality/{name}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+          limits:
+            memory: "512Mi"
+        args:
+          - sidekiq
+        env:
+          - name: AWS_REGION
+            value: eu-west-1
+          - name: RACK_ENV
+            value: production
+          - name: RAILS_ENV
+            value: production
+          - name: PORT
+            value: "3000"
+          - name: RAILS_SERVE_STATIC_FILES
+            value: "true"
+          - name: S3_BUCKET_NAME
+            value: "climate-watch-dev"
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: CW_AWS_ACCESS_KEY
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: CW_AWS_SECRET_ACCESS_KEY
+          - name: POSTGRES_URL
+            valueFrom:
+                secretKeyRef:
+                  name: dbsecrets
+                  key: CW_SHARED_POSTGRES_URL_STAGING
+          - name: REDIS_SERVER
+            value: redis://localhost:6379
+      - name: redis
+        image: redis
+        ports:
+         - containerPort: 6379
+        resources:
+         requests:
+           memory: "0Mi"
+           cpu: "0m"
 
       restartPolicy: Always

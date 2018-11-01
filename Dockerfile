@@ -39,7 +39,7 @@ WORKDIR /usr/src/$NAME
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./
 
-RUN bundle install --without development test --jobs 4 --deployment
+RUN cd /usr/src/$NAME && bundle install --without development test --jobs 4 --deployment
 
 # Env variables
 ARG secretKey
@@ -66,4 +66,4 @@ EXPOSE 3000
 RUN bundle exec rake assets:precompile
 
 # Start app
-CMD bundle exec rake tmp:clear db:migrate && bundle exec rails s -b 0.0.0.0
+ENTRYPOINT ["./entrypoint.sh"]
