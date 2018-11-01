@@ -7,10 +7,10 @@ describe SingleRecordFetcher do
     describe 'SHOW action' do
       it 'calls api' do
         VCR.use_cassette('laws_and_policies') do
-          response = Net::HTTP.get_response(
-            URI("http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets/#{iso}")
-          )
-          expect(response.message).to eq('OK')
+          response = SingleRecordFetcher.
+            new('http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets', iso).call
+          expect(response).not_to be_empty
+          expect(response.keys).to contain_exactly('targets', 'sectors', 'country_meta')
         end
       end
     end
