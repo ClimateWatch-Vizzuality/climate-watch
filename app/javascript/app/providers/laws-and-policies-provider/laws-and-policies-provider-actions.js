@@ -2,10 +2,9 @@ import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
 import isEmpty from 'lodash/isEmpty';
 
-const LSE_BASE_API =
-  'http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets';
+const BASE_URL = '/api/v1/lse_laws_and_policies';
 
-const generateApiEndpoint = iso => `${LSE_BASE_API}/${iso}`;
+const generateApiEndpoint = iso => `${BASE_URL}/${iso}`;
 
 const fetchLawsAndPoliciesInit = createAction('fetchLawsAndPoliciesInit');
 const fetchLawsAndPoliciesReady = createAction('fetchLawsAndPoliciesReady');
