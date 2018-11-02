@@ -49,9 +49,7 @@ export const FILTER_DEFAULTS = {
   'historical-emissions': {
     source: 'CAIT - AR2',
     gases: 'All GHG',
-    sectors: 'Total including LUCF',
-    start_year: '2014',
-    end_year: '2014'
+    sectors: 'Total including LUCF'
   },
   'ndc-content': {},
   'ndc-sdg-linkages': {},

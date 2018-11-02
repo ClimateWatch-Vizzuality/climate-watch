@@ -16,7 +16,9 @@ const Button = props => {
     disabled,
     onClick,
     noBox,
-    noSpace
+    noSpace,
+    dataFor,
+    dataTip
   } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
@@ -25,15 +27,26 @@ const Button = props => {
     [styles.disabled]: disabled || (!onClick && !link && !href),
     [styles.noSpace]: noSpace
   });
+
+  const tooltipProps = {
+    'data-for': dataFor,
+    'data-tip': dataTip
+  };
+
   if (href) {
     return (
-      <a className={classNames} href={href}>
+      <a className={classNames} href={href} {...tooltipProps}>
         {children}
       </a>
     );
   }
   return link ? (
-    <NavLink className={classNames} to={link} onClick={onClick}>
+    <NavLink
+      className={classNames}
+      to={link}
+      onClick={onClick}
+      {...tooltipProps}
+    >
       {children}
     </NavLink>
   ) : (
@@ -42,6 +55,7 @@ const Button = props => {
       disabled={disabled}
       className={classNames}
       onClick={onClick}
+      {...tooltipProps}
     >
       {children}
     </button>
@@ -58,13 +72,17 @@ Button.propTypes = {
   noSpace: PropTypes.bool,
   noBox: PropTypes.bool,
   disabled: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  dataFor: PropTypes.string,
+  dataTip: PropTypes.string
 };
 
 Button.defaultProps = {
   noSpace: false,
   disabled: false,
-  href: null
+  href: null,
+  dataFor: null,
+  dataTip: null
 };
 
 export default Button;
