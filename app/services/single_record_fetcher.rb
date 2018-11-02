@@ -7,7 +7,7 @@ class SingleRecordFetcher
   end
 
   def call
-    Rails.cache.fetch("api/v1/lse_laws_and_policies/#{id}", expires: 7.days) do
+    Rails.cache.fetch("#{id}/laws_and_policies", expires: 7.days) do
       response = Net::HTTP.get(URI("#{url}/#{id}"))
       JSON.parse(response)
     end
