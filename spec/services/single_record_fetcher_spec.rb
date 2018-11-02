@@ -4,6 +4,11 @@ require 'vcr'
 describe SingleRecordFetcher do
   context do
     let(:iso) { 'ARG' }
+
+    before(:each) do
+      Rails.cache.clear
+    end
+
     describe 'SHOW action' do
       it 'calls api' do
         VCR.use_cassette('laws_and_policies') do

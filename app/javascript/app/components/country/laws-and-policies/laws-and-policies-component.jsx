@@ -27,10 +27,9 @@ class LawsAndPolicies extends PureComponent {
   };
 
   handleInfoOnClick = () => {
-    // TODO: Change the slugs when laws and policies metadata is ready
     this.props.setModalMetadata({
       category: 'Country',
-      slugs: 'laws-and-policies',
+      slugs: ['national_laws_politices', 'ndc_cait'],
       customTitle: 'Laws and Policies',
       open: true
     });

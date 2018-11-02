@@ -5,10 +5,6 @@ describe Api::V1::LseLawsAndPoliciesController, type: :controller do
     let(:url) { 'http://www.lse.ac.uk/GranthamInstitute/wp-json/wri/v1/targets' }
     let(:iso) { 'ARG' }
 
-    before(:each) do
-      Rails.cache.clear
-    end
-
     describe 'SHOW actions' do
       it 'calls SingleRecordFetcher service' do
         fake_single_fetcher_record = double('fake_single_fetcher_record')
