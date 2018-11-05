@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Indc' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}indc"
+      "#{CW_FILES_PREFIX}indc"
     end
 
     def path

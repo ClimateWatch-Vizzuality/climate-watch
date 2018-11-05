@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}adaptation"
+      "#{CW_FILES_PREFIX}adaptation"
     end
 
     def path

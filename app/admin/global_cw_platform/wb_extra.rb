@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Wb Extra' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}wb_extra"
+      "#{CW_FILES_PREFIX}wb_extra"
     end
 
     def path

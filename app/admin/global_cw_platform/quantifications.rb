@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Quantifications' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}quantifications"
+      "#{CW_FILES_PREFIX}quantifications"
     end
 
     def path

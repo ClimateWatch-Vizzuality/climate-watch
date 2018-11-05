@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Historical Emissions' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}historical_emissions"
+      "#{CW_FILES_PREFIX}historical_emissions"
     end
 
     def path

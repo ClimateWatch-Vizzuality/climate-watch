@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Locations' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}locations"
+      "#{CW_FILES_PREFIX}locations"
     end
 
     def path
