@@ -131,18 +131,37 @@ export const getLawsAndPolicies = createSelector(
   }
 );
 
-export const getLawsAndPoliciesForCurrentSector = createSelector(
-  [getLawsAndPolicies],
-  lawsAndPoliciesPerSector => lawsAndPoliciesPerSector.energy
+const getLawsTargets = createSelector([getAllTargets], targets =>
+  targets.filter(target => target.doc_type === 'law')
+);
+
+const getSectorLabels = createSelector(
+  [getSectors, getLawsTargets],
+  (sectors, lawTargets) =>
+    sectors &&
+    lawTargets &&
+    sectors.map(sector => ({
+      label: `${sector.label} (${lawTargets.filter(
+        target => target.sector === sector.value
+      ).length})`,
+      value: sector.value
+    }))
+);
+
+const getNationalPoliciesCount = createSelector(
+  [getLawsTargets, getCurrentSector],
+  (lawsTargets, currentSector) =>
+    lawsTargets.filter(target => target.sector === currentSector.value).length
 );
 
 export const getCardsInRow = () => CARDS_IN_ROW;
 
 export const getAllData = createStructuredSelector({
-  sectors: getSectors,
+  sectors: getSectorLabels,
   ndcContent: getNdcContent,
   lawsTargets: getLawsAndPolicies,
   currentSector: getCurrentSector,
   countryProfileLink: getCountryProfileLink,
-  lawsAndPoliciesCount: getLawsAndPoliciesCount
+  lawsAndPoliciesCount: getLawsAndPoliciesCount,
+  nationalPoliciesCount: getNationalPoliciesCount
 });

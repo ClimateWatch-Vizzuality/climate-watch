@@ -44,7 +44,8 @@ class LawsAndPolicies extends PureComponent {
       countryProfileLink,
       currentSector,
       country,
-      lawsAndPoliciesCount
+      lawsAndPoliciesCount,
+      nationalPoliciesCount
     } = this.props;
 
     const countryName = country && `${country.wri_standard_name}`;
@@ -82,7 +83,7 @@ class LawsAndPolicies extends PureComponent {
             options={sectors}
             onValueChange={this.handleSourceChange}
             value={currentSector}
-            disclaimer={`${lawsTargets.length} National Policies available for ${countryName} for the selected sector`}
+            disclaimer={`${nationalPoliciesCount} National Policies available for ${countryName} for the selected sector`}
             hideResetButton
           />
           <div className={styles.buttonContainer}>
@@ -157,7 +158,8 @@ LawsAndPolicies.propTypes = {
   lawsAndPoliciesCount: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
-  ])
+  ]),
+  nationalPoliciesCount: PropTypes.number
 };
 
 export default LawsAndPolicies;
