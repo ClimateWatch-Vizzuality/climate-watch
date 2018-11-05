@@ -4,12 +4,12 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
-
+import DownloadMenu from 'components/download-menu';
 import anchorNavThemeColorTheme from 'styles/themes/anchor-nav/anchor-nav-theme-color.scss';
 import layout from 'styles/layout.scss';
 import styles from './data-explorer-styles';
 
-const DataExplorer = ({ navLinks, route, handleDownloadModalOpen }) => (
+const DataExplorer = ({ navLinks, route }) => (
   <div>
     <Header theme={styles}>
       <div className={styles.introWrapper}>
@@ -17,12 +17,13 @@ const DataExplorer = ({ navLinks, route, handleDownloadModalOpen }) => (
           theme={styles}
           className={styles.intro}
           title="Data Explorer"
-          button={{
-            text: 'Download All Data (62 MB)',
-            onClick: handleDownloadModalOpen,
-            color: 'white',
-            className: styles.button
-          }}
+          customButton={
+            <DownloadMenu
+              title="Download bulk data"
+              inButton
+              withDownloadIcon
+            />
+          }
         />
       </div>
       <AnchorNav
@@ -40,8 +41,7 @@ const DataExplorer = ({ navLinks, route, handleDownloadModalOpen }) => (
 
 DataExplorer.propTypes = {
   navLinks: PropTypes.array,
-  route: PropTypes.object.isRequired,
-  handleDownloadModalOpen: PropTypes.func.isRequired
+  route: PropTypes.object.isRequired
 };
 
 export default DataExplorer;

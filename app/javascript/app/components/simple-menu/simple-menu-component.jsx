@@ -4,6 +4,7 @@ import cx from 'classnames';
 import uniq from 'lodash/uniq';
 import Icon from 'components/icon';
 import checkIcon from 'assets/icons/check.svg';
+import downloadIcon from 'assets/icons/download.svg';
 import ClickOutside from 'react-click-outside';
 import { NavLink } from 'react-router-dom';
 import includes from 'lodash/includes';
@@ -52,9 +53,15 @@ class SimpleMenu extends PureComponent {
   }
 
   renderInsideLink(option, withAction = false) {
+    const { withDownloadIcon } = this.props;
     const { succesfulActions } = this.state;
     return (
-      <div className={styles.documentLink} key={option.label}>
+      <div
+        className={cx(styles.documentLink, {
+          [styles.withDownloadIcon]: withDownloadIcon
+        })}
+        key={option.label}
+      >
         {option.icon &&
           (withAction && succesfulActions.includes(option.label) ? (
             <Icon icon={checkIcon} className={styles.icon} />
@@ -62,6 +69,9 @@ class SimpleMenu extends PureComponent {
             <Icon icon={option.icon} className={styles.icon} />
           ))}
         <span className={styles.title}>{option.label}</span>
+        {withDownloadIcon && (
+          <Icon icon={downloadIcon} className={styles.icon} />
+        )}
       </div>
     );
   }
@@ -129,6 +139,7 @@ class SimpleMenu extends PureComponent {
       options,
       reverse,
       positionRight,
+      inButton,
       inButtonGroup,
       dataFor,
       dataTip
@@ -138,6 +149,7 @@ class SimpleMenu extends PureComponent {
       'data-for': dataFor,
       'data-tip': dataTip
     };
+
     return (
       <ClickOutside
         onClickOutside={() => this.setState({ open: false })}
@@ -145,6 +157,7 @@ class SimpleMenu extends PureComponent {
           styles.dropdown,
           { [styles.reverse]: reverse },
           { [styles.positionRight]: positionRight },
+          { [styles.inButton]: inButton },
           { [styles.inButtonGroup]: inButtonGroup }
         )}
         {...tooltipProps}
@@ -167,6 +180,8 @@ SimpleMenu.propTypes = {
   reverse: PropTypes.bool,
   positionRight: PropTypes.bool,
   inButtonGroup: PropTypes.bool,
+  inButton: PropTypes.bool,
+  withDownloadIcon: PropTypes.bool,
   buttonClassName: PropTypes.string,
   currentPathname: PropTypes.string,
   analyticsGraphName: PropTypes.string,
@@ -176,7 +191,10 @@ SimpleMenu.propTypes = {
 
 SimpleMenu.defaultProps = {
   dataFor: null,
-  dataTip: null
+  dataTip: null,
+  inButtonGroup: false,
+  inButton: false,
+  withDownloadIcon: false
 };
 
 export default SimpleMenu;
