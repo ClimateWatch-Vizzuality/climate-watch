@@ -8,9 +8,24 @@ import {
   MULTIPLE_LEVEL_SECTION_FIELDS,
   SECTION_NAMES,
   FIELD_ALIAS,
-  GROUPED_OR_MULTI_SELECT_FIELDS
+  GROUPED_OR_MULTI_SELECT_FIELDS,
+  NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
+import { ALL_SELECTED_OPTION } from 'data/constants';
 import { isNoColumnField } from 'utils/data-explorer';
+
+const getOptions = (filterOptions, field, addGroupId) => {
+  const noAllSelected = NON_COLUMN_KEYS.includes(field);
+  if (noAllSelected) return filterOptions && filterOptions[field];
+  const allSelectedOption = addGroupId
+    ? { ...ALL_SELECTED_OPTION, groupId: 'regions' }
+    : ALL_SELECTED_OPTION;
+  return (
+    (filterOptions &&
+    filterOptions[field] && [allSelectedOption, ...filterOptions[field]]) ||
+    []
+  );
+};
 
 class DataExplorerFilters extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -34,7 +49,7 @@ class DataExplorerFilters extends PureComponent {
         key={label}
         label={deburrCapitalize(label)}
         placeholder={`Filter by ${deburrCapitalize(label)}`}
-        options={(filterOptions && filterOptions[field]) || []}
+        options={getOptions(filterOptions, field)}
         onValueChange={selected => {
           handleFiltersChange({ [field]: selected && selected.value });
           handleChangeSelectorAnalytics();
@@ -71,14 +86,13 @@ class DataExplorerFilters extends PureComponent {
             key={field}
             label={deburrCapitalize(field)}
             placeholder={`Filter by ${deburrCapitalize(field)}`}
-            options={filterOptions ? filterOptions[field] : []}
+            options={getOptions(filterOptions, field)}
             value={
               selectedOptions ? (
                 selectedOptions[field] && selectedOptions[field][0]
               ) : null
             }
             disabled={isDisabled(field)}
-            clearable
             onChange={option => {
               handleFiltersChange({ [field]: option && option.value });
               handleChangeSelectorAnalytics();
@@ -98,7 +112,7 @@ class DataExplorerFilters extends PureComponent {
             selectedLabel={activeFilterRegion}
             placeholder={`Filter by ${label}`}
             values={(selectedOptions && selectedOptions[field]) || []}
-            options={filterOptions ? filterOptions[field] : []}
+            options={getOptions(filterOptions, field, true)}
             groups={fieldInfo.groups}
             disabled={isDisabled(field)}
             onMultiValueChange={selected => {
