@@ -45,7 +45,7 @@ platforms:
           - sdgs
           - sdg_targets
       - name: socioeconomics
-        importer: nil
+        importer: ImportSocioeconomics
         datasets:
           - indicators_gdp
           - indicators_gdp_per_capita
