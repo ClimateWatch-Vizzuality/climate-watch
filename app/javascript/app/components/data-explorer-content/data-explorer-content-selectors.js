@@ -28,7 +28,11 @@ import {
   FILTERS_DATA_WITHOUT_MODEL,
   SORTING_DEFAULTS
 } from 'data/data-explorer-constants';
-import { SOURCE_VERSIONS } from 'data/constants';
+import {
+  SOURCE_VERSIONS,
+  ALL_SELECTED,
+  ALL_SELECTED_OPTION
+} from 'data/constants';
 import {
   getPathwaysModelOptions,
   getPathwaysScenarioOptions,
@@ -446,7 +450,11 @@ const mergeSourcesAndVersions = filters => {
   const versionFilter = filters.gwps;
   const updatedFilters = filters;
   if (dataSourceFilter || dataSourceFilter === '') {
-    updatedFilters.source = `${dataSourceFilter}-${versionFilter}`;
+    if (dataSourceFilter === ALL_SELECTED) {
+      updatedFilters.source = ALL_SELECTED;
+    } else {
+      updatedFilters.source = `${dataSourceFilter}-${versionFilter}`;
+    }
     delete updatedFilters['data-sources'];
     delete updatedFilters.gwps;
   }
@@ -505,7 +513,7 @@ const forceAR2OnCAIT = (parsedSelectedFilters, filterOptions) => {
   const selectedOption = filterOptions.source.find(o =>
     o.value.startsWith(dataSourceId)
   );
-  if (selectedOption.dataSourceSlug === 'CAIT') {
+  if (selectedOption && selectedOption.dataSourceSlug === 'CAIT') {
     const CAIT_AR2_OPTION = filterOptions.source.find(
       o => o.label === 'CAIT - AR2'
     );
@@ -542,6 +550,8 @@ export const getSelectedFilters = createSelector(
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
       if (isNonColumnKey || isNoModelColumnKey) {
         selectedFilterObjects[filterKey] = filterId;
+      } else if (filterId === ALL_SELECTED) {
+        selectedFilterObjects[filterKey] = [ALL_SELECTED_OPTION];
       } else {
         const multipleParsedSelectedFilters = filterId.split(',');
         selectedFilterObjects[filterKey] = findFilterOptions(
@@ -550,6 +560,7 @@ export const getSelectedFilters = createSelector(
         );
       }
     });
+
     return selectedFilterObjects;
   }
 );
@@ -701,10 +712,11 @@ export const getMethodology = createSelector(
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source = selectedFilters.source[0].dataSourceSlug;
+      const source =
+        selectedFilters.source[0] && selectedFilters.source[0].dataSourceSlug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
-    return methodology.filter(s => metaSource.includes(s.source));
+    return methodology.filter(s => metaSource && metaSource.includes(s.source));
   }
 );
 

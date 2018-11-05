@@ -1,6 +1,7 @@
 import { mapProps } from 'recompose';
 import sortBy from 'lodash/sortBy';
 import Component from './dropdown-component';
+import { ALL_SELECTED } from '../../data/constants';
 
 const { NODE_ENV } = process.env;
 const optionsSanitizer = mapProps(props => {
@@ -28,7 +29,14 @@ const optionsSort = mapProps(props => {
     updatedProps.options &&
     updatedProps.options.length
   ) {
-    updatedProps = { ...props, options: sortBy(props.options, 'label') };
+    let options = sortBy(props.options, 'label');
+    const allSelectedOption = props.options.find(o => o.label === ALL_SELECTED);
+    if (allSelectedOption) {
+      const allSelectedIndex = options.indexOf(allSelectedOption);
+      options.splice(allSelectedIndex, 1);
+      options = [allSelectedOption, ...options];
+    }
+    updatedProps = { ...props, options };
   }
   return updatedProps;
 });

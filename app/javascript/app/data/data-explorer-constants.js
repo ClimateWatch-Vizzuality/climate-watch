@@ -1,4 +1,4 @@
-import { TOP_EMITTERS } from 'data/constants';
+import { TOP_EMITTERS, ALL_SELECTED } from 'data/constants';
 
 export const DATA_EXPLORER_BLACKLIST = [
   'id',
@@ -48,12 +48,30 @@ export const FIRST_TABLE_HEADERS = {
 export const FILTER_DEFAULTS = {
   'historical-emissions': {
     source: 'CAIT - AR2',
+    regions: ALL_SELECTED,
     gases: 'All GHG',
     sectors: 'Total including LUCF'
   },
-  'ndc-content': {},
-  'ndc-sdg-linkages': {},
-  'emission-pathways': {}
+  'ndc-content': {
+    categories: ALL_SELECTED,
+    indicators: ALL_SELECTED,
+    sectors: ALL_SELECTED,
+    countries: ALL_SELECTED
+  },
+  'ndc-sdg-linkages': {
+    countries: ALL_SELECTED,
+    goals: ALL_SELECTED,
+    targets: ALL_SELECTED,
+    sectors: ALL_SELECTED
+  },
+  'emission-pathways': {
+    locations: ALL_SELECTED,
+    models: ALL_SELECTED,
+    scenarios: ALL_SELECTED,
+    categories: ALL_SELECTED,
+    subcategories: ALL_SELECTED,
+    indicators: ALL_SELECTED
+  }
 };
 
 export const DATA_EXPLORER_SECTIONS = {
@@ -290,6 +308,7 @@ export const FILTERS_DATA_WITHOUT_MODEL = {
 };
 
 export const DATA_EXPLORER_TABLE_COLUMNS_WIDTH = {
+  'historical-emissions': 100,
   'emission-pathways': 100
 };
 export const SORTING_DEFAULTS = {
