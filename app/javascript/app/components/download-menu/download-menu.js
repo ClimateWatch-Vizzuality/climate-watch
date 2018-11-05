@@ -9,9 +9,10 @@ import Component from './download-menu-component';
 
 const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
 const { S3_BUCKET_NAME } = process.env;
+const { CW_FILES_PREFIX } = process.env;
 
 const server = `http://${S3_BUCKET_NAME}.s3.amazonaws.com`;
-const folder = '/climate-watch-download-zip';
+const folder = `${CW_FILES_PREFIX}climate-watch-download-zip`;
 const url = `${server}${folder}`;
 
 const downloadMenuOptions = [
