@@ -49,6 +49,8 @@ spec:
         args:
           - start
         env:
+          - name: CW_FILES_PREFIX
+            value: 'climatewatch.org/staging.climatewatch.org/climate-watch/'
           - name: RACK_ENV
             value: production
           - name: RAILS_ENV
@@ -70,19 +72,19 @@ spec:
                   name: dbsecrets
                   key: CW_SHARED_POSTGRES_URL_STAGING
           - name: S3_BUCKET_NAME
-            value: "climate-watch-dev"
+            value: "wri-sites"
           - name: AWS_REGION
             value: "eu-west-1"
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
                 secretKeyRef:
                   name: appsecrets
-                  key: CW_AWS_ACCESS_KEY
+                  key: CW_PLATFORMS_S3_ACCESS_KEY
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
                 secretKeyRef:
                   name: appsecrets
-                  key: CW_AWS_SECRET_ACCESS_KEY
+                  key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
           - name: ESP_API
             value: "https://data.emissionspathways.org/api/v1"
           - name: GFW_API
@@ -127,17 +129,17 @@ spec:
           - name: RAILS_SERVE_STATIC_FILES
             value: "true"
           - name: S3_BUCKET_NAME
-            value: "climate-watch-dev"
+            value: "wri-sites"
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
                 secretKeyRef:
                   name: appsecrets
-                  key: CW_AWS_ACCESS_KEY
+                  key: CW_PLATFORMS_S3_ACCESS_KEY
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
                 secretKeyRef:
                   name: appsecrets
-                  key: CW_AWS_SECRET_ACCESS_KEY
+                  key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
           - name: POSTGRES_URL
             valueFrom:
                 secretKeyRef:

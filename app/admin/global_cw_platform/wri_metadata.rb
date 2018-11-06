@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Wri Metadata' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}wri_metadata"
+      "#{CW_FILES_PREFIX}wri_metadata"
     end
 
     def path
@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Wri Metadata' do
     end
 
     def import_worker
-      ImportWriMetadataWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWriMetadata')
     end
 
     def section_repository

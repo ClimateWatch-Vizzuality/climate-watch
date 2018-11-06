@@ -3,19 +3,19 @@ platforms:
     display_name: Climate Watch Global
     sections:
       - name: adaptation
-        worker: ImportAdaptationWorker
+        importer: ImportAdaptation
         datasets:
           - adaptation
           - adaptation_metadata
       - name: historical_emissions
-        worker: ImportHistoricalEmissionsWorker
+        importer: ImportHistoricalEmissions
         datasets:
           - CW_HistoricalEmissions_metadata_sectors
           - CW_HistoricalEmissions_CAIT
           - CW_HistoricalEmissions_PIK
           - CW_HistoricalEmissions_UNFCCC
       - name: indc
-        worker: ImportIndcWorker
+        importer: ImportIndc
         datasets:
           - NDC_CAIT_data
           - NDC_CAIT_legend
@@ -24,35 +24,35 @@ platforms:
           - NDC_submission
           - NDC_metadata
       - name: locations
-        worker: ImportLocationsWorker
+        importer: ImportLocations
         datasets:
           - locations
       - name: locations_members
-        worker: ImportLocationMembersWorker
+        importer: ImportLocationMembers
         datasets:
           - locations_groupings
       - name: ndc_texts
-        # worker:
+        # importer:
         datasets:
           - ndc_texts
       - name: quantifications
-        worker: ImportQuantificationsWorker
+        importer: ImportQuantifications
         datasets:
           - CW_NDC_quantification_commas
       - name: sdgs
-        worker: ImportSdgsWorker
+        importer: ImportSdgs
         datasets:
           - sdgs
           - sdg_targets
       - name: socioeconomics
-        worker: nil
+        importer: ImportSocioeconomics
         datasets:
           - indicators_gdp
           - indicators_gdp_per_capita
           - indicators_population
           - indicators_population_growth
       - name: timeline
-        worker: ImportTimelineWorker
+        importer: ImportTimeline
         datasets:
           - BR
           - BUR
@@ -65,21 +65,13 @@ platforms:
           - SA
           - cancun
       - name: wb_extra
-        worker: ImportWbExtraWorker
+        importer: ImportWbExtra
         datasets:
           - population
           - gdp
       - name: wri_metadata
-        worker: ImportWriMetadataWorker
+        importer: ImportWriMetadata
         datasets:
           - Acronyms
           - metadata_sources
           - metadata_sources_descriptions
-  # - name: indonesia_platform
-  #   sections:
-  #     - name: historical_emissions
-  #     - name: timeline
-  # - name: india_platform
-  #   sections:
-  #     - name: historical_emissions
-  #     - name: timeline

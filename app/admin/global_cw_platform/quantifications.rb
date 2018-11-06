@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Quantifications' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}quantifications"
+      "#{CW_FILES_PREFIX}quantifications"
     end
 
     def path
@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Quantifications' do
     end
 
     def import_worker
-      ImportQuantificationsWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportQuantifications')
     end
 
     def section_repository

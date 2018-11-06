@@ -3,7 +3,7 @@ ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
 
   section_name = 'ndc_texts'
   platform_name = 'global_cw_platform'
-  s3_folder_path = "#{CW_FILES_PREFIX_TEST}ndc_texts"
+  s3_folder_path = "#{CW_FILES_PREFIX}ndc_texts"
 
   menu parent: 'Climate Watch Global',
        label: section_name.split('_').map(&:capitalize).join(' '),

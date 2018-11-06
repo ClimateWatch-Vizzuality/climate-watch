@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Locations Members' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX_TEST}locations_members"
+      "#{CW_FILES_PREFIX}locations_members"
     end
 
     def path
@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Locations Members' do
     end
 
     def import_worker
-      ImportLocationMembersWorker.perform_async(section.id)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportLocationMembers')
     end
 
     def section_repository
