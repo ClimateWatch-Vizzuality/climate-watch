@@ -39,7 +39,6 @@ class DataExplorerContent extends PureComponent {
       return (
         <Table
           data={data}
-          rowHeight={60}
           sortBy={sortDefaults ? sortDefaults.sort_col : undefined}
           sortDirection={sortDefaults ? sortDefaults.sort_dir : undefined}
           firstColumnHeaders={firstColumnHeaders}
