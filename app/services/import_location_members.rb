@@ -1,5 +1,5 @@
 class ImportLocationMembers
-  LOCATION_GROUPINGS_FILEPATH = "#{CW_FILES_PREFIX}locations/locations_groupings.csv"
+  LOCATION_GROUPINGS_FILEPATH = "#{CW_FILES_PREFIX}locations_members/locations_groupings.csv"
 
   def call
     import_records(S3CSVReader.read(LOCATION_GROUPINGS_FILEPATH))
