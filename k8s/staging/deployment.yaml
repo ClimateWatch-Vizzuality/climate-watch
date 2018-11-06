@@ -118,6 +118,8 @@ spec:
         args:
           - sidekiq
         env:
+          - name: CW_FILES_PREFIX
+            value: 'climatewatch.org/staging.climatewatch.org/climate-watch/'
           - name: AWS_REGION
             value: eu-west-1
           - name: RACK_ENV
