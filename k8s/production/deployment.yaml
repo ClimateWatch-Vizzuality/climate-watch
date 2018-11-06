@@ -44,6 +44,8 @@ spec:
           requests:
             memory: "128Mi"
         env:
+          - name: CW_FILES_PREFIX
+            value: 'climatewatch.org/www.climatewatch.org/climate-watch/'
           - name: RACK_ENV
             value: production
           - name: RAILS_ENV

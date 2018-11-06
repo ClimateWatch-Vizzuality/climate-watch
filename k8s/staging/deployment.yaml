@@ -49,6 +49,8 @@ spec:
         args:
           - start
         env:
+          - name: CW_FILES_PREFIX
+            value: 'climatewatch.org/staging.climatewatch.org/climate-watch/'
           - name: RACK_ENV
             value: production
           - name: RAILS_ENV
