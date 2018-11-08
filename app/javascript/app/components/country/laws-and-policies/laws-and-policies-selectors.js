@@ -30,7 +30,9 @@ const getAllTargets = createSelector(
 export const getCurrentSector = createSelector(
   [getActiveSector, getSectors],
   (activeSector, sectors) => {
-    if (isEmpty(activeSector)) return sectors && sectors[0];
+    const defaultSector =
+      sectors && sectors.find(sector => sector.value === 'economy-wide');
+    if (isEmpty(activeSector)) { return sectors && sectors.length && defaultSector; }
 
     return (
       sectors && sectors.find(sector => sector.value === activeSector.sector)
