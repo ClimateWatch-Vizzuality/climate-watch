@@ -32,7 +32,9 @@ export const getCurrentSector = createSelector(
   (activeSector, sectors) => {
     const defaultSector =
       sectors && sectors.find(sector => sector.value === 'economy-wide');
-    if (isEmpty(activeSector)) { return sectors && sectors.length && defaultSector; }
+    if (isEmpty(activeSector)) {
+      return sectors && sectors.length && defaultSector;
+    }
 
     return (
       sectors && sectors.find(sector => sector.value === activeSector.sector)
@@ -142,12 +144,24 @@ const getSectorLabels = createSelector(
   (sectors, lawTargets) =>
     sectors &&
     lawTargets &&
-    sectors.map(sector => ({
-      label: `${sector.label} (${lawTargets.filter(
+    sectors.map(sector => {
+      const matches = lawTargets.filter(
         target => target.sector === sector.value
-      ).length})`,
-      value: sector.value
-    }))
+      ).length;
+      let labelText = '';
+      if (matches) {
+        labelText =
+          matches === 1
+            ? `${sector.label} (${matches} target)`
+            : `${sector.label} (${matches} targets)`;
+      } else {
+        labelText = `${sector.label} (no targets)`;
+      }
+      return {
+        label: labelText,
+        value: sector.value
+      };
+    })
 );
 
 const getNationalPoliciesCount = createSelector(
