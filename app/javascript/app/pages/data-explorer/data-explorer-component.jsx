@@ -17,6 +17,9 @@ const DataExplorer = ({ navLinks, route }) => (
           theme={styles}
           className={styles.intro}
           title="Data Explorer"
+          description={
+            'Here you can find all the raw data that is used in the other modules across the site. Filter the data using the picklists at the top and download data for that module or the whole site for your own analysis.'
+          }
           customButton={
             <DownloadMenu
               title="Download bulk data"
