@@ -48,7 +48,9 @@ export const getNdcContent = createSelector(
     if (!targets) return null;
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) ||
-      (sectors && sectors[0]);
+      (sectors &&
+        sectors.find(sector => sector.value === 'economy-wide') &&
+        sectors.find(sector => sector.value === 'economy-wide').value);
 
     const ndcTargets = targets.filter(target => target.doc_type === 'ndc');
     const parsedNdcsPerSector = groupBy(ndcTargets, 'sector');
@@ -85,7 +87,9 @@ export const getLawsAndPolicies = createSelector(
     if (!targets) return null;
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) ||
-      (sectors && sectors[0]);
+      (sectors &&
+        sectors.find(sector => sector.value === 'economy-wide') &&
+        sectors.find(sector => sector.value === 'economy-wide').value);
 
     const lawsTargets = targets.filter(target => target.doc_type === 'law');
     const parsedLawsTargetsPerSector = groupBy(lawsTargets, 'sector');
