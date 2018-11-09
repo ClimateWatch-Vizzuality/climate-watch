@@ -30,7 +30,11 @@ const getAllTargets = createSelector(
 export const getCurrentSector = createSelector(
   [getActiveSector, getSectors],
   (activeSector, sectors) => {
-    if (isEmpty(activeSector)) return sectors && sectors[0];
+    const defaultSector =
+      sectors && sectors.find(sector => sector.value === 'economy-wide');
+    if (isEmpty(activeSector)) {
+      return sectors && sectors.length && defaultSector;
+    }
 
     return (
       sectors && sectors.find(sector => sector.value === activeSector.sector)
@@ -44,7 +48,9 @@ export const getNdcContent = createSelector(
     if (!targets) return null;
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) ||
-      (sectors && sectors[0]);
+      (sectors &&
+        sectors.find(sector => sector.value === 'economy-wide') &&
+        sectors.find(sector => sector.value === 'economy-wide').value);
 
     const ndcTargets = targets.filter(target => target.doc_type === 'ndc');
     const parsedNdcsPerSector = groupBy(ndcTargets, 'sector');
@@ -81,7 +87,9 @@ export const getLawsAndPolicies = createSelector(
     if (!targets) return null;
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) ||
-      (sectors && sectors[0]);
+      (sectors &&
+        sectors.find(sector => sector.value === 'economy-wide') &&
+        sectors.find(sector => sector.value === 'economy-wide').value);
 
     const lawsTargets = targets.filter(target => target.doc_type === 'law');
     const parsedLawsTargetsPerSector = groupBy(lawsTargets, 'sector');
@@ -131,18 +139,40 @@ export const getLawsAndPolicies = createSelector(
   }
 );
 
-export const getLawsAndPoliciesForCurrentSector = createSelector(
-  [getLawsAndPolicies],
-  lawsAndPoliciesPerSector => lawsAndPoliciesPerSector.energy
+const getLawsTargets = createSelector([getAllTargets], targets =>
+  targets.filter(target => target.doc_type === 'law')
+);
+
+const getSectorLabels = createSelector(
+  [getSectors, getAllTargets],
+  (sectors, targets) =>
+    sectors &&
+    targets &&
+    sectors.map(sector => {
+      const matches = targets.filter(target => target.sector === sector.value)
+        .length;
+      return {
+        label: sector.label,
+        targetsAmount: matches,
+        value: sector.value
+      };
+    })
+);
+
+const getNationalPoliciesCount = createSelector(
+  [getLawsTargets, getCurrentSector],
+  (lawsTargets, currentSector) =>
+    lawsTargets.filter(target => target.sector === currentSector.value).length
 );
 
 export const getCardsInRow = () => CARDS_IN_ROW;
 
 export const getAllData = createStructuredSelector({
-  sectors: getSectors,
+  sectors: getSectorLabels,
   ndcContent: getNdcContent,
   lawsTargets: getLawsAndPolicies,
   currentSector: getCurrentSector,
   countryProfileLink: getCountryProfileLink,
-  lawsAndPoliciesCount: getLawsAndPoliciesCount
+  lawsAndPoliciesCount: getLawsAndPoliciesCount,
+  nationalPoliciesCount: getNationalPoliciesCount
 });

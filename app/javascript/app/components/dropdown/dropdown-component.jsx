@@ -82,6 +82,15 @@ class Dropdown extends PureComponent {
                 [styles.withDot]: colorDot
               })}
               renderToggleButton={() => <Icon icon={arrow} />}
+              renderOption={option => (
+                <div className={styles.optionItem}>
+                  {option.targetsAmount && option.targetsAmount > 0 ? (
+                    <span className={styles.bold}>{option.label}</span>
+                  ) : (
+                    option && option.label
+                  )}
+                </div>
+              )}
               {...this.props}
             />
             {disclaimer && <p className={styles.disclaimer}>{disclaimer}</p>}
