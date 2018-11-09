@@ -144,25 +144,16 @@ const getLawsTargets = createSelector([getAllTargets], targets =>
 );
 
 const getSectorLabels = createSelector(
-  [getSectors, getLawsTargets],
-  (sectors, lawTargets) =>
+  [getSectors, getAllTargets],
+  (sectors, targets) =>
     sectors &&
-    lawTargets &&
+    targets &&
     sectors.map(sector => {
-      const matches = lawTargets.filter(
-        target => target.sector === sector.value
-      ).length;
-      let labelText = '';
-      if (matches) {
-        labelText =
-          matches === 1
-            ? `${sector.label} (${matches} target)`
-            : `${sector.label} (${matches} targets)`;
-      } else {
-        labelText = `${sector.label} (no targets)`;
-      }
+      const matches = targets.filter(target => target.sector === sector.value)
+        .length;
       return {
-        label: labelText,
+        label: sector.label,
+        targetsAmount: matches,
         value: sector.value
       };
     })
