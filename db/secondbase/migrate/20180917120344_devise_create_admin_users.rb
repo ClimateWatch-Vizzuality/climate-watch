@@ -2,6 +2,7 @@
 
 class DeviseCreateAdminUsers < ActiveRecord::Migration[5.2]
   def change
+    return if table_exists? :admin_users
     create_table :admin_users do |t|
       ## Database authenticatable
       t.string :email,              null: false, default: ''
