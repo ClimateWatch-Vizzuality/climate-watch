@@ -29,7 +29,8 @@ ActiveAdmin.register_page 'Global Cw Platform Historical Emissions' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportHistoricalEmissions', current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportHistoricalEmissions',
+                                                   current_admin_user.email)
     end
 
     def section_repository

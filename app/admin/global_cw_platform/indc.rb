@@ -29,7 +29,8 @@ ActiveAdmin.register_page 'Global Cw Platform Indc' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportIndc', current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportIndc',
+                                                   current_admin_user.email)
     end
 
     def section_repository
