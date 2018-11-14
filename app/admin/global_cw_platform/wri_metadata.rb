@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Wri Metadata' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWriMetadata')
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWriMetadata', current_admin_user.email)
     end
 
     def section_repository
