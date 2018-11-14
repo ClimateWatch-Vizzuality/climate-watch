@@ -29,7 +29,8 @@ ActiveAdmin.register_page 'Global Cw Platform Socioeconomics' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportSocioeconomics')
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportSocioeconomics',
+                                                   current_admin_user.email)
     end
 
     def section_repository

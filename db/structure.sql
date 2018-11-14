@@ -1508,7 +1508,8 @@ CREATE TABLE public.worker_logs (
     section_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    error text
+    error text,
+    user_email character varying
 );
 
 
@@ -3497,6 +3498,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181002152649'),
 ('20181003090648'),
 ('20181009120234'),
-('20181026095008');
+('20181026095008'),
+('20181114113643');
 
 
