@@ -11,6 +11,10 @@ class ApiDocumentationContent extends PureComponent {
     const { data, handleAnalyticsTryLink } = this.props;
     return (
       <div className={styles.documentation}>
+        <p>
+          To use this data in your own applications, please see our API
+          documentation below:
+        </p>
         <h3 className={styles.sectionTitle}>API Calls</h3>
         {data.map(d => (
           <div key={d.title} className={styles.call}>
