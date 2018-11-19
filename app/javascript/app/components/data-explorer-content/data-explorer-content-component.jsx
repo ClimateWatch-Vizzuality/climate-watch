@@ -47,6 +47,7 @@ class DataExplorerContent extends PureComponent {
           handleSortChange={handleSortChange}
           forcedColumnWidth={tableColumnsWidth[section] || null}
           flexGrow={0}
+          emptyValueLabel="N/A"
         />
       );
     }
