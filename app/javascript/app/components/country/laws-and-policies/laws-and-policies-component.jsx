@@ -30,7 +30,7 @@ class LawsAndPolicies extends PureComponent {
     this.props.setModalMetadata({
       category: 'Country',
       slugs: ['national_laws_politices', 'ndc_cait'],
-      customTitle: 'Laws and Policies',
+      customTitle: 'Targets in Laws and Policies',
       open: true
     });
   };
@@ -53,7 +53,7 @@ class LawsAndPolicies extends PureComponent {
 
     return (
       <div className={layout.content}>
-        <h3 className={styles.title}>Laws and Policies</h3>
+        <h3 className={styles.title}>Targets in Laws and Policies</h3>
         <div className={styles.descriptionContainer}>
           <div className="grid-column-item">
             This table compares quantified targets in countries’ NDCs with those

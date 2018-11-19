@@ -33,7 +33,7 @@ export default [
   },
   {
     hash: 'laws-and-policies',
-    label: 'Laws and Policies',
+    label: 'Targets in Laws and Policies',
     anchor: true,
     component: LawsAndPolicies
   }
