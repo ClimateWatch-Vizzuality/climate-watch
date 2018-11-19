@@ -311,6 +311,3 @@ export const DATA_EXPLORER_TABLE_COLUMNS_WIDTH = {
   'historical-emissions': 100,
   'emission-pathways': 100
 };
-export const SORTING_DEFAULTS = {
-  'historical-emissions': '2014'
-};
