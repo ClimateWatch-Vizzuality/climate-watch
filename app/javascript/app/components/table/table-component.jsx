@@ -7,6 +7,7 @@ import { pixelBreakpoints } from 'components/responsive';
 import difference from 'lodash/difference';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
+import headerRowRenderer from './header-row-renderer-component';
 import styles from './table-styles.scss';
 import { deburrCapitalize } from '../../utils/utils';
 
@@ -104,6 +105,7 @@ class SimpleTable extends PureComponent {
                 sortBy={sortBy}
                 sortDirection={sortDirection}
                 rowGetter={({ index }) => data[index]}
+                headerRowRenderer={headerRowRenderer}
               >
                 {columnData.map(column => (
                   <Column

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="32px" viewBox="0 0 28 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>076D3681-8EA9-4C35-BB9E-1E5C0FD6CF3C</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="ui" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="GENERAL-UI-COMPONENT" transform="translate(-458.000000, -2334.000000)" fill="#868697" fill-rule="nonzero">
+            <g id="icon/collapse" transform="translate(458.000000, 2334.000000)">
+                <g id="collapse">
+                    <path d="M14,0 L0.909,12.8 L27.091,12.8 L14,0 Z M14,32 L27.091,19.2 L0.909,19.2 L14,32 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
