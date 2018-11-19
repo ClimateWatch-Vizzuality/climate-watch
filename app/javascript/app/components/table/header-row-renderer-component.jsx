@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import idleSort from 'assets/icons/collapse.svg';
 import Icon from 'components/icon';
-import cx from 'classnames';
 import styles from './table-styles.scss';
 
 const headerRowRenderer = props => {
@@ -12,7 +11,7 @@ const headerRowRenderer = props => {
       {columns.map(c => {
         if (!c.props['aria-sort']) {
           c.props.children.push(
-            <Icon icon={idleSort} className={cx(styles.idleSortIcon)} />
+            <Icon icon={idleSort} className={styles.idleSortIcon} />
           );
         }
         return c;
