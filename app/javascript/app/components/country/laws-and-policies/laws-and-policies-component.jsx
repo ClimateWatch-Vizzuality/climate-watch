@@ -109,7 +109,7 @@ class LawsAndPolicies extends PureComponent {
                 data: styles.fixedCardData
               }}
               title={{
-                title: 'Submitted NDC',
+                title: 'Targets in Submitted NDC',
                 link: ndcContent.sources[0].link
               }}
             >
