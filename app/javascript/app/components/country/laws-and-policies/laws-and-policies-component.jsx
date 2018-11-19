@@ -83,7 +83,9 @@ class LawsAndPolicies extends PureComponent {
             options={sectors}
             onValueChange={this.handleSourceChange}
             value={currentSector}
-            disclaimer={`${nationalPoliciesCount} National Policies available for ${countryName} for the selected sector`}
+            disclaimer={`${nationalPoliciesCount} ${nationalPoliciesCount === 1
+              ? 'Target'
+              : 'Targets'} in national laws and policies available for ${countryName} for the selected sector`}
             hideResetButton
           />
           <div className={styles.buttonContainer}>
