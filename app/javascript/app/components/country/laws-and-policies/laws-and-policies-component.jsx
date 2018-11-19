@@ -127,14 +127,16 @@ class LawsAndPolicies extends PureComponent {
             <div className={cx(styles.fixedCard, styles.noContent)}>
               {currentSector &&
                 currentSector.value &&
-                `No ${currentSector.value} targets found in the NDC`}
+                `There are no ${currentSector.value} targets found in the NDC`}
             </div>
           )}
           {lawsTargets && lawsTargets.length ? (
             <SlideCards cards={lawsTargets} cardsInRow={cardsInRow} />
           ) : (
             <div className={styles.noContent}>
-              There are no targets found in law and policies
+              {currentSector &&
+                currentSector.value &&
+                `There are no ${currentSector.value} targets found in laws and policies`}
             </div>
           )}
         </div>
