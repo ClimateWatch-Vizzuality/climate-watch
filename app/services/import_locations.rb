@@ -82,7 +82,8 @@ class ImportLocations
 
   def mark_locations_with_eu_membership
     countries_in_eu.each do |iso_code3|
-      Location.find_by_iso_code3(iso_code3).update(is_in_eu: true)
+      Location.find_by_iso_code3(iso_code3) && 
+        Location.find_by_iso_code3(iso_code3).update(is_in_eu: true)
     end
   end
 
