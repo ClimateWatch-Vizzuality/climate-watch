@@ -30,7 +30,7 @@ class LawsAndPolicies extends PureComponent {
     this.props.setModalMetadata({
       category: 'Country',
       slugs: ['national_laws_politices', 'ndc_cait'],
-      customTitle: 'Laws and Policies',
+      customTitle: 'Targets in Laws and Policies',
       open: true
     });
   };
@@ -53,12 +53,12 @@ class LawsAndPolicies extends PureComponent {
 
     return (
       <div className={layout.content}>
-        <h3 className={styles.title}>Laws and Policies</h3>
+        <h3 className={styles.title}>Targets in Laws and Policies</h3>
         <div className={styles.descriptionContainer}>
           <div className="grid-column-item">
-            This table compares quantified targets in countries’ NDCs with those
-            in their national laws and policies. The purpose is to indicate the
-            level of alignment.
+            This table compares quantified targets in countries’ submitted NDCs
+            with targets in relevant national laws and policies. The purpose is
+            to indicate the level of alignment.
           </div>
           <div className={styles.logoContainer}>
             {
@@ -83,7 +83,9 @@ class LawsAndPolicies extends PureComponent {
             options={sectors}
             onValueChange={this.handleSourceChange}
             value={currentSector}
-            disclaimer={`${nationalPoliciesCount} National Policies available for ${countryName} for the selected sector`}
+            disclaimer={`${nationalPoliciesCount} ${nationalPoliciesCount === 1
+              ? 'national law and policy'
+              : 'national laws and policies'} with targets available for ${countryName} for the selected sector`}
             hideResetButton
           />
           <div className={styles.buttonContainer}>
@@ -109,7 +111,7 @@ class LawsAndPolicies extends PureComponent {
                 data: styles.fixedCardData
               }}
               title={{
-                title: 'Submitted NDC',
+                title: 'Targets in Submitted NDC',
                 link: ndcContent.sources[0].link
               }}
             >
@@ -127,14 +129,16 @@ class LawsAndPolicies extends PureComponent {
             <div className={cx(styles.fixedCard, styles.noContent)}>
               {currentSector &&
                 currentSector.value &&
-                `No ${currentSector.value} targets found in the NDC`}
+                `There are no ${currentSector.value} targets found in the NDC`}
             </div>
           )}
           {lawsTargets && lawsTargets.length ? (
             <SlideCards cards={lawsTargets} cardsInRow={cardsInRow} />
           ) : (
             <div className={styles.noContent}>
-              There are no targets found in law and policies
+              {currentSector &&
+                currentSector.value &&
+                `There are no ${currentSector.value} targets found in laws and policies`}
             </div>
           )}
         </div>

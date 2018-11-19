@@ -61,7 +61,10 @@ class SlideCards extends Component {
                 <Card
                   keyValue={card.source.title}
                   contentFirst
-                  title={card.source}
+                  title={{
+                    link: card.source.link,
+                    title: `Targets found in ${card.source.title}`
+                  }}
                   theme={{
                     contentContainer: styles.cardContentContainer,
                     title: styles.cardTitle,

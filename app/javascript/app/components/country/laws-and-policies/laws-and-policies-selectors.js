@@ -1,6 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
 
 const CARDS_IN_ROW = 2;
 
@@ -161,8 +162,14 @@ const getSectorLabels = createSelector(
 
 const getNationalPoliciesCount = createSelector(
   [getLawsTargets, getCurrentSector],
-  (lawsTargets, currentSector) =>
-    lawsTargets.filter(target => target.sector === currentSector.value).length
+  (lawsTargets, currentSector) => {
+    const targetsMatches = lawsTargets.filter(
+      target => target.sector === currentSector.value
+    );
+    const lawsMatches = targetsMatches.flatMap(t => t.sources);
+
+    return lawsMatches.length > 0 ? uniqBy(lawsMatches, 'id').length : 0;
+  }
 );
 
 export const getCardsInRow = () => CARDS_IN_ROW;
