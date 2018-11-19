@@ -17,6 +17,7 @@ import swissImage from 'assets/partners/swiss.jpg';
 import actsImage from 'assets/partners/acts.png';
 import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
+import lseImage from 'assets/partners/lse-logo.png';
 
 import Component from './about-partners-component';
 
@@ -78,6 +79,15 @@ const partnershipWith = {
       },
       description:
         'provided support in developing concepts and functions for the Pathways module.'
+    },
+    {
+      link: 'http://www.lse.ac.uk/GranthamInstitute',
+      img: {
+        alt: 'London School of Economics & Grantham Research Institute',
+        src: lseImage
+      },
+      description:
+        'contributed to Climate Watch by providing policy data based on Climate Change Laws and Policies of the World.'
     },
     {
       link: 'http://www.ndcpartnership.org/',
