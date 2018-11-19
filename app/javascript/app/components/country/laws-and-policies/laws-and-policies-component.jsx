@@ -56,9 +56,9 @@ class LawsAndPolicies extends PureComponent {
         <h3 className={styles.title}>Targets in Laws and Policies</h3>
         <div className={styles.descriptionContainer}>
           <div className="grid-column-item">
-            This table compares quantified targets in countries’ NDCs with those
-            in their national laws and policies. The purpose is to indicate the
-            level of alignment.
+            This table compares quantified targets in countries’ submitted NDCs
+            with targets in relevant national laws and policies. The purpose is
+            to indicate the level of alignment.
           </div>
           <div className={styles.logoContainer}>
             {
