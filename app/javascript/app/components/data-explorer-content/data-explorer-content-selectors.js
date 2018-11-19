@@ -6,6 +6,7 @@ import pick from 'lodash/pick';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
 import { isNoColumnField } from 'utils/data-explorer';
+import { isPageContained } from 'utils/navigation';
 
 import sortBy from 'lodash/sortBy';
 import {
@@ -30,7 +31,8 @@ import {
 import {
   SOURCE_VERSIONS,
   ALL_SELECTED,
-  ALL_SELECTED_OPTION
+  ALL_SELECTED_OPTION,
+  CONTAINED_PATHNAME
 } from 'data/constants';
 import {
   getPathwaysModelOptions,
@@ -279,7 +281,9 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
         ? '/models'
         : '';
-    return `/${DATA_EXPLORER_SECTIONS[section]
+    return `/${isPageContained
+      ? `${CONTAINED_PATHNAME}/`
+      : ''}${DATA_EXPLORER_SECTIONS[section]
       .moduleName}${subSection}${urlParameters}`;
   }
 );
