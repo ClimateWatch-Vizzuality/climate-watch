@@ -6,6 +6,7 @@ import pick from 'lodash/pick';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
 import { isNoColumnField } from 'utils/data-explorer';
+import { isPageContained } from 'utils/navigation';
 
 import sortBy from 'lodash/sortBy';
 import {
@@ -25,13 +26,13 @@ import {
   NON_COLUMN_KEYS,
   TOP_EMITTERS_OPTION,
   FILTER_DEFAULTS,
-  FILTERS_DATA_WITHOUT_MODEL,
-  SORTING_DEFAULTS
+  FILTERS_DATA_WITHOUT_MODEL
 } from 'data/data-explorer-constants';
 import {
   SOURCE_VERSIONS,
   ALL_SELECTED,
-  ALL_SELECTED_OPTION
+  ALL_SELECTED_OPTION,
+  CONTAINED_PATHNAME
 } from 'data/constants';
 import {
   getPathwaysModelOptions,
@@ -280,7 +281,9 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
         ? '/models'
         : '';
-    return `/${DATA_EXPLORER_SECTIONS[section]
+    return `/${isPageContained
+      ? `${CONTAINED_PATHNAME}/`
+      : ''}${DATA_EXPLORER_SECTIONS[section]
       .moduleName}${subSection}${urlParameters}`;
   }
 );
@@ -781,15 +784,22 @@ export const parseData = createSelector([parseEmissionsInData], data => {
   return updatedData.map(d => pick(d, whiteList));
 });
 
-export const getFirstTableHeaders = createSelector(
+const getYearColumnKeys = createSelector(
   [parseData, getSection],
   (data, section) => {
     if (!data || !data.length || !section) return null;
-    const yearColumnKeys = Object.keys(data[0]).filter(k => isANumber(k));
+    return Object.keys(data[0]).filter(k => isANumber(k));
+  }
+);
+
+export const getFirstTableHeaders = createSelector(
+  [getYearColumnKeys, getSection],
+  (yearColumnKeys, section) => {
+    if (!yearColumnKeys || !section) return null;
     const reversedYearColumnKeys = [...yearColumnKeys].reverse();
     const sectionFirstHeaders = FIRST_TABLE_HEADERS[section];
     switch (section) {
-      case 'emission-pathways':
+      case [SECTION_NAMES.pathways]:
         return sectionFirstHeaders.concat(yearColumnKeys);
       default:
         return sectionFirstHeaders.concat(reversedYearColumnKeys);
@@ -798,16 +808,24 @@ export const getFirstTableHeaders = createSelector(
 );
 
 export const getSortDefaults = createSelector(
-  [getSection, getSearch],
-  (section, search) => {
+  [getSection, getSearch, getYearColumnKeys],
+  (section, search, yearColumnKeys) => {
     if (!section) return null;
+    const sectionsWithDefaults = [SECTION_NAMES.historicalEmissions];
+    const sortingDefaults = sectionsWithDefaults.includes(section)
+      ? {
+        [SECTION_NAMES.historicalEmissions]:
+            yearColumnKeys && yearColumnKeys[yearColumnKeys.length - 1]
+      }
+      : {};
     const sortCol =
       search.sort_col ||
-      SORTING_DEFAULTS[section] ||
+      sortingDefaults[section] ||
       FIRST_TABLE_HEADERS[section][0];
 
     const sortDir =
-      search.sort_dir || (section === 'historical-emissions' ? 'DESC' : 'ASC');
+      search.sort_dir ||
+      (section === SECTION_NAMES.historicalEmissions ? 'DESC' : 'ASC');
     return { sort_col: sortCol, sort_dir: sortDir };
   }
 );
