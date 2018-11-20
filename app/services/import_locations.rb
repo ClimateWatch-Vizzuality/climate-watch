@@ -1,17 +1,23 @@
 class ImportLocations
-  LOCATIONS_FILEPATH = "#{CW_FILES_PREFIX}locations/locations.csv"
+  LOCATIONS_FILEPATH = "#{CW_FILES_PREFIX}locations/locations.csv".freeze
   CARTODB_URL =
     'https://wri-01.carto.com/api/v2/sql?q=SELECT%20name_engli,iso,topojson,centroid%20FROM%20gadm28_countries'.freeze
 
   def call
     import_locations(S3CSVReader.read(LOCATIONS_FILEPATH))
+    mark_locations_with_eu_membership
     import_topojson
+  end
+
+  def self.countries_in_eu
+    %w(AUT BEL BGR HRV CYP CZE DNK EST FIN FRA DEU GRC HUN IRL ITA LVA LTU
+       LUX MLT NLD POL PRT ROU SVK SVN ESP SWE GBR)
   end
 
   private
 
   def import_locations(content)
-    content.each.with_index(2) do |row|
+    content.each do |row|
       attributes = {
         iso_code3: iso_code3(row),
         iso_code2: iso_code2(row),
@@ -45,14 +51,14 @@ class ImportLocations
   end
 
   def iso_code3(row)
-    row[:iso_code3] && row[:iso_code3].upcase
+    row[:iso_code3]&.upcase
   end
 
   def iso_code2(row)
     if row[:iso_code2].blank?
       ''
     else
-      row[:iso_code2] && row[:iso_code2].upcase
+      row[:iso_code2]&.upcase
     end
   end
 
@@ -76,6 +82,12 @@ class ImportLocations
       Rails.logger.debug "#{op} OK #{iso_code3}"
     else
       Rails.logger.error "#{op} FAILED #{iso_code3}"
+    end
+  end
+
+  def mark_locations_with_eu_membership
+    self.class.countries_in_eu.each do |iso_code3|
+      Location.find_by_iso_code3(iso_code3)&.update(is_in_eu: true)
     end
   end
 end

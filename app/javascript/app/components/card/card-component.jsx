@@ -23,6 +23,10 @@ class Card extends PureComponent {
       </div>
     );
 
+    const handleClick = url => {
+      window.open(url, '_blank');
+    };
+
     const renderContent = () => (
       <div
         key={`content-${keyValue}`}
@@ -30,7 +34,10 @@ class Card extends PureComponent {
       >
         {typeof title === 'object' ? (
           <a
-            href={title.link}
+            role="button"
+            tabIndex={0}
+            onKeyPress={() => handleClick(title.link)}
+            onClick={() => handleClick(title.link)}
             className={cx(styles.title, styles.link, theme.title)}
           >
             {title.title}

@@ -34,9 +34,12 @@ const mapStateToProps = (state, { location, match }) => {
   const country = getCountry(countryData);
   const cardsInRow = getCardsInRow();
 
+  const isInEu = country && country.is_in_eu;
+
   return {
     cardsInRow,
     country,
+    isInEu,
     ...getTargetsData
   };
 };

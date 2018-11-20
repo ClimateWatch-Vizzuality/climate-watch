@@ -444,7 +444,8 @@ CREATE TABLE public.locations (
     location_type text NOT NULL,
     show_in_cw boolean DEFAULT true,
     topojson json,
-    centroid jsonb
+    centroid jsonb,
+    is_in_eu boolean
 );
 
 
@@ -3499,6 +3500,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181003090648'),
 ('20181009120234'),
 ('20181026095008'),
-('20181114113643');
+('20181114113643'),
+('20181119171426');
 
 

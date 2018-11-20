@@ -7,7 +7,8 @@ module Api
                  :ndcp_navigators_name,
                  :wri_standard_name,
                  :unfccc_group,
-                 :centroid
+                 :centroid,
+                 :is_in_eu
 
       has_many :members,
                serializer: Api::V1::LocationSerializer,
