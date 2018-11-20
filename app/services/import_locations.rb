@@ -81,13 +81,8 @@ class ImportLocations
   end
 
   def mark_locations_with_eu_membership
-    countries_in_eu.each do |iso_code3|
+    EU_COUNTRIES.each do |iso_code3|
       Location.find_by_iso_code3(iso_code3)&.update(is_in_eu: true)
     end
-  end
-
-  def countries_in_eu
-    %w(AUT BEL BGR HRV CYP CZE DNK EST FIN FRA DEU GRC HUN IRL ITA LVA LTU
-       LUX MLT NLD POL PRT ROU SVK SVN ESP SWE GBR)
   end
 end

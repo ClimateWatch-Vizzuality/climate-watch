@@ -50,9 +50,12 @@ class LawsAndPolicies extends PureComponent {
     } = this.props;
 
     const countryName = country && `${country.wri_standard_name}`;
+    const countryIso = country && country.iso_code3;
     const ndcContentPresent = !isEmpty(ndcContent);
     const linkForEUcountries = `${window.location.protocol}//${window.location
       .host}/ndcs/country/EU28/`;
+    const linkForOtherCountries = `${window.location.protocol}//${window
+      .location.host}/ndcs/country/${countryIso}/`;
 
     return (
       <div className={layout.content}>
@@ -115,7 +118,7 @@ class LawsAndPolicies extends PureComponent {
               }}
               title={{
                 title: 'Targets in Submitted NDC',
-                link: isInEu ? linkForEUcountries : ndcContent.sources[0].link
+                link: isInEu ? linkForEUcountries : linkForOtherCountries
               }}
             >
               <CardRow
