@@ -48,12 +48,16 @@ module Api
                 display: 'Indicator ID'
               },
               {
-                column: 'indicator_name',
-                alias: 'indicator_name'
-              },
-              {
                 column: 'value',
                 alias: 'value'
+              },
+              {
+                column: 'source',
+                alias: 'source'
+              },
+              {
+                column: 'indicator_name',
+                alias: 'indicator_name'
               }
             ]
           end
