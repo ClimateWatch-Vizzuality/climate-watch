@@ -132,11 +132,6 @@ class DataExplorerContentContainer extends PureComponent {
     this.updateUrlParam({ name: 'page', value: page.selected + 1 });
   };
 
-  handleDataDownload = () => {
-    const { downloadHref } = this.props;
-    return window.location.assign(downloadHref);
-  };
-
   handleSortChange = ({ sortBy, sortDirection }) => {
     if (!(this.props.section === 'emission-pathways' && isANumber(sortBy))) {
       this.updateUrlParam([

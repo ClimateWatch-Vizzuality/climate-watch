@@ -1,12 +1,6 @@
 @import '~styles/layout.scss';
 
 .row {
-  @include row((10, 2));
-
-  height: $navbar-height;
-}
-
-.withDataExplorerLayout {
   @include row((9, 3));
 
   height: $navbar-height;
