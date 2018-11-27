@@ -101,27 +101,27 @@ export const getLawsAndPolicies = createSelector(
       parsedLawsTargetsPerSector[activeSector].forEach(target => {
         target.sources.forEach(source => {
           groupedBySources.push({
-            id: source.id
+            title: source.title
           });
         });
       });
 
-      const groupedById = groupBy(groupedBySources, 'id');
-      const sourcesIds = Object.keys(groupedById);
+      const groupedByTitle = groupBy(groupedBySources, 'title');
+      const sourcesTitles = Object.keys(groupedByTitle);
 
       const groupedTargetsBySources = {};
-      sourcesIds.forEach(sourceId => {
-        groupedTargetsBySources[sourceId] = { source: {}, content: [] };
+      sourcesTitles.forEach(sourceTitle => {
+        groupedTargetsBySources[sourceTitle] = { source: {}, content: [] };
       });
 
-      sourcesIds.forEach(sourceId => {
+      sourcesTitles.forEach(sourceTitle => {
         parsedLawsTargetsPerSector[activeSector].forEach(target => {
           const sourceInfo = target.sources.find(
-            source => source.id === sourceId
+            source => source.title === sourceTitle
           );
           if (!isEmpty(sourceInfo)) {
-            groupedTargetsBySources[sourceId].source = sourceInfo;
-            groupedTargetsBySources[sourceId].content.push(target);
+            groupedTargetsBySources[sourceTitle].source = sourceInfo;
+            groupedTargetsBySources[sourceTitle].content.push(target);
           }
         });
       });
