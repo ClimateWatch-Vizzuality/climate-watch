@@ -100,7 +100,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
     UNFCCC: ['historical_emissions_unfccc']
   },
   'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
-  'ndc-content': ['ndc_cait', 'ndc_wb', 'ndc_die'],
+  'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
