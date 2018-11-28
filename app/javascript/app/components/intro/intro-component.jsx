@@ -14,13 +14,16 @@ const Intro = props => {
     theme,
     textColumns,
     button,
+    customButton,
     className
   } = props;
-  const actionButton = button && (
-    <Button color="yellow" className={theme.button} {...button}>
-      {button.text}
-    </Button>
-  );
+  const actionButton =
+    (customButton || button) &&
+    (customButton || (
+      <Button color="yellow" className={theme.button} {...button}>
+        {button.text}
+      </Button>
+    ));
 
   return (
     <div className={cx(styles.wrapper, className)}>
@@ -44,6 +47,7 @@ Intro.propTypes = {
   disclaimer: PropTypes.string,
   theme: PropTypes.object,
   button: PropTypes.object,
+  customButton: PropTypes.object,
   textColumns: PropTypes.bool,
   className: PropTypes.string
 };

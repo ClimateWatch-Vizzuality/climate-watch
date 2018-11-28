@@ -8,8 +8,6 @@ import { replaceAll } from 'utils/utils';
 import { getStorageWithExpiration } from 'utils/localStorage';
 import { handleAnalytics } from './analytics';
 
-const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
-
 const REPLACEMENTS = {
   regions: 'regions[]',
   data_sources: 'source_ids[]',
@@ -36,7 +34,7 @@ export const openDownloadModal = (
   setModalDownloadParams,
   section
 ) => {
-  if (!FEATURE_DATA_SURVEY || getStorageWithExpiration('userSurvey')) {
+  if (getStorageWithExpiration('userSurvey')) {
     handleAnalytics(
       'Data Explorer',
       'Download Data',

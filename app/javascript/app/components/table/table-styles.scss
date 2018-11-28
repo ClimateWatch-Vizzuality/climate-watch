@@ -45,6 +45,7 @@
     color: $theme-color;
     font-size: $font-size-sm;
     white-space: normal;
+    line-height: $line-height-medium;
 
     a {
       line-height: $line-height-medium;
@@ -139,4 +140,11 @@
 .emptyValue {
   font-style: italic;
   font-weight: $font-weight-light;
+}
+
+.idleSortIcon {
+  width: 8px;
+  height: 8px;
+  margin-left: 3px;
+  transform: translateY(-30%);
 }

@@ -12,13 +12,11 @@
 }
 
 .intro {
-  > * {
-    @media #{$tablet-landscape} {
-      @include xy-gutters($gutter-position: 'left', $gutters: $gutter-padding);
-    }
+  .title {
+    color: $theme-color;
   }
 
-  .title {
+  .description {
     color: $theme-color;
   }
 }

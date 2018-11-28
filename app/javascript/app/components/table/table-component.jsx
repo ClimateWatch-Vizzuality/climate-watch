@@ -7,13 +7,13 @@ import { pixelBreakpoints } from 'components/responsive';
 import difference from 'lodash/difference';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import cellRenderer from './cell-renderer-component';
+import headerRowRenderer from './header-row-renderer-component';
 import styles from './table-styles.scss';
 import { deburrCapitalize } from '../../utils/utils';
 
 const minColumnWidth = 180;
 const getResponsiveWidth = (columns, width) => {
   if (columns.length === 1) return width;
-
   const isMinColumSized = width / columns < minColumnWidth;
 
   let responsiveRatio = 1.4; // Mobile
@@ -23,11 +23,12 @@ const getResponsiveWidth = (columns, width) => {
     responsiveRatio = 1.2; // Tablet
   } else if (width > pixelBreakpoints.landscape) {
     // Desktop
-    responsiveColumnRatio = 0.1;
+    responsiveColumnRatio = 0.07;
     responsiveRatio = 1;
   }
   const columnRatio = isMinColumSized ? responsiveColumnRatio : 0;
   const columnExtraWidth = columnRatio * columns;
+
   return width * responsiveRatio * (1 + columnExtraWidth);
 };
 
@@ -104,6 +105,7 @@ class SimpleTable extends PureComponent {
                 sortBy={sortBy}
                 sortDirection={sortDirection}
                 rowGetter={({ index }) => data[index]}
+                headerRowRenderer={headerRowRenderer}
               >
                 {columnData.map(column => (
                   <Column

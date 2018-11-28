@@ -70,3 +70,22 @@
 .infoIcon {
   fill: $gray;
 }
+
+.dropdownDisclaimerWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.disclaimer {
+  margin-left: 10px;
+  color: $manatee;
+}
+
+.bold {
+  font-weight: bolder;
+  color: $black;
+}
+
+.optionItem {
+  padding: 12px 30px 12px 10px;
+}

@@ -5,7 +5,7 @@ import Loading from 'components/loading';
 import Icon from 'components/icon';
 import { themr } from 'react-css-themr';
 import cx from 'classnames';
-
+import { ALL_SELECTED } from 'data/constants';
 import dropdownArrow from 'assets/icons/dropdown-arrow.svg';
 import infoIcon from 'assets/icons/info.svg';
 import theme from 'styles/themes/dropdown/react-selectize.scss';
@@ -37,11 +37,11 @@ class Multiselect extends Component {
       return <span>{selectedLabel}</span>;
     }
     if (hasValues && !search) {
-      return values.length === options.length ? (
-        <span>All selected</span>
-      ) : (
-        <span>{`${values.length} selected`}</span>
-      );
+      const selectedValuesLabel =
+        values.length === options.length || values[0].label === ALL_SELECTED
+          ? ALL_SELECTED
+          : `${values.length} selected`;
+      return <span>{selectedValuesLabel}</span>;
     }
     return null;
   }

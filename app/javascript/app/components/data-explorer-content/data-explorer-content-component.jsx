@@ -19,8 +19,6 @@ import DataExplorerFilters from './data-explorer-filters';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
 
-const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
-
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderTable() {
@@ -29,30 +27,25 @@ class DataExplorerContent extends PureComponent {
       firstColumnHeaders,
       loading,
       handleSortChange,
-      search,
       titleLinks,
       section,
-      tableColumnsWidth
+      tableColumnsWidth,
+      sortDefaults
     } = this.props;
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length) {
-      const columns = data && Object.keys(data[0]);
-      const sortBy =
-        search.sort_col ||
-        columns.find(c => firstColumnHeaders.includes(c)) ||
-        columns[0];
       return (
         <Table
           data={data}
-          rowHeight={60}
-          sortBy={sortBy}
-          sortDirection={search.sort_dir}
+          sortBy={sortDefaults ? sortDefaults.sort_col : undefined}
+          sortDirection={sortDefaults ? sortDefaults.sort_dir : undefined}
           firstColumnHeaders={firstColumnHeaders}
           horizontalScroll
           titleLinks={titleLinks}
           handleSortChange={handleSortChange}
           forcedColumnWidth={tableColumnsWidth[section] || null}
           flexGrow={0}
+          emptyValueLabel="N/A"
         />
       );
     }
@@ -90,7 +83,6 @@ class DataExplorerContent extends PureComponent {
       filterQuery,
       query,
       handleDownloadModalOpen,
-      handleDataDownload,
       handlePageChange,
       pageCount,
       initialPage,
@@ -125,7 +117,7 @@ class DataExplorerContent extends PureComponent {
         </div>
         <div className={styles.buttons}>
           <Button className={styles.button} href={href} color="plain">
-            {`View in ${toStartCase(sectionLabel)}`}
+            {`Visualize in ${toStartCase(sectionLabel)}`}
           </Button>
           {!loading && data && !metadataSection ? (
             <ReactPaginate
@@ -145,9 +137,7 @@ class DataExplorerContent extends PureComponent {
           )}
           <Button
             className={styles.button}
-            onClick={
-              FEATURE_DATA_SURVEY ? handleDownloadModalOpen : handleDataDownload
-            }
+            onClick={handleDownloadModalOpen}
             color="yellow"
             disabled={!data}
           >
@@ -155,7 +145,7 @@ class DataExplorerContent extends PureComponent {
           </Button>
         </div>
         <ApiDocumentation section={section} />
-        {FEATURE_DATA_SURVEY && <ModalDownload />}
+        <ModalDownload />
       </div>
     );
   }
@@ -166,7 +156,6 @@ DataExplorerContent.propTypes = {
   sectionLabel: PropTypes.string.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
-  handleDataDownload: PropTypes.func.isRequired,
   handleSortChange: PropTypes.func.isRequired,
   selectedOptions: PropTypes.object,
   metadataSection: PropTypes.bool,
@@ -183,11 +172,13 @@ DataExplorerContent.propTypes = {
   search: PropTypes.object,
   initialPage: PropTypes.number,
   titleLinks: PropTypes.array,
+  sortDefaults: PropTypes.object,
   tableColumnsWidth: PropTypes.object
 };
 
 DataExplorerContent.defaultProps = {
-  hasParamsReady: false
+  hasParamsReady: false,
+  sortDefaults: null
 };
 
 export default DataExplorerContent;

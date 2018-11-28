@@ -3,6 +3,7 @@ SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
@@ -43,6 +44,74 @@ CREATE FUNCTION public.emissions_filter_by_year_range(emissions jsonb, start_yea
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.active_storage_attachments (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    record_type character varying NOT NULL,
+    record_id bigint NOT NULL,
+    blob_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: active_storage_attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.active_storage_attachments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: active_storage_attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.active_storage_attachments_id_seq OWNED BY public.active_storage_attachments.id;
+
+
+--
+-- Name: active_storage_blobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.active_storage_blobs (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    filename character varying NOT NULL,
+    content_type character varying,
+    metadata text,
+    byte_size bigint NOT NULL,
+    checksum character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: active_storage_blobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.active_storage_blobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: active_storage_blobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage_blobs.id;
+
 
 --
 -- Name: adaptation_values; Type: TABLE; Schema: public; Owner: -
@@ -124,6 +193,65 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: datasets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.datasets (
+    id bigint NOT NULL,
+    name character varying,
+    section_id bigint
+);
+
+
+--
+-- Name: datasets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.datasets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: datasets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.datasets_id_seq OWNED BY public.datasets.id;
+
+
+--
+-- Name: documents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.documents (
+    id bigint NOT NULL,
+    platform_name character varying
+);
+
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.documents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 
 --
@@ -316,7 +444,8 @@ CREATE TABLE public.locations (
     location_type text NOT NULL,
     show_in_cw boolean DEFAULT true,
     topojson json,
-    centroid jsonb
+    centroid jsonb,
+    is_in_eu boolean
 );
 
 
@@ -642,7 +771,7 @@ CREATE TABLE public.indc_values (
     location_id bigint NOT NULL,
     sector_id bigint,
     label_id bigint,
-    value text,
+    value text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -923,6 +1052,35 @@ ALTER SEQUENCE public.ndcs_id_seq OWNED BY public.ndcs.id;
 
 
 --
+-- Name: platforms; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.platforms (
+    id bigint NOT NULL,
+    name character varying
+);
+
+
+--
+-- Name: platforms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.platforms_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: platforms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.platforms_id_seq OWNED BY public.platforms.id;
+
+
+--
 -- Name: quantification_labels; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -995,6 +1153,36 @@ ALTER SEQUENCE public.quantification_values_id_seq OWNED BY public.quantificatio
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: sections; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sections (
+    id bigint NOT NULL,
+    name character varying,
+    platform_id bigint
+);
+
+
+--
+-- Name: sections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sections_id_seq OWNED BY public.sections.id;
 
 
 --
@@ -1311,6 +1499,41 @@ ALTER SEQUENCE public.wb_extra_country_data_id_seq OWNED BY public.wb_extra_coun
 
 
 --
+-- Name: worker_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.worker_logs (
+    id bigint NOT NULL,
+    state integer,
+    jid character varying,
+    section_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    error text,
+    user_email character varying
+);
+
+
+--
+-- Name: worker_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.worker_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worker_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.worker_logs_id_seq OWNED BY public.worker_logs.id;
+
+
+--
 -- Name: wri_metadata_acronyms; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1439,6 +1662,20 @@ ALTER SEQUENCE public.wri_metadata_values_id_seq OWNED BY public.wri_metadata_va
 
 
 --
+-- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_attachments ALTER COLUMN id SET DEFAULT nextval('public.active_storage_attachments_id_seq'::regclass);
+
+
+--
+-- Name: active_storage_blobs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('public.active_storage_blobs_id_seq'::regclass);
+
+
+--
 -- Name: adaptation_values id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1450,6 +1687,20 @@ ALTER TABLE ONLY public.adaptation_values ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.adaptation_variables ALTER COLUMN id SET DEFAULT nextval('public.adaptation_variables_id_seq'::regclass);
+
+
+--
+-- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets ALTER COLUMN id SET DEFAULT nextval('public.datasets_id_seq'::regclass);
+
+
+--
+-- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
 
 
 --
@@ -1607,6 +1858,13 @@ ALTER TABLE ONLY public.ndcs ALTER COLUMN id SET DEFAULT nextval('public.ndcs_id
 
 
 --
+-- Name: platforms id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.platforms ALTER COLUMN id SET DEFAULT nextval('public.platforms_id_seq'::regclass);
+
+
+--
 -- Name: quantification_labels id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1618,6 +1876,13 @@ ALTER TABLE ONLY public.quantification_labels ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.quantification_values ALTER COLUMN id SET DEFAULT nextval('public.quantification_values_id_seq'::regclass);
+
+
+--
+-- Name: sections id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections ALTER COLUMN id SET DEFAULT nextval('public.sections_id_seq'::regclass);
 
 
 --
@@ -1684,6 +1949,13 @@ ALTER TABLE ONLY public.wb_extra_country_data ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: worker_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.worker_logs ALTER COLUMN id SET DEFAULT nextval('public.worker_logs_id_seq'::regclass);
+
+
+--
 -- Name: wri_metadata_acronyms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1712,6 +1984,87 @@ ALTER TABLE ONLY public.wri_metadata_values ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: indc_values indc_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.indc_values
+    ADD CONSTRAINT indc_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: indc_searchable_values; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.indc_searchable_values AS
+ SELECT indc_values.id,
+    indc_indicators.source_id,
+    indc_sources.name AS source,
+    locations.iso_code3,
+    locations.wri_standard_name AS country,
+    (array_agg(DISTINCT global_categories.category_id))::integer[] AS global_categories_ids,
+    array_to_string(array_agg(DISTINCT global_categories.name), ', '::text) AS global_category,
+    (array_agg(DISTINCT overview_categories.category_id))::integer[] AS overview_categories_ids,
+    array_to_string(array_agg(DISTINCT overview_categories.name), ', '::text) AS overview_category,
+    indc_values.sector_id,
+    COALESCE(sectors.name, parent_sectors.name) AS sector,
+    COALESCE(subsectors.name) AS subsector,
+    indc_values.indicator_id,
+    indc_indicators.slug AS indicator_slug,
+    indc_indicators.name AS indicator_name,
+    indc_values.value
+   FROM ((((((((public.indc_values
+     JOIN public.locations ON ((locations.id = indc_values.location_id)))
+     JOIN public.indc_indicators ON ((indc_indicators.id = indc_values.indicator_id)))
+     JOIN public.indc_sources ON ((indc_sources.id = indc_indicators.source_id)))
+     LEFT JOIN ( SELECT indc_sectors.id,
+            indc_sectors.parent_id,
+            indc_sectors.name
+           FROM public.indc_sectors
+          WHERE (indc_sectors.parent_id IS NOT NULL)) subsectors ON ((indc_values.sector_id = subsectors.id)))
+     LEFT JOIN ( SELECT indc_sectors.id,
+            indc_sectors.parent_id,
+            indc_sectors.name
+           FROM public.indc_sectors
+          WHERE (indc_sectors.parent_id IS NULL)) sectors ON ((indc_values.sector_id = sectors.id)))
+     LEFT JOIN ( SELECT indc_sectors.id,
+            indc_sectors.parent_id,
+            indc_sectors.name
+           FROM public.indc_sectors
+          WHERE (indc_sectors.parent_id IS NULL)) parent_sectors ON ((subsectors.parent_id = parent_sectors.id)))
+     LEFT JOIN ( SELECT ic.category_id,
+            ic.indicator_id,
+            c.name
+           FROM ((public.indc_indicators_categories ic
+             JOIN public.indc_categories c ON ((ic.category_id = c.id)))
+             JOIN public.indc_category_types ct ON (((c.category_type_id = ct.id) AND (upper(ct.name) = 'GLOBAL'::text))))) global_categories ON ((global_categories.indicator_id = indc_indicators.id)))
+     LEFT JOIN ( SELECT ic.category_id,
+            ic.indicator_id,
+            c.name
+           FROM ((public.indc_indicators_categories ic
+             JOIN public.indc_categories c ON ((ic.category_id = c.id)))
+             JOIN public.indc_category_types ct ON (((c.category_type_id = ct.id) AND (upper(ct.name) = 'OVERVIEW'::text))))) overview_categories ON ((overview_categories.indicator_id = indc_indicators.id)))
+  GROUP BY indc_values.id, indc_indicators.source_id, indc_sources.name, locations.iso_code3, locations.wri_standard_name, COALESCE(sectors.name, parent_sectors.name), COALESCE(subsectors.name), indc_indicators.slug, indc_indicators.name, indc_values.value
+  ORDER BY locations.wri_standard_name
+  WITH NO DATA;
+
+
+--
+-- Name: active_storage_attachments active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_attachments
+    ADD CONSTRAINT active_storage_attachments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: active_storage_blobs active_storage_blobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_blobs
+    ADD CONSTRAINT active_storage_blobs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: adaptation_values adaptation_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1733,6 +2086,30 @@ ALTER TABLE ONLY public.adaptation_variables
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: datasets datasets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT datasets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: datasets datasets_section_id_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT datasets_section_id_name_key UNIQUE (section_id, name);
+
+
+--
+-- Name: documents documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.documents
+    ADD CONSTRAINT documents_pkey PRIMARY KEY (id);
 
 
 --
@@ -1840,14 +2217,6 @@ ALTER TABLE ONLY public.indc_submissions
 
 
 --
--- Name: indc_values indc_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.indc_values
-    ADD CONSTRAINT indc_values_pkey PRIMARY KEY (id);
-
-
---
 -- Name: location_members location_members_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1912,6 +2281,22 @@ ALTER TABLE ONLY public.ndcs
 
 
 --
+-- Name: platforms platforms_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.platforms
+    ADD CONSTRAINT platforms_name_key UNIQUE (name);
+
+
+--
+-- Name: platforms platforms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.platforms
+    ADD CONSTRAINT platforms_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: quantification_labels quantification_labels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1933,6 +2318,22 @@ ALTER TABLE ONLY public.quantification_values
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: sections sections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections
+    ADD CONSTRAINT sections_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sections sections_platform_id_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections
+    ADD CONSTRAINT sections_platform_id_name_key UNIQUE (platform_id, name);
 
 
 --
@@ -2008,6 +2409,14 @@ ALTER TABLE ONLY public.wb_extra_country_data
 
 
 --
+-- Name: worker_logs worker_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.worker_logs
+    ADD CONSTRAINT worker_logs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: wri_metadata_acronyms wri_metadata_acronyms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2047,6 +2456,27 @@ CREATE UNIQUE INDEX indc_indicators_categories_uniq ON public.indc_indicators_ca
 
 
 --
+-- Name: index_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_active_storage_attachments_on_blob_id ON public.active_storage_attachments USING btree (blob_id);
+
+
+--
+-- Name: index_active_storage_attachments_uniqueness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active_storage_attachments USING btree (record_type, record_id, name, blob_id);
+
+
+--
+-- Name: index_active_storage_blobs_on_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
+
+
+--
 -- Name: index_adaptation_values_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2065,6 +2495,13 @@ CREATE INDEX index_adaptation_values_on_variable_id ON public.adaptation_values 
 --
 
 CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_variables USING btree (slug);
+
+
+--
+-- Name: index_datasets_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_datasets_on_section_id ON public.datasets USING btree (section_id);
 
 
 --
@@ -2278,6 +2715,48 @@ CREATE INDEX index_indc_labels_on_indicator_id ON public.indc_labels USING btree
 
 
 --
+-- Name: index_indc_searchable_values_on_global_categories_ids; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_global_categories_ids ON public.indc_searchable_values USING btree (global_categories_ids);
+
+
+--
+-- Name: index_indc_searchable_values_on_indicator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_indicator_id ON public.indc_searchable_values USING btree (indicator_id);
+
+
+--
+-- Name: index_indc_searchable_values_on_iso_code3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_iso_code3 ON public.indc_searchable_values USING btree (iso_code3);
+
+
+--
+-- Name: index_indc_searchable_values_on_overview_categories_ids; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_overview_categories_ids ON public.indc_searchable_values USING btree (overview_categories_ids);
+
+
+--
+-- Name: index_indc_searchable_values_on_sector_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_sector_id ON public.indc_searchable_values USING btree (sector_id);
+
+
+--
+-- Name: index_indc_searchable_values_on_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_indc_searchable_values_on_source_id ON public.indc_searchable_values USING btree (source_id);
+
+
+--
 -- Name: index_indc_sectors_on_parent_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2446,6 +2925,13 @@ CREATE INDEX index_searchable_emissions_path_ops ON public.historical_emissions_
 
 
 --
+-- Name: index_sections_on_platform_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sections_on_platform_id ON public.sections USING btree (platform_id);
+
+
+--
 -- Name: index_socioeconomic_indicators_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2492,6 +2978,20 @@ CREATE INDEX index_users_on_ct_id ON public.users USING btree (ct_id);
 --
 
 CREATE INDEX index_wb_extra_country_data_on_location_id ON public.wb_extra_country_data USING btree (location_id);
+
+
+--
+-- Name: index_worker_logs_on_jid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_worker_logs_on_jid ON public.worker_logs USING btree (jid);
+
+
+--
+-- Name: index_worker_logs_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_worker_logs_on_section_id ON public.worker_logs USING btree (section_id);
 
 
 --
@@ -2634,6 +3134,14 @@ ALTER TABLE ONLY public.wb_extra_country_data
 
 
 --
+-- Name: datasets fk_rails_4cf1467767; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.datasets
+    ADD CONSTRAINT fk_rails_4cf1467767 FOREIGN KEY (section_id) REFERENCES public.sections(id);
+
+
+--
 -- Name: indc_values fk_rails_78b5d1bae9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2642,11 +3150,27 @@ ALTER TABLE ONLY public.indc_values
 
 
 --
+-- Name: sections fk_rails_79731eb272; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sections
+    ADD CONSTRAINT fk_rails_79731eb272 FOREIGN KEY (platform_id) REFERENCES public.platforms(id);
+
+
+--
 -- Name: indc_indicators_categories fk_rails_7f8ee8d66f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.indc_indicators_categories
     ADD CONSTRAINT fk_rails_7f8ee8d66f FOREIGN KEY (indicator_id) REFERENCES public.indc_indicators(id) ON DELETE CASCADE;
+
+
+--
+-- Name: worker_logs fk_rails_81b253936f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.worker_logs
+    ADD CONSTRAINT fk_rails_81b253936f FOREIGN KEY (section_id) REFERENCES public.sections(id);
 
 
 --
@@ -2965,6 +3489,18 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180615113815'),
 ('20180720105038'),
 ('20180803123629'),
-('20180807150412');
+('20180807150412'),
+('20180918170821'),
+('20180918170838'),
+('20180924154438'),
+('20180926092216'),
+('20180926092245'),
+('20180926092304'),
+('20181002152649'),
+('20181003090648'),
+('20181009120234'),
+('20181026095008'),
+('20181114113643'),
+('20181119171426');
 
 

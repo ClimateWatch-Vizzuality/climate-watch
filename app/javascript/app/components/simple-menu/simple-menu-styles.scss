@@ -92,6 +92,24 @@
     }
   }
 
+  &.inButton {
+    .links {
+      top: 45px;
+      width: 100%;
+    }
+
+    .button {
+      &::after {
+        display: none;
+      }
+    }
+
+    .arrowIcon {
+      height: 12px;
+      width: 12px;
+    }
+  }
+
   .links {
     display: none;
     position: absolute;
@@ -139,6 +157,11 @@
             margin-right: 5px;
             width: 15px;
             height: 15px;
+          }
+
+          &.withDownloadIcon {
+            justify-content: space-between;
+            padding: 0 10px 0 15px;
           }
         }
       }

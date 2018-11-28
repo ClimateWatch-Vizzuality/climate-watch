@@ -14,46 +14,50 @@ module Api
                 column: 'id', alias: 'id', visible: false
               },
               {
-                column: 'indc_sources.name', alias: 'source', visible: false
+                column: 'source', alias: 'source', visible: false
               },
               {
-                column: 'locations.iso_code3', alias: 'iso_code3', visible: false
+                column: 'iso_code3', alias: 'iso_code3', visible: false
               },
               {
-                column: 'locations.wri_standard_name', alias: 'country'
+                column: 'country', alias: 'country'
               },
               {
-                column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT global_categories.name), ', ')",
+                column: 'global_category',
                 alias: 'global_category',
                 order: false,
                 group: false
               },
               {
-                column: "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT overview_categories.name), ', ')",
+                column: 'overview_category',
                 alias: 'overview_category',
                 order: false,
                 group: false
               },
               {
-                column: 'COALESCE(sectors.name, parent_sectors.name)',
+                column: 'sector',
                 alias: 'sector'
               },
               {
-                column: 'COALESCE(subsectors.name)',
+                column: 'subsector',
                 alias: 'subsector'
               },
               {
-                column: 'indc_indicators.slug',
+                column: 'indicator_slug',
                 alias: 'indicator_slug',
                 display: 'Indicator ID'
               },
               {
-                column: 'indc_indicators.name',
-                alias: 'indicator_name'
+                column: 'value',
+                alias: 'value'
               },
               {
-                column: 'indc_values.value',
-                alias: 'value'
+                column: 'source',
+                alias: 'source'
+              },
+              {
+                column: 'indicator_name',
+                alias: 'indicator_name'
               }
             ]
           end

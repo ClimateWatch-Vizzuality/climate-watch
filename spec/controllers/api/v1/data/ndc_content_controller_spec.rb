@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe Api::V1::Data::NdcContentController, type: :controller do
   include_context 'NDC values'
 
+  before(:each) do
+    Indc::SearchableValue.refresh
+  end
+
   describe 'GET index' do
     it 'renders NDC values' do
       get :index, params: {

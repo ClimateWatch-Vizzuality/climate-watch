@@ -18,18 +18,16 @@ module Api
           def initialize(params)
             initialize_filters(params)
             initialise_sorting(params[:sort_col], params[:sort_dir])
-            @query = ::Indc::Value.all
+            @query = ::Indc::Value.
+              from('indc_searchable_values indc_values').
+              all
           end
 
           def call
             apply_filters
             @query = @query.
               select(select_columns).
-              joins(:location, indicator: :source).
-              group(group_columns).
               order(sanitised_order)
-            join_sectors
-            join_categories
             @query
           end
 
@@ -52,42 +50,9 @@ module Api
             @countries = params[:countries]
           end
 
-          def join_sectors
-            # rubocop:disable Metrics/LineLength
-            subsectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NOT NULL'
-            sectors_subquery = 'SELECT id, parent_id, name FROM indc_sectors WHERE parent_id IS NULL'
-            @query = @query.
-              joins("LEFT JOIN (#{subsectors_subquery}) subsectors ON sector_id = subsectors.id").
-              joins("LEFT JOIN (#{sectors_subquery}) sectors ON sector_id = sectors.id").
-              joins("LEFT JOIN (#{sectors_subquery}) parent_sectors ON subsectors.parent_id = parent_sectors.id")
-            # rubocop:enable Metrics/LineLength
-          end
-
-          def join_categories
-            [
-              ::Indc::CategoryType::GLOBAL, ::Indc::CategoryType::OVERVIEW
-            ].each do |name|
-              category_type = ::Indc::CategoryType.find_by_name(name)
-              @query = @query.joins(
-                <<~SQL
-                  LEFT JOIN (
-                    SELECT ic.category_id, ic.indicator_id, c.name
-                    FROM indc_indicators_categories ic
-                    JOIN indc_categories c ON ic.category_id = c.id
-                    WHERE c.category_type_id = #{category_type&.id}
-                  ) #{name}_categories ON #{name}_categories.indicator_id = indc_indicators.id
-                SQL
-              )
-            end
-          end
-
           def apply_filters
             apply_location_filter
-            if @source_ids
-              @query = @query.where(
-                'indc_indicators.source_id' => @source_ids
-              )
-            end
+            @query = @query.where(source_id: @source_ids) if @source_ids
             @query = @query.where(indicator_id: @indicator_ids) if @indicator_ids
             apply_sector_filter
             apply_category_filter
@@ -95,13 +60,13 @@ module Api
 
           def apply_location_filter
             return unless @countries
-            @query = @query.where(
-              'locations.iso_code3' => @countries
-            )
+
+            @query = @query.where(iso_code3: @countries)
           end
 
           def apply_sector_filter
             return unless @sector_ids
+
             top_level_sector_ids = ::Indc::Sector.
               where(parent_id: nil, id: @sector_ids).
               pluck(:id)
@@ -114,6 +79,7 @@ module Api
 
           def apply_category_filter
             return unless @category_ids
+
             top_level_category_ids = ::Indc::Category.
               where(parent_id: nil, id: @category_ids).
               pluck(:id)
@@ -123,7 +89,7 @@ module Api
               ).pluck(:id)
 
             @query = @query.where(
-              'overview_categories.category_id' => subcategory_ids
+              'overview_categories_ids && ARRAY[?]', subcategory_ids
             )
           end
         end

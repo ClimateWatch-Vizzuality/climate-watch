@@ -19,6 +19,7 @@ import {
   addYearOptions,
   getSelectedOptions
 } from '../data-explorer-content-selectors';
+import { ALL_SELECTED } from '../../../data/constants';
 
 const mapStateToProps = (state, { section, location }) => {
   const search = getSearch(location);
@@ -113,9 +114,12 @@ const getParamsToUpdate = (updatedFilters, section) => {
         sourceAndVersionParam(value, section)
       );
     } else {
+      const blankValue = NON_COLUMN_KEYS.includes(filterName)
+        ? ''
+        : ALL_SELECTED;
       paramsToUpdate.push({
         name: `${section}-${filterName}`,
-        value: parsedValue || '' // Allow empty strings to override the defaults. These won't be fetched
+        value: parsedValue || blankValue // Allow blank value to override the defaults. These won't be fetched
       });
     }
   });

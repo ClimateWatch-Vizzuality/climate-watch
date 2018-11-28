@@ -4,8 +4,12 @@ import GHGCountryEmissions from 'components/country/country-ghg';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
+import LawsAndPolicies from 'components/country/laws-and-policies';
 
-export default [
+const FEATURE_LAWS_AND_POLICIES =
+  process.env.FEATURE_LAWS_AND_POLICIES === 'true';
+
+const routes = [
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',
@@ -31,3 +35,14 @@ export default [
     component: NDCSDGLinkages
   }
 ];
+
+if (FEATURE_LAWS_AND_POLICIES) {
+  routes.push({
+    hash: 'laws-and-policies',
+    label: 'Targets in Laws and Policies',
+    anchor: true,
+    component: LawsAndPolicies
+  });
+}
+
+export default routes;

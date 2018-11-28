@@ -1,0 +1,99 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+$circle-size: 50px;
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 0;
+}
+
+.arrow {
+  height: 30px;
+}
+
+.arrowNavCircle {
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 2px #888;
+  height: $circle-size;
+  width: $circle-size;
+  background-color: $white;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.arrowNavRight {
+  position: absolute;
+  top: 35%;
+  right: calc(0% - #{$circle-size} / 2);
+}
+
+.arrowNavLeft {
+  position: absolute;
+  top: 35%;
+  left: calc(0% - #{$circle-size} / 2);
+  z-index: 2;
+}
+
+.dotsPagination {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.dot {
+  height: 11px;
+  width: 11px;
+  border-radius: 50%;
+  border: 1px solid $black;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.filledDot {
+  background-color: $black;
+}
+
+.card {
+  list-style-type: none;
+  width: 390px;
+  margin-left: -1px;
+  z-index: 0;
+}
+
+.cardInside {
+  height: 350px;
+  width: 390px;
+  box-shadow: none;
+}
+
+.cardContentContainer {
+  background-color: $light-gray;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+.cardTitle {
+  font-size: $font-size;
+  font-weight: $font-weight;
+}
+
+.cardData {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.noContent {
+  background-color: $light-gray;
+  flex: 0 0 100%;
+  height: 350px;
+  padding: 20px;
+}
