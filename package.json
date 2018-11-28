@@ -5,7 +5,8 @@
     "node": ">=8.0.0 <9"
   },
   "scripts": {
-    "start": "run-s rails:db:migrate servers",
+    "start": "run-p -r rails:server js:server",
+    "rails": "run-s rails:db:migrate servers",
     "rails:install": "bundle install",
     "js:install": "yarn install",
     "js:reinstall": "rm -rf ./node_modules && yarn install",
@@ -14,7 +15,6 @@
     "rails:db:migrate": "RAILS_ENV=development bundle exec rails db:migrate",
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",
     "rails:server": "bundle exec rails s",
-    "servers": "run-p -r rails:server js:server",
     "precommit": "lint-staged",
     "lint": "eslint --ext js --ext jsx .",
     "generate": "plop --plopfile app/javascript/generators/plopfile.js component",

@@ -1,13 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import DownloadMenu from 'components/download-menu';
 import ShareMenu from 'components/share-menu';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { Desktop } from 'components/responsive';
 import styles from './tools-nav-styles.scss';
 
-const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
 const mycwLinkConfig = { to: '/my-climate-watch', title: 'My climate watch' };
 const isActive = (match, location) =>
   match && location.pathname.includes(match.path);
@@ -37,14 +35,7 @@ const renderMyCWLink = location => (
 const ToolsNav = props => (
   <div className={cx(styles.toolsNav, props.className)}>
     {renderMyCWLink(props.location)}
-    {FEATURE_DATA_EXPLORER ? (
-      <Desktop>{renderDataExplorerLink(props.location)}</Desktop>
-    ) : (
-      <DownloadMenu
-        className={cx(styles.iconButton, styles.downloadButton)}
-        reverse={props.reverse}
-      />
-    )}
+    <Desktop>{renderDataExplorerLink(props.location)}</Desktop>
     <ShareMenu
       className={cx(styles.iconButton, styles.shareButton)}
       reverse={props.reverse}

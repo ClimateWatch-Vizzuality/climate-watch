@@ -1,4 +1,5 @@
 @import '~styles/layout.scss';
+@import '~styles/settings.scss';
 
 .card {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
@@ -37,4 +38,10 @@
 .subtitle {
   color: $theme-color;
   line-height: $line-height-medium;
+}
+
+.link {
+  text-decoration: underline solid $theme-secondary;
+  color: $theme-color;
+  cursor: pointer;
 }

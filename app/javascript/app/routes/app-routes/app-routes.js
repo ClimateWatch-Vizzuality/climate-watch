@@ -41,17 +41,6 @@ import emissionPathwaysScenarioSections from './emission-pathways-scenario-secti
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 
-// flags
-const FEATURE_DATA_EXPLORER = process.env.FEATURE_DATA_EXPLORER === 'true';
-
-const dataExplorer = FEATURE_DATA_EXPLORER
-  ? {
-    path: '/data-explorer',
-    component: DataExplorer,
-    routes: DataExplorerRoutes
-  }
-  : {};
-
 export default [
   {
     path: '/',
@@ -184,7 +173,11 @@ export default [
     component: MyClimateWatch,
     routes: MyCwRoutes
   },
-  dataExplorer,
+  {
+    path: '/data-explorer',
+    component: DataExplorer,
+    routes: DataExplorerRoutes
+  },
   {
     path: '/about',
     component: About,
@@ -205,12 +198,12 @@ export default [
   {
     path: '/my-climate-watch',
     label: 'MY CW',
-    navMobile: !!FEATURE_DATA_EXPLORER
+    navMobile: true
   },
   {
     path: '/data-explorer',
     label: 'DATA EXPLORER',
-    navMobile: !!FEATURE_DATA_EXPLORER
+    navMobile: true
   },
   {
     path: '/',

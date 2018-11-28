@@ -42,7 +42,7 @@
 
     .sticky-outer-wrapper,
     .sticky-inner-wrapper {
-      z-index: 12;
+      z-index: 23; // dropdown items have 21
     }
   }
 }

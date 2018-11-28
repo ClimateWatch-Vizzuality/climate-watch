@@ -6,6 +6,7 @@ import pick from 'lodash/pick';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
 import { isNoColumnField } from 'utils/data-explorer';
+import { isPageContained } from 'utils/navigation';
 
 import sortBy from 'lodash/sortBy';
 import {
@@ -27,7 +28,12 @@ import {
   FILTER_DEFAULTS,
   FILTERS_DATA_WITHOUT_MODEL
 } from 'data/data-explorer-constants';
-import { SOURCE_VERSIONS } from 'data/constants';
+import {
+  SOURCE_VERSIONS,
+  ALL_SELECTED,
+  ALL_SELECTED_OPTION,
+  CONTAINED_PATHNAME
+} from 'data/constants';
 import {
   getPathwaysModelOptions,
   getPathwaysScenarioOptions,
@@ -228,15 +234,6 @@ export const getNonColumnQuery = createSelector(
   }
 );
 
-export const parseFilterQuery = createSelector(
-  [getFilterQuery, getNonColumnQuery],
-  (filterIds, nonColumnQuery) => {
-    if (!filterIds) return null;
-    const filterQuery = qs.stringify({ ...filterIds, ...nonColumnQuery });
-    return filterQuery;
-  }
-);
-
 const getParsedFilterId = (
   parsedKey,
   parsedKeyData,
@@ -284,7 +281,9 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
         ? '/models'
         : '';
-    return `/${DATA_EXPLORER_SECTIONS[section]
+    return `/${isPageContained
+      ? `${CONTAINED_PATHNAME}/`
+      : ''}${DATA_EXPLORER_SECTIONS[section]
       .moduleName}${subSection}${urlParameters}`;
   }
 );
@@ -454,7 +453,11 @@ const mergeSourcesAndVersions = filters => {
   const versionFilter = filters.gwps;
   const updatedFilters = filters;
   if (dataSourceFilter || dataSourceFilter === '') {
-    updatedFilters.source = `${dataSourceFilter}-${versionFilter}`;
+    if (dataSourceFilter === ALL_SELECTED) {
+      updatedFilters.source = ALL_SELECTED;
+    } else {
+      updatedFilters.source = `${dataSourceFilter}-${versionFilter}`;
+    }
     delete updatedFilters['data-sources'];
     delete updatedFilters.gwps;
   }
@@ -513,7 +516,7 @@ const forceAR2OnCAIT = (parsedSelectedFilters, filterOptions) => {
   const selectedOption = filterOptions.source.find(o =>
     o.value.startsWith(dataSourceId)
   );
-  if (selectedOption.dataSourceSlug === 'CAIT') {
+  if (selectedOption && selectedOption.dataSourceSlug === 'CAIT') {
     const CAIT_AR2_OPTION = filterOptions.source.find(
       o => o.label === 'CAIT - AR2'
     );
@@ -550,6 +553,8 @@ export const getSelectedFilters = createSelector(
       const isNoModelColumnKey = isNoColumnField(section, filterKey);
       if (isNonColumnKey || isNoModelColumnKey) {
         selectedFilterObjects[filterKey] = filterId;
+      } else if (filterId === ALL_SELECTED) {
+        selectedFilterObjects[filterKey] = [ALL_SELECTED_OPTION];
       } else {
         const multipleParsedSelectedFilters = filterId.split(',');
         selectedFilterObjects[filterKey] = findFilterOptions(
@@ -558,6 +563,7 @@ export const getSelectedFilters = createSelector(
         );
       }
     });
+
     return selectedFilterObjects;
   }
 );
@@ -709,10 +715,11 @@ export const getMethodology = createSelector(
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source = selectedFilters.source[0].dataSourceSlug;
+      const source =
+        selectedFilters.source[0] && selectedFilters.source[0].dataSourceSlug;
       metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
     }
-    return methodology.filter(s => metaSource.includes(s.source));
+    return methodology.filter(s => metaSource && metaSource.includes(s.source));
   }
 );
 
@@ -777,18 +784,65 @@ export const parseData = createSelector([parseEmissionsInData], data => {
   return updatedData.map(d => pick(d, whiteList));
 });
 
-export const getFirstTableHeaders = createSelector(
+const getYearColumnKeys = createSelector(
   [parseData, getSection],
   (data, section) => {
     if (!data || !data.length || !section) return null;
-    const yearColumnKeys = Object.keys(data[0]).filter(k => isANumber(k));
+    return Object.keys(data[0]).filter(k => isANumber(k));
+  }
+);
+
+export const getFirstTableHeaders = createSelector(
+  [getYearColumnKeys, getSection],
+  (yearColumnKeys, section) => {
+    if (!yearColumnKeys || !section) return null;
     const reversedYearColumnKeys = [...yearColumnKeys].reverse();
     const sectionFirstHeaders = FIRST_TABLE_HEADERS[section];
     switch (section) {
-      case 'emission-pathways':
+      case [SECTION_NAMES.pathways]:
         return sectionFirstHeaders.concat(yearColumnKeys);
       default:
         return sectionFirstHeaders.concat(reversedYearColumnKeys);
     }
+  }
+);
+
+export const getSortDefaults = createSelector(
+  [getSection, getSearch, getYearColumnKeys],
+  (section, search, yearColumnKeys) => {
+    if (!section) return null;
+    const sectionsWithDefaults = [SECTION_NAMES.historicalEmissions];
+    const sortingDefaults = sectionsWithDefaults.includes(section)
+      ? {
+        [SECTION_NAMES.historicalEmissions]:
+            yearColumnKeys && yearColumnKeys[yearColumnKeys.length - 1]
+      }
+      : {};
+    const sortCol =
+      search.sort_col ||
+      sortingDefaults[section] ||
+      FIRST_TABLE_HEADERS[section][0];
+
+    const sortDir =
+      search.sort_dir ||
+      (section === SECTION_NAMES.historicalEmissions ? 'DESC' : 'ASC');
+    return { sort_col: sortCol, sort_dir: sortDir };
+  }
+);
+
+export const parseFilterQuery = createSelector(
+  [getFilterQuery, getNonColumnQuery, getSortDefaults],
+  (filterIds, nonColumnQuery, sortDefaults) => {
+    if (!filterIds) return null;
+    const isReady =
+      sortDefaults && !!sortDefaults.sort_dir && !!sortDefaults.sort_col;
+    if (!isReady) return null;
+    const filterQuery = qs.stringify({
+      ...filterIds,
+      ...nonColumnQuery,
+      ...sortDefaults
+    });
+
+    return filterQuery;
   }
 );

@@ -14,6 +14,7 @@ import gizImage from 'assets/partners/giz.png';
 import actsImage from 'assets/partners/acts.png';
 import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
+import lseImage from 'assets/partners/lse-logo.png';
 
 import Component from './footer-component';
 
@@ -43,6 +44,15 @@ const basePartners = [
       alt: 'Giz',
       src: gizImage,
       customClass: 'narrower'
+    }
+  },
+  {
+    link: 'http://www.lse.ac.uk/GranthamInstitute',
+    orderingString: 'lse',
+    img: {
+      alt: 'London School of Economics & Grantham Research Institute',
+      src: lseImage,
+      customClass: 'rectangularXxl'
     }
   },
   {

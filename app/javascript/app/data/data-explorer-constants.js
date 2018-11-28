@@ -1,4 +1,4 @@
-import { TOP_EMITTERS } from 'data/constants';
+import { TOP_EMITTERS, ALL_SELECTED } from 'data/constants';
 
 export const DATA_EXPLORER_BLACKLIST = [
   'id',
@@ -48,14 +48,30 @@ export const FIRST_TABLE_HEADERS = {
 export const FILTER_DEFAULTS = {
   'historical-emissions': {
     source: 'CAIT - AR2',
+    regions: ALL_SELECTED,
     gases: 'All GHG',
-    sectors: 'Total including LUCF',
-    start_year: '2014',
-    end_year: '2014'
+    sectors: 'Total including LUCF'
   },
-  'ndc-content': {},
-  'ndc-sdg-linkages': {},
-  'emission-pathways': {}
+  'ndc-content': {
+    categories: ALL_SELECTED,
+    indicators: ALL_SELECTED,
+    sectors: ALL_SELECTED,
+    countries: ALL_SELECTED
+  },
+  'ndc-sdg-linkages': {
+    countries: ALL_SELECTED,
+    goals: ALL_SELECTED,
+    targets: ALL_SELECTED,
+    sectors: ALL_SELECTED
+  },
+  'emission-pathways': {
+    locations: ALL_SELECTED,
+    models: ALL_SELECTED,
+    scenarios: ALL_SELECTED,
+    categories: ALL_SELECTED,
+    subcategories: ALL_SELECTED,
+    indicators: ALL_SELECTED
+  }
 };
 
 export const DATA_EXPLORER_SECTIONS = {
@@ -84,7 +100,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
     UNFCCC: ['historical_emissions_unfccc']
   },
   'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
-  'ndc-content': ['ndc_cait', 'ndc_wb'],
+  'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
   'emission-pathways': [null] // model, scenario and indicator related metadata
 };
 
@@ -114,7 +130,9 @@ export const DATA_EXPLORER_FILTERS = {
 // and will only be selectable if all the values are selected
 export const DATA_EXPLORER_DEPENDENCIES = {
   'historical-emissions': {
-    sectors: ['source']
+    regions: ['source'],
+    sectors: ['source'],
+    gases: ['source']
   },
   'emission-pathways': {
     models: ['locations'],
@@ -290,23 +308,6 @@ export const FILTERS_DATA_WITHOUT_MODEL = {
 };
 
 export const DATA_EXPLORER_TABLE_COLUMNS_WIDTH = {
+  'historical-emissions': 100,
   'emission-pathways': 100
-};
-
-export default {
-  DATA_EXPLORER_BLACKLIST,
-  DATA_EXPLORER_SECTIONS,
-  DATA_EXPLORER_METHODOLOGY_SOURCE,
-  DATA_EXPLORER_DEPENDENCIES,
-  DATA_EXPLORER_EXTERNAL_PREFIX,
-  DATA_EXPLORER_TO_MODULES_PARAMS,
-  DATA_EXPLORER_TABLE_COLUMNS_WIDTH,
-  MULTIPLE_LEVEL_SECTION_FIELDS,
-  GROUPED_OR_MULTI_SELECT_FIELDS,
-  DATA_EXPLORER_PER_PAGE,
-  POSSIBLE_LABEL_FIELDS,
-  POSSIBLE_VALUE_FIELDS,
-  FIELD_ALIAS,
-  TOP_EMITTERS_OPTION,
-  FILTERS_DATA_WITHOUT_MODEL
 };

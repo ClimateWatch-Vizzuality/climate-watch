@@ -107,7 +107,7 @@ class TableContainer extends PureComponent {
       columnsOptions,
       optionsOpen
     } = this.state;
-    const { handleSortChange } = this.props;
+    const { handleSortChange, setRowsHeight } = this.props;
     return createElement(Component, {
       ...this.props,
       data,
@@ -118,7 +118,7 @@ class TableContainer extends PureComponent {
       columnsOptions,
       handleSortChange: handleSortChange || this.handleSortChange,
       handleColumnChange: this.handleColumnChange,
-      setRowsHeight: this.setRowsHeight,
+      setRowsHeight: setRowsHeight || this.setRowsHeight,
       setColumnWidth: this.setColumnWidth,
       setOptionsOpen: this.setOptionsOpen,
       setOptionsClose: this.setOptionsClose,
@@ -131,6 +131,7 @@ TableContainer.propTypes = {
   data: PropTypes.array.isRequired,
   defaultColumns: PropTypes.array,
   handleSortChange: PropTypes.func,
+  setRowsHeight: PropTypes.func,
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   forcedColumnWidth: PropTypes.number

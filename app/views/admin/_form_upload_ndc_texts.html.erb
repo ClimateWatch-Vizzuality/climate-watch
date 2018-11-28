@@ -1,0 +1,30 @@
+<% if datasets.any? %>
+  <table class="index_table">
+    <thead>
+      <th class="col" style="width:10%">Dataset name</th>
+      <th class="col" style="width:10%">Dataset</th>
+    </thead>
+    <tbody>
+      <% datasets.each do |dataset| %>
+        <tr>
+          <td><%= dataset.name %>
+          <td>
+            <% if dataset.datafile.attached? %>
+              <%= dataset.datafile.filename %>
+            <% end %>
+            <div class='forms-container'>
+              <%= form_tag(upload_path, multipart: true, class: 'form_inline') do %>
+                <%= file_field_tag 'datafile' %>
+                <%= submit_tag 'Upload file' %>
+                <%= hidden_field_tag :dataset_id, dataset.id %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= form_tag(download_path, multipart: true) do %>
+    <%= submit_tag 'Download data files' %>
+  <% end %>
+<% end %>

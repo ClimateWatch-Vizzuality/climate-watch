@@ -9,8 +9,16 @@ import iconEdit from 'assets/icons/edit.svg';
 import iconDelete from 'assets/icons/delete.svg';
 import PropTypes from 'prop-types';
 import ShareMenu from 'components/share-menu';
+import ReactTooltip from 'react-tooltip';
 
 import styles from './button-group-styles.scss';
+
+const tooltipText = {
+  share: 'Share',
+  info: 'Information',
+  download: 'Download data',
+  addToUser: 'Add to user'
+};
 
 const iconsMap = {
   info: iconInfo,
@@ -31,6 +39,8 @@ const renderButton = buttonConfig => {
           analyticsGraphName={buttonConfig.analyticsGraphName}
           reverse={buttonConfig.reverseDropdown}
           positionRight={buttonConfig.positionRight}
+          dataFor="blueTooltip"
+          dataTip={tooltipText[buttonConfig.type]}
         />
       );
     default:
@@ -42,6 +52,8 @@ const renderButton = buttonConfig => {
           link={buttonConfig.link}
           href={buttonConfig.href}
           disabled={buttonConfig.disabled}
+          dataFor="blueTooltip"
+          dataTip={tooltipText[buttonConfig.type]}
         >
           <Icon icon={iconsMap[buttonConfig.type]} />
         </Button>
@@ -58,6 +70,7 @@ const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
     )}
   >
     {buttonsConfig.map(buttonConfig => renderButton(buttonConfig))}
+    <ReactTooltip id="blueTooltip" effect="solid" />
   </div>
 );
 

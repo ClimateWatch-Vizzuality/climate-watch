@@ -32,7 +32,8 @@ class Dropdown extends PureComponent {
       info,
       infoText,
       required,
-      optional
+      optional,
+      disclaimer
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     const hasNotValue = this.props.value && !this.props.value.value;
@@ -72,14 +73,28 @@ class Dropdown extends PureComponent {
           )}
         >
           {this.props.loading && <Loading className={styles.loader} mini />}
-          <SimpleSelect
-            ref={el => {
-              this.selectorElement = el;
-            }}
-            className={cx(className, disabled, { [styles.withDot]: colorDot })}
-            renderToggleButton={() => <Icon icon={arrow} />}
-            {...this.props}
-          />
+          <div className={styles.dropdownDisclaimerWrapper}>
+            <SimpleSelect
+              ref={el => {
+                this.selectorElement = el;
+              }}
+              className={cx(className, disabled, {
+                [styles.withDot]: colorDot
+              })}
+              renderToggleButton={() => <Icon icon={arrow} />}
+              renderOption={option => (
+                <div className={styles.optionItem}>
+                  {option.targetsAmount && option.targetsAmount > 0 ? (
+                    <span className={styles.bold}>{option.label}</span>
+                  ) : (
+                    option && option.label
+                  )}
+                </div>
+              )}
+              {...this.props}
+            />
+            {disclaimer && <p className={styles.disclaimer}>{disclaimer}</p>}
+          </div>
         </div>
       </div>
     );
@@ -106,7 +121,8 @@ Dropdown.propTypes = {
   colorDot: PropTypes.string,
   required: PropTypes.bool,
   optional: PropTypes.bool,
-  value: PropTypes.object
+  value: PropTypes.object,
+  disclaimer: PropTypes.string
 };
 
 export default themr('Dropdown', styles)(Dropdown);

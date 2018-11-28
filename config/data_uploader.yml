@@ -1,0 +1,77 @@
+platforms:
+  - name: global_cw_platform
+    display_name: Climate Watch Global
+    sections:
+      - name: adaptation
+        importer: ImportAdaptation
+        datasets:
+          - adaptation
+          - adaptation_metadata
+      - name: historical_emissions
+        importer: ImportHistoricalEmissions
+        datasets:
+          - CW_HistoricalEmissions_metadata_sectors
+          - CW_HistoricalEmissions_CAIT
+          - CW_HistoricalEmissions_PIK
+          - CW_HistoricalEmissions_UNFCCC
+      - name: indc
+        importer: ImportIndc
+        datasets:
+          - NDC_CAIT_data
+          - NDC_CAIT_legend
+          - NDC_WB_data_wide
+          - NDC_WB_data_sectoral
+          - NDC_submission
+          - NDC_metadata
+      - name: locations
+        importer: ImportLocations
+        datasets:
+          - locations
+      - name: locations_members
+        importer: ImportLocationMembers
+        datasets:
+          - locations_groupings
+      - name: ndc_texts
+        # importer:
+        datasets:
+          - ndc_texts
+      - name: quantifications
+        importer: ImportQuantifications
+        datasets:
+          - CW_NDC_quantification_commas
+      - name: sdgs
+        importer: ImportSdgs
+        datasets:
+          - sdgs
+          - sdg_targets
+      - name: socioeconomics
+        importer: ImportSocioeconomics
+        datasets:
+          - indicators_gdp
+          - indicators_gdp_per_capita
+          - indicators_population
+          - indicators_population_growth
+      - name: timeline
+        importer: ImportTimeline
+        datasets:
+          - BR
+          - BUR
+          - GHG18_A1
+          - LTS
+          - NAP
+          - NC_A1
+          - NC_NA1
+          - NDC_INDC
+          - SA
+          - cancun
+      - name: wb_extra
+        importer: ImportWbExtra
+        datasets:
+          - population
+          - gdp
+      - name: wri_metadata
+        importer: ImportWriMetadata
+        datasets:
+          - Acronyms
+          - metadata_sources
+          - metadata_sources_descriptions

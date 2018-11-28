@@ -1,0 +1,135 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.title {
+  padding-top: 40px;
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: 20px;
+}
+
+.descriptionContainer {
+  display: flex;
+  color: $theme-color;
+  line-height: $line-height-medium;
+  margin-bottom: 30px;
+
+  @include columns(12, $gutters: false);
+
+  @media #{$tablet-landscape} {
+    @include columns((6,6), $gutters: false);
+  }
+}
+
+.logoContainer {
+  text-align: right;
+  margin: auto 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  @media #{$tablet-landscape} {
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+}
+
+.actions {
+  @include columns((6,6), $gutters: false);
+
+  margin-bottom: 30px;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.buttonGroup {
+  width: 45px;
+}
+
+.dropdown {
+  max-width: 270px;
+}
+
+.subTitle {
+  font-size: $font-size;
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  margin-bottom: 10px;
+}
+
+.cardsContainer {
+  display: flex;
+  position: relative;
+  overflow: auto;
+
+  @media #{$desktop} {
+    overflow: visible;
+  }
+}
+
+.fixedCard {
+  flex: 0 0 33%;
+  height: 350px;
+  box-shadow: 0 1px 25px 0 rgba(0, 0, 0, 0.1);
+  border: solid 1px rgba(26, 28, 34, 0.1);
+  z-index: 1;
+}
+
+.fixedCardContentContainer {
+  background-color: $light-gray;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+.fixedCardTitle {
+  font-size: $font-size;
+  font-weight: $font-weight;
+}
+
+.fixedCardData {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownTextWrapper {
+  display: flex;
+}
+
+.logo {
+  width: 500px;
+  background-image: url('assets/partners/lse-logo.png');
+  height: 210px;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+  background-size: 100%;
+}
+
+.noContent {
+  background-color: $light-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $manatee;
+  height: 350px;
+  width: inherit;
+  font-size: $font-size-sm;
+  font-style: italic;
+  padding: 20px;
+}
+
+.logoText {
+  text-align: left;
+  color: $theme-color;
+  padding: 2rem;
+
+  @media #{$tablet-landscape} {
+    padding: 2.5rem 1.5rem;
+  }
+}

@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self) rescue ActiveAdmin::DatabaseHitDuringLoad
+
+  authenticate :admin_user do
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   namespace :api do
     namespace :v1 do
       namespace :locations do
@@ -50,6 +58,7 @@ Rails.application.routes.draw do
       resources :timeline, param: :code, only: [:index, :show]
 
       resources :stories, only: [:index]
+      resources :lse_laws_and_policies, only: [:show]
 
       namespace :data do
         resources :historical_emissions, only: [:index] do

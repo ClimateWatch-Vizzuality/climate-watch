@@ -4,6 +4,7 @@ import GHGCountryEmissions from 'components/country/country-ghg';
 import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import ClimateVulnerability from 'components/country/country-climate-vulnerability';
 import CountryNdcOverview from 'components/country/country-ndc-overview';
+import LawsAndPolicies from 'components/country/laws-and-policies';
 
 export default [
   {
@@ -29,5 +30,11 @@ export default [
     label: 'NDC-SDG Linkages',
     anchor: true,
     component: NDCSDGLinkages
+  },
+  {
+    hash: 'laws-and-policies',
+    label: 'Targets in Laws and Policies',
+    anchor: true,
+    component: LawsAndPolicies
   }
 ];

@@ -17,5 +17,6 @@ module ClimateWatch
     config.autoload_paths << "#{Rails.root}/lib/modules"
 
     config.active_record.schema_format = :sql
+    config.active_job.queue_adapter = :sidekiq
   end
 end

@@ -190,7 +190,7 @@ class ModalDownload extends PureComponent {
       <Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
-        header={<ModalHeader title="Download NDC Component" />}
+        header={<ModalHeader title="Purpose of Download" />}
       >
         {this.renderForm()}
       </Modal>

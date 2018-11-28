@@ -40,13 +40,24 @@ gem 'turbolinks', '~> 5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'aws-sdk', '~> 2'
+
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'api-pagination'
 gem 'kaminari'
 gem 'oj'
 gem 'scenic'
+
+# Add second shared database across country platforms
+gem 'secondbase'
+# Add activeadmin for simple CMS
+gem 'activeadmin'
+gem 'devise'
+
+gem 'aws-sdk-rails', '~> 2'
+gem 'aws-sdk-s3', '~> 1'
+
+gem 'sidekiq'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -87,3 +98,10 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git' do
+  gem 'cw_data_uploader', '~> 0.3.5', require: 'data_uploader'
+end
+
+# for debugging
+# gem 'cw_data_uploader', '~> 0.2.0', require: 'data_uploader', path: '../climate-watch-gems'

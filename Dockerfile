@@ -39,7 +39,7 @@ WORKDIR /usr/src/$NAME
 # Install app dependencies
 COPY Gemfile Gemfile.lock ./
 
-RUN bundle install --without development test --jobs 4 --deployment
+RUN cd /usr/src/$NAME && bundle install --without development test --jobs 4 --deployment
 
 # Env variables
 ARG secretKey
@@ -47,12 +47,6 @@ ENV SECRET_KEY_BASE $secretKey
 
 ARG APPSIGNAL_PUSH_API_KEY
 ENV APPSIGNAL_PUSH_API_KEY $APPSIGNAL_PUSH_API_KEY
-
-ARG FEATURE_DATA_EXPLORER
-ENV FEATURE_DATA_EXPLORER $FEATURE_DATA_EXPLORER
-
-ARG FEATURE_DATA_SURVEY
-ENV FEATURE_DATA_SURVEY $FEATURE_DATA_SURVEY
 
 ARG USER_SURVEY_SPREADSHEET_URL
 ENV USER_SURVEY_SPREADSHEET_URL $USER_SURVEY_SPREADSHEET_URL
@@ -66,4 +60,4 @@ EXPOSE 3000
 RUN bundle exec rake assets:precompile
 
 # Start app
-CMD bundle exec rake tmp:clear db:migrate && bundle exec rails s -b 0.0.0.0
+ENTRYPOINT ["./entrypoint.sh"]
