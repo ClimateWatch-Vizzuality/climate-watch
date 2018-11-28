@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import ScrollToTop from 'components/scroll-to-top';
 
+import 'cw-components/dist/main';
 import 'styles/sticky.scss';
 
 import store from 'app/store';
