@@ -19,8 +19,6 @@ import DataExplorerFilters from './data-explorer-filters';
 import ApiDocumentation from './api-documentation/api-documentation';
 import styles from './data-explorer-content-styles.scss';
 
-const FEATURE_DATA_SURVEY = process.env.FEATURE_DATA_SURVEY === 'true';
-
 class DataExplorerContent extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   renderTable() {
@@ -85,7 +83,6 @@ class DataExplorerContent extends PureComponent {
       filterQuery,
       query,
       handleDownloadModalOpen,
-      handleDataDownload,
       handlePageChange,
       pageCount,
       initialPage,
@@ -140,9 +137,7 @@ class DataExplorerContent extends PureComponent {
           )}
           <Button
             className={styles.button}
-            onClick={
-              FEATURE_DATA_SURVEY ? handleDownloadModalOpen : handleDataDownload
-            }
+            onClick={handleDownloadModalOpen}
             color="yellow"
             disabled={!data}
           >
@@ -150,7 +145,7 @@ class DataExplorerContent extends PureComponent {
           </Button>
         </div>
         <ApiDocumentation section={section} />
-        {FEATURE_DATA_SURVEY && <ModalDownload />}
+        <ModalDownload />
       </div>
     );
   }
@@ -161,7 +156,6 @@ DataExplorerContent.propTypes = {
   sectionLabel: PropTypes.string.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   handleDownloadModalOpen: PropTypes.func.isRequired,
-  handleDataDownload: PropTypes.func.isRequired,
   handleSortChange: PropTypes.func.isRequired,
   selectedOptions: PropTypes.object,
   metadataSection: PropTypes.bool,
