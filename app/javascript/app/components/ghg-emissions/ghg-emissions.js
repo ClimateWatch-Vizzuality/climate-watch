@@ -1,83 +1,22 @@
-import { PureComponent, createElement } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
-import {
-  getChartData,
-  getChartDomain,
-  getChartConfig,
-  getSourceOptions,
-  getSourceSelected,
-  getVersionOptions,
-  getVersionSelected,
-  getBreaksByOptions,
-  getBreakSelected,
-  getFilterOptions,
-  getFiltersSelected,
-  getSelectorDefaults,
-  getProviderFilters,
-  getActiveFilterRegion,
-  getLinkToDataExplorer
-} from './ghg-emissions-selectors';
-
-const groups = [
-  {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
-    groupId: 'countries',
-    title: 'Countries'
-  }
-];
-
-const mapStateToProps = (state, { location }) => {
-  const { data } = state.emissions;
-  const { meta } = state.ghgEmissionsMeta;
-  const { data: regions } = state.regions;
-  const search = qs.parse(location.search);
-  const ghg = {
-    meta,
-    data,
-    regions,
-    search
-  };
-  return {
-    data: getChartData(ghg),
-    domain: getChartDomain(ghg),
-    config: getChartConfig(ghg),
-    sources: getSourceOptions(ghg),
-    sourceSelected: getSourceSelected(ghg),
-    versions: getVersionOptions(ghg),
-    versionSelected: getVersionSelected(ghg),
-    breaksBy: getBreaksByOptions(ghg),
-    breakSelected: getBreakSelected(ghg),
-    filters: getFilterOptions(ghg),
-    filtersSelected: getFiltersSelected(ghg),
-    selectorDefaults: getSelectorDefaults(ghg),
-    activeFilterRegion: getActiveFilterRegion(ghg),
-    providerFilters: getProviderFilters(ghg),
-    downloadLink: getLinkToDataExplorer(ghg),
-    loading: state.ghgEmissionsMeta.loading || state.emissions.loading,
-    groups,
-    search
-  };
-};
+import { getGHGEmissions } from './ghg-emissions-selectors';
 
 class GhgEmissionsContainer extends PureComponent {
   componentDidUpdate() {
     const { search, sourceSelected, versionSelected } = this.props;
-    if (!search.source && sourceSelected) {
+    if (!(search && search.source) && sourceSelected) {
       this.updateUrlParam({ name: 'source', value: sourceSelected.value });
     }
-    if (!search.version && versionSelected) {
+    if (!(search && search.version) && versionSelected) {
       this.updateUrlParam({ name: 'version', value: versionSelected.value });
     }
   }
@@ -88,9 +27,9 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleBreakByChange = breakBy => {
-    const { versionSelected } = this.props;
+    const { versionSelected, sourceSelected } = this.props;
     const params = [
-      { name: 'source', value: this.props.sourceSelected.value },
+      { name: 'source', value: sourceSelected.value },
       { name: 'breakBy', value: breakBy.value },
       { name: 'version', value: versionSelected.value }
     ];
@@ -151,15 +90,23 @@ class GhgEmissionsContainer extends PureComponent {
     }
   };
 
+  updateUrlParam = (params, clear) => {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  };
+
   render() {
-    return createElement(GhgEmissionsComponent, {
-      ...this.props,
-      handleSourceChange: this.handleSourceChange,
-      handleVersionChange: this.handleVersionChange,
-      handleBreakByChange: this.handleBreakByChange,
-      handleFilterChange: this.handleFilterChange,
-      handleInfoClick: this.handleInfoClick
-    });
+    return (
+      <GhgEmissionsComponent
+        {...this.props}
+        updateUrlParam={this.updateUrlParam}
+        handleSourceChange={this.handleSourceChange}
+        handleVersionChange={this.handleVersionChange}
+        handleBreakByChange={this.handleBreakByChange}
+        handleFilterChange={this.handleFilterChange}
+        handleInfoClick={this.handleInfoClick}
+      />
+    );
   }
 }
 
@@ -179,5 +126,5 @@ GhgEmissionsContainer.defaultProps = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(GhgEmissionsContainer)
+  connect(getGHGEmissions, actions)(GhgEmissionsContainer)
 );

@@ -6,7 +6,7 @@ import RegionsProvider from 'providers/regions-provider';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
 import MultiSelect from 'components/multiselect';
-import Chart from 'components/charts/chart';
+import { Chart } from 'cw-components';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 
@@ -64,7 +64,6 @@ class GhgEmissions extends PureComponent {
         ]}
       />
     );
-
     return (
       <div>
         <h2 className={styles.title}>Global Historical Emissions</h2>
@@ -105,8 +104,15 @@ class GhgEmissions extends PureComponent {
           <TabletLandscape>{renderButtonGroup()}</TabletLandscape>
         </div>
         <Chart
-          className={styles.chartWrapper}
+          // className={styles.chartWrapper}
           type="line"
+          // type={
+          //   selectedOptions &&
+          //     selectedOptions.chartType &&
+          //     selectedOptions.chartType.value
+          // }
+
+          theme={{ legend: styles.legend }}
           config={config}
           data={data}
           domain={domain}
@@ -114,6 +120,10 @@ class GhgEmissions extends PureComponent {
           dataSelected={filtersSelected}
           height={500}
           loading={loading}
+          lineType="linear"
+          showUnit
+          // onLegendChange={v =>
+          //   this.handleFilterChange(fieldToBreakBy, v)}
         />
         <TabletPortraitOnly>
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>

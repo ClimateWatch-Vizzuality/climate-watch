@@ -1,9 +1,10 @@
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
+import qs from 'query-string';
 import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
@@ -27,7 +28,7 @@ import {
   DATA_SCALE
 } from 'data/constants';
 
-const BREAY_BY_OPTIONS = [
+const BREAK_BY_OPTIONS = [
   {
     label: 'Gas',
     value: 'gas'
@@ -42,21 +43,47 @@ const BREAY_BY_OPTIONS = [
   }
 ];
 
+const groups = [
+  {
+    groupId: 'regions',
+    title: 'Regions'
+  },
+  {
+    groupId: 'countries',
+    title: 'Countries'
+  }
+];
+
 // meta data for selectors
-const getMeta = state => state.meta || null;
-const getSources = state => (state.meta && state.meta.data_source) || null;
-const getRegions = state => state.regions || null;
-const getVersions = state => (state.meta && state.meta.gwp) || null;
+const getData = ({ emissions }) => (emissions && emissions.data) || [];
+const getMeta = ({ ghgEmissionsMeta }) =>
+  (ghgEmissionsMeta && ghgEmissionsMeta.meta) || null;
+const getRegions = ({ regions }) => (regions && regions.data) || null;
+const getSources = createSelector(
+  getMeta,
+  meta => (meta && meta.data_source) || null
+);
+const getVersions = createSelector(getMeta, meta => (meta && meta.gwp) || null);
 
 // values from search
-const getSearch = state => state.search || null;
-const getSourceSelection = state => state.search.source || null;
-const getVersionSelection = state => state.search.version || null;
-const getBreakSelection = state => state.search.breakBy || null;
-const getFilterSelection = state => state.search.filter;
-
-// data for the graph
-const getData = state => state.data || [];
+const getSearch = (state, { location }) =>
+  location && location.search && qs.parse(location.search);
+const getSourceSelection = createSelector(
+  getSearch,
+  search => (search && search.data_source) || null
+);
+const getVersionSelection = createSelector(
+  getSearch,
+  search => (search && search.version) || null
+);
+const getBreakSelection = createSelector(
+  getSearch,
+  search => (search && search.breakBy) || null
+);
+const getFilterSelection = createSelector(
+  getSearch,
+  search => (search && search.filter) || null
+);
 
 // Sources selectors
 export const getSourceOptions = createSelector(getSources, sources => {
@@ -106,7 +133,7 @@ export const getVersionSelected = createSelector(
 );
 
 // BreakBy selectors
-export const getBreaksByOptions = () => BREAY_BY_OPTIONS;
+export const getBreaksByOptions = () => BREAK_BY_OPTIONS;
 
 export const getAllowedSectors = createSelector(
   [getSourceSelected, getVersionSelected],
@@ -140,7 +167,7 @@ export const filterAndSortData = createSelector(
     getAllowedSectors
   ],
   (data, source, version, breakBy, sectorsAllowed) => {
-    if (!data || isEmpty(data)) return null;
+    if (!data || isEmpty(data) || !source || !version) return null;
     const breakByValue = breakBy.value;
     const dataBySource =
       source.label === 'UNFCCC' && breakByValue !== 'sector'
@@ -367,13 +394,29 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   return generateLinkToDataExplorer(search, section);
 });
 
-export default {
-  getSourceOptions,
-  getSourceSelected,
-  getBreaksByOptions,
-  getBreakSelected,
-  getFilterOptions,
-  getFiltersSelected,
-  getProviderFilters,
-  getActiveFilterRegion
-};
+const getLoading = createSelector(
+  [getChartConfig, state => state.ghgEmissionsMeta, state => state.emissions],
+  (chartConfig, meta, data) =>
+    (meta && meta.loading) || (data && data.loading) || !chartConfig || false
+);
+
+export const getGHGEmissions = createStructuredSelector({
+  data: getChartData,
+  domain: getChartDomain,
+  config: getChartConfig,
+  sources: getSourceOptions,
+  sourceSelected: getSourceSelected,
+  versions: getVersionOptions,
+  versionSelected: getVersionSelected,
+  breaksBy: getBreaksByOptions,
+  breakSelected: getBreakSelected,
+  filters: getFilterOptions,
+  filtersSelected: getFiltersSelected,
+  selectorDefaults: getSelectorDefaults,
+  activeFilterRegion: getActiveFilterRegion,
+  providerFilters: getProviderFilters,
+  downloadLink: getLinkToDataExplorer,
+  loading: getLoading,
+  groups: () => groups,
+  search: getSearch
+});
