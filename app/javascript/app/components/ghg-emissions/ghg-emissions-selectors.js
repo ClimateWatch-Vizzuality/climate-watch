@@ -4,7 +4,6 @@ import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
-import qs from 'query-string';
 import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
@@ -66,24 +65,9 @@ const getSources = createSelector(
 const getVersions = createSelector(getMeta, meta => (meta && meta.gwp) || null);
 
 // values from search
-const getSearch = (state, { location }) =>
-  location && location.search && qs.parse(location.search);
-const getSourceSelection = createSelector(
-  getSearch,
-  search => (search && search.data_source) || null
-);
-const getVersionSelection = createSelector(
-  getSearch,
-  search => (search && search.version) || null
-);
-const getBreakSelection = createSelector(
-  getSearch,
-  search => (search && search.breakBy) || null
-);
-const getFilterSelection = createSelector(
-  getSearch,
-  search => (search && search.filter) || null
-);
+const getSearch = (state, { search }) => search || null;
+const getSelection = field =>
+  createSelector(getSearch, search => (search && search[field]) || null);
 
 // Sources selectors
 export const getSourceOptions = createSelector(getSources, sources => {
@@ -96,7 +80,7 @@ export const getSourceOptions = createSelector(getSources, sources => {
 });
 
 export const getSourceSelected = createSelector(
-  [getSourceOptions, getSourceSelection],
+  [getSourceOptions, getSelection('source')],
   (sources, selected) => {
     if (!sources) return null;
     if (!selected) return sources[0];
@@ -121,7 +105,7 @@ export const getVersionOptions = createSelector(
 );
 
 export const getVersionSelected = createSelector(
-  [getVersionOptions, getVersionSelection],
+  [getVersionOptions, getSelection('version')],
   (versions, selected) => {
     if (!versions) return null;
     if (!selected) return versions[0];
@@ -133,7 +117,7 @@ export const getVersionSelected = createSelector(
 );
 
 // BreakBy selectors
-export const getBreaksByOptions = () => BREAK_BY_OPTIONS;
+export const getBreakByOptions = () => BREAK_BY_OPTIONS;
 
 export const getAllowedSectors = createSelector(
   [getSourceSelected, getVersionSelected],
@@ -148,8 +132,8 @@ export const getAllowedSectors = createSelector(
   }
 );
 
-export const getBreakSelected = createSelector(
-  [getBreaksByOptions, getBreakSelection],
+export const getBreakBySelected = createSelector(
+  [getBreakByOptions, getSelection('breakBy')],
   (breaks, selected) => {
     if (!breaks) return null;
     if (!selected) return breaks[0];
@@ -163,7 +147,7 @@ export const filterAndSortData = createSelector(
     getData,
     getSourceSelected,
     getVersionSelected,
-    getBreakSelected,
+    getBreakBySelected,
     getAllowedSectors
   ],
   (data, source, version, breakBy, sectorsAllowed) => {
@@ -225,7 +209,7 @@ export const getRegionsOptions = createSelector(
 export const getFilterOptions = createSelector(
   [
     getMeta,
-    getBreakSelected,
+    getBreakBySelected,
     getRegionsOptions,
     filterAndSortData,
     getAllowedSectors
@@ -252,7 +236,7 @@ export const getFilterOptions = createSelector(
 );
 
 export const getFiltersSelected = createSelector(
-  [getFilterOptions, getFilterSelection, getBreakSelected],
+  [getFilterOptions, getSelection('filter'), getBreakBySelected],
   (filters, selected, breakBy) => {
     if (!filters || selected === '') return [];
     if (!selected && breakBy.value !== 'location') return filters;
@@ -291,7 +275,7 @@ export const getActiveFilterRegion = createSelector(
 
 // Map the data from the API
 export const filterData = createSelector(
-  [filterAndSortData, getFiltersSelected, getBreakSelected],
+  [filterAndSortData, getFiltersSelected, getBreakBySelected],
   (data, filters, breakBy) => {
     if (!data || !data.length || !filters || !filters.length) return null;
     const filterValues = filters.map(filter => filter.label);
@@ -300,7 +284,7 @@ export const filterData = createSelector(
 );
 
 export const getChartData = createSelector(
-  [filterData, getBreakSelected, getFiltersSelected],
+  [filterData, getBreakBySelected, getFiltersSelected],
   (data, breakBy, filters) => {
     if (!data || !data.length || !breakBy || !filters) return null;
     const xValues = data[0].emissions.map(d => d.year);
@@ -331,7 +315,7 @@ export const getChartDomain = createSelector([getChartData], data => {
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [filterData, getBreakSelected],
+  [filterData, getBreakBySelected],
   (data, breakBy) => {
     if (!data || !breakBy) return null;
     const yColumns = data.map(d => ({
@@ -361,7 +345,7 @@ export const getChartConfig = createSelector(
 );
 
 export const getProviderFilters = createSelector(
-  [getSourceSelected, getBreakSelected, getSelectorDefaults],
+  [getSourceSelected, getBreakBySelected, getSelectorDefaults],
   (sourceSelected, breakSelected, selectorDefaults) => {
     if (!sourceSelected || !breakSelected) return null;
     const filter = {};
@@ -400,23 +384,46 @@ const getLoading = createSelector(
     (meta && meta.loading) || (data && data.loading) || !chartConfig || false
 );
 
+const CHART_TYPE_OPTIONS = [
+  { label: 'line', value: 'line' },
+  { label: 'area', value: 'area' }
+];
+
+export const getChartTypeSelected = createSelector(
+  [() => CHART_TYPE_OPTIONS, getSelection('chartType')],
+  (options, selected) => {
+    if (!selected) return options[0];
+    return options.find(category => category.value === parseInt(selected, 10));
+  }
+);
+
+export const getOptions = createStructuredSelector({
+  sources: getSourceOptions,
+  versions: getVersionOptions,
+  chartType: () => CHART_TYPE_OPTIONS,
+  breakBy: getBreakByOptions,
+  filters: getFilterOptions
+});
+
+export const getOptionsSelected = createStructuredSelector({
+  sourcesSelected: getSourceSelected,
+  versionsSelected: getVersionSelected,
+  chartTypeSelected: getChartTypeSelected,
+  breakBySelected: getBreakBySelected,
+  filtersSelected: getFiltersSelected
+});
+
 export const getGHGEmissions = createStructuredSelector({
   data: getChartData,
   domain: getChartDomain,
   config: getChartConfig,
-  sources: getSourceOptions,
-  sourceSelected: getSourceSelected,
-  versions: getVersionOptions,
-  versionSelected: getVersionSelected,
-  breaksBy: getBreaksByOptions,
-  breakSelected: getBreakSelected,
-  filters: getFilterOptions,
-  filtersSelected: getFiltersSelected,
   selectorDefaults: getSelectorDefaults,
   activeFilterRegion: getActiveFilterRegion,
   providerFilters: getProviderFilters,
   downloadLink: getLinkToDataExplorer,
   loading: getLoading,
   groups: () => groups,
-  search: getSearch
+  search: getSearch,
+  options: getOptions,
+  selected: getOptionsSelected
 });

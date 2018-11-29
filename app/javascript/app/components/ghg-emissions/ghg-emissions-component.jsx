@@ -5,39 +5,81 @@ import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
-import MultiSelect from 'components/multiselect';
-import { Chart } from 'cw-components';
+import { Chart, MultiSelect } from 'cw-components';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
-
+import startCase from 'lodash/startCase';
+import isArray from 'lodash/isArray';
+import { ALL_SELECTED_OPTION } from 'data/constants';
 import styles from './ghg-emissions-styles.scss';
+
+const NON_COLUMN_KEYS = ['breakBy', 'chartType'];
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+
+  renderDropdown(label, field, multi, icons) {
+    const addAllSelected = (filterOptions, f) => {
+      const noAllSelected = NON_COLUMN_KEYS.includes(f);
+      if (noAllSelected) return filterOptions && filterOptions[f];
+      return (
+        (filterOptions &&
+        filterOptions[f] && [ALL_SELECTED_OPTION, ...filterOptions[f]]) ||
+        []
+      );
+    };
+
+    const { selected: selectedOptions, options } = this.props;
+    const value = selectedOptions && selectedOptions[field];
+    const iconsProp = icons ? { icons } : {};
+    if (multi) {
+      return (
+        <MultiSelect
+          key={field}
+          label={label || startCase(field)}
+          placeholder={`Filter by ${startCase(field)}`}
+          options={addAllSelected(options, field)}
+          onValueChange={selected => this.handleChange(field, selected)}
+          values={(isArray(value) ? value : [value]) || null}
+          hideResetButton
+        />
+      );
+    }
+    return (
+      <Dropdown
+        key={field}
+        label={label || startCase(field)}
+        placeholder={`Filter by ${startCase(field)}`}
+        options={addAllSelected(options, field)}
+        onValueChange={selected => this.handleChange(field, selected)}
+        value={value || null}
+        hideResetButton
+        {...iconsProp}
+      />
+    );
+  }
+
   render() {
     const {
       data,
       domain,
       config,
       groups,
-      sources,
-      sourceSelected,
-      handleSourceChange,
       handleInfoClick,
-      versions,
-      versionSelected,
-      handleVersionChange,
-      breaksBy,
-      breakSelected,
-      handleBreakByChange,
-      filters,
-      filtersSelected,
-      handleFilterChange,
+      handleChange,
       providerFilters,
       loading,
       activeFilterRegion,
-      downloadLink
+      downloadLink,
+      options,
+      selected: selectedOptions
     } = this.props;
+    const { filters } = options;
+    const {
+      chartTypeSelected,
+      breakBySelected,
+      filtersSelected
+    } = selectedOptions;
 
     const renderButtonGroup = () => (
       <ButtonGroup
@@ -64,6 +106,7 @@ class GhgEmissions extends PureComponent {
         ]}
       />
     );
+
     return (
       <div>
         <h2 className={styles.title}>Global Historical Emissions</h2>
@@ -71,47 +114,23 @@ class GhgEmissions extends PureComponent {
         <EmissionsMetaProvider />
         <EmissionsProvider filters={providerFilters} />
         <div className={styles.col4}>
-          <Dropdown
-            label="Source"
-            options={sources}
-            onValueChange={handleSourceChange}
-            value={sourceSelected}
-            hideResetButton
-          />
-          <Dropdown
-            label="IPCC Version"
-            options={versions}
-            onValueChange={handleVersionChange}
-            value={versionSelected}
-            hideResetButton
-            disabled={versions && versions.length === 1}
-          />
-          <Dropdown
-            label="Select by"
-            options={breaksBy}
-            onValueChange={handleBreakByChange}
-            value={breakSelected}
-            hideResetButton
-          />
+          {this.renderDropdown('Source', 'sources')}
+          {this.renderDropdown('IPCC Version', 'versions')}
+          {this.renderDropdown('Select by', 'breakBy')}
           <MultiSelect
             selectedLabel={activeFilterRegion ? activeFilterRegion.label : null}
-            label={breakSelected.label}
-            groups={breakSelected.value === 'location' ? groups : null}
+            label={breakBySelected.label}
+            groups={breakBySelected.value === 'location' ? groups : null}
             values={filtersSelected || []}
             options={filters || []}
-            onMultiValueChange={handleFilterChange}
+            onMultiValueChange={selected => handleChange('filter', selected)}
           />
+          {this.renderDropdown('Chart Selected', 'chartType')}
           <TabletLandscape>{renderButtonGroup()}</TabletLandscape>
         </div>
         <Chart
-          // className={styles.chartWrapper}
-          type="line"
-          // type={
-          //   selectedOptions &&
-          //     selectedOptions.chartType &&
-          //     selectedOptions.chartType.value
-          // }
-
+          className={styles.chartWrapper}
+          type={chartTypeSelected && chartTypeSelected.value}
           theme={{ legend: styles.legend }}
           config={config}
           data={data}
@@ -138,21 +157,12 @@ GhgEmissions.propTypes = {
   data: PropTypes.array,
   domain: PropTypes.object,
   config: PropTypes.object,
+  options: PropTypes.object,
+  selected: PropTypes.object,
   groups: PropTypes.array,
-  versions: PropTypes.array,
-  versionSelected: PropTypes.object,
-  handleVersionChange: PropTypes.func.isRequired,
-  sources: PropTypes.array,
-  sourceSelected: PropTypes.object,
+  handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  handleSourceChange: PropTypes.func.isRequired,
-  breaksBy: PropTypes.array,
-  breakSelected: PropTypes.object,
   providerFilters: PropTypes.object,
-  handleBreakByChange: PropTypes.func.isRequired,
-  filters: PropTypes.array,
-  filtersSelected: PropTypes.array,
-  handleFilterChange: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   activeFilterRegion: PropTypes.object,
   downloadLink: PropTypes.string

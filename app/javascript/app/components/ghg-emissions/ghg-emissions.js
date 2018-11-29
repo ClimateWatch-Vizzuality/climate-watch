@@ -4,15 +4,23 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
+import qs from 'query-string';
 
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
 import { getGHGEmissions } from './ghg-emissions-selectors';
 
+const mapStateToProps = (state, props) => {
+  const { location } = props;
+  const search = location && location.search && qs.parse(location.search);
+  return getGHGEmissions(state, { ...props, search });
+};
+
 class GhgEmissionsContainer extends PureComponent {
   componentDidUpdate() {
-    const { search, sourceSelected, versionSelected } = this.props;
+    const { search, selected } = this.props;
+    const { sourceSelected, versionSelected } = selected;
     if (!(search && search.source) && sourceSelected) {
       this.updateUrlParam({ name: 'source', value: sourceSelected.value });
     }
@@ -21,13 +29,16 @@ class GhgEmissionsContainer extends PureComponent {
     }
   }
 
+  handleChange = (field, selected) => this[`handle${field}Change`](selected);
+
   handleSourceChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
     handleAnalytics('Historical Emissions', 'Source selected', category.label);
   };
 
   handleBreakByChange = breakBy => {
-    const { versionSelected, sourceSelected } = this.props;
+    const { selected } = this.props;
+    const { versionSelected, sourceSelected } = selected;
     const params = [
       { name: 'source', value: sourceSelected.value },
       { name: 'breakBy', value: breakBy.value },
@@ -42,8 +53,14 @@ class GhgEmissionsContainer extends PureComponent {
     handleAnalytics('Historical Emissions', 'version selected', version.label);
   };
 
+  handleChartTypeChange = version => {
+    this.updateUrlParam({ name: 'chartType', value: version.value });
+    handleAnalytics('Chart Type', 'chart type selected', version.label);
+  };
+
   handleFilterChange = filters => {
-    const oldFilters = this.props.filtersSelected;
+    const { selected } = this.props;
+    const { filtersSelected: oldFilters, breakSelected } = selected;
     const removing = filters.length < oldFilters.length;
     const selectedFilter = filters
       .filter(x => oldFilters.indexOf(x) === -1)
@@ -56,9 +73,7 @@ class GhgEmissionsContainer extends PureComponent {
       filters.forEach(filter => {
         if (filter.groupId !== 'regions') {
           filtersParam.push(
-            this.props.breakSelected.value === 'location'
-              ? filter.iso
-              : filter.value
+            breakSelected.value === 'location' ? filter.iso : filter.value
           );
         }
       });
@@ -80,7 +95,8 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleInfoClick = () => {
-    const { source } = this.props.sourceSelected;
+    const { selected } = this.props;
+    const { source } = selected.sourceSelected;
     if (source) {
       this.props.setModalMetadata({
         category: 'Historical Emissions',
@@ -100,10 +116,7 @@ class GhgEmissionsContainer extends PureComponent {
       <GhgEmissionsComponent
         {...this.props}
         updateUrlParam={this.updateUrlParam}
-        handleSourceChange={this.handleSourceChange}
-        handleVersionChange={this.handleVersionChange}
-        handleBreakByChange={this.handleBreakByChange}
-        handleFilterChange={this.handleFilterChange}
+        handleChange={this.handleChange}
         handleInfoClick={this.handleInfoClick}
       />
     );
@@ -113,18 +126,16 @@ class GhgEmissionsContainer extends PureComponent {
 GhgEmissionsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  breakSelected: PropTypes.object,
-  sourceSelected: PropTypes.object,
-  versionSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
-  filtersSelected: PropTypes.array,
+  selected: PropTypes.object,
   search: PropTypes.object
 };
 
 GhgEmissionsContainer.defaultProps = {
-  sourceSelected: null
+  selected: undefined,
+  search: undefined
 };
 
 export default withRouter(
-  connect(getGHGEmissions, actions)(GhgEmissionsContainer)
+  connect(mapStateToProps, actions)(GhgEmissionsContainer)
 );
