@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import * as actions from './login-provider-actions';
-import * as reducers from './login-provider-reducers';
-
-const initialState = reducers.initialState;
+import reducers, { initialState } from './login-provider-reducers';
 
 class LoginProvider extends PureComponent {
   componentDidMount() {
