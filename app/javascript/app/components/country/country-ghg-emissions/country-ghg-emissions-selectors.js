@@ -93,7 +93,10 @@ export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
     if (!sources || !sources.length) return {};
-    if (!selected) return sources[0];
+    if (!selected) {
+      const defaultSource = sources.find(s => s.label === 'UNFCCC');
+      return defaultSource || sources[0];
+    }
     return sources.find(category => category.value === parseInt(selected, 10));
   }
 );
