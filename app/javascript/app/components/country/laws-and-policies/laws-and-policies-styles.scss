@@ -2,23 +2,23 @@
 @import '~styles/settings.scss';
 
 .title {
-  padding-top: 40px;
   font-size: $font-size-large;
   font-weight: $font-weight;
   color: $theme-color;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .descriptionContainer {
   display: flex;
   color: $theme-color;
+  padding-top: 40px;
   line-height: $line-height-medium;
   margin-bottom: 30px;
 
   @include columns(12, $gutters: false);
 
-  @media #{$tablet-landscape} {
-    @include columns((6,6), $gutters: false);
+  @media #{$desktop} {
+    @include columns((7, 5), $gutters: false);
   }
 }
 
@@ -29,22 +29,28 @@
   justify-content: center;
   margin-top: 20px;
 
-  @media #{$tablet-landscape} {
+  @media #{$desktop} {
     justify-content: flex-end;
     margin-top: 0;
   }
 }
 
 .actions {
-  @include columns((6,6), $gutters: false);
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 35px;
 
-  margin-bottom: 30px;
+  @media #{$desktop} {
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
 }
 
 .buttonContainer {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  padding-bottom: 8px;
 }
 
 .buttonGroup {
@@ -118,7 +124,7 @@
   justify-content: center;
   color: $manatee;
   height: 350px;
-  width: inherit;
+  width: 100%;
   font-size: $font-size-sm;
   font-style: italic;
   padding: 20px;
@@ -132,4 +138,9 @@
   @media #{$tablet-landscape} {
     padding: 2.5rem 1.5rem;
   }
+}
+
+.dropdownWrapper {
+  width: auto;
+  margin-right: 10px;
 }
