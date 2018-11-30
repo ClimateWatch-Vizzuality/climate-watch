@@ -5,22 +5,25 @@ import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
-import { Chart, MultiSelect } from 'cw-components';
+import MultiSelect from 'components/multiselect';
+import { Chart } from 'cw-components';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
 import { ALL_SELECTED_OPTION } from 'data/constants';
+import lineIcon from 'assets/icons/line_chart.svg';
+import areaIcon from 'assets/icons/area_chart.svg';
 import styles from './ghg-emissions-styles.scss';
 
-const NON_COLUMN_KEYS = ['breakBy', 'chartType'];
+const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType'];
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
   renderDropdown(label, field, multi, icons) {
     const addAllSelected = (filterOptions, f) => {
-      const noAllSelected = NON_COLUMN_KEYS.includes(f);
+      const noAllSelected = NO_ALL_SELECTED_COLUMNS.includes(f);
       if (noAllSelected) return filterOptions && filterOptions[f];
       return (
         (filterOptions &&
@@ -29,8 +32,8 @@ class GhgEmissions extends PureComponent {
       );
     };
 
-    const { selected: selectedOptions, options } = this.props;
-    const value = selectedOptions && selectedOptions[field];
+    const { selected: selectedOptions, options, handleChange } = this.props;
+    const value = selectedOptions && selectedOptions[`${field}Selected`];
     const iconsProp = icons ? { icons } : {};
     if (multi) {
       return (
@@ -39,7 +42,7 @@ class GhgEmissions extends PureComponent {
           label={label || startCase(field)}
           placeholder={`Filter by ${startCase(field)}`}
           options={addAllSelected(options, field)}
-          onValueChange={selected => this.handleChange(field, selected)}
+          onValueChange={selected => handleChange(field, selected)}
           values={(isArray(value) ? value : [value]) || null}
           hideResetButton
         />
@@ -51,7 +54,7 @@ class GhgEmissions extends PureComponent {
         label={label || startCase(field)}
         placeholder={`Filter by ${startCase(field)}`}
         options={addAllSelected(options, field)}
-        onValueChange={selected => this.handleChange(field, selected)}
+        onValueChange={selected => handleChange(field, selected)}
         value={value || null}
         hideResetButton
         {...iconsProp}
@@ -69,18 +72,13 @@ class GhgEmissions extends PureComponent {
       handleChange,
       providerFilters,
       loading,
-      activeFilterRegion,
       downloadLink,
       options,
-      selected: selectedOptions
+      selected: selectedOptions,
+      legendOptions,
+      legendSelected
     } = this.props;
-    const { filters } = options;
-    const {
-      chartTypeSelected,
-      breakBySelected,
-      filtersSelected
-    } = selectedOptions;
-
+    const { chartTypeSelected } = selectedOptions;
     const renderButtonGroup = () => (
       <ButtonGroup
         className={styles.colEnd}
@@ -106,6 +104,7 @@ class GhgEmissions extends PureComponent {
         ]}
       />
     );
+    const icons = { line: lineIcon, area: areaIcon };
 
     return (
       <div>
@@ -116,16 +115,27 @@ class GhgEmissions extends PureComponent {
         <div className={styles.col4}>
           {this.renderDropdown('Source', 'sources')}
           {this.renderDropdown('IPCC Version', 'versions')}
-          {this.renderDropdown('Select by', 'breakBy')}
           <MultiSelect
-            selectedLabel={activeFilterRegion ? activeFilterRegion.label : null}
-            label={breakBySelected.label}
-            groups={breakBySelected.value === 'location' ? groups : null}
-            values={filtersSelected || []}
-            options={filters || []}
-            onMultiValueChange={selected => handleChange('filter', selected)}
+            label={'Regions'}
+            groups={groups}
+            values={selectedOptions.regionsSelected || []}
+            options={options.regions || []}
+            onMultiValueChange={selected => handleChange('regions', selected)}
           />
-          {this.renderDropdown('Chart Selected', 'chartType')}
+          <MultiSelect
+            label={'Sectors / Subsectors'}
+            values={selectedOptions.sectorsSelected || []}
+            options={options.sectors || []}
+            onMultiValueChange={selected => handleChange('sectors', selected)}
+          />
+          <MultiSelect
+            label={'Gases'}
+            values={selectedOptions.gasesSelected || []}
+            options={options.gases || []}
+            onMultiValueChange={selected => handleChange('gases', selected)}
+          />
+          {this.renderDropdown('Break by', 'breakBy')}
+          {this.renderDropdown(null, 'chartType', false, icons)}
           <TabletLandscape>{renderButtonGroup()}</TabletLandscape>
         </div>
         <Chart
@@ -135,8 +145,8 @@ class GhgEmissions extends PureComponent {
           config={config}
           data={data}
           domain={domain}
-          dataOptions={filters}
-          dataSelected={filtersSelected}
+          dataOptions={legendOptions}
+          dataSelected={legendSelected}
           height={500}
           loading={loading}
           lineType="linear"
@@ -159,6 +169,8 @@ GhgEmissions.propTypes = {
   config: PropTypes.object,
   options: PropTypes.object,
   selected: PropTypes.object,
+  legendOptions: PropTypes.array,
+  legendSelected: PropTypes.array,
   groups: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,

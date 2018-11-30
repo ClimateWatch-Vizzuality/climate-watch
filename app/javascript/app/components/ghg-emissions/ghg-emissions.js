@@ -5,6 +5,8 @@ import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
+import upperFirst from 'lodash/upperFirst';
+import camelCase from 'lodash/camelCase';
 
 import { actions } from 'components/modal-metadata';
 
@@ -29,38 +31,42 @@ class GhgEmissionsContainer extends PureComponent {
     }
   }
 
-  handleChange = (field, selected) => this[`handle${field}Change`](selected);
+  handleChange = (field, selected) => {
+    if (['regions', 'sectors', 'gases'].includes(field)) { return this.handleFilterChange(field, selected); }
+    const functionName = `handle${upperFirst(camelCase(field))}Change`;
+    return this[functionName](selected);
+  };
 
-  handleSourceChange = category => {
+  handleSourcesChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
     handleAnalytics('Historical Emissions', 'Source selected', category.label);
   };
 
   handleBreakByChange = breakBy => {
     const { selected } = this.props;
-    const { versionSelected, sourceSelected } = selected;
+    const { versionsSelected, sourcesSelected } = selected;
     const params = [
-      { name: 'source', value: sourceSelected.value },
+      { name: 'source', value: sourcesSelected.value },
       { name: 'breakBy', value: breakBy.value },
-      { name: 'version', value: versionSelected.value }
+      { name: 'version', value: versionsSelected.value }
     ];
     this.updateUrlParam(params, true);
     handleAnalytics('Historical Emissions', 'Break by selected', breakBy.label);
   };
 
-  handleVersionChange = version => {
+  handleVersionsChange = version => {
     this.updateUrlParam({ name: 'version', value: version.value });
     handleAnalytics('Historical Emissions', 'version selected', version.label);
   };
 
-  handleChartTypeChange = version => {
-    this.updateUrlParam({ name: 'chartType', value: version.value });
-    handleAnalytics('Chart Type', 'chart type selected', version.label);
+  handleChartTypeChange = type => {
+    this.updateUrlParam({ name: 'chartType', value: type.value });
+    handleAnalytics('Chart Type', 'chart type selected', type.label);
   };
 
-  handleFilterChange = filters => {
+  handleFilterChange = (field, filters) => {
     const { selected } = this.props;
-    const { filtersSelected: oldFilters, breakSelected } = selected;
+    const oldFilters = selected[`${field}Selected`];
     const removing = filters.length < oldFilters.length;
     const selectedFilter = filters
       .filter(x => oldFilters.indexOf(x) === -1)
@@ -72,19 +78,17 @@ class GhgEmissionsContainer extends PureComponent {
     } else if (selectedFilter.groupId !== 'regions') {
       filters.forEach(filter => {
         if (filter.groupId !== 'regions') {
-          filtersParam.push(
-            breakSelected.value === 'location' ? filter.iso : filter.value
-          );
+          filtersParam.push(field === 'regions' ? filter.iso : filter.value);
         }
       });
     }
-    this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
+    this.updateUrlParam({ name: [field], value: filtersParam.toString() });
     const selectedFilterLabels = filters.map(f => f.label);
     if (selectedFilterLabels.length > 0) {
       handleAnalytics(
         'Historical Emissions',
         'Filter by',
-        selectedFilterLabels.toString()
+        `${field}: ${selectedFilterLabels.toString()}`
       );
     }
   };

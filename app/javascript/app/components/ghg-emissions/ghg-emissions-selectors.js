@@ -1,5 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import isArray from 'lodash/isArray';
 import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
 import groupBy from 'lodash/groupBy';
@@ -24,22 +25,42 @@ import {
   ALLOWED_SECTORS_BY_SOURCE,
   EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
   DEFAULT_EMISSIONS_SELECTIONS,
-  DATA_SCALE
+  DATA_SCALE,
+  METRIC_OPTIONS,
+  ALL_SELECTED
 } from 'data/constants';
 
 const BREAK_BY_OPTIONS = [
   {
-    label: 'Gas',
-    value: 'gas'
+    label: 'Regions - Absolute',
+    value: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
   },
   {
-    label: 'Sector',
-    value: 'sector'
+    label: 'Regions - Per GDP',
+    value: `regions-${METRIC_OPTIONS.PER_GDP.value}`
   },
   {
-    label: 'Regions',
-    value: 'location'
-  }
+    label: 'Regions - Per Capita',
+    value: `regions-${METRIC_OPTIONS.PER_CAPITA.value}`
+  },
+  {
+    label: 'Sector - Absolute',
+    value: `sector-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
+  },
+  {
+    label: 'Sector - Per GDP',
+    value: `sector-${METRIC_OPTIONS.PER_CAPITA.value}`
+  },
+  {
+    label: 'Sector - Per Capita',
+    value: `sector-${METRIC_OPTIONS.PER_GDP.value}`
+  },
+  {
+    label: 'Gas - Absolute',
+    value: `gas-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
+  },
+  { label: 'Gas - Per GDP', value: `gas-${METRIC_OPTIONS.PER_GDP.value}` },
+  { label: 'Gas - Per Capita', value: `gas-${METRIC_OPTIONS.PER_CAPITA.value}` }
 ];
 
 const groups = [
@@ -132,7 +153,7 @@ export const getAllowedSectors = createSelector(
   }
 );
 
-export const getBreakBySelected = createSelector(
+export const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
   (breaks, selected) => {
     if (!breaks) return null;
@@ -141,20 +162,37 @@ export const getBreakBySelected = createSelector(
   }
 );
 
+const getBreakBySelected = createSelector(
+  getBreakByOptionSelected,
+  breakBySelected => {
+    if (!breakBySelected) return null;
+    const breakByArray = breakBySelected.value.split('-');
+    return { modelSelected: breakByArray[0], metricSelected: breakByArray[1] };
+  }
+);
+
+export const getModelSelected = createSelector(
+  getBreakBySelected,
+  breakBySelected => (breakBySelected && breakBySelected.modelSelected) || null
+);
+export const getMetricSelected = createSelector(
+  getBreakBySelected,
+  breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
+);
+
 // Get data and filter and sort by emissions value
 export const filterAndSortData = createSelector(
   [
     getData,
     getSourceSelected,
     getVersionSelected,
-    getBreakBySelected,
+    getModelSelected,
     getAllowedSectors
   ],
-  (data, source, version, breakBy, sectorsAllowed) => {
+  (data, source, version, model, sectorsAllowed) => {
     if (!data || isEmpty(data) || !source || !version) return null;
-    const breakByValue = breakBy.value;
     const dataBySource =
-      source.label === 'UNFCCC' && breakByValue !== 'sector'
+      source.label === 'UNFCCC' && model !== 'sector'
         ? data.filter(
           d =>
             d.sector.trim() ===
@@ -162,7 +200,7 @@ export const filterAndSortData = createSelector(
         )
         : data;
     const dataBySector =
-      breakByValue === 'sector'
+      model === 'sector'
         ? dataBySource.filter(d => sectorsAllowed.indexOf(d.sector.trim()) > -1)
         : dataBySource;
     return sortEmissionsByValue(
@@ -205,56 +243,50 @@ export const getRegionsOptions = createSelector(
   }
 );
 
-// Filters selector
-export const getFilterOptions = createSelector(
-  [
-    getMeta,
-    getBreakBySelected,
-    getRegionsOptions,
-    filterAndSortData,
-    getAllowedSectors
-  ],
-  (meta, breakSelected, regions, data) => {
-    if (isEmpty(meta) || isEmpty(data) || !breakSelected || !regions) {
-      return [];
+export const getFieldOptions = field =>
+  createSelector(
+    [getMeta, getRegionsOptions, filterAndSortData],
+    (meta, regions, data) => {
+      if (isEmpty(meta) || isEmpty(data) || !regions) {
+        return [];
+      }
+      const filterOptions = Object.keys(groupBy(data, field));
+      const filtersSelected = meta[field].filter(
+        m => filterOptions.indexOf(m.label) > -1
+      );
+      if (field === 'location') {
+        const countries = filtersSelected.map(d => ({
+          ...d,
+          value: d.iso,
+          groupId: 'countries'
+        }));
+        return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
+      }
+      return sortLabelByAlpha(filtersSelected);
     }
-    const breakByValue = breakSelected.value;
-    const filterOptions = Object.keys(groupBy(data, breakByValue));
-    const filtersSelected = meta[breakByValue].filter(
-      m => filterOptions.indexOf(m.label) > -1
-    );
-    if (breakByValue === 'location') {
-      const countries = filtersSelected.map(d => ({
-        ...d,
-        value: d.iso,
-        groupId: 'countries'
-      }));
-      return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
-    }
-    return sortLabelByAlpha(filtersSelected);
-  }
-);
+  );
 
-export const getFiltersSelected = createSelector(
-  [getFilterOptions, getSelection('filter'), getBreakBySelected],
-  (filters, selected, breakBy) => {
-    if (!filters || selected === '') return [];
-    if (!selected && breakBy.value !== 'location') return filters;
-    let selectedFilters = [];
-    if (breakBy.value === 'location' && !selected) {
-      const selectedValues = TOP_EMITTERS;
-      selectedFilters = filters.filter(
-        filter => selectedValues.indexOf(filter.value) > -1
-      );
-    } else {
-      const selectedValues = selected.split(',');
-      selectedFilters = filters.filter(
-        filter => selectedValues.indexOf(`${filter.value}`) > -1
-      );
+export const getFiltersSelected = field =>
+  createSelector(
+    [getFieldOptions(field), getSelection('filter')],
+    (filters, selected) => {
+      if (!filters || selected === '') return [];
+      if (!selected && field !== 'location') return filters;
+      let selectedFilters = [];
+      if (field === 'location' && !selected) {
+        const selectedValues = TOP_EMITTERS;
+        selectedFilters = filters.filter(
+          filter => selectedValues.indexOf(filter.value) > -1
+        );
+      } else {
+        const selectedValues = selected.split(',');
+        selectedFilters = filters.filter(
+          filter => selectedValues.indexOf(`${filter.value}`) > -1
+        );
+      }
+      return selectedFilters;
     }
-    return selectedFilters;
-  }
-);
+  );
 
 // get selector defaults
 export const getSelectorDefaults = createSelector(
@@ -265,33 +297,62 @@ export const getSelectorDefaults = createSelector(
   }
 );
 
-export const getActiveFilterRegion = createSelector(
-  [getFiltersSelected],
-  filters => {
-    if (!filters) return null;
-    return filters.find(f => f.groupId === 'regions');
+const CHART_TYPE_OPTIONS = [
+  { label: 'line', value: 'line' },
+  { label: 'area', value: 'area' }
+];
+
+export const getChartTypeSelected = createSelector(
+  [() => CHART_TYPE_OPTIONS, getSelection('chartType')],
+  (options, selected) => {
+    if (!selected) return options[0];
+    return options.find(type => type.value === selected);
   }
 );
 
+const getOptions = createStructuredSelector({
+  sources: getSourceOptions,
+  versions: getVersionOptions,
+  chartType: () => CHART_TYPE_OPTIONS,
+  breakBy: getBreakByOptions,
+  regions: getFieldOptions('location'),
+  sectors: getFieldOptions('sector'),
+  gases: getFieldOptions('gas')
+});
+
+const getOptionsSelected = createStructuredSelector({
+  sourcesSelected: getSourceSelected,
+  versionsSelected: getVersionSelected,
+  chartTypeSelected: getChartTypeSelected,
+  breakBySelected: getBreakByOptionSelected,
+  regionsSelected: getFiltersSelected('location'),
+  sectorsSelected: getFiltersSelected('sector'),
+  gasesSelected: getFiltersSelected('gas')
+});
+
 // Map the data from the API
-export const filterData = createSelector(
-  [filterAndSortData, getFiltersSelected, getBreakBySelected],
-  (data, filters, breakBy) => {
+const filterData = createSelector(
+  [filterAndSortData, getOptionsSelected],
+  (data, filters) => {
     if (!data || !data.length || !filters || !filters.length) return null;
-    const filterValues = filters.map(filter => filter.label);
-    return data.filter(d => filterValues.indexOf(d[breakBy.value]) > -1);
+    // We have to filter the data for all the values
+
+    // const filterValues = filters.map(filter => filter.label);
+    // return data.filter(d => filterValues.indexOf(d[model]) > -1);
+    return data;
   }
 );
 
 export const getChartData = createSelector(
-  [filterData, getBreakBySelected, getFiltersSelected],
-  (data, breakBy, filters) => {
-    if (!data || !data.length || !breakBy || !filters) return null;
+  [filterData, getModelSelected, getOptionsSelected],
+  (data, model, filters) => {
+    // DATA: Filter by all options selected and not only model selected
+    if (!data || !data.length || !model || !filters) return null;
     const xValues = data[0].emissions.map(d => d.year);
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
-        const yKey = getYColumnValue(d[breakBy.value]);
+        const yKey = getYColumnValue(d[model]);
         const yData = d.emissions.find(e => e.year === x);
         yItems[yKey] = yData.value ? yData.value * DATA_SCALE : null;
       });
@@ -315,12 +376,12 @@ export const getChartDomain = createSelector([getChartData], data => {
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [filterData, getBreakBySelected],
-  (data, breakBy) => {
-    if (!data || !breakBy) return null;
+  [filterData, getModelSelected],
+  (data, model) => {
+    if (!data || !model) return null;
     const yColumns = data.map(d => ({
-      label: d[breakBy.value],
-      value: getYColumnValue(d[breakBy.value])
+      label: d[model],
+      value: getYColumnValue(d[model])
     }));
     const yColumnsChecked = uniqBy(yColumns, 'value');
     const chartColors = setChartColors(
@@ -345,11 +406,11 @@ export const getChartConfig = createSelector(
 );
 
 export const getProviderFilters = createSelector(
-  [getSourceSelected, getBreakBySelected, getSelectorDefaults],
-  (sourceSelected, breakSelected, selectorDefaults) => {
-    if (!sourceSelected || !breakSelected) return null;
+  [getSourceSelected, getModelSelected, getSelectorDefaults],
+  (sourceSelected, model, selectorDefaults) => {
+    if (!sourceSelected || !model) return null;
     const filter = {};
-    switch (breakSelected.value) {
+    switch (model) {
       case 'gas':
         filter.location = selectorDefaults.location;
         filter.sector = selectorDefaults.sector;
@@ -384,46 +445,44 @@ const getLoading = createSelector(
     (meta && meta.loading) || (data && data.loading) || !chartConfig || false
 );
 
-const CHART_TYPE_OPTIONS = [
-  { label: 'line', value: 'line' },
-  { label: 'area', value: 'area' }
-];
-
-export const getChartTypeSelected = createSelector(
-  [() => CHART_TYPE_OPTIONS, getSelection('chartType')],
-  (options, selected) => {
-    if (!selected) return options[0];
-    return options.find(category => category.value === parseInt(selected, 10));
+const getLegendDataOptions = createSelector(
+  [getModelSelected, getOptions],
+  (modelSelected, options) => {
+    if (!options || !modelSelected || !options[modelSelected]) return null;
+    return options[modelSelected];
   }
 );
 
-export const getOptions = createStructuredSelector({
-  sources: getSourceOptions,
-  versions: getVersionOptions,
-  chartType: () => CHART_TYPE_OPTIONS,
-  breakBy: getBreakByOptions,
-  filters: getFilterOptions
-});
+const getLegendDataSelected = createSelector(
+  [getModelSelected, getOptions, getOptionsSelected],
+  (modelSelected, options, selectedOptions) => {
+    if (
+      !selectedOptions ||
+      !modelSelected ||
+      !selectedOptions[modelSelected] ||
+      !options
+    ) { return null; }
 
-export const getOptionsSelected = createStructuredSelector({
-  sourcesSelected: getSourceSelected,
-  versionsSelected: getVersionSelected,
-  chartTypeSelected: getChartTypeSelected,
-  breakBySelected: getBreakBySelected,
-  filtersSelected: getFiltersSelected
-});
+    const dataSelected = selectedOptions[modelSelected];
+    if (!isArray(dataSelected)) {
+      if (dataSelected.value === ALL_SELECTED) return options[modelSelected];
+    }
+    return isArray(dataSelected) ? dataSelected : [dataSelected];
+  }
+);
 
 export const getGHGEmissions = createStructuredSelector({
   data: getChartData,
   domain: getChartDomain,
   config: getChartConfig,
   selectorDefaults: getSelectorDefaults,
-  activeFilterRegion: getActiveFilterRegion,
   providerFilters: getProviderFilters,
   downloadLink: getLinkToDataExplorer,
   loading: getLoading,
   groups: () => groups,
   search: getSearch,
   options: getOptions,
+  legendOptions: getLegendDataOptions,
+  legendSelected: getLegendDataSelected,
   selected: getOptionsSelected
 });
