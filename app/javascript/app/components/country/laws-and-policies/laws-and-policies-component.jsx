@@ -11,6 +11,7 @@ import Card from 'components/card';
 import CardRow from 'components/card/card-row';
 import LawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import cx from 'classnames';
+import { Desktop, TabletLandscapeOnly } from 'components/responsive';
 
 import styles from './laws-and-policies-styles.scss';
 
@@ -35,18 +36,55 @@ class LawsAndPolicies extends PureComponent {
     });
   };
 
+  renderActionToolbar = () => {
+    const {
+      sectors,
+      currentSector,
+      country,
+      nationalPoliciesCount
+    } = this.props;
+
+    const countryName = country && `${country.wri_standard_name}`;
+
+    return (
+      <div className={styles.actions}>
+        <Dropdown
+          wrapperClassName={styles.dropdownWrapper}
+          className={styles.dropdown}
+          label="Filter by sector"
+          options={sectors}
+          onValueChange={this.handleSourceChange}
+          value={currentSector}
+          disclaimer={`${nationalPoliciesCount} ${nationalPoliciesCount === 1
+            ? 'national law and policy'
+            : 'national laws and policies'} with targets available for ${countryName} for the selected sector`}
+          hideResetButton
+        />
+        <div className={styles.buttonContainer}>
+          <ButtonGroup
+            className={styles.buttonGroup}
+            buttonsConfig={[
+              {
+                type: 'info',
+                onClick: this.handleInfoOnClick
+              }
+            ]}
+          />
+        </div>
+      </div>
+    );
+  };
+
   render() {
     const {
       cardsInRow,
       ndcContent,
-      sectors,
       lawsTargets,
       countryProfileLink,
       currentSector,
       country,
       isInEu,
-      lawsAndPoliciesCount,
-      nationalPoliciesCount
+      lawsAndPoliciesCount
     } = this.props;
 
     const countryName = country && `${country.wri_standard_name}`;
@@ -59,12 +97,15 @@ class LawsAndPolicies extends PureComponent {
 
     return (
       <div className={layout.content}>
-        <h3 className={styles.title}>Targets in Laws and Policies</h3>
         <div className={styles.descriptionContainer}>
           <div className="grid-column-item">
-            This table compares quantified targets in countries’ submitted NDCs
-            with targets in relevant national laws and policies. The purpose is
-            to indicate the level of alignment.
+            <h3 className={styles.title}>Targets in Laws and Policies</h3>
+            <div>
+              This table compares quantified targets in countries’ submitted
+              NDCs with targets in relevant national laws and policies. The
+              purpose is to indicate the level of alignment.
+            </div>
+            <Desktop>{this.renderActionToolbar()}</Desktop>
           </div>
           <div className={styles.logoContainer}>
             {
@@ -81,30 +122,9 @@ class LawsAndPolicies extends PureComponent {
               >{`See all ${lawsAndPoliciesCount} national laws and policies in ${countryName} on Climate Change Laws of the World.`}</span>
             </a>
           </div>
-        </div>
-        <div className={styles.actions}>
-          <Dropdown
-            className={styles.dropdown}
-            label="Filter by sector"
-            options={sectors}
-            onValueChange={this.handleSourceChange}
-            value={currentSector}
-            disclaimer={`${nationalPoliciesCount} ${nationalPoliciesCount === 1
-              ? 'national law and policy'
-              : 'national laws and policies'} with targets available for ${countryName} for the selected sector`}
-            hideResetButton
-          />
-          <div className={styles.buttonContainer}>
-            <ButtonGroup
-              className={styles.buttonGroup}
-              buttonsConfig={[
-                {
-                  type: 'info',
-                  onClick: this.handleInfoOnClick
-                }
-              ]}
-            />
-          </div>
+          <TabletLandscapeOnly>
+            {this.renderActionToolbar()}
+          </TabletLandscapeOnly>
         </div>
         <div className={styles.cardsContainer}>
           {ndcContentPresent ? (

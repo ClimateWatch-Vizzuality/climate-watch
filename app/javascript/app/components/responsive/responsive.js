@@ -28,6 +28,9 @@ export const TabletPortrait = props => (
 export const TabletPortraitOnly = props => (
   <Responsive {...props} maxWidth={remBreakpoints.landscape} />
 );
+export const TabletLandscapeOnly = props => (
+  <Responsive {...props} maxWidth={remBreakpoints.desktop} />
+);
 export const MobileOnly = props => (
   <Responsive {...props} maxWidth={remBreakpoints.mobile} />
 );
