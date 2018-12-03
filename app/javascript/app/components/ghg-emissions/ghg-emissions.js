@@ -7,6 +7,8 @@ import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
+import isArray from 'lodash/isArray';
+import isEqual from 'lodash/isEqual';
 
 import { actions } from 'components/modal-metadata';
 
@@ -32,7 +34,9 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleChange = (field, selected) => {
-    if (['regions', 'sectors', 'gases'].includes(field)) { return this.handleFilterChange(field, selected); }
+    if (['regions', 'sectors', 'gases'].includes(field)) {
+      return this.handleFilterChange(field, selected);
+    }
     const functionName = `handle${upperFirst(camelCase(field))}Change`;
     return this[functionName](selected);
   };
@@ -68,9 +72,12 @@ class GhgEmissionsContainer extends PureComponent {
     const { selected } = this.props;
     const oldFilters = selected[`${field}Selected`];
     const removing = filters.length < oldFilters.length;
-    const selectedFilter = filters
-      .filter(x => oldFilters.indexOf(x) === -1)
-      .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0];
+    const selectedFilter = isArray(oldFilters)
+      ? filters
+        .filter(x => !isEqual(oldFilters, x) || oldFilters.indexOf(x) === -1)
+        .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0]
+      : filters.find(x => !isEqual(oldFilters, x));
+
     const filtersParam = [];
     if (!removing && selectedFilter.groupId === 'regions') {
       filtersParam.push(selectedFilter.iso);

@@ -24,7 +24,7 @@ import {
   DEFAULT_AXES_CONFIG,
   ALLOWED_SECTORS_BY_SOURCE,
   EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
-  DEFAULT_EMISSIONS_SELECTIONS,
+  // DEFAULT_EMISSIONS_SELECTIONS,
   DATA_SCALE,
   METRIC_OPTIONS,
   ALL_SELECTED
@@ -111,8 +111,8 @@ export const getSourceSelected = createSelector(
 
 // Versions selectors
 export const getVersionOptions = createSelector(
-  [getVersions, getSources, getSourceSelected, getData],
-  (versions, sources, sourceSelected, data) => {
+  [getVersions, getSourceSelected, getData],
+  (versions, sourceSelected, data) => {
     if (!sourceSelected || !versions || !data) return null;
     const versionsFromData = groupBy(data, 'gwp');
     return sortBy(
@@ -180,38 +180,14 @@ export const getMetricSelected = createSelector(
   breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
 );
 
-// Get data and filter and sort by emissions value
-export const filterAndSortData = createSelector(
-  [
-    getData,
-    getSourceSelected,
-    getVersionSelected,
-    getModelSelected,
-    getAllowedSectors
-  ],
-  (data, source, version, model, sectorsAllowed) => {
-    if (!data || isEmpty(data) || !source || !version) return null;
-    const dataBySource =
-      source.label === 'UNFCCC' && model !== 'sector'
-        ? data.filter(
-          d =>
-            d.sector.trim() ===
-              DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version.label]
-        )
-        : data;
-    const dataBySector =
-      model === 'sector'
-        ? dataBySource.filter(d => sectorsAllowed.indexOf(d.sector.trim()) > -1)
-        : dataBySource;
-    return sortEmissionsByValue(
-      dataBySector.filter(d => d.gwp === version.label)
-    );
-  }
-);
+const sortData = createSelector(getData, data => {
+  if (!data || isEmpty(data)) return null;
+  return sortEmissionsByValue(data);
+});
 
 // use filtered data to get top emitters for each region
 export const getRegionsOptions = createSelector(
-  [getRegions, filterAndSortData],
+  [getRegions, sortData],
   (regions, data) => {
     if (!regions || !data) return null;
     const mappedRegions = [
@@ -245,7 +221,7 @@ export const getRegionsOptions = createSelector(
 
 export const getFieldOptions = field =>
   createSelector(
-    [getMeta, getRegionsOptions, filterAndSortData],
+    [getMeta, getRegionsOptions, sortData],
     (meta, regions, data) => {
       if (isEmpty(meta) || isEmpty(data) || !regions) {
         return [];
@@ -266,36 +242,46 @@ export const getFieldOptions = field =>
     }
   );
 
-export const getFiltersSelected = field =>
+const getDefaultOptions = createSelector(
+  [getSourceSelected, getMeta],
+  (sourceSelected, meta) => {
+    if (!sourceSelected || !meta) return null;
+    const defaults = getGhgEmissionDefaults(sourceSelected.label, meta);
+    const defaultOptions = {};
+    Object.keys(defaults).forEach(key => {
+      defaultOptions[key] = meta[key].find(
+        m =>
+          m.label === defaults[key] ||
+          m.iso === defaults[key] ||
+          String(m.value) === String(defaults[key])
+      );
+    });
+    return defaultOptions;
+  }
+);
+
+const getFiltersSelected = field =>
   createSelector(
-    [getFieldOptions(field), getSelection('filter')],
-    (filters, selected) => {
-      if (!filters || selected === '') return [];
-      if (!selected && field !== 'location') return filters;
+    [getFieldOptions(field), getSelection(field), getDefaultOptions],
+    (options, selected, defaults) => {
+      if (!defaults) return null;
+      if (!options || isEmpty(options) || !selected) return defaults[field];
       let selectedFilters = [];
-      if (field === 'location' && !selected) {
-        const selectedValues = TOP_EMITTERS;
-        selectedFilters = filters.filter(
-          filter => selectedValues.indexOf(filter.value) > -1
+      if (selected) {
+        const selectedValues = selected.split(',');
+        selectedFilters = options.filter(
+          filter => selectedValues.indexOf(`${filter.value}`) > -1
         );
       } else {
-        const selectedValues = selected.split(',');
-        selectedFilters = filters.filter(
-          filter => selectedValues.indexOf(`${filter.value}`) > -1
+        if (field !== 'location') return options;
+        const selectedValues = TOP_EMITTERS;
+        selectedFilters = options.filter(
+          filter => selectedValues.indexOf(filter.value) > -1
         );
       }
       return selectedFilters;
     }
   );
-
-// get selector defaults
-export const getSelectorDefaults = createSelector(
-  [getSourceSelected, getMeta],
-  (sourceSelected, meta) => {
-    if (!sourceSelected || !meta) return null;
-    return getGhgEmissionDefaults(sourceSelected.label, meta);
-  }
-);
 
 const CHART_TYPE_OPTIONS = [
   { label: 'line', value: 'line' },
@@ -332,21 +318,34 @@ const getOptionsSelected = createStructuredSelector({
 
 // Map the data from the API
 const filterData = createSelector(
-  [filterAndSortData, getOptionsSelected],
+  [sortData, getOptionsSelected],
   (data, filters) => {
-    if (!data || !data.length || !filters || !filters.length) return null;
+    if (!data || !data.length || !filters) return null;
+    return data;
     // We have to filter the data for all the values
+
+    // const dataBySector =
+    //   model === 'sector'
+    //     ? dataBySource.filter(d => sectorsAllowed.indexOf(d.sector.trim()) > -1)
+    //     : dataBySource;
+    // const dataBySource =
+    //   source.label === 'UNFCCC'
+    //     ? data.filter(
+    //       d =>
+    //         d.sector.trim() ===
+    //           DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version.label]
+    //     )
+    //     : data;
+    // dataBySector.filter(d => d.gwp === version.label);
 
     // const filterValues = filters.map(filter => filter.label);
     // return data.filter(d => filterValues.indexOf(d[model]) > -1);
-    return data;
   }
 );
 
 export const getChartData = createSelector(
   [filterData, getModelSelected, getOptionsSelected],
   (data, model, filters) => {
-    // DATA: Filter by all options selected and not only model selected
     if (!data || !data.length || !model || !filters) return null;
     const xValues = data[0].emissions.map(d => d.year);
     const dataParsed = xValues.map(x => {
@@ -405,35 +404,6 @@ export const getChartConfig = createSelector(
   }
 );
 
-export const getProviderFilters = createSelector(
-  [getSourceSelected, getModelSelected, getSelectorDefaults],
-  (sourceSelected, model, selectorDefaults) => {
-    if (!sourceSelected || !model) return null;
-    const filter = {};
-    switch (model) {
-      case 'gas':
-        filter.location = selectorDefaults.location;
-        filter.sector = selectorDefaults.sector;
-        break;
-      case 'location':
-        filter.gas = selectorDefaults.gas;
-        filter.sector = selectorDefaults.sector;
-        break;
-      case 'sector':
-        filter.gas = selectorDefaults.gas;
-        filter.location = selectorDefaults.location;
-        break;
-      default:
-        break;
-    }
-
-    return {
-      ...filter,
-      source: sourceSelected.value
-    };
-  }
-);
-
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'historical-emissions';
   return generateLinkToDataExplorer(search, section);
@@ -445,29 +415,56 @@ const getLoading = createSelector(
     (meta && meta.loading) || (data && data.loading) || !chartConfig || false
 );
 
+const toPlural = model => {
+  const plurals = {
+    sector: 'sectors',
+    gas: 'gases'
+  };
+  return plurals[model] || model;
+};
+
 const getLegendDataOptions = createSelector(
   [getModelSelected, getOptions],
   (modelSelected, options) => {
-    if (!options || !modelSelected || !options[modelSelected]) return null;
-    return options[modelSelected];
+    if (!options || !modelSelected || !options[toPlural(modelSelected)]) {
+      return null;
+    }
+    return options[toPlural(modelSelected)];
   }
 );
 
 const getLegendDataSelected = createSelector(
   [getModelSelected, getOptions, getOptionsSelected],
   (modelSelected, options, selectedOptions) => {
+    const model = toPlural(modelSelected);
+    const selectedModel = `${model}Selected`;
     if (
       !selectedOptions ||
       !modelSelected ||
-      !selectedOptions[modelSelected] ||
+      !selectedOptions[selectedModel] ||
       !options
-    ) { return null; }
+    ) {
+      return null;
+    }
 
-    const dataSelected = selectedOptions[modelSelected];
+    const dataSelected = selectedOptions[selectedModel];
     if (!isArray(dataSelected)) {
-      if (dataSelected.value === ALL_SELECTED) return options[modelSelected];
+      if (dataSelected.value === ALL_SELECTED) return options[model];
     }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
+  }
+);
+
+const getProviderFilters = createSelector(
+  [getOptionsSelected],
+  selectedOptions => {
+    if (!selectedOptions || !selectedOptions.sourcesSelected) return null;
+    const { sourcesSelected, sectorsSelected, gasesSelected } = selectedOptions;
+    return {
+      source: sourcesSelected.value,
+      gas: gasesSelected.value,
+      sector: sectorsSelected.value
+    };
   }
 );
 
@@ -475,7 +472,6 @@ export const getGHGEmissions = createStructuredSelector({
   data: getChartData,
   domain: getChartDomain,
   config: getChartConfig,
-  selectorDefaults: getSelectorDefaults,
   providerFilters: getProviderFilters,
   downloadLink: getLinkToDataExplorer,
   loading: getLoading,

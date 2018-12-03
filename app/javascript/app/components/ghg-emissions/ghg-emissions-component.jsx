@@ -105,7 +105,10 @@ class GhgEmissions extends PureComponent {
       />
     );
     const icons = { line: lineIcon, area: areaIcon };
-
+    const getValues = selected => {
+      if (!selected) return [];
+      return isArray(selected) ? selected.map(s => s.value) : [selected.value];
+    };
     return (
       <div>
         <h2 className={styles.title}>Global Historical Emissions</h2>
@@ -118,19 +121,19 @@ class GhgEmissions extends PureComponent {
           <MultiSelect
             label={'Regions'}
             groups={groups}
-            values={selectedOptions.regionsSelected || []}
+            values={getValues(selectedOptions.regionsSelected)}
             options={options.regions || []}
             onMultiValueChange={selected => handleChange('regions', selected)}
           />
           <MultiSelect
             label={'Sectors / Subsectors'}
-            values={selectedOptions.sectorsSelected || []}
+            values={getValues(selectedOptions.sectorsSelected)}
             options={options.sectors || []}
             onMultiValueChange={selected => handleChange('sectors', selected)}
           />
           <MultiSelect
             label={'Gases'}
-            values={selectedOptions.gasesSelected || []}
+            values={getValues(selectedOptions.gasesSelected)}
             options={options.gases || []}
             onMultiValueChange={selected => handleChange('gases', selected)}
           />
@@ -146,7 +149,7 @@ class GhgEmissions extends PureComponent {
           data={data}
           domain={domain}
           dataOptions={legendOptions}
-          dataSelected={legendSelected}
+          dataSelected={legendSelected || []}
           height={500}
           loading={loading}
           lineType="linear"
