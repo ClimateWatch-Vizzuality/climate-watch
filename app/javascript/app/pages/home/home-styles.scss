@@ -9,8 +9,17 @@
   }
 }
 
-.storiesLayout {
-  @include row();
+.autocompleteSearch { //OK
+  width: 100%;
+  // font-style: italic;
+
+  .react-selectize-placeholder {
+    font-style: italic;
+  }
+}
+
+.autocompleteSearch .react-selectize-placeholder {
+  font-style: italic;
 }
 
 .imgLayout {
@@ -61,7 +70,15 @@
   background-color: $light-gray;
 }
 
+.intro {
+  margin-bottom: 14px;
+  text-align: center;
+}
+
 .homeIntro {
+  align-items: center;
+  margin: auto;
+
   @media #{$tablet-portrait} {
     max-width: 450px;
   }
@@ -74,7 +91,7 @@
 .column {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
@@ -86,20 +103,25 @@
   padding-top: 60px;
   padding-bottom: 60px;
 
+  .row {
+    justify-content: center;
+  }
+
   @media #{$tablet-landscape} {
     padding-bottom: 0;
 
     &.extraPadding {
       padding-top: 120px;
-      padding-bottom: 120px;
+      padding-bottom: 100px;
     }
   }
 }
 
-.cwLogo {
-  width: 270px;
-  height: 25px;
+.cwLogo { //OK
   fill: $white;
+  height: 31px;
+  margin-bottom: 38px;
+  width: 332px;
 }
 
 .fullscreen {
