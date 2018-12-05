@@ -148,7 +148,7 @@ class LawsAndPolicies extends PureComponent {
               />
               <CardRow
                 title="Targets"
-                subtitle="Economy-wide targets"
+                subtitle={currentSector.label}
                 description={ndcContent.description}
               />
             </Card>
