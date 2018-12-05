@@ -101,9 +101,10 @@ class LawsAndPolicies extends PureComponent {
           <div className="grid-column-item">
             <h3 className={styles.title}>Targets in Laws and Policies</h3>
             <div>
-              This table compares quantified targets in countries’ submitted
-              NDCs with targets in relevant national laws and policies. The
-              purpose is to indicate the level of alignment.
+              Are countries implementing laws and policies consistent with the
+              targets in their Nationally Determined Contributions (NDCs)? Use
+              the table below to explore alignment between quantified NDC
+              targets and targets in sectoral laws and policies.
             </div>
             <Desktop>{this.renderActionToolbar()}</Desktop>
           </div>
