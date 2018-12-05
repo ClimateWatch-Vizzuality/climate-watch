@@ -8,14 +8,13 @@ import Button from 'components/button';
 import Dropdown from 'components/dropdown';
 import AutocompleteSearch from 'components/autocomplete-search';
 import Stories from 'components/stories';
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
 import cx from 'classnames';
 import GeoLocationProvider from 'providers/geolocation-provider';
 import { MobileOnly, TabletLandscape } from 'components/responsive';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
-import fullscreen from 'assets/icons/map-fullscreen.svg';
-import background from 'assets/headers/home.jpg';
+import background from 'assets/headers/homeHeader.png';
 import countryBgScreenshot from 'assets/screenshots/country-with-quantifications@1x.png';
 import countrySmScreenshot from 'assets/screenshots/country-mobile-screenshot@2x.png';
 import ndcBgScreenshot from 'assets/screenshots/ndc-explore-bg-screenshot';
@@ -49,35 +48,13 @@ class Home extends PureComponent {
         >
           <div className={cx(styles.column, styles.homeIntro)}>
             <Icon icon={cwLogo} className={styles.cwLogo} />
-            <Intro description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress." />
-            <AutocompleteSearch />
-          </div>
-          <div className={cx(styles.column, styles.video)}>
-            <TabletLandscape>
-              <Button
-                color="yellow"
-                onClick={this.onClickFullscreen}
-                className={styles.fullscreen}
-                square
-              >
-                <Icon icon={fullscreen} />
-              </Button>
-            </TabletLandscape>
-            <ReactPlayer
-              width="100%"
-              height="100%"
-              ref={player => {
-                this.player = player;
-              }}
-              url="https://youtu.be/C2nIcBqrHsk"
-              controls
-              youtubeConfig={{
-                playerVars: {
-                  playsinline: 0,
-                  fs: 0 // remove full screen button
-                },
-                preload: true
-              }}
+            <Intro
+              description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data."
+              className={styles.intro}
+            />
+            <AutocompleteSearch
+              className={styles.autocompleteSearch}
+              placeholder="Search across the platform by keyword or by country"
             />
           </div>
         </Section>
