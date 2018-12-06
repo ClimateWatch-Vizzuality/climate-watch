@@ -72,7 +72,10 @@ export const getSourceSelected = createSelector(
   [getSourceOptions, getSourceSelection],
   (sources, selected) => {
     if (!sources) return null;
-    if (!selected) return sources[0];
+    if (!selected) {
+      const defaultSource = sources.find(s => s.label === 'CAIT');
+      return defaultSource || sources[0];
+    }
     return sources.find(category => category.value === parseInt(selected, 10));
   }
 );
@@ -125,7 +128,10 @@ export const getBreakSelected = createSelector(
   [getBreaksByOptions, getBreakSelection],
   (breaks, selected) => {
     if (!breaks) return null;
-    if (!selected) return breaks[0];
+    if (!selected) {
+      const defaultBreak = breaks.find(b => b.value === 'location');
+      return defaultBreak || breaks[0];
+    }
     return breaks.find(category => category.value === selected);
   }
 );
