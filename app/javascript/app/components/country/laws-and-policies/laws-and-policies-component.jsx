@@ -18,13 +18,10 @@ import styles from './laws-and-policies-styles.scss';
 class LawsAndPolicies extends PureComponent {
   handleSourceChange = sector => {
     const { updateUrlParam } = this.props;
-    updateUrlParam(
-      {
-        name: 'sector',
-        value: sector.value
-      },
-      true
-    );
+    updateUrlParam({
+      name: 'sector',
+      value: sector.value
+    });
   };
 
   handleInfoOnClick = () => {
@@ -148,7 +145,7 @@ class LawsAndPolicies extends PureComponent {
               />
               <CardRow
                 title="Targets"
-                subtitle={currentSector.label}
+                subtitle={currentSector && currentSector.label}
                 description={ndcContent.description}
               />
             </Card>
