@@ -1,15 +1,15 @@
 GIT
   remote: https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git
-  revision: 0e2c5ef487f756b79e6fff2388a44ba77e4ff7f9
+  revision: f382db71a553c6360c16317f555035ec3d70c169
   specs:
-    climate_watch_engine (1.3.4)
+    climate_watch_engine (1.4.1)
       aws-sdk-s3 (~> 1)
       rails (~> 5.2.0)
-    cw_data_uploader (0.3.7)
+    cw_data_uploader (0.4.0)
       activeadmin
       aws-sdk-rails (~> 2)
       aws-sdk-s3 (~> 1)
-      climate_watch_engine (~> 1.3.0)
+      climate_watch_engine (~> 1.4.0)
       devise
       pg
       rubyzip
@@ -396,7 +396,7 @@ DEPENDENCIES
   byebug
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
-  cw_data_uploader (~> 0.3.7)!
+  cw_data_uploader (~> 0.4.0)!
   devise
   dotenv-rails
   factory_bot_rails
