@@ -18,13 +18,10 @@ import styles from './laws-and-policies-styles.scss';
 class LawsAndPolicies extends PureComponent {
   handleSourceChange = sector => {
     const { updateUrlParam } = this.props;
-    updateUrlParam(
-      {
-        name: 'sector',
-        value: sector.value
-      },
-      true
-    );
+    updateUrlParam({
+      name: 'sector',
+      value: sector.value
+    });
   };
 
   handleInfoOnClick = () => {
