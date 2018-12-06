@@ -184,6 +184,106 @@ ALTER SEQUENCE public.adaptation_variables_id_seq OWNED BY public.adaptation_var
 
 
 --
+-- Name: agriculture_profile_emission_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_emission_categories (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    unit character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: agriculture_profile_emission_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_emission_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_emission_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_emission_categories_id_seq OWNED BY public.agriculture_profile_emission_categories.id;
+
+
+--
+-- Name: agriculture_profile_emission_subcategories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_emission_subcategories (
+    id bigint NOT NULL,
+    name character varying,
+    short_name character varying,
+    indicator_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    emission_category_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_emission_subcategories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_emission_subcategories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_emission_subcategories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_emission_subcategories_id_seq OWNED BY public.agriculture_profile_emission_subcategories.id;
+
+
+--
+-- Name: agriculture_profile_emissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_emissions (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    value double precision NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    location_id bigint,
+    emission_subcategory_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_emissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_emissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_emissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_emissions_id_seq OWNED BY public.agriculture_profile_emissions.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1690,6 +1790,27 @@ ALTER TABLE ONLY public.adaptation_variables ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: agriculture_profile_emission_categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_categories ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_emission_categories_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_emission_subcategories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_subcategories ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_emission_subcategories_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_emissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_emissions_id_seq'::regclass);
+
+
+--
 -- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2078,6 +2199,30 @@ ALTER TABLE ONLY public.adaptation_values
 
 ALTER TABLE ONLY public.adaptation_variables
     ADD CONSTRAINT adaptation_variables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_emission_categories agriculture_profile_emission_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_categories
+    ADD CONSTRAINT agriculture_profile_emission_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_emission_subcategories agriculture_profile_emission_subcategories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_subcategories
+    ADD CONSTRAINT agriculture_profile_emission_subcategories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_emissions agriculture_profile_emissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions
+    ADD CONSTRAINT agriculture_profile_emissions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2498,10 +2643,38 @@ CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_vari
 
 
 --
+-- Name: index_agriculture_profile_emissions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_emissions_on_location_id ON public.agriculture_profile_emissions USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_emissions_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_emissions_on_year ON public.agriculture_profile_emissions USING btree (year);
+
+
+--
 -- Name: index_datasets_on_section_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_datasets_on_section_id ON public.datasets USING btree (section_id);
+
+
+--
+-- Name: index_emission_subcategories_on_emission_category_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_emission_subcategories_on_emission_category_id ON public.agriculture_profile_emission_subcategories USING btree (emission_category_id);
+
+
+--
+-- Name: index_emissions_on_emission_subcategory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_emissions_on_emission_subcategory_id ON public.agriculture_profile_emissions USING btree (emission_subcategory_id);
 
 
 --
@@ -3046,6 +3219,14 @@ ALTER TABLE ONLY public.indc_indicators_categories
 
 
 --
+-- Name: agriculture_profile_emissions fk_rails_0b1be4fa79; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions
+    ADD CONSTRAINT fk_rails_0b1be4fa79 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: historical_emissions_records fk_rails_0c4499c126; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3115,6 +3296,14 @@ ALTER TABLE ONLY public.indc_categories
 
 ALTER TABLE ONLY public.ndc_sdg_ndc_target_sectors
     ADD CONSTRAINT fk_rails_4391f3a35d FOREIGN KEY (sector_id) REFERENCES public.ndc_sdg_sectors(id) ON DELETE CASCADE;
+
+
+--
+-- Name: agriculture_profile_emissions fk_rails_44759b2043; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions
+    ADD CONSTRAINT fk_rails_44759b2043 FOREIGN KEY (emission_subcategory_id) REFERENCES public.agriculture_profile_emission_subcategories(id);
 
 
 --
@@ -3235,6 +3424,14 @@ ALTER TABLE ONLY public.ndc_sdg_targets
 
 ALTER TABLE ONLY public.wri_metadata_values
     ADD CONSTRAINT fk_rails_b2362e90f1 FOREIGN KEY (source_id) REFERENCES public.wri_metadata_sources(id) ON DELETE CASCADE;
+
+
+--
+-- Name: agriculture_profile_emission_subcategories fk_rails_b33836128c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_subcategories
+    ADD CONSTRAINT fk_rails_b33836128c FOREIGN KEY (emission_category_id) REFERENCES public.agriculture_profile_emission_categories(id);
 
 
 --
@@ -3501,6 +3698,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181009120234'),
 ('20181026095008'),
 ('20181114113643'),
-('20181119171426');
+('20181119171426'),
+('20181205151353'),
+('20181205152900'),
+('20181205161151');
 
 
