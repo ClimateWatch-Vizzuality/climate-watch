@@ -3,8 +3,6 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
-import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
@@ -88,72 +86,76 @@ const getVersions = createSelector(getMeta, meta => (meta && meta.gwp) || null);
 // values from search
 const getSearch = (state, { search }) => search || null;
 const getSelection = field =>
-  createSelector(getSearch, search => (search && search[field]) || null);
+  createSelector(
+    getSearch,
+    search => (search && (search[field] || search[toPlural(field)])) || null
+  );
 
 // Sources selectors
-export const getSourceOptions = createSelector(getSources, sources => {
-  if (!sources) return null;
-  return sources.map(d => ({
-    label: d.label,
-    value: d.value,
-    source: d.source
-  }));
-});
+const getSourceOptions = createSelector(
+  [getSources, getVersions, getData],
+  (sources, versions, data) => {
+    if (!sources || !versions || !data) return null;
+    const sourceOptionsTemplate = [
+      { source: 'CAIT', version: 'AR2' },
+      { source: 'CAIT', version: 'AR4' },
+      { source: 'PIK', version: 'AR2' },
+      { source: 'PIK', version: 'AR4' },
+      { source: 'UNFCCC', version: 'AR2' },
+      { source: 'UNFCCC', version: 'AR4' }
+    ];
 
-export const getSourceSelected = createSelector(
+    return sourceOptionsTemplate.map(template => {
+      const sourceValue = sources.find(
+        sourceMeta => template.source === sourceMeta.label
+      ).value;
+      const versionValue = versions.find(
+        versionMeta => template.version === versionMeta.label
+      ).value;
+      return {
+        label: `${template.source}-${template.version}`,
+        value: `${sourceValue}-${versionValue}`
+      };
+    });
+  }
+);
+
+const getSourceSelected = createSelector(
   [getSourceOptions, getSelection('source')],
   (sources, selected) => {
     if (!sources) return null;
     if (!selected) return sources[0];
-    return sources.find(category => category.value === parseInt(selected, 10));
+    return sources.find(source => source.value === selected);
   }
 );
 
-// Versions selectors
-export const getVersionOptions = createSelector(
-  [getVersions, getSourceSelected, getData],
-  (versions, sourceSelected, data) => {
-    if (!sourceSelected || !versions || !data) return null;
-    const versionsFromData = groupBy(data, 'gwp');
-    return sortBy(
-      Object.keys(versionsFromData).map(version => ({
-        label: version,
-        value: versions.find(versionMeta => version === versionMeta.label).value
-      })),
-      'label'
-    );
-  }
-);
-
-export const getVersionSelected = createSelector(
-  [getVersionOptions, getSelection('version')],
-  (versions, selected) => {
-    if (!versions) return null;
-    if (!selected) return versions[0];
-    return (
-      versions.find(version => version.value === parseInt(selected, 10)) ||
-      versions[0]
-    );
-  }
-);
+const getVersionSelected = () =>
+  createSelector([getSourceOptions, getSourceSelected], (options, selected) => {
+    if (!selected) return options[0].label.split('-')[1];
+    return selected.label.split('-')[1];
+  });
 
 // BreakBy selectors
-export const getBreakByOptions = () => BREAK_BY_OPTIONS;
+const getBreakByOptions = () => BREAK_BY_OPTIONS;
 
-export const getAllowedSectors = createSelector(
+const getAllowedSectors = createSelector(
   [getSourceSelected, getVersionSelected],
   (source, version) => {
     if (!source || !version) return null;
-    if (source.label === 'UNFCCC') {
-      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
+    const sourceLabel = source.label.split('-')[0];
+    const allowedSectors = ALLOWED_SECTORS_BY_SOURCE[sourceLabel];
+    if (sourceLabel === 'UNFCCC') {
+      return allowedSectors[version.label];
     }
-    return ALLOWED_SECTORS_BY_SOURCE[source.label].concat(
-      EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL[source.label]
-    );
+    const extraGlobalSectors =
+      EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL[sourceLabel];
+    return extraGlobalSectors
+      ? allowedSectors.concat(extraGlobalSectors)
+      : allowedSectors;
   }
 );
 
-export const getBreakByOptionSelected = createSelector(
+const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
   (breaks, selected) => {
     if (!breaks) return null;
@@ -226,19 +228,16 @@ export const getFieldOptions = field =>
       if (isEmpty(meta) || isEmpty(data) || !regions) {
         return [];
       }
-      const filterOptions = Object.keys(groupBy(data, field));
-      const filtersSelected = meta[field].filter(
-        m => filterOptions.indexOf(m.label) > -1
-      );
+      const fieldOptions = meta[field];
       if (field === 'location') {
-        const countries = filtersSelected.map(d => ({
+        const countries = fieldOptions.map(d => ({
           ...d,
           value: d.iso,
           groupId: 'countries'
         }));
         return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
       }
-      return sortLabelByAlpha(filtersSelected);
+      return sortLabelByAlpha(fieldOptions);
     }
   );
 
@@ -246,14 +245,18 @@ const getDefaultOptions = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-    const defaults = getGhgEmissionDefaults(sourceSelected.label, meta);
+    const defaults = getGhgEmissionDefaults(
+      sourceSelected.label.split('-')[0],
+      meta
+    );
     const defaultOptions = {};
     Object.keys(defaults).forEach(key => {
-      defaultOptions[key] = meta[key].find(
+      const keyDefault = String(defaults[key]).split(',');
+      defaultOptions[key] = meta[key].filter(
         m =>
-          m.label === defaults[key] ||
-          m.iso === defaults[key] ||
-          String(m.value) === String(defaults[key])
+          keyDefault.includes(m.label) ||
+          keyDefault.includes(m.iso) ||
+          keyDefault.includes(String(m.value))
       );
     });
     return defaultOptions;
@@ -265,7 +268,7 @@ const getFiltersSelected = field =>
     [getFieldOptions(field), getSelection(field), getDefaultOptions],
     (options, selected, defaults) => {
       if (!defaults) return null;
-      if (!options || isEmpty(options) || !selected) return defaults[field];
+      if (!selected || isEmpty(options)) return defaults[field];
       let selectedFilters = [];
       if (selected) {
         const selectedValues = selected.split(',');
@@ -296,19 +299,25 @@ export const getChartTypeSelected = createSelector(
   }
 );
 
+const getSectorOptions = createSelector(
+  [getFieldOptions('sector'), getAllowedSectors],
+  (options, allowedOptions) => {
+    if (!options || isEmpty(options)) return null;
+    return options.filter(o => allowedOptions.includes(o.label));
+  }
+);
+
 const getOptions = createStructuredSelector({
   sources: getSourceOptions,
-  versions: getVersionOptions,
   chartType: () => CHART_TYPE_OPTIONS,
   breakBy: getBreakByOptions,
   regions: getFieldOptions('location'),
-  sectors: getFieldOptions('sector'),
+  sectors: getSectorOptions,
   gases: getFieldOptions('gas')
 });
 
 const getOptionsSelected = createStructuredSelector({
   sourcesSelected: getSourceSelected,
-  versionsSelected: getVersionSelected,
   chartTypeSelected: getChartTypeSelected,
   breakBySelected: getBreakByOptionSelected,
   regionsSelected: getFiltersSelected('location'),
@@ -460,10 +469,11 @@ const getProviderFilters = createSelector(
   selectedOptions => {
     if (!selectedOptions || !selectedOptions.sourcesSelected) return null;
     const { sourcesSelected, sectorsSelected, gasesSelected } = selectedOptions;
+    const parseValues = selected => selected.map(s => s.value).join();
     return {
-      source: sourcesSelected.value,
-      gas: gasesSelected.value,
-      sector: sectorsSelected.value
+      source: sourcesSelected.value.split('-')[0],
+      gas: parseValues(gasesSelected),
+      sector: parseValues(sectorsSelected)
     };
   }
 );

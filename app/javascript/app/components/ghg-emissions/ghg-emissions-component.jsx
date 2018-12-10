@@ -16,7 +16,8 @@ import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import styles from './ghg-emissions-styles.scss';
 
-const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType'];
+const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType', 'sources'];
+const getValues = value => (value && (isArray(value) ? value : [value])) || [];
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -105,10 +106,6 @@ class GhgEmissions extends PureComponent {
       />
     );
     const icons = { line: lineIcon, area: areaIcon };
-    const getValues = selected => {
-      if (!selected) return [];
-      return isArray(selected) ? selected.map(s => s.value) : [selected.value];
-    };
     return (
       <div>
         <h2 className={styles.title}>Global Historical Emissions</h2>
@@ -117,7 +114,6 @@ class GhgEmissions extends PureComponent {
         <EmissionsProvider filters={providerFilters} />
         <div className={styles.col4}>
           {this.renderDropdown('Source', 'sources')}
-          {this.renderDropdown('IPCC Version', 'versions')}
           <MultiSelect
             label={'Regions'}
             groups={groups}

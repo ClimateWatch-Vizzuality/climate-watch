@@ -8,8 +8,7 @@ import qs from 'query-string';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
-import isEqual from 'lodash/isEqual';
-
+import { ALL_SELECTED } from 'data/constants';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -47,20 +46,8 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleBreakByChange = breakBy => {
-    const { selected } = this.props;
-    const { versionsSelected, sourcesSelected } = selected;
-    const params = [
-      { name: 'source', value: sourcesSelected.value },
-      { name: 'breakBy', value: breakBy.value },
-      { name: 'version', value: versionsSelected.value }
-    ];
-    this.updateUrlParam(params, true);
+    this.updateUrlParam({ name: 'breakBy', value: breakBy.value }, true);
     handleAnalytics('Historical Emissions', 'Break by selected', breakBy.label);
-  };
-
-  handleVersionsChange = version => {
-    this.updateUrlParam({ name: 'version', value: version.value });
-    handleAnalytics('Historical Emissions', 'version selected', version.label);
   };
 
   handleChartTypeChange = type => {
@@ -72,12 +59,15 @@ class GhgEmissionsContainer extends PureComponent {
     const { selected } = this.props;
     const oldFilters = selected[`${field}Selected`];
     const removing = filters.length < oldFilters.length;
-    const selectedFilter = isArray(oldFilters)
-      ? filters
-        .filter(x => !isEqual(oldFilters, x) || oldFilters.indexOf(x) === -1)
-        .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0]
-      : filters.find(x => !isEqual(oldFilters, x));
-
+    // const selectedFilter = isArray(oldFilters)
+    //   ? filters
+    //     .filter(x => !isEqual(oldFilters, x) || oldFilters.indexOf(x) === -1)
+    //     .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0]
+    //   : filters.find(x => !isEqual(oldFilters, x));
+    const oldFilterValues = oldFilters.map(f => f.value);
+    const selectedFilter = filters.find(
+      x => !oldFilterValues.includes(x.label)
+    );
     const filtersParam = [];
     if (!removing && selectedFilter.groupId === 'regions') {
       filtersParam.push(selectedFilter.iso);
@@ -89,7 +79,27 @@ class GhgEmissionsContainer extends PureComponent {
         }
       });
     }
-    this.updateUrlParam({ name: [field], value: filtersParam.toString() });
+
+    let values;
+
+    if (isArray(filters)) {
+      values =
+        filters.length === 0 ||
+        filters[filters.length - 1].label === ALL_SELECTED
+          ? ALL_SELECTED
+          : filters
+            .filter(v => v.value !== ALL_SELECTED)
+            .map(v => v.value)
+            .join(',');
+    } else {
+      values = filters.value;
+    }
+    // this.updateUrlParam({ name: [field], value: filtersParam.toString() });
+    this.updateUrlParam({
+      name: [field],
+      value: values
+    });
+
     const selectedFilterLabels = filters.map(f => f.label);
     if (selectedFilterLabels.length > 0) {
       handleAnalytics(
