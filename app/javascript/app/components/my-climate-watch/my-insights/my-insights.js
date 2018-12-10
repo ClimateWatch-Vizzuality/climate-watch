@@ -6,7 +6,7 @@ import * as insightActions from 'pages/my-climate-watch/my-cw-editor/my-cw-edito
 import MyInsightsComponent from './my-insights-component';
 import initialState from './my-insights-initial-state';
 import { parseInsights } from './my-insights-selectors';
-import * as reducers from './my-insights-reducers';
+import reducers from './my-insights-reducers';
 import * as actions from './my-insights-actions';
 
 const mapStateToProps = ({ insights, myCWEditor }) => ({
