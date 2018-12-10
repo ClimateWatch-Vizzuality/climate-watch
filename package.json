@@ -6,7 +6,7 @@
   },
   "scripts": {
     "start": "run-p -r rails:server js:server",
-    "reinstall": "rm -rf ./node_modules && npm install",
+    "reinstall": "rm -rf ./node_modules && yarn install",
     "js:server": "yarn install && ./bin/webpack-dev-server",
     "rails:cleanimport": "rails db:drop db:create db:migrate db:import",
     "rails:server": "bundle exec rails s",
@@ -106,7 +106,7 @@
     "redux-actions": "2.2.1",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.2.0",
-    "redux-tools": "github:vizzuality/redux-tools#3.3.0",
+    "redux-tools": "github:vizzuality/redux-tools#3.3.1",
     "reselect": "3.0.1",
     "resolve-url-loader": "2.1.0",
     "sass-loader": "6.0.6",
