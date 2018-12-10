@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { toSelector } from './viz-creator-utils';
 import VizCreatorComponent from './viz-creator-component';
-import * as reducers from './viz-creator-reducers';
+import reducers from './viz-creator-reducers';
 import * as actions from './viz-creator-actions';
 import initialState from './viz-creator-initial-state';
 import {

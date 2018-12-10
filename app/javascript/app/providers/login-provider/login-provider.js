@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import * as actions from './login-provider-actions';
-import * as reducers from './login-provider-reducers';
+import reducers from './login-provider-reducers';
 
 const initialState = reducers.initialState;
 
