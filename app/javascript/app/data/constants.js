@@ -293,6 +293,12 @@ export const SOURCE_VERSIONS = [
 
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
+export const NO_ALL_SELECTED_COLUMNS = [
+  'breakBy',
+  'chartType',
+  'sources',
+  'regions'
+];
 
 export const METRIC_OPTIONS = {
   ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },

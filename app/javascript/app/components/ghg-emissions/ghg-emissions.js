@@ -8,7 +8,7 @@ import qs from 'query-string';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
-import { ALL_SELECTED } from 'data/constants';
+import { ALL_SELECTED, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -56,45 +56,23 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleFilterChange = (field, filters) => {
-    const { selected } = this.props;
-    const oldFilters = selected[`${field}Selected`];
-    const removing = filters.length < oldFilters.length;
-    // const selectedFilter = isArray(oldFilters)
-    //   ? filters
-    //     .filter(x => !isEqual(oldFilters, x) || oldFilters.indexOf(x) === -1)
-    //     .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0]
-    //   : filters.find(x => !isEqual(oldFilters, x));
-    const oldFilterValues = oldFilters.map(f => f.value);
-    const selectedFilter = filters.find(
-      x => !oldFilterValues.includes(x.label)
-    );
-    const filtersParam = [];
-    if (!removing && selectedFilter.groupId === 'regions') {
-      filtersParam.push(selectedFilter.iso);
-      selectedFilter.members.forEach(m => filtersParam.push(m));
-    } else if (selectedFilter.groupId !== 'regions') {
-      filters.forEach(filter => {
-        if (filter.groupId !== 'regions') {
-          filtersParam.push(field === 'regions' ? filter.iso : filter.value);
-        }
-      });
-    }
-
     let values;
-
     if (isArray(filters)) {
-      values =
-        filters.length === 0 ||
-        filters[filters.length - 1].label === ALL_SELECTED
-          ? ALL_SELECTED
-          : filters
-            .filter(v => v.value !== ALL_SELECTED)
-            .map(v => v.value)
-            .join(',');
+      if (
+        !NO_ALL_SELECTED_COLUMNS.includes(field) &&
+        (filters.length === 0 ||
+          filters[filters.length - 1].label === ALL_SELECTED)
+      ) {
+        values = ALL_SELECTED;
+      } else {
+        values = filters
+          .filter(v => v.value !== ALL_SELECTED)
+          .map(v => v.value)
+          .join(',');
+      }
     } else {
       values = filters.value;
     }
-    // this.updateUrlParam({ name: [field], value: filtersParam.toString() });
     this.updateUrlParam({
       name: [field],
       value: values

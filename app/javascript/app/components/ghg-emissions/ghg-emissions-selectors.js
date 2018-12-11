@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
+import isEqual from 'lodash/isEqual';
 import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
@@ -22,11 +23,19 @@ import {
   DEFAULT_AXES_CONFIG,
   ALLOWED_SECTORS_BY_SOURCE,
   EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
-  // DEFAULT_EMISSIONS_SELECTIONS,
   DATA_SCALE,
   METRIC_OPTIONS,
-  ALL_SELECTED
+  ALL_SELECTED,
+  ALL_SELECTED_OPTION
 } from 'data/constants';
+
+const toPlural = model => {
+  const plurals = {
+    sector: 'sectors',
+    gas: 'gases'
+  };
+  return plurals[model] || model;
+};
 
 const BREAK_BY_OPTIONS = [
   {
@@ -86,10 +95,11 @@ const getVersions = createSelector(getMeta, meta => (meta && meta.gwp) || null);
 // values from search
 const getSearch = (state, { search }) => search || null;
 const getSelection = field =>
-  createSelector(
-    getSearch,
-    search => (search && (search[field] || search[toPlural(field)])) || null
-  );
+  createSelector(getSearch, search => {
+    if (!search) return null;
+    if (field === 'location') return search.regions || null;
+    return search[field] || search[toPlural(field)] || null;
+  });
 
 // Sources selectors
 const getSourceOptions = createSelector(
@@ -222,24 +232,20 @@ export const getRegionsOptions = createSelector(
 );
 
 export const getFieldOptions = field =>
-  createSelector(
-    [getMeta, getRegionsOptions, sortData],
-    (meta, regions, data) => {
-      if (isEmpty(meta) || isEmpty(data) || !regions) {
-        return [];
-      }
-      const fieldOptions = meta[field];
-      if (field === 'location') {
-        const countries = fieldOptions.map(d => ({
-          ...d,
-          value: d.iso,
-          groupId: 'countries'
-        }));
-        return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
-      }
-      return sortLabelByAlpha(fieldOptions);
+  createSelector([getMeta, getRegionsOptions], (meta, regions) => {
+    if (isEmpty(meta)) return [];
+    const fieldOptions = meta[field];
+    if (field === 'location') {
+      if (!regions) return [];
+      const countries = fieldOptions.map(d => ({
+        ...d,
+        value: d.iso,
+        groupId: 'countries'
+      }));
+      return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
     }
-  );
+    return sortLabelByAlpha(fieldOptions);
+  });
 
 const getDefaultOptions = createSelector(
   [getSourceSelected, getMeta],
@@ -254,10 +260,17 @@ const getDefaultOptions = createSelector(
       const keyDefault = String(defaults[key]).split(',');
       defaultOptions[key] = meta[key].filter(
         m =>
-          keyDefault.includes(m.label) ||
           keyDefault.includes(m.iso) ||
+          keyDefault.includes(m.label) ||
           keyDefault.includes(String(m.value))
       );
+      // Correction for Regions value
+      if (defaultOptions[key][0].iso) {
+        defaultOptions[key] = defaultOptions[key].map(o => ({
+          ...o,
+          value: o.iso
+        }));
+      }
     });
     return defaultOptions;
   }
@@ -271,10 +284,13 @@ const getFiltersSelected = field =>
       if (!selected || isEmpty(options)) return defaults[field];
       let selectedFilters = [];
       if (selected) {
-        const selectedValues = selected.split(',');
-        selectedFilters = options.filter(
-          filter => selectedValues.indexOf(`${filter.value}`) > -1
-        );
+        if (selected === ALL_SELECTED) selectedFilters = [ALL_SELECTED_OPTION];
+        else {
+          const selectedValues = selected.split(',');
+          selectedFilters = options.filter(
+            filter => selectedValues.indexOf(`${filter.value}`) > -1
+          );
+        }
       } else {
         if (field !== 'location') return options;
         const selectedValues = TOP_EMITTERS;
@@ -331,24 +347,8 @@ const filterData = createSelector(
   (data, filters) => {
     if (!data || !data.length || !filters) return null;
     return data;
-    // We have to filter the data for all the values
-
-    // const dataBySector =
-    //   model === 'sector'
-    //     ? dataBySource.filter(d => sectorsAllowed.indexOf(d.sector.trim()) > -1)
-    //     : dataBySource;
-    // const dataBySource =
-    //   source.label === 'UNFCCC'
-    //     ? data.filter(
-    //       d =>
-    //         d.sector.trim() ===
-    //           DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version.label]
-    //     )
-    //     : data;
-    // dataBySector.filter(d => d.gwp === version.label);
-
-    // const filterValues = filters.map(filter => filter.label);
-    // return data.filter(d => filterValues.indexOf(d[model]) > -1);
+    // Already filtered by source- version, gas, region, sector
+    // Missing metric?
   }
 );
 
@@ -424,14 +424,6 @@ const getLoading = createSelector(
     (meta && meta.loading) || (data && data.loading) || !chartConfig || false
 );
 
-const toPlural = model => {
-  const plurals = {
-    sector: 'sectors',
-    gas: 'gases'
-  };
-  return plurals[model] || model;
-};
-
 const getLegendDataOptions = createSelector(
   [getModelSelected, getOptions],
   (modelSelected, options) => {
@@ -468,12 +460,22 @@ const getProviderFilters = createSelector(
   [getOptionsSelected],
   selectedOptions => {
     if (!selectedOptions || !selectedOptions.sourcesSelected) return null;
-    const { sourcesSelected, sectorsSelected, gasesSelected } = selectedOptions;
-    const parseValues = selected => selected.map(s => s.value).join();
+    const {
+      sourcesSelected,
+      sectorsSelected,
+      gasesSelected,
+      regionsSelected
+    } = selectedOptions;
+    const parseValues = selected =>
+      (isEqual(selected, [ALL_SELECTED_OPTION])
+        ? null
+        : selected.map(s => s.value).join());
     return {
       source: sourcesSelected.value.split('-')[0],
+      gwp: sourcesSelected.value.split('-')[1],
       gas: parseValues(gasesSelected),
-      sector: parseValues(sectorsSelected)
+      sector: parseValues(sectorsSelected),
+      location: parseValues(regionsSelected)
     };
   }
 );

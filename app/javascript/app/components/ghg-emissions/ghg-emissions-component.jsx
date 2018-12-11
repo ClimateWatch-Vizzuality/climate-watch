@@ -5,40 +5,37 @@ import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
-import MultiSelect from 'components/multiselect';
-import { Chart } from 'cw-components';
+import { Chart, Multiselect } from 'cw-components';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
-import { ALL_SELECTED_OPTION } from 'data/constants';
+import { ALL_SELECTED_OPTION, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import styles from './ghg-emissions-styles.scss';
 
-const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType', 'sources'];
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
+const addAllSelected = (filterOptions, f) => {
+  const noAllSelected = NO_ALL_SELECTED_COLUMNS.includes(f);
+  if (noAllSelected) return filterOptions && filterOptions[f];
+  return (
+    (filterOptions &&
+    filterOptions[f] && [ALL_SELECTED_OPTION, ...filterOptions[f]]) ||
+    []
+  );
+};
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
   renderDropdown(label, field, multi, icons) {
-    const addAllSelected = (filterOptions, f) => {
-      const noAllSelected = NO_ALL_SELECTED_COLUMNS.includes(f);
-      if (noAllSelected) return filterOptions && filterOptions[f];
-      return (
-        (filterOptions &&
-        filterOptions[f] && [ALL_SELECTED_OPTION, ...filterOptions[f]]) ||
-        []
-      );
-    };
-
     const { selected: selectedOptions, options, handleChange } = this.props;
     const value = selectedOptions && selectedOptions[`${field}Selected`];
     const iconsProp = icons ? { icons } : {};
     if (multi) {
       return (
-        <MultiSelect
+        <Multiselect
           key={field}
           label={label || startCase(field)}
           placeholder={`Filter by ${startCase(field)}`}
@@ -114,24 +111,24 @@ class GhgEmissions extends PureComponent {
         <EmissionsProvider filters={providerFilters} />
         <div className={styles.col4}>
           {this.renderDropdown('Source', 'sources')}
-          <MultiSelect
+          <Multiselect
             label={'Regions'}
             groups={groups}
             values={getValues(selectedOptions.regionsSelected)}
             options={options.regions || []}
-            onMultiValueChange={selected => handleChange('regions', selected)}
+            onValueChange={selected => handleChange('regions', selected)}
           />
-          <MultiSelect
+          <Multiselect
             label={'Sectors / Subsectors'}
             values={getValues(selectedOptions.sectorsSelected)}
             options={options.sectors || []}
-            onMultiValueChange={selected => handleChange('sectors', selected)}
+            onValueChange={selected => handleChange('sectors', selected)}
           />
-          <MultiSelect
+          <Multiselect
             label={'Gases'}
             values={getValues(selectedOptions.gasesSelected)}
-            options={options.gases || []}
-            onMultiValueChange={selected => handleChange('gases', selected)}
+            options={addAllSelected(options, 'gases')}
+            onValueChange={selected => handleChange('gases', selected)}
           />
           {this.renderDropdown('Break by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', false, icons)}
