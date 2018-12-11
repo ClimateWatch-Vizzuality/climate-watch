@@ -12,6 +12,10 @@
 .autocompleteSearch {
   width: 100%;
   padding-bottom: 0;
+  
+  & [class|=react-selectize-placeholder] {
+    font-style: italic;
+  }
 }
 
 .imgLayout {
