@@ -14,7 +14,7 @@ import GeoLocationProvider from 'providers/geolocation-provider';
 import { MobileOnly, TabletLandscape } from 'components/responsive';
 
 import cwLogo from 'assets/icons/cw-logo-white.svg';
-import background from 'assets/headers/homeHeader.png';
+import background from 'assets/headers/home.png';
 import countryBgScreenshot from 'assets/screenshots/country-with-quantifications@1x.png';
 import countrySmScreenshot from 'assets/screenshots/country-mobile-screenshot@2x.png';
 import ndcBgScreenshot from 'assets/screenshots/ndc-explore-bg-screenshot';
