@@ -9,17 +9,8 @@
   }
 }
 
-.autocompleteSearch { //OK
+.autocompleteSearch {
   width: 100%;
-  // font-style: italic;
-
-  .react-selectize-placeholder {
-    font-style: italic;
-  }
-}
-
-.autocompleteSearch .react-selectize-placeholder {
-  font-style: italic;
 }
 
 .imgLayout {
@@ -91,7 +82,6 @@
 .column {
   display: flex;
   flex-direction: column;
-  // justify-content: center;
   margin-bottom: $gutter-padding;
 
   @media #{$tablet-landscape} {
@@ -117,7 +107,7 @@
   }
 }
 
-.cwLogo { //OK
+.cwLogo {
   fill: $white;
   height: 31px;
   margin-bottom: 38px;
