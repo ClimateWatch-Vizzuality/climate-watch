@@ -40,6 +40,11 @@ class Home extends PureComponent {
 
   render() {
     const { geolocation, countriesOptions, handleDropDownChange } = this.props;
+    const placeholder = (
+      <span style={{ fontStyle: 'italic' }}>
+        Search across the platform by keyword or by country
+      </span>
+    );
     return (
       <div className={styles.homeBg}>
         <Section
@@ -54,7 +59,7 @@ class Home extends PureComponent {
             />
             <AutocompleteSearch
               className={styles.autocompleteSearch}
-              placeholder="Search across the platform by keyword or by country"
+              placeholder={placeholder}
             />
           </div>
         </Section>
