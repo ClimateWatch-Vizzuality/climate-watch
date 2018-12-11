@@ -46,13 +46,13 @@ AutocompleteSearch.propTypes = {
   handleValueClick: Proptypes.func.isRequired,
   handleSearchChange: Proptypes.func.isRequired,
   searchList: Proptypes.array,
-  placeholder: Proptypes.array,
+  placeholder: Proptypes.string,
   className: Proptypes.string
 };
 
 AutocompleteSearch.defaultProps = {
   placeholder: 'Search for a country or keyword',
-  className: undefined
+  className: null
 };
 
 export default AutocompleteSearch;
