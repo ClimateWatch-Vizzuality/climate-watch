@@ -24,42 +24,23 @@ import {
   ALLOWED_SECTORS_BY_SOURCE,
   EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
   DATA_SCALE,
-  METRIC_OPTIONS,
   ALL_SELECTED,
   ALL_SELECTED_OPTION
 } from 'data/constants';
 
 const BREAK_BY_OPTIONS = [
   {
-    label: 'Regions - Absolute',
-    value: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
+    label: 'Regions',
+    value: 'regions'
   },
   {
-    label: 'Regions - Per GDP',
-    value: `regions-${METRIC_OPTIONS.PER_GDP.value}`
+    label: 'Sector',
+    value: 'sector'
   },
   {
-    label: 'Regions - Per Capita',
-    value: `regions-${METRIC_OPTIONS.PER_CAPITA.value}`
-  },
-  {
-    label: 'Sector - Absolute',
-    value: `sector-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
-  },
-  {
-    label: 'Sector - Per GDP',
-    value: `sector-${METRIC_OPTIONS.PER_CAPITA.value}`
-  },
-  {
-    label: 'Sector - Per Capita',
-    value: `sector-${METRIC_OPTIONS.PER_GDP.value}`
-  },
-  {
-    label: 'Gas - Absolute',
-    value: `gas-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
-  },
-  { label: 'Gas - Per GDP', value: `gas-${METRIC_OPTIONS.PER_GDP.value}` },
-  { label: 'Gas - Per Capita', value: `gas-${METRIC_OPTIONS.PER_CAPITA.value}` }
+    label: 'Gas',
+    value: 'gas'
+  }
 ];
 
 const groups = [
@@ -300,10 +281,40 @@ export const getChartTypeSelected = createSelector(
 );
 
 const getSectorOptions = createSelector(
-  [getFieldOptions('sector'), getAllowedSectors],
-  (options, allowedOptions) => {
+  [getFieldOptions('sector'), getAllowedSectors, getMeta],
+  (options, allowedOptions, meta) => {
     if (!options || isEmpty(options)) return null;
-    return options.filter(o => allowedOptions.includes(o.label));
+    const { sector: metaSectors } = meta;
+    return metaSectors;
+    // const allowedSectorLabels = [];
+    // options.forEach(o => {
+    //   if (allowedOptions.includes(o.label)) {
+    //     allowedSectorLabels.push(o.label);
+    //   }
+    // });
+
+    // const sectors = metaSectors
+    //   .filter(
+    //     s =>
+    //       !s.parentId &&
+    //       allowedSectorLabels.includes(s.value)
+    //   )
+    //   .map(d => ({
+    //     label: d.label,
+    //     value: d.value,
+    //     groupParent: String(d.value)
+    //   }));
+
+    // const subsectors = metaSectors
+    //   .filter(
+    //     s => s.parentId
+    //   )
+    //   .map(d => ({
+    //     label: d.label,
+    //     value: d.value,
+    //     group: String(d.parentId)
+    //   }));
+    // return [...sectors, ...subsectors];
   }
 );
 
@@ -354,40 +365,34 @@ const getLegendDataSelected = createSelector(
       return null;
     }
     const dataSelected = selectedOptions[selectedModel];
+    if (dataSelected && isEqual(dataSelected[0], ALL_SELECTED_OPTION)) {
+      return options[model];
+    }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
 );
 
 const getYColumnOptions = createSelector(
-  [getLegendDataSelected, getModelSelected],
-  (legendDataSelected, modelSelected) => {
+  [getLegendDataSelected],
+  legendDataSelected => {
     if (!legendDataSelected) return null;
     const getYOption = columns =>
       columns &&
       columns.map(d => ({
         label: d && d.label,
-        value: d && getYColumnValue(`${modelSelected}${d.value}`)
+        value: d && getYColumnValue(d.label)
       }));
     return uniqBy(getYOption(legendDataSelected), 'value');
   }
 );
 
 // Map the data from the API
-const filterData = createSelector(
-  [sortData, getOptionsSelected],
-  (data, filters) => {
-    if (!data || !data.length || !filters) return null;
-    return data;
-    // Already filtered by source- version, gas, region, sector
-    // Missing metric?
-  }
-);
 
 const getDFilterValue = (d, modelSelected) =>
   (modelSelected === 'regions' ? d.location : d[modelSelected]);
 
 export const getChartData = createSelector(
-  [filterData, getModelSelected, getYColumnOptions],
+  [sortData, getModelSelected, getYColumnOptions],
   (data, model, yColumnOptions) => {
     if (!data || !data.length || !model) return null;
     const yearValues = data[0].emissions.map(d => d.year);

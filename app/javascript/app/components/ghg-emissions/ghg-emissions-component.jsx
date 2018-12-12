@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
+import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
+import MultiDropdown from 'components/multi-dropdown';
 import { Chart, Multiselect, Dropdown } from 'cw-components';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
@@ -112,6 +114,7 @@ class GhgEmissions extends PureComponent {
             <div className={styles.buttonGroup}>{renderButtonGroup()}</div>
           </TabletLandscape>
         </div>
+        <WorldBankDataProvider />
         <RegionsProvider />
         <EmissionsMetaProvider />
         <EmissionsProvider filters={providerFilters} />
@@ -124,11 +127,13 @@ class GhgEmissions extends PureComponent {
             options={options.regions || []}
             onValueChange={selected => handleChange('regions', selected)}
           />
-          <Multiselect
-            label={'Sectors / Subsectors'}
-            values={getValues(selectedOptions.sectorsSelected)}
+          <MultiDropdown
+            label="Sectors / Subsectors"
+            theme={{ wrapper: styles.dropdown }}
             options={options.sectors || []}
-            onValueChange={selected => handleChange('sectors', selected)}
+            values={getValues(selectedOptions.sectorsSelected)}
+            onChange={selected => handleChange('sectors', selected)}
+            multiselect
           />
           <Multiselect
             label={'Gases'}
