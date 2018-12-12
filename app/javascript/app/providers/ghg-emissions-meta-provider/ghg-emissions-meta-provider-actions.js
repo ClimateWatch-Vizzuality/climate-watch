@@ -35,6 +35,12 @@ const fetchEmissionsMeta = createThunkAction(
                     iso: item.iso_code3
                   };
                 }
+                if (key === 'sector') {
+                  newItem = {
+                    ...newItem,
+                    parentId: item.parent_id
+                  };
+                }
                 if (key === 'data_source') {
                   newItem = {
                     ...newItem,

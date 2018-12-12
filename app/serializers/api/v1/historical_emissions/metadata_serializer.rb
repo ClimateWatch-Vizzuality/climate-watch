@@ -14,7 +14,7 @@ module Api
 
         def sector
           object.sectors.map do |g|
-            g.slice(:id, :name)
+            g.slice(:id, :name, :parent_id)
           end
         end
 
