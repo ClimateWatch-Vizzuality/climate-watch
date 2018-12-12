@@ -46,7 +46,7 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleBreakByChange = breakBy => {
-    this.updateUrlParam({ name: 'breakBy', value: breakBy.value }, true);
+    this.updateUrlParam({ name: 'breakBy', value: breakBy.value });
     handleAnalytics('Historical Emissions', 'Break by selected', breakBy.label);
   };
 

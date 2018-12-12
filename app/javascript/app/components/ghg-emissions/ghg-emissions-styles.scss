@@ -2,30 +2,40 @@
 
 $min-height: 600px;
 
+.titleContainer {
+  @include columns((12, 12));
+
+  @media #{$tablet-landscape} {
+    @include columns((9.9, 2));
+  }
+
+  .colEnd {
+    @media #{$tablet-landscape} {
+      margin-top: $gutter-padding;
+    }
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  padding-bottom: 30px;
+
+  > div {
+    width: 100%;
+  }
+}
+
 .col4 {
-  @include columns((6, 6, 6, 6));
+  @include columns((6, 6, 6, 6, 8, 4));
 
   > div {
     @include xy-gutters(30px, $gutter-position: 'bottom');
   }
 
   @media #{$tablet-landscape} {
-    @include columns((20%, 20%, 20%, 20%, 20%));
+    @include columns((2.1, 2.1, 2.1, 2.1, 2.1, 1.4));
 
     align-items: flex-end;
-  }
-}
-
-.buttonGroup {
-  display: inline-block;
-  padding-bottom: 30px;
-}
-
-.colEnd {
-  width: 180px;
-
-  @media #{$tablet-landscape} {
-    width: auto;
   }
 }
 

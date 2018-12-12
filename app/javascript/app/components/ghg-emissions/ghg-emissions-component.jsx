@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
-import Dropdown from 'components/dropdown';
 import ButtonGroup from 'components/button-group';
-import { Chart, Multiselect } from 'cw-components';
+import { Chart, Multiselect, Dropdown } from 'cw-components';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
+import { toPlural } from 'utils/ghg-emissions';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
 import { ALL_SELECTED_OPTION, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
@@ -74,7 +74,8 @@ class GhgEmissions extends PureComponent {
       options,
       selected: selectedOptions,
       legendOptions,
-      legendSelected
+      legendSelected,
+      fieldToBreakBy
     } = this.props;
     const { chartTypeSelected } = selectedOptions;
     const renderButtonGroup = () => (
@@ -105,7 +106,12 @@ class GhgEmissions extends PureComponent {
     const icons = { line: lineIcon, area: areaIcon };
     return (
       <div>
-        <h2 className={styles.title}>Global Historical Emissions</h2>
+        <div className={styles.titleContainer}>
+          <h2 className={styles.title}>Global Historical Emissions</h2>
+          <TabletLandscape>
+            <div className={styles.buttonGroup}>{renderButtonGroup()}</div>
+          </TabletLandscape>
+        </div>
         <RegionsProvider />
         <EmissionsMetaProvider />
         <EmissionsProvider filters={providerFilters} />
@@ -132,7 +138,6 @@ class GhgEmissions extends PureComponent {
           />
           {this.renderDropdown('Break by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', false, icons)}
-          <TabletLandscape>{renderButtonGroup()}</TabletLandscape>
         </div>
         <Chart
           className={styles.chartWrapper}
@@ -147,8 +152,7 @@ class GhgEmissions extends PureComponent {
           loading={loading}
           lineType="linear"
           showUnit
-          // onLegendChange={v =>
-          //   this.handleFilterChange(fieldToBreakBy, v)}
+          onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
         />
         <TabletPortraitOnly>
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
@@ -165,6 +169,7 @@ GhgEmissions.propTypes = {
   config: PropTypes.object,
   options: PropTypes.object,
   selected: PropTypes.object,
+  fieldToBreakBy: PropTypes.string,
   legendOptions: PropTypes.array,
   legendSelected: PropTypes.array,
   groups: PropTypes.array,

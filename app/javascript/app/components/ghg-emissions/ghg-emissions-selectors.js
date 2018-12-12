@@ -4,7 +4,7 @@ import isArray from 'lodash/isArray';
 import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
-import { getGhgEmissionDefaults } from 'utils/ghg-emissions';
+import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
   getYColumnValue,
@@ -28,14 +28,6 @@ import {
   ALL_SELECTED,
   ALL_SELECTED_OPTION
 } from 'data/constants';
-
-const toPlural = model => {
-  const plurals = {
-    sector: 'sectors',
-    gas: 'gases'
-  };
-  return plurals[model] || model;
-};
 
 const BREAK_BY_OPTIONS = [
   {
@@ -139,31 +131,23 @@ const getSourceSelected = createSelector(
   }
 );
 
-const getVersionSelected = () =>
-  createSelector([getSourceOptions, getSourceSelected], (options, selected) => {
-    if (!selected) return options[0].label.split('-')[1];
-    return selected.label.split('-')[1];
-  });
-
 // BreakBy selectors
 const getBreakByOptions = () => BREAK_BY_OPTIONS;
 
-const getAllowedSectors = createSelector(
-  [getSourceSelected, getVersionSelected],
-  (source, version) => {
-    if (!source || !version) return null;
-    const sourceLabel = source.label.split('-')[0];
-    const allowedSectors = ALLOWED_SECTORS_BY_SOURCE[sourceLabel];
-    if (sourceLabel === 'UNFCCC') {
-      return allowedSectors[version.label];
-    }
-    const extraGlobalSectors =
-      EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL[sourceLabel];
-    return extraGlobalSectors
-      ? allowedSectors.concat(extraGlobalSectors)
-      : allowedSectors;
+const getAllowedSectors = createSelector([getSourceSelected], source => {
+  if (!source) return null;
+  const sourceLabel = source.label.split('-')[0];
+  const versionLabel = source.label.split('-')[1];
+  const allowedSectors = ALLOWED_SECTORS_BY_SOURCE[sourceLabel];
+  if (sourceLabel === 'UNFCCC') {
+    return allowedSectors[versionLabel];
   }
-);
+  const extraGlobalSectors =
+    EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL[sourceLabel];
+  return extraGlobalSectors
+    ? allowedSectors.concat(extraGlobalSectors)
+    : allowedSectors;
+});
 
 const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
@@ -341,88 +325,10 @@ const getOptionsSelected = createStructuredSelector({
   gasesSelected: getFiltersSelected('gas')
 });
 
-// Map the data from the API
-const filterData = createSelector(
-  [sortData, getOptionsSelected],
-  (data, filters) => {
-    if (!data || !data.length || !filters) return null;
-    return data;
-    // Already filtered by source- version, gas, region, sector
-    // Missing metric?
-  }
-);
-
-export const getChartData = createSelector(
-  [filterData, getModelSelected, getOptionsSelected],
-  (data, model, filters) => {
-    if (!data || !data.length || !model || !filters) return null;
-    const xValues = data[0].emissions.map(d => d.year);
-    const dataParsed = xValues.map(x => {
-      const yItems = {};
-      data.forEach(d => {
-        const yKey = getYColumnValue(d[model]);
-        const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value ? yData.value * DATA_SCALE : null;
-      });
-      const item = {
-        x,
-        ...yItems
-      };
-      return item;
-    });
-    return dataParsed;
-  }
-);
-
-export const getChartDomain = createSelector([getChartData], data => {
-  if (!data) return null;
-  return { x: setXAxisDomain(), y: setYAxisDomain() };
-});
-
-// variable that caches chart elements assigned color
-// to avoid element color changing when the chart is updated
-let colorThemeCache = {};
-
-export const getChartConfig = createSelector(
-  [filterData, getModelSelected],
-  (data, model) => {
-    if (!data || !model) return null;
-    const yColumns = data.map(d => ({
-      label: d[model],
-      value: getYColumnValue(d[model])
-    }));
-    const yColumnsChecked = uniqBy(yColumns, 'value');
-    const chartColors = setChartColors(
-      yColumnsChecked.length,
-      CHART_COLORS,
-      CHART_COLORS_EXTENDED
-    );
-    const theme = getThemeConfig(yColumnsChecked, chartColors);
-    colorThemeCache = { ...theme, ...colorThemeCache };
-    const tooltip = getTooltipConfig(yColumnsChecked);
-    return {
-      axes: DEFAULT_AXES_CONFIG,
-      theme: colorThemeCache,
-      tooltip,
-      animation: false,
-      columns: {
-        x: [{ label: 'year', value: 'x' }],
-        y: yColumnsChecked
-      }
-    };
-  }
-);
-
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'historical-emissions';
   return generateLinkToDataExplorer(search, section);
 });
-
-const getLoading = createSelector(
-  [getChartConfig, state => state.ghgEmissionsMeta, state => state.emissions],
-  (chartConfig, meta, data) =>
-    (meta && meta.loading) || (data && data.loading) || !chartConfig || false
-);
 
 const getLegendDataOptions = createSelector(
   [getModelSelected, getOptions],
@@ -447,13 +353,114 @@ const getLegendDataSelected = createSelector(
     ) {
       return null;
     }
-
     const dataSelected = selectedOptions[selectedModel];
-    if (!isArray(dataSelected)) {
-      if (dataSelected.value === ALL_SELECTED) return options[model];
-    }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
+);
+
+const getYColumnOptions = createSelector(
+  [getLegendDataSelected, getModelSelected],
+  (legendDataSelected, modelSelected) => {
+    if (!legendDataSelected) return null;
+    const getYOption = columns =>
+      columns &&
+      columns.map(d => ({
+        label: d && d.label,
+        value: d && getYColumnValue(`${modelSelected}${d.value}`)
+      }));
+    return uniqBy(getYOption(legendDataSelected), 'value');
+  }
+);
+
+// Map the data from the API
+const filterData = createSelector(
+  [sortData, getOptionsSelected],
+  (data, filters) => {
+    if (!data || !data.length || !filters) return null;
+    return data;
+    // Already filtered by source- version, gas, region, sector
+    // Missing metric?
+  }
+);
+
+const getDFilterValue = (d, modelSelected) =>
+  (modelSelected === 'regions' ? d.location : d[modelSelected]);
+
+export const getChartData = createSelector(
+  [filterData, getModelSelected, getYColumnOptions],
+  (data, model, yColumnOptions) => {
+    if (!data || !data.length || !model) return null;
+    const yearValues = data[0].emissions.map(d => d.year);
+    const dataParsed = yearValues.map(x => {
+      const yItems = {};
+      data.forEach(d => {
+        const columnObject = yColumnOptions.find(
+          c => c.label === getDFilterValue(d, model)
+        );
+        const yKey = columnObject && columnObject.value;
+        const yData = d.emissions.find(e => e.year === x);
+        yItems[yKey] = yData.value ? yData.value * DATA_SCALE : null;
+      });
+      const item = {
+        x,
+        ...yItems
+      };
+      return item;
+    });
+    return dataParsed;
+  }
+);
+
+export const getChartDomain = createSelector([getChartData], data => {
+  if (!data) return null;
+  return {
+    x: setXAxisDomain(),
+    y: setYAxisDomain()
+  };
+});
+
+// variable that caches chart elements assigned color
+// to avoid element color changing when the chart is updated
+let colorThemeCache = {};
+
+export const getChartConfig = createSelector(
+  [getModelSelected, getYColumnOptions],
+  (model, yColumns) => {
+    if (!model || !yColumns) return null;
+
+    const chartColors = setChartColors(
+      yColumns.length,
+      CHART_COLORS,
+      CHART_COLORS_EXTENDED
+    );
+    const theme = getThemeConfig(yColumns, chartColors);
+    colorThemeCache = {
+      ...theme,
+      ...colorThemeCache
+    };
+    const tooltip = getTooltipConfig(yColumns);
+    return {
+      axes: DEFAULT_AXES_CONFIG,
+      theme: colorThemeCache,
+      tooltip,
+      animation: false,
+      columns: {
+        x: [
+          {
+            label: 'year',
+            value: 'x'
+          }
+        ],
+        y: yColumns
+      }
+    };
+  }
+);
+
+const getLoading = createSelector(
+  [getChartConfig, state => state.ghgEmissionsMeta, state => state.emissions],
+  (chartConfig, meta, data) =>
+    (meta && meta.loading) || (data && data.loading) || !chartConfig || false
 );
 
 const getProviderFilters = createSelector(
@@ -492,5 +499,6 @@ export const getGHGEmissions = createStructuredSelector({
   options: getOptions,
   legendOptions: getLegendDataOptions,
   legendSelected: getLegendDataSelected,
-  selected: getOptionsSelected
+  selected: getOptionsSelected,
+  fieldToBreakBy: getModelSelected
 });

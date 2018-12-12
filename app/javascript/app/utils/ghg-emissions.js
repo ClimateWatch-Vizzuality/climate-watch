@@ -34,4 +34,10 @@ export const calculatedRatio = (selected, calculationData, x) => {
   return 1;
 };
 
-export default { getGhgEmissionDefaults, calculatedRatio };
+export const toPlural = model => {
+  const plurals = {
+    sector: 'sectors',
+    gas: 'gases'
+  };
+  return plurals[model] || model;
+};
