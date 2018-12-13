@@ -58,7 +58,7 @@ const Item = props => {
       onClick={() => toggleOpenGroup(item)}
     />
   );
-
+  const showChildrenActive = hasActiveChild && !active;
   return (
     <div
       className={cx(styles.itemWrapper, {
@@ -79,8 +79,7 @@ const Item = props => {
       >
         {label}
         {active && <span className={cx(styles.activeMark, theme.activeMark)} />}
-        {hasActiveChild &&
-        !active && (
+        {showChildrenActive && (
           <span
             className={cx(styles.childrenActiveMark, theme.childrenActiveMark)}
           />
@@ -98,7 +97,7 @@ Item.propTypes = {
   highlightedIndex: PropTypes.number,
   getItemProps: PropTypes.func.isRequired,
   toggleOpenGroup: PropTypes.func.isRequired,
-  optionsAction: PropTypes.func.isRequired,
+  optionsAction: PropTypes.func,
   optionsActionKey: PropTypes.string,
   activeValue: PropTypes.object,
   activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -112,6 +111,7 @@ Item.defaultProps = {
   showGroup: undefined,
   highlightedIndex: undefined,
   optionsActionKey: undefined,
+  optionsAction: undefined,
   activeValue: undefined,
   activeLabel: undefined,
   noParentSelection: false,

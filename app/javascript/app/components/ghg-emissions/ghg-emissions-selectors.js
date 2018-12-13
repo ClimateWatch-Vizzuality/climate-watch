@@ -163,18 +163,16 @@ const sortData = createSelector(getData, data => {
   return sortEmissionsByValue(data);
 });
 
-// use filtered data to get top emitters for each region
-export const getRegionsOptions = createSelector(
-  [getRegions, sortData],
-  (regions, data) => {
-    if (!regions || !data) return null;
+const getRegionsOptions = createSelector(
+  [getRegions, getMeta],
+  (regions, meta) => {
+    if (!regions || !meta) return null;
     const mappedRegions = [TOP_EMITTERS_OPTION];
     regions.forEach(region => {
       const regionMembers = region.members.map(m => m.iso_code3);
-      const regionData = data.filter(
-        d => regionMembers.indexOf(d.iso_code3) > -1
-      );
-      const regionIsos = regionData.map(m => m.iso_code3).slice(0, 10);
+      const regionMeta = (meta.location || [])
+        .filter(d => regionMembers.indexOf(d.iso_code3) > -1);
+      const regionIsos = regionMeta.map(m => m.iso_code3);
       if (region.iso_code3 !== 'WORLD') {
         mappedRegions.push({
           label: region.wri_standard_name,
@@ -236,41 +234,6 @@ const getDefaultOptions = createSelector(
   }
 );
 
-const getFiltersSelected = field =>
-  createSelector(
-    [getFieldOptions(field), getSelection(field), getDefaultOptions],
-    (options, selected, defaults) => {
-      if (!defaults) return null;
-      if (!selected || isEmpty(options)) return defaults[field];
-      let selectedFilters = [];
-      if (selected) {
-        if (selected === ALL_SELECTED) selectedFilters = [ALL_SELECTED_OPTION];
-        else {
-          const selectedValues = selected.split(',');
-          selectedFilters = options.filter(
-            filter =>
-              selectedValues.indexOf(String(filter.value)) !== -1 ||
-              selectedValues.indexOf(filter.iso_code3) !== -1
-          );
-        }
-      }
-      return selectedFilters;
-    }
-  );
-
-const CHART_TYPE_OPTIONS = [
-  { label: 'line', value: 'line' },
-  { label: 'area', value: 'area' }
-];
-
-export const getChartTypeSelected = createSelector(
-  [() => CHART_TYPE_OPTIONS, getSelection('chartType')],
-  (options, selected) => {
-    if (!selected) return options[0];
-    return options.find(type => type.value === selected);
-  }
-);
-
 const getSectorOptions = createSelector(
   [getFieldOptions('sector'), getAllowedSectors, getMeta],
   (options, allowedOptions, meta) => {
@@ -283,13 +246,11 @@ const getSectorOptions = createSelector(
       }
     });
 
-    const sectors = metaSectors
-      .filter(s => !s.parentId && allowedSectorLabels.includes(s.value))
-      .map(d => ({
-        label: d.label,
-        value: d.value,
-        groupParent: String(d.value)
-      }));
+    const sectors = metaSectors.filter(s => !s.parentId).map(d => ({
+      label: d.label,
+      value: d.value,
+      groupParent: String(d.value)
+    }));
 
     const subsectors = metaSectors.filter(s => s.parentId).map(d => ({
       label: d.label,
@@ -308,6 +269,45 @@ const getOptions = createStructuredSelector({
   sectors: getSectorOptions,
   gases: getFieldOptions('gas')
 });
+
+const getFiltersSelected = field =>
+  createSelector(
+    [getOptions, getSelection(field), getDefaultOptions],
+    (options, selected, defaults) => {
+      const fieldOptions = options && options[toPlural(field)];
+      if (!defaults) return null;
+      if (!selected || !fieldOptions || isEmpty(fieldOptions)) {
+        return defaults[field];
+      }
+      let selectedFilters = [];
+      if (selected) {
+        if (selected === ALL_SELECTED) selectedFilters = [ALL_SELECTED_OPTION];
+        else {
+          const selectedValues = selected.split(',');
+          selectedFilters = fieldOptions.filter(
+            filter =>
+              selectedValues.indexOf(String(filter.value)) !== -1 ||
+              selectedValues.indexOf(filter.iso_code3) !== -1
+          );
+        }
+      }
+      return selectedFilters;
+    }
+  );
+
+const CHART_TYPE_OPTIONS = [
+  { label: 'line', value: 'line' },
+  { label: 'area', value: 'area' },
+  { label: 'percentage', value: 'percentage' }
+];
+
+export const getChartTypeSelected = createSelector(
+  [() => CHART_TYPE_OPTIONS, getSelection('chartType')],
+  (options, selected) => {
+    if (!selected) return options[0];
+    return options.find(type => type.value === selected);
+  }
+);
 
 const getOptionsSelected = createStructuredSelector({
   sourcesSelected: getSourceSelected,

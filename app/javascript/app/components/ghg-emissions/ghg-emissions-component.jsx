@@ -15,6 +15,7 @@ import isArray from 'lodash/isArray';
 import { ALL_SELECTED_OPTION, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
+import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import styles from './ghg-emissions-styles.scss';
 
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
@@ -105,7 +106,11 @@ class GhgEmissions extends PureComponent {
         ]}
       />
     );
-    const icons = { line: lineIcon, area: areaIcon };
+    const icons = {
+      line: lineIcon,
+      area: areaIcon,
+      percentage: percentageIcon
+    };
     return (
       <div>
         <div className={styles.titleContainer}>
@@ -123,22 +128,22 @@ class GhgEmissions extends PureComponent {
           <Multiselect
             label={'Regions'}
             groups={groups}
-            values={getValues(selectedOptions.regionsSelected)}
             options={options.regions || []}
+            values={getValues(selectedOptions.regionsSelected)}
             onValueChange={selected => handleChange('regions', selected)}
           />
           <MultiDropdown
             label="Sectors / Subsectors"
             theme={{ wrapper: styles.dropdown }}
-            options={addAllSelected(options.sectors)}
-            values={getValues(selectedOptions.sectorsSelected)}
+            options={addAllSelected(options, 'sectors')}
+            values={selectedOptions.sectorsSelected || []}
             onChange={selected => handleChange('sectors', selected)}
             multiselect
           />
           <Multiselect
             label={'Gases'}
-            values={getValues(selectedOptions.gasesSelected)}
             options={addAllSelected(options, 'gases')}
+            values={getValues(selectedOptions.gasesSelected)}
             onValueChange={selected => handleChange('gases', selected)}
           />
           {this.renderDropdown('Break by', 'breakBy')}
