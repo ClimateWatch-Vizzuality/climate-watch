@@ -249,7 +249,7 @@ const getFiltersSelected = field =>
           const selectedValues = selected.split(',');
           selectedFilters = options.filter(
             filter =>
-              selectedValues.indexOf(filter.value) !== -1 ||
+              selectedValues.indexOf(String(filter.value)) !== -1 ||
               selectedValues.indexOf(filter.iso_code3) !== -1
           );
         }
@@ -276,36 +276,27 @@ const getSectorOptions = createSelector(
   (options, allowedOptions, meta) => {
     if (!options || isEmpty(options)) return null;
     const { sector: metaSectors } = meta;
-    return metaSectors;
-    // const allowedSectorLabels = [];
-    // options.forEach(o => {
-    //   if (allowedOptions.includes(o.label)) {
-    //     allowedSectorLabels.push(o.label);
-    //   }
-    // });
+    const allowedSectorLabels = [];
+    options.forEach(o => {
+      if (allowedOptions.includes(o.label)) {
+        allowedSectorLabels.push(o.label);
+      }
+    });
 
-    // const sectors = metaSectors
-    //   .filter(
-    //     s =>
-    //       !s.parentId &&
-    //       allowedSectorLabels.includes(s.value)
-    //   )
-    //   .map(d => ({
-    //     label: d.label,
-    //     value: d.value,
-    //     groupParent: String(d.value)
-    //   }));
+    const sectors = metaSectors
+      .filter(s => !s.parentId && allowedSectorLabels.includes(s.value))
+      .map(d => ({
+        label: d.label,
+        value: d.value,
+        groupParent: String(d.value)
+      }));
 
-    // const subsectors = metaSectors
-    //   .filter(
-    //     s => s.parentId
-    //   )
-    //   .map(d => ({
-    //     label: d.label,
-    //     value: d.value,
-    //     group: String(d.parentId)
-    //   }));
-    // return [...sectors, ...subsectors];
+    const subsectors = metaSectors.filter(s => s.parentId).map(d => ({
+      label: d.label,
+      value: d.value,
+      group: String(d.parentId)
+    }));
+    return [...sectors, ...subsectors];
   }
 );
 
@@ -395,7 +386,8 @@ export const getChartData = createSelector(
         );
         const yKey = columnObject && columnObject.value;
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = yData.value ? yData.value * DATA_SCALE : null;
+        yItems[yKey] =
+          yData.value || yData.value === 0 ? yData.value * DATA_SCALE : null;
       });
       const item = {
         x,
