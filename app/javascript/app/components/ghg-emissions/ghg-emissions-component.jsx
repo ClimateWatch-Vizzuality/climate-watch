@@ -130,7 +130,7 @@ class GhgEmissions extends PureComponent {
           <MultiDropdown
             label="Sectors / Subsectors"
             theme={{ wrapper: styles.dropdown }}
-            options={options.sectors || []}
+            options={addAllSelected(options.sectors)}
             values={getValues(selectedOptions.sectorsSelected)}
             onChange={selected => handleChange('sectors', selected)}
             multiselect

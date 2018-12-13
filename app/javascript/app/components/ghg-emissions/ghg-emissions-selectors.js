@@ -27,6 +27,7 @@ import {
   ALL_SELECTED,
   ALL_SELECTED_OPTION
 } from 'data/constants';
+import { TOP_EMITTERS_OPTION } from 'data/data-explorer-constants';
 
 const BREAK_BY_OPTIONS = [
   {
@@ -167,15 +168,7 @@ export const getRegionsOptions = createSelector(
   [getRegions, sortData],
   (regions, data) => {
     if (!regions || !data) return null;
-    const mappedRegions = [
-      {
-        label: 'Top Emitters',
-        value: 'TOP',
-        members: TOP_EMITTERS,
-        iso: 'TOP',
-        groupId: 'regions'
-      }
-    ];
+    const mappedRegions = [TOP_EMITTERS_OPTION];
     regions.forEach(region => {
       const regionMembers = region.members.map(m => m.iso_code3);
       const regionData = data.filter(
@@ -207,7 +200,7 @@ export const getFieldOptions = field =>
         value: d.iso,
         groupId: 'countries'
       }));
-      return sortLabelByAlpha(union(regions.concat(countries), 'iso'));
+      return union(regions.concat(countries), 'iso');
     }
     return sortLabelByAlpha(fieldOptions);
   });
@@ -220,6 +213,7 @@ const getDefaultOptions = createSelector(
       sourceSelected.label.split('-')[0],
       meta
     );
+    defaults.location = TOP_EMITTERS;
     const defaultOptions = {};
     Object.keys(defaults).forEach(key => {
       const keyDefault = String(defaults[key]).split(',');
@@ -237,6 +231,7 @@ const getDefaultOptions = createSelector(
         }));
       }
     });
+    defaultOptions.location.push(TOP_EMITTERS_OPTION);
     return defaultOptions;
   }
 );
@@ -253,15 +248,11 @@ const getFiltersSelected = field =>
         else {
           const selectedValues = selected.split(',');
           selectedFilters = options.filter(
-            filter => selectedValues.indexOf(`${filter.value}`) > -1
+            filter =>
+              selectedValues.indexOf(filter.value) !== -1 ||
+              selectedValues.indexOf(filter.iso_code3) !== -1
           );
         }
-      } else {
-        if (field !== 'location') return options;
-        const selectedValues = TOP_EMITTERS;
-        selectedFilters = options.filter(
-          filter => selectedValues.indexOf(filter.value) > -1
-        );
       }
       return selectedFilters;
     }
@@ -378,7 +369,7 @@ const getYColumnOptions = createSelector(
     if (!legendDataSelected) return null;
     const getYOption = columns =>
       columns &&
-      columns.map(d => ({
+      columns.filter(c => !isEqual(c, TOP_EMITTERS_OPTION)).map(d => ({
         label: d && d.label,
         value: d && getYColumnValue(d.label)
       }));
@@ -481,7 +472,10 @@ const getProviderFilters = createSelector(
     const parseValues = selected =>
       (isEqual(selected, [ALL_SELECTED_OPTION])
         ? null
-        : selected.map(s => s.value).join());
+        : selected
+          .filter(s => !isEqual(s, TOP_EMITTERS_OPTION))
+          .map(s => s.value)
+          .join());
     return {
       source: sourcesSelected.value.split('-')[0],
       gwp: sourcesSelected.value.split('-')[1],
