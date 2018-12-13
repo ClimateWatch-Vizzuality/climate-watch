@@ -20,7 +20,7 @@ module Api
           }, status: :bad_request and return
         end
 
-        render json: ::HistoricalEmissions::Record.find_by_params(params),
+        render json: ::HistoricalEmissions::Record.find_by_params(index_params),
                each_serializer: Api::V1::HistoricalEmissions::RecordSerializer,
                params: params
       end
@@ -29,7 +29,7 @@ module Api
         render(
           json: HistoricalEmissionsMetadata.new(
             merged_records(grouped_records),
-            ::HistoricalEmissions::Sector.all,
+            fetch_meta_sectors,
             ::HistoricalEmissions::Gas.all,
             ::HistoricalEmissions::Gwp.all,
             Location.all
@@ -40,10 +40,29 @@ module Api
 
       private
 
+      def fetch_meta_sectors
+        return ::HistoricalEmissions::Sector.all if deeply_nested_sectors?
+
+        ::HistoricalEmissions::Sector.first_and_second_level
+      end
+
+      def index_params
+        return params if deeply_nested_sectors?
+
+        not_deeply_nested_ids = ::HistoricalEmissions::Sector.first_and_second_level.pluck(:id)
+        sector_ids = (params[:sector] || '').split(',') | not_deeply_nested_ids
+
+        params.merge(sector: sector_ids.join(','))
+      end
+
       def valid_params(params)
         params[:source] && (
           params[:location] || params[:sector] || params[:gas]
         )
+      end
+
+      def deeply_nested_sectors?
+        params.fetch(:deeply_nested_sectors, 'true') == 'true'
       end
 
       def grouped_records
