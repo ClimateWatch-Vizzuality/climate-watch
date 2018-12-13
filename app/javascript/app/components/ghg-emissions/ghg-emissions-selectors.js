@@ -274,7 +274,9 @@ const getFiltersSelected = field =>
   createSelector(
     [getOptions, getSelection(field), getDefaultOptions],
     (options, selected, defaults) => {
-      const fieldOptions = options && options[toPlural(field)];
+      const fieldOptions =
+        options &&
+        (field === 'location' ? options.regions : options[toPlural(field)]);
       if (!defaults) return null;
       if (!selected || !fieldOptions || isEmpty(fieldOptions)) {
         return defaults[field];
