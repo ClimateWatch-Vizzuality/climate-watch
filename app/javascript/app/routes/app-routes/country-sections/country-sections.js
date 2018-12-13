@@ -6,7 +6,7 @@ import ClimateVulnerability from 'components/country/country-climate-vulnerabili
 import CountryNdcOverview from 'components/country/country-ndc-overview';
 import LawsAndPolicies from 'components/country/laws-and-policies';
 
-export default [
+const routes = [
   {
     hash: 'ghg-emissions',
     label: 'GHG Emissions',
@@ -38,3 +38,5 @@ export default [
     component: LawsAndPolicies
   }
 ];
+
+export default routes;

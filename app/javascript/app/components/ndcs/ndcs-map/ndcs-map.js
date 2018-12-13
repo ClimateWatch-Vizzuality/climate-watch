@@ -116,7 +116,7 @@ class NDCMapContainer extends PureComponent {
     this.props.setModalMetadata({
       customTitle: 'NDC Content',
       category: 'NDC Content Map',
-      slugs: ['ndc_cait', 'ndc_wb', 'ndc_die'],
+      slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
       open: true
     });
   };

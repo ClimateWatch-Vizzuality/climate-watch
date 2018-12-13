@@ -135,7 +135,10 @@ const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
   (breaks, selected) => {
     if (!breaks) return null;
-    if (!selected) return breaks[0];
+    if (!selected) {
+      const defaultBreak = breaks.find(b => b.value === 'location');
+      return defaultBreak || breaks[0];
+    }
     return breaks.find(category => category.value === selected);
   }
 );

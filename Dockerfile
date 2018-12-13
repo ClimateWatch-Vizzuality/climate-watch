@@ -15,6 +15,9 @@ ENV GFW_API https://production-api.globalforestwatch.org
 ENV S3_BUCKET_NAME climate-watch-dev
 ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
+ARG FEATURE_LAWS_AND_POLICIES
+ENV FEATURE_LAWS_AND_POLICIES $FEATURE_LAWS_AND_POLICIES
+
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
