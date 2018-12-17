@@ -391,8 +391,14 @@ export const getChartData = createSelector(
         );
         const yKey = columnObject && columnObject.value;
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] =
+        const value =
           yData.value || yData.value === 0 ? yData.value * DATA_SCALE : null;
+        const currentValue = yItems[yKey];
+        if (value && (currentValue || currentValue === 0)) {
+          yItems[yKey] = value + yItems[yKey];
+        } else {
+          yItems[yKey] = value || currentValue;
+        }
       });
       const item = {
         x,
