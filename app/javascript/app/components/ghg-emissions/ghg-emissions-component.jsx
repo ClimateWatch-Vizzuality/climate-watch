@@ -32,23 +32,10 @@ const addAllSelected = (filterOptions, f) => {
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
-  renderDropdown(label, field, multi, icons) {
+  renderDropdown(label, field, icons) {
     const { selected: selectedOptions, options, handleChange } = this.props;
     const value = selectedOptions && selectedOptions[`${field}Selected`];
     const iconsProp = icons ? { icons } : {};
-    if (multi) {
-      return (
-        <Multiselect
-          key={field}
-          label={label || startCase(field)}
-          placeholder={`Filter by ${startCase(field)}`}
-          options={addAllSelected(options, field)}
-          onValueChange={selected => handleChange(field, selected)}
-          values={(isArray(value) ? value : [value]) || null}
-          hideResetButton
-        />
-      );
-    }
     return (
       <Dropdown
         key={field}
@@ -147,7 +134,7 @@ class GhgEmissions extends PureComponent {
             onValueChange={selected => handleChange('gases', selected)}
           />
           {this.renderDropdown('Break by', 'breakBy')}
-          {this.renderDropdown(null, 'chartType', false, icons)}
+          {this.renderDropdown(null, 'chartType', icons)}
         </div>
         <Chart
           className={styles.chartWrapper}

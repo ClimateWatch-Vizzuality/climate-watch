@@ -1,6 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
+import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
@@ -166,29 +167,23 @@ const sortData = createSelector(getData, data => {
   return sortEmissionsByValue(data);
 });
 
-const getRegionsOptions = createSelector(
-  [getRegions, getMeta],
-  (regions, meta) => {
-    if (!regions || !meta) return null;
-    const mappedRegions = [TOP_EMITTERS_OPTION];
-    regions.forEach(region => {
-      const regionMembers = region.members.map(m => m.iso_code3);
-      const regionMeta = (meta.location || [])
-        .filter(d => regionMembers.indexOf(d.iso_code3) > -1);
-      const regionIsos = regionMeta.map(m => m.iso_code3);
-      if (region.iso_code3 !== 'WORLD') {
-        mappedRegions.push({
-          label: region.wri_standard_name,
-          value: region.iso_code3,
-          iso: region.iso_code3,
-          members: regionIsos,
-          groupId: 'regions'
-        });
-      }
-    });
-    return mappedRegions;
-  }
-);
+const getRegionsOptions = createSelector([getRegions], regions => {
+  if (!regions) return null;
+  const mappedRegions = [TOP_EMITTERS_OPTION];
+  regions.forEach(region => {
+    const regionMembers = region.members.map(m => m.iso_code3);
+    if (region.iso_code3 !== 'WORLD') {
+      mappedRegions.push({
+        label: region.wri_standard_name,
+        value: region.iso_code3,
+        iso: region.iso_code3,
+        members: regionMembers,
+        groupId: 'regions'
+      });
+    }
+  });
+  return mappedRegions;
+});
 
 export const getFieldOptions = field =>
   createSelector([getMeta, getRegionsOptions], (meta, regions) => {
@@ -367,7 +362,8 @@ const getYColumnOptions = createSelector(
       columns &&
       columns.filter(c => !isEqual(c, TOP_EMITTERS_OPTION)).map(d => ({
         label: d && d.label,
-        value: d && getYColumnValue(d.label)
+        value: d && getYColumnValue(d.label),
+        members: d && d.members
       }));
     return uniqBy(getYOption(legendDataSelected), 'value');
   }
@@ -395,7 +391,9 @@ export const getChartData = createSelector(
       const yItems = {};
       data.forEach(d => {
         const columnObject = yColumnOptions.find(
-          c => c.label === getDFilterValue(d, model)
+          c =>
+            c.label === getDFilterValue(d, model) ||
+            (c.members && c.members.includes(d.iso_code3))
         );
         const yKey = columnObject && columnObject.value;
         const yData = d.emissions.find(e => e.year === x);
@@ -473,19 +471,28 @@ const getProviderFilters = createSelector(
       gasesSelected,
       regionsSelected
     } = selectedOptions;
+
     const parseValues = selected =>
       (isEqual(selected, [ALL_SELECTED_OPTION])
         ? null
-        : selected
-          .filter(s => !isEqual(s, TOP_EMITTERS_OPTION))
-          .map(s => s.value)
-          .join());
+        : uniq(
+          selected
+            .filter(s => !isEqual(s, TOP_EMITTERS_OPTION))
+            .map(s => s.value)
+        ).join());
+    const regionCountriesSelected = [];
+    regionsSelected.forEach(r => {
+      if (r.members) regionCountriesSelected.push(r.members);
+    });
+    const countryValues = regionCountriesSelected.join();
     return {
       source: sourcesSelected.value.split('-')[0],
       gwp: sourcesSelected.value.split('-')[1],
       gas: parseValues(gasesSelected),
       sector: parseValues(sectorsSelected),
-      location: parseValues(regionsSelected)
+      location: `${parseValues(regionsSelected)}${countryValues
+        ? `,${countryValues}`
+        : ''}`
     };
   }
 );
