@@ -378,6 +378,14 @@ const getYColumnOptions = createSelector(
 const getDFilterValue = (d, modelSelected) =>
   (modelSelected === 'regions' ? d.location : d[modelSelected]);
 
+const calculateValue = (currentValue, value) => {
+  const updatedValue = value || value === 0 ? value * DATA_SCALE : null;
+  if (updatedValue && (currentValue || currentValue === 0)) {
+    return updatedValue + currentValue;
+  }
+  return updatedValue || currentValue;
+};
+
 export const getChartData = createSelector(
   [sortData, getModelSelected, getYColumnOptions],
   (data, model, yColumnOptions) => {
@@ -391,14 +399,7 @@ export const getChartData = createSelector(
         );
         const yKey = columnObject && columnObject.value;
         const yData = d.emissions.find(e => e.year === x);
-        const value =
-          yData.value || yData.value === 0 ? yData.value * DATA_SCALE : null;
-        const currentValue = yItems[yKey];
-        if (value && (currentValue || currentValue === 0)) {
-          yItems[yKey] = value + yItems[yKey];
-        } else {
-          yItems[yKey] = value || currentValue;
-        }
+        yItems[yKey] = calculateValue(yItems[yKey], yData.value);
       });
       const item = {
         x,
