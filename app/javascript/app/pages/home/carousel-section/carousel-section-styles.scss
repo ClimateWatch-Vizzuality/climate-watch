@@ -29,11 +29,13 @@
   text-align: center;
   padding-bottom: 30px;
   max-width: 90%;
+  line-height: 26px;
 }
 
 .buttonsContainer {
   display: flex;
   justify-content: space-around;
+  align-items: flex-end;
   width: 100%;
 }
 
@@ -50,18 +52,31 @@
 
 .image {
   max-height: 40vh;
+  min-height: 300px;
 }
 
-:global .cwCarouselPaging{
+:global .cwCarouselPaging {
   li {
     padding: 0 35px !important;
 
     &:first-child {
       padding-left: 0 !important;
     }
-  
+
     &:last-child {
       padding-right: 0 !important;
     }
   }
+}
+
+.geoLocation {
+  display: block;
+  opacity: 1;
+  font-size: $font-size-s;
+  color: $dark-gray;
+  margin-bottom: 10px;
+}
+
+.geoLocationHide {
+  opacity: 0;
 }
