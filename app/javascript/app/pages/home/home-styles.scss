@@ -1,64 +1,12 @@
 @import '~styles/settings.scss';
 @import '~styles/layout.scss';
 
-.doubleFold {
-  @include columns(12);
-
-  @media #{$tablet-portrait} {
-    @include columns(6);
-  }
-}
-
 .autocompleteSearch {
   width: 100%;
   padding-bottom: 0;
-  
+
   & [class|=react-selectize-placeholder] {
     font-style: italic;
-  }
-}
-
-.imgLayout {
-  @include columns(8);
-
-  > *:first-child {
-    @include column-offset(2, $gutters: true);
-  }
-
-  @media #{$tablet-portrait} {
-    justify-content: center;
-
-    > *:first-child {
-      min-width: 500px;
-
-      @include column-offset(0, $gutters: true);
-
-      img {
-        height: 100%;
-        width: 100%;
-      }
-    }
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns(12);
-
-    > *:first-child {
-      @include column-offset(0, $gutters: true);
-
-      min-width: 400px;
-
-      img {
-        height: auto;
-      }
-    }
-  }
-}
-
-.mobileDoubleAction {
-  @media #{$mobile-only} {
-    justify-content: space-between;
-    height: 140px;
   }
 }
 
@@ -93,10 +41,6 @@
   padding-top: 60px;
   padding-bottom: 60px;
 
-  .row {
-    justify-content: center;
-  }
-
   @media #{$tablet-landscape} {
     padding-bottom: 0;
 
@@ -112,93 +56,4 @@
   height: 31px;
   margin-bottom: 38px;
   width: 332px;
-}
-
-.fullscreen {
-  border-radius: 50%;
-  position: absolute;
-  z-index: 2;
-  right: -20px;
-  top: -20px;
-}
-
-.geoLocation {
-  opacity: 1;
-  font-size: $font-size-s;
-  color: $base-text;
-  margin-bottom: 5px;
-}
-
-.geoLocationHide {
-  opacity: 0;
-}
-
-.imageLeft {
-  box-shadow: -10px 9px 30px 0 rgba(37, 89, 124, 0.15);
-}
-
-.imageRight {
-  box-shadow: 10px 9px 30px 0 rgba(37, 89, 124, 0.15);
-}
-
-.imageTall {
-  box-shadow: -10px 0 30px 0 rgba(37, 89, 124, 0.15);
-}
-
-.video {
-  position: relative;
-  background: #000;
-  height: 315px;
-
-  @media #{$mobile-only} {
-    height: 200px;
-  }
-}
-
-.countries {
-  display: flex;
-  padding-bottom: 0;
-}
-
-.sdgLinkages {
-  display: flex;
-}
-
-.countries,
-.ndcs,
-.sdgLinkages,
-.ghg,
-.pathways {
-  background-image: linear-gradient(to top, $theme-color -100%, transparent 10%);
-  border-bottom: solid 1px $border-color;
-
-  @media #{$tablet-portrait} {
-    background-image: none;
-  }
-}
-
-.invertOrder {
-  order: 2;
-  margin-bottom: 0;
-
-  @media #{$tablet-landscape} {
-    order: initial;
-  }
-}
-
-.imgContainer {
-  @media #{$tablet-portrait} {
-    display: flex;
-    justify-content: center;
-  }
-
-  @media #{$tablet-landscape} {
-    display: block;
-  }
-}
-
-.ndcImageMobile {
-  margin-right: -$gutter-padding / 2;
-  margin-left: -$gutter-padding / 2;
-  width: calc(100% + #{$gutter-padding});
 }
