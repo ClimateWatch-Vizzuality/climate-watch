@@ -305,3 +305,11 @@ export const METRIC_OPTIONS = {
   PER_CAPITA: { label: 'per Capita', value: 'PER_CAPITA' },
   PER_GDP: { label: 'per GDP', value: 'PER_GDP' }
 };
+
+export const TOP_EMITTERS_OPTION = {
+  iso: 'TOP',
+  label: 'Top Emitters',
+  value: 'TOP',
+  members: TOP_EMITTERS.join(','),
+  groupId: 'regions'
+};

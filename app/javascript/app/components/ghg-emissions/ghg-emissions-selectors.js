@@ -3,7 +3,6 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
-import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
@@ -26,9 +25,9 @@ import {
   EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
   DATA_SCALE,
   ALL_SELECTED,
-  ALL_SELECTED_OPTION
+  ALL_SELECTED_OPTION,
+  TOP_EMITTERS_OPTION
 } from 'data/constants';
-import { TOP_EMITTERS_OPTION } from 'data/data-explorer-constants';
 
 const BREAK_BY_OPTIONS = [
   {
@@ -191,12 +190,21 @@ export const getFieldOptions = field =>
     const fieldOptions = meta[field];
     if (field === 'location') {
       if (!regions) return [];
-      const countries = fieldOptions.map(d => ({
-        ...d,
-        value: d.iso,
-        groupId: 'countries'
-      }));
-      return union(regions.concat(countries), 'iso');
+      const countries = [];
+      const regionIsos = regions.map(r => r.iso);
+      fieldOptions.forEach(d => {
+        if (!regionIsos.includes(d.iso)) {
+          countries.push({
+            ...d,
+            value: d.iso,
+            groupId: 'countries'
+          });
+        }
+      });
+      const sortedRegions = sortLabelByAlpha(regions).sort(
+        x => (x.value === 'TOP' ? -1 : 0)
+      );
+      return sortedRegions.concat(sortLabelByAlpha(countries));
     }
     return sortLabelByAlpha(fieldOptions);
   });
@@ -360,7 +368,7 @@ const getYColumnOptions = createSelector(
     if (!legendDataSelected) return null;
     const getYOption = columns =>
       columns &&
-      columns.filter(c => !isEqual(c, TOP_EMITTERS_OPTION)).map(d => ({
+      columns.map(d => ({
         label: d && d.label,
         value: d && getYColumnValue(d.label),
         members: d && d.members
@@ -475,11 +483,7 @@ const getProviderFilters = createSelector(
     const parseValues = selected =>
       (isEqual(selected, [ALL_SELECTED_OPTION])
         ? null
-        : uniq(
-          selected
-            .filter(s => !isEqual(s, TOP_EMITTERS_OPTION))
-            .map(s => s.value)
-        ).join());
+        : uniq(selected.map(s => s.value)).join());
     const regionCountriesSelected = [];
     regionsSelected.forEach(r => {
       if (r.members) regionCountriesSelected.push(r.members);
