@@ -7,7 +7,7 @@ module Api
       attribute :updated_at, key: :date
 
       def updated_at
-        object.updated_at.strftime('%d %B %Y')
+        object.updated_at.strftime('%d %b %Y')
       end
     end
   end
