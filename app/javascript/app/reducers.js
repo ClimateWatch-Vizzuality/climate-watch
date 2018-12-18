@@ -31,6 +31,7 @@ import * as agricultureCountriesContextsProvider from 'providers/agriculture-cou
 import * as agricultureEmissionsProvider from 'providers/agriculture-emissions-provider';
 import * as agricultureLandAreaProvider from 'providers/agriculture-land-area-provider';
 import * as storiesProvider from 'providers/stories-provider';
+import * as latestUpdatesProvider from 'providers/latest-updates-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -60,7 +61,8 @@ const providersReducers = {
   ),
   agricultureEmissions: handleActions(agricultureEmissionsProvider),
   agricultureLandArea: handleActions(agricultureLandAreaProvider),
-  stories: handleActions(storiesProvider)
+  stories: handleActions(storiesProvider),
+  latestUpdates: handleActions(latestUpdatesProvider)
 };
 
 // Pages
