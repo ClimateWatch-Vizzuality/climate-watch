@@ -7,6 +7,7 @@ import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
 import MultiDropdown from 'components/multi-dropdown';
 import { Chart, Multiselect, Dropdown } from 'cw-components';
+import ReactTooltip from 'react-tooltip';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
@@ -33,18 +34,26 @@ class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
   renderDropdown(label, field, icons) {
-    const { selected: selectedOptions, options, handleChange } = this.props;
+    const {
+      selected: selectedOptions,
+      options,
+      handleChange,
+      chartTypeDisabled
+    } = this.props;
     const value = selectedOptions && selectedOptions[`${field}Selected`];
     const iconsProp = icons ? { icons } : {};
     return (
       <Dropdown
         key={field}
+        info={field === 'chartType'}
+        infoText="Stacked and percentage charts are only available if the selected regions do not have countries in common"
         label={label || startCase(field)}
         placeholder={`Filter by ${startCase(field)}`}
         options={addAllSelected(options, field)}
         onValueChange={selected => handleChange(field, selected)}
         value={value || null}
         hideResetButton
+        disabled={field === 'chartType' && chartTypeDisabled}
         {...iconsProp}
       />
     );
@@ -155,6 +164,7 @@ class GhgEmissions extends PureComponent {
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
         </TabletPortraitOnly>
         <ModalMetadata />
+        <ReactTooltip />
       </div>
     );
   }
@@ -175,7 +185,8 @@ GhgEmissions.propTypes = {
   providerFilters: PropTypes.object,
   loading: PropTypes.bool,
   activeFilterRegion: PropTypes.object,
-  downloadLink: PropTypes.string
+  downloadLink: PropTypes.string,
+  chartTypeDisabled: PropTypes.bool
 };
 
 export default GhgEmissions;

@@ -4,6 +4,7 @@ import isArray from 'lodash/isArray';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import isEqual from 'lodash/isEqual';
+import intersection from 'lodash/intersection';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
@@ -258,6 +259,28 @@ const getSectorOptions = createSelector(
   }
 );
 
+const getDisableAccumulatedCharts = createSelector(
+  [getFieldOptions('location'), getSelection('location')],
+  (locationOptions, locationSelected) => {
+    if (!locationOptions.length || !locationSelected) return false;
+    const selectedLocations = locationSelected.split(',');
+    const locationOptionsSelected = locationOptions.filter(location =>
+      selectedLocations.includes(location.iso)
+    );
+    return locationOptionsSelected.some(
+      location =>
+        location.members &&
+        intersection(location.members, selectedLocations).length !== 0
+    );
+  }
+);
+
+const CHART_TYPE_OPTIONS = [
+  { label: 'line', value: 'line' },
+  { label: 'area', value: 'area' },
+  { label: 'percentage', value: 'percentage' }
+];
+
 const getOptions = createStructuredSelector({
   sources: getSourceOptions,
   chartType: () => CHART_TYPE_OPTIONS,
@@ -294,16 +317,24 @@ const getFiltersSelected = field =>
     }
   );
 
-const CHART_TYPE_OPTIONS = [
-  { label: 'line', value: 'line' },
-  { label: 'area', value: 'area' },
-  { label: 'percentage', value: 'percentage' }
-];
+const getLegendDataOptions = createSelector(
+  [getModelSelected, getOptions],
+  (modelSelected, options) => {
+    if (!options || !modelSelected || !options[toPlural(modelSelected)]) {
+      return null;
+    }
+    return options[toPlural(modelSelected)];
+  }
+);
 
-export const getChartTypeSelected = createSelector(
-  [() => CHART_TYPE_OPTIONS, getSelection('chartType')],
-  (options, selected) => {
-    if (!selected) return options[0];
+const getChartTypeSelected = createSelector(
+  [
+    () => CHART_TYPE_OPTIONS,
+    getSelection('chartType'),
+    getDisableAccumulatedCharts
+  ],
+  (options, selected, disableAccumulatedCharts) => {
+    if (!selected || disableAccumulatedCharts) return options[0];
     return options.find(type => type.value === selected);
   }
 );
@@ -321,16 +352,6 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'historical-emissions';
   return generateLinkToDataExplorer(search, section);
 });
-
-const getLegendDataOptions = createSelector(
-  [getModelSelected, getOptions],
-  (modelSelected, options) => {
-    if (!options || !modelSelected || !options[toPlural(modelSelected)]) {
-      return null;
-    }
-    return options[toPlural(modelSelected)];
-  }
-);
 
 const getLegendDataSelected = createSelector(
   [getModelSelected, getOptions, getOptionsSelected],
@@ -527,5 +548,6 @@ export const getGHGEmissions = createStructuredSelector({
   legendOptions: getLegendDataOptions,
   legendSelected: getLegendDataSelected,
   selected: getOptionsSelected,
-  fieldToBreakBy: getModelSelected
+  fieldToBreakBy: getModelSelected,
+  chartTypeDisabled: getDisableAccumulatedCharts
 });
