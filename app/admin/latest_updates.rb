@@ -4,7 +4,7 @@ ActiveAdmin.register Update do
   permit_params :category, :description, :link
 
   controller do
-    before_action { @page_title = "Latest Updates" }
+    before_action { @page_title = 'Latest Updates' }
   end
 
   form do |f|
