@@ -5,11 +5,11 @@ import Icon from 'components/icon';
 import arrowTailRight from 'assets/icons/arrow-tail-right.svg';
 import styles from './tile-styles.scss';
 
-const Tile = ({ type, date, description, link }) => (
+const Tile = ({ category, date, description, link }) => (
   <div className={styles.tile}>
     <div className={styles.container}>
       <div className={styles.details}>
-        <span>{type}</span>
+        <span>{category}</span>
         <span>{date}</span>
       </div>
       <div className={styles.content}>
@@ -31,7 +31,7 @@ const Tile = ({ type, date, description, link }) => (
 );
 
 Tile.propTypes = {
-  type: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired

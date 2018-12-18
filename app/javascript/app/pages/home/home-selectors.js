@@ -3,6 +3,7 @@ import sortBy from 'lodash/sortBy';
 
 const getCountries = state => state.data;
 const getIpData = state => state.ipData;
+const getLatestUpdates = state => state.latestUpdates;
 
 export const getCountriesOptions = createSelector([getCountries], countries => {
   const countriesOptions = countries.map(country => ({
@@ -19,5 +20,6 @@ export const getCountryLocationData = createSelector([getIpData], ipData => ({
 
 export default {
   getCountriesOptions,
-  getCountryLocationData
+  getCountryLocationData,
+  latestUpdates: getLatestUpdates
 };
