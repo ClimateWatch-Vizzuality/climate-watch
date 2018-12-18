@@ -23,6 +23,7 @@ const renderExploreCountryButton = geolocation => (
       className={styles.button}
       color="yellow"
       link={`/countries/${geolocation.iso ? geolocation.iso : ''}`}
+      disabled={!geolocation.country}
     >
       Explore your country
     </Button>
@@ -54,7 +55,9 @@ const renderButton = (
   return (
     <div key={b.text} className={styles.button}>
       <Dropdown
-        placeholder="Select another country"
+        placeholder={
+          geolocation ? 'Select another country' : 'Select a country'
+        }
         options={countriesOptions}
         onValueChange={handleDropDownChange}
         plain
@@ -144,7 +147,7 @@ class CarouselSectionComponent extends Component {
         <Carousel
           pagingTitles={this.pagingTitles(slidesData)}
           primarySlider="bottom"
-          autoplay={false}
+          autoplay
         >
           {this.renderSlides(this.props)}
         </Carousel>
