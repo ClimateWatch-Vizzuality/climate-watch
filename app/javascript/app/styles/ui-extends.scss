@@ -10,7 +10,6 @@
   @extend %texts-defaults;
 
   font-size: $font-size-xxl-large;
-  // line-height: $title-line-height;
   font-weight: $font-weight-bold;
 }
 
@@ -19,7 +18,6 @@
   @extend %texts-defaults;
 
   font-size: $font-size-xl-large;
-  // line-height: $headlines-line-height;
   font-weight: $font-weight-light;
 }
 
@@ -28,7 +26,6 @@
   @extend %texts-defaults;
 
   font-size: $font-size-large;
-  // line-height: $small-title-line-height;
   font-weight: $font-weight-bold;
 }
 
@@ -37,6 +34,5 @@
   @extend %texts-defaults;
 
   font-size: $font-size;
-  // line-height: $body-text-line-height;
   font-weight: $font-weight;
 }
