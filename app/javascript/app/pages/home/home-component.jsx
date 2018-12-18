@@ -8,6 +8,7 @@ import cwLogo from 'assets/icons/cw-logo-white.svg';
 import background from 'assets/headers/home.jpg';
 
 import CarouselSection from './carousel-section';
+import UserCasesSection from './user-cases-section';
 
 import styles from './home-styles.scss';
 
@@ -31,6 +32,9 @@ const Home = () => (
     </Section>
     <div>
       <CarouselSection />
+    </div>
+    <div>
+      <UserCasesSection />
     </div>
   </div>
 );
