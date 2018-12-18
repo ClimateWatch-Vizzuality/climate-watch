@@ -17,7 +17,6 @@ import {
   setYAxisDomain
 } from 'utils/graphs';
 import {
-  TOP_EMITTERS,
   CHART_COLORS,
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG,
@@ -217,7 +216,6 @@ const getDefaultOptions = createSelector(
       sourceSelected.label.split('-')[0],
       meta
     );
-    defaults.location = TOP_EMITTERS;
     const defaultOptions = {};
     Object.keys(defaults).forEach(key => {
       const keyDefault = String(defaults[key]).split(',');
@@ -227,15 +225,8 @@ const getDefaultOptions = createSelector(
           keyDefault.includes(m.label) ||
           keyDefault.includes(String(m.value))
       );
-      // Correction for Regions value
-      if (defaultOptions[key][0].iso) {
-        defaultOptions[key] = defaultOptions[key].map(o => ({
-          ...o,
-          value: o.iso
-        }));
-      }
     });
-    defaultOptions.location.push(TOP_EMITTERS_OPTION);
+    defaultOptions.location = [TOP_EMITTERS_OPTION];
     return defaultOptions;
   }
 );
@@ -358,6 +349,26 @@ const getLegendDataSelected = createSelector(
     if (dataSelected && isEqual(dataSelected[0], ALL_SELECTED_OPTION)) {
       return options[model];
     }
+    const shouldExpandIntoCountries =
+      dataSelected.length === 1 && dataSelected[0].groupId === 'regions';
+    if (shouldExpandIntoCountries) {
+      const countryOptions = dataSelected[0].members.map(iso =>
+        options[model].find(o => o.iso === iso)
+      );
+      const LEGEND_LIMIT = 10;
+      if (countryOptions.length > LEGEND_LIMIT) {
+        const othersGroup = countryOptions.slice(LEGEND_LIMIT, -1);
+        const othersOption = {
+          iso: 'OTHERS',
+          label: 'Others',
+          value: othersGroup.map(o => o.iso).join(),
+          members: othersGroup.map(o => o.iso),
+          groupId: 'regions'
+        };
+        return [...countryOptions.slice(0, LEGEND_LIMIT), othersOption];
+      }
+      return countryOptions;
+    }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
 );
@@ -398,14 +409,16 @@ export const getChartData = createSelector(
     const dataParsed = yearValues.map(x => {
       const yItems = {};
       data.forEach(d => {
-        const columnObject = yColumnOptions.find(
+        const columnObjects = yColumnOptions.filter(
           c =>
             c.label === getDFilterValue(d, model) ||
             (c.members && c.members.includes(d.iso_code3))
         );
-        const yKey = columnObject && columnObject.value;
+        const yKeys = columnObjects.map(k => k.value);
         const yData = d.emissions.find(e => e.year === x);
-        yItems[yKey] = calculateValue(yItems[yKey], yData.value);
+        yKeys.forEach(key => {
+          yItems[key] = calculateValue(yItems[key], yData.value);
+        });
       });
       const item = {
         x,

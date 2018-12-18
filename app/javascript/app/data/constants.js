@@ -117,8 +117,7 @@ export const TOP_EMITTERS = [
   'BRA',
   'IDN',
   'CAN',
-  'MEX',
-  'TOP'
+  'MEX'
 ];
 
 export const CHART_COLORS = [
@@ -310,6 +309,6 @@ export const TOP_EMITTERS_OPTION = {
   iso: 'TOP',
   label: 'Top Emitters',
   value: 'TOP',
-  members: TOP_EMITTERS.join(','),
+  members: TOP_EMITTERS,
   groupId: 'regions'
 };
