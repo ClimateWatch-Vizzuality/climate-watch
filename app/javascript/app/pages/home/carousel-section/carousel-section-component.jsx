@@ -22,7 +22,7 @@ const renderExploreCountryButton = geolocation => (
     <Button
       className={styles.button}
       color="yellow"
-      link={`/countries/${geolocation.iso ? geolocation.iso : ''}`}
+      link={geolocation.iso ? `/countries/${geolocation.iso}` : null}
       disabled={!geolocation.country}
     >
       Explore your country
