@@ -74,7 +74,8 @@ class GhgEmissions extends PureComponent {
       selected: selectedOptions,
       legendOptions,
       legendSelected,
-      fieldToBreakBy
+      fieldToBreakBy,
+      hideRemoveOptions
     } = this.props;
     const { chartTypeSelected } = selectedOptions;
     const renderButtonGroup = () => (
@@ -159,6 +160,7 @@ class GhgEmissions extends PureComponent {
           lineType="linear"
           showUnit
           onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+          hideRemoveOptions={hideRemoveOptions}
         />
         <TabletPortraitOnly>
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
@@ -186,7 +188,8 @@ GhgEmissions.propTypes = {
   loading: PropTypes.bool,
   activeFilterRegion: PropTypes.object,
   downloadLink: PropTypes.string,
-  chartTypeDisabled: PropTypes.bool
+  chartTypeDisabled: PropTypes.bool,
+  hideRemoveOptions: PropTypes.bool
 };
 
 export default GhgEmissions;

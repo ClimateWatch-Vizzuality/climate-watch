@@ -353,9 +353,26 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   return generateLinkToDataExplorer(search, section);
 });
 
+export const onlyOneRegionSelected = createSelector(
+  [getModelSelected, getOptionsSelected],
+  (modelSelected, selectedOptions) => {
+    const model = modelSelected && toPlural(modelSelected);
+    if (
+      !selectedOptions ||
+      !model ||
+      model !== 'regions' ||
+      !selectedOptions.regionsSelected
+    ) {
+      return false;
+    }
+    const dataSelected = selectedOptions.regionsSelected;
+    return dataSelected.length === 1 && dataSelected[0].groupId === 'regions';
+  }
+);
+
 const getLegendDataSelected = createSelector(
-  [getModelSelected, getOptions, getOptionsSelected],
-  (modelSelected, options, selectedOptions) => {
+  [getModelSelected, getOptions, getOptionsSelected, onlyOneRegionSelected],
+  (modelSelected, options, selectedOptions, shouldExpandIntoCountries) => {
     const model = toPlural(modelSelected);
     const selectedModel = `${model}Selected`;
     if (
@@ -370,8 +387,6 @@ const getLegendDataSelected = createSelector(
     if (dataSelected && isEqual(dataSelected[0], ALL_SELECTED_OPTION)) {
       return options[model];
     }
-    const shouldExpandIntoCountries =
-      dataSelected.length === 1 && dataSelected[0].groupId === 'regions';
     if (shouldExpandIntoCountries) {
       const countryOptions = dataSelected[0].members.map(iso =>
         options[model].find(o => o.iso === iso)
@@ -549,5 +564,6 @@ export const getGHGEmissions = createStructuredSelector({
   legendSelected: getLegendDataSelected,
   selected: getOptionsSelected,
   fieldToBreakBy: getModelSelected,
-  chartTypeDisabled: getDisableAccumulatedCharts
+  chartTypeDisabled: getDisableAccumulatedCharts,
+  hideRemoveOptions: onlyOneRegionSelected
 });
