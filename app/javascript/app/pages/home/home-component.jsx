@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import ReactPlayer from 'react-player';
 import Intro from 'components/intro';
 import Section from 'components/section';
@@ -11,6 +12,10 @@ import videoThumbnailImage from 'assets/home/video_background';
 import SiteMapFooter from 'components/site-map-footer';
 
 import HighlightedStories from './stories';
+=======
+import IntroSection from './intro-section/intro-section';
+import LatestUpdatesSection from './latest-updates-section/latest-updates-section';
+>>>>>>> Integrate Latest updates section with api
 import CarouselSection from './carousel-section';
 import UserCasesSection from './user-cases-section';
 
@@ -18,22 +23,10 @@ import styles from './home-styles.scss';
 
 const Home = () => (
   <div className={styles.homeBg}>
-    <Section
-      className={cx(styles.section, styles.extraPadding)}
-      backgroundImage={background}
-    >
-      <div className={cx(styles.column, styles.homeIntro)}>
-        <Icon icon={cwLogo} className={styles.cwLogo} />
-        <Intro
-          description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data."
-          className={styles.intro}
-        />
-        <AutocompleteSearch
-          className={styles.autocompleteSearch}
-          placeholder="Search across the platform by keyword or by country"
-        />
-      </div>
-    </Section>
+    <IntroSection />
+    <div>
+      <LatestUpdatesSection />
+    </div>
     <div>
       <CarouselSection />
     </div>
