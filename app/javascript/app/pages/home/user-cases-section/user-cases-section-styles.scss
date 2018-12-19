@@ -3,15 +3,27 @@
 
 .container {
   background-color: $white;
-  padding: 70px 0;
+  padding: 70px 0 120px;
+
+  @media #{$desktop} {
+    padding: 70px 0;
+  }
 }
 
-.sliderWrapper {
-  @include row(6);
+.carouselWrapper {
+  @include row();
 
   :global .slick-active {
     z-index: 2;
   }
+
+  @media #{$tablet-landscape} {
+    @include row(6);
+  }
+}
+
+.slideWrapper {
+  padding: 20px 40px 0;
 }
 
 .slideTitle {
@@ -22,7 +34,7 @@
 }
 
 .slideList {
-  padding: 30px 0 0 30px;
+  padding: 30px 0 0 33px;
   list-style: none;
   counter-reset: list-counter;
 
@@ -33,6 +45,7 @@
     counter-increment: list-counter;
     position: relative;
     padding-bottom: 45px;
+    line-height: 26px;
 
     &::before {
       content: counter(list-counter) "";
@@ -42,7 +55,7 @@
       justify-content: center;
       align-items: center;
       left: -35px;
-      top: -3px;
+      top: 0;
       color: $theme-color;
       font-weight: $font-weight-bold;
       border: 1px solid $theme-border;
@@ -50,55 +63,67 @@
       height: 26px;
       border-radius: 13px;
     }
-  }
-}
 
-.link {
-  color: $theme-color;
-  font-weight: $font-weight-bold;
-  position: relative;
-  display: inline-block;
-  text-shadow: 0 2px $white;
+    a {
+      color: $theme-color;
+      font-weight: $font-weight-bold;
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 2px $white;
 
-  &::before {
-    content: "";
-    width: 100%;
-    height: 2px;
-    background-color: $theme-color;
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    z-index: -1;
+      &::before {
+        content: "";
+        width: 100%;
+        height: 2px;
+        background-color: $theme-color;
+        position: absolute;
+        bottom: 3px;
+        left: 0;
+        z-index: -1;
+      }
+    }
   }
 }
 
 .userIcon {
   background-color: $secondary-gray;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
+  padding: 3px;
   border-radius: 30px;
 }
 
 :global .userCasesPaging {
   display: flex !important;
+  box-sizing: border-box;
   justify-content: space-between;
   width: 400px;
   position: absolute;
-  bottom: 4px;
+  bottom: -90px;
+  padding-left: 40px;
+
+  @media #{$desktop} {
+    bottom: 4px;
+    padding-left: 40px;
+  }
 
   > li {
+    cursor: pointer;
+
     div {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100px;
       height: 100px;
-      padding: 5px;
+      padding: 10px;
 
       p {
-        font-size: $font-size-sm;
-        color: $secondary-gray;
+        font-size: $font-size-s;
+        color: $theme-color;
+        opacity: 0.5;
         text-align: center;
+        margin: 0;
       }
     }
   }
@@ -113,6 +138,7 @@
 
       p {
         color: $theme-color;
+        opacity: 1;
       }
     }
   }
