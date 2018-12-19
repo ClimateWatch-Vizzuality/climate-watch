@@ -15,8 +15,18 @@ class ImportAgricultureProfile
   #
   def call
     cleanup
+    Rails.logger.info "Importing LEGEND"
     import_emission_categories(S3CSVReader.read(LEGEND_FILEPATH))
+    Rails.logger.info "Importing EMISSIONS"
     import_emissions(S3CSVReader.read(EMISSIONS_FILEPATH))
+    Rails.logger.info "Importing MACRO_INDICATORS"
+    import_country_contexts(S3CSVReader.read(MACRO_INDICATORS_FILEPATH))
+    Rails.logger.info "Importing WATER_WITHDRAWAL"
+    import_country_contexts(S3CSVReader.read(WATER_WITHDRAWAL_FILEPATH))
+    Rails.logger.info "Importing WBD"
+    import_country_contexts(S3CSVReader.read(WBD_FILEPATH))
+    Rails.logger.info "Importing INPUTS"
+    import_country_contexts(S3CSVReader.read(INPUTS_FILEPATH))
   end
 
   private
@@ -25,7 +35,9 @@ class ImportAgricultureProfile
     AgricultureProfile::Emission.delete_all
     AgricultureProfile::EmissionSubcategory.delete_all
     AgricultureProfile::EmissionCategory.delete_all
+    AgricultureProfile::CountryContext.delete_all
   end
+
 
   def emission_subcategory_attributes(row, category_id)
     {
@@ -64,6 +76,22 @@ class ImportAgricultureProfile
       AgricultureProfile::Emission.create!(
           emission_attributes(values,
                               location_id, subcategory_id))
+    end
+  end
+
+  def import_country_contexts(content)
+    content.each do |row|
+      location_id = Location.find_by(iso_code3: row[:area]).id
+      indicator = row[:short_names]
+      values = row.to_h.except(:area, :short_names)
+      values.each do |value|
+        next if value.second.blank?
+        context =
+            AgricultureProfile::CountryContext
+                .find_or_create_by(location_id: location_id, year: value.first)
+        eval("context.#{indicator.downcase} = value.second")
+        context.save!
+      end
     end
   end
 end

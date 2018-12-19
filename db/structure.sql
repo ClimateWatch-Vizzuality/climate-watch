@@ -184,6 +184,44 @@ ALTER SEQUENCE public.adaptation_variables_id_seq OWNED BY public.adaptation_var
 
 
 --
+-- Name: agriculture_profile_country_contexts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_country_contexts (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    employment_agri_female double precision,
+    employment_agri_male double precision,
+    employment_agri_total double precision,
+    total_pesticides_use double precision,
+    total_fertilizers double precision,
+    water_withdrawal double precision,
+    water_withdrawal_rank integer,
+    value_added_agr double precision,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_country_contexts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_country_contexts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_country_contexts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_country_contexts_id_seq OWNED BY public.agriculture_profile_country_contexts.id;
+
+
+--
 -- Name: agriculture_profile_emission_categories; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1789,6 +1827,13 @@ ALTER TABLE ONLY public.adaptation_variables ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: agriculture_profile_country_contexts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_country_contexts ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_country_contexts_id_seq'::regclass);
+
+
+--
 -- Name: agriculture_profile_emission_categories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2198,6 +2243,14 @@ ALTER TABLE ONLY public.adaptation_values
 
 ALTER TABLE ONLY public.adaptation_variables
     ADD CONSTRAINT adaptation_variables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_country_contexts agriculture_profile_country_contexts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_country_contexts
+    ADD CONSTRAINT agriculture_profile_country_contexts_pkey PRIMARY KEY (id);
 
 
 --
@@ -2639,6 +2692,13 @@ CREATE INDEX index_adaptation_values_on_variable_id ON public.adaptation_values 
 --
 
 CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_variables USING btree (slug);
+
+
+--
+-- Name: index_agriculture_profile_country_contexts_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_country_contexts_on_location_id ON public.agriculture_profile_country_contexts USING btree (location_id);
 
 
 --
@@ -3315,6 +3375,14 @@ ALTER TABLE ONLY public.wb_extra_country_data
 
 
 --
+-- Name: agriculture_profile_country_contexts fk_rails_49fb2d23cb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_country_contexts
+    ADD CONSTRAINT fk_rails_49fb2d23cb FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: datasets fk_rails_4cf1467767; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3693,6 +3761,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181119171426'),
 ('20181205151353'),
 ('20181205152900'),
-('20181205161151');
+('20181205161151'),
+('20181219173718');
 
 
