@@ -6,7 +6,12 @@ import arrowTailRight from 'assets/icons/arrow-tail-right.svg';
 import styles from './tile-styles.scss';
 
 const Tile = ({ category, date, description, link }) => (
-  <div className={styles.tile}>
+  <a
+    href={link}
+    className={styles.tile}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
     <div className={styles.container}>
       <div className={styles.details}>
         <span>{category}</span>
@@ -21,13 +26,13 @@ const Tile = ({ category, date, description, link }) => (
         >
           {description}
         </Truncate>
-        <a href={link} className={styles.link}>
+        <span className={styles.link}>
           Explore here
           <Icon icon={arrowTailRight} />
-        </a>
+        </span>
       </div>
     </div>
-  </div>
+  </a>
 );
 
 Tile.propTypes = {
