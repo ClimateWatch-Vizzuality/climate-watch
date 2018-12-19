@@ -36,12 +36,11 @@ class ImportAgricultureProfile
     }
   end
 
-  def emission_attributes(value, year, location_id, subcategory_id)
+  def emission_attributes(values, location_id, subcategory_id)
     {
         emission_subcategory_id: subcategory_id,
         location_id: location_id,
-        year: year.to_s.to_i,
-        value: value.gsub('.', '').to_i
+        values: values
     }
   end
 
@@ -60,13 +59,11 @@ class ImportAgricultureProfile
       subcategory_id =
           AgricultureProfile::EmissionSubcategory.find_by(
               short_name: row[:short_names]).id
-      row[2..row.length].each_with_index do |value, index|
-        next unless value
-        AgricultureProfile::Emission.create!(
-            emission_attributes(
-                value, row.headers[index + 2],
-                location_id, subcategory_id))
-      end
+      values = row.to_h.except(:area, :short_names)
+      next if values.blank?
+      AgricultureProfile::Emission.create!(
+          emission_attributes(values,
+                              location_id, subcategory_id))
     end
   end
 end

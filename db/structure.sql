@@ -255,8 +255,7 @@ ALTER SEQUENCE public.agriculture_profile_emission_subcategories_id_seq OWNED BY
 
 CREATE TABLE public.agriculture_profile_emissions (
     id bigint NOT NULL,
-    year integer NOT NULL,
-    value double precision NOT NULL,
+    "values" jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     location_id bigint,
@@ -2647,13 +2646,6 @@ CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_vari
 --
 
 CREATE INDEX index_agriculture_profile_emissions_on_location_id ON public.agriculture_profile_emissions USING btree (location_id);
-
-
---
--- Name: index_agriculture_profile_emissions_on_year; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_agriculture_profile_emissions_on_year ON public.agriculture_profile_emissions USING btree (year);
 
 
 --

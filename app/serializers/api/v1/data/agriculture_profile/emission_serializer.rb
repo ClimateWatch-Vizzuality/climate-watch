@@ -4,8 +4,7 @@ module Api
       module AgricultureProfile
         class EmissionSerializer < ActiveModel::Serializer
           has_one :emission_subcategory
-          attribute :year
-          attribute :value
+          attribute :values
         end
       end
     end
