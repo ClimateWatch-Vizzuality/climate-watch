@@ -8,11 +8,13 @@
   height: 254px;
   position: relative;
   width: 370px;
+  margin: 0 30px 30px 0;
 
   &:hover {
     &::before {
       background: $theme-secondary;
       transform: scaleY(1.1);
+      box-shadow: 15px 15px 20px 0 rgba(45,45,45,0.14);
     }
 
     .link {
@@ -25,9 +27,8 @@
     border: 1px solid $theme-secondary;
     content: '';
     height: 100%;
-    width: 100%;
+    width: 370px;
     transition: 0.1s ease-in-out;
-    box-shadow: 6px 6px 13px 0 #c6c6c6;
   }
 }
 
