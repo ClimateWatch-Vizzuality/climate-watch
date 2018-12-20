@@ -29,7 +29,13 @@ class LatestUpdatesSection extends Component {
         <div className={styles.container}>
           <h2>Latest updates</h2>
           <div className={styles.tilesGroup}>
-            {loading ? <Loading /> : this.renderContent(data)}
+            {loading ? (
+              <div className={styles.noContent}>
+                <Loading />
+              </div>
+            ) : (
+              this.renderContent(data)
+            )}
           </div>
         </div>
         <LatestUpdatesProvider />
