@@ -11,7 +11,7 @@
 }
 
 .homeBg {
-  background-color: $light-gray;
+  background-color: $white;
 }
 
 .intro {
@@ -65,9 +65,10 @@
 }
 
 :global .react-player__play-icon {
-  border-width: 4px 0px 4px 8px !important;
+  border-width: 4px 0 4px 8px !important;
   border-color: transparent transparent transparent #0a1941 !important;
   margin-left: 4px !important;
+
   &::after {
     content: 'Watch Video';
     position: absolute;
@@ -83,6 +84,6 @@
   background: none !important;
   width: 54px !important;
   height: 54px !important;
-  background-color: #FFC735 !important;
+  background-color: #ffc735 !important;
   position: relative;
 }
