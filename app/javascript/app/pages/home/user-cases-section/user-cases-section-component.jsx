@@ -70,11 +70,16 @@ class UserCasesSectionComponent extends Component {
             {...settings}
           >
             {slidesData.map(slide => (
-              <div className={styles.slideWrapper} bottomSlide>
+              <div
+                className={styles.slideWrapper}
+                key={slide.paragraphs[0].text}
+                bottomSlide
+              >
                 <h3 className={styles.slideTitle}>{slide.title}</h3>
                 <ol className={styles.slideList}>
                   {slide.paragraphs.map(p => (
                     <li
+                      key={p.text}
                       dangerouslySetInnerHTML={paragraphTextCreator(
                         p.text,
                         p.anchorText,
