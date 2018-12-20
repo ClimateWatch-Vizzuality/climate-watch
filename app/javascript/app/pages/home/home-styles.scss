@@ -57,3 +57,32 @@
   margin-bottom: 38px;
   width: 332px;
 }
+
+.video {
+  height: 440px;
+  width: 100%;
+  background-color: black;
+}
+
+:global .react-player__play-icon {
+  border-width: 4px 0px 4px 8px !important;
+  border-color: transparent transparent transparent #0a1941 !important;
+  margin-left: 4px !important;
+  &::after {
+    content: 'Watch Video';
+    position: absolute;
+    color: $white;
+    font-size: 16px;
+    bottom: -25px;
+    left: -16px;
+    width: 150px;
+  }
+}
+
+:global .react-player__shadow {
+  background: none !important;
+  width: 54px !important;
+  height: 54px !important;
+  background-color: #FFC735 !important;
+  position: relative;
+}
