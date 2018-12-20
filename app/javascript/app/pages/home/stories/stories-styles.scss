@@ -114,8 +114,12 @@
   font-size: $font-size-large;
   font-weight: bold;
   line-height: 30px;
-  max-width: 300px;
+  max-width: 75%;
   padding-left: 30px;
+
+  @media #{$tablet-landscape} {
+    max-width: 300px;
+  }
 }
 
 .storyDescription {
