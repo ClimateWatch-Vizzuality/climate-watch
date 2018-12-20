@@ -87,7 +87,9 @@ module Api
           all.map do |source|
             {
               id: source.id,
-              name: source.name
+              name: source.name,
+              display_name: source.display_name,
+              metadata_dataset: source.metadata_dataset
             }.merge(records[source.id])
           end
       end

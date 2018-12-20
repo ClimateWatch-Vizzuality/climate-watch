@@ -7,8 +7,16 @@ module Api
         def data_source
           object.data_sources.map do |g|
             g.
-              slice(:id, :name, :location_ids, :sector_ids, :gas_ids, :gwp_ids).
-              merge(source: "historical_emissions_#{g[:name]}")
+              slice(
+                :id,
+                :name,
+                :display_name,
+                :location_ids,
+                :sector_ids,
+                :gas_ids,
+                :gwp_ids
+              ).
+              merge(source: g[:metadata_dataset])
           end
         end
 

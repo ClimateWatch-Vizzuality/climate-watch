@@ -1,11 +1,19 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/LineLength
 object_contents = {
+  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sources.csv" => <<~END,
+    Name,Display name,Metadata dataset
+    CAIT,CAIT,historical_emissions_CAIT
+    PIK,PIK,historical_emissions_PIK
+    UNFCCC_AI,UNFCCC Annex I,historical_emissions_UNFCCC
+    UNFCCC_NAI,UNFCCC Non-Annex I,historical_emissions_UNFCCC
+  END
   "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors.csv" => <<~END,
-    Source,SourceType,Sector,SubsectorOf
+    Source,AnnexType,Sector,SubsectorOf
     CAIT,,Total excluding LUCF,
     PIK,,Total including LUCF,
-    UNFCCC,AI,Total GHG emissions without LULUCF,
+    UNFCCC_AI,AI,Total GHG emissions without LULUCF,
   END
   "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_CAIT.csv" => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
@@ -17,9 +25,10 @@ object_contents = {
   END
   "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC.csv" => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
-    ABW,UNFCCC,Total GHG emissions without LULUCF,Aggregate F-gases,AR4,6.242714951,6.264371648,6.183325393
+    ABW,UNFCCC_AI,Total GHG emissions without LULUCF,Aggregate F-gases,AR4,6.242714951,6.264371648,6.183325393
   END
 }
+# rubocop:enable Metrics/LineLength
 
 RSpec.describe ImportHistoricalEmissions do
   subject { ImportHistoricalEmissions.new.call }
