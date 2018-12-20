@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
 import isEqual from 'lodash/isEqual';
 import intersection from 'lodash/intersection';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
@@ -380,9 +381,86 @@ export const onlyOneRegionSelected = createSelector(
   }
 );
 
+const getExpandedLegendRegionsSelected = createSelector(
+  [
+    getModelSelected,
+    getOptions,
+    getOptionsSelected,
+    onlyOneRegionSelected,
+    sortData
+  ],
+  (
+    modelSelected,
+    options,
+    selectedOptions,
+    shouldExpandIntoCountries,
+    data
+  ) => {
+    const model = toPlural(modelSelected);
+    if (
+      !shouldExpandIntoCountries ||
+      !selectedOptions ||
+      !model ||
+      model !== 'regions' ||
+      !selectedOptions.regionsSelected ||
+      !data
+    ) {
+      return null;
+    }
+    const dataSelected = selectedOptions.regionsSelected;
+    if (!shouldExpandIntoCountries) return null;
+    const countryOptions = dataSelected[0].members.map(iso =>
+      options[model].find(o => o.iso === iso)
+    );
+    const groupedCountries = data && groupBy(data, 'iso_code3');
+    const getLastValue = x => x.emissions[x.emissions.length - 1].value;
+
+    const latestValuesHash = {};
+    Object.keys(groupedCountries).forEach(c => {
+      latestValuesHash[c] = groupedCountries[c].reduce(
+        (acc, v) => acc + getLastValue(v),
+        0
+      );
+    });
+    const compare = (a, b) =>
+      (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
+    const sortedCountries = countryOptions.sort(compare);
+    const LEGEND_LIMIT = 10;
+    if (data && sortedCountries.length > LEGEND_LIMIT) {
+      const othersGroup = data && sortedCountries.slice(LEGEND_LIMIT, -1);
+      const othersOption = {
+        iso: 'OTHERS',
+        label: 'Others',
+        value: othersGroup.map(o => o.iso).join(),
+        members: othersGroup.map(o => o.iso),
+        groupId: 'regions',
+        hideData: true
+      };
+      const updatedOthers = othersGroup.map(o => ({
+        ...o,
+        hideLegend: true,
+        legendColumn: 'Others'
+      }));
+      return (
+        data && [
+          ...sortedCountries.slice(0, LEGEND_LIMIT),
+          othersOption,
+          ...updatedOthers
+        ]
+      );
+    }
+    return sortedCountries;
+  }
+);
+
 const getLegendDataSelected = createSelector(
-  [getModelSelected, getOptions, getOptionsSelected, onlyOneRegionSelected],
-  (modelSelected, options, selectedOptions, shouldExpandIntoCountries) => {
+  [
+    getModelSelected,
+    getOptions,
+    getOptionsSelected,
+    getExpandedLegendRegionsSelected
+  ],
+  (modelSelected, options, selectedOptions, expandedLegendRegionsSelected) => {
     const model = toPlural(modelSelected);
     const selectedModel = `${model}Selected`;
     if (
@@ -397,40 +475,23 @@ const getLegendDataSelected = createSelector(
     if (dataSelected && isEqual(dataSelected[0], ALL_SELECTED_OPTION)) {
       return options[model];
     }
-    if (shouldExpandIntoCountries) {
-      const countryOptions = dataSelected[0].members.map(iso =>
-        options[model].find(o => o.iso === iso)
-      );
-      const LEGEND_LIMIT = 10;
-      if (countryOptions.length > LEGEND_LIMIT) {
-        const othersGroup = countryOptions.slice(LEGEND_LIMIT, -1);
-        const othersOption = {
-          iso: 'OTHERS',
-          label: 'Others',
-          value: othersGroup.map(o => o.iso).join(),
-          members: othersGroup.map(o => o.iso),
-          groupId: 'regions'
-        };
-        return [...countryOptions.slice(0, LEGEND_LIMIT), othersOption];
-      }
-      return countryOptions;
-    }
+    if (expandedLegendRegionsSelected) { return expandedLegendRegionsSelected.filter(c => !c.hideLegend); }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
 );
 
 const getYColumnOptions = createSelector(
-  [getLegendDataSelected],
-  legendDataSelected => {
+  [getLegendDataSelected, getExpandedLegendRegionsSelected],
+  (legendDataSelected, expandedLegendRegionsSelected) => {
     if (!legendDataSelected) return null;
+    const dataSelected = expandedLegendRegionsSelected || legendDataSelected;
     const getYOption = columns =>
       columns &&
       columns.map(d => ({
-        label: d && d.label,
-        value: d && getYColumnValue(d.label),
-        members: d && d.members
+        ...d,
+        value: d && getYColumnValue(d.label)
       }));
-    return uniqBy(getYOption(legendDataSelected), 'value');
+    return uniqBy(getYOption(dataSelected), 'value');
   }
 );
 
@@ -552,7 +613,7 @@ export const getChartConfig = createSelector(
       ...theme,
       ...colorThemeCache
     };
-    const tooltip = getTooltipConfig(yColumns);
+    const tooltip = getTooltipConfig(yColumns.filter(c => !c.hideLegend));
     return {
       axes: DEFAULT_AXES_CONFIG,
       theme: colorThemeCache,

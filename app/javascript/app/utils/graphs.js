@@ -8,6 +8,7 @@ import { getNiceTickValues } from 'recharts-scale';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
+import { OTHER_COLOR } from 'data/constants';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -83,6 +84,12 @@ export const getThemeConfig = (columns, colors) => {
       stroke: colors[correctedIndex],
       fill: colors[correctedIndex]
     };
+    if (column.hideLegend || column.hideData) {
+      theme[column.value] = {
+        stroke: OTHER_COLOR,
+        fill: OTHER_COLOR
+      };
+    }
   });
   return theme;
 };

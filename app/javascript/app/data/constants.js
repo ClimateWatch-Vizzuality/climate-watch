@@ -130,7 +130,7 @@ export const CHART_COLORS = [
   '#AB0000',
   '#20D5B7',
   '#383F45',
-  '#CACCD0'
+  '#000'
 ];
 
 export const CHART_COLORS_EXTENDED = [
@@ -143,7 +143,6 @@ export const CHART_COLORS_EXTENDED = [
   '#AB0000',
   '#20D5B7',
   '#383F45',
-  '#CACCD0',
   '#80DAE9',
   '#93BBD9',
   '#E98CBE',
@@ -152,9 +151,10 @@ export const CHART_COLORS_EXTENDED = [
   '#FFC4D5',
   '#D58080',
   '#90EADB',
-  '#9C9FA2',
-  '#E5E6E8'
+  '#000'
 ];
+
+export const OTHER_COLOR = '#b1b1b1';
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
 
