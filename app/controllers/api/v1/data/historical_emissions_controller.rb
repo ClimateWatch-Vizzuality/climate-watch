@@ -18,7 +18,7 @@ module Api
 
         def meta
           set_links_header(
-            [:data_sources, :gwps, :gases, :sectors].map do |he_resource|
+            [:data_sources, :gases, :sectors].map do |he_resource|
               {
                 link: "/api/v1/data/historical_emissions/#{he_resource}",
                 rel: "meta #{he_resource}"

@@ -67,7 +67,6 @@ Rails.application.routes.draw do
         end
         namespace :historical_emissions do
           resources :data_sources, only: [:index]
-          resources :gwps, only: [:index]
           resources :gases, only: [:index]
           resources :sectors, only: [:index]
         end

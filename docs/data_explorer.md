@@ -5,7 +5,6 @@
 ### Parameters
 - regions[] (ISO code 3)
 - source_ids[]
-- gwp_ids[]
 - gas_ids[]
 - sector_ids[]
 - start_year
@@ -80,7 +79,7 @@ Total: 31090
 Returns a Link header with meta endpoint urls for discovery (can be used with a HEAD request)
 
 ```
-Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources", </api/v1/data/historical_emissions/gwps>; rel="meta gwps", </api/v1/data/historical_emissions/gases>; rel="meta gases", </api/v1/data/historical_emissions/sectors>; rel="meta sectors", </api/v1/locations/regions>; rel="meta locations"
+Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources", </api/v1/data/historical_emissions/gases>; rel="meta gases", </api/v1/data/historical_emissions/sectors>; rel="meta sectors", </api/v1/locations/regions>; rel="meta locations"
 ```
 
 ### Data sources
@@ -93,21 +92,6 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
       {
          "id":number,
          "name":"string e.g. CAIT"
-      }
-   ]
-}
-```
-
-### GWPs
-
-`/api/v1/data/historical_emissions/gwps`
-
-```
-{
-   "data":[
-      {
-         "id":number,
-         "name":"string e.g. AR2"
       }
    ]
 }
