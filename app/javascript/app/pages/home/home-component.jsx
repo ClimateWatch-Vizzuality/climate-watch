@@ -8,6 +8,7 @@ import cx from 'classnames';
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import background from 'assets/headers/home.jpg';
 import videoThumbnailImage from 'assets/home/video_background';
+import SiteMapFooter from 'components/site-map-footer';
 
 import HighlightedStories from './stories';
 import CarouselSection from './carousel-section';
@@ -65,6 +66,7 @@ const Home = () => (
     <div>
       <HighlightedStories />
     </div>
+    <SiteMapFooter />
   </div>
 );
 
