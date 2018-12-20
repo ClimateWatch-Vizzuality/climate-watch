@@ -51,13 +51,22 @@ class UserCasesSectionComponent extends Component {
               fade
             >
               <div>
-                <img src={politicianImg} alt="Political building" />
+                <div
+                  className={styles.carouselImage}
+                  style={{ backgroundImage: `url(${politicianImg})` }}
+                />
               </div>
               <div>
-                <img src={researcherImg} alt="Library" />
+                <div
+                  className={styles.carouselImage}
+                  style={{ backgroundImage: `url(${researcherImg})` }}
+                />
               </div>
               <div>
-                <img src={activistImg} alt="Demonstration" />
+                <div
+                  className={styles.carouselImage}
+                  style={{ backgroundImage: `url(${activistImg})` }}
+                />
               </div>
             </Slider>
           </TabletLandscape>
