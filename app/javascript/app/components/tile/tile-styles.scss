@@ -10,11 +10,11 @@
   width: 370px;
   margin: 0 30px 30px 0;
 
-  &:hover {
+  &:hover, &:focus {
     &::before {
       background: $theme-secondary;
       transform: scaleY(1.1);
-      box-shadow: 15px 15px 20px 0 rgba(45,45,45,0.14);
+      box-shadow: 15px 15px 20px 0 rgba(45, 45, 45, 0.14);
     }
 
     .link {
@@ -23,7 +23,7 @@
   }
 
   &::before {
-    background: white;
+    background: $white;
     border: 1px solid $theme-secondary;
     content: '';
     height: 100%;
