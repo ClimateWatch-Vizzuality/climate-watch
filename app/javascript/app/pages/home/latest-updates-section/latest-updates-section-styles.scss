@@ -20,12 +20,12 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-}
 
-h2 {
-  @extend %headline;
-  margin-bottom: 20px;
-  color: $theme-color;
+  h2 {
+    @extend %headline;
+    margin-bottom: 20px;
+    color: $theme-color;
+  }
 }
 
 .noContent {
