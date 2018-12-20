@@ -1360,6 +1360,39 @@ ALTER SEQUENCE timeline_sources_id_seq OWNED BY timeline_sources.id;
 
 
 --
+-- Name: updates; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.updates (
+    id bigint NOT NULL,
+    category character varying,
+    description text,
+    link character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: updates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.updates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: updates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.updates_id_seq OWNED BY public.updates.id;
+
+
+--
 -- Name: user_stories; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1922,6 +1955,13 @@ ALTER TABLE ONLY timeline_sources ALTER COLUMN id SET DEFAULT nextval('timeline_
 
 
 --
+-- Name: updates id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.updates ALTER COLUMN id SET DEFAULT nextval('public.updates_id_seq'::regclass);
+
+
+--
 -- Name: user_stories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2375,6 +2415,14 @@ ALTER TABLE ONLY timeline_notes
 
 ALTER TABLE ONLY timeline_sources
     ADD CONSTRAINT timeline_sources_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: updates updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.updates
+    ADD CONSTRAINT updates_pkey PRIMARY KEY (id);
 
 
 --
@@ -3502,6 +3550,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181009120234'),
 ('20181026095008'),
 ('20181114113643'),
-('20181119171426');
+('20181119171426'),
+('20181218161317'),
+('20181218161621'),
+('20181218163254');
 
 

@@ -9,6 +9,7 @@ import background from 'assets/headers/home.jpg';
 import SiteMapFooter from 'components/site-map-footer';
 
 import CarouselSection from './carousel-section';
+import UserCasesSection from './user-cases-section';
 
 import styles from './home-styles.scss';
 
@@ -32,6 +33,9 @@ const Home = () => (
     </Section>
     <div>
       <CarouselSection />
+    </div>
+    <div>
+      <UserCasesSection />
     </div>
     <SiteMapFooter />
   </div>
