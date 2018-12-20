@@ -1,23 +1,13 @@
 import React from 'react';
-<<<<<<< HEAD
 import ReactPlayer from 'react-player';
-import Intro from 'components/intro';
-import Section from 'components/section';
-import Icon from 'components/icon';
-import AutocompleteSearch from 'components/autocomplete-search';
-import cx from 'classnames';
-import cwLogo from 'assets/icons/cw-logo-white.svg';
-import background from 'assets/headers/home.jpg';
 import videoThumbnailImage from 'assets/home/video_background';
 import SiteMapFooter from 'components/site-map-footer';
 
-import HighlightedStories from './stories';
-=======
 import IntroSection from './intro-section/intro-section';
 import LatestUpdatesSection from './latest-updates-section/latest-updates-section';
->>>>>>> Integrate Latest updates section with api
 import CarouselSection from './carousel-section';
 import UserCasesSection from './user-cases-section';
+import HighlightedStories from './stories';
 
 import styles from './home-styles.scss';
 
