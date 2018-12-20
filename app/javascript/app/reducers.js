@@ -28,6 +28,7 @@ import * as emissionsProvider from 'providers/emissions-provider';
 import * as dataExplorerProvider from 'providers/data-explorer-provider';
 import * as lawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import * as storiesProvider from 'providers/stories-provider';
+import * as latestUpdatesProvider from 'providers/latest-updates-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -52,7 +53,8 @@ const providersReducers = {
   espTimeSeries: handleActions(espTimeSeriesProvider),
   dataExplorer: handleActions(dataExplorerProvider),
   lawsAndPolicies: handleActions(lawsAndPoliciesProvider),
-  stories: handleActions(storiesProvider)
+  stories: handleActions(storiesProvider),
+  latestUpdates: handleActions(latestUpdatesProvider)
 };
 
 // Pages
