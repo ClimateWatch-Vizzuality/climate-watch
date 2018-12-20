@@ -9,7 +9,7 @@ object_contents = {
     UNFCCC_AI,UNFCCC Annex I,historical_emissions_UNFCCC
     UNFCCC_NAI,UNFCCC Non-Annex I,historical_emissions_UNFCCC
   END
-  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors.csv" => <<~END,
+  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors_NEW.csv" => <<~END,
     Source,AnnexType,Sector,SubsectorOf
     CAIT,,Total excluding LUCF,
     PIK,,Total including LUCF,
@@ -23,7 +23,7 @@ object_contents = {
     Country,Source,Sector,Gas,GWP,1850,1851,1852
     ABW,PIK,Total including LUCF,CH4,AR2,0.00000469,0.00000475,0.00000483
   END
-  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC.csv" => <<~END,
+  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC_NEW.csv" => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
     ABW,UNFCCC_AI,Total GHG emissions without LULUCF,Aggregate F-gases,AR4,6.242714951,6.264371648,6.183325393
   END
