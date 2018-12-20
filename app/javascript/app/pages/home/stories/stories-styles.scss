@@ -12,6 +12,10 @@
     height: 1080px;
   }
 
+  @media #{$tablet-landscape} {
+    height: 930px;
+  }
+
   margin-bottom: 50px;
 }
 
