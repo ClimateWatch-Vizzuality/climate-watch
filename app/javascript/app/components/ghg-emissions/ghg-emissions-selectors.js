@@ -26,13 +26,22 @@ import {
   DATA_SCALE,
   ALL_SELECTED,
   ALL_SELECTED_OPTION,
-  TOP_EMITTERS_OPTION
+  TOP_EMITTERS_OPTION,
+  METRIC_OPTIONS
 } from 'data/constants';
 
 const BREAK_BY_OPTIONS = [
   {
-    label: 'Regions',
-    value: 'regions'
+    label: `Regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.label}`,
+    value: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
+  },
+  {
+    label: `Regions-${METRIC_OPTIONS.PER_CAPITA.label}`,
+    value: `regions-${METRIC_OPTIONS.PER_CAPITA.value}`
+  },
+  {
+    label: `Regions-${METRIC_OPTIONS.PER_GDP.label}`,
+    value: `regions-${METRIC_OPTIONS.PER_GDP.value}`
   },
   {
     label: 'Sector',
@@ -65,6 +74,7 @@ const getSources = createSelector(
   meta => (meta && meta.data_source) || null
 );
 const getVersions = createSelector(getMeta, meta => (meta && meta.gwp) || null);
+const getWBData = ({ wbCountryData }) => wbCountryData.data || null;
 
 // values from search
 const getSearch = (state, { search }) => search || null;
@@ -429,19 +439,58 @@ const getYColumnOptions = createSelector(
 const getDFilterValue = (d, modelSelected) =>
   (modelSelected === 'regions' ? d.location : d[modelSelected]);
 
-const calculateValue = (currentValue, value) => {
-  const updatedValue = value || value === 0 ? value * DATA_SCALE : null;
+const getCalculationData = createSelector([getWBData], data => {
+  if (!data || isEmpty(data)) return null;
+  const yearData = {};
+  Object.keys(data).forEach(iso => {
+    data[iso].forEach(d => {
+      if (!yearData[d.year]) yearData[d.year] = {};
+      yearData[d.year][iso] = { population: d.population, gdp: d.gdp };
+    });
+  });
+  return yearData;
+});
+
+export const getMetricRatio = (selected, calculationData, x) => {
+  if (!calculationData || !calculationData[x]) return 1;
+  if (selected === METRIC_OPTIONS.PER_GDP.value) {
+    // GDP is in dollars and we want to display it in million dollars
+    return calculationData[x][0].gdp / 1000000;
+  }
+  if (selected === METRIC_OPTIONS.PER_CAPITA.value) {
+    return calculationData[x][0].population;
+  }
+  return 1;
+};
+
+const calculateValue = (currentValue, value, metricData) => {
+  const metricRatio = metricData || 1;
+  const updatedValue =
+    value || value === 0 ? value * DATA_SCALE / metricRatio : null;
   if (updatedValue && (currentValue || currentValue === 0)) {
     return updatedValue + currentValue;
   }
   return updatedValue || currentValue;
 };
 
-export const getChartData = createSelector(
-  [sortData, getModelSelected, getYColumnOptions],
-  (data, model, yColumnOptions) => {
+const getChartData = createSelector(
+  [
+    sortData,
+    getModelSelected,
+    getYColumnOptions,
+    getMetricSelected,
+    getCalculationData
+  ],
+  (data, model, yColumnOptions, metric, calculationData) => {
     if (!data || !data.length || !model) return null;
     const yearValues = data[0].emissions.map(d => d.year);
+    const shouldHaveMetricData =
+      metric && metric !== METRIC_OPTIONS.ABSOLUTE_VALUE.value;
+    let metricField = null;
+    if (shouldHaveMetricData) {
+      metricField =
+        metric === METRIC_OPTIONS.PER_CAPITA.value ? 'population' : 'gdp';
+    }
     const dataParsed = yearValues.map(x => {
       const yItems = {};
       data.forEach(d => {
@@ -452,8 +501,18 @@ export const getChartData = createSelector(
         );
         const yKeys = columnObjects.map(k => k.value);
         const yData = d.emissions.find(e => e.year === x);
+        let metricData =
+          metricField &&
+          calculationData &&
+          calculationData[x] &&
+          calculationData[x][d.iso_code3] &&
+          calculationData[x][d.iso_code3][metricField];
+        // GDP is in dollars and we want to display it in million dollars
+        if (metricField === 'gdp' && metricData) metricData /= 1000000;
         yKeys.forEach(key => {
-          yItems[key] = calculateValue(yItems[key], yData.value);
+          if (!shouldHaveMetricData || metricData) {
+            yItems[key] = calculateValue(yItems[key], yData.value, metricData);
+          }
         });
       });
       const item = {
@@ -466,7 +525,7 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartDomain = createSelector([getChartData], data => {
+const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
   return {
     x: setXAxisDomain(),
