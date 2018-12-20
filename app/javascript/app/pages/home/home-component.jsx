@@ -11,6 +11,7 @@ import videoThumbnailImage from 'assets/home/video_background';
 
 import HighlightedStories from './stories';
 import CarouselSection from './carousel-section';
+import UserCasesSection from './user-cases-section';
 
 import styles from './home-styles.scss';
 
@@ -34,6 +35,9 @@ const Home = () => (
     </Section>
     <div>
       <CarouselSection />
+    </div>
+    <div>
+      <UserCasesSection />
     </div>
     <div className={styles.video}>
       <ReactPlayer
