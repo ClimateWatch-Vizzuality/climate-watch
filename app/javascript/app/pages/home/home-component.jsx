@@ -6,6 +6,7 @@ import AutocompleteSearch from 'components/autocomplete-search';
 import cx from 'classnames';
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import background from 'assets/headers/home.jpg';
+import SiteMapFooter from 'components/site-map-footer';
 
 import CarouselSection from './carousel-section';
 
@@ -32,6 +33,7 @@ const Home = () => (
     <div>
       <CarouselSection />
     </div>
+    <SiteMapFooter />
   </div>
 );
 
