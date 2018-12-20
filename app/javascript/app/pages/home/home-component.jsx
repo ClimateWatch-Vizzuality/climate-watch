@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactPlayer from 'react-player';
 import Intro from 'components/intro';
 import Section from 'components/section';
 import Icon from 'components/icon';
@@ -6,7 +7,9 @@ import AutocompleteSearch from 'components/autocomplete-search';
 import cx from 'classnames';
 import cwLogo from 'assets/icons/cw-logo-white.svg';
 import background from 'assets/headers/home.jpg';
+import videoThumbnailImage from 'assets/home/video_background';
 
+import HighlightedStories from './stories';
 import CarouselSection from './carousel-section';
 import UserCasesSection from './user-cases-section';
 
@@ -35,6 +38,32 @@ const Home = () => (
     </div>
     <div>
       <UserCasesSection />
+    </div>
+    <div className={styles.video}>
+      <ReactPlayer
+        width="100%"
+        height="100%"
+        ref={player => {
+          this.player = player;
+        }}
+        url="https://youtu.be/C2nIcBqrHsk"
+        controls={false}
+        light={videoThumbnailImage}
+        loop
+        playing
+        config={{
+          youtube: {
+            playerVars: {
+              playsinline: 0,
+              fs: 0 // remove full screen button
+            },
+            preload: true
+          }
+        }}
+      />
+    </div>
+    <div>
+      <HighlightedStories />
     </div>
   </div>
 );
