@@ -9,7 +9,7 @@
 }
 
 .container {
-  background-color: $bg-blue;
+  background-color: $theme-color-intense;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -35,10 +35,21 @@
   }
 }
 
+.logo,
+.rwText {
+  margin-left: 5px;
+}
+
+.rwText {
+  width: 100px;
+}
+
 .align {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 
   @media #{$mobile-only} {
-    text-align: left;
+    justify-content: flex-start;
   }
 }
