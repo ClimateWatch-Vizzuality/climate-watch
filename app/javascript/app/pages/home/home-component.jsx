@@ -46,9 +46,8 @@ const Home = () => (
         }}
       />
     </div>
-    <div>
-      <HighlightedStories />
-    </div>
+    <HighlightedStories />
+    <SubscribeSection />
   </div>
 );
 
