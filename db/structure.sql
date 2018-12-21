@@ -1363,7 +1363,7 @@ ALTER SEQUENCE timeline_sources_id_seq OWNED BY timeline_sources.id;
 -- Name: updates; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.updates (
+CREATE TABLE updates (
     id bigint NOT NULL,
     category character varying,
     description text,
@@ -1377,7 +1377,7 @@ CREATE TABLE public.updates (
 -- Name: updates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.updates_id_seq
+CREATE SEQUENCE updates_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1389,7 +1389,7 @@ CREATE SEQUENCE public.updates_id_seq
 -- Name: updates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.updates_id_seq OWNED BY public.updates.id;
+ALTER SEQUENCE updates_id_seq OWNED BY updates.id;
 
 
 --
@@ -1958,7 +1958,7 @@ ALTER TABLE ONLY timeline_sources ALTER COLUMN id SET DEFAULT nextval('timeline_
 -- Name: updates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.updates ALTER COLUMN id SET DEFAULT nextval('public.updates_id_seq'::regclass);
+ALTER TABLE ONLY updates ALTER COLUMN id SET DEFAULT nextval('updates_id_seq'::regclass);
 
 
 --
@@ -2421,7 +2421,7 @@ ALTER TABLE ONLY timeline_sources
 -- Name: updates updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.updates
+ALTER TABLE ONLY updates
     ADD CONSTRAINT updates_pkey PRIMARY KEY (id);
 
 
@@ -3551,8 +3551,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181026095008'),
 ('20181114113643'),
 ('20181119171426'),
-('20181218161317'),
-('20181218161621'),
 ('20181218163254');
 
 
