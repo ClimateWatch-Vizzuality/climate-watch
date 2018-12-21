@@ -47,12 +47,8 @@ const Home = () => (
         }}
       />
     </div>
-    <div>
-      <HighlightedStories />
-    </div>
-    <div>
-      <SubscribeSection />
-    </div>
+    <HighlightedStories />
+    <SubscribeSection />
   </div>
 );
 
