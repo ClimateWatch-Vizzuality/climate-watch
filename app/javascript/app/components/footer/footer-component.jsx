@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import BottomBar from 'components/footer/bottom-bar';
+import SiteMap from 'components/footer/site-map-footer';
 import Contact from 'components/contact';
 
 import layout from 'styles/layout.scss';
@@ -17,12 +18,14 @@ class Footer extends PureComponent {
       includeContact,
       includeBottom
     } = this.props;
-    const className = cx(styles.footer, styles.border);
     return (
-      <footer className={className}>
+      <footer>
+        <SiteMap />
         {includePartners && (
-          <div className={cx(layout.content, styles.nav)}>
-            <div>Partners</div>
+          <div className={cx(layout.content, styles.border, styles.nav)}>
+            <div className={styles.partners}>
+              <span className={styles.partnersHeadline}>Partners</span>
+            </div>
             <div className="grid-column-item">
               <div className={styles.contentWrapper}>
                 <div className="grid-column-item">

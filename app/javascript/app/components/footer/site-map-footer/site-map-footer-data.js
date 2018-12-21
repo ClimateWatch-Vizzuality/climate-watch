@@ -16,8 +16,8 @@ export const siteMapData = [
   {
     title: 'Country Platforms',
     links: [
-      { title: 'India', href: '/' },
-      { title: 'Indonesia', href: '/' },
+      // { title: 'India', href: '/' },
+      // { title: 'Indonesia', href: '/' },
       { title: 'South Africa', href: '/http://southafricaclimateexplorer.org/' }
     ]
   },

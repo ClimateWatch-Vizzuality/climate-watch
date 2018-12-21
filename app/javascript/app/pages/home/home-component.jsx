@@ -1,5 +1,4 @@
 import React from 'react';
-import SiteMapFooter from 'components/site-map-footer';
 import ReactPlayer from 'react-player';
 import videoThumbnailImage from 'assets/home/video_background';
 
@@ -49,7 +48,6 @@ const Home = () => (
     <div>
       <HighlightedStories />
     </div>
-    <SiteMapFooter />
   </div>
 );
 
