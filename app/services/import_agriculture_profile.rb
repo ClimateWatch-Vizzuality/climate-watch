@@ -21,12 +21,14 @@ class ImportAgricultureProfile
     import_emissions(S3CSVReader.read(EMISSIONS_FILEPATH))
     Rails.logger.info "Importing MACRO_INDICATORS"
     import_country_contexts(S3CSVReader.read(MACRO_INDICATORS_FILEPATH))
-    Rails.logger.info "Importing WATER_WITHDRAWAL"
-    import_country_contexts(S3CSVReader.read(WATER_WITHDRAWAL_FILEPATH))
     Rails.logger.info "Importing WBD"
     import_country_contexts(S3CSVReader.read(WBD_FILEPATH))
     Rails.logger.info "Importing INPUTS"
     import_country_contexts(S3CSVReader.read(INPUTS_FILEPATH))
+    Rails.logger.info "Importing WATER_WITHDRAWAL"
+    import_country_contexts(S3CSVReader.read(WATER_WITHDRAWAL_FILEPATH))
+    Rails.logger.info "Update water withdrawal rank"
+    update_water_withdrawal_rank
   end
 
   private
@@ -67,7 +69,11 @@ class ImportAgricultureProfile
 
   def import_emissions(content)
     content.each do |row|
-      location_id = Location.find_by(iso_code3: row[:area]).id
+      begin
+        location_id = Location.find_by(iso_code3: row[:area]).id
+      rescue
+        puts row
+      end
       subcategory_id =
           AgricultureProfile::EmissionSubcategory.find_by(
               short_name: row[:short_names]).id
@@ -88,10 +94,38 @@ class ImportAgricultureProfile
         next if value.second.blank?
         context =
             AgricultureProfile::CountryContext
-                .find_or_create_by(location_id: location_id, year: value.first)
+                .find_or_create_by(location_id: location_id,
+                                   year: value.first.to_s.to_i)
         eval("context.#{indicator.downcase} = value.second")
-        context.save!
+        begin
+          context.save!
+        rescue Exception => e
+          puts values
+        end
       end
+    end
+  end
+
+  def update_water_withdrawal_rank
+    years = AgricultureProfile::CountryContext
+                .select(:year).distinct.pluck(:year)
+
+    years.each do |year|
+      sql = "
+       WITH cte as (
+       SELECT id, water_withdrawal,
+              RANK() OVER ( ORDER BY water_withdrawal ASC) AS rnk
+       FROM agriculture_profile_country_contexts
+       WHERE year = #{year}
+       )
+       UPDATE agriculture_profile_country_contexts 
+       SET water_withdrawal_rank = cte.rnk
+       FROM cte
+       WHERE agriculture_profile_country_contexts.id = cte.id
+       AND agriculture_profile_country_contexts.water_withdrawal IS NOT NULL
+      "
+
+      ActiveRecord::Base.connection.execute(sql)
     end
   end
 end
