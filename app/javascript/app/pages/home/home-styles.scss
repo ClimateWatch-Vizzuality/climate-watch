@@ -1,59 +1,35 @@
 @import '~styles/settings.scss';
-@import '~styles/layout.scss';
-
-.autocompleteSearch {
-  width: 100%;
-  padding-bottom: 0;
-
-  & [class|=react-selectize-placeholder] {
-    font-style: italic;
-  }
-}
 
 .homeBg {
-  background-color: $light-gray;
+  background-color: $white;
 }
 
-.intro {
-  margin-bottom: 14px;
-  text-align: center;
+.video {
+  height: 440px;
+  width: 100%;
+  background-color: black;
 }
 
-.homeIntro {
-  align-items: center;
-  margin: auto;
+:global .react-player__play-icon {
+  border-width: 4px 0 4px 8px !important;
+  border-color: transparent transparent transparent #0a1941 !important;
+  margin-left: 4px !important;
 
-  @media #{$tablet-portrait} {
-    max-width: 450px;
-  }
-
-  @media #{$tablet-landscape} {
-    max-width: 100%;
-  }
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-}
-
-.section {
-  padding-top: 60px;
-  padding-bottom: 60px;
-
-  @media #{$tablet-landscape} {
-    padding-bottom: 0;
-
-    &.extraPadding {
-      padding-top: 120px;
-      padding-bottom: 100px;
-    }
+  &::after {
+    content: 'Watch Video';
+    position: absolute;
+    color: $white;
+    font-size: 16px;
+    bottom: -25px;
+    left: -16px;
+    width: 150px;
   }
 }
 
-.cwLogo {
-  fill: $white;
-  height: 31px;
-  margin-bottom: 38px;
-  width: 332px;
+:global .react-player__shadow {
+  background: none !important;
+  width: 54px !important;
+  height: 54px !important;
+  background-color: #ffc735 !important;
+  position: relative;
 }

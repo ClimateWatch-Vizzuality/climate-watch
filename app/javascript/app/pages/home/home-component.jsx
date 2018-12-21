@@ -1,41 +1,53 @@
 import React from 'react';
-import Intro from 'components/intro';
-import Section from 'components/section';
-import Icon from 'components/icon';
-import AutocompleteSearch from 'components/autocomplete-search';
-import cx from 'classnames';
-import cwLogo from 'assets/icons/cw-logo-white.svg';
-import background from 'assets/headers/home.jpg';
 import SiteMapFooter from 'components/site-map-footer';
+import ReactPlayer from 'react-player';
+import videoThumbnailImage from 'assets/home/video_background';
 
+import IntroSection from './intro-section/intro-section';
+import LatestUpdatesSection from './latest-updates-section/latest-updates-section';
 import CarouselSection from './carousel-section';
 import UserCasesSection from './user-cases-section';
+import HighlightedStories from './stories';
 
 import styles from './home-styles.scss';
 
 const Home = () => (
   <div className={styles.homeBg}>
-    <Section
-      className={cx(styles.section, styles.extraPadding)}
-      backgroundImage={background}
-    >
-      <div className={cx(styles.column, styles.homeIntro)}>
-        <Icon icon={cwLogo} className={styles.cwLogo} />
-        <Intro
-          description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data."
-          className={styles.intro}
-        />
-        <AutocompleteSearch
-          className={styles.autocompleteSearch}
-          placeholder="Search across the platform by keyword or by country"
-        />
-      </div>
-    </Section>
+    <IntroSection />
+    <div>
+      <LatestUpdatesSection />
+    </div>
     <div>
       <CarouselSection />
     </div>
     <div>
       <UserCasesSection />
+    </div>
+    <div className={styles.video}>
+      <ReactPlayer
+        width="100%"
+        height="100%"
+        ref={player => {
+          this.player = player;
+        }}
+        url="https://youtu.be/C2nIcBqrHsk"
+        controls={false}
+        light={videoThumbnailImage}
+        loop
+        playing
+        config={{
+          youtube: {
+            playerVars: {
+              playsinline: 0,
+              fs: 0 // remove full screen button
+            },
+            preload: true
+          }
+        }}
+      />
+    </div>
+    <div>
+      <HighlightedStories />
     </div>
     <SiteMapFooter />
   </div>

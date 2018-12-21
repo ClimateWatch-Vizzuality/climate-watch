@@ -27,6 +27,8 @@ import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-prov
 import * as emissionsProvider from 'providers/emissions-provider';
 import * as dataExplorerProvider from 'providers/data-explorer-provider';
 import * as lawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
+import * as storiesProvider from 'providers/stories-provider';
+import * as latestUpdatesProvider from 'providers/latest-updates-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -50,7 +52,9 @@ const providersReducers = {
   espLocations: handleActions(espLocationsProvider),
   espTimeSeries: handleActions(espTimeSeriesProvider),
   dataExplorer: handleActions(dataExplorerProvider),
-  lawsAndPolicies: handleActions(lawsAndPoliciesProvider)
+  lawsAndPolicies: handleActions(lawsAndPoliciesProvider),
+  stories: handleActions(storiesProvider),
+  latestUpdates: handleActions(latestUpdatesProvider)
 };
 
 // Pages
@@ -69,7 +73,6 @@ const pagesReducers = {
 // Components
 import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
-import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
@@ -90,7 +93,6 @@ import * as AnchorNavComponent from 'components/anchor-nav';
 const componentsReducers = {
   map: handleActions(mapComponent),
   autocompleteSearch: handleActions(autocompleteSearchComponent),
-  stories: handleActions(storiesComponent),
   countrySelect: handleActions(countrySelectComponent),
   modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
