@@ -10,30 +10,44 @@ class SubscribeSection extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      email: ''
+      email: '',
+      subscribed: false
     };
   }
 
+  subscribe() {
+    //TO DO WITH BACKEND
+    console.log(`Subscribe email: ${this.state.email}`);
+    this.setState({ subscribed: true });
+  }
+
   render() {
+    const { subscribed } = this.state;
     return (
       <div className={styles.section} style={{ backgroundImage: `url(${background})` }}>
         <div className={styles.subscribe}>
           <h2>Sign up for Updates</h2>
-          <div className={styles.form}>
-            <Input
-              placeholder="Enter your email"
-              theme={theme}
-              icon={false}
-              value={this.state.email}
-              onChange={(value) => this.setState({ email: value })}
-            />
-            <Button
-              className={styles.button}
-              onClick={() => console.log(`Subscribe email: ${this.state.email}`)}
-            >
-              Subscribe
-            </Button>
-          </div>
+          {!subscribed ?
+            (
+              <div className={styles.form}>
+                <Input
+                  placeholder="Enter your email"
+                  theme={theme}
+                  icon={false}
+                  value={this.state.email}
+                  onChange={(value) => this.setState({ email: value })}
+                />
+                <Button
+                  className={styles.button}
+                  onClick={() => this.subscribe()}
+                >
+                  Subscribe
+                </Button>
+              </div>
+            ) : (
+              <h3>Thank you for subscribing.</h3>
+            )
+          }
         </div>
       </div>
     );
