@@ -49,7 +49,6 @@ const Home = () => (
     <div>
       <HighlightedStories />
     </div>
-    <SiteMapFooter />
   </div>
 );
 
