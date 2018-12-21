@@ -22,42 +22,44 @@ class Footer extends PureComponent {
       <footer>
         <SiteMap />
         {includePartners && (
-          <div className={cx(layout.content, styles.border, styles.nav)}>
-            <div className={styles.partners}>
-              <span className={styles.partnersHeadline}>Partners</span>
-            </div>
-            <div className="grid-column-item">
-              <div className={styles.contentWrapper}>
-                <div className="grid-column-item">
-                  <div className={styles.partnersContainer}>
-                    {partners.map(
-                      partner =>
-                        partner.img && (
-                          <div
-                            key={partner.img.alt}
-                            className={styles.logoContainer}
-                          >
-                            <a
-                              className={cx(
-                                styles.logo,
-                                styles[partner.img.customClass] ||
-                                  styles.defaultLogo
-                              )}
-                              href={partner.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
+          <div className={styles.border}>
+            <div className={cx(layout.content, styles.nav)}>
+              <div className={styles.partners}>
+                <span className={styles.partnersHeadline}>Partners</span>
+              </div>
+              <div className="grid-column-item">
+                <div className={styles.contentWrapper}>
+                  <div className="grid-column-item">
+                    <div className={styles.partnersContainer}>
+                      {partners.map(
+                        partner =>
+                          partner.img && (
+                            <div
+                              key={partner.img.alt}
+                              className={styles.logoContainer}
                             >
-                              <img
-                                src={partner.img.src}
-                                alt={partner.img.alt}
-                              />
-                            </a>
-                          </div>
-                        )
-                    )}
+                              <a
+                                className={cx(
+                                  styles.logo,
+                                  styles[partner.img.customClass] ||
+                                    styles.defaultLogo
+                                )}
+                                href={partner.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <img
+                                  src={partner.img.src}
+                                  alt={partner.img.alt}
+                                />
+                              </a>
+                            </div>
+                          )
+                      )}
+                    </div>
                   </div>
+                  {includeContact && <Contact />}
                 </div>
-                {includeContact && <Contact />}
               </div>
             </div>
           </div>
