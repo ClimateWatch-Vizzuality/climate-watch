@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import videoThumbnailImage from 'assets/home/video_background';
-import SiteMapFooter from 'components/site-map-footer';
 
 import IntroSection from './intro-section/intro-section';
 import LatestUpdatesSection from './latest-updates-section/latest-updates-section';
