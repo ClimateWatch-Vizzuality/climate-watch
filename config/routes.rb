@@ -94,6 +94,7 @@ Rails.application.routes.draw do
         namespace :agriculture_profile, only: [:index] do
           resources :emissions, only: [:index]
           resources :country_contexts, only: [:index]
+          resources :areas, only: [:index]
         end
       end
 

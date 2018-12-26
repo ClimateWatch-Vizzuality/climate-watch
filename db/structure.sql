@@ -170,6 +170,43 @@ ALTER SEQUENCE public.adaptation_variables_id_seq OWNED BY public.adaptation_var
 
 
 --
+-- Name: agriculture_profile_areas; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_areas (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    share_in_land_area_1 double precision,
+    share_in_land_area_2 double precision,
+    share_in_land_area_3 double precision,
+    share_in_land_area_4 double precision,
+    share_in_agricultural_area_1 double precision,
+    share_in_agricultural_area_2 double precision,
+    share_in_agricultural_area_3 double precision,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_areas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_areas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_areas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_areas_id_seq OWNED BY public.agriculture_profile_areas.id;
+
+
+--
 -- Name: agriculture_profile_country_contexts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1813,6 +1850,13 @@ ALTER TABLE ONLY public.adaptation_variables ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: agriculture_profile_areas id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_areas ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_areas_id_seq'::regclass);
+
+
+--
 -- Name: agriculture_profile_country_contexts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2229,6 +2273,14 @@ ALTER TABLE ONLY public.adaptation_values
 
 ALTER TABLE ONLY public.adaptation_variables
     ADD CONSTRAINT adaptation_variables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_areas agriculture_profile_areas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_areas
+    ADD CONSTRAINT agriculture_profile_areas_pkey PRIMARY KEY (id);
 
 
 --
@@ -2678,6 +2730,13 @@ CREATE INDEX index_adaptation_values_on_variable_id ON public.adaptation_values 
 --
 
 CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_variables USING btree (slug);
+
+
+--
+-- Name: index_agriculture_profile_areas_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_areas_on_location_id ON public.agriculture_profile_areas USING btree (location_id);
 
 
 --
@@ -3553,6 +3612,14 @@ ALTER TABLE ONLY public.location_members
 
 
 --
+-- Name: agriculture_profile_areas fk_rails_c88d9f613e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_areas
+    ADD CONSTRAINT fk_rails_c88d9f613e FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: historical_emissions_records fk_rails_d47c0f188e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3748,6 +3815,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205151353'),
 ('20181205152900'),
 ('20181205161151'),
-('20181219173718');
+('20181219173718'),
+('20181226160920');
 
 

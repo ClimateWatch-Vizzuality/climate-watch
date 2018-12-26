@@ -29,6 +29,8 @@ class ImportAgricultureProfile
     import_country_contexts(S3CSVReader.read(WATER_WITHDRAWAL_FILEPATH))
     Rails.logger.info "Update water withdrawal rank"
     update_water_withdrawal_rank
+    Rails.logger.info "Importing LAND_USE_FILEPATH"
+    import_areas(S3CSVReader.read(LAND_USE_FILEPATH))
   end
 
   private
@@ -38,6 +40,7 @@ class ImportAgricultureProfile
     AgricultureProfile::EmissionSubcategory.delete_all
     AgricultureProfile::EmissionCategory.delete_all
     AgricultureProfile::CountryContext.delete_all
+    AgricultureProfile::Area.delete_all
   end
 
 
@@ -97,11 +100,24 @@ class ImportAgricultureProfile
                 .find_or_create_by(location_id: location_id,
                                    year: value.first.to_s.to_i)
         eval("context.#{indicator.downcase} = value.second")
-        begin
-          context.save!
-        rescue Exception => e
-          puts values
-        end
+        context.save!
+      end
+    end
+  end
+
+  def import_areas(content)
+    content.each do |row|
+      location_id = Location.find_by(iso_code3: row[:area]).id
+      indicator = row[:short_names]
+      values = row.to_h.except(:area, :short_names)
+      values.each do |value|
+        next if value.second.blank?
+        area =
+            AgricultureProfile::Area
+                .find_or_create_by(location_id: location_id,
+                                   year: value.first.to_s.to_i)
+        eval("area.#{indicator.downcase} = value.second")
+        area.save!
       end
     end
   end
