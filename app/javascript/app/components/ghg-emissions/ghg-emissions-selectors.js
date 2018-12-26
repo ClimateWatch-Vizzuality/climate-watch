@@ -92,7 +92,6 @@ const getSourceOptions = createSelector(
     if (!sources || !versions || !data) return null;
     const sourceOptionsTemplate = [
       { source: 'CAIT', version: 'AR2' },
-      { source: 'CAIT', version: 'AR4' },
       { source: 'PIK', version: 'AR2' },
       { source: 'PIK', version: 'AR4' },
       { source: 'UNFCCC', version: 'AR2' },
@@ -194,30 +193,47 @@ const getRegionsOptions = createSelector([getRegions], regions => {
   return mappedRegions;
 });
 
-export const getFieldOptions = field =>
-  createSelector([getMeta, getRegionsOptions], (meta, regions) => {
-    if (isEmpty(meta)) return [];
+const filterOptionsBySource = field =>
+  createSelector([getMeta, getSourceSelected], (meta, sourceSelected) => {
+    if (isEmpty(meta)) return null;
     const fieldOptions = meta[field];
-    if (field === 'location') {
-      if (!regions) return [];
-      const countries = [];
-      const regionIsos = regions.map(r => r.iso);
-      fieldOptions.forEach(d => {
-        if (!regionIsos.includes(d.iso)) {
-          countries.push({
-            ...d,
-            value: d.iso,
-            groupId: 'countries'
-          });
-        }
-      });
-      const sortedRegions = sortLabelByAlpha(regions).sort(
-        x => (x.value === 'TOP' ? -1 : 0)
-      );
-      return sortedRegions.concat(sortLabelByAlpha(countries));
-    }
-    return sortLabelByAlpha(fieldOptions);
+    const sourceValue = sourceSelected.value.split('-')[0];
+    const sourceMeta = meta.data_source.find(
+      s => String(s.value) === sourceValue
+    );
+    const allowedIds = sourceMeta[field];
+    return fieldOptions.filter(o => allowedIds.includes(o.value));
   });
+
+const getFieldOptions = field =>
+  createSelector(
+    [getMeta, getRegionsOptions, filterOptionsBySource(field)],
+    (meta, regions, filteredOptions) => {
+      if (!filteredOptions) return [];
+      const fieldOptions = filteredOptions;
+
+      if (field === 'location') {
+        if (!regions) return [];
+        const countries = [];
+        const regionIsos = regions.map(r => r.iso);
+        fieldOptions.forEach(d => {
+          if (!regionIsos.includes(d.iso)) {
+            countries.push({
+              ...d,
+              value: d.iso,
+              groupId: 'countries'
+            });
+          }
+        });
+        const sortedRegions = sortLabelByAlpha(regions).sort(
+          x => (x.value === 'TOP' ? -1 : 0)
+        );
+        return sortedRegions.concat(sortLabelByAlpha(countries));
+      }
+
+      return sortLabelByAlpha(fieldOptions);
+    }
+  );
 
 const getDefaultOptions = createSelector(
   [getSourceSelected, getMeta],
@@ -272,7 +288,9 @@ const getSectorOptions = createSelector(
 const countriesSelectedFromRegions = regionsSelected => {
   let regionCountriesSelected = [];
   regionsSelected.forEach(r => {
-    if (r.members) { regionCountriesSelected = regionCountriesSelected.concat(r.members); } else regionCountriesSelected.push(r.iso);
+    if (r.members) {
+      regionCountriesSelected = regionCountriesSelected.concat(r.members);
+    } else regionCountriesSelected.push(r.iso);
   });
   return regionCountriesSelected;
 };
