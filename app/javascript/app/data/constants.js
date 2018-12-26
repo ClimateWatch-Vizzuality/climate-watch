@@ -135,23 +135,21 @@ export const CHART_COLORS = [
 
 export const CHART_COLORS_EXTENDED = [
   '#00B4D2',
+  '#FFB400',
   '#0677B3',
   '#D2187C',
-  '#FFB400',
   '#FF7800',
   '#FF88AA',
   '#AB0000',
   '#20D5B7',
   '#383F45',
   '#80DAE9',
-  '#93BBD9',
   '#E98CBE',
   '#FFDA80',
+  '#53BBD9',
   '#FFBC80',
   '#FFC4D5',
-  '#D58080',
-  '#90EADB',
-  '#000'
+  '#D58080'
 ];
 
 export const OTHER_COLOR = '#b1b1b1';
