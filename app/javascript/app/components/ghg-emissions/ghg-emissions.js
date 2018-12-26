@@ -13,7 +13,7 @@ import { ALL_SELECTED, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
-import { getGHGEmissions } from './ghg-emissions-selectors';
+import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
 
 const mapStateToProps = (state, props) => {
   const { location } = props;
@@ -62,7 +62,9 @@ class GhgEmissionsContainer extends PureComponent {
       const { selected, legendSelected } = this.props;
       const { regionsSelected } = selected;
       const shouldCompressRegion = !isEqual(regionsSelected, legendSelected);
-      if (shouldCompressRegion) { updatedFilters = [regionsSelected[0], filters[filters.length - 1]]; }
+      if (shouldCompressRegion) {
+        updatedFilters = [regionsSelected[0], filters[filters.length - 1]];
+      }
     }
     return updatedFilters;
   };
