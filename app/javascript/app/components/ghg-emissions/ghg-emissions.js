@@ -8,6 +8,7 @@ import qs from 'query-string';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
+import isEqual from 'lodash/isEqual';
 import { ALL_SELECTED, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import { actions } from 'components/modal-metadata';
 
@@ -55,24 +56,40 @@ class GhgEmissionsContainer extends PureComponent {
     handleAnalytics('Chart Type', 'chart type selected', type.label);
   };
 
+  correctRegionFiltersOnLegendChange = (field, filters) => {
+    let updatedFilters = filters;
+    if (field === 'regions') {
+      const { selected, legendSelected } = this.props;
+      const { regionsSelected } = selected;
+      const shouldCompressRegion = !isEqual(regionsSelected, legendSelected);
+      if (shouldCompressRegion) { updatedFilters = [regionsSelected[0], filters[filters.length - 1]]; }
+    }
+    return updatedFilters;
+  };
+
   handleFilterChange = (field, filters) => {
     let values;
-    if (isArray(filters)) {
+    const updatedFilters = this.correctRegionFiltersOnLegendChange(
+      field,
+      filters
+    );
+    if (isArray(updatedFilters)) {
       if (
         !NO_ALL_SELECTED_COLUMNS.includes(field) &&
-        (filters.length === 0 ||
-          filters[filters.length - 1].label === ALL_SELECTED)
+        (updatedFilters.length === 0 ||
+          updatedFilters[updatedFilters.length - 1].label === ALL_SELECTED)
       ) {
         values = ALL_SELECTED;
       } else {
-        values = filters
+        values = updatedFilters
           .filter(v => v.value !== ALL_SELECTED)
           .map(v => v.value)
           .join(',');
       }
     } else {
-      values = filters.value;
+      values = updatedFilters.value;
     }
+
     this.updateUrlParam({
       name: [field],
       value: values
@@ -127,6 +144,7 @@ GhgEmissionsContainer.propTypes = {
   location: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
   selected: PropTypes.object,
+  legendSelected: PropTypes.object,
   search: PropTypes.object
 };
 
