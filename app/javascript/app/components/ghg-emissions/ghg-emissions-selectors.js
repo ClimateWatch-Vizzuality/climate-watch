@@ -5,7 +5,6 @@ import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import isEqual from 'lodash/isEqual';
-import intersection from 'lodash/intersection';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import {
@@ -270,6 +269,14 @@ const getSectorOptions = createSelector(
   }
 );
 
+const countriesSelectedFromRegions = regionsSelected => {
+  let regionCountriesSelected = [];
+  regionsSelected.forEach(r => {
+    if (r.members) { regionCountriesSelected = regionCountriesSelected.concat(r.members); } else regionCountriesSelected.push(r.iso);
+  });
+  return regionCountriesSelected;
+};
+
 const getDisableAccumulatedCharts = createSelector(
   [getFieldOptions('location'), getSelection('location')],
   (locationOptions, locationSelected) => {
@@ -278,11 +285,10 @@ const getDisableAccumulatedCharts = createSelector(
     const locationOptionsSelected = locationOptions.filter(location =>
       selectedLocations.includes(location.iso)
     );
-    return locationOptionsSelected.some(
-      location =>
-        location.members &&
-        intersection(location.members, selectedLocations).length !== 0
+    const countriesSelected = countriesSelectedFromRegions(
+      locationOptionsSelected
     );
+    return !isEqual(countriesSelected, uniq(countriesSelected));
   }
 );
 
@@ -475,7 +481,9 @@ const getLegendDataSelected = createSelector(
     if (dataSelected && isEqual(dataSelected[0], ALL_SELECTED_OPTION)) {
       return options[model];
     }
-    if (expandedLegendRegionsSelected) { return expandedLegendRegionsSelected.filter(c => !c.hideLegend); }
+    if (expandedLegendRegionsSelected) {
+      return expandedLegendRegionsSelected.filter(c => !c.hideLegend);
+    }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
 );
