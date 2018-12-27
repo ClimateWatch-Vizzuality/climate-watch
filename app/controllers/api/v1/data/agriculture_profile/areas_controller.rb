@@ -9,7 +9,8 @@ module Api
             render json: areas,
                    adapter: :json,
                    each_serializer: Api::V1::Data::AgricultureProfile::AreaSerializer,
-                   root: :data
+                   root: :data,
+                   meta: ::AgricultureProfile::Metadatum.areas
           end
         end
       end

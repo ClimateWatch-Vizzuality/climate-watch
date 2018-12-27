@@ -468,6 +468,39 @@ ALTER SEQUENCE public.agriculture_profile_meat_trades_id_seq OWNED BY public.agr
 
 
 --
+-- Name: agriculture_profile_metadata; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_metadata (
+    id bigint NOT NULL,
+    short_name character varying NOT NULL,
+    indicator character varying NOT NULL,
+    category character varying,
+    subcategory character varying,
+    unit character varying
+);
+
+
+--
+-- Name: agriculture_profile_metadata_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_metadata_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_metadata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_metadata_id_seq OWNED BY public.agriculture_profile_metadata.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2030,6 +2063,13 @@ ALTER TABLE ONLY public.agriculture_profile_meat_trades ALTER COLUMN id SET DEFA
 
 
 --
+-- Name: agriculture_profile_metadata id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_metadata ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_metadata_id_seq'::regclass);
+
+
+--
 -- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2482,6 +2522,14 @@ ALTER TABLE ONLY public.agriculture_profile_meat_productions
 
 ALTER TABLE ONLY public.agriculture_profile_meat_trades
     ADD CONSTRAINT agriculture_profile_meat_trades_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_metadata agriculture_profile_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_metadata
+    ADD CONSTRAINT agriculture_profile_metadata_pkey PRIMARY KEY (id);
 
 
 --
@@ -4031,6 +4079,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205161151'),
 ('20181219173718'),
 ('20181226160920'),
-('20181227100559');
+('20181227100559'),
+('20181227144108');
 
 

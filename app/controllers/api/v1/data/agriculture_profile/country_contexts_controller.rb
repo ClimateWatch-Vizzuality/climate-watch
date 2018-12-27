@@ -9,7 +9,8 @@ module Api
             render json: contexts,
                    adapter: :json,
                    each_serializer: Api::V1::Data::AgricultureProfile::CountryContextSerializer,
-                   root: :data
+                   root: :data,
+                   meta: ::AgricultureProfile::Metadatum.country_contexts
           end
         end
       end

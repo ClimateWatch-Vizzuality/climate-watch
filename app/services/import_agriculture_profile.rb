@@ -12,10 +12,11 @@ class ImportAgricultureProfile
   METADATA_FILEPATH = "#{CW_FILES_PREFIX}agriculture/metadata_sources_823.csv".freeze
 
   # rubocop:enable LineLength
-  #
+
   def call
     cleanup
     Rails.logger.info "Importing LEGEND"
+    import_metadata(S3CSVReader.read(LEGEND_FILEPATH))
     import_emission_categories(S3CSVReader.read(LEGEND_FILEPATH))
     Rails.logger.info "Importing EMISSIONS"
     import_emissions(S3CSVReader.read(EMISSIONS_FILEPATH))
@@ -40,6 +41,7 @@ class ImportAgricultureProfile
   private
 
   def cleanup
+    AgricultureProfile::Metadatum.delete_all
     AgricultureProfile::Emission.delete_all
     AgricultureProfile::EmissionSubcategory.delete_all
     AgricultureProfile::EmissionCategory.delete_all
@@ -68,6 +70,16 @@ class ImportAgricultureProfile
     }
   end
 
+  def metadatum_attributes(row)
+    {
+        short_name: row[:short_names],
+        indicator: row[:indicator_name],
+        category: row[:category],
+        subcategory: row[:sub_category],
+        unit: row[:unit]
+    }
+  end
+
   def import_emission_categories(content)
     content.each do |row|
       category_id = AgricultureProfile::EmissionCategory
@@ -77,21 +89,27 @@ class ImportAgricultureProfile
     end
   end
 
+  def import_metadata(content)
+    content.each do |row|
+      AgricultureProfile::Metadatum.create!(metadatum_attributes(row))
+    end
+  end
+
   def import_emissions(content)
     content.each do |row|
       begin
         location_id = Location.find_by(iso_code3: row[:area]).id
+        subcategory_id =
+            AgricultureProfile::EmissionSubcategory.find_by(
+                short_name: row[:short_names]).id
+        values = row.to_h.except(:area, :short_names)
+        next if values.blank?
+        AgricultureProfile::Emission.create!(
+            emission_attributes(values,
+                                location_id, subcategory_id))
       rescue
         puts row
       end
-      subcategory_id =
-          AgricultureProfile::EmissionSubcategory.find_by(
-              short_name: row[:short_names]).id
-      values = row.to_h.except(:area, :short_names)
-      next if values.blank?
-      AgricultureProfile::Emission.create!(
-          emission_attributes(values,
-                              location_id, subcategory_id))
     end
   end
 

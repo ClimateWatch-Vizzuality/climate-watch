@@ -9,7 +9,8 @@ module Api
             render json: meat,
                    adapter: :json,
                    each_serializer: Api::V1::Data::AgricultureProfile::MeatConsumptionSerializer,
-                   root: :data
+                   root: :data,
+                   meta: ::AgricultureProfile::Metadatum.meat_consumptions
           end
         end
       end
