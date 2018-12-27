@@ -95,6 +95,9 @@ Rails.application.routes.draw do
           resources :emissions, only: [:index]
           resources :country_contexts, only: [:index]
           resources :areas, only: [:index]
+          resources :meat_consumptions, only: [:index]
+          resources :meat_productions, only: [:index]
+          resources :meat_trades, only: [:index]
         end
       end
 

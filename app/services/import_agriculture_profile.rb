@@ -31,6 +31,10 @@ class ImportAgricultureProfile
     update_water_withdrawal_rank
     Rails.logger.info "Importing LAND_USE_FILEPATH"
     import_areas(S3CSVReader.read(LAND_USE_FILEPATH))
+    Rails.logger.info "Importing FAO_FILEPATH"
+    import_meat_consumptions(S3CSVReader.read(FAO_FILEPATH))
+    Rails.logger.info "Importing PRODUCTION_FILEPATH"
+    import_meat_trades(S3CSVReader.read(PRODUCTION_FILEPATH))
   end
 
   private
@@ -41,6 +45,9 @@ class ImportAgricultureProfile
     AgricultureProfile::EmissionCategory.delete_all
     AgricultureProfile::CountryContext.delete_all
     AgricultureProfile::Area.delete_all
+    AgricultureProfile::MeatConsumption.delete_all
+    AgricultureProfile::MeatProduction.delete_all
+    AgricultureProfile::MeatTrade.delete_all
   end
 
 
@@ -118,6 +125,46 @@ class ImportAgricultureProfile
                                    year: value.first.to_s.to_i)
         eval("area.#{indicator.downcase} = value.second")
         area.save!
+      end
+    end
+  end
+
+  def import_meat_consumptions(content)
+    content.each do |row|
+      location_id = Location.find_by(iso_code3: row[:country]).id
+      indicator = row[:short_names]
+      values = row.to_h.except(:area, :short_names)
+      values.each do |value|
+        next if value.second.blank?
+        meat =
+            AgricultureProfile::MeatConsumption
+                .find_or_create_by(location_id: location_id,
+                                   year: value.first.to_s.to_i)
+        eval("meat.#{indicator.downcase} = value.second")
+        meat.save!
+      end
+    end
+  end
+
+  def import_meat_trades(content)
+    content.each do |row|
+      location_id = Location.find_by(iso_code3: row[:area]).id
+      indicator = row[:short_names]
+      values = row.to_h.except(:area, :short_names)
+      values.each do |value|
+        next if value.second.blank?
+        meat = if indicator.starts_with?('production')
+                 AgricultureProfile::MeatProduction
+                     .find_or_create_by(location_id: location_id,
+                                        year: value.first.to_s.to_i)
+               else
+                 AgricultureProfile::MeatTrade
+                     .find_or_create_by(location_id: location_id,
+                                        year: value.first.to_s.to_i)
+               end
+
+        eval("meat.#{indicator.downcase} = value.second")
+        meat.save!
       end
     end
   end

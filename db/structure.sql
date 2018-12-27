@@ -344,6 +344,130 @@ ALTER SEQUENCE public.agriculture_profile_emissions_id_seq OWNED BY public.agric
 
 
 --
+-- Name: agriculture_profile_meat_consumptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_meat_consumptions (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    meat_consumption_1 double precision,
+    meat_consumption_2 double precision,
+    meat_consumption_3 double precision,
+    meat_consumption_4 double precision,
+    meat_consumption_per_capita_1 double precision,
+    meat_consumption_per_capita_2 double precision,
+    meat_consumption_per_capita_3 double precision,
+    meat_consumption_per_capita_4 double precision,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_meat_consumptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_meat_consumptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_meat_consumptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_meat_consumptions_id_seq OWNED BY public.agriculture_profile_meat_consumptions.id;
+
+
+--
+-- Name: agriculture_profile_meat_productions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_meat_productions (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    production_agr_1 integer,
+    production_agr_2 integer,
+    production_agr_3 integer,
+    production_agr_4 integer,
+    production_agr_5 integer,
+    production_agr_6 integer,
+    production_agr_7 integer,
+    production_agr_8 integer,
+    production_agr_9 integer,
+    production_agr_10 integer,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_meat_productions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_meat_productions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_meat_productions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_meat_productions_id_seq OWNED BY public.agriculture_profile_meat_productions.id;
+
+
+--
+-- Name: agriculture_profile_meat_trades; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_meat_trades (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    trade_import_1 integer,
+    trade_import_2 integer,
+    trade_import_3 integer,
+    trade_import_4 integer,
+    trade_import_5 integer,
+    trade_import_6 integer,
+    trade_import_7 integer,
+    trade_import_8 integer,
+    trade_export_1 integer,
+    trade_export_2 integer,
+    trade_export_3 integer,
+    trade_export_4 integer,
+    trade_export_5 integer,
+    trade_export_6 integer,
+    trade_export_7 integer,
+    trade_export_8 integer,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_meat_trades_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_meat_trades_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_meat_trades_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_meat_trades_id_seq OWNED BY public.agriculture_profile_meat_trades.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1885,6 +2009,27 @@ ALTER TABLE ONLY public.agriculture_profile_emissions ALTER COLUMN id SET DEFAUL
 
 
 --
+-- Name: agriculture_profile_meat_consumptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_consumptions ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_meat_consumptions_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_meat_productions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_productions ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_meat_productions_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_meat_trades id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_trades ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_meat_trades_id_seq'::regclass);
+
+
+--
 -- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2313,6 +2458,30 @@ ALTER TABLE ONLY public.agriculture_profile_emission_subcategories
 
 ALTER TABLE ONLY public.agriculture_profile_emissions
     ADD CONSTRAINT agriculture_profile_emissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_meat_consumptions agriculture_profile_meat_consumptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_consumptions
+    ADD CONSTRAINT agriculture_profile_meat_consumptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_meat_productions agriculture_profile_meat_productions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_productions
+    ADD CONSTRAINT agriculture_profile_meat_productions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_meat_trades agriculture_profile_meat_trades_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_trades
+    ADD CONSTRAINT agriculture_profile_meat_trades_pkey PRIMARY KEY (id);
 
 
 --
@@ -2751,6 +2920,27 @@ CREATE INDEX index_agriculture_profile_country_contexts_on_location_id ON public
 --
 
 CREATE INDEX index_agriculture_profile_emissions_on_location_id ON public.agriculture_profile_emissions USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_meat_consumptions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_meat_consumptions_on_location_id ON public.agriculture_profile_meat_consumptions USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_meat_productions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_meat_productions_on_location_id ON public.agriculture_profile_meat_productions USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_meat_trades_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_meat_trades_on_location_id ON public.agriculture_profile_meat_trades USING btree (location_id);
 
 
 --
@@ -3356,6 +3546,14 @@ ALTER TABLE ONLY public.indc_categories
 
 
 --
+-- Name: agriculture_profile_meat_consumptions fk_rails_2778e7bbae; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_consumptions
+    ADD CONSTRAINT fk_rails_2778e7bbae FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: timeline_documents fk_rails_2ac4f5f0c8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3500,6 +3698,14 @@ ALTER TABLE ONLY public.ndc_sdg_ndc_targets
 
 
 --
+-- Name: agriculture_profile_meat_trades fk_rails_98f6b5f058; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_trades
+    ADD CONSTRAINT fk_rails_98f6b5f058 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: visualizations fk_rails_a3de285f9a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3633,6 +3839,14 @@ ALTER TABLE ONLY public.historical_emissions_records
 
 ALTER TABLE ONLY public.historical_emissions_records
     ADD CONSTRAINT fk_rails_d6211ecb28 FOREIGN KEY (data_source_id) REFERENCES public.historical_emissions_data_sources(id) ON DELETE CASCADE;
+
+
+--
+-- Name: agriculture_profile_meat_productions fk_rails_d7299d20dc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_productions
+    ADD CONSTRAINT fk_rails_d7299d20dc FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -3816,6 +4030,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205152900'),
 ('20181205161151'),
 ('20181219173718'),
-('20181226160920');
+('20181226160920'),
+('20181227100559');
 
 
