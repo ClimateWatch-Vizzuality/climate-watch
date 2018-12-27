@@ -128,28 +128,28 @@ export const CHART_COLORS = [
   '#FF7800',
   '#FF88AA',
   '#AB0000',
-  '#20D5B7',
-  '#383F45',
-  '#000'
+  '#20D5B7'
 ];
 
 export const CHART_COLORS_EXTENDED = [
-  '#00B4D2',
-  '#FFB400',
-  '#0677B3',
-  '#D2187C',
-  '#FF7800',
-  '#FF88AA',
-  '#AB0000',
-  '#20D5B7',
-  '#383F45',
-  '#80DAE9',
-  '#E98CBE',
-  '#FFDA80',
-  '#53BBD9',
-  '#FFBC80',
+  '#e6194B',
+  '#3cb44b',
+  '#ffe119',
+  '#4363d8',
+  '#f58231',
+  '#911eb4',
+  '#42d4f4',
+  '#f032e6',
+  '#bfef45',
   '#FFC4D5',
-  '#D58080'
+  '#469990',
+  '#e6beff',
+  '#9A6324',
+  '#800000',
+  '#aaffc3',
+  '#808000',
+  '#FFDA80',
+  '#000075'
 ];
 
 export const OTHER_COLOR = '#b1b1b1';

@@ -9,12 +9,10 @@ import {
   getYColumnValue,
   getThemeConfig,
   getTooltipConfig,
-  setChartColors,
   setXAxisDomain,
   setYAxisDomain
 } from 'utils/graphs';
 import {
-  CHART_COLORS,
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG,
   DATA_SCALE,
@@ -93,7 +91,8 @@ const getExpandedLegendRegionsSelected = createSelector(
     const sortedCountries = countryOptions.sort(compare);
     const LEGEND_LIMIT = 10;
     if (data && sortedCountries.length > LEGEND_LIMIT) {
-      const othersGroup = data && sortedCountries.slice(LEGEND_LIMIT, -1);
+      const othersGroup =
+        data && sortedCountries.slice(LEGEND_LIMIT, -1).filter(o => o);
       const othersOption = {
         iso: 'OTHERS',
         label: 'Others',
@@ -270,17 +269,11 @@ export const getChartConfig = createSelector(
   [getModelSelected, getYColumnOptions],
   (model, yColumns) => {
     if (!model || !yColumns) return null;
-
-    const chartColors = setChartColors(
-      yColumns.length,
-      CHART_COLORS,
-      CHART_COLORS_EXTENDED
+    colorThemeCache = getThemeConfig(
+      yColumns,
+      CHART_COLORS_EXTENDED,
+      colorThemeCache
     );
-    const theme = getThemeConfig(yColumns, chartColors);
-    colorThemeCache = {
-      ...theme,
-      ...colorThemeCache
-    };
     const tooltip = getTooltipConfig(yColumns.filter(c => !c.hideLegend));
     return {
       axes: DEFAULT_AXES_CONFIG,
