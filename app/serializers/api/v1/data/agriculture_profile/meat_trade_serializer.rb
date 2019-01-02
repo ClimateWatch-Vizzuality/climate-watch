@@ -3,8 +3,7 @@ module Api
     module Data
       module AgricultureProfile
         class MeatTradeSerializer < ActiveModel::Serializer
-          has_one :location
-          attributes :year,
+          attributes :location_id, :year,
                      :trade_import_1,
                      :trade_import_2,
                      :trade_import_3,

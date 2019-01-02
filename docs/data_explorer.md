@@ -573,6 +573,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
     "data": [
         {
+            "location_id": 16,
             "year": 1991,
             "employment_agri_female": 8.538000107,
             "employment_agri_male": 6.613999844,
@@ -581,23 +582,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
             "total_fertilizers": 288700,
             "water_withdrawal": null,
             "water_withdrawal_rank": null,
-            "value_added_agr": 2.347019,
-            "location": {
-                "iso_code3": "AUT",
-                "pik_name": "Austria",
-                "cait_name": "Austria",
-                "ndcp_navigators_name": null,
-                "wri_standard_name": "Austria",
-                "unfccc_group": "UNFCCC Annex I",
-                "centroid": {
-                    "type": "Point",
-                    "coordinates": [
-                        14.130672958419,
-                        47.5856569254507
-                    ]
-                },
-                "is_in_eu": true
-            }
+            "value_added_agr": 2.347019
         }
     ],
     "meta": [
@@ -676,6 +661,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
     "data": [
         {
+            "location_id": 16,
             "year": 1991,
             "share_in_land_area_1": 8258,
             "share_in_land_area_2": 3036.9,
@@ -683,11 +669,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
             "share_in_land_area_4": 3782.2,
             "share_in_agricultural_area_1": 1445,
             "share_in_agricultural_area_2": 79,
-            "share_in_agricultural_area_3": 1512.9,
-            "location": {
-                "id": 16,
-                ...
-            }
+            "share_in_agricultural_area_3": 1512.9
         }
     ]
     
@@ -766,6 +748,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
     "data": [
         {
+            "location_id": 16,
             "year": 1991,
             "meat_consumption_1": 112,
             "meat_consumption_2": 3,
@@ -774,11 +757,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
             "meat_consumption_per_capita_1": 2.952443071,
             "meat_consumption_per_capita_2": 0.088121388,
             "meat_consumption_per_capita_3": 6.263397087,
-            "meat_consumption_per_capita_4": 5.07036907,
-            "location": {
-                "id": 4,
-                ...
-            }
+            "meat_consumption_per_capita_4": 5.07036907
         }
     ]
     "meta": [
@@ -864,6 +843,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
     "data": [
         {
+            "location_id": 16,
             "year": 1991,
             "production_agr_1": 1571361,
             "production_agr_2": null,
@@ -874,11 +854,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
             "production_agr_7": 76733,
             "production_agr_8": 312,
             "production_agr_9": 3329700,
-            "production_agr_10": 17762,
-            "location": {
-                "id": 16,
-                ...
-            }
+            "production_agr_10": 17762
         }
     ]
     "meta": [
@@ -980,6 +956,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 {
     "data": [
         {
+            "location_id": 16,
             "year": 1991,
             "trade_import_1": 66511,
             "trade_import_2": 118,
@@ -996,11 +973,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
             "trade_export_5": 3430,
             "trade_export_6": 4,
             "trade_export_7": null,
-            "trade_export_8": 1427,
-            "location": {
-                "id": 16,
-                ...
-            }
+            "trade_export_8": 1427
         }
     ]
     "meta": [
