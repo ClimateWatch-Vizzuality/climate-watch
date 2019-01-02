@@ -64,28 +64,29 @@ class ImportAgricultureProfile
 
   def emission_attributes(values, location_id, subcategory_id)
     {
-        emission_subcategory_id: subcategory_id,
-        location_id: location_id,
-        values: values
+      emission_subcategory_id: subcategory_id,
+      location_id: location_id,
+      values: values
     }
   end
 
   def metadatum_attributes(row)
     {
-        short_name: row[:short_names],
-        indicator: row[:indicator_name],
-        category: row[:category],
-        subcategory: row[:sub_category],
-        unit: row[:unit]
+      short_name: row[:short_names],
+      indicator: row[:indicator_name],
+      category: row[:category],
+      subcategory: row[:sub_category],
+      unit: row[:unit]
     }
   end
 
   def import_emission_categories(content)
     content.each do |row|
-      category_id = AgricultureProfile::EmissionCategory
-                        .find_or_create_by!(name: row['Category']).id rescue nil
-      AgricultureProfile::EmissionSubcategory
-          .create!(emission_subcategory_attributes(row, category_id))
+      category_id =
+        AgricultureProfile::EmissionCategory.find_or_create_by!(
+          name: row['Category']).id rescue nil
+      AgricultureProfile::EmissionSubcategory.create!(
+        emission_subcategory_attributes(row, category_id))
     end
   end
 
@@ -100,13 +101,13 @@ class ImportAgricultureProfile
       begin
         location_id = Location.find_by(iso_code3: row[:area]).id
         subcategory_id =
-            AgricultureProfile::EmissionSubcategory.find_by(
-                short_name: row[:short_names]).id
+          AgricultureProfile::EmissionSubcategory.find_by(
+            short_name: row[:short_names]).id
         values = row.to_h.except(:area, :short_names)
         next if values.blank?
         AgricultureProfile::Emission.create!(
-            emission_attributes(values,
-                                location_id, subcategory_id))
+          emission_attributes(values,
+                              location_id, subcategory_id))
       rescue
         puts row
       end
@@ -121,9 +122,9 @@ class ImportAgricultureProfile
       values.each do |value|
         next if value.second.blank?
         context =
-            AgricultureProfile::CountryContext
-                .find_or_create_by(location_id: location_id,
-                                   year: value.first.to_s.to_i)
+          AgricultureProfile::CountryContext.find_or_create_by(
+            location_id: location_id,
+            year: value.first.to_s.to_i)
         eval("context.#{indicator.downcase} = value.second")
         context.save!
       end
@@ -138,9 +139,9 @@ class ImportAgricultureProfile
       values.each do |value|
         next if value.second.blank?
         area =
-            AgricultureProfile::Area
-                .find_or_create_by(location_id: location_id,
-                                   year: value.first.to_s.to_i)
+          AgricultureProfile::Area.find_or_create_by(
+            location_id: location_id,
+            year: value.first.to_s.to_i)
         eval("area.#{indicator.downcase} = value.second")
         area.save!
       end
@@ -155,9 +156,9 @@ class ImportAgricultureProfile
       values.each do |value|
         next if value.second.blank?
         meat =
-            AgricultureProfile::MeatConsumption
-                .find_or_create_by(location_id: location_id,
-                                   year: value.first.to_s.to_i)
+          AgricultureProfile::MeatConsumption.find_or_create_by(
+            location_id: location_id,
+            year: value.first.to_s.to_i)
         eval("meat.#{indicator.downcase} = value.second")
         meat.save!
       end
@@ -172,13 +173,13 @@ class ImportAgricultureProfile
       values.each do |value|
         next if value.second.blank?
         meat = if indicator.starts_with?('production')
-                 AgricultureProfile::MeatProduction
-                     .find_or_create_by(location_id: location_id,
-                                        year: value.first.to_s.to_i)
+                 AgricultureProfile::MeatProduction.find_or_create_by(
+                   location_id: location_id,
+                   year: value.first.to_s.to_i)
                else
-                 AgricultureProfile::MeatTrade
-                     .find_or_create_by(location_id: location_id,
-                                        year: value.first.to_s.to_i)
+                 AgricultureProfile::MeatTrade.find_or_create_by(
+                   location_id: location_id,
+                   year: value.first.to_s.to_i)
                end
 
         eval("meat.#{indicator.downcase} = value.second")
@@ -189,7 +190,7 @@ class ImportAgricultureProfile
 
   def update_water_withdrawal_rank
     years = AgricultureProfile::CountryContext
-                .select(:year).distinct.pluck(:year)
+              .select(:year).distinct.pluck(:year)
 
     years.each do |year|
       sql = "
