@@ -1,4 +1,6 @@
 class ImportAgricultureProfile
+  include ClimateWatchEngine::CSVImporter
+
   # rubocop:disable LineLength
   EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Emissions Sample Data 823.csv".freeze
   INPUTS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Inputs Sample Data 823.csv".freeze
@@ -14,28 +16,30 @@ class ImportAgricultureProfile
   # rubocop:enable LineLength
 
   def call
-    cleanup
-    Rails.logger.info "Importing LEGEND"
-    import_metadata(S3CSVReader.read(LEGEND_FILEPATH))
-    import_emission_categories(S3CSVReader.read(LEGEND_FILEPATH))
-    Rails.logger.info "Importing EMISSIONS"
-    import_emissions(S3CSVReader.read(EMISSIONS_FILEPATH))
-    Rails.logger.info "Importing MACRO_INDICATORS"
-    import_country_contexts(S3CSVReader.read(MACRO_INDICATORS_FILEPATH))
-    Rails.logger.info "Importing WBD"
-    import_country_contexts(S3CSVReader.read(WBD_FILEPATH))
-    Rails.logger.info "Importing INPUTS"
-    import_country_contexts(S3CSVReader.read(INPUTS_FILEPATH))
-    Rails.logger.info "Importing WATER_WITHDRAWAL"
-    import_country_contexts(S3CSVReader.read(WATER_WITHDRAWAL_FILEPATH))
-    Rails.logger.info "Update water withdrawal rank"
-    update_water_withdrawal_rank
-    Rails.logger.info "Importing LAND_USE_FILEPATH"
-    import_areas(S3CSVReader.read(LAND_USE_FILEPATH))
-    Rails.logger.info "Importing FAO_FILEPATH"
-    import_meat_consumptions(S3CSVReader.read(FAO_FILEPATH))
-    Rails.logger.info "Importing PRODUCTION_FILEPATH"
-    import_meat_trades(S3CSVReader.read(PRODUCTION_FILEPATH))
+    ActiveRecord::Base.transaction do
+      cleanup
+      Rails.logger.info "Importing LEGEND"
+      import_metadata(S3CSVReader.read(LEGEND_FILEPATH), LEGEND_FILEPATH)
+      import_emission_categories(S3CSVReader.read(LEGEND_FILEPATH), LEGEND_FILEPATH)
+      Rails.logger.info "Importing EMISSIONS"
+      import_emissions(S3CSVReader.read(EMISSIONS_FILEPATH), EMISSIONS_FILEPATH)
+      Rails.logger.info "Importing MACRO_INDICATORS"
+      import_country_contexts(S3CSVReader.read(MACRO_INDICATORS_FILEPATH), MACRO_INDICATORS_FILEPATH)
+      Rails.logger.info "Importing WBD"
+      import_country_contexts(S3CSVReader.read(WBD_FILEPATH), WBD_FILEPATH)
+      Rails.logger.info "Importing INPUTS"
+      import_country_contexts(S3CSVReader.read(INPUTS_FILEPATH), INPUTS_FILEPATH)
+      Rails.logger.info "Importing WATER_WITHDRAWAL"
+      import_country_contexts(S3CSVReader.read(WATER_WITHDRAWAL_FILEPATH), WATER_WITHDRAWAL_FILEPATH)
+      Rails.logger.info "Update water withdrawal rank"
+      update_water_withdrawal_rank
+      Rails.logger.info "Importing LAND_USE_FILEPATH"
+      import_areas(S3CSVReader.read(LAND_USE_FILEPATH), LAND_USE_FILEPATH)
+      Rails.logger.info "Importing FAO_FILEPATH"
+      import_meat_consumptions(S3CSVReader.read(FAO_FILEPATH), FAO_FILEPATH)
+      Rails.logger.info "Importing PRODUCTION_FILEPATH"
+      import_meat_trades(S3CSVReader.read(PRODUCTION_FILEPATH), PRODUCTION_FILEPATH)
+    end
   end
 
   private
@@ -80,8 +84,8 @@ class ImportAgricultureProfile
     }
   end
 
-  def import_emission_categories(content)
-    content.each do |row|
+  def import_emission_categories(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
       category_id =
         AgricultureProfile::EmissionCategory.find_or_create_by!(
           name: row['Category']).id rescue nil
@@ -90,32 +94,28 @@ class ImportAgricultureProfile
     end
   end
 
-  def import_metadata(content)
-    content.each do |row|
+  def import_metadata(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
       AgricultureProfile::Metadatum.create!(metadatum_attributes(row))
     end
   end
 
-  def import_emissions(content)
-    content.each do |row|
-      begin
-        location_id = Location.find_by(iso_code3: row[:area]).id
-        subcategory_id =
-          AgricultureProfile::EmissionSubcategory.find_by(
-            short_name: row[:short_names]).id
-        values = row.to_h.except(:area, :short_names)
-        next if values.blank?
-        AgricultureProfile::Emission.create!(
-          emission_attributes(values,
-                              location_id, subcategory_id))
-      rescue
-        puts row
-      end
+  def import_emissions(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
+      location_id = Location.find_by(iso_code3: row[:area]).id
+      subcategory_id =
+        AgricultureProfile::EmissionSubcategory.find_by(
+          short_name: row[:short_names]).id
+      values = row.to_h.except(:area, :short_names)
+      next if values.blank?
+      AgricultureProfile::Emission.create!(
+        emission_attributes(values,
+                            location_id, subcategory_id))
     end
   end
 
-  def import_country_contexts(content)
-    content.each do |row|
+  def import_country_contexts(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
       location_id = Location.find_by(iso_code3: row[:area]).id
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
@@ -131,8 +131,8 @@ class ImportAgricultureProfile
     end
   end
 
-  def import_areas(content)
-    content.each do |row|
+  def import_areas(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
       location_id = Location.find_by(iso_code3: row[:area]).id
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
@@ -148,8 +148,8 @@ class ImportAgricultureProfile
     end
   end
 
-  def import_meat_consumptions(content)
-    content.each do |row|
+  def import_meat_consumptions(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
       location_id = Location.find_by(iso_code3: row[:country]).id
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
@@ -165,8 +165,8 @@ class ImportAgricultureProfile
     end
   end
 
-  def import_meat_trades(content)
-    content.each do |row|
+  def import_meat_trades(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
       location_id = Location.find_by(iso_code3: row[:area]).id
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
