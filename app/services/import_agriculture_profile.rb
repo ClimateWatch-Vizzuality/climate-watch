@@ -125,7 +125,7 @@ class ImportAgricultureProfile
           AgricultureProfile::CountryContext.find_or_create_by(
             location_id: location_id,
             year: value.first.to_s.to_i)
-        eval("context.#{indicator.downcase} = value.second")
+        context.send(:"#{indicator.downcase}=", value.second)
         context.save!
       end
     end
@@ -142,7 +142,7 @@ class ImportAgricultureProfile
           AgricultureProfile::Area.find_or_create_by(
             location_id: location_id,
             year: value.first.to_s.to_i)
-        eval("area.#{indicator.downcase} = value.second")
+        area.send(:"#{indicator.downcase}=", value.second)
         area.save!
       end
     end
@@ -159,7 +159,7 @@ class ImportAgricultureProfile
           AgricultureProfile::MeatConsumption.find_or_create_by(
             location_id: location_id,
             year: value.first.to_s.to_i)
-        eval("meat.#{indicator.downcase} = value.second")
+        meat.send(:"#{indicator.downcase}=", value.second)
         meat.save!
       end
     end
@@ -182,7 +182,7 @@ class ImportAgricultureProfile
                    year: value.first.to_s.to_i)
                end
 
-        eval("meat.#{indicator.downcase} = value.second")
+        meat.send(:"#{indicator.downcase}=", value.second)
         meat.save!
       end
     end
