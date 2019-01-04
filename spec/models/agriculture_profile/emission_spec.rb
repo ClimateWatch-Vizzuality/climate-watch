@@ -29,15 +29,15 @@ RSpec.describe AgricultureProfile::Emission, type: :model do
     location = FactoryBot.create(:location)
     subcategory = FactoryBot.create(:agriculture_profile_emission_subcategory)
     FactoryBot.create(
-        :agriculture_profile_emission,
-        location: location,
-        emission_subcategory: subcategory
+      :agriculture_profile_emission,
+      location: location,
+      emission_subcategory: subcategory
     )
     expect(
       FactoryBot.build(
-          :agriculture_profile_emission,
-          location: location,
-          emission_subcategory: subcategory
+        :agriculture_profile_emission,
+        location: location,
+        emission_subcategory: subcategory
       )
     ).to have(1).errors_on(:emission_subcategory_id)
   end
