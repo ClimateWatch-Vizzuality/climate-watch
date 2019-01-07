@@ -6,7 +6,7 @@
 const webpack = require('webpack');
 const { basename, dirname, join, relative, resolve } = require('path');
 const { sync } = require('glob');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
@@ -20,30 +20,32 @@ const packPaths = sync(join(entryPath, extensionGlob));
 const entry = packPaths.reduce((map, entryParam) => {
   const localMap = map;
   const namespace = relative(join(entryPath), dirname(entryParam));
-  localMap[
-    join(namespace, basename(entryParam, extname(entryParam)))
-  ] = resolve(entryParam);
+  localMap[join(namespace, basename(entryParam, extname(entryParam)))] = [
+    'babel-polyfill',
+    resolve(entryParam)
+  ];
   return localMap;
 }, {});
 
 module.exports = {
   entry,
-
   output: {
-    filename: '[name].js',
     path: output.path,
-    publicPath: output.publicPath
+    publicPath: output.publicPath,
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].js'
   },
-
   module: {
     rules: sync(join(loadersDir, '*.js')).map(loader => require(loader))
   },
-
   plugins: [
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
-    new ExtractTextPlugin(
-      env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'
-    ),
+    new MiniCssExtractPlugin({
+      filename:
+        env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css',
+      chunkFilename:
+        env.NODE_ENV === 'production' ? '[id]-[hash].css' : '[id].css'
+    }),
     new ManifestPlugin({
       publicPath: output.publicPath,
       writeToFileEmit: true
@@ -53,7 +55,6 @@ module.exports = {
       'process.env.NODE_ENV': env.NODE_ENV
     })
   ],
-
   resolve: {
     extensions: settings.extensions,
     modules: [
@@ -65,16 +66,11 @@ module.exports = {
     alias: {
       app: 'app',
       components: 'app/components',
-      routes: 'app/routes'
+      routes: 'app/routes',
+      constants: 'app/constants',
+      utils: 'app/utils'
     }
   },
-
-  resolveLoader: {
-    modules: ['node_modules']
-  },
-
-  node: {
-    fs: 'empty',
-    net: 'empty'
-  }
+  resolveLoader: { modules: ['node_modules'] },
+  node: { fs: 'empty', net: 'empty' }
 };
