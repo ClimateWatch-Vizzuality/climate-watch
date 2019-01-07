@@ -91,6 +91,14 @@ Rails.application.routes.draw do
           resources :labels, only: [:index]
           resources :sectors, only: [:index]
         end
+        namespace :agriculture_profile, only: [:index] do
+          resources :emissions, only: [:index]
+          resources :country_contexts, only: [:index]
+          resources :areas, only: [:index]
+          resources :meat_consumptions, only: [:index]
+          resources :meat_productions, only: [:index]
+          resources :meat_trades, only: [:index]
+        end
       end
 
       get :login, to: 'auth#login'
