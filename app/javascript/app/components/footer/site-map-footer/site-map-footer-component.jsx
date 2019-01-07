@@ -1,18 +1,18 @@
 import React from 'react';
 import { Icon } from 'cw-components';
 import cwLogo from 'assets/icons/cw-logo.svg';
+import { NavLink } from 'react-router-dom';
 
 import { siteMapData } from './site-map-footer-data';
-
 import styles from './site-map-footer-styles';
 
 const Component = () => {
   // eslint-disable-next-line react/prop-types
   const siteMapLink = ({ title, href }) =>
     (href.startsWith('/') ? (
-      <a href={href} className={styles.link}>
+      <NavLink to={href} className={styles.link}>
         {title}
-      </a>
+      </NavLink>
     ) : (
       <a
         href={href}
@@ -33,10 +33,12 @@ const Component = () => {
         <div>
           <div className={styles.sectionsContainer}>
             {siteMapData.map(section => (
-              <div className={styles.sectionWrapper}>
+              <div key={section.title} className={styles.sectionWrapper}>
                 <h4 className={styles.sectionHeader}>{section.title}</h4>
                 <ul className={styles.linksList}>
-                  {section.links.map(l => <li>{siteMapLink(l)}</li>)}
+                  {section.links.map(l => (
+                    <li key={l.href}>{siteMapLink(l)}</li>
+                  ))}
                 </ul>
               </div>
             ))}
