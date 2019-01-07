@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
 
 const CARDS_IN_ROW = 2;
+const DEFAULT_SECTOR_CODE = 'economy-wide';
 
 const getIso = state => state.iso || null;
 
@@ -31,14 +32,15 @@ const getAllTargets = createSelector(
 export const getCurrentSector = createSelector(
   [getActiveSector, getSectors],
   (activeSector, sectors) => {
+    if (!activeSector || !sectors) return null;
+
     const defaultSector =
-      sectors && sectors.find(sector => sector.value === 'economy-wide');
-    if (isEmpty(activeSector)) {
-      return sectors && sectors.length && defaultSector;
-    }
+      sectors && sectors.find(sector => sector.value === DEFAULT_SECTOR_CODE);
 
     return (
-      sectors && sectors.find(sector => sector.value === activeSector.sector)
+      (sectors &&
+        sectors.find(sector => sector.value === activeSector.sector)) ||
+      defaultSector
     );
   }
 );
@@ -50,8 +52,8 @@ export const getNdcContent = createSelector(
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) ||
       (sectors &&
-        sectors.find(sector => sector.value === 'economy-wide') &&
-        sectors.find(sector => sector.value === 'economy-wide').value);
+        sectors.find(sector => sector.value === DEFAULT_SECTOR_CODE) &&
+        sectors.find(sector => sector.value === DEFAULT_SECTOR_CODE).value);
 
     const ndcTargets = targets.filter(target => target.doc_type === 'ndc');
     const parsedNdcsPerSector = groupBy(ndcTargets, 'sector');
@@ -89,8 +91,8 @@ export const getLawsAndPolicies = createSelector(
     const activeSector =
       (!isEmpty(currentSector) && currentSector.sector) ||
       (sectors &&
-        sectors.find(sector => sector.value === 'economy-wide') &&
-        sectors.find(sector => sector.value === 'economy-wide').value);
+        sectors.find(sector => sector.value === DEFAULT_SECTOR_CODE) &&
+        sectors.find(sector => sector.value === DEFAULT_SECTOR_CODE).value);
 
     const lawsTargets = targets.filter(target => target.doc_type === 'law');
     const parsedLawsTargetsPerSector = groupBy(lawsTargets, 'sector');
@@ -163,6 +165,8 @@ const getSectorLabels = createSelector(
 const getNationalPoliciesCount = createSelector(
   [getLawsTargets, getCurrentSector],
   (lawsTargets, currentSector) => {
+    if (!lawsTargets || !currentSector) return 0;
+
     const targetsMatches = lawsTargets.filter(
       target => target.sector === currentSector.value
     );

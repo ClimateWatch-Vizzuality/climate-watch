@@ -47,15 +47,6 @@ const basePartners = [
     }
   },
   {
-    link: 'http://www.lse.ac.uk/GranthamInstitute',
-    orderingString: 'lse',
-    img: {
-      alt: 'London School of Economics & Grantham Research Institute',
-      src: lseImage,
-      customClass: 'rectangularXxl'
-    }
-  },
-  {
     link: 'http://www.ndcpartnership.org/',
     orderingString: 'ndc',
     img: {
@@ -135,6 +126,18 @@ const espPartners = [
   }
 ];
 
+const countryOnlyPartners = [
+  {
+    link: 'http://www.lse.ac.uk/GranthamInstitute',
+    orderingString: 'lse',
+    img: {
+      alt: 'London School of Economics & Grantham Research Institute',
+      src: lseImage,
+      customClass: 'rectangularXxl'
+    }
+  }
+];
+
 const alphabetically = (a, b) => {
   if (a.orderingString < b.orderingString) return -1;
   if (a.orderingString > b.orderingString) return 1;
@@ -145,8 +148,11 @@ const parsedPath = pathname => {
   if (pathname === '/ghg-emissions' || pathname === '/ndcs-sdg') {
     return 'ghg & ndcs-sdg';
   }
-  if (pathname.includes('/countries') || pathname.includes('/ndcs')) {
-    return 'countries & ndcs';
+  if (pathname.includes('/ndcs')) {
+    return 'ndcs';
+  }
+  if (pathname.includes('/countries')) {
+    return 'countries';
   }
   if (pathname.includes('/pathways')) return 'pathways';
   return 'default';
@@ -157,8 +163,12 @@ const getLogos = pathname => {
   switch (path) {
     case 'ghg & ndcs-sdg':
       return [...basePartners];
-    case 'countries & ndcs':
+    case 'ndcs':
       return [...basePartners, ...ndcPartners].sort(alphabetically);
+    case 'countries':
+      return [...basePartners, ...ndcPartners, ...countryOnlyPartners].sort(
+        alphabetically
+      );
     case 'pathways':
       return [...basePartners, ...espPartners].sort(alphabetically);
     default:

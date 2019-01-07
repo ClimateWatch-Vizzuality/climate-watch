@@ -45,9 +45,9 @@ const mapStateToProps = (state, { location, match }) => {
 };
 
 class LawsAndPoliciesContainer extends PureComponent {
-  updateUrlParam = (params, clear) => {
+  updateUrlParam = params => {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, params, clear));
+    history.replace(getLocationParamUpdated(location, params));
   };
 
   render() {
