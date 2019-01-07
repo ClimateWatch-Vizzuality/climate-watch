@@ -10,8 +10,7 @@
   width: 370px;
   margin: 0 30px 30px 0;
 
-  &:hover,
-  &:focus {
+  &:hover, &:focus {
     &::before {
       background: $theme-secondary;
       transform: scaleY(1.1);

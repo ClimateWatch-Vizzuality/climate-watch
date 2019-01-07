@@ -1,4 +1,4 @@
-S3_BUCKET_URL = "https://s3-#{Rails.application.secrets.aws_region}.amazonaws.com/#{Rails.application.secrets.s3_bucket_name}"
+S3_BUCKET_URL = "https://#{Rails.application.secrets.s3_bucket_name}.s3.amazonaws.com"
 
 CW_FILES_PREFIX = ENV['CW_FILES_PREFIX']
 
