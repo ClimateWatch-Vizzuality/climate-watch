@@ -66,9 +66,9 @@ gem 'sidekiq'
 # https://github.com/rails/rails/issues/24063
 gem 'listen', '>= 3.0.5', '< 3.2'
 gem 'appsignal'
+gem 'dotenv-rails'
 
 group :development, :test do
-  gem 'dotenv-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.5'
