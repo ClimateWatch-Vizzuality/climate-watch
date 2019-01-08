@@ -80,6 +80,13 @@ export default [
     sections: agricultureSections
   },
   {
+    path: '/sectors/agriculture',
+    component: SectorsAgriculture,
+    label: 'SECTORS AGRICULTURE',
+    sections: agricultureSections,
+    headerImage: 'home'
+  },
+  {
     path: '/ndcs/country/:iso/full',
     component: NDCCountryFull,
     exact: true,
