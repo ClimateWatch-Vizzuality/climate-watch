@@ -11,10 +11,6 @@ export const getSources = createSelector(
   getMeta,
   meta => (meta && meta.data_source) || null
 );
-export const getVersions = createSelector(
-  getMeta,
-  meta => (meta && meta.gwp) || null
-);
 export const getWBData = ({ wbCountryData }) => wbCountryData.data || null;
 
 // values from search

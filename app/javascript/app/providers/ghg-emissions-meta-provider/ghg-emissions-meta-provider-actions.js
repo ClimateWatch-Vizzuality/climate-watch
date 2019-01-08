@@ -43,11 +43,12 @@ const fetchEmissionsMeta = createThunkAction(
                 }
                 if (key === 'data_source') {
                   newItem = {
-                    ...newItem,
+                    name: item.name,
+                    label: item.display_name,
+                    value: item.id,
                     location: item.location_ids,
                     sector: item.sector_ids,
                     gas: item.gas_ids,
-                    gwp: item.gwp_ids,
                     source: item.source
                   };
                 }

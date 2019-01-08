@@ -61,25 +61,23 @@ export const ALLOWED_SECTORS_BY_SOURCE = {
     'Waste',
     'Other'
   ],
-  UNFCCC: {
-    AR2: [
-      'Energy',
-      'Industrial Processes',
-      'Solvent and Other Product Use',
-      'Agriculture',
-      'Land-Use Change and Forestry',
-      'Waste',
-      'Other'
-    ],
-    AR4: [
-      'Energy',
-      'Industrial Processes and Product Use',
-      'Agriculture',
-      'Land Use, Land-Use Change and Forestry',
-      'Waste',
-      'Other'
-    ]
-  }
+  UNFCCC_AI: [
+    'Energy',
+    'Industrial Processes',
+    'Solvent and Other Product Use',
+    'Agriculture',
+    'Land-Use Change and Forestry',
+    'Waste',
+    'Other'
+  ],
+  UNFCCC_NAI: [
+    'Energy',
+    'Industrial Processes and Product Use',
+    'Agriculture',
+    'Land Use, Land-Use Change and Forestry',
+    'Waste',
+    'Other'
+  ]
 };
 
 export const EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL = {
@@ -97,12 +95,14 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     sector: 'Total including LULUCF',
     location: 'WORLD'
   },
-  UNFCCC: {
+  UNFCCC_AI: {
     gas: 'Aggregate GHGs',
-    sector: {
-      AR2: 'Total GHG emissions including LULUCF/LUCF',
-      AR4: 'Total GHG emissions with LULUCF'
-    },
+    sector: 'Total GHG emissions including LULUCF/LUCF',
+    location: 'ANNEXI'
+  },
+  UNFCCC_NAI: {
+    gas: 'Aggregate GHGs',
+    sector: 'Total GHG emissions with LULUCF',
     location: 'ANNEXI'
   }
 };
@@ -259,7 +259,6 @@ export const NDC_DOCUMENT_OPTIONS = [
   }
 ];
 
-export const LATEST_VERSION = 'AR4';
 export const CONTAINED_PATHNAME = 'contained';
 
 export const LENSES_SELECTOR_INFO = {

@@ -12,8 +12,7 @@ import {
   COUNTRY_COMPARE_COLORS,
   DATA_SCALE,
   DEFAULT_EMISSIONS_SELECTIONS,
-  ALLOWED_SECTORS_BY_SOURCE,
-  LATEST_VERSION
+  ALLOWED_SECTORS_BY_SOURCE
 } from 'data/constants';
 import {
   getYColumnValue,
@@ -95,22 +94,10 @@ export const getSourceSelected = createSelector(
   }
 );
 
-export const getVersion = createSelector([getData], data => {
-  if (!data || isEmpty(data)) return null;
-  const hasLatestVersion = data.some(d => d.gwp === LATEST_VERSION);
-  return hasLatestVersion ? LATEST_VERSION : 'AR2';
+export const getAllowedSectors = createSelector([getSourceSelected], source => {
+  if (!source) return null;
+  return ALLOWED_SECTORS_BY_SOURCE[source.label];
 });
-
-export const getAllowedSectors = createSelector(
-  [getSourceSelected, getVersion],
-  (source, version) => {
-    if (!source || !version) return null;
-    if (source.label === 'UNFCCC') {
-      return ALLOWED_SECTORS_BY_SOURCE[source.label][version];
-    }
-    return ALLOWED_SECTORS_BY_SOURCE[source.label];
-  }
-);
 
 export const getSectorOptions = createSelector(
   [getData, getAllowedSectors],
@@ -156,18 +143,12 @@ export const filterData = createSelector(
     getSourceSelected,
     getCalculationSelected,
     addNameToLocations,
-    getVersion,
     getSectorOptions,
     getSectorsSelected
   ],
-  (data, source, calculation, locations, version, sectorOptions, sectors) => {
+  (data, source, calculation, locations, sectorOptions, sectors) => {
     if (!data || !data.length) return [];
     let filteredData = data;
-    // Filter by version
-    // If the data has the AR4 version (latest) we only want to display that data to avoid duplicates
-    if (version === LATEST_VERSION) {
-      filteredData = filteredData.filter(d => d.gwp === LATEST_VERSION);
-    }
 
     // Filter by source and gas
     filteredData = filteredData.filter(
@@ -177,10 +158,7 @@ export const filterData = createSelector(
     );
 
     // Filter by sector
-    const defaultSector =
-      source.label === 'UNFCCC'
-        ? [DEFAULT_EMISSIONS_SELECTIONS[source.label].sector[version]]
-        : [DEFAULT_EMISSIONS_SELECTIONS[source.label].sector];
+    const defaultSector = [DEFAULT_EMISSIONS_SELECTIONS[source.label].sector];
     const sectorFilters =
       sectors && sectors.length && sectorOptions.length !== sectors.length
         ? sectors.map(s => s.label)

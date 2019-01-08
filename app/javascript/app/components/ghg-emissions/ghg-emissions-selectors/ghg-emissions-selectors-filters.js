@@ -5,8 +5,6 @@ import isEqual from 'lodash/isEqual';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortEmissionsByValue, sortLabelByAlpha } from 'utils/graphs';
 import {
-  ALLOWED_SECTORS_BY_SOURCE,
-  EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL,
   ALL_SELECTED,
   ALL_SELECTED_OPTION,
   TOP_EMITTERS_OPTION,
@@ -17,44 +15,26 @@ import {
   getMeta,
   getRegions,
   getSources,
-  getVersions,
   getSelection
 } from './ghg-emissions-selectors-get';
 
 // Sources selectors
-const getSourceOptions = createSelector(
-  [getSources, getVersions, getData],
-  (sources, versions, data) => {
-    if (!sources || !versions || !data) return null;
-    const sourceOptionsTemplate = [
-      { source: 'CAIT', version: 'AR2' },
-      { source: 'PIK', version: 'AR2' },
-      { source: 'PIK', version: 'AR4' },
-      { source: 'UNFCCC', version: 'AR2' },
-      { source: 'UNFCCC', version: 'AR4' }
-    ];
+const getSourceOptions = createSelector([getSources], sources => {
+  if (!sources) return null;
 
-    return sourceOptionsTemplate.map(template => {
-      const sourceValue = sources.find(
-        sourceMeta => template.source === sourceMeta.label
-      ).value;
-      const versionValue = versions.find(
-        versionMeta => template.version === versionMeta.label
-      ).value;
-      return {
-        label: `${template.source}-${template.version}`,
-        value: `${sourceValue}-${versionValue}`
-      };
-    });
-  }
-);
+  return sources.map(source => ({
+    name: source.name,
+    label: source.label,
+    value: String(source.value)
+  }));
+});
 
 const getSourceSelected = createSelector(
   [getSourceOptions, getSelection('source')],
   (sources, selected) => {
     if (!sources) return null;
     if (!selected) return sources[0];
-    return sources.find(source => source.value === selected);
+    return sources.find(source => String(source.value) === selected);
   }
 );
 
@@ -84,21 +64,6 @@ const BREAK_BY_OPTIONS = [
 ];
 
 const getBreakByOptions = () => BREAK_BY_OPTIONS;
-
-const getAllowedSectors = createSelector([getSourceSelected], source => {
-  if (!source) return null;
-  const sourceLabel = source.label.split('-')[0];
-  const versionLabel = source.label.split('-')[1];
-  const allowedSectors = ALLOWED_SECTORS_BY_SOURCE[sourceLabel];
-  if (sourceLabel === 'UNFCCC') {
-    return allowedSectors[versionLabel];
-  }
-  const extraGlobalSectors =
-    EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL[sourceLabel];
-  return extraGlobalSectors
-    ? allowedSectors.concat(extraGlobalSectors)
-    : allowedSectors;
-});
 
 const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
@@ -155,9 +120,9 @@ const getRegionsOptions = createSelector([getRegions], regions => {
 
 const filterOptionsBySource = field =>
   createSelector([getMeta, getSourceSelected], (meta, sourceSelected) => {
-    if (isEmpty(meta)) return null;
+    if (isEmpty(meta) || !sourceSelected) return null;
     const fieldOptions = meta[field];
-    const sourceValue = sourceSelected.value.split('-')[0];
+    const sourceValue = sourceSelected.value;
     const sourceMeta = meta.data_source.find(
       s => String(s.value) === sourceValue
     );
@@ -199,10 +164,7 @@ const getDefaultOptions = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-    const defaults = getGhgEmissionDefaults(
-      sourceSelected.label.split('-')[0],
-      meta
-    );
+    const defaults = getGhgEmissionDefaults(sourceSelected, meta);
     const defaultOptions = {};
     Object.keys(defaults).forEach(key => {
       const keyDefault = String(defaults[key]).split(',');
@@ -219,16 +181,10 @@ const getDefaultOptions = createSelector(
 );
 
 const getSectorOptions = createSelector(
-  [getFieldOptions('sector'), getAllowedSectors, getMeta],
-  (options, allowedOptions, meta) => {
+  [getFieldOptions('sector'), getMeta],
+  (options, meta) => {
     if (!options || isEmpty(options)) return null;
     const { sector: metaSectors } = meta;
-    const allowedSectorLabels = [];
-    options.forEach(o => {
-      if (allowedOptions.includes(o.label)) {
-        allowedSectorLabels.push(o.label);
-      }
-    });
 
     const sectors = metaSectors.filter(s => !s.parentId).map(d => ({
       label: d.label,

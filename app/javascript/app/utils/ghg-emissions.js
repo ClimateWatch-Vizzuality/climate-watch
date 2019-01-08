@@ -5,13 +5,10 @@ import {
 } from 'data/constants';
 
 export const getGhgEmissionDefaults = (source, meta) => {
-  const defaults = DEFAULT_EMISSIONS_SELECTIONS[source];
+  const defaults = DEFAULT_EMISSIONS_SELECTIONS[source.name];
   if (!defaults) return {};
 
-  const sectorDefaults =
-    source === 'UNFCCC'
-      ? Object.keys(defaults.sector).map(key => defaults.sector[key])
-      : defaults.sector;
+  const sectorDefaults = defaults.sector;
   return {
     gas: meta.gas.find(g => g.label === defaults.gas).value,
     sector: meta.sector

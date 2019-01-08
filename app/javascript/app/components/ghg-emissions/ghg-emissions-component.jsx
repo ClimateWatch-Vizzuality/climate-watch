@@ -49,7 +49,7 @@ class GhgEmissions extends PureComponent {
         infoText="Stacked and percentage charts are only available if the selected regions do not have countries in common"
         label={label || startCase(field)}
         placeholder={`Filter by ${startCase(field)}`}
-        options={addAllSelected(options, field)}
+        options={addAllSelected(options, field) || []}
         onValueChange={selected => handleChange(field, selected)}
         value={value || null}
         hideResetButton

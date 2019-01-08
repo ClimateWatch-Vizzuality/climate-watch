@@ -25,8 +25,7 @@ export const getProviderFilters = createSelector(
     });
     const countryValues = regionCountriesSelected.join();
     return {
-      source: sourcesSelected.value.split('-')[0],
-      gwp: sourcesSelected.value.split('-')[1],
+      source: sourcesSelected.value,
       gas: parseValues(gasesSelected),
       sector: parseValues(sectorsSelected),
       location: `${parseValues(regionsSelected)}${countryValues

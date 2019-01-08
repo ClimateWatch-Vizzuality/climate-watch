@@ -141,7 +141,7 @@ export const getLegendDataSelected = createSelector(
       return options[model];
     }
     if (expandedLegendRegionsSelected) {
-      return expandedLegendRegionsSelected.filter(c => !c.hideLegend);
+      return expandedLegendRegionsSelected.filter(c => c && !c.hideLegend);
     }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
@@ -274,7 +274,7 @@ export const getChartConfig = createSelector(
       CHART_COLORS_EXTENDED,
       colorThemeCache
     );
-    const tooltip = getTooltipConfig(yColumns.filter(c => !c.hideLegend));
+    const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
     return {
       axes: DEFAULT_AXES_CONFIG,
       theme: colorThemeCache,
