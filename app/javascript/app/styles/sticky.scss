@@ -40,6 +40,12 @@
       }
     }
 
+    &.-sectors-agriculture {
+      .sticky-inner-wrapper {
+        background: linear-gradient(135deg, #0677B3 0%, #00B4D2 100%);
+      }
+    }
+
     .sticky-outer-wrapper,
     .sticky-inner-wrapper {
       z-index: 23; // dropdown items have 21
