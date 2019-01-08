@@ -29,21 +29,23 @@ node {
   checkout scm
   properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])])
 
+  def cw_files_prefix = (env.BRANCH_NAME == 'master') ? 'climatewatch.org/www.climatewatch.org/climate-watch/' : 'climatewatch.org/staging.climatewatch.org/climate-watch/'
+
   try {
 
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "master":
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${env.CW_FILES_PREFIX} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${env.CW_FILES_PREFIX} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
           break
         case "sandbox":
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${env.CW_FILES_PREFIX} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${env.CW_FILES_PREFIX} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
           break
         default:
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${env.CW_FILES_PREFIX} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${env.CW_FILES_PREFIX} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
+          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg secretKey=${secretKey} --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
       }
     }
 
