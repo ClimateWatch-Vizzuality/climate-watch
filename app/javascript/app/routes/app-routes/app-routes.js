@@ -22,6 +22,7 @@ import MyClimateWatch from 'pages/my-climate-watch';
 import DataExplorer from 'pages/data-explorer';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
+import SectorsAgriculture from 'pages/sectors-agriculture';
 
 // routes
 import NDCSRoutes from './NDCS-routes';
@@ -40,6 +41,7 @@ import emissionPathwaysModelSections from './emission-pathways-model-sections';
 import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
+import agricultureSections from './sectors-agriculture-sections';
 
 export default [
   {
@@ -72,6 +74,13 @@ export default [
     exact: true,
     nav: true,
     label: 'SECTORS'
+  },
+  {
+    path: '/sectors/agriculture',
+    component: SectorsAgriculture,
+    label: 'SECTORS AGRICULTURE',
+    sections: agricultureSections,
+    headerImage: 'home'
   },
   {
     path: '/ndcs/country/:iso/full',
