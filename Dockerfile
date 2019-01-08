@@ -4,8 +4,14 @@ MAINTAINER Jose Angel Parreño <joseangel.parreno@vizzuality.com>
 ENV NAME climate-watch
 
 # Set application environment
+
+# args from command execution
 ARG RAILS_ENV
 ENV RAILS_ENV $RAILS_ENV
+
+ARG CW_FILES_PREFIX
+ENV CW_FILES_PREFIX $CW_FILES_PREFIX
+
 ENV RACK_ENV $RAILS_ENV
 ENV NODE_ENV $RAILS_ENV
 
@@ -13,10 +19,8 @@ ENV ESP_API https://data.emissionspathways.org/api/v1
 ENV CW_API /api/v1
 ENV GFW_API https://production-api.globalforestwatch.org
 ENV S3_BUCKET_NAME wri-sites
-ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
-ARG FEATURE_LAWS_AND_POLICIES
-ENV FEATURE_LAWS_AND_POLICIES $FEATURE_LAWS_AND_POLICIES
+ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
 # Install dependencies
 RUN apt-get update \
