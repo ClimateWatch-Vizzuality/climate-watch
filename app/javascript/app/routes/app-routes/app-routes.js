@@ -21,6 +21,7 @@ import MyClimateWatch from 'pages/my-climate-watch';
 import DataExplorer from 'pages/data-explorer';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
+import Sectors from 'pages/sectors';
 import SectorsAgriculture from 'pages/sectors-agriculture';
 
 // routes
@@ -43,6 +44,7 @@ import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 
+const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 export default [
   {
     path: '/',
@@ -68,12 +70,20 @@ export default [
     headerColor: '#045F61',
     sections: countryCompareSections
   },
-  {
-    nav: true,
-    label: 'SECTORS',
-    routes: sectorsRoutes
-  },
-  {
+  FEATURE_AGRICULTURE
+    ? {
+      nav: true,
+      label: 'SECTORS',
+      routes: sectorsRoutes
+    }
+    : {
+      path: '/sectors',
+      component: Sectors,
+      exact: true,
+      nav: true,
+      label: 'SECTORS'
+    },
+  FEATURE_AGRICULTURE && {
     path: '/sectors/agriculture',
     component: SectorsAgriculture,
     headerImage: 'sectors-agriculture',
