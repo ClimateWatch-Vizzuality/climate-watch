@@ -95,7 +95,7 @@ export default [
     component: SectorsAgriculture,
     label: 'SECTORS AGRICULTURE',
     sections: agricultureSections,
-    headerImage: 'home'
+    headerImage: 'sectors-agriculture'
   },
   {
     path: '/ndcs/country/:iso/full',
