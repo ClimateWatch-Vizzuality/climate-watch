@@ -77,6 +77,7 @@ export default [
     path: '/sectors/agriculture',
     component: SectorsAgriculture,
     headerImage: 'sectors-agriculture',
+    headerColor: '#0677B3',
     sections: agricultureSections
   },
   {
