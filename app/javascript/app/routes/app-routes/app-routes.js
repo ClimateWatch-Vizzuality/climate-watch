@@ -7,7 +7,6 @@ import About from 'pages/about';
 import CountryIndex from 'pages/country-index';
 import CountriesSelect from 'components/countries-select';
 import CountryCompare from 'pages/country-compare';
-import Sectors from 'pages/sectors';
 import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountry from 'pages/ndc-country';
 import NDCCompare from 'pages/ndc-compare';
@@ -34,6 +33,7 @@ import DataExplorerRoutes from './data-explorer-routes';
 import aboutRoutes from './about-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
+import sectorsRoutes from './sectors-routes';
 
 // sections
 import countrySections from './country-sections';
@@ -69,18 +69,15 @@ export default [
     sections: countryCompareSections
   },
   {
-    path: '/sectors',
-    component: Sectors,
-    exact: true,
     nav: true,
-    label: 'SECTORS'
+    label: 'SECTORS',
+    routes: sectorsRoutes
   },
   {
     path: '/sectors/agriculture',
     component: SectorsAgriculture,
-    label: 'SECTORS AGRICULTURE',
-    sections: agricultureSections,
-    headerImage: 'sectors-agriculture'
+    headerImage: 'sectors-agriculture',
+    sections: agricultureSections
   },
   {
     path: '/ndcs/country/:iso/full',
