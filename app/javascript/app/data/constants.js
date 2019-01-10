@@ -80,10 +80,6 @@ export const ALLOWED_SECTORS_BY_SOURCE = {
   ]
 };
 
-export const EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL = {
-  CAIT: ['Bunker Fuels']
-};
-
 export const DEFAULT_EMISSIONS_SELECTIONS = {
   CAIT: {
     gas: 'All GHG',
