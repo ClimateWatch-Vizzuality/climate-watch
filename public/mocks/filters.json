@@ -1,0 +1,42 @@
+{
+  "countries": [
+    {
+      "name": "France"
+    },
+    {
+      "name": "Italy"
+    },
+    {
+      "name": "Spain"
+    },
+    {
+      "name": "Portugal"
+    }
+  ],
+  "models": [
+    "GCAM",
+    "MODEL2"
+  ],
+  "scenarios": [
+    "Paris plus",
+    "Paris",
+    "Brussels"
+  ],
+  "categories": [
+    "buildings",
+    "roads"
+  ],
+  "subcategories": [
+    "electricity generation",
+    "domestic waste"
+  ],
+  "indicators": [
+    "all"
+  ],
+  "time-series": [
+    {
+      "y": 2000,
+      "v": 200
+    }
+  ]
+}
