@@ -28,7 +28,10 @@
   <loc>https://www.climatewatchdata.org/sectors</loc>
 </url>
 <url>
-  <loc>https://www.climatewatchdata.org/ndcs</loc>
+  <loc>https://www.climatewatchdata.org/ndcs-content</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/ndc-search</loc>
 </url>
 <url>
   <loc>https://www.climatewatchdata.org/ndcs/compare</loc>
@@ -59,5 +62,8 @@
 </url>
 <url>
   <loc>https://www.climatewatchdata.org/about</loc>
+</url>
+<url>
+  <loc>https://www.climatewatchdata.org/data-explorer</loc>
 </url>
 </urlset>
