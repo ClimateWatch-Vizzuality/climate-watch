@@ -1,0 +1,19 @@
+@import '~styles/settings';
+
+.sideNavigation {
+  display: flex;
+  flex-direction: column;
+  padding: $gutter-padding 0px;
+}
+
+.sectionLabel {
+  cursor: pointer;
+  font-size: $font-size-sm;
+  opacity: 0.5;
+  color: $theme-color;
+  padding-bottom: $card-content-margin;
+
+  &.selected {
+    opacity: 1;
+  }
+}

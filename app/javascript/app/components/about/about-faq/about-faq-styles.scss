@@ -1,0 +1,26 @@
+@import '~styles/settings';
+@import '~styles/layout';
+
+.container {
+  @include row((3, 9))
+}
+
+.faqContentContainer {
+  padding: $gutter-padding 0px;
+}
+
+.questionTitleWrapper {
+  margin-bottom: 15px;
+}
+
+.questionTitle {
+  color: $theme-color;
+  font-size: $font-size-large;
+  font-weight: $font-weight-bold;
+}
+
+.questionAnswer {
+  color: $theme-color;
+  font-size: $font-size;
+  padding-bottom: $gutter-padding;
+}
