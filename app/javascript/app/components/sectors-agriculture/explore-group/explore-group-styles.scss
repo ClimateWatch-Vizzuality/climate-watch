@@ -1,0 +1,16 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.container {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.btnGroup {
+  margin-right: 28px;
+  width: 45%;
+}
+
+.exploreBtn {
+  width: 45%;
+}

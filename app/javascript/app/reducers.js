@@ -28,6 +28,7 @@ import * as emissionsProvider from 'providers/emissions-provider';
 import * as dataExplorerProvider from 'providers/data-explorer-provider';
 import * as lawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import * as agricultureCountriesContextsProvider from 'providers/agriculture-countries-context-provider';
+import * as agricultureEmissionsProvider from 'providers/agriculture-emissions-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -52,7 +53,8 @@ const providersReducers = {
   espTimeSeries: handleActions(espTimeSeriesProvider),
   dataExplorer: handleActions(dataExplorerProvider),
   lawsAndPolicies: handleActions(lawsAndPoliciesProvider),
-  agricultureCountriesContexts: handleActions(agricultureCountriesContextsProvider)
+  agricultureCountriesContexts: handleActions(agricultureCountriesContextsProvider),
+  agricultureEmissions: handleActions(agricultureEmissionsProvider)
 };
 
 // Pages

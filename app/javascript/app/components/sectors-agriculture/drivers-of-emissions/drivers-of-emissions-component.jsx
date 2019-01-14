@@ -2,8 +2,17 @@ import React, { PureComponent } from 'react';
 import layout from 'styles/layout.scss';
 import { Switch } from 'cw-components';
 import PropTypes from 'prop-types';
-
+import ExploreButtonGroup from 'components/sectors-agriculture/explore-group/explore-group';
+import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import * as styles from './drivers-of-emissions-styles.scss';
+import CardPieChart from '../card-pie-chart/card-pie-chart-component';
+
+const theme = {
+  card: styles.fixedCard,
+  contentContainer: styles.fixedCardContentContainer,
+  // title: styles.fixedCardTitle,
+  data: styles.fixedCardData
+};
 
 class DriversOfEmissions extends PureComponent {
   render() {
@@ -37,7 +46,26 @@ class DriversOfEmissions extends PureComponent {
               />
             </div>
           </div>
-          <div>Data content here</div>
+          <div>
+            <TabletLandscape>
+              <div className={styles.navigationSection}>
+                <div>NAVIGATION</div>
+                <ExploreButtonGroup exploreButtonText="Explore emissions" />
+              </div>
+              <div className={styles.navigationSection}>
+                <div>CHART</div>
+                <CardPieChart
+                  theme={theme}
+                  cardSubTitleText="Global agriculture emissions in 2014"
+                />
+              </div>
+            </TabletLandscape>
+            <TabletPortraitOnly>
+              <div className={styles.graphControlsSection}>
+                <ExploreButtonGroup exploreButtonText="Explore emissions" />
+              </div>
+            </TabletPortraitOnly>
+          </div>
         </div>
       </div>
     );
