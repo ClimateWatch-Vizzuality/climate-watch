@@ -60,6 +60,7 @@
     "foundation-sites": "6.4.3",
     "glob": "7.1.2",
     "history": "4.7.2",
+    "html-react-parser": "^0.6.1",
     "html-webpack-plugin": "2.29.0",
     "js-lenses": "2.0.1",
     "js-yaml": "3.9.0",
