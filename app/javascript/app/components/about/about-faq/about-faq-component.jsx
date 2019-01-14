@@ -1,38 +1,46 @@
 import React from 'react';
+import renderHTML from 'html-react-parser';
+import { NavLink } from 'react-router-dom';
 
 import SideNavigation from 'components/side-navigation';
 
 import styles from './about-faq-styles.scss';
 
-const renderTextFaq = (q, index) => (
-  <div key={q.title} className={styles.questionContainer}>
+const renderQuestion = ({ title, answer, type }, index) => (
+  <div key={title} className={styles.questionContainer}>
     <div className={styles.questionTitleWrapper}>
       <span className={styles.questionTitle}>
         {`${index + 1}. `}
       </span>
       <span className={styles.questionTitle}>
-        {q.title}
+        {title}
       </span>
     </div>
-    <p className={styles.questionAnswer}>{q.answer}</p>
+    {renderAnswer(type, answer)}
   </div>
 );
 
-const renderTableFaq = () => (
-  <div>table here</div>
-);
+const replaceNavLink = ({ attribs }) => <NavLink to={attribs.to}><span>{attribs.innertext}</span></NavLink>;
 
-const FaqComponent = ({ selectedSection, sideNavigationSections, selectedSectionSlug }) => (
+const renderAnswer = (type, answer) => {
+  switch (type) {
+    case 'html':
+      return (<div className={styles.htmlAnswer} >
+        {renderHTML(answer, { replace: node => node.name === 'link' && replaceNavLink(node) })}
+      </div>);
+    default:
+      return <p className={styles.questionAnswer}>{answer}</p>;
+  }
+};
+
+const FaqComponent = ({ sections, sideNavigationSections, selectedSectionSlug }) =>(
   <div className={styles.container}>
     <SideNavigation sections={sideNavigationSections} selectedSection={selectedSectionSlug} />
     <div className={styles.faqContentContainer}>
       {
-        selectedSection.content.map((q, index) => (
-          q.type === 'text' ?
-            renderTextFaq(q, index) :
-            renderTableFaq()
-        )
-        )
+        sections.filter(s => s.slug === selectedSectionSlug)[0].content.map((q, index) => (
+          renderQuestion(q, index)
+        ))
       }
     </div>
   </div>

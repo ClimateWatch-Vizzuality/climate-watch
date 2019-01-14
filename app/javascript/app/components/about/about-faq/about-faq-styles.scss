@@ -23,4 +23,34 @@
   color: $theme-color;
   font-size: $font-size;
   padding-bottom: $gutter-padding;
+  line-height: $line-height-medium;
+}
+
+.htmlAnswer {
+  color: $theme-color;
+  font-size: $font-size;
+  padding-bottom: $gutter-padding;
+  line-height: $line-height-medium;
+  
+  a {
+    color: $link-color;
+    text-decoration: underline;
+    text-decoration-color: $link-color;
+  }
+
+  ul {
+    margin-top: 10px;
+  }
+
+  li {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 10px;
+
+    &::before {
+      content: "-";
+      position: absolute;
+      left: 5px;
+    }
+  }
 }
