@@ -18,7 +18,7 @@ module.exports = merge(sharedConfig, {
     minimizer: [
       new UglifyJSPlugin({
         uglifyOptions: {
-          compress: { warnings: false },
+          compress: { warnings: false, collapse_vars: false },
           output: { comments: false }
         },
         sourceMap: false
