@@ -3,12 +3,12 @@
 .sideNavigation {
   display: flex;
   flex-direction: column;
-  padding: $gutter-padding 0px;
+  padding: $gutter-padding 0;
 }
 
 .sectionLabel {
   cursor: pointer;
-  font-size: $font-size-sm;
+  font-size: $font-size;
   opacity: 0.5;
   color: $theme-color;
   padding-bottom: $card-content-margin;

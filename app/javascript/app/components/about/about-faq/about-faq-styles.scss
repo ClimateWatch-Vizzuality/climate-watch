@@ -2,11 +2,12 @@
 @import '~styles/layout';
 
 .container {
-  @include row((3, 9))
+  @include row((3, 9));
 }
 
 .faqContentContainer {
-  padding: $gutter-padding 0px;
+  padding: $gutter-padding 0;
+  min-height: calc(100vh - 270px); // 270 is the added height of navbar heading and footer
 }
 
 .questionTitleWrapper {
@@ -21,21 +22,20 @@
 
 .questionAnswer {
   color: $theme-color;
-  font-size: $font-size;
+  font-size: $font-size-m;
   padding-bottom: $gutter-padding;
   line-height: $line-height-medium;
 }
 
 .htmlAnswer {
   color: $theme-color;
-  font-size: $font-size;
+  font-size: $font-size-m;
   padding-bottom: $gutter-padding;
   line-height: $line-height-medium;
-  
+
   a {
-    color: $link-color;
-    text-decoration: underline;
-    text-decoration-color: $link-color;
+    border-bottom: solid 1px $theme-secondary;
+    color: $theme-color;
   }
 
   ul {
