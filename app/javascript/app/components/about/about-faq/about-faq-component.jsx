@@ -61,7 +61,7 @@ const FaqComponent = ({
     />
     <div className={styles.faqContentContainer}>
       {sections
-        .filter(s => s.slug === selectedSectionSlug)[0]
+        .find(s => s.slug === selectedSectionSlug)
         .content.map((q, index) => renderQuestion(q, index))}
     </div>
   </div>

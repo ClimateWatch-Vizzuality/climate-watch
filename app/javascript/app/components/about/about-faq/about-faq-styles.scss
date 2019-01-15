@@ -1,13 +1,31 @@
 @import '~styles/settings';
 @import '~styles/layout';
 
+$mobile-header-height: 118px;
+$header-height: 144px;
+$desktop-header-height: 174px;
+$mobile-footer-height: 64px;
+$content-height: calc(100vh - #{$navbar-height});
+
 .container {
   @include row((3, 9));
 }
 
 .faqContentContainer {
   padding: $gutter-padding 0;
-  min-height: calc(100vh - 270px); // 270 is the added height of navbar heading and footer
+  min-height: calc(#{$content-height} - #{$mobile-header-height} - #{$mobile-footer-height});
+
+  @media #{$tablet-portrait} {
+    min-height: calc(#{$content-height} - #{$mobile-header-height} - #{$footer-height});
+  }
+
+  @media #{$tablet-landscape} {
+    min-height: calc(#{$content-height} - #{$header-height} - #{$footer-height});
+  }
+
+  @media #{$desktop} {
+    min-height: calc(#{$content-height} - #{$desktop-header-height} - #{$footer-height});
+  }
 }
 
 .questionTitleWrapper {

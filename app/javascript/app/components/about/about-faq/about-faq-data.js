@@ -1,4 +1,4 @@
-export const sections = [
+export const sectionsData = [
   {
     label: 'General questions',
     slug: 'general_questions',
@@ -19,7 +19,7 @@ export const sections = [
         type: 'html',
         title: 'Can I download the data?',
         answer:
-          '<span>Yes, all the data published on Climate Watch is free and open. This means you can download data and use it for your own analysis with proper <a href="/attribution" rel="noopener noreferrer" target="_blank" > attribution </a>. Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" /> page for more information about using the data.<span>'
+          '<span>Yes, all the data published on Climate Watch is free and open. This means you can download data and use it for your own analysis with proper attribution. Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" /> page for more information about using the data.<span>'
       },
       {
         type: 'html',

@@ -1,34 +1,31 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 
-import { sections } from './about-faq-data';
-
+import { sectionsData } from './about-faq-data';
 
 const getQuery = state => state.query;
 
-const getSections = () => sections;
+const getSections = () => sectionsData;
 
-const selectedSectionSlug = 'general_questions';
+const defaultSectionSlug = 'general_questions';
 
-const getSelectedSection = createSelector(getSections, sect => sect.filter(s => s.slug === selectedSectionSlug)[0]);
-
-const getSideNavigationSections = createSelector(
-  [getSections, getSelectedSection],
-  (sectionss, selectedSection) => {
-    if (!sectionss || !selectedSection) return null;
-    return sectionss.reduce((acc, section) => (
-      [...acc, {
+const getSideNavigationSections = createSelector(getSections, sections => {
+  if (!sections) return null;
+  return sections.reduce(
+    (acc, section) => [
+      ...acc,
+      {
         label: section.label,
         slug: section.slug,
         link: section.path,
-        selected: section.slug === selectedSection.slug
-      }]
-    ), []);
-  }
-);
+        selected: section.slug === defaultSectionSlug
+      }
+    ],
+    []
+  );
+});
 
 export default createStructuredSelector({
   query: getQuery,
   sections: getSections,
-  selectedSection: getSelectedSection,
   sideNavigationSections: getSideNavigationSections
 });
