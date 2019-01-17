@@ -11,6 +11,7 @@ module AgricultureProfile
       context = CountryContext.all
       context = context.by_year(params[:year]) if params[:year]
       context = context.by_location(params[:location_id]) if params[:location_id]
+      context = context.by_location(params[:iso_code3]) if params[:iso_code3]
       context
     end
   end
