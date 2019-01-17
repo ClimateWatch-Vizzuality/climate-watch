@@ -5,7 +5,12 @@ module Api
         class AreaSerializer < ActiveModel::Serializer
           attributes :location_id, :year, :share_in_land_area_1, :share_in_land_area_2,
                      :share_in_land_area_3, :share_in_land_area_4, :share_in_agricultural_area_1,
-                     :share_in_agricultural_area_2, :share_in_agricultural_area_3
+                     :share_in_agricultural_area_2, :share_in_agricultural_area_3,
+                     :iso_code3
+
+          def iso_code3
+            object.location&.iso_code3
+          end
         end
       end
     end

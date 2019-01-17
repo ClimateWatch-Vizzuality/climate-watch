@@ -19,7 +19,12 @@ module Api
                      :trade_export_5,
                      :trade_export_6,
                      :trade_export_7,
-                     :trade_export_8
+                     :trade_export_8,
+                     :iso_code3
+
+          def iso_code3
+            object.location&.iso_code3
+          end
         end
       end
     end
