@@ -298,7 +298,14 @@ export const getCategory = createSelector(
 );
 
 function getOptions(section, filter, filtersMeta, query, category) {
-  if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
+  if (section !== SECTION_NAMES.pathways) {
+    if (filter === 'sectors' && query) {
+      return filtersMeta[filter].filter(
+        s => query.data_sources.indexOf(s.data_source_id) > -1
+      );
+    }
+    return filtersMeta[filter];
+  }
   switch (filter) {
     case FILTER_NAMES.models:
       return getPathwaysModelOptions(query, filtersMeta, filter);
