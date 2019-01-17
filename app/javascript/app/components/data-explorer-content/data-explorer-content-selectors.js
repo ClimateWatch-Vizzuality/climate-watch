@@ -114,6 +114,7 @@ export const getSourceOptions = createSelector(
     return sectionMeta.data_sources.map(option => {
       const updatedOption = option;
       updatedOption.dataSourceId = option.id;
+      updatedOption.name = option.display_name;
       return updatedOption;
     });
   }
@@ -371,7 +372,9 @@ export const getFilterOptions = createSelector(
       );
     }
     if (filterKeys.includes('countries')) filtersMeta.countries = countries;
-    if (filterKeys.includes('data-sources')) { filtersMeta['data-sources'] = sourceVersions; }
+    if (filterKeys.includes('data-sources')) {
+      filtersMeta['data-sources'] = sourceVersions;
+    }
 
     const filterOptions = {};
     filterKeys.forEach(f => {

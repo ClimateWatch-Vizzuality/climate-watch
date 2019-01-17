@@ -130,9 +130,9 @@ export const DATA_EXPLORER_FILTERS = {
 // and will only be selectable if all the values are selected
 export const DATA_EXPLORER_DEPENDENCIES = {
   'historical-emissions': {
-    regions: ['source'],
-    sectors: ['source'],
-    gases: ['source']
+    regions: ['data-sources'],
+    sectors: ['data-sources'],
+    gases: ['data-sources']
   },
   'emission-pathways': {
     models: ['locations'],
@@ -159,8 +159,7 @@ export const MODULES_TO_DATA_EXPLORER_PARAMS = {
 };
 export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'historical-emissions': {
-    data_sources: { key: 'source' },
-    gwps: { key: 'version' }
+    data_sources: { key: 'source' }
   },
   'ndc-sdg-linkages': {
     goals: {
@@ -299,6 +298,7 @@ export const TOP_EMITTERS_OPTION = {
 };
 
 export const FIELD_ALIAS = {
+  'historical-emissions': { 'data-sources': 'Data sources' },
   'ndc-sdg-linkages': { goals: 'sdg', targets: 'sdg_target' }
 };
 
