@@ -76,20 +76,6 @@ const getDependentKeysToDelete = (section, filterName) => {
   );
 };
 
-const sourceAndVersionParam = (value, section) => {
-  const values = value && value.split('-');
-  return [
-    {
-      name: `${section}-data-sources`,
-      value: (value && values[0]) || ''
-    },
-    {
-      name: `${section}-gwps`,
-      value: (value && values[1]) || ''
-    }
-  ];
-};
-
 const parsedMultipleValues = value => {
   const selectedValue = value[value.length - 1];
   if (
@@ -104,24 +90,15 @@ const parsedMultipleValues = value => {
 };
 
 const getParamsToUpdate = (updatedFilters, section) => {
-  const SOURCE_AND_VERSION_KEY = 'source';
-  let paramsToUpdate = [];
+  const paramsToUpdate = [];
   Object.keys(updatedFilters).forEach(filterName => {
     const value = updatedFilters[filterName];
     const parsedValue = isArray(value) ? parsedMultipleValues(value) : value;
-    if (filterName === SOURCE_AND_VERSION_KEY) {
-      paramsToUpdate = paramsToUpdate.concat(
-        sourceAndVersionParam(value, section)
-      );
-    } else {
-      const blankValue = NON_COLUMN_KEYS.includes(filterName)
-        ? ''
-        : ALL_SELECTED;
-      paramsToUpdate.push({
-        name: `${section}-${filterName}`,
-        value: parsedValue || blankValue // Allow blank value to override the defaults. These won't be fetched
-      });
-    }
+    const blankValue = NON_COLUMN_KEYS.includes(filterName) ? '' : ALL_SELECTED;
+    paramsToUpdate.push({
+      name: `${section}-${filterName}`,
+      value: parsedValue || blankValue // Allow blank value to override the defaults. These won't be fetched
+    });
   });
   return paramsToUpdate;
 };

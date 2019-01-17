@@ -47,7 +47,7 @@ export const FIRST_TABLE_HEADERS = {
 
 export const FILTER_DEFAULTS = {
   'historical-emissions': {
-    source: 'CAIT - AR2',
+    'data-sources': 'CAIT',
     regions: ALL_SELECTED,
     gases: 'All GHG',
     sectors: 'Total including LUCF'
@@ -105,7 +105,7 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
 };
 
 export const DATA_EXPLORER_FILTERS = {
-  'historical-emissions': ['source', 'regions', 'sectors', 'gases'],
+  'historical-emissions': ['data-sources', 'regions', 'sectors', 'gases'],
   'ndc-sdg-linkages': [
     'countries',
     'goals',
@@ -154,7 +154,6 @@ export const MODULES_TO_DATA_EXPLORER_PARAMS = {
   'historical-emissions': {
     filter: 'filter',
     source: 'data-sources',
-    version: 'gwps',
     breakBy: 'breakBy'
   }
 };

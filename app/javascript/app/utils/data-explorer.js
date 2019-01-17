@@ -11,7 +11,6 @@ import { handleAnalytics } from './analytics';
 const REPLACEMENTS = {
   regions: 'regions[]',
   data_sources: 'source_ids[]',
-  gwps: 'gwp_ids[]',
   gases: 'gas_ids[]',
   sectors: 'sector_ids[]',
   goals: 'goal_ids[]',

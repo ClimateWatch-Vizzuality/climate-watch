@@ -275,14 +275,6 @@ export const USERS_PROFESIONAL_SECTORS = [
   'Other'
 ];
 
-export const SOURCE_VERSIONS = [
-  { name: 'PIK - AR2', dataSourceSlug: 'PIK', versionSlug: 'AR2' },
-  { name: 'PIK - AR4', dataSourceSlug: 'PIK', versionSlug: 'AR4' },
-  { name: 'CAIT - AR2', dataSourceSlug: 'CAIT', versionSlug: 'AR2' },
-  { name: 'UNFCCC - AR2', dataSourceSlug: 'UNFCCC', versionSlug: 'AR2' },
-  { name: 'UNFCCC - AR4', dataSourceSlug: 'UNFCCC', versionSlug: 'AR4' }
-];
-
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
 export const NO_ALL_SELECTED_COLUMNS = [
