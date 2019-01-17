@@ -20,7 +20,7 @@ class DriversOfEmissions extends PureComponent {
   handleCountryChange = ({ value }) => {
     this.updateUrlParam([{ name: 'emissionsCountry', value }]);
   };
-  
+
   render() {
     return createElement(Component, {
       ...this.props,
@@ -45,7 +45,8 @@ const mapStateToProps = (state, { location }) => {
     location
   };
   const getTargetsData = getAllData(emissionsData);
-  return getTargetsData;
+  console.log('getTargetsData:',getTargetsData);
+  return { ...getTargetsData };
 };
 
 export default withRouter(

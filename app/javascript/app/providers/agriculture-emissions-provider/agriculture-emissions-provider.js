@@ -14,6 +14,14 @@ class AgricultureEmissionsProvider extends PureComponent {
     fetchAgricultureEmissions(emissionsCountry);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { emissionsCountry: emissionsCountryNew } = nextProps;
+    const { fetchAgricultureEmissions, emissionsCountry } = this.props;
+    if (emissionsCountryNew !== emissionsCountry) {
+      fetchAgricultureEmissions(emissionsCountryNew);
+    }
+  }
+
   render() {
     return null;
   }

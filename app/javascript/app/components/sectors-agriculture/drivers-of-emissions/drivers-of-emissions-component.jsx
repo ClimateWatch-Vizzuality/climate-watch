@@ -21,11 +21,22 @@ const theme = {
 class DriversOfEmissions extends PureComponent {
   render() {
     // eslint-disable-next-line react/prop-types
-    const { handleTabChange, emissionTabs, activeTab, config, data, domain, filters, countries, handleCountryChange, emissionsCountry } = this.props;
+    const {
+      handleTabChange,
+      emissionTabs,
+      activeTab,
+      config,
+      data,
+      domain,
+      filters,
+      countries,
+      handleCountryChange,
+      emissionsCountry
+    } = this.props;
     return (
       <div className={layout.content}>
         <CountriesProvider />
-        {/* <AgricultureEmissionsProvider emissionsCountry /> */}
+        <AgricultureEmissionsProvider emissionsCountry={emissionsCountry} />
         <div className={styles.content}>
           <div className={styles.header}>
             <h2>Drivers of emissions</h2>
@@ -75,8 +86,8 @@ class DriversOfEmissions extends PureComponent {
                   config={config}
                   data={data}
                   domain={domain}
-                  dataOptions={filters}
-                  dataSelected={filters}
+                  // dataOptions={filters}
+                  // dataSelected={filters}
                   height={600}
                   // loading={loading}
                 />
