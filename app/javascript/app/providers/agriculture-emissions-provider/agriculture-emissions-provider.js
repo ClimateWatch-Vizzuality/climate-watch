@@ -10,8 +10,8 @@ export { default as actions } from './agriculture-emissions-provider-actions';
 
 class AgricultureEmissionsProvider extends PureComponent {
   componentDidMount() {
-    const { fetchAgricultureEmissions } = this.props;
-    fetchAgricultureEmissions();
+    const { fetchAgricultureEmissions, emissionsCountry } = this.props;
+    fetchAgricultureEmissions(emissionsCountry);
   }
 
   render() {
@@ -20,7 +20,12 @@ class AgricultureEmissionsProvider extends PureComponent {
 }
 
 AgricultureEmissionsProvider.propTypes = {
-  fetchAgricultureEmissions: PropTypes.func.isRequired
+  fetchAgricultureEmissions: PropTypes.func.isRequired,
+  emissionsCountry: PropTypes.string
+};
+
+AgricultureEmissionsProvider.defaultProps = {
+  emissionsCountry: 'AFG'
 };
 
 export default connect(null, actions)(AgricultureEmissionsProvider);

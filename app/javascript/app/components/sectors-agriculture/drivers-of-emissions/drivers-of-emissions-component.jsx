@@ -3,6 +3,10 @@ import layout from 'styles/layout.scss';
 import { Switch } from 'cw-components';
 import PropTypes from 'prop-types';
 import ExploreButtonGroup from 'components/sectors-agriculture/explore-group/explore-group';
+import Chart from 'components/charts/chart';
+import Dropdown from 'components/dropdown';
+import CountriesProvider from 'providers/countries-provider/countries-provider';
+import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import * as styles from './drivers-of-emissions-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart-component';
@@ -16,9 +20,12 @@ const theme = {
 
 class DriversOfEmissions extends PureComponent {
   render() {
-    const { handleTabChange, emissionTabs, activeTab } = this.props;
+    // eslint-disable-next-line react/prop-types
+    const { handleTabChange, emissionTabs, activeTab, config, data, domain, filters, countries, handleCountryChange, emissionsCountry } = this.props;
     return (
       <div className={layout.content}>
+        <CountriesProvider />
+        {/* <AgricultureEmissionsProvider emissionsCountry /> */}
         <div className={styles.content}>
           <div className={styles.header}>
             <h2>Drivers of emissions</h2>
@@ -49,11 +56,30 @@ class DriversOfEmissions extends PureComponent {
           <div>
             <TabletLandscape>
               <div className={styles.navigationSection}>
-                <div>NAVIGATION</div>
+                <div>
+                  <Dropdown
+                    key="Country"
+                    label="Country"
+                    options={countries}
+                    onValueChange={handleCountryChange}
+                    value={emissionsCountry}
+                    hideResetButton
+                  />
+                </div>
                 <ExploreButtonGroup exploreButtonText="Explore emissions" />
               </div>
               <div className={styles.navigationSection}>
-                <div>CHART</div>
+                <Chart
+                  className={styles.chartWrapper}
+                  type="line"
+                  config={config}
+                  data={data}
+                  domain={domain}
+                  dataOptions={filters}
+                  dataSelected={filters}
+                  height={600}
+                  // loading={loading}
+                />
                 <CardPieChart
                   theme={theme}
                   cardSubTitleText="Global agriculture emissions in 2014"

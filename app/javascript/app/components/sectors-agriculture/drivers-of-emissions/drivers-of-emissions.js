@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
-
-import { getEmissionsTabSelected } from './drivers-of-emissions-selectors';
+import { getAllData } from './drivers-of-emissions-selectors';
 import Component from './drivers-of-emissions-component';
 import { emissionTabs } from './drivers-of-emissions-data';
 
@@ -18,10 +17,15 @@ class DriversOfEmissions extends PureComponent {
   handleTabChange = ({ value }) =>
     this.updateUrlParam([{ name: 'tab', value }]);
 
+  handleCountryChange = ({ value }) => {
+    this.updateUrlParam([{ name: 'emissionsCountry', value }]);
+  };
+  
   render() {
     return createElement(Component, {
       ...this.props,
       handleTabChange: this.handleTabChange,
+      handleCountryChange: this.handleCountryChange,
       emissionTabs
     });
   }
@@ -32,11 +36,16 @@ DriversOfEmissions.propTypes = {
   location: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state, { route, location }) => {
-  const routeData = { route, location, hash: location.hash };
-  return {
-    activeTab: getEmissionsTabSelected(routeData)
+const mapStateToProps = (state, { location }) => {
+  const { data } = state.agricultureEmissions;
+  const { data: countriesData } = state.countries;
+  const emissionsData = {
+    data,
+    countriesData,
+    location
   };
+  const getTargetsData = getAllData(emissionsData);
+  return getTargetsData;
 };
 
 export default withRouter(

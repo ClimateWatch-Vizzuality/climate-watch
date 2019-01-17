@@ -19,7 +19,7 @@ class SectorsAgriculture extends PureComponent {
     return (
       <div>
         {/* PROVIDERS HERE */}
-        <AgricultureEmissionsProvider />
+        {/* <AgricultureEmissionsProvider /> */}
 
         <Header route={route}>
           <div className={cx(layout.content, styles.headerContent)}>
