@@ -25,15 +25,13 @@ class Accordion extends PureComponent {
           data.length > 0 &&
           data.map((section, index) => {
             let isOpen = index === 0;
-            if (openSlug) {
-              if (openSlug !== 'none') {
-                const isActiveInResults = data.some(d => d.slug === openSlug);
-                isOpen =
-                  openSlug === section.slug ||
-                  (index === 0 && !isActiveInResults);
-              } else {
-                isOpen = false;
-              }
+            if (openSlug && openSlug !== 'none') {
+              const isActiveInResults = data.some(d => d.slug === openSlug);
+              isOpen =
+                openSlug === section.slug ||
+                (index === 0 && !isActiveInResults);
+            } else {
+              isOpen = false;
             }
             const title = section.parent
               ? `${section.parent.name} | ${section.title}`
