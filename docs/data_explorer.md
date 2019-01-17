@@ -527,7 +527,8 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 
 #### Parameters
 
-- location_id (Iso code 3)
+- location_id
+- iso_code3
 
 #### Data
 
@@ -565,7 +566,8 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 #### Parameters
 
 - year
-- location_id (Iso code 3)
+- location_id
+- iso_code3
 
 #### Data
 
@@ -653,7 +655,8 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 #### Parameters
 
 - year
-- location_id (Iso code 3)
+- location_id
+- iso_code3
 
 #### Data
 
@@ -672,7 +675,7 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
             "share_in_agricultural_area_3": 1512.9
         }
     ]
-    
+
     "meta": [
             {
                 "id": 109,
@@ -740,7 +743,8 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 #### Parameters
 
 - year
-- location_id (Iso code 3)
+- location_id
+- iso_code3
 
 #### Data
 
@@ -835,7 +839,8 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 #### Parameters
 
 - year
-- location_id (Iso code 3)
+- location_id
+- iso_code3
 
 #### Data
 
@@ -948,7 +953,8 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
 #### Parameters
 
 - year
-- location_id (Iso code 3)
+- location_id
+- iso_code3
 
 #### Data
 
