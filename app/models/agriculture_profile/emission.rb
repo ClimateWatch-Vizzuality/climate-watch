@@ -7,5 +7,13 @@ module AgricultureProfile
     validates_uniqueness_of :emission_subcategory_id, scope: :location_id
 
     scope :by_location, ->(location_id) { where(location_id: location_id) }
+    scope :by_location_iso, ->(iso_code3) { joins(:location).where(locations: { iso_code3: iso_code3}) }
+
+    def self.filter(params)
+      emissions = Emission.all
+      emissions = emissions.by_location(params[:location_id]) if params[:location_id]
+      emissions = emissions.by_location_iso(params[:iso_code3]) if params[:iso_code3]
+      emissions
+    end
   end
 end
