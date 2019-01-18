@@ -17,6 +17,7 @@
     top: 20px;
     bottom: 50px;
   }
+
   justify-content: space-between;
   align-items: center;
 }
@@ -34,6 +35,7 @@
 
 .logosContainer {
   @include columns(6);
+
   margin-bottom: 50px;
 
   @media #{$tablet-landscape} {

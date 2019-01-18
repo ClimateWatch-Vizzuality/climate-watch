@@ -79,7 +79,7 @@ class ResourcesForAction extends PureComponent {
           <div className={styles.page}>
             <div className={styles.logosContainer}>
               {partners.map(partner => (
-                <div className={styles.partnerWrapper}>
+                <div key={partner.title} className={styles.partnerWrapper}>
                   <button
                     type="button"
                     onClick={() => this.handleLogoClick(partner)}
