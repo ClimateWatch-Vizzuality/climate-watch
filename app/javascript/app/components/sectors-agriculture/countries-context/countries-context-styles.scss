@@ -3,19 +3,20 @@
 
 .container {
   @include row(12);
+
   margin-top: $gutter-padding;
   margin-bottom: $gutter-padding;
 }
 
 .intro {
   @include columns((6 , 5));
+
   margin-bottom: 40px;
 
   > *:last-child {
     @include column-offset(1, $gutters: true);
   }
 }
-
 
 .header {
   color: $theme-color;
@@ -47,20 +48,16 @@
 }
 
 .actionsContainer {
-  @include columns((3, 5, 2));
+  @include columns((3, 3, 2));
+  @include xy-gutters($gutter-position: ('bottom'));
+
   align-items: flex-end;
 
   > *:last-child {
-    @include column-offset(2, $gutters: true);
+    @include column-offset(4, $gutters: true);
   }
 }
-.timelineWrapper {
-  .label {
-    font-size: $font-size-s;
-    font-weight: $font-weight-bold;
-    color: $theme-color;
-  }
-}
+
 .dataContainer {
   display: flex;
   flex-direction: column;
@@ -69,54 +66,91 @@
   justify-content: space-around;
 }
 
-.timelineContainer {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+.cardsContainer {
+  @include columns(6);
 
-.track {
-  position: relative;
-  height: 4px;
-  width: 470px;
-  border-radius: 4px;
-  background-color: $lighter-gray;
-}
-
-.marker {
-  position: relative;
-  left: 0;
-  top: -8px;
-  height: 20px;
-  width: 20px;
-  border-radius: 10px;
-  background-color: $white;
-  border: 1px solid $lighter-gray;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.09);
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    background-color: $theme-color;
-    border-radius: 4px;
-    left: 6px;
-    top: 6px;
+  > * {
+    @include xy-gutters($gutter-position: ('top', 'bottom'));
   }
 }
 
-.year {
-  font-size: $font-size-s;
-  font-weight: $font-weight;
-  color: $manatee;
+.card {
+  height: 430px;
+
+  .titleContainer {
+    min-height: 75px;
+    height: 75px;
+    padding: 15px 30px;
+  }
 }
 
-.yearSelected {
-  color: $theme-color;
-  font-weight: $font-weight-bold;
-}
+.cardData {
+  position: relative;
+  padding: 30px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
 
+  .introText {
+    max-width: 90%;
+  }
+
+  .textHtmlWrapper {
+    p {
+      font-size: $font-size;
+      line-height: $line-height-modal;
+      color: $manatee;
+    }
+
+    span {
+      color: $theme-color;
+    }
+  }
+
+  .cardInfoIcon {
+    position: absolute;
+    fill: $manatee;
+    right: 30px;
+    top: 20px;
+  }
+
+  .cardContent {
+    display: flex;
+    margin-top: $gutter-padding;
+    min-height: 130px;
+
+    .chart,
+    .legend {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .legendItem {
+      width: 100%;
+      padding-left: 30px;
+    }
+
+    .rank {
+      position: absolute;
+      bottom: 10px;
+    }
+  }
+
+  .yearData {
+    position: absolute;
+    color: $manatee;
+    right: 30px;
+    bottom: 20px;
+    font-size: $font-size-s;
+
+    span {
+      color: $theme-color;
+    }
+  }
+}
 
 .btnGroup {
   width: 100%;
