@@ -57,10 +57,6 @@ const partners = [
 ];
 
 class ResourcesForAction extends PureComponent {
-  handleLogoClick = partner => {
-    window.open(partner.link, '_blank');
-  };
-
   render() {
     return (
       <React.Fragment>
