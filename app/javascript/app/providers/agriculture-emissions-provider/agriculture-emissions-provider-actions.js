@@ -16,7 +16,7 @@ const BASE_URL = '/api/v1/data/agriculture_profile/emissions';
 
 const fetchAgricultureEmissions = createThunkAction(
   'fetchAgricultureEmissions',
-  (emissionsCountry) => (dispatch, state) => {
+  emissionsCountry => (dispatch, state) => {
     const { agricultureEmissions } = state();
     const query = emissionsCountry ? `?location_id=${70}` : '';
     if (isEmpty(agricultureEmissions.data) && !agricultureEmissions.loading) {

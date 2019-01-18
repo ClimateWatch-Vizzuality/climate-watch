@@ -6,6 +6,7 @@ import ExploreButtonGroup from 'components/sectors-agriculture/explore-group/exp
 import Chart from 'components/charts/chart';
 import Dropdown from 'components/dropdown';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
+import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import * as styles from './drivers-of-emissions-styles.scss';
@@ -31,12 +32,16 @@ class DriversOfEmissions extends PureComponent {
       filters,
       countries,
       handleCountryChange,
-      emissionsCountry
+      emissionsCountry,
+      ghgEmissionsFilters,
+      pieChartData
     } = this.props;
+    console.log('pieChartData: ', pieChartData);
     return (
       <div className={layout.content}>
         <CountriesProvider />
-        <AgricultureEmissionsProvider emissionsCountry={emissionsCountry} />
+        {/* <AgricultureEmissionsProvider emissionsCountry={emissionsCountry} /> */}
+        <EmissionsProvider filters={ghgEmissionsFilters} />
         <div className={styles.content}>
           <div className={styles.header}>
             <h2>Drivers of emissions</h2>
@@ -94,6 +99,7 @@ class DriversOfEmissions extends PureComponent {
                 <CardPieChart
                   theme={theme}
                   cardSubTitleText="Global agriculture emissions in 2014"
+                  pieChartData={pieChartData}
                 />
               </div>
             </TabletLandscape>

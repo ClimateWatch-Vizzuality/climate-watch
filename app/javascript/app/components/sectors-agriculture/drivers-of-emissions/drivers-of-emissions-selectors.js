@@ -22,28 +22,37 @@ const getSourceSelection = state =>
   (state.location && state.location.search) || null;
 const getData = state => state.data || null;
 const getCountriesData = state => state.countriesData || null;
+const getGhgEmissionsData = state => state.ghgEmissionsData || null;
 
-export const getAgricultureSubsectorsData = createSelector(
-  [getData],
-  data => data.filter(({ emission_subcategory: { short_name } }) =>
+const ghgEmissionsFilter = {
+  gas: 49,
+  location: 'WORLD',
+  source: 13
+};
+
+export const getAgricultureSubsectorsData = createSelector([getData], data =>
+  data.filter(({ emission_subcategory: { short_name } }) =>
     AGRICULTURE_SUBSECTORS.includes(short_name)
   )
 );
 
-export const getChartData = createSelector([getAgricultureSubsectorsData], data => {
-  if (!data || !data.length) return null;
-  const xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
-  const dataParsed = xValues.map(x => {
-    const yItems = {};
-    data.forEach(d => {
-      const yKey = getYColumnValue(d.emission_subcategory.name);
-      const yData = d.values[x];
-      yItems[yKey] = yData ? parseFloat(yData) : 0;
+export const getChartData = createSelector(
+  [getAgricultureSubsectorsData],
+  data => {
+    if (!data || !data.length) return null;
+    const xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
+    const dataParsed = xValues.map(x => {
+      const yItems = {};
+      data.forEach(d => {
+        const yKey = getYColumnValue(d.emission_subcategory.name);
+        const yData = d.values[x];
+        yItems[yKey] = yData ? parseFloat(yData) : 0;
+      });
+      return { x, ...yItems };
     });
-    return { x, ...yItems };
-  });
-  return dataParsed;
-});
+    return dataParsed;
+  }
+);
 
 export const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
@@ -136,6 +145,35 @@ export const getFilterOptions = createSelector([getYColumns], yColumns => {
   return yColumns.map(column => ({ ...column, groupId: 'subSectors' }));
 });
 
+export const getGhgEmissionsFilter = createSelector(
+  [getEmissionCountrySelected],
+  selectedCountry => {
+    if (!selectedCountry) return ghgEmissionsFilter;
+    return { ...ghgEmissionsFilter, location: selectedCountry.value };
+  }
+);
+
+export const getPieChartData = createSelector(
+  [getGhgEmissionsData],
+  (data) => {
+    if (!data || !data.length) return null;
+    const sectorsLastYearEmission = data.map(({ emissions, sector, location }) => {
+      const lastYearEmission = emissions[emissions.length - 1];
+      return { sector, location, ...lastYearEmission };
+    }).filter(({ value }) => value > 0);
+    if (!sectorsLastYearEmission) return null;
+    const { location, year } = sectorsLastYearEmission[0];
+    const totalEmission = sectorsLastYearEmission.reduce(
+      (acc, emission) => acc + emission.value,
+      0);
+    const sectorEmissions = sectorsLastYearEmission.map(
+      ({ sector, value }) => ({ name: sector, value, percentageValue: (value * 100 / totalEmission) })
+    );
+    return { location, year, sectorEmissions };
+  }
+);
+
+
 // export const getPieChartData = createSelector(
 //   [getChartData],
 //   (data) => ({
@@ -160,5 +198,7 @@ export const getAllData = createStructuredSelector({
   // pieChartData: getPieChartData,
   filters: getFilterOptions,
   countries: getCountriesOptions,
-  emissionsCountry: getEmissionCountrySelected
+  emissionsCountry: getEmissionCountrySelected,
+  ghgEmissionsFilters: getGhgEmissionsFilter,
+  pieChartData: getPieChartData
 });

@@ -7,7 +7,7 @@ import * as styles from './card-pie-chart-styles.scss';
 class CardPieChart extends PureComponent {
   render() {
     // eslint-disable-next-line react/prop-types
-    const { cardSubTitleText, theme } = this.props;
+    const { cardSubTitleText, theme, pieChartData } = this.props;
     const DATA = [
       { name: 'Group A', value: 2400 },
       { name: 'Group B', value: 4567 },
@@ -24,25 +24,29 @@ class CardPieChart extends PureComponent {
       '#ACACB7',
       '#999B9E'
     ];
+
+    const agricultureEmissionRow = pieChartData && pieChartData.sectorEmissions.find(({ name }) => name === 'Agriculture');
+    console.log(agricultureEmissionRow);
+    // const { value = '', percentageValue = '' } = pieChartData ? pieChartData.sectorEmissions.find(({ location }) => location === 'Agriculture') : { value: '', percentageValue: '' };
     return (
       <Card theme={theme} subtitle={cardSubTitleText}>
         <div className={styles.cardContent}>
           <p className={styles.description}>
-            Worldwide in 2014, the Agriculture sector contributed to 3k MtCO2e
-            GHG emissions, which represented 24.3% of all emissions.
+            {pieChartData && pieChartData.location} in {pieChartData && pieChartData.year}, the Agriculture sector contributed to {agricultureEmissionRow && agricultureEmissionRow.value} MtCO2e
+            GHG emissions, which represented {agricultureEmissionRow && agricultureEmissionRow.percentageValue}% of all emissions.
           </p>
           <div className={styles.labels}>
             {/* {DATA.map(({ name, value }, index) => ( */}
             <DataLabel
-              name={DATA[0].name}
-              value={DATA[0].value}
+              name='Agriculture'
+              value={`${agricultureEmissionRow && agricultureEmissionRow.percentageValue}% (${agricultureEmissionRow && agricultureEmissionRow.value})`}
               color="#808184"
             />
             {/* ))} */}
           </div>
           <PieChart width={200} height={200} className={styles.pieChart}>
             <Pie
-              data={DATA}
+              data={pieChartData ? pieChartData.sectorEmissions : []}
               dataKey="value"
               nameKey="name"
               cx="50%"
