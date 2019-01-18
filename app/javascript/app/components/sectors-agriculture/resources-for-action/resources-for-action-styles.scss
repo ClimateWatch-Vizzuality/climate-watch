@@ -1,0 +1,60 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.page {
+  @include row();
+}
+
+.title {
+  color: $theme-color;
+  font-size: $font-size-large;
+  font-weight: normal;
+}
+
+.descriptionWrapper {
+  display: flex;
+  margin: {
+    top: 20px;
+    bottom: 50px;
+  }
+  justify-content: space-between;
+  align-items: center;
+}
+
+.description {
+  color: $theme-color;
+  font-size: $font-size;
+  max-width: 600px;
+  margin-right: 20px;
+}
+
+.button {
+  max-width: 210px;
+}
+
+.logosContainer {
+  @include columns(6);
+  margin-bottom: 50px;
+
+  @media #{$tablet-landscape} {
+    @include columns(4);
+  }
+}
+
+.partnerWrapper {
+  padding: 20px;
+}
+
+.partnerDescription {
+  margin-top: 10px;
+  color: $ebony-clay;
+  font-size: $font-size-sm;
+  line-height: 20px;
+}
+
+.imgContainer {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
