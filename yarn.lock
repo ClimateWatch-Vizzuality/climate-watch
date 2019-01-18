@@ -2555,9 +2555,9 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-"cw-components@github:ClimateWatch-Vizzuality/climate-watch-components#1.30.0":
-  version "1.30.0"
-  resolved "https://codeload.github.com/ClimateWatch-Vizzuality/climate-watch-components/tar.gz/5361f6afbe13c8efb513ac7c9284d87fd72fdbd5"
+"cw-components@github:ClimateWatch-Vizzuality/climate-watch-components#1.34.0":
+  version "1.34.0"
+  resolved "https://codeload.github.com/ClimateWatch-Vizzuality/climate-watch-components/tar.gz/8874b792920d364d81114173a73980dfc25c299c"
   dependencies:
     d3-format "1.3.0"
     d3-hierarchy "^1.1.8"
