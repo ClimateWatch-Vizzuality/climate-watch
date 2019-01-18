@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import isEmpty from 'lodash/isEmpty';
 
 const fetchAgricultureCountriesContextsInit = createAction(
   'fetchAgricultureCountriesContextsInit'
@@ -16,12 +15,10 @@ const BASE_URL = '/api/v1/data/agriculture_profile/country_contexts';
 
 const fetchAgricultureCountriesContexts = createThunkAction(
   'fetchAgricultureCountriesContexts',
-  (country, year) => (dispatch, state) => {
-    console.log('inside fetch', country, year);
+  country => (dispatch, state) => {
     const { agricultureCountriesContexts } = state();
-    // const query = false ? `?location_id=${1}&year=${1993}` : `?location_id=${1}`;
-    const query = false ? `?location_id=${1}&year=${1993}` : '';
-    if (isEmpty(agricultureCountriesContexts.data) && !agricultureCountriesContexts.loading) {
+    const query = `?iso_code3=${country}`;
+    if (country && !agricultureCountriesContexts.loading) {
       dispatch(fetchAgricultureCountriesContextsInit());
       fetch(`${BASE_URL}${query}`)
         .then(response => {
