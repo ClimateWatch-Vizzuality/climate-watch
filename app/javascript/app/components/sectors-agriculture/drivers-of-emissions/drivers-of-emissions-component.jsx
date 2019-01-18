@@ -37,10 +37,11 @@ class DriversOfEmissions extends PureComponent {
       pieChartData
     } = this.props;
     console.log('pieChartData: ', pieChartData);
+    console.log('emissionsCountry: ', emissionsCountry);
     return (
       <div className={layout.content}>
         <CountriesProvider />
-        {/* <AgricultureEmissionsProvider emissionsCountry={emissionsCountry} /> */}
+        <AgricultureEmissionsProvider isoCode3={emissionsCountry && emissionsCountry.value} />
         <EmissionsProvider filters={ghgEmissionsFilters} />
         <div className={styles.content}>
           <div className={styles.header}>

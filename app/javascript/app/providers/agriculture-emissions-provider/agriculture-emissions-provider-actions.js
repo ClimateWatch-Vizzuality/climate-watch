@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
-import isEmpty from 'lodash/isEmpty';
 
 const fetchAgricultureEmissionsInit = createAction(
   'fetchAgricultureEmissionsInit'
@@ -16,10 +15,10 @@ const BASE_URL = '/api/v1/data/agriculture_profile/emissions';
 
 const fetchAgricultureEmissions = createThunkAction(
   'fetchAgricultureEmissions',
-  emissionsCountry => (dispatch, state) => {
+  isoCode3 => (dispatch, state) => {
     const { agricultureEmissions } = state();
-    const query = emissionsCountry ? `?location_id=${70}` : '';
-    if (isEmpty(agricultureEmissions.data) && !agricultureEmissions.loading) {
+    const query = isoCode3 ? `?iso_code3=${isoCode3}` : '';
+    if (!agricultureEmissions.loading) {
       dispatch(fetchAgricultureEmissionsInit());
       fetch(`${BASE_URL}${query}`)
         .then(response => {

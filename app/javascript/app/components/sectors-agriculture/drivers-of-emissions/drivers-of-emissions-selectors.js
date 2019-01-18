@@ -89,7 +89,8 @@ let colorThemeCache = {};
 export const getChartConfig = createSelector(
   [getChartData, getYColumns],
   (data, yColumns) => {
-    if (!data) return null;
+    if (!data || !yColumns) return null;
+    console.log('yColumns: ',yColumns);
     const yColumnsChecked = yColumns;
     const chartColors = setChartColors(
       yColumnsChecked.length,
@@ -173,29 +174,11 @@ export const getPieChartData = createSelector(
   }
 );
 
-
-// export const getPieChartData = createSelector(
-//   [getChartData],
-//   (data) => ({
-//     name: 'Location name',
-//     year: 1923,
-//     data: [
-//       { name: 'Location name', value: 2400 },
-//       { name: 'Group B', value: 4567 },
-//       { name: 'Group C', value: 1398 },
-//       { name: 'Group D', value: 9800 },
-//       { name: 'Group E', value: 3908 },
-//       { name: 'Group F', value: 4800 }
-//     ]
-//   })
-// );
-
 export const getAllData = createStructuredSelector({
   activeTab: getEmissionsTabSelected,
   data: getChartData,
   config: getChartConfig,
   domain: getChartDomain,
-  // pieChartData: getPieChartData,
   filters: getFilterOptions,
   countries: getCountriesOptions,
   emissionsCountry: getEmissionCountrySelected,
