@@ -96,7 +96,8 @@ class ChartLine extends PureComponent {
       margin,
       domain,
       forceFixedFormatDecimals,
-      espGraph
+      espGraph,
+      dot
     } = this.props;
     const unit =
       espGraph &&
@@ -178,7 +179,7 @@ class ChartLine extends PureComponent {
                   isAnimationActive={
                     isUndefined(config.animation) ? true : config.animation
                   }
-                  dot={{ strokeWidth: 0, fill: color, radius: 0.5 }}
+                  dot={dot && { strokeWidth: 0, fill: color, radius: 0.5 }}
                   dataKey={column.value}
                   stroke={color}
                   strokeWidth={2}
@@ -216,13 +217,15 @@ ChartLine.propTypes = {
   forceFixedFormatDecimals: PropTypes.number,
   margin: PropTypes.object,
   domain: PropTypes.object,
-  espGraph: PropTypes.bool.isRequired
+  espGraph: PropTypes.bool.isRequired,
+  dot: PropTypes.bool
 };
 
 ChartLine.defaultProps = {
   height: '100%',
   onMouseMove: () => {},
-  espGraph: false
+  espGraph: false,
+  dot: true
 };
 
 export default ChartLine;

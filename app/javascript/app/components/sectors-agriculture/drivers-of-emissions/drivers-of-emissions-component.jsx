@@ -15,7 +15,6 @@ import CardPieChart from '../card-pie-chart/card-pie-chart-component';
 const theme = {
   card: styles.fixedCard,
   contentContainer: styles.fixedCardContentContainer,
-  // title: styles.fixedCardTitle,
   data: styles.fixedCardData
 };
 
@@ -36,12 +35,14 @@ class DriversOfEmissions extends PureComponent {
       ghgEmissionsFilters,
       pieChartData
     } = this.props;
-    console.log('pieChartData: ', pieChartData);
-    console.log('emissionsCountry: ', emissionsCountry);
+    // console.log('pieChartData: ', pieChartData);
+    // console.log('emissionsCountry: ', emissionsCountry);
     return (
       <div className={layout.content}>
         <CountriesProvider />
-        <AgricultureEmissionsProvider isoCode3={emissionsCountry && emissionsCountry.value} />
+        {/* <AgricultureEmissionsProvider
+          isoCode3={emissionsCountry && emissionsCountry.value}
+        /> */}
         <EmissionsProvider filters={ghgEmissionsFilters} />
         <div className={styles.content}>
           <div className={styles.header}>
@@ -54,7 +55,7 @@ class DriversOfEmissions extends PureComponent {
                 the different agricultural emissions sub-domains, providing a
                 picture of the contribution to the total amount of GHG emissions
                 from agriculture. GHG emissions from agriculture consist of
-                non-CO2 gases produced by crop and livestock production and
+                non-CO<sub>2</sub> gases produced by crop and livestock production and
                 management activities. Explore the history and potential future
                 pathways of those drivers.
               </p>
@@ -64,7 +65,6 @@ class DriversOfEmissions extends PureComponent {
                 onClick={handleTabChange}
                 theme={{
                   wrapper: styles.switch,
-                  // option: styles.switchOption
                   checkedOption: styles.switchSelected
                 }}
               />
@@ -94,12 +94,12 @@ class DriversOfEmissions extends PureComponent {
                   domain={domain}
                   // dataOptions={filters}
                   // dataSelected={filters}
-                  height={600}
+                  height={520}
+                  dot={false}
                   // loading={loading}
                 />
                 <CardPieChart
                   theme={theme}
-                  cardSubTitleText="Global agriculture emissions in 2014"
                   pieChartData={pieChartData}
                 />
               </div>

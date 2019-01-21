@@ -39,15 +39,14 @@ DriversOfEmissions.propTypes = {
 const mapStateToProps = (state, { location }) => {
   const { data } = state.agricultureEmissions;
   const { data: countriesData } = state.countries;
-  const { data: ghgEmissionsData } = state.emissions;
+  const ghgEmissions = state.emissions;
   const emissionsData = {
     data,
     countriesData,
-    ghgEmissionsData,
+    ghgEmissions,
     location
   };
   const getTargetsData = getAllData(emissionsData);
-  console.log('getTargetsData:', getTargetsData);
   return { ...getTargetsData };
 };
 

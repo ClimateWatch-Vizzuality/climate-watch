@@ -3,7 +3,7 @@
 
 .content {
   margin-top: 45px;
-  height: 700px;
+  height: 900px;
 }
 
 .intro {
@@ -37,23 +37,4 @@
   @include columns((8,4));
 
   margin-bottom: 20px;
-}
-
-.fixedCard {
-  height: 520px;
-}
-
-.fixedCardContentContainer {
-  font-size: $font-size-s;
-  min-height: unset;
-  padding: 7px 13px;
-
-  p {
-    color: $manatee;
-    margin: 0;
-  }
-}
-// title: styles.fixedCardTitle,
-.fixedCardData {
-  padding: 37px 31px;
 }
