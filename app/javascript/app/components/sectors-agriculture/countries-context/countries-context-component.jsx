@@ -86,6 +86,7 @@ const CountriesContext = ({
               value={selectedCountry}
               options={countries}
               onValueChange={updateCountryFilter}
+              hideResetButton
             />
           )}
         </div>
@@ -96,6 +97,7 @@ const CountriesContext = ({
               value={selectedYear}
               options={years}
               onValueChange={updateYearFilter}
+              hideResetButton
             />
           )}
         </div>

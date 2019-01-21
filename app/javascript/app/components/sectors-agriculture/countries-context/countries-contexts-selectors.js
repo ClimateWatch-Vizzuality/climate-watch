@@ -1,5 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import { isEmpty, sortBy, some } from 'lodash';
+import { format } from 'd3-format';
 
 const getCountriesContextsData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.data;
@@ -10,7 +11,7 @@ const getSearch = ({ search }) => search || null;
 
 const legendHtmlDot = (text, color, value, unit) =>
   `<p><span style="background-color: ${color}; width: 10px; height: 10px; display: inline-block; border-radius: 10px; margin-right: 10px;" ></span>${text}</p><p style="color: ${color};">${value ||
-    '---'}${unit}.<p/>`;
+    '---'} ${unit}<p/>`;
 
 const getChartConfig = (labels, year, unit, colors) => ({
   outerRadius: 55,
@@ -106,18 +107,18 @@ const getCardsData = createSelector(
           { label: 'Total GDP', slug: 'totalGDP' }
         ],
         y.label,
-        'USD',
+        '$',
         ['#0677B3', '#CACCD0']
       ),
       chartData: [
         {
           name: 'agricultureProduction',
-          value: yearData.value_added_agr,
+          value: wbCountryData.gdp * yearData.value_added_agr / 100,
           fill: '#0677B3'
         },
         {
           name: 'totalGDP',
-          value: wbCountryData && wbCountryData.gdp ? wbCountryData.gdp : 0,
+          value: wbCountryData.gdp,
           fill: '#CACCD0'
         }
       ],
@@ -127,7 +128,11 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Agriculture production',
             '#0677B3',
-            yearData.value_added_agr,
+            format('.2s')(
+              wbCountryData.gdp
+                ? wbCountryData.gdp * yearData.value_added_agr / 100
+                : yearData.value_added_agr
+            ),
             '$USD'
           )
         },
@@ -135,7 +140,7 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Total GDP',
             '#CACCD0',
-            wbCountryData ? wbCountryData.gdp : 0,
+            format('.2s')(wbCountryData ? wbCountryData.gdp : 0),
             '$USD'
           )
         }
@@ -157,7 +162,8 @@ const getCardsData = createSelector(
       ],
       rank: `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank ||
         '---'}</span> of 156</p>`,
-      text: `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal}%</span> of total water withdrawn was employed in agricultural activities.</p>`
+      text: `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal ||
+        '---'} %</span> of total water withdrawn was employed in agricultural activities.</p>`
     };
     const fertilizer = {
       chartConfig: getChartConfig(
@@ -166,7 +172,7 @@ const getCardsData = createSelector(
           { label: 'Pesticides use', slug: 'pesticidesUse' }
         ],
         y.label,
-        'ton',
+        'tonnes',
         ['#0677B3', '#1ECDB0']
       ),
       chartData: [
@@ -178,16 +184,16 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Fertilizer use',
             '#0677B3',
-            yearData.total_fertilizers,
-            'ton'
+            format('.2s')(yearData.total_fertilizers),
+            'tonnes'
           )
         },
         {
           text: legendHtmlDot(
             'Pesticides use',
             '#1ECDB0',
-            yearData.total_pesticides_use,
-            'ton'
+            format('.2s')(yearData.total_pesticides_use),
+            'tonnes of active ingredients'
           )
         }
       ],
