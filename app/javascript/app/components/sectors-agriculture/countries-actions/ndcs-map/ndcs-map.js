@@ -147,7 +147,7 @@ NDCMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
-  selectedIndicator: PropTypes.object.isRequired,
+  selectedIndicator: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
   fetchNDCS: PropTypes.func.isRequired
 };
