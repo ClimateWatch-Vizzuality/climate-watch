@@ -88,7 +88,7 @@ class ImportAgricultureProfile
     import_each_with_logging(content, filepath) do |row|
       category_id =
         AgricultureProfile::EmissionCategory.find_or_create_by!(
-          name: row['Category']).id rescue nil
+          name: row[:category], unit: row[:unit]).id rescue nil
       AgricultureProfile::EmissionSubcategory.create!(
         emission_subcategory_attributes(row, category_id))
     end
