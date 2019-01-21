@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
 import NdcsMap from './ndcs-map';
+import NdcsTable from './ndcs-table';
 import styles from './countries-actions-styles';
 
 const tabs = [
@@ -12,12 +14,22 @@ const tabs = [
   {
     name: 'TABLE',
     value: 'table',
-    disabled: true
+    disabled: false
   }
 ];
 
+const SwitchOptions = {
+  map: NdcsMap,
+  table: NdcsTable
+};
+
 class CountriesActions extends PureComponent {
   render() {
+    const { handleSwitchClick, query } = this.props;
+    const switchOption = query.display || 'map';
+
+    const Component = SwitchOptions[switchOption];
+
     return (
       <React.Fragment>
         <div className={styles.page}>
@@ -30,8 +42,8 @@ class CountriesActions extends PureComponent {
             </span>
             <Switch
               options={tabs}
-              selectedOption={tabs[0].value}
-              onClick={() => {}}
+              selectedOption={tabs.find(o => o.value === switchOption).value}
+              onClick={handleSwitchClick}
               theme={{
                 wrapper: styles.switch,
                 option: styles.switchOption,
@@ -39,11 +51,16 @@ class CountriesActions extends PureComponent {
               }}
             />
           </div>
-          <NdcsMap />
+          <Component />
         </div>
       </React.Fragment>
     );
   }
 }
+
+CountriesActions.propTypes = {
+  handleSwitchClick: PropTypes.func.isRequired,
+  query: PropTypes.object.isRequired
+};
 
 export default CountriesActions;

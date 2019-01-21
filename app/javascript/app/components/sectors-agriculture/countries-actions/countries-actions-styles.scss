@@ -4,6 +4,7 @@
 
 .page {
   @include row();
+  margin-bottom: 50px;
 }
 
 .title {
