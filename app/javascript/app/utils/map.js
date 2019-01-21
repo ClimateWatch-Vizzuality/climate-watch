@@ -40,10 +40,10 @@ const buckets = [
   ]
 ];
 
-export function getColorByIndex(data, index) {
+export function getColorByIndex(data, index, colors = buckets) {
   const length = Object.keys(data).length;
   if (index === -2) return '#ddd';
-  return buckets[length - 2][index - 1] || '#E5E5EB';
+  return colors[length - 2][index - 1] || '#E5E5EB';
 }
 
 export function createLegendBuckets(locations, labels, isos) {
