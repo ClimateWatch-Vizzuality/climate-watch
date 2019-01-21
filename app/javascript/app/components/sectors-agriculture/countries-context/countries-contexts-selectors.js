@@ -89,9 +89,8 @@ const getCardsData = createSelector(
     const y = year || years[0];
     const yearData = contextsData.find(d => d.year === parseInt(y.value, 10));
     const countryCode = c.value;
-    const wbCountryData = wbData[countryCode].find(
-      d => d.year === parseInt(y.value, 10)
-    );
+    const wbCountryData =
+      wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {};
 
     const socioeconomic = {
       title: 'Socio-economic indicators',
