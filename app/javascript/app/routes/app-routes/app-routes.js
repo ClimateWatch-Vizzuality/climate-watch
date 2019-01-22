@@ -77,7 +77,7 @@ export default [
     }
     : {
       path: '/sectors',
-      component: Sectors,
+      component: SectorsAgriculture,
       exact: true,
       nav: true,
       label: 'SECTORS'
