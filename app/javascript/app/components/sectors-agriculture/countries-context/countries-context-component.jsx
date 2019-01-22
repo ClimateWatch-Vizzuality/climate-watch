@@ -61,7 +61,7 @@ const CountriesContext = ({
 }) => (
   <div className={styles.container}>
     <div>
-      <h2 className={styles.header}>CountriesContext</h2>
+      <h2 className={styles.header}>Countries Context</h2>
       <div className={styles.intro}>
         <p className={styles.introText}>
           The agricultural sector differs vastly among countries and affects
