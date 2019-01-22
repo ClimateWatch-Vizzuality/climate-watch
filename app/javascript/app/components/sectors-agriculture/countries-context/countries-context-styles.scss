@@ -1,0 +1,157 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.container {
+  @include row(12);
+
+  margin-top: $gutter-padding;
+  margin-bottom: $gutter-padding;
+}
+
+.intro {
+  @include columns((6 , 5));
+
+  margin-bottom: 40px;
+
+  > *:last-child {
+    @include column-offset(1, $gutters: true);
+  }
+}
+
+.header {
+  color: $theme-color;
+  font-weight: $font-weight;
+  margin-bottom: 12px;
+}
+
+.introText {
+  color: $theme-color;
+}
+
+.switchWrapper {
+  display: flex;
+  justify-content: flex-end;
+  height: 40px;
+}
+
+.switchOption {
+  display: flex;
+  align-items: center;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xs;
+  line-height: $font-size-sm;
+  letter-spacing: 1px;
+}
+
+.switchSelected {
+  background-color: $theme-color;
+}
+
+.actionsContainer {
+  @include columns((3, 3, 2));
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  align-items: flex-end;
+
+  > *:last-child {
+    @include column-offset(4, $gutters: true);
+  }
+}
+
+.dataContainer {
+  display: flex;
+  flex-direction: column;
+  height: 45px;
+  padding-top: 5px;
+  justify-content: space-around;
+}
+
+.cardsContainer {
+  @include columns(6);
+
+  > * {
+    @include xy-gutters($gutter-position: ('top', 'bottom'));
+  }
+}
+
+.card {
+  height: 430px;
+
+  .titleContainer {
+    min-height: 75px;
+    height: 75px;
+    padding: 15px 30px;
+  }
+}
+
+.cardData {
+  position: relative;
+  padding: 30px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+
+  .introText {
+    max-width: 90%;
+  }
+
+  .textHtmlWrapper {
+    p {
+      font-size: $font-size;
+      line-height: $line-height-modal;
+      color: $manatee;
+    }
+
+    span {
+      color: $theme-color;
+    }
+  }
+
+  .cardInfoIcon {
+    position: absolute;
+    fill: $manatee;
+    right: 30px;
+    top: 20px;
+  }
+
+  .cardContent {
+    display: flex;
+    margin-top: $gutter-padding;
+    min-height: 130px;
+
+    .chart,
+    .legend {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .legendItem {
+      width: 100%;
+      padding-left: 30px;
+    }
+
+    .rank {
+      position: absolute;
+      bottom: 10px;
+    }
+  }
+
+  .yearData {
+    position: absolute;
+    color: $manatee;
+    right: 30px;
+    bottom: 20px;
+    font-size: $font-size-s;
+
+    span {
+      color: $theme-color;
+    }
+  }
+}
+
+.btnGroup {
+  width: 100%;
+}

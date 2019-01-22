@@ -27,6 +27,7 @@ import * as espIndicatorsTrendProvider from 'providers/esp-indicators-trend-prov
 import * as emissionsProvider from 'providers/emissions-provider';
 import * as dataExplorerProvider from 'providers/data-explorer-provider';
 import * as lawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
+import * as agricultureCountriesContextsProvider from 'providers/agriculture-countries-context-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -50,7 +51,8 @@ const providersReducers = {
   espLocations: handleActions(espLocationsProvider),
   espTimeSeries: handleActions(espTimeSeriesProvider),
   dataExplorer: handleActions(dataExplorerProvider),
-  lawsAndPolicies: handleActions(lawsAndPoliciesProvider)
+  lawsAndPolicies: handleActions(lawsAndPoliciesProvider),
+  agricultureCountriesContexts: handleActions(agricultureCountriesContextsProvider)
 };
 
 // Pages
