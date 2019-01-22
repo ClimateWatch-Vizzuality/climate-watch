@@ -22,6 +22,9 @@ class CountriesContextsContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params));
   };
 
+  handleInfoBtnClick = () => {
+    // TODO: Implement info button click
+  };
   updateCountryFilter = country =>
     this.updateUrlParam({ name: 'country', value: country.value });
   updateYearFilter = year =>
@@ -33,6 +36,7 @@ class CountriesContextsContainer extends PureComponent {
         {...this.props}
         updateCountryFilter={this.updateCountryFilter}
         updateYearFilter={this.updateYearFilter}
+        handleInfoBtnClick={this.handleInfoBtnClick}
       />
     );
   }

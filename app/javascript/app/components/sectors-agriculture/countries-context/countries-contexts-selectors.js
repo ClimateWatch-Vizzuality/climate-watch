@@ -92,6 +92,7 @@ const getCardsData = createSelector(
     const wbCountryData =
       wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {};
 
+    // TODO: Replace the hardcoded values with data!!!
     const socioeconomic = {
       title: 'Socio-economic indicators',
       text: `<p>There were <span style="color: red;">21 million</span> people (<span style="color: red;">10.5%</span> of the population) employed in <span>${c.label}'s</span> Agriculture sector in <span>${y.value}</span>, of which <span>${Math.round(

@@ -25,7 +25,9 @@ const emissionTabs = [
 const buttonGroupConfig = [
   {
     type: 'info',
-    onClick: () => {}
+    onClick: () => {
+      // TODO: Implement info button click
+    }
   },
   {
     type: 'share',
@@ -54,7 +56,8 @@ const CountriesContext = ({
   selectedYear,
   cards,
   updateYearFilter,
-  updateCountryFilter
+  updateCountryFilter,
+  handleInfoBtnClick
 }) => (
   <div className={styles.container}>
     <div>
@@ -149,7 +152,7 @@ const CountriesContext = ({
                 <Icon
                   icon={infoIcon}
                   theme={{ icon: styles.cardInfoIcon }}
-                  onClick={() => {}}
+                  onClick={handleInfoBtnClick}
                 />
                 <div className={styles.yearData}>
                   <span>{selectedYear && selectedYear.value}</span> data
@@ -182,7 +185,8 @@ CountriesContext.propTypes = {
   }),
   cards: PropTypes.arrayOf(PropTypes.shape({})),
   updateYearFilter: PropTypes.func.isRequired,
-  updateCountryFilter: PropTypes.func.isRequired
+  updateCountryFilter: PropTypes.func.isRequired,
+  handleInfoBtnClick: PropTypes.func.isRequired
 };
 
 export default CountriesContext;
