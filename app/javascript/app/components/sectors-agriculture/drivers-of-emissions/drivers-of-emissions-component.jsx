@@ -55,9 +55,9 @@ class DriversOfEmissions extends PureComponent {
                 the different agricultural emissions sub-domains, providing a
                 picture of the contribution to the total amount of GHG emissions
                 from agriculture. GHG emissions from agriculture consist of
-                non-CO<sub>2</sub> gases produced by crop and livestock production and
-                management activities. Explore the history and potential future
-                pathways of those drivers.
+                non-CO<sub>2</sub> gases produced by crop and livestock
+                production and management activities. Explore the history and
+                potential future pathways of those drivers.
               </p>
               <Switch
                 options={emissionTabs}
@@ -98,10 +98,7 @@ class DriversOfEmissions extends PureComponent {
                   dot={false}
                   // loading={loading}
                 />
-                <CardPieChart
-                  theme={theme}
-                  pieChartData={pieChartData}
-                />
+                <CardPieChart theme={theme} pieChartData={pieChartData} />
               </div>
             </TabletLandscape>
             <TabletPortraitOnly>

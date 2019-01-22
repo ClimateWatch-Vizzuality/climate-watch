@@ -6,7 +6,11 @@ import Tooltip from '../tooltip/tooltip';
 
 class CardPieChart extends PureComponent {
   renderLoading = loading =>
-    (loading ? <Loading height="100%" /> : <NoContent message="No data available" />);
+    (loading ? (
+      <Loading height="100%" />
+    ) : (
+      <NoContent message="No data available" />
+    ));
 
   render() {
     const { pieChartData } = this.props;
@@ -25,14 +29,21 @@ class CardPieChart extends PureComponent {
       contentContainer: styles.fixedCardContentContainer,
       data: styles.fixedCardData
     };
-    console.log('loading:',loading);
+    console.log('loading:', loading);
     return (
-      <Card theme={theme} subtitle={pieChartData ? `${location} agriculture emissions in ${year}` : ''}>
+      <Card
+        theme={theme}
+        subtitle={
+          pieChartData ? `${location} agriculture emissions in ${year}` : ''
+        }
+      >
         {pieChartData ? (
           <div className={styles.cardContent}>
             <p className={styles.description}>
-              <span>{location}</span> in <span>{year}</span>, the Agriculture sector contributed to <span>{value}</span> MtCO<sub>2</sub>e
-                  GHG emissions, which represented <span>{percentageValue}</span> of all emissions.
+              <span>{location}</span> in <span>{year}</span>, the Agriculture
+              sector contributed to <span>{value}</span> MtCO<sub>2</sub>e GHG
+              emissions, which represented <span>{percentageValue}</span> of all
+              emissions.
             </p>
             <div className={styles.labels}>
               <Tag
@@ -46,7 +57,9 @@ class CardPieChart extends PureComponent {
               />
               <span className={styles.labelValue} style={{ color }}>
                 {`${percentageValue} (${value} `}
-                <span>MtCO<sub>2</sub></span>)
+                <span>
+                  MtCO<sub>2</sub>
+                </span>)
               </span>
             </div>
             <PieChart
@@ -57,8 +70,9 @@ class CardPieChart extends PureComponent {
               customTooltip={<Tooltip />}
             />
           </div>
-        ) : (this.renderLoading(loading))
-        }
+        ) : (
+          this.renderLoading(loading)
+        )}
       </Card>
     );
   }
