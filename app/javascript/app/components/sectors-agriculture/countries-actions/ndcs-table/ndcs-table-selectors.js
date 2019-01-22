@@ -9,6 +9,8 @@ const getIndicatorsData = state => state.indicators || [];
 const getCountries = state => state.countries || [];
 const getQuery = state => deburrUpper(state.query) || '';
 
+const PERMITTED_AGRICULTURE_INDICATOR = ['m_agriculture', 'a_agriculture'];
+
 export const getindicatorsParsed = createSelector(
   getIndicatorsData,
   indicators =>
@@ -32,7 +34,7 @@ export const getAgricultureIndicators = createSelector(
   indicatorsParsed => {
     if (!indicatorsParsed) return null;
     const agricultureIndicators = indicatorsParsed.filter(indicator =>
-      indicator.value.endsWith('agriculture')
+      PERMITTED_AGRICULTURE_INDICATOR.includes(indicator.value)
     );
     return agricultureIndicators;
   }

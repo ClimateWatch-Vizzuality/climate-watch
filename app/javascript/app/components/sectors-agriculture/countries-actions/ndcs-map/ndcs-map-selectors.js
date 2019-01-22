@@ -12,6 +12,8 @@ const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 
+const PERMITTED_AGRICULTURE_INDICATOR = ['m_agriculture', 'a_agriculture'];
+
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
 );
@@ -48,7 +50,7 @@ export const getAgricultureIndicators = createSelector(
   indicatorsParsed => {
     if (!indicatorsParsed) return null;
     const agricultureIndicators = indicatorsParsed.filter(indicator =>
-      indicator.value.endsWith('agriculture')
+      PERMITTED_AGRICULTURE_INDICATOR.includes(indicator.value)
     );
     return agricultureIndicators;
   }
