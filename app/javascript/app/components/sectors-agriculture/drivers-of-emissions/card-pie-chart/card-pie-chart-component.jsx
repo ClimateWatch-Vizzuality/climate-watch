@@ -2,15 +2,15 @@ import React, { PureComponent } from 'react';
 import { Card, PieChart, Tag, Loading, NoContent } from 'cw-components';
 import PropTypes from 'prop-types';
 import * as styles from './card-pie-chart-styles.scss';
-import Tooltip from '../tooltip/tooltip';
+import Tooltip from './tooltip/tooltip';
 
 class CardPieChart extends PureComponent {
   renderLoading = loading =>
-    (loading ? (
+    loading ? (
       <Loading height="100%" />
     ) : (
       <NoContent message="No data available" />
-    ));
+    );
 
   render() {
     const { pieChartData } = this.props;
@@ -20,8 +20,8 @@ class CardPieChart extends PureComponent {
     const loading = pieChartData && pieChartData.loading;
     const location = pieChartData && pieChartData.location;
     const year = pieChartData && pieChartData.year;
-    const value = data && data.length && data[0].formattedValue;
-    const percentageValue = data && data.length && data[0].formattedPercentage;
+    const emissionValue = pieChartData && pieChartData.emissionValue;
+    const emissionPercentage = pieChartData && pieChartData.emissionPercentage;
     const color = pieChartData && pieChartData.color;
 
     const theme = {
@@ -29,7 +29,7 @@ class CardPieChart extends PureComponent {
       contentContainer: styles.fixedCardContentContainer,
       data: styles.fixedCardData
     };
-    console.log('loading:', loading);
+
     return (
       <Card
         theme={theme}
@@ -37,13 +37,16 @@ class CardPieChart extends PureComponent {
           pieChartData ? `${location} agriculture emissions in ${year}` : ''
         }
       >
-        {pieChartData ? (
+        {pieChartData && emissionValue ? (
           <div className={styles.cardContent}>
             <p className={styles.description}>
               <span>{location}</span> in <span>{year}</span>, the Agriculture
-              sector contributed to <span>{value}</span> MtCO<sub>2</sub>e GHG
-              emissions, which represented <span>{percentageValue}</span> of all
-              emissions.
+              sector contributed to{' '}
+              <span>
+                {emissionValue} MtCO<sub>2</sub>e
+              </span>{' '}
+              GHG emissions, which represented <span>{emissionPercentage}</span>{' '}
+              of all emissions.
             </p>
             <div className={styles.labels}>
               <Tag
@@ -56,7 +59,7 @@ class CardPieChart extends PureComponent {
                 color={color}
               />
               <span className={styles.labelValue} style={{ color }}>
-                {`${percentageValue} (${value} `}
+                {`${emissionPercentage} (${emissionValue} `}
                 <span>
                   MtCO<sub>2</sub>
                 </span>)

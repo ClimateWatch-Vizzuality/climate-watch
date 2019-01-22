@@ -6,7 +6,6 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
 import { getAllData } from './drivers-of-emissions-selectors';
 import Component from './drivers-of-emissions-component';
-import { emissionTabs } from './drivers-of-emissions-data';
 
 class DriversOfEmissions extends PureComponent {
   updateUrlParam(params, clear) {
@@ -25,8 +24,7 @@ class DriversOfEmissions extends PureComponent {
     return createElement(Component, {
       ...this.props,
       handleTabChange: this.handleTabChange,
-      handleCountryChange: this.handleCountryChange,
-      emissionTabs
+      handleCountryChange: this.handleCountryChange
     });
   }
 }
@@ -37,11 +35,11 @@ DriversOfEmissions.propTypes = {
 };
 
 const mapStateToProps = (state, { location }) => {
-  const { data } = state.agricultureEmissions;
+  const agricultureEmissions = state.agricultureEmissions;
   const { data: countriesData } = state.countries;
   const ghgEmissions = state.emissions;
   const emissionsData = {
-    data,
+    agricultureEmissions,
     countriesData,
     ghgEmissions,
     location

@@ -1,5 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import qs from 'query-string';
+import { uniqBy } from 'lodash';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -17,14 +18,16 @@ import {
 import { format } from 'd3-format';
 import {
   emissionTabs,
-  HISTORICAL_EMISSIONS,
-  AGRICULTURE_SUBSECTORS
+  HISTORICAL_EMISSIONS
 } from './drivers-of-emissions-data';
 
 const getSourceSelection = state =>
   (state.location && state.location.search) || null;
-const getData = state => state.data || null;
 const getCountriesData = state => state.countriesData || null;
+const getAgricultureEmissionsData = state =>
+  (state.agricultureEmissions && state.agricultureEmissions.data) || null;
+const getAgricultureEmissionsLoading = state =>
+  (state.agricultureEmissions && state.agricultureEmissions.loading) || false;
 const getGhgEmissionsData = state =>
   (state.ghgEmissions && state.ghgEmissions.data) || null;
 const getGhgEmissionsLoading = state =>
@@ -71,7 +74,7 @@ export const getEmissionCountrySelected = createSelector(
     if (!countriesOptions || !selectedEmissionOption) return null;
     if (!selectedEmissionOption) {
       const defaultCountry = countriesOptions.find(
-        ({ value }) => value === 'AFG'
+        ({ value }) => value === 'WORLD'
       );
       return defaultCountry || countriesOptions[0];
     }
@@ -84,10 +87,14 @@ export const getEmissionCountrySelected = createSelector(
 );
 
 /** LINE CHART SELECTORS */
-export const getAgricultureSubsectorsData = createSelector([getData], data =>
-  data.filter(({ emission_subcategory: { short_name } }) =>
-    AGRICULTURE_SUBSECTORS.includes(short_name)
-  )
+export const getAgricultureSubsectorsData = createSelector(
+  [getAgricultureEmissionsData],
+  data => {
+    if (!data) return null;
+    return data.filter(
+      ({ emission_subcategory: { category_id } }) => category_id === 1
+    );
+  }
 );
 
 export const getChartData = createSelector(
@@ -100,7 +107,7 @@ export const getChartData = createSelector(
       data.forEach(d => {
         const yKey = getYColumnValue(d.emission_subcategory.name);
         const yData = d.values[x];
-        yItems[yKey] = yData ? parseFloat(yData) : undefined;
+        yItems[yKey] = yData ? parseFloat(yData) * 1000 : undefined;
       });
       return { x, ...yItems };
     });
@@ -115,12 +122,14 @@ export const getChartDomain = createSelector([getChartData], data => {
 
 const getYColumns = createSelector([getAgricultureSubsectorsData], data => {
   if (!data || !data.length) return null;
-  return data
+  const yColumns = data
     .map(({ emission_subcategory: { name } }) => ({
       label: name,
       value: getYColumnValue(name)
     }))
     .filter(y => y !== 'x');
+  const yUniqColumns = uniqBy(yColumns, 'value');
+  return yUniqColumns;
 });
 
 let colorThemeCache = {};
@@ -140,7 +149,10 @@ export const getChartConfig = createSelector(
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumnsChecked);
     return {
-      axes: DEFAULT_AXES_CONFIG,
+      axes: {
+        ...DEFAULT_AXES_CONFIG,
+        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit: 'MtCO<sub>2</sub>' }
+      },
       theme: colorThemeCache,
       tooltip,
       columns: {
@@ -193,15 +205,19 @@ export const getPieChartData = createSelector([getGhgEmissionsData], data => {
   const agricultureRow = sectorEmissions.find(
     ({ name }) => name === 'agriculture'
   );
-  const sectorsEmissionsData = [
-    agricultureRow,
-    ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
-  ];
+  const sectorsEmissionsData = agricultureRow
+    ? [
+        agricultureRow,
+        ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
+      ]
+    : sectorEmissions;
   const { location, year } = sectorsLastYearEmission[0];
 
   return {
     year,
     location,
+    emissionValue: agricultureRow && agricultureRow.formattedValue,
+    emissionPercentage: agricultureRow && agricultureRow.formattedPercentage,
     data: sectorsEmissionsData
   };
 });
@@ -209,7 +225,8 @@ export const getPieChartData = createSelector([getGhgEmissionsData], data => {
 export const getPieChartConfig = createSelector(
   [getPieChartData],
   pieChartData => {
-    if (!pieChartData) return null;
+    if (!pieChartData || !pieChartData.data || !pieChartData.data.length)
+      return null;
     const { data } = pieChartData;
     const columns = data.map(({ sector }) => ({
       label: sector,
@@ -249,12 +266,20 @@ export const getPieChartPayload = createSelector(
   (pieChartData, config, loading) => {
     if (!pieChartData || !config) return null;
 
-    const { location, year, data } = pieChartData;
+    const {
+      location,
+      year,
+      emissionValue,
+      emissionPercentage,
+      data
+    } = pieChartData;
     const color = AGRICULTURE_COLOR;
 
     return {
       location,
       year: `${year}`,
+      emissionValue,
+      emissionPercentage,
       data,
       config,
       color,
@@ -266,6 +291,7 @@ export const getPieChartPayload = createSelector(
 export const getAllData = createStructuredSelector({
   activeTab: getEmissionsTabSelected,
   data: getChartData,
+  loading: getAgricultureEmissionsLoading,
   config: getChartConfig,
   domain: getChartDomain,
   filters: getFilterOptions,

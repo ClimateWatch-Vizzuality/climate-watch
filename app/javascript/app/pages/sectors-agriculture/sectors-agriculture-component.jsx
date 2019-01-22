@@ -6,7 +6,6 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
-import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -18,9 +17,6 @@ class SectorsAgriculture extends PureComponent {
     const { route, anchorLinks, setActiveSection } = this.props;
     return (
       <div>
-        {/* PROVIDERS HERE */}
-        {/* <AgricultureEmissionsProvider /> */}
-
         <Header route={route}>
           <div className={cx(layout.content, styles.headerContent)}>
             <div className="grid-column-item">
@@ -53,7 +49,7 @@ class SectorsAgriculture extends PureComponent {
               fireOnRapidScroll={false}
               key={section.hash}
             >
-              <div className={styles.section}>
+              <div>
                 <div id={section.hash} className={styles.sectionHash} />
                 <section.component />
               </div>

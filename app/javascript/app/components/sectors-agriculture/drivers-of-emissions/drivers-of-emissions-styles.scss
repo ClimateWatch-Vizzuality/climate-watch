@@ -18,6 +18,7 @@
 
 .header {
   color: $theme-color;
+  margin-bottom: 30px;
 
   h2 {
     font-weight: 400;
@@ -37,4 +38,8 @@
   @include columns((8,4));
 
   margin-bottom: 20px;
+}
+
+.dropdown {
+  max-width: 300px;
 }
