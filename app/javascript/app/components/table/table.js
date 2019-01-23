@@ -30,14 +30,16 @@ class TableContainer extends PureComponent {
       forcedColumnWidth,
       sortBy: sortBy || Object.keys(data[0])[0],
       sortDirection,
-      activeColumns: columns.map(d => ({
+      activeColumns: columns.filter(d => !d.endsWith('NotShow')).map(d => ({
         label: toStartCase(d),
         value: d
       })),
-      columnsOptions: Object.keys(data[0]).map(d => ({
-        label: toStartCase(d),
-        value: d
-      }))
+      columnsOptions: Object.keys(data[0])
+        .filter(d => !d.endsWith('NotShow'))
+        .map(d => ({
+          label: toStartCase(d),
+          value: d
+        }))
     };
   }
 

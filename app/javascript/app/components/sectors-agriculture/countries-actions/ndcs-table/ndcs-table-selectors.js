@@ -129,21 +129,12 @@ export const getFilteredData = createSelector(
   }
 );
 
-export const getTitleLinks = createSelector([getFilteredData], data => {
-  if (!data || isEmpty(data)) return null;
-  return data.map(d => [
-    {
-      columnName: 'country',
-      url: `/ndcs/country/${d.iso}`
-    }
-  ]);
-});
-
 export const removeIsoFromData = createSelector([getFilteredData], data => {
   if (!data || isEmpty(data)) return null;
   return data.map(d => ({
     country: d.country,
-    value: d.value
+    value: d.value,
+    urlNotShow: `/ndcs/country/${d.iso}`
   }));
 });
 
@@ -152,6 +143,5 @@ export default {
   getCategoryIndicators,
   getSelectedCategory,
   getSelectedIndicator,
-  removeIsoFromData,
-  getTitleLinks
+  removeIsoFromData
 };
