@@ -23,7 +23,8 @@ import {
 
 const getSourceSelection = state =>
   (state.location && state.location.search) || null;
-const getCountriesData = state => state.countriesData || null;
+const getCountries = state => state.countries || null;
+const getRegions = state => state.regions || null;
 const getAgricultureEmissionsData = state =>
   (state.agricultureEmissions && state.agricultureEmissions.data) || null;
 const getAgricultureEmissionsLoading = state =>
@@ -59,8 +60,8 @@ export const getEmissionsTabSelected = createSelector(
 );
 
 /**  COUNTRIES SELECTORS */
-export const getCountriesOptions = createSelector(
-  [getCountriesData],
+const getCountriesOptions = createSelector(
+  [getCountries],
   countries => {
     if (!countries) return null;
     return countries.map(d => ({
@@ -70,10 +71,29 @@ export const getCountriesOptions = createSelector(
   }
 );
 
+const getRegionsOptions = createSelector(
+  [getRegions],
+  regions => {
+    if (!regions) return null;
+    return regions.map(d => ({
+      label: d.wri_standard_name,
+      value: d.iso_code3
+    }));
+  }
+);
+
+export const getLocationsOptions = createSelector(
+  [getCountriesOptions, getRegionsOptions],
+  (countries, regions) => {
+    if (!countries || !countries.length || !regions || !regions.length) return [];
+    return [...countries, ...regions];
+  }
+);
+
 export const getEmissionCountrySelected = createSelector(
-  [getSourceSelection, getCountriesOptions],
+  [getSourceSelection, getLocationsOptions],
   (selectedEmissionOption, countriesOptions) => {
-    if (!countriesOptions || !selectedEmissionOption) return null;
+    if (!countriesOptions) return null;
     if (!selectedEmissionOption) {
       const defaultCountry = countriesOptions.find(
         ({ value }) => value === 'WORLD'
@@ -297,7 +317,7 @@ export const getAllData = createStructuredSelector({
   config: getChartConfig,
   domain: getChartDomain,
   filters: getFilterOptions,
-  countries: getCountriesOptions,
+  locations: getLocationsOptions,
   emissionsCountry: getEmissionCountrySelected,
   ghgEmissionsFilters: getGhgEmissionsFilter,
   pieChartData: getPieChartPayload

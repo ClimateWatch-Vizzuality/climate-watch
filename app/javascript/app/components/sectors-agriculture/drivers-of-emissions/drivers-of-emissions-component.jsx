@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ExploreButtonGroup from 'components/sectors-agriculture/explore-group/explore-group';
 import Chart from 'components/charts/chart';
 import Dropdown from 'components/dropdown';
+import RegionsProvider from 'providers/regions-provider/regions-provider';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
@@ -27,7 +28,7 @@ class DriversOfEmissions extends PureComponent {
       data,
       domain,
       filters,
-      countries,
+      locations,
       handleCountryChange,
       emissionsCountry,
       ghgEmissionsFilters,
@@ -38,6 +39,7 @@ class DriversOfEmissions extends PureComponent {
 
     return (
       <div>
+        <RegionsProvider />
         <CountriesProvider />
         <AgricultureEmissionsProvider
           isoCode3={emissionsCountry && emissionsCountry.value}
@@ -78,7 +80,7 @@ class DriversOfEmissions extends PureComponent {
                     key="Country"
                     label="Country"
                     className={styles.dropdown}
-                    options={countries}
+                    options={locations}
                     onValueChange={handleCountryChange}
                     value={emissionsCountry}
                     hideResetButton
@@ -124,7 +126,7 @@ DriversOfEmissions.propTypes = {
   data: PropTypes.array,
   domain: PropTypes.object.isRequired,
   filters: PropTypes.array,
-  countries: PropTypes.array,
+  locations: PropTypes.array,
   emissionsCountry: PropTypes.object.isRequired,
   ghgEmissionsFilters: PropTypes.object,
   pieChartData: PropTypes.object
@@ -137,7 +139,7 @@ DriversOfEmissions.defaultProps = {
   config: PropTypes.object.isRequired,
   data: [],
   filters: [],
-  countries: [],
+  locations: [],
   // emissionsCountry: 'WORLD',
   ghgEmissionsFilters: {},
   pieChartData: null

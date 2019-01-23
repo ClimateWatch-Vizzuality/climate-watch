@@ -36,11 +36,13 @@ DriversOfEmissions.propTypes = {
 
 const mapStateToProps = (state, { location }) => {
   const agricultureEmissions = state.agricultureEmissions;
-  const { data: countriesData } = state.countries;
+  const { data: regions } = state.regions;
+  const { data: countries } = state.countries;
   const ghgEmissions = state.emissions;
   const emissionsData = {
     agricultureEmissions,
-    countriesData,
+    regions,
+    countries,
     ghgEmissions,
     location
   };
