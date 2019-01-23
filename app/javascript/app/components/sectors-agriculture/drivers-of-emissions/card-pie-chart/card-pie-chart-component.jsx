@@ -1,30 +1,73 @@
 import React, { PureComponent } from 'react';
 import { Card, PieChart, Tag, Loading, NoContent } from 'cw-components';
 import PropTypes from 'prop-types';
+import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import * as styles from './card-pie-chart-styles.scss';
 import Tooltip from './tooltip/tooltip';
 
 class CardPieChart extends PureComponent {
-  renderLoading = loading =>
-    loading ? (
+  renderAgricultureLabel = () => {
+    const { pieChartData } = this.props;
+    const color = pieChartData && pieChartData.color;
+    const emissionValue = pieChartData && pieChartData.emissionValue;
+    const emissionPercentage = pieChartData && pieChartData.emissionPercentage;
+
+    return (
+      <div className={styles.agricultureLabel}>
+        <div>
+          <Tag
+            key="agr"
+            label="Agriculture"
+            theme={{
+              tag: styles.tagTheme
+            }}
+            canRemove={false}
+            color={color}
+          />
+          <span className={styles.labelValue} style={{ color }}>
+            {`${emissionPercentage} (${emissionValue} `}
+            <span>
+              MtCO<sub>2</sub>
+            </span>)
+          </span>
+        </div>
+      </div>
+    );
+  };
+
+  renderPieChart = () => {
+    const { pieChartData } = this.props;
+    const data = pieChartData ? pieChartData.data : [];
+    const config = pieChartData && pieChartData.config;
+    return (
+      <PieChart
+        data={data}
+        width={285}
+        height={200}
+        config={config}
+        customTooltip={<Tooltip />}
+      />
+    );
+  };
+
+  renderLoading = () => {
+    const { pieChartData } = this.props;
+    const loading = pieChartData && pieChartData.loading;
+    return loading ? (
       <Loading height="100%" />
     ) : (
       <NoContent message="No data available" />
     );
+  };
 
   render() {
     const { pieChartData } = this.props;
-
-    const data = pieChartData ? pieChartData.data : [];
-    const config = pieChartData && pieChartData.config;
-    const loading = pieChartData && pieChartData.loading;
     const location = pieChartData && pieChartData.location;
     const year = pieChartData && pieChartData.year;
     const emissionValue = pieChartData && pieChartData.emissionValue;
     const emissionPercentage = pieChartData && pieChartData.emissionPercentage;
-    const color = pieChartData && pieChartData.color;
 
-    const theme = {
+    const cardTheme = {
       card: styles.fixedCard,
       contentContainer: styles.fixedCardContentContainer,
       data: styles.fixedCardData
@@ -32,7 +75,7 @@ class CardPieChart extends PureComponent {
 
     return (
       <Card
-        theme={theme}
+        theme={cardTheme}
         subtitle={
           pieChartData ? `${location} agriculture emissions in ${year}` : ''
         }
@@ -48,33 +91,19 @@ class CardPieChart extends PureComponent {
               GHG emissions, which represented <span>{emissionPercentage}</span>{' '}
               of all emissions.
             </p>
-            <div className={styles.labels}>
-              <Tag
-                key="agr"
-                label="Agriculture"
-                theme={{
-                  tag: styles.tagTheme
-                }}
-                canRemove={false}
-                color={color}
-              />
-              <span className={styles.labelValue} style={{ color }}>
-                {`${emissionPercentage} (${emissionValue} `}
-                <span>
-                  MtCO<sub>2</sub>
-                </span>)
-              </span>
-            </div>
-            <PieChart
-              data={data}
-              width={285}
-              height={200}
-              config={config}
-              customTooltip={<Tooltip />}
-            />
+            <TabletLandscape>
+              {this.renderAgricultureLabel()}
+              {this.renderPieChart()}
+            </TabletLandscape>
+            <TabletPortraitOnly>
+              <div className={styles.portraitContent}>
+                {this.renderAgricultureLabel()}
+                {this.renderPieChart()}
+              </div>
+            </TabletPortraitOnly>
           </div>
         ) : (
-          this.renderLoading(loading)
+          this.renderLoading()
         )}
       </Card>
     );

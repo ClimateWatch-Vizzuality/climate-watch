@@ -1,10 +1,9 @@
 @import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
-.theme {
-  height: 519px;
-}
-
-.labels {
+.agricultureLabel {
+  display: flex;
+  align-items: center;
   margin-bottom: 40px;
 }
 
@@ -21,6 +20,11 @@
   margin-left: 40px;
 }
 
+.portraitContent {
+  @include columns((6,6));
+  margin-bottom: 20px;
+}
+
 .tagTheme {
   border: none;
   box-shadow: none;
@@ -28,9 +32,9 @@
   font-size: $font-size;
 }
 
-
 .fixedCard {
-  height: 520px;
+  height: 100%;
+  width: 100%;
 }
 
 .fixedCardContentContainer {

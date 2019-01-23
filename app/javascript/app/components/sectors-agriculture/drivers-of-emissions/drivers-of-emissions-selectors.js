@@ -44,7 +44,7 @@ const GHG_DEFAULT_FILTER = {
 
 const AGRICULTURE_COLOR = '#0677B3';
 
-export const getEmissionsTabSelected = createSelector(
+const getEmissionsTabSelected = createSelector(
   [getSourceSelection],
   selectedEmissionOption => {
     if (!selectedEmissionOption) {
@@ -59,38 +59,32 @@ export const getEmissionsTabSelected = createSelector(
   }
 );
 
-/**  COUNTRIES SELECTORS */
-const getCountriesOptions = createSelector(
-  [getCountries],
-  countries => {
-    if (!countries) return null;
-    return countries.map(d => ({
-      label: d.wri_standard_name,
-      value: d.iso_code3
-    }));
-  }
-);
+/**  LOCATIONS SELECTORS */
+const getCountriesOptions = createSelector([getCountries], countries => {
+  if (!countries) return null;
+  return countries.map(d => ({
+    label: d.wri_standard_name,
+    value: d.iso_code3
+  }));
+});
 
-const getRegionsOptions = createSelector(
-  [getRegions],
-  regions => {
-    if (!regions) return null;
-    return regions.map(d => ({
-      label: d.wri_standard_name,
-      value: d.iso_code3
-    }));
-  }
-);
+const getRegionsOptions = createSelector([getRegions], regions => {
+  if (!regions) return null;
+  return regions.map(d => ({
+    label: d.wri_standard_name,
+    value: d.iso_code3
+  }));
+});
 
-export const getLocationsOptions = createSelector(
+const getLocationsOptions = createSelector(
   [getCountriesOptions, getRegionsOptions],
   (countries, regions) => {
-    if (!countries || !countries.length || !regions || !regions.length) return [];
+    if (!countries || !countries.length || !regions || !regions.length) { return []; }
     return [...countries, ...regions];
   }
 );
 
-export const getEmissionCountrySelected = createSelector(
+const getEmissionCountrySelected = createSelector(
   [getSourceSelection, getLocationsOptions],
   (selectedEmissionOption, countriesOptions) => {
     if (!countriesOptions) return null;
@@ -109,7 +103,7 @@ export const getEmissionCountrySelected = createSelector(
 );
 
 /** LINE CHART SELECTORS */
-export const getAgricultureSubsectorsData = createSelector(
+const getAgricultureSubsectorsData = createSelector(
   [getAgricultureEmissionsData],
   data => {
     if (!data) return null;
@@ -119,25 +113,22 @@ export const getAgricultureSubsectorsData = createSelector(
   }
 );
 
-export const getChartData = createSelector(
-  [getAgricultureSubsectorsData],
-  data => {
-    if (!data || !data.length) return null;
-    const xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
-    const dataParsed = xValues.map(x => {
-      const yItems = {};
-      data.forEach(d => {
-        const yKey = getYColumnValue(d.emission_subcategory.name);
-        const yData = d.values[x];
-        yItems[yKey] = yData ? parseFloat(yData) * API_SCALE : undefined;
-      });
-      return { x, ...yItems };
+const getChartData = createSelector([getAgricultureSubsectorsData], data => {
+  if (!data || !data.length) return null;
+  const xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
+  const dataParsed = xValues.map(x => {
+    const yItems = {};
+    data.forEach(d => {
+      const yKey = getYColumnValue(d.emission_subcategory.name);
+      const yData = d.values[x];
+      yItems[yKey] = yData ? parseFloat(yData) * API_SCALE : undefined;
     });
-    return dataParsed;
-  }
-);
+    return { x, ...yItems };
+  });
+  return dataParsed;
+});
 
-export const getChartDomain = createSelector([getChartData], data => {
+const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
   return { x: ['auto', 'auto'], y: [0, 'auto'] };
 });
@@ -156,7 +147,7 @@ const getYColumns = createSelector([getAgricultureSubsectorsData], data => {
 
 let colorThemeCache = {};
 
-export const getChartConfig = createSelector(
+const getChartConfig = createSelector(
   [getChartData, getYColumns],
   (data, yColumns) => {
     if (!data || !yColumns) return null;
@@ -185,13 +176,13 @@ export const getChartConfig = createSelector(
   }
 );
 
-export const getFilterOptions = createSelector([getYColumns], yColumns => {
+const getFilterOptions = createSelector([getYColumns], yColumns => {
   if (!yColumns) return null;
   return yColumns.map(column => ({ ...column, groupId: 'subSectors' }));
 });
 
 /** PIE-CHART SELECTORS */
-export const getGhgEmissionsFilter = createSelector(
+const getGhgEmissionsFilter = createSelector(
   [getEmissionCountrySelected],
   selectedCountry => {
     if (!selectedCountry) return GHG_DEFAULT_FILTER;
@@ -199,7 +190,7 @@ export const getGhgEmissionsFilter = createSelector(
   }
 );
 
-export const getPieChartData = createSelector([getGhgEmissionsData], data => {
+const getPieChartData = createSelector([getGhgEmissionsData], data => {
   if (!data || !data.length) return null;
 
   const sectorsLastYearEmission = data
@@ -229,9 +220,9 @@ export const getPieChartData = createSelector([getGhgEmissionsData], data => {
   );
   const sectorsEmissionsData = agricultureRow
     ? [
-        agricultureRow,
-        ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
-      ]
+      agricultureRow,
+      ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
+    ]
     : sectorEmissions;
   const { location, year } = sectorsLastYearEmission[0];
 
@@ -244,46 +235,42 @@ export const getPieChartData = createSelector([getGhgEmissionsData], data => {
   };
 });
 
-export const getPieChartConfig = createSelector(
-  [getPieChartData],
-  pieChartData => {
-    if (!pieChartData || !pieChartData.data || !pieChartData.data.length)
-      return null;
-    const { data } = pieChartData;
-    const columns = data.map(({ sector }) => ({
-      label: sector,
-      value: getColumnValue(sector).toLowerCase()
-    }));
+const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
+  if (!pieChartData || !pieChartData.data || !pieChartData.data.length) { return null; }
+  const { data } = pieChartData;
+  const columns = data.map(({ sector }) => ({
+    label: sector,
+    value: getColumnValue(sector).toLowerCase()
+  }));
 
-    const tooltip = getTooltipConfig(columns);
-    let theme = getPieChartThemeConfig(columns, GREY_CHART_COLORS);
-    const agricultureTheme = {
-      ...theme.agriculture,
-      stroke: AGRICULTURE_COLOR
-    };
-    theme = { ...theme, agriculture: agricultureTheme };
+  const tooltip = getTooltipConfig(columns);
+  let theme = getPieChartThemeConfig(columns, GREY_CHART_COLORS);
+  const agricultureTheme = {
+    ...theme.agriculture,
+    stroke: AGRICULTURE_COLOR
+  };
+  theme = { ...theme, agriculture: agricultureTheme };
 
-    const config = {
-      tooltip,
-      animation: true,
-      axes: {
-        yLeft: {
-          unit: 'MtCO2e',
-          label: '2014'
-        }
-      },
-      theme,
-      innerRadius: 50,
-      outerRadius: 90,
-      hideLabel: true,
-      hideLegend: true
-    };
+  const config = {
+    tooltip,
+    animation: true,
+    axes: {
+      yLeft: {
+        unit: 'MtCO2e',
+        label: '2014'
+      }
+    },
+    theme,
+    innerRadius: 50,
+    outerRadius: 90,
+    hideLabel: true,
+    hideLegend: true
+  };
 
-    return config;
-  }
-);
+  return config;
+});
 
-export const getPieChartPayload = createSelector(
+const getPieChartPayload = createSelector(
   [getPieChartData, getPieChartConfig, getGhgEmissionsLoading],
   (pieChartData, config, loading) => {
     if (!pieChartData || !config) return null;
@@ -309,6 +296,9 @@ export const getPieChartPayload = createSelector(
     };
   }
 );
+
+// TO DO
+// const getButtonGroupConfig = createSelector();
 
 export const getAllData = createStructuredSelector({
   activeTab: getEmissionsTabSelected,
