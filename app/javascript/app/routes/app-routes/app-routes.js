@@ -78,7 +78,7 @@ export default [
     }
     : {
       path: '/sectors',
-      component: SectorsAgriculture,
+      component: Sectors,
       exact: true,
       nav: true,
       label: 'SECTORS'
@@ -89,13 +89,6 @@ export default [
     headerImage: 'sectors-agriculture',
     headerColor: '#0677B3',
     sections: agricultureSections
-  },
-  {
-    path: '/sectors/agriculture',
-    component: SectorsAgriculture,
-    label: 'SECTORS AGRICULTURE',
-    sections: agricultureSections,
-    headerImage: 'sectors-agriculture'
   },
   {
     path: '/ndcs/country/:iso/full',

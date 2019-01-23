@@ -34,11 +34,13 @@ $min-height: 450px;
   @media #{$tablet-landscape} {
     @include columns((8,4));
   }
+
   margin-bottom: 40px;
 }
 
 .filtersWrapper {
   display: inline-flex;
+
   & > * {
     margin-right: 20px;
   }
