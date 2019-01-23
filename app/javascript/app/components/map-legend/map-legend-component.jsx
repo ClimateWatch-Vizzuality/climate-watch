@@ -5,7 +5,7 @@ import { getColorByIndex } from 'utils/map';
 
 import styles from './map-legend-styles.scss';
 
-const MapLegend = ({ title, buckets, className }) => (
+const MapLegend = ({ title, buckets, className, mapColors }) => (
   <div className={cx(styles.wrapper, className)}>
     <p className={styles.title}>{title}</p>
     <ul className={styles.list}>
@@ -15,7 +15,11 @@ const MapLegend = ({ title, buckets, className }) => (
             <span
               className={styles.bucketIcon}
               style={{
-                backgroundColor: getColorByIndex(buckets, buckets[key].index)
+                backgroundColor: getColorByIndex(
+                  buckets,
+                  buckets[key].index,
+                  mapColors
+                )
               }}
             />
             <span className={styles.bucketTxt}>{buckets[key].name}</span>
@@ -28,12 +32,14 @@ const MapLegend = ({ title, buckets, className }) => (
 MapLegend.propTypes = {
   title: PropTypes.string,
   buckets: PropTypes.object,
-  className: PropTypes.string
+  className: PropTypes.string,
+  mapColors: PropTypes.array
 };
 
 MapLegend.defaultProps = {
   title: '',
-  buckets: {}
+  buckets: {},
+  mapColors: undefined
 };
 
 export default MapLegend;
