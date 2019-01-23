@@ -1,0 +1,74 @@
+@import '~styles/settings';
+@import '~styles/layout';
+
+$mobile-header-height: 118px;
+$header-height: 144px;
+$desktop-header-height: 174px;
+$mobile-footer-height: 64px;
+$content-height: calc(100vh - #{$navbar-height});
+
+.container {
+  @include row((3, 9));
+}
+
+.faqContentContainer {
+  padding: $gutter-padding 0;
+  min-height: calc(#{$content-height} - #{$mobile-header-height} - #{$mobile-footer-height});
+
+  @media #{$tablet-portrait} {
+    min-height: calc(#{$content-height} - #{$mobile-header-height} - #{$footer-height});
+  }
+
+  @media #{$tablet-landscape} {
+    min-height: calc(#{$content-height} - #{$header-height} - #{$footer-height});
+  }
+
+  @media #{$desktop} {
+    min-height: calc(#{$content-height} - #{$desktop-header-height} - #{$footer-height});
+  }
+}
+
+.questionTitleWrapper {
+  margin-bottom: 15px;
+}
+
+.questionTitle {
+  color: $theme-color;
+  font-size: $font-size-large;
+  font-weight: $font-weight-bold;
+}
+
+.questionAnswer {
+  color: $theme-color;
+  font-size: $font-size-m;
+  padding-bottom: $gutter-padding;
+  line-height: $line-height-medium;
+}
+
+.htmlAnswer {
+  color: $theme-color;
+  font-size: $font-size-m;
+  padding-bottom: $gutter-padding;
+  line-height: $line-height-medium;
+
+  a {
+    border-bottom: solid 1px $theme-secondary;
+    color: $theme-color;
+  }
+
+  ul {
+    margin-top: 10px;
+  }
+
+  li {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 10px;
+
+    &::before {
+      content: "-";
+      position: absolute;
+      left: 5px;
+    }
+  }
+}

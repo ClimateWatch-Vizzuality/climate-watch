@@ -180,7 +180,7 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
-export const ESP_HIGH_ROWS = ['description'];
+export const ESP_HIGH_ROWS = ['description', 'purpose'];
 export const ESP_MEDIUM_ROWS = [
   'composite_name',
   'definition',
@@ -192,7 +192,14 @@ export const ESP_MEDIUM_ROWS = [
   'reference'
 ];
 
-export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
+export const ESP_NARROW_COLUMNS = [
+  'year',
+  'unit',
+  'first',
+  'last',
+  'submitting_parties',
+  'document_type'
+];
 export const ESP_WIDE_COLUMNS = ['description'];
 
 export const FILTERS_BY_CATEGORY = {

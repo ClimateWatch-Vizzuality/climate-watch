@@ -1,0 +1,52 @@
+
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.page {
+  @include row();
+
+  margin-bottom: 50px;
+}
+
+.title {
+  color: $theme-color;
+  font-size: $font-size-large;
+  font-weight: normal;
+}
+
+.descriptionWrapper {
+  display: flex;
+  margin: {
+    top: 20px;
+    bottom: 50px;
+  }
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.description {
+  color: $theme-color;
+  font-size: $font-size;
+  max-width: 600px;
+  margin-right: 20px;
+}
+
+.switchWrapper {
+  display: flex;
+  justify-content: flex-end;
+  height: 40px;
+}
+
+.switchOption {
+  display: flex;
+  align-items: center;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xs;
+  line-height: $font-size-sm;
+  letter-spacing: 1px;
+}
+
+.switchSelected {
+  background-color: $theme-color;
+}
