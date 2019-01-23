@@ -25,7 +25,11 @@ const SwitchOptions = {
 
 class CountriesActions extends PureComponent {
   render() {
-    const { handleSwitchClick, query } = this.props;
+    const {
+      handleSwitchClick,
+      query,
+      countriesCountWithProposedActions
+    } = this.props;
     const switchOption = query.display || 'map';
 
     const Component = SwitchOptions[switchOption];
@@ -36,9 +40,10 @@ class CountriesActions extends PureComponent {
           <h3 className={styles.title}>Countries’ Actions in their NDCs</h3>
           <div className={styles.descriptionWrapper}>
             <span className={styles.description}>
-              As part of the Paris Agreement, (X) countries have proposed
-              agricultural mitigation and adaptation actions. See what countries
-              are saying about agriculture in their NDCs.
+              As part of the Paris Agreement, ({countriesCountWithProposedActions})
+              countries have proposed agricultural mitigation and adaptation
+              actions. See what countries are saying about agriculture in their
+              NDCs.
             </span>
             <Switch
               options={tabs}
@@ -60,7 +65,8 @@ class CountriesActions extends PureComponent {
 
 CountriesActions.propTypes = {
   handleSwitchClick: PropTypes.func.isRequired,
-  query: PropTypes.object.isRequired
+  query: PropTypes.object.isRequired,
+  countriesCountWithProposedActions: PropTypes.number
 };
 
 export default CountriesActions;

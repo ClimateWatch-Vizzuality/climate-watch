@@ -6,10 +6,26 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import Component from './countries-actions-component';
 
+import { getCountriesCountWithProposedActions } from './ndcs-map/ndcs-map-selectors';
+
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
-  return {
+
+  const { data } = state.ndcs;
+  const { countries } = state;
+  const ndcsWithSelection = {
+    ...data,
+    countries: countries.data,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator,
     search
+  };
+
+  return {
+    search,
+    countriesCountWithProposedActions: getCountriesCountWithProposedActions(
+      ndcsWithSelection
+    )
   };
 };
 

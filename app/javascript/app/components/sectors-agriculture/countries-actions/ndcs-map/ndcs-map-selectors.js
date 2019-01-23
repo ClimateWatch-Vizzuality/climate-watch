@@ -56,6 +56,24 @@ export const getAgricultureIndicators = createSelector(
   }
 );
 
+export const getCountriesCountWithProposedActions = createSelector(
+  [getAgricultureIndicators],
+  indicators => {
+    if (!indicators) return 0;
+
+    const SECTORAL_ACTION_SPECIFIED_IDS = [56, 98];
+
+    const locations = indicators.map(ind => ind.locations);
+    const countriesWithActionsSpecified = locations.map(location =>
+      Object.keys(location).filter(countryIso =>
+        SECTORAL_ACTION_SPECIFIED_IDS.includes(location[countryIso].label_id)
+      )
+    );
+
+    return [...new Set(countriesWithActionsSpecified.flat())].length;
+  }
+);
+
 export const getCategories = createSelector(
   [getCategoriesData, getAgricultureIndicators],
   (categories, indicators) => {
@@ -206,5 +224,6 @@ export default {
   getSelectedIndicator,
   getAgricultureIndicators,
   getSelectedCategory,
-  getPathsWithStyles
+  getPathsWithStyles,
+  getCountriesCountWithProposedActions
 };
