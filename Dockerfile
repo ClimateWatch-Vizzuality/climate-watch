@@ -22,6 +22,9 @@ ENV S3_BUCKET_NAME wri-sites
 
 ENV GOOGLE_ANALYTICS_ID UA-1981881-51
 
+ARG FEATURE_AGRICULTURE
+ENV FEATURE_AGRICULTURE $FEATURE_AGRICULTURE
+
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
