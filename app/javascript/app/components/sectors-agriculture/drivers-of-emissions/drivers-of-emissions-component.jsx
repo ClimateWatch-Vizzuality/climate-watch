@@ -106,23 +106,9 @@ class DriversOfEmissions extends PureComponent {
                 <CardPieChart theme={theme} pieChartData={pieChartData} />
               </div>
             </TabletLandscape>
-            <TabletPortraitOnly>
-              <div className={styles.graphControlsSection}>
-                <ExploreButtonGroup exploreButtonText="Explore emissions" />
-                <Chart
-                  className={styles.chartWrapper}
-                  type="line"
-                  config={config}
-                  data={data}
-                  domain={domain}
-                  dataOptions={filters}
-                  dataSelected={filters}
-                  height={430}
-                  dot={false}
-                />
-                <CardPieChart theme={theme} pieChartData={pieChartData} />
-              </div>
-            </TabletPortraitOnly>
+            {/* <TabletPortraitOnly>
+              <div className={styles.graphControlsSection}></div>
+            </TabletPortraitOnly> */}
           </div>
         </div>
       </div>
