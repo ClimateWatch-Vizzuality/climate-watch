@@ -33,6 +33,8 @@ const getGhgEmissionsData = state =>
 const getGhgEmissionsLoading = state =>
   (state.ghgEmissions && state.ghgEmissions.loading) || false;
 
+const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
+
 const GHG_DEFAULT_FILTER = {
   gas: 49,
   location: 'WORLD',
@@ -107,7 +109,7 @@ export const getChartData = createSelector(
       data.forEach(d => {
         const yKey = getYColumnValue(d.emission_subcategory.name);
         const yData = d.values[x];
-        yItems[yKey] = yData ? parseFloat(yData) * 1000 : undefined;
+        yItems[yKey] = yData ? parseFloat(yData) * API_SCALE : undefined;
       });
       return { x, ...yItems };
     });
@@ -151,7 +153,7 @@ export const getChartConfig = createSelector(
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
-        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit: 'MtCO<sub>2</sub>' }
+        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit: 'MtCO2e' }
       },
       theme: colorThemeCache,
       tooltip,

@@ -100,6 +100,8 @@ class DriversOfEmissions extends PureComponent {
                   dataSelected={filters}
                   height={430}
                   dot={false}
+                  forceFixedFormatDecimals="3"
+                  espGraph
                 />
                 <CardPieChart theme={theme} pieChartData={pieChartData} />
               </div>
