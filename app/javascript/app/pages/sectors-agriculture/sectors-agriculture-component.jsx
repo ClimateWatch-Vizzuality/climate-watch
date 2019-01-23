@@ -49,7 +49,7 @@ class SectorsAgriculture extends PureComponent {
               fireOnRapidScroll={false}
               key={section.hash}
             >
-              <div>
+              <div className={styles.sectionComponent}>
                 <div id={section.hash} className={styles.sectionHash} />
                 <section.component />
               </div>

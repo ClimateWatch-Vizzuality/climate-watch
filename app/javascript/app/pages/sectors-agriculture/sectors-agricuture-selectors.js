@@ -3,17 +3,17 @@ import { createSelector } from 'reselect';
 // import qs from 'query-string';
 
 const getSections = routeData => routeData.route.sections || null;
-const getSearch = routeData => routeData.location.search || null;
+// const getSearch = routeData => routeData.location.search || null;
+// const getHash = routeData => routeData.hash || null;
+// const getRoutes = routeData => routeData.route.routes || null;
 
-export const getAnchorLinks = createSelector(
-  [getSections, getSearch],
-  (sections, search) =>
-    sections.filter(route => route.anchor).map(route => ({
-      label: route.label,
-      path: route.path,
-      hash: route.hash,
-      search
-    }))
+export const getAnchorLinks = createSelector([getSections], sections =>
+  sections.filter(route => route.anchor).map(route => ({
+    label: route.label,
+    path: route.path,
+    hash: route.hash,
+    component: route.component
+  }))
 );
 
 // export const getRouteLinks = createSelector(
