@@ -5,13 +5,13 @@ export const slidesData = [
     paragraphs: [
       {
         text:
-          'View your country and other countries climate plans in NDC Content',
+          'View your country and other countries’ climate plans in NDC Content',
         anchorText: 'NDC Content',
         href: '/ndcs-content'
       },
       {
         text:
-          'Compare your countries’ emission by sector and gas with other countries over time in GHG emissions',
+          'Compare your countries’ emissions by sector and gas with other countries over time in GHG emissions',
         anchorText: 'GHG emissions',
         href: '/ghg-emissions'
       },
@@ -35,19 +35,19 @@ export const slidesData = [
     paragraphs: [
       {
         text:
-          'Explore NDC contents, compare across countries and download data with the NDC Content',
+          'Explore NDC content, compare across countries and download data with NDC Content',
         anchorText: 'NDC Content',
         href: '/ndcs-content'
       },
       {
         text:
-          'View and download comprehensive historical greenhouse gases emissions from multiple data sources in GHG emissions',
+          'View and download comprehensive historical greenhouse gas emissions from multiple data sources in GHG emissions',
         anchorText: 'GHG emissions',
         href: '/ghg-emissions'
       },
       {
         text:
-          'Compare countries’ different economic and emission scenarios from multiple climate models in Pathways',
+          'Compare countries’ economic and emission scenarios from different climate models in Pathways',
         anchorText: 'Pathways',
         href: '/pathways'
       },
