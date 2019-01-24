@@ -16,7 +16,7 @@ const HomeIntroSection = () => (
     <div className={cx(styles.column, styles.homeIntro)}>
       <Icon icon={cwLogo} className={styles.cwLogo} />
       <Intro
-        description="Improving understanding of the possible policy and development paths that could lead to decarbonization of the economy in different countries by providing high-quality, global data."
+        description="Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress."
         className={styles.intro}
       />
       <AutocompleteSearch
