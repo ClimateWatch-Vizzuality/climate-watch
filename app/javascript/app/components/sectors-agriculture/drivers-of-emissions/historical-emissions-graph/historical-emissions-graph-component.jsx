@@ -14,9 +14,16 @@ import CardPieChart from '../card-pie-chart/card-pie-chart-component';
 
 class HistoricalEmissionsGraph extends PureComponent {
   renderFilters = () => {
-    const { locations, handleCountryChange, emissionsCountry } = this.props;
+    const {
+      locations,
+      handleCountryChange,
+      emissionsCountry,
+      emissionTypes,
+      handleEmissionTypeChange,
+      emissionType
+    } = this.props;
     return (
-      <div>
+      <div className={styles.filtersGroup}>
         <Dropdown
           key="locations"
           label="Country/Region"
@@ -24,6 +31,15 @@ class HistoricalEmissionsGraph extends PureComponent {
           options={locations}
           onValueChange={handleCountryChange}
           value={emissionsCountry}
+          hideResetButton
+        />
+        <Dropdown
+          key="emissions"
+          label="Emissions"
+          className={styles.dropdown}
+          options={emissionTypes}
+          onValueChange={handleEmissionTypeChange}
+          value={emissionType}
           hideResetButton
         />
       </div>
@@ -114,6 +130,7 @@ class HistoricalEmissionsGraph extends PureComponent {
 
 HistoricalEmissionsGraph.propTypes = {
   handleCountryChange: PropTypes.func,
+  handleEmissionTypeChange: PropTypes.func,
   config: PropTypes.object.isRequired,
   data: PropTypes.array,
   domain: PropTypes.object.isRequired,
@@ -121,17 +138,21 @@ HistoricalEmissionsGraph.propTypes = {
   locations: PropTypes.array,
   emissionsCountry: PropTypes.object.isRequired,
   ghgEmissionsFilters: PropTypes.object,
-  pieChartData: PropTypes.object
+  pieChartData: PropTypes.object,
+  emissionTypes: PropTypes.array,
+  emissionType: PropTypes.object.isRequired
 };
 
 HistoricalEmissionsGraph.defaultProps = {
   handleCountryChange: () => {},
+  handleEmissionTypeChange: () => {},
   config: PropTypes.object.isRequired,
   data: [],
   filters: [],
   locations: [],
   ghgEmissionsFilters: {},
-  pieChartData: null
+  pieChartData: null,
+  emissionTypes: []
 };
 
 export default HistoricalEmissionsGraph;

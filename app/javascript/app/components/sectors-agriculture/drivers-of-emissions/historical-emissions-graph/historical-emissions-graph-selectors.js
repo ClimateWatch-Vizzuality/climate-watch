@@ -90,21 +90,54 @@ const getEmissionCountrySelected = createSelector(
     if (!selectedEmissionOption) {
       return defaultCountry || countriesOptions[0];
     }
-    const { emissionsCountry } = qs.parse(selectedEmissionOption);
+    const { emissionCountry } = qs.parse(selectedEmissionOption);
     const selectedCountry = countriesOptions.find(
-      ({ value }) => value === emissionsCountry
+      ({ value }) => value === emissionCountry
     );
     return selectedCountry || defaultCountry;
   }
 );
 
 /** LINE CHART SELECTORS */
-const getAgricultureSubsectorsData = createSelector(
+const getAgricultureEmissionTypes = createSelector(
   [getAgricultureEmissionsData],
   data => {
     if (!data) return null;
+    const emissionTypes = data
+      .map(({ emission_subcategory: { category_name, category_id } }) => ({
+        label: category_name,
+        value: `${category_id}`
+      }))
+      .filter(({ label }) => label);
+    return uniqBy(emissionTypes, 'value');
+  }
+);
+
+const getEmissionTypeSelected = createSelector(
+  [getSourceSelection, getAgricultureEmissionTypes],
+  (selectedEmissionOption, emissionTypes) => {
+    if (!emissionTypes) return null;
+    if (!selectedEmissionOption) {
+      const defaultEmissionType = emissionTypes.find(
+        ({ value }) => value === 1
+      );
+      return defaultEmissionType || emissionTypes[0];
+    }
+    const { emissionType } = qs.parse(selectedEmissionOption);
+    const selectedEmissionType = emissionTypes.find(
+      ({ value }) => value === emissionType
+    );
+    return selectedEmissionType || emissionTypes[0];
+  }
+);
+
+const getAgricultureSubsectorsData = createSelector(
+  [getAgricultureEmissionsData, getEmissionTypeSelected],
+  (data, emissionType) => {
+    if (!data || !emissionType) return null;
     return data.filter(
-      ({ emission_subcategory: { category_id } }) => category_id === 1
+      ({ emission_subcategory: { category_id } }) =>
+        `${category_id}` === emissionType.value
     );
   }
 );
@@ -305,5 +338,7 @@ export const getAllData = createStructuredSelector({
   locations: getLocationsOptions,
   emissionsCountry: getEmissionCountrySelected,
   ghgEmissionsFilters: getGhgEmissionsFilter,
-  pieChartData: getPieChartPayload
+  pieChartData: getPieChartPayload,
+  emissionTypes: getAgricultureEmissionTypes,
+  emissionType: getEmissionTypeSelected
 });
