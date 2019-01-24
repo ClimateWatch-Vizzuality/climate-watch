@@ -250,7 +250,7 @@ const getFiltersSelected = field =>
         (field === 'location' ? options.regions : options[toPlural(field)]);
       if (!defaults) return null;
       if (!selected || !fieldOptions || isEmpty(fieldOptions)) {
-        return defaults[field];
+        return defaults[field] || [ALL_SELECTED_OPTION];
       }
       let selectedFilters = [];
       if (selected) {
