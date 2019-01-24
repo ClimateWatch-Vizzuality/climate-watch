@@ -12,6 +12,7 @@ import {
   FILTER_DEFAULTS,
   NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
+import { ALL_SELECTED } from 'data/constants';
 import { handleAnalytics } from 'utils/analytics';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
@@ -19,7 +20,6 @@ import {
   addYearOptions,
   getSelectedOptions
 } from '../data-explorer-content-selectors';
-import { ALL_SELECTED } from '../../../data/constants';
 
 const mapStateToProps = (state, { section, location }) => {
   const search = getSearch(location);
@@ -56,7 +56,7 @@ const mapStateToProps = (state, { section, location }) => {
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: addYearOptions(dataState),
     selectedOptions,
-    activeFilterRegion: getActiveFilterLabel(dataState)
+    activeFilterLabel: getActiveFilterLabel(dataState)
   };
 };
 

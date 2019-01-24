@@ -205,7 +205,8 @@ export const GROUPED_OR_MULTI_SELECT_FIELDS = {
         { groupId: 'regions', title: 'Regions' },
         { groupId: 'countries', title: 'Countries' }
       ]
-    }
+    },
+    { key: 'gases' }
   ],
   'emission-pathways': [{ key: 'scenarios' }]
 };

@@ -691,8 +691,8 @@ export const getActiveFilterLabel = createSelector(
   [getSelectedFilters],
   selectedFields => {
     const regions = selectedFields && selectedFields.regions;
-    if (!regions || regions.length > 1) return null;
-    return regions[0] && regions[0].label;
+    if (!regions || regions.length > 1) return { regions: null };
+    return { regions: regions[0] && regions[0].label };
   }
 );
 

@@ -69,7 +69,7 @@ class DataExplorerFilters extends PureComponent {
       filterOptions,
       filters,
       section,
-      activeFilterRegion,
+      activeFilterLabel,
       isDisabled,
       handleChangeSelectorAnalytics
     } = this.props;
@@ -109,7 +109,7 @@ class DataExplorerFilters extends PureComponent {
           <MultiSelect
             key={fieldInfo.key}
             label={deburrCapitalize(label)}
-            selectedLabel={activeFilterRegion}
+            selectedLabel={activeFilterLabel[field]}
             placeholder={`Filter by ${label}`}
             values={(selectedOptions && selectedOptions[field]) || []}
             options={getOptions(filterOptions, field, true)}
@@ -137,7 +137,7 @@ class DataExplorerFilters extends PureComponent {
 }
 
 DataExplorerFilters.propTypes = {
-  activeFilterRegion: PropTypes.string,
+  activeFilterLabel: PropTypes.string,
   section: PropTypes.string.isRequired,
   handleFiltersChange: PropTypes.func.isRequired,
   handleChangeSelectorAnalytics: PropTypes.func.isRequired,
