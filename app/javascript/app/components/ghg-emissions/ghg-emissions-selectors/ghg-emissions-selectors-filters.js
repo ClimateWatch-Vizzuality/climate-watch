@@ -132,8 +132,8 @@ const filterOptionsBySource = field =>
 
 const getFieldOptions = field =>
   createSelector(
-    [getMeta, getRegionsOptions, filterOptionsBySource(field)],
-    (meta, regions, filteredOptions) => {
+    [getRegionsOptions, filterOptionsBySource(field)],
+    (regions, filteredOptions) => {
       if (!filteredOptions) return [];
       const fieldOptions = filteredOptions;
 
@@ -181,18 +181,17 @@ const getDefaultOptions = createSelector(
 );
 
 const getSectorOptions = createSelector(
-  [getFieldOptions('sector'), getMeta],
-  (options, meta) => {
+  [getFieldOptions('sector')],
+  options => {
     if (!options || isEmpty(options)) return null;
-    const { sector: metaSectors } = meta;
 
-    const sectors = metaSectors.filter(s => !s.parentId).map(d => ({
+    const sectors = options.filter(s => !s.parentId).map(d => ({
       label: d.label,
       value: d.value,
       groupParent: String(d.value)
     }));
 
-    const subsectors = metaSectors.filter(s => s.parentId).map(d => ({
+    const subsectors = options.filter(s => s.parentId).map(d => ({
       label: d.label,
       value: d.value,
       group: String(d.parentId)
