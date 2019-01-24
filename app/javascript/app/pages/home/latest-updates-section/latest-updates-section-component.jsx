@@ -27,7 +27,7 @@ class LatestUpdatesSection extends Component {
     return (
       <section className={styles.section}>
         <div className={styles.container}>
-          <h2>Latest updates</h2>
+          <h2 className={styles.sectionTitle}>Latest updates</h2>
           <div className={styles.tilesGroup}>
             {loading ? (
               <div className={styles.noContent}>
