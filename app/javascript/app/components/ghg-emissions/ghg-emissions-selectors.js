@@ -146,7 +146,7 @@ export const filterAndSortData = createSelector(
     getAllowedSectors
   ],
   (data, source, version, breakBy, sectorsAllowed) => {
-    if (!data || isEmpty(data) || !source || isEmpty(data)) return null;
+    if (!data || isEmpty(data) || !source) return null;
     const breakByValue = breakBy.value;
     const dataBySource =
       source.label === 'UNFCCC' && breakByValue !== 'sector'
