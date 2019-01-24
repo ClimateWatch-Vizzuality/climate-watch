@@ -81,7 +81,7 @@ class GhgEmissionsContainer extends PureComponent {
         values = ALL_SELECTED;
       } else {
         values = updatedFilters
-          .filter(v => v.value !== ALL_SELECTED)
+          .filter(v => v && v.value !== ALL_SELECTED)
           .map(v => v.value)
           .join(',');
       }
