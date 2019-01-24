@@ -17,7 +17,7 @@ const fetchAgricultureEmissions = createThunkAction(
   'fetchAgricultureEmissions',
   isoCode3 => (dispatch, state) => {
     const { agricultureEmissions } = state();
-    const query = isoCode3 ? `?iso_code3=${isoCode3}` : '';
+    const query = isoCode3 ? `?iso_code3=${isoCode3}` : '?iso_code3=WORLD';
     if (!agricultureEmissions.loading) {
       dispatch(fetchAgricultureEmissionsInit());
       fetch(`${BASE_URL}${query}`)
