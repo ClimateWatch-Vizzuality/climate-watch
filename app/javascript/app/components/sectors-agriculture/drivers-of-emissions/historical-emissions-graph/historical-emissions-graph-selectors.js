@@ -33,9 +33,9 @@ const getGhgEmissionsLoading = state =>
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
 
 const GHG_DEFAULT_FILTER = {
-  gas: 49,
+  gas: 277,
   location: 'WORLD',
-  source: 13
+  source: 66
 };
 
 const AGRICULTURE_COLOR = '#0677B3';
