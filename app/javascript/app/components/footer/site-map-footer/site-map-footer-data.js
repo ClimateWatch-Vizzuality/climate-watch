@@ -11,7 +11,10 @@ export const siteMapData = [
   },
   {
     title: 'Data',
-    links: [{ title: 'Explore Datasets', href: '/data-explorer' }]
+    links: [
+      { title: 'Explore Datasets', href: '/data-explorer' },
+      { title: 'My Climate Watch', href: '/my-climate-watch' }
+    ]
   },
   {
     title: 'Country Platforms',
@@ -27,7 +30,8 @@ export const siteMapData = [
       { title: 'About Climate Watch', href: '/about' },
       { title: 'Climate Watch Partners', href: '/about/partners' },
       { title: 'Contact Us & Feedback', href: '/about/contact' },
-      { title: 'Permissions & Licensing', href: '/about/permissions' }
+      { title: 'Permissions & Licensing', href: '/about/permissions' },
+      { title: 'FAQ', href: '/about/faq' }
     ]
   }
 ];
