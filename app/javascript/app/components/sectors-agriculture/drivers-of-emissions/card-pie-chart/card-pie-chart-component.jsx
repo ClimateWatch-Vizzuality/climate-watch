@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Card, PieChart, Tag, Loading, NoContent } from 'cw-components';
 import PropTypes from 'prop-types';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
-import * as styles from './card-pie-chart-styles.scss';
+import styles from './card-pie-chart-styles.scss';
 import Tooltip from './tooltip/tooltip';
 
 class CardPieChart extends PureComponent {

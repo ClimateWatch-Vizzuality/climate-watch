@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tag } from 'cw-components';
 import { has } from 'lodash';
-import * as styles from './tooltip-styles.scss';
+import styles from './tooltip-styles.scss';
 
 const Tooltip = ({ content }) => {
   const color = has(content, 'payload[0].payload.fill')

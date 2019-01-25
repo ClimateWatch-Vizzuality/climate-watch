@@ -8,7 +8,7 @@ import CountriesProvider from 'providers/countries-provider/countries-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
-import * as styles from './historical-emissions-graph-styles.scss';
+import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart-component';
 
 class HistoricalEmissionsGraph extends PureComponent {

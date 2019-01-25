@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Switch } from 'cw-components';
 import PropTypes from 'prop-types';
-import * as styles from './drivers-of-emissions-styles.scss';
+import styles from './drivers-of-emissions-styles.scss';
 import { emissionTabs } from './drivers-of-emissions-data';
 import HistoricalEmissionsGraph from './historical-emissions-graph/historical-emissions-graph';
 import EmissionPathwaysGraph from './emission-pathways-graph/emission-pathways-graph';
