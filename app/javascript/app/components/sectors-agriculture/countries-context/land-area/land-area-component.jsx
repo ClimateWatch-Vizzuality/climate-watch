@@ -12,6 +12,16 @@ const cardTheme = {
   data: styles.data
 };
 
+const renderTag = (chartConfig, key) => (
+  <Tag
+    theme={{ tag: styles.tag, label: styles.label }}
+    key={chartConfig.theme[key].label}
+    canRemove={false}
+    label={chartConfig.theme[key].label}
+    color={chartConfig.theme[key].stroke}
+  />
+);
+
 const LandArea = ({
   selectedCountry,
   selectedYear,
@@ -22,69 +32,61 @@ const LandArea = ({
   handleInfoBtnClick
 }) => (
   <div className={styles.container}>
-    <Card
-      key={'Share in Land Area'}
-      title={'Share in Land Area'}
-      theme={cardTheme}
-    >
-      <div className={styles.cardContainer}>
-        <div className={styles.header}>
-          <div className={styles.title}>
-            Share of different types of agricultural land as a percentage of
-            total land area in a country. Depending on agricultural intensity,
-            countries devote a different amount of land to agriculture.
+    {chartData && (
+      <Card
+        key={'Share in Land Area'}
+        title={'Share in Land Area'}
+        theme={cardTheme}
+      >
+        <div className={styles.cardContainer}>
+          <div className={styles.header}>
+            <div className={styles.title}>
+              Share of different types of agricultural land as a percentage of
+              total land area in a country. Depending on agricultural intensity,
+              countries devote a different amount of land to agriculture.
+            </div>
+            <Icon
+              icon={infoIcon}
+              theme={{ icon: styles.cardInfoIcon }}
+              onClick={handleInfoBtnClick}
+            />
           </div>
-          <Icon
-            icon={infoIcon}
-            theme={{ icon: styles.cardInfoIcon }}
-            onClick={handleInfoBtnClick}
-          />
-        </div>
-        <div className={styles.chartContainer}>
-          <div className={styles.legend}>
-            {firstLevelLegend &&
-              firstLevelLegend.map(q => (
-                <React.Fragment>
-                  <Tag
-                    theme={{ tag: styles.tag, label: styles.label }}
-                    key={chartConfig.theme[q].label}
-                    canRemove={false}
-                    label={chartConfig.theme[q].label}
-                    color={chartConfig.theme[q].stroke}
+          <div className={styles.chartContainer}>
+            <div className={styles.legend}>
+              {firstLevelLegend &&
+                firstLevelLegend.map(q => (
+                  <React.Fragment>
+                    {renderTag(chartConfig, q)}
+                    {chartConfig.theme[q].children &&
+                      chartConfig.theme[q].children.map(nestedTag => (
+                        <div className={styles.nestedLegend}>
+                          {renderTag(chartConfig, nestedTag)}
+                        </div>
+                      ))}
+                  </React.Fragment>
+                ))}
+            </div>
+            <div className={styles.chart}>
+              {chartData &&
+              chartColors &&
+              chartConfig && (
+                  <SunburstChart
+                    data={chartData}
+                    customTooltip={<Tooltip />}
+                    width={300}
+                    height={300}
+                    colors={chartColors}
+                    config={chartConfig}
                   />
-                  {chartConfig.theme[q].children &&
-                    chartConfig.theme[q].children.map(nestedTag => (
-                      <div className={styles.nestedLegend}>
-                        <Tag
-                          theme={{ tag: styles.tag, label: styles.label }}
-                          key={chartConfig.theme[nestedTag].label}
-                          canRemove={false}
-                          label={chartConfig.theme[nestedTag].label}
-                          color={chartConfig.theme[nestedTag].stroke}
-                        />
-                      </div>
-                    ))}
-                </React.Fragment>
-              ))}
+                )}
+            </div>
           </div>
-          {chartData &&
-          chartColors &&
-          chartConfig && (
-              <SunburstChart
-                data={chartData}
-                customTooltip={<Tooltip />}
-                width={300}
-                height={300}
-                colors={chartColors}
-                config={chartConfig}
-              />
-            )}
         </div>
-      </div>
-      <div className={styles.yearData}>
-        <span>{selectedYear && selectedYear.value}</span> data
-      </div>
-    </Card>
+        <div className={styles.yearData}>
+          <span>{selectedYear && selectedYear.value}</span> data
+        </div>
+      </Card>
+    )}
     {selectedCountry &&
     selectedYear && (
         <LandAreaProvider
