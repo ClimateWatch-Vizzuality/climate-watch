@@ -71,17 +71,17 @@ const getEmissionCountrySelected = createSelector(
   [getSourceSelection, getLocationsOptions],
   (selectedEmissionOption, countriesOptions) => {
     if (!countriesOptions) return null;
+    const defaultCountry = countriesOptions.find(
+      ({ value }) => value === 'WORLD'
+    );
     if (!selectedEmissionOption) {
-      const defaultCountry = countriesOptions.find(
-        ({ value }) => value === 'WORLD'
-      );
       return defaultCountry || countriesOptions[0];
     }
     const { emissionsCountry } = qs.parse(selectedEmissionOption);
     const selectedCountry = countriesOptions.find(
       ({ value }) => value === emissionsCountry
     );
-    return selectedCountry || countriesOptions[0];
+    return selectedCountry || defaultCountry;
   }
 );
 
