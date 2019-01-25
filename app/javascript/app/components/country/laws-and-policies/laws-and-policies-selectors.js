@@ -170,7 +170,10 @@ const getNationalPoliciesCount = createSelector(
     const targetsMatches = lawsTargets.filter(
       target => target.sector === currentSector.value
     );
-    const lawsMatches = targetsMatches.flatMap(t => t.sources);
+    const lawsMatches = targetsMatches.reduce(
+      (acc, t) => acc.concat(t.sources),
+      []
+    );
 
     return lawsMatches.length > 0 ? uniqBy(lawsMatches, 'id').length : 0;
   }
