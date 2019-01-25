@@ -24,14 +24,14 @@ import {
   POSSIBLE_LABEL_FIELDS,
   POSSIBLE_VALUE_FIELDS,
   NON_COLUMN_KEYS,
-  TOP_EMITTERS_OPTION,
   FILTER_DEFAULTS,
   FILTERS_DATA_WITHOUT_MODEL
 } from 'data/data-explorer-constants';
 import {
   ALL_SELECTED,
   ALL_SELECTED_OPTION,
-  CONTAINED_PATHNAME
+  CONTAINED_PATHNAME,
+  TOP_EMITTERS_OPTION
 } from 'data/constants';
 import {
   getPathwaysModelOptions,
@@ -138,6 +138,14 @@ const findSelectedValueObject = (meta, selectedId) =>
       String(option.id) === selectedId
   );
 
+const addTopEmittersMembers = (isosArray, regions, key) => {
+  if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
+    const topRegion = regions.find(r => r.iso === 'TOP');
+    if (topRegion) return isosArray.concat(topRegion.members);
+  }
+  return isosArray;
+};
+
 function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
   const subcategories =
@@ -153,7 +161,11 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     }
 
     const parsedKey = correctedKey.replace('-', '_');
-    const selectedIds = parsedFilters[key].split(',');
+    const selectedIds = addTopEmittersMembers(
+      parsedFilters[key].split(','),
+      metadata.regions,
+      key
+    );
 
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
@@ -171,7 +183,6 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       );
     }
   });
-
   return filterIds;
 }
 
@@ -337,6 +348,13 @@ const getLabel = (option, filterKey) => {
   }
   return label;
 };
+const getValue = option => (
+  option.iso ||
+    option.iso_code ||
+    option.iso_code3 ||
+    (option.id && String(option.id)) ||
+    (option.dataSourceId && String(option.dataSourceId))
+);
 
 export const getFilterOptions = createSelector(
   [
@@ -387,17 +405,23 @@ export const getFilterOptions = createSelector(
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
+        if (f === 'regions') options.unshift(TOP_EMITTERS_OPTION);
         const optionsArray = options.map(option => {
-          const label = getLabel(option, f);
-          const value =
-            option.iso_code ||
-            option.iso_code3 ||
-            (option.id && String(option.id)) ||
-            (option.dataSourceId && `${option.dataSourceId}`);
-          return { ...option, value, label };
+          const updatedOption = { ...option };
+          updatedOption.label = getLabel(option, f);
+          updatedOption.value = getValue(option);
+          if (f === 'regions') {
+            updatedOption.iso = option.iso_code3;
+            const regionMembers =
+              option.members && option.members.map(m => m.iso_code3);
+            if (regionMembers) {
+              updatedOption.members = regionMembers;
+              updatedOption.iso = regionMembers;
+              updatedOption.groupId = 'regions';
+            }
+          }
+          return updatedOption;
         });
-
-        if (f === 'regions') optionsArray.unshift(TOP_EMITTERS_OPTION);
         filterOptions[f] = optionsArray;
       }
     });

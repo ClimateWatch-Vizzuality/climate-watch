@@ -77,14 +77,6 @@ const getDependentKeysToDelete = (section, filterName) => {
 };
 
 const parsedMultipleValues = value => {
-  const selectedValue = value[value.length - 1];
-  if (
-    selectedValue &&
-    selectedValue.groupId &&
-    selectedValue.groupId === 'regions'
-  ) {
-    return [selectedValue.value];
-  }
   const parseValue = value.map(filter => filter.value);
   return parseValue.length === 0 ? undefined : parseValue.toString();
 };

@@ -1,4 +1,4 @@
-import { TOP_EMITTERS, ALL_SELECTED } from 'data/constants';
+import { ALL_SELECTED } from 'data/constants';
 
 export const DATA_EXPLORER_BLACKLIST = [
   'id',
@@ -223,7 +223,8 @@ export const FILTER_NAMES = {
   scenarios: 'scenarios',
   indicators: 'indicators',
   categories: 'categories',
-  subcategories: 'subcategories'
+  subcategories: 'subcategories',
+  regions: 'regions'
 };
 
 export const FILTERED_FIELDS = {
@@ -279,6 +280,7 @@ export const FILTERED_FIELDS = {
 export const NON_COLUMN_KEYS = ['start_year', 'end_year'];
 
 export const POSSIBLE_LABEL_FIELDS = [
+  'label',
   'value',
   'name',
   'full_name',
@@ -290,13 +292,6 @@ export const POSSIBLE_LABEL_FIELDS = [
 ];
 
 export const POSSIBLE_VALUE_FIELDS = ['id', 'value'];
-
-export const TOP_EMITTERS_OPTION = {
-  iso_code3: 'TOP',
-  label: 'Top Emitters',
-  value: TOP_EMITTERS.join(','),
-  groupId: 'regions'
-};
 
 export const FIELD_ALIAS = {
   'historical-emissions': { 'data-sources': 'Data sources' },
