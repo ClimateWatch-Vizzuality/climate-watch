@@ -6,6 +6,7 @@ import { noEmptyValues } from 'utils/utils';
 import { PropTypes } from 'prop-types';
 import { actions } from 'components/modal-download';
 import isArray from 'lodash/isArray';
+import last from 'lodash/last';
 import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_DEPENDENCIES,
@@ -77,6 +78,7 @@ const getDependentKeysToDelete = (section, filterName) => {
 };
 
 const parsedMultipleValues = value => {
+  if (last(value) && last(value).value === ALL_SELECTED) return ALL_SELECTED;
   const parseValue = value.map(filter => filter.value);
   return parseValue.length === 0 ? undefined : parseValue.toString();
 };
