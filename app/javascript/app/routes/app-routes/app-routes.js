@@ -21,6 +21,7 @@ import MyClimateWatch from 'pages/my-climate-watch';
 import DataExplorer from 'pages/data-explorer';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
+import Sectors from 'pages/sectors';
 import SectorsAgriculture from 'pages/sectors-agriculture';
 
 // routes
@@ -77,7 +78,7 @@ export default [
     }
     : {
       path: '/sectors',
-      component: SectorsAgriculture,
+      component: Sectors,
       exact: true,
       nav: true,
       label: 'SECTORS'
@@ -87,19 +88,6 @@ export default [
     component: SectorsAgriculture,
     headerImage: 'sectors-agriculture',
     headerColor: '#0677B3',
-    sections: agricultureSections
-  },
-  {
-    path: '/sectors/agriculture',
-    component: SectorsAgriculture,
-    label: 'SECTORS AGRICULTURE',
-    sections: agricultureSections,
-    headerImage: 'sectors-agriculture'
-  },
-  {
-    path: '/sectors/agriculture',
-    component: SectorsAgriculture,
-    headerImage: 'sectors-agriculture',
     sections: agricultureSections
   },
   {

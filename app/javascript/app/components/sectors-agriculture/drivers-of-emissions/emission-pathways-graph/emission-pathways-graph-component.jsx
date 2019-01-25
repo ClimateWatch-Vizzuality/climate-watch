@@ -5,13 +5,12 @@ import EspModelsProvider from 'providers/esp-models-provider';
 import EspScenariosProvider from 'providers/esp-scenarios-provider';
 import EspIndicatorsProvider from 'providers/esp-indicators-provider';
 import EspTimeSeriesProvider from 'providers/esp-time-series-provider';
-import ButtonGroup from 'components/button-group';
 import ModalOverview from 'components/modal-overview';
 import Dropdown from 'components/dropdown';
 import Chart from 'components/charts/chart';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import ExploreButtonGroup from '../explore-group';
 
-import layout from 'styles/layout.scss';
 import styles from './emission-pathways-graph-styles.scss';
 
 class EmissionPathwayGraph extends PureComponent {
@@ -39,6 +38,36 @@ class EmissionPathwayGraph extends PureComponent {
     );
   }
 
+  renderExploreButtonGroup = () => {
+    const { downloadLink, handleInfoClick } = this.props;
+    const buttonGroupConfig = [
+      {
+        type: 'info',
+        onClick: handleInfoClick
+      },
+      {
+        type: 'share',
+        shareUrl: '/embed/pathways',
+        analyticsGraphName: 'Drivers of Emissions',
+        positionRight: true
+      },
+      {
+        type: 'download',
+        section: 'pathways',
+        link: downloadLink
+      },
+      {
+        type: 'addToUser'
+      }
+    ];
+    return (
+      <ExploreButtonGroup
+        exploreButtonText="Explore pathways"
+        buttonGroupConfig={buttonGroupConfig}
+      />
+    );
+  };
+
   render() {
     const {
       data,
@@ -50,11 +79,9 @@ class EmissionPathwayGraph extends PureComponent {
       filtersOptions,
       filtersSelected,
       handleSelectorChange,
-      handleInfoClick,
       modalData,
       model,
-      handleModelChange,
-      downloadLink
+      handleModelChange
     } = this.props;
     const needsTimeSeries =
       filtersSelected && filtersSelected.location && filtersSelected.model;
@@ -65,49 +92,19 @@ class EmissionPathwayGraph extends PureComponent {
 
     return (
       <div className={styles.wrapper}>
-        <div className={layout.content}>
-          <EspModelsProvider />
-          <EspScenariosProvider />
-          <EspIndicatorsProvider />
-          <EspLocationsProvider withTimeSeries />
-          {needsTimeSeries && (
-            <EspTimeSeriesProvider
-              location={filtersSelected.location.value}
-              model={filtersSelected.model.value}
-            />
-          )}
-          <div className="grid-column-item">
-            <div className={styles.titleAndBtnsWrapper}>
-              <h2 className={styles.title}>Drivers of Emissions</h2>
-              <TabletLandscape>
-                <ButtonGroup
-                  className={styles.btnGroup}
-                  buttonsConfig={[
-                    {
-                      type: 'info',
-                      onClick: handleInfoClick
-                    },
-                    {
-                      type: 'share',
-                      shareUrl: '/embed/pathways',
-                      analyticsGraphName: 'Drivers of Emissions',
-                      positionRight: true
-                    },
-                    {
-                      type: 'download',
-                      section: 'pathways',
-                      link: downloadLink
-                    },
-                    {
-                      type: 'addToUser'
-                    }
-                  ]}
-                />
-              </TabletLandscape>
-            </div>
-          </div>
-          <div className="grid-column-item">
-            <div className={styles.selectorsWrapper}>
+        <EspModelsProvider />
+        <EspScenariosProvider />
+        <EspIndicatorsProvider />
+        <EspLocationsProvider withTimeSeries />
+        {needsTimeSeries && (
+          <EspTimeSeriesProvider
+            location={filtersSelected.location.value}
+            model={filtersSelected.model.value}
+          />
+        )}
+        <div className="grid-column-item">
+          <div className={styles.selectorsWrapper}>
+            <div className={styles.filtersWrapper}>
               <Dropdown
                 label="Region"
                 options={filtersOptions.locations}
@@ -135,60 +132,39 @@ class EmissionPathwayGraph extends PureComponent {
                 value={filtersSelected.indicator}
               />
             </div>
+            <TabletLandscape>{this.renderExploreButtonGroup()}</TabletLandscape>
           </div>
-          <Chart
-            className={styles.chartWrapper}
-            type="line"
-            config={config}
-            data={data}
-            domain={domain}
-            dataOptions={filtersOptions.scenarios}
-            dataSelected={filtersSelected.scenario}
-            customMessage={this.renderCustomMessage()}
-            height={600}
-            loading={loading}
-            error={error}
-            targetParam="scenario"
-            forceFixedFormatDecimals={3}
-            margin={{ top: 50 }}
-            espGraph
-            model={model || null}
-          />
-          <TabletPortraitOnly>
-            <ButtonGroup
-              className={styles.btnGroup}
-              buttonsConfig={[
-                {
-                  type: 'info',
-                  onClick: handleInfoClick
-                },
-                {
-                  type: 'share',
-                  shareUrl: '/embed/pathways',
-                  analyticsGraphName: 'Pathways',
-                  positionRight: true
-                },
-                {
-                  type: 'download',
-                  section: 'pathways',
-                  link: downloadLink
-                },
-                {
-                  type: 'addToUser'
-                }
-              ]}
-            />
-          </TabletPortraitOnly>
-          <ModalOverview
-            data={modalData}
-            title={'Pathways Metadata'}
-            tabTitles={[
-              'Model',
-              'Scenarios',
-              filtersSelected.indicator ? 'Indicator' : null
-            ]}
-          />
         </div>
+        <Chart
+          className={styles.chartWrapper}
+          type="line"
+          config={config}
+          data={data}
+          domain={domain}
+          dataOptions={filtersOptions.scenarios}
+          dataSelected={filtersSelected.scenario}
+          customMessage={this.renderCustomMessage()}
+          height={600}
+          loading={loading}
+          error={error}
+          targetParam="scenario"
+          forceFixedFormatDecimals={3}
+          margin={{ top: 50 }}
+          espGraph
+          model={model || null}
+        />
+        <TabletPortraitOnly>
+          {this.renderExploreButtonGroup()}
+        </TabletPortraitOnly>
+        <ModalOverview
+          data={modalData}
+          title={'Pathways Metadata'}
+          tabTitles={[
+            'Model',
+            'Scenarios',
+            filtersSelected.indicator ? 'Indicator' : null
+          ]}
+        />
       </div>
     );
   }

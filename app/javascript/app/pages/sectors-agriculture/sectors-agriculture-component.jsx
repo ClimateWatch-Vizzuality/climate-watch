@@ -17,7 +17,6 @@ class SectorsAgriculture extends PureComponent {
     const { route, anchorLinks, setActiveSection } = this.props;
     return (
       <div>
-        {/* PROVIDERS HERE */}
         <Header route={route}>
           <div className={cx(layout.content, styles.headerContent)}>
             <div className="grid-column-item">
@@ -50,7 +49,7 @@ class SectorsAgriculture extends PureComponent {
               fireOnRapidScroll={false}
               key={section.hash}
             >
-              <div className={styles.section}>
+              <div className={styles.sectionComponent}>
                 <div id={section.hash} className={styles.sectionHash} />
                 <section.component />
               </div>

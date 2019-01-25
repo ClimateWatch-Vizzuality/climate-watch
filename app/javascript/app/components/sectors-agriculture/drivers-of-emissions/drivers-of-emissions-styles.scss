@@ -1,0 +1,35 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.content {
+  margin-top: 45px;
+}
+
+.intro {
+  display: inline-flex;
+  justify-content: space-between;
+
+  p {
+    margin-right: 40px;
+    text-align: justify;
+    width: 50%;
+  }
+}
+
+.header {
+  color: $theme-color;
+  margin-bottom: 30px;
+
+  h2 {
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+}
+
+.switch {
+  height: max-content;
+}
+
+.switchSelected {
+  background-color: $theme-color;
+}

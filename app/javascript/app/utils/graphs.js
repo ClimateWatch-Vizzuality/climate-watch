@@ -87,6 +87,21 @@ export const getThemeConfig = (columns, colors) => {
   return theme;
 };
 
+export const getPieChartThemeConfig = (columns, colors) => {
+  const theme = {};
+  columns.forEach((column, i) => {
+    const index = column.index || i;
+    const correctedIndex =
+      index < colors.length ? index : index - colors.length;
+    theme[column.value] = {
+      label: column.label,
+      stroke: colors[correctedIndex],
+      fill: colors[correctedIndex]
+    };
+  });
+  return theme;
+};
+
 export const getTooltipConfig = columns => {
   const tooltip = {};
   columns.forEach(column => {
