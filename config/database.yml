@@ -21,13 +21,11 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: postgres
-  password: postgres
 
 development:
   <<: *default
   url: <%= ENV['POSTGRES_URL'] %>
-  username: postgres
-  password: postgres
+
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
@@ -61,8 +59,7 @@ development:
 test:
   <<: *default
   database: climate-watch_test
-  username: postgres
-  password: postgres
+
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -97,11 +94,7 @@ secondbase:
     encoding: unicode
     database: climate-watch-shared_development
     url: <%= ENV['SHARED_POSTGRES_URL'] %>
-    username: postgres
-    password: postgres
   test:
     adapter: postgresql
     encoding: unicode
     database: climate-watch-shared_test
-    username: postgres
-    password: postgres
