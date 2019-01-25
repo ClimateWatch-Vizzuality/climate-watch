@@ -92,83 +92,79 @@ class EmissionPathwayGraph extends PureComponent {
 
     return (
       <div className={styles.wrapper}>
-        <div>
-          <EspModelsProvider />
-          <EspScenariosProvider />
-          <EspIndicatorsProvider />
-          <EspLocationsProvider withTimeSeries />
-          {needsTimeSeries && (
-            <EspTimeSeriesProvider
-              location={filtersSelected.location.value}
-              model={filtersSelected.model.value}
-            />
-          )}
-          <div className="grid-column-item">
-            <div className={styles.selectorsWrapper}>
-              <div className={styles.filtersWrapper}>
-                <Dropdown
-                  label="Region"
-                  options={filtersOptions.locations}
-                  onValueChange={option =>
-                    handleSelectorChange(option, 'currentLocation')}
-                  value={filtersSelected.location}
-                  hideResetButton
-                />
-                <Dropdown
-                  label="Model and scenarios"
-                  options={filtersOptions.models}
-                  onValueChange={handleModelChange}
-                  disabled={filtersLoading.location}
-                  value={filtersSelected.model}
-                  hideResetButton
-                />
-                <Dropdown
-                  label="Indicator"
-                  placeholder="Select an indicator"
-                  options={filtersOptions.indicators}
-                  hideResetButton
-                  disabled={filtersDisabled}
-                  onValueChange={option =>
-                    handleSelectorChange(option, 'indicator')}
-                  value={filtersSelected.indicator}
-                />
-              </div>
-              <TabletLandscape>
-                {this.renderExploreButtonGroup()}
-              </TabletLandscape>
+        <EspModelsProvider />
+        <EspScenariosProvider />
+        <EspIndicatorsProvider />
+        <EspLocationsProvider withTimeSeries />
+        {needsTimeSeries && (
+          <EspTimeSeriesProvider
+            location={filtersSelected.location.value}
+            model={filtersSelected.model.value}
+          />
+        )}
+        <div className="grid-column-item">
+          <div className={styles.selectorsWrapper}>
+            <div className={styles.filtersWrapper}>
+              <Dropdown
+                label="Region"
+                options={filtersOptions.locations}
+                onValueChange={option =>
+                  handleSelectorChange(option, 'currentLocation')}
+                value={filtersSelected.location}
+                hideResetButton
+              />
+              <Dropdown
+                label="Model and scenarios"
+                options={filtersOptions.models}
+                onValueChange={handleModelChange}
+                disabled={filtersLoading.location}
+                value={filtersSelected.model}
+                hideResetButton
+              />
+              <Dropdown
+                label="Indicator"
+                placeholder="Select an indicator"
+                options={filtersOptions.indicators}
+                hideResetButton
+                disabled={filtersDisabled}
+                onValueChange={option =>
+                  handleSelectorChange(option, 'indicator')}
+                value={filtersSelected.indicator}
+              />
             </div>
+            <TabletLandscape>{this.renderExploreButtonGroup()}</TabletLandscape>
           </div>
-          <Chart
-            className={styles.chartWrapper}
-            type="line"
-            config={config}
-            data={data}
-            domain={domain}
-            dataOptions={filtersOptions.scenarios}
-            dataSelected={filtersSelected.scenario}
-            customMessage={this.renderCustomMessage()}
-            height={600}
-            loading={loading}
-            error={error}
-            targetParam="scenario"
-            forceFixedFormatDecimals={3}
-            margin={{ top: 50 }}
-            espGraph
-            model={model || null}
-          />
-          <TabletPortraitOnly>
-            {this.renderExploreButtonGroup()}
-          </TabletPortraitOnly>
-          <ModalOverview
-            data={modalData}
-            title={'Pathways Metadata'}
-            tabTitles={[
-              'Model',
-              'Scenarios',
-              filtersSelected.indicator ? 'Indicator' : null
-            ]}
-          />
         </div>
+        <Chart
+          className={styles.chartWrapper}
+          type="line"
+          config={config}
+          data={data}
+          domain={domain}
+          dataOptions={filtersOptions.scenarios}
+          dataSelected={filtersSelected.scenario}
+          customMessage={this.renderCustomMessage()}
+          height={600}
+          loading={loading}
+          error={error}
+          targetParam="scenario"
+          forceFixedFormatDecimals={3}
+          margin={{ top: 50 }}
+          espGraph
+          model={model || null}
+        />
+        <TabletPortraitOnly>
+          {this.renderExploreButtonGroup()}
+        </TabletPortraitOnly>
+        <ModalOverview
+          data={modalData}
+          title={'Pathways Metadata'}
+          tabTitles={[
+            'Model',
+            'Scenarios',
+            filtersSelected.indicator ? 'Indicator' : null
+          ]}
+        />
       </div>
     );
   }
