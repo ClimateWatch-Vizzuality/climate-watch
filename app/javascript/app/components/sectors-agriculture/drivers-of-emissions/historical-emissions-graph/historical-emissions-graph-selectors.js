@@ -239,12 +239,6 @@ const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
   const config = {
     tooltip,
     animation: true,
-    axes: {
-      yLeft: {
-        unit: 'MtCO2e',
-        label: '2014'
-      }
-    },
     theme,
     innerRadius: 50,
     outerRadius: 90,
