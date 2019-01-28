@@ -8,7 +8,7 @@ import storiesDefaultImage from 'assets/backgrounds/stories-default';
 // import SectionTitle from 'components/section-title';
 import { Icon, Button } from 'cw-components';
 import yellowWriLogo from 'assets/icons/yellow-wri-logo';
-import { WRI_WEBSITE } from 'data/constants';
+import { WRI_CLIMATE_BLOG } from 'data/constants';
 import styles from './stories-styles.scss';
 
 class Stories extends PureComponent {
@@ -16,7 +16,7 @@ class Stories extends PureComponent {
     handleAnalytics('Home', 'Clicks from home page block', title);
   };
   handleBtnClick = () => {
-    window.open(WRI_WEBSITE, '_blank');
+    window.open(WRI_CLIMATE_BLOG, '_blank');
   };
 
   handleStoryClick = (link, title) => {
