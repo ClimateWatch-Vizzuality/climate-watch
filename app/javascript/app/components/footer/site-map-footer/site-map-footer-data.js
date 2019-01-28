@@ -29,7 +29,7 @@ export const siteMapData = [
     links: [
       { title: 'About Climate Watch', href: '/about' },
       { title: 'Climate Watch Partners', href: '/about/partners' },
-      { title: 'Contact Us & Feedback', href: '/about/contact' },
+      { title: 'Sign up for updates', href: '/about/contact' },
       { title: 'Permissions & Licensing', href: '/about/permissions' },
       { title: 'FAQ', href: '/about/faq/general_questions' }
     ]
