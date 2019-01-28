@@ -90,9 +90,9 @@ const getEmissionCountrySelected = createSelector(
     if (!selectedEmissionOption) {
       return defaultCountry || countriesOptions[0];
     }
-    const { emissionCountry } = qs.parse(selectedEmissionOption);
+    const { emissionsCountry } = qs.parse(selectedEmissionOption);
     const selectedCountry = countriesOptions.find(
-      ({ value }) => value === emissionCountry
+      ({ value }) => value === emissionsCountry
     );
     return selectedCountry || defaultCountry;
   }
