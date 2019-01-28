@@ -32,6 +32,9 @@ import * as agricultureEmissionsProvider from 'providers/agriculture-emissions-p
 import * as agricultureLandAreaProvider from 'providers/agriculture-land-area-provider';
 import * as storiesProvider from 'providers/stories-provider';
 import * as latestUpdatesProvider from 'providers/latest-updates-provider';
+import * as agricultureMeatConsumptionProvider from 'providers/agriculture-meat-consumption-provider';
+import * as agricultureMeatProductionProvider from 'providers/agriculture-meat-production-provider';
+import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -62,7 +65,10 @@ const providersReducers = {
   agricultureEmissions: handleActions(agricultureEmissionsProvider),
   agricultureLandArea: handleActions(agricultureLandAreaProvider),
   stories: handleActions(storiesProvider),
-  latestUpdates: handleActions(latestUpdatesProvider)
+  latestUpdates: handleActions(latestUpdatesProvider),
+  meatConsumption: handleActions(agricultureMeatConsumptionProvider),
+  meatProduction: handleActions(agricultureMeatProductionProvider),
+  meatTrade: handleActions(agricultureMeatTradeProvider)
 };
 
 // Pages
