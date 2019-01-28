@@ -90,9 +90,9 @@ const getEmissionCountrySelected = createSelector(
     if (!selectedEmissionOption) {
       return defaultCountry || countriesOptions[0];
     }
-    const { emissionCountry } = qs.parse(selectedEmissionOption);
+    const { emissionsCountry } = qs.parse(selectedEmissionOption);
     const selectedCountry = countriesOptions.find(
-      ({ value }) => value === emissionCountry
+      ({ value }) => value === emissionsCountry
     );
     return selectedCountry || defaultCountry;
   }
@@ -154,10 +154,42 @@ const getChartData = createSelector([getAgricultureSubsectorsData], data => {
     });
     return { x, ...yItems };
   });
-  return dataParsed;
+  const arr = [];
+  dataParsed.forEach(d => {
+    const arrayOfYValues = Object.values(d)
+      .map(z => z)
+      .splice(1); // remove 'x' property
+    if (!arrayOfYValues.every(value => !value)) arr.push(d);
+  });
+  return arr;
 });
 
-const getChartDomain = createSelector([getChartData], data => {
+const getDomainX = createSelector([getChartData], data => {
+  if (!data) return 'auto';
+  const emptyColumns = data.map(d => {
+    const arrayOfYValues = Object.values(d)
+      .map(z => z)
+      .splice(1); // remove 'x' property
+    return { x: d.x, empty: arrayOfYValues.every(value => !value) };
+  });
+  const firstColumnWithDataIndex = emptyColumns.indexOf(
+    emptyColumns.find(d => !d.empty)
+  );
+  const startX =
+    firstColumnWithDataIndex === 0
+      ? 'auto'
+      : emptyColumns[firstColumnWithDataIndex].x;
+  const lastColumnWithDataIndex = emptyColumns
+    .reverse()
+    .indexOf(emptyColumns.find(d => !d.empty));
+  const endX =
+    lastColumnWithDataIndex === 0
+      ? 'auto'
+      : emptyColumns[lastColumnWithDataIndex - 1].x;
+  return [`${startX}`, `${endX}`];
+});
+
+const getChartDomain = createSelector([getChartData, getDomainX], data => {
   if (!data) return null;
   return { x: ['auto', 'auto'], y: [0, 'auto'] };
 });
