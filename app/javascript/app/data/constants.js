@@ -214,18 +214,12 @@ export const ESP_MEDIUM_ROWS = [
   'socieconomics',
   'policy_coverage',
   'geographic_coverage',
-  'reference'
+  'reference',
+  'acronym'
 ];
 
-export const ESP_NARROW_COLUMNS = [
-  'year',
-  'unit',
-  'first',
-  'last',
-  'submitting_parties',
-  'document_type'
-];
-export const ESP_WIDE_COLUMNS = ['description'];
+export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
+export const ESP_WIDE_COLUMNS = ['description', 'acronym_definition'];
 
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],

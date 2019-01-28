@@ -24,7 +24,9 @@ const replaceNavLink = ({ attribs }) => (
   </NavLink>
 );
 
-const replaceTable = tableData => <Table data={tableData} horizontalScroll />;
+const replaceTable = tableData => (
+  <Table data={tableData} horizontalScroll={false} />
+);
 
 const renderAnswer = (type, answer, tableData) => {
   switch (type) {
