@@ -7,6 +7,7 @@ import LatestUpdatesSection from './latest-updates-section/latest-updates-sectio
 import CarouselSection from './carousel-section';
 import UserCasesSection from './user-cases-section';
 import HighlightedStories from './stories';
+import SubscribeSection from './subscribe-section';
 
 import styles from './home-styles.scss';
 
