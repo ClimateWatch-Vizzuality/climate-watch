@@ -312,7 +312,9 @@ function getOptions(section, filter, filtersMeta, query, category) {
   if (section !== SECTION_NAMES.pathways) {
     if (filter === 'sectors' && query) {
       return filtersMeta[filter].filter(
-        s => query.data_sources.indexOf(s.data_source_id) > -1
+        s =>
+          !query.data_sources ||
+          query.data_sources.indexOf(s.data_source_id) > -1
       );
     }
     return filtersMeta[filter];
@@ -348,13 +350,12 @@ const getLabel = (option, filterKey) => {
   }
   return label;
 };
-const getValue = option => (
+const getValue = option =>
   option.iso ||
-    option.iso_code ||
-    option.iso_code3 ||
-    (option.id && String(option.id)) ||
-    (option.dataSourceId && String(option.dataSourceId))
-);
+  option.iso_code ||
+  option.iso_code3 ||
+  (option.id && String(option.id)) ||
+  (option.dataSourceId && String(option.dataSourceId));
 
 export const getFilterOptions = createSelector(
   [
