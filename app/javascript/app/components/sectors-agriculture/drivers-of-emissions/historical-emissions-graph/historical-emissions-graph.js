@@ -35,11 +35,13 @@ const mapStateToProps = (state, { location }) => {
   const { data: regions } = state.regions;
   const { data: countries } = state.countries;
   const ghgEmissions = state.emissions;
+  const ghgEmissionsMeta = state.ghgEmissionsMeta;
   const emissionsData = {
     agricultureEmissions,
     regions,
     countries,
     ghgEmissions,
+    ghgEmissionsMeta,
     location
   };
   const getTargetsData = getAllData(emissionsData);
