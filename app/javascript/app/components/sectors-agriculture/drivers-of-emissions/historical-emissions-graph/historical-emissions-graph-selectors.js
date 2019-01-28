@@ -1,6 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import qs from 'query-string';
-import { uniqBy } from 'lodash';
+import { uniqBy, has } from 'lodash';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -29,15 +29,16 @@ const getGhgEmissionsData = state =>
   (state.ghgEmissions && state.ghgEmissions.data) || null;
 const getGhgEmissionsLoading = state =>
   (state.ghgEmissions && state.ghgEmissions.loading) || false;
+const getGhgSources = state =>
+  (has(state, 'ghgEmissionsMeta.meta.data_source') &&
+    state.ghgEmissionsMeta.meta.data_source) ||
+  null;
+const getGhgGas = state =>
+  (has(state, 'ghgEmissionsMeta.meta.gas') &&
+    state.ghgEmissionsMeta.meta.gas) ||
+  null;
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
-
-const GHG_DEFAULT_FILTER = {
-  gas: 277,
-  location: 'WORLD',
-  source: 66
-};
-
 const AGRICULTURE_COLOR = '#0677B3';
 
 /**  LOCATIONS SELECTORS */
@@ -66,6 +67,18 @@ const getLocationsOptions = createSelector(
     return [...countries, ...regions];
   }
 );
+
+const getGhgEmissionGas = createSelector([getGhgGas], gases => {
+  if (!gases) return null;
+  const defaultGas = gases.find(s => s.label === 'All GHG');
+  return defaultGas || gases[0];
+});
+
+const getGhgEmissionSource = createSelector([getGhgSources], sources => {
+  if (!sources) return null;
+  const defaultSource = sources.find(s => s.label === 'CAIT');
+  return defaultSource || sources[0];
+});
 
 const getEmissionCountrySelected = createSelector(
   [getSourceSelection, getLocationsOptions],
@@ -166,10 +179,14 @@ const getFilterOptions = createSelector([getYColumns], yColumns => {
 
 /** PIE-CHART SELECTORS */
 const getGhgEmissionsFilter = createSelector(
-  [getEmissionCountrySelected],
-  selectedCountry => {
-    if (!selectedCountry) return GHG_DEFAULT_FILTER;
-    return { ...GHG_DEFAULT_FILTER, location: selectedCountry.value };
+  [getEmissionCountrySelected, getGhgEmissionSource, getGhgEmissionGas],
+  (selectedCountry, source, gas) => {
+    if (!selectedCountry || !source) return null;
+    return {
+      location: selectedCountry.value,
+      source: source.value,
+      gas: gas.value
+    };
   }
 );
 

@@ -5,6 +5,7 @@ import Chart from 'components/charts/chart';
 import Dropdown from 'components/dropdown';
 import RegionsProvider from 'providers/regions-provider/regions-provider';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
+import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
@@ -79,7 +80,6 @@ class HistoricalEmissionsGraph extends PureComponent {
 
   render() {
     const { emissionsCountry, ghgEmissionsFilters } = this.props;
-
     return (
       <div>
         <RegionsProvider />
@@ -87,6 +87,7 @@ class HistoricalEmissionsGraph extends PureComponent {
         <AgricultureEmissionsProvider
           isoCode3={emissionsCountry && emissionsCountry.value}
         />
+        <EmissionsMetaProvider />
         <EmissionsProvider filters={ghgEmissionsFilters} />
         <TabletLandscape>
           <div className={styles.landscapeContent}>
