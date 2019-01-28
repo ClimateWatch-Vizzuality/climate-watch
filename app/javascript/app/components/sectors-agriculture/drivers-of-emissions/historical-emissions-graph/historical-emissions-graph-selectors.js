@@ -181,7 +181,7 @@ const getFilterOptions = createSelector([getYColumns], yColumns => {
 const getGhgEmissionsFilter = createSelector(
   [getEmissionCountrySelected, getGhgEmissionSource, getGhgEmissionGas],
   (selectedCountry, source, gas) => {
-    if (!selectedCountry || !source) return null;
+    if (!selectedCountry || !source || !gas) return null;
     return {
       location: selectedCountry.value,
       source: source.value,
