@@ -320,4 +320,5 @@ export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
 
 export const WRI_WEBSITE = 'https://www.wri.org/';
+export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';
 export const RW_WEBSITE = 'https://resourcewatch.org/';
