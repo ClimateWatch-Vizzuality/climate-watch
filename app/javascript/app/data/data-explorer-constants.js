@@ -193,7 +193,19 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
 };
 
 export const MULTIPLE_LEVEL_SECTION_FIELDS = {
-  'ndc-content': [{ key: 'sectors' }, { key: 'categories' }]
+  'historical-emissions': [
+    {
+      key: 'sectors'
+    }
+  ],
+  'ndc-content': [
+    {
+      key: 'sectors'
+    },
+    {
+      key: 'categories'
+    }
+  ]
 };
 
 export const GROUPED_OR_MULTI_SELECT_FIELDS = {

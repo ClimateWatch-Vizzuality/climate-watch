@@ -444,9 +444,8 @@ const parseMultipleLevelOptions = options => {
     .map(option => {
       const updatedOption = option;
       if (option.parent_id) {
-        updatedOption.group = groupParents.find(
-          o => option.parent_id === o.parentId
-        ).name;
+        const parent = groupParents.find(o => option.parent_id === o.parentId);
+        if (parent) updatedOption.group = parent.name;
       }
       return updatedOption;
     });
