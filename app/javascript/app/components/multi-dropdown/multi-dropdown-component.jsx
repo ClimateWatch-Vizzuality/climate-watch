@@ -137,7 +137,7 @@ Dropdown.propTypes = {
 Dropdown.defaultProps = {
   className: undefined,
   label: undefined,
-  theme: undefined,
+  theme: {},
   options: undefined,
   modalOpen: undefined,
   modalClosing: undefined,

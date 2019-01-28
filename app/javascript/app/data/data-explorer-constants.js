@@ -195,7 +195,8 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
 export const MULTIPLE_LEVEL_SECTION_FIELDS = {
   'historical-emissions': [
     {
-      key: 'sectors'
+      key: 'sectors',
+      multiselect: true
     }
   ],
   'ndc-content': [

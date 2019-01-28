@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
-import MultiDropdown from 'components/dropdown/multi-dropdown';
+import MultiDropdown from 'components/multi-dropdown';
 import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {
@@ -13,6 +13,7 @@ import {
 } from 'data/data-explorer-constants';
 import { ALL_SELECTED_OPTION } from 'data/constants';
 import { isNoColumnField } from 'utils/data-explorer';
+import { isArray } from 'util';
 
 const getOptions = (filterOptions, field, addGroupId) => {
   const noAllSelected = NON_COLUMN_KEYS.includes(field);
@@ -81,23 +82,30 @@ class DataExplorerFilters extends PureComponent {
       GROUPED_OR_MULTI_SELECT_FIELDS[section].find(s => s.key === field);
     const fieldFilters = filters.map(field => {
       if (multipleSection(field)) {
+        const isMulti = multipleSection(field).multiselect;
+        const valueProp = {};
+        const values = selectedOptions ? selectedOptions[field] : null;
+        valueProp[`value${isMulti ? 's' : ''}`] = isMulti
+          ? values || []
+          : values && values[0];
+
         return (
           <MultiDropdown
             key={field}
             label={deburrCapitalize(field)}
             placeholder={`Filter by ${deburrCapitalize(field)}`}
             options={getOptions(filterOptions, field)}
-            value={
-              selectedOptions ? (
-                selectedOptions[field] && selectedOptions[field][0]
-              ) : null
-            }
+            {...valueProp}
             disabled={isDisabled(field)}
             onChange={option => {
-              handleFiltersChange({ [field]: option && option.value });
+              const selectedValue = isArray(option)
+                ? option.map(o => o.value).join()
+                : option && option.value;
+              handleFiltersChange({ [field]: selectedValue });
               handleChangeSelectorAnalytics();
             }}
             noParentSelection={multipleSection(field).noSelectableParent}
+            multiselect={isMulti}
           />
         );
       } else if (groupedSelect(field)) {
