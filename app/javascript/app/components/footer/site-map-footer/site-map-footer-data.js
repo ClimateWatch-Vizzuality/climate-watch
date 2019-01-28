@@ -31,7 +31,7 @@ export const siteMapData = [
       { title: 'Climate Watch Partners', href: '/about/partners' },
       { title: 'Contact Us & Feedback', href: '/about/contact' },
       { title: 'Permissions & Licensing', href: '/about/permissions' },
-      { title: 'FAQ', href: '/about/faq' }
+      { title: 'FAQ', href: '/about/faq/general_questions' }
     ]
   }
 ];
