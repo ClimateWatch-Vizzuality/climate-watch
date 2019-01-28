@@ -137,7 +137,7 @@ class DataExplorerFilters extends PureComponent {
 }
 
 DataExplorerFilters.propTypes = {
-  activeFilterLabel: PropTypes.string,
+  activeFilterLabel: PropTypes.object,
   section: PropTypes.string.isRequired,
   handleFiltersChange: PropTypes.func.isRequired,
   handleChangeSelectorAnalytics: PropTypes.func.isRequired,
