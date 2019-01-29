@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import actions from './geolocation-provider-actions';
 import reducers, { initialState } from './geolocation-provider-reducers';
 
+const { IPSTACK_GEOLOCATION_API_KEY } = process.env;
+
 class GeolocationProvider extends PureComponent {
   componentDidMount() {
     const { requestLocation, locationProvider } = this.props;
@@ -22,7 +24,7 @@ GeolocationProvider.propTypes = {
 };
 
 GeolocationProvider.defaultProps = {
-  locationProvider: 'https://freegeoip.net/json/'
+  locationProvider: `http://api.ipstack.com/check?access_key=${IPSTACK_GEOLOCATION_API_KEY}&format=1`
 };
 
 export { actions, reducers, initialState };

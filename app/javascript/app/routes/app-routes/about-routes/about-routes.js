@@ -27,7 +27,7 @@ export default [
     component: AboutContact,
     exact: true,
     anchor: true,
-    label: 'Contact Us & Feedback'
+    label: 'Sign Up for Updates'
   },
   {
     path: '/about/permissions',
@@ -97,6 +97,7 @@ export default [
     exact: false,
     anchor: true,
     label: 'FAQ',
-    component: () => createElement(Redirect, { to: '/about/faq/general_questions' })
+    component: () =>
+      createElement(Redirect, { to: '/about/faq/general_questions' })
   }
 ];
