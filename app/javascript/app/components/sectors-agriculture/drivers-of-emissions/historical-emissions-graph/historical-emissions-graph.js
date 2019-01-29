@@ -18,7 +18,10 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   handleEmissionTypeChange = ({ value }) => {
-    this.updateUrlParam([{ name: 'emissionType', value }]);
+    this.updateUrlParam([
+      { name: 'emissionType', value },
+      { name: 'filter', value: '' }
+    ]);
   };
 
   render() {
