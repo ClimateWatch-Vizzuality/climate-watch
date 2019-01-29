@@ -34,15 +34,17 @@ class Dropdown extends PureComponent {
       highlightedIndex,
       noParentSelection,
       placeholder,
-      disabled
+      disabled,
+      handleOnChange,
+      values
     } = this.props;
-
     const dropdown = (
       <Downshift
         itemToString={i => i && i.label}
         onStateChange={handleStateChange}
         onOuterClick={checkModalClosing}
         {...this.props}
+        onChange={handleOnChange}
       >
         {({ getInputProps, getItemProps, getRootProps }) => (
           <Selector
@@ -57,6 +59,7 @@ class Dropdown extends PureComponent {
             handleClearSelection={() => handleClearSelection()}
             disabled={disabled}
             placeholder={placeholder}
+            values={values}
             {...getRootProps({ refKey: 'innerRef' })}
           >
             <Menu
@@ -72,6 +75,7 @@ class Dropdown extends PureComponent {
               noItemsFound={noItemsFound}
               toggleOpenGroup={toggleOpenGroup}
               noParentSelection={noParentSelection}
+              theme={theme}
             />
           </Selector>
         )}
@@ -79,8 +83,10 @@ class Dropdown extends PureComponent {
     );
 
     return (
-      <div className={cx(styles.cropdown, theme, className)}>
-        {label && <div className={styles.label}>{label}</div>}
+      <div className={cx(styles.dropdown, theme.wrapper, className)}>
+        {label && (
+          <div className={cx(styles.label, theme.wrapper)}>{label}</div>
+        )}
         {dropdown}
       </div>
     );
@@ -99,9 +105,11 @@ Dropdown.propTypes = {
     PropTypes.string,
     PropTypes.number
   ]),
+  values: PropTypes.array,
   placeholder: PropTypes.string,
   searchable: PropTypes.bool,
   noItemsFound: PropTypes.string,
+  handleOnChange: PropTypes.func.isRequired,
   optionsAction: PropTypes.func,
   optionsActionKey: PropTypes.string,
   arrowPosition: PropTypes.string,
@@ -124,6 +132,42 @@ Dropdown.propTypes = {
   activeValue: PropTypes.object,
   activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   highlightedIndex: PropTypes.number
+};
+
+Dropdown.defaultProps = {
+  className: undefined,
+  label: undefined,
+  theme: {},
+  options: undefined,
+  modalOpen: undefined,
+  modalClosing: undefined,
+  value: undefined,
+  placeholder: undefined,
+  searchable: undefined,
+  noItemsFound: undefined,
+  optionsAction: undefined,
+  optionsActionKey: undefined,
+  arrowPosition: undefined,
+  noSelectedValue: undefined,
+  noParentSelection: undefined,
+  clearable: undefined,
+  groupKey: undefined,
+  handleStateChange: undefined,
+  handleClearSelection: undefined,
+  onInputClick: undefined,
+  onSelectorClick: undefined,
+  inputValue: undefined,
+  isOpen: undefined,
+  disabled: undefined,
+  showGroup: undefined,
+  toggleOpenGroup: undefined,
+  buildInputProps: undefined,
+  checkModalClosing: undefined,
+  items: undefined,
+  activeValue: undefined,
+  activeLabel: undefined,
+  highlightedIndex: undefined,
+  values: []
 };
 
 export default Dropdown;

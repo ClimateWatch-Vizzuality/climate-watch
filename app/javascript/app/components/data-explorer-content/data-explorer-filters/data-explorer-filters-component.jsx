@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
-import MultiDropdown from 'components/multi-dropdown';
+import MultiDropdown from 'components/dropdown/multi-dropdown';
 import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {
@@ -88,7 +88,6 @@ class DataExplorerFilters extends PureComponent {
         valueProp[`value${isMulti ? 's' : ''}`] = isMulti
           ? values || []
           : values && values[0];
-
         return (
           <MultiDropdown
             key={field}

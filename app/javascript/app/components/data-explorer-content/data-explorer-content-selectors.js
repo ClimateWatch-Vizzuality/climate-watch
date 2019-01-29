@@ -732,10 +732,13 @@ export const getSelectedOptions = createSelector(
           label: selectedFields[key]
         };
       } else {
-        selectedOptions[key] = selectedFields[key].map(f => ({
+        selectedOptions[key] = parseMultipleLevelOptions(
+          selectedFields[key]
+        ).map(f => ({
           value: f.value || f.slug,
           label: f.label,
-          id: f.iso_code3 || f.id || f.dataSourceId
+          id: f.iso_code3 || f.id || f.dataSourceId,
+          ...f
         }));
       }
     });

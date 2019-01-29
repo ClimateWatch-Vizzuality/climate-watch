@@ -3,19 +3,26 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deburrUpper } from 'utils/utils';
 import groupBy from 'lodash/groupBy';
+import isArray from 'lodash/isArray';
 import remove from 'lodash/remove';
 
 import Component from './multi-dropdown-component';
 
 const mapStateToProps = (
   { modalMeta },
-  { value, options, noSelectedValue }
+  { value, options, noSelectedValue, values }
 ) => {
+  const selectedValues = values || value;
   const activeValue =
-    typeof value === 'string' || typeof value === 'number'
-      ? options.find(o => o.value === value)
-      : value;
-  const activeLabel = (activeValue && activeValue.label) || noSelectedValue;
+    typeof selectedValues === 'string' || typeof selectedValues === 'number'
+      ? options.find(o => o.value === selectedValues)
+      : selectedValues;
+  const activeLabel =
+    (activeValue &&
+      (isArray(activeValue) && activeValue.length === 1
+        ? activeValue[0].label
+        : activeValue.label)) ||
+    noSelectedValue;
 
   return {
     modalOpen: modalMeta ? modalMeta.open : false,
@@ -59,7 +66,21 @@ class DropdownContainer extends PureComponent {
     groups.forEach(g => {
       listWithGroupsAndItems = listWithGroupsAndItems.concat(newItems[g]);
     });
-    return listWithGroupsAndItems;
+    return this.addIsActive(listWithGroupsAndItems);
+  };
+
+  addIsActive = itemList => {
+    const { values } = this.props;
+    const parentsWithActiveChilds = [];
+    values.forEach(v => {
+      if (v.group) parentsWithActiveChilds.push(parseInt(v.group, 10));
+    });
+    return itemList.map(i => ({
+      ...i,
+      active:
+        values.includes(i) || values.map(v => v && v.value).includes(i.value),
+      hasActiveChild: parentsWithActiveChilds.includes(i.value)
+    }));
   };
 
   filterItems = () => {
@@ -77,18 +98,43 @@ class DropdownContainer extends PureComponent {
     );
   };
 
+  handleMultiselectChange = (changes, downshiftStateAndHelpers) => {
+    const { values: selectedItems } = this.props;
+    const { onChange } = this.props;
+    const itemToRemove = selectedItems.find(
+      s => s.label === changes.inputValue
+    );
+    if (itemToRemove) {
+      const isOutsideClickChange =
+        changes && changes.type === '__autocomplete_mouseup__';
+      if (!isOutsideClickChange) {
+        selectedItems.splice(selectedItems.indexOf(itemToRemove), 1);
+      }
+    } else {
+      selectedItems.push(downshiftStateAndHelpers.selectedItem);
+    }
+    onChange(selectedItems);
+  };
+
   handleStateChange = (changes, downshiftStateAndHelpers) => {
+    const { multiselect } = this.props;
     if (!downshiftStateAndHelpers.isOpen) {
       this.setState({ inputValue: '' });
     } else if ((changes && changes.inputValue) || changes.inputValue === '') {
-      this.setState({ inputValue: changes.inputValue, highlightedIndex: 0 });
+      if (multiselect) {
+        this.handleMultiselectChange(changes, downshiftStateAndHelpers);
+      }
+      this.setState({ inputValue: changes.inputValue });
     }
-    if (changes && changes.selectedItem) {
+
+    if (changes && changes.selectedItem && !multiselect) {
       this.setState({ isOpen: false, inputValue: '' });
     }
+
     if (Object.keys(changes).indexOf('isOpen') > -1) {
       this.setState({ inputValue: '' });
     }
+
     if (
       (changes && changes.highlightedIndex) ||
       changes.highlightedIndex === 0
@@ -101,6 +147,13 @@ class DropdownContainer extends PureComponent {
     const { onChange } = this.props;
     onChange();
     this.setState({ isOpen: false, showGroup: '', inputValue: '' });
+  };
+
+  handleOnChange = selection => {
+    const { multiselect, onChange } = this.props;
+    if (!multiselect) return onChange(selection);
+    // Multiselect needs to be handled in handleStateChange as the removing changes don't trigger onChange
+    return null;
   };
 
   toggleOpenGroup = item => {
@@ -138,9 +191,12 @@ class DropdownContainer extends PureComponent {
     });
   };
 
+  checkModalClosing = () => {
+    this.setState({ isOpen: false });
+  };
+
   render() {
     const { isOpen, showGroup, inputValue, highlightedIndex } = this.state;
-
     return createElement(Component, {
       ...this.props,
       isOpen,
@@ -154,6 +210,7 @@ class DropdownContainer extends PureComponent {
       handleClearSelection: this.handleClearSelection,
       buildInputProps: this.buildInputProps,
       toggleOpenGroup: this.toggleOpenGroup,
+      handleOnChange: this.handleOnChange,
       items: this.getGroupedItems()
     });
   }
@@ -161,10 +218,21 @@ class DropdownContainer extends PureComponent {
 
 DropdownContainer.propTypes = {
   searchable: PropTypes.bool,
+  multiselect: PropTypes.bool,
   options: PropTypes.array,
   groupKey: PropTypes.string,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func.isRequired,
+  values: PropTypes.array
+};
+
+DropdownContainer.defaultProps = {
+  searchable: false,
+  multiselect: false,
+  options: [],
+  values: [],
+  groupKey: undefined,
+  placeholder: undefined
 };
 
 export default connect(mapStateToProps, null)(DropdownContainer);
