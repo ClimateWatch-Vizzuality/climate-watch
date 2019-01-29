@@ -27,8 +27,12 @@ class CountriesContextsContainer extends PureComponent {
   };
   updateCountryFilter = country =>
     this.updateUrlParam({ name: 'country', value: country.value });
+
   updateYearFilter = year =>
     this.updateUrlParam({ name: 'year', value: year.value });
+
+  handleSwitchClick = ({ value }) =>
+    this.updateUrlParam({ name: 'contextBy', value });
 
   render() {
     return (
@@ -36,6 +40,7 @@ class CountriesContextsContainer extends PureComponent {
         {...this.props}
         updateCountryFilter={this.updateCountryFilter}
         updateYearFilter={this.updateYearFilter}
+        handleSwitchClick={this.handleSwitchClick}
         handleInfoBtnClick={this.handleInfoBtnClick}
       />
     );
