@@ -593,9 +593,7 @@ CREATE TABLE public.historical_emissions_data_sources (
     id bigint NOT NULL,
     name text,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    display_name text NOT NULL,
-    metadata_dataset text NOT NULL
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -4143,7 +4141,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181205161151'),
 ('20181218163254'),
 ('20181219173718'),
-('20181220093604'),
 ('20181226160920'),
 ('20181227100559'),
 ('20181227144108');
