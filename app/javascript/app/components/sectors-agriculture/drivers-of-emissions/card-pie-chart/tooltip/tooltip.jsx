@@ -37,7 +37,7 @@ const Tooltip = ({ content }) => {
 };
 
 Tooltip.propTypes = {
-  content: PropTypes.object.isRequired
+  content: PropTypes.object
 };
 
 export default Tooltip;

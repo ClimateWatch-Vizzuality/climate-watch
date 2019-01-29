@@ -73,21 +73,17 @@ const filterByEmissionType = createSelector(
   }
 );
 
-const getYColumns = createSelector([filterByEmissionType], data => {
+export const getFilterOptions = createSelector([filterByEmissionType], data => {
   if (!data || !data.length) return null;
   const yColumns = data
     .map(({ emission_subcategory: { name } }) => ({
       label: name,
-      value: getYColumnValue(name)
+      value: getYColumnValue(name),
+      groupId: 'subSectors'
     }))
     .filter(y => y !== 'x');
   const yUniqColumns = uniqBy(yColumns, 'value');
   return yUniqColumns;
-});
-
-export const getFilterOptions = createSelector([getYColumns], yColumns => {
-  if (!yColumns) return null;
-  return yColumns.map(column => ({ ...column, groupId: 'subSectors' }));
 });
 
 export const getFiltersSelected = createSelector(
