@@ -21,12 +21,13 @@ const Menu = props => {
     noParentSelection,
     theme
   } = props;
+
   return !isOpen ? null : (
     <div className={cx(styles.menu, theme.menu)}>
       {items && items.length ? (
         items.map((item, index) => (
           <Item
-            key={`${item.label}${item.value}`}
+            key={`${item.slug}${item.id}${item.label}`}
             index={index}
             item={item}
             showGroup={showGroup}

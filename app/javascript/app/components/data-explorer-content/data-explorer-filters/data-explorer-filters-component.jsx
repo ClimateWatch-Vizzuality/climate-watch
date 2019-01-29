@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
-import MultiDropdown from 'components/dropdown/multi-dropdown';
+import MultiDropdown from 'components/multi-dropdown';
 import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {

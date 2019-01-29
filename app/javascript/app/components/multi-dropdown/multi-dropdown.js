@@ -3,19 +3,26 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deburrUpper } from 'utils/utils';
 import groupBy from 'lodash/groupBy';
+import isArray from 'lodash/isArray';
 import remove from 'lodash/remove';
 
 import Component from './multi-dropdown-component';
 
 const mapStateToProps = (
   { modalMeta },
-  { value, options, noSelectedValue }
+  { value, options, noSelectedValue, values }
 ) => {
+  const selectedValues = values || value;
   const activeValue =
-    typeof value === 'string' || typeof value === 'number'
-      ? options.find(o => o.value === value)
-      : value;
-  const activeLabel = (activeValue && activeValue.label) || noSelectedValue;
+    typeof selectedValues === 'string' || typeof selectedValues === 'number'
+      ? options.find(o => o.value === selectedValues)
+      : selectedValues;
+  const activeLabel =
+    (activeValue &&
+      (isArray(activeValue) && activeValue.length === 1
+        ? activeValue[0].label
+        : activeValue.label)) ||
+    noSelectedValue;
 
   return {
     modalOpen: modalMeta ? modalMeta.open : false,
@@ -70,7 +77,8 @@ class DropdownContainer extends PureComponent {
     });
     return itemList.map(i => ({
       ...i,
-      active: values.includes(i),
+      active:
+        values.includes(i) || values.map(v => v && v.value).includes(i.value),
       hasActiveChild: parentsWithActiveChilds.includes(i.value)
     }));
   };

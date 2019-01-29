@@ -51,11 +51,14 @@ const Selector = props => {
           className={cx(styles.value, {
             [styles.noValue]: !activeValue,
             [styles.clearable]: clearable,
-            [styles.placeholder]: !isOpen && !activeLabel
+            [styles.placeholder]:
+              !isOpen && !activeLabel && valuesSelectedLength === 0
           })}
         >
           {(isOpen && !searchable) || !isOpen ? (
-            activeLabel || placeholder || `${valuesSelectedLength} selected`
+            activeLabel ||
+            (valuesSelectedLength > 0 && `${valuesSelectedLength} selected`) ||
+            placeholder
           ) : (
             ''
           )}

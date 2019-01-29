@@ -96,7 +96,7 @@ class Dropdown extends PureComponent {
 Dropdown.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
-  theme: PropTypes.object,
+  theme: PropTypes.string,
   options: PropTypes.array,
   modalOpen: PropTypes.bool,
   modalClosing: PropTypes.bool,
