@@ -166,19 +166,22 @@ const getFiltersSelected = createSelector(
     if (!search) return filters;
     const { filter } = qs.parse(search);
     const filtersValues = filters.map(({ value }) => value);
-    const subCategoriesSelected = filter && filter.split(',') || filtersValues;
-    const filtersSelected = filters.filter(({ value }) => subCategoriesSelected.includes(value));
+    const subCategoriesSelected =
+      (filter && filter.split(',')) || filtersValues;
+    const filtersSelected = filters.filter(({ value }) =>
+      subCategoriesSelected.includes(value)
+    );
     return filtersSelected;
   }
 );
 
-const getYColumnsSelected = createSelector([getFiltersSelected],
-  (filtersSelected) => {
-    if (!filtersSelected || !filtersSelected.length)  return null;
+const getYColumnsSelected = createSelector(
+  [getFiltersSelected],
+  filtersSelected => {
+    if (!filtersSelected || !filtersSelected.length) return null;
     return filtersSelected.map(({ value }) => value);
   }
 );
-
 
 const filterDataBySelectedIndicator = createSelector(
   [filterByEmissionType, getFiltersSelected],
@@ -186,14 +189,12 @@ const filterDataBySelectedIndicator = createSelector(
     if (!data) return null;
     if (!filtersSelected) return data;
     const labels = filtersSelected.map(({ label }) => label);
-    const result = data.filter(
-      ({ emission_subcategory: { name } }) => labels.includes(name)
+    const result = data.filter(({ emission_subcategory: { name } }) =>
+      labels.includes(name)
     );
     return result;
   }
 );
-
-
 
 const getChartData = createSelector([filterDataBySelectedIndicator], data => {
   if (!data || !data.length) return null;
@@ -252,7 +253,6 @@ const getChartConfig = createSelector(
     };
   }
 );
-
 
 /** PIE-CHART SELECTORS */
 const getGhgEmissionsFilter = createSelector(
