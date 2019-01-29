@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
-import { uniqBy } from 'lodash';
+import { uniqBy, sortBy } from 'lodash';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -21,22 +21,31 @@ const getAgricultureEmissionsData = state =>
   (state.agricultureEmissions && state.agricultureEmissions.data) || null;
 
 /** LINE CHART SELECTORS */
-export const getAgricultureEmissionTypes = createSelector(
+export const getEmissionTypes = createSelector(
   [getAgricultureEmissionsData],
   data => {
-    if (!data) return null;
-    const emissionTypes = data
-      .map(({ emission_subcategory: { category_name, category_id } }) => ({
-        label: category_name,
+    if (!data || !data.length) return null;
+    const totalLabel = 'Total';
+    const emissionTypes = data.map(
+      ({ emission_subcategory: { category_name, category_id } }) => ({
+        label: category_name || totalLabel,
         value: `${category_id}`
-      }))
-      .filter(({ label }) => label);
-    return uniqBy(emissionTypes, 'value');
+      })
+    );
+    const uniqEmissionTypes = uniqBy(emissionTypes, 'value');
+    const totalOption = uniqEmissionTypes.find(
+      ({ label }) => label === totalLabel
+    );
+    const sortedEmissionTypes = sortBy(
+      uniqEmissionTypes.filter(({ label }) => label !== totalLabel),
+      ['label']
+    );
+    return [totalOption, ...sortedEmissionTypes];
   }
 );
 
 export const getEmissionTypeSelected = createSelector(
-  [getSourceSelection, getAgricultureEmissionTypes],
+  [getSourceSelection, getEmissionTypes],
   (selectedEmissionOption, emissionTypes) => {
     if (!emissionTypes) return null;
     if (!selectedEmissionOption) {
@@ -97,14 +106,6 @@ export const getFiltersSelected = createSelector(
   }
 );
 
-// const getYColumnsSelected = createSelector(
-//   [getFiltersSelected],
-//   filtersSelected => {
-//     if (!filtersSelected || !filtersSelected.length) return null;
-//     return filtersSelected.map(({ value }) => value);
-//   }
-// );
-
 const filterDataBySelectedIndicator = createSelector(
   [filterByEmissionType, getFiltersSelected],
   (data, filtersSelected) => {
@@ -154,16 +155,14 @@ export const getChartConfig = createSelector(
   [getChartData, getFiltersSelected],
   (data, yColumns) => {
     if (!data || !yColumns) return null;
-
-    const yColumnsChecked = yColumns;
     const chartColors = setChartColors(
-      yColumnsChecked.length,
+      yColumns.length,
       CHART_COLORS,
       CHART_COLORS_EXTENDED
     );
-    const theme = getThemeConfig(yColumnsChecked, chartColors);
+    const theme = getThemeConfig(yColumns, chartColors);
     colorThemeCache = { ...theme, ...colorThemeCache };
-    const tooltip = getTooltipConfig(yColumnsChecked);
+    const tooltip = getTooltipConfig(yColumns);
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,

@@ -41,6 +41,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           onValueChange={handleEmissionTypeChange}
           value={emissionType}
           hideResetButton
+          noAutoSort
         />
       </div>
     );
@@ -57,7 +58,7 @@ class HistoricalEmissionsGraph extends PureComponent {
         domain={domain}
         dataOptions={filters}
         dataSelected={filtersSelected}
-        height={400}
+        height={430}
         dot={false}
         forceFixedFormatDecimals="3"
         espGraph

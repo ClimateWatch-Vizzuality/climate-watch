@@ -11,7 +11,7 @@ import {
   getChartDomain,
   getFilterOptions,
   getFiltersSelected,
-  getAgricultureEmissionTypes,
+  getEmissionTypes,
   getEmissionTypeSelected
 } from './historical-emissions-graph-selectors/line-chart-selectors';
 
@@ -29,6 +29,6 @@ export const getAllData = createStructuredSelector({
   emissionsCountry: getEmissionCountrySelected,
   ghgEmissionsFilters: getGhgEmissionsFilter,
   pieChartData: getPieChartPayload,
-  emissionTypes: getAgricultureEmissionTypes,
+  emissionTypes: getEmissionTypes,
   emissionType: getEmissionTypeSelected
 });
