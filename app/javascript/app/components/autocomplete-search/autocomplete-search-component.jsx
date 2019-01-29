@@ -11,18 +11,12 @@ import styles from './autocomplete-search-styles.scss';
 
 class AutocompleteSearch extends PureComponent {
   render() {
-    const {
-      handleValueClick,
-      handleSearchChange,
-      searchList,
-      className,
-      placeholder
-    } = this.props;
+    const { handleValueClick, handleSearchChange, searchList } = this.props;
     return (
-      <div className={cx(styles.wrapper, className)}>
+      <div className={styles.wrapper}>
         <Dropdown
           className={theme.dropdownOptionWithArrow}
-          placeholder={placeholder}
+          placeholder="Search for a country or keyword"
           options={searchList}
           onSearchChange={handleSearchChange}
           onValueChange={handleValueClick}
@@ -45,14 +39,7 @@ class AutocompleteSearch extends PureComponent {
 AutocompleteSearch.propTypes = {
   handleValueClick: Proptypes.func.isRequired,
   handleSearchChange: Proptypes.func.isRequired,
-  searchList: Proptypes.array,
-  placeholder: Proptypes.string,
-  className: Proptypes.string
-};
-
-AutocompleteSearch.defaultProps = {
-  placeholder: 'Search for a country or keyword',
-  className: null
+  searchList: Proptypes.array
 };
 
 export default AutocompleteSearch;

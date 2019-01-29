@@ -1,35 +1,192 @@
 @import '~styles/settings.scss';
+@import '~styles/layout.scss';
 
-.homeBg {
-  background-color: $white;
-}
+.doubleFold {
+  @include columns(12);
 
-.video {
-  height: 440px;
-  width: 100%;
-  background-color: black;
-}
-
-:global .react-player__play-icon {
-  border-width: 4px 0 4px 8px !important;
-  border-color: transparent transparent transparent #0a1941 !important;
-  margin-left: 4px !important;
-
-  &::after {
-    content: 'Learn more about why we built Climate Watch and how it can help you.';
-    position: absolute;
-    color: $white;
-    font-size: 16px;
-    bottom: -50px;
-    left: -222px;
-    width: 491px;
+  @media #{$tablet-portrait} {
+    @include columns(6);
   }
 }
 
-:global .react-player__shadow {
-  background: none !important;
-  width: 54px !important;
-  height: 54px !important;
-  background-color: #ffc735 !important;
+.storiesLayout {
+  @include row();
+}
+
+.imgLayout {
+  @include columns(8);
+
+  > *:first-child {
+    @include column-offset(2, $gutters: true);
+  }
+
+  @media #{$tablet-portrait} {
+    justify-content: center;
+
+    > *:first-child {
+      min-width: 500px;
+
+      @include column-offset(0, $gutters: true);
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(12);
+
+    > *:first-child {
+      @include column-offset(0, $gutters: true);
+
+      min-width: 400px;
+
+      img {
+        height: auto;
+      }
+    }
+  }
+}
+
+.mobileDoubleAction {
+  @media #{$mobile-only} {
+    justify-content: space-between;
+    height: 140px;
+  }
+}
+
+.homeBg {
+  background-color: $light-gray;
+}
+
+.homeIntro {
+  @media #{$tablet-portrait} {
+    max-width: 450px;
+  }
+
+  @media #{$tablet-landscape} {
+    max-width: 100%;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
+}
+
+.section {
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+  @media #{$tablet-landscape} {
+    padding-bottom: 0;
+
+    &.extraPadding {
+      padding-top: 120px;
+      padding-bottom: 120px;
+    }
+  }
+}
+
+.cwLogo {
+  width: 270px;
+  height: 25px;
+  fill: $white;
+}
+
+.fullscreen {
+  border-radius: 50%;
+  position: absolute;
+  z-index: 2;
+  right: -20px;
+  top: -20px;
+}
+
+.geoLocation {
+  opacity: 1;
+  font-size: $font-size-s;
+  color: $base-text;
+  margin-bottom: 5px;
+}
+
+.geoLocationHide {
+  opacity: 0;
+}
+
+.imageLeft {
+  box-shadow: -10px 9px 30px 0 rgba(37, 89, 124, 0.15);
+}
+
+.imageRight {
+  box-shadow: 10px 9px 30px 0 rgba(37, 89, 124, 0.15);
+}
+
+.imageTall {
+  box-shadow: -10px 0 30px 0 rgba(37, 89, 124, 0.15);
+}
+
+.video {
   position: relative;
+  background: #000;
+  height: 315px;
+
+  @media #{$mobile-only} {
+    height: 200px;
+  }
+}
+
+.countries {
+  display: flex;
+  padding-bottom: 0;
+}
+
+.sdgLinkages {
+  display: flex;
+}
+
+.countries,
+.ndcs,
+.sdgLinkages,
+.ghg,
+.pathways {
+  background-image: linear-gradient(to top, $theme-color -100%, transparent 10%);
+  border-bottom: solid 1px $border-color;
+
+  @media #{$tablet-portrait} {
+    background-image: none;
+  }
+}
+
+.invertOrder {
+  order: 2;
+  margin-bottom: 0;
+
+  @media #{$tablet-landscape} {
+    order: initial;
+  }
+}
+
+.imgContainer {
+  @media #{$tablet-portrait} {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media #{$tablet-landscape} {
+    display: block;
+  }
+}
+
+.ndcImageMobile {
+  margin-right: -$gutter-padding / 2;
+  margin-left: -$gutter-padding / 2;
+  width: calc(100% + #{$gutter-padding});
 }

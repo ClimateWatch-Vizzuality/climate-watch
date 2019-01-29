@@ -30,8 +30,6 @@ import * as lawsAndPoliciesProvider from 'providers/laws-and-policies-provider';
 import * as agricultureCountriesContextsProvider from 'providers/agriculture-countries-context-provider';
 import * as agricultureEmissionsProvider from 'providers/agriculture-emissions-provider';
 import * as agricultureLandAreaProvider from 'providers/agriculture-land-area-provider';
-import * as storiesProvider from 'providers/stories-provider';
-import * as latestUpdatesProvider from 'providers/latest-updates-provider';
 
 const providersReducers = {
   login: handleModule(loginProvider),
@@ -60,9 +58,7 @@ const providersReducers = {
     agricultureCountriesContextsProvider
   ),
   agricultureEmissions: handleActions(agricultureEmissionsProvider),
-  agricultureLandArea: handleActions(agricultureLandAreaProvider),
-  stories: handleActions(storiesProvider),
-  latestUpdates: handleActions(latestUpdatesProvider)
+  agricultureLandArea: handleActions(agricultureLandAreaProvider)
 };
 
 // Pages
@@ -81,6 +77,7 @@ const pagesReducers = {
 // Components
 import * as mapComponent from 'components/map';
 import * as autocompleteSearchComponent from 'components/autocomplete-search';
+import * as storiesComponent from 'components/stories';
 import * as countrySelectComponent from 'components/countries-select';
 import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
@@ -101,6 +98,7 @@ import * as AnchorNavComponent from 'components/anchor-nav';
 const componentsReducers = {
   map: handleActions(mapComponent),
   autocompleteSearch: handleActions(autocompleteSearchComponent),
+  stories: handleActions(storiesComponent),
   countrySelect: handleActions(countrySelectComponent),
   modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),

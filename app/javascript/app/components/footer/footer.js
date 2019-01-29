@@ -172,12 +172,9 @@ const getLogos = pathname => {
     case 'pathways':
       return [...basePartners, ...espPartners].sort(alphabetically);
     default:
-      return [
-        ...basePartners,
-        ...ndcPartners,
-        ...espPartners,
-        ...countryOnlyPartners
-      ].sort(alphabetically);
+      return [...basePartners, ...ndcPartners, ...espPartners].sort(
+        alphabetically
+      );
   }
 };
 

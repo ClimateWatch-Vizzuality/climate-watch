@@ -21,21 +21,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-top: $gutter-padding;
   padding-bottom: $gutter-padding;
   color: $dark-gray;
   font-weight: $font-weight-semi-bold;
-}
-
-.partners {
-  position: relative;
-}
-
-.partnersHeadline {
-  position: absolute;
-  top: -12px;
-  left: -10px;
-  background-color: $white;
-  padding: 0 10px;
 }
 
 .contentWrapper {

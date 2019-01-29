@@ -59,7 +59,6 @@ Rails.application.routes.draw do
 
       resources :stories, only: [:index]
       resources :lse_laws_and_policies, only: [:show]
-      resources :updates, only: [:index]
 
       namespace :data do
         resources :historical_emissions, only: [:index] do

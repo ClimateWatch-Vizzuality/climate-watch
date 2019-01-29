@@ -1,0 +1,114 @@
+@import '~styles/layout.scss';
+
+.container {
+  position: relative;
+  height: 700px;
+
+  @media #{$tablet-portrait} {
+    height: 1080px;
+  }
+
+  @media #{$tablet-landscape} {
+    height: 600px;
+  }
+}
+
+.title {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: $font-size;
+  color: $white;
+  z-index: 1;
+
+  @media #{$tablet-portrait} {
+    top: $gutter-padding;
+    left: $gutter-padding;
+  }
+}
+
+.story {
+  position: relative;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-end;
+  float: left;
+  width: 50%;
+  height: 25%;
+  color: $white;
+  font-size: $font-size;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  transition: background-size 0.3s ease-in;
+
+  @media #{$tablet-portrait} {
+    padding: $gutter-padding;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(71, 44, 184, 0.1);
+    background-image: linear-gradient(-180deg, rgba($bg-blue, 0) 0%, rgba($bg-blue, 0.7) 100%);
+    z-index: -1;
+  }
+
+  &:hover::after {
+    background-image: linear-gradient(-180deg, rgba($bg-blue, 0) 0%, rgba($bg-blue, 0.2) 100%);
+  }
+
+  @media #{$tablet-portrait} {
+    height: 33%;
+    font-size: $font-size-large;
+  }
+
+  @media #{$tablet-landscape} {
+    width: 25%;
+    height: 50%;
+  }
+}
+
+.grid {
+  @include xy-grid($wrap: true);
+
+  height: 100%;
+
+  @media #{$tablet-landscape} {
+    @include xy-grid($direction: 'vertical', $wrap: true);
+  }
+
+  > a {
+    @include xy-cell(6, $gutters: 0);
+    @include xy-cell(25%, $gutters: 0, $vertical:true);
+
+    @media #{$tablet-portrait} {
+      @include xy-cell(6, $gutters: 0);
+      @include xy-cell(33.333333%, $gutters: 0, $vertical:true);
+    }
+
+    @media #{$tablet-landscape} {
+      @include xy-cell(3, $gutters: 0);
+      @include xy-cell(50%, $gutters: 0, $vertical:true);
+    }
+  }
+
+  & :first-child {
+    @include xy-cell(12, $gutters: 0);
+    @include xy-cell(50%, $gutters: 0, $vertical:true);
+
+    @media #{$tablet-portrait} {
+      @include xy-cell(12, $gutters: 0);
+      @include xy-cell(33.333333%, $gutters: 0, $vertical:true);
+    }
+
+    @media #{$tablet-landscape} {
+      @include xy-cell(6, $gutters: 0);
+      @include xy-cell(100%, $gutters: 0, $vertical:true);
+    }
+  }
+}

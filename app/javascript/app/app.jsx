@@ -6,9 +6,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import ScrollToTop from 'components/scroll-to-top';
-
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import 'cw-components/dist/main.css';
 import 'styles/sticky.scss';
 

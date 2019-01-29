@@ -19,13 +19,13 @@ export const sectionsData = [
         type: 'html',
         title: 'Can I download the data?',
         answer:
-          '<span>Yes, all the data published on Climate Watch is free and open. This means you can download data and use it for your own analysis with proper attribution. Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about using the data.<span>'
+          '<span>Yes, all the data published on Climate Watch is free and open. This means you can download data and use it for your own analysis with proper attribution. Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" /> page for more information about using the data.<span>'
       },
       {
         type: 'html',
         title: 'How do I cite Climate Watch data as a source?',
         answer:
-          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2018. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
+          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2018. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" /> page for more information about citation.  '
       },
       {
         type: 'html',
@@ -49,7 +49,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How frequently is the data updated?',
         answer:
-          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions" innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs-content" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are updated as new NDCs are submitted to the UNFCCC.</p>'
+          '<Link to="/countries" innertext="Country profiles" /> are updated at least once per year. Links to UNFCCC submissions are updated more frequently as new documents are submitted. <Link to="/ghg-emissions " innertext="Historical GHG emissions" /> are updated as available. It takes at least 1-2 years for organizations to compile, process and report GHG data; thus, the last year of complete GHG data will often be 2-3 years behind the current calendar year.<p><Link to="/ndcs" innertext="NDC content" /> is updated as new NDCs are submitted to the UNFCCC.</p><p> <Link to="/ndcs-sdg" innertext="NDC-SDG linkages" /> are updated as new NDCs are submitted to the UNFCCC.</p>'
       },
       {
         type: 'html',
@@ -59,113 +59,10 @@ export const sectionsData = [
           'Much of the data on Climate Watch is obtained from other sources and we aim to make them all transparent. Make sure you have read and understood the sources and methodologies when using Climate Watch data. If you have additional questions, please contact us at <a href="mailto:climatewatch@wri.org"> climatewatch@wri.org</a>.'
       },
       {
-        type: 'table',
+        type: 'html',
         title: 'What acronyms are used on Climate Watch?',
-        answer: '<table />',
-        tableData: [
-          {
-            acronym: 'AR2',
-            acronym_definition: "IPCC's Second Assessment Report in 1995"
-          },
-          {
-            acronym: 'AR4',
-            acronym_definition: "IPCC's Fourth Assessment Report in 2007"
-          },
-          { acronym: 'BAU', acronym_definition: 'Business As Usual' },
-          { acronym: 'BR', acronym_definition: 'Biennial Report' },
-          { acronym: 'BUR', acronym_definition: 'Biennial Update Report ' },
-          {
-            acronym: 'CAIT',
-            acronym_definition: 'Climate Analysis Indicators Tool'
-          },
-          {
-            acronym: 'CDIAC',
-            acronym_definition:
-              'Carbon Dioxide Information Analysis Center (of the U.S. Dept. of Energy)'
-          },
-          { acronym: 'CH4', acronym_definition: 'Methane' },
-          { acronym: 'CO2', acronym_definition: 'Carbon Dioxide' },
-          {
-            acronym: 'EIA',
-            acronym_definition:
-              'Energy Information Administration (of the U.S. Dept. of Energy)'
-          },
-          {
-            acronym: 'EPA',
-            acronym_definition: 'United States Environmental Protection Agency'
-          },
-          {
-            acronym: 'EU28',
-            acronym_definition: 'European Union group od 28 countries'
-          },
-          {
-            acronym: 'F-gases',
-            acronym_definition:
-              'Hydrofluorocarbons, perfluorocarbons, sulful hexafluoride, Nitrogen Trifluoride'
-          },
-          {
-            acronym: 'FAO',
-            acronym_definition:
-              'Food and Agriculture Organization of the United Nations'
-          },
-          { acronym: 'GDP', acronym_definition: 'Gross Domestic Product' },
-          { acronym: 'GHG', acronym_definition: 'Greenhouse Gas' },
-          {
-            acronym: 'Gt',
-            acronym_definition: 'Gigatonnes, or billion metric tons'
-          },
-          { acronym: 'GWP', acronym_definition: 'Global Warming Potential' },
-          { acronym: 'HFC', acronym_definition: 'Hydrofluorocarbon' },
-          { acronym: 'IEA', acronym_definition: 'International Energy Agency' },
-          {
-            acronym: 'INDC',
-            acronym_definition: 'Intended Nationally Determined Contribution'
-          },
-          {
-            acronym: 'IPCC',
-            acronym_definition: 'Intergovernmental Panel on Climate Change'
-          },
-          { acronym: 'LTS', acronym_definition: 'Long-term Strategy ' },
-          {
-            acronym: 'LUCF',
-            acronym_definition: 'Land-use Change and Forestry'
-          },
-          {
-            acronym: 'LULUCF',
-            acronym_definition: 'Land-use, land-use Change and Forestry'
-          },
-          { acronym: 'Mt', acronym_definition: 'Million metric tonnes/ tons' },
-          {
-            acronym: 'MtCO2e',
-            acronym_definition:
-              'Million metric tonnes/tons of Carbon Dioxide equivalent'
-          },
-          { acronym: 'N2O', acronym_definition: 'Nitrous Oxide' },
-          { acronym: 'NC', acronym_definition: 'National Communication' },
-          {
-            acronym: 'NDC',
-            acronym_definition: 'Nationally Determined Contributions '
-          },
-          { acronym: 'NF3', acronym_definition: 'Nitrogen Trifluoride' },
-          {
-            acronym: 'OECD',
-            acronym_definition:
-              'Organization for Economic Co-operation and Development'
-          },
-          { acronym: 'PFC', acronym_definition: 'Perfluorocarbon' },
-          {
-            acronym: 'SDG',
-            acronym_definition: 'Sustainable Development Goals'
-          },
-          { acronym: 'SF6', acronym_definition: 'Sulfur Hexafluoride' },
-          { acronym: 'UN', acronym_definition: 'United Nations' },
-          {
-            acronym: 'UNFCCC',
-            acronym_definition:
-              'United Nations Framework Convention on Climate Change'
-          },
-          { acronym: 'WRI', acronym_definition: 'World Resources Institute' }
-        ]
+        answer:
+          'Please see a list of acronyms used listed <a href="https://onewri.sharepoint.com/:x:/r/sites/climatewatch/_layouts/15/Doc.aspx?sourcedoc=%7B6036aca4-e0e4-4242-9d7c-9e21c61403c3%7D&action=default" rel="noopener noreferrer" target="_blank" >here</a>. Please also further explanation of certain terms in the sections below.'
       }
     ]
   },
@@ -186,11 +83,11 @@ export const sectionsData = [
           'UNFCCC provides official country-reported inventories; CAIT and PIK are estimates made by non-government research institutes. CAIT and PIK datasets apply a consistent methodology and are comparable across all countries included. The UNFCCC dataset is not comparable across all countries, due to the different reporting requirements and methodologies for Annex 1 and non-Annex 1 countries. The PIK dataset prioritizes country-reported inventories and fills the data gaps with secondary sources and assumptions. CAIT uses none of the self-reported inventories for individual countries and instead uses datasets with global coverage. Thus, the PIK dataset aligns better with country-reported estimates, while CAIT provides an independent inventory that compliments the other two. Among other methodology differences, CAIT uses global warming potential (GWP) values from the IPCC’s Second Assessment Report (AR2) for non-CO2 gases; PIK provides data under both AR2 and AR4 GWP values; UNFCCC data uses either AR2 and AR4, depending on the inventory methodology the party opts to follow. '
       },
       {
-        type: 'html',
+        type: 'text',
         title:
           'How significant are uncertainties in the emissions data, particularly in the land-use change and forestry sector? ',
         answer:
-          'According to the Working Group III Contribution to the IPCC Fifth Assessment Report, global CO<sub>2</sub> emissions from fossil fuel combustion are known within 8% uncertainty (90% confidence interval). CO<sub>2</sub> emissions from FOLU (forestry and other land use) have very large uncertainties attached in the order of ± 50%. Uncertainty for global emissions of CH<sub>4</sub>, N<sub>2</sub>O and the F-gases has been estimated as 20%, 60% and 20% respectively. For the PIK dataset, regional deforestation emissions are downscaled to country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. So, levels of uncertainty are quite high for earlier years of data (closer to 1850).  '
+          'According to the Working Group III Contribution to the IPCC Fifth Assessment Report, global CO2 emissions from fossil fuel combustion are known within 8% uncertainty (90% confidence interval). CO2 emissions from FOLU (forestry and other land use) have very large uncertainties attached in the order of ± 50%. Uncertainty for global emissions of CH4, N2O and the F-gases has been estimated as 20%, 60% and 20% respectively. For the PIK dataset, regional deforestation emissions are downscaled to country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. So, levels of uncertainty are quite high for earlier years of data (closer to 1850).  '
       }
     ]
   },
@@ -221,7 +118,7 @@ export const sectionsData = [
         type: 'html',
         title: 'What is the methodology behind the data? ',
         answer:
-          'The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://cait.wri.org/indc/?_ga=2.28118332.1668429314.1539630180-1825175710.1480702135" rel="noopener noreferrer" target="_blank">CAIT Paris Contributions Map</a>, <a href="http://spappssecext.worldbank.org/sites/indc/Pages/INDCHome.aspx" rel="noopener noreferrer" target="_blank">World Bank’s NDC Platform</a>, and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE’s NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">“Designing and Preparing INDCs.”</a>'
+          'The structured indicators used for presenting NDC information are adapted from several data sources, including the <a href="http://cait.wri.org/indc/?_ga=2.28118332.1668429314.1539630180-1825175710.1480702135" rel="noopener noreferrer" target="_blank">CAIT Paris Contributions Map, World Bank’s NDC Platform</a>, and  <a href="https://klimalog.die-gdi.de/ndc/#NDCExplorer/worldMap?NDC??income???catIncome" rel="noopener noreferrer" target="_blank">DIE’s NDC Explorer</a>. Please refer to respective resources for detailed documentation. The terms and phrases used in this tool follow, to the extent possible, WRI’s publication <a href="https://www.wri.org/publication/designing-and-preparing-indcs" rel="noopener noreferrer" target="_blank">“Designing and Preparing INDCs.”</a>'
       },
       {
         type: 'text',
@@ -245,7 +142,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How are the NDC-SDG linkages determined?',
         answer:
-          'WRI\'s working paper <a href="https://www.wri.org/publication/examining-alignment-between-intended-nationally-determined-contributions-and-sustainable" rel="noopener noreferrer" target="_blank" >"Examining the Alignment between the Intended Nationally Determined Contributions and the Sustainable Development Goals"</a> outlines the methodology and a more detailed technical note is forthcoming. Linkages are determined through textual analysis of the Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) to identify alignments of targets, actions, policy measures and needs. Analysis was only conducted at the target level, meaning the texts of submitted NDCs were compared against the text of the 169 SDG targets. The language in the 17 SDGs is broader than in the targets, so analysis was not conducted at that level. What appears as goal level analysis (on the landing page of the NDC-SDG module) is an aggregation of the analysis at the target level. It is important to note that this analysis only looks at countries’ NDCs and so does not necessarily reflect a country’s actions in the real world. Lastly, the analysis is inherently subjective, so other analysis may result in different conclusions. If this is the case, please let us know at <a href="mailto:climatewatch@wri.org">climatewatch@wri.org</a>. Our aim is to be entirely transparent in our analysis, identifying the exact text in the NDC for each point of alignment identified so that users can confirm for themselves.'
+          'WRI\'s working paper <a href="https://www.wri.org/publication/examining-alignment-between-intended-nationally-determined-contributions-and-sustainable" rel="noopener noreferrer" about="_blank" >"Examining the Alignment between the Intended Nationally Determined Contributions and the Sustainable Development Goals"</a> outlines the methodology and a more detailed technical note is forthcoming. Linkages are determined through textual analysis of the Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) to identify alignments of targets, actions, policy measures and needs. Analysis was only conducted at the target level, meaning the texts of submitted NDCs were compared against the text of the 169 SDG targets. The language in the 17 SDGs is broader than in the targets, so analysis was not conducted at that level. What appears as goal level analysis (on the landing page of the NDC-SDG module) is an aggregation of the analysis at the target level. It is important to note that this analysis only looks at countries’ NDCs and so does not necessarily reflect a country’s actions in the real world. Lastly, the analysis is inherently subjective, so other analysis may result in different conclusions. If this is the case, please let us know at <a href="mailto:climatewatch@wri.org">climatewatch@wri.org</a>. Our aim is to be entirely transparent in our analysis, identifying the exact text in the NDC for each point of alignment identified so that users can confirm for themselves.'
       },
       {
         type: 'text',
