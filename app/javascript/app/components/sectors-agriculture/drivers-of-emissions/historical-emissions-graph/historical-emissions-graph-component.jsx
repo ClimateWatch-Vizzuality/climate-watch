@@ -47,7 +47,7 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   renderEmissionsChart = () => {
-    const { config, data, domain, filters } = this.props;
+    const { config, data, domain, filters, filtersSelected } = this.props;
     return (
       <Chart
         className={styles.chartWrapper}
@@ -56,7 +56,7 @@ class HistoricalEmissionsGraph extends PureComponent {
         data={data}
         domain={domain}
         dataOptions={filters}
-        dataSelected={filters}
+        dataSelected={filtersSelected}
         height={400}
         dot={false}
         forceFixedFormatDecimals="3"
@@ -135,6 +135,7 @@ HistoricalEmissionsGraph.propTypes = {
   data: PropTypes.array,
   domain: PropTypes.object.isRequired,
   filters: PropTypes.array,
+  filtersSelected: PropTypes.array,
   locations: PropTypes.array,
   emissionsCountry: PropTypes.object.isRequired,
   ghgEmissionsFilters: PropTypes.object,
@@ -149,6 +150,7 @@ HistoricalEmissionsGraph.defaultProps = {
   config: PropTypes.object.isRequired,
   data: [],
   filters: [],
+  filtersSelected: [],
   locations: [],
   ghgEmissionsFilters: {},
   pieChartData: null,

@@ -131,7 +131,7 @@ const getEmissionTypeSelected = createSelector(
   }
 );
 
-const getAgricultureSubsectorsData = createSelector(
+const filterByEmissionType = createSelector(
   [getAgricultureEmissionsData, getEmissionTypeSelected],
   (data, emissionType) => {
     if (!data || !emissionType) return null;
@@ -142,7 +142,60 @@ const getAgricultureSubsectorsData = createSelector(
   }
 );
 
-const getChartData = createSelector([getAgricultureSubsectorsData], data => {
+const getYColumns = createSelector([filterByEmissionType], data => {
+  if (!data || !data.length) return null;
+  const yColumns = data
+    .map(({ emission_subcategory: { name } }) => ({
+      label: name,
+      value: getYColumnValue(name)
+    }))
+    .filter(y => y !== 'x');
+  const yUniqColumns = uniqBy(yColumns, 'value');
+  return yUniqColumns;
+});
+
+const getFilterOptions = createSelector([getYColumns], yColumns => {
+  if (!yColumns) return null;
+  return yColumns.map(column => ({ ...column, groupId: 'subSectors' }));
+});
+
+const getFiltersSelected = createSelector(
+  [getSourceSelection, getFilterOptions],
+  (search, filters) => {
+    if (!filters || !filters.length) return null;
+    if (!search) return filters;
+    const { filter } = qs.parse(search);
+    const filtersValues = filters.map(({ value }) => value);
+    const subCategoriesSelected = filter && filter.split(',') || filtersValues;
+    const filtersSelected = filters.filter(({ value }) => subCategoriesSelected.includes(value));
+    return filtersSelected;
+  }
+);
+
+const getYColumnsSelected = createSelector([getFiltersSelected],
+  (filtersSelected) => {
+    if (!filtersSelected || !filtersSelected.length)  return null;
+    return filtersSelected.map(({ value }) => value);
+  }
+);
+
+
+const filterDataBySelectedIndicator = createSelector(
+  [filterByEmissionType, getFiltersSelected],
+  (data, filtersSelected) => {
+    if (!data) return null;
+    if (!filtersSelected) return data;
+    const labels = filtersSelected.map(({ label }) => label);
+    const result = data.filter(
+      ({ emission_subcategory: { name } }) => labels.includes(name)
+    );
+    return result;
+  }
+);
+
+
+
+const getChartData = createSelector([filterDataBySelectedIndicator], data => {
   if (!data || !data.length) return null;
   const xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
   const dataParsed = xValues.map(x => {
@@ -164,52 +217,15 @@ const getChartData = createSelector([getAgricultureSubsectorsData], data => {
   return arr;
 });
 
-const getDomainX = createSelector([getChartData], data => {
-  if (!data) return 'auto';
-  const emptyColumns = data.map(d => {
-    const arrayOfYValues = Object.values(d)
-      .map(z => z)
-      .splice(1); // remove 'x' property
-    return { x: d.x, empty: arrayOfYValues.every(value => !value) };
-  });
-  const firstColumnWithDataIndex = emptyColumns.indexOf(
-    emptyColumns.find(d => !d.empty)
-  );
-  const startX =
-    firstColumnWithDataIndex === 0
-      ? 'auto'
-      : emptyColumns[firstColumnWithDataIndex].x;
-  const lastColumnWithDataIndex = emptyColumns
-    .reverse()
-    .indexOf(emptyColumns.find(d => !d.empty));
-  const endX =
-    lastColumnWithDataIndex === 0
-      ? 'auto'
-      : emptyColumns[lastColumnWithDataIndex - 1].x;
-  return [`${startX}`, `${endX}`];
-});
-
-const getChartDomain = createSelector([getChartData, getDomainX], data => {
+const getChartDomain = createSelector([getChartData], data => {
   if (!data) return null;
-  return { x: ['auto', 'auto'], y: [0, 'auto'] };
-});
-
-const getYColumns = createSelector([getAgricultureSubsectorsData], data => {
-  if (!data || !data.length) return null;
-  const yColumns = data
-    .map(({ emission_subcategory: { name } }) => ({
-      label: name,
-      value: getYColumnValue(name)
-    }))
-    .filter(y => y !== 'x');
-  const yUniqColumns = uniqBy(yColumns, 'value');
-  return yUniqColumns;
+  return { x: ['auto', 'auto'], y: ['auto', 'auto'] };
 });
 
 let colorThemeCache = {};
 
 const getChartConfig = createSelector(
-  [getChartData, getYColumns],
+  [getChartData, getFiltersSelected],
   (data, yColumns) => {
     if (!data || !yColumns) return null;
 
@@ -237,10 +253,6 @@ const getChartConfig = createSelector(
   }
 );
 
-const getFilterOptions = createSelector([getYColumns], yColumns => {
-  if (!yColumns) return null;
-  return yColumns.map(column => ({ ...column, groupId: 'subSectors' }));
-});
 
 /** PIE-CHART SELECTORS */
 const getGhgEmissionsFilter = createSelector(
@@ -367,6 +379,7 @@ export const getAllData = createStructuredSelector({
   config: getChartConfig,
   domain: getChartDomain,
   filters: getFilterOptions,
+  filtersSelected: getFiltersSelected,
   locations: getLocationsOptions,
   emissionsCountry: getEmissionCountrySelected,
   ghgEmissionsFilters: getGhgEmissionsFilter,
