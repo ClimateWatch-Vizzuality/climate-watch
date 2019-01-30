@@ -26,6 +26,15 @@ const getMeatProductionData = ({ meatProduction }) =>
 
 const getMeatTradeData = ({ meatTrade }) => meatTrade && meatTrade.data;
 
+const getWorldConsumptionData = ({ meatWorldConsumption }) =>
+  meatWorldConsumption && meatWorldConsumption.data;
+
+const getWorldProductionData = ({ meatWorldProduction }) =>
+  meatWorldProduction && meatWorldProduction.data;
+
+const getWorldTradeData = ({ meatWorldTrade }) =>
+  meatWorldTrade && meatWorldTrade.data;
+
 const getMeatConsumptionMeta = ({ meatConsumption }) =>
   meatConsumption && meatConsumption.meta;
 
@@ -171,7 +180,10 @@ const getChartData = createSelector(
     getMeatProductionData,
     getMeatTradeData,
     getSelectedCountry,
-    getBreakByValue
+    getBreakByValue,
+    getWorldConsumptionData,
+    getWorldProductionData,
+    getWorldTradeData
   ],
   (
     selectedFilters,
@@ -182,15 +194,23 @@ const getChartData = createSelector(
     productionData,
     tradeData,
     selectedCountry,
-    breakByValue
+    breakByValue,
+    worldConsumptionData,
+    worldProductionData,
+    worldTradeData
   ) => {
     if (
       !selectedFilters ||
       !productionConsumptionMeta ||
       !tradeMeta ||
       !selectedData ||
-      !selectedCountry
-    ) { return null; }
+      !selectedCountry ||
+      !worldConsumptionData ||
+      !worldProductionData ||
+      !worldTradeData
+    ) {
+      return null;
+    }
 
     const filterBreakByFn = o => o.short_name.includes(breakByValue);
 
@@ -202,7 +222,7 @@ const getChartData = createSelector(
     const showCountryData = selectedData.find(
       o => o.value === selectedCountry.value
     );
-    // const showOthersData = selectedData.find(o => o.value === 'others');
+    const showOthersData = selectedData.find(o => o.value === 'others');
 
     const xValues = isTradeIndicator
       ? tradeMeta
@@ -213,24 +233,37 @@ const getChartData = createSelector(
         .map(o => o.category);
 
     const data = { ...consumptionData, ...productionData, ...tradeData };
+    const worldData = {
+      ...worldConsumptionData,
+      ...worldProductionData,
+      ...worldTradeData
+    };
+
     const dataParsed = xValues.map(x => {
       const yItems = {};
-      if (showCountryData) {
-        const dataID = isTradeIndicator
-          ? tradeMeta.filter(filterBreakByFn).find(o => o.subcategory === x) &&
-            tradeMeta.filter(filterBreakByFn).find(o => o.subcategory === x)
-              .short_name
-          : productionConsumptionMeta
+
+      const dataID = isTradeIndicator
+        ? tradeMeta.filter(filterBreakByFn).find(o => o.subcategory === x) &&
+          tradeMeta.filter(filterBreakByFn).find(o => o.subcategory === x)
+            .short_name
+        : productionConsumptionMeta
+          .filter(filterBreakByFn)
+          .find(o => o.category === x) &&
+          productionConsumptionMeta
             .filter(filterBreakByFn)
-            .find(o => o.category === x) &&
-            productionConsumptionMeta
-              .filter(filterBreakByFn)
-              .find(o => o.category === x).short_name;
-        const parsedDataID = lowerCase(dataID)
-          .split(' ')
-          .join('_');
-        const value = (!isEmpty(data) && data[parsedDataID]) || undefined;
-        yItems.yCountry = value;
+            .find(o => o.category === x).short_name;
+      const parsedDataID = lowerCase(dataID)
+        .split(' ')
+        .join('_');
+
+      const countryValue = !isEmpty(data) && data[parsedDataID];
+      if (showCountryData) {
+        yItems.yCountry = countryValue || undefined;
+      }
+      if (showOthersData) {
+        const worldValue =
+          (!isEmpty(worldData) && worldData[parsedDataID]) || undefined;
+        yItems.yOthers = worldValue;
       }
       const item = { x, ...yItems };
       return item;
@@ -266,7 +299,9 @@ const getAxesConfig = createSelector(
     tradeMeta,
     breakByValue
   ) => {
-    if (!selectedFilters || !productionMeta || !consumptionMeta || !tradeMeta) { return null; }
+    if (!selectedFilters || !productionMeta || !consumptionMeta || !tradeMeta) {
+      return null;
+    }
 
     const allMeta = [...productionMeta, ...consumptionMeta, ...tradeMeta];
     const filterBreakByFn = o => o.short_name.includes(breakByValue);

@@ -36,7 +36,7 @@ const Tooltip = ({ content, config }) => {
           color={countryColor}
         />
         <div className={styles.value}>
-          {countryValue ? `${format('.2s')(countryValue)} ${unit}` : 'n/a'}
+          {countryValue ? `${format(',.2f')(countryValue)} ${unit}` : 'n/a'}
         </div>
       </p>
       <p className={styles.info}>
@@ -52,7 +52,7 @@ const Tooltip = ({ content, config }) => {
         />
         <div className={styles.value}>
           {otherCountriesValue ? (
-            `${format('.2s')(otherCountriesValue)} ${unit}`
+            `${format(',.2f')(otherCountriesValue)} ${unit}`
           ) : (
             'n/a'
           )}

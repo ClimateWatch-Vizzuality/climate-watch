@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MeatConsumptionProvider from 'providers/agriculture-meat-consumption-provider';
+import MeatWorldConsumptionProvider from 'providers/agriculture-world-meat-consumption-provider';
 import MeatProductionProvider from 'providers/agriculture-meat-production-provider';
+import MeatWorldProductionProvider from 'providers/agriculture-world-meat-production-provider';
 import MeatTradeProvider from 'providers/agriculture-meat-trade-provider';
+import MeatWorldTradeProvider from 'providers/agriculture-world-meat-trade-provider';
 import { Card, Icon, Chart, Dropdown } from 'cw-components';
 import NoContent from 'components/no-content';
 import infoIcon from 'assets/icons/info';
@@ -12,7 +15,8 @@ import styles from './meat-data-styles.scss';
 
 const cardTheme = {
   card: styles.card,
-  data: styles.data
+  data: styles.data,
+  contentContainer: styles.contentContainer
 };
 
 const MeatData = ({
@@ -56,6 +60,7 @@ const MeatData = ({
             {categories && (
               <Dropdown
                 label={'Categories'}
+                theme={{ select: styles.dropdown }}
                 value={selectedCategory}
                 options={categories}
                 onValueChange={updateCategoryFilter}
@@ -65,6 +70,7 @@ const MeatData = ({
             {breakByOptions && (
               <Dropdown
                 label={'Break by'}
+                theme={{ select: styles.dropdown }}
                 value={selectedBreakBy}
                 options={breakByOptions}
                 onValueChange={updateBreakByFilter}
@@ -114,6 +120,11 @@ const MeatData = ({
           params={{ country: selectedCountry.value, year: selectedYear.value }}
         />
       ]}
+    {selectedYear && [
+      <MeatWorldConsumptionProvider params={{ year: selectedYear.value }} />,
+      <MeatWorldProductionProvider params={{ year: selectedYear.value }} />,
+      <MeatWorldTradeProvider params={{ year: selectedYear.value }} />
+    ]}
   </div>
 );
 

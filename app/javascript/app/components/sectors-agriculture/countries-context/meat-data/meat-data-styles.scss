@@ -9,7 +9,7 @@
 
 .cardContainer {
   display: block;
-  padding: 30px;
+  padding: 15px 30px;
 }
 
 .chartContainer {
@@ -60,7 +60,7 @@
 }
 
 .data {
-  padding: 15px 30px;
+  padding-top: 20px;
   position: relative;
 }
 
@@ -84,5 +84,17 @@
 }
 
 .actionsContainer {
-  @include columns(3,3,6);
+  @include columns(6,6);
+
+  @media #{$tablet-landscape} {
+    @include columns(3,3,6);
+  }
+}
+
+.dropdown {
+  background-color: $white;
+}
+
+.contentContainer {
+  padding: 15px 30px;
 }
