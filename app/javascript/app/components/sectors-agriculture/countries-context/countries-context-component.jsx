@@ -7,6 +7,7 @@ import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import AgricultureCountriesContextProvider from 'providers/agriculture-countries-context-provider';
 import ButtonGroup from 'components/button-group';
 import infoIcon from 'assets/icons/info';
+import LandArea from './land-area';
 import styles from './countries-context-styles.scss';
 
 const emissionTabs = [
@@ -61,7 +62,7 @@ const CountriesContext = ({
 }) => (
   <div className={styles.container}>
     <div>
-      <h2 className={styles.header}>CountriesContext</h2>
+      <h2 className={styles.header}>Countries Context</h2>
       <div className={styles.intro}>
         <p className={styles.introText}>
           The agricultural sector differs vastly among countries and affects
@@ -164,6 +165,7 @@ const CountriesContext = ({
         <div>SELECT A COUNTRY</div>
       )}
     </div>
+    {selectedCountry && <LandArea />}
     <CountriesProvider />
     <WbCountryDataProvider />
     <AgricultureCountriesContextProvider

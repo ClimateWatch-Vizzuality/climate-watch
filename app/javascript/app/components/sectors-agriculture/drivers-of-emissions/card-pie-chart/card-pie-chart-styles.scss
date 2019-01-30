@@ -1,0 +1,54 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.agricultureLabel {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.description {
+  color: $manatee;
+
+  span {
+    color: $theme-color;
+  }
+}
+
+.labelValue {
+  font-weight: bold;
+  margin-left: 40px;
+}
+
+.portraitContent {
+  @include columns((6,6));
+
+  margin-bottom: 20px;
+}
+
+.tagTheme {
+  border: none;
+  box-shadow: none;
+  color: $theme-color;
+  font-size: $font-size;
+}
+
+.fixedCard {
+  height: 100%;
+  width: 100%;
+}
+
+.fixedCardContentContainer {
+  font-size: $font-size-s;
+  min-height: unset;
+  padding: 7px 13px;
+
+  p {
+    color: $manatee;
+    margin: 0;
+  }
+}
+
+.fixedCardData {
+  padding: 37px 31px;
+}

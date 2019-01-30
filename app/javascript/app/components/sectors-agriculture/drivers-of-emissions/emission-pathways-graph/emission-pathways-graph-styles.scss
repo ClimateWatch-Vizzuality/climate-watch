@@ -24,18 +24,6 @@ $min-height: 450px;
   }
 }
 
-.selectorsWrapper {
-  @include columns(6);
-
-  > * {
-    @include xy-gutters($gutter-position: ('bottom'));
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns(2.4);
-  }
-}
-
 .titleAndBtnsWrapper {
   @include xy-gutters($gutter-position: ('bottom'));
 
@@ -43,7 +31,19 @@ $min-height: 450px;
 }
 
 .selectorsWrapper {
+  @media #{$tablet-landscape} {
+    @include columns((8,4));
+  }
+
   margin-bottom: 40px;
+}
+
+.filtersWrapper {
+  display: inline-flex;
+
+  & > * {
+    margin-right: 20px;
+  }
 }
 
 .title {

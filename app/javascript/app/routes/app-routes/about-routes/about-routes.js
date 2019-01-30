@@ -27,7 +27,7 @@ export default [
     component: AboutContact,
     exact: true,
     anchor: true,
-    label: 'Contact Us & Feedback'
+    label: 'Sign Up for Updates'
   },
   {
     path: '/about/permissions',

@@ -43,10 +43,11 @@ const getCountries = createSelector(getLocationsData, locations => {
   }));
 });
 
-const getSelectedCountry = createSelector(
+export const getSelectedCountry = createSelector(
   [getSearch, getCountries],
   (search, countries) => {
     if (!search && !search.country && isEmpty(countries)) return null;
+    if (search && !search.country && !isEmpty(countries)) return countries[0];
     const selectedCountry = countries.find(c => c.value === search.country);
     return selectedCountry;
   }
@@ -60,7 +61,7 @@ const getYears = createSelector(getCountriesContextsData, data => {
   }));
 });
 
-const getSelectedYear = createSelector(
+export const getSelectedYear = createSelector(
   [getSearch, getYears],
   (search, years) => {
     if (!search && !search.year && !years) return null;

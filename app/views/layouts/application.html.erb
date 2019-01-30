@@ -47,10 +47,11 @@
       <script src="https://ndcpartnership.org/sites/all/themes/ndcp_v2/js/iframeHelper.js"></script>
     <% end %>
 
+    <%= javascript_pack_tag 'main' %>
+
     <% if @is_production %>
       <%= stylesheet_pack_tag 'main' %>
     <% end %>
-    <%= javascript_pack_tag 'main' %>
   </head>
 
   <body>
