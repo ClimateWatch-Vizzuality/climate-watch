@@ -159,7 +159,10 @@ export const MODULES_TO_DATA_EXPLORER_PARAMS = {
 };
 export const DATA_EXPLORER_TO_MODULES_PARAMS = {
   'historical-emissions': {
-    data_sources: { key: 'source' }
+    data_sources: { key: 'source' },
+    gases: { key: 'gases' },
+    sectors: { key: 'sectors' },
+    regions: { key: 'regions' }
   },
   'ndc-sdg-linkages': {
     goals: {
@@ -304,7 +307,7 @@ export const POSSIBLE_LABEL_FIELDS = [
   'number'
 ];
 
-export const POSSIBLE_VALUE_FIELDS = ['id', 'value'];
+export const POSSIBLE_VALUE_FIELDS = ['id', 'value', 'iso_code3', 'iso'];
 
 export const FIELD_ALIAS = {
   'historical-emissions': { 'data-sources': 'Data sources' },

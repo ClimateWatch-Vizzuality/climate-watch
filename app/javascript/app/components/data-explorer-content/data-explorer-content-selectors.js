@@ -496,7 +496,9 @@ export const parseExternalParams = createSelector(
         const filterObjects = sectionMeta[metaMatchingKey].filter(
           i =>
             ids.map(f => parseInt(f, 10)).includes(i.id) ||
-            ids.includes(i.number)
+            ids.includes(i.number) ||
+            ids.includes(i.iso_code3) ||
+            ids.includes(i.iso)
         );
         const selectedIds = filterObjects.map(labelObject => {
           const label = POSSIBLE_VALUE_FIELDS.find(
