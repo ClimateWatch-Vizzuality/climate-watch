@@ -11,9 +11,10 @@ import {
   GROUPED_OR_MULTI_SELECT_FIELDS,
   NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
-import { ALL_SELECTED_OPTION } from 'data/constants';
+import { ALL_SELECTED_OPTION, ALL_SELECTED } from 'data/constants';
 import { isNoColumnField } from 'utils/data-explorer';
-import { isArray } from 'util';
+import isArray from 'lodash/isArray';
+import last from 'lodash/last';
 
 const getOptions = (filterOptions, field, addGroupId) => {
   const noAllSelected = NON_COLUMN_KEYS.includes(field);
@@ -88,6 +89,18 @@ class DataExplorerFilters extends PureComponent {
         valueProp[`value${isMulti ? 's' : ''}`] = isMulti
           ? values || []
           : values && values[0];
+        const getSelectedValue = option => {
+          if (isArray(option)) {
+            return option.length > 0 && last(option).value === ALL_SELECTED
+              ? ALL_SELECTED
+              : option
+                .map(o => o.value)
+                .filter(v => v !== ALL_SELECTED)
+                .join();
+          }
+          return option && option.value;
+        };
+
         return (
           <MultiDropdown
             key={field}
@@ -97,10 +110,7 @@ class DataExplorerFilters extends PureComponent {
             {...valueProp}
             disabled={isDisabled(field)}
             onChange={option => {
-              const selectedValue = isArray(option)
-                ? option.map(o => o.value).join()
-                : option && option.value;
-              handleFiltersChange({ [field]: selectedValue });
+              handleFiltersChange({ [field]: getSelectedValue(option) });
               handleChangeSelectorAnalytics();
             }}
             noParentSelection={multipleSection(field).noSelectableParent}
