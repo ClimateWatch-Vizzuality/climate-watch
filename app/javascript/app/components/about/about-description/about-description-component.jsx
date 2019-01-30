@@ -34,7 +34,7 @@ const About = () => (
         </a>;
       </li>
       <li>
-        <a href="/ndcs" className={styles.link}>
+        <a href="/ndcs-content" className={styles.link}>
           A comprehensive, user-friendly database of all countries’ Nationally
           Determined Contributions (NDCs)
         </a>;
