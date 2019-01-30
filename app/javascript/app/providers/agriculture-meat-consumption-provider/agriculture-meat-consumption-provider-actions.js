@@ -22,7 +22,7 @@ const fetchMeatConsumption = createThunkAction(
         .then(data => {
           if (data) {
             const d = data.data && data.data[0];
-            const parsedData = { data: d, meta: data.meta };
+            const parsedData = { data: d || {}, meta: data.meta };
             dispatch(fetchMeatConsumptionReady(parsedData));
           } else {
             dispatch(fetchMeatConsumptionReady([]));

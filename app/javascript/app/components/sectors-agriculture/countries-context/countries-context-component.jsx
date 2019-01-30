@@ -8,6 +8,7 @@ import AgricultureCountriesContextProvider from 'providers/agriculture-countries
 import ButtonGroup from 'components/button-group';
 import infoIcon from 'assets/icons/info';
 import LandArea from './land-area';
+import MeatData from './meat-data';
 import styles from './countries-context-styles.scss';
 
 const emissionTabs = [
@@ -166,6 +167,7 @@ const CountriesContext = ({
       )}
     </div>
     {selectedCountry && <LandArea />}
+    {selectedCountry && selectedYear && <MeatData />}
     <CountriesProvider />
     <WbCountryDataProvider />
     <AgricultureCountriesContextProvider
