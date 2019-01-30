@@ -95,9 +95,7 @@ Item.propTypes = {
   highlightedIndex: PropTypes.number,
   getItemProps: PropTypes.func.isRequired,
   toggleOpenGroup: PropTypes.func.isRequired,
-  optionsAction: PropTypes.func.isRequired,
-  optionsActionKey: PropTypes.string,
-  activeValue: PropTypes.object,
+  activeValue: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   theme: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   noParentSelection: PropTypes.bool
@@ -108,7 +106,6 @@ Item.defaultProps = {
   item: undefined,
   showGroup: undefined,
   highlightedIndex: undefined,
-  optionsActionKey: undefined,
   activeValue: undefined,
   activeLabel: undefined,
   noParentSelection: false,

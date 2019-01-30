@@ -96,7 +96,7 @@ Selector.propTypes = {
   arrowPosition: PropTypes.string,
   onSelectorClick: PropTypes.func,
   clearable: PropTypes.bool,
-  activeValue: PropTypes.object,
+  activeValue: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   searchable: PropTypes.bool,
   inputProps: PropTypes.func,

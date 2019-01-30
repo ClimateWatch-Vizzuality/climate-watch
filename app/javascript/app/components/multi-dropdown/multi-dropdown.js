@@ -23,7 +23,6 @@ const mapStateToProps = (
         ? activeValue[0].label
         : activeValue.label)) ||
     noSelectedValue;
-
   return {
     modalOpen: modalMeta ? modalMeta.open : false,
     modalClosing: modalMeta ? modalMeta.closing : false,
