@@ -10,4 +10,14 @@
 
 .sectionComponent {
   margin-bottom: 100px;
+  position: relative;
+}
+
+.sectionHash {
+  position: absolute;
+  top: -130px;
+
+  @media #{$tablet-landscape} {
+    top: -79px;
+  }
 }
