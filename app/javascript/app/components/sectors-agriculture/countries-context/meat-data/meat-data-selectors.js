@@ -45,6 +45,15 @@ const getMeatTradeMeta = ({ meatTrade }) => meatTrade && meatTrade.meta;
 
 const getSearch = ({ search }) => search || null;
 
+const getCountriesCountPerIndicators = createSelector(
+  [getMeatConsumptionMeta, getMeatTradeMeta, getMeatProductionMeta],
+  (consumptionMeta, tradeMeta, productionMeta) => {
+    if (!consumptionMeta || !tradeMeta || !productionMeta) return null;
+
+    return { ...consumptionMeta[0], ...tradeMeta[0], ...productionMeta[0] };
+  }
+);
+
 const getProductionConsumptionMeta = createSelector(
   [getMeatConsumptionMeta, getMeatProductionMeta],
   (consumptionMeta, productionMeta) => {
@@ -184,7 +193,8 @@ const getChartData = createSelector(
     getBreakByValue,
     getWorldConsumptionData,
     getWorldProductionData,
-    getWorldTradeData
+    getWorldTradeData,
+    getCountriesCountPerIndicators
   ],
   (
     selectedFilters,
@@ -198,7 +208,8 @@ const getChartData = createSelector(
     breakByValue,
     worldConsumptionData,
     worldProductionData,
-    worldTradeData
+    worldTradeData,
+    countriesCountPerIndicators
   ) => {
     if (
       !selectedFilters ||
@@ -208,7 +219,8 @@ const getChartData = createSelector(
       isEmpty(selectedCountry) ||
       !worldConsumptionData ||
       !worldProductionData ||
-      !worldTradeData
+      !worldTradeData ||
+      isEmpty(countriesCountPerIndicators)
     ) {
       return null;
     }
@@ -267,7 +279,11 @@ const getChartData = createSelector(
           (!isEmpty(worldData) && worldData[parsedDataID]) || undefined;
         yItems.yOthers = worldValue;
       }
-      const item = { x, ...yItems };
+      const item = {
+        x,
+        ...yItems,
+        countriesCount: countriesCountPerIndicators[parsedDataID]
+      };
       return item;
     });
 

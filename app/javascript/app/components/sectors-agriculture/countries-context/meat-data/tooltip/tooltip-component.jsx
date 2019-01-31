@@ -10,12 +10,16 @@ import styles from './tooltip-styles.scss';
 const Tooltip = ({ content, config }) => {
   const payload = get(content, 'payload[0].payload');
   const category = (payload && payload.x) || '';
+  const countriesCount = payload && payload.countriesCount;
 
   const countryValue = payload && payload.yCountry;
   const otherCountriesValue = payload && payload.yOthers;
 
   const countryName = get(config, 'tooltip.yCountry.label');
-  const othersName = get(config, 'tooltip.yOthers.label');
+  const othersName = `${get(
+    config,
+    'tooltip.yOthers.label'
+  )} (${countriesCount})`;
 
   const countryColor = get(config, 'theme.yCountry.stroke') || '';
   const othersColor = get(config, 'theme.yOthers.stroke') || '';
