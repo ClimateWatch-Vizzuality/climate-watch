@@ -21,35 +21,30 @@ const Tooltip = ({ content, config }) => {
   const othersColor = get(config, 'theme.yOthers.stroke') || '';
   const unit = get(config, 'axes.yLeft.unit') || '';
 
+  const renderTag = (label, color) => (
+    <Tag
+      key={label}
+      label={label}
+      theme={{
+        tag: styles.tag,
+        label: styles.label
+      }}
+      canRemove={false}
+      color={color}
+    />
+  );
+
   return (
     <div className={styles.tooltip}>
       <div className={styles.category}>{category}</div>
       <p className={styles.info}>
-        <Tag
-          key="countryAgr"
-          label={countryName}
-          theme={{
-            tag: styles.tag,
-            label: styles.label
-          }}
-          canRemove={false}
-          color={countryColor}
-        />
+        {renderTag(countryName, countryColor)}
         <div className={styles.value}>
           {countryValue ? `${format(',.2f')(countryValue)} ${unit}` : 'n/a'}
         </div>
       </p>
       <p className={styles.info}>
-        <Tag
-          key="othersAgr"
-          label={othersName}
-          theme={{
-            tag: styles.tag,
-            label: styles.label
-          }}
-          canRemove={false}
-          color={othersColor}
-        />
+        {renderTag(othersName, othersColor)}
         <div className={styles.value}>
           {otherCountriesValue ? (
             `${format(',.2f')(otherCountriesValue)} ${unit}`

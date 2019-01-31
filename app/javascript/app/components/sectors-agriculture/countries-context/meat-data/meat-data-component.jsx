@@ -35,98 +35,95 @@ const MeatData = ({
   updateBreakByFilter,
   handleLegendChange,
   handleInfoBtnClick
-}) => (
-  <div className={styles.container}>
-    {chartData && (
-      <Card
-        key={'Production, Consumption and Trade'}
-        title={'Production, Consumption and Trade'}
-        theme={cardTheme}
-      >
-        <div className={styles.cardContainer}>
-          <div className={styles.header}>
-            <div className={styles.title}>
-              Many crops grown within a country are traded globally and consumed
-              elsewhere. Explore countries’ production, consumption and trade of
-              some of the main agricultural products.
+}) => {
+  const params = selectedCountry &&
+  selectedYear && { country: selectedCountry.value, year: selectedYear.value };
+  return (
+    <div className={styles.container}>
+      {chartData && (
+        <Card
+          key={'Production, Consumption and Trade'}
+          title={'Production, Consumption and Trade'}
+          theme={cardTheme}
+        >
+          <div className={styles.cardContainer}>
+            <div className={styles.header}>
+              <div className={styles.title}>
+                Many crops grown within a country are traded globally and
+                consumed elsewhere. Explore countries’ production, consumption
+                and trade of some of the main agricultural products.
+              </div>
+              <Icon
+                icon={infoIcon}
+                theme={{ icon: styles.cardInfoIcon }}
+                onClick={handleInfoBtnClick}
+              />
             </div>
-            <Icon
-              icon={infoIcon}
-              theme={{ icon: styles.cardInfoIcon }}
-              onClick={handleInfoBtnClick}
-            />
+            <div className={styles.actionsContainer}>
+              {categories && (
+                <Dropdown
+                  label={'Categories'}
+                  theme={{ select: styles.dropdown }}
+                  value={selectedCategory}
+                  options={categories}
+                  onValueChange={updateCategoryFilter}
+                  hideResetButton
+                />
+              )}
+              {breakByOptions && (
+                <Dropdown
+                  label={'Break by'}
+                  theme={{ select: styles.dropdown }}
+                  value={selectedBreakBy}
+                  options={breakByOptions}
+                  onValueChange={updateBreakByFilter}
+                  hideResetButton
+                />
+              )}
+            </div>
+            <div className={styles.chartContainer}>
+              {chartData && chartData.hasValues ? (
+                <Chart
+                  type="bar"
+                  theme={{ legend: styles.legend }}
+                  config={chartConfig}
+                  data={chartData.data}
+                  domain={domain}
+                  customTooltip={<Tooltip />}
+                  dataSelected={dataSelected}
+                  dataOptions={dataOptions}
+                  height={300}
+                  onLegendChange={handleLegendChange}
+                  barSize={40}
+                  barGap={0}
+                />
+              ) : (
+                <NoContent
+                  message="No data for selected filters"
+                  className={styles.noContent}
+                  minHeight={300}
+                />
+              )}
+            </div>
           </div>
-          <div className={styles.actionsContainer}>
-            {categories && (
-              <Dropdown
-                label={'Categories'}
-                theme={{ select: styles.dropdown }}
-                value={selectedCategory}
-                options={categories}
-                onValueChange={updateCategoryFilter}
-                hideResetButton
-              />
-            )}
-            {breakByOptions && (
-              <Dropdown
-                label={'Break by'}
-                theme={{ select: styles.dropdown }}
-                value={selectedBreakBy}
-                options={breakByOptions}
-                onValueChange={updateBreakByFilter}
-                hideResetButton
-              />
-            )}
+          <div className={styles.yearData}>
+            <span>{selectedYear && selectedYear.value}</span> data
           </div>
-          <div className={styles.chartContainer}>
-            {chartData && chartData.hasValues ? (
-              <Chart
-                type="bar"
-                theme={{ legend: styles.legend }}
-                config={chartConfig}
-                data={chartData.data}
-                domain={domain}
-                customTooltip={<Tooltip />}
-                dataSelected={dataSelected}
-                dataOptions={dataOptions}
-                height={300}
-                onLegendChange={handleLegendChange}
-                barSize={40}
-                barGap={0}
-              />
-            ) : (
-              <NoContent
-                message="No data for selected filters"
-                className={styles.noContent}
-                minHeight={300}
-              />
-            )}
-          </div>
-        </div>
-        <div className={styles.yearData}>
-          <span>{selectedYear && selectedYear.value}</span> data
-        </div>
-      </Card>
-    )}
-    {selectedCountry &&
-    selectedYear && [
-        <MeatConsumptionProvider
-          params={{ country: selectedCountry.value, year: selectedYear.value }}
-        />,
-        <MeatProductionProvider
-          params={{ country: selectedCountry.value, year: selectedYear.value }}
-        />,
-        <MeatTradeProvider
-          params={{ country: selectedCountry.value, year: selectedYear.value }}
-        />
+        </Card>
+      )}
+      {params && [
+        <MeatConsumptionProvider params={params} />,
+        <MeatProductionProvider params={params} />,
+        <MeatTradeProvider params={params} />
       ]}
-    {selectedYear && [
-      <MeatWorldConsumptionProvider params={{ year: selectedYear.value }} />,
-      <MeatWorldProductionProvider params={{ year: selectedYear.value }} />,
-      <MeatWorldTradeProvider params={{ year: selectedYear.value }} />
-    ]}
-  </div>
-);
+      {selectedYear && [
+        <MeatWorldConsumptionProvider params={{ year: selectedYear.value }} />,
+        <MeatWorldProductionProvider params={{ year: selectedYear.value }} />,
+        <MeatWorldTradeProvider params={{ year: selectedYear.value }} />
+      ]}
+    </div>
+  );
+};
 
 MeatData.propTypes = {
   selectedCountry: PropTypes.object,
