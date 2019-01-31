@@ -34,24 +34,22 @@ const Tooltip = ({ content, config }) => {
     />
   );
 
+  const renderFormattedValue = value => (
+    <div className={styles.value}>
+      {value ? `${format(',.2f')(value)} ${unit}` : 'n/a'}
+    </div>
+  );
+
   return (
     <div className={styles.tooltip}>
       <div className={styles.category}>{category}</div>
       <p className={styles.info}>
         {renderTag(countryName, countryColor)}
-        <div className={styles.value}>
-          {countryValue ? `${format(',.2f')(countryValue)} ${unit}` : 'n/a'}
-        </div>
+        {renderFormattedValue(countryValue)}
       </p>
       <p className={styles.info}>
         {renderTag(othersName, othersColor)}
-        <div className={styles.value}>
-          {otherCountriesValue ? (
-            `${format(',.2f')(otherCountriesValue)} ${unit}`
-          ) : (
-            'n/a'
-          )}
-        </div>
+        {renderFormattedValue(otherCountriesValue)}
       </p>
     </div>
   );
