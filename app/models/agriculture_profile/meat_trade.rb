@@ -1,5 +1,6 @@
 module AgricultureProfile
   class MeatTrade < ApplicationRecord
+    include LocationCountable
     belongs_to :location
 
     validates_presence_of :year

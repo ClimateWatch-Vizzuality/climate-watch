@@ -3,6 +3,7 @@ module Api
     module Data
       module AgricultureProfile
         class MeatTradesController < Api::V1::Data::ApiController
+          include CountableMetadata
           def index
             meat = ::AgricultureProfile::MeatTrade.filter(params)
 
@@ -10,7 +11,8 @@ module Api
                    adapter: :json,
                    each_serializer: Api::V1::Data::AgricultureProfile::MeatTradeSerializer,
                    root: :data,
-                   meta: ::AgricultureProfile::Metadatum.meat_trades
+                   meta: meta(::AgricultureProfile::MeatTrade,
+                              ::AgricultureProfile::Metadatum.meat_trades)
           end
         end
       end
