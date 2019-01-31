@@ -11,7 +11,8 @@ module Api
                    adapter: :json,
                    each_serializer: Api::V1::Data::AgricultureProfile::MeatTradeSerializer,
                    root: :data,
-                   meta: meta(::AgricultureProfile::MeatTrade, ::AgricultureProfile::Metadatum.meat_trades)
+                   meta: meta(::AgricultureProfile::MeatTrade,
+                              ::AgricultureProfile::Metadatum.meat_trades)
           end
         end
       end

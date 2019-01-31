@@ -8,7 +8,7 @@ module LocationCountable
   class_methods do
     def build_count_query
       sql_array = []
-      (self.column_names - %w[id year location_id]).each { |c| sql_array << "count(#{c}) as #{c}"}
+      (column_names - %w[id year location_id]).each { |c| sql_array << "count(#{c}) as #{c}" }
       sql_array.join(', ')
     end
   end
