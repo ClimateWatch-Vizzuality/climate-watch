@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
+import lowerCase from 'lodash/lowerCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -61,12 +62,15 @@ export const getCountriesCountWithProposedActions = createSelector(
   indicators => {
     if (!indicators) return 0;
 
-    const SECTORAL_ACTION_SPECIFIED_IDS = [56, 98];
+    const KEY_WORD_FOR_NO_ACTION = 'no';
 
     const locations = indicators.map(ind => ind.locations);
     const countriesWithActionsSpecified = locations.map(location =>
-      Object.keys(location).filter(countryIso =>
-        SECTORAL_ACTION_SPECIFIED_IDS.includes(location[countryIso].label_id)
+      Object.keys(location).filter(
+        countryIso =>
+          !lowerCase(location[countryIso].value).startsWith(
+            KEY_WORD_FOR_NO_ACTION
+          )
       )
     );
 
