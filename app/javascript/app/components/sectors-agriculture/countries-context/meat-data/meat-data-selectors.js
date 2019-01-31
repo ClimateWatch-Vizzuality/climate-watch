@@ -45,6 +45,15 @@ const getMeatTradeMeta = ({ meatTrade }) => meatTrade && meatTrade.meta;
 
 const getSearch = ({ search }) => search || null;
 
+const getCountriesCountPerIndicators = createSelector(
+  [getMeatConsumptionMeta, getMeatTradeMeta, getMeatProductionMeta],
+  (consumptionMeta, tradeMeta, productionMeta) => {
+    if (!consumptionMeta || !tradeMeta || !productionMeta) return null;
+
+    return { ...consumptionMeta[0], ...tradeMeta[0], ...productionMeta[0] };
+  }
+);
+
 const getProductionConsumptionMeta = createSelector(
   [getMeatConsumptionMeta, getMeatProductionMeta],
   (consumptionMeta, productionMeta) => {
@@ -62,9 +71,10 @@ const getConsumptionProductionOptions = createSelector(
     return [consumptionMeta, productionMeta].map(
       meta =>
         meta &&
-        meta[0] && {
-          label: meta[0].indicator,
-          value: meta[0].indicator
+        meta.length &&
+        meta[1] && {
+          label: meta[1].indicator,
+          value: meta[1].indicator
         }
     );
   }
@@ -183,7 +193,8 @@ const getChartData = createSelector(
     getBreakByValue,
     getWorldConsumptionData,
     getWorldProductionData,
-    getWorldTradeData
+    getWorldTradeData,
+    getCountriesCountPerIndicators
   ],
   (
     selectedFilters,
@@ -197,7 +208,8 @@ const getChartData = createSelector(
     breakByValue,
     worldConsumptionData,
     worldProductionData,
-    worldTradeData
+    worldTradeData,
+    countriesCountPerIndicators
   ) => {
     if (
       !selectedFilters ||
@@ -207,12 +219,14 @@ const getChartData = createSelector(
       isEmpty(selectedCountry) ||
       !worldConsumptionData ||
       !worldProductionData ||
-      !worldTradeData
+      !worldTradeData ||
+      isEmpty(countriesCountPerIndicators)
     ) {
       return null;
     }
 
-    const filterBreakByFn = o => o.short_name.includes(breakByValue);
+    const filterBreakByFn = o =>
+      o.short_name && o.short_name.includes(breakByValue);
 
     const isTradeIndicator =
       selectedFilters[CATEGORY_KEY] &&
@@ -265,7 +279,11 @@ const getChartData = createSelector(
           (!isEmpty(worldData) && worldData[parsedDataID]) || undefined;
         yItems.yOthers = worldValue;
       }
-      const item = { x, ...yItems };
+      const item = {
+        x,
+        ...yItems,
+        countriesCount: countriesCountPerIndicators[parsedDataID]
+      };
       return item;
     });
 
@@ -304,7 +322,8 @@ const getAxesConfig = createSelector(
     }
 
     const allMeta = [...productionMeta, ...consumptionMeta, ...tradeMeta];
-    const filterBreakByFn = o => o.short_name.includes(breakByValue);
+    const filterBreakByFn = o =>
+      o.short_name && o.short_name.includes(breakByValue);
 
     const indicatorMeta = allMeta
       .filter(filterBreakByFn)
