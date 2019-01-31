@@ -62,9 +62,10 @@ const getConsumptionProductionOptions = createSelector(
     return [consumptionMeta, productionMeta].map(
       meta =>
         meta &&
-        meta[0] && {
-          label: meta[0].indicator,
-          value: meta[0].indicator
+        meta.length &&
+        meta[1] && {
+          label: meta[1].indicator,
+          value: meta[1].indicator
         }
     );
   }
@@ -212,7 +213,8 @@ const getChartData = createSelector(
       return null;
     }
 
-    const filterBreakByFn = o => o.short_name.includes(breakByValue);
+    const filterBreakByFn = o =>
+      o.short_name && o.short_name.includes(breakByValue);
 
     const isTradeIndicator =
       selectedFilters[CATEGORY_KEY] &&
@@ -304,7 +306,8 @@ const getAxesConfig = createSelector(
     }
 
     const allMeta = [...productionMeta, ...consumptionMeta, ...tradeMeta];
-    const filterBreakByFn = o => o.short_name.includes(breakByValue);
+    const filterBreakByFn = o =>
+      o.short_name && o.short_name.includes(breakByValue);
 
     const indicatorMeta = allMeta
       .filter(filterBreakByFn)
