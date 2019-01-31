@@ -125,7 +125,11 @@ CardPieChart.propTypes = {
       })
     ),
     config: PropTypes.object
-  }).isRequired
+  })
+};
+
+CardPieChart.defaultProps = {
+  pieChartData: {}
 };
 
 export default CardPieChart;

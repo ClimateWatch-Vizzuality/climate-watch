@@ -14,9 +14,16 @@ import CardPieChart from '../card-pie-chart/card-pie-chart-component';
 
 class HistoricalEmissionsGraph extends PureComponent {
   renderFilters = () => {
-    const { locations, handleCountryChange, emissionsCountry } = this.props;
+    const {
+      locations,
+      handleCountryChange,
+      emissionsCountry,
+      emissionTypes,
+      handleEmissionTypeChange,
+      emissionType
+    } = this.props;
     return (
-      <div>
+      <div className={styles.filtersGroup}>
         <Dropdown
           key="locations"
           label="Country/Region"
@@ -26,12 +33,29 @@ class HistoricalEmissionsGraph extends PureComponent {
           value={emissionsCountry}
           hideResetButton
         />
+        <Dropdown
+          key="emissions"
+          label="Emissions"
+          className={styles.dropdown}
+          options={emissionTypes}
+          onValueChange={handleEmissionTypeChange}
+          value={emissionType}
+          hideResetButton
+          noAutoSort
+        />
       </div>
     );
   };
 
   renderEmissionsChart = () => {
-    const { config, data, domain, filters } = this.props;
+    const {
+      config,
+      data,
+      domain,
+      filters,
+      filtersSelected,
+      loading
+    } = this.props;
     return (
       <Chart
         className={styles.chartWrapper}
@@ -40,11 +64,12 @@ class HistoricalEmissionsGraph extends PureComponent {
         data={data}
         domain={domain}
         dataOptions={filters}
-        dataSelected={filters}
-        height={400}
+        dataSelected={filtersSelected}
+        height={430}
         dot={false}
-        forceFixedFormatDecimals="3"
+        forceFixedFormatDecimals={3}
         espGraph
+        loading={loading && !data}
       />
     );
   };
@@ -114,24 +139,36 @@ class HistoricalEmissionsGraph extends PureComponent {
 
 HistoricalEmissionsGraph.propTypes = {
   handleCountryChange: PropTypes.func,
-  config: PropTypes.object.isRequired,
+  handleEmissionTypeChange: PropTypes.func,
+  config: PropTypes.object,
   data: PropTypes.array,
-  domain: PropTypes.object.isRequired,
+  domain: PropTypes.object,
   filters: PropTypes.array,
+  filtersSelected: PropTypes.array,
   locations: PropTypes.array,
-  emissionsCountry: PropTypes.object.isRequired,
+  emissionsCountry: PropTypes.object,
   ghgEmissionsFilters: PropTypes.object,
-  pieChartData: PropTypes.object
+  pieChartData: PropTypes.object,
+  emissionTypes: PropTypes.array,
+  emissionType: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 HistoricalEmissionsGraph.defaultProps = {
   handleCountryChange: () => {},
-  config: PropTypes.object.isRequired,
+  handleEmissionTypeChange: () => {},
+  config: null,
+  domain: null,
   data: [],
   filters: [],
+  filtersSelected: [],
   locations: [],
   ghgEmissionsFilters: {},
-  pieChartData: null
+  pieChartData: null,
+  emissionsCountry: null,
+  emissionTypes: [],
+  emissionType: null,
+  loading: false
 };
 
 export default HistoricalEmissionsGraph;

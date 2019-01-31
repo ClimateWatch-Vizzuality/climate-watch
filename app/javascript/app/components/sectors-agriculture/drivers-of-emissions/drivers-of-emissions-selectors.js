@@ -1,7 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import qs from 'query-string';
 import { emissionTabs } from './drivers-of-emissions-data';
-import { getPieChartData } from './historical-emissions-graph/historical-emissions-graph-selectors';
+import { getPieChartData } from './historical-emissions-graph/historical-emissions-graph-selectors/pie-chart-selectors';
 
 const getSourceSelection = state =>
   (state.location && state.location.search) || null;

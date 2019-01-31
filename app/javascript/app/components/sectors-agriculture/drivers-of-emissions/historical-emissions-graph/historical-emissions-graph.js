@@ -17,10 +17,18 @@ class HistoricalEmissionsGraph extends PureComponent {
     this.updateUrlParam([{ name: 'emissionsCountry', value }]);
   };
 
+  handleEmissionTypeChange = ({ value }) => {
+    this.updateUrlParam([
+      { name: 'emissionType', value },
+      { name: 'filter', value: '' }
+    ]);
+  };
+
   render() {
     return createElement(Component, {
       ...this.props,
-      handleCountryChange: this.handleCountryChange
+      handleCountryChange: this.handleCountryChange,
+      handleEmissionTypeChange: this.handleEmissionTypeChange
     });
   }
 }
