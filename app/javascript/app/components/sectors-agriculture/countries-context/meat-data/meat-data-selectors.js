@@ -204,7 +204,7 @@ const getChartData = createSelector(
       !productionConsumptionMeta ||
       !tradeMeta ||
       !selectedData ||
-      !selectedCountry ||
+      isEmpty(selectedCountry) ||
       !worldConsumptionData ||
       !worldProductionData ||
       !worldTradeData
