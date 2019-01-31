@@ -355,7 +355,7 @@ const getChartConfig = createSelector(
       },
       theme: {
         yCountry: { stroke: '#0677B3', fill: '#0677B3' },
-        yOthers: { stroke: '#CACCD0', fill: '#CACCD0' }
+        yOthers: { stroke: '#D4D6D8', fill: '#D4D6D8' }
       }
     };
   }
