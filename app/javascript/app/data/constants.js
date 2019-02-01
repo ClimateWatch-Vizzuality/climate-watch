@@ -354,10 +354,10 @@ export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
   },
   water_withdrawal: {
     1: { name: 'No data', index: 0 },
-    2: { name: '0 - 10', index: 1 },
-    3: { name: '10 - 100', index: 2 },
-    4: { name: '100 - 1,000', index: 3 },
-    5: { name: '> 1,000', index: 4 }
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
   },
   employment_agri_female: {
     1: { name: 'No data', index: 0 },
