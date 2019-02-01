@@ -25,21 +25,33 @@ class CountriesContextsContainer extends PureComponent {
   handleInfoBtnClick = () => {
     // TODO: Implement info button click
   };
-  updateCountryFilter = country =>
-    this.updateUrlParam({ name: 'country', value: country.value });
 
-  updateYearFilter = year =>
-    this.updateUrlParam({ name: 'year', value: year.value });
+  updateCountryFilter = ({ value }) =>
+    this.updateUrlParam({ name: 'country', value });
+
+  updateCountryYearFilter = ({ value }) =>
+    this.updateUrlParam({ name: 'countryYear', value });
+
+  updateIndicatorYearFilter = ({ value }) =>
+    this.updateUrlParam({ name: 'indicatorYear', value });
+
+  updateIndicatorFilter = ({ value }) =>
+    this.updateUrlParam({ name: 'contextMapIndicator', value });
 
   handleSwitchClick = ({ value }) =>
     this.updateUrlParam({ name: 'contextBy', value });
+
+  updateFilter = ({ value, filter }) =>
+    this.updateUrlParam({ name: filter, value });
 
   render() {
     return (
       <Component
         {...this.props}
         updateCountryFilter={this.updateCountryFilter}
-        updateYearFilter={this.updateYearFilter}
+        updateCountryYearFilter={this.updateCountryYearFilter}
+        updateIndicatorYearFilter={this.updateIndicatorYearFilter}
+        updateIndicatorFilter={this.updateIndicatorFilter}
         handleSwitchClick={this.handleSwitchClick}
         handleInfoBtnClick={this.handleInfoBtnClick}
       />

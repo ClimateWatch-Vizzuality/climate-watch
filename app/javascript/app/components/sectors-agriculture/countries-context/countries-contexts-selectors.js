@@ -53,25 +53,33 @@ export const getSelectedCountry = createSelector(
   }
 );
 
-const getYears = createSelector(getCountriesContextsData, data => {
-  if (isEmpty(data)) return null;
-  return sortBy(data, 'year').map(r => ({
-    label: r.year.toString(),
-    value: r.year.toString()
-  }));
-});
+const getYears = createSelector(
+  [getCountriesContextsData, getSelectedCountry],
+  (data, selectedCountry) => {
+    if (isEmpty(data) || !selectedCountry) return null;
+    const selectedCountryData = data.filter(
+      d => d.iso_code3 === selectedCountry.value
+    );
+    return sortBy(selectedCountryData, 'year').map(r => ({
+      label: r.year.toString(),
+      value: r.year.toString()
+    }));
+  }
+);
 
 export const getSelectedYear = createSelector(
   [getSearch, getYears],
   (search, years) => {
-    if (!search && !search.year && !years) return null;
+    if (!search && !search.countryYear && !years) return null;
     if (
-      (!search || !search.year || !some(years, ['value', search.year])) &&
+      (!search ||
+        !search.countryYear ||
+        !some(years, ['value', search.countryYear])) &&
       years
     ) {
       return years[0];
     }
-    return { label: search.year, value: search.year };
+    return { label: search.countryYear, value: search.countryYear };
   }
 );
 
@@ -88,8 +96,10 @@ const getCardsData = createSelector(
     if (isEmpty(contextsData) || isEmpty(wbData)) return null;
     const c = country || countries[0];
     const y = year || years[0];
-    const yearData = contextsData.find(d => d.year === parseInt(y.value, 10));
     const countryCode = c.value;
+    const yearData = contextsData
+      .filter(d => d.year === parseInt(y.value, 10))
+      .find(d => d.iso_code3 === countryCode);
     const wbCountryData =
       wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {};
 
@@ -208,6 +218,7 @@ const getCardsData = createSelector(
 );
 
 export const countriesContexts = createStructuredSelector({
+  query: getSearch,
   years: getYears,
   selectedYear: getSelectedYear,
   countries: getCountries,
