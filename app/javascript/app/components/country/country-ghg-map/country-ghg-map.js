@@ -95,7 +95,7 @@ class CountryGhgMapContainer extends Component {
 
   fetchData = props => {
     const { sourceSelected, fetchGhgEmissionsMapData, defaultValues } = props;
-    if (sourceSelected && sourceSelected.value) {
+    if (sourceSelected) {
       fetchGhgEmissionsMapData({
         source: sourceSelected.value,
         gas: defaultValues.gas,

@@ -5,7 +5,8 @@ import {
 } from 'data/constants';
 
 export const getGhgEmissionDefaults = (source, meta) => {
-  const defaults = DEFAULT_EMISSIONS_SELECTIONS[source.name];
+  const sourceName = source.name || source.label;
+  const defaults = DEFAULT_EMISSIONS_SELECTIONS[sourceName];
   if (!defaults) return {};
 
   const sectorDefaults = defaults.sector;

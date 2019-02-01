@@ -144,7 +144,7 @@ export const getSelectorDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta || isEmpty(meta)) return null;
-    return getGhgEmissionDefaults(sourceSelected.label, meta);
+    return getGhgEmissionDefaults(sourceSelected, meta);
   }
 );
 
