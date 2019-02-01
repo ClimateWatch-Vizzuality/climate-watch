@@ -316,3 +316,65 @@ export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
 export const WRI_WEBSITE = 'https://www.wri.org/';
 export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';
 export const RW_WEBSITE = 'https://resourcewatch.org/';
+
+export const AGRICULTURE_INDICATORS_NAMES = {
+  total_pesticides_use: 'Pesticides consumption',
+  total_fertilizers: 'Fertilizers consumption',
+  value_added_Agr: 'Agriculture value added',
+  water_withdrawal: 'Water withdrawal',
+  employment_agri_female: 'Female employment',
+  employment_agri_male: 'Male employment',
+  employment_agri_total: 'Total employment'
+};
+
+export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
+  total_pesticides_use: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '0 - 10 tonnes', index: 1 },
+    3: { name: '10 - 100 tonnes', index: 2 },
+    4: { name: '100 - 1,000 tonnes', index: 3 },
+    5: { name: '> 1,000 tonnes', index: 4 }
+  },
+  total_fertilizers: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '0 - 10 tonnes', index: 1 },
+    3: { name: '10 - 100 tonnes', index: 2 },
+    4: { name: '100 - 1,000 tonnes', index: 3 },
+    5: { name: '> 1,000 tonnes', index: 4 }
+  },
+  value_added_Agr: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  },
+  water_withdrawal: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '0 - 10 kg/ha', index: 1 },
+    3: { name: '10 - 100 kg/ha', index: 2 },
+    4: { name: '100 - 1,000 kg/ha', index: 3 },
+    5: { name: '> 1,000 kg/ha', index: 4 }
+  },
+  employment_agri_female: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  },
+  employment_agri_male: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  },
+  employment_agri_total: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  }
+};
