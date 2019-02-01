@@ -34,7 +34,8 @@ class ContextByIndicatorContainer extends PureComponent {
     return (
       (countryData &&
         countryData.value &&
-        `${format(',.2s')(countryData.value)} ${selectedIndicator.unit}`) ||
+        `${format(',.2s')(countryData.value)} ${selectedIndicator.unit ||
+          '%'}`) ||
       'No data'
     );
   }
