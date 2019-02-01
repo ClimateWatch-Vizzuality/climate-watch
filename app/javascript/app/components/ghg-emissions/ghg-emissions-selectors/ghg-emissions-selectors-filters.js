@@ -4,12 +4,7 @@ import uniq from 'lodash/uniq';
 import isEqual from 'lodash/isEqual';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortEmissionsByValue, sortLabelByAlpha } from 'utils/graphs';
-import {
-  ALL_SELECTED,
-  ALL_SELECTED_OPTION,
-  TOP_EMITTERS_OPTION,
-  METRIC_OPTIONS
-} from 'data/constants';
+import { TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
 import {
   getData,
   getMeta,
@@ -249,19 +244,16 @@ const getFiltersSelected = field =>
         (field === 'location' ? options.regions : options[toPlural(field)]);
       if (!defaults) return null;
       if (!selected || !fieldOptions || isEmpty(fieldOptions)) {
-        return defaults[field] || [ALL_SELECTED_OPTION];
+        return defaults[field];
       }
       let selectedFilters = [];
       if (selected) {
-        if (selected === ALL_SELECTED) selectedFilters = [ALL_SELECTED_OPTION];
-        else {
-          const selectedValues = selected.split(',');
-          selectedFilters = fieldOptions.filter(
-            filter =>
-              selectedValues.indexOf(String(filter.value)) !== -1 ||
-              selectedValues.indexOf(filter.iso_code3) !== -1
-          );
-        }
+        const selectedValues = selected.split(',');
+        selectedFilters = fieldOptions.filter(
+          filter =>
+            selectedValues.indexOf(String(filter.value)) !== -1 ||
+            selectedValues.indexOf(filter.iso_code3) !== -1
+        );
       }
       return selectedFilters;
     }

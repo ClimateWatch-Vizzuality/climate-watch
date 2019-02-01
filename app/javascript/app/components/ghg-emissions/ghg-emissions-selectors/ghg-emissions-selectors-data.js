@@ -3,7 +3,6 @@ import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
-import isEqual from 'lodash/isEqual';
 import { toPlural } from 'utils/ghg-emissions';
 import {
   getYColumnValue,
@@ -16,7 +15,6 @@ import {
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG,
   DATA_SCALE,
-  ALL_SELECTED_OPTION,
   METRIC_OPTIONS
 } from 'data/constants';
 import { getWBData } from './ghg-emissions-selectors-get';
@@ -137,9 +135,6 @@ export const getLegendDataSelected = createSelector(
       return null;
     }
     const dataSelected = selectedOptions[selectedModel];
-    if (dataSelected && isEqual(dataSelected[0], ALL_SELECTED_OPTION)) {
-      return options[model];
-    }
     if (expandedLegendRegionsSelected) {
       return expandedLegendRegionsSelected.filter(c => c && !c.hideLegend);
     }

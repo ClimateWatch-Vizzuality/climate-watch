@@ -13,22 +13,12 @@ import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
-import { ALL_SELECTED_OPTION, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import styles from './ghg-emissions-styles.scss';
 
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
-const addAllSelected = (filterOptions, f) => {
-  const noAllSelected = NO_ALL_SELECTED_COLUMNS.includes(f);
-  if (noAllSelected) return filterOptions && filterOptions[f];
-  return (
-    (filterOptions &&
-    filterOptions[f] && [ALL_SELECTED_OPTION, ...filterOptions[f]]) ||
-    []
-  );
-};
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -49,7 +39,7 @@ class GhgEmissions extends PureComponent {
         infoText="Stacked and percentage charts are only available if the selected regions do not have countries in common"
         label={label || startCase(field)}
         placeholder={`Filter by ${startCase(field)}`}
-        options={addAllSelected(options, field) || []}
+        options={options[field] || []}
         onValueChange={selected => handleChange(field, selected)}
         value={value || null}
         hideResetButton
@@ -128,18 +118,19 @@ class GhgEmissions extends PureComponent {
             options={options.regions || []}
             values={getValues(selectedOptions.regionsSelected)}
             onValueChange={selected => handleChange('regions', selected)}
+            hideResetButton
           />
           <MultiDropdown
             label="Sectors / Subsectors"
             theme={{ wrapper: styles.dropdown }}
-            options={addAllSelected(options, 'sectors')}
+            options={options.sectors}
             values={selectedOptions.sectorsSelected || []}
             onChange={selected => handleChange('sectors', selected)}
             multiselect
           />
           <Multiselect
             label={'Gases'}
-            options={addAllSelected(options, 'gases')}
+            options={options.gases}
             values={getValues(selectedOptions.gasesSelected)}
             onValueChange={selected => handleChange('gases', selected)}
           />
