@@ -106,7 +106,7 @@ ContextByIndicatorComponent.propTypes = {
   indicatorSelectedYear: PropTypes.shape({}),
   countryData: PropTypes.shape({}),
   legend: PropTypes.shape({}),
-  paths: PropTypes.shape({}),
+  paths: PropTypes.arrayOf(PropTypes.shape({})),
   tooltipTxt: PropTypes.string,
   updateIndicatorFilter: PropTypes.func.isRequired,
   updateIndicatorYearFilter: PropTypes.func.isRequired,
