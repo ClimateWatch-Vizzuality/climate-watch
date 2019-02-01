@@ -5,7 +5,9 @@ import {
   ComposableMap,
   ZoomableGroup,
   Geographies,
-  Geography
+  Geography,
+  Markers,
+  Marker
 } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import { Motion, spring } from 'react-motion';
@@ -32,6 +34,7 @@ class Map extends PureComponent {
       tooltipId,
       handleZoomIn,
       handleZoomOut,
+      handleMarkerClick,
       countryNameTooltip,
       onCountryClick,
       onCountryMove,
@@ -40,7 +43,8 @@ class Map extends PureComponent {
       onCountryFocus,
       onCountryBlur,
       defaultStyle,
-      controlPosition
+      controlPosition,
+      markers
     } = this.props;
     const getMotionStyle = () => {
       const xCenter = (customCenter && customCenter[0]) || center[0];
@@ -57,6 +61,58 @@ class Map extends PureComponent {
         })
       };
     };
+
+    const renderMarkers = () => (
+      <Markers>
+        {markers.map(marker => (
+          <Marker key={marker.name} marker={marker} onClick={handleMarkerClick}>
+            <rect
+              id="svgCircle"
+              width={20}
+              height={20}
+              x={-6}
+              y={-5}
+              rx={10}
+              ry={10}
+              style={{
+                fill: '#0D384E',
+                opacity: 1
+              }}
+            />
+            <rect
+              id="svgRectangle"
+              width={147}
+              height={20}
+              x={-135}
+              y={-5}
+              rx={10}
+              ry={10}
+              style={{
+                fill: '#0D384E',
+                opacity: 0
+              }}
+            />
+            <text
+              id="platformName"
+              textAnchor="middle"
+              x={-62}
+              y={8.5}
+              style={{
+                fontFamily: 'Lato, sans-serif',
+                fontSize: 12,
+                fill: '#fff',
+                stroke: 'none',
+                opacity: 0
+              }}
+            >
+              {marker.name}
+            </text>
+            {marker.pin}
+          </Marker>
+        ))}
+      </Markers>
+    );
+
     return (
       <TabletLandscape>
         {matches => (
@@ -147,6 +203,7 @@ class Map extends PureComponent {
                           return null;
                         })}
                     </Geographies>
+                    {markers && markers.length && renderMarkers()}
                   </ZoomableGroup>
                 </ComposableMap>
               )}
@@ -174,6 +231,7 @@ Map.propTypes = {
   countryNameTooltip: PropTypes.bool.isRequired,
   handleZoomIn: PropTypes.func,
   handleZoomOut: PropTypes.func,
+  handleMarkerClick: PropTypes.func,
   onCountryEnter: PropTypes.func,
   onCountryClick: PropTypes.func,
   onCountryMove: PropTypes.func,
@@ -181,7 +239,8 @@ Map.propTypes = {
   onCountryFocus: PropTypes.func,
   onCountryBlur: PropTypes.func,
   controlPosition: PropTypes.string,
-  defaultStyle: PropTypes.object.isRequired
+  defaultStyle: PropTypes.object.isRequired,
+  markers: PropTypes.array
 };
 
 Map.defaultProps = {
@@ -201,6 +260,8 @@ Map.defaultProps = {
   onCountryEnter: () => {},
   onCountryMove: () => {},
   onCountryLeave: () => {},
+  handleMarkerClick: () => {},
+  markers: [],
   defaultStyle: {
     default: {
       fill: '#E5E5EB',
