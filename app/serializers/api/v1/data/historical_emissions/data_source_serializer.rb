@@ -3,7 +3,7 @@ module Api
     module Data
       module HistoricalEmissions
         class DataSourceSerializer < ActiveModel::Serializer
-          attributes :id, :name
+          attributes :id, :name, :display_name
         end
       end
     end

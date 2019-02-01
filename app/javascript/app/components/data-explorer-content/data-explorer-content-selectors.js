@@ -24,15 +24,14 @@ import {
   POSSIBLE_LABEL_FIELDS,
   POSSIBLE_VALUE_FIELDS,
   NON_COLUMN_KEYS,
-  TOP_EMITTERS_OPTION,
   FILTER_DEFAULTS,
   FILTERS_DATA_WITHOUT_MODEL
 } from 'data/data-explorer-constants';
 import {
-  SOURCE_VERSIONS,
   ALL_SELECTED,
   ALL_SELECTED_OPTION,
-  CONTAINED_PATHNAME
+  CONTAINED_PATHNAME,
+  TOP_EMITTERS_OPTION
 } from 'data/constants';
 import {
   getPathwaysModelOptions,
@@ -112,14 +111,10 @@ export const getSourceOptions = createSelector(
     ) {
       return null;
     }
-    return SOURCE_VERSIONS.map(option => {
-      const dataSource = sectionMeta.data_sources.find(
-        s => s.name === option.dataSourceSlug
-      );
-      const version = sectionMeta.gwps.find(s => s.name === option.versionSlug);
+    return sectionMeta.data_sources.map(option => {
       const updatedOption = option;
-      updatedOption.dataSourceId = dataSource && dataSource.id;
-      updatedOption.versionId = version && version.id;
+      updatedOption.dataSourceId = option.id;
+      updatedOption.name = option.display_name;
       return updatedOption;
     });
   }
@@ -143,6 +138,14 @@ const findSelectedValueObject = (meta, selectedId) =>
       String(option.id) === selectedId
   );
 
+const addTopEmittersMembers = (isosArray, regions, key) => {
+  if (key === FILTER_NAMES.regions && isosArray.includes('TOP')) {
+    const topRegion = regions.find(r => r.iso === 'TOP');
+    if (topRegion) return isosArray.concat(topRegion.members);
+  }
+  return isosArray;
+};
+
 function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
   const filterIds = {};
   const subcategories =
@@ -158,7 +161,11 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
     }
 
     const parsedKey = correctedKey.replace('-', '_');
-    const selectedIds = parsedFilters[key].split(',');
+    const selectedIds = addTopEmittersMembers(
+      parsedFilters[key].split(','),
+      metadata.regions,
+      key
+    );
 
     const filters = [];
     if (metadataWithSubcategories[parsedKey]) {
@@ -176,7 +183,6 @@ function extractFilterIds(parsedFilters, metadata, isLinkQuery = false) {
       );
     }
   });
-
   return filterIds;
 }
 
@@ -195,13 +201,10 @@ export const getFilterQuery = createSelector(
   [getSectionMeta, getSearch, getSection],
   (sectionMeta, search, section) => {
     if (!sectionMeta || isEmpty(sectionMeta)) return null;
-    const paramsToColumns = { 'data-sources': 'source' };
     const searchKeys = Object.keys(search);
     const parsedSearchKeys = searchKeys.map(k => {
       const keyWithoutSectionPrefix = k.replace(`${section}-`, '');
-      return (
-        paramsToColumns[keyWithoutSectionPrefix] || keyWithoutSectionPrefix
-      );
+      return keyWithoutSectionPrefix;
     });
     const filterDefaultKeys = Object.keys(FILTER_DEFAULTS[section]);
     const noExternalParams = !searchKeys.some(s =>
@@ -306,7 +309,16 @@ export const getCategory = createSelector(
 );
 
 function getOptions(section, filter, filtersMeta, query, category) {
-  if (section !== SECTION_NAMES.pathways) return filtersMeta[filter];
+  if (section !== SECTION_NAMES.pathways) {
+    if (filter === 'sectors' && query) {
+      return filtersMeta[filter].filter(
+        s =>
+          !query.data_sources ||
+          query.data_sources.indexOf(s.data_source_id) > -1
+      );
+    }
+    return filtersMeta[filter];
+  }
   switch (filter) {
     case FILTER_NAMES.models:
       return getPathwaysModelOptions(query, filtersMeta, filter);
@@ -338,6 +350,12 @@ const getLabel = (option, filterKey) => {
   }
   return label;
 };
+const getValue = option =>
+  option.iso ||
+  option.iso_code ||
+  option.iso_code3 ||
+  (option.id && String(option.id)) ||
+  (option.dataSourceId && String(option.dataSourceId));
 
 export const getFilterOptions = createSelector(
   [
@@ -380,24 +398,31 @@ export const getFilterOptions = createSelector(
       );
     }
     if (filterKeys.includes('countries')) filtersMeta.countries = countries;
-    if (filterKeys.includes('source')) filtersMeta.source = sourceVersions;
+    if (filterKeys.includes('data-sources')) {
+      filtersMeta['data-sources'] = sourceVersions;
+    }
 
     const filterOptions = {};
     filterKeys.forEach(f => {
       const options = getOptions(section, f, filtersMeta, query, category);
       if (options) {
+        if (f === 'regions') options.unshift(TOP_EMITTERS_OPTION);
         const optionsArray = options.map(option => {
-          const label = getLabel(option, f);
-          const value =
-            option.iso_code ||
-            option.iso_code3 ||
-            (option.id && String(option.id)) ||
-            (option.dataSourceId &&
-              `${option.dataSourceId}-${option.versionId}`);
-          return { ...option, value, label };
+          const updatedOption = { ...option };
+          updatedOption.label = getLabel(option, f);
+          updatedOption.value = getValue(option);
+          if (f === 'regions') {
+            updatedOption.iso = option.iso_code3;
+            const regionMembers =
+              option.members && option.members.map(m => m.iso_code3);
+            if (regionMembers) {
+              updatedOption.members = regionMembers;
+              updatedOption.iso = regionMembers;
+              updatedOption.groupId = 'regions';
+            }
+          }
+          return updatedOption;
         });
-
-        if (f === 'regions') optionsArray.unshift(TOP_EMITTERS_OPTION);
         filterOptions[f] = optionsArray;
       }
     });
@@ -407,21 +432,21 @@ export const getFilterOptions = createSelector(
 
 const parseMultipleLevelOptions = options => {
   const groupParents = [];
+  const hasChildren = d => options.some(o => String(o.parent_id) === d.value);
   const finalOptions = options
-    .map(option => {
-      const updatedOption = option;
-      if (!option.parent_id) {
-        updatedOption.groupParent = option.name;
-        groupParents.push({ parentId: option.id, name: option.name });
+    .map(o => {
+      const updatedOption = o;
+      if (!o.parent_id && hasChildren(o)) {
+        updatedOption.groupParent = o.name;
+        groupParents.push({ parentId: o.id, name: o.name });
       }
       return updatedOption;
     })
-    .map(option => {
-      const updatedOption = option;
-      if (option.parent_id) {
-        updatedOption.group = groupParents.find(
-          o => option.parent_id === o.parentId
-        ).name;
+    .map(o => {
+      const updatedOption = o;
+      if (o.parent_id) {
+        const parent = groupParents.find(p => o.parent_id === p.parentId);
+        if (parent) updatedOption.group = parent.name;
       }
       return updatedOption;
     });
@@ -448,22 +473,6 @@ const parseGroupsInOptions = createSelector(
   }
 );
 
-const mergeSourcesAndVersions = filters => {
-  const dataSourceFilter = filters['data-sources'];
-  const versionFilter = filters.gwps;
-  const updatedFilters = filters;
-  if (dataSourceFilter || dataSourceFilter === '') {
-    if (dataSourceFilter === ALL_SELECTED) {
-      updatedFilters.source = ALL_SELECTED;
-    } else {
-      updatedFilters.source = `${dataSourceFilter}-${versionFilter}`;
-    }
-    delete updatedFilters['data-sources'];
-    delete updatedFilters.gwps;
-  }
-  return updatedFilters;
-};
-
 export const parseExternalParams = createSelector(
   [getSearch, getSection, getFilterOptions, getSectionMeta],
   (search, section, filterOptions, sectionMeta) => {
@@ -488,7 +497,9 @@ export const parseExternalParams = createSelector(
         const filterObjects = sectionMeta[metaMatchingKey].filter(
           i =>
             ids.map(f => parseInt(f, 10)).includes(i.id) ||
-            ids.includes(i.number)
+            ids.includes(i.number) ||
+            ids.includes(i.iso_code3) ||
+            ids.includes(i.iso)
         );
         const selectedIds = filterObjects.map(labelObject => {
           const label = POSSIBLE_VALUE_FIELDS.find(
@@ -511,20 +522,6 @@ const findFilterOptions = (options, selectedFilters) =>
     })
   );
 
-const forceAR2OnCAIT = (parsedSelectedFilters, filterOptions) => {
-  const dataSourceId = parsedSelectedFilters.source.split('-')[0];
-  const selectedOption = filterOptions.source.find(o =>
-    o.value.startsWith(dataSourceId)
-  );
-  if (selectedOption && selectedOption.dataSourceSlug === 'CAIT') {
-    const CAIT_AR2_OPTION = filterOptions.source.find(
-      o => o.label === 'CAIT - AR2'
-    );
-    return { ...parsedSelectedFilters, source: CAIT_AR2_OPTION.value };
-  }
-  return parsedSelectedFilters;
-};
-
 export const getSelectedFilters = createSelector(
   [getSearch, getSection, getFilterOptions],
   (search, section, filterOptions) => {
@@ -535,16 +532,10 @@ export const getSelectedFilters = createSelector(
     );
     const selectedKeys = nonExternalKeys.filter(k => k.startsWith(section));
     const sectionRelatedFields = pick(selectedFields, selectedKeys);
-    let parsedSelectedFilters = mergeSourcesAndVersions(
-      removeFiltersPrefix(sectionRelatedFields, section)
+    const parsedSelectedFilters = removeFiltersPrefix(
+      sectionRelatedFields,
+      section
     );
-
-    if (parsedSelectedFilters.source) {
-      parsedSelectedFilters = forceAR2OnCAIT(
-        parsedSelectedFilters,
-        filterOptions
-      );
-    } // Remove when GHG emissions has the correct version options
 
     const selectedFilterObjects = {};
     Object.keys(parsedSelectedFilters).forEach(filterKey => {
@@ -727,8 +718,8 @@ export const getActiveFilterLabel = createSelector(
   [getSelectedFilters],
   selectedFields => {
     const regions = selectedFields && selectedFields.regions;
-    if (!regions || regions.length > 1) return null;
-    return regions[0] && regions[0].label;
+    if (!regions || regions.length > 1) return { regions: null };
+    return { regions: regions[0] && regions[0].label };
   }
 );
 
@@ -744,10 +735,13 @@ export const getSelectedOptions = createSelector(
           label: selectedFields[key]
         };
       } else {
-        selectedOptions[key] = selectedFields[key].map(f => ({
+        selectedOptions[key] = parseMultipleLevelOptions(
+          selectedFields[key]
+        ).map(f => ({
           value: f.value || f.slug,
           label: f.label,
-          id: f.iso_code3 || f.id || `${f.dataSourceId}-${f.versionId}`
+          id: f.iso_code3 || f.id || f.dataSourceId,
+          ...f
         }));
       }
     });

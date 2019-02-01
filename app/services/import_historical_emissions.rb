@@ -1,13 +1,15 @@
 class ImportHistoricalEmissions
   # rubocop:disable LineLength
-  META_SECTORS_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors.csv".freeze
+  META_SOURCES_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sources.csv".freeze
+  META_SECTORS_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors_NEW.csv".freeze
   DATA_CAIT_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_CAIT.csv".freeze
   DATA_PIK_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_PIK.csv".freeze
-  DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC.csv".freeze
+  DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC_NEW.csv".freeze
   # rubocop:enable LineLength
   #
   def call
     cleanup
+    import_sources(S3CSVReader.read(META_SOURCES_FILEPATH))
     import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
     import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
     import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
@@ -26,6 +28,25 @@ class ImportHistoricalEmissions
     HistoricalEmissions::Record.delete_all
   end
 
+  def source_attributes(row)
+    {
+      name: row[:name],
+      display_name: row[:display_name],
+      metadata_dataset: row[:metadata_dataset]
+    }
+  end
+
+  def import_sources(content)
+    content.each do |row|
+      next if HistoricalEmissions::DataSource.find_by(
+        name: row[:name]
+      )
+
+      source = source_attributes(row)
+      HistoricalEmissions::DataSource.create!(source)
+    end
+  end
+
   def sector_attributes(row)
     {
       name: row[:sector],
@@ -41,11 +62,12 @@ class ImportHistoricalEmissions
   def import_sectors(content)
     content.each do |row|
       next if HistoricalEmissions::Sector.
-          joins(:data_source).
-          find_by(
-            name: row[:sector],
-            'historical_emissions_data_sources.name' => row[:source]
-          )
+        joins(:data_source).
+        find_by(
+          name: row[:sector],
+          'historical_emissions_data_sources.name' => row[:source]
+        )
+
       sector = sector_attributes(row)
       HistoricalEmissions::Sector.create!(sector)
     end

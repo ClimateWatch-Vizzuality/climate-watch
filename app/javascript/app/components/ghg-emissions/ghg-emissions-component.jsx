@@ -3,42 +3,71 @@ import PropTypes from 'prop-types';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
-import Dropdown from 'components/dropdown';
+import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
-import MultiSelect from 'components/multiselect';
-import Chart from 'components/charts/chart';
+import MultiDropdown from 'components/multi-dropdown';
+import { Chart, Multiselect, Dropdown } from 'cw-components';
+import ReactTooltip from 'react-tooltip';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
-
+import { toPlural } from 'utils/ghg-emissions';
+import startCase from 'lodash/startCase';
+import isArray from 'lodash/isArray';
+import lineIcon from 'assets/icons/line_chart.svg';
+import areaIcon from 'assets/icons/area_chart.svg';
+import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import styles from './ghg-emissions-styles.scss';
+
+const getValues = value => (value && (isArray(value) ? value : [value])) || [];
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+
+  renderDropdown(label, field, icons) {
+    const {
+      selected: selectedOptions,
+      options,
+      handleChange,
+      chartTypeDisabled
+    } = this.props;
+    const value = selectedOptions && selectedOptions[`${field}Selected`];
+    const iconsProp = icons ? { icons } : {};
+    return (
+      <Dropdown
+        key={field}
+        info={field === 'chartType'}
+        infoText="Stacked and percentage charts are only available if the selected regions do not have countries in common"
+        label={label || startCase(field)}
+        placeholder={`Filter by ${startCase(field)}`}
+        options={options[field] || []}
+        onValueChange={selected => handleChange(field, selected)}
+        value={value || null}
+        hideResetButton
+        disabled={field === 'chartType' && chartTypeDisabled}
+        {...iconsProp}
+      />
+    );
+  }
+
   render() {
     const {
       data,
       domain,
       config,
       groups,
-      sources,
-      sourceSelected,
-      handleSourceChange,
       handleInfoClick,
-      versions,
-      versionSelected,
-      handleVersionChange,
-      breaksBy,
-      breakSelected,
-      handleBreakByChange,
-      filters,
-      filtersSelected,
-      handleFilterChange,
+      handleChange,
       providerFilters,
       loading,
-      activeFilterRegion,
-      downloadLink
+      downloadLink,
+      options,
+      selected: selectedOptions,
+      legendOptions,
+      legendSelected,
+      fieldToBreakBy,
+      hideRemoveOptions
     } = this.props;
-
+    const { chartTypeSelected } = selectedOptions;
     const renderButtonGroup = () => (
       <ButtonGroup
         className={styles.colEnd}
@@ -64,61 +93,71 @@ class GhgEmissions extends PureComponent {
         ]}
       />
     );
-
+    const icons = {
+      line: lineIcon,
+      area: areaIcon,
+      percentage: percentageIcon
+    };
     return (
       <div>
-        <h2 className={styles.title}>Global Historical Emissions</h2>
+        <div className={styles.titleContainer}>
+          <h2 className={styles.title}>Global Historical Emissions</h2>
+          <TabletLandscape>
+            <div className={styles.buttonGroup}>{renderButtonGroup()}</div>
+          </TabletLandscape>
+        </div>
+        <WorldBankDataProvider />
         <RegionsProvider />
         <EmissionsMetaProvider />
         <EmissionsProvider filters={providerFilters} />
         <div className={styles.col4}>
-          <Dropdown
-            label="Source"
-            options={sources}
-            onValueChange={handleSourceChange}
-            value={sourceSelected}
+          {this.renderDropdown('Source', 'sources')}
+          <Multiselect
+            label={'Regions'}
+            groups={groups}
+            options={options.regions || []}
+            values={getValues(selectedOptions.regionsSelected)}
+            onValueChange={selected => handleChange('regions', selected)}
             hideResetButton
           />
-          <Dropdown
-            label="IPCC Version"
-            options={versions}
-            onValueChange={handleVersionChange}
-            value={versionSelected}
-            hideResetButton
-            disabled={versions && versions.length === 1}
+          <MultiDropdown
+            label="Sectors / Subsectors"
+            theme={{ wrapper: styles.dropdown }}
+            options={options.sectors}
+            values={selectedOptions.sectorsSelected || []}
+            onChange={selected => handleChange('sectors', selected)}
+            multiselect
           />
-          <Dropdown
-            label="Select by"
-            options={breaksBy}
-            onValueChange={handleBreakByChange}
-            value={breakSelected}
-            hideResetButton
+          <Multiselect
+            label={'Gases'}
+            options={options.gases}
+            values={getValues(selectedOptions.gasesSelected)}
+            onValueChange={selected => handleChange('gases', selected)}
           />
-          <MultiSelect
-            selectedLabel={activeFilterRegion ? activeFilterRegion.label : null}
-            label={breakSelected.label}
-            groups={breakSelected.value === 'location' ? groups : null}
-            values={filtersSelected || []}
-            options={filters || []}
-            onMultiValueChange={handleFilterChange}
-          />
-          <TabletLandscape>{renderButtonGroup()}</TabletLandscape>
+          {this.renderDropdown('Break by', 'breakBy')}
+          {this.renderDropdown(null, 'chartType', icons)}
         </div>
         <Chart
           className={styles.chartWrapper}
-          type="line"
+          type={chartTypeSelected && chartTypeSelected.value}
+          theme={{ legend: styles.legend }}
           config={config}
           data={data}
           domain={domain}
-          dataOptions={filters}
-          dataSelected={filtersSelected}
+          dataOptions={legendOptions}
+          dataSelected={legendSelected || []}
           height={500}
           loading={loading}
+          lineType="linear"
+          showUnit
+          onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+          hideRemoveOptions={hideRemoveOptions}
         />
         <TabletPortraitOnly>
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
         </TabletPortraitOnly>
         <ModalMetadata />
+        <ReactTooltip />
       </div>
     );
   }
@@ -128,24 +167,20 @@ GhgEmissions.propTypes = {
   data: PropTypes.array,
   domain: PropTypes.object,
   config: PropTypes.object,
+  options: PropTypes.object,
+  selected: PropTypes.object,
+  fieldToBreakBy: PropTypes.string,
+  legendOptions: PropTypes.array,
+  legendSelected: PropTypes.array,
   groups: PropTypes.array,
-  versions: PropTypes.array,
-  versionSelected: PropTypes.object,
-  handleVersionChange: PropTypes.func.isRequired,
-  sources: PropTypes.array,
-  sourceSelected: PropTypes.object,
+  handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  handleSourceChange: PropTypes.func.isRequired,
-  breaksBy: PropTypes.array,
-  breakSelected: PropTypes.object,
   providerFilters: PropTypes.object,
-  handleBreakByChange: PropTypes.func.isRequired,
-  filters: PropTypes.array,
-  filtersSelected: PropTypes.array,
-  handleFilterChange: PropTypes.func.isRequired,
   loading: PropTypes.bool,
   activeFilterRegion: PropTypes.object,
-  downloadLink: PropTypes.string
+  downloadLink: PropTypes.string,
+  chartTypeDisabled: PropTypes.bool,
+  hideRemoveOptions: PropTypes.bool
 };
 
 export default GhgEmissions;

@@ -77,8 +77,9 @@ class CountryGhgEmissions extends PureComponent {
         }
       ];
 
-    const link = `/ghg-emissions?breakBy=location&filter=${iso}`;
-    const href = `/contained/ghg-emissions?breakBy=location&filter=${iso}&isNdcp=true`;
+    const link = `/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS
+      .ABSOLUTE_VALUE.value}&regions=${iso}`;
+    const href = `/contained${link}&isNdcp=true`;
 
     return [
       <ButtonGroup

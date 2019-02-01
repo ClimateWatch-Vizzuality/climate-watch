@@ -1,10 +1,12 @@
 @import '~styles/layout.scss';
+@import '~styles/utils.scss';
 
 $dd-height: 45px;
 
 .dropdown {
   width: auto;
   text-align: left;
+  margin-top: 3px;
 }
 
 .label {
@@ -32,6 +34,24 @@ $dd-height: 45px;
   .arrow {
     transform: rotate(180deg);
   }
+}
+
+.activeMark {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: $theme-color;
+}
+
+.childrenActiveMark {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: solid 2px $theme-color;
 }
 
 .disabled {
@@ -100,7 +120,7 @@ $dd-height: 45px;
     }
 
     &::placeholder {
-      color: $placeholder-gray;
+      color: $athens-gray;
     }
 
     &:read-only {
@@ -150,6 +170,9 @@ $dd-height: 45px;
   background-color: $white;
 
   .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     padding: rem(12px) rem(10px);
     border-bottom: 1px solid $border-color;

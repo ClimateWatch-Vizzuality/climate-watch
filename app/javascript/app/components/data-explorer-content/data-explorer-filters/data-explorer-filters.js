@@ -6,12 +6,14 @@ import { noEmptyValues } from 'utils/utils';
 import { PropTypes } from 'prop-types';
 import { actions } from 'components/modal-download';
 import isArray from 'lodash/isArray';
+import last from 'lodash/last';
 import {
   DATA_EXPLORER_FILTERS,
   DATA_EXPLORER_DEPENDENCIES,
   FILTER_DEFAULTS,
   NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
+import { ALL_SELECTED } from 'data/constants';
 import { handleAnalytics } from 'utils/analytics';
 import DataExplorerFiltersComponent from './data-explorer-filters-component';
 import {
@@ -19,7 +21,6 @@ import {
   addYearOptions,
   getSelectedOptions
 } from '../data-explorer-content-selectors';
-import { ALL_SELECTED } from '../../../data/constants';
 
 const mapStateToProps = (state, { section, location }) => {
   const search = getSearch(location);
@@ -56,7 +57,7 @@ const mapStateToProps = (state, { section, location }) => {
     filters: DATA_EXPLORER_FILTERS[section],
     filterOptions: addYearOptions(dataState),
     selectedOptions,
-    activeFilterRegion: getActiveFilterLabel(dataState)
+    activeFilterLabel: getActiveFilterLabel(dataState)
   };
 };
 
@@ -76,52 +77,22 @@ const getDependentKeysToDelete = (section, filterName) => {
   );
 };
 
-const sourceAndVersionParam = (value, section) => {
-  const values = value && value.split('-');
-  return [
-    {
-      name: `${section}-data-sources`,
-      value: (value && values[0]) || ''
-    },
-    {
-      name: `${section}-gwps`,
-      value: (value && values[1]) || ''
-    }
-  ];
-};
-
 const parsedMultipleValues = value => {
-  const selectedValue = value[value.length - 1];
-  if (
-    selectedValue &&
-    selectedValue.groupId &&
-    selectedValue.groupId === 'regions'
-  ) {
-    return [selectedValue.value];
-  }
+  if (last(value) && last(value).value === ALL_SELECTED) return ALL_SELECTED;
   const parseValue = value.map(filter => filter.value);
   return parseValue.length === 0 ? undefined : parseValue.toString();
 };
 
 const getParamsToUpdate = (updatedFilters, section) => {
-  const SOURCE_AND_VERSION_KEY = 'source';
-  let paramsToUpdate = [];
+  const paramsToUpdate = [];
   Object.keys(updatedFilters).forEach(filterName => {
     const value = updatedFilters[filterName];
     const parsedValue = isArray(value) ? parsedMultipleValues(value) : value;
-    if (filterName === SOURCE_AND_VERSION_KEY) {
-      paramsToUpdate = paramsToUpdate.concat(
-        sourceAndVersionParam(value, section)
-      );
-    } else {
-      const blankValue = NON_COLUMN_KEYS.includes(filterName)
-        ? ''
-        : ALL_SELECTED;
-      paramsToUpdate.push({
-        name: `${section}-${filterName}`,
-        value: parsedValue || blankValue // Allow blank value to override the defaults. These won't be fetched
-      });
-    }
+    const blankValue = NON_COLUMN_KEYS.includes(filterName) ? '' : ALL_SELECTED;
+    paramsToUpdate.push({
+      name: `${section}-${filterName}`,
+      value: parsedValue || blankValue // Allow blank value to override the defaults. These won't be fetched
+    });
   });
   return paramsToUpdate;
 };

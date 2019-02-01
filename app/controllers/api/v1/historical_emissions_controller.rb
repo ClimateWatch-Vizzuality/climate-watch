@@ -4,7 +4,6 @@ module Api
       :data_sources,
       :sectors,
       :gases,
-      :gwps,
       :locations
     ) do
       alias_method :read_attribute_for_serialization, :send
@@ -20,7 +19,7 @@ module Api
           }, status: :bad_request and return
         end
 
-        render json: ::HistoricalEmissions::Record.find_by_params(params),
+        render json: ::HistoricalEmissions::Record.find_by_params(index_params),
                each_serializer: Api::V1::HistoricalEmissions::RecordSerializer,
                params: params
       end
@@ -29,9 +28,8 @@ module Api
         render(
           json: HistoricalEmissionsMetadata.new(
             merged_records(grouped_records),
-            ::HistoricalEmissions::Sector.all,
+            fetch_meta_sectors,
             ::HistoricalEmissions::Gas.all,
-            ::HistoricalEmissions::Gwp.all,
             Location.all
           ),
           serializer: Api::V1::HistoricalEmissions::MetadataSerializer
@@ -40,10 +38,29 @@ module Api
 
       private
 
+      def fetch_meta_sectors
+        return ::HistoricalEmissions::Sector.all if deeply_nested_sectors?
+
+        ::HistoricalEmissions::Sector.first_and_second_level
+      end
+
+      def index_params
+        return params if deeply_nested_sectors?
+
+        not_deeply_nested_ids = ::HistoricalEmissions::Sector.first_and_second_level.pluck(:id)
+        sector_ids = (params[:sector] || '').split(',') | not_deeply_nested_ids
+
+        params.merge(sector: sector_ids.join(','))
+      end
+
       def valid_params(params)
         params[:source] && (
           params[:location] || params[:sector] || params[:gas]
         )
+      end
+
+      def deeply_nested_sectors?
+        params.fetch(:deeply_nested_sectors, 'true') == 'true'
       end
 
       def grouped_records
@@ -53,8 +70,7 @@ module Api
               data_source_id,
               ARRAY_AGG(DISTINCT sector_id) AS sector_ids,
               ARRAY_AGG(DISTINCT gas_id) AS gas_ids,
-              ARRAY_AGG(DISTINCT location_id) AS location_ids,
-              ARRAY_AGG(DISTINCT gwp_id) AS gwp_ids
+              ARRAY_AGG(DISTINCT location_id) AS location_ids
             SQL
           ).
           group('data_source_id').
@@ -68,7 +84,9 @@ module Api
           all.map do |source|
             {
               id: source.id,
-              name: source.name
+              name: source.name,
+              display_name: source.display_name,
+              metadata_dataset: source.metadata_dataset
             }.merge(records[source.id])
           end
       end

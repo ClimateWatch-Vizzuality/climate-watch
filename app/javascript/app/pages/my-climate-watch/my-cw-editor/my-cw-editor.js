@@ -5,7 +5,7 @@ import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
 
 import { actions as creatorActions } from 'components/my-climate-watch/viz-creator';
 import * as actions from './my-cw-editor-actions';
-import * as reducers from './my-cw-editor-reducers';
+import reducers from './my-cw-editor-reducers';
 import initialState from './my-cw-editor-initial-state';
 import EditorComponent from './my-cw-editor-component';
 

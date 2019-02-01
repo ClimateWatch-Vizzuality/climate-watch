@@ -80,7 +80,8 @@ class CompareGhgChart extends PureComponent {
         noSpace
         className={styles.colEnd}
         color="yellow"
-        link={`/ghg-emissions?breakBy=location&filter=${selectedLocationsFilter}`}
+        link={`/ghg-emissions?breakBy=regions-${CALCULATION_OPTIONS
+          .ABSOLUTE_VALUE.value}&regions=${selectedLocationsFilter}`}
         onClick={handleAnalyticsClick}
       >
         Explore emissions

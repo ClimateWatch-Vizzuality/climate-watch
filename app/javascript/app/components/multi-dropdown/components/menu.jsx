@@ -18,15 +18,16 @@ const Menu = props => {
     optionsActionKey,
     noItemsFound,
     toggleOpenGroup,
-    noParentSelection
+    noParentSelection,
+    theme
   } = props;
 
   return !isOpen ? null : (
-    <div className={styles.menu}>
+    <div className={cx(styles.menu, theme.menu)}>
       {items && items.length ? (
         items.map((item, index) => (
           <Item
-            key={`${item.slug}${item.id}`}
+            key={`${item.slug}${item.id}${item.label}`}
             index={index}
             item={item}
             showGroup={showGroup}
@@ -38,6 +39,7 @@ const Menu = props => {
             activeValue={activeValue}
             activeLabel={activeLabel}
             noParentSelection={noParentSelection}
+            theme={theme}
           />
         ))
       ) : (
@@ -51,7 +53,8 @@ const Menu = props => {
 
 Menu.propTypes = {
   isOpen: PropTypes.bool,
-  activeValue: PropTypes.object,
+  activeValue: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  theme: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   activeLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   items: PropTypes.array,
   showGroup: PropTypes.string,
@@ -62,6 +65,21 @@ Menu.propTypes = {
   noItemsFound: PropTypes.string,
   noParentSelection: PropTypes.bool,
   toggleOpenGroup: PropTypes.func.isRequired
+};
+
+Menu.defaultProps = {
+  isOpen: false,
+  activeValue: undefined,
+  theme: undefined,
+  activeLabel: undefined,
+  items: undefined,
+  showGroup: undefined,
+  getItemProps: undefined,
+  highlightedIndex: undefined,
+  optionsAction: undefined,
+  optionsActionKey: undefined,
+  noItemsFound: undefined,
+  noParentSelection: false
 };
 
 export default Menu;

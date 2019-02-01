@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
-import MultiDropdown from 'components/dropdown/multi-dropdown';
+import MultiDropdown from 'components/multi-dropdown';
 import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {
@@ -11,8 +11,10 @@ import {
   GROUPED_OR_MULTI_SELECT_FIELDS,
   NON_COLUMN_KEYS
 } from 'data/data-explorer-constants';
-import { ALL_SELECTED_OPTION } from 'data/constants';
+import { ALL_SELECTED_OPTION, ALL_SELECTED } from 'data/constants';
 import { isNoColumnField } from 'utils/data-explorer';
+import isArray from 'lodash/isArray';
+import last from 'lodash/last';
 
 const getOptions = (filterOptions, field, addGroupId) => {
   const noAllSelected = NON_COLUMN_KEYS.includes(field);
@@ -69,7 +71,7 @@ class DataExplorerFilters extends PureComponent {
       filterOptions,
       filters,
       section,
-      activeFilterRegion,
+      activeFilterLabel,
       isDisabled,
       handleChangeSelectorAnalytics
     } = this.props;
@@ -81,23 +83,38 @@ class DataExplorerFilters extends PureComponent {
       GROUPED_OR_MULTI_SELECT_FIELDS[section].find(s => s.key === field);
     const fieldFilters = filters.map(field => {
       if (multipleSection(field)) {
+        const isMulti = multipleSection(field).multiselect;
+        const valueProp = {};
+        const values = selectedOptions ? selectedOptions[field] : null;
+        valueProp[`value${isMulti ? 's' : ''}`] = isMulti
+          ? values || []
+          : values && values[0];
+        const getSelectedValue = option => {
+          if (isArray(option)) {
+            return option.length > 0 && last(option).value === ALL_SELECTED
+              ? ALL_SELECTED
+              : option
+                .map(o => o.value)
+                .filter(v => v !== ALL_SELECTED)
+                .join();
+          }
+          return option && option.value;
+        };
+
         return (
           <MultiDropdown
             key={field}
             label={deburrCapitalize(field)}
             placeholder={`Filter by ${deburrCapitalize(field)}`}
             options={getOptions(filterOptions, field)}
-            value={
-              selectedOptions ? (
-                selectedOptions[field] && selectedOptions[field][0]
-              ) : null
-            }
+            {...valueProp}
             disabled={isDisabled(field)}
             onChange={option => {
-              handleFiltersChange({ [field]: option && option.value });
+              handleFiltersChange({ [field]: getSelectedValue(option) });
               handleChangeSelectorAnalytics();
             }}
             noParentSelection={multipleSection(field).noSelectableParent}
+            multiselect={isMulti}
           />
         );
       } else if (groupedSelect(field)) {
@@ -109,7 +126,7 @@ class DataExplorerFilters extends PureComponent {
           <MultiSelect
             key={fieldInfo.key}
             label={deburrCapitalize(label)}
-            selectedLabel={activeFilterRegion}
+            selectedLabel={activeFilterLabel[field]}
             placeholder={`Filter by ${label}`}
             values={(selectedOptions && selectedOptions[field]) || []}
             options={getOptions(filterOptions, field, true)}
@@ -137,7 +154,7 @@ class DataExplorerFilters extends PureComponent {
 }
 
 DataExplorerFilters.propTypes = {
-  activeFilterRegion: PropTypes.string,
+  activeFilterLabel: PropTypes.object,
   section: PropTypes.string.isRequired,
   handleFiltersChange: PropTypes.func.isRequired,
   handleChangeSelectorAnalytics: PropTypes.func.isRequired,

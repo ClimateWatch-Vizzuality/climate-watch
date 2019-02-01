@@ -61,29 +61,23 @@ export const ALLOWED_SECTORS_BY_SOURCE = {
     'Waste',
     'Other'
   ],
-  UNFCCC: {
-    AR2: [
-      'Energy',
-      'Industrial Processes',
-      'Solvent and Other Product Use',
-      'Agriculture',
-      'Land-Use Change and Forestry',
-      'Waste',
-      'Other'
-    ],
-    AR4: [
-      'Energy',
-      'Industrial Processes and Product Use',
-      'Agriculture',
-      'Land Use, Land-Use Change and Forestry',
-      'Waste',
-      'Other'
-    ]
-  }
-};
-
-export const EXTRA_ALLOWED_SECTORS_BY_SOURCE_ONLY_GLOBAL = {
-  CAIT: ['Bunker Fuels']
+  UNFCCC_AI: [
+    'Energy',
+    'Industrial Processes',
+    'Solvent and Other Product Use',
+    'Agriculture',
+    'Land-Use Change and Forestry',
+    'Waste',
+    'Other'
+  ],
+  UNFCCC_NAI: [
+    'Energy',
+    'Industrial Processes and Product Use',
+    'Agriculture',
+    'Land Use, Land-Use Change and Forestry',
+    'Waste',
+    'Other'
+  ]
 };
 
 export const DEFAULT_EMISSIONS_SELECTIONS = {
@@ -97,12 +91,14 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     sector: 'Total including LULUCF',
     location: 'WORLD'
   },
-  UNFCCC: {
+  UNFCCC_AI: {
     gas: 'Aggregate GHGs',
-    sector: {
-      AR2: 'Total GHG emissions including LULUCF/LUCF',
-      AR4: 'Total GHG emissions with LULUCF'
-    },
+    sector: 'Total GHG emissions including LULUCF/LUCF',
+    location: 'ANNEXI'
+  },
+  UNFCCC_NAI: {
+    gas: 'Aggregate GHGs',
+    sector: 'Total GHG emissions with LULUCF',
     location: 'ANNEXI'
   }
 };
@@ -117,8 +113,7 @@ export const TOP_EMITTERS = [
   'BRA',
   'IDN',
   'CAN',
-  'MEX',
-  'TOP'
+  'MEX'
 ];
 
 export const CHART_COLORS = [
@@ -129,34 +124,31 @@ export const CHART_COLORS = [
   '#FF7800',
   '#FF88AA',
   '#AB0000',
-  '#20D5B7',
-  '#383F45',
-  '#CACCD0'
+  '#20D5B7'
 ];
 
 export const CHART_COLORS_EXTENDED = [
-  '#00B4D2',
-  '#0677B3',
-  '#D2187C',
-  '#FFB400',
-  '#FF7800',
-  '#FF88AA',
-  '#AB0000',
-  '#20D5B7',
-  '#383F45',
-  '#CACCD0',
-  '#80DAE9',
-  '#93BBD9',
-  '#E98CBE',
-  '#FFDA80',
-  '#FFBC80',
+  '#e6194B',
+  '#3cb44b',
+  '#ffe119',
+  '#4363d8',
+  '#f58231',
+  '#911eb4',
+  '#42d4f4',
+  '#f032e6',
+  '#bfef45',
   '#FFC4D5',
-  '#D58080',
-  '#90EADB',
-  '#9C9FA2',
-  '#E5E6E8'
+  '#469990',
+  '#e6beff',
+  '#9A6324',
+  '#800000',
+  '#aaffc3',
+  '#808000',
+  '#FFDA80',
+  '#000075'
 ];
 
+export const OTHER_COLOR = '#b1b1b1';
 export const GREY_CHART_COLORS = [
   '#68696B',
   '#757678',
@@ -281,7 +273,6 @@ export const NDC_DOCUMENT_OPTIONS = [
   }
 ];
 
-export const LATEST_VERSION = 'AR4';
 export const CONTAINED_PATHNAME = 'contained';
 
 export const LENSES_SELECTOR_INFO = {
@@ -302,16 +293,28 @@ export const USERS_PROFESIONAL_SECTORS = [
   'Other'
 ];
 
-export const SOURCE_VERSIONS = [
-  { name: 'PIK - AR2', dataSourceSlug: 'PIK', versionSlug: 'AR2' },
-  { name: 'PIK - AR4', dataSourceSlug: 'PIK', versionSlug: 'AR4' },
-  { name: 'CAIT - AR2', dataSourceSlug: 'CAIT', versionSlug: 'AR2' },
-  { name: 'UNFCCC - AR2', dataSourceSlug: 'UNFCCC', versionSlug: 'AR2' },
-  { name: 'UNFCCC - AR4', dataSourceSlug: 'UNFCCC', versionSlug: 'AR4' }
-];
-
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
+export const NO_ALL_SELECTED_COLUMNS = [
+  'breakBy',
+  'chartType',
+  'sources',
+  'regions'
+];
+
+export const METRIC_OPTIONS = {
+  ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },
+  PER_CAPITA: { label: 'per Capita', value: 'PER_CAPITA' },
+  PER_GDP: { label: 'per GDP', value: 'PER_GDP' }
+};
+
+export const TOP_EMITTERS_OPTION = {
+  iso: 'TOP',
+  label: 'Top Emitters',
+  value: 'TOP',
+  members: TOP_EMITTERS,
+  groupId: 'regions'
+};
 
 export const WRI_WEBSITE = 'https://www.wri.org/';
 export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';

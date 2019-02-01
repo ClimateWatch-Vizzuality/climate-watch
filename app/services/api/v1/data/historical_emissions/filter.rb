@@ -11,7 +11,6 @@ module Api
           # @param params [Hash]
           # @option params [Array<String>] :regions
           # @option params [Array<Integer>] :source_ids
-          # @option params [Array<Integer>] :gwp_ids
           # @option params [Array<Integer>] :gas_ids
           # @option params [Array<Integer>] :sector_ids
           # @option params [Integer] :start_year
@@ -58,7 +57,7 @@ module Api
           def initialize_filters(params)
             # integer arrays
             [
-              :source_ids, :gwp_ids, :gas_ids, :sector_ids
+              :source_ids, :gas_ids, :sector_ids
             ].map do |param_name|
               if params[param_name].present? && params[param_name].is_a?(Array)
                 value = params[param_name].map(&:to_i)
@@ -75,7 +74,6 @@ module Api
 
           def apply_filters(query)
             query = query.where(data_source_id: @source_ids) if @source_ids
-            query = query.where(gwp_id: @gwp_ids) if @gwp_ids
             query = query.where(gas_id: @gas_ids) if @gas_ids
             query = apply_location_filter(query)
             query = apply_sector_filter(query)

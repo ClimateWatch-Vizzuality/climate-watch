@@ -1,136 +1,105 @@
-import { PureComponent, createElement } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
-
+import qs from 'query-string';
+import upperFirst from 'lodash/upperFirst';
+import camelCase from 'lodash/camelCase';
+import isArray from 'lodash/isArray';
+import isEqual from 'lodash/isEqual';
+import { ALL_SELECTED, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
-import {
-  getChartData,
-  getChartDomain,
-  getChartConfig,
-  getSourceOptions,
-  getSourceSelected,
-  getVersionOptions,
-  getVersionSelected,
-  getBreaksByOptions,
-  getBreakSelected,
-  getFilterOptions,
-  getFiltersSelected,
-  getSelectorDefaults,
-  getProviderFilters,
-  getActiveFilterRegion,
-  getLinkToDataExplorer
-} from './ghg-emissions-selectors';
+import { getGHGEmissions } from './ghg-emissions-selectors/ghg-emissions-selectors';
 
-const groups = [
-  {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
-    groupId: 'countries',
-    title: 'Countries'
-  }
-];
-
-const mapStateToProps = (state, { location }) => {
-  const { data } = state.emissions;
-  const { meta } = state.ghgEmissionsMeta;
-  const { data: regions } = state.regions;
-  const search = qs.parse(location.search);
-  const ghg = {
-    meta,
-    data,
-    regions,
-    search
-  };
-  return {
-    data: getChartData(ghg),
-    domain: getChartDomain(ghg),
-    config: getChartConfig(ghg),
-    sources: getSourceOptions(ghg),
-    sourceSelected: getSourceSelected(ghg),
-    versions: getVersionOptions(ghg),
-    versionSelected: getVersionSelected(ghg),
-    breaksBy: getBreaksByOptions(ghg),
-    breakSelected: getBreakSelected(ghg),
-    filters: getFilterOptions(ghg),
-    filtersSelected: getFiltersSelected(ghg),
-    selectorDefaults: getSelectorDefaults(ghg),
-    activeFilterRegion: getActiveFilterRegion(ghg),
-    providerFilters: getProviderFilters(ghg),
-    downloadLink: getLinkToDataExplorer(ghg),
-    loading: state.ghgEmissionsMeta.loading || state.emissions.loading,
-    groups,
-    search
-  };
+const mapStateToProps = (state, props) => {
+  const { location } = props;
+  const search = location && location.search && qs.parse(location.search);
+  return getGHGEmissions(state, { ...props, search });
 };
 
 class GhgEmissionsContainer extends PureComponent {
   componentDidUpdate() {
-    const { search, sourceSelected, versionSelected } = this.props;
-    if (!search.source && sourceSelected) {
+    const { search, selected } = this.props;
+    const { sourceSelected } = selected;
+    if (!(search && search.source) && sourceSelected) {
       this.updateUrlParam({ name: 'source', value: sourceSelected.value });
-    }
-    if (!search.version && versionSelected) {
-      this.updateUrlParam({ name: 'version', value: versionSelected.value });
     }
   }
 
-  handleSourceChange = category => {
+  handleChange = (field, selected) => {
+    if (['regions', 'sectors', 'gases'].includes(field)) {
+      return this.handleFilterChange(field, selected);
+    }
+    const functionName = `handle${upperFirst(camelCase(field))}Change`;
+    return this[functionName](selected);
+  };
+
+  handleSourcesChange = category => {
     this.updateUrlParam([{ name: 'source', value: category.value }]);
     handleAnalytics('Historical Emissions', 'Source selected', category.label);
   };
 
   handleBreakByChange = breakBy => {
-    const { versionSelected } = this.props;
-    const params = [
-      { name: 'source', value: this.props.sourceSelected.value },
-      { name: 'breakBy', value: breakBy.value },
-      { name: 'version', value: versionSelected.value }
-    ];
-    this.updateUrlParam(params, true);
+    this.updateUrlParam({ name: 'breakBy', value: breakBy.value });
     handleAnalytics('Historical Emissions', 'Break by selected', breakBy.label);
   };
 
-  handleVersionChange = version => {
-    this.updateUrlParam({ name: 'version', value: version.value });
-    handleAnalytics('Historical Emissions', 'version selected', version.label);
+  handleChartTypeChange = type => {
+    this.updateUrlParam({ name: 'chartType', value: type.value });
+    handleAnalytics('Chart Type', 'chart type selected', type.label);
   };
 
-  handleFilterChange = filters => {
-    const oldFilters = this.props.filtersSelected;
-    const removing = filters.length < oldFilters.length;
-    const selectedFilter = filters
-      .filter(x => oldFilters.indexOf(x) === -1)
-      .concat(oldFilters.filter(x => filters.indexOf(x) === -1))[0];
-    const filtersParam = [];
-    if (!removing && selectedFilter.groupId === 'regions') {
-      filtersParam.push(selectedFilter.iso);
-      selectedFilter.members.forEach(m => filtersParam.push(m));
-    } else if (selectedFilter.groupId !== 'regions') {
-      filters.forEach(filter => {
-        if (filter.groupId !== 'regions') {
-          filtersParam.push(
-            this.props.breakSelected.value === 'location'
-              ? filter.iso
-              : filter.value
-          );
-        }
-      });
+  correctRegionFiltersOnLegendChange = (field, filters) => {
+    let updatedFilters = filters;
+    if (field === 'regions') {
+      const { selected, legendSelected } = this.props;
+      const { regionsSelected } = selected;
+      const shouldCompressRegion = !isEqual(regionsSelected, legendSelected);
+      if (shouldCompressRegion) {
+        updatedFilters = [regionsSelected[0], filters[filters.length - 1]];
+      }
     }
-    this.updateUrlParam({ name: 'filter', value: filtersParam.toString() });
+    return updatedFilters;
+  };
+
+  handleFilterChange = (field, filters) => {
+    let values;
+    const updatedFilters = this.correctRegionFiltersOnLegendChange(
+      field,
+      filters
+    );
+    if (isArray(updatedFilters)) {
+      if (
+        !NO_ALL_SELECTED_COLUMNS.includes(field) &&
+        (updatedFilters.length === 0 ||
+          updatedFilters[updatedFilters.length - 1].label === ALL_SELECTED)
+      ) {
+        values = ALL_SELECTED;
+      } else {
+        values = updatedFilters
+          .filter(v => v && v.value !== ALL_SELECTED)
+          .map(v => v.value)
+          .join(',');
+      }
+    } else {
+      values = updatedFilters.value;
+    }
+
+    this.updateUrlParam({
+      name: [field],
+      value: values
+    });
+
     const selectedFilterLabels = filters.map(f => f.label);
     if (selectedFilterLabels.length > 0) {
       handleAnalytics(
         'Historical Emissions',
         'Filter by',
-        selectedFilterLabels.toString()
+        `${field}: ${selectedFilterLabels.toString()}`
       );
     }
   };
@@ -141,7 +110,8 @@ class GhgEmissionsContainer extends PureComponent {
   }
 
   handleInfoClick = () => {
-    const { source } = this.props.sourceSelected;
+    const { selected } = this.props;
+    const { source } = selected.sourceSelected;
     if (source) {
       this.props.setModalMetadata({
         category: 'Historical Emissions',
@@ -151,31 +121,35 @@ class GhgEmissionsContainer extends PureComponent {
     }
   };
 
+  updateUrlParam = (params, clear) => {
+    const { history, location } = this.props;
+    history.replace(getLocationParamUpdated(location, params, clear));
+  };
+
   render() {
-    return createElement(GhgEmissionsComponent, {
-      ...this.props,
-      handleSourceChange: this.handleSourceChange,
-      handleVersionChange: this.handleVersionChange,
-      handleBreakByChange: this.handleBreakByChange,
-      handleFilterChange: this.handleFilterChange,
-      handleInfoClick: this.handleInfoClick
-    });
+    return (
+      <GhgEmissionsComponent
+        {...this.props}
+        updateUrlParam={this.updateUrlParam}
+        handleChange={this.handleChange}
+        handleInfoClick={this.handleInfoClick}
+      />
+    );
   }
 }
 
 GhgEmissionsContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  breakSelected: PropTypes.object,
-  sourceSelected: PropTypes.object,
-  versionSelected: PropTypes.object,
   setModalMetadata: PropTypes.func.isRequired,
-  filtersSelected: PropTypes.array,
+  selected: PropTypes.object,
+  legendSelected: PropTypes.array,
   search: PropTypes.object
 };
 
 GhgEmissionsContainer.defaultProps = {
-  sourceSelected: null
+  selected: undefined,
+  search: undefined
 };
 
 export default withRouter(

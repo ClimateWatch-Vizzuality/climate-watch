@@ -1,7 +1,7 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import isEqual from 'lodash/isEqual';
 import actions from './emissions-provider-actions';
 import reducers, { initialState } from './emissions-provider-reducers';
 
@@ -13,9 +13,7 @@ class EmissionsProvider extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { filters, getEmissions } = nextProps;
-    if (filters !== this.props.filters) {
-      getEmissions(filters);
-    }
+    if (!isEqual(filters, this.props.filters)) getEmissions(filters);
   }
 
   render() {

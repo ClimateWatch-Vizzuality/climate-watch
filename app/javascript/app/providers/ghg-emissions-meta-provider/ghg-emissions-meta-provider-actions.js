@@ -12,7 +12,7 @@ const fetchEmissionsMeta = createThunkAction(
     const { ghgEmissionsMeta } = state();
     if (isEmpty(ghgEmissionsMeta.meta) && !ghgEmissionsMeta.loading) {
       dispatch(fetchEmissionsMetaInit());
-      fetch('/api/v1/emissions/meta')
+      fetch('/api/v1/emissions/meta?deeply_nested_sectors=false')
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
@@ -35,13 +35,20 @@ const fetchEmissionsMeta = createThunkAction(
                     iso: item.iso_code3
                   };
                 }
-                if (key === 'data_source') {
+                if (key === 'sector') {
                   newItem = {
                     ...newItem,
+                    parentId: item.parent_id
+                  };
+                }
+                if (key === 'data_source') {
+                  newItem = {
+                    name: item.name,
+                    label: item.display_name,
+                    value: item.id,
                     location: item.location_ids,
                     sector: item.sector_ids,
                     gas: item.gas_ids,
-                    gwp: item.gwp_ids,
                     source: item.source
                   };
                 }

@@ -70,7 +70,7 @@ const LandArea = ({
               {chartData &&
               chartColors &&
               chartConfig && (
-                  <SunburstChart
+              <SunburstChart
                     data={chartData}
                     customTooltip={<Tooltip />}
                     width={300}
@@ -89,7 +89,7 @@ const LandArea = ({
     )}
     {selectedCountry &&
     selectedYear && (
-        <LandAreaProvider
+    <LandAreaProvider
           params={{ country: selectedCountry.value, year: selectedYear.value }}
         />
       )}

@@ -11,11 +11,9 @@ rvm:
 addons:
   postgresql: 9.6
 before_script:
+  - bundle exec rake db:create db:structure:load RAILS_ENV=test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - psql -c 'create database "climate-watch_test"' -U postgres
-  - psql -c 'create database "climate-watch-shared_test"' -U postgres
-  - bundle exec rake db:structure:load RAILS_ENV=test
 script:
   - bundle exec rspec
   # Preferably you will run test-reporter on branch update events. But

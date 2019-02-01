@@ -156,23 +156,23 @@ export const getDataParsed = createSelector(
   }
 );
 
-// get selector defaults
-export const getDefaultValues = createSelector(
-  [getSources, getSourceSelected, getMeta],
-  (sources, sourceSelected, meta) => {
-    if (!sourceSelected || !meta) return null;
-    return {
-      ...getGhgEmissionDefaults(sourceSelected.label, meta),
-      source: sources[0].value
-    };
-  }
-);
-
 export const getSelectorDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta) return null;
-    return getGhgEmissionDefaults(sourceSelected.label, meta);
+    return getGhgEmissionDefaults(sourceSelected, meta);
+  }
+);
+
+// get selector defaults
+export const getDefaultValues = createSelector(
+  [getSources, getSourceSelected, getMeta, getSelectorDefaults],
+  (sources, sourceSelected, meta, selectorDefaults) => {
+    if (!sourceSelected || !meta) return null;
+    return {
+      ...selectorDefaults,
+      source: sources[0].value
+    };
   }
 );
 

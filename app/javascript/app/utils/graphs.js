@@ -3,11 +3,14 @@ import camelCase from 'lodash/camelCase';
 import chroma from 'chroma-js';
 import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
+import uniq from 'lodash/uniq';
 import isArray from 'lodash/isArray';
 import { getNiceTickValues } from 'recharts-scale';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
+import isEmpty from 'lodash/isEmpty';
+import { OTHER_COLOR } from 'data/constants';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -73,18 +76,43 @@ export const sortEmissionsByValue = array =>
 export const getColumnValue = column => upperFirst(camelCase(column));
 export const getYColumnValue = column => `y${getColumnValue(column)}`;
 
-export const getThemeConfig = (columns, colors) => {
+export const getThemeConfig = (columns, colors, colorCache = {}) => {
   const theme = {};
-  columns.forEach((column, i) => {
-    const index = column.index || i;
-    const correctedIndex =
-      index < colors.length ? index : index - colors.length;
+  let newColumns = columns;
+  let usedColors = [];
+  if (colorCache && !isEmpty(colorCache)) {
+    const usedColumns = columns.filter(c => colorCache[c.value]);
+    usedColors = uniq(usedColumns.map(c => colorCache[c.value].stroke));
+    newColumns = columns.filter(c => !usedColumns.includes(c.value));
+  }
+  const themeUsedColors = [];
+  let availableColors = colors.filter(c => !usedColors.includes(c));
+  newColumns.forEach((column, i) => {
+    availableColors = availableColors.filter(c => !themeUsedColors.includes(c));
+    if (!availableColors.length) availableColors = colors;
+    let index;
+    if (column.index || column.index === 0) {
+      index = column.index;
+    } else {
+      index = i % availableColors.length;
+      themeUsedColors.push(selectedColor);
+    }
+    const selectedColor = availableColors[index];
     theme[column.value] = {
-      stroke: colors[correctedIndex],
-      fill: colors[correctedIndex]
+      stroke: selectedColor,
+      fill: selectedColor
     };
+    if (column.hideLegend || column.hideData) {
+      theme[column.value] = {
+        stroke: OTHER_COLOR,
+        fill: OTHER_COLOR
+      };
+    }
   });
-  return theme;
+  return {
+    ...theme,
+    ...colorCache
+  };
 };
 
 export const getPieChartThemeConfig = (columns, colors) => {

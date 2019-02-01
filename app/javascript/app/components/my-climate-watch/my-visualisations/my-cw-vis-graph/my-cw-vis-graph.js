@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
 import initialState from './my-cw-vis-graph-initial-state';
-import * as reducers from './my-cw-vis-graph-reducers';
+import reducers from './my-cw-vis-graph-reducers';
 import * as actions from './my-cw-vis-graph-actions';
 
 import MyVisGraphComponent from './my-cw-vis-graph-component';

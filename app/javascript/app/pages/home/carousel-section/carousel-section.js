@@ -8,4 +8,6 @@ const mapStateToProps = state => ({
   geolocation: getCountryLocationData(state.geoLocation)
 });
 
-export default withRouter(connect(mapStateToProps, null)(CarouselSectionComponent));
+export default withRouter(
+  connect(mapStateToProps, null)(CarouselSectionComponent)
+);

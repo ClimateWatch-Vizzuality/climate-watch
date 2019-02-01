@@ -8,7 +8,7 @@ import * as myCWEditorActions from 'pages/my-climate-watch/my-cw-editor/my-cw-ed
 
 import MyVisualisationsComponent from './my-visualisations-component';
 import initialState from './my-visualisations-initial-state';
-import * as reducers from './my-visualisations-reducers';
+import reducers from './my-visualisations-reducers';
 import * as actions from './my-visualisations-actions';
 
 class MyVisualisations extends Component {

@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniqBy from 'lodash/uniqBy';
-import uniq from 'lodash/uniq';
 import groupBy from 'lodash/groupBy';
 import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
@@ -15,7 +14,6 @@ import {
   getThemeConfig,
   getTooltipConfig,
   sortEmissionsByValue,
-  sortLabelByAlpha,
   getColorPalette,
   setXAxisDomain,
   setYAxisDomain
@@ -24,7 +22,6 @@ import {
   CALCULATION_OPTIONS,
   QUANTIFICATIONS_CONFIG,
   DEFAULT_AXES_CONFIG,
-  ALLOWED_SECTORS_BY_SOURCE,
   DATA_SCALE
 } from 'data/constants';
 
@@ -44,7 +41,6 @@ const getCalculationData = state =>
 // values from search
 const getSourceSelection = state => state.search.source || null;
 const getCalculationSelection = state => state.search.calculation || null;
-const getVersionSelection = state => state.search.version || null;
 const getFilterSelection = state => state.search.filter;
 
 // data for the graph
@@ -71,14 +67,15 @@ export const getSources = createSelector(
   getMeta,
   meta => meta.data_source || null
 );
-export const getVersions = createSelector(getMeta, meta => meta.gwp || null);
 
 export const getSourceOptions = createSelector(getSources, sources => {
   if (!sources) return [];
   return sources.map(d => ({
+    name: d.name,
     label: d.label,
-    value: d.value,
-    source: d.source
+    value: String(d.value),
+    source: d.source,
+    sectors: d.sector
   }));
 });
 
@@ -94,10 +91,10 @@ export const getSourceSelected = createSelector(
   (sources, selected) => {
     if (!sources || !sources.length) return {};
     if (!selected) {
-      const defaultSource = sources.find(s => s.label === 'CAIT');
+      const defaultSource = sources.find(s => s.name === 'CAIT');
       return defaultSource || sources[0];
     }
-    return sources.find(category => category.value === parseInt(selected, 10));
+    return sources.find(category => category.value === selected);
   }
 );
 
@@ -109,36 +106,11 @@ export const getCalculationSelected = createSelector(
   }
 );
 
-// Versions selectors
-export const getVersionOptions = createSelector(
-  [getVersions, getSources, getSourceSelected],
-  (versions, sources, sourceSelected) => {
-    if (!sourceSelected || !versions) return [];
-    const sourceData = sources.find(d => sourceSelected.value === d.value);
-    return versions.filter(filter => sourceData.gwp.indexOf(filter.value) > -1);
-  }
-);
-
-export const getVersionSelected = createSelector(
-  [getVersionOptions, getVersionSelection],
-  (versions, selected) => {
-    if (!versions || !versions.length) return null;
-    if (!selected) {
-      const AR4Version = versions.find(version => version.label === 'AR4');
-      return AR4Version || versions[0];
-    }
-    return versions.find(version => version.value === parseInt(selected, 10));
-  }
-);
-
 export const getAllowedSectors = createSelector(
-  [getSourceSelected, getVersionSelected],
-  (source, version) => {
-    if (!source || !version) return null;
-    if (source.label === 'UNFCCC') {
-      return ALLOWED_SECTORS_BY_SOURCE[source.label][version.label];
-    }
-    return ALLOWED_SECTORS_BY_SOURCE[source.label];
+  [getSourceSelected, getMeta],
+  (source, meta) => {
+    if (!source || !meta || !meta.sector) return null;
+    return meta.sector.filter(d => source.sectors.indexOf(d.value) > -1);
   }
 );
 
@@ -146,14 +118,8 @@ export const getAllowedSectors = createSelector(
 export const getFilterOptions = createSelector(
   [getData, getMeta, getAllowedSectors],
   (data, meta, sectorsAllowed) => {
-    if (!sectorsAllowed || isEmpty(data) || isEmpty(meta)) return [];
-    const sectorLabels = uniq(data.map(d => d.sector));
-    const filteredSelected = meta.sector.filter(
-      filter =>
-        sectorLabels.indexOf(filter.label) > -1 &&
-        sectorsAllowed.indexOf(filter.label) > -1
-    );
-    return sortLabelByAlpha(filteredSelected);
+    if (isEmpty(sectorsAllowed) || isEmpty(data) || isEmpty(meta)) return [];
+    return sectorsAllowed;
   }
 );
 
@@ -178,7 +144,7 @@ export const getSelectorDefaults = createSelector(
   [getSourceSelected, getMeta],
   (sourceSelected, meta) => {
     if (!sourceSelected || !meta || isEmpty(meta)) return null;
-    return getGhgEmissionDefaults(sourceSelected.label, meta);
+    return getGhgEmissionDefaults(sourceSelected, meta);
   }
 );
 
@@ -187,12 +153,9 @@ export const filterData = createSelector(
   [getData, getSourceSelected, getCalculationSelected, getFiltersSelected],
   (data, sourceSelected, calculation, filters) => {
     if (!data || !data.length) return [];
-    let filteredData = sortEmissionsByValue(
+    const filteredData = sortEmissionsByValue(
       data.filter(d => filters.map(f => f.label).indexOf(d.sector.trim()) >= 0)
     );
-    // If the data has the AR4 version (latest) we only want to display that data to avoid duplicates
-    const hasAR4 = filteredData.some(d => d.gwp === 'AR4');
-    if (hasAR4) filteredData = filteredData.filter(d => d.gwp === 'AR4');
     if (calculation.value !== 'ABSOLUTE_VALUE') {
       const dataGrouped = groupBy(
         flatten(filteredData.map(d => d.emissions)),
