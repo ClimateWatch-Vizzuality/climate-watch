@@ -1,4 +1,4 @@
-import { PureComponent, createElement } from 'react';
+import React, { PureComponent, createElement } from 'react';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -61,13 +61,50 @@ class CountrySelectContainer extends PureComponent {
     handleAnalytics('Home', 'Search for a country', iso);
   };
 
+  handleMarkerClick = marker => {
+    if (marker && marker.link) window.open(marker.link, '_blank');
+  };
+
   render() {
+    const pin = (
+      <svg width="8" height="12" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M1.096.3h6.773v6.706L5.274 4.674C3.813 6.136.864 8.29 2.4 11.7c-4.746-3.82-.831-7.351.81-9.092L1.096.3z"
+          fill="#FFF"
+          fillRule="evenodd"
+        />
+      </svg>
+    );
+
+    const markers = [
+      {
+        coordinates: [28.034, -26.1952],
+        link: 'http://southafricaclimateexplorer.org',
+        name: 'South Africa platform',
+        pin
+      },
+      {
+        coordinates: [79.2167, 20.6448],
+        link: 'http://india-platform-staging.vizzuality.com',
+        name: 'India platform',
+        pin
+      },
+      {
+        coordinates: [112.0149, -3.54],
+        link: 'http://indonesia-platform-staging.vizzuality.com',
+        name: 'Indonesia platform',
+        pin
+      }
+    ];
+
     return createElement(CountrySelectComponent, {
       ...this.props,
       handleClickAnalytics: this.handleClickAnalytics,
       onCountryClick: this.onCountryClick,
       onCountryMouseEnter: this.onCountryMouseEnter,
-      onCountryMouseLeave: this.onCountryMouseLeave
+      onCountryMouseLeave: this.onCountryMouseLeave,
+      handleMarkerClick: this.handleMarkerClick,
+      markers
     });
   }
 }

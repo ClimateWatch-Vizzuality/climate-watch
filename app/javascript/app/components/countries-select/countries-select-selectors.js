@@ -4,6 +4,8 @@ import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 
+const COUNTRY_PLATFORMS_ISOS = ['ZAF', 'IND', 'IDN'];
+
 const getCountries = state => sortBy(state.countries, 'wri_standard_name');
 export const getPreSelect = state => state.preSelect;
 export const getFilterUpper = state => deburrUpper(state.query);
@@ -58,6 +60,16 @@ const countryStyles = {
   }
 };
 
+const countryPlatformsStyles = {
+  default: {
+    fill: '#B1B1C0',
+    fillOpacity: 1,
+    stroke: '#ffffff',
+    strokeWidth: 0.7,
+    outline: 'none'
+  }
+};
+
 const activeCountryStyles = {
   ...countryStyles,
   default: {
@@ -86,6 +98,13 @@ export const getPathsWithStyles = createSelector(
           return paths.push({
             ...path,
             style: countryStyles
+          });
+        }
+
+        if (COUNTRY_PLATFORMS_ISOS.includes(iso)) {
+          return paths.push({
+            ...path,
+            style: { ...countryStyles, ...countryPlatformsStyles }
           });
         }
 
