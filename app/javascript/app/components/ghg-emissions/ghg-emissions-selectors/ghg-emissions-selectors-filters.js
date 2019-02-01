@@ -184,11 +184,11 @@ const getSectorOptions = createSelector(
   [getFieldOptions('sector')],
   options => {
     if (!options || isEmpty(options)) return null;
-
+    const hasChildren = d => options.some(o => o.parentId === d.value);
     const sectors = options.filter(s => !s.parentId).map(d => ({
       label: d.label,
       value: d.value,
-      groupParent: String(d.value)
+      groupParent: hasChildren(d) && String(d.value)
     }));
 
     const subsectors = options.filter(s => s.parentId).map(d => ({

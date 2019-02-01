@@ -432,19 +432,20 @@ export const getFilterOptions = createSelector(
 
 const parseMultipleLevelOptions = options => {
   const groupParents = [];
+  const hasChildren = d => options.some(o => String(o.parent_id) === d.value);
   const finalOptions = options
-    .map(option => {
-      const updatedOption = option;
-      if (!option.parent_id) {
-        updatedOption.groupParent = option.name;
-        groupParents.push({ parentId: option.id, name: option.name });
+    .map(o => {
+      const updatedOption = o;
+      if (!o.parent_id && hasChildren(o)) {
+        updatedOption.groupParent = o.name;
+        groupParents.push({ parentId: o.id, name: o.name });
       }
       return updatedOption;
     })
-    .map(option => {
-      const updatedOption = option;
-      if (option.parent_id) {
-        const parent = groupParents.find(o => option.parent_id === o.parentId);
+    .map(o => {
+      const updatedOption = o;
+      if (o.parent_id) {
+        const parent = groupParents.find(p => o.parent_id === p.parentId);
         if (parent) updatedOption.group = parent.name;
       }
       return updatedOption;
