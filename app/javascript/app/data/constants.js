@@ -320,7 +320,7 @@ export const RW_WEBSITE = 'https://resourcewatch.org/';
 export const AGRICULTURE_INDICATORS_NAMES = {
   total_pesticides_use: 'Pesticides consumption',
   total_fertilizers: 'Fertilizers consumption',
-  value_added_Agr: 'Agriculture value added',
+  value_added_agr: 'Agriculture value added',
   water_withdrawal: 'Water withdrawal',
   employment_agri_female: 'Female employment',
   employment_agri_male: 'Male employment',
@@ -342,7 +342,7 @@ export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
     4: { name: '100 - 1,000 tonnes', index: 3 },
     5: { name: '> 1,000 tonnes', index: 4 }
   },
-  value_added_Agr: {
+  value_added_agr: {
     1: { name: 'No data', index: 0 },
     2: { name: '< 5%', index: 1 },
     3: { name: '5% - 20%', index: 2 },
