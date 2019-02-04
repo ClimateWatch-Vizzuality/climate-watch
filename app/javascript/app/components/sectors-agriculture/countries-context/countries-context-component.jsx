@@ -4,9 +4,7 @@ import { Switch } from 'cw-components';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import AgricultureCountriesContextProvider from 'providers/agriculture-countries-context-provider';
 import ContextByCountry from './context-by-country';
-import ContextByIndicator from './context-by-indicators';
-// import LandArea from './land-area';
-// import MeatData from './meat-data';
+import ContextByIndicator from './context-by-indicator';
 import styles from './countries-context-styles.scss';
 
 const tabs = [
@@ -66,8 +64,6 @@ class CountriesContext extends PureComponent {
             <div>SELECT A COUNTRY</div>
           )}
         </div>
-        {/* {selectedCountry && <LandArea />} */}
-        {/* {selectedCountry && selectedYear && <MeatData />} */}
         <WbCountryDataProvider />
         <AgricultureCountriesContextProvider
           country={selectedCountry && selectedCountry.value}
