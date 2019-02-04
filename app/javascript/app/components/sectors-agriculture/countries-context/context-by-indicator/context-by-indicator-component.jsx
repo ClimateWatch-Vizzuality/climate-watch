@@ -14,7 +14,7 @@ const getTooltip = (country, tooltipTxt, { label }) => (
   <div className={tooltipTheme.info}>
     <div className={tooltipTheme.countryName}>{country.name}</div>
     <p className={tooltipTheme.text}>
-      {label} {tooltipTxt}
+      {label}: {tooltipTxt}
     </p>
   </div>
 );
