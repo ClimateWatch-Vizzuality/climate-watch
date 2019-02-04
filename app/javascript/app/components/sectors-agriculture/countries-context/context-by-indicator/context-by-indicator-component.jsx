@@ -10,10 +10,12 @@ import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './context-by-indicator-styles';
 import { MAP_COLORS } from './context-by-indicator-selectors';
 
-const getTooltip = (country, tooltipTxt) => (
+const getTooltip = (country, tooltipTxt, { label }) => (
   <div className={tooltipTheme.info}>
     <div className={tooltipTheme.countryName}>{country.name}</div>
-    <p className={tooltipTheme.text}>{tooltipTxt}</p>
+    <p className={tooltipTheme.text}>
+      {label} {tooltipTxt}
+    </p>
   </div>
 );
 
@@ -93,7 +95,7 @@ const ContextByIndicatorComponent = ({
     />
     {countryData && (
       <ReactTooltip className={styles.tooltipContainer} id="cc-map-tooltip">
-        {getTooltip(countryData, tooltipTxt)}
+        {getTooltip(countryData, tooltipTxt, selectedIndicator)}
       </ReactTooltip>
     )}
   </React.Fragment>
