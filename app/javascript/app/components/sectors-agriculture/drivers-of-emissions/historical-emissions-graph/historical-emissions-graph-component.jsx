@@ -8,9 +8,11 @@ import CountriesProvider from 'providers/countries-provider/countries-provider';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
+import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart-component';
+import { metrics } from './historical-emissions-graph-data';
 
 class HistoricalEmissionsGraph extends PureComponent {
   renderFilters = () => {
@@ -20,7 +22,9 @@ class HistoricalEmissionsGraph extends PureComponent {
       emissionsCountry,
       emissionTypes,
       handleEmissionTypeChange,
-      emissionType
+      handleMetricTypeChange,
+      emissionType,
+      emissionMetric
     } = this.props;
     return (
       <div className={styles.filtersGroup}>
@@ -40,6 +44,16 @@ class HistoricalEmissionsGraph extends PureComponent {
           options={emissionTypes}
           onValueChange={handleEmissionTypeChange}
           value={emissionType}
+          hideResetButton
+          noAutoSort
+        />
+        <Dropdown
+          key="metric"
+          label="Break by metric"
+          className={styles.dropdown}
+          options={metrics}
+          onValueChange={handleMetricTypeChange}
+          value={emissionMetric}
           hideResetButton
           noAutoSort
         />
@@ -109,6 +123,7 @@ class HistoricalEmissionsGraph extends PureComponent {
       <div>
         <RegionsProvider />
         <CountriesProvider />
+        <WbCountryDataProvider />
         <AgricultureEmissionsProvider
           isoCode3={emissionsCountry && emissionsCountry.value}
         />
@@ -140,6 +155,7 @@ class HistoricalEmissionsGraph extends PureComponent {
 HistoricalEmissionsGraph.propTypes = {
   handleCountryChange: PropTypes.func,
   handleEmissionTypeChange: PropTypes.func,
+  handleMetricTypeChange: PropTypes.func,
   config: PropTypes.object,
   data: PropTypes.array,
   domain: PropTypes.object,
@@ -151,12 +167,14 @@ HistoricalEmissionsGraph.propTypes = {
   pieChartData: PropTypes.object,
   emissionTypes: PropTypes.array,
   emissionType: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  emissionMetric: PropTypes.object
 };
 
 HistoricalEmissionsGraph.defaultProps = {
   handleCountryChange: () => {},
   handleEmissionTypeChange: () => {},
+  handleMetricTypeChange: () => {},
   config: null,
   domain: null,
   data: [],
@@ -168,7 +186,8 @@ HistoricalEmissionsGraph.defaultProps = {
   emissionsCountry: null,
   emissionTypes: [],
   emissionType: null,
-  loading: false
+  loading: false,
+  emissionMetric: null
 };
 
 export default HistoricalEmissionsGraph;
