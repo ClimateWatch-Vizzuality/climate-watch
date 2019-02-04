@@ -5,6 +5,7 @@ import { Dropdown, Card, Icon, PieChart } from 'cw-components';
 import ButtonGroup from 'components/button-group';
 import infoIcon from 'assets/icons/info';
 import LandArea from './land-area';
+import MeatData from './meat-data';
 
 import styles from './context-by-country-styles.scss';
 
@@ -123,6 +124,7 @@ const ContextByCountryComponent = ({
         ))}
     </div>
     <LandArea />
+    {selectedCountry && selectedYear && <MeatData />}
   </React.Fragment>
 );
 
