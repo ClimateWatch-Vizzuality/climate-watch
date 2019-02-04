@@ -12,6 +12,10 @@ import {
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG
 } from 'data/constants';
+import {
+  getEmissionCountrySelected
+} from './ghg-metadata-selectors';
+import { metrics } from '../historical-emissions-graph-data';
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
 
@@ -19,6 +23,36 @@ const getSourceSelection = state =>
   (state.location && state.location.search) || null;
 const getAgricultureEmissionsData = state =>
   (state.agricultureEmissions && state.agricultureEmissions.data) || null;
+const getWbCountryData = state => state.wbCountryData && state.wbCountryData.data || null;
+
+// const getCountryMetricData = createSelector([getWbCountryData, getEmissionCountrySelected],
+//   (data, country) => {
+//     if (!data || !country) return null;
+//     return data[country.value];
+//   }
+// );
+
+export const getMetricSelected = createSelector([getSourceSelection],
+  (sourceSelection) => {
+    if (!sourceSelection) return metrics[0];
+    const { emissionMetric } = qs.parse(sourceSelection);
+    const selectedEmissionMetric = metrics.find(
+      ({ value }) => value === emissionMetric
+    );
+    return selectedEmissionMetric || metrics[0];
+  }
+);
+
+// const getMetric = createSelector([getMetricSelected, getCountryMetricData],
+//   (metric, countryMetricData) => {
+//     if (!data) return null;
+//     if (!metric || !countryMetricData) return data;
+//     if (metric.value === 'population')
+//       return countryMetricData.map(d => 
+
+//       }).
+//   }
+// );
 
 /** LINE CHART SELECTORS */
 export const getEmissionTypes = createSelector(
