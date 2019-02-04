@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
-import { uniqBy, sortBy } from 'lodash';
+import { uniqBy, sortBy, isEmpty, intersection } from 'lodash';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -12,9 +12,7 @@ import {
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG
 } from 'data/constants';
-import {
-  getEmissionCountrySelected
-} from './ghg-metadata-selectors';
+import { getEmissionCountrySelected } from './ghg-metadata-selectors';
 import { metrics } from '../historical-emissions-graph-data';
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
@@ -23,17 +21,12 @@ const getSourceSelection = state =>
   (state.location && state.location.search) || null;
 const getAgricultureEmissionsData = state =>
   (state.agricultureEmissions && state.agricultureEmissions.data) || null;
-const getWbCountryData = state => state.wbCountryData && state.wbCountryData.data || null;
+const getWbCountryData = state =>
+  (state.wbCountryData && state.wbCountryData.data) || null;
 
-// const getCountryMetricData = createSelector([getWbCountryData, getEmissionCountrySelected],
-//   (data, country) => {
-//     if (!data || !country) return null;
-//     return data[country.value];
-//   }
-// );
-
-export const getMetricSelected = createSelector([getSourceSelection],
-  (sourceSelection) => {
+export const getMetricSelected = createSelector(
+  [getSourceSelection],
+  sourceSelection => {
     if (!sourceSelection) return metrics[0];
     const { emissionMetric } = qs.parse(sourceSelection);
     const selectedEmissionMetric = metrics.find(
@@ -43,18 +36,50 @@ export const getMetricSelected = createSelector([getSourceSelection],
   }
 );
 
-// const getMetric = createSelector([getMetricSelected, getCountryMetricData],
-//   (metric, countryMetricData) => {
-//     if (!data) return null;
-//     if (!metric || !countryMetricData) return data;
-//     if (metric.value === 'population')
-//       return countryMetricData.map(d => 
+export const getMetricData = createSelector(
+  [getMetricSelected],
+  metricSelected => {
+    if (!metricSelected) return null;
+    if (metricSelected.value === 'total') {
+      return {
+        value: metricSelected.value,
+        unit: 'MtC02e',
+        scale: 1
+      };
+    }
+    if (metricSelected.value === 'population') {
+      return {
+        value: metricSelected.value,
+        unit: 'tC02e',
+        scale: 1000000
+      };
+    }
+    if (metricSelected.value === 'gdp') {
+      return {
+        value: metricSelected.value,
+        unit: 'tC02e',
+        scale: 1000000
+      };
+    }
+    return null;
+  }
+);
 
-//       }).
-//   }
-// );
+const getCountryMetricData = createSelector(
+  [getWbCountryData, getMetricData, getEmissionCountrySelected],
+  (data, metric, country) => {
+    if (!data || !metric || !country) return null;
+    const countryMetric = data[country.value];
+    const metricData = {};
+    if (countryMetric) {
+      countryMetric.forEach(d => {
+        metricData[d.year] = d[metric.value];
+      });
+    }
+    return { value: metric.value, data: metricData };
+  }
+);
 
-/** LINE CHART SELECTORS */
 export const getEmissionTypes = createSelector(
   [getAgricultureEmissionsData],
   data => {
@@ -150,16 +175,30 @@ const filterDataBySelectedIndicator = createSelector(
 );
 
 export const getChartData = createSelector(
-  [filterDataBySelectedIndicator],
-  data => {
-    if (!data || !data.length) return null;
-    const xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
+  [filterDataBySelectedIndicator, getCountryMetricData, getMetricData],
+  (data, countryMetric, metric) => {
+    if (!data || !data.length || !countryMetric || !metric) return null;
+    if (countryMetric.value !== 'total' && isEmpty(countryMetric.data)) { return null; }
+
+    let xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
+    if (countryMetric.value !== 'total') {
+      const metricValues = Object.keys(countryMetric.data).map(key =>
+        parseInt(key, 10)
+      );
+      xValues = intersection(xValues, metricValues);
+    }
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
         const yKey = getYColumnValue(d.emission_subcategory.name);
         const yData = d.values[x];
-        yItems[yKey] = yData ? parseFloat(yData) * API_SCALE : undefined;
+        // console.log(`year: ${x}, value: ${yData}, countryMetric.data: ${(countryMetric.data[x] || 1)}, metric.scale: ${metric.scale}`);
+        yItems[yKey] = yData
+          ? parseFloat(yData) *
+            API_SCALE /
+            (countryMetric.data[x] || 1) *
+            metric.scale
+          : undefined;
       });
       return { x, ...yItems };
     });
@@ -182,9 +221,9 @@ export const getChartDomain = createSelector([getChartData], data => {
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [getChartData, getFiltersSelected],
-  (data, yColumns) => {
-    if (!data || !yColumns) return null;
+  [getChartData, getFiltersSelected, getMetricData],
+  (data, yColumns, metric) => {
+    if (!data || !yColumns || !metric) return null;
     const chartColors = setChartColors(
       yColumns.length,
       CHART_COLORS,
@@ -193,10 +232,11 @@ export const getChartConfig = createSelector(
     const theme = getThemeConfig(yColumns, chartColors);
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumns);
+    // const unit = metric === 'total' ? 'MtCO2e' : 'tCO2e';
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
-        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit: 'MtCO2e' }
+        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit: metric.unit }
       },
       theme: colorThemeCache,
       tooltip,
