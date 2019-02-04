@@ -25,18 +25,23 @@ class ContextByIndicatorContainer extends PureComponent {
     };
   }
 
+  // eslint-disable-next-line react/sort-comp
+  indicatorValueFormat = (value, unit) => {
+    if (!value) return 'No Data';
+    if (unit === '%' || !unit) return `${Math.round(value * 10) / 10} %`;
+    return `${format(',.2s')(value)} ${unit}`;
+  };
+
   getTooltipText() {
     const { geometryIdHover } = this.state;
     const { mapData, selectedIndicator } = this.props;
     if (!geometryIdHover || !mapData || !selectedIndicator) return '';
 
     const countryData = mapData.find(c => c.iso === geometryIdHover);
+
     return (
-      (countryData &&
-        countryData.value &&
-        `${format(',.2s')(countryData.value)} ${selectedIndicator.unit ||
-          '%'}`) ||
-      'No data'
+      countryData &&
+      this.indicatorValueFormat(countryData.value, selectedIndicator.unit)
     );
   }
 
