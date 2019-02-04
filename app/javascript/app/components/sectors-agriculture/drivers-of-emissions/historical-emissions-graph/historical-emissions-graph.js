@@ -26,7 +26,7 @@ class HistoricalEmissionsGraph extends PureComponent {
 
   handleMetricTypeChange = ({ value }) => {
     this.updateUrlParam([{ name: 'emissionMetric', value }]);
-  }
+  };
 
   render() {
     return createElement(Component, {
