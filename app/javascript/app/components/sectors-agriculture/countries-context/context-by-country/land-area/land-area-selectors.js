@@ -2,7 +2,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import {
   getSelectedCountry,
   getSelectedYear
-} from '../countries-contexts-selectors';
+} from '../../countries-contexts-selectors';
 
 const AVAILABLE_COLORS_FOR_AGRICULTURAL = [
   '#0677B3',

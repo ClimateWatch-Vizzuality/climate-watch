@@ -1,0 +1,58 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.filtersLayout {
+  @include columns(6);
+
+  margin-bottom: 40px;
+
+  @media #{$tablet-landscape} {
+    @include columns(3);
+  }
+}
+
+.column {
+  @include columns();
+}
+
+.actionsContainer {
+  @include columns((3, 3, 2));
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  align-items: flex-end;
+
+  > *:last-child {
+    @include column-offset(4, $gutters: true);
+  }
+}
+
+.btnGroup {
+  width: 100%;
+}
+
+.legend {
+  position: relative;
+  left: 0;
+  bottom: 12%;
+
+  @media #{$tablet-landscape} {
+    top: -160px;
+  }
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}

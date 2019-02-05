@@ -15,12 +15,11 @@ const BASE_URL = '/api/v1/data/agriculture_profile/country_contexts';
 
 const fetchAgricultureCountriesContexts = createThunkAction(
   'fetchAgricultureCountriesContexts',
-  country => (dispatch, state) => {
+  () => (dispatch, state) => {
     const { agricultureCountriesContexts } = state();
-    const query = `?iso_code3=${country}`;
-    if (country && !agricultureCountriesContexts.loading) {
+    if (!agricultureCountriesContexts.loading) {
       dispatch(fetchAgricultureCountriesContextsInit());
-      fetch(`${BASE_URL}${query}`)
+      fetch(`${BASE_URL}`)
         .then(response => {
           if (response.ok) return response.json();
           throw Error(response.statusText);
