@@ -1,9 +1,9 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
-
+const webpack = require('webpack');
 const dotenv = require('dotenv').config(); // eslint-disable-line
 const merge = require('webpack-merge');
 const sharedConfig = require('./shared.js');
-const { settings, output } = require('./configuration.js');
+const { env, settings, output } = require('./configuration.js');
 
 module.exports = merge(sharedConfig, {
   devtool: '#eval-source-map',
@@ -15,6 +15,12 @@ module.exports = merge(sharedConfig, {
   output: {
     pathinfo: true
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.USER_REPORT_KEY': JSON.stringify(env.USER_REPORT_KEY_STAGING)
+    })
+  ],
 
   devServer: {
     clientLogLevel: 'none',
