@@ -4,7 +4,7 @@
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.5);
   color: $white;
-  width: 370px;
+  width: 100%;
 
   &::placeholder {
     color: $white;
@@ -18,5 +18,5 @@
 }
 
 .wrapper {
-  margin-right: 30px;
+  width: 100%;
 }
