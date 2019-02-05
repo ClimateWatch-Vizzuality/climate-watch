@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import styles from './user-report-styles.scss';
 
+const { USER_REPORT_KEY } = process.env;
+
 class UserReport extends PureComponent {
   componentDidMount() {
     if (typeof window !== 'undefined') {
       window._urq = window._urq || [];
-      window._urq.push(['initSite', 'cf0fa021-d239-457b-bb99-e9ab0205134c']);
+      window._urq.push(['initSite', `${USER_REPORT_KEY}`]);
     }
   }
 
