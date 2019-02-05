@@ -5,13 +5,15 @@ import {
   getYColumnValue,
   getThemeConfig,
   getTooltipConfig,
-  setChartColors
+  setChartColors,
+  getMetricRatio
 } from 'utils/graphs';
 import {
   CHART_COLORS,
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG
 } from 'data/constants';
+import { METRIC_OPTIONS } from 'utils/defaults';
 import { getEmissionCountrySelected } from './ghg-metadata-selectors';
 import { metrics } from '../historical-emissions-graph-data';
 
@@ -36,47 +38,18 @@ export const getMetricSelected = createSelector(
   }
 );
 
-export const getMetricData = createSelector(
-  [getMetricSelected],
-  metricSelected => {
-    if (!metricSelected) return null;
-    if (metricSelected.value === 'total') {
-      return {
-        value: metricSelected.value,
-        unit: 'MtC02e',
-        scale: 1
-      };
-    }
-    if (metricSelected.value === 'population') {
-      return {
-        value: metricSelected.value,
-        unit: 'tC02e',
-        scale: 1000000
-      };
-    }
-    if (metricSelected.value === 'gdp') {
-      return {
-        value: metricSelected.value,
-        unit: 'tC02e',
-        scale: 1000000
-      };
-    }
-    return null;
-  }
-);
-
 const getCountryMetricData = createSelector(
-  [getWbCountryData, getMetricData, getEmissionCountrySelected],
-  (data, metric, country) => {
-    if (!data || !metric || !country) return null;
+  [getWbCountryData, getEmissionCountrySelected],
+  (data, country) => {
+    if (!data || !country) return null;
     const countryMetric = data[country.value];
     const metricData = {};
     if (countryMetric) {
       countryMetric.forEach(d => {
-        metricData[d.year] = d[metric.value];
+        metricData[d.year] = { gdp: d.gdp, population: d.population };
       });
     }
-    return { value: metric.value, data: metricData };
+    return metricData;
   }
 );
 
@@ -175,14 +148,20 @@ const filterDataBySelectedIndicator = createSelector(
 );
 
 export const getChartData = createSelector(
-  [filterDataBySelectedIndicator, getCountryMetricData, getMetricData],
-  (data, countryMetric, metric) => {
-    if (!data || !data.length || !countryMetric || !metric) return null;
-    if (countryMetric.value !== 'total' && isEmpty(countryMetric.data)) { return null; }
+  [filterDataBySelectedIndicator, getCountryMetricData, getMetricSelected],
+  (data, countryMetric, metricSelected) => {
+    if (!data || !data.length || !countryMetric || !metricSelected) return null;
+    if (
+      metricSelected.value !== METRIC_OPTIONS.ABSOLUTE_VALUE.value &&
+      isEmpty(countryMetric)
+    ) {
+      return null;
+    } // set null when country/region doesn't have a metric data
 
     let xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
-    if (countryMetric.value !== 'total') {
-      const metricValues = Object.keys(countryMetric.data).map(key =>
+    if (metricSelected.value !== METRIC_OPTIONS.ABSOLUTE_VALUE.value) {
+      // get array of common years for data and for metric
+      const metricValues = Object.keys(countryMetric).map(key =>
         parseInt(key, 10)
       );
       xValues = intersection(xValues, metricValues);
@@ -192,12 +171,13 @@ export const getChartData = createSelector(
       data.forEach(d => {
         const yKey = getYColumnValue(d.emission_subcategory.name);
         const yData = d.values[x];
-        // console.log(`year: ${x}, value: ${yData}, countryMetric.data: ${(countryMetric.data[x] || 1)}, metric.scale: ${metric.scale}`);
+        const calculationRatio = getMetricRatio(
+          metricSelected.value,
+          countryMetric,
+          x
+        );
         yItems[yKey] = yData
-          ? parseFloat(yData) *
-            API_SCALE /
-            (countryMetric.data[x] || 1) *
-            metric.scale
+          ? parseFloat(yData) * API_SCALE / calculationRatio
           : undefined;
       });
       return { x, ...yItems };
@@ -221,9 +201,9 @@ export const getChartDomain = createSelector([getChartData], data => {
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [getChartData, getFiltersSelected, getMetricData],
-  (data, yColumns, metric) => {
-    if (!data || !yColumns || !metric) return null;
+  [getChartData, getFiltersSelected, getMetricSelected],
+  (data, yColumns, metricSelected) => {
+    if (!data || !yColumns || !metricSelected) return null;
     const chartColors = setChartColors(
       yColumns.length,
       CHART_COLORS,
@@ -232,11 +212,17 @@ export const getChartConfig = createSelector(
     const theme = getThemeConfig(yColumns, chartColors);
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumns);
-    // const unit = metric === 'total' ? 'MtCO2e' : 'tCO2e';
+    let unit = 'MtCO2e';
+    if (metricSelected.value === 'population') {
+      unit = 'tC02e per Capita'; // from MtC02 to tC02 ( 1 MtC02 = 1000000 tC02)
+    }
+    if (metricSelected.value === 'gdp') {
+      unit = 'tC02e per million $ GDP'; // from MtC02 to tC02 ( 1 MtC02 = 1000000 tC02)
+    }
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
-        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit: metric.unit }
+        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit }
       },
       theme: colorThemeCache,
       tooltip,
