@@ -1,17 +1,20 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
-import { uniqBy, sortBy } from 'lodash';
+import { uniqBy, sortBy, isEmpty, intersection } from 'lodash';
 import {
   getYColumnValue,
   getThemeConfig,
   getTooltipConfig,
-  setChartColors
+  setChartColors,
+  getMetricRatio
 } from 'utils/graphs';
 import {
   CHART_COLORS,
   CHART_COLORS_EXTENDED,
-  DEFAULT_AXES_CONFIG
+  DEFAULT_AXES_CONFIG,
+  METRIC_OPTIONS
 } from 'data/constants';
+import { getEmissionCountrySelected } from './ghg-metadata-selectors';
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
 
@@ -19,8 +22,37 @@ const getSourceSelection = state =>
   (state.location && state.location.search) || null;
 const getAgricultureEmissionsData = state =>
   (state.agricultureEmissions && state.agricultureEmissions.data) || null;
+const getWbCountryData = state =>
+  (state.wbCountryData && state.wbCountryData.data) || null;
 
-/** LINE CHART SELECTORS */
+export const getMetricSelected = createSelector(
+  [getSourceSelection],
+  sourceSelection => {
+    if (!sourceSelection) return METRIC_OPTIONS.ABSOLUTE_VALUE;
+    const { emissionMetric } = qs.parse(sourceSelection);
+    const metricOptions = Object.values(METRIC_OPTIONS).map(option => option);
+    const selectedEmissionMetric = metricOptions.find(
+      ({ value }) => value === emissionMetric
+    );
+    return selectedEmissionMetric || METRIC_OPTIONS.ABSOLUTE_VALUE;
+  }
+);
+
+const getCountryMetricData = createSelector(
+  [getWbCountryData, getEmissionCountrySelected],
+  (data, country) => {
+    if (!data || !country) return null;
+    const countryMetric = data[country.value];
+    const metricData = {};
+    if (countryMetric) {
+      countryMetric.forEach(d => {
+        metricData[d.year] = { gdp: d.gdp, population: d.population };
+      });
+    }
+    return metricData;
+  }
+);
+
 export const getEmissionTypes = createSelector(
   [getAgricultureEmissionsData],
   data => {
@@ -116,16 +148,37 @@ const filterDataBySelectedIndicator = createSelector(
 );
 
 export const getChartData = createSelector(
-  [filterDataBySelectedIndicator],
-  data => {
-    if (!data || !data.length) return null;
-    const xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
+  [filterDataBySelectedIndicator, getCountryMetricData, getMetricSelected],
+  (data, countryMetric, metricSelected) => {
+    if (!data || !data.length || !countryMetric || !metricSelected) return null;
+    if (
+      metricSelected.value !== METRIC_OPTIONS.ABSOLUTE_VALUE.value &&
+      isEmpty(countryMetric)
+    ) {
+      return null;
+    } // set null when country/region doesn't have a metric data
+
+    let xValues = Object.keys(data[0].values).map(key => parseInt(key, 10));
+    if (metricSelected.value !== METRIC_OPTIONS.ABSOLUTE_VALUE.value) {
+      // get array of common years for data and for metric
+      const metricValues = Object.keys(countryMetric).map(key =>
+        parseInt(key, 10)
+      );
+      xValues = intersection(xValues, metricValues);
+    }
     const dataParsed = xValues.map(x => {
       const yItems = {};
       data.forEach(d => {
         const yKey = getYColumnValue(d.emission_subcategory.name);
         const yData = d.values[x];
-        yItems[yKey] = yData ? parseFloat(yData) * API_SCALE : undefined;
+        const calculationRatio = getMetricRatio(
+          metricSelected.value,
+          countryMetric,
+          x
+        );
+        yItems[yKey] = yData
+          ? parseFloat(yData) * API_SCALE / calculationRatio
+          : undefined;
       });
       return { x, ...yItems };
     });
@@ -148,9 +201,9 @@ export const getChartDomain = createSelector([getChartData], data => {
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [getChartData, getFiltersSelected],
-  (data, yColumns) => {
-    if (!data || !yColumns) return null;
+  [getChartData, getFiltersSelected, getMetricSelected],
+  (data, yColumns, metricSelected) => {
+    if (!data || !yColumns || !metricSelected) return null;
     const chartColors = setChartColors(
       yColumns.length,
       CHART_COLORS,
@@ -159,10 +212,17 @@ export const getChartConfig = createSelector(
     const theme = getThemeConfig(yColumns, chartColors);
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumns);
+    let unit = 'MtCO2e';
+    if (metricSelected.value === 'population') {
+      unit = 'tC02e per Capita'; // from MtC02 to tC02 ( 1 MtC02 = 1000000 tC02)
+    }
+    if (metricSelected.value === 'gdp') {
+      unit = 'tC02e per million $ GDP'; // from MtC02 to tC02 ( 1 MtC02 = 1000000 tC02)
+    }
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
-        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit: 'MtCO2e' }
+        yLeft: { ...DEFAULT_AXES_CONFIG.yLeft, unit }
       },
       theme: colorThemeCache,
       tooltip,
