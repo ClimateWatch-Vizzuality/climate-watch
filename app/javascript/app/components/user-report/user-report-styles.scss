@@ -1,17 +1,18 @@
+@import '~styles/settings.scss';
+
 .userReport {
   position: fixed;
-  top: 50%;
+  top: 40%;
   right: 0;
   width: 72px;
   z-index: 10000000;
-  background-color: red;
+  background-color: $theme-secondary;
   box-shadow: 0 0 2px rgba(black, 0.125);
-  color: white;
-  font-size: 16px;
-  border: 1px solid white;
+  color: $theme-color;
+  font-size: $font-size-sm;
   transform: rotate(-90deg) translate(0, 12px);
   transform-origin: 50% 0%;
-  transition: transform .3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
   border-radius: 4px 4px 0 0;
   padding: 4px 0 16px;
   cursor: pointer;
