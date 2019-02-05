@@ -10,9 +10,9 @@ import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
+import { METRIC_OPTIONS } from 'utils/defaults';
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart-component';
-import { metrics } from './historical-emissions-graph-data';
 
 class HistoricalEmissionsGraph extends PureComponent {
   renderFilters = () => {
@@ -26,6 +26,7 @@ class HistoricalEmissionsGraph extends PureComponent {
       emissionType,
       emissionMetric
     } = this.props;
+    const metricOptions = Object.values(METRIC_OPTIONS).map(option => option);
     return (
       <div className={styles.filtersGroup}>
         <Dropdown
@@ -51,7 +52,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           key="metric"
           label="Break by metric"
           className={styles.dropdown}
-          options={metrics}
+          options={metricOptions}
           onValueChange={handleMetricTypeChange}
           value={emissionMetric}
           hideResetButton

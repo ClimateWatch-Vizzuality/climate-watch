@@ -1,5 +1,5 @@
 export const METRIC_OPTIONS = {
-  ABSOLUTE_VALUE: { label: 'Absolute value', value: 'total' },
-  PER_CAPITA: { label: 'per Capita', value: 'population' },
-  PER_GDP: { label: 'per GDP', value: 'gdp' }
+  ABSOLUTE_VALUE: { label: 'Total', value: 'total' },
+  PER_CAPITA: { label: 'Per Capita', value: 'population' },
+  PER_GDP: { label: 'Per GDP', value: 'gdp' }
 };
