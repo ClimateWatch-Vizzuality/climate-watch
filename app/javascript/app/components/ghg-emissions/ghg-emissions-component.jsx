@@ -85,7 +85,8 @@ class GhgEmissions extends PureComponent {
           {
             type: 'download',
             section: 'ghg-emissions',
-            link: downloadLink
+            link: downloadLink,
+            tooltipText: 'View or download raw data'
           },
           {
             type: 'addToUser'
