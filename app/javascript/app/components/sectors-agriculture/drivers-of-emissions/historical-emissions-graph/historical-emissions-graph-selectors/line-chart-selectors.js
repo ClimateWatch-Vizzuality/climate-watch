@@ -11,9 +11,9 @@ import {
 import {
   CHART_COLORS,
   CHART_COLORS_EXTENDED,
-  DEFAULT_AXES_CONFIG
+  DEFAULT_AXES_CONFIG,
+  METRIC_OPTIONS
 } from 'data/constants';
-import { METRIC_OPTIONS } from 'utils/defaults';
 import { getEmissionCountrySelected } from './ghg-metadata-selectors';
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)

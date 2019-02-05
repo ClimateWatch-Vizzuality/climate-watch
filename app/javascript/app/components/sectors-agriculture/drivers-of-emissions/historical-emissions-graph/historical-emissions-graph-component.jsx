@@ -10,7 +10,7 @@ import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
-import { METRIC_OPTIONS } from 'utils/defaults';
+import { METRIC_OPTIONS } from 'data/constants';
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart-component';
 
