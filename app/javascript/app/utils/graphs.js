@@ -9,8 +9,7 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import isEmpty from 'lodash/isEmpty';
-import { OTHER_COLOR } from 'data/constants';
-import { METRIC_OPTIONS } from 'utils/defaults';
+import { OTHER_COLOR, METRIC_OPTIONS } from 'data/constants';
 
 export const parseRegions = regions =>
   regions.map(region => ({
