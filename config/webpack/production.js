@@ -15,6 +15,7 @@ module.exports = merge(sharedConfig, {
   plugins: [
     new webpack.EnvironmentPlugin([
       'GOOGLE_ANALYTICS_ID',
+      'USER_REPORT_KEY',
       'CW_API',
       'ESP_API',
       'GFW_API'
