@@ -15,7 +15,6 @@ import {
 } from 'data/constants';
 import { METRIC_OPTIONS } from 'utils/defaults';
 import { getEmissionCountrySelected } from './ghg-metadata-selectors';
-import { metrics } from '../historical-emissions-graph-data';
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
 
@@ -29,12 +28,13 @@ const getWbCountryData = state =>
 export const getMetricSelected = createSelector(
   [getSourceSelection],
   sourceSelection => {
-    if (!sourceSelection) return metrics[0];
+    if (!sourceSelection) return METRIC_OPTIONS.ABSOLUTE_VALUE;
     const { emissionMetric } = qs.parse(sourceSelection);
-    const selectedEmissionMetric = metrics.find(
+    const metricOptions = Object.values(METRIC_OPTIONS).map(option => option);
+    const selectedEmissionMetric = metricOptions.find(
       ({ value }) => value === emissionMetric
     );
-    return selectedEmissionMetric || metrics[0];
+    return selectedEmissionMetric || METRIC_OPTIONS.ABSOLUTE_VALUE;
   }
 );
 
