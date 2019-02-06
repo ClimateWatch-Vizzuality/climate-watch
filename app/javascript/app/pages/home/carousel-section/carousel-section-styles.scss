@@ -38,7 +38,7 @@
   align-items: center;
   width: 100%;
   flex-direction: column;
-  & > * {
+  > * {
     margin-bottom: 20px;
   }
 
@@ -77,7 +77,7 @@
 
     &.slick-active {
       background: $theme-color;
-      > *::after {
+      > ::after {
         background-color: unset !important;
       }
     }
@@ -94,8 +94,8 @@
 
       &.slick-active {
         background: none;
-         > *::after {
-          background-color: $theme-color-intense  !important;
+        > ::after {
+          background-color: $theme-color-intense !important;
         }
       }
     }
