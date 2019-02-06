@@ -32,6 +32,7 @@
   font-weight: $font-weight-light;
   font-size: $font-size-x-large;
   color: $theme-color;
+
   @media #{$tablet-portrait} {
     width: 445px;
   }
