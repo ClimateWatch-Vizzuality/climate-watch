@@ -50,6 +50,7 @@ const ContextByIndicatorComponent = ({
   legend,
   tooltipTxt,
   countryData,
+  topTenCountries,
   updateIndicatorFilter,
   updateIndicatorYearFilter,
   handleCountryEnter
@@ -88,12 +89,41 @@ const ContextByIndicatorComponent = ({
             onCountryFocus={() => {}}
             dragEnable={false}
           />
+          <MapLegend
+            mapColors={MAP_COLORS}
+            buckets={legend}
+            className={styles.legend}
+          />
+          {topTenCountries && (
+            <div className={styles.topTenSection}>
+              <p
+                className={styles.title}
+              >{`${selectedIndicator.label} (${selectedIndicator.unit})`}</p>
+              {topTenCountries.length ? (
+                <ul className={styles.countriesContainer}>
+                  {topTenCountries.map(c => (
+                    <li key={c.value} className={styles.countryData}>
+                      <span
+                        data-label={c.label}
+                        style={{
+                          width: `${c.chartWidth}%`,
+                          height: '12px',
+                          backgroundColor: c.color,
+                          display: 'block'
+                        }}
+                      />
+                      <p className={styles.value}>{c.valueLabel}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div
+                  className={styles.noData}
+                >{`No ${selectedIndicator.label} data for year ${indicatorSelectedYear.label}`}</div>
+              )}
+            </div>
+          )}
         </div>
-        <MapLegend
-          mapColors={MAP_COLORS}
-          buckets={legend}
-          className={styles.legend}
-        />
         {!isTablet && (
           <ButtonGroup
             className={styles.btnGroup}
@@ -116,6 +146,7 @@ const ContextByIndicatorComponent = ({
 
 ContextByIndicatorComponent.propTypes = {
   indicators: PropTypes.arrayOf(PropTypes.shape({})),
+  topTenCountries: PropTypes.arrayOf(PropTypes.shape({})),
   indicatorsYears: PropTypes.arrayOf(PropTypes.shape({})),
   selectedIndicator: PropTypes.shape({}),
   indicatorSelectedYear: PropTypes.shape({}),
