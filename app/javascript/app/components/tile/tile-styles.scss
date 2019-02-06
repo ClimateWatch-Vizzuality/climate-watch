@@ -14,7 +14,9 @@
     width: 370px;
     height: 254px;
   }
-  &:hover, &:focus {
+
+  &:hover,
+  &:focus {
     &::before {
       background: $theme-secondary;
       transform: scaleY(1.1);
@@ -33,6 +35,7 @@
     height: 100%;
     width: 300px;
     transition: 0.1s ease-in-out;
+
     @media #{$tablet-portrait} {
       width: 370px;
     }
