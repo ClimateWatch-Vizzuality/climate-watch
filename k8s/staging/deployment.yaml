@@ -103,8 +103,6 @@ spec:
                   key: CW_HTTP_AUTH_PASSWORD_STAGING
           - name: REDIS_SERVER
             value: redis://localhost:6379
-          - name: USER_REPORT_KEY
-            value: "cf0fa021-d239-457b-bb99-e9ab0205134c"
 
         ports:
           - containerPort: 3000
