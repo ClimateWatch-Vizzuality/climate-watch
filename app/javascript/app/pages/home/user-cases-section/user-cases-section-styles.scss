@@ -32,7 +32,9 @@
   font-weight: $font-weight-light;
   font-size: $font-size-x-large;
   color: $theme-color;
-  width: 445px;
+  @media #{$tablet-portrait} {
+    width: 445px;
+  }
 }
 
 .slideList {
@@ -102,7 +104,7 @@
   bottom: -90px;
 
   @media #{$tablet-portrait} {
-    width: 400px;
+    // width: 400px;
     padding-left: 40px;
   }
 
