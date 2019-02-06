@@ -30,7 +30,7 @@ const arrayToSentence = arr => {
 const getInfoText = activeConflicts => `${arrayToSentence(
   activeConflicts
 )} selector${activeConflicts.length > 1 ? 's have' : ' has'}
-   conflicts in accumulated data selection so stacked and percentage charts are not available`;
+   conflicts in data selection so aggregation and distribution charts are not available`;
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
