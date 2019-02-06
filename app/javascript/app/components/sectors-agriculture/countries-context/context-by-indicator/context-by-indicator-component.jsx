@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { Dropdown } from 'cw-components';
+import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
@@ -53,52 +54,64 @@ const ContextByIndicatorComponent = ({
   updateIndicatorYearFilter,
   handleCountryEnter
 }) => (
-  <React.Fragment>
-    <div className={styles.actionsContainer}>
-      <div className={styles.selectorWrapper}>
-        <Dropdown
-          label={'Indicator'}
-          value={selectedIndicator}
-          options={indicators}
-          onValueChange={updateIndicatorFilter}
-          hideResetButton
+  <TabletLandscape>
+    {isTablet => (
+      <React.Fragment>
+        <div className={styles.actionsContainer}>
+          <Dropdown
+            label={'Indicator'}
+            value={selectedIndicator}
+            options={indicators}
+            onValueChange={updateIndicatorFilter}
+            hideResetButton
+          />
+          <Dropdown
+            label={'Year'}
+            value={indicatorSelectedYear}
+            options={indicatorsYears}
+            onValueChange={updateIndicatorYearFilter}
+            hideResetButton
+          />
+          <div className={styles.buttonGroupWrapper}>
+            <ButtonGroup
+              className={styles.btnGroup}
+              buttonsConfig={buttonGroupConfig}
+            />
+          </div>
+        </div>
+        <div className={styles.visualizationsContainer}>
+          <Map
+            paths={paths}
+            tooltipId="cc-map-tooltip"
+            onCountryClick={() => {}}
+            onCountryEnter={handleCountryEnter}
+            onCountryFocus={() => {}}
+            dragEnable={false}
+          />
+        </div>
+        <MapLegend
+          mapColors={MAP_COLORS}
+          buckets={legend}
+          className={styles.legend}
         />
-      </div>
-      <div className={styles.timelineWrapper}>
-        <Dropdown
-          label={'Year'}
-          value={indicatorSelectedYear}
-          options={indicatorsYears}
-          onValueChange={updateIndicatorYearFilter}
-          hideResetButton
-        />
-      </div>
-      <div className={styles.buttonGroupWrapper}>
-        <ButtonGroup
-          className={styles.btnGroup}
-          buttonsConfig={buttonGroupConfig}
-        />
-      </div>
-    </div>
-    <Map
-      paths={paths}
-      tooltipId="cc-map-tooltip"
-      onCountryClick={() => {}}
-      onCountryEnter={handleCountryEnter}
-      onCountryFocus={() => {}}
-      dragEnable={false}
-    />
-    <MapLegend
-      mapColors={MAP_COLORS}
-      buckets={legend}
-      className={styles.legend}
-    />
-    {countryData && (
-      <ReactTooltip className={styles.tooltipContainer} id="cc-map-tooltip">
-        {getTooltip(countryData, tooltipTxt, selectedIndicator)}
-      </ReactTooltip>
+        {!isTablet && (
+          <ButtonGroup
+            className={styles.btnGroup}
+            buttonsConfig={buttonGroupConfig}
+          />
+        )}
+        {countryData && (
+          <ReactTooltip
+            className={styles.tooltipContainer}
+            id="cc-map-tooltip"
+            delayHide={isTablet ? 0 : 3000}
+          >
+            {getTooltip(countryData, tooltipTxt, selectedIndicator)}
+          </ReactTooltip>
+        )}
+      </React.Fragment>
     )}
-  </React.Fragment>
+  </TabletLandscape>
 );
 
 ContextByIndicatorComponent.propTypes = {
