@@ -32,7 +32,7 @@ node {
   def cw_files_prefix = 'climatewatch.org/staging.climatewatch.org/climate-watch/'
   def user_report_key = 'cf0fa021-d239-457b-bb99-e9ab0205134c'
 
-  if env.BRANCH_NAME == 'master' {
+  if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '5fe46fa7-c7e6-40e6-8e48-37479c4599f1'
   }
