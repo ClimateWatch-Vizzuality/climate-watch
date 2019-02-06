@@ -50,7 +50,6 @@
 }
 
 .topTenSection {
-  margin-top: 40px;
 
   .title {
     color: $theme-color;
@@ -60,6 +59,10 @@
 
   .noData {
     color: $theme-color;
+  }
+
+  @media #{$tablet-landscape} {
+    margin-top: 40px;
   }
 }
 
@@ -102,11 +105,7 @@
 .legend {
   position: relative;
   left: 0;
-  bottom: 25%;
-
-  @media #{$tablet-landscape} {
-    top: -160px;
-  }
+  bottom: 130px;
 }
 
 :global .__react_component_tooltip {

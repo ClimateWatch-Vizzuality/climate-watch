@@ -81,19 +81,21 @@ const ContextByIndicatorComponent = ({
           </div>
         </div>
         <div className={styles.visualizationsContainer}>
-          <Map
-            paths={paths}
-            tooltipId="cc-map-tooltip"
-            onCountryClick={() => {}}
-            onCountryEnter={handleCountryEnter}
-            onCountryFocus={() => {}}
-            dragEnable={false}
-          />
-          <MapLegend
-            mapColors={MAP_COLORS}
-            buckets={legend}
-            className={styles.legend}
-          />
+          <div>
+            <Map
+              paths={paths}
+              tooltipId="cc-map-tooltip"
+              onCountryClick={() => {}}
+              onCountryEnter={handleCountryEnter}
+              onCountryFocus={() => {}}
+              dragEnable={false}
+            />
+            <MapLegend
+              mapColors={MAP_COLORS}
+              buckets={legend}
+              className={styles.legend}
+            />
+          </div>
           {topTenCountries && (
             <div className={styles.topTenSection}>
               <p
