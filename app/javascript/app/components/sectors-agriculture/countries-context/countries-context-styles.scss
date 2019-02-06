@@ -9,12 +9,23 @@
 }
 
 .intro {
-  @include columns((6 , 5));
+  @include columns((12 , 6));
+  @include xy-gutters($gutter-position: ('bottom'));
 
   margin-bottom: 40px;
 
   > *:last-child {
-    @include column-offset(1, $gutters: true);
+    margin-top: $gutter-padding;
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((6 , 5));
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+
+      margin-top: 0;
+    }
   }
 }
 
