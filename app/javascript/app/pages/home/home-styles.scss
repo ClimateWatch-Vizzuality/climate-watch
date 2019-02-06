@@ -18,6 +18,7 @@
 
 :global .react-player__preview {
   position: relative;
+
   &::after {
     content: 'Learn more about why we built Climate Watch and how it can help you.';
     position: absolute;

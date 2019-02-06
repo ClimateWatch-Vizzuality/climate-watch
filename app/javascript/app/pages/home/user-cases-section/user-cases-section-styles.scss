@@ -23,7 +23,9 @@
 }
 
 .slideWrapper {
-  padding: 20px 40px 0;
+  @media #{$tablet-portrait} {
+    padding: 20px 40px 0;
+  }
 }
 
 .slideTitle {
@@ -94,10 +96,15 @@
   display: flex !important;
   box-sizing: border-box;
   justify-content: space-between;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   position: absolute;
   bottom: -90px;
-  padding-left: 40px;
+
+  @media #{$tablet-portrait} {
+    width: 400px;
+    padding-left: 40px;
+  }
 
   @media #{$desktop} {
     bottom: 2px;
