@@ -4,7 +4,6 @@
 .agricultureLabel {
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
 }
 
 .description {
@@ -20,12 +19,6 @@
   margin-left: 40px;
 }
 
-.portraitContent {
-  @include columns((6,6));
-
-  margin-bottom: 20px;
-}
-
 .tagTheme {
   border: none;
   box-shadow: none;
@@ -36,6 +29,7 @@
 .fixedCard {
   height: 100%;
   width: 100%;
+  max-height: 520px;
 }
 
 .fixedCardContentContainer {
@@ -51,4 +45,16 @@
 
 .fixedCardData {
   padding: 37px 31px;
+  overflow: hidden;
+}
+
+@media #{$tablet-portrait} {
+  .portraitContent {
+    @include columns((6,6));
+    // margin-bottom: 20px;
+  }
+
+  .agricultureLabel {
+    margin-bottom: 40px;
+  }
 }
