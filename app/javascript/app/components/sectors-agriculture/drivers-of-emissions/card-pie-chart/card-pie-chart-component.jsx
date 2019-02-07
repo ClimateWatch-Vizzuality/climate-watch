@@ -42,8 +42,8 @@ class CardPieChart extends PureComponent {
     return (
       <PieChart
         data={data}
-        width={285}
-        height={200}
+        width="100%"
+        height={250}
         config={config}
         customTooltip={<Tooltip />}
       />
