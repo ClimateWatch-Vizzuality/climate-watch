@@ -6,7 +6,7 @@ ActiveAdmin.register_page 'Global CW Platform NDC SDGs Targets' do
 
   controller do
     def section_name
-      'ndc_sdgs_targetndc_sdgs_targets'
+      'ndc_sdgs_targets'
     end
 
     def platform_name
