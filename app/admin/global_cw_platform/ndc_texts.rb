@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Ndc Texts' do
+ActiveAdmin.register_page 'Global CW Platform NDC Texts' do
   include DataUploader::SharedAdmin
 
   section_name = 'ndc_texts'

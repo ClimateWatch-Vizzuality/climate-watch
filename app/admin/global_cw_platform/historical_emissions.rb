@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Historical Emissions' do
+ActiveAdmin.register_page 'Global CW Platform Historical Emissions' do
   include DataUploader::SharedAdmin
 
   section_name = 'historical_emissions'

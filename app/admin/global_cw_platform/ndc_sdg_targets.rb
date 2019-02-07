@@ -1,12 +1,12 @@
-ActiveAdmin.register_page 'Global CW Platform WRI Metadata' do
+ActiveAdmin.register_page 'Global CW Platform NDC SDGs Targets' do
   include DataUploader::SharedAdmin
 
-  section_name = 'wri_metadata'
+  section_name = 'ndc_sdgs_targets'
   platform_name = 'global_cw_platform'
 
   controller do
     def section_name
-      'wri_metadata'
+      'ndc_sdgs_targets'
     end
 
     def platform_name
@@ -14,11 +14,11 @@ ActiveAdmin.register_page 'Global CW Platform WRI Metadata' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX}wri_metadata"
+      "#{CW_FILES_PREFIX}sdgs"
     end
 
     def path
-      admin_global_cw_platform_wri_metadata_path
+      admin_global_cw_platform_ndc_sdgs_targets_path
     end
 
     def section
@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global CW Platform WRI Metadata' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWriMetadata',
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportNdcSdgTargets',
                                                    current_admin_user.email)
     end
 
@@ -60,11 +60,11 @@ ActiveAdmin.register_page 'Global CW Platform WRI Metadata' do
   content do
     render partial: 'data_uploader/admin/form_upload_datasets', locals: {
       datasets: datasets_proc.call,
-      upload_path: admin_global_cw_platform_wri_metadata_upload_datafile_path,
-      download_path: admin_global_cw_platform_wri_metadata_download_datafiles_path,
+      upload_path: admin_global_cw_platform_ndc_sdgs_targets_upload_datafile_path,
+      download_path: admin_global_cw_platform_ndc_sdgs_targets_download_datafiles_path,
       download_single_data_file_path:
-          admin_global_cw_platform_wri_metadata_download_datafile_path,
-      import_path: admin_global_cw_platform_wri_metadata_run_importer_path,
+          admin_global_cw_platform_ndc_sdgs_targets_download_datafile_path,
+      import_path: admin_global_cw_platform_ndc_sdgs_targets_run_importer_path,
       import_button_disabled: section_proc.call.worker_logs.started.any?,
       logs: section_proc.call.worker_logs.order(created_at: :desc)
     }

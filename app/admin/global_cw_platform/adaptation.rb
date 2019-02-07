@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
+ActiveAdmin.register_page 'Global CW Platform Adaptation' do
   include DataUploader::SharedAdmin
 
   section_name = 'adaptation'
