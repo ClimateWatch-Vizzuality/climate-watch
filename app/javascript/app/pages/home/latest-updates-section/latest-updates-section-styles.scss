@@ -12,6 +12,7 @@
 
 .section {
   @include row();
+
   background-color: $white;
   padding-top: 60px;
   width: 100%;
