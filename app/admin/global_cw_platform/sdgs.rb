@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Sdgs' do
+ActiveAdmin.register_page 'Global CW Platform SDGs' do
   include DataUploader::SharedAdmin
 
   section_name = 'sdgs'
