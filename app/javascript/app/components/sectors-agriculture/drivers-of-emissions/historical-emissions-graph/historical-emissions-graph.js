@@ -24,11 +24,16 @@ class HistoricalEmissionsGraph extends PureComponent {
     ]);
   };
 
+  handleMetricTypeChange = ({ value }) => {
+    this.updateUrlParam([{ name: 'emissionMetric', value }]);
+  };
+
   render() {
     return createElement(Component, {
       ...this.props,
       handleCountryChange: this.handleCountryChange,
-      handleEmissionTypeChange: this.handleEmissionTypeChange
+      handleEmissionTypeChange: this.handleEmissionTypeChange,
+      handleMetricTypeChange: this.handleMetricTypeChange
     });
   }
 }
@@ -44,12 +49,14 @@ const mapStateToProps = (state, { location }) => {
   const { data: countries } = state.countries;
   const ghgEmissions = state.emissions;
   const ghgEmissionsMeta = state.ghgEmissionsMeta;
+  const wbCountryData = state.wbCountryData;
   const emissionsData = {
     agricultureEmissions,
     regions,
     countries,
     ghgEmissions,
     ghgEmissionsMeta,
+    wbCountryData,
     location
   };
   const getTargetsData = getAllData(emissionsData);

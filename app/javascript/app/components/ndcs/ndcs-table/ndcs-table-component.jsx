@@ -11,13 +11,11 @@ import styles from './ndcs-table-styles.scss';
 
 class NDCTable extends PureComponent {
   getTableContent() {
-    const { loading, data, noContentMsg, titleLinks } = this.props;
+    const { loading, data, noContentMsg } = this.props;
 
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length > 0) {
-      return (
-        <Table parseHtml titleLinks={titleLinks} data={data} rowHeight={60} />
-      );
+      return <Table parseHtml urlInData data={data} rowHeight={60} />;
     }
     return <NoContent className={styles.noContent} message={noContentMsg} />;
   }
@@ -78,8 +76,7 @@ NDCTable.propTypes = {
   data: PropTypes.array,
   handleCategoryChange: PropTypes.func.isRequired,
   handleIndicatorChange: PropTypes.func.isRequired,
-  handleSearchChange: PropTypes.func.isRequired,
-  titleLinks: PropTypes.array
+  handleSearchChange: PropTypes.func.isRequired
 };
 
 export default NDCTable;

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import videoThumbnailImage from 'assets/home/videobg@2x';
 
+import UserReport from 'components/user-report';
 import IntroSection from './intro-section/intro-section';
 import LatestUpdatesSection from './latest-updates-section/latest-updates-section';
 import CarouselSection from './carousel-section';
@@ -48,6 +49,7 @@ const Home = () => (
     </div>
     <HighlightedStories />
     <SubscribeSection />
+    <UserReport />
   </div>
 );
 
