@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
+import flatten from 'lodash/flatten';
 import lowerCase from 'lodash/lowerCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
@@ -74,7 +75,7 @@ export const getCountriesCountWithProposedActions = createSelector(
       )
     );
 
-    return [...new Set(countriesWithActionsSpecified.flat())].length;
+    return flatten([...new Set(countriesWithActionsSpecified)]).length;
   }
 );
 
@@ -84,9 +85,9 @@ export const getCategories = createSelector(
     if (!categories || !indicators) return null;
 
     const indicatorsCategoryIds = indicators.map(ind => ind.categoryIds);
-    const uniqueIndicatorsCategoryIds = [
-      ...new Set(indicatorsCategoryIds.flat())
-    ];
+    const uniqueIndicatorsCategoryIds = flatten([
+      ...new Set(indicatorsCategoryIds)
+    ]);
 
     return sortBy(
       Object.keys(categories)
