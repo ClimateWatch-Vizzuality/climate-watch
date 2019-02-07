@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Agriculture Profile' do
+ActiveAdmin.register_page 'Global CW Platform Agriculture Profile' do
   include DataUploader::SharedAdmin
 
   section_name = 'agriculture_profile'

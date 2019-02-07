@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Timeline' do
+ActiveAdmin.register_page 'Global CW Platform Documents Timeline' do
   include DataUploader::SharedAdmin
 
   section_name = 'timeline'

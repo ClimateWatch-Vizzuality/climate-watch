@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Indc' do
+ActiveAdmin.register_page 'Global CW Platform INDC' do
   include DataUploader::SharedAdmin
 
   section_name = 'indc'
