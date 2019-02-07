@@ -2,6 +2,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import lowerCase from 'lodash/lowerCase';
 import isEmpty from 'lodash/isEmpty';
 import some from 'lodash/some';
+import flatten from 'lodash/flatten';
 import {
   getSelectedCountry,
   getSelectedYear
@@ -297,7 +298,7 @@ const getChartData = createSelector(
         }, {})
     );
 
-    const anyValues = some(parsed.map(o => Object.values(o)).flat());
+    const anyValues = some(flatten(parsed.map(o => Object.values(o))));
     return { data: dataParsed, hasValues: anyValues };
   }
 );
