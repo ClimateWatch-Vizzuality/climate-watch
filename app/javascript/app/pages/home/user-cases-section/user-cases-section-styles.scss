@@ -23,7 +23,7 @@
 }
 
 .slideWrapper {
-  @media #{$tablet-portrait} {
+  @media #{$tablet-landscape} {
     padding: 20px 40px 0;
   }
 }
@@ -104,7 +104,7 @@
   position: absolute;
   bottom: -90px;
 
-  @media #{$tablet-portrait} {
+  @media #{$tablet-landscape} {
     padding-left: 40px;
   }
 
