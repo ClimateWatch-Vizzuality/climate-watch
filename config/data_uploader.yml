@@ -57,6 +57,10 @@ platforms:
         datasets:
           - sdgs
           - sdg_targets
+      - name: ndc_sdgs_targets
+        importer: ImportNdcSdgTargets
+        datasets:
+          - ndc_sdg_targets
       - name: socioeconomics
         importer: ImportSocioeconomics
         datasets:
