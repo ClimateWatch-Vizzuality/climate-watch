@@ -1,11 +1,15 @@
 # This migration comes from data_uploader (originally 20181129153835)
 class AddDetailsToWorkerLogs < ActiveRecord::Migration[5.2]
   def up
-    add_column :worker_logs, :details, :jsonb, default: {}
-    DataUploader::WorkerLog.find_each do |log|
-      log.update!(details: { errors: [{ type: :error, msg: log.error }] })
+    unless column_exists? :worker_logs, :details
+      add_column :worker_logs, :details, :jsonb, default: {}
+      DataUploader::WorkerLog.find_each do |log|
+        log.update!(details: { errors: [{ type: :error, msg: log.error }] })
+      end
     end
-    remove_column :worker_logs, :error
+    if column_exists? :worker_logs, :error
+      remove_column :worker_logs, :error
+    end
   end
 
   def down
