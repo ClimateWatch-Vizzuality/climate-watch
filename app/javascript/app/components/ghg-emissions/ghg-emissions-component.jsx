@@ -12,13 +12,25 @@ import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import startCase from 'lodash/startCase';
+import capitalize from 'lodash/capitalize';
 import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import styles from './ghg-emissions-styles.scss';
 
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
+const arrayToSentence = arr => {
+  const sentence =
+    arr.length > 1 ? `${arr.slice(0, arr.length - 1).join(', ')}, and ` : '';
+  return capitalize(`${sentence}${arr.slice(-1)}`);
+};
+
+const getInfoText = activeConflicts => `${arrayToSentence(
+  activeConflicts
+)} selector${activeConflicts.length > 1 ? 's have' : ' has'}
+   conflicts in data selection so aggregation and distribution charts are not available`;
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -28,15 +40,17 @@ class GhgEmissions extends PureComponent {
       selected: selectedOptions,
       options,
       handleChange,
-      chartTypeDisabled
+      accumulatedChartsConflict
     } = this.props;
     const value = selectedOptions && selectedOptions[`${field}Selected`];
     const iconsProp = icons ? { icons } : {};
+    const chartTypeDisabled = !isEmpty(accumulatedChartsConflict);
+    const activeConflicts = Object.keys(accumulatedChartsConflict);
     return (
       <Dropdown
         key={field}
-        info={field === 'chartType'}
-        infoText="Stacked and percentage charts are only available if the selected regions do not have countries in common"
+        info={field === 'chartType' && chartTypeDisabled}
+        infoText={getInfoText(activeConflicts)}
         label={label || startCase(field)}
         placeholder={`Filter by ${startCase(field)}`}
         options={options[field] || []}
@@ -85,7 +99,8 @@ class GhgEmissions extends PureComponent {
           {
             type: 'download',
             section: 'ghg-emissions',
-            link: downloadLink
+            link: downloadLink,
+            tooltipText: 'View or download raw data'
           },
           {
             type: 'addToUser'
@@ -169,6 +184,7 @@ GhgEmissions.propTypes = {
   config: PropTypes.object,
   options: PropTypes.object,
   selected: PropTypes.object,
+  accumulatedChartsConflict: PropTypes.object,
   fieldToBreakBy: PropTypes.string,
   legendOptions: PropTypes.array,
   legendSelected: PropTypes.array,
@@ -179,7 +195,6 @@ GhgEmissions.propTypes = {
   loading: PropTypes.bool,
   activeFilterRegion: PropTypes.object,
   downloadLink: PropTypes.string,
-  chartTypeDisabled: PropTypes.bool,
   hideRemoveOptions: PropTypes.bool
 };
 

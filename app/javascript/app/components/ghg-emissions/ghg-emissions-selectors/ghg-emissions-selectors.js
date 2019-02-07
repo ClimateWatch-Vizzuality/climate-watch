@@ -37,7 +37,7 @@ export const getGHGEmissions = createStructuredSelector({
   downloadLink: getLinkToDataExplorer,
   options: getOptions,
   selected: getOptionsSelected,
-  chartTypeDisabled: getDisableAccumulatedCharts,
+  accumulatedChartsConflict: getDisableAccumulatedCharts,
   legendOptions: getLegendDataOptions,
   legendSelected: getLegendDataSelected,
   data: getChartData,

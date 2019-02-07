@@ -28,6 +28,7 @@ const iconsMap = {
   delete: iconDelete
 };
 const renderButton = buttonConfig => {
+  const dataTip = buttonConfig.tooltipText || tooltipText[buttonConfig.type];
   switch (buttonConfig.type) {
     case 'share':
       return (
@@ -40,7 +41,7 @@ const renderButton = buttonConfig => {
           reverse={buttonConfig.reverseDropdown}
           positionRight={buttonConfig.positionRight}
           dataFor="blueTooltip"
-          dataTip={tooltipText[buttonConfig.type]}
+          dataTip={dataTip}
         />
       );
     default:
@@ -53,7 +54,7 @@ const renderButton = buttonConfig => {
           href={buttonConfig.href}
           disabled={buttonConfig.disabled}
           dataFor="blueTooltip"
-          dataTip={tooltipText[buttonConfig.type]}
+          dataTip={dataTip}
         >
           <Icon icon={iconsMap[buttonConfig.type]} />
         </Button>

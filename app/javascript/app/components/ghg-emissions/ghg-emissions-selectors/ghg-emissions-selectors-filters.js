@@ -205,21 +205,6 @@ const countriesSelectedFromRegions = regionsSelected => {
   return regionCountriesSelected;
 };
 
-export const getDisableAccumulatedCharts = createSelector(
-  [getFieldOptions('location'), getSelection('location')],
-  (locationOptions, locationSelected) => {
-    if (!locationOptions.length || !locationSelected) return false;
-    const selectedLocations = locationSelected.split(',');
-    const locationOptionsSelected = locationOptions.filter(location =>
-      selectedLocations.includes(location.iso)
-    );
-    const countriesSelected = countriesSelectedFromRegions(
-      locationOptionsSelected
-    );
-    return !isEqual(countriesSelected, uniq(countriesSelected));
-  }
-);
-
 const CHART_TYPE_OPTIONS = [
   { label: 'line', value: 'line' },
   { label: 'area', value: 'area' },
@@ -269,6 +254,40 @@ export const getLegendDataOptions = createSelector(
   }
 );
 
+export const getDisableAccumulatedCharts = createSelector(
+  [
+    getOptions,
+    getSelection('location'),
+    getFiltersSelected('gas'),
+    getFiltersSelected('sector')
+  ],
+  (options, locationSelected, gasSelected, sectorsSelected) => {
+    const { regions: locationOptions } = options || {};
+    const conflicts = {};
+    if (sectorsSelected && sectorsSelected.length > 1) {
+      const parentIds = [];
+      sectorsSelected.forEach(s => s.group && parentIds.push(s.group));
+      if (sectorsSelected.some(s => parentIds.includes(String(s.value)))) { conflicts.sector = true; }
+    }
+    if (
+      gasSelected &&
+      gasSelected.length > 1 &&
+      gasSelected.some(g => g.label === 'All GHG')
+    ) { conflicts.gas = true; }
+    if (locationOptions && locationOptions.length && locationSelected) {
+      const selectedLocations = locationSelected.split(',');
+      const locationOptionsSelected = locationOptions.filter(location =>
+        selectedLocations.includes(location.iso)
+      );
+      const countriesSelected = countriesSelectedFromRegions(
+        locationOptionsSelected
+      );
+      if (!isEqual(countriesSelected, uniq(countriesSelected))) { conflicts.region = true; }
+    }
+    return conflicts;
+  }
+);
+
 const getChartTypeSelected = createSelector(
   [
     () => CHART_TYPE_OPTIONS,
@@ -276,7 +295,7 @@ const getChartTypeSelected = createSelector(
     getDisableAccumulatedCharts
   ],
   (options, selected, disableAccumulatedCharts) => {
-    if (!selected || disableAccumulatedCharts) return options[0];
+    if (!selected || !isEmpty(disableAccumulatedCharts)) return options[0];
     return options.find(type => type.value === selected);
   }
 );

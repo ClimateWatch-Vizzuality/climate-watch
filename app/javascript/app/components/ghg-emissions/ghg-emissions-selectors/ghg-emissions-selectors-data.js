@@ -271,7 +271,13 @@ export const getChartConfig = createSelector(
     );
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
     return {
-      axes: DEFAULT_AXES_CONFIG,
+      axes: {
+        ...DEFAULT_AXES_CONFIG,
+        yLeft: {
+          ...DEFAULT_AXES_CONFIG.yLeft,
+          suffix: 't'
+        }
+      },
       theme: colorThemeCache,
       tooltip,
       animation: false,
