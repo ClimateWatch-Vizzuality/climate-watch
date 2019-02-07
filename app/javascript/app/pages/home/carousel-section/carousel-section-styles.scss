@@ -1,8 +1,13 @@
 @import '~styles/ui-extends.scss';
+@import '~styles/layout.scss';
 
 .container {
   background-image: linear-gradient(to top, #{$light-gray} 80%, rgb(255, 255, 255) 75%);
-  padding: 0 0 70px 0;
+  padding: 0 0 70px;
+
+  > * {
+    @include row();
+  }
 }
 
 .slideWrapper {
@@ -45,6 +50,9 @@
   @media #{$tablet-portrait} {
     flex-direction: row;
     align-items: flex-end;
+    > * {
+      margin: 0 10px;
+    }
   }
 }
 
@@ -97,6 +105,9 @@
         > ::after {
           background-color: $theme-color-intense !important;
         }
+      }
+      > * {
+        height: 100%;
       }
     }
 
