@@ -107,6 +107,7 @@ const ContextByIndicatorComponent = ({
                     <li key={c.value} className={styles.countryData}>
                       <span
                         data-label={c.label}
+                        data-value={c.valueLabel}
                         style={{
                           width: `${c.chartWidth}%`,
                           height: '12px',
@@ -114,7 +115,6 @@ const ContextByIndicatorComponent = ({
                           display: 'block'
                         }}
                       />
-                      <p className={styles.value}>{c.valueLabel}</p>
                     </li>
                   ))}
                 </ul>
