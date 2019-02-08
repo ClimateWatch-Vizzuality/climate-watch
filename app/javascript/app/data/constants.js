@@ -206,8 +206,7 @@ export const ESP_MEDIUM_ROWS = [
   'socieconomics',
   'policy_coverage',
   'geographic_coverage',
-  'reference',
-  'acronym'
+  'reference'
 ];
 
 export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
