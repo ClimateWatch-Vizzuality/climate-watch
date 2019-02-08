@@ -104,7 +104,10 @@ const ContextByIndicatorComponent = ({
               {topTenCountries.length ? (
                 <ul className={styles.countriesContainer}>
                   {topTenCountries.map(c => (
-                    <li key={c.value} className={styles.countryData}>
+                    <li
+                      key={`${c.value}-${Math.random()}-${selectedIndicator.label}`}
+                      className={styles.countryData}
+                    >
                       <span
                         data-label={c.label}
                         data-value={c.valueLabel}
