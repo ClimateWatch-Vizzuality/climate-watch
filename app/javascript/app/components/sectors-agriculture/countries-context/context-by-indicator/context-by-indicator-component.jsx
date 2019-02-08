@@ -81,7 +81,7 @@ const ContextByIndicatorComponent = ({
           </div>
         </div>
         <div className={styles.visualizationsContainer}>
-          <div>
+          <div className="layout-container">
             <Map
               paths={paths}
               tooltipId="cc-map-tooltip"
