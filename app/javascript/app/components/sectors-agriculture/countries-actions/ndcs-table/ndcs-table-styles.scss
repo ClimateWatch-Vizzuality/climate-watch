@@ -2,22 +2,15 @@
 @import '~styles/settings.scss';
 
 .filtersLayout {
-  @include columns(6);
-
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
+
+    max-width: 270px;
   }
 
-  @media #{$tablet-landscape} {
-    @include columns(3);
-
-    margin-bottom: 36px;
-  }
-}
-
-.searchBox {
-  @media #{$tablet-landscape} {
-    @include column-offset(6, $gutters: true);
+  @media #{$tablet-portrait} {
+    display: flex;
+    justify-content: space-between;
   }
 }
 

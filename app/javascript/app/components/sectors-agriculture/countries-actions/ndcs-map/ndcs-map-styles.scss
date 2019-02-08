@@ -7,12 +7,12 @@
 }
 
 .filtersLayout {
-  @include columns(6);
-
   margin-bottom: 40px;
+}
 
-  @media #{$tablet-landscape} {
-    @include columns(3);
+.filtersGroup {
+  > * {
+    max-width: 270px;
   }
 }
 
@@ -20,22 +20,10 @@
   @include columns();
 }
 
-.buttonGroup {
-  @media #{$tablet-landscape} {
-    @include column-offset(6, $gutters: true);
-
-    margin-top: 20px;
-  }
-}
-
 .legend {
   position: absolute;
   left: 0;
   bottom: 12%;
-
-  @media #{$tablet-landscape} {
-    bottom: 0;
-  }
 }
 
 :global .__react_component_tooltip {
@@ -48,4 +36,26 @@
   left: 0;
   right: 0;
   z-index: 10;
+}
+
+@media #{$tablet-portrait} {
+  .filtersLayout {
+    @include columns(6);
+  }
+}
+
+@media #{$tablet-landscape} {
+  .filtersLayout {
+    @include columns((10,2));
+  }
+
+  .buttonGroup {
+    @include column-offset(6, $gutters: true);
+
+    margin-top: 20px;
+  }
+
+  .legend {
+    bottom: 0;
+  }
 }
