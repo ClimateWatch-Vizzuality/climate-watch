@@ -1,6 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import { getColorByIndex } from 'utils/map';
-import { isEmpty } from 'lodash';
+import { isEmpty, orderBy } from 'lodash';
 import { format } from 'd3-format';
 import worldPaths from 'app/data/world-50m-paths';
 import {
@@ -49,12 +49,13 @@ const getAgricultureMeta = ({ agricultureCountriesContexts }) =>
 
 const getIndicatorsParsed = createSelector(getAgricultureMeta, meta => {
   if (!meta) return [];
-  return meta.map(i => ({
+  const indicators = meta.map(i => ({
     value: i.short_name.toLowerCase(),
     label: AGRICULTURE_INDICATORS_NAMES[i.short_name.toLowerCase()],
     filter: 'contextMapIndicator',
     unit: i.unit || '%'
   }));
+  return orderBy(indicators, 'label');
 });
 
 export const getSelectedIndicator = createSelector(
@@ -70,7 +71,7 @@ const getYears = createSelector(getAgricultureData, data => {
   if (!data) return null;
   const years = data.map(d => d.year);
   const uniqueYears = [...new Set(years)];
-  return uniqueYears.sort((a, b) => a - b).map(y => ({
+  return uniqueYears.sort((a, b) => b - a).map(y => ({
     label: y.toString(),
     value: y.toString()
   }));
