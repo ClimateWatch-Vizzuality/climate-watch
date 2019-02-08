@@ -23,8 +23,8 @@
       box-shadow: 15px 15px 20px 0 rgba(45, 45, 45, 0.14);
     }
 
-    .link {
-      visibility: visible;
+    svg {
+      left: 10px;
     }
   }
 
@@ -78,10 +78,12 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  visibility: hidden;
   width: 140px;
 
   svg {
+    position: relative;
+    left: 0;
     width: 40px;
+    transition: 0.1s ease-in-out;
   }
 }
