@@ -72,23 +72,21 @@ class ResourcesForAction extends PureComponent {
               NDC Funding Navigator
             </Button>
           </div>
-          <div className={styles.page}>
-            <div className={styles.logosContainer}>
-              {partners.map(partner => (
-                <div key={partner.title} className={styles.partnerWrapper}>
-                  <a
-                    href={partner.link}
-                    target="_blank"
-                    className={styles.imgContainer}
-                  >
-                    <img src={partner.img} alt={partner.title} />
-                  </a>
-                  <p className={styles.partnerDescription}>
-                    {partner.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+          <div className={styles.logosContainer}>
+            {partners.map(partner => (
+              <div key={partner.title} className={styles.partnerWrapper}>
+                <a
+                  href={partner.link}
+                  target="_blank"
+                  className={styles.imgContainer}
+                >
+                  <img src={partner.img} alt={partner.title} />
+                </a>
+                <p className={styles.partnerDescription}>
+                  {partner.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </React.Fragment>
