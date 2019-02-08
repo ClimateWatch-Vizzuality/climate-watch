@@ -14,15 +14,19 @@
   border-width: 4px 0 4px 8px !important;
   border-color: transparent transparent transparent #0a1941 !important;
   margin-left: 4px !important;
+}
+
+:global .react-player__preview {
+  position: relative;
 
   &::after {
     content: 'Learn more about why we built Climate Watch and how it can help you.';
     position: absolute;
     color: $white;
     font-size: 16px;
-    bottom: -50px;
-    left: -222px;
-    width: 491px;
+    top: 60%;
+    text-align: center;
+    width: 80%;
   }
 }
 

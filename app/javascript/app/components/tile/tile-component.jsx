@@ -22,7 +22,7 @@ const Tile = ({ category, date, description, link }) => (
           className={styles.description}
           lines={4}
           ellipsis={<span>...</span>}
-          width={320}
+          width={270}
         >
           {description}
         </Truncate>

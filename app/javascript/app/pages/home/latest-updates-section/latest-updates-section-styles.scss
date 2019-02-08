@@ -1,5 +1,6 @@
 @import '~styles/settings.scss';
 @import '~styles/ui-extends.scss';
+@import '~styles/layout.scss';
 
 .tilesGroup {
   display: inline-flex;
@@ -10,11 +11,11 @@
 }
 
 .section {
+  @include row();
+
   background-color: $white;
   padding-top: 60px;
   width: 100%;
-  padding-right: 0.9375rem;
-  padding-left: 0.9375rem;
 }
 
 .container {

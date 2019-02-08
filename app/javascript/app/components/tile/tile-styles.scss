@@ -5,12 +5,18 @@
   cursor: pointer;
   display: flex;
   font-family: $font-family-1;
-  height: 254px;
+  height: 274px;
   position: relative;
-  width: 370px;
+  width: 300px;
   margin: 0 30px 30px 0;
 
-  &:hover, &:focus {
+  @media #{$tablet-portrait} {
+    width: 370px;
+    height: 254px;
+  }
+
+  &:hover,
+  &:focus {
     &::before {
       background: $theme-secondary;
       transform: scaleY(1.1);
@@ -27,8 +33,12 @@
     border: 1px solid $theme-secondary;
     content: '';
     height: 100%;
-    width: 370px;
+    width: 300px;
     transition: 0.1s ease-in-out;
+
+    @media #{$tablet-portrait} {
+      width: 370px;
+    }
   }
 }
 

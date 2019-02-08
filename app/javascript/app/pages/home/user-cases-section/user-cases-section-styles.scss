@@ -23,14 +23,19 @@
 }
 
 .slideWrapper {
-  padding: 20px 40px 0;
+  @media #{$tablet-landscape} {
+    padding: 20px 40px 0;
+  }
 }
 
 .slideTitle {
   font-weight: $font-weight-light;
   font-size: $font-size-x-large;
   color: $theme-color;
-  width: 445px;
+
+  @media #{$tablet-portrait} {
+    width: 445px;
+  }
 }
 
 .slideList {
@@ -94,10 +99,14 @@
   display: flex !important;
   box-sizing: border-box;
   justify-content: space-between;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   position: absolute;
   bottom: -90px;
-  padding-left: 40px;
+
+  @media #{$tablet-landscape} {
+    padding-left: 40px;
+  }
 
   @media #{$desktop} {
     bottom: 2px;

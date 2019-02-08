@@ -1,8 +1,13 @@
 @import '~styles/ui-extends.scss';
+@import '~styles/layout.scss';
 
 .container {
   background-image: linear-gradient(to top, #{$light-gray} 80%, rgb(255, 255, 255) 75%);
   padding: 0 0 70px;
+
+  > * {
+    @include row();
+  }
 }
 
 .slideWrapper {
@@ -35,8 +40,20 @@
 .buttonsContainer {
   display: flex;
   justify-content: space-around;
-  align-items: flex-end;
+  align-items: center;
   width: 100%;
+  flex-direction: column;
+  > * {
+    margin-bottom: 20px;
+  }
+
+  @media #{$tablet-portrait} {
+    flex-direction: row;
+    align-items: flex-end;
+    > * {
+      margin: 0 10px;
+    }
+  }
 }
 
 .button {
@@ -57,8 +74,42 @@
 
 :global .cwCarouselPaging {
   li {
-    padding: 0 35px !important;
-    font-size: $font-size-s;
+    font-size: 0;
+    height: $font-size-s;
+    width: $font-size-s;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 50%;
+    background-color: $gray;
+    margin: 0 10px;
+
+    &.slick-active {
+      background: $theme-color;
+      > ::after {
+        background-color: unset !important;
+      }
+    }
+
+    @media #{$tablet-portrait} {
+      font-size: $font-size-s;
+      height: auto;
+      width: auto;
+      padding: 0 35px !important;
+      border-bottom: 3px solid rgba(10, 25, 65, 0.2) !important;
+      border-radius: 0;
+      background: none;
+      margin: 0;
+
+      &.slick-active {
+        background: none;
+        > ::after {
+          background-color: $theme-color-intense !important;
+        }
+      }
+      > * {
+        height: 100%;
+      }
+    }
 
     &:first-child {
       padding-left: 0 !important;
