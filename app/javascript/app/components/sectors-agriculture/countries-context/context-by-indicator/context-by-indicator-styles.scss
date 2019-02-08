@@ -6,28 +6,111 @@
   margin-bottom: 40px;
 }
 
-.filtersLayout {
-  @include columns(6);
-
-  margin-bottom: 40px;
-
-  @media #{$tablet-landscape} {
-    @include columns(3);
-  }
-}
-
-.column {
-  @include columns();
-}
-
 .actionsContainer {
-  @include columns((3, 3, 2));
+  @include columns();
   @include xy-gutters($gutter-position: ('bottom'));
+
+  .buttonGroupWrapper {
+    display: none;
+  }
 
   align-items: flex-end;
 
-  > *:last-child {
-    @include column-offset(4, $gutters: true);
+  @media #{$tablet-portrait} {
+    @include columns((6, 6));
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((3, 3, 2));
+
+    .buttonGroupWrapper {
+      display: block;
+    }
+
+    > *:last-child {
+      @include column-offset(4, $gutters: true);
+    }
+  }
+}
+
+.visualizationsContainer {
+  @include columns();
+
+  @media #{$tablet-landscape} {
+    @include columns((8, 3));
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+    }
+  }
+}
+
+.topTenSection {
+  .title {
+    color: $theme-color;
+    font-weight: $font-weight-bold;
+    margin-bottom: 40px;
+  }
+
+  .noData {
+    color: $theme-color;
+  }
+
+  @media #{$tablet-landscape} {
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+}
+
+.countryData {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 95%;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  span {
+    position: relative;
+
+    &::before {
+      position: absolute;
+      content: attr(data-label);
+      color: $theme-color;
+      width: max-content;
+      top: -23px;
+
+      @media #{$tablet-landscape} {
+        padding-right: 15px;
+        transform: translate(-100%, 0);
+        top: -5px;
+      }
+    }
+
+    &::after {
+      content: attr(data-value);
+      position: absolute;
+      color: $dark-gray;
+      font-size: $font-size-sm;
+      right: 0;
+      top: -3px;
+      transform: translateX(130%);
+    }
+  }
+
+  .value {
+    color: $dark-gray;
+    font-size: $font-size-sm;
+    padding-left: 10px;
   }
 }
 
@@ -38,11 +121,7 @@
 .legend {
   position: relative;
   left: 0;
-  bottom: 12%;
-
-  @media #{$tablet-landscape} {
-    top: -160px;
-  }
+  bottom: 130px;
 }
 
 :global .__react_component_tooltip {

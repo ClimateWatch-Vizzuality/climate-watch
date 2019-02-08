@@ -3,6 +3,7 @@ import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
+import flatten from 'lodash/flatten';
 
 const getCategoriesData = state => state.categories || {};
 const getIndicatorsData = state => state.indicators || [];
@@ -48,9 +49,9 @@ export const getCategories = createSelector(
     const indicatorsCategoryIds = agricultureIndicators.map(
       ind => ind.categoryIds
     );
-    const uniqueIndicatorsCategoryIds = [
-      ...new Set(indicatorsCategoryIds.flat())
-    ];
+    const uniqueIndicatorsCategoryIds = flatten([
+      ...new Set(indicatorsCategoryIds)
+    ]);
 
     return Object.keys(categories)
       .filter(category =>
