@@ -99,11 +99,13 @@ class GhgEmissionsContainer extends PureComponent {
 
   handleInfoClick = () => {
     const { selected } = this.props;
-    const { source } = selected.sourceSelected;
+    let { label: source } = selected.sourcesSelected || {};
     if (source) {
+      if (source.startsWith('UNFCCC')) source = 'UNFCCC';
+      const slugs = `historical_emissions_${source}`;
       this.props.setModalMetadata({
         category: 'Historical Emissions',
-        slugs: source,
+        slugs,
         open: true
       });
     }
