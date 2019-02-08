@@ -85,9 +85,9 @@ const ContextByIndicatorComponent = ({
             <Map
               paths={paths}
               tooltipId="cc-map-tooltip"
-              onCountryClick={() => {}}
+              onCountryClick={undefined}
               onCountryEnter={handleCountryEnter}
-              onCountryFocus={() => {}}
+              onCountryFocus={undefined}
               dragEnable={false}
             />
             <MapLegend
@@ -136,7 +136,7 @@ const ContextByIndicatorComponent = ({
           <ReactTooltip
             className={styles.tooltipContainer}
             id="cc-map-tooltip"
-            delayHide={isTablet ? 0 : 3000}
+            delayHide={isTablet ? 0 : 2000}
           >
             {getTooltip(countryData, tooltipTxt, selectedIndicator)}
           </ReactTooltip>
