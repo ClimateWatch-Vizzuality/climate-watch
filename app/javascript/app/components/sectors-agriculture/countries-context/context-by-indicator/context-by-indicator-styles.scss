@@ -53,7 +53,7 @@
   .title {
     color: $theme-color;
     font-weight: $font-weight-bold;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   .noData {
@@ -62,6 +62,7 @@
 
   @media #{$tablet-landscape} {
     margin-top: 40px;
+    margin-bottom: 20px;
   }
 }
 
@@ -70,7 +71,13 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
+  width: 95%;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 15px;
+    width: 100%;
+  }
 
   span {
     position: relative;
@@ -80,13 +87,23 @@
       content: attr(data-label);
       color: $theme-color;
       width: max-content;
-      top: -20px;
+      top: -23px;
 
       @media #{$tablet-landscape} {
         padding-right: 15px;
         transform: translate(-100%, 0);
         top: -5px;
       }
+    }
+
+    &::after {
+      content: attr(data-value);
+      position: absolute;
+      color: $dark-gray;
+      font-size: $font-size-sm;
+      right: 0;
+      top: -3px;
+      transform: translateX(130%);
     }
   }
 
