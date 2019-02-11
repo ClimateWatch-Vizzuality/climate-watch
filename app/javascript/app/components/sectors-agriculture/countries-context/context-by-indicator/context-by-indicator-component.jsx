@@ -6,7 +6,6 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
-
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './context-by-indicator-styles';
 import { MAP_COLORS } from './context-by-indicator-selectors';
@@ -40,6 +39,12 @@ const buttonGroupConfig = [
     type: 'addToUser'
   }
 ];
+
+const renderButtonGroup = config => (
+  <div className={styles.buttonGroupWrapper}>
+    <ButtonGroup className={styles.btnGroup} buttonsConfig={config} />
+  </div>
+);
 
 const ContextByIndicatorComponent = ({
   indicators,
@@ -75,14 +80,7 @@ const ContextByIndicatorComponent = ({
               hideResetButton
             />
           </div>
-          {isTablet && (
-            <div className={styles.buttonGroupWrapper}>
-              <ButtonGroup
-                className={styles.btnGroup}
-                buttonsConfig={buttonGroupConfig}
-              />
-            </div>
-          )}
+          {isTablet && renderButtonGroup(buttonGroupConfig)}
         </div>
         <div className={styles.visualizationsContainer}>
           <div className="layout-container">
@@ -133,12 +131,7 @@ const ContextByIndicatorComponent = ({
             </div>
           )}
         </div>
-        {!isTablet && (
-          <ButtonGroup
-            className={styles.btnGroup}
-            buttonsConfig={buttonGroupConfig}
-          />
-        )}
+        {!isTablet && renderButtonGroup(buttonGroupConfig)}
         {countryData && (
           <ReactTooltip
             className={styles.tooltipContainer}
