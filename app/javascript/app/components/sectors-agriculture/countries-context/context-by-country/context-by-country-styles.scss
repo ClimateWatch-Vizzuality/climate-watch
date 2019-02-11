@@ -48,33 +48,22 @@
 }
 
 .actionsContainer {
-  @include columns();
-  @include xy-gutters($gutter-position: ('bottom'));
+  @include columns((10, 2));
 
   .buttonGroupWrapper {
     display: none;
   }
 
   align-items: flex-end;
+}
 
-  @media #{$tablet-portrait} {
-    @include columns((6, 6));
+.filtersGroup {
+  display: flex;
+  flex-direction: column;
 
-    > *:last-child {
-      @include column-offset(1, $gutters: true);
-    }
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns((3, 3, 2));
-
-    .buttonGroupWrapper {
-      display: block;
-    }
-
-    > *:last-child {
-      @include column-offset(4, $gutters: true);
-    }
+  > * {
+    max-width: 270px;
+    margin-bottom: 20px;
   }
 }
 
@@ -99,7 +88,7 @@
 }
 
 .card {
-  height: 430px;
+  height: 100%;
 
   .titleContainer {
     min-height: 75px;
@@ -111,7 +100,7 @@
 .cardData {
   position: relative;
   padding: 30px;
-  height: 350px;
+  height: 100%;
   display: flex;
   flex-direction: column;
 
@@ -140,12 +129,13 @@
 
   .cardContent {
     display: flex;
+    flex-direction: column;
     margin-top: $gutter-padding;
     min-height: 130px;
 
     .chart,
     .legend {
-      width: 50%;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -178,4 +168,36 @@
 
 .btnGroup {
   width: 100%;
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    flex-direction: row;
+    > * {
+      margin: 0 30px 0 0;
+    }
+  }
+
+  .card {
+    height: 430px;
+  }
+
+  .cardData {
+    height: 350px;
+  }
+
+  .cardContent {
+    flex-direction: row;
+
+    .chart,
+    .legend {
+      width: 50%;
+    }
+  }
+}
+
+@media #{$tablet-landscape} {
+  .cardsContainer {
+    @include columns(6);
+  }
 }

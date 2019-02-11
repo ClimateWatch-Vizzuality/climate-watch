@@ -59,26 +59,30 @@ const ContextByIndicatorComponent = ({
     {isTablet => (
       <React.Fragment>
         <div className={styles.actionsContainer}>
-          <Dropdown
-            label={'Indicator'}
-            value={selectedIndicator}
-            options={indicators}
-            onValueChange={updateIndicatorFilter}
-            hideResetButton
-          />
-          <Dropdown
-            label={'Year'}
-            value={indicatorSelectedYear}
-            options={indicatorsYears}
-            onValueChange={updateIndicatorYearFilter}
-            hideResetButton
-          />
-          <div className={styles.buttonGroupWrapper}>
-            <ButtonGroup
-              className={styles.btnGroup}
-              buttonsConfig={buttonGroupConfig}
+          <div className={styles.filtersGroup}>
+            <Dropdown
+              label={'Indicator'}
+              value={selectedIndicator}
+              options={indicators}
+              onValueChange={updateIndicatorFilter}
+              hideResetButton
+            />
+            <Dropdown
+              label={'Year'}
+              value={indicatorSelectedYear}
+              options={indicatorsYears}
+              onValueChange={updateIndicatorYearFilter}
+              hideResetButton
             />
           </div>
+          {isTablet && (
+            <div className={styles.buttonGroupWrapper}>
+              <ButtonGroup
+                className={styles.btnGroup}
+                buttonsConfig={buttonGroupConfig}
+              />
+            </div>
+          )}
         </div>
         <div className={styles.visualizationsContainer}>
           <div className="layout-container">
