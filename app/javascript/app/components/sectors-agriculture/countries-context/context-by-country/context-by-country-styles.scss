@@ -49,12 +49,8 @@
 
 .actionsContainer {
   @include columns((10, 2));
-
-  .buttonGroupWrapper {
-    display: none;
-  }
-
   align-items: flex-end;
+  margin-bottom: 20px;
 }
 
 .filtersGroup {
@@ -80,10 +76,6 @@
 
   > * {
     @include xy-gutters($gutter-position: ('top', 'bottom'));
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns(6);
   }
 }
 
@@ -184,14 +176,14 @@
 
   .cardData {
     height: 350px;
-  }
 
-  .cardContent {
-    flex-direction: row;
+    .cardContent {
+      flex-direction: row;
 
-    .chart,
-    .legend {
-      width: 50%;
+      .chart,
+      .legend {
+        width: 50%;
+      }
     }
   }
 }
