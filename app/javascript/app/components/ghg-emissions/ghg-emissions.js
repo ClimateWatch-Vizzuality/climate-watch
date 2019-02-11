@@ -9,7 +9,6 @@ import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
-import { ALL_SELECTED, NO_ALL_SELECTED_COLUMNS } from 'data/constants';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -73,18 +72,7 @@ class GhgEmissionsContainer extends PureComponent {
       filters
     );
     if (isArray(updatedFilters)) {
-      if (
-        !NO_ALL_SELECTED_COLUMNS.includes(field) &&
-        (updatedFilters.length === 0 ||
-          updatedFilters[updatedFilters.length - 1].label === ALL_SELECTED)
-      ) {
-        values = ALL_SELECTED;
-      } else {
-        values = updatedFilters
-          .filter(v => v && v.value !== ALL_SELECTED)
-          .map(v => v.value)
-          .join(',');
-      }
+      values = updatedFilters.map(v => v.value).join(',');
     } else {
       values = updatedFilters.value;
     }
@@ -111,11 +99,13 @@ class GhgEmissionsContainer extends PureComponent {
 
   handleInfoClick = () => {
     const { selected } = this.props;
-    const { source } = selected.sourceSelected;
+    let { label: source } = selected.sourcesSelected || {};
     if (source) {
+      if (source.startsWith('UNFCCC')) source = 'UNFCCC';
+      const slugs = `historical_emissions_${source}`;
       this.props.setModalMetadata({
         category: 'Historical Emissions',
-        slugs: source,
+        slugs,
         open: true
       });
     }

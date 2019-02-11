@@ -1,7 +1,5 @@
 import { createSelector } from 'reselect';
 import uniq from 'lodash/uniq';
-import isEqual from 'lodash/isEqual';
-import { ALL_SELECTED_OPTION } from 'data/constants';
 import { getOptionsSelected } from './ghg-emissions-selectors-filters';
 
 export const getProviderFilters = createSelector(
@@ -15,10 +13,7 @@ export const getProviderFilters = createSelector(
       regionsSelected
     } = selectedOptions;
 
-    const parseValues = selected =>
-      (isEqual(selected, [ALL_SELECTED_OPTION])
-        ? null
-        : uniq(selected.map(s => s.value)).join());
+    const parseValues = selected => uniq(selected.map(s => s.value)).join();
     const regionCountriesSelected = [];
     regionsSelected.forEach(r => {
       if (r.members) regionCountriesSelected.push(r.members);
