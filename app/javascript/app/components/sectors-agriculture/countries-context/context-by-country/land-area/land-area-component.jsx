@@ -73,8 +73,8 @@ const LandArea = ({
               <SunburstChart
                     data={chartData}
                     customTooltip={<Tooltip />}
-                    width={300}
-                    height={300}
+                    width={250}
+                    height={250}
                     colors={chartColors}
                     config={chartConfig}
                   />
