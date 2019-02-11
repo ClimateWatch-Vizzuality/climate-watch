@@ -1,6 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import { getColorByIndex } from 'utils/map';
-import { isEmpty } from 'lodash';
+import { isEmpty, orderBy } from 'lodash';
+import { format } from 'd3-format';
 import worldPaths from 'app/data/world-50m-paths';
 import {
   PATH_LAYERS,
@@ -40,6 +41,7 @@ export const MAP_COLORS = [
 ];
 
 const getSearch = state => state.search || null;
+const getCountries = state => state.countries || null;
 const getAgricultureData = ({ agricultureCountriesContexts }) =>
   (agricultureCountriesContexts && agricultureCountriesContexts.data) || null;
 const getAgricultureMeta = ({ agricultureCountriesContexts }) =>
@@ -47,12 +49,13 @@ const getAgricultureMeta = ({ agricultureCountriesContexts }) =>
 
 const getIndicatorsParsed = createSelector(getAgricultureMeta, meta => {
   if (!meta) return [];
-  return meta.map(i => ({
+  const indicators = meta.map(i => ({
     value: i.short_name.toLowerCase(),
     label: AGRICULTURE_INDICATORS_NAMES[i.short_name.toLowerCase()],
     filter: 'contextMapIndicator',
-    unit: i.unit
+    unit: i.unit || '%'
   }));
+  return orderBy(indicators, 'label');
 });
 
 export const getSelectedIndicator = createSelector(
@@ -68,7 +71,7 @@ const getYears = createSelector(getAgricultureData, data => {
   if (!data) return null;
   const years = data.map(d => d.year);
   const uniqueYears = [...new Set(years)];
-  return uniqueYears.sort((a, b) => a - b).map(y => ({
+  return uniqueYears.sort((a, b) => b - a).map(y => ({
     label: y.toString(),
     value: y.toString()
   }));
@@ -105,13 +108,56 @@ export const getMapData = createSelector(
   [getSelectedIndicator, getSelectedYear, getAgricultureData],
   (indicator, year, data) => {
     if (!indicator || !year) return null;
+    return data.filter(d => d.year === parseInt(year.value, 10)).map(l => ({
+      iso: l.iso_code3,
+      value: l[indicator.value],
+      unit: indicator.unit,
+      bucketIndex: getBucketIndex(indicator.value, l[indicator.value])
+    }));
+  }
+);
+
+const indicatorValueFormat = (value, unit) => {
+  if (!value) return 'No Data';
+  if (unit === '%' || !unit) return `${Math.round(value * 10) / 10}`;
+  return `${format(',.2s')(value)}`;
+};
+
+const getWidth = (value, maxValue) => value * 100 / maxValue;
+
+export const getTopTenCountries = createSelector(
+  [getMapData, getCountries, getSelectedIndicator],
+  data => {
+    if (!data) return null;
     return data
-      .filter(d => d.year === parseInt(year.value, 10))
-      .map(l => ({
-        iso: l.iso_code3,
-        value: l[indicator.value],
-        bucketIndex: getBucketIndex(indicator.value, l[indicator.value])
-      }));
+      .slice()
+      .filter(d => d.value)
+      .sort((a, b) => b.value - a.value)
+      .filter(c => c.iso !== 'WORLD')
+      .filter(c => c.iso !== 'SAR')
+      .slice(0, 10);
+  }
+);
+
+export const getTopTenConfig = createSelector(
+  [getTopTenCountries, getCountries, getSelectedIndicator],
+  (data, countries, selectedIndicator) => {
+    if (!data || !countries || !selectedIndicator) return null;
+    const values = data.map(d => d.value);
+    const maxValue = Math.max(...values);
+    return data.map(d => ({
+      ...d,
+      label:
+        countries.find(c => c.value === d.iso) &&
+        countries.find(c => c.value === d.iso).label,
+      valueLabel: indicatorValueFormat(d.value, d.unit),
+      chartWidth: getWidth(d.value, maxValue),
+      color: getColorByIndex(
+        AGRICULTURE_INDICATORS_MAP_BUCKETS[selectedIndicator.value],
+        d.bucketIndex,
+        MAP_COLORS
+      )
+    }));
   }
 );
 
@@ -178,5 +224,6 @@ export const countriesContexts = createStructuredSelector({
   indicatorSelectedYear: getSelectedYear,
   paths: getPathsWithStyles,
   legend: getMapLegend,
-  mapData: getMapData
+  mapData: getMapData,
+  topTenCountries: getTopTenConfig
 });

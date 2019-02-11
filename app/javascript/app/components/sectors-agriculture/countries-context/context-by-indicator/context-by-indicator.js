@@ -8,9 +8,9 @@ import { countriesContexts } from './context-by-indicator-selectors';
 
 import Component from './context-by-indicator-component';
 
-const mapStateToProps = (state, { location }) => {
+const mapStateToProps = (state, { location, countries }) => {
   const search = qs.parse(location.search);
-  const cc = { ...state, search };
+  const cc = { ...state, search, countries };
   return {
     ...countriesContexts(cc)
   };

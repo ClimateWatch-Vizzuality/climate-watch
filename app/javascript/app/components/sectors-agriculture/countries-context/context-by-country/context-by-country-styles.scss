@@ -48,13 +48,33 @@
 }
 
 .actionsContainer {
-  @include columns((3, 3, 2));
+  @include columns();
   @include xy-gutters($gutter-position: ('bottom'));
+
+  .buttonGroupWrapper {
+    display: none;
+  }
 
   align-items: flex-end;
 
-  > *:last-child {
-    @include column-offset(4, $gutters: true);
+  @media #{$tablet-portrait} {
+    @include columns((6, 6));
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns((3, 3, 2));
+
+    .buttonGroupWrapper {
+      display: block;
+    }
+
+    > *:last-child {
+      @include column-offset(4, $gutters: true);
+    }
   }
 }
 
@@ -67,10 +87,14 @@
 }
 
 .cardsContainer {
-  @include columns(6);
+  @include columns();
 
   > * {
     @include xy-gutters($gutter-position: ('top', 'bottom'));
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns(6);
   }
 }
 

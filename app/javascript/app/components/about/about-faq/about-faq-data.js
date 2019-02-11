@@ -83,8 +83,14 @@ export const sectionsData = [
             acronym_definition:
               'Carbon Dioxide Information Analysis Center (of the U.S. Dept. of Energy)'
           },
-          { acronym: 'CH4', acronym_definition: 'Methane' },
-          { acronym: 'CO2', acronym_definition: 'Carbon Dioxide' },
+          {
+            acronym: '<span>CH<sub>4</sub></span>',
+            acronym_definition: 'Methane'
+          },
+          {
+            acronym: '<span>CO<sub>2</sub></span>',
+            acronym_definition: 'Carbon Dioxide'
+          },
           {
             acronym: 'EIA',
             acronym_definition:
@@ -136,17 +142,23 @@ export const sectionsData = [
           },
           { acronym: 'Mt', acronym_definition: 'Million metric tonnes/ tons' },
           {
-            acronym: 'MtCO2e',
+            acronym: '<span>MtCO<sub>2</sub>e</span>',
             acronym_definition:
               'Million metric tonnes/tons of Carbon Dioxide equivalent'
           },
-          { acronym: 'N2O', acronym_definition: 'Nitrous Oxide' },
+          {
+            acronym: '<span>N<sub>2</sub>O</span>',
+            acronym_definition: 'Nitrous Oxide'
+          },
           { acronym: 'NC', acronym_definition: 'National Communication' },
           {
             acronym: 'NDC',
             acronym_definition: 'Nationally Determined Contributions '
           },
-          { acronym: 'NF3', acronym_definition: 'Nitrogen Trifluoride' },
+          {
+            acronym: '<span>NF<sub>3</sub></span>',
+            acronym_definition: 'Nitrogen Trifluoride'
+          },
           {
             acronym: 'OECD',
             acronym_definition:
@@ -157,7 +169,10 @@ export const sectionsData = [
             acronym: 'SDG',
             acronym_definition: 'Sustainable Development Goals'
           },
-          { acronym: 'SF6', acronym_definition: 'Sulfur Hexafluoride' },
+          {
+            acronym: '<span>SF<sub>6</sub></span>',
+            acronym_definition: 'Sulfur Hexafluoride'
+          },
           { acronym: 'UN', acronym_definition: 'United Nations' },
           {
             acronym: 'UNFCCC',
