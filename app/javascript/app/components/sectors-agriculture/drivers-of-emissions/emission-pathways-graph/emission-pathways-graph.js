@@ -18,6 +18,7 @@ import {
   getChartConfig,
   getFiltersOptions,
   getFiltersSelected,
+  getExplorePathwaysButtonConfig,
   getModalData,
   getModelSelected,
   getLinkToDataExplorer
@@ -63,6 +64,7 @@ const mapStateToProps = (state, { location }) => {
     },
     filtersOptions: getFiltersOptions(espData),
     filtersSelected,
+    explorePathwaysConfig: getExplorePathwaysButtonConfig(espData),
     modalData: getModalData(espData),
     model: getModelSelected(espData),
     error: providers.some(p => state[p].error),
