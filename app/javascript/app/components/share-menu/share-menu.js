@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import shareIcon from 'assets/icons/share.svg';
 import facebookIcon from 'assets/icons/facebook.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
@@ -9,7 +10,8 @@ import copy from 'copy-to-clipboard';
 import Component from './share-menu-component';
 
 const mapStateToProps = (state, { path }) => {
-  const url = location.origin + (path || location.pathname) + location.search;
+  const { origin, pathname, search, hash } = location;
+  const url = origin + (path || pathname) + search + hash;
   const copyUrl = () => copy(url);
   const iframeCode = `<iframe src="${url}" frameborder="0" style="height: 600px; width: 1230px"></iframe>`;
   const copyCode = () => copy(iframeCode);
@@ -50,4 +52,4 @@ const mapStateToProps = (state, { path }) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Component);
+export default withRouter(connect(mapStateToProps, null)(Component));
