@@ -564,13 +564,12 @@ export const getExplorePathwaysButtonConfig = createSelector(
   filters => {
     if (!filters) return {};
     const { location, category, indicator, model } = filters;
-    const locationParam = location && location.value;
-    const categoryParam = category && category.value;
-    const indicatorParam = indicator && indicator.value;
-    const modelParam = model && model.value;
-    return {
-      link: `/pathways/model?currentLocation=${locationParam}&category=${categoryParam}&indicator=${indicatorParam}&model=${modelParam}`
-    };
+    const hasSelection = location && category && indicator && model;
+    return hasSelection
+      ? {
+        link: `/pathways/model?currentLocation=${location.value}&category=${category.value}&indicator=${indicator.value}&model=${model.value}`
+      }
+      : { link: '/pathways/model' };
   }
 );
 
