@@ -15,14 +15,6 @@ $min-height: 450px;
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
   }
-
-  @media #{$tablet-landscape} {
-    > *:last-child {
-      @include column-offset(7.2, $gutters: true);
-    }
-
-    @include columns(2.4);
-  }
 }
 
 .titleAndBtnsWrapper {
@@ -32,20 +24,8 @@ $min-height: 450px;
 }
 
 .selectorsWrapper {
-  @media #{$tablet-landscape} {
-    @include columns((8,4));
-  }
-
   margin-bottom: 40px;
 }
-
-// .filtersWrapper {
-//   display: inline-flex;
-
-//   & > * {
-//     margin-right: 20px;
-//   }
-// }
 
 .title {
   font-size: $font-size-large;
@@ -97,5 +77,15 @@ $min-height: 450px;
     > * {
       margin-bottom: 0;
     }
+  }
+  .titleAndBtnsWrapper {
+    > *:last-child {
+      @include column-offset(7.2, $gutters: true);
+    }
+
+    @include columns(2.4);
+  }
+  .selectorsWrapper {
+    @include columns((8,4));
   }
 }
