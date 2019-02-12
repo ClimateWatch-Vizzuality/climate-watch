@@ -24,6 +24,13 @@ export function getLocationParamUpdated(location, params = [], clear = false) {
   };
 }
 
+export function updateUrlHash(location, newHash) {
+  return {
+    ...location,
+    hash: newHash
+  };
+}
+
 export const isPageContained =
   window.location.pathname.split('/')[1] === CONTAINED_PATHNAME;
 
@@ -38,6 +45,7 @@ export const isEmbededComponent = location =>
 export default {
   getSearch,
   getLocationParamUpdated,
+  updateUrlHash,
   isPageContained,
   isPageNdcp,
   isEmbededComponent

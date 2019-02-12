@@ -6,6 +6,7 @@ import Intro from 'components/intro';
 import AnchorNav from 'components/anchor-nav';
 import Sticky from 'react-stickynode';
 import cx from 'classnames';
+import { updateUrlHash } from 'utils/navigation';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import layout from 'styles/layout.scss';
@@ -14,7 +15,13 @@ import styles from './sectors-agriculture-styles';
 class SectorsAgriculture extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { route, anchorLinks, setActiveSection } = this.props;
+    const {
+      route,
+      anchorLinks,
+      setActiveSection,
+      location,
+      history
+    } = this.props;
     return (
       <div>
         <Header route={route}>
@@ -45,6 +52,7 @@ class SectorsAgriculture extends PureComponent {
               topOffset={'40%'}
               onEnter={() => {
                 setActiveSection(section.hash);
+                history.replace(updateUrlHash(location, section.hash));
               }}
               fireOnRapidScroll={false}
               key={section.hash}
@@ -62,6 +70,8 @@ class SectorsAgriculture extends PureComponent {
 
 SectorsAgriculture.propTypes = {
   route: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array.isRequired,
   setActiveSection: PropTypes.func.isRequired
 };
