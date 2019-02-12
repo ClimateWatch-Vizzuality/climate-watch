@@ -37,12 +37,6 @@ const buttonGroupConfig = [
   }
 ];
 
-const renderButtonGroup = config => (
-  <div className={styles.buttonGroupWrapper}>
-    <ButtonGroup className={styles.btnGroup} buttonsConfig={config} />
-  </div>
-);
-
 const ContextByCountryComponent = ({
   cards,
   countries,
@@ -77,7 +71,12 @@ const ContextByCountryComponent = ({
               />
             )}
           </div>
-          {isTablet && renderButtonGroup(buttonGroupConfig)}
+          {isTablet && (
+            <ButtonGroup
+              className={styles.btnGroup}
+              buttonsConfig={buttonGroupConfig}
+            />
+          )}
         </div>
         <div className={styles.cardsContainer}>
           {cards &&
@@ -127,7 +126,12 @@ const ContextByCountryComponent = ({
         </div>
         <LandArea />
         {selectedCountry && selectedYear && <MeatData />}
-        {!isTablet && renderButtonGroup(buttonGroupConfig)}
+        {!isTablet && (
+          <ButtonGroup
+            className={styles.btnGroup}
+            buttonsConfig={buttonGroupConfig}
+          />
+        )}
       </React.Fragment>
     )}
   </TabletLandscape>
