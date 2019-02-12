@@ -78,6 +78,7 @@ $min-height: 450px;
       margin-bottom: 0;
     }
   }
+
   .titleAndBtnsWrapper {
     > *:last-child {
       @include column-offset(7.2, $gutters: true);
@@ -85,6 +86,7 @@ $min-height: 450px;
 
     @include columns(2.4);
   }
+
   .selectorsWrapper {
     @include columns((8,4));
   }
