@@ -40,12 +40,6 @@ const buttonGroupConfig = [
   }
 ];
 
-const renderButtonGroup = config => (
-  <div className={styles.buttonGroupWrapper}>
-    <ButtonGroup className={styles.btnGroup} buttonsConfig={config} />
-  </div>
-);
-
 const ContextByIndicatorComponent = ({
   indicators,
   selectedIndicator,
@@ -80,7 +74,12 @@ const ContextByIndicatorComponent = ({
               hideResetButton
             />
           </div>
-          {isTablet && renderButtonGroup(buttonGroupConfig)}
+          {isTablet && (
+            <ButtonGroup
+              className={styles.btnGroup}
+              buttonsConfig={buttonGroupConfig}
+            />
+          )}
         </div>
         <div className={styles.visualizationsContainer}>
           <div className="layout-container">
@@ -131,7 +130,12 @@ const ContextByIndicatorComponent = ({
             </div>
           )}
         </div>
-        {!isTablet && renderButtonGroup(buttonGroupConfig)}
+        {!isTablet && (
+          <ButtonGroup
+            className={styles.btnGroup}
+            buttonsConfig={buttonGroupConfig}
+          />
+        )}
         {countryData && (
           <ReactTooltip
             className={styles.tooltipContainer}
