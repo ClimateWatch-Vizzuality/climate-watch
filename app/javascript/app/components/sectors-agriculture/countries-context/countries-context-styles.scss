@@ -26,6 +26,10 @@
   color: $theme-color;
 }
 
+.switch {
+  height: max-content;
+}
+
 .switchWrapper {
   display: flex;
   height: 40px;
