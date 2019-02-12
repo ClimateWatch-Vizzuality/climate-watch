@@ -6,12 +6,11 @@
   margin-bottom: 40px;
 }
 
-// .actionsContainer {
-//   @include columns();
-//   @include xy-gutters($gutter-position: ('bottom'));
+.actionsContainer {
+  @include xy-gutters($gutter-position: ('bottom'));
 
-//   margin-bottom: 40px;
-// }
+  align-items: flex-end;
+}
 
 .visualizationsContainer {
   @include columns();
@@ -63,7 +62,7 @@
       content: attr(data-label);
       color: $theme-color;
       width: max-content;
-      top: -23px;
+      top: -20px;
 
       @media #{$tablet-landscape} {
         padding-right: 15px;
@@ -82,17 +81,12 @@
       transform: translateX(130%);
     }
   }
-}
 
-.value {
-  color: $dark-gray;
-  font-size: $font-size-sm;
-  padding-left: 10px;
-}
-.actionsContainer {
-  @include xy-gutters($gutter-position: ('bottom'));
-
-  align-items: flex-end;
+  .value {
+    color: $dark-gray;
+    font-size: $font-size-sm;
+    padding-left: 10px;
+  }
 }
 
 .btnGroup {
