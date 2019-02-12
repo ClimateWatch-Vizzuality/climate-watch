@@ -47,7 +47,6 @@ class EmissionPathwayGraph extends PureComponent {
       },
       {
         type: 'share',
-        shareUrl: '/embed/pathways',
         analyticsGraphName: 'Drivers of Emissions',
         positionRight: true
       },
