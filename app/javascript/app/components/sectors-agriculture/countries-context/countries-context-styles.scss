@@ -157,7 +157,7 @@
   width: 100%;
 }
 
-@media #{$tablet-portrait} {
+@media #{$tablet-landscape} {
   .intro {
     @include columns((6 , 5));
 
