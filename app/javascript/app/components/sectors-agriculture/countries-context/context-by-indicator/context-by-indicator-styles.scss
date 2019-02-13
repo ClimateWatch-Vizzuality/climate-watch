@@ -14,14 +14,6 @@
 
 .visualizationsContainer {
   @include columns();
-
-  @media #{$tablet-landscape} {
-    @include columns((8, 3));
-
-    > *:last-child {
-      @include column-offset(1, $gutters: true);
-    }
-  }
 }
 
 .topTenSection {
@@ -34,11 +26,6 @@
   .noData {
     color: $theme-color;
   }
-
-  @media #{$tablet-landscape} {
-    margin-top: 40px;
-    margin-bottom: 20px;
-  }
 }
 
 .countryData {
@@ -49,11 +36,6 @@
   margin-bottom: 30px;
   width: 95%;
 
-  @media #{$tablet-landscape} {
-    margin-bottom: 15px;
-    width: 100%;
-  }
-
   span {
     position: relative;
 
@@ -63,12 +45,6 @@
       color: $theme-color;
       width: max-content;
       top: -20px;
-
-      @media #{$tablet-landscape} {
-        padding-right: 15px;
-        transform: translate(-100%, 0);
-        top: -5px;
-      }
     }
 
     &::after {
@@ -116,31 +92,56 @@
   flex-direction: column;
 
   > * {
-    max-width: 270px;
+    width: 100%;
     margin-bottom: 20px;
   }
 }
 
 @media #{$tablet-portrait} {
-  .actionsContainer {
-    @include columns((10, 2));
-  }
-
   .filtersGroup {
     flex-direction: row;
 
     > * {
       margin: 0 30px 0 0;
+      max-width: 270px;
     }
   }
 }
 
 @media #{$tablet-landscape} {
+  .actionsContainer {
+    @include columns((10, 2));
+  }
+
   .filtersLayout {
     @include columns(3);
   }
 
   .legend {
     top: -160px;
+  }
+
+  .visualizationsContainer {
+    @include columns((8, 3));
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+    }
+  }
+
+  .topTenSection { 
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+
+  .countryData {
+    margin-bottom: 15px;
+    width: 100%;
+
+    span::before {
+      padding-right: 15px;
+      transform: translate(-100%, 0);
+      top: -5px;
+    }
   }
 }
