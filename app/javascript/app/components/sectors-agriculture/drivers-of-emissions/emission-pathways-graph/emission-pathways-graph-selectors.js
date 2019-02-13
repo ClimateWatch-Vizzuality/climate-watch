@@ -564,10 +564,20 @@ export const getExplorePathwaysButtonConfig = createSelector(
   filters => {
     if (!filters) return {};
     const { location, category, indicator, model } = filters;
-    const hasSelection = location && category && indicator && model;
-    return hasSelection
+    const locationParam = location ? `currentLocation=${location.value}` : '';
+    const categoryParam = category ? `category=${category.value}` : '';
+    const indicatorParam = indicator ? `indicator=${indicator.value}` : '';
+    const modelParam = model && model.value ? `model=${model.value}` : '';
+    const selection = [
+      locationParam,
+      categoryParam,
+      indicatorParam,
+      modelParam
+    ];
+    const paramsString = selection.filter(p => p !== '').join('&');
+    return paramsString
       ? {
-        link: `/pathways/model?currentLocation=${location.value}&category=${category.value}&indicator=${indicator.value}&model=${model.value}`
+        link: `/pathways/model?${paramsString}`
       }
       : { link: '/pathways/model' };
   }
