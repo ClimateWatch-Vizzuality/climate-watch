@@ -12,7 +12,7 @@
 
 .filtersGroup {
   > * {
-    max-width: 270px;
+    width: 100%;
   }
 }
 
@@ -41,6 +41,12 @@
 @media #{$tablet-portrait} {
   .filtersLayout {
     @include columns(6);
+  }
+
+  .filtersGroup {
+    > * {
+      max-width: 270px;
+    }
   }
 }
 
