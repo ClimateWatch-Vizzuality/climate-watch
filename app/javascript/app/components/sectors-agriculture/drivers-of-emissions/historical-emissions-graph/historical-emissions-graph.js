@@ -28,19 +28,30 @@ class HistoricalEmissionsGraph extends PureComponent {
     this.updateUrlParam([{ name: 'emissionMetric', value }]);
   };
 
+  handleInfoClick = () => {
+    const { setModalMetadata } = this.props;
+    setModalMetadata({
+      category: 'Historical Emissions',
+      slugs: 'historical_emissions_cait',
+      open: true
+    });
+  };
+
   render() {
     return createElement(Component, {
       ...this.props,
       handleCountryChange: this.handleCountryChange,
       handleEmissionTypeChange: this.handleEmissionTypeChange,
-      handleMetricTypeChange: this.handleMetricTypeChange
+      handleMetricTypeChange: this.handleMetricTypeChange,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
 
 HistoricalEmissionsGraph.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  setModalMetadata: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, { location }) => {

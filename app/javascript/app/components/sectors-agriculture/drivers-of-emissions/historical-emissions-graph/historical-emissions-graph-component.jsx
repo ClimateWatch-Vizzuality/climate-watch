@@ -103,9 +103,12 @@ class HistoricalEmissionsGraph extends PureComponent {
     );
   };
 
-  renderExploreButtonGroup = () => {
+  renderExploreButtonGroup = handleInfoClick => {
     const buttonGroupConfig = [
-      { type: 'info' },
+      {
+        type: 'info',
+        onClick: handleInfoClick
+      },
       { type: 'share' },
       { type: 'download' },
       { type: 'addToUser' }
@@ -119,7 +122,11 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   render() {
-    const { emissionsCountry, ghgEmissionsFilters } = this.props;
+    const {
+      emissionsCountry,
+      ghgEmissionsFilters,
+      handleInfoClick
+    } = this.props;
     return (
       <div>
         <RegionsProvider />
@@ -133,7 +140,7 @@ class HistoricalEmissionsGraph extends PureComponent {
         <TabletLandscape>
           <div className={styles.landscapeContent}>
             {this.renderFilters()}
-            {this.renderExploreButtonGroup()}
+            {this.renderExploreButtonGroup(handleInfoClick)}
           </div>
           <div className={styles.landscapeContent}>
             {this.renderEmissionsChart()}
@@ -144,7 +151,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           <div className={styles.portraitContent}>
             {this.renderFilters()}
             {this.renderEmissionsChart()}
-            {this.renderExploreButtonGroup()}
+            {this.renderExploreButtonGroup(handleInfoClick)}
             {this.renderPieChart()}
           </div>
         </TabletPortraitOnly>
@@ -157,6 +164,7 @@ HistoricalEmissionsGraph.propTypes = {
   handleCountryChange: PropTypes.func,
   handleEmissionTypeChange: PropTypes.func,
   handleMetricTypeChange: PropTypes.func,
+  handleInfoClick: PropTypes.func.isRequired,
   config: PropTypes.object,
   data: PropTypes.array,
   domain: PropTypes.object,
