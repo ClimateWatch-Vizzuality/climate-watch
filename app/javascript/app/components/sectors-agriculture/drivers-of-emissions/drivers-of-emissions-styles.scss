@@ -29,14 +29,14 @@
 
 .switchWrapper {
   height: max-content;
-  width: min-content;
+  max-width: max-content;
 }
 
 .switchSelected {
   background-color: $theme-color;
 }
 
-@media #{$tablet-portrait} {
+@media #{$tablet-landscape} {
   .intro {
     flex-direction: row;
 

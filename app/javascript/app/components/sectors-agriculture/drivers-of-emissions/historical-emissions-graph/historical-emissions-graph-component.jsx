@@ -116,6 +116,9 @@ class HistoricalEmissionsGraph extends PureComponent {
         exploreButtonText="Explore emissions"
         exploreButtonConfig={exploreEmissionsConfig}
         buttonGroupConfig={buttonGroupConfig}
+        theme={{
+          container: styles.buttonGroupContainer
+        }}
       />
     );
   };
