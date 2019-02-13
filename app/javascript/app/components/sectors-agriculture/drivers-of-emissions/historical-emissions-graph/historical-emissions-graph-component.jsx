@@ -104,6 +104,7 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   renderExploreButtonGroup = () => {
+    const { exploreEmissionsConfig } = this.props;
     const buttonGroupConfig = [
       { type: 'info' },
       { type: 'share' },
@@ -113,6 +114,7 @@ class HistoricalEmissionsGraph extends PureComponent {
     return (
       <ExploreButtonGroup
         exploreButtonText="Explore emissions"
+        exploreButtonConfig={exploreEmissionsConfig}
         buttonGroupConfig={buttonGroupConfig}
       />
     );
@@ -158,6 +160,7 @@ HistoricalEmissionsGraph.propTypes = {
   handleEmissionTypeChange: PropTypes.func,
   handleMetricTypeChange: PropTypes.func,
   config: PropTypes.object,
+  exploreEmissionsConfig: PropTypes.object.isRequired,
   data: PropTypes.array,
   domain: PropTypes.object,
   filters: PropTypes.array,

@@ -559,10 +559,35 @@ export const getLinkToDataExplorer = createSelector(
   }
 );
 
+export const getExplorePathwaysButtonConfig = createSelector(
+  getFiltersSelected,
+  filters => {
+    if (!filters) return {};
+    const { location, category, indicator, model } = filters;
+    const locationParam = location ? `currentLocation=${location.value}` : '';
+    const categoryParam = category ? `category=${category.value}` : '';
+    const indicatorParam = indicator ? `indicator=${indicator.value}` : '';
+    const modelParam = model && model.value ? `model=${model.value}` : '';
+    const selection = [
+      locationParam,
+      categoryParam,
+      indicatorParam,
+      modelParam
+    ];
+    const paramsString = selection.filter(p => p !== '').join('&');
+    return paramsString
+      ? {
+        link: `/pathways/model?${paramsString}`
+      }
+      : { link: '/pathways/model' };
+  }
+);
+
 export default {
   getChartData,
   getChartDomainWithYMargins,
   getChartConfig,
   getFiltersOptions,
-  getFiltersSelected
+  getFiltersSelected,
+  getExplorePathwaysButtonConfig
 };

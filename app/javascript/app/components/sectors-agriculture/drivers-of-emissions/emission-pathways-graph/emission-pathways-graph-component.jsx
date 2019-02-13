@@ -39,7 +39,7 @@ class EmissionPathwayGraph extends PureComponent {
   }
 
   renderExploreButtonGroup = () => {
-    const { downloadLink, handleInfoClick } = this.props;
+    const { downloadLink, handleInfoClick, explorePathwaysConfig } = this.props;
     const buttonGroupConfig = [
       {
         type: 'info',
@@ -62,6 +62,7 @@ class EmissionPathwayGraph extends PureComponent {
     return (
       <ExploreButtonGroup
         exploreButtonText="Explore pathways"
+        exploreButtonConfig={explorePathwaysConfig}
         buttonGroupConfig={buttonGroupConfig}
       />
     );
@@ -175,6 +176,7 @@ EmissionPathwayGraph.propTypes = {
   modalData: PropTypes.array,
   model: PropTypes.object,
   config: PropTypes.object,
+  explorePathwaysConfig: PropTypes.object,
   downloadLink: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.bool,
