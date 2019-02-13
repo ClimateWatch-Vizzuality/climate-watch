@@ -20,26 +20,33 @@ const getTooltip = (country, tooltipTxt, { label }) => (
   </div>
 );
 
-const buttonGroupConfig = [
-  {
-    type: 'info',
-    onClick: () => {
-      // TODO: Implement info button click
+const renderButtonGroup = handleInfoClick => {
+  const buttonGroupConfig = [
+    {
+      type: 'info',
+      onClick: handleInfoClick
+    },
+    {
+      type: 'share',
+      analyticsGraphName: 'agriculture/countries-context-by-country',
+      positionRight: true
+    },
+    {
+      type: 'download',
+      section: 'ghg-emissions'
+    },
+    {
+      type: 'addToUser'
     }
-  },
-  {
-    type: 'share',
-    analyticsGraphName: 'Country/Ghg-emissions',
-    positionRight: true
-  },
-  {
-    type: 'download',
-    section: 'ghg-emissions'
-  },
-  {
-    type: 'addToUser'
-  }
-];
+  ];
+
+  return (
+    <ButtonGroup
+      className={styles.btnGroup}
+      buttonsConfig={buttonGroupConfig}
+    />
+  );
+};
 
 const ContextByIndicatorComponent = ({
   indicators,
@@ -53,7 +60,8 @@ const ContextByIndicatorComponent = ({
   topTenCountries,
   updateIndicatorFilter,
   updateIndicatorYearFilter,
-  handleCountryEnter
+  handleCountryEnter,
+  handleInfoClick
 }) => (
   <TabletLandscape>
     {isTablet => (
@@ -74,10 +82,7 @@ const ContextByIndicatorComponent = ({
             hideResetButton
           />
           <div className={styles.buttonGroupWrapper}>
-            <ButtonGroup
-              className={styles.btnGroup}
-              buttonsConfig={buttonGroupConfig}
-            />
+            {renderButtonGroup(handleInfoClick)}
           </div>
         </div>
         <div className={styles.visualizationsContainer}>
@@ -129,12 +134,7 @@ const ContextByIndicatorComponent = ({
             </div>
           )}
         </div>
-        {!isTablet && (
-          <ButtonGroup
-            className={styles.btnGroup}
-            buttonsConfig={buttonGroupConfig}
-          />
-        )}
+        {!isTablet && renderButtonGroup(handleInfoClick)}
         {countryData && (
           <ReactTooltip
             className={styles.tooltipContainer}
@@ -161,6 +161,7 @@ ContextByIndicatorComponent.propTypes = {
   tooltipTxt: PropTypes.string,
   updateIndicatorFilter: PropTypes.func.isRequired,
   updateIndicatorYearFilter: PropTypes.func.isRequired,
+  handleInfoClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired
 };
 

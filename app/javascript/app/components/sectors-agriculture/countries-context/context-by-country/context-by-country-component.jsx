@@ -16,26 +16,33 @@ const cardTheme = {
   contentContainer: styles.titleContainer
 };
 
-const buttonGroupConfig = [
-  {
-    type: 'info',
-    onClick: () => {
-      // TODO: Implement info button click
+const renderButtonGroup = handleInfoClick => {
+  const buttonGroupConfig = [
+    {
+      type: 'info',
+      onClick: handleInfoClick
+    },
+    {
+      type: 'share',
+      analyticsGraphName: 'Country/Ghg-emissions',
+      positionRight: true
+    },
+    {
+      type: 'download',
+      section: 'ghg-emissions'
+    },
+    {
+      type: 'addToUser'
     }
-  },
-  {
-    type: 'share',
-    analyticsGraphName: 'Country/Ghg-emissions',
-    positionRight: true
-  },
-  {
-    type: 'download',
-    section: 'ghg-emissions'
-  },
-  {
-    type: 'addToUser'
-  }
-];
+  ];
+
+  return (
+    <ButtonGroup
+      className={styles.btnGroup}
+      buttonsConfig={buttonGroupConfig}
+    />
+  );
+};
 
 const ContextByCountryComponent = ({
   cards,
@@ -45,7 +52,8 @@ const ContextByCountryComponent = ({
   selectedYear,
   handleInfoBtnClick,
   updateCountryFilter,
-  updateCountryYearFilter
+  updateCountryYearFilter,
+  handleInfoClick
 }) => (
   <TabletLandscape>
     {isTablet => (
@@ -70,10 +78,7 @@ const ContextByCountryComponent = ({
             />
           )}
           <div className={styles.buttonGroupWrapper}>
-            <ButtonGroup
-              className={styles.btnGroup}
-              buttonsConfig={buttonGroupConfig}
-            />
+            {renderButtonGroup(handleInfoClick)}
           </div>
         </div>
         <div className={styles.cardsContainer}>
@@ -124,12 +129,7 @@ const ContextByCountryComponent = ({
         </div>
         <LandArea />
         {selectedCountry && selectedYear && <MeatData />}
-        {!isTablet && (
-          <ButtonGroup
-            className={styles.btnGroup}
-            buttonsConfig={buttonGroupConfig}
-          />
-        )}
+        {!isTablet && renderButtonGroup(handleInfoClick)}
       </React.Fragment>
     )}
   </TabletLandscape>
@@ -149,7 +149,8 @@ ContextByCountryComponent.propTypes = {
   cards: PropTypes.arrayOf(PropTypes.shape({})),
   updateCountryYearFilter: PropTypes.func.isRequired,
   updateCountryFilter: PropTypes.func.isRequired,
-  handleInfoBtnClick: PropTypes.func.isRequired
+  handleInfoBtnClick: PropTypes.func.isRequired,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default ContextByCountryComponent;

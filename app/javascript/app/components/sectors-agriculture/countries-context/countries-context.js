@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { actions } from 'components/modal-metadata';
 import Component from './countries-context-component';
 import { countriesContexts } from './countries-contexts-selectors';
 
@@ -24,6 +25,16 @@ class CountriesContextsContainer extends PureComponent {
 
   handleInfoBtnClick = () => {
     // TODO: Implement info button click
+  };
+
+  handleInfoClick = () => {
+    const { setModalMetadata } = this.props;
+    setModalMetadata({
+      customTitle: 'Socioeconomic indicators',
+      category: 'Countries Context',
+      slugs: 'socioenconomic_all indicators',
+      open: true
+    });
   };
 
   updateCountryFilter = ({ value }) =>
@@ -54,15 +65,17 @@ class CountriesContextsContainer extends PureComponent {
         updateIndicatorFilter={this.updateIndicatorFilter}
         handleSwitchClick={this.handleSwitchClick}
         handleInfoBtnClick={this.handleInfoBtnClick}
+        handleInfoClick={this.handleInfoClick}
       />
     );
   }
 }
 
 CountriesContextsContainer.propTypes = {
-  history: PropTypes.shape({})
+  history: PropTypes.shape({}),
+  setModalMetadata: PropTypes.func.isRequired
 };
 
 export default withRouter(
-  connect(mapStateToProps, null)(CountriesContextsContainer)
+  connect(mapStateToProps, actions)(CountriesContextsContainer)
 );
