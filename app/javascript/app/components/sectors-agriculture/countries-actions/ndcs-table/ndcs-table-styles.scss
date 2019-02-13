@@ -5,12 +5,15 @@
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
 
-    max-width: 270px;
+    width: 100%;
   }
 
   @media #{$tablet-portrait} {
     display: flex;
     justify-content: space-between;
+    > * {  
+      max-width: 270px;
+    }
   }
 }
 
