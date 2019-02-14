@@ -16,8 +16,6 @@
 }
 
 .filtersGroup {
-  @include columns((6, 6, 6));
-
   > * {
     @include xy-gutters(30px, $gutter-position: ('bottom'));
   }
@@ -30,6 +28,12 @@
 
 .buttonGroupContainer {
   margin-bottom: 40px;
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns((6, 6, 6));
+  }
 }
 
 @media #{$tablet-landscape} {

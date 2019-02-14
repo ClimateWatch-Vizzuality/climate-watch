@@ -4,21 +4,31 @@
 .filtersLayout {
   > * {
     @include xy-gutters($gutter-position: ('bottom'));
-
-    width: 100%;
   }
+}
 
-  @media #{$tablet-portrait} {
-    display: flex;
-    justify-content: space-between;
-    > * {  
-      max-width: 270px;
-    }
-  }
+.emptyCell {
+  display: none;
 }
 
 .loader,
 .noContent {
   margin-top: 25px;
   min-height: 475px;
+}
+
+@media #{$tablet-portrait} {
+  .filtersLayout {
+    @include columns((6));
+  }
+}
+
+
+@media #{$tablet-landscape} {
+  .filtersLayout {
+    @include columns((3,6,3));
+      .emptyCell {
+        display: block;
+      }
+  }
 }

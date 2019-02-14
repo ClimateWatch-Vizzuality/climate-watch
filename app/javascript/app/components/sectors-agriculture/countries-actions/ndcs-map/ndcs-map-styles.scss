@@ -10,12 +10,6 @@
   margin-bottom: 40px;
 }
 
-.filtersGroup {
-  > * {
-    width: 100%;
-  }
-}
-
 .column {
   @include columns();
 }
@@ -42,17 +36,19 @@
   .filtersLayout {
     @include columns(6);
   }
-
-  .filtersGroup {
-    > * {
-      max-width: 270px;
-    }
-  }
 }
 
 @media #{$tablet-landscape} {
   .filtersLayout {
     @include columns((10,2));
+  }
+
+  .filtersGroup {
+    @include columns((4,4,4));
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
   }
 
   .buttonGroup {
