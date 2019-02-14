@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import ShareMenu from 'components/share-menu';
+import Icon from 'components/icon';
+import downloadIcon from 'assets/icons/download.svg';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { Desktop } from 'components/responsive';
@@ -15,12 +17,13 @@ const activeProps = location => ({
 });
 const renderDataExplorerLink = location => (
   <NavLink
-    className={cx(styles.link, styles.noWrap)}
+    className={cx(styles.link, styles.noWrap, styles.linkWithIcon)}
     to="/data-explorer"
     title="Data Explorer"
     {...activeProps(location)}
   >
-    DATA EXPLORER
+    <Icon icon={downloadIcon} className={styles.downloadIcon} />
+    <span>DATA EXPLORER</span>
   </NavLink>
 );
 const renderMyCWLink = location => (
