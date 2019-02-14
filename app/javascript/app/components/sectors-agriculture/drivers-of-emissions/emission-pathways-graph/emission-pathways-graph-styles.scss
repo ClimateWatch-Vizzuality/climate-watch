@@ -59,23 +59,24 @@ $min-height: 450px;
   cursor: pointer;
 }
 
-.filtersWrapper {
-  display: flex;
-  flex-wrap: wrap;
+.filtersGroup {
+  @include columns((6, 6, 6));
 
-  & > * {
-    margin-bottom: 20px;
-    max-width: 220px;
-    margin-right: 30px;
+  > * {
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
   }
 }
 
 @media #{$tablet-landscape} {
-  .filtersWrapper {
-    flex-wrap: nowrap;
+  .filtersGroup {
+    @include columns((4, 4, 4));
 
     > * {
-      margin-bottom: 0;
+      @include xy-gutters(30px, $gutter-position: ('bottom', 'right'));
+
+      &:first-child {
+        @include xy-gutters(0, $gutter-position: 'left');
+      }
     }
   }
 
@@ -89,5 +90,9 @@ $min-height: 450px;
 
   .selectorsWrapper {
     @include columns((8,4));
+  }
+
+  .buttonGroupContainer {
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
   }
 }
