@@ -23,12 +23,12 @@
   }
 }
 
-
 @media #{$tablet-landscape} {
   .filtersLayout {
     @include columns((3,6,3));
-      .emptyCell {
-        display: block;
-      }
+
+    .emptyCell {
+      display: block;
+    }
   }
 }
