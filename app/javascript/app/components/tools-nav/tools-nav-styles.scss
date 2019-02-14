@@ -26,6 +26,15 @@
   }
 }
 
+.downloadIcon {
+  margin-right: 5px;
+}
+
+.linkWithIcon {
+  align-items: center;
+  display: flex;
+}
+
 .link {
   color: $dark-gray;
   margin-left: 25px;
