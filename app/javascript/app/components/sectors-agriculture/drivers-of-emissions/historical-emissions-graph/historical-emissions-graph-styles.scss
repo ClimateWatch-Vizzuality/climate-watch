@@ -17,8 +17,9 @@
 
 .filtersGroup {
   @include columns((6, 6, 6));
+
   > * {
-    @include xy-gutters(30px, $gutter-position: 'bottom');
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
   }
 }
 
@@ -34,11 +35,17 @@
 @media #{$tablet-landscape} {
   .filtersGroup {
     @include columns((4, 4, 4));
+
     > * {
-      @include xy-gutters(30px, $gutter-position: 'bottom');
+      @include xy-gutters(30px, $gutter-position: ('bottom', 'right'));
+
+      &:first-child {
+        @include xy-gutters(0, $gutter-position: 'left');
+      }
     }
   }
+
   .buttonGroupContainer {
-    margin-bottom: 0.9375rem;
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
   }
 }

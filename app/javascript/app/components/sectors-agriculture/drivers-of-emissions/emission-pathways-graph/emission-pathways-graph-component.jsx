@@ -64,6 +64,7 @@ class EmissionPathwayGraph extends PureComponent {
         exploreButtonText="Explore pathways"
         exploreButtonConfig={explorePathwaysConfig}
         buttonGroupConfig={buttonGroupConfig}
+        theme={{ container: styles.buttonGroupContainer }}
       />
     );
   };
@@ -104,7 +105,7 @@ class EmissionPathwayGraph extends PureComponent {
         )}
         <div className="grid-column-item">
           <div className={styles.selectorsWrapper}>
-            <div className={styles.filtersWrapper}>
+            <div className={styles.filtersGroup}>
               <Dropdown
                 label="Region"
                 options={filtersOptions.locations}
