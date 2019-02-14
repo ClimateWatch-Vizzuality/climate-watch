@@ -54,6 +54,7 @@
 
 .filtersGroup {
   @include columns(12);
+
   > * {
     @include xy-gutters(30px, $gutter-position: 'bottom');
   }
@@ -156,6 +157,7 @@
 
 .btnGroup {
   width: 100%;
+
   @include xy-gutters(30px, $gutter-position: 'bottom');
 }
 
@@ -185,14 +187,16 @@
 @media #{$tablet-landscape} {
   .filtersGroup {
     @include columns((4, 4, 4));
+
     > *:first-child {
       @include xy-gutters(0, $gutter-position: 'left');
     }
   }
+
   .cardsContainer {
     @include columns(6);
   }
-  
+
   .actionsContainer {
     @include columns((10, 2));
   }
