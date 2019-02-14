@@ -17,6 +17,7 @@
 }
 
 .topTenSection {
+  min-height: 160px;
   .title {
     color: $theme-color;
     font-weight: $font-weight-bold;
@@ -67,6 +68,7 @@
 
 .btnGroup {
   width: 100%;
+  @include xy-gutters(30px, $gutter-position: 'bottom');
 }
 
 .legend {
@@ -88,29 +90,28 @@
 }
 
 .filtersGroup {
-  display: flex;
-  flex-direction: column;
-
+  @include columns(12);
   > * {
-    width: 100%;
-    margin-bottom: 20px;
+    @include xy-gutters(30px, $gutter-position: 'bottom');
   }
 }
 
 @media #{$tablet-portrait} {
   .filtersGroup {
-    flex-direction: row;
-
-    > * {
-      margin: 0 30px 0 0;
-      max-width: 270px;
-    }
+    @include columns((6,6));
   }
 }
 
 @media #{$tablet-landscape} {
   .actionsContainer {
     @include columns((10, 2));
+  }
+
+  .filtersGroup {
+    @include columns((4, 4, 4));
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
   }
 
   .filtersLayout {

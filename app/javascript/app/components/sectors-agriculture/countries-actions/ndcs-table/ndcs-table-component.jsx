@@ -48,6 +48,7 @@ class NDCTable extends PureComponent {
             hideResetButton
             plain
           />
+          <div className={styles.emptyCell} />
           <Search
             value={query}
             theme={darkSearch}
