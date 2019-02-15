@@ -24,7 +24,9 @@ class EmissionPathwayGraph extends PureComponent {
       : '';
     return (
       <span>
-        {`${getName('location')} doesn't have any data for ${getName(
+        {`${getName(
+          'location'
+        )} doesn't have any agriculture data for ${getName(
           'model'
         )}${unavailableIndicatorName}. `}
         <button

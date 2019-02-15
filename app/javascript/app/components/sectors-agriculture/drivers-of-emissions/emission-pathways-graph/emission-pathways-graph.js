@@ -146,7 +146,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
     if (location && location.value) {
       params.push({ name: 'currentLocation', value: location.value });
     }
-    this.updateUrlParam(params, true);
+    this.updateUrlParam(params);
   };
 
   handleSelectorChange = (option, param, clear) => {
