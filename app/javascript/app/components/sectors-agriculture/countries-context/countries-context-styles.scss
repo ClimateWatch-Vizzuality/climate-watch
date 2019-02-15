@@ -24,6 +24,7 @@
 
 .introText {
   color: $theme-color;
+  max-width: 600px;
 }
 
 .switch {
@@ -93,7 +94,7 @@
   flex-direction: column;
 
   .introText {
-    max-width: 90%;
+    max-width: 600px;
   }
 
   .textHtmlWrapper {
