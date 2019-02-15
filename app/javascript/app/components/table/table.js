@@ -51,7 +51,7 @@ class TableContainer extends PureComponent {
 
   setRowsHeight = columns => {
     if (columns.find(c => ESP_HIGH_ROWS.indexOf(c.value) > -1)) {
-      return 150;
+      return 200;
     } else if (columns.find(c => ESP_MEDIUM_ROWS.indexOf(c.value) > -1)) {
       return 80;
     }
