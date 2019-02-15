@@ -34,6 +34,10 @@
 
   height: calc(100vh - #{$gutter-padding * 2});
   background-color: white;
+
+  @media #{$mobile-only} {
+    @include row((10, 2), $gridDirection: 'vertical');
+  }
 }
 
 .navMenu {
@@ -51,6 +55,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media #{$mobile-only} {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 }
 
 .tools {
