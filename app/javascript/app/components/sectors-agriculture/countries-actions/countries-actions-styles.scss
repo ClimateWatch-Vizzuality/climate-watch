@@ -51,7 +51,7 @@
   background-color: $theme-color;
 }
 
-@media #{$tablet-portrait} {
+@media #{$tablet-landscape} {
   .descriptionWrapper {
     flex-direction: row;
     align-items: center;
