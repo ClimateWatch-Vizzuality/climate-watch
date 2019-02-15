@@ -7,7 +7,7 @@ export const sectionsData = [
         type: 'text',
         title: 'What is Climate Watch?',
         answer:
-          'Climate Watch is an online open data platform that provides data to help countries achieve ambitious climate goals and enhance their sustainable development.'
+          "Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress."
       },
       {
         type: 'text',
@@ -25,7 +25,7 @@ export const sectionsData = [
         type: 'html',
         title: 'How do I cite Climate Watch data as a source?',
         answer:
-          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2018. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
+          '<span>Use the info button next to each dataset and figure on Climate Watch to see its citation information.  A general citation for Climate Watch is as follows: Climate Watch. 2019. Washington, D.C.: World Resources Institute. Available online at: <link to="/" innerText="www.climatewatchdata.org"></link>. See our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about citation.  '
       },
       {
         type: 'html',
@@ -73,7 +73,7 @@ export const sectionsData = [
           },
           { acronym: 'BAU', acronym_definition: 'Business As Usual' },
           { acronym: 'BR', acronym_definition: 'Biennial Report' },
-          { acronym: 'BUR', acronym_definition: 'Biennial Update Report ' },
+          { acronym: 'BUR', acronym_definition: 'Biennial Update Report' },
           {
             acronym: 'CAIT',
             acronym_definition: 'Climate Analysis Indicators Tool'
@@ -102,12 +102,12 @@ export const sectionsData = [
           },
           {
             acronym: 'EU28',
-            acronym_definition: 'European Union group od 28 countries'
+            acronym_definition: 'European Union group of 28 countries'
           },
           {
             acronym: 'F-gases',
             acronym_definition:
-              'Hydrofluorocarbons, perfluorocarbons, sulful hexafluoride, Nitrogen Trifluoride'
+              'Hydrofluorocarbons, perfluorocarbons, sulfur hexafluoride, Nitrogen Trifluoride'
           },
           {
             acronym: 'FAO',
@@ -131,7 +131,7 @@ export const sectionsData = [
             acronym: 'IPCC',
             acronym_definition: 'Intergovernmental Panel on Climate Change'
           },
-          { acronym: 'LTS', acronym_definition: 'Long-term Strategy ' },
+          { acronym: 'LTS', acronym_definition: 'Long-term Strategy' },
           {
             acronym: 'LUCF',
             acronym_definition: 'Land-use Change and Forestry'
@@ -140,11 +140,11 @@ export const sectionsData = [
             acronym: 'LULUCF',
             acronym_definition: 'Land-use, land-use Change and Forestry'
           },
-          { acronym: 'Mt', acronym_definition: 'Million metric tonnes/ tons' },
+          { acronym: 'Mt', acronym_definition: 'Million metric tonnes' },
           {
             acronym: '<span>MtCO<sub>2</sub>e</span>',
             acronym_definition:
-              'Million metric tonnes/tons of Carbon Dioxide equivalent'
+              'Million metric tonnes of Carbon Dioxide equivalent'
           },
           {
             acronym: '<span>N<sub>2</sub>O</span>',
@@ -153,7 +153,7 @@ export const sectionsData = [
           { acronym: 'NC', acronym_definition: 'National Communication' },
           {
             acronym: 'NDC',
-            acronym_definition: 'Nationally Determined Contributions '
+            acronym_definition: 'Nationally Determined Contributions'
           },
           {
             acronym: '<span>NF<sub>3</sub></span>',
@@ -198,7 +198,7 @@ export const sectionsData = [
         type: 'text',
         title: 'What are the main differences between the three data sources?',
         answer:
-          'UNFCCC provides official country-reported inventories; CAIT and PIK are estimates made by non-government research institutes. CAIT and PIK datasets apply a consistent methodology and are comparable across all countries included. The UNFCCC dataset is not comparable across all countries, due to the different reporting requirements and methodologies for Annex 1 and non-Annex 1 countries. The PIK dataset prioritizes country-reported inventories and fills the data gaps with secondary sources and assumptions. CAIT uses none of the self-reported inventories for individual countries and instead uses datasets with global coverage. Thus, the PIK dataset aligns better with country-reported estimates, while CAIT provides an independent inventory that compliments the other two. Among other methodology differences, CAIT uses global warming potential (GWP) values from the IPCC’s Second Assessment Report (AR2) for non-CO2 gases; PIK provides data under both AR2 and AR4 GWP values; UNFCCC data uses either AR2 and AR4, depending on the inventory methodology the party opts to follow. '
+          'UNFCCC provides official country-reported inventories; CAIT and PIK are estimates made by non-government research institutes. CAIT and PIK datasets apply a consistent methodology and are comparable across all countries included. The UNFCCC dataset is not comparable across all countries, due to the different reporting requirements and methodologies for Annex 1 and non-Annex 1 countries. Non-Annex 1 countries also don’t report a complete time series of data for each year. The PIK dataset prioritizes country-reported inventories and fills the data gaps with secondary sources and assumptions. CAIT uses none of the self-reported inventories for individual countries and instead uses datasets with global coverage. Thus, the PIK dataset aligns better with country-reported estimates, while CAIT provides an independent inventory that compliments the other two. Among other methodology differences, CAIT uses global warming potential (GWP) values from the IPCC’s Second Assessment Report (AR2) for non-CO2 gases; PIK provides data under both AR2 and AR4 GWP values; UNFCCC data uses either AR2 and AR4, depending on the inventory methodology the party opts to follow. '
       },
       {
         type: 'html',
