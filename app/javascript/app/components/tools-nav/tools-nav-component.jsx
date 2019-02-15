@@ -5,7 +5,6 @@ import Icon from 'components/icon';
 import downloadIcon from 'assets/icons/download.svg';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { Desktop } from 'components/responsive';
 import styles from './tools-nav-styles.scss';
 
 const mycwLinkConfig = { to: '/my-climate-watch', title: 'My climate watch' };
@@ -37,8 +36,7 @@ const renderMyCWLink = location => (
 );
 const ToolsNav = props => (
   <div className={cx(styles.toolsNav, props.className)}>
-    {renderMyCWLink(props.location)}
-    <Desktop>{renderDataExplorerLink(props.location)}</Desktop>
+    {[renderMyCWLink(props.location), renderDataExplorerLink(props.location)]}
     <ShareMenu
       className={cx(styles.iconButton, styles.shareButton)}
       reverse={props.reverse}
