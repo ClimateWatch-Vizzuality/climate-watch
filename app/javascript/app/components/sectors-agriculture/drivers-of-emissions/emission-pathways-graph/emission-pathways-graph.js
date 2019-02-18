@@ -155,15 +155,18 @@ class EmissionPathwayGraphContainer extends PureComponent {
   };
 
   handleClearSelection = () => {
-    const { location } = this.props.filtersSelected;
-    this.updateUrlParam(
-      { name: 'currentLocation', value: location.value },
-      true
-    );
+    const { search } = this.props;
+    const { model, ...rest } = search;
+    const params = Object.keys(rest).map(k => (
+      { name: k, value: rest[k] }
+    ));
+    this.updateUrlParam(params, true);
   };
 
   updateUrlParam(params, clear) {
     const { history, location } = this.props;
+    console.log('replacing this params', params)
+    console.log('clearing', true)
     history.replace(getLocationParamUpdated(location, params, clear));
   }
 
