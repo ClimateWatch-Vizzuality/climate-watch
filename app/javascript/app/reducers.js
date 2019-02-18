@@ -1,8 +1,6 @@
 /* eslint-disable import/first */
 import { combineReducers } from 'redux';
 import { handleActions } from 'app/utils/redux';
-// Restore when library ready to IE
-import { handleModule } from 'redux-tools';
 
 // Providers
 import * as loginProvider from 'providers/login-provider';
@@ -40,7 +38,7 @@ import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
 
 const providersReducers = {
-  login: handleModule(loginProvider),
+  login: handleActions(loginProvider),
   countries: handleActions(countriesProvider),
   regions: handleActions(regionsProvider),
   adaptations: handleActions(adaptationsProvider),
@@ -87,7 +85,7 @@ const pagesReducers = {
   ndcs: handleActions(NDCSPage),
   countryNDCFull: handleActions(countryNDCFullPage),
   ndcSearch: handleActions(ndcSearchPage),
-  myCWEditor: handleModule(myCWEditor)
+  myCWEditor: handleActions(myCWEditor)
 };
 
 // Components
@@ -121,10 +119,10 @@ const componentsReducers = {
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
-  insights: handleModule(myInsights),
-  visualisations: handleModule(myVisualisations),
-  vizCreator: handleModule(myVisualisationsCreator),
-  vizGraph: handleModule(myVisualisationsGraphComponent),
+  insights: handleActions(myInsights),
+  visualisations: handleActions(myVisualisations),
+  vizCreator: handleActions(myVisualisationsCreator),
+  vizGraph: handleActions(myVisualisationsGraphComponent),
   espGraph: handleActions(espGraphComponent),
   ndcSdg: handleActions(ndcSdgLinkagesComponent),
   hamburger: handleActions(HamburgerComponent),
