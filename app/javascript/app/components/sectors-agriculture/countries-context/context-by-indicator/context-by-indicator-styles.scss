@@ -7,49 +7,18 @@
 }
 
 .actionsContainer {
-  @include columns();
   @include xy-gutters($gutter-position: ('bottom'));
 
-  .buttonGroupWrapper {
-    display: none;
-  }
-
   align-items: flex-end;
-
-  @media #{$tablet-portrait} {
-    @include columns((6, 6));
-
-    > *:last-child {
-      @include column-offset(1, $gutters: true);
-    }
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns((3, 3, 2));
-
-    .buttonGroupWrapper {
-      display: block;
-    }
-
-    > *:last-child {
-      @include column-offset(4, $gutters: true);
-    }
-  }
 }
 
 .visualizationsContainer {
   @include columns();
-
-  @media #{$tablet-landscape} {
-    @include columns((8, 3));
-
-    > *:last-child {
-      @include column-offset(1, $gutters: true);
-    }
-  }
 }
 
 .topTenSection {
+  min-height: 160px;
+
   .title {
     color: $theme-color;
     font-weight: $font-weight-bold;
@@ -58,11 +27,6 @@
 
   .noData {
     color: $theme-color;
-  }
-
-  @media #{$tablet-landscape} {
-    margin-top: 40px;
-    margin-bottom: 20px;
   }
 }
 
@@ -74,11 +38,6 @@
   margin-bottom: 30px;
   width: 95%;
 
-  @media #{$tablet-landscape} {
-    margin-bottom: 15px;
-    width: 100%;
-  }
-
   span {
     position: relative;
 
@@ -87,13 +46,7 @@
       content: attr(data-label);
       color: $theme-color;
       width: max-content;
-      top: -23px;
-
-      @media #{$tablet-landscape} {
-        padding-right: 15px;
-        transform: translate(-100%, 0);
-        top: -5px;
-      }
+      top: -20px;
     }
 
     &::after {
@@ -116,6 +69,8 @@
 
 .btnGroup {
   width: 100%;
+
+  @include xy-gutters(30px, $gutter-position: 'bottom');
 }
 
 .legend {
@@ -134,4 +89,64 @@
   left: 0;
   right: 0;
   z-index: 10;
+}
+
+.filtersGroup {
+  @include columns(12);
+
+  > * {
+    @include xy-gutters(30px, $gutter-position: 'bottom');
+  }
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns((6,6));
+  }
+}
+
+@media #{$tablet-landscape} {
+  .actionsContainer {
+    @include columns((10, 2));
+  }
+
+  .filtersGroup {
+    @include columns((4, 4, 4));
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+
+  .filtersLayout {
+    @include columns(3);
+  }
+
+  .legend {
+    top: -160px;
+  }
+
+  .visualizationsContainer {
+    @include columns((8, 3));
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+    }
+  }
+
+  .topTenSection {
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+
+  .countryData {
+    margin-bottom: 15px;
+    width: 100%;
+
+    span::before {
+      padding-right: 15px;
+      transform: translate(-100%, 0);
+      top: -5px;
+    }
+  }
 }

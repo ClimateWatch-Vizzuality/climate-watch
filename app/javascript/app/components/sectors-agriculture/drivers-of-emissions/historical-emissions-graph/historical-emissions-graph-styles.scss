@@ -16,14 +16,40 @@
 }
 
 .filtersGroup {
-  display: flex;
-
-  & > * {
-    margin-right: 30px;
-    max-width: 220px;
+  > * {
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
   }
 }
 
 .chartWrapper {
   position: relative;
+  min-height: 550px;
+}
+
+.buttonGroupContainer {
+  margin-bottom: 40px;
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns((6, 6, 6));
+  }
+}
+
+@media #{$tablet-landscape} {
+  .filtersGroup {
+    @include columns((4, 4, 4));
+
+    > * {
+      @include xy-gutters(30px, $gutter-position: ('bottom', 'right'));
+
+      &:first-child {
+        @include xy-gutters(0, $gutter-position: 'left');
+      }
+    }
+  }
+
+  .buttonGroupContainer {
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
+  }
 }

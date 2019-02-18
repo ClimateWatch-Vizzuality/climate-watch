@@ -81,8 +81,7 @@ const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
     tooltip,
     animation: true,
     theme,
-    innerRadius: 50,
-    outerRadius: 90,
+    innerRadius: '50%',
     hideLabel: true,
     hideLegend: true
   };

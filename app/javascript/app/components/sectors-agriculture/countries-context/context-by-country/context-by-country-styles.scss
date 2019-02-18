@@ -48,33 +48,15 @@
 }
 
 .actionsContainer {
-  @include columns();
-  @include xy-gutters($gutter-position: ('bottom'));
-
-  .buttonGroupWrapper {
-    display: none;
-  }
-
   align-items: flex-end;
+  margin-bottom: 20px;
+}
 
-  @media #{$tablet-portrait} {
-    @include columns((6, 6));
+.filtersGroup {
+  @include columns(12);
 
-    > *:last-child {
-      @include column-offset(1, $gutters: true);
-    }
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns((3, 3, 2));
-
-    .buttonGroupWrapper {
-      display: block;
-    }
-
-    > *:last-child {
-      @include column-offset(4, $gutters: true);
-    }
+  > * {
+    @include xy-gutters(30px, $gutter-position: 'bottom');
   }
 }
 
@@ -92,14 +74,10 @@
   > * {
     @include xy-gutters($gutter-position: ('top', 'bottom'));
   }
-
-  @media #{$tablet-landscape} {
-    @include columns(6);
-  }
 }
 
 .card {
-  height: 430px;
+  height: 100%;
 
   .titleContainer {
     min-height: 75px;
@@ -111,7 +89,7 @@
 .cardData {
   position: relative;
   padding: 30px;
-  height: 350px;
+  height: 100%;
   display: flex;
   flex-direction: column;
 
@@ -140,12 +118,13 @@
 
   .cardContent {
     display: flex;
+    flex-direction: column;
     margin-top: $gutter-padding;
     min-height: 130px;
 
     .chart,
     .legend {
-      width: 50%;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -178,4 +157,47 @@
 
 .btnGroup {
   width: 100%;
+
+  @include xy-gutters(30px, $gutter-position: 'bottom');
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns((6,6));
+  }
+
+  .card {
+    height: 430px;
+  }
+
+  .cardData {
+    height: 350px;
+
+    .cardContent {
+      flex-direction: row;
+
+      .chart,
+      .legend {
+        width: 50%;
+      }
+    }
+  }
+}
+
+@media #{$tablet-landscape} {
+  .filtersGroup {
+    @include columns((4, 4, 4));
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+
+  .cardsContainer {
+    @include columns(6);
+  }
+
+  .actionsContainer {
+    @include columns((10, 2));
+  }
 }

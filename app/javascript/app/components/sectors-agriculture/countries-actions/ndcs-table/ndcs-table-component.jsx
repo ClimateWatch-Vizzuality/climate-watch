@@ -5,17 +5,26 @@ import Search from 'components/search';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
+import { TabletPortrait } from 'components/responsive';
 
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import styles from './ndcs-table-styles.scss';
 
 class NDCTable extends PureComponent {
-  getTableContent() {
+  getTableContent(isMobile) {
     const { loading, data, noContentMsg } = this.props;
 
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length > 0) {
-      return <Table parseHtml urlInData data={data} rowHeight={60} />;
+      return (
+        <Table
+          parseHtml
+          urlInData
+          data={data}
+          rowHeight={60}
+          forcedColumnWidth={!isMobile && 150}
+        />
+      );
     }
     return <NoContent className={styles.noContent} message={noContentMsg} />;
   }
@@ -39,6 +48,7 @@ class NDCTable extends PureComponent {
             hideResetButton
             plain
           />
+          <div className={styles.emptyCell} />
           <Search
             value={query}
             theme={darkSearch}
@@ -48,7 +58,9 @@ class NDCTable extends PureComponent {
             plain
           />
         </div>
-        {this.getTableContent()}
+        <TabletPortrait>
+          {isMobile => this.getTableContent(isMobile)}
+        </TabletPortrait>
       </div>
     );
   }

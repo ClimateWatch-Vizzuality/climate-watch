@@ -6,7 +6,6 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
-
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './context-by-indicator-styles';
 import { MAP_COLORS } from './context-by-indicator-selectors';
@@ -59,26 +58,28 @@ const ContextByIndicatorComponent = ({
     {isTablet => (
       <React.Fragment>
         <div className={styles.actionsContainer}>
-          <Dropdown
-            label={'Indicator'}
-            value={selectedIndicator}
-            options={indicators}
-            onValueChange={updateIndicatorFilter}
-            hideResetButton
-          />
-          <Dropdown
-            label={'Year'}
-            value={indicatorSelectedYear}
-            options={indicatorsYears}
-            onValueChange={updateIndicatorYearFilter}
-            hideResetButton
-          />
-          <div className={styles.buttonGroupWrapper}>
+          <div className={styles.filtersGroup}>
+            <Dropdown
+              label={'Indicator'}
+              value={selectedIndicator}
+              options={indicators}
+              onValueChange={updateIndicatorFilter}
+              hideResetButton
+            />
+            <Dropdown
+              label={'Year'}
+              value={indicatorSelectedYear}
+              options={indicatorsYears}
+              onValueChange={updateIndicatorYearFilter}
+              hideResetButton
+            />
+          </div>
+          {isTablet && (
             <ButtonGroup
               className={styles.btnGroup}
               buttonsConfig={buttonGroupConfig}
             />
-          </div>
+          )}
         </div>
         <div className={styles.visualizationsContainer}>
           <div className="layout-container">
