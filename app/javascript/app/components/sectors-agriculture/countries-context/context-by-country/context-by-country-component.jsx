@@ -87,30 +87,52 @@ const ContextByCountryComponent = ({
                   dangerouslySetInnerHTML={{ __html: c.text }}
                 />
                 <div className={styles.cardContent}>
-                  <div className={cx(styles.textHtmlWrapper, styles.legend)}>
-                    {c.legend &&
-                      c.legend.map(i => (
+                  {c.legend && (
+                    <div className={cx(styles.textHtmlWrapper, styles.legend)}>
+                      {c.legend.map(i => (
                         <div
                           key={i.title}
                           dangerouslySetInnerHTML={{ __html: i.text }}
                           className={styles.legendItem}
                         />
                       ))}
-                  </div>
-                  <div className={styles.chart}>
-                    {c.chartConfig && (
+                    </div>
+                  )}
+                  {c.chartConfig && (
+                    <div className={styles.chart}>
                       <PieChart
                         data={c.chartData}
                         width={150}
                         config={c.chartConfig}
                       />
-                    )}
-                  </div>
+                    </div>
+                  )}
                   {c.rank && (
                     <div
                       className={cx(styles.textHtmlWrapper, styles.rank)}
                       dangerouslySetInnerHTML={{ __html: c.rank }}
                     />
+                  )}
+                  {c.population && (
+                    <ul className={styles.populationBarsContainer}>
+                      {c.population.map(p => (
+                        <li
+                          key={`${p.value}-${c.countryName}`}
+                          className={styles.countryData}
+                          data-value={p.valueLabel}
+                        >
+                          <span
+                            data-label={p.label}
+                            style={{
+                              width: `${p.value}%`,
+                              height: '12px',
+                              backgroundColor: p.color,
+                              display: 'block'
+                            }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
                   )}
                 </div>
                 <Icon
