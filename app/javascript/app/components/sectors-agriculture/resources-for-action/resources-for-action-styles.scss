@@ -18,6 +18,7 @@
     bottom: 50px;
   }
 
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
@@ -26,7 +27,8 @@
   color: $theme-color;
   font-size: $font-size;
   max-width: 600px;
-  margin-right: 20px;
+  margin: 0 0 30px;
+  text-align: justify;
 }
 
 .button {
@@ -34,17 +36,11 @@
 }
 
 .logosContainer {
-  @include columns(6);
-
   margin-bottom: 50px;
-
-  @media #{$tablet-landscape} {
-    @include columns(4);
-  }
 }
 
 .partnerWrapper {
-  padding: 20px;
+  margin-bottom: 50px;
 }
 
 .partnerDescription {
@@ -59,4 +55,29 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+@media #{$tablet-portrait} {
+  .descriptionWrapper {
+    flex-direction: row;
+  }
+
+  .description {
+    margin: 0 20px 0 0;
+  }
+
+  .logosContainer {
+    @include columns(6);
+  }
+
+  .partnerWrapper {
+    margin-bottom: 0;
+    padding: 20px;
+  }
+}
+
+@media #{$tablet-landscape} {
+  .logosContainer {
+    @include columns(4);
+  }
 }

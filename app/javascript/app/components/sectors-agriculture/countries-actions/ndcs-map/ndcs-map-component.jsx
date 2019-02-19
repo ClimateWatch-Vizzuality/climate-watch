@@ -69,15 +69,17 @@ const NDCMap = ({
     {isTablet => (
       <div className={styles.wrapper}>
         <div className={styles.filtersLayout}>
-          <Dropdown
-            label="Category"
-            paceholder="Select a category"
-            options={categories}
-            onValueChange={handleCategoryChange}
-            value={selectedCategory}
-            hideResetButton
-            plain
-          />
+          <div className={styles.filtersGroup}>
+            <Dropdown
+              label="Category"
+              paceholder="Select a category"
+              options={categories}
+              onValueChange={handleCategoryChange}
+              value={selectedCategory}
+              hideResetButton
+              plain
+            />
+          </div>
           {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
         </div>
         {loading && <Loading light className={styles.loader} />}

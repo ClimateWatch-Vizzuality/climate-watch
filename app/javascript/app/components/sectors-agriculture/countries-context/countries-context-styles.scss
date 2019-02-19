@@ -9,23 +9,10 @@
 }
 
 .intro {
-  @include columns((12 , 6));
-  @include xy-gutters($gutter-position: ('bottom'));
-
   margin-bottom: 40px;
 
-  > *:last-child {
-    margin-top: $gutter-padding;
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns((6 , 5));
-
-    > *:last-child {
-      @include column-offset(1, $gutters: true);
-
-      margin-top: 0;
-    }
+  > * {
+    margin-bottom: 20px;
   }
 }
 
@@ -37,11 +24,15 @@
 
 .introText {
   color: $theme-color;
+  max-width: 600px;
+}
+
+.switch {
+  height: max-content;
 }
 
 .switchWrapper {
   display: flex;
-  justify-content: flex-end;
   height: 40px;
 }
 
@@ -103,7 +94,7 @@
   flex-direction: column;
 
   .introText {
-    max-width: 90%;
+    max-width: 600px;
   }
 
   .textHtmlWrapper {
@@ -165,4 +156,22 @@
 
 .btnGroup {
   width: 100%;
+}
+
+@media #{$tablet-landscape} {
+  .intro {
+    @include columns((6 , 5));
+
+    > * {
+      margin-bottom: 0;
+    }
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+    }
+  }
+
+  .switchWrapper {
+    justify-content: flex-end;
+  }
 }

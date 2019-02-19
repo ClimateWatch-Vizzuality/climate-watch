@@ -51,30 +51,32 @@ const ContextByCountryComponent = ({
     {isTablet => (
       <React.Fragment>
         <div className={styles.actionsContainer}>
-          {countries && (
-            <Dropdown
-              label={'Country'}
-              value={selectedCountry}
-              options={countries}
-              onValueChange={updateCountryFilter}
-              hideResetButton
-            />
-          )}
-          {selectedYear && (
-            <Dropdown
-              label={'Year'}
-              value={selectedYear}
-              options={years}
-              onValueChange={updateCountryYearFilter}
-              hideResetButton
-            />
-          )}
-          <div className={styles.buttonGroupWrapper}>
+          <div className={styles.filtersGroup}>
+            {countries && (
+              <Dropdown
+                label={'Country'}
+                value={selectedCountry}
+                options={countries}
+                onValueChange={updateCountryFilter}
+                hideResetButton
+              />
+            )}
+            {selectedYear && (
+              <Dropdown
+                label={'Year'}
+                value={selectedYear}
+                options={years}
+                onValueChange={updateCountryYearFilter}
+                hideResetButton
+              />
+            )}
+          </div>
+          {isTablet && (
             <ButtonGroup
               className={styles.btnGroup}
               buttonsConfig={buttonGroupConfig}
             />
-          </div>
+          )}
         </div>
         <div className={styles.cardsContainer}>
           {cards &&

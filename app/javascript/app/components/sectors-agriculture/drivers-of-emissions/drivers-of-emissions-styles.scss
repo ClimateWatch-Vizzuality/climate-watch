@@ -6,13 +6,14 @@
 }
 
 .intro {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
 
   p {
-    margin-right: 40px;
+    margin-bottom: 20px;
+    max-width: 600px;
     text-align: justify;
-    width: 50%;
   }
 }
 
@@ -26,10 +27,26 @@
   }
 }
 
-.switch {
+.switchWrapper {
   height: max-content;
+  max-width: max-content;
 }
 
 .switchSelected {
   background-color: $theme-color;
+}
+
+@media #{$tablet-landscape} {
+  .intro {
+    flex-direction: row;
+
+    p {
+      margin: 0 40px 0 0;
+      width: 50%;
+    }
+  }
+
+  .switchWrapper {
+    width: unset;
+  }
 }

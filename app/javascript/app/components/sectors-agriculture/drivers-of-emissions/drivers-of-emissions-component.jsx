@@ -62,7 +62,7 @@ class DriversOfEmissions extends PureComponent {
                 selectedOption={activeTab.value}
                 onClick={handleTabChange}
                 theme={{
-                  wrapper: styles.switch,
+                  wrapper: styles.switchWrapper,
                   checkedOption: styles.switchSelected
                 }}
               />

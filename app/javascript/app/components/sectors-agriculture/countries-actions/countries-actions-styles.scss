@@ -16,20 +16,21 @@
 
 .descriptionWrapper {
   display: flex;
+  flex-direction: column;
   margin: {
     top: 20px;
     bottom: 50px;
   }
 
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .description {
   color: $theme-color;
   font-size: $font-size;
   max-width: 600px;
-  margin-right: 20px;
+  margin-bottom: 30px;
 }
 
 .switchWrapper {
@@ -49,4 +50,15 @@
 
 .switchSelected {
   background-color: $theme-color;
+}
+
+@media #{$tablet-landscape} {
+  .descriptionWrapper {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .description {
+    margin: 0 20px 0 0;
+  }
 }
