@@ -8,12 +8,9 @@ export function getLocationParamUpdated(location, params = [], clear = false) {
   const search = getSearch(location);
   const newFilters = {};
   const paramsArray = isArray(params) ? params : [params];
-  console.log('Search', search)
-  console.log('paramsArray', paramsArray)
   paramsArray.forEach(param => {
     newFilters[param.name] = param.value;
   });
-  console.log('newFilters', newFilters, clear)
   const newSearch = clear
     ? { ...newFilters }
     : {
