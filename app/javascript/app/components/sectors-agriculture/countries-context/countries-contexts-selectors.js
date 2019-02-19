@@ -106,6 +106,25 @@ const getCardsData = createSelector(
 
     // TODO: Replace the hardcoded values with data!!!
     const socioeconomic = {
+      population: [
+        {
+          value: yearData.employment_agri_female,
+          label: 'Women',
+          valueLabel: `${precentageTwoPlacesRound(
+            yearData.employment_agri_female
+          )}%`,
+          color: '#0677B3'
+        },
+        {
+          value: yearData.employment_agri_male,
+          label: 'Men',
+          valueLabel: `${precentageTwoPlacesRound(
+            yearData.employment_agri_male
+          )}%`,
+          color: '#1ECDB0'
+        }
+      ],
+      countryName: c.label,
       title: 'Socio-economic indicators',
       text: `<p>In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
         yearData.employment_agri_total
