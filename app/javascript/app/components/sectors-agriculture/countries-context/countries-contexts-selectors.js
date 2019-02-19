@@ -1,6 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import { isEmpty, sortBy, some } from 'lodash';
 import { format } from 'd3-format';
+import { precentageTwoPlacesRound } from 'utils/utils';
 
 const getCountriesContextsData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.data;
@@ -106,9 +107,13 @@ const getCardsData = createSelector(
     // TODO: Replace the hardcoded values with data!!!
     const socioeconomic = {
       title: 'Socio-economic indicators',
-      text: `<p>There were <span style="color: red;">21 million</span> people (<span style="color: red;">10.5%</span> of the population) employed in <span>${c.label}'s</span> Agriculture sector in <span>${y.value}</span>, of which <span>${Math.round(
-        yearData.employment_agri_female * 100
-      ) / 100}%</span> were female.</p>`
+      text: `<p>In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
+        yearData.employment_agri_total
+      )}%</span> of <span>${c.label}'s</span> population was employed in the Agriculture sector. <span>${precentageTwoPlacesRound(
+        yearData.employment_agri_female
+      )}%</span> of women worked in agriculture compared with <span>${precentageTwoPlacesRound(
+        yearData.employment_agri_male
+      )}%</span> of men.</p>`
     };
 
     const GDP = {
