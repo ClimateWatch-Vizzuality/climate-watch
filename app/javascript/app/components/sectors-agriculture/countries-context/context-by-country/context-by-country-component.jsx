@@ -37,6 +37,28 @@ const buttonGroupConfig = [
   }
 ];
 
+const renderPopulationBarChart = ({ countryName, population }) => (
+  <ul className={styles.populationBarsContainer}>
+    {population.map(p => (
+      <li
+        key={`${p.value}-${countryName}`}
+        className={styles.countryData}
+        data-value={p.valueLabel}
+      >
+        <span
+          data-label={p.label}
+          style={{
+            width: `${p.value}%`,
+            height: '12px',
+            backgroundColor: p.color,
+            display: 'block'
+          }}
+        />
+      </li>
+    ))}
+  </ul>
+);
+
 const ContextByCountryComponent = ({
   cards,
   countries,
@@ -113,27 +135,7 @@ const ContextByCountryComponent = ({
                       dangerouslySetInnerHTML={{ __html: c.rank }}
                     />
                   )}
-                  {c.population && (
-                    <ul className={styles.populationBarsContainer}>
-                      {c.population.map(p => (
-                        <li
-                          key={`${p.value}-${c.countryName}`}
-                          className={styles.countryData}
-                          data-value={p.valueLabel}
-                        >
-                          <span
-                            data-label={p.label}
-                            style={{
-                              width: `${p.value}%`,
-                              height: '12px',
-                              backgroundColor: p.color,
-                              display: 'block'
-                            }}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  {c.population && renderPopulationBarChart(c)}
                 </div>
                 <Icon
                   icon={infoIcon}
@@ -158,6 +160,10 @@ const ContextByCountryComponent = ({
     )}
   </TabletLandscape>
 );
+renderPopulationBarChart.propTypes = {
+  countryName: PropTypes.string,
+  population: PropTypes.arrayOf(PropTypes.shape({}))
+};
 
 ContextByCountryComponent.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.shape({})),
