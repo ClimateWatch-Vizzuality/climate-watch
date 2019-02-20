@@ -755,8 +755,7 @@ CREATE TABLE public.historical_emissions_sectors (
     name text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    annex_type text,
-    is_aggregation boolean DEFAULT false
+    annex_type text
 );
 
 
@@ -4226,7 +4225,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181227100559'),
 ('20181227144108'),
 ('20190207144949'),
-('20190219190427'),
-('20190220134430');
+('20190219190427');
 
 
