@@ -1,24 +1,43 @@
 class ImportHistoricalEmissions
+  include ClimateWatchEngine::CSVImporter
+
   # rubocop:disable LineLength
   META_SOURCES_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sources.csv".freeze
-  META_SECTORS_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors_NEW.csv".freeze
+  META_SECTORS_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors.csv".freeze
   DATA_CAIT_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_CAIT.csv".freeze
   DATA_PIK_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_PIK.csv".freeze
   DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC_NEW.csv".freeze
   # rubocop:enable LineLength
   #
   def call
-    cleanup
-    import_sources(S3CSVReader.read(META_SOURCES_FILEPATH))
-    import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
-    import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
-    import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
-    import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH))
-    HistoricalEmissions::NormalisedRecord.refresh
-    HistoricalEmissions::SearchableRecord.refresh
+    reset_cache
+
+    ActiveRecord::Base.transaction do
+      cleanup
+      import_sources(S3CSVReader.read(META_SOURCES_FILEPATH))
+      import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
+      import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
+      # import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
+      # import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH))
+
+      Rails.logger.info "Refreshing materialized views"
+      HistoricalEmissions::NormalisedRecord.refresh
+      HistoricalEmissions::SearchableRecord.refresh
+    end
   end
 
   private
+
+  def reset_cache
+    @sources_cache = {}
+    @sectors_cache = {}
+    @gases_cache = {}
+    @gwps_cache = {}
+    @locations_cache = Location.all.reduce({}) do |cache, location|
+      cache[location.iso_code3] = location
+      cache
+    end
+  end
 
   def cleanup
     HistoricalEmissions::DataSource.delete_all
@@ -38,38 +57,43 @@ class ImportHistoricalEmissions
 
   def import_sources(content)
     content.each do |row|
-      next if HistoricalEmissions::DataSource.find_by(
-        name: row[:name]
-      )
+      name = row[:name]
 
-      source = source_attributes(row)
-      HistoricalEmissions::DataSource.create!(source)
+      next if @sources_cache[name].present?
+
+      source = HistoricalEmissions::DataSource.create!(source_attributes(row))
+      @sources_cache[name] = source
     end
   end
 
   def sector_attributes(row)
     {
       name: row[:sector],
-      data_source: HistoricalEmissions::DataSource.find_or_create_by(
-        name: row[:source]
-      ),
+      data_source: @sources_cache[row[:source]],
       annex_type: row[:annex_type],
-      parent: row[:subsectorof] &&
-        HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
+      is_aggregation: row[:is_aggregation]&.upcase == 'YES'
     }
+  end
+
+  def parse_parents(row)
+    return [] if row[:subsectorof].blank?
+
+    row[:subsectorof].split(';').
+      map(&:strip).
+      map { |name| HistoricalEmissions::Sector.find_or_create_by!(name: name) }
   end
 
   def import_sectors(content)
     content.each do |row|
-      next if HistoricalEmissions::Sector.
-        joins(:data_source).
-        find_by(
-          name: row[:sector],
-          'historical_emissions_data_sources.name' => row[:source]
-        )
+      key = "#{row[:source]}_#{row[:sector]}"
+      next if @sectors_cache[key].present?
 
-      sector = sector_attributes(row)
-      HistoricalEmissions::Sector.create!(sector)
+      sector = HistoricalEmissions::Sector.create!(sector_attributes(row))
+      @sectors_cache[key] = sector
+
+      parse_parents(row).each do |parent|
+        sector.parents << parent
+      end
     end
   end
 
@@ -79,17 +103,23 @@ class ImportHistoricalEmissions
     end
   end
 
+  def find_or_create_gas(name)
+    @gases_cache[name] ||
+      @gases_cache[name] = HistoricalEmissions::Gas.find_or_create_by(name: name)
+  end
+
+  def find_or_create_gwp(name)
+    @gwps_cache[name] ||
+      @gwps_cache[name] = HistoricalEmissions::Gwp.find_or_create_by(name: name)
+  end
+
   def record_attributes(row)
     {
-      location: Location.find_by(iso_code3: row[:country]),
-      data_source: HistoricalEmissions::DataSource.find_by(name: row[:source]),
-      sector: HistoricalEmissions::Sector.joins(:data_source).
-        find_by(
-          name: row[:sector],
-          'historical_emissions_data_sources.name' => row[:source]
-        ),
-      gas: HistoricalEmissions::Gas.find_or_create_by(name: row[:gas]),
-      gwp: HistoricalEmissions::Gwp.find_or_create_by(name: row[:gwp]),
+      location: @locations_cache[row[:country]],
+      data_source: @sources_cache[row[:source]],
+      sector: @sectors_cache["#{row[:source]}_#{row[:sector]}"],
+      gas: find_or_create_gas(row[:gas]),
+      gwp: find_or_create_gwp(row[:gwp]),
       emissions: emissions(row)
     }
   end

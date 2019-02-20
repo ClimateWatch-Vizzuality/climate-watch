@@ -22,8 +22,7 @@ import styles from './ghg-emissions-styles.scss';
 
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
 const arrayToSentence = arr => {
-  const sentence =
-    arr.length > 1 ? `${arr.slice(0, arr.length - 1).join(', ')}, and ` : '';
+  const sentence = arr.length > 1 ? `${arr.slice(0, arr.length - 1).join(', ')}, and ` : '';
   return capitalize(`${sentence}${arr.slice(-1)}`);
 };
 

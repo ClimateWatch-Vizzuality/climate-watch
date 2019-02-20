@@ -23,6 +23,7 @@ platforms:
       - name: historical_emissions
         importer: ImportHistoricalEmissions
         datasets:
+          - CW_HistoricalEmissions_metadata_sources
           - CW_HistoricalEmissions_metadata_sectors
           - CW_HistoricalEmissions_CAIT
           - CW_HistoricalEmissions_PIK
