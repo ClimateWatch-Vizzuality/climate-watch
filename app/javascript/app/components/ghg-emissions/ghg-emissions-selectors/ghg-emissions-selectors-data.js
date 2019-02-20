@@ -30,12 +30,7 @@ export const onlyOneRegionSelected = createSelector(
   [getModelSelected, getOptionsSelected],
   (modelSelected, selectedOptions) => {
     const model = modelSelected && toPlural(modelSelected);
-    if (
-      !selectedOptions ||
-      !model ||
-      model !== 'regions' ||
-      !selectedOptions.regionsSelected
-    ) {
+    if (!selectedOptions || !model || model !== 'regions' || !selectedOptions.regionsSelected) {
       return false;
     }
     const dataSelected = selectedOptions.regionsSelected;
@@ -44,20 +39,8 @@ export const onlyOneRegionSelected = createSelector(
 );
 
 const getExpandedLegendRegionsSelected = createSelector(
-  [
-    getModelSelected,
-    getOptions,
-    getOptionsSelected,
-    onlyOneRegionSelected,
-    sortData
-  ],
-  (
-    modelSelected,
-    options,
-    selectedOptions,
-    shouldExpandIntoCountries,
-    data
-  ) => {
+  [getModelSelected, getOptions, getOptionsSelected, onlyOneRegionSelected, sortData],
+  (modelSelected, options, selectedOptions, shouldExpandIntoCountries, data) => {
     const model = toPlural(modelSelected);
     if (
       !shouldExpandIntoCountries ||
@@ -70,7 +53,6 @@ const getExpandedLegendRegionsSelected = createSelector(
       return null;
     }
     const dataSelected = selectedOptions.regionsSelected;
-    if (!shouldExpandIntoCountries) return null;
     const countryOptions = dataSelected[0].members.map(iso =>
       options[model].find(o => o.iso === iso)
     );
@@ -79,18 +61,13 @@ const getExpandedLegendRegionsSelected = createSelector(
 
     const latestValuesHash = {};
     Object.keys(groupedCountries).forEach(c => {
-      latestValuesHash[c] = groupedCountries[c].reduce(
-        (acc, v) => acc + getLastValue(v),
-        0
-      );
+      latestValuesHash[c] = groupedCountries[c].reduce((acc, v) => acc + getLastValue(v), 0);
     });
-    const compare = (a, b) =>
-      (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
+    const compare = (a, b) => (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
     const sortedCountries = countryOptions.sort(compare);
     const LEGEND_LIMIT = 10;
     if (data && sortedCountries.length > LEGEND_LIMIT) {
-      const othersGroup =
-        data && sortedCountries.slice(LEGEND_LIMIT, -1).filter(o => o);
+      const othersGroup = data && sortedCountries.slice(LEGEND_LIMIT, -1).filter(o => o);
       const othersOption = {
         iso: 'OTHERS',
         label: 'Others',
@@ -104,15 +81,38 @@ const getExpandedLegendRegionsSelected = createSelector(
         hideLegend: true,
         legendColumn: 'Others'
       }));
-      return (
-        data && [
-          ...sortedCountries.slice(0, LEGEND_LIMIT),
-          othersOption,
-          ...updatedOthers
-        ]
-      );
+      return data && [...sortedCountries.slice(0, LEGEND_LIMIT), othersOption, ...updatedOthers];
     }
     return sortedCountries;
+  }
+);
+
+export const onlyOneAggregatedSectorSelected = createSelector(
+  [getModelSelected, getOptionsSelected],
+  (modelSelected, selectedOptions) => {
+    const model = modelSelected && toPlural(modelSelected);
+    if (!selectedOptions || !model || model !== 'sectors' || !selectedOptions.sectorsSelected) {
+      return false;
+    }
+
+    const dataSelected = selectedOptions.sectorsSelected;
+    return dataSelected.length === 1 && dataSelected[0].groupId === 'aggregations';
+  }
+);
+
+const getExpandedLegendSectorsSelected = createSelector(
+  [getModelSelected, getOptions, getOptionsSelected, onlyOneAggregatedSectorSelected],
+  (modelSelected, options, selectedOptions, shouldExpandIntoSectors) => {
+    const model = toPlural(modelSelected);
+    if (!shouldExpandIntoSectors) return null;
+
+    const selectedSector = selectedOptions.sectorsSelected[0];
+
+    const sectorOptions = selectedSector.aggregatedSectorIds.map(id =>
+      options[model].find(o => o.value === id)
+    );
+
+    return sectorOptions;
   }
 );
 
@@ -121,32 +121,38 @@ export const getLegendDataSelected = createSelector(
     getModelSelected,
     getOptions,
     getOptionsSelected,
-    getExpandedLegendRegionsSelected
+    getExpandedLegendRegionsSelected,
+    getExpandedLegendSectorsSelected
   ],
-  (modelSelected, options, selectedOptions, expandedLegendRegionsSelected) => {
+  (
+    modelSelected,
+    options,
+    selectedOptions,
+    expandedLegendRegionsSelected,
+    expandedLegendSectorsSelected
+  ) => {
     const model = toPlural(modelSelected);
     const selectedModel = `${model}Selected`;
-    if (
-      !selectedOptions ||
-      !modelSelected ||
-      !selectedOptions[selectedModel] ||
-      !options
-    ) {
+    if (!selectedOptions || !modelSelected || !selectedOptions[selectedModel] || !options) {
       return null;
     }
     const dataSelected = selectedOptions[selectedModel];
     if (expandedLegendRegionsSelected) {
       return expandedLegendRegionsSelected.filter(c => c && !c.hideLegend);
     }
+    if (expandedLegendSectorsSelected) {
+      return expandedLegendSectorsSelected;
+    }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
 );
 
 const getYColumnOptions = createSelector(
-  [getLegendDataSelected, getExpandedLegendRegionsSelected],
-  (legendDataSelected, expandedLegendRegionsSelected) => {
+  [getLegendDataSelected, getExpandedLegendRegionsSelected, getExpandedLegendSectorsSelected],
+  (legendDataSelected, expandedLegendRegionsSelected, expandedLegendSectorsSelected) => {
     if (!legendDataSelected) return null;
-    const dataSelected = expandedLegendRegionsSelected || legendDataSelected;
+    const dataSelected =
+      expandedLegendRegionsSelected || expandedLegendSectorsSelected || legendDataSelected;
     const getYOption = columns =>
       columns &&
       columns.map(d => ({
@@ -188,8 +194,7 @@ export const getMetricRatio = (selected, calculationData, x) => {
 
 const calculateValue = (currentValue, value, metricData) => {
   const metricRatio = metricData || 1;
-  const updatedValue =
-    value || value === 0 ? value * DATA_SCALE / metricRatio : null;
+  const updatedValue = value || value === 0 ? value * DATA_SCALE / metricRatio : null;
   if (updatedValue && (currentValue || currentValue === 0)) {
     return updatedValue + currentValue;
   }
@@ -197,33 +202,25 @@ const calculateValue = (currentValue, value, metricData) => {
 };
 
 export const getChartData = createSelector(
-  [
-    sortData,
-    getModelSelected,
-    getYColumnOptions,
-    getMetricSelected,
-    getCalculationData
-  ],
+  [sortData, getModelSelected, getYColumnOptions, getMetricSelected, getCalculationData],
   (data, model, yColumnOptions, metric, calculationData) => {
     if (!data || !data.length || !model) return null;
     const yearValues = data[0].emissions.map(d => d.year);
-    const shouldHaveMetricData =
-      metric && metric !== METRIC_OPTIONS.ABSOLUTE_VALUE.value;
+    const shouldHaveMetricData = metric && metric !== METRIC_OPTIONS.ABSOLUTE_VALUE.value;
     let metricField = null;
     if (shouldHaveMetricData) {
-      metricField =
-        metric === METRIC_OPTIONS.PER_CAPITA.value ? 'population' : 'gdp';
+      metricField = metric === METRIC_OPTIONS.PER_CAPITA.value ? 'population' : 'gdp';
     }
     const dataParsed = yearValues.map(x => {
       const yItems = {};
       data.forEach(d => {
         const columnObjects = yColumnOptions.filter(
           c =>
-            c.label === getDFilterValue(d, model) ||
-            (c.members && c.members.includes(d.iso_code3))
+            c.label === getDFilterValue(d, model) || (c.members && c.members.includes(d.iso_code3))
         );
         const yKeys = columnObjects.map(k => k.value);
         const yData = d.emissions.find(e => e.year === x);
+
         let metricData =
           metricField &&
           calculationData &&
@@ -231,6 +228,7 @@ export const getChartData = createSelector(
           calculationData[x][d.iso_code3] &&
           calculationData[x][d.iso_code3][metricField];
         // GDP is in dollars and we want to display it in million dollars
+
         if (metricField === 'gdp' && metricData) metricData /= 1000000;
         yKeys.forEach(key => {
           if (!shouldHaveMetricData || metricData) {
@@ -264,11 +262,7 @@ export const getChartConfig = createSelector(
   [getModelSelected, getYColumnOptions],
   (model, yColumns) => {
     if (!model || !yColumns) return null;
-    colorThemeCache = getThemeConfig(
-      yColumns,
-      CHART_COLORS_EXTENDED,
-      colorThemeCache
-    );
+    colorThemeCache = getThemeConfig(yColumns, CHART_COLORS_EXTENDED, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
     return {
       axes: {

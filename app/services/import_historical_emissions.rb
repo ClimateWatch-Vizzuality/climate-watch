@@ -71,14 +71,14 @@ class ImportHistoricalEmissions
       name: row[:sector],
       data_source: @sources_cache[row[:source]],
       annex_type: row[:annex_type],
-      is_aggregation: row[:is_aggregation]&.upcase == 'YES'
+      parent: row[:subsectorof] && HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
     }
   end
 
   def parse_parents(row)
-    return [] if row[:subsectorof].blank?
+    return [] if row[:aggregatedby].blank?
 
-    row[:subsectorof].split(';').
+    row[:aggregatedby].split(';').
       map(&:strip).
       map { |name| HistoricalEmissions::Sector.find_or_create_by!(name: name) }
   end

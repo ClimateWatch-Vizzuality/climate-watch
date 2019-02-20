@@ -33,8 +33,7 @@ const fetchEmissionsMeta = createThunkAction('fetchEmissionsMeta', () => (dispat
               if (key === 'sector') {
                 newItem = {
                   ...newItem,
-                  isAggregation: item.is_aggregation,
-                  subsectors: item.subsectors,
+                  aggregatedSectorIds: item.aggregated_sector_ids,
                   parentId: item.parent_id
                 };
               }

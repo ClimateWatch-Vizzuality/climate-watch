@@ -72,14 +72,11 @@ const getBreakByOptionSelected = createSelector(
   }
 );
 
-const getBreakBySelected = createSelector(
-  getBreakByOptionSelected,
-  breakBySelected => {
-    if (!breakBySelected) return null;
-    const breakByArray = breakBySelected.value.split('-');
-    return { modelSelected: breakByArray[0], metricSelected: breakByArray[1] };
-  }
-);
+const getBreakBySelected = createSelector(getBreakByOptionSelected, breakBySelected => {
+  if (!breakBySelected) return null;
+  const breakByArray = breakBySelected.value.split('-');
+  return { modelSelected: breakByArray[0], metricSelected: breakByArray[1] };
+});
 
 export const getModelSelected = createSelector(
   getBreakBySelected,
@@ -118,82 +115,77 @@ const filterOptionsBySource = field =>
     if (isEmpty(meta) || !sourceSelected) return null;
     const fieldOptions = meta[field];
     const sourceValue = sourceSelected.value;
-    const sourceMeta = meta.data_source.find(
-      s => String(s.value) === sourceValue
-    );
+    const sourceMeta = meta.data_source.find(s => String(s.value) === sourceValue);
     const allowedIds = sourceMeta[field];
     return fieldOptions.filter(o => allowedIds.includes(o.value));
   });
 
 const getFieldOptions = field =>
-  createSelector(
-    [getRegionsOptions, filterOptionsBySource(field)],
-    (regions, filteredOptions) => {
-      if (!filteredOptions) return [];
-      const fieldOptions = filteredOptions;
+  createSelector([getRegionsOptions, filterOptionsBySource(field)], (regions, filteredOptions) => {
+    if (!filteredOptions) return [];
+    const fieldOptions = filteredOptions;
 
-      if (field === 'location') {
-        if (!regions) return [];
-        const countries = [];
-        const regionIsos = regions.map(r => r.iso);
-        fieldOptions.forEach(d => {
-          if (!regionIsos.includes(d.iso)) {
-            countries.push({
-              ...d,
-              value: d.iso,
-              groupId: 'countries'
-            });
-          }
-        });
-        const sortedRegions = sortLabelByAlpha(regions).sort(
-          x => (x.value === 'TOP' ? -1 : 0)
-        );
-        return sortedRegions.concat(sortLabelByAlpha(countries));
-      }
-
-      return sortLabelByAlpha(fieldOptions);
+    if (field === 'location') {
+      if (!regions) return [];
+      const countries = [];
+      const regionIsos = regions.map(r => r.iso);
+      fieldOptions.forEach(d => {
+        if (!regionIsos.includes(d.iso)) {
+          countries.push({
+            ...d,
+            value: d.iso,
+            groupId: 'countries'
+          });
+        }
+      });
+      const sortedRegions = sortLabelByAlpha(regions).sort(x => (x.value === 'TOP' ? -1 : 0));
+      return sortedRegions.concat(sortLabelByAlpha(countries));
     }
-  );
 
-const getDefaultOptions = createSelector(
-  [getSourceSelected, getMeta],
-  (sourceSelected, meta) => {
-    if (!sourceSelected || !meta) return null;
-    const defaults = getGhgEmissionDefaults(sourceSelected, meta);
-    const defaultOptions = {};
-    Object.keys(defaults).forEach(key => {
-      const keyDefault = String(defaults[key]).split(',');
-      defaultOptions[key] = meta[key].filter(
-        m =>
-          keyDefault.includes(m.iso) ||
-          keyDefault.includes(m.label) ||
-          keyDefault.includes(String(m.value))
-      );
-    });
-    defaultOptions.location = [TOP_EMITTERS_OPTION];
-    return defaultOptions;
-  }
-);
+    return sortLabelByAlpha(fieldOptions);
+  });
 
-const getSectorOptions = createSelector(
-  [getFieldOptions('sector')],
-  options => {
-    if (!options || isEmpty(options)) return null;
-    const hasChildren = d => options.some(o => o.parentId === d.value);
-    const sectors = options.filter(s => !s.parentId).map(d => ({
+const getDefaultOptions = createSelector([getSourceSelected, getMeta], (sourceSelected, meta) => {
+  if (!sourceSelected || !meta) return null;
+  const defaults = getGhgEmissionDefaults(sourceSelected, meta);
+  const defaultOptions = {};
+  Object.keys(defaults).forEach(key => {
+    const keyDefault = String(defaults[key]).split(',');
+    defaultOptions[key] = meta[key].filter(
+      m =>
+        keyDefault.includes(m.iso) ||
+        keyDefault.includes(m.label) ||
+        keyDefault.includes(String(m.value))
+    );
+  });
+  defaultOptions.location = [TOP_EMITTERS_OPTION];
+  return defaultOptions;
+});
+
+const getSectorOptions = createSelector([getFieldOptions('sector')], options => {
+  if (!options || isEmpty(options)) return null;
+  const hasChildren = d => options.some(o => o.parentId === d.value);
+  const aggregatesComesFirst = o => (o.groupId === 'aggregations' ? -1 : 0);
+
+  const sectors = options
+    .filter(s => !s.parentId)
+    .map(d => ({
       label: d.label,
       value: d.value,
-      groupParent: hasChildren(d) && String(d.value)
-    }));
+      aggregatedSectorIds: d.aggregatedSectorIds,
+      groupParent: hasChildren(d) && String(d.value),
+      groupId: isEmpty(d.aggregatedSectorIds) ? 'sectors' : 'aggregations'
+    }))
+    .sort(aggregatesComesFirst);
 
-    const subsectors = options.filter(s => s.parentId).map(d => ({
-      label: d.label,
-      value: d.value,
-      group: String(d.parentId)
-    }));
-    return [...sectors, ...subsectors];
-  }
-);
+  const subsectors = options.filter(s => s.parentId).map(d => ({
+    label: d.label,
+    value: d.value,
+    group: String(d.parentId),
+    groupId: 'sectors'
+  }));
+  return [...sectors, ...subsectors];
+});
 
 const countriesSelectedFromRegions = regionsSelected => {
   let regionCountriesSelected = [];
@@ -225,8 +217,7 @@ const getFiltersSelected = field =>
     [getOptions, getSelection(field), getDefaultOptions],
     (options, selected, defaults) => {
       const fieldOptions =
-        options &&
-        (field === 'location' ? options.regions : options[toPlural(field)]);
+        options && (field === 'location' ? options.regions : options[toPlural(field)]);
       if (!defaults) return null;
       if (!selected || !fieldOptions || isEmpty(fieldOptions)) {
         return defaults[field];
@@ -255,45 +246,36 @@ export const getLegendDataOptions = createSelector(
 );
 
 export const getDisableAccumulatedCharts = createSelector(
-  [
-    getOptions,
-    getSelection('location'),
-    getFiltersSelected('gas'),
-    getFiltersSelected('sector')
-  ],
+  [getOptions, getSelection('location'), getFiltersSelected('gas'), getFiltersSelected('sector')],
   (options, locationSelected, gasSelected, sectorsSelected) => {
     const { regions: locationOptions } = options || {};
     const conflicts = {};
     if (sectorsSelected && sectorsSelected.length > 1) {
       const parentIds = [];
       sectorsSelected.forEach(s => s.group && parentIds.push(s.group));
-      if (sectorsSelected.some(s => parentIds.includes(String(s.value)))) { conflicts.sector = true; }
+      if (sectorsSelected.some(s => parentIds.includes(String(s.value)))) {
+        conflicts.sector = true;
+      }
     }
-    if (
-      gasSelected &&
-      gasSelected.length > 1 &&
-      gasSelected.some(g => g.label === 'All GHG')
-    ) { conflicts.gas = true; }
+    if (gasSelected && gasSelected.length > 1 && gasSelected.some(g => g.label === 'All GHG')) {
+      conflicts.gas = true;
+    }
     if (locationOptions && locationOptions.length && locationSelected) {
       const selectedLocations = locationSelected.split(',');
       const locationOptionsSelected = locationOptions.filter(location =>
         selectedLocations.includes(location.iso)
       );
-      const countriesSelected = countriesSelectedFromRegions(
-        locationOptionsSelected
-      );
-      if (!isEqual(countriesSelected, uniq(countriesSelected))) { conflicts.region = true; }
+      const countriesSelected = countriesSelectedFromRegions(locationOptionsSelected);
+      if (!isEqual(countriesSelected, uniq(countriesSelected))) {
+        conflicts.region = true;
+      }
     }
     return conflicts;
   }
 );
 
 const getChartTypeSelected = createSelector(
-  [
-    () => CHART_TYPE_OPTIONS,
-    getSelection('chartType'),
-    getDisableAccumulatedCharts
-  ],
+  [() => CHART_TYPE_OPTIONS, getSelection('chartType'), getDisableAccumulatedCharts],
   (options, selected, disableAccumulatedCharts) => {
     if (!selected || !isEmpty(disableAccumulatedCharts)) return options[0];
     return options.find(type => type.value === selected);

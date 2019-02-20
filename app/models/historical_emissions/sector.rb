@@ -6,7 +6,7 @@ module HistoricalEmissions
                         required: false
     has_many :records, class_name: 'HistoricalEmissions::Record'
 
-    has_and_belongs_to_many :subsectors,
+    has_and_belongs_to_many :aggregated_sectors,
                             class_name: 'HistoricalEmissions::Sector',
                             join_table: :historical_emissions_sector_subsectors,
                             foreign_key: :sector_id,
@@ -19,10 +19,6 @@ module HistoricalEmissions
                             association_foreign_key: :sector_id
 
     validates :name, presence: true
-
-    def parent_id
-      parents.first&.id
-    end
 
     def self.first_and_second_level
       joins('LEFT JOIN historical_emissions_sectors parents ON historical_emissions_sectors.parent_id = parents.id').
