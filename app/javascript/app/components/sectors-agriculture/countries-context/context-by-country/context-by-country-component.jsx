@@ -37,11 +37,11 @@ const buttonGroupConfig = [
   }
 ];
 
-const renderPopulationBarChart = ({ countryName, population }) => (
+const renderPopulationBarChart = ({ countryName, population }, year) => (
   <ul className={styles.populationBarsContainer}>
     {population.map(p => (
       <li
-        key={`${p.value}-${countryName}`}
+        key={`${p.value}-${p.label}-${countryName}-${year.value}`}
         className={styles.countryData}
         data-value={p.valueLabel}
       >
@@ -135,7 +135,7 @@ const ContextByCountryComponent = ({
                       dangerouslySetInnerHTML={{ __html: c.rank }}
                     />
                   )}
-                  {c.population && renderPopulationBarChart(c)}
+                  {c.population && renderPopulationBarChart(c, selectedYear)}
                 </div>
                 <Icon
                   icon={infoIcon}
