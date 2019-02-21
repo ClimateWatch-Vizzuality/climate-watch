@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
-import MultiDropdown from 'components/multi-dropdown';
+import { MultiLevelDropdown } from 'cw-components';
 import MultiSelect from 'components/multiselect';
 import { deburrCapitalize } from 'app/utils';
 import {
@@ -23,9 +23,7 @@ const getOptions = (filterOptions, field, addGroupId) => {
     ? { ...ALL_SELECTED_OPTION, groupId: 'regions' }
     : ALL_SELECTED_OPTION;
   return (
-    (filterOptions &&
-    filterOptions[field] && [allSelectedOption, ...filterOptions[field]]) ||
-    []
+    (filterOptions && filterOptions[field] && [allSelectedOption, ...filterOptions[field]]) || []
   );
 };
 
@@ -41,8 +39,7 @@ class DataExplorerFilters extends PureComponent {
       isDisabled,
       section
     } = this.props;
-    const label =
-      (FIELD_ALIAS[section] && FIELD_ALIAS[section][field]) || field;
+    const label = (FIELD_ALIAS[section] && FIELD_ALIAS[section][field]) || field;
     const value = isColumnField
       ? selectedOptions && selectedOptions[field] && selectedOptions[field][0]
       : selectedOptions && selectedOptions[field];
@@ -86,9 +83,7 @@ class DataExplorerFilters extends PureComponent {
         const isMulti = multipleSection(field).multiselect;
         const valueProp = {};
         const values = selectedOptions ? selectedOptions[field] : null;
-        valueProp[`value${isMulti ? 's' : ''}`] = isMulti
-          ? values || []
-          : values && values[0];
+        valueProp[`value${isMulti ? 's' : ''}`] = isMulti ? values || [] : values && values[0];
         const getSelectedValue = option => {
           if (isArray(option)) {
             return option.length > 0 && last(option).value === ALL_SELECTED
@@ -102,7 +97,7 @@ class DataExplorerFilters extends PureComponent {
         };
 
         return (
-          <MultiDropdown
+          <MultiLevelDropdown
             key={field}
             label={deburrCapitalize(field)}
             placeholder={`Filter by ${deburrCapitalize(field)}`}
@@ -118,9 +113,7 @@ class DataExplorerFilters extends PureComponent {
           />
         );
       } else if (groupedSelect(field)) {
-        const fieldInfo = GROUPED_OR_MULTI_SELECT_FIELDS[section].find(
-          f => f.key === field
-        );
+        const fieldInfo = GROUPED_OR_MULTI_SELECT_FIELDS[section].find(f => f.key === field);
         const label = fieldInfo.label || fieldInfo.key;
         return (
           <MultiSelect
@@ -142,13 +135,9 @@ class DataExplorerFilters extends PureComponent {
       return this.renderDropdown(field, !isNoColumnField(section, field));
     });
     const hasYearFilters =
-      section === SECTION_NAMES.historicalEmissions ||
-      section === SECTION_NAMES.pathways;
+      section === SECTION_NAMES.historicalEmissions || section === SECTION_NAMES.pathways;
     const yearFilters =
-      hasYearFilters &&
-      ['start_year', 'end_year'].map(field =>
-        this.renderDropdown(field, false)
-      );
+      hasYearFilters && ['start_year', 'end_year'].map(field => this.renderDropdown(field, false));
     return yearFilters ? fieldFilters.concat(yearFilters) : fieldFilters;
   }
 }
