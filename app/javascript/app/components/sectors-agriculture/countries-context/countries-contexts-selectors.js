@@ -1,5 +1,5 @@
 import { createSelector, createStructuredSelector } from 'reselect';
-import { isEmpty, sortBy, some } from 'lodash';
+import { isEmpty, orderBy, some } from 'lodash';
 import { format } from 'd3-format';
 import { precentageTwoPlacesRound } from 'utils/utils';
 
@@ -61,7 +61,7 @@ const getYears = createSelector(
     const selectedCountryData = data.filter(
       d => d.iso_code3 === selectedCountry.value
     );
-    return sortBy(selectedCountryData, 'year').map(r => ({
+    return orderBy(selectedCountryData, 'year', 'desc').map(r => ({
       label: r.year.toString(),
       value: r.year.toString()
     }));
