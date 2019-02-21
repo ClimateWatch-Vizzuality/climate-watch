@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
+import Loading from 'components/loading';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import AgricultureCountriesContextProvider from 'providers/agriculture-countries-context-provider';
 import ContextByCountry from './context-by-country';
@@ -27,7 +28,7 @@ const SwitchOptionsComponents = {
 
 class CountriesContext extends PureComponent {
   render() {
-    const { query, selectedCountry, handleSwitchClick } = this.props;
+    const { query, selectedCountry, handleSwitchClick, loading } = this.props;
 
     const switchOption = (query && query.contextBy) || 'indicator';
 
@@ -58,10 +59,10 @@ class CountriesContext extends PureComponent {
           </div>
         </div>
         <div>
-          {selectedCountry ? (
-            <Component {...this.props} />
+          {loading ? (
+            <Loading light className={styles.loader} />
           ) : (
-            <div>SELECT A COUNTRY</div>
+            selectedCountry && <Component {...this.props} />
           )}
         </div>
         <WbCountryDataProvider />
@@ -79,6 +80,7 @@ CountriesContext.propTypes = {
     value: PropTypes.string,
     label: PropTypes.string
   }),
+  loading: PropTypes.bool,
   handleSwitchClick: PropTypes.func.isRequired
 };
 
