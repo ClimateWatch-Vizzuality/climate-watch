@@ -1,20 +1,15 @@
 import React from 'react';
-import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { Dropdown, Card, Icon, PieChart } from 'cw-components';
+import { isEmpty } from 'lodash';
+import { Dropdown } from 'cw-components';
 import { TabletLandscape } from 'components/responsive';
 import ButtonGroup from 'components/button-group';
-import infoIcon from 'assets/icons/info';
+import NoContent from 'components/no-content';
+import IndicatorCards from './indicator-card';
 import LandArea from './land-area';
 import MeatData from './meat-data';
 
 import styles from './context-by-country-styles.scss';
-
-const cardTheme = {
-  card: styles.card,
-  data: styles.cardData,
-  contentContainer: styles.titleContainer
-};
 
 const buttonGroupConfig = [
   {
@@ -37,35 +32,13 @@ const buttonGroupConfig = [
   }
 ];
 
-const renderPopulationBarChart = ({ countryName, population }, year) => (
-  <ul className={styles.populationBarsContainer}>
-    {population.map(p => (
-      <li
-        key={`${p.value}-${p.label}-${countryName}-${year.value}`}
-        className={styles.countryData}
-        data-value={p.valueLabel}
-      >
-        <span
-          data-label={p.label}
-          style={{
-            width: `${p.value}%`,
-            height: '12px',
-            backgroundColor: p.color,
-            display: 'block'
-          }}
-        />
-      </li>
-    ))}
-  </ul>
-);
-
 const ContextByCountryComponent = ({
   cards,
   countries,
   selectedCountry,
   years,
   selectedYear,
-  handleInfoBtnClick,
+  // handleInfoBtnClick,
   updateCountryFilter,
   updateCountryYearFilter
 }) => (
@@ -83,15 +56,16 @@ const ContextByCountryComponent = ({
                 hideResetButton
               />
             )}
-            {selectedYear && (
-              <Dropdown
-                label={'Year'}
-                value={selectedYear}
-                options={years}
-                onValueChange={updateCountryYearFilter}
-                hideResetButton
-              />
-            )}
+            {!isEmpty(years) &&
+             selectedYear && (
+                <Dropdown
+                  label={'Year'}
+                  value={selectedYear}
+                  options={years}
+                  onValueChange={updateCountryYearFilter}
+                  hideResetButton
+                />
+              )}
           </div>
           {isTablet && (
             <ButtonGroup
@@ -100,56 +74,24 @@ const ContextByCountryComponent = ({
             />
           )}
         </div>
-        <div className={styles.cardsContainer}>
-          {cards &&
-            cards.map(c => (
-              <Card key={c.title} title={c.title} theme={cardTheme}>
-                <div
-                  className={cx(styles.textHtmlWrapper, styles.introText)}
-                  dangerouslySetInnerHTML={{ __html: c.text }}
-                />
-                <div className={styles.cardContent}>
-                  {c.legend && (
-                    <div className={cx(styles.textHtmlWrapper, styles.legend)}>
-                      {c.legend.map(i => (
-                        <div
-                          key={i.title}
-                          dangerouslySetInnerHTML={{ __html: i.text }}
-                          className={styles.legendItem}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  {c.chartConfig && (
-                    <div className={styles.chart}>
-                      <PieChart
-                        data={c.chartData}
-                        width={150}
-                        config={c.chartConfig}
-                      />
-                    </div>
-                  )}
-                  {c.rank && (
-                    <div
-                      className={cx(styles.textHtmlWrapper, styles.rank)}
-                      dangerouslySetInnerHTML={{ __html: c.rank }}
-                    />
-                  )}
-                  {c.population && renderPopulationBarChart(c, selectedYear)}
-                </div>
-                <Icon
-                  icon={infoIcon}
-                  theme={{ icon: styles.cardInfoIcon }}
-                  onClick={handleInfoBtnClick}
-                />
-                <div className={styles.yearData}>
-                  <span>{selectedYear && selectedYear.value}</span> data
-                </div>
-              </Card>
-            ))}
-        </div>
-        <LandArea />
-        {selectedCountry && selectedYear && <MeatData />}
+        {!isEmpty(years) ? (
+          <div>
+            {selectedCountry &&
+             selectedYear && (
+                <React.Fragment>
+                  <IndicatorCards selectedYear={selectedYear} cards={cards} />
+                  <LandArea />
+                  <MeatData />
+                </React.Fragment>
+              )}
+          </div>
+        ) : (
+          <NoContent
+            message={`No data for ${selectedCountry.label} please select another country`}
+            className={styles.noContent}
+            minHeight={300}
+          />
+        )}
         {!isTablet && (
           <ButtonGroup
             className={styles.btnGroup}
@@ -160,10 +102,6 @@ const ContextByCountryComponent = ({
     )}
   </TabletLandscape>
 );
-renderPopulationBarChart.propTypes = {
-  countryName: PropTypes.string,
-  population: PropTypes.arrayOf(PropTypes.shape({}))
-};
 
 ContextByCountryComponent.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.shape({})),
@@ -178,8 +116,8 @@ ContextByCountryComponent.propTypes = {
   }),
   cards: PropTypes.arrayOf(PropTypes.shape({})),
   updateCountryYearFilter: PropTypes.func.isRequired,
-  updateCountryFilter: PropTypes.func.isRequired,
-  handleInfoBtnClick: PropTypes.func.isRequired
+  updateCountryFilter: PropTypes.func.isRequired
+  // handleInfoBtnClick: PropTypes.func.isRequired
 };
 
 export default ContextByCountryComponent;
