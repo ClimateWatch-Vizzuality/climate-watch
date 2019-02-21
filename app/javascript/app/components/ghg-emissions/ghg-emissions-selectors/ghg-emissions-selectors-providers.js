@@ -8,16 +8,15 @@ export const getProviderFilters = createSelector([getOptionsSelected], selectedO
   const { sourcesSelected, sectorsSelected, gasesSelected, regionsSelected } = selectedOptions;
 
   const parseValues = selected => uniq(selected.map(s => s.value)).join();
-
-  const regionMembers = flatMap(regionsSelected, r => (r.members || []).map(id => ({ value: id })));
-  const sectorAggregates = flatMap(sectorsSelected, s =>
-    (s.aggregatedSectorIds || []).map(id => ({ value: id }))
-  );
+  const withExpanded = optionsSelected => [
+    ...optionsSelected,
+    ...flatMap(optionsSelected, o => (o.expandsTo || []).map(value => ({ value })))
+  ];
 
   return {
     source: sourcesSelected.value,
     gas: parseValues(gasesSelected),
-    sector: parseValues([...sectorsSelected, ...sectorAggregates]),
-    location: parseValues([...regionsSelected, ...regionMembers])
+    sector: parseValues(withExpanded(sectorsSelected)),
+    location: parseValues(withExpanded(regionsSelected))
   };
 });

@@ -102,7 +102,7 @@ const getRegionsOptions = createSelector([getRegions], regions => {
         label: region.wri_standard_name,
         value: region.iso_code3,
         iso: region.iso_code3,
-        members: regionMembers,
+        expandsTo: regionMembers,
         groupId: 'regions'
       });
     }
@@ -172,7 +172,7 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
     .map(d => ({
       label: d.label,
       value: d.value,
-      aggregatedSectorIds: d.aggregatedSectorIds,
+      expandsTo: d.aggregatedSectorIds,
       groupParent: hasChildren(d) && String(d.value),
       groupId: isEmpty(d.aggregatedSectorIds) ? 'sectors' : 'aggregations'
     }))
@@ -190,8 +190,8 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
 const countriesSelectedFromRegions = regionsSelected => {
   let regionCountriesSelected = [];
   regionsSelected.forEach(r => {
-    if (r.members) {
-      regionCountriesSelected = regionCountriesSelected.concat(r.members);
+    if (r.expandsTo) {
+      regionCountriesSelected = regionCountriesSelected.concat(r.expandsTo);
     } else regionCountriesSelected.push(r.iso);
   });
   return regionCountriesSelected;

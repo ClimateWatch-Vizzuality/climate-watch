@@ -45,13 +45,7 @@ export const QUANTIFICATIONS_CONFIG = {
 export const DATA_SCALE = 1000000;
 
 export const ALLOWED_SECTORS_BY_SOURCE = {
-  CAIT: [
-    'Energy',
-    'Industrial Processes',
-    'Agriculture',
-    'Waste',
-    'Land-Use Change and Forestry'
-  ],
+  CAIT: ['Energy', 'Industrial Processes', 'Agriculture', 'Waste', 'Land-Use Change and Forestry'],
   PIK: [
     'Energy',
     'Industrial process',
@@ -103,18 +97,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   }
 };
 
-export const TOP_EMITTERS = [
-  'CHN',
-  'USA',
-  'EU28',
-  'IND',
-  'RUS',
-  'JPN',
-  'BRA',
-  'IDN',
-  'CAN',
-  'MEX'
-];
+export const TOP_EMITTERS = ['CHN', 'USA', 'EU28', 'IND', 'RUS', 'JPN', 'BRA', 'IDN', 'CAN', 'MEX'];
 
 export const CHART_COLORS = [
   '#00B4D2',
@@ -294,12 +277,7 @@ export const USERS_PROFESIONAL_SECTORS = [
 
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
-export const NO_ALL_SELECTED_COLUMNS = [
-  'breakBy',
-  'chartType',
-  'sources',
-  'regions'
-];
+export const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType', 'sources', 'regions'];
 
 export const METRIC_OPTIONS = {
   ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },
@@ -311,7 +289,7 @@ export const TOP_EMITTERS_OPTION = {
   iso: 'TOP',
   label: 'Top Emitters',
   value: 'TOP',
-  members: TOP_EMITTERS,
+  expandsTo: TOP_EMITTERS,
   groupId: 'regions'
 };
 

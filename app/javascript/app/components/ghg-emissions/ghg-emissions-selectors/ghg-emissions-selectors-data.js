@@ -53,7 +53,7 @@ const getExpandedLegendRegionsSelected = createSelector(
       return null;
     }
     const dataSelected = selectedOptions.regionsSelected;
-    const countryOptions = dataSelected[0].members.map(iso =>
+    const countryOptions = dataSelected[0].expandsTo.map(iso =>
       options[model].find(o => o.iso === iso)
     );
     const groupedCountries = data && groupBy(data, 'iso_code3');
@@ -72,7 +72,7 @@ const getExpandedLegendRegionsSelected = createSelector(
         iso: 'OTHERS',
         label: 'Others',
         value: othersGroup.map(o => o.iso).join(),
-        members: othersGroup.map(o => o.iso),
+        expandsTo: othersGroup.map(o => o.iso),
         groupId: 'regions',
         hideData: true
       };
@@ -108,7 +108,7 @@ const getExpandedLegendSectorsSelected = createSelector(
 
     const selectedSector = selectedOptions.sectorsSelected[0];
 
-    const sectorOptions = selectedSector.aggregatedSectorIds.map(id =>
+    const sectorOptions = selectedSector.expandsTo.map(id =>
       options[model].find(o => o.value === id)
     );
 
@@ -216,7 +216,8 @@ export const getChartData = createSelector(
       data.forEach(d => {
         const columnObjects = yColumnOptions.filter(
           c =>
-            c.label === getDFilterValue(d, model) || (c.members && c.members.includes(d.iso_code3))
+            c.label === getDFilterValue(d, model) ||
+            (c.expandsTo && c.expandsTo.includes(d.iso_code3))
         );
         const yKeys = columnObjects.map(k => k.value);
         const yData = d.emissions.find(e => e.year === x);
