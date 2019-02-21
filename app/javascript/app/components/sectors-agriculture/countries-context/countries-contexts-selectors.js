@@ -97,6 +97,7 @@ const getCardsData = createSelector(
     if (isEmpty(contextsData) || isEmpty(wbData)) return null;
     const c = country || countries[0];
     const y = year || years[0];
+    if (!y) return null;
     const countryCode = c.value;
     const yearData = contextsData
       .filter(d => d.year === parseInt(y.value, 10))
@@ -104,7 +105,6 @@ const getCardsData = createSelector(
     const wbCountryData =
       wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {};
 
-    // TODO: Replace the hardcoded values with data!!!
     const socioeconomic = {
       population: [
         {
@@ -128,11 +128,13 @@ const getCardsData = createSelector(
       title: 'Socio-economic indicators',
       text: `<p>In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
         yearData.employment_agri_total
-      )}%</span> of <span>${c.label}'s</span> population was employed in the Agriculture sector. <span>${precentageTwoPlacesRound(
+      ) ||
+        '---'}%</span> of <span>${c.label}'s</span> population was employed in the Agriculture sector. <span>${precentageTwoPlacesRound(
         yearData.employment_agri_female
-      )}%</span> of women worked in agriculture compared with <span>${precentageTwoPlacesRound(
+      ) ||
+        '---'}%</span> of women worked in agriculture compared with <span>${precentageTwoPlacesRound(
         yearData.employment_agri_male
-      )}%</span> of men.</p>`
+      ) || '---'}%</span> of men.</p>`
     };
 
     const GDP = {
@@ -158,6 +160,7 @@ const getCardsData = createSelector(
         }
       ],
       title: 'GDP indicators',
+      countryName: c.label,
       legend: [
         {
           text: legendHtmlDot(
@@ -195,6 +198,7 @@ const getCardsData = createSelector(
           )
         }
       ],
+      countryName: c.label,
       rank: `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank ||
         '---'}</span> of 156</p>`,
       text: `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal ||
