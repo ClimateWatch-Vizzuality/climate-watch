@@ -49,6 +49,10 @@
   background-color: $theme-color;
 }
 
+.loader {
+  min-height: 300px;
+}
+
 .actionsContainer {
   @include columns((3, 3, 2));
   @include xy-gutters($gutter-position: ('bottom'));
