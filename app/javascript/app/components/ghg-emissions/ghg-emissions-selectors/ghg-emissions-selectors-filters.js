@@ -1,6 +1,8 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
+import values from 'lodash/values';
+import countBy from 'lodash/countBy';
 import isEqual from 'lodash/isEqual';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortEmissionsByValue, sortLabelByAlpha } from 'utils/graphs';
@@ -187,14 +189,15 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
   return [...sectors, ...subsectors];
 });
 
-const countriesSelectedFromRegions = regionsSelected => {
-  let regionCountriesSelected = [];
-  regionsSelected.forEach(r => {
-    if (r.expandsTo) {
-      regionCountriesSelected = regionCountriesSelected.concat(r.expandsTo);
-    } else regionCountriesSelected.push(r.iso);
+const expandSelectedOptions = optionsSelected => {
+  let optionsExpanded = [];
+  optionsSelected.forEach(o => {
+    if (!isEmpty(o.expandsTo)) {
+      optionsExpanded = optionsExpanded.concat(o.expandsTo);
+    } else optionsExpanded.push(o.value);
   });
-  return regionCountriesSelected;
+
+  return optionsExpanded;
 };
 
 const CHART_TYPE_OPTIONS = [
@@ -253,7 +256,11 @@ export const getDisableAccumulatedCharts = createSelector(
     if (sectorsSelected && sectorsSelected.length > 1) {
       const parentIds = [];
       sectorsSelected.forEach(s => s.group && parentIds.push(s.group));
-      if (sectorsSelected.some(s => parentIds.includes(String(s.value)))) {
+      const anyParentSelected = sectorsSelected.some(s => parentIds.includes(String(s.value)));
+      const expandedSectors = expandSelectedOptions(sectorsSelected);
+      const anyOverlappingSectors = values(countBy(expandedSectors)).some(count => count > 1);
+
+      if (anyParentSelected || anyOverlappingSectors) {
         conflicts.sector = true;
       }
     }
@@ -265,7 +272,7 @@ export const getDisableAccumulatedCharts = createSelector(
       const locationOptionsSelected = locationOptions.filter(location =>
         selectedLocations.includes(location.iso)
       );
-      const countriesSelected = countriesSelectedFromRegions(locationOptionsSelected);
+      const countriesSelected = expandSelectedOptions(locationOptionsSelected);
       if (!isEqual(countriesSelected, uniq(countriesSelected))) {
         conflicts.region = true;
       }
