@@ -207,7 +207,7 @@ export function noEmptyValues(object) {
 }
 
 export function precentageTwoPlacesRound(percentage) {
-  return Math.round(percentage * 100) / 100;
+  return Math.round(percentage * 10) / 10;
 }
 
 export default {
