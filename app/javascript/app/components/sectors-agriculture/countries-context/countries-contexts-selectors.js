@@ -103,7 +103,8 @@ const getCardsData = createSelector(
       .filter(d => d.year === parseInt(y.value, 10))
       .find(d => d.iso_code3 === countryCode);
     const wbCountryData =
-      wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {};
+      wbData[countryCode] &&
+      (wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {});
 
     const socioeconomic = {
       population: [
