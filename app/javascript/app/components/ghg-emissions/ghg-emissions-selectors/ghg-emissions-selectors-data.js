@@ -116,6 +116,16 @@ const getExpandedLegendSectorsSelected = createSelector(
   }
 );
 
+export const getLegendDataOptions = createSelector(
+  [getModelSelected, getOptions],
+  (modelSelected, options) => {
+    if (!options || !modelSelected || !options[toPlural(modelSelected)]) {
+      return null;
+    }
+    return options[toPlural(modelSelected)];
+  }
+);
+
 export const getLegendDataSelected = createSelector(
   [
     getModelSelected,

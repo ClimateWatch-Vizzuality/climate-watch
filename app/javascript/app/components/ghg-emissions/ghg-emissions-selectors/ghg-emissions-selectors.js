@@ -1,16 +1,13 @@
 import { createStructuredSelector } from 'reselect';
-import {
-  getSearch,
-  getLinkToDataExplorer
-} from './ghg-emissions-selectors-get';
+import { getSearch, getLinkToDataExplorer } from './ghg-emissions-selectors-get';
 import {
   getOptions,
   getOptionsSelected,
-  getLegendDataOptions,
-  getDisableAccumulatedCharts,
+  getFiltersConflicts,
   getModelSelected
 } from './ghg-emissions-selectors-filters';
 import {
+  getLegendDataOptions,
   getLegendDataSelected,
   getChartDomain,
   getChartData,
@@ -37,7 +34,7 @@ export const getGHGEmissions = createStructuredSelector({
   downloadLink: getLinkToDataExplorer,
   options: getOptions,
   selected: getOptionsSelected,
-  accumulatedChartsConflict: getDisableAccumulatedCharts,
+  filtersConflicts: getFiltersConflicts,
   legendOptions: getLegendDataOptions,
   legendSelected: getLegendDataSelected,
   data: getChartData,

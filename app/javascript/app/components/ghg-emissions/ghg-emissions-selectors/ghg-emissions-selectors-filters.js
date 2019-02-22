@@ -1,9 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
+import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
-import uniq from 'lodash/uniq';
-import values from 'lodash/values';
-import countBy from 'lodash/countBy';
-import isEqual from 'lodash/isEqual';
+import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortEmissionsByValue, sortLabelByAlpha } from 'utils/graphs';
 import { TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
@@ -14,6 +12,19 @@ import {
   getSources,
   getSelection
 } from './ghg-emissions-selectors-get';
+
+const DEFAULTS = {
+  breakBy: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
+};
+
+const getOptionSelectedFunction = filter => (options, selected) => {
+  if (!options) return null;
+  if (!selected) {
+    const defaultOption = options.find(b => b.value === DEFAULTS[filter]);
+    return defaultOption || options[0];
+  }
+  return options.find(o => o.value === selected);
+};
 
 // Sources selectors
 const getSourceOptions = createSelector([getSources], sources => {
@@ -28,15 +39,10 @@ const getSourceOptions = createSelector([getSources], sources => {
 
 const getSourceSelected = createSelector(
   [getSourceOptions, getSelection('source')],
-  (sources, selected) => {
-    if (!sources) return null;
-    if (!selected) return sources[0];
-    return sources.find(source => String(source.value) === selected);
-  }
+  getOptionSelectedFunction('source')
 );
 
 // BreakBy selectors
-
 const BREAK_BY_OPTIONS = [
   {
     label: `Regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.label}`,
@@ -64,14 +70,7 @@ const getBreakByOptions = () => BREAK_BY_OPTIONS;
 
 const getBreakByOptionSelected = createSelector(
   [getBreakByOptions, getSelection('breakBy')],
-  (breaks, selected) => {
-    if (!breaks) return null;
-    if (!selected) {
-      const defaultBreak = breaks.find(b => b.value === 'location');
-      return defaultBreak || breaks[0];
-    }
-    return breaks.find(category => category.value === selected);
-  }
+  getOptionSelectedFunction('breakBy')
 );
 
 const getBreakBySelected = createSelector(getBreakByOptionSelected, breakBySelected => {
@@ -189,26 +188,17 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
   return [...sectors, ...subsectors];
 });
 
-const expandSelectedOptions = optionsSelected => {
-  let optionsExpanded = [];
-  optionsSelected.forEach(o => {
-    if (!isEmpty(o.expandsTo)) {
-      optionsExpanded = optionsExpanded.concat(o.expandsTo);
-    } else optionsExpanded.push(o.value);
-  });
-
-  return optionsExpanded;
-};
-
 const CHART_TYPE_OPTIONS = [
   { label: 'line', value: 'line' },
   { label: 'area', value: 'area' },
   { label: 'percentage', value: 'percentage' }
 ];
 
+const getChartTypeOptions = () => CHART_TYPE_OPTIONS;
+
 export const getOptions = createStructuredSelector({
   sources: getSourceOptions,
-  chartType: () => CHART_TYPE_OPTIONS,
+  chartType: getChartTypeOptions,
   breakBy: getBreakByOptions,
   regions: getFieldOptions('location'),
   sectors: getSectorOptions,
@@ -238,62 +228,98 @@ const getFiltersSelected = field =>
     }
   );
 
-export const getLegendDataOptions = createSelector(
-  [getModelSelected, getOptions],
-  (modelSelected, options) => {
-    if (!options || !modelSelected || !options[toPlural(modelSelected)]) {
-      return null;
-    }
-    return options[toPlural(modelSelected)];
-  }
-);
-
-export const getDisableAccumulatedCharts = createSelector(
-  [getOptions, getSelection('location'), getFiltersSelected('gas'), getFiltersSelected('sector')],
-  (options, locationSelected, gasSelected, sectorsSelected) => {
-    const { regions: locationOptions } = options || {};
-    const conflicts = {};
-    if (sectorsSelected && sectorsSelected.length > 1) {
-      const parentIds = [];
-      sectorsSelected.forEach(s => s.group && parentIds.push(s.group));
-      const anyParentSelected = sectorsSelected.some(s => parentIds.includes(String(s.value)));
-      const expandedSectors = expandSelectedOptions(sectorsSelected);
-      const anyOverlappingSectors = values(countBy(expandedSectors)).some(count => count > 1);
-
-      if (anyParentSelected || anyOverlappingSectors) {
-        conflicts.sector = true;
-      }
-    }
-    if (gasSelected && gasSelected.length > 1 && gasSelected.some(g => g.label === 'All GHG')) {
-      conflicts.gas = true;
-    }
-    if (locationOptions && locationOptions.length && locationSelected) {
-      const selectedLocations = locationSelected.split(',');
-      const locationOptionsSelected = locationOptions.filter(location =>
-        selectedLocations.includes(location.iso)
-      );
-      const countriesSelected = expandSelectedOptions(locationOptionsSelected);
-      if (!isEqual(countriesSelected, uniq(countriesSelected))) {
-        conflicts.region = true;
-      }
-    }
-    return conflicts;
-  }
-);
-
 const getChartTypeSelected = createSelector(
-  [() => CHART_TYPE_OPTIONS, getSelection('chartType'), getDisableAccumulatedCharts],
-  (options, selected, disableAccumulatedCharts) => {
-    if (!selected || !isEmpty(disableAccumulatedCharts)) return options[0];
-    return options.find(type => type.value === selected);
+  [getChartTypeOptions, getSelection('chartType')],
+  getOptionSelectedFunction('chartType')
+);
+
+const getOverlappingConflicts = optionsSelected => {
+  const conflicts = [];
+  const overlapsCheckedIds = [];
+
+  optionsSelected.forEach(option => {
+    if (option.expandsTo) {
+      const overlappingOptions = [];
+      optionsSelected.forEach(option2 => {
+        if (option2.value === option.value) return;
+        if (overlapsCheckedIds.includes(option2.value)) return;
+
+        const expandedOption = [option.value, ...(option.expandsTo || [])].map(String);
+        const expandedOption2 = [option2.value, option2.group, ...(option2.expandsTo || [])].map(
+          String
+        );
+
+        if (intersection(expandedOption, expandedOption2).length > 0) {
+          overlappingOptions.push(option2.label);
+        }
+      });
+
+      if (overlappingOptions.length) {
+        conflicts.push(`${option.label} overlaps with ${arrayToSentence(overlappingOptions)}`);
+      }
+
+      overlapsCheckedIds.push(option.value);
+    }
+  });
+
+  return conflicts;
+};
+
+export const getFiltersConflicts = createSelector(
+  [
+    getFiltersSelected('location'),
+    getFiltersSelected('gas'),
+    getFiltersSelected('sector'),
+    getModelSelected,
+    getChartTypeSelected
+  ],
+  (locationSelected, gasSelected, sectorsSelected, modelSelected, chartSelected) => {
+    let conflicts = [];
+    const solutions = ['Please deselect any conflicted option'];
+    const isAggregatedChart = chartSelected.value !== 'line';
+    const notBreakBySector = modelSelected !== 'sector';
+    const notBreakByGas = modelSelected !== 'gas';
+    const notBreakByRegion = modelSelected !== 'region';
+
+    const solutionChangeBreakByTo = option => solutions.push(`change "Break by" to ${option}`);
+
+    if (sectorsSelected && sectorsSelected.length > 1 && (isAggregatedChart || notBreakBySector)) {
+      conflicts = conflicts.concat(getOverlappingConflicts(sectorsSelected));
+      if (notBreakBySector) solutionChangeBreakByTo('sector');
+    }
+
+    if (gasSelected && gasSelected.length > 1 && (isAggregatedChart || notBreakByGas)) {
+      if (gasSelected.some(g => g.label === 'All GHG')) {
+        conflicts.push('All GHG option cannot be selected with included gas');
+      }
+      if (notBreakByGas) solutionChangeBreakByTo('gas');
+    }
+
+    if (
+      locationSelected &&
+      locationSelected.length > 1 &&
+      (isAggregatedChart || notBreakByRegion)
+    ) {
+      conflicts = conflicts.concat(getOverlappingConflicts(locationSelected));
+      if (notBreakByRegion) solutionChangeBreakByTo('region');
+    }
+
+    if (conflicts.length && isAggregatedChart) {
+      solutions.push('change "Chart Type" to line chart');
+    }
+
+    return {
+      conflicts,
+      solutionText: solutions.join(' or ')
+    };
   }
 );
 
 export const getOptionsSelected = createStructuredSelector({
   sourcesSelected: getSourceSelected,
-  chartTypeSelected: getChartTypeSelected,
-  breakBySelected: getBreakByOptionSelected,
   regionsSelected: getFiltersSelected('location'),
   sectorsSelected: getFiltersSelected('sector'),
-  gasesSelected: getFiltersSelected('gas')
+  gasesSelected: getFiltersSelected('gas'),
+  breakBySelected: getBreakByOptionSelected,
+  chartTypeSelected: getChartTypeSelected
 });

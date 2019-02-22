@@ -55,3 +55,25 @@ $min-height: 500px;
     padding-bottom: 50px;
   }
 }
+
+.chartConflicts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-family: $font-family-1;
+  font-size: $font-size-m;
+  color: $theme-color;
+
+  p {
+    margin: 10px 0;
+  }
+
+  ul {
+    list-style: initial;
+
+    li {
+      margin: 5px 0 5px 30px;
+    }
+  }
+}
