@@ -151,12 +151,13 @@ const getCardsData = createSelector(
       chartData: [
         {
           name: 'agricultureProduction',
-          value: wbCountryData.gdp * yearData.value_added_agr / 100,
+          value:
+            wbCountryData && wbCountryData.gdp * yearData.value_added_agr / 100,
           fill: '#0677B3'
         },
         {
           name: 'totalGDP',
-          value: wbCountryData.gdp,
+          value: wbCountryData && wbCountryData.gdp,
           fill: '#CACCD0'
         }
       ],
@@ -164,16 +165,18 @@ const getCardsData = createSelector(
       countryName: c.label,
       legend: [
         {
-          text: legendHtmlDot(
-            'Agriculture production',
-            '#0677B3',
-            format('.2s')(
-              wbCountryData.gdp
-                ? wbCountryData.gdp * yearData.value_added_agr / 100
-                : yearData.value_added_agr
-            ),
-            '$USD'
-          )
+          text:
+            wbCountryData &&
+            legendHtmlDot(
+              'Agriculture production',
+              '#0677B3',
+              format('.2s')(
+                wbCountryData.gdp
+                  ? wbCountryData.gdp * yearData.value_added_agr / 100
+                  : yearData.value_added_agr
+              ),
+              '$USD'
+            )
         },
         {
           text: legendHtmlDot(
