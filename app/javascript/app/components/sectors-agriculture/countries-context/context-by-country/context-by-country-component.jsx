@@ -87,7 +87,7 @@ const ContextByCountryComponent = ({
           </div>
         ) : (
           <NoContent
-            message={`No data for ${selectedCountry.label} please select another country`}
+            message={`No data for ${selectedCountry.label}, please select another country`}
             className={styles.noContent}
             minHeight={300}
           />
