@@ -1,6 +1,7 @@
 import { createSelector, createStructuredSelector } from 'reselect';
-import { isEmpty, sortBy, some } from 'lodash';
+import { isEmpty, orderBy, some } from 'lodash';
 import { format } from 'd3-format';
+import { precentageTwoPlacesRound } from 'utils/utils';
 
 const getCountriesContextsData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.data;
@@ -60,7 +61,7 @@ const getYears = createSelector(
     const selectedCountryData = data.filter(
       d => d.iso_code3 === selectedCountry.value
     );
-    return sortBy(selectedCountryData, 'year').map(r => ({
+    return orderBy(selectedCountryData, 'year', 'desc').map(r => ({
       label: r.year.toString(),
       value: r.year.toString()
     }));
@@ -96,19 +97,45 @@ const getCardsData = createSelector(
     if (isEmpty(contextsData) || isEmpty(wbData)) return null;
     const c = country || countries[0];
     const y = year || years[0];
+    if (!y) return null;
     const countryCode = c.value;
     const yearData = contextsData
       .filter(d => d.year === parseInt(y.value, 10))
       .find(d => d.iso_code3 === countryCode);
     const wbCountryData =
-      wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {};
+      wbData[countryCode] &&
+      (wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {});
 
-    // TODO: Replace the hardcoded values with data!!!
     const socioeconomic = {
+      population: [
+        {
+          value: yearData.employment_agri_female,
+          label: 'Women',
+          valueLabel: `${precentageTwoPlacesRound(
+            yearData.employment_agri_female
+          )}%`,
+          color: '#0677B3'
+        },
+        {
+          value: yearData.employment_agri_male,
+          label: 'Men',
+          valueLabel: `${precentageTwoPlacesRound(
+            yearData.employment_agri_male
+          )}%`,
+          color: '#1ECDB0'
+        }
+      ],
+      countryName: c.label,
       title: 'Socio-economic indicators',
-      text: `<p>There were <span style="color: red;">21 million</span> people (<span style="color: red;">10.5%</span> of the population) employed in <span>${c.label}'s</span> Agriculture sector in <span>${y.value}</span>, of which <span>${Math.round(
-        yearData.employment_agri_female * 100
-      ) / 100}%</span> were female.</p>`
+      text: `<p>In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
+        yearData.employment_agri_total
+      ) ||
+        '---'}%</span> of <span>${c.label}'s</span> population was employed in the Agriculture sector. <span>${precentageTwoPlacesRound(
+        yearData.employment_agri_female
+      ) ||
+        '---'}%</span> of women worked in agriculture compared with <span>${precentageTwoPlacesRound(
+        yearData.employment_agri_male
+      ) || '---'}%</span> of men.</p>`
     };
 
     const GDP = {
@@ -124,28 +151,32 @@ const getCardsData = createSelector(
       chartData: [
         {
           name: 'agricultureProduction',
-          value: wbCountryData.gdp * yearData.value_added_agr / 100,
+          value:
+            wbCountryData && wbCountryData.gdp * yearData.value_added_agr / 100,
           fill: '#0677B3'
         },
         {
           name: 'totalGDP',
-          value: wbCountryData.gdp,
+          value: wbCountryData && wbCountryData.gdp,
           fill: '#CACCD0'
         }
       ],
       title: 'GDP indicators',
+      countryName: c.label,
       legend: [
         {
-          text: legendHtmlDot(
-            'Agriculture production',
-            '#0677B3',
-            format('.2s')(
-              wbCountryData.gdp
-                ? wbCountryData.gdp * yearData.value_added_agr / 100
-                : yearData.value_added_agr
-            ),
-            '$USD'
-          )
+          text:
+            wbCountryData &&
+            legendHtmlDot(
+              'Agriculture production',
+              '#0677B3',
+              format('.2s')(
+                wbCountryData.gdp
+                  ? wbCountryData.gdp * yearData.value_added_agr / 100
+                  : yearData.value_added_agr
+              ),
+              '$USD'
+            )
         },
         {
           text: legendHtmlDot(
@@ -171,6 +202,7 @@ const getCardsData = createSelector(
           )
         }
       ],
+      countryName: c.label,
       rank: `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank ||
         '---'}</span> of 156</p>`,
       text: `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal ||

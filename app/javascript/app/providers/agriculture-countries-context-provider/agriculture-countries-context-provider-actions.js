@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions';
 import { createThunkAction } from 'utils/redux';
+import isEmpty from 'lodash/isEmpty';
 
 const fetchAgricultureCountriesContextsInit = createAction(
   'fetchAgricultureCountriesContextsInit'
@@ -17,7 +18,10 @@ const fetchAgricultureCountriesContexts = createThunkAction(
   'fetchAgricultureCountriesContexts',
   () => (dispatch, state) => {
     const { agricultureCountriesContexts } = state();
-    if (!agricultureCountriesContexts.loading) {
+    if (
+      agricultureCountriesContexts &&
+      isEmpty(agricultureCountriesContexts.data)
+    ) {
       dispatch(fetchAgricultureCountriesContextsInit());
       fetch(`${BASE_URL}`)
         .then(response => {

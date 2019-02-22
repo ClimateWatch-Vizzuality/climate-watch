@@ -7,10 +7,14 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import Component from './countries-context-component';
 import { countriesContexts } from './countries-contexts-selectors';
 
+const providers = ['wbCountryData', 'agricultureCountriesContexts'];
+
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
+  const loading = providers.some(p => state[p].loading);
   const cc = { ...state, search };
   return {
+    loading,
     ...countriesContexts(cc)
   };
 };

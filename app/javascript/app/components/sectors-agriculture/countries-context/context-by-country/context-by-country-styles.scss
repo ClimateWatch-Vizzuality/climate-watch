@@ -68,93 +68,6 @@
   justify-content: space-around;
 }
 
-.cardsContainer {
-  @include columns();
-
-  > * {
-    @include xy-gutters($gutter-position: ('top', 'bottom'));
-  }
-}
-
-.card {
-  height: 100%;
-
-  .titleContainer {
-    min-height: 75px;
-    height: 75px;
-    padding: 15px 30px;
-  }
-}
-
-.cardData {
-  position: relative;
-  padding: 30px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .introText {
-    max-width: 90%;
-  }
-
-  .textHtmlWrapper {
-    p {
-      font-size: $font-size;
-      line-height: $line-height-modal;
-      color: $manatee;
-    }
-
-    span {
-      color: $theme-color;
-    }
-  }
-
-  .cardInfoIcon {
-    position: absolute;
-    fill: $manatee;
-    right: 30px;
-    top: 20px;
-  }
-
-  .cardContent {
-    display: flex;
-    flex-direction: column;
-    margin-top: $gutter-padding;
-    min-height: 130px;
-
-    .chart,
-    .legend {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .legendItem {
-      width: 100%;
-      padding-left: 30px;
-    }
-
-    .rank {
-      position: absolute;
-      bottom: 10px;
-    }
-  }
-
-  .yearData {
-    position: absolute;
-    color: $manatee;
-    right: 30px;
-    bottom: 20px;
-    font-size: $font-size-s;
-
-    span {
-      color: $theme-color;
-    }
-  }
-}
-
 .btnGroup {
   width: 100%;
 
@@ -165,23 +78,6 @@
   .filtersGroup {
     @include columns((6,6));
   }
-
-  .card {
-    height: 430px;
-  }
-
-  .cardData {
-    height: 350px;
-
-    .cardContent {
-      flex-direction: row;
-
-      .chart,
-      .legend {
-        width: 50%;
-      }
-    }
-  }
 }
 
 @media #{$tablet-landscape} {
@@ -191,10 +87,6 @@
     > *:first-child {
       @include xy-gutters(0, $gutter-position: 'left');
     }
-  }
-
-  .cardsContainer {
-    @include columns(6);
   }
 
   .actionsContainer {
