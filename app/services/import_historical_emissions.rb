@@ -6,7 +6,7 @@ class ImportHistoricalEmissions
   META_SECTORS_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors.csv".freeze
   DATA_CAIT_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_CAIT.csv".freeze
   DATA_PIK_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_PIK.csv".freeze
-  DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC_NEW.csv".freeze
+  DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC.csv".freeze
   # rubocop:enable LineLength
   #
   def call
@@ -16,11 +16,11 @@ class ImportHistoricalEmissions
       cleanup
       import_sources(S3CSVReader.read(META_SOURCES_FILEPATH))
       import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
-      import_records(S3CSVReader.read(DATA_CAIT_FILEPATH))
-      # import_records(S3CSVReader.read(DATA_PIK_FILEPATH))
-      # import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH))
+      import_records(S3CSVReader.read(DATA_CAIT_FILEPATH), DATA_CAIT_FILEPATH)
+      # import_records(S3CSVReader.read(DATA_PIK_FILEPATH), DATA_PIK_FILEPATH)
+      # import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH), DATA_UNFCCC_FILEPATH)
 
-      Rails.logger.info "Refreshing materialized views"
+      Rails.logger.info 'Refreshing materialized views'
       HistoricalEmissions::NormalisedRecord.refresh
       HistoricalEmissions::SearchableRecord.refresh
     end
@@ -33,9 +33,8 @@ class ImportHistoricalEmissions
     @sectors_cache = {}
     @gases_cache = {}
     @gwps_cache = {}
-    @locations_cache = Location.all.reduce({}) do |cache, location|
+    @locations_cache = Location.all.each_with_object({}) do |location, cache|
       cache[location.iso_code3] = location
-      cache
     end
   end
 
@@ -56,7 +55,7 @@ class ImportHistoricalEmissions
   end
 
   def import_sources(content)
-    content.each do |row|
+    import_each_with_logging(content, META_SOURCES_FILEPATH) do |row|
       name = row[:name]
 
       next if @sources_cache[name].present?
@@ -75,7 +74,7 @@ class ImportHistoricalEmissions
     }
   end
 
-  def parse_parents(row)
+  def parse_aggregated_by(row)
     return [] if row[:aggregatedby].blank?
 
     row[:aggregatedby].split(';').
@@ -84,15 +83,15 @@ class ImportHistoricalEmissions
   end
 
   def import_sectors(content)
-    content.each do |row|
+    import_each_with_logging(content, META_SECTORS_FILEPATH) do |row|
       key = "#{row[:source]}_#{row[:sector]}"
       next if @sectors_cache[key].present?
 
       sector = HistoricalEmissions::Sector.create!(sector_attributes(row))
       @sectors_cache[key] = sector
 
-      parse_parents(row).each do |parent|
-        sector.parents << parent
+      parse_aggregated_by(row).each do |agg_by_sector|
+        sector.aggregated_by << agg_by_sector
       end
     end
   end
@@ -124,13 +123,9 @@ class ImportHistoricalEmissions
     }
   end
 
-  def import_records(content)
-    content.each do |row|
-      begin
-        HistoricalEmissions::Record.create!(record_attributes(row))
-      rescue ActiveRecord::RecordInvalid => invalid
-        STDERR.puts "Error importing #{row.to_s.chomp}: #{invalid}"
-      end
+  def import_records(content, filepath)
+    import_each_with_logging(content, filepath) do |row|
+      HistoricalEmissions::Record.create!(record_attributes(row))
     end
   end
 end

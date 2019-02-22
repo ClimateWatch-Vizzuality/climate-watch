@@ -812,23 +812,23 @@ CREATE MATERIALIZED VIEW public.historical_emissions_searchable_records AS
 
 
 --
--- Name: historical_emissions_sector_subsectors; Type: TABLE; Schema: public; Owner: -
+-- Name: historical_emissions_sector_aggregations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.historical_emissions_sector_subsectors (
+CREATE TABLE public.historical_emissions_sector_aggregations (
     id bigint NOT NULL,
     sector_id bigint,
-    subsector_id bigint,
+    aggregated_sector_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: historical_emissions_sector_subsectors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: historical_emissions_sector_aggregations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.historical_emissions_sector_subsectors_id_seq
+CREATE SEQUENCE public.historical_emissions_sector_aggregations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -837,10 +837,10 @@ CREATE SEQUENCE public.historical_emissions_sector_subsectors_id_seq
 
 
 --
--- Name: historical_emissions_sector_subsectors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: historical_emissions_sector_aggregations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.historical_emissions_sector_subsectors_id_seq OWNED BY public.historical_emissions_sector_subsectors.id;
+ALTER SEQUENCE public.historical_emissions_sector_aggregations_id_seq OWNED BY public.historical_emissions_sector_aggregations.id;
 
 
 --
@@ -2193,10 +2193,10 @@ ALTER TABLE ONLY public.historical_emissions_records ALTER COLUMN id SET DEFAULT
 
 
 --
--- Name: historical_emissions_sector_subsectors id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: historical_emissions_sector_aggregations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.historical_emissions_sector_subsectors ALTER COLUMN id SET DEFAULT nextval('public.historical_emissions_sector_subsectors_id_seq'::regclass);
+ALTER TABLE ONLY public.historical_emissions_sector_aggregations ALTER COLUMN id SET DEFAULT nextval('public.historical_emissions_sector_aggregations_id_seq'::regclass);
 
 
 --
@@ -2692,11 +2692,11 @@ ALTER TABLE ONLY public.historical_emissions_records
 
 
 --
--- Name: historical_emissions_sector_subsectors historical_emissions_sector_subsectors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: historical_emissions_sector_aggregations historical_emissions_sector_aggregations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.historical_emissions_sector_subsectors
-    ADD CONSTRAINT historical_emissions_sector_subsectors_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.historical_emissions_sector_aggregations
+    ADD CONSTRAINT historical_emissions_sector_aggregations_pkey PRIMARY KEY (id);
 
 
 --
@@ -3257,17 +3257,17 @@ CREATE INDEX index_historical_emissions_searchable_records_on_sector_id ON publi
 
 
 --
--- Name: index_historical_emissions_sector_subsectors_on_sector_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_historical_emissions_sector_aggregations_on_agg_sector_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_historical_emissions_sector_subsectors_on_sector_id ON public.historical_emissions_sector_subsectors USING btree (sector_id);
+CREATE INDEX index_historical_emissions_sector_aggregations_on_agg_sector_id ON public.historical_emissions_sector_aggregations USING btree (aggregated_sector_id);
 
 
 --
--- Name: index_historical_emissions_sector_subsectors_on_subsector_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_historical_emissions_sector_aggregations_on_sector_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_historical_emissions_sector_subsectors_on_subsector_id ON public.historical_emissions_sector_subsectors USING btree (subsector_id);
+CREATE INDEX index_historical_emissions_sector_aggregations_on_sector_id ON public.historical_emissions_sector_aggregations USING btree (sector_id);
 
 
 --
@@ -3671,14 +3671,6 @@ ALTER TABLE ONLY public.wri_metadata_values
 
 
 --
--- Name: historical_emissions_sector_subsectors fk_rails_094a929b05; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.historical_emissions_sector_subsectors
-    ADD CONSTRAINT fk_rails_094a929b05 FOREIGN KEY (sector_id) REFERENCES public.historical_emissions_sectors(id) ON DELETE CASCADE;
-
-
---
 -- Name: indc_indicators_categories fk_rails_0aab1cd23e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3855,6 +3847,14 @@ ALTER TABLE ONLY public.quantification_values
 
 
 --
+-- Name: historical_emissions_sector_aggregations fk_rails_88ece9e4ce; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.historical_emissions_sector_aggregations
+    ADD CONSTRAINT fk_rails_88ece9e4ce FOREIGN KEY (sector_id) REFERENCES public.historical_emissions_sectors(id) ON DELETE CASCADE;
+
+
+--
 -- Name: ndc_sdg_ndc_targets fk_rails_898d96a83b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3884,14 +3884,6 @@ ALTER TABLE ONLY public.ndc_sdg_ndc_targets
 
 ALTER TABLE ONLY public.agriculture_profile_meat_trades
     ADD CONSTRAINT fk_rails_98f6b5f058 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
-
-
---
--- Name: historical_emissions_sector_subsectors fk_rails_a26e97a2b2; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.historical_emissions_sector_subsectors
-    ADD CONSTRAINT fk_rails_a26e97a2b2 FOREIGN KEY (subsector_id) REFERENCES public.historical_emissions_sectors(id) ON DELETE CASCADE;
 
 
 --
@@ -3956,6 +3948,14 @@ ALTER TABLE ONLY public.timeline_notes
 
 ALTER TABLE ONLY public.historical_emissions_sectors
     ADD CONSTRAINT fk_rails_bac381b199 FOREIGN KEY (data_source_id) REFERENCES public.historical_emissions_data_sources(id) ON DELETE CASCADE;
+
+
+--
+-- Name: historical_emissions_sector_aggregations fk_rails_bdc0add882; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.historical_emissions_sector_aggregations
+    ADD CONSTRAINT fk_rails_bdc0add882 FOREIGN KEY (aggregated_sector_id) REFERENCES public.historical_emissions_sectors(id) ON DELETE CASCADE;
 
 
 --

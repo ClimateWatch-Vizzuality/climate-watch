@@ -8,14 +8,14 @@ module HistoricalEmissions
 
     has_and_belongs_to_many :aggregated_sectors,
                             class_name: 'HistoricalEmissions::Sector',
-                            join_table: :historical_emissions_sector_subsectors,
+                            join_table: :historical_emissions_sector_aggregations,
                             foreign_key: :sector_id,
-                            association_foreign_key: :subsector_id
+                            association_foreign_key: :aggregated_sector_id
 
-    has_and_belongs_to_many :parents,
+    has_and_belongs_to_many :aggregated_by,
                             class_name: 'HistoricalEmissions::Sector',
-                            join_table: :historical_emissions_sector_subsectors,
-                            foreign_key: :subsector_id,
+                            join_table: :historical_emissions_sector_aggregations,
+                            foreign_key: :aggregated_sector_id,
                             association_foreign_key: :sector_id
 
     validates :name, presence: true
