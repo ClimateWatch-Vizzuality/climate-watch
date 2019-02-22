@@ -4,6 +4,7 @@ import { renderRoutes } from 'react-router-config';
 import cx from 'classnames';
 
 import CountriesProvider from 'providers/countries-provider';
+import UserReport from 'components/user-report';
 import { Desktop } from 'components/responsive';
 import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
@@ -38,6 +39,7 @@ class App extends PureComponent {
           {renderRoutes(route.routes.filter(r => r.path))}
         </div>
         <Footer />
+        <UserReport />
       </div>
     );
   }
