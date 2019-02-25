@@ -1,4 +1,5 @@
 import { createSelector, createStructuredSelector } from 'reselect';
+import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
 import { arrayToSentence } from 'utils';
@@ -234,6 +235,8 @@ const getChartTypeSelected = createSelector(
 );
 
 const getOverlappingConflicts = optionsSelected => {
+  if (!optionsSelected || optionsSelected.length <= 1) return [];
+
   const conflicts = [];
   const overlapsCheckedIds = [];
 
@@ -265,6 +268,13 @@ const getOverlappingConflicts = optionsSelected => {
   return conflicts;
 };
 
+const getGasConflicts = gasSelected => {
+  if (!gasSelected || gasSelected.length <= 1) return [];
+  if (!gasSelected.some(g => g.label === 'All GHG')) return [];
+
+  return ['All GHG option cannot be selected with any other gas'];
+};
+
 export const getFiltersConflicts = createSelector(
   [
     getFiltersSelected('location'),
@@ -275,37 +285,45 @@ export const getFiltersConflicts = createSelector(
   ],
   (locationSelected, gasSelected, sectorsSelected, modelSelected, chartSelected) => {
     let conflicts = [];
-    const solutions = ['Please deselect any conflicted option'];
+    let canChangeBreakByTo = difference(['sector', 'gas', 'regions'], [modelSelected]);
+    const solutions = ['Please deselect all conflicted options'];
     const isAggregatedChart = chartSelected.value !== 'line';
     const notBreakBySector = modelSelected !== 'sector';
     const notBreakByGas = modelSelected !== 'gas';
-    const notBreakByRegion = modelSelected !== 'region';
+    const notBreakByRegion = modelSelected !== 'regions';
 
-    const solutionChangeBreakByTo = option => solutions.push(`change "Break by" to ${option}`);
+    const sectorConflicts = getOverlappingConflicts(sectorsSelected);
+    const regionConflicts = getOverlappingConflicts(locationSelected);
+    const gasConflicts = getGasConflicts(gasSelected);
 
-    if (sectorsSelected && sectorsSelected.length > 1 && (isAggregatedChart || notBreakBySector)) {
-      conflicts = conflicts.concat(getOverlappingConflicts(sectorsSelected));
-      if (notBreakBySector) solutionChangeBreakByTo('sector');
+    if (sectorConflicts.length) {
+      canChangeBreakByTo = difference(canChangeBreakByTo, ['gas', 'regions']);
+    }
+    if (regionConflicts.length) {
+      canChangeBreakByTo = difference(canChangeBreakByTo, ['sector', 'gas']);
+    }
+    if (gasConflicts.length) {
+      canChangeBreakByTo = difference(canChangeBreakByTo, ['sector', 'regions']);
     }
 
-    if (gasSelected && gasSelected.length > 1 && (isAggregatedChart || notBreakByGas)) {
-      if (gasSelected.some(g => g.label === 'All GHG')) {
-        conflicts.push('All GHG option cannot be selected with included gas');
-      }
-      if (notBreakByGas) solutionChangeBreakByTo('gas');
+    if (sectorConflicts.length && (isAggregatedChart || notBreakBySector)) {
+      conflicts = conflicts.concat(sectorConflicts);
     }
 
-    if (
-      locationSelected &&
-      locationSelected.length > 1 &&
-      (isAggregatedChart || notBreakByRegion)
-    ) {
-      conflicts = conflicts.concat(getOverlappingConflicts(locationSelected));
-      if (notBreakByRegion) solutionChangeBreakByTo('region');
+    if (gasConflicts.length && (isAggregatedChart || notBreakByGas)) {
+      conflicts = conflicts.concat(gasConflicts);
+    }
+
+    if (regionConflicts.length && (isAggregatedChart || notBreakByRegion)) {
+      conflicts = conflicts.concat(regionConflicts);
     }
 
     if (conflicts.length && isAggregatedChart) {
       solutions.push('change "Chart Type" to line chart');
+    }
+
+    if (canChangeBreakByTo.length) {
+      solutions.push(`change "Break by" to ${arrayToSentence(canChangeBreakByTo)}`);
     }
 
     return {
