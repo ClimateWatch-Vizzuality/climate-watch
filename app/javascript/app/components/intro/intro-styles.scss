@@ -32,6 +32,7 @@
   font-weight: $font-weight-light;
   line-height: $line-height-xs;
   margin-bottom: 10px;
+  text-align: inherit;
 
   @media #{$tablet-landscape} {
     font-size: $font-size-xl-large;
