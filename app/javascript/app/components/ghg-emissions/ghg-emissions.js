@@ -8,7 +8,6 @@ import qs from 'query-string';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
-import isEqual from 'lodash/isEqual';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -52,14 +51,18 @@ class GhgEmissionsContainer extends PureComponent {
     handleAnalytics('Chart Type', 'chart type selected', type.label);
   };
 
-  correctRegionFiltersOnLegendChange = (field, filters) => {
+  compressFiltersIfNecessary = (field, filters) => {
+    const correctFields = ['regions', 'sectors'];
     let updatedFilters = filters;
-    if (field === 'regions') {
-      const { selected, legendSelected } = this.props;
-      const { regionsSelected } = selected;
-      const shouldCompressRegion = !isEqual(regionsSelected, legendSelected);
-      if (shouldCompressRegion) {
-        updatedFilters = [regionsSelected[0], filters[filters.length - 1]];
+    if (correctFields.includes(field)) {
+      const { selected } = this.props;
+      const optionsSelected = selected[`${field}Selected`];
+      const shouldCompress =
+        optionsSelected.length === 1 &&
+        optionsSelected[0].expandsTo &&
+        optionsSelected[0].expandsTo.length;
+      if (shouldCompress) {
+        updatedFilters = [...optionsSelected, filters[filters.length - 1]];
       }
     }
     return updatedFilters;
@@ -67,10 +70,8 @@ class GhgEmissionsContainer extends PureComponent {
 
   handleFilterChange = (field, filters) => {
     let values;
-    const updatedFilters = this.correctRegionFiltersOnLegendChange(
-      field,
-      filters
-    );
+    const updatedFilters = this.compressFiltersIfNecessary(field, filters);
+
     if (isArray(updatedFilters)) {
       values = updatedFilters.map(v => v.value).join(',');
     } else {
@@ -142,6 +143,4 @@ GhgEmissionsContainer.defaultProps = {
   search: undefined
 };
 
-export default withRouter(
-  connect(mapStateToProps, actions)(GhgEmissionsContainer)
-);
+export default withRouter(connect(mapStateToProps, actions)(GhgEmissionsContainer));

@@ -13,7 +13,7 @@ import {
   getChartData,
   getChartConfig,
   getLoading,
-  onlyOneRegionSelected
+  getHideRemoveOptions
 } from './ghg-emissions-selectors-data';
 import { getProviderFilters } from './ghg-emissions-selectors-providers';
 
@@ -42,6 +42,6 @@ export const getGHGEmissions = createStructuredSelector({
   config: getChartConfig,
   loading: getLoading,
   fieldToBreakBy: getModelSelected,
-  hideRemoveOptions: onlyOneRegionSelected,
+  hideRemoveOptions: getHideRemoveOptions,
   providerFilters: getProviderFilters
 });

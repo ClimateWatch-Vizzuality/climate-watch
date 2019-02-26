@@ -225,6 +225,7 @@ const getFiltersSelected = field =>
             selectedValues.indexOf(filter.iso_code3) !== -1
         );
       }
+
       return selectedFilters;
     }
   );

@@ -26,7 +26,7 @@ import {
   getOptions
 } from './ghg-emissions-selectors-filters';
 
-export const onlyOneRegionSelected = createSelector(
+const onlyOneRegionSelected = createSelector(
   [getModelSelected, getOptionsSelected],
   (modelSelected, selectedOptions) => {
     const model = modelSelected && toPlural(modelSelected);
@@ -87,7 +87,7 @@ const getExpandedLegendRegionsSelected = createSelector(
   }
 );
 
-export const onlyOneAggregatedSectorSelected = createSelector(
+const onlyOneAggregatedSectorSelected = createSelector(
   [getModelSelected, getOptionsSelected],
   (modelSelected, selectedOptions) => {
     const model = modelSelected && toPlural(modelSelected);
@@ -303,4 +303,10 @@ export const getLoading = createSelector(
   [getChartConfig, state => state.ghgEmissionsMeta, state => state.emissions],
   (chartConfig, meta, data) =>
     (meta && meta.loading) || (data && data.loading) || !chartConfig || false
+);
+
+export const getHideRemoveOptions = createSelector(
+  [onlyOneRegionSelected, onlyOneAggregatedSectorSelected],
+  (oneRegionSelected, oneAggregatedSectorSelected) =>
+    oneRegionSelected || oneAggregatedSectorSelected
 );
