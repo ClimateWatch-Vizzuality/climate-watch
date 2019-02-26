@@ -31,7 +31,8 @@ import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSContentRoutes from './NDCSContent-routes';
 import MyCwRoutes from './my-cw-routes';
 import DataExplorerRoutes from './data-explorer-routes';
-import aboutRoutes from './about-routes';
+import AboutRoutes from './about-routes';
+import AboutNestedRoutes from './about-nested-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
 import sectorsRoutes from './sectors-routes';
@@ -198,11 +199,15 @@ export default [
   {
     path: '/about',
     component: About,
-    nav: true,
     label: 'ABOUT',
     headerImage: 'about',
     headerColor: '#113750',
-    routes: aboutRoutes
+    routes: AboutRoutes
+  },
+  {
+    nav: true,
+    label: 'ABOUT',
+    routes: AboutNestedRoutes
   },
   {
     path: '/error-page',
