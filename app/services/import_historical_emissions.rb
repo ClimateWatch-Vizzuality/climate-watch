@@ -70,7 +70,8 @@ class ImportHistoricalEmissions
       name: row[:sector],
       data_source: @sources_cache[row[:source]],
       annex_type: row[:annex_type],
-      parent: row[:subsectorof] && HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
+      parent: row[:subsectorof] &&
+        HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
     }
   end
 
