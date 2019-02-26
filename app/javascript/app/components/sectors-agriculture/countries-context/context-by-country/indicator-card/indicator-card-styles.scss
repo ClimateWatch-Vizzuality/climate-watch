@@ -1,0 +1,176 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.cardsContainer {
+  @include columns();
+
+  > * {
+    @include xy-gutters($gutter-position: ('top', 'bottom'));
+  }
+}
+
+.card {
+  height: 100%;
+
+  .titleContainer {
+    min-height: 75px;
+    height: 75px;
+    padding: 15px 30px;
+  }
+}
+
+.noContent {
+  p {
+    font-size: $font-size;
+  }
+}
+
+.cardData {
+  position: relative;
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .introText {
+    max-width: 90%;
+  }
+
+  .textHtmlWrapper {
+    p {
+      font-size: $font-size;
+      line-height: $line-height-modal;
+      color: $manatee;
+    }
+
+    span {
+      color: $theme-color;
+    }
+  }
+
+  .cardInfoIcon {
+    position: absolute;
+    fill: $manatee;
+    right: 30px;
+    top: 20px;
+  }
+
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    margin-top: $gutter-padding;
+    min-height: 130px;
+
+    .chart,
+    .legend {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .legendItem {
+      width: 100%;
+      padding-left: 30px;
+    }
+
+    .rank {
+      position: absolute;
+      bottom: 10px;
+    }
+  }
+
+  .yearData {
+    position: absolute;
+    color: $manatee;
+    right: 30px;
+    bottom: 20px;
+    font-size: $font-size-s;
+
+    span {
+      color: $theme-color;
+    }
+  }
+}
+
+.btnGroup {
+  width: 100%;
+
+  @include xy-gutters(30px, $gutter-position: 'bottom');
+}
+
+.populationBarsContainer {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: $gutter-padding;
+}
+
+.countryData {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: $gutter-padding;
+  width: 95%;
+  background-color: $chart-fill-gray;
+
+  &::after {
+    content: attr(data-value);
+    position: absolute;
+    color: $dark-gray;
+    font-size: $font-size-sm;
+    right: 0;
+    top: -3px;
+    transform: translateX(130%);
+  }
+
+  span {
+    position: relative;
+
+    &::before {
+      position: absolute;
+      content: attr(data-label);
+      color: $theme-color;
+      width: max-content;
+      top: -20px;
+    }
+  }
+
+  .value {
+    color: $dark-gray;
+    font-size: $font-size-sm;
+    padding-left: 10px;
+  }
+}
+
+@media #{$tablet-portrait} {
+  .card {
+    height: 430px;
+  }
+
+  .cardData {
+    height: 350px;
+
+    .cardContent {
+      flex-direction: row;
+
+      .chart,
+      .legend {
+        width: 50%;
+      }
+    }
+  }
+}
+
+@media #{$tablet-landscape} {
+  .cardsContainer {
+    @include columns(6);
+  }
+
+  .actionsContainer {
+    @include columns((10, 2));
+  }
+}

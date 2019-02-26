@@ -202,6 +202,11 @@ export const arrayToSentence = arr => {
   return `${sentence}${arr.slice(-1)}`;
 };
 
+export function precentageTwoPlacesRound(percentage) {
+  if (!percentage) return null;
+  return Math.round(percentage * 10) / 10;
+}
+
 export default {
   arrayToSentence,
   compareIndexByKey,
@@ -216,5 +221,6 @@ export default {
   replaceAll,
   findEqual,
   isANumber,
-  noEmptyValues
+  noEmptyValues,
+  precentageTwoPlacesRound
 };

@@ -214,13 +214,11 @@ export default [
   },
   {
     path: '/my-climate-watch',
-    label: 'MY CW',
-    navMobile: true
+    label: 'MY CW'
   },
   {
     path: '/data-explorer',
-    label: 'DATA EXPLORER',
-    navMobile: true
+    label: 'DATA EXPLORER'
   },
   {
     path: '/',

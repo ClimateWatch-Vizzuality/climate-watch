@@ -84,9 +84,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.filtersSelected.location !== this.props.filtersSelected.location
-    ) {
+    if (prevProps.filtersSelected.location !== this.props.filtersSelected.location) {
       const currentLocation = this.props.filtersSelected.location;
       this.props.findAvailableModels(currentLocation.value);
     }
@@ -96,20 +94,13 @@ class EmissionPathwayGraphContainer extends PureComponent {
   }
 
   updateUrlWithNewParams = (search, filtersSelected) => {
-    const possibleParams = [
-      'model',
-      'indicator',
-      'currentLocation',
-      'scenario'
-    ];
+    const possibleParams = ['model', 'indicator', 'currentLocation', 'scenario'];
     const paramsToUpdate = [];
     const getFilterParamValue = f => {
       if (isArray(filtersSelected[f])) {
         return search[f]
           ? filtersSelected[f]
-            .filter(selectedFilter =>
-              search[f].includes(selectedFilter.value)
-            )
+            .filter(selectedFilter => search[f].includes(selectedFilter.value))
             .join(',')
           : filtersSelected[f].map(filter => filter.value).join(',');
       }
@@ -122,8 +113,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
           paramsToUpdate.push({
             name: f,
             value:
-              (filtersSelected[f] && filtersSelected[f].value) ||
-              filtersSelected.location.value
+              (filtersSelected[f] && filtersSelected[f].value) || filtersSelected.location.value
           });
         } else if (f !== 'currentLocation' && filtersSelected[f]) {
           const value = getFilterParamValue(f);
@@ -155,11 +145,10 @@ class EmissionPathwayGraphContainer extends PureComponent {
   };
 
   handleClearSelection = () => {
-    const { location } = this.props.filtersSelected;
-    this.updateUrlParam(
-      { name: 'currentLocation', value: location.value },
-      true
-    );
+    const { search } = this.props;
+    const { model, scenario, ...rest } = search;
+    const params = Object.keys(rest).map(k => ({ name: k, value: rest[k] }));
+    this.updateUrlParam(params, true);
   };
 
   updateUrlParam(params, clear) {
@@ -192,6 +181,4 @@ EmissionPathwayGraphContainer.propTypes = {
 };
 
 export { actions, reducers, initialState };
-export default withRouter(
-  connect(mapStateToProps, actions)(EmissionPathwayGraphContainer)
-);
+export default withRouter(connect(mapStateToProps, actions)(EmissionPathwayGraphContainer));

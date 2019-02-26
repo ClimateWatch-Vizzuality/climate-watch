@@ -4,6 +4,7 @@ import { renderRoutes } from 'react-router-config';
 import cx from 'classnames';
 
 import CountriesProvider from 'providers/countries-provider';
+import UserReport from 'components/user-report';
 import { Desktop } from 'components/responsive';
 import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
@@ -15,35 +16,19 @@ import styles from './app-styles.scss'; // eslint-disable-line
 
 class App extends PureComponent {
   render() {
-    const {
-      route,
-      navRoutes,
-      navMobileRoutes,
-      location,
-      navbarMobileIsOpen
-    } = this.props;
+    const { route, navRoutes, location, navbarMobileIsOpen } = this.props;
     return (
-      <div
-        className={cx(
-          styles.app,
-          navbarMobileIsOpen ? styles.mobileMenuOpen : ''
-        )}
-      >
+      <div className={cx(styles.app, navbarMobileIsOpen ? styles.mobileMenuOpen : '')}>
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
         <Desktop>
           {isDesktop =>
-            (isDesktop ? (
-              <NavBar routes={navRoutes} />
-            ) : (
-              <NavBarMobile routes={navRoutes.concat(navMobileRoutes)} />
-            ))}
+            (isDesktop ? <NavBar routes={navRoutes} /> : <NavBarMobile routes={navRoutes} />)}
         </Desktop>
-        <div className={styles.pageWrapper}>
-          {renderRoutes(route.routes.filter(r => r.path))}
-        </div>
+        <div className={styles.pageWrapper}>{renderRoutes(route.routes.filter(r => r.path))}</div>
         <Footer />
+        <UserReport />
       </div>
     );
   }
@@ -52,7 +37,6 @@ class App extends PureComponent {
 App.propTypes = {
   route: Proptypes.object,
   navRoutes: Proptypes.array,
-  navMobileRoutes: Proptypes.array,
   location: Proptypes.object.isRequired,
   navbarMobileIsOpen: Proptypes.bool
 };

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'cw-components';
+import Loading from 'components/loading';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import AgricultureCountriesContextProvider from 'providers/agriculture-countries-context-provider';
 import ContextByCountry from './context-by-country';
@@ -27,7 +28,7 @@ const SwitchOptionsComponents = {
 
 class CountriesContext extends PureComponent {
   render() {
-    const { query, selectedCountry, handleSwitchClick } = this.props;
+    const { query, selectedCountry, handleSwitchClick, loading } = this.props;
 
     const switchOption = (query && query.contextBy) || 'indicator';
 
@@ -39,9 +40,8 @@ class CountriesContext extends PureComponent {
           <h2 className={styles.header}>Countries Context</h2>
           <div className={styles.intro}>
             <p className={styles.introText}>
-              The agricultural sector differs vastly among countries and affects
-              jobs, economy, land-use, water and food security. Explore key
-              indicators of progress over time below.
+              The agricultural sector differs vastly among countries and affects jobs, economy,
+              land-use, water and food security. Explore key indicators of progress over time below.
             </p>
             <div className={styles.switchWrapper}>
               <Switch
@@ -58,16 +58,14 @@ class CountriesContext extends PureComponent {
           </div>
         </div>
         <div>
-          {selectedCountry ? (
-            <Component {...this.props} />
+          {loading ? (
+            <Loading light className={styles.loader} />
           ) : (
-            <div>SELECT A COUNTRY</div>
+            selectedCountry && <Component {...this.props} />
           )}
         </div>
         <WbCountryDataProvider />
-        <AgricultureCountriesContextProvider
-          country={selectedCountry && selectedCountry.value}
-        />
+        <AgricultureCountriesContextProvider country={selectedCountry && selectedCountry.value} />
       </div>
     );
   }
@@ -79,6 +77,7 @@ CountriesContext.propTypes = {
     value: PropTypes.string,
     label: PropTypes.string
   }),
+  loading: PropTypes.bool,
   handleSwitchClick: PropTypes.func.isRequired
 };
 
