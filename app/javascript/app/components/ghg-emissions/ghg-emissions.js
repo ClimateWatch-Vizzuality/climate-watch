@@ -37,7 +37,11 @@ class GhgEmissionsContainer extends PureComponent {
   };
 
   handleSourcesChange = category => {
-    this.updateUrlParam([{ name: 'source', value: category.value }]);
+    this.updateUrlParam([
+      { name: 'source', value: category.value },
+      { name: 'sectors', value: null },
+      { name: 'gases', value: null }
+    ]);
     handleAnalytics('Historical Emissions', 'Source selected', category.label);
   };
 
