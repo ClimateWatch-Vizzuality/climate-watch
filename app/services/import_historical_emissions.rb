@@ -10,15 +10,15 @@ class ImportHistoricalEmissions
   # rubocop:enable LineLength
   #
   def call
-    reset_cache
+    setup_cache
 
     ActiveRecord::Base.transaction do
       cleanup
       import_sources(S3CSVReader.read(META_SOURCES_FILEPATH))
       import_sectors(S3CSVReader.read(META_SECTORS_FILEPATH))
       import_records(S3CSVReader.read(DATA_CAIT_FILEPATH), DATA_CAIT_FILEPATH)
-      # import_records(S3CSVReader.read(DATA_PIK_FILEPATH), DATA_PIK_FILEPATH)
-      # import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH), DATA_UNFCCC_FILEPATH)
+      import_records(S3CSVReader.read(DATA_PIK_FILEPATH), DATA_PIK_FILEPATH)
+      import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH), DATA_UNFCCC_FILEPATH)
 
       Rails.logger.info 'Refreshing materialized views'
       HistoricalEmissions::NormalisedRecord.refresh
@@ -28,7 +28,7 @@ class ImportHistoricalEmissions
 
   private
 
-  def reset_cache
+  def setup_cache
     @sources_cache = {}
     @sectors_cache = {}
     @gases_cache = {}
