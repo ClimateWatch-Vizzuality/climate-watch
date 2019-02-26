@@ -9,7 +9,8 @@ import {
   getThemeConfig,
   getTooltipConfig,
   setXAxisDomain,
-  setYAxisDomain
+  setYAxisDomain,
+  sortEmissionsByValue
 } from 'utils/graphs';
 import {
   CHART_COLORS_EXTENDED,
@@ -17,14 +18,20 @@ import {
   DATA_SCALE,
   METRIC_OPTIONS
 } from 'data/constants';
-import { getWBData } from './ghg-emissions-selectors-get';
+import { getWBData, getData } from './ghg-emissions-selectors-get';
 import {
-  sortData,
   getModelSelected,
   getMetricSelected,
   getOptionsSelected,
   getOptions
 } from './ghg-emissions-selectors-filters';
+
+const LEGEND_LIMIT = 10;
+
+const sortData = createSelector(getData, data => {
+  if (!data || isEmpty(data)) return null;
+  return sortEmissionsByValue(data);
+});
 
 const onlyOneRegionSelected = createSelector(
   [getModelSelected, getOptionsSelected],
@@ -65,7 +72,7 @@ const getExpandedLegendRegionsSelected = createSelector(
     });
     const compare = (a, b) => (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
     const sortedCountries = countryOptions.sort(compare);
-    const LEGEND_LIMIT = 10;
+
     if (data && sortedCountries.length > LEGEND_LIMIT) {
       const othersGroup = data && sortedCountries.slice(LEGEND_LIMIT, -1).filter(o => o);
       const othersOption = {
@@ -83,6 +90,7 @@ const getExpandedLegendRegionsSelected = createSelector(
       }));
       return data && [...sortedCountries.slice(0, LEGEND_LIMIT), othersOption, ...updatedOthers];
     }
+
     return sortedCountries;
   }
 );
@@ -157,21 +165,16 @@ export const getLegendDataSelected = createSelector(
   }
 );
 
-const getYColumnOptions = createSelector(
-  [getLegendDataSelected, getExpandedLegendRegionsSelected, getExpandedLegendSectorsSelected],
-  (legendDataSelected, expandedLegendRegionsSelected, expandedLegendSectorsSelected) => {
-    if (!legendDataSelected) return null;
-    const dataSelected =
-      expandedLegendRegionsSelected || expandedLegendSectorsSelected || legendDataSelected;
-    const getYOption = columns =>
-      columns &&
-      columns.map(d => ({
-        ...d,
-        value: d && getYColumnValue(d.label)
-      }));
-    return uniqBy(getYOption(dataSelected), 'value');
-  }
-);
+const getYColumnOptions = createSelector([getLegendDataSelected], legendDataSelected => {
+  if (!legendDataSelected) return null;
+  const getYOption = columns =>
+    columns &&
+    columns.map(d => ({
+      ...d,
+      value: d && getYColumnValue(d.label)
+    }));
+  return uniqBy(getYOption(legendDataSelected), 'value');
+});
 
 // Map the data from the API
 

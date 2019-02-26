@@ -4,15 +4,9 @@ import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
-import { sortEmissionsByValue, sortLabelByAlpha } from 'utils/graphs';
+import { sortLabelByAlpha } from 'utils/graphs';
 import { TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
-import {
-  getData,
-  getMeta,
-  getRegions,
-  getSources,
-  getSelection
-} from './ghg-emissions-selectors-get';
+import { getMeta, getRegions, getSources, getSelection } from './ghg-emissions-selectors-get';
 
 const DEFAULTS = {
   breakBy: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
@@ -88,11 +82,6 @@ export const getMetricSelected = createSelector(
   getBreakBySelected,
   breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
 );
-
-export const sortData = createSelector(getData, data => {
-  if (!data || isEmpty(data)) return null;
-  return sortEmissionsByValue(data);
-});
 
 const getRegionsOptions = createSelector([getRegions], regions => {
   if (!regions) return null;
