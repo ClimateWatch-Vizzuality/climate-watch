@@ -65,13 +65,17 @@ class ImportHistoricalEmissions
     end
   end
 
+  def sector_key(source, name)
+    "#{source}_#{name}"
+  end
+
   def sector_attributes(row)
     {
       name: row[:sector],
       data_source: @sources_cache[row[:source]],
       annex_type: row[:annex_type],
       parent: row[:subsectorof] &&
-        HistoricalEmissions::Sector.find_or_create_by(name: row[:subsectorof])
+        @sectors_cache[sector_key(row[:source], row[:subsectorof])]
     }
   end
 
@@ -80,12 +84,12 @@ class ImportHistoricalEmissions
 
     row[:aggregatedby].split(';').
       map(&:strip).
-      map { |name| HistoricalEmissions::Sector.find_or_create_by!(name: name) }
+      map { |name| @sectors_cache[sector_key(row[:source], name)] }
   end
 
   def import_sectors(content)
     import_each_with_logging(content, META_SECTORS_FILEPATH) do |row|
-      key = "#{row[:source]}_#{row[:sector]}"
+      key = sector_key(row[:source], row[:sector])
       next if @sectors_cache[key].present?
 
       sector = HistoricalEmissions::Sector.create!(sector_attributes(row))

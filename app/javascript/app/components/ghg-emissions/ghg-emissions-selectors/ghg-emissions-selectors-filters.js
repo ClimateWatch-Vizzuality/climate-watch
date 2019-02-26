@@ -285,7 +285,7 @@ export const getFiltersConflicts = createSelector(
   (locationSelected, gasSelected, sectorsSelected, modelSelected, chartSelected) => {
     let conflicts = [];
     let canChangeBreakByTo = difference(['sector', 'gas', 'regions'], [modelSelected]);
-    const solutions = ['Please deselect all conflicted options'];
+    const solutions = ['Please deselect all conflicting options'];
     const isAggregatedChart = chartSelected.value !== 'line';
     const notBreakBySector = modelSelected !== 'sector';
     const notBreakByGas = modelSelected !== 'gas';
