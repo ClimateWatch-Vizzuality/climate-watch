@@ -270,10 +270,19 @@ const getOverlappingConflicts = optionsSelected => {
 };
 
 const getGasConflicts = gasSelected => {
-  if (!gasSelected || gasSelected.length <= 1) return [];
-  if (!gasSelected.some(g => g.label === 'All GHG')) return [];
+  const aggregatedGases = ['All GHG', 'Aggregate F-gases', 'Aggregate GHGs'];
 
-  return ['All GHG option cannot be selected with any other gas'];
+  if (!gasSelected || gasSelected.length <= 1) return [];
+
+  const conflicts = [];
+
+  aggregatedGases.forEach(gas => {
+    if (gasSelected.some(g => g.label.includes(gas))) {
+      conflicts.push(`${gas} option cannot be selected with any other gas`);
+    }
+  });
+
+  return conflicts;
 };
 
 export const getFiltersConflicts = createSelector(
