@@ -1,8 +1,4 @@
-import {
-  DEFAULT_EMISSIONS_SELECTIONS,
-  DATA_SCALE,
-  CALCULATION_OPTIONS
-} from 'data/constants';
+import { DEFAULT_EMISSIONS_SELECTIONS, DATA_SCALE, CALCULATION_OPTIONS } from 'data/constants';
 
 export const getGhgEmissionDefaults = (source, meta) => {
   const sourceName = source.name || source.label;
@@ -11,11 +7,8 @@ export const getGhgEmissionDefaults = (source, meta) => {
 
   const sectorDefaults = defaults.sector;
   return {
-    gas: meta.gas.find(g => g.label === defaults.gas).value,
-    sector: meta.sector
-      .filter(s => sectorDefaults.indexOf(s.label) > -1)
-      .map(s => s.value)
-      .toString(),
+    gas: (meta.gas.find(g => g.label === defaults.gas) || {}).value,
+    sector: (meta.sector.find(s => s.label === sectorDefaults) || {}).value,
     location: defaults.location
   };
 };
