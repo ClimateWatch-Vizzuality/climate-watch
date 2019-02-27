@@ -44,36 +44,6 @@ export const QUANTIFICATIONS_CONFIG = {
 
 export const DATA_SCALE = 1000000;
 
-export const ALLOWED_SECTORS_BY_SOURCE = {
-  CAIT: ['Energy', 'Industrial Processes', 'Agriculture', 'Waste', 'Land-Use Change and Forestry'],
-  PIK: [
-    'Energy',
-    'Industrial process',
-    'Solvent sector',
-    'Agriculture',
-    'Land-Use Change and Forestry',
-    'Waste',
-    'Other'
-  ],
-  UNFCCC_AI: [
-    'Energy',
-    'Industrial Processes',
-    'Solvent and Other Product Use',
-    'Agriculture',
-    'Land-Use Change and Forestry',
-    'Waste',
-    'Other'
-  ],
-  UNFCCC_NAI: [
-    'Energy',
-    'Industrial Processes and Product Use',
-    'Agriculture',
-    'Land Use, Land-Use Change and Forestry',
-    'Waste',
-    'Other'
-  ]
-};
-
 export const DEFAULT_EMISSIONS_SELECTIONS = {
   CAIT: {
     gas: 'All GHG',
