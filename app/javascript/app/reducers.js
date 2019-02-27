@@ -60,9 +60,7 @@ const providersReducers = {
   espTimeSeries: handleActions(espTimeSeriesProvider),
   dataExplorer: handleActions(dataExplorerProvider),
   lawsAndPolicies: handleActions(lawsAndPoliciesProvider),
-  agricultureCountriesContexts: handleActions(
-    agricultureCountriesContextsProvider
-  ),
+  agricultureCountriesContexts: handleActions(agricultureCountriesContextsProvider),
   agricultureEmissions: handleActions(agricultureEmissionsProvider),
   agricultureLandArea: handleActions(agricultureLandAreaProvider),
   stories: handleActions(storiesProvider),

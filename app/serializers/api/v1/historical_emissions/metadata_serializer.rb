@@ -21,7 +21,7 @@ module Api
 
         def sector
           object.sectors.map do |g|
-            g.slice(:id, :name, :parent_id)
+            g.slice(:id, :name, :parent_id, :aggregated_sector_ids)
           end
         end
 

@@ -43,8 +43,7 @@ export const compareIndexByKey = attribute =>
     const divideByDot = /(.*)\.(.*)/;
     const isNotNumber = /[^0-9.]/;
     const match = x => x[attribute].match(divideByDot);
-    const fullNumber = x =>
-      (match(x) && match(x)[1]) || x[attribute].match(divideByDot);
+    const fullNumber = x => (match(x) && match(x)[1]) || x[attribute].match(divideByDot);
     const decimalNumber = x => match(x) && match(x)[2];
     const fullA = fullNumber(a);
     const fullB = fullNumber(b);
@@ -79,8 +78,7 @@ export function importAllImagesFromFolder(r) {
   return images;
 }
 
-export const truncateDecimals = (number, decimalPlaces) =>
-  number.toFixed(decimalPlaces) / 1;
+export const truncateDecimals = (number, decimalPlaces) => number.toFixed(decimalPlaces) / 1;
 
 const r2lWrittedLanguages = ['AR'];
 export function isR2LWrittedLanguage(lang) {
@@ -98,8 +96,7 @@ export const sanitize = data => {
   return data;
 };
 
-export const sanitizeUrl = url =>
-  (url.startsWith('http') ? url : `http://${url}`);
+export const sanitizeUrl = url => (url.startsWith('http') ? url : `http://${url}`);
 
 export const hexToRgba = (hex, opacity) => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -132,16 +129,11 @@ export const wordWrap = (long_string, max_char) => {
   for (let i = 0; i < split_string.length; i++) {
     const word = split_string[i];
 
-    if (
-      sum_length_of_words(split_out[split_out.length - 1]) + word.length >
-      max_char
-    ) {
+    if (sum_length_of_words(split_out[split_out.length - 1]) + word.length > max_char) {
       split_out = split_out.concat([[]]);
     }
 
-    split_out[split_out.length - 1] = split_out[split_out.length - 1].concat(
-      word
-    );
+    split_out[split_out.length - 1] = split_out[split_out.length - 1].concat(word);
   }
 
   for (let i = 0; i < split_out.length; i++) {
@@ -193,8 +185,7 @@ export const replaceAll = (text, replacements) => {
   return updatedText;
 };
 
-export const findEqual = (parent, children, value) =>
-  children.find(c => parent[c] === value);
+export const findEqual = (parent, children, value) => children.find(c => parent[c] === value);
 
 export function noEmptyValues(object) {
   const noEmptyResult = {};
@@ -206,12 +197,18 @@ export function noEmptyValues(object) {
   return noEmptyResult;
 }
 
+export const arrayToSentence = arr => {
+  const sentence = arr.length > 1 ? `${arr.slice(0, arr.length - 1).join(', ')}, and ` : '';
+  return `${sentence}${arr.slice(-1)}`;
+};
+
 export function precentageTwoPlacesRound(percentage) {
   if (!percentage) return null;
   return Math.round(percentage * 10) / 10;
 }
 
 export default {
+  arrayToSentence,
   compareIndexByKey,
   deburrUpper,
   isCountryIncluded,

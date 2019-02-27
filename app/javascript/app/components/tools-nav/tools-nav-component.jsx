@@ -8,8 +8,7 @@ import PropTypes from 'prop-types';
 import styles from './tools-nav-styles.scss';
 
 const mycwLinkConfig = { to: '/my-climate-watch', title: 'My climate watch' };
-const isActive = (match, location) =>
-  match && location.pathname.includes(match.path);
+const isActive = (match, location) => match && location.pathname.includes(match.path);
 const activeProps = location => ({
   isActive: match => isActive(match, location),
   activeClassName: styles.linkActive
@@ -44,10 +43,7 @@ const ToolsNav = props => (
       renderMyCWLink(props.location, props.closeMenu),
       renderDataExplorerLink(props.location, props.closeMenu)
     ]}
-    <ShareMenu
-      className={cx(styles.iconButton, styles.shareButton)}
-      reverse={props.reverse}
-    />
+    <ShareMenu className={cx(styles.iconButton, styles.shareButton)} reverse={props.reverse} />
   </div>
 );
 

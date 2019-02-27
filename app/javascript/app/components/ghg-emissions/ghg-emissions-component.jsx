@@ -5,59 +5,36 @@ import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
-import MultiDropdown from 'components/multi-dropdown';
-import { Chart, Multiselect, Dropdown } from 'cw-components';
+import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
 import ReactTooltip from 'react-tooltip';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
 import startCase from 'lodash/startCase';
-import capitalize from 'lodash/capitalize';
 import isArray from 'lodash/isArray';
-import isEmpty from 'lodash/isEmpty';
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
 import styles from './ghg-emissions-styles.scss';
 
 const getValues = value => (value && (isArray(value) ? value : [value])) || [];
-const arrayToSentence = arr => {
-  const sentence =
-    arr.length > 1 ? `${arr.slice(0, arr.length - 1).join(', ')}, and ` : '';
-  return capitalize(`${sentence}${arr.slice(-1)}`);
-};
-
-const getInfoText = activeConflicts => `${arrayToSentence(
-  activeConflicts
-)} selector${activeConflicts.length > 1 ? 's have' : ' has'}
-   conflicts in data selection so aggregation and distribution charts are not available`;
 
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
   renderDropdown(label, field, icons) {
-    const {
-      selected: selectedOptions,
-      options,
-      handleChange,
-      accumulatedChartsConflict
-    } = this.props;
+    const { selected: selectedOptions, options, handleChange } = this.props;
     const value = selectedOptions && selectedOptions[`${field}Selected`];
     const iconsProp = icons ? { icons } : {};
-    const chartTypeDisabled = !isEmpty(accumulatedChartsConflict);
-    const activeConflicts = Object.keys(accumulatedChartsConflict);
     return (
       <Dropdown
         key={field}
-        info={field === 'chartType' && chartTypeDisabled}
-        infoText={getInfoText(activeConflicts)}
         label={label || startCase(field)}
         placeholder={`Filter by ${startCase(field)}`}
         options={options[field] || []}
         onValueChange={selected => handleChange(field, selected)}
         value={value || null}
         hideResetButton
-        disabled={field === 'chartType' && chartTypeDisabled}
         {...iconsProp}
       />
     );
@@ -67,6 +44,7 @@ class GhgEmissions extends PureComponent {
     const {
       data,
       domain,
+      filtersConflicts,
       config,
       groups,
       handleInfoClick,
@@ -113,6 +91,8 @@ class GhgEmissions extends PureComponent {
       area: areaIcon,
       percentage: percentageIcon
     };
+    const noFiltersConflicts = filtersConflicts && filtersConflicts.conflicts.length < 1;
+
     return (
       <div>
         <div className={styles.titleContainer}>
@@ -135,7 +115,7 @@ class GhgEmissions extends PureComponent {
             onValueChange={selected => handleChange('regions', selected)}
             hideResetButton
           />
-          <MultiDropdown
+          <MultiLevelDropdown
             label="Sectors / Subsectors"
             theme={{ wrapper: styles.dropdown }}
             options={options.sectors}
@@ -152,22 +132,34 @@ class GhgEmissions extends PureComponent {
           {this.renderDropdown('Break by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', icons)}
         </div>
-        <Chart
-          className={styles.chartWrapper}
-          type={chartTypeSelected && chartTypeSelected.value}
-          theme={{ legend: styles.legend }}
-          config={config}
-          data={data}
-          domain={domain}
-          dataOptions={legendOptions}
-          dataSelected={legendSelected || []}
-          height={500}
-          loading={loading}
-          lineType="linear"
-          showUnit
-          onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
-          hideRemoveOptions={hideRemoveOptions}
-        />
+        {noFiltersConflicts ? (
+          <Chart
+            className={styles.chartWrapper}
+            type={chartTypeSelected && chartTypeSelected.value}
+            theme={{ legend: styles.legend }}
+            config={config}
+            data={data}
+            domain={domain}
+            dataOptions={legendOptions}
+            dataSelected={legendSelected || []}
+            height={500}
+            loading={loading}
+            lineType="linear"
+            showUnit
+            onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+            hideRemoveOptions={hideRemoveOptions}
+          />
+        ) : (
+          <div className={styles.chartConflicts}>
+            <div>
+              <p>We are not able to display current selection because:</p>
+              <ul>
+                {filtersConflicts.conflicts.map(conflict => <li key={conflict}>{conflict}</li>)}
+              </ul>
+              <p>{filtersConflicts.solutionText}</p>
+            </div>
+          </div>
+        )}
         <TabletPortraitOnly>
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
         </TabletPortraitOnly>
@@ -184,7 +176,7 @@ GhgEmissions.propTypes = {
   config: PropTypes.object,
   options: PropTypes.object,
   selected: PropTypes.object,
-  accumulatedChartsConflict: PropTypes.object,
+  filtersConflicts: PropTypes.object,
   fieldToBreakBy: PropTypes.string,
   legendOptions: PropTypes.array,
   legendSelected: PropTypes.array,

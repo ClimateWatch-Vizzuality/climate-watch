@@ -17,6 +17,9 @@ export function getLocationParamUpdated(location, params = [], clear = false) {
       ...search,
       ...newFilters
     };
+  Object.keys(newSearch).forEach(key => {
+    if (newSearch[key] === null) delete newSearch[key];
+  });
   return {
     pathname: location.pathname,
     search: qs.stringify(newSearch),
@@ -31,16 +34,14 @@ export function updateUrlHash(location, newHash) {
   };
 }
 
-export const isPageContained =
-  window.location.pathname.split('/')[1] === CONTAINED_PATHNAME;
+export const isPageContained = window.location.pathname.split('/')[1] === CONTAINED_PATHNAME;
 
 export const isPageNdcp = location => {
   const search = qs.parse(location.search);
   return search && search.isNdcp && search.isNdcp === 'true';
 };
 
-export const isEmbededComponent = location =>
-  location.pathname.includes('/embed');
+export const isEmbededComponent = location => location.pathname.includes('/embed');
 
 export default {
   getSearch,

@@ -18,26 +18,15 @@ class App extends PureComponent {
   render() {
     const { route, navRoutes, location, navbarMobileIsOpen } = this.props;
     return (
-      <div
-        className={cx(
-          styles.app,
-          navbarMobileIsOpen ? styles.mobileMenuOpen : ''
-        )}
-      >
+      <div className={cx(styles.app, navbarMobileIsOpen ? styles.mobileMenuOpen : '')}>
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
         <Desktop>
           {isDesktop =>
-            (isDesktop ? (
-              <NavBar routes={navRoutes} />
-            ) : (
-              <NavBarMobile routes={navRoutes} />
-            ))}
+            (isDesktop ? <NavBar routes={navRoutes} /> : <NavBarMobile routes={navRoutes} />)}
         </Desktop>
-        <div className={styles.pageWrapper}>
-          {renderRoutes(route.routes.filter(r => r.path))}
-        </div>
+        <div className={styles.pageWrapper}>{renderRoutes(route.routes.filter(r => r.path))}</div>
         <Footer />
         <UserReport />
       </div>

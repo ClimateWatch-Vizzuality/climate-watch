@@ -30,23 +30,18 @@ class CountriesContextsContainer extends PureComponent {
     // TODO: Implement info button click
   };
 
-  updateCountryFilter = ({ value }) =>
-    this.updateUrlParam({ name: 'country', value });
+  updateCountryFilter = ({ value }) => this.updateUrlParam({ name: 'country', value });
 
-  updateCountryYearFilter = ({ value }) =>
-    this.updateUrlParam({ name: 'countryYear', value });
+  updateCountryYearFilter = ({ value }) => this.updateUrlParam({ name: 'countryYear', value });
 
-  updateIndicatorYearFilter = ({ value }) =>
-    this.updateUrlParam({ name: 'indicatorYear', value });
+  updateIndicatorYearFilter = ({ value }) => this.updateUrlParam({ name: 'indicatorYear', value });
 
   updateIndicatorFilter = ({ value }) =>
     this.updateUrlParam({ name: 'contextMapIndicator', value });
 
-  handleSwitchClick = ({ value }) =>
-    this.updateUrlParam({ name: 'contextBy', value });
+  handleSwitchClick = ({ value }) => this.updateUrlParam({ name: 'contextBy', value });
 
-  updateFilter = ({ value, filter }) =>
-    this.updateUrlParam({ name: filter, value });
+  updateFilter = ({ value, filter }) => this.updateUrlParam({ name: filter, value });
 
   render() {
     return (
@@ -67,6 +62,4 @@ CountriesContextsContainer.propTypes = {
   history: PropTypes.shape({})
 };
 
-export default withRouter(
-  connect(mapStateToProps, null)(CountriesContextsContainer)
-);
+export default withRouter(connect(mapStateToProps, null)(CountriesContextsContainer));

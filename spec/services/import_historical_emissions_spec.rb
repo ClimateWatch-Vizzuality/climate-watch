@@ -2,28 +2,28 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/LineLength
 object_contents = {
-  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sources.csv" => <<~END,
+  ImportHistoricalEmissions::META_SOURCES_FILEPATH => <<~END,
     Name,Display name,Metadata dataset
     CAIT,CAIT,historical_emissions_CAIT
     PIK,PIK,historical_emissions_PIK
     UNFCCC_AI,UNFCCC Annex I,historical_emissions_UNFCCC
     UNFCCC_NAI,UNFCCC Non-Annex I,historical_emissions_UNFCCC
   END
-  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_metadata_sectors_NEW.csv" => <<~END,
+  ImportHistoricalEmissions::META_SECTORS_FILEPATH => <<~END,
     Source,AnnexType,Sector,SubsectorOf
     CAIT,,Total excluding LUCF,
     PIK,,Total including LUCF,
     UNFCCC_AI,AI,Total GHG emissions without LULUCF,
   END
-  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_CAIT.csv" => <<~END,
+  ImportHistoricalEmissions::DATA_CAIT_FILEPATH => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
     ABW,CAIT,Total excluding LUCF,All GHG,AR2,15.21284765,15.28643902,14.01053087,14.02811754
   END
-  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_PIK.csv" => <<~END,
+  ImportHistoricalEmissions::DATA_PIK_FILEPATH => <<~END,
     Country,Source,Sector,Gas,GWP,1850,1851,1852
     ABW,PIK,Total including LUCF,CH4,AR2,0.00000469,0.00000475,0.00000483
   END
-  "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC_NEW.csv" => <<~END,
+  ImportHistoricalEmissions::DATA_UNFCCC_FILEPATH => <<~END,
     Country,Source,Sector,Gas,GWP,1990,1991,1992
     ABW,UNFCCC_AI,Total GHG emissions without LULUCF,Aggregate F-gases,AR4,6.242714951,6.264371648,6.183325393
   END

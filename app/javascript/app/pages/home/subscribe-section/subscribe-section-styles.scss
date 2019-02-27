@@ -6,7 +6,7 @@
   background-repeat: no-repeat;
   display: flex;
   min-height: 300px;
-  width: 100%; 
+  width: 100%;
 
   .subscribe {
     align-items: center;
@@ -14,17 +14,16 @@
     flex-direction: column;
     margin: 0 auto;
     width: max-content;
-    align-items: center;
     justify-content: center;
-  
+
     h2 {
       @extend %headline;
-    
+
       color: $white;
       margin-bottom: 30px;
       text-align: center;
     }
-  
+
     .button {
       background-color: $theme-secondary;
       width: 100%;

@@ -5,8 +5,7 @@ import { precentageTwoPlacesRound } from 'utils/utils';
 
 const getCountriesContextsData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.data;
-const getWBCountriesData = ({ wbCountryData }) =>
-  wbCountryData && wbCountryData.data;
+const getWBCountriesData = ({ wbCountryData }) => wbCountryData && wbCountryData.data;
 const getLocationsData = ({ countries }) => countries && countries.data;
 const getSearch = ({ search }) => search || null;
 
@@ -44,23 +43,18 @@ const getCountries = createSelector(getLocationsData, locations => {
   }));
 });
 
-export const getSelectedCountry = createSelector(
-  [getSearch, getCountries],
-  (search, countries) => {
-    if (!search && !search.country && isEmpty(countries)) return null;
-    if (search && !search.country && !isEmpty(countries)) return countries[0];
-    const selectedCountry = countries.find(c => c.value === search.country);
-    return selectedCountry;
-  }
-);
+export const getSelectedCountry = createSelector([getSearch, getCountries], (search, countries) => {
+  if (!search && !search.country && isEmpty(countries)) return null;
+  if (search && !search.country && !isEmpty(countries)) return countries[0];
+  const selectedCountry = countries.find(c => c.value === search.country);
+  return selectedCountry;
+});
 
 const getYears = createSelector(
   [getCountriesContextsData, getSelectedCountry],
   (data, selectedCountry) => {
     if (isEmpty(data) || !selectedCountry) return null;
-    const selectedCountryData = data.filter(
-      d => d.iso_code3 === selectedCountry.value
-    );
+    const selectedCountryData = data.filter(d => d.iso_code3 === selectedCountry.value);
     return orderBy(selectedCountryData, 'year', 'desc').map(r => ({
       label: r.year.toString(),
       value: r.year.toString()
@@ -68,21 +62,13 @@ const getYears = createSelector(
   }
 );
 
-export const getSelectedYear = createSelector(
-  [getSearch, getYears],
-  (search, years) => {
-    if (!search && !search.countryYear && !years) return null;
-    if (
-      (!search ||
-        !search.countryYear ||
-        !some(years, ['value', search.countryYear])) &&
-      years
-    ) {
-      return years[0];
-    }
-    return { label: search.countryYear, value: search.countryYear };
+export const getSelectedYear = createSelector([getSearch, getYears], (search, years) => {
+  if (!search && !search.countryYear && !years) return null;
+  if ((!search || !search.countryYear || !some(years, ['value', search.countryYear])) && years) {
+    return years[0];
   }
-);
+  return { label: search.countryYear, value: search.countryYear };
+});
 
 const getCardsData = createSelector(
   [
@@ -111,17 +97,13 @@ const getCardsData = createSelector(
         {
           value: yearData.employment_agri_female,
           label: 'Women',
-          valueLabel: `${precentageTwoPlacesRound(
-            yearData.employment_agri_female
-          )}%`,
+          valueLabel: `${precentageTwoPlacesRound(yearData.employment_agri_female)}%`,
           color: '#0677B3'
         },
         {
           value: yearData.employment_agri_male,
           label: 'Men',
-          valueLabel: `${precentageTwoPlacesRound(
-            yearData.employment_agri_male
-          )}%`,
+          valueLabel: `${precentageTwoPlacesRound(yearData.employment_agri_male)}%`,
           color: '#1ECDB0'
         }
       ],
@@ -151,8 +133,7 @@ const getCardsData = createSelector(
       chartData: [
         {
           name: 'agricultureProduction',
-          value:
-            wbCountryData && wbCountryData.gdp * yearData.value_added_agr / 100,
+          value: wbCountryData && wbCountryData.gdp * yearData.value_added_agr / 100,
           fill: '#0677B3'
         },
         {
@@ -194,12 +175,7 @@ const getCardsData = createSelector(
       title: 'Water withdrawal and water stress',
       legend: [
         {
-          text: legendHtmlDot(
-            'Agricultural activities',
-            '#0677B3',
-            yearData.water_withdrawal,
-            '%'
-          )
+          text: legendHtmlDot('Agricultural activities', '#0677B3', yearData.water_withdrawal, '%')
         }
       ],
       countryName: c.label,

@@ -58,32 +58,29 @@ const ContextByCountryComponent = ({
             )}
             {!isEmpty(years) &&
              selectedYear && (
-                <Dropdown
-                  label={'Year'}
-                  value={selectedYear}
-                  options={years}
-                  onValueChange={updateCountryYearFilter}
-                  hideResetButton
-                />
-              )}
+               <Dropdown
+                 label={'Year'}
+                 value={selectedYear}
+                 options={years}
+                 onValueChange={updateCountryYearFilter}
+                 hideResetButton
+               />
+             )}
           </div>
           {isTablet && (
-            <ButtonGroup
-              className={styles.btnGroup}
-              buttonsConfig={buttonGroupConfig}
-            />
+            <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
           )}
         </div>
         {!isEmpty(years) ? (
           <div>
             {selectedCountry &&
              selectedYear && (
-                <React.Fragment>
-                  <IndicatorCards selectedYear={selectedYear} cards={cards} />
-                  <LandArea />
-                  <MeatData />
-                </React.Fragment>
-              )}
+               <React.Fragment>
+                 <IndicatorCards selectedYear={selectedYear} cards={cards} />
+                 <LandArea />
+                 <MeatData />
+               </React.Fragment>
+            )}
           </div>
         ) : (
           <NoContent
@@ -92,12 +89,7 @@ const ContextByCountryComponent = ({
             minHeight={300}
           />
         )}
-        {!isTablet && (
-          <ButtonGroup
-            className={styles.btnGroup}
-            buttonsConfig={buttonGroupConfig}
-          />
-        )}
+        {!isTablet && <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />}
       </React.Fragment>
     )}
   </TabletLandscape>

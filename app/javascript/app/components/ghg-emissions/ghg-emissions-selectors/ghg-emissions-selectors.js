@@ -1,22 +1,19 @@
 import { createStructuredSelector } from 'reselect';
-import {
-  getSearch,
-  getLinkToDataExplorer
-} from './ghg-emissions-selectors-get';
+import { getSearch, getLinkToDataExplorer } from './ghg-emissions-selectors-get';
 import {
   getOptions,
   getOptionsSelected,
-  getLegendDataOptions,
-  getDisableAccumulatedCharts,
+  getFiltersConflicts,
   getModelSelected
 } from './ghg-emissions-selectors-filters';
 import {
+  getLegendDataOptions,
   getLegendDataSelected,
   getChartDomain,
   getChartData,
   getChartConfig,
   getLoading,
-  onlyOneRegionSelected
+  getHideRemoveOptions
 } from './ghg-emissions-selectors-data';
 import { getProviderFilters } from './ghg-emissions-selectors-providers';
 
@@ -37,7 +34,7 @@ export const getGHGEmissions = createStructuredSelector({
   downloadLink: getLinkToDataExplorer,
   options: getOptions,
   selected: getOptionsSelected,
-  accumulatedChartsConflict: getDisableAccumulatedCharts,
+  filtersConflicts: getFiltersConflicts,
   legendOptions: getLegendDataOptions,
   legendSelected: getLegendDataSelected,
   data: getChartData,
@@ -45,6 +42,6 @@ export const getGHGEmissions = createStructuredSelector({
   config: getChartConfig,
   loading: getLoading,
   fieldToBreakBy: getModelSelected,
-  hideRemoveOptions: onlyOneRegionSelected,
+  hideRemoveOptions: getHideRemoveOptions,
   providerFilters: getProviderFilters
 });

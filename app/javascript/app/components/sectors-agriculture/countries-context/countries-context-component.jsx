@@ -40,9 +40,8 @@ class CountriesContext extends PureComponent {
           <h2 className={styles.header}>Countries Context</h2>
           <div className={styles.intro}>
             <p className={styles.introText}>
-              The agricultural sector differs vastly among countries and affects
-              jobs, economy, land-use, water and food security. Explore key
-              indicators of progress over time below.
+              The agricultural sector differs vastly among countries and affects jobs, economy,
+              land-use, water and food security. Explore key indicators of progress over time below.
             </p>
             <div className={styles.switchWrapper}>
               <Switch
@@ -66,9 +65,7 @@ class CountriesContext extends PureComponent {
           )}
         </div>
         <WbCountryDataProvider />
-        <AgricultureCountriesContextProvider
-          country={selectedCountry && selectedCountry.value}
-        />
+        <AgricultureCountriesContextProvider country={selectedCountry && selectedCountry.value} />
       </div>
     );
   }
