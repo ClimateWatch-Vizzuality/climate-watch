@@ -155,7 +155,7 @@ const getDefaultOptions = createSelector([getSourceSelected, getMeta], (sourceSe
 
 const getSectorOptions = createSelector([getFieldOptions('sector')], options => {
   if (!options || isEmpty(options)) return null;
-  const hasChildren = d => options.some(o => o.parentId === d.value);
+  // const hasChildren = d => options.some(o => o.parentId === d.value);
   const aggregatesComesFirst = o => (o.groupId === 'aggregations' ? -1 : 0);
 
   const sectors = options
@@ -164,7 +164,8 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
       label: d.label,
       value: d.value,
       expandsTo: d.aggregatedSectorIds,
-      groupParent: hasChildren(d) && String(d.value),
+      // TODO: first add optgroup to multileveldropdown
+      // groupParent: hasChildren(d) && String(d.value),
       groupId: isEmpty(d.aggregatedSectorIds) ? 'sectors' : 'aggregations'
     }))
     .sort(aggregatesComesFirst);

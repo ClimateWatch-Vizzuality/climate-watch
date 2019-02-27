@@ -14,9 +14,10 @@ import {
 } from 'utils/graphs';
 import {
   CHART_COLORS_EXTENDED,
-  DEFAULT_AXES_CONFIG,
   DATA_SCALE,
-  METRIC_OPTIONS
+  DEFAULT_AXES_CONFIG,
+  METRIC_OPTIONS,
+  OTHER_COLOR
 } from 'data/constants';
 import { getWBData, getData } from './ghg-emissions-selectors-get';
 import {
@@ -46,22 +47,13 @@ const onlyOneRegionSelected = createSelector(
 );
 
 const getExpandedLegendRegionsSelected = createSelector(
-  [getModelSelected, getOptions, getOptionsSelected, onlyOneRegionSelected, sortData],
-  (modelSelected, options, selectedOptions, shouldExpandIntoCountries, data) => {
-    const model = toPlural(modelSelected);
-    if (
-      !shouldExpandIntoCountries ||
-      !selectedOptions ||
-      !model ||
-      model !== 'regions' ||
-      !selectedOptions.regionsSelected ||
-      !data
-    ) {
-      return null;
-    }
+  [getOptions, getOptionsSelected, onlyOneRegionSelected, sortData],
+  (options, selectedOptions, shouldExpandIntoCountries, data) => {
+    if (!shouldExpandIntoCountries || !data) return null;
+
     const dataSelected = selectedOptions.regionsSelected;
     const countryOptions = dataSelected[0].expandsTo.map(iso =>
-      options[model].find(o => o.iso === iso)
+      options.regions.find(o => o.iso === iso)
     );
     const groupedCountries = data && groupBy(data, 'iso_code3');
     const getLastValue = x => x.emissions[x.emissions.length - 1].value;
@@ -70,25 +62,20 @@ const getExpandedLegendRegionsSelected = createSelector(
     Object.keys(groupedCountries).forEach(c => {
       latestValuesHash[c] = groupedCountries[c].reduce((acc, v) => acc + getLastValue(v), 0);
     });
-    const compare = (a, b) => (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
-    const sortedCountries = countryOptions.sort(compare);
+    const byLatestYearEmission = (a, b) =>
+      (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
+    const sortedCountries = countryOptions.sort(byLatestYearEmission);
 
     if (data && sortedCountries.length > LEGEND_LIMIT) {
       const othersGroup = data && sortedCountries.slice(LEGEND_LIMIT, -1).filter(o => o);
       const othersOption = {
         iso: 'OTHERS',
         label: 'Others',
-        value: othersGroup.map(o => o.iso).join(),
+        value: 'OTHERS',
         expandsTo: othersGroup.map(o => o.iso),
-        groupId: 'regions',
-        hideData: true
+        groupId: 'regions'
       };
-      const updatedOthers = othersGroup.map(o => ({
-        ...o,
-        hideLegend: true,
-        legendColumn: 'Others'
-      }));
-      return data && [...sortedCountries.slice(0, LEGEND_LIMIT), othersOption, ...updatedOthers];
+      return data && [...sortedCountries.slice(0, LEGEND_LIMIT), othersOption];
     }
 
     return sortedCountries;
@@ -115,7 +102,6 @@ const getExpandedLegendSectorsSelected = createSelector(
     if (!shouldExpandIntoSectors) return null;
 
     const selectedSector = selectedOptions.sectorsSelected[0];
-
     const sectorOptions = selectedSector.expandsTo.map(id =>
       options[model].find(o => o.value === id)
     );
@@ -165,6 +151,37 @@ export const getLegendDataSelected = createSelector(
   }
 );
 
+const getExpandedData = createSelector(
+  [sortData, getLegendDataSelected],
+  (data, legendDataSelected) => {
+    if (!legendDataSelected || !data) return null;
+    const othersOption = legendDataSelected.find(o => o.iso === 'OTHERS');
+    if (!othersOption) return data;
+
+    const othEmByYear = {};
+    const regionBelongsToOthers = d => othersOption.expandsTo.includes(d.iso_code3);
+
+    data.forEach(d => {
+      if (regionBelongsToOthers(d)) {
+        d.emissions.forEach(e => {
+          othEmByYear[e.year] = (othEmByYear[e.year] || 0) + e.value;
+        });
+      }
+    });
+
+    const othersData = {
+      iso_code3: 'OTHERS',
+      location: 'Others',
+      emissions: Object.keys(othEmByYear).map(year => ({
+        year: Number(year),
+        value: othEmByYear[year]
+      }))
+    };
+
+    return [...data.filter(d => !regionBelongsToOthers(d)), othersData];
+  }
+);
+
 const getYColumnOptions = createSelector([getLegendDataSelected], legendDataSelected => {
   if (!legendDataSelected) return null;
   const getYOption = columns =>
@@ -193,18 +210,6 @@ const getCalculationData = createSelector([getWBData], data => {
   return yearData;
 });
 
-export const getMetricRatio = (selected, calculationData, x) => {
-  if (!calculationData || !calculationData[x]) return 1;
-  if (selected === METRIC_OPTIONS.PER_GDP.value) {
-    // GDP is in dollars and we want to display it in million dollars
-    return calculationData[x][0].gdp / 1000000;
-  }
-  if (selected === METRIC_OPTIONS.PER_CAPITA.value) {
-    return calculationData[x][0].population;
-  }
-  return 1;
-};
-
 const calculateValue = (currentValue, value, metricData) => {
   const metricRatio = metricData || 1;
   const updatedValue = value || value === 0 ? value * DATA_SCALE / metricRatio : null;
@@ -215,7 +220,7 @@ const calculateValue = (currentValue, value, metricData) => {
 };
 
 export const getChartData = createSelector(
-  [sortData, getModelSelected, getYColumnOptions, getMetricSelected, getCalculationData],
+  [getExpandedData, getModelSelected, getYColumnOptions, getMetricSelected, getCalculationData],
   (data, model, yColumnOptions, metric, calculationData) => {
     if (!data || !data.length || !model) return null;
     const yearValues = data[0].emissions.map(d => d.year);
@@ -270,7 +275,9 @@ export const getChartDomain = createSelector([getChartData], data => {
 
 // variable that caches chart elements assigned color
 // to avoid element color changing when the chart is updated
-let colorThemeCache = {};
+let colorThemeCache = {
+  yOthers: { stroke: OTHER_COLOR, fill: OTHER_COLOR }
+};
 
 export const getChartConfig = createSelector(
   [getModelSelected, getYColumnOptions],
