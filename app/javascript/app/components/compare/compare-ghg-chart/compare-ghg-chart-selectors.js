@@ -13,12 +13,13 @@ import {
   DEFAULT_EMISSIONS_SELECTIONS
 } from 'data/constants';
 import {
-  getYColumnValue,
-  sortEmissionsByValue,
-  getTooltipConfig,
   getThemeConfig,
+  getTooltipConfig,
+  getYColumnValue,
   setXAxisDomain,
-  setYAxisDomain
+  setYAxisDomain,
+  sortEmissionsByValue,
+  sortLabelByAlpha
 } from 'utils/graphs';
 import {
   parseSelectedLocations,
@@ -90,11 +91,13 @@ export const getSectorOptions = createSelector(
   [getSourceSelected, getSectors],
   (source, sectors) => {
     if (!source || !sectors) return null;
-    return sectors
-      .filter(d => source.sectors.indexOf(d.value) > -1)
-      .filter(d => isEmpty(d.aggregatedSectorIds))
-      .filter(d => !d.parentId)
-      .map(d => ({ label: d.label, value: d.label }));
+    return sortLabelByAlpha(
+      sectors
+        .filter(d => source.sectors.indexOf(d.value) > -1)
+        .filter(d => isEmpty(d.aggregatedSectorIds))
+        .filter(d => !d.parentId)
+        .map(d => ({ label: d.label, value: d.label }))
+    );
   }
 );
 
