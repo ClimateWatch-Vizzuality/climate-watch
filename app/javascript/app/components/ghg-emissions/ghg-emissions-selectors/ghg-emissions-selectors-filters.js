@@ -88,15 +88,13 @@ const getRegionsOptions = createSelector([getRegions], regions => {
   const mappedRegions = [TOP_EMITTERS_OPTION];
   regions.forEach(region => {
     const regionMembers = region.members.map(m => m.iso_code3);
-    if (region.iso_code3 !== 'WORLD') {
-      mappedRegions.push({
-        label: region.wri_standard_name,
-        value: region.iso_code3,
-        iso: region.iso_code3,
-        expandsTo: regionMembers,
-        groupId: 'regions'
-      });
-    }
+    mappedRegions.push({
+      label: region.wri_standard_name,
+      value: region.iso_code3,
+      iso: region.iso_code3,
+      expandsTo: regionMembers,
+      groupId: 'regions'
+    });
   });
   return mappedRegions;
 });
