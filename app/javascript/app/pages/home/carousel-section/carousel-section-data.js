@@ -3,6 +3,7 @@ import ndcsBgImage from 'assets/home/CW_homemockups_NDC@2x';
 import ndcsdgBgImage from 'assets/home/CW_homemockups_NDC_SDG@2x';
 import ghgBgImage from 'assets/home/CW_homemockups_GHG@2x';
 import pathwaysBgImage from 'assets/home/CW_homemockups_pathways@2x';
+import dataExplorerBgImage from 'assets/home/CW_homemockups_dataexplorer@2x';
 
 export const slidesData = [
   {
@@ -105,5 +106,23 @@ export const slidesData = [
     smImage: pathwaysBgImage,
     bgImage: pathwaysBgImage,
     altText: 'Emission pathways'
+  },
+  {
+    pagingTitle: 'Data Explorer',
+    title: 'Data Explorer',
+    text: [
+      'Dive deep into the raw data of Climate Watch. Explore, filter and download all of our open data for your own use.'
+    ],
+    buttons: [
+      {
+        text: 'Download and Explore Data',
+        link: '/data-explorer',
+        color: 'yellow',
+        type: 'button'
+      }
+    ],
+    smImage: dataExplorerBgImage,
+    bgImage: dataExplorerBgImage,
+    altText: 'Data Explorer'
   }
 ];
