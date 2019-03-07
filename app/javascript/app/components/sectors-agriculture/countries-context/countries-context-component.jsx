@@ -41,7 +41,7 @@ class CountriesContext extends PureComponent {
           <div className={styles.intro}>
             <p className={styles.introText}>
               The agricultural sector differs vastly among countries and affects
-              jobs, economy, land-use, water and food security. Explore key
+              jobs, the economy, land-use, water and food security. Explore key
               indicators of progress over time below.
             </p>
             <div className={styles.switchWrapper}>
