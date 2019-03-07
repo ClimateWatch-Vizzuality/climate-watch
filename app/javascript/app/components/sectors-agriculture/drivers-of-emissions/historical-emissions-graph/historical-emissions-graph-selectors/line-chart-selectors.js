@@ -121,14 +121,9 @@ const filterByEmissionType = createSelector(
   [getAgricultureEmissionsData, getEmissionTypeSelected],
   (data, emissionType) => {
     if (!data || !emissionType) return null;
-    return (
-      data.filter(
-        ({ emission_subcategory: { category_id } }) =>
-          `${category_id}` === emissionType.value
-      ) ||
-      data.find(
-        ({ emission_subcategory: { category_id } }) => category_id === null
-      )
+    return data.filter(
+      ({ emission_subcategory: { category_id } }) =>
+        `${category_id}` === emissionType.value
     );
   }
 );
