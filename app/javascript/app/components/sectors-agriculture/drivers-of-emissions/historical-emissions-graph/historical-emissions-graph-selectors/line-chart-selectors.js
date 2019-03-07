@@ -17,11 +17,33 @@ import {
 import { getEmissionCountrySelected } from './ghg-metadata-selectors';
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
+const TOTAL_SUBCATEGORY = {
+  name: 'Total emissions',
+  category_id: 'total',
+  category_name: 'Agriculture Emissions: Total',
+  short_name: 'total_emissions_agr_18'
+};
 
 const getSourceSelection = state =>
   (state.location && state.location.search) || null;
-const getAgricultureEmissionsData = state =>
-  (state.agricultureEmissions && state.agricultureEmissions.data) || null;
+
+const getAgricultureEmissionsData = state => {
+  if (state.agricultureEmissions) {
+    return state.agricultureEmissions.data.map(e => {
+      // fills data with the missing total emissions data
+      if (e.emission_subcategory.short_name === TOTAL_SUBCATEGORY.short_name) {
+        const emission_subcategory = {
+          ...e.emission_subcategory,
+          ...TOTAL_SUBCATEGORY
+        };
+        return { ...e, emission_subcategory };
+      }
+      return e;
+    });
+  }
+  return null;
+};
+
 const getWbCountryData = state =>
   (state.wbCountryData && state.wbCountryData.data) || null;
 
@@ -57,19 +79,20 @@ export const getEmissionTypes = createSelector(
   [getAgricultureEmissionsData],
   data => {
     if (!data || !data.length) return null;
-    const totalLabel = 'Agriculture Emissions: Total';
     const emissionTypes = data.map(
       ({ emission_subcategory: { category_name, category_id } }) => ({
-        label: category_name || totalLabel,
+        label: category_name,
         value: `${category_id}`
       })
     );
     const uniqEmissionTypes = uniqBy(emissionTypes, 'value');
     const totalOption = uniqEmissionTypes.find(
-      ({ label }) => label === totalLabel
+      ({ label }) => label === TOTAL_SUBCATEGORY.category_name
     );
     const sortedEmissionTypes = sortBy(
-      uniqEmissionTypes.filter(({ label }) => label !== totalLabel),
+      uniqEmissionTypes.filter(
+        ({ label }) => label !== TOTAL_SUBCATEGORY.category_name
+      ),
       ['label']
     );
     return [totalOption, ...sortedEmissionTypes];
