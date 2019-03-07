@@ -91,6 +91,10 @@ export default [
     headerColor: '#0677B3',
     sections: agricultureSections
   },
+  FEATURE_AGRICULTURE && {
+    path: '/sectors/coming-soon',
+    component: Sectors
+  },
   {
     path: '/ndcs/country/:iso/full',
     component: NDCCountryFull,
