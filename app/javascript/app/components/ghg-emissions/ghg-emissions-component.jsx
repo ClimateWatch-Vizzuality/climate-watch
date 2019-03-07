@@ -113,7 +113,6 @@ class GhgEmissions extends PureComponent {
             options={options.regions || []}
             values={getValues(selectedOptions.regionsSelected)}
             onValueChange={selected => handleChange('regions', selected)}
-            hideResetButton
           />
           <MultiLevelDropdown
             label="Sectors / Subsectors"
@@ -121,6 +120,7 @@ class GhgEmissions extends PureComponent {
             options={options.sectors}
             values={selectedOptions.sectorsSelected || []}
             onChange={selected => handleChange('sectors', selected)}
+            clearable
             multiselect
           />
           <Multiselect

@@ -5,9 +5,10 @@ import { withRouter } from 'react-router';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
-import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
+import upperFirst from 'lodash/upperFirst';
 import { actions } from 'components/modal-metadata';
 
 import GhgEmissionsComponent from './ghg-emissions-component';
@@ -84,7 +85,7 @@ class GhgEmissionsContainer extends PureComponent {
 
     this.updateUrlParam({
       name: [field],
-      value: values
+      value: isEmpty(values) ? null : values
     });
 
     const selectedFilterLabels = filters.map(f => f.label);
