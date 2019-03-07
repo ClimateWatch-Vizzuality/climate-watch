@@ -79,7 +79,7 @@ class NDCMapContainer extends PureComponent {
     const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/ndcs/country/${iso}`);
+      this.props.history.push(`/ndcs/country/${iso}/sectoral-information`);
       handleAnalytics(
         'NDC Content Map',
         'Use map to find country',
