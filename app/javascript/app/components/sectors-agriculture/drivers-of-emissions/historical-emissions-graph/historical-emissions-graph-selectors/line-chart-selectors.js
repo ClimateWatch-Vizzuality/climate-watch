@@ -57,7 +57,7 @@ export const getEmissionTypes = createSelector(
   [getAgricultureEmissionsData],
   data => {
     if (!data || !data.length) return null;
-    const totalLabel = 'Total';
+    const totalLabel = 'Agriculture Emissions: Total';
     const emissionTypes = data.map(
       ({ emission_subcategory: { category_name, category_id } }) => ({
         label: category_name || totalLabel,
