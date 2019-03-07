@@ -81,7 +81,7 @@ class NDCMapContainer extends PureComponent {
     if (iso && isCountryIncluded(isoCountries, iso)) {
       this.props.history.push(`/ndcs/country/${iso}/sectoral-information`);
       handleAnalytics(
-        'NDC Content Map',
+        'Agriculture Profile - Countries Actions',
         'Use map to find country',
         geography.properties.name
       );
