@@ -47,6 +47,10 @@ const getAgricultureData = ({ agricultureCountriesContexts }) =>
 const getAgricultureMeta = ({ agricultureCountriesContexts }) =>
   (agricultureCountriesContexts && agricultureCountriesContexts.meta) || null;
 
+export const getISOCountries = createSelector([getCountries], countries =>
+  countries.map(country => country.value)
+);
+
 const getIndicatorsParsed = createSelector(getAgricultureMeta, meta => {
   if (!meta) return [];
   const indicators = meta.map(i => ({
@@ -218,6 +222,7 @@ export const getMapLegend = createSelector(getSelectedIndicator, indicator => {
 });
 
 export const countriesContexts = createStructuredSelector({
+  isoCountries: getISOCountries,
   indicators: getIndicatorsParsed,
   selectedIndicator: getSelectedIndicator,
   indicatorsYears: getYears,
