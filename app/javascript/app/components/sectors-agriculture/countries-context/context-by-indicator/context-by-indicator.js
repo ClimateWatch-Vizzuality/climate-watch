@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
 import { format } from 'd3-format';
+import { isCountryIncluded } from 'app/utils';
 import { handleAnalytics } from 'utils/analytics';
 import { countriesContexts } from './context-by-indicator-selectors';
 
@@ -53,14 +54,16 @@ class ContextByIndicatorContainer extends PureComponent {
   };
 
   handleCountryClick = geography => {
-    const { history } = this.props;
+    const { isoCountries, history } = this.props;
     const iso = geography.properties && geography.properties.id;
-    history.push(`/countries/${iso}`);
-    handleAnalytics(
-      'Agriculture Profile - Countries Context',
-      'Use map to find country',
-      geography.properties.name
-    );
+    if (iso && isCountryIncluded(isoCountries, iso)) {
+      history.push(`/countries/${iso}`);
+      handleAnalytics(
+        'Agriculture Profile - Countries Context',
+        'Use map to find country',
+        geography.properties.name
+      );
+    }
   };
 
   render() {
@@ -78,6 +81,7 @@ class ContextByIndicatorContainer extends PureComponent {
 ContextByIndicatorContainer.propTypes = {
   selectedIndicator: PropTypes.shape({}),
   mapData: PropTypes.arrayOf(PropTypes.shape({})),
+  isoCountries: PropTypes.arrayOf(PropTypes.string),
   history: PropTypes.shape({})
 };
 
