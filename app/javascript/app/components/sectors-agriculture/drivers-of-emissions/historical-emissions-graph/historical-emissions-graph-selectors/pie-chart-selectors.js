@@ -8,6 +8,7 @@ import { GREY_CHART_COLORS } from 'data/constants';
 import { format } from 'd3-format';
 
 const AGRICULTURE_COLOR = '#0677B3';
+const AGGREGATED_SECTORS = ['Total excluding LUCF', 'Total including LUCF'];
 
 const getGhgEmissionsData = state =>
   (state.ghgEmissions && state.ghgEmissions.data) || null;
@@ -22,7 +23,9 @@ export const getPieChartData = createSelector([getGhgEmissionsData], data => {
       const lastYearEmission = emissions[emissions.length - 1];
       return { sector, location, ...lastYearEmission };
     })
-    .filter(({ value }) => value > 0); // filter for negative emission for Forestry sector
+    .filter(
+      ({ sector, value }) => value > 0 && !AGGREGATED_SECTORS.includes(sector)
+    ); // filter for negative emission for Forestry sector and total LUCF sectors
 
   if (!sectorsLastYearEmission) return null;
   const totalEmission = sectorsLastYearEmission.reduce(
