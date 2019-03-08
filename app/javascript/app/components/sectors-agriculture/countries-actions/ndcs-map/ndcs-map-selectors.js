@@ -75,7 +75,7 @@ export const getCountriesCountWithProposedActions = createSelector(
       )
     );
 
-    return flatten([...new Set(countriesWithActionsSpecified)]).length;
+    return [...new Set(flatten(countriesWithActionsSpecified))].length;
   }
 );
 
