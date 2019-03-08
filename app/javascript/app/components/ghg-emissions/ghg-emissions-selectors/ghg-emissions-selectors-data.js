@@ -179,19 +179,6 @@ const getExpandedData = createSelector(
   }
 );
 
-// some regions expands to underlying countries but also have
-// their own aggregated data
-const getRegionsWithOwnData = createSelector([getRegions, getExpandedData], (regions, data) => {
-  if (!regions || isEmpty(data)) return [];
-
-  const regionsISOs = regions.map(r => r.iso_code3);
-  const regionsISOsWithOwnData = uniq(
-    data.filter(d => regionsISOs.includes(d.iso_code3)).map(d => d.iso_code3)
-  );
-
-  return regions.filter(r => regionsISOsWithOwnData.includes(r.iso_code3));
-});
-
 const getSortedData = createSelector(getExpandedData, data => {
   if (!data || isEmpty(data)) return null;
   return sortEmissionsByValue(data);
@@ -229,26 +216,31 @@ const calculateValue = (currentValue, value, metricData) => {
   return updatedValue || currentValue;
 };
 
+// some regions expands to underlying countries but also have
+// their own aggregated data
+const getRegionsWithOwnData = (regions, data) => {
+  if (!regions || isEmpty(data)) return [];
+
+  const regionsISOs = regions.map(r => r.iso_code3);
+  const regionsISOsWithOwnData = uniq(
+    data.filter(d => regionsISOs.includes(d.iso_code3)).map(d => d.iso_code3)
+  );
+
+  return regions.filter(r => regionsISOsWithOwnData.includes(r.iso_code3));
+};
+
 export const getChartData = createSelector(
   [
     getSortedData,
-    getRegionsWithOwnData,
+    getRegions,
     getShouldExpandRegions,
     getModelSelected,
     getYColumnOptions,
     getMetricSelected,
     getCalculationData
   ],
-  (
-    data,
-    regionsWithOwnData,
-    shouldExpandRegions,
-    model,
-    yColumnOptions,
-    metric,
-    calculationData
-  ) => {
-    if (!data || !data.length || !model || !calculationData) return null;
+  (data, regions, shouldExpandRegions, model, yColumnOptions, metric, calculationData) => {
+    if (!data || !data.length || !model || !calculationData || !regions) return null;
     const yearValues = data[0].emissions.map(d => d.year);
     const shouldHaveMetricData = metric && metric !== METRIC_OPTIONS.ABSOLUTE_VALUE.value;
     let metricField = null;
@@ -256,6 +248,7 @@ export const getChartData = createSelector(
       metricField = metric === METRIC_OPTIONS.PER_CAPITA.value ? 'population' : 'gdp';
     }
 
+    const regionsWithOwnData = getRegionsWithOwnData(regions, data);
     const regionWithOwnDataMembers = uniq(
       flatMap(regionsWithOwnData, r => r.members.map(m => m.iso_code3))
     );
@@ -271,6 +264,13 @@ export const getChartData = createSelector(
       return flatMap(column.expandsTo, e => data.filter(d => d.iso_code3 === e)).filter(d => d);
     };
 
+    const expandRegionToCountries = iso => {
+      const region = regions.find(r => r.iso_code3 === iso);
+      if (!region || !region.members) return iso;
+      return flatMap(region.members, expandRegionToCountries);
+    };
+    const expandRegionsToCountries = isos => uniq(flatMap(isos, expandRegionToCountries));
+
     const getMetricData = (year, region, column) => {
       const getMetricForYearAndRegion = (y, r) =>
         metricField &&
@@ -283,7 +283,8 @@ export const getChartData = createSelector(
       // if no metric data for expandable column then use expanded regions to
       // calculate metric data
       if (!metricData && column.expandsTo && column.expandsTo.length) {
-        metricData = column.expandsTo.reduce(
+        const expandedCountries = expandRegionsToCountries(column.expandsTo);
+        metricData = expandedCountries.reduce(
           (acc, iso) => acc + (getMetricForYearAndRegion(year, iso) || 0),
           0
         );
