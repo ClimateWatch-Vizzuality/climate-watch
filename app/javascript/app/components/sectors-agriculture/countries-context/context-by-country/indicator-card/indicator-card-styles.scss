@@ -20,6 +20,9 @@
 }
 
 .noContent {
+  justify-self: center;
+  width: 100%;
+
   p {
     font-size: $font-size;
   }
@@ -58,8 +61,8 @@
   .cardContent {
     display: flex;
     flex-direction: column;
-    margin-top: $gutter-padding;
     min-height: 130px;
+    height: 100%;
 
     .chart,
     .legend {
@@ -106,6 +109,7 @@
   flex-direction: column;
   justify-content: space-around;
   margin-left: $gutter-padding;
+  margin-top: $gutter-padding;
 }
 
 .countryData {

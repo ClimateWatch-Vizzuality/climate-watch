@@ -147,6 +147,10 @@
       padding-right: 15px;
       transform: translate(-100%, 0);
       top: -5px;
+      max-width: 151px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 }
