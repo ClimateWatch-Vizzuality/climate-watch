@@ -57,7 +57,9 @@ class ContextByIndicatorContainer extends PureComponent {
     const { isoCountries, history } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      history.push(`/countries/${iso}`);
+      history.push(
+        `/sectors/agriculture?contextBy=country&contextMapIndicator=total_fertilizers&country=${iso}#understand-countries-contexts`
+      );
       handleAnalytics(
         'Agriculture Profile - Countries Context',
         'Use map to find country',
