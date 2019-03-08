@@ -234,12 +234,11 @@ export const getIndicatorsOptions = createSelector(
         i => i.category && i.category.id === category
       );
     }
-
     return filteredIndicators.map(i => ({
       label: i.name || i.composite_name || '',
       value: i.id,
       unit: i.unit,
-      subcategory: i.subcategory.name
+      subcategory: i.subcategory.id
     }));
   }
 );
@@ -566,11 +565,15 @@ export const getExplorePathwaysButtonConfig = createSelector(
     const { location, category, indicator, model } = filters;
     const locationParam = location ? `currentLocation=${location.value}` : '';
     const categoryParam = category ? `category=${category.value}` : '';
+    const subCategoryParam = indicator
+      ? `subcategory=${indicator.subcategory}`
+      : '';
     const indicatorParam = indicator ? `indicator=${indicator.value}` : '';
     const modelParam = model && model.value ? `model=${model.value}` : '';
     const selection = [
       locationParam,
       categoryParam,
+      subCategoryParam,
       indicatorParam,
       modelParam
     ];
