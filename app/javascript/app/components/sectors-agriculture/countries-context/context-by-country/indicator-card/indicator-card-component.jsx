@@ -27,7 +27,7 @@ const renderLegend = (card, year) => {
     </div>
   ) : (
     <NoContent
-      message={`No water withdrawal data for ${card.countryName} on ${year.value}`}
+      message={`No water withdrawal data for ${card.countryName} in ${year.value}`}
       className={styles.noContent}
       minHeight={100}
     />
