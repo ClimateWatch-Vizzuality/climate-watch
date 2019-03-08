@@ -58,8 +58,8 @@
   .cardContent {
     display: flex;
     flex-direction: column;
-    margin-top: $gutter-padding;
     min-height: 130px;
+    height: 100%;
 
     .chart,
     .legend {
@@ -106,6 +106,7 @@
   flex-direction: column;
   justify-content: space-around;
   margin-left: $gutter-padding;
+  margin-top: $gutter-padding;
 }
 
 .countryData {
