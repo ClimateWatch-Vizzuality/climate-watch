@@ -203,10 +203,12 @@ const getCardsData = createSelector(
         }
       ],
       countryName: c.label,
-      rank: `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank ||
-        '---'}</span> of 156</p>`,
-      text: `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal ||
-        '---'} %</span> of total water withdrawn was employed in agricultural activities.</p>`
+      rank: yearData.water_withdrawal_rank
+        ? `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank}</span> of 156</p>`
+        : '',
+      text: contextsData.water_withdrawal
+        ? `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal} %</span> of total water withdrawn was employed in agricultural activities.</p>`
+        : ''
     };
     const fertilizer = {
       chartConfig: getChartConfig(
