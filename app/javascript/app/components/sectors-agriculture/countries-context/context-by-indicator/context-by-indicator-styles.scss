@@ -47,6 +47,10 @@
       color: $theme-color;
       width: max-content;
       top: -20px;
+      max-width: 151px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     &::after {
