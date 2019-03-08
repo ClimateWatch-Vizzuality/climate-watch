@@ -27,7 +27,7 @@ const renderLegend = (card, year) => {
     </div>
   ) : (
     <NoContent
-      message={`No water withdrawal data for ${card.countryName} on ${year.value}`}
+      message={`No water withdrawal data for ${card.countryName} in ${year.value}`}
       className={styles.noContent}
       minHeight={100}
     />
@@ -78,7 +78,11 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
             {card.legend && renderLegend(card, selectedYear)}
             {card.chartConfig && (
               <div className={styles.chart}>
-                <PieChart data={card.chartData} width={150} config={card.chartConfig} />
+                <PieChart
+                  data={card.chartData}
+                  width={150}
+                  config={card.chartConfig}
+                />
               </div>
             )}
             {card.rank && (
@@ -89,7 +93,11 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
             )}
             {card.population && renderPopulationBarChart(card, selectedYear)}
           </div>
-          <Icon icon={infoIcon} theme={{ icon: styles.cardInfoIcon }} onClick={undefined} />
+          <Icon
+            icon={infoIcon}
+            theme={{ icon: styles.cardInfoIcon }}
+            onClick={undefined}
+          />
           <div className={styles.yearData}>
             <span>{selectedYear && selectedYear.value}</span> data
           </div>
