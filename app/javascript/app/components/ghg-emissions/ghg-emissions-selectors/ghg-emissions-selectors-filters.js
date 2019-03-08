@@ -2,6 +2,7 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
 import isEmpty from 'lodash/isEmpty';
+import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
@@ -201,7 +202,7 @@ const getFiltersSelected = field =>
         options && (field === 'location' ? options.regions : options[toPlural(field)]);
       if (!defaults) return null;
       if (!selected || !fieldOptions || isEmpty(fieldOptions)) {
-        return defaults[field];
+        return [...defaults[field]];
       }
       let selectedFilters = [];
       if (selected) {
@@ -272,15 +273,34 @@ const getGasConflicts = gasSelected => {
   return conflicts;
 };
 
+const getChartConflicts = (metricSelected, chartSelected) => {
+  const conflicts = [];
+
+  if (['PER_CAPITA', 'PER_GDP'].includes(metricSelected) && chartSelected.value !== 'line') {
+    const metricOption = METRIC_OPTIONS[metricSelected];
+    conflicts.push(`${metricOption.label} metric is not allowed with ${chartSelected.label} chart`);
+  }
+
+  return conflicts;
+};
+
 export const getFiltersConflicts = createSelector(
   [
     getFiltersSelected('location'),
     getFiltersSelected('gas'),
     getFiltersSelected('sector'),
     getModelSelected,
+    getMetricSelected,
     getChartTypeSelected
   ],
-  (locationSelected, gasSelected, sectorsSelected, modelSelected, chartSelected) => {
+  (
+    locationSelected,
+    gasSelected,
+    sectorsSelected,
+    modelSelected,
+    metricSelected,
+    chartSelected
+  ) => {
     let conflicts = [];
     let canChangeBreakByTo = difference(['sector', 'gas', 'regions'], [modelSelected]);
     const solutions = ['Please deselect all conflicting options'];
@@ -292,6 +312,7 @@ export const getFiltersConflicts = createSelector(
     const sectorConflicts = getOverlappingConflicts(sectorsSelected);
     const regionConflicts = getOverlappingConflicts(locationSelected);
     const gasConflicts = getGasConflicts(gasSelected);
+    const chartConflicts = getChartConflicts(metricSelected, chartSelected);
 
     if (sectorConflicts.length) {
       canChangeBreakByTo = difference(canChangeBreakByTo, ['gas', 'regions']);
@@ -315,6 +336,8 @@ export const getFiltersConflicts = createSelector(
       conflicts = conflicts.concat(regionConflicts);
     }
 
+    conflicts = conflicts.concat(chartConflicts);
+
     if (conflicts.length && isAggregatedChart) {
       solutions.push('change "Chart Type" to line chart');
     }
@@ -325,7 +348,7 @@ export const getFiltersConflicts = createSelector(
 
     return {
       conflicts,
-      solutionText: solutions.join(' or ')
+      solutionText: uniq(solutions).join(' or ')
     };
   }
 );

@@ -75,12 +75,10 @@ class Multiselect extends Component {
             styles.multiSelect,
             children ? styles.hasChildren : '',
             { [styles.mirrorX]: mirrorX },
-            { [styles.searchable]: !icon }
+            { [styles.unsearchable]: icon }
           )}
         >
-          <div className={cx(styles.values, 'values')}>
-            {this.getSelectorValue()}
-          </div>
+          <div className={cx(styles.values, 'values')}>{this.getSelectorValue()}</div>
           {loading && <Loading className={styles.loader} mini />}
           <MultiSelect
             ref={el => {
@@ -92,12 +90,7 @@ class Multiselect extends Component {
               const className = option.isSelected ? selectedClassName : '';
               return (
                 (!hideSelected || !option.isSelected) && (
-                  <div
-                    className={cx(
-                      className,
-                      option.groupId ? styles.nested : ''
-                    )}
-                  >
+                  <div className={cx(className, option.groupId ? styles.nested : '')}>
                     {option.label}
                     {option.isSelected && <span className={styles.checked} />}
                   </div>
@@ -106,10 +99,7 @@ class Multiselect extends Component {
             }}
             onValuesChange={handleChange}
             renderToggleButton={({ open }) => (
-              <Icon
-                className={open ? styles.isOpen : ''}
-                icon={icon || dropdownArrow}
-              />
+              <Icon className={open ? styles.isOpen : ''} icon={icon || dropdownArrow} />
             )}
             onSearchChange={s => this.setState({ search: s })}
             search={this.state.search}
