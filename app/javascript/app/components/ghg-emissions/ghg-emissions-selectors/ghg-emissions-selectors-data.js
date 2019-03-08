@@ -208,11 +208,6 @@ const getYColumnOptions = createSelector([getLegendDataSelected], legendDataSele
   return uniqBy(getYOption(legendDataSelected), 'value');
 });
 
-// Map the data from the API
-
-const getDFilterValue = (d, modelSelected) =>
-  (modelSelected === 'regions' ? d.location : d[modelSelected]);
-
 const getCalculationData = createSelector([getWBData], data => {
   if (!data || isEmpty(data)) return null;
   const yearData = {};
@@ -253,7 +248,7 @@ export const getChartData = createSelector(
     metric,
     calculationData
   ) => {
-    if (!data || !data.length || !model) return null;
+    if (!data || !data.length || !model || !calculationData) return null;
     const yearValues = data[0].emissions.map(d => d.year);
     const shouldHaveMetricData = metric && metric !== METRIC_OPTIONS.ABSOLUTE_VALUE.value;
     let metricField = null;
@@ -261,43 +256,66 @@ export const getChartData = createSelector(
       metricField = metric === METRIC_OPTIONS.PER_CAPITA.value ? 'population' : 'gdp';
     }
 
-    const regionWithOwnDataISOs = regionsWithOwnData.map(r => r.iso_code3);
     const regionWithOwnDataMembers = uniq(
       flatMap(regionsWithOwnData, r => r.members.map(m => m.iso_code3))
     );
-    const notMemberOfRegionWithOwnData = d => !regionWithOwnDataMembers.includes(d.iso_code3);
+    const memberOfRegionWithOwnData = d => regionWithOwnDataMembers.includes(d.iso_code3);
 
-    const dataParsed = yearValues.map(x => {
-      const yItems = {};
-      data.forEach(d => {
-        const columnObjects = yColumnOptions.filter(
-          c =>
-            (c.label === getDFilterValue(d, model) &&
-              (shouldExpandRegions || (!shouldExpandRegions && notMemberOfRegionWithOwnData(d)))) ||
-            (c.expandsTo &&
-              !regionWithOwnDataISOs.includes(c.iso) &&
-              c.expandsTo.includes(d.iso_code3))
+    const isBreakByRegions = model === 'regions';
+    const groupByKey = isBreakByRegions ? 'location' : model;
+    const groupedData = groupBy(data, groupByKey);
+
+    const expandedData = column => {
+      if (!column.expandsTo) return null;
+
+      return flatMap(column.expandsTo, e => data.filter(d => d.iso_code3 === e)).filter(d => d);
+    };
+
+    const getMetricData = (year, region, column) => {
+      const getMetricForYearAndRegion = (y, r) =>
+        metricField &&
+        calculationData &&
+        calculationData[y] &&
+        calculationData[y][r] &&
+        calculationData[y][r][metricField];
+      let metricData = getMetricForYearAndRegion(year, region);
+
+      // if no metric data for expandable column then use expanded regions to
+      // calculate metric data
+      if (!metricData && column.expandsTo && column.expandsTo.length) {
+        metricData = column.expandsTo.reduce(
+          (acc, iso) => acc + (getMetricForYearAndRegion(year, iso) || 0),
+          0
         );
-        const yKeys = columnObjects.map(k => k.value);
-        const yData = d.emissions.find(e => e.year === x);
+      }
 
-        let metricData =
-          metricField &&
-          calculationData &&
-          calculationData[x] &&
-          calculationData[x][d.iso_code3] &&
-          calculationData[x][d.iso_code3][metricField];
-        // GDP is in dollars and we want to display it in million dollars
+      // GDP is in dollars and we want to display it in million dollars
+      if (metricField === 'gdp' && metricData) metricData /= 1000000;
 
-        if (metricField === 'gdp' && metricData) metricData /= 1000000;
-        yKeys.forEach(key => {
-          if (yData && (!shouldHaveMetricData || metricData)) {
-            yItems[key] = calculateValue(yItems[key], yData.value, metricData);
+      return metricData;
+    };
+
+    const dataParsed = yearValues.map(year => {
+      const yItems = {};
+
+      yColumnOptions.forEach(column => {
+        const dataForColumn = groupedData[column.label] || expandedData(column) || [];
+
+        dataForColumn.forEach(d => {
+          if (!isBreakByRegions && memberOfRegionWithOwnData(d)) return;
+
+          const yearEmissions = d.emissions.find(e => e.year === year);
+          const key = column.value;
+          const metricData = shouldHaveMetricData && getMetricData(year, d.iso_code3, column);
+
+          if (yearEmissions) {
+            yItems[key] = calculateValue(yItems[key], yearEmissions.value, metricData);
           }
         });
       });
+
       const item = {
-        x,
+        x: year,
         ...yItems
       };
       return item;
