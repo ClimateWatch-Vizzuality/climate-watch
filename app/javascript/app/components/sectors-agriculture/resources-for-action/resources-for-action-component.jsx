@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Button from 'components/button';
 
 // logos
 import faostatLogo from 'assets/partners/partners-FAOSTAT.png';
@@ -67,6 +68,13 @@ class ResourcesForAction extends PureComponent {
               support and tools. Explore highlighted resources from our partners
               below.
             </span>
+            <Button
+              color="yellow"
+              className={styles.button}
+              href="https://ndcpartnership.org/knowledge-portal"
+            >
+              NDC Partnership
+            </Button>
           </div>
           <div className={styles.logosContainer}>
             {partners.map(partner => (
