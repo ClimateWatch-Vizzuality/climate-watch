@@ -54,7 +54,7 @@ class DriversOfEmissions extends PureComponent {
       <div>
         <div className={styles.content}>
           <div className={styles.header}>
-            <h2>Drivers of emissions</h2>
+            <h2>Drivers of Emissions</h2>
             <div className={styles.intro}>
               <Description agriculturePercentage={agriculturePercentage} />
               <Switch
