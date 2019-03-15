@@ -51,10 +51,12 @@ const Tooltip = ({ content, config }) => {
         {renderTag(countryName, countryColor)}
         {renderFormattedValue(countryValue)}
       </p>
-      <p className={styles.info}>
-        {renderTag(othersName, othersColor)}
-        {renderFormattedValue(otherCountriesValue)}
-      </p>
+      {otherCountriesValue && (
+        <p className={styles.info}>
+          {renderTag(othersName, othersColor)}
+          {renderFormattedValue(otherCountriesValue)}
+        </p>
+      )}
     </div>
   );
 };
