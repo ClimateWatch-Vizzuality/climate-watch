@@ -16,7 +16,7 @@ const PER_CAPITA_FILTER = 'per_capita';
 
 export const CATEGORY_KEY = 'meatCategory';
 export const BREAK_BY_KEY = 'breakBy';
-export const COUNTRIES_KEY = 'countriesSel';
+export const COUNTRIES_KEY = 'country';
 
 // DATA && METADATA
 const getMeatConsumptionData = ({ meatConsumption }) =>
@@ -121,7 +121,7 @@ const getDefaults = createSelector(
     return {
       [BREAK_BY_KEY]: breakByOptions.find(o => o.value === GDP_FILTER),
       [CATEGORY_KEY]: categoriesOptions && categoriesOptions[0],
-      [COUNTRIES_KEY]: dataOptions
+      [COUNTRIES_KEY]: dataOptions.filter(o => o.value !== 'others')
     };
   }
 );
@@ -139,14 +139,10 @@ const getSelectedData = createSelector(
   [getSearch, getDefaults, getDataOptions],
   (query, defaults, dataOptions) => {
     if (!defaults || !dataOptions) return null;
-    if (!query || !query[COUNTRIES_KEY]) return defaults[COUNTRIES_KEY];
-
-    const findSelectedOption = value =>
-      dataOptions.find(o => o.value === value);
-
-    return query[COUNTRIES_KEY].includes(',')
-      ? query[COUNTRIES_KEY].split(',').map(v => findSelectedOption(v))
-      : [findSelectedOption(query[COUNTRIES_KEY])];
+    if (!query || !query.tradeChart) return defaults[COUNTRIES_KEY];
+    return query.tradeChart.includes('others')
+      ? dataOptions
+      : dataOptions.filter(o => o.value !== 'others');
   }
 );
 
@@ -351,16 +347,26 @@ const getAxesConfig = createSelector(
   }
 );
 
+const getTooltipConfig = createSelector(
+  [getSelectedCountry, getSelectedData],
+  (selectedCountry, selectedData) => {
+    if (isEmpty(selectedCountry) || !selectedData) return null;
+    return selectedData.find(o => o.value === 'others')
+      ? {
+        yCountry: { label: selectedCountry.label },
+        yOthers: { label: 'Other countries' }
+      }
+      : { yCountry: { label: selectedCountry.label } };
+  }
+);
+
 const getChartConfig = createSelector(
-  [getSelectedCountry, getAxesConfig],
-  (selectedCountry, axesConfig) => {
+  [getSelectedCountry, getAxesConfig, getTooltipConfig],
+  (selectedCountry, axesConfig, tooltipConfig) => {
     if (isEmpty(selectedCountry) || !axesConfig) return null;
     return {
       axes: axesConfig,
-      tooltip: {
-        yCountry: { label: selectedCountry.label },
-        yOthers: { label: 'Other countries' }
-      },
+      tooltip: tooltipConfig,
       animation: false,
       columns: {
         x: [{ label: 'category', value: 'x' }],
