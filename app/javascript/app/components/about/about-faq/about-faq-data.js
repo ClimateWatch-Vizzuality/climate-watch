@@ -5,21 +5,21 @@ export const sectionsData = [
     content: [
       {
         type: 'text',
-        title: 'What is Climate Watch?',
+        title: 'What is Climate Watch?',
         answer:
           "Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress."
       },
       {
-        type: 'text',
+        type: 'html',
         title: 'Who is this tool for? ',
         answer:
-          'Government ministries, development organizations, civil society organizations and researchers can use Climate Watch to find and download data about global emissions, climate commitments, sustainable development and other topics. Visit our homepage to see what we can offer you. '
+          'Government ministries, development organizations, civil society organizations and researchers can use Climate Watch to find and download data about global emissions, climate commitments, sustainable development and other topics. Visit our <Link to="/" innertext="homepage" /> to see what we can offer you. '
       },
       {
         type: 'html',
         title: 'Can I download the data?',
         answer:
-          '<span>Yes, all the data published on Climate Watch is free and open. This means you can download data and use it for your own analysis with proper attribution. Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about using the data.<span>'
+          '<span>Yes, all the data published on Climate Watch are free and open. This means you can download data and use it for your own analysis with proper attribution (see question 4). Use the Data Explorer at the top right corner of the homepage to explore the datasets and download one or more of them. Visit our <Link to="/about/permissions" innertext="Permissions and Licensing" />  page for more information about using the data.<span>'
       },
       {
         type: 'html',
@@ -37,7 +37,7 @@ export const sectionsData = [
         type: 'html',
         title: 'Who is behind Climate Watch?',
         answer:
-          'Visit our Partners page to see all the organizations involved in developing and managing Climate Watch. The platform is managed on a daily basis by the World Resources Institute and is part of the Resource Watch family of data platforms. The name “Climate Watch” refers only to the platform and not to any particular organization.'
+          'Visit our <Link to="/about/partners" innertext="Partners" /> page to see all the organizations involved in developing and managing Climate Watch. The platform is managed on a daily basis by the World Resources Institute and is part of the <a href="https://resourcewatch.org/" rel="noopener noreferrer" target="_blank">Resource Watch</a> family of data platforms. The name “Climate Watch” refers only to the platform and not to any particular organization.'
       },
       {
         type: 'text',
@@ -56,7 +56,7 @@ export const sectionsData = [
         title:
           'What should I do if I believe a dataset on Climate Watch is inaccurate or that better data exists?',
         answer:
-          'Much of the data on Climate Watch is obtained from other sources and we aim to make them all transparent. Make sure you have read and understood the sources and methodologies when using Climate Watch data. If you have additional questions, please contact us at <a href="mailto:climatewatch@wri.org"> climatewatch@wri.org</a>.'
+          'Much of the data on Climate Watch are obtained from other sources and we aim to make them all transparent. Make sure you have read and understood the sources and methodologies when using Climate Watch data. If you have additional questions, please contact us at <a href="mailto:climatewatch@wri.org"> climatewatch@wri.org</a>.'
       },
       {
         type: 'table',
@@ -192,20 +192,20 @@ export const sectionsData = [
         type: 'html',
         title: 'Where is your GHG emissions data from?',
         answer:
-          'Our GHG emissions data comes from three sources:<ul><li><a href="http://cait.wri.org/historical/Country%20GHG%20Emissions?indicator%5b%5d=Total%20GHG%20Emissions%20Excluding%20Land-Use%20Change%20and%20Forestry&indicator%5b%5d=Total%20GHG%20Emissions%20Including%20Land-Use%20Change%20and%20Forestry&year%5b%5d=2014&sortIdx=NaN&chartType=geo" rel="noopener noreferrer" target="_blank" >CAIT</a> emissions data is compiled using a consistent methodology to create a comprehensive and internationally comparable data set for 190 countries including all GHGs and major IPCC sectors. CAIT uses the 2016 edition of the IEA publication for CO₂ emissions from fossil fuel combustion from 1971 to 2014, and draws the remaining CO₂ and non-CO₂ emissions data from a variety of other sources including CDIAC, U.S. EPA, and FAO. (See <a href="http://cait2.wri.org/docs/CAIT2.0_CountryGHG_Methods.pdf" rel="noopener noreferrer" target="_blank" >CAIT GHG Sources and Methods Documentation</a> for more detailed information.)</li><li><a href="http://pmd.gfz-potsdam.de/pik/showshort.php?id=escidoc:2086888" rel="noopener noreferrer" target="_blank" >Primap’s dataset</a> combines several published datasets to create a comprehensive set of GHG emission pathways for every country and Kyoto gas covering the years 1850 to 2014 for all 197 UNFCCC parties as well as most non-UNFCCC territories. The data resolves the main IPCC 1996 categories. For CO₂ from energy and industry, time series for subsectors are available. Country level data is combined from different sources using the PRIMAP emissions module. It is supplemented with growth rates from regionally resolved sources and numerical extrapolations. Regional deforestation emissions are downscaled to country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. </li><li>UNFCCC’s GHG <a href="http://di.unfccc.int/detailed_data_by_party" rel="noopener noreferrer" target="_blank">data interface</a> provides access to the most recent GHG data reported by countries that are Parties to the Climate Change Convention. The data interface includes the latest data reported by Annex I Parties and to the extent possible national communications and biennial update reports of non-Annex I Parties.</li></ul>'
+          'Our GHG emissions data comes from three sources:<ul><li><a href="http://cait.wri.org/historical/Country%20GHG%20Emissions?indicator%5b%5d=Total%20GHG%20Emissions%20Excluding%20Land-Use%20Change%20and%20Forestry&indicator%5b%5d=Total%20GHG%20Emissions%20Including%20Land-Use%20Change%20and%20Forestry&year%5b%5d=2014&sortIdx=NaN&chartType=geo" rel="noopener noreferrer" target="_blank" >CAIT</a> emissions data are compiled using a consistent methodology to create a comprehensive and internationally comparable data set for 190 countries including all GHGs and major IPCC sectors. CAIT uses the 2016 edition of the IEA publication for CO₂ emissions from fossil fuel combustion from 1971 to 2014, and draws the remaining CO₂ and non-CO₂ emissions data from a variety of other sources including CDIAC, U.S. EPA, and FAO. (See <a href="http://cait2.wri.org/docs/CAIT2.0_CountryGHG_Methods.pdf" rel="noopener noreferrer" target="_blank" >CAIT GHG Sources and Methods Documentation</a> for more detailed information.)</li><li><a href="http://pmd.gfz-potsdam.de/pik/showshort.php?id=escidoc:2086888" rel="noopener noreferrer" target="_blank" >Primap’s dataset</a> combines several published datasets to create a comprehensive set of GHG emission pathways for every country and Kyoto greenhouse gas covering the years 1850 to 2014 for all 197 UNFCCC Parties as well as most non-UNFCCC territories. The data resolves the main IPCC 1996 categories. For CO₂ from energy and industry, time series for subsectors are available. Country-level data are combined from different sources using the PRIMAP emissions module. It is supplemented with growth rates from regionally resolved sources and numerical extrapolations. Regional deforestation emissions are downscaled to country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. </li><li>UNFCCC’s GHG <a href="http://di.unfccc.int/detailed_data_by_party" rel="noopener noreferrer" target="_blank">data interface</a> provides access to the most recent GHG data reported by countries that are Parties to the Climate Change Convention. The data interface includes the latest data reported by Annex I Parties and to the extent possible National Communications and Biennial Update Reports of non-Annex I Parties.</li></ul>'
       },
       {
         type: 'text',
         title: 'What are the main differences between the three data sources?',
         answer:
-          'UNFCCC provides official country-reported inventories; CAIT and PIK are estimates made by non-government research institutes. CAIT and PIK datasets apply a consistent methodology and are comparable across all countries included. The UNFCCC dataset is not comparable across all countries, due to the different reporting requirements and methodologies for Annex 1 and non-Annex 1 countries. Non-Annex 1 countries also don’t report a complete time series of data for each year. The PIK dataset prioritizes country-reported inventories and fills the data gaps with secondary sources and assumptions. CAIT uses none of the self-reported inventories for individual countries and instead uses datasets with global coverage. Thus, the PIK dataset aligns better with country-reported estimates, while CAIT provides an independent inventory that compliments the other two. Among other methodology differences, CAIT uses global warming potential (GWP) values from the IPCC’s Second Assessment Report (AR2) for non-CO2 gases; PIK provides data under both AR2 and AR4 GWP values; UNFCCC data uses either AR2 and AR4, depending on the inventory methodology the party opts to follow. '
+          'UNFCCC data provide official country-reported inventories; CAIT and PIK datasets are estimates made by non-government research institutes. CAIT and PIK datasets apply a consistent methodology and are comparable across all countries included. The UNFCCC dataset is not comparable across all countries due to the different reporting requirements and methodologies for Annex 1 and non-Annex 1 countries. Non-Annex 1 countries also do not report a complete time series of data for each year. The PIK dataset prioritizes country-reported inventories and fills the data gaps with secondary sources and assumptions. CAIT uses none of the self-reported inventories for individual countries and instead uses datasets with global coverage. Thus, the PIK dataset aligns better with country-reported estimates, while CAIT provides an independent inventory that complements the other two. Among other methodology differences, CAIT uses global warming potential (GWP) values from the IPCC’s Second Assessment Report (AR2) for non-CO2 gases; PIK provides data under both AR2 and AR4 GWP values; UNFCCC data uses either AR2 and AR4, depending on the inventory methodology the party opts to follow. '
       },
       {
         type: 'html',
         title:
           'How significant are uncertainties in the emissions data, particularly in the land-use change and forestry sector? ',
         answer:
-          'According to the Working Group III Contribution to the IPCC Fifth Assessment Report, global CO<sub>2</sub> emissions from fossil fuel combustion are known within 8% uncertainty (90% confidence interval). CO<sub>2</sub> emissions from FOLU (forestry and other land use) have very large uncertainties attached in the order of ± 50%. Uncertainty for global emissions of CH<sub>4</sub>, N<sub>2</sub>O and the F-gases has been estimated as 20%, 60% and 20% respectively. For the PIK dataset, regional deforestation emissions are downscaled to country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. So, levels of uncertainty are quite high for earlier years of data (closer to 1850).  '
+          'According to the Working Group III Contribution to the IPCC Fifth Assessment Report, global CO<sub>2</sub> emissions from fossil fuel combustion are known within 8% uncertainty (90% confidence interval). CO<sub>2</sub> emissions from FOLU (forestry and other land use) have very large uncertainties associated with them in the order of ± 50%. Uncertainty for global emissions of CH<sub>4</sub>, N<sub>2</sub>O and the F-gases has been estimated as 20%, 60% and 20% respectively. For the PIK dataset, regional deforestation emissions are downscaled to the country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. Accordingly levels of uncertainty are quite high for earlier years of data (closer to 1850).  '
       }
     ]
   },
@@ -217,13 +217,13 @@ export const sectionsData = [
         type: 'text',
         title: 'What are NDCs? ',
         answer:
-          'In the lead up to the Paris climate conference in December 2015, parties were invited by the UNFCCC to communicate their national plans to address climate change, known as Intended Nationally Determined Contributions, or INDCs. A country’s INDC is converted to a Nationally Determined Contribution (NDC) when it formally joins the Paris Agreement by submitting an instrument of ratification, acceptance, approval or accession.'
+          'In the lead up to the Paris climate conference in December 2015, Parties were invited by the UNFCCC to communicate their national plans to address climate change, known as Intended Nationally Determined Contributions, or INDCs. A country’s INDC is converted to a Nationally Determined Contribution (NDC) when it formally joins the Paris Agreement by submitting an instrument of ratification, acceptance, approval or accession.'
       },
       {
         type: 'text',
         title: 'How are NDCs assessed? ',
         answer:
-          'The NDC Content module of Climate Watch presents contributions submitted by parties in different forms, including visualizations, structured indicators, and original text. The module does not evaluate the ambition of contributions. The data presented is submitted by countries is intended to make these documents more transparent, accessible, comparable and easier to understand.  '
+          'The NDC Content module of Climate Watch presents contributions submitted by Parties in different forms, including visualizations, structured indicators, and original text. The module does not evaluate the ambition of contributions. The data presented are submitted by countries and are intended to make these documents more transparent, accessible, comparable and easier to understand.  '
       },
       {
         type: 'html',
@@ -284,9 +284,9 @@ export const sectionsData = [
       },
       {
         type: 'text',
-        title: 'Why is data missing for some countries? ',
+        title: 'Why are data missing for some countries? ',
         answer:
-          'As per our methodology, no data could be captured for the following parties: Andorra, United Arab Emirates (UAE), Iceland, Kyrgyzstan, Serbia, Ukraine and New Zealand.  '
+          'As per our methodology, no data could be captured for the following Parties: Andorra, Iceland, Kyrgyzstan, New Zealand, Serbia, Ukraine and the United Arab Emirates (UAE).  '
       }
     ]
   },
@@ -311,7 +311,7 @@ export const sectionsData = [
         title:
           'What is your criteria for selecting models and scenarios? Will more be added?',
         answer:
-          'The models included on Pathways are published in peer-reviewed publications or are part of a government report; if other cases, they have been widely used by governments. We welcome additional modeling teams and institutions to add their models and contact us about uploading their data.'
+          'The models included on Pathways are published in peer-reviewed publications or are part of a government report, or have been widely used by governments. We welcome additional modeling teams and institutions to add their models and contact us about uploading their data.'
       },
       {
         type: 'html',
@@ -324,14 +324,14 @@ export const sectionsData = [
         title:
           'What do the models say about whether we’re on track to keep global warming below 2°C? ',
         answer:
-          'The answer to this question varies by scenario. Almost all Business as Usual or Reference case scenarios show that we are not on track to keep global warming under 2°C. However, more ambitious scenarios show that it is possible to keep the global warming under 2°C by using technologies like carbon capture and storage with bioenergy and increased renewable energy.'
+          'The answer to this question varies by scenario. Almost all Business as Usual or Reference Case scenarios show that we are not on track to keep global warming under 1.5-2°C. However, more ambitious scenarios show that it is possible to keep the global warming under 1.5-2°C. Many rely on carbon removal approaches, such as  carbon capture and storage with bioenergy (BECCS), coupled with greater mitigation ambitions, such as increased renewable energy generation.'
       },
       {
         type: 'text',
         title:
           'Why can’t I compare countries and regions across different models?',
         answer:
-          'This feature has not been implemented yet. Comparisons across multiple models introduce concerns about comparability, since indicators have different definitions and models might vary significantly in their scope, complexity and assumptions. We are working to develop this feature in a way that makes assumptions clear and understandable.'
+          'Comparisons across multiple models introduce concerns about comparability, since indicators have different definitions and models might vary significantly in their scope, complexity and assumptions.'
       },
       {
         type: 'html',
@@ -356,7 +356,7 @@ export const sectionsData = [
         title:
           'What was the process for choosing the metrics for the “Climate Vulnerability and Readiness” section?',
         answer:
-          'The indicators were selected because they have data that is geographically comprehensive, updated regularly and tells a compelling story that links poverty, vulnerability and climate impacts. These indicators show that the poor are most vulnerable to climate risks such as sea level rise, increases in temperature and more erratic rainfall. This section also includes indicators that show the extent to which a country is ready to adapt to climate change to reduce its vulnerability to climate impacts.'
+          'The indicators were selected because they have data that are geographically comprehensive, updated regularly and tells a compelling story that links poverty, vulnerability and climate impacts. These indicators show that the poor are most vulnerable to climate risks such as sea level rise, increases in temperature and more erratic rainfall. This section also includes indicators that show the extent to which a country is ready to adapt to climate change to reduce its vulnerability to climate impacts.'
       },
       {
         type: 'html',
@@ -370,53 +370,53 @@ export const sectionsData = [
         title:
           'What document types are included in the timelines on the country profile pages? ',
         answer:
-          '<p>The country profiles include links to documents submitted to the UNFCCC by parties. A summary of the document types, their purposes, which parties submit them and how often is below:</p><table />',
+          '<p>The country profiles include links to documents submitted to the UNFCCC by parties. A summary of the document types, their purposes, which Parties submit them and how often is below:</p><table />',
         tableData: [
           {
-            document_type: 'National Comunication (NC)',
+            document_type: 'National Communication (NC)',
             purpose:
-              'NCs include information on national circumstances, GHG inventories, vulnerability and adaptation, mitigation assessment, financial resources and technology transfer, and education, training and public awareness.',
-            submitting_parties: 'All parties',
+              'All Parties include information on national circumstances and GHG inventories. Annex 1 Parties also include projections and total effect of policies and measures; vulnerability assessment, climate change impacts, and adaptation measures; financial resources and transfer of technology; research and systematic observation; and education, training, and public awareness. Non-Annex 1 countries include a general description of steps taken or envisioned to implement the Convention; other information considered relevant to the achievement of the objective of the Convention; and constraints, gaps, and related financial, technical, and capacity needs',
+            submitting_parties: 'All Parties',
             frequency:
-              'Non-Annex I parties are required to submit their first NC within three years of entering the Convention and every four years thereafter. Annex I parties submit every four years.'
+              'Non-Annex I Parties are required to submit their first NC within three years of entering the Convention and every four years thereafter. Annex I Parties submit every four years.'
           },
           {
             document_type: 'Biennial Report (BR)',
             purpose:
               'BRs include GHG emission trends, quantified economy-wide emission reduction target and progress in achievement of this target, GHG projections and provision of financial, technological and capacity building support.',
-            submitting_parties: 'Annex I parties',
+            submitting_parties: 'Annex I Parties',
             frequency:
               'The first BR should have been submitted by January 1, 2014, and every two years after that.'
           },
           {
             document_type: 'Biennial Update Report (BUR)',
             purpose:
-              'BURs include an update on national GHG inventories, information on mitigation actions taken and their effects and an outline of needs and support received.',
-            submitting_parties: 'Non-Annex I parties',
+              'BURs include information on national circumstances and institutional arrangements; national GHG inventory; mitigation actions and their effects; constraints and gaps, and related financial, technical and capacity needs, including a description of support needed and received; information on the level of support received; and information on domestic measurement reporting and verification.',
+            submitting_parties: 'Non-Annex I Parties',
             frequency:
-              "The first BUR should have been submitted by December 2014, or consistent with the Party's capabilities or level of support, and every two years thereafter as a summary of their NC or a stand-alone report."
+              "The first BUR should have been submitted by December 2014, or consistent with the Party's capabilities or level of support, and every two years thereafter in conjunction with their NC or as a stand-alone report."
           },
           {
-            document_type: 'Cancun pledge pre-2020 Target',
+            document_type: 'Pre-2020 Cancun Targets and Actions',
             purpose:
               'The Cancun pledges are quantified economy-wide emission reduction targets for the period to 2020.',
-            submitting_parties: 'Annex I parties and many non-Annex I parties',
+            submitting_parties: 'Annex I Parties and many non-Annex I Parties',
             frequency:
               'These were one-time only pledges submitted at the 2010 Conference of the Parties in Cancun, Mexico.'
           },
           {
             document_type: 'I/NDC',
             purpose:
-              'Post-2020 climate actions submitted by countries in the run up to COP21 in Paris in 2015. The “I” is dropped once countries as parties formally join the agreement. There is no standard format for I/NDCs, but they should be ambitious, equitable, and transparent.',
-            submitting_parties: 'All parties',
+              'Post-2020 climate actions submitted by countries in the run up to COP21 in Paris in 2015. The “I” is dropped once countries as Parties formally join the agreement. Some countries also submitted NDCs either as an update to their INDC or as their first submission. There is no standard format for I/NDCs, but they should be ambitious, equitable, and transparent.',
+            submitting_parties: 'All Parties',
             frequency:
-              'INDCs were submitted before COP21 in 2015 and parties are expected to make revisions by 2020 and every five years thereafter. '
+              'INDCs were submitted before COP21 in 2015, and in early 2016, and Parties are expected to make revisions by 2020 and every five years thereafter. '
           },
           {
             document_type: 'Long-term Strategy',
             purpose:
               'These are long-term low greenhouse gas emission development strategies for the period to mid-century (2050).',
-            submitting_parties: 'All parties',
+            submitting_parties: 'All Parties',
             frequency:
               'Parties are invited to communicate long-term strategies by 2020, in accordance with Article 4, paragraph 19, of the Paris Agreement.'
           },
@@ -425,23 +425,23 @@ export const sectionsData = [
               'National GHG Inventory (full inventory and common tabular format)',
             purpose:
               'The inventory covers emissions and removals of direct GHGs (carbon dioxide, methane, nitrous oxide, perfluorocarbons, hydrofluorocarbons, sulphur hexafluoride and nitrogen trifluoride) from five sectors (energy; industrial processes and product use; agriculture; land use, land-use change and forestry; and waste), and for all years from the base year (or period) to two years before the inventory is due (e.g. the inventories due 15 April 2016 cover emissions and removals for all years from the base year to 2014).',
-            submitting_parties: 'Annex I parties ',
+            submitting_parties: 'Annex I Parties ',
             frequency:
-              'Annex I parties are required to submit by April 15 every year. '
+              'Annex I Parties are required to submit by April 15 every year. '
           },
           {
             document_type:
               'Strategies and Approaches for Scaling Up Climate Finance ',
             purpose:
               'Strategies and approaches for scaling up finance during the period from 2014 to 2020. ',
-            submitting_parties: 'Annex I parties ',
+            submitting_parties: 'Annex I Parties ',
             frequency: 'Every two years. '
           },
           {
             document_type: 'National Adaptation Plans  ',
             purpose:
               'NAPs are a means of identifying medium- and long-term adaptation needs and developing and implementing strategies and programs to address those needs. ',
-            submitting_parties: 'All parties ',
+            submitting_parties: 'All Parties ',
             frequency:
               'Not applicable – it is a continuous, progressive and iterative process.  '
           }
