@@ -5,7 +5,7 @@ export const sectionsData = [
     content: [
       {
         type: 'text',
-        title: 'What is Climate Watch?',
+        title: 'What is Climate Watch?',
         answer:
           "Climate Watch offers open data, visualizations and analysis to help policymakers, researchers and other stakeholders gather insights on countries' climate progress."
       },
