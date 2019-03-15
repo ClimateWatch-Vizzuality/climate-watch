@@ -51,8 +51,8 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     location: 'WORLD'
   },
   PIK: {
-    gas: 'All GHG',
-    sector: 'Total including LULUCF',
+    gas: 'KYOTOGHG',
+    sector: 'Total excluding LULUCF',
     location: 'WORLD'
   },
   UNFCCC_AI: {
