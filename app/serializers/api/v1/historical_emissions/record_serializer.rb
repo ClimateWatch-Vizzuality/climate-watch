@@ -31,7 +31,7 @@ module Api
         end
 
         def gwp
-          object.gwp.name
+          object.gwp&.name
         end
 
         def emissions
