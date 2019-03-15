@@ -3,15 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import qs from 'query-string';
-import isArray from 'lodash/isArray';
 import { getLocationParamUpdated } from 'utils/navigation';
 import Component from './meat-data-component';
-import {
-  meatData,
-  CATEGORY_KEY,
-  BREAK_BY_KEY,
-  COUNTRIES_KEY
-} from './meat-data-selectors';
+import { meatData, CATEGORY_KEY, BREAK_BY_KEY } from './meat-data-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const search = qs.parse(location.search);
@@ -39,13 +33,9 @@ class MeatDataContainer extends PureComponent {
     this.updateUrlParam({ name: BREAK_BY_KEY, value: option.value });
 
   handleLegendChange = selected => {
-    let values;
-    if (isArray(selected)) {
-      values = selected.map(v => v.value).join(',');
-    } else {
-      values = selected.value;
-    }
-    this.updateUrlParam({ name: COUNTRIES_KEY, value: values });
+    const others = selected.filter(v => v.value === 'others');
+    const value = others.length && others[0].value;
+    this.updateUrlParam({ name: 'tradeChart', value });
   };
 
   render() {
