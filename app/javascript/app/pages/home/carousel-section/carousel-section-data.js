@@ -29,7 +29,7 @@ export const slidesData = [
     pagingTitle: 'NDCs',
     title: 'Nationally Determined Contributions',
     text: [
-      'Nationally determined contributions (NDCs) are countries’ commitments under the Paris Agreement to reduce emissions and adapt to the impacts of climate change.To date, 192 countries submitted NDCs, covering 96% of global greenhouse gas emissions.',
+      'Nationally determined contributions (NDCs) are countries’ commitments under the Paris Agreement to reduce emissions and adapt to the impacts of climate change. To date, 192 countries submitted NDCs, covering 96% of global greenhouse gas emissions.',
       'Explore NDCs by searching for key terms, and analyze and compare them using over 150 structured indicators.'
     ],
     buttons: [
