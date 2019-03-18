@@ -81,7 +81,7 @@ const getYears = createSelector(getAgricultureData, data => {
   }));
 });
 
-const getYearsWithData = createSelector(
+export const getYearsWithData = createSelector(
   [getSelectedIndicator, getYears, getAgricultureData],
   (indicator, years, data) => {
     if (!years || !years || !data) return null;
@@ -245,6 +245,7 @@ export const countriesContexts = createStructuredSelector({
   indicators: getIndicatorsParsed,
   selectedIndicator: getSelectedIndicator,
   indicatorsYears: getYears,
+  yearsWithData: getYearsWithData,
   indicatorSelectedYear: getSelectedYear,
   paths: getPathsWithStyles,
   legend: getMapLegend,

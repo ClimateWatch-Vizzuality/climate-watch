@@ -46,85 +46,116 @@ const buttonGroupConfig = [
   }
 ];
 
-const ContextByIndicatorComponent = ({
-  indicators,
-  selectedIndicator,
-  indicatorsYears,
-  indicatorSelectedYear,
-  paths,
-  legend,
-  tooltipTxt,
-  countryData,
-  topTenCountries,
-  updateIndicatorFilter,
-  updateIndicatorYearFilter,
-  handleCountryEnter,
-  handleCountryClick
-}) => (
-  <TabletLandscape>
-    {isTablet => (
-      <React.Fragment>
-        <div className={styles.actionsContainer}>
-          <div className={styles.filtersGroup}>
-            <Dropdown
-              label={'Indicator'}
-              value={selectedIndicator}
-              options={indicators}
-              onValueChange={updateIndicatorFilter}
-              hideResetButton
-            />
-            <Dropdown
-              label={'Year'}
-              value={indicatorSelectedYear}
-              options={indicatorsYears}
-              onValueChange={updateIndicatorYearFilter}
-              hideResetButton
-            />
-          </div>
-          {isTablet && (
-            <ButtonGroup
-              className={styles.btnGroup}
-              buttonsConfig={buttonGroupConfig}
-            />
-          )}
-        </div>
-        <div className={styles.visualizationsContainer}>
-          <div className="layout-container">
-            <Map
-              paths={paths}
-              tooltipId="cc-map-tooltip"
-              onCountryClick={handleCountryClick}
-              onCountryEnter={handleCountryEnter}
-              onCountryFocus={undefined}
-              dragEnable={false}
-            />
-            <MapLegend
-              mapColors={MAP_COLORS}
-              buckets={legend}
-              className={styles.legend}
-            />
-          </div>
-          {topTenCountries && (
-            <div className={styles.topTenSection}>
-              <p
-                className={styles.title}
-              >{`${selectedIndicator.label} (${selectedIndicator.unit})`}</p>
-              {topTenCountries.length ? (
-                <ul className={styles.countriesContainer}>
-                  {topTenCountries.map(c => (
-                    <li
-                      key={`${c.value}-${Math.random()}-${selectedIndicator.label}`}
-                      className={styles.countryData}
-                    >
-                      <span
-                        data-label={c.label}
-                        data-value={c.valueLabel}
-                        style={{
-                          width: `${c.chartWidth}%`,
-                          height: '12px',
-                          backgroundColor: c.color,
-                          display: 'block'
-                        }}
+class ContextByIndicatorComponent extends Component {
+  componentDidUpdate() {
+    ReactTooltip.rebuild();
+  }
+
+  renderYearLabel = option => {
+    const { yearsWithData } = this.props;
+    const hasData = yearsWithData.find(y => y.value === option.value);
+    return (
+      <div
+        style={{ color: `${hasData ? '#113750' : '#b1b1c1'}`, padding: '10px' }}
+      >
+        {option.label}
+      </div>
+    );
+  };
+
+  render() {
+    const {
+      indicators,
+      selectedIndicator,
+      indicatorsYears,
+      indicatorSelectedYear,
+      paths,
+      legend,
+      tooltipTxt,
+      countryData,
+      topTenCountries,
+      updateIndicatorFilter,
+      updateIndicatorYearFilter,
+      handleCountryEnter,
+      handleCountryClick
+    } = this.props;
+
+    return (
+      <TabletLandscape>
+        {isTablet => (
+          <React.Fragment>
+            <div className={styles.actionsContainer}>
+              <div className={styles.filtersGroup}>
+                <Dropdown
+                  label={'Indicator'}
+                  value={selectedIndicator}
+                  options={indicators}
+                  onValueChange={updateIndicatorFilter}
+                  hideResetButton
+                />
+                <Dropdown
+                  label={'Year'}
+                  value={indicatorSelectedYear}
+                  options={indicatorsYears}
+                  renderOption={this.renderYearLabel}
+                  onValueChange={updateIndicatorYearFilter}
+                  hideResetButton
+                />
+              </div>
+              {isTablet && (
+                <ButtonGroup
+                  className={styles.btnGroup}
+                  buttonsConfig={buttonGroupConfig}
+                />
+              )}
+            </div>
+            <div className={styles.visualizationsContainer}>
+              <div className="layout-container">
+                <Map
+                  paths={paths}
+                  tooltipId="cc-map-tooltip"
+                  onCountryClick={handleCountryClick}
+                  onCountryEnter={handleCountryEnter}
+                  onCountryFocus={undefined}
+                  dragEnable={false}
+                />
+                <MapLegend
+                  mapColors={MAP_COLORS}
+                  buckets={legend}
+                  className={styles.legend}
+                />
+              </div>
+              {topTenCountries && (
+                <div className={styles.topTenSection}>
+                  <p
+                    className={styles.title}
+                  >{`${selectedIndicator.label} (${selectedIndicator.unit})`}</p>
+                  {topTenCountries.length ? (
+                    <React.Fragment>
+                      <ul className={styles.countriesContainer}>
+                        {topTenCountries.map(c => (
+                          <li
+                            key={`${c.value}-${Math.random()}-${selectedIndicator.label}`}
+                            className={styles.countryData}
+                            data-for="cc-chart-tooltip"
+                            data-tip={c.label}
+                          >
+                            <span
+                              data-label={c.label}
+                              data-value={c.valueLabel}
+                              style={{
+                                width: `${c.chartWidth}%`,
+                                height: '12px',
+                                backgroundColor: c.color,
+                                display: 'block'
+                              }}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                      <ReactTooltip
+                        className={styles.tooltipContainer}
+                        id="cc-chart-tooltip"
                       />
                     </React.Fragment>
                   ) : (
@@ -161,6 +192,7 @@ ContextByIndicatorComponent.propTypes = {
   indicators: PropTypes.arrayOf(PropTypes.shape({})),
   topTenCountries: PropTypes.arrayOf(PropTypes.shape({})),
   indicatorsYears: PropTypes.arrayOf(PropTypes.shape({})),
+  yearsWithData: PropTypes.arrayOf(PropTypes.shape({})),
   selectedIndicator: PropTypes.shape({}),
   indicatorSelectedYear: PropTypes.shape({}),
   countryData: PropTypes.shape({}),
