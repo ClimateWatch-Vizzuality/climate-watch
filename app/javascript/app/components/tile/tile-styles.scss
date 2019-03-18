@@ -46,7 +46,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 15px 26px 30px 15px;
+  padding: 15px 26px 25px 15px;
+  justify-content: space-between;
   position: absolute;
   width: 100%;
 }
@@ -65,18 +66,17 @@
 .content {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-  margin-left: 4px;
 }
 
 .description {
   font-size: $font-size-large;
+  margin-left: 4px;
 }
 
 .link {
   display: flex;
   align-items: flex-end;
+  margin-left: 4px;
   justify-content: space-between;
   width: 140px;
 
