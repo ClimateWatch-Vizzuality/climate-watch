@@ -11,7 +11,7 @@ export const slidesData = [
       },
       {
         text:
-          'Compare your countries’ emissions by sector and gas with other countries over time in GHG emissions',
+          "Compare your country's emissions by sector and gas with emissions from other countries over time in GHG emissions",
         anchorText: 'GHG emissions',
         href: '/ghg-emissions'
       },
