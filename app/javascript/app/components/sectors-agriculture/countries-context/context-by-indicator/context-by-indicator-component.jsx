@@ -51,6 +51,18 @@ class ContextByIndicatorComponent extends Component {
     ReactTooltip.rebuild();
   }
 
+  renderYearLabel = option => {
+    const { yearsWithData } = this.props;
+    const hasData = yearsWithData.find(y => y.value === option.value);
+    return (
+      <div
+        style={{ color: `${hasData ? '#113750' : '#b1b1c1'}`, padding: '10px' }}
+      >
+        {option.label}
+      </div>
+    );
+  };
+
   render() {
     const {
       indicators,
@@ -67,6 +79,7 @@ class ContextByIndicatorComponent extends Component {
       handleCountryEnter,
       handleCountryClick
     } = this.props;
+
     return (
       <TabletLandscape>
         {isTablet => (
@@ -84,6 +97,7 @@ class ContextByIndicatorComponent extends Component {
                   label={'Year'}
                   value={indicatorSelectedYear}
                   options={indicatorsYears}
+                  renderOption={this.renderYearLabel}
                   onValueChange={updateIndicatorYearFilter}
                   hideResetButton
                 />
@@ -178,6 +192,7 @@ ContextByIndicatorComponent.propTypes = {
   indicators: PropTypes.arrayOf(PropTypes.shape({})),
   topTenCountries: PropTypes.arrayOf(PropTypes.shape({})),
   indicatorsYears: PropTypes.arrayOf(PropTypes.shape({})),
+  yearsWithData: PropTypes.arrayOf(PropTypes.shape({})),
   selectedIndicator: PropTypes.shape({}),
   indicatorSelectedYear: PropTypes.shape({}),
   countryData: PropTypes.shape({}),

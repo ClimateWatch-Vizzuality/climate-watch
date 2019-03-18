@@ -1,6 +1,6 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 import { getColorByIndex } from 'utils/map';
-import { isEmpty, orderBy } from 'lodash';
+import { isEmpty, orderBy, flatten } from 'lodash';
 import { format } from 'd3-format';
 import worldPaths from 'app/data/world-50m-paths';
 import {
@@ -81,11 +81,30 @@ const getYears = createSelector(getAgricultureData, data => {
   }));
 });
 
+export const getYearsWithData = createSelector(
+  [getSelectedIndicator, getYears, getAgricultureData],
+  (indicator, years, data) => {
+    if (!years || !years || !data) return null;
+    years.map(y => data.filter(d => d.year === y).some(f => f[indicator]));
+    const yearsWithData = years.map(y =>
+      data.filter(d => d.year === parseInt(y.value, 10))
+    );
+    const yearsWithSelectedIndicatorData = flatten(yearsWithData)
+      .filter(y => y[indicator.value])
+      .map(d => d.year);
+    const uniqueYears = [...new Set(yearsWithSelectedIndicatorData)];
+    return uniqueYears.map(y => ({
+      label: y.toString(),
+      value: y.toString()
+    }));
+  }
+);
+
 export const getSelectedYear = createSelector(
-  [getYears, getSearch],
-  (years, search) => {
-    if (isEmpty(years)) return null;
-    if (search && !search.indicatorYear) return years[0];
+  [getYears, getYearsWithData, getSearch],
+  (years, yearsWithData, search) => {
+    if (isEmpty(years) || isEmpty(years)) return null;
+    if (search && !search.indicatorYear) return yearsWithData[0];
     return years.find(y => y.value === search.indicatorYear);
   }
 );
@@ -226,6 +245,7 @@ export const countriesContexts = createStructuredSelector({
   indicators: getIndicatorsParsed,
   selectedIndicator: getSelectedIndicator,
   indicatorsYears: getYears,
+  yearsWithData: getYearsWithData,
   indicatorSelectedYear: getSelectedYear,
   paths: getPathsWithStyles,
   legend: getMapLegend,
