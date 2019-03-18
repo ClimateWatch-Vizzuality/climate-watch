@@ -64,122 +64,126 @@ export const sectionsData = [
         answer: '<table />',
         tableData: [
           {
-            acronym: 'AR2',
-            acronym_definition: "IPCC's Second Assessment Report in 1995"
+            Acronym: 'AR2',
+            'Acronym definition': "IPCC's Second Assessment Report in 1995"
           },
           {
-            acronym: 'AR4',
-            acronym_definition: "IPCC's Fourth Assessment Report in 2007"
+            Acronym: 'AR4',
+            'Acronym definition': "IPCC's Fourth Assessment Report in 2007"
           },
-          { acronym: 'BAU', acronym_definition: 'Business As Usual' },
-          { acronym: 'BR', acronym_definition: 'Biennial Report' },
-          { acronym: 'BUR', acronym_definition: 'Biennial Update Report' },
+          { Acronym: 'BAU', 'Acronym definition': 'Business As Usual' },
+          { Acronym: 'BR', 'Acronym definition': 'Biennial Report' },
+          { Acronym: 'BUR', 'Acronym definition': 'Biennial Update Report' },
           {
-            acronym: 'CAIT',
-            acronym_definition: 'Climate Analysis Indicators Tool'
+            Acronym: 'CAIT',
+            'Acronym definition': 'Climate Analysis Indicators Tool'
           },
           {
-            acronym: 'CDIAC',
-            acronym_definition:
+            Acronym: 'CDIAC',
+            'Acronym definition':
               'Carbon Dioxide Information Analysis Center (of the U.S. Dept. of Energy)'
           },
           {
-            acronym: '<span>CH<sub>4</sub></span>',
-            acronym_definition: 'Methane'
+            Acronym: '<span>CH<sub>4</sub></span>',
+            'Acronym definition': 'Methane'
           },
           {
-            acronym: '<span>CO<sub>2</sub></span>',
-            acronym_definition: 'Carbon Dioxide'
+            Acronym: '<span>CO<sub>2</sub></span>',
+            'Acronym definition': 'Carbon Dioxide'
           },
           {
-            acronym: 'EIA',
-            acronym_definition:
+            Acronym: 'EIA',
+            'Acronym definition':
               'Energy Information Administration (of the U.S. Dept. of Energy)'
           },
           {
-            acronym: 'EPA',
-            acronym_definition: 'United States Environmental Protection Agency'
+            Acronym: 'EPA',
+            'Acronym definition':
+              'United States Environmental Protection Agency'
           },
           {
-            acronym: 'EU28',
-            acronym_definition: 'European Union group of 28 countries'
+            Acronym: 'EU28',
+            'Acronym definition': 'European Union group of 28 countries'
           },
           {
-            acronym: 'F-gases',
-            acronym_definition:
+            Acronym: 'F-gases',
+            'Acronym definition':
               'Hydrofluorocarbons, perfluorocarbons, sulfur hexafluoride, Nitrogen Trifluoride'
           },
           {
-            acronym: 'FAO',
-            acronym_definition:
+            Acronym: 'FAO',
+            'Acronym definition':
               'Food and Agriculture Organization of the United Nations'
           },
-          { acronym: 'GDP', acronym_definition: 'Gross Domestic Product' },
-          { acronym: 'GHG', acronym_definition: 'Greenhouse Gas' },
+          { Acronym: 'GDP', 'Acronym definition': 'Gross Domestic Product' },
+          { Acronym: 'GHG', 'Acronym definition': 'Greenhouse Gas' },
           {
-            acronym: 'Gt',
-            acronym_definition: 'Gigatonnes, or billion metric tons'
+            Acronym: 'Gt',
+            'Acronym definition': 'Gigatonnes, or billion metric tons'
           },
-          { acronym: 'GWP', acronym_definition: 'Global Warming Potential' },
-          { acronym: 'HFC', acronym_definition: 'Hydrofluorocarbon' },
-          { acronym: 'IEA', acronym_definition: 'International Energy Agency' },
+          { Acronym: 'GWP', 'Acronym definition': 'Global Warming Potential' },
+          { Acronym: 'HFC', 'Acronym definition': 'Hydrofluorocarbon' },
           {
-            acronym: 'INDC',
-            acronym_definition: 'Intended Nationally Determined Contribution'
-          },
-          {
-            acronym: 'IPCC',
-            acronym_definition: 'Intergovernmental Panel on Climate Change'
-          },
-          { acronym: 'LTS', acronym_definition: 'Long-term Strategy' },
-          {
-            acronym: 'LUCF',
-            acronym_definition: 'Land-use Change and Forestry'
+            Acronym: 'IEA',
+            'Acronym definition': 'International Energy Agency'
           },
           {
-            acronym: 'LULUCF',
-            acronym_definition: 'Land-use, land-use Change and Forestry'
+            Acronym: 'INDC',
+            'Acronym definition': 'Intended Nationally Determined Contribution'
           },
-          { acronym: 'Mt', acronym_definition: 'Million metric tonnes' },
           {
-            acronym: '<span>MtCO<sub>2</sub>e</span>',
-            acronym_definition:
+            Acronym: 'IPCC',
+            'Acronym definition': 'Intergovernmental Panel on Climate Change'
+          },
+          { Acronym: 'LTS', 'Acronym definition': 'Long-term Strategy' },
+          {
+            Acronym: 'LUCF',
+            'Acronym definition': 'Land-use Change and Forestry'
+          },
+          {
+            Acronym: 'LULUCF',
+            'Acronym definition': 'Land-use, land-use Change and Forestry'
+          },
+          { Acronym: 'Mt', 'Acronym definition': 'Million metric tonnes' },
+          {
+            Acronym: '<span>MtCO<sub>2</sub>e</span>',
+            'Acronym definition':
               'Million metric tonnes of Carbon Dioxide equivalent'
           },
           {
-            acronym: '<span>N<sub>2</sub>O</span>',
-            acronym_definition: 'Nitrous Oxide'
+            Acronym: '<span>N<sub>2</sub>O</span>',
+            'Acronym definition': 'Nitrous Oxide'
           },
-          { acronym: 'NC', acronym_definition: 'National Communication' },
+          { Acronym: 'NC', 'Acronym definition': 'National Communication' },
           {
-            acronym: 'NDC',
-            acronym_definition: 'Nationally Determined Contributions'
-          },
-          {
-            acronym: '<span>NF<sub>3</sub></span>',
-            acronym_definition: 'Nitrogen Trifluoride'
+            Acronym: 'NDC',
+            'Acronym definition': 'Nationally Determined Contributions'
           },
           {
-            acronym: 'OECD',
-            acronym_definition:
+            Acronym: '<span>NF<sub>3</sub></span>',
+            'Acronym definition': 'Nitrogen Trifluoride'
+          },
+          {
+            Acronym: 'OECD',
+            'Acronym definition':
               'Organization for Economic Co-operation and Development'
           },
-          { acronym: 'PFC', acronym_definition: 'Perfluorocarbon' },
+          { Acronym: 'PFC', 'Acronym definition': 'Perfluorocarbon' },
           {
-            acronym: 'SDG',
-            acronym_definition: 'Sustainable Development Goals'
+            Acronym: 'SDG',
+            'Acronym definition': 'Sustainable Development Goals'
           },
           {
-            acronym: '<span>SF<sub>6</sub></span>',
-            acronym_definition: 'Sulfur Hexafluoride'
+            Acronym: '<span>SF<sub>6</sub></span>',
+            'Acronym definition': 'Sulfur Hexafluoride'
           },
-          { acronym: 'UN', acronym_definition: 'United Nations' },
+          { Acronym: 'UN', 'Acronym definition': 'United Nations' },
           {
-            acronym: 'UNFCCC',
-            acronym_definition:
+            Acronym: 'UNFCCC',
+            'Acronym definition':
               'United Nations Framework Convention on Climate Change'
           },
-          { acronym: 'WRI', acronym_definition: 'World Resources Institute' }
+          { Acronym: 'WRI', 'Acronym definition': 'World Resources Institute' }
         ]
       }
     ]
@@ -373,76 +377,77 @@ export const sectionsData = [
           '<p>The country profiles include links to documents submitted to the UNFCCC by parties. A summary of the document types, their purposes, which Parties submit them and how often is below:</p><table />',
         tableData: [
           {
-            document_type: 'National Communication (NC)',
-            purpose:
+            'Document type': 'National Communication (NC)',
+            Purpose:
               'All Parties include information on national circumstances and GHG inventories. Annex 1 Parties also include projections and total effect of policies and measures; vulnerability assessment, climate change impacts, and adaptation measures; financial resources and transfer of technology; research and systematic observation; and education, training, and public awareness. Non-Annex 1 countries include a general description of steps taken or envisioned to implement the Convention; other information considered relevant to the achievement of the objective of the Convention; and constraints, gaps, and related financial, technical, and capacity needs',
-            submitting_parties: 'All Parties',
-            frequency:
+            'Submitting Parties': 'All Parties',
+            Frequency:
               'Non-Annex I Parties are required to submit their first NC within three years of entering the Convention and every four years thereafter. Annex I Parties submit every four years.'
           },
           {
-            document_type: 'Biennial Report (BR)',
-            purpose:
+            'Document type': 'Biennial Report (BR)',
+            Purpose:
               'BRs include GHG emission trends, quantified economy-wide emission reduction target and progress in achievement of this target, GHG projections and provision of financial, technological and capacity building support.',
-            submitting_parties: 'Annex I Parties',
-            frequency:
+            'Submitting Parties': 'Annex I Parties',
+            Frequency:
               'The first BR should have been submitted by January 1, 2014, and every two years after that.'
           },
           {
-            document_type: 'Biennial Update Report (BUR)',
-            purpose:
+            'Document type': 'Biennial Update Report (BUR)',
+            Purpose:
               'BURs include information on national circumstances and institutional arrangements; national GHG inventory; mitigation actions and their effects; constraints and gaps, and related financial, technical and capacity needs, including a description of support needed and received; information on the level of support received; and information on domestic measurement reporting and verification.',
-            submitting_parties: 'Non-Annex I Parties',
-            frequency:
+            'Submitting Parties': 'Non-Annex I Parties',
+            Frequency:
               "The first BUR should have been submitted by December 2014, or consistent with the Party's capabilities or level of support, and every two years thereafter in conjunction with their NC or as a stand-alone report."
           },
           {
-            document_type: 'Pre-2020 Cancun Targets and Actions',
-            purpose:
+            'Document type': 'Pre-2020 Cancun Targets and Actions',
+            Purpose:
               'The Cancun pledges are quantified economy-wide emission reduction targets for the period to 2020.',
-            submitting_parties: 'Annex I Parties and many non-Annex I Parties',
-            frequency:
+            'Submitting Parties':
+              'Annex I Parties and many non-Annex I Parties',
+            Frequency:
               'These were one-time only pledges submitted at the 2010 Conference of the Parties in Cancun, Mexico.'
           },
           {
-            document_type: 'I/NDC',
-            purpose:
+            'Document type': 'I/NDC',
+            Purpose:
               'Post-2020 climate actions submitted by countries in the run up to COP21 in Paris in 2015. The “I” is dropped once countries as Parties formally join the agreement. Some countries also submitted NDCs either as an update to their INDC or as their first submission. There is no standard format for I/NDCs, but they should be ambitious, equitable, and transparent.',
-            submitting_parties: 'All Parties',
-            frequency:
+            'Submitting Parties': 'All Parties',
+            Frequency:
               'INDCs were submitted before COP21 in 2015, and in early 2016, and Parties are expected to make revisions by 2020 and every five years thereafter. '
           },
           {
-            document_type: 'Long-term Strategy',
-            purpose:
+            'Document type': 'Long-term Strategy',
+            Purpose:
               'These are long-term low greenhouse gas emission development strategies for the period to mid-century (2050).',
-            submitting_parties: 'All Parties',
-            frequency:
+            'Submitting Parties': 'All Parties',
+            Frequency:
               'Parties are invited to communicate long-term strategies by 2020, in accordance with Article 4, paragraph 19, of the Paris Agreement.'
           },
           {
-            document_type:
+            'Document type':
               'National GHG Inventory (full inventory and common tabular format)',
-            purpose:
+            Purpose:
               'The inventory covers emissions and removals of direct GHGs (carbon dioxide, methane, nitrous oxide, perfluorocarbons, hydrofluorocarbons, sulphur hexafluoride and nitrogen trifluoride) from five sectors (energy; industrial processes and product use; agriculture; land use, land-use change and forestry; and waste), and for all years from the base year (or period) to two years before the inventory is due (e.g. the inventories due 15 April 2016 cover emissions and removals for all years from the base year to 2014).',
-            submitting_parties: 'Annex I Parties ',
-            frequency:
+            'Submitting Parties': 'Annex I Parties ',
+            Frequency:
               'Annex I Parties are required to submit by April 15 every year. '
           },
           {
-            document_type:
+            'Document type':
               'Strategies and Approaches for Scaling Up Climate Finance ',
-            purpose:
+            Purpose:
               'Strategies and approaches for scaling up finance during the period from 2014 to 2020. ',
-            submitting_parties: 'Annex I Parties ',
-            frequency: 'Every two years. '
+            'Submitting Parties': 'Annex I Parties ',
+            Frequency: 'Every two years. '
           },
           {
-            document_type: 'National Adaptation Plans  ',
-            purpose:
+            'Document type': 'National Adaptation Plans  ',
+            Purpose:
               'NAPs are a means of identifying medium- and long-term adaptation needs and developing and implementing strategies and programs to address those needs. ',
-            submitting_parties: 'All Parties ',
-            frequency:
+            'Submitting Parties': 'All Parties ',
+            Frequency:
               'Not applicable – it is a continuous, progressive and iterative process.  '
           }
         ]

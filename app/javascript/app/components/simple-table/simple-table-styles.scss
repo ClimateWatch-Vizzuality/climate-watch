@@ -1,0 +1,50 @@
+
+@import '~styles/settings';
+@import '~styles/layout';
+
+.header {
+  display: flex;
+  margin-right: 16px;
+
+  span {
+    color: $theme-color;
+    font-family: $font-family-1;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    padding: 30px 10px 15px 0;
+    text-transform: none;
+
+    &:first-child {
+      padding-left: 10px;
+    }
+  }
+}
+
+.scroll {
+  border-top: solid 1px $theme-color-light;
+  display: block;
+  height: 500px;
+  overflow-y: scroll;
+  position: relative;
+
+  > table {
+    background-color: $light-gray;
+    border-collapse: collapse;
+    font-size: $font-size-sm;
+    width: 100%;
+
+    tr {
+      border-bottom: solid 1px #e5e5eb;
+    }
+
+    td {
+      padding: 10px 10px 10px 0;
+      vertical-align: top;
+
+      &:first-child {
+        font-weight: $font-weight-bold;
+        padding-left: 10px;
+      }
+    }
+  }
+}

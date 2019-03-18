@@ -1,9 +1,8 @@
 import React from 'react';
 import renderHTML from 'html-react-parser';
 import PropTypes from 'prop-types';
-import Table from 'components/table';
 import { NavLink } from 'react-router-dom';
-
+import SimpleTable from 'components/simple-table';
 import SideNavigation from 'components/side-navigation';
 
 import styles from './about-faq-styles.scss';
@@ -24,9 +23,7 @@ const replaceNavLink = ({ attribs }) => (
   </NavLink>
 );
 
-const replaceTable = tableData => (
-  <Table data={tableData} horizontalScroll={false} parseHtml />
-);
+const replaceTable = tableData => <SimpleTable data={tableData} />;
 
 const renderAnswer = (type, answer, tableData) => {
   switch (type) {
