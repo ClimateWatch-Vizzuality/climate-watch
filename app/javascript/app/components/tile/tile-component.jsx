@@ -13,11 +13,11 @@ const Tile = ({ category, date, description, link }) => (
     rel="noopener noreferrer"
   >
     <div className={styles.container}>
-      <div className={styles.details}>
-        <span>{category}</span>
-        <span>{date}</span>
-      </div>
       <div className={styles.content}>
+        <div className={styles.details}>
+          <span>{category}</span>
+          <span>{date}</span>
+        </div>
         <Truncate
           className={styles.description}
           lines={4}
@@ -26,11 +26,11 @@ const Tile = ({ category, date, description, link }) => (
         >
           {description}
         </Truncate>
-        <span className={styles.link}>
-          Explore here
-          <Icon icon={arrowTailRight} />
-        </span>
       </div>
+      <span className={styles.link}>
+        Explore here
+        <Icon icon={arrowTailRight} />
+      </span>
     </div>
   </a>
 );
