@@ -10,10 +10,20 @@
   flex-direction: column;
   justify-content: space-between;
 
-  p {
+  .description {
     margin-bottom: 20px;
     max-width: 600px;
     text-align: justify;
+
+    p {
+      margin-bottom: 18px;
+    }
+
+    sub {
+      vertical-align: baseline;
+      position: relative;
+      top: 0.4em;
+    }
   }
 }
 
@@ -40,7 +50,7 @@
   .intro {
     flex-direction: row;
 
-    p {
+    .description {
       margin: 0 40px 0 0;
       width: 50%;
     }
