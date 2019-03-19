@@ -41,9 +41,10 @@ const LandArea = ({
         <div className={styles.cardContainer}>
           <div className={styles.header}>
             <div className={styles.title}>
-              Share of different types of agricultural land as a percentage of
-              total land area in a country. Depending on agricultural intensity,
-              countries devote a different amount of land to agriculture.
+              Land used for agricultural production often uses a significant
+              portion of total land in a country and expanding agricultural land
+              can drive deforestation and emissions growth. See the total
+              percentage of land used for agriculture.
             </div>
             <Icon
               icon={infoIcon}
