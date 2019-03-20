@@ -201,8 +201,8 @@ const getCardsData = createSelector(
       rank: yearData.water_withdrawal_rank
         ? `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank}</span> of 156</p>`
         : '',
-      text: contextsData.water_withdrawal
-        ? `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal} %</span> of total water withdrawn was employed in agricultural activities.</p>`
+      text: yearData.water_withdrawal
+        ? '<p>Globally, 70 percent of all freshwater withdrawn from rivers, lakes and aquifers was used for agriculture. In many regions, baseline water stress coincides with regions  of key crop production, increasing water stress and future risks.</p>'
         : ''
     };
     const fertilizer = {
