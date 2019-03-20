@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global Cw Platform Ndc Sdgs Targets' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX}ndc_sdgs_targets"
+      "#{CW_FILES_PREFIX}sdgs"
     end
 
     def path
