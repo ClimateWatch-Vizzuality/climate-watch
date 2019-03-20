@@ -29,8 +29,7 @@ ActiveAdmin.register_page 'Global CW Platform Documents Timeline' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportTimeline',
-                                                   current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportTimeline', current_admin_user.email)
     end
 
     def section_repository

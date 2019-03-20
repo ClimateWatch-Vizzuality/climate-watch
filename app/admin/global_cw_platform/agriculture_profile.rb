@@ -29,8 +29,7 @@ ActiveAdmin.register_page 'Global CW Platform Agriculture Profile' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportAgricultureProfileß',
-                                                   current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportAgricultureProfile', current_admin_user.email)
     end
 
     def section_repository
