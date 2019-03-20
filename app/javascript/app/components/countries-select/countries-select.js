@@ -76,26 +76,25 @@ class CountrySelectContainer extends PureComponent {
       </svg>
     );
 
-    const markers = [
-      {
-        coordinates: [28.034, -26.1952],
-        link: 'http://southafricaclimateexplorer.org',
-        name: 'South Africa platform',
-        pin
-      },
-      {
-        coordinates: [79.2167, 20.6448],
-        link: 'http://india-platform-staging.vizzuality.com',
-        name: 'India platform',
-        pin
-      },
-      {
-        coordinates: [112.0149, -3.54],
-        link: 'http://indonesia-platform-staging.vizzuality.com',
-        name: 'Indonesia platform',
-        pin
-      }
-    ];
+    const markers = [];
+//      {
+//        coordinates: [28.034, -26.1952],
+//        link: 'http://southafricaclimateexplorer.org',
+//        name: 'South Africa platform',
+//        pin
+//      },
+//      {
+//        coordinates: [79.2167, 20.6448],
+//        link: 'http://india-platform-staging.vizzuality.com',
+//        name: 'India platform',
+//        pin
+//      },
+//      {
+//        coordinates: [112.0149, -3.54],
+//        link: 'http://indonesia-platform-staging.vizzuality.com',
+//        name: 'Indonesia platform',
+//        pin
+//      }
 
     return createElement(CountrySelectComponent, {
       ...this.props,
