@@ -12,7 +12,7 @@ export const siteMapData = [
   {
     title: 'Data',
     links: [
-      { title: 'Explore Datasets', href: '/data-explorer' },
+      { title: 'Data Explorer', href: '/data-explorer' },
       { title: 'My Climate Watch', href: '/my-climate-watch' }
     ]
   },
