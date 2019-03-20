@@ -157,6 +157,24 @@ export const CHART_COLORS_EXTENDED = [
   '#E5E6E8'
 ];
 
+export const GREY_CHART_COLORS = [
+  '#68696B',
+  '#757678',
+  '#808184',
+  '#818285',
+  '#8e8f91',
+  '#999B9E',
+  '#959697',
+  '#a4a5a6',
+  '#ACACB7',
+  '#b3b4b5',
+  '#c2c3c3',
+  '#d1d2d2',
+  '#e0e1e1',
+  '#E3E5EA',
+  '#eff0f0'
+];
+
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
 
 export const DEFAULT_AXES_CONFIG = {
@@ -187,7 +205,7 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
-export const ESP_HIGH_ROWS = ['description'];
+export const ESP_HIGH_ROWS = ['description', 'purpose'];
 export const ESP_MEDIUM_ROWS = [
   'composite_name',
   'definition',
@@ -196,11 +214,12 @@ export const ESP_MEDIUM_ROWS = [
   'socieconomics',
   'policy_coverage',
   'geographic_coverage',
-  'reference'
+  'reference',
+  'acronym'
 ];
 
 export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
-export const ESP_WIDE_COLUMNS = ['description'];
+export const ESP_WIDE_COLUMNS = ['description', 'acronym_definition'];
 
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],
@@ -293,3 +312,7 @@ export const SOURCE_VERSIONS = [
 
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
+
+export const WRI_WEBSITE = 'https://www.wri.org/';
+export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';
+export const RW_WEBSITE = 'https://resourcewatch.org/';

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import BottomBar from 'components/footer/bottom-bar';
+import SiteMap from 'components/footer/site-map-footer';
 import Contact from 'components/contact';
 
 import layout from 'styles/layout.scss';
@@ -17,44 +18,48 @@ class Footer extends PureComponent {
       includeContact,
       includeBottom
     } = this.props;
-    const className = cx(styles.footer, styles.border);
     return (
-      <footer className={className}>
+      <footer>
+        <SiteMap />
         {includePartners && (
-          <div className={cx(layout.content, styles.nav)}>
-            <div>Partners</div>
-            <div className="grid-column-item">
-              <div className={styles.contentWrapper}>
-                <div className="grid-column-item">
-                  <div className={styles.partnersContainer}>
-                    {partners.map(
-                      partner =>
-                        partner.img && (
-                          <div
-                            key={partner.img.alt}
-                            className={styles.logoContainer}
-                          >
-                            <a
-                              className={cx(
-                                styles.logo,
-                                styles[partner.img.customClass] ||
-                                  styles.defaultLogo
-                              )}
-                              href={partner.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
+          <div className={styles.border}>
+            <div className={cx(layout.content, styles.nav)}>
+              <div className={styles.partners}>
+                <span className={styles.partnersHeadline}>Partners</span>
+              </div>
+              <div className="grid-column-item">
+                <div className={styles.contentWrapper}>
+                  <div className="grid-column-item">
+                    <div className={styles.partnersContainer}>
+                      {partners.map(
+                        partner =>
+                          partner.img && (
+                            <div
+                              key={partner.img.alt}
+                              className={styles.logoContainer}
                             >
-                              <img
-                                src={partner.img.src}
-                                alt={partner.img.alt}
-                              />
-                            </a>
-                          </div>
-                        )
-                    )}
+                              <a
+                                className={cx(
+                                  styles.logo,
+                                  styles[partner.img.customClass] ||
+                                    styles.defaultLogo
+                                )}
+                                href={partner.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <img
+                                  src={partner.img.src}
+                                  alt={partner.img.alt}
+                                />
+                              </a>
+                            </div>
+                          )
+                      )}
+                    </div>
                   </div>
+                  {includeContact && <Contact />}
                 </div>
-                {includeContact && <Contact />}
               </div>
             </div>
           </div>

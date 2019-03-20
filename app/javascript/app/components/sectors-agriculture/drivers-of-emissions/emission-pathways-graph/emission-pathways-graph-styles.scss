@@ -1,0 +1,79 @@
+@import '~styles/layout.scss';
+
+$min-height: 450px;
+
+.wrapper {
+  border-bottom: solid 1px $theme-border;
+  min-height: 450px;
+  padding-bottom: 50px;
+}
+
+.titleAndBtnsWrapper {
+  @include columns(6);
+
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  @media #{$tablet-landscape} {
+    > *:last-child {
+      @include column-offset(7.2, $gutters: true);
+    }
+
+    @include columns(2.4);
+  }
+}
+
+.titleAndBtnsWrapper {
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  margin-top: $gutter-padding;
+}
+
+.selectorsWrapper {
+  @media #{$tablet-landscape} {
+    @include columns((8,4));
+  }
+
+  margin-bottom: 40px;
+}
+
+.filtersWrapper {
+  display: inline-flex;
+
+  & > * {
+    margin-right: 20px;
+  }
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: 10px;
+}
+
+.chartWrapper {
+  position: relative;
+  min-height: $min-height;
+}
+
+.loader {
+  min-height: 450px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.noContent {
+  min-height: $min-height;
+}
+
+.clearButton {
+  color: $theme-color;
+  border-bottom: 1px solid $theme-secondary;
+  vertical-align: bottom;
+  font-size: 1em;
+  cursor: pointer;
+}

@@ -184,6 +184,337 @@ ALTER SEQUENCE public.adaptation_variables_id_seq OWNED BY public.adaptation_var
 
 
 --
+-- Name: agriculture_profile_areas; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_areas (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    share_in_land_area_1 double precision,
+    share_in_land_area_2 double precision,
+    share_in_land_area_3 double precision,
+    share_in_land_area_4 double precision,
+    share_in_agricultural_area_1 double precision,
+    share_in_agricultural_area_2 double precision,
+    share_in_agricultural_area_3 double precision,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_areas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_areas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_areas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_areas_id_seq OWNED BY public.agriculture_profile_areas.id;
+
+
+--
+-- Name: agriculture_profile_country_contexts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_country_contexts (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    employment_agri_female double precision,
+    employment_agri_male double precision,
+    employment_agri_total double precision,
+    total_pesticides_use double precision,
+    total_fertilizers double precision,
+    water_withdrawal double precision,
+    water_withdrawal_rank integer,
+    value_added_agr double precision,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_country_contexts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_country_contexts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_country_contexts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_country_contexts_id_seq OWNED BY public.agriculture_profile_country_contexts.id;
+
+
+--
+-- Name: agriculture_profile_emission_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_emission_categories (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    unit character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: agriculture_profile_emission_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_emission_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_emission_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_emission_categories_id_seq OWNED BY public.agriculture_profile_emission_categories.id;
+
+
+--
+-- Name: agriculture_profile_emission_subcategories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_emission_subcategories (
+    id bigint NOT NULL,
+    name character varying,
+    short_name character varying,
+    indicator_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    emission_category_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_emission_subcategories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_emission_subcategories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_emission_subcategories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_emission_subcategories_id_seq OWNED BY public.agriculture_profile_emission_subcategories.id;
+
+
+--
+-- Name: agriculture_profile_emissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_emissions (
+    id bigint NOT NULL,
+    "values" jsonb NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    location_id bigint,
+    emission_subcategory_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_emissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_emissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_emissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_emissions_id_seq OWNED BY public.agriculture_profile_emissions.id;
+
+
+--
+-- Name: agriculture_profile_meat_consumptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_meat_consumptions (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    meat_consumption_1 double precision,
+    meat_consumption_2 double precision,
+    meat_consumption_3 double precision,
+    meat_consumption_4 double precision,
+    meat_consumption_per_capita_1 double precision,
+    meat_consumption_per_capita_2 double precision,
+    meat_consumption_per_capita_3 double precision,
+    meat_consumption_per_capita_4 double precision,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_meat_consumptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_meat_consumptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_meat_consumptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_meat_consumptions_id_seq OWNED BY public.agriculture_profile_meat_consumptions.id;
+
+
+--
+-- Name: agriculture_profile_meat_productions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_meat_productions (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    production_agr_1 integer,
+    production_agr_2 integer,
+    production_agr_3 integer,
+    production_agr_4 integer,
+    production_agr_5 integer,
+    production_agr_6 integer,
+    production_agr_7 integer,
+    production_agr_8 integer,
+    production_agr_9 integer,
+    production_agr_10 integer,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_meat_productions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_meat_productions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_meat_productions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_meat_productions_id_seq OWNED BY public.agriculture_profile_meat_productions.id;
+
+
+--
+-- Name: agriculture_profile_meat_trades; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_meat_trades (
+    id bigint NOT NULL,
+    year integer NOT NULL,
+    trade_import_1 integer,
+    trade_import_2 integer,
+    trade_import_3 integer,
+    trade_import_4 integer,
+    trade_import_5 integer,
+    trade_import_6 integer,
+    trade_import_7 integer,
+    trade_import_8 integer,
+    trade_export_1 integer,
+    trade_export_2 integer,
+    trade_export_3 integer,
+    trade_export_4 integer,
+    trade_export_5 integer,
+    trade_export_6 integer,
+    trade_export_7 integer,
+    trade_export_8 integer,
+    location_id bigint
+);
+
+
+--
+-- Name: agriculture_profile_meat_trades_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_meat_trades_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_meat_trades_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_meat_trades_id_seq OWNED BY public.agriculture_profile_meat_trades.id;
+
+
+--
+-- Name: agriculture_profile_metadata; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agriculture_profile_metadata (
+    id bigint NOT NULL,
+    short_name character varying NOT NULL,
+    indicator character varying NOT NULL,
+    category character varying,
+    subcategory character varying,
+    unit character varying
+);
+
+
+--
+-- Name: agriculture_profile_metadata_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agriculture_profile_metadata_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agriculture_profile_metadata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agriculture_profile_metadata_id_seq OWNED BY public.agriculture_profile_metadata.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1359,6 +1690,39 @@ ALTER SEQUENCE public.timeline_sources_id_seq OWNED BY public.timeline_sources.i
 
 
 --
+-- Name: updates; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.updates (
+    id bigint NOT NULL,
+    category character varying,
+    description text,
+    link character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: updates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.updates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: updates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.updates_id_seq OWNED BY public.updates.id;
+
+
+--
 -- Name: user_stories; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1690,6 +2054,69 @@ ALTER TABLE ONLY public.adaptation_variables ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: agriculture_profile_areas id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_areas ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_areas_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_country_contexts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_country_contexts ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_country_contexts_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_emission_categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_categories ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_emission_categories_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_emission_subcategories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_subcategories ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_emission_subcategories_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_emissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_emissions_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_meat_consumptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_consumptions ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_meat_consumptions_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_meat_productions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_productions ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_meat_productions_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_meat_trades id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_trades ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_meat_trades_id_seq'::regclass);
+
+
+--
+-- Name: agriculture_profile_metadata id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_metadata ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_metadata_id_seq'::regclass);
+
+
+--
 -- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1921,6 +2348,13 @@ ALTER TABLE ONLY public.timeline_sources ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: updates id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.updates ALTER COLUMN id SET DEFAULT nextval('public.updates_id_seq'::regclass);
+
+
+--
 -- Name: user_stories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2078,6 +2512,78 @@ ALTER TABLE ONLY public.adaptation_values
 
 ALTER TABLE ONLY public.adaptation_variables
     ADD CONSTRAINT adaptation_variables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_areas agriculture_profile_areas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_areas
+    ADD CONSTRAINT agriculture_profile_areas_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_country_contexts agriculture_profile_country_contexts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_country_contexts
+    ADD CONSTRAINT agriculture_profile_country_contexts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_emission_categories agriculture_profile_emission_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_categories
+    ADD CONSTRAINT agriculture_profile_emission_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_emission_subcategories agriculture_profile_emission_subcategories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_subcategories
+    ADD CONSTRAINT agriculture_profile_emission_subcategories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_emissions agriculture_profile_emissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions
+    ADD CONSTRAINT agriculture_profile_emissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_meat_consumptions agriculture_profile_meat_consumptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_consumptions
+    ADD CONSTRAINT agriculture_profile_meat_consumptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_meat_productions agriculture_profile_meat_productions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_productions
+    ADD CONSTRAINT agriculture_profile_meat_productions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_meat_trades agriculture_profile_meat_trades_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_trades
+    ADD CONSTRAINT agriculture_profile_meat_trades_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agriculture_profile_metadata agriculture_profile_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_metadata
+    ADD CONSTRAINT agriculture_profile_metadata_pkey PRIMARY KEY (id);
 
 
 --
@@ -2377,6 +2883,14 @@ ALTER TABLE ONLY public.timeline_sources
 
 
 --
+-- Name: updates updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.updates
+    ADD CONSTRAINT updates_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: user_stories user_stories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2498,10 +3012,66 @@ CREATE UNIQUE INDEX index_adaptation_variables_on_slug ON public.adaptation_vari
 
 
 --
+-- Name: index_agriculture_profile_areas_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_areas_on_location_id ON public.agriculture_profile_areas USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_country_contexts_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_country_contexts_on_location_id ON public.agriculture_profile_country_contexts USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_emissions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_emissions_on_location_id ON public.agriculture_profile_emissions USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_meat_consumptions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_meat_consumptions_on_location_id ON public.agriculture_profile_meat_consumptions USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_meat_productions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_meat_productions_on_location_id ON public.agriculture_profile_meat_productions USING btree (location_id);
+
+
+--
+-- Name: index_agriculture_profile_meat_trades_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agriculture_profile_meat_trades_on_location_id ON public.agriculture_profile_meat_trades USING btree (location_id);
+
+
+--
 -- Name: index_datasets_on_section_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_datasets_on_section_id ON public.datasets USING btree (section_id);
+
+
+--
+-- Name: index_emission_subcategories_on_emission_category_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_emission_subcategories_on_emission_category_id ON public.agriculture_profile_emission_subcategories USING btree (emission_category_id);
+
+
+--
+-- Name: index_emissions_on_emission_subcategory_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_emissions_on_emission_subcategory_id ON public.agriculture_profile_emissions USING btree (emission_subcategory_id);
 
 
 --
@@ -3046,6 +3616,14 @@ ALTER TABLE ONLY public.indc_indicators_categories
 
 
 --
+-- Name: agriculture_profile_emissions fk_rails_0b1be4fa79; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions
+    ADD CONSTRAINT fk_rails_0b1be4fa79 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: historical_emissions_records fk_rails_0c4499c126; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3075,6 +3653,14 @@ ALTER TABLE ONLY public.ndcs
 
 ALTER TABLE ONLY public.indc_categories
     ADD CONSTRAINT fk_rails_2684980181 FOREIGN KEY (parent_id) REFERENCES public.indc_categories(id) ON DELETE CASCADE;
+
+
+--
+-- Name: agriculture_profile_meat_consumptions fk_rails_2778e7bbae; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_consumptions
+    ADD CONSTRAINT fk_rails_2778e7bbae FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -3118,6 +3704,14 @@ ALTER TABLE ONLY public.ndc_sdg_ndc_target_sectors
 
 
 --
+-- Name: agriculture_profile_emissions fk_rails_44759b2043; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emissions
+    ADD CONSTRAINT fk_rails_44759b2043 FOREIGN KEY (emission_subcategory_id) REFERENCES public.agriculture_profile_emission_subcategories(id);
+
+
+--
 -- Name: indc_submissions fk_rails_47352eee01; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3131,6 +3725,14 @@ ALTER TABLE ONLY public.indc_submissions
 
 ALTER TABLE ONLY public.wb_extra_country_data
     ADD CONSTRAINT fk_rails_498e2daf90 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
+-- Name: agriculture_profile_country_contexts fk_rails_49fb2d23cb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_country_contexts
+    ADD CONSTRAINT fk_rails_49fb2d23cb FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -3206,6 +3808,14 @@ ALTER TABLE ONLY public.ndc_sdg_ndc_targets
 
 
 --
+-- Name: agriculture_profile_meat_trades fk_rails_98f6b5f058; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_trades
+    ADD CONSTRAINT fk_rails_98f6b5f058 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: visualizations fk_rails_a3de285f9a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3235,6 +3845,14 @@ ALTER TABLE ONLY public.ndc_sdg_targets
 
 ALTER TABLE ONLY public.wri_metadata_values
     ADD CONSTRAINT fk_rails_b2362e90f1 FOREIGN KEY (source_id) REFERENCES public.wri_metadata_sources(id) ON DELETE CASCADE;
+
+
+--
+-- Name: agriculture_profile_emission_subcategories fk_rails_b33836128c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_emission_subcategories
+    ADD CONSTRAINT fk_rails_b33836128c FOREIGN KEY (emission_category_id) REFERENCES public.agriculture_profile_emission_categories(id);
 
 
 --
@@ -3310,6 +3928,14 @@ ALTER TABLE ONLY public.location_members
 
 
 --
+-- Name: agriculture_profile_areas fk_rails_c88d9f613e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_areas
+    ADD CONSTRAINT fk_rails_c88d9f613e FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: historical_emissions_records fk_rails_d47c0f188e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3323,6 +3949,14 @@ ALTER TABLE ONLY public.historical_emissions_records
 
 ALTER TABLE ONLY public.historical_emissions_records
     ADD CONSTRAINT fk_rails_d6211ecb28 FOREIGN KEY (data_source_id) REFERENCES public.historical_emissions_data_sources(id) ON DELETE CASCADE;
+
+
+--
+-- Name: agriculture_profile_meat_productions fk_rails_d7299d20dc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agriculture_profile_meat_productions
+    ADD CONSTRAINT fk_rails_d7299d20dc FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE CASCADE;
 
 
 --
@@ -3501,6 +4135,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181009120234'),
 ('20181026095008'),
 ('20181114113643'),
-('20181119171426');
+('20181119171426'),
+('20181205151353'),
+('20181205152900'),
+('20181205161151'),
+('20181218163254'),
+('20181219173718'),
+('20181226160920'),
+('20181227100559'),
+('20181227144108');
 
 

@@ -1,0 +1,100 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.container {
+  width: 100%;
+  margin-top: $gutter-padding;
+  margin-bottom: $gutter-padding;
+}
+
+.cardContainer {
+  display: block;
+  padding: 15px 30px;
+}
+
+.chartContainer {
+  margin-top: 30px;
+}
+
+.legend {
+  margin-top: 15px;
+}
+
+.chart {
+  margin-top: -50px;
+  margin-right: 50px;
+}
+
+.tag {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  flex-grow: 0;
+}
+
+.label {
+  padding: 5px 0;
+  margin-right: 8px;
+  width: max-content;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 35px;
+}
+
+.cardInfoIcon {
+  fill: $manatee;
+}
+
+.card {
+  height: 760px;
+  width: 100%;
+}
+
+.data {
+  padding-top: 20px;
+  position: relative;
+}
+
+.title {
+  max-width: 500px;
+  color: $manatee;
+  font-size: $font-size;
+  line-height: 26px;
+}
+
+.yearData {
+  position: absolute;
+  color: $manatee;
+  right: 30px;
+  bottom: 20px;
+  font-size: $font-size-s;
+
+  span {
+    color: $theme-color;
+  }
+}
+
+.actionsContainer {
+  @include columns(6,6);
+
+  @media #{$tablet-landscape} {
+    @include columns(3,3,6);
+  }
+}
+
+.dropdown {
+  background-color: $white;
+}
+
+.contentContainer {
+  padding: 15px 30px;
+}
