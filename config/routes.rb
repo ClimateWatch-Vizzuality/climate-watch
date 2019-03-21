@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 
       resources :stories, only: [:index]
       resources :lse_laws_and_policies, only: [:show]
+      resources :updates, only: [:index]
 
       namespace :data do
         resources :historical_emissions, only: [:index] do
@@ -90,6 +91,14 @@ Rails.application.routes.draw do
           resources :categories, only: [:index]
           resources :labels, only: [:index]
           resources :sectors, only: [:index]
+        end
+        namespace :agriculture_profile, only: [:index] do
+          resources :emissions, only: [:index]
+          resources :country_contexts, only: [:index]
+          resources :areas, only: [:index]
+          resources :meat_consumptions, only: [:index]
+          resources :meat_productions, only: [:index]
+          resources :meat_trades, only: [:index]
         end
       end
 

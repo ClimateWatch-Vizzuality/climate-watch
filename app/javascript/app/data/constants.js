@@ -157,6 +157,24 @@ export const CHART_COLORS_EXTENDED = [
   '#E5E6E8'
 ];
 
+export const GREY_CHART_COLORS = [
+  '#68696B',
+  '#757678',
+  '#808184',
+  '#818285',
+  '#8e8f91',
+  '#999B9E',
+  '#959697',
+  '#a4a5a6',
+  '#ACACB7',
+  '#b3b4b5',
+  '#c2c3c3',
+  '#d1d2d2',
+  '#e0e1e1',
+  '#E3E5EA',
+  '#eff0f0'
+];
+
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
 
 export const DEFAULT_AXES_CONFIG = {
@@ -187,7 +205,7 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
-export const ESP_HIGH_ROWS = ['description'];
+export const ESP_HIGH_ROWS = ['description', 'purpose'];
 export const ESP_MEDIUM_ROWS = [
   'composite_name',
   'definition',
@@ -200,7 +218,7 @@ export const ESP_MEDIUM_ROWS = [
 ];
 
 export const ESP_NARROW_COLUMNS = ['year', 'unit', 'first', 'last'];
-export const ESP_WIDE_COLUMNS = ['description'];
+export const ESP_WIDE_COLUMNS = ['description', 'acronym_definition'];
 
 export const FILTERS_BY_CATEGORY = {
   models: ['country'],
@@ -293,3 +311,75 @@ export const SOURCE_VERSIONS = [
 
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
+
+export const WRI_WEBSITE = 'https://www.wri.org/';
+export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';
+export const RW_WEBSITE = 'https://resourcewatch.org/';
+
+export const AGRICULTURE_INDICATORS_NAMES = {
+  total_pesticides_use: 'Pesticides consumption',
+  total_fertilizers: 'Fertilizers consumption',
+  value_added_agr: 'Agriculture value added',
+  water_withdrawal: 'Water withdrawal',
+  employment_agri_female: 'Female employment',
+  employment_agri_male: 'Male employment',
+  employment_agri_total: 'Total employment'
+};
+
+export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
+  total_pesticides_use: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '0 - 10 tonnes', index: 1 },
+    3: { name: '10 - 100 tonnes', index: 2 },
+    4: { name: '100 - 1,000 tonnes', index: 3 },
+    5: { name: '> 1,000 tonnes', index: 4 }
+  },
+  total_fertilizers: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '0 - 10 tonnes', index: 1 },
+    3: { name: '10 - 100 tonnes', index: 2 },
+    4: { name: '100 - 1,000 tonnes', index: 3 },
+    5: { name: '> 1,000 tonnes', index: 4 }
+  },
+  value_added_agr: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  },
+  water_withdrawal: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  },
+  employment_agri_female: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  },
+  employment_agri_male: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  },
+  employment_agri_total: {
+    1: { name: 'No data', index: 0 },
+    2: { name: '< 5%', index: 1 },
+    3: { name: '5% - 20%', index: 2 },
+    4: { name: '20% - 50%', index: 3 },
+    5: { name: '> 50%', index: 4 }
+  }
+};
+
+export const METRIC_OPTIONS = {
+  ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },
+  PER_CAPITA: { label: 'per Capita', value: 'PER_CAPITA' },
+  PER_GDP: { label: 'per GDP', value: 'PER_GDP' }
+};

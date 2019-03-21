@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Wri Metadata' do
+ActiveAdmin.register_page 'Global CW Platform WRI Metadata' do
   include DataUploader::SharedAdmin
 
   section_name = 'wri_metadata'
@@ -29,8 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Wri Metadata' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWriMetadata',
-                                                   current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWriMetadata', current_admin_user.email)
     end
 
     def section_repository

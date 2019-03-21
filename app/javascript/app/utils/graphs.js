@@ -8,6 +8,8 @@ import { getNiceTickValues } from 'recharts-scale';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
+import isEmpty from 'lodash/isEmpty';
+import { OTHER_COLOR, METRIC_OPTIONS } from 'data/constants';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -87,6 +89,21 @@ export const getThemeConfig = (columns, colors) => {
   return theme;
 };
 
+export const getPieChartThemeConfig = (columns, colors) => {
+  const theme = {};
+  columns.forEach((column, i) => {
+    const index = column.index || i;
+    const correctedIndex =
+      index < colors.length ? index : index - colors.length;
+    theme[column.value] = {
+      label: column.label,
+      stroke: colors[correctedIndex],
+      fill: colors[correctedIndex]
+    };
+  });
+  return theme;
+};
+
 export const getTooltipConfig = columns => {
   const tooltip = {};
   columns.forEach(column => {
@@ -146,3 +163,17 @@ export function getCustomTicks(
     ticks: getNiceTickValues([minValue, maxValue], tickNumber, decimals)
   };
 }
+
+export const getMetricRatio = (selected, calculationData, x) => {
+  if (!calculationData || !calculationData[x]) return 1;
+  if (selected === METRIC_OPTIONS.PER_GDP.value) {
+    // GDP is in dollars and we want to display it in million dollars
+    // emissions is in MtC02e and we want to display it in tCO2e (1MtC02e = 1000000 tC02e)
+    return calculationData[x].gdp / (1000000 * 1000000);
+  }
+  if (selected === METRIC_OPTIONS.PER_CAPITA.value) {
+    // emissions is in MtC02e and we want to display it in tCO2e (1MtC02e = 1000000 tC02e)
+    return calculationData[x].population / 1000000;
+  }
+  return 1;
+};

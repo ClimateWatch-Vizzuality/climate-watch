@@ -19,7 +19,7 @@ export const getDefaultColumns = createSelector([getCategory], category => {
     case 'models':
       return [
         'full_name',
-        'maintainer_institute',
+        'maintained_by',
         'geographic_coverage',
         'time_horizon',
         'url'
@@ -205,7 +205,10 @@ export const renameDataColumns = createSelector(
     if (!data || isEmpty(data)) return null;
     if (category === 'models') {
       let renamedData = data;
-      const changes = [{ old: 'maintainer_name', new: 'developed_by' }];
+      const changes = [
+        { old: 'maintainer_name', new: 'developed_by' },
+        { old: 'maintainer_institute', new: 'maintained_by' }
+      ];
       renamedData = renamedData.map(d => {
         const updatedD = d;
         changes.forEach(change => {

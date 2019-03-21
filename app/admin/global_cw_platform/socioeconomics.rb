@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Socioeconomics' do
+ActiveAdmin.register_page 'Global CW Platform Socioeconomics' do
   include DataUploader::SharedAdmin
 
   section_name = 'socioeconomics'
@@ -29,8 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Socioeconomics' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportSocioeconomics',
-                                                   current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportSocioeconomics', current_admin_user.email)
     end
 
     def section_repository

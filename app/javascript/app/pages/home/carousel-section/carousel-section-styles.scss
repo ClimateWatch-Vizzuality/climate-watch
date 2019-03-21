@@ -1,0 +1,134 @@
+@import '~styles/ui-extends.scss';
+@import '~styles/layout.scss';
+
+.container {
+  background-image: linear-gradient(to top, #{$light-gray} 80%, rgb(255, 255, 255) 75%);
+  padding: 0 0 70px;
+
+  > * {
+    @include row();
+  }
+}
+
+.slideWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.slideTitle {
+  font-weight: $font-weight-light;
+  font-size: $font-size-x-large;
+  color: $theme-color;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.slideParagraph {
+  @extend %bodyText;
+
+  color: $theme-color;
+  text-align: center;
+  padding-bottom: 30px;
+  max-width: 90%;
+  line-height: 26px;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  > * {
+    margin-bottom: 20px;
+  }
+
+  @media #{$tablet-portrait} {
+    flex-direction: row;
+    align-items: flex-end;
+    > * {
+      margin: 0 10px;
+    }
+  }
+}
+
+.button {
+  width: 300px;
+}
+
+.bottomSlideContainer {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  max-height: 40vh;
+  min-height: 350px;
+}
+
+:global .cwCarouselPaging {
+  li {
+    font-size: 0;
+    height: $font-size-s;
+    width: $font-size-s;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 50%;
+    background-color: $gray;
+    margin: 0 10px;
+
+    &.slick-active {
+      background: $theme-color;
+      > ::after {
+        background-color: unset !important;
+      }
+    }
+
+    @media #{$tablet-portrait} {
+      font-size: $font-size-s;
+      height: auto;
+      width: auto;
+      padding: 0 35px !important;
+      border-bottom: 3px solid rgba(10, 25, 65, 0.2) !important;
+      border-radius: 0;
+      background: none;
+      margin: 0;
+
+      &.slick-active {
+        background: none;
+        > ::after {
+          background-color: $theme-color-intense !important;
+        }
+      }
+      > * {
+        height: 100%;
+      }
+    }
+
+    &:first-child {
+      padding-left: 0 !important;
+    }
+
+    &:last-child {
+      padding-right: 0 !important;
+    }
+  }
+}
+
+.geoLocation {
+  display: block;
+  opacity: 1;
+  font-size: $font-size-s;
+  color: $dark-gray;
+  margin-bottom: 10px;
+}
+
+.geoLocationHide {
+  opacity: 0;
+}

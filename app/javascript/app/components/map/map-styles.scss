@@ -40,3 +40,13 @@
     cursor: pointer;
   }
 }
+
+:global .rsm-marker--hover {
+  #svgRectangle {
+    opacity: 1 !important;
+  }
+
+  #platformName {
+    opacity: 1 !important;
+  }
+}

@@ -1,0 +1,63 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.filtersLayout {
+  margin-bottom: 40px;
+}
+
+.column {
+  @include columns();
+}
+
+.legend {
+  position: absolute;
+  left: 0;
+  bottom: 12%;
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+@media #{$tablet-portrait} {
+  .filtersLayout {
+    @include columns(6);
+  }
+}
+
+@media #{$tablet-landscape} {
+  .filtersLayout {
+    @include columns((10,2));
+  }
+
+  .filtersGroup {
+    @include columns((4,4,4));
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+
+  .buttonGroup {
+    @include column-offset(6, $gutters: true);
+
+    margin-top: 20px;
+  }
+
+  .legend {
+    bottom: 0;
+  }
+}

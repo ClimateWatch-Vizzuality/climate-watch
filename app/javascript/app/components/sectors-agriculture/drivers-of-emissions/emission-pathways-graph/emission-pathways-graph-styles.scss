@@ -1,0 +1,102 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+$min-height: 450px;
+
+.wrapper {
+  border-bottom: solid 1px $theme-border;
+  min-height: 450px;
+  padding-bottom: 50px;
+}
+
+.titleAndBtnsWrapper {
+  @include columns(6);
+
+  > * {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+}
+
+.titleAndBtnsWrapper {
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  margin-top: $gutter-padding;
+}
+
+.selectorsWrapper {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-weight: $font-weight;
+  color: $theme-color;
+  margin-bottom: 10px;
+}
+
+.chartWrapper {
+  position: relative;
+  min-height: $min-height;
+}
+
+.loader {
+  min-height: 450px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.noContent {
+  min-height: $min-height;
+}
+
+.clearButton {
+  color: $theme-color;
+  border-bottom: 1px solid $theme-secondary;
+  vertical-align: bottom;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.filtersGroup {
+  > * {
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
+  }
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns((6, 6, 6));
+  }
+}
+
+@media #{$tablet-landscape} {
+  .filtersGroup {
+    @include columns((4, 4, 4));
+
+    > * {
+      @include xy-gutters(30px, $gutter-position: ('bottom', 'right'));
+
+      &:first-child {
+        @include xy-gutters(0, $gutter-position: 'left');
+      }
+    }
+  }
+
+  .titleAndBtnsWrapper {
+    > *:last-child {
+      @include column-offset(7.2, $gutters: true);
+    }
+
+    @include columns(2.4);
+  }
+
+  .selectorsWrapper {
+    @include columns((8,4));
+  }
+
+  .buttonGroupContainer {
+    @include xy-gutters(30px, $gutter-position: ('bottom'));
+  }
+}

@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2'
+gem 'rails', '5.2.2'
 gem 'bootsnap'
 
 gem 'sprockets',  '~> 3.7.2'
@@ -100,7 +100,8 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 git 'https://github.com/ClimateWatch-Vizzuality/climate-watch-gems.git' do
-  gem 'cw_data_uploader', '~> 0.4.2', require: 'data_uploader'
+  gem 'cw_data_uploader', '~> 0.4.3', require: 'data_uploader'
+  gem 'climate_watch_engine', '~> 1.4.3'
 end
 
 # for debugging

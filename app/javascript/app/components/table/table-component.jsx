@@ -117,6 +117,7 @@ class SimpleTable extends PureComponent {
                     label={deburrCapitalize(column)}
                     dataKey={column}
                     flexGrow={flexGrow}
+                    maxWidth={setColumnWidth(column)}
                     width={setColumnWidth(column)}
                     cellRenderer={cell =>
                       cellRenderer({ props: this.props, cell })}

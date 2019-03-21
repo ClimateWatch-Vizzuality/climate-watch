@@ -1,0 +1,83 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.page {
+  @include row();
+}
+
+.title {
+  color: $theme-color;
+  font-size: $font-size-large;
+  font-weight: normal;
+}
+
+.descriptionWrapper {
+  display: flex;
+  margin: {
+    top: 20px;
+    bottom: 50px;
+  }
+
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.description {
+  color: $theme-color;
+  font-size: $font-size;
+  max-width: 600px;
+  margin: 0 0 30px;
+  text-align: justify;
+}
+
+.button {
+  max-width: 210px;
+}
+
+.logosContainer {
+  margin-bottom: 50px;
+}
+
+.partnerWrapper {
+  margin-bottom: 50px;
+}
+
+.partnerDescription {
+  margin-top: 10px;
+  color: $ebony-clay;
+  font-size: $font-size-sm;
+  line-height: 20px;
+}
+
+.imgContainer {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+@media #{$tablet-portrait} {
+  .descriptionWrapper {
+    flex-direction: row;
+  }
+
+  .description {
+    margin: 0 20px 0 0;
+  }
+
+  .logosContainer {
+    @include columns(6);
+  }
+
+  .partnerWrapper {
+    margin-bottom: 0;
+    padding: 20px;
+  }
+}
+
+@media #{$tablet-landscape} {
+  .logosContainer {
+    @include columns(4);
+  }
+}

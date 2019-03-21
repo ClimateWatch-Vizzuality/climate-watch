@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global Cw Platform Wb Extra' do
+ActiveAdmin.register_page 'Global CW Platform World Bank Extra' do
   include DataUploader::SharedAdmin
 
   section_name = 'wb_extra'
@@ -29,8 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Wb Extra' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWbExtra',
-                                                   current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportWbExtra', current_admin_user.email)
     end
 
     def section_repository

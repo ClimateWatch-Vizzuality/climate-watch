@@ -4,6 +4,7 @@ import facebookIcon from 'assets/icons/facebook.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
 import mailIcon from 'assets/icons/mail.svg';
 import linkIcon from 'assets/icons/link.svg';
+import { actions } from 'components/hamburger';
 import copy from 'copy-to-clipboard';
 import { withRouter } from 'react-router';
 import Component from './tools-nav-component';
@@ -40,4 +41,4 @@ const mapStateToProps = () => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, null)(Component));
+export default withRouter(connect(mapStateToProps, actions)(Component));

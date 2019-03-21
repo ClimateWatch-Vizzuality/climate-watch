@@ -27,7 +27,9 @@ class CountriesSelect extends PureComponent {
       onCountryClick,
       onCountryMouseEnter,
       onCountryMouseLeave,
-      handleClickAnalytics
+      handleClickAnalytics,
+      handleMarkerClick,
+      markers
     } = this.props;
 
     return (
@@ -71,6 +73,8 @@ class CountriesSelect extends PureComponent {
                   zoomEnable={false}
                   className={styles.map}
                   onCountryClick={onCountryClick}
+                  markers={markers}
+                  handleMarkerClick={handleMarkerClick}
                   customCenter={[20, 15]}
                   dragEnable={false}
                 />
@@ -92,6 +96,8 @@ CountriesSelect.propTypes = {
   onCountryMouseEnter: Proptypes.func.isRequired,
   onCountryMouseLeave: Proptypes.func.isRequired,
   handleClickAnalytics: Proptypes.func.isRequired,
+  handleMarkerClick: Proptypes.func.isRequired,
+  markers: Proptypes.array,
   opened: Proptypes.bool,
   isCompareVisible: Proptypes.bool,
   countriesList: Proptypes.array,

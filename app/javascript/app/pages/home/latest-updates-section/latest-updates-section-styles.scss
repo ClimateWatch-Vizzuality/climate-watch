@@ -1,0 +1,35 @@
+@import '~styles/settings.scss';
+@import '~styles/ui-extends.scss';
+@import '~styles/layout.scss';
+
+.tilesGroup {
+  display: inline-flex;
+  width: 100%;
+  overflow-x: auto;
+  height: 340px;
+  align-items: center;
+}
+
+.section {
+  @include row();
+
+  background-color: $white;
+  padding-top: 60px;
+  width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .sectionTitle {
+    font-size: $font-size-x-large;
+    font-weight: $font-weight-light;
+    margin-bottom: 20px;
+    color: $theme-color;
+  }
+}
+
+.noContent {
+  width: 100%;
+}

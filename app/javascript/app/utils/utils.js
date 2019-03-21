@@ -206,6 +206,11 @@ export function noEmptyValues(object) {
   return noEmptyResult;
 }
 
+export function precentageTwoPlacesRound(percentage) {
+  if (!percentage) return null;
+  return Math.round(percentage * 10) / 10;
+}
+
 export default {
   compareIndexByKey,
   deburrUpper,
@@ -219,5 +224,6 @@ export default {
   replaceAll,
   findEqual,
   isANumber,
-  noEmptyValues
+  noEmptyValues,
+  precentageTwoPlacesRound
 };

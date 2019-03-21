@@ -24,17 +24,19 @@ const renderTrendLine = (chartData, titleLink) => {
 };
 
 const cellRenderer = ({
-  props: { parseHtml, titleLinks, trendLine, emptyValueLabel },
+  props: { parseHtml, titleLinks, trendLine, emptyValueLabel, data, urlInData },
   cell
 }) => {
   let { cellData } = cell;
   const { rowIndex, dataKey } = cell;
   cellData = sanitize(cellData);
+
   // check for TitleLink
-  const titleLink =
-    titleLinks &&
-    titleLinks[rowIndex] &&
-    titleLinks[rowIndex].find(t => t.columnName === dataKey);
+  const titleLink = urlInData
+    ? data.find(c => c.country === cellData) || undefined
+    : titleLinks &&
+      titleLinks[rowIndex] &&
+      titleLinks[rowIndex].find(t => t.columnName === dataKey);
 
   // check for Trendline
   if (trendLine && dataKey === trendLine) {
@@ -46,7 +48,9 @@ const cellRenderer = ({
         {cellData}
       </a>
     ) : (
-      <NavLink to={titleLink.url}>{cellData}</NavLink>
+      <NavLink to={urlInData ? titleLink.urlNotShow : titleLink.url}>
+        {cellData}
+      </NavLink>
     );
   }
   // render Html or finally cellData
@@ -69,7 +73,8 @@ cellRenderer.propTypes = {
     titleLinks: PropTypes.array, // [ [ {columnName: 'title field name in the table', url:'/destination-url' or 'self'}, ... ] ]
     trendLine: PropTypes.string, // 'field name of the trend line column'
     parseHtml: PropTypes.bool,
-    emptyValueLabel: PropTypes.string
+    emptyValueLabel: PropTypes.string,
+    urlInData: PropTypes.bool
   })
 };
 

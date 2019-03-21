@@ -7,7 +7,6 @@ import About from 'pages/about';
 import CountryIndex from 'pages/country-index';
 import CountriesSelect from 'components/countries-select';
 import CountryCompare from 'pages/country-compare';
-import Sectors from 'pages/sectors';
 import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountry from 'pages/ndc-country';
 import NDCCompare from 'pages/ndc-compare';
@@ -22,6 +21,8 @@ import MyClimateWatch from 'pages/my-climate-watch';
 import DataExplorer from 'pages/data-explorer';
 import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
+import Sectors from 'pages/sectors';
+import SectorsAgriculture from 'pages/sectors-agriculture';
 
 // routes
 import NDCSRoutes from './NDCS-routes';
@@ -30,9 +31,11 @@ import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSContentRoutes from './NDCSContent-routes';
 import MyCwRoutes from './my-cw-routes';
 import DataExplorerRoutes from './data-explorer-routes';
-import aboutRoutes from './about-routes';
+import AboutRoutes from './about-routes';
+import AboutNestedRoutes from './about-nested-routes';
 import emissionPathwaysRoutes from './emission-pathways-routes';
 import emissionPathwaysModelRoutes from './emission-pathways-model-routes';
+import sectorsRoutes from './sectors-routes';
 
 // sections
 import countrySections from './country-sections';
@@ -40,7 +43,9 @@ import emissionPathwaysModelSections from './emission-pathways-model-sections';
 import emissionPathwaysScenarioSections from './emission-pathways-scenario-sections';
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
+import agricultureSections from './sectors-agriculture-sections';
 
+const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 export default [
   {
     path: '/',
@@ -66,12 +71,29 @@ export default [
     headerColor: '#045F61',
     sections: countryCompareSections
   },
-  {
-    path: '/sectors',
-    component: Sectors,
-    exact: true,
-    nav: true,
-    label: 'SECTORS'
+  FEATURE_AGRICULTURE
+    ? {
+      nav: true,
+      label: 'SECTORS',
+      routes: sectorsRoutes
+    }
+    : {
+      path: '/sectors',
+      component: Sectors,
+      exact: true,
+      nav: true,
+      label: 'SECTORS'
+    },
+  FEATURE_AGRICULTURE && {
+    path: '/sectors/agriculture',
+    component: SectorsAgriculture,
+    headerImage: 'sectors-agriculture',
+    headerColor: '#0677B3',
+    sections: agricultureSections
+  },
+  FEATURE_AGRICULTURE && {
+    path: '/sectors/coming-soon',
+    component: Sectors
   },
   {
     path: '/ndcs/country/:iso/full',
@@ -181,11 +203,15 @@ export default [
   {
     path: '/about',
     component: About,
-    nav: true,
     label: 'ABOUT',
     headerImage: 'about',
     headerColor: '#113750',
-    routes: aboutRoutes
+    routes: AboutRoutes
+  },
+  {
+    nav: true,
+    label: 'ABOUT',
+    routes: AboutNestedRoutes
   },
   {
     path: '/error-page',
@@ -197,13 +223,11 @@ export default [
   },
   {
     path: '/my-climate-watch',
-    label: 'MY CW',
-    navMobile: true
+    label: 'MY CW'
   },
   {
     path: '/data-explorer',
-    label: 'DATA EXPLORER',
-    navMobile: true
+    label: 'DATA EXPLORER'
   },
   {
     path: '/',

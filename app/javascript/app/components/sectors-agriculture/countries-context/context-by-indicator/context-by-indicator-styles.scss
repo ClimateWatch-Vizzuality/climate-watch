@@ -1,0 +1,156 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.actionsContainer {
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  align-items: flex-end;
+}
+
+.visualizationsContainer {
+  @include columns();
+}
+
+.topTenSection {
+  min-height: 160px;
+
+  .title {
+    color: $theme-color;
+    font-weight: $font-weight-bold;
+    margin-bottom: 40px;
+  }
+
+  .noData {
+    color: $theme-color;
+  }
+}
+
+.countryData {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 95%;
+
+  span {
+    position: relative;
+
+    &::before {
+      position: absolute;
+      content: attr(data-label);
+      color: $theme-color;
+      width: max-content;
+      top: -20px;
+    }
+
+    &::after {
+      content: attr(data-value);
+      position: absolute;
+      color: $dark-gray;
+      font-size: $font-size-sm;
+      right: 0;
+      top: -3px;
+      transform: translateX(130%);
+    }
+  }
+
+  .value {
+    color: $dark-gray;
+    font-size: $font-size-sm;
+    padding-left: 10px;
+  }
+}
+
+.btnGroup {
+  width: 100%;
+
+  @include xy-gutters(30px, $gutter-position: 'bottom');
+}
+
+.legend {
+  position: relative;
+  left: 0;
+  bottom: 130px;
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.filtersGroup {
+  @include columns(12);
+
+  > * {
+    @include xy-gutters(30px, $gutter-position: 'bottom');
+  }
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns((6,6));
+  }
+}
+
+@media #{$tablet-landscape} {
+  .actionsContainer {
+    @include columns((10, 2));
+  }
+
+  .filtersGroup {
+    @include columns((4, 4, 4));
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+
+  .filtersLayout {
+    @include columns(3);
+  }
+
+  .legend {
+    top: -160px;
+  }
+
+  .visualizationsContainer {
+    @include columns((8, 3));
+
+    > *:last-child {
+      @include column-offset(1, $gutters: true);
+    }
+  }
+
+  .topTenSection {
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+
+  .countryData {
+    margin-bottom: 15px;
+    width: 100%;
+
+    span::before {
+      padding-right: 15px;
+      transform: translate(-100%, 0);
+      top: -5px;
+      max-width: 151px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}

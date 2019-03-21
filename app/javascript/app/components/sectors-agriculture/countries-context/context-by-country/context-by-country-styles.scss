@@ -1,0 +1,95 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.container {
+  @include row(12);
+
+  margin-top: $gutter-padding;
+  margin-bottom: $gutter-padding;
+}
+
+.intro {
+  @include columns((6 , 5));
+
+  margin-bottom: 40px;
+
+  > *:last-child {
+    @include column-offset(1, $gutters: true);
+  }
+}
+
+.header {
+  color: $theme-color;
+  font-weight: $font-weight;
+  margin-bottom: 12px;
+}
+
+.introText {
+  color: $theme-color;
+}
+
+.switchWrapper {
+  display: flex;
+  justify-content: flex-end;
+  height: 40px;
+}
+
+.switchOption {
+  display: flex;
+  align-items: center;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xs;
+  line-height: $font-size-sm;
+  letter-spacing: 1px;
+}
+
+.switchSelected {
+  background-color: $theme-color;
+}
+
+.actionsContainer {
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.filtersGroup {
+  @include columns(12);
+
+  > * {
+    @include xy-gutters(30px, $gutter-position: 'bottom');
+  }
+}
+
+.dataContainer {
+  display: flex;
+  flex-direction: column;
+  height: 45px;
+  padding-top: 5px;
+  justify-content: space-around;
+}
+
+.btnGroup {
+  width: 100%;
+
+  @include xy-gutters(30px, $gutter-position: 'bottom');
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns((6,6));
+  }
+}
+
+@media #{$tablet-landscape} {
+  .filtersGroup {
+    @include columns((4, 4, 4));
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+
+  .actionsContainer {
+    @include columns((10, 2));
+  }
+}

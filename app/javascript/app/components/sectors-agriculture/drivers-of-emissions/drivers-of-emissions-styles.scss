@@ -1,0 +1,52 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.content {
+  margin-top: 45px;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  p {
+    margin-bottom: 20px;
+    max-width: 600px;
+    text-align: justify;
+  }
+}
+
+.header {
+  color: $theme-color;
+  margin-bottom: 30px;
+
+  h2 {
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+}
+
+.switchWrapper {
+  height: max-content;
+  max-width: max-content;
+}
+
+.switchSelected {
+  background-color: $theme-color;
+}
+
+@media #{$tablet-landscape} {
+  .intro {
+    flex-direction: row;
+
+    p {
+      margin: 0 40px 0 0;
+      width: 50%;
+    }
+  }
+
+  .switchWrapper {
+    width: unset;
+  }
+}

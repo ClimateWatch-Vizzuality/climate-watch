@@ -1,0 +1,19 @@
+@import '~styles/settings.scss';
+
+.value {
+  color: $manatee;
+  font-size: $font-size-sm;
+}
+
+.tag {
+  border: none;
+  box-shadow: none;
+  color: $theme-color;
+  font-size: $font-size;
+}
+
+.tooltip {
+  background: white;
+  box-shadow: 0 5px 15px 0 rgba(71,44,184,0.1);
+  padding: 15px;
+}
