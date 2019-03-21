@@ -34,7 +34,7 @@ node {
 
   if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
-    user_report_key = '5fe46fa7-c7e6-40e6-8e48-37479c4599f1'
+    user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
   }
 
   try {
