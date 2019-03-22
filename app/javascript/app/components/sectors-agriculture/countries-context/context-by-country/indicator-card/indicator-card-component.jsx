@@ -80,12 +80,12 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
             {card.legend && renderLegend(card, selectedYear)}
             {card.chartData &&
             card.chartData.some(l => l.value) && (
-            <div className={styles.chart}>
+                <div className={styles.chart}>
                   <PieChart
-                data={card.chartData}
-                width={150}
-                config={card.chartConfig}
-              />
+                    data={card.chartData}
+                    width={150}
+                    config={card.chartConfig}
+                  />
                 </div>
               )}
             {card.rank && (

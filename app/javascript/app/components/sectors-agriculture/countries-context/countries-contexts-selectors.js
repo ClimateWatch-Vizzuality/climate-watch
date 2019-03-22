@@ -195,9 +195,9 @@ const getCardsData = createSelector(
         [
           {
             label: 'Agricultural activities',
-            slug: 'agricultureWaterWithdrawal'
+            slug: 'agricultureActivities'
           },
-          { label: 'Non-agricultural activities', slug: 'totalWaterWithdrawal' }
+          { label: 'Non-agricultural activities', slug: 'nonAgricultureActivities' }
         ],
         y.label,
         'percentage',
@@ -206,10 +206,10 @@ const getCardsData = createSelector(
       ),
       chartData: [
         {
-          name: 'totalWaterWithdrawal',
-          value: yearData.water_withdrawal && 100.0 - yearData.water_withdrawal
+          name: 'nonAgricultureActivities',
+          value: yearData.water_withdrawal && 100 - yearData.water_withdrawal
         },
-        { name: 'agricultureWaterWithdrawal', value: yearData.water_withdrawal }
+        { name: 'agricultureActivities', value: yearData.water_withdrawal }
       ],
       legend: [
         {
