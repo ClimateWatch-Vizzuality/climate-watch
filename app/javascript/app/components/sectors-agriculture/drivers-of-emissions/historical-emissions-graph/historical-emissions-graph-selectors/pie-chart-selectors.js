@@ -51,11 +51,10 @@ export const getPieChartData = createSelector([getGhgEmissionsData], data => {
       ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
     ]
     : sectorEmissions;
-  const { location, year } = sectorsLastYearEmission[0];
 
   return {
-    year,
-    location,
+    year: sectorsLastYearEmission[0] && sectorsLastYearEmission[0].year,
+    location: sectorsLastYearEmission[0] && sectorsLastYearEmission[0].location,
     emissionValue: agricultureRow && agricultureRow.formattedValue,
     emissionPercentage: agricultureRow && agricultureRow.formattedPercentage,
     data: sectorsEmissionsData
