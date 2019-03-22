@@ -193,7 +193,10 @@ const getCardsData = createSelector(
       title: 'Water withdrawal and water stress',
       chartConfig: getChartConfig(
         [
-          { label: 'Agricultural activities', slug: 'agricultureWaterWithdrawal' },
+          {
+            label: 'Agricultural activities',
+            slug: 'agricultureWaterWithdrawal'
+          },
           { label: 'Non-agricultural activities', slug: 'totalWaterWithdrawal' }
         ],
         y.label,
@@ -202,9 +205,11 @@ const getCardsData = createSelector(
         '%'
       ),
       chartData: [
-        { name: 'totalWaterWithdrawal', value: yearData.water_withdrawal && 100.00 - yearData.water_withdrawal },
+        {
+          name: 'totalWaterWithdrawal',
+          value: yearData.water_withdrawal && 100.0 - yearData.water_withdrawal
+        },
         { name: 'agricultureWaterWithdrawal', value: yearData.water_withdrawal }
-
       ],
       legend: [
         {
@@ -220,7 +225,8 @@ const getCardsData = createSelector(
       rank: yearData.water_withdrawal_rank
         ? `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank}</span> of 156</p>`
         : '',
-      text: '<p>Globally, 70 percent of all freshwater withdrawn from rivers, lakes and aquifers was used for agriculture. In many regions, baseline water stress coincides with regions  of key crop production, increasing water stress and future risks.</p>',
+      text:
+        '<p>Globally, 70 percent of all freshwater withdrawn from rivers, lakes and aquifers was used for agriculture. In many regions, baseline water stress coincides with regions  of key crop production, increasing water stress and future risks.</p>',
       noDataMessage: `No water withdrawal data for ${c.label} in ${y.value}`
     };
 

@@ -27,7 +27,9 @@ const renderLegend = (card, year) => {
     </div>
   ) : (
     <NoContent
-      message={card.noDataMessage || `No data for ${card.countryName} in ${year.value}`}
+      message={
+        card.noDataMessage || `No data for ${card.countryName} in ${year.value}`
+      }
       className={styles.noContent}
       minHeight={100}
     />
@@ -76,15 +78,16 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
           />
           <div className={styles.cardContent}>
             {card.legend && renderLegend(card, selectedYear)}
-            {card.chartData && card.chartData.some(l => l.value) && (
-              <div className={styles.chart}>
-                <PieChart
-                  data={card.chartData}
-                  width={150}
-                  config={card.chartConfig}
-                />
-              </div>
-            )}
+            {card.chartData &&
+            card.chartData.some(l => l.value) && (
+            <div className={styles.chart}>
+                  <PieChart
+                data={card.chartData}
+                width={150}
+                config={card.chartConfig}
+              />
+                </div>
+              )}
             {card.rank && (
               <div
                 className={cx(styles.textHtmlWrapper, styles.rank)}
