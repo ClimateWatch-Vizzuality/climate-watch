@@ -14,7 +14,7 @@ const legendHtmlDot = (text, color, value, unit) =>
   `<p><span style="background-color: ${color}; width: 10px; height: 10px; display: inline-block; border-radius: 10px; margin-right: 10px;" ></span>${text}</p><p style="color: ${color};">${value ||
     '---'} ${unit}<p/>`;
 
-const getChartConfig = (labels, year, unit, colors) => ({
+const getChartConfig = (labels, year, unit, colors, suffix) => ({
   outerRadius: 55,
   innerRadius: 25,
   hideLegend: true,
@@ -27,7 +27,8 @@ const getChartConfig = (labels, year, unit, colors) => ({
   axes: {
     yLeft: {
       unit,
-      label: year
+      label: year,
+      suffix
     }
   },
   theme: {
@@ -130,7 +131,8 @@ const getCardsData = createSelector(
       text: `<p> Agriculture is a source of livelihood for more than 2 billion people around the world. In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
         yearData.employment_agri_total
       ) ||
-        '---'}%</span> of <span>${c.label}'s</span> population was employed in the agriculture sector.`
+        '---'}%</span> of <span>${c.label}'s</span> population was employed in the agriculture sector.`,
+      noDataMessage: `No population data for ${c.label} on ${y.value}`
     };
 
     const GDP = {
@@ -183,16 +185,38 @@ const getCardsData = createSelector(
         }
       ],
       text:
-        '<p><span>Agriculture</span> makes up a significant portion of the economic output of many developing countries and economic growth in the sector can often reduce poverty and increase food security. </p>'
+        '<p><span>Agriculture</span> makes up a significant portion of the economic output of many developing countries and economic growth in the sector can often reduce poverty and increase food security. </p>',
+      noDataMessage: `No GDP data for ${c.label} in ${y.value}`
     };
+
     const water = {
       title: 'Water withdrawal and water stress',
+      chartConfig: getChartConfig(
+        [
+          {
+            label: 'Agricultural activities',
+            slug: 'agricultureActivities'
+          },
+          { label: 'Non-agricultural activities', slug: 'nonAgricultureActivities' }
+        ],
+        y.label,
+        'percentage',
+        ['#0677B3', '#CACCD0'],
+        '%'
+      ),
+      chartData: [
+        {
+          name: 'nonAgricultureActivities',
+          value: yearData.water_withdrawal && 100 - yearData.water_withdrawal
+        },
+        { name: 'agricultureActivities', value: yearData.water_withdrawal }
+      ],
       legend: [
         {
           text: legendHtmlDot(
             'Agricultural activities',
             '#0677B3',
-            yearData.water_withdrawal,
+            format('.2')(yearData.water_withdrawal),
             '%'
           )
         }
@@ -201,10 +225,11 @@ const getCardsData = createSelector(
       rank: yearData.water_withdrawal_rank
         ? `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank}</span> of 156</p>`
         : '',
-      text: contextsData.water_withdrawal
-        ? '<p>Globally, 70 percent of all freshwater withdrawn from rivers, lakes and aquifers was used for agriculture. In many regions, baseline water stress coincides with regions  of key crop production, increasing water stress and future risks.</p>'
-        : ''
+      text:
+        '<p>Globally, 70 percent of all freshwater withdrawn from rivers, lakes and aquifers was used for agriculture. In many regions, baseline water stress coincides with regions  of key crop production, increasing water stress and future risks.</p>',
+      noDataMessage: `No water withdrawal data for ${c.label} in ${y.value}`
     };
+
     const fertilizer = {
       chartConfig: getChartConfig(
         [
@@ -239,7 +264,8 @@ const getCardsData = createSelector(
       ],
       title: 'Fertilizer and pesticide use',
       text:
-        '<p>The use of synthetic nitrogen fertilizer is a large contributor to emissions in agriculture, owing to the potent greenhouse gas N2O. Heavy pesticide use can lead to harmful impacts on the environment.</p>'
+        '<p>The use of synthetic nitrogen fertilizer is a large contributor to emissions in agriculture, owing to the potent greenhouse gas N2O. Heavy pesticide use can lead to harmful impacts on the environment.</p>',
+      noDataMessage: `No fertilizer and pesticide use data for ${c.label} in ${y.value}`
     };
 
     return [GDP, socioeconomic, water, fertilizer];
