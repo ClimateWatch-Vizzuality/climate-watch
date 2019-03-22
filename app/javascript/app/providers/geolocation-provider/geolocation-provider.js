@@ -24,7 +24,7 @@ GeolocationProvider.propTypes = {
 };
 
 GeolocationProvider.defaultProps = {
-  locationProvider: `http://api.ipstack.com/check?access_key=${IPSTACK_GEOLOCATION_API_KEY}&format=1`
+  locationProvider: `https://api.ipstack.com/check?access_key=${IPSTACK_GEOLOCATION_API_KEY}&format=1`
 };
 
 export { actions, reducers, initialState };
