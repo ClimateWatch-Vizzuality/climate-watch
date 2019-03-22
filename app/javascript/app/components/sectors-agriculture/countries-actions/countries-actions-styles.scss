@@ -30,7 +30,11 @@
   color: $theme-color;
   font-size: $font-size;
   max-width: 600px;
-  margin-bottom: 30px;
+  margin-bottom: 14px;
+
+  p {
+    margin-bottom: 16px;
+  }
 }
 
 .switchWrapper {

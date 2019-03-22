@@ -1,9 +1,6 @@
 import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
-import uniqBy from 'lodash/uniqBy';
-import sortBy from 'lodash/sortBy';
-import flatten from 'lodash/flatten';
-import lowerCase from 'lodash/lowerCase';
+import { sortBy, flatten, lowerCase, uniqBy } from 'lodash';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -59,23 +56,24 @@ export const getAgricultureIndicators = createSelector(
 );
 
 export const getCountriesCountWithProposedActions = createSelector(
-  [getAgricultureIndicators],
-  indicators => {
-    if (!indicators) return 0;
-
+  [getAgricultureIndicators, getIndicatorsParsed],
+  (indicators, indicatorsParsed) => {
+    if (!indicators || !indicatorsParsed) return 0;
     const KEY_WORD_FOR_NO_ACTION = 'no';
-
-    const locations = indicators.map(ind => ind.locations);
-    const countriesWithActionsSpecified = locations.map(location =>
-      Object.keys(location).filter(
-        countryIso =>
-          !lowerCase(location[countryIso].value).startsWith(
-            KEY_WORD_FOR_NO_ACTION
-          )
-      )
-    );
-
-    return [...new Set(flatten(countriesWithActionsSpecified))].length;
+    const countriesCount = {};
+    indicatorsParsed
+      .filter(({ value }) => PERMITTED_AGRICULTURE_INDICATOR.includes(value))
+      .forEach(indicator => {
+        const isoCodes = Object.keys(indicator.locations);
+        const actionCountries = isoCodes.filter(
+          isoCode =>
+            !lowerCase(indicator.locations[isoCode].value).startsWith(
+              KEY_WORD_FOR_NO_ACTION
+            )
+        ).length;
+        countriesCount[indicator.value] = actionCountries;
+      });
+    return countriesCount;
   }
 );
 

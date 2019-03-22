@@ -140,6 +140,7 @@
       color: $theme-color;
       width: max-content;
       top: -20px;
+      font-size: $font-size-xs;
     }
   }
 
@@ -165,6 +166,10 @@
       .legend {
         width: 50%;
       }
+    }
+
+    span::before {
+      font-size: $font-size;
     }
   }
 }

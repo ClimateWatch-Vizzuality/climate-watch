@@ -110,7 +110,7 @@ const getCardsData = createSelector(
       population: [
         {
           value: yearData.employment_agri_female,
-          label: 'Women',
+          label: 'Percent of Women Employed in Agriculture',
           valueLabel: `${precentageTwoPlacesRound(
             yearData.employment_agri_female
           )}%`,
@@ -118,7 +118,7 @@ const getCardsData = createSelector(
         },
         {
           value: yearData.employment_agri_male,
-          label: 'Men',
+          label: 'Percent of Men Employed in Agriculture',
           valueLabel: `${precentageTwoPlacesRound(
             yearData.employment_agri_male
           )}%`,
@@ -127,15 +127,10 @@ const getCardsData = createSelector(
       ],
       countryName: c.label,
       title: 'Socio-economic indicators',
-      text: `<p>In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
+      text: `<p> Agriculture is a source of livelihood for more than 2 billion people around the world. In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
         yearData.employment_agri_total
       ) ||
-        '---'}%</span> of <span>${c.label}'s</span> population was employed in the Agriculture sector. <span>${precentageTwoPlacesRound(
-        yearData.employment_agri_female
-      ) ||
-        '---'}%</span> of women worked in agriculture compared with <span>${precentageTwoPlacesRound(
-        yearData.employment_agri_male
-      ) || '---'}%</span> of men.</p>`
+        '---'}%</span> of <span>${c.label}'s</span> population was employed in the agriculture sector.`
     };
 
     const GDP = {
@@ -188,7 +183,7 @@ const getCardsData = createSelector(
         }
       ],
       text:
-        '<p><span>Agriculture</span> makes up a significant proportion of the total economic output of many countries, especially developing ones. </p>'
+        '<p><span>Agriculture</span> makes up a significant portion of the economic output of many developing countries and economic growth in the sector can often reduce poverty and increase food security. </p>'
     };
     const water = {
       title: 'Water withdrawal and water stress',
@@ -207,7 +202,7 @@ const getCardsData = createSelector(
         ? `<p>Water stress country ranking <span>${yearData.water_withdrawal_rank}</span> of 156</p>`
         : '',
       text: contextsData.water_withdrawal
-        ? `<p>In <span>${c.label}</span> in <span>${y.label}</span>, <span>${contextsData.water_withdrawal} %</span> of total water withdrawn was employed in agricultural activities.</p>`
+        ? '<p>Globally, 70 percent of all freshwater withdrawn from rivers, lakes and aquifers was used for agriculture. In many regions, baseline water stress coincides with regions  of key crop production, increasing water stress and future risks.</p>'
         : ''
     };
     const fertilizer = {

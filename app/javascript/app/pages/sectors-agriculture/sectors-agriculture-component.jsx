@@ -30,7 +30,7 @@ class SectorsAgriculture extends PureComponent {
               <Intro
                 title="Agriculture"
                 description={
-                  'Agriculture is the second-largest contributor to global greenhouse gas emissions. This profile shows you where emissions come from (including direct and indirect emissions), what actions countries have proposed in their NDCs and resources for more action.'
+                  'Agriculture is the second-largest contributor to global greenhouse gas emissions. This page shows you where emissions come from (including direct and indirect emissions), what actions countries have proposed in their NDCs and resources for more action.'
                 }
               />
             </div>
