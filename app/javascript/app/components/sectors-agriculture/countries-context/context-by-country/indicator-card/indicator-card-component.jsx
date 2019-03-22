@@ -14,7 +14,7 @@ const cardTheme = {
 };
 
 const renderLegend = (card, year) => {
-  const hasData = card.legend.some(l => l.value != null) || card.chartConfig;
+  const hasData = card.chartData.some(l => l.value);
   return hasData ? (
     <div className={cx(styles.textHtmlWrapper, styles.legend)}>
       {card.legend.map(i => (
@@ -27,7 +27,7 @@ const renderLegend = (card, year) => {
     </div>
   ) : (
     <NoContent
-      message={`No water withdrawal data for ${card.countryName} in ${year.value}`}
+      message={card.noDataMessage || `No data for ${card.countryName} in ${year.value}`}
       className={styles.noContent}
       minHeight={100}
     />
@@ -76,7 +76,7 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
           />
           <div className={styles.cardContent}>
             {card.legend && renderLegend(card, selectedYear)}
-            {card.chartConfig && (
+            {card.chartData && card.chartData.some(l => l.value) && (
               <div className={styles.chart}>
                 <PieChart
                   data={card.chartData}
