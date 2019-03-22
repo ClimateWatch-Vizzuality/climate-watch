@@ -32,12 +32,11 @@ node {
   def cw_files_prefix = 'climatewatch.org/staging.climatewatch.org/climate-watch/'
   def user_report_key = 'cf0fa021-d239-457b-bb99-e9ab0205134c'
   def user_survey_spreadsheet = 'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec'
-  def ipstack_geolocation = ''
+  def ipstack_geolocation = 'dfdb1e600e6d3f7855b84455b6550f92'
 
   if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
-    ipstack_geolocation = 'dfdb1e600e6d3f7855b84455b6550f92'
   }
 
   // env vars with build-arg
