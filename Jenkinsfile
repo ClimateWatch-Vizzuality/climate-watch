@@ -31,27 +31,43 @@ node {
 
   def cw_files_prefix = 'climatewatch.org/staging.climatewatch.org/climate-watch/'
   def user_report_key = 'cf0fa021-d239-457b-bb99-e9ab0205134c'
+  def user_survey_spreadsheet = 'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec'
+  def ipstack_geolocation = 'dfdb1e600e6d3f7855b84455b6550f92'
 
   if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
     user_report_key = '81f6ea43-5c9f-48e0-bdb2-56fc59aafbb4'
   }
 
+  // env vars with build-arg
+  def base_envs = "--build-arg RAILS_ENV=production --build-arg secretKey=${secretKey}"
+
+  def feature_flags_env = '--build-arg FEATURE_AGRICULTURE=true'
+  if (env.BRANCH_NAME == 'master') {
+    feature_flags_env = '--build-arg FEATURE_AGRICULTURE=false'
+  }
+
+  def cw_files_env = "--build-arg CW_FILES_PREFIX=${cw_files_prefix}"
+  def app_signal_env = "--build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}"
+  def user_report_env = "--build-arg USER_REPORT_KEY=${user_report_key}"
+  def user_survey_env = "--build-arg USER_SURVEY_SPREADSHEET_URL=${user_survey_spreadsheet}"
+  def ipstack_env = "--build-arg IPSTACK_GEOLOCATION_API_KEY=${ipstack_geolocation}"
+
   try {
 
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "master":
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg USER_REPORT_KEY=${user_report_key} --build-arg secretKey=${secretKey} --build-arg FEATURE_AGRICULTURE=false --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg USER_REPORT_KEY=${user_report_key} --build-arg secretKey=${secretKey} --build-arg FEATURE_AGRICULTURE=false --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
+          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${ipstack_env} -t ${imageTag} ." )
+          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${ipstack_env} -t ${dockerUsername}/${appName}:latest ." )
           break
         case "sandbox":
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg USER_REPORT_KEY=${user_report_key} --build-arg secretKey=${secretKey} --build-arg FEATURE_AGRICULTURE=true --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg USER_REPORT_KEY=${user_report_key} --build-arg secretKey=${secretKey} --build-arg FEATURE_AGRICULTURE=true --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
+          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${ipstack_env} -t ${imageTag} ." )
+          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${ipstack_env} -t ${dockerUsername}/${appName}:latest ." )
           break
         default:
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg USER_REPORT_KEY=${user_report_key} --build-arg secretKey=${secretKey} --build-arg FEATURE_AGRICULTURE=false --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${imageTag} ." )
-          sh("docker -H :2375 build --build-arg RAILS_ENV=production --build-arg USER_REPORT_KEY=${user_report_key} --build-arg secretKey=${secretKey} --build-arg FEATURE_AGRICULTURE=false --build-arg CW_FILES_PREFIX=${cw_files_prefix} --build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL} --build-arg USER_SURVEY_SPREADSHEET_URL=https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec -t ${dockerUsername}/${appName}:latest ." )
+          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${ipstack_env} -t ${imageTag} ." )
+          sh("docker -H :2375 build ${base_envs} ${feature_flags_env} ${cw_files_env} ${app_signal_env} ${user_report_env} ${user_survey_env} ${ipstack_env} -t ${dockerUsername}/${appName}:latest ." )
       }
     }
 
