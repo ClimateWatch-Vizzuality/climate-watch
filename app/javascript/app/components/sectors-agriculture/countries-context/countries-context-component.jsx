@@ -29,7 +29,6 @@ const SwitchOptionsComponents = {
 class CountriesContext extends PureComponent {
   render() {
     const { query, selectedCountry, handleSwitchClick, loading } = this.props;
-
     const switchOption = (query && query.contextBy) || 'indicator';
 
     const Component = SwitchOptionsComponents[switchOption];
@@ -47,6 +46,7 @@ class CountriesContext extends PureComponent {
             </p>
             <div className={styles.switchWrapper}>
               <Switch
+                key={`explore-by-${switchOption}`}
                 options={tabs}
                 selectedOption={switchOption}
                 onClick={handleSwitchClick}

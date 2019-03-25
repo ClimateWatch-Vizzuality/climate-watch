@@ -6,8 +6,9 @@ import qs from 'query-string';
 import { format } from 'd3-format';
 import { isCountryIncluded } from 'app/utils';
 import { handleAnalytics } from 'utils/analytics';
-import { countriesContexts } from './context-by-indicator-selectors';
+import { getLocationParamUpdated } from 'utils/navigation';
 
+import { countriesContexts } from './context-by-indicator-selectors';
 import Component from './context-by-indicator-component';
 
 const mapStateToProps = (state, { location, countries }) => {
@@ -54,18 +55,25 @@ class ContextByIndicatorContainer extends PureComponent {
   };
 
   handleCountryClick = geography => {
-    const { isoCountries, history } = this.props;
+    const { isoCountries, indicatorSelectedYear } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      history.push(
-        `/sectors/agriculture?contextBy=country&contextMapIndicator=total_fertilizers&country=${iso}#understand-countries-contexts`
-      );
+      this.updateUrlParam([
+        { name: 'contextBy', value: 'country' },
+        { name: 'country', value: iso },
+        { name: 'countryYear', value: indicatorSelectedYear.value }
+      ]);
       handleAnalytics(
         'Agriculture Profile - Countries Context',
         'Use map to find country',
         geography.properties.name
       );
     }
+  };
+
+  updateUrlParam = (params, clear) => {
+    const { history, location } = this.props;
+    history.push(getLocationParamUpdated(location, params, clear));
   };
 
   render() {
@@ -84,7 +92,9 @@ ContextByIndicatorContainer.propTypes = {
   selectedIndicator: PropTypes.shape({}),
   mapData: PropTypes.arrayOf(PropTypes.shape({})),
   isoCountries: PropTypes.arrayOf(PropTypes.string),
-  history: PropTypes.shape({})
+  history: PropTypes.shape({}),
+  indicatorSelectedYear: PropTypes.shape({}),
+  location: PropTypes.shape({})
 };
 
 export default withRouter(
