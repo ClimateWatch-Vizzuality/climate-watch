@@ -50,7 +50,7 @@ export const getGhgEmissionsFilter = createSelector(
   (selectedCountry, source, gas) => {
     if (!selectedCountry || !source || !gas) return null;
     return {
-      location: selectedCountry.value,
+      location: `WORLD,${selectedCountry.value}`,
       source: source.value,
       gas: gas.value
     };
