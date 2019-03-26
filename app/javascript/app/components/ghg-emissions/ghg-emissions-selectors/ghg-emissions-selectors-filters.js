@@ -189,8 +189,11 @@ const getFiltersSelected = field =>
 
     const fieldOptions = field === 'location' ? options.regions : options[toPlural(field)];
     const defaultSelection = defaults && defaults[field] && String(defaults[field]);
-    const selection = selected || defaultSelection;
 
+    // empty filter selected deliberately
+    if (selected === '') return [];
+
+    const selection = selected || defaultSelection;
     let selectedFilters = [];
     if (selection) {
       const selectedValues = selection.split(',');

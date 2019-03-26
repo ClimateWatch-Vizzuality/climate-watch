@@ -6,8 +6,8 @@ const getEmissionsInit = createAction('getEmissionsInit');
 const getEmissionsFail = createAction('getEmissionsFail');
 const getEmissionsReady = createAction('getEmissionsReady');
 const getEmissions = createThunkAction('getEmissions', filters => dispatch => {
-  dispatch(getEmissionsInit());
   if (filters) {
+    dispatch(getEmissionsInit());
     fetch(`/api/v1/emissions?${qs.stringify(filters)}`)
       .then(response => {
         if (response.ok) return response.json();

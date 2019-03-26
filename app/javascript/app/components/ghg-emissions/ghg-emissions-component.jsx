@@ -40,26 +40,80 @@ class GhgEmissions extends PureComponent {
     );
   }
 
-  render() {
+  renderChart() {
     const {
+      config,
       data,
       domain,
+      fieldToBreakBy,
       filtersConflicts,
-      config,
+      handleChange,
+      hideRemoveOptions,
+      legendOptions,
+      legendSelected,
+      loading,
+      providerFilters,
+      selected: selectedOptions
+    } = this.props;
+    const { chartTypeSelected } = selectedOptions;
+
+    const anyFilterConflicts = !!(filtersConflicts && filtersConflicts.conflicts.length);
+
+    if (!providerFilters) {
+      return (
+        <div className={styles.messageContainer}>
+          <div>
+            <p>Please select all filters</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (anyFilterConflicts) {
+      return (
+        <div className={styles.messageContainer}>
+          <div>
+            <p>We are not able to display current selection because:</p>
+            <ul>
+              {filtersConflicts.conflicts.map(conflict => <li key={conflict}>{conflict}</li>)}
+            </ul>
+            <p>{filtersConflicts.solutionText}</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Chart
+        className={styles.chartWrapper}
+        type={chartTypeSelected && chartTypeSelected.value}
+        theme={{ legend: styles.legend }}
+        config={config}
+        data={data}
+        domain={domain}
+        dataOptions={legendOptions}
+        dataSelected={legendSelected || []}
+        height={500}
+        loading={loading}
+        lineType="linear"
+        showUnit
+        onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+        hideRemoveOptions={hideRemoveOptions}
+      />
+    );
+  }
+
+  render() {
+    const {
       groups,
       handleInfoClick,
       handleChange,
       providerFilters,
-      loading,
       downloadLink,
       options,
-      selected: selectedOptions,
-      legendOptions,
-      legendSelected,
-      fieldToBreakBy,
-      hideRemoveOptions
+      selected: selectedOptions
     } = this.props;
-    const { chartTypeSelected } = selectedOptions;
+
     const renderButtonGroup = () => (
       <ButtonGroup
         className={styles.colEnd}
@@ -91,7 +145,6 @@ class GhgEmissions extends PureComponent {
       area: areaIcon,
       percentage: percentageIcon
     };
-    const noFiltersConflicts = filtersConflicts && filtersConflicts.conflicts.length < 1;
 
     return (
       <div>
@@ -104,7 +157,7 @@ class GhgEmissions extends PureComponent {
         <WorldBankDataProvider />
         <RegionsProvider />
         <EmissionsMetaProvider />
-        <EmissionsProvider filters={providerFilters} />
+        {providerFilters && <EmissionsProvider filters={providerFilters} />}
         <div className={styles.col4}>
           {this.renderDropdown('Source', 'sources')}
           <Multiselect
@@ -132,34 +185,7 @@ class GhgEmissions extends PureComponent {
           {this.renderDropdown('Break by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', icons)}
         </div>
-        {noFiltersConflicts ? (
-          <Chart
-            className={styles.chartWrapper}
-            type={chartTypeSelected && chartTypeSelected.value}
-            theme={{ legend: styles.legend }}
-            config={config}
-            data={data}
-            domain={domain}
-            dataOptions={legendOptions}
-            dataSelected={legendSelected || []}
-            height={500}
-            loading={loading}
-            lineType="linear"
-            showUnit
-            onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
-            hideRemoveOptions={hideRemoveOptions}
-          />
-        ) : (
-          <div className={styles.chartConflicts}>
-            <div>
-              <p>We are not able to display current selection because:</p>
-              <ul>
-                {filtersConflicts.conflicts.map(conflict => <li key={conflict}>{conflict}</li>)}
-              </ul>
-              <p>{filtersConflicts.solutionText}</p>
-            </div>
-          </div>
-        )}
+        {this.renderChart()}
         <TabletPortraitOnly>
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
         </TabletPortraitOnly>

@@ -29,5 +29,8 @@ export const getProviderFilters = createSelector([getOptionsSelected], selectedO
     location: parseValues(withExpanded(regionsSelected))
   };
 
+  // do not allow empty filters
+  if (Object.keys(filter).some(k => !filter[k])) return null;
+
   return filter;
 });
