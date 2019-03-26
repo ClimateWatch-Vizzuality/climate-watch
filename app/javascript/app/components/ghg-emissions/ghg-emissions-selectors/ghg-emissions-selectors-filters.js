@@ -6,7 +6,7 @@ import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
-import { TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
+import { GAS_EXPANDS, TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
 import { getMeta, getRegions, getSources, getSelection } from './ghg-emissions-selectors-get';
 
 const DEFAULTS = {
@@ -84,22 +84,6 @@ export const getMetricSelected = createSelector(
   breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
 );
 
-const getRegionsOptions = createSelector([getRegions], regions => {
-  if (!regions) return null;
-  const mappedRegions = [TOP_EMITTERS_OPTION];
-  regions.forEach(region => {
-    const regionMembers = region.members.map(m => m.iso_code3);
-    mappedRegions.push({
-      label: region.wri_standard_name,
-      value: region.iso_code3,
-      iso: region.iso_code3,
-      expandsTo: regionMembers,
-      groupId: 'regions'
-    });
-  });
-  return mappedRegions;
-});
-
 const filterOptionsBySource = field =>
   createSelector([getMeta, getSourceSelected], (meta, sourceSelected) => {
     if (isEmpty(meta) || !sourceSelected) return null;
@@ -111,29 +95,45 @@ const filterOptionsBySource = field =>
   });
 
 const getFieldOptions = field =>
-  createSelector([getRegionsOptions, filterOptionsBySource(field)], (regions, filteredOptions) => {
+  createSelector([filterOptionsBySource(field)], filteredOptions => {
     if (!filteredOptions) return [];
     const fieldOptions = filteredOptions;
-
-    if (field === 'location') {
-      if (!regions) return [];
-      const countries = [];
-      const regionIsos = regions.map(r => r.iso);
-      fieldOptions.forEach(d => {
-        if (!regionIsos.includes(d.iso)) {
-          countries.push({
-            ...d,
-            value: d.iso,
-            groupId: 'countries'
-          });
-        }
-      });
-      const sortedRegions = sortLabelByAlpha(regions).sort(x => (x.value === 'TOP' ? -1 : 0));
-      return sortedRegions.concat(sortLabelByAlpha(countries));
-    }
-
     return sortLabelByAlpha(fieldOptions);
   });
+
+const getRegionOptions = createSelector(
+  [getRegions, getFieldOptions('location')],
+  (regions, options) => {
+    if (!regions) return null;
+
+    const regionOptions = [TOP_EMITTERS_OPTION];
+    regions.forEach(region => {
+      const regionMembers = region.members.map(m => m.iso_code3);
+      regionOptions.push({
+        label: region.wri_standard_name,
+        value: region.iso_code3,
+        iso: region.iso_code3,
+        expandsTo: regionMembers,
+        groupId: 'regions'
+      });
+    });
+
+    const countryOptions = [];
+    const regionISOs = regionOptions.map(r => r.iso);
+
+    options.forEach(d => {
+      if (!regionISOs.includes(d.iso)) {
+        countryOptions.push({
+          ...d,
+          value: d.iso,
+          groupId: 'countries'
+        });
+      }
+    });
+    const sortedRegions = sortLabelByAlpha(regionOptions).sort(x => (x.value === 'TOP' ? -1 : 0));
+    return sortedRegions.concat(sortLabelByAlpha(countryOptions));
+  }
+);
 
 const getSectorOptions = createSelector([getFieldOptions('sector')], options => {
   if (!options || isEmpty(options)) return null;
@@ -160,6 +160,18 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
   return [...sectors, ...subsectors];
 });
 
+const getGasOptions = createSelector(
+  [getFieldOptions('gas')],
+  options =>
+    options &&
+    options.map(o => ({
+      ...o,
+      expandsTo:
+        GAS_EXPANDS[o.label] &&
+        GAS_EXPANDS[o.label].map(g => (options.find(opt => opt.label === g) || {}).value)
+    }))
+);
+
 const CHART_TYPE_OPTIONS = [
   { label: 'line', value: 'line' },
   { label: 'area', value: 'area' },
@@ -172,9 +184,9 @@ export const getOptions = createStructuredSelector({
   sources: getSourceOptions,
   chartType: getChartTypeOptions,
   breakBy: getBreakByOptions,
-  regions: getFieldOptions('location'),
+  regions: getRegionOptions,
   sectors: getSectorOptions,
-  gases: getFieldOptions('gas')
+  gases: getGasOptions
 });
 
 const getDefaults = createSelector([getSourceSelected, getMeta], (sourceSelected, meta) => {

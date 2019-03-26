@@ -107,6 +107,34 @@ const getExpandedLegendSectorsSelected = createSelector(
   }
 );
 
+const getShouldExpandGases = createSelector(
+  [getModelSelected, getOptionsSelected],
+  (modelSelected, selectedOptions) => {
+    const model = modelSelected && toPlural(modelSelected);
+    if (!selectedOptions || !model || model !== 'gases' || !selectedOptions.gasesSelected) {
+      return false;
+    }
+
+    const dataSelected = selectedOptions.gasesSelected;
+    return (
+      dataSelected.length === 1 && dataSelected[0].expandsTo && dataSelected[0].expandsTo.length
+    );
+  }
+);
+
+const getExpandedLegendGasesSelected = createSelector(
+  [getModelSelected, getOptions, getOptionsSelected, getShouldExpandGases],
+  (modelSelected, options, selectedOptions, shouldExpandGases) => {
+    const model = toPlural(modelSelected);
+    if (!shouldExpandGases) return null;
+
+    const selectedGas = selectedOptions.gasesSelected[0];
+    const gasOptions = selectedGas.expandsTo.map(id => options[model].find(o => o.value === id));
+
+    return gasOptions;
+  }
+);
+
 export const getLegendDataOptions = createSelector(
   [getModelSelected, getOptions],
   (modelSelected, options) => {
@@ -123,14 +151,16 @@ export const getLegendDataSelected = createSelector(
     getOptions,
     getOptionsSelected,
     getExpandedLegendRegionsSelected,
-    getExpandedLegendSectorsSelected
+    getExpandedLegendSectorsSelected,
+    getExpandedLegendGasesSelected
   ],
   (
     modelSelected,
     options,
     selectedOptions,
     expandedLegendRegionsSelected,
-    expandedLegendSectorsSelected
+    expandedLegendSectorsSelected,
+    expandedLegendGasesSelected
   ) => {
     const model = toPlural(modelSelected);
     const selectedModel = `${model}Selected`;
@@ -143,6 +173,9 @@ export const getLegendDataSelected = createSelector(
     }
     if (expandedLegendSectorsSelected) {
       return expandedLegendSectorsSelected;
+    }
+    if (expandedLegendGasesSelected) {
+      return expandedLegendGasesSelected;
     }
     return isArray(dataSelected) ? dataSelected : [dataSelected];
   }
