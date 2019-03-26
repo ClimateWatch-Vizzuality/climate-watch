@@ -5,6 +5,7 @@ import { getOptionsSelected } from './ghg-emissions-selectors-filters';
 
 export const getProviderFilters = createSelector([getOptionsSelected], selectedOptions => {
   if (!selectedOptions || !selectedOptions.sourcesSelected) return null;
+
   const {
     sourcesSelected,
     sectorsSelected,
