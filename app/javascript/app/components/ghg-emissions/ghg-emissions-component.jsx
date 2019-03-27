@@ -63,7 +63,7 @@ class GhgEmissions extends PureComponent {
       return (
         <div className={styles.messageContainer}>
           <div>
-            <p>Please select all filters</p>
+            <p>Please select an option for each of the filters</p>
           </div>
         </div>
       );

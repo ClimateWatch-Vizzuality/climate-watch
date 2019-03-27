@@ -6,7 +6,7 @@ import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
-import { GAS_EXPANDS, TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
+import { GAS_AGGREGATES, TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
 import { getMeta, getRegions, getSources, getSelection } from './ghg-emissions-selectors-get';
 
 const DEFAULTS = {
@@ -160,17 +160,16 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
   return [...sectors, ...subsectors];
 });
 
-const getGasOptions = createSelector(
-  [getFieldOptions('gas')],
-  options =>
-    options &&
-    options.map(o => ({
-      ...o,
-      expandsTo:
-        GAS_EXPANDS[o.label] &&
-        GAS_EXPANDS[o.label].map(g => (options.find(opt => opt.label === g) || {}).value)
-    }))
-);
+const getGasOptions = createSelector([getFieldOptions('gas')], options => {
+  if (!options) return [];
+
+  const valueByLabel = g => (options.find(opt => opt.label === g) || {}).value;
+
+  return options.map(o => ({
+    ...o,
+    expandsTo: GAS_AGGREGATES[o.label] && GAS_AGGREGATES[o.label].map(valueByLabel)
+  }));
+});
 
 const CHART_TYPE_OPTIONS = [
   { label: 'line', value: 'line' },

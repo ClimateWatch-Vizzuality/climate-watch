@@ -263,8 +263,11 @@ export const TOP_EMITTERS_OPTION = {
   groupId: 'regions'
 };
 
-export const GAS_EXPANDS = {
-  'All GHG': ['CH4', 'CO2', 'F-Gas', 'N2O']
+export const GAS_AGGREGATES = {
+  'All GHG': ['CH4', 'CO2', 'F-Gas', 'N2O'],
+  KYOTOGHG: [''],
+  'Aggregate GHGs': ['CH4', 'CO2', 'HFCs', 'N2O', 'PFCs', 'SF6'],
+  'Aggregate F-gases': ['HFCs', 'PFCs', 'SF6']
 };
 
 export const WRI_WEBSITE = 'https://www.wri.org/';

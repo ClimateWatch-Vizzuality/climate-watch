@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
-import isArray from 'lodash/isArray';
+import castArray from 'lodash/castArray';
 import flatMap from 'lodash/flatMap';
 import uniqBy from 'lodash/uniqBy';
 import uniq from 'lodash/uniq';
@@ -31,17 +31,25 @@ import {
 
 const LEGEND_LIMIT = 10;
 
-const getShouldExpandRegions = createSelector(
-  [getModelSelected, getOptionsSelected],
-  (modelSelected, selectedOptions) => {
+const getShouldExpand = filter =>
+  createSelector([getModelSelected, getOptionsSelected], (modelSelected, selectedOptions) => {
     const model = modelSelected && toPlural(modelSelected);
-    if (!selectedOptions || !model || model !== 'regions' || !selectedOptions.regionsSelected) {
+    const dataSelected = selectedOptions[`${filter}Selected`];
+
+    if (!selectedOptions || !model || model !== filter || !dataSelected) {
       return false;
     }
-    const dataSelected = selectedOptions.regionsSelected;
-    return dataSelected.length === 1 && dataSelected[0].groupId === 'regions';
-  }
-);
+
+    return !!(
+      dataSelected.length === 1 &&
+      dataSelected[0].expandsTo &&
+      dataSelected[0].expandsTo.length
+    );
+  });
+
+const getShouldExpandRegions = getShouldExpand('regions');
+const getShouldExpandGases = getShouldExpand('gases');
+const getShouldExpandSectors = getShouldExpand('sectors');
 
 const getExpandedLegendRegionsSelected = createSelector(
   [getOptions, getOptionsSelected, getShouldExpandRegions, getData],
@@ -79,19 +87,6 @@ const getExpandedLegendRegionsSelected = createSelector(
   }
 );
 
-const getShouldExpandSectors = createSelector(
-  [getModelSelected, getOptionsSelected],
-  (modelSelected, selectedOptions) => {
-    const model = modelSelected && toPlural(modelSelected);
-    if (!selectedOptions || !model || model !== 'sectors' || !selectedOptions.sectorsSelected) {
-      return false;
-    }
-
-    const dataSelected = selectedOptions.sectorsSelected;
-    return dataSelected.length === 1 && dataSelected[0].groupId === 'aggregations';
-  }
-);
-
 const getExpandedLegendSectorsSelected = createSelector(
   [getModelSelected, getOptions, getOptionsSelected, getShouldExpandSectors],
   (modelSelected, options, selectedOptions, shouldExpandSectors) => {
@@ -104,21 +99,6 @@ const getExpandedLegendSectorsSelected = createSelector(
     );
 
     return sectorOptions;
-  }
-);
-
-const getShouldExpandGases = createSelector(
-  [getModelSelected, getOptionsSelected],
-  (modelSelected, selectedOptions) => {
-    const model = modelSelected && toPlural(modelSelected);
-    if (!selectedOptions || !model || model !== 'gases' || !selectedOptions.gasesSelected) {
-      return false;
-    }
-
-    const dataSelected = selectedOptions.gasesSelected;
-    return (
-      dataSelected.length === 1 && dataSelected[0].expandsTo && dataSelected[0].expandsTo.length
-    );
   }
 );
 
@@ -167,17 +147,18 @@ export const getLegendDataSelected = createSelector(
     if (!selectedOptions || !modelSelected || !selectedOptions[selectedModel] || !options) {
       return null;
     }
-    const dataSelected = selectedOptions[selectedModel];
+
+    let dataSelected = selectedOptions[selectedModel];
+
     if (expandedLegendRegionsSelected) {
-      return expandedLegendRegionsSelected.filter(c => c && !c.hideLegend);
+      dataSelected = expandedLegendRegionsSelected;
+    } else if (expandedLegendSectorsSelected) {
+      dataSelected = expandedLegendSectorsSelected;
+    } else if (expandedLegendGasesSelected) {
+      dataSelected = expandedLegendGasesSelected;
     }
-    if (expandedLegendSectorsSelected) {
-      return expandedLegendSectorsSelected;
-    }
-    if (expandedLegendGasesSelected) {
-      return expandedLegendGasesSelected;
-    }
-    return isArray(dataSelected) ? dataSelected : [dataSelected];
+
+    return castArray(dataSelected).filter(c => c && !c.hideLegend);
   }
 );
 
@@ -266,13 +247,12 @@ export const getChartData = createSelector(
   [
     getSortedData,
     getRegions,
-    getShouldExpandRegions,
     getModelSelected,
     getYColumnOptions,
     getMetricSelected,
     getCalculationData
   ],
-  (data, regions, shouldExpandRegions, model, yColumnOptions, metric, calculationData) => {
+  (data, regions, model, yColumnOptions, metric, calculationData) => {
     if (!data || !data.length || !model || !calculationData || !regions) return null;
     const yearValues = data[0].emissions.map(d => d.year);
     const shouldHaveMetricData = metric && metric !== METRIC_OPTIONS.ABSOLUTE_VALUE.value;
@@ -409,6 +389,7 @@ export const getLoading = createSelector(
 );
 
 export const getHideRemoveOptions = createSelector(
-  [getShouldExpandRegions, getShouldExpandSectors],
-  (shouldExpandRegions, shouldExpandSectors) => shouldExpandRegions || shouldExpandSectors
+  [getShouldExpandRegions, getShouldExpandSectors, getShouldExpandGases],
+  (shouldExpandRegions, shouldExpandSectors, shouldExpandGases) =>
+    shouldExpandRegions || shouldExpandSectors || shouldExpandGases
 );
