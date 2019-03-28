@@ -6,7 +6,7 @@ import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
-import { TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
+import { GAS_AGGREGATES, TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
 import { getMeta, getRegions, getSources, getSelection } from './ghg-emissions-selectors-get';
 
 const DEFAULTS = {
@@ -84,22 +84,6 @@ export const getMetricSelected = createSelector(
   breakBySelected => (breakBySelected && breakBySelected.metricSelected) || null
 );
 
-const getRegionsOptions = createSelector([getRegions], regions => {
-  if (!regions) return null;
-  const mappedRegions = [TOP_EMITTERS_OPTION];
-  regions.forEach(region => {
-    const regionMembers = region.members.map(m => m.iso_code3);
-    mappedRegions.push({
-      label: region.wri_standard_name,
-      value: region.iso_code3,
-      iso: region.iso_code3,
-      expandsTo: regionMembers,
-      groupId: 'regions'
-    });
-  });
-  return mappedRegions;
-});
-
 const filterOptionsBySource = field =>
   createSelector([getMeta, getSourceSelected], (meta, sourceSelected) => {
     if (isEmpty(meta) || !sourceSelected) return null;
@@ -111,46 +95,45 @@ const filterOptionsBySource = field =>
   });
 
 const getFieldOptions = field =>
-  createSelector([getRegionsOptions, filterOptionsBySource(field)], (regions, filteredOptions) => {
+  createSelector([filterOptionsBySource(field)], filteredOptions => {
     if (!filteredOptions) return [];
     const fieldOptions = filteredOptions;
-
-    if (field === 'location') {
-      if (!regions) return [];
-      const countries = [];
-      const regionIsos = regions.map(r => r.iso);
-      fieldOptions.forEach(d => {
-        if (!regionIsos.includes(d.iso)) {
-          countries.push({
-            ...d,
-            value: d.iso,
-            groupId: 'countries'
-          });
-        }
-      });
-      const sortedRegions = sortLabelByAlpha(regions).sort(x => (x.value === 'TOP' ? -1 : 0));
-      return sortedRegions.concat(sortLabelByAlpha(countries));
-    }
-
     return sortLabelByAlpha(fieldOptions);
   });
 
-const getDefaultOptions = createSelector([getSourceSelected, getMeta], (sourceSelected, meta) => {
-  if (!sourceSelected || !meta) return null;
-  const defaults = getGhgEmissionDefaults(sourceSelected, meta);
-  const defaultOptions = {};
-  Object.keys(defaults).forEach(key => {
-    const keyDefault = String(defaults[key]).split(',');
-    defaultOptions[key] = meta[key].filter(
-      m =>
-        keyDefault.includes(m.iso) ||
-        keyDefault.includes(m.label) ||
-        keyDefault.includes(String(m.value))
-    );
-  });
-  defaultOptions.location = [TOP_EMITTERS_OPTION];
-  return defaultOptions;
-});
+const getRegionOptions = createSelector(
+  [getRegions, getFieldOptions('location')],
+  (regions, options) => {
+    if (!regions) return null;
+
+    const regionOptions = [TOP_EMITTERS_OPTION];
+    regions.forEach(region => {
+      const regionMembers = region.members.map(m => m.iso_code3);
+      regionOptions.push({
+        label: region.wri_standard_name,
+        value: region.iso_code3,
+        iso: region.iso_code3,
+        expandsTo: regionMembers,
+        groupId: 'regions'
+      });
+    });
+
+    const countryOptions = [];
+    const regionISOs = regionOptions.map(r => r.iso);
+
+    options.forEach(d => {
+      if (!regionISOs.includes(d.iso)) {
+        countryOptions.push({
+          ...d,
+          value: d.iso,
+          groupId: 'countries'
+        });
+      }
+    });
+    const sortedRegions = sortLabelByAlpha(regionOptions).sort(x => (x.value === 'TOP' ? -1 : 0));
+    return sortedRegions.concat(sortLabelByAlpha(countryOptions));
+  }
+);
 
 const getSectorOptions = createSelector([getFieldOptions('sector')], options => {
   if (!options || isEmpty(options)) return null;
@@ -177,6 +160,17 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
   return [...sectors, ...subsectors];
 });
 
+const getGasOptions = createSelector([getFieldOptions('gas')], options => {
+  if (!options) return [];
+
+  const valueByLabel = g => (options.find(opt => opt.label === g) || {}).value;
+
+  return options.map(o => ({
+    ...o,
+    expandsTo: GAS_AGGREGATES[o.label] && GAS_AGGREGATES[o.label].map(valueByLabel).filter(v => v)
+  }));
+});
+
 const CHART_TYPE_OPTIONS = [
   { label: 'line', value: 'line' },
   { label: 'area', value: 'area' },
@@ -189,34 +183,39 @@ export const getOptions = createStructuredSelector({
   sources: getSourceOptions,
   chartType: getChartTypeOptions,
   breakBy: getBreakByOptions,
-  regions: getFieldOptions('location'),
+  regions: getRegionOptions,
   sectors: getSectorOptions,
-  gases: getFieldOptions('gas')
+  gases: getGasOptions
+});
+
+const getDefaults = createSelector([getSourceSelected, getMeta], (sourceSelected, meta) => {
+  if (!sourceSelected || !meta) return null;
+
+  return getGhgEmissionDefaults(sourceSelected, meta);
 });
 
 const getFiltersSelected = field =>
-  createSelector(
-    [getOptions, getSelection(field), getDefaultOptions],
-    (options, selected, defaults) => {
-      const fieldOptions =
-        options && (field === 'location' ? options.regions : options[toPlural(field)]);
-      if (!defaults) return null;
-      if (!selected || !fieldOptions || isEmpty(fieldOptions)) {
-        return [...defaults[field]];
-      }
-      let selectedFilters = [];
-      if (selected) {
-        const selectedValues = selected.split(',');
-        selectedFilters = fieldOptions.filter(
-          filter =>
-            selectedValues.indexOf(String(filter.value)) !== -1 ||
-            selectedValues.indexOf(filter.iso_code3) !== -1
-        );
-      }
+  createSelector([getOptions, getSelection(field), getDefaults], (options, selected, defaults) => {
+    if (!options || !defaults) return null;
 
-      return selectedFilters;
+    const fieldOptions = field === 'location' ? options.regions : options[toPlural(field)];
+    const defaultSelection = defaults && defaults[field] && String(defaults[field]);
+
+    // empty filter selected deliberately
+    if (selected === '') return [];
+
+    const selection = selected || defaultSelection;
+    let selectedFilters = [];
+    if (selection) {
+      const selectedValues = selection.split(',');
+      selectedFilters = fieldOptions.filter(
+        filter =>
+          selectedValues.includes(String(filter.value)) || selectedValues.includes(filter.iso_code3)
+      );
     }
-  );
+
+    return selectedFilters;
+  });
 
 const getChartTypeSelected = createSelector(
   [getChartTypeOptions, getSelection('chartType')],
@@ -258,7 +257,7 @@ const getOverlappingConflicts = optionsSelected => {
 };
 
 const getGasConflicts = gasSelected => {
-  const aggregatedGases = ['All GHG', 'Aggregate F-gases', 'Aggregate GHGs'];
+  const aggregatedGases = Object.keys(GAS_AGGREGATES);
 
   if (!gasSelected || gasSelected.length <= 1) return [];
 
@@ -293,14 +292,7 @@ export const getFiltersConflicts = createSelector(
     getMetricSelected,
     getChartTypeSelected
   ],
-  (
-    locationSelected,
-    gasSelected,
-    sectorsSelected,
-    modelSelected,
-    metricSelected,
-    chartSelected
-  ) => {
+  (regionSelected, gasSelected, sectorsSelected, modelSelected, metricSelected, chartSelected) => {
     let conflicts = [];
     let canChangeBreakByTo = difference(['sector', 'gas', 'regions'], [modelSelected]);
     const solutions = ['Please deselect all conflicting options'];
@@ -310,7 +302,7 @@ export const getFiltersConflicts = createSelector(
     const notBreakByRegion = modelSelected !== 'regions';
 
     const sectorConflicts = getOverlappingConflicts(sectorsSelected);
-    const regionConflicts = getOverlappingConflicts(locationSelected);
+    const regionConflicts = getOverlappingConflicts(regionSelected);
     const gasConflicts = getGasConflicts(gasSelected);
     const chartConflicts = getChartConflicts(metricSelected, chartSelected);
 

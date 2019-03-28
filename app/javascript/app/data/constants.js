@@ -263,6 +263,13 @@ export const TOP_EMITTERS_OPTION = {
   groupId: 'regions'
 };
 
+export const GAS_AGGREGATES = {
+  'All GHG': ['CH4', 'CO2', 'F-Gas', 'N2O'],
+  KYOTOGHG: ['CH4', 'CO2', 'HFCS', 'N2O'],
+  'Aggregate GHGs': ['CH4', 'CO2', 'HFCs', 'N2O', 'PFCs', 'SF6'],
+  'Aggregate F-gases': ['HFCs', 'PFCs', 'SF6']
+};
+
 export const WRI_WEBSITE = 'https://www.wri.org/';
 export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';
 export const RW_WEBSITE = 'https://resourcewatch.org/';

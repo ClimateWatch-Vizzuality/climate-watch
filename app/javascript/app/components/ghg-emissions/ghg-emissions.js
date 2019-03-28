@@ -6,8 +6,7 @@ import { getLocationParamUpdated } from 'utils/navigation';
 import { handleAnalytics } from 'utils/analytics';
 import qs from 'query-string';
 import camelCase from 'lodash/camelCase';
-import isArray from 'lodash/isArray';
-import isEmpty from 'lodash/isEmpty';
+import castArray from 'lodash/castArray';
 import upperFirst from 'lodash/upperFirst';
 import { actions } from 'components/modal-metadata';
 
@@ -56,36 +55,12 @@ class GhgEmissionsContainer extends PureComponent {
     handleAnalytics('Chart Type', 'chart type selected', type.label);
   };
 
-  compressFiltersIfNecessary = (field, filters) => {
-    const correctFields = ['regions', 'sectors'];
-    let updatedFilters = filters;
-    if (correctFields.includes(field)) {
-      const { selected } = this.props;
-      const optionsSelected = selected[`${field}Selected`];
-      const shouldCompress =
-        optionsSelected.length === 1 &&
-        optionsSelected[0].expandsTo &&
-        optionsSelected[0].expandsTo.length;
-      if (shouldCompress) {
-        updatedFilters = [...optionsSelected, filters[filters.length - 1]];
-      }
-    }
-    return updatedFilters;
-  };
-
   handleFilterChange = (field, filters) => {
-    let values;
-    const updatedFilters = this.compressFiltersIfNecessary(field, filters);
-
-    if (isArray(updatedFilters)) {
-      values = updatedFilters.map(v => v.value).join(',');
-    } else {
-      values = updatedFilters.value;
-    }
-
     this.updateUrlParam({
       name: [field],
-      value: isEmpty(values) ? null : values
+      value: castArray(filters)
+        .map(v => v.value)
+        .join(',')
     });
 
     const selectedFilterLabels = filters.map(f => f.label);
