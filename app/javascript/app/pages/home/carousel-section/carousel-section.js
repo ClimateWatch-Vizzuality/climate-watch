@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import CarouselSectionComponent from './carousel-section-component';
-import { getCountriesOptions, getCountryLocationData } from '../home-selectors';
+import { getCountriesOptions } from '../home-selectors';
 
 const mapStateToProps = state => ({
-  countriesOptions: getCountriesOptions(state.countries),
-  geolocation: getCountryLocationData(state.geoLocation)
+  countriesOptions: getCountriesOptions(state.countries)
 });
 
 export default withRouter(

@@ -13,7 +13,6 @@ import * as ndcsSdgsMetaProvider from 'providers/ndcs-sdgs-meta-provider';
 import * as ndcsSdgsDataProvider from 'providers/ndcs-sdgs-data-provider';
 import * as ndcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import * as ghgEmissionsProvider from 'providers/ghg-emissions-meta-provider';
-import * as geoLocationProvider from 'providers/geolocation-provider';
 import * as wbCountryProvider from 'providers/wb-country-data-provider';
 import * as timelineProvider from 'providers/timeline-provider';
 import * as socioeconomicsProvider from 'providers/socioeconomics-provider';
@@ -46,7 +45,6 @@ const providersReducers = {
   ndcsSdgsMeta: handleActions(ndcsSdgsMetaProvider),
   ndcsSdgsData: handleActions(ndcsSdgsDataProvider),
   ghgEmissionsMeta: handleActions(ghgEmissionsProvider),
-  geoLocation: handleActions(geoLocationProvider),
   wbCountryData: handleActions(wbCountryProvider),
   socioeconomics: handleActions(socioeconomicsProvider),
   timeline: handleActions(timelineProvider),
@@ -60,7 +58,9 @@ const providersReducers = {
   espTimeSeries: handleActions(espTimeSeriesProvider),
   dataExplorer: handleActions(dataExplorerProvider),
   lawsAndPolicies: handleActions(lawsAndPoliciesProvider),
-  agricultureCountriesContexts: handleActions(agricultureCountriesContextsProvider),
+  agricultureCountriesContexts: handleActions(
+    agricultureCountriesContextsProvider
+  ),
   agricultureEmissions: handleActions(agricultureEmissionsProvider),
   agricultureLandArea: handleActions(agricultureLandAreaProvider),
   stories: handleActions(storiesProvider),
