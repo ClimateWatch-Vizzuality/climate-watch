@@ -352,13 +352,16 @@ export const getChartData = createSelector(
         });
       });
 
-      const item = {
+      // if there is no value for any item then return null
+      // and then filter this out from chart data
+      if (Object.keys(yItems).length === 0) return null;
+
+      return {
         x: year,
         ...yItems
       };
-      return item;
     });
-    return dataParsed;
+    return dataParsed.filter(x => x);
   }
 );
 
