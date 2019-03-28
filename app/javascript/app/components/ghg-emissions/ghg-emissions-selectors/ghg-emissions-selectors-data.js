@@ -346,7 +346,7 @@ export const getChartData = createSelector(
           const metricData = shouldHaveMetricData && getMetricData(year, d.iso_code3, column);
           const metricRatio = shouldHaveMetricData ? metricData : 1;
 
-          if (yearEmissions) {
+          if (yearEmissions && metricRatio) {
             yItems[key] = calculateValue(yItems[key], yearEmissions.value, metricRatio);
           }
         });
