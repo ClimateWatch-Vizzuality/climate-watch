@@ -265,7 +265,7 @@ export const TOP_EMITTERS_OPTION = {
 
 export const GAS_AGGREGATES = {
   'All GHG': ['CH4', 'CO2', 'F-Gas', 'N2O'],
-  KYOTOGHG: [''],
+  KYOTOGHG: ['CH4', 'CO2', 'HFCS', 'N2O'],
   'Aggregate GHGs': ['CH4', 'CO2', 'HFCs', 'N2O', 'PFCs', 'SF6'],
   'Aggregate F-gases': ['HFCs', 'PFCs', 'SF6']
 };

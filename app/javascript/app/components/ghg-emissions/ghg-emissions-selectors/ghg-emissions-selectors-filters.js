@@ -167,7 +167,7 @@ const getGasOptions = createSelector([getFieldOptions('gas')], options => {
 
   return options.map(o => ({
     ...o,
-    expandsTo: GAS_AGGREGATES[o.label] && GAS_AGGREGATES[o.label].map(valueByLabel)
+    expandsTo: GAS_AGGREGATES[o.label] && GAS_AGGREGATES[o.label].map(valueByLabel).filter(v => v)
   }));
 });
 
@@ -257,7 +257,7 @@ const getOverlappingConflicts = optionsSelected => {
 };
 
 const getGasConflicts = gasSelected => {
-  const aggregatedGases = ['All GHG', 'Aggregate F-gases', 'Aggregate GHGs'];
+  const aggregatedGases = Object.keys(GAS_AGGREGATES);
 
   if (!gasSelected || gasSelected.length <= 1) return [];
 
