@@ -41,6 +41,14 @@ class DownloadMenuContainer extends PureComponent {
       action: this.handleOnClick.bind(this, `${url}/ndc-content.zip`, '6.4 MB')
     },
     {
+      label: 'NDC-SDG Linkages (763 KB)',
+      action: this.handleOnClick.bind(
+        this,
+        `${url}/ndc-sdg-linkages.zip`,
+        '763 KB'
+      )
+    },
+    {
       label: 'NDC Targets (329 kB)',
       action: this.handleOnClick.bind(
         this,
