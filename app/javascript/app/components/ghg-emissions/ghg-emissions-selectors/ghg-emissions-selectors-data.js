@@ -18,7 +18,6 @@ import {
   CHART_COLORS_EXTENDED,
   DATA_SCALE,
   DEFAULT_AXES_CONFIG,
-  METRIC_OPTIONS,
   OTHER_COLOR
 } from 'data/constants';
 import { getWBData, getData, getRegions } from './ghg-emissions-selectors-get';
@@ -221,9 +220,8 @@ const getCalculationData = createSelector([getWBData], data => {
   return yearData;
 });
 
-const calculateValue = (currentValue, value, metricData) => {
-  const metricRatio = metricData || 1;
-  const updatedValue = value || value === 0 ? value * DATA_SCALE / metricRatio : null;
+const calculateValue = (currentValue, value, metricRatio) => {
+  const updatedValue = value || value === 0 ? value * (DATA_SCALE / metricRatio) : null;
   if (updatedValue && (currentValue || currentValue === 0)) {
     return updatedValue + currentValue;
   }
@@ -255,11 +253,11 @@ export const getChartData = createSelector(
   (data, regions, model, yColumnOptions, metric, calculationData) => {
     if (!data || !data.length || !model || !calculationData || !regions) return null;
     const yearValues = data[0].emissions.map(d => d.year);
-    const shouldHaveMetricData = metric && metric !== METRIC_OPTIONS.ABSOLUTE_VALUE.value;
-    let metricField = null;
-    if (shouldHaveMetricData) {
-      metricField = metric === METRIC_OPTIONS.PER_CAPITA.value ? 'population' : 'gdp';
-    }
+    const metricField = {
+      PER_CAPITA: 'population',
+      PER_GDP: 'gdp'
+    }[metric];
+    const shouldHaveMetricData = !!metricField;
 
     const regionsWithOwnData = getRegionsWithOwnData(regions, data);
     const regionWithOwnDataMembers = uniq(
@@ -321,9 +319,10 @@ export const getChartData = createSelector(
           const yearEmissions = d.emissions.find(e => e.year === year);
           const key = column.value;
           const metricData = shouldHaveMetricData && getMetricData(year, d.iso_code3, column);
+          const metricRatio = shouldHaveMetricData ? metricData : 1;
 
           if (yearEmissions) {
-            yItems[key] = calculateValue(yItems[key], yearEmissions.value, metricData);
+            yItems[key] = calculateValue(yItems[key], yearEmissions.value, metricRatio);
           }
         });
       });
