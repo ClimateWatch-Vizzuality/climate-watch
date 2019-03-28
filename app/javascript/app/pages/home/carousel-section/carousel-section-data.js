@@ -12,15 +12,7 @@ export const slidesData = [
     text: [
       'Gain insights by country on historical and target emissions, national climate commitments, climate vulnerability and readiness, and linkages between climate and sustainable development goals.'
     ],
-    buttons: [
-      {
-        text: 'Explore your country',
-        link: '/countries',
-        color: 'yellow',
-        type: 'geolocator'
-      },
-      { text: 'Select another country', type: 'dropdown' }
-    ],
+    buttons: [{ text: 'Select a country', type: 'dropdown' }],
     smImage: countryBgImage,
     bgImage: countryBgImage,
     altText: 'Climate goals chart'

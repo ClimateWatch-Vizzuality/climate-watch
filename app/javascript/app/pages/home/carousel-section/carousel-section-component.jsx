@@ -1,45 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
 import { Carousel } from 'cw-components';
 import Dropdown from 'components/dropdown';
 import Button from 'components/button';
 import { handleAnalytics } from 'utils/analytics';
-import GeoLocationProvider from 'providers/geolocation-provider';
 import { slidesData } from './carousel-section-data';
 
 import styles from './carousel-section-styles.scss';
 
-const renderExploreCountryButton = geolocation => (
-  <div key="geolocator">
-    <span
-      className={cx(styles.geoLocation, {
-        [styles.geoLocationHide]: !geolocation.country
-      })}
-    >
-      Connecting from {geolocation.country}?
-    </span>
-    <Button
-      className={styles.button}
-      color="yellow"
-      link={geolocation.iso ? `/countries/${geolocation.iso}` : null}
-      disabled={!geolocation.country}
-    >
-      Explore your country
-    </Button>
-  </div>
-);
-
-const renderButton = (
-  b,
-  countriesOptions,
-  handleDropDownChange,
-  geolocation
-) => {
+const renderButton = (b, countriesOptions, handleDropDownChange) => {
   const { type } = b;
-  if (type === 'geolocator') {
-    return renderExploreCountryButton(geolocation);
-  }
   if (type === 'button') {
     return (
       <Button
@@ -55,9 +25,7 @@ const renderButton = (
   return (
     <div key={b.text} className={styles.button}>
       <Dropdown
-        placeholder={
-          geolocation ? 'Select another country' : 'Select a country'
-        }
+        placeholder={'Select a country'}
         options={countriesOptions}
         onValueChange={handleDropDownChange}
         plain
@@ -83,8 +51,7 @@ const BottomSlide = ({
   text,
   buttons,
   countriesOptions,
-  handleDropDownChange,
-  geolocation
+  handleDropDownChange
 }) => (
   <div className={styles.slideWrapper} key={title}>
     <h3 className={styles.slideTitle}>{title}</h3>
@@ -95,7 +62,7 @@ const BottomSlide = ({
     ))}
     <div className={styles.buttonsContainer}>
       {buttons.map(b =>
-        renderButton(b, countriesOptions, handleDropDownChange, geolocation)
+        renderButton(b, countriesOptions, handleDropDownChange)
       )}
     </div>
   </div>
@@ -110,7 +77,7 @@ class CarouselSectionComponent extends Component {
     handleAnalytics('Home', 'Search for a country', selected.value);
   };
 
-  renderSlides = ({ geolocation, countriesOptions }) => {
+  renderSlides = ({ countriesOptions }) => {
     const tops =
       slidesData &&
       slidesData.map(slide => (
@@ -131,7 +98,6 @@ class CarouselSectionComponent extends Component {
           title={slide.title}
           text={slide.text}
           buttons={slide.buttons}
-          geolocation={geolocation}
           countriesOptions={countriesOptions}
           handleDropDownChange={this.handleDropDownChange}
           bottomSlide
@@ -151,7 +117,6 @@ class CarouselSectionComponent extends Component {
         >
           {this.renderSlides(this.props)}
         </Carousel>
-        <GeoLocationProvider />
       </section>
     );
   }
@@ -162,8 +127,7 @@ BottomSlide.propTypes = {
   text: PropTypes.arrayOf(PropTypes.string),
   buttons: PropTypes.arrayOf(PropTypes.shape({})),
   countriesOptions: PropTypes.arrayOf(PropTypes.shape({})),
-  handleDropDownChange: PropTypes.func.isRequired,
-  geolocation: PropTypes.shape({})
+  handleDropDownChange: PropTypes.func.isRequired
 };
 
 BottomSlide.defaultProps = {

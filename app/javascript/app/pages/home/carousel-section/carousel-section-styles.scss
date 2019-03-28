@@ -43,6 +43,7 @@
   align-items: center;
   width: 100%;
   flex-direction: column;
+
   > * {
     margin-bottom: 20px;
   }
@@ -50,6 +51,7 @@
   @media #{$tablet-portrait} {
     flex-direction: row;
     align-items: flex-end;
+
     > * {
       margin: 0 10px;
     }
@@ -85,6 +87,7 @@
 
     &.slick-active {
       background: $theme-color;
+
       > ::after {
         background-color: unset !important;
       }
@@ -102,10 +105,12 @@
 
       &.slick-active {
         background: none;
+
         > ::after {
           background-color: $theme-color-intense !important;
         }
       }
+
       > * {
         height: 100%;
       }
@@ -119,16 +124,4 @@
       padding-right: 0 !important;
     }
   }
-}
-
-.geoLocation {
-  display: block;
-  opacity: 1;
-  font-size: $font-size-s;
-  color: $dark-gray;
-  margin-bottom: 10px;
-}
-
-.geoLocationHide {
-  opacity: 0;
 }
