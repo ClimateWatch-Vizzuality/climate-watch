@@ -6,7 +6,6 @@ import RegionsProvider from 'providers/regions-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
 import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
-import ReactTooltip from 'react-tooltip';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
@@ -145,11 +144,6 @@ class GhgEmissions extends PureComponent {
       area: areaIcon,
       percentage: percentageIcon
     };
-    const getTooltipFor = opt => {
-      if (!opt || opt.length < 2) return '';
-
-      return opt.map(o => o.label).join(', ');
-    };
 
     return (
       <div>
@@ -165,34 +159,28 @@ class GhgEmissions extends PureComponent {
         {providerFilters && <EmissionsProvider filters={providerFilters} />}
         <div className={styles.col4}>
           {this.renderDropdown('Source', 'sources')}
-          <div data-tip={getTooltipFor(selectedOptions.regionsSelected)} data-for="filtersTooltip">
-            <Multiselect
-              label={'Regions'}
-              groups={groups}
-              options={options.regions || []}
-              values={getValues(selectedOptions.regionsSelected)}
-              onValueChange={selected => handleChange('regions', selected)}
-            />
-          </div>
-          <div data-tip={getTooltipFor(selectedOptions.sectorsSelected)} data-for="filtersTooltip">
-            <MultiLevelDropdown
-              label="Sectors / Subsectors"
-              theme={{ wrapper: styles.dropdown }}
-              options={options.sectors}
-              values={selectedOptions.sectorsSelected || []}
-              onChange={selected => handleChange('sectors', selected)}
-              clearable
-              multiselect
-            />
-          </div>
-          <div data-tip={getTooltipFor(selectedOptions.gasesSelected)} data-for="filtersTooltip">
-            <Multiselect
-              label={'Gases'}
-              options={options.gases}
-              values={getValues(selectedOptions.gasesSelected)}
-              onValueChange={selected => handleChange('gases', selected)}
-            />
-          </div>
+          <Multiselect
+            label={'Regions'}
+            groups={groups}
+            options={options.regions || []}
+            values={getValues(selectedOptions.regionsSelected)}
+            onValueChange={selected => handleChange('regions', selected)}
+          />
+          <MultiLevelDropdown
+            label="Sectors / Subsectors"
+            theme={{ wrapper: styles.dropdown }}
+            options={options.sectors}
+            values={selectedOptions.sectorsSelected || []}
+            onChange={selected => handleChange('sectors', selected)}
+            clearable
+            multiselect
+          />
+          <Multiselect
+            label={'Gases'}
+            options={options.gases}
+            values={getValues(selectedOptions.gasesSelected)}
+            onValueChange={selected => handleChange('gases', selected)}
+          />
           {this.renderDropdown('Break by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', icons)}
         </div>
@@ -201,7 +189,6 @@ class GhgEmissions extends PureComponent {
           <div className={styles.buttonGroup}>{renderButtonGroup(true)}</div>
         </TabletPortraitOnly>
         <ModalMetadata />
-        <ReactTooltip id="filtersTooltip" effect="solid" />
       </div>
     );
   }
