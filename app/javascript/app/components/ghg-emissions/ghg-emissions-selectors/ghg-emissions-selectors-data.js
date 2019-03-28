@@ -56,7 +56,8 @@ const getExpandedLegendRegionsSelected = createSelector(
     if (!shouldExpandRegions || !data) return null;
 
     const dataSelected = selectedOptions.regionsSelected;
-    const countryOptions = dataSelected[0].expandsTo.map(iso =>
+    const expandedOption = dataSelected[0];
+    const countryOptions = expandedOption.expandsTo.map(iso =>
       options.regions.find(o => o.iso === iso)
     );
     const groupedCountries = data && groupBy(data, 'iso_code3');
@@ -77,6 +78,7 @@ const getExpandedLegendRegionsSelected = createSelector(
         label: 'Others',
         value: 'OTHERS',
         expandsTo: othersGroup.map(o => o.iso),
+        expandedOptionValue: expandedOption.iso,
         groupId: 'regions'
       };
       return data && [...sortedCountries.slice(0, LEGEND_LIMIT), othersOption];
@@ -168,16 +170,39 @@ const getExpandedData = createSelector(
     const othersOption = legendDataSelected.find(o => o.iso === 'OTHERS');
     if (!othersOption) return data;
 
+    const expandedRegionISO = othersOption.expandedOptionValue;
+    const expandedRegionData = data.find(d => d.iso_code3 === expandedRegionISO);
+
     const othEmByYear = {};
     const regionBelongsToOthers = d => othersOption.expandsTo.includes(d.iso_code3);
 
-    data.forEach(d => {
-      if (regionBelongsToOthers(d)) {
-        d.emissions.forEach(e => {
-          othEmByYear[e.year] = (othEmByYear[e.year] || 0) + e.value;
-        });
-      }
-    });
+    // if expanded region like for example WORLD has it's own data line
+    // then use that Total value to calculate Others value
+    if (expandedRegionData) {
+      const expandedCountriesISOCodes = legendDataSelected
+        .filter(o => o.iso !== 'OTHERS')
+        .map(o => o.iso);
+      const exCountriesEmByYear = {};
+      data.forEach(d => {
+        if (expandedCountriesISOCodes.includes(d.iso_code3)) {
+          d.emissions.forEach(e => {
+            exCountriesEmByYear[e.year] = (exCountriesEmByYear[e.year] || 0) + e.value;
+          });
+        }
+      });
+
+      expandedRegionData.emissions.forEach(e => {
+        othEmByYear[e.year] = e.value - exCountriesEmByYear[e.year];
+      });
+    } else {
+      data.forEach(d => {
+        if (regionBelongsToOthers(d)) {
+          d.emissions.forEach(e => {
+            othEmByYear[e.year] = (othEmByYear[e.year] || 0) + e.value;
+          });
+        }
+      });
+    }
 
     const othersData = {
       iso_code3: 'OTHERS',
