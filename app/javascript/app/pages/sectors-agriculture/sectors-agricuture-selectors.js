@@ -7,7 +7,7 @@ const getGhgEmissionsData = state =>
   (state.emissions && state.emissions.data) || null;
 
 const AGRICULTURE_SECTOR = 'Agriculture';
-const TOTAL_SECTOR = 'Total including LUCF';
+const TOTAL_SECTOR = 'Total excluding LUCF';
 
 export const getAnchorLinks = createSelector([getSections], sections =>
   sections.filter(route => route.anchor).map(route => ({
