@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { actions } from 'components/anchor-nav';
-import { getAnchorLinks } from './sectors-agricuture-selectors';
+import {
+  getAnchorLinks,
+  getWorldwidePercentageAgricultureEmission
+} from './sectors-agricuture-selectors';
 import Component from './sectors-agriculture-component';
 
 const mapStateToProps = (state, { route, location, history }) => {
@@ -9,7 +12,8 @@ const mapStateToProps = (state, { route, location, history }) => {
   return {
     location,
     history,
-    anchorLinks: getAnchorLinks(routeData)
+    anchorLinks: getAnchorLinks(routeData),
+    percentageEmission: getWorldwidePercentageAgricultureEmission(state)
   };
 };
 

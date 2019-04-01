@@ -20,8 +20,14 @@ class SectorsAgriculture extends PureComponent {
       anchorLinks,
       setActiveSection,
       location,
-      history
+      history,
+      percentageEmission
     } = this.props;
+    const percentageEmissionText =
+      (percentageEmission &&
+        `, producing ${percentageEmission} of all emissions`) ||
+      '';
+
     return (
       <div>
         <Header route={route}>
@@ -29,9 +35,7 @@ class SectorsAgriculture extends PureComponent {
             <div className="grid-column-item">
               <Intro
                 title="Agriculture"
-                description={
-                  'Agriculture is the second-largest contributor to global greenhouse gas emissions. This page shows you where emissions come from (including direct and indirect emissions), what actions countries have proposed in their NDCs and resources for more action.'
-                }
+                description={`Agriculture is the second-largest contributor to global greenhouse gas emissions${percentageEmissionText}. This page shows you where emissions come from (including direct and indirect emissions), what actions countries have proposed in their NDCs and resources for more action.`}
               />
             </div>
           </div>
@@ -73,7 +77,12 @@ SectorsAgriculture.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   anchorLinks: PropTypes.array.isRequired,
-  setActiveSection: PropTypes.func.isRequired
+  setActiveSection: PropTypes.func.isRequired,
+  percentageEmission: PropTypes.string
+};
+
+SectorsAgriculture.defaultProps = {
+  percentageEmission: ''
 };
 
 export default SectorsAgriculture;

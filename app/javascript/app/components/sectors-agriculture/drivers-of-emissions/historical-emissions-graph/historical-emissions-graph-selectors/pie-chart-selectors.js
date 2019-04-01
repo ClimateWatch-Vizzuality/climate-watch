@@ -6,9 +6,16 @@ import {
 } from 'utils/graphs';
 import { GREY_CHART_COLORS } from 'data/constants';
 import { format } from 'd3-format';
+import { getEmissionCountrySelected } from './ghg-metadata-selectors';
 
 const AGRICULTURE_COLOR = '#0677B3';
-const AGGREGATED_SECTORS = ['Total excluding LUCF', 'Total including LUCF'];
+const TOTAL_EMISSION = 'Total excluding LUCF';
+const INCLUDED_SECTORS = [
+  'Agriculture',
+  'Energy',
+  'Industrial Processes',
+  'Waste' /** , 'Land-Use Change and Forestry' */
+];
 
 const getGhgEmissionsData = state =>
   (state.ghgEmissions && state.ghgEmissions.data) || null;
@@ -16,50 +23,69 @@ const getGhgEmissionsLoading = state =>
   (state.ghgEmissions && state.ghgEmissions.loading) || false;
 
 /** PIE-CHART SELECTORS */
-export const getPieChartData = createSelector([getGhgEmissionsData], data => {
-  if (!data || !data.length) return null;
-  const sectorsLastYearEmission = data
-    .map(({ emissions, sector, location }) => {
+export const getGhgEmissionsDataByLocation = createSelector(
+  [getGhgEmissionsData, getEmissionCountrySelected],
+  (data, location) => {
+    if (!data || !data.length || !location) return null;
+    const emissionsData = data.filter(
+      ({ iso_code3 }) => iso_code3 === location.value
+    );
+    return emissionsData;
+  }
+);
+
+export const getPieChartData = createSelector(
+  [getGhgEmissionsDataByLocation],
+  data => {
+    if (!data || !data.length) return null;
+    const lastYearEmissions = data.map(({ emissions, sector, location }) => {
       const lastYearEmission = emissions[emissions.length - 1];
       return { sector, location, ...lastYearEmission };
-    })
-    .filter(
-      ({ sector, value }) => value > 0 && !AGGREGATED_SECTORS.includes(sector)
+    });
+
+    const totalLastYearEmission = lastYearEmissions.find(
+      ({ sector }) => sector && sector === TOTAL_EMISSION
+    ).value;
+
+    const filteredEmissions = lastYearEmissions.filter(
+      ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
     ); // filter for negative emission for Forestry sector and total LUCF sectors
 
-  if (!sectorsLastYearEmission) return null;
-  const totalEmission = sectorsLastYearEmission.reduce(
-    (acc, emission) => acc + emission.value,
-    0
-  );
+    if (!filteredEmissions) return null;
 
-  const sectorEmissions = sectorsLastYearEmission.map(({ sector, value }) => ({
-    name: getColumnValue(sector).toLowerCase(),
-    value,
-    sector,
-    formattedValue: `${format('.2s')(value)}`,
-    formattedPercentage: `${format('.2f')(value * 100 / totalEmission)}%`,
-    percentageValue: value * 100 / totalEmission
-  }));
+    const sectorEmissions = filteredEmissions.map(({ sector, value }) => ({
+      name: getColumnValue(sector).toLowerCase(),
+      value,
+      sector,
+      formattedValue: `${format('.2s')(value)}`,
+      formattedPercentage: `${format('.2f')(
+        value * 100 / totalLastYearEmission
+      )}%`,
+      percentageValue: value * 100 / totalLastYearEmission
+    }));
 
-  const agricultureRow = sectorEmissions.find(
-    ({ name }) => name === 'agriculture'
-  );
-  const sectorsEmissionsData = agricultureRow
-    ? [
-      agricultureRow,
-      ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
-    ]
-    : sectorEmissions;
+    const agricultureRow = sectorEmissions.find(
+      ({ name }) => name === 'agriculture'
+    );
 
-  return {
-    year: sectorsLastYearEmission[0] && sectorsLastYearEmission[0].year,
-    location: sectorsLastYearEmission[0] && sectorsLastYearEmission[0].location,
-    emissionValue: agricultureRow && agricultureRow.formattedValue,
-    emissionPercentage: agricultureRow && agricultureRow.formattedPercentage,
-    data: sectorsEmissionsData
-  };
-});
+    if (!agricultureRow) return null;
+
+    const sectorsEmissionsData = agricultureRow
+      ? [
+        agricultureRow,
+        ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
+      ]
+      : sectorEmissions;
+
+    return {
+      year: filteredEmissions[0] && filteredEmissions[0].year,
+      location: filteredEmissions[0] && filteredEmissions[0].location,
+      emissionValue: agricultureRow && agricultureRow.formattedValue,
+      emissionPercentage: agricultureRow && agricultureRow.formattedPercentage,
+      data: sectorsEmissionsData
+    };
+  }
+);
 
 const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
   if (!pieChartData || !pieChartData.data || !pieChartData.data.length) {
