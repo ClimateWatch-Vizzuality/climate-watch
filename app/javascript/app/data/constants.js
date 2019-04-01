@@ -67,7 +67,18 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   }
 };
 
-export const TOP_EMITTERS = ['CHN', 'USA', 'EU28', 'IND', 'RUS', 'JPN', 'BRA', 'IDN', 'CAN', 'MEX'];
+export const TOP_EMITTERS = [
+  'CHN',
+  'USA',
+  'EU28',
+  'IND',
+  'RUS',
+  'JPN',
+  'BRA',
+  'IDN',
+  'CAN',
+  'MEX'
+];
 
 export const CHART_COLORS = [
   '#00B4D2',
@@ -102,22 +113,14 @@ export const CHART_COLORS_EXTENDED = [
 ];
 
 export const OTHER_COLOR = '#b1b1b1';
+
 export const GREY_CHART_COLORS = [
   '#68696B',
-  '#757678',
-  '#808184',
   '#818285',
-  '#8e8f91',
-  '#999B9E',
-  '#959697',
-  '#a4a5a6',
-  '#ACACB7',
-  '#b3b4b5',
-  '#c2c3c3',
-  '#d1d2d2',
-  '#e0e1e1',
-  '#E3E5EA',
-  '#eff0f0'
+  '#999B9D',
+  '#ACAEB8',
+  '#C3C4CD',
+  '#E2E4EA'
 ];
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
@@ -247,7 +250,12 @@ export const USERS_PROFESIONAL_SECTORS = [
 
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
-export const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType', 'sources', 'regions'];
+export const NO_ALL_SELECTED_COLUMNS = [
+  'breakBy',
+  'chartType',
+  'sources',
+  'regions'
+];
 
 export const METRIC_OPTIONS = {
   ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },
