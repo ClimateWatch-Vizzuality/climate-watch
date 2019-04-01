@@ -7,7 +7,7 @@ const getGhgEmissionsData = state =>
   (state.emissions && state.emissions.data) || null;
 
 const AGRICULTURE_SECTOR = 'Agriculture';
-const TOTAL_SECTOR = 'Total excluding LUCF';
+const TOTAL_SECTOR = 'Total including LUCF';
 
 export const getAnchorLinks = createSelector([getSections], sections =>
   sections.filter(route => route.anchor).map(route => ({
@@ -43,7 +43,9 @@ export const getWorldwidePercentageAgricultureEmission = createSelector(
       !agricultureEmissions.emissions ||
       !totalEmission ||
       !totalEmission.emissions
-    ) { return null; }
+    ) {
+      return null;
+    }
     const { emissions } = agricultureEmissions;
     const lastYear = Math.max(...emissions.map(({ year }) => year));
     const lastYearAgricultureEmission = emissions.find(
