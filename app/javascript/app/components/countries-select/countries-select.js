@@ -80,7 +80,7 @@ class CountrySelectContainer extends PureComponent {
       {
         coordinates: [28.034, -26.1952],
         link: 'http://southafricaclimateexplorer.org',
-        name: 'South Africa Climate Explorer',
+        name: 'South Africa Explorer',
         pin
       },
       //      {
@@ -92,7 +92,7 @@ class CountrySelectContainer extends PureComponent {
       {
         coordinates: [112.0149, -3.54],
         link: 'https://indonesia.climatewatchdata.org',
-        name: 'Climate Watch Indonesia',
+        name: 'Indonesia Platform',
         pin
       }
     ];
