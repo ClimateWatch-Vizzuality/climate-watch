@@ -15,9 +15,10 @@ import {
   sortEmissionsByValue
 } from 'utils/graphs';
 import {
-  CHART_COLORS_EXTENDED,
   DATA_SCALE,
   DEFAULT_AXES_CONFIG,
+  GHG_TABLE_HEADER,
+  NEW_CHART_COLORS_EXTENDED,
   OTHER_COLOR
 } from 'data/constants';
 import { getWBData, getData, getRegions } from './ghg-emissions-selectors-get';
@@ -383,7 +384,7 @@ export const getChartConfig = createSelector(
   [getModelSelected, getMetricSelected, getYColumnOptions],
   (model, metric, yColumns) => {
     if (!model || !yColumns) return null;
-    colorThemeCache = getThemeConfig(yColumns, CHART_COLORS_EXTENDED, colorThemeCache);
+    colorThemeCache = getThemeConfig(yColumns, NEW_CHART_COLORS_EXTENDED, colorThemeCache);
     let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
     if (metric === 'PER_GDP') {
       unit = `${unit}/ million $ GDP`;
@@ -413,6 +414,28 @@ export const getChartConfig = createSelector(
         y: yColumns
       }
     };
+  }
+);
+
+export const getTableData = createSelector(
+  [getChartData, getModelSelected, getYColumnOptions],
+  (data, model, yColumnOptions) => {
+    if (!data || !model || !data.length || !yColumnOptions) return null;
+
+    const formatValue = value => value && Number(value.toFixed(2));
+
+    const pivot = yColumnOptions.map(c => ({
+      [GHG_TABLE_HEADER[model]]: c.label,
+      ...data.reduce(
+        (acc, d) => ({
+          ...acc,
+          [String(d.x)]: formatValue(d[c.value]) // year: value
+        }),
+        {}
+      )
+    }));
+
+    return pivot;
   }
 );
 

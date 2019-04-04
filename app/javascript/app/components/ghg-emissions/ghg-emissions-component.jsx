@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import startCase from 'lodash/startCase';
+import isArray from 'lodash/isArray';
+
+import { GHG_TABLE_HEADER } from 'data/constants';
+import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
-import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
+import Table from 'components/table';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
-import startCase from 'lodash/startCase';
-import isArray from 'lodash/isArray';
+
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
@@ -52,7 +56,8 @@ class GhgEmissions extends PureComponent {
       legendSelected,
       loading,
       providerFilters,
-      selected: selectedOptions
+      selected: selectedOptions,
+      tableData
     } = this.props;
     const { chartTypeSelected } = selectedOptions;
 
@@ -83,22 +88,37 @@ class GhgEmissions extends PureComponent {
     }
 
     return (
-      <Chart
-        className={styles.chartWrapper}
-        type={chartTypeSelected && chartTypeSelected.value}
-        theme={{ legend: styles.legend }}
-        config={config}
-        data={data}
-        domain={domain}
-        dataOptions={legendOptions}
-        dataSelected={legendSelected || []}
-        height={500}
-        loading={loading}
-        lineType="linear"
-        showUnit
-        onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
-        hideRemoveOptions={hideRemoveOptions}
-      />
+      <React.Fragment>
+        <Chart
+          className={styles.chartWrapper}
+          type={chartTypeSelected && chartTypeSelected.value}
+          theme={{ legend: styles.legend }}
+          config={config}
+          data={data}
+          domain={domain}
+          dataOptions={legendOptions}
+          dataSelected={legendSelected || []}
+          height={500}
+          loading={loading}
+          lineType="linear"
+          showUnit
+          onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+          hideRemoveOptions={hideRemoveOptions}
+        />
+        {
+          !loading &&
+          tableData &&
+          tableData.length && (
+            <Table
+              data={tableData}
+              horizontalScroll
+              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy]]}
+              flexGrow={0}
+              emptyValueLabel="N/A"
+            />
+          )
+        }
+      </React.Fragment>
     );
   }
 
@@ -216,6 +236,7 @@ class GhgEmissions extends PureComponent {
 
 GhgEmissions.propTypes = {
   data: PropTypes.array,
+  tableData: PropTypes.array,
   domain: PropTypes.object,
   config: PropTypes.object,
   options: PropTypes.object,
