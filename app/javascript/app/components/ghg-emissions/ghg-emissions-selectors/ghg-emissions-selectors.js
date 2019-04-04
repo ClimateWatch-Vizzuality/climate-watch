@@ -17,19 +17,7 @@ import {
 } from './ghg-emissions-selectors-data';
 import { getProviderFilters } from './ghg-emissions-selectors-providers';
 
-const groups = [
-  {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
-    groupId: 'countries',
-    title: 'Countries'
-  }
-];
-
 export const getGHGEmissions = createStructuredSelector({
-  groups: () => groups,
   search: getSearch,
   downloadLink: getLinkToDataExplorer,
   options: getOptions,

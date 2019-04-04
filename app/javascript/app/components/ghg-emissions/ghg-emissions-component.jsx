@@ -104,7 +104,6 @@ class GhgEmissions extends PureComponent {
 
   render() {
     const {
-      groups,
       handleInfoClick,
       handleChange,
       providerFilters,
@@ -144,6 +143,26 @@ class GhgEmissions extends PureComponent {
       area: areaIcon,
       percentage: percentageIcon
     };
+    const regionGroups = [
+      {
+        groupId: 'regions',
+        title: 'Regions'
+      },
+      {
+        groupId: 'countries',
+        title: 'Countries'
+      }
+    ];
+    const sectorGroups = [
+      {
+        groupId: 'totals',
+        title: 'Total Emission'
+      },
+      {
+        groupId: 'sectors',
+        title: 'Sector&Sub-Sector'
+      }
+    ];
 
     return (
       <div>
@@ -158,17 +177,18 @@ class GhgEmissions extends PureComponent {
         <EmissionsMetaProvider />
         {providerFilters && <EmissionsProvider filters={providerFilters} />}
         <div className={styles.col4}>
-          {this.renderDropdown('Source', 'sources')}
+          {this.renderDropdown('Data Source', 'sources')}
           <Multiselect
-            label={'Regions'}
-            groups={groups}
+            label={'Countries/Regions'}
+            groups={regionGroups}
             options={options.regions || []}
             values={getValues(selectedOptions.regionsSelected)}
             onValueChange={selected => handleChange('regions', selected)}
           />
           <MultiLevelDropdown
-            label="Sectors / Subsectors"
+            label="Sectors/Subsectors"
             theme={{ wrapper: styles.dropdown }}
+            optGroups={sectorGroups}
             options={options.sectors}
             values={selectedOptions.sectorsSelected || []}
             onChange={selected => handleChange('sectors', selected)}
@@ -181,7 +201,7 @@ class GhgEmissions extends PureComponent {
             values={getValues(selectedOptions.gasesSelected)}
             onValueChange={selected => handleChange('gases', selected)}
           />
-          {this.renderDropdown('Break by', 'breakBy')}
+          {this.renderDropdown('Show data by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', icons)}
         </div>
         {this.renderChart()}
@@ -204,7 +224,6 @@ GhgEmissions.propTypes = {
   fieldToBreakBy: PropTypes.string,
   legendOptions: PropTypes.array,
   legendSelected: PropTypes.array,
-  groups: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,
