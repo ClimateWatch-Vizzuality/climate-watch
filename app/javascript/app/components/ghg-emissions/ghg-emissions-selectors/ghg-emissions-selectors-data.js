@@ -18,6 +18,8 @@ import {
   DATA_SCALE,
   DEFAULT_AXES_CONFIG,
   GHG_TABLE_HEADER,
+  NEW_CHART_COLORS_BASIC,
+  NEW_CHART_COLORS,
   NEW_CHART_COLORS_EXTENDED,
   OTHER_COLOR
 } from 'data/constants';
@@ -380,11 +382,18 @@ let colorThemeCache = {
   yOthers: { stroke: OTHER_COLOR, fill: OTHER_COLOR }
 };
 
+const getColorPalette = columns => {
+  if (columns.length <= 10) return NEW_CHART_COLORS_BASIC;
+  if (columns.length <= 20) return NEW_CHART_COLORS;
+  return NEW_CHART_COLORS_EXTENDED;
+};
+
 export const getChartConfig = createSelector(
   [getModelSelected, getMetricSelected, getYColumnOptions],
   (model, metric, yColumns) => {
     if (!model || !yColumns) return null;
-    colorThemeCache = getThemeConfig(yColumns, NEW_CHART_COLORS_EXTENDED, colorThemeCache);
+    const colorPalette = getColorPalette(yColumns);
+    colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
     if (metric === 'PER_GDP') {
       unit = `${unit}/ million $ GDP`;

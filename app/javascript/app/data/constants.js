@@ -101,7 +101,7 @@ export const CHART_COLORS_EXTENDED = [
   '#000075'
 ];
 
-export const OTHER_COLOR = '#b1b1b1';
+export const OTHER_COLOR = '#999C9F';
 
 export const NEW_CHART_COLORS_BASIC = [
   '#FFB800',
@@ -124,19 +124,19 @@ export const NEW_CHART_COLORS = [
   '#6D40EA',
   '#96E4EF',
   '#D2187C',
-  '#C1EEDC',
+  '#13C881',
   '#008EEE',
+  '#2EC9DF',
+  '#FFB597',
   '#B69FF4',
   '#0845CB',
   '#FF6CD0',
+  '#C1EEDC',
   '#FFDB80',
-  '#2EC9DF',
-  '#FFB597',
   '#999C9F',
   '#80C3F6',
   '#CCCDCF',
-  '#E88BBD',
-  '#13C881'
+  '#E88BBD'
 ];
 
 export const NEW_CHART_COLORS_EXTENDED = [
