@@ -355,16 +355,29 @@ export const getChartData = createSelector(
         });
       });
 
-      // if there is no value for any item then return null
-      // and then filter this out from chart data
-      if (Object.keys(yItems).length === 0) return null;
-
       return {
         x: year,
         ...yItems
       };
     });
-    return dataParsed.filter(x => x);
+
+    // if there is no value for any legend item
+    // remove those element from the start and the end of chart
+    // leave those in the middle
+    const trimWithNoData = dataToTrim => {
+      const indexesToString = dataToTrim
+        .map((d, idx) => (Object.keys(d).length > 1 ? idx : '_'))
+        .join(',')
+        .replace(/_,/g, '')
+        .trim();
+      const middleIndexes = indexesToString.split(',');
+      const firstNotEmptyIndex = Number(middleIndexes[0]);
+      const lastNotEmptyIndex = Number(middleIndexes[middleIndexes.length - 1]);
+
+      return dataToTrim.filter((_d, idx) => idx >= firstNotEmptyIndex && idx <= lastNotEmptyIndex);
+    };
+
+    return trimWithNoData(dataParsed);
   }
 );
 
