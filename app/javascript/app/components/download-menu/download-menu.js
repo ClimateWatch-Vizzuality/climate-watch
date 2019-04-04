@@ -34,7 +34,7 @@ class DownloadMenuContainer extends PureComponent {
   downloadMenuOptionsWithSurvey = [
     {
       label: 'All data (62 MB)',
-      action: this.handleOnClick.bind(this, `${url}/all.zip`, '62 MB')
+      action: this.handleOnClick.bind(this, `${url}/all.zip`, '122.5 MB')
     },
     {
       label: 'NDC Content (6.4 MB)',
