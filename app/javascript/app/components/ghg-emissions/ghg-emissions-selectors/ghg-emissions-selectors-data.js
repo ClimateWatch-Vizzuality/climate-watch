@@ -380,16 +380,23 @@ let colorThemeCache = {
 };
 
 export const getChartConfig = createSelector(
-  [getModelSelected, getYColumnOptions],
-  (model, yColumns) => {
+  [getModelSelected, getMetricSelected, getYColumnOptions],
+  (model, metric, yColumns) => {
     if (!model || !yColumns) return null;
     colorThemeCache = getThemeConfig(yColumns, CHART_COLORS_EXTENDED, colorThemeCache);
+    let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
+    if (metric === 'PER_GDP') {
+      unit = `${unit}/ million $ GDP`;
+    } else if (metric === 'PER_CAPITA') {
+      unit = `${unit} per capita`;
+    }
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
         yLeft: {
           ...DEFAULT_AXES_CONFIG.yLeft,
+          unit,
           suffix: 't'
         }
       },
