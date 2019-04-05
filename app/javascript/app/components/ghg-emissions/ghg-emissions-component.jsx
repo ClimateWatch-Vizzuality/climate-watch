@@ -86,6 +86,10 @@ class GhgEmissions extends PureComponent {
         </div>
       );
     }
+    const setColumnWidth = (column) => {
+      if (column === GHG_TABLE_HEADER[fieldToBreakBy]) return 300;
+      return 200;
+    };
 
     return (
       <React.Fragment>
@@ -112,8 +116,10 @@ class GhgEmissions extends PureComponent {
             <Table
               data={tableData}
               horizontalScroll
-              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy]]}
-              flexGrow={0}
+              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
+               flexGrow={0}
+              parseHtml
+              setColumnWidth={setColumnWidth}
               emptyValueLabel="N/A"
             />
           )

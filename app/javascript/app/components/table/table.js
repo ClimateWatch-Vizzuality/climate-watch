@@ -16,13 +16,7 @@ import Component from './table-component';
 class TableContainer extends PureComponent {
   constructor(props) {
     super(props);
-    const {
-      data,
-      defaultColumns,
-      sortBy,
-      sortDirection,
-      forcedColumnWidth
-    } = props;
+    const { data, defaultColumns, sortBy, sortDirection, forcedColumnWidth } = props;
     const columns = defaultColumns || Object.keys(data[0]);
     this.state = {
       data,
@@ -81,9 +75,7 @@ class TableContainer extends PureComponent {
 
   getDataSorted = (data, sortBy, sortDirection) => {
     const dataSorted = _sortBy(data, sortBy);
-    return sortDirection === SortDirection.DESC
-      ? reverse(dataSorted)
-      : dataSorted;
+    return sortDirection === SortDirection.DESC ? reverse(dataSorted) : dataSorted;
   };
 
   toggleOptionsOpen = () => {
@@ -101,15 +93,8 @@ class TableContainer extends PureComponent {
   };
 
   render() {
-    const {
-      data,
-      sortBy,
-      sortDirection,
-      activeColumns,
-      columnsOptions,
-      optionsOpen
-    } = this.state;
-    const { handleSortChange, setRowsHeight } = this.props;
+    const { data, sortBy, sortDirection, activeColumns, columnsOptions, optionsOpen } = this.state;
+    const { handleSortChange, setRowsHeight, setColumnWidth } = this.props;
     return createElement(Component, {
       ...this.props,
       data,
@@ -121,7 +106,7 @@ class TableContainer extends PureComponent {
       handleSortChange: handleSortChange || this.handleSortChange,
       handleColumnChange: this.handleColumnChange,
       setRowsHeight: setRowsHeight || this.setRowsHeight,
-      setColumnWidth: this.setColumnWidth,
+      setColumnWidth: setColumnWidth || this.setColumnWidth,
       setOptionsOpen: this.setOptionsOpen,
       setOptionsClose: this.setOptionsClose,
       toggleOptionsOpen: this.toggleOptionsOpen
@@ -134,6 +119,7 @@ TableContainer.propTypes = {
   defaultColumns: PropTypes.array,
   handleSortChange: PropTypes.func,
   setRowsHeight: PropTypes.func,
+  setColumnWidth: PropTypes.func,
   sortBy: PropTypes.string.isRequired,
   sortDirection: PropTypes.string.isRequired,
   forcedColumnWidth: PropTypes.number

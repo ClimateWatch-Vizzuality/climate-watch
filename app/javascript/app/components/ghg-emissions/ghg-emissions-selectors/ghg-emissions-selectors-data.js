@@ -401,19 +401,24 @@ const getColorPalette = columns => {
   return NEW_CHART_COLORS_EXTENDED;
 };
 
+const getUnit = metric => {
+  let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
+  if (metric === 'PER_GDP') {
+    unit = `${unit}/ million $ GDP`;
+  } else if (metric === 'PER_CAPITA') {
+    unit = `${unit} per capita`;
+  }
+  return unit;
+};
+
 export const getChartConfig = createSelector(
   [getModelSelected, getMetricSelected, getYColumnOptions],
   (model, metric, yColumns) => {
     if (!model || !yColumns) return null;
     const colorPalette = getColorPalette(yColumns);
     colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
-    let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
-    if (metric === 'PER_GDP') {
-      unit = `${unit}/ million $ GDP`;
-    } else if (metric === 'PER_CAPITA') {
-      unit = `${unit} per capita`;
-    }
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
+    const unit = getUnit(metric);
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
@@ -440,14 +445,16 @@ export const getChartConfig = createSelector(
 );
 
 export const getTableData = createSelector(
-  [getChartData, getModelSelected, getYColumnOptions],
-  (data, model, yColumnOptions) => {
+  [getChartData, getMetricSelected, getModelSelected, getYColumnOptions],
+  (data, metric, model, yColumnOptions) => {
     if (!data || !model || !data.length || !yColumnOptions) return null;
 
     const formatValue = value => value && Number(value.toFixed(2));
+    const unit = getUnit(metric);
 
     const pivot = yColumnOptions.map(c => ({
       [GHG_TABLE_HEADER[model]]: c.label,
+      unit,
       ...data.reduce(
         (acc, d) => ({
           ...acc,
