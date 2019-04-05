@@ -7,29 +7,18 @@ import {
   getModelSelected
 } from './ghg-emissions-selectors-filters';
 import {
+  getChartConfig,
+  getChartData,
+  getChartDomain,
+  getHideRemoveOptions,
   getLegendDataOptions,
   getLegendDataSelected,
-  getChartDomain,
-  getChartData,
-  getChartConfig,
   getLoading,
-  getHideRemoveOptions
+  getTableData
 } from './ghg-emissions-selectors-data';
 import { getProviderFilters } from './ghg-emissions-selectors-providers';
 
-const groups = [
-  {
-    groupId: 'regions',
-    title: 'Regions'
-  },
-  {
-    groupId: 'countries',
-    title: 'Countries'
-  }
-];
-
 export const getGHGEmissions = createStructuredSelector({
-  groups: () => groups,
   search: getSearch,
   downloadLink: getLinkToDataExplorer,
   options: getOptions,
@@ -38,6 +27,7 @@ export const getGHGEmissions = createStructuredSelector({
   legendOptions: getLegendDataOptions,
   legendSelected: getLegendDataSelected,
   data: getChartData,
+  tableData: getTableData,
   domain: getChartDomain,
   config: getChartConfig,
   loading: getLoading,

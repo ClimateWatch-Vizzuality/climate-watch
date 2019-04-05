@@ -41,23 +41,23 @@ const getSourceSelected = createSelector(
 // BreakBy selectors
 const BREAK_BY_OPTIONS = [
   {
-    label: `Regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.label}`,
+    label: 'Regions-Totals',
     value: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
   },
   {
-    label: `Regions-${METRIC_OPTIONS.PER_CAPITA.label}`,
+    label: 'Regions-Per Capita',
     value: `regions-${METRIC_OPTIONS.PER_CAPITA.value}`
   },
   {
-    label: `Regions-${METRIC_OPTIONS.PER_GDP.label}`,
+    label: 'Regions-Per GDP',
     value: `regions-${METRIC_OPTIONS.PER_GDP.value}`
   },
   {
-    label: 'Sector',
+    label: 'Sectors',
     value: 'sector'
   },
   {
-    label: 'Gas',
+    label: 'Gasses',
     value: 'gas'
   }
 ];
@@ -138,7 +138,7 @@ const getRegionOptions = createSelector(
 const getSectorOptions = createSelector([getFieldOptions('sector')], options => {
   if (!options || isEmpty(options)) return null;
   const hasChildren = d => options.some(o => o.parentId === d.value);
-  const aggregatesComesFirst = o => (o.groupId === 'aggregations' ? -1 : 0);
+  const aggregatesComesFirst = o => (o.groupId === 'totals' ? -1 : 0);
 
   const sectors = options
     .filter(s => !s.parentId)
@@ -147,15 +147,14 @@ const getSectorOptions = createSelector([getFieldOptions('sector')], options => 
       value: d.value,
       expandsTo: d.aggregatedSectorIds,
       groupParent: hasChildren(d) ? String(d.value) : null,
-      groupId: isEmpty(d.aggregatedSectorIds) ? 'sectors' : 'aggregations'
+      optGroup: isEmpty(d.aggregatedSectorIds) ? 'sectors' : 'totals'
     }))
     .sort(aggregatesComesFirst);
 
   const subsectors = options.filter(s => s.parentId).map(d => ({
     label: d.label,
     value: d.value,
-    group: String(d.parentId),
-    groupId: 'sectors'
+    group: String(d.parentId)
   }));
   return [...sectors, ...subsectors];
 });

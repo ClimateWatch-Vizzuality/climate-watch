@@ -67,18 +67,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   }
 };
 
-export const TOP_EMITTERS = [
-  'CHN',
-  'USA',
-  'EU28',
-  'IND',
-  'RUS',
-  'JPN',
-  'BRA',
-  'IDN',
-  'CAN',
-  'MEX'
-];
+export const TOP_EMITTERS = ['CHN', 'USA', 'EU28', 'IND', 'RUS', 'JPN', 'BRA', 'IDN', 'CAN', 'MEX'];
 
 export const CHART_COLORS = [
   '#00B4D2',
@@ -112,16 +101,78 @@ export const CHART_COLORS_EXTENDED = [
   '#000075'
 ];
 
-export const OTHER_COLOR = '#b1b1b1';
+export const OTHER_COLOR = '#999C9F';
 
-export const GREY_CHART_COLORS = [
-  '#68696B',
-  '#818285',
-  '#999B9D',
-  '#ACAEB8',
-  '#C3C4CD',
-  '#E2E4EA'
+export const NEW_CHART_COLORS_BASIC = [
+  '#FFB800',
+  '#0845CB',
+  '#FF6C2F',
+  '#008EEE',
+  '#FF6CD0',
+  '#2EC9DF',
+  '#D2187C',
+  '#6D40EA',
+  '#999C9F',
+  '#13C881'
 ];
+
+export const NEW_CHART_COLORS = [
+  '#FFB800',
+  '#83A2E5',
+  '#FF6C2F',
+  '#FFB5E7',
+  '#6D40EA',
+  '#96E4EF',
+  '#FFDB80',
+  '#D2187C',
+  '#13C881',
+  '#008EEE',
+  '#2EC9DF',
+  '#FFB597',
+  '#B69FF4',
+  '#0845CB',
+  '#FF6CD0',
+  '#C1EEDC',
+  '#999C9F',
+  '#80C3F6',
+  '#CCCDCF',
+  '#E88BBD'
+];
+
+export const NEW_CHART_COLORS_EXTENDED = [
+  '#FFB800',
+  '#B69FF4',
+  '#FF6C2F',
+  '#FFB5E7',
+  '#512FAF',
+  '#2EC9DF',
+  '#0E9560',
+  '#B28000',
+  '#999C9F',
+  '#FFB597',
+  '#D2187C',
+  '#96E4EF',
+  '#6D40EA',
+  '#B24B20',
+  '#0845CB',
+  '#C1EEDC',
+  '#0063A6',
+  '#80C3F6',
+  '#008EEE',
+  '#FFDB80',
+  '#9D115C',
+  '#BF509B',
+  '#FF6CD0',
+  '#208C9B',
+  '#83A2E5',
+  '#032265',
+  '#E88BBD',
+  '#727477',
+  '#13C881',
+  '#CCCDCF'
+];
+
+export const GREY_CHART_COLORS = ['#68696B', '#818285', '#999B9D', '#ACAEB8', '#C3C4CD', '#E2E4EA'];
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
 
@@ -250,12 +301,7 @@ export const USERS_PROFESIONAL_SECTORS = [
 
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
-export const NO_ALL_SELECTED_COLUMNS = [
-  'breakBy',
-  'chartType',
-  'sources',
-  'regions'
-];
+export const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType', 'sources', 'regions'];
 
 export const METRIC_OPTIONS = {
   ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },
@@ -276,6 +322,12 @@ export const GAS_AGGREGATES = {
   KYOTOGHG: ['CH4', 'CO2', 'HFCS', 'N2O'],
   'Aggregate GHGs': ['CH4', 'CO2', 'HFCs', 'N2O', 'PFCs', 'SF6'],
   'Aggregate F-gases': ['HFCs', 'PFCs', 'SF6']
+};
+
+export const GHG_TABLE_HEADER = {
+  regions: 'Country/Region',
+  gas: 'Gas',
+  sector: 'Sector'
 };
 
 export const WRI_WEBSITE = 'https://www.wri.org/';

@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import startCase from 'lodash/startCase';
+import isArray from 'lodash/isArray';
+
+import { GHG_TABLE_HEADER } from 'data/constants';
+import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
 import WorldBankDataProvider from 'providers/wb-country-data-provider';
 import ButtonGroup from 'components/button-group';
-import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
+import Table from 'components/table';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
-import startCase from 'lodash/startCase';
-import isArray from 'lodash/isArray';
+
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
 import percentageIcon from 'assets/icons/icon-percentage-chart.svg';
@@ -52,7 +56,8 @@ class GhgEmissions extends PureComponent {
       legendSelected,
       loading,
       providerFilters,
-      selected: selectedOptions
+      selected: selectedOptions,
+      tableData
     } = this.props;
     const { chartTypeSelected } = selectedOptions;
 
@@ -81,30 +86,50 @@ class GhgEmissions extends PureComponent {
         </div>
       );
     }
+    const setColumnWidth = (column) => {
+      if (column === GHG_TABLE_HEADER[fieldToBreakBy]) return 300;
+      return 200;
+    };
 
     return (
-      <Chart
-        className={styles.chartWrapper}
-        type={chartTypeSelected && chartTypeSelected.value}
-        theme={{ legend: styles.legend }}
-        config={config}
-        data={data}
-        domain={domain}
-        dataOptions={legendOptions}
-        dataSelected={legendSelected || []}
-        height={500}
-        loading={loading}
-        lineType="linear"
-        showUnit
-        onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
-        hideRemoveOptions={hideRemoveOptions}
-      />
+      <React.Fragment>
+        <Chart
+          className={styles.chartWrapper}
+          type={chartTypeSelected && chartTypeSelected.value}
+          theme={{ legend: styles.legend }}
+          config={config}
+          data={data}
+          domain={domain}
+          dataOptions={legendOptions}
+          dataSelected={legendSelected || []}
+          height={500}
+          loading={loading}
+          lineType="linear"
+          showUnit
+          onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
+          hideRemoveOptions={hideRemoveOptions}
+        />
+        {
+          !loading &&
+          tableData &&
+          tableData.length && (
+            <Table
+              data={tableData}
+              horizontalScroll
+              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
+              flexGrow={0}
+              parseHtml
+              setColumnWidth={setColumnWidth}
+              emptyValueLabel="N/A"
+            />
+          )
+        }
+      </React.Fragment>
     );
   }
 
   render() {
     const {
-      groups,
       handleInfoClick,
       handleChange,
       providerFilters,
@@ -144,6 +169,26 @@ class GhgEmissions extends PureComponent {
       area: areaIcon,
       percentage: percentageIcon
     };
+    const regionGroups = [
+      {
+        groupId: 'regions',
+        title: 'Regions'
+      },
+      {
+        groupId: 'countries',
+        title: 'Countries'
+      }
+    ];
+    const sectorGroups = [
+      {
+        groupId: 'totals',
+        title: 'Total Emission'
+      },
+      {
+        groupId: 'sectors',
+        title: 'Sector&Sub-Sector'
+      }
+    ];
 
     return (
       <div>
@@ -158,17 +203,18 @@ class GhgEmissions extends PureComponent {
         <EmissionsMetaProvider />
         {providerFilters && <EmissionsProvider filters={providerFilters} />}
         <div className={styles.col4}>
-          {this.renderDropdown('Source', 'sources')}
+          {this.renderDropdown('Data Source', 'sources')}
           <Multiselect
-            label={'Regions'}
-            groups={groups}
+            label={'Countries/Regions'}
+            groups={regionGroups}
             options={options.regions || []}
             values={getValues(selectedOptions.regionsSelected)}
             onValueChange={selected => handleChange('regions', selected)}
           />
           <MultiLevelDropdown
-            label="Sectors / Subsectors"
+            label="Sectors/Subsectors"
             theme={{ wrapper: styles.dropdown }}
+            optGroups={sectorGroups}
             options={options.sectors}
             values={selectedOptions.sectorsSelected || []}
             onChange={selected => handleChange('sectors', selected)}
@@ -176,12 +222,12 @@ class GhgEmissions extends PureComponent {
             multiselect
           />
           <Multiselect
-            label={'Gases'}
+            label={'Gasses'}
             options={options.gases}
             values={getValues(selectedOptions.gasesSelected)}
             onValueChange={selected => handleChange('gases', selected)}
           />
-          {this.renderDropdown('Break by', 'breakBy')}
+          {this.renderDropdown('Show data by', 'breakBy')}
           {this.renderDropdown(null, 'chartType', icons)}
         </div>
         {this.renderChart()}
@@ -196,6 +242,7 @@ class GhgEmissions extends PureComponent {
 
 GhgEmissions.propTypes = {
   data: PropTypes.array,
+  tableData: PropTypes.array,
   domain: PropTypes.object,
   config: PropTypes.object,
   options: PropTypes.object,
@@ -204,7 +251,6 @@ GhgEmissions.propTypes = {
   fieldToBreakBy: PropTypes.string,
   legendOptions: PropTypes.array,
   legendSelected: PropTypes.array,
-  groups: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   providerFilters: PropTypes.object,

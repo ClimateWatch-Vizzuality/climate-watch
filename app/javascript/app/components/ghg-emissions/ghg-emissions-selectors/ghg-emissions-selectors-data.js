@@ -15,9 +15,12 @@ import {
   sortEmissionsByValue
 } from 'utils/graphs';
 import {
-  CHART_COLORS_EXTENDED,
   DATA_SCALE,
   DEFAULT_AXES_CONFIG,
+  GHG_TABLE_HEADER,
+  NEW_CHART_COLORS_BASIC,
+  NEW_CHART_COLORS,
+  NEW_CHART_COLORS_EXTENDED,
   OTHER_COLOR
 } from 'data/constants';
 import { getWBData, getData, getRegions } from './ghg-emissions-selectors-get';
@@ -352,16 +355,29 @@ export const getChartData = createSelector(
         });
       });
 
-      // if there is no value for any item then return null
-      // and then filter this out from chart data
-      if (Object.keys(yItems).length === 0) return null;
-
       return {
         x: year,
         ...yItems
       };
     });
-    return dataParsed.filter(x => x);
+
+    // if there is no value for any legend item
+    // remove those element from the start and the end of chart
+    // leave those in the middle
+    const trimWithNoData = dataToTrim => {
+      const indexesToString = dataToTrim
+        .map((d, idx) => (Object.keys(d).length > 1 ? idx : '_'))
+        .join(',')
+        .replace(/_,/g, '')
+        .trim();
+      const middleIndexes = indexesToString.split(',');
+      const firstNotEmptyIndex = Number(middleIndexes[0]);
+      const lastNotEmptyIndex = Number(middleIndexes[middleIndexes.length - 1]);
+
+      return dataToTrim.filter((_d, idx) => idx >= firstNotEmptyIndex && idx <= lastNotEmptyIndex);
+    };
+
+    return trimWithNoData(dataParsed);
   }
 );
 
@@ -379,17 +395,36 @@ let colorThemeCache = {
   yOthers: { stroke: OTHER_COLOR, fill: OTHER_COLOR }
 };
 
+const getColorPalette = columns => {
+  if (columns.length <= 10) return NEW_CHART_COLORS_BASIC;
+  if (columns.length <= 20) return NEW_CHART_COLORS;
+  return NEW_CHART_COLORS_EXTENDED;
+};
+
+const getUnit = metric => {
+  let unit = DEFAULT_AXES_CONFIG.yLeft.unit;
+  if (metric === 'PER_GDP') {
+    unit = `${unit}/ million $ GDP`;
+  } else if (metric === 'PER_CAPITA') {
+    unit = `${unit} per capita`;
+  }
+  return unit;
+};
+
 export const getChartConfig = createSelector(
-  [getModelSelected, getYColumnOptions],
-  (model, yColumns) => {
+  [getModelSelected, getMetricSelected, getYColumnOptions],
+  (model, metric, yColumns) => {
     if (!model || !yColumns) return null;
-    colorThemeCache = getThemeConfig(yColumns, CHART_COLORS_EXTENDED, colorThemeCache);
+    const colorPalette = getColorPalette(yColumns);
+    colorThemeCache = getThemeConfig(yColumns, colorPalette, colorThemeCache);
     const tooltip = getTooltipConfig(yColumns.filter(c => c && !c.hideLegend));
+    const unit = getUnit(metric);
     return {
       axes: {
         ...DEFAULT_AXES_CONFIG,
         yLeft: {
           ...DEFAULT_AXES_CONFIG.yLeft,
+          unit,
           suffix: 't'
         }
       },
@@ -406,6 +441,30 @@ export const getChartConfig = createSelector(
         y: yColumns
       }
     };
+  }
+);
+
+export const getTableData = createSelector(
+  [getChartData, getMetricSelected, getModelSelected, getYColumnOptions],
+  (data, metric, model, yColumnOptions) => {
+    if (!data || !model || !data.length || !yColumnOptions) return null;
+
+    const formatValue = value => value && Number(value.toFixed(2));
+    const unit = getUnit(metric);
+
+    const pivot = yColumnOptions.map(c => ({
+      [GHG_TABLE_HEADER[model]]: c.label,
+      unit,
+      ...data.reduce(
+        (acc, d) => ({
+          ...acc,
+          [String(d.x)]: formatValue(d[c.value]) // year: value
+        }),
+        {}
+      )
+    }));
+
+    return pivot;
   }
 );
 
