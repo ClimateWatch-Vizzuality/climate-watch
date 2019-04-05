@@ -59,11 +59,11 @@ ActiveAdmin.register_page 'Global CW Platform Documents Timeline' do
   content do
     render partial: 'data_uploader/admin/form_upload_datasets', locals: {
       datasets: datasets_proc.call,
-      upload_path: admin_global_cw_platform_timeline_upload_datafile_path,
-      download_path: admin_global_cw_platform_timeline_download_datafiles_path,
+      upload_path: admin_global_cw_platform_documents_timeline_upload_datafile_path,
+      download_path: admin_global_cw_platform_documents_timeline_download_datafiles_path,
       download_single_data_file_path:
-          admin_global_cw_platform_timeline_download_datafile_path,
-      import_path: admin_global_cw_platform_timeline_run_importer_path,
+          admin_global_cw_platform_documents_timeline_download_datafile_path,
+      import_path: admin_global_cw_platform_documents_timeline_run_importer_path,
       import_button_disabled: section_proc.call.worker_logs.started.any?,
       logs: section_proc.call.worker_logs.order(created_at: :desc)
     }
