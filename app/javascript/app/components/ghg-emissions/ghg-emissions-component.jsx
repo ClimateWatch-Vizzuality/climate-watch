@@ -117,7 +117,7 @@ class GhgEmissions extends PureComponent {
               data={tableData}
               horizontalScroll
               firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
-               flexGrow={0}
+              flexGrow={0}
               parseHtml
               setColumnWidth={setColumnWidth}
               emptyValueLabel="N/A"
