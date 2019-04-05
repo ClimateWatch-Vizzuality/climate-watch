@@ -222,7 +222,7 @@ class GhgEmissions extends PureComponent {
             multiselect
           />
           <Multiselect
-            label={'Gases'}
+            label={'Gasses'}
             options={options.gases}
             values={getValues(selectedOptions.gasesSelected)}
             onValueChange={selected => handleChange('gases', selected)}
