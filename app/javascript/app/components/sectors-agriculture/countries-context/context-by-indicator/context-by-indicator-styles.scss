@@ -94,6 +94,8 @@
 .filtersGroup {
   @include columns(12);
 
+  margin-top: 20px;
+
   > * {
     @include xy-gutters(30px, $gutter-position: 'bottom');
   }
