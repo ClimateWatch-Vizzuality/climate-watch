@@ -29,11 +29,6 @@ module Api
                 alias: 'data_source'
               },
               {
-                column: 'gwp',
-                alias: 'gwp',
-                visible: false
-              },
-              {
                 column: 'sector',
                 alias: 'sector'
               },
