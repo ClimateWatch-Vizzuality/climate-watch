@@ -18,7 +18,7 @@ ActiveAdmin.register_page 'Global CW Platform Documents Timeline' do
     end
 
     def path
-      admin_global_cw_platform_timeline_path
+      admin_global_cw_platform_documents_timeline_path
     end
 
     def section
