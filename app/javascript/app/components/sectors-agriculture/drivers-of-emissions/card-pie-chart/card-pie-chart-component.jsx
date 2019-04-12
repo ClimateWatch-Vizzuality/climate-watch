@@ -63,14 +63,14 @@ class CardPieChart extends PureComponent {
   };
 
   render() {
-    const { pieChartData, ghgEmissionsFilters } = this.props;
+    const { pieChartData, ghgEmissionsFilters, isEmbed } = this.props;
     const location = pieChartData && pieChartData.location;
     const year = pieChartData && pieChartData.year;
     const emissionValue = pieChartData && pieChartData.emissionValue;
     const emissionPercentage = pieChartData && pieChartData.emissionPercentage;
 
     const cardTheme = {
-      card: styles.fixedCard,
+      card: isEmbed ? styles.fixedCardEmbed : styles.fixedCard,
       contentContainer: styles.fixedCardContentContainer,
       data: styles.fixedCardData
     };
@@ -132,12 +132,14 @@ CardPieChart.propTypes = {
     ),
     config: PropTypes.object
   }),
-  ghgEmissionsFilters: PropTypes.object
+  ghgEmissionsFilters: PropTypes.object,
+  isEmbed: PropTypes.bool
 };
 
 CardPieChart.defaultProps = {
   pieChartData: {},
-  ghgEmissionsFilters: {}
+  ghgEmissionsFilters: {},
+  isEmbed: false
 };
 
 export default CardPieChart;
