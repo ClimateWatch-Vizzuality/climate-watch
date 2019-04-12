@@ -77,8 +77,6 @@ class CardPieChart extends PureComponent {
 
     return (
       <div>
-        <EmissionsMetaProvider />
-        <EmissionsProvider filters={ghgEmissionsFilters} />
         <Card
           theme={cardTheme}
           subtitle={
@@ -111,6 +109,8 @@ class CardPieChart extends PureComponent {
             this.renderLoading()
           )}
         </Card>
+        <EmissionsMetaProvider />
+        <EmissionsProvider filters={ghgEmissionsFilters} />
       </div>
     );
   }

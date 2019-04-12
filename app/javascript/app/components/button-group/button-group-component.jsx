@@ -36,6 +36,7 @@ const renderButton = buttonConfig => {
           key={buttonConfig.type}
           className={cx(styles.button, styles.share)}
           path={buttonConfig.shareUrl}
+          shouldEmbedQueryParams={buttonConfig.shouldEmbedQueryParams}
           inButtonGroup
           analyticsGraphName={buttonConfig.analyticsGraphName}
           reverse={buttonConfig.reverseDropdown}
