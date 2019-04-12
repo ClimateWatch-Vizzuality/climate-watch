@@ -6,7 +6,7 @@ import {
 } from 'utils/graphs';
 import { GREY_CHART_COLORS } from 'data/constants';
 import { format } from 'd3-format';
-import { getEmissionCountrySelected } from './ghg-metadata-selectors';
+import getIsoCode from './location-selectors';
 
 const AGRICULTURE_COLOR = '#0677B3';
 const TOTAL_EMISSION = 'Total excluding LUCF';
@@ -18,18 +18,15 @@ const INCLUDED_SECTORS = [
 ];
 
 const getGhgEmissionsData = state =>
-  (state.ghgEmissions && state.ghgEmissions.data) || null;
+  (state.emissions && state.emissions.data) || null;
 const getGhgEmissionsLoading = state =>
-  (state.ghgEmissions && state.ghgEmissions.loading) || false;
+  (state.emissions && state.emissions.loading) || false;
 
-/** PIE-CHART SELECTORS */
-export const getGhgEmissionsDataByLocation = createSelector(
-  [getGhgEmissionsData, getEmissionCountrySelected],
-  (data, location) => {
-    if (!data || !data.length || !location) return null;
-    const emissionsData = data.filter(
-      ({ iso_code3 }) => iso_code3 === location.value
-    );
+const getGhgEmissionsDataByLocation = createSelector(
+  [getGhgEmissionsData, getIsoCode],
+  (data, isoCode) => {
+    if (!data || !data.length || !isoCode) return null;
+    const emissionsData = data.filter(({ iso_code3 }) => iso_code3 === isoCode);
     return emissionsData;
   }
 );
@@ -76,14 +73,14 @@ export const getPieChartData = createSelector(
         ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
       ]
       : sectorEmissions;
-
-    return {
+    const x = {
       year: filteredEmissions[0] && filteredEmissions[0].year,
       location: filteredEmissions[0] && filteredEmissions[0].location,
       emissionValue: agricultureRow && agricultureRow.formattedValue,
       emissionPercentage: agricultureRow && agricultureRow.formattedPercentage,
       data: sectorsEmissionsData
     };
+    return x;
   }
 );
 
@@ -98,6 +95,7 @@ const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
   }));
 
   const tooltip = getTooltipConfig(columns);
+
   let theme = getPieChartThemeConfig(columns, GREY_CHART_COLORS);
   const agricultureTheme = {
     ...theme.agriculture,
@@ -117,7 +115,7 @@ const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
   return config;
 });
 
-export default createSelector(
+export const getPieChartPayload = createSelector(
   [getPieChartData, getPieChartConfig, getGhgEmissionsLoading],
   (pieChartData, config, loading) => {
     if (!pieChartData || !config) return null;
