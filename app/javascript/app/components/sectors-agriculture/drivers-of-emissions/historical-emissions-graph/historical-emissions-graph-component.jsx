@@ -89,14 +89,15 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   renderExploreButtonGroup = () => {
-    const { exploreEmissionsConfig } = this.props;
+    const { exploreEmissionsConfig, emissionsCountry } = this.props;
     const buttonGroupConfig = [
       { type: 'info' },
       {
         type: 'share',
-        shareUrl: '/embed/agriculture-emission',
-        // analyticsGraphName: 'Country/Ghg-emissions',
-        positionRight: true
+        shareUrl: `/embed/agriculture-emission?emissionsCountry=${emissionsCountry &&
+          emissionsCountry.value}`,
+        positionRight: true,
+        shouldEmbedQueryParams: false
       },
       { type: 'download' },
       { type: 'addToUser' }
