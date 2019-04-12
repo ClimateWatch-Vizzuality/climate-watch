@@ -14,7 +14,7 @@ import {
   DEFAULT_AXES_CONFIG,
   METRIC_OPTIONS
 } from 'data/constants';
-import { getEmissionCountrySelected } from './ghg-metadata-selectors';
+import { getEmissionCountrySelected } from './location-selectors';
 
 const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
 const TOTAL_SUBCATEGORY = {

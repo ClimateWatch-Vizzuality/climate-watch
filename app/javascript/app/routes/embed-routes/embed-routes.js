@@ -10,6 +10,7 @@ import NDCSDGLinkages from 'components/country/country-ndc-sdg-linkages';
 import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
 import MyVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
+import AgricultureEmissionPieChart from 'components/sectors-agriculture/drivers-of-emissions/card-pie-chart/card-pie-chart';
 
 export default [
   {
@@ -50,6 +51,11 @@ export default [
   {
     path: '/embed/pathways',
     component: EmissionPathwaysGraph,
+    exact: true
+  },
+  {
+    path: '/embed/agriculture-emission',
+    component: AgricultureEmissionPieChart,
     exact: true
   },
   {

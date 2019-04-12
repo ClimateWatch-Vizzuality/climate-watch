@@ -1,10 +1,9 @@
-import { createSelector, createStructuredSelector } from 'reselect';
-import getLocationsOptions from './historical-emissions-graph-selectors/location-selectors';
-import getPieChartPayload from './historical-emissions-graph-selectors/pie-chart-selectors';
+import { /** createSelector, */ createStructuredSelector } from 'reselect';
 import {
-  getGhgEmissionsFilter,
+  getLocationsOptions,
   getEmissionCountrySelected
-} from './historical-emissions-graph-selectors/ghg-metadata-selectors';
+} from './historical-emissions-graph-selectors/location-selectors';
+
 import {
   getChartData,
   getChartConfig,
@@ -19,16 +18,17 @@ import {
 const getAgricultureEmissionsLoading = state =>
   (state.agricultureEmissions && state.agricultureEmissions.loading) || false;
 
-const getExploreEmissionsButtonConfig = createSelector(
-  getGhgEmissionsFilter,
-  filters => {
-    if (!filters) return {};
-    const { location, source, gas } = filters;
-    return {
-      link: `/ghg-emissions?regions=${location}&source=${source}&gases=${gas}`
-    };
-  }
-);
+// TO DO
+// const getExploreEmissionsButtonConfig = createSelector(
+//   getGhgEmissionsFilter,
+//   filters => {
+//     // if (!filters) return {};
+//     // const { location, source, gas } = filters;
+//     // return {
+//     //   link: `/ghg-emissions?regions=${location}&source=${source}&gases=${gas}`
+//     // };
+//   }
+// );
 
 export const getAllData = createStructuredSelector({
   data: getChartData,
@@ -39,9 +39,7 @@ export const getAllData = createStructuredSelector({
   filtersSelected: getFiltersSelected,
   locations: getLocationsOptions,
   emissionsCountry: getEmissionCountrySelected,
-  ghgEmissionsFilters: getGhgEmissionsFilter,
-  exploreEmissionsConfig: getExploreEmissionsButtonConfig,
-  pieChartData: getPieChartPayload,
+  exploreEmissionsConfig: /** getExploreEmissionsButtonConfig, */ () => {},
   emissionTypes: getEmissionTypes,
   emissionType: getEmissionTypeSelected,
   emissionMetric: getMetricSelected
