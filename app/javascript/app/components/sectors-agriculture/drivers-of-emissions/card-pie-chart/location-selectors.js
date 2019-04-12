@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import qs from 'query-string';
 
 const getIsoCodeFromSearch = (state, props) =>
-  (props.location && props.location.search) || null;
+  (props && props.location && props.location.search) || null;
 
 export default createSelector([getIsoCodeFromSearch], search => {
   if (!search) return 'WORLD';

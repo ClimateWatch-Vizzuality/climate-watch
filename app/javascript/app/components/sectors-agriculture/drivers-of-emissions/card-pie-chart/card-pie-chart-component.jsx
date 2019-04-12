@@ -29,7 +29,7 @@ class CardPieChart extends PureComponent {
           <span className={styles.labelValue} style={{ color }}>
             {`${emissionPercentage} (${emissionValue} `}
             <span>
-              MtCO<sub>2</sub>
+              MtCO<sub>2</sub>)
             </span>
           </span>
         </div>
