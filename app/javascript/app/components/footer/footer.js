@@ -15,6 +15,7 @@ import actsImage from 'assets/partners/acts.png';
 import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
 import lseImage from 'assets/partners/lse-logo.png';
+import unepImage from 'assets/partners/partners-UNEP.png';
 
 import Component from './footer-component';
 
@@ -109,6 +110,16 @@ const ndcPartners = [
     img: {
       alt: 'German Development Institute',
       src: dieImage,
+      customClass: 'narrower'
+    }
+  },
+  {
+    link:
+      'https://www.frankfurt-school.de/home/international-advisory-services/fs-unep-collaboration-centre',
+    orderingString: 'unep',
+    img: {
+      alt: 'UNEP Collaboration Centre',
+      src: unepImage,
       customClass: 'narrower'
     }
   }
