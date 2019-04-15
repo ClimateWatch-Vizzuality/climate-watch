@@ -39,6 +39,12 @@
   max-height: 520px;
 }
 
+.fixedCardEmbed {
+  @extend .fixedCard;
+
+  max-width: 400px;
+}
+
 .fixedCardContentContainer {
   font-size: $font-size-s;
   min-height: unset;

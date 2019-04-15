@@ -9,9 +9,10 @@ import codeIcon from 'assets/icons/code.svg';
 import copy from 'copy-to-clipboard';
 import Component from './share-menu-component';
 
-const mapStateToProps = (state, { path }) => {
+const mapStateToProps = (state, { path, shouldEmbedQueryParams = true }) => {
   const { origin, pathname, search, hash } = location;
-  const url = origin + (path || pathname) + search + hash;
+  const queryParams = shouldEmbedQueryParams ? search + hash : '';
+  const url = origin + (path || pathname) + queryParams;
   const copyUrl = () => copy(url);
   const iframeCode = `<iframe src="${url}" frameborder="0" style="height: 600px; width: 1230px"></iframe>`;
   const copyCode = () => copy(iframeCode);
