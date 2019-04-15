@@ -29,7 +29,7 @@ export const getGhgEmissionsFilter = createSelector(
   (isoCode, source, gas) => {
     if (!isoCode || !source || !gas) return null;
     return {
-      location: isoCode,
+      location: `WORLD,${isoCode}`,
       source: source.value,
       gas: gas.value
     };
