@@ -112,7 +112,8 @@ const partnershipWith = {
         'https://www.frankfurt-school.de/home/international-advisory-services/fs-unep-collaboration-centre',
       img: {
         alt: 'UNEP Collaboration Centre',
-        src: unepImage
+        src: unepImage,
+        customClass: 'veryLarge'
       },
       description:
         'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
