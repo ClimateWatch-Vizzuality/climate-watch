@@ -18,6 +18,7 @@ import actsImage from 'assets/partners/acts.png';
 import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
 import lseImage from 'assets/partners/lse-logo.png';
+import unepImage from 'assets/partners/partners-UNEP.png';
 
 import Component from './about-partners-component';
 
@@ -102,6 +103,17 @@ const partnershipWith = {
       img: {
         alt: 'Stockholm Environment Institute',
         src: seiImage
+      },
+      description:
+        'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
+    },
+    {
+      link:
+        'https://www.frankfurt-school.de/home/international-advisory-services/fs-unep-collaboration-centre',
+      img: {
+        alt: 'UNEP Collaboration Centre',
+        src: unepImage,
+        customClass: 'veryLarge'
       },
       description:
         'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
