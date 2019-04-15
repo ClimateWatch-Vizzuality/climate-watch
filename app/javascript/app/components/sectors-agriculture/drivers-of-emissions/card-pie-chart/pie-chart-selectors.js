@@ -42,13 +42,13 @@ export const getPieChartData = createSelector(
 
     const totalLastYearEmission = lastYearEmissions.find(
       ({ sector }) => sector && sector === TOTAL_EMISSION
-    ).value;
+    );
 
     const filteredEmissions = lastYearEmissions.filter(
       ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
     ); // filter for negative emission for Forestry sector and total LUCF sectors
 
-    if (!filteredEmissions) return null;
+    if (!filteredEmissions || !totalLastYearEmission) return null;
 
     const sectorEmissions = filteredEmissions.map(({ sector, value }) => ({
       name: getColumnValue(sector).toLowerCase(),
@@ -56,9 +56,9 @@ export const getPieChartData = createSelector(
       sector,
       formattedValue: `${format('.2s')(value)}`,
       formattedPercentage: `${format('.2f')(
-        value * 100 / totalLastYearEmission
+        value * 100 / totalLastYearEmission.value
       )}%`,
-      percentageValue: value * 100 / totalLastYearEmission
+      percentageValue: value * 100 / totalLastYearEmission.value
     }));
 
     const agricultureRow = sectorEmissions.find(
