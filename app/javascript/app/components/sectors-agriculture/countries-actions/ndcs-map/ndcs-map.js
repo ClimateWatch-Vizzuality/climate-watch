@@ -79,12 +79,15 @@ class NDCMapContainer extends PureComponent {
     const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/ndcs/country/${iso}/sectoral-information`);
+      this.props.history.push(
+        `/ndcs/country/${iso}/sectoral-information?section=sectoral_mitigation_plans`
+      );
       handleAnalytics(
         'Agriculture Profile - Countries Actions',
         'Use map to find country',
         geography.properties.name
       );
+      window.scrollTo(0, 0);
     }
   };
 
