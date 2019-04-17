@@ -40,6 +40,16 @@ export const MAP_COLORS = [
   ['#00B4D2', '#00A0CA', '#0677B3', '#045480']
 ];
 
+const DEFAULT_YEARS = {
+  value_added_agr: '2010',
+  employment_agri_female: '2017',
+  total_fertilizers: '2002',
+  employment_agri_male: '2017',
+  total_pesticides_use: '2012',
+  employment_agri_total: '2017',
+  water_withdrawal: '2010'
+};
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getAgricultureData = ({ agricultureCountriesContexts }) =>
@@ -84,7 +94,7 @@ const getYears = createSelector(getAgricultureData, data => {
 export const getYearsWithData = createSelector(
   [getSelectedIndicator, getYears, getAgricultureData],
   (indicator, years, data) => {
-    if (!years || !years || !data) return null;
+    if (!indicator || !years || !data) return null;
     years.map(y => data.filter(d => d.year === y).some(f => f[indicator]));
     const yearsWithData = years.map(y =>
       data.filter(d => d.year === parseInt(y.value, 10))
@@ -101,10 +111,16 @@ export const getYearsWithData = createSelector(
 );
 
 export const getSelectedYear = createSelector(
-  [getYears, getYearsWithData, getSearch],
-  (years, yearsWithData, search) => {
-    if (isEmpty(years) || isEmpty(years)) return null;
-    if (search && !search.indicatorYear) return yearsWithData[0];
+  [getYears, getYearsWithData, getSearch, getSelectedIndicator],
+  (years, yearsWithData, search, indicator) => {
+    if (isEmpty(years)) return null;
+    if (search && !search.indicatorYear) {
+      const defaultYear = DEFAULT_YEARS[indicator.value];
+      return (
+        yearsWithData.find(({ label }) => label === defaultYear) ||
+        yearsWithData[0]
+      );
+    }
     return years.find(y => y.value === search.indicatorYear);
   }
 );
