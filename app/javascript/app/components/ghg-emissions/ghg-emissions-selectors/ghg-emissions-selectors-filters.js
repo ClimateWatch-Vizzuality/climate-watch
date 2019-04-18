@@ -102,12 +102,13 @@ const getFieldOptions = field =>
   });
 
 const getRegionOptions = createSelector(
-  [getRegions, getFieldOptions('location')],
-  (regions, options) => {
-    if (!regions) return null;
+  [getRegions, getSourceSelected, getFieldOptions('location')],
+  (regions, sourceSelected, options) => {
+    if (!regions || !sourceSelected) return null;
 
     const regionOptions = [TOP_EMITTERS_OPTION];
     regions.forEach(region => {
+      if (sourceSelected.name.startsWith('UNFCCC') && region.iso_code3 === 'WORLD') return;
       const regionMembers = region.members.map(m => m.iso_code3);
       regionOptions.push({
         label: region.wri_standard_name,
