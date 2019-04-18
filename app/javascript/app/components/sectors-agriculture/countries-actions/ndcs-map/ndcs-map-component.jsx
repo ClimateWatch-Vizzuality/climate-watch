@@ -11,7 +11,7 @@ import Icon from 'components/icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
-
+import DataExplorerFilters from 'providers/data-explorer-provider';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-map-styles.scss';
 
@@ -115,6 +115,7 @@ const NDCMap = ({
           />
         )}
         <ModalMetadata />
+        <DataExplorerFilters section={'ndc-content'} />
       </div>
     )}
   </TabletLandscape>

@@ -28,14 +28,15 @@ const actions = { ...fetchActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcs;
-  const { countries } = state;
+  const { countries, dataExplorer } = state;
   const search = qs.parse(location.search);
   const ndcsWithSelection = {
     ...data,
     countries: countries.data,
     categorySelected: search.category,
     indicatorSelected: search.indicator,
-    search
+    search,
+    dataExplorer
   };
   return {
     loading,
