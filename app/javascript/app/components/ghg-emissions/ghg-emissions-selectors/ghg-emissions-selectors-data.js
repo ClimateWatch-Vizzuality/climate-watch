@@ -248,14 +248,6 @@ const getCalculationData = createSelector([getWBData], data => {
   return yearData;
 });
 
-const calculateValue = (currentValue, value, metricRatio) => {
-  const updatedValue = value || value === 0 ? value * (DATA_SCALE / metricRatio) : null;
-  if (updatedValue && (currentValue || currentValue === 0)) {
-    return updatedValue + currentValue;
-  }
-  return updatedValue || currentValue;
-};
-
 // some regions expands to underlying countries but also have
 // their own aggregated data
 const getRegionsWithOwnData = (regions, data) => {
@@ -340,19 +332,25 @@ export const getChartData = createSelector(
 
       yColumnOptions.forEach(column => {
         const dataForColumn = groupedData[column.label] || expandedData(column) || [];
+        const key = column.value;
+        let totalValue = null;
+        let totalMetric = null;
 
         dataForColumn.forEach(d => {
           if (!isBreakByRegions && memberOfRegionWithOwnData(d)) return;
 
           const yearEmissions = d.emissions.find(e => e.year === year);
-          const key = column.value;
-          const metricData = shouldHaveMetricData && getMetricData(year, d.iso_code3, column);
-          const metricRatio = shouldHaveMetricData ? metricData : 1;
+          const metricRatio = shouldHaveMetricData ? getMetricData(year, d.iso_code3, column) : 1;
 
           if (yearEmissions && metricRatio) {
-            yItems[key] = calculateValue(yItems[key], yearEmissions.value, metricRatio);
+            totalValue += yearEmissions.value;
+            totalMetric = shouldHaveMetricData ? totalMetric + metricRatio : 1;
           }
         });
+
+        if (totalValue !== null && totalMetric !== null) {
+          yItems[key] = totalValue * (DATA_SCALE / totalMetric);
+        }
       });
 
       return {
