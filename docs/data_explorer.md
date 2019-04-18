@@ -91,7 +91,11 @@ Link: </api/v1/data/historical_emissions/data_sources>; rel="meta data_sources",
    "data":[
       {
          "id":number,
-         "name":"string e.g. CAIT"
+         "name":"string e.g. CAIT",
+         "display_name":"string e.g. CAIT",
+         "gas_ids":[1,2,3],
+         "sector_ids":[1,2,3],
+         "location_ids":[1,2,3]
       }
    ]
 }

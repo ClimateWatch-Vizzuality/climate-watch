@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'components/dropdown';
-import { MultiLevelDropdown } from 'cw-components';
-import MultiSelect from 'components/multiselect';
+import { MultiLevelDropdown, Multiselect } from 'cw-components';
 import { deburrCapitalize } from 'app/utils';
 import {
   MULTIPLE_LEVEL_SECTION_FIELDS,
@@ -81,9 +80,6 @@ class DataExplorerFilters extends PureComponent {
     const fieldFilters = filters.map(field => {
       if (multipleSection(field)) {
         const isMulti = multipleSection(field).multiselect;
-        const valueProp = {};
-        const values = selectedOptions ? selectedOptions[field] : null;
-        valueProp[`value${isMulti ? 's' : ''}`] = isMulti ? values || [] : values && values[0];
         const getSelectedValue = option => {
           if (isArray(option)) {
             return option.length > 0 && last(option).value === ALL_SELECTED
@@ -102,7 +98,7 @@ class DataExplorerFilters extends PureComponent {
             label={deburrCapitalize(field)}
             placeholder={`Filter by ${deburrCapitalize(field)}`}
             options={getOptions(filterOptions, field)}
-            {...valueProp}
+            values={(selectedOptions && selectedOptions[field]) || []}
             disabled={isDisabled(field)}
             onChange={option => {
               handleFiltersChange({ [field]: getSelectedValue(option) });
@@ -116,7 +112,7 @@ class DataExplorerFilters extends PureComponent {
         const fieldInfo = GROUPED_OR_MULTI_SELECT_FIELDS[section].find(f => f.key === field);
         const label = fieldInfo.label || fieldInfo.key;
         return (
-          <MultiSelect
+          <Multiselect
             key={fieldInfo.key}
             label={deburrCapitalize(label)}
             selectedLabel={activeFilterLabel[field]}
@@ -125,7 +121,7 @@ class DataExplorerFilters extends PureComponent {
             options={getOptions(filterOptions, field, true)}
             groups={fieldInfo.groups}
             disabled={isDisabled(field)}
-            onMultiValueChange={selected => {
+            onValueChange={selected => {
               handleFiltersChange({ [field]: selected });
               handleChangeSelectorAnalytics();
             }}

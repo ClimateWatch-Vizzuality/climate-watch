@@ -27,7 +27,7 @@ module Api
       def meta
         render(
           json: HistoricalEmissionsMetadata.new(
-            merged_records(grouped_records),
+            Api::V1::Data::HistoricalEmissions::DataSourceWithRelatedRecordsSearch.new.call,
             fetch_meta_sectors,
             ::HistoricalEmissions::Gas.all,
             Location.all
@@ -61,34 +61,6 @@ module Api
 
       def deeply_nested_sectors?
         params.fetch(:deeply_nested_sectors, 'true') == 'true'
-      end
-
-      def grouped_records
-        ::HistoricalEmissions::Record.
-          select(
-            <<-SQL
-              data_source_id,
-              ARRAY_AGG(DISTINCT sector_id) AS sector_ids,
-              ARRAY_AGG(DISTINCT gas_id) AS gas_ids,
-              ARRAY_AGG(DISTINCT location_id) AS location_ids
-            SQL
-          ).
-          group('data_source_id').
-          as_json.
-          map { |h| [h['data_source_id'], h.symbolize_keys.except(:id)] }.
-          to_h
-      end
-
-      def merged_records(records)
-        ::HistoricalEmissions::DataSource.
-          all.map do |source|
-            {
-              id: source.id,
-              name: source.name,
-              display_name: source.display_name,
-              metadata_dataset: source.metadata_dataset
-            }.merge(records[source.id] || {})
-          end
       end
     end
   end
