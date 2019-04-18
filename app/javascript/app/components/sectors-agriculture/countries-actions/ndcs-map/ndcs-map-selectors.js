@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
-import { sortBy, flatten, lowerCase, uniqBy } from 'lodash';
+import { sortBy, flatten, lowerCase, uniqBy, has } from 'lodash';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
@@ -10,8 +10,14 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getDataExplorerMeta = state =>
+  (state.dataExplorer && state.dataExplorer.metadata) || null;
 
 const PERMITTED_AGRICULTURE_INDICATOR = ['m_agriculture', 'a_agriculture'];
+const DEFAULT_DOWNLOAD_LINK_PARAMS = {
+  sectorName: 'Agriculture',
+  categorySlug: 'sectoral_information'
+};
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
@@ -217,10 +223,39 @@ export const getPathsWithStyles = createSelector(
   }
 );
 
-export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'ndc-content';
-  return generateLinkToDataExplorer(search, section);
-});
+const getDataExplorerParams = createSelector(
+  [getDataExplorerMeta],
+  metadata => {
+    if (
+      !has(metadata, 'ndc-content.sectors') ||
+      !has(metadata, 'ndc-content.categories')
+    ) { return null; }
+    const { sectorName, categorySlug } = DEFAULT_DOWNLOAD_LINK_PARAMS;
+    const agricultureSector = metadata['ndc-content'].sectors.find(
+      ({ name }) => name === sectorName
+    );
+    const sectoralInfoCategory = metadata['ndc-content'].categories.find(
+      ({ slug }) => slug === categorySlug
+    );
+    const sectorParam = agricultureSector
+      ? { sectors: agricultureSector.id }
+      : {};
+    const categoryParam = sectoralInfoCategory
+      ? { category: sectoralInfoCategory.id }
+      : {};
+
+    return { ...sectorParam, ...categoryParam };
+  }
+);
+
+export const getLinkToDataExplorer = createSelector(
+  [getSearch, getDataExplorerParams],
+  (search, params) => {
+    if (!params) return null;
+    const section = 'ndc-content';
+    return generateLinkToDataExplorer({ ...search, ...params }, section);
+  }
+);
 
 export default {
   getCategories,
