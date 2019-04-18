@@ -164,7 +164,14 @@ export const DATA_EXPLORER_TO_MODULES_PARAMS = {
       idLabel: 'number'
     }
   },
-  'ndc-content': {},
+  'ndc-content': {
+    sectors: {
+      key: 'sectors'
+    },
+    categories: {
+      key: 'category'
+    }
+  },
   'emission-pathways': {
     locations: {
       key: 'currentLocation',
