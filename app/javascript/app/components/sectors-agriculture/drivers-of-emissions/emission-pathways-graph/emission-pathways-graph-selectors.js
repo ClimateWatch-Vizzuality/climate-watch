@@ -43,8 +43,6 @@ const DEFAULT_SELECTIONS = {
   subcategory: {
     best: 'LULUCF Anthropogenic GHG Emissions by Gas',
     secondBest: 'Land Cover'
-    // ,
-    // thirdBest: 'Total GHG Emissions'
   }
 };
 

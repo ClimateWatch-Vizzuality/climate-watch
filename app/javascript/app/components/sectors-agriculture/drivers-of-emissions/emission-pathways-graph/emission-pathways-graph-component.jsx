@@ -131,7 +131,7 @@ class EmissionPathwayGraph extends PureComponent {
                 options={filtersOptions.subcategory}
                 onValueChange={handleSubcategoryChange}
                 hideResetButton
-                disabled={filtersLoading.location}
+                disabled={filtersDisabled}
                 value={filtersSelected.subcategory}
               />
               <Dropdown
