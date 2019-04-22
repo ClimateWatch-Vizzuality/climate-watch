@@ -29,7 +29,7 @@ const actions = { ...ownActions, ...modalActions };
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
   const search = qs.parse(location.search);
-  const { currentLocation, model, indicator, scenario } = search;
+  const { currentLocation, model, indicator, scenario, subcategory } = search;
   const espData = {
     data,
     locations: state.espLocations.data,
@@ -41,6 +41,7 @@ const mapStateToProps = (state, { location }) => {
     model,
     indicator,
     scenario,
+    subcategory,
     search
   };
   const providers = [
@@ -99,6 +100,7 @@ class EmissionPathwayGraphContainer extends PureComponent {
     const possibleParams = [
       'model',
       'indicator',
+      'subcategory',
       'currentLocation',
       'scenario'
     ];
@@ -149,6 +151,15 @@ class EmissionPathwayGraphContainer extends PureComponent {
     this.updateUrlParam(params);
   };
 
+  handleSubcategoryChange = subcategory => {
+    const { location } = this.props.filtersSelected;
+    const params = [{ name: 'subcategory', value: subcategory.value }];
+    if (location && location.value) {
+      params.push({ name: 'currentLocation', value: location.value });
+    }
+    this.updateUrlParam(params);
+  };
+
   handleSelectorChange = (option, param, clear) => {
     const params = [{ name: param, value: option ? option.value : '' }];
     this.updateUrlParam(params, clear);
@@ -176,7 +187,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
       handleInfoClick: this.handleInfoClick,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,
-      handleClearSelection: this.handleClearSelection
+      handleClearSelection: this.handleClearSelection,
+      handleSubcategoryChange: this.handleSubcategoryChange
     });
   }
 }
