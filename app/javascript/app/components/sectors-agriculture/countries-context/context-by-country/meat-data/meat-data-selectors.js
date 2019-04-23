@@ -11,7 +11,7 @@ import {
 const TRADE_IMPORT = 'Import';
 const TRADE_EXPORT = 'Export';
 
-const GDP_FILTER = 'GDP';
+const TOTAL_FILTER = 'total';
 const PER_CAPITA_FILTER = 'per_capita';
 
 export const CATEGORY_KEY = 'meatCategory';
@@ -101,7 +101,7 @@ const getCategoriesOptions = createSelector(
 );
 
 const getBreakByOptions = createSelector(() => [
-  { label: 'GDP', value: GDP_FILTER },
+  { label: 'Absolute', value: TOTAL_FILTER },
   { label: 'Per capita', value: PER_CAPITA_FILTER }
 ]);
 
@@ -119,7 +119,7 @@ const getDefaults = createSelector(
     if (!categoriesOptions || !breakByOptions || !dataOptions) return null;
 
     return {
-      [BREAK_BY_KEY]: breakByOptions.find(o => o.value === GDP_FILTER),
+      [BREAK_BY_KEY]: breakByOptions.find(o => o.value === TOTAL_FILTER),
       [CATEGORY_KEY]: categoriesOptions && categoriesOptions[0],
       [COUNTRIES_KEY]: dataOptions.filter(o => o.value !== 'others')
     };
