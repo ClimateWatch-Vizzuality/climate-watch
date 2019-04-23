@@ -57,7 +57,7 @@ const BREAK_BY_OPTIONS = [
     value: 'sector'
   },
   {
-    label: 'Gasses',
+    label: 'Gases',
     value: 'gas'
   }
 ];
