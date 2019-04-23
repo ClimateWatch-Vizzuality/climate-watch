@@ -67,18 +67,18 @@ $min-height: 450px;
 
 @media #{$tablet-portrait} {
   .filtersGroup {
-    @include columns((6, 6, 6));
+    @include columns((6, 6, 6, 6));
   }
 }
 
 @media #{$tablet-landscape} {
   .filtersGroup {
-    @include columns((4, 4, 4));
+    @include columns((6, 6));
 
     > * {
       @include xy-gutters(30px, $gutter-position: ('bottom', 'right'));
 
-      &:first-child {
+      &:nth-child(odd) {
         @include xy-gutters(0, $gutter-position: 'left');
       }
     }

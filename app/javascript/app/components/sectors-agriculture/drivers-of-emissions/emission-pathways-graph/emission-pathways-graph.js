@@ -29,7 +29,7 @@ const actions = { ...ownActions, ...modalActions };
 const mapStateToProps = (state, { location }) => {
   const { data } = state.espTimeSeries;
   const search = qs.parse(location.search);
-  const { currentLocation, model, indicator, scenario } = search;
+  const { currentLocation, model, indicator, scenario, subcategory } = search;
   const espData = {
     data,
     locations: state.espLocations.data,
@@ -41,6 +41,7 @@ const mapStateToProps = (state, { location }) => {
     model,
     indicator,
     scenario,
+    subcategory,
     search
   };
   const providers = [
@@ -84,7 +85,9 @@ class EmissionPathwayGraphContainer extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.filtersSelected.location !== this.props.filtersSelected.location) {
+    if (
+      prevProps.filtersSelected.location !== this.props.filtersSelected.location
+    ) {
       const currentLocation = this.props.filtersSelected.location;
       this.props.findAvailableModels(currentLocation.value);
     }
@@ -94,13 +97,21 @@ class EmissionPathwayGraphContainer extends PureComponent {
   }
 
   updateUrlWithNewParams = (search, filtersSelected) => {
-    const possibleParams = ['model', 'indicator', 'currentLocation', 'scenario'];
+    const possibleParams = [
+      'model',
+      'indicator',
+      'subcategory',
+      'currentLocation',
+      'scenario'
+    ];
     const paramsToUpdate = [];
     const getFilterParamValue = f => {
       if (isArray(filtersSelected[f])) {
         return search[f]
           ? filtersSelected[f]
-            .filter(selectedFilter => search[f].includes(selectedFilter.value))
+            .filter(selectedFilter =>
+              search[f].includes(selectedFilter.value)
+            )
             .join(',')
           : filtersSelected[f].map(filter => filter.value).join(',');
       }
@@ -113,7 +124,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
           paramsToUpdate.push({
             name: f,
             value:
-              (filtersSelected[f] && filtersSelected[f].value) || filtersSelected.location.value
+              (filtersSelected[f] && filtersSelected[f].value) ||
+              filtersSelected.location.value
           });
         } else if (f !== 'currentLocation' && filtersSelected[f]) {
           const value = getFilterParamValue(f);
@@ -139,9 +151,29 @@ class EmissionPathwayGraphContainer extends PureComponent {
     this.updateUrlParam(params);
   };
 
+  handleSubcategoryChange = subcategory => {
+    const { location } = this.props.filtersSelected;
+    const params = [{ name: 'subcategory', value: subcategory.value }];
+    if (location && location.value) {
+      params.push({ name: 'currentLocation', value: location.value });
+    }
+    this.updateUrlParam(params);
+  };
+
   handleSelectorChange = (option, param, clear) => {
     const params = [{ name: param, value: option ? option.value : '' }];
     this.updateUrlParam(params, clear);
+  };
+
+  handleCurrentLocationChange = location => {
+    const params = [
+      { name: 'currentLocation', value: location ? location.value : '' },
+      { name: 'subcategory', value: '' },
+      { name: 'model', value: '' },
+      { name: 'indicator', value: '' },
+      { name: 'scenario', value: '' }
+    ];
+    this.updateUrlParam(params);
   };
 
   handleClearSelection = () => {
@@ -166,7 +198,9 @@ class EmissionPathwayGraphContainer extends PureComponent {
       handleInfoClick: this.handleInfoClick,
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,
-      handleClearSelection: this.handleClearSelection
+      handleClearSelection: this.handleClearSelection,
+      handleSubcategoryChange: this.handleSubcategoryChange,
+      handleCurrentLocationChange: this.handleCurrentLocationChange
     });
   }
 }
@@ -181,4 +215,6 @@ EmissionPathwayGraphContainer.propTypes = {
 };
 
 export { actions, reducers, initialState };
-export default withRouter(connect(mapStateToProps, actions)(EmissionPathwayGraphContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(EmissionPathwayGraphContainer)
+);
