@@ -85,7 +85,8 @@ class EmissionPathwayGraph extends PureComponent {
       modalData,
       model,
       handleModelChange,
-      handleSubcategoryChange
+      handleSubcategoryChange,
+      handleCurrentLocationChange
     } = this.props;
     const needsTimeSeries =
       filtersSelected && filtersSelected.location && filtersSelected.model;
@@ -112,8 +113,7 @@ class EmissionPathwayGraph extends PureComponent {
               <Dropdown
                 label="Region"
                 options={filtersOptions.locations}
-                onValueChange={option =>
-                  handleSelectorChange(option, 'currentLocation')}
+                onValueChange={handleCurrentLocationChange}
                 value={filtersSelected.location}
                 hideResetButton
               />
@@ -200,7 +200,8 @@ EmissionPathwayGraph.propTypes = {
   handleInfoClick: PropTypes.func,
   handleModelChange: PropTypes.func,
   handleClearSelection: PropTypes.func,
-  handleSubcategoryChange: PropTypes.func
+  handleSubcategoryChange: PropTypes.func,
+  handleCurrentLocationChange: PropTypes.func
 };
 
 export default EmissionPathwayGraph;

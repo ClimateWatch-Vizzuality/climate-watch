@@ -165,6 +165,17 @@ class EmissionPathwayGraphContainer extends PureComponent {
     this.updateUrlParam(params, clear);
   };
 
+  handleCurrentLocationChange = location => {
+    const params = [
+      { name: 'currentLocation', value: location ? location.value : '' },
+      { name: 'subcategory', value: '' },
+      { name: 'model', value: '' },
+      { name: 'indicator', value: '' },
+      { name: 'scenario', value: '' }
+    ];
+    this.updateUrlParam(params);
+  };
+
   handleClearSelection = () => {
     const { search } = this.props;
     const { model, scenario, ...rest } = search;
@@ -188,7 +199,8 @@ class EmissionPathwayGraphContainer extends PureComponent {
       handleModelChange: this.handleModelChange,
       handleSelectorChange: this.handleSelectorChange,
       handleClearSelection: this.handleClearSelection,
-      handleSubcategoryChange: this.handleSubcategoryChange
+      handleSubcategoryChange: this.handleSubcategoryChange,
+      handleCurrentLocationChange: this.handleCurrentLocationChange
     });
   }
 }
