@@ -157,22 +157,15 @@ export const CHART_COLORS_EXTENDED = [
   '#E5E6E8'
 ];
 
+export const OTHER_COLOR = '#b1b1b1';
+
 export const GREY_CHART_COLORS = [
   '#68696B',
-  '#757678',
-  '#808184',
   '#818285',
-  '#8e8f91',
-  '#999B9E',
-  '#959697',
-  '#a4a5a6',
-  '#ACACB7',
-  '#b3b4b5',
-  '#c2c3c3',
-  '#d1d2d2',
-  '#e0e1e1',
-  '#E3E5EA',
-  '#eff0f0'
+  '#999B9D',
+  '#ACAEB8',
+  '#C3C4CD',
+  '#E2E4EA'
 ];
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];

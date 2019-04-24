@@ -29,7 +29,6 @@ const SwitchOptionsComponents = {
 class CountriesContext extends PureComponent {
   render() {
     const { query, selectedCountry, handleSwitchClick, loading } = this.props;
-
     const switchOption = (query && query.contextBy) || 'indicator';
 
     const Component = SwitchOptionsComponents[switchOption];
@@ -40,12 +39,14 @@ class CountriesContext extends PureComponent {
           <h2 className={styles.header}>Understand Countries{"'"} Context</h2>
           <div className={styles.intro}>
             <p className={styles.introText}>
-              The agricultural sector differs vastly among countries and affects
-              jobs, the economy, land-use, water and food security. Explore key
-              indicators of progress over time below.
+              Agricultural practices and products not only influence emissions
+              and water impacts, but also provide economic growth, jobs and food
+              security. How countries can reduce their environmental impacts
+              will be dependent on their unique circumstances.
             </p>
             <div className={styles.switchWrapper}>
               <Switch
+                key={`explore-by-${switchOption}`}
                 options={tabs}
                 selectedOption={switchOption}
                 onClick={handleSwitchClick}

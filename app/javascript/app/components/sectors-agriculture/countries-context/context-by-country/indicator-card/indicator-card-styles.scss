@@ -79,8 +79,7 @@
     }
 
     .rank {
-      position: absolute;
-      bottom: 10px;
+      margin: 10px 0;
     }
   }
 
@@ -140,6 +139,7 @@
       color: $theme-color;
       width: max-content;
       top: -20px;
+      font-size: $font-size-xs;
     }
   }
 
@@ -165,6 +165,15 @@
       .legend {
         width: 50%;
       }
+
+      .rank {
+        position: absolute;
+        bottom: 10px;
+      }
+    }
+
+    span::before {
+      font-size: $font-size;
     }
   }
 }

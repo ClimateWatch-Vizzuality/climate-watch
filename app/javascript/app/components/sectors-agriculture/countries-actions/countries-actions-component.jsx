@@ -31,20 +31,26 @@ class CountriesActions extends PureComponent {
       countriesCountWithProposedActions
     } = this.props;
     const switchOption = query.display || 'map';
-
     const Component = SwitchOptions[switchOption];
-
+    const { m_agriculture, a_agriculture } = countriesCountWithProposedActions;
     return (
       <React.Fragment>
         <div className={styles.page}>
           <h3 className={styles.title}>Countries’ Actions in their NDCs</h3>
           <div className={styles.descriptionWrapper}>
-            <span className={styles.description}>
-              As part of the Paris Agreement, ({countriesCountWithProposedActions})
-              countries have proposed agricultural mitigation and adaptation
-              actions. See what countries are saying about agriculture in their
-              NDCs.
-            </span>
+            <div className={styles.description}>
+              <p>
+                While emissions are rising, countries are also stepping up their
+                commitments to reduce emissions. As part of the Paris Agreement,{' '}
+                {m_agriculture} countries proposed agricultural mitigation
+                actions and {a_agriculture} countries proposed agricultural
+                adaptation actions.
+              </p>
+              <p>
+                Click on a country to see what agriculture actions have been
+                proposed in their NDCs.
+              </p>
+            </div>
             <Switch
               options={tabs}
               selectedOption={tabs.find(o => o.value === switchOption).value}

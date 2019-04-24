@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
 import { themr } from 'react-css-themr';
 import PropTypes from 'prop-types';
@@ -14,7 +15,6 @@ const CheckInputComponent = props => {
     theme,
     toggleFirst,
     disabled,
-    id,
     errorText
   } = props;
   return (
@@ -24,14 +24,12 @@ const CheckInputComponent = props => {
           [styles.toggleFirst]: toggleFirst,
           [styles.disabled]: disabled
         })}
-        htmlFor={id}
       >
         <input
           className={theme.checkbox}
           type="checkbox"
           checked={!disabled && checked}
           onChange={onChange}
-          id={id}
           disabled={disabled}
         />
         <span className={theme.label}>{label}</span>
@@ -55,7 +53,6 @@ CheckInputComponent.propTypes = {
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
   toggleFirst: PropTypes.bool,
-  id: PropTypes.string,
   theme: PropTypes.object
 };
 

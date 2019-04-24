@@ -5,14 +5,13 @@ import Chart from 'components/charts/chart';
 import Dropdown from 'components/dropdown';
 import RegionsProvider from 'providers/regions-provider/regions-provider';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
-import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
-import EmissionsProvider from 'providers/emissions-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import { METRIC_OPTIONS } from 'data/constants';
+
 import styles from './historical-emissions-graph-styles.scss';
-import CardPieChart from '../card-pie-chart/card-pie-chart-component';
+import CardPieChart from '../card-pie-chart/card-pie-chart';
 
 class HistoricalEmissionsGraph extends PureComponent {
   renderFilters = () => {
@@ -89,25 +88,17 @@ class HistoricalEmissionsGraph extends PureComponent {
     );
   };
 
-  renderPieChart = () => {
-    const { pieChartData } = this.props;
-    return (
-      <CardPieChart
-        theme={{
-          card: styles.fixedCard,
-          contentContainer: styles.fixedCardContentContainer,
-          data: styles.fixedCardData
-        }}
-        pieChartData={pieChartData}
-      />
-    );
-  };
-
   renderExploreButtonGroup = () => {
-    const { exploreEmissionsConfig } = this.props;
+    const { exploreEmissionsConfig, emissionsCountry } = this.props;
     const buttonGroupConfig = [
       { type: 'info' },
-      { type: 'share' },
+      {
+        type: 'share',
+        shareUrl: `/embed/agriculture-emission?emissionsCountry=${emissionsCountry &&
+          emissionsCountry.value}`,
+        positionRight: true,
+        shouldEmbedQueryParams: false
+      },
       { type: 'download' },
       { type: 'addToUser' }
     ];
@@ -124,17 +115,9 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   render() {
-    const { emissionsCountry, ghgEmissionsFilters } = this.props;
+    const { emissionsCountry } = this.props;
     return (
       <div>
-        <RegionsProvider />
-        <CountriesProvider />
-        <WbCountryDataProvider />
-        <AgricultureEmissionsProvider
-          isoCode3={emissionsCountry && emissionsCountry.value}
-        />
-        <EmissionsMetaProvider />
-        <EmissionsProvider filters={ghgEmissionsFilters} />
         <TabletLandscape>
           <div className={styles.landscapeContent}>
             {this.renderFilters()}
@@ -142,7 +125,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           </div>
           <div className={styles.landscapeContent}>
             {this.renderEmissionsChart()}
-            {this.renderPieChart()}
+            <CardPieChart />
           </div>
         </TabletLandscape>
         <TabletPortraitOnly>
@@ -150,9 +133,15 @@ class HistoricalEmissionsGraph extends PureComponent {
             {this.renderFilters()}
             {this.renderEmissionsChart()}
             {this.renderExploreButtonGroup()}
-            {this.renderPieChart()}
+            <CardPieChart />
           </div>
         </TabletPortraitOnly>
+        <RegionsProvider />
+        <CountriesProvider />
+        <WbCountryDataProvider />
+        <AgricultureEmissionsProvider
+          isoCode3={emissionsCountry && emissionsCountry.value}
+        />
       </div>
     );
   }
@@ -170,8 +159,6 @@ HistoricalEmissionsGraph.propTypes = {
   filtersSelected: PropTypes.array,
   locations: PropTypes.array,
   emissionsCountry: PropTypes.object,
-  ghgEmissionsFilters: PropTypes.object,
-  pieChartData: PropTypes.object,
   emissionTypes: PropTypes.array,
   emissionType: PropTypes.object,
   loading: PropTypes.bool,
@@ -188,8 +175,6 @@ HistoricalEmissionsGraph.defaultProps = {
   filters: [],
   filtersSelected: [],
   locations: [],
-  ghgEmissionsFilters: {},
-  pieChartData: null,
   emissionsCountry: null,
   emissionTypes: [],
   emissionType: null,

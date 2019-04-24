@@ -1,7 +1,10 @@
 import { createSelector } from 'reselect';
+import qs from 'query-string';
 
 const getCountries = state => state.countries || null;
 const getRegions = state => state.regions || null;
+const getSourceSelection = state =>
+  (state.location && state.location.search) || null;
 
 /**  LOCATIONS SELECTORS */
 const getCountriesOptions = createSelector([getCountries], countries => {
@@ -20,10 +23,28 @@ const getRegionsOptions = createSelector([getRegions], regions => {
   }));
 });
 
-export default createSelector(
+export const getLocationsOptions = createSelector(
   [getCountriesOptions, getRegionsOptions],
   (countries, regions) =>
     (!countries || !countries.length || !regions || !regions.length
       ? []
       : [...countries, ...regions])
+);
+
+export const getEmissionCountrySelected = createSelector(
+  [getSourceSelection, getLocationsOptions],
+  (selectedEmissionOption, countriesOptions) => {
+    if (!countriesOptions) return null;
+    const defaultCountry = countriesOptions.find(
+      ({ value }) => value === 'WORLD'
+    );
+    if (!selectedEmissionOption) {
+      return defaultCountry || countriesOptions[0];
+    }
+    const { emissionsCountry } = qs.parse(selectedEmissionOption);
+    const selectedCountry = countriesOptions.find(
+      ({ value }) => value === emissionsCountry
+    );
+    return selectedCountry || defaultCountry;
+  }
 );

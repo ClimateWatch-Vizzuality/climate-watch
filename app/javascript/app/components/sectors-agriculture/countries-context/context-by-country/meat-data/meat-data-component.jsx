@@ -49,9 +49,11 @@ const MeatData = ({
           <div className={styles.cardContainer}>
             <div className={styles.header}>
               <div className={styles.title}>
-                Many crops grown within a country are traded globally and
-                consumed elsewhere. Explore countries’ production, consumption
-                and trade of some of the main agricultural products.
+                Beef, sheep, and other animals are resource and greenhouse
+                gas-intensive to produce and have a higher carbon footprint than
+                non-animal foods. However, products are traded globally and
+                consumption in other countries is driving the demand and
+                emissions growth.
               </div>
               <Icon
                 icon={infoIcon}

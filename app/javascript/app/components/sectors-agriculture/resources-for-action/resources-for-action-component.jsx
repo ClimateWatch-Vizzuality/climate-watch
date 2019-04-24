@@ -63,11 +63,17 @@ class ResourcesForAction extends PureComponent {
         <div className={styles.page}>
           <h3 className={styles.title}>Resources for Action</h3>
           <div className={styles.descriptionWrapper}>
-            <span className={styles.description}>
-              To plan and implement actions, countries need the right financial
-              support and tools. Explore highlighted resources from our partners
-              below.
-            </span>
+            <div className={styles.description}>
+              <p>
+                To plan and implement NDCs, there are already many tools and
+                resources that can help countries to turn their agriculture
+                commitments into action.
+              </p>
+              <p>
+                To learn more about agriculture and to dive into the data,
+                explore highlighted resources from our partners below.
+              </p>
+            </div>
             <Button
               color="yellow"
               className={styles.button}

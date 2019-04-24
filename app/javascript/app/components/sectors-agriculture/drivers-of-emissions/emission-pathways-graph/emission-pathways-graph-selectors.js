@@ -39,7 +39,11 @@ const AXES_CONFIG = {
 
 const DEFAULT_SELECTIONS = {
   model: 'Global Change Assessment Model',
-  indicator: 'CO2'
+  indicator: 'CO2',
+  subcategory: {
+    best: 'LULUCF Anthropogenic GHG Emissions by Gas',
+    secondBest: 'Land Cover'
+  }
 };
 
 const getSearch = state => state.search || null;
@@ -55,6 +59,7 @@ const getModel = state => parseInt(state.model, 10) || null;
 const getScenarios = state => state.scenario || null;
 const getIndicator = state => parseInt(state.indicator, 10) || null;
 const getCategory = () => 3; // 3 is for Agriculture, Land use and Forestry
+const getSubcategory = state => parseInt(state.subcategory, 10) || null;
 
 // data for the graph
 const getData = state => state.data || null;
@@ -125,7 +130,7 @@ export const getModelSelected = createSelector(
       );
       return defaultModel || models[0];
     }
-    return models.find(m => modelSelected === m.value);
+    return models.find(m => modelSelected === m.value) || models[0];
   }
 );
 
@@ -223,22 +228,56 @@ export const getCategorySelected = createSelector(
   }
 );
 
-export const getIndicatorsOptions = createSelector(
-  [getIndicatorsWithData, getCategory],
+export const getSubCategoryOptions = createSelector(
+  [getIndicatorsWithData, getCategorySelected],
   (indicators, category) => {
-    if (!indicators || !indicators.length || !category) return [];
-    let filteredIndicators = indicators;
+    if (!indicators || !category) return null;
+    const indicatorsSelected = indicators.filter(
+      i => i.category && i.category.id === category.value
+    );
+    const subcategories = (indicatorsSelected || []).map(i => ({
+      label: i.subcategory && i.subcategory.name,
+      value: i.subcategory && i.subcategory.id
+    }));
+    return uniqBy(subcategories, 'value');
+  }
+);
 
-    if (category) {
+export const getSubcategorySelected = createSelector(
+  [getSubCategoryOptions, getSubcategory],
+  (subcategories, subcategorySelected) => {
+    if (!subcategories) return null;
+    if (!subcategorySelected) {
+      const defaultSubcategory = subcategories.find(
+        s =>
+          s.label === DEFAULT_SELECTIONS.subcategory.best ||
+          s.label === DEFAULT_SELECTIONS.subcategory.secondBest ||
+          s.label === DEFAULT_SELECTIONS.subcategory.thirdBest
+      );
+      return defaultSubcategory || subcategories[0];
+    }
+    return (
+      subcategories.find(s => subcategorySelected === s.value) ||
+      subcategories[0]
+    );
+  }
+);
+
+export const getIndicatorsOptions = createSelector(
+  [getIndicatorsWithData, getSubcategorySelected],
+  (indicators, subcategory) => {
+    if (!indicators || !indicators.length || !subcategory) return [];
+    let filteredIndicators = indicators;
+    if (subcategory) {
       filteredIndicators = indicators.filter(
-        i => i.category && i.category.id === category
+        i => i.subcategory && i.subcategory.id === subcategory.value
       );
     }
     return filteredIndicators.map(i => ({
       label: i.name || i.composite_name || '',
       value: i.id,
       unit: i.unit,
-      subcategory: i.subcategory.id
+      subcategory: i.subcategory.name
     }));
   }
 );
@@ -253,7 +292,7 @@ export const getIndicatorSelected = createSelector(
       );
       return defaultIndicator || indicators[0];
     }
-    return indicators.find(i => indicatorSelected === i.value);
+    return indicators.find(i => indicatorSelected === i.value) || indicators[0];
   }
 );
 
@@ -283,14 +322,16 @@ export const getFiltersOptions = createSelector(
     getModelsOptions,
     getScenariosOptions,
     getIndicatorsOptions,
-    getCategoryOptions
+    getCategoryOptions,
+    getSubCategoryOptions
   ],
-  (locations, models, scenarios, indicators, category) => ({
+  (locations, models, scenarios, indicators, category, subcategory) => ({
     locations,
     models,
     scenarios,
     indicators,
-    category
+    category,
+    subcategory
   })
 );
 
@@ -301,6 +342,7 @@ export const getFiltersSelected = createSelector(
     getUnavailableModelSelected,
     getScenariosSelected,
     getCategorySelected,
+    getSubcategorySelected,
     getIndicatorSelected,
     getUnavailableIndicatorSelected
   ],
@@ -310,6 +352,7 @@ export const getFiltersSelected = createSelector(
     unavailableModel,
     scenario,
     category,
+    subcategory,
     indicator,
     unavailableIndicator
   ) => ({
@@ -317,6 +360,7 @@ export const getFiltersSelected = createSelector(
     model: model || unavailableModel,
     scenario,
     category,
+    subcategory,
     indicator: indicator || unavailableIndicator
   })
 );
