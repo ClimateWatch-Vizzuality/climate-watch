@@ -25,6 +25,36 @@ const getValues = value => (value && (isArray(value) ? value : [value])) || [];
 class GhgEmissions extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
 
+  handleDownloadDataClick = () => {
+    const { fieldToBreakBy, tableData } = this.props;
+
+    let csvContent = 'data:text/csv;charset=utf-8,';
+
+    const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
+    const indexOf = col =>
+      (defaultColumnOrder.indexOf(col) > -1 ? defaultColumnOrder.indexOf(col) : Infinity);
+    const columnOrder = (a, b) => indexOf(a) - indexOf(b);
+    const escapeForCSV = value => (value && String(value).includes(',') ? `"${value}"` : value);
+
+    const headers = Object.keys(tableData[0]).sort(columnOrder);
+    const rows = [headers.join(',')];
+
+    tableData.forEach(row => {
+      rows.push(headers.map(header => escapeForCSV(row[header])).join(','));
+    });
+
+    csvContent += rows.join('\r\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'ghg-emissions.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link); // Required for FF
+    link.click();
+    document.body.removeChild(link);
+  };
+
   renderDropdown(label, field, icons) {
     const { selected: selectedOptions, options, handleChange } = this.props;
     const value = selectedOptions && selectedOptions[`${field}Selected`];
@@ -86,10 +116,11 @@ class GhgEmissions extends PureComponent {
         </div>
       );
     }
-    const setColumnWidth = (column) => {
+    const setColumnWidth = column => {
       if (column === GHG_TABLE_HEADER[fieldToBreakBy]) return 300;
       return 200;
     };
+    const tableDataReady = !loading && tableData && tableData.length;
 
     return (
       <React.Fragment>
@@ -109,21 +140,17 @@ class GhgEmissions extends PureComponent {
           onLegendChange={v => handleChange(toPlural(fieldToBreakBy), v)}
           hideRemoveOptions={hideRemoveOptions}
         />
-        {
-          !loading &&
-          tableData &&
-          tableData.length && (
-            <Table
-              data={tableData}
-              horizontalScroll
-              firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
-              flexGrow={0}
-              parseHtml
-              setColumnWidth={setColumnWidth}
-              emptyValueLabel="N/A"
-            />
-          )
-        }
+        {tableDataReady && (
+          <Table
+            data={tableData}
+            horizontalScroll
+            firstColumnHeaders={[GHG_TABLE_HEADER[fieldToBreakBy], 'unit']}
+            flexGrow={0}
+            parseHtml
+            setColumnWidth={setColumnWidth}
+            emptyValueLabel="N/A"
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -157,6 +184,11 @@ class GhgEmissions extends PureComponent {
             section: 'ghg-emissions',
             link: downloadLink,
             tooltipText: 'View or download raw data'
+          },
+          {
+            type: 'download',
+            tooltipText: 'Download data in csv',
+            onClick: this.handleDownloadDataClick
           },
           {
             type: 'addToUser'
