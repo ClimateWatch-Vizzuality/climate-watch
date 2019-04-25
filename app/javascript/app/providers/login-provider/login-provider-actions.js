@@ -24,7 +24,7 @@ const getUser = createThunkAction('getUser', () => (dispatch, state) => {
   }
 });
 
-const saveUserData = createThunkAction(
+export const saveUserData = createThunkAction(
   'saveUserData',
   formData => (dispatch, getState) => {
     dispatch(updateUserData(formData));
@@ -54,6 +54,5 @@ export default {
   profileUpdateError,
   updateUserData,
   deleteUserData,
-  getUser,
-  saveUserData
+  getUser
 };
