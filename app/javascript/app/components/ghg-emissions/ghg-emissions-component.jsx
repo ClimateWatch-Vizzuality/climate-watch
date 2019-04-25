@@ -14,6 +14,8 @@ import Table from 'components/table';
 import ModalMetadata from 'components/modal-metadata';
 import { TabletPortraitOnly, TabletLandscape } from 'components/responsive';
 import { toPlural } from 'utils/ghg-emissions';
+import { encodeAsCSVContent, invokeCSVDownload } from 'utils/csv';
+import { orderByColumns, stripHTML } from 'utils';
 
 import lineIcon from 'assets/icons/line_chart.svg';
 import areaIcon from 'assets/icons/area_chart.svg';
@@ -28,31 +30,11 @@ class GhgEmissions extends PureComponent {
   handleDownloadDataClick = () => {
     const { fieldToBreakBy, tableData } = this.props;
 
-    let csvContent = 'data:text/csv;charset=utf-8,';
-
     const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
-    const indexOf = col =>
-      (defaultColumnOrder.indexOf(col) > -1 ? defaultColumnOrder.indexOf(col) : Infinity);
-    const columnOrder = (a, b) => indexOf(a) - indexOf(b);
-    const escapeForCSV = value => (value && String(value).includes(',') ? `"${value}"` : value);
-
-    const headers = Object.keys(tableData[0]).sort(columnOrder);
-    const rows = [headers.join(',')];
-
-    tableData.forEach(row => {
-      rows.push(headers.map(header => escapeForCSV(row[header])).join(','));
-    });
-
-    csvContent += rows.join('\r\n');
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'ghg-emissions.csv');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link); // Required for FF
-    link.click();
-    document.body.removeChild(link);
+    const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
+    const data = tableData.map(stripHtmlFromUnit);
+    const csvContentEncoded = encodeAsCSVContent(data, orderByColumns(defaultColumnOrder));
+    invokeCSVDownload(csvContentEncoded);
   };
 
   renderDropdown(label, field, icons) {
