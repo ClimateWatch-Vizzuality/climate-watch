@@ -6,7 +6,7 @@ $min-height: 500px;
   @include columns((12, 12));
 
   @media #{$tablet-landscape} {
-    @include columns((9.9, 2));
+    @include columns((9.4, 2.5));
   }
 
   .colEnd {

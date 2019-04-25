@@ -42,7 +42,7 @@ module.exports = merge(sharedConfig, {
     headers: { 'Access-Control-Allow-Origin': '*' },
     historyApiFallback: true,
     watchOptions: {
-      ignored: /node_modules/
+      ignored: /node_modules([\\]+|\/)+(?!cw-components)/
     }
   }
 });

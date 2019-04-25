@@ -207,20 +207,31 @@ export function precentageTwoPlacesRound(percentage) {
   return Math.round(percentage * 10) / 10;
 }
 
+export function orderByColumns(columnOrder) {
+  const indexOf = col => (columnOrder.indexOf(col) > -1 ? columnOrder.indexOf(col) : Infinity);
+  return (a, b) => indexOf(a) - indexOf(b);
+}
+
+export function stripHTML(text) {
+  return text.replace(/<(?:.|\n)*?>/gm, '');
+}
+
 export default {
   arrayToSentence,
   compareIndexByKey,
   deburrUpper,
-  isCountryIncluded,
-  importAllImagesFromFolder,
-  truncateDecimals,
-  isMicrosoftBrowser,
-  toStartCase,
-  wordWrap,
-  parseLinkHeader,
-  replaceAll,
   findEqual,
+  importAllImagesFromFolder,
   isANumber,
+  isCountryIncluded,
+  isMicrosoftBrowser,
   noEmptyValues,
-  precentageTwoPlacesRound
+  orderByColumns,
+  parseLinkHeader,
+  precentageTwoPlacesRound,
+  replaceAll,
+  stripHTML,
+  toStartCase,
+  truncateDecimals,
+  wordWrap
 };
