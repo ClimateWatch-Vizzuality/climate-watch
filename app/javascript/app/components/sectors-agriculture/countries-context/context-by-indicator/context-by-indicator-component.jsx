@@ -25,27 +25,6 @@ const getTooltip = (country, tooltipTxt, { label }) => (
   </Link>
 );
 
-const buttonGroupConfig = [
-  {
-    type: 'info',
-    onClick: () => {
-      // TODO: Implement info button click
-    }
-  },
-  {
-    type: 'share',
-    analyticsGraphName: 'Country/Ghg-emissions',
-    positionRight: true
-  },
-  {
-    type: 'download',
-    section: 'ghg-emissions'
-  },
-  {
-    type: 'addToUser'
-  }
-];
-
 class ContextByIndicatorComponent extends Component {
   componentDidUpdate() {
     ReactTooltip.rebuild();
@@ -55,9 +34,7 @@ class ContextByIndicatorComponent extends Component {
     const { yearsWithData } = this.props;
     const hasData = yearsWithData.find(y => y.value === option.value);
     return (
-      <div
-        style={{ color: `${hasData ? '#113750' : '#b1b1c1'}`, padding: '10px' }}
-      >
+      <div style={{ color: `${hasData ? '#113750' : '#b1b1c1'}`, padding: '10px' }}>
         {option.label}
       </div>
     );
@@ -77,8 +54,28 @@ class ContextByIndicatorComponent extends Component {
       updateIndicatorFilter,
       updateIndicatorYearFilter,
       handleCountryEnter,
-      handleCountryClick
+      handleCountryClick,
+      handleInfoClick
     } = this.props;
+
+    const buttonGroupConfig = [
+      {
+        type: 'info',
+        onClick: handleInfoClick
+      },
+      {
+        type: 'share',
+        analyticsGraphName: 'Country/Ghg-emissions',
+        positionRight: true
+      },
+      {
+        type: 'download',
+        section: 'ghg-emissions'
+      },
+      {
+        type: 'addToUser'
+      }
+    ];
 
     return (
       <TabletLandscape>
@@ -103,10 +100,7 @@ class ContextByIndicatorComponent extends Component {
                 />
               </div>
               {isTablet && (
-                <ButtonGroup
-                  className={styles.btnGroup}
-                  buttonsConfig={buttonGroupConfig}
-                />
+                <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
               )}
             </div>
             <div className={styles.visualizationsContainer}>
@@ -119,11 +113,7 @@ class ContextByIndicatorComponent extends Component {
                   onCountryFocus={undefined}
                   dragEnable={false}
                 />
-                <MapLegend
-                  mapColors={MAP_COLORS}
-                  buckets={legend}
-                  className={styles.legend}
-                />
+                <MapLegend mapColors={MAP_COLORS} buckets={legend} className={styles.legend} />
               </div>
               {topTenCountries && (
                 <div className={styles.topTenSection}>
@@ -153,10 +143,7 @@ class ContextByIndicatorComponent extends Component {
                           </li>
                         ))}
                       </ul>
-                      <ReactTooltip
-                        className={styles.tooltipContainer}
-                        id="cc-chart-tooltip"
-                      />
+                      <ReactTooltip className={styles.tooltipContainer} id="cc-chart-tooltip" />
                     </React.Fragment>
                   ) : (
                     <div
@@ -167,10 +154,7 @@ class ContextByIndicatorComponent extends Component {
               )}
             </div>
             {!isTablet && (
-              <ButtonGroup
-                className={styles.btnGroup}
-                buttonsConfig={buttonGroupConfig}
-              />
+              <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
             )}
             {countryData && (
               <ReactTooltip
@@ -202,7 +186,8 @@ ContextByIndicatorComponent.propTypes = {
   updateIndicatorFilter: PropTypes.func.isRequired,
   updateIndicatorYearFilter: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
-  handleCountryClick: PropTypes.func.isRequired
+  handleCountryClick: PropTypes.func.isRequired,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default ContextByIndicatorComponent;

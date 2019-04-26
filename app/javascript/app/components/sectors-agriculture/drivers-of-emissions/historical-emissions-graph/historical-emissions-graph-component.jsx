@@ -62,14 +62,7 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   renderEmissionsChart = () => {
-    const {
-      config,
-      data,
-      domain,
-      filters,
-      filtersSelected,
-      loading
-    } = this.props;
+    const { config, data, domain, filters, filtersSelected, loading } = this.props;
     return (
       <Chart
         className={styles.chartWrapper}
@@ -89,9 +82,12 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   renderExploreButtonGroup = () => {
-    const { exploreEmissionsConfig, emissionsCountry } = this.props;
+    const { exploreEmissionsConfig, emissionsCountry, handleInfoClick } = this.props;
     const buttonGroupConfig = [
-      { type: 'info' },
+      {
+        type: 'info',
+        onClick: handleInfoClick
+      },
       {
         type: 'share',
         shareUrl: `/embed/agriculture-emission?emissionsCountry=${emissionsCountry &&
@@ -139,9 +135,7 @@ class HistoricalEmissionsGraph extends PureComponent {
         <RegionsProvider />
         <CountriesProvider />
         <WbCountryDataProvider />
-        <AgricultureEmissionsProvider
-          isoCode3={emissionsCountry && emissionsCountry.value}
-        />
+        <AgricultureEmissionsProvider isoCode3={emissionsCountry && emissionsCountry.value} />
       </div>
     );
   }
@@ -151,6 +145,7 @@ HistoricalEmissionsGraph.propTypes = {
   handleCountryChange: PropTypes.func,
   handleEmissionTypeChange: PropTypes.func,
   handleMetricTypeChange: PropTypes.func,
+  handleInfoClick: PropTypes.func,
   config: PropTypes.object,
   exploreEmissionsConfig: PropTypes.object.isRequired,
   data: PropTypes.array,
@@ -169,6 +164,7 @@ HistoricalEmissionsGraph.defaultProps = {
   handleCountryChange: () => {},
   handleEmissionTypeChange: () => {},
   handleMetricTypeChange: () => {},
+  handleInfoClick: () => {},
   config: null,
   domain: null,
   data: [],

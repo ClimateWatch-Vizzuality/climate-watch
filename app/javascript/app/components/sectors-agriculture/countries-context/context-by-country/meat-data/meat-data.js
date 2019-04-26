@@ -22,15 +22,10 @@ class MeatDataContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params));
   };
 
-  handleInfoBtnClick = () => {
-    // TODO: Implement info button click
-  };
-
   updateCategoryFilter = category =>
     this.updateUrlParam({ name: CATEGORY_KEY, value: category.value });
 
-  updateBreakByFilter = option =>
-    this.updateUrlParam({ name: BREAK_BY_KEY, value: option.value });
+  updateBreakByFilter = option => this.updateUrlParam({ name: BREAK_BY_KEY, value: option.value });
 
   handleLegendChange = selected => {
     const others = selected.filter(v => v.value === 'others');

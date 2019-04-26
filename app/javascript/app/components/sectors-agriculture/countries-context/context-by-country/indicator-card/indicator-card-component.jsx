@@ -1,9 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { Card, Icon, PieChart } from 'cw-components';
+import { Card, PieChart } from 'cw-components';
 import NoContent from 'components/no-content';
-import infoIcon from 'assets/icons/info';
 
 import styles from './indicator-card-styles.scss';
 
@@ -27,9 +26,7 @@ const renderLegend = (card, year) => {
     </div>
   ) : (
     <NoContent
-      message={
-        card.noDataMessage || `No data for ${card.countryName} in ${year.value}`
-      }
+      message={card.noDataMessage || `No data for ${card.countryName} in ${year.value}`}
       className={styles.noContent}
       minHeight={100}
     />
@@ -78,16 +75,14 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
           />
           <div className={styles.cardContent}>
             {card.legend && renderLegend(card, selectedYear)}
-            {card.chartData &&
-            card.chartData.some(l => l.value) && (
+            {
+              card.chartData &&
+              card.chartData.some(l => l.value) && (
                 <div className={styles.chart}>
-                  <PieChart
-                    data={card.chartData}
-                    width={150}
-                    config={card.chartConfig}
-                  />
+                  <PieChart data={card.chartData} width={150} config={card.chartConfig} />
                 </div>
-              )}
+              )
+            }
             {card.rank && (
               <div
                 className={cx(styles.textHtmlWrapper, styles.rank)}
@@ -96,11 +91,6 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
             )}
             {card.population && renderPopulationBarChart(card, selectedYear)}
           </div>
-          <Icon
-            icon={infoIcon}
-            theme={{ icon: styles.cardInfoIcon }}
-            onClick={undefined}
-          />
           <div className={styles.yearData}>
             <span>{selectedYear && selectedYear.value}</span> data
           </div>

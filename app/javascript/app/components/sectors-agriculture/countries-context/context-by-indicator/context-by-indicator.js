@@ -7,6 +7,7 @@ import { format } from 'd3-format';
 import { isCountryIncluded } from 'app/utils';
 import { handleAnalytics } from 'utils/analytics';
 import { getLocationParamUpdated } from 'utils/navigation';
+import { actions } from 'components/modal-metadata';
 
 import { countriesContexts } from './context-by-indicator-selectors';
 import Component from './context-by-indicator-component';
@@ -42,10 +43,7 @@ class ContextByIndicatorContainer extends PureComponent {
 
     const countryData = mapData.find(c => c.iso === geometryIdHover);
 
-    return (
-      countryData &&
-      this.indicatorValueFormat(countryData.value, selectedIndicator.unit)
-    );
+    return countryData && this.indicatorValueFormat(countryData.value, selectedIndicator.unit);
   }
 
   handleCountryEnter = geography => {
@@ -71,6 +69,15 @@ class ContextByIndicatorContainer extends PureComponent {
     }
   };
 
+  handleInfoClick = () => {
+    this.props.setModalMetadata({
+      customTitle: 'Data Sources',
+      category: 'Agriculture - Context by Indicator',
+      slugs: ['FAOSTAT_2', 'FAOSTAT_3', 'WBD', 'Aqueduct_Country_River_Basin_Rankings'],
+      open: true
+    });
+  };
+
   updateUrlParam = (params, clear) => {
     const { history, location } = this.props;
     history.push(getLocationParamUpdated(location, params, clear));
@@ -83,6 +90,7 @@ class ContextByIndicatorContainer extends PureComponent {
       tooltipTxt,
       handleCountryEnter: this.handleCountryEnter,
       handleCountryClick: this.handleCountryClick,
+      handleInfoClick: this.handleInfoClick,
       countryData: this.state.country
     });
   }
@@ -94,9 +102,8 @@ ContextByIndicatorContainer.propTypes = {
   isoCountries: PropTypes.arrayOf(PropTypes.string),
   history: PropTypes.shape({}),
   indicatorSelectedYear: PropTypes.shape({}),
-  location: PropTypes.shape({})
+  location: PropTypes.shape({}),
+  setModalMetadata: PropTypes.func
 };
 
-export default withRouter(
-  connect(mapStateToProps, null)(ContextByIndicatorContainer)
-);
+export default withRouter(connect(mapStateToProps, actions)(ContextByIndicatorContainer));
