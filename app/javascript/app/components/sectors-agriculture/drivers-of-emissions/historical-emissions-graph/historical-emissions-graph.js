@@ -18,14 +18,19 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   handleEmissionTypeChange = ({ value }) => {
-    this.updateUrlParam([
-      { name: 'emissionType', value },
-      { name: 'filter', value: '' }
-    ]);
+    this.updateUrlParam([{ name: 'emissionType', value }, { name: 'filter', value: '' }]);
   };
 
   handleMetricTypeChange = ({ value }) => {
     this.updateUrlParam([{ name: 'emissionMetric', value }]);
+  };
+
+  handleInfoClick = () => {
+    this.props.setModalMetadata({
+      category: 'Agriculture - Historical Emissions',
+      slugs: 'FAOSTAT_1',
+      open: true
+    });
   };
 
   render() {
@@ -33,14 +38,16 @@ class HistoricalEmissionsGraph extends PureComponent {
       ...this.props,
       handleCountryChange: this.handleCountryChange,
       handleEmissionTypeChange: this.handleEmissionTypeChange,
-      handleMetricTypeChange: this.handleMetricTypeChange
+      handleMetricTypeChange: this.handleMetricTypeChange,
+      handleInfoClick: this.handleInfoClick
     });
   }
 }
 
 HistoricalEmissionsGraph.propTypes = {
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  setModalMetadata: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, { location }) => {
@@ -63,6 +70,4 @@ const mapStateToProps = (state, { location }) => {
   return { ...getTargetsData };
 };
 
-export default withRouter(
-  connect(mapStateToProps, actions)(HistoricalEmissionsGraph)
-);
+export default withRouter(connect(mapStateToProps, actions)(HistoricalEmissionsGraph));

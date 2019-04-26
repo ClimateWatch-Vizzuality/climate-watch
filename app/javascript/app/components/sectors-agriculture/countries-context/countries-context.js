@@ -26,10 +26,6 @@ class CountriesContextsContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, params));
   };
 
-  handleInfoBtnClick = () => {
-    // TODO: Implement info button click
-  };
-
   updateCountryFilter = ({ value }) => this.updateUrlParam({ name: 'country', value });
 
   updateCountryYearFilter = ({ value }) => this.updateUrlParam({ name: 'countryYear', value });
@@ -52,7 +48,6 @@ class CountriesContextsContainer extends PureComponent {
         updateIndicatorYearFilter={this.updateIndicatorYearFilter}
         updateIndicatorFilter={this.updateIndicatorFilter}
         handleSwitchClick={this.handleSwitchClick}
-        handleInfoBtnClick={this.handleInfoBtnClick}
       />
     );
   }

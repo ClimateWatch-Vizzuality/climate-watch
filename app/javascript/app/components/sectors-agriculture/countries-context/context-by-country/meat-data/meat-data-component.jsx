@@ -6,9 +6,8 @@ import MeatProductionProvider from 'providers/agriculture-meat-production-provid
 import MeatWorldProductionProvider from 'providers/agriculture-world-meat-production-provider';
 import MeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import MeatWorldTradeProvider from 'providers/agriculture-world-meat-trade-provider';
-import { Card, Icon, Chart, Dropdown } from 'cw-components';
+import { Card, Chart, Dropdown } from 'cw-components';
 import NoContent from 'components/no-content';
-import infoIcon from 'assets/icons/info';
 import Tooltip from './tooltip';
 
 import styles from './meat-data-styles.scss';
@@ -33,8 +32,7 @@ const MeatData = ({
   domain,
   updateCategoryFilter,
   updateBreakByFilter,
-  handleLegendChange,
-  handleInfoBtnClick
+  handleLegendChange
 }) => {
   const params = selectedCountry &&
   selectedYear && { country: selectedCountry.value, year: selectedYear.value };
@@ -49,17 +47,11 @@ const MeatData = ({
           <div className={styles.cardContainer}>
             <div className={styles.header}>
               <div className={styles.title}>
-                Beef, sheep, and other animals are resource and greenhouse
-                gas-intensive to produce and have a higher carbon footprint than
-                non-animal foods. However, products are traded globally and
-                consumption in other countries is driving the demand and
+                Beef, sheep, and other animals are resource and greenhouse gas-intensive to produce
+                and have a higher carbon footprint than non-animal foods. However, products are
+                traded globally and consumption in other countries is driving the demand and
                 emissions growth.
               </div>
-              <Icon
-                icon={infoIcon}
-                theme={{ icon: styles.cardInfoIcon }}
-                onClick={handleInfoBtnClick}
-              />
             </div>
             <div className={styles.actionsContainer}>
               {categories && (
@@ -139,7 +131,6 @@ MeatData.propTypes = {
   breakByOptions: PropTypes.array,
   selectedCategory: PropTypes.object,
   selectedBreakBy: PropTypes.object,
-  handleInfoBtnClick: PropTypes.func,
   dataSelected: PropTypes.array,
   dataOptions: PropTypes.array,
   domain: PropTypes.object,

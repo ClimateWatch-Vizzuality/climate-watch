@@ -11,89 +11,95 @@ import MeatData from './meat-data';
 
 import styles from './context-by-country-styles.scss';
 
-const buttonGroupConfig = [
-  {
-    type: 'info',
-    onClick: () => {
-      // TODO: Implement info button click
-    }
-  },
-  {
-    type: 'share',
-    analyticsGraphName: 'Country/Ghg-emissions',
-    positionRight: true
-  },
-  {
-    type: 'download',
-    section: 'ghg-emissions'
-  },
-  {
-    type: 'addToUser'
-  }
-];
-
 const ContextByCountryComponent = ({
   cards,
   countries,
   selectedCountry,
   years,
   selectedYear,
-  // handleInfoBtnClick,
+  handleInfoClick,
   updateCountryFilter,
   updateCountryYearFilter
-}) => (
-  <TabletLandscape>
-    {isTablet => (
-      <React.Fragment>
-        <div className={styles.actionsContainer}>
-          <div className={styles.filtersGroup}>
-            {countries && (
-              <Dropdown
-                label={'Country'}
-                value={selectedCountry}
-                options={countries}
-                onValueChange={updateCountryFilter}
-                hideResetButton
-              />
+}) => {
+  const buttonGroupConfig = [
+    {
+      type: 'info',
+      onClick: handleInfoClick
+    },
+    {
+      type: 'share',
+      analyticsGraphName: 'Country/Ghg-emissions',
+      positionRight: true
+    },
+    {
+      type: 'download',
+      section: 'ghg-emissions'
+    },
+    {
+      type: 'addToUser'
+    }
+  ];
+
+  return (
+    <TabletLandscape>
+      {isTablet => (
+        <React.Fragment>
+          <div className={styles.actionsContainer}>
+            <div className={styles.filtersGroup}>
+              {countries && (
+                <Dropdown
+                  label={'Country'}
+                  value={selectedCountry}
+                  options={countries}
+                  onValueChange={updateCountryFilter}
+                  hideResetButton
+                />
+              )}
+              {
+                !isEmpty(years) &&
+                selectedYear && (
+                  <Dropdown
+                    label={'Year'}
+                    value={selectedYear}
+                    options={years}
+                    onValueChange={updateCountryYearFilter}
+                    hideResetButton
+                  />
+                )
+              }
+            </div>
+            {isTablet && (
+              <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
             )}
-            {!isEmpty(years) &&
-             selectedYear && (
-               <Dropdown
-                 label={'Year'}
-                 value={selectedYear}
-                 options={years}
-                 onValueChange={updateCountryYearFilter}
-                 hideResetButton
-               />
-             )}
           </div>
-          {isTablet && (
+          {!isEmpty(years) ? (
+            <div>
+              {
+                selectedCountry &&
+                selectedYear && (
+                  <React.Fragment>
+                    <IndicatorCards selectedYear={selectedYear} cards={cards} />
+                    <LandArea />
+                    <MeatData />
+                  </React.Fragment>
+                )
+              }
+            </div>
+          ) : (
+            <NoContent
+              message={`No data for ${selectedCountry.label}, please select another country`}
+              className={styles.noContent}
+              minHeight={300}
+            />
+          )}
+          {!isTablet && (
             <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />
           )}
-        </div>
-        {!isEmpty(years) ? (
-          <div>
-            {selectedCountry &&
-             selectedYear && (
-               <React.Fragment>
-                 <IndicatorCards selectedYear={selectedYear} cards={cards} />
-                 <LandArea />
-                 <MeatData />
-               </React.Fragment>
-            )}
-          </div>
-        ) : (
-          <NoContent
-            message={`No data for ${selectedCountry.label}, please select another country`}
-            className={styles.noContent}
-            minHeight={300}
-          />
-        )}
-        {!isTablet && <ButtonGroup className={styles.btnGroup} buttonsConfig={buttonGroupConfig} />}
-      </React.Fragment>
-    )}
-  </TabletLandscape>
-);
+        </React.Fragment>
+      )}
+    </TabletLandscape>
+  );
+};
 
 ContextByCountryComponent.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.shape({})),
@@ -108,8 +114,8 @@ ContextByCountryComponent.propTypes = {
   }),
   cards: PropTypes.arrayOf(PropTypes.shape({})),
   updateCountryYearFilter: PropTypes.func.isRequired,
-  updateCountryFilter: PropTypes.func.isRequired
-  // handleInfoBtnClick: PropTypes.func.isRequired
+  updateCountryFilter: PropTypes.func.isRequired,
+  handleInfoClick: PropTypes.func.isRequired
 };
 
 export default ContextByCountryComponent;
