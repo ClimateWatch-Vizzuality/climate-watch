@@ -168,7 +168,7 @@ class GhgEmissions extends PureComponent {
             tooltipText: 'View or download raw data'
           },
           {
-            type: 'download',
+            type: 'downloadCSV',
             tooltipText: 'Download data in csv',
             onClick: this.handleDownloadDataClick
           },
