@@ -132,12 +132,12 @@ class CountryNdcOverview extends PureComponent {
                   </Card>
                   <Card title="Identified Sectors for Mitigation Action">
                     <div className={styles.cardContent}>
-                      {values && values.coverage_sectors_short ? (
+                      {values && values.coverage_sectors ? (
                         <p
                           className={styles.targetText}
                           // eslint-disable-next-line react/no-danger
                           dangerouslySetInnerHTML={{
-                            __html: values.coverage_sectors_short[0].value
+                            __html: values.coverage_sectors[0].value
                           }}
                         />
                       ) : (
