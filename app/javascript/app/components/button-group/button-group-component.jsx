@@ -4,6 +4,7 @@ import Icon from 'components/icon';
 import cx from 'classnames';
 import iconInfo from 'assets/icons/info.svg';
 import iconDownload from 'assets/icons/download.svg';
+import iconDownloadCSV from 'assets/icons/download-csv.svg';
 import iconAddToUser from 'assets/icons/add-to-user.svg';
 import iconEdit from 'assets/icons/edit.svg';
 import iconDelete from 'assets/icons/delete.svg';
@@ -23,6 +24,7 @@ const tooltipText = {
 const iconsMap = {
   info: iconInfo,
   download: iconDownload,
+  downloadCSV: iconDownloadCSV,
   addToUser: iconAddToUser,
   edit: iconEdit,
   delete: iconDelete
@@ -64,13 +66,7 @@ const renderButton = buttonConfig => {
 };
 
 const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
-  <div
-    className={cx(
-      styles.buttonGroup,
-      disabled ? styles.disabled : '',
-      className
-    )}
-  >
+  <div className={cx(styles.buttonGroup, disabled ? styles.disabled : '', className)}>
     {buttonsConfig.map(buttonConfig => renderButton(buttonConfig))}
     <ReactTooltip id="blueTooltip" effect="solid" />
   </div>
