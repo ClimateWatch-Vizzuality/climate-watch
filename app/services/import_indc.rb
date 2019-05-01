@@ -261,7 +261,7 @@ class ImportIndc
   end
 
   def import_values_cait
-    Indc::Indicator.where(source: @sources_index['CAIT']).each do |indicator|
+    Indc::Indicator.where(source: [@sources_index['CAIT'], @sources_index['DIE']]).each do |indicator|
       @cait_data.each do |r|
         location = @locations_by_iso3[r[:iso]]
         unless location
