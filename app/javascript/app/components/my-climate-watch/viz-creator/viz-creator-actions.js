@@ -1,4 +1,5 @@
-import { createAction, createThunkAction } from 'redux-tools';
+import { createAction } from 'redux-actions';
+import { createThunkAction } from 'utils/redux';
 import { get } from 'js-lenses';
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';
@@ -9,28 +10,19 @@ import { EPAPI, CWAPI } from 'services/api';
 import { fetchMyVisualisations } from 'components/my-climate-watch/my-visualisations/my-visualisations-actions';
 import { $datasets } from './viz-creator-lenses';
 
-const mapResource = (resource, key) =>
-  (isArray(resource) ? resource : [resource]).map(r => r[key]);
+const mapResource = (resource, key) => (isArray(resource) ? resource : [resource]).map(r => r[key]);
 const mapResourceValue = resource => mapResource(resource, 'value');
 const mapResourceLabel = resource => mapResource(resource, 'label');
 
-export const fetchDatasets = createThunkAction(
-  'fetchDatasets',
-  () => dispatch => {
-    EPAPI.get('datasets', null, true).then(d => {
-      dispatch(gotDatasets(d));
-    });
-  }
-);
+export const fetchDatasets = createThunkAction('fetchDatasets', () => dispatch => {
+  EPAPI.get('datasets', null, true).then(d => {
+    dispatch(gotDatasets(d));
+  });
+});
 
-export const fetchLocations = createThunkAction(
-  'fetchLocations',
-  () => dispatch => {
-    EPAPI.get('locations', 'time_series=true').then(d =>
-      dispatch(gotLocations(d))
-    );
-  }
-);
+export const fetchLocations = createThunkAction('fetchLocations', () => dispatch => {
+  EPAPI.get('locations', 'time_series=true').then(d => dispatch(gotLocations(d)));
+});
 
 export const fetchVisualisations = createThunkAction(
   'fetchVisualisations',
@@ -43,33 +35,24 @@ export const fetchVisualisations = createThunkAction(
   }
 );
 
-export const fetchModels = createThunkAction(
-  'fetchModels',
-  locations => dispatch => {
-    EPAPI.get(
-      'models',
-      `location=${mapResourceValue(locations)}&time_series=true`
-    ).then(d => dispatch(gotModels(d)));
-  }
-);
+export const fetchModels = createThunkAction('fetchModels', locations => dispatch => {
+  EPAPI.get('models', `location=${mapResourceValue(locations)}&time_series=true`).then(d =>
+    dispatch(gotModels(d))
+  );
+});
 
-export const fetchScenarios = createThunkAction(
-  'fetchScenarios',
-  modelId => dispatch => {
-    EPAPI.get('scenarios', `model=${modelId}&time_series=true`).then(d =>
-      dispatch(gotScenarios(d))
-    );
-  }
-);
+export const fetchScenarios = createThunkAction('fetchScenarios', modelId => dispatch => {
+  EPAPI.get('scenarios', `model=${modelId}&time_series=true`).then(d => dispatch(gotScenarios(d)));
+});
 
 export const fetchCategories = createThunkAction(
   'fetchCategories',
   ({ scenarios, locations }) => dispatch => {
     EPAPI.get(
       'categories',
-      `scenario=${mapResourceValue(scenarios).join(
-        ','
-      )}&location=${mapResourceValue(locations)}&time_series=true`
+      `scenario=${mapResourceValue(scenarios).join(',')}&location=${mapResourceValue(
+        locations
+      )}&time_series=true`
     ).then(d => {
       const categories = d.map(({ id, name }) => ({ id, name }));
       dispatch(gotCategories(categories));
@@ -82,9 +65,7 @@ export const fetchSubCategories = createThunkAction(
   ({ scenarios, locations, category }) => dispatch => {
     EPAPI.get(
       'subcategories',
-      `scenario=${mapResourceValue(scenarios).join(
-        ','
-      )}&location=${mapResourceValue(
+      `scenario=${mapResourceValue(scenarios).join(',')}&location=${mapResourceValue(
         locations
       )}&category=${category.value}&time_series=true`
     ).then(d => dispatch(gotSubCategories(d)));
@@ -94,9 +75,7 @@ export const fetchSubCategories = createThunkAction(
 export const fetchIndicators = createThunkAction(
   'fetchIndicators',
   ({ locations, scenarios, subcategory, stackable }) => dispatch => {
-    let params = `scenario=${mapResourceValue(scenarios).join(
-      ','
-    )}&location=${mapResourceValue(
+    let params = `scenario=${mapResourceValue(scenarios).join(',')}&location=${mapResourceValue(
       locations
     )}&time_series=true&subcategory=${subcategory}`;
     if (stackable) {
@@ -120,9 +99,7 @@ export const fetchYears = createThunkAction(
       `location=${mapResourceValue(
         locations
       )}&scenario=${flatScenarios}&indicator=${flatIndicators}&time_series=true`
-    ).then(d =>
-      dispatch(gotYears(d.years.map(y => ({ value: y, label: `${y}` }))))
-    );
+    ).then(d => dispatch(gotYears(d.years.map(y => ({ value: y, label: `${y}` })))));
   }
 );
 
@@ -192,9 +169,7 @@ export const gotYears = createAction('gotYears');
 export const selectYear = createAction('selectYear');
 
 export const updateVisualisationName = createAction('updateVisualisationName');
-export const updateVisualisationDescription = createAction(
-  'updateVisualisationDescription'
-);
+export const updateVisualisationDescription = createAction('updateVisualisationDescription');
 
 export const clearVisualisation = createAction('clearVisualisation');
 
@@ -205,9 +180,7 @@ export const gotVisualizationFail = createAction('fetchVisualisationFail');
 export const saveVisualisationReady = createAction('saveVisualisationReady');
 export const saveVisualisationFail = createAction('saveVisualisationFail');
 
-export const deleteVisualisationReady = createAction(
-  'deleteVisualisationReady'
-);
+export const deleteVisualisationReady = createAction('deleteVisualisationReady');
 export const deleteVisualisationFail = createAction('deleteVisualisationFail');
 
 export const saveVisualisation = createThunkAction(
