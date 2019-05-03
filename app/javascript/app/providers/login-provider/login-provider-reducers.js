@@ -1,5 +1,3 @@
-import * as actions from './login-provider-actions';
-
 export const initialState = {
   loading: false,
   loaded: false,
@@ -18,12 +16,12 @@ function updateUserState(state, user, newUserData) {
 }
 
 export default {
-  [actions.getUserInit]: state => ({
+  getUserInit: state => ({
     ...state,
     loading: true,
     profileUpdated: false
   }),
-  [actions.getUserReady]: (state, { payload }) => ({
+  getUserReady: (state, { payload }) => ({
     ...state,
     loading: false,
     loaded: true,
@@ -31,7 +29,7 @@ export default {
     logged: true,
     profileUpdated: false
   }),
-  [actions.getUserFail]: state => ({
+  getUserFail: state => ({
     ...state,
     loading: false,
     loaded: true,
@@ -39,7 +37,7 @@ export default {
     error: true,
     profileUpdated: false
   }),
-  [actions.updateUserData]: (state, { payload }) => {
+  updateUserData: (state, { payload }) => {
     const user = state.user;
     const newUserData = state.user.user_id;
     newUserData.first_name = payload.firstName;
@@ -51,17 +49,17 @@ export default {
     newUserData.tester = payload.tester;
     return updateUserState(state, user, newUserData);
   },
-  [actions.deleteUserData]: state => ({
+  deleteUserData: state => ({
     ...state,
     logged: false,
     user: {}
   }),
-  [actions.profileUpdated]: state => ({
+  profileUpdated: state => ({
     ...state,
     profileUpdated: true,
     profileUpdateError: false
   }),
-  [actions.profileUpdateError]: state => ({
+  profileUpdateError: state => ({
     ...state,
     profileUpdated: false,
     profileUpdateError: true

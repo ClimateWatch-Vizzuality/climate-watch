@@ -1,16 +1,17 @@
-import { createAction, createThunkAction } from 'redux-tools';
+import { createAction } from 'redux-actions';
+import { createThunkAction } from 'utils/redux';
 import { CWAPI } from 'services/api';
 import { LOGOUT_URL } from 'data/constants';
 
-export const getUserInit = createAction('getUserInit');
-export const getUserReady = createAction('getUserReady');
-export const getUserFail = createAction('getUserFail');
-export const profileUpdated = createAction('profileUpdated');
-export const profileUpdateError = createAction('profileUpdateError');
-export const updateUserData = createAction('updateUserData');
-export const deleteUserData = createAction('deleteUserData');
+const getUserInit = createAction('getUserInit');
+const getUserReady = createAction('getUserReady');
+const getUserFail = createAction('getUserFail');
+const profileUpdated = createAction('profileUpdated');
+const profileUpdateError = createAction('profileUpdateError');
+const updateUserData = createAction('updateUserData');
+const deleteUserData = createAction('deleteUserData');
 
-export const getUser = createThunkAction('getUser', () => (dispatch, state) => {
+const getUser = createThunkAction('getUser', () => (dispatch, state) => {
   const { login } = state();
   if (!login.loading) {
     dispatch(getUserInit());
@@ -44,3 +45,14 @@ export const logout = createThunkAction('logout', () => dispatch => {
       console.warn(e);
     });
 });
+
+export default {
+  getUserInit,
+  getUserReady,
+  getUserFail,
+  profileUpdated,
+  profileUpdateError,
+  updateUserData,
+  deleteUserData,
+  getUser
+};
