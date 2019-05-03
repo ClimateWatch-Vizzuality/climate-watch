@@ -1,4 +1,5 @@
-import { createAction, createThunkAction } from 'redux-tools';
+import { createAction } from 'redux-actions';
+import { createThunkAction } from 'utils/redux';
 import { get } from 'js-lenses';
 import find from 'lodash/find';
 import uniqBy from 'lodash/uniqBy';

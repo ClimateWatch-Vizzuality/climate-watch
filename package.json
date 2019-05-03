@@ -115,7 +115,6 @@
     "redux-actions": "2.2.1",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.2.0",
-    "redux-tools": "github:vizzuality/redux-tools#3.3.0",
     "reselect": "3.0.1",
     "resolve-url-loader": "2.1.0",
     "sass-loader": "6.0.6",

@@ -1,4 +1,5 @@
-import { createAction, createThunkAction } from 'redux-tools';
+import { createAction } from 'redux-actions';
+import { createThunkAction } from 'utils/redux';
 import { CWAPI } from 'services/api';
 
 import {
