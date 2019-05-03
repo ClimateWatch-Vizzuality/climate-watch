@@ -448,7 +448,7 @@ export const getTableData = createSelector(
     if (!data || !model || !data.length || !yColumnOptions) return null;
 
     const formatValue = value => value && Number(value.toFixed(2));
-    const unit = getUnit(metric);
+    const unit = `t${getUnit(metric)}`;
 
     const pivot = yColumnOptions.map(c => ({
       [GHG_TABLE_HEADER[model]]: c.label,
