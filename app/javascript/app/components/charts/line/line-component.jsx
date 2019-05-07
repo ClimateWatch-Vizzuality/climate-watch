@@ -112,6 +112,7 @@ class ChartLine extends PureComponent {
     const LineChartMargin = espGraph
       ? { top: 50, right: 0, left: marginOffset, bottom: 0 }
       : { top: 10, right: 0, left: -10, bottom: 0 };
+
     const yAxisLabel = (
       <Label
         position="top"
@@ -143,7 +144,7 @@ class ChartLine extends PureComponent {
           <YAxis
             axisLine={false}
             tickLine={false}
-            scale="linear"
+            scale="auto"
             type="number"
             tick={
               <CustomizedYAxisTick
@@ -152,7 +153,7 @@ class ChartLine extends PureComponent {
                 unit={espGraph && unit}
               />
             }
-            domain={(domain && domain.y) || ['auto', 'auto']}
+            domain={(domain && domain.y) || [0, 'auto']}
             interval={'preserveStartEnd'}
           >
             {espGraph && yAxisLabel}

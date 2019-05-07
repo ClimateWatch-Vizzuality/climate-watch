@@ -216,11 +216,6 @@ export const getChartData = createSelector(
   }
 );
 
-export const getChartDomain = createSelector([getChartData], data => {
-  if (!data) return null;
-  return { x: ['auto', 'auto'], y: ['auto', 'auto'] };
-});
-
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
