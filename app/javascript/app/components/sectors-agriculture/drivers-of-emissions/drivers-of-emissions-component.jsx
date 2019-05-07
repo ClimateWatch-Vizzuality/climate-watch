@@ -21,7 +21,7 @@ class DriversOfEmissions extends PureComponent {
         <p>
           Agriculture is one of the most rapidly growing sectors and accounts
           for a significant portion of emissions in developing countries. GHG
-          emissions from agriculture consist of non-CO<sub>2</sub> gases
+          emissions from agriculture consist mainly of non-CO<sub>2</sub> gases
           produced by crop and livestock production and management activities.
         </p>
         <p>
