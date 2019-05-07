@@ -19,7 +19,8 @@ const getRegionsOptions = createSelector([getRegions], regions => {
   if (!regions) return null;
   return regions.map(d => ({
     label: d.wri_standard_name,
-    value: d.iso_code3
+    value: d.iso_code3,
+    members: d.members && d.members.map(({ iso_code3 }) => iso_code3)
   }));
 });
 
