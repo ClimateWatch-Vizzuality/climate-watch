@@ -7,7 +7,6 @@ import {
 import {
   getChartData,
   getChartConfig,
-  getChartDomain,
   getFilterOptions,
   getFiltersSelected,
   getEmissionTypes,
@@ -33,7 +32,6 @@ export const getAllData = createStructuredSelector({
   data: getChartData,
   loading: getAgricultureEmissionsLoading,
   config: getChartConfig,
-  domain: getChartDomain,
   filters: getFilterOptions,
   filtersSelected: getFiltersSelected,
   locations: getLocationsOptions,
