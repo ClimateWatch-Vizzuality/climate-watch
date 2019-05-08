@@ -11,7 +11,7 @@ module Api
       end
 
       def latest
-        render json: @location.latest_socioeconomics
+        render json: @location.latest_socioeconomics.to_json
       end
 
       private
