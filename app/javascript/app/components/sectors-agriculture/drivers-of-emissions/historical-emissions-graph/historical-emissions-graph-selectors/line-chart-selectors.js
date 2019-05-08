@@ -1,6 +1,13 @@
 import { createSelector } from 'reselect';
 import qs from 'query-string';
-import { uniqBy, sortBy, isEmpty, intersection } from 'lodash';
+import {
+  uniqBy,
+  sortBy,
+  isEmpty,
+  intersection,
+  flatten,
+  groupBy
+} from 'lodash';
 import {
   getYColumnValue,
   getThemeConfig,
@@ -63,12 +70,36 @@ export const getMetricSelected = createSelector(
 const getCountryMetricData = createSelector(
   [getWbCountryData, getEmissionCountrySelected],
   (data, country) => {
-    if (!data || !country) return null;
+    if (isEmpty(data) || !country) return null;
     const countryMetric = data[country.value];
     const metricData = {};
     if (countryMetric) {
       countryMetric.forEach(d => {
         metricData[d.year] = { gdp: d.gdp, population: d.population };
+      });
+    } else {
+      const members =
+        country.members && country.members.map(isoCode3 => data[isoCode3]);
+      if (!members) return {};
+      const membersByYear = groupBy(flatten(members), 'year');
+      const years = Object.keys(membersByYear);
+
+      years.forEach(year => {
+        const metricsData =
+          membersByYear[year] &&
+          membersByYear[year].reduce(
+            (acc, member) => {
+              if (member) {
+                const gdp = acc.gdp + member.gdp;
+                const population = acc.population + member.population;
+                return { gdp, population };
+              }
+              return acc;
+            },
+            { gdp: 0, population: 0 }
+          );
+
+        metricData[year] = metricsData;
       });
     }
     return metricData;
