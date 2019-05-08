@@ -515,53 +515,6 @@ ALTER SEQUENCE public.agriculture_profile_metadata_id_seq OWNED BY public.agricu
 
 
 --
--- Name: agriculture_profile_metadata_sources; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.agriculture_profile_metadata_sources (
-    id bigint NOT NULL,
-    dataset character varying,
-    title character varying,
-    technical_title character varying,
-    source_organization character varying,
-    learn_more character varying,
-    summary text,
-    description text,
-    cautions text,
-    geographic_coverage character varying,
-    date_of_content character varying,
-    frequency_of_updates character varying,
-    summary_of_licenses character varying,
-    terms_of_service_link character varying,
-    citation character varying,
-    published_language character varying,
-    published_title character varying,
-    other character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: agriculture_profile_metadata_sources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.agriculture_profile_metadata_sources_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: agriculture_profile_metadata_sources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.agriculture_profile_metadata_sources_id_seq OWNED BY public.agriculture_profile_metadata_sources.id;
-
-
---
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2194,13 +2147,6 @@ ALTER TABLE ONLY public.agriculture_profile_metadata ALTER COLUMN id SET DEFAULT
 
 
 --
--- Name: agriculture_profile_metadata_sources id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.agriculture_profile_metadata_sources ALTER COLUMN id SET DEFAULT nextval('public.agriculture_profile_metadata_sources_id_seq'::regclass);
-
-
---
 -- Name: datasets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2675,14 +2621,6 @@ ALTER TABLE ONLY public.agriculture_profile_meat_trades
 
 ALTER TABLE ONLY public.agriculture_profile_metadata
     ADD CONSTRAINT agriculture_profile_metadata_pkey PRIMARY KEY (id);
-
-
---
--- Name: agriculture_profile_metadata_sources agriculture_profile_metadata_sources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.agriculture_profile_metadata_sources
-    ADD CONSTRAINT agriculture_profile_metadata_sources_pkey PRIMARY KEY (id);
 
 
 --
@@ -4228,7 +4166,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181227144108'),
 ('20190207144949'),
 ('20190219190427'),
-('20190404173252'),
 ('20190405154306');
 
 
