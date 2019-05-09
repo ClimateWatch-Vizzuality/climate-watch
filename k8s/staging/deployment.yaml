@@ -112,9 +112,9 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            memory: "128Mi"
-          limits:
             memory: "512Mi"
+          limits:
+            memory: "1Gi"
         args:
           - sidekiq
         env:

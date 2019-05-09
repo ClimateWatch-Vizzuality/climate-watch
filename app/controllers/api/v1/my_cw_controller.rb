@@ -13,7 +13,7 @@ module Api
           @current_user = ::MyCw::User.new
           @current_user.errors.add(:id, :invalid)
 
-          render json: {'code': '401', 'message': 'Not authorized'}.to_json, status: :unauthorized
+          render json: {'code': '401', 'message': 'Not authorized'}, status: :unauthorized
         end
       end
 
