@@ -21,9 +21,18 @@ namespace :agriculture_profile do
     end
   end
 
+  desc 'Import agriculture profile country contexts from remote .csv file'
+  task import_contexts: :environment do
+    TimedLogger.log('import agriculture country contexts') do
+      ImportAgricultureContexts.new.call
+    end
+  end
+
   desc 'Import all agriculture profile data from remote .csv file'
   task import: [
+    'agriculture_profile:metadata',
+    'agriculture_profile:import_emissions',
+    'agriculture_profile:import_contexts',
     'agriculture_profile:import_profile',
-    'agriculture_profile:import_emissions'
   ]
 end

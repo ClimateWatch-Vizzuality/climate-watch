@@ -11,16 +11,19 @@ platforms:
         importer: ImportAgricultureMetadata
         datasets:
           - Legend File 823
+      - name: agriculture_contexts
+        importer: ImportAgricultureContexts
+        datasets:
+          - Agr FAOSTAT Inputs Sample Data 823
+          - Agr FAOSTAT Macro Indicators Sample Data 823
+          - Agr FAOSTAT Water Withdrawal Database 823
+          - Agr WBD Sample Data 823
       - name: agriculture_profile
         importer: ImportAgricultureProfile
         datasets:
-          - Agr FAOSTAT Inputs Sample Data 823
-          - Agr FAOSTAT Land Use Sample Data 823
-          - Agr FAOSTAT Macro Indicators Sample Data 823
           - Agr FAOSTAT Production and Trade Sample Data 823
-          - Agr FAOSTAT Water Withdrawal Database 823
           - Agr OECD_FAO Sample Data 823
-          - Agr WBD Sample Data 823
+          - Agr FAOSTAT Land Use Sample Data 823
       - name: agriculture_emissions
         importer: ImportAgricultureEmissions
         datasets:
