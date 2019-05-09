@@ -74,6 +74,10 @@
 .dropdownDisclaimerWrapper {
   display: flex;
   align-items: center;
+
+  :global .dropdown-menu {
+    max-height: 300px !important;
+  }
 }
 
 .disclaimer {
