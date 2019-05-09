@@ -8,6 +8,14 @@ class ImportAgricultureEmissions
   # rubocop:enable LineLength
 
   def call
+    unless AgricultureProfile::Metadatum.any?
+      msg = <<-EOS
+        Please make sure you import Agriculture
+        profile metadata before running this importer
+      EOS
+      add_error(:failed_dependency, msg: msg)
+      return
+    end
     ActiveRecord::Base.transaction do
       cleanup
       Rails.logger.info "Importing EMISSIONS Categories"
