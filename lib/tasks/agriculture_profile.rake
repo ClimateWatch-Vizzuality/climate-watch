@@ -1,11 +1,18 @@
 namespace :agriculture_profile do
+
+  desc 'Import agriculture metadata from remote .csv file'
+  task import_metadata: :environment do
+    TimedLogger.log('import agriculture metadata') do
+      ImportAgricultureMetadta.new.call
+    end
+  end
+
   desc 'Import agriculture profile from remote .csv file'
   task import_profile: :environment do
     TimedLogger.log('import agriculture profile data') do
       ImportAgricultureProfile.new.call
     end
   end
-
 
   desc 'Import agriculture profile emissions from remote .csv file'
   task import_emissions: :environment do

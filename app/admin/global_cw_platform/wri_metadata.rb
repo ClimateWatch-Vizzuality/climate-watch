@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global CW Platform WRI Metadata' do
+ActiveAdmin.register_page 'Global Cw Platform Wri Metadata' do
   include DataUploader::SharedAdmin
 
   section_name = 'wri_metadata'

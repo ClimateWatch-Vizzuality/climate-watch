@@ -7,6 +7,10 @@ platforms:
         datasets:
           - adaptation
           - adaptation_metadata
+      - name: agriculture_metadata
+        importer: ImportAgricultureMetadata
+        datasets:
+          - Legend File 823
       - name: agriculture_profile
         importer: ImportAgricultureProfile
         datasets:
@@ -17,7 +21,6 @@ platforms:
           - Agr FAOSTAT Water Withdrawal Database 823
           - Agr OECD_FAO Sample Data 823
           - Agr WBD Sample Data 823
-          - Legend File 823
       - name: agriculture_emissions
         importer: ImportAgricultureEmissions
         datasets:

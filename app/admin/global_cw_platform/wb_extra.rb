@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global CW Platform World Bank Extra' do
+ActiveAdmin.register_page 'Global Cw Platform Wb Extra' do
   include DataUploader::SharedAdmin
 
   section_name = 'wb_extra'

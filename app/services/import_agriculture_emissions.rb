@@ -10,8 +10,6 @@ class ImportAgricultureEmissions
   def call
     ActiveRecord::Base.transaction do
       cleanup
-      Rails.logger.info "Importing LEGEND"
-      import_metadata(S3CSVReader.read(LEGEND_FILEPATH), LEGEND_FILEPATH)
       Rails.logger.info "Importing EMISSIONS Categories"
       import_emission_categories(S3CSVReader.read(LEGEND_FILEPATH), LEGEND_FILEPATH)
       Rails.logger.info "Importing EMISSIONS"
@@ -22,28 +20,10 @@ class ImportAgricultureEmissions
   private
 
   def cleanup
-    AgricultureProfile::Metadatum.delete_all
     AgricultureProfile::Emission.delete_all
     AgricultureProfile::EmissionSubcategory.delete_all
     AgricultureProfile::EmissionCategory.delete_all
   end
-
-  def metadatum_attributes(row)
-    {
-      short_name: row[:short_names],
-      indicator: row[:indicator_name],
-      category: row[:category],
-      subcategory: row[:sub_category],
-      unit: row[:unit]
-    }
-  end
-
-  def import_metadata(content, filepath)
-    import_each_with_logging(content, filepath) do |row|
-      AgricultureProfile::Metadatum.create!(metadatum_attributes(row))
-    end
-  end
-
 
   def emission_subcategory_attributes(row, category_id)
     {

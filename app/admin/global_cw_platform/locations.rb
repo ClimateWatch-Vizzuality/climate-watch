@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global CW Platform Locations' do
+ActiveAdmin.register_page 'Global Cw Platform Locations' do
   include DataUploader::SharedAdmin
 
   section_name = 'locations'
