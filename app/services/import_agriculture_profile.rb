@@ -36,7 +36,7 @@ class ImportAgricultureProfile
       values.each do |value|
         next if value.second.blank?
         area =
-          AgricultureProfile::Area.find_or_create_by(
+          AgricultureProfile::Area.find_or_initialize_by(
             location_id: location_id,
             year: value.first.to_s.to_i)
         area.send(:"#{indicator.downcase}=", value.second)
@@ -53,7 +53,7 @@ class ImportAgricultureProfile
       values.each do |value|
         next if value.second.blank?
         meat =
-          AgricultureProfile::MeatConsumption.find_or_create_by(
+          AgricultureProfile::MeatConsumption.find_or_initialize_by(
             location_id: location_id,
             year: value.first.to_s.to_i)
         meat.send(:"#{indicator.downcase}=", value.second)
@@ -70,11 +70,11 @@ class ImportAgricultureProfile
       values.each do |value|
         next if value.second.blank?
         meat = if indicator.starts_with?('production')
-                 AgricultureProfile::MeatProduction.find_or_create_by(
+                 AgricultureProfile::MeatProduction.find_or_initialize_by(
                    location_id: location_id,
                    year: value.first.to_s.to_i)
                else
-                 AgricultureProfile::MeatTrade.find_or_create_by(
+                 AgricultureProfile::MeatTrade.find_or_initialize_by(
                    location_id: location_id,
                    year: value.first.to_s.to_i)
                end
