@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global CW Platform Socioeconomics' do
+ActiveAdmin.register_page 'Global Cw Platform Socioeconomics' do
   include DataUploader::SharedAdmin
 
   section_name = 'socioeconomics'

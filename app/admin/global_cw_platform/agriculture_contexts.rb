@@ -1,12 +1,12 @@
-ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
+ActiveAdmin.register_page 'Global Cw Platform Agriculture Contexts' do
   include DataUploader::SharedAdmin
 
-  section_name = 'adaptation'
+  section_name = 'agriculture_contexts'
   platform_name = 'global_cw_platform'
 
   controller do
     def section_name
-      'adaptation'
+      'agriculture_contexts'
     end
 
     def platform_name
@@ -14,11 +14,11 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX}adaptation"
+      "#{CW_FILES_PREFIX}agriculture_contexts"
     end
 
     def path
-      admin_global_cw_platform_adaptation_path
+      admin_global_cw_platform_agriculture_contexts_path
     end
 
     def section
@@ -29,7 +29,7 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
     end
 
     def import_worker
-      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportAdaptation', current_admin_user.email)
+      DataUploader::BaseImportWorker.perform_async(section.id, 'ImportAgricultureContexts', current_admin_user.email)
     end
 
     def section_repository
@@ -59,11 +59,11 @@ ActiveAdmin.register_page 'Global Cw Platform Adaptation' do
   content do
     render partial: 'data_uploader/admin/form_upload_datasets', locals: {
       datasets: datasets_proc.call,
-      upload_path: admin_global_cw_platform_adaptation_upload_datafile_path,
-      download_path: admin_global_cw_platform_adaptation_download_datafiles_path,
+      upload_path: admin_global_cw_platform_agriculture_contexts_upload_datafile_path,
+      download_path: admin_global_cw_platform_agriculture_contexts_download_datafiles_path,
       download_single_data_file_path:
-          admin_global_cw_platform_adaptation_download_datafile_path,
-      import_path: admin_global_cw_platform_adaptation_run_importer_path,
+          admin_global_cw_platform_agriculture_contexts_download_datafile_path,
+      import_path: admin_global_cw_platform_agriculture_contexts_run_importer_path,
       import_button_disabled: section_proc.call.worker_logs.started.any?,
       logs: section_proc.call.worker_logs.order(created_at: :desc)
     }
