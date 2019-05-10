@@ -29,7 +29,7 @@ namespace :agriculture_profile do
 
   desc 'Import all agriculture profile data from remote .csv file'
   task import: [
-    'agriculture_profile:metadata',
+    'agriculture_profile:import_metadata',
     'agriculture_profile:import_emissions',
     'agriculture_profile:import_contexts',
     'agriculture_profile:import_profile'
