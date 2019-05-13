@@ -29,8 +29,16 @@ class ImportAgricultureProfile
   end
 
   def import_areas(content, filepath)
+    areas = []
+    locations = {}
     import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:area]).id
+      location_id = if !locations[row[:area]]
+                      location_id = Location.find_by(iso_code3: row[:area]).id
+                      locations[row[:area]] = location_id
+                      location_id
+                    else
+                      locations[row[:area]]
+                    end
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
       values.each do |value|
@@ -40,14 +48,23 @@ class ImportAgricultureProfile
             location_id: location_id,
             year: value.first.to_s.to_i)
         area.send(:"#{indicator.downcase}=", value.second)
-        area.save!
+        areas << area
       end
     end
+    AgricultureProfile::Area.import!(areas)
   end
 
   def import_meat_consumptions(content, filepath)
+    meats = []
+    locations = {}
     import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:country]).id
+      location_id = if !locations[row[:area]]
+                      location_id = Location.find_by(iso_code3: row[:country]).id
+                      locations[row[:area]] = location_id
+                      location_id
+                    else
+                      locations[row[:area]]
+                    end
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
       values.each do |value|
@@ -57,31 +74,44 @@ class ImportAgricultureProfile
             location_id: location_id,
             year: value.first.to_s.to_i)
         meat.send(:"#{indicator.downcase}=", value.second)
-        meat.save!
+        meats << meat
       end
     end
+    AgricultureProfile::MeatConsumption.import!(meats)
   end
 
   def import_meat_trades(content, filepath)
+    meat_trades = []
+    meat_productions = []
+    locations = {}
     import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:area]).id
+      location_id = if !locations[row[:area]]
+                      location_id = Location.find_by(iso_code3: row[:area]).id
+                      locations[row[:area]] = location_id
+                      location_id
+                    else
+                      locations[row[:area]]
+                    end
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
       values.each do |value|
         next if value.second.blank?
-        meat = if indicator.starts_with?('production')
-                 AgricultureProfile::MeatProduction.find_or_initialize_by(
-                   location_id: location_id,
-                   year: value.first.to_s.to_i)
-               else
-                 AgricultureProfile::MeatTrade.find_or_initialize_by(
-                   location_id: location_id,
-                   year: value.first.to_s.to_i)
-               end
-
-        meat.send(:"#{indicator.downcase}=", value.second)
-        meat.save!
+        if indicator.starts_with?('production')
+          meat_production = AgricultureProfile::MeatProduction.find_or_initialize_by(
+            location_id: location_id,
+            year: value.first.to_s.to_i)
+          meat_production.send(:"#{indicator.downcase}=", value.second)
+          meat_productions << meat_production
+        else
+          meat_trade = AgricultureProfile::MeatTrade.find_or_initialize_by(
+            location_id: location_id,
+            year: value.first.to_s.to_i)
+          meat_trade.send(:"#{indicator.downcase}=", value.second)
+          meat_trades << meat_trade
+        end
       end
     end
+    AgricultureProfile::MeatProduction.import!(meat_productions)
+    AgricultureProfile::MeatTrade.import!(meat_trades)
   end
 end
