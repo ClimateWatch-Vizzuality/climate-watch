@@ -2,10 +2,10 @@ class ImportAgricultureContexts
   include ClimateWatchEngine::CSVImporter
 
   # rubocop:disable LineLength
-  INPUTS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Inputs Sample Data 823.csv".freeze
-  WBD_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr WBD Sample Data 823.csv".freeze
-  MACRO_INDICATORS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Macro Indicators Sample Data 823.csv".freeze
-  WATER_WITHDRAWAL_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Water Withdrawal Database 823.csv".freeze
+  INPUTS_FILEPATH = "#{CW_FILES_PREFIX}agriculture_contexts/Agr FAOSTAT Inputs Sample Data 823.csv".freeze
+  WBD_FILEPATH = "#{CW_FILES_PREFIX}agriculture_contexts/Agr WBD Sample Data 823.csv".freeze
+  MACRO_INDICATORS_FILEPATH = "#{CW_FILES_PREFIX}agriculture_contexts/Agr FAOSTAT Macro Indicators Sample Data 823.csv".freeze
+  WATER_WITHDRAWAL_FILEPATH = "#{CW_FILES_PREFIX}agriculture_contexts/Agr FAOSTAT Water Withdrawal Database 823.csv".freeze
   # rubocop:enable LineLength
 
   def call

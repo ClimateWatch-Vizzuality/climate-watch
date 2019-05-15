@@ -2,9 +2,9 @@ class ImportAgricultureProfile
   include ClimateWatchEngine::CSVImporter
 
   # rubocop:disable LineLength
-  FAO_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr OECD_FAO Sample Data 823.csv".freeze
-  LAND_USE_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Land Use Sample Data 823.csv".freeze
-  PRODUCTION_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Production and Trade Sample Data 823.csv".freeze
+  FAO_FILEPATH = "#{CW_FILES_PREFIX}agriculture_profile/Agr OECD_FAO Sample Data 823.csv".freeze
+  LAND_USE_FILEPATH = "#{CW_FILES_PREFIX}agriculture_profile/Agr FAOSTAT Land Use Sample Data 823.csv".freeze
+  PRODUCTION_FILEPATH = "#{CW_FILES_PREFIX}agriculture_profile/Agr FAOSTAT Production and Trade Sample Data 823.csv".freeze
   # rubocop:enable LineLength
 
   def call

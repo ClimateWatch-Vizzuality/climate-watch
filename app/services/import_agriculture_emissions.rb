@@ -2,8 +2,8 @@ class ImportAgricultureEmissions
   include ClimateWatchEngine::CSVImporter
 
   # rubocop:disable LineLength
-  EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Emissions Sample Data 823.csv".freeze
-  LEGEND_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Legend File 823.csv".freeze
+  EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}agriculture_emissions/Agr FAOSTAT Emissions Sample Data 823.csv".freeze
+  LEGEND_FILEPATH = "#{CW_FILES_PREFIX}agriculture_metadata/Legend File 823.csv".freeze
 
   # rubocop:enable LineLength
 

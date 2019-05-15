@@ -1,7 +1,7 @@
 class ImportAgricultureMetadata
   include ClimateWatchEngine::CSVImporter
 
-  LEGEND_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Legend File 823.csv".freeze
+  LEGEND_FILEPATH = "#{CW_FILES_PREFIX}agriculture_metadata/Legend File 823.csv".freeze
 
   def call
     ActiveRecord::Base.transaction do
