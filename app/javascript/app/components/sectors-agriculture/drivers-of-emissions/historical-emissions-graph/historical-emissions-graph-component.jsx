@@ -26,6 +26,16 @@ class HistoricalEmissionsGraph extends PureComponent {
       emissionMetric
     } = this.props;
     const metricOptions = Object.values(METRIC_OPTIONS).map(option => option);
+    const locationGroups = [
+      {
+        groupId: 'regions',
+        title: 'Regions'
+      },
+      {
+        groupId: 'countries',
+        title: 'Countries'
+      }
+    ];
     return (
       <div className={styles.filtersGroup}>
         <Dropdown
@@ -35,6 +45,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           options={locations}
           onValueChange={handleCountryChange}
           value={emissionsCountry}
+          groups={locationGroups}
           hideResetButton
         />
         <Dropdown
@@ -81,11 +92,7 @@ class HistoricalEmissionsGraph extends PureComponent {
   };
 
   renderExploreButtonGroup = () => {
-    const {
-      exploreEmissionsConfig,
-      emissionsCountry,
-      handleInfoClick
-    } = this.props;
+    const { exploreEmissionsConfig, emissionsCountry, handleInfoClick } = this.props;
     const buttonGroupConfig = [
       {
         type: 'info',
@@ -138,9 +145,7 @@ class HistoricalEmissionsGraph extends PureComponent {
         <RegionsProvider />
         <CountriesProvider />
         <WbCountryDataProvider />
-        <AgricultureEmissionsProvider
-          isoCode3={emissionsCountry && emissionsCountry.value}
-        />
+        <AgricultureEmissionsProvider isoCode3={emissionsCountry && emissionsCountry.value} />
       </div>
     );
   }
