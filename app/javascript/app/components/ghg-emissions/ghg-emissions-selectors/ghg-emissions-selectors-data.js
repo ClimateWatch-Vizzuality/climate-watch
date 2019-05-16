@@ -447,8 +447,11 @@ export const getTableData = createSelector(
   (data, metric, model, yColumnOptions) => {
     if (!data || !model || !data.length || !yColumnOptions) return null;
 
-    const formatValue = value => value && Number(value.toFixed(2));
-    const unit = `t${getUnit(metric)}`;
+    const isAbsoluteValue = metric === 'ABSOLUTE_VALUE';
+    const scale = isAbsoluteValue ? 1000000 : 1; // to convert tCO2e to MtCO2e if not gdp or population metric
+    const scaleString = isAbsoluteValue ? 'Mt' : 't';
+    const formatValue = value => value && Number((value / scale).toFixed(2));
+    const unit = `${scaleString}${getUnit(metric)}`;
 
     const pivot = yColumnOptions.map(c => ({
       [GHG_TABLE_HEADER[model]]: c.label,
