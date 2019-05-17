@@ -76,4 +76,6 @@ NDCSEnhancementsTableContainer.propTypes = {
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, actions)(NDCSEnhancementsTableContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(NDCSEnhancementsTableContainer)
+);

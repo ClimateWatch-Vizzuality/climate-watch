@@ -75,17 +75,17 @@ export default [
   },
   FEATURE_AGRICULTURE
     ? {
-      nav: true,
-      label: 'SECTORS',
-      routes: sectorsRoutes
-    }
+        nav: true,
+        label: 'SECTORS',
+        routes: sectorsRoutes
+      }
     : {
-      path: '/sectors',
-      component: Sectors,
-      exact: true,
-      nav: true,
-      label: 'SECTORS'
-    },
+        path: '/sectors',
+        component: Sectors,
+        exact: true,
+        nav: true,
+        label: 'SECTORS'
+      },
   FEATURE_AGRICULTURE && {
     path: '/sectors/agriculture',
     component: SectorsAgriculture,

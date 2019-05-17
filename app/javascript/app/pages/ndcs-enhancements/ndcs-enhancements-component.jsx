@@ -14,8 +14,14 @@ import styles from './ndcs-enhancements-styles.scss';
 
 const NDCEnhancements = ({ anchorLinks, query, route }) => (
   <div>
-    <MetaDescription descriptionContext={NDC_ENHANCEMENTS_CONTENT} subtitle="NDC ENHANCEMENTS CONTENT" />
-    <SocialMetadata descriptionContext={NDC_ENHANCEMENTS_CONTENT} href={location.href} />
+    <MetaDescription
+      descriptionContext={NDC_ENHANCEMENTS_CONTENT}
+      subtitle="NDC ENHANCEMENTS CONTENT"
+    />
+    <SocialMetadata
+      descriptionContext={NDC_ENHANCEMENTS_CONTENT}
+      href={location.href}
+    />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">

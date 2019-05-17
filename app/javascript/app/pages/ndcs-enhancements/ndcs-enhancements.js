@@ -29,4 +29,6 @@ NDCSEnhancementsContainer.propTypes = {
 };
 
 export { actions, reducers, initialState };
-export default withRouter(connect(mapStateToProps, actions)(NDCSEnhancementsContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(NDCSEnhancementsContainer)
+);

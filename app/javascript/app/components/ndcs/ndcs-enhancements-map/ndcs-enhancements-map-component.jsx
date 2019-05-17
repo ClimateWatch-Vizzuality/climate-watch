@@ -57,8 +57,8 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
   />
 );
 
-const renderSearch = (searchHandler,query) => (
-    <Search
+const renderSearch = (searchHandler, query) => (
+  <Search
     value={query}
     theme={darkSearch}
     onChange={searchHandler}
@@ -66,33 +66,36 @@ const renderSearch = (searchHandler,query) => (
     placeholder="Search table data"
     plain
   />
-)
+);
 
-const renderCircular = (datum) => (
+const renderCircular = datum => (
   <div className={styles.circularChartContainer}>
     <CircularChart
-      index={.1}
-      value={Math.round((datum.value/datum.max*100) * 10) / 10}
+      index={0.1}
+      value={Math.round(datum.value / datum.max * 100 * 10) / 10}
       color={datum.opts.color}
     />
     <div className={styles.circularChartValues}>
-      <div 
+      <div
         style={{
           color: datum.opts.color
         }}
-        >
-        {datum.opts.prefix}{datum.value}{datum.opts.suffix}
+      >
+        {datum.opts.prefix}
+        {datum.value}
+        {datum.opts.suffix}
       </div>
     </div>
-    <div className={styles.circularChartLabels}
+    <div
+      className={styles.circularChartLabels}
       style={{
         color: datum.opts.color
       }}
-      >
+    >
       {datum.opts.label}
     </div>
   </div>
-)
+);
 
 const NDCSEnhancementsMap = ({
   loading,
@@ -117,8 +120,9 @@ const NDCSEnhancementsMap = ({
           <div className={styles.filtersLayout}>
             {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
           </div>
-          
-          {(!loading && summaryData) && (
+
+          {!loading &&
+          summaryData && (
             <div className="grid-column-item">
               <div className={styles.charts}>
                 <div className={styles.chartsGroup}>
@@ -138,7 +142,7 @@ const NDCSEnhancementsMap = ({
               </div>
             </div>
           )}
-          
+
           {loading && <Loading light className={styles.loader} />}
           <Map
             paths={paths}
@@ -179,20 +183,30 @@ const NDCSEnhancementsMap = ({
         <div className={styles.wrapper}>
           {!loading && (
             <div className={styles.filtersLayout}>
-              {isTablet && renderSearch(handleSearchChange,query)}
+              {isTablet && renderSearch(handleSearchChange, query)}
             </div>
           )}
-          {(!loading && tableData && (tableData.length > 0)) && (
+          {!loading &&
+          tableData &&
+          tableData.length > 0 && (
             <div className={styles.tableWrapper}>
-              <Table horizontalScroll parseHtml urlInData data={tableData} flexGrow={0} />
+              <Table
+                horizontalScroll
+                parseHtml
+                urlInData
+                data={tableData}
+                flexGrow={0}
+              />
             </div>
           )}
-          {(!loading && (!tableData || (tableData.length <= 0))) && (
+          {!loading &&
+          (!tableData || tableData.length <= 0) && (
             <NoContent className={styles.noContent} message={noContentMsg} />
           )}
-          {(!loading && !isTablet) && (
+          {!loading &&
+          !isTablet && (
             <div className={styles.column}>
-              {renderSearch(handleSearchChange,query)}
+              {renderSearch(handleSearchChange, query)}
             </div>
           )}
         </div>
