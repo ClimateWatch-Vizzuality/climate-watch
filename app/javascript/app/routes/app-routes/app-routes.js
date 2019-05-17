@@ -11,6 +11,7 @@ import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountry from 'pages/ndc-country';
 import NDCCompare from 'pages/ndc-compare';
 import NDCS from 'pages/ndcs';
+import NDCSEnhancements from 'pages/ndcs-enhancements';
 import NDCSDG from 'pages/ndc-sdg';
 import Country from 'pages/country';
 import EmissionPathways from 'pages/emission-pathways';
@@ -29,6 +30,7 @@ import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSContentRoutes from './NDCSContent-routes';
+import NDCSEnhancementsRoutes from './NDCSEnhancements-routes';
 import MyCwRoutes from './my-cw-routes';
 import DataExplorerRoutes from './data-explorer-routes';
 import AboutRoutes from './about-routes';
@@ -126,6 +128,13 @@ export default [
     headerImage: 'ndc',
     headerColor: '#035388',
     routes: NDCSContentRoutes
+  },
+  {
+    path: '/ndcs-enhancements',
+    component: NDCSEnhancements,
+    headerImage: 'ndc',
+    headerColor: '#035388',
+    routes: NDCSEnhancementsRoutes
   },
   {
     path: '/ndcs-sdg',

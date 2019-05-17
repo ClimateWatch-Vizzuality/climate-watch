@@ -6,6 +6,11 @@ export default [
     activeId
   },
   {
+    path: '/ndcs-enhancements',
+    label: '#StepUpAmbition Tracker',
+    activeId
+  },
+  {
     path: '/ndcs/compare/mitigation',
     label: 'NDC Comparison',
     activeId
