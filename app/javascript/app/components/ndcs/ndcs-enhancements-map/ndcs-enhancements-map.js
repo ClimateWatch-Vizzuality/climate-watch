@@ -22,7 +22,8 @@ import {
   getISOCountries,
   getLinkToDataExplorer,
   tableRemoveIsoFromData,
-  summarizeIndicators
+  summarizeIndicators,
+  MAP_COLORS
 } from './ndcs-enhancements-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -48,7 +49,8 @@ const mapStateToProps = (state, { location }) => {
     category: tableGetCategory(ndcsEnhancementsWithSelection),
     tableData: tableRemoveIsoFromData(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
-    downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection)
+    downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
+    mapColors: MAP_COLORS
   };
 };
 
