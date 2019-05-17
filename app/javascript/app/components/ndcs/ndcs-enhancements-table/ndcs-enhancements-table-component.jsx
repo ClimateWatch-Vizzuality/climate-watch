@@ -15,7 +15,9 @@ class NDCSEnhancementsTable extends PureComponent {
 
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length > 0) {
-      return <Table horizontalScroll parseHtml urlInData data={data} flexGrow={0} />;
+      return (
+        <Table horizontalScroll parseHtml urlInData data={data} flexGrow={0} />
+      );
     }
     return <NoContent className={styles.noContent} message={noContentMsg} />;
   }

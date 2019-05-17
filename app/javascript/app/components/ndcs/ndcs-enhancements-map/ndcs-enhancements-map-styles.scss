@@ -60,7 +60,7 @@
 
 .tableWrapper {
   .ReactVirtualized__Table__Grid {
-    background:#fff !important;
+    background: #fff !important;
   }
 }
 
@@ -77,53 +77,59 @@
 }
 
 .chartsGroup {
-  text-align:center;
+  text-align: center;
   font-weight: $font-weight-bold;
+
   @media #{$tablet-landscape} {
     > div {
       @include columns(6);
     }
   }
+
   > div {
-    display:flex;
-    flex-direction:row;
-    align-items:center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 }
 
 .circularChartContainer {
   position: relative;
   margin: $card-content-margin;
-  flex:1;
+  flex: 1;
   height: 120px;
-  overflow:visible;
+  overflow: visible;
+
   &:first-child {
-    margin-left:0;
+    margin-left: 0;
   }
+
   &:last-child {
-    margin-right:0;
+    margin-right: 0;
   }
+
   [class*=circularChartWrapper] {
-    position:static;
-    margin:0 auto;
+    position: static;
+    margin: 0 auto;
   }
+
   svg {
-    height:120px !important;
+    height: 120px !important;
   }
 }
 
 .circularChartValues {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
   font-weight: $font-weight-bold;
 }
 
 .circularChartLabels {
-  position:relative;
-  bottom: .8em;
+  position: relative;
+  bottom: 0.8em;
   white-space: nowrap;
-  width:100%;
-  text-align:center;
+  width: 100%;
+  text-align: center;
 }

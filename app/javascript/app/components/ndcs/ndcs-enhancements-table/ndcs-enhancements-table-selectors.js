@@ -39,7 +39,9 @@ export const getCategory = createSelector(
   [getCategories],
   (categories = []) => {
     if (!categories || !categories.length) return null;
-    return categories.find(cat => cat.value === 'ndc_enhancement') || categories[0];
+    return (
+      categories.find(cat => cat.value === 'ndc_enhancement') || categories[0]
+    );
   }
 );
 
@@ -64,7 +66,8 @@ export const getCategoryIndicators = createSelector(
 export const getSelectedData = createSelector(
   [getCategoryIndicators, getCountries],
   (indicators, countries) => {
-    if (!indicators || !indicators.length || !indicators[0].locations) return [];
+    if (!indicators || !indicators.length || !indicators[0].locations)
+      return [];
 
     return Object.keys(indicators[0].locations).map(iso => {
       const countryData =
@@ -72,10 +75,10 @@ export const getSelectedData = createSelector(
       let row = {
         country: countryData.wri_standard_name || iso,
         iso
-      }
+      };
       indicators.forEach(ind => {
         row[ind.label] = ind.locations[iso].value;
-      })
+      });
       return row;
     });
   }
@@ -85,18 +88,16 @@ export const getFilteredData = createSelector(
   [getSelectedData, getQuery],
   (data, query) => {
     if (!data || isEmpty(data)) return null;
-    return data.filter(
-      d => {
-        let match = false;
-        for (let col in d) {
-          if (deburrUpper(d[col]).indexOf(query) > -1) {
-            match = true;
-            break;
-          }
+    return data.filter(d => {
+      let match = false;
+      for (let col in d) {
+        if (deburrUpper(d[col]).indexOf(query) > -1) {
+          match = true;
+          break;
         }
-        return match;
       }
-    );
+      return match;
+    });
   }
 );
 
@@ -108,7 +109,7 @@ export const removeIsoFromData = createSelector([getFilteredData], data => {
     return {
       ...d,
       urlNotShow: `/ndcs/country/${iso}`
-    }
+    };
   });
 });
 
