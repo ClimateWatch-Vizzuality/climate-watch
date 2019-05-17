@@ -15,7 +15,7 @@ import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import ModalMetadata from 'components/modal-metadata';
-
+import Card from 'components/card';
 import CircularChart from 'components/circular-chart';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
@@ -70,28 +70,23 @@ const renderSearch = (searchHandler, query) => (
 
 const renderCircular = datum => (
   <div className={styles.circularChartContainer}>
-    <CircularChart
-      index={0.1}
-      value={Math.round(datum.value / datum.max * 100 * 10) / 10}
-      color={datum.opts.color}
-    />
-    <div className={styles.circularChartValues}>
-      <div
-        style={{
-          color: datum.opts.color
-        }}
-      >
-        {datum.opts.prefix}
-        {datum.value}
-        {datum.opts.suffix}
+    <div>
+      <CircularChart
+        index={.1}
+        value={Math.round((datum.value/datum.max*100) * 10) / 10}
+        color={datum.opts.color}
+      />
+      <div className={styles.circularChartValues}>
+        <div 
+          style={{
+            color: datum.opts.color
+          }}
+          >
+          {datum.opts.prefix}{datum.value}{datum.opts.suffix}
+        </div>
       </div>
     </div>
-    <div
-      className={styles.circularChartLabels}
-      style={{
-        color: datum.opts.color
-      }}
-    >
+    <div className={styles.circularChartLabels}>
       {datum.opts.label}
     </div>
   </div>
@@ -111,7 +106,8 @@ const NDCSEnhancementsMap = ({
   handleCountryClick,
   handleCountryEnter,
   handleSearchChange,
-  noContentMsg
+  noContentMsg,
+  mapColors
 }) => (
   <div>
     <TabletLandscape>
@@ -120,60 +116,56 @@ const NDCSEnhancementsMap = ({
           <div className={styles.filtersLayout}>
             {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
           </div>
+          
+          <div className={styles.containerUpper}>
 
-          {!loading &&
-          summaryData && (
-            <div className="grid-column-item">
-              <div className={styles.charts}>
-                <div className={styles.chartsGroup}>
-                  Intends to update NDC for 2020
-                  <div className={styles.chartsInner}>
-                    {renderCircular(summaryData.planned.countries)}
-                    {renderCircular(summaryData.planned.emissions)}
-                  </div>
-                </div>
-                <div className={styles.chartsGroup}>
-                  Submitted a second NDC
-                  <div className={styles.chartsInner}>
-                    {renderCircular(summaryData.submitted.countries)}
-                    {renderCircular(summaryData.submitted.emissions)}
-                  </div>
-                </div>
-              </div>
+            <div className={styles.containerCharts}>
+              {(!loading && summaryData) && (
+                    <Card theme={{
+                      card: styles.chartsCard,
+                      contentContainer: styles.chartsCardContentContainer,
+                      data: styles.chartsCardData
+                    }}>
+                      {renderCircular(summaryData.planned.countries)}
+                      {renderCircular(summaryData.planned.emissions)}
+                    </Card>
+              )}
             </div>
-          )}
-
-          {loading && <Loading light className={styles.loader} />}
-          <Map
-            paths={paths}
-            tooltipId="ndcs-map-tooltip"
-            onCountryClick={handleCountryClick}
-            onCountryEnter={handleCountryEnter}
-            onCountryFocus={handleCountryEnter}
-            dragEnable={false}
-            customCenter={!isTablet ? [10, -50] : null}
-          />
-          {!isTablet && (
-            <div className={styles.column}>
-              {renderButtonGroup(handleInfoClick, true)}
+            <div className={styles.containerMap}>
+              {loading && <Loading light className={styles.loader} />}
+              <Map
+                paths={paths}
+                tooltipId="ndcs-map-tooltip"
+                onCountryClick={handleCountryClick}
+                onCountryEnter={handleCountryEnter}
+                onCountryFocus={handleCountryEnter}
+                dragEnable={false}
+                customCenter={!isTablet ? [10, -50] : null}
+              />
+              {!isTablet && (
+                <div className={styles.column}>
+                  {renderButtonGroup(handleInfoClick, true)}
+                </div>
+              )}
+              {countryData && (
+                <ReactTooltip
+                  className={styles.tooltipContainer}
+                  id="ndcs-map-tooltip"
+                  delayHide={isTablet ? 0 : 3000}
+                >
+                  {getTooltip(countryData, tooltipTxt)}
+                </ReactTooltip>
+              )}
+              {indicator && (
+                <MapLegend
+                  className={styles.legend}
+                  title={indicator.legend}
+                  buckets={indicator.legendBuckets}
+                  mapColors={mapColors}
+                />
+              )}
             </div>
-          )}
-          {countryData && (
-            <ReactTooltip
-              className={styles.tooltipContainer}
-              id="ndcs-map-tooltip"
-              delayHide={isTablet ? 0 : 3000}
-            >
-              {getTooltip(countryData, tooltipTxt)}
-            </ReactTooltip>
-          )}
-          {indicator && (
-            <MapLegend
-              className={styles.legend}
-              title={indicator.legend}
-              buckets={indicator.legendBuckets}
-            />
-          )}
+          </div>
           <ModalMetadata />
         </div>
       )}
@@ -229,7 +221,8 @@ NDCSEnhancementsMap.propTypes = {
   handleSearchChange: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
-  handleInfoClick: PropTypes.func.isRequired
+  handleInfoClick: PropTypes.func.isRequired,
+  mapColors: PropTypes.array
 };
 
 export default NDCSEnhancementsMap;

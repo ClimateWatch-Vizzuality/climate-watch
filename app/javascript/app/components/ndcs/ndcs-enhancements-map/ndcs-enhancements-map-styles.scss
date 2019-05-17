@@ -64,48 +64,50 @@
   }
 }
 
-.charts {
-  @include columns('shrink', $wrap: false);
-
-  overflow: scroll;
-
-  @media #{$tablet-landscape} {
-    @include columns(6);
-
-    overflow: hidden;
-  }
+.containerUpper,.containerCharts,.containerMap {
+  position:relative;
 }
 
-.chartsGroup {
-  text-align: center;
-  font-weight: $font-weight-bold;
+.containerUpper {
+  @include columns((4,8));
+}
+.containerCharts {
 
-  @media #{$tablet-landscape} {
-    > div {
-      @include columns(6);
-    }
-  }
+}
+.containerMap {
 
-  > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+}
+
+.chartsCard {
+  height:100%;
+}
+
+.chartsCardContentContainer {
+  display:none;
+}
+
+.chartsCardData {
+  background:#fff;
 }
 
 .circularChartContainer {
-  position: relative;
+  position:relative;
   margin: $card-content-margin;
-  flex: 1;
-  height: 120px;
-  overflow: visible;
-
+  flex:1;
+  height: 200px;
+  overflow:visible;
+  display:flex;
+  flex-direction:row;
   &:first-child {
-    margin-left: 0;
+    svg {
+      visibility:hidden;
+    }
+    .circularChartValues {
+      font-size:4.5em;
+    }
   }
-
-  &:last-child {
-    margin-right: 0;
+  > div {
+    position:relative;
   }
 
   [class*=circularChartWrapper] {
@@ -114,7 +116,7 @@
   }
 
   svg {
-    height: 120px !important;
+    height:200px !important;
   }
 }
 
@@ -124,12 +126,12 @@
   left: 50%;
   transform: translate(-50%,-50%);
   font-weight: $font-weight-bold;
+  font-size:2.4em;
 }
 
 .circularChartLabels {
-  position: relative;
-  bottom: 0.8em;
-  white-space: nowrap;
-  width: 100%;
-  text-align: center;
+  position:relative;
+  display: flex;
+  align-items: center;
+  justify-content: left;
 }

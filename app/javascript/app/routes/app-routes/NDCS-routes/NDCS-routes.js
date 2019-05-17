@@ -7,7 +7,7 @@ export default [
   },
   {
     path: '/ndcs-enhancements',
-    label: '#StepUpAmbition Tracker',
+    label: '2020 Ambition Tracker',
     activeId
   },
   {
