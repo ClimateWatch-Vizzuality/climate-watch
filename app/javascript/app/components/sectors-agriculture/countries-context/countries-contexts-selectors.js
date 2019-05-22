@@ -5,10 +5,26 @@ import { precentageTwoPlacesRound } from 'utils/utils';
 
 const getCountriesContextsData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.data;
+
+const getCountriesContextsMetaData = ({ agricultureCountriesContexts }) =>
+  agricultureCountriesContexts && agricultureCountriesContexts.meta;
+
 const getWBCountriesData = ({ wbCountryData }) =>
   wbCountryData && wbCountryData.data;
 const getLocationsData = ({ countries }) => countries && countries.data;
 const getSearch = ({ search }) => search || null;
+
+const getIndicatorsLabels = createSelector(
+  [getCountriesContextsMetaData],
+  contextsMetaData => {
+    if (!contextsMetaData) return null;
+    const myLabels = contextsMetaData.reduce((arr, item) => {
+      arr[item.short_name] = item.indicator;
+      return arr;
+    }, {});
+    return { ...myLabels };
+  }
+);
 
 const legendHtmlDot = (text, color, value, unit) =>
   `<p><span style="background-color: ${color}; width: 10px; height: 10px; display: inline-block; border-radius: 10px; margin-right: 10px;" ></span>${text}</p><p style="color: ${color};">${value ||
@@ -92,10 +108,11 @@ const getCardsData = createSelector(
     getSelectedCountry,
     getSelectedYear,
     getCountries,
-    getYears
+    getYears,
+    getIndicatorsLabels
   ],
-  (contextsData, wbData, country, year, countries, years) => {
-    if (isEmpty(contextsData) || isEmpty(wbData)) return null;
+  (contextsData, wbData, country, year, countries, years, indicatorsLabels) => {
+    if (isEmpty(contextsData) || isEmpty(indicatorsLabels) || isEmpty(wbData)) { return null; }
     const c = country || countries[0];
     const y = year || years[0];
     if (!y) return null;
@@ -106,12 +123,11 @@ const getCardsData = createSelector(
     const wbCountryData =
       wbData[countryCode] &&
       (wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {});
-
     const socioeconomic = {
       population: [
         {
           value: yearData.employment_agri_female,
-          label: 'Percent of Women Employed in Agriculture',
+          label: indicatorsLabels.employment_agri_female,
           valueLabel: `${precentageTwoPlacesRound(
             yearData.employment_agri_female
           )}%`,
@@ -119,7 +135,7 @@ const getCardsData = createSelector(
         },
         {
           value: yearData.employment_agri_male,
-          label: 'Percent of Men Employed in Agriculture',
+          label: indicatorsLabels.employment_agri_male,
           valueLabel: `${precentageTwoPlacesRound(
             yearData.employment_agri_male
           )}%`,
@@ -197,7 +213,10 @@ const getCardsData = createSelector(
             label: 'Agricultural activities',
             slug: 'agricultureActivities'
           },
-          { label: 'Non-agricultural activities', slug: 'nonAgricultureActivities' }
+          {
+            label: 'Non-agricultural activities',
+            slug: 'nonAgricultureActivities'
+          }
         ],
         y.label,
         'percentage',
@@ -233,8 +252,11 @@ const getCardsData = createSelector(
     const fertilizer = {
       chartConfig: getChartConfig(
         [
-          { label: 'Fertilizer use', slug: 'fertilizerUse' },
-          { label: 'Pesticides use', slug: 'pesticidesUse' }
+          { label: indicatorsLabels.total_fertilizers, slug: 'fertilizerUse' },
+          {
+            label: indicatorsLabels.total_pesticides_use,
+            slug: 'pesticidesUse'
+          }
         ],
         y.label,
         'tonnes',
