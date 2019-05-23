@@ -19,6 +19,7 @@ import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
 import lseImage from 'assets/partners/lse-logo.png';
 import unepImage from 'assets/partners/partners-UNEP.png';
+import australianImage from 'assets/partners/australian_government.png';
 
 import Component from './about-partners-component';
 
@@ -211,11 +212,18 @@ const additionalData = {
   ]
 };
 
-const foundingBy = {
-  id: 'founding-by',
+const fundingBy = {
+  id: 'funding-by',
   title: 'Generous funding for this initiative is provided by',
   type: 'col4',
   partners: [
+    {
+      link: 'https://dfat.gov.au/pages/default.aspx',
+      img: {
+        alt: 'Australian Government',
+        src: australianImage
+      }
+    },
     {
       link:
         'https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy',
@@ -267,7 +275,7 @@ const foundingBy = {
 };
 
 const withSections = withProps(() => ({
-  sections: [partnershipWith, techPartnership, additionalData, foundingBy]
+  sections: [partnershipWith, techPartnership, additionalData, fundingBy]
 }));
 
 export default withSections(Component);
