@@ -58,15 +58,15 @@ class ImportAgricultureProfile
     meats = []
     locations = {}
     import_each_with_logging(content, filepath) do |row|
-      location_id = if !locations[row[:area]]
+      location_id = if !locations[row[:country]]
                       location_id = Location.find_by(iso_code3: row[:country]).id
-                      locations[row[:area]] = location_id
+                      locations[row[:country]] = location_id
                       location_id
                     else
-                      locations[row[:area]]
+                      locations[row[:country]]
                     end
       indicator = row[:short_names]
-      values = row.to_h.except(:area, :short_names)
+      values = row.to_h.except(:country, :short_names)
       values.each do |value|
         next if value.second.blank?
         meat =
