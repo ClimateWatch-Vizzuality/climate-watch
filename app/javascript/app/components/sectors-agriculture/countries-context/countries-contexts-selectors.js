@@ -18,17 +18,18 @@ const getIndicatorsLabels = createSelector(
   [getCountriesContextsMetaData],
   contextsMetaData => {
     if (!contextsMetaData) return null;
-    const myLabels = contextsMetaData.reduce((arr, item) => {
-      arr[item.short_name] = item.indicator;
-      return arr;
+    const myLabels = contextsMetaData.reduce((obj, item) => {
+      obj[item.short_name] = item.indicator;
+      return obj;
     }, {});
     return { ...myLabels };
   }
 );
 
 const legendHtmlDot = (text, color, value, unit) =>
-  `<p><span style="background-color: ${color}; width: 10px; height: 10px; display: inline-block; border-radius: 10px; margin-right: 10px;" ></span>${text}</p><p style="color: ${color};">${value ||
-    '---'} ${unit}<p/>`;
+  `<p><span style="background-color: ${color}; width: 10px; height: 10px;
+  display: inline-block; border-radius: 10px; margin-right: 10px;" >
+  </span>${text}</p><p style="color: ${color};">${value || '---'} ${unit}<p/>`;
 
 const getChartConfig = (labels, year, unit, colors, suffix) => ({
   outerRadius: 55,
@@ -112,7 +113,9 @@ const getCardsData = createSelector(
     getIndicatorsLabels
   ],
   (contextsData, wbData, country, year, countries, years, indicatorsLabels) => {
-    if (isEmpty(contextsData) || isEmpty(indicatorsLabels) || isEmpty(wbData)) { return null; }
+    if (isEmpty(contextsData) || isEmpty(indicatorsLabels) || isEmpty(wbData)) {
+      return null;
+    }
     const c = country || countries[0];
     const y = year || years[0];
     if (!y) return null;
@@ -144,10 +147,11 @@ const getCardsData = createSelector(
       ],
       countryName: c.label,
       title: 'Socio-economic indicators',
-      text: `<p> Agriculture is a source of livelihood for more than 2 billion people around the world. In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
-        yearData.employment_agri_total
-      ) ||
-        '---'}%</span> of <span>${c.label}'s</span> population was employed in the agriculture sector.`,
+      text: `<p> Agriculture is a source of livelihood for more than 2 billion
+        people around the world. In <span>${y.value}</span>,
+        <span>${precentageTwoPlacesRound(yearData.employment_agri_total) ||
+          '---'}%</span> of <span>${c.label}'s</span> population was employed in
+      the agriculture sector.`,
       noDataMessage: `No population data for ${c.label} on ${y.value}`
     };
 
@@ -170,7 +174,7 @@ const getCardsData = createSelector(
         },
         {
           name: 'totalGDP',
-          value: wbCountryData && wbCountryData.gdp,
+          value: yearData.value_added_agr && wbCountryData && wbCountryData.gdp,
           fill: '#CACCD0'
         }
       ],
