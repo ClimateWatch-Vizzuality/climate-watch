@@ -43,10 +43,9 @@ class ImportAgricultureProfile
       values = row.to_h.except(:area, :short_names)
       values.each do |value|
         next if value.second.blank?
-        area =
-          AgricultureProfile::Area.find_or_initialize_by(
-            location_id: location_id,
-            year: value.first.to_s.to_i)
+        year = value.first.to_s.to_i
+        area = areas.select{|m| m.location_id == location_id && m.year == year }.first ||
+          AgricultureProfile::Area.new(location_id: location_id, year: year)
         area.send(:"#{indicator.downcase}=", value.second)
         areas << area
       end
@@ -69,10 +68,10 @@ class ImportAgricultureProfile
       values = row.to_h.except(:country, :short_names)
       values.each do |value|
         next if value.second.blank?
-        meat =
-          AgricultureProfile::MeatConsumption.find_or_initialize_by(
-            location_id: location_id,
-            year: value.first.to_s.to_i)
+        year = value.first.to_s.to_i
+        meat = meats.select{|m| m.location_id == location_id && m.year == year }.first ||
+          AgricultureProfile::MeatConsumption.new(location_id: location_id,
+            year: year)
         meat.send(:"#{indicator.downcase}=", value.second)
         meats << meat
       end
@@ -96,16 +95,21 @@ class ImportAgricultureProfile
       values = row.to_h.except(:area, :short_names)
       values.each do |value|
         next if value.second.blank?
+        year = value.first.to_s.to_i
         if indicator.starts_with?('production')
-          meat_production = AgricultureProfile::MeatProduction.find_or_initialize_by(
-            location_id: location_id,
-            year: value.first.to_s.to_i)
+          meat_production = meat_productions.select do |mp|
+            mp.location_id == location_id && mp.year == year
+          end.first ||
+            AgricultureProfile::MeatProduction.new(location_id: location_id,
+                                                   year: year)
           meat_production.send(:"#{indicator.downcase}=", value.second)
           meat_productions << meat_production
         else
-          meat_trade = AgricultureProfile::MeatTrade.find_or_initialize_by(
-            location_id: location_id,
-            year: value.first.to_s.to_i)
+          meat_trade = meat_trades.select do |mt|
+            mt.location_id == location_id && mt.year == year
+          end.first ||
+          AgricultureProfile::MeatTrade.new(location_id: location_id,
+                                            year: year)
           meat_trade.send(:"#{indicator.downcase}=", value.second)
           meat_trades << meat_trade
         end
