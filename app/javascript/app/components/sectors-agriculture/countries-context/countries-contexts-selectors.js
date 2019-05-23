@@ -26,10 +26,12 @@ const getIndicatorsLabels = createSelector(
   }
 );
 
-const legendHtmlDot = (text, color, value, unit) =>
-  `<p><span style="background-color: ${color}; width: 10px; height: 10px;
+const legendHtmlDot = (text, color, value, unit) => {
+  const returnedValue = value ? `${value} ${unit}` : 'No data';
+  return `<p><span style="background-color: ${color}; width: 10px; height: 10px;
   display: inline-block; border-radius: 10px; margin-right: 10px;" >
-  </span>${text}</p><p style="color: ${color};">${value || '---'} ${unit}<p/>`;
+  </span>${text}</p><p style="color: ${color};">${returnedValue}<p/>`;
+};
 
 const getChartConfig = (labels, year, unit, colors, suffix) => ({
   outerRadius: 55,
@@ -174,7 +176,7 @@ const getCardsData = createSelector(
         },
         {
           name: 'totalGDP',
-          value: yearData.value_added_agr && wbCountryData && wbCountryData.gdp,
+          value: wbCountryData && wbCountryData.gdp,
           fill: '#CACCD0'
         }
       ],
@@ -187,11 +189,13 @@ const getCardsData = createSelector(
             legendHtmlDot(
               'Agriculture production',
               '#0677B3',
-              format('.2s')(
-                wbCountryData.gdp
-                  ? wbCountryData.gdp * yearData.value_added_agr / 100
-                  : yearData.value_added_agr
-              ),
+              yearData.value_added_agr
+                ? format('.2s')(
+                  wbCountryData.gdp
+                    ? wbCountryData.gdp * yearData.value_added_agr / 100
+                    : yearData.value_added_agr
+                )
+                : undefined,
               '$USD'
             )
         },
@@ -239,7 +243,9 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Agricultural activities',
             '#0677B3',
-            format('.2')(yearData.water_withdrawal),
+            yearData.water_withdrawal
+              ? format('.2')(yearData.water_withdrawal)
+              : undefined,
             '%'
           )
         }
@@ -275,7 +281,9 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Fertilizer use',
             '#0677B3',
-            format('.2s')(yearData.total_fertilizers),
+            yearData.total_fertilizers
+              ? format('.2s')(yearData.total_fertilizers)
+              : undefined,
             'tonnes'
           )
         },
@@ -283,7 +291,9 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Pesticides use',
             '#1ECDB0',
-            format('.2s')(yearData.total_pesticides_use),
+            yearData.total_pesticides_use
+              ? format('.2s')(yearData.total_pesticides_use)
+              : undefined,
             'tonnes of active ingredients'
           )
         }
