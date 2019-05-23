@@ -43,8 +43,9 @@ class CountriesActions extends PureComponent {
                 While emissions are rising, countries are also stepping up their
                 commitments to reduce emissions. As part of the Paris Agreement,{' '}
                 {m_agriculture} countries proposed agricultural mitigation
-                actions and {a_agriculture} countries proposed agricultural
-                adaptation actions.
+                measures (i.e.: targets, policies, actions and plans) and{' '}
+                {a_agriculture} countries proposed agricultural adaptation
+                measures (i.e.: targets, policies, actions and plans).
               </p>
               <p>
                 Click on a country to see what agriculture actions have been
