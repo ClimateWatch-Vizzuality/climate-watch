@@ -254,9 +254,20 @@ const getChartData = createSelector(
       const yItems = {};
 
       const dataID = isTradeIndicator
-        ? tradeMeta.filter(filterBreakByFn).find(o => o.subcategory === x) &&
-          tradeMeta.filter(filterBreakByFn).find(o => o.subcategory === x)
-            .short_name
+        ? tradeMeta
+          .filter(filterBreakByFn)
+          .find(
+            o =>
+              o.subcategory === x &&
+                o.category === selectedFilters[CATEGORY_KEY].value
+          ) &&
+          tradeMeta
+            .filter(filterBreakByFn)
+            .find(
+              o =>
+                o.subcategory === x &&
+                o.category === selectedFilters[CATEGORY_KEY].value
+            ).short_name
         : productionConsumptionMeta
           .filter(filterBreakByFn)
           .find(o => o.category === x) &&
