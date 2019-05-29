@@ -32,29 +32,36 @@ const getTooltip = (country, tooltipTxt) => (
 );
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
-  <ButtonGroup
-    className={styles.buttonGroup}
-    buttonsConfig={[
-      {
-        type: 'info',
-        onClick: clickHandler
-      },
-      {
-        type: 'share',
-        shareUrl: '/embed/ndcs-enhancements',
-        analyticsGraphName: 'Ndcs',
-        positionRight: true
-      },
-      {
-        type: 'download',
-        section: 'ndcs-enhancements',
-        link: downloadLink
-      },
-      {
-        type: 'addToUser'
-      }
-    ]}
-  />
+  <div className={styles.containerControls}>
+    <div>
+      <p><em>Track how many countries have announced or submitted second NDCs and click on a country to get details.</em></p>
+    </div>
+    <div>
+      <ButtonGroup
+        className={styles.buttonGroup}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: clickHandler
+          },
+          {
+            type: 'share',
+            shareUrl: '/embed/ndcs-enhancements',
+            analyticsGraphName: 'Ndcs',
+            positionRight: true
+          },
+          {
+            type: 'download',
+            section: 'ndcs-enhancements',
+            link: downloadLink
+          },
+          {
+            type: 'addToUser'
+          }
+        ]}
+      />
+    </div>
+  </div>
 );
 
 const renderSearch = (searchHandler, query) => (
@@ -72,23 +79,23 @@ const renderCircular = datum => (
   <div className={styles.circularChartContainer}>
     <div>
       <CircularChart
-        index={.1}
-        value={Math.round((datum.value/datum.max*100) * 10) / 10}
+        index={0.1}
+        value={Math.round(datum.value / datum.max * 100 * 10) / 10}
         color={datum.opts.color}
       />
       <div className={styles.circularChartValues}>
-        <div 
+        <div
           style={{
             color: datum.opts.color
           }}
-          >
-          {datum.opts.prefix}{datum.value}{datum.opts.suffix}
+        >
+          {datum.opts.prefix}
+          {datum.value}
+          {datum.opts.suffix}
         </div>
       </div>
     </div>
-    <div className={styles.circularChartLabels}>
-      {datum.opts.label}
-    </div>
+    <div className={styles.circularChartLabels}>{datum.opts.label}</div>
   </div>
 );
 
@@ -116,19 +123,15 @@ const NDCSEnhancementsMap = ({
           <div className={styles.filtersLayout}>
             {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
           </div>
-          
-          <div className={styles.containerUpper}>
 
+          <div className={styles.containerUpper}>
             <div className={styles.containerCharts}>
-              {(!loading && summaryData) && (
-                    <Card theme={{
-                      card: styles.chartsCard,
-                      contentContainer: styles.chartsCardContentContainer,
-                      data: styles.chartsCardData
-                    }}>
-                      {renderCircular(summaryData.planned.countries)}
-                      {renderCircular(summaryData.planned.emissions)}
-                    </Card>
+              {!loading &&
+              summaryData && (
+                <div>
+                  {renderCircular(summaryData.planned.countries)}
+                  {renderCircular(summaryData.planned.emissions)}
+                </div>
               )}
             </div>
             <div className={styles.containerMap}>
