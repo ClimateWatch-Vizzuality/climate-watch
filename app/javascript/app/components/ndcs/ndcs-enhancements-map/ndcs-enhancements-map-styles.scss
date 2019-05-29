@@ -6,26 +6,18 @@
   margin-bottom: 40px;
 }
 
-.filtersLayout {
-  @include columns(6);
-
-  margin-bottom: 40px;
-
-  @media #{$tablet-landscape} {
-    @include columns(3);
-  }
-}
-
 .column {
   @include columns();
 }
 
 .buttonGroup {
-  @media #{$tablet-landscape} {
-    @include column-offset(9, $gutters: true);
+  width:100%;
+}
 
-    margin-top: 20px;
-  }
+.containerControls {
+  @include columns((8,4));
+  margin-bottom:40px;
+  margin-top: 20px;
 }
 
 .searchBox {
@@ -68,26 +60,20 @@
   position:relative;
 }
 
+.containerMap {
+  padding-left:calc(#{$gutter-padding} / 2);
+}
+
 .containerUpper {
   @include columns((4,8));
 }
+
 .containerCharts {
-
-}
-.containerMap {
-
-}
-
-.chartsCard {
-  height:100%;
-}
-
-.chartsCardContentContainer {
-  display:none;
-}
-
-.chartsCardData {
-  background:#fff;
+  box-shadow:20px 0 20px -20px $chart-fill-gray;
+  color:$dark-gray;
+  &,> div {
+    height:100%;
+  }
 }
 
 .circularChartContainer {
@@ -98,14 +84,18 @@
   overflow:visible;
   display:flex;
   flex-direction:row;
+  padding-right:calc(#{$gutter-padding} / 2);
+
   &:first-child {
     svg {
       visibility:hidden;
     }
+
     .circularChartValues {
       font-size:4.5em;
     }
   }
+
   > div {
     position:relative;
   }

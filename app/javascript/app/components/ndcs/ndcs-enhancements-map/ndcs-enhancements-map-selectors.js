@@ -122,10 +122,14 @@ export const mergeIndicators = createSelector(
         index: len
       };
     });
-    
-    const parseLocationValues = (locationValues => {
-      if ((locationValues.ndce_2020_submitted && locationValues.ndce_2020_submitted != "No")
-        || (locationValues.submission && locationValues.submission == "Second NDC Submitted")) {
+
+    const parseLocationValues = locationValues => {
+      if (
+        (locationValues.ndce_2020_submitted &&
+          locationValues.ndce_2020_submitted != 'No') ||
+        (locationValues.submission &&
+          locationValues.submission == 'Second NDC Submitted')
+      ) {
         return indicatorRef.ndce_2020_submitted;
       } else if (
         locationValues.ndce_plan_2020 &&
@@ -210,55 +214,62 @@ const countryStyles = {
 };
 
 export const MAP_COLORS = [
-  ['rgb(80, 129, 166)', 'rgb(144, 177, 203)', 'rgb(254, 224, 141)', 'rgb(246, 206, 142)','rgb(246, 206, 142)'],
-  ['rgb(80, 129, 166)', 'rgb(144, 177, 203)', 'rgb(254, 224, 141)', 'rgb(246, 206, 142)','rgb(246, 206, 142)'],
-  ['rgb(80, 129, 166)', 'rgb(144, 177, 203)', 'rgb(254, 224, 141)', 'rgb(246, 206, 142)','rgb(246, 206, 142)'],
-  ['rgb(80, 129, 166)', 'rgb(144, 177, 203)', 'rgb(254, 224, 141)', 'rgb(246, 206, 142)','rgb(246, 206, 142)'],
-  ['rgb(80, 129, 166)', 'rgb(144, 177, 203)', 'rgb(254, 224, 141)', 'rgb(246, 206, 142)','rgb(246, 206, 142)'],
-  ['rgb(80, 129, 166)', 'rgb(144, 177, 203)', 'rgb(254, 224, 141)', 'rgb(246, 206, 142)','rgb(246, 206, 142)'],
-  ['rgb(80, 129, 166)', 'rgb(144, 177, 203)', 'rgb(254, 224, 141)', 'rgb(246, 206, 142)','rgb(246, 206, 142)']
+  [
+    'rgb(80, 129, 166)',
+    'rgb(144, 177, 203)',
+    'rgb(254, 224, 141)',
+    'rgb(246, 206, 142)',
+    'rgb(246, 206, 142)'
+  ],
+  [
+    'rgb(80, 129, 166)',
+    'rgb(144, 177, 203)',
+    'rgb(254, 224, 141)',
+    'rgb(246, 206, 142)',
+    'rgb(246, 206, 142)'
+  ],
+  [
+    'rgb(80, 129, 166)',
+    'rgb(144, 177, 203)',
+    'rgb(254, 224, 141)',
+    'rgb(246, 206, 142)',
+    'rgb(246, 206, 142)'
+  ],
+  [
+    'rgb(80, 129, 166)',
+    'rgb(144, 177, 203)',
+    'rgb(254, 224, 141)',
+    'rgb(246, 206, 142)',
+    'rgb(246, 206, 142)'
+  ],
+  [
+    'rgb(80, 129, 166)',
+    'rgb(144, 177, 203)',
+    'rgb(254, 224, 141)',
+    'rgb(246, 206, 142)',
+    'rgb(246, 206, 142)'
+  ],
+  [
+    'rgb(80, 129, 166)',
+    'rgb(144, 177, 203)',
+    'rgb(254, 224, 141)',
+    'rgb(246, 206, 142)',
+    'rgb(246, 206, 142)'
+  ],
+  [
+    'rgb(80, 129, 166)',
+    'rgb(144, 177, 203)',
+    'rgb(254, 224, 141)',
+    'rgb(246, 206, 142)',
+    'rgb(246, 206, 142)'
+  ]
 ];
 
-export const getPathsWithStyles = createSelector(
-  mergeIndicators,
-  indicator => {
-    const paths = [];
-    worldPaths.forEach(path => {
-      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
-        const { locations, legendBuckets } = indicator;
-
-        if (!locations) {
-          paths.push({
-            ...path,
-            countryStyles
-          });
-          return null;
-        }
-
-        const iso = path.properties && path.properties.id;
-        const isEuropeanCountry = europeanCountries.includes(iso);
-        const countryData = isEuropeanCountry
-          ? locations[europeSlug]
-          : locations[iso];
-
-        let style = countryStyles;
-        if (countryData && countryData.label_id) {
-          const legendData = legendBuckets[countryData.label_id];
-          const color = getColorByIndex(legendBuckets, legendData.index, MAP_COLORS);
-          style = {
-            ...countryStyles,
-            default: {
-              ...countryStyles.default,
-              fill: color,
-              fillOpacity: 1
-            },
-            hover: {
-              ...countryStyles.hover,
-              fill: color,
-              fillOpacity: 1
-            }
-          };
-        }
+export const getPathsWithStyles = createSelector(mergeIndicators, indicator => {
+  const paths = [];
+  worldPaths.forEach(path => {
+    if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+      const { locations, legendBuckets } = indicator;
 
       if (!locations) {
         paths.push({
@@ -277,7 +288,11 @@ export const getPathsWithStyles = createSelector(
       let style = countryStyles;
       if (countryData && countryData.label_id) {
         const legendData = legendBuckets[countryData.label_id];
-        const color = getColorByIndex(legendBuckets, legendData.index);
+        const color = getColorByIndex(
+          legendBuckets,
+          legendData.index,
+          MAP_COLORS
+        );
         style = {
           ...countryStyles,
           default: {
@@ -321,17 +336,26 @@ export const summarizeIndicators = createSelector(
           value: 0,
           max: Object.keys(mergedIndicator.locations).length,
           opts: {
-            color:getColorByIndex(mergedIndicator.legendBuckets, type == "submitted" ? "1" : "2", MAP_COLORS),
-            label:"countries that have stated their intent to release a second NDC"
+            color: getColorByIndex(
+              mergedIndicator.legendBuckets,
+              type == 'submitted' ? '1' : '2',
+              MAP_COLORS
+            ),
+            label:
+              'countries that have stated their intent to release a second NDC'
           }
         },
         emissions: {
           value: 0,
           max: 100,
           opts: {
-            color:getColorByIndex(mergedIndicator.legendBuckets, type == "submitted" ? "1" : "2", MAP_COLORS),
-            suffix:"%",
-            label:"% of global emissions represented"
+            color: getColorByIndex(
+              mergedIndicator.legendBuckets,
+              type == 'submitted' ? '1' : '2',
+              MAP_COLORS
+            ),
+            suffix: '%',
+            label: '% of global emissions represented'
           }
         }
       };
@@ -383,10 +407,10 @@ export const tableGetSelectedData = createSelector(
         iso
       };
       indicators.forEach(ind => {
-        if (ind.categoryIds.indexOf(11) > -1 && ind.label !== "Date") {
+        if (ind.categoryIds.indexOf(11) > -1 && ind.label !== 'Date') {
           row[ind.label] = ind.locations[iso].value;
         }
-      })
+      });
       return row;
     });
   }

@@ -26,9 +26,10 @@ const NDCEnhancements = ({ anchorLinks, query, route }) => (
       <div className={layout.content}>
         <div className="grid-column-item">
           <div className={styles.headerLayout}>
-            <Intro 
+            <Intro
               title="2020 Ambition Tracker"
-              description={`<p>The Paris Agreement was widely hailed for drawing all nations together to tackle climate change, based on bottom-up contributions that will be reviewed and strengthened over time. This dashboard provides and overview where emissions stand, what countries and sector are causing them and what countries have proposed to address climate change.</p><p><em>Track how many countries have announced or submitted second NDCs and click on a country to get details.</em></p>`} />
+              description={`<p>The Paris Agreement was widely hailed for drawing all nations together to tackle climate change, based on bottom-up contributions that will be reviewed and strengthened over time. This dashboard provides and overview where emissions stand, what countries and sector are causing them and what countries have proposed to address climate change.</p>`}
+            />
             <AutocompleteSearch />
           </div>
         </div>
