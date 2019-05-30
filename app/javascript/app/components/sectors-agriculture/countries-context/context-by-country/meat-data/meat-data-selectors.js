@@ -105,13 +105,18 @@ const getBreakByOptions = createSelector(() => [
   { label: 'Per capita', value: PER_CAPITA_FILTER }
 ]);
 
-const getDataOptions = createSelector([getSelectedCountry], selectedCountry => {
-  if (isEmpty(selectedCountry)) return null;
-  return [
-    { label: selectedCountry.label, value: selectedCountry.value },
-    { label: 'Other countries', value: 'others' }
-  ];
-});
+const getDataOptions = createSelector(
+  [getSelectedCountry, getSearch],
+  (selectedCountry, query) => {
+    if (isEmpty(selectedCountry)) return null;
+    return query && query.breakBy === PER_CAPITA_FILTER
+      ? [{ label: selectedCountry.label, value: selectedCountry.value }]
+      : [
+        { label: selectedCountry.label, value: selectedCountry.value },
+        { label: 'Other countries', value: 'others' }
+      ];
+  }
+);
 
 const getDefaults = createSelector(
   [getCategoriesOptions, getBreakByOptions, getDataOptions],
