@@ -34,13 +34,14 @@ class ImportAgricultureContexts
     import_each_with_logging(content, filepath) do |row|
       location_id = Location.find_by(iso_code3: row[:area]).id
       indicator = row[:short_names]
-      values = row.to_h.except(:area, :short_names)
+      values = row.to_h.except(:area, :short_names, :source)
       values.each do |value|
         next if value.second.blank?
+        year = value.first.to_s.to_i
         context =
           AgricultureProfile::CountryContext.find_or_create_by(
             location_id: location_id,
-            year: value.first.to_s.to_i)
+            year: year)
         context.send(:"#{indicator.downcase}=", value.second)
         context.save!
       end
