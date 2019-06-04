@@ -33,6 +33,8 @@ const legendHtmlDot = (text, color, value, unit) => {
   </span>${text}</p><p style="color: ${color};">${returnedValue}<p/>`;
 };
 
+const formatValue = (value, unit) => value ? `${format('.2s')(value)} ${unit}` : 'No data';
+
 const getChartConfig = (labels, year, unit, colors, suffix) => ({
   outerRadius: 55,
   innerRadius: 25,
@@ -260,43 +262,9 @@ const getCardsData = createSelector(
     };
 
     const fertilizer = {
-      chartConfig: getChartConfig(
-        [
-          { label: indicatorsLabels.total_fertilizers, slug: 'fertilizerUse' },
-          {
-            label: indicatorsLabels.total_pesticides_use,
-            slug: 'pesticidesUse'
-          }
-        ],
-        y.label,
-        'tonnes',
-        ['#0677B3', '#1ECDB0']
-      ),
-      chartData: [
-        { name: 'fertilizerUse', value: yearData.total_fertilizers },
-        { name: 'pesticidesUse', value: yearData.total_pesticides_use }
-      ],
-      legend: [
-        {
-          text: legendHtmlDot(
-            'Fertilizer use',
-            '#0677B3',
-            yearData.total_fertilizers
-              ? format('.2s')(yearData.total_fertilizers)
-              : undefined,
-            'tonnes'
-          )
-        },
-        {
-          text: legendHtmlDot(
-            'Pesticides use',
-            '#1ECDB0',
-            yearData.total_pesticides_use
-              ? format('.2s')(yearData.total_pesticides_use)
-              : undefined,
-            'tonnes of active ingredients'
-          )
-        }
+      bulletList: [
+        `Fertilizer use: ${formatValue(yearData.total_fertilizers, 'tonnes')}`,
+        `Pesticides use: ${formatValue(yearData.total_pesticides_use, 'tonnes of active ingredients')}`
       ],
       title: 'Fertilizer and pesticide use',
       text:
