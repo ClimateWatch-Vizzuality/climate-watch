@@ -16,6 +16,7 @@ import {
   getMetricRatio
 } from 'utils/graphs';
 import {
+  AGRICULTURE_TOTAL_EMISSIONS,
   CHART_COLORS,
   CHART_COLORS_EXTENDED,
   DEFAULT_AXES_CONFIG,
@@ -23,33 +24,11 @@ import {
 } from 'data/constants';
 import { getEmissionCountrySelected } from './location-selectors';
 
-const API_SCALE = 0.001; // converting from Gigagrams to Megatonnes ( 1 Gg = 0.001 Mt)
-const TOTAL_SUBCATEGORY = {
-  name: 'Total emissions',
-  category_id: 'total',
-  category_name: 'Agriculture Emissions: Total',
-  short_name: 'total_emissions_agr_18'
-};
-
 const getSourceSelection = state =>
   (state.location && state.location.search) || null;
 
-const getAgricultureEmissionsData = state => {
-  if (state.agricultureEmissions) {
-    return state.agricultureEmissions.data.map(e => {
-      // fills data with the missing total emissions data
-      if (e.emission_subcategory.short_name === TOTAL_SUBCATEGORY.short_name) {
-        const emission_subcategory = {
-          ...e.emission_subcategory,
-          ...TOTAL_SUBCATEGORY
-        };
-        return { ...e, emission_subcategory };
-      }
-      return e;
-    });
-  }
-  return null;
-};
+const getAgricultureEmissionsData = state =>
+  (state.agricultureEmissions && state.agricultureEmissions.data) || null;
 
 const getWbCountryData = state =>
   (state.wbCountryData && state.wbCountryData.data) || null;
@@ -118,11 +97,11 @@ export const getEmissionTypes = createSelector(
     );
     const uniqEmissionTypes = uniqBy(emissionTypes, 'value');
     const totalOption = uniqEmissionTypes.find(
-      ({ label }) => label === TOTAL_SUBCATEGORY.category_name
+      ({ label }) => label === AGRICULTURE_TOTAL_EMISSIONS.category_name
     );
     const sortedEmissionTypes = sortBy(
       uniqEmissionTypes.filter(
-        ({ label }) => label !== TOTAL_SUBCATEGORY.category_name
+        ({ label }) => label !== AGRICULTURE_TOTAL_EMISSIONS.category_name
       ),
       ['label']
     );
@@ -156,6 +135,15 @@ const filterByEmissionType = createSelector(
       ({ emission_subcategory: { category_id } }) =>
         `${category_id}` === emissionType.value
     );
+  }
+);
+
+const getEmissionCategoryUnit = createSelector(
+  [filterByEmissionType],
+  (data) => {
+    if (!data || !data.length) return null;
+
+    return data[0].emission_subcategory.category_unit;
   }
 );
 
@@ -231,7 +219,7 @@ export const getChartData = createSelector(
           x
         );
         yItems[yKey] = yData
-          ? parseFloat(yData) * API_SCALE / calculationRatio
+          ? parseFloat(yData) / calculationRatio
           : undefined;
       });
       return { x, ...yItems };
@@ -250,9 +238,9 @@ export const getChartData = createSelector(
 let colorThemeCache = {};
 
 export const getChartConfig = createSelector(
-  [getChartData, getFiltersSelected, getMetricSelected],
-  (data, yColumns, metricSelected) => {
-    if (!data || !yColumns || !metricSelected) return null;
+  [getChartData, getFiltersSelected, getMetricSelected, getEmissionCategoryUnit],
+  (data, yColumns, metricSelected, apiUnit) => {
+    if (!data || !yColumns || !metricSelected || !apiUnit) return null;
     const chartColors = setChartColors(
       yColumns.length,
       CHART_COLORS,
@@ -261,12 +249,12 @@ export const getChartConfig = createSelector(
     const theme = getThemeConfig(yColumns, chartColors);
     colorThemeCache = { ...theme, ...colorThemeCache };
     const tooltip = getTooltipConfig(yColumns);
-    let unit = 'MtCO2e';
-    if (metricSelected.value === 'population') {
-      unit = 'tC02e per Capita'; // from MtC02 to tC02 ( 1 MtC02 = 1000000 tC02)
+    let unit = apiUnit;
+    if (metricSelected.value === METRIC_OPTIONS.PER_CAPITA.value) {
+      unit = `${unit} per Capita`;
     }
-    if (metricSelected.value === 'gdp') {
-      unit = 'tC02e per million $ GDP'; // from MtC02 to tC02 ( 1 MtC02 = 1000000 tC02)
+    if (metricSelected.value === METRIC_OPTIONS.PER_GDP.value) {
+      unit = `${unit} per million $ GDP`;
     }
     return {
       axes: {

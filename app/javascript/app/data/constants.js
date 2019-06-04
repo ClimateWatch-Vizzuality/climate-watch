@@ -361,6 +361,13 @@ export const WRI_WEBSITE = 'https://www.wri.org/';
 export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';
 export const RW_WEBSITE = 'https://resourcewatch.org/';
 
+export const AGRICULTURE_TOTAL_EMISSIONS = {
+  name: 'Total emissions',
+  category_id: 'total',
+  category_name: 'Agriculture Emissions: Total',
+  short_name: 'total_emissions_agr_18'
+};
+
 export const AGRICULTURE_INDICATORS_NAMES = {
   total_pesticides_use: 'Pesticides consumption',
   total_fertilizers: 'Fertilizers consumption',
