@@ -23,9 +23,10 @@ class HistoricalEmissionsGraph extends PureComponent {
       handleEmissionTypeChange,
       handleMetricTypeChange,
       emissionType,
-      emissionMetric
+      emissionMetric,
+      emissionMetrics
     } = this.props;
-    const metricOptions = Object.values(METRIC_OPTIONS).map(option => option);
+
     const locationGroups = [
       {
         groupId: 'regions',
@@ -62,7 +63,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           key="metric"
           label="Break by metric"
           className={styles.dropdown}
-          options={metricOptions}
+          options={emissionMetrics}
           onValueChange={handleMetricTypeChange}
           value={emissionMetric}
           hideResetButton
@@ -166,7 +167,8 @@ HistoricalEmissionsGraph.propTypes = {
   emissionTypes: PropTypes.array,
   emissionType: PropTypes.object,
   loading: PropTypes.bool,
-  emissionMetric: PropTypes.object
+  emissionMetric: PropTypes.object,
+  emissionMetrics: PropTypes.array
 };
 
 HistoricalEmissionsGraph.defaultProps = {
@@ -183,7 +185,8 @@ HistoricalEmissionsGraph.defaultProps = {
   emissionTypes: [],
   emissionType: null,
   loading: false,
-  emissionMetric: null
+  emissionMetric: null,
+  emissionMetrics: []
 };
 
 export default HistoricalEmissionsGraph;

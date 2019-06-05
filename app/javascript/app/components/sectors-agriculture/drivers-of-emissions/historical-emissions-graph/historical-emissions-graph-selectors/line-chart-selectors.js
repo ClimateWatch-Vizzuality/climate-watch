@@ -33,19 +33,6 @@ const getAgricultureEmissionsData = state =>
 const getWbCountryData = state =>
   (state.wbCountryData && state.wbCountryData.data) || null;
 
-export const getMetricSelected = createSelector(
-  [getSourceSelection],
-  sourceSelection => {
-    if (!sourceSelection) return METRIC_OPTIONS.ABSOLUTE_VALUE;
-    const { emissionMetric } = qs.parse(sourceSelection);
-    const metricOptions = Object.values(METRIC_OPTIONS).map(option => option);
-    const selectedEmissionMetric = metricOptions.find(
-      ({ value }) => value === emissionMetric
-    );
-    return selectedEmissionMetric || METRIC_OPTIONS.ABSOLUTE_VALUE;
-  }
-);
-
 const getCountryMetricData = createSelector(
   [getWbCountryData, getEmissionCountrySelected],
   (data, country) => {
@@ -124,6 +111,34 @@ export const getEmissionTypeSelected = createSelector(
       ({ value }) => value === emissionType
     );
     return selectedEmissionType || emissionTypes[0];
+  }
+);
+
+export const getMetricOptions = createSelector(
+  getEmissionTypeSelected,
+  emissionType => {
+    const allMetrics = Object.values(METRIC_OPTIONS);
+
+    if (!emissionType) return allMetrics;
+
+    if (emissionType && emissionType.label === 'Agriculture emissions intensity') {
+      return [METRIC_OPTIONS.ABSOLUTE_VALUE];
+    }
+
+    return allMetrics;
+  }
+);
+
+export const getMetricSelected = createSelector(
+  [getSourceSelection, getMetricOptions],
+  (sourceSelection, metricOptions) => {
+    if (!sourceSelection) return METRIC_OPTIONS.ABSOLUTE_VALUE;
+
+    const { emissionMetric } = qs.parse(sourceSelection);
+    const selectedEmissionMetric = metricOptions.find(
+      ({ value }) => value === emissionMetric
+    );
+    return selectedEmissionMetric || METRIC_OPTIONS.ABSOLUTE_VALUE;
   }
 );
 

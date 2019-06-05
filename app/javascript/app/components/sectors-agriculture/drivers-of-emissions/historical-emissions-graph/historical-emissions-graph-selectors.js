@@ -11,7 +11,8 @@ import {
   getFiltersSelected,
   getEmissionTypes,
   getEmissionTypeSelected,
-  getMetricSelected
+  getMetricSelected,
+  getMetricOptions
 } from './historical-emissions-graph-selectors/line-chart-selectors';
 
 const getAgricultureEmissionsLoading = state =>
@@ -39,5 +40,6 @@ export const getAllData = createStructuredSelector({
   exploreEmissionsConfig: getExploreEmissionsButtonConfig,
   emissionTypes: getEmissionTypes,
   emissionType: getEmissionTypeSelected,
-  emissionMetric: getMetricSelected
+  emissionMetric: getMetricSelected,
+  emissionMetrics: getMetricOptions
 });
