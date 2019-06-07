@@ -7,18 +7,18 @@ export const initialState = {
   error: false
 };
 
-const transformData = (data) => (
-  data.map(d => {
-    if (d.emission_subcategory.short_name === AGRICULTURE_TOTAL_EMISSIONS.short_name) {
-      const emission_subcategory = {
-        ...d.emission_subcategory,
-        ...AGRICULTURE_TOTAL_EMISSIONS
-      };
-      return { ...d, emission_subcategory };
-    }
-    return d;
-  })
-);
+const appendMissingTotalEmissionsProps = d => {
+  if (d.emission_subcategory.short_name === AGRICULTURE_TOTAL_EMISSIONS.short_name) {
+    const emission_subcategory = {
+      ...d.emission_subcategory,
+      ...AGRICULTURE_TOTAL_EMISSIONS
+    };
+    return { ...d, emission_subcategory };
+  }
+  return d;
+};
+
+const transformData = data => data.map(appendMissingTotalEmissionsProps);
 
 const setLoading = (loading, state) => ({ ...state, loading });
 const setLoaded = (loaded, state) => ({ ...state, loaded });
@@ -28,6 +28,5 @@ export default {
   fetchAgricultureEmissionsInit: state => setLoading(true, state),
   fetchAgricultureEmissionsReady: (state, { payload: { data } }) =>
     setLoaded(true, setLoading(false, { ...state, data: transformData(data) })),
-  fetchAgricultureEmissionsFail: state =>
-    setLoading(setError(state, true), false)
+  fetchAgricultureEmissionsFail: state => setLoading(setError(state, true), false)
 };
