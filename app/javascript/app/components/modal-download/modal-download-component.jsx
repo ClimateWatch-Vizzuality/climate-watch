@@ -83,7 +83,6 @@ class ModalDownload extends PureComponent {
               label={'Email'}
               value={this.state.email}
               onChange={e => this.handleChange(e, 'email')}
-              optional
             />
             <CheckInput
               className={styles.checkbox}
