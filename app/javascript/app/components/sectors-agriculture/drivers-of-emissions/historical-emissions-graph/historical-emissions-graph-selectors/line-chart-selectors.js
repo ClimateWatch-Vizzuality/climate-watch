@@ -64,11 +64,9 @@ export const getEmissionTypes = createSelector([getAgricultureEmissionsData], da
     value: `${category_id}`
   }));
   const uniqEmissionTypes = uniqBy(emissionTypes, 'value');
-  const totalOption = uniqEmissionTypes.find(
-    ({ label }) => label === AGRICULTURE_TOTAL_EMISSIONS.category_name
-  );
+  const totalOption = uniqEmissionTypes.find(({ label }) => label === AGRICULTURE_TOTAL_EMISSIONS);
   const sortedEmissionTypes = sortBy(
-    uniqEmissionTypes.filter(({ label }) => label !== AGRICULTURE_TOTAL_EMISSIONS.category_name),
+    uniqEmissionTypes.filter(({ label }) => label !== AGRICULTURE_TOTAL_EMISSIONS),
     ['label']
   );
   return [totalOption, ...sortedEmissionTypes];
