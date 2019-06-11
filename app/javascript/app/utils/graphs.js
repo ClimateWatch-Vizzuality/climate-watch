@@ -10,7 +10,7 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import isEmpty from 'lodash/isEmpty';
-import { OTHER_COLOR, METRIC_OPTIONS } from 'data/constants';
+import { OTHER_COLOR } from 'data/constants';
 
 export const parseRegions = regions =>
   regions.map(region => ({
@@ -27,9 +27,7 @@ export const sortLabelByAlpha = array =>
 
 const flatmap = (res, v) => Object.assign(res, v);
 export const extractValues = data => key =>
-  data.map(d =>
-    map(d, (v, k) => ({ [k]: d[k][key] || v })).reduce(flatmap, {})
-  );
+  data.map(d => map(d, (v, k) => ({ [k]: d[k][key] || v })).reduce(flatmap, {}));
 
 export const getColumns = data =>
   Object.keys(data[0]).map(d => ({ label: data[0][d].label, value: d }));
@@ -58,16 +56,10 @@ export const groupDataByScenario = (data, scenarios) =>
 export const sortEmissionsByValue = array =>
   array.sort((a, b) => {
     if (!a.emissions.length || !b.emissions.length) return 0;
-    if (
-      a.emissions[a.emissions.length - 1].value >
-      b.emissions[a.emissions.length - 1].value
-    ) {
+    if (a.emissions[a.emissions.length - 1].value > b.emissions[a.emissions.length - 1].value) {
       return -1;
     }
-    if (
-      a.emissions[a.emissions.length - 1].value <
-      b.emissions[a.emissions.length - 1].value
-    ) {
+    if (a.emissions[a.emissions.length - 1].value < b.emissions[a.emissions.length - 1].value) {
       return 1;
     }
     return 0;
@@ -119,8 +111,7 @@ export const getPieChartThemeConfig = (columns, colors) => {
   const theme = {};
   columns.forEach((column, i) => {
     const index = column.index || i;
-    const correctedIndex =
-      index < colors.length ? index : index - colors.length;
+    const correctedIndex = index < colors.length ? index : index - colors.length;
     theme[column.value] = {
       label: column.label,
       stroke: colors[correctedIndex],
@@ -141,8 +132,7 @@ export const getTooltipConfig = columns => {
 export const setChartColors = (chartElementsLength, palette, extendedPalette) =>
   (chartElementsLength < 11 ? palette : extendedPalette);
 
-export const getColorPalette = (colorRange, quantity) =>
-  chroma.scale(colorRange).colors(quantity);
+export const getColorPalette = (colorRange, quantity) => chroma.scale(colorRange).colors(quantity);
 
 export const darkenColor = color => chroma(color).darken();
 
@@ -159,12 +149,7 @@ export function setXAxisDomain() {
   return ['auto', 'auto'];
 }
 
-export function getCustomTicks(
-  columns,
-  data,
-  tickNumber = 8,
-  decimals = false
-) {
+export function getCustomTicks(columns, data, tickNumber = 8, decimals = false) {
   const totalValues = [];
   const yValues = columns.y.map(c => data.map(d => d[[c.value]]));
   const getSign = value => (value > 0 ? 'positive' : 'negative');
@@ -189,17 +174,3 @@ export function getCustomTicks(
     ticks: getNiceTickValues([minValue, maxValue], tickNumber, decimals)
   };
 }
-
-export const getMetricRatio = (selected, calculationData, x) => {
-  if (!calculationData || !calculationData[x]) return 1;
-  if (selected === METRIC_OPTIONS.PER_GDP.value) {
-    // GDP is in dollars and we want to display it in million dollars
-    // emissions is in MtC02e and we want to display it in tCO2e (1MtC02e = 1000000 tC02e)
-    return calculationData[x].gdp / (1000000 * 1000000);
-  }
-  if (selected === METRIC_OPTIONS.PER_CAPITA.value) {
-    // emissions is in MtC02e and we want to display it in tCO2e (1MtC02e = 1000000 tC02e)
-    return calculationData[x].population / 1000000;
-  }
-  return 1;
-};

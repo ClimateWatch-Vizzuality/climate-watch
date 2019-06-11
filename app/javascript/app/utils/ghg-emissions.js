@@ -1,4 +1,4 @@
-import { DEFAULT_EMISSIONS_SELECTIONS, DATA_SCALE, CALCULATION_OPTIONS } from 'data/constants';
+import { DEFAULT_EMISSIONS_SELECTIONS, CALCULATION_OPTIONS } from 'data/constants';
 
 export const getGhgEmissionDefaults = (source, meta) => {
   const sourceName = source.name || source.label;
@@ -17,7 +17,7 @@ export const calculatedRatio = (selected, calculationData, x) => {
   if (!calculationData || !calculationData[x]) return 1;
   if (selected === CALCULATION_OPTIONS.PER_GDP.value) {
     // GDP is in dollars and we want to display it in million dollars
-    return calculationData[x][0].gdp / DATA_SCALE;
+    return calculationData[x][0].gdp / 1000000;
   }
   if (selected === CALCULATION_OPTIONS.PER_CAPITA.value) {
     return calculationData[x][0].population;

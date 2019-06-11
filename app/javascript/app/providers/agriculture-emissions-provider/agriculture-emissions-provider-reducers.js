@@ -2,6 +2,7 @@ export const initialState = {
   loading: false,
   loaded: false,
   data: [],
+  meta: {},
   error: false
 };
 
@@ -11,8 +12,7 @@ const setError = (state, error) => ({ ...state, error });
 
 export default {
   fetchAgricultureEmissionsInit: state => setLoading(true, state),
-  fetchAgricultureEmissionsReady: (state, { payload: { data } }) =>
-    setLoaded(true, setLoading(false, { ...state, data })),
-  fetchAgricultureEmissionsFail: state =>
-    setLoading(setError(state, true), false)
+  fetchAgricultureEmissionsReady: (state, { payload: { data, meta } }) =>
+    setLoaded(true, setLoading(false, { ...state, data, meta })),
+  fetchAgricultureEmissionsFail: state => setLoading(setError(state, true), false)
 };

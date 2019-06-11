@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ExploreButtonGroup from 'components/sectors-agriculture/drivers-of-emissions/explore-group/explore-group';
-import Chart from 'components/charts/chart';
-import Dropdown from 'components/dropdown';
+import { Chart, Dropdown } from 'cw-components';
 import RegionsProvider from 'providers/regions-provider/regions-provider';
 import CountriesProvider from 'providers/countries-provider/countries-provider';
 import AgricultureEmissionsProvider from 'providers/agriculture-emissions-provider/agriculture-emissions-provider';
 import WbCountryDataProvider from 'providers/wb-country-data-provider';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
-import { METRIC_OPTIONS } from 'data/constants';
 
 import styles from './historical-emissions-graph-styles.scss';
 import CardPieChart from '../card-pie-chart/card-pie-chart';
@@ -23,9 +21,10 @@ class HistoricalEmissionsGraph extends PureComponent {
       handleEmissionTypeChange,
       handleMetricTypeChange,
       emissionType,
-      emissionMetric
+      emissionMetric,
+      emissionMetrics
     } = this.props;
-    const metricOptions = Object.values(METRIC_OPTIONS).map(option => option);
+
     const locationGroups = [
       {
         groupId: 'regions',
@@ -62,7 +61,7 @@ class HistoricalEmissionsGraph extends PureComponent {
           key="metric"
           label="Break by metric"
           className={styles.dropdown}
-          options={metricOptions}
+          options={emissionMetrics}
           onValueChange={handleMetricTypeChange}
           value={emissionMetric}
           hideResetButton
@@ -83,9 +82,9 @@ class HistoricalEmissionsGraph extends PureComponent {
         dataOptions={filters}
         dataSelected={filtersSelected}
         height={430}
-        dot={false}
-        forceFixedFormatDecimals={3}
-        espGraph
+        dots={false}
+        lineType="linear"
+        showUnit
         loading={loading && !data}
       />
     );
@@ -166,7 +165,8 @@ HistoricalEmissionsGraph.propTypes = {
   emissionTypes: PropTypes.array,
   emissionType: PropTypes.object,
   loading: PropTypes.bool,
-  emissionMetric: PropTypes.object
+  emissionMetric: PropTypes.object,
+  emissionMetrics: PropTypes.array
 };
 
 HistoricalEmissionsGraph.defaultProps = {
@@ -183,7 +183,8 @@ HistoricalEmissionsGraph.defaultProps = {
   emissionTypes: [],
   emissionType: null,
   loading: false,
-  emissionMetric: null
+  emissionMetric: null,
+  emissionMetrics: []
 };
 
 export default HistoricalEmissionsGraph;

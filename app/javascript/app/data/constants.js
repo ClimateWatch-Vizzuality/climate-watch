@@ -67,18 +67,7 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
   }
 };
 
-export const TOP_EMITTERS = [
-  'CHN',
-  'USA',
-  'EU28',
-  'IND',
-  'RUS',
-  'JPN',
-  'BRA',
-  'IDN',
-  'CAN',
-  'MEX'
-];
+export const TOP_EMITTERS = ['CHN', 'USA', 'EU28', 'IND', 'RUS', 'JPN', 'BRA', 'IDN', 'CAN', 'MEX'];
 
 export const CHART_COLORS = [
   '#00B4D2',
@@ -183,16 +172,13 @@ export const NEW_CHART_COLORS_EXTENDED = [
   '#CCCDCF'
 ];
 
-export const GREY_CHART_COLORS = [
-  '#68696B',
-  '#818285',
-  '#999B9D',
-  '#ACAEB8',
-  '#C3C4CD',
-  '#E2E4EA'
-];
+export const GREY_CHART_COLORS = ['#68696B', '#818285', '#999B9D', '#ACAEB8', '#C3C4CD', '#E2E4EA'];
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
+
+export const UNITS = {
+  CO2e: 'CO<sub>2</sub>e'
+};
 
 export const DEFAULT_AXES_CONFIG = {
   xBottom: {
@@ -202,7 +188,7 @@ export const DEFAULT_AXES_CONFIG = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'CO<sub>2</sub>e',
+    unit: UNITS.CO2e,
     format: 'number'
   }
 };
@@ -323,18 +309,7 @@ export const USERS_PROFESIONAL_SECTORS = [
 
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
-export const NO_ALL_SELECTED_COLUMNS = [
-  'breakBy',
-  'chartType',
-  'sources',
-  'regions'
-];
-
-export const METRIC_OPTIONS = {
-  ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },
-  PER_CAPITA: { label: 'per Capita', value: 'PER_CAPITA' },
-  PER_GDP: { label: 'per GDP', value: 'PER_GDP' }
-};
+export const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType', 'sources', 'regions'];
 
 export const TOP_EMITTERS_OPTION = {
   iso: 'TOP',
@@ -360,6 +335,8 @@ export const GHG_TABLE_HEADER = {
 export const WRI_WEBSITE = 'https://www.wri.org/';
 export const WRI_CLIMATE_BLOG = 'https://www.wri.org/blog-tags/9654';
 export const RW_WEBSITE = 'https://resourcewatch.org/';
+
+export const AGRICULTURE_TOTAL_EMISSIONS = 'Agriculture Emissions: Total';
 
 export const AGRICULTURE_INDICATORS_NAMES = {
   total_pesticides_use: 'Pesticides consumption',

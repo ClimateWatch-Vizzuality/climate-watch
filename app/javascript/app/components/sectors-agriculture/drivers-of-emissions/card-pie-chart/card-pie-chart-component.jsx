@@ -7,6 +7,15 @@ import EmissionsProvider from 'providers/emissions-provider';
 import styles from './card-pie-chart-styles.scss';
 import Tooltip from './tooltip/tooltip';
 
+const renderEmissionValue = value => (
+  <span
+    // eslint-disable-next-line react/no-danger
+    dangerouslySetInnerHTML={{
+      __html: value
+    }}
+  />
+);
+
 class CardPieChart extends PureComponent {
   renderAgricultureLabel = () => {
     const { pieChartData } = this.props;
@@ -27,10 +36,7 @@ class CardPieChart extends PureComponent {
             color={color}
           />
           <span className={styles.labelValue} style={{ color }}>
-            {`${emissionPercentage} (${emissionValue} `}
-            <span>
-              MtCO<sub>2</sub>)
-            </span>
+            {emissionPercentage} ({renderEmissionValue(emissionValue)})
           </span>
         </div>
       </div>
@@ -42,24 +48,14 @@ class CardPieChart extends PureComponent {
     const data = pieChartData ? pieChartData.data : [];
     const config = pieChartData && pieChartData.config;
     return (
-      <PieChart
-        data={data}
-        width="100%"
-        height={250}
-        config={config}
-        customTooltip={<Tooltip />}
-      />
+      <PieChart data={data} width="100%" height={250} config={config} customTooltip={<Tooltip />} />
     );
   };
 
   renderLoading = () => {
     const { pieChartData } = this.props;
     const loading = pieChartData && pieChartData.loading;
-    return loading ? (
-      <Loading height="100%" />
-    ) : (
-      <NoContent message="No data available" />
-    );
+    return loading ? <Loading height="100%" /> : <NoContent message="No data available" />;
   };
 
   render() {
@@ -79,19 +75,13 @@ class CardPieChart extends PureComponent {
       <div>
         <Card
           theme={cardTheme}
-          subtitle={
-            pieChartData ? `${location} agriculture emissions in ${year}` : ''
-          }
+          subtitle={pieChartData ? `${location} agriculture emissions in ${year}` : ''}
         >
           {pieChartData && emissionValue ? (
             <div className={styles.cardContent}>
               <p className={styles.description}>
-                <span>{location}</span> in <span>{year}</span>, the Agriculture
-                sector contributed to{' '}
-                <span>
-                  {emissionValue} MtCO<sub>2</sub>e
-                </span>{' '}
-                GHG emissions, which represented{' '}
+                <span>{location}</span> in <span>{year}</span>, the Agriculture sector contributed
+                to {renderEmissionValue(emissionValue)} GHG emissions, which represented{' '}
                 <span>{emissionPercentage}</span> of all emissions.
               </p>
               <TabletLandscape>
