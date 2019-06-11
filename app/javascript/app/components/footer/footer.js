@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import googleImage from 'assets/partners/google.png';
 import ndcImage from 'assets/partners/ndcp.png';
 import wriImage from 'assets/partners/wri.png';
-import climateAnalyticsImage from 'assets/partners/climate-analytics.png';
-import climateActionTrackerImage from 'assets/partners/climate-action-tracker.png';
 import worldBankImage from 'assets/partners/the-world-bank.png';
 import ccImage from 'assets/partners/unfccc.jpg';
 import gizImage from 'assets/partners/giz.png';
@@ -20,24 +18,6 @@ import unepImage from 'assets/partners/partners-UNEP.png';
 import Component from './footer-component';
 
 const basePartners = [
-  {
-    link: 'http://climateactiontracker.org/',
-    orderingString: 'climateaction',
-    img: {
-      alt: 'Climate action',
-      src: climateActionTrackerImage,
-      customClass: 'rectangularL'
-    }
-  },
-  {
-    link: 'http://climateanalytics.org/',
-    orderingString: 'climateanalytics',
-    img: {
-      alt: 'Climate analytics',
-      src: climateAnalyticsImage,
-      customClass: 'narrow'
-    }
-  },
   {
     link: 'https://www.giz.de/en/html/index.html',
     orderingString: 'deutch-giz',

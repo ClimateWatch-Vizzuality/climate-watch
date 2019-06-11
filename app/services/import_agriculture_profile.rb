@@ -2,37 +2,14 @@ class ImportAgricultureProfile
   include ClimateWatchEngine::CSVImporter
 
   # rubocop:disable LineLength
-  EMISSIONS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Emissions Sample Data 823.csv".freeze
-  INPUTS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Inputs Sample Data 823.csv".freeze
-  LAND_USE_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Land Use Sample Data 823.csv".freeze
-  MACRO_INDICATORS_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Macro Indicators Sample Data 823.csv".freeze
-  PRODUCTION_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Production and Trade Sample Data 823.csv".freeze
-  WATER_WITHDRAWAL_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr FAOSTAT Water Withdrawal Database 823.csv".freeze
-  FAO_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr OECD_FAO Sample Data 823.csv".freeze
-  WBD_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Agr WBD Sample Data 823.csv".freeze
-  LEGEND_FILEPATH = "#{CW_FILES_PREFIX}agriculture/Legend File 823.csv".freeze
-  METADATA_FILEPATH = "#{CW_FILES_PREFIX}agriculture/metadata_sources_823.csv".freeze
-
+  FAO_FILEPATH = "#{CW_FILES_PREFIX}agriculture_profile/Agr OECD_FAO Sample Data 823.csv".freeze
+  LAND_USE_FILEPATH = "#{CW_FILES_PREFIX}agriculture_profile/Agr FAOSTAT Land Use Sample Data 823.csv".freeze
+  PRODUCTION_FILEPATH = "#{CW_FILES_PREFIX}agriculture_profile/Agr FAOSTAT Production and Trade Sample Data 823.csv".freeze
   # rubocop:enable LineLength
 
   def call
     ActiveRecord::Base.transaction do
       cleanup
-      Rails.logger.info "Importing LEGEND"
-      import_metadata(S3CSVReader.read(LEGEND_FILEPATH), LEGEND_FILEPATH)
-      import_emission_categories(S3CSVReader.read(LEGEND_FILEPATH), LEGEND_FILEPATH)
-      Rails.logger.info "Importing EMISSIONS"
-      import_emissions(S3CSVReader.read(EMISSIONS_FILEPATH), EMISSIONS_FILEPATH)
-      Rails.logger.info "Importing MACRO_INDICATORS"
-      import_country_contexts(S3CSVReader.read(MACRO_INDICATORS_FILEPATH), MACRO_INDICATORS_FILEPATH)
-      Rails.logger.info "Importing WBD"
-      import_country_contexts(S3CSVReader.read(WBD_FILEPATH), WBD_FILEPATH)
-      Rails.logger.info "Importing INPUTS"
-      import_country_contexts(S3CSVReader.read(INPUTS_FILEPATH), INPUTS_FILEPATH)
-      Rails.logger.info "Importing WATER_WITHDRAWAL"
-      import_country_contexts(S3CSVReader.read(WATER_WITHDRAWAL_FILEPATH), WATER_WITHDRAWAL_FILEPATH)
-      Rails.logger.info "Update water withdrawal rank"
-      update_water_withdrawal_rank
       Rails.logger.info "Importing LAND_USE_FILEPATH"
       import_areas(S3CSVReader.read(LAND_USE_FILEPATH), LAND_USE_FILEPATH)
       Rails.logger.info "Importing FAO_FILEPATH"
@@ -45,169 +22,157 @@ class ImportAgricultureProfile
   private
 
   def cleanup
-    AgricultureProfile::Metadatum.delete_all
-    AgricultureProfile::Emission.delete_all
-    AgricultureProfile::EmissionSubcategory.delete_all
-    AgricultureProfile::EmissionCategory.delete_all
-    AgricultureProfile::CountryContext.delete_all
     AgricultureProfile::Area.delete_all
     AgricultureProfile::MeatConsumption.delete_all
     AgricultureProfile::MeatProduction.delete_all
     AgricultureProfile::MeatTrade.delete_all
   end
 
-
-  def emission_subcategory_attributes(row, category_id)
-    {
-      name: row[:sub_category],
-      emission_category_id: category_id,
-      short_name: row[:short_names],
-      indicator_name: row[:indicator_name]
-    }
-  end
-
-  def emission_attributes(values, location_id, subcategory_id)
-    {
-      emission_subcategory_id: subcategory_id,
-      location_id: location_id,
-      values: values
-    }
-  end
-
-  def metadatum_attributes(row)
-    {
-      short_name: row[:short_names],
-      indicator: row[:indicator_name],
-      category: row[:category],
-      subcategory: row[:sub_category],
-      unit: row[:unit]
-    }
-  end
-
-  def import_emission_categories(content, filepath)
-    import_each_with_logging(content, filepath) do |row|
-      category_id =
-        AgricultureProfile::EmissionCategory.find_or_create_by!(
-          name: row[:category], unit: row[:unit]).id rescue nil
-      AgricultureProfile::EmissionSubcategory.create!(
-        emission_subcategory_attributes(row, category_id))
-    end
-  end
-
-  def import_metadata(content, filepath)
-    import_each_with_logging(content, filepath) do |row|
-      AgricultureProfile::Metadatum.create!(metadatum_attributes(row))
-    end
-  end
-
-  def import_emissions(content, filepath)
-    import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:area]).id
-      subcategory_id =
-        AgricultureProfile::EmissionSubcategory.find_by(
-          short_name: row[:short_names]).id
-      values = row.to_h.except(:area, :short_names)
-      next if values.blank?
-      AgricultureProfile::Emission.create!(
-        emission_attributes(values,
-                            location_id, subcategory_id))
-    end
-  end
-
-  def import_country_contexts(content, filepath)
-    import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:area]).id
-      indicator = row[:short_names]
-      values = row.to_h.except(:area, :short_names)
-      values.each do |value|
-        next if value.second.blank?
-        context =
-          AgricultureProfile::CountryContext.find_or_create_by(
-            location_id: location_id,
-            year: value.first.to_s.to_i)
-        context.send(:"#{indicator.downcase}=", value.second)
-        context.save!
-      end
-    end
-  end
-
   def import_areas(content, filepath)
+    areas = []
+    locations = {}
     import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:area]).id
+      location_id = if !locations[row[:area]]
+                      location_id = Location.find_by(iso_code3: row[:area]).id
+                      locations[row[:area]] = location_id
+                      location_id
+                    else
+                      locations[row[:area]]
+                    end
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
       values.each do |value|
         next if value.second.blank?
-        area =
-          AgricultureProfile::Area.find_or_create_by(
-            location_id: location_id,
-            year: value.first.to_s.to_i)
+        year = value.first.to_s.to_i
+        area = areas.select{|m| m.location_id == location_id && m.year == year }.first ||
+          AgricultureProfile::Area.find_or_initialize_by(location_id: location_id, year: year)
         area.send(:"#{indicator.downcase}=", value.second)
-        area.save!
+        areas << area
       end
+      puts "#{areas.size} areas to add!"
+      AgricultureProfile::Area.import!(areas,
+                                       on_duplicate_key_update: { conflict_target: [:id],
+                                                                  columns: [:share_in_land_area_1,
+                                                                            :share_in_land_area_2,
+                                                                            :share_in_land_area_3,
+                                                                            :share_in_land_area_4,
+                                                                            :share_in_agricultural_area_1,
+                                                                            :share_in_agricultural_area_2,
+                                                                            :share_in_agricultural_area_3]
+      })
+      areas = []
     end
   end
 
   def import_meat_consumptions(content, filepath)
+    meats = []
+    locations = {}
     import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:country]).id
+      location_id = if !locations[row[:country]]
+                      location_id = Location.find_by(iso_code3: row[:country]).id
+                      locations[row[:country]] = location_id
+                      location_id
+                    else
+                      locations[row[:country]]
+                    end
       indicator = row[:short_names]
-      values = row.to_h.except(:area, :short_names)
+      values = row.to_h.except(:country, :short_names)
       values.each do |value|
         next if value.second.blank?
-        meat =
-          AgricultureProfile::MeatConsumption.find_or_create_by(
-            location_id: location_id,
-            year: value.first.to_s.to_i)
+        year = value.first.to_s.to_i
+        meat = meats.select{|m| m.location_id == location_id && m.year == year }.first ||
+          AgricultureProfile::MeatConsumption.find_or_initialize_by(location_id: location_id,
+            year: year)
         meat.send(:"#{indicator.downcase}=", value.second)
-        meat.save!
+        meats << meat
       end
+      puts "#{meats.size} records to add of meat consumption"
+      AgricultureProfile::MeatConsumption.import!(meats,
+                                       on_duplicate_key_update: { conflict_target: [:id],
+                                                                  columns: [:meat_consumption_1,
+                                                                            :meat_consumption_2,
+                                                                            :meat_consumption_3,
+                                                                            :meat_consumption_4,
+                                                                            :meat_consumption_per_capita_1,
+                                                                            :meat_consumption_per_capita_2,
+                                                                            :meat_consumption_per_capita_3,
+                                                                            :meat_consumption_per_capita_4]
+      })
+      meats = []
     end
   end
 
   def import_meat_trades(content, filepath)
+    meat_trades = []
+    meat_productions = []
+    locations = {}
     import_each_with_logging(content, filepath) do |row|
-      location_id = Location.find_by(iso_code3: row[:area]).id
+      location_id = if !locations[row[:area]]
+                      location_id = Location.find_by(iso_code3: row[:area]).id
+                      locations[row[:area]] = location_id
+                      location_id
+                    else
+                      locations[row[:area]]
+                    end
       indicator = row[:short_names]
       values = row.to_h.except(:area, :short_names)
       values.each do |value|
         next if value.second.blank?
-        meat = if indicator.starts_with?('production')
-                 AgricultureProfile::MeatProduction.find_or_create_by(
-                   location_id: location_id,
-                   year: value.first.to_s.to_i)
-               else
-                 AgricultureProfile::MeatTrade.find_or_create_by(
-                   location_id: location_id,
-                   year: value.first.to_s.to_i)
-               end
-
-        meat.send(:"#{indicator.downcase}=", value.second)
-        meat.save!
+        year = value.first.to_s.to_i
+        if indicator.starts_with?('production')
+          meat_production = meat_productions.select do |mp|
+            mp.location_id == location_id && mp.year == year
+          end.first ||
+            AgricultureProfile::MeatProduction.find_or_initialize_by(location_id: location_id,
+                                                   year: year)
+          meat_production.send(:"#{indicator.downcase}=", value.second)
+          meat_productions << meat_production
+        else
+          meat_trade = meat_trades.select do |mt|
+            mt.location_id == location_id && mt.year == year
+          end.first ||
+          AgricultureProfile::MeatTrade.find_or_initialize_by(location_id: location_id,
+                                            year: year)
+          meat_trade.send(:"#{indicator.downcase}=", value.second)
+          meat_trades << meat_trade
+        end
       end
-    end
-  end
-
-  def update_water_withdrawal_rank
-    years = AgricultureProfile::CountryContext
-              .select(:year).distinct.pluck(:year)
-
-    years.each do |year|
-      sql = "
-       WITH cte as (
-       SELECT id, water_withdrawal,
-              RANK() OVER ( ORDER BY water_withdrawal ASC) AS rnk
-       FROM agriculture_profile_country_contexts
-       WHERE year = #{year}
-       )
-       UPDATE agriculture_profile_country_contexts 
-       SET water_withdrawal_rank = cte.rnk
-       FROM cte
-       WHERE agriculture_profile_country_contexts.id = cte.id
-       AND agriculture_profile_country_contexts.water_withdrawal IS NOT NULL
-      "
-
-      ActiveRecord::Base.connection.execute(sql)
+      puts "#{meat_productions.size} meat productions to add"
+      puts "#{meat_trades.size} meat trades to add"
+      AgricultureProfile::MeatProduction.import!(meat_productions,
+                                       on_duplicate_key_update: { conflict_target: [:id],
+                                                                  columns: [:production_agr_1,
+                                                                            :production_agr_2,
+                                                                            :production_agr_3,
+                                                                            :production_agr_4,
+                                                                            :production_agr_5,
+                                                                            :production_agr_6,
+                                                                            :production_agr_7,
+                                                                            :production_agr_8,
+                                                                            :production_agr_9,
+                                                                            :production_agr_10]
+      })
+      AgricultureProfile::MeatTrade.import!(meat_trades,
+                                       on_duplicate_key_update: { conflict_target: [:id],
+                                                                  columns: [:trade_import_1,
+                                                                            :trade_import_2,
+                                                                            :trade_import_3,
+                                                                            :trade_import_4,
+                                                                            :trade_import_5,
+                                                                            :trade_import_6,
+                                                                            :trade_import_7,
+                                                                            :trade_import_8,
+                                                                            :trade_export_1,
+                                                                            :trade_export_2,
+                                                                            :trade_export_3,
+                                                                            :trade_export_4,
+                                                                            :trade_export_5,
+                                                                            :trade_export_6,
+                                                                            :trade_export_7,
+                                                                            :trade_export_8]
+      })
+      meat_productions = []
+      meat_trades = []
     end
   end
 end

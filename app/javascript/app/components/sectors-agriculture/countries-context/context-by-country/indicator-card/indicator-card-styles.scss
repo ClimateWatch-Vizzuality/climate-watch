@@ -66,6 +66,22 @@
       justify-content: center;
     }
 
+    .bulletList {
+      width: 100%;
+
+      ul {
+        list-style: initial;
+        margin-left: 30px;
+        margin-top: 30px;
+      }
+
+      li {
+        font-size: $font-size;
+        line-height: $line-height-modal;
+        color: $theme-color;
+      }
+    }
+
     .legendItem {
       width: 100%;
       padding-left: 30px;

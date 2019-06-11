@@ -54,6 +54,8 @@ gem 'secondbase'
 gem 'activeadmin'
 gem 'devise'
 
+gem 'activerecord-import'
+
 gem 'aws-sdk-rails', '~> 2'
 gem 'aws-sdk-s3', '~> 1'
 
