@@ -7,19 +7,29 @@ platforms:
         datasets:
           - adaptation
           - adaptation_metadata
+      - name: agriculture_metadata
+        importer: ImportAgricultureMetadata
+        datasets:
+          - Legend File 823
+      - name: agriculture_contexts
+        importer: ImportAgricultureContexts
+        datasets:
+          - Agr FAOSTAT Inputs Sample Data 823
+          - Agr FAOSTAT Macro Indicators Sample Data 823
+          - Agr FAOSTAT Water Withdrawal Database 823
+          - Agr WBD Sample Data 823
       - name: agriculture_profile
         importer: ImportAgricultureProfile
         datasets:
-          - Agr FAOSTAT Emissions Sample Data 823
-          - Agr FAOSTAT Inputs Sample Data 823
-          - Agr FAOSTAT Land Use Sample Data 823
-          - Agr FAOSTAT Macro Indicators Sample Data 823
           - Agr FAOSTAT Production and Trade Sample Data 823
-          - Agr FAOSTAT Water Withdrawal Database 823
           - Agr OECD_FAO Sample Data 823
-          - Agr WBD Sample Data 823
+          - Agr FAOSTAT Land Use Sample Data 823
+      - name: agriculture_emissions
+        importer: ImportAgricultureEmissions
+        datasets:
+          - Agr FAOSTAT Emissions Sample Data 823
           - Legend File 823
-          - metadata_sources_823
+
       - name: historical_emissions
         importer: ImportHistoricalEmissions
         datasets:

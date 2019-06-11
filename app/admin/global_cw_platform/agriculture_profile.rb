@@ -1,4 +1,4 @@
-ActiveAdmin.register_page 'Global CW Platform Agriculture Profile' do
+ActiveAdmin.register_page 'Global Cw Platform Agriculture Profile' do
   include DataUploader::SharedAdmin
 
   section_name = 'agriculture_profile'
@@ -14,7 +14,7 @@ ActiveAdmin.register_page 'Global CW Platform Agriculture Profile' do
     end
 
     def s3_folder_path
-      "#{CW_FILES_PREFIX}agriculture"
+      "#{CW_FILES_PREFIX}agriculture_profile"
     end
 
     def path

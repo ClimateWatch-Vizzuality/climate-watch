@@ -5,14 +5,35 @@ import { precentageTwoPlacesRound } from 'utils/utils';
 
 const getCountriesContextsData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.data;
+
+const getCountriesContextsMetaData = ({ agricultureCountriesContexts }) =>
+  agricultureCountriesContexts && agricultureCountriesContexts.meta;
+
 const getWBCountriesData = ({ wbCountryData }) =>
   wbCountryData && wbCountryData.data;
 const getLocationsData = ({ countries }) => countries && countries.data;
 const getSearch = ({ search }) => search || null;
 
-const legendHtmlDot = (text, color, value, unit) =>
-  `<p><span style="background-color: ${color}; width: 10px; height: 10px; display: inline-block; border-radius: 10px; margin-right: 10px;" ></span>${text}</p><p style="color: ${color};">${value ||
-    '---'} ${unit}<p/>`;
+const getIndicatorsLabels = createSelector(
+  [getCountriesContextsMetaData],
+  contextsMetaData => {
+    if (!contextsMetaData) return null;
+    const myLabels = contextsMetaData.reduce((obj, item) => {
+      obj[item.short_name] = item.indicator;
+      return obj;
+    }, {});
+    return { ...myLabels };
+  }
+);
+
+const legendHtmlDot = (text, color, value, unit) => {
+  const returnedValue = value ? `${value} ${unit}` : 'No data';
+  return `<p><span style="background-color: ${color}; width: 10px; height: 10px;
+  display: inline-block; border-radius: 10px; margin-right: 10px;" >
+  </span>${text}</p><p style="color: ${color};">${returnedValue}<p/>`;
+};
+
+const formatValue = (value, unit) => value ? `${format('.2s')(value)} ${unit}` : 'No data';
 
 const getChartConfig = (labels, year, unit, colors, suffix) => ({
   outerRadius: 55,
@@ -92,10 +113,13 @@ const getCardsData = createSelector(
     getSelectedCountry,
     getSelectedYear,
     getCountries,
-    getYears
+    getYears,
+    getIndicatorsLabels
   ],
-  (contextsData, wbData, country, year, countries, years) => {
-    if (isEmpty(contextsData) || isEmpty(wbData)) return null;
+  (contextsData, wbData, country, year, countries, years, indicatorsLabels) => {
+    if (isEmpty(contextsData) || isEmpty(indicatorsLabels) || isEmpty(wbData)) {
+      return null;
+    }
     const c = country || countries[0];
     const y = year || years[0];
     if (!y) return null;
@@ -106,12 +130,11 @@ const getCardsData = createSelector(
     const wbCountryData =
       wbData[countryCode] &&
       (wbData[countryCode].find(d => d.year === parseInt(y.value, 10)) || {});
-
     const socioeconomic = {
       population: [
         {
           value: yearData.employment_agri_female,
-          label: 'Percent of Women Employed in Agriculture',
+          label: indicatorsLabels.employment_agri_female,
           valueLabel: `${precentageTwoPlacesRound(
             yearData.employment_agri_female
           )}%`,
@@ -119,7 +142,7 @@ const getCardsData = createSelector(
         },
         {
           value: yearData.employment_agri_male,
-          label: 'Percent of Men Employed in Agriculture',
+          label: indicatorsLabels.employment_agri_male,
           valueLabel: `${precentageTwoPlacesRound(
             yearData.employment_agri_male
           )}%`,
@@ -128,10 +151,11 @@ const getCardsData = createSelector(
       ],
       countryName: c.label,
       title: 'Socio-economic indicators',
-      text: `<p> Agriculture is a source of livelihood for more than 2 billion people around the world. In <span>${y.value}</span>, <span>${precentageTwoPlacesRound(
-        yearData.employment_agri_total
-      ) ||
-        '---'}%</span> of <span>${c.label}'s</span> population was employed in the agriculture sector.`,
+      text: `<p> Agriculture is a source of livelihood for more than 2 billion
+        people around the world. In <span>${y.value}</span>,
+        <span>${precentageTwoPlacesRound(yearData.employment_agri_total) ||
+          '---'}%</span> of <span>${c.label}'s</span> population was employed in
+      the agriculture sector.`,
       noDataMessage: `No population data for ${c.label} on ${y.value}`
     };
 
@@ -167,11 +191,13 @@ const getCardsData = createSelector(
             legendHtmlDot(
               'Agriculture production',
               '#0677B3',
-              format('.2s')(
-                wbCountryData.gdp
-                  ? wbCountryData.gdp * yearData.value_added_agr / 100
-                  : yearData.value_added_agr
-              ),
+              yearData.value_added_agr
+                ? format('.2s')(
+                  wbCountryData.gdp
+                    ? wbCountryData.gdp * yearData.value_added_agr / 100
+                    : yearData.value_added_agr
+                )
+                : undefined,
               '$USD'
             )
         },
@@ -197,7 +223,10 @@ const getCardsData = createSelector(
             label: 'Agricultural activities',
             slug: 'agricultureActivities'
           },
-          { label: 'Non-agricultural activities', slug: 'nonAgricultureActivities' }
+          {
+            label: 'Non-agricultural activities',
+            slug: 'nonAgricultureActivities'
+          }
         ],
         y.label,
         'percentage',
@@ -216,7 +245,9 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Agricultural activities',
             '#0677B3',
-            format('.2')(yearData.water_withdrawal),
+            yearData.water_withdrawal
+              ? format('.2')(yearData.water_withdrawal)
+              : undefined,
             '%'
           )
         }
@@ -231,36 +262,9 @@ const getCardsData = createSelector(
     };
 
     const fertilizer = {
-      chartConfig: getChartConfig(
-        [
-          { label: 'Fertilizer use', slug: 'fertilizerUse' },
-          { label: 'Pesticides use', slug: 'pesticidesUse' }
-        ],
-        y.label,
-        'tonnes',
-        ['#0677B3', '#1ECDB0']
-      ),
-      chartData: [
-        { name: 'fertilizerUse', value: yearData.total_fertilizers },
-        { name: 'pesticidesUse', value: yearData.total_pesticides_use }
-      ],
-      legend: [
-        {
-          text: legendHtmlDot(
-            'Fertilizer use',
-            '#0677B3',
-            format('.2s')(yearData.total_fertilizers),
-            'tonnes'
-          )
-        },
-        {
-          text: legendHtmlDot(
-            'Pesticides use',
-            '#1ECDB0',
-            format('.2s')(yearData.total_pesticides_use),
-            'tonnes of active ingredients'
-          )
-        }
+      bulletList: [
+        `Fertilizer use: ${formatValue(yearData.total_fertilizers, 'tonnes')}`,
+        `Pesticides use: ${formatValue(yearData.total_pesticides_use, 'tonnes of active ingredients')}`
       ],
       title: 'Fertilizer and pesticide use',
       text:
