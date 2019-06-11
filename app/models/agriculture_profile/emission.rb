@@ -15,5 +15,9 @@ module AgricultureProfile
       emissions = emissions.by_location_iso(params[:iso_code3]) if params[:iso_code3]
       emissions
     end
+
+    def self.all_locations_iso_codes
+      all.joins(:location).distinct.pluck('locations.iso_code3')
+    end
   end
 end
