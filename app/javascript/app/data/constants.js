@@ -176,6 +176,10 @@ export const GREY_CHART_COLORS = ['#68696B', '#818285', '#999B9D', '#ACAEB8', '#
 
 export const COUNTRY_COMPARE_COLORS = ['#113750', '#00B4D2', '#D2187C'];
 
+export const UNITS = {
+  CO2e: 'CO<sub>2</sub>e'
+};
+
 export const DEFAULT_AXES_CONFIG = {
   xBottom: {
     name: 'Year',
@@ -184,7 +188,7 @@ export const DEFAULT_AXES_CONFIG = {
   },
   yLeft: {
     name: 'Emissions',
-    unit: 'CO<sub>2</sub>e',
+    unit: UNITS.CO2e,
     format: 'number'
   }
 };
@@ -306,12 +310,6 @@ export const USERS_PROFESIONAL_SECTORS = [
 export const ALL_SELECTED = 'All Selected';
 export const ALL_SELECTED_OPTION = { label: ALL_SELECTED, value: ALL_SELECTED };
 export const NO_ALL_SELECTED_COLUMNS = ['breakBy', 'chartType', 'sources', 'regions'];
-
-export const METRIC_OPTIONS = {
-  ABSOLUTE_VALUE: { label: 'Absolute value', value: 'ABSOLUTE_VALUE' },
-  PER_CAPITA: { label: 'per Capita', value: 'PER_CAPITA' },
-  PER_GDP: { label: 'per GDP', value: 'PER_GDP' }
-};
 
 export const TOP_EMITTERS_OPTION = {
   iso: 'TOP',
