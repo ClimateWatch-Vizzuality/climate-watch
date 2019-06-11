@@ -540,11 +540,17 @@ Link: </api/v1/data/ndc_content/indicators>; rel="meta indicators", </api/v1/dat
             "emission_subcategory": {
                 "name": "Manure Management",
                 "short_name": "total_emissions_agr_2",
-                "indicator_name": "Total Emissions in agriculture"
+                "indicator_name": "Total Emissions in agriculture",
+                "category_id": 100,
+                "category_name": "Total Emissions",
+                "category unit": "CO2eq gigagrams"
             }
         }
         ...
-   ]
+   ],
+   "meta": {
+     "emission_locations_with_data": ["ITA", "HUN", "COL", "IRQ"...]
+   }
 ```
 
 ### Country Contexts
