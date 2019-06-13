@@ -34,7 +34,11 @@ const getTooltip = (country, tooltipTxt) => (
 const renderButtonGroup = (clickHandler, downloadLink) => (
   <div className={styles.containerControls}>
     <div>
-      <p><em>Track how many countries have announced or submitted second NDCs and click on a country to get details.</em></p>
+      <p>
+        <em>
+          Explore the interactive map and table to track which countries have signalled they will update or enhance their national climate plans (NDCs) by 2020.
+        </em>
+      </p>
     </div>
     <div>
       <ButtonGroup
@@ -107,6 +111,7 @@ const NDCSEnhancementsMap = ({
   downloadLink,
   countryData,
   tableData,
+  tableHeaders,
   summaryData,
   query,
   handleInfoClick,
@@ -136,6 +141,7 @@ const NDCSEnhancementsMap = ({
             </div>
             <div className={styles.containerMap}>
               {loading && <Loading light className={styles.loader} />}
+              {!isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
               <Map
                 paths={paths}
                 tooltipId="ndcs-map-tooltip"
@@ -145,11 +151,6 @@ const NDCSEnhancementsMap = ({
                 dragEnable={false}
                 customCenter={!isTablet ? [10, -50] : null}
               />
-              {!isTablet && (
-                <div className={styles.column}>
-                  {renderButtonGroup(handleInfoClick, true)}
-                </div>
-              )}
               {countryData && (
                 <ReactTooltip
                   className={styles.tooltipContainer}
@@ -178,7 +179,7 @@ const NDCSEnhancementsMap = ({
         <div className={styles.wrapper}>
           {!loading && (
             <div className={styles.filtersLayout}>
-              {isTablet && renderSearch(handleSearchChange, query)}
+              {renderSearch(handleSearchChange, query)}
             </div>
           )}
           {!loading &&
@@ -187,22 +188,15 @@ const NDCSEnhancementsMap = ({
             <div className={styles.tableWrapper}>
               <Table
                 horizontalScroll
-                parseHtml
                 urlInData
+                parseHtml
                 data={tableData}
-                flexGrow={0}
               />
             </div>
           )}
           {!loading &&
           (!tableData || tableData.length <= 0) && (
             <NoContent className={styles.noContent} message={noContentMsg} />
-          )}
-          {!loading &&
-          !isTablet && (
-            <div className={styles.column}>
-              {renderSearch(handleSearchChange, query)}
-            </div>
           )}
         </div>
       )}
@@ -220,6 +214,7 @@ NDCSEnhancementsMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   tableData: PropTypes.array,
+  tableHeaders: PropTypes.array,
   summaryData: PropTypes.object,
   handleSearchChange: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,

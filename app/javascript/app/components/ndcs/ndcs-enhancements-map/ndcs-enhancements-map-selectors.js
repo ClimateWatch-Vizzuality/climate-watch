@@ -11,34 +11,12 @@ import isEmpty from 'lodash/isEmpty';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
-const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 const getQuery = state => deburrUpper(state.query) || '';
-
-const targetIndicators = [
-  'submission',
-  'ndce_2020_submitted',
-  'ndce_plan_2020',
-  'ndce_2015_revised'
-];
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
 );
-
-export const getCategories = createSelector(getCategoriesData, categories => {
-  if (!categories) return null;
-  return sortBy(
-    Object.keys(categories).map(category => ({
-      label: categories[category].name,
-      value: categories[category].slug,
-      id: category
-    })),
-    'label'
-  ).filter(
-    cat => cat.value === 'ndc_enhancement' || cat.value === 'unfccc_process'
-  );
-});
 
 export const getIndicatorsParsed = createSelector(
   [getIndicatorsData, getISOCountries],
@@ -63,129 +41,28 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    );
+    ).filter(ind => ind.categoryIds.indexOf(11) > -1);
   }
 );
 
-export const getCategoryIndicators = createSelector(
-  [getIndicatorsParsed, getCategories],
-  (indicatorsParsed, categories) => {
-    if (!indicatorsParsed) return null;
-    const categoryIndicators = indicatorsParsed.filter(indicator => {
-      let found = false;
-      categories.every(cat => {
-        found = indicator.categoryIds.indexOf(parseInt(cat.id)) > -1;
-        return !found;
-      });
-      return found;
-    });
-    return categoryIndicators;
-  }
-);
-
-export const getIndicators = createSelector(
-  getCategoryIndicators,
-  (indicators = []) => {
+export const getMapIndicator = createSelector(
+  [getIndicatorsParsed,getISOCountries],
+  (indicators = [],isos) => {
     if (!indicators || !indicators.length) return null;
-    return indicators
-      .filter(ind => targetIndicators.indexOf(ind.value) > -1)
-      .sort((a, b) => (a.value == 'submission' ? -1 : 0));
-  }
-);
+    const mapIndicator = indicators
+      .find(ind => ind.value == "ndce_status_2020");
 
-export const mergeIndicators = createSelector(
-  [getIndicators, getISOCountries],
-  (indicators = [], isos) => {
-    if (!indicators || !indicators.length) return {};
-    const { categoryIds, locations } = indicators[0];
-    const mergedIndicator = {
-      categoryIds,
-      locations,
-      label: 'Status of NDC Enhancement(s)',
-      labels: {},
-      value: 'ndce_status'
-    };
-    const indicatorRef = {};
-    indicators.forEach((indicator, i) => {
-      if (indicator.value !== 'submission') {
-        indicatorRef[indicator.value] = indicator.label;
-        mergedIndicator.labels[i.toString()] = {
-          name: indicator.label,
-          index: i
-        };
-      }
-    });
-    ['First NDC Submitted', 'No NDC Submitted'].forEach(label => {
-      let len = Object.keys(mergedIndicator.labels).length + 1;
-      mergedIndicator.labels[len.toString()] = {
-        name: label,
-        index: len
-      };
-    });
-
-    const parseLocationValues = locationValues => {
-      if (
-        (locationValues.ndce_2020_submitted &&
-          locationValues.ndce_2020_submitted != 'No') ||
-        (locationValues.submission &&
-          locationValues.submission == 'Second NDC Submitted')
-      ) {
-        return indicatorRef.ndce_2020_submitted;
-      } else if (
-        locationValues.ndce_plan_2020 &&
-        locationValues.ndce_plan_2020 != 'No'
-      ) {
-        return indicatorRef.ndce_plan_2020;
-      } else if (
-        locationValues.ndce_2015_revised &&
-        locationValues.ndce_2015_revised != 'No'
-      ) {
-        return indicatorRef.ndce_2015_revised;
-      } else if (
-        locationValues.submission &&
-        locationValues.submission == 'First NDC Submitted'
-      ) {
-        return locationValues.submission;
-      } else {
-        return 'No NDC Submitted';
-      }
-    };
-
-    for (let l in locations) {
-      const location = locations[l];
-      const locationValues = {};
-      indicators.forEach(indicator => {
-        locationValues[indicator.value] = indicator.locations[l]
-          ? indicator.locations[l].value
-          : 'No';
-      });
-      const val = parseLocationValues(locationValues);
-      mergedIndicator.locations[l].value = val;
-      mergedIndicator.locations[l].label_id = (val => {
-        let id;
-        for (let i in mergedIndicator.labels) {
-          if (mergedIndicator.labels[i].name == val) {
-            id = i;
-            break;
-          }
+    //Set all countries without values to "No Information" by default
+    console.log(mapIndicator);
+    isos.forEach(iso => {
+      if (!mapIndicator.locations[iso]) {
+        mapIndicator.locations[iso] = {
+          value:mapIndicator.legendBuckets[237].name,
+          label_id:237
         }
-        return id;
-      })(val);
-    }
-    mergedIndicator.legendBuckets = createLegendBuckets(
-      mergedIndicator.locations,
-      mergedIndicator.labels,
-      isos
-    );
-
-    //Shift "Not Applicable" to bottom of legend items
-    mergedIndicator.legendBuckets[
-      Object.keys(mergedIndicator.legendBuckets).length
-    ] =
-      mergedIndicator.legendBuckets['0'];
-    delete mergedIndicator.legendBuckets['0'];
-
-    return mergedIndicator;
+      }
+    })
+    return mapIndicator;
   }
 );
 
@@ -215,107 +92,77 @@ const countryStyles = {
 
 export const MAP_COLORS = [
   [
-    'rgb(80, 129, 166)',
-    'rgb(144, 177, 203)',
     'rgb(254, 224, 141)',
-    'rgb(246, 206, 142)',
-    'rgb(246, 206, 142)'
+    'rgb(80, 129, 166)',
+    'rgb(172, 187, 191)'
   ],
   [
-    'rgb(80, 129, 166)',
-    'rgb(144, 177, 203)',
     'rgb(254, 224, 141)',
-    'rgb(246, 206, 142)',
-    'rgb(246, 206, 142)'
+    'rgb(80, 129, 166)',
+    'rgb(172, 187, 191)'
   ],
   [
-    'rgb(80, 129, 166)',
-    'rgb(144, 177, 203)',
     'rgb(254, 224, 141)',
-    'rgb(246, 206, 142)',
-    'rgb(246, 206, 142)'
-  ],
-  [
     'rgb(80, 129, 166)',
-    'rgb(144, 177, 203)',
-    'rgb(254, 224, 141)',
-    'rgb(246, 206, 142)',
-    'rgb(246, 206, 142)'
-  ],
-  [
-    'rgb(80, 129, 166)',
-    'rgb(144, 177, 203)',
-    'rgb(254, 224, 141)',
-    'rgb(246, 206, 142)',
-    'rgb(246, 206, 142)'
-  ],
-  [
-    'rgb(80, 129, 166)',
-    'rgb(144, 177, 203)',
-    'rgb(254, 224, 141)',
-    'rgb(246, 206, 142)',
-    'rgb(246, 206, 142)'
-  ],
-  [
-    'rgb(80, 129, 166)',
-    'rgb(144, 177, 203)',
-    'rgb(254, 224, 141)',
-    'rgb(246, 206, 142)',
-    'rgb(246, 206, 142)'
+    'rgb(172, 187, 191)'
   ]
+
 ];
 
-export const getPathsWithStyles = createSelector(mergeIndicators, indicator => {
-  const paths = [];
-  worldPaths.forEach(path => {
-    if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
-      const { locations, legendBuckets } = indicator;
+export const getPathsWithStyles = createSelector(
+  [getMapIndicator,getISOCountries],
+  (indicator,isos) => {
+    if (!indicator) return [];
+    const paths = [];
+    worldPaths.forEach(path => {
+      if (path.properties.layer !== PATH_LAYERS.ISLANDS) {
+        const { locations, legendBuckets } = indicator;
 
-      if (!locations) {
+        if (!locations) {
+          paths.push({
+            ...path,
+            countryStyles
+          });
+          return null;
+        }
+
+        const iso = path.properties && path.properties.id;
+        const isEuropeanCountry = europeanCountries.includes(iso);
+        const countryData = isEuropeanCountry
+          ? locations[europeSlug]
+          : locations[iso];
+
+        let style = countryStyles;
+        if (countryData && countryData.label_id) {
+          const legendIndex = legendBuckets[countryData.label_id].index;
+          const color = getColorByIndex(
+            legendBuckets,
+            legendIndex,
+            MAP_COLORS
+          );
+          style = {
+            ...countryStyles,
+            default: {
+              ...countryStyles.default,
+              fill: color,
+              fillOpacity: 1
+            },
+            hover: {
+              ...countryStyles.hover,
+              fill: color,
+              fillOpacity: 1
+            }
+          };
+        }
+
         paths.push({
           ...path,
-          countryStyles
+          style
         });
-        return null;
       }
-
-      const iso = path.properties && path.properties.id;
-      const isEuropeanCountry = europeanCountries.includes(iso);
-      const countryData = isEuropeanCountry
-        ? locations[europeSlug]
-        : locations[iso];
-
-      let style = countryStyles;
-      if (countryData && countryData.label_id) {
-        const legendData = legendBuckets[countryData.label_id];
-        const color = getColorByIndex(
-          legendBuckets,
-          legendData.index,
-          MAP_COLORS
-        );
-        style = {
-          ...countryStyles,
-          default: {
-            ...countryStyles.default,
-            fill: color,
-            fillOpacity: 1
-          },
-          hover: {
-            ...countryStyles.hover,
-            fill: color,
-            fillOpacity: 1
-          }
-        };
-      }
-
-      paths.push({
-        ...path,
-        style
-      });
-    }
-    return null;
-  });
-  return paths;
+      return null;
+    });
+    return paths;
 });
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
@@ -326,23 +173,25 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
 //Chart data methods
 
 export const summarizeIndicators = createSelector(
-  [mergeIndicators, getCategoryIndicators],
-  (mergedIndicator, indicators) => {
-    if (!mergedIndicator || !indicators) return null;
+  [getIndicatorsParsed,getMapIndicator],
+  (indicators,indicator) => {
+    if (!indicator || !indicators) return null;
     let summaryData = {};
+    //Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
+    //ONLY planned 2020 NDCs currently displayed in component
     ['planned', 'submitted'].forEach(type => {
       summaryData[type] = {
         countries: {
           value: 0,
-          max: Object.keys(mergedIndicator.locations).length,
+          max: Object.keys(indicator.locations).length,
           opts: {
             color: getColorByIndex(
-              mergedIndicator.legendBuckets,
+              indicator.legendBuckets,
               type == 'submitted' ? '1' : '2',
               MAP_COLORS
             ),
             label:
-              'countries that have stated their intent to release a second NDC'
+              'countries have stated their intention to submit a 2020 NDC'
           }
         },
         emissions: {
@@ -350,12 +199,12 @@ export const summarizeIndicators = createSelector(
           max: 100,
           opts: {
             color: getColorByIndex(
-              mergedIndicator.legendBuckets,
+              indicator.legendBuckets,
               type == 'submitted' ? '1' : '2',
               MAP_COLORS
             ),
             suffix: '%',
-            label: '% of global emissions represented'
+            label: 'of global emissions are represented by these countries'
           }
         }
       };
@@ -363,12 +212,12 @@ export const summarizeIndicators = createSelector(
     const emissionsIndicator = indicators.find(
       indicator => indicator.value == 'ndce_ghg'
     );
-    for (let l in mergedIndicator.locations) {
-      const location = mergedIndicator.locations[l];
+    for (let l in indicator.locations) {
+      const location = indicator.locations[l];
       var type =
-        location.label_id == '1'
+        location.label_id == 235
           ? 'submitted'
-          : location.label_id == '2' ? 'planned' : null;
+          : location.label_id == 236 ? 'planned' : null;
       if (type) {
         summaryData[type].countries.value++;
         if (emissionsIndicator.locations[l])
@@ -383,35 +232,28 @@ export const summarizeIndicators = createSelector(
 
 //Table data methods
 
-export const tableGetCategory = createSelector(
-  [getCategories],
-  (categories = []) => {
-    if (!categories || !categories.length) return null;
-    return (
-      categories.find(cat => cat.value === 'ndc_enhancement') || categories[0]
-    );
-  }
-);
-
 export const tableGetSelectedData = createSelector(
-  [getCategoryIndicators, getCountries],
-  (indicators, countries) => {
+  [getIndicatorsParsed, getMapIndicator, getCountries],
+  (indicators, indicator, countries) => {
     if (!indicators || !indicators.length || !indicators[0].locations)
       return [];
 
-    return Object.keys(indicators[0].locations).map(iso => {
-      const countryData =
-        countries.find(country => country.iso_code3 === iso) || {};
-      let row = {
-        country: countryData.wri_standard_name || iso,
-        iso
-      };
-      indicators.forEach(ind => {
-        if (ind.categoryIds.indexOf(11) > -1 && ind.label !== 'Date') {
-          row[ind.label] = ind.locations[iso].value;
-        }
-      });
-      return row;
+    return Object.keys(indicator.locations).map(iso => {
+      if (indicator.locations[iso].label_id !== 237) {
+        const countryData =
+          countries.find(country => country.iso_code3 === iso) || {};
+        let row = {
+          country: countryData.wri_standard_name || iso,
+          iso
+        };
+        indicators.forEach(ind => {
+          if (ind.locations[iso]) {
+            row[ind.label] = ind.locations[iso].value;
+          }
+        });
+        return row;
+      }
+      return false;
     });
   }
 );
@@ -449,12 +291,8 @@ export const tableRemoveIsoFromData = createSelector(
 );
 
 export default {
-  getCategories,
-  getCategoryIndicators,
-  getIndicators,
-  tableGetCategory,
+  getMapIndicator,
   tableRemoveIsoFromData,
-  mergeIndicators,
   summarizeIndicators,
   getPathsWithStyles
 };
