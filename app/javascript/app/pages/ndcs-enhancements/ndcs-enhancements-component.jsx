@@ -28,7 +28,7 @@ const NDCEnhancements = ({ anchorLinks, query, route }) => (
           <div className={styles.headerLayout}>
             <Intro
               title="2020 Ambition Tracker"
-              description={`<p>The Paris Agreement was widely hailed for drawing all nations together to tackle climate change, based on bottom-up contributions that will be reviewed and strengthened over time. This dashboard provides and overview where emissions stand, what countries and sector are causing them and what countries have proposed to address climate change.</p>`}
+              description={`<p>The Paris Agreement calls for countries to come back to the table every five years – in 2020, 2025 and so on -- with new national climate commitments (NDCs) informed by the latest advances in technology, science and shifting economic trends.</p>`}
             />
             <AutocompleteSearch />
           </div>

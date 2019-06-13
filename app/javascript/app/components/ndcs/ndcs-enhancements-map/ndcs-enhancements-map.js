@@ -14,10 +14,7 @@ import { actions as modalActions } from 'components/modal-metadata';
 import Component from './ndcs-enhancements-map-component';
 
 import {
-  getCategories,
-  getCategoryIndicators,
-  tableGetCategory,
-  mergeIndicators,
+  getMapIndicator,
   getPathsWithStyles,
   getISOCountries,
   getLinkToDataExplorer,
@@ -42,11 +39,8 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: ndcsEnhancementsWithSelection.query,
     paths: getPathsWithStyles(ndcsEnhancementsWithSelection),
-    categories: getCategories(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
-    indicators: getCategoryIndicators(ndcsEnhancementsWithSelection),
-    indicator: mergeIndicators(ndcsEnhancementsWithSelection),
-    category: tableGetCategory(ndcsEnhancementsWithSelection),
+    indicator: getMapIndicator(ndcsEnhancementsWithSelection),
     tableData: tableRemoveIsoFromData(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
@@ -134,6 +128,7 @@ class NDCMapContainer extends PureComponent {
       handleInfoClick: this.handleInfoClick,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
+      indicator: this.props.indicator,
       countryData: this.state.country,
       tableData: this.props.tableData,
       summaryData: this.props.summaryData
@@ -145,7 +140,6 @@ NDCMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
-  indicator: PropTypes.object.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };

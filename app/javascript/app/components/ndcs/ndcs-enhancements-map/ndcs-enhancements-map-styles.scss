@@ -16,6 +16,7 @@
 
 .containerControls {
   @include columns((8,4));
+
   margin-bottom:40px;
   margin-top: 20px;
 }
@@ -61,18 +62,38 @@
 }
 
 .containerMap {
-  padding-left:calc(#{$gutter-padding} / 2);
+  @media #{$tablet-landscape} {
+    padding-left:calc(#{$gutter-padding} / 2);
+  }
+
+  padding-top:calc(#{$gutter-padding} / 2);
 }
 
 .containerUpper {
-  @include columns((4,8));
+  
+  @media #{$tablet-landscape} {
+      @include columns((4,8));
+  }
 }
 
 .containerCharts {
-  box-shadow:20px 0 20px -20px $chart-fill-gray;
-  color:$dark-gray;
-  &,> div {
-    height:100%;
+
+  box-shadow:0 20px 20px -20px $chart-fill-gray;
+
+  > div {
+    @include columns(50%);
+  }
+
+  @media #{$tablet-landscape} {
+    box-shadow:20px 0 20px -20px $chart-fill-gray;
+
+    &,> div {
+      height:100%;
+    }
+
+    > div {
+      @include columns(100%);
+    }
   }
 }
 
