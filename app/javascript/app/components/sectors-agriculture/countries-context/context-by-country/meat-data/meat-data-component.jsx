@@ -90,6 +90,8 @@ const MeatData = ({
                   onLegendChange={handleLegendChange}
                   barSize={40}
                   barGap={0}
+                  margin={{ top: 20, right: 0, left: -10, bottom: 0 }}
+                  showUnit
                 />
               ) : (
                 <NoContent

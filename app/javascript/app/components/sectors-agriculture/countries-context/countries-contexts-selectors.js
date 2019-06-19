@@ -3,28 +3,26 @@ import { isEmpty, orderBy, some } from 'lodash';
 import { format } from 'd3-format';
 import { precentageTwoPlacesRound } from 'utils/utils';
 
+const DEFAULT_COUNTRY = 'USA';
+
 const getCountriesContextsData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.data;
 
 const getCountriesContextsMetaData = ({ agricultureCountriesContexts }) =>
   agricultureCountriesContexts && agricultureCountriesContexts.meta;
 
-const getWBCountriesData = ({ wbCountryData }) =>
-  wbCountryData && wbCountryData.data;
+const getWBCountriesData = ({ wbCountryData }) => wbCountryData && wbCountryData.data;
 const getLocationsData = ({ countries }) => countries && countries.data;
 const getSearch = ({ search }) => search || null;
 
-const getIndicatorsLabels = createSelector(
-  [getCountriesContextsMetaData],
-  contextsMetaData => {
-    if (!contextsMetaData) return null;
-    const myLabels = contextsMetaData.reduce((obj, item) => {
-      obj[item.short_name] = item.indicator;
-      return obj;
-    }, {});
-    return { ...myLabels };
-  }
-);
+const getIndicatorsLabels = createSelector([getCountriesContextsMetaData], contextsMetaData => {
+  if (!contextsMetaData) return null;
+  const myLabels = contextsMetaData.reduce((obj, item) => {
+    obj[item.short_name] = item.indicator;
+    return obj;
+  }, {});
+  return { ...myLabels };
+});
 
 const legendHtmlDot = (text, color, value, unit) => {
   const returnedValue = value ? `${value} ${unit}` : 'No data';
@@ -33,7 +31,7 @@ const legendHtmlDot = (text, color, value, unit) => {
   </span>${text}</p><p style="color: ${color};">${returnedValue}<p/>`;
 };
 
-const formatValue = (value, unit) => value ? `${format('.2s')(value)} ${unit}` : 'No data';
+const formatValue = (value, unit) => (value ? `${format('.2s')(value)} ${unit}` : 'No data');
 
 const getChartConfig = (labels, year, unit, colors, suffix) => ({
   outerRadius: 55,
@@ -66,23 +64,20 @@ const getCountries = createSelector(getLocationsData, locations => {
   }));
 });
 
-export const getSelectedCountry = createSelector(
-  [getSearch, getCountries],
-  (search, countries) => {
-    if (!search && !search.country && isEmpty(countries)) return null;
-    if (search && !search.country && !isEmpty(countries)) return countries[0];
-    const selectedCountry = countries.find(c => c.value === search.country);
-    return selectedCountry;
+export const getSelectedCountry = createSelector([getSearch, getCountries], (search, countries) => {
+  if (!search && !search.country && isEmpty(countries)) return null;
+  if (search && !search.country && !isEmpty(countries)) {
+    return countries.find(c => c.value === DEFAULT_COUNTRY) || countries[0];
   }
-);
+  const selectedCountry = countries.find(c => c.value === search.country);
+  return selectedCountry;
+});
 
 const getYears = createSelector(
   [getCountriesContextsData, getSelectedCountry],
   (data, selectedCountry) => {
     if (isEmpty(data) || !selectedCountry) return null;
-    const selectedCountryData = data.filter(
-      d => d.iso_code3 === selectedCountry.value
-    );
+    const selectedCountryData = data.filter(d => d.iso_code3 === selectedCountry.value);
     return orderBy(selectedCountryData, 'year', 'desc').map(r => ({
       label: r.year.toString(),
       value: r.year.toString()
@@ -90,21 +85,13 @@ const getYears = createSelector(
   }
 );
 
-export const getSelectedYear = createSelector(
-  [getSearch, getYears],
-  (search, years) => {
-    if (!search && !search.countryYear && !years) return null;
-    if (
-      (!search ||
-        !search.countryYear ||
-        !some(years, ['value', search.countryYear])) &&
-      years
-    ) {
-      return years[0];
-    }
-    return { label: search.countryYear, value: search.countryYear };
+export const getSelectedYear = createSelector([getSearch, getYears], (search, years) => {
+  if (!search && !search.countryYear && !years) return null;
+  if ((!search || !search.countryYear || !some(years, ['value', search.countryYear])) && years) {
+    return years[0];
   }
-);
+  return { label: search.countryYear, value: search.countryYear };
+});
 
 const getCardsData = createSelector(
   [
@@ -135,17 +122,13 @@ const getCardsData = createSelector(
         {
           value: yearData.employment_agri_female,
           label: indicatorsLabels.employment_agri_female,
-          valueLabel: `${precentageTwoPlacesRound(
-            yearData.employment_agri_female
-          )}%`,
+          valueLabel: `${precentageTwoPlacesRound(yearData.employment_agri_female)}%`,
           color: '#0677B3'
         },
         {
           value: yearData.employment_agri_male,
           label: indicatorsLabels.employment_agri_male,
-          valueLabel: `${precentageTwoPlacesRound(
-            yearData.employment_agri_male
-          )}%`,
+          valueLabel: `${precentageTwoPlacesRound(yearData.employment_agri_male)}%`,
           color: '#1ECDB0'
         }
       ],
@@ -172,8 +155,7 @@ const getCardsData = createSelector(
       chartData: [
         {
           name: 'agricultureProduction',
-          value:
-            wbCountryData && wbCountryData.gdp * yearData.value_added_agr / 100,
+          value: wbCountryData && wbCountryData.gdp * yearData.value_added_agr / 100,
           fill: '#0677B3'
         },
         {
@@ -245,9 +227,7 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Agricultural activities',
             '#0677B3',
-            yearData.water_withdrawal
-              ? format('.2')(yearData.water_withdrawal)
-              : undefined,
+            yearData.water_withdrawal ? format('.2')(yearData.water_withdrawal) : undefined,
             '%'
           )
         }
@@ -264,7 +244,10 @@ const getCardsData = createSelector(
     const fertilizer = {
       bulletList: [
         `Fertilizer use: ${formatValue(yearData.total_fertilizers, 'tonnes')}`,
-        `Pesticides use: ${formatValue(yearData.total_pesticides_use, 'tonnes of active ingredients')}`
+        `Pesticides use: ${formatValue(
+          yearData.total_pesticides_use,
+          'tonnes of active ingredients'
+        )}`
       ],
       title: 'Fertilizer and pesticide use',
       text:
