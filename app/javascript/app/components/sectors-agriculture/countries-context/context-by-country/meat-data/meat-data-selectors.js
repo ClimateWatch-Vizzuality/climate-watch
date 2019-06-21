@@ -357,7 +357,7 @@ const getAxesConfig = createSelector(
         name: 'Meat',
         unit: indicatorMeta && indicatorMeta.unit,
         format: 'number',
-        label: { dx: 2, dy: 14, className: '' }
+        label: { dx: 10, dy: 10, className: '' }
       }
     };
   }

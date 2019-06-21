@@ -5,7 +5,8 @@ import { format } from 'd3-format';
 import getIsoCode from './location-selectors';
 
 const AGRICULTURE_COLOR = '#0677B3';
-const TOTAL_EMISSION = 'Total excluding LUCF';
+const TOTAL_EXCLUDING_LUCF = 'Total excluding LUCF';
+const TOTAL_INCLUDING_LUCF = 'Total including LUCF';
 const INCLUDED_SECTORS = [
   'Agriculture',
   'Energy',
@@ -34,47 +35,58 @@ export const getPieChartData = createSelector([getGhgEmissionsDataByLocation], d
     return { sector, location, ...lastYearEmission };
   });
 
-  const totalLastYearEmission = lastYearEmissions.find(
-    ({ sector }) => sector && sector === TOTAL_EMISSION
+  const totalIncludingLUCF = lastYearEmissions.find(
+    ({ sector }) => sector && sector === TOTAL_INCLUDING_LUCF
+  );
+  const totalExcludingLUCF = lastYearEmissions.find(
+    ({ sector }) => sector && sector === TOTAL_EXCLUDING_LUCF
   );
 
   const filteredEmissions = lastYearEmissions.filter(
     ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
   ); // filter for negative emission for Forestry sector and total LUCF sectors
 
-  if (!filteredEmissions || !totalLastYearEmission) return null;
+  if (!filteredEmissions || !totalIncludingLUCF || !totalExcludingLUCF) return null;
 
   const formatEmissionValue = value => {
-    const formatted = `${format('.2s')(value * API_SCALE)}t${UNITS.CO2e}`;
+    const formatted = `${format('.3s')(value * API_SCALE)}t${UNITS.CO2e}`;
     const onlyNumber = parseFloat(formatted);
     const rest = formatted.replace(onlyNumber, '');
     return `${onlyNumber} ${rest}`;
   };
+  const formatPercentage = (value) => `${format('.2f')(value)}%`;
+  const emissionObject = (value, total) => ({
+    value,
+    percentageValue: (value * 100) / total,
+    get formattedValue() {
+      return formatEmissionValue(this.value);
+    },
+    get formattedPercentage() {
+      return formatPercentage(this.percentageValue);
+    }
+  });
 
   const sectorEmissions = filteredEmissions.map(({ sector, value }) => ({
     name: getColumnValue(sector).toLowerCase(),
-    value,
     sector,
-    formattedValue: formatEmissionValue(value),
-    formattedPercentage: `${format('.2f')(value * 100 / totalLastYearEmission.value)}%`,
-    percentageValue: value * 100 / totalLastYearEmission.value
+    ...emissionObject(value, totalExcludingLUCF.value)
   }));
 
   const agricultureRow = sectorEmissions.find(({ name }) => name === 'agriculture');
 
   if (!agricultureRow) return null;
 
-  const sectorsEmissionsData = agricultureRow
-    ? [agricultureRow, ...sectorEmissions.filter(({ name }) => name !== 'agriculture')]
-    : sectorEmissions;
-  const x = {
-    year: filteredEmissions[0] && filteredEmissions[0].year,
+  return {
+    year: filteredEmissions[0] && String(filteredEmissions[0].year),
     location: filteredEmissions[0] && filteredEmissions[0].location,
-    emissionValue: agricultureRow && agricultureRow.formattedValue,
-    emissionPercentage: agricultureRow && agricultureRow.formattedPercentage,
-    data: sectorsEmissionsData
+    agricultureEmissions: {
+      includingLUCF: emissionObject(agricultureRow.value, totalIncludingLUCF.value),
+      excludingLUCF: emissionObject(agricultureRow.value, totalExcludingLUCF.value)
+    },
+    totalExcludingLUCF: formatEmissionValue(totalExcludingLUCF.value),
+    totalIncludingLUCF: formatEmissionValue(totalIncludingLUCF.value),
+    data: sectorEmissions
   };
-  return x;
 });
 
 const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
@@ -112,17 +124,11 @@ export const getPieChartPayload = createSelector(
   [getPieChartData, getPieChartConfig, getGhgEmissionsLoading],
   (pieChartData, config, loading) => {
     if (!pieChartData || !config) return null;
-    const { location, year, emissionValue, emissionPercentage, data } = pieChartData;
-    const color = AGRICULTURE_COLOR;
 
     return {
-      location,
-      year: `${year}`,
-      emissionValue,
-      emissionPercentage,
-      data,
+      ...pieChartData,
+      color: AGRICULTURE_COLOR,
       config,
-      color,
       loading
     };
   }
