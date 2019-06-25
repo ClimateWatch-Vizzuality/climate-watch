@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { Card, PieChart } from 'cw-components';
+import { Card, PieChart, TooltipChart } from 'cw-components';
 import NoContent from 'components/no-content';
 
 import styles from './indicator-card-styles.scss';
@@ -101,7 +101,12 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
               card.chartData &&
               card.chartData.some(l => l.value) && (
                 <div className={styles.chart}>
-                  <PieChart data={card.chartData} width={150} config={card.chartConfig} />
+                  <PieChart
+                    data={card.chartData}
+                    width={150}
+                    config={card.chartConfig}
+                    customTooltip={card.tooltipValueFormat ? <TooltipChart getCustomYLabelFormat={card.tooltipValueFormat} /> : null}
+                  />
                 </div>
               )
             }
