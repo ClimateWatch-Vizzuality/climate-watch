@@ -32,6 +32,11 @@ const legendHtmlDot = (text, color, value, unit) => {
 };
 
 const formatValue = (value, unit) => (value ? `${format('.2s')(value)} ${unit}` : 'No data');
+const formatMoney = (value) => format('.2s')(value)
+  .replace('k', ' thousand')
+  .replace('M', ' million')
+  .replace('G', ' billion')
+  .replace('T', ' trillion');
 
 const getChartConfig = (labels, year, unit, colors, suffix) => ({
   outerRadius: 55,
@@ -149,7 +154,7 @@ const getCardsData = createSelector(
           { label: 'Total GDP', slug: 'totalGDP' }
         ],
         y.label,
-        '$',
+        '$USD',
         ['#0677B3', '#CACCD0']
       ),
       chartData: [
@@ -164,6 +169,7 @@ const getCardsData = createSelector(
           fill: '#CACCD0'
         }
       ],
+      tooltipValueFormat: (value) => formatMoney(value),
       title: 'GDP indicators',
       countryName: c.label,
       legend: [
@@ -174,7 +180,7 @@ const getCardsData = createSelector(
               'Agriculture production',
               '#0677B3',
               yearData.value_added_agr
-                ? format('.2s')(
+                ? formatMoney(
                   wbCountryData.gdp
                     ? wbCountryData.gdp * yearData.value_added_agr / 100
                     : yearData.value_added_agr
@@ -187,7 +193,7 @@ const getCardsData = createSelector(
           text: legendHtmlDot(
             'Total GDP',
             '#CACCD0',
-            format('.2s')(wbCountryData ? wbCountryData.gdp : 0),
+            formatMoney(wbCountryData ? wbCountryData.gdp : 0),
             '$USD'
           )
         }
