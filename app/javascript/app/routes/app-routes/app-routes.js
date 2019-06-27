@@ -48,6 +48,7 @@ import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
+const FEATURE_NDCS_ENHANCEMENTS = process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
 export default [
   {
     path: '/',
@@ -129,7 +130,7 @@ export default [
     headerColor: '#035388',
     routes: NDCSContentRoutes
   },
-  {
+  FEATURE_NDCS_ENHANCEMENTS && {
     path: '/ndcs-enhancements',
     component: NDCSEnhancements,
     headerImage: 'ndc',
