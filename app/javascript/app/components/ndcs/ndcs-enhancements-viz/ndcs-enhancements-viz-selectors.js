@@ -46,22 +46,23 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const getMapIndicator = createSelector(
-  [getIndicatorsParsed,getISOCountries],
-  (indicators = [],isos) => {
+  [getIndicatorsParsed, getISOCountries],
+  (indicators = [], isos) => {
     if (!indicators || !indicators.length) return null;
-    const mapIndicator = indicators
-      .find(ind => ind.value == "ndce_status_2020");
+    const mapIndicator = indicators.find(
+      ind => ind.value == 'ndce_status_2020'
+    );
 
     //Set all countries without values to "No Information" by default
     console.log(mapIndicator);
     isos.forEach(iso => {
       if (!mapIndicator.locations[iso]) {
         mapIndicator.locations[iso] = {
-          value:mapIndicator.legendBuckets[237].name,
-          label_id:237
-        }
+          value: mapIndicator.legendBuckets[237].name,
+          label_id: 237
+        };
       }
-    })
+    });
     return mapIndicator;
   }
 );
@@ -91,27 +92,14 @@ const countryStyles = {
 };
 
 export const MAP_COLORS = [
-  [
-    'rgb(254, 224, 141)',
-    'rgb(80, 129, 166)',
-    'rgb(172, 187, 191)'
-  ],
-  [
-    'rgb(254, 224, 141)',
-    'rgb(80, 129, 166)',
-    'rgb(172, 187, 191)'
-  ],
-  [
-    'rgb(254, 224, 141)',
-    'rgb(80, 129, 166)',
-    'rgb(172, 187, 191)'
-  ]
-
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(172, 187, 191)'],
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(172, 187, 191)'],
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(172, 187, 191)']
 ];
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator,getISOCountries],
-  (indicator,isos) => {
+  [getMapIndicator, getISOCountries],
+  (indicator, isos) => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
@@ -135,11 +123,7 @@ export const getPathsWithStyles = createSelector(
         let style = countryStyles;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(
-            legendBuckets,
-            legendIndex,
-            MAP_COLORS
-          );
+          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...countryStyles,
             default: {
@@ -163,7 +147,8 @@ export const getPathsWithStyles = createSelector(
       return null;
     });
     return paths;
-});
+  }
+);
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
   const section = 'ndc-enhancements';
@@ -173,8 +158,8 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
 //Chart data methods
 
 export const summarizeIndicators = createSelector(
-  [getIndicatorsParsed,getMapIndicator],
-  (indicators,indicator) => {
+  [getIndicatorsParsed, getMapIndicator],
+  (indicators, indicator) => {
     if (!indicator || !indicators) return null;
     let summaryData = {};
     //Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
@@ -190,8 +175,7 @@ export const summarizeIndicators = createSelector(
               type == 'submitted' ? '1' : '2',
               MAP_COLORS
             ),
-            label:
-              'countries have stated their intention to submit a 2020 NDC'
+            label: 'countries have stated their intention to submit a 2020 NDC'
           }
         },
         emissions: {

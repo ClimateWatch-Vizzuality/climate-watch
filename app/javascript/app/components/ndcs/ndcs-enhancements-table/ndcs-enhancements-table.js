@@ -4,40 +4,49 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
+import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { actions } from 'pages/ndcs-enhancements';
+import { europeSlug, europeanCountries } from 'app/data/european-countries';
+
+import { actions as fetchActions } from 'pages/ndcs-enhancements';
 
 import Component from './ndcs-enhancements-table-component';
+
 import {
-  getCategories,
-  getCategoryIndicators,
-  getCategory,
-  //getIndicator,
-  removeIsoFromData
+  getISOCountries,
+  tableRemoveIsoFromData
 } from './ndcs-enhancements-table-selectors';
+
+const actions = { ...fetchActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcsEnhancements;
-  const { data: countries } = state.countries;
+  const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsEnhancementsWithSelection = {
     ...data,
-    countries,
-    query: search.search
+    countries: countries.data,
+    query: search.search,
+    search
   };
-
   return {
     loading,
     query: ndcsEnhancementsWithSelection.query,
-    categories: getCategories(ndcsEnhancementsWithSelection),
-    indicators: getCategoryIndicators(ndcsEnhancementsWithSelection),
-    category: getCategory(ndcsEnhancementsWithSelection),
-    //indicator: getIndicator(ndcsEnhancementsWithSelection),
-    data: removeIsoFromData(ndcsEnhancementsWithSelection)
+    isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
+    tableData: tableRemoveIsoFromData(ndcsEnhancementsWithSelection)
   };
 };
 
 class NDCSEnhancementsTableContainer extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  handleSearchChange = query => {
+    this.updateUrlParam({ name: 'search', value: query });
+  };
+
   componentWillMount() {
     this.props.fetchNDCSEnhancements();
   }
@@ -46,14 +55,9 @@ class NDCSEnhancementsTableContainer extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
-  updateUrlParam(param) {
+  updateUrlParam(param, clear) {
     const { history, location } = this.props;
-    history.replace(getLocationParamUpdated(location, param));
-    handleAnalytics(
-      'NDC Content Table',
-      'Searches for something in the table',
-      param.value
-    );
+    history.replace(getLocationParamUpdated(location, param, clear));
   }
 
   render() {
@@ -64,15 +68,16 @@ class NDCSEnhancementsTableContainer extends PureComponent {
     return createElement(Component, {
       ...this.props,
       noContentMsg,
-      handleSearchChange: this.handleSearchChange
+      handleSearchChange: this.handleSearchChange,
+      tableData: this.props.tableData
     });
   }
 }
 
 NDCSEnhancementsTableContainer.propTypes = {
-  query: PropTypes.string,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  isoCountries: PropTypes.array.isRequired,
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };
 

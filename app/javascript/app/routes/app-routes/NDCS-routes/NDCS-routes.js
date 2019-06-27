@@ -1,5 +1,6 @@
 const activeId = 'ndc';
-const FEATURE_NDCS_ENHANCEMENTS = process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
+const FEATURE_NDCS_ENHANCEMENTS =
+  process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
 export default [
   {
     path: '/ndcs-content',
