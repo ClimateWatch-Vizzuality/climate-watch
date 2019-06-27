@@ -29,31 +29,31 @@ const NDCSEnhancementsTable = ({
   noContentMsg
 }) => (
   <div>
-      <div className={styles.wrapper}>
-        {loading && <Loading light className={styles.loader} />}
-        {!loading && (
-          <div className={styles.filtersLayout}>
-            {renderSearch(handleSearchChange, query)}
-          </div>
-        )}
-        {!loading &&
-        tableData &&
-        tableData.length > 0 && (
-          <div className={styles.tableWrapper}>
-            <Table 
-              data={tableData}
-              horizontalScroll 
-              urlInData 
-              parseHtml 
-              dynamicRowsHeight={true}
-            />
-          </div>
-        )}
-        {!loading &&
-        (!tableData || tableData.length <= 0) && (
-          <NoContent className={styles.noContent} message={noContentMsg} />
-        )}
-      </div>
+    <div className={styles.wrapper}>
+      {loading && <Loading light className={styles.loader} />}
+      {!loading && (
+        <div className={styles.filtersLayout}>
+          {renderSearch(handleSearchChange, query)}
+        </div>
+      )}
+      {!loading &&
+      tableData &&
+      tableData.length > 0 && (
+        <div className={styles.tableWrapper}>
+          <Table
+            data={tableData}
+            horizontalScroll
+            urlInData
+            parseHtml
+            dynamicRowsHeight={true}
+          />
+        </div>
+      )}
+      {!loading &&
+      (!tableData || tableData.length <= 0) && (
+        <NoContent className={styles.noContent} message={noContentMsg} />
+      )}
+    </div>
   </div>
 );
 
