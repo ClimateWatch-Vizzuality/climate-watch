@@ -144,4 +144,6 @@ NDCSEnhancementsVizContainer.propTypes = {
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, actions)(NDCSEnhancementsVizContainer));
+export default withRouter(
+  connect(mapStateToProps, actions)(NDCSEnhancementsVizContainer)
+);
