@@ -1,28 +1,33 @@
 @import '~styles/layout.scss';
 @import '~styles/settings.scss';
 
-.filtersLayout {
-  @include columns(6);
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
 
-  > * {
-    @include xy-gutters($gutter-position: ('bottom'));
-  }
-
-  @media #{$tablet-landscape} {
-    @include columns(3);
-
-    margin-bottom: 36px;
-  }
+.column {
+  @include columns();
 }
 
 .searchBox {
   @media #{$tablet-landscape} {
     @include column-offset(9, $gutters: true);
+
+    margin-top: 20px;
   }
 }
 
-.loader,
-.noContent {
-  margin-top: 25px;
-  min-height: 475px;
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.tableWrapper {
+  .ReactVirtualized__Table__Grid {
+    background:#fff !important;
+  }
 }

@@ -11,7 +11,7 @@ import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { actions as fetchActions } from 'pages/ndcs-enhancements';
 import { actions as modalActions } from 'components/modal-metadata';
 
-import Component from './ndcs-enhancements-map-component';
+import Component from './ndcs-enhancements-viz-component';
 
 import {
   getMapIndicator,
@@ -21,7 +21,7 @@ import {
   tableRemoveIsoFromData,
   summarizeIndicators,
   MAP_COLORS
-} from './ndcs-enhancements-map-selectors';
+} from './ndcs-enhancements-viz-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
 
@@ -48,7 +48,7 @@ const mapStateToProps = (state, { location }) => {
   };
 };
 
-class NDCMapContainer extends PureComponent {
+class NDCSEnhancementsVizContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,7 +136,7 @@ class NDCMapContainer extends PureComponent {
   }
 }
 
-NDCMapContainer.propTypes = {
+NDCSEnhancementsVizContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
@@ -144,4 +144,4 @@ NDCMapContainer.propTypes = {
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, actions)(NDCMapContainer));
+export default withRouter(connect(mapStateToProps, actions)(NDCSEnhancementsVizContainer));

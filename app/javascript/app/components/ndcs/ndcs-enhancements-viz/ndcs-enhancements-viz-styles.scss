@@ -51,12 +51,6 @@
   z-index: 10;
 }
 
-.tableWrapper {
-  .ReactVirtualized__Table__Grid {
-    background: #fff !important;
-  }
-}
-
 .containerUpper,.containerCharts,.containerMap {
   position:relative;
 }
@@ -70,14 +64,12 @@
 }
 
 .containerUpper {
-  
   @media #{$tablet-landscape} {
-      @include columns((4,8));
+    @include columns((4,8));
   }
 }
 
 .containerCharts {
-
   box-shadow:0 20px 20px -20px $chart-fill-gray;
 
   > div {

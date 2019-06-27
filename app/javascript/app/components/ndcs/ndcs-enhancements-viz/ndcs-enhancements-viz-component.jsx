@@ -5,21 +5,17 @@ import { Link } from 'react-router-dom';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
-import Dropdown from 'components/dropdown';
-import Search from 'components/search';
-import Table from 'components/table';
 import NoContent from 'components/no-content';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
-import darkSearch from 'styles/themes/search/search-dark.scss';
 import ModalMetadata from 'components/modal-metadata';
 import Card from 'components/card';
 import CircularChart from 'components/circular-chart';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
-import styles from './ndcs-enhancements-map-styles.scss';
+import styles from './ndcs-enhancements-viz-styles.scss';
 
 const getTooltip = (country, tooltipTxt) => (
   <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
@@ -36,7 +32,9 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Explore the interactive map and table to track which countries have signalled they will update or enhance their national climate plans (NDCs) by 2020.
+          Explore the data to track which countries have
+          signalled they will update or enhance their national climate plans
+          (NDCs) by 2020.
         </em>
       </p>
     </div>
@@ -68,17 +66,6 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
   </div>
 );
 
-const renderSearch = (searchHandler, query) => (
-  <Search
-    value={query}
-    theme={darkSearch}
-    onChange={searchHandler}
-    className={styles.searchBox}
-    placeholder="Search table data"
-    plain
-  />
-);
-
 const renderCircular = datum => (
   <div className={styles.circularChartContainer}>
     <div>
@@ -103,21 +90,17 @@ const renderCircular = datum => (
   </div>
 );
 
-const NDCSEnhancementsMap = ({
+const NDCSEnhancementsViz = ({
   loading,
   indicator,
   paths,
   tooltipTxt,
   downloadLink,
   countryData,
-  tableData,
-  tableHeaders,
   summaryData,
-  query,
   handleInfoClick,
   handleCountryClick,
   handleCountryEnter,
-  handleSearchChange,
   noContentMsg,
   mapColors
 }) => (
@@ -174,53 +157,22 @@ const NDCSEnhancementsMap = ({
         </div>
       )}
     </TabletLandscape>
-    <TabletLandscape>
-      {isTablet => (
-        <div className={styles.wrapper}>
-          {!loading && (
-            <div className={styles.filtersLayout}>
-              {renderSearch(handleSearchChange, query)}
-            </div>
-          )}
-          {!loading &&
-          tableData &&
-          tableData.length > 0 && (
-            <div className={styles.tableWrapper}>
-              <Table
-                horizontalScroll
-                urlInData
-                parseHtml
-                data={tableData}
-              />
-            </div>
-          )}
-          {!loading &&
-          (!tableData || tableData.length <= 0) && (
-            <NoContent className={styles.noContent} message={noContentMsg} />
-          )}
-        </div>
-      )}
-    </TabletLandscape>
   </div>
 );
 
-NDCSEnhancementsMap.propTypes = {
+NDCSEnhancementsViz.propTypes = {
   loading: PropTypes.bool,
   noContentMsg: PropTypes.string,
-  query: PropTypes.string,
   indicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
-  tableData: PropTypes.array,
-  tableHeaders: PropTypes.array,
   summaryData: PropTypes.object,
-  handleSearchChange: PropTypes.func.isRequired,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   mapColors: PropTypes.array
 };
 
-export default NDCSEnhancementsMap;
+export default NDCSEnhancementsViz;

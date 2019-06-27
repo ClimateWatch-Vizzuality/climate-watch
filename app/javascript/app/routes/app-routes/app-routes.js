@@ -30,7 +30,6 @@ import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSContentRoutes from './NDCSContent-routes';
-import NDCSEnhancementsRoutes from './NDCSEnhancements-routes';
 import MyCwRoutes from './my-cw-routes';
 import DataExplorerRoutes from './data-explorer-routes';
 import AboutRoutes from './about-routes';
@@ -46,9 +45,11 @@ import emissionPathwaysScenarioSections from './emission-pathways-scenario-secti
 import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
+import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
-const FEATURE_NDCS_ENHANCEMENTS = process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
+const FEATURE_NDCS_ENHANCEMENTS =
+  process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
 export default [
   {
     path: '/',
@@ -135,7 +136,7 @@ export default [
     component: NDCSEnhancements,
     headerImage: 'ndc',
     headerColor: '#035388',
-    routes: NDCSEnhancementsRoutes
+    sections: ndcsEnhancementsSections
   },
   {
     path: '/ndcs-sdg',
