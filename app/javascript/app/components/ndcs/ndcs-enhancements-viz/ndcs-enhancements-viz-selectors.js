@@ -54,7 +54,6 @@ export const getMapIndicator = createSelector(
     );
 
     //Set all countries without values to "No Information" by default
-    console.log(mapIndicator);
     isos.forEach(iso => {
       if (!mapIndicator.locations[iso]) {
         mapIndicator.locations[iso] = {
@@ -92,9 +91,9 @@ const countryStyles = {
 };
 
 export const MAP_COLORS = [
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(172, 187, 191)'],
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(172, 187, 191)'],
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(172, 187, 191)']
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(204, 204, 204)'],
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(204, 204, 204)'],
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(204, 204, 204)']
 ];
 
 export const getPathsWithStyles = createSelector(
@@ -188,7 +187,7 @@ export const summarizeIndicators = createSelector(
               MAP_COLORS
             ),
             suffix: '%',
-            label: 'of global emissions are represented by these countries'
+            label: 'of global emissions (2015 emissions data) are represented by these countries'
           }
         }
       };

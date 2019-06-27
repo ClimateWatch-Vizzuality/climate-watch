@@ -32,9 +32,8 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Explore the data to track which countries have
-          signalled they will update or enhance their national climate plans
-          (NDCs) by 2020.
+          Explore the data to track which countries have signalled they will
+          update or enhance their national climate plans (NDCs) by 2020.
         </em>
       </p>
     </div>
