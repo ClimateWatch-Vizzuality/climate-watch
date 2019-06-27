@@ -1,11 +1,12 @@
 const activeId = 'ndc';
+const FEATURE_NDCS_ENHANCEMENTS = process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
 export default [
   {
     path: '/ndcs-content',
     label: 'NDC Content',
     activeId
   },
-  {
+  FEATURE_NDCS_ENHANCEMENTS && {
     path: '/ndcs-enhancements',
     label: '2020 Ambition Tracker',
     activeId
