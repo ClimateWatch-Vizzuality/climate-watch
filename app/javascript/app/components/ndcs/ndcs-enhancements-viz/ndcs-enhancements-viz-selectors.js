@@ -150,7 +150,7 @@ export const getPathsWithStyles = createSelector(
 );
 
 export const getLinkToDataExplorer = createSelector([getSearch], search => {
-  const section = 'ndc-enhancements';
+  const section = 'ndcs';
   return generateLinkToDataExplorer(search, section);
 });
 
