@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
 import Search from 'components/search';
-import Table from 'components/table';
+import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import darkSearch from 'styles/themes/search/search-dark.scss';
@@ -46,6 +46,8 @@ const NDCSEnhancementsTable = ({
             urlInData
             parseHtml
             dynamicRowsHeight={true}
+            setColumnWidth={column => 1100/6}
+            defaultColumns={['country','Share of GHG Emissions','2020 NDC Status','Statement','Source Link','Statement Date']}
           />
         </div>
       )}
@@ -55,6 +57,7 @@ const NDCSEnhancementsTable = ({
       )}
     </div>
   </div>
+  
 );
 
 NDCSEnhancementsTable.propTypes = {
