@@ -89,13 +89,17 @@ export const tableRemoveIsoFromData = createSelector(
       try {
         date = new Date(d['Statement Date']);
         date = {
-          name:date.toLocaleDateString("en-US"),
-          value:date.getTime()
-        }
-      } catch (e) {};
+          name: date.toLocaleDateString('en-US'),
+          value: date.getTime()
+        };
+      } catch (e) {}
       d['Statement Date'] = date;
-      d['Source Link'] = d['Source Link'].replace("href=","target='_blank' href=");
-      d.country = "<a href='"+`/ndcs/country/${d.iso}`+"'>"+d.country+"</a>";
+      d['Source Link'] = d['Source Link'].replace(
+        'href=',
+        "target='_blank' href="
+      );
+      d.country =
+        "<a href='" + `/ndcs/country/${d.iso}` + "'>" + d.country + '</a>';
       delete d.iso;
       return d;
     });
