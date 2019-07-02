@@ -12,7 +12,7 @@ export default [
   },
   {
     hash: 'understand-countries-contexts',
-    label: 'Understand Countries’ Contexts',
+    label: 'Understand Country Context',
     anchor: true,
     component: CountriesContext
   },
