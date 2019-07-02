@@ -36,7 +36,7 @@ class CountriesContext extends PureComponent {
     return (
       <div className={styles.container}>
         <div>
-          <h2 className={styles.header}>Understand Countries{"'"} Context</h2>
+          <h2 className={styles.header}>Understand Country Context</h2>
           <div className={styles.intro}>
             <p className={styles.introText}>
               Agricultural practices and products not only influence emissions
