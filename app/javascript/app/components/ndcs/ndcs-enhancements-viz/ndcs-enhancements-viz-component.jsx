@@ -32,8 +32,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Explore the data to track which countries have signalled they will
-          update or enhance their national climate plans (NDCs) by 2020.
+          This page tracks countries which have signaled they will submit a new or updated national climate plan (NDC) by 2020. According to the Paris Agreement, every updated NDC should represent a progression from the last and reflect countries' "highest possible ambition."
         </em>
       </p>
     </div>

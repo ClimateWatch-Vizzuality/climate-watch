@@ -26,7 +26,7 @@ const NDCSEnhancements = ({ query, route }) => (
           <div className={styles.headerLayout}>
             <Intro
               title="2020 Ambition Tracker"
-              description={`<p>The Paris Agreement calls for countries to come back to the table every five years – in 2020, 2025 and so on -- with new national climate commitments (NDCs) informed by the latest advances in technology, science and shifting economic trends.</p>`}
+              description={`<p>The Paris Agreement calls on countries to deliver every five years new national climate commitments (NDCs) informed by the latest advances in technology, science and shifting economic trends.</p>`}
             />
             <AutocompleteSearch />
           </div>
