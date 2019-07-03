@@ -188,7 +188,7 @@ export const summarizeIndicators = createSelector(
             ),
             suffix: '%',
             label:
-              'of global emissions (2015 emissions data) are represented by these countries'
+              'of global emissions are represented by these countries (2015 emissions data)'
           }
         }
       };
