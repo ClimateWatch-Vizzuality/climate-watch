@@ -32,7 +32,10 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          This page tracks countries which have signaled they will submit a new or updated national climate plan (NDC) by 2020. According to the Paris Agreement, every updated NDC should represent a progression from the last and reflect countries' "highest possible ambition."
+          This page tracks countries which have signaled they will submit a new
+          or updated national climate plan (NDC) by 2020. According to the Paris
+          Agreement, every updated NDC should represent a progression from the
+          last and reflect countries' "highest possible ambition."
         </em>
       </p>
     </div>
