@@ -42,9 +42,6 @@ node {
   def base_envs = "--build-arg RAILS_ENV=production --build-arg secretKey=${secretKey}"
 
   def feature_flags_env = '--build-arg FEATURE_AGRICULTURE=true'
-  if (env.BRANCH_NAME == 'master') {
-    feature_flags_env = '--build-arg FEATURE_AGRICULTURE=false'
-  }
 
   def cw_files_env = "--build-arg CW_FILES_PREFIX=${cw_files_prefix}"
   def app_signal_env = "--build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}"
