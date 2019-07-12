@@ -69,7 +69,7 @@ export const getEmissionTypes = createSelector([getAgricultureEmissionsData], da
     uniqEmissionTypes.filter(({ label }) => label !== AGRICULTURE_TOTAL_EMISSIONS),
     ['label']
   );
-  return [totalOption, ...sortedEmissionTypes];
+  return [totalOption, ...sortedEmissionTypes].filter(et => et);
 });
 
 export const getEmissionTypeSelected = createSelector(

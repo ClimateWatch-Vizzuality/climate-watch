@@ -381,10 +381,10 @@ export const AGRICULTURE_INDICATORS_MAP_BUCKETS = {
   },
   total_fertilizers: {
     1: { name: 'No data', index: 0 },
-    2: { name: '0 - 10 tonnes', index: 1 },
-    3: { name: '10 - 100 tonnes', index: 2 },
-    4: { name: '100 - 1,000 tonnes', index: 3 },
-    5: { name: '> 1,000 tonnes', index: 4 }
+    2: { name: '0 - 10,000 tonnes', index: 1 },
+    3: { name: '10,000 - 100,000 tonnes', index: 2 },
+    4: { name: '100,000 - 1 million tonnes', index: 3 },
+    5: { name: '> 1 million tonnes', index: 4 }
   },
   value_added_agr: {
     1: { name: 'No data', index: 0 },

@@ -100,16 +100,20 @@ const getCategoriesOptions = createSelector(
   }
 );
 
-const getBreakByOptions = createSelector(() => [
-  { label: 'Absolute', value: TOTAL_FILTER },
-  { label: 'Per capita', value: PER_CAPITA_FILTER }
-]);
+const getBreakByOptions = createSelector(getSearch, (query) => {
+  return query && [TRADE_EXPORT, TRADE_IMPORT].includes(query[CATEGORY_KEY])
+    ? [{ label: 'Absolute', value: TOTAL_FILTER }]
+    : [
+      { label: 'Absolute', value: TOTAL_FILTER },
+      { label: 'Per capita', value: PER_CAPITA_FILTER }
+    ];
+});
 
 const getDataOptions = createSelector(
   [getSelectedCountry, getSearch],
   (selectedCountry, query) => {
     if (isEmpty(selectedCountry)) return null;
-    return query && query.breakBy === PER_CAPITA_FILTER
+    return query && query[BREAK_BY_KEY] === PER_CAPITA_FILTER
       ? [{ label: selectedCountry.label, value: selectedCountry.value }]
       : [
         { label: selectedCountry.label, value: selectedCountry.value },
@@ -136,7 +140,7 @@ const getSelectedCategory = createSelector(
   (query, defaults, categories) => {
     if (!defaults || !categories) return null;
     if (!query || !query[CATEGORY_KEY]) return defaults[CATEGORY_KEY];
-    return categories.find(c => c.value === query[CATEGORY_KEY]);
+    return categories.find(c => c.value === query[CATEGORY_KEY]) || categories[0];
   }
 );
 
@@ -156,7 +160,7 @@ const getSelectedBreakBy = createSelector(
   (query, defaults, breakByOptions) => {
     if (!defaults || !breakByOptions) return null;
     if (!query || !query[BREAK_BY_KEY]) return defaults[BREAK_BY_KEY];
-    return breakByOptions.find(o => o.value === query[BREAK_BY_KEY]);
+    return breakByOptions.find(o => o.value === query[BREAK_BY_KEY]) || breakByOptions[0];
   }
 );
 
@@ -357,7 +361,7 @@ const getAxesConfig = createSelector(
         name: 'Meat',
         unit: indicatorMeta && indicatorMeta.unit,
         format: 'number',
-        label: { dx: 2, dy: 14, className: '' }
+        label: { dx: 10, dy: 10, className: '' }
       }
     };
   }
