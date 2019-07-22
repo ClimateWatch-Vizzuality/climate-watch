@@ -7,7 +7,7 @@ import styles from './cookie-consent-styles';
 const COOKIE_BANNER_KEY = 'closed_cookie_banner';
 
 const cookieConsentText =
-  'This website uses cookies to provide you with an improved user experience. By continuing to browse this site, you consent to the use of cookies and similar technologies. For further details please visit our ';
+  'This website uses cookies to provide you with an improved user experience. By continuing to browse this site, you consent to the use of cookies and similar technologies. For further detailes, please visit our ';
 const privacyPolicyLink = 'https://www.wri.org/about/privacy-policy';
 
 class CookieConsent extends PureComponent {
@@ -34,10 +34,13 @@ class CookieConsent extends PureComponent {
         })}
       >
         <span>
-          {cookieConsentText} <a href={privacyPolicyLink}>privacy policy</a>.
+          {cookieConsentText}{' '}
+          <a className={styles.link} href={privacyPolicyLink}>
+            privacy policy
+          </a>.
         </span>
         <Button className={styles.button} onClick={this.handleClick}>
-          OK
+          Ok, got it
         </Button>
       </div>
     );
