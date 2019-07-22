@@ -1,0 +1,26 @@
+@import '~styles/settings';
+
+.container {
+  position: fixed;
+  bottom: 0%;
+  z-index: 15;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #FFC735;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: $font-family-1;
+  font-size: 14px;
+  color: #113750;
+}
+
+.button {
+  margin-left: 5px;
+  width: auto;
+  background-color: $white;
+}
+
+.containerHidden {
+  display: none;
+}
