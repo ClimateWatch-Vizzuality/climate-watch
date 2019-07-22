@@ -94,7 +94,7 @@ node {
             sh("sed -i -e 's/{name}/${appName}/g' k8s/staging/*.yaml")
             sh("kubectl apply -f k8s/staging/")
           }
-          sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record")
+          sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record --namespace=climate-watch")
           break
 
         // Roll out to production
@@ -126,7 +126,7 @@ node {
               sh("sed -i -e 's/{name}/${appName}/g' k8s/production/*.yaml")
               sh("kubectl apply -f k8s/production/")
             }
-            sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record")
+            sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record --namespace=climate-watch")
           } else {
             sh("echo NOT DEPLOYED")
             currentBuild.result = 'SUCCESS'
