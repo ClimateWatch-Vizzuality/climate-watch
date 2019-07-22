@@ -1,0 +1,45 @@
+@import '~styles/settings';
+
+.container {
+  position: fixed;
+  bottom: 0%;
+  z-index: 15;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #0A1941;
+  font-family: $font-family-1;
+  font-size: 14px;
+  color: #F4F5F6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media #{$tablet-landscape} {
+    flex-direction: row;
+  }
+}
+
+.link {
+  color: #F4F5F6;
+  text-decoration: underline;
+}
+
+.button {
+  margin-left: 5px;
+  width: 106px;
+  background-color: #FFC735;
+  text-transform: none;
+  color: #0A1941;
+  margin-top: 15px;
+  cursor: pointer;
+
+  @media #{$tablet-landscape} {
+    margin-top: 0;
+    width: 168px;
+  }
+}
+
+.containerHidden {
+  display: none;
+}
