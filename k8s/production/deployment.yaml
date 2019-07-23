@@ -97,8 +97,6 @@ spec:
                   key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
           - name: ESP_API
             value: "https://data.emissionspathways.org/api/v1"
-          - name: S3_BUCKET_NAME
-            value: "wri-sites"
           - name: GFW_API
             value: "https://production-api.globalforestwatch.org"
           - name: CORS_WHITELIST
