@@ -156,7 +156,7 @@ spec:
          - containerPort: 6379
         resources:
          requests:
-           memory: "0Mi"
-           cpu: "0m"
+           memory: 256Mi
+           cpu: 100m
 
       restartPolicy: Always
