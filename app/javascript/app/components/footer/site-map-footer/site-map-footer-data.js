@@ -3,6 +3,7 @@ export const siteMapData = [
     title: 'Tools',
     links: [
       { title: 'Country Profiles', href: '/countries' },
+      { title: 'Agriculture Sector', href: '/sectors/agriculture' },
       { title: 'NDCs', href: '/ndcs-content' },
       { title: 'NDC-SDG Linkages', href: '/ndcs-sdg' },
       { title: 'Historical GHG Emissions', href: '/ghg-emissions' },
