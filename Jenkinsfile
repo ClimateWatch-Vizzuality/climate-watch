@@ -42,9 +42,6 @@ node {
   def base_envs = "--build-arg RAILS_ENV=production --build-arg secretKey=${secretKey}"
 
   def feature_flags_env = '--build-arg FEATURE_AGRICULTURE=true'
-  if (env.BRANCH_NAME == 'master') {
-    feature_flags_env = '--build-arg FEATURE_AGRICULTURE=false'
-  }
 
   def cw_files_env = "--build-arg CW_FILES_PREFIX=${cw_files_prefix}"
   def app_signal_env = "--build-arg APPSIGNAL_PUSH_API_KEY=${env.CW_APP_SIGNAL}"
@@ -92,12 +89,12 @@ node {
         // Roll out to sandbox
         case "sandbox":
           sh("echo Deploying to STAGING app")
-          def service = sh([returnStdout: true, script: "kubectl get deploy ${appName}-staging || echo NotFound"]).trim()
+          def service = sh([returnStdout: true, script: "kubectl get deploy ${appName}-staging --namespace=climate-watch || echo NotFound"]).trim()
           if ((service && service.indexOf("NotFound") > -1) || (forceCompleteDeploy)){
             sh("sed -i -e 's/{name}/${appName}/g' k8s/staging/*.yaml")
             sh("kubectl apply -f k8s/staging/")
           }
-          sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record")
+          sh("kubectl set image deployment ${appName}-staging ${appName}-staging=${imageTag} --record --namespace=climate-watch")
           break
 
         // Roll out to production
@@ -124,12 +121,12 @@ node {
           }
           if (userInput == true && !didTimeout){
             sh("echo Deploying to PROD app")
-            def service = sh([returnStdout: true, script: "kubectl get deploy ${appName} || echo NotFound"]).trim()
+            def service = sh([returnStdout: true, script: "kubectl get deploy ${appName} --namespace=climate-watch || echo NotFound"]).trim()
             if ((service && service.indexOf("NotFound") > -1) || (forceCompleteDeploy)){
               sh("sed -i -e 's/{name}/${appName}/g' k8s/production/*.yaml")
               sh("kubectl apply -f k8s/production/")
             }
-            sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record")
+            sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record --namespace=climate-watch")
           } else {
             sh("echo NOT DEPLOYED")
             currentBuild.result = 'SUCCESS'

@@ -6,11 +6,11 @@ import uniq from 'lodash/uniq';
 import { arrayToSentence } from 'utils';
 import { getGhgEmissionDefaults, toPlural } from 'utils/ghg-emissions';
 import { sortLabelByAlpha } from 'utils/graphs';
-import { GAS_AGGREGATES, TOP_EMITTERS_OPTION, METRIC_OPTIONS } from 'data/constants';
+import { GAS_AGGREGATES, TOP_EMITTERS_OPTION, CALCULATION_OPTIONS } from 'data/constants';
 import { getMeta, getRegions, getSources, getSelection } from './ghg-emissions-selectors-get';
 
 const DEFAULTS = {
-  breakBy: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
+  breakBy: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
 };
 
 const getOptionSelectedFunction = filter => (options, selected) => {
@@ -42,15 +42,15 @@ const getSourceSelected = createSelector(
 const BREAK_BY_OPTIONS = [
   {
     label: 'Regions-Totals',
-    value: `regions-${METRIC_OPTIONS.ABSOLUTE_VALUE.value}`
+    value: `regions-${CALCULATION_OPTIONS.ABSOLUTE_VALUE.value}`
   },
   {
     label: 'Regions-Per Capita',
-    value: `regions-${METRIC_OPTIONS.PER_CAPITA.value}`
+    value: `regions-${CALCULATION_OPTIONS.PER_CAPITA.value}`
   },
   {
     label: 'Regions-Per GDP',
-    value: `regions-${METRIC_OPTIONS.PER_GDP.value}`
+    value: `regions-${CALCULATION_OPTIONS.PER_GDP.value}`
   },
   {
     label: 'Sectors',
@@ -276,7 +276,7 @@ const getChartConflicts = (metricSelected, chartSelected) => {
   const conflicts = [];
 
   if (['PER_CAPITA', 'PER_GDP'].includes(metricSelected) && chartSelected.value !== 'line') {
-    const metricOption = METRIC_OPTIONS[metricSelected];
+    const metricOption = CALCULATION_OPTIONS[metricSelected];
     conflicts.push(`${metricOption.label} metric is not allowed with ${chartSelected.label} chart`);
   }
 

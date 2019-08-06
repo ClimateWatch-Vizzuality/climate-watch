@@ -2,8 +2,6 @@ import { withProps } from 'recompose';
 
 import ndcImage from 'assets/partners/ndcp.png';
 import wriImage from 'assets/partners/wri.png';
-import climateAnalyticsImage from 'assets/partners/climate-analytics.png';
-import climateActionTrackerImage from 'assets/partners/climate-action-tracker.png';
 import worldBankImage from 'assets/partners/the-world-bank.png';
 import vizzualityImage from 'assets/partners/vizzuality.png';
 import ccImage from 'assets/partners/unfccc.jpg';
@@ -19,6 +17,7 @@ import dieImage from 'assets/partners/die.jpg';
 import seiImage from 'assets/partners/sei.png';
 import lseImage from 'assets/partners/lse-logo.png';
 import unepImage from 'assets/partners/partners-UNEP.png';
+import australianImage from 'assets/partners/australian_government.png';
 
 import Component from './about-partners-component';
 
@@ -35,24 +34,6 @@ const partnershipWith = {
       },
       description:
         'contributed to Climate Watch by providing NDC-related data based on the NDC Explorer.'
-    },
-    {
-      link: 'http://climateactiontracker.org/',
-      img: {
-        alt: 'Climate action',
-        src: climateActionTrackerImage
-      },
-      description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
-    },
-    {
-      link: 'http://climateanalytics.org/',
-      img: {
-        alt: 'Climate analytics',
-        src: climateAnalyticsImage
-      },
-      description:
-        'joined the Climate Watch development team and provided support in developing concepts for the scope and functions of Climate Watch.'
     },
     {
       link: 'https://www.giz.de/en/html/index.html',
@@ -211,11 +192,18 @@ const additionalData = {
   ]
 };
 
-const foundingBy = {
-  id: 'founding-by',
+const fundingBy = {
+  id: 'funding-by',
   title: 'Generous funding for this initiative is provided by',
   type: 'col4',
   partners: [
+    {
+      link: 'https://dfat.gov.au/pages/default.aspx',
+      img: {
+        alt: 'Australian Government',
+        src: australianImage
+      }
+    },
     {
       link:
         'https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy',
@@ -267,7 +255,7 @@ const foundingBy = {
 };
 
 const withSections = withProps(() => ({
-  sections: [partnershipWith, techPartnership, additionalData, foundingBy]
+  sections: [partnershipWith, techPartnership, additionalData, fundingBy]
 }));
 
 export default withSections(Component);

@@ -11,6 +11,7 @@ module Api
           attribute :indicator_name
           attribute :category_name
           attribute :category_id
+          attribute :category_unit
 
           def category_name
             object.emission_category&.name
@@ -18,6 +19,10 @@ module Api
 
           def category_id
             object.emission_category_id
+          end
+
+          def category_unit
+            object.emission_category&.unit
           end
         end
       end

@@ -236,32 +236,41 @@ class ImportIndc
   end
 
   def import_labels
-    indicators = @cait_labels.
-      group_by { |l| l[:indicator_name] }.
-      map { |k, v| [k, v.map { |i| i[:legend_item] }] }.
+    indicators = @cait_labels.group_by { |l| l[:indicator_name] }.
+      map { |k, v| [k, v.map { |i| {label: i[:legend_item], slug: i[:slug]} }] }.
       to_h
 
     indicators.each do |indicator_name, labels|
       indicator = Indc::Indicator.find_by(slug: indicator_name)
       next unless indicator
 
-      nds_label = labels.delete('No Document Submitted')
-      labels.each_with_index do |label, index|
+      no_document_submitted = 'No Document Submitted'
+      nds_label_obj = labels.detect { |obj| obj[:label] == no_document_submitted }
+      labels.reject! { |obj| obj[:label] == no_document_submitted }
+      labels.each_with_index do |label_obj, index|
         Indc::Label.create!(
           indicator: indicator,
-          value: label,
+          value: label_obj[:label],
+          slug: label_obj[:slug],
           index: index + 1
         )
       end
-      if nds_label.present?
-        # fixed index for the No Document Submitted label
-        Indc::Label.create!(indicator: indicator, value: nds_label, index: -2)
-      end
+      next unless nds_label_obj.present?
+
+      # fixed index for the No Document Submitted label
+      Indc::Label.create!(
+        indicator: indicator,
+        value: nds_label_obj[:label],
+        slug: nds_label_obj[:slug],
+        index: -2
+      )
     end
   end
 
   def import_values_cait
-    Indc::Indicator.where(source: [@sources_index['CAIT'], @sources_index['DIE']]).each do |indicator|
+    Indc::Indicator.
+      where(source: [@sources_index['CAIT'], @sources_index['DIE']]).
+      each do |indicator|
       @cait_data.each do |r|
         location = @locations_by_iso3[r[:iso]]
         unless location

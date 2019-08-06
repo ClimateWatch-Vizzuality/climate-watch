@@ -7,12 +7,20 @@ import EmissionsProvider from 'providers/emissions-provider';
 import styles from './card-pie-chart-styles.scss';
 import Tooltip from './tooltip/tooltip';
 
+const renderEmissionValue = value => (
+  <span
+    // eslint-disable-next-line react/no-danger
+    dangerouslySetInnerHTML={{
+      __html: value
+    }}
+  />
+);
+
 class CardPieChart extends PureComponent {
   renderAgricultureLabel = () => {
     const { pieChartData } = this.props;
     const color = pieChartData && pieChartData.color;
-    const emissionValue = pieChartData && pieChartData.emissionValue;
-    const emissionPercentage = pieChartData && pieChartData.emissionPercentage;
+    const emission = pieChartData && pieChartData.agricultureEmissions && pieChartData.agricultureEmissions.excludingLUCF;
 
     return (
       <div className={styles.agricultureLabel}>
@@ -27,10 +35,7 @@ class CardPieChart extends PureComponent {
             color={color}
           />
           <span className={styles.labelValue} style={{ color }}>
-            {`${emissionPercentage} (${emissionValue} `}
-            <span>
-              MtCO<sub>2</sub>)
-            </span>
+            {emission.formattedPercentage} ({renderEmissionValue(emission.formattedValue)})
           </span>
         </div>
       </div>
@@ -41,33 +46,27 @@ class CardPieChart extends PureComponent {
     const { pieChartData } = this.props;
     const data = pieChartData ? pieChartData.data : [];
     const config = pieChartData && pieChartData.config;
+
     return (
-      <PieChart
-        data={data}
-        width="100%"
-        height={250}
-        config={config}
-        customTooltip={<Tooltip />}
-      />
+      <PieChart data={data} width="100%" height={250} config={config} customTooltip={<Tooltip />} />
     );
   };
 
   renderLoading = () => {
     const { pieChartData } = this.props;
     const loading = pieChartData && pieChartData.loading;
-    return loading ? (
-      <Loading height="100%" />
-    ) : (
-      <NoContent message="No data available" />
-    );
+    return loading ? <Loading height="100%" /> : <NoContent message="No data available" />;
   };
 
   render() {
     const { pieChartData, ghgEmissionsFilters, isEmbed } = this.props;
     const location = pieChartData && pieChartData.location;
     const year = pieChartData && pieChartData.year;
-    const emissionValue = pieChartData && pieChartData.emissionValue;
-    const emissionPercentage = pieChartData && pieChartData.emissionPercentage;
+
+    const agricultureEmissions = pieChartData && pieChartData.agricultureEmissions;
+    const totalIncludingLUCF = pieChartData && pieChartData.totalIncludingLUCF;
+    const totalExcludingLUCF = pieChartData && pieChartData.totalExcludingLUCF;
+    const subtitle = pieChartData ? `${location} GHG emissions by sector in ${year} (excluding LUCF)` : '';
 
     const cardTheme = {
       card: isEmbed ? styles.fixedCardEmbed : styles.fixedCard,
@@ -79,20 +78,16 @@ class CardPieChart extends PureComponent {
       <div>
         <Card
           theme={cardTheme}
-          subtitle={
-            pieChartData ? `${location} agriculture emissions in ${year}` : ''
-          }
+          subtitle={subtitle}
         >
-          {pieChartData && emissionValue ? (
+          {pieChartData && agricultureEmissions ? (
             <div className={styles.cardContent}>
               <p className={styles.description}>
-                <span>{location}</span> in <span>{year}</span>, the Agriculture
-                sector contributed to{' '}
-                <span>
-                  {emissionValue} MtCO<sub>2</sub>e
-                </span>{' '}
-                GHG emissions, which represented{' '}
-                <span>{emissionPercentage}</span> of all emissions.
+                <span>{location}</span> in <span>{year}</span>, the Agriculture sector contributed{' '}
+                {renderEmissionValue(agricultureEmissions.excludingLUCF.formattedValue)} GHG emissions, which represented{' '}
+                <span>{agricultureEmissions.excludingLUCF.formattedPercentage}</span> of its total emissions excluding{' '}
+                land-use change and forestry ({renderEmissionValue(totalExcludingLUCF)}), and <span>{agricultureEmissions.includingLUCF.formattedPercentage}</span>{' '}
+                including LUCF ({renderEmissionValue(totalIncludingLUCF)})
               </p>
               <TabletLandscape>
                 {this.renderAgricultureLabel()}
@@ -116,13 +111,24 @@ class CardPieChart extends PureComponent {
   }
 }
 
+const EmissionObjectPropType = PropTypes.shape({
+  value: PropTypes.number,
+  percentageValue: PropTypes.number,
+  formattedValue: PropTypes.string,
+  formattedPercentage: PropTypes.string
+});
+
 CardPieChart.propTypes = {
   pieChartData: PropTypes.shape({
     location: PropTypes.string,
     year: PropTypes.string,
-    formattedValue: PropTypes.string,
-    formattedPercentage: PropTypes.string,
     color: PropTypes.string,
+    agricultureEmissions: PropTypes.shape({
+      includingLUCF: EmissionObjectPropType,
+      excludingLUCF: EmissionObjectPropType
+    }),
+    totalIncludingLUCF: PropTypes.string,
+    totalExcludingLUCF: PropTypes.string,
     data: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,

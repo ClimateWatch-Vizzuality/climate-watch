@@ -9,7 +9,16 @@ module Api
             render json: emissions,
                    adapter: :json,
                    each_serializer: Api::V1::Data::AgricultureProfile::EmissionSerializer,
-                   root: :data
+                   root: :data,
+                   meta: meta
+          end
+
+          private
+
+          def meta
+            {
+              emission_locations_with_data: ::AgricultureProfile::Emission.all_locations_iso_codes
+            }
           end
         end
       end

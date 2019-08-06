@@ -25,7 +25,9 @@ class SectorsAgriculture extends PureComponent {
       percentageEmission
     } = this.props;
     const percentageEmissionText =
-      (percentageEmission && `, producing ${percentageEmission} of all emissions`) || '';
+      (percentageEmission &&
+        `, producing ${percentageEmission} of all emissions`) ||
+      '';
 
     return (
       <div>
@@ -34,7 +36,7 @@ class SectorsAgriculture extends PureComponent {
             <div className="grid-column-item">
               <Intro
                 title="Agriculture"
-                description={`Agriculture is the second-largest contributor to global greenhouse gas emissions${percentageEmissionText}. This page shows you where emissions come from (including direct and indirect emissions), what actions countries have proposed in their NDCs and resources for more action.`}
+                description={`Agriculture is the second-largest contributor to global greenhouse gas emissions after the energy sector (including transport)${percentageEmissionText}. This page shows you where emissions come from (including direct and indirect emissions), what actions countries have proposed in their NDCs and resources for more action.`}
               />
             </div>
           </div>

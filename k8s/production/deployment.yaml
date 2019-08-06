@@ -1,6 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  namespace: climate-watch
   labels:
     name: {name}
   name: {name}
@@ -96,8 +97,6 @@ spec:
                   key: CW_PLATFORMS_S3_SECRET_ACCESS_KEY
           - name: ESP_API
             value: "https://data.emissionspathways.org/api/v1"
-          - name: S3_BUCKET_NAME
-            value: "wri-sites"
           - name: GFW_API
             value: "https://production-api.globalforestwatch.org"
           - name: CORS_WHITELIST
@@ -113,9 +112,9 @@ spec:
         imagePullPolicy: Always
         resources:
           requests:
-            memory: "128Mi"
-          limits:
             memory: "512Mi"
+          limits:
+            memory: "4Gi"
         args:
           - sidekiq
         env:
@@ -156,7 +155,7 @@ spec:
          - containerPort: 6379
         resources:
          requests:
-           memory: "0Mi"
-           cpu: "0m"
+           memory: 256Mi
+           cpu: 100m
 
       restartPolicy: Always

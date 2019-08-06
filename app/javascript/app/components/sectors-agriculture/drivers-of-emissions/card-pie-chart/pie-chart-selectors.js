@@ -1,15 +1,12 @@
 import { createSelector } from 'reselect';
-import {
-  getTooltipConfig,
-  getColumnValue,
-  getPieChartThemeConfig
-} from 'utils/graphs';
-import { GREY_CHART_COLORS } from 'data/constants';
+import { getTooltipConfig, getColumnValue, getPieChartThemeConfig } from 'utils/graphs';
+import { GREY_CHART_COLORS, UNITS } from 'data/constants';
 import { format } from 'd3-format';
 import getIsoCode from './location-selectors';
 
 const AGRICULTURE_COLOR = '#0677B3';
-const TOTAL_EMISSION = 'Total excluding LUCF';
+const TOTAL_EXCLUDING_LUCF = 'Total excluding LUCF';
+const TOTAL_INCLUDING_LUCF = 'Total including LUCF';
 const INCLUDED_SECTORS = [
   'Agriculture',
   'Energy',
@@ -17,10 +14,8 @@ const INCLUDED_SECTORS = [
   'Waste' /** , 'Land-Use Change and Forestry' */
 ];
 
-const getGhgEmissionsData = state =>
-  (state.emissions && state.emissions.data) || null;
-const getGhgEmissionsLoading = state =>
-  (state.emissions && state.emissions.loading) || false;
+const getGhgEmissionsData = state => (state.emissions && state.emissions.data) || null;
+const getGhgEmissionsLoading = state => (state.emissions && state.emissions.loading) || false;
 
 const getGhgEmissionsDataByLocation = createSelector(
   [getGhgEmissionsData, getIsoCode],
@@ -31,58 +26,68 @@ const getGhgEmissionsDataByLocation = createSelector(
   }
 );
 
-export const getPieChartData = createSelector(
-  [getGhgEmissionsDataByLocation],
-  data => {
-    if (!data || !data.length) return null;
-    const lastYearEmissions = data.map(({ emissions, sector, location }) => {
-      const lastYearEmission = emissions[emissions.length - 1];
-      return { sector, location, ...lastYearEmission };
-    });
+const API_SCALE = 1000000; // GHG emission data MtCO2e, we convert to tCO2e
 
-    const totalLastYearEmission = lastYearEmissions.find(
-      ({ sector }) => sector && sector === TOTAL_EMISSION
-    );
+export const getPieChartData = createSelector([getGhgEmissionsDataByLocation], data => {
+  if (!data || !data.length) return null;
+  const lastYearEmissions = data.map(({ emissions, sector, location }) => {
+    const lastYearEmission = emissions[emissions.length - 1];
+    return { sector, location, ...lastYearEmission };
+  });
 
-    const filteredEmissions = lastYearEmissions.filter(
-      ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
-    ); // filter for negative emission for Forestry sector and total LUCF sectors
+  const totalIncludingLUCF = lastYearEmissions.find(
+    ({ sector }) => sector && sector === TOTAL_INCLUDING_LUCF
+  );
+  const totalExcludingLUCF = lastYearEmissions.find(
+    ({ sector }) => sector && sector === TOTAL_EXCLUDING_LUCF
+  );
 
-    if (!filteredEmissions || !totalLastYearEmission) return null;
+  const filteredEmissions = lastYearEmissions.filter(
+    ({ sector, value }) => value > 0 && INCLUDED_SECTORS.includes(sector)
+  ); // filter for negative emission for Forestry sector and total LUCF sectors
 
-    const sectorEmissions = filteredEmissions.map(({ sector, value }) => ({
-      name: getColumnValue(sector).toLowerCase(),
-      value,
-      sector,
-      formattedValue: `${format('.2s')(value)}`,
-      formattedPercentage: `${format('.2f')(
-        value * 100 / totalLastYearEmission.value
-      )}%`,
-      percentageValue: value * 100 / totalLastYearEmission.value
-    }));
+  if (!filteredEmissions || !totalIncludingLUCF || !totalExcludingLUCF) return null;
 
-    const agricultureRow = sectorEmissions.find(
-      ({ name }) => name === 'agriculture'
-    );
+  const formatEmissionValue = value => {
+    const formatted = `${format('.3s')(value * API_SCALE)}t${UNITS.CO2e}`;
+    const onlyNumber = parseFloat(formatted);
+    const rest = formatted.replace(onlyNumber, '');
+    return `${onlyNumber} ${rest}`;
+  };
+  const formatPercentage = (value) => `${format('.2f')(value)}%`;
+  const emissionObject = (value, total) => ({
+    value,
+    percentageValue: (value * 100) / total,
+    get formattedValue() {
+      return formatEmissionValue(this.value);
+    },
+    get formattedPercentage() {
+      return formatPercentage(this.percentageValue);
+    }
+  });
 
-    if (!agricultureRow) return null;
+  const sectorEmissions = filteredEmissions.map(({ sector, value }) => ({
+    name: getColumnValue(sector).toLowerCase(),
+    sector,
+    ...emissionObject(value, totalExcludingLUCF.value)
+  }));
 
-    const sectorsEmissionsData = agricultureRow
-      ? [
-        agricultureRow,
-        ...sectorEmissions.filter(({ name }) => name !== 'agriculture')
-      ]
-      : sectorEmissions;
-    const x = {
-      year: filteredEmissions[0] && filteredEmissions[0].year,
-      location: filteredEmissions[0] && filteredEmissions[0].location,
-      emissionValue: agricultureRow && agricultureRow.formattedValue,
-      emissionPercentage: agricultureRow && agricultureRow.formattedPercentage,
-      data: sectorsEmissionsData
-    };
-    return x;
-  }
-);
+  const agricultureRow = sectorEmissions.find(({ name }) => name === 'agriculture');
+
+  if (!agricultureRow) return null;
+
+  return {
+    year: filteredEmissions[0] && String(filteredEmissions[0].year),
+    location: filteredEmissions[0] && filteredEmissions[0].location,
+    agricultureEmissions: {
+      includingLUCF: emissionObject(agricultureRow.value, totalIncludingLUCF.value),
+      excludingLUCF: emissionObject(agricultureRow.value, totalExcludingLUCF.value)
+    },
+    totalExcludingLUCF: formatEmissionValue(totalExcludingLUCF.value),
+    totalIncludingLUCF: formatEmissionValue(totalIncludingLUCF.value),
+    data: sectorEmissions
+  };
+});
 
 const getPieChartConfig = createSelector([getPieChartData], pieChartData => {
   if (!pieChartData || !pieChartData.data || !pieChartData.data.length) {
@@ -119,23 +124,11 @@ export const getPieChartPayload = createSelector(
   [getPieChartData, getPieChartConfig, getGhgEmissionsLoading],
   (pieChartData, config, loading) => {
     if (!pieChartData || !config) return null;
-    const {
-      location,
-      year,
-      emissionValue,
-      emissionPercentage,
-      data
-    } = pieChartData;
-    const color = AGRICULTURE_COLOR;
 
     return {
-      location,
-      year: `${year}`,
-      emissionValue,
-      emissionPercentage,
-      data,
+      ...pieChartData,
+      color: AGRICULTURE_COLOR,
       config,
-      color,
       loading
     };
   }

@@ -9,6 +9,7 @@ import { Desktop } from 'components/responsive';
 import NavBarMobile from 'components/navbar-mobile';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
+import CookieConsent from 'components/cookie-consent';
 import { HOME_PAGE } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 
@@ -18,17 +19,29 @@ class App extends PureComponent {
   render() {
     const { route, navRoutes, location, navbarMobileIsOpen } = this.props;
     return (
-      <div className={cx(styles.app, navbarMobileIsOpen ? styles.mobileMenuOpen : '')}>
+      <div
+        className={cx(
+          styles.app,
+          navbarMobileIsOpen ? styles.mobileMenuOpen : ''
+        )}
+      >
         <MetaDescription descriptionContext={HOME_PAGE} />
         <SocialMetadata descriptionContext={HOME_PAGE} href={location.href} />
         <CountriesProvider />
         <Desktop>
           {isDesktop =>
-            (isDesktop ? <NavBar routes={navRoutes} /> : <NavBarMobile routes={navRoutes} />)}
+            (isDesktop ? (
+              <NavBar routes={navRoutes} />
+            ) : (
+              <NavBarMobile routes={navRoutes} />
+            ))}
         </Desktop>
-        <div className={styles.pageWrapper}>{renderRoutes(route.routes.filter(r => r.path))}</div>
+        <div className={styles.pageWrapper}>
+          {renderRoutes(route.routes.filter(r => r.path))}
+        </div>
         <Footer />
         <UserReport />
+        <CookieConsent />
       </div>
     );
   }

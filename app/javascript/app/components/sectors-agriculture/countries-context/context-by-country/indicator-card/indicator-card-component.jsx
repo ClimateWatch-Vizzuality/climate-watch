@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { Card, PieChart } from 'cw-components';
+import { Card, PieChart, TooltipChart } from 'cw-components';
 import NoContent from 'components/no-content';
 
 import styles from './indicator-card-styles.scss';
@@ -13,7 +13,7 @@ const cardTheme = {
 };
 
 const renderLegend = (card, year) => {
-  const hasData = card.chartData.some(l => l.value);
+  const hasData = card.chartData && card.chartData.some(l => l.value);
   return hasData ? (
     <div className={cx(styles.textHtmlWrapper, styles.legend)}>
       {card.legend.map(i => (
@@ -23,6 +23,27 @@ const renderLegend = (card, year) => {
           className={styles.legendItem}
         />
       ))}
+    </div>
+  ) : (
+    <NoContent
+      message={card.noDataMessage || `No data for ${card.countryName} in ${year.value}`}
+      className={styles.noContent}
+      minHeight={100}
+    />
+  );
+};
+
+const renderBulletList = (card, year) => {
+  const hasData = card.bulletList && card.bulletList.length;
+  return hasData ? (
+    <div className={cx(styles.textHtmlWrapper, styles.bulletList)}>
+      <ul>
+        {card.bulletList.map(text => (
+          <li key={text}>
+            {text}
+          </li>
+        ))}
+      </ul>
     </div>
   ) : (
     <NoContent
@@ -74,12 +95,18 @@ const indicatorCardsComponent = ({ cards, selectedYear }) => (
             dangerouslySetInnerHTML={{ __html: card.text }}
           />
           <div className={styles.cardContent}>
+            {card.bulletList && renderBulletList(card, selectedYear)}
             {card.legend && renderLegend(card, selectedYear)}
             {
               card.chartData &&
               card.chartData.some(l => l.value) && (
                 <div className={styles.chart}>
-                  <PieChart data={card.chartData} width={150} config={card.chartConfig} />
+                  <PieChart
+                    data={card.chartData}
+                    width={150}
+                    config={card.chartConfig}
+                    customTooltip={card.tooltipValueFormat ? <TooltipChart getCustomYLabelFormat={card.tooltipValueFormat} /> : null}
+                  />
                 </div>
               )
             }

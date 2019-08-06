@@ -19,10 +19,11 @@ class DriversOfEmissions extends PureComponent {
     const emissionDescription = (
       <div className={styles.description}>
         <p>
-          Agriculture is one of the most rapidly growing sectors and accounts
-          for a significant portion of emissions in developing countries. GHG
-          emissions from agriculture consist mainly of non-CO<sub>2</sub> gases
-          produced by crop and livestock production and management activities.
+          Agriculture activities are responsible for more land-clearing than any
+          other sector, contributing a significant amount of emissions in
+          developing countries. GHG emissions from agriculture consist mainly of
+          non-CO<sub>2</sub> gases produced by crop and livestock production and
+          management activities.
         </p>
         <p>
           Explore what activities are driving agricultural emissions in the
