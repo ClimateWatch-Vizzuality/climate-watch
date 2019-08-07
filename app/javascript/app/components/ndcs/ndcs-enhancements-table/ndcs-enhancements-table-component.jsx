@@ -43,7 +43,6 @@ const NDCSEnhancementsTable = ({
           <Table
             data={tableData}
             horizontalScroll
-            urlInData
             parseHtml
             dynamicRowsHeight={true}
             setColumnWidth={column => 1100 / 6}

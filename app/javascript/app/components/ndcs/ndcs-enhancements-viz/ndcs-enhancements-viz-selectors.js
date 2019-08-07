@@ -53,12 +53,12 @@ export const getMapIndicator = createSelector(
       ind => ind.value == 'ndce_status_2020'
     );
 
-    //Set all countries without values to "No Information" by default
+    // Set all countries without values to "No Information" by default
     isos.forEach(iso => {
       if (!mapIndicator.locations[iso]) {
         mapIndicator.locations[iso] = {
-          value: mapIndicator.legendBuckets[237].name,
-          label_id: 237
+          value: mapIndicator.legendBuckets[238].name,
+          label_id: 238
         };
       }
     });
@@ -91,9 +91,10 @@ const countryStyles = {
 };
 
 export const MAP_COLORS = [
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(204, 204, 204)'],
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(204, 204, 204)'],
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(204, 204, 204)']
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)'],
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)'],
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)'],
+  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)']
 ];
 
 export const getPathsWithStyles = createSelector(
@@ -154,15 +155,15 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   return generateLinkToDataExplorer(search, section);
 });
 
-//Chart data methods
+// Chart data methods
 
 export const summarizeIndicators = createSelector(
   [getIndicatorsParsed, getMapIndicator],
   (indicators, indicator) => {
     if (!indicator || !indicators) return null;
-    let summaryData = {};
-    //Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
-    //ONLY planned 2020 NDCs currently displayed in component
+    const summaryData = {};
+    // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
+    // ONLY planned 2020 NDCs currently displayed in component
     ['planned', 'submitted'].forEach(type => {
       summaryData[type] = {
         countries: {
@@ -196,19 +197,23 @@ export const summarizeIndicators = createSelector(
     const emissionsIndicator = indicators.find(
       indicator => indicator.value == 'ndce_ghg'
     );
-    for (let l in indicator.locations) {
+    for (const l in indicator.locations) {
       const location = indicator.locations[l];
-      var type =
+      const type =
         location.label_id == 235
           ? 'submitted'
           : location.label_id == 236 ? 'planned' : null;
       if (type) {
         summaryData[type].countries.value++;
-        if (emissionsIndicator.locations[l])
+        if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
           );
+        }
       }
+    }
+    for (let type in summaryData) {
+      parseFloat(summaryData[type].emissions.value = summaryData[type].emissions.value.toFixed(1));
     }
     return summaryData;
   }
