@@ -91,10 +91,30 @@ const countryStyles = {
 };
 
 export const MAP_COLORS = [
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)'],
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)'],
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)'],
-  ['rgb(254, 224, 141)', 'rgb(80, 129, 166)', 'rgb(255, 0, 0)', 'rgb(204, 204, 204)']
+  [
+    'rgb(254, 224, 141)',
+    'rgb(80, 129, 166)',
+    'rgb(255, 0, 0)',
+    'rgb(204, 204, 204)'
+  ],
+  [
+    'rgb(254, 224, 141)',
+    'rgb(80, 129, 166)',
+    'rgb(255, 0, 0)',
+    'rgb(204, 204, 204)'
+  ],
+  [
+    'rgb(254, 224, 141)',
+    'rgb(80, 129, 166)',
+    'rgb(255, 0, 0)',
+    'rgb(204, 204, 204)'
+  ],
+  [
+    'rgb(254, 224, 141)',
+    'rgb(80, 129, 166)',
+    'rgb(255, 0, 0)',
+    'rgb(204, 204, 204)'
+  ]
 ];
 
 export const getPathsWithStyles = createSelector(
@@ -213,7 +233,11 @@ export const summarizeIndicators = createSelector(
       }
     }
     for (let type in summaryData) {
-      parseFloat(summaryData[type].emissions.value = summaryData[type].emissions.value.toFixed(1));
+      parseFloat(
+        (summaryData[type].emissions.value = summaryData[
+          type
+        ].emissions.value.toFixed(1))
+      );
     }
     return summaryData;
   }
