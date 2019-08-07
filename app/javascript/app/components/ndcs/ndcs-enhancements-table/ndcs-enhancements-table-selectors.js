@@ -88,19 +88,20 @@ export const tableRemoveIsoFromData = createSelector(
       let date = d['Statement Date'];
       try {
         date = new Date(d['Statement Date']);
-        date = !isNaN(date.getTime()) ? {
-          name: date.toLocaleDateString('en-US'),
-          value: date.getTime()
-        } : {
-          name: undefined,
-          value: undefined
-        };
+        date = !isNaN(date.getTime())
+          ? {
+              name: date.toLocaleDateString('en-US'),
+              value: date.getTime()
+            }
+          : {
+              name: undefined,
+              value: undefined
+            };
       } catch (e) {}
       d['Statement Date'] = date;
-      d['Source Link'] = d['Source Link'] ? d['Source Link'].replace(
-        'href=',
-        "target='_blank' href="
-      ) : undefined;
+      d['Source Link'] = d['Source Link']
+        ? d['Source Link'].replace('href=', "target='_blank' href=")
+        : undefined;
       d.country =
         "<a href='" + `/ndcs/country/${d.iso}` + "'>" + d.country + '</a>';
       delete d.iso;
