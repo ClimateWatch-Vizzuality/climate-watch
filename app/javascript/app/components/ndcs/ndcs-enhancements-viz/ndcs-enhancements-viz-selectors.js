@@ -214,69 +214,8 @@ export const summarizeIndicators = createSelector(
   }
 );
 
-//Table data methods
-
-export const tableGetSelectedData = createSelector(
-  [getIndicatorsParsed, getMapIndicator, getCountries],
-  (indicators, indicator, countries) => {
-    if (!indicators || !indicators.length || !indicators[0].locations)
-      return [];
-
-    return Object.keys(indicator.locations).map(iso => {
-      if (indicator.locations[iso].label_id !== 237) {
-        const countryData =
-          countries.find(country => country.iso_code3 === iso) || {};
-        let row = {
-          country: countryData.wri_standard_name || iso,
-          iso
-        };
-        indicators.forEach(ind => {
-          if (ind.locations[iso]) {
-            row[ind.label] = ind.locations[iso].value;
-          }
-        });
-        return row;
-      }
-      return false;
-    });
-  }
-);
-
-export const tableGetFilteredData = createSelector(
-  [tableGetSelectedData, getQuery],
-  (data, query) => {
-    if (!data || isEmpty(data)) return null;
-    return data.filter(d => {
-      let match = false;
-      for (let col in d) {
-        if (deburrUpper(d[col]).indexOf(query) > -1) {
-          match = true;
-          break;
-        }
-      }
-      return match;
-    });
-  }
-);
-
-export const tableRemoveIsoFromData = createSelector(
-  [tableGetFilteredData],
-  data => {
-    if (!data || isEmpty(data)) return null;
-    return data.map(d => {
-      const iso = d.iso;
-      delete d.iso;
-      return {
-        ...d,
-        urlNotShow: `/ndcs/country/${iso}`
-      };
-    });
-  }
-);
-
 export default {
   getMapIndicator,
-  tableRemoveIsoFromData,
   summarizeIndicators,
   getPathsWithStyles
 };

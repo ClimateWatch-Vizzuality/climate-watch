@@ -18,7 +18,6 @@ import {
   getPathsWithStyles,
   getISOCountries,
   getLinkToDataExplorer,
-  tableRemoveIsoFromData,
   summarizeIndicators,
   MAP_COLORS
 } from './ndcs-enhancements-viz-selectors';
@@ -41,7 +40,6 @@ const mapStateToProps = (state, { location }) => {
     paths: getPathsWithStyles(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
     indicator: getMapIndicator(ndcsEnhancementsWithSelection),
-    tableData: tableRemoveIsoFromData(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
     mapColors: MAP_COLORS
@@ -130,7 +128,6 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       handleSearchChange: this.handleSearchChange,
       indicator: this.props.indicator,
       countryData: this.state.country,
-      tableData: this.props.tableData,
       summaryData: this.props.summaryData
     });
   }
