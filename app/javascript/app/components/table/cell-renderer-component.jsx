@@ -53,18 +53,17 @@ const cellRenderer = ({
       </NavLink>
     );
   }
-  // render Html or finally cellData
-  return parseHtml ? (
-    // eslint-disable-next-line react/no-danger
-    <div dangerouslySetInnerHTML={{ __html: cellData }} />
+  const renderWhenEmpty = emptyValueLabel ? (
+    <div className={styles.emptyValue}>{emptyValueLabel}</div>
   ) : (
-    cellData ||
-    (emptyValueLabel ? (
-      <div className={styles.emptyValue}>{emptyValueLabel}</div>
-    ) : (
-      ''
-    ))
+    ''
   );
+  // render Html or finally cellData
+  return parseHtml
+    ? // eslint-disable-next-line react/no-danger
+    (cellData && <div dangerouslySetInnerHTML={{ __html: cellData }} />) ||
+      renderWhenEmpty
+    : cellData || renderWhenEmpty;
 };
 
 cellRenderer.propTypes = {
