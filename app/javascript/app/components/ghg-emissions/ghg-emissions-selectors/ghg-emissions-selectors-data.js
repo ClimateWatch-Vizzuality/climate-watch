@@ -34,20 +34,23 @@ import {
 const LEGEND_LIMIT = 10;
 
 const getShouldExpand = filter =>
-  createSelector([getModelSelected, getOptionsSelected], (modelSelected, selectedOptions) => {
-    const model = modelSelected && toPlural(modelSelected);
-    const dataSelected = selectedOptions[`${filter}Selected`];
+  createSelector(
+    [getModelSelected, getOptionsSelected],
+    (modelSelected, selectedOptions) => {
+      const model = modelSelected && toPlural(modelSelected);
+      const dataSelected = selectedOptions[`${filter}Selected`];
 
-    if (!selectedOptions || !model || model !== filter || !dataSelected) {
-      return false;
+      if (!selectedOptions || !model || model !== filter || !dataSelected) {
+        return false;
+      }
+
+      return !!(
+        dataSelected.length === 1 &&
+        dataSelected[0].expandsTo &&
+        dataSelected[0].expandsTo.length
+      );
     }
-
-    return !!(
-      dataSelected.length === 1 &&
-      dataSelected[0].expandsTo &&
-      dataSelected[0].expandsTo.length
-    );
-  });
+  );
 
 const getShouldExpandRegions = getShouldExpand('regions');
 const getShouldExpandGases = getShouldExpand('gases');
@@ -68,14 +71,18 @@ const getExpandedLegendRegionsSelected = createSelector(
 
     const latestValuesHash = {};
     Object.keys(groupedCountries).forEach(c => {
-      latestValuesHash[c] = groupedCountries[c].reduce((acc, v) => acc + getLastValue(v), 0);
+      latestValuesHash[c] = groupedCountries[c].reduce(
+        (acc, v) => acc + getLastValue(v),
+        0
+      );
     });
     const byLatestYearEmission = (a, b) =>
       (latestValuesHash[a.iso] > latestValuesHash[b.iso] ? -1 : 1);
     const sortedCountries = countryOptions.sort(byLatestYearEmission);
 
     if (data && sortedCountries.length > LEGEND_LIMIT) {
-      const othersGroup = data && sortedCountries.slice(LEGEND_LIMIT, -1).filter(o => o);
+      const othersGroup =
+        data && sortedCountries.slice(LEGEND_LIMIT, -1).filter(o => o);
       const othersOption = {
         iso: 'OTHERS',
         label: 'Others',
@@ -113,7 +120,9 @@ const getExpandedLegendGasesSelected = createSelector(
     if (!shouldExpandGases) return null;
 
     const selectedGas = selectedOptions.gasesSelected[0];
-    const gasOptions = selectedGas.expandsTo.map(id => options[model].find(o => o.value === id));
+    const gasOptions = selectedGas.expandsTo.map(id =>
+      options[model].find(o => o.value === id)
+    );
 
     return gasOptions;
   }
@@ -148,7 +157,12 @@ export const getLegendDataSelected = createSelector(
   ) => {
     const model = toPlural(modelSelected);
     const selectedModel = `${model}Selected`;
-    if (!selectedOptions || !modelSelected || !selectedOptions[selectedModel] || !options) {
+    if (
+      !selectedOptions ||
+      !modelSelected ||
+      !selectedOptions[selectedModel] ||
+      !options
+    ) {
       return null;
     }
 
@@ -174,10 +188,13 @@ const getExpandedData = createSelector(
     if (!othersOption) return data;
 
     const expandedRegionISO = othersOption.expandedOptionValue;
-    const expandedRegionData = data.find(d => d.iso_code3 === expandedRegionISO);
+    const expandedRegionData = data.find(
+      d => d.iso_code3 === expandedRegionISO
+    );
 
     const othEmByYear = {};
-    const regionBelongsToOthers = d => othersOption.expandsTo.includes(d.iso_code3);
+    const regionBelongsToOthers = d =>
+      othersOption.expandsTo.includes(d.iso_code3);
 
     // if expanded region like for example WORLD has it's own data line
     // then use that Total value to calculate Others value
@@ -189,7 +206,8 @@ const getExpandedData = createSelector(
       data.forEach(d => {
         if (expandedCountriesISOCodes.includes(d.iso_code3)) {
           d.emissions.forEach(e => {
-            exCountriesEmByYear[e.year] = (exCountriesEmByYear[e.year] || 0) + e.value;
+            exCountriesEmByYear[e.year] =
+              (exCountriesEmByYear[e.year] || 0) + e.value;
           });
         }
       });
@@ -225,16 +243,19 @@ const getSortedData = createSelector(getExpandedData, data => {
   return sortEmissionsByValue(data);
 });
 
-const getYColumnOptions = createSelector([getLegendDataSelected], legendDataSelected => {
-  if (!legendDataSelected) return null;
-  const getYOption = columns =>
-    columns &&
-    columns.map(d => ({
-      ...d,
-      value: d && getYColumnValue(d.label)
-    }));
-  return uniqBy(getYOption(legendDataSelected), 'value');
-});
+const getYColumnOptions = createSelector(
+  [getLegendDataSelected],
+  legendDataSelected => {
+    if (!legendDataSelected) return null;
+    const getYOption = columns =>
+      columns &&
+      columns.map(d => ({
+        ...d,
+        value: d && getYColumnValue(d.label)
+      }));
+    return uniqBy(getYOption(legendDataSelected), 'value');
+  }
+);
 
 const getCalculationData = createSelector([getWBData], data => {
   if (!data || isEmpty(data)) return null;
@@ -271,7 +292,7 @@ export const getChartData = createSelector(
     getCalculationData
   ],
   (data, regions, model, yColumnOptions, metric, calculationData) => {
-    if (!data || !data.length || !model || !calculationData || !regions) return null;
+    if (!data || !data.length || !model || !calculationData || !regions) { return null; }
     const yearValues = data[0].emissions.map(d => d.year);
     const metricField = {
       PER_CAPITA: 'population',
@@ -283,7 +304,8 @@ export const getChartData = createSelector(
     const regionWithOwnDataMembers = uniq(
       flatMap(regionsWithOwnData, r => r.members.map(m => m.iso_code3))
     );
-    const memberOfRegionWithOwnData = d => regionWithOwnDataMembers.includes(d.iso_code3);
+    const memberOfRegionWithOwnData = d =>
+      regionWithOwnDataMembers.includes(d.iso_code3);
 
     const isBreakByRegions = model === 'regions';
     const groupByKey = isBreakByRegions ? 'location' : model;
@@ -292,7 +314,9 @@ export const getChartData = createSelector(
     const expandedData = column => {
       if (!column.expandsTo) return null;
 
-      return flatMap(column.expandsTo, e => data.filter(d => d.iso_code3 === e)).filter(d => d);
+      return flatMap(column.expandsTo, e =>
+        data.filter(d => d.iso_code3 === e)
+      ).filter(d => d);
     };
 
     const expandRegionToCountries = iso => {
@@ -300,7 +324,8 @@ export const getChartData = createSelector(
       if (!region || !region.members) return iso;
       return flatMap(region.members, expandRegionToCountries);
     };
-    const expandRegionsToCountries = isos => uniq(flatMap(isos, expandRegionToCountries));
+    const expandRegionsToCountries = isos =>
+      uniq(flatMap(isos, expandRegionToCountries));
 
     const getMetricData = (year, region, column) => {
       const getMetricForYearAndRegion = (y, r) =>
@@ -331,7 +356,8 @@ export const getChartData = createSelector(
       const yItems = {};
 
       yColumnOptions.forEach(column => {
-        const dataForColumn = groupedData[column.label] || expandedData(column) || [];
+        const dataForColumn =
+          groupedData[column.label] || expandedData(column) || [];
         const key = column.value;
         let totalValue = null;
         let totalMetric = null;
@@ -340,9 +366,11 @@ export const getChartData = createSelector(
           if (!isBreakByRegions && memberOfRegionWithOwnData(d)) return;
 
           const yearEmissions = d.emissions.find(e => e.year === year);
-          const metricRatio = shouldHaveMetricData ? getMetricData(year, d.iso_code3, column) : 1;
+          const metricRatio = shouldHaveMetricData
+            ? getMetricData(year, d.iso_code3, column)
+            : 1;
 
-          if (yearEmissions && metricRatio) {
+          if (yearEmissions && yearEmissions.value && metricRatio) {
             totalValue += yearEmissions.value;
             totalMetric = shouldHaveMetricData ? totalMetric + metricRatio : 1;
           }
@@ -350,6 +378,8 @@ export const getChartData = createSelector(
 
         if (totalValue !== null && totalMetric !== null) {
           yItems[key] = totalValue * (DATA_SCALE / totalMetric);
+        } else {
+          yItems[key] = null;
         }
       });
 
@@ -372,7 +402,9 @@ export const getChartData = createSelector(
       const firstNotEmptyIndex = Number(middleIndexes[0]);
       const lastNotEmptyIndex = Number(middleIndexes[middleIndexes.length - 1]);
 
-      return dataToTrim.filter((_d, idx) => idx >= firstNotEmptyIndex && idx <= lastNotEmptyIndex);
+      return dataToTrim.filter(
+        (_d, idx) => idx >= firstNotEmptyIndex && idx <= lastNotEmptyIndex
+      );
     };
 
     return trimWithNoData(dataParsed);
