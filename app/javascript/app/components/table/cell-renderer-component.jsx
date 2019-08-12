@@ -58,12 +58,15 @@ const cellRenderer = ({
   ) : (
     ''
   );
+
+  if (!cellData) return renderWhenEmpty;
+
   // render Html or finally cellData
-  return parseHtml
-    ? // eslint-disable-next-line react/no-danger
-    (cellData && <div dangerouslySetInnerHTML={{ __html: cellData }} />) ||
-      renderWhenEmpty
-    : cellData || renderWhenEmpty;
+  return parseHtml ? (
+    <div dangerouslySetInnerHTML={{ __html: cellData }} /> // eslint-disable-line react/no-danger
+  ) : (
+    cellData
+  );
 };
 
 cellRenderer.propTypes = {
