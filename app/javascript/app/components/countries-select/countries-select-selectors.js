@@ -4,7 +4,7 @@ import sortBy from 'lodash/sortBy';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 
-const COUNTRY_PLATFORMS_ISOS = ['ZAF', 'IDN']; // ['IND'];
+const COUNTRY_PLATFORMS_ISOS = ['ZAF', 'IDN', 'IND'];
 
 const getCountries = state => sortBy(state.countries, 'wri_standard_name');
 export const getPreSelect = state => state.preSelect;
