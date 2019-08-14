@@ -83,12 +83,12 @@ class CountrySelectContainer extends PureComponent {
         name: 'South Africa Explorer',
         pin
       },
-      //      {
-      //        coordinates: [79.2167, 20.6448],
-      //        link: 'http://india-platform-staging.vizzuality.com',
-      //        name: 'India platform',
-      //        pin
-      //      },
+      {
+        coordinates: [79.2167, 20.6448],
+        link: 'https://indiaclimateexplorer.org/',
+        name: 'India platform',
+        pin
+      },
       {
         coordinates: [112.0149, -3.54],
         link: 'https://indonesia.climatewatchdata.org',
