@@ -118,8 +118,8 @@ const NDCSEnhancementsViz = ({
               {!loading &&
               summaryData && (
                 <div>
-                  {renderCircular(summaryData.planned.countries)}
-                  {renderCircular(summaryData.planned.emissions)}
+                  {renderCircular(summaryData.intend_2020.countries)}
+                  {renderCircular(summaryData.enhance_2020.countries)}
                 </div>
               )}
             </div>

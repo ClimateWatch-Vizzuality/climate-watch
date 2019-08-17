@@ -130,18 +130,6 @@
     padding-right: calc(#{$gutter-padding} / 2);
   }
 
-  &:first-child {
-    svg {
-      //Hiding initial circular chart for now because the number of countries will remain a small minority for some time
-      //Leaving functionality in place in case the data should be shown in the future
-      visibility: hidden;
-    }
-
-    .circularChartValues {
-      font-size: 4.5em;
-    }
-  }
-
   > div {
     position: relative;
 
@@ -157,6 +145,16 @@
 
   svg {
     height: 200px !important;
+  }
+
+  //Hiding circular charts for now because the number of countries will remain a small minority for some time
+  //Leaving functionality in place in case the data should be shown in the future
+  svg {
+    visibility: hidden;
+  }
+
+  .circularChartValues {
+    font-size: 4.5em;
   }
 }
 

@@ -11,6 +11,7 @@ import isEmpty from 'lodash/isEmpty';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
+const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 const getQuery = state => deburrUpper(state.query) || '';
 
@@ -19,9 +20,11 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getIndicatorsData, getISOCountries],
-  (indicators, isos) => {
+  [getCategories, getIndicatorsData, getISOCountries],
+  (categories, indicators, isos) => {
+    if (!categories) return null;
     if (!indicators || !indicators.length) return null;
+    const categoryId = Object.keys(categories).find(id => categories[id].slug == "ndc_enhancement");
     return sortBy(
       uniqBy(
         indicators.map(i => {
@@ -41,27 +44,33 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(11) > -1);
+    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId)) > -1);
   }
 );
 
 export const getMapIndicator = createSelector(
   [getIndicatorsParsed, getISOCountries],
-  (indicators = [], isos) => {
+  (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
     const mapIndicator = indicators.find(
       ind => ind.value == 'ndce_status_2020'
     );
 
-    // Set all countries without values to "No Information" by default
-    isos.forEach(iso => {
-      if (!mapIndicator.locations[iso]) {
-        mapIndicator.locations[iso] = {
-          value: mapIndicator.legendBuckets[238].name,
-          label_id: 238
-        };
+    if (mapIndicator) {
+      const noInfoId = Object.keys(mapIndicator.legendBuckets).find(id => mapIndicator.legendBuckets[id].slug == "no_info_2020");
+      // Set all countries without values to "No Information" by default
+      if (noInfoId) {
+        isos.forEach(iso => {
+          if (!mapIndicator.locations[iso]) {
+            mapIndicator.locations[iso] = {
+              value: mapIndicator.legendBuckets[noInfoId].name,
+              label_id: noInfoId,
+              label_slug:  mapIndicator.legendBuckets[noInfoId].slug
+            };
+          }
+        });
       }
-    });
+    }
     return mapIndicator;
   }
 );
@@ -93,27 +102,27 @@ const countryStyles = {
 export const MAP_COLORS = [
   [
     'rgb(254, 224, 141)',
+    'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(255, 0, 0)',
-    'rgb(204, 204, 204)'
+    'rgb(204, 204, 204)'    
   ],
   [
     'rgb(254, 224, 141)',
+    'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(255, 0, 0)',
-    'rgb(204, 204, 204)'
+    'rgb(204, 204, 204)'    
   ],
   [
     'rgb(254, 224, 141)',
+    'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(255, 0, 0)',
-    'rgb(204, 204, 204)'
+    'rgb(204, 204, 204)'    
   ],
   [
     'rgb(254, 224, 141)',
+    'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(255, 0, 0)',
-    'rgb(204, 204, 204)'
+    'rgb(204, 204, 204)'    
   ]
 ];
 
@@ -182,20 +191,41 @@ export const summarizeIndicators = createSelector(
   (indicators, indicator) => {
     if (!indicator || !indicators) return null;
     const summaryData = {};
+    const labels = Object.keys(indicator.legendBuckets).map(id => {
+      return {
+        ...indicator.legendBuckets[id],
+        id:id
+      }
+    })
+
     // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
-    // ONLY planned 2020 NDCs currently displayed in component
-    ['planned', 'submitted'].forEach(type => {
-      summaryData[type] = {
+    // Retain functionality for showing emissions percentage in case this becomes useful to display later
+    // ONLY "intent to submit" and "intent to enhance" 2020 NDCs currently displayed in component
+    // ONLY country totals currently displayed in component
+    labels.forEach(label => {
+      summaryData[label.slug] = {
         countries: {
           value: 0,
           max: Object.keys(indicator.locations).length,
           opts: {
             color: getColorByIndex(
               indicator.legendBuckets,
-              type == 'submitted' ? '1' : '2',
+              label.index,
               MAP_COLORS
             ),
-            label: 'countries have stated their intention to submit a 2020 NDC'
+            label: (() => {
+                switch (label.slug) {
+                case "enhance_2020":
+                  return "of those explicitly indicate enhanced ambition or action";
+                break;
+                case "intend_2020":
+                  return "countries have stated their intention to submit a 2020 NDC";
+                break;
+                default:
+                  return "countries";
+                break;
+              }
+            })()
           }
         },
         emissions: {
@@ -204,12 +234,11 @@ export const summarizeIndicators = createSelector(
           opts: {
             color: getColorByIndex(
               indicator.legendBuckets,
-              type == 'submitted' ? '1' : '2',
+              label.index,
               MAP_COLORS
             ),
             suffix: '%',
-            label:
-              'of global emissions are represented by these countries (2015 emissions data)'
+            label: 'of global emissions are represented by these countries (2015 emissions data)'
           }
         }
       };
@@ -219,14 +248,15 @@ export const summarizeIndicators = createSelector(
     );
     for (const l in indicator.locations) {
       const location = indicator.locations[l];
-      const type =
-        location.label_id == 235
-          ? 'submitted'
-          : location.label_id == 236 ? 'planned' : null;
+      const type = location.label_slug;
       if (type) {
         summaryData[type].countries.value++;
+        if (type == "enhance_2020") summaryData["intend_2020"].countries.value++;
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
+            emissionsIndicator.locations[l].value
+          );
+          if (type == "enhance_2020") summaryData["intend_2020"].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
           );
         }
