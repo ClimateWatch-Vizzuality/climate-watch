@@ -22,8 +22,7 @@ export const getISOCountries = createSelector([getCountries], countries =>
 export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
-    if (!categories) return null;
-    if (!indicators || !indicators.length) return null;
+    if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
       id => categories[id].slug == 'ndc_enhancement'
     );

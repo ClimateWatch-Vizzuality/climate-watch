@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
+const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 const getQuery = state => deburrUpper(state.query) || '';
 
@@ -15,9 +16,12 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getIndicatorsData, getISOCountries],
-  (indicators, isos) => {
-    if (!indicators || !indicators.length) return null;
+  [getCategories, getIndicatorsData, getISOCountries],
+  (categories, indicators, isos) => {
+    if (!categories || !indicators || !indicators.length) return null;
+    const categoryId = Object.keys(categories).find(
+      id => categories[id].slug == 'ndc_enhancement'
+    );
     return sortBy(
       uniqBy(
         indicators.map(i => {
@@ -31,7 +35,7 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(11) > -1);
+    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId)) > -1);
   }
 );
 
@@ -44,7 +48,7 @@ export const tableGetSelectedData = createSelector(
     const refIndicator = indicators[0];
 
     return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].label_id !== 237) {
+      if (refIndicator.locations[iso].label_slug !== "no_info_2020") {
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
         let row = {
