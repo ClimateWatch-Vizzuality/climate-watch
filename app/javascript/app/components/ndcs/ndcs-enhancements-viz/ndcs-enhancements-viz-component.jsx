@@ -34,7 +34,11 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
         <em>
           Explore the data to track which countries have signaled they will
           submit or enhance their national climate plans (NDCs) by 2020. Please
-          contact <a href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update" target="_blank">
+          contact{' '}
+          <a
+            href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
+            target="_blank"
+          >
             Rhys Gerholdt
           </a>.
         </em>
@@ -136,7 +140,8 @@ const NDCSEnhancementsViz = ({
                 dragEnable={false}
                 customCenter={!isTablet ? [10, -50] : null}
               />
-              {countryData && (tooltipTxt.length > 0) && (
+              {countryData &&
+              tooltipTxt.length > 0 && (
                 <ReactTooltip
                   className={styles.tooltipContainer}
                   id="ndcs-map-tooltip"

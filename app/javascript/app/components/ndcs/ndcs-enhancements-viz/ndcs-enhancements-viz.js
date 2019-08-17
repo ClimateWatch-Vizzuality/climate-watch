@@ -102,9 +102,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
         default:
           break;
       }
-      return tooltipTxt
-        ? tooltipTxt + '\n\nLearn more in table below.'
-        : '';
+      return tooltipTxt ? tooltipTxt + '\n\nLearn more in table below.' : '';
     } else {
       return '';
     }
