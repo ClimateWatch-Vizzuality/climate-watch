@@ -15,6 +15,7 @@ import Component from './ndcs-enhancements-viz-component';
 
 import {
   getMapIndicator,
+  getIndicatorsParsed,
   getPathsWithStyles,
   getISOCountries,
   getLinkToDataExplorer,
@@ -40,6 +41,7 @@ const mapStateToProps = (state, { location }) => {
     paths: getPathsWithStyles(ndcsEnhancementsWithSelection),
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
     indicator: getMapIndicator(ndcsEnhancementsWithSelection),
+    indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
     summaryData: summarizeIndicators(ndcsEnhancementsWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsEnhancementsWithSelection),
     mapColors: MAP_COLORS
@@ -65,14 +67,34 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
   getTooltipText() {
     const { geometryIdHover } = this.state;
-    const { indicator } = this.props;
+    const { indicator,indicators } = this.props;
     if (!geometryIdHover || !indicator) return '';
 
     const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
     const id = isEuropeanCountry ? europeSlug : geometryIdHover;
-    return indicator.locations && indicator.locations[id]
-      ? indicator.locations[id].value
-      : 'Not Applicable';
+
+    const dateIndicator = indicators.find(indicator => indicator.value == "ndce_date");
+    const statementIndicator = indicators.find(indicator => indicator.value == "ndce_statement");
+
+    if (indicator.locations && indicator.locations[id]) {
+      let tooltipTxt;
+      switch(indicator.locations[id].label_slug) {
+        case "submitted_2020":
+          tooltipTxt = "Submitted a 2020 NDC on "+dateIndicator.locations[id].value+".";
+        break;
+        case "intend_2020":
+          tooltipTxt = "Intends to Submit 2020 NDC \n\n"+statementIndicator.locations[id].value;
+        break;
+        case "enhance_2020":
+          tooltipTxt = "Intends to Enhance Ambition or Action \n"+statementIndicator.locations[id].value;
+        break;
+        default:
+        break;
+      }
+      return tooltipTxt ? tooltipTxt+"\n\nLearn more in table below." : indicator.locations[id].value;
+    } else {
+      return 'Not Applicable';
+    }
   }
 
   handleCountryClick = geography => {

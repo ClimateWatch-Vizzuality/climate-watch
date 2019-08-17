@@ -24,7 +24,9 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories) return null;
     if (!indicators || !indicators.length) return null;
-    const categoryId = Object.keys(categories).find(id => categories[id].slug == "ndc_enhancement");
+    const categoryId = Object.keys(categories).find(
+      id => categories[id].slug == 'ndc_enhancement'
+    );
     return sortBy(
       uniqBy(
         indicators.map(i => {
@@ -57,7 +59,9 @@ export const getMapIndicator = createSelector(
     );
 
     if (mapIndicator) {
-      const noInfoId = Object.keys(mapIndicator.legendBuckets).find(id => mapIndicator.legendBuckets[id].slug == "no_info_2020");
+      const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
+        id => mapIndicator.legendBuckets[id].slug == 'no_info_2020'
+      );
       // Set all countries without values to "No Information" by default
       if (noInfoId) {
         isos.forEach(iso => {
@@ -65,7 +69,7 @@ export const getMapIndicator = createSelector(
             mapIndicator.locations[iso] = {
               value: mapIndicator.legendBuckets[noInfoId].name,
               label_id: noInfoId,
-              label_slug:  mapIndicator.legendBuckets[noInfoId].slug
+              label_slug: mapIndicator.legendBuckets[noInfoId].slug
             };
           }
         });
@@ -104,25 +108,25 @@ export const MAP_COLORS = [
     'rgb(254, 224, 141)',
     'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(204, 204, 204)'    
+    'rgb(204, 204, 204)'
   ],
   [
     'rgb(254, 224, 141)',
     'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(204, 204, 204)'    
+    'rgb(204, 204, 204)'
   ],
   [
     'rgb(254, 224, 141)',
     'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(204, 204, 204)'    
+    'rgb(204, 204, 204)'
   ],
   [
     'rgb(254, 224, 141)',
     'rgb(55, 104, 141)',
     'rgb(80, 129, 166)',
-    'rgb(204, 204, 204)'    
+    'rgb(204, 204, 204)'
   ]
 ];
 
@@ -194,9 +198,9 @@ export const summarizeIndicators = createSelector(
     const labels = Object.keys(indicator.legendBuckets).map(id => {
       return {
         ...indicator.legendBuckets[id],
-        id:id
-      }
-    })
+        id: id
+      };
+    });
 
     // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
     // Retain functionality for showing emissions percentage in case this becomes useful to display later
@@ -214,16 +218,16 @@ export const summarizeIndicators = createSelector(
               MAP_COLORS
             ),
             label: (() => {
-                switch (label.slug) {
-                case "enhance_2020":
-                  return "of those explicitly indicate enhanced ambition or action";
-                break;
-                case "intend_2020":
-                  return "countries have stated their intention to submit a 2020 NDC";
-                break;
+              switch (label.slug) {
+                case 'enhance_2020':
+                  return 'of those explicitly indicate enhanced ambition or action';
+                  break;
+                case 'intend_2020':
+                  return 'countries have stated their intention to submit a 2020 NDC';
+                  break;
                 default:
-                  return "countries";
-                break;
+                  return 'countries';
+                  break;
               }
             })()
           }
@@ -238,7 +242,8 @@ export const summarizeIndicators = createSelector(
               MAP_COLORS
             ),
             suffix: '%',
-            label: 'of global emissions are represented by these countries (2015 emissions data)'
+            label:
+              'of global emissions are represented by these countries (2015 emissions data)'
           }
         }
       };
@@ -251,14 +256,16 @@ export const summarizeIndicators = createSelector(
       const type = location.label_slug;
       if (type) {
         summaryData[type].countries.value++;
-        if (type == "enhance_2020") summaryData["intend_2020"].countries.value++;
+        if (type == 'enhance_2020')
+          summaryData['intend_2020'].countries.value++;
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
           );
-          if (type == "enhance_2020") summaryData["intend_2020"].emissions.value += parseFloat(
-            emissionsIndicator.locations[l].value
-          );
+          if (type == 'enhance_2020')
+            summaryData['intend_2020'].emissions.value += parseFloat(
+              emissionsIndicator.locations[l].value
+            );
         }
       }
     }
@@ -275,6 +282,7 @@ export const summarizeIndicators = createSelector(
 
 export default {
   getMapIndicator,
+  getIndicatorsParsed,
   summarizeIndicators,
   getPathsWithStyles
 };
