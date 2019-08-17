@@ -48,7 +48,7 @@ export const tableGetSelectedData = createSelector(
     const refIndicator = indicators[0];
 
     return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].label_slug !== "no_info_2020") {
+      if (refIndicator.locations[iso].label_slug !== 'no_info_2020') {
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
         let row = {

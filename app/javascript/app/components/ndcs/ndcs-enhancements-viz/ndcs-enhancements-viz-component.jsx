@@ -136,7 +136,7 @@ const NDCSEnhancementsViz = ({
                 dragEnable={false}
                 customCenter={!isTablet ? [10, -50] : null}
               />
-              {countryData && (
+              {countryData && (tooltipTxt.length > 0) && (
                 <ReactTooltip
                   className={styles.tooltipContainer}
                   id="ndcs-map-tooltip"

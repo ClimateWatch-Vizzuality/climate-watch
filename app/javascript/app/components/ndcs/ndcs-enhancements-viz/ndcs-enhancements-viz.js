@@ -104,9 +104,9 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       }
       return tooltipTxt
         ? tooltipTxt + '\n\nLearn more in table below.'
-        : indicator.locations[id].value;
+        : '';
     } else {
-      return 'Not Applicable';
+      return '';
     }
   }
 
