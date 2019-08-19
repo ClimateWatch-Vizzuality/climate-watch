@@ -19,7 +19,7 @@ const NDCSLTS = ({ query, route }) => (
         <div className="grid-column-item">
           <div className={styles.headerLayout}>
             <Intro
-              title="2020 Ambition Tracker"
+              title="Long-term Strategy Tracker"
               description={`<p>The Paris Agreement calls on countries to deliver every five years new national climate commitments (NDCs) informed by the latest advances in technology, science and shifting economic trends.</p>`}
             />
             <AutocompleteSearch />
