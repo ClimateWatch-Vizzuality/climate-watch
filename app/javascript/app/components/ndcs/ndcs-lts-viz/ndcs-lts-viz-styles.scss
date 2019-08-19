@@ -50,7 +50,7 @@
   bottom: 12%;
 
   @media #{$tablet-landscape} {
-    bottom: 0;
+    bottom: -2em;
   }
 }
 
