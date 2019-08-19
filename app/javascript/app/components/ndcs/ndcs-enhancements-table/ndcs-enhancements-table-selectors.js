@@ -2,10 +2,8 @@ import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import isEmpty from 'lodash/isEmpty';
 
-const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
@@ -16,34 +14,33 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getCategories, getIndicatorsData, getISOCountries],
-  (categories, indicators, isos) => {
+  [getCategories, getIndicatorsData],
+  (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug == 'ndc_enhancement'
+      id => categories[id].slug === 'ndc_enhancement'
     );
     return sortBy(
       uniqBy(
-        indicators.map(i => {
-          return {
-            label: i.name,
-            value: i.slug,
-            categoryIds: i.category_ids,
-            locations: i.locations
-          };
-        }),
+        indicators.map(i => ({
+          label: i.name,
+          value: i.slug,
+          categoryIds: i.category_ids,
+          locations: i.locations
+        })),
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId)) > -1);
+    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
   }
 );
 
 export const tableGetSelectedData = createSelector(
   [getIndicatorsParsed, getCountries],
   (indicators, countries) => {
-    if (!indicators || !indicators.length || !indicators[0].locations)
+    if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
+    }
 
     const refIndicator = indicators[0];
 
@@ -51,7 +48,7 @@ export const tableGetSelectedData = createSelector(
       if (refIndicator.locations[iso].label_slug !== 'no_info_2020') {
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
-        let row = {
+        const row = {
           country: countryData.wri_standard_name || iso,
           iso
         };
@@ -73,12 +70,11 @@ export const tableGetFilteredData = createSelector(
     if (!data || isEmpty(data)) return null;
     return data.filter(d => {
       let match = false;
-      for (let col in d) {
+      Object.keys(d).forEach(col => {
         if (deburrUpper(d[col]).indexOf(query) > -1) {
           match = true;
-          break;
         }
-      }
+      });
       return match;
     });
   }
@@ -94,20 +90,23 @@ export const tableRemoveIsoFromData = createSelector(
         date = new Date(d['Statement Date']);
         date = !isNaN(date.getTime())
           ? {
-              name: date.toLocaleDateString('en-US'),
-              value: date.getTime()
-            }
+            name: date.toLocaleDateString('en-US'),
+            value: date.getTime()
+          }
           : {
-              name: undefined,
-              value: undefined
-            };
-      } catch (e) {}
+            name: undefined,
+            value: undefined
+          };
+      } catch (e) {
+        console.error(e);
+      }
       d['Statement Date'] = date;
       d['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
         : undefined;
-      d.country =
-        "<a href='" + `/ndcs/country/${d.iso}` + "'>" + d.country + '</a>';
+      d.country = `${"<a href='" +
+        `/ndcs/country/${d.iso}` +
+        "'>"}${d.country}</a>`;
       delete d.iso;
       return d;
     });

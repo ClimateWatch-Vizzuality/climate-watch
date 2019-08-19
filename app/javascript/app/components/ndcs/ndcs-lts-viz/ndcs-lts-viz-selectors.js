@@ -1,18 +1,15 @@
 import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
-import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
-import isEmpty from 'lodash/isEmpty';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
-const getQuery = state => deburrUpper(state.query) || '';
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
@@ -23,7 +20,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug == 'longterm_strategy'
+      id => categories[id].slug === 'longterm_strategy'
     );
     return sortBy(
       uniqBy(
@@ -44,7 +41,7 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId)) > -1);
+    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
   }
 );
 
@@ -52,13 +49,11 @@ export const getMapIndicator = createSelector(
   [getIndicatorsParsed, getISOCountries],
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
-    const mapIndicator = indicators.find(
-      ind => ind.value == 'lts'
-    );
+    const mapIndicator = indicators.find(ind => ind.value === 'lts');
 
     if (mapIndicator) {
       const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-        id => mapIndicator.legendBuckets[id].label == 'No Document Submitted'
+        id => mapIndicator.legendBuckets[id].label === 'No Document Submitted'
       );
       // Set all countries without values to "No Document Submitted" by default
       if (noInfoId) {
@@ -130,8 +125,8 @@ export const MAP_COLORS = [
 ];
 
 export const getPathsWithStyles = createSelector(
-  [getMapIndicator, getISOCountries],
-  (indicator, isos) => {
+  [getMapIndicator],
+  indicator => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
@@ -191,17 +186,16 @@ export const summarizeIndicators = createSelector(
   (indicators, indicator) => {
     if (!indicator || !indicators) return null;
     const summaryData = {};
-    const labels = Object.keys(indicator.legendBuckets).map(id => {
-      return {
-        ...indicator.legendBuckets[id],
-        id: id
-      };
-    });
-
-    console.log(labels);
+    const labels = Object.keys(indicator.legendBuckets).map(id => ({
+      ...indicator.legendBuckets[id],
+      id
+    }));
 
     labels.forEach(label => {
-      const slug = label.name == 'Long-term Strategy Submitted' ? 'submitted' : 'not_submitted';
+      const slug =
+        label.name === 'Long-term Strategy Submitted'
+          ? 'submitted'
+          : 'not_submitted';
 
       summaryData[slug] = {
         countries: {
@@ -241,12 +235,13 @@ export const summarizeIndicators = createSelector(
         }
       };
     });
-    const emissionsIndicator = indicators.find(
-      indicator => indicator.value == 'ndce_ghg'
-    );
-    for (const l in indicator.locations) {
+    const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
+    Object.keys(indicator.locations).forEach(l => {
       const location = indicator.locations[l];
-      const type = location.value == "Long-term Strategy Submitted" ? 'submitted' : 'not_submitted' //location.label_slug;
+      const type =
+        location.value === 'Long-term Strategy Submitted'
+          ? 'submitted'
+          : 'not_submitted'; // location.label_slug;
       if (type) {
         summaryData[type].countries.value++;
         if (emissionsIndicator && emissionsIndicator.locations[l]) {
@@ -255,14 +250,14 @@ export const summarizeIndicators = createSelector(
           );
         }
       }
-    }
-    for (let type in summaryData) {
+    });
+    Object.keys(summaryData).forEach(type => {
       parseFloat(
         (summaryData[type].emissions.value = summaryData[
           type
         ].emissions.value.toFixed(1))
       );
-    }
+    });
     return summaryData;
   }
 );

@@ -40,7 +40,6 @@ const mapStateToProps = (state, { location }) => {
     paths: getPathsWithStyles(ndcsLTSWithSelection),
     isoCountries: getISOCountries(ndcsLTSWithSelection),
     indicator: getMapIndicator(ndcsLTSWithSelection),
-    indicators: getIndicatorsParsed(ndcsLTSWithSelection),
     summaryData: summarizeIndicators(ndcsLTSWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsLTSWithSelection),
     mapColors: MAP_COLORS
@@ -56,10 +55,6 @@ class NDCSLTSVizContainer extends PureComponent {
     };
   }
 
-  handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
-  };
-
   componentWillMount() {
     this.props.fetchNDCSLTS();
   }
@@ -71,12 +66,19 @@ class NDCSLTSVizContainer extends PureComponent {
 
     const id = geometryIdHover;
 
-    if (indicator.locations && indicator.locations[id] && indicator.locations[id].value == "Long-term Strategy Submitted") {
+    if (
+      indicator.locations &&
+      indicator.locations[id] &&
+      indicator.locations[id].value === 'Long-term Strategy Submitted'
+    ) {
       return indicator.locations[id].value;
-    } else {
-      return '';
     }
+    return '';
   }
+
+  handleSearchChange = query => {
+    this.updateUrlParam({ name: 'search', value: query });
+  };
 
   handleCountryClick = geography => {
     const { isoCountries } = this.props;

@@ -2,10 +2,8 @@ import { createSelector } from 'reselect';
 import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import isEmpty from 'lodash/isEmpty';
 
-const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
@@ -17,33 +15,32 @@ export const getISOCountries = createSelector([getCountries], countries =>
 
 export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
-  (categories, indicators, isos) => {
+  (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug == 'longterm_strategy'
+      id => categories[id].slug === 'longterm_strategy'
     );
     return sortBy(
       uniqBy(
-        indicators.map(i => {
-          return {
-            label: i.name,
-            value: i.slug,
-            categoryIds: i.category_ids,
-            locations: i.locations
-          };
-        }),
+        indicators.map(i => ({
+          label: i.name,
+          value: i.slug,
+          categoryIds: i.category_ids,
+          locations: i.locations
+        })),
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId)) > -1);
+    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
   }
 );
 
 export const tableGetSelectedData = createSelector(
   [getIndicatorsParsed, getCountries],
   (indicators, countries) => {
-    if (!indicators || !indicators.length || !indicators[0].locations)
+    if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
+    }
 
     const refIndicator = indicators[0];
 
@@ -51,7 +48,7 @@ export const tableGetSelectedData = createSelector(
       if (refIndicator.locations[iso].value !== 'No Document Submitted') {
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
-        let row = {
+        const row = {
           country: countryData.wri_standard_name || iso,
           iso
         };
@@ -73,12 +70,11 @@ export const tableGetFilteredData = createSelector(
     if (!data || isEmpty(data)) return null;
     return data.filter(d => {
       let match = false;
-      for (let col in d) {
+      Object.keys(d).forEach(col => {
         if (deburrUpper(d[col]).indexOf(query) > -1) {
           match = true;
-          break;
         }
-      }
+      });
       return match;
     });
   }
@@ -90,11 +86,13 @@ export const tableRemoveIsoFromData = createSelector(
     if (!data || isEmpty(data)) return null;
 
     return data.map(d => {
-      d.country =
-        "<a href='" + `/ndcs/country/${d.iso}` + "'>" + d.country + '</a>';
-      delete d.iso;
-      delete d["Communication of Long-term Strategy"];
-      return d;
+      const datum = { ...d };
+      datum.country = `${"<a href='" +
+        `/ndcs/country/${d.iso}` +
+        "'>"}${d.country}</a>`;
+      delete datum.iso;
+      delete datum['Communication of Long-term Strategy'];
+      return datum;
     });
   }
 );

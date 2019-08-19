@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
-import { Link } from 'react-router-dom';
 import Search from 'components/search';
 import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
@@ -23,7 +21,6 @@ const renderSearch = (searchHandler, query) => (
 const NDCSEnhancementsTable = ({
   loading,
   tableData,
-  tableHeaders,
   query,
   handleSearchChange,
   noContentMsg
@@ -39,28 +36,28 @@ const NDCSEnhancementsTable = ({
       {!loading &&
       tableData &&
       tableData.length > 0 && (
-        <div className={styles.tableWrapper}>
-          <Table
-            data={tableData}
-            horizontalScroll
-            parseHtml
-            dynamicRowsHeight={true}
-            setColumnWidth={column => 1100 / 6}
-            defaultColumns={[
-              'country',
-              'Share of GHG Emissions',
-              '2020 NDC Status',
-              'Statement',
-              'Source Link',
-              'Statement Date'
-            ]}
-          />
-        </div>
-      )}
+      <div className={styles.tableWrapper}>
+            <Table
+          data={tableData}
+          horizontalScroll
+          parseHtml
+          dynamicRowsHeight
+          setColumnWidth={column => 1100 / 6}
+          defaultColumns={[
+                'country',
+                'Share of GHG Emissions',
+                '2020 NDC Status',
+                'Statement',
+                'Source Link',
+                'Statement Date'
+              ]}
+        />
+          </div>
+        )}
       {!loading &&
       (!tableData || tableData.length <= 0) && (
-        <NoContent className={styles.noContent} message={noContentMsg} />
-      )}
+      <NoContent className={styles.noContent} message={noContentMsg} />
+        )}
     </div>
   </div>
 );
@@ -70,7 +67,6 @@ NDCSEnhancementsTable.propTypes = {
   noContentMsg: PropTypes.string,
   query: PropTypes.string,
   tableData: PropTypes.array,
-  tableHeaders: PropTypes.array,
   handleSearchChange: PropTypes.func.isRequired
 };
 

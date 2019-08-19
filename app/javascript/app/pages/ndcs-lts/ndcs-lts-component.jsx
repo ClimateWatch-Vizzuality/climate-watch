@@ -1,5 +1,4 @@
 import React from 'react';
-import { renderRoutes } from 'react-router-config';
 import Proptypes from 'prop-types';
 import Header from 'components/header';
 import Intro from 'components/intro';
@@ -10,7 +9,7 @@ import { MetaDescription, SocialMetadata } from 'components/seo';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-lts-styles.scss';
 
-const NDCSLTS = ({ query, route }) => (
+const NDCSLTS = ({ route }) => (
   <div>
     <MetaDescription descriptionContext={NDC_LTS} subtitle="NDC LTS" />
     <SocialMetadata descriptionContext={NDC_LTS} href={location.href} />
@@ -20,7 +19,9 @@ const NDCSLTS = ({ query, route }) => (
           <div className={styles.headerLayout}>
             <Intro
               title="Long-term Strategy Tracker"
-              description={`<p>The Paris Agreement calls on countries to deliver every five years new national climate commitments (NDCs) informed by the latest advances in technology, science and shifting economic trends.</p>`}
+              description={
+                '<p>The Paris Agreement calls on countries to deliver every five years new national climate commitments (NDCs) informed by the latest advances in technology, science and shifting economic trends.</p>'
+              }
             />
             <AutocompleteSearch />
           </div>
@@ -43,7 +44,6 @@ const NDCSLTS = ({ query, route }) => (
 );
 
 NDCSLTS.propTypes = {
-  query: Proptypes.string,
   route: Proptypes.object.isRequired
 };
 

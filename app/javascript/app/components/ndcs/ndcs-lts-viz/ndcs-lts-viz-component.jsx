@@ -5,13 +5,11 @@ import { Link } from 'react-router-dom';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import MapLegend from 'components/map-legend';
-import NoContent from 'components/no-content';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
-import Card from 'components/card';
 import CircularChart from 'components/circular-chart';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
@@ -38,6 +36,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
           <a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Rhys Gerholdt
           </a>.
@@ -107,7 +106,6 @@ const NDCSLTSViz = ({
   handleInfoClick,
   handleCountryClick,
   handleCountryEnter,
-  noContentMsg,
   mapColors
 }) => (
   <div>
@@ -122,10 +120,8 @@ const NDCSLTSViz = ({
             <div className={styles.containerCharts}>
               {!loading &&
               summaryData && (
-                <div>
-                  {renderCircular(summaryData.submitted.countries)}
-                </div>
-              )}
+              <div>{renderCircular(summaryData.submitted.countries)}</div>
+                )}
             </div>
             <div className={styles.containerMap}>
               {loading && <Loading light className={styles.loader} />}
@@ -141,14 +137,14 @@ const NDCSLTSViz = ({
               />
               {countryData &&
               tooltipTxt.length > 0 && (
-                <ReactTooltip
-                  className={styles.tooltipContainer}
-                  id="ndcs-map-tooltip"
-                  delayHide={isTablet ? 0 : 3000}
-                >
-                  {getTooltip(countryData, tooltipTxt)}
-                </ReactTooltip>
-              )}
+              <ReactTooltip
+                    className={styles.tooltipContainer}
+                    id="ndcs-map-tooltip"
+                    delayHide={isTablet ? 0 : 3000}
+                  >
+                    {getTooltip(countryData, tooltipTxt)}
+                  </ReactTooltip>
+                )}
               {indicator && (
                 <MapLegend
                   className={styles.legend}
@@ -168,7 +164,6 @@ const NDCSLTSViz = ({
 
 NDCSLTSViz.propTypes = {
   loading: PropTypes.bool,
-  noContentMsg: PropTypes.string,
   indicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,

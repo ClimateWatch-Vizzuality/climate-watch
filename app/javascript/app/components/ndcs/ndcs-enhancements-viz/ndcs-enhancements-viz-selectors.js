@@ -7,13 +7,11 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
-import isEmpty from 'lodash/isEmpty';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
-const getQuery = state => deburrUpper(state.query) || '';
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
@@ -24,7 +22,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug == 'ndc_enhancement'
+      id => categories[id].slug === 'ndc_enhancement'
     );
     return sortBy(
       uniqBy(
@@ -45,7 +43,7 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId)) > -1);
+    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
   }
 );
 
@@ -54,12 +52,12 @@ export const getMapIndicator = createSelector(
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
     const mapIndicator = indicators.find(
-      ind => ind.value == 'ndce_status_2020'
+      ind => ind.value === 'ndce_status_2020'
     );
 
     if (mapIndicator) {
       const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-        id => mapIndicator.legendBuckets[id].slug == 'no_info_2020'
+        id => mapIndicator.legendBuckets[id].slug === 'no_info_2020'
       );
       // Set all countries without values to "No Information" by default
       if (noInfoId) {
@@ -131,7 +129,7 @@ export const MAP_COLORS = [
 
 export const getPathsWithStyles = createSelector(
   [getMapIndicator, getISOCountries],
-  (indicator, isos) => {
+  indicator => {
     if (!indicator) return [];
     const paths = [];
     worldPaths.forEach(path => {
@@ -194,12 +192,10 @@ export const summarizeIndicators = createSelector(
   (indicators, indicator) => {
     if (!indicator || !indicators) return null;
     const summaryData = {};
-    const labels = Object.keys(indicator.legendBuckets).map(id => {
-      return {
-        ...indicator.legendBuckets[id],
-        id: id
-      };
-    });
+    const labels = Object.keys(indicator.legendBuckets).map(id => ({
+      ...indicator.legendBuckets[id],
+      id
+    }));
 
     // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
     // Retain functionality for showing emissions percentage in case this becomes useful to display later
@@ -247,34 +243,34 @@ export const summarizeIndicators = createSelector(
         }
       };
     });
-    const emissionsIndicator = indicators.find(
-      indicator => indicator.value == 'ndce_ghg'
-    );
-    for (const l in indicator.locations) {
+    const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
+    Object.keys(indicator.locations).forEach(l => {
       const location = indicator.locations[l];
       const type = location.label_slug;
       if (type) {
         summaryData[type].countries.value++;
-        if (type == 'enhance_2020')
-          summaryData['intend_2020'].countries.value++;
+        if (type === 'enhance_2020') {
+          summaryData.intend_2020.countries.value++;
+        }
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
           );
-          if (type == 'enhance_2020')
-            summaryData['intend_2020'].emissions.value += parseFloat(
+          if (type === 'enhance_2020') {
+            summaryData.intend_2020.emissions.value += parseFloat(
               emissionsIndicator.locations[l].value
             );
+          }
         }
       }
-    }
-    for (let type in summaryData) {
+    });
+    Object.keys(summaryData).forEach(type => {
       parseFloat(
         (summaryData[type].emissions.value = summaryData[
           type
         ].emissions.value.toFixed(1))
       );
-    }
+    });
     return summaryData;
   }
 );
