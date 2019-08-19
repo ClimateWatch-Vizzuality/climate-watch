@@ -12,6 +12,7 @@ import NDCCountry from 'pages/ndc-country';
 import NDCCompare from 'pages/ndc-compare';
 import NDCS from 'pages/ndcs';
 import NDCSEnhancements from 'pages/ndcs-enhancements';
+import NDCSLTS from 'pages/ndcs-lts';
 import NDCSDG from 'pages/ndc-sdg';
 import Country from 'pages/country';
 import EmissionPathways from 'pages/emission-pathways';
@@ -46,10 +47,13 @@ import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
+import ndcsLTSSections from './ndcs-lts-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_NDCS_ENHANCEMENTS =
   process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
+const FEATURE_NDCS_LTS =
+  process.env.FEATURE_NDCS_LTS === 'true';
 export default [
   {
     path: '/',
@@ -137,6 +141,13 @@ export default [
     headerImage: 'ndc',
     headerColor: '#035388',
     sections: ndcsEnhancementsSections
+  },
+  FEATURE_NDCS_LTS && {
+    path: '/ndcs-lts',
+    component: NDCSLTS,
+    headerImage: 'ndc',
+    headerColor: '#035388',
+    sections: ndcsLTSSections
   },
   {
     path: '/ndcs-sdg',

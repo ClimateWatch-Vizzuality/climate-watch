@@ -29,6 +29,4 @@ NDCSLTSContainer.propTypes = {
 };
 
 export { actions, reducers, initialState };
-export default withRouter(
-  connect(mapStateToProps, actions)(NDCSLTSContainer)
-);
+export default withRouter(connect(mapStateToProps, actions)(NDCSLTSContainer));

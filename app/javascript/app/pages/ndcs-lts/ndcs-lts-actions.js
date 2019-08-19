@@ -15,8 +15,7 @@ const fetchNDCSLTS = createThunkAction(
     const { ndcsLTS } = state();
     if (
       ndcsLTS &&
-      (isEmpty(ndcsLTS.data) ||
-        isEmpty(ndcsLTS.data.indicators)) &&
+      (isEmpty(ndcsLTS.data) || isEmpty(ndcsLTS.data.indicators)) &&
       !ndcsLTS.loading
     ) {
       dispatch(fetchNDCSLTSInit());

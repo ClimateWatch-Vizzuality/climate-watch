@@ -12,14 +12,8 @@ import styles from './ndcs-lts-styles.scss';
 
 const NDCSLTS = ({ query, route }) => (
   <div>
-    <MetaDescription
-      descriptionContext={NDC_LTS}
-      subtitle="NDC LTS"
-    />
-    <SocialMetadata
-      descriptionContext={NDC_LTS}
-      href={location.href}
-    />
+    <MetaDescription descriptionContext={NDC_LTS} subtitle="NDC LTS" />
+    <SocialMetadata descriptionContext={NDC_LTS} href={location.href} />
     <Header route={route}>
       <div className={layout.content}>
         <div className="grid-column-item">
