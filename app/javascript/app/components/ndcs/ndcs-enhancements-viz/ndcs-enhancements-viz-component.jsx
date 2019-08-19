@@ -60,7 +60,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
           },
           {
             type: 'download',
-            section: 'ndcs-enhancements',
+            section: 'ndcs-content',
             link: downloadLink
           },
           {
