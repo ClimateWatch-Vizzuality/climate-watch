@@ -5,7 +5,6 @@ import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
 import isEmpty from 'lodash/isEmpty';
 
@@ -24,7 +23,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug == 'ndc_enhancement'
+      id => categories[id].slug == 'longterm_strategy'
     );
     return sortBy(
       uniqBy(
@@ -54,14 +53,14 @@ export const getMapIndicator = createSelector(
   (indicators, isos) => {
     if (!indicators || !indicators.length) return null;
     const mapIndicator = indicators.find(
-      ind => ind.value == 'ndce_status_2020'
+      ind => ind.value == 'lts'
     );
 
     if (mapIndicator) {
       const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-        id => mapIndicator.legendBuckets[id].slug == 'no_info_2020'
+        id => mapIndicator.legendBuckets[id].label == 'No Document Submitted'
       );
-      // Set all countries without values to "No Information" by default
+      // Set all countries without values to "No Document Submitted" by default
       if (noInfoId) {
         isos.forEach(iso => {
           if (!mapIndicator.locations[iso]) {
@@ -74,6 +73,7 @@ export const getMapIndicator = createSelector(
         });
       }
     }
+
     return mapIndicator;
   }
 );
@@ -147,10 +147,7 @@ export const getPathsWithStyles = createSelector(
         }
 
         const iso = path.properties && path.properties.id;
-        const isEuropeanCountry = europeanCountries.includes(iso);
-        const countryData = isEuropeanCountry
-          ? locations[europeSlug]
-          : locations[iso];
+        const countryData = locations[iso];
 
         let style = countryStyles;
         if (countryData && countryData.label_id) {
@@ -201,12 +198,12 @@ export const summarizeIndicators = createSelector(
       };
     });
 
-    // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
-    // Retain functionality for showing emissions percentage in case this becomes useful to display later
-    // ONLY "intent to submit" and "intent to enhance" 2020 NDCs currently displayed in component
-    // ONLY country totals currently displayed in component
+    console.log(labels);
+
     labels.forEach(label => {
-      summaryData[label.slug] = {
+      const slug = label.name == 'Long-term Strategy Submitted' ? 'submitted' : 'not_submitted';
+
+      summaryData[slug] = {
         countries: {
           value: 0,
           max: Object.keys(indicator.locations).length,
@@ -217,12 +214,9 @@ export const summarizeIndicators = createSelector(
               MAP_COLORS
             ),
             label: (() => {
-              switch (label.slug) {
-                case 'enhance_2020':
-                  return 'of those explicitly indicate enhanced ambition or action';
-                  break;
-                case 'intend_2020':
-                  return 'countries have stated their intention to submit a 2020 NDC';
+              switch (slug) {
+                case 'submitted':
+                  return 'countries have submitted a long-term strategy document';
                   break;
                 default:
                   return 'countries';
@@ -252,19 +246,13 @@ export const summarizeIndicators = createSelector(
     );
     for (const l in indicator.locations) {
       const location = indicator.locations[l];
-      const type = location.label_slug;
+      const type = location.value == "Long-term Strategy Submitted" ? 'submitted' : 'not_submitted' //location.label_slug;
       if (type) {
         summaryData[type].countries.value++;
-        if (type == 'enhance_2020')
-          summaryData['intend_2020'].countries.value++;
-        if (emissionsIndicator.locations[l]) {
+        if (emissionsIndicator && emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
           );
-          if (type == 'enhance_2020')
-            summaryData['intend_2020'].emissions.value += parseFloat(
-              emissionsIndicator.locations[l].value
-            );
         }
       }
     }

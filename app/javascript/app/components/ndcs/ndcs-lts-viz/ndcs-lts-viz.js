@@ -6,7 +6,6 @@ import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 import { actions as fetchActions } from 'pages/ndcs-lts';
 import { actions as modalActions } from 'components/modal-metadata';
@@ -70,39 +69,10 @@ class NDCSLTSVizContainer extends PureComponent {
     const { indicator, indicators } = this.props;
     if (!geometryIdHover || !indicator) return '';
 
-    const isEuropeanCountry = europeanCountries.includes(geometryIdHover);
-    const id = isEuropeanCountry ? europeSlug : geometryIdHover;
+    const id = geometryIdHover;
 
-    const dateIndicator = indicators.find(
-      indicator => indicator.value == 'ndce_date'
-    );
-    const statementIndicator = indicators.find(
-      indicator => indicator.value == 'ndce_statement'
-    );
-
-    if (indicator.locations && indicator.locations[id]) {
-      let tooltipTxt;
-      switch (indicator.locations[id].label_slug) {
-        case 'submitted_2020':
-          tooltipTxt =
-            'Submitted a 2020 NDC on ' +
-            dateIndicator.locations[id].value +
-            '.';
-          break;
-        case 'intend_2020':
-          tooltipTxt =
-            'Intends to Submit 2020 NDC \n\n' +
-            statementIndicator.locations[id].value;
-          break;
-        case 'enhance_2020':
-          tooltipTxt =
-            'Intends to Enhance Ambition or Action \n' +
-            statementIndicator.locations[id].value;
-          break;
-        default:
-          break;
-      }
-      return tooltipTxt ? tooltipTxt + '\n\nLearn more in table below.' : '';
+    if (indicator.locations && indicator.locations[id] && indicator.locations[id].value == "Long-term Strategy Submitted") {
+      return indicator.locations[id].value;
     } else {
       return '';
     }

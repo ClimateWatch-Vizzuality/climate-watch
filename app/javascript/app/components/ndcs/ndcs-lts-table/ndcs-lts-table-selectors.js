@@ -20,7 +20,7 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryId = Object.keys(categories).find(
-      id => categories[id].slug == 'ndc_enhancement'
+      id => categories[id].slug == 'longterm_strategy'
     );
     return sortBy(
       uniqBy(
@@ -48,7 +48,7 @@ export const tableGetSelectedData = createSelector(
     const refIndicator = indicators[0];
 
     return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].label_slug !== 'no_info_2020') {
+      if (refIndicator.locations[iso].value !== 'No Document Submitted') {
         const countryData =
           countries.find(country => country.iso_code3 === iso) || {};
         let row = {
@@ -88,27 +88,12 @@ export const tableRemoveIsoFromData = createSelector(
   [tableGetFilteredData],
   data => {
     if (!data || isEmpty(data)) return null;
+
     return data.map(d => {
-      let date = d['Statement Date'];
-      try {
-        date = new Date(d['Statement Date']);
-        date = !isNaN(date.getTime())
-          ? {
-              name: date.toLocaleDateString('en-US'),
-              value: date.getTime()
-            }
-          : {
-              name: undefined,
-              value: undefined
-            };
-      } catch (e) {}
-      d['Statement Date'] = date;
-      d['Source Link'] = d['Source Link']
-        ? d['Source Link'].replace('href=', "target='_blank' href=")
-        : undefined;
       d.country =
         "<a href='" + `/ndcs/country/${d.iso}` + "'>" + d.country + '</a>';
       delete d.iso;
+      delete d["Communication of Long-term Strategy"];
       return d;
     });
   }

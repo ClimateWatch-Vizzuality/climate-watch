@@ -123,8 +123,7 @@ const NDCSLTSViz = ({
               {!loading &&
               summaryData && (
                 <div>
-                  {renderCircular(summaryData.intend_2020.countries)}
-                  {renderCircular(summaryData.enhance_2020.countries)}
+                  {renderCircular(summaryData.submitted.countries)}
                 </div>
               )}
             </div>
