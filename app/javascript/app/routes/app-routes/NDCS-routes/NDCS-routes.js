@@ -10,7 +10,7 @@ export default [
   },
   FEATURE_NDCS_ENHANCEMENTS && {
     path: '/ndcs-enhancements',
-    label: '2020 Ambition Tracker',
+    label: '2020 NDC Tracker',
     activeId
   },
   FEATURE_NDCS_LTS && {

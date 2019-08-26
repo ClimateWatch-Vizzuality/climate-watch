@@ -215,10 +215,10 @@ export const summarizeIndicators = createSelector(
             label: (() => {
               switch (label.slug) {
                 case 'enhance_2020':
-                  return 'of those explicitly indicate enhanced ambition or action';
+                  return 'countries have stated their intention to enhance ambition or action in their 2020 NDC';
                   break;
                 case 'intend_2020':
-                  return 'countries have stated their intention to submit a 2020 NDC';
+                  return 'countries have stated their intention to submit or update a 2020 NDC';
                   break;
                 default:
                   return 'countries';
@@ -249,18 +249,10 @@ export const summarizeIndicators = createSelector(
       const type = location.label_slug;
       if (type) {
         summaryData[type].countries.value++;
-        if (type === 'enhance_2020') {
-          summaryData.intend_2020.countries.value++;
-        }
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
           );
-          if (type === 'enhance_2020') {
-            summaryData.intend_2020.emissions.value += parseFloat(
-              emissionsIndicator.locations[l].value
-            );
-          }
         }
       }
     });
