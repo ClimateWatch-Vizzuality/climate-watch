@@ -20,7 +20,7 @@ const NDCSLTS = ({ route }) => (
             <Intro
               title="Long-term Strategy Tracker"
               description={
-                '<p>The Paris Agreement calls on countries to deliver every five years new national climate commitments (NDCs) informed by the latest advances in technology, science and shifting economic trends.</p>'
+                '<p>Under the Paris Agreement, countries are invited to communicate long-term strategies by 2020. These strategies are a valuable opportunity for countries to lay out their vision for achieving a low-carbon economy by 2050 while also pursuing sustainable development.</p>'
               }
             />
             <AutocompleteSearch />

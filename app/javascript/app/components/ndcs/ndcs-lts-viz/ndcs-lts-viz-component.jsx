@@ -30,16 +30,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Explore the data to track which countries have signaled they will
-          submit or enhance their national climate plans (NDCs) by 2020. Please
-          contact{' '}
-          <a
-            href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Rhys Gerholdt
-          </a>.
+          Explore which countries have submitted long-term strategies thus far below. Visit Climate Watch in the coming months for in-depth analysis of long-term strategies..
         </em>
       </p>
     </div>
