@@ -213,7 +213,19 @@ const getExpandedData = createSelector(
       });
 
       expandedRegionData.emissions.forEach(e => {
-        othEmByYear[e.year] = e.value - exCountriesEmByYear[e.year];
+        if (e.value >= exCountriesEmByYear[e.year]) {
+          othEmByYear[e.year] = e.value - exCountriesEmByYear[e.year];
+        }
+      });
+
+      data.forEach(d => {
+        if (regionBelongsToOthers(d)) {
+          d.emissions.forEach(e => {
+            if (othEmByYear[e.year] < 0 || othEmByYear[e.year] === undefined) {
+              othEmByYear[e.year] = (othEmByYear[e.year] || 0) + e.value;
+            }
+          });
+        }
       });
     } else {
       data.forEach(d => {
@@ -292,7 +304,10 @@ export const getChartData = createSelector(
     getCalculationData
   ],
   (data, regions, model, yColumnOptions, metric, calculationData) => {
-    if (!data || !data.length || !model || !calculationData || !regions) { return null; }
+    if (!data || !data.length || !model || !calculationData || !regions) {
+      return null;
+    }
+
     const yearValues = data[0].emissions.map(d => d.year);
     const metricField = {
       PER_CAPITA: 'population',
