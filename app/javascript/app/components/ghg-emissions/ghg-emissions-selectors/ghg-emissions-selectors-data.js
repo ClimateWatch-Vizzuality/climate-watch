@@ -188,7 +188,7 @@ const getExpandedData = createSelector(
     if (!othersOption) return data;
 
     const expandedRegionISO = othersOption.expandedOptionValue;
-    const expandedRegionData = data.find(
+    const expandedRegionData = data.filter(
       d => d.iso_code3 === expandedRegionISO
     );
 
@@ -198,7 +198,7 @@ const getExpandedData = createSelector(
 
     // if expanded region like for example WORLD has it's own data line
     // then use that Total value to calculate Others value
-    if (expandedRegionData) {
+    if (expandedRegionData.length) {
       const expandedCountriesISOCodes = legendDataSelected
         .filter(o => o.iso !== 'OTHERS')
         .map(o => o.iso);
@@ -212,8 +212,17 @@ const getExpandedData = createSelector(
         }
       });
 
-      expandedRegionData.emissions.forEach(e => {
-        othEmByYear[e.year] = e.value - exCountriesEmByYear[e.year];
+      const regionDataEmByYear = {};
+      expandedRegionData.forEach(erd => {
+        erd.emissions.forEach(e => {
+          regionDataEmByYear[e.year] =
+            (regionDataEmByYear[e.year] || 0) + e.value;
+        });
+      });
+
+      Object.keys(regionDataEmByYear).forEach(year => {
+        othEmByYear[year] =
+          regionDataEmByYear[year] - exCountriesEmByYear[year];
       });
     } else {
       data.forEach(d => {
@@ -292,7 +301,9 @@ export const getChartData = createSelector(
     getCalculationData
   ],
   (data, regions, model, yColumnOptions, metric, calculationData) => {
-    if (!data || !data.length || !model || !calculationData || !regions) { return null; }
+    if (!data || !data.length || !model || !calculationData || !regions) {
+      return null;
+    }
     const yearValues = data[0].emissions.map(d => d.year);
     const metricField = {
       PER_CAPITA: 'population',
