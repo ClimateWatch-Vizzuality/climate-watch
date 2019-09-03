@@ -14,24 +14,26 @@ class ImportIndc
     "#{CW_FILES_PREFIX}indc/NDC_metadata.csv".freeze
 
   def call
-    cleanup
+    ActiveRecord::Base.transaction do
+      cleanup
 
-    load_csvs
-    load_locations
+      load_csvs
+      load_locations
 
-    import_sources
-    import_category_types
-    import_categories
-    import_category_relations
-    import_indicators
-    import_indicators_categories
-    import_labels
-    import_values_cait
-    import_sectors
-    import_values_wb
-    reject_map_indicators_without_values_or_labels
-    import_submissions
-    Indc::SearchableValue.refresh
+      import_sources
+      import_category_types
+      import_categories
+      import_category_relations
+      import_indicators
+      import_indicators_categories
+      import_labels
+      import_values_cait
+      import_sectors
+      import_values_wb
+      reject_map_indicators_without_values_or_labels
+      import_submissions
+      Indc::SearchableValue.refresh
+    end
   end
 
   private
