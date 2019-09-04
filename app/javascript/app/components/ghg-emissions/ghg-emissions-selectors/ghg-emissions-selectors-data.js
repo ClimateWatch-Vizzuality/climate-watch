@@ -187,50 +187,56 @@ const getExpandedData = createSelector(
     const othersOption = legendDataSelected.find(o => o.iso === 'OTHERS');
     if (!othersOption) return data;
 
-    const expandedRegionISO = othersOption.expandedOptionValue;
-    const expandedRegionData = data.find(
-      d => d.iso_code3 === expandedRegionISO
+    // could be WORLD or any other region
+    const expandedRegionISOCode = othersOption.expandedOptionValue;
+    const expandedRegionData = data.filter(
+      d => d.iso_code3 === expandedRegionISOCode
     );
 
-    const othEmByYear = {};
+    let othersEmissionByYear = {};
     const regionBelongsToOthers = d =>
       othersOption.expandsTo.includes(d.iso_code3);
 
+    const sumEmissionsByYear = dataCollection => {
+      const result = {};
+
+      dataCollection.forEach(d => {
+        d.emissions.forEach(e => {
+          result[e.year] = (result[e.year] || 0) + e.value;
+        });
+      });
+
+      return result;
+    };
+
     // if expanded region like for example WORLD has it's own data line
     // then use that Total value to calculate Others value
-    if (expandedRegionData) {
+    if (expandedRegionData.length) {
       const expandedCountriesISOCodes = legendDataSelected
         .filter(o => o.iso !== 'OTHERS')
         .map(o => o.iso);
-      const exCountriesEmByYear = {};
-      data.forEach(d => {
-        if (expandedCountriesISOCodes.includes(d.iso_code3)) {
-          d.emissions.forEach(e => {
-            exCountriesEmByYear[e.year] =
-              (exCountriesEmByYear[e.year] || 0) + e.value;
-          });
-        }
-      });
+      const expandedCountriesEmissionByYear = sumEmissionsByYear(
+        data.filter(d => expandedCountriesISOCodes.includes(d.iso_code3))
+      );
+      const regionDataEmissionsByYear = sumEmissionsByYear(expandedRegionData);
 
-      expandedRegionData.emissions.forEach(e => {
-        othEmByYear[e.year] = e.value - exCountriesEmByYear[e.year];
+      Object.keys(regionDataEmissionsByYear).forEach(year => {
+        othersEmissionByYear[year] =
+          regionDataEmissionsByYear[year] -
+          expandedCountriesEmissionByYear[year];
       });
     } else {
-      data.forEach(d => {
-        if (regionBelongsToOthers(d)) {
-          d.emissions.forEach(e => {
-            othEmByYear[e.year] = (othEmByYear[e.year] || 0) + e.value;
-          });
-        }
-      });
+      othersEmissionByYear = sumEmissionsByYear(
+        data.filter(regionBelongsToOthers)
+      );
     }
 
     const othersData = {
       iso_code3: 'OTHERS',
       location: 'Others',
-      emissions: Object.keys(othEmByYear).map(year => ({
+      emissions: Object.keys(othersEmissionByYear).map(year => ({
         year: Number(year),
-        value: othEmByYear[year]
+        value: othersEmissionByYear[year]
       }))
     };
 
@@ -292,7 +298,9 @@ export const getChartData = createSelector(
     getCalculationData
   ],
   (data, regions, model, yColumnOptions, metric, calculationData) => {
-    if (!data || !data.length || !model || !calculationData || !regions) { return null; }
+    if (!data || !data.length || !model || !calculationData || !regions) {
+      return null;
+    }
     const yearValues = data[0].emissions.map(d => d.year);
     const metricField = {
       PER_CAPITA: 'population',
