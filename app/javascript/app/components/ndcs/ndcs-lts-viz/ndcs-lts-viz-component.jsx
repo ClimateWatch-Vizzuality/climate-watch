@@ -30,7 +30,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Explore which countries have submitted long-term strategies thus far below. Visit Climate Watch in the coming months for in-depth analysis of long-term strategies..
+          Explore which countries have submitted long-term strategies thus far below. Visit Climate Watch in the coming months for in-depth analysis of long-term strategies.
         </em>
       </p>
     </div>
