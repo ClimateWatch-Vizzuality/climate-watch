@@ -149,13 +149,15 @@
   }
 
   //Hiding circular charts for now because the number of countries will remain a small minority for some time
-  //Leaving functionality in place in case the data should be shown in the future
-  svg {
-    visibility: hidden;
-  }
+  //Leaving emission chart and functionality in place in case the data should be shown in the future
+  &:first-child {
+    svg {
+      visibility: hidden;
+    }
 
-  .circularChartValues {
-    font-size: 4.5em;
+    .circularChartValues {
+      font-size: 4.5em;
+    }
   }
 }
 

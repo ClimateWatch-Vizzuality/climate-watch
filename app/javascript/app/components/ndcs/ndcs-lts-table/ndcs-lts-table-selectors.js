@@ -15,23 +15,31 @@ export const getISOCountries = createSelector([getCountries], countries =>
 
 export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
-  (categories, indicators) => {
+  (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === 'longterm_strategy'
+    const categoryIds = Object.keys(categories).filter(
+      //Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
+      id => categories[id].slug === 'longterm_strategy' || categories[id].slug === 'ndc_enhancement'
     );
-    return sortBy(
+    const preppedIndicators = sortBy(
       uniqBy(
-        indicators.map(i => ({
-          label: i.name,
-          value: i.slug,
-          categoryIds: i.category_ids,
-          locations: i.locations
-        })),
+        indicators.map(i => {
+          return {
+            label: i.name,
+            value: i.slug,
+            categoryIds: i.category_ids,
+            locations: i.locations
+          };
+        }),
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
+    );
+    let filteredIndicators = [];
+    categoryIds.forEach(id => {
+      filteredIndicators = filteredIndicators.concat(preppedIndicators.filter(ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1))
+    });
+    return filteredIndicators;
   }
 );
 
@@ -86,13 +94,30 @@ export const tableRemoveIsoFromData = createSelector(
     if (!data || isEmpty(data)) return null;
 
     return data.map(d => {
-      const datum = { ...d };
-      datum.country = `${"<a href='" +
+      let date = d['Submission Date'];
+      try {
+        date = new Date(d['Submission Date']);
+        date = !isNaN(date.getTime())
+          ? {
+            name: date.toLocaleDateString('en-US'),
+            value: date.getTime()
+          }
+          : {
+            name: undefined,
+            value: undefined
+          };
+      } catch (e) {
+        console.error(e);
+      }
+      d['Submission Date'] = date;
+      d['Document'] = d['Document']
+        ? d['Document'].replace('href=', "target='_blank' href=")
+        : undefined;
+      d.country = `${"<a href='" +
         `/ndcs/country/${d.iso}` +
         "'>"}${d.country}</a>`;
-      delete datum.iso;
-      delete datum['Communication of Long-term Strategy'];
-      return datum;
+      delete d.iso;
+      return d;
     });
   }
 );

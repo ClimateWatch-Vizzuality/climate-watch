@@ -42,11 +42,13 @@ const NDCSLTSTable = ({
           horizontalScroll
           parseHtml
           dynamicRowsHeight
-          setColumnWidth={column => 1100 / 3}
+          setColumnWidth={column => 1100 / 5}
           defaultColumns={[
                 'country',
-                'LTS Submission',
-                'Date of LTS Submission'
+                'Share of GHG Emissions',
+                'Long-term GHG Target',
+                'Document',
+                'Submission Date'
               ]}
         />
           </div>

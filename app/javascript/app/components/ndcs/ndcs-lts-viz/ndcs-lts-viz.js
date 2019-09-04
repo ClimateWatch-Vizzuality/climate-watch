@@ -40,6 +40,7 @@ const mapStateToProps = (state, { location }) => {
     paths: getPathsWithStyles(ndcsLTSWithSelection),
     isoCountries: getISOCountries(ndcsLTSWithSelection),
     indicator: getMapIndicator(ndcsLTSWithSelection),
+    indicators: getIndicatorsParsed(ndcsLTSWithSelection),
     summaryData: summarizeIndicators(ndcsLTSWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsLTSWithSelection),
     mapColors: MAP_COLORS
@@ -66,12 +67,16 @@ class NDCSLTSVizContainer extends PureComponent {
 
     const id = geometryIdHover;
 
+    const targetIndicator = indicators.find(
+      indicator => indicator.value == 'lts_target'
+    );
+
     if (
       indicator.locations &&
       indicator.locations[id] &&
       indicator.locations[id].value === 'Long-term Strategy Submitted'
     ) {
-      return indicator.locations[id].value;
+      return "Long-term Target: <em>"+targetIndicator.locations[id].value+"</em>";
     }
     return '';
   }

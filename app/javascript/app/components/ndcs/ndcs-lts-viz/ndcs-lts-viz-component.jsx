@@ -19,7 +19,7 @@ const getTooltip = (country, tooltipTxt) => (
   <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
     <div className={tooltipTheme.info}>
       <div className={tooltipTheme.countryName}>{country.name}</div>
-      <p className={tooltipTheme.text}>{tooltipTxt}</p>
+      <p className={tooltipTheme.text} dangerouslySetInnerHTML={{ __html: tooltipTxt }}></p>
     </div>
     <Icon icon={accordionArrow} className={tooltipTheme.icon} />
   </Link>
@@ -111,7 +111,10 @@ const NDCSLTSViz = ({
             <div className={styles.containerCharts}>
               {!loading &&
               summaryData && (
-              <div>{renderCircular(summaryData.submitted.countries)}</div>
+              <div>
+                {renderCircular(summaryData.submitted.countries)}
+                {renderCircular(summaryData.submitted.emissions)}
+              </div>
                 )}
             </div>
             <div className={styles.containerMap}>

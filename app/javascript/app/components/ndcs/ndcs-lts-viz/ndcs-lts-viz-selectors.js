@@ -19,10 +19,11 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryId = Object.keys(categories).find(
-      id => categories[id].slug === 'longterm_strategy'
+    const categoryIds = Object.keys(categories).filter(
+      //Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
+      id => categories[id].slug === 'longterm_strategy' || categories[id].slug === 'ndc_enhancement'
     );
-    return sortBy(
+    const preppedIndicators = sortBy(
       uniqBy(
         indicators.map(i => {
           const legendBuckets = createLegendBuckets(
@@ -41,7 +42,12 @@ export const getIndicatorsParsed = createSelector(
         'value'
       ),
       'label'
-    ).filter(ind => ind.categoryIds.indexOf(parseInt(categoryId, 10)) > -1);
+    );
+    let filteredIndicators = [];
+    categoryIds.forEach(id => {
+      filteredIndicators = filteredIndicators.concat(preppedIndicators.filter(ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1))
+    });
+    return filteredIndicators;
   }
 );
 
@@ -99,20 +105,12 @@ const countryStyles = {
 
 export const MAP_COLORS = [
   [
-    'rgb(106, 155, 192)',
-    'rgb(204, 204, 204)'
+    'rgb(55, 104, 141)',
+    'rgb(164, 164, 164)'
   ],
   [
-    'rgb(106, 155, 192)',
-    'rgb(204, 204, 204)'
-  ],
-  [
-    'rgb(106, 155, 192)',
-    'rgb(204, 204, 204)'
-  ],
-  [
-    'rgb(106, 155, 192)',
-    'rgb(204, 204, 204)'
+    'rgb(55, 104, 141)',
+    'rgb(164, 164, 164)'
   ]
 ];
 
@@ -222,7 +220,7 @@ export const summarizeIndicators = createSelector(
             ),
             suffix: '%',
             label:
-              'of global emissions are represented by these countries (2015 emissions data)'
+              'of global emissions represented by these countries (2015 emissions data)'
           }
         }
       };
