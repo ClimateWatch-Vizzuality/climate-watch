@@ -60,8 +60,8 @@ class ImportWbExtra
     WbExtra::CountryData.create(
       location: country_location,
       year: year,
-      population: @population_by_country[country_code][year_index]&.to_i,
-      gdp: @gdp_by_country[country_code][year_index]&.to_i
+      population: @population_by_country[country_code][year_index]&.to_f,
+      gdp: @gdp_by_country[country_code][year_index]&.to_f
     )
   end
 
