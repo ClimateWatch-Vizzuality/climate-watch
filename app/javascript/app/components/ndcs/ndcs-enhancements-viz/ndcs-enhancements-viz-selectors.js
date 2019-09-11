@@ -258,9 +258,12 @@ export const summarizeIndicators = createSelector(
     });
     Object.keys(summaryData).forEach(type => {
       summaryData[type].emissions.value = parseFloat(
-        (summaryData[type].emissions.value.toFixed(1))
+        summaryData[type].emissions.value.toFixed(1)
       );
-      summaryData[type].countries.opts.label += ', representing '+summaryData[type].emissions.value+'% of global emissions (2014 emissions data)'
+      summaryData[type].countries.opts.label +=
+        `, representing ${
+          summaryData[type].emissions.value
+        }% of global emissions (2014 emissions data)`;
     });
     return summaryData;
   }

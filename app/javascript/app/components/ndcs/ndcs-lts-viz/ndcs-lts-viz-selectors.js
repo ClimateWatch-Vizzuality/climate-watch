@@ -20,8 +20,10 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryIds = Object.keys(categories).filter(
-      //Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
-      id => categories[id].slug === 'longterm_strategy' || categories[id].slug === 'ndc_enhancement'
+      // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
+      id =>
+        categories[id].slug === 'longterm_strategy' ||
+        categories[id].slug === 'ndc_enhancement'
     );
     const preppedIndicators = sortBy(
       uniqBy(
@@ -45,7 +47,11 @@ export const getIndicatorsParsed = createSelector(
     );
     let filteredIndicators = [];
     categoryIds.forEach(id => {
-      filteredIndicators = filteredIndicators.concat(preppedIndicators.filter(ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1))
+      filteredIndicators = filteredIndicators.concat(
+        preppedIndicators.filter(
+          ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1
+        )
+      );
     });
     return filteredIndicators;
   }
@@ -104,14 +110,8 @@ const countryStyles = {
 };
 
 export const MAP_COLORS = [
-  [
-    'rgb(55, 104, 141)',
-    'rgb(164, 164, 164)'
-  ],
-  [
-    'rgb(55, 104, 141)',
-    'rgb(164, 164, 164)'
-  ]
+  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
+  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)']
 ];
 
 export const getPathsWithStyles = createSelector(
@@ -243,9 +243,7 @@ export const summarizeIndicators = createSelector(
     });
     Object.keys(summaryData).forEach(type => {
       summaryData[type].emissions.value = parseFloat(
-        (summaryData[
-          type
-        ].emissions.value.toFixed(1))
+        summaryData[type].emissions.value.toFixed(1)
       );
     });
     return summaryData;
