@@ -86,22 +86,22 @@ class NDCSEnhancementsVizContainer extends PureComponent {
       switch (indicator.locations[id].label_slug) {
         case 'submitted_2020':
           tooltipTxt =
-            'Submitted a 2020 NDC on ' +
-            dateIndicator.locations[id].value +
-            '.';
+            `Submitted a 2020 NDC on ${
+              dateIndicator.locations[id].value
+            }.`;
           break;
         case 'no_info_2020':
           break;
         default:
           tooltipTxt =
-            indicator.locations[id].value+'\n\n' +
-            statementIndicator.locations[id].value;
+            `${indicator.locations[id].value
+            }\n\n${
+              statementIndicator.locations[id].value}`;
           break;
       }
-      return tooltipTxt ? tooltipTxt + '\n\nLearn more in table below.' : '';
-    } else {
-      return '';
+      return tooltipTxt ? `${tooltipTxt}\n\nLearn more in table below.` : '';
     }
+    return '';
   }
 
   handleCountryClick = geography => {
