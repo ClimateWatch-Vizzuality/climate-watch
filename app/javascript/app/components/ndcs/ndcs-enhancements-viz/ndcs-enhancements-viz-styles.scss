@@ -48,9 +48,10 @@
   position: absolute;
   left: 0;
   bottom: 12%;
+  max-width: 160px;
 
   @media #{$tablet-landscape} {
-    bottom: -2em;
+    bottom: -3em;
   }
 }
 

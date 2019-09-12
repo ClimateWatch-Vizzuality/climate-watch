@@ -82,6 +82,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
     if (indicator.locations && indicator.locations[id]) {
       let tooltipTxt;
+      console.log(indicator.locations[id]);
       switch (indicator.locations[id].label_slug) {
         case 'submitted_2020':
           tooltipTxt =
@@ -89,17 +90,12 @@ class NDCSEnhancementsVizContainer extends PureComponent {
             dateIndicator.locations[id].value +
             '.';
           break;
-        case 'intend_2020':
-          tooltipTxt =
-            'Intends to Submit 2020 NDC \n\n' +
-            statementIndicator.locations[id].value;
-          break;
-        case 'enhance_2020':
-          tooltipTxt =
-            'Intends to Enhance Ambition or Action \n' +
-            statementIndicator.locations[id].value;
+        case 'no_info_2020':
           break;
         default:
+          tooltipTxt =
+            indicator.locations[id].value+'\n\n' +
+            statementIndicator.locations[id].value;
           break;
       }
       return tooltipTxt ? tooltipTxt + '\n\nLearn more in table below.' : '';
