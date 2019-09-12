@@ -82,7 +82,6 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
     if (indicator.locations && indicator.locations[id]) {
       let tooltipTxt;
-      console.log(indicator.locations[id]);
       switch (indicator.locations[id].label_slug) {
         case 'submitted_2020':
           tooltipTxt =
