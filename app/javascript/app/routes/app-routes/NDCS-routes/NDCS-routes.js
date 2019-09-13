@@ -1,27 +1,25 @@
+import isEmpty from 'lodash/isEmpty';
+
 const activeId = 'ndc';
 const FEATURE_NDCS_ENHANCEMENTS =
   process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
 const FEATURE_NDCS_LTS = process.env.FEATURE_NDCS_LTS === 'true';
-let routes = [
+export default [
   {
     path: '/ndcs-content',
     label: 'NDC Content',
     activeId
-  }
-]
-  
-FEATURE_NDCS_ENHANCEMENTS && routes.push({
-  path: '/ndcs-enhancements',
-  label: '2020 NDC Tracker',
-  activeId
-})
-FEATURE_NDCS_LTS && routes.push({
-  path: '/ndcs-lts',
-  label: 'Long-Term Strategy Tracker',
-  activeId
-})
-
-routes.push(
+  },
+  FEATURE_NDCS_ENHANCEMENTS && {
+    path: '/ndcs-enhancements',
+    label: '2020 NDC Tracker',
+    activeId
+  },
+  FEATURE_NDCS_LTS && {
+    path: '/ndcs-lts',
+    label: 'Long-Term Strategy Tracker',
+    activeId
+  },
   {
     path: '/ndcs/compare/mitigation',
     label: 'NDC Comparison',
@@ -37,6 +35,4 @@ routes.push(
     label: 'NDC-SDG LINKAGES',
     activeId
   }
-)
-
-export default routes;
+].filter(o => !isEmpty(o));
