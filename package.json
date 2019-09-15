@@ -70,7 +70,7 @@
     "postcss-loader": "2.0.6",
     "prop-types": "15.5.10",
     "raw-loader": "0.5.1",
-    "react": "16.2.0",
+    "react": "16.4.0",
     "react-addons-css-transition-group": "15.6.0",
     "react-addons-shallow-compare": "15.6.0",
     "react-click-outside": "github:tj/react-click-outside",
