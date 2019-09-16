@@ -18,7 +18,7 @@ const NDCSLTS = ({ route }) => (
         <div className="grid-column-item">
           <div className={styles.headerLayout}>
             <Intro
-              title="Long-term Strategy Tracker"
+              title="Long-Term Strategy Tracker"
               description={
                 '<p>Under the Paris Agreement, countries are invited to communicate long-term strategies by 2020. These strategies are a valuable opportunity for countries to lay out their vision for achieving a low-carbon economy by 2050 while also pursuing sustainable development.</p>'
               }
