@@ -127,7 +127,7 @@ const NDCSLTSViz = ({
                 onCountryEnter={handleCountryEnter}
                 onCountryFocus={handleCountryEnter}
                 dragEnable={false}
-                customCenter={!isTablet ? [10, -50] : null}
+                customCenter={!isTablet ? [10, -10] : null}
               />
               {countryData &&
               tooltipTxt.length > 0 && (

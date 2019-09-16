@@ -135,7 +135,6 @@ const NDCSEnhancementsViz = ({
                 onCountryEnter={handleCountryEnter}
                 onCountryFocus={handleCountryEnter}
                 dragEnable={false}
-                customCenter={!isTablet ? [10, -50] : null}
               />
               {countryData &&
               tooltipTxt.length > 0 && (
@@ -155,6 +154,14 @@ const NDCSEnhancementsViz = ({
                   mapColors={mapColors}
                 />
               )}
+              <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+                <defs>
+                  <pattern id="pattern_gJ2H6" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+                    <rect width="8" height="8" fill="rgb(204,204,204)"></rect>
+                    <line x1="0" y="0" x2="0" y2="8" stroke="#6A9BC0" strokeWidth="8" />
+                  </pattern>
+                </defs>
+              </svg>
             </div>
           </div>
           <ModalMetadata />

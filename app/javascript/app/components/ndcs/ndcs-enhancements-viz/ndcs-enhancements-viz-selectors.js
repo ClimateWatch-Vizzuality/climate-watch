@@ -164,12 +164,12 @@ export const getPathsWithStyles = createSelector(
         let style = countryStyles;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+          const color = countryData.label_slug == 'ambg_2020' ? 'url(#pattern_gJ2H6)' : getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...countryStyles,
             default: {
               ...countryStyles.default,
-              fill: color,
+              fill: color ,
               fillOpacity: 1
             },
             hover: {

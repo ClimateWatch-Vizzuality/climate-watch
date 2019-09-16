@@ -57,6 +57,17 @@
   @media #{$tablet-landscape} {
     bottom: -3em;
   }
+  [class*=__buckets__]:nth-child(5) {
+    [class*=__bucketIcon__] {
+      background:repeating-linear-gradient(
+        -45deg,
+        #6A9BC0,
+        #6A9BC0 2px,
+        rgb(204,204,204) 2px,
+        rgb(204,204,204) 4px
+      ) !important;
+    }
+  }
 }
 
 :global .__react_component_tooltip {
