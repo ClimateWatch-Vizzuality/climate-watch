@@ -31,7 +31,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       <p>
         <em>
           Explore the data to track which countries have signaled they will
-          submit or enhance their national climate plans (NDCs) by 2020. To
+          submit or enhance their national climate commitments (NDCs) by 2020. To
           request changes or additions, please contact &nbsp;<a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"
@@ -90,7 +90,7 @@ const renderCircular = datum => (
         </div>
       </div>
     </div>
-    <div className={styles.circularChartLabels}>{datum.opts.label}</div>
+    <div className={styles.circularChartLabels}><div dangerouslySetInnerHTML={{ __html: datum.opts.label }}></div></div>
   </div>
 );
 

@@ -224,4 +224,12 @@
   @media #{$desktop} {
     top: 0;
   }
+  span[title] {
+    display:inline;
+    border-bottom:1px dotted #ccc;
+    cursor:default;
+    &:hover {
+      border-bottom-color:#aaa;
+    }
+  }
 }
