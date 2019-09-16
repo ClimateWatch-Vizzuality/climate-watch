@@ -48,6 +48,11 @@
   position: absolute;
   left: 0;
   bottom: 12%;
+  max-width: 100%;
+
+  @media #{$tablet-portrait} {
+    max-width:160px;
+  }
 
   @media #{$tablet-landscape} {
     bottom: -2em;
@@ -125,19 +130,19 @@
   flex-direction: row;
   font-size: 0.8em;
 
+  > div {
+    position: relative;
+    &:first-child {
+      max-width:60%;
+    }
+  }
+
   @media #{$tablet-portrait} {
     font-size: 1em;
     margin: 0 $card-content-margin $card-content-margin;
     padding-right: calc(#{$gutter-padding} / 2);
   }
 
-  > div {
-    position: relative;
-
-    &:first-child {
-      max-width:66.666%;
-    }
-  }
 
   [class*=circularChartWrapper] {
     position: static;
