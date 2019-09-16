@@ -42,7 +42,7 @@ const NDCSEnhancementsTable = ({
           horizontalScroll
           parseHtml
           dynamicRowsHeight
-          setColumnWidth={column => 1100 / 6}
+          setColumnWidth={column => (1160 - ((6+2) * 10)) / 6}
           defaultColumns={[
                 'country',
                 'Share of GHG Emissions',
