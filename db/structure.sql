@@ -1001,7 +1001,8 @@ CREATE TABLE public.indc_labels (
     value text NOT NULL,
     index integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    slug character varying
 );
 
 
@@ -4166,6 +4167,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181227144108'),
 ('20190207144949'),
 ('20190219190427'),
-('20190405154306');
+('20190405154306'),
+('20190725143552');
 
 
