@@ -103,36 +103,36 @@ const countryStyles = {
 export const MAP_COLORS = [
   [
     'rgb(254, 224, 141)',
-    'rgb(55, 104, 141)',
-    'rgb(106, 155, 192)',
+    'rgb(30, 79, 116)',
+    'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(254, 224, 141)',
-    'rgb(55, 104, 141)',
-    'rgb(106, 155, 192)',
+    'rgb(30, 79, 116)',
+    'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(254, 224, 141)',
-    'rgb(55, 104, 141)',
-    'rgb(106, 155, 192)',
+    'rgb(30, 79, 116)',
+    'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(254, 224, 141)',
-    'rgb(55, 104, 141)',
-    'rgb(106, 155, 192)',
+    'rgb(30, 79, 116)',
+    'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(254, 224, 141)',
-    'rgb(55, 104, 141)',
-    'rgb(106, 155, 192)',
+    'rgb(30, 79, 116)',
+    'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ]
@@ -164,12 +164,12 @@ export const getPathsWithStyles = createSelector(
         let style = countryStyles;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+          const color = countryData.label_slug == 'ambg_2020' ? 'url(#pattern_gJ2H6)' : getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...countryStyles,
             default: {
               ...countryStyles.default,
-              fill: color,
+              fill: color ,
               fillOpacity: 1
             },
             hover: {
@@ -226,10 +226,10 @@ export const summarizeIndicators = createSelector(
             label: (() => {
               switch (label.slug) {
                 case 'enhance_2020':
-                  return 'countries have stated their intention to enhance ambition or action in their 2020 NDC';
+                  return '<strong>countries have stated their intention to enhance ambition or action in their NDCs by 2020</strong>';
                   break;
                 case 'intend_2020':
-                  return 'countries have stated their intention to submit or update a 2020 NDC';
+                  return '<strong>countries have stated their intention to update their NDCs by 2020</strong>';
                   break;
                 default:
                   return 'countries';
@@ -271,9 +271,9 @@ export const summarizeIndicators = createSelector(
       summaryData[type].emissions.value = parseFloat(
         summaryData[type].emissions.value.toFixed(1)
       );
-      summaryData[type].countries.opts.label += `, representing ${summaryData[
+      summaryData[type].countries.opts.label += `, representing <span title="2014 emissions data">${summaryData[
         type
-      ].emissions.value}% of global emissions (2014 emissions data)`;
+      ].emissions.value}% of global emissions</span>`;
     });
     return summaryData;
   }

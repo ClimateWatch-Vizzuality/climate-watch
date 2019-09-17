@@ -48,10 +48,25 @@
   position: absolute;
   left: 0;
   bottom: 12%;
-  max-width: 160px;
+  max-width: 100%;
+
+  @media #{$tablet-portrait} {
+    max-width:160px;
+  }
 
   @media #{$tablet-landscape} {
     bottom: -3em;
+  }
+  [class*=__buckets__]:nth-child(5) {
+    [class*=__bucketIcon__] {
+      background:repeating-linear-gradient(
+        -45deg,
+        #aaa,
+        #aaa 2px,
+        #ddd 2px,
+        #ddd 4px
+      ) !important;
+    }
   }
 }
 
@@ -118,25 +133,48 @@
 
 .circularChartContainer {
   position: relative;
-  margin: -60px 0 0;
+  margin: -60px 0 4.8em;
   flex: 1;
   height: 200px;
   overflow: visible;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   font-size: 0.8em;
+
+  > div {
+    position: relative;
+    &:first-child {
+      max-width:100%;
+    }
+  }
 
   @media #{$tablet-portrait} {
     font-size: 1em;
     margin: 0 $card-content-margin $card-content-margin;
     padding-right: calc(#{$gutter-padding} / 2);
+    flex-direction:row;
+    > div {
+      &:first-child {
+        max-width:50%;
+      }
+    }
   }
 
-  > div {
-    position: relative;
+  @media #{$tablet-landscape} {
+    flex-direction:column;
+    > div {
+      &:first-child {
+        max-width:100%;
+      }
+    }
+  }
 
-    &:first-child {
-      max-width:66.666%;
+  @media #{$desktop} {
+    flex-direction:row;
+    > div {
+      &:first-child {
+        max-width:50%;
+      }
     }
   }
 
@@ -174,4 +212,24 @@
   display: flex;
   align-items: center;
   justify-content: left;
+  top: -2.4em;
+  @media #{$tablet-portrait} {
+    top:0;
+  }
+
+  @media #{$tablet-landscape} {
+    top: -2.4em;
+  }
+
+  @media #{$desktop} {
+    top: 0;
+  }
+  span[title] {
+    display:inline;
+    border-bottom:1px dotted #ccc;
+    cursor:default;
+    &:hover {
+      border-bottom-color:#aaa;
+    }
+  }
 }

@@ -31,7 +31,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       <p>
         <em>
           Explore the data to track which countries have signaled they will
-          submit or enhance their national climate plans (NDCs) by 2020. To
+          submit or enhance their national climate commitments (NDCs) by 2020. To
           request changes or additions, please contact &nbsp;<a
             href="mailto:Rhys.Gerholdt@wri.org?subject=2020 NDC Tracker Update"
             target="_blank"
@@ -90,7 +90,7 @@ const renderCircular = datum => (
         </div>
       </div>
     </div>
-    <div className={styles.circularChartLabels}>{datum.opts.label}</div>
+    <div className={styles.circularChartLabels}><div dangerouslySetInnerHTML={{ __html: datum.opts.label }}></div></div>
   </div>
 );
 
@@ -135,7 +135,7 @@ const NDCSEnhancementsViz = ({
                 onCountryEnter={handleCountryEnter}
                 onCountryFocus={handleCountryEnter}
                 dragEnable={false}
-                customCenter={!isTablet ? [10, -50] : null}
+                customCenter={!isTablet ? [10, -10] : null}
               />
               {countryData &&
               tooltipTxt.length > 0 && (
@@ -155,6 +155,14 @@ const NDCSEnhancementsViz = ({
                   mapColors={mapColors}
                 />
               )}
+              <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+                <defs>
+                  <pattern id="pattern_gJ2H6" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+                    <rect width="8" height="8" fill="rgb(204,204,204)"></rect>
+                    <line x1="0" y="0" x2="0" y2="8" stroke="#bbb" strokeWidth="8" />
+                  </pattern>
+                </defs>
+              </svg>
             </div>
           </div>
           <ModalMetadata />
