@@ -103,7 +103,7 @@ module Api
           joins(:values).
           where(slug: SECTORS_INDICATORS).
           where(indc_values: {location_id: location.id}).
-          where.not(indc_values: {value: "No specified action"}).
+          where.not(indc_values: {value: "No specified measure"}).
           order('indc_indicators.name').pluck(:name)
 
         render json: NdcOverview.new(values, sectors),

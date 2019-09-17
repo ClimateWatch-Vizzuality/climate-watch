@@ -226,7 +226,7 @@ export const ESP_BLACKLIST = {
   indicators: ['id', 'parent_id']
 };
 
-export const ESP_HIGH_ROWS = ['description', 'purpose'];
+export const ESP_HIGH_ROWS = ['description', 'purpose', 'Statement'];
 export const ESP_MEDIUM_ROWS = [
   'composite_name',
   'definition',

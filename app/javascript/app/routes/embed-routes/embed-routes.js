@@ -2,6 +2,8 @@ import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import NDCMap from 'components/ndcs/ndcs-map';
+import NDCSEnhancementsViz from 'components/ndcs/ndcs-enhancements-viz';
+import NDCSLTSViz from 'components/ndcs/ndcs-lts-viz';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import CompareGhgChart from 'components/compare/compare-ghg-chart';
 import CountryGhg from 'components/country/country-ghg';
@@ -16,6 +18,16 @@ export default [
   {
     path: '/embed/ndcs',
     component: NDCMap,
+    exact: true
+  },
+  {
+    path: '/embed/ndcs-enhancements',
+    component: NDCSEnhancementsViz,
+    exact: true
+  },
+  {
+    path: '/embed/ndcs-lts',
+    component: NDCSLTSViz,
     exact: true
   },
   {
