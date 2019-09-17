@@ -45,7 +45,7 @@ const NDCSEnhancementsTable = ({
           setColumnWidth={column => (1160 - ((6+2) * 10)) / 6}
           defaultColumns={[
                 'country',
-                'Share of GHG Emissions',
+                'Share of Global GHG Emissions',
                 '2020 NDC Status',
                 'Statement',
                 'Source Link',

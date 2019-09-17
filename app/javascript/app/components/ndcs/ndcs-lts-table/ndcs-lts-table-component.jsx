@@ -45,7 +45,7 @@ const NDCSLTSTable = ({
           setColumnWidth={column => ((column == "country" || column == "Share of GHG Emissions") ? 180 : (1170 - ((5+2) * 10) - 360) / 3)}
           defaultColumns={[
                 'country',
-                'Share of GHG Emissions',
+                'Share of Global GHG Emissions',
                 'Quantified 2050 Emissions Goal',
                 'Document',
                 'Submission Date'
