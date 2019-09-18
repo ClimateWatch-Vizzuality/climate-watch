@@ -229,7 +229,7 @@ export const summarizeIndicators = createSelector(
                   return '<strong>countries have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020</strong>';
                   break;
                 case 'intend_2020':
-                  return '<strong>countries have stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update an NDC</span> by 2020</strong>';
+                  return '<strong>countries have stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020</strong>';
                   break;
                 default:
                   return 'countries';
