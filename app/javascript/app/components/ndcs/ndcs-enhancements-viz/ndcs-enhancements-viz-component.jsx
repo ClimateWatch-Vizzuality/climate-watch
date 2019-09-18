@@ -131,7 +131,6 @@ const NDCSEnhancementsViz = ({
               <Map
                 paths={paths}
                 tooltipId="ndcs-map-tooltip"
-                onCountryClick={handleCountryClick}
                 onCountryEnter={handleCountryEnter}
                 onCountryFocus={handleCountryEnter}
                 dragEnable={false}

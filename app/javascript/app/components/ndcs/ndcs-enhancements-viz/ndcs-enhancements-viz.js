@@ -104,6 +104,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
   }
 
   handleCountryClick = geography => {
+    //Click action has been disabled for countries on this map per WRI request
     const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
