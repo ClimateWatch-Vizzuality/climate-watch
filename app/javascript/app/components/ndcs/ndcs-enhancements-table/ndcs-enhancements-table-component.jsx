@@ -23,7 +23,8 @@ const NDCSEnhancementsTable = ({
   tableData,
   query,
   handleSearchChange,
-  noContentMsg
+  noContentMsg,
+  columns
 }) => (
   <div>
     <div className={styles.wrapper}>
@@ -36,28 +37,21 @@ const NDCSEnhancementsTable = ({
       {!loading &&
       tableData &&
       tableData.length > 0 && (
-      <div className={styles.tableWrapper}>
-            <Table
-          data={tableData}
-          horizontalScroll
-          parseHtml
-          dynamicRowsHeight
-          setColumnWidth={column => (1160 - ((6+2) * 10)) / 6}
-          defaultColumns={[
-                'country',
-                'Share of GHG Emissions',
-                '2020 NDC Status',
-                'Statement',
-                'Source Link',
-                'Statement Date'
-              ]}
-        />
-          </div>
-        )}
+        <div className={styles.tableWrapper}>
+          <Table
+            data={tableData}
+            horizontalScroll
+            parseHtml
+            dynamicRowsHeight
+            setColumnWidth={column => (1160 - (6 + 2) * 10) / 6}
+            defaultColumns={columns}
+          />
+        </div>
+      )}
       {!loading &&
       (!tableData || tableData.length <= 0) && (
-      <NoContent className={styles.noContent} message={noContentMsg} />
-        )}
+        <NoContent className={styles.noContent} message={noContentMsg} />
+      )}
     </div>
   </div>
 );

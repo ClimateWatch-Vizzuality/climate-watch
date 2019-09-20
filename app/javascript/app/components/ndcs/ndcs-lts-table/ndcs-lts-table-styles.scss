@@ -28,4 +28,9 @@
 
 .tableWrapper {
   margin-top: 20px;
+
+  [class*=__headerRow] {
+    height:52px !important;
+    align-items: flex-end;
+  }
 }

@@ -23,7 +23,9 @@ const NDCSLTSTable = ({
   tableData,
   query,
   handleSearchChange,
-  noContentMsg
+  noContentMsg,
+  columns,
+  setColumnWidth
 }) => (
   <div>
     <div className={styles.wrapper}>
@@ -36,27 +38,21 @@ const NDCSLTSTable = ({
       {!loading &&
       tableData &&
       tableData.length > 0 && (
-      <div className={styles.tableWrapper}>
-            <Table
-          data={tableData}
-          horizontalScroll
-          parseHtml
-          dynamicRowsHeight
-          setColumnWidth={column => ((column == "country" || column == "Share of GHG Emissions") ? 180 : (1170 - ((5+2) * 10) - 360) / 3)}
-          defaultColumns={[
-                'country',
-                'Share of GHG Emissions',
-                'Quantified 2050 Emissions Goal',
-                'Document',
-                'Submission Date'
-              ]}
-        />
-          </div>
-        )}
+        <div className={styles.tableWrapper}>
+          <Table
+            data={tableData}
+            horizontalScroll
+            parseHtml
+            dynamicRowsHeight
+            setColumnWidth={setColumnWidth}
+            defaultColumns={columns}
+          />
+        </div>
+      )}
       {!loading &&
       (!tableData || tableData.length <= 0) && (
-      <NoContent className={styles.noContent} message={noContentMsg} />
-        )}
+        <NoContent className={styles.noContent} message={noContentMsg} />
+      )}
     </div>
   </div>
 );

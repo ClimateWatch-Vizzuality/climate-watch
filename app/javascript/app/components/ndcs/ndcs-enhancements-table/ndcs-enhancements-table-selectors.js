@@ -90,13 +90,13 @@ export const tableRemoveIsoFromData = createSelector(
         date = new Date(d['Statement Date']);
         date = !isNaN(date.getTime())
           ? {
-            name: date.toLocaleDateString('en-US'),
-            value: date.getTime()
-          }
+              name: date.toLocaleDateString('en-US'),
+              value: date.getTime()
+            }
           : {
-            name: undefined,
-            value: undefined
-          };
+              name: undefined,
+              value: undefined
+            };
       } catch (e) {
         console.error(e);
       }
@@ -113,6 +113,28 @@ export const tableRemoveIsoFromData = createSelector(
   }
 );
 
+export const getDefaultColumns = createSelector(
+  [getIndicatorsParsed],
+  indicators => {
+    if (!indicators || isEmpty(indicators)) return [];
+
+    const columnIds = [
+      'country',
+      'ndce_ghg',
+      'ndce_status_2020',
+      'ndce_statement',
+      'ndce_source',
+      'ndce_date'
+    ];
+
+    return columnIds.map(id => {
+      const match = indicators.find(indicator => indicator.value === id);
+      return match ? match.label : id;
+    });
+  }
+);
+
 export default {
-  tableRemoveIsoFromData
+  tableRemoveIsoFromData,
+  getDefaultColumns
 };

@@ -95,6 +95,11 @@
   }
 
   padding-top: calc(#{$gutter-padding} / 2);
+  [class*=map-styles__wrapper] {
+    &,&[class*=__notDraggable] {
+      cursor:default;
+    }
+  }
 }
 
 .containerUpper {
