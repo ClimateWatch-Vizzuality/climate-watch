@@ -19,7 +19,9 @@ export const getIndicatorsParsed = createSelector(
     if (!categories || !indicators || !indicators.length) return null;
     const categoryIds = Object.keys(categories).filter(
       //Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
-      id => categories[id].slug === 'longterm_strategy' || categories[id].slug === 'ndc_enhancement'
+      id =>
+        categories[id].slug === 'longterm_strategy' ||
+        categories[id].slug === 'ndc_enhancement'
     );
     const preppedIndicators = sortBy(
       uniqBy(
@@ -37,7 +39,11 @@ export const getIndicatorsParsed = createSelector(
     );
     let filteredIndicators = [];
     categoryIds.forEach(id => {
-      filteredIndicators = filteredIndicators.concat(preppedIndicators.filter(ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1))
+      filteredIndicators = filteredIndicators.concat(
+        preppedIndicators.filter(
+          ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1
+        )
+      );
     });
     return filteredIndicators;
   }
@@ -99,13 +105,13 @@ export const tableRemoveIsoFromData = createSelector(
         date = new Date(d['Submission Date']);
         date = !isNaN(date.getTime())
           ? {
-            name: date.toLocaleDateString('en-US'),
-            value: date.getTime()
-          }
+              name: date.toLocaleDateString('en-US'),
+              value: date.getTime()
+            }
           : {
-            name: undefined,
-            value: undefined
-          };
+              name: undefined,
+              value: undefined
+            };
       } catch (e) {
         console.error(e);
       }
@@ -122,6 +128,27 @@ export const tableRemoveIsoFromData = createSelector(
   }
 );
 
+export const getDefaultColumns = createSelector(
+  [getIndicatorsParsed],
+  indicators => {
+    if (!indicators || isEmpty(indicators)) return [];
+
+    const columnIds = [
+      'country',
+      'ndce_ghg',
+      'lts_target',
+      'lts_document',
+      'lts_date'
+    ];
+
+    return columnIds.map(id => {
+      const match = indicators.find(indicator => indicator.value === id);
+      return match ? match.label : id;
+    });
+  }
+);
+
 export default {
-  tableRemoveIsoFromData
+  tableRemoveIsoFromData,
+  getDefaultColumns
 };

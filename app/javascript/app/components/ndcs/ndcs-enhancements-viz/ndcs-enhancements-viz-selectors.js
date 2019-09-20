@@ -102,35 +102,35 @@ const countryStyles = {
 
 export const MAP_COLORS = [
   [
-    'rgb(254, 224, 141)',
+    'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
-    'rgb(254, 224, 141)',
+    'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
-    'rgb(254, 224, 141)',
+    'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
-    'rgb(254, 224, 141)',
+    'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
-    'rgb(254, 224, 141)',
+    'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
     'rgb(0, 0, 0)',
@@ -226,10 +226,10 @@ export const summarizeIndicators = createSelector(
             label: (() => {
               switch (label.slug) {
                 case 'enhance_2020':
-                  return '<strong>countries have stated their intention to enhance ambition or action in their NDCs by 2020</strong>';
+                  return '<strong>countries have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020</strong>';
                   break;
                 case 'intend_2020':
-                  return '<strong>countries have stated their intention to update their NDCs by 2020</strong>';
+                  return '<strong>countries have stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020</strong>';
                   break;
                 default:
                   return 'countries';
