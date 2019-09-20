@@ -14,7 +14,8 @@ import Component from './ndcs-lts-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData
+  tableRemoveIsoFromData,
+  getDefaultColumns
 } from './ndcs-lts-table-selectors';
 
 const actions = { ...fetchActions };
@@ -33,7 +34,8 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: ndcsLTSWithSelection.query,
     isoCountries: getISOCountries(ndcsLTSWithSelection),
-    tableData: tableRemoveIsoFromData(ndcsLTSWithSelection)
+    tableData: tableRemoveIsoFromData(ndcsLTSWithSelection),
+    columns: getDefaultColumns(ndcsLTSWithSelection)
   };
 };
 
@@ -60,6 +62,24 @@ class NDCSLTSTableContainer extends PureComponent {
     history.replace(getLocationParamUpdated(location, param, clear));
   }
 
+  setColumnWidth = column => {
+    const narrowColumns = [0, 1];
+    const tableWidth = 1170;
+    const numColumns = this.props.columns.length;
+    const numNarrowColumns = narrowColumns.length;
+    const colPadding = 10;
+    const narrowColumnWidth = 180;
+    const columnWidth =
+      (tableWidth -
+        (numColumns + 2) * colPadding -
+        numNarrowColumns * narrowColumnWidth) /
+      (numColumns - numNarrowColumns);
+    let index = this.props.columns.indexOf(column);
+    return index !== -1 && narrowColumns.indexOf(index) > -1
+      ? narrowColumnWidth
+      : columnWidth;
+  };
+
   render() {
     const { query } = this.props;
     const noContentMsg = query
@@ -69,7 +89,8 @@ class NDCSLTSTableContainer extends PureComponent {
       ...this.props,
       noContentMsg,
       handleSearchChange: this.handleSearchChange,
-      tableData: this.props.tableData
+      tableData: this.props.tableData,
+      setColumnWidth: this.setColumnWidth
     });
   }
 }
