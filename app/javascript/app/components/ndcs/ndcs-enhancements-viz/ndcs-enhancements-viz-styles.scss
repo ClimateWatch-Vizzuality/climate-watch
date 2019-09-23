@@ -231,10 +231,10 @@
   }
   span[title] {
     display:inline;
-    border-bottom:1px dotted #ccc;
+    border-bottom:1px solid #aaa;
     cursor:default;
     &:hover {
-      border-bottom-color:#aaa;
+      border-bottom-color:#000;
     }
   }
 }
