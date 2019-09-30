@@ -18,7 +18,11 @@ class Embed extends PureComponent {
     return (
       <div className={styles.embed}>
         <CountriesProvider />
-        <div className={cx(layout.content, styles.embedContent)}>
+        <div
+          className={cx(layout.content, styles.embedContent, {
+            [styles.hasFooter]: !isNdcp
+          })}
+        >
           {renderRoutes(route.routes)}
         </div>
         {!isNdcp && (

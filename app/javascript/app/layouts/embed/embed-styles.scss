@@ -6,9 +6,12 @@ $footer-height: 65px;
   max-width: 100%;
   overflow: auto;
   margin: 0;
-  padding: 0 0 $footer-height;
   border: solid 1px $gray;
   background-color: $white;
+}
+
+.hasFooter {
+  padding: 0 0 $footer-height;
 }
 
 .embedContent {
