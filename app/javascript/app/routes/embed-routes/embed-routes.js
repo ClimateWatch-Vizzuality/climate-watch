@@ -21,7 +21,7 @@ export default [
     exact: true
   },
   {
-    path: '/embed/ndcs-enhancements',
+    path: '/embed/2020-ndc-tracker',
     component: NDCSEnhancementsViz,
     exact: true
   },

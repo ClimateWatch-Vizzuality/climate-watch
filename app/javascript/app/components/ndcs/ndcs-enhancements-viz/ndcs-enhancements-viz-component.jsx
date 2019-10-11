@@ -52,7 +52,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
           },
           {
             type: 'share',
-            shareUrl: '/embed/ndcs-enhancements',
+            shareUrl: '/embed/2020-ndc-tracker',
             analyticsGraphName: 'Ndcs',
             positionRight: true
           },

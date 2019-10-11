@@ -11,7 +11,7 @@ export default [
     activeId
   },
   FEATURE_NDCS_ENHANCEMENTS && {
-    path: '/ndcs-enhancements',
+    path: '/2020-ndc-tracker',
     label: '2020 NDC Tracker',
     activeId
   },
