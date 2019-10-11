@@ -15,10 +15,10 @@ import CircularChart from 'components/circular-chart';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
-const getTooltip = (country, tooltipTxt) => (
+const getTooltip = (country, tooltipTxt, tooltipLabel) => (
   <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
     <div className={tooltipTheme.info}>
-      <div className={tooltipTheme.countryName}>{country.name}</div>
+      <div className={tooltipTheme.countryName}>{tooltipLabel}</div>
       <p className={tooltipTheme.text}>{tooltipTxt}</p>
     </div>
     <Icon icon={accordionArrow} className={tooltipTheme.icon} />
@@ -101,6 +101,7 @@ const NDCSEnhancementsViz = ({
   indicator,
   paths,
   tooltipTxt,
+  tooltipLabel,
   downloadLink,
   countryData,
   summaryData,
@@ -146,7 +147,7 @@ const NDCSEnhancementsViz = ({
                   id="ndcs-map-tooltip"
                   delayHide={isTablet ? 0 : 3000}
                 >
-                  {getTooltip(countryData, tooltipTxt)}
+                  {getTooltip(countryData, tooltipTxt, tooltipLabel)}
                 </ReactTooltip>
               )}
               {indicator && (
@@ -192,6 +193,7 @@ NDCSEnhancementsViz.propTypes = {
   indicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,
+  tooltipLabel: PropTypes.string,
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   summaryData: PropTypes.object,
