@@ -208,6 +208,8 @@ export const summarizeIndicators = createSelector(
       id
     }));
 
+    const locations = Object.keys(indicator.locations);
+
     // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
     // Retain functionality for showing emissions percentage in case this becomes useful to display later
     // ONLY "intent to submit" and "intent to enhance" 2020 NDCs currently displayed in component
@@ -216,26 +218,14 @@ export const summarizeIndicators = createSelector(
       summaryData[label.slug] = {
         countries: {
           value: 0,
-          max: Object.keys(indicator.locations).length,
+          max: locations.length,
           opts: {
             color: getColorByIndex(
               indicator.legendBuckets,
               label.index,
               MAP_COLORS
             ),
-            label: (() => {
-              switch (label.slug) {
-                case 'enhance_2020':
-                  return '<strong>countries have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020</strong>';
-                  break;
-                case 'intend_2020':
-                  return '<strong>countries have stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020</strong>';
-                  break;
-                default:
-                  return 'countries';
-                  break;
-              }
-            })()
+            label: undefined
           }
         },
         emissions: {
@@ -255,7 +245,7 @@ export const summarizeIndicators = createSelector(
       };
     });
     const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
-    Object.keys(indicator.locations).forEach(l => {
+    locations.forEach(l => {
       const location = indicator.locations[l];
       const type = location.label_slug;
       if (type) {
@@ -271,6 +261,23 @@ export const summarizeIndicators = createSelector(
       summaryData[type].emissions.value = parseFloat(
         summaryData[type].emissions.value.toFixed(1)
       );
+      let count = summaryData[type].countries.value;
+      summaryData[type].countries.opts.label = (() => {
+        switch (type) {
+          case 'enhance_2020':
+            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020</strong>';
+            break;
+          case 'intend_2020':
+            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020</strong>';
+            break;
+          case 'submitted_2020':
+            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' submitted a 2020 NDC</strong>';
+            break;
+          default:
+            return '<strong>countr'+(count == 1 ? 'y' : 'ies')+'</strong>';
+            break;
+        }
+      })()
       summaryData[type].countries.opts.label += `, representing <span title="2014 emissions data">${summaryData[
         type
       ].emissions.value}% of global emissions</span>`;

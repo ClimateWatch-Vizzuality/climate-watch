@@ -124,6 +124,7 @@ const NDCSEnhancementsViz = ({
                 <div>
                   {renderCircular(summaryData.intend_2020.countries)}
                   {renderCircular(summaryData.enhance_2020.countries)}
+                  {renderCircular(summaryData.submitted_2020.countries)}
                 </div>
               )}
             </div>
