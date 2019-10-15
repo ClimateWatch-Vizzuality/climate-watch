@@ -15,10 +15,10 @@ import CircularChart from 'components/circular-chart';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './ndcs-enhancements-viz-styles.scss';
 
-const getTooltip = (country, tooltipTxt) => (
+const getTooltip = (country, tooltipTxt, tooltipLabel) => (
   <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
     <div className={tooltipTheme.info}>
-      <div className={tooltipTheme.countryName}>{country.name}</div>
+      <div className={tooltipTheme.countryName}>{tooltipLabel}</div>
       <p className={tooltipTheme.text}>{tooltipTxt}</p>
     </div>
     <Icon icon={accordionArrow} className={tooltipTheme.icon} />
@@ -52,7 +52,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
           },
           {
             type: 'share',
-            shareUrl: '/embed/ndcs-enhancements',
+            shareUrl: '/embed/2020-ndc-tracker',
             analyticsGraphName: 'Ndcs',
             positionRight: true
           },
@@ -101,6 +101,7 @@ const NDCSEnhancementsViz = ({
   indicator,
   paths,
   tooltipTxt,
+  tooltipLabel,
   downloadLink,
   countryData,
   summaryData,
@@ -124,6 +125,7 @@ const NDCSEnhancementsViz = ({
                 <div>
                   {renderCircular(summaryData.intend_2020.countries)}
                   {renderCircular(summaryData.enhance_2020.countries)}
+                  {renderCircular(summaryData.submitted_2020.countries)}
                 </div>
               )}
             </div>
@@ -145,7 +147,7 @@ const NDCSEnhancementsViz = ({
                   id="ndcs-map-tooltip"
                   delayHide={isTablet ? 0 : 3000}
                 >
-                  {getTooltip(countryData, tooltipTxt)}
+                  {getTooltip(countryData, tooltipTxt, tooltipLabel)}
                 </ReactTooltip>
               )}
               {indicator && (
@@ -191,6 +193,7 @@ NDCSEnhancementsViz.propTypes = {
   indicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,
+  tooltipLabel: PropTypes.string,
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   summaryData: PropTypes.object,
