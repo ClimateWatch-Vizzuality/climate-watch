@@ -437,7 +437,7 @@ export const getChartConfig = createSelector(
     getChartNeededPrecision
   ],
   (data, allScenarios, scenariosInChart, indicator, precision) => {
-    if (!data || !allScenarios) return null;
+    if (!data || !allScenarios || isEmpty(scenariosInChart)) return null;
     const yColumns = data.map(d => {
       const scenario = scenariosInChart.find(
         s => parseInt(s.value, 10) === d.scenario_id
