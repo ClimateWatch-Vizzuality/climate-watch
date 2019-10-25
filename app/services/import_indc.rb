@@ -271,7 +271,7 @@ class ImportIndc
 
   def import_values_cait
     Indc::Indicator.
-      where(source: [@sources_index['CAIT'], @sources_index['DIE']]).
+      where(source: [@sources_index['CAIT'], @sources_index['NDC Explorer']]).
       each do |indicator|
       @cait_data.each do |r|
         location = @locations_by_iso3[r[:iso]]
