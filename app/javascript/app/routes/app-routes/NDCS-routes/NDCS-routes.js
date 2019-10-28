@@ -16,7 +16,7 @@ export default [
     activeId
   },
   FEATURE_NDCS_LTS && {
-    path: '/ndcs-lts',
+    path: '/lts-tracker',
     label: 'Long-Term Strategy Tracker',
     activeId
   },
