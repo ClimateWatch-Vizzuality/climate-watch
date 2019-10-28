@@ -105,35 +105,30 @@ export const MAP_COLORS = [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ]
 ];
@@ -164,7 +159,7 @@ export const getPathsWithStyles = createSelector(
         let style = countryStyles;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = countryData.label_slug == 'ambg_2020' ? 'url(#pattern_gJ2H6)' : getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...countryStyles,
             default: {
