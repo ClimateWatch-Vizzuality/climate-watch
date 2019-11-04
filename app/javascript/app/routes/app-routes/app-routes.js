@@ -47,7 +47,7 @@ import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
-import ndcsLTSSections from './ndcs-lts-sections';
+import ndcsLTSSections from './lts-tracker-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_NDCS_ENHANCEMENTS =
@@ -142,7 +142,7 @@ export default [
     sections: ndcsEnhancementsSections
   },
   FEATURE_NDCS_LTS && {
-    path: '/ndcs-lts',
+    path: '/lts-tracker',
     component: NDCSLTS,
     headerImage: 'ndc',
     headerColor: '#035388',

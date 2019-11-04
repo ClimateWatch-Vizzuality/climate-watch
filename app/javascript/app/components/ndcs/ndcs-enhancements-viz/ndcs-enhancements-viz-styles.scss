@@ -3,7 +3,6 @@
 
 .wrapper {
   position: relative;
-  margin-bottom: 40px;
 }
 
 .column {
@@ -55,18 +54,7 @@
   }
 
   @media #{$tablet-landscape} {
-    bottom: -3em;
-  }
-  [class*=__buckets__]:nth-child(5) {
-    [class*=__bucketIcon__] {
-      background:repeating-linear-gradient(
-        -45deg,
-        #aaa,
-        #aaa 2px,
-        #ddd 2px,
-        #ddd 4px
-      ) !important;
-    }
+    bottom: 0;
   }
 }
 
@@ -158,6 +146,9 @@
     padding-right: calc(#{$gutter-padding} / 2);
     margin: -60px 0 6.8em;
     flex-direction:column;
+    &:last-child {
+      margin-bottom:10%;
+    }
     > div {
       &:first-child {
         max-width:100%;
@@ -167,14 +158,14 @@
 
   @media #{$tablet-landscape} {
     margin: -5% $card-content-margin 0;
-    &:first-child {
-      margin-top:0;
+    &:last-child {
+      margin-bottom:-5%;
     }
   }
 
   @media #{$desktop} {
     flex-direction:row;
-    margin-bottom:-5%;
+    margin-bottom:-10%;
     > div {
       &:first-child {
         max-width:50%;

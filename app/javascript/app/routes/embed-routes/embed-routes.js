@@ -26,7 +26,7 @@ export default [
     exact: true
   },
   {
-    path: '/embed/ndcs-lts',
+    path: '/embed/lts-tracker',
     component: NDCSLTSViz,
     exact: true
   },
