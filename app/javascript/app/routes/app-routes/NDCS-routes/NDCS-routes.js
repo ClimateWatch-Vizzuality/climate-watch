@@ -11,12 +11,12 @@ export default [
     activeId
   },
   FEATURE_NDCS_ENHANCEMENTS && {
-    path: '/ndcs-enhancements',
+    path: '/2020-ndc-tracker',
     label: '2020 NDC Tracker',
     activeId
   },
   FEATURE_NDCS_LTS && {
-    path: '/ndcs-lts',
+    path: '/lts-tracker',
     label: 'Long-Term Strategy Tracker',
     activeId
   },

@@ -47,13 +47,12 @@ import emissionPathwaysSections from './emission-pathways-sections';
 import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
-import ndcsLTSSections from './ndcs-lts-sections';
+import ndcsLTSSections from './lts-tracker-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_NDCS_ENHANCEMENTS =
   process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
-const FEATURE_NDCS_LTS =
-  process.env.FEATURE_NDCS_LTS === 'true';
+const FEATURE_NDCS_LTS = process.env.FEATURE_NDCS_LTS === 'true';
 export default [
   {
     path: '/',
@@ -136,14 +135,14 @@ export default [
     routes: NDCSContentRoutes
   },
   FEATURE_NDCS_ENHANCEMENTS && {
-    path: '/ndcs-enhancements',
+    path: '/2020-ndc-tracker',
     component: NDCSEnhancements,
     headerImage: 'ndc',
     headerColor: '#035388',
     sections: ndcsEnhancementsSections
   },
   FEATURE_NDCS_LTS && {
-    path: '/ndcs-lts',
+    path: '/lts-tracker',
     component: NDCSLTS,
     headerImage: 'ndc',
     headerColor: '#035388',

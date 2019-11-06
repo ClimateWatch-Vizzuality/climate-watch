@@ -3,7 +3,6 @@
 
 .wrapper {
   position: relative;
-  margin-bottom: 40px;
 }
 
 .column {
@@ -55,18 +54,7 @@
   }
 
   @media #{$tablet-landscape} {
-    bottom: -3em;
-  }
-  [class*=__buckets__]:nth-child(5) {
-    [class*=__bucketIcon__] {
-      background:repeating-linear-gradient(
-        -45deg,
-        #aaa,
-        #aaa 2px,
-        #ddd 2px,
-        #ddd 4px
-      ) !important;
-    }
+    bottom: 0;
   }
 }
 
@@ -117,7 +105,7 @@
 
   @media #{$tablet-portrait} {
     > div {
-      @include columns(50%);
+      @include columns(33.333%);
     }
   }
 
@@ -138,35 +126,29 @@
 
 .circularChartContainer {
   position: relative;
-  margin: -60px 0 4.8em;
+  margin: -10% 0;
   flex: 1;
   height: 200px;
   overflow: visible;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-size: 0.8em;
 
   > div {
     position: relative;
     &:first-child {
-      max-width:100%;
+      max-width:50%;
     }
   }
 
   @media #{$tablet-portrait} {
     font-size: 1em;
-    margin: 0 $card-content-margin $card-content-margin;
     padding-right: calc(#{$gutter-padding} / 2);
-    flex-direction:row;
-    > div {
-      &:first-child {
-        max-width:50%;
-      }
-    }
-  }
-
-  @media #{$tablet-landscape} {
+    margin: -60px 0 6.8em;
     flex-direction:column;
+    &:last-child {
+      margin-bottom:10%;
+    }
     > div {
       &:first-child {
         max-width:100%;
@@ -174,8 +156,16 @@
     }
   }
 
+  @media #{$tablet-landscape} {
+    margin: -5% $card-content-margin 0;
+    &:last-child {
+      margin-bottom:-5%;
+    }
+  }
+
   @media #{$desktop} {
     flex-direction:row;
+    margin-bottom:-10%;
     > div {
       &:first-child {
         max-width:50%;
@@ -217,12 +207,9 @@
   display: flex;
   align-items: center;
   justify-content: left;
-  top: -2.4em;
-  @media #{$tablet-portrait} {
-    top:0;
-  }
+  top: 0;
 
-  @media #{$tablet-landscape} {
+  @media #{$tablet-portrait} {
     top: -2.4em;
   }
 
@@ -231,10 +218,10 @@
   }
   span[title] {
     display:inline;
-    border-bottom:1px dotted #ccc;
+    border-bottom:1px solid #aaa;
     cursor:default;
     &:hover {
-      border-bottom-color:#aaa;
+      border-bottom-color:#000;
     }
   }
 }

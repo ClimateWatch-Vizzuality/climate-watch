@@ -105,35 +105,30 @@ export const MAP_COLORS = [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ],
   [
     'rgb(255, 108, 47)',
     'rgb(30, 79, 116)',
     'rgb(132, 181, 218)',
-    'rgb(0, 0, 0)',
     'rgb(204, 204, 204)'
   ]
 ];
@@ -164,7 +159,7 @@ export const getPathsWithStyles = createSelector(
         let style = countryStyles;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = countryData.label_slug == 'ambg_2020' ? 'url(#pattern_gJ2H6)' : getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
             ...countryStyles,
             default: {
@@ -208,34 +203,25 @@ export const summarizeIndicators = createSelector(
       id
     }));
 
+    const locations = Object.keys(indicator.locations);
+
     // Retain functionality for showing submitted 2020 NDCs in case this becomes useful to display later
     // Retain functionality for showing emissions percentage in case this becomes useful to display later
     // ONLY "intent to submit" and "intent to enhance" 2020 NDCs currently displayed in component
     // ONLY country totals currently displayed in component
     labels.forEach(label => {
       summaryData[label.slug] = {
+        includesEU:false,
         countries: {
           value: 0,
-          max: Object.keys(indicator.locations).length,
+          max: locations.length,
           opts: {
             color: getColorByIndex(
               indicator.legendBuckets,
               label.index,
               MAP_COLORS
             ),
-            label: (() => {
-              switch (label.slug) {
-                case 'enhance_2020':
-                  return '<strong>countries have stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020</strong>';
-                  break;
-                case 'intend_2020':
-                  return '<strong>countries have stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020</strong>';
-                  break;
-                default:
-                  return 'countries';
-                  break;
-              }
-            })()
+            label: undefined
           }
         },
         emissions: {
@@ -255,11 +241,12 @@ export const summarizeIndicators = createSelector(
       };
     });
     const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
-    Object.keys(indicator.locations).forEach(l => {
+    locations.forEach(l => {
       const location = indicator.locations[l];
       const type = location.label_slug;
       if (type) {
-        summaryData[type].countries.value++;
+        if (l == 'EU28') summaryData[type].includesEU = true;
+        summaryData[type].countries.value += l == 'EU28' ? 28 : 1;
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
@@ -271,7 +258,25 @@ export const summarizeIndicators = createSelector(
       summaryData[type].emissions.value = parseFloat(
         summaryData[type].emissions.value.toFixed(1)
       );
-      summaryData[type].countries.opts.label += `, representing <span title="2014 emissions data">${summaryData[
+      let count = summaryData[type].countries.value;
+      summaryData[type].countries.opts.label = (() => {
+        switch (type) {
+          case 'enhance_2020':
+            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020';
+            break;
+          case 'intend_2020':
+            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020';
+            break;
+          case 'submitted_2020':
+            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' submitted a 2020 NDC';
+            break;
+          default:
+            return '<strong>countr'+(count == 1 ? 'y' : 'ies')+'';
+            break;
+        }
+      })()
+      if (summaryData[type].includesEU) summaryData[type].countries.opts.label += " (including the European Union)";
+      summaryData[type].countries.opts.label += `</strong>, representing <span title="2014 emissions data">${summaryData[
         type
       ].emissions.value}% of global emissions</span>`;
     });

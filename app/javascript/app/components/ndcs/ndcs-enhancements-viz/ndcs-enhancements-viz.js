@@ -39,6 +39,7 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: ndcsEnhancementsWithSelection.query,
     paths: getPathsWithStyles(ndcsEnhancementsWithSelection),
+    countries: countries.data,
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
     indicator: getMapIndicator(ndcsEnhancementsWithSelection),
     indicators: getIndicatorsParsed(ndcsEnhancementsWithSelection),
@@ -103,6 +104,18 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     return '';
   }
 
+  getTooltipLabel() {
+    const { geometryIdHover } = this.state;
+    const { indicator, countries } = this.props;
+    if (!geometryIdHover || !indicator) return '';
+
+    if (europeanCountries.includes(geometryIdHover)) return 'European Union (28)';
+    const country = countries.find(country => {
+      return country.iso_code3 === geometryIdHover;
+    });
+    return country ? country.wri_standard_name : '';
+  }
+
   handleCountryClick = geography => {
     //Click action has been disabled for countries on this map per WRI request
     const { isoCountries } = this.props;
@@ -143,6 +156,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
 
   render() {
     const tooltipTxt = this.getTooltipText();
+    const tooltipLabel = this.getTooltipLabel();
     const { query } = this.props;
     const noContentMsg = query
       ? 'No results found'
@@ -150,6 +164,7 @@ class NDCSEnhancementsVizContainer extends PureComponent {
     return createElement(Component, {
       ...this.props,
       tooltipTxt,
+      tooltipLabel,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
