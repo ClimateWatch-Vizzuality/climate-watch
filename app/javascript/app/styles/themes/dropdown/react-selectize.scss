@@ -436,6 +436,12 @@ $height: 45px;
     }
   }
 
+  .withSearch {
+    .react-selectize-toggle-button-container {
+      transform: rotate(0deg) !important;
+    }
+  }
+
   .open {
     .react-selectize-control {
       background: $white !important;

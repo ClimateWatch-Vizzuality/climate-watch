@@ -16,7 +16,8 @@ class AutocompleteSearch extends PureComponent {
       handleSearchChange,
       searchList,
       className,
-      placeholder
+      placeholder,
+      variant
     } = this.props;
     return (
       <div className={cx(styles.wrapper, className)}>
@@ -28,12 +29,15 @@ class AutocompleteSearch extends PureComponent {
           onValueChange={handleValueClick}
           value={null}
           hideResetButton
-          white
+          white={variant === 'white'}
+          dark={variant === 'dark'}
           hasSearch
           renderToggleButton={({ open }) => (
             <Icon
               icon={searchIcon}
-              className={cx(styles.searchIcon, !open ? styles.whiteIcon : '')}
+              className={cx(styles.searchIcon, {
+                [styles.whiteIcon]: !open && variant === 'white'
+              })}
             />
           )}
         />
@@ -47,12 +51,14 @@ AutocompleteSearch.propTypes = {
   handleSearchChange: Proptypes.func.isRequired,
   searchList: Proptypes.array,
   placeholder: Proptypes.string,
-  className: Proptypes.string
+  className: Proptypes.string,
+  variant: Proptypes.string
 };
 
 AutocompleteSearch.defaultProps = {
   placeholder: 'Search for a country or keyword',
-  className: null
+  className: null,
+  variant: 'white'
 };
 
 export default AutocompleteSearch;
