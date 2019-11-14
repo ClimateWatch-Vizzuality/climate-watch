@@ -52,7 +52,7 @@ const Button = props => {
     </NavLink>
   ) : (
     <button
-      title={title || disabled ? 'Coming soon' : ''}
+      title={title || (disabled ? 'Coming soon' : '')}
       disabled={disabled}
       className={classNames}
       onClick={onClick}
