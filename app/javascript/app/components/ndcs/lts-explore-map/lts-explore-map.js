@@ -148,7 +148,7 @@ LTSExploreMapContainer.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
   fetchNDCSLTS: PropTypes.func.isRequired,
   query: PropTypes.object,
-  summaryData: PropTypes.array,
+  summaryData: PropTypes.object,
   indicator: PropTypes.object,
   indicators: PropTypes.array
 };
