@@ -61,5 +61,5 @@ $country-filter-height: 60px;
   margin-bottom: -1px;
   position: relative;
   min-height: 400px;
-  z-index: 5;
+  z-index: $z-index-under-loader;
 }

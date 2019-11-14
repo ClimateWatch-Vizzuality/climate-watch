@@ -104,7 +104,7 @@
 .columnSelector :global {
   position: absolute;
   right: 0;
-  z-index: 10;
+  z-index: $z-index-loader;
   border-bottom: solid 1px $theme-color-light;
   width: 25px;
   background-color: white;
