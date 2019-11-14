@@ -12,28 +12,18 @@
 
 .buttonGroup {
   width: auto;
-  margin-top: 1em;
+  margin-top: 0;
   min-width: 200px;
   float: right;
-
-  .containerControls & {
-    @media #{$tablet-portrait} {
-      margin-top: 0;
-      width: 100%;
-      min-width: 0;
-    }
-  }
 }
 
 .containerControls {
   @media #{$tablet-portrait} {
-    @include columns((8,4));
+    // @include column-offset(6);
+    // @include columns();
   }
 
-  margin-bottom: 40px;
-  margin-top: 20px;
-
-  @include clearFix();
+  // @include clearFix();
 }
 
 .searchBox {
@@ -179,4 +169,37 @@
   display: flex;
   align-items: center;
   justify-content: left;
+}
+
+.buttonGroup {
+  width: 100%;
+  margin: 20px 0;
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns(6);
+  }
+}
+
+@media #{$tablet-landscape} {
+  .filtersLayout {
+    @include columns((9,3));
+  }
+
+  .filtersGroup {
+    @include columns(4);
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+
+  .buttonGroup {
+    margin: 20px 0;
+  }
+}
+
+.mapInfo {
+  font-style: italic;
 }

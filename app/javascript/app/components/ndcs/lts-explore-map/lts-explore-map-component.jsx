@@ -30,42 +30,29 @@ const getTooltip = (country, tooltipTxt) => (
 );
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
-  <div className={styles.containerControls}>
-    <div>
-      <p>
-        <em>
-          Explore which countries have submitted long-term strategies thus far
-          below. Visit Climate Watch in the coming months for in-depth analysis
-          of long-term strategies.
-        </em>
-      </p>
-    </div>
-    <div>
-      <ButtonGroup
-        className={styles.buttonGroup}
-        buttonsConfig={[
-          {
-            type: 'info',
-            onClick: clickHandler
-          },
-          {
-            type: 'share',
-            shareUrl: '/embed/ndcs-lts',
-            analyticsGraphName: 'Ndcs',
-            positionRight: true
-          },
-          {
-            type: 'download',
-            section: 'ndcs-content',
-            link: downloadLink
-          },
-          {
-            type: 'addToUser'
-          }
-        ]}
-      />
-    </div>
-  </div>
+  <ButtonGroup
+    className={styles.buttonGroup}
+    buttonsConfig={[
+      {
+        type: 'info',
+        onClick: clickHandler
+      },
+      {
+        type: 'share',
+        shareUrl: '/embed/ndcs-lts',
+        analyticsGraphName: 'Ndcs',
+        positionRight: true
+      },
+      {
+        type: 'download',
+        section: 'ndcs-content',
+        link: downloadLink
+      },
+      {
+        type: 'addToUser'
+      }
+    ]}
+  />
 );
 
 const renderCircular = datum => (
@@ -114,23 +101,25 @@ const LTSExploreMap = ({
       {isTablet => (
         <div className={styles.wrapper}>
           <div className={styles.filtersLayout}>
-            <Dropdown
-              label="Category"
-              paceholder="Select a category"
-              options={categories}
-              onValueChange={handleCategoryChange}
-              value={selectedCategory}
-              hideResetButton
-              plain
-            />
-            <Dropdown
-              label="Indicator"
-              options={indicators}
-              onValueChange={handleIndicatorChange}
-              value={selectedIndicator}
-              hideResetButton
-              plain
-            />
+            <div className={styles.filtersGroup}>
+              <Dropdown
+                label="Category"
+                paceholder="Select a category"
+                options={categories}
+                onValueChange={handleCategoryChange}
+                value={selectedCategory}
+                hideResetButton
+                plain
+              />
+              <Dropdown
+                label="Indicator"
+                options={indicators}
+                onValueChange={handleIndicatorChange}
+                value={selectedIndicator}
+                hideResetButton
+                plain
+              />
+            </div>
             {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
           </div>
           <div className={styles.containerUpper}>
@@ -144,7 +133,11 @@ const LTSExploreMap = ({
             </div>
             <div className={styles.containerMap}>
               {loading && <Loading light className={styles.loader} />}
-              {!isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
+              <p className={styles.mapInfo}>
+                Explore which countries have submitted long-term strategies thus
+                far below. Visit Climate Watch in the coming months for in-depth
+                analysis of long-term strategies.
+              </p>
               <Map
                 paths={paths}
                 tooltipId="ndcs-map-tooltip"
@@ -163,6 +156,7 @@ const LTSExploreMap = ({
                   {getTooltip(countryData, tooltipTxt)}
                 </ReactTooltip>
               )}
+              {!isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
             </div>
           </div>
           <ModalMetadata />

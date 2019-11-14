@@ -188,12 +188,8 @@ export const summarizeIndicators = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
-
     labels.forEach(label => {
-      const slug =
-        label.name === 'Long-term Strategy Submitted'
-          ? 'submitted'
-          : 'not_submitted';
+      const slug = label.index < 1 ? 'submitted' : 'not_submitted';
 
       summaryData[slug] = {
         countries: {
