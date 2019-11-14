@@ -5,13 +5,13 @@ import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
 import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
-import MapLegend from 'components/map-legend';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import CircularChart from 'components/circular-chart';
+import Dropdown from 'components/dropdown';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import styles from './lts-explore-map-styles.scss';
@@ -94,7 +94,6 @@ const renderCircular = datum => (
 
 const LTSExploreMap = ({
   loading,
-  indicator,
   paths,
   tooltipTxt,
   downloadLink,
@@ -103,19 +102,40 @@ const LTSExploreMap = ({
   handleInfoClick,
   handleCountryClick,
   handleCountryEnter,
-  mapColors
+  categories,
+  indicators,
+  handleCategoryChange,
+  selectedCategory,
+  handleIndicatorChange,
+  selectedIndicator
 }) => (
   <div>
     <TabletLandscape>
       {isTablet => (
         <div className={styles.wrapper}>
           <div className={styles.filtersLayout}>
+            <Dropdown
+              label="Category"
+              paceholder="Select a category"
+              options={categories}
+              onValueChange={handleCategoryChange}
+              value={selectedCategory}
+              hideResetButton
+              plain
+            />
+            <Dropdown
+              label="Indicator"
+              options={indicators}
+              onValueChange={handleIndicatorChange}
+              value={selectedIndicator}
+              hideResetButton
+              plain
+            />
             {isTablet && renderButtonGroup(handleInfoClick, downloadLink)}
           </div>
-
           <div className={styles.containerUpper}>
             <div className={styles.containerCharts}>
-              {!loading && summaryData && (
+              {!loading && summaryData && summaryData.submitted && (
                 <div>
                   {renderCircular(summaryData.submitted.countries)}
                   {renderCircular(summaryData.submitted.emissions)}
@@ -143,14 +163,6 @@ const LTSExploreMap = ({
                   {getTooltip(countryData, tooltipTxt)}
                 </ReactTooltip>
               )}
-              {indicator && (
-                <MapLegend
-                  className={styles.legend}
-                  title={indicator.legend}
-                  buckets={indicator.legendBuckets}
-                  mapColors={mapColors}
-                />
-              )}
             </div>
           </div>
           <ModalMetadata />
@@ -162,7 +174,6 @@ const LTSExploreMap = ({
 
 LTSExploreMap.propTypes = {
   loading: PropTypes.bool,
-  indicator: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipTxt: PropTypes.string,
   downloadLink: PropTypes.string,
@@ -171,7 +182,12 @@ LTSExploreMap.propTypes = {
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
-  mapColors: PropTypes.array
+  categories: PropTypes.array,
+  indicators: PropTypes.array,
+  handleCategoryChange: PropTypes.func,
+  selectedCategory: PropTypes.object,
+  handleIndicatorChange: PropTypes.func,
+  selectedIndicator: PropTypes.object
 };
 
 export default LTSExploreMap;

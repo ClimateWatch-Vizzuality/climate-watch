@@ -5,6 +5,7 @@ import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
+import { getSelectedIndicator } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -19,12 +20,14 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryIds = Object.keys(categories).filter(
-      // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
-      id =>
-        categories[id].slug === 'longterm_strategy' ||
-        categories[id].slug === 'ndc_enhancement'
-    );
+    const categoryIds = Object.keys(categories);
+    // TODO: check this filter
+    // .filter(
+    //   // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
+    //   id =>
+    //     categories[id].slug === 'longterm_strategy' ||
+    //     categories[id].slug === 'ndc_enhancement'
+    // );
     const preppedIndicators = sortBy(
       uniqBy(
         indicators.map(i => {
@@ -45,6 +48,7 @@ export const getIndicatorsParsed = createSelector(
       ),
       'label'
     );
+
     let filteredIndicators = [];
     categoryIds.forEach(id => {
       filteredIndicators = filteredIndicators.concat(
@@ -58,28 +62,29 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const getMapIndicator = createSelector(
-  [getIndicatorsParsed, getISOCountries],
-  (indicators, isos) => {
+  [getIndicatorsParsed, getISOCountries, getSelectedIndicator],
+  (indicators, isos, selectedIndicator) => {
     if (!indicators || !indicators.length) return null;
-    const mapIndicator = indicators.find(ind => ind.value === 'lts');
+    // TODO: To be reviewed
+    const mapIndicator = selectedIndicator || indicators[0];
 
-    if (mapIndicator) {
-      const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-        id => mapIndicator.legendBuckets[id].label === 'No Document Submitted'
-      );
-      // Set all countries without values to "No Document Submitted" by default
-      if (noInfoId) {
-        isos.forEach(iso => {
-          if (!mapIndicator.locations[iso]) {
-            mapIndicator.locations[iso] = {
-              value: mapIndicator.legendBuckets[noInfoId].name,
-              label_id: noInfoId,
-              label_slug: mapIndicator.legendBuckets[noInfoId].slug
-            };
-          }
-        });
-      }
-    }
+    // if (mapIndicator) {
+    //   const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
+    //     id => mapIndicator.legendBuckets[id].label === 'No Document Submitted'
+    //   );
+    //   // Set all countries without values to "No Document Submitted" by default
+    //   if (noInfoId) {
+    //     isos.forEach(iso => {
+    //       if (!mapIndicator.locations[iso]) {
+    //         mapIndicator.locations[iso] = {
+    //           value: mapIndicator.legendBuckets[noInfoId].name,
+    //           label_id: noInfoId,
+    //           label_slug: mapIndicator.legendBuckets[noInfoId].slug
+    //         };
+    //       }
+    //     });
+    //   }
+    // }
 
     return mapIndicator;
   }
@@ -111,6 +116,9 @@ const countryStyles = {
 
 export const MAP_COLORS = [
   ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
+  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
+  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
+  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
   ['rgb(55, 104, 141)', 'rgb(164, 164, 164)']
 ];
 
@@ -137,7 +145,7 @@ export const getPathsWithStyles = createSelector(
         let style = countryStyles;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
-          const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
+          const color = getColorByIndex(legendBuckets, legendIndex);
           style = {
             ...countryStyles,
             default: {
@@ -192,11 +200,7 @@ export const summarizeIndicators = createSelector(
           value: 0,
           max: Object.keys(indicator.locations).length,
           opts: {
-            color: getColorByIndex(
-              indicator.legendBuckets,
-              label.index,
-              MAP_COLORS
-            ),
+            color: getColorByIndex(indicator.legendBuckets, label.index),
             label: (() => {
               switch (slug) {
                 case 'submitted':
@@ -211,11 +215,7 @@ export const summarizeIndicators = createSelector(
           value: 0,
           max: 100,
           opts: {
-            color: getColorByIndex(
-              indicator.legendBuckets,
-              label.index,
-              MAP_COLORS
-            ),
+            color: getColorByIndex(indicator.legendBuckets, label.index),
             suffix: '%',
             label:
               'of global emissions represented by these countries (2014 emissions data)'
