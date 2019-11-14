@@ -14,7 +14,7 @@
   margin-bottom: 20px;
   position: sticky;
   top: 108px;
-  z-index: 1;
+  z-index: $z-index-over-base;
 }
 
 .filtersGroup {

@@ -23,7 +23,7 @@ $min-height: 450px;
   top: 0;
   right: 0;
   left: 0;
-  z-index: 5;
+  z-index: $z-index-under-loader;
 }
 
 .noContent {

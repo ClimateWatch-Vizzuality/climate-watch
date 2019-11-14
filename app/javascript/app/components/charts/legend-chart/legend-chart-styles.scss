@@ -100,11 +100,11 @@ $margin-container: 10px;
 .tagSelector :global {
   width: 29px;
   height: 29px;
-  z-index: 0;
+  z-index: $z-index-base;
 
   .react-selectize-control {
     background-color: $white !important;
-    z-index: 10;
+    z-index: $z-index-loader;
     height: 28px !important;
     padding-left: 5px !important;
   }

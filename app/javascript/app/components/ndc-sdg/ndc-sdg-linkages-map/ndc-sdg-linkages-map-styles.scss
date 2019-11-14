@@ -55,7 +55,7 @@
   position: absolute;
   right: 0;
   top: $gutter-padding;
-  z-index: 2;
+  z-index: $z-index-sticky;
   width: 100%;
 }
 
@@ -68,7 +68,7 @@
   font-weight: $font-weight;
   font-size: $font-size-large;
   color: $theme-color;
-  z-index: 2;
+  z-index: $z-index-sticky;
 
   @media #{$tablet-landscape} {
     display: block;

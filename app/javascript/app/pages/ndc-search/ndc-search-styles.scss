@@ -15,7 +15,7 @@
   @include row();
 
   margin-bottom: 15px;
-  z-index: 2;
+  z-index: $z-index-sticky;
 
   @media #{$tablet-portrait} {
     > * {

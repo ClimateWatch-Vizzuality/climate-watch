@@ -150,7 +150,7 @@ $height: 45px;
       overflow: auto;
       position: absolute;
       max-height: 200px;
-      z-index: 21;
+      z-index: $z-index-dropdown-menu;
 
       &.tethered {
         min-width: 100%;
