@@ -18,15 +18,22 @@ export const focusEditor = createAction('focusEditor');
 export const focusTitle = createAction('focusTitle');
 export const updateTitle = createAction('updateTitle');
 
-export const logState = createThunkAction('logState', () => (dispatch, getState) => {
-  const { myCWEditor: { content: editorState } } = getState();
-  console.log(logEditorState(editorState)); // eslint-disable-line no-console
-});
+export const logState = createThunkAction(
+  'logState',
+  () => (dispatch, getState) => {
+    const {
+      myCWEditor: { content: editorState }
+    } = getState();
+    console.info(logEditorState(editorState)); // eslint-disable-line no-console
+  }
+);
 
 export const insertAtomic = createThunkAction(
   'insertAtomic',
   ({ type, mode, data }) => (dispatch, getState) => {
-    const { myCWEditor: { content: editorState } } = getState();
+    const {
+      myCWEditor: { content: editorState }
+    } = getState();
     const { entityKey, newEditorState } = updateEditorContent({
       editorState,
       type,
@@ -34,28 +41,38 @@ export const insertAtomic = createThunkAction(
       data
     });
     dispatch(
-      updateContent(insertAtomicBlock({ editorState: newEditorState, entityKey, char: ' ' }))
+      updateContent(
+        insertAtomicBlock({ editorState: newEditorState, entityKey, char: ' ' })
+      )
     );
     dispatch(focusEditor());
   }
 );
 
-export const deleteAtomic = createThunkAction('deleteAtomic', atomic => (dispatch, getState) => {
-  const { myCWEditor: { content: editorState } } = getState();
-  dispatch(updateContent(deleteAtomicBlock(atomic, editorState)));
-  dispatch(focusEditor());
-});
+export const deleteAtomic = createThunkAction(
+  'deleteAtomic',
+  atomic => (dispatch, getState) => {
+    const {
+      myCWEditor: { content: editorState }
+    } = getState();
+    dispatch(updateContent(deleteAtomicBlock(atomic, editorState)));
+    dispatch(focusEditor());
+  }
+);
 
-export const pickVisualiation = createThunkAction('pickVisualiation', data => dispatch => {
-  dispatch(
-    insertAtomic({
-      mode: 'IMMUTABLE',
-      type: 'multichart',
-      data
-    })
-  );
-  dispatch(closePicker());
-});
+export const pickVisualiation = createThunkAction(
+  'pickVisualiation',
+  data => dispatch => {
+    dispatch(
+      insertAtomic({
+        mode: 'IMMUTABLE',
+        type: 'multichart',
+        data
+      })
+    );
+    dispatch(closePicker());
+  }
+);
 
 export const clearInsight = createAction('clearInsight');
 export const fetchInsightReady = createAction('fetchInsightReady');
@@ -65,16 +82,19 @@ export const saveInsightFail = createAction('saveInsightFail');
 export const deleteInsightFail = createAction('deleteInsightFail');
 export const deleteInsightReady = createAction('deleteInsightReady');
 
-export const fetchInsight = createThunkAction('fetchInsight', insightId => dispatch => {
-  CWAPI.get(`my_cw/user_stories/${insightId}`)
-    .then(insight => {
-      dispatch(fetchInsightReady(insight));
-    })
-    .catch(e => {
-      console.warn(e);
-      dispatch(fetchInsightFail());
-    });
-});
+export const fetchInsight = createThunkAction(
+  'fetchInsight',
+  insightId => dispatch => {
+    CWAPI.get(`my_cw/user_stories/${insightId}`)
+      .then(insight => {
+        dispatch(fetchInsightReady(insight));
+      })
+      .catch(e => {
+        console.warn(e);
+        dispatch(fetchInsightFail());
+      });
+  }
+);
 
 export const saveInsight = createThunkAction(
   'saveInsight',
@@ -104,13 +124,15 @@ export const saveInsight = createThunkAction(
   }
 );
 
-export const deleteInsight = createThunkAction('deleteInsight', id => dispatch =>
-  CWAPI.delete(`my_cw/user_stories/${id}`)
-    .then(response => {
-      dispatch(deleteInsightReady(response));
-    })
-    .catch(e => {
-      console.warn(e);
-      dispatch(deleteInsightFail());
-    })
+export const deleteInsight = createThunkAction(
+  'deleteInsight',
+  id => dispatch =>
+    CWAPI.delete(`my_cw/user_stories/${id}`)
+      .then(response => {
+        dispatch(deleteInsightReady(response));
+      })
+      .catch(e => {
+        console.warn(e);
+        dispatch(deleteInsightFail());
+      })
 );
