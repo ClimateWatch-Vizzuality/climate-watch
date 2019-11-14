@@ -291,7 +291,8 @@ Map.defaultProps = {
       strokeWidth: 0.5,
       outline: 'none'
     }
-  }
+  },
+  theme: {}
 };
 
 export default Map;
