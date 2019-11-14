@@ -67,16 +67,14 @@ class NDCSLTSVizContainer extends PureComponent {
 
     const id = geometryIdHover;
 
-    const targetIndicator = indicators.find(
-      indicator => indicator.value == 'lts_target'
-    );
+    const targetIndicator = indicators.find(i => i.value === 'lts_target');
 
     if (
       indicator.locations &&
       indicator.locations[id] &&
       indicator.locations[id].value === 'Long-term Strategy Submitted'
     ) {
-      return "Long-term Target: <em>"+targetIndicator.locations[id].value+"</em>";
+      return `Long-term Target: <em>${targetIndicator.locations[id].value}</em>`;
     }
     return '';
   }
@@ -148,7 +146,11 @@ NDCSLTSVizContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchNDCSLTS: PropTypes.func.isRequired
+  fetchNDCSLTS: PropTypes.func.isRequired,
+  indicator: PropTypes.object,
+  indicators: PropTypes.array,
+  summaryData: PropTypes.object,
+  query: PropTypes.object
 };
 
 export default withRouter(
