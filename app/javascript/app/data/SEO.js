@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const TITLE = 'Climate Watch: Data for Climate Action';
 export const HOME_PAGE =
   'Climate Watch is an open online platform designed to empower users with the climate data, visualizations and resources they need to gather insights on national and global progress on climate change, sustainable development, and help advance the goals of the Paris Agreement.';
@@ -6,6 +7,8 @@ export const COUNTRY_PROFILES =
 export const NDC_CONTENT =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
 export const NDC_ENHANCEMENTS =
+  'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
+export const LTS_EXPLORE =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
 export const NDC_LTS =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
