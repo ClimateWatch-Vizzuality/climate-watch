@@ -59,7 +59,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: $z-index-loader;
 }
 
 .containerUpper,
@@ -202,4 +202,7 @@
 
 .mapInfo {
   font-style: italic;
+  position: absolute;
+  z-index: $z-index-over-map;
+  width: 80%;
 }
