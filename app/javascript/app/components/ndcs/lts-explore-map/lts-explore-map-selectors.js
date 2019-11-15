@@ -12,6 +12,11 @@ const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
 
+export const getMaximumCountries = createSelector(
+  getCountries,
+  countries => countries.length
+);
+
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
 );
@@ -179,6 +184,28 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
 
 // Chart data methods
 
+export const getLegend = createSelector(
+  [getMapIndicator, getMaximumCountries],
+  (indicator, maximumCountries) => {
+    if (!indicator || !maximumCountries) return null;
+    const bucketsWithId = Object.keys(indicator.legendBuckets).map(id => ({
+      ...indicator.legendBuckets[id],
+      id
+    }));
+    return bucketsWithId.map(label => {
+      const partiesNumber = Object.values(indicator.locations).filter(
+        l => l.label_id === parseInt(label.id, 10)
+      ).length;
+      return {
+        ...label,
+        value: (partiesNumber * 100) / maximumCountries,
+        partiesNumber,
+        color: getColorByIndex(indicator.legendBuckets, label.index)
+      };
+    });
+  }
+);
+
 export const summarizeIndicators = createSelector(
   [getIndicatorsParsed, getMapIndicator],
   (indicators, indicator) => {
@@ -190,7 +217,6 @@ export const summarizeIndicators = createSelector(
     }));
     labels.forEach(label => {
       const slug = label.index < 1 ? 'submitted' : 'not_submitted';
-
       summaryData[slug] = {
         countries: {
           value: 0,

@@ -7,6 +7,7 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
+import Progress from 'components/progress';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
@@ -79,6 +80,43 @@ const renderCircular = datum => (
   </div>
 );
 
+const LegendItem = ({ name, partiesNumber, value, color }) => (
+  <div className={styles.legendItem}>
+    <div>
+      <span className={styles.legendDot} style={{ backgroundColor: color }} />
+      {name}
+    </div>
+    <div className={styles.progressContainer}>
+      <Progress value={value} className={styles.progressBar} color={color} />
+      <div className={styles.partiesNumber}>
+        {partiesNumber} {partiesNumber === 1 ? 'party' : 'parties'}
+      </div>
+    </div>
+  </div>
+);
+
+LegendItem.propTypes = {
+  name: PropTypes.string,
+  partiesNumber: PropTypes.number,
+  value: PropTypes.number,
+  color: PropTypes.string
+};
+
+const renderLegend = legendData => (
+  <div className={styles.legendContainer}>
+    {legendData &&
+      legendData.map(l => (
+        <LegendItem
+          key={l.name}
+          name={l.name}
+          partiesNumber={l.partiesNumber}
+          value={l.value}
+          color={l.color}
+        />
+      ))}
+  </div>
+);
+
 const LTSExploreMap = ({
   loading,
   paths,
@@ -86,6 +124,7 @@ const LTSExploreMap = ({
   downloadLink,
   countryData,
   summaryData,
+  legendData,
   handleInfoClick,
   handleCountryClick,
   handleCountryEnter,
@@ -125,10 +164,11 @@ const LTSExploreMap = ({
           <div className={styles.containerUpper}>
             <div className={styles.containerCharts}>
               {!loading && summaryData && summaryData.submitted && (
-                <div>
+                <React.Fragment>
                   {renderCircular(summaryData.submitted.countries)}
                   {renderCircular(summaryData.submitted.emissions)}
-                </div>
+                  {renderLegend(legendData)}
+                </React.Fragment>
               )}
             </div>
             <div className={styles.containerMap}>
@@ -173,6 +213,7 @@ LTSExploreMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   summaryData: PropTypes.object,
+  legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
