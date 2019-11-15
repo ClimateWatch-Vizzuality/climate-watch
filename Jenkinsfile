@@ -33,7 +33,7 @@ node {
   def user_report_key = 'cf0fa021-d239-457b-bb99-e9ab0205134c'
   def user_survey_spreadsheet = 'https://script.google.com/macros/s/AKfycbzgN1G9IdLYO3KqlTC4gzBxR1UTX5bYXu1qRaiRn1oD9qoaq6s/exec'
 
-  def feature_flags_env = '--build-arg FEATURE_AGRICULTURE=true --build-arg FEATURE_NDCS_ENHANCEMENTS=true --build-arg FEATURE_NDCS_LTS=true'
+  def feature_flags_env = '--build-arg FEATURE_AGRICULTURE=true --build-arg FEATURE_NDCS_ENHANCEMENTS=true --build-arg FEATURE_LTS_EXPLORE=true'
 
   if (env.BRANCH_NAME == 'master') {
     cw_files_prefix = 'climatewatch.org/www.climatewatch.org/climate-watch/'
