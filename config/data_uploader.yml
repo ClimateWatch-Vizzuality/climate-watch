@@ -38,6 +38,7 @@ platforms:
           - CW_HistoricalEmissions_CAIT
           - CW_HistoricalEmissions_PIK
           - CW_HistoricalEmissions_UNFCCC
+          - CW_HistoricalEmissions_GCP
       - name: indc
         importer: ImportIndc
         datasets:
