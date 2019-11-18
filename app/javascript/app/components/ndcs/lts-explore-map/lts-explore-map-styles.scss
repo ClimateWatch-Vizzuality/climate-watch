@@ -96,41 +96,12 @@
   font-size: $font-size-sm;
   background-color: $white;
   box-shadow: $box-shadow-light;
-
-  > div {
-    position: relative;
-
-    &:first-child {
-      max-width: 60%;
-    }
-  }
-
-  [class*=circularChartWrapper] {
-    position: static;
-    margin: 0 auto;
-  }
-
-  svg {
-    height: 200px !important;
-  }
-
-  //Hiding circular charts for now because the number of countries will remain a small minority for some time
-  //Leaving emission chart and functionality in place in case the data should be shown in the future
-  &:first-child {
-    svg {
-      visibility: hidden;
-    }
-
-    .circularChartValues {
-      font-size: 4.5em;
-    }
-  }
 }
 
 .summaryCard {
   height: 180px;
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   color: $theme-color-intense;
   background-color: $white;
   box-shadow: $box-shadow-light;
@@ -139,9 +110,14 @@
   padding: 20px;
 
   .summaryCardValue {
+    flex: 1;
     font-size: 4.5em;
     font-weight: $font-weight-light;
     margin: 0 22px;
+  }
+
+  .summaryCardDescription {
+    flex: 1;
   }
 }
 
@@ -180,15 +156,6 @@
       }
     }
   }
-}
-
-.circularChartValues {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: $font-weight-bold;
-  font-size: 2.4em;
 }
 
 .circularChartLabels {

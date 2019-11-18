@@ -50,6 +50,7 @@ const mapStateToProps = (state, { location }) => {
     categorySelected: search.category,
     indicatorSelected: search.indicator,
     categories: mapCategories,
+    emissions: state.emissions,
     search
   };
 

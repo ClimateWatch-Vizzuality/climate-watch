@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
+import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
@@ -11,10 +12,24 @@ const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+const getEmissions = state => state.emissions.data || null;
 
 export const getMaximumCountries = createSelector(
   getCountries,
   countries => countries.length
+);
+
+export const getCountryLastYearEmissions = createSelector(
+  getEmissions,
+  emissions => {
+    if (!emissions) return null;
+    const countryLastYearEmissions = {};
+    Object.values(emissions).forEach(e => {
+      countryLastYearEmissions[e.iso_code3] =
+        e.emissions[e.emissions.length - 1].value;
+    });
+    return countryLastYearEmissions;
+  }
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -155,6 +170,8 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   return generateLinkToDataExplorer(search, section);
 });
 
+const percentage = (value, total) => (value * 100) / total;
+
 // Chart data methods
 
 export const getLegend = createSelector(
@@ -173,7 +190,7 @@ export const getLegend = createSelector(
       ).length;
       return {
         ...label,
-        value: (partiesNumber * 100) / maximumCountries,
+        value: percentage(partiesNumber, maximumCountries),
         partiesNumber,
         color: getColorByIndex(indicator.legendBuckets, label.index)
       };
@@ -182,100 +199,54 @@ export const getLegend = createSelector(
 );
 
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator],
-  (legend, indicator) => {
-    // Get last year of emissions and values for each country
-    // From each country in each legend label get emissions from last year in emissions data (2014?)
-    // Sum the values for each label and calculate percentage over the full value
-    if (!indicator || !legend) return null;
-    const data = [
-      {
-        name: 'groupA',
-        value: 400
-      },
-      {
-        name: 'groupB',
-        value: 300
-      },
-      {
-        name: 'groupC',
-        value: 300
-      },
-      {
-        name: 'groupD',
-        value: 200
-      },
-      {
-        name: 'groupE',
-        value: 278
-      },
-      {
-        name: 'groupF',
-        value: 189
-      }
-    ];
+  [getLegend, getMapIndicator, getCountryLastYearEmissions, getMapIndicator],
+  (legend, indicator, emissionsData, selectedIndicator) => {
+    if (!indicator || !legend || !emissionsData || !selectedIndicator) {
+      return null;
+    }
+
+    const totalEmissions = Object.values(emissionsData).reduce(
+      (a, b) => a + b,
+      0
+    );
+    const data = legend.map(legendItem => {
+      let legendItemValue = 0;
+      Object.entries(selectedIndicator.locations).forEach(entry => {
+        const [locationIso, { value: legendItemName }] = entry;
+        if (
+          legendItemName === legendItem.name &&
+          !isNaN(emissionsData[locationIso])
+        ) {
+          legendItemValue += emissionsData[locationIso];
+        }
+      });
+      return {
+        name: camelCase(legendItem.name),
+        value: percentage(legendItemValue, totalEmissions)
+      };
+    });
 
     const config = {
-      tooltip: {
-        groupA: {
-          label: 'Group A'
-        },
-        groupB: {
-          label: 'Group B'
-        },
-        groupC: {
-          label: 'Group C'
-        },
-        groupD: {
-          label: 'Group D'
-        },
-        groupE: {
-          label: 'Group E'
-        },
-        groupF: {
-          label: 'Group F'
-        }
-      },
       animation: true,
-      axes: {
-        yLeft: {
-          unit: 'MtCO2e',
-          label: '2010'
-        }
-      },
-      theme: {
-        // Color of the slices is in the stroke attribute:
-        // fill: '#f5b335', // Optional -just if monochrome
-        groupA: {
-          label: 'Group A',
-          stroke: 'red'
-        },
-        groupB: {
-          label: 'Group B',
-          stroke: 'blue'
-        },
-        groupC: {
-          label: 'Group C',
-          stroke: 'teal'
-        },
-        groupD: {
-          label: 'Group D',
-          stroke: 'orange'
-        },
-        groupE: {
-          label: 'Group E',
-          stroke: 'maroon'
-        },
-        groupF: {
-          label: 'Group F',
-          stroke: 'fuchsia'
-        }
-      },
       innerRadius: 50,
-      outerRadius: 80,
-      hideLabel: false,
+      outerRadius: 100,
+      hideLabel: true,
       hideLegend: true
     };
+
+    const tooltipLabels = {};
+    const themeLabels = {};
+    legend.forEach(l => {
+      tooltipLabels[camelCase(l.name)] = {
+        label: l.name
+      };
+      themeLabels[camelCase(l.name)] = {
+        label: l.name,
+        stroke: l.color
+      };
+    });
+    config.tooltip = tooltipLabels;
+    config.theme = themeLabels;
     return {
       config,
       data

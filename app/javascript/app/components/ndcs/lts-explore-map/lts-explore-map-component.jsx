@@ -13,6 +13,8 @@ import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
+import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
+import EmissionsProvider from 'providers/emissions-provider';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
@@ -200,6 +202,14 @@ const LTSExploreMap = ({
             </div>
           </div>
           <ModalMetadata />
+          <EmissionsMetaProvider />
+          {/* TODO: Get source and gas */}
+          <EmissionsProvider
+            filters={{
+              source: 8,
+              gas: 25
+            }}
+          />
         </div>
       )}
     </TabletLandscape>
