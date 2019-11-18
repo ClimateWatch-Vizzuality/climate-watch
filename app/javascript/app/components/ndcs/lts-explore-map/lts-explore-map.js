@@ -24,7 +24,8 @@ import {
   getPathsWithStyles,
   getISOCountries,
   getLinkToDataExplorer,
-  summarizeIndicators
+  summarizeIndicators,
+  getLegend
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -61,6 +62,7 @@ const mapStateToProps = (state, { location }) => {
     indicator: getMapIndicator(ndcsLTSWithSelection),
     // indicators: getIndicatorsParsed(ndcsLTSWithSelection),
     summaryData: summarizeIndicators(ndcsLTSWithSelection),
+    legendData: getLegend(ndcsLTSWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsLTSWithSelection),
     categories: getCategories(ndcsLTSWithSelection),
     indicators: getCategoryIndicators(ndcsLTSWithSelection),
