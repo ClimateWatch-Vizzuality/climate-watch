@@ -17,15 +17,6 @@
   float: right;
 }
 
-.containerControls {
-  @media #{$tablet-portrait} {
-    // @include column-offset(6);
-    // @include columns();
-  }
-
-  // @include clearFix();
-}
-
 .searchBox {
   @media #{$tablet-landscape} {
     @include column-offset(9, $gutters: true);
@@ -203,6 +194,6 @@
 .mapInfo {
   font-style: italic;
   position: absolute;
-  z-index: $z-index-over-map;
+  z-index: $z-index-over-base;
   width: 80%;
 }

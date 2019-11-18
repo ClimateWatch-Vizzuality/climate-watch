@@ -6,10 +6,10 @@
   z-index: $z-index-cookie-consent;
   width: 100%;
   padding: 10px 15px;
-  background-color: #0a1941;
+  background-color: $theme-color-intense;
   font-family: $font-family-1;
   font-size: 14px;
-  color: #f4f5f6;
+  color: $white;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,16 +21,16 @@
 }
 
 .link {
-  color: #f4f5f6;
+  color: $white;
   text-decoration: underline;
 }
 
 .button {
   margin-left: 5px;
   width: 106px;
-  background-color: #ffc735;
+  background-color: $theme-secondary;
   text-transform: none;
-  color: #0a1941;
+  color: $theme-color-intense;
   margin-top: 15px;
   cursor: pointer;
 
