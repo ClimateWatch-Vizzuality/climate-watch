@@ -87,6 +87,22 @@ $breakpoints: (
   xxlarge: 1440px,
 );
 
+// z-index
+$z-index-base: 0;
+$z-index-over-base: 1;
+$z-index-sticky: 2;
+$z-index-over-sticky: 3;
+$z-index-under-loader: 5;
+$z-index-multiselect: 9;
+$z-index-loader: 10;
+$z-index-over-loader: 11;
+$z-index-cookie-consent: 15;
+$z-index-over-map: 20;
+$z-index-dropdown-menu: 21;
+$z-index-over-dropdown: 23;
+$z-index-loading-modal: 50;
+$z-index-top: 10000000;
+
 // Media queries
 $mobile-only: 'screen and (max-width: #{$breakpoint-mobile-only})';
 $tablet-portrait: 'screen and (min-width: #{$breakpoint-tablet-portrait})';

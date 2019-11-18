@@ -1,3 +1,5 @@
+@import '~styles/layout.scss';
+
 .blockType {
   box-sizing: border-box;
   border: 1px solid #ddd;
@@ -32,7 +34,7 @@
   border: 1px solid #ddd;
   border-radius: 2px;
   box-shadow: 0 1px 3px 0 rgba(220, 220, 220, 1);
-  z-index: 3;
+  z-index: $z-index-over-sticky;
   box-sizing: border-box;
   width: 74px;
   margin-top: 8px;

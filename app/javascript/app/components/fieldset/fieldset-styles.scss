@@ -1,3 +1,5 @@
+@import '~styles/layout.scss';
+
 $pad: 0.8em;
 
 .fieldsetContainer {
@@ -23,7 +25,7 @@ $pad: 0.8em;
   margin-bottom: $pad;
   background-color: white;
   height: 1.5em;
-  z-index: 1;
+  z-index: $z-index-over-base;
 
   &Failed {
     opacity: 1;

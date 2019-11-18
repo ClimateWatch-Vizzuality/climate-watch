@@ -18,7 +18,8 @@ const Button = props => {
     noBox,
     noSpace,
     dataFor,
-    dataTip
+    dataTip,
+    title
   } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
@@ -51,7 +52,7 @@ const Button = props => {
     </NavLink>
   ) : (
     <button
-      title={disabled ? 'Coming soon' : ''}
+      title={title || (disabled ? 'Coming soon' : '')}
       disabled={disabled}
       className={classNames}
       onClick={onClick}
@@ -74,7 +75,8 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   dataFor: PropTypes.string,
-  dataTip: PropTypes.string
+  dataTip: PropTypes.string,
+  title: PropTypes.string
 };
 
 Button.defaultProps = {

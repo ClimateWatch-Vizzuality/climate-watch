@@ -14,6 +14,7 @@ import CircularChart from 'components/circular-chart';
 import Dropdown from 'components/dropdown';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
+import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
 
 const getTooltip = (country, tooltipTxt) => (
@@ -144,8 +145,9 @@ const LTSExploreMap = ({
                 onCountryClick={handleCountryClick}
                 onCountryEnter={handleCountryEnter}
                 onCountryFocus={handleCountryEnter}
-                dragEnable={false}
-                customCenter={!isTablet ? [10, -10] : null}
+                zoomEnable
+                customCenter={!isTablet ? [10, 40] : [20, 40]}
+                theme={newMapTheme}
               />
               {countryData && tooltipTxt.length > 0 && (
                 <ReactTooltip
