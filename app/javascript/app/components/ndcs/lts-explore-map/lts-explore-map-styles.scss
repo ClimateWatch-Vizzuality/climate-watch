@@ -127,6 +127,24 @@
   }
 }
 
+.summaryCard {
+  height: 180px;
+  display: flex;
+  flex-direction: row;
+  color: $theme-color-intense;
+  background-color: $white;
+  box-shadow: $box-shadow-light;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+
+  .summaryCardValue {
+    font-size: 4.5em;
+    font-weight: $font-weight-light;
+    margin: 0 22px;
+  }
+}
+
 .legendContainer {
   background-color: $white;
   box-shadow: $box-shadow-light;
@@ -134,6 +152,7 @@
   font-size: $font-size-sm;
   display: flex;
   flex-direction: column;
+  color: $theme-color-intense;
 
   .legendItem {
     &:not(:last-child) {

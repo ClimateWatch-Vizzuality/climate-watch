@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
 import { TabletLandscape } from 'components/responsive';
+import { PieChart } from 'cw-components';
 import Map from 'components/map';
 import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
@@ -11,7 +12,6 @@ import Progress from 'components/progress';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
-import CircularChart from 'components/circular-chart';
 import Dropdown from 'components/dropdown';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
@@ -57,27 +57,24 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
   />
 );
 
-const renderCircular = datum => (
-  <div className={styles.circularChartContainer}>
-    <div>
-      <CircularChart
-        index={0.1}
-        value={Math.round((datum.value / datum.max) * 100 * 10) / 10}
-        color={datum.opts.color}
-      />
-      <div className={styles.circularChartValues}>
-        <div
-          style={{
-            color: datum.opts.color
-          }}
-        >
-          {datum.opts.prefix}
-          {datum.value}
-          {datum.opts.suffix}
-        </div>
-      </div>
+const renderSummary = summaryData => (
+  <div className={styles.summaryCard}>
+    <div className={styles.summaryCardValue}>
+      <div>{summaryData.value}</div>
     </div>
-    <div className={styles.circularChartLabels}>{datum.opts.label}</div>
+    <div className={styles.summaryCardDescription}>
+      {summaryData.description}
+    </div>
+  </div>
+);
+
+const renderDonutCard = emissionsData => (
+  <div className={styles.circularChartContainer}>
+    <PieChart
+      data={emissionsData.data}
+      width={600}
+      config={emissionsData.config}
+    />
   </div>
 );
 
@@ -124,17 +121,18 @@ const LTSExploreMap = ({
   tooltipTxt,
   downloadLink,
   countryData,
-  summaryData,
+  emissionsCardData,
+  summaryCardData,
   legendData,
   handleInfoClick,
   handleCountryClick,
   handleCountryEnter,
   categories,
   indicators,
+  selectedIndicator,
   handleCategoryChange,
   selectedCategory,
-  handleIndicatorChange,
-  selectedIndicator
+  handleIndicatorChange
 }) => (
   <div>
     <TabletLandscape>
@@ -164,11 +162,11 @@ const LTSExploreMap = ({
           </div>
           <div className={styles.containerUpper}>
             <div className={styles.containerCharts}>
-              {!loading && summaryData && summaryData.submitted && (
+              {!loading && (
                 <React.Fragment>
-                  {renderCircular(summaryData.submitted.countries)}
-                  {renderCircular(summaryData.submitted.emissions)}
-                  {renderLegend(legendData)}
+                  {summaryCardData && renderSummary(summaryCardData)}
+                  {emissionsCardData && renderDonutCard(emissionsCardData)}
+                  {legendData && renderLegend(legendData)}
                 </React.Fragment>
               )}
             </div>
@@ -214,17 +212,18 @@ LTSExploreMap.propTypes = {
   tooltipTxt: PropTypes.string,
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
-  summaryData: PropTypes.object,
+  emissionsCardData: PropTypes.object,
+  summaryCardData: PropTypes.object,
   legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
   handleInfoClick: PropTypes.func.isRequired,
   categories: PropTypes.array,
   indicators: PropTypes.array,
+  selectedIndicator: PropTypes.object,
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
-  handleIndicatorChange: PropTypes.func,
-  selectedIndicator: PropTypes.object
+  handleIndicatorChange: PropTypes.func
 };
 
 export default LTSExploreMap;

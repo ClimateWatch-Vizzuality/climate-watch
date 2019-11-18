@@ -12,20 +12,19 @@ import { actions as modalActions } from 'components/modal-metadata';
 import {
   getCategories,
   getCategoryIndicators,
-  getSelectedCategory,
-  getSelectedIndicator
+  getSelectedCategory
 } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 
 import Component from './lts-explore-map-component';
 
 import {
   getMapIndicator,
-  // getIndicatorsParsed,
   getPathsWithStyles,
   getISOCountries,
   getLinkToDataExplorer,
-  summarizeIndicators,
-  getLegend
+  getEmissionsCardData,
+  getLegend,
+  getSummaryCardData
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -59,15 +58,14 @@ const mapStateToProps = (state, { location }) => {
     query: ndcsLTSWithSelection.query,
     paths: getPathsWithStyles(ndcsLTSWithSelection),
     isoCountries: getISOCountries(ndcsLTSWithSelection),
-    indicator: getMapIndicator(ndcsLTSWithSelection),
-    // indicators: getIndicatorsParsed(ndcsLTSWithSelection),
-    summaryData: summarizeIndicators(ndcsLTSWithSelection),
+    selectedIndicator: getMapIndicator(ndcsLTSWithSelection),
+    emissionsCardData: getEmissionsCardData(ndcsLTSWithSelection),
     legendData: getLegend(ndcsLTSWithSelection),
+    summaryCardData: getSummaryCardData(ndcsLTSWithSelection),
     downloadLink: getLinkToDataExplorer(ndcsLTSWithSelection),
     categories: getCategories(ndcsLTSWithSelection),
     indicators: getCategoryIndicators(ndcsLTSWithSelection),
-    selectedCategory: getSelectedCategory(ndcsLTSWithSelection),
-    selectedIndicator: getSelectedIndicator(ndcsLTSWithSelection)
+    selectedCategory: getSelectedCategory(ndcsLTSWithSelection)
   };
 };
 

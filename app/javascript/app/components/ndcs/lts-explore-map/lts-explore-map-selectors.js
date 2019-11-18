@@ -26,13 +26,6 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryIds = Object.keys(categories);
-    // TODO: check this filter
-    // .filter(
-    //   // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
-    //   id =>
-    //     categories[id].slug === 'longterm_strategy' ||
-    //     categories[id].slug === 'ndc_enhancement'
-    // );
     const preppedIndicators = sortBy(
       uniqBy(
         indicators.map(i => {
@@ -67,30 +60,10 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const getMapIndicator = createSelector(
-  [getIndicatorsParsed, getISOCountries, getSelectedIndicator],
-  (indicators, isos, selectedIndicator) => {
+  [getIndicatorsParsed, getSelectedIndicator],
+  (indicators, selectedIndicator) => {
     if (!indicators || !indicators.length) return null;
-    // TODO: To be reviewed
     const mapIndicator = selectedIndicator || indicators[0];
-
-    // if (mapIndicator) {
-    //   const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-    //     id => mapIndicator.legendBuckets[id].label === 'No Document Submitted'
-    //   );
-    //   // Set all countries without values to "No Document Submitted" by default
-    //   if (noInfoId) {
-    //     isos.forEach(iso => {
-    //       if (!mapIndicator.locations[iso]) {
-    //         mapIndicator.locations[iso] = {
-    //           value: mapIndicator.legendBuckets[noInfoId].name,
-    //           label_id: noInfoId,
-    //           label_slug: mapIndicator.legendBuckets[noInfoId].slug
-    //         };
-    //       }
-    //     });
-    //   }
-    // }
-
     return mapIndicator;
   }
 );
@@ -187,7 +160,9 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
 export const getLegend = createSelector(
   [getMapIndicator, getMaximumCountries],
   (indicator, maximumCountries) => {
-    if (!indicator || !maximumCountries) return null;
+    if (!indicator || !indicator.legendBuckets || !maximumCountries) {
+      return null;
+    }
     const bucketsWithId = Object.keys(indicator.legendBuckets).map(id => ({
       ...indicator.legendBuckets[id],
       id
@@ -206,73 +181,124 @@ export const getLegend = createSelector(
   }
 );
 
-export const summarizeIndicators = createSelector(
-  [getIndicatorsParsed, getMapIndicator],
-  (indicators, indicator) => {
-    if (!indicator || !indicators) return null;
-    const summaryData = {};
-    const labels = Object.keys(indicator.legendBuckets).map(id => ({
-      ...indicator.legendBuckets[id],
-      id
-    }));
-    labels.forEach(label => {
-      const slug = label.index < 1 ? 'submitted' : 'not_submitted';
-      summaryData[slug] = {
-        countries: {
-          value: 0,
-          max: Object.keys(indicator.locations).length,
-          opts: {
-            color: getColorByIndex(indicator.legendBuckets, label.index),
-            label: (() => {
-              switch (slug) {
-                case 'submitted':
-                  return 'countries have submitted a long-term strategy document';
-                default:
-                  return 'countries';
-              }
-            })()
-          }
-        },
-        emissions: {
-          value: 0,
-          max: 100,
-          opts: {
-            color: getColorByIndex(indicator.legendBuckets, label.index),
-            suffix: '%',
-            label:
-              'of global emissions represented by these countries (2014 emissions data)'
-          }
-        }
-      };
-    });
-    const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
-    Object.keys(indicator.locations).forEach(l => {
-      const location = indicator.locations[l];
-      const type =
-        location.value === 'Long-term Strategy Submitted'
-          ? 'submitted'
-          : 'not_submitted'; // location.label_slug;
-      if (type) {
-        summaryData[type].countries.value += 1;
-        if (emissionsIndicator && emissionsIndicator.locations[l]) {
-          summaryData[type].emissions.value += parseFloat(
-            emissionsIndicator.locations[l].value
-          );
-        }
+export const getEmissionsCardData = createSelector(
+  [getLegend, getMapIndicator],
+  (legend, indicator) => {
+    // Get last year of emissions and values for each country
+    // From each country in each legend label get emissions from last year in emissions data (2014?)
+    // Sum the values for each label and calculate percentage over the full value
+    if (!indicator || !legend) return null;
+    const data = [
+      {
+        name: 'groupA',
+        value: 400
+      },
+      {
+        name: 'groupB',
+        value: 300
+      },
+      {
+        name: 'groupC',
+        value: 300
+      },
+      {
+        name: 'groupD',
+        value: 200
+      },
+      {
+        name: 'groupE',
+        value: 278
+      },
+      {
+        name: 'groupF',
+        value: 189
       }
-    });
-    Object.keys(summaryData).forEach(type => {
-      summaryData[type].emissions.value = parseFloat(
-        summaryData[type].emissions.value.toFixed(1)
-      );
-    });
-    return summaryData;
+    ];
+
+    const config = {
+      tooltip: {
+        groupA: {
+          label: 'Group A'
+        },
+        groupB: {
+          label: 'Group B'
+        },
+        groupC: {
+          label: 'Group C'
+        },
+        groupD: {
+          label: 'Group D'
+        },
+        groupE: {
+          label: 'Group E'
+        },
+        groupF: {
+          label: 'Group F'
+        }
+      },
+      animation: true,
+      axes: {
+        yLeft: {
+          unit: 'MtCO2e',
+          label: '2010'
+        }
+      },
+      theme: {
+        // Color of the slices is in the stroke attribute:
+        // fill: '#f5b335', // Optional -just if monochrome
+        groupA: {
+          label: 'Group A',
+          stroke: 'red'
+        },
+        groupB: {
+          label: 'Group B',
+          stroke: 'blue'
+        },
+        groupC: {
+          label: 'Group C',
+          stroke: 'teal'
+        },
+        groupD: {
+          label: 'Group D',
+          stroke: 'orange'
+        },
+        groupE: {
+          label: 'Group E',
+          stroke: 'maroon'
+        },
+        groupF: {
+          label: 'Group F',
+          stroke: 'fuchsia'
+        }
+      },
+      innerRadius: 50,
+      outerRadius: 80,
+      hideLabel: false,
+      hideLegend: true
+    };
+    return {
+      config,
+      data
+    };
+  }
+);
+export const getSummaryCardData = createSelector(
+  [getLegend, getMapIndicator, getMaximumCountries],
+  (legend, indicator, maximumCountries) => {
+    if (!indicator || !legend) return null;
+    // TODO: This may change. The info will come from the backend
+    const selectedLegendItem = legend[0];
+    return {
+      value: selectedLegendItem.partiesNumber,
+      description: `out of ${maximumCountries} parties - ${indicator.label}`
+    };
   }
 );
 
 export default {
   getMapIndicator,
   getIndicatorsParsed,
-  summarizeIndicators,
-  getPathsWithStyles
+  getEmissionsCardData,
+  getPathsWithStyles,
+  getSummaryCardData
 };
