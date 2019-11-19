@@ -60,11 +60,7 @@
 }
 
 .containerMap {
-  @media #{$tablet-landscape} {
-    padding-left: calc(#{$gutter-padding} / 2);
-  }
-
-  padding-top: calc(#{$gutter-padding} / 2);
+  margin-top: calc(#{$gutter-padding} / 2);
 }
 
 .containerUpper {
@@ -203,4 +199,11 @@
   position: absolute;
   z-index: $z-index-over-base;
   width: 80%;
+  display: flex;
+
+  .handCursorIcon {
+    width: 46px;
+    height: 37px;
+    margin-right: 12px;
+  }
 }

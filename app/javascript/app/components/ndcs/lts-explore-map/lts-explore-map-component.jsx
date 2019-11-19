@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { TabletLandscape } from 'components/responsive';
 import { PieChart } from 'cw-components';
 import Map from 'components/map';
-import ButtonGroup from 'components/button-group';
 import Icon from 'components/icon';
+import ButtonGroup from 'components/button-group';
 import Progress from 'components/progress';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
@@ -16,6 +16,7 @@ import Dropdown from 'components/dropdown';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 
+import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
@@ -175,9 +176,12 @@ const LTSExploreMap = ({
             <div className={styles.containerMap}>
               {loading && <Loading light className={styles.loader} />}
               <p className={styles.mapInfo}>
-                Explore which countries have submitted long-term strategies thus
-                far below. Visit Climate Watch in the coming months for in-depth
-                analysis of long-term strategies.
+                <Icon icon={handCursorIcon} className={styles.handCursorIcon} />
+                <span>
+                  Explore which countries have submitted long-term strategies
+                  thus far below. Visit Climate Watch in the coming months for
+                  in-depth analysis of long-term strategies.
+                </span>
               </p>
               <Map
                 paths={paths}
