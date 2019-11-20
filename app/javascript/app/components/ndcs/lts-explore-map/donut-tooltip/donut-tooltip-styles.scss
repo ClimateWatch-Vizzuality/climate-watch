@@ -1,0 +1,9 @@
+@import '~styles/settings.scss';
+
+.tooltip {
+  position: absolute;
+  background: white;
+  box-shadow: $box-shadow-light;
+  padding: 15px;
+  cursor: pointer;
+}

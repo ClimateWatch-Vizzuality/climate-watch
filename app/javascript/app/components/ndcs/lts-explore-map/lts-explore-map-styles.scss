@@ -72,6 +72,8 @@
 }
 
 .containerCharts {
+  position: relative;
+
   > div {
     @include xy-gutters($gutter-padding, $gutter-position: 'top');
   }
@@ -87,8 +89,7 @@
 
 .circularChartContainer {
   height: 180px;
-  display: flex;
-  flex-direction: row;
+  padding: 15px 25px;
   font-size: $font-size-sm;
   background-color: $white;
   box-shadow: $box-shadow-light;
