@@ -1,27 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import lowerCase from 'lodash/lowerCase';
+import capitalize from 'lodash/capitalize';
 import styles from './donut-tooltip-styles.scss';
 
 const DonutTooltip = props => {
   const {
     reference,
-    content: { payload, coordinate }
+    chartReference,
+    content: { payload, coordinate },
+    data
   } = props;
+  if (!payload || !payload[0]) return null;
 
-  return payload && payload[0]
-    ? ReactDOM.createPortal(
-      <div
-        className={styles.tooltip}
-        style={{ left: coordinate.x + 100, top: coordinate.y }}
-      >
-        {`Parties with ${'indicator'} represent ${
-          payload[0].value
-        } of global emissions`}
-      </div>,
-      reference
-    )
-    : null;
+  const total = Object.values(data).reduce((acc, d) => acc + d.value, 0);
+  const percentage = Math.round((payload[0].value * 100) / total);
+
+  const legendItemName = capitalize(lowerCase(payload[0].name));
+
+  const chartTop = chartReference.getBoundingClientRect().top;
+  const referenceTop = reference.getBoundingClientRect().top;
+  const top = chartTop - referenceTop + coordinate.y;
+  const left = coordinate.x > 100 ? coordinate.x : coordinate.x + 100;
+
+  return ReactDOM.createPortal(
+    <div className={styles.tooltip} style={{ left, top }}>
+      {`Parties with ${legendItemName} represent ${percentage} % of global emissions`}
+    </div>,
+    reference
+  );
 };
 
 DonutTooltip.propTypes = {

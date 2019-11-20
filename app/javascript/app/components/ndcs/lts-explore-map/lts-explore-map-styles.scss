@@ -87,12 +87,16 @@
   }
 }
 
-.circularChartContainer {
+.donutContainer {
   height: 180px;
   padding: 15px 25px;
   font-size: $font-size-sm;
   background-color: $white;
   box-shadow: $box-shadow-light;
+}
+
+.pieChart {
+  align-items: center;
 }
 
 .summaryCard {
@@ -103,18 +107,17 @@
   background-color: $white;
   box-shadow: $box-shadow-light;
   align-items: center;
-  text-align: center;
   padding: 20px;
 
   .summaryCardValue {
     flex: 1;
-    font-size: 4.5em;
+    font-size: $font-size-xxl-large;
     font-weight: $font-weight-light;
-    margin: 0 22px;
+    text-align: center;
   }
 
   .summaryCardDescription {
-    flex: 1;
+    flex: 3;
   }
 }
 

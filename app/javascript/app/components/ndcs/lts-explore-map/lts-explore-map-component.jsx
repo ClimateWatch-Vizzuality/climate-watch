@@ -7,20 +7,19 @@ import { TabletLandscape } from 'components/responsive';
 import Map from 'components/map';
 import Icon from 'components/icon';
 import ButtonGroup from 'components/button-group';
-import Progress from 'components/progress';
-import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import { PieChart } from 'cw-components';
-
+import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
 
+import LegendItem from './legend-item';
 import CustomTooltip from './donut-tooltip';
 
 const getTooltip = (country, tooltipTxt) => (
@@ -73,28 +72,6 @@ const renderSummary = summaryData => (
   </div>
 );
 
-const LegendItem = ({ name, partiesNumber, value, color }) => (
-  <div className={styles.legendItem}>
-    <div>
-      <span className={styles.legendDot} style={{ backgroundColor: color }} />
-      {name}
-    </div>
-    <div className={styles.progressContainer}>
-      <Progress value={value} className={styles.progressBar} color={color} />
-      <div className={styles.partiesNumber}>
-        {partiesNumber} {partiesNumber === 1 ? 'party' : 'parties'}
-      </div>
-    </div>
-  </div>
-);
-
-LegendItem.propTypes = {
-  name: PropTypes.string,
-  partiesNumber: PropTypes.number,
-  value: PropTypes.number,
-  color: PropTypes.string
-};
-
 const renderLegend = legendData => (
   <div className={styles.legendContainer}>
     {legendData &&
@@ -114,19 +91,30 @@ class LTSExploreMap extends PureComponent {
   constructor() {
     super();
     this.state = {
-      tooltipParentRef: null
+      tooltipParentRef: null,
+      pieChartRef: null
     };
   }
 
   renderDonutChart = emissionsCardData => (
-    <div className={styles.circularChartContainer}>
+    <div
+      className={styles.donutContainer}
+      ref={r => {
+        this.setState({ pieChartRef: r });
+      }}
+    >
       <PieChart
         data={emissionsCardData.data}
-        width={185}
+        width={200}
         config={emissionsCardData.config}
         customTooltip={
-          <CustomTooltip reference={this.state.tooltipParentRef} />
+          <CustomTooltip
+            reference={this.state.tooltipParentRef}
+            chartReference={this.state.pieChartRef}
+            data={emissionsCardData.data}
+          />
         }
+        theme={{ pieChart: styles.pieChart }}
       />
     </div>
   );

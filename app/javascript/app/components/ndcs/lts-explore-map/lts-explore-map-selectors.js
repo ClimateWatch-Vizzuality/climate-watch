@@ -229,9 +229,10 @@ export const getEmissionsCardData = createSelector(
     const config = {
       animation: true,
       innerRadius: 50,
-      outerRadius: 100,
+      outerRadius: 70,
       hideLabel: true,
-      hideLegend: true
+      hideLegend: true,
+      innerHoverLabel: true
     };
 
     const tooltipLabels = {};
