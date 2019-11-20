@@ -1,5 +1,11 @@
 @import '~styles/settings.scss';
 
+.map {
+  svg {
+    height: 100%;
+  }
+}
+
 .actions {
   right: 0;
   top: 0;

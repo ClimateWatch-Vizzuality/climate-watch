@@ -6,6 +6,12 @@
   margin-bottom: 40px;
 }
 
+.map {
+  svg {
+    height: 100%;
+  }
+}
+
 .column {
   @include columns();
 }
@@ -99,25 +105,40 @@
   align-items: center;
 }
 
-.summaryCard {
+.summaryCardContainer {
   height: 180px;
-  display: flex;
-  flex-flow: row wrap;
-  color: $theme-color-intense;
   background-color: $white;
   box-shadow: $box-shadow-light;
-  align-items: center;
-  padding: 20px;
+  display: flex;
+  justify-content: center;
 
-  .summaryCardValue {
-    flex: 1;
-    font-size: $font-size-xxl-large;
-    font-weight: $font-weight-light;
-    text-align: center;
-  }
+  .summaryCard {
+    flex-flow: row wrap;
+    color: $theme-color-intense;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
 
-  .summaryCardDescription {
-    flex: 3;
+    @media #{$tablet-portrait} {
+      width: 50%;
+    }
+
+    @media #{$tablet-landscape} {
+      width: 100%;
+    }
+
+    .summaryCardValue {
+      flex: 1;
+      font-size: $font-size-xxl-large;
+      font-weight: $font-weight-light;
+      text-align: center;
+    }
+
+    .summaryCardDescription {
+      flex: 3;
+    }
   }
 }
 
@@ -129,6 +150,7 @@
   display: flex;
   flex-direction: column;
   color: $theme-color-intense;
+  align-items: center;
 
   .legendItem {
     &:not(:last-child) {

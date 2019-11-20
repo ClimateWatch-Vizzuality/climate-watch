@@ -62,12 +62,14 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
 );
 
 const renderSummary = summaryData => (
-  <div className={styles.summaryCard}>
-    <div className={styles.summaryCardValue}>
-      <div>{summaryData.value}</div>
-    </div>
-    <div className={styles.summaryCardDescription}>
-      {summaryData.description}
+  <div className={styles.summaryCardContainer}>
+    <div className={styles.summaryCard}>
+      <div className={styles.summaryCardValue}>
+        <div>{summaryData.value}</div>
+      </div>
+      <div className={styles.summaryCardDescription}>
+        {summaryData.description}
+      </div>
     </div>
   </div>
 );

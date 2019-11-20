@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
+import isEmpty from 'lodash/isEmpty';
+import isNumber from 'lodash/isNumber';
 import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
@@ -201,7 +203,13 @@ export const getLegend = createSelector(
 export const getEmissionsCardData = createSelector(
   [getLegend, getMapIndicator, getCountryLastYearEmissions, getMapIndicator],
   (legend, indicator, emissionsData, selectedIndicator) => {
-    if (!indicator || !legend || !emissionsData || !selectedIndicator) {
+    if (
+      !indicator ||
+      !legend ||
+      !emissionsData ||
+      isEmpty(emissionsData) ||
+      !selectedIndicator
+    ) {
       return null;
     }
 
@@ -215,7 +223,7 @@ export const getEmissionsCardData = createSelector(
         const [locationIso, { value: legendItemName }] = entry;
         if (
           legendItemName === legendItem.name &&
-          !isNaN(emissionsData[locationIso])
+          isNumber(emissionsData[locationIso])
         ) {
           legendItemValue += emissionsData[locationIso];
         }
