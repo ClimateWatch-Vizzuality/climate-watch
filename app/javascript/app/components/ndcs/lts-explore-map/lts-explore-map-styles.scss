@@ -7,6 +7,8 @@
 }
 
 .map {
+  height: 100%;
+
   svg {
     height: 100%;
   }
@@ -142,39 +144,43 @@
   }
 }
 
-.legendContainer {
+.legendCardContainer {
   background-color: $white;
   box-shadow: $box-shadow-light;
-  padding: 24px 20px;
-  font-size: $font-size-sm;
   display: flex;
-  flex-direction: column;
-  color: $theme-color-intense;
-  align-items: center;
+  justify-content: center;
 
-  .legendItem {
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
+  .legendContainer {
+    display: flex;
+    padding: 24px 20px;
+    flex-direction: column;
+    font-size: $font-size-sm;
+    color: $theme-color-intense;
 
-    .legendDot {
-      height: 10px;
-      display: inline-block;
-      margin-right: 5px;
-      width: 10px;
-      border-radius: 50%;
-    }
-
-    .progressContainer {
-      display: flex;
-      align-items: center;
-
-      .progressBar {
-        width: 180px;
+    .legendItem {
+      &:not(:last-child) {
+        margin-bottom: 10px;
       }
 
-      .partiesNumber {
-        margin-left: 16px;
+      .legendDot {
+        height: 10px;
+        display: inline-block;
+        margin-right: 5px;
+        width: 10px;
+        border-radius: 50%;
+      }
+
+      .progressContainer {
+        display: flex;
+        align-items: center;
+
+        .progressBar {
+          width: 180px;
+        }
+
+        .partiesNumber {
+          margin-left: 16px;
+        }
       }
     }
   }

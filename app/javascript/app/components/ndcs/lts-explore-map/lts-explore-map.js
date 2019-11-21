@@ -24,7 +24,8 @@ import {
   getLinkToDataExplorer,
   getEmissionsCardData,
   getLegend,
-  getSummaryCardData
+  getSummaryCardData,
+  getEmissionsProviderFilters
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -44,6 +45,7 @@ const mapStateToProps = (state, { location }) => {
   }
 
   const ndcsLTSWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
@@ -66,7 +68,8 @@ const mapStateToProps = (state, { location }) => {
     downloadLink: getLinkToDataExplorer(ndcsLTSWithSelection),
     categories: getCategories(ndcsLTSWithSelection),
     indicators: getCategoryIndicators(ndcsLTSWithSelection),
-    selectedCategory: getSelectedCategory(ndcsLTSWithSelection)
+    selectedCategory: getSelectedCategory(ndcsLTSWithSelection),
+    emissionsProviderFilters: getEmissionsProviderFilters(ndcsLTSWithSelection)
   };
 };
 

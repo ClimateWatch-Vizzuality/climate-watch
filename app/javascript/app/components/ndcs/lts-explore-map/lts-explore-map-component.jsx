@@ -75,17 +75,19 @@ const renderSummary = summaryData => (
 );
 
 const renderLegend = legendData => (
-  <div className={styles.legendContainer}>
-    {legendData &&
-      legendData.map(l => (
-        <LegendItem
-          key={l.name}
-          name={l.name}
-          partiesNumber={l.partiesNumber}
-          value={l.value}
-          color={l.color}
-        />
-      ))}
+  <div className={styles.legendCardContainer}>
+    <div className={styles.legendContainer}>
+      {legendData &&
+        legendData.map(l => (
+          <LegendItem
+            key={l.name}
+            name={l.name}
+            partiesNumber={l.partiesNumber}
+            value={l.value}
+            color={l.color}
+          />
+        ))}
+    </div>
   </div>
 );
 
@@ -139,7 +141,8 @@ class LTSExploreMap extends PureComponent {
       selectedIndicator,
       handleCategoryChange,
       selectedCategory,
-      handleIndicatorChange
+      handleIndicatorChange,
+      emissionsProviderFilters
     } = this.props;
 
     return (
@@ -206,8 +209,9 @@ class LTSExploreMap extends PureComponent {
                     onCountryEnter={handleCountryEnter}
                     onCountryFocus={handleCountryEnter}
                     zoomEnable
-                    customCenter={!isTablet ? [10, 40] : [20, 40]}
+                    customCenter={!isTablet ? [10, 20] : [20, 20]}
                     theme={newMapTheme}
+                    className={styles.map}
                   />
                   {countryData && tooltipTxt.length > 0 && (
                     <ReactTooltip
@@ -224,12 +228,7 @@ class LTSExploreMap extends PureComponent {
               </div>
               <ModalMetadata />
               <EmissionsMetaProvider />
-              <EmissionsProvider
-                filters={{
-                  source: 8,
-                  gas: 25
-                }}
-              />
+              <EmissionsProvider filters={emissionsProviderFilters} />
             </div>
           )}
         </TabletLandscape>
@@ -255,6 +254,7 @@ LTSExploreMap.propTypes = {
   selectedIndicator: PropTypes.object,
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
+  emissionsProviderFilters: PropTypes.object,
   handleIndicatorChange: PropTypes.func
 };
 

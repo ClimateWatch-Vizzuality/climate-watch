@@ -10,6 +10,13 @@ import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import { getSelectedIndicator } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 
+export const getMeta = ({ ghgEmissionsMeta }) =>
+  (ghgEmissionsMeta && ghgEmissionsMeta.meta) || null;
+export const getSources = createSelector(
+  getMeta,
+  meta => (meta && meta.data_source) || null
+);
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -199,6 +206,13 @@ export const getLegend = createSelector(
     });
   }
 );
+
+export const getEmissionsProviderFilters = createSelector([getMeta], meta => {
+  if (!meta || !meta.gas) return null;
+  const gas = meta.gas.find(g => g.label === 'All GHG');
+  const source = meta.data_source.find(g => g.label === 'CAIT');
+  return { source: source && source.value, gas: gas && gas.value };
+});
 
 export const getEmissionsCardData = createSelector(
   [getLegend, getMapIndicator, getCountryLastYearEmissions, getMapIndicator],
