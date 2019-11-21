@@ -211,7 +211,13 @@ export const getEmissionsProviderFilters = createSelector([getMeta], meta => {
   if (!meta || !meta.gas) return null;
   const gas = meta.gas.find(g => g.label === 'All GHG');
   const source = meta.data_source.find(g => g.label === 'CAIT');
-  return { source: source && source.value, gas: gas && gas.value };
+  const sector = meta.sector.find(g => g.label === 'Total including LUCF');
+
+  return {
+    source: source && source.value,
+    gas: gas && gas.value,
+    sector: sector && sector.value
+  };
 });
 
 export const getEmissionsCardData = createSelector(

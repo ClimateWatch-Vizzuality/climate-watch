@@ -25,8 +25,7 @@ const DonutTooltip = props => {
 
   // Avoid covering the label on the center
   const left = coordinate.x > 40 ? coordinate.x + 80 : coordinate.x;
-  if (top < 340 && left < 150) top += 50;
-
+  if (top < 340 && left < 190) top += 80;
   return ReactDOM.createPortal(
     <div className={styles.tooltip} style={{ left, top }}>
       {`Parties with ${legendItemName} represent ${percentage} % of global emissions`}
