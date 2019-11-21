@@ -84,25 +84,6 @@ class LTSExploreMapContainer extends PureComponent {
     this.props.fetchNDCSLTS();
   }
 
-  getTooltipText() {
-    const { geometryIdHover } = this.state;
-    const { indicator, indicators } = this.props;
-    if (!geometryIdHover || !indicator) return '';
-
-    const id = geometryIdHover;
-
-    const targetIndicator = indicators.find(i => i.value === 'lts_target');
-
-    if (
-      indicator.locations &&
-      indicator.locations[id] &&
-      indicator.locations[id].value === 'Long-term Strategy Submitted'
-    ) {
-      return `Long-term Target: <em>${targetIndicator.locations[id].value}</em>`;
-    }
-    return '';
-  }
-
   handleSearchChange = query => {
     this.updateUrlParam({ name: 'search', value: query });
   };
@@ -161,14 +142,12 @@ class LTSExploreMapContainer extends PureComponent {
   }
 
   render() {
-    const tooltipTxt = this.getTooltipText();
     const { query } = this.props;
     const noContentMsg = query
       ? 'No results found'
       : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,
-      tooltipTxt,
       handleCountryClick: this.handleCountryClick,
       handleCountryEnter: this.handleCountryEnter,
       handleInfoClick: this.handleInfoClick,
@@ -191,8 +170,7 @@ LTSExploreMapContainer.propTypes = {
   fetchNDCSLTS: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.object,
-  indicator: PropTypes.object,
-  indicators: PropTypes.array
+  indicator: PropTypes.object
 };
 
 export default withRouter(
