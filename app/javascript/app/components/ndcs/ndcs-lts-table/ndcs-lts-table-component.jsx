@@ -35,9 +35,7 @@ const NDCSLTSTable = ({
           {renderSearch(handleSearchChange, query)}
         </div>
       )}
-      {!loading &&
-      tableData &&
-      tableData.length > 0 && (
+      {!loading && tableData && tableData.length > 0 && (
         <div className={styles.tableWrapper}>
           <Table
             data={tableData}
@@ -49,8 +47,7 @@ const NDCSLTSTable = ({
           />
         </div>
       )}
-      {!loading &&
-      (!tableData || tableData.length <= 0) && (
+      {!loading && (!tableData || tableData.length <= 0) && (
         <NoContent className={styles.noContent} message={noContentMsg} />
       )}
     </div>
@@ -62,7 +59,9 @@ NDCSLTSTable.propTypes = {
   noContentMsg: PropTypes.string,
   query: PropTypes.string,
   tableData: PropTypes.array,
-  handleSearchChange: PropTypes.func.isRequired
+  handleSearchChange: PropTypes.func.isRequired,
+  columns: PropTypes.array.isRequired,
+  setColumnWidth: PropTypes.func.isRequired
 };
 
 export default NDCSLTSTable;
