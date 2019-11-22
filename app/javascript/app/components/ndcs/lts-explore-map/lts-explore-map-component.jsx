@@ -10,8 +10,6 @@ import ButtonGroup from 'components/button-group';
 import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
-import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
-import EmissionsProvider from 'providers/emissions-provider';
 import { PieChart } from 'cw-components';
 import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
@@ -141,8 +139,7 @@ class LTSExploreMap extends PureComponent {
       selectedIndicator,
       handleCategoryChange,
       selectedCategory,
-      handleIndicatorChange,
-      emissionsProviderFilters
+      handleIndicatorChange
     } = this.props;
 
     return (
@@ -227,8 +224,6 @@ class LTSExploreMap extends PureComponent {
                 </div>
               </div>
               <ModalMetadata />
-              <EmissionsMetaProvider />
-              <EmissionsProvider filters={emissionsProviderFilters} />
             </div>
           )}
         </TabletLandscape>
@@ -254,7 +249,6 @@ LTSExploreMap.propTypes = {
   selectedIndicator: PropTypes.object,
   handleCategoryChange: PropTypes.func,
   selectedCategory: PropTypes.object,
-  emissionsProviderFilters: PropTypes.object,
   handleIndicatorChange: PropTypes.func
 };
 

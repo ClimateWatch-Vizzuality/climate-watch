@@ -2,43 +2,20 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
-import isEmpty from 'lodash/isEmpty';
-import isNumber from 'lodash/isNumber';
 import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import { getSelectedIndicator } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 
-export const getMeta = ({ ghgEmissionsMeta }) =>
-  (ghgEmissionsMeta && ghgEmissionsMeta.meta) || null;
-export const getSources = createSelector(
-  getMeta,
-  meta => (meta && meta.data_source) || null
-);
-
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
-const getEmissions = state => state.emissions.data || null;
 
 export const getMaximumCountries = createSelector(
   getCountries,
   countries => countries.length
-);
-
-export const getCountryLastYearEmissions = createSelector(
-  getEmissions,
-  emissions => {
-    if (!emissions) return null;
-    const countryLastYearEmissions = {};
-    Object.values(emissions).forEach(e => {
-      countryLastYearEmissions[e.iso_code3] =
-        e.emissions[e.emissions.length - 1].value;
-    });
-    return countryLastYearEmissions;
-  }
 );
 
 export const getISOCountries = createSelector([getCountries], countries =>
@@ -115,14 +92,6 @@ const countryStyles = {
     outline: 'none'
   }
 };
-
-export const MAP_COLORS = [
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)']
-];
 
 export const getPathsWithStyles = createSelector(
   [getMapIndicator],
@@ -207,34 +176,16 @@ export const getLegend = createSelector(
   }
 );
 
-export const getEmissionsProviderFilters = createSelector([getMeta], meta => {
-  if (!meta || !meta.gas) return null;
-  const gas = meta.gas.find(g => g.label === 'All GHG');
-  const source = meta.data_source.find(g => g.label === 'CAIT');
-  const sector = meta.sector.find(g => g.label === 'Total including LUCF');
-
-  return {
-    source: source && source.value,
-    gas: gas && gas.value,
-    sector: sector && sector.value
-  };
-});
-
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator, getCountryLastYearEmissions, getMapIndicator],
-  (legend, indicator, emissionsData, selectedIndicator) => {
-    if (
-      !indicator ||
-      !legend ||
-      !emissionsData ||
-      isEmpty(emissionsData) ||
-      !selectedIndicator
-    ) {
+  [getLegend, getMapIndicator, getMapIndicator, getIndicatorsData],
+  (legend, indicator, selectedIndicator, indicators) => {
+    if (!indicator || !legend || !selectedIndicator) {
       return null;
     }
-
-    const totalEmissions = Object.values(emissionsData).reduce(
-      (a, b) => a + b,
+    const emissionPercentages = indicators.find(i => i.slug === 'ndce_ghg')
+      .locations;
+    const totalEmissions = Object.values(emissionPercentages).reduce(
+      (a, b) => a + parseFloat(b.value),
       0
     );
     const data = legend.map(legendItem => {
@@ -243,9 +194,9 @@ export const getEmissionsCardData = createSelector(
         const [locationIso, { value: legendItemName }] = entry;
         if (
           legendItemName === legendItem.name &&
-          isNumber(emissionsData[locationIso])
+          emissionPercentages[locationIso]
         ) {
-          legendItemValue += emissionsData[locationIso];
+          legendItemValue += parseFloat(emissionPercentages[locationIso].value);
         }
       });
       return {
