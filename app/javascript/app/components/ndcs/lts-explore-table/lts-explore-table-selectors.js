@@ -97,7 +97,7 @@ const headerChanges = {
     'Latest submission (Current selection)',
   Document: 'LTS submission Link',
   'Submission Date': 'Date of LTS submission',
-  'Share of GHG Emissions': 'Share of global GHG emissions (2014)'
+  'Share of GHG Emissions': 'Share of global GHG emissions'
 };
 
 export const tableRemoveIsoFromData = createSelector(
