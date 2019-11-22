@@ -15,6 +15,10 @@
 .border {
   border-top: solid 1px $border-color;
   padding-top: 0;
+
+  &.isContained {
+    margin-top: 30px;
+  }
 }
 
 .nav {
