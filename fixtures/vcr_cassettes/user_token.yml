@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://staging-api.globalforestwatch.org/auth/check-logged
+    uri: https://production-api.globalforestwatch.org/auth/check-logged
     body:
       encoding: US-ASCII
       string: ''
