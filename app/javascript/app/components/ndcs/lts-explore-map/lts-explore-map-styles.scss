@@ -6,6 +6,14 @@
   margin-bottom: 40px;
 }
 
+.map {
+  height: 100%;
+
+  svg {
+    height: 100%;
+  }
+}
+
 .column {
   @include columns();
 }
@@ -60,11 +68,7 @@
 }
 
 .containerMap {
-  @media #{$tablet-landscape} {
-    padding-left: calc(#{$gutter-padding} / 2);
-  }
-
-  padding-top: calc(#{$gutter-padding} / 2);
+  margin-top: calc(#{$gutter-padding} / 2);
 }
 
 .containerUpper {
@@ -76,6 +80,8 @@
 }
 
 .containerCharts {
+  position: relative;
+
   > div {
     @include xy-gutters($gutter-padding, $gutter-position: 'top');
   }
@@ -89,87 +95,96 @@
   }
 }
 
-.circularChartContainer {
+.donutContainer {
   height: 180px;
-  display: flex;
-  flex-direction: row;
+  padding: 15px 25px;
   font-size: $font-size-sm;
   background-color: $white;
   box-shadow: $box-shadow-light;
+}
 
-  > div {
-    position: relative;
+.pieChart {
+  align-items: center;
+}
 
-    &:first-child {
-      max-width: 60%;
+.summaryCardContainer {
+  height: 180px;
+  background-color: $white;
+  box-shadow: $box-shadow-light;
+  display: flex;
+  justify-content: center;
+
+  .summaryCard {
+    flex-flow: row wrap;
+    color: $theme-color-intense;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+
+    @media #{$tablet-portrait} {
+      width: 50%;
     }
-  }
 
-  [class*=circularChartWrapper] {
-    position: static;
-    margin: 0 auto;
-  }
-
-  svg {
-    height: 200px !important;
-  }
-
-  //Hiding circular charts for now because the number of countries will remain a small minority for some time
-  //Leaving emission chart and functionality in place in case the data should be shown in the future
-  &:first-child {
-    svg {
-      visibility: hidden;
+    @media #{$tablet-landscape} {
+      width: 100%;
     }
 
-    .circularChartValues {
-      font-size: 4.5em;
+    .summaryCardValue {
+      flex: 1;
+      font-size: $font-size-xxl-large;
+      font-weight: $font-weight-light;
+      text-align: center;
+      margin-right: 10px;
+    }
+
+    .summaryCardDescription {
+      flex: 3;
     }
   }
 }
 
-.legendContainer {
+.legendCardContainer {
   background-color: $white;
   box-shadow: $box-shadow-light;
-  padding: 24px 20px;
-  font-size: $font-size-sm;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 
-  .legendItem {
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
+  .legendContainer {
+    display: flex;
+    padding: 24px 20px;
+    flex-direction: column;
+    font-size: $font-size-sm;
+    color: $theme-color-intense;
 
-    .legendDot {
-      height: 10px;
-      display: inline-block;
-      margin-right: 5px;
-      width: 10px;
-      border-radius: 50%;
-    }
-
-    .progressContainer {
-      display: flex;
-      align-items: center;
-
-      .progressBar {
-        width: 180px;
+    .legendItem {
+      &:not(:last-child) {
+        margin-bottom: 10px;
       }
 
-      .partiesNumber {
-        margin-left: 16px;
+      .legendDot {
+        height: 10px;
+        display: inline-block;
+        margin-right: 5px;
+        width: 10px;
+        border-radius: 50%;
+      }
+
+      .progressContainer {
+        display: flex;
+        align-items: center;
+
+        .progressBar {
+          width: 180px;
+        }
+
+        .partiesNumber {
+          margin-left: 16px;
+        }
       }
     }
   }
-}
-
-.circularChartValues {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: $font-weight-bold;
-  font-size: 2.4em;
 }
 
 .circularChartLabels {
@@ -217,4 +232,11 @@
   position: absolute;
   z-index: $z-index-over-base;
   width: 80%;
+  display: flex;
+
+  .handCursorIcon {
+    width: 46px;
+    height: 37px;
+    margin-right: 12px;
+  }
 }

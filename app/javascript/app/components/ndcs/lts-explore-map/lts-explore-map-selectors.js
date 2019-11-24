@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
+import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
@@ -26,13 +27,6 @@ export const getIndicatorsParsed = createSelector(
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryIds = Object.keys(categories);
-    // TODO: check this filter
-    // .filter(
-    //   // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
-    //   id =>
-    //     categories[id].slug === 'longterm_strategy' ||
-    //     categories[id].slug === 'ndc_enhancement'
-    // );
     const preppedIndicators = sortBy(
       uniqBy(
         indicators.map(i => {
@@ -67,30 +61,10 @@ export const getIndicatorsParsed = createSelector(
 );
 
 export const getMapIndicator = createSelector(
-  [getIndicatorsParsed, getISOCountries, getSelectedIndicator],
-  (indicators, isos, selectedIndicator) => {
+  [getIndicatorsParsed, getSelectedIndicator],
+  (indicators, selectedIndicator) => {
     if (!indicators || !indicators.length) return null;
-    // TODO: To be reviewed
     const mapIndicator = selectedIndicator || indicators[0];
-
-    // if (mapIndicator) {
-    //   const noInfoId = Object.keys(mapIndicator.legendBuckets).find(
-    //     id => mapIndicator.legendBuckets[id].label === 'No Document Submitted'
-    //   );
-    //   // Set all countries without values to "No Document Submitted" by default
-    //   if (noInfoId) {
-    //     isos.forEach(iso => {
-    //       if (!mapIndicator.locations[iso]) {
-    //         mapIndicator.locations[iso] = {
-    //           value: mapIndicator.legendBuckets[noInfoId].name,
-    //           label_id: noInfoId,
-    //           label_slug: mapIndicator.legendBuckets[noInfoId].slug
-    //         };
-    //       }
-    //     });
-    //   }
-    // }
-
     return mapIndicator;
   }
 );
@@ -118,14 +92,6 @@ const countryStyles = {
     outline: 'none'
   }
 };
-
-export const MAP_COLORS = [
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
-  ['rgb(55, 104, 141)', 'rgb(164, 164, 164)']
-];
 
 export const getPathsWithStyles = createSelector(
   [getMapIndicator],
@@ -182,12 +148,16 @@ export const getLinkToDataExplorer = createSelector([getSearch], search => {
   return generateLinkToDataExplorer(search, section);
 });
 
+const percentage = (value, total) => (value * 100) / total;
+
 // Chart data methods
 
 export const getLegend = createSelector(
   [getMapIndicator, getMaximumCountries],
   (indicator, maximumCountries) => {
-    if (!indicator || !maximumCountries) return null;
+    if (!indicator || !indicator.legendBuckets || !maximumCountries) {
+      return null;
+    }
     const bucketsWithId = Object.keys(indicator.legendBuckets).map(id => ({
       ...indicator.legendBuckets[id],
       id
@@ -198,7 +168,7 @@ export const getLegend = createSelector(
       ).length;
       return {
         ...label,
-        value: (partiesNumber * 100) / maximumCountries,
+        value: percentage(partiesNumber, maximumCountries),
         partiesNumber,
         color: getColorByIndex(indicator.legendBuckets, label.index)
       };
@@ -206,73 +176,80 @@ export const getLegend = createSelector(
   }
 );
 
-export const summarizeIndicators = createSelector(
-  [getIndicatorsParsed, getMapIndicator],
-  (indicators, indicator) => {
-    if (!indicator || !indicators) return null;
-    const summaryData = {};
-    const labels = Object.keys(indicator.legendBuckets).map(id => ({
-      ...indicator.legendBuckets[id],
-      id
-    }));
-    labels.forEach(label => {
-      const slug = label.index < 1 ? 'submitted' : 'not_submitted';
-      summaryData[slug] = {
-        countries: {
-          value: 0,
-          max: Object.keys(indicator.locations).length,
-          opts: {
-            color: getColorByIndex(indicator.legendBuckets, label.index),
-            label: (() => {
-              switch (slug) {
-                case 'submitted':
-                  return 'countries have submitted a long-term strategy document';
-                default:
-                  return 'countries';
-              }
-            })()
-          }
-        },
-        emissions: {
-          value: 0,
-          max: 100,
-          opts: {
-            color: getColorByIndex(indicator.legendBuckets, label.index),
-            suffix: '%',
-            label:
-              'of global emissions represented by these countries (2014 emissions data)'
-          }
+export const getEmissionsCardData = createSelector(
+  [getLegend, getMapIndicator, getMapIndicator, getIndicatorsData],
+  (legend, indicator, selectedIndicator, indicators) => {
+    if (!indicator || !legend || !selectedIndicator) {
+      return null;
+    }
+    const emissionPercentages = indicators.find(i => i.slug === 'ndce_ghg')
+      .locations;
+    const totalEmissions = Object.values(emissionPercentages).reduce(
+      (a, b) => a + parseFloat(b.value),
+      0
+    );
+    const data = legend.map(legendItem => {
+      let legendItemValue = 0;
+      Object.entries(selectedIndicator.locations).forEach(entry => {
+        const [locationIso, { value: legendItemName }] = entry;
+        if (
+          legendItemName === legendItem.name &&
+          emissionPercentages[locationIso]
+        ) {
+          legendItemValue += parseFloat(emissionPercentages[locationIso].value);
         }
+      });
+      return {
+        name: camelCase(legendItem.name),
+        value: percentage(legendItemValue, totalEmissions)
       };
     });
-    const emissionsIndicator = indicators.find(ind => ind.value === 'ndce_ghg');
-    Object.keys(indicator.locations).forEach(l => {
-      const location = indicator.locations[l];
-      const type =
-        location.value === 'Long-term Strategy Submitted'
-          ? 'submitted'
-          : 'not_submitted'; // location.label_slug;
-      if (type) {
-        summaryData[type].countries.value += 1;
-        if (emissionsIndicator && emissionsIndicator.locations[l]) {
-          summaryData[type].emissions.value += parseFloat(
-            emissionsIndicator.locations[l].value
-          );
-        }
-      }
+
+    const config = {
+      animation: true,
+      innerRadius: 50,
+      outerRadius: 70,
+      hideLabel: true,
+      hideLegend: true,
+      innerHoverLabel: true
+    };
+
+    const tooltipLabels = {};
+    const themeLabels = {};
+    legend.forEach(l => {
+      tooltipLabels[camelCase(l.name)] = {
+        label: l.name
+      };
+      themeLabels[camelCase(l.name)] = {
+        label: l.name,
+        stroke: l.color
+      };
     });
-    Object.keys(summaryData).forEach(type => {
-      summaryData[type].emissions.value = parseFloat(
-        summaryData[type].emissions.value.toFixed(1)
-      );
-    });
-    return summaryData;
+    config.tooltip = tooltipLabels;
+    config.theme = themeLabels;
+    return {
+      config,
+      data
+    };
+  }
+);
+export const getSummaryCardData = createSelector(
+  [getLegend, getMapIndicator, getMaximumCountries],
+  (legend, indicator, maximumCountries) => {
+    if (!indicator || !legend) return null;
+    // TODO: This may change. The info will come from the backend
+    const selectedLegendItem = legend[0];
+    return {
+      value: selectedLegendItem.partiesNumber,
+      description: `out of ${maximumCountries} parties - ${indicator.label}`
+    };
   }
 );
 
 export default {
   getMapIndicator,
   getIndicatorsParsed,
-  summarizeIndicators,
-  getPathsWithStyles
+  getEmissionsCardData,
+  getPathsWithStyles,
+  getSummaryCardData
 };
