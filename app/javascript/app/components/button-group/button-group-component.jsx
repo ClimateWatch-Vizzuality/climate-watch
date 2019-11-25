@@ -11,6 +11,7 @@ import iconDelete from 'assets/icons/delete.svg';
 import PropTypes from 'prop-types';
 import ShareMenu from 'components/share-menu';
 import ReactTooltip from 'react-tooltip';
+import { isPageContained } from 'utils/navigation';
 
 import styles from './button-group-styles.scss';
 
@@ -29,7 +30,14 @@ const iconsMap = {
   edit: iconEdit,
   delete: iconDelete
 };
-const renderButton = buttonConfig => {
+
+const getButtonLink = (link, currentPathname) => {
+  const fullPathname = window.location.href;
+  const updatedPath = fullPathname.replace(`/contained${currentPathname}`, '');
+  return `${updatedPath}${link}`;
+};
+
+const renderButton = (buttonConfig, currentPathname) => {
   const dataTip = buttonConfig.tooltipText || tooltipText[buttonConfig.type];
   switch (buttonConfig.type) {
     case 'share':
@@ -54,10 +62,15 @@ const renderButton = buttonConfig => {
           className={styles.button}
           onClick={buttonConfig.onClick}
           link={buttonConfig.link}
-          href={buttonConfig.href}
+          href={
+            buttonConfig.link && isPageContained
+              ? getButtonLink(buttonConfig.link, currentPathname)
+              : buttonConfig.href
+          }
           disabled={buttonConfig.disabled}
           dataFor="blueTooltip"
           dataTip={dataTip}
+          target={buttonConfig.link && isPageContained ? '_blank' : undefined}
         >
           <Icon icon={iconsMap[buttonConfig.type]} />
         </Button>
@@ -65,16 +78,28 @@ const renderButton = buttonConfig => {
   }
 };
 
-const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
-  <div className={cx(styles.buttonGroup, disabled ? styles.disabled : '', className)}>
-    {buttonsConfig.map(buttonConfig => renderButton(buttonConfig))}
-    <ReactTooltip id="blueTooltip" effect="solid" />
-  </div>
-);
+const ButtonGroup = ({ className, buttonsConfig, disabled, location }) => {
+  const { pathname: currentPathname } = location;
+  return (
+    <div
+      className={cx(
+        styles.buttonGroup,
+        disabled ? styles.disabled : '',
+        className
+      )}
+    >
+      {buttonsConfig.map(buttonConfig =>
+        renderButton(buttonConfig, currentPathname)
+      )}
+      <ReactTooltip id="blueTooltip" effect="solid" />
+    </div>
+  );
+};
 
 ButtonGroup.propTypes = {
   className: PropTypes.string,
   buttonsConfig: PropTypes.array,
+  location: PropTypes.object,
   disabled: PropTypes.bool
 };
 

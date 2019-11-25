@@ -31,6 +31,7 @@ class AutocompleteSearch extends PureComponent {
           hideResetButton
           white={variant === 'white'}
           dark={variant === 'dark'}
+          plain={variant === 'plain'}
           hasSearch
           renderToggleButton={({ open }) => (
             <Icon

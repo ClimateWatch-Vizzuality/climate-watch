@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
+import { isPageContained } from 'utils/navigation';
 
 import { actions as modalActions } from 'components/modal-metadata';
 
@@ -50,7 +51,11 @@ class NdcSdgLinkagesMapContainer extends PureComponent {
       } else if (goalHover) {
         path = `${commonPath}${goalHover}&searchBy=goal`;
       }
-      history.push(path);
+      if (isPageContained) {
+        window.open(path, '_blank');
+      } else {
+        history.push(path);
+      }
     }
   };
 

@@ -5,6 +5,7 @@ import Search from 'components/search';
 import Table from 'components/table';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
+import { isPageContained } from 'utils/navigation';
 
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import styles from './ndcs-table-styles.scss';
@@ -15,7 +16,15 @@ class NDCTable extends PureComponent {
 
     if (loading) return <Loading light className={styles.loader} />;
     if (data && data.length > 0) {
-      return <Table parseHtml urlInData data={data} rowHeight={60} />;
+      return (
+        <Table
+          parseHtml
+          urlInData
+          data={data}
+          rowHeight={60}
+          openLinksInNewTab={isPageContained}
+        />
+      );
     }
     return <NoContent className={styles.noContent} message={noContentMsg} />;
   }
