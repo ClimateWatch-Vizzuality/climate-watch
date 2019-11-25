@@ -361,6 +361,12 @@ $height: 45px;
     border-radius: 2px;
     color: #08c;
   }
+
+  .withSearch {
+    .react-selectize-toggle-button-container {
+      transform: rotate(0deg) !important;
+    }
+  }
 }
 
 .white :global {
@@ -433,12 +439,6 @@ $height: 45px;
 
     &:hover {
       background-color: $white !important;
-    }
-  }
-
-  .withSearch {
-    .react-selectize-toggle-button-container {
-      transform: rotate(0deg) !important;
     }
   }
 

@@ -70,12 +70,15 @@ class Dropdown extends PureComponent {
             white ? theme.white : '',
             plain ? theme.plain : '',
             dark ? theme.dark : '',
-            blueBorder ? theme.blueBorder : '',
-            { withSearch: hasSearch }
+            blueBorder ? theme.blueBorder : ''
           )}
         >
           {this.props.loading && <Loading className={styles.loader} mini />}
-          <div className={styles.dropdownDisclaimerWrapper}>
+          <div
+            className={cx(styles.dropdownDisclaimerWrapper, {
+              withSearch: hasSearch
+            })}
+          >
             <SimpleSelect
               ref={el => {
                 this.selectorElement = el;
