@@ -11,6 +11,7 @@ import iconDelete from 'assets/icons/delete.svg';
 import PropTypes from 'prop-types';
 import ShareMenu from 'components/share-menu';
 import ReactTooltip from 'react-tooltip';
+import { isPageContained } from 'utils/navigation';
 
 import styles from './button-group-styles.scss';
 
@@ -58,6 +59,7 @@ const renderButton = buttonConfig => {
           disabled={buttonConfig.disabled}
           dataFor="blueTooltip"
           dataTip={dataTip}
+          target={buttonConfig.link && isPageContained ? '_blank' : undefined}
         >
           <Icon icon={iconsMap[buttonConfig.type]} />
         </Button>
@@ -66,7 +68,13 @@ const renderButton = buttonConfig => {
 };
 
 const ButtonGroup = ({ className, buttonsConfig, disabled }) => (
-  <div className={cx(styles.buttonGroup, disabled ? styles.disabled : '', className)}>
+  <div
+    className={cx(
+      styles.buttonGroup,
+      disabled ? styles.disabled : '',
+      className
+    )}
+  >
     {buttonsConfig.map(buttonConfig => renderButton(buttonConfig))}
     <ReactTooltip id="blueTooltip" effect="solid" />
   </div>

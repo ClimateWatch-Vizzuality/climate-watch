@@ -19,7 +19,8 @@ const Button = props => {
     noSpace,
     dataFor,
     dataTip,
-    title
+    title,
+    target
   } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
@@ -36,7 +37,7 @@ const Button = props => {
 
   if (href) {
     return (
-      <a className={classNames} href={href} {...tooltipProps}>
+      <a className={classNames} href={href} target={target} {...tooltipProps}>
         {children}
       </a>
     );
@@ -46,6 +47,7 @@ const Button = props => {
       className={classNames}
       to={link}
       onClick={onClick}
+      target={target}
       {...tooltipProps}
     >
       {children}
@@ -76,7 +78,8 @@ Button.propTypes = {
   onClick: PropTypes.func,
   dataFor: PropTypes.string,
   dataTip: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
+  target: PropTypes.string
 };
 
 Button.defaultProps = {
