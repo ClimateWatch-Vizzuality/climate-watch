@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
-import { getLocationParamUpdated } from 'utils/navigation';
+import { getLocationParamUpdated, isPageContained } from 'utils/navigation';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 
 import { actions as fetchActions } from 'pages/ndcs';
@@ -77,7 +77,12 @@ class NDCMapContainer extends PureComponent {
     const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/ndcs/country/${iso}`);
+      const path = `/ndcs/country/${iso}`;
+      if (isPageContained) {
+        window.open(path, '_blank');
+      } else {
+        this.props.history.push(path);
+      }
       handleAnalytics(
         'NDC Content Map',
         'Use map to find country',
