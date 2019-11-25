@@ -174,7 +174,10 @@ const getLogos = pathname => {
 
 class FooterContainer extends PureComponent {
   render() {
-    const partners = getLogos(this.props.location.pathname);
+    const { isContained } = this.props;
+    let partners = getLogos(this.props.location.pathname);
+    if (isContained) { partners = partners.filter(p => p.orderingString !== 'ndc'); }
+
     const includePartners = !location.pathname.includes('/about');
     return createElement(Component, {
       ...this.props,
@@ -185,7 +188,8 @@ class FooterContainer extends PureComponent {
 }
 
 FooterContainer.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
+  isContained: PropTypes.bool
 };
 
 export default withRouter(FooterContainer);
