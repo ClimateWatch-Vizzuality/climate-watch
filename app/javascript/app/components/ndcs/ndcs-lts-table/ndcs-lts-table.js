@@ -69,10 +69,6 @@ class NDCSLTSTableContainer extends PureComponent {
     this.updateUrlParam({ name: 'search', value: query });
   };
 
-  handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
-  };
-
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
     history.replace(getLocationParamUpdated(location, param, clear));

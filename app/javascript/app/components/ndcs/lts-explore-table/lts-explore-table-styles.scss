@@ -4,6 +4,7 @@
 .wrapper {
   position: relative;
   margin-bottom: 40px;
+  min-height: 80px;
 }
 
 .column {
@@ -19,7 +20,7 @@
 }
 
 .loader {
-  min-height: 500px;
+  min-height: 80px;
   position: absolute;
   left: 0;
   right: 0;

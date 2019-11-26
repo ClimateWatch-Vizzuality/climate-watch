@@ -98,7 +98,7 @@ export const tableRemoveIsoFromData = createSelector(
     if (!data || isEmpty(data)) return null;
 
     return data.map(d => {
-      const updatedD = { ...d };
+      const updatedTableDataItem = { ...d };
       let date = d['Submission Date'];
       try {
         date = new Date(d['Submission Date']);
@@ -114,14 +114,17 @@ export const tableRemoveIsoFromData = createSelector(
       } catch (e) {
         console.error(e);
       }
-      updatedD['Submission Date'] = date;
-      updatedD.Document = d.Document
-        ? updatedD.Document.replace('href=', "target='_blank' href=")
+      updatedTableDataItem['Submission Date'] = date;
+      updatedTableDataItem.Document = d.Document
+        ? updatedTableDataItem.Document.replace(
+          'href=',
+          "target='_blank' href="
+        )
         : undefined;
       const isoLink = `/ndcs/country/${d.iso}`;
-      updatedD.country = `<a href='${isoLink}'>${d.country}</a>`;
-      delete updatedD.iso;
-      return updatedD;
+      updatedTableDataItem.country = `<a href='${isoLink}'>${d.country}</a>`;
+      delete updatedTableDataItem.iso;
+      return updatedTableDataItem;
     });
   }
 );
