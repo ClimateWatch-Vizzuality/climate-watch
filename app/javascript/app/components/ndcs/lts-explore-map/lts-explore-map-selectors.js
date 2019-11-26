@@ -182,8 +182,10 @@ export const getEmissionsCardData = createSelector(
     if (!indicator || !legend || !selectedIndicator) {
       return null;
     }
-    const emissionPercentages = indicators.find(i => i.slug === 'ndce_ghg')
-      .locations;
+    const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    if (!emissionsIndicator) return null;
+
+    const emissionPercentages = emissionsIndicator.locations;
     const totalEmissions = Object.values(emissionPercentages).reduce(
       (a, b) => a + parseFloat(b.value),
       0

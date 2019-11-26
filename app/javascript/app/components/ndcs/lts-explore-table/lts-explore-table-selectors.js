@@ -92,16 +92,23 @@ export const tableGetFilteredData = createSelector(
   }
 );
 
+const headerChanges = {
+  'Communication of Long-term Strategy':
+    'Latest submission (Current selection)',
+  Document: 'LTS submission Link',
+  'Submission Date': 'Date of LTS submission',
+  'Share of GHG Emissions': 'Share of global GHG emissions'
+};
+
 export const tableRemoveIsoFromData = createSelector(
   [tableGetFilteredData],
   data => {
     if (!data || isEmpty(data)) return null;
-
     return data.map(d => {
-      const updatedD = { ...d };
-      let date = updatedD['Submission Date'];
+      const updatedTableDataItem = { ...d };
+      let date = updatedTableDataItem['Submission Date'];
       try {
-        date = new Date(updatedD['Submission Date']);
+        date = new Date(updatedTableDataItem['Submission Date']);
         date = !isNaN(date.getTime())
           ? {
             name: date.toLocaleDateString('en-US'),
@@ -114,15 +121,23 @@ export const tableRemoveIsoFromData = createSelector(
       } catch (e) {
         console.error(e);
       }
-      updatedD['Submission Date'] = date;
-      updatedD.Document = updatedD.Document
-        ? updatedD.Document.replace('href=', "target='_blank' href=")
+      updatedTableDataItem['Submission Date'] = date;
+      updatedTableDataItem.Document = updatedTableDataItem.Document
+        ? updatedTableDataItem.Document.replace(
+          'href=',
+          "target='_blank' href="
+        )
         : undefined;
-      updatedD.country = `${"<a href='" +
-        `/ndcs/country/${updatedD.iso}` +
-        "'>"}${updatedD.country}</a>`;
-      delete updatedD.iso;
-      return updatedD;
+      updatedTableDataItem.country = `${"<a href='" +
+        `/ndcs/country/${updatedTableDataItem.iso}` +
+        "'>"}${updatedTableDataItem.country}</a>`;
+      delete updatedTableDataItem.iso;
+      const changedHeadersD = {};
+      Object.keys(updatedTableDataItem).forEach(k => {
+        const header = headerChanges[k] || k;
+        changedHeadersD[header] = updatedTableDataItem[k];
+      });
+      return changedHeadersD;
     });
   }
 );
@@ -131,19 +146,19 @@ export const getDefaultColumns = createSelector(
   [getIndicatorsParsed],
   indicators => {
     if (!indicators || isEmpty(indicators)) return [];
-
     const columnIds = [
       'country',
-      'ndce_ghg',
-      'lts_target',
+      'lts',
       'lts_document',
-      'lts_date'
+      'lts_date',
+      'ndce_ghg'
     ];
 
-    return columnIds.map(id => {
+    const columns = columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);
       return match ? match.label : id;
     });
+    return columns.map(c => headerChanges[c] || c);
   }
 );
 
