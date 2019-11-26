@@ -191,7 +191,7 @@ class LTSExploreMap extends PureComponent {
                     onCountryEnter={handleCountryEnter}
                     onCountryFocus={handleCountryEnter}
                     zoomEnable
-                    customCenter={!isTablet ? [10, 20] : [20, 20]}
+                    customCenter={isTablet ? [20, 20] : [10, 20]}
                     theme={newMapTheme}
                     className={styles.map}
                   />
@@ -199,7 +199,7 @@ class LTSExploreMap extends PureComponent {
                     <ReactTooltip
                       className={styles.tooltipContainer}
                       id="lts-map-tooltip"
-                      delayHide={isTablet ? 0 : 3000}
+                      delayHide={isTablet ? 0 : 1000}
                     >
                       <Link
                         className={tooltipTheme.container}
