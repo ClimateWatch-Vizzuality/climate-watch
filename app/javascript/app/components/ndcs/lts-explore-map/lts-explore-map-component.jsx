@@ -11,7 +11,6 @@ import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import { PieChart } from 'cw-components';
-import accordionArrow from 'assets/icons/accordion-arrow.svg';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
@@ -19,19 +18,6 @@ import styles from './lts-explore-map-styles.scss';
 
 import LegendItem from './legend-item';
 import CustomTooltip from './donut-tooltip';
-
-const getTooltip = (country, tooltipTxt) => (
-  <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
-    <div className={tooltipTheme.info}>
-      <div className={tooltipTheme.countryName}>{country.name}</div>
-      <p
-        className={tooltipTheme.text}
-        dangerouslySetInnerHTML={{ __html: tooltipTxt }}
-      />
-    </div>
-    <Icon icon={accordionArrow} className={tooltipTheme.icon} />
-  </Link>
-);
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
   <ButtonGroup
@@ -125,7 +111,6 @@ class LTSExploreMap extends PureComponent {
     const {
       loading,
       paths,
-      tooltipTxt,
       downloadLink,
       countryData,
       emissionsCardData,
@@ -201,22 +186,29 @@ class LTSExploreMap extends PureComponent {
                   </p>
                   <Map
                     paths={paths}
-                    tooltipId="ndcs-map-tooltip"
+                    tooltipId="lts-map-tooltip"
                     onCountryClick={handleCountryClick}
                     onCountryEnter={handleCountryEnter}
                     onCountryFocus={handleCountryEnter}
                     zoomEnable
-                    customCenter={!isTablet ? [10, 20] : [20, 20]}
+                    customCenter={isTablet ? [20, 20] : [10, 20]}
                     theme={newMapTheme}
                     className={styles.map}
                   />
-                  {countryData && tooltipTxt.length > 0 && (
+                  {countryData && (
                     <ReactTooltip
                       className={styles.tooltipContainer}
-                      id="ndcs-map-tooltip"
-                      delayHide={isTablet ? 0 : 3000}
+                      id="lts-map-tooltip"
+                      delayHide={isTablet ? 0 : 1000}
                     >
-                      {getTooltip(countryData, tooltipTxt)}
+                      <Link
+                        className={tooltipTheme.container}
+                        to={`/ndcs/country/${countryData.id}`}
+                      >
+                        <div className={tooltipTheme.countryName}>
+                          {countryData.name}
+                        </div>
+                      </Link>
                     </ReactTooltip>
                   )}
                   {!isTablet &&
@@ -235,7 +227,6 @@ class LTSExploreMap extends PureComponent {
 LTSExploreMap.propTypes = {
   loading: PropTypes.bool,
   paths: PropTypes.array.isRequired,
-  tooltipTxt: PropTypes.string,
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   emissionsCardData: PropTypes.object,
