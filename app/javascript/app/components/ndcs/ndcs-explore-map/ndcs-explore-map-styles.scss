@@ -1,0 +1,245 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+}
+
+.map {
+  height: 100%;
+
+  > svg {
+    height: 100%;
+    min-height: 380px;
+  }
+}
+
+.column {
+  @include columns();
+}
+
+.buttonGroup {
+  width: auto;
+  margin-top: 0;
+  min-width: 200px;
+  float: right;
+  min-height: 45px;
+}
+
+.searchBox {
+  @media #{$tablet-landscape} {
+    @include column-offset(9, $gutters: true);
+
+    margin-top: 20px;
+  }
+}
+
+.legend {
+  position: absolute;
+  left: 0;
+  bottom: 12%;
+  max-width: 100%;
+
+  @media #{$tablet-portrait} {
+    max-width: 160px;
+  }
+
+  @media #{$tablet-landscape} {
+    bottom: -2em;
+  }
+}
+
+:global .__react_component_tooltip {
+  max-width: 250px;
+  white-space: pre-line;
+}
+
+.loader {
+  min-height: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: $z-index-loader;
+}
+
+.containerUpper,
+.containerCharts,
+.containerMap {
+  position: relative;
+}
+
+.containerMap {
+  margin-top: calc(#{$gutter-padding} / 2);
+  display: flex;
+  flex-direction: column;
+}
+
+.containerUpper {
+  @include columns();
+
+  @media #{$tablet-landscape} {
+    @include columns((4,8));
+  }
+}
+
+.containerCharts {
+  position: relative;
+
+  > div {
+    @include xy-gutters($gutter-padding, $gutter-position: 'top');
+  }
+
+  @media #{$tablet-landscape} {
+    @include columns();
+
+    > div {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+}
+
+.donutContainer {
+  height: 180px;
+  padding: 15px 25px;
+  font-size: $font-size-sm;
+  background-color: $white;
+  box-shadow: $box-shadow-light;
+}
+
+.pieChart {
+  align-items: center;
+}
+
+.summaryCardContainer {
+  height: 180px;
+  background-color: $white;
+  box-shadow: $box-shadow-light;
+  display: flex;
+  justify-content: center;
+
+  .summaryCard {
+    flex-flow: row wrap;
+    color: $theme-color-intense;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+
+    @media #{$tablet-portrait} {
+      width: 50%;
+    }
+
+    @media #{$tablet-landscape} {
+      width: 100%;
+    }
+
+    .summaryCardValue {
+      flex: 1;
+      font-size: $font-size-xxl-large;
+      font-weight: $font-weight-light;
+      text-align: center;
+      margin-right: 10px;
+    }
+
+    .summaryCardDescription {
+      flex: 3;
+    }
+  }
+}
+
+.legendCardContainer {
+  background-color: $white;
+  box-shadow: $box-shadow-light;
+  display: flex;
+  justify-content: center;
+
+  .legendContainer {
+    display: flex;
+    padding: 24px 20px;
+    flex-direction: column;
+    font-size: $font-size-sm;
+    color: $theme-color-intense;
+
+    .legendItem {
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+
+      .legendDot {
+        height: 10px;
+        display: inline-block;
+        margin-right: 5px;
+        width: 10px;
+        border-radius: 50%;
+      }
+
+      .progressContainer {
+        display: flex;
+        align-items: center;
+
+        .progressBar {
+          width: 180px;
+        }
+
+        .partiesNumber {
+          margin-left: 16px;
+        }
+      }
+    }
+  }
+}
+
+.circularChartLabels {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.buttonGroup {
+  width: 100%;
+  margin: 20px 0;
+}
+
+@media #{$tablet-portrait} {
+  .filtersGroup {
+    @include columns(6);
+  }
+}
+
+.wrapperBackground {
+  background-color: $white;
+}
+
+@media #{$tablet-landscape} {
+  .filtersLayout {
+    @include columns((9,3));
+  }
+
+  .filtersGroup {
+    @include columns(4);
+
+    > *:first-child {
+      @include xy-gutters(0, $gutter-position: 'left');
+    }
+  }
+
+  .buttonGroup {
+    margin: 20px 0;
+  }
+}
+
+.mapInfo {
+  font-style: italic;
+  position: absolute;
+  z-index: $z-index-over-base;
+  width: 80%;
+  display: flex;
+
+  .handCursorIcon {
+    width: 46px;
+    height: 37px;
+    margin-right: 12px;
+  }
+}
