@@ -65,19 +65,18 @@
   }
 
   @media #{$tablet-landscape} {
-    @include row();
-    @include columns((9, 3));
+    @include row((9, 3));
 
     &.withSearch {
-      @include columns((6, 3, 3));
+      @include row((6, 3, 3));
     }
 
     &.withoutBack {
-      @include columns(12);
+      @include row();
       @include column-offset(9);
 
       &.withSearch {
-        @include columns(6);
+        @include row(6);
         @include column-offset(6);
       }
     }
