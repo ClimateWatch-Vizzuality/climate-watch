@@ -121,7 +121,7 @@ class NDCCountry extends PureComponent {
                   [styles.withoutBack]: !previousPathname
                 })}
               >
-                {previousPathname && (
+                {previousPathLabel && (
                   <div className={styles.backButton}>
                     <Link
                       to={{

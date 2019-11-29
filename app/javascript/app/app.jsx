@@ -16,15 +16,18 @@ import 'styles/sticky.scss';
 import store from 'app/store';
 import routes, { basename } from 'app/routes/routes';
 
-const RoutesContainer = withRouter(({ location }) => {
+const RoutesContainer = withRouter(({ location, history }) => {
+  const { action } = history;
   const [currentLocation, setCurrentLocation] = useState(null);
   useEffect(() => {
-    if (currentLocation) {
-      const { pathname, search } = currentLocation;
-      sessionStorage.setItem('previousLocationPathname', pathname);
-      sessionStorage.setItem('previousLocationSearch', search);
+    if (action !== 'REPLACE') {
+      if (currentLocation) {
+        const { pathname, search } = currentLocation;
+        sessionStorage.setItem('previousLocationPathname', pathname);
+        sessionStorage.setItem('previousLocationSearch', search);
+      }
+      setCurrentLocation(location);
     }
-    setCurrentLocation(location);
   }, [location.pathname]);
 
   return renderRoutes(routes);
