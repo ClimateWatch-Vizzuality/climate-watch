@@ -143,3 +143,21 @@
     margin-bottom: 0;
   }
 }
+
+.alertContainer {
+  @include row();
+
+  .alert {
+    text-align: right;
+    margin: 20px 0 18px;
+
+    .alertIcon {
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    .alertText {
+      color: $dark-gray;
+    }
+  }
+}
