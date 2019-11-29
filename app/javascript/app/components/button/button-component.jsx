@@ -18,7 +18,9 @@ const Button = props => {
     noBox,
     noSpace,
     dataFor,
-    dataTip
+    dataTip,
+    title,
+    target
   } = props;
   const classNames = cx(className, styles.button, {
     [styles.square]: square,
@@ -35,7 +37,7 @@ const Button = props => {
 
   if (href) {
     return (
-      <a className={classNames} href={href} {...tooltipProps}>
+      <a className={classNames} href={href} target={target} {...tooltipProps}>
         {children}
       </a>
     );
@@ -45,13 +47,14 @@ const Button = props => {
       className={classNames}
       to={link}
       onClick={onClick}
+      target={target}
       {...tooltipProps}
     >
       {children}
     </NavLink>
   ) : (
     <button
-      title={disabled ? 'Coming soon' : ''}
+      title={title || (disabled ? 'Coming soon' : '')}
       disabled={disabled}
       className={classNames}
       onClick={onClick}
@@ -74,7 +77,9 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   dataFor: PropTypes.string,
-  dataTip: PropTypes.string
+  dataTip: PropTypes.string,
+  title: PropTypes.string,
+  target: PropTypes.string
 };
 
 Button.defaultProps = {

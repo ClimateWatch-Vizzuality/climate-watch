@@ -64,6 +64,11 @@ export const DEFAULT_EMISSIONS_SELECTIONS = {
     gas: 'Aggregate GHGs',
     sector: 'Total GHG emissions including LULUCF/LUCF',
     location: 'ANNEXI'
+  },
+  GCP: {
+    gas: 'CO2',
+    sector: 'Total fossil fuels and cement',
+    location: 'WORLD'
   }
 };
 

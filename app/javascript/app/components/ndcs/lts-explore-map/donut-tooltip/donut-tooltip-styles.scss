@@ -1,0 +1,9 @@
+@import '~styles/settings.scss';
+
+.tooltip {
+  z-index: $z-index-over-map;
+  position: absolute;
+  background: $white;
+  box-shadow: $box-shadow-light;
+  padding: 15px;
+}

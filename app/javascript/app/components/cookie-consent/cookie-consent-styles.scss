@@ -3,13 +3,13 @@
 .container {
   position: fixed;
   bottom: 0%;
-  z-index: 15;
+  z-index: $z-index-cookie-consent;
   width: 100%;
   padding: 10px 15px;
-  background-color: #0A1941;
+  background-color: $theme-color-intense;
   font-family: $font-family-1;
   font-size: 14px;
-  color: #F4F5F6;
+  color: $white;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,16 +21,16 @@
 }
 
 .link {
-  color: #F4F5F6;
+  color: $white;
   text-decoration: underline;
 }
 
 .button {
   margin-left: 5px;
   width: 106px;
-  background-color: #FFC735;
+  background-color: $theme-secondary;
   text-transform: none;
-  color: #0A1941;
+  color: $theme-color-intense;
   margin-top: 15px;
   cursor: pointer;
 

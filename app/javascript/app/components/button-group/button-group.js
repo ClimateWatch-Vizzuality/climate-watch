@@ -1,3 +1,4 @@
+import { withRouter } from 'react-router';
 import Component from './button-group-component';
 
-export default Component;
+export default withRouter(Component);

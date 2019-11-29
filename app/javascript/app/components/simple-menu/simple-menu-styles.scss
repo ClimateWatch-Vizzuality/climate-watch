@@ -116,7 +116,7 @@
     top: 60px;
     right: 0;
     width: 210px;
-    z-index: 11;
+    z-index: $z-index-over-loader;
     border-top: 1px solid $theme-border;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
 

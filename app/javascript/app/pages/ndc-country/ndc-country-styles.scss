@@ -11,7 +11,7 @@
     @include xy-gutters($gutter-position: ('bottom'));
   }
 
-  z-index: 2;
+  z-index: $z-index-sticky;
 
   > :nth-child(4) {
     height: 100%;
@@ -32,7 +32,7 @@
       @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
     }
 
-    z-index: 0;
+    z-index: $z-index-base;
   }
 }
 

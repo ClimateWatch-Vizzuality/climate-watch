@@ -14,25 +14,23 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getCategories, getIndicatorsData, getISOCountries],
-  (categories, indicators, isos) => {
+  [getCategories, getIndicatorsData],
+  (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
     const categoryIds = Object.keys(categories).filter(
-      //Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
+      // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
       id =>
         categories[id].slug === 'longterm_strategy' ||
         categories[id].slug === 'ndc_enhancement'
     );
     const preppedIndicators = sortBy(
       uniqBy(
-        indicators.map(i => {
-          return {
-            label: i.name,
-            value: i.slug,
-            categoryIds: i.category_ids,
-            locations: i.locations
-          };
-        }),
+        indicators.map(i => ({
+          label: i.name,
+          value: i.slug,
+          categoryIds: i.category_ids,
+          locations: i.locations
+        })),
         'value'
       ),
       'label'
@@ -100,30 +98,33 @@ export const tableRemoveIsoFromData = createSelector(
     if (!data || isEmpty(data)) return null;
 
     return data.map(d => {
+      const updatedTableDataItem = { ...d };
       let date = d['Submission Date'];
       try {
         date = new Date(d['Submission Date']);
         date = !isNaN(date.getTime())
           ? {
-              name: date.toLocaleDateString('en-US'),
-              value: date.getTime()
-            }
+            name: date.toLocaleDateString('en-US'),
+            value: date.getTime()
+          }
           : {
-              name: undefined,
-              value: undefined
-            };
+            name: undefined,
+            value: undefined
+          };
       } catch (e) {
         console.error(e);
       }
-      d['Submission Date'] = date;
-      d['Document'] = d['Document']
-        ? d['Document'].replace('href=', "target='_blank' href=")
+      updatedTableDataItem['Submission Date'] = date;
+      updatedTableDataItem.Document = d.Document
+        ? updatedTableDataItem.Document.replace(
+          'href=',
+          "target='_blank' href="
+        )
         : undefined;
-      d.country = `${"<a href='" +
-        `/ndcs/country/${d.iso}` +
-        "'>"}${d.country}</a>`;
-      delete d.iso;
-      return d;
+      const isoLink = `/ndcs/country/${d.iso}`;
+      updatedTableDataItem.country = `<a href='${isoLink}'>${d.country}</a>`;
+      delete updatedTableDataItem.iso;
+      return updatedTableDataItem;
     });
   }
 );

@@ -2,9 +2,16 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import startCase from 'lodash/startCase';
 import isArray from 'lodash/isArray';
+import { isPageContained } from 'utils/navigation';
+import cx from 'classnames';
 
 import { GHG_TABLE_HEADER } from 'data/constants';
-import { Chart, Multiselect, MultiLevelDropdown, Dropdown } from 'cw-components';
+import {
+  Chart,
+  Multiselect,
+  MultiLevelDropdown,
+  Dropdown
+} from 'cw-components';
 import EmissionsMetaProvider from 'providers/ghg-emissions-meta-provider';
 import EmissionsProvider from 'providers/emissions-provider';
 import RegionsProvider from 'providers/regions-provider';
@@ -33,7 +40,10 @@ class GhgEmissions extends PureComponent {
     const defaultColumnOrder = [GHG_TABLE_HEADER[fieldToBreakBy], 'unit'];
     const stripHtmlFromUnit = d => ({ ...d, unit: stripHTML(d.unit) });
     const data = tableData.map(stripHtmlFromUnit);
-    const csvContentEncoded = encodeAsCSVContent(data, orderByColumns(defaultColumnOrder));
+    const csvContentEncoded = encodeAsCSVContent(
+      data,
+      orderByColumns(defaultColumnOrder)
+    );
     invokeCSVDownload(csvContentEncoded);
   };
 
@@ -73,7 +83,9 @@ class GhgEmissions extends PureComponent {
     } = this.props;
     const { chartTypeSelected } = selectedOptions;
 
-    const anyFilterConflicts = !!(filtersConflicts && filtersConflicts.conflicts.length);
+    const anyFilterConflicts = !!(
+      filtersConflicts && filtersConflicts.conflicts.length
+    );
 
     if (!providerFilters) {
       return (
@@ -91,7 +103,9 @@ class GhgEmissions extends PureComponent {
           <div>
             <p>We are not able to display current selection because:</p>
             <ul>
-              {filtersConflicts.conflicts.map(conflict => <li key={conflict}>{conflict}</li>)}
+              {filtersConflicts.conflicts.map(conflict => (
+                <li key={conflict}>{conflict}</li>
+              ))}
             </ul>
             <p>{filtersConflicts.solutionText}</p>
           </div>
@@ -206,8 +220,14 @@ class GhgEmissions extends PureComponent {
 
     return (
       <div>
-        <div className={styles.titleContainer}>
-          <h2 className={styles.title}>Global Historical Emissions</h2>
+        <div
+          className={cx(styles.titleContainer, {
+            [styles.containedButtonGroup]: isPageContained
+          })}
+        >
+          {!isPageContained && (
+            <h2 className={styles.title}>Global Historical Emissions</h2>
+          )}
           <TabletLandscape>
             <div className={styles.buttonGroup}>{renderButtonGroup()}</div>
           </TabletLandscape>

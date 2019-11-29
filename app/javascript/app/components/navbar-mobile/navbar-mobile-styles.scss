@@ -4,7 +4,7 @@
   position: fixed;
   width: 100%;
   height: $navbar-height;
-  z-index: 23; // index inside global stacking context, dropdown items have 21
+  z-index: $z-index-over-dropdown;
 }
 
 .navbar {

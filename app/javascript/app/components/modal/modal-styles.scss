@@ -16,7 +16,7 @@ $close-position: 35px;
   display: flex;
   flex-direction: column;
   background-color: $white;
-  z-index: 21;
+  z-index: $z-index-dropdown-menu;
   border: 'none';
   border-radius: 0;
 
@@ -58,7 +58,7 @@ $close-position: 35px;
   right: $gutter-padding;
   top: $gutter-padding;
   border: solid 1px rgba(202, 204, 208, 0.85);
-  z-index: 20;
+  z-index: $z-index-over-map;
 }
 
 :global .ReactModal__Body--open {

@@ -16,16 +16,21 @@ class Footer extends PureComponent {
       partners,
       includePartners,
       includeContact,
-      includeBottom
+      includeBottom,
+      isContained
     } = this.props;
     return (
       <footer>
-        <SiteMap />
+        {!isContained && <SiteMap />}
         {includePartners && (
-          <div className={styles.border}>
+          <div
+            className={cx(styles.border, { [styles.isContained]: isContained })}
+          >
             <div className={cx(layout.content, styles.nav)}>
               <div className={styles.partners}>
-                <span className={styles.partnersHeadline}>Partners</span>
+                <span className={styles.partnersHeadline}>
+                  {isContained ? 'Data contributed by' : 'Partners'}
+                </span>
               </div>
               <div className="grid-column-item">
                 <div className={styles.contentWrapper}>
@@ -74,13 +79,15 @@ Footer.propTypes = {
   partners: PropTypes.array.isRequired,
   includePartners: PropTypes.bool,
   includeContact: PropTypes.bool,
-  includeBottom: PropTypes.bool
+  includeBottom: PropTypes.bool,
+  isContained: PropTypes.bool
 };
 
 Footer.defaultProps = {
   includePartners: true,
   includeContact: true,
-  includeBottom: true
+  includeBottom: true,
+  isContained: false
 };
 
 export default Footer;

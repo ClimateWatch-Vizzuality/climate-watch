@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { isPageContained } from 'utils/navigation';
 
 import SDGCard from 'components/sdg-card';
 import NdcSdgLinkagesList from 'components/ndc-sdg/ndc-sdg-linkages-list';
@@ -25,7 +26,11 @@ class NdcSdgLinkagesTable extends PureComponent {
 
     if (!goals || !goals.length) return <Loading className={styles.loading} />;
     return (
-      <div className="grid-column-item">
+      <div
+        className={cx('grid-column-item', {
+          [styles.isContained]: isPageContained
+        })}
+      >
         {selectedGoal ? (
           <NdcSdgLinkagesList
             targetHover={targetHover}

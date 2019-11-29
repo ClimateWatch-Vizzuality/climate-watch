@@ -82,7 +82,7 @@ $animation-delay-time: 0.1s;
   bottom: 0;
   width: 60px;
   height: 52px;
-  z-index: 0;
+  z-index: $z-index-base;
   transition: fill $animation-time linear $animation-delay-time;
 
   @for $i from 1 through length($sdg-colors) {

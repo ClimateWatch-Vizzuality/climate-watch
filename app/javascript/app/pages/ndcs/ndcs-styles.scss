@@ -18,3 +18,12 @@
     @include columns(6);
   }
 }
+
+.containedHeader {
+  display: flex;
+  margin-top: 10px;
+
+  > div {
+    flex: 1;
+  }
+}

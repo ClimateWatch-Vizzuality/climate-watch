@@ -35,7 +35,7 @@ $circle-size: 50px;
   position: absolute;
   top: 35%;
   left: calc(0% - #{$circle-size} / 2);
-  z-index: 2;
+  z-index: $z-index-sticky;
 }
 
 .dotsPagination {
@@ -61,7 +61,7 @@ $circle-size: 50px;
   list-style-type: none;
   width: 390px;
   margin-left: -1px;
-  z-index: 0;
+  z-index: $z-index-base;
 }
 
 .cardInside {

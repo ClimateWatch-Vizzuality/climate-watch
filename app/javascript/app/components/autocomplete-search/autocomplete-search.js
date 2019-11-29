@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { handleAnalytics } from 'utils/analytics';
+import { isPageContained } from 'utils/navigation';
 import actions from './autocomplete-search-actions';
 import reducers, { initialState } from './autocomplete-search-reducers';
 
@@ -30,7 +31,11 @@ class AutocompleteSearchContainer extends PureComponent {
   }
 
   handleValueClick = option => {
-    this.props.history.push(option.path);
+    if (isPageContained) {
+      window.open(option.path, '_blank');
+    } else {
+      this.props.history.push(option.path);
+    }
     handleAnalytics('Home', 'Clicks through from a Search', option.value);
   };
 
