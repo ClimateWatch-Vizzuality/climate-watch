@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
 import Intro from 'components/intro';
+import Icon from 'components/icon';
 import cx from 'classnames';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
@@ -11,6 +12,7 @@ import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
+import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import styles from './country-ndc-overview-styles.scss';
 
@@ -192,6 +194,15 @@ class CountryNdcOverview extends PureComponent {
 
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
+        <div className={styles.alertContainer}>
+          <div className={styles.alert}>
+            <Icon icon={alertIcon} className={styles.alertIcon} />
+            <span className={styles.alertText}>
+              The information shown below only reflects the latest NDC
+              submission.
+            </span>
+          </div>
+        </div>
         <NdcContentOverviewProvider locations={[iso]} />
         {!hasSectors && !loading ? (
           <NoContent
@@ -210,11 +221,9 @@ class CountryNdcOverview extends PureComponent {
                     <Intro
                       theme={introTheme}
                       title={
-                        actions ? (
-                          'Nationally Determined Contribution (NDC) Overview'
-                        ) : (
-                          'Summary'
-                        )
+                        actions
+                          ? 'Nationally Determined Contribution (NDC) Overview'
+                          : 'Summary'
                       }
                     />
                     <TabletPortraitOnly>{description}</TabletPortraitOnly>
