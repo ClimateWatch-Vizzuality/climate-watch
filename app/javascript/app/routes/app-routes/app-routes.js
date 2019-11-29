@@ -52,8 +52,6 @@ import ndcsLTSSections from './lts-tracker-sections';
 import LTSExploreSections from './lts-explore-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
-const FEATURE_NDCS_ENHANCEMENTS =
-  process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 export default [
   {
@@ -143,7 +141,7 @@ export default [
     headerColor: '#035388',
     sections: LTSExploreSections
   },
-  FEATURE_NDCS_ENHANCEMENTS && {
+  {
     path: '/2020-ndc-tracker',
     component: NDCSEnhancements,
     headerImage: 'ndc',
