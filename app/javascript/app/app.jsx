@@ -25,7 +25,7 @@ const RoutesContainer = withRouter(({ location }) => {
       sessionStorage.setItem('previousLocationSearch', search);
     }
     setCurrentLocation(location);
-  }, [location]);
+  }, [location.pathname]);
 
   return renderRoutes(routes);
 });

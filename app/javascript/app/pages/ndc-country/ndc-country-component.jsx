@@ -24,20 +24,33 @@ import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-country-styles.scss';
 
 const getPreviousPathLabel = previousPathname => {
+  const updatedPathname = previousPathname;
   let lastPathLabel = {
     '/': 'Home'
   }[previousPathname];
-  const regexps = {};
-  regexps[/\/countries\/compare*/] = 'country compare';
-  regexps[/\/countries\/*/] = 'country';
-  Object.keys(regexps).some(key => {
-    if (previousPathname && previousPathname.match(key)) {
-      lastPathLabel = regexps[key];
+  const regexs = [
+    { regex: /countries\/compare/, label: 'country compare' },
+    { regex: /countries/, label: 'country' }
+  ];
+
+  regexs.some(regexWithLabel => {
+    const { regex, label } = regexWithLabel;
+    if (previousPathname && previousPathname.match(regex)) {
+      lastPathLabel = label;
       return true;
     }
     return false;
   });
-  return lastPathLabel || (previousPathname && toStartCase(previousPathname));
+  return lastPathLabel || (updatedPathname && toStartCase(updatedPathname));
+};
+
+const shouldClearPath = pathname => {
+  const clearRegexps = [/\/ndcs\/country/, /\/error-page/, /\/ndcs\/compare/];
+  if (clearRegexps.some(r => pathname.match(r))) {
+    sessionStorage.setItem('previousLocationPathname', '');
+    return true;
+  }
+  return false;
 };
 
 class NDCCountry extends PureComponent {
@@ -83,7 +96,10 @@ class NDCCountry extends PureComponent {
     const hasSearch = notSummary;
     const previousPathname = sessionStorage.getItem('previousLocationPathname');
     const previousSearch = sessionStorage.getItem('previousLocationSearch');
-    const previousPathLabel = getPreviousPathLabel(previousPathname);
+
+    const previousPathLabel = shouldClearPath(previousPathname)
+      ? null
+      : getPreviousPathLabel(previousPathname);
 
     return (
       <div>
