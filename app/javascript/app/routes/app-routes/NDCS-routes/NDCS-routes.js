@@ -1,8 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 
 const activeId = 'ndc';
-const FEATURE_NDCS_ENHANCEMENTS =
-  process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 export default [
   {
@@ -10,7 +8,7 @@ export default [
     label: 'NDC Content',
     activeId
   },
-  FEATURE_NDCS_ENHANCEMENTS && {
+  {
     path: '/2020-ndc-tracker',
     label: '2020 NDC Tracker',
     activeId
