@@ -9,7 +9,10 @@ import { isPageNdcp, isEmbededComponent } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
 
 import CountryNdcOverviewComponent from './country-ndc-overview-component';
-import { getValuesGrouped } from './country-ndc-overview-selectors';
+import {
+  getValuesGrouped,
+  getLastDocument
+} from './country-ndc-overview-selectors';
 
 const mapStateToProps = (state, { location, match }) => {
   const { iso } = match.params;
@@ -18,10 +21,15 @@ const mapStateToProps = (state, { location, match }) => {
   const countryData = overviewData ? overviewData[iso] : null;
   const isNdcp = isPageNdcp(location);
   const isEmbed = isEmbededComponent(location);
+  const documentsData = {
+    iso,
+    documents: state.ndcsDocumentsMeta.data
+  };
   return {
     iso,
     isNdcp,
     isEmbed,
+    lastDocument: getLastDocument(documentsData),
     values: getValuesGrouped(countryData),
     loading: state.ndcContentOverview.loading,
     sectors: countryData ? countryData.sectors : null,

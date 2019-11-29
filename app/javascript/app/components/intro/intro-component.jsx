@@ -9,6 +9,7 @@ import styles from './intro-styles.scss';
 const Intro = props => {
   const {
     title,
+    subtitle,
     description,
     disclaimer,
     theme,
@@ -29,6 +30,7 @@ const Intro = props => {
     <div className={cx(styles.wrapper, className)}>
       <div className={cx(theme.main, { [styles.withButton]: !!actionButton })}>
         <h2 className={theme.title}>{title}</h2>
+        {subtitle && <span>{subtitle}</span>}
         <TabletLandscape> {actionButton} </TabletLandscape>
       </div>
       <p
@@ -43,6 +45,7 @@ const Intro = props => {
 
 Intro.propTypes = {
   title: PropTypes.string,
+  subtitle: PropTypes.string,
   description: PropTypes.string,
   disclaimer: PropTypes.string,
   theme: PropTypes.object,
