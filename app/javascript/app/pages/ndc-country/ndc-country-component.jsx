@@ -23,6 +23,8 @@ import theme from 'styles/themes/dropdown/dropdown-links.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-country-styles.scss';
 
+const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+
 const getPreviousPathLabel = previousPathname => {
   const updatedPathname = previousPathname;
   let lastPathLabel = {
@@ -80,10 +82,33 @@ class NDCCountry extends PureComponent {
     );
   }
 
+  renderCompareButton() {
+    const { match } = this.props;
+    if (!FEATURE_LTS_EXPLORE) {
+      return (
+        <Button
+          color="yellow"
+          link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
+        >
+          {'Compare'}
+        </Button>
+      );
+    }
+    return (
+      <div className={styles.compareButton}>
+        <Button
+          color="yellow"
+          link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
+        >
+          {'Compare countries and submissions'}
+        </Button>
+      </div>
+    );
+  }
+
   render() {
     const {
       country,
-      match,
       onSearchChange,
       search,
       route,
@@ -117,11 +142,16 @@ class NDCCountry extends PureComponent {
             <div className={styles.header}>
               <div
                 className={cx(styles.actionsContainer, {
-                  [styles.withSearch]: hasSearch,
+                  [styles.withSearch]: hasSearch || !FEATURE_LTS_EXPLORE,
                   [styles.withoutBack]: !previousPathname
                 })}
               >
-                {previousPathLabel && (
+                {!FEATURE_LTS_EXPLORE && (
+                  <div>
+                    <Intro title={country.wri_standard_name} />
+                  </div>
+                )}
+                {FEATURE_LTS_EXPLORE && previousPathLabel && (
                   <div className={styles.backButton}>
                     <Link
                       to={{
@@ -135,6 +165,9 @@ class NDCCountry extends PureComponent {
                   </div>
                 )}
                 {this.renderFullTextDropdown()}
+                <TabletLandscape>
+                  {!FEATURE_LTS_EXPLORE && this.renderCompareButton()}
+                </TabletLandscape>
                 {hasSearch && (
                   <Search
                     theme={lightSearch}
@@ -144,18 +177,13 @@ class NDCCountry extends PureComponent {
                   />
                 )}
               </div>
-              <div className={styles.title}>
-                <Intro title={country.wri_standard_name} />
-              </div>
-              <TabletLandscape>
-                <div className={styles.compareButton}>
-                  <Button
-                    color="yellow"
-                    link={`/ndcs/compare/mitigation?locations=${match.params.iso}`}
-                  >
-                    Compare countries and submissions
-                  </Button>
+              {FEATURE_LTS_EXPLORE && (
+                <div className={styles.title}>
+                  <Intro title={country.wri_standard_name} />
                 </div>
+              )}
+              <TabletLandscape>
+                {FEATURE_LTS_EXPLORE && this.renderCompareButton()}
               </TabletLandscape>
             </div>
             <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
