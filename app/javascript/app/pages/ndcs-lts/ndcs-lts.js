@@ -7,12 +7,6 @@ import actions from './ndcs-lts-actions';
 import reducers, { initialState } from './ndcs-lts-reducers';
 
 import Component from './ndcs-lts-component';
-import { getAnchorLinks } from './ndcs-lts-selectors';
-
-const mapStateToProps = (state, { route, location }) => ({
-  anchorLinks: getAnchorLinks(route),
-  query: location.search
-});
 
 class NDCSLTSContainer extends PureComponent {
   componentWillMount() {
@@ -29,4 +23,4 @@ NDCSLTSContainer.propTypes = {
 };
 
 export { actions, reducers, initialState };
-export default withRouter(connect(mapStateToProps, actions)(NDCSLTSContainer));
+export default withRouter(connect(null, actions)(NDCSLTSContainer));

@@ -9,6 +9,8 @@ import ReactTooltip from 'react-tooltip';
 import ButtonGroup from 'components/button-group';
 import { TabletLandscape } from 'components/responsive';
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
+import AutocompleteSearch from 'components/autocomplete-search';
+import { isPageContained } from 'utils/navigation';
 
 import LegendRange from './legend-range';
 import LegendSteps from './legend-steps';
@@ -57,8 +59,52 @@ class NdcSdgLinkagesMap extends PureComponent {
   handleMapInteraction = country =>
     this.setState({ country: country.properties });
 
-  render() {
+  renderMapHeader({ isTablet }) {
     const { downloadLink } = this.props;
+    const buttonGroup = (
+      <ButtonGroup
+        className={styles.buttons}
+        buttonsConfig={[
+          {
+            type: 'info',
+            onClick: this.props.handleInfoClick
+          },
+          {
+            type: 'share',
+            shareUrl: '/embed/ndcs-sdg',
+            analyticsGraphName: 'Ndcs-Sdg',
+            positionRight: true
+          },
+          {
+            type: 'download',
+            section: 'ndcs-sdg',
+            link: downloadLink
+          },
+          {
+            type: 'addToUser'
+          }
+        ]}
+      />
+    );
+
+    if (isPageContained) {
+      return (
+        <React.Fragment>
+          <AutocompleteSearch variant="dark" className={styles.autoComplete} />
+          {buttonGroup}
+        </React.Fragment>
+      );
+    }
+
+    return isTablet ? (
+      <React.Fragment>
+        <h3 className={styles.title}>Global Linkage Overview</h3>
+        {buttonGroup}
+      </React.Fragment>
+    ) : null;
+  }
+
+  render() {
     return (
       <TabletLandscape>
         {isTablet => (
@@ -68,34 +114,7 @@ class NdcSdgLinkagesMap extends PureComponent {
             })}
           >
             <div className={styles.row}>
-              {isTablet ? (
-                <h3 className={styles.title}>Global Linkage Overview</h3>
-              ) : null}
-              {isTablet ? (
-                <ButtonGroup
-                  className={styles.buttons}
-                  buttonsConfig={[
-                    {
-                      type: 'info',
-                      onClick: this.props.handleInfoClick
-                    },
-                    {
-                      type: 'share',
-                      shareUrl: '/embed/ndcs-sdg',
-                      analyticsGraphName: 'Ndcs-Sdg',
-                      positionRight: true
-                    },
-                    {
-                      type: 'download',
-                      section: 'ndcs-sdg',
-                      link: downloadLink
-                    },
-                    {
-                      type: 'addToUser'
-                    }
-                  ]}
-                />
-              ) : null}
+              {this.renderMapHeader({ isTablet })}
             </div>
             <Map
               style={{ height: '100%', width: '100%' }}

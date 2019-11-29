@@ -7,6 +7,7 @@ import Intro from 'components/intro';
 import GhgEmissionsGraph from 'components/ghg-emissions';
 import { HISTORICAL_GHG_EMISIONS } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import { isPageContained } from 'utils/navigation';
 
 import layout from 'styles/layout.scss';
 import styles from './ghg-emissions-styles.scss';
@@ -25,11 +26,13 @@ class GhgEmissions extends PureComponent {
           descriptionContext={HISTORICAL_GHG_EMISIONS}
           href={location.href}
         />
-        <Header route={route}>
-          <div className={cx(layout.content, styles.header)}>
-            <Intro title="Historical GHG Emissions" />
-          </div>
-        </Header>
+        {!isPageContained && (
+          <Header route={route}>
+            <div className={cx(layout.content, styles.header)}>
+              <Intro title="Historical GHG Emissions" />
+            </div>
+          </Header>
+        )}
         <div className={styles.wrapper}>
           <div className={layout.content}>
             <GhgEmissionsGraph />

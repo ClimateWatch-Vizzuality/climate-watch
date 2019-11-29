@@ -25,6 +25,7 @@ import EmissionPathwaysModel from 'pages/emission-pathways-model';
 import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import Sectors from 'pages/sectors';
 import SectorsAgriculture from 'pages/sectors-agriculture';
+import LTSExplore from 'pages/lts-explore';
 
 // routes
 import NDCSRoutes from './NDCS-routes';
@@ -48,11 +49,10 @@ import countryCompareSections from './country-compare-sections';
 import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 import ndcsLTSSections from './lts-tracker-sections';
+import LTSExploreSections from './lts-explore-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
-const FEATURE_NDCS_ENHANCEMENTS =
-  process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
-const FEATURE_NDCS_LTS = process.env.FEATURE_NDCS_LTS === 'true';
+const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 export default [
   {
     path: '/',
@@ -80,17 +80,17 @@ export default [
   },
   FEATURE_AGRICULTURE
     ? {
-        nav: true,
-        label: 'SECTORS',
-        routes: sectorsRoutes
-      }
+      nav: true,
+      label: 'SECTORS',
+      routes: sectorsRoutes
+    }
     : {
-        path: '/sectors',
-        component: Sectors,
-        exact: true,
-        nav: true,
-        label: 'SECTORS'
-      },
+      path: '/sectors',
+      component: Sectors,
+      exact: true,
+      nav: true,
+      label: 'SECTORS'
+    },
   FEATURE_AGRICULTURE && {
     path: '/sectors/agriculture',
     component: SectorsAgriculture,
@@ -134,14 +134,21 @@ export default [
     headerColor: '#035388',
     routes: NDCSContentRoutes
   },
-  FEATURE_NDCS_ENHANCEMENTS && {
+  FEATURE_LTS_EXPLORE && {
+    path: '/lts-explore',
+    component: LTSExplore,
+    headerImage: 'ndc',
+    headerColor: '#035388',
+    sections: LTSExploreSections
+  },
+  {
     path: '/2020-ndc-tracker',
     component: NDCSEnhancements,
     headerImage: 'ndc',
     headerColor: '#035388',
     sections: ndcsEnhancementsSections
   },
-  FEATURE_NDCS_LTS && {
+  {
     path: '/lts-tracker',
     component: NDCSLTS,
     headerImage: 'ndc',

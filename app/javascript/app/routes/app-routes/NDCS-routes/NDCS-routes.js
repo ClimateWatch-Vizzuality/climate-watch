@@ -1,21 +1,24 @@
 import isEmpty from 'lodash/isEmpty';
 
 const activeId = 'ndc';
-const FEATURE_NDCS_ENHANCEMENTS =
-  process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
-const FEATURE_NDCS_LTS = process.env.FEATURE_NDCS_LTS === 'true';
+const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 export default [
   {
     path: '/ndcs-content',
     label: 'NDC Content',
     activeId
   },
-  FEATURE_NDCS_ENHANCEMENTS && {
+  {
     path: '/2020-ndc-tracker',
     label: '2020 NDC Tracker',
     activeId
   },
-  FEATURE_NDCS_LTS && {
+  FEATURE_LTS_EXPLORE && {
+    path: '/lts-explore',
+    label: 'Explore Long-Term Strategies (LTS)',
+    activeId
+  },
+  {
     path: '/lts-tracker',
     label: 'Long-Term Strategy Tracker',
     activeId

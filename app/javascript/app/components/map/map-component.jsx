@@ -23,7 +23,7 @@ import styles from './map-styles.scss';
 class Map extends PureComponent {
   render() {
     const { zoom, center, customCenter } = this.props;
-    const { className } = this.props;
+    const { className, theme } = this.props;
     const {
       forceUpdate,
       paths,
@@ -123,14 +123,22 @@ class Map extends PureComponent {
           >
             {zoomEnable && (
               <div
-                className={cx(styles.actions, {
-                  [styles.bottom]: controlPosition === 'bottom'
-                })}
+                className={cx(
+                  styles.actions,
+                  {
+                    [styles.bottom]: controlPosition === 'bottom'
+                  },
+                  theme.actions
+                )}
               >
-                <Button onClick={handleZoomIn}>
+                <Button title="map zoom in" onClick={handleZoomIn}>
                   <Icon icon={mapZoomIn} />
                 </Button>
-                <Button disabled={zoom === 1} onClick={handleZoomOut}>
+                <Button
+                  title="map zoom out"
+                  disabled={zoom === 1}
+                  onClick={handleZoomOut}
+                >
                   <Icon icon={mapZoomOut} />
                 </Button>
               </div>
@@ -201,7 +209,8 @@ class Map extends PureComponent {
                             return <Geography {...commonProps} />;
                           }
                           return null;
-                        })}
+                        })
+                      }
                     </Geographies>
                     {markers && markers.length && renderMarkers()}
                   </ZoomableGroup>
@@ -226,6 +235,7 @@ Map.propTypes = {
   forceUpdate: PropTypes.bool,
   cache: PropTypes.bool,
   className: PropTypes.string,
+  theme: PropTypes.object,
   paths: PropTypes.array.isRequired,
   tooltipId: PropTypes.string,
   countryNameTooltip: PropTypes.bool.isRequired,
@@ -281,7 +291,8 @@ Map.defaultProps = {
       strokeWidth: 0.5,
       outline: 'none'
     }
-  }
+  },
+  theme: {}
 };
 
 export default Map;

@@ -7,6 +7,7 @@ class ImportHistoricalEmissions
   DATA_CAIT_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_CAIT.csv".freeze
   DATA_PIK_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_PIK.csv".freeze
   DATA_UNFCCC_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_UNFCCC.csv".freeze
+  DATA_GCP_FILEPATH = "#{CW_FILES_PREFIX}historical_emissions/CW_HistoricalEmissions_GCP.csv".freeze
   # rubocop:enable LineLength
   #
   def call
@@ -19,6 +20,7 @@ class ImportHistoricalEmissions
       import_records(S3CSVReader.read(DATA_CAIT_FILEPATH), DATA_CAIT_FILEPATH)
       import_records(S3CSVReader.read(DATA_PIK_FILEPATH), DATA_PIK_FILEPATH)
       import_records(S3CSVReader.read(DATA_UNFCCC_FILEPATH), DATA_UNFCCC_FILEPATH)
+      import_records(S3CSVReader.read(DATA_GCP_FILEPATH), DATA_GCP_FILEPATH)
 
       Rails.logger.info 'Refreshing materialized views'
       HistoricalEmissions::NormalisedRecord.refresh

@@ -2,7 +2,7 @@
 
 :global .sticky-outer-wrapper {
   .sticky-inner-wrapper {
-    z-index: 2;
+    z-index: $z-index-sticky;
   }
 
   &.sticky {
@@ -48,7 +48,7 @@
 
     .sticky-outer-wrapper,
     .sticky-inner-wrapper {
-      z-index: 23; // dropdown items have 21
+      z-index: $z-index-over-dropdown; // dropdown items have 21
     }
   }
 }

@@ -102,6 +102,8 @@ spec:
                 secretKeyRef:
                   name: appsecrets
                   key: CW_HTTP_AUTH_PASSWORD_STAGING
+          - name: BASIC_AUTH
+            value: "true"
           - name: REDIS_SERVER
             value: redis://localhost:6379
 

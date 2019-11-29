@@ -51,7 +51,7 @@
   max-width: 100%;
 
   @media #{$tablet-portrait} {
-    max-width:160px;
+    max-width: 160px;
   }
 
   @media #{$tablet-landscape} {
@@ -61,7 +61,7 @@
 
 :global .__react_component_tooltip {
   max-width: 250px;
-  white-space:pre-line;
+  white-space: pre-line;
 }
 
 .loader {
@@ -69,7 +69,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: $z-index-loader;
 }
 
 .containerUpper,
@@ -116,7 +116,6 @@
     > div {
       @include columns(100%);
     }
-
   }
 }
 
@@ -132,8 +131,9 @@
 
   > div {
     position: relative;
+
     &:first-child {
-      max-width:60%;
+      max-width: 60%;
     }
   }
 
@@ -142,7 +142,6 @@
     margin: 0 $card-content-margin $card-content-margin;
     padding-right: calc(#{$gutter-padding} / 2);
   }
-
 
   [class*=circularChartWrapper] {
     position: static;

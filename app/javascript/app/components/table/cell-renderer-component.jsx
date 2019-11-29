@@ -24,7 +24,15 @@ const renderTrendLine = (chartData, titleLink) => {
 };
 
 const cellRenderer = ({
-  props: { parseHtml, titleLinks, trendLine, emptyValueLabel, data, urlInData },
+  props: {
+    parseHtml,
+    titleLinks,
+    trendLine,
+    emptyValueLabel,
+    data,
+    urlInData,
+    openLinksInNewTab
+  },
   cell
 }) => {
   let { cellData } = cell;
@@ -48,7 +56,10 @@ const cellRenderer = ({
         {cellData}
       </a>
     ) : (
-      <NavLink to={urlInData ? titleLink.urlNotShow : titleLink.url}>
+      <NavLink
+        target={openLinksInNewTab ? '_blank' : '_self'}
+        to={urlInData ? titleLink.urlNotShow : titleLink.url}
+      >
         {cellData}
       </NavLink>
     );

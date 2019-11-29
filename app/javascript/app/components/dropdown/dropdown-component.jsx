@@ -33,7 +33,8 @@ class Dropdown extends PureComponent {
       infoText,
       required,
       optional,
-      disclaimer
+      disclaimer,
+      hasSearch
     } = this.props;
     const arrow = this.props.white ? dropdownArrowWhite : dropdownArrow;
     const hasNotValue = this.props.value && !this.props.value.value;
@@ -73,7 +74,11 @@ class Dropdown extends PureComponent {
           )}
         >
           {this.props.loading && <Loading className={styles.loader} mini />}
-          <div className={styles.dropdownDisclaimerWrapper}>
+          <div
+            className={cx(styles.dropdownDisclaimerWrapper, {
+              withSearch: hasSearch
+            })}
+          >
             <SimpleSelect
               ref={el => {
                 this.selectorElement = el;
