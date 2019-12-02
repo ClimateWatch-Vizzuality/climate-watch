@@ -7,7 +7,7 @@ import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import { actions as fetchActions } from 'pages/ndcs-lts';
+import { actions as fetchActions } from 'pages/lts-explore';
 import { actions as modalActions } from 'components/modal-metadata';
 import {
   getCategories,
@@ -30,44 +30,35 @@ import {
 const actions = { ...fetchActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.ndcsLTS;
+  const { data, loading } = state.LTS;
   const { countries } = state;
   const search = qs.parse(location.search);
 
-  const mapCategories = {};
-  if (data.categories) {
-    Object.keys(data.categories).forEach(id => {
-      if (data.categories[id].type === 'map') {
-        mapCategories[id] = data.categories[id];
-      }
-    });
-  }
-
-  const ndcsLTSWithSelection = {
+  const LTSWithSelection = {
     ...state,
     ...data,
     countries: countries.data,
     query: search.search,
     categorySelected: search.category,
     indicatorSelected: search.indicator,
-    categories: mapCategories,
+    categories: data.categories,
     emissions: state.emissions,
     search
   };
 
   return {
     loading,
-    query: ndcsLTSWithSelection.query,
-    paths: getPathsWithStyles(ndcsLTSWithSelection),
-    isoCountries: getISOCountries(ndcsLTSWithSelection),
-    selectedIndicator: getMapIndicator(ndcsLTSWithSelection),
-    emissionsCardData: getEmissionsCardData(ndcsLTSWithSelection),
-    legendData: getLegend(ndcsLTSWithSelection),
-    summaryCardData: getSummaryCardData(ndcsLTSWithSelection),
-    downloadLink: getLinkToDataExplorer(ndcsLTSWithSelection),
-    categories: getCategories(ndcsLTSWithSelection),
-    indicators: getCategoryIndicators(ndcsLTSWithSelection),
-    selectedCategory: getSelectedCategory(ndcsLTSWithSelection)
+    query: LTSWithSelection.query,
+    paths: getPathsWithStyles(LTSWithSelection),
+    isoCountries: getISOCountries(LTSWithSelection),
+    selectedIndicator: getMapIndicator(LTSWithSelection),
+    emissionsCardData: getEmissionsCardData(LTSWithSelection),
+    legendData: getLegend(LTSWithSelection),
+    summaryCardData: getSummaryCardData(LTSWithSelection),
+    downloadLink: getLinkToDataExplorer(LTSWithSelection),
+    categories: getCategories(LTSWithSelection),
+    indicators: getCategoryIndicators(LTSWithSelection),
+    selectedCategory: getSelectedCategory(LTSWithSelection)
   };
 };
 
@@ -81,7 +72,7 @@ class LTSExploreMapContainer extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.fetchNDCSLTS();
+    this.props.fetchLTS();
   }
 
   handleSearchChange = query => {
@@ -167,7 +158,7 @@ LTSExploreMapContainer.propTypes = {
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchNDCSLTS: PropTypes.func.isRequired,
+  fetchLTS: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.object,
   indicator: PropTypes.object
