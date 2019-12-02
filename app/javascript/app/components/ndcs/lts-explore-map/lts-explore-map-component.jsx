@@ -29,13 +29,13 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       },
       {
         type: 'share',
-        shareUrl: '/embed/ndcs-lts',
-        analyticsGraphName: 'Ndcs',
+        shareUrl: '/embed/lts-explore',
+        analyticsGraphName: 'Lts',
         positionRight: true
       },
       {
         type: 'download',
-        section: 'ndcs-content',
+        section: 'lts-explore',
         link: downloadLink
       },
       {
