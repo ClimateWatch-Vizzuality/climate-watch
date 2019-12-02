@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import { actions as fetchActions } from 'pages/ndcs-lts';
+import { actions as fetchActions } from 'pages/lts-explore';
 
 import Component from './lts-explore-table-component';
 
@@ -19,10 +19,10 @@ import {
 const actions = { ...fetchActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.ndcsLTS;
+  const { data, loading } = state.LTS;
   const { countries } = state;
   const search = qs.parse(location.search);
-  const ndcsLTSWithSelection = {
+  const LTSWithSelection = {
     ...data,
     countries: countries.data,
     query: search.search,
@@ -30,10 +30,10 @@ const mapStateToProps = (state, { location }) => {
   };
   return {
     loading,
-    query: ndcsLTSWithSelection.query,
-    isoCountries: getISOCountries(ndcsLTSWithSelection),
-    tableData: tableRemoveIsoFromData(ndcsLTSWithSelection),
-    columns: getDefaultColumns(ndcsLTSWithSelection)
+    query: LTSWithSelection.query,
+    isoCountries: getISOCountries(LTSWithSelection),
+    tableData: tableRemoveIsoFromData(LTSWithSelection),
+    columns: getDefaultColumns(LTSWithSelection)
   };
 };
 
@@ -44,7 +44,7 @@ class LTSExploreTableContainer extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.fetchNDCSLTS();
+    this.props.fetchLTS();
   }
 
   setColumnWidth = column => {
@@ -95,7 +95,7 @@ LTSExploreTableContainer.propTypes = {
   tableData: PropTypes.array,
   columns: PropTypes.array,
   query: PropTypes.object,
-  fetchNDCSLTS: PropTypes.func.isRequired
+  fetchLTS: PropTypes.func.isRequired
 };
 
 export default withRouter(

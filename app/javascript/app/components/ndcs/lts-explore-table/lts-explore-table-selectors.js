@@ -17,13 +17,7 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryIds = Object.keys(categories).filter(
-      // Need to get the NDC Enhancement data category to borrow the emissions figure from that dataset for consistency
-      id =>
-        categories[id].slug === 'longterm_strategy' ||
-        categories[id].slug === 'ndc_enhancement'
-    );
-    const preppedIndicators = sortBy(
+    const parsedIndicators = sortBy(
       uniqBy(
         indicators.map(i => ({
           label: i.name,
@@ -35,15 +29,7 @@ export const getIndicatorsParsed = createSelector(
       ),
       'label'
     );
-    let filteredIndicators = [];
-    categoryIds.forEach(id => {
-      filteredIndicators = filteredIndicators.concat(
-        preppedIndicators.filter(
-          ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1
-        )
-      );
-    });
-    return filteredIndicators;
+    return parsedIndicators;
   }
 );
 
@@ -148,7 +134,7 @@ export const getDefaultColumns = createSelector(
     if (!indicators || isEmpty(indicators)) return [];
     const columnIds = [
       'country',
-      'lts',
+      'lts_target',
       'lts_document',
       'lts_date',
       'ndce_ghg'
