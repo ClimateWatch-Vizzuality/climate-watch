@@ -44,6 +44,8 @@ platforms:
         datasets:
           - NDC_CAIT_data
           - NDC_CAIT_legend
+          - NDC_LTS_data
+          - NDC_LTS_data_sectoral
           - NDC_WB_data_wide
           - NDC_WB_data_sectoral
           - NDC_submission
