@@ -26,8 +26,7 @@ export const getIndicatorsParsed = createSelector(
   [getCategories, getIndicatorsData, getISOCountries],
   (categories, indicators, isos) => {
     if (!categories || !indicators || !indicators.length) return null;
-    const categoryIds = Object.keys(categories);
-    const preppedIndicators = sortBy(
+    return sortBy(
       uniqBy(
         indicators.map(i => {
           const legendBuckets = createLegendBuckets(
@@ -47,16 +46,6 @@ export const getIndicatorsParsed = createSelector(
       ),
       'label'
     );
-
-    let filteredIndicators = [];
-    categoryIds.forEach(id => {
-      filteredIndicators = filteredIndicators.concat(
-        preppedIndicators.filter(
-          ind => ind.categoryIds.indexOf(parseInt(id, 10)) > -1
-        )
-      );
-    });
-    return filteredIndicators;
   }
 );
 
@@ -64,7 +53,10 @@ export const getMapIndicator = createSelector(
   [getIndicatorsParsed, getSelectedIndicator],
   (indicators, selectedIndicator) => {
     if (!indicators || !indicators.length) return null;
-    const mapIndicator = selectedIndicator || indicators[0];
+    const mapIndicator =
+      selectedIndicator && selectedIndicator.label
+        ? selectedIndicator
+        : indicators[0];
     return mapIndicator;
   }
 );
