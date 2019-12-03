@@ -14,6 +14,8 @@ export const NDC_LTS =
   'Analyze and compare every national climate pledge (Nationally Determined Contribution – or NDC) under the Paris Agreement, with the ability to search key words and see summaries by topic across all.';
 export const NDC_COUNTRY = ({ countryName = '' }) =>
   `Explore the Commitments (NDCs) made by ${countryName} to act on climate change, as part of the Paris Agreement`;
+export const LTS_COUNTRY = ({ countryName = '' }) =>
+  `Explore the Long-term strategies (LTSs) made by ${countryName} to act on climate change`;
 export const NDC_SDG_LINKAGES =
   'Comprehensive mapping of linkages between Nationally Determined Contributions (NDCs) and the Sustainable Development Goals (SDGs) and associated targets of the 2030 Agenda for Sustainable Development.';
 export const HISTORICAL_GHG_EMISIONS =
