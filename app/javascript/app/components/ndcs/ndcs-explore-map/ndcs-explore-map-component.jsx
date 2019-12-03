@@ -11,13 +11,13 @@ import Loading from 'components/loading';
 import ModalMetadata from 'components/modal-metadata';
 import Dropdown from 'components/dropdown';
 import { PieChart } from 'cw-components';
+import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
+import LegendItem from 'components/ndcs/shared/legend-item';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
+
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './ndcs-explore-map-styles.scss';
-
-import LegendItem from './legend-item';
-import CustomTooltip from './donut-tooltip';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
   <ButtonGroup
