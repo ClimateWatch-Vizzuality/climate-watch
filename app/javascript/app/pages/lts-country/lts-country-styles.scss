@@ -1,0 +1,53 @@
+@import '~styles/layout.scss';
+
+.anchorNav {
+  @include row('shrink', $wrap: false);
+}
+
+.doubleFold {
+  @include row(12);
+
+  > :not(:first-child) {
+    @include xy-gutters($gutter-position: ('bottom'));
+  }
+
+  z-index: $z-index-sticky;
+
+  > :nth-child(4) {
+    height: 100%;
+  }
+
+  @media #{$tablet-portrait} {
+    @include row((12, 6, 6));
+
+    > :not(:first-child) {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    @include row((5, 3, 2, 2));
+
+    > :not(:first-child) {
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    }
+
+    z-index: $z-index-base;
+  }
+}
+
+.backButton {
+  margin-right: 20px;
+}
+
+.backIcon {
+  fill: $white;
+  width: 60px;
+  height: 60px;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

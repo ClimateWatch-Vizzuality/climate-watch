@@ -83,7 +83,7 @@ class LTSExploreMapContainer extends PureComponent {
     const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/ndcs/country/${iso}`);
+      this.props.history.push(`/lts/country/${iso}`);
       handleAnalytics(
         'LTS Explore Map',
         'Use map to find country',
