@@ -9,6 +9,7 @@ import CountriesSelect from 'components/countries-select';
 import CountryCompare from 'pages/country-compare';
 import NDCCountryFull from 'pages/ndc-country-full';
 import NDCCountry from 'pages/ndc-country';
+import LTSCountry from 'pages/lts-country';
 import NDCCompare from 'pages/ndc-compare';
 import NDCS from 'pages/ndcs';
 import NDCSEnhancements from 'pages/ndcs-enhancements';
@@ -30,6 +31,7 @@ import LTSExplore from 'pages/lts-explore';
 // routes
 import NDCSRoutes from './NDCS-routes';
 import NDCCountryRoutes from './NDCCountry-routes';
+import LTSCountryRoutes from './LTSCountry-routes';
 import NDCCompareRoutes from './NDCCompare-routes';
 import NDCSContentRoutes from './NDCSContent-routes';
 import MyCwRoutes from './my-cw-routes';
@@ -114,6 +116,13 @@ export default [
     headerImage: 'ndc',
     headerColor: '#035388',
     routes: NDCCountryRoutes
+  },
+  {
+    path: '/lts/country/:iso',
+    component: LTSCountry,
+    headerImage: 'ndc',
+    headerColor: '#035388',
+    routes: LTSCountryRoutes
   },
   {
     path: '/ndcs/compare',

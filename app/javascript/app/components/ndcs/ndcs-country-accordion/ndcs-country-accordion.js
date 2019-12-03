@@ -41,21 +41,23 @@ class NdcsCountryAccordionContainer extends PureComponent {
       fetchNdcsCountryAccordion,
       category,
       search,
-      compare
+      compare,
+      lts
     } = this.props;
     const locations = iso || search.locations;
-    fetchNdcsCountryAccordion({ locations, category, compare });
+    fetchNdcsCountryAccordion({ locations, category, compare, lts });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchNdcsCountryAccordion, compare } = this.props;
+    const { fetchNdcsCountryAccordion, compare, lts } = this.props;
     const newLocations = qs.parse(nextProps.location.search).locations;
     const oldLocations = qs.parse(this.props.location.search).locations;
     if (newLocations !== oldLocations) {
       fetchNdcsCountryAccordion({
         locations: newLocations,
         category: nextProps.category,
-        compare
+        compare,
+        lts
       });
     }
   }
@@ -73,7 +75,8 @@ NdcsCountryAccordionContainer.propTypes = {
   category: PropTypes.string,
   search: PropTypes.object,
   location: PropTypes.object,
-  compare: PropTypes.bool
+  compare: PropTypes.bool,
+  lts: PropTypes.bool
 };
 
 export { actions, reducers, initialState };
