@@ -1,0 +1,35 @@
+@import '~styles/settings.scss';
+
+$lighter-blue: #e7edf8;
+$lighter-blue-2: #d4dff4;
+
+.column {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+
+  > div {
+    padding: 20px;
+  }
+}
+
+.row {
+  padding-top: 0 !important; // Due to the :global in styles
+  padding-bottom: 0 !important; // Due to the :global in styles
+}
+
+.evenRow {
+  .column {
+    &:nth-child(2) {
+      background-color: $lighter-blue;
+    }
+  }
+}
+
+.oddRow {
+  .column {
+    &:nth-child(2) {
+      background-color: $lighter-blue-2;
+    }
+  }
+}

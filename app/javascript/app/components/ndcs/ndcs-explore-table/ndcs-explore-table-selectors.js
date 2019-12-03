@@ -132,13 +132,7 @@ export const getDefaultColumns = createSelector(
   [getIndicatorsParsed],
   indicators => {
     if (!indicators || isEmpty(indicators)) return [];
-    const columnIds = [
-      'country',
-      'submission',
-      'ndcs_document',
-      'ndcs_date',
-      'ndce_ghg'
-    ];
+    const columnIds = ['country', 'submission', 'submission_date', 'ndce_ghg'];
 
     const columns = columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);
