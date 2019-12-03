@@ -5,6 +5,8 @@ import { Table } from 'cw-components';
 import NoContent from 'components/no-content';
 import Loading from 'components/loading';
 import darkSearch from 'styles/themes/search/search-dark.scss';
+import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
+
 import styles from './lts-explore-table-styles.scss';
 
 const renderSearch = (searchHandler, query) => (
@@ -44,6 +46,7 @@ const LTSExploreTable = ({
             dynamicRowsHeight
             setColumnWidth={setColumnWidth}
             defaultColumns={columns}
+            theme={exploreTableTheme}
           />
         </div>
       )}
