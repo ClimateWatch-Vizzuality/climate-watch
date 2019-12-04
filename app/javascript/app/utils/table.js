@@ -2,9 +2,10 @@ export const setColumnWidth = (
   column,
   columns,
   tableWidth,
-  narrowColumnWidth
+  narrowColumnWidth,
+  _narrowColumns
 ) => {
-  const narrowColumns = [0, 1];
+  const narrowColumns = _narrowColumns || [];
   const numColumns = columns.length;
   const numNarrowColumns = narrowColumns.length;
   const colPadding = 10;
