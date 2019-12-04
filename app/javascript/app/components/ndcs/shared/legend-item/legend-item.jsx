@@ -1,7 +1,7 @@
 import React from 'react';
 import Progress from 'components/progress';
 import PropTypes from 'prop-types';
-import styles from './lts-explore-map-styles.scss';
+import styles from './legend-item-styles.scss';
 
 const LegendItem = ({ name, partiesNumber, value, color }) => (
   <div className={styles.legendItem}>

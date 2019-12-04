@@ -17,7 +17,7 @@ import handCursorIcon from 'assets/icons/hand-cursor.svg';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
-import styles from './lts-explore-map-styles.scss';
+import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
   <ButtonGroup
@@ -29,13 +29,13 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       },
       {
         type: 'share',
-        shareUrl: '/embed/lts-explore',
-        analyticsGraphName: 'Lts',
+        shareUrl: '/embed/ndcs-ndcs',
+        analyticsGraphName: 'Ndcs',
         positionRight: true
       },
       {
         type: 'download',
-        section: 'lts-explore',
+        section: 'ndcs-content',
         link: downloadLink
       },
       {
@@ -75,7 +75,7 @@ const renderLegend = legendData => (
   </div>
 );
 
-class LTSExploreMap extends PureComponent {
+class NDCSExploreMap extends PureComponent {
   constructor() {
     super();
     this.state = {
@@ -186,7 +186,7 @@ class LTSExploreMap extends PureComponent {
                   </p>
                   <Map
                     paths={paths}
-                    tooltipId="lts-map-tooltip"
+                    tooltipId="ndcs-map-tooltip"
                     onCountryClick={handleCountryClick}
                     onCountryEnter={handleCountryEnter}
                     onCountryFocus={handleCountryEnter}
@@ -198,7 +198,7 @@ class LTSExploreMap extends PureComponent {
                   {countryData && (
                     <ReactTooltip
                       className={styles.tooltipContainer}
-                      id="lts-map-tooltip"
+                      id="ndcs-map-tooltip"
                       delayHide={isTablet ? 0 : 1000}
                     >
                       <Link
@@ -224,7 +224,7 @@ class LTSExploreMap extends PureComponent {
   }
 }
 
-LTSExploreMap.propTypes = {
+NDCSExploreMap.propTypes = {
   loading: PropTypes.bool,
   paths: PropTypes.array.isRequired,
   downloadLink: PropTypes.string,
@@ -243,4 +243,4 @@ LTSExploreMap.propTypes = {
   handleIndicatorChange: PropTypes.func
 };
 
-export default LTSExploreMap;
+export default NDCSExploreMap;

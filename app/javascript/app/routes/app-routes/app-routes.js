@@ -27,6 +27,7 @@ import EmissionPathwaysScenario from 'pages/emission-pathways-scenario';
 import Sectors from 'pages/sectors';
 import SectorsAgriculture from 'pages/sectors-agriculture';
 import LTSExplore from 'pages/lts-explore';
+import NDCSExplore from 'pages/ndcs-explore';
 
 // routes
 import NDCSRoutes from './NDCS-routes';
@@ -52,9 +53,13 @@ import agricultureSections from './sectors-agriculture-sections';
 import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 import ndcsLTSSections from './lts-tracker-sections';
 import LTSExploreSections from './lts-explore-sections';
+import NDCSExploreSections from './ndcs-explore-sections';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const FEATURE_NDCS_ENHANCEMENTS =
+  process.env.FEATURE_NDCS_ENHANCEMENTS === 'true';
+
 export default [
   {
     path: '/',
@@ -150,7 +155,14 @@ export default [
     headerColor: '#035388',
     sections: LTSExploreSections
   },
-  {
+  FEATURE_LTS_EXPLORE && {
+    path: '/ndcs-explore',
+    component: NDCSExplore,
+    headerImage: 'ndc',
+    headerColor: '#035388',
+    sections: NDCSExploreSections
+  },
+  FEATURE_NDCS_ENHANCEMENTS && {
     path: '/2020-ndc-tracker',
     component: NDCSEnhancements,
     headerImage: 'ndc',

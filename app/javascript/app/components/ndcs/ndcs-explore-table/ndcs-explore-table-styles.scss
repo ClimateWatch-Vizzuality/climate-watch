@@ -1,0 +1,32 @@
+@import '~styles/layout.scss';
+@import '~styles/settings.scss';
+
+.wrapper {
+  position: relative;
+  margin-bottom: 40px;
+  min-height: 80px;
+}
+
+.column {
+  @include columns();
+}
+
+.searchBox {
+  @media #{$tablet-landscape} {
+    @include column-offset(9, $gutters: true);
+
+    margin-top: 20px;
+  }
+}
+
+.loader {
+  min-height: 80px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: $z-index-loader;
+}
+
+.tableWrapper {
+  margin-top: 20px;
+}
