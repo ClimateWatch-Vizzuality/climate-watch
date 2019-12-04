@@ -60,6 +60,7 @@
 
       &.withSearch {
         @include row(6);
+        @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
       }
     }
   }
@@ -72,12 +73,12 @@
     }
 
     &.withoutBack {
-      @include row((9,3));
+      @include row((9, 3));
       @include xy-gutters($gutter-position: ('right'), $gutters: $gutter-padding);
       @include column-offset(9);
 
       &.withSearch {
-        @include row(6);
+        @include row((6, 3, 3));
         @include column-offset(6);
       }
     }
