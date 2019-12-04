@@ -48,9 +48,17 @@ class NDCSExploreTableContainer extends PureComponent {
   }
 
   setColumnWidth = column => {
+    const { columns } = this.props;
     const TABLE_WIDTH = 1170;
     const MIN_COLUMN_WIDTH = 180;
-    setColumnWidth(column, this.props.columns, TABLE_WIDTH, MIN_COLUMN_WIDTH);
+    const narrowColumns = [0];
+    return setColumnWidth(
+      column,
+      columns,
+      TABLE_WIDTH,
+      MIN_COLUMN_WIDTH,
+      narrowColumns
+    );
   };
 
   updateUrlParam(param, clear) {
