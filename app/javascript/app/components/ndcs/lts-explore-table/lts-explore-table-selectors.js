@@ -86,9 +86,28 @@ const headerChanges = {
   'Share of GHG Emissions': 'Share of global GHG emissions'
 };
 
+export const getDefaultColumns = createSelector(
+  [getIndicatorsParsed],
+  indicators => {
+    if (!indicators || isEmpty(indicators)) return [];
+    const COLUMN_IDS = [
+      'country',
+      'lts_target',
+      'lts_document',
+      'lts_date',
+      'ndce_ghg'
+    ];
+    const columns = COLUMN_IDS.map(id => {
+      const match = indicators.find(indicator => indicator.value === id);
+      return match ? match.label : id;
+    });
+    return columns.map(c => headerChanges[c] || c);
+  }
+);
+
 export const tableRemoveIsoFromData = createSelector(
-  [tableGetFilteredData],
-  data => {
+  [tableGetFilteredData, getDefaultColumns],
+  (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
     return data.map(d => {
       const updatedTableDataItem = { ...d };
@@ -118,33 +137,16 @@ export const tableRemoveIsoFromData = createSelector(
         `/ndcs/country/${updatedTableDataItem.iso}` +
         "'>"}${updatedTableDataItem.country}</a>`;
       delete updatedTableDataItem.iso;
-      const changedHeadersD = {};
+
+      const filteredAndChangedHeadersD = {};
       Object.keys(updatedTableDataItem).forEach(k => {
         const header = headerChanges[k] || k;
-        changedHeadersD[header] = updatedTableDataItem[k];
+        if (columnHeaders.includes(header)) {
+          filteredAndChangedHeadersD[header] = updatedTableDataItem[k];
+        }
       });
-      return changedHeadersD;
+      return filteredAndChangedHeadersD;
     });
-  }
-);
-
-export const getDefaultColumns = createSelector(
-  [getIndicatorsParsed],
-  indicators => {
-    if (!indicators || isEmpty(indicators)) return [];
-    const columnIds = [
-      'country',
-      'lts_target',
-      'lts_document',
-      'lts_date',
-      'ndce_ghg'
-    ];
-
-    const columns = columnIds.map(id => {
-      const match = indicators.find(indicator => indicator.value === id);
-      return match ? match.label : id;
-    });
-    return columns.map(c => headerChanges[c] || c);
   }
 );
 
