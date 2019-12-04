@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import fetchActions from 'pages/ndcs/ndcs-actions';
+import { setColumnWidth } from 'utils/table';
 
 import Component from './ndcs-explore-table-component';
 
@@ -47,21 +48,9 @@ class NDCSExploreTableContainer extends PureComponent {
   }
 
   setColumnWidth = column => {
-    const narrowColumns = [0, 1];
-    const tableWidth = 1170;
-    const numColumns = this.props.columns.length;
-    const numNarrowColumns = narrowColumns.length;
-    const colPadding = 10;
-    const narrowColumnWidth = 180;
-    const columnWidth =
-      (tableWidth -
-        (numColumns + 2) * colPadding -
-        numNarrowColumns * narrowColumnWidth) /
-      (numColumns - numNarrowColumns);
-    const index = this.props.columns.indexOf(column);
-    return index !== -1 && narrowColumns.indexOf(index) > -1
-      ? narrowColumnWidth
-      : columnWidth;
+    const TABLE_WIDTH = 1170;
+    const MIN_COLUMN_WIDTH = 180;
+    setColumnWidth(column, this.props.columns, TABLE_WIDTH, MIN_COLUMN_WIDTH);
   };
 
   updateUrlParam(param, clear) {
