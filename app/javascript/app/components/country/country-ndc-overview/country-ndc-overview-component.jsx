@@ -188,6 +188,7 @@ class CountryNdcOverview extends PureComponent {
       isEmbed,
       lastDocument
     } = this.props;
+    const { date: documentDate } = lastDocument || {};
     const hasSectors = values && sectors;
     const description = hasSectors && (
       <p
@@ -203,7 +204,8 @@ class CountryNdcOverview extends PureComponent {
     );
     const summaryIntroText = !lastDocument
       ? 'Summary'
-      : `Summary of ${lastDocument.document_type}`;
+      : `Summary of ${lastDocument.document_type &&
+          lastDocument.document_type.toUpperCase()}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
         {FEATURE_LTS_EXPLORE && (
@@ -239,7 +241,7 @@ class CountryNdcOverview extends PureComponent {
                           ? 'Nationally Determined Contribution (NDC) Overview'
                           : summaryIntroText
                       }
-                      subtitle={'(hello)'}
+                      subtitle={documentDate && `(submitted[${documentDate}])`}
                     />
                     <TabletPortraitOnly>{description}</TabletPortraitOnly>
                     {actions && (

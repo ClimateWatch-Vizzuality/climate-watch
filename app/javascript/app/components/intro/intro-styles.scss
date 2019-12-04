@@ -39,6 +39,12 @@
   }
 }
 
+.subtitle {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  margin-left: 8px;
+}
+
 .description {
   margin-bottom: 20px;
   line-height: $line-height-medium;

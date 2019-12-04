@@ -21,11 +21,11 @@
 }
 
 .header {
-  margin-top: 40px;
+  margin: 20px 0;
 }
 
 .actions {
-  @include columns((6, 6));
+  @include columns();
   @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
@@ -45,11 +45,7 @@
   line-height: $line-height-medium;
   column-count: 1;
   column-gap: $gutter-padding;
-  margin-bottom: 15px;
-
-  @media #{$tablet-landscape} {
-    column-count: 2;
-  }
+  margin-bottom: 60px;
 }
 
 .row {
