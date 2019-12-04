@@ -7,7 +7,7 @@ import Loading from 'components/loading';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
 
-import styles from './lts-explore-table-styles.scss';
+import styles from './ndcs-explore-table-styles.scss';
 
 const renderSearch = (searchHandler, query) => (
   <Search
@@ -20,7 +20,7 @@ const renderSearch = (searchHandler, query) => (
   />
 );
 
-const LTSExploreTable = ({
+const NDCSExploreTable = ({
   loading,
   tableData,
   query,
@@ -43,7 +43,6 @@ const LTSExploreTable = ({
             data={tableData}
             horizontalScroll
             parseHtml
-            dynamicRowsHeight
             setColumnWidth={setColumnWidth}
             defaultColumns={columns}
             theme={exploreTableTheme}
@@ -57,7 +56,7 @@ const LTSExploreTable = ({
   </div>
 );
 
-LTSExploreTable.propTypes = {
+NDCSExploreTable.propTypes = {
   loading: PropTypes.bool,
   noContentMsg: PropTypes.string,
   query: PropTypes.string,
@@ -67,4 +66,4 @@ LTSExploreTable.propTypes = {
   columns: PropTypes.array
 };
 
-export default LTSExploreTable;
+export default NDCSExploreTable;

@@ -1,0 +1,28 @@
+@import '~styles/settings.scss';
+
+.legendItem {
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  .legendDot {
+    height: 10px;
+    display: inline-block;
+    margin-right: 5px;
+    width: 10px;
+    border-radius: 50%;
+  }
+
+  .progressContainer {
+    display: flex;
+    align-items: center;
+
+    .progressBar {
+      width: 180px;
+    }
+
+    .partiesNumber {
+      margin-left: 16px;
+    }
+  }
+}
