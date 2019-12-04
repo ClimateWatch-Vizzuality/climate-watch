@@ -29,14 +29,18 @@ const Intro = props => {
   return (
     <div className={cx(styles.wrapper, className)}>
       <div className={cx(theme.main, { [styles.withButton]: !!actionButton })}>
-        <h2 className={theme.title}>{title}</h2>
-        {subtitle && <span>{subtitle}</span>}
+        <h2 className={theme.title}>
+          {title}
+          {subtitle && <span className={theme.subtitle}>{subtitle}</span>}
+        </h2>
         <TabletLandscape> {actionButton} </TabletLandscape>
       </div>
-      <p
-        className={cx(theme.description, textColumns ? theme.columns : '')}
-        dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line
-      />
+      {description && (
+        <p
+          className={cx(theme.description, textColumns ? theme.columns : '')}
+          dangerouslySetInnerHTML={{ __html: description }} // eslint-disable-line
+        />
+      )}
       {disclaimer && <p className={styles.disclaimer}>{disclaimer}</p>}
       <TabletPortraitOnly> {actionButton} </TabletPortraitOnly>
     </div>
