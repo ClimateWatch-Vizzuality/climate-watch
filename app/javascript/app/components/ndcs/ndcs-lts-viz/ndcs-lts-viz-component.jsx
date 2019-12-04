@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
@@ -19,7 +20,10 @@ const getTooltip = (country, tooltipTxt) => (
   <Link className={tooltipTheme.container} to={`/ndcs/country/${country.id}`}>
     <div className={tooltipTheme.info}>
       <div className={tooltipTheme.countryName}>{country.name}</div>
-      <p className={tooltipTheme.text} dangerouslySetInnerHTML={{ __html: tooltipTxt }}></p>
+      <p
+        className={tooltipTheme.text}
+        dangerouslySetInnerHTML={{ __html: tooltipTxt }}
+      />
     </div>
     <Icon icon={accordionArrow} className={tooltipTheme.icon} />
   </Link>
@@ -30,7 +34,9 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
     <div>
       <p>
         <em>
-          Explore which countries have submitted long-term strategies thus far below. Visit Climate Watch in the coming months for in-depth analysis of long-term strategies.
+          Explore which countries have submitted long-term strategies thus far
+          below. Visit Climate Watch in the coming months for in-depth analysis
+          of long-term strategies.
         </em>
       </p>
     </div>
@@ -44,7 +50,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
           },
           {
             type: 'share',
-            shareUrl: '/embed/ndcs-lts',
+            shareUrl: '/embed/lts-tracker',
             analyticsGraphName: 'Ndcs',
             positionRight: true
           },
@@ -67,7 +73,7 @@ const renderCircular = datum => (
     <div>
       <CircularChart
         index={0.1}
-        value={Math.round(datum.value / datum.max * 100 * 10) / 10}
+        value={Math.round((datum.value / datum.max) * 100 * 10) / 10}
         color={datum.opts.color}
       />
       <div className={styles.circularChartValues}>
@@ -109,13 +115,12 @@ const NDCSLTSViz = ({
 
           <div className={styles.containerUpper}>
             <div className={styles.containerCharts}>
-              {!loading &&
-              summaryData && (
-              <div>
-                {renderCircular(summaryData.submitted.countries)}
-                {renderCircular(summaryData.submitted.emissions)}
-              </div>
-                )}
+              {!loading && summaryData && (
+                <div>
+                  {renderCircular(summaryData.submitted.countries)}
+                  {renderCircular(summaryData.submitted.emissions)}
+                </div>
+              )}
             </div>
             <div className={styles.containerMap}>
               {loading && <Loading light className={styles.loader} />}
@@ -129,16 +134,15 @@ const NDCSLTSViz = ({
                 dragEnable={false}
                 customCenter={!isTablet ? [10, -10] : null}
               />
-              {countryData &&
-              tooltipTxt.length > 0 && (
-              <ReactTooltip
-                    className={styles.tooltipContainer}
-                    id="ndcs-map-tooltip"
-                    delayHide={isTablet ? 0 : 3000}
-                  >
-                    {getTooltip(countryData, tooltipTxt)}
-                  </ReactTooltip>
-                )}
+              {countryData && tooltipTxt.length > 0 && (
+                <ReactTooltip
+                  className={styles.tooltipContainer}
+                  id="ndcs-map-tooltip"
+                  delayHide={isTablet ? 0 : 3000}
+                >
+                  {getTooltip(countryData, tooltipTxt)}
+                </ReactTooltip>
+              )}
               {indicator && (
                 <MapLegend
                   className={styles.legend}

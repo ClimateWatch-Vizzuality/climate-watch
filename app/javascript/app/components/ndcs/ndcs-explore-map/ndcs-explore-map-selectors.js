@@ -53,10 +53,7 @@ export const getMapIndicator = createSelector(
   [getIndicatorsParsed, getSelectedIndicator],
   (indicators, selectedIndicator) => {
     if (!indicators || !indicators.length) return null;
-    const mapIndicator =
-      selectedIndicator && selectedIndicator.label
-        ? selectedIndicator
-        : indicators[0];
+    const mapIndicator = selectedIndicator || indicators[0];
     return mapIndicator;
   }
 );

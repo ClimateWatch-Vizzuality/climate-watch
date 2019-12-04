@@ -52,6 +52,18 @@ module Api
           )
         end
 
+        indicators = ::Indc::Indicator.
+          includes(
+            :labels, :source, :categories,
+            values: [:sector, :label, :location]
+        ).order(:order)
+
+        # params[:source] -> one of ["CAIT", "LTS", "WB", "NDC Explorer"]
+        if params[:source]
+          source = ::Indc::Source.where(name: params[:source])
+          indicators = indicators.where(source_id: source.map(&:id))
+        end
+
         if params[:category]
           parent = ::Indc::Category.
             includes(:category_type).
@@ -66,13 +78,7 @@ module Api
             )
         end
 
-        indicators = ::Indc::Indicator.
-          includes(
-            :labels, :source, :categories,
-            values: [:sector, :label, :location]
-          ).
-          where(id: categories.flat_map(&:indicator_ids).uniq).
-          order(:order)
+        categories = categories.where(id: indicators.flat_map(&:category_ids).uniq)
 
         if location_list
           indicators = indicators.where(

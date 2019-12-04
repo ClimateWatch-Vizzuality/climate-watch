@@ -4,6 +4,10 @@ class ImportIndc
     "#{CW_FILES_PREFIX}indc/NDC_CAIT_data.csv".freeze
   LEGEND_CAIT_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_CAIT_legend.csv".freeze
+  DATA_LTS_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_LTS_data.csv".freeze
+  DATA_LTS_SECTORAL_FILEPATH =
+    "#{CW_FILES_PREFIX}indc/NDC_LTS_data_sectoral.csv".freeze
   DATA_WB_WIDE_FILEPATH =
     "#{CW_FILES_PREFIX}indc/NDC_WB_data_wide.csv".freeze
   DATA_WB_SECTORAL_FILEPATH =
@@ -28,8 +32,14 @@ class ImportIndc
       import_indicators_categories
       import_labels
       import_values_cait
-      import_sectors
+
+      import_sectors_lts
+      import_values_lts
+      import_sector_values_lts
+
+      import_sectors_wb
       import_values_wb
+
       reject_map_indicators_without_values_or_labels
       import_submissions
       Indc::SearchableValue.refresh
@@ -58,6 +68,10 @@ class ImportIndc
       DATA_CAIT_FILEPATH, [symbol_converter]
     ).map(&:to_h)
     @cait_labels = S3CSVReader.read(LEGEND_CAIT_FILEPATH).map(&:to_h)
+    @lts_data = S3CSVReader.read(
+      DATA_LTS_FILEPATH, [symbol_converter]
+    ).map(&:to_h)
+    @lts_sectoral_data = S3CSVReader.read(DATA_LTS_SECTORAL_FILEPATH).map(&:to_h)
     @wb_wide_data = S3CSVReader.read(DATA_WB_WIDE_FILEPATH).map(&:to_h)
     @wb_sectoral_data = S3CSVReader.read(DATA_WB_SECTORAL_FILEPATH).map(&:to_h)
     @metadata = S3CSVReader.read(METADATA_FILEPATH).map(&:to_h)
@@ -289,7 +303,73 @@ class ImportIndc
     end
   end
 
-  def import_sectors
+  def import_values_lts
+    Indc::Indicator.
+      where(source: @sources_index['LTS']).each do |indicator|
+      @lts_data.each do |r|
+        location = @locations_by_iso3[r[:iso]]
+        unless location
+          Rails.logger.error "location #{r[:country]} not found. Skipping."
+          next
+        end
+
+        next unless r[:"#{indicator.slug}"].present?
+
+        Indc::Value.create!(
+          value_cait_attributes(r, location, indicator)
+        )
+      end
+    end
+  end
+
+  def import_sectors_lts
+    sectors = @lts_sectoral_data.map do |d|
+      d.slice(:sector, :subsector)
+    end
+
+    @sectors_index = {}
+    sectors.uniq.each do |d|
+      parent = Indc::Sector.find_or_create_by(
+        name: d[:sector]
+      )
+      sector = Indc::Sector.create!(
+        name: d[:subsector],
+        parent: parent
+      )
+
+      @sectors_index[d[:subsector]] = sector
+    end
+  end
+
+  def import_sector_values_lts
+    indicator_index = Indc::Indicator.
+      where(source: @sources_index['LTS']).
+      group_by(&:slug).
+      map { |k, v| [k, v.first] }.
+      to_h
+
+    @lts_sectoral_data.each do |r|
+      location = @locations_by_iso3[r[:countrycode]]
+      unless location
+        Rails.logger.error "location #{r[:countrycode]} not found. Skipping."
+        next
+      end
+
+      indicator = indicator_index[r[:questioncode]]
+      unless indicator
+        Rails.logger.error "indicator #{r[:questioncode]} not found. Skipping."
+        next
+      end
+
+      next unless r[:responsetext]
+
+      Indc::Value.create!(
+        value_wb_attributes(r, location, indicator)
+      )
+    end
+  end
+
+  def import_sectors_wb
     sectors = @wb_sectoral_data.map do |d|
       d.slice(:sector, :subsector)
     end
