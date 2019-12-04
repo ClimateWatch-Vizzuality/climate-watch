@@ -5,7 +5,6 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import fetchActions from 'pages/ndcs/ndcs-actions';
 import { setColumnWidth } from 'utils/table';
 
 import Component from './ndcs-explore-table-component';
@@ -15,8 +14,6 @@ import {
   tableRemoveIsoFromData,
   getDefaultColumns
 } from './ndcs-explore-table-selectors';
-
-const actions = { ...fetchActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcs;
@@ -41,10 +38,6 @@ class NDCSExploreTableContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-
-  componentWillMount() {
-    this.props.fetchNDCS();
   }
 
   setColumnWidth = column => {
@@ -90,10 +83,9 @@ NDCSExploreTableContainer.propTypes = {
   location: PropTypes.object.isRequired,
   tableData: PropTypes.array,
   columns: PropTypes.array,
-  query: PropTypes.object,
-  fetchNDCS: PropTypes.func.isRequired
+  query: PropTypes.object
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCSExploreTableContainer)
+  connect(mapStateToProps, null)(NDCSExploreTableContainer)
 );

@@ -7,8 +7,6 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 import { setColumnWidth } from 'utils/table';
 
-import { actions as fetchActions } from 'pages/lts-explore';
-
 import Component from './lts-explore-table-component';
 
 import {
@@ -16,8 +14,6 @@ import {
   tableRemoveIsoFromData,
   getDefaultColumns
 } from './lts-explore-table-selectors';
-
-const actions = { ...fetchActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.LTS;
@@ -42,10 +38,6 @@ class LTSExploreTableContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-
-  componentWillMount() {
-    this.props.fetchLTS();
   }
 
   setColumnWidth = column => {
@@ -90,10 +82,9 @@ LTSExploreTableContainer.propTypes = {
   location: PropTypes.object.isRequired,
   tableData: PropTypes.array,
   columns: PropTypes.array,
-  query: PropTypes.object,
-  fetchLTS: PropTypes.func.isRequired
+  query: PropTypes.object
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(LTSExploreTableContainer)
+  connect(mapStateToProps, null)(LTSExploreTableContainer)
 );
