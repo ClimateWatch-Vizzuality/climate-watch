@@ -13,6 +13,7 @@ import NdcSdgLinkagesContent from 'components/ndc-sdg/ndc-sdg-linkages-content';
 import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathways-graph';
 import MyVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
 import AgricultureEmissionPieChart from 'components/sectors-agriculture/drivers-of-emissions/card-pie-chart/card-pie-chart';
+import LTSExploreMap from 'components/ndcs/lts-explore-map';
 
 export default [
   {
@@ -28,6 +29,11 @@ export default [
   {
     path: '/embed/lts-tracker',
     component: NDCSLTSViz,
+    exact: true
+  },
+  {
+    path: '/embed/lts-explore',
+    component: LTSExploreMap,
     exact: true
   },
   {

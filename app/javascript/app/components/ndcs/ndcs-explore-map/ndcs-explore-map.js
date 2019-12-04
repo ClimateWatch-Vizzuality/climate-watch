@@ -7,7 +7,7 @@ import { handleAnalytics } from 'utils/analytics';
 import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
 
-import { actions as fetchActions } from 'pages/lts-explore';
+import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
 import {
   getCategories,
@@ -15,7 +15,7 @@ import {
   getSelectedCategory
 } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 
-import Component from './lts-explore-map-component';
+import Component from './ndcs-explore-map-component';
 
 import {
   getMapIndicator,
@@ -25,44 +25,53 @@ import {
   getEmissionsCardData,
   getLegend,
   getSummaryCardData
-} from './lts-explore-map-selectors';
+} from './ndcs-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
 
 const mapStateToProps = (state, { location }) => {
-  const { data, loading } = state.LTS;
+  const { data, loading } = state.ndcs;
   const { countries } = state;
   const search = qs.parse(location.search);
 
-  const LTSWithSelection = {
+  const mapCategories = {};
+  if (data.categories) {
+    Object.keys(data.categories).forEach(id => {
+      if (data.categories[id].type === 'map') {
+        mapCategories[id] = data.categories[id];
+      }
+    });
+  }
+
+  const ndcsExploreWithSelection = {
     ...state,
     ...data,
     countries: countries.data,
     query: search.search,
     categorySelected: search.category,
     indicatorSelected: search.indicator,
-    categories: data.categories,
+    categories: mapCategories,
     emissions: state.emissions,
     search
   };
 
   return {
     loading,
-    query: LTSWithSelection.query,
-    paths: getPathsWithStyles(LTSWithSelection),
-    isoCountries: getISOCountries(LTSWithSelection),
-    selectedIndicator: getMapIndicator(LTSWithSelection),
-    emissionsCardData: getEmissionsCardData(LTSWithSelection),
-    legendData: getLegend(LTSWithSelection),
-    summaryCardData: getSummaryCardData(LTSWithSelection),
-    downloadLink: getLinkToDataExplorer(LTSWithSelection),
-    categories: getCategories(LTSWithSelection),
-    indicators: getCategoryIndicators(LTSWithSelection),
-    selectedCategory: getSelectedCategory(LTSWithSelection)
+    query: ndcsExploreWithSelection.query,
+    paths: getPathsWithStyles(ndcsExploreWithSelection),
+    isoCountries: getISOCountries(ndcsExploreWithSelection),
+    selectedIndicator: getMapIndicator(ndcsExploreWithSelection),
+    emissionsCardData: getEmissionsCardData(ndcsExploreWithSelection),
+    legendData: getLegend(ndcsExploreWithSelection),
+    summaryCardData: getSummaryCardData(ndcsExploreWithSelection),
+    downloadLink: getLinkToDataExplorer(ndcsExploreWithSelection),
+    categories: getCategories(ndcsExploreWithSelection),
+    indicators: getCategoryIndicators(ndcsExploreWithSelection),
+    selectedCategory: getSelectedCategory(ndcsExploreWithSelection)
   };
 };
 
-class LTSExploreMapContainer extends PureComponent {
+class NDCSExploreMapContainer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,7 +81,7 @@ class LTSExploreMapContainer extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.fetchLTS();
+    this.props.fetchNDCS();
   }
 
   handleSearchChange = query => {
@@ -83,9 +92,9 @@ class LTSExploreMapContainer extends PureComponent {
     const { isoCountries } = this.props;
     const iso = geography.properties && geography.properties.id;
     if (iso && isCountryIncluded(isoCountries, iso)) {
-      this.props.history.push(`/lts/country/${iso}`);
+      this.props.history.push(`/ndcs/country/${iso}`);
       handleAnalytics(
-        'LTS Explore Map',
+        'NDCS Explore Map',
         'Use map to find country',
         geography.properties.name
       );
@@ -110,18 +119,18 @@ class LTSExploreMapContainer extends PureComponent {
       },
       true
     );
-    handleAnalytics('LTS Explore Map', 'Change category', category.label);
+    handleAnalytics('NDCS Explore Map', 'Change category', category.label);
   };
 
   handleIndicatorChange = indicator => {
     this.updateUrlParam({ name: 'indicator', value: indicator.value });
-    handleAnalytics('LTS Explore Map', 'Change indicator', indicator.label);
+    handleAnalytics('NDCS Explore Map', 'Change indicator', indicator.label);
   };
 
   handleInfoClick = () => {
     this.props.setModalMetadata({
-      customTitle: 'LTS Explore',
-      category: 'LTS Explore Map',
+      customTitle: 'NDCS Explore',
+      category: 'NDCS Explore Map',
       slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
       open: true
     });
@@ -135,7 +144,7 @@ class LTSExploreMapContainer extends PureComponent {
   render() {
     const { query } = this.props;
     const noContentMsg = query
-      ? 'No results found'
+      ? 'No resundcs found'
       : 'There is no data for this indicator';
     return createElement(Component, {
       ...this.props,
@@ -153,17 +162,17 @@ class LTSExploreMapContainer extends PureComponent {
   }
 }
 
-LTSExploreMapContainer.propTypes = {
+NDCSExploreMapContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   isoCountries: PropTypes.array.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
-  fetchLTS: PropTypes.func.isRequired,
+  fetchNDCS: PropTypes.func.isRequired,
   query: PropTypes.object,
   summaryData: PropTypes.object,
   indicator: PropTypes.object
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(LTSExploreMapContainer)
+  connect(mapStateToProps, actions)(NDCSExploreMapContainer)
 );

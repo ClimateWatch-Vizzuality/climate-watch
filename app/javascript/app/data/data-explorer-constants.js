@@ -97,7 +97,8 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
     PIK: ['historical_emissions_pik'],
     CAIT: ['historical_emissions_cait'],
-    UNFCCC: ['historical_emissions_unfccc']
+    UNFCCC: ['historical_emissions_unfccc'],
+    GCP: ['historical_emissions_gcp']
   },
   'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
   'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
@@ -139,7 +140,13 @@ export const DATA_EXPLORER_DEPENDENCIES = {
     scenarios: ['models', 'locations'],
     categories: ['scenarios', 'models', 'locations'],
     subcategories: ['categories', 'scenarios', 'models', 'locations'],
-    indicators: ['subcategories', 'categories', 'scenarios', 'models', 'locations']
+    indicators: [
+      'subcategories',
+      'categories',
+      'scenarios',
+      'models',
+      'locations'
+    ]
   }
 };
 

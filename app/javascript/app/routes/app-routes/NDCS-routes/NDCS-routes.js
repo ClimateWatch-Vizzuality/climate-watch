@@ -15,7 +15,12 @@ export default [
   },
   FEATURE_LTS_EXPLORE && {
     path: '/lts-explore',
-    label: 'Explore Long-Term Strategies (LTS)',
+    label: 'Explore LTS',
+    activeId
+  },
+  FEATURE_LTS_EXPLORE && {
+    path: '/ndcs-explore',
+    label: 'Explore NDCS',
     activeId
   },
   {
