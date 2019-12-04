@@ -47,6 +47,7 @@ const getPreviousPathLabel = previousPathname => {
 };
 
 const shouldClearPath = pathname => {
+  if (!pathname) return false;
   const clearRegexps = [/\/ndcs\/country/, /\/error-page/, /\/ndcs\/compare/];
   if (clearRegexps.some(r => pathname.match(r))) {
     sessionStorage.setItem('previousLocationPathname', '');
