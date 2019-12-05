@@ -19,10 +19,16 @@ const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.LTS;
   const { countries } = state;
   const search = qs.parse(location.search);
+
   const LTSWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator,
+    categories: data.categories,
+    emissions: state.emissions,
     search
   };
   return {
