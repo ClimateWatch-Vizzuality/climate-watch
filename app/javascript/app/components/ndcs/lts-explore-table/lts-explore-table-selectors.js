@@ -3,6 +3,7 @@ import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
+import { getMapIndicator } from 'components/ndcs/lts-explore-map/lts-explore-map-selectors';
 
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -86,18 +87,27 @@ const headerChanges = {
   'Share of GHG Emissions': 'Share of global GHG emissions'
 };
 
+export const getSelectedIndicatorHeader = createSelector(
+  [getMapIndicator],
+  selectedIndicator => {
+    if (!selectedIndicator) return null;
+    return `${selectedIndicator.label} (Current selection)`;
+  }
+);
+
 export const getDefaultColumns = createSelector(
-  [getIndicatorsParsed],
-  indicators => {
+  [getIndicatorsParsed, getSelectedIndicatorHeader],
+  (indicators, selectedIndicatorHeader) => {
     if (!indicators || isEmpty(indicators)) return [];
-    const COLUMN_IDS = [
+    const columnIds = [
       'country',
-      'lts_target',
+      selectedIndicatorHeader,
       'lts_document',
       'lts_date',
       'ndce_ghg'
     ];
-    const columns = COLUMN_IDS.map(id => {
+
+    const columns = columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);
       return match ? match.label : id;
     });
@@ -105,8 +115,23 @@ export const getDefaultColumns = createSelector(
   }
 );
 
+const addIndicatorColumn = createSelector(
+  [tableGetFilteredData, getMapIndicator, getSelectedIndicatorHeader],
+  (data, selectedIndicator, selectedIndicatorHeader) => {
+    if (!data || isEmpty(data)) return null;
+    const updatedTableData = data;
+    return updatedTableData.map(countryRow => {
+      const updatedCountryRow = { ...countryRow };
+      const countryIndicatorData = selectedIndicator.locations[countryRow.iso];
+      updatedCountryRow[selectedIndicatorHeader] =
+        countryIndicatorData && countryIndicatorData.value;
+      return updatedCountryRow;
+    });
+  }
+);
+
 export const tableRemoveIsoFromData = createSelector(
-  [tableGetFilteredData, getDefaultColumns],
+  [addIndicatorColumn, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
     return data.map(d => {
@@ -127,12 +152,14 @@ export const tableRemoveIsoFromData = createSelector(
         console.error(e);
       }
       updatedTableDataItem['Submission Date'] = date;
+
       updatedTableDataItem.Document = updatedTableDataItem.Document
         ? updatedTableDataItem.Document.replace(
           'href=',
           "target='_blank' href="
         )
         : undefined;
+
       updatedTableDataItem.country = `${"<a href='" +
         `/ndcs/country/${updatedTableDataItem.iso}` +
         "'>"}${updatedTableDataItem.country}</a>`;
