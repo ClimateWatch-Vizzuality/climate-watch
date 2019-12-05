@@ -10,11 +10,11 @@ const fetchLTSReady = createAction('fetchLTSReady');
 const fetchLTSFail = createAction('fetchLTSFail');
 
 const fetchLTS = createThunkAction('fetchLTS', () => (dispatch, state) => {
-  const { ndcs } = state();
+  const { LTS } = state();
   if (
-    ndcs &&
-    (isEmpty(ndcs.data) || isEmpty(ndcs.data.indicators)) &&
-    !ndcs.loading
+    LTS &&
+    (isEmpty(LTS.data) || isEmpty(LTS.data.indicators)) &&
+    !LTS.loading
   ) {
     dispatch(fetchLTSInit());
     fetch('/api/v1/ndcs?source=LTS&filter=map')
