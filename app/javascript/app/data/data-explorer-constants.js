@@ -97,8 +97,8 @@ export const DATA_EXPLORER_METHODOLOGY_SOURCE = {
   'historical-emissions': {
     PIK: ['historical_emissions_pik'],
     CAIT: ['historical_emissions_cait'],
-    UNFCCC: ['historical_emissions_unfccc'],
-    GCP: ['historical_emissions_gcp']
+    'UNFCCC Annex I': ['historical_emissions_unfccc'],
+    'UNFCCC Non-Annex I': ['unfccc_documents']
   },
   'ndc-sdg-linkages': ['ndc_sdc_all indicators'],
   'ndc-content': ['ndc_cw', 'ndc_wb', 'ndc_die'],
