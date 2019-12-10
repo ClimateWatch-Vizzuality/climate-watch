@@ -20,10 +20,15 @@ const mapStateToProps = (state, { location }) => {
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsNDCSWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
-    search
+    search,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator,
+    categories: data.categories,
+    emissions: state.emissions
   };
   return {
     loading,
