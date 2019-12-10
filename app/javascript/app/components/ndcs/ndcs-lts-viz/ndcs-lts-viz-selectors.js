@@ -5,6 +5,7 @@ import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
+import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -85,30 +86,6 @@ export const getMapIndicator = createSelector(
   }
 );
 
-const countryStyles = {
-  default: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  }
-};
-
 export const MAP_COLORS = [
   ['rgb(55, 104, 141)', 'rgb(164, 164, 164)'],
   ['rgb(55, 104, 141)', 'rgb(164, 164, 164)']
@@ -126,7 +103,7 @@ export const getPathsWithStyles = createSelector(
         if (!locations) {
           paths.push({
             ...path,
-            countryStyles
+            COUNTRY_STYLES
           });
           return null;
         }
@@ -134,19 +111,19 @@ export const getPathsWithStyles = createSelector(
         const iso = path.properties && path.properties.id;
         const countryData = locations[iso];
 
-        let style = countryStyles;
+        let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
-            ...countryStyles,
+            ...COUNTRY_STYLES,
             default: {
-              ...countryStyles.default,
+              ...COUNTRY_STYLES.default,
               fill: color,
               fillOpacity: 1
             },
             hover: {
-              ...countryStyles.hover,
+              ...COUNTRY_STYLES.hover,
               fill: color,
               fillOpacity: 1
             }
@@ -201,10 +178,8 @@ export const summarizeIndicators = createSelector(
               switch (slug) {
                 case 'submitted':
                   return 'countries have submitted a long-term strategy document';
-                  break;
                 default:
                   return 'countries';
-                  break;
               }
             })()
           }
@@ -233,7 +208,7 @@ export const summarizeIndicators = createSelector(
           ? 'submitted'
           : 'not_submitted'; // location.label_slug;
       if (type) {
-        summaryData[type].countries.value++;
+        summaryData[type].countries.value += 1;
         if (emissionsIndicator && emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
