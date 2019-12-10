@@ -6,6 +6,7 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
+import { COUNTRY_STYLES } from 'constants';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -40,6 +41,7 @@ export const getIndicatorsParsed = createSelector(
             i.labels,
             isos
           );
+
           return {
             label: i.name,
             value: i.slug,
@@ -89,34 +91,10 @@ export const getSelectedIndicator = createSelector(
     const defaultSelection = indicators[0];
     return selected
       ? indicators.find(indicator => indicator.value === selected) ||
-        defaultSelection
+          defaultSelection
       : defaultSelection;
   }
 );
-
-const countryStyles = {
-  default: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  }
-};
 
 export const getPathsWithStyles = createSelector(
   [getSelectedIndicator],
@@ -129,7 +107,7 @@ export const getPathsWithStyles = createSelector(
         if (!locations) {
           paths.push({
             ...path,
-            countryStyles
+            COUNTRY_STYLES
           });
           return null;
         }
@@ -140,19 +118,19 @@ export const getPathsWithStyles = createSelector(
           ? locations[europeSlug]
           : locations[iso];
 
-        let style = countryStyles;
+        let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
           const legendData = legendBuckets[countryData.label_id];
           const color = getColorByIndex(legendBuckets, legendData.index);
           style = {
-            ...countryStyles,
+            ...COUNTRY_STYLES,
             default: {
-              ...countryStyles.default,
+              ...COUNTRY_STYLES.default,
               fill: color,
               fillOpacity: 1
             },
             hover: {
-              ...countryStyles.hover,
+              ...COUNTRY_STYLES.hover,
               fill: color,
               fillOpacity: 1
             }
