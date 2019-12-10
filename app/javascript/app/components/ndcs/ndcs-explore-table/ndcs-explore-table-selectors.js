@@ -3,6 +3,7 @@ import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
+import { getMapIndicator } from 'components/ndcs/ndcs-explore-map/ndcs-explore-map-selectors';
 
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -78,6 +79,29 @@ export const tableGetFilteredData = createSelector(
   }
 );
 
+export const getSelectedIndicatorHeader = createSelector(
+  [getMapIndicator],
+  selectedIndicator => {
+    if (!selectedIndicator) return null;
+    return `${selectedIndicator.label} (Current selection)`;
+  }
+);
+
+const addIndicatorColumn = createSelector(
+  [tableGetFilteredData, getMapIndicator, getSelectedIndicatorHeader],
+  (data, selectedIndicator, selectedIndicatorHeader) => {
+    if (!data || isEmpty(data)) return null;
+    const updatedTableData = data;
+    return updatedTableData.map(countryRow => {
+      const updatedCountryRow = { ...countryRow };
+      const countryIndicatorData = selectedIndicator.locations[countryRow.iso];
+      updatedCountryRow[selectedIndicatorHeader] =
+        countryIndicatorData && countryIndicatorData.value;
+      return updatedCountryRow;
+    });
+  }
+);
+
 const headerChanges = {
   'Communication of Long-term Strategy':
     'Latest submission (Current selection)',
@@ -87,10 +111,16 @@ const headerChanges = {
 };
 
 export const getDefaultColumns = createSelector(
-  [getIndicatorsParsed],
-  indicators => {
+  [getIndicatorsParsed, getSelectedIndicatorHeader],
+  (indicators, selectedIndicatorHeader) => {
     if (!indicators || isEmpty(indicators)) return [];
-    const columnIds = ['country', 'submission', 'submission_date', 'ndce_ghg'];
+    const columnIds = [
+      'country',
+      selectedIndicatorHeader,
+      'submission',
+      'submission_date',
+      'ndce_ghg'
+    ];
 
     const columns = columnIds.map(id => {
       const match = indicators.find(indicator => indicator.value === id);
@@ -101,7 +131,7 @@ export const getDefaultColumns = createSelector(
 );
 
 export const tableRemoveIsoFromData = createSelector(
-  [tableGetFilteredData, getDefaultColumns],
+  [addIndicatorColumn, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
     return data.map(d => {
