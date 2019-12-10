@@ -228,14 +228,17 @@ export const getEmissionsCardData = createSelector(
   }
 );
 export const getSummaryCardData = createSelector(
-  [getLegend, getMapIndicator, getMaximumCountries],
-  (legend, indicator, maximumCountries) => {
-    if (!indicator || !legend) return null;
-    // TODO: This may change. The info will come from the backend
-    const selectedLegendItem = legend[0];
+  [getMaximumCountries, getIndicatorsData],
+  (maximumCountries, indicators) => {
+    if (!indicators || !maximumCountries) return null;
+    const LTSIndicator = indicators.find(i => i.slug === 'lts_document');
+    if (!LTSIndicator) return null;
+    const partiesNumber = Object.values(LTSIndicator.locations).filter(
+      l => l.value
+    ).length;
     return {
-      value: selectedLegendItem.partiesNumber,
-      description: `out of ${maximumCountries} parties - ${indicator.label}`
+      value: partiesNumber,
+      description: `out of ${maximumCountries} parties have submitted long-term strategies`
     };
   }
 );
