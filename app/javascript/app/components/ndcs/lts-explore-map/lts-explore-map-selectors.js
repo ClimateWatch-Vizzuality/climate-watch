@@ -267,6 +267,7 @@ export const getEmissionsCardData = createSelector(
     };
   }
 );
+
 export const getSummaryCardData = createSelector(
   [getMaximumCountries, getIndicatorsData],
   (maximumCountries, indicators) => {
