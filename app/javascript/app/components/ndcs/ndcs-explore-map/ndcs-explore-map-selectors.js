@@ -67,8 +67,7 @@ export const getSelectedCategory = createSelector(
   (selected, categories = []) => {
     if (!categories || !categories.length) return null;
     const defaultCategory =
-      categories.find(cat => cat.value === 'longterm_strategy') ||
-      categories[0];
+      categories.find(cat => cat.value === 'unfccc_process') || categories[0];
     if (selected) {
       return (
         categories.find(category => category.value === selected) ||
@@ -94,7 +93,8 @@ export const getSelectedIndicator = createSelector(
   [state => state.indicatorSelected, getCategoryIndicators],
   (selected, indicators = []) => {
     if (!indicators || !indicators.length) return {};
-    const defaultSelection = indicators[0];
+    const defaultSelection =
+      indicators.find(i => i.value === 'submission') || indicators[0];
     return selected
       ? indicators.find(indicator => indicator.value === selected) ||
           defaultSelection
