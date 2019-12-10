@@ -215,24 +215,27 @@ export const getEmissionsCardData = createSelector(
     if (!emissionsIndicator) return null;
 
     const emissionPercentages = emissionsIndicator.locations;
-    const totalEmissions = Object.values(emissionPercentages).reduce(
-      (a, b) => a + parseFloat(b.value),
-      0
-    );
+    let summedPercentage = 0;
     const data = legend.map(legendItem => {
       let legendItemValue = 0;
       Object.entries(selectedIndicator.locations).forEach(entry => {
-        const [locationIso, { value: legendItemName }] = entry;
+        const [locationIso, { label_id: labelId }] = entry;
         if (
-          legendItemName === legendItem.name &&
+          labelId === parseInt(legendItem.id, 10) &&
           emissionPercentages[locationIso]
         ) {
           legendItemValue += parseFloat(emissionPercentages[locationIso].value);
         }
       });
+      summedPercentage += legendItemValue;
+
+      // The 'No information' label is always the last one so we can calculate its value substracting from 100
       return {
         name: camelCase(legendItem.name),
-        value: percentage(legendItemValue, totalEmissions)
+        value:
+          legendItem.name === NO_INFORMATION_LABEL
+            ? 100 - summedPercentage
+            : legendItemValue
       };
     });
 

@@ -152,10 +152,6 @@ export const getEmissionsCardData = createSelector(
     if (!emissionsIndicator) return null;
 
     const emissionPercentages = emissionsIndicator.locations;
-    const totalEmissions = Object.values(emissionPercentages).reduce(
-      (a, b) => a + parseFloat(b.value),
-      0
-    );
     const data = legend.map(legendItem => {
       let legendItemValue = 0;
       Object.entries(selectedIndicator.locations).forEach(entry => {
@@ -169,7 +165,7 @@ export const getEmissionsCardData = createSelector(
       });
       return {
         name: camelCase(legendItem.name),
-        value: percentage(legendItemValue, totalEmissions)
+        value: legendItemValue
       };
     });
 
