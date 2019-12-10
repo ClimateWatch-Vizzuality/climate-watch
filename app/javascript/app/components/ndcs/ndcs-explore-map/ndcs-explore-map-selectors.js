@@ -6,15 +6,24 @@ import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
-import { getSelectedIndicator } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
-const getCategories = state => state.categories || null;
+const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+
+export const getCategories = createSelector(getCategoriesData, categories =>
+  (!categories
+    ? null
+    : Object.keys(categories).map(category => ({
+      label: categories[category].name,
+      value: categories[category].slug,
+      id: category
+    })))
+);
 
 export const getMaximumCountries = createSelector(
   getCountries,
@@ -50,6 +59,46 @@ export const getIndicatorsParsed = createSelector(
       ),
       'label'
     );
+  }
+);
+
+export const getSelectedCategory = createSelector(
+  [state => state.categorySelected, getCategories],
+  (selected, categories = []) => {
+    if (!categories || !categories.length) return null;
+    const defaultCategory =
+      categories.find(cat => cat.value === 'longterm_strategy') ||
+      categories[0];
+    if (selected) {
+      return (
+        categories.find(category => category.value === selected) ||
+        defaultCategory
+      );
+    }
+    return defaultCategory;
+  }
+);
+
+export const getCategoryIndicators = createSelector(
+  [getIndicatorsParsed, getSelectedCategory],
+  (indicatorsParsed, category) => {
+    if (!indicatorsParsed || !category) return null;
+    const categoryIndicators = indicatorsParsed.filter(
+      indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
+    );
+    return categoryIndicators;
+  }
+);
+
+export const getSelectedIndicator = createSelector(
+  [state => state.indicatorSelected, getCategoryIndicators],
+  (selected, indicators = []) => {
+    if (!indicators || !indicators.length) return {};
+    const defaultSelection = indicators[0];
+    return selected
+      ? indicators.find(indicator => indicator.value === selected) ||
+          defaultSelection
+      : defaultSelection;
   }
 );
 

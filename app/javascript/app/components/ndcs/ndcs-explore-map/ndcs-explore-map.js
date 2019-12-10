@@ -9,11 +9,6 @@ import { getLocationParamUpdated } from 'utils/navigation';
 
 import fetchActions from 'pages/ndcs/ndcs-actions';
 import { actions as modalActions } from 'components/modal-metadata';
-import {
-  getCategories,
-  getCategoryIndicators,
-  getSelectedCategory
-} from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 
 import Component from './ndcs-explore-map-component';
 
@@ -24,7 +19,10 @@ import {
   getLinkToDataExplorer,
   getEmissionsCardData,
   getLegend,
-  getSummaryCardData
+  getSummaryCardData,
+  getCategories,
+  getCategoryIndicators,
+  getSelectedCategory
 } from './ndcs-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
