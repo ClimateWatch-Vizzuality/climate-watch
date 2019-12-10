@@ -9,6 +9,8 @@ import { PATH_LAYERS } from 'app/data/constants';
 import { getSelectedIndicator } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
+const NOT_APPLICABLE_LABEL = 'Not Applicable';
+
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
@@ -33,7 +35,8 @@ export const getIndicatorsParsed = createSelector(
           const legendBuckets = createLegendBuckets(
             i.locations,
             i.labels,
-            isos
+            isos,
+            NOT_APPLICABLE_LABEL
           );
           return {
             label: i.name,
@@ -128,17 +131,24 @@ export const getLegend = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
-    return bucketsWithId.map(label => {
-      const partiesNumber = Object.values(indicator.locations).filter(
-        l => l.label_id === parseInt(label.id, 10)
-      ).length;
-      return {
-        ...label,
-        value: percentage(partiesNumber, maximumCountries),
-        partiesNumber,
-        color: getColorByIndex(indicator.legendBuckets, label.index)
-      };
-    });
+    return sortBy(
+      bucketsWithId.map(label => {
+        let partiesNumber = Object.values(indicator.locations).filter(
+          l => l.label_id === parseInt(label.id, 10)
+        ).length;
+        if (label.name === NOT_APPLICABLE_LABEL) {
+          partiesNumber =
+            maximumCountries - Object.values(indicator.locations).length;
+        }
+        return {
+          ...label,
+          value: percentage(partiesNumber, maximumCountries),
+          partiesNumber,
+          color: getColorByIndex(indicator.legendBuckets, label.index)
+        };
+      }),
+      'index'
+    ).reverse();
   }
 );
 
@@ -150,22 +160,28 @@ export const getEmissionsCardData = createSelector(
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
     if (!emissionsIndicator) return null;
-
     const emissionPercentages = emissionsIndicator.locations;
+    let summedPercentage = 0;
     const data = legend.map(legendItem => {
       let legendItemValue = 0;
       Object.entries(selectedIndicator.locations).forEach(entry => {
-        const [locationIso, { value: legendItemName }] = entry;
+        const [locationIso, { label_id: labelId }] = entry;
         if (
-          legendItemName === legendItem.name &&
+          labelId === parseInt(legendItem.id, 10) &&
           emissionPercentages[locationIso]
         ) {
           legendItemValue += parseFloat(emissionPercentages[locationIso].value);
         }
       });
+      summedPercentage += legendItemValue;
+
+      // The 'No information' label is always the last one so we can calculate its value substracting from 100
       return {
         name: camelCase(legendItem.name),
-        value: legendItemValue
+        value:
+          legendItem.name === NOT_APPLICABLE_LABEL
+            ? 100 - summedPercentage
+            : legendItemValue
       };
     });
 
