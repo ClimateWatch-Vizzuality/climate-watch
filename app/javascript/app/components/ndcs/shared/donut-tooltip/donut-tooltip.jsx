@@ -9,14 +9,11 @@ const DonutTooltip = props => {
   const {
     reference,
     chartReference,
-    content: { payload, coordinate },
-    data
+    content: { payload, coordinate }
   } = props;
   if (!payload || !payload[0]) return null;
 
-  const total = Object.values(data).reduce((acc, d) => acc + d.value, 0);
-  const percentage = Math.round((payload[0].value * 100) / total);
-
+  const percentage = Math.round(payload[0].value);
   const legendItemName = capitalize(lowerCase(payload[0].name));
 
   const chartTop = chartReference.getBoundingClientRect().top;
