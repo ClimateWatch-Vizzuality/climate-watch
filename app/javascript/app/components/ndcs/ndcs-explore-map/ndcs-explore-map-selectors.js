@@ -7,6 +7,7 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import { getSelectedIndicator } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
+import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -58,30 +59,6 @@ export const getMapIndicator = createSelector(
   }
 );
 
-const countryStyles = {
-  default: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  }
-};
-
 export const getPathsWithStyles = createSelector(
   [getMapIndicator],
   indicator => {
@@ -94,7 +71,7 @@ export const getPathsWithStyles = createSelector(
         if (!locations) {
           paths.push({
             ...path,
-            countryStyles
+            COUNTRY_STYLES
           });
           return null;
         }
@@ -102,19 +79,19 @@ export const getPathsWithStyles = createSelector(
         const iso = path.properties && path.properties.id;
         const countryData = locations[iso];
 
-        let style = countryStyles;
+        let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex);
           style = {
-            ...countryStyles,
+            ...COUNTRY_STYLES,
             default: {
-              ...countryStyles.default,
+              ...COUNTRY_STYLES.default,
               fill: color,
               fillOpacity: 1
             },
             hover: {
-              ...countryStyles.hover,
+              ...COUNTRY_STYLES.hover,
               fill: color,
               fillOpacity: 1
             }

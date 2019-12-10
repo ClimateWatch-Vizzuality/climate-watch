@@ -6,12 +6,24 @@ import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
-import { getSelectedIndicator } from 'components/ndcs/ndcs-map/ndcs-map-selectors';
+import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+
+const NO_INFORMATION_LABEL = 'No information';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
-const getCategories = state => state.categories || null;
+const getCategoriesData = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
+
+export const getCategories = createSelector(getCategoriesData, categories =>
+  (!categories
+    ? null
+    : Object.keys(categories).map(category => ({
+      label: categories[category].name,
+      value: categories[category].slug,
+      id: category
+    })))
+);
 
 export const getMaximumCountries = createSelector(
   getCountries,
@@ -23,16 +35,17 @@ export const getISOCountries = createSelector([getCountries], countries =>
 );
 
 export const getIndicatorsParsed = createSelector(
-  [getCategories, getIndicatorsData, getISOCountries],
-  (categories, indicators, isos) => {
-    if (!categories || !indicators || !indicators.length) return null;
+  [getIndicatorsData, getISOCountries],
+  (indicators, isos) => {
+    if (!indicators || !indicators.length) return null;
     return sortBy(
       uniqBy(
         indicators.map(i => {
           const legendBuckets = createLegendBuckets(
             i.locations,
             i.labels,
-            isos
+            isos,
+            NO_INFORMATION_LABEL
           );
           return {
             label: i.name,
@@ -49,41 +62,58 @@ export const getIndicatorsParsed = createSelector(
   }
 );
 
-export const getMapIndicator = createSelector(
-  [getIndicatorsParsed, getSelectedIndicator],
-  (indicators, selectedIndicator) => {
-    if (!indicators || !indicators.length) return null;
-    const mapIndicator =
-      selectedIndicator && selectedIndicator.label
-        ? selectedIndicator
-        : indicators[0];
-    return mapIndicator;
+export const getSelectedCategory = createSelector(
+  [state => state.categorySelected, getCategories],
+  (selected, categories = []) => {
+    if (!categories || !categories.length) return null;
+    const defaultCategory =
+      categories.find(cat => cat.value === 'longterm_strategy') ||
+      categories[0];
+    if (selected) {
+      return (
+        categories.find(category => category.value === selected) ||
+        defaultCategory
+      );
+    }
+    return defaultCategory;
   }
 );
 
-const countryStyles = {
-  default: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
+export const getCategoryIndicators = createSelector(
+  [getIndicatorsParsed, getSelectedCategory],
+  (indicatorsParsed, category) => {
+    if (!indicatorsParsed || !category) return null;
+    const categoryIndicators = indicatorsParsed.filter(
+      indicator => indicator.categoryIds.indexOf(parseInt(category.id, 10)) > -1
+    );
+    return categoryIndicators;
   }
-};
+);
+
+export const getSelectedIndicator = createSelector(
+  [state => state.indicatorSelected, getCategoryIndicators],
+  (selected, indicators = []) => {
+    if (!indicators || !indicators.length) return {};
+    const defaultSelection = indicators[0];
+    return selected
+      ? indicators.find(indicator => indicator.value === selected) ||
+          defaultSelection
+      : defaultSelection;
+  }
+);
+
+export const getMapIndicator = createSelector(
+  [getIndicatorsParsed, getCategories, getSelectedIndicator],
+  (indicators, categories, selectedIndicator) => {
+    if (!indicators || !categories || !indicators.length) return null;
+    const mapIndicator =
+      selectedIndicator && selectedIndicator.label
+        ? selectedIndicator
+        : indicators.find(indicator => indicator.slug === 'lts_submission') ||
+          indicators[0];
+    return mapIndicator;
+  }
+);
 
 export const getPathsWithStyles = createSelector(
   [getMapIndicator],
@@ -97,7 +127,7 @@ export const getPathsWithStyles = createSelector(
         if (!locations) {
           paths.push({
             ...path,
-            countryStyles
+            COUNTRY_STYLES
           });
           return null;
         }
@@ -105,19 +135,19 @@ export const getPathsWithStyles = createSelector(
         const iso = path.properties && path.properties.id;
         const countryData = locations[iso];
 
-        let style = countryStyles;
+        let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex);
           style = {
-            ...countryStyles,
+            ...COUNTRY_STYLES,
             default: {
-              ...countryStyles.default,
+              ...COUNTRY_STYLES.default,
               fill: color,
               fillOpacity: 1
             },
             hover: {
-              ...countryStyles.hover,
+              ...COUNTRY_STYLES.hover,
               fill: color,
               fillOpacity: 1
             }
@@ -154,17 +184,24 @@ export const getLegend = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
-    return bucketsWithId.map(label => {
-      const partiesNumber = Object.values(indicator.locations).filter(
-        l => l.label_id === parseInt(label.id, 10)
-      ).length;
-      return {
-        ...label,
-        value: percentage(partiesNumber, maximumCountries),
-        partiesNumber,
-        color: getColorByIndex(indicator.legendBuckets, label.index)
-      };
-    });
+    return sortBy(
+      bucketsWithId.map(label => {
+        let partiesNumber = Object.values(indicator.locations).filter(
+          l => l.label_id === parseInt(label.id, 10)
+        ).length;
+        if (label.name === NO_INFORMATION_LABEL) {
+          partiesNumber =
+            maximumCountries - Object.values(indicator.locations).length;
+        }
+        return {
+          ...label,
+          value: percentage(partiesNumber, maximumCountries),
+          partiesNumber,
+          color: getColorByIndex(indicator.legendBuckets, label.index)
+        };
+      }),
+      'index'
+    ).reverse();
   }
 );
 
@@ -174,7 +211,7 @@ export const getEmissionsCardData = createSelector(
     if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
-    const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    const emissionsIndicator = indicators.find(i => i.slug === 'lts_ghg');
     if (!emissionsIndicator) return null;
 
     const emissionPercentages = emissionsIndicator.locations;
