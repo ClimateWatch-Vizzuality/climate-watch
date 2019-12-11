@@ -7,7 +7,7 @@ import Loading from 'components/loading';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
 
-import styles from './lts-explore-table-styles.scss';
+import styles from 'components/ndcs/shared/explore-table-styles.scss';
 
 const renderSearch = (searchHandler, query) => (
   <Search
@@ -27,7 +27,8 @@ const LTSExploreTable = ({
   handleSearchChange,
   noContentMsg,
   columns,
-  setColumnWidth
+  setColumnWidth,
+  titleLinks
 }) => (
   <div>
     <div className={styles.wrapper}>
@@ -46,6 +47,7 @@ const LTSExploreTable = ({
             dynamicRowsHeight
             setColumnWidth={setColumnWidth}
             defaultColumns={columns}
+            titleLinks={titleLinks}
             theme={exploreTableTheme}
           />
         </div>
@@ -64,7 +66,8 @@ LTSExploreTable.propTypes = {
   tableData: PropTypes.array,
   handleSearchChange: PropTypes.func.isRequired,
   setColumnWidth: PropTypes.func.isRequired,
-  columns: PropTypes.array
+  columns: PropTypes.array,
+  titleLinks: PropTypes.array
 };
 
 export default LTSExploreTable;

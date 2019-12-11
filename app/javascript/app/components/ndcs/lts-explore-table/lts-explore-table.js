@@ -11,26 +11,34 @@ import Component from './lts-explore-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData,
-  getDefaultColumns
+  getFilteredData,
+  getDefaultColumns,
+  getTitleLinks
 } from './lts-explore-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.LTS;
   const { countries } = state;
   const search = qs.parse(location.search);
+
   const LTSWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator,
+    categories: data.categories,
+    emissions: state.emissions,
     search
   };
   return {
     loading,
     query: LTSWithSelection.query,
     isoCountries: getISOCountries(LTSWithSelection),
-    tableData: tableRemoveIsoFromData(LTSWithSelection),
-    columns: getDefaultColumns(LTSWithSelection)
+    tableData: getFilteredData(LTSWithSelection),
+    columns: getDefaultColumns(LTSWithSelection),
+    titleLinks: getTitleLinks(LTSWithSelection)
   };
 };
 
@@ -40,18 +48,16 @@ class LTSExploreTableContainer extends PureComponent {
     this.state = {};
   }
 
-  setColumnWidth = column => {
-    const TABLE_WIDTH = 1170;
-    const MIN_COLUMN_WIDTH = 180;
-    const narrowColumns = [0];
-    return setColumnWidth(
+  setColumnWidth = column =>
+    setColumnWidth({
       column,
-      this.props.columns,
-      TABLE_WIDTH,
-      MIN_COLUMN_WIDTH,
-      narrowColumns
-    );
-  };
+      columns: this.props.columns,
+      tableWidth: 1170,
+      narrowColumnWidth: 180,
+      wideColumnWidth: 360,
+      narrowColumns: [0, 3, 4],
+      wideColumns: [1]
+    });
 
   updateUrlParam(param, clear) {
     const { history, location } = this.props;

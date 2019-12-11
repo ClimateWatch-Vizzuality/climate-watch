@@ -169,9 +169,9 @@ export const getLegend = createSelector(
 );
 
 export const getEmissionsCardData = createSelector(
-  [getLegend, getMapIndicator, getMapIndicator, getIndicatorsData],
-  (legend, indicator, selectedIndicator, indicators) => {
-    if (!indicator || !legend || !selectedIndicator) {
+  [getLegend, getMapIndicator, getIndicatorsData],
+  (legend, selectedIndicator, indicators) => {
+    if (!legend || !selectedIndicator || !indicators) {
       return null;
     }
     const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
