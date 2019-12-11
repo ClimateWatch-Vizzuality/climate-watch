@@ -11,8 +11,9 @@ import Component from './ndcs-explore-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData,
-  getDefaultColumns
+  getFilteredData,
+  getDefaultColumns,
+  getTitleLinks
 } from './ndcs-explore-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -20,17 +21,23 @@ const mapStateToProps = (state, { location }) => {
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsNDCSWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
-    search
+    search,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator,
+    categories: data.categories,
+    emissions: state.emissions
   };
   return {
     loading,
     query: ndcsNDCSWithSelection.query,
     isoCountries: getISOCountries(ndcsNDCSWithSelection),
-    tableData: tableRemoveIsoFromData(ndcsNDCSWithSelection),
-    columns: getDefaultColumns(ndcsNDCSWithSelection)
+    tableData: getFilteredData(ndcsNDCSWithSelection),
+    columns: getDefaultColumns(ndcsNDCSWithSelection),
+    titleLinks: getTitleLinks(ndcsNDCSWithSelection)
   };
 };
 
@@ -42,16 +49,13 @@ class NDCSExploreTableContainer extends PureComponent {
 
   setColumnWidth = column => {
     const { columns } = this.props;
-    const TABLE_WIDTH = 1170;
-    const MIN_COLUMN_WIDTH = 180;
-    const narrowColumns = [0];
-    return setColumnWidth(
+    return setColumnWidth({
       column,
       columns,
-      TABLE_WIDTH,
-      MIN_COLUMN_WIDTH,
-      narrowColumns
-    );
+      tableWidth: 1170,
+      narrowColumnWidth: 180,
+      narrowColumns: [0]
+    });
   };
 
   updateUrlParam(param, clear) {
