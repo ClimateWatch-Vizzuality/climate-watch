@@ -46,18 +46,16 @@ class LTSExploreTableContainer extends PureComponent {
     this.state = {};
   }
 
-  setColumnWidth = column => {
-    const TABLE_WIDTH = 1170;
-    const MIN_COLUMN_WIDTH = 180;
-    const narrowColumns = [0];
-    return setColumnWidth(
+  setColumnWidth = column =>
+    setColumnWidth({
       column,
-      this.props.columns,
-      TABLE_WIDTH,
-      MIN_COLUMN_WIDTH,
-      narrowColumns
-    );
-  };
+      columns: this.props.columns,
+      tableWidth: 1170,
+      narrowColumnWidth: 180,
+      wideColumnWidth: 360,
+      narrowColumns: [0, 3, 4],
+      wideColumns: [1]
+    });
 
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
