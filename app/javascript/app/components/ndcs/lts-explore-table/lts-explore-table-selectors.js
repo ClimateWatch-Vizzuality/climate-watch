@@ -115,7 +115,7 @@ export const getDefaultColumns = createSelector(
   }
 );
 
-const addIndicatorColumn = createSelector(
+export const addIndicatorColumn = createSelector(
   [tableGetFilteredData, getMapIndicator, getSelectedIndicatorHeader],
   (data, selectedIndicator, selectedIndicatorHeader) => {
     if (!data || isEmpty(data)) return null;
@@ -130,54 +130,40 @@ const addIndicatorColumn = createSelector(
   }
 );
 
-export const tableRemoveIsoFromData = createSelector(
-  [addIndicatorColumn, getDefaultColumns],
+export const getTitleLinks = createSelector([addIndicatorColumn], data => {
+  if (!data || isEmpty(data)) return null;
+  return data.map(d => [
+    {
+      columnName: 'country',
+      url: `/lts/country/${d.iso}`
+    }
+  ]);
+});
+
+const addDocumentTarget = createSelector([addIndicatorColumn], data => {
+  if (!data || isEmpty(data)) return null;
+  return data.map(d => {
+    const updatedTableDataItem = { ...d };
+    updatedTableDataItem.Document = updatedTableDataItem.Document
+      ? updatedTableDataItem.Document.replace('href=', "target='_blank' href=")
+      : undefined;
+    return updatedTableDataItem;
+  });
+});
+
+export const getFilteredData = createSelector(
+  [addDocumentTarget, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
     return data.map(d => {
-      const updatedTableDataItem = { ...d };
-      let date = updatedTableDataItem['Submission Date'];
-      try {
-        date = new Date(updatedTableDataItem['Submission Date']);
-        date = !isNaN(date.getTime())
-          ? {
-            name: date.toLocaleDateString('en-US'),
-            value: date.getTime()
-          }
-          : {
-            name: undefined,
-            value: undefined
-          };
-      } catch (e) {
-        console.error(e);
-      }
-      updatedTableDataItem['Submission Date'] = date;
-
-      updatedTableDataItem.Document = updatedTableDataItem.Document
-        ? updatedTableDataItem.Document.replace(
-          'href=',
-          "target='_blank' href="
-        )
-        : undefined;
-
-      updatedTableDataItem.country = `${"<a href='" +
-        `/ndcs/country/${updatedTableDataItem.iso}` +
-        "'>"}${updatedTableDataItem.country}</a>`;
-      delete updatedTableDataItem.iso;
-
       const filteredAndChangedHeadersD = {};
-      Object.keys(updatedTableDataItem).forEach(k => {
+      Object.keys(d).forEach(k => {
         const header = headerChanges[k] || k;
         if (columnHeaders.includes(header)) {
-          filteredAndChangedHeadersD[header] = updatedTableDataItem[k];
+          filteredAndChangedHeadersD[header] = d[k];
         }
       });
       return filteredAndChangedHeadersD;
     });
   }
 );
-
-export default {
-  tableRemoveIsoFromData,
-  getDefaultColumns
-};
