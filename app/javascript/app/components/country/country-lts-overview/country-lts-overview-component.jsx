@@ -75,7 +75,6 @@ class CountryLtsOverview extends PureComponent {
     );
   }
 
-
   renderCards() {
     const { sectors, values } = this.props;
     const renderSubtitle = text => <h4 className={styles.subTitle}>{text}</h4>;
@@ -87,7 +86,7 @@ class CountryLtsOverview extends PureComponent {
       data,
       title
     };
-  
+
     return (
       <div className="grid-column-item">
         <div className={styles.row}>
@@ -95,11 +94,7 @@ class CountryLtsOverview extends PureComponent {
             <div className={styles.cards}>
               <div className="grid-column-item">
                 <div className={styles.cardsRowContainer}>
-                  <Card
-                    title="Contribution type"
-                    contentFirst
-                    theme={theme}
-                  >
+                  <Card title="Contribution type" contentFirst theme={theme}>
                     <div className={styles.cardContent}>
                       {values && values.coverage_sectors ? (
                         <p
@@ -114,16 +109,14 @@ class CountryLtsOverview extends PureComponent {
                       )}
                     </div>
                   </Card>
-                  <Card
-                    title="GHG Target"
-                    contentFirst
-                    theme={theme}
-                  >
+                  <Card title="GHG Target" contentFirst theme={theme}>
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
                         <React.Fragment>
                           <div className={styles.metaSection}>
-                            <span className={styles.metaTitle}>Target type</span>
+                            <span className={styles.metaTitle}>
+                              Target type
+                            </span>
                             <p
                               className={styles.targetText}
                               // eslint-disable-next-line react/no-danger
@@ -133,7 +126,9 @@ class CountryLtsOverview extends PureComponent {
                             />
                           </div>
                           <div className={styles.metaSection}>
-                            <span className={styles.metaTitle}>Target year</span>
+                            <span className={styles.metaTitle}>
+                              Target year
+                            </span>
                             <p
                               className={styles.targetText}
                               // eslint-disable-next-line react/no-danger
@@ -148,11 +143,7 @@ class CountryLtsOverview extends PureComponent {
                       )}
                     </div>
                   </Card>
-                  <Card
-                    title="Non-GHG Target"
-                    contentFirst
-                    theme={theme}
-                  >
+                  <Card title="Non-GHG Target" contentFirst theme={theme}>
                     <div className={styles.cardContent}>
                       {values && values.non_ghg_target ? (
                         <p
@@ -212,11 +203,9 @@ class CountryLtsOverview extends PureComponent {
                     <Intro
                       theme={introTheme}
                       title={
-                        actions ? (
-                          'Nationally Determined Contribution (NDC) Overview'
-                        ) : (
-                          'Summary'
-                        )
+                        actions
+                          ? 'Nationally Determined Contribution (NDC) Overview'
+                          : 'Summary'
                       }
                     />
                     <TabletPortraitOnly>{description}</TabletPortraitOnly>
