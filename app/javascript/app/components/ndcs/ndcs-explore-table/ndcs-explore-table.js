@@ -11,8 +11,9 @@ import Component from './ndcs-explore-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData,
-  getDefaultColumns
+  getFilteredData,
+  getDefaultColumns,
+  getTitleLinks
 } from './ndcs-explore-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -34,8 +35,9 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: ndcsNDCSWithSelection.query,
     isoCountries: getISOCountries(ndcsNDCSWithSelection),
-    tableData: tableRemoveIsoFromData(ndcsNDCSWithSelection),
-    columns: getDefaultColumns(ndcsNDCSWithSelection)
+    tableData: getFilteredData(ndcsNDCSWithSelection),
+    columns: getDefaultColumns(ndcsNDCSWithSelection),
+    titleLinks: getTitleLinks(ndcsNDCSWithSelection)
   };
 };
 

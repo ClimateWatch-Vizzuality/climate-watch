@@ -11,8 +11,9 @@ import Component from './lts-explore-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData,
-  getDefaultColumns
+  getFilteredData,
+  getDefaultColumns,
+  getTitleLinks
 } from './lts-explore-table-selectors';
 
 const mapStateToProps = (state, { location }) => {
@@ -35,8 +36,9 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: LTSWithSelection.query,
     isoCountries: getISOCountries(LTSWithSelection),
-    tableData: tableRemoveIsoFromData(LTSWithSelection),
-    columns: getDefaultColumns(LTSWithSelection)
+    tableData: getFilteredData(LTSWithSelection),
+    columns: getDefaultColumns(LTSWithSelection),
+    titleLinks: getTitleLinks(LTSWithSelection)
   };
 };
 
