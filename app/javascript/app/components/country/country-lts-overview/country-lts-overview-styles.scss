@@ -1,0 +1,174 @@
+@import '~styles/layout.scss';
+
+.wrapper {
+  border-bottom: solid 1px $border-color;
+  border-top: solid 1px $border-color;
+  min-height: 450px;
+}
+
+.embededWrapper {
+  border: none;
+}
+
+.countryOverviewPadding {
+  padding-bottom: 2em;
+}
+
+.col2 {
+  @media #{$tablet-landscape} {
+    @include columns((6, 6));
+  }
+}
+
+.header {
+  margin-top: 40px;
+}
+
+.actions {
+  @include columns((6, 6));
+  @include xy-gutters($gutter-position: ('bottom'));
+
+  @media #{$tablet-landscape} {
+    @include columns((2.4, 3.6, 6));
+  }
+}
+
+.subTitle {
+  font-size: $font-size;
+  color: $theme-color;
+  font-weight: $font-weight-bold;
+  margin-bottom: 10px;
+}
+
+.descriptionContainer {
+  color: $theme-color;
+  line-height: $line-height-medium;
+  column-count: 1;
+  column-gap: $gutter-padding;
+  margin-bottom: 15px;
+
+  @media #{$tablet-landscape} {
+    column-count: 2;
+  }
+}
+
+.row {
+  @include columns();
+}
+
+.subtitles {
+  @include columns((9, 3));
+}
+
+.cards {
+  > div {
+    @include xy-gutters($gutter-position: ('top', 'bottom'));
+  }
+}
+
+.cardsRowContainer {
+  @include columns('shrink', $wrap: false);
+
+  > div {
+    width: 270px;
+  }
+
+  overflow: auto;
+
+  @media #{$tablet-landscape} {
+    @include columns((4, 4, 4));
+
+    > div {
+      width: 100%;
+    }
+  }
+}
+
+.cardContent {
+  background-color: white;
+
+  a {
+    color: $theme-color;
+    border-bottom: solid 1px $theme-secondary;
+  }
+}
+
+.metaTitle {
+  font-size: $font-size-s;
+  color: $dark-gray;
+  margin-bottom: 6px;
+}
+
+.targetText {
+  display: block;
+  font-size: $font-size-sm;
+  line-height: $line-height-small;
+  color: $theme-color;
+  margin-bottom: 0;
+  margin-top: 6px;
+}
+
+.noContent {
+  font-size: $font-size-sm;
+  color: $dark-gray;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listItem {
+  font-size: $font-size;
+  color: $theme-color;
+  margin-bottom: 5px;
+}
+
+.loader {
+  min-height: 400px;
+}
+
+.noContentWrapper {
+  min-height: 450px;
+}
+
+.exploreBtn {
+  margin-bottom: $gutter-padding;
+
+  @media #{$tablet-landscape} {
+    margin-bottom: 0;
+  }
+}
+
+
+// card component theme
+
+.card {
+  color: "pink";
+  border-radius: 6px;
+  border-color: transparent;
+}
+
+.contentContainer {
+  background-color: #ECF1FA;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  min-height: 70px;
+}
+
+.metaSection {
+  background-color: white;
+  padding: 16px 28px 24px;
+
+  &:not(:last-child) {
+    border-bottom: 2px solid #E8ECF5;
+  }
+}
+
+.title {
+  font-weight: $font-weight;
+}
+
+.data {
+  background-color: white;
+}

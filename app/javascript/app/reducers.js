@@ -35,6 +35,7 @@ import * as agricultureMeatProductionProvider from 'providers/agriculture-meat-p
 import * as agricultureWorldMeatProductionProvider from 'providers/agriculture-world-meat-production-provider';
 import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
+import * as ltsCountryAccordionProvider from 'providers/lts-country-accordion-provider';
 
 const providersReducers = {
   login: handleActions(loginProvider),
@@ -70,7 +71,8 @@ const providersReducers = {
   meatProduction: handleActions(agricultureMeatProductionProvider),
   meatWorldProduction: handleActions(agricultureWorldMeatProductionProvider),
   meatTrade: handleActions(agricultureMeatTradeProvider),
-  meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider)
+  meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
+  ltsCountryAccordion: handleActions(ltsCountryAccordionProvider)
 };
 
 // Pages
