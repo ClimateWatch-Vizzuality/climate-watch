@@ -208,7 +208,7 @@ class CountryNdcOverview extends PureComponent {
           lastDocument.document_type.toUpperCase()}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-        {FEATURE_LTS_EXPLORE && (
+        {FEATURE_LTS_EXPLORE && hasSectors && !loading && (
           <div className={styles.alertContainer}>
             <div className={styles.alert}>
               <Icon icon={alertIcon} className={styles.alertIcon} />
