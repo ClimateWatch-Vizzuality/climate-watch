@@ -104,7 +104,7 @@ export const getDefaultColumns = createSelector(
       selectedIndicatorHeader,
       'lts_document',
       'lts_date',
-      'ndce_ghg'
+      'lts_ghg'
     ];
 
     const columns = columnIds.map(id => {

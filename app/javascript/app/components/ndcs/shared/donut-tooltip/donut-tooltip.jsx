@@ -35,7 +35,9 @@ const DonutTooltip = props => {
 };
 
 DonutTooltip.propTypes = {
-  content: PropTypes.object
+  content: PropTypes.object,
+  reference: PropTypes.object,
+  chartReference: PropTypes.object
 };
 
 export default DonutTooltip;
