@@ -1,14 +1,15 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import actions from './lts-country-accordion-provider-actions';
+import actions from './ndc-country-accordion-provider-actions';
 import reducers, {
   initialState
-} from './lts-country-accordion-provider-reducers';
+} from './ndc-country-accordion-provider-reducers';
 
 class LtsCountryAccordionProvider extends PureComponent {
   componentDidMount() {
-    this.props.fetchNdcsCountryAccordion();
+    const { locations, category, lts } = this.props;
+    this.props.fetchNdcsCountryAccordion({ locations, category, lts });
   }
 
   render() {
@@ -17,7 +18,9 @@ class LtsCountryAccordionProvider extends PureComponent {
 }
 
 LtsCountryAccordionProvider.propTypes = {
-  // locations: PropTypes.array,
+  locations: PropTypes.array,
+  lts: PropTypes.bool,
+  category: PropTypes.string,
   fetchNdcsCountryAccordion: PropTypes.func.isRequired
 };
 

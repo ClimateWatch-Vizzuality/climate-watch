@@ -1,17 +1,48 @@
 import { createSelector } from 'reselect';
-import groupBy from 'lodash/groupBy';
 
-const getValues = state => (state ? state.values : null);
+const SUBMISSION_SLUGS = [
+  'lts_document',
+  'lts_date',
+  'lts_vision',
+  'lts_document',
+  'lts_date',
+  'lts_target',
+  'lts_m_tt',
+  'lts_zero',
+  'lts_m_sce_yn',
+  'lts_m_model'
+];
 
-export const getValuesGrouped = createSelector(getValues, values => {
-  if (!values || !values.length) return null;
-  const groupedValues = groupBy(values, 'slug');
-  Object.keys(groupedValues).forEach(key => {
-    if (!groupedValues[key].length) groupedValues[key] = null;
-  });
-  return groupedValues;
-});
+const getIndicators = ({ state }) =>
+  state &&
+  state.ndcCountryAccordion &&
+  state.ndcCountryAccordion.data &&
+  state.ndcCountryAccordion.data.indicators;
+const getIso = ({ iso }) => iso || null;
+
+export const getCardsData = createSelector(
+  [getIndicators, getIso],
+  (indicators, iso) => {
+    if (!indicators || !indicators.length || !iso) return null;
+
+    const filteredIndicators = indicators.filter(({ slug }) =>
+      SUBMISSION_SLUGS.includes(slug)
+    );
+
+    const cardData = filteredIndicators.reduce((acc, nextIndicator) => {
+      const { slug, name, locations } = nextIndicator;
+      return {
+        ...acc,
+        [slug]: {
+          name,
+          value: locations[iso] && locations[iso][0] && locations[iso][0].value
+        }
+      };
+    }, {});
+    return cardData;
+  }
+);
 
 export default {
-  getValuesGrouped
+  getCardsData
 };

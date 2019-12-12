@@ -10,10 +10,6 @@
   border: none;
 }
 
-.countryOverviewPadding {
-  padding-bottom: 2em;
-}
-
 .col2 {
   @media #{$tablet-landscape} {
     @include columns((6, 6));
@@ -24,31 +20,13 @@
   margin-top: 40px;
 }
 
-.actions {
-  @include columns((6, 6));
-  @include xy-gutters($gutter-position: ('bottom'));
-
-  @media #{$tablet-landscape} {
-    @include columns((2.4, 3.6, 6));
-  }
-}
-
-.subTitle {
-  font-size: $font-size;
-  color: $theme-color;
-  font-weight: $font-weight-bold;
-  margin-bottom: 10px;
-}
-
 .descriptionContainer {
   color: $theme-color;
   line-height: $line-height-medium;
-  column-count: 1;
-  column-gap: $gutter-padding;
   margin-bottom: 15px;
 
   @media #{$tablet-landscape} {
-    column-count: 2;
+    width: 70%;
   }
 }
 
@@ -93,7 +71,7 @@
   }
 }
 
-.metaTitle {
+.cardTitle {
   font-size: $font-size-s;
   color: $dark-gray;
   margin-bottom: 6px;
@@ -117,12 +95,6 @@
   align-items: center;
 }
 
-.listItem {
-  font-size: $font-size;
-  color: $theme-color;
-  margin-bottom: 5px;
-}
-
 .loader {
   min-height: 400px;
 }
@@ -130,17 +102,6 @@
 .noContentWrapper {
   min-height: 450px;
 }
-
-.exploreBtn {
-  margin-bottom: $gutter-padding;
-
-  @media #{$tablet-landscape} {
-    margin-bottom: 0;
-  }
-}
-
-
-// card component theme
 
 .card {
   color: "pink";
@@ -156,7 +117,7 @@
   min-height: 70px;
 }
 
-.metaSection {
+.cardRow {
   background-color: white;
   padding: 16px 28px 24px;
 
