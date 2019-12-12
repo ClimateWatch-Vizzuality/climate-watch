@@ -72,7 +72,6 @@ const providersReducers = {
   meatWorldProduction: handleActions(agricultureWorldMeatProductionProvider),
   meatTrade: handleActions(agricultureMeatTradeProvider),
   meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
-  // ltsCountryAccordion: handleActions(ltsCountryAccordionProvider)
   ndcCountryAccordion: handleActions(ndcCountryAccordionProvider)
 };
 
@@ -103,7 +102,6 @@ import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as modalESPOverviewComponent from 'components/modal-overview';
 import * as espGraphComponent from 'components/emission-pathways/emission-pathways-graph';
-// import * as ndcCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
@@ -122,7 +120,6 @@ const componentsReducers = {
   modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
-  // ndcCountryAccordion: handleActions(ndcCountryAccordion),
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),
