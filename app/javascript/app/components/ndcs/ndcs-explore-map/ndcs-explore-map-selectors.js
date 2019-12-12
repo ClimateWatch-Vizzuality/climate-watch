@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
+import groupBy from 'lodash/groupBy';
 import camelCase from 'lodash/camelCase';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
@@ -266,15 +267,29 @@ export const getEmissionsCardData = createSelector(
 );
 
 export const getSummaryCardData = createSelector(
-  [getLegend, getMapIndicator, getMaximumCountries],
-  (legend, indicator, maximumCountries) => {
-    if (!indicator || !legend) return null;
-    // TODO: This may change. The info will come from the backend
-    const selectedLegendItem = legend[0];
-    return {
-      value: selectedLegendItem.partiesNumber,
-      description: `out of ${maximumCountries} parties - ${indicator.label}`
-    };
+  [getIndicatorsData],
+  indicators => {
+    if (!indicators) return null;
+    const latestSubmissionIndicator = indicators.find(
+      i => i.slug === 'submission'
+    );
+    const groupedSubmissions = groupBy(
+      latestSubmissionIndicator.locations,
+      'value'
+    );
+    const secondValue = groupedSubmissions['Second NDC Submitted'].length;
+    return [
+      {
+        value: groupedSubmissions['First NDC Submitted'].length,
+        description: 'parties have submitted their first NDC'
+      },
+      {
+        value: secondValue,
+        description: `part${
+          secondValue === 1 ? 'y has' : 'ies have'
+        } submitted their second NDC`
+      }
+    ];
   }
 );
 

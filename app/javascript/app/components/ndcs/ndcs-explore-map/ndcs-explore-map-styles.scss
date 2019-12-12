@@ -134,9 +134,14 @@
       width: 100%;
     }
 
+    .summarySentence {
+      display: flex;
+      align-items: center;
+    }
+
     .summaryCardValue {
-      flex: 1;
-      font-size: $font-size-xxl-large;
+      flex: 2;
+      font-size: $font-size-xl-large;
       font-weight: $font-weight-light;
       text-align: center;
       margin-right: 10px;
