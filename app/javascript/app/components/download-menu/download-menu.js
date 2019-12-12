@@ -61,12 +61,8 @@ class DownloadMenuContainer extends PureComponent {
       action: this.handleOnClick.bind(this, `${url}/NDC_text_HTML.zip`, '53 MB')
     },
     {
-      label: 'GHG emissions (3.5 MB)',
-      action: this.handleOnClick.bind(
-        this,
-        `${url}/ghg-emissions.zip`,
-        '3.5 MB'
-      )
+      label: 'GHG emissions (9 MB)',
+      action: this.handleOnClick.bind(this, `${url}/ghg-emissions.zip`, '9 MB')
     },
     {
       label: 'Adaptation (357 kB)',
