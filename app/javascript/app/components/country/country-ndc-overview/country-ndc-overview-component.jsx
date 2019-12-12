@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
 import Intro from 'components/intro';
+import Icon from 'components/icon';
 import cx from 'classnames';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
@@ -11,8 +12,11 @@ import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
+import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
 import styles from './country-ndc-overview-styles.scss';
+
+const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -175,7 +179,16 @@ class CountryNdcOverview extends PureComponent {
   }
 
   render() {
-    const { sectors, values, loading, actions, iso, isEmbed } = this.props;
+    const {
+      sectors,
+      values,
+      loading,
+      actions,
+      iso,
+      isEmbed,
+      lastDocument
+    } = this.props;
+    const { date: documentDate } = lastDocument || {};
     const hasSectors = values && sectors;
     const description = hasSectors && (
       <p
@@ -189,9 +202,23 @@ class CountryNdcOverview extends PureComponent {
         }}
       />
     );
-
+    const summaryIntroText = !lastDocument
+      ? 'Summary'
+      : `Summary of ${lastDocument.document_type &&
+          lastDocument.document_type.toUpperCase()}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
+        {FEATURE_LTS_EXPLORE && hasSectors && !loading && (
+          <div className={styles.alertContainer}>
+            <div className={styles.alert}>
+              <Icon icon={alertIcon} className={styles.alertIcon} />
+              <span className={styles.alertText}>
+                The information shown below only reflects the latest NDC
+                submission.
+              </span>
+            </div>
+          </div>
+        )}
         <NdcContentOverviewProvider locations={[iso]} />
         {!hasSectors && !loading ? (
           <NoContent
@@ -210,12 +237,11 @@ class CountryNdcOverview extends PureComponent {
                     <Intro
                       theme={introTheme}
                       title={
-                        actions ? (
-                          'Nationally Determined Contribution (NDC) Overview'
-                        ) : (
-                          'Summary'
-                        )
+                        actions
+                          ? 'Nationally Determined Contribution (NDC) Overview'
+                          : summaryIntroText
                       }
+                      subtitle={documentDate && `(submitted[${documentDate}])`}
                     />
                     <TabletPortraitOnly>{description}</TabletPortraitOnly>
                     {actions && (
@@ -255,6 +281,7 @@ CountryNdcOverview.propTypes = {
   isNdcp: PropTypes.bool,
   isEmbed: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired,
+  lastDocument: PropTypes.object,
   handleAnalyticsClick: PropTypes.func.isRequired
 };
 
