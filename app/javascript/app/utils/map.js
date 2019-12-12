@@ -46,7 +46,12 @@ export function getColorByIndex(data, index, colors = buckets) {
   return colors[length - 2][index - 1] || '#E5E5EB';
 }
 
-export function createLegendBuckets(locations, labels, isos) {
+export function createLegendBuckets(
+  locations,
+  labels,
+  isos,
+  notApplicableLabel = 'Not Applicable'
+) {
   if (Object.keys(locations) === isos) return labels;
   // An index of -2 is applied in the backend to 'No Data Submitted'
   const notSubmitted = Object.keys(labels).find(l => labels[l].index === -2);
@@ -54,10 +59,10 @@ export function createLegendBuckets(locations, labels, isos) {
     const notApplicableKey = parseInt(notSubmitted, 10) + 1;
     return {
       ...labels,
-      [notApplicableKey]: { name: 'Not Applicable', index: 0 }
+      [notApplicableKey]: { name: notApplicableLabel, index: 0 }
     };
   }
-  return { ...labels, 0: { name: 'Not Applicable', index: 0 } };
+  return { ...labels, 0: { name: notApplicableLabel, index: 0 } };
 }
 
 export default {

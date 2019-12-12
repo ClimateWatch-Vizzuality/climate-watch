@@ -178,10 +178,8 @@ class NDCSExploreMap extends PureComponent {
                       className={styles.handCursorIcon}
                     />
                     <span>
-                      Explore which countries have submitted long-term
-                      strategies thus far below. Visit Climate Watch in the
-                      coming months for in-depth analysis of long-term
-                      strategies.
+                      Explore the interactive map to understand which countries
+                      have submitted new or updated NDCs.
                     </span>
                   </p>
                   <Map
