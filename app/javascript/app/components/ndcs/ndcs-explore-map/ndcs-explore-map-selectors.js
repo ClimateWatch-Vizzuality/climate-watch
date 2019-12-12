@@ -225,15 +225,17 @@ export const getEmissionsCardData = createSelector(
       summedPercentage += legendItemValue;
 
       // The 'No information' label is always the last one so we can calculate its value substracting from 100
+      if (legendItem.name === NOT_APPLICABLE_LABEL && summedPercentage < 100) {
+        return {
+          name: camelCase(legendItem.name),
+          value: 100 - summedPercentage
+        };
+      }
       return {
         name: camelCase(legendItem.name),
-        value:
-          legendItem.name === NOT_APPLICABLE_LABEL
-            ? 100 - summedPercentage
-            : legendItemValue
+        value: legendItemValue
       };
     });
-
     const config = {
       animation: true,
       innerRadius: 50,
@@ -262,6 +264,7 @@ export const getEmissionsCardData = createSelector(
     };
   }
 );
+
 export const getSummaryCardData = createSelector(
   [getLegend, getMapIndicator, getMaximumCountries],
   (legend, indicator, maximumCountries) => {
