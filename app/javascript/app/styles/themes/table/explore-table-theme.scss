@@ -8,8 +8,13 @@ $lighter-blue-2: #d4dff4;
   display: flex;
   align-items: flex-end;
 
+  > div,
+  > a {
+    margin: auto 0;
+  }
+
   &:nth-child(2) {
-    padding: 0 10px 10px;
+    padding: 0 10px;
   }
 }
 
