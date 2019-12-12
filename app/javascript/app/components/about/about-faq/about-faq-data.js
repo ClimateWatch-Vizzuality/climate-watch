@@ -199,10 +199,95 @@ export const sectionsData = [
           'Our GHG emissions data comes from three sources:<ul><li><a href="http://cait.wri.org/historical/Country%20GHG%20Emissions?indicator%5b%5d=Total%20GHG%20Emissions%20Excluding%20Land-Use%20Change%20and%20Forestry&indicator%5b%5d=Total%20GHG%20Emissions%20Including%20Land-Use%20Change%20and%20Forestry&year%5b%5d=2014&sortIdx=NaN&chartType=geo" rel="noopener noreferrer" target="_blank" >CAIT</a> emissions data are compiled using a consistent methodology to create a comprehensive and internationally comparable data set for 190 countries including all GHGs and major IPCC sectors. CAIT uses the 2016 edition of the IEA publication for CO₂ emissions from fossil fuel combustion from 1971 to 2014, and draws the remaining CO₂ and non-CO₂ emissions data from a variety of other sources including CDIAC, U.S. EPA, and FAO. (See <a href="http://cait2.wri.org/docs/CAIT2.0_CountryGHG_Methods.pdf" rel="noopener noreferrer" target="_blank" >CAIT GHG Sources and Methods Documentation</a> for more detailed information.)</li><li><a href="http://pmd.gfz-potsdam.de/pik/showshort.php?id=escidoc:2086888" rel="noopener noreferrer" target="_blank" >Primap’s dataset</a> combines several published datasets to create a comprehensive set of GHG emission pathways for every country and Kyoto greenhouse gas covering the years 1850 to 2014 for all 197 UNFCCC Parties as well as most non-UNFCCC territories. The data resolves the main IPCC 1996 categories. For CO₂ from energy and industry, time series for subsectors are available. Country-level data are combined from different sources using the PRIMAP emissions module. It is supplemented with growth rates from regionally resolved sources and numerical extrapolations. Regional deforestation emissions are downscaled to country level using estimates of the deforested area obtained from potential vegetation and calculations for the needed agricultural land. </li><li>UNFCCC’s GHG <a href="http://di.unfccc.int/detailed_data_by_party" rel="noopener noreferrer" target="_blank">data interface</a> provides access to the most recent GHG data reported by countries that are Parties to the Climate Change Convention. The data interface includes the latest data reported by Annex I Parties and to the extent possible National Communications and Biennial Update Reports of non-Annex I Parties.</li></ul>'
       },
       {
-        type: 'text',
-        title: 'What are the main differences between the three data sources?',
+        type: 'table',
+        title:
+          'What data source should I use? What are the main differences between the data sources?',
         answer:
-          'UNFCCC data provide official country-reported inventories; CAIT and PIK datasets are estimates made by non-government research institutes. CAIT and PIK datasets apply a consistent methodology and are comparable across all countries included. The UNFCCC dataset is not comparable across all countries due to the different reporting requirements and methodologies for Annex 1 and non-Annex 1 countries. Non-Annex 1 countries also do not report a complete time series of data for each year. The PIK dataset prioritizes country-reported inventories and fills the data gaps with secondary sources and assumptions. CAIT uses none of the self-reported inventories for individual countries and instead uses datasets with global coverage. Thus, the PIK dataset aligns better with country-reported estimates, while CAIT provides an independent inventory that complements the other two. Among other methodology differences, CAIT uses global warming potential (GWP) values from the IPCC’s Second Assessment Report (AR2) for non-CO2 gases; PIK provides data under both AR2 and AR4 GWP values; UNFCCC data uses either AR2 and AR4, depending on the inventory methodology the party opts to follow. '
+          '<p>Depending on what you are using the data for, there are certain advantages and disadvantages of each source. The table below provides information on the differences between the datasets included in Climate Watch that can help you decide which source is most appropriate for your use. Please note that in some cases, the data included in Climate Watch is only a subset of the data available from the original source.</p><table />',
+        tableData: [
+          {
+            '': 'Summary',
+            CAIT:
+              'The CAIT dataset is the most comprehensive included on Climate Watch and includes all sectors and gases. In order to emphasize comparability of data across countries, it does not use countries’ official inventories reported to the UNFCCC. It has a 3 year lag.',
+            'PIK PRIMAP-hist':
+              'The PIK PRIMAP-hist dataset included on Climate Watch combines UNFCCC reported data where available and fills gaps with other sources. It does not include land use change and forestry (LUCF) but covers all other sectors and has a 3 year lag. Additional data to what is shown on Climate Watch is available from <a href="http://dataservices.gfz-potsdam.de/pik/showshort.php?id=escidoc:3842934">PIK</a>.',
+            UNFCCC:
+              'UNFCCC includes only officially reported data by countries. It has large data gaps for non-Annex I countries. Due to different reporting requirements for Annex I and non-Annex I countries, the data is not internally comparable. It covers all sectors and has 2-3 year lag.',
+            GCP:
+              'GCP provides the most recent CO2 emissions with a 1 year lag (new data is released in December for the previous year). It includes CO2 emissions from fossil fuel combustion, cement production, and bunkers.'
+          },
+          {
+            '': 'Original data sources used',
+            CAIT:
+              'Carbon Dioxide Information Analysis Center (CDIAC), International Energy Agency (IEA), U.S. Environmental Protection Agency, U.S. Food and Agriculture Organization, and U.S. Energy Information Administration. See more detailed information about sources <a href="http://cait.wri.org/docs/CAIT2.0_CountryGHG_Methods.pdf">here</a>.',
+            'PIK PRIMAP-hist':
+              'Uses countries’ official inventories reported to the UNFCCC as a basis, and fills in with data from other sources, including CDIAC, Emissions Database for Global Atmospheric Research (EDGAR), and FAO, among others. See all sources <a href="http://dataservices.gfz-potsdam.de/pik/showshort.php?id=escidoc:3842934">here</a>.',
+            UNFCCC:
+              'The inventory data are provided in the annual GHG inventory submissions by Annex I Parties and in the National Communications and Biennial Update Reports by non-Annex I Parties.',
+            GCP:
+              'CDIAC for fossil fuel and industry data for 1959-2014; where available countries’ data reported to the UNFCCC are used in preference. BP Statistical Review of World Energy is used for preliminary estimates of 2015-2017 data. For more information about methodology and sources, see Section 2.1.1 <a href="https://www.earth-syst-sci-data.net/10/2141/2018/essd-10-2141-2018.pdf">here</a>.'
+          },
+          {
+            '': 'Temporal coverage',
+            CAIT: '1990-2016',
+            'PIK PRIMAP-hist': '1850-2016',
+            UNFCCC:
+              '1990-2017 for Annex I countries; Varied coverage for non-Annex I countries',
+            GCP: '1960-2018'
+          },
+          {
+            '': 'Geographic coverage',
+            CAIT: '197 Parties to the UNFCCC (196 countries plus the EU)',
+            'PIK PRIMAP-hist':
+              '216 countries, regions and country groups, with the 196 of the 197 Parties to the UNFCCC shown on Climate Watch (State of Palestine is not included).',
+            UNFCCC:
+              'All 43 Annex I Parties; 148 of the 154 non-Annex I Parties',
+            GCP:
+              '229 countries, regions, and country groups; 195 of 197 Parties to the UNFCCC shown on Climate Watch (Monaco and San Marino are not included).'
+          },
+          {
+            '': 'Sector coverage (sector definitions may vary across sources)',
+            CAIT:
+              'Main IPCC sectors, including energy sub-sectors. Includes:<ul><li>agriculture</li><li>bunker fuels</li><li>energy<ul><li>electricity/heat</li><li>fugitive emissions</li><li>manufacturing/ construction</li><li>other fuel combustion</li><li>transportation</li></ul></li><li>industrial processes</li><li>land-use change and forestry</li><li>waste</li>',
+            'PIK PRIMAP-hist':
+              'Main IPCC sectors excluding LUCF. Includes: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>land use change and forestry</li><li>bunker fuels</li></ul> Additional sub-sectors are included in the original source and not reflected on Climate Watch.',
+            UNFCCC:
+              'Main IPCC sectors; energy sub-sectors are reported but not included on Climate Watch. For Annex I countries: <ul><li>agriculture</li><li>energy</li><li>industrial processes and product use</li><li>land use, land-use change, and forestry</li><li>other</li><li>waste</li></ul>Excludes: <ul><li>bunker fuels (reported separately)</li></ul>For non-Annex I countries: <ul><li>agriculture</li><li>energy</li><li>industrial processes</li><li>land-use change and forestry</li><li>other</li><li>solvent and other product use</li><li>waste</li></ul>Excludes: <ul><li>bunker fuels (reported separately)</li></ul>',
+            GCP:
+              'Fossil fuel combustion and cement production. Bunkers are reported at the global rather than territorial level and included on Climate Watch. Land use, land use change and forestry emissions are reported at the global, but not territorial, level and not included on Climate Watch. Includes:<ul><li>fossil fuel combustion</li><li>cement production</li></ul>Excludes:<ul><li>land use change and forestry (reported separately)</li><li>waste</li></ul>'
+          },
+          {
+            '': 'Gas coverage ',
+            CAIT: 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
+            'PIK PRIMAP-hist': 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
+            UNFCCC: 'Kyoto GHGs (CH4, CO2, N2O, F-gases)',
+            GCP: 'CO2 only'
+          },
+          {
+            '': 'Timeliness',
+            CAIT: '3 year lag',
+            'PIK PRIMAP-hist': '3 year lag',
+            UNFCCC: '2-3 year lag',
+            GCP: '1-2 year lag'
+          },
+          {
+            '': 'Use of country reported data to the UNFCC',
+            CAIT: 'Does not use UNFCCC reported data',
+            'PIK PRIMAP-hist': 'Uses UNFCCC reported data and fills gaps',
+            UNFCCC: 'Only uses UNFCCC reported data',
+            GCP: 'Uses UNFCCC reported data and fills gaps'
+          },
+          {
+            '': 'Comparable methodology across countries',
+            CAIT:
+              'Consistent methodology used across all countries to maximize comparability',
+            'PIK PRIMAP-hist':
+              'Uses national inventories where available and fills in the gaps. Therefore, comparability varies depending on country groups (Annex 1 / non-Annex 1) and years.',
+            UNFCCC:
+              'Comparable across Annex 1 Parties, but not to non-Annex 1 Parties due to different reporting requirements between Annex 1 and non-Annex 1 Parties.',
+            GCP: 'Comparable across countries.'
+          }
+        ]
       },
       {
         type: 'html',
