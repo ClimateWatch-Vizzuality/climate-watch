@@ -1,9 +1,17 @@
 import { createElement } from 'react';
 import { Redirect } from 'react-router-dom';
 
+import CountryLtsOverview from 'components/country/country-lts-overview';
 import NDCCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 
 export default [
+  {
+    path: '/lts/country/:iso',
+    component: () => createElement(CountryLtsOverview, { textColumns: true }),
+    exact: true,
+    anchor: true,
+    label: 'Summary'
+  },
   {
     path: '/lts/country/:iso/overview',
     component: () =>
@@ -56,7 +64,7 @@ export default [
     path: '/lts/country/:iso',
     component: ({ match }) =>
       createElement(Redirect, {
-        to: `/lts/country/${match.params.iso}/overview`
+        to: `/lts/country/${match.params.iso}`
       })
   }
 ];
