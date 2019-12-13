@@ -6,7 +6,7 @@ import reducers, {
   initialState
 } from './ndc-country-accordion-provider-reducers';
 
-class LtsCountryAccordionProvider extends PureComponent {
+class NdcsCountryAccordionProvider extends PureComponent {
   componentDidMount() {
     const { locations, category, lts } = this.props;
     this.props.fetchNdcsCountryAccordion({ locations, category, lts });
@@ -17,7 +17,7 @@ class LtsCountryAccordionProvider extends PureComponent {
   }
 }
 
-LtsCountryAccordionProvider.propTypes = {
+NdcsCountryAccordionProvider.propTypes = {
   locations: PropTypes.array,
   lts: PropTypes.bool,
   category: PropTypes.string,
@@ -25,4 +25,4 @@ LtsCountryAccordionProvider.propTypes = {
 };
 
 export { actions, reducers, initialState };
-export default connect(null, actions)(LtsCountryAccordionProvider);
+export default connect(null, actions)(NdcsCountryAccordionProvider);

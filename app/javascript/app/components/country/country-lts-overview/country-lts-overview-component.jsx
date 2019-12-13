@@ -49,7 +49,7 @@ const Cards = ({ cardData }) => (
                 <Card title="Submission" contentFirst theme={theme}>
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_document} />
-                    <CardRow rowDat={cardData.lts_date} />
+                    <CardRow rowData={cardData.lts_date} />
                   </div>
                 </Card>
                 <Card title="Mitigation" contentFirst theme={theme}>
