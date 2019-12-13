@@ -1,3 +1,11 @@
+const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const exploreTools = FEATURE_LTS_EXPLORE
+  ? [
+    { title: 'Explore NDCs', href: '/ndcs-explore' },
+    { title: 'Explore LTS', href: '/lts-explore' }
+  ]
+  : [];
+
 export const siteMapData = [
   {
     title: 'Tools',
@@ -5,6 +13,7 @@ export const siteMapData = [
       { title: 'Country Profiles', href: '/countries' },
       { title: 'Agriculture Sector', href: '/sectors/agriculture' },
       { title: 'NDCs', href: '/ndcs-content' },
+      ...exploreTools,
       { title: 'NDC-SDG Linkages', href: '/ndcs-sdg' },
       { title: 'Historical GHG Emissions', href: '/ghg-emissions' },
       { title: 'Pathways', href: '/pathways' }
