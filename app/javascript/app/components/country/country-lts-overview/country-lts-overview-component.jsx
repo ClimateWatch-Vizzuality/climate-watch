@@ -8,18 +8,11 @@ import Loading from 'components/loading';
 import NoContent from 'components/no-content';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
+import cardTheme from 'styles/themes/card/card-light.scss';
 import layout from 'styles/layout.scss';
 import NdcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 
 import styles from './country-lts-overview-styles.scss';
-
-const { card, contentContainer, data, title } = styles;
-const theme = {
-  card,
-  contentContainer,
-  data,
-  title
-};
 
 const CardRow = ({ rowData }) => (
   <React.Fragment>
@@ -46,20 +39,20 @@ const Cards = ({ cardData }) => (
           <div className="grid-column-item">
             {cardData ? (
               <div className={styles.cardsRowContainer}>
-                <Card title="Submission" contentFirst theme={theme}>
+                <Card title="Submission" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_document} />
                     <CardRow rowData={cardData.lts_date} />
                   </div>
                 </Card>
-                <Card title="Mitigation" contentFirst theme={theme}>
+                <Card title="Mitigation" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_target} />
                     <CardRow rowData={cardData.lts_m_tt} />
                     <CardRow rowData={cardData.lts_zero} />
                   </div>
                 </Card>
-                <Card title="Modeling" contentFirst theme={theme}>
+                <Card title="Modeling" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
                     <CardRow rowData={cardData.lts_m_sce_yn} />
                     <CardRow rowData={cardData.lts_m_model} />
