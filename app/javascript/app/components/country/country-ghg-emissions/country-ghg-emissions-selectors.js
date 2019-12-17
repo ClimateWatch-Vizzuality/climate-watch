@@ -112,6 +112,7 @@ export const getAllowedSectors = createSelector(
   (source, sectors) => {
     if (!source || !source.sectors || !sectors) return null;
     return sectors
+      .filter(d => d.label !== 'Bunker Fuels')
       .filter(d => source.sectors.indexOf(d.value) > -1)
       .filter(d => isEmpty(d.aggregatedSectorIds))
       .filter(d => !d.parentId);

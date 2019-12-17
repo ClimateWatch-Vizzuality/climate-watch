@@ -19,7 +19,7 @@ import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
 
-const renderButtonGroup = (clickHandler, downloadLink) => (
+const renderButtonGroup = clickHandler => (
   <ButtonGroup
     className={styles.buttonGroup}
     buttonsConfig={[
@@ -36,7 +36,8 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       {
         type: 'download',
         section: 'lts-explore',
-        link: downloadLink
+        // link: downloadLink,
+        disabled: true
       },
       {
         type: 'addToUser'

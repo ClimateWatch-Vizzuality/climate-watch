@@ -119,7 +119,7 @@ class LTSExploreMapContainer extends PureComponent {
     this.props.setModalMetadata({
       customTitle: 'LTS Explore',
       category: 'LTS Explore Map',
-      slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
+      slugs: ['lts'],
       open: true
     });
   };
