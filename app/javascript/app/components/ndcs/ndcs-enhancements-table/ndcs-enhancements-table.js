@@ -3,18 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
-import { handleAnalytics } from 'utils/analytics';
-import { isCountryIncluded } from 'app/utils';
 import { getLocationParamUpdated } from 'utils/navigation';
-import { europeSlug, europeanCountries } from 'app/data/european-countries';
-
 import { actions as fetchActions } from 'pages/ndcs-enhancements';
 
 import Component from './ndcs-enhancements-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData,
+  getFilteredDataBySearch,
   getDefaultColumns
 } from './ndcs-enhancements-table-selectors';
 
@@ -34,7 +30,7 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: ndcsEnhancementsWithSelection.query,
     isoCountries: getISOCountries(ndcsEnhancementsWithSelection),
-    tableData: tableRemoveIsoFromData(ndcsEnhancementsWithSelection),
+    tableData: getFilteredDataBySearch(ndcsEnhancementsWithSelection),
     columns: getDefaultColumns(ndcsEnhancementsWithSelection)
   };
 };
@@ -44,10 +40,6 @@ class NDCSEnhancementsTableContainer extends PureComponent {
     super(props);
     this.state = {};
   }
-
-  handleSearchChange = query => {
-    this.updateUrlParam({ name: 'search', value: query });
-  };
 
   componentWillMount() {
     this.props.fetchNDCSEnhancements();
@@ -79,7 +71,8 @@ class NDCSEnhancementsTableContainer extends PureComponent {
 NDCSEnhancementsTableContainer.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  isoCountries: PropTypes.array.isRequired,
+  query: PropTypes.string,
+  tableData: PropTypes.array,
   fetchNDCSEnhancements: PropTypes.func.isRequired
 };
 

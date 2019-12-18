@@ -11,7 +11,7 @@ import Component from './lts-explore-table-component';
 
 import {
   getISOCountries,
-  getFilteredData,
+  getFilteredDataBySearch,
   getDefaultColumns,
   getTitleLinks
 } from './lts-explore-table-selectors';
@@ -36,7 +36,7 @@ const mapStateToProps = (state, { location }) => {
     loading,
     query: LTSWithSelection.query,
     isoCountries: getISOCountries(LTSWithSelection),
-    tableData: getFilteredData(LTSWithSelection),
+    tableData: getFilteredDataBySearch(LTSWithSelection),
     columns: getDefaultColumns(LTSWithSelection),
     titleLinks: getTitleLinks(LTSWithSelection)
   };
