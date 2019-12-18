@@ -1,15 +1,14 @@
 @import '~styles/settings.scss';
 
 .card {
-  color: "pink";
   border-radius: 6px;
   border-color: transparent;
-  box-shadow: 0 2px 20px 0 #e8ecf5;
+  box-shadow: 0 2px 20px 0 $catskill-white;
   margin: 15px;
 }
 
 .contentContainer {
-  background-color: #ecf1fa;
+  background-color: $link-water;
   display: flex;
   align-items: center;
   padding: 0 30px;
@@ -21,5 +20,5 @@
 }
 
 .data {
-  background-color: white;
+  background-color: $white;
 }
