@@ -87,7 +87,7 @@ NDCSExploreTableContainer.propTypes = {
   location: PropTypes.object.isRequired,
   tableData: PropTypes.array,
   columns: PropTypes.array,
-  query: PropTypes.object
+  query: PropTypes.string
 };
 
 export default withRouter(

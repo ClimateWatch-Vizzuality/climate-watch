@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { deburrUpper } from 'app/utils';
+import { deburrUpper, filterQuery } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
@@ -156,14 +156,6 @@ export const getFilteredDataBySearch = createSelector(
   [getFilteredData, getQuery],
   (data, query) => {
     if (!data || isEmpty(data)) return null;
-    return data.filter(d => {
-      let match = false;
-      Object.keys(d).forEach(col => {
-        if (deburrUpper(d[col]).indexOf(query) > -1) {
-          match = true;
-        }
-      });
-      return match;
-    });
+    return filterQuery(data, query);
   }
 );
