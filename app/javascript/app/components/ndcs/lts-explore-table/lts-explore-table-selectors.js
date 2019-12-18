@@ -8,7 +8,7 @@ import { getMapIndicator } from 'components/ndcs/lts-explore-map/lts-explore-map
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
-const getQuery = state => deburrUpper(state.query) || '';
+export const getQuery = state => deburrUpper(state.query) || '';
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
@@ -63,22 +63,6 @@ export const tableGetSelectedData = createSelector(
   }
 );
 
-export const tableGetFilteredData = createSelector(
-  [tableGetSelectedData, getQuery],
-  (data, query) => {
-    if (!data || isEmpty(data)) return null;
-    return data.filter(d => {
-      let match = false;
-      Object.keys(d).forEach(col => {
-        if (deburrUpper(d[col]).indexOf(query) > -1) {
-          match = true;
-        }
-      });
-      return match;
-    });
-  }
-);
-
 const headerChanges = {
   'Communication of Long-term Strategy':
     'Latest submission (Current selection)',
@@ -116,7 +100,7 @@ export const getDefaultColumns = createSelector(
 );
 
 export const addIndicatorColumn = createSelector(
-  [tableGetFilteredData, getMapIndicator, getSelectedIndicatorHeader],
+  [tableGetSelectedData, getMapIndicator, getSelectedIndicatorHeader],
   (data, selectedIndicator, selectedIndicatorHeader) => {
     if (!data || isEmpty(data)) return null;
     const updatedTableData = data;
@@ -151,7 +135,7 @@ const addDocumentTarget = createSelector([addIndicatorColumn], data => {
   });
 });
 
-export const getFilteredData = createSelector(
+const getFilteredData = createSelector(
   [addDocumentTarget, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
@@ -164,6 +148,22 @@ export const getFilteredData = createSelector(
         }
       });
       return filteredAndChangedHeadersD;
+    });
+  }
+);
+
+export const getFilteredDataBySearch = createSelector(
+  [getFilteredData, getQuery],
+  (data, query) => {
+    if (!data || isEmpty(data)) return null;
+    return data.filter(d => {
+      let match = false;
+      Object.keys(d).forEach(col => {
+        if (deburrUpper(d[col]).indexOf(query) > -1) {
+          match = true;
+        }
+      });
+      return match;
     });
   }
 );

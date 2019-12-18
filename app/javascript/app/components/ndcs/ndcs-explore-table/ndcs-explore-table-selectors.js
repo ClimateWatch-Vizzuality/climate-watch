@@ -1,9 +1,11 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import { deburrUpper } from 'app/utils';
 import {
   getSelectedIndicatorHeader,
   addIndicatorColumn,
-  getIndicatorsParsed
+  getIndicatorsParsed,
+  getQuery
 } from 'components/ndcs/lts-explore-table/lts-explore-table-selectors';
 
 const getCountries = state => state.countries || null;
@@ -40,7 +42,7 @@ export const getDefaultColumns = createSelector(
   }
 );
 
-export const getFilteredData = createSelector(
+const getFilteredData = createSelector(
   [addIndicatorColumn, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
@@ -66,3 +68,19 @@ export const getTitleLinks = createSelector([addIndicatorColumn], data => {
     }
   ]);
 });
+
+export const getFilteredDataBySearch = createSelector(
+  [getFilteredData, getQuery],
+  (data, query) => {
+    if (!data || isEmpty(data)) return null;
+    return data.filter(d => {
+      let match = false;
+      Object.keys(d).forEach(col => {
+        if (deburrUpper(d[col]).indexOf(query) > -1) {
+          match = true;
+        }
+      });
+      return match;
+    });
+  }
+);
