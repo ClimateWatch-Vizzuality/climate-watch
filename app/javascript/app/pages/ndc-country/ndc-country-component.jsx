@@ -115,7 +115,9 @@ class NDCCountry extends PureComponent {
       route,
       anchorLinks,
       notSummary,
-      location
+      location,
+      countrySelectFilter,
+      query
     } = this.props;
 
     const countryName = country && `${country.wri_standard_name}`;
@@ -126,7 +128,11 @@ class NDCCountry extends PureComponent {
     const previousPathLabel = shouldClearPath(previousPathname)
       ? null
       : getPreviousPathLabel(previousPathname);
-
+    const renderIntroDropdown = () => (
+      <Intro
+        title={<Dropdown value={query} onChange={countrySelectFilter} />}
+      />
+    );
     return (
       <div>
         <MetaDescription
@@ -147,11 +153,7 @@ class NDCCountry extends PureComponent {
                   [styles.withoutBack]: !previousPathname
                 })}
               >
-                {!FEATURE_LTS_EXPLORE && (
-                  <div>
-                    <Intro title={country.wri_standard_name} />
-                  </div>
-                )}
+                {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
                 {FEATURE_LTS_EXPLORE && previousPathLabel && (
                   <div className={styles.backButton}>
                     <Link
@@ -179,9 +181,7 @@ class NDCCountry extends PureComponent {
                 )}
               </div>
               {FEATURE_LTS_EXPLORE && (
-                <div className={styles.title}>
-                  <Intro title={country.wri_standard_name} />
-                </div>
+                <div className={styles.title}>{renderIntroDropdown()}</div>
               )}
               <TabletLandscape>
                 {FEATURE_LTS_EXPLORE && this.renderCompareButton()}
