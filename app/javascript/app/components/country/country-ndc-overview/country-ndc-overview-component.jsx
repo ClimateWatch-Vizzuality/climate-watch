@@ -141,7 +141,7 @@ class CountryNdcOverview extends PureComponent {
                     contentFirst
                   >
                     <div className={styles.cardContent}>
-                      {values && values.non_ghg_target ? (
+                      {values && values.coverage_sectors ? (
                         <React.Fragment>
                           <CardRow
                             rowData={{
