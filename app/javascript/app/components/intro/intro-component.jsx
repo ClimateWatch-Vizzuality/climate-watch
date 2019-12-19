@@ -48,7 +48,7 @@ const Intro = props => {
 };
 
 Intro.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   subtitle: PropTypes.string,
   description: PropTypes.string,
   disclaimer: PropTypes.string,

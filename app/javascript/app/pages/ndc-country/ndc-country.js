@@ -4,17 +4,13 @@ import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import {
-  getFilterUpper,
-  getISOCountries,
-  getFilteredCountriesWithPath
-} from 'components/countries-select/countries-select-selectors';
 
 import NDCCountryComponent from './ndc-country-component';
 import {
   getCountry,
   getAnchorLinks,
-  getDocumentsOptions
+  getDocumentsOptions,
+  addUrlToCountries
 } from './ndc-country-selectors';
 
 const mapStateToProps = (state, { match, location, route }) => {
@@ -41,17 +37,8 @@ const mapStateToProps = (state, { match, location, route }) => {
     'sectoral-information'
   ].includes(pathname[pathname.length - 1]);
 
-  const { countrySelect, countries } = state;
-  const stateWithFilters = {
-    ...countrySelect,
-    query: countrySelect.query,
-    countries: countries.data
-  };
-
   return {
-    query: getFilterUpper(stateWithFilters),
-    isoCountries: getISOCountries(stateWithFilters),
-    countriesList: getFilteredCountriesWithPath(stateWithFilters),
+    countriesOptions: addUrlToCountries(countryData),
     country: getCountry(countryData),
     search: search.search,
     anchorLinks: getAnchorLinks(routeData),
@@ -74,11 +61,16 @@ class NDCCountryContainer extends PureComponent {
     this.props.history.push(selected.path);
   };
 
+  handleCountryLink = selected => {
+    this.props.history.push(selected.path);
+  };
+
   render() {
     return createElement(NDCCountryComponent, {
       ...this.props,
       onSearchChange: this.onSearchChange,
-      handleDropDownChange: this.handleDropDownChange
+      handleDropDownChange: this.handleDropDownChange,
+      handleCountryLink: this.handleCountryLink
     });
   }
 }
