@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import layout from 'styles/layout.scss';
 import styles from './ndcs-commitments-styles.scss';
 
-const CommitmentContent = props => {
+const Commitment = props => {
   const { title, description, hint } = props;
   return (
     <div className={styles.commitmentWrapper}>
-      <div className={styles.commitmentInfo}>
+      <div className={styles.commitmentText}>
         <div>
           <h1 className={styles.title}>{title}</h1>
           <p className={styles.description}>{description}</p>
@@ -19,22 +19,22 @@ const CommitmentContent = props => {
   );
 };
 
-const NdcOverview = ({ data }) => (
+const NdcsCommitments = ({ data }) => (
   <div className={layout.content}>
     {data.map(commitment => (
-      <CommitmentContent {...commitment} />
+      <Commitment {...commitment} />
     ))}
   </div>
 );
 
-CommitmentContent.propTypes = {
+Commitment.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   hint: PropTypes.string
 };
 
-NdcOverview.propTypes = {
+NdcsCommitments.propTypes = {
   data: PropTypes.array
 };
 
-export default NdcOverview;
+export default NdcsCommitments;
