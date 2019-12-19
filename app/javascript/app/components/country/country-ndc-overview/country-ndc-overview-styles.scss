@@ -86,13 +86,9 @@
   }
 }
 
-.cardContent {
-  margin: 15px;
-
-  a {
-    color: $theme-color;
-    border-bottom: solid 1px $theme-secondary;
-  }
+.cardContent a {
+  color: $theme-color;
+  border-bottom: solid 1px $theme-secondary;
 }
 
 .metaTitle {
@@ -116,6 +112,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 16px;
 }
 
 .listItem {
