@@ -1,6 +1,6 @@
 @import '~styles/settings.scss';
 
-$min-width: 300px;
+$min-width: 250px;
 
 .dropdown :global {
   .react-selectize-control {
@@ -23,7 +23,6 @@ $min-width: 300px;
     .simple-value {
       font-size: $font-size-xl-large;
       color: $white;
-      min-width: $min-width;
       width: auto !important;
 
       > span {
@@ -52,7 +51,7 @@ $min-width: 300px;
     }
 
     .simple-select {
-      max-width: $min-width;
+      max-width: $min-width + 45px;
     }
 
     .react-selectize-toggle-button-container {
