@@ -4,11 +4,6 @@ import Proptypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import {
-  getFilterUpper,
-  getISOCountries,
-  getFilteredCountriesWithPath
-} from 'components/countries-select/countries-select-selectors';
 
 import NDCCountryComponent from './ndc-country-component';
 import {
@@ -42,17 +37,7 @@ const mapStateToProps = (state, { match, location, route }) => {
     'sectoral-information'
   ].includes(pathname[pathname.length - 1]);
 
-  const { countrySelect, countries } = state;
-  const stateWithFilters = {
-    ...countrySelect,
-    query: countrySelect.query,
-    countries: countries.data
-  };
-
   return {
-    query: getFilterUpper(stateWithFilters),
-    isoCountries: getISOCountries(stateWithFilters),
-    countriesList: getFilteredCountriesWithPath(stateWithFilters),
     countriesOptions: addUrlToCountries(countryData),
     country: getCountry(countryData),
     search: search.search,
