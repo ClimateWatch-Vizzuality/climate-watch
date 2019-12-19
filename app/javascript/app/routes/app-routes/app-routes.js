@@ -143,7 +143,7 @@ export default [
   },
   {
     nav: true,
-    label: 'NDCs',
+    label: FEATURE_LTS_EXPLORE ? 'COMMITMENTS' : 'NDCs',
     routes: NDCSRoutes
   },
   {
