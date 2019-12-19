@@ -1,0 +1,18 @@
+@import '~styles/layout.scss';
+
+.shareButton {
+  width: 118px;
+
+  .shareText {
+    margin-left: 10px;
+  }
+
+  &Active {
+    fill: $theme-color;
+  }
+
+  &:hover {
+    box-shadow: none;
+    fill: $theme-color;
+  }
+}
