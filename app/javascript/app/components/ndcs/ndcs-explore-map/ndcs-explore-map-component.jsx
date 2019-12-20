@@ -21,19 +21,13 @@ import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
-  <React.Fragment>
+  <div className={styles.buttonGroupContainer}>
     <ButtonGroup
       className={styles.buttonGroup}
       buttonsConfig={[
         {
           type: 'info',
           onClick: clickHandler
-        },
-        {
-          type: 'share',
-          shareUrl: '/embed/ndcs-explore',
-          analyticsGraphName: 'Ndcs',
-          positionRight: true
         },
         {
           type: 'download',
@@ -45,8 +39,8 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
         }
       ]}
     />
-    <ShareButton />
-  </React.Fragment>
+    <ShareButton analyticsName="NDC Explore" sharePath="/embed/ndcs-explore" />
+  </div>
 );
 
 const renderSummary = summaryData => (
