@@ -222,12 +222,12 @@
   width: auto;
   min-width: 200px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   margin: 22px 0;
+
   @include xy-gutters($gutter-position: ('right', 'left'), $gutters: 0);
 
   @media #{$tablet-landscape} {
-    justify-content: flex-end;
     width: 150px;
   }
 }
@@ -236,9 +236,11 @@
   margin-top: 0;
   min-height: 45px;
   width: 100%;
+
   @media #{$tablet-portrait} {
     width: 150px;
   }
+
   margin-right: 20px;
 }
 
