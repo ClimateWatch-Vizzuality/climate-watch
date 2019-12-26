@@ -8,6 +8,7 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+import { sortByIndexAndNotInfo } from 'components/ndcs/shared/utils';
 
 const NOT_APPLICABLE_LABEL = 'Not Applicable';
 
@@ -181,24 +182,22 @@ export const getLegend = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
-    return sortBy(
-      bucketsWithId.map(label => {
-        let partiesNumber = Object.values(indicator.locations).filter(
-          l => l.label_id === parseInt(label.id, 10)
-        ).length;
-        if (label.name === NOT_APPLICABLE_LABEL) {
-          partiesNumber =
-            maximumCountries - Object.values(indicator.locations).length;
-        }
-        return {
-          ...label,
-          value: percentage(partiesNumber, maximumCountries),
-          partiesNumber,
-          color: getColorByIndex(indicator.legendBuckets, label.index)
-        };
-      }),
-      'index'
-    ).reverse();
+    const legendItems = bucketsWithId.map(label => {
+      let partiesNumber = Object.values(indicator.locations).filter(
+        l => l.label_id === parseInt(label.id, 10)
+      ).length;
+      if (label.name === NOT_APPLICABLE_LABEL) {
+        partiesNumber =
+          maximumCountries - Object.values(indicator.locations).length;
+      }
+      return {
+        ...label,
+        value: percentage(partiesNumber, maximumCountries),
+        partiesNumber,
+        color: getColorByIndex(indicator.legendBuckets, label.index)
+      };
+    });
+    return legendItems.sort(sortByIndexAndNotInfo);
   }
 );
 
