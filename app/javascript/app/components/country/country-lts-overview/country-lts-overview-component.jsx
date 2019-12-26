@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'components/card';
+import CardRowLight from 'components/card/card-row-light';
 import Intro from 'components/intro';
 import cx from 'classnames';
 import ModalMetadata from 'components/modal-metadata';
@@ -14,23 +15,6 @@ import NdcCountryAccordionProvider from 'providers/ndc-country-accordion-provide
 
 import styles from './country-lts-overview-styles.scss';
 
-const CardRow = ({ rowData }) => (
-  <React.Fragment>
-    {rowData && (
-      <div className={styles.cardRow}>
-        <span className={styles.cardTitle}>{rowData.name || ''}</span>
-        <p
-          className={styles.targetText}
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: rowData.value || ''
-          }}
-        />
-      </div>
-    )}
-  </React.Fragment>
-);
-
 const Cards = ({ cardData }) => (
   <div className="grid-column-item">
     <div className={styles.row}>
@@ -41,21 +25,21 @@ const Cards = ({ cardData }) => (
               <div className={styles.cardsRowContainer}>
                 <Card title="Submission" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
-                    <CardRow rowData={cardData.lts_document} />
-                    <CardRow rowData={cardData.lts_date} />
+                    <CardRowLight rowData={cardData.lts_document} />
+                    <CardRowLight rowData={cardData.lts_date} />
                   </div>
                 </Card>
                 <Card title="Mitigation" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
-                    <CardRow rowData={cardData.lts_target} />
-                    <CardRow rowData={cardData.lts_m_tt} />
-                    <CardRow rowData={cardData.lts_zero} />
+                    <CardRowLight rowData={cardData.lts_target} />
+                    <CardRowLight rowData={cardData.lts_m_tt} />
+                    <CardRowLight rowData={cardData.lts_zero} />
                   </div>
                 </Card>
                 <Card title="Modeling" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
-                    <CardRow rowData={cardData.lts_m_sce_yn} />
-                    <CardRow rowData={cardData.lts_m_model} />
+                    <CardRowLight rowData={cardData.lts_m_sce_yn} />
+                    <CardRowLight rowData={cardData.lts_m_model} />
                   </div>
                 </Card>
               </div>
@@ -114,7 +98,7 @@ const CountryLtsOverview = props => {
   );
 };
 
-CardRow.propTypes = {
+CardRowLight.propTypes = {
   rowData: PropTypes.object
 };
 

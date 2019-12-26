@@ -21,11 +21,11 @@
 }
 
 .header {
-  margin-top: 40px;
+  margin: 20px 0;
 }
 
 .actions {
-  @include columns((6, 6));
+  @include columns();
   @include xy-gutters($gutter-position: ('bottom'));
 
   @media #{$tablet-landscape} {
@@ -38,6 +38,10 @@
   color: $theme-color;
   font-weight: $font-weight-bold;
   margin-bottom: 10px;
+
+  &.paddedLeft {
+    padding-left: 15px;
+  }
 }
 
 .descriptionContainer {
@@ -45,11 +49,7 @@
   line-height: $line-height-medium;
   column-count: 1;
   column-gap: $gutter-padding;
-  margin-bottom: 15px;
-
-  @media #{$tablet-landscape} {
-    column-count: 2;
-  }
+  margin-bottom: 60px;
 }
 
 .row {
@@ -90,13 +90,9 @@
   }
 }
 
-.cardContent {
-  margin: 15px;
-
-  a {
-    color: $theme-color;
-    border-bottom: solid 1px $theme-secondary;
-  }
+.cardContent a {
+  color: $theme-color;
+  border-bottom: solid 1px $theme-secondary;
 }
 
 .metaTitle {
@@ -120,12 +116,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 16px;
+}
+
+.list {
+  background-color: white;
+  padding: 16px 28px 24px;
 }
 
 .listItem {
-  font-size: $font-size;
-  color: $theme-color;
   margin-bottom: 5px;
+  display: block;
+  font-size: $font-size-sm;
+  line-height: $line-height-small;
+  color: $theme-color;
+  margin-top: 6px;
 }
 
 .loader {
@@ -141,5 +146,23 @@
 
   @media #{$tablet-landscape} {
     margin-bottom: 0;
+  }
+}
+
+.alertContainer {
+  @include row();
+
+  .alert {
+    text-align: right;
+    margin: 20px 0 18px;
+
+    .alertIcon {
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    .alertText {
+      color: $dark-gray;
+    }
   }
 }

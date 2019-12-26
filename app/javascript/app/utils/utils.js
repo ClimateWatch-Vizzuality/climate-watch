@@ -24,6 +24,7 @@ const replaceAcronyms = string => {
     Ndc: 'NDC',
     Indc: 'INDC',
     Sdg: 'SDG',
+    Lts: 'LTS',
     'Co 2': 'CO2'
   };
   return replaceAll(string, replacements);

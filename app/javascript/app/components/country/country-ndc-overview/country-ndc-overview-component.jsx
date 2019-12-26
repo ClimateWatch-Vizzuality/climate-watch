@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
+import CardRowLight from 'components/card/card-row-light';
 import Intro from 'components/intro';
+import Icon from 'components/icon';
 import cx from 'classnames';
 import ModalMetadata from 'components/modal-metadata';
 import Loading from 'components/loading';
@@ -11,8 +13,14 @@ import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
+import cardTheme from 'styles/themes/card/card-light.scss';
+
+import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
+
 import styles from './country-ndc-overview-styles.scss';
+
+const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 
 class CountryNdcOverview extends PureComponent {
   // eslint-disable-line react/prefer-stateless-function
@@ -75,7 +83,11 @@ class CountryNdcOverview extends PureComponent {
 
   renderCards() {
     const { sectors, values } = this.props;
-    const renderSubtitle = text => <h4 className={styles.subTitle}>{text}</h4>;
+    const renderSubtitle = (text, paddingLeft) => (
+      <h4 className={cx(styles.subTitle, { [styles.paddedLeft]: paddingLeft })}>
+        {text}
+      </h4>
+    );
     return (
       <div className="grid-column-item">
         <div className={styles.row}>
@@ -83,30 +95,26 @@ class CountryNdcOverview extends PureComponent {
             <div className={styles.subtitles}>
               {renderSubtitle('Mitigation contribution')}
               <TabletLandscape>
-                {renderSubtitle('Adaptation contribution')}
+                {renderSubtitle('Adaptation contribution', true)}
               </TabletLandscape>
             </div>
             <div className={styles.cards}>
               <div className="grid-column-item">
                 <div className={styles.cardsRowContainer}>
-                  <Card title="GHG Target">
+                  <Card title="GHG Target" theme={cardTheme} contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
                         <React.Fragment>
-                          <span className={styles.metaTitle}>Target type</span>
-                          <p
-                            className={styles.targetText}
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                              __html: values.ghg_target_type[0].value
+                          <CardRowLight
+                            rowData={{
+                              title: 'Target type',
+                              value: values.ghg_target_type[0].value
                             }}
                           />
-                          <span className={styles.metaTitle}>Target year</span>
-                          <p
-                            className={styles.targetText}
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                              __html: values.time_target_year[0].value
+                          <CardRowLight
+                            rowData={{
+                              title: 'Target year',
+                              value: values.time_target_year[0].value
                             }}
                           />
                         </React.Fragment>
@@ -115,14 +123,13 @@ class CountryNdcOverview extends PureComponent {
                       )}
                     </div>
                   </Card>
-                  <Card title="Non-GHG Target">
+                  <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.non_ghg_target ? (
-                        <p
-                          className={styles.targetText}
-                          // eslint-disable-next-line react/no-danger
-                          dangerouslySetInnerHTML={{
-                            __html: values.non_ghg_target[0].value
+                        <CardRowLight
+                          rowData={{
+                            title: '',
+                            value: values.non_ghg_target[0].value
                           }}
                         />
                       ) : (
@@ -130,14 +137,17 @@ class CountryNdcOverview extends PureComponent {
                       )}
                     </div>
                   </Card>
-                  <Card title="Identified Sectors for Mitigation Action">
+                  <Card
+                    title="Identified Sectors for Mitigation Action"
+                    theme={cardTheme}
+                    contentFirst
+                  >
                     <div className={styles.cardContent}>
                       {values && values.coverage_sectors ? (
-                        <p
-                          className={styles.targetText}
-                          // eslint-disable-next-line react/no-danger
-                          dangerouslySetInnerHTML={{
-                            __html: values.coverage_sectors[0].value
+                        <CardRowLight
+                          rowData={{
+                            title: '',
+                            value: values.coverage_sectors[0].value
                           }}
                         />
                       ) : (
@@ -151,7 +161,11 @@ class CountryNdcOverview extends PureComponent {
                 {renderSubtitle('Adaptation contribution')}
               </TabletPortraitOnly>
               <div className={styles.adaptationList}>
-                <Card title="Identified Sectors for Adaptation Action">
+                <Card
+                  title="Identified Sectors for Adaptation Action"
+                  theme={cardTheme}
+                  contentFirst
+                >
                   <div className={styles.cardContent}>
                     {sectors.length ? (
                       <ul className={styles.list}>
@@ -174,8 +188,30 @@ class CountryNdcOverview extends PureComponent {
     );
   }
 
+  // We can only show the alert when we have the filtered by NDC content
+  renderAlertText = () =>
+    null && (
+      <div className={styles.alertContainer}>
+        <div className={styles.alert}>
+          <Icon icon={alertIcon} className={styles.alertIcon} />
+          <span className={styles.alertText}>
+            The information shown below only reflects the latest NDC submission.
+          </span>
+        </div>
+      </div>
+    );
+
   render() {
-    const { sectors, values, loading, actions, iso, isEmbed } = this.props;
+    const {
+      sectors,
+      values,
+      loading,
+      actions,
+      iso,
+      isEmbed,
+      lastDocument
+    } = this.props;
+    const { date: documentDate } = lastDocument || {};
     const hasSectors = values && sectors;
     const description = hasSectors && (
       <p
@@ -189,9 +225,16 @@ class CountryNdcOverview extends PureComponent {
         }}
       />
     );
-
+    const summaryIntroText = !lastDocument
+      ? 'Summary'
+      : `Summary of ${lastDocument.document_type &&
+          lastDocument.document_type.toUpperCase()}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
+        {FEATURE_LTS_EXPLORE &&
+          hasSectors &&
+          !loading &&
+          this.renderAlertText()}
         <NdcContentOverviewProvider locations={[iso]} />
         {!hasSectors && !loading ? (
           <NoContent
@@ -210,12 +253,11 @@ class CountryNdcOverview extends PureComponent {
                     <Intro
                       theme={introTheme}
                       title={
-                        actions ? (
-                          'Nationally Determined Contribution (NDC) Overview'
-                        ) : (
-                          'Summary'
-                        )
+                        actions
+                          ? 'Nationally Determined Contribution (NDC) Overview'
+                          : summaryIntroText
                       }
+                      subtitle={documentDate && `(submitted[${documentDate}])`}
                     />
                     <TabletPortraitOnly>{description}</TabletPortraitOnly>
                     {actions && (
@@ -255,6 +297,7 @@ CountryNdcOverview.propTypes = {
   isNdcp: PropTypes.bool,
   isEmbed: PropTypes.bool,
   handleInfoClick: PropTypes.func.isRequired,
+  lastDocument: PropTypes.object,
   handleAnalyticsClick: PropTypes.func.isRequired
 };
 

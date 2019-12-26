@@ -34,7 +34,7 @@ export const getCardsData = createSelector(
       return {
         ...acc,
         [slug]: {
-          name,
+          title: name,
           value: locations[iso] && locations[iso][0] && locations[iso][0].value
         }
       };

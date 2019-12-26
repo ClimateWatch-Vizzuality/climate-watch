@@ -4,50 +4,85 @@
   @include row('shrink', $wrap: false);
 }
 
-.doubleFold {
-  @include row(12);
-
-  > :not(:first-child) {
-    @include xy-gutters($gutter-position: ('bottom'));
-  }
-
-  z-index: $z-index-sticky;
-
-  > :nth-child(4) {
-    height: 100%;
-  }
+.compareButton {
+  @include row();
 
   @media #{$tablet-portrait} {
-    @include row((12, 6, 6));
-
-    > :not(:first-child) {
-      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
-    }
-  }
-
-  @media #{$tablet-landscape} {
-    @include row((5, 3, 2, 2));
-
-    > :not(:first-child) {
-      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
-    }
-
-    z-index: $z-index-base;
+    @include row(6);
   }
 }
 
+.title {
+  @include row();
+}
+
 .backButton {
-  margin-right: 20px;
+  @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+
+  > a {
+    color: $white;
+  }
+}
+
+.viewDocumentButton {
+  @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+
+  @media #{$tablet-portrait} {
+    @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+  }
 }
 
 .backIcon {
   fill: $white;
-  width: 60px;
-  height: 60px;
+  width: 38px;
+  height: 12px;
+  margin-right: 24px;
 }
 
-.title {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+.actionsContainer {
+  @include row();
+
+  z-index: $z-index-sticky;
+
+  @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+
+  @media #{$tablet-portrait} {
+    @include row(6);
+    @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+
+    &.withSearch {
+      @include row((6, 3, 3));
+    }
+
+    &.withoutBack {
+      @include row((12, 6, 6));
+      @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+
+      &.withSearch {
+        @include row(6);
+        @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+      }
+    }
+  }
+
+  @media #{$tablet-landscape} {
+    @include row((9, 3));
+
+    &.withSearch {
+      @include row((6, 3, 3));
+    }
+
+    &.withoutBack {
+      @include row((9, 3));
+      @include xy-gutters($gutter-position: ('right'), $gutters: $gutter-padding);
+      @include column-offset(9);
+
+      &.withSearch {
+        @include row((6, 3, 3));
+        @include column-offset(6);
+      }
+    }
+
+    z-index: $z-index-base;
+  }
 }
