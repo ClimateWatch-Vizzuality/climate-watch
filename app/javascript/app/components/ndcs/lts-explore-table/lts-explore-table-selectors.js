@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { deburrUpper } from 'app/utils';
+import { deburrUpper, filterQuery } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
@@ -8,7 +8,7 @@ import { getMapIndicator } from 'components/ndcs/lts-explore-map/lts-explore-map
 const getCountries = state => state.countries || null;
 const getCategories = state => state.categories || null;
 const getIndicatorsData = state => state.indicators || null;
-const getQuery = state => deburrUpper(state.query) || '';
+export const getQuery = state => deburrUpper(state.query) || '';
 
 export const getISOCountries = createSelector([getCountries], countries =>
   countries.map(country => country.iso_code3)
@@ -40,41 +40,25 @@ export const tableGetSelectedData = createSelector(
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
-
-    const refIndicator = indicators[0];
+    const refIndicator =
+      indicators.find(i => i.value === 'lts_submission') || indicators[0];
 
     return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].value !== 'No Document Submitted') {
-        const countryData =
-          countries.find(country => country.iso_code3 === iso) || {};
-        const row = {
-          country: countryData.wri_standard_name || iso,
-          iso
-        };
-        indicators.forEach(ind => {
-          if (ind.locations[iso]) {
-            row[ind.label] = ind.locations[iso].value;
-          }
-        });
-        return row;
+      if (refIndicator.locations[iso].value === 'No Document Submitted') {
+        return false;
       }
-      return false;
-    });
-  }
-);
-
-export const tableGetFilteredData = createSelector(
-  [tableGetSelectedData, getQuery],
-  (data, query) => {
-    if (!data || isEmpty(data)) return null;
-    return data.filter(d => {
-      let match = false;
-      Object.keys(d).forEach(col => {
-        if (deburrUpper(d[col]).indexOf(query) > -1) {
-          match = true;
+      const countryData =
+        countries.find(country => country.iso_code3 === iso) || {};
+      const row = {
+        country: countryData.wri_standard_name || iso,
+        iso
+      };
+      indicators.forEach(ind => {
+        if (ind.locations[iso]) {
+          row[ind.label] = ind.locations[iso].value;
         }
       });
-      return match;
+      return row;
     });
   }
 );
@@ -116,7 +100,7 @@ export const getDefaultColumns = createSelector(
 );
 
 export const addIndicatorColumn = createSelector(
-  [tableGetFilteredData, getMapIndicator, getSelectedIndicatorHeader],
+  [tableGetSelectedData, getMapIndicator, getSelectedIndicatorHeader],
   (data, selectedIndicator, selectedIndicatorHeader) => {
     if (!data || isEmpty(data)) return null;
     const updatedTableData = data;
@@ -151,7 +135,7 @@ const addDocumentTarget = createSelector([addIndicatorColumn], data => {
   });
 });
 
-export const getFilteredData = createSelector(
+const getFilteredData = createSelector(
   [addDocumentTarget, getDefaultColumns],
   (data, columnHeaders) => {
     if (!data || isEmpty(data)) return null;
@@ -165,5 +149,13 @@ export const getFilteredData = createSelector(
       });
       return filteredAndChangedHeadersD;
     });
+  }
+);
+
+export const getFilteredDataBySearch = createSelector(
+  [getFilteredData, getQuery],
+  (data, query) => {
+    if (!data || isEmpty(data)) return null;
+    return filterQuery(data, query);
   }
 );

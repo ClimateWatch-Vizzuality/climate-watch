@@ -7,8 +7,9 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+import { sortByIndexAndNotInfo } from 'components/ndcs/shared/utils';
 
-const NO_INFORMATION_LABEL = 'No information';
+const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -45,7 +46,7 @@ export const getIndicatorsParsed = createSelector(
             i.locations,
             i.labels,
             isos,
-            NO_INFORMATION_LABEL
+            NO_DOCUMENT_SUBMITTED
           );
           return {
             label: i.name,
@@ -184,12 +185,12 @@ export const getLegend = createSelector(
       ...indicator.legendBuckets[id],
       id
     }));
-    return sortBy(
+    const legendItems = uniqBy(
       bucketsWithId.map(label => {
         let partiesNumber = Object.values(indicator.locations).filter(
           l => l.label_id === parseInt(label.id, 10)
         ).length;
-        if (label.name === NO_INFORMATION_LABEL) {
+        if (label.name === NO_DOCUMENT_SUBMITTED) {
           partiesNumber =
             maximumCountries - Object.values(indicator.locations).length;
         }
@@ -200,8 +201,10 @@ export const getLegend = createSelector(
           color: getColorByIndex(indicator.legendBuckets, label.index)
         };
       }),
-      'index'
-    ).reverse();
+      'name'
+    );
+
+    return legendItems.sort(sortByIndexAndNotInfo);
   }
 );
 
@@ -233,7 +236,7 @@ export const getEmissionsCardData = createSelector(
       return {
         name: camelCase(legendItem.name),
         value:
-          legendItem.name === NO_INFORMATION_LABEL
+          legendItem.name === NO_DOCUMENT_SUBMITTED
             ? 100 - summedPercentage
             : legendItemValue
       };

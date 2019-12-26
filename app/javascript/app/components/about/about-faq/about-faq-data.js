@@ -195,9 +195,9 @@ export const sectionsData = [
       {
         type: 'table',
         title:
-          'What data source should I use? What are the main differences between the data sources?',
+          'Which data sources does Climate Watch use? What are the differences between these data sources?',
         answer:
-          '<p>Depending on what you are using the data for, there are certain advantages and disadvantages of each source. The table below provides information on the differences between the datasets included in Climate Watch that can help you decide which source is most appropriate for your use. Please note that in some cases, the data included in Climate Watch is only a subset of the data available from the original source.</p><table />',
+          '<p>Climate Watch uses four different historical emissions data sources that are all slightly different in their scope and methodology. Depending on what you are using the data for, there are certain advantages and disadvantages of each source. The table below provides information on the differences between the datasets included in Climate Watch that can help you decide which source is most appropriate for your use. Please note that in some cases, the data included in Climate Watch is only a subset of the data available from the original source.</p><table />',
         tableData: [
           {
             '': 'Summary',

@@ -103,20 +103,6 @@
   min-height: 450px;
 }
 
-.card {
-  color: "pink";
-  border-radius: 6px;
-  border-color: transparent;
-}
-
-.contentContainer {
-  background-color: #ecf1fa;
-  display: flex;
-  align-items: center;
-  padding: 0 30px;
-  min-height: 70px;
-}
-
 .cardRow {
   background-color: white;
   padding: 16px 28px 24px;
@@ -124,12 +110,4 @@
   &:not(:last-child) {
     border-bottom: 2px solid #e8ecf5;
   }
-}
-
-.title {
-  font-weight: $font-weight;
-}
-
-.data {
-  background-color: white;
 }

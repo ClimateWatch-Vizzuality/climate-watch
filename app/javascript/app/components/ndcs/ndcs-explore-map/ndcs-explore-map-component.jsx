@@ -29,7 +29,7 @@ const renderButtonGroup = (clickHandler, downloadLink) => (
       },
       {
         type: 'share',
-        shareUrl: '/embed/ndcs-ndcs',
+        shareUrl: '/embed/ndcs-explore',
         analyticsGraphName: 'Ndcs',
         positionRight: true
       },
