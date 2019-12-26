@@ -38,6 +38,10 @@
   color: $theme-color;
   font-weight: $font-weight-bold;
   margin-bottom: 10px;
+
+  &.paddedLeft {
+    padding-left: 15px;
+  }
 }
 
 .descriptionContainer {
@@ -115,10 +119,18 @@
   padding: 16px;
 }
 
+.list {
+  background-color: white;
+  padding: 16px 28px 24px;
+}
+
 .listItem {
-  font-size: $font-size;
-  color: $theme-color;
   margin-bottom: 5px;
+  display: block;
+  font-size: $font-size-sm;
+  line-height: $line-height-small;
+  color: $theme-color;
+  margin-top: 6px;
 }
 
 .loader {

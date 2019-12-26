@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
-import CardRow from 'components/card/card-row-light';
+import CardRowLight from 'components/card/card-row-light';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
@@ -83,7 +83,11 @@ class CountryNdcOverview extends PureComponent {
 
   renderCards() {
     const { sectors, values } = this.props;
-    const renderSubtitle = text => <h4 className={styles.subTitle}>{text}</h4>;
+    const renderSubtitle = (text, paddingLeft) => (
+      <h4 className={cx(styles.subTitle, { [styles.paddedLeft]: paddingLeft })}>
+        {text}
+      </h4>
+    );
     return (
       <div className="grid-column-item">
         <div className={styles.row}>
@@ -91,7 +95,7 @@ class CountryNdcOverview extends PureComponent {
             <div className={styles.subtitles}>
               {renderSubtitle('Mitigation contribution')}
               <TabletLandscape>
-                {renderSubtitle('Adaptation contribution')}
+                {renderSubtitle('Adaptation contribution', true)}
               </TabletLandscape>
             </div>
             <div className={styles.cards}>
@@ -101,13 +105,13 @@ class CountryNdcOverview extends PureComponent {
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
                         <React.Fragment>
-                          <CardRow
+                          <CardRowLight
                             rowData={{
                               title: 'Target type',
                               value: values.ghg_target_type[0].value
                             }}
                           />
-                          <CardRow
+                          <CardRowLight
                             rowData={{
                               title: 'Target year',
                               value: values.time_target_year[0].value
@@ -122,14 +126,12 @@ class CountryNdcOverview extends PureComponent {
                   <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.non_ghg_target ? (
-                        <React.Fragment>
-                          <CardRow
-                            rowData={{
-                              title: '',
-                              value: values.non_ghg_target[0].value
-                            }}
-                          />
-                        </React.Fragment>
+                        <CardRowLight
+                          rowData={{
+                            title: '',
+                            value: values.non_ghg_target[0].value
+                          }}
+                        />
                       ) : (
                         <div className={styles.noContent}>Not included</div>
                       )}
@@ -142,14 +144,12 @@ class CountryNdcOverview extends PureComponent {
                   >
                     <div className={styles.cardContent}>
                       {values && values.coverage_sectors ? (
-                        <React.Fragment>
-                          <CardRow
-                            rowData={{
-                              title: '',
-                              value: values.coverage_sectors[0].value
-                            }}
-                          />
-                        </React.Fragment>
+                        <CardRowLight
+                          rowData={{
+                            title: '',
+                            value: values.coverage_sectors[0].value
+                          }}
+                        />
                       ) : (
                         <div className={styles.noContent}>Not included</div>
                       )}
@@ -188,6 +188,19 @@ class CountryNdcOverview extends PureComponent {
     );
   }
 
+  // We can only show the alert when we have the filtered by NDC content
+  renderAlertText = () =>
+    null && (
+      <div className={styles.alertContainer}>
+        <div className={styles.alert}>
+          <Icon icon={alertIcon} className={styles.alertIcon} />
+          <span className={styles.alertText}>
+            The information shown below only reflects the latest NDC submission.
+          </span>
+        </div>
+      </div>
+    );
+
   render() {
     const {
       sectors,
@@ -218,17 +231,10 @@ class CountryNdcOverview extends PureComponent {
           lastDocument.document_type.toUpperCase()}`;
     return (
       <div className={cx(styles.wrapper, { [styles.embededWrapper]: isEmbed })}>
-        {FEATURE_LTS_EXPLORE && hasSectors && !loading && (
-          <div className={styles.alertContainer}>
-            <div className={styles.alert}>
-              <Icon icon={alertIcon} className={styles.alertIcon} />
-              <span className={styles.alertText}>
-                The information shown below only reflects the latest NDC
-                submission.
-              </span>
-            </div>
-          </div>
-        )}
+        {FEATURE_LTS_EXPLORE &&
+          hasSectors &&
+          !loading &&
+          this.renderAlertText()}
         <NdcContentOverviewProvider locations={[iso]} />
         {!hasSectors && !loading ? (
           <NoContent

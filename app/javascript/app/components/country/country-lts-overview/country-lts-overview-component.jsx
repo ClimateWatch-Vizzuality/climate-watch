@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'components/card';
-import CardRow from 'components/card/card-row-light';
+import CardRowLight from 'components/card/card-row-light';
 import Intro from 'components/intro';
 import cx from 'classnames';
 import ModalMetadata from 'components/modal-metadata';
@@ -25,21 +25,21 @@ const Cards = ({ cardData }) => (
               <div className={styles.cardsRowContainer}>
                 <Card title="Submission" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
-                    <CardRow rowData={cardData.lts_document} />
-                    <CardRow rowData={cardData.lts_date} />
+                    <CardRowLight rowData={cardData.lts_document} />
+                    <CardRowLight rowData={cardData.lts_date} />
                   </div>
                 </Card>
                 <Card title="Mitigation" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
-                    <CardRow rowData={cardData.lts_target} />
-                    <CardRow rowData={cardData.lts_m_tt} />
-                    <CardRow rowData={cardData.lts_zero} />
+                    <CardRowLight rowData={cardData.lts_target} />
+                    <CardRowLight rowData={cardData.lts_m_tt} />
+                    <CardRowLight rowData={cardData.lts_zero} />
                   </div>
                 </Card>
                 <Card title="Modeling" contentFirst theme={cardTheme}>
                   <div className={styles.cardContent}>
-                    <CardRow rowData={cardData.lts_m_sce_yn} />
-                    <CardRow rowData={cardData.lts_m_model} />
+                    <CardRowLight rowData={cardData.lts_m_sce_yn} />
+                    <CardRowLight rowData={cardData.lts_m_model} />
                   </div>
                 </Card>
               </div>
@@ -98,7 +98,7 @@ const CountryLtsOverview = props => {
   );
 };
 
-CardRow.propTypes = {
+CardRowLight.propTypes = {
   rowData: PropTypes.object
 };
 
