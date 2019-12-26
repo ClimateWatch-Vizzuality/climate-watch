@@ -112,7 +112,8 @@ export default [
   },
   FEATURE_COMMITMENTS_OVERVIEW && {
     path: '/ndc-overview',
-    component: NdcOverview
+    component: NdcOverview,
+    headerImage: 'ndc'
   },
   {
     path: '/ndcs/country/:iso/full',
