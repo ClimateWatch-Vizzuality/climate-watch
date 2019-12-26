@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'components/card';
+import CardRow from 'components/card/card-row-light';
 import Intro from 'components/intro';
 import cx from 'classnames';
 import ModalMetadata from 'components/modal-metadata';
@@ -20,23 +21,6 @@ const theme = {
   data,
   title
 };
-
-const CardRow = ({ rowData }) => (
-  <React.Fragment>
-    {rowData && (
-      <div className={styles.cardRow}>
-        <span className={styles.cardTitle}>{rowData.name || ''}</span>
-        <p
-          className={styles.targetText}
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: rowData.value || ''
-          }}
-        />
-      </div>
-    )}
-  </React.Fragment>
-);
 
 const Cards = ({ cardData }) => (
   <div className="grid-column-item">

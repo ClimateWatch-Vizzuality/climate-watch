@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'components/button';
 import Card from 'components/card';
+import CardRow from 'components/card/card-row-light';
 import Intro from 'components/intro';
 import Icon from 'components/icon';
 import cx from 'classnames';
@@ -12,8 +13,11 @@ import ButtonGroup from 'components/button-group';
 import { TabletLandscape, TabletPortraitOnly } from 'components/responsive';
 import introTheme from 'styles/themes/intro/intro-simple.scss';
 import layout from 'styles/layout.scss';
+import cardTheme from 'styles/themes/card/card-light.scss';
+
 import alertIcon from 'assets/icons/alert.svg';
 import NdcContentOverviewProvider from 'providers/ndc-content-overview-provider';
+
 import styles from './country-ndc-overview-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
@@ -93,24 +97,20 @@ class CountryNdcOverview extends PureComponent {
             <div className={styles.cards}>
               <div className="grid-column-item">
                 <div className={styles.cardsRowContainer}>
-                  <Card title="GHG Target">
+                  <Card title="GHG Target" theme={cardTheme} contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.ghg_target_type ? (
                         <React.Fragment>
-                          <span className={styles.metaTitle}>Target type</span>
-                          <p
-                            className={styles.targetText}
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                              __html: values.ghg_target_type[0].value
+                          <CardRow
+                            rowData={{
+                              title: 'Target type',
+                              value: values.ghg_target_type[0].value
                             }}
                           />
-                          <span className={styles.metaTitle}>Target year</span>
-                          <p
-                            className={styles.targetText}
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                              __html: values.time_target_year[0].value
+                          <CardRow
+                            rowData={{
+                              title: 'Target year',
+                              value: values.time_target_year[0].value
                             }}
                           />
                         </React.Fragment>
@@ -119,31 +119,37 @@ class CountryNdcOverview extends PureComponent {
                       )}
                     </div>
                   </Card>
-                  <Card title="Non-GHG Target">
+                  <Card title="Non-GHG Target" theme={cardTheme} contentFirst>
                     <div className={styles.cardContent}>
                       {values && values.non_ghg_target ? (
-                        <p
-                          className={styles.targetText}
-                          // eslint-disable-next-line react/no-danger
-                          dangerouslySetInnerHTML={{
-                            __html: values.non_ghg_target[0].value
-                          }}
-                        />
+                        <React.Fragment>
+                          <CardRow
+                            rowData={{
+                              title: '',
+                              value: values.non_ghg_target[0].value
+                            }}
+                          />
+                        </React.Fragment>
                       ) : (
                         <div className={styles.noContent}>Not included</div>
                       )}
                     </div>
                   </Card>
-                  <Card title="Identified Sectors for Mitigation Action">
+                  <Card
+                    title="Identified Sectors for Mitigation Action"
+                    theme={cardTheme}
+                    contentFirst
+                  >
                     <div className={styles.cardContent}>
                       {values && values.coverage_sectors ? (
-                        <p
-                          className={styles.targetText}
-                          // eslint-disable-next-line react/no-danger
-                          dangerouslySetInnerHTML={{
-                            __html: values.coverage_sectors[0].value
-                          }}
-                        />
+                        <React.Fragment>
+                          <CardRow
+                            rowData={{
+                              title: '',
+                              value: values.coverage_sectors[0].value
+                            }}
+                          />
+                        </React.Fragment>
                       ) : (
                         <div className={styles.noContent}>Not included</div>
                       )}
@@ -155,7 +161,11 @@ class CountryNdcOverview extends PureComponent {
                 {renderSubtitle('Adaptation contribution')}
               </TabletPortraitOnly>
               <div className={styles.adaptationList}>
-                <Card title="Identified Sectors for Adaptation Action">
+                <Card
+                  title="Identified Sectors for Adaptation Action"
+                  theme={cardTheme}
+                  contentFirst
+                >
                   <div className={styles.cardContent}>
                     {sectors.length ? (
                       <ul className={styles.list}>
