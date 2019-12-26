@@ -40,25 +40,25 @@ export const tableGetSelectedData = createSelector(
     if (!indicators || !indicators.length || !indicators[0].locations) {
       return [];
     }
-
-    const refIndicator = indicators[0];
+    const refIndicator =
+      indicators.find(i => i.value === 'lts_submission') || indicators[0];
 
     return Object.keys(refIndicator.locations).map(iso => {
-      if (refIndicator.locations[iso].value !== 'No Document Submitted') {
-        const countryData =
-          countries.find(country => country.iso_code3 === iso) || {};
-        const row = {
-          country: countryData.wri_standard_name || iso,
-          iso
-        };
-        indicators.forEach(ind => {
-          if (ind.locations[iso]) {
-            row[ind.label] = ind.locations[iso].value;
-          }
-        });
-        return row;
+      if (refIndicator.locations[iso].value === 'No Document Submitted') {
+        return false;
       }
-      return false;
+      const countryData =
+        countries.find(country => country.iso_code3 === iso) || {};
+      const row = {
+        country: countryData.wri_standard_name || iso,
+        iso
+      };
+      indicators.forEach(ind => {
+        if (ind.locations[iso]) {
+          row[ind.label] = ind.locations[iso].value;
+        }
+      });
+      return row;
     });
   }
 );
