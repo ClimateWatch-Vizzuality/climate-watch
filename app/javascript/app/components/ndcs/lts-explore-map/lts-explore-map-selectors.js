@@ -7,6 +7,7 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { PATH_LAYERS } from 'app/data/constants';
 import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
+import { sortByIndexAndNotInfo } from 'components/ndcs/shared/utils';
 
 const NO_DOCUMENT_SUBMITTED = 'No Document Submitted';
 
@@ -203,14 +204,7 @@ export const getLegend = createSelector(
       'name'
     );
 
-    const sortByIndexAndNotSubmitted = (a, b) => {
-      const isNotSubmitted = i => i.index <= 0;
-      if (isNotSubmitted(a)) return 1;
-      if (isNotSubmitted(b)) return -1;
-      return a.index - b.index;
-    };
-
-    return legendItems.sort(sortByIndexAndNotSubmitted);
+    return legendItems.sort(sortByIndexAndNotInfo);
   }
 );
 
