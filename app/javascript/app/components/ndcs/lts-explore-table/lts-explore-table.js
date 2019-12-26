@@ -55,7 +55,7 @@ class LTSExploreTableContainer extends PureComponent {
       tableWidth: 1170,
       narrowColumnWidth: 110,
       wideColumnWidth: 380,
-      narrowColumns: [0, 3, 4],
+      narrowColumns: [0, 3],
       wideColumns: [1]
     });
 
