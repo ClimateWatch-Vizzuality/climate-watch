@@ -54,8 +54,7 @@ export const addUrlToCountries = createSelector(
       .filter(c => c.iso_code3 !== country.iso_code3)
       .map(c => ({
         value: c.iso_code3,
-        label: c.wri_standard_name,
-        path: `/ndcs/country/${c.iso_code3}`
+        label: c.wri_standard_name
       }));
   }
 );
