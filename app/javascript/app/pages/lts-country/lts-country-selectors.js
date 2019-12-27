@@ -44,3 +44,16 @@ export const getDocumentsOptions = createSelector(
     }));
   }
 );
+
+export const addUrlToCountries = createSelector(
+  [getCountries, getCountry],
+  (countries, country) => {
+    if (!countries) return null;
+    return countries
+      .filter(c => c.iso_code3 !== country.iso_code3)
+      .map(c => ({
+        value: c.iso_code3,
+        label: c.wri_standard_name
+      }));
+  }
+);

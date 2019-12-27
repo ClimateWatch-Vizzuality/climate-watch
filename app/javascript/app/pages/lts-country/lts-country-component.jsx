@@ -10,14 +10,17 @@ import Search from 'components/search';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
+import { Dropdown as CWDropdown } from 'cw-components';
 import { LTS_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletLandscape } from 'components/responsive';
 import longArrowBack from 'assets/icons/long-arrow-back.svg';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import { previousPathLabel, getPreviousLinkTo } from 'app/utils/history';
+
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
+import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import styles from './lts-country-styles.scss';
 
 class LTSCountry extends PureComponent {
@@ -78,7 +81,9 @@ class LTSCountry extends PureComponent {
       search,
       route,
       anchorLinks,
-      notSummary
+      notSummary,
+      countriesOptions,
+      handleCountryLink
     } = this.props;
 
     const hasSearch = notSummary;
@@ -90,6 +95,26 @@ class LTSCountry extends PureComponent {
     ];
     const lastPathLabel = previousPathLabel(clearRegexs, directLinksRegexs);
     const countryName = country && `${country.wri_standard_name}`;
+
+    const renderIntroDropdown = () => (
+      <Intro
+        title={
+          <CWDropdown
+            value={
+              country && {
+                label: country.wri_standard_name,
+                value: country.iso_code3
+              }
+            }
+            options={countriesOptions}
+            onValueChange={handleCountryLink}
+            hideResetButton
+            theme={countryDropdownTheme}
+          />
+        }
+      />
+    );
+
     return (
       <div>
         <MetaDescription
@@ -120,9 +145,7 @@ class LTSCountry extends PureComponent {
                   />
                 )}
               </div>
-              <div className={styles.title}>
-                <Intro title={country.wri_standard_name} />
-              </div>
+              <div className={styles.title}>{renderIntroDropdown()}</div>
               <TabletLandscape>{this.renderCompareButton()}</TabletLandscape>
             </div>
             <Sticky activeClass="sticky -ndcs" top="#navBarMobile">
@@ -151,7 +174,9 @@ LTSCountry.propTypes = {
   notSummary: PropTypes.bool,
   match: PropTypes.object.isRequired,
   documentsOptions: PropTypes.array,
-  goBack: PropTypes.func.isRequired
+  goBack: PropTypes.func.isRequired,
+  handleCountryLink: PropTypes.func.isRequired,
+  countriesOptions: PropTypes.array
 };
 
 export default LTSCountry;
