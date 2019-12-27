@@ -9,7 +9,8 @@ import NDCCountryComponent from './ndc-country-component';
 import {
   getCountry,
   getAnchorLinks,
-  getDocumentsOptions
+  getDocumentsOptions,
+  addUrlToCountries
 } from './ndc-country-selectors';
 
 const mapStateToProps = (state, { match, location, route }) => {
@@ -35,7 +36,9 @@ const mapStateToProps = (state, { match, location, route }) => {
     'adaptation',
     'sectoral-information'
   ].includes(pathname[pathname.length - 1]);
+
   return {
+    countriesOptions: addUrlToCountries(countryData),
     country: getCountry(countryData),
     search: search.search,
     anchorLinks: getAnchorLinks(routeData),
@@ -58,18 +61,29 @@ class NDCCountryContainer extends PureComponent {
     this.props.history.push(selected.path);
   };
 
+  handleCountryLink = selected => {
+    const { history, country } = this.props;
+    const path = history.location.pathname.replace(
+      country.iso_code3,
+      selected.value
+    );
+    history.push(path);
+  };
+
   render() {
     return createElement(NDCCountryComponent, {
       ...this.props,
       onSearchChange: this.onSearchChange,
-      handleDropDownChange: this.handleDropDownChange
+      handleDropDownChange: this.handleDropDownChange,
+      handleCountryLink: this.handleCountryLink
     });
   }
 }
 
 NDCCountryContainer.propTypes = {
   history: Proptypes.object.isRequired,
-  location: Proptypes.object.isRequired
+  location: Proptypes.object.isRequired,
+  country: Proptypes.object.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, null)(NDCCountryContainer));

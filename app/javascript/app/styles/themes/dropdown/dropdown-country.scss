@@ -1,0 +1,81 @@
+@import '~styles/settings.scss';
+
+$min-width: 250px;
+
+.dropdown :global {
+  .react-selectize-control {
+    border: none !important;
+    box-shadow: none !important;
+    min-height: 70px;
+
+    .react-selectize-toggle-button-container {
+      flex-grow: 0;
+
+      > svg {
+        fill: white;
+        width: 13px;
+        height: 8px;
+        position: absolute;
+        top: calc(50% + 2px);
+      }
+    }
+
+    .simple-value {
+      font-size: $font-size-xl-large;
+      color: $white;
+      width: auto !important;
+
+      > span {
+        overflow: visible !important;
+        width: auto !important;
+      }
+    }
+
+    .resizable-input {
+      min-height: 56px;
+      max-height: 56px;
+      min-width: $min-width;
+      width: auto;
+      padding-bottom: 28px !important;
+      font-size: $font-size-xl-large !important;
+      font-weight: $font-weight-light !important;
+      color: $white !important;
+      overflow: visible !important;
+      visibility: hidden;
+    }
+  }
+
+  .open {
+    .resizable-input {
+      visibility: visible;
+    }
+
+    .simple-select {
+      max-width: $min-width + 45px;
+    }
+
+    .react-selectize-toggle-button-container {
+      > svg {
+        top: calc(50% - 10px);
+      }
+    }
+  }
+
+  .simple-select {
+    margin-top: 10px !important;
+    border-radius: 5px;
+
+    .simple-option,
+    .no-results-found {
+      font-size: $font-size;
+      font-weight: $font-weight;
+    }
+  }
+
+  .react-selectize-search-field-and-selected-values {
+    min-width: $min-width;
+    overflow: visible !important;
+    flex-grow: 0 !important;
+    width: auto !important;
+  }
+}

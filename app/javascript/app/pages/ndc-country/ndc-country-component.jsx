@@ -12,6 +12,7 @@ import Sticky from 'react-stickynode';
 import AnchorNav from 'components/anchor-nav';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
 import Dropdown from 'components/dropdown';
+import { Dropdown as CWDropdown } from 'cw-components';
 import { NDC_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletLandscape } from 'components/responsive';
@@ -19,7 +20,8 @@ import longArrowBack from 'assets/icons/long-arrow-back.svg';
 import { toStartCase } from 'app/utils';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
-import theme from 'styles/themes/dropdown/dropdown-links.scss';
+import dropdownLinksTheme from 'styles/themes/dropdown/dropdown-links.scss';
+import countryDropdownTheme from 'styles/themes/dropdown/dropdown-country.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './ndc-country-styles.scss';
 
@@ -64,7 +66,7 @@ class NDCCountry extends PureComponent {
       documentsOptions &&
       (documentsOptions.length > 1 ? (
         <Dropdown
-          className={theme.dropdownOptionWithArrow}
+          className={dropdownLinksTheme.dropdownOptionWithArrow}
           placeholder="View full text"
           options={documentsOptions}
           onValueChange={handleDropDownChange}
@@ -115,7 +117,9 @@ class NDCCountry extends PureComponent {
       route,
       anchorLinks,
       notSummary,
-      location
+      location,
+      countriesOptions,
+      handleCountryLink
     } = this.props;
 
     const countryName = country && `${country.wri_standard_name}`;
@@ -126,6 +130,25 @@ class NDCCountry extends PureComponent {
     const previousPathLabel = shouldClearPath(previousPathname)
       ? null
       : getPreviousPathLabel(previousPathname);
+
+    const renderIntroDropdown = () => (
+      <Intro
+        title={
+          <CWDropdown
+            value={
+              country && {
+                label: country.wri_standard_name,
+                value: country.iso_code3
+              }
+            }
+            options={countriesOptions}
+            onValueChange={handleCountryLink}
+            hideResetButton
+            theme={countryDropdownTheme}
+          />
+        }
+      />
+    );
 
     return (
       <div>
@@ -147,11 +170,7 @@ class NDCCountry extends PureComponent {
                   [styles.withoutBack]: !previousPathname
                 })}
               >
-                {!FEATURE_LTS_EXPLORE && (
-                  <div>
-                    <Intro title={country.wri_standard_name} />
-                  </div>
-                )}
+                {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
                 {FEATURE_LTS_EXPLORE && previousPathLabel && (
                   <div className={styles.backButton}>
                     <Link
@@ -179,9 +198,7 @@ class NDCCountry extends PureComponent {
                 )}
               </div>
               {FEATURE_LTS_EXPLORE && (
-                <div className={styles.title}>
-                  <Intro title={country.wri_standard_name} />
-                </div>
+                <div className={styles.title}>{renderIntroDropdown()}</div>
               )}
               <TabletLandscape>
                 {FEATURE_LTS_EXPLORE && this.renderCompareButton()}
@@ -209,9 +226,11 @@ NDCCountry.propTypes = {
   match: PropTypes.object.isRequired,
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
+  handleCountryLink: PropTypes.func.isRequired,
   search: PropTypes.string,
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,
+  countriesOptions: PropTypes.array,
   handleDropDownChange: PropTypes.func,
   location: PropTypes.object,
   notSummary: PropTypes.bool
