@@ -205,6 +205,7 @@ NDCCountry.propTypes = {
   handleCountryLink: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
   handleCountryLink: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
   search: PropTypes.string,
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,
