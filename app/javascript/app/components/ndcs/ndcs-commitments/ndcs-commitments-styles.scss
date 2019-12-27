@@ -1,0 +1,42 @@
+@import '~styles/settings.scss';
+@import '~styles/layout.scss';
+
+.commitmentContainer {
+  border-top: solid 1px $border-color;
+}
+
+.commitmentWrapper {
+  display: flex;
+  padding: 64px 0;
+  margin: 0;
+
+  @include columns(6);
+}
+
+.commitmentText {
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  justify-content: space-between;
+}
+
+.title {
+  color: $theme-color;
+  font-family: $font-family-1;
+  font-weight: $font-weight-light;
+  font-size: 36px;
+  line-height: $line-height-title;
+  margin-bottom: 24px;
+}
+
+.description {
+  color: $theme-color-intense;
+  font-size: $font-size;
+  line-height: $line-height-modal;
+  margin-bottom: 20px;
+}
+
+.hint {
+  color: $manatee;
+  line-height: $line-height-modal;
+}
