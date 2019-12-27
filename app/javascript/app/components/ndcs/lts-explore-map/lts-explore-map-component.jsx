@@ -14,36 +14,34 @@ import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
+import ShareButton from 'components/button/share-button';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './lts-explore-map-styles.scss';
 
 const renderButtonGroup = clickHandler => (
-  <ButtonGroup
-    className={styles.buttonGroup}
-    buttonsConfig={[
-      {
-        type: 'info',
-        onClick: clickHandler
-      },
-      {
-        type: 'share',
-        shareUrl: '/embed/lts-explore',
-        analyticsGraphName: 'Lts',
-        positionRight: true
-      },
-      {
-        type: 'download',
-        section: 'lts-explore',
-        // link: downloadLink,
-        disabled: true
-      },
-      {
-        type: 'addToUser'
-      }
-    ]}
-  />
+  <div className={styles.buttonGroupContainer}>
+    <ButtonGroup
+      className={styles.buttonGroup}
+      buttonsConfig={[
+        {
+          type: 'info',
+          onClick: clickHandler
+        },
+        {
+          type: 'download',
+          section: 'lts-explore',
+          // link: downloadLink,
+          disabled: true
+        },
+        {
+          type: 'addToUser'
+        }
+      ]}
+    />
+    <ShareButton analyticsName="LTS Explore" sharePath="/embed/lts-explore" />
+  </div>
 );
 
 const renderSummary = summaryData => (

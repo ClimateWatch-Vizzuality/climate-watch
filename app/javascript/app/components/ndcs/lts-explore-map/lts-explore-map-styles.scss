@@ -18,14 +18,6 @@
   @include columns();
 }
 
-.buttonGroup {
-  width: auto;
-  margin-top: 0;
-  min-width: 200px;
-  float: right;
-  min-height: 45px;
-}
-
 .searchBox {
   @media #{$tablet-landscape} {
     @include column-offset(9, $gutters: true);
@@ -170,11 +162,6 @@
   justify-content: left;
 }
 
-.buttonGroup {
-  width: 100%;
-  margin: 20px 0;
-}
-
 @media #{$tablet-portrait} {
   .filtersGroup {
     @include columns(6);
@@ -187,20 +174,42 @@
 
 @media #{$tablet-landscape} {
   .filtersLayout {
-    @include columns((9,3));
+    @include columns((8,4));
   }
 
   .filtersGroup {
-    @include columns(4);
+    @include columns(5.8);
 
     > *:first-child {
       @include xy-gutters(0, $gutter-position: 'left');
     }
   }
+}
 
-  .buttonGroup {
-    margin: 20px 0;
+.buttonGroupContainer {
+  width: auto;
+  min-width: 200px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 22px 0;
+
+  @include xy-gutters($gutter-position: ('right', 'left'), $gutters: 0);
+
+  @media #{$tablet-landscape} {
+    width: 150px;
   }
+}
+
+.buttonGroup {
+  margin-top: 0;
+  min-height: 45px;
+  width: 100%;
+
+  @media #{$tablet-portrait} {
+    width: 150px;
+  }
+
+  margin-right: 20px;
 }
 
 .mapInfo {

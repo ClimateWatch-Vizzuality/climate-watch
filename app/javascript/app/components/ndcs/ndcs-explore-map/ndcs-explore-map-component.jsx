@@ -14,35 +14,33 @@ import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
+import ShareButton from 'components/button/share-button';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
-  <ButtonGroup
-    className={styles.buttonGroup}
-    buttonsConfig={[
-      {
-        type: 'info',
-        onClick: clickHandler
-      },
-      {
-        type: 'share',
-        shareUrl: '/embed/ndcs-explore',
-        analyticsGraphName: 'Ndcs',
-        positionRight: true
-      },
-      {
-        type: 'download',
-        section: 'ndcs-content',
-        link: downloadLink
-      },
-      {
-        type: 'addToUser'
-      }
-    ]}
-  />
+  <div className={styles.buttonGroupContainer}>
+    <ButtonGroup
+      className={styles.buttonGroup}
+      buttonsConfig={[
+        {
+          type: 'info',
+          onClick: clickHandler
+        },
+        {
+          type: 'download',
+          section: 'ndcs-content',
+          link: downloadLink
+        },
+        {
+          type: 'addToUser'
+        }
+      ]}
+    />
+    <ShareButton analyticsName="NDC Explore" sharePath="/embed/ndcs-explore" />
+  </div>
 );
 
 const renderSummary = summaryData => (

@@ -1,0 +1,100 @@
+@import '~styles/layout.scss';
+
+.shareButton {
+  width: 118px;
+
+  .shareText {
+    margin-left: 10px;
+  }
+
+  &Active {
+    fill: $theme-color;
+  }
+
+  &:hover {
+    box-shadow: none;
+    fill: $theme-color;
+  }
+}
+
+.modal {
+  overflow: hidden;
+  height: 90%;
+
+  @media #{$tablet-portrait} {
+    height: 210px;
+  }
+}
+
+.modalContent {
+  padding: 16px 30px 0;
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  @media #{$tablet-portrait} {
+    flex-direction: row;
+  }
+
+  .linkContainer {
+    transition: color 0.1s linear;
+    cursor: pointer;
+
+    .link {
+      color: $dark-gray;
+      vertical-align: text-bottom;
+      text-transform: uppercase;
+
+      .documentLink {
+        font-weight: $font-weight-bold;
+        height: 60px;
+        padding: 0 30px 0 15px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: auto;
+        font-size: $font-size-s;
+        line-height: $line-height-medium;
+        color: $dark-gray;
+        letter-spacing: 1px;
+        background-color: transparent;
+        transition: color 0.1s linear;
+
+        .icon {
+          fill: $dark-gray;
+          margin-right: 5px;
+          width: 15px;
+          height: 15px;
+        }
+
+        &.withDownloadIcon {
+          justify-content: space-between;
+          padding: 0 10px 0 15px;
+        }
+      }
+    }
+
+    &:hover {
+      .link {
+        .documentLink {
+          color: $theme-color;
+
+          .icon {
+            fill: $theme-color;
+          }
+
+          .title {
+            color: $theme-color;
+          }
+        }
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+}
