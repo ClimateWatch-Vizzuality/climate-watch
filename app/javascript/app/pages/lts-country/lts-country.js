@@ -6,7 +6,11 @@ import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
 
 import LTSCountryComponent from './lts-country-component';
-import { getCountry, getAnchorLinks } from './lts-country-selectors';
+import {
+  getCountry,
+  getAnchorLinks,
+  getDocumentsOptions
+} from './lts-country-selectors';
 
 const mapStateToProps = (state, { match, location, route }) => {
   const { iso } = match.params;
@@ -20,6 +24,13 @@ const mapStateToProps = (state, { match, location, route }) => {
     location,
     route
   };
+
+  // Update with LTS document meta
+  const documentsData = {
+    iso,
+    data: state.ndcsDocumentsMeta.data
+  };
+
   const pathname = location.pathname.split('/');
   const notSummary = [
     'overview',
@@ -31,6 +42,7 @@ const mapStateToProps = (state, { match, location, route }) => {
     country: getCountry(countryData),
     search: search.search,
     anchorLinks: getAnchorLinks(routeData),
+    documentsOptions: getDocumentsOptions(documentsData),
     notSummary
   };
 };
