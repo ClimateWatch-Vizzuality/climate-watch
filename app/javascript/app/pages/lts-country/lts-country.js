@@ -60,6 +60,7 @@ class LTSCountryContainer extends PureComponent {
   render() {
     return createElement(LTSCountryComponent, {
       ...this.props,
+      goBack: this.props.history.goBack,
       onSearchChange: this.onSearchChange,
       handleDropDownChange: this.handleDropDownChange
     });

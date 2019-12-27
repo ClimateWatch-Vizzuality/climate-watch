@@ -19,8 +19,11 @@
 .backButton {
   @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
 
-  > a {
+  > a,
+  .linkButton {
     color: $white;
+    font-size: $font-size;
+    cursor: pointer;
   }
 }
 

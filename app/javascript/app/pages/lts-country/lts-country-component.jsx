@@ -14,43 +14,11 @@ import { LTS_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletLandscape } from 'components/responsive';
 import longArrowBack from 'assets/icons/long-arrow-back.svg';
-import { toStartCase } from 'app/utils';
 import NdcsDocumentsMetaProvider from 'providers/ndcs-documents-meta-provider';
-
+import { previousPathLabel, getPreviousLinkTo } from 'app/utils/history';
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import lightSearch from 'styles/themes/search/search-light.scss';
 import styles from './lts-country-styles.scss';
-
-const getPreviousPathLabel = previousPathname => {
-  const updatedPathname = previousPathname;
-  let lastPathLabel = {
-    '/': 'Home'
-  }[previousPathname];
-  const regexs = [
-    { regex: /countries\/compare/, label: 'country compare' },
-    { regex: /countries/, label: 'country' }
-  ];
-
-  regexs.some(regexWithLabel => {
-    const { regex, label } = regexWithLabel;
-    if (previousPathname && previousPathname.match(regex)) {
-      lastPathLabel = label;
-      return true;
-    }
-    return false;
-  });
-  return lastPathLabel || (updatedPathname && toStartCase(updatedPathname));
-};
-
-const shouldClearPath = pathname => {
-  if (!pathname) return false;
-  const clearRegexps = [/\/ndcs\/country/, /\/error-page/, /\/ndcs\/compare/];
-  if (clearRegexps.some(r => pathname.match(r))) {
-    sessionStorage.setItem('previousLocationPathname', '');
-    return true;
-  }
-  return false;
-};
 
 class LTSCountry extends PureComponent {
   renderFullTextDropdown() {
@@ -66,6 +34,25 @@ class LTSCountry extends PureComponent {
           View LTS Document
         </Button>
       )
+    );
+  }
+
+  renderBackButton(lastPathLabel) {
+    const { goBack } = this.props;
+    return (
+      <div className={styles.backButton}>
+        {lastPathLabel ? (
+          <Link to={getPreviousLinkTo}>
+            <Icon className={styles.backIcon} icon={longArrowBack} />
+            Back to {lastPathLabel}
+          </Link>
+        ) : (
+          <button className={styles.linkButton} onClick={goBack}>
+            <Icon className={styles.backIcon} icon={longArrowBack} />
+            Back
+          </button>
+        )}
+      </div>
     );
   }
 
@@ -95,13 +82,13 @@ class LTSCountry extends PureComponent {
     } = this.props;
 
     const hasSearch = notSummary;
-    const previousPathname = sessionStorage.getItem('previousLocationPathname');
-    const previousSearch = sessionStorage.getItem('previousLocationSearch');
 
-    const previousPathLabel = shouldClearPath(previousPathname)
-      ? null
-      : getPreviousPathLabel(previousPathname);
-
+    const clearRegexs = [/\/lts\/country/, /\/lts\/compare/];
+    const directLinksRegexs = [
+      { regex: /countries\/compare/, label: 'country compare' },
+      { regex: /countries/, label: 'country' }
+    ];
+    const lastPathLabel = previousPathLabel(clearRegexs, directLinksRegexs);
     const countryName = country && `${country.wri_standard_name}`;
     return (
       <div>
@@ -119,23 +106,10 @@ class LTSCountry extends PureComponent {
             <div className={styles.header}>
               <div
                 className={cx(styles.actionsContainer, {
-                  [styles.withSearch]: hasSearch,
-                  [styles.withoutBack]: !previousPathname
+                  [styles.withSearch]: hasSearch
                 })}
               >
-                {previousPathLabel && (
-                  <div className={styles.backButton}>
-                    <Link
-                      to={{
-                        pathname: previousPathname,
-                        search: previousSearch
-                      }}
-                    >
-                      <Icon className={styles.backIcon} icon={longArrowBack} />
-                      Back to {previousPathLabel}
-                    </Link>
-                  </div>
-                )}
+                {this.renderBackButton(lastPathLabel)}
                 {this.renderFullTextDropdown()}
                 {hasSearch && (
                   <Search
@@ -176,7 +150,8 @@ LTSCountry.propTypes = {
   anchorLinks: PropTypes.array,
   notSummary: PropTypes.bool,
   match: PropTypes.object.isRequired,
-  documentsOptions: PropTypes.array
+  documentsOptions: PropTypes.array,
+  goBack: PropTypes.func.isRequired
 };
 
 export default LTSCountry;

@@ -19,8 +19,11 @@
 .backButton {
   @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
 
-  > a {
+  > a,
+  .linkButton {
     color: $white;
+    font-size: $font-size;
+    cursor: pointer;
   }
 }
 
@@ -53,36 +56,15 @@
     &.withSearch {
       @include row((6, 3, 3));
     }
-
-    &.withoutBack {
-      @include row((12, 6, 6));
-      @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-
-      &.withSearch {
-        @include row(6);
-        @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-      }
-    }
   }
 
   @media #{$tablet-landscape} {
     @include row((9, 3));
 
+    z-index: $z-index-base;
+
     &.withSearch {
       @include row((6, 3, 3));
     }
-
-    &.withoutBack {
-      @include row((9, 3));
-      @include xy-gutters($gutter-position: ('right'), $gutters: $gutter-padding);
-      @include column-offset(9);
-
-      &.withSearch {
-        @include row((6, 3, 3));
-        @include column-offset(6);
-      }
-    }
-
-    z-index: $z-index-base;
   }
 }

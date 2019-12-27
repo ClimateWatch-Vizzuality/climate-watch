@@ -17,7 +17,7 @@ import { NDC_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletLandscape } from 'components/responsive';
 import longArrowBack from 'assets/icons/long-arrow-back.svg';
-import { toStartCase } from 'app/utils';
+import { previousPathLabel, getPreviousLinkTo } from 'app/utils/history';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import dropdownLinksTheme from 'styles/themes/dropdown/dropdown-links.scss';
@@ -27,41 +27,9 @@ import styles from './ndc-country-styles.scss';
 
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
 
-const getPreviousPathLabel = previousPathname => {
-  const updatedPathname = previousPathname;
-  let lastPathLabel = {
-    '/': 'Home'
-  }[previousPathname];
-  const regexs = [
-    { regex: /countries\/compare/, label: 'country compare' },
-    { regex: /countries/, label: 'country' }
-  ];
-
-  regexs.some(regexWithLabel => {
-    const { regex, label } = regexWithLabel;
-    if (previousPathname && previousPathname.match(regex)) {
-      lastPathLabel = label;
-      return true;
-    }
-    return false;
-  });
-  return lastPathLabel || (updatedPathname && toStartCase(updatedPathname));
-};
-
-const shouldClearPath = pathname => {
-  if (!pathname) return false;
-  const clearRegexps = [/\/ndcs\/country/, /\/error-page/, /\/ndcs\/compare/];
-  if (clearRegexps.some(r => pathname.match(r))) {
-    sessionStorage.setItem('previousLocationPathname', '');
-    return true;
-  }
-  return false;
-};
-
 class NDCCountry extends PureComponent {
   renderFullTextDropdown() {
     const { match, documentsOptions, handleDropDownChange } = this.props;
-
     return (
       documentsOptions &&
       (documentsOptions.length > 1 ? (
@@ -82,6 +50,25 @@ class NDCCountry extends PureComponent {
           {`View ${documentsOptions[0].label} Document`}
         </Button>
       ))
+    );
+  }
+
+  renderBackButton(lastPathLabel) {
+    const { goBack } = this.props;
+    return (
+      <div className={styles.backButton}>
+        {lastPathLabel ? (
+          <Link to={getPreviousLinkTo}>
+            <Icon className={styles.backIcon} icon={longArrowBack} />
+            Back to {lastPathLabel}
+          </Link>
+        ) : (
+          <button className={styles.linkButton} onClick={goBack}>
+            <Icon className={styles.backIcon} icon={longArrowBack} />
+            Back
+          </button>
+        )}
+      </div>
     );
   }
 
@@ -124,12 +111,13 @@ class NDCCountry extends PureComponent {
 
     const countryName = country && `${country.wri_standard_name}`;
     const hasSearch = notSummary;
-    const previousPathname = sessionStorage.getItem('previousLocationPathname');
-    const previousSearch = sessionStorage.getItem('previousLocationSearch');
 
-    const previousPathLabel = shouldClearPath(previousPathname)
-      ? null
-      : getPreviousPathLabel(previousPathname);
+    const directLinksRegexs = [
+      { regex: /countries\/compare/, label: 'country compare' },
+      { regex: /countries/, label: 'country' }
+    ];
+    const clearRegexs = [/\/ndcs\/country/, /\/ndcs\/compare/];
+    const lastPathLabel = previousPathLabel(clearRegexs, directLinksRegexs);
 
     const renderIntroDropdown = () => (
       <Intro
@@ -167,23 +155,11 @@ class NDCCountry extends PureComponent {
               <div
                 className={cx(styles.actionsContainer, {
                   [styles.withSearch]: hasSearch || !FEATURE_LTS_EXPLORE,
-                  [styles.withoutBack]: !previousPathname
+                  [styles.withoutBack]: !FEATURE_LTS_EXPLORE
                 })}
               >
                 {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
-                {FEATURE_LTS_EXPLORE && previousPathLabel && (
-                  <div className={styles.backButton}>
-                    <Link
-                      to={{
-                        pathname: previousPathname,
-                        search: previousSearch
-                      }}
-                    >
-                      <Icon className={styles.backIcon} icon={longArrowBack} />
-                      Back to {previousPathLabel}
-                    </Link>
-                  </div>
-                )}
+                {FEATURE_LTS_EXPLORE && this.renderBackButton(lastPathLabel)}
                 {this.renderFullTextDropdown()}
                 <TabletLandscape>
                   {!FEATURE_LTS_EXPLORE && this.renderCompareButton()}
@@ -227,6 +203,7 @@ NDCCountry.propTypes = {
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
   handleCountryLink: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
   search: PropTypes.string,
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,
