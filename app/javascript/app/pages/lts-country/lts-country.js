@@ -25,7 +25,7 @@ const mapStateToProps = (state, { match, location, route }) => {
     route
   };
 
-  // Update with LTS document meta
+  // TODO: Update with LTS document meta
   const documentsData = {
     iso,
     data: state.ndcsDocumentsMeta.data
