@@ -18,7 +18,8 @@
 }
 
 .modal {
-  height: initial;
+  overflow: hidden;
+  height: 90%;
 
   @media #{$tablet-portrait} {
     height: 210px;
