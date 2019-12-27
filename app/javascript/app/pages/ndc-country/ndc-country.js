@@ -62,7 +62,12 @@ class NDCCountryContainer extends PureComponent {
   };
 
   handleCountryLink = selected => {
-    this.props.history.push(selected.path);
+    const { history, country } = this.props;
+    const path = history.location.pathname.replace(
+      country.iso_code3,
+      selected.value
+    );
+    history.push(path);
   };
 
   render() {
@@ -77,7 +82,8 @@ class NDCCountryContainer extends PureComponent {
 
 NDCCountryContainer.propTypes = {
   history: Proptypes.object.isRequired,
-  location: Proptypes.object.isRequired
+  location: Proptypes.object.isRequired,
+  country: Proptypes.object.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, null)(NDCCountryContainer));
