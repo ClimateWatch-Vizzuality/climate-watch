@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const QuestionCard = ({ link, slug, answerLabel, questionStats }) => {
-  const { answerNumber } = questionStats;
+  const { answerNumber } = questionStats || {};
   return (
     <div>
       {link}
