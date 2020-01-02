@@ -60,7 +60,7 @@
   @include columns((9, 3));
 }
 
-.cards {
+.legacyCards {
   @include columns();
 
   > div {
@@ -72,7 +72,25 @@
   }
 }
 
-.cardsRowContainer {
+.legacyCardsRowContainer {
+  @include columns('shrink', $wrap: false);
+
+  > div {
+    width: 270px;
+  }
+
+  overflow: auto;
+
+  @media #{$tablet-landscape} {
+    @include columns((4, 4, 4));
+
+    > div {
+      width: 100%;
+    }
+  }
+}
+
+.cards {
   @include columns('shrink', $wrap: false);
 
   > div {
