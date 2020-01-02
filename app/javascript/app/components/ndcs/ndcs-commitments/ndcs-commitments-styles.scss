@@ -5,12 +5,15 @@
   border-top: solid 1px $border-color;
 }
 
-.commitmentWrapper {
+.section {
   display: flex;
   padding: 64px 0;
   margin: 0;
-
   @include columns(6);
+}
+
+.floatRight {
+  float: right;
 }
 
 .commitmentText {
