@@ -7,7 +7,8 @@ import ReactTooltip from 'react-tooltip';
 import styles from './question-card.scss';
 
 const QuestionCard = ({ link, questionText, questionStats }) => {
-  const { answerNumber, maxPartiesNumber, percentage } = questionStats || {};
+  const { answerNumber, maxPartiesNumber, emissionPercentage } =
+    questionStats || {};
   return (
     <a
       className={styles.questionCard}
@@ -26,10 +27,13 @@ const QuestionCard = ({ link, questionText, questionStats }) => {
       </button>
       <div className={styles.questionText}>{questionText}</div>
       <div className={styles.answerText}>
-        <span className={styles.answerNumber}>{answerNumber}</span> out of{' '}
-        {maxPartiesNumber} covering
-        <span className={styles.percentage}>{percentage}%</span> of the total
-        GHG
+        <span className={styles.answerNumber}>{answerNumber || '-'}</span> out
+        of {maxPartiesNumber || '-'} covering{' '}
+        <span className={styles.percentage}>
+          {emissionPercentage ? Math.round(emissionPercentage * 10) / 10 : '-'}{' '}
+          %
+        </span>{' '}
+        of the total GHG
       </div>
       <Progress
         value={(answerNumber / maxPartiesNumber) * 100}

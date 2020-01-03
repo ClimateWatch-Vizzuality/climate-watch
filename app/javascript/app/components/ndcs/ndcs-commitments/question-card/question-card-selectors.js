@@ -8,19 +8,46 @@ const getAnswerLabel = (state, { answerLabel }) => answerLabel || null;
 export const getTotalCountriesNumber = state =>
   (state.countries && state.countries.data.length) || null;
 
-export const getQuestionStats = createSelector(
-  [getIndicators, getSlug, getAnswerLabel, getTotalCountriesNumber],
-  (indicators, slug, answerLabel, maxPartiesNumber) => {
+const getPositiveAnswerIsos = createSelector(
+  [getIndicators, getSlug, getAnswerLabel],
+  (indicators, slug, answerLabel) => {
     if (!indicators || !slug || !answerLabel) return null;
     const indicator = indicators.find(i => i.slug === slug);
     if (!indicator) return null;
-    const answerNumberLocations = Object.values(indicator.locations).filter(
-      l => l.value === answerLabel
+    return Object.keys(indicator.locations).filter(
+      k => indicator.locations[k].value === answerLabel
     );
+  }
+);
+
+export const getEmissionsPercentage = createSelector(
+  [getIndicators, getPositiveAnswerIsos],
+  (indicators, positiveAnswerIsos) => {
+    if (!indicators || !positiveAnswerIsos) {
+      return null;
+    }
+    const emissionsIndicator = indicators.find(i => i.slug === 'ndce_ghg');
+    if (!emissionsIndicator) return null;
+
+    const emissionPercentages = emissionsIndicator.locations;
+    let summedPercentage = 0;
+    positiveAnswerIsos.forEach(iso => {
+      if (emissionPercentages[iso]) {
+        summedPercentage += parseFloat(emissionPercentages[iso].value);
+      }
+    });
+    return summedPercentage;
+  }
+);
+
+export const getQuestionStats = createSelector(
+  [getTotalCountriesNumber, getPositiveAnswerIsos, getEmissionsPercentage],
+  (maxPartiesNumber, positiveAnswerIsos, emissionPercentage) => {
+    if (!positiveAnswerIsos) return null;
     return {
-      answerNumber: answerNumberLocations.length,
+      answerNumber: positiveAnswerIsos.length,
       maxPartiesNumber,
-      emissionPercentage: 82
+      emissionPercentage
     };
   }
 );
