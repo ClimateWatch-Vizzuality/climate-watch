@@ -7,10 +7,24 @@ export const commitmentsData = [
       'See how many countries have submitted certain types of commitments and explore the details by clicking on each box.',
     questions: [
       {
+        questionText: 'How many Parties ratified the Paris Agreement?',
         link:
           'https://unfccc.int/process/the-paris-agreement/status-of-ratification',
         slug: 'pa_ratified',
         answerLabel: 'Yes'
+      },
+      {
+        questionText:
+          'How many Parties submitted first Nationally Determined Contributions?',
+        link: 'https://www4.unfccc.int/sites/NDCStaging/Pages/All.aspx',
+        slug: 'submission',
+        answerLabel: 'First NDC Submitted'
+      },
+      {
+        questionText: 'How many Parties have submitted Long-term strategies?',
+        link: '/lts-tracker',
+        slug: 'lts_submission',
+        answerLabel: 'Long-term Strategy Submitted'
       }
     ]
   },
@@ -22,10 +36,20 @@ export const commitmentsData = [
       'See how many countries have submitted certain commitments and explore the details by clicking on each box.',
     questions: [
       {
-        link:
-          'https://unfccc.int/process/the-paris-agreement/status-of-ratification',
-        slug: 'pa_ratified',
-        answerLabel: 'Yes'
+        questionText:
+          'How many Parties intend to enhance ambition or action in their NDCs?',
+        link: '/ndc-tracker',
+        slug: 'enhance_2020',
+        linkSlug: 'ndce_status_2020',
+        answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
+      },
+      {
+        questionText:
+          'How many Parties have submitted an updated or second NDC?',
+        link: '/ndc-tracker',
+        slug: 'submitted_2020',
+        linkSlug: 'ndce_status_2020',
+        answerLabel: '2020 NDC Submitted'
       }
     ]
   },
@@ -37,10 +61,13 @@ export const commitmentsData = [
       'See how many countries have submitted additional commitments and explore the details by clicking on each box.',
     questions: [
       {
-        link:
-          'https://unfccc.int/process/the-paris-agreement/status-of-ratification',
-        slug: 'pa_ratified',
-        answerLabel: 'Yes'
+        questionText: 'How many countries have a net zero emission target?',
+        link: 'https://eciu.net/netzerotracker'
+      },
+      {
+        questionText:
+          'How many countries have an economy-wide target in a national law or policy?',
+        link: 'https://climate-laws.org/'
       }
     ]
   }

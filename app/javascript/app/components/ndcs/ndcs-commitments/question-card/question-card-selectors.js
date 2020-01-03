@@ -10,6 +10,7 @@ export const getQuestionStats = createSelector(
   (indicators, slug, answerLabel) => {
     if (!indicators || !slug || !answerLabel) return null;
     const indicator = indicators.find(i => i.slug === slug);
+    if (!indicator) return null;
     const answerNumberLocations = Object.values(indicator.locations).filter(
       l => l.answer === answerLabel
     );

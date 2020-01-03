@@ -23,15 +23,17 @@ const Commitment = props => {
           </div>
           <div className={styles.questionsWrapper}>
             <ShareButton
-              className={styles.floatRight}
+              className={styles.shareButton}
               analyticsName="NDC Overview"
               sharePath="/embed/ndc-overview"
             />
             {questions.map(question => (
               <QuestionCard
-                key={question.slug}
+                key={question.slug || question.questionText}
                 slug={question.slug}
                 link={question.link}
+                linkSlug={question.linkSlug}
+                questionText={question.questionText}
                 answerLabel={question.answerLabel}
               />
             ))}
