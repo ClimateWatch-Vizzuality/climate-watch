@@ -6,7 +6,7 @@ import styles from './ndcs-commitments-styles.scss';
 import QuestionCard from './question-card';
 
 const Commitment = props => {
-  const { title, description, hint, questions } = props;
+  const { title, description, hint, questions, color } = props;
   return (
     <div className={styles.commitmentContainer}>
       <div className={layout.content}>
@@ -32,6 +32,7 @@ const Commitment = props => {
                 key={question.slug || question.questionText}
                 slug={question.slug}
                 link={question.link}
+                color={color}
                 linkSlug={question.linkSlug}
                 questionText={question.questionText}
                 answerLabel={question.answerLabel}
@@ -50,6 +51,7 @@ const NdcsCommitments = ({ data }) =>
 Commitment.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
+  color: PropTypes.string,
   hint: PropTypes.string,
   questions: PropTypes.array
 };

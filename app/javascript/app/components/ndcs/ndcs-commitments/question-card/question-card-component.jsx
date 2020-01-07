@@ -7,7 +7,7 @@ import ReactTooltip from 'react-tooltip';
 import Loading from 'components/loading';
 import styles from './question-card.scss';
 
-const QuestionCard = ({ link, questionText, questionStats }) => {
+const QuestionCard = ({ link, questionText, questionStats, color }) => {
   const { answerNumber, maxPartiesNumber, emissionPercentage } =
     questionStats || {};
   return (
@@ -43,7 +43,7 @@ const QuestionCard = ({ link, questionText, questionStats }) => {
           <Progress
             value={(answerNumber / maxPartiesNumber) * 100}
             className={styles.progressBar}
-            color="#FF6C2F"
+            color={color}
           />
         </React.Fragment>
       ) : (
@@ -56,7 +56,8 @@ const QuestionCard = ({ link, questionText, questionStats }) => {
 QuestionCard.propTypes = {
   questionText: PropTypes.string,
   link: PropTypes.string,
-  questionStats: PropTypes.object
+  questionStats: PropTypes.object,
+  color: PropTypes.string
 };
 
 export default QuestionCard;
