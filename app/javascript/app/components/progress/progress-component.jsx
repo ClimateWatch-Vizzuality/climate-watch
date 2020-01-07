@@ -11,7 +11,7 @@ const Progress = ({ value, theme, color, className = '' }) => {
     <div className={cx(styles.progress, classNames)}>
       <div
         className={styles.bar}
-        style={{ backgroundColor: color, width: `${value}%` }}
+        style={{ backgroundColor: color, width: `${value ? value + 1 : 0}%` }}
       />
     </div>
   );

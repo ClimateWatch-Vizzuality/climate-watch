@@ -5,12 +5,21 @@
   border-top: solid 1px $border-color;
 }
 
-.commitmentWrapper {
+.section {
   display: flex;
   padding: 64px 0;
   margin: 0;
 
-  @include columns(6);
+  @include row(12);
+
+  @media #{$tablet-landscape} {
+    @include columns(6);
+  }
+}
+
+.shareButton {
+  float: right;
+  margin-bottom: 20px;
 }
 
 .commitmentText {
