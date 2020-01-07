@@ -8,7 +8,7 @@ import { commitmentsData } from './ndcs-commitments-data';
 
 class NdcsCommitments extends PureComponent {
   componentWillMount() {
-    this.props.fetchNDCS();
+    this.props.fetchNDCS(true);
   }
 
   render() {

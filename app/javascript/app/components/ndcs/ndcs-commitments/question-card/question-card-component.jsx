@@ -4,6 +4,7 @@ import Progress from 'components/progress';
 import Icon from 'components/icon';
 import infoIcon from 'assets/icons/info.svg';
 import ReactTooltip from 'react-tooltip';
+import Loading from 'components/loading';
 import styles from './question-card.scss';
 
 const QuestionCard = ({ link, questionText, questionStats }) => {
@@ -26,20 +27,28 @@ const QuestionCard = ({ link, questionText, questionStats }) => {
         <ReactTooltip id="info-button" effect="solid" />
       </button>
       <div className={styles.questionText}>{questionText}</div>
-      <div className={styles.answerText}>
-        <span className={styles.answerNumber}>{answerNumber || '-'}</span> out
-        of {maxPartiesNumber || '-'} covering{' '}
-        <span className={styles.percentage}>
-          {emissionPercentage ? Math.round(emissionPercentage * 10) / 10 : '-'}{' '}
-          %
-        </span>{' '}
-        of the total GHG
-      </div>
-      <Progress
-        value={(answerNumber / maxPartiesNumber) * 100}
-        className={styles.progressBar}
-        color="#FF6C2F"
-      />
+      {answerNumber || answerNumber === 0 ? (
+        <React.Fragment>
+          <div className={styles.answerText}>
+            <span className={styles.answerNumber}>{answerNumber}</span> out of{' '}
+            {maxPartiesNumber} covering{' '}
+            <span className={styles.percentage}>
+              {emissionPercentage || emissionPercentage === 0
+                ? Math.round(emissionPercentage * 10) / 10
+                : '-'}{' '}
+              %
+            </span>{' '}
+            of the total GHG
+          </div>
+          <Progress
+            value={(answerNumber / maxPartiesNumber) * 100}
+            className={styles.progressBar}
+            color="#FF6C2F"
+          />
+        </React.Fragment>
+      ) : (
+        <Loading light mini className={styles.loader} />
+      )}
     </a>
   );
 };

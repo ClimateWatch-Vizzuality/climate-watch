@@ -39,16 +39,16 @@ export const commitmentsData = [
         questionText:
           'How many Parties intend to enhance ambition or action in their NDCs?',
         link: '/ndc-tracker',
-        slug: 'enhance_2020',
-        linkSlug: 'ndce_status_2020',
+        slug: 'ndce_status_2020',
+        linkSlug: 'enhance_2020',
         answerLabel: 'Intends to Enhance Ambition or Action in 2020 NDC'
       },
       {
         questionText:
           'How many Parties have submitted an updated or second NDC?',
         link: '/ndc-tracker',
-        slug: 'submitted_2020',
-        linkSlug: 'ndce_status_2020',
+        slug: 'ndce_status_2020',
+        linkSlug: 'submitted_2020',
         answerLabel: '2020 NDC Submitted'
       }
     ]
