@@ -25,10 +25,11 @@ const getDocumentSelected = createSelector(
 );
 
 export const filterSearchResults = createSelector(
-  [getResultsData, getDocumentSelected],
-  (results, docSelected) => {
+  [getResultsData, getDocumentSelected, getDocQuery],
+  (results, docSelected, docQuery) => {
     if (!results) return null;
-    if (!docSelected) return results;
+    if (docQuery === 'all') return results;
+    if (!docSelected) return null;
     return uniqBy(
       results.filter(d => d.document_type === docSelected.value),
       'location.iso_code3'
