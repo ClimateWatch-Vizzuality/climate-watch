@@ -36,7 +36,7 @@ const getPreviousPathLabel = directLinksRegexs => {
 export const previousPathLabel = (clearRegexs, directLinksRegexs) =>
   (shouldClearPath(clearRegexs) ? null : getPreviousPathLabel(directLinksRegexs));
 
-export const getPreviousLinkTo = {
+export const getPreviousLinkTo = () => ({
   pathname: getPreviousPathname(),
   search: getPreviousSearch()
-};
+});

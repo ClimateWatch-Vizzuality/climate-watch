@@ -55,10 +55,11 @@ class NDCCountry extends PureComponent {
 
   renderBackButton(lastPathLabel) {
     const { goBack } = this.props;
+    const previousLinkTo = getPreviousLinkTo();
     return (
       <div className={styles.backButton}>
-        {lastPathLabel ? (
-          <Link to={getPreviousLinkTo}>
+        {lastPathLabel && previousLinkTo.pathname ? (
+          <Link to={previousLinkTo}>
             <Icon className={styles.backIcon} icon={longArrowBack} />
             Back to {lastPathLabel}
           </Link>
@@ -202,8 +203,6 @@ NDCCountry.propTypes = {
   match: PropTypes.object.isRequired,
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
-  handleCountryLink: PropTypes.func.isRequired,
-  goBack: PropTypes.func.isRequired,
   handleCountryLink: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
   search: PropTypes.string,

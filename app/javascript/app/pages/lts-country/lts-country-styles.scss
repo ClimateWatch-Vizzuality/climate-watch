@@ -9,6 +9,8 @@
 
   @media #{$tablet-portrait} {
     @include row(6);
+
+    margin-bottom: 110px;
   }
 }
 

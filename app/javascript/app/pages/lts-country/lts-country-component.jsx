@@ -42,10 +42,11 @@ class LTSCountry extends PureComponent {
 
   renderBackButton(lastPathLabel) {
     const { goBack } = this.props;
+    const previousLinkTo = getPreviousLinkTo();
     return (
       <div className={styles.backButton}>
-        {lastPathLabel ? (
-          <Link to={getPreviousLinkTo}>
+        {lastPathLabel && previousLinkTo.pathname ? (
+          <Link to={previousLinkTo}>
             <Icon className={styles.backIcon} icon={longArrowBack} />
             Back to {lastPathLabel}
           </Link>
