@@ -8,6 +8,8 @@ import { TabletLandscape } from 'components/responsive';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
+import Accordion from 'components/accordion';
+
 import NDCSearchMap from 'components/ndcs/ndcs-search-map';
 import NoContent from 'components/no-content';
 import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
@@ -24,6 +26,9 @@ class SearchPage extends PureComponent {
       fetchSearchResults,
       searchMessageText
     } = this.props;
+
+    // console.log('accordionData: ', accordionData);
+
     const hasNoContent = !results && !loading;
     return (
       <div className={styles.page}>
@@ -49,17 +54,23 @@ class SearchPage extends PureComponent {
                     message={searchMessageText}
                   />
                 )}
-                {results &&
-                  !loading &&
-                  results.map(result => (
-                    <ResultCard
-                      className={styles.resultCard}
-                      key={`${result.location
-                        .iso_code3}-${result.document_type}-${result.language}`}
-                      result={result}
-                      search={search}
-                    />
-                  ))}
+                {results && !loading && (
+                  <Accordion
+                    className={styles.accordion}
+                    param="section"
+                    data={results}
+                    hasNestedCollapse
+                  >
+                    {results.map(result => (
+                      <ResultCard
+                        className={styles.resultCard}
+                        key={`${result.location.iso_code3}-${result.document_type}-${result.language}`}
+                        result={result}
+                        search={search}
+                      />
+                    ))}
+                  </Accordion>
+                )}
               </div>
             </div>
             <TabletLandscape>

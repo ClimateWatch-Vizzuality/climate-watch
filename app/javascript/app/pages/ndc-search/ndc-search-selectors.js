@@ -51,6 +51,30 @@ export const getSearchResultsSorted = createSelector(
   }
 );
 
+const renderDocumentType = (docSelected, result) =>
+  (!docSelected ? ` - ${result && result.document_type.toUpperCase()}` : '');
+
+export const getResults = createSelector(
+  [getSearchResultsSorted, getDocumentSelected],
+  (results, docSelected) => {
+    // console.log('docSelected: ', docSelected);
+    const x =
+      results &&
+      results.map(result => {
+        const name = `${result.location.name}${renderDocumentType(
+          docSelected,
+          result
+        )} - ${result.language}`;
+        return {
+          slug: name,
+          title: name,
+          ...result
+        };
+      });
+    return x;
+  }
+);
+
 export function getMessageText(search) {
   if (isEmpty(search)) {
     return 'Please select an option from the available filters or type a keyword to search through the NDCs.';
@@ -60,5 +84,6 @@ export function getMessageText(search) {
 
 export default {
   getSearchResultsSorted,
+  getResults,
   getMessageText
 };
