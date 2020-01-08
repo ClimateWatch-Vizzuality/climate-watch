@@ -75,7 +75,8 @@ class NDCCountryContainer extends PureComponent {
       ...this.props,
       onSearchChange: this.onSearchChange,
       handleDropDownChange: this.handleDropDownChange,
-      handleCountryLink: this.handleCountryLink
+      handleCountryLink: this.handleCountryLink,
+      goBack: this.props.history.goBack
     });
   }
 }
