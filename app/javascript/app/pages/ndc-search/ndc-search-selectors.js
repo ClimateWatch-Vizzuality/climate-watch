@@ -52,23 +52,22 @@ export const getSearchResultsSorted = createSelector(
 );
 export const getResults = createSelector(
   [getSearchResultsSorted, getDocumentSelected],
-  (results, docSelected) => (
+  (results, docSelected) =>
     results &&
-      results.map(result => {
-        const { iso_code3, name } = result.location;
-        const documentType = result && result.document_type.toUpperCase();
-        const title = `${name}${docSelected ? documentType : ''} - ${
-          result.language
-        }`;
-        const slug = `${iso_code3}-${documentType}-${result.language}`;
+    results.map(result => {
+      const { iso_code3, name } = result.location;
+      const documentType = result && result.document_type.toUpperCase();
+      const title = `${name} ${!docSelected ? documentType : ''} - ${
+        result.language
+      }`;
+      const slug = `${iso_code3}-${documentType}-${result.language}`;
 
-        return {
-          slug,
-          title,
-          ...result
-        };
-      })
-  )
+      return {
+        slug,
+        title,
+        ...result
+      };
+    })
 );
 
 export function getMessageText(search) {

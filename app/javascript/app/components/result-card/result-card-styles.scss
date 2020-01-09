@@ -26,27 +26,15 @@
   }
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.title {
-  margin-bottom: 10px;
-  color: $theme-color;
-}
-
 .count {
   color: $theme-color-intense;
   font-weight: $font-weight-bold;
   display: inline-block;
-  margin-bottom: 30px;
+  padding-bottom: 30px;
 }
 
 .match {
-  margin-bottom: 40px;
+  padding-bottom: 40px;
   color: $dark-gray;
   line-height: 1.5em;
   position: relative;
