@@ -92,11 +92,15 @@ Accordion.propTypes = {
   children: PropTypes.node,
   isChild: PropTypes.bool,
   hasNestedCollapse: PropTypes.bool,
-  theme: PropTypes.object
+  theme: PropTypes.shape({
+    content: PropTypes.string,
+    title: PropTypes.string
+  })
 };
 
 Accordion.defaultProps = {
-  data: []
+  data: [],
+  theme: {}
 };
 
 export default Accordion;

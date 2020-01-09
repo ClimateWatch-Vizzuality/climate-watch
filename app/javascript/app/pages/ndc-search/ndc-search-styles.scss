@@ -52,7 +52,6 @@
 
 .contentCols {
   @include columns(12, $gutters: false);
-  @include column-offset(2);
 
   @media #{$tablet-landscape} {
     @include columns((6,6), $gutters: false);
@@ -82,13 +81,4 @@
   max-width: 75%;
   line-height: 1.5;
   margin: 0 auto;
-}
-
-//accordion styles overide
-.content {
-  padding-left: 0;
-}
-
-.title {
-  margin-left: 0;
 }

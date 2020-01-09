@@ -7,7 +7,7 @@
   align-items: flex-start;
   color: $white;
   font-family: $font-family-1;
-  padding: 30px 30px 30px 0;
+  padding: 30px;
   position: relative;
 
   &:not(:last-child) {
@@ -19,6 +19,10 @@
       right: 0;
       width: 200%;
     }
+  }
+
+  @media #{$tablet-landscape} {
+    padding-left: 0;
   }
 }
 

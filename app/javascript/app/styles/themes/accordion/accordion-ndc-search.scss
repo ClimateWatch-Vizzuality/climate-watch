@@ -1,0 +1,13 @@
+@import '~styles/settings.scss';
+
+.content {
+  @media #{$tablet-landscape} {
+    padding-left: 0;
+  }
+}
+
+.title {
+  @media #{$tablet-landscape} {
+    margin-left: 0;
+  }
+}

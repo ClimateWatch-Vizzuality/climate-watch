@@ -14,6 +14,7 @@ import NDCSearchMap from 'components/ndcs/ndcs-search-map';
 import NoContent from 'components/no-content';
 import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 
+import accordionTheme from 'styles/themes/accordion/accordion-ndc-search.scss';
 import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
@@ -26,8 +27,6 @@ class SearchPage extends PureComponent {
       fetchSearchResults,
       searchMessageText
     } = this.props;
-
-    // console.log('accordionData: ', accordionData);
 
     const hasNoContent = !results && !loading;
     return (
@@ -57,18 +56,14 @@ class SearchPage extends PureComponent {
                 {results && !loading && (
                   <Accordion
                     className={styles.accordion}
-                    theme={{
-                      header: styles.header,
-                      content: styles.content,
-                      title: styles.title
-                    }}
+                    theme={accordionTheme}
                     param="section"
                     data={results}
                   >
                     {results.map(result => (
                       <ResultCard
                         className={styles.resultCard}
-                        key={`${result.location.iso_code3}-${result.document_type}-${result.language}`}
+                        key={result.slug}
                         result={result}
                         search={search}
                       />
