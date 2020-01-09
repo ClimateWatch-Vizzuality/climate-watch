@@ -1,4 +1,4 @@
-import { createElement, PureComponent } from 'react';
+import { createElement, useEffect, useState } from 'react';
 import { withRouter } from 'react-router';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,25 +15,29 @@ const mapStateToProps = (state, { location, param }) => {
   };
 };
 
-class AccordionContainer extends PureComponent {
-  handleOnClick = (slug, open) => {
-    const { param } = this.props;
-    const newSlug = !open ? slug : 'none';
-    this.updateUrlParam({ name: param, value: newSlug });
-  };
+const AccordionContainer = props => {
+  const { data, param, history, location } = props;
+  const { openSlug } = props;
+  const [updatedOpenSlug, setOpenSlug] = useState(openSlug);
+  useEffect(() => {
+    if (data.length === 1) setOpenSlug(data[0].slug);
+  }, []);
 
-  updateUrlParam = (params, clear) => {
-    const { history, location } = this.props;
+  const updateUrlParam = (params, clear) => {
     history.replace(getLocationParamUpdated(location, params, clear));
   };
 
-  render() {
-    return createElement(AccordionComponent, {
-      handleOnClick: this.handleOnClick,
-      ...this.props
-    });
-  }
-}
+  const handleOnClick = (slug, open) => {
+    const newSlug = !open ? slug : 'none';
+    updateUrlParam({ name: param, value: newSlug });
+  };
+
+  return createElement(AccordionComponent, {
+    ...props,
+    handleOnClick,
+    openSlug: openSlug || updatedOpenSlug
+  });
+};
 
 AccordionContainer.propTypes = {
   location: Proptypes.object,
