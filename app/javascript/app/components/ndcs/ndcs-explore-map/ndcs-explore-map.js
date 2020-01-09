@@ -167,7 +167,7 @@ NDCSExploreMapContainer.propTypes = {
   setModalMetadata: PropTypes.func.isRequired,
   fetchNDCS: PropTypes.func.isRequired,
   query: PropTypes.object,
-  summaryData: PropTypes.object,
+  summaryData: PropTypes.array,
   indicator: PropTypes.object
 };
 

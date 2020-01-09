@@ -18,30 +18,12 @@
   @include row();
 }
 
-.backButton {
-  @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
-
-  > a,
-  .linkButton {
-    color: $white;
-    font-size: $font-size;
-    cursor: pointer;
-  }
-}
-
 .viewDocumentButton {
   @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
 
   @media #{$tablet-portrait} {
     @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
   }
-}
-
-.backIcon {
-  fill: $white;
-  width: 38px;
-  height: 12px;
-  margin-right: 24px;
 }
 
 .actionsContainer {

@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
-import { Link } from 'react-router-dom';
 import Header from 'components/header';
 import Intro from 'components/intro';
-import Icon from 'components/icon';
 import Button from 'components/button';
+import BackButton from 'components/back-button';
 import Search from 'components/search';
 import cx from 'classnames';
 import Sticky from 'react-stickynode';
@@ -16,8 +15,6 @@ import { Dropdown as CWDropdown } from 'cw-components';
 import { NDC_COUNTRY } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
 import { TabletLandscape } from 'components/responsive';
-import longArrowBack from 'assets/icons/long-arrow-back.svg';
-import { previousPathLabel, getPreviousLinkTo } from 'app/utils/history';
 
 import anchorNavRegularTheme from 'styles/themes/anchor-nav/anchor-nav-regular.scss';
 import dropdownLinksTheme from 'styles/themes/dropdown/dropdown-links.scss';
@@ -50,26 +47,6 @@ class NDCCountry extends PureComponent {
           {`View ${documentsOptions[0].label} Document`}
         </Button>
       ))
-    );
-  }
-
-  renderBackButton(lastPathLabel) {
-    const { goBack } = this.props;
-    const previousLinkTo = getPreviousLinkTo();
-    return (
-      <div className={styles.backButton}>
-        {lastPathLabel && previousLinkTo.pathname ? (
-          <Link to={previousLinkTo}>
-            <Icon className={styles.backIcon} icon={longArrowBack} />
-            Back to {lastPathLabel}
-          </Link>
-        ) : (
-          <button className={styles.linkButton} onClick={goBack}>
-            <Icon className={styles.backIcon} icon={longArrowBack} />
-            Back
-          </button>
-        )}
-      </div>
     );
   }
 
@@ -113,13 +90,6 @@ class NDCCountry extends PureComponent {
     const countryName = country && `${country.wri_standard_name}`;
     const hasSearch = notSummary;
 
-    const directLinksRegexs = [
-      { regex: /countries\/compare/, label: 'country compare' },
-      { regex: /countries/, label: 'country' }
-    ];
-    const clearRegexs = [/\/ndcs\/country/, /\/ndcs\/compare/];
-    const lastPathLabel = previousPathLabel(clearRegexs, directLinksRegexs);
-
     const renderIntroDropdown = () => (
       <Intro
         title={
@@ -160,7 +130,15 @@ class NDCCountry extends PureComponent {
                 })}
               >
                 {!FEATURE_LTS_EXPLORE && renderIntroDropdown()}
-                {FEATURE_LTS_EXPLORE && this.renderBackButton(lastPathLabel)}
+                {FEATURE_LTS_EXPLORE && (
+                  <BackButton
+                    directLinksRegexs={[
+                      { regex: /countries\/compare/, label: 'country compare' },
+                      { regex: /countries/, label: 'country' }
+                    ]}
+                    clearRegexs={[/\/ndcs\/country/, /\/ndcs\/compare/]}
+                  />
+                )}
                 {this.renderFullTextDropdown()}
                 <TabletLandscape>
                   {!FEATURE_LTS_EXPLORE && this.renderCompareButton()}
@@ -204,7 +182,6 @@ NDCCountry.propTypes = {
   country: PropTypes.object,
   onSearchChange: PropTypes.func.isRequired,
   handleCountryLink: PropTypes.func.isRequired,
-  goBack: PropTypes.func.isRequired,
   search: PropTypes.string,
   anchorLinks: PropTypes.array,
   documentsOptions: PropTypes.array,

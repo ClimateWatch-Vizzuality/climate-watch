@@ -228,7 +228,7 @@ NDCSExploreMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   emissionsCardData: PropTypes.object,
-  summaryCardData: PropTypes.object,
+  summaryCardData: PropTypes.array,
   legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
