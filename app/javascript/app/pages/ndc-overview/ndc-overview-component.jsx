@@ -1,11 +1,11 @@
 import React from 'react';
 import Proptypes from 'prop-types';
-import NdcCommitments from 'components/ndcs/ndcs-commitments';
 import layout from 'styles/layout.scss';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import { NDCS_OVERVIEW } from 'data/SEO';
 import { MetaDescription, SocialMetadata } from 'components/seo';
+import { renderRoutes } from 'react-router-config';
 import styles from './ndc-overview-styles.scss';
 
 const NdcOverview = ({ route }) => (
@@ -27,7 +27,7 @@ const NdcOverview = ({ route }) => (
         </div>
       </div>
     </Header>
-    <NdcCommitments />
+    {renderRoutes(route.routes)}
   </div>
 );
 

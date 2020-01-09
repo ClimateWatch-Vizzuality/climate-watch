@@ -70,6 +70,10 @@
           height: 15px;
         }
 
+        .title {
+          min-width: 80px;
+        }
+
         &.withDownloadIcon {
           justify-content: space-between;
           padding: 0 10px 0 15px;

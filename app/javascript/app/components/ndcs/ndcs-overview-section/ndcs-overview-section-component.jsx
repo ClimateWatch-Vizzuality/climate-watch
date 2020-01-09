@@ -1,14 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+import { isEmbededComponent } from 'utils/navigation';
 import layout from 'styles/layout.scss';
 import ShareButton from 'components/button/share-button';
-import styles from './ndcs-commitments-styles.scss';
+import styles from './ndcs-overview-section-styles.scss';
 import QuestionCard from './question-card';
 
-const Commitment = props => {
-  const { title, description, hint, questions, color } = props;
+const NdcsOverviewSection = ({ data, section, location }) => {
+  const { title, description, hint, questions, color } = data;
   return (
-    <div className={styles.commitmentContainer}>
+    <div
+      className={cx({
+        [styles.commitmentContainer]: !isEmbededComponent(location)
+      })}
+    >
       <div className={layout.content}>
         <div className={styles.section}>
           <div className={styles.commitmentWrapper}>
@@ -25,11 +31,11 @@ const Commitment = props => {
             <ShareButton
               className={styles.shareButton}
               analyticsName="NDC Overview"
-              sharePath="/embed/ndc-overview"
+              sharePath={`/embed/ndc-overview/${section}`}
             />
             {questions.map(question => (
               <QuestionCard
-                key={question.slug || question.questionText}
+                key={`${question.slug}${question.questionText}`}
                 slug={question.slug}
                 link={question.link}
                 color={color}
@@ -45,19 +51,15 @@ const Commitment = props => {
   );
 };
 
-const NdcsCommitments = ({ data }) =>
-  data.map(commitment => <Commitment key={commitment.title} {...commitment} />);
-
-Commitment.propTypes = {
-  title: PropTypes.string,
-  description: PropTypes.string,
-  color: PropTypes.string,
-  hint: PropTypes.string,
-  questions: PropTypes.array
+NdcsOverviewSection.propTypes = {
+  section: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  location: PropTypes.object,
+  data: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+    hint: PropTypes.string,
+    questions: PropTypes.array
+  })
 };
 
-NdcsCommitments.propTypes = {
-  data: PropTypes.array
-};
-
-export default NdcsCommitments;
+export default NdcsOverviewSection;

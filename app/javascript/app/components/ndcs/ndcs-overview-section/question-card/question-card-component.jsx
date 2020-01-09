@@ -56,8 +56,8 @@ const QuestionCard = ({ link, questionText, questionStats, color }) => {
 QuestionCard.propTypes = {
   questionText: PropTypes.string,
   link: PropTypes.string,
-  questionStats: PropTypes.object,
-  color: PropTypes.string
+  color: PropTypes.string,
+  questionStats: PropTypes.object
 };
 
 export default QuestionCard;

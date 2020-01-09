@@ -2,9 +2,7 @@ import { createSelector } from 'reselect';
 
 const SUBMISSION_SLUGS = [
   'lts_document',
-  'lts_date',
   'lts_vision',
-  'lts_document',
   'lts_date',
   'lts_target',
   'lts_m_tt',

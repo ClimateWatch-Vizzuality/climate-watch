@@ -55,6 +55,7 @@ import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 import ndcsLTSSections from './lts-tracker-sections';
 import LTSExploreSections from './lts-explore-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
+import NDCOverviewRoutes from './ndcs-overview-routes';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
@@ -113,7 +114,8 @@ export default [
   FEATURE_COMMITMENTS_OVERVIEW && {
     path: '/ndc-overview',
     component: NdcOverview,
-    headerImage: 'ndc'
+    headerImage: 'ndc',
+    routes: NDCOverviewRoutes
   },
   {
     path: '/ndcs/country/:iso/full',
