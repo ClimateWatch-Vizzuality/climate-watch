@@ -44,10 +44,12 @@
   max-width: 100%;
 
   .text :global {
-    margin-right: 80px;
-
     .highlight {
       background-color: $theme-secondary;
+    }
+
+    @media #{$tablet-landscape} {
+      margin-right: 80px;
     }
   }
 
