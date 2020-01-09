@@ -37,7 +37,7 @@ const Accordion = props => {
         data.map((section, index) => {
           const isOpen = getIsOpen(section, index);
           const title = section.parent
-            ? `${section.parent.name} | ${section.title}`
+            ? `${section.parent.name} || ${section.title}`
             : section.title;
           return (
             <section
