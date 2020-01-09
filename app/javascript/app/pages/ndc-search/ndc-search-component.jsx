@@ -57,9 +57,13 @@ class SearchPage extends PureComponent {
                 {results && !loading && (
                   <Accordion
                     className={styles.accordion}
+                    theme={{
+                      header: styles.header,
+                      content: styles.content,
+                      title: styles.title
+                    }}
                     param="section"
                     data={results}
-                    hasNestedCollapse
                   >
                     {results.map(result => (
                       <ResultCard

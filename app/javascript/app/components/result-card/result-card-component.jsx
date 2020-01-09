@@ -11,11 +11,13 @@ import styles from './result-card-styles.scss';
 
 const ResultCard = props => {
   const { result, search, className } = props;
+  const resultsText = `${result.matches.length} RESULT${
+    result.matches.length !== 1 ? 'S' : ''
+  }:`;
+
   return (
     <div className={cx(styles.resultCard, className)}>
-      <div className={styles.header}>
-        <span className={styles.count}>{result.matches.length}</span>
-      </div>
+      <span className={styles.count}>{resultsText}</span>
       {result.matches &&
         result.matches.map(match => (
           <NavLink
