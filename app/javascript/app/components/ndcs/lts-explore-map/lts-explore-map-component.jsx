@@ -229,7 +229,7 @@ LTSExploreMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   emissionsCardData: PropTypes.object,
-  summaryCardData: PropTypes.array,
+  summaryCardData: PropTypes.object,
   legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,
