@@ -1,0 +1,20 @@
+@import '~styles/settings';
+@import '~styles/layout.scss';
+
+.backIcon {
+  fill: $white;
+  width: 38px;
+  height: 12px;
+  margin-right: 24px;
+}
+
+.backButton {
+  @include xy-gutters($gutter-position: ('bottom'), $gutters: $gutter-padding);
+
+  > a,
+  .linkButton {
+    color: $white;
+    font-size: $font-size;
+    cursor: pointer;
+  }
+}
