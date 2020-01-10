@@ -57,7 +57,7 @@ class LTSCountryContainer extends PureComponent {
       country.iso_code3,
       selected.value
     );
-    history.push(path);
+    history.replace(path);
   };
 
   render() {
@@ -73,7 +73,7 @@ class LTSCountryContainer extends PureComponent {
 LTSCountryContainer.propTypes = {
   history: Proptypes.object.isRequired,
   location: Proptypes.object.isRequired,
-  country: Proptypes.object.isRequired
+  country: Proptypes.object
 };
 
 export default withRouter(connect(mapStateToProps, null)(LTSCountryContainer));
