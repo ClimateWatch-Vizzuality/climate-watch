@@ -7,8 +7,7 @@
   align-items: flex-start;
   color: $white;
   font-family: $font-family-1;
-  padding-top: 30px;
-  padding-right: 25px;
+  padding: 30px;
   position: relative;
 
   &:not(:last-child) {
@@ -21,28 +20,21 @@
       width: 200%;
     }
   }
-}
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.title {
-  margin-bottom: 10px;
-  color: $theme-color;
+  @media #{$tablet-landscape} {
+    padding-left: 0;
+  }
 }
 
 .count {
-  color: $dark-gray;
+  color: $theme-color-intense;
   font-weight: $font-weight-bold;
   display: inline-block;
+  padding-bottom: 30px;
 }
 
 .match {
-  margin-bottom: 40px;
+  padding-bottom: 40px;
   color: $dark-gray;
   line-height: 1.5em;
   position: relative;
@@ -52,10 +44,12 @@
   max-width: 100%;
 
   .text :global {
-    margin-right: 80px;
-
     .highlight {
       background-color: $theme-secondary;
+    }
+
+    @media #{$tablet-landscape} {
+      margin-right: 80px;
     }
   }
 

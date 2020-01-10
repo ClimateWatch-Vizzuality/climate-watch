@@ -8,10 +8,13 @@ import { TabletLandscape } from 'components/responsive';
 import Header from 'components/header';
 import Intro from 'components/intro';
 import ResultCard from 'components/result-card';
+import Accordion from 'components/accordion';
+
 import NDCSearchMap from 'components/ndcs/ndcs-search-map';
 import NoContent from 'components/no-content';
 import NdcsAutocompleteSearch from 'components/ndcs/ndcs-autocomplete-search';
 
+import accordionTheme from 'styles/themes/accordion/accordion-ndc-search.scss';
 import styles from './ndc-search-styles.scss';
 
 class SearchPage extends PureComponent {
@@ -24,6 +27,7 @@ class SearchPage extends PureComponent {
       fetchSearchResults,
       searchMessageText
     } = this.props;
+
     const hasNoContent = !results && !loading;
     return (
       <div className={styles.page}>
@@ -49,17 +53,23 @@ class SearchPage extends PureComponent {
                     message={searchMessageText}
                   />
                 )}
-                {results &&
-                  !loading &&
-                  results.map(result => (
-                    <ResultCard
-                      className={styles.resultCard}
-                      key={`${result.location
-                        .iso_code3}-${result.document_type}-${result.language}`}
-                      result={result}
-                      search={search}
-                    />
-                  ))}
+                {results && !loading && (
+                  <Accordion
+                    className={styles.accordion}
+                    theme={accordionTheme}
+                    param="section"
+                    data={results}
+                  >
+                    {results.map(result => (
+                      <ResultCard
+                        className={styles.resultCard}
+                        key={result.slug}
+                        result={result}
+                        search={search}
+                      />
+                    ))}
+                  </Accordion>
+                )}
               </div>
             </div>
             <TabletLandscape>

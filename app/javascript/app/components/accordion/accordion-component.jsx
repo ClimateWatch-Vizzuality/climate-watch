@@ -16,7 +16,8 @@ const Accordion = props => {
     children,
     isChild,
     hasNestedCollapse,
-    openSlug
+    openSlug,
+    theme
   } = props;
 
   const getIsOpen = (section, index) => {
@@ -48,8 +49,8 @@ const Accordion = props => {
                 className={cx(styles.header, isChild ? styles.subHeader : '')}
                 onClick={() => handleOnClick(section.slug, isOpen)}
               >
-                <div className={layout.content}>
-                  <div className={styles.title}>
+                <div className={cx(layout.content, theme.content)}>
+                  <div className={cx(styles.title, theme.title)}>
                     {title}
                     <Icon
                       icon={dropdownArrow}
@@ -90,11 +91,16 @@ Accordion.propTypes = {
   ),
   children: PropTypes.node,
   isChild: PropTypes.bool,
-  hasNestedCollapse: PropTypes.bool
+  hasNestedCollapse: PropTypes.bool,
+  theme: PropTypes.shape({
+    content: PropTypes.string,
+    title: PropTypes.string
+  })
 };
 
 Accordion.defaultProps = {
-  data: []
+  data: [],
+  theme: {}
 };
 
 export default Accordion;
