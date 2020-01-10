@@ -125,7 +125,7 @@ class NDCCountry extends PureComponent {
             <div className={styles.header}>
               <div
                 className={cx(styles.actionsContainer, {
-                  [styles.withSearch]: hasSearch || !FEATURE_LTS_EXPLORE,
+                  [styles.withSearch]: hasSearch,
                   [styles.withoutBack]: !FEATURE_LTS_EXPLORE
                 })}
               >
