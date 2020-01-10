@@ -28,7 +28,7 @@ export const filterSearchResults = createSelector(
   [getResultsData, getDocumentSelected, getDocQuery],
   (results, docSelected, docQuery) => {
     if (!results) return null;
-    if (docQuery === 'all') return results;
+    if (!docQuery || docQuery === 'all') return results;
     if (!docSelected) return null;
     return uniqBy(
       results.filter(d => d.document_type === docSelected.value),
