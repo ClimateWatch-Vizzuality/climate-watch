@@ -45,7 +45,7 @@ const CountryLtsOverviewContainer = props => {
 };
 
 CountryLtsOverviewContainer.propTypes = {
-  iso: Proptypes.func.isRequired,
+  iso: Proptypes.string,
   fetchNdcsCountryAccordion: Proptypes.func.isRequired
 };
 
