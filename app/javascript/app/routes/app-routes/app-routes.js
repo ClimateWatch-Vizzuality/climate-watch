@@ -28,6 +28,7 @@ import Sectors from 'pages/sectors';
 import SectorsAgriculture from 'pages/sectors-agriculture';
 import LTSExplore from 'pages/lts-explore';
 import NDCSExplore from 'pages/ndcs-explore';
+import NdcOverview from 'pages/ndc-overview';
 
 // routes
 import NDCSRoutes from './NDCS-routes';
@@ -54,9 +55,12 @@ import ndcsEnhancementsSections from './ndcs-enhancements-sections';
 import ndcsLTSSections from './lts-tracker-sections';
 import LTSExploreSections from './lts-explore-sections';
 import NDCSExploreSections from './ndcs-explore-sections';
+import NDCOverviewRoutes from './ndcs-overview-routes';
 
 const FEATURE_AGRICULTURE = process.env.FEATURE_AGRICULTURE === 'true';
 const FEATURE_LTS_EXPLORE = process.env.FEATURE_LTS_EXPLORE === 'true';
+const FEATURE_COMMITMENTS_OVERVIEW =
+  process.env.FEATURE_COMMITMENTS_OVERVIEW === 'true';
 
 export default [
   {
@@ -107,6 +111,12 @@ export default [
     path: '/sectors/coming-soon',
     component: Sectors
   },
+  FEATURE_COMMITMENTS_OVERVIEW && {
+    path: '/ndc-overview',
+    component: NdcOverview,
+    headerImage: 'ndc',
+    routes: NDCOverviewRoutes
+  },
   {
     path: '/ndcs/country/:iso/full',
     component: NDCCountryFull,
@@ -136,7 +146,7 @@ export default [
   },
   {
     nav: true,
-    label: 'NDCs',
+    label: FEATURE_LTS_EXPLORE ? 'COMMITMENTS' : 'NDCs',
     routes: NDCSRoutes
   },
   {

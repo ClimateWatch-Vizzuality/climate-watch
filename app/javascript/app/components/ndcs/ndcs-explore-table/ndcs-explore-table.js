@@ -5,34 +5,39 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-import fetchActions from 'pages/ndcs/ndcs-actions';
+import { setColumnWidth } from 'utils/table';
 
 import Component from './ndcs-explore-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData,
-  getDefaultColumns
+  getFilteredDataBySearch,
+  getDefaultColumns,
+  getTitleLinks
 } from './ndcs-explore-table-selectors';
-
-const actions = { ...fetchActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.ndcs;
   const { countries } = state;
   const search = qs.parse(location.search);
   const ndcsNDCSWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
-    search
+    search,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator,
+    categories: data.categories,
+    emissions: state.emissions
   };
   return {
     loading,
     query: ndcsNDCSWithSelection.query,
     isoCountries: getISOCountries(ndcsNDCSWithSelection),
-    tableData: tableRemoveIsoFromData(ndcsNDCSWithSelection),
-    columns: getDefaultColumns(ndcsNDCSWithSelection)
+    tableData: getFilteredDataBySearch(ndcsNDCSWithSelection),
+    columns: getDefaultColumns(ndcsNDCSWithSelection),
+    titleLinks: getTitleLinks(ndcsNDCSWithSelection)
   };
 };
 
@@ -42,26 +47,15 @@ class NDCSExploreTableContainer extends PureComponent {
     this.state = {};
   }
 
-  componentWillMount() {
-    this.props.fetchNDCS();
-  }
-
   setColumnWidth = column => {
-    const narrowColumns = [0, 1];
-    const tableWidth = 1170;
-    const numColumns = this.props.columns.length;
-    const numNarrowColumns = narrowColumns.length;
-    const colPadding = 10;
-    const narrowColumnWidth = 180;
-    const columnWidth =
-      (tableWidth -
-        (numColumns + 2) * colPadding -
-        numNarrowColumns * narrowColumnWidth) /
-      (numColumns - numNarrowColumns);
-    const index = this.props.columns.indexOf(column);
-    return index !== -1 && narrowColumns.indexOf(index) > -1
-      ? narrowColumnWidth
-      : columnWidth;
+    const { columns } = this.props;
+    return setColumnWidth({
+      column,
+      columns,
+      tableWidth: 1170,
+      narrowColumnWidth: 180,
+      narrowColumns: [0]
+    });
   };
 
   updateUrlParam(param, clear) {
@@ -93,10 +87,9 @@ NDCSExploreTableContainer.propTypes = {
   location: PropTypes.object.isRequired,
   tableData: PropTypes.array,
   columns: PropTypes.array,
-  query: PropTypes.object,
-  fetchNDCS: PropTypes.func.isRequired
+  query: PropTypes.string
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(NDCSExploreTableContainer)
+  connect(mapStateToProps, null)(NDCSExploreTableContainer)
 );

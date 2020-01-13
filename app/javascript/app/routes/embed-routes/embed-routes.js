@@ -14,6 +14,8 @@ import EmissionPathwaysGraph from 'components/emission-pathways/emission-pathway
 import MyVisualisationsGraphComponent from 'components/my-climate-watch/my-visualisations/my-cw-vis-graph';
 import AgricultureEmissionPieChart from 'components/sectors-agriculture/drivers-of-emissions/card-pie-chart/card-pie-chart';
 import LTSExploreMap from 'components/ndcs/lts-explore-map';
+import NDCSExploreMap from 'components/ndcs/ndcs-explore-map';
+import NDCOverviewSection from 'components/ndcs/ndcs-overview-section';
 
 export default [
   {
@@ -34,6 +36,11 @@ export default [
   {
     path: '/embed/lts-explore',
     component: LTSExploreMap,
+    exact: true
+  },
+  {
+    path: '/embed/ndcs-explore',
+    component: NDCSExploreMap,
     exact: true
   },
   {
@@ -79,6 +86,11 @@ export default [
   {
     path: '/embed/my-visualizations/:id',
     component: MyVisualisationsGraphComponent,
+    exact: true
+  },
+  {
+    path: '/embed/ndc-overview/:section',
+    component: NDCOverviewSection,
     exact: true
   },
   {

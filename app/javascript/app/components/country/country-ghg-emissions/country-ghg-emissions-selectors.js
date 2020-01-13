@@ -110,7 +110,7 @@ export const getCalculationSelected = createSelector(
 export const getAllowedSectors = createSelector(
   [getSourceSelected, getSectors],
   (source, sectors) => {
-    if (!source || !sectors) return null;
+    if (!source || !source.sectors || !sectors) return null;
     return sectors
       .filter(d => d.label !== 'Bunker Fuels')
       .filter(d => source.sectors.indexOf(d.value) > -1)

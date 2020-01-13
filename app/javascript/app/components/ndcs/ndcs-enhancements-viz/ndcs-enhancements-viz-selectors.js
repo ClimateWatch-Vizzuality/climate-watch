@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect';
 import { getColorByIndex, createLegendBuckets } from 'utils/map';
-import { deburrUpper } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
+import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -76,30 +76,6 @@ export const getMapIndicator = createSelector(
   }
 );
 
-const countryStyles = {
-  default: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  }
-};
-
 export const MAP_COLORS = [
   [
     'rgb(255, 108, 47)',
@@ -145,7 +121,7 @@ export const getPathsWithStyles = createSelector(
         if (!locations) {
           paths.push({
             ...path,
-            countryStyles
+            COUNTRY_STYLES
           });
           return null;
         }
@@ -156,19 +132,19 @@ export const getPathsWithStyles = createSelector(
           ? locations[europeSlug]
           : locations[iso];
 
-        let style = countryStyles;
+        let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
           const legendIndex = legendBuckets[countryData.label_id].index;
           const color = getColorByIndex(legendBuckets, legendIndex, MAP_COLORS);
           style = {
-            ...countryStyles,
+            ...COUNTRY_STYLES,
             default: {
-              ...countryStyles.default,
-              fill: color ,
+              ...COUNTRY_STYLES.default,
+              fill: color,
               fillOpacity: 1
             },
             hover: {
-              ...countryStyles.hover,
+              ...COUNTRY_STYLES.hover,
               fill: color,
               fillOpacity: 1
             }
@@ -211,7 +187,7 @@ export const summarizeIndicators = createSelector(
     // ONLY country totals currently displayed in component
     labels.forEach(label => {
       summaryData[label.slug] = {
-        includesEU:false,
+        includesEU: false,
         countries: {
           value: 0,
           max: locations.length,
@@ -245,8 +221,8 @@ export const summarizeIndicators = createSelector(
       const location = indicator.locations[l];
       const type = location.label_slug;
       if (type) {
-        if (l == 'EU28') summaryData[type].includesEU = true;
-        summaryData[type].countries.value += l == 'EU28' ? 28 : 1;
+        if (l === 'EU28') summaryData[type].includesEU = true;
+        summaryData[type].countries.value += l === 'EU28' ? 28 : 1;
         if (emissionsIndicator.locations[l]) {
           summaryData[type].emissions.value += parseFloat(
             emissionsIndicator.locations[l].value
@@ -258,27 +234,32 @@ export const summarizeIndicators = createSelector(
       summaryData[type].emissions.value = parseFloat(
         summaryData[type].emissions.value.toFixed(1)
       );
-      let count = summaryData[type].countries.value;
+      const count = summaryData[type].countries.value;
       summaryData[type].countries.opts.label = (() => {
         switch (type) {
           case 'enhance_2020':
-            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020';
-            break;
+            return `<strong>countr${
+              count === 1 ? 'y has' : 'ies have'
+            } stated their intention to <span title="Definition: Strengthening mitigation ambition and/or increasing adaptation action in the 2020 NDC.">enhance ambition or action</span> in an NDC by 2020`;
           case 'intend_2020':
-            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020';
-            break;
+            return `<strong>countr${
+              count === 1 ? 'y has' : 'ies have'
+            } stated their intention to <span title="Definition: Includes providing information to improve the clarity of the NDC or on measures to implement the current NDC.">update</span> an NDC by 2020`;
           case 'submitted_2020':
-            return '<strong>countr'+(count == 1 ? 'y has' : 'ies have')+' submitted a 2020 NDC';
-            break;
+            return `<strong>countr${
+              count === 1 ? 'y has' : 'ies have'
+            } submitted a 2020 NDC`;
           default:
-            return '<strong>countr'+(count == 1 ? 'y' : 'ies')+'';
-            break;
+            return `<strong>countr${count === 1 ? 'y' : 'ies'}`;
         }
-      })()
-      if (summaryData[type].includesEU) summaryData[type].countries.opts.label += " (including the European Union)";
-      summaryData[type].countries.opts.label += `</strong>, representing <span title="2014 emissions data">${summaryData[
+      })();
+      if (summaryData[type].includesEU) {
+        summaryData[type].countries.opts.label +=
+          ' (including the European Union)';
+      }
+      summaryData[
         type
-      ].emissions.value}% of global emissions</span>`;
+      ].countries.opts.label += `</strong>, representing <span title="2014 emissions data">${summaryData[type].emissions.value}% of global emissions</span>`;
     });
     return summaryData;
   }

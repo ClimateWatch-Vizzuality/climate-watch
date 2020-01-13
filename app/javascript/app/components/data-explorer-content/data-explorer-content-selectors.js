@@ -3,6 +3,7 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
+import flatten from 'lodash/flatten';
 import qs from 'query-string';
 import { findEqual, isANumber, noEmptyValues } from 'utils/utils';
 import { isNoColumnField } from 'utils/data-explorer';
@@ -284,10 +285,9 @@ export const getLink = createSelector(
       DATA_EXPLORER_SECTIONS[section].moduleName === 'pathways'
         ? '/models'
         : '';
-    return `/${isPageContained
-      ? `${CONTAINED_PATHNAME}/`
-      : ''}${DATA_EXPLORER_SECTIONS[section]
-      .moduleName}${subSection}${urlParameters}`;
+    return `/${isPageContained ? `${CONTAINED_PATHNAME}/` : ''}${
+      DATA_EXPLORER_SECTIONS[section].moduleName
+    }${subSection}${urlParameters}`;
   }
 );
 
@@ -680,36 +680,38 @@ export const getMethodology = createSelector(
   [getMeta, getSection, getSelectedFilters],
   (meta, section, selectedFilters) => {
     const sectionHasSources = section === SECTION_NAMES.historicalEmissions;
-    const emissionPathwaysSection = section === SECTION_NAMES.pathways;
+
     if (
       !meta ||
       isEmpty(meta) ||
       !section ||
       (sectionHasSources &&
         (isEmpty(selectedFilters) ||
-          !selectedFilters.source ||
-          !selectedFilters.source.length > 0)) ||
-      (emissionPathwaysSection &&
-        (isEmpty(selectedFilters) ||
-          (!selectedFilters.indicators &&
-            !selectedFilters.models &&
-            !selectedFilters.scenarios)))
+          !selectedFilters['data-sources'] ||
+          !selectedFilters['data-sources'].length > 0))
     ) {
       return null;
-    }
-
-    if (emissionPathwaysSection) {
-      const { models, scenarios, indicators } = selectedFilters;
-      return [models, scenarios, indicators].filter(m => m);
     }
 
     const methodology = meta.methodology;
     let metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section];
     if (sectionHasSources) {
-      const source =
-        selectedFilters.source[0] && selectedFilters.source[0].dataSourceSlug;
-      metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
+      const selectedSource =
+        selectedFilters['data-sources'] &&
+        selectedFilters['data-sources'][0].label;
+
+      if (selectedSource === ALL_SELECTED) {
+        metaSource = flatten(
+          Object.values(DATA_EXPLORER_METHODOLOGY_SOURCE[section])
+        ); // display metadata from all sources
+      } else {
+        const source =
+          selectedFilters['data-sources'][0] &&
+          selectedFilters['data-sources'][0].label;
+        metaSource = DATA_EXPLORER_METHODOLOGY_SOURCE[section][source];
+      }
     }
+
     return methodology.filter(s => metaSource && metaSource.includes(s.source));
   }
 );
@@ -761,7 +763,9 @@ export const getTitleLinks = createSelector(
         {
           columnName: 'indc_text',
           url: `/ndcs/country/${country &&
-            country.iso_code3}/full?query=${target_number}&searchBy=target&document=${d.document_type}-${d.language}`
+            country.iso_code3}/full?query=${target_number}&searchBy=target&document=${
+            d.document_type
+          }-${d.language}`
         }
       ];
     });

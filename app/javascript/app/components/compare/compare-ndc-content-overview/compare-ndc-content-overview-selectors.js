@@ -27,8 +27,8 @@ export const getSummaryText = createSelector(
     return selectedLocations.map(l => {
       const d = data[l.iso_code3];
       const text =
-        d && d.values && d.values.find(v => v.slug === 'indc_summary').value;
-      return { ...l, text };
+        d && d.values && d.values.find(v => v.slug === 'indc_summary');
+      return { ...l, text: text && text.value };
     });
   }
 );

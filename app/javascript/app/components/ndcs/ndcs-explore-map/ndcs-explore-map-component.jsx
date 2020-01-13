@@ -14,46 +14,46 @@ import { PieChart } from 'cw-components';
 import CustomTooltip from 'components/ndcs/shared/donut-tooltip';
 import LegendItem from 'components/ndcs/shared/legend-item';
 import handCursorIcon from 'assets/icons/hand-cursor.svg';
+import ShareButton from 'components/button/share-button';
 
 import tooltipTheme from 'styles/themes/map-tooltip/map-tooltip.scss';
 import newMapTheme from 'styles/themes/map/map-new-zoom-controls.scss';
 import styles from './ndcs-explore-map-styles.scss';
 
 const renderButtonGroup = (clickHandler, downloadLink) => (
-  <ButtonGroup
-    className={styles.buttonGroup}
-    buttonsConfig={[
-      {
-        type: 'info',
-        onClick: clickHandler
-      },
-      {
-        type: 'share',
-        shareUrl: '/embed/ndcs-ndcs',
-        analyticsGraphName: 'Ndcs',
-        positionRight: true
-      },
-      {
-        type: 'download',
-        section: 'ndcs-content',
-        link: downloadLink
-      },
-      {
-        type: 'addToUser'
-      }
-    ]}
-  />
+  <div className={styles.buttonGroupContainer}>
+    <ButtonGroup
+      className={styles.buttonGroup}
+      buttonsConfig={[
+        {
+          type: 'info',
+          onClick: clickHandler
+        },
+        {
+          type: 'download',
+          section: 'ndcs-content',
+          link: downloadLink
+        },
+        {
+          type: 'addToUser'
+        }
+      ]}
+    />
+    <ShareButton analyticsName="NDC Explore" sharePath="/embed/ndcs-explore" />
+  </div>
 );
 
 const renderSummary = summaryData => (
   <div className={styles.summaryCardContainer}>
     <div className={styles.summaryCard}>
-      <div className={styles.summaryCardValue}>
-        <div>{summaryData.value}</div>
-      </div>
-      <div className={styles.summaryCardDescription}>
-        {summaryData.description}
-      </div>
+      {summaryData.map(summarySentence => (
+        <div className={styles.summarySentence}>
+          <div className={styles.summaryCardValue}>{summarySentence.value}</div>
+          <div className={styles.summaryCardDescription}>
+            {summarySentence.description}
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 );
@@ -178,10 +178,8 @@ class NDCSExploreMap extends PureComponent {
                       className={styles.handCursorIcon}
                     />
                     <span>
-                      Explore which countries have submitted long-term
-                      strategies thus far below. Visit Climate Watch in the
-                      coming months for in-depth analysis of long-term
-                      strategies.
+                      Explore the interactive map to understand which countries
+                      have submitted new or updated NDCs.
                     </span>
                   </p>
                   <Map
@@ -230,7 +228,7 @@ NDCSExploreMap.propTypes = {
   downloadLink: PropTypes.string,
   countryData: PropTypes.object,
   emissionsCardData: PropTypes.object,
-  summaryCardData: PropTypes.object,
+  summaryCardData: PropTypes.array,
   legendData: PropTypes.array,
   handleCountryClick: PropTypes.func.isRequired,
   handleCountryEnter: PropTypes.func.isRequired,

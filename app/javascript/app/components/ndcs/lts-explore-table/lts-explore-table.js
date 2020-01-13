@@ -5,35 +5,40 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import qs from 'query-string';
 import { getLocationParamUpdated } from 'utils/navigation';
-
-import { actions as fetchActions } from 'pages/lts-explore';
+import { setColumnWidth } from 'utils/table';
 
 import Component from './lts-explore-table-component';
 
 import {
   getISOCountries,
-  tableRemoveIsoFromData,
-  getDefaultColumns
+  getFilteredDataBySearch,
+  getDefaultColumns,
+  getTitleLinks
 } from './lts-explore-table-selectors';
-
-const actions = { ...fetchActions };
 
 const mapStateToProps = (state, { location }) => {
   const { data, loading } = state.LTS;
   const { countries } = state;
   const search = qs.parse(location.search);
+
   const LTSWithSelection = {
+    ...state,
     ...data,
     countries: countries.data,
     query: search.search,
+    categorySelected: search.category,
+    indicatorSelected: search.indicator,
+    categories: data.categories,
+    emissions: state.emissions,
     search
   };
   return {
     loading,
     query: LTSWithSelection.query,
     isoCountries: getISOCountries(LTSWithSelection),
-    tableData: tableRemoveIsoFromData(LTSWithSelection),
-    columns: getDefaultColumns(LTSWithSelection)
+    tableData: getFilteredDataBySearch(LTSWithSelection),
+    columns: getDefaultColumns(LTSWithSelection),
+    titleLinks: getTitleLinks(LTSWithSelection)
   };
 };
 
@@ -43,27 +48,16 @@ class LTSExploreTableContainer extends PureComponent {
     this.state = {};
   }
 
-  componentWillMount() {
-    this.props.fetchLTS();
-  }
-
-  setColumnWidth = column => {
-    const narrowColumns = [0, 1];
-    const tableWidth = 1170;
-    const numColumns = this.props.columns.length;
-    const numNarrowColumns = narrowColumns.length;
-    const colPadding = 10;
-    const narrowColumnWidth = 180;
-    const columnWidth =
-      (tableWidth -
-        (numColumns + 2) * colPadding -
-        numNarrowColumns * narrowColumnWidth) /
-      (numColumns - numNarrowColumns);
-    const index = this.props.columns.indexOf(column);
-    return index !== -1 && narrowColumns.indexOf(index) > -1
-      ? narrowColumnWidth
-      : columnWidth;
-  };
+  setColumnWidth = column =>
+    setColumnWidth({
+      column,
+      columns: this.props.columns,
+      tableWidth: 1170,
+      narrowColumnWidth: 110,
+      wideColumnWidth: 380,
+      narrowColumns: [0, 3],
+      wideColumns: [1]
+    });
 
   updateUrlParam(param, clear) {
     const { history, location } = this.props;
@@ -94,10 +88,9 @@ LTSExploreTableContainer.propTypes = {
   location: PropTypes.object.isRequired,
   tableData: PropTypes.array,
   columns: PropTypes.array,
-  query: PropTypes.object,
-  fetchLTS: PropTypes.func.isRequired
+  query: PropTypes.object
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(LTSExploreTableContainer)
+  connect(mapStateToProps, null)(LTSExploreTableContainer)
 );
