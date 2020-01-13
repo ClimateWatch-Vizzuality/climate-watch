@@ -13,17 +13,17 @@ module Api
       end
 
       def show
-        country = Location.find_by(location_type: 'COUNTRY',
-                                   iso_code3: params[:code])
-        unless country
+        location = Location.find_by(iso_code3: params[:code])
+
+        unless location
           render json: {
-            error: 'Country not found',
+            error: 'Location not found',
             status: 404
           }, status: :not_found and return
         end
 
         collection = ::WbExtra::CountryData.
-          where(location: country).
+          where(location: location).
           filter_by_dates(params[:startYear], params[:endYear])
 
         render json: collection,

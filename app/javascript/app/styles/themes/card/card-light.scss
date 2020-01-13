@@ -1,0 +1,24 @@
+@import '~styles/settings.scss';
+
+.card {
+  border-radius: 6px;
+  border-color: transparent;
+  box-shadow: 0 2px 20px 0 $catskill-white;
+  margin: 15px;
+}
+
+.contentContainer {
+  background-color: $link-water;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  min-height: 70px;
+}
+
+.title {
+  font-weight: $font-weight;
+}
+
+.data {
+  background-color: $white;
+}

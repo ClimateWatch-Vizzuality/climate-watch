@@ -9,14 +9,8 @@ import { getLocationParamUpdated } from 'utils/navigation';
 
 import { actions as fetchActions } from 'pages/lts-explore';
 import { actions as modalActions } from 'components/modal-metadata';
-import {
-  getCategories,
-  getCategoryIndicators,
-  getSelectedCategory
-} from 'components/ndcs/ndcs-map/ndcs-map-selectors';
 
 import Component from './lts-explore-map-component';
-
 import {
   getMapIndicator,
   getPathsWithStyles,
@@ -24,7 +18,10 @@ import {
   getLinkToDataExplorer,
   getEmissionsCardData,
   getLegend,
-  getSummaryCardData
+  getSummaryCardData,
+  getCategories,
+  getCategoryIndicators,
+  getSelectedCategory
 } from './lts-explore-map-selectors';
 
 const actions = { ...fetchActions, ...modalActions };
@@ -122,7 +119,7 @@ class LTSExploreMapContainer extends PureComponent {
     this.props.setModalMetadata({
       customTitle: 'LTS Explore',
       category: 'LTS Explore Map',
-      slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
+      slugs: ['lts'],
       open: true
     });
   };
@@ -159,8 +156,8 @@ LTSExploreMapContainer.propTypes = {
   isoCountries: PropTypes.array.isRequired,
   setModalMetadata: PropTypes.func.isRequired,
   fetchLTS: PropTypes.func.isRequired,
-  query: PropTypes.object,
-  summaryData: PropTypes.object,
+  query: PropTypes.string,
+  summaryData: PropTypes.array,
   indicator: PropTypes.object
 };
 

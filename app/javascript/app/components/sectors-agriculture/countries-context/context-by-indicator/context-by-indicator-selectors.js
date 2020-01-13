@@ -8,30 +8,7 @@ import {
   AGRICULTURE_INDICATORS_NAMES,
   AGRICULTURE_INDICATORS_MAP_BUCKETS
 } from 'app/data/constants';
-
-const countryStyles = {
-  default: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  }
-};
+import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 export const MAP_COLORS = [
   ['#0677B3', '#1ECDB0'],
@@ -85,10 +62,12 @@ const getYears = createSelector(getAgricultureData, data => {
   if (!data) return null;
   const years = data.map(d => d.year);
   const uniqueYears = [...new Set(years)];
-  return uniqueYears.sort((a, b) => b - a).map(y => ({
-    label: y.toString(),
-    value: y.toString()
-  }));
+  return uniqueYears
+    .sort((a, b) => b - a)
+    .map(y => ({
+      label: y.toString(),
+      value: y.toString()
+    }));
 });
 
 export const getYearsWithData = createSelector(
@@ -151,12 +130,14 @@ export const getMapData = createSelector(
   [getSelectedIndicator, getSelectedYear, getAgricultureData],
   (indicator, year, data) => {
     if (!indicator || !year) return null;
-    return data.filter(d => d.year === parseInt(year.value, 10)).map(l => ({
-      iso: l.iso_code3,
-      value: l[indicator.value],
-      unit: indicator.unit,
-      bucketIndex: getBucketIndex(indicator.value, l[indicator.value])
-    }));
+    return data
+      .filter(d => d.year === parseInt(year.value, 10))
+      .map(l => ({
+        iso: l.iso_code3,
+        value: l[indicator.value],
+        unit: indicator.unit,
+        bucketIndex: getBucketIndex(indicator.value, l[indicator.value])
+      }));
   }
 );
 
@@ -166,7 +147,7 @@ const indicatorValueFormat = (value, unit) => {
   return `${format(',.2s')(value)}`;
 };
 
-const getWidth = (value, maxValue) => value * 100 / maxValue;
+const getWidth = (value, maxValue) => (value * 100) / maxValue;
 
 export const getTopTenCountries = createSelector(
   [getMapData, getCountries, getSelectedIndicator],
@@ -214,7 +195,7 @@ export const getPathsWithStyles = createSelector(
         if (!mapData) {
           paths.push({
             ...path,
-            countryStyles
+            COUNTRY_STYLES
           });
           return null;
         }
@@ -222,7 +203,7 @@ export const getPathsWithStyles = createSelector(
         const iso = path.properties && path.properties.id;
         const countryData = mapData.filter(c => c.iso === iso);
 
-        let style = countryStyles;
+        let style = COUNTRY_STYLES;
         if (!isEmpty(countryData)) {
           const color = getColorByIndex(
             AGRICULTURE_INDICATORS_MAP_BUCKETS[selectedIndicator.value],
@@ -230,14 +211,14 @@ export const getPathsWithStyles = createSelector(
             MAP_COLORS
           );
           style = {
-            ...countryStyles,
+            ...COUNTRY_STYLES,
             default: {
-              ...countryStyles.default,
+              ...COUNTRY_STYLES.default,
               fill: color,
               fillOpacity: 1
             },
             hover: {
-              ...countryStyles.hover,
+              ...COUNTRY_STYLES.hover,
               fill: color,
               fillOpacity: 1
             }

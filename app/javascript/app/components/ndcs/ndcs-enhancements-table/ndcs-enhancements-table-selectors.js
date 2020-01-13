@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { deburrUpper } from 'app/utils';
+import { deburrUpper, filterQuery } from 'app/utils';
 import uniqBy from 'lodash/uniqBy';
 import sortBy from 'lodash/sortBy';
 import isEmpty from 'lodash/isEmpty';
@@ -64,51 +64,34 @@ export const tableGetSelectedData = createSelector(
   }
 );
 
-export const tableGetFilteredData = createSelector(
-  [tableGetSelectedData, getQuery],
-  (data, query) => {
-    if (!data || isEmpty(data)) return null;
-    return data.filter(d => {
-      let match = false;
-      Object.keys(d).forEach(col => {
-        if (deburrUpper(d[col]).indexOf(query) > -1) {
-          match = true;
-        }
-      });
-      return match;
-    });
-  }
-);
-
 export const tableRemoveIsoFromData = createSelector(
-  [tableGetFilteredData],
+  [tableGetSelectedData],
   data => {
     if (!data || isEmpty(data)) return null;
-    return data.map(d => {
+    return data.filter(Boolean).map(d => {
+      const updatedD = { ...d };
       let date = d['Statement Date'];
       try {
         date = new Date(d['Statement Date']);
         date = !isNaN(date.getTime())
           ? {
-              name: date.toLocaleDateString('en-US'),
-              value: date.getTime()
-            }
+            name: date.toLocaleDateString('en-US'),
+            value: date.getTime()
+          }
           : {
-              name: undefined,
-              value: undefined
-            };
+            name: undefined,
+            value: undefined
+          };
       } catch (e) {
         console.error(e);
       }
-      d['Statement Date'] = date;
-      d['Source Link'] = d['Source Link']
+      updatedD['Statement Date'] = date;
+      updatedD['Source Link'] = d['Source Link']
         ? d['Source Link'].replace('href=', "target='_blank' href=")
         : undefined;
-      d.country = `${"<a href='" +
-        `/ndcs/country/${d.iso}` +
-        "'>"}${d.country}</a>`;
-      delete d.iso;
-      return d;
+      updatedD.country = `<a href="/ndcs/country/${d.iso}">${d.country}</a>`;
+      delete updatedD.iso;
+      return updatedD;
     });
   }
 );
@@ -134,7 +117,26 @@ export const getDefaultColumns = createSelector(
   }
 );
 
-export default {
-  tableRemoveIsoFromData,
-  getDefaultColumns
-};
+const getFilteredData = createSelector(
+  [tableRemoveIsoFromData, getDefaultColumns],
+  (data, columnHeaders) => {
+    if (!data || isEmpty(data)) return null;
+    return data.map(d => {
+      const filteredHeadersD = {};
+      Object.keys(d).forEach(k => {
+        if (columnHeaders.includes(k)) {
+          filteredHeadersD[k] = d[k];
+        }
+      });
+      return filteredHeadersD;
+    });
+  }
+);
+
+export const getFilteredDataBySearch = createSelector(
+  [getFilteredData, getQuery],
+  (data, query) => {
+    if (!data || isEmpty(data)) return null;
+    return filterQuery(data, query);
+  }
+);

@@ -52,7 +52,6 @@
 
 .contentCols {
   @include columns(12, $gutters: false);
-  @include column-offset(2);
 
   @media #{$tablet-landscape} {
     @include columns((6,6), $gutters: false);

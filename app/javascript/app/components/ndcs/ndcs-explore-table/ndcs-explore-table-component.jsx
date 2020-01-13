@@ -7,7 +7,7 @@ import Loading from 'components/loading';
 import darkSearch from 'styles/themes/search/search-dark.scss';
 import exploreTableTheme from 'styles/themes/table/explore-table-theme.scss';
 
-import styles from './ndcs-explore-table-styles.scss';
+import styles from 'components/ndcs/shared/explore-table-styles.scss';
 
 const renderSearch = (searchHandler, query) => (
   <Search
@@ -27,7 +27,8 @@ const NDCSExploreTable = ({
   handleSearchChange,
   noContentMsg,
   columns,
-  setColumnWidth
+  setColumnWidth,
+  titleLinks
 }) => (
   <div>
     <div className={styles.wrapper}>
@@ -46,6 +47,7 @@ const NDCSExploreTable = ({
             setColumnWidth={setColumnWidth}
             defaultColumns={columns}
             theme={exploreTableTheme}
+            titleLinks={titleLinks}
           />
         </div>
       )}
@@ -63,7 +65,8 @@ NDCSExploreTable.propTypes = {
   tableData: PropTypes.array,
   handleSearchChange: PropTypes.func.isRequired,
   setColumnWidth: PropTypes.func.isRequired,
-  columns: PropTypes.array
+  columns: PropTypes.array,
+  titleLinks: PropTypes.array
 };
 
 export default NDCSExploreTable;

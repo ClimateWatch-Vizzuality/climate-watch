@@ -5,6 +5,7 @@ import { generateLinkToDataExplorer } from 'utils/data-explorer';
 import worldPaths from 'app/data/world-50m-paths';
 import { europeSlug, europeanCountries } from 'app/data/european-countries';
 import { PATH_LAYERS } from 'app/data/constants';
+import { COUNTRY_STYLES } from 'components/ndcs/shared/constants';
 
 const getSearch = state => state.search || null;
 const getCountries = state => state.countries || null;
@@ -124,30 +125,6 @@ export const getSelectedCategory = createSelector(
   }
 );
 
-const countryStyles = {
-  default: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  hover: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  },
-  pressed: {
-    fill: '#e9e9e9',
-    fillOpacity: 1,
-    stroke: '#f5f6f7',
-    strokeWidth: 1,
-    outline: 'none'
-  }
-};
-
 export const MAP_COLORS = [
   ['#0677B3', '#1ECDB0'],
   ['#0677B3', '#1ECDB0', '#00A0CA'],
@@ -178,7 +155,7 @@ export const getPathsWithStyles = createSelector(
         if (!locations) {
           paths.push({
             ...path,
-            countryStyles
+            COUNTRY_STYLES
           });
           return null;
         }
@@ -189,7 +166,7 @@ export const getPathsWithStyles = createSelector(
           ? locations[europeSlug]
           : locations[iso];
 
-        let style = countryStyles;
+        let style = COUNTRY_STYLES;
         if (countryData && countryData.label_id) {
           const legendData = legendBuckets[countryData.label_id];
           const color = getColorByIndex(
@@ -198,14 +175,14 @@ export const getPathsWithStyles = createSelector(
             MAP_COLORS
           );
           style = {
-            ...countryStyles,
+            ...COUNTRY_STYLES,
             default: {
-              ...countryStyles.default,
+              ...COUNTRY_STYLES.default,
               fill: color,
               fillOpacity: 1
             },
             hover: {
-              ...countryStyles.hover,
+              ...COUNTRY_STYLES.hover,
               fill: color,
               fillOpacity: 1
             }
@@ -229,7 +206,9 @@ const getDataExplorerParams = createSelector(
     if (
       !has(metadata, 'ndc-content.sectors') ||
       !has(metadata, 'ndc-content.categories')
-    ) { return null; }
+    ) {
+      return null;
+    }
     const { sectorName, categorySlug } = DEFAULT_DOWNLOAD_LINK_PARAMS;
     const agricultureSector = metadata['ndc-content'].sectors.find(
       ({ name }) => name === sectorName

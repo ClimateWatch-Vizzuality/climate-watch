@@ -1,11 +1,15 @@
 class ImportTimeline
+  include ClimateWatchEngine::CSVImporter
+
   def call
-    cleanup
+    ActiveRecord::Base.transaction do
+      cleanup
 
-    find_csvs
-    load_csvs
+      find_csvs
+      load_csvs
 
-    import_all
+      import_all
+    end
   end
 
   def cleanup
@@ -51,7 +55,7 @@ class ImportTimeline
       name: name
     )
 
-    csv.each do |line|
+    import_each_with_logging(csv, "#{CW_FILES_PREFIX}timeline/#{name}.csv") do |line|
       import_document(source, line)
     end
   end

@@ -35,6 +35,7 @@ import * as agricultureMeatProductionProvider from 'providers/agriculture-meat-p
 import * as agricultureWorldMeatProductionProvider from 'providers/agriculture-world-meat-production-provider';
 import * as agricultureMeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import * as agricultureWorldMeatTradeProvider from 'providers/agriculture-world-meat-trade-provider';
+import * as ndcCountryAccordionProvider from 'providers/ndc-country-accordion-provider';
 
 const providersReducers = {
   login: handleActions(loginProvider),
@@ -70,7 +71,8 @@ const providersReducers = {
   meatProduction: handleActions(agricultureMeatProductionProvider),
   meatWorldProduction: handleActions(agricultureWorldMeatProductionProvider),
   meatTrade: handleActions(agricultureMeatTradeProvider),
-  meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider)
+  meatWorldTrade: handleActions(agricultureWorldMeatTradeProvider),
+  ndcCountryAccordion: handleActions(ndcCountryAccordionProvider)
 };
 
 // Pages
@@ -100,7 +102,6 @@ import * as modalDownloadComponent from 'components/modal-download';
 import * as modalMetadataComponent from 'components/modal-metadata';
 import * as modalESPOverviewComponent from 'components/modal-overview';
 import * as espGraphComponent from 'components/emission-pathways/emission-pathways-graph';
-import * as ndcCountryAccordion from 'components/ndcs/ndcs-country-accordion';
 import * as countryGhgEmissionsMapComponent from 'components/country/country-ghg-map';
 import * as countryGhgEmissionsComponent from 'components/country/country-ghg-emissions';
 import * as countrySDGLinkagesComponent from 'components/country/country-ndc-sdg-linkages';
@@ -119,7 +120,6 @@ const componentsReducers = {
   modalDownload: handleActions(modalDownloadComponent),
   modalMetadata: handleActions(modalMetadataComponent),
   modalESPOverview: handleActions(modalESPOverviewComponent),
-  ndcCountryAccordion: handleActions(ndcCountryAccordion),
   countryGhgEmissionsMap: handleActions(countryGhgEmissionsMapComponent),
   countryGhgEmissions: handleActions(countryGhgEmissionsComponent),
   countrySDGLinkages: handleActions(countrySDGLinkagesComponent),

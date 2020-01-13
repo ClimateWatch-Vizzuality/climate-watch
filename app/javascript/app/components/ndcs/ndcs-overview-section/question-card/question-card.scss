@@ -1,0 +1,48 @@
+@import '~styles/settings.scss';
+
+.questionCard {
+  position: relative;
+  border: solid 2.5px $link-water;
+  border-radius: 6px;
+  padding: 20px 60px 25px;
+  clear: both;
+  display: block;
+  color: $theme-color-intense;
+  text-decoration: none;
+  margin-bottom: 20px;
+
+  &:hover {
+    background-color: $catskill-white;
+  }
+}
+
+.infoButton {
+  position: absolute;
+  z-index: $z-index-over-dropdown;
+  cursor: pointer;
+  top: 12px;
+  right: 12px;
+}
+
+.questionText {
+  font-weight: $font-weight-bold;
+  color: $theme-color-intense;
+  margin-bottom: 15px;
+}
+
+.answerText {
+  margin-bottom: 15px;
+}
+
+.answerNumber {
+  font-size: $font-size-large;
+  color: $theme-color-intense;
+}
+
+.percentage {
+  font-weight: $font-weight-bold;
+}
+
+.loader {
+  min-height: 54px;
+}
