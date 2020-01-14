@@ -26,7 +26,6 @@ class ExploreButtonsGroup extends PureComponent {
         />
         <Button
           key="action2"
-          noSpace
           className={styles.exploreBtn}
           color="yellow"
           href={isNdcp ? href : null}

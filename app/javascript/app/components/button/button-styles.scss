@@ -16,10 +16,6 @@
   transition: background-color 150ms ease-out;
   min-width: 25px;
 
-  &.noSpace {
-    padding: 0;
-  }
-
   &:disabled {
     cursor: not-allowed;
   }
