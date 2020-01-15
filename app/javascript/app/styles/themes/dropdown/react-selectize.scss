@@ -1,7 +1,7 @@
 @import '~styles/settings.scss';
 
 $height: 45px;
-$dropdown-border: 2px solid #ECF1FA;
+$dropdown-border: 2.5px solid #ECF1FA;
 $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
 
 .dropdown :global {
@@ -36,6 +36,7 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
         height: $height;
         overflow: hidden;
         transition: box-shadow 150ms ease-out;
+        border: $dropdown-border;
 
         // &:hover {
         //   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.09);
@@ -177,17 +178,25 @@ $dropdown-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.09);
     }
   }
 
-  .multi-select.react-selectize.root-node .simple-value {
-    display: inline-block;
-    // margin: 2px;
-    vertical-align: middle;
-
-    span {
+  .cw__multiselect-styles_multiSelect {
+    color: pink;
+    .multi-select.react-selectize.root-node .simple-value {
       display: inline-block;
-      padding: 2px 5px 4px;
-      vertical-align: center;
+      // margin: 2px;
+      vertical-align: middle;
+  
+      .react-selectize-control {
+        border: $dropdown-border;
+      }
+  
+      span {
+        display: inline-block;
+        padding: 2px 5px 4px;
+        vertical-align: center;
+      }
     }
   }
+
 
   .simple-select.react-selectize.root-node .simple-value {
     // margin: 2px;

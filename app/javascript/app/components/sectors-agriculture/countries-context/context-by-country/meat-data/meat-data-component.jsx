@@ -8,8 +8,10 @@ import MeatTradeProvider from 'providers/agriculture-meat-trade-provider';
 import MeatWorldTradeProvider from 'providers/agriculture-world-meat-trade-provider';
 import { Card, Chart, Dropdown } from 'cw-components';
 import NoContent from 'components/no-content';
-import Tooltip from './tooltip';
+import dropdownTheme from 'styles/themes/dropdown/react-selectize.scss';
 
+import Tooltip from './tooltip';
+import cx from 'classnames';
 import styles from './meat-data-styles.scss';
 
 const cardTheme = {
@@ -62,16 +64,18 @@ const MeatData = ({
                   options={categories}
                   onValueChange={updateCategoryFilter}
                   hideResetButton
+                  // theme={dropdownTheme}
                 />
               )}
               {breakByOptions && (
                 <Dropdown
                   label={'Break by'}
-                  theme={{ select: styles.dropdown }}
+                  theme={cx(dropdownTheme, { select: styles.dropdown })}
                   value={selectedBreakBy}
                   options={breakByOptions}
                   onValueChange={updateBreakByFilter}
                   hideResetButton
+                  // theme={dropdownTheme}
                 />
               )}
             </div>
