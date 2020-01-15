@@ -67,7 +67,7 @@ class NDCCountryContainer extends PureComponent {
       country.iso_code3,
       selected.value
     );
-    history.push(path);
+    history.replace(path);
   };
 
   render() {

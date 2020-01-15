@@ -13,7 +13,6 @@
 
 .headerCols {
   @include row();
-
   margin-bottom: 15px;
   z-index: $z-index-sticky;
 
@@ -24,14 +23,12 @@
   }
 
   @media #{$tablet-landscape} {
-    @include row((4, 8));
-
-    > * {
-      @include xy-gutters($gutter-position: ('bottom'), $gutters: 0);
+    .intro {
+      margin-bottom: 100px;
     }
 
-    > *:first-child {
-      @include xy-gutters($gutter-position: ('right'), $gutters: 0);
+    .select {
+      margin-bottom: 64px;
     }
   }
 }

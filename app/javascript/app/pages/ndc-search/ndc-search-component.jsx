@@ -33,7 +33,7 @@ class SearchPage extends PureComponent {
       <div className={styles.page}>
         <Header route={route}>
           <div className={styles.headerCols}>
-            <Intro title="NDC Search" />
+            <Intro className={styles.intro} title="NDC Search" />
             <NdcsAutocompleteSearch
               className={styles.select}
               fetchSearchResults={fetchSearchResults}

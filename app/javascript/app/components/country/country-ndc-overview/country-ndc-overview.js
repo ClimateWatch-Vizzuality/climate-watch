@@ -1,4 +1,4 @@
-import { PureComponent, createElement } from 'react';
+import { useEffect, createElement } from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import { withRouter } from 'react-router';
@@ -7,6 +7,7 @@ import { handleAnalytics } from 'utils/analytics';
 
 import { isPageNdcp, isEmbededComponent } from 'utils/navigation';
 import { actions } from 'components/modal-metadata';
+import { actions as fetchActions } from 'components/ndcs/ndcs-country-accordion';
 
 import CountryNdcOverviewComponent from './country-ndc-overview-component';
 import {
@@ -37,13 +38,24 @@ const mapStateToProps = (state, { location, match }) => {
   };
 };
 
-class CountryNdcOverviewContainer extends PureComponent {
-  handleAnalyticsClick = () => {
+function CountryNdcOverviewContainer(props) {
+  const { iso, fetchNdcsCountryAccordion, setModalMetadata } = props;
+
+  useEffect(() => {
+    fetchNdcsCountryAccordion({
+      locations: iso,
+      category: 'summary',
+      compare: false,
+      lts: false
+    });
+  }, [iso]);
+
+  const handleAnalyticsClick = () => {
     handleAnalytics('Country', 'Leave page to explore data', 'Ndc Overview');
   };
 
-  handleInfoClick = () => {
-    this.props.setModalMetadata({
+  const handleInfoClick = () => {
+    setModalMetadata({
       category: 'Country',
       slugs: ['ndc_cw', 'ndc_wb', 'ndc_die'],
       customTitle: 'Nationally Determined Contribution (NDC) Overview',
@@ -51,13 +63,11 @@ class CountryNdcOverviewContainer extends PureComponent {
     });
   };
 
-  render() {
-    return createElement(CountryNdcOverviewComponent, {
-      ...this.props,
-      handleInfoClick: this.handleInfoClick,
-      handleAnalyticsClick: this.handleAnalyticsClick
-    });
-  }
+  return createElement(CountryNdcOverviewComponent, {
+    ...props,
+    handleInfoClick,
+    handleAnalyticsClick
+  });
 }
 
 CountryNdcOverviewContainer.propTypes = {
@@ -65,5 +75,7 @@ CountryNdcOverviewContainer.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps, actions)(CountryNdcOverviewContainer)
+  connect(mapStateToProps, { ...actions, ...fetchActions })(
+    CountryNdcOverviewContainer
+  )
 );
